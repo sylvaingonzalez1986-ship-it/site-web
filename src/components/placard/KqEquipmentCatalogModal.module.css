@@ -110,7 +110,7 @@
 .accountSummary>button{border-color:#172923;border-radius:10px;background:#efc451;color:#172923;box-shadow:2px 3px 0 #172923}
 .toolbar>label:first-child,.compatibilityToggle,.sortControl select{border-color:#172923;border-radius:8px;background:#fff1d6;color:#172923}
 .categoryNav,.productArea{scrollbar-color:#536058 #fff1d6}
-.categoryNav>button{background:#d5a573;color:#172923;border-color:#172923;border-radius:10px;box-shadow:2px 3px 0 #172923}
+.categoryNav>button{background:var(--game-surface-warm);color:#172923;border-color:#172923;border-radius:10px;box-shadow:2px 3px 0 #172923}
 .categoryNav>button:hover,.categoryNav>button[data-active]{background:#efc451;color:#172923;border-color:#172923;box-shadow:2px 3px 0 #172923}
 .loadoutSummary,.productAreaHeader{background:#f7dfb8;color:#172923;border:2px solid #172923;border-radius:12px;box-shadow:2px 3px 0 #172923}
 .loadoutSummary small,.productAreaHeader small{color:#076c61}

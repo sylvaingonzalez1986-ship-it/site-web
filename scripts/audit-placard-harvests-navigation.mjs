@@ -8,6 +8,7 @@ import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const root = process.cwd(), output = resolve(root, 'output/placard-harvests-navigation');
+const harvestsOnly = process.argv.includes('--harvests-only');
 const port = 3254, origin = `http://127.0.0.1:${port}`;
 const modules = {
   'warehouse-assets': `export default ${await readFile(resolve(root, 'public/placard/warehouse-v2/manifest.json'), 'utf8')};`,
@@ -110,6 +111,7 @@ try {
   for(const[width,height]of [[1440,1000],[1000,900],[390,844],[320,740]]){
     await page.setViewport({width,height,isMobile:width<700,hasTouch:width<700});await visit();
     assert.deepEqual(await states(),['overflow','jury','duel','queued','ready','curing']);
+    assert.deepEqual(await page.$$eval('[data-placard-harvests] figure li strong',nodes=>nodes.map(node=>Number(node.textContent))),[3,1,1,1],'Harvest summary counts each harvest once across jury, curing, ready and overflow');
     assert.equal(await page.$('[data-harvest-id="spent-flower"]'),null,'Burned flowers without remaining stock are omitted');
     await unlocked();await screenshot('harvests-'+width);
     for(const id of ['jury-flower','queued-flower','locked-flower']){
@@ -122,7 +124,9 @@ try {
     }
     await page.select('[data-placard-harvests] select','jury');assert.deepEqual(await states(),['jury','duel','queued']);
     await page.select('[data-placard-harvests] select','stock');assert.deepEqual(await states(),['overflow','ready','curing']);
+    assert.equal(await page.$eval('[data-placard-harvests] figcaption',node=>node.textContent),'6 récoltes par étape','Filtering the list preserves the complete harvest summary');
     await page.select('[data-placard-harvests] select','all');
+    if(harvestsOnly){await unchanged();checks.push({width,height,states:6,summaryCounts:true,filters:true,flowerLinks:true,noOverflow:true,noMutations:true});continue;}
     await clickText('Protéger le surplus');await page.waitForSelector('[data-storage-capacity]');
     assert.equal(await page.$eval('[data-storage-shop]',node=>node.open),false,'Container catalogue starts collapsed');
     assert.equal(await page.$$eval('[data-storage-overflow]',nodes=>nodes.length),1);
@@ -151,11 +155,20 @@ try {
   for(const[fail,remaining]of [['flowers',['overflow','ready','curing']],['storage',['jury','duel','queued']],['flowers,storage',[]]]){
     await visit('fail='+fail);assert.deepEqual(await states(),remaining);assert.equal(await page.$$eval('[role="alert"]',nodes=>nodes.length),fail.split(',').length);
     assert.equal(await page.$('[data-placard-harvests] h3')===null,remaining.length===0,'Unavailable data must not show an empty account prompt');
+    if(remaining.length){
+      const legend=await page.$$eval('[data-placard-harvests] figure li',nodes=>nodes.map(node=>({label:node.querySelector('span').textContent,value:Number(node.querySelector('strong').textContent)})));
+      assert.deepEqual(legend,fail==='flowers'?[{label:'En affinage',value:1},{label:'Prêtes à vendre',value:1},{label:'Surplus à protéger',value:1}]:[{label:'Jury et duels',value:3}],'Unavailable source categories are omitted, never reported as zero');
+      assert.equal(await page.$eval('[data-harvest-summary-unavailable]',node=>node.textContent),fail==='flowers'?'Jury et duels : données indisponibles.':'Affinage, vente et surplus : données indisponibles.','The partial summary names its unavailable data');
+      assert.match(await page.$eval('[data-placard-harvests] figcaption',node=>node.textContent),/données partielles/);
+    }else assert.equal(await page.$('[data-placard-harvests] figure'),null,'No allocation chart without either data source');
     await page.evaluate(()=>window.__recover());await page.click('[role="alert"] button');await page.waitForFunction(()=>document.querySelectorAll('[data-harvest-id]').length===6&&!document.querySelector('[role="alert"]'));
-    await unchanged();checks.push({partialFailure:fail,retry:true,successfulSourceRetained:true});
+    assert.deepEqual(await page.$$eval('[data-placard-harvests] figure li strong',nodes=>nodes.map(node=>Number(node.textContent))),[3,1,1,1],'Recovery restores all category counts');
+    assert.equal(await page.$('[data-harvest-summary-unavailable]'),null,'Recovery removes the missing-data notice');
+    await unchanged();checks.push({partialFailure:fail,retry:true,successfulSourceRetained:true,unavailableCategoriesOmitted:true});
   }
-  await visit('jury-only');await page.select('[data-placard-harvests] select','stock');await clickText('Voir toutes mes récoltes');assert.deepEqual(await states(),['jury','duel','queued']);
+  await visit('jury-only');assert.deepEqual(await page.$$eval('[data-placard-harvests] figure li strong',nodes=>nodes.map(node=>Number(node.textContent))),[3,0,0,0],'A successfully loaded empty storage remains an actual zero');await page.select('[data-placard-harvests] select','stock');await clickText('Voir toutes mes récoltes');assert.deepEqual(await states(),['jury','duel','queued']);
   await visit('empty');await clickText('Commencer une culture');await page.waitForSelector('[data-fixture-destination="game"]');await unchanged();
+  if(!harvestsOnly){
   await visit();await navigate('shop',390);await clickSelector('[aria-label="Ouvrir le rayon matériel"]');await page.waitForSelector('[aria-labelledby="equipment-catalog-title"]');
   assert.equal(await page.$eval('[aria-labelledby="equipment-catalog-title"]',node=>node.getAttribute('role')),'region','Embedded catalogue remains part of the page');await unlocked();
   await page.focus('[aria-label="Retour à la boutique"]');await page.keyboard.down('Shift');await page.keyboard.press('Tab');await page.keyboard.up('Shift');
@@ -179,8 +192,9 @@ try {
   await page.keyboard.press('Escape');await page.waitForSelector('[aria-label="Panier matériel"][data-open]',{hidden:true});
   assert.ok(await page.$('[aria-labelledby="equipment-catalog-title"]'),'Escape closes only the active cart layer');await unlocked();await unchanged();
   checks.push({embeddedCatalogue:true,keyboardExit:true,drawerEscapePreservesCatalogue:true,cartEscapePreservesCatalogue:true,cartAndConfirmationFocusTraps:true,confirmationTotal:true});
+  }
   assert.deepEqual(errors,[]);assert.deepEqual(blocked,[]);
-  await writeFile(resolve(output,'report.json'),JSON.stringify({checks,emptyAccount:true,emptyFilter:true,errors,remoteRequests:blocked},null,2));
+  await writeFile(resolve(output,harvestsOnly?'harvests-report.json':'report.json'),JSON.stringify({scope:harvestsOnly?'harvests':'full-navigation',checks,emptyAccount:true,emptyFilter:true,errors,remoteRequests:blocked},null,2));
   console.log(JSON.stringify({checks:checks.length,viewports:4,errors,remoteRequests:blocked.length}));
 }catch(error){
   if(page){await page.screenshot({path:resolve(output,'failure.png'),fullPage:true}).catch(()=>{});await writeFile(resolve(output,'failure.json'),JSON.stringify({error:String(error),stack:error.stack,checks,errors,content:await page.evaluate(()=>document.body.innerText).catch(()=>null)},null,2));}

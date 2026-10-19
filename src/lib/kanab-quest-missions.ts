@@ -16,7 +16,9 @@ const cash = (amountCents: number): KqMissionReward => ({ kind: "cash", amountCe
 const card = (code: string, name: string): KqMissionReward => ({ kind: "card", code, name, rarity: "gold" });
 const pack = (cardCount: number): KqMissionReward => ({ kind: "pack", cardCount });
 function mission<const Code extends string>(code: Code, track: KqMissionTrack, step: MissionCopy["difficulty"], metric: string, target: number, reward: KqMissionReward, title: string, description: string, action: string, destination: KqMissionDestination, progressLabel: string) {
-  return { code, track, step, metric, target, reward, title, description, action, destination, progressLabel, difficulty: step };
+  return { code, track, step, metric, target, reward, title,
+    description: track === "quality" ? `${description} Les fleurs déjà qualifiées continuent de compter.` : description,
+    action, destination, progressLabel, difficulty: step };
 }
 
 /** Display/tutorial catalogue. The server independently verifies all progress and rewards. */
@@ -34,17 +36,17 @@ export const KQ_MISSION_DEFINITIONS = [
   mission("twenty-varieties", "culture", 6, "varieties", 20, pack(10), "L’encyclopédie vivante",
     "Récolte 20 Buddies différents : une collection de cultures menée à son terme.", "Compléter mes cultures", "game", "Buddies différents récoltés"),
   mission("beautiful-flower", "quality", 1, "beautiful_flowers", 1, cash(7500), "Une belle pousse",
-    "Récolte une fleur avec au moins 6 points de Qualité, le niveau Belle pousse.", "Soigner ma culture", "game", "Récoltes de Qualité 6 ou plus"),
+    "Récolte une fleur avec au moins 8 points de Qualité, le niveau Belle pousse.", "Soigner ma culture", "game", "Récoltes Belle pousse ou mieux"),
   mission("contest-flower", "quality", 2, "contest_flowers", 1, cash(20000), "Une fleur de concours",
-    "Récolte une fleur avec au moins 10 points de Qualité, le niveau Qualité concours.", "Viser la qualité concours", "game", "Récoltes de Qualité 10 ou plus"),
+    "Récolte une fleur avec au moins 14 points de Qualité, le niveau Qualité concours.", "Viser la qualité concours", "game", "Récoltes Qualité concours ou mieux"),
   mission("three-contest-flowers", "quality", 3, "contest_flowers", 3, card("BOTTE-021", "Diagnostic croisé"), "Le talent se confirme",
-    "Réussis 3 récoltes de Qualité concours ou mieux : au moins 10 points de Qualité chacune.", "Affiner mes cultures", "game", "Récoltes de Qualité 10 ou plus"),
+    "Réussis 3 récoltes de Qualité concours ou mieux : au moins 14 points de Qualité chacune.", "Affiner mes cultures", "game", "Récoltes Qualité concours ou mieux"),
   mission("five-contest-varieties", "quality", 4, "contest_varieties", 5, card("BOTTE-030", "Sonde d’humidité"), "La qualité sous toutes ses formes",
-    "Récolte 5 Buddies différents avec au moins 10 points de Qualité chacun.", "Cultiver un autre profil", "game", "Buddies différents de Qualité 10 ou plus"),
-  mission("legendary-flower", "quality", 5, "legendary_flowers", 1, pack(3), "La fleur d’exception",
-    "Atteins le niveau Fleur légendaire avec une récolte à 14 points de Qualité ou plus.", "Viser une fleur légendaire", "game", "Récoltes de Qualité 14 ou plus"),
+    "Récolte 5 Buddies différents avec au moins 14 points de Qualité chacun.", "Cultiver un autre profil", "game", "Buddies différents Qualité concours ou mieux"),
+  mission("legendary-flower", "quality", 5, "legendary_flowers", 1, pack(3), "La première légendaire",
+    "Atteins le niveau Fleur légendaire : au moins 26 points de Qualité et 4 étapes réussies, dont 2 critiques.", "Viser une fleur légendaire", "game", "Fleurs légendaires"),
   mission("three-legendary-varieties", "quality", 6, "legendary_varieties", 3, pack(10), "Une signature légendaire",
-    "Récolte 3 Buddies différents au niveau Fleur légendaire : au moins 14 points de Qualité chacun.", "Perfectionner mes cultures", "game", "Buddies différents de Qualité 14 ou plus"),
+    "Récolte 3 Buddies différents au niveau Fleur légendaire : au moins 26 points de Qualité et 4 étapes réussies, dont 2 critiques, pour chaque culture.", "Perfectionner mes cultures", "game", "Buddies différents légendaires"),
   mission("first-prepared", "preparation", 1, "prepared_batches", 1, cash(5000), "De la récolte au lot",
     "Prépare une première récolte pour le commerce, en fleur ou en produit transformé.", "Préparer mes récoltes", "market", "Récoltes préparées"),
   mission("first-curing", "preparation", 2, "cured_lots", 1, cash(15000), "La patience du chanvrier",

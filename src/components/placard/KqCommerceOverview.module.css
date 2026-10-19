@@ -82,3 +82,12 @@
 .overview :where(button,summary,a){touch-action:manipulation;min-height: 44px}
 .overview :where(button,summary,a,input,select):focus-visible{outline:3px solid #172923;outline-offset:4px}
 .overview :where(button,input,select){max-width:100%}
+.audiences > section > div { flex: 1; min-width: 0; }
+.visuals { display: grid; gap: 18px; }
+.explanation, .saleDetails { margin-top: 10px; font-size: .72rem; }
+.explanation > summary, .saleDetails > summary { cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 750; }
+.explanation > summary::before, .saleDetails > summary::before { content: "+"; }
+.explanation[open] > summary::before, .saleDetails[open] > summary::before { content: "−"; }
+.saleDetails dl { display: grid; gap: 7px; margin: 0 0 8px; }
+.saleDetails dl > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px 12px; }
+.saleDetails dd { margin: 0; font-weight: 750; }

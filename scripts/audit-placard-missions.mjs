@@ -62,7 +62,9 @@ try {
  const waitClaim=async(code)=>page.waitForFunction(code=>window.__claims.includes(code)&&!document.body.innerText.includes('Récupération…'),{},code);
  for(const width of [320,390,768,1440]) {
   await page.setViewport({width,height:900});await goto();await page.waitForSelector(culture);
-  await overflow();assert.equal(await page.$$('progress').then(e=>e.length),6);
+  await overflow();assert.equal(await page.$$('[role="meter"]').then(e=>e.length),5);
+  assert.deepEqual(await page.$$eval('[aria-label="Progression de tes défis"] figure li strong',items=>items.map(item=>Number(item.textContent))),[0,5,25],'The overview separates claimed, claimable and remaining missions');
+  assert.equal(await page.$$eval('[role="meter"]',items=>items.every(item=>Number(item.getAttribute('aria-valuenow'))===Number(item.getAttribute('aria-valuemax')))),true,'Every ready mission exposes its reached target');
   assert.equal(await page.$$eval('details ol li',items=>items.length),30);
   await page.$$eval('details',items=>items.forEach(item=>item.open=true));await overflow();
   await page.$$eval('details',items=>items.forEach(item=>item.open=false));

@@ -12,6 +12,7 @@
   background: #fffdf5;
   overflow: hidden;
 }
+.visualSummary { margin-bottom: 12px; }
 .overview summary {
   display: flex;
   align-items: center;

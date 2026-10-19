@@ -84,13 +84,13 @@
 .zoneChip[data-zone-kind=storage] {
   border-color: #172923; }
 .zoneChip[data-zone-kind=drying][aria-pressed=true] {
-  background: #d5a573; }
+  background: var(--game-surface-warm); }
 .zoneChip[data-zone-kind=storage][aria-pressed=true] {
   background: #bee7de; }
 .activity { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 0 4px; font-size: 13px; line-height: 1.5; color: var(--muted); }
 .activity > a { flex-shrink: 0; }
 .inspector { min-width: 0; overflow: hidden; scroll-margin-top: 16px; border: 2px solid #172923; background: #fffaf0; border-radius: 15px 12px 16px 12px; box-shadow: 3px 4px 0 #172923; }
-.inspectorHeader { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 22px; background: #d5a573; border-bottom: 2px solid #172923; }
+.inspectorHeader { display: flex; justify-content: space-between; align-items: center; gap: 14px; padding: 22px; background: var(--game-surface-warm); border-bottom: 2px solid #172923; }
 .inspectorHeader h3 { margin: 8px 0; font-size: 32px; line-height: 1.1; overflow-wrap: anywhere; }
 .inspectorHeader small { font-size: 11px; color: #172923; }
 .inspectorHeader span { font-size: 12px; color: #172923; }
@@ -168,7 +168,7 @@
 .roomIntro p { margin: 0; font-size: 13px; line-height: 1.6; color: var(--muted); }
 .devices { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 22px; }
 .device { min-width: 0; display: flex; flex-direction: column; overflow: hidden; border: 2px solid #172923; background: #fffaf0; border-radius: 15px 12px 16px 12px; box-shadow: 3px 4px 0 #172923; }
-.deviceVisual { display: flex; align-items: center; justify-content: center; position: relative; height: 175px; background: radial-gradient(ellipse at 50% 95%,#17292320,transparent 65%), #d5a57355; color: #172923; border-bottom: 2px solid #172923; }
+.deviceVisual { display: flex; align-items: center; justify-content: center; position: relative; height: 175px; background: radial-gradient(ellipse at 50% 95%,#17292320,transparent 65%), rgb(var(--game-surface-warm-rgb) / 33.333%); color: #172923; border-bottom: 2px solid #172923; }
 .deviceVisual > svg { width: 72px; height: 72px; stroke-width: 1.8; }
 .deviceVisual .deviceArtwork { width: 190px; height: 145px; position: relative; object-fit: contain; }
 .ownedBadge { position: absolute; top: 12px; right: 12px; max-width: calc(100% - 24px); padding: 6px 9px; font-size: 11px; border: 2px solid #172923; background: #fff1d6; color: #172923; border-radius: 8px; font-weight: 750; }

@@ -35,7 +35,7 @@
 .card[data-buddie-blocked] .status { color: #72522f; }
 .card[aria-expanded="true"] { border-color: #172923; background: #dcefe4; }
 .scrollBand { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 22px; font-size: 10px; line-height: 1; cursor: ew-resize; touch-action: pan-y; user-select: none; -webkit-user-select: none; border-top: 2px solid #17292355; color: #536058; }
-.scrollMeter { position: relative; width: 65px; height: 3px; border-radius: 5px; background: #d5a57380; }
+.scrollMeter { position: relative; width: 65px; height: 3px; border-radius: 5px; background: rgb(var(--game-surface-warm-rgb) / 50.196%); }
 .scrollMeter i { position: absolute; top: 0; width: 20%; height: 3px; border-radius: 5px; background: #076c61; }
 .empty { margin: 0; min-height: 120px; display: grid; place-items: center; padding: 12px; font-size: 12px; text-align: center; color: #536058; }
 .ghost { position: fixed; z-index: 2147483000; width: 88px; pointer-events: none; transform: rotate(-7deg); filter: drop-shadow(4px 5px 0 #17292380); }

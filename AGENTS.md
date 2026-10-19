@@ -16,3 +16,11 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Grant sequence `USAGE` explicitly when a permitted insert uses a `SERIAL` / `BIGSERIAL` default. Give API views their own grants and check underlying relations for `security_invoker` views.
 - Do not restore automatic grants with `ALTER DEFAULT PRIVILEGES`, or grant privileges on all tables/functions in `public`. Use named objects.
 - Run `npm run check:supabase-grants` after changing migrations. Historical application access is completed by `20260923000200_explicit_data_api_grants.sql`; new tables must not rely on that catch-up migration.
+
+## Game UI: visual clarity
+
+- Across game screens, lead with the player's key numbers, a useful visualization, and the next action. Keep labels short; put secondary explanations and formulas in expandable details.
+- Reuse `src/components/placard/KqVisuals.tsx` for progress toward a real goal, comparable quantities, and parts of a total. Preserve existing useful interactive charts and the game's cream, teal, gold and ink palette.
+- Use `--game-surface-warm` for warm game panels and accents: warm apricot orange, alongside cream surfaces. Do not reintroduce the former brown panel backgrounds or pale peach.
+- Show actual data with units and readable values. Never invent history, mix different units on a common scale, present an estimate as a result, or treat missing data as zero. The server's offered amounts remain authoritative.
+- Preserve visible costs, prerequisites, errors and confirmation details. Graphs must work at 320 px, by keyboard where interactive, and without relying on colour alone.

@@ -1228,12 +1228,28 @@ export async function getKqAdminRunsSnapshot(adminEmail: string, selection: KqRu
   return ownerId ? getKqPlayerRunsSnapshot(ownerId, selection) : { activeRun: null, activeRuns: [] };
 }
 
+/** Read both SQL rows and compact RPC snapshots without reclassifying old flowers. */
+function mapKqHarvestTierFields(quality: number, row: {
+  harvest_tier_version?: unknown; successful_stages?: unknown; critical_stages?: unknown;
+  harvestTierVersion?: unknown; successfulStages?: unknown; criticalStages?: unknown;
+}) {
+  const version = row.harvest_tier_version ?? row.harvestTierVersion;
+  const successfulStages = row.successful_stages ?? row.successfulStages;
+  const criticalStages = row.critical_stages ?? row.criticalStages;
+  const context = version === 2 ? {
+    harvestTierVersion: 2 as const,
+    ...(typeof successfulStages === "number" && Number.isInteger(successfulStages) ? { successfulStages } : {}),
+    ...(typeof criticalStages === "number" && Number.isInteger(criticalStages) ? { criticalStages } : {}),
+  } : {};
+  return { ...context, tier: getKqHarvestTier(quality, context) };
+}
+
 export async function getKqPlayerFlowers(ownerId: string) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const supabase = createSupabaseServiceClient();
   const [result, queueResult] = await Promise.all([
     supabase.from("kq_flowers")
-      .select("id,run_id,variety_code,variety_name,quality,traits,combos,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at,locked_at,burned_at")
+      .select("id,run_id,variety_code,variety_name,quality,harvest_tier_version,successful_stages,critical_stages,traits,combos,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at,locked_at,burned_at")
       .eq("owner_id", ownerId)
       .in("status", ["available", "locked"])
       .order("created_at", { ascending: false })
@@ -1253,6 +1269,7 @@ export async function getKqPlayerFlowers(ownerId: string) {
     varietyCode: String(flower.variety_code),
     varietyName: String(flower.variety_name),
     quality: Number(flower.quality),
+    ...mapKqHarvestTierFields(Number(flower.quality), flower),
     traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
     combos: Array.isArray(flower.combos) ? flower.combos.map(String) : [],
     stats: flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats : {},
@@ -1326,6 +1343,7 @@ export function mapKqPlayerCoreSnapshot(
       varietyCode: String(flower.varietyCode),
       varietyName: String(flower.varietyName),
       quality: Number(flower.quality),
+      ...mapKqHarvestTierFields(Number(flower.quality), flower),
       traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
       combos: Array.isArray(flower.combos) ? flower.combos.map(String) : [],
       stats: flower.stats && typeof flower.stats === "object" ? flower.stats : {},
@@ -1350,6 +1368,11 @@ export function mapKqPlayerCoreSnapshot(
       variety_name: String(flower.variety_name),
       rules_version: Number(flower.rules_version ?? 2),
       quality: Number(flower.quality),
+      harvest_tier_version: Number(flower.harvest_tier_version ?? flower.harvestTierVersion ?? 1),
+      successful_stages: typeof (flower.successful_stages ?? flower.successfulStages) === "number"
+        ? Number(flower.successful_stages ?? flower.successfulStages) : undefined,
+      critical_stages: typeof (flower.critical_stages ?? flower.criticalStages) === "number"
+        ? Number(flower.critical_stages ?? flower.criticalStages) : undefined,
       traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
       battle_stats: flower.battle_stats && typeof flower.battle_stats === "object"
         ? flower.battle_stats as Record<string, number>
@@ -1505,7 +1528,7 @@ export async function getKqRandomBattleQueueHealth(): Promise<KqRandomQueueHealt
   if (queueRows.length === 0) return buildKqRandomQueueHealth([], [], new Date(), truncated);
 
   const flowersResult = await supabase.from("kq_flowers")
-    .select("id,quality")
+    .select("id,quality,harvest_tier_version,successful_stages,critical_stages")
     .in("id", queueRows.map((row) => row.flowerId));
   if (flowersResult.error) throw new Error(`[supabase:kq_flowers] ${flowersResult.error.message}`);
   return buildKqRandomQueueHealth(
@@ -1513,6 +1536,7 @@ export async function getKqRandomBattleQueueHealth(): Promise<KqRandomQueueHealt
     (flowersResult.data ?? []).map((flower) => ({
       id: String(flower.id),
       quality: Number(flower.quality),
+      ...mapKqHarvestTierFields(Number(flower.quality), flower),
     })),
     new Date(),
     truncated,
@@ -1633,7 +1657,7 @@ export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: strin
   const definition = KQ_TRAINING_BOTS.find((bot) => bot.code === botCode)!;
   const supabase = createSupabaseServiceClient();
   const flowerResult = await supabase.from("kq_flowers")
-    .select("id,run_id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at")
+    .select("id,run_id,variety_name,quality,harvest_tier_version,successful_stages,critical_stages,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at")
     .eq("id", flowerId).eq("owner_id", ownerId).maybeSingle();
   if (flowerResult.error) throw new Error(`[supabase:kq_flowers:bot] ${flowerResult.error.message}`);
   if (!flowerResult.data || flowerResult.data.status !== "available") throw new Error("Ta Fleur n’est plus disponible.");
@@ -1851,6 +1875,9 @@ export async function leaveKqAdminRandomBattleQueue(adminEmail: string, flowerId
 
 type KqFlowerBattleRow = {
   id: string; variety_name: string; quality: number; traits: string[];
+  harvest_tier_version?: number;
+  successful_stages?: number;
+  critical_stages?: number;
   rules_version?: number;
   cannabinoid_report?: KqFlowerCard["cannabinoidReport"];
   cultivation_profile?: KqFlowerCard["cultivationProfile"];
@@ -1861,7 +1888,7 @@ type KqFlowerBattleRow = {
 function mapKqOfficialFlowerCard(row: KqFlowerBattleRow, ownerName: string): KqFlowerCard {
   return {
     id: row.id, ownerName, variety: row.variety_name,
-    tier: getKqHarvestTier(row.quality),
+    ...mapKqHarvestTierFields(row.quality, row),
     status: row.status as KqFlowerCard["status"],
     createdAt: row.created_at, integrityCode: `DB-${row.id.slice(0, 8).toUpperCase()}`,
     traits: Array.isArray(row.traits) ? row.traits : [],
@@ -1880,6 +1907,8 @@ function mapKqHistoryFlowerCard(flower: KqFlowerCard): KqFlowerCard {
     ownerName: flower.ownerName,
     variety: flower.variety,
     tier: flower.tier,
+    ...(flower.harvestTierVersion === 2 ? { harvestTierVersion: 2 as const,
+      successfulStages: flower.successfulStages, criticalStages: flower.criticalStages } : {}),
     status: flower.status,
     createdAt: flower.createdAt,
     integrityCode: flower.integrityCode,
@@ -1949,7 +1978,7 @@ export async function getKqPlayerBattles(ownerId: string, limit = KQ_BATTLE_HIST
     : [battle.row.flower_id]))];
   const flowersResult = flowerIds.length > 0
     ? await supabase.from("kq_flowers")
-      .select("id,variety_name,quality,traits,battle_stats,rules_version,status,created_at").in("id", flowerIds)
+      .select("id,variety_name,quality,harvest_tier_version,successful_stages,critical_stages,traits,battle_stats,rules_version,status,created_at").in("id", flowerIds)
     : { data: [], error: null };
   if (flowersResult.error) throw new Error(`[supabase:kq_flowers:battles] ${flowersResult.error.message}`);
   const flowers = new Map((flowersResult.data ?? []).map((flower) => [flower.id, flower as KqFlowerBattleRow]));
@@ -2012,7 +2041,7 @@ export async function getKqPlayerBattle(ownerId: string, battleId: string) {
   if (!battle) return null;
   const flowerIds = [battle.flower_one_id, battle.flower_two_id];
   const flowersResult = await supabase.from("kq_flowers")
-    .select("id,variety_name,quality,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at")
+    .select("id,variety_name,quality,harvest_tier_version,successful_stages,critical_stages,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at")
     .in("id", flowerIds);
   if (flowersResult.error) throw new Error(`[supabase:kq_flowers:battle] ${flowersResult.error.message}`);
   const flowers = new Map((flowersResult.data ?? []).map((flower) => [flower.id, flower as KqFlowerBattleRow]));

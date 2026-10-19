@@ -101,6 +101,32 @@ describe("Kanab Quest Supabase inventory mapping", () => {
       null,
     ])).toEqual(["2026-09-07:clean-sweep"]);
   });
+  it("maps versioned harvest titles consistently in collections and compact battle snapshots", () => {
+    const examples = [
+      { id: "legacy", quality: 14, expected: "Fleur légendaire" },
+      { id: "contest", quality: 14, harvestTierVersion: 2, successfulStages: 6, criticalStages: 6, expected: "Qualité concours" },
+      { id: "exceptional", quality: 26, harvestTierVersion: 2, successfulStages: 3, criticalStages: 3, expected: "Fleur exceptionnelle" },
+      { id: "legendary", quality: 26, harvestTierVersion: 2, successfulStages: 4, criticalStages: 2, expected: "Fleur légendaire" },
+      { id: "missing-evidence", quality: 30, harvestTierVersion: 2, expected: "Fleur exceptionnelle" },
+    ];
+    const snapshot = mapKqPlayerCoreSnapshot({ flowers: examples, humanBattles: examples.map(flower => ({
+      id: `battle-${flower.id}`, status: "verdict", rounds: [], winner: "player",
+      lockedAt: "2026-10-18T10:00:00Z", verdictAt: "2026-10-18T10:01:00Z",
+      playerFlower: { id: flower.id, quality: flower.quality, variety_name: "Fleur",
+        harvest_tier_version: flower.harvestTierVersion,
+        successful_stages: flower.successfulStages, critical_stages: flower.criticalStages,
+        battle_stats: {}, status: "burned", created_at: "2026-10-18T09:00:00Z" },
+      opponentFlower: { id: "old-rival", quality: 14, battle_stats: {} },
+    })) });
+    expect(snapshot.flowers.map(flower => flower.tier)).toEqual(examples.map(flower => flower.expected));
+    for (const example of examples) {
+      const battle = snapshot.battles.find(item => item.id === `battle-${example.id}`)!;
+      expect(battle.playerFlower.tier).toBe(example.expected);
+      expect(battle.opponentFlower.tier).toBe("Fleur légendaire");
+    }
+    expect(snapshot.flowers[0]).not.toHaveProperty("harvestTierVersion");
+    expect(snapshot.flowers[3]).toMatchObject({ harvestTierVersion: 2, successfulStages: 4, criticalStages: 2 });
+  });
   it("rejects draft artwork while accepting local and hosted final assets", () => {
     expect(isKqFinalArtworkUrl("/cards/botte-01.webp")).toBe(true);
     expect(isKqFinalArtworkUrl("https://cdn.test/cards/heritage-01.webp")).toBe(true);

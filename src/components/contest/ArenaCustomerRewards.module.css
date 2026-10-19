@@ -1,4 +1,4 @@
-.panel { --green: #172923; --paper: #fff8e7; --cream: #fff1d6; --wood: #d5a573; --gold: #efc451; --turquoise: #149b8b; color: var(--green); background: var(--paper); border: 3px solid var(--green); border-radius: 20px; overflow: hidden; box-shadow: 5px 6px 0 var(--green); margin: 0 6px 1.5rem 0; min-width: 0; }
+.panel { --green: #172923; --paper: #fff8e7; --cream: #fff1d6; --wood: var(--game-surface-warm); --gold: #efc451; --turquoise: #149b8b; color: var(--green); background: var(--paper); border: 3px solid var(--green); border-radius: 20px; overflow: hidden; box-shadow: 5px 6px 0 var(--green); margin: 0 6px 1.5rem 0; min-width: 0; }
 .panel * { box-sizing: border-box; }
 .heading { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; padding: 1.1rem clamp(1rem, 2.5vw, 1.5rem); background: var(--wood); color: var(--green); border-bottom: 3px solid var(--green); }
 .heading > div { min-width: 0; }

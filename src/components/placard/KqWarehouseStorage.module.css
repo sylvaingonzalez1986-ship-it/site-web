@@ -149,7 +149,7 @@
 .protection svg { flex-shrink: 0; }
 .protection > strong { font-weight: 750; color: #076c61; }
 .protectionScale { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); flex-basis: 100%; gap: 4px; }
-.protectionScale > i { border-radius: 3px; height: 6px; background: #d5a57355; border: 1px solid #172923; }
+.protectionScale > i { border-radius: 3px; height: 6px; background: rgb(var(--game-surface-warm-rgb) / 33.333%); border: 1px solid #172923; }
 .protectionScale > i[data-filled=true] {
   background: #149b8b; }
 .productCard[data-protection="5"] .protectionScale > i[data-filled=true] {

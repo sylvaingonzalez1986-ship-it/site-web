@@ -1,3 +1,5 @@
+import { getKqHarvestTier } from "./kanab-quest-harvest-tiers";
+
 export type KqRandomQueueHealthStatus = "healthy" | "watch" | "critical";
 
 export type KqRandomQueueHealth = {
@@ -12,6 +14,7 @@ export type KqRandomQueueHealth = {
     artisanale: number;
     bellePousse: number;
     concours: number;
+    exceptionnelle: number;
     legendaire: number;
     unknown: number;
   };
@@ -26,6 +29,9 @@ type KqRandomQueueRow = {
 type KqRandomQueueFlower = {
   id: string;
   quality: number;
+  harvestTierVersion?: 2;
+  successfulStages?: number;
+  criticalStages?: number;
 };
 
 const FIFTEEN_MINUTES_MS = 15 * 60 * 1000;
@@ -50,7 +56,7 @@ export function buildKqRandomQueueHealth(
   truncated = false,
 ): KqRandomQueueHealth {
   const nowMs = now.getTime();
-  const qualities = new Map(flowers.map((flower) => [flower.id, flower.quality]));
+  const flowerById = new Map(flowers.map((flower) => [flower.id, flower]));
   const validQueuedTimes = queueRows
     .map((row) => Date.parse(row.queuedAt))
     .filter(Number.isFinite);
@@ -63,17 +69,21 @@ export function buildKqRandomQueueHealth(
     artisanale: 0,
     bellePousse: 0,
     concours: 0,
+    exceptionnelle: 0,
     legendaire: 0,
     unknown: 0,
   };
 
   for (const row of queueRows) {
-    const quality = qualities.get(row.flowerId);
-    if (!Number.isFinite(quality)) qualityBands.unknown += 1;
-    else if (quality! < 6) qualityBands.artisanale += 1;
-    else if (quality! < 10) qualityBands.bellePousse += 1;
-    else if (quality! < 14) qualityBands.concours += 1;
-    else qualityBands.legendaire += 1;
+    const flower = flowerById.get(row.flowerId);
+    if (!flower || !Number.isFinite(flower.quality)) { qualityBands.unknown += 1; continue; }
+    switch (getKqHarvestTier(flower.quality, flower)) {
+      case "Récolte artisanale": qualityBands.artisanale += 1; break;
+      case "Belle pousse": qualityBands.bellePousse += 1; break;
+      case "Qualité concours": qualityBands.concours += 1; break;
+      case "Fleur exceptionnelle": qualityBands.exceptionnelle += 1; break;
+      case "Fleur légendaire": qualityBands.legendaire += 1; break;
+    }
   }
 
   return {

@@ -5,6 +5,7 @@ import { Check, ChevronDown, LockKeyhole, ShoppingBag, Star, Store, Trophy, User
 import { KQ_CHANNELS, getKqShopNetworkBonus, type KqCommerceReceipt, type KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqMarketReputationProgress, KQ_MARKET_REPUTATION_TIERS } from "@/lib/kanab-quest-market-demand";
+import { KqBarChart, KqProgressMeter } from "./KqVisuals";
 import styles from "./KqCommerceOverview.module.css";
 
 const officeArt = "/placard/commerce-office-sylvain-v3.webp";
@@ -13,15 +14,17 @@ const signed = (value: number) => `${value > 0 ? "+" : "−"}${number(Math.abs(v
 
 function SaleRow({ receipt }: { receipt: KqCommerceReceipt }) {
   const channel = receipt.channel ? KQ_CHANNELS[receipt.channel] : null;
-  const reputation = receipt.reputationGain ?? 0;
+  const reputation = receipt.reputationGain;
   const networkChange = receipt.channel === "cbd-shop" ? receipt.shopPartnersDelta
     : receipt.channel === "online" && receipt.clientsBefore !== undefined && receipt.clientsAfter !== undefined ? receipt.clientsAfter - receipt.clientsBefore : undefined;
   return <li className={styles.saleRow}>
     {channel ? <Image src={channel.image} alt="" width={56} height={56} sizes="56px" /> : <ShoppingBag size={24} aria-hidden="true" />}
-    <div><strong>{channel?.name ?? "Vente"}</strong><span>{number((receipt.units ?? 0) / 10)} g vendus</span>
-      <small>{receipt.vatCents !== undefined ? `TTC ${formatKqCash(receipt.payoutCents ?? 0)} · TVA ${formatKqCash(receipt.vatCents)} · Labo ${formatKqCash(receipt.labPaidCents ?? 0)} · Électricité et soins ${formatKqCash(receipt.electricityPaidCents ?? 0)}` : ""}</small>
-      <small>{reputation ? `${signed(reputation)} réputation` : "Réputation stable"}{networkChange ? ` · ${signed(networkChange)} ${receipt.channel === "cbd-shop" ? "partenaire(s)" : "client(s)"}` : ""}</small></div>
-    <span className={styles.saleAmount}><strong>{formatKqCash(receipt.netPayoutCents ?? 0)}</strong><small>versés</small></span>
+    <div><strong>{channel?.name ?? "Vente"}</strong><span>{receipt.units === undefined ? "Volume indisponible" : `${number(receipt.units / 10)} g vendus`}</span>
+      <small>{reputation === undefined ? "Réputation non renseignée" : reputation ? `${signed(reputation)} réputation` : "Réputation stable"}{networkChange ? ` · ${signed(networkChange)} ${receipt.channel === "cbd-shop" ? "partenaire(s)" : "client(s)"}` : ""}</small>
+      <details className={styles.saleDetails}><summary>Détail du versement</summary><dl>{[
+        ["Vente TTC", receipt.payoutCents], ["TVA", receipt.vatCents], ["Laboratoire", receipt.labPaidCents], ["Électricité et soins", receipt.electricityPaidCents],
+      ].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{typeof value === "number" ? formatKqCash(value) : "Non renseigné"}</dd></div>)}</dl></details></div>
+    <span className={styles.saleAmount}><strong>{receipt.netPayoutCents === undefined ? "—" : formatKqCash(receipt.netPayoutCents)}</strong><small>{receipt.netPayoutCents === undefined ? "indisponible" : "versés"}</small></span>
   </li>;
 }
 
@@ -29,9 +32,9 @@ export function KqCommerceOverview({ data, onOpenShop }: {
   data: KqCommerceSnapshot; onOpenShop: () => void;
 }) {
   const progress = getKqMarketReputationProgress(data.reputation);
-  const partners = data.shopPartners ?? 0;
-  const networkBonus = getKqShopNetworkBonus(data.campaign?.shopPartnersStart ?? 0);
-  const nextNetwork = [1, 4, 8, 12].find(threshold => threshold > partners);
+  const partners = data.shopPartners;
+  const networkBonus = data.campaign?.shopPartnersStart === undefined ? null : getKqShopNetworkBonus(data.campaign.shopPartnersStart);
+  const nextNetwork = partners === undefined ? undefined : [1, 4, 8, 12].find(threshold => threshold > partners);
   const sales = data.receipts.filter(receipt => receipt.action === "sell");
   return <details className={styles.overview} aria-label="Mon commerce">
     <summary className={styles.summary}>
@@ -47,9 +50,7 @@ export function KqCommerceOverview({ data, onOpenShop }: {
           <small className={styles.eyebrow}><Trophy size={17} aria-hidden="true" /> Ta réputation</small>
           <h2>{progress.tier.name}</h2>
           <div className={styles.rankNumbers}><strong>{number(data.reputation)} <small>points</small></strong><span>{data.online ? `${number(data.online.confidence)}/100` : `+${progress.tier.priceBonusPercent} %`}<small>{data.online ? "de confiance commerciale" : "sur tes prix en ligne"}</small></span></div>
-          <div className={styles.nextRank}><span>{progress.nextTier ? "Prochain palier" : "Progression accomplie"}</span><strong>{progress.nextTier?.name ?? "Dernier palier atteint"}</strong></div>
-          <progress value={progress.progressPercent} max={100} aria-label={progress.nextTier ? `Progression vers ${progress.nextTier.name}` : "Dernier palier atteint"} />
-          <p>{progress.nextTier ? <><strong>{number(progress.pointsToNext)} points</strong> à gagner pour atteindre {number(progress.nextTier.minimum)}.</> : "Tu as atteint le plus haut rang du marché."}</p>
+          <KqProgressMeter label={progress.nextTier ? `Vers ${progress.nextTier.name}` : "Dernier palier atteint"} value={progress.progressPercent} max={100} valueLabel={progress.nextTier ? `${number(progress.pointsToNext)} points restants` : "Rang maximal"} hint={progress.nextTier ? `Objectif : ${number(progress.nextTier.minimum)} points` : undefined} tone="gold" />
         </div>
       </section>
       <details className={styles.rankDetails}><summary>Voir les paliers et leurs avantages <ChevronDown size={16} aria-hidden="true" /></summary>
@@ -61,8 +62,8 @@ export function KqCommerceOverview({ data, onOpenShop }: {
         })}</ol><p>{data.online ? "La réputation attire des visiteurs. La confiance dépend des ventes réellement livrées, de la qualité et du prix demandé. Même une marque connue doit proposer un bon rapport qualité-prix." : "La réputation améliore les prix et la demande en ligne. Les commandes restent limitées."}</p>
       </details>
       <div className={styles.audiences}>
-        <section aria-label="Clientèle en ligne"><Users size={28} aria-hidden="true" /><div><h3>Clients en ligne</h3><strong className={styles.stat}>{number(data.clients)} <span>fidèles</span></strong><p>{data.online ? `${number(data.online.followers)} abonnés suivent ta marque. Les commandes satisfaisantes construisent la fidélité ; les visiteurs ne deviennent pas automatiquement des clients.` : data.clients ? "Les bonnes livraisons fidélisent. Une qualité décevante peut faire partir tes clients." : "Tes premières bonnes livraisons en ligne construiront ta clientèle."}</p></div></section>
-        <section aria-label="Boutiques partenaires"><Store size={28} aria-hidden="true" /><div><h3>Boutiques partenaires</h3><strong className={styles.stat}>{number(partners)} <span>sur 20</span></strong><p>{data.online ? "Ton réseau développe les volumes de reprise. Les fleurs indoor commercialisables sont payées 3 €/g en shop et 2,10 €/g chez les grossistes, hors demande temporaire. Les extraits ont leurs propres barèmes." : <>+{networkBonus} points de reprise sur cette période de 24 heures. {nextNetwork ? `Encore ${nextNetwork - partners} boutique${nextNetwork - partners > 1 ? "s" : ""} pour le prochain bonus réseau.` : "Bonus réseau maximal atteint."}</>}</p></div></section>
+        <section aria-label="Clientèle en ligne"><Users size={28} aria-hidden="true" /><div><h3>Clients en ligne</h3>{data.online ? <div className={styles.visuals}><KqBarChart title="Ton audience" items={[{ label: "Abonnés", value: data.online.followers, displayValue: number(data.online.followers), tone: "gold" }, { label: "Clients fidèles", value: data.clients, displayValue: number(data.clients), tone: "teal" }]} /><KqProgressMeter label="Confiance commerciale" value={data.online.confidence} max={100} valueLabel={`${number(data.online.confidence)} / 100`} /></div> : <strong className={styles.stat}>{number(data.clients)} <span>fidèles</span></strong>}<details className={styles.explanation}><summary>Comment fidéliser</summary><p>Les commandes satisfaisantes construisent la fidélité. Les visiteurs ne deviennent pas automatiquement des clients ; une qualité décevante peut les faire partir.</p></details></div></section>
+        <section aria-label="Boutiques partenaires"><Store size={28} aria-hidden="true" /><div><h3>Boutiques partenaires</h3>{partners === undefined ? <p>Réseau indisponible</p> : <KqProgressMeter label="Ton réseau" value={partners} max={20} valueLabel={`${number(partners)} / 20 partenaires`} tone="gold" hint={nextNetwork ? `${nextNetwork - partners} avant le prochain bonus` : "Bonus réseau maximal"} />}<details className={styles.explanation}><summary>Tarifs et bonus du réseau</summary><p>{data.online ? "Le réseau développe les volumes de reprise. Fleurs indoor : 3 €/g en shop et 2,10 €/g chez les grossistes, hors demande temporaire. Les extraits ont leurs propres barèmes." : networkBonus === null ? "Bonus de la période indisponible." : `+${networkBonus} points de reprise sur cette période de 24 heures.`}</p></details></div></section>
       </div>
       <section className={styles.history} aria-label="Dernières ventes"><header><div><small className={styles.eyebrow}>Tes résultats</small><h3>Dernières ventes</h3></div><button className={styles.shopLink} onClick={onOpenShop}><ShoppingBag size={17} aria-hidden="true" /> Équiper l’Entrepôt</button></header>
         {sales.length ? <><ul className={styles.sales}>{sales.slice(0,3).map((receipt,index)=><SaleRow key={index} receipt={receipt} />)}</ul>

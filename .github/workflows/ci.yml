@@ -42,6 +42,9 @@ jobs:
       - run: npm ci
       - run: npm run check:supabase-grants
       - run: npm run test:crypto:sql
+      - run: npm run test:bank:sql
+      - run: npm run test:harvest-tiers:sql
+      - run: npm run test:harvest-tiers:campaigns
       - run: npm run test:ci
 
   audit:

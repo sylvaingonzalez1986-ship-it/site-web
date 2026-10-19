@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankCommand, parseKqBankEuros, KQ_BANK_INSTALLMENT_MS, KQ_BANK_TERM_DAYS, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_REPAYMENT_CENTS, type KqBankSnapshot } from "./kanab-quest-bank";
+import { getKqBankerDialogue, getKqBankLimitCents, getKqBankTerms, isKqBankSnapshot, parseKqBankCommand, parseKqBankEuros, KQ_BANK_INSTALLMENT_MS, KQ_BANK_TERM_DAYS, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_REPAYMENT_CENTS, type KqBankSnapshot } from "./kanab-quest-bank";
 const id = "12345678-1234-4123-8123-123456789abc";
 export const bankFixture = (): KqBankSnapshot => ({
   version: 1, serverNow: "2026-09-23T12:00:00Z", cashCents: 35000, reputation: 200,
@@ -8,6 +8,27 @@ export const bankFixture = (): KqBankSnapshot => ({
   blockedReason: null, loan: null, history: [], autoPaidCents: 0, replayed: false,
 });
 describe("bank contracts", () => {
+  it.each([
+    [199, 0], [200, 500_000], [201, 505_000], [312, 1_060_000], [400, 1_500_000], [475, 1_875_000],
+    [599, 2_495_000], [600, 2_500_000], [601, 2_508_300], [1000, 5_833_300],
+    [1499, 9_991_600], [1500, 10_000_000], [1501, 10_010_000], [2000, 15_000_000],
+    [2999, 24_990_000], [3000, 25_000_000], [2_147_483_647, 25_000_000],
+  ])("offers a progressive credit limit at %i reputation", (reputation, expectedCents) => {
+    expect(getKqBankLimitCents(reputation)).toBe(expectedCents);
+  });
+  it("rewards every reputation point without reducing previous limits or exceeding the final cap", () => {
+    for (let reputation = 200; reputation <= 3000; reputation++) {
+      const limit = getKqBankLimitCents(reputation);
+      const previousTier = KQ_BANK_TIERS.filter(tier => tier.reputation <= reputation).at(-1)!;
+      expect(limit).toBeGreaterThan(getKqBankLimitCents(reputation - 1));
+      expect(limit).toBeGreaterThanOrEqual(previousTier.maxCents);
+      expect(limit).toBeLessThanOrEqual(KQ_BANK_MAX_CENTS);
+      expect(limit % 100).toBe(0);
+    }
+  });
+  it.each([-1, NaN, Infinity, 600.5, Number.MAX_SAFE_INTEGER + 1])("does not infer credit from invalid reputation %s", reputation => {
+    expect(getKqBankLimitCents(reputation)).toBe(0);
+  });
   it("normalizes commands and discards user ownership or client totals", () => {
     const value = { action: "borrow", requestKey: id, quoteId: id, amountCents: 10000, expectedRateBps: 500 };
     expect(parseKqBankCommand({ ...value, userId: "victim", interestCents: 0 })).toEqual(value);

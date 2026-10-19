@@ -1,0 +1,28 @@
+.chart,.progress { --visual-color: #168577; min-width: 0; color: #172923; }
+.chart { margin: 0; }
+.chart [data-tone="teal"],.progress[data-tone="teal"] { --visual-color: #168577; }
+.chart [data-tone="gold"],.progress[data-tone="gold"] { --visual-color: #d7a634; }
+.chart [data-tone="red"],.progress[data-tone="red"] { --visual-color: #ae513b; }
+.chart [data-tone="ink"],.progress[data-tone="ink"] { --visual-color: #445e54; }
+.chart figcaption { margin-bottom: 16px; font-size: .83rem; line-height: 1.45; font-weight: 800; }
+.labels { display: flex; justify-content: space-between; align-items: baseline; gap: 8px 16px; flex-wrap: wrap; font-size: .76rem; line-height: 1.5; }
+.labels > span { min-width: 0; overflow-wrap: anywhere; }
+.labels > strong { font-size: .82rem; font-variant-numeric: tabular-nums; }
+.track,.barTrack { position: relative; height: 12px; margin-top: 7px; overflow: hidden; background: #17292312; border-radius: 5px; }
+.track { border: 1px solid #17292345; }
+.track > span { display: block; height: 100%; width: var(--visual-fill); background: var(--visual-color); }
+.hint { display: block; margin: 7px 0 0; color: #526157; font-size: .71rem; line-height: 1.55; }
+.bars { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.barTrack > span { position: absolute; height: 100%; left: 0; background: var(--visual-color); border-radius: 3px; }
+.barTrack[data-signed]::after { position: absolute; content: ""; left: 50%; top: 0; bottom: 0; border-left: 1px solid #17292370; }
+.barTrack[data-signed] > span { left: 50%; }
+.barTrack[data-signed][data-negative] > span { left: auto; right: 50%; }
+.allocation { display: flex; height: 24px; overflow: hidden; border: 1px solid #17292365; background: #1729230c; border-radius: 7px; }
+.allocation > span { height: 100%; min-width: 0; background: var(--visual-color); }
+.allocation > span + span { box-shadow: -1px 0 #fffaf0; }
+.legend { display: grid; gap: 9px; margin: 13px 0 0; padding: 0; list-style: none; }
+.legend li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; font-size: .73rem; line-height: 1.5; }
+.legend li > span { display: flex; gap: 7px; align-items: baseline; }
+.legend i { display: inline-block; width: 9px; height: 9px; flex: 0 0 9px; border-radius: 2px; background: var(--visual-color); border: 1px solid #17292355; }
+.legend strong { font-variant-numeric: tabular-nums; }
+@media (prefers-contrast: more) { .track,.barTrack,.allocation { border: 1px solid #172923; } }

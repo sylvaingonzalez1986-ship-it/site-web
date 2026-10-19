@@ -1,0 +1,4 @@
+.charts { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 28px; margin: 20px 0; padding: 22px; color: #172923; background: #fffaf0; border: 2px solid #172923; border-radius: 14px; }
+.charts > * { min-width: 0; }
+.unavailable { margin: 0; font-size: .8rem; line-height: 1.6; color: #526157; }
+@media(max-width:600px) { .charts { grid-template-columns: 1fr; padding: 16px; } }

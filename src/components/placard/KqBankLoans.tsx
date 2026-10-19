@@ -5,6 +5,8 @@ import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { useEffect, useRef, useState } from "react";
 import { BadgeCheck, ChevronDown, Landmark, RefreshCw, TrendingDown, TrendingUp } from "lucide-react";
 import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankEuros, KQ_BANK_INSTALLMENT_COUNT, KQ_BANK_INSTALLMENT_GAME_DAYS, KQ_BANK_SCENARIOS, KQ_BANK_TIERS, type KqBankCommand, type KqBankSnapshot } from "@/lib/kanab-quest-bank";
+import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
+import { KqBankCreditChart, KqBankRepaymentChart } from "./KqBankVisuals";
 import styles from "./KqBankLoans.module.css";
 
 const euros = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
@@ -83,39 +85,56 @@ export function KqBankLoans() {
     finally { inFlight.current = false; setBusy(false); }
   }
   const scenario = data ? KQ_BANK_SCENARIOS[data.market.scenario] : null;
+  const nextTier = data ? KQ_BANK_TIERS.find(tier => tier.reputation > data.reputation) : null;
+  const maximumTier = KQ_BANK_TIERS[KQ_BANK_TIERS.length - 1];
   return <section className={styles.bank} aria-labelledby="bank-loans-title">
     <header className={styles.heading}><Landmark aria-hidden="true" size={25} /><div><small>Le bureau du banquier</small><h3 id="bank-loans-title">On parle affaires ?</h3></div><button type="button" className={styles.refresh} disabled={busy} aria-label="Actualiser le dossier bancaire" onClick={() => setRefresh(value => value + 1)}><RefreshCw size={18} aria-hidden="true" /></button></header>
     {!data && !error ? <p role="status">Le banquier examine ton dossier…</p> : null}
     {error && !draft ? <p className={styles.error} role="alert">{error}</p> : null}
     {notice ? <p className={styles.notice} role="status"><BadgeCheck size={18} aria-hidden="true" />{notice}</p> : null}
     {data && scenario ? <>
-      <blockquote className={styles.dialogue}>{getKqBankerDialogue(data)}</blockquote>
       <div className={styles.market}>
         <span>{data.market.changeBps < 0 ? <TrendingDown size={20} aria-hidden="true" /> : <TrendingUp size={20} aria-hidden="true" />}<strong>{scenario.title}</strong><b>{data.market.changeBps > 0 ? "+" : ""}{(data.market.changeBps / 100).toLocaleString("fr-FR")} pt</b></span>
-        <p>{data.market.changeBps === 0 && data.market.scenario !== "steady" ? `Le taux reste à son ${data.market.rateBps === 150 ? "plancher" : "plafond"} malgré ce scénario.` : scenario.description}</p><small>Conditions communes du jour · prochain scénario le {date(data.market.expiresAt)}. Tirage quotidien à minuit UTC.</small>
+        <small>Prochain taux · {date(data.market.expiresAt)}</small>
+      </div>
+      {!offer && !data.loan ? <p className={styles.hint}>{getKqBankerDialogue(data)}</p> : null}
+      <div className={styles.financing}>
+      <div className={styles.overview}>
+        {offer ? <>
+          <div className={styles.offerHeading}><div className={styles.offerLimit}><span>Tu peux emprunter jusqu’à</span><strong id="bank-personal-limit">{euros(offer.maxCents)}</strong><small>Euros de jeu · plafond autorisé</small></div></div>
+          <KqBankCreditChart reputation={data.reputation} maxCents={offer.maxCents} />
+        </> : <KqProgressMeter label="Réputation" value={data.reputation} max={nextTier?.reputation ?? maximumTier.reputation} valueLabel={`${data.reputation.toLocaleString("fr-FR")} points`} hint={nextTier ? `${nextTier.reputation - data.reputation} points jusqu’au prochain repère` : "Repère maximal atteint"} />}
+        <div className={styles.rate}><span><small>{offer ? "Coût fixe du prêt" : "Taux du marché"}</small><strong>{percent(offer?.rateBps ?? data.market.rateBps)}</strong></span><span>{KQ_BANK_INSTALLMENT_COUNT * KQ_BANK_INSTALLMENT_GAME_DAYS} jours de jeu<small>35 jours réels · 7 échéances</small></span></div>
+        {data.loan ? <p className={styles.hint}>Prêt en cours : solde-le pour emprunter à nouveau.</p> : null}
       </div>
       {offer ? <div className={styles.offer}>
-        <div className={styles.offerHeading}><div className={styles.offerLimit}><span>Ton plafond personnel</span><strong id="bank-personal-limit">{euros(offer.maxCents)}</strong><small>{data.reputation.toLocaleString("fr-FR")} points de réputation · euros de jeu</small></div><strong>{percent(offer.rateBps)}<small>coût total sur {KQ_BANK_INSTALLMENT_COUNT * KQ_BANK_INSTALLMENT_GAME_DAYS} jours de jeu</small></strong></div>
-        <label htmlFor="bank-loan-amount">Capital à emprunter · euros de jeu</label>
+        <label htmlFor="bank-loan-amount">Combien veux-tu emprunter ?</label>
         <div className={styles.amount}><input id="bank-loan-amount" inputMode="decimal" value={amount} onChange={event => setAmount(event.target.value)} aria-describedby="bank-amount-bounds" /><span>€</span></div>
+        <input className={styles.amountRange} type="range" aria-label="Ajuster le montant du prêt" min={offer.minCents} max={offer.maxCents} step={100} value={Math.max(offer.minCents, Math.min(amountCents, offer.maxCents))} aria-valuetext={euros(Math.max(offer.minCents, Math.min(amountCents, offer.maxCents)))} disabled={busy} onChange={event => setAmount((Number(event.target.value) / 100).toFixed(2))} />
         <div className={styles.amountPresets} role="group" aria-label="Choisir un montant de prêt">{([{ label: "25 %", share: .25 }, { label: "50 %", share: .5 }, { label: "Maximum", share: 1 }] as const).map(preset => {
           const cents = Math.min(offer.maxCents, Math.max(offer.minCents, Math.round(offer.maxCents * preset.share)));
           return <button type="button" key={preset.label} disabled={busy} aria-pressed={amountCents === cents} aria-label={`${preset.label} du plafond : ${euros(cents)}`} onClick={() => setAmount((cents / 100).toFixed(2))}>{preset.label}</button>;
         })}</div>
-        <small id="bank-amount-bounds">De {euros(offer.minCents)} à {euros(offer.maxCents)} · offre valable jusqu’au {date(offer.expiresAt)}.</small>
-        {terms ? <><div className={styles.installmentRepayment} id="bank-installment-repayment"><small>{KQ_BANK_INSTALLMENT_COUNT} échéances · tous les {KQ_BANK_INSTALLMENT_GAME_DAYS} jours de jeu</small><strong>{installmentMinCents === installmentMaxCents ? euros(installmentMinCents) : `${euros(installmentMinCents)} à ${euros(installmentMaxCents)}`}</strong><span>soit tous les 5 jours réels. Premier prélèvement dans 30 jours de jeu. Le contrat détaille les sept prélèvements.</span></div><dl className={styles.totals}><div><dt>Capital reçu</dt><dd>{euros(amountCents)}</dd></div><div><dt>Intérêts fixes</dt><dd>{euros(terms.interestCents)}</dd></div><div><dt>Total à rendre</dt><dd>{euros(terms.totalCents)}</dd></div></dl></> : <p className={styles.hint}>Choisis un montant dans les limites de ton dossier, avec deux décimales maximum.</p>}
+        <small id="bank-amount-bounds">De {euros(offer.minCents)} à {euros(offer.maxCents)}</small>
+        {terms ? <>
+          <div className={styles.cost}><KqAllocationBar label="Ce que tu rembourseras" items={[{ label: "Capital reçu", value: amountCents, displayValue: euros(amountCents), tone: "teal" }, { label: "Intérêts fixes", value: terms.interestCents, displayValue: euros(terms.interestCents), tone: "gold" }]} /><div className={styles.total}><span>Total à rendre</span><strong>{euros(terms.totalCents)}</strong></div></div>
+          <div className={styles.installmentRepayment} id="bank-installment-repayment"><small>Par échéance · 7 prélèvements</small><strong>{installmentMinCents === installmentMaxCents ? euros(installmentMinCents) : `${euros(installmentMinCents)} à ${euros(installmentMaxCents)}`}</strong></div>
+          <KqBankRepaymentChart installments={terms.installments.map(cents => ({ amountCents: cents }))} />
+        </> : <p className={styles.hint}>Montant hors limites ou format invalide.</p>}
         <button type="button" className={styles.primary} disabled={!terms || busy} onClick={() => { if (offer && terms) review({ action: "borrow", quoteId: offer.quoteId, amountCents, expectedRateBps: offer.rateBps }); }}>Examiner le contrat</button>
       </div> : null}
+      </div>
       {data.blockedReason === "experience" && data.eligibleAt ? <p className={styles.hint}>Ton ancienneté sera suffisante le {date(data.eligibleAt)}.</p> : null}
       {data.loan ? <div className={styles.loan}>
         <div className={styles.offerHeading}><span>Ton prêt en cours</span><strong>{euros(data.loan.remainingCents)}<small>restant à rembourser</small></strong></div>
-        <p>Capital : {euros(data.loan.principalCents)} · coût fixe : {euros(data.loan.interestCents)} ({percent(data.loan.rateBps)}). Une échéance tous les 30 jours de jeu (5 jours réels). Échéance finale le {date(data.loan.dueAt)}.</p>
+        <KqAllocationBar label="Avancement du remboursement" items={[{ label: "Déjà réglé", value: data.loan.paidCents, displayValue: euros(data.loan.paidCents), tone: "teal" }, { label: "Restant dû", value: data.loan.remainingCents, displayValue: euros(data.loan.remainingCents), tone: "gold" }]} />
         {data.loan.overdueCents > 0 ? <p className={styles.error} role="status">{euros(data.loan.overdueCents)} en retard. Tes prochains fonds disponibles régulariseront ces échéances pendant le jeu. Aucun nouveau prêt avant remboursement.</p> : null}
-        <ol className={styles.schedule}>{data.loan.schedule.map((item, i) => <li key={item.at}><span><b>Échéance {i + 1}</b><small>{date(item.at)}</small></span><strong>{euros(item.amountCents)}<small>{item.paidCents === item.amountCents ? "Réglée" : item.paidCents > 0 ? `${euros(item.paidCents)} réglés` : Date.parse(item.at) <= Date.parse(data.serverNow) ? "À régulariser" : "À venir"}</small></strong></li>)}</ol>
+        <KqBankRepaymentChart installments={data.loan.schedule} serverNow={data.serverNow} />
+        <details className={styles.rules}><summary>Détail du contrat <ChevronDown size={16} aria-hidden="true" /></summary><p>Capital : {euros(data.loan.principalCents)} · intérêts : {euros(data.loan.interestCents)} ({percent(data.loan.rateBps)}). Dernière échéance le {date(data.loan.dueAt)}. Capital et taux restent fixes.</p><ol className={styles.schedule}>{data.loan.schedule.map((item, i) => <li key={item.at}><span><b>Échéance {i + 1}</b><small>{date(item.at)}</small></span><strong>{euros(item.amountCents)}<small>{euros(item.paidCents)} réglés</small></strong></li>)}</ol></details>
         <button type="button" className={styles.primary} disabled={busy || data.cashCents < data.loan.remainingCents} onClick={() => { if (data.loan) review({ action: "repay", loanId: data.loan.id, amountCents: data.loan.remainingCents }); }}>Solder le prêt · {euros(data.loan.remainingCents)}</button>
         <small>Disponible : {euros(data.cashCents)}. Remboursement anticipé sans frais supplémentaires ; les intérêts convenus restent dus.</small>
       </div> : null}
-      <details className={styles.rules}><summary>Les règles du bureau <ChevronDown size={16} aria-hidden="true" /></summary><p>Un seul prêt à la fois, dès 200 points de réputation et 24 heures après ta première culture terminée. Les sept prélèvements sont espacés de 30 jours de jeu (5 jours réels), soit 210 jours de jeu (35 jours réels) au total. Le premier intervient 30 jours de jeu après la signature. Les échéances dues sont rattrapées automatiquement pendant le jeu, dans la limite de ta trésorerie.</p><p>Les taux changent pour les nouvelles offres. Ton contrat signé reste fixe jusqu’au remboursement. Les retards n’ajoutent aucun intérêt. Tout se passe en monnaie de jeu.</p><ul>{KQ_BANK_TIERS.map(tier => <li key={tier.reputation}>{tier.reputation.toLocaleString("fr-FR")} points : jusqu’à {euros(tier.maxCents)}{tier.discountBps ? ` · réduction de ${(tier.discountBps / 100).toLocaleString("fr-FR")} point sur le taux` : ""}.</li>)}</ul></details>
+      <details className={styles.rules}><summary>Les règles du bureau <ChevronDown size={16} aria-hidden="true" /></summary><p>Un seul prêt à la fois, dès 200 points de réputation et 24 heures après ta première culture terminée. Les sept prélèvements sont espacés de 30 jours de jeu (5 jours réels), soit 210 jours de jeu (35 jours réels) au total. Le premier intervient 30 jours de jeu après la signature. Les échéances dues sont rattrapées automatiquement pendant le jeu, dans la limite de ta trésorerie.</p><p>Le plafond progresse à chaque point de réputation entre les repères ci-dessous, avec un arrondi à l’euro inférieur. Il atteint son maximum à {maximumTier.reputation.toLocaleString("fr-FR")} points. Les réductions du taux changent uniquement aux paliers indiqués ; le taux du marché évolue chaque jour pour les nouvelles offres.</p><ul>{KQ_BANK_TIERS.map(tier => <li key={tier.reputation}>{tier.reputation.toLocaleString("fr-FR")} points : plafond de {euros(tier.maxCents)}{tier.discountBps ? ` · réduction de ${(tier.discountBps / 100).toLocaleString("fr-FR")} point sur le taux dès ce palier` : ""}.</li>)}</ul><p>La réputation et le marché influencent tes prochains prêts. Le capital et le taux d’un contrat signé restent fixes jusqu’au remboursement. Les retards n’ajoutent aucun intérêt. Tout se passe en monnaie de jeu.</p></details>
       {data.history.length ? <details className={styles.rules}><summary>Prêts remboursés <ChevronDown size={16} aria-hidden="true" /></summary><ul>{data.history.map(loan => <li key={loan.id}>{euros(loan.principalCents)} empruntés · {euros(loan.totalCents)} remboursés · soldé le {date(loan.paidAt!)}.</li>)}</ul></details> : null}
     </> : null}
     <dialog className={styles.modal} ref={dialog} aria-labelledby="bank-contract-title" onCancel={event => { if (busy) event.preventDefault(); else setDraft(null); }}>

@@ -17,6 +17,8 @@ import { KqSeasonBoard } from "./KqSeasonBoard";
 import { KqBattleHistory } from "./KqBattleHistory";
 import { KqBattleVerdictDialog } from "./KqBattleVerdictDialog";
 import { KqCulturePreparation } from "./KqCulturePreparation";
+import { KqHarvestTierProgress } from "./KqHarvestTierProgress";
+import { KQ_HARVEST_TIERS_LEGACY, KQ_HARVEST_TIERS_V2, KQ_LEGENDARY_REQUIREMENTS } from "@/lib/kanab-quest-harvest-tiers";
 import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
 
 import Image from "next/image";
@@ -2049,7 +2051,7 @@ function KqGameSession({
                       <FlowerTcgCard
                         varietyName={flower.varietyName}
                         varietyCode={flower.varietyCode}
-                        tier={getKqHarvestTier(flower.quality)}
+                        tier={flower.tier ?? getKqHarvestTier(flower.quality, flower)}
                         quality={flower.quality}
                         stats={flower.stats}
                         imageUrl={ownedBuddieArtwork[flower.varietyCode]?.imageUrl}
@@ -2187,8 +2189,9 @@ function KqGameSession({
         </main>
       );
     }
-    const tier = getKqHarvestTier(state.quality);
     const flower = createKqFlower(state);
+    const tier = flower.tier;
+    const harvestProjection = getKqRunProjection(state);
     const recentJuryCodes = battleHistory.slice(0, 3).flatMap((entry) => entry.rounds.map((round) => round.code));
     const juryProgram = getKqJuryProgram(state.seed, recentJuryCodes, state.rulesVersion);
     if (isPlayerMode) {
@@ -2209,6 +2212,7 @@ function KqGameSession({
           </section>
           <section className={styles.traitsPanel}>
             <h2>Ta Fleur rejoint la réserve officielle</h2>
+            {harvestProjection.nextTier && harvestProjection.qualityToNextTier === 0 ? <p><KqHarvestTierProgress projection={harvestProjection} /></p> : null}
             <p>
               Elle n’est pas brûlée maintenant. Elle reste dans ta réserve jusqu’à son premier duel,
               puis le verdict la brûle définitivement.
@@ -2251,6 +2255,7 @@ function KqGameSession({
         </section>
         <section className={styles.traitsPanel}>
           <h2>L’histoire de cette culture</h2>
+          {harvestProjection.nextTier && harvestProjection.qualityToNextTier === 0 ? <p><KqHarvestTierProgress projection={harvestProjection} /></p> : null}
           <div className={styles.cultureReceipt}>
             <article><Flame /><span><small>Copies brûlées · {burnedCards.length}</small><div>{burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>)}</div></span></article>
             <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte du deck conservée</em>}</div></span></article>
@@ -2526,14 +2531,25 @@ function KqGameSession({
             <header><span>Trajectoire actuelle</span><small>Recalculée après chaque étape</small></header>
             <div>
               <article><Star aria-hidden="true" /><span><strong>{runProjection.projectedQuality}</strong><small>Qualité projetée{runProjection.equipmentQualityBonus > 0 ? ` · +${runProjection.equipmentQualityBonus} matériel` : ""}</small></span></article>
-              <article><Trophy aria-hidden="true" /><span><strong>{runProjection.tier}</strong><small>{runProjection.nextTier ? `${runProjection.qualityToNextTier} point${runProjection.qualityToNextTier > 1 ? "s" : ""} avant ${runProjection.nextTier}` : "Palier maximal atteint"}</small></span></article>
+              <article><Trophy aria-hidden="true" /><span><strong>{runProjection.tier}</strong><small>Palier actuel</small></span></article>
               <article><Scale aria-hidden="true" /><span><strong>{displayedHarvestGrams.toLocaleString("fr-FR")} g</strong><small>Total estimé · {state.warehouse ? `${state.warehouse.activeAreaM2} m²` : `${getKqProductionUnits(state.equipment?.productionUnits)} tente${getKqProductionUnits(state.equipment?.productionUnits)>1?"s":""}`}{runProjection.harvestLossPercent > 0 ? " · après pertes" : ""}</small></span></article>
               <article><Sparkles aria-hidden="true" /><span><strong>{runProjection.remainingStages}</strong><small>Étape{runProjection.remainingStages > 1 ? "s" : ""} encore ouverte{runProjection.remainingStages > 1 ? "s" : ""}</small></span></article>
             </div>
+            <p><KqHarvestTierProgress projection={runProjection} /></p>
             {getKqProductionUnits(state.equipment?.productionUnits) > 1 || runProjection.harvestLossPercent > 0 ? <details className={styles.tentHarvestDetails}><summary>{state.warehouse ? "Voir le calcul de la récolte et les pertes" : "Voir le détail par tente et les pertes"}</summary><HarvestYieldBreakdown state={state} /></details> : null}
             {plannedMarketRoute ? <aside className={styles.runRouteTarget}><Target aria-hidden="true" /><span><small>Cap commercial épinglé</small><strong>{plannedMarketRoute.name} · jury ≥ {plannedMarketRoute.minimumJuryScore.toFixed(1)}/10</strong><em>La Qualité de culture prépare la Fleur ; seul le verdict officiel donnera la note commerciale.</em></span></aside> : null}
             <p>Projection non garantie : seuls les résultats déjà validés et le matériel installé sont comptés.</p>
           </section>
+        </details>
+        <details className={styles.cultureDisclosure}>
+          <summary><span>Barème des fleurs</span><small>Les paliers de cette culture</small></summary>
+          <ul className={styles.cultureHistory}>
+            {(state.harvestTierVersion === 2 ? KQ_HARVEST_TIERS_V2 : KQ_HARVEST_TIERS_LEGACY).map(tier => <li key={tier.name}><strong>{tier.name}</strong><b>Dès {tier.minimumQuality} points</b></li>)}
+          </ul>
+          <div className={styles.cultureHelp}>
+            {state.harvestTierVersion === 2 ? <p>Fleur légendaire : au moins {KQ_LEGENDARY_REQUIREMENTS.minimumQuality} points de Qualité et {KQ_LEGENDARY_REQUIREMENTS.minimumSuccessfulStages} étapes réussies, dont {KQ_LEGENDARY_REQUIREMENTS.minimumCriticalStages} critiques.</p> : <p>Cette culture conserve son barème d’origine.</p>}
+            <p>La Qualité de culture est distincte de la note du jury et de la qualité commerciale sur 10.</p>
+          </div>
         </details>
         <details className={styles.cultureDisclosure}>
           <summary><span>Défis du jour</span><small>{runChallenges.filter((challenge) => getKqChallengeProgress(state, challenge.code).reached).length}/{runChallenges.length} atteints</small></summary>

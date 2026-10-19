@@ -1,4 +1,4 @@
-import { getKqBankTerms, KQ_BANK_INSTALLMENT_MS, KQ_BANK_TERM_DAYS, parseKqBankCommand, type KqBankLoan, type KqBankSnapshot } from "./kanab-quest-bank";
+import { getKqBankLimitCents, getKqBankTerms, KQ_BANK_INSTALLMENT_MS, KQ_BANK_TERM_DAYS, parseKqBankCommand, type KqBankLoan, type KqBankSnapshot } from "./kanab-quest-bank";
 import { createKqBusinessPreview, isKqAdvertisingKind, KQ_ADVERTISING, KQ_DOMICILIATION_MONTHLY_CENTS, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, normalizeKqShopName } from "./kanab-quest-business";
 import { parseSavingsCommand, type ChanvrierSavings } from "./chanvrier-savings";
 import type { KqCommerceSnapshot } from "./kanab-quest-commerce";
@@ -80,7 +80,7 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
       version: 1, serverNow: stamp(), cashCents: cash(), reputation: 600,
       eligibleAt: new Date(started - 86_400_000).toISOString(),
       market: { id: marketId, scenario: "steady", rateBps: 500, changeBps: 0, startsAt: new Date(started).toISOString(), expiresAt: new Date(clock() + 86_400_000).toISOString() },
-      offer: loan ? null : { quoteId: marketId, minCents: 10000, maxCents: 2500000, rateBps: 450, termDays: KQ_BANK_TERM_DAYS, expiresAt: new Date(clock() + 86_400_000).toISOString() },
+      offer: loan ? null : { quoteId: marketId, minCents: 10000, maxCents: getKqBankLimitCents(600), rateBps: 450, termDays: KQ_BANK_TERM_DAYS, expiresAt: new Date(clock() + 86_400_000).toISOString() },
       blockedReason: loan ? "active" : null, loan, history: loans, autoPaidCents: 0, replayed: false,
     };
   }
@@ -188,7 +188,7 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
       const value = parseKqBankCommand(body);
       if (!value) throw new Error("Contrat d’essai invalide.");
       if (value.action === "borrow") {
-        if (loan || value.quoteId !== marketId || value.expectedRateBps !== 450 || value.amountCents > 2500000) throw new Error("Consulte l’offre bancaire disponible.");
+        if (loan || value.quoteId !== marketId || value.expectedRateBps !== 450 || value.amountCents > getKqBankLimitCents(600)) throw new Error("Consulte l’offre bancaire disponible.");
         const terms = getKqBankTerms(value.amountCents, value.expectedRateBps);
         const accepted = clock();
         loan = { id: id(), principalCents: value.amountCents, interestCents: terms.interestCents, totalCents: terms.totalCents, paidCents: 0,

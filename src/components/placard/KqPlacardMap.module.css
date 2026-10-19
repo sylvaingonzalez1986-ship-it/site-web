@@ -5,7 +5,7 @@
 .mapIdentity h1 > span { color: #149b8b; }
 .wallet { display: flex; align-items: center; gap: 10px; margin-left: auto; }
 .wallet > span { display: flex; align-items: center; gap: 9px; padding: 9px 11px; border: 2px solid #172923; border-radius: 13px; background: #efc451; box-shadow: 2px 2px 0 #172923; }
-.wallet > span + span { background: #d5a573; }
+.wallet > span + span { background: var(--game-surface-warm); }
 .wallet svg { color: #172923; flex-shrink: 0; stroke-width: 2.5; }
 .wallet small { display: block; margin-bottom: 3px; color: #35473a; font-size: 10px; }
 .wallet strong { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
@@ -39,7 +39,7 @@
 .building[data-selected] .buildingLabel, .building[data-highlighted] .buildingLabel { background: #efc451; }
 .mapFoot { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; min-height: 43px; padding: 9px 18px; border-top: 2px solid #172923; color: #40554b; background: #fff1d6; font-size: 11px; }
 .mapFoot > span { display: inline-flex; align-items: center; gap: 7px; }
-.details { padding: 18px 22px 22px; border-top: 2px solid #172923; background: #d5a573; scroll-margin-block: 90px; }
+.details { padding: 18px 22px 22px; border-top: 2px solid #172923; background: var(--game-surface-warm); scroll-margin-block: 90px; }
 .detailHeading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
 .detailHeading span { font-size: 11px; color: #35473a; }
 .detailHeading h2 { margin: 4px 0 0; font: 900 26px/1.1 var(--font-display), Impact, sans-serif; }

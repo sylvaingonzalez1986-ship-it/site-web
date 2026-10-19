@@ -13,22 +13,20 @@
 .panel.panel .modes small { font-size: 10px; }
 .panel.panel .meter { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px 0; border-bottom: 1px dashed #172923; }
 .panel.panel .meter strong { display: block; color: #536058; font-size: clamp(18px,4.8vw,26px); font-weight: 900; }
-.panel.panel .tentTotals { margin: 12px 0; padding: 12px; border: 1px solid #172923; background: #fffaf0; border-color: #172923; border-radius: 13px; }
-.panel.panel .tentTotals>strong { display: block; font-size: 12px; line-height: 1.5; }
-.panel.panel .tentTotals dl { margin: 7px 0 0; }
-.panel.panel .tentTotals dl>div { display: flex; justify-content: space-between; gap: 12px; padding: 8px 0; border-bottom: 1px solid #172923; }
-.panel.panel .tentTotals dt { font-size: 12px; font-weight: 800; }
-.panel.panel .tentTotals dd { margin: 0; text-align: right; font-size: 13px; }
-.panel.panel .tentTotals dd b { white-space: nowrap; }
-.panel.panel .tentTotals p { margin-bottom: 0; }
+.budgetHeader { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 18px; margin: 8px 0 16px; }
+.budgetHeader > span { font-size: 12px; }
+.budgetHeader > strong { min-width: 0; overflow-wrap: anywhere; font-size: clamp(21px,4.8vw,30px); font-variant-numeric: tabular-nums; }
+.panel.panel .budgetHeader small { font-size: 11px; font-weight: 500; }
+.solar { margin-top: 14px; }
 .panel.panel em { font-style: normal; font-size: 13px; }
 .panel.panel p { color: #172923; font-size: 12px; line-height: 1.5; margin: 10px 0; }
 .panel.panel p>svg { vertical-align: middle; margin-right: 5px; }
 .panel.panel details { margin-top: 12px; font-size: 12px; }
-.panel.panel summary { cursor: pointer; padding: 10px 0; font-weight: 800; }
-.panel.panel ul { list-style: none; padding: 0; margin: 0; }
-.panel.panel li { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid #172923; color: #172923; font-size: 12px; }
-.panel.panel li b { white-space: nowrap; }
+.panel.panel summary { cursor: pointer; padding: 12px 0; min-height: 44px; box-sizing: border-box; font-weight: 800; }
+.panel.panel summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.panel.panel details > ul,.panel.panel .wearPreview > ul { list-style: none; padding: 0; margin: 0; }
+.panel.panel details > ul > li,.panel.panel .wearPreview > ul > li { display: flex; justify-content: space-between; gap: 10px; padding: 9px 0; border-bottom: 1px solid #172923; color: #172923; font-size: 12px; }
+.panel.panel details > ul > li b,.panel.panel .wearPreview > ul > li b { white-space: nowrap; }
 .panel.panel .payment { padding: 12px; background: #d8eee3; border: 2px solid #172923; border-radius: 13px; }
 .panel.panel .payment strong { font-size: 14px; }
 .panel.panel .payment button { width: 100%; margin-top: 10px; }
@@ -43,7 +41,7 @@
 .panel.panel .modes b { overflow-wrap: anywhere; font-size: 11px; }
 .panel.panel .wearPreview { padding: 12px; margin-top: 12px; background: #fffaf0; border: 1px solid #172923; border-color: #172923; border-radius: 13px; }
 .panel.panel .wearPreview>strong { font-size: 13px; }
-.panel.panel .wearPreview li { display: block; }
+.panel.panel .wearPreview > ul > li { display: block; }
 .panel.panel .wearPreview li>div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 5px 10px; }
 .panel.panel .wearPreview li>div>span { min-width: 0; overflow-wrap: anywhere; }
 .panel.panel .wearPreview progress { display: block; width: 100%; height: 8px; margin: 7px 0; accent-color: #149b8b; }

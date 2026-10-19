@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { createServer } from "vite";
-import { PGlite } from "../output/reputation-test-tools/node_modules/@electric-sql/pglite/dist/index.js";
+import { PGlite } from "@electric-sql/pglite";
 
 const db = new PGlite();
 const vite = await createServer({
@@ -139,13 +139,13 @@ async function checked(owner) {
   assert.equal(Math.abs(balances.loan_payable ?? 0), view.loan?.remainingCents ?? 0);
   return view;
 }
-let isKqBankSnapshot, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_RATE_BPS, KQ_BANK_MAX_REPAYMENT_CENTS, getKqBankTerms;
+let isKqBankSnapshot, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_RATE_BPS, KQ_BANK_MAX_REPAYMENT_CENTS, getKqBankTerms, getKqBankLimitCents;
 try {
   await bootstrap(); await extendSchema();
   await db.exec(await migration('20260921000100_kq_business_calendar.sql'));
   await db.exec(await migration('20260921000200_kq_treasury_accounting.sql'));
   await db.exec(await migration('20260923000300_kq_bank_loans.sql'));
-  ({ isKqBankSnapshot, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_RATE_BPS, KQ_BANK_MAX_REPAYMENT_CENTS, getKqBankTerms } = await vite.ssrLoadModule('/src/lib/kanab-quest-bank.ts'));
+  ({ isKqBankSnapshot, KQ_BANK_TIERS, KQ_BANK_MAX_CENTS, KQ_BANK_MAX_RATE_BPS, KQ_BANK_MAX_REPAYMENT_CENTS, getKqBankTerms, getKqBankLimitCents } = await vite.ssrLoadModule('/src/lib/kanab-quest-bank.ts'));
   const legacyOwner=await experienced(600), legacyOffer=await bank(legacyOwner);
   const legacyCommand=borrow(legacyOffer,12345), legacyBefore=await bank(legacyOwner,legacyCommand);
   await db.exec(await migration('20260923000700_kq_bank_investment_limits.sql'));
@@ -165,12 +165,12 @@ try {
   const closedOwner=await experienced(), closedCommand=borrow(await bank(closedOwner));
   const closedLoan=(await bank(closedOwner,closedCommand)).loan;
   const closedBefore=await bank(closedOwner,{action:'repay',requestKey:randomUUID(),loanId:closedLoan.id,amountCents:closedLoan.totalCents});
-  const migrationState=async()=> (await db.query(`SELECT
+  const migrationState=async(includeCadence=false)=> (await db.query(`SELECT
     (SELECT jsonb_agg(to_jsonb(row) ORDER BY row.user_id,row.request_key) FROM kq_bank_requests row) AS requests,
     (SELECT jsonb_agg(to_jsonb(row) ORDER BY row.user_id) FROM kq_equipment_wallets row) AS wallets,
     (SELECT jsonb_agg(to_jsonb(row) ORDER BY row.user_id,row.account) FROM kq_treasury_balances row) AS balances,
     (SELECT jsonb_agg(to_jsonb(row) ORDER BY row.id) FROM kq_treasury_journal row) AS journal,
-    (SELECT jsonb_agg(to_jsonb(row)-'installment_hours' ORDER BY row.id) FROM kq_bank_loans row) AS loans`)).rows[0];
+    (SELECT jsonb_agg(${includeCadence ? 'to_jsonb(row)' : "to_jsonb(row)-'installment_hours'"} ORDER BY row.id) FROM kq_bank_loans row) AS loans`)).rows[0];
   const beforeMigration=await migrationState();
   await db.exec(await migration('20260924000100_kq_bank_monthly_installments.sql'));
   assert.deepEqual(await migrationState(),beforeMigration,'rescheduling never changes signed amounts, paid cents, cash, accounting or request receipts');
@@ -191,6 +191,33 @@ try {
   assert.equal((await bank(partialOwner)).cashCents,partialBefore.cashCents,'replaying a rescheduled loan never credits its capital twice');
   console.log('PASS: monthly migration reschedules open loans, preserves prior payments, closed history, cash, accounting and request receipts.');
 
+  const progressiveMigration=await migration('20261018000800_kq_bank_progressive_credit.sql');
+  const originalDefinition=(await result("SELECT pg_get_functiondef('rpc_kq_bank(uuid,jsonb)'::regprocedure) AS definition")).definition;
+  await db.exec(originalDefinition.replace('WHEN rep>=200 THEN 500000 ELSE 0 END;', 'WHEN rep>=200 THEN 500001 ELSE 0 END;'));
+  await assert.rejects(()=>db.exec(progressiveMigration),/bank_progressive_credit_contract_drift/);
+  await db.exec('ROLLBACK');
+  assert.equal((await result("SELECT to_regprocedure('kq_bank_credit_limit(integer)') AS helper")).helper,null,'drift failure rolls back helper creation');
+  await db.exec(originalDefinition);
+  const beforeProgressive=await migrationState(true);
+  const existingViews=await Promise.all([legacyOwner,partialOwner,closedOwner].map(owner=>bank(owner)));
+  await db.exec(progressiveMigration);
+  assert.deepEqual(await migrationState(true),beforeProgressive,'progressive limits never modify any signed loan, schedule, receipt, wallet or accounting entry');
+  for(const [index,existingOwner] of [legacyOwner,partialOwner,closedOwner].entries()) {
+    const after=await checked(existingOwner);
+    assert.deepEqual(after.loan,existingViews[index].loan);
+    assert.deepEqual(after.history,existingViews[index].history);
+    assert.equal(after.cashCents,existingViews[index].cashCents);
+  }
+  assert.equal((await bank(legacyOwner,legacyCommand)).replayed,true);
+  assert.equal((await bank(partialOwner,partialCommand)).replayed,true);
+  assert.equal((await bank(closedOwner,closedCommand)).replayed,true);
+  assert.deepEqual(await migrationState(true),beforeProgressive,'old command receipts replay without creating credit or accounting movements');
+  const patchedDefinition=(await result("SELECT pg_get_functiondef('rpc_kq_bank(uuid,jsonb)'::regprocedure) AS definition")).definition;
+  assert.equal(patchedDefinition,originalDefinition.replace(
+    'cap:=CASE WHEN rep>=3000 THEN 25000000 WHEN rep>=1500 THEN 10000000 WHEN rep>=600 THEN 2500000 WHEN rep>=200 THEN 500000 ELSE 0 END;',
+    'cap:=public.kq_bank_credit_limit(rep);'), 'the migration changes only the live RPC capacity formula');
+  console.log('PASS: progressive migration rejects RPC drift and preserves signed loans, repayment dates, receipts, cash and accounting verbatim.');
+
   const fresh = await player();
   const noRep = await experienced(199);
   assert.equal((await bank(fresh)).blockedReason, 'experience');
@@ -203,7 +230,7 @@ try {
   assert.equal((await bank(novice)).blockedReason, 'experience');
   console.log('PASS: server reputation and first completed-culture age gate.');
 
-  for (const [index,tier] of KQ_BANK_TIERS.entries()) {
+  for (const tier of KQ_BANK_TIERS) {
     const {reputation:rep,maxCents:cap,discountBps:discount}=tier;
     const owner = await experienced(rep); const view = await checked(owner);
     assert.equal(view.offer.maxCents, cap);
@@ -211,9 +238,46 @@ try {
     for (const amount of [9999, cap + 1, 1.2, 2147483647, -1]) await assert.rejects(() => bank(owner, borrow(view, amount)), /bank_invalid/);
     assert.equal((await bank(owner)).loan, null);
     const beforeTier=await bank(await experienced(rep-1));
-    if(index===0) assert.equal(beforeTier.offer,null);
-    else assert.equal(beforeTier.offer.maxCents,KQ_BANK_TIERS[index-1].maxCents,'server keeps the preceding ceiling one reputation point below the next gate');
+    if(rep===200) assert.equal(beforeTier.offer,null);
+    else assert.equal(beforeTier.offer.maxCents,getKqBankLimitCents(rep-1),'server progressively approaches the next anchor');
   }
+  const anchorCases=[
+    [-2147483648,0],[-1,0],[0,0],[199,0],[200,500000],[201,505000],
+    [400,1500000],[475,1875000],[599,2495000],[600,2500000],[601,2508300],
+    [1000,5833300],[1050,6250000],[1499,9991600],[1500,10000000],[1501,10010000],
+    [2000,15000000],[2250,17500000],[2999,24990000],[3000,25000000],[3001,25000000],[2147483647,25000000],
+  ];
+  for(const [rep,expectedCap] of anchorCases) {
+    assert.equal((await result('SELECT kq_bank_credit_limit($1) AS cap',[rep])).cap,expectedCap,`SQL limit at ${rep} reputation`);
+    assert.equal(getKqBankLimitCents(rep),expectedCap,`TypeScript limit at ${rep} reputation`);
+    if(rep<0) continue;
+    const boundaryOwner=await experienced(rep), boundaryView=await checked(boundaryOwner);
+    assert.equal(boundaryView.offer?.maxCents??0,expectedCap,`RPC limit at ${rep} reputation`);
+    if(!boundaryView.offer) continue;
+    const discount=[...KQ_BANK_TIERS].reverse().find(tier=>rep>=tier.reputation).discountBps;
+    assert.equal(boundaryView.offer.rateBps,Math.max(100,boundaryView.market.rateBps-discount),'rate discounts stay at the existing reputation gates');
+    await assert.rejects(()=>bank(boundaryOwner,borrow(boundaryView,expectedCap+1)),/bank_invalid/);
+    const borrowed=await bank(boundaryOwner,borrow(boundaryView,expectedCap));
+    assert.equal(borrowed.loan.principalCents,expectedCap,'the advertised progressive ceiling can actually be borrowed');
+    await checked(boundaryOwner);
+  }
+  const allLimits=(await db.query('SELECT reputation,kq_bank_credit_limit(reputation) AS cap FROM generate_series(0,3100) reputation')).rows;
+  for(const [index,{reputation,cap}] of allLimits.entries()) {
+    assert.equal(cap,getKqBankLimitCents(reputation),`SQL/TypeScript parity at ${reputation} reputation`);
+    assert.equal(cap%100,0,'capacity is rounded down to a whole game euro');
+    if(index>0) assert(cap>=allLimits[index-1].cap,'capacity never decreases as reputation increases');
+  }
+  const droppingOwner=await experienced(1000), droppingView=await checked(droppingOwner);
+  await db.query('UPDATE kq_equipment_wallets SET reputation=900 WHERE user_id=$1',[droppingOwner]);
+  const beforeRejectedBorrow=await migrationState(true);
+  await assert.rejects(()=>bank(droppingOwner,borrow(droppingView,droppingView.offer.maxCents)),/bank_invalid/);
+  assert.deepEqual(await migrationState(true),beforeRejectedBorrow,'a stale high-capacity offer cannot mutate balances or receipts after reputation drops');
+  const reducedView=await checked(droppingOwner);
+  assert.equal(reducedView.offer.maxCents,5000000);
+  assert.equal(reducedView.offer.rateBps,droppingView.offer.rateBps,'same-tier reputation loss isolates capacity revalidation');
+  assert.equal((await bank(droppingOwner,borrow(droppingView,reducedView.offer.maxCents))).loan.principalCents,5000000);
+  await checked(droppingOwner);
+  console.log('PASS: progressive capacities, exact anchors and neighbours, unchanged rate discounts, every integer reputation, and server revalidation after reputation loss.');
   const rich = await experienced(3000, 2147483000), richView = await bank(rich);
   await assert.rejects(() => bank(rich, borrow(richView)), /bank_wallet_limit/);
   assert.equal(await cash(rich), 2147483000);
@@ -361,6 +425,13 @@ try {
   }
   for (const role of ['anon', 'authenticated']) {
     assert.equal((await result("SELECT has_function_privilege($1,'rpc_kq_bank(uuid,jsonb)','EXECUTE') AS allowed", [role])).allowed, false);
+  }
+  for (const role of ['anon', 'authenticated', 'service_role']) {
+    assert.equal((await result("SELECT has_function_privilege($1,'kq_bank_credit_limit(integer)','EXECUTE') AS allowed",[role])).allowed,false);
+    await db.exec(`SET ROLE ${role}`);
+    try {
+      await assert.rejects(()=>db.query('SELECT public.kq_bank_credit_limit(1000)'),/permission denied/);
+    } finally { await db.exec('RESET ROLE'); }
   }
   assert.equal((await result("SELECT has_function_privilege('service_role','rpc_kq_bank(uuid,jsonb)','EXECUTE') AS allowed")).allowed, true);
   console.log('PASS: private bank tables and helpers; only the service RPC is exposed.');

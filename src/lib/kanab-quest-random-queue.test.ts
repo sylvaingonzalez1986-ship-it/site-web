@@ -13,7 +13,7 @@ describe("Kanab Quest random duel queue", () => {
       oldestWaitMinutes: 0,
       waitingOver15Minutes: 0,
       waitingOver60Minutes: 0,
-      qualityBands: { artisanale: 0, bellePousse: 0, concours: 0, legendaire: 0, unknown: 0 },
+      qualityBands: { artisanale: 0, bellePousse: 0, concours: 0, exceptionnelle: 0, legendaire: 0, unknown: 0 },
       truncated: false,
     });
   });
@@ -36,10 +36,22 @@ describe("Kanab Quest random duel queue", () => {
       oldestWaitMinutes: 75,
       waitingOver15Minutes: 2,
       waitingOver60Minutes: 1,
-      qualityBands: { artisanale: 1, bellePousse: 1, concours: 0, legendaire: 1, unknown: 1 },
+      qualityBands: { artisanale: 1, bellePousse: 1, concours: 0, exceptionnelle: 0, legendaire: 1, unknown: 1 },
     });
     expect(JSON.stringify(health)).not.toContain("flower-a");
     expect(JSON.stringify(health)).not.toContain("userId");
+  });
+
+  it("keeps historical titles and requires success evidence for new legendary flowers", () => {
+    const flowers = [
+      { id: "old", quality: 14 },
+      { id: "contest", quality: 14, harvestTierVersion: 2 as const },
+      { id: "exceptional", quality: 26, harvestTierVersion: 2 as const, successfulStages: 3, criticalStages: 3 },
+      { id: "legendary", quality: 26, harvestTierVersion: 2 as const, successfulStages: 4, criticalStages: 2 },
+      { id: "missing-proof", quality: 30, harvestTierVersion: 2 as const },
+    ];
+    const health = buildKqRandomQueueHealth(flowers.map(flower => ({ flowerId: flower.id, queuedAt: now.toISOString() })), flowers, now);
+    expect(health.qualityBands).toEqual({ artisanale: 0, bellePousse: 0, concours: 1, exceptionnelle: 2, legendaire: 2, unknown: 0 });
   });
 
   it("formats the waiting time for the player", () => {

@@ -1,0 +1,29 @@
+.credit,.repayments { margin: 0; min-width: 0; color: #172923; }
+.credit figcaption,.repayments figcaption { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 7px 12px; font-size: .77rem; line-height: 1.5; }
+.credit figcaption > span { font-weight: 700; }
+.credit svg { display: block; width: 100%; margin-top: 10px; overflow: visible; }
+.grid { stroke: #17292320; stroke-width: 1; }
+.area { fill: #1685771c; }
+.line { stroke: #168577; stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.future { fill: none; stroke: #708577; stroke-width: 2; stroke-dasharray: 5 6; }
+.cursor { stroke: #168577; stroke-width: 1; stroke-dasharray: 3 4; }
+.target { fill: #efc451; stroke: #172923; stroke-width: 2; }
+.dot { fill: #168577; stroke: #fffaf0; stroke-width: 3; }
+.axes { display: flex; justify-content: space-between; gap: 10px; color: #526157; font-size: .7rem; line-height: 1.5; }
+.axes > :last-child { text-align: right; }
+.next { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; margin-top: 18px; padding-top: 12px; border-top: 1px solid #17292335; font-size: .77rem; }
+.next strong { font-variant-numeric: tabular-nums; }
+.repayments figcaption > span { font-size: .69rem; color: #526157; }
+.repayments ol { display: grid; grid-template-columns: repeat(7,minmax(0,1fr)); gap: 7px; list-style: none; margin: 16px 0 10px; padding: 0; }
+.repayments ol button { display: flex; flex-direction: column; align-items: stretch; gap: 5px; width: 100%; padding: 6px 4px; border: 1px solid transparent; box-shadow: none; border-radius: 6px; background: transparent; color: inherit; }
+.repayments ol button[aria-pressed="true"] { border-color: #172923; background: #fff1d6; box-shadow: none; }
+.repayments ol button:focus-visible { outline: 3px solid #168577; outline-offset: 2px; }
+.column { display: flex; align-items: end; height: 64px; border-bottom: 1px solid #17292350; }
+.column > i { display: flex; align-items: end; width: 100%; background: #efc451; border-radius: 4px 4px 0 0; overflow: hidden; border: 1px solid #17292345; }
+.column b { display: block; width: 100%; background: #168577; }
+[data-overdue] .column > i { background: #bc6049; }
+.columnLabel { font: 700 .7rem/1.4 ui-monospace,monospace; }
+.selected { display: flex; justify-content: space-between; gap: 10px; padding: 10px 0; font-size: .84rem; }
+.selected > strong { text-align: right; font-variant-numeric: tabular-nums; }
+.selected small { display: block; margin-top: 4px; font-size: .68rem; font-weight: 500; color: #526157; }
+.srOnly { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }

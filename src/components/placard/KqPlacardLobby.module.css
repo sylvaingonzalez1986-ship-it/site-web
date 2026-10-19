@@ -1,7 +1,7 @@
 .lobby { position: relative; padding: 22px clamp(12px, 2.5vw, 36px) 30px; color: #172923; background: #e6e6c9; background-image: radial-gradient(#17292316 .7px, transparent .8px); background-size: 8px 8px; font-family: var(--font-body), Arial, sans-serif; }
 .lobby > * { max-width: 1400px; margin-inline: auto; }
 .nextAction { display: flex; align-items: center; gap: 16px; min-height: 88px; margin-bottom: 20px; padding: 10px 17px 10px 12px; border: 2px solid #172923; border-radius: 20px 20px 20px 8px; background: #fff1d6; box-shadow: 4px 4px 0 #172923; }
-.guidePortrait { position: relative; display: block; flex-shrink: 0; width: 64px; height: 68px; overflow: hidden; border: 2px solid #172923; border-radius: 50% 50% 42% 42%; background: #fff; box-shadow: 2px 2px 0 #d5a573; }
+.guidePortrait { position: relative; display: block; flex-shrink: 0; width: 64px; height: 68px; overflow: hidden; border: 2px solid #172923; border-radius: 50% 50% 42% 42%; background: #fff; box-shadow: 2px 2px 0 var(--game-surface-warm); }
 .guidePortrait > img { position: absolute; width: 88px; max-width: none; height: 88px; left: -12px; top: -8px; object-fit: contain; }
 .nextAction > div { flex: 1; min-width: 0; }
 .nextAction > div > span { display: block; margin-bottom: 4px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #435f50; }

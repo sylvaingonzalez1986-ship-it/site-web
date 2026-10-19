@@ -222,7 +222,7 @@ describe("Kanab Quest dice prototype", () => {
     expect(projection.remainingStages).toBe(3);
     expect(projection.equipmentQualityBonus).toBeGreaterThan(0);
     expect(projection.projectedQuality).toBe(state.quality + projection.equipmentQualityBonus);
-    expect(projection.tier).toBe(getKqHarvestTier(projection.projectedQuality));
+    expect(projection.tier).toBe(getKqHarvestTier(projection.projectedQuality, state));
     expect(projection.harvestLossPercent).toBe(15);
 
     const final = advanceKqStage({ ...state, stageIndex: KQ_STAGES.length - 1, phase: "resolved" });
@@ -244,8 +244,9 @@ describe("Kanab Quest dice prototype", () => {
     expect(receipt?.harvestLossPercent).toBe((resolved.harvestLossPercent ?? 0) - (rolled.harvestLossPercent ?? 0));
   });
 
-  it("shows the exact distance to every harvest tier", () => {
+  it("shows the exact distance to every historical harvest tier", () => {
     const base = startKqGame(215);
+    delete base.harvestTierVersion;
     expect(getKqRunProjection(base)).toMatchObject({ tier: "Récolte artisanale", nextTier: "Belle pousse", qualityToNextTier: 6 });
     expect(getKqRunProjection({ ...base, quality: 6 })).toMatchObject({ tier: "Belle pousse", nextTier: "Qualité concours", qualityToNextTier: 4 });
     expect(getKqRunProjection({ ...base, quality: 10 })).toMatchObject({ tier: "Qualité concours", nextTier: "Fleur légendaire", qualityToNextTier: 4 });

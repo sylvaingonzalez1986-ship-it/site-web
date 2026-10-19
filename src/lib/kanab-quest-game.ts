@@ -6,6 +6,8 @@ import { isKqWarehouseRunSnapshot, type KqWarehouseRunSnapshot } from "./kanab-q
 import { calculateKqWarehouseHarvest, quoteKqWarehouseEnergy } from "./kanab-quest-warehouse-run";
 import { applyKqBuddieYield, isKqBuddieCultivationProfile, type KqBuddieCultivationProfile } from "./kanab-quest-buddie-cultivation";
 import type { KqCampaign } from "./kanab-quest-campaign";
+import { getKqHarvestTierProgress, type KqLegendaryRequirements } from "./kanab-quest-harvest-tiers";
+export { getKqHarvestTier } from "./kanab-quest-harvest-tiers";
 import {
   KQ_HERITAGE_CARDS,
   KQ_HERITAGE_STARTING_XP_BONUS,
@@ -148,6 +150,8 @@ export type KqStageDecision = {
 export type KqGameState = {
   warehouse?: KqWarehouseRunSnapshot;
   rulesVersion?: 2 | 3;
+  /** Absent on existing cultures, which keep their original harvest scale. */
+  harvestTierVersion?: 2;
   care?: KqCareState;
   /** Recorded once at culture start; later changes apply to the next culture. */
   domiciliation?: KqDomiciliation;
@@ -689,6 +693,7 @@ export function startKqGame(
       heritageUsed: false,
       heritageArmed: false,
     } : {}),
+    harvestTierVersion: 2,
     stageIndex: 0, phase: "prepare", xp: Math.max(1, config.startingXp ?? 1) + buddie.advantageLevel + heritageStartingXp, quality: warehouse?.qualityBonus ?? 0, equipment, dice: null, bonusDie: null, effectNotices: [
       ...(buddie.advantageLevel > 0 ? [`${buddie.name} : +${buddie.advantageLevel} XP au départ.`] : []),
       ...(heritage ? [`${heritage.name} : +${heritageStartingXp} XP au départ.`] : []),
@@ -1412,18 +1417,6 @@ export function advanceKqStage(state: KqGameState): KqGameState {
   return observeKqCareStage({ ...nextState, handCodes: drawKqAvailableHandCodes(nextState), heritageReserveCodes: undefined }, getKqSituation(nextState));
 }
 
-const KQ_HARVEST_TIERS = [
-  { minimumQuality: 0, name: "Récolte artisanale" },
-  { minimumQuality: 6, name: "Belle pousse" },
-  { minimumQuality: 10, name: "Qualité concours" },
-  { minimumQuality: 14, name: "Fleur légendaire" },
-] as const;
-
-export function getKqHarvestTier(quality: number) {
-  return [...KQ_HARVEST_TIERS].reverse().find((tier) => quality >= tier.minimumQuality)?.name
-    ?? KQ_HARVEST_TIERS[0].name;
-}
-
 export type KqRunProjection = {
   currentQuality: number;
   equipmentQualityBonus: number;
@@ -1432,6 +1425,8 @@ export type KqRunProjection = {
   nextTier: string | null;
   qualityToNextTier: number;
   successfulStages: number;
+  criticalStages: number;
+  legendaryRequirements: KqLegendaryRequirements | null;
   remainingStages: number;
   harvestGrams: number;
   harvestLossPercent: number;
@@ -1472,8 +1467,7 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
     ? state.equipmentQualityBonus ?? 0
     : calculateKqEquipmentQualityBonus(state.equipment?.qualityMaxBonus ?? 0, successfulStages);
   const projectedQuality = state.phase === "complete" ? state.quality : state.quality + equipmentQualityBonus;
-  const tierIndex = Math.max(0, KQ_HARVEST_TIERS.findLastIndex((tier) => projectedQuality >= tier.minimumQuality));
-  const nextTier = KQ_HARVEST_TIERS[tierIndex + 1] ?? null;
+  const tierProgress = getKqHarvestTierProgress(projectedQuality, state);
   const harvestLossPercent = Math.max(0, Math.min(80, state.harvestLossPercent ?? 0));
   const harvestGrams = cultureDead ? 0 : state.phase === "complete" && state.harvestGrams !== undefined
     ? state.harvestGrams
@@ -1483,10 +1477,12 @@ export function getKqRunProjection(state: KqGameState): KqRunProjection {
     currentQuality: state.quality,
     equipmentQualityBonus,
     projectedQuality,
-    tier: cultureDead ? "Culture morte" : KQ_HARVEST_TIERS[tierIndex].name,
-    nextTier: cultureDead ? null : nextTier?.name ?? null,
-    qualityToNextTier: !cultureDead && nextTier ? Math.max(0, nextTier.minimumQuality - projectedQuality) : 0,
+    tier: cultureDead ? "Culture morte" : tierProgress.tier,
+    nextTier: cultureDead ? null : tierProgress.nextTier,
+    qualityToNextTier: cultureDead ? 0 : tierProgress.qualityToNextTier,
     successfulStages,
+    criticalStages: state.history.filter(entry => entry.outcome === "critical").length,
+    legendaryRequirements: cultureDead ? null : tierProgress.legendaryRequirements,
     remainingStages: state.phase === "complete" ? 0 : Math.max(0, KQ_STAGES.length - state.history.length),
     harvestGrams,
     harvestLossPercent,

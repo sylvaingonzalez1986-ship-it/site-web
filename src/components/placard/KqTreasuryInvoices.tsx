@@ -7,6 +7,7 @@ import type { KqEnergySnapshot } from "@/lib/kanab-quest-energy";
 import { formatKqCash as money } from "@/lib/kanab-quest-equipment";
 import { KQ_SHOP_MONTHLY_CENTS } from "@/lib/kanab-quest-business";
 import { getKqOnlineSiteTier } from "@/lib/kanab-quest-online";
+import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
 import styles from "./KqTreasuryInvoices.module.css";
 
 const date = (value: string) => new Date(value).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
@@ -38,6 +39,16 @@ export function KqTreasuryInvoices({ data, energy, energyError, now: liveNow, bu
       <article><small>Factures à régler</small><strong>{money(due)}</strong><span>Fournisseurs, laboratoire, électricité et soins</span></article>
       <article><small>Trésorerie disponible</small><strong>{money(data.cashCents)}</strong><span>{due > data.cashCents ? `${money(due - data.cashCents)} manquent pour tout régler` : `${money(data.cashCents - due)} après règlement des factures`}</span></article>
       <article><small>TVA déjà réservée</small><strong>{money(vat.reservedCents)}</strong><span>Mise de côté, séparée de ton disponible</span></article>
+    </div>
+    <div className={styles.calendarGrid}>
+      <section className={styles.calendar}><KqAllocationBar label="Factures restant à régler" emptyLabel="Toutes les factures sont réglées." items={[
+        { label: "Fournisseurs", value: suppliers?.outstandingCents ?? 0, displayValue: money(suppliers?.outstandingCents ?? 0), tone: "ink" },
+        { label: "Laboratoire", value: lab.outstandingCents, displayValue: money(lab.outstandingCents), tone: "gold" },
+        { label: "Électricité et soins", value: energyDue, displayValue: money(energyDue), tone: "teal" },
+      ]} /></section>
+      <section className={styles.calendar}><KqProgressMeter label="Couverture par ta trésorerie" value={Math.min(data.cashCents, due)} max={due}
+        valueLabel={due > 0 ? `${Math.floor(Math.min(1, data.cashCents / due) * 100)} % des factures` : "Aucune facture à payer"}
+        tone={data.cashCents < due ? "gold" : "teal"} hint={data.cashCents < due ? `Il manque ${money(due - data.cashCents)}` : `${money(data.cashCents - due)} disponibles après règlement`} /></section>
     </div>
     <section className={styles.inbox} aria-label="Factures à régler">
       <header className={styles.heading}><div><small>Le courrier du bureau</small><h2>Factures & échéances</h2></div><button type="button" className={styles.secondary} disabled={busy} onClick={onRetry} aria-label="Actualiser les factures"><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></header>

@@ -35,7 +35,7 @@
 .notice,.error,.empty{padding:18px;font-size:14px;border:2px solid #172923;border-radius:11px;background:#fffaf0}.error{border-color:#873321;color:#873321}.error p{margin:0 0 12px}.error button,.empty button{display:block;min-height:44px;margin-top:12px;padding:8px 14px;font-weight:800;cursor:pointer;border:2px solid #172923;border-radius:9px;background:#efc451;color:#172923;box-shadow:2px 3px 0 #172923}
 .footer{flex-shrink:0;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:10px 24px;font-size:11px;line-height:1.5;background:#f7dfb8;color:#172923;border-top:2px solid #172923}
 .shopLink{display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 12px;border-radius:8px;text-align:left;font-weight:800;cursor:pointer;border:2px solid #172923;background:#efc451;color:#172923;box-shadow:2px 3px 0 #172923}.shopLink span{display:grid}.shopLink small{font-size:10px;font-weight:500}
-.detailDialog{width:1060px;max-height:calc(100dvh - 40px);overflow-y:auto;overscroll-behavior:contain;border-color:#172923;background:#d5a573}
+.detailDialog{width:1060px;max-height:calc(100dvh - 40px);overflow-y:auto;overscroll-behavior:contain;border-color:#172923;background:var(--game-surface-warm)}
 .detailLayout{display:grid;grid-template-columns:minmax(0,1fr) minmax(320px,.94fr);min-height:0;padding:24px;gap:28px;align-items:center}
 .enlargedCard{min-width:0;display:grid;place-items:center}.enlargedCard img{display:block;width:auto;max-width:100%;height:auto;max-height:calc(100dvh - 94px);object-fit:contain;box-shadow:5px 5px 0 #001e18}
 .detailCopy{min-width:0;padding:26px 24px;background:#fffaf0;border:2px solid #172923;border-radius:12px;box-shadow:3px 4px 0 #172923}

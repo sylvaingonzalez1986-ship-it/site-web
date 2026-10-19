@@ -4,7 +4,7 @@ Le bureau regroupe **Comptabilité**, **Banque** et **Gestion**, en conservant l
 
 ## Prêts de jeu
 
-Le premier prêt nécessite 200 points de réputation et une première culture terminée depuis au moins 24 heures réelles. Le banquier explique le refus, l’attente, l’offre ou le prêt en cours. Les plafonds sont de 5 000 / 25 000 / 100 000 / 250 000 € pour 200 / 600 / 1 500 / 3 000 points ; les trois derniers paliers réduisent le taux de 0,5 / 1 / 1,5 point.
+Le premier prêt nécessite 200 points de réputation et une première culture terminée depuis au moins 24 heures réelles. Le banquier explique le refus, l’attente, l’offre ou le prêt en cours. Les repères de financement sont de 5 000 / 25 000 / 100 000 / 250 000 € pour 200 / 600 / 1 500 / 3 000 points. Le plafond augmente à chaque point entre ces repères, par interpolation linéaire arrondie à l’euro inférieur, puis reste limité à 250 000 €. Les réductions de taux restent acquises aux seuils de 600 / 1 500 / 3 000 points : 0,5 / 1 / 1,5 point.
 
 Chaque journée UTC reçoit un scénario aléatoire persistant et commun à tous les joueurs : confiance, concurrence, stabilité, inflation ou tension. Le taux de base évolue dans une plage de 1,5 à 14 %, avec un taux proposé plancher de 1 % après réduction. Actualiser ne retire pas un nouveau scénario. La création a lieu à la première consultation de la journée, sans tâche cron.
 
@@ -15,6 +15,16 @@ Les échéances sont espacées de **30 jours de jeu, soit 120 heures réelles (5
 La migration `20260924000100_kq_bank_monthly_installments.sql` applique ce calendrier aux nouveaux prêts et aux prêts encore ouverts, depuis leur date de signature. Les montants, intérêts et paiements déjà enregistrés sont conservés. Les prêts soldés avant cette migration gardent leur échéancier historique quotidien. L’intervalle est enregistré par contrat et calculé en heures réelles pour rester exact lors des changements d’heure. Le champ API `offer.termDays` exprime la durée totale en jours réels : 35.
 
 Migration appliquée le 24 septembre 2026 à la base Supabase liée, à la demande de l’utilisateur, avec `supabase db push --linked --yes`. Le projet lié correspond à la configuration de l’application et seule cette migration était en attente. L’application a réussi ; le dry-run suivant confirme que la base est à jour. Cette opération déploie le calendrier côté base ; elle ne publie pas le code de l’interface.
+
+### Progression du crédit — 18 octobre 2026
+
+L’ancien calcul conservait le plafond du seuil précédent : à 475 points, le joueur ne pouvait emprunter que 5 000 €. La migration `20261018000800_kq_bank_progressive_credit.sql` remplace ce calcul pour les nouvelles offres. À 475 points, le plafond devient **18 750 €** ; à 1 000 points, **58 333 €** ; à 2 000 points, **150 000 €**. Aucun plafond antérieur ne diminue. La réputation courante est relue sous verrou au moment de signer ; le navigateur ne décide pas du crédit autorisé.
+
+Le bureau distingue le plafond personnel du montant choisi (1 000 € préremplis). Une courbe situe le crédit actuel et le prochain repère ; le curseur, les raccourcis et la saisie permettent de choisir le montant. La répartition capital/intérêts et les sept barres de l'échéancier rendent le coût et les prélèvements visibles avant signature. Les règles secondaires sont repliables. Le plafond serveur reste la référence : si la base utilise encore l'ancien calcul, l'interface affiche bien 5 000 € à 475 points, sans promettre 18 750 €.
+
+Un prêt déjà ouvert doit être soldé avant une nouvelle demande ; les gains de réputation ne changent pas son capital, ses intérêts ou son échéancier. La migration ne réécrit aucun contrat, paiement, reçu ou solde. Elle doit être appliquée à la base avant d’activer le nouveau calcul ; sa préparation locale ne constitue pas un déploiement.
+
+Validation locale : tests Vitest de banque, backend, API et didacticiel réussis ; `npm run test:bank:sql` vérifie les migrations réelles, les permissions, l’emprunt à 18 750 € et la conservation des anciens contrats dans PostgreSQL isolé. Ce contrôle rejoint la CI. `npm run check:supabase-grants`, TypeScript et ESLint ciblé passent. L’audit `node scripts/audit-placard-treasury.mjs --bank-only` passe à 320 et 1280 px : plafond à 475 points, prochain repère, refus du centime supplémentaire, contrat et signature simulée. Rapport local : `output/placard-treasury/report-bank.json`.
 
 ## Crypto aux cours CoinMarketCap
 

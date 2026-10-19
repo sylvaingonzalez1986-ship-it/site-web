@@ -192,6 +192,18 @@ describe("bounded official battle history", () => {
     expect(reads).toHaveLength(previousReads);
   });
 
+  it("loads the frozen harvest version and success evidence for history and verdict reads", async () => {
+    human(1);
+    Object.assign(rows.kq_flowers[0], { quality: 26, harvest_tier_version: 2, successful_stages: 3, critical_stages: 3 });
+    Object.assign(rows.kq_flowers[1], { quality: 14 });
+    const history = await getKqPlayerBattles(owner);
+    const detail = await getKqPlayerBattle(owner, id(1));
+    for (const battle of [history[0], detail!]) {
+      expect(battle.playerFlower).toMatchObject({ tier: "Fleur exceptionnelle", harvestTierVersion: 2, successfulStages: 3, criticalStages: 3 });
+      expect(battle.opponentFlower.tier).toBe("Fleur légendaire");
+    }
+  });
+
   it("keeps the initial snapshot at 12 archived fights plus received pending verdicts, without analysis reports", () => {
     const archived = Array.from({ length: 15 }, (_, index) => {
       const battle = bot(index + 10);

@@ -152,3 +152,21 @@
   .activity > summary > span { flex-basis: 100%; margin-left: 26px; }
   .activity > summary::after { display: none; }
 }
+.tycoon :where(summary):focus-visible { outline: 3px solid #147d68; outline-offset: 4px; }
+.explanation > summary, .footnote > summary { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: .72rem; font-weight: 750; cursor: pointer; }
+.explanation > summary::before, .footnote > summary::before { content: "+"; }
+.explanation[open] > summary::before, .footnote[open] > summary::before { content: "−"; }
+.tycoon .explanation p, .tycoon .footnote p { margin-top: 0; max-width: 85ch; }
+.tycoon .campaignAction { display: grid; gap: 8px; width: 100%; padding: 0; border: 0; background: transparent; color: inherit; text-align: left; }
+.campaignAction > strong { font-size: .8rem; }
+.campaignAction > span:last-child { display: flex; justify-content: space-between; align-items: center; gap: 8px; min-height: 44px; font-size: .7rem; font-weight: 750; }
+.planOption { display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 2px solid #17292365; border-radius: 9px; background: var(--cream); }
+.planOption[data-selected="true"] { background: var(--mint); border-color: var(--ink); box-shadow: 3px 3px 0 var(--ink); }
+.tycoon .planOption .plan { width: 100%; flex: 1; border: 0; border-radius: 0; box-shadow: none; background: transparent; }
+.planMeter { padding: 4px 14px 16px; }
+.stockForecast { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(0,1fr); align-items: center; gap: 28px; margin: 24px 0; }
+.forecastTotal { display: grid; gap: 8px; padding: 18px; border: 1px solid #17292335; border-radius: 8px; background: #bfe9db60; }
+.forecastTotal > span { font-size: .72rem; }
+.forecastTotal > strong { font: 900 2rem/1 var(--font-display),Impact,sans-serif; overflow-wrap: anywhere; }
+.forecastTotal > small { font-size: .65rem; line-height: 1.5; }
+@media (max-width: 600px) { .stockForecast { grid-template-columns: minmax(0,1fr); gap: 18px; } }

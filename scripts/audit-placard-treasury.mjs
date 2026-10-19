@@ -15,7 +15,7 @@ const modules={
  import {PlacardPlayerShell} from '/src/components/placard/PlacardPlayerShell';
  import {createKqBusinessPreview,KQ_GAME_DAY_MS as day,KQ_GAME_MONTH_MS as month} from '/src/lib/kanab-quest-business';
  import {quoteKqEnergy} from '/src/lib/kanab-quest-energy';
- import {getKqBankTerms,isKqBankSnapshot,parseKqBankCommand,KQ_BANK_TIERS,KQ_BANK_MIN_CENTS} from '/src/lib/kanab-quest-bank';
+ import {getKqBankLimitCents,getKqBankTerms,isKqBankSnapshot,parseKqBankCommand,KQ_BANK_TIERS,KQ_BANK_MIN_CENTS} from '/src/lib/kanab-quest-bank';
  import {isKqCryptoSnapshot,isKqCryptoOrder,isKqCryptoTrade,parseKqCryptoAction} from '/src/lib/kanab-quest-crypto';
  const now=Date.now(),origin=now-40*day,from=origin+month,iso=n=>new Date(n).toISOString();
  const initial={cash:200000,vat_reserve:0,savings:30000,equipment:45000,website:100000,opening_equity:-375000};
@@ -30,10 +30,11 @@ const modules={
  const energy={cashCents:commerce.cashCents,outstandingCents:4000,invoiceCount:2,bestGramsPerKwh:null,invoices:[{runId:'energy-unpaid',createdAt:iso(now-day),totalCents:5000,remainingCents:4000,harvestGrams:100,quote:quoteKqEnergy([])},{runId:'energy-paid',createdAt:iso(now-2*day),totalCents:1800,remainingCents:0,harvestGrams:100,quote:quoteKqEnergy([])}],quotes:{}};
  const savings={cashCents:commerce.cashCents,balanceCents:30000,interestCreditedCents:0,nextInterestAt:iso(now+86400000),ratePercent:5,periodHours:24,maxBalanceCents:2000000000,replayed:false};
  const params=new URLSearchParams(location.search),marketId='11111111-1111-4111-8111-111111111111',loanId='22222222-2222-4222-8222-222222222222';
- const bankReputation=params.has('low-reputation')?90:params.has('high-reputation')?KQ_BANK_TIERS.at(-1).reputation:312,bankTier=KQ_BANK_TIERS.filter(tier=>bankReputation>=tier.reputation).at(-1)??KQ_BANK_TIERS[0];
- const offer={quoteId:marketId,minCents:KQ_BANK_MIN_CENTS,maxCents:bankTier.maxCents,rateBps:700-bankTier.discountBps,termDays:35,expiresAt:iso(now+86400000)};
- window.__bankAudit={offer,topTier:KQ_BANK_TIERS.at(-1),terms:getKqBankTerms(offer.maxCents,offer.rateBps)};
- const bank={version:1,serverNow:iso(now),cashCents:commerce.cashCents,reputation:bankReputation,eligibleAt:iso(now-86400000),market:{id:marketId,scenario:'inflation',rateBps:700,changeBps:50,startsAt:iso(now-3600000),expiresAt:offer.expiresAt},offer:params.has('low-reputation')?null:offer,blockedReason:params.has('low-reputation')?'reputation':null,loan:null,history:[],autoPaidCents:0,replayed:false};
+ const requestedBankReputation=Number(params.get('bank-reputation'));
+ const bankReputation=params.has('low-reputation')?90:params.has('high-reputation')?KQ_BANK_TIERS.at(-1).reputation:params.has('bank-reputation')&&Number.isSafeInteger(requestedBankReputation)&&requestedBankReputation>=0?requestedBankReputation:312,bankTier=KQ_BANK_TIERS.filter(tier=>bankReputation>=tier.reputation).at(-1)??KQ_BANK_TIERS[0];
+ const offer={quoteId:marketId,minCents:KQ_BANK_MIN_CENTS,maxCents:params.has('legacy-bank')?500000:getKqBankLimitCents(bankReputation),rateBps:700-bankTier.discountBps,termDays:35,expiresAt:iso(now+86400000)};
+ window.__bankAudit={offer,topTier:KQ_BANK_TIERS.at(-1),terms:offer.maxCents>=offer.minCents?getKqBankTerms(offer.maxCents,offer.rateBps):null};
+ const bank={version:1,serverNow:iso(now),cashCents:commerce.cashCents,reputation:bankReputation,eligibleAt:iso(now-86400000),market:{id:marketId,scenario:'inflation',rateBps:700,changeBps:50,startsAt:iso(now-3600000),expiresAt:offer.expiresAt},offer:bankReputation<KQ_BANK_TIERS[0].reputation?null:offer,blockedReason:bankReputation<KQ_BANK_TIERS[0].reputation?'reputation':null,loan:null,history:[],autoPaidCents:0,replayed:false};
  const cryptoMarket={version:1,serverNow:iso(now),marketStatus:params.has('crypto-unavailable')?'unavailable':params.has('crypto-stale')?'stale':'live',updatedAt:iso(now),cashCents:commerce.cashCents,assets:Array.from({length:100},(_,index)=>({id:index+1,rank:index+1,name:index===0?'Bitcoin':index===1?'Ethereum':'Crypto fixture '+(index+1),symbol:index===0?'BTC':index===1?'ETH':'T'+(index+1),priceEur:index===0?'50000':index===1?'2500':'10',change24h:index%2===0?2.5:-1.25,quotedAt:iso(params.has('crypto-stale')?now-172800000:now),inTop100:true})),positions:params.has('crypto-stale')?[{assetId:1,quantity:'0.002',costBasisCents:10000,valueCents:10000}]:[],recentTrades:[]};
  if(params.has('crypto-retry')){cryptoMarket.marketStatus='stale';cryptoMarket.refresh={refreshing:false,nextAttemptAt:iso(now+6000),lastFailureCode:'rate_limited'};cryptoMarket.positions=[{assetId:1,quantity:'0.002',costBasisCents:10000,valueCents:10000}];for(const asset of cryptoMarket.assets)if(asset.id!==2)asset.quotedAt=iso(now-172800000);}
  window.__refreshCryptoQuotes=()=>{cryptoMarket.marketStatus='live';cryptoMarket.updatedAt=iso(Date.now());for(const asset of cryptoMarket.assets)asset.quotedAt=cryptoMarket.updatedAt;if(cryptoMarket.refresh)cryptoMarket.refresh={refreshing:false,nextAttemptAt:null,lastFailureCode:null};};
@@ -157,7 +158,91 @@ try{
   }
   return{separateOfficeAndBank:true,bankWithoutAccountingControls:true,bankDoesNotFetchAccounting:true,mapSwitchesPlaces:true,marketThreeTabKeyboard:true,dashboardWithoutStock:true,managementAtMarket:true,legacyManagementRedirect:true,marketAccountingLink:true};
  };
- if(process.argv.includes('--headers-only')){
+ if(process.argv.includes('--bank-only')){
+  const bankResults=[],money=cents=>(cents/100).toLocaleString('fr-FR',{style:'currency',currency:'EUR'}).replace(/\s+/g,'');
+  for(const width of [320,1280]){
+   await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});
+   await page.goto('http://127.0.0.1:3218/?view=treasury&pole=bank&bank-reputation=475',{waitUntil:'networkidle0'});
+   await page.waitForSelector('#bank-loan-amount');
+   const expected=await page.evaluate(()=>window.__bankAudit);
+   assert.equal(expected.offer.maxCents,1_875_000,'475 reputation offers 18,750 game euros');
+   assert.equal(await page.$eval('#bank-personal-limit',element=>element.textContent.replace(/\s+/g,'')),money(1_875_000));
+   assert.equal(await page.$eval('#bank-loan-amount',input=>input.value),'1000','Suggested amount remains distinct from the borrowing ceiling');
+   assert.equal(await page.$$('[data-bank-credit-chart] svg').then(items=>items.length),1,'Reputation credit is visualized');
+   assert.equal(await page.$$('[data-bank-schedule] ol button').then(items=>items.length),7,'Seven instalments have accessible interactive bars');
+   const offerText=await text();
+   assert((await page.$eval('[data-bank-credit-chart]',element=>element.textContent)).includes('600 pts'),'Next reputation landmark is visible');
+   assert(offerText.includes('Encore 125 points'),'Remaining reputation is visible');
+   assert.equal(await page.$eval('details[class*="rules"]',element=>element.open),false,'Detailed explanations stay collapsed');
+   await page.focus('[aria-label="Ajuster le montant du prêt"]');await page.keyboard.press('ArrowRight');
+   assert.equal(await page.$eval('#bank-loan-amount',input=>input.value),'1001.00','Keyboard slider updates exact loan amount');
+   await clickSelector('[data-bank-schedule] ol li:nth-child(2) button');
+   assert.equal(await page.$eval('[data-bank-schedule] ol li:nth-child(2) button',button=>button.getAttribute('aria-pressed')),'true','Schedule can be explored');
+   await clickSelector('[aria-label="Choisir un montant de prêt"] button[aria-label^="Maximum du plafond"]');
+   assert.equal(await page.$eval('#bank-loan-amount',input=>Math.round(Number(input.value)*100)),1_875_000);
+   await fill('#bank-loan-amount','18750.01');
+   assert.equal(await page.$eval('#bank-panel-loans button[class*="primary"]',button=>button.disabled),true,'One cent above the interpolated ceiling is rejected');
+   await clickSelector('[aria-label="Choisir un montant de prêt"] button[aria-label^="Maximum du plafond"]');
+   await noOverflow();await shot('bank-progressive-offer-'+width);
+   await (await page.$('section[aria-labelledby="bank-loans-title"]')).screenshot({path:resolve(output,'bank-visual-'+width+'.png')});
+   await click('Examiner le contrat');await page.waitForSelector('dialog[aria-labelledby="bank-contract-title"][open]');
+   const contract=await page.$eval('dialog[aria-labelledby="bank-contract-title"]',dialog=>{const r=dialog.getBoundingClientRect();return{left:r.left,right:r.right,top:r.top,bottom:r.bottom,viewportWidth:innerWidth,viewportHeight:innerHeight,overflow:dialog.scrollWidth>dialog.clientWidth+1,text:dialog.textContent.replace(/\s+/g,'')};});
+   assert(contract.left>=0&&contract.top>=0&&contract.right<=contract.viewportWidth+1&&contract.bottom<=contract.viewportHeight+1,'Loan contract fits the viewport');
+   assert.equal(contract.overflow,false);
+   for(const cents of [expected.offer.maxCents,expected.terms.interestCents,expected.terms.totalCents])assert(contract.text.includes(money(cents)),'Contract displays its principal, interest and repayment');
+   const installments=await page.$$eval('dialog[open] ol li strong',items=>items.map(item=>Math.round(Number(item.textContent.replace(/[^\d,-]/g,'').replace(',','.'))*100)));
+   assert.deepEqual(installments,expected.terms.installments);assert.equal(installments.reduce((total,value)=>total+value,0),expected.terms.totalCents);
+   assert.equal(await page.evaluate(()=>window.__actions.length),0,'Reviewing the contract does not sign it');
+   await noOverflow();await viewportShot('bank-progressive-contract-'+width);
+   await click('Signer et recevoir le capital');await page.waitForFunction(()=>document.body.innerText.includes('Contrat signé.'));
+   const commands=await page.evaluate(()=>window.__actions);
+   assert.equal(commands.length,1);assert.equal(commands[0].action,'borrow');assert.equal(commands[0].amountCents,1_875_000);assert.equal(commands[0].expectedRateBps,expected.offer.rateBps);
+   assert.equal(await page.$('#bank-loan-amount'),null,'An active loan removes the new-loan form');
+   assert.equal(await page.$eval('#bank-panel-loans ol',list=>list.children.length),7);
+   const activeText=await text();assert.match(activeText,/ton prêt en cours/i);assert(activeText.includes('Prêt en cours : solde-le pour emprunter à nouveau.'));
+   assert((await page.$eval('#bank-panel-loans',element=>element.textContent)).includes('Capital et taux restent fixes.'));
+   assert.deepEqual(await page.evaluate(()=>window.__financeRequests),[],'Bank-only audit makes no accounting request');
+   assert.equal(await page.evaluate(()=>window.__cryptoReads),0,'Bank-only audit makes no crypto request');
+   await noOverflow();await shot('bank-progressive-active-'+width);
+   bankResults.push({width,reputation:475,maxCents:1_875_000,nextReputation:600,pointsToNext:125,defaultAmountCents:100_000,maximumPreset:true,centBoundary:true,contract:true,installments:true,signed:true,activeExplanation:true,noOverflow:true});
+  }
+  await page.goto('http://127.0.0.1:3218/?view=treasury&pole=bank&bank-reputation=475&legacy-bank=1',{waitUntil:'networkidle0'});
+  await page.waitForSelector('#bank-personal-limit');
+  assert.equal(await page.$eval('#bank-personal-limit',element=>element.textContent.replace(/\s+/g,'')),money(500000),'The graph never replaces the actual server limit with a projected allowance');
+  assert((await page.$eval('[data-bank-credit-chart]',element=>element.textContent.replace(/\s+/g,''))).includes('Plafondautoriséaujourd’hui:'+money(500000)));
+  await noOverflow();
+  await page.goto('http://127.0.0.1:3218/?view=treasury&pole=bank&low-reputation=1',{waitUntil:'networkidle0'});
+  await page.waitForSelector('[role="meter"][aria-label="Réputation"]');
+  assert.equal(await page.$('#bank-loan-amount'),null,'A reputation gate never displays a borrowing form');
+  await noOverflow();
+  assert.deepEqual(errors,[]);
+  await writeFile(resolve(output,'report-bank.json'),JSON.stringify({passed:true,bankResults,serverLimitAuthoritative:true,reputationGate:true,errors},null,2));
+  console.log(JSON.stringify({passed:true,bankResults,output}));
+ } else if(process.argv.includes('--finance-visuals-only')){
+  const financeResults=[];
+  for(const width of [320,1280]){
+   await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});
+   await page.goto('http://127.0.0.1:3218/?view=treasury',{waitUntil:'networkidle0'});
+   await page.waitForSelector('[role="meter"][aria-label="Couverture par ta trésorerie"]');
+   assert((await text()).includes('Factures restant à régler'));await noOverflow();await shot('visual-invoices-'+width);
+   await selectTab('overview');await page.waitForSelector('[aria-label="Répartition des charges"]');
+   assert((await text()).includes('Répartition des fonds et placements'));assert((await text()).includes('Disponible et engagements'));
+   await noOverflow();await shot('visual-accounts-overview-'+width);
+   await selectTab('accounts');await page.waitForSelector('[aria-label="Bilan de gestion"]');
+   assert((await text()).includes('Produits, charges et résultat'));assert((await text()).includes('Équilibre du bilan'));
+   await noOverflow();await shot('visual-accounts-balance-'+width);
+   await selectPole('bank');await selectDesk('savings');await page.waitForSelector('[aria-label="Mon livret d’épargne"] input');
+   assert((await text()).includes('Trésorerie et épargne'));await noOverflow();await shot('visual-savings-'+width);
+   await page.goto('http://127.0.0.1:3218/?view=treasury&pole=bank&crypto-stale=1',{waitUntil:'networkidle0'});
+   await selectDesk('crypto');await page.waitForSelector('#crypto-portfolio-tab');await clickSelector('#crypto-portfolio-tab');
+   await page.waitForSelector('#crypto-portfolio-list');assert((await text()).includes('Répartition du capital investi'));
+   await noOverflow();await shot('visual-crypto-portfolio-'+width);
+   financeResults.push({width,invoices:true,accounts:true,savings:true,portfolio:true,noOverflow:true});
+  }
+  assert.deepEqual(errors,[]);
+  await writeFile(resolve(output,'report-finance-visuals.json'),JSON.stringify({passed:true,financeResults,errors},null,2));
+  console.log(JSON.stringify({passed:true,financeResults,output}));
+ } else if(process.argv.includes('--headers-only')){
   const headers=[];
   for(const width of [320,390,1440])for(const pole of ['accounting','bank']){
    await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});
@@ -185,7 +270,7 @@ try{
   await selectTab('journal');assert.equal(await page.$$eval('[aria-label="Journal comptable"] > ul > li',entries=>entries.length),25);await page.$eval('[aria-label="Journal comptable"] li summary',el=>el.click());assert((await text()).includes('Débit'));assert((await text()).includes('Crédit'));await noOverflow();await shot('journal-'+width);await click('Suivant');await page.waitForFunction(()=>window.__financeRequests.at(-1).includes('offset=25'));await page.waitForSelector('[aria-label="Journal comptable"] > ul > li');assert.equal(await page.$$eval('[aria-label="Journal comptable"] > ul > li',entries=>entries.length),9);
   await page.select('#treasury-period','previous');await page.waitForFunction(()=>window.__financeRequests.at(-1).includes('period=previous'));await page.waitForSelector('[aria-label="Journal comptable"]');assert((await text()).includes('Situation historique'));assert(!(await text()).includes('présentent un écart'));await selectTab('accounts');assert((await text()).includes('Bilan équilibré'));
   await page.select('#treasury-period','all');await page.waitForFunction(()=>window.__financeRequests.at(-1).includes('period=all'));await page.waitForSelector('[aria-label="Bilan de gestion"]');assert((await text()).includes('Bilan équilibré'));
-  await selectTab('chartOfAccounts');await page.waitForSelector('[aria-label="Plan comptable"]');assert.equal(await page.$$eval('[data-account]',rows=>rows.length),37);await page.type('[aria-label="Rechercher un compte"]','epargne');assert.equal(await page.$$eval('[data-account]',rows=>rows.length),2);await page.$eval('[aria-label="Rechercher un compte"]',el=>{const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;setter.call(el,'');el.dispatchEvent(new Event('input',{bubbles:true}));});await noOverflow();await shot('plan-'+width);await selectPole('bank');await page.waitForSelector('#bank-loan-amount');assert((await text()).includes('312 points de réputation'));assert((await text()).includes('Prix sous pression'));assert((await text()).includes('coût total sur 210 jours de jeu'));await noOverflow();await shot('bank-'+width);
+  await selectTab('chartOfAccounts');await page.waitForSelector('[aria-label="Plan comptable"]');assert.equal(await page.$$eval('[data-account]',rows=>rows.length),37);await page.type('[aria-label="Rechercher un compte"]','epargne');assert.equal(await page.$$eval('[data-account]',rows=>rows.length),2);await page.$eval('[aria-label="Rechercher un compte"]',el=>{const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;setter.call(el,'');el.dispatchEvent(new Event('input',{bubbles:true}));});await noOverflow();await shot('plan-'+width);await selectPole('bank');await page.waitForSelector('#bank-loan-amount');assert((await text()).includes('312 points'));assert((await text()).includes('Prix sous pression'));assert((await text()).includes('210 jours de jeu'));await noOverflow();await shot('bank-'+width);
   await click('Examiner le contrat');await page.waitForSelector('dialog[open]');assert((await text()).toLocaleLowerCase('fr').includes('ton contrat de prêt'));assert.equal(await page.evaluate(()=>window.__actions.filter(a=>a.action==='borrow').length),0);await noOverflow();await shot('bank-contract-'+width);await click('Revenir au dossier');
   await selectDesk('savings');await page.waitForSelector('[aria-label="Mon livret d’épargne"] input');await noOverflow();await shot('savings-'+width);
   await selectDesk('crypto');await page.waitForSelector('[aria-label="Acheter Bitcoin"]');assert.equal(await page.$$eval('#crypto-market-list button[aria-label^="Acheter "]',buttons=>buttons.length),10);assert((await text()).includes('1 / 10'));await noOverflow();await shot('crypto-'+width);
@@ -228,7 +313,7 @@ try{
   await fill('#bank-loan-amount',((expected.offer.maxCents+1)/100).toFixed(2));assert.equal(await page.$eval('#bank-panel-loans button[class*="primary"]',button=>button.disabled),true,'One cent above the reputation ceiling is rejected');
   await fill('#bank-loan-amount','100000,001');assert.equal(await page.$eval('#bank-panel-loans button[class*="primary"]',button=>button.disabled),true,'More than two decimals cannot open a contract');
   await fill('#bank-loan-amount',(expected.offer.maxCents/100).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}));assert.equal(await page.$eval('#bank-panel-loans button[class*="primary"]',button=>button.disabled),false,'Large French-formatted amounts are accepted');
-  await clickSelector('[aria-label="Choisir un montant de prêt"] button[aria-label^="Maximum du plafond"]');assert((await page.$eval('#bank-installment-repayment',element=>element.textContent)).includes('7 échéances'));const daily=await page.$eval('#bank-installment-repayment',element=>element.textContent.replace(/\s+/g,''));assert(daily.includes(money(Math.min(...expected.terms.installments))));assert(daily.includes(money(Math.max(...expected.terms.installments))));await noOverflow();await shot('bank-high-offer-'+width);
+  await clickSelector('[aria-label="Choisir un montant de prêt"] button[aria-label^="Maximum du plafond"]');assert((await page.$eval('#bank-installment-repayment',element=>element.textContent)).includes('7 prélèvements'));const daily=await page.$eval('#bank-installment-repayment',element=>element.textContent.replace(/\s+/g,''));assert(daily.includes(money(Math.min(...expected.terms.installments))));assert(daily.includes(money(Math.max(...expected.terms.installments))));await noOverflow();await shot('bank-high-offer-'+width);
   await click('Examiner le contrat');await page.waitForSelector('dialog[open]');const contract=await page.$eval('dialog[open]',dialog=>{const r=dialog.getBoundingClientRect();return{left:r.left,right:r.right,top:r.top,bottom:r.bottom,viewportWidth:innerWidth,viewportHeight:innerHeight,overflow:dialog.scrollWidth>dialog.clientWidth+1,text:dialog.textContent.replace(/\s+/g,'')};});assert(contract.left>=0&&contract.top>=0&&contract.right<=contract.viewportWidth+1&&contract.bottom<=contract.viewportHeight+1,'Large-loan contract fits the viewport');assert.equal(contract.overflow,false);assert(contract.text.includes(money(expected.offer.maxCents)));assert(contract.text.includes(money(expected.terms.interestCents)));assert(contract.text.includes(money(expected.terms.totalCents)));assert.equal(await page.evaluate(()=>window.__actions.filter(action=>action.action==='borrow').length),0,'Examining the maximum loan does not sign it');
   const scheduleLabels=await page.$$eval('dialog[open] ol li',items=>items.map(item=>item.textContent.split(':')[0].trim()));assert.deepEqual(scheduleLabels,Array.from({length:7},(_,i)=>'J + '+((i+1)*30)+' de jeu'),'Contract displays seven instalments spaced by 30 game days');
   assert((await page.$eval('dialog[open]',dialog=>dialog.textContent)).includes('5 jours réels'),'Contract explains the real-time equivalent');

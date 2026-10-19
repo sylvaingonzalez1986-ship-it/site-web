@@ -15,7 +15,7 @@
 .gameHud :global([data-releve-journal-toolbar]) { padding:0; margin-left:auto; }
 .gameHud :global([data-releve-journal-toolbar]) button { width:40px; min-width:40px; padding:7px; }
 .gameHud :global([data-releve-journal-toolbar]) button > span { display:none; }
-.quarterButton { display:inline-flex; align-items:center; gap:6px; background:#d5a573; border:2px solid #172923; border-radius:10px; padding:7px 10px; color:#172923; font-size:.75rem !important; font-weight:750 !important; }
+.quarterButton { display:inline-flex; align-items:center; gap:6px; background:var(--game-surface-warm); border:2px solid #172923; border-radius:10px; padding:7px 10px; color:#172923; font-size:.75rem !important; font-weight:750 !important; }
 .missionProgress { display:grid; gap:6px; min-width:65px; max-width:120px; flex:1; }
 .missionProgress span { font-size:.62rem; color:#536454; }
 .missionProgress progress { width:100%; height:5px; accent-color:#008b7c; }
@@ -75,7 +75,7 @@
 .chapterToolbar :global([data-releve-journal-toolbar]) { padding:0; }
 @media(max-width:700px) { .chapterToolbar { gap:12px; } .chapterToolbar :global([data-releve-journal-toolbar]) button { padding:8px; width:44px; } .chapterToolbar :global([data-releve-journal-toolbar]) button > span { display:none; } }
 .frameTitle { display: flex; align-items: center; gap: 10px; font-weight: 850; }
-.frameHeader { background: #d5a573; border-bottom: 2px solid #172923; padding-block: 9px; }
+.frameHeader { background: var(--game-surface-warm); border-bottom: 2px solid #172923; padding-block: 9px; }
 .confirm button { font:inherit; cursor:pointer; min-height:44px; }
 .confirm button:focus-visible { outline:3px solid #006c62; outline-offset:4px; }
 .topline { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 14px 0; font-size: .8rem; }

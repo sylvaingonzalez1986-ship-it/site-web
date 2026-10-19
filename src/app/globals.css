@@ -9,6 +9,8 @@
   --cream: #f7f4ee;
   --ink: #1a1a1a;
   --charcoal: #3d3d3d;
+  --game-surface-warm-rgb: 255 173 92;
+  --game-surface-warm: rgb(var(--game-surface-warm-rgb));
 }
 
 @theme inline {

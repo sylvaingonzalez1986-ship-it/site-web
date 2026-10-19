@@ -5,7 +5,7 @@
 .firstPlan{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 12px}.firstPlan>span{font-size:.76rem;color:#4d6658}
 .map :global([data-warehouse-map-viewport][data-fixed-camera=true]){height:clamp(220px,36dvh,390px);min-height:0}
 
-.production { --kq-ink:#172923;--kq-yellow:#efc451;--kq-green:#149b8b;--kq-green-dark:#172923;--kq-cream:#fff1d6;--kq-tan:#d5a573; }
+.production { --kq-ink:#172923;--kq-yellow:#efc451;--kq-green:#149b8b;--kq-green-dark:#172923;--kq-cream:#fff1d6;--kq-tan:var(--game-surface-warm); }
 .production > * { min-width:0;max-width:100%; }
 .deckCard { display:flex!important;flex-direction:column;gap:10px;padding:12px;border:2px solid #172923;border-radius:13px;background:#fff1d6;cursor:pointer;min-width:0; }
 .deckCard[data-selected=true] { background:#d7efe2;box-shadow:3px 3px 0 #172923; }

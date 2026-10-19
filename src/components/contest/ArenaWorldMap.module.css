@@ -1,6 +1,6 @@
-.map { overflow: hidden; border: 3px solid #172923; border-radius: 16px; background: #d5a573; color: #172923; box-shadow: 5px 7px 0 #172923; }
+.map { overflow: hidden; border: 3px solid #172923; border-radius: 16px; background: var(--game-surface-warm); color: #172923; box-shadow: 5px 7px 0 #172923; }
 .heading { display: none; }
-.viewport { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #087b70 #fff1d6; background: #d5a573; }
+.viewport { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #087b70 #fff1d6; background: var(--game-surface-warm); }
 .terrain { position: relative; width: 100%; aspect-ratio: 3 / 2; isolation: isolate; }
 .terrain > img { object-fit: cover; user-select: none; pointer-events: none; }
 .lightingLayer { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }

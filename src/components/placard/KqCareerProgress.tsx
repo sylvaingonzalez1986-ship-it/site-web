@@ -13,6 +13,7 @@ import { KQ_EQUIPMENT_CATALOG } from "@/lib/kanab-quest-equipment";
 import { ChanvrierAvatar } from "../contest/ChanvrierAvatar";
 import styles from "./KqCareerProgress.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { KqBarChart, KqProgressMeter } from "./KqVisuals";
 
 const equipment = KQ_EQUIPMENT_CATALOG.filter(item => item.purchasable);
 const milestones = CHANVRIER_CAREER_LEVEL_XP.map((xp, index) => {
@@ -57,11 +58,10 @@ export function KqCareerProgress({ career, profile, compact = false }: {
         </div>
       </div>
       {career ? <div className={styles.progression}>
-        <div className={styles.progressHeading}>
-          <strong>{career.nextLevel === null ? "Niveau métier maximal" : `Vers le niveau ${career.nextLevel}`}</strong>
-          <span>{career.nextLevel === null ? `${format(career.xp)} XP cumulés` : `${format(earnedInLevel)} / ${format(neededInLevel)} XP`}</span>
-        </div>
-        <progress aria-label="Avancement vers le prochain niveau Chanvrier" aria-valuetext={career.nextLevel === null ? "Niveau métier maximal atteint" : `${format(earnedInLevel)} XP sur ${format(neededInLevel)} dans ce niveau, encore ${format(career.xpToNextLevel)} XP avant le niveau ${career.nextLevel}`} max={100} value={career.progressPercent} />
+        <KqProgressMeter label={career.nextLevel === null ? "Niveau métier maximal" : `Vers le niveau ${career.nextLevel}`}
+          value={career.nextLevel === null ? 1 : earnedInLevel} max={career.nextLevel === null ? 1 : neededInLevel}
+          valueLabel={career.nextLevel === null ? `${format(career.xp)} XP cumulés` : `${format(earnedInLevel)} / ${format(neededInLevel)} XP`}
+          tone={career.nextLevel === null ? "gold" : "teal"} />
         <div className={styles.progressCaption}>
           <span>{career.nextLevel === null ? "Les conditions de pratique restent nécessaires." : `encore ${format(career.xpToNextLevel)} XP`}</span>
           <small>{format(career.xp)} {isTutorial ? "XP de démonstration" : "XP permanents"}</small>
@@ -86,11 +86,14 @@ export function KqCareerProgress({ career, profile, compact = false }: {
           <section>
             <h3>Ta pratique d’atelier</h3>
             <p>Les transformations ne donnent pas d’XP métier. Elles valident la pratique requise pour certaines machines.</p>
-            <dl className={styles.practice}>{CHANVRIER_PROCESSING_FAMILIES.map(family => <div key={family}><dt>{CHANVRIER_PRACTICE_LABELS[family]}</dt><dd>{format(career.processingPractice[family])} lot{career.processingPractice[family] > 1 ? "s" : ""}</dd></div>)}</dl>
+            <KqBarChart title="Lots transformés par filière" emptyLabel="Aucune transformation enregistrée." items={CHANVRIER_PROCESSING_FAMILIES.map(family => ({ label: CHANVRIER_PRACTICE_LABELS[family], value: career.processingPractice[family], displayValue: `${format(career.processingPractice[family])} lots`, tone: "teal" }))} />
             <ul className={styles.practiceRequirements}>{equipment.filter(item => getChanvrierEquipmentPracticeRequirement(item.code)).map(item => {
               const requirement = getChanvrierEquipmentPracticeRequirement(item.code)!;
               const lots = career.processingPractice[requirement.family];
-              return <li key={item.code}><strong>{item.name}</strong><span>{format(lots)} / {requirement.minimumLots} lots de {CHANVRIER_PRACTICE_LABELS[requirement.family]} · {lots >= requirement.minimumLots ? "pratique acquise" : "à pratiquer"}</span></li>;
+              return <li key={item.code}><KqProgressMeter label={item.name} value={lots} max={requirement.minimumLots}
+                valueLabel={`${format(lots)} / ${requirement.minimumLots} lots`}
+                hint={`${CHANVRIER_PRACTICE_LABELS[requirement.family]} · ${lots >= requirement.minimumLots ? "Pratique acquise" : `Encore ${requirement.minimumLots - lots} lot${requirement.minimumLots - lots > 1 ? "s" : ""}`}`}
+                tone={lots >= requirement.minimumLots ? "gold" : "teal"} /></li>;
             })}</ul>
           </section>
         </div>

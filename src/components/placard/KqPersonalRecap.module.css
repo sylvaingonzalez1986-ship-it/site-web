@@ -32,6 +32,10 @@
 .criteria dt { font-size: .8rem; font-weight: 850; }
 .criteria dd { margin: .3rem 0 0; font-size: .78rem; line-height: 1.5; }
 .recap .note { color: #172923; font-size: .74rem; }
+.juryContributions { margin-top: 16px; padding: 14px; border: 1px solid #24574640; border-radius: 10px; background: #fffdf5; }
+.recap .juryContributions figure li { display: block; padding: 0; border: 0; border-radius: 0; background: none; }
+.recap .juryContributions [aria-hidden="true"] > span { display: block; padding: 0; border: 0; border-radius: 3px; background: var(--visual-color); }
+.recap .juryContributions > p { margin-top: 10px; color: #526157; font-size: 11px; }
 .recap .action { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: .9rem; padding: .7rem; border: 2px solid #172923; border-radius: 12px; background: #efc451; color: #172923; font-size: .8rem; font-weight: 850; line-height: 1.4; text-align: center; text-decoration: none; }
 .recap .action:focus-visible, .disclosure > summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
 .recap [hidden] { display: none; }

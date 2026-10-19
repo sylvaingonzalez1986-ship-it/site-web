@@ -3,6 +3,7 @@
 import { Check, ChevronDown, ChevronRight, CircleAlert, PackageOpen, Settings2, Tent, Warehouse } from "lucide-react";
 import { buildKqTentEquipmentSummary, getKqEquipmentAtLevel, getKqEquipmentBuildingNumber, isKqSharedEquipmentSlot, KQ_BUILDING_EQUIPMENT_SLOTS, KQ_EQUIPMENT_SLOT_LABELS, type KqEquipmentSlot } from "@/lib/kanab-quest-equipment";
 import type { KqBuildingEquipmentOverview, KqSharedEquipmentOverview, KqTentOverview } from "./KqTentSelector";
+import { KqAllocationBar } from "./KqVisuals";
 import styles from "./KqWarehouseOverview.module.css";
 
 const WORKSHOP_SLOTS: KqEquipmentSlot[] = ["sifting", "washing", "filtration", "static-separation", "press", "drying"];
@@ -23,9 +24,16 @@ export function KqWarehouseOverview({ tents, buildings = [], equipmentScopeVersi
 }) {
   const summaries = tents.map(tent => ({ tent, summary: buildKqTentEquipmentSummary({ ownedCodes: tent.ownedCodes ?? tent.equippedCodes, equippedCodes: tent.equippedCodes, levels: tent.levels, cultureWear: tent.cultureWear, equipmentScopeVersion }) }));
   const attentionCount = summaries.filter(({ summary }) => !summary.ready || summary.wornCount > 0).length;
+  const incompleteCount = summaries.filter(({ summary }) => summary.missingRequiredCount > 0).length;
+  const maintenanceCount = summaries.filter(({ summary }) => summary.missingRequiredCount === 0 && summary.wornCount > 0).length;
   return <section className={styles.overview} tabIndex={-1} aria-labelledby="warehouse-overview-title" aria-busy={loading}>
     {error ? <p className={styles.feedback} role="alert">{error}<button type="button" onClick={onRetry}>Réessayer</button></p>
       : loading && !tents.length ? <p className={styles.feedback} role="status">Chargement du matériel des tentes…</p> : null}
+    {summaries.length > 0 ? <div className={styles.visualSummary}><KqAllocationBar label="État des tentes" items={[
+      { label: "Équipées et entretenues", value: tents.length - attentionCount, displayValue: String(tents.length - attentionCount), tone: "teal" },
+      { label: "Essentiels à installer", value: incompleteCount, displayValue: String(incompleteCount), tone: "gold" },
+      { label: "Matériel à remplacer", value: maintenanceCount, displayValue: String(maintenanceCount), tone: "red" },
+    ]} /></div> : null}
     <details className={styles.disclosure} data-warehouse-recap>
       <summary id="warehouse-overview-title" className={styles.heading}>
         <span className={styles.headingIcon}><PackageOpen size={20} aria-hidden="true"/></span>

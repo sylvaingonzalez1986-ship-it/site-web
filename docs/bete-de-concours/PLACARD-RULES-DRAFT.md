@@ -1,6 +1,6 @@
 # Règlement du Placard — brouillon de lancement
 
-Version de travail `2026-10-13-draft-9`. Ce document n'est pas publié aux
+Version de travail `2026-10-18-draft-10`. Ce document n'est pas publié aux
 clients et ne vaut pas règlement commercial tant que les lots, les dates de
 saison et les probabilités des collections ne sont pas validés.
 
@@ -128,6 +128,45 @@ leur fenêtre d’utilisation imposent un choix.
 
 Les statistiques de la Fleur et les notes du jury sont conservées au
 dixième afin de limiter les égalités sans inventer un bonus aléatoire caché.
+
+### Paliers de récolte — barème du 18 octobre 2026
+
+Les nouvelles cultures utilisent les seuils suivants, en points de Qualité de
+culture, distincts de la note du jury et de la qualité commerciale sur 10 :
+
+| Palier | Qualité de culture |
+| --- | --- |
+| Récolte artisanale | Moins de 8 |
+| Belle pousse | 8 à 13 |
+| Qualité concours | 14 à 19 |
+| Fleur exceptionnelle | 20 à 25, ou davantage sans les conditions légendaires |
+| Fleur légendaire | Au moins 26, avec au moins 4 étapes réussies dont 2 critiques |
+
+Les critiques comptent aussi parmi les étapes réussies. Les bonus de matériel,
+cartes et Héritages participent toujours à la Qualité, mais ne remplacent pas
+ces résultats d’étapes. La projection affiche séparément les points et les
+conditions de réussite manquantes. Une culture morte ne produit aucune Fleur.
+
+Le barème est figé au lancement : les cultures déjà lancées et les anciennes
+fleurs conservent les seuils 6 / 10 / 14 et leurs qualifications pour les
+missions, y compris les récompenses pas encore récupérées. Les quantités, les
+statistiques du jury et les formules de vente ne changent pas.
+
+La migration `20261018000900_kq_harvest_tiers_v2.sql` doit précéder le déploiement
+du code correspondant. Elle conserve le barème sur chaque Fleur et dérive les
+compteurs de réussite du journal officiel. Vérification SQL locale :
+`npm run test:harvest-tiers:sql` et `npm run test:harvest-tiers:campaigns`.
+Les combinaisons déjà légales à +7 points sur une étape et jusqu’à 41 points
+avec l’entrepôt sont désormais acceptées par la sauvegarde et la base ; la
+borne de stockage reste compatible avec les anciens équipements (53 points).
+
+Migration appliquée le 18 octobre 2026 au projet Supabase lié
+`eyowwwpdmfrulhkpvlnf`, depuis un lot isolé limité à cette migration. Les
+12 contrôles préalables et 24 contrôles finaux passent, dont 18 cas de barème.
+Les 293 fleurs et 311 cultures historiques sont conservées ; aucune culture
+n’était active au moment de l’application. L’historique distant confirme la
+migration et le lot est à jour. Le code du site reste à déployer. Reçu :
+`output/harvest-tiers-migration/application-result.json`.
 
 ## 3 bis. Boosters Kanab Quest
 

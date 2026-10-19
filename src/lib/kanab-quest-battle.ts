@@ -9,6 +9,10 @@ export type KqFlowerCard = {
   id: string;
   /** Missing on historical snapshots, which retain their original five-stat rules. */
   rulesVersion?: 2 | 3;
+  harvestTierVersion?: 2;
+  /** Harvest distinction evidence frozen from the completed culture journal. */
+  successfulStages?: number;
+  criticalStages?: number;
   ownerName: string;
   variety: string;
   tier: string;
@@ -177,12 +181,17 @@ export function createKqFlower(state: KqGameState, ownerName = "Toi"): KqFlowerC
   return {
     id: `FLOWER-${state.seed}-${state.history.map((entry) => entry.dice.join("")).join("")}${identity}`,
     ...(newRules ? { rulesVersion: 3 as const } : {}),
+    ...(state.harvestTierVersion === 2 ? {
+      harvestTierVersion: 2 as const,
+      successfulStages: successes,
+      criticalStages: state.history.filter(entry => entry.outcome === "critical").length,
+    } : {}),
     ...(cannabinoidReport ? { cannabinoidReport } : {}),
     ...(state.cultivationProfile ? { cultivationProfile: structuredClone(state.cultivationProfile) } : {}),
     ...(terpeneReport ? { terpeneReport } : {}),
     ownerName,
     variety: state.varietyName,
-    tier: getKqHarvestTier(state.quality),
+    tier: getKqHarvestTier(state.quality, state),
     status: "available",
     createdAt: state.completedAt ?? state.startedAt ?? new Date(0).toISOString(),
     integrityCode: createKqIntegrityCode(state),

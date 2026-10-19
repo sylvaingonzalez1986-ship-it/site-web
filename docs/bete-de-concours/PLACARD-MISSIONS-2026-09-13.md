@@ -1,6 +1,6 @@
 # Centre de missions du Placard
 
-## Révision du 15 octobre 2026 — trente missions
+## Révision du 18 octobre 2026 — trente missions
 
 Le nouveau catalogue comporte cinq parcours de six étapes : Découverte,
 Apprenti, Confirmé, Expert, Maître et Légende. Chaque étape demande de récupérer
@@ -15,12 +15,12 @@ déjà atteints restent comptés pendant cette progression.
 | Culture | 4 | Dix façons de cultiver | 10 Buddies différents récoltés | Loupe à trichomes · carte rare |
 | Culture | 5 | Le jardin des connaisseurs | 15 Buddies différents récoltés | Pack de 3 cartes |
 | Culture | 6 | L’encyclopédie vivante | 20 Buddies différents récoltés | Pack de 10 cartes |
-| Qualité | 1 | Une belle pousse | 1 récolte avec une Qualité ≥ 6 | 75 € de jeu |
-| Qualité | 2 | Une fleur de concours | 1 récolte avec une Qualité ≥ 10 | 200 € de jeu |
-| Qualité | 3 | Le talent se confirme | 3 récoltes avec une Qualité ≥ 10 | Diagnostic croisé · carte rare |
-| Qualité | 4 | La qualité sous toutes ses formes | 5 Buddies différents avec une Qualité ≥ 10 | Sonde d’humidité · carte rare |
-| Qualité | 5 | La fleur d’exception | 1 récolte avec une Qualité ≥ 14 | Pack de 3 cartes |
-| Qualité | 6 | Une signature légendaire | 3 Buddies différents avec une Qualité ≥ 14 | Pack de 10 cartes |
+| Qualité | 1 | Une belle pousse | 1 récolte avec une Qualité ≥ 8 | 75 € de jeu |
+| Qualité | 2 | Une fleur de concours | 1 récolte avec une Qualité ≥ 14 | 200 € de jeu |
+| Qualité | 3 | Le talent se confirme | 3 récoltes avec une Qualité ≥ 14 | Diagnostic croisé · carte rare |
+| Qualité | 4 | La qualité sous toutes ses formes | 5 Buddies différents avec une Qualité ≥ 14 | Sonde d’humidité · carte rare |
+| Qualité | 5 | La première légendaire | 1 récolte de Qualité ≥ 26, avec 4 étapes réussies dont 2 critiques | Pack de 3 cartes |
+| Qualité | 6 | Une signature légendaire | 3 Buddies différents légendaires, selon les mêmes conditions | Pack de 10 cartes |
 | Préparation | 1 | De la récolte au lot | 1 récolte préparée pour le commerce | 50 € de jeu |
 | Préparation | 2 | La patience du chanvrier | 1 lot arrivé à la fin de son curing | 150 € de jeu |
 | Préparation | 3 | Le premier atelier | 1 récolte transformée, opération terminée | 250 € de jeu |
@@ -53,6 +53,14 @@ s’additionnent sans multiplier la diversité lorsqu’un lot est fractionné. 
 entièrement vendu ou retiré avant la fin du curing ne valide pas un affinage ; les
 ventes ultérieures n’effacent pas celui qui a été terminé. La Qualité de récolte
 et la note du jury sur 10 sont deux mesures différentes.
+
+Le barème du 18 octobre s’applique aux nouvelles cultures. Les anciennes fleurs
+et les cultures déjà lancées gardent leurs qualifications aux seuils 6 / 10 / 14.
+Elles continuent donc de compter dans les missions, même si la récompense reste à
+récupérer. Le nouveau palier Fleur exceptionnelle commence à 20 points ; il ne
+valide pas les missions légendaires. Les critiques sont incluses dans les quatre
+étapes réussies nécessaires. Cette transition est portée par la migration
+`20261018000900_kq_harvest_tiers_v2.sql`, à appliquer avant le code correspondant.
 
 Les deux missions aromatiques commencent à compter à l’installation de la
 migration : les anciens reçus ne prouvent pas les arômes, la qualité et le quota

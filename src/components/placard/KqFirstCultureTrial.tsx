@@ -178,7 +178,7 @@ export function KqFirstCultureTrial({ storageKey, onClose, onContinue, continueL
         <div className={styles.stats}><span>Qualité <strong>{game.quality}</strong></span><span>XP disponibles <strong>{game.xp}</strong></span></div>
       </> : <section className={styles.harvest}>
         {artwork ? <Image src={artwork.src} alt={artwork.alt} width={200} height={200} sizes="160px" loading="eager" /> : <Leaf size={64} aria-hidden="true" />}
-        <span className={styles.eyebrow}>BUDDIE D’ESSAI · {getKqHarvestTier(game.quality)}</span>
+        <span className={styles.eyebrow}>BUDDIE D’ESSAI · {getKqHarvestTier(game.quality, game)}</span>
         <h3>{(game.harvestGrams ?? 0).toLocaleString('fr-FR')} g <span>récoltés</span></h3>
         <p className={styles.harvestScore}>6 étapes accomplies · {game.quality} de qualité</p>
         <p>De la première pousse aux arômes préservés, tu as mené ta culture jusqu’au bout.</p>

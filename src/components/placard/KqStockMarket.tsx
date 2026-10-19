@@ -10,6 +10,7 @@ import { KQ_STOCK_INSTRUMENTS, canTradeKqStockAsset, formatKqStockQuantity, isKq
 import stockCatalog from "@/lib/stock-market-catalog.json";
 import stockLogos from "@/lib/stock-market-logos.json";
 import styles from "./KqStockMarket.module.css";
+import { KqPortfolioBreakdown } from "./KqPortfolioBreakdown";
 
 const euros = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
 const price = (value: string, currency = "EUR") => Number(value).toLocaleString("fr-FR", { style: "currency", currency, maximumFractionDigits: Number(value) < 1 ? 8 : 2 });
@@ -181,11 +182,12 @@ export function KqStockMarket({ onWalletRefresh }: { onWalletRefresh?: () => voi
   function changeTab(next: StockTab) { setTab(next); setPage(0); }
   return <section className={styles.market} aria-label="Comptoir boursier" data-testid="stocks-market">
     <header className={styles.header}><div className={styles.icon}><ChartNoAxesCombined size={36} aria-hidden="true" /></div><div><small>Les placements de Kanab Quest</small><h3>Le comptoir boursier</h3><p>Paris, New York. Ton portefeuille de jeu.</p></div><span className={styles.stamp}>CAC 40<br />S&amp;P 500</span></header>
-    <p className={styles.disclaimer}>Actions et parts virtuelles d’indices avec tes euros de jeu. Cours Yahoo Finance pouvant être différés ; la date est indiquée pour chaque titre. Hors séance, le dernier cours connu peut servir aux échanges du jeu.</p>
+    <p className={styles.disclaimer}>Actions et indices virtuels · euros de jeu · cours pouvant être différés.</p>
     <div className={styles.status}><span><Clock3 size={16} aria-hidden="true" />{loading ? "Actualisation des cours…" : "Cours datés, prix confirmés avant l’ordre"}<small>État du marché au dernier relevé. Les titres américains sont convertis en euros au taux de change du marché.</small></span><button type="button" disabled={loading || busy} aria-label="Actualiser les cours boursiers" onClick={() => void reload()}><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></div>
     {error ? <p className={styles.error} role="alert">{error}</p> : null}
     {notice ? <p className={styles.success} role="status">{notice}</p> : null}
     <div className={styles.summary}><div><small>Disponible</small><strong>{data ? euros(data.cashCents) : "—"}</strong></div><div><small>Valeur du portefeuille</small><strong>{totalValue === null ? "Cours à actualiser" : euros(totalValue)}</strong></div><div><small>Montant investi</small><strong>{data ? euros(data.positions.reduce((sum, position) => sum + position.costBasisCents, 0)) : "—"}</strong></div></div>
+    {tab === "portfolio" && data ? <KqPortfolioBreakdown positions={data.positions.map(position => ({ ...position, label: KQ_STOCK_INSTRUMENTS.find(asset => asset.id === position.assetId)?.name ?? position.assetId }))} /> : null}
     <div className={styles.tabs} role="tablist" aria-label="Marchés boursiers">{TABS.map((item, i) => <button type="button" key={item.id} id={`stock-${item.id}-tab`} role="tab" aria-selected={tab === item.id} aria-controls={`stock-${item.id}-list`} tabIndex={tab === item.id ? 0 : -1} onClick={() => changeTab(item.id)} onKeyDown={event => {
       const next = event.key === "ArrowRight" ? (i + 1) % TABS.length : event.key === "ArrowLeft" ? (i + TABS.length - 1) % TABS.length : event.key === "Home" ? 0 : event.key === "End" ? TABS.length - 1 : null;
       if (next === null) return; event.preventDefault(); changeTab(TABS[next].id); document.getElementById(`stock-${TABS[next].id}-tab`)?.focus();

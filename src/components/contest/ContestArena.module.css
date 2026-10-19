@@ -5,7 +5,7 @@
   --arena-cream: #f5e6c9;
   --arena-paper: #fff1d6;
   --arena-yellow: #efc451;
-  --arena-tan: #d5a573;
+  --arena-tan: var(--game-surface-warm);
   --arena-ink: #172923;
   --arena-muted: #4f554f;
   overflow: clip;

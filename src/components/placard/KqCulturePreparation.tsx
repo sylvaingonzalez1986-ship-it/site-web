@@ -12,13 +12,13 @@ export function KqCulturePreparation({ cardCount, note, disabled, disabledReason
   return <section className={styles.preparation} aria-labelledby="culture-preparation-title" data-culture-preparation>
     <div className={styles.intro}>
       <div className={styles.deckStamp} aria-hidden="true"><Layers3 /><b>{cardCount}</b><span>CARTE{cardCount > 1 ? "S" : ""}</span></div>
-      <div className={styles.heading}><span>DERNIERS PRÉPARATIFS</span><h2 id="culture-preparation-title">À toi de jouer.</h2><p>{cardCount > 0 ? "Tes cartes sont prêtes. Joue-les au bon moment pour aider ta culture." : "Tu pars sans carte Botte du Chanvrier. Tu peux en ajouter ou tenter ta chance avec les dés."}</p></div>
+      <div className={styles.heading}><span>DERNIERS PRÉPARATIFS</span><h2 id="culture-preparation-title">À toi de jouer.</h2>{cardCount === 0 ? <p>Sans carte Botte du Chanvrier · départ possible avec les dés.</p> : null}</div>
       <button type="button" className={styles.edit} disabled={busy} onClick={onEditDeck}><SlidersHorizontal size={16} />Ajuster mon deck</button>
     </div>
     <ol className={styles.steps} aria-label="Le déroulement d’un tour">
-      <li><span className={styles.stepNumber}>01</span><Leaf aria-hidden="true" /><div><small>AVANT LES DÉS</small><strong>Prépare le terrain</strong><p>Joue une carte de préparation si tu en as besoin.</p></div></li>
-      <li><span className={styles.stepNumber}>02</span><Dices aria-hidden="true" /><div><small>LE LANCER</small><strong>Tente ta chance</strong><p>Lance les dés pour résoudre l’incident.</p></div></li>
-      <li><span className={styles.stepNumber}>03</span><Undo2 aria-hidden="true" /><div><small>APRÈS LES DÉS</small><strong>À toi de réagir</strong><p>Une carte de réaction peut changer la donne.</p></div></li>
+      <li><span className={styles.stepNumber}>01</span><Leaf aria-hidden="true" /><div><small>AVANT LES DÉS</small><strong>Carte de préparation</strong><p>Facultative</p></div></li>
+      <li><span className={styles.stepNumber}>02</span><Dices aria-hidden="true" /><div><small>LE LANCER</small><strong>Lance les dés</strong><p>Résous l’incident</p></div></li>
+      <li><span className={styles.stepNumber}>03</span><Undo2 aria-hidden="true" /><div><small>APRÈS LES DÉS</small><strong>Carte de réaction</strong><p>Facultative</p></div></li>
     </ol>
     <details className={styles.reference}>
       <summary><Dices size={17} /><span>Les dés et les cartes : les repères utiles</span><ChevronDown size={17} /></summary>

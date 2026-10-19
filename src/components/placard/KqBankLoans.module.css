@@ -1,20 +1,38 @@
-.bank { min-width: 0; color: #172923; background: #d5a573; border-top: 2px solid #172923; padding: 24px; border: 2px solid #172923; border-radius: 18px; box-shadow: 3px 4px 0 #172923; }
+.bank { min-width: 0; color: #172923; background: var(--game-surface-warm); border-top: 2px solid #172923; padding: 24px; border: 2px solid #172923; border-radius: 18px; box-shadow: 3px 4px 0 #172923; }
 .heading { display: flex; align-items: center; gap: 12px; }
 .heading > svg { color: #172923; flex-shrink: 0; }
-.heading small { color: #536058; text-transform: uppercase; letter-spacing: .07em; font: 700 .6rem/1.5 ui-monospace,monospace; }
+.heading small { color: #344a40; text-transform: uppercase; letter-spacing: .07em; font: 700 .6rem/1.5 ui-monospace,monospace; }
 .heading h3,.modal h3 { font: 900 1.65rem/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; margin: 4px 0; }
 .bank button { cursor: pointer; font: inherit; min-height: 44px; border: 2px solid #172923; border-radius: 11px; background: #fffaf0; color: #172923; box-shadow: 2px 3px 0 #172923; }
 .bank button:disabled { opacity: 1; cursor: not-allowed; background: #e2dccb; color: #667064; border-color: #899285; box-shadow: none; }
 .bank button:focus-visible,.bank input:focus-visible,.rules summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
 .refresh { background: #fffaf0; color: #172923; width: 44px; display: grid; place-items: center; flex-shrink: 0; margin-left: auto; border: 2px solid #172923; border-radius: 11px; box-shadow: 2px 3px 0 #172923; }
 .dialogue { margin: 24px 0; padding: 20px 22px; border-left: 3px solid #172923; background: #fff1d6; color: #172923; box-shadow: 3px 4px 0 #172923; font: 800 1rem/1.65 var(--font-body),sans-serif; border: 2px solid #172923; border-radius: 18px; font-size: .92rem; }
-.market { padding: 18px; background: #d8eee3; color: #172923; border: 2px solid #172923; margin-bottom: 22px; border-radius: 18px; box-shadow: 3px 4px 0 #172923; }
+.market { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; padding: 14px 18px; background: #d8eee3; color: #172923; border: 2px solid #172923; margin: 20px 0; border-radius: 12px; }
 .market > span { display: flex; align-items: center; gap: 8px; font-size: .86rem; color: #172923; }
 .market b { margin-left: auto; white-space: nowrap; font: 700 .72rem/1.4 ui-monospace,monospace; }
 .market p,.loan p,.rules p,.modal p { font-size: .8rem; line-height: 1.7; }
 .market p { margin: 10px 0; color: #536058; }
 .market small,.offer > small,.loan > small { display: block; font-size: .72rem; line-height: 1.7; color: #536058; }
+.reputation { margin-bottom: 22px; padding: 18px; background: #fff1d6; border: 2px solid #172923; border-radius: 18px; }
+.reputation > div { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px 16px; }
+.reputation > div > span { font-size: .78rem; font-weight: 700; }
+.reputation > div > strong { font-size: 1rem; font-variant-numeric: tabular-nums; }
+.reputation p { margin: 10px 0 0; font-size: .76rem; line-height: 1.7; }
 .offer,.loan { padding: 24px; background: #fffaf0; color: #172923; border: 2px solid #172923; border-top: 4px solid #172923; box-shadow: 3px 4px 0 #172923; border-radius: 18px; }
+.financing { display: grid; grid-template-columns: minmax(0,.9fr) minmax(0,1.1fr); gap: 20px; align-items: start; }
+.financing:has(> :only-child) { grid-template-columns: 1fr; }
+.overview { min-width: 0; padding: 24px; background: #fff1d6; border: 2px solid #172923; border-radius: 18px; }
+.rate { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; padding-top: 18px; margin-top: 18px; border-top: 1px solid #17292335; font-size: .76rem; }
+.rate small { display: block; color: #526157; font-size: .68rem; line-height: 1.6; }
+.rate strong { display: block; margin-top: 4px; font: 900 1.8rem/1.2 var(--font-display),Impact,sans-serif; }
+.amountRange { display: block; width: 100%; min-height: 32px; margin: 0 0 8px; accent-color: #168577; cursor: pointer; }
+.cost { margin: 22px 0 16px; }
+.total { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid #17292340; font-size: .85rem; }
+.loan > figure { margin: 22px 0; }
+.offer > .primary { margin-top: 16px; }
+@media(max-width:800px) { .financing { grid-template-columns: 1fr; } }
+@media(max-width:500px) { .overview { padding: 18px 14px; } }
 .offerHeading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: start; gap: 16px; margin-bottom: 22px; }
 .offerHeading > span { max-width: 130px; font: 800 .7rem/1.5 ui-monospace,monospace; text-transform: uppercase; color: #536058; }
 .offerHeading > strong { min-width: 0; overflow-wrap: anywhere; font: 900 2rem/1.1 var(--font-display),Impact,sans-serif; text-align: right; }
@@ -24,12 +42,13 @@
 .offerLimit > strong { display: block; margin-top: 8px; overflow-wrap: anywhere; font: 900 clamp(1.8rem,4vw,2.7rem)/1.1 var(--font-display),Impact,sans-serif; font-variant-numeric: tabular-nums; }
 .offerLimit > small { max-width: none; font-size: .72rem; }
 .offer label { display: block; font-size: .78rem; margin-bottom: 8px; }
+.amountHelp { margin: 0 0 10px; color: #536058; font-size: .72rem; line-height: 1.7; }
 .amount { display: flex; align-items: center; border: 2px solid #172923; margin-bottom: 10px; padding-right: 14px; background: #fffaf0; color: #172923; border-radius: 11px; }
 .amount input { width: 100%; min-width: 0; border: 0; min-height: 48px; padding: 10px 14px; background: transparent; color: inherit; font: 800 1.25rem/1.3 var(--font-body),sans-serif; }
 .amountPresets { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-bottom: 12px; }
 .bank .amountPresets button { min-width: 0; padding: 10px 5px; color: #172923; background: #fffaf0; border-color: #172923; font-size: .76rem; font-weight: 750; }
 .bank .amountPresets button[aria-pressed="true"] { background: #149b8b; color: #172923; border-color: #172923; }
-.installmentRepayment { margin-top: 22px; padding: 18px; background: #fffaf0; border: 2px solid #172923; border-radius: 18px; box-shadow: 3px 4px 0 #172923; color: #172923; }
+.installmentRepayment { margin: 18px 0 22px; padding: 14px 16px; background: #fff1d6; border: 1px solid #17292360; border-radius: 12px; color: #172923; }
 .installmentRepayment small { display: block; color: #536058; font-size: .72rem; line-height: 1.7; }
 .installmentRepayment strong { display: block; margin-block: 8px; overflow-wrap: anywhere; font: 900 clamp(1.35rem,3vw,1.8rem)/1.25 var(--font-display),Impact,sans-serif; font-variant-numeric: tabular-nums; }
 .installmentRepayment span { color: #536058; font-size: .72rem; line-height: 1.7; }
@@ -38,7 +57,7 @@
 .totals > div:last-child { margin-top: 5px; border-top: 1px solid #17292340; font-weight: 800; }
 .totals dd { margin: 0 0 0 auto; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .bank .primary { width: 100%; background: #efc451; color: #172923; font-weight: 800; padding: 13px 16px; border-color: #172923; font-size: .79rem; }
-.hint { font-size: .76rem; color: #536058; line-height: 1.7; margin-block: 18px; }
+.hint { font-size: .76rem; color: #344a40; line-height: 1.7; margin-block: 18px; }
 .offer .hint { color: #536058; }
 .schedule { margin: 20px 0; padding: 0; list-style: none; }
 .schedule li { display: flex; justify-content: space-between; gap: 18px; padding: 11px 0; border-top: 1px solid #17292340; font-size: .8rem; }
@@ -51,7 +70,7 @@
 .rules ul { padding-left: 19px; }
 .rules li { font-size: .7rem; line-height: 1.8; }
 .error { background: #f7ded1; color: #8a3427; padding: 14px; font-size: .79rem; line-height: 1.65; }
-.notice { display: flex; gap: 9px; align-items: start; color: #076c61; font-size: .77rem; line-height: 1.6; padding: 12px 0; }
+.notice { display: flex; gap: 9px; align-items: start; color: #344a40; font-size: .77rem; line-height: 1.6; padding: 12px 0; }
 .notice svg { flex-shrink: 0; }
 .modal { position: fixed; inset: 0; margin: auto; width: min(560px,calc(100vw - 28px)); box-sizing: border-box; max-height: calc(100dvh - 40px); overflow: auto; border: 2px solid #172923; background: #fffaf0; color: #172923; padding: 28px; border-radius: 18px; box-shadow: 3px 4px 0 #172923; }
 .modal::backdrop { background: #172923c9; }

@@ -7,6 +7,7 @@ export const KQ_BANK_INSTALLMENT_MS = KQ_BANK_INSTALLMENT_GAME_DAYS * KQ_GAME_DA
 /** The API expresses the full loan term in real days. */
 export const KQ_BANK_TERM_DAYS = KQ_BANK_INSTALLMENT_COUNT * KQ_BANK_INSTALLMENT_MS / 86_400_000;
 export const KQ_BANK_MIN_CENTS = 10_000;
+/** Credit anchors: limits grow between them; rate discounts apply at each threshold. */
 export const KQ_BANK_TIERS = [
   { reputation: 200, maxCents: 500_000, discountBps: 0 },
   { reputation: 600, maxCents: 2_500_000, discountBps: 50 },
@@ -16,6 +17,20 @@ export const KQ_BANK_TIERS = [
 export const KQ_BANK_MAX_CENTS = KQ_BANK_TIERS[KQ_BANK_TIERS.length - 1].maxCents;
 export const KQ_BANK_MAX_RATE_BPS = 1400;
 export const KQ_BANK_MAX_REPAYMENT_CENTS = KQ_BANK_MAX_CENTS + Math.ceil(KQ_BANK_MAX_CENTS * KQ_BANK_MAX_RATE_BPS / 10_000);
+/** Linear reputation credit, rounded down to whole euros; mirrors kq_bank_credit_limit. */
+export function getKqBankLimitCents(reputation: number): number {
+  if (!Number.isSafeInteger(reputation) || reputation < KQ_BANK_TIERS[0].reputation) return 0;
+  for (let index = 1; index < KQ_BANK_TIERS.length; index++) {
+    const lower = KQ_BANK_TIERS[index - 1], upper = KQ_BANK_TIERS[index];
+    if (reputation < upper.reputation) {
+      return lower.maxCents + Math.floor(
+        (reputation - lower.reputation) * (upper.maxCents - lower.maxCents)
+        / ((upper.reputation - lower.reputation) * 100),
+      ) * 100;
+    }
+  }
+  return KQ_BANK_MAX_CENTS;
+}
 export const KQ_BANK_SCENARIOS: Record<string, { title: string; description: string }> = {
   confidence: { title: "Vent de confiance", description: "Les banques ouvrent les vannes. Le coût des nouveaux crédits baisse." },
   competition: { title: "Guerre des guichets", description: "Les établissements se disputent les bons dossiers : les taux reculent." },

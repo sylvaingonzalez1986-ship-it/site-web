@@ -7,6 +7,7 @@ import { formatKqCash, getKqEquipmentBuildingNumber, isKqBuildingEquipment, isKq
 import { createClientRequestKey } from "@/lib/client-request-key";
 import styles from "./KqWarehouseInventory.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { KqProgressMeter } from "./KqVisuals";
 
 export function KqCultureEquipmentWear({ code, name, condition, cashCents, activeRun, tentNumber = 1, productionUnits = 1, equipmentScopeVersion = 2, disabled, onUpdated }: {
   code: string;
@@ -70,11 +71,11 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
   };
 
   return <section className={styles.cultureWear} aria-label={`État de ${name}`} data-due={condition.due}>
-    <strong>{condition.due ? "Hors service · à remplacer" : `État : ${condition.conditionPercent.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %`}</strong>
-    <progress value={condition.conditionPercent} max={100} aria-label={`État de ${name}`} />
+    <KqProgressMeter label={`État de ${name}`} value={condition.conditionPercent} max={100}
+      valueLabel={condition.due ? "Hors service" : `${condition.conditionPercent.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %`}
+      tone={condition.due ? "red" : condition.conditionPercent < 30 ? "gold" : "teal"} />
     <small>Remplacement dans {destination} : {formatKqCash(condition.replacementCents)} · niveaux conservés.</small>
-    {condition.due ? <p>Ses bonus sont désactivés. Le matériel de départ assure le dépannage aux emplacements qui en disposent.</p>
-      : <p>L’usure est définitive. Le mode éco ralentit l’usure ; l’intensif l’accélère, encore davantage sous 30 % d’état. En réserve, ce matériel ne s’use pas.</p>}
+    {condition.due ? <p>Bonus désactivés · remplacement nécessaire.</p> : null}
     {condition.due && replacedVersion !== condition.version ? <>
       {confirming ? <div className={styles.replaceConfirm} role="group" aria-label={`Confirmer le remplacement de ${name}`}>
         <p>Racheter {name} pour {destination} pour <strong>{formatKqCash(condition.replacementCents)}</strong> ? Son état revient à 100 % et ses niveaux sont conservés.</p>
@@ -86,5 +87,6 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
     </> : null}
     {replacedVersion === condition.version ? <p role="status">Matériel remplacé. Actualisation de son état…</p> : null}
     {error ? <p role="alert" className={styles.error}>{error}<button type="button" onClick={onUpdated}>Actualiser</button></p> : null}
+    <details className={styles.wearRules}><summary>Usure et dépannage</summary><p>L’usure est définitive. Le mode éco la ralentit ; l’intensif l’accélère, encore davantage sous 30 % d’état. En réserve, ce matériel ne s’use pas. Le matériel de départ assure le dépannage aux emplacements qui en disposent.</p></details>
   </section>;
 }

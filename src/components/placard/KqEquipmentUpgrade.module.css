@@ -7,7 +7,7 @@
 .upgrade.upgrade small { display: block; font-size: 11px; line-height: 1.5; margin-top: 8px; color: #536058; }
 .heading small { display: inline; }
 .progress { display: grid; grid-template-columns: repeat(10, 1fr); gap: 4px; margin-top: 10px; }
-.progress i { transform: skew(-12deg); background: #d5a57355; border: 1px solid #172923; border-radius: 3px; height: 9px; }
+.progress i { transform: skew(-12deg); background: rgb(var(--game-surface-warm-rgb) / 33.333%); border: 1px solid #172923; border-radius: 3px; height: 9px; }
 .progress i[data-filled="true"] { background: var(--level-accent); }
 .milestones { display: flex; justify-content: space-between; gap: 6px; margin-top: 6px; font-size: 9px; color: #536058; }
 .upgrade.upgrade p { display: flex; align-items: center; gap: 6px; margin: 12px 0 4px; font-size: 12px; line-height: 1.5; color: #172923; }

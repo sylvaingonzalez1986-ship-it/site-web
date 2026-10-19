@@ -81,6 +81,7 @@ type Bootstrap = {
       artisanale: number;
       bellePousse: number;
       concours: number;
+      exceptionnelle: number;
       legendaire: number;
       unknown: number;
     };
@@ -586,6 +587,7 @@ export function AdminPlacardOperationsPanel() {
             <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.artisanale}</b> Récolte artisanale</span>
             <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.bellePousse}</b> Belle pousse</span>
             <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.concours}</b> Qualité concours</span>
+            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.exceptionnelle}</b> Fleur exceptionnelle</span>
             <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.legendaire}</b> Fleur légendaire</span>
           </div>
           <p className="mt-3 text-xs">Vue strictement anonyme · aucun compte ni identifiant de Fleur n’est exposé.{randomBattleQueue.qualityBands.unknown > 0 ? ` ${randomBattleQueue.qualityBands.unknown} entrée(s) sans qualité exploitable.` : ""}{randomBattleQueue.truncated ? " Affichage limité aux 1 000 plus anciennes entrées." : ""}</p>

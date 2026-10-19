@@ -5,7 +5,7 @@ import { createServer } from "vite";
 const vite=await createServer({configFile:false,envDir:false,resolve:{alias:{"@":path.resolve("src")}},server:{middlewareMode:true,watch:null}});
 let game;
 try {game=await vite.ssrLoadModule("/src/lib/kanab-quest-game.ts");} finally {await vite.close();}
-const {KQ_CARDS,KQ_BUDDIES,canPlayKqCard,playKqCard,rollKqDice,resolveKqStage,advanceKqStage,startKqGame,previewKqResolution}=game;
+const {KQ_CARDS,KQ_BUDDIES,canPlayKqCard,playKqCard,rollKqDice,resolveKqStage,advanceKqStage,startKqGame,previewKqResolution,getKqHarvestTier}=game;
 const rank={failure:0,fragile:1,success:2,critical:3};
 const common=KQ_CARDS.filter(c=>c.rarity==="common"&&c.category!=="pbi").map(c=>c.code);
 const profiles=[
@@ -32,7 +32,7 @@ for(const profile of profiles){
       state=resolveKqStage(state);state=advanceKqStage(state);
     }
     if(state.phase!=="complete")throw new Error("Run did not finish");
-    quality+=state.quality;contest+=Number(state.quality>=10);burns+=state.usedCards.length;failures+=state.history.filter(h=>h.outcome==="failure").length;
+    quality+=state.quality;contest+=Number(!state.cultureDead&&["Qualité concours","Fleur exceptionnelle","Fleur légendaire"].includes(getKqHarvestTier(state.quality,state)));burns+=state.usedCards.length;failures+=state.history.filter(h=>h.outcome==="failure").length;
   }
   report.push({profile:profile.name,runs:1500,averageQuality:+(quality/1500).toFixed(2),contestPercent:+(100*contest/1500).toFixed(1),averageCardsUsed:+(burns/1500).toFixed(2),averageFailedStages:+(failures/1500).toFixed(2)});
 }

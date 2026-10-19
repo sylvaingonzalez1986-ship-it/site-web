@@ -8,6 +8,7 @@ import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const root=process.cwd(),output=resolve(root,'output/arena-recap'),origin='http://127.0.0.1:3266';
+const juryOnly=process.argv.includes('--jury-only');
 const modules={
   fixture:`import React from 'react';import{createRoot}from'react-dom/client';import'/src/app/globals.css';
     import{KqCultureRecap,KqJuryRecap}from'/src/components/placard/KqPersonalRecap';
@@ -88,7 +89,7 @@ try{
   await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});page=await browser.newPage();page.setDefaultTimeout(20000);page.setDefaultNavigationTimeout(60000);page.on('pageerror',error=>report.errors.push({scenario,message:error.message}));await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await page.setRequestInterception(true);
   page.on('request',request=>{const url=new URL(request.url());if(url.protocol==='data:'||url.protocol==='blob:')return void request.continue();if(url.origin!==origin){report.remote.push(url.href);return void request.abort();}if(url.pathname.startsWith('/api/')){report.apiRequests.push({scenario,method:request.method(),path:url.pathname});return void request.respond({status:503,contentType:'application/json',body:'{}'});}void request.continue();});
   for(const width of [320,390,768,1440]){
-    for(const [name,coverage] of [['culture','detailed'],['culture-care','detailed'],['culture-partial','partial'],['culture-legacy','legacy'],['culture-v2','detailed'],['culture-dead','detailed']]){
+    for(const [name,coverage] of juryOnly?[]:[['culture','detailed'],['culture-care','detailed'],['culture-partial','partial'],['culture-legacy','legacy'],['culture-v2','detailed'],['culture-dead','detailed']]){
       await visit(name,width);const receipt=await page.evaluate(()=>window.__recapFixture.game);const dead=name==='culture-dead';
       if(dead){assert.equal(receipt.cultureDead,true);assert.equal(receipt.harvestGrams,0);}
       else assert.equal(receipt.history.length,6);
@@ -146,11 +147,23 @@ try{
       else {assert(/65\s*%/.test(text)&&/35\s*%/.test(text),'Real criterion weights are explained');}
       if(name==='jury-tie')assert(text.includes('aucun déficit de note'),'A tied loss is explained without an alleged score deficit');
       if(name==='jury-no-stats'){assert(text.includes('statistiques complètes'));assert(!text.includes('Contribution à l’écart'),'Missing stats cannot support numerical attribution');}
-      if(name==='jury'){assert(text.includes('-0,65 point')&&text.includes('-0,35 point'),'Weighted contributions retain the precision needed to explain a one-point gap');}
+      if(name==='jury-no-stats'||name==='jury-legacy')assert.equal(await page.$$('[data-jury-analysis] figure').then(items=>items.length),0,'Missing or unknown historical evidence cannot produce a contribution chart');
+      if(name==='jury'){
+        assert(text.includes('-0,65 point')&&text.includes('-0,35 point'),'Weighted contributions retain the precision needed to explain a one-point gap');
+        assert.deepEqual(await page.$$eval('[data-jury-analysis] figure li strong',items=>items.map(item=>item.textContent)),['-0,65 pts','-0,35 pts'],'Visible contribution bars preserve signed weighted points');
+        assert.equal(await page.$$eval('[data-jury-analysis] figure [data-negative="true"]',items=>items.length),2,'Both negative contributions extend to the negative side of zero');
+        const bars=await page.$$eval('[data-jury-analysis] figure [data-negative="true"]',items=>items.map(track=>{
+          const fill=track.querySelector('span'),trackBox=track.getBoundingClientRect(),fillBox=fill.getBoundingClientRect();
+          return {width:trackBox.width,height:trackBox.height,fillWidth:fillBox.width,fillHeight:fillBox.height,right:fillBox.right,zero:trackBox.left+trackBox.width/2,color:getComputedStyle(fill).backgroundColor};
+        }));
+        assert(bars.every(bar=>bar.width>50&&bar.height>=8&&bar.fillWidth>0&&bar.fillHeight>=8),'Contribution bars remain visible inside the game layout');
+        assert(bars.every(bar=>Math.abs(bar.right-bar.zero)<1),'Negative values end at the zero axis');
+        assert(bars.every(bar=>bar.color!=='transparent'&&bar.color!=='rgba(0, 0, 0, 0)'),'Inherited styles cannot make the bars transparent');
+      }
       await shot(name+'-'+width+'-details');
       const button=await page.$('[data-recap-prepare]');await button.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));assert((await button.boundingBox()).height>=44);await button.click();await page.waitForSelector('[data-audit-prepared]');report.results.push({name,width,keyboardDetails:true,prepare:true});
     }
   }
   assert.deepEqual(report.errors,[]);assert.deepEqual(report.apiRequests,[]);assert.deepEqual(report.remote,[]);report.passed=true;
 }catch(error){report.failure=error.stack;await shot('failure').catch(()=>undefined);process.exitCode=1;}
-finally{await writeFile(resolve(output,'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));await browser?.close();await server.close();}
+finally{await writeFile(resolve(output,juryOnly?'report-jury.json':'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));await browser?.close();await server.close();}

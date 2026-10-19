@@ -4,15 +4,11 @@
 .header p { max-width: 65ch; margin: 12px 0; color: #536058; font-size: 14px; line-height: 1.7; }
 .header > img { object-fit: contain; width: clamp(85px, 16vw, 140px); height: auto; filter: drop-shadow(2px 3px 0 #172923); }
 .eyebrow { color: #076c61; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; }
-.overview { display: grid; grid-template-columns: 1fr auto; gap: 16px 24px; padding: 20px; border: 2px solid #172923; border-radius: 16px; background: #172923; color: #fff1d6; }
-.overview strong { display: block; margin-top: 6px; font: 900 clamp(25px, 3vw, 36px)/1.12 var(--font-display), Impact, sans-serif; }
-.overview p { margin: 8px 0 0; color: #e3ddcd; font-size: 12px; line-height: 1.6; }
-.overview small { font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
-.overview progress { grid-column: 1 / -1; appearance: none; width: 100%; height: 8px; border: 0; border-radius: 8px; overflow: hidden; background: #fff1d62b; }
-.overview progress::-webkit-progress-bar { background: #fff1d62b; }
-.overview progress::-webkit-progress-value { background: #efc451; border-radius: 8px; }
-.overview progress::-moz-progress-bar { background: #efc451; border-radius: 8px; }
-.readyCount { display: flex; align-items: center; gap: 8px; align-self: center; padding: 10px 12px; border: 1px solid #efc451; border-radius: 12px; color: #efc451; font-size: 12px; font-weight: 800; }
+.overview { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 24px; padding: 20px; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; color: #172923; }
+.overviewHeading > strong { display: block; margin-top: 6px; font: 900 clamp(25px, 3vw, 36px)/1.12 var(--font-display), Impact, sans-serif; }
+.overviewHeading > small { font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.overviewVisual { grid-column: 1 / -1; min-width: 0; }
+.readyCount { display: flex; align-items: center; gap: 8px; align-self: center; padding: 10px 12px; border: 1px solid #9a7720; border-radius: 12px; background: #efc451; color: #172923; font-size: 12px; font-weight: 800; }
 .rewardLegend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0 0; padding: 0; list-style: none; color: #536058; }
 .rewardLegend li { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; }
 .trackNav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
@@ -32,7 +28,7 @@
 .sections span { padding: 3px 6px; background: #17292314; border-radius: 12px; font-size: 10px; }
 .track { min-width: 0; display: flex; flex-direction: column; overflow: hidden; border: 2px solid #172923; background: #fffaf0; border-radius: 18px; color: #172923; box-shadow: 3px 4px 0 #172923; }
 .track[data-ready] { border-color: #172923; box-shadow: 4px 5px 0 #172923; }
-.art { position: relative; height: 158px; background: #d5a573; border-bottom: 2px solid #172923; }
+.art { position: relative; height: 158px; background: var(--game-surface-warm); border-bottom: 2px solid #172923; }
 .art img { object-fit: cover; object-position: center 40%; }
 .art::after { content: ""; position: absolute; inset: 0; background: #fff1d6; display: none; }
 .art > span { position: absolute; bottom: 12px; left: 18px; right: auto; z-index: 1; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; background: #fff1d6; border: 2px solid #172923; border-radius: 11px; padding: 8px 10px; max-width: calc(100% - 36px); color: #172923; box-shadow: 2px 3px 0 #172923; }
@@ -48,14 +44,7 @@
 .reached { display: inline-flex; align-items: center; gap: 5px; margin: 0 0 12px; color: #076c61; font-size: 12px; font-weight: 800; }
 .body h2 { margin: 10px 0; font: 900 clamp(24px, 2.5vw, 32px)/1.08 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .description { margin: 0 0 20px; min-height: 0; color: #536058; font-size: 13px; line-height: 1.65; }
-.progressLabel { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: auto; font-size: 12px; }
-.progressLabel b { color: #076c61; white-space: nowrap; }
-.body progress { appearance: none; display: block; width: 100%; height: 9px; margin: 10px 0 16px; border: 0; border-radius: 12px; overflow: hidden; background: #17292314; }
-.body progress::-webkit-progress-bar { background: #17292314; }
-.body progress::-webkit-progress-value { background: #149b8b; border-radius: 12px; }
-.body progress::-moz-progress-bar { background: #149b8b; border-radius: 12px; }
-.track[data-ready] progress::-webkit-progress-value { background: #efc451; }
-.track[data-ready] progress::-moz-progress-bar { background: #efc451; }
+.missionMeter { margin: auto 0 16px; min-width: 0; }
 .reward { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; background: #f7dfb8; padding: 10px; border: 1px solid #172923; border-radius: 12px; }
 .reward img { object-fit: contain; }
 .reward[data-kind="card"] { background: #e4e1f4; }

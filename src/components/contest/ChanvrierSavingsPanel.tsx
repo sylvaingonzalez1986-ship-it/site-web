@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { PiggyBank, RefreshCw } from "lucide-react";
 import { createClientRequestKey } from "@/lib/client-request-key";
 import { parseSavingsAmount, type ChanvrierSavings, type ChanvrierSavingsCommand } from "@/lib/chanvrier-savings";
+import { KqAllocationBar } from "../placard/KqVisuals";
 import styles from "./ChanvrierSavingsPanel.module.css";
 const euro = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
 export function ChanvrierSavingsPanel({ embedded = false, onSnapshot, refreshKey = 0 }: {
@@ -56,13 +57,12 @@ export function ChanvrierSavingsPanel({ embedded = false, onSnapshot, refreshKey
   return <section className={`${styles.panel}${embedded ? ` ${styles.embedded}` : ""}`} aria-label="Mon livret d’épargne">
     {embedded ? <header className={styles.embeddedHeader}><PiggyBank size={23} aria-hidden="true" /><div><h3>Mon livret d’épargne</h3><small>Avantage Trésorier · +5 % toutes les 24 h</small></div></header> : <button type="button" className={styles.toggle} aria-expanded={open} onClick={() => setOpen(value => !value)}><PiggyBank size={22} aria-hidden="true" /><span><strong>Mon livret d’épargne</strong><small>Trésorier · +5 % toutes les 24 h</small></span><b>{open ? "−" : "+"}</b></button>}
     {open || embedded ? <div className={styles.body} aria-busy={busy}>
-      <p>Place la monnaie de ton jeu. Chaque dépôt rapporte 5 % après 24 h complètes, puis les intérêts sont réinvestis chaque jour, même pendant ton absence. Les centimes sont arrondis à l’inférieur.</p>
-      {data ? <><div className={styles.balances}><div><small>Sur ton livret</small><strong>{euro(data.balanceCents)}</strong></div><div><small>Disponible en jeu</small><strong>{euro(data.cashCents)}</strong></div></div>
+      {data ? <><KqAllocationBar label="Trésorerie et épargne" items={[{ label: "Sur ton livret", value: data.balanceCents, displayValue: euro(data.balanceCents), tone: "teal" }, { label: "Disponible en jeu", value: data.cashCents, displayValue: euro(data.cashCents), tone: "gold" }]} />
         {data.nextInterestAt ? <p>Prochains intérêts : {new Date(data.nextInterestAt).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })}.</p> : <p>{data.balanceCents >= data.maxBalanceCents ? "Le plafond du livret est atteint." : "Dépose au moins 0,20 € pour commencer à gagner des intérêts."}</p>}
         {data.interestCreditedCents > 0 ? <p className={styles.gain}>+{euro(data.interestCreditedCents)} d’intérêts ajoutés au livret.</p> : null}
         <label>Montant en euros<input inputMode="decimal" placeholder="Ex. 100,00" value={amount} disabled={busy} onChange={event => setAmount(event.target.value)} /></label>
         <div className={styles.actions}><button type="button" disabled={busy || !cents || cents > data.cashCents || cents + data.balanceCents > data.maxBalanceCents} onClick={() => void transfer("deposit")}>Déposer</button><button type="button" disabled={busy || !cents || cents > data.balanceCents} onClick={() => void transfer("withdraw")}>Retirer</button><button type="button" aria-label="Actualiser le livret" disabled={busy} onClick={() => setRefresh(value => value + 1)}><RefreshCw size={17} /></button></div>
-        <small>Retrait libre. Chaque nouveau dépôt garde son propre délai de 24 h. Plafond, intérêts compris : {euro(data.maxBalanceCents)}.</small>
+        <details><summary>Règles du livret</summary><p>Retrait libre. Chaque dépôt rapporte 5 % après 24 h complètes, puis les intérêts sont réinvestis chaque jour, même pendant ton absence. Les centimes sont arrondis à l’inférieur. Plafond, intérêts compris : {euro(data.maxBalanceCents)}. Monnaie de jeu uniquement.</p></details>
       </> : busy ? <p role="status">Ouverture du livret…</p> : <button type="button" onClick={() => setRefresh(value => value + 1)}>Réessayer</button>}
       {notice ? <p role="status" className={styles.gain}>{notice}</p> : null}
       {error ? <p role="alert" className={styles.error}>{error}</p> : null}

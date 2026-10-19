@@ -2,7 +2,7 @@
 .header { display:flex; gap:18px; align-items:center; }
 .header h3 { margin:5px 0; font:900 clamp(1.65rem,3vw,2.1rem)/1.1 var(--font-display),Impact,sans-serif; text-transform:uppercase; }
 .header p { margin:0; color:#536058; font-size:.9rem; }
-.header small,.orderHeader small { font:750 .66rem/1.5 ui-monospace,monospace; text-transform:uppercase; letter-spacing:.07em; color:#536058; }
+.header small,.orderHeader small { font:750 .66rem/1.5 ui-monospace,monospace; text-transform:uppercase; letter-spacing:.07em; color:#344a40; }
 .icon { display:grid; place-items:center; width:68px; height:72px; flex-shrink:0; border:2px solid #172923; background:#149b8b; box-shadow:3px 4px 0 #172923; color:#172923; transform:rotate(-4deg); border-radius:17px; }
 .stamp { margin-left:auto; padding:10px; border:2px dashed #172923; color:#172923; font:800 .62rem/1.7 ui-monospace,monospace; text-align:center; transform:rotate(5deg); border-color:#172923; border-radius:12px; background:#f7dfb8; }
 .disclaimer,.source { color:#536058; font-size:.78rem; line-height:1.7; }
@@ -67,7 +67,7 @@
 .position dd { text-align:right; margin:0; font-weight:750; overflow-wrap:anywhere; min-width:0; }
 .order { position:fixed; inset:0; margin:auto; box-sizing:border-box; width:min(560px,calc(100vw - 32px)); max-width:none; max-height:calc(100dvh - 32px); height:fit-content; overflow:auto; overscroll-behavior:contain; padding:0; border:2px solid #172923; border-top:3px solid #172923; border-radius:20px; background:#fffaf0; color:#172923; box-shadow:3px 4px 0 #172923; }
 .order::backdrop { background:#172923c9; backdrop-filter:blur(3px); }
-.orderHeader { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:24px 26px 20px; border-bottom:2px solid #172923; background:#d5a573; }
+.orderHeader { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:24px 26px 20px; border-bottom:2px solid #172923; background:var(--game-surface-warm); }
 .orderHeader>div { min-width:0; }
 .orderIdentity { display:flex; align-items:center; gap:12px; }
 .orderIdentity>div { min-width:0; }

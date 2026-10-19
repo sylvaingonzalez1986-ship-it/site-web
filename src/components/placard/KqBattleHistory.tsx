@@ -6,6 +6,7 @@ import type { KqOfficialBattle } from "@/lib/kanab-quest-api";
 import { KQ_BATTLE_HISTORY_LIMIT } from "@/lib/kanab-quest-battle-history-policy";
 import { KQ_REWARD_BALANCE } from "@/lib/kanab-quest-reward-balance";
 import { KqJuryRecap } from "./KqPersonalRecap";
+import { KqAllocationBar, KqBarChart, KqProgressMeter } from "./KqVisuals";
 import styles from "./KqBattleHistory.module.css";
 
 const PAGE_SIZE = 5;
@@ -55,8 +56,11 @@ function BattleReceipt({ battle }: { battle: KqOfficialBattle }) {
       {cancelled ? <p className={styles.cancelledNotice}>Engagement annulé après 48 heures. Aucun verdict, aucun burn et aucun point : les deux Fleurs sont redevenues disponibles.</p> : <>
         <div className={styles.rounds} aria-label="Scores des manches">
           {battle.rounds.map(round => <div key={round.code} data-won={round.winner === "player" || undefined}>
-            <span><strong>{round.label}</strong><small>{round.winner === "player" ? "Manche gagnée" : "Manche perdue"}</small></span>
-            <b>{round.playerScore} – {round.opponentScore}</b>
+            <KqBarChart title={round.label} items={[
+              { label: "Ta Fleur", value: round.playerScore, displayValue: String(round.playerScore), tone: "teal" },
+              { label: "Adversaire", value: round.opponentScore, displayValue: String(round.opponentScore), tone: "gold" },
+            ]} />
+            <small>{round.winner === "player" ? "Manche gagnée" : "Manche perdue"}</small>
           </div>)}
         </div>
         <p className={styles.burnNotice}>{battle.opponentType === "bot" ? "Ta Fleur brûlée" : "Deux Fleurs brûlées"} · +{experience.toLocaleString("fr-FR")} EXP d’Arène</p>
@@ -106,11 +110,12 @@ export function KqBattleHistory({ battles, pending, onRequestVerdict, onLoadRece
 
     {recent.length > 0 ? <>
       <div className={styles.overview}>
-        <dl className={styles.metrics}>
-          <div data-wins><dt>Victoires</dt><dd>{wins}</dd></div>
-          <div><dt>Défaites</dt><dd>{losses}</dd></div>
-          <div><dt>Réussite</dt><dd>{judged.length ? `${Math.round(wins / judged.length * 100)} %` : "—"}</dd></div>
-        </dl>
+        <KqAllocationBar label="Résultats des combats jugés" emptyLabel="Aucun verdict dans cet historique." items={[
+          { label: "Victoires", value: wins, displayValue: String(wins), tone: "teal" },
+          { label: "Défaites", value: losses, displayValue: String(losses), tone: "red" },
+        ]} />
+        {judged.length > 0 ? <KqProgressMeter label="Taux de victoire" value={wins} max={judged.length}
+          valueLabel={`${Math.round(wins / judged.length * 100)} %`} hint={`${wins} victoires sur ${judged.length} verdicts`} /> : null}
         <p>Bilan des {judged.length} combats jugés de cet historique · officiels et entraînements.</p>
       </div>
       <ol className={styles.list} start={offset + 1} key={`${historyKey}:${page}`} aria-label={`Combats ${offset + 1} à ${offset + visible.length}`}>

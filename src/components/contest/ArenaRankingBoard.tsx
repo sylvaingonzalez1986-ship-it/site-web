@@ -5,6 +5,7 @@ import { BookOpen, Building2, ChevronDown, ChevronUp, CircleHelp, Crosshair, Ref
 import Link from "@/components/navigation/NavigationLink";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
 import { LeaderboardAvatar } from "./LeaderboardAvatar";
+import { KqAllocationBar } from "../placard/KqVisuals";
 import styles from "./ArenaRankingBoard.module.css";
 
 export type ArenaRankingMode = "general" | "tasting" | "duels" | "business";
@@ -100,10 +101,14 @@ export function ArenaRankingBoard({ id, mode, scope, rows, loading, unavailable,
   };
   const renderRow = (row: ArenaRankingRow) => {
     const isViewer = viewerRow !== undefined ? row.key === viewerRow?.key : row.pseudo === viewerPseudo;
+    const contributionTotal = row.contributions ? row.contributions.notebook + row.contributions.duels + row.contributions.business : 0;
     const content = <>
       <span className={styles.rank} data-podium={row.rank <= 3 || undefined} aria-label={`Place ${row.rank}`}>{row.rank === 1 ? <Trophy size={13} aria-hidden="true" /> : null}<b>{row.rank}</b></span>
       <span className={styles.avatar}><LeaderboardAvatar profile={row.avatar} pseudo={row.pseudo} /></span>
-      <span className={styles.identity}><span className={styles.playerName}><strong>{row.pseudo}</strong>{isViewer ? <em>Toi</em> : null}</span>{row.contributions ? <span className={styles.contributions}><span>Dégustation <b>{formatScore(row.contributions.notebook)}</b></span><span>Duels <b>{formatScore(row.contributions.duels)}</b></span><span>Entreprise <b>{formatScore(row.contributions.business)}</b></span></span> : row.detail ? <small className={styles.detail}>{row.detail}</small> : null}</span>
+      <span className={styles.identity}><span className={styles.playerName}><strong>{row.pseudo}</strong>{isViewer ? <em>Toi</em> : null}</span>{row.contributions ? <>
+        {contributionTotal > 0 ? <span className={styles.contributionBar} aria-hidden="true">{(["notebook", "duels", "business"] as const).map(source => <span key={source} data-source={source} style={{ width: `${Math.max(0, row.contributions![source]) / contributionTotal * 100}%` }} />)}</span> : null}
+        <span className={styles.contributions}><span data-source="notebook">Dégustation <b>{formatScore(row.contributions.notebook)}</b></span><span data-source="duels">Duels <b>{formatScore(row.contributions.duels)}</b></span><span data-source="business">Entreprise <b>{formatScore(row.contributions.business)}</b></span></span>
+      </> : row.detail ? <small className={styles.detail}>{row.detail}</small> : null}</span>
       <span className={styles.score}><strong>{formatScore(row.score)}</strong><small>{row.scoreLabel}</small>{row.rewardGrams !== null ? <em>≈ {formatScore(row.rewardGrams)} g</em> : null}</span>
     </>;
     return <li key={row.key} value={row.rank}>{row.href ? <Link href={row.href} className={styles.row} data-viewer={isViewer || undefined} aria-label={`Voir le profil de ${row.pseudo}, place ${row.rank}`}>{content}</Link> : <div className={styles.row} tabIndex={-1} data-viewer={isViewer || undefined}>{content}</div>}</li>;
@@ -120,6 +125,16 @@ export function ArenaRankingBoard({ id, mode, scope, rows, loading, unavailable,
     </div>
 
     <div className={styles.paper}>
+      {mode === "general" && viewer?.contributions && !loading && !unavailable ? <div className={styles.viewerBreakdown}>
+        <KqAllocationBar label={`Ton score général · ${formatScore(viewer.score)} points`} items={[
+          { label: "Dégustation", value: viewer.contributions.notebook, displayValue: `${formatScore(viewer.contributions.notebook)} pts`, tone: "gold" },
+          { label: "Duels", value: viewer.contributions.duels, displayValue: `${formatScore(viewer.contributions.duels)} pts`, tone: "ink" },
+          { label: "Entreprise", value: viewer.contributions.business, displayValue: `${formatScore(viewer.contributions.business)} pts`, tone: "teal" },
+        ]} emptyLabel="Aucun point enregistré." />
+      </div> : null}
+
+      <details className={styles.scoreGuide}>
+      <summary>Les leviers de ce classement</summary>
       {mode === "general" ? <div className={styles.scoreRecipe} aria-label="Les trois contributions au classement général, sans plafond">
         <div data-criterion="notebook"><BookOpen aria-hidden="true" /><span><strong>Dégustation</strong><small>Priorité aux découvertes</small></span><b>+100<small>par fleur</small></b></div>
         <div data-criterion="duels"><Swords aria-hidden="true" /><span><strong>Duels</strong><small>Contre des joueurs</small></span><b>↗<small>gains dégressifs</small></b></div>
@@ -130,6 +145,8 @@ export function ArenaRankingBoard({ id, mode, scope, rows, loading, unavailable,
         <span><Building2 size={18} aria-hidden="true" /><strong>Entreprise · 3 moteurs de progression</strong></span>
         <ul><li>Surface cultivée</li><li>Chiffre d’affaires</li><li>Réputation</li></ul>
       </div> : null}
+      {mode === "tasting" ? <p>100 points par fleur différente achetée et évaluée par un avis validé dans la saison.</p> : mode === "duels" ? <p>Les duels contre les autres joueurs alimentent ce classement. Le détail du calcul est disponible en bas du tableau.</p> : null}
+      </details>
 
       <div className={styles.toolbar}>
         <div className={styles.listLabel}><span className={styles.liveDot} aria-hidden="true" /><strong>{loading ? "Le tableau se prépare…" : unavailable ? "Tableau indisponible" : `${playerCount.toLocaleString("fr-FR")} joueur${playerCount > 1 ? "s" : ""} au tableau`}</strong>{!loading && !unavailable && rows.length > 0 ? <small>{mode === "tasting" && scope === "global" ? "Toutes les saisons" : "Classement de la saison"}</small> : null}</div>

@@ -8,7 +8,7 @@
   padding: 12px;
   border: 3px solid var(--ink);
   border-radius: 24px 19px 23px 18px;
-  background: #d5a573;
+  background: var(--game-surface-warm);
   color: var(--ink);
   box-shadow: 5px 7px 0 var(--ink);
   font-family: var(--font-body), Arial, sans-serif;
@@ -95,6 +95,18 @@ a.row:hover { background: #f3e0bb; border-color: #17292370; }
 .avatar > span { width: 48px; height: 48px; border-color: var(--ink); border-radius: 11px; background: #fffaf0; box-shadow: 2px 2px 0 var(--ink); }
 .avatar > span > span { border-radius: 7px; background: #e4e6cc; }
 .identity { min-width: 0; }
+.viewerBreakdown { padding: 18px 20px 5px; }
+.scoreGuide { margin: 10px 20px; border-bottom: 1px solid #17292330; }
+.scoreGuide > summary { min-height: 44px; padding: 12px 0; cursor: pointer; font-size: 12px; font-weight: 800; }
+.scoreGuide > p { margin: 0 0 14px; font-size: 12px; line-height: 1.6; }
+.contributionBar { display: flex; height: 7px; margin-top: 8px; border-radius: 4px; overflow: hidden; background: #17292315; }
+.contributionBar > span { min-width: 0; height: 100%; }
+.contributionBar > span[data-source="notebook"] { background: #d7a634; }
+.contributionBar > span[data-source="duels"] { background: #445e54; }
+.contributionBar > span[data-source="business"] { background: #168577; }
+.contributions > span::before { content: ""; width: 6px; height: 6px; flex: 0 0 6px; border-radius: 2px; background: #168577; }
+.contributions > span[data-source="notebook"]::before { background: #d7a634; }
+.contributions > span[data-source="duels"]::before { background: #445e54; }
 .playerName { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
 .playerName strong { overflow-wrap: anywhere; font-size: 14px; line-height: 1.25; font-weight: 900; }
 .playerName em { padding: 2px 6px; border: 1px solid var(--ink); border-radius: 5px; background: var(--turquoise); font-size: 9px; font-weight: 900; font-style: normal; }
@@ -150,6 +162,8 @@ a.row:hover { background: #f3e0bb; border-color: #17292370; }
 }
 
 @media (max-width: 560px) {
+  .viewerBreakdown { padding: 12px 10px 0; }
+  .scoreGuide { margin-inline: 10px; }
   .board { padding: 7px; border-radius: 18px 15px 18px 15px; box-shadow: 3px 5px 0 var(--ink); }
   .heading { align-items: flex-start; gap: 10px; padding: 19px 14px 17px; border-radius: 10px 10px 5px 5px; }
   .board .heading h3 { max-width: 13ch; font-size: 29px; }

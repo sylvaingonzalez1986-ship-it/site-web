@@ -2,7 +2,7 @@
 .tiers.tiers header h4 { margin: 0; color: #172923; font-family: var(--font-display), Impact, sans-serif; font-size: 24px; }
 .tiers.tiers header p { font-size: 12px; line-height: 1.5; color: #536058; }
 .grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 9px; }
-.grid article { min-width: 0; display: flex; flex-direction: column; padding: 13px 11px; --tier: #d5a573; background: #fffaf0; border: 2px solid #172923; border-top: 6px solid var(--tier); border-radius: 10px; box-shadow: 2px 3px 0 #172923; }
+.grid article { min-width: 0; display: flex; flex-direction: column; padding: 13px 11px; --tier: var(--game-surface-warm); background: #fffaf0; border: 2px solid #172923; border-top: 6px solid var(--tier); border-radius: 10px; box-shadow: 2px 3px 0 #172923; }
 .grid article[data-tier="standard"] { --tier: #a9ded3; }
 .grid article[data-tier="premium"] { --tier: #efc451; }
 .grid article[data-selected] { outline: 3px solid #076c61; outline-offset: 2px; }

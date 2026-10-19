@@ -10,6 +10,7 @@ import { getKqCultureStory } from "@/lib/kanab-quest-culture-story";
 import { getKqCannabinoidReport } from "@/lib/kanab-quest-care";
 import { getKqCareProductArtwork } from "@/lib/kanab-quest-care-artwork";
 import { KqCannabinoidReport } from "./KqCannabinoidReport";
+import { KqBarChart } from "./KqVisuals";
 import Link from "@/components/navigation/NavigationLink";
 import styles from "./KqPersonalRecap.module.css";
 
@@ -152,6 +153,7 @@ export function KqJuryRecap({ rounds, playerStats, opponentStats, onPrepare, pre
   if (!summary || !analysis) return null;
   const closest = summary.closest;
   const mainAdvice = analysis.recommendations[0];
+  const measuredCriteria = analysis.focus.criteria.filter(criterion => criterion.weightedGap !== null);
   const strongestWin = rounds.filter(round => round.winner === "player" && round.playerScore > round.opponentScore)
     .sort((left, right) => (right.playerScore - right.opponentScore) - (left.playerScore - left.opponentScore))[0];
   return <section className={styles.recap} data-jury-personal-recap aria-label="Ton bilan personnel du jury">
@@ -160,16 +162,23 @@ export function KqJuryRecap({ rounds, playerStats, opponentStats, onPrepare, pre
       <small className={styles.eyebrow}>{analysis.wins} manche{analysis.wins === 1 ? "" : "s"} remportée{analysis.wins === 1 ? "" : "s"} sur 3</small>
       <h4>{analysis.title}</h4>
       <p>{analysis.summary}</p>
-      <p>{analysis.focus.reason}</p>
-      {strongestWin ? <p><strong>Ton point d’appui : {strongestWin.label}.</strong> {score(strongestWin.playerScore - strongestWin.opponentScore)} point{strongestWin.playerScore - strongestWin.opponentScore > 1 ? "s" : ""} d’avance sur cette manche.</p> : null}
+      {measuredCriteria.length ? <div className={styles.juryContributions}>
+        <KqBarChart title={`${analysis.focus.label} · contribution à l’écart`} items={measuredCriteria.map(criterion => ({
+          label: criterion.label, value: criterion.weightedGap!, displayValue: `${signedContribution(criterion.weightedGap!)} pts`,
+          tone: criterion.weightedGap! < 0 ? "red" : "teal",
+        }))} />
+        <p>Points pondérés avant la variation du jury. + : avantage à ta Fleur ; − : avantage à l’adversaire.</p>
+      </div> : null}
       {mainAdvice ? <div className={styles.highlight}>
         <small className={styles.eyebrow}>Pour ta prochaine culture</small>
         <h4>{mainAdvice.title}</h4>
-        <p>{mainAdvice.explanation}</p>
       </div> : null}
     </div>
     <details className={styles.disclosure} data-jury-analysis-details>
       <summary>Comprendre les critères du jury</summary>
+      <p>{analysis.focus.reason}</p>
+      {strongestWin ? <p><strong>Ton point d’appui : {strongestWin.label}.</strong> {score(strongestWin.playerScore - strongestWin.opponentScore)} point{strongestWin.playerScore - strongestWin.opponentScore > 1 ? "s" : ""} d’avance sur cette manche.</p> : null}
+      {mainAdvice ? <p><strong>{mainAdvice.title}</strong> {mainAdvice.explanation}</p> : null}
       {analysis.focus.criteria.length ? <dl className={styles.criteria}>
         {analysis.focus.criteria.map(criterion => <div key={criterion.stat}>
           <dt>{criterion.label} · {criterion.weightPercent} % de la note de base</dt>

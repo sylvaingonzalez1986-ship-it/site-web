@@ -228,13 +228,14 @@ try {
     await visit('view=catalog&xp=250&washing=2&cultures=3');await portraitReady();
     const career=await page.$eval('[data-career-progress]',el=>el.textContent);
     assert.match(career,/Niveau 2/);assert.match(career,/50 \/ 200 XP/);assert.match(career,/encore 150 XP/);
-    assert.equal(await page.$eval('[data-career-progress] progress',el=>el.value),25);
+    assert.deepEqual(await page.$eval('[data-career-progress] [role="meter"][aria-label="Vers le niveau 3"]',el=>({value:Number(el.getAttribute('aria-valuenow')),max:Number(el.getAttribute('aria-valuemax')),text:el.getAttribute('aria-valuetext')})),{value:50,max:200,text:'50 / 200 XP'});
     await page.screenshot({path:resolve(output,`career-personalized-collapsed-${width}.png`)});
     await page.$eval('[data-career-details] > summary',el=>el.click());
     assert.equal(await page.$$eval('[data-career-details] ol > li',els=>els.length),10);
     assert.match(await page.$eval('[data-career-details]',el=>el.textContent),/\+100 XP métier par culture terminée/);
     assert.match(await page.$eval('[data-career-details]',el=>el.textContent),/Les transformations ne donnent pas d’XP métier/);
-    assert.match(await page.$eval('[data-career-details]',el=>el.textContent),/2 \/ 3 lots de lavage/);
+    assert.deepEqual(await page.$eval('[data-career-details] [role="meter"][aria-valuemax="3"]',el=>({value:Number(el.getAttribute('aria-valuenow')),text:el.getAttribute('aria-valuetext')})),{value:2,text:'2 / 3 lots'});
+    assert.match(await page.$eval('[data-career-details]',el=>el.textContent),/lavage · Encore 1 lot/);
     await noOverflow();await page.screenshot({path:resolve(output,`career-personalized-details-${width}.png`)});
     await page.focus('[data-career-details] > summary');await page.keyboard.press('Enter');
     assert.equal(await page.$eval('[data-career-details]',el=>el.open),false);

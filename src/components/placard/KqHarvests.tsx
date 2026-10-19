@@ -9,6 +9,7 @@ import { getKqStorageRefreshDelay } from "@/lib/kanab-quest-storage-refresh";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqWarehouseEntry } from "./KqWarehouseEntry";
 import { KqStorageStatus } from "./KqStorageStatus";
+import { KqAllocationBar } from "./KqVisuals";
 import styles from "./KqHarvests.module.css";
 
 const labels: Record<KqHarvestState, string> = { jury: "À présenter au jury", queued: "Adversaire recherché", duel: "Duel en cours", overflow: "Du surplus à protéger", curing: "En affinage", ready: "Prête à vendre" };
@@ -20,7 +21,7 @@ export function KqHarvests({ section, onSectionChange, onOpenArena, onOpenMarket
   onOpenGame: () => void;
 }) {
   const api = useKqTutorialApi();
-  const [flowers, setFlowers] = useState<KqOfficialFlower[]>([]);
+  const [flowers, setFlowers] = useState<KqOfficialFlower[] | null>(null);
   const [storage, setStorage] = useState<KqStorageSnapshot | null>(null);
   const [errors, setErrors] = useState<string[]>([]);
   const [loaded, setLoaded] = useState(false);
@@ -42,7 +43,7 @@ export function KqHarvests({ section, onSectionChange, onOpenArena, onOpenMarket
       if (controller.signal.aborted) return;
       const problems: string[] = [];
       if (result[0].status === "fulfilled" && Array.isArray(result[0].value.flowers)) setFlowers(result[0].value.flowers);
-      else { setFlowers([]); problems.push("Les récoltes en attente du jury sont momentanément indisponibles."); }
+      else { setFlowers(null); problems.push("Les récoltes en attente du jury sont momentanément indisponibles."); }
       if (result[1].status === "fulfilled" && Array.isArray(result[1].value.lots) && typeof result[1].value.serverNow === "string") {
         currentStorage = result[1].value as KqStorageSnapshot;
         received = performance.now();
@@ -55,22 +56,31 @@ export function KqHarvests({ section, onSectionChange, onOpenArena, onOpenMarket
     const unsubscribe = api.subscribe(["kq:storage-updated", "kq:equipment-updated", "arena:progress-updated"], () => void stop.refresh());
     return () => { controller.abort(); stop(); unsubscribe(); polling.current = null; };
   }, [api, section]);
-  const rows = getKqHarvestRows(flowers, storage);
+  const rows = getKqHarvestRows(flowers ?? [], storage);
   const visible = rows.filter(row => filter === "all" || (filter === "jury" ? !row.lot : !!row.lot));
+  const harvestCounts = [
+    ...(flowers !== null ? [{ label: "Jury et duels", value: rows.filter(row => !row.lot).length, tone: "ink" as const }] : []),
+    ...(storage !== null ? [
+      { label: "En affinage", value: rows.filter(row => row.state === "curing").length, tone: "gold" as const },
+      { label: "Prêtes à vendre", value: rows.filter(row => row.state === "ready").length, tone: "teal" as const },
+      { label: "Surplus à protéger", value: rows.filter(row => row.state === "overflow").length, tone: "red" as const },
+    ] : []),
+  ];
   return <main className={styles.page} data-placard-harvests>
-    <header className={styles.heading}><div><small>Du jury à la vente</small><h2>Mes récoltes</h2><p>Retrouve chaque récolte, son état et la prochaine action.</p></div></header>
+    <header className={styles.heading}><div><small>Du jury à la vente</small><h2>Mes récoltes</h2></div></header>
     <nav className={styles.tabs} aria-label="Parcours des récoltes">
       <button type="button" aria-current={section === "overview" ? "page" : undefined} onClick={() => onSectionChange("overview")}>Toutes mes récoltes</button>
       <button type="button" onClick={() => onOpenArena()}>Jury & duels</button>
       <button type="button" aria-current={section === "storage" ? "page" : undefined} onClick={() => onSectionChange("storage")}>Stockage & affinage</button>
     </nav>
     {section === "storage" ? <KqWarehouseEntry embedded initialSection="storage" onClose={() => onSectionChange("overview")} /> : <>
+      {loaded && rows.length > 0 ? <div className={styles.visualSummary}><KqAllocationBar label={errors.length ? "Récoltes disponibles · données partielles" : `${rows.length} récolte${rows.length > 1 ? "s" : ""} par étape`} items={harvestCounts.map(item => ({ ...item, displayValue: String(item.value) }))} />{errors.length ? <p className={styles.partialSummary} data-harvest-summary-unavailable>{flowers === null ? "Jury et duels : données indisponibles." : "Affinage, vente et surplus : données indisponibles."}</p> : null}</div> : null}
       <div className={styles.toolbar}><label>Afficher<select value={filter} onChange={event => setFilter(event.target.value)}><option value="all">Toutes les récoltes</option><option value="jury">Jury et duels</option><option value="stock">Stockage et vente</option></select></label><button type="button" aria-label="Actualiser les récoltes" onClick={() => void polling.current?.refresh()}><RefreshCw size={18} /></button></div>
       {errors.map(error => <p role="alert" key={error} className={styles.error}>{error} <button type="button" onClick={() => void polling.current?.refresh()}>Réessayer</button></p>)}
       {!loaded ? <p role="status" className={styles.empty}>Ouverture de tes récoltes…</p> : visible.length ? <ul className={styles.list}>{visible.map(row => <li key={row.id} data-harvest-id={row.id} data-harvest-state={row.state}>
         <div className={styles.harvestIcon} aria-hidden="true">{row.lot ? <PackageCheck size={27} /> : <Sprout size={27} />}</div>
         <div className={styles.identity}><span className={styles.state} data-urgent={row.state === "overflow" || undefined}>{labels[row.state]}</span><h3>{row.name}</h3>
-          {row.lot ? <KqStorageStatus storage={row.lot.projection} nowMs={Date.parse(storage!.serverNow)} compact /> : <p>{row.state === "jury" ? "Présente cette Fleur pour obtenir son verdict avant la vente." : row.state === "queued" ? "La recherche est en cours. Tu peux suivre ou quitter la file au jury." : "Retrouve l’adversaire et le verdict dans Jury & duels."}</p>}
+          {row.lot ? <KqStorageStatus storage={row.lot.projection} nowMs={Date.parse(storage!.serverNow)} compact /> : null}
         </div>
         <div className={styles.actions}>{!row.lot ? <button type="button" className={styles.primary} onClick={() => onOpenArena(row.id)}><Swords size={16} />{row.state === "jury" ? "Présenter au jury" : "Suivre le duel"}<ArrowRight size={16} /></button> : <>
           {row.state === "overflow" ? <button type="button" className={styles.primary} onClick={() => onSectionChange("storage")}>Protéger le surplus<ArrowRight size={16} /></button> : null}
@@ -78,7 +88,7 @@ export function KqHarvests({ section, onSectionChange, onOpenArena, onOpenMarket
           {row.state !== "overflow" ? <button type="button" onClick={() => onSectionChange("storage")}><Clock3 size={15} /> Gérer le stockage</button> : null}
         </>}</div>
       </li>)}</ul> : !errors.length ? <div className={styles.empty}><Sprout size={32} aria-hidden="true" /><h3>{filter === "all" ? "Ta prochaine récolte commence ici" : "Aucune récolte dans cette catégorie"}</h3><p>{filter === "all" ? "Lance une culture. Tu retrouveras sa récolte ici, jusqu’à sa vente." : "Les autres récoltes restent accessibles dans la liste complète."}</p><button type="button" className={styles.primary} onClick={filter === "all" ? onOpenGame : () => setFilter("all")}>{filter === "all" ? "Commencer une culture" : "Voir toutes mes récoltes"}<ArrowRight size={16} /></button></div> : null}
-      <p className={styles.note}>L’affinage (curing) dure 6 heures réelles après le verdict. Pendant ce temps, la vente aux grossistes reste possible.</p>
+      <details className={styles.note}><summary>Préparer la vente</summary><p>Le verdict du jury ouvre la vente. Tu peux suivre un duel ou quitter sa file dans Jury & duels. L’affinage (curing) dure 6 heures réelles après le verdict ; la vente aux grossistes reste possible pendant ce temps.</p></details>
     </>}
   </main>;
 }

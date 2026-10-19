@@ -6,7 +6,7 @@
 .shopDialog { position: relative; width: min(1100px, 100%); max-height: calc(100dvh - 48px); overflow-y: auto; background: #fff1d6; border: 3px solid #172923; border-radius: 26px 22px 28px 20px; box-shadow: 6px 7px 0 #172923; outline: none; }
 .backdrop[data-embedded] { position: relative; inset: auto; z-index: auto; display: block; padding: 0; background: transparent; backdrop-filter: none; }
 .backdrop[data-embedded] .shopDialog { max-height: none; overflow: visible; }
-.header { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 15px 22px; background: #d5a573; border-radius: 23px 19px 0 0; border-bottom: 3px solid #172923; }
+.header { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 15px 22px; background: var(--game-surface-warm); border-radius: 23px 19px 0 0; border-bottom: 3px solid #172923; }
 .header h2 { margin: 0; font: 900 clamp(30px, 4vw, 46px)/1 var(--font-display), Impact, sans-serif; }
 .headerActions { display: flex; align-items: center; gap: 12px; }
 .headerActions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 7px 12px; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; color: #172923; box-shadow: 2px 3px 0 #172923; font: 800 12px var(--font-body), sans-serif; cursor: pointer; }

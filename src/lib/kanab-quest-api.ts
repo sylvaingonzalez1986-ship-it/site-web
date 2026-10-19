@@ -15,6 +15,11 @@ export type KqApiBurnReceipt = {
 };
 
 export type KqOfficialFlower = {
+  /** Absent on historical responses; the original harvest scale then applies. */
+  harvestTierVersion?: 2;
+  successfulStages?: number;
+  criticalStages?: number;
+  tier?: string;
   cultivationProfile?: KqBuddieCultivationProfile;
   terpeneReport?: KqTerpeneReport;
   rulesVersion?: number;

@@ -1,4 +1,4 @@
-.navigation{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px;background:#d5a573;border-block:2px solid #172923}
+.navigation{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px;background:var(--game-surface-warm);border-block:2px solid #172923}
 .navigation button{min-height:44px;padding:9px 14px;border:2px solid #172923;border-radius:11px;background:#fffaf0;color:#172923;font:inherit;font-weight:700;cursor:pointer;box-shadow:2px 3px 0 #172923}
 .navigation button[aria-pressed=true]{background:#efc451;color:#172923}
 .navigation button:focus-visible{outline:3px solid #172923;outline-offset:3px}

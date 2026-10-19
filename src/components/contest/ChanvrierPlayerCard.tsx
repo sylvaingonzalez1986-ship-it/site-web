@@ -13,6 +13,7 @@ import { KQ_MISSION_COPY } from "@/lib/kanab-quest-missions";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { ChanvrierAvatar } from "./ChanvrierAvatar";
 import { KqCareerProgress } from "../placard/KqCareerProgress";
+import { KqAllocationBar, KqProgressMeter } from "../placard/KqVisuals";
 import styles from "./ChanvrierPlayerCard.module.css";
 
 const ICONS = { "triple-spark": Dices, "spark-collector": Sparkles, "perfect-culture": Leaf, "cool-head": ShieldCheck, "natural-defense": ShieldCheck, "jury-favorite": Trophy, "versatile-artisan": Store, "perfect-victory": Swords };
@@ -23,9 +24,6 @@ function BadgeMedal({ badge }: { badge: Pick<ChanvrierBadge, "code" | "awardedAt
   const Icon = code ? ICONS[code as keyof typeof ICONS] : Award;
   const tier = code ? badge.code.slice(-1) : "2";
   return <span className={styles.medal} data-tier={tier} data-locked={!badge.awardedAt} aria-hidden="true"><Icon size={27} /></span>;
-}
-function Meter({ value, target, label }: { value: number; target: number; label: string }) {
-  return <progress className={styles.meter} value={Math.min(value, target)} max={target} aria-label={label} />;
 }
 
 export function ChanvrierPlayerCard({ profile, onEdit, inline = false, showTrigger = true, launcherRef }: {
@@ -156,22 +154,30 @@ export function ChanvrierPlayerCard({ profile, onEdit, inline = false, showTrigg
             {data.newBadgeCount > 0 ? <div className={styles.unlock} role="status"><Sparkles size={21} /><span><strong>{data.newBadgeCount} nouvelle{data.newBadgeCount > 1 ? "s distinctions" : " distinction"} !</strong> Ta vitrine s’agrandit.</span><button type="button" onClick={() => setTab("badges")}>Voir</button></div> : null}
             {tab === "journey" ? <>
               <KqCareerProgress career={data.career} profile={profile} />
-              <div className={styles.reputation}><div><small>RÉPUTATION</small><h3>{reputation.tier.name}</h3><p>{reputation.nextTier ? `${reputation.pointsToNext} points avant ${reputation.nextTier.name}` : "Le plus haut palier est atteint."}</p></div><strong>{data.reputation}<small>points</small></strong><Meter value={reputation.progressPercent} target={100} label="Prochain palier de réputation" /></div>
+              <div className={styles.reputation}><div><small>RÉPUTATION</small><h3>{reputation.tier.name}</h3></div><strong>{data.reputation.toLocaleString("fr-FR")}<small>points</small></strong>
+                <div className={styles.reputationMeter}><KqProgressMeter label={reputation.nextTier ? `Vers ${reputation.nextTier.name}` : "Palier maximal atteint"}
+                  value={reputation.nextTier ? reputation.reputation - reputation.tier.minimum : 1} max={reputation.nextTier ? reputation.nextTier.minimum - reputation.tier.minimum : 1}
+                  valueLabel={reputation.nextTier ? `${(reputation.reputation - reputation.tier.minimum).toLocaleString("fr-FR")} / ${(reputation.nextTier.minimum - reputation.tier.minimum).toLocaleString("fr-FR")} pts` : "Acquis"}
+                  hint={reputation.nextTier ? `Encore ${reputation.pointsToNext.toLocaleString("fr-FR")} points` : undefined} tone={reputation.nextTier ? "teal" : "gold"} /></div>
+              </div>
               <div className={styles.stats}>
                 <div><Leaf /><strong>{data.metrics.cultures ?? 0}</strong><span>Cultures terminées</span></div>
                 <div><Trophy /><strong>{data.metrics.bestJury ? `${data.metrics.bestJury.toLocaleString("fr-FR")}/10` : "—"}</strong><span>Meilleure note du jury</span></div>
-                <div><Swords /><strong>{data.metrics.wins ?? 0} <small>V ·</small> {data.metrics.losses ?? 0} <small>D</small></strong><span>Duels entre joueurs</span></div>
               </div>
+              <div className={styles.duelResults}><KqAllocationBar label="Duels entre joueurs" emptyLabel="Aucun duel jugé pour le moment." items={[
+                { label: "Victoires", value: data.metrics.wins ?? 0, displayValue: String(data.metrics.wins ?? 0), tone: "teal" },
+                { label: "Défaites", value: data.metrics.losses ?? 0, displayValue: String(data.metrics.losses ?? 0), tone: "red" },
+              ]} /></div>
               <div className={styles.ranking}><Award size={29} /><div><strong>Classement commun</strong><p>{data.rank ? `N° ${data.rank} dans Kanab Quest` : "Pas encore classé"} · Tous les chanvriers réunis</p>{data.rank && data.rankAsOf ? <small>Classement du {new Date(data.rankAsOf).toLocaleDateString("fr-FR")}</small> : null}</div><Link prefetch={false} onClick={close} href="/arene">L’arène ↗</Link></div>
               <div className={styles.sectionTitle}><h3>Mon prochain cap</h3><Link prefetch={false} onClick={close} href="/arene/placard?view=missions">Toutes les missions ↗</Link></div>
-              <div className={styles.objectives}>{objectives.map(o => <Link prefetch={false} onClick={close} key={o.key} href={o.href}><small>{o.hint}</small><strong>{o.title}</strong><Meter value={o.value} target={o.target} label={o.title} /><span>{Math.min(o.value, o.target)} / {o.target}<b>Continuer →</b></span></Link>)}</div>
+              <div className={styles.objectives}>{objectives.map(o => <Link prefetch={false} onClick={close} key={o.key} href={o.href}><small>{o.hint}</small><div className={styles.objectiveMeter}><KqProgressMeter value={o.value} max={o.target} label={o.title} /></div><span><b>Continuer →</b></span></Link>)}</div>
               {!objectives.length ? <p>Tous tes objectifs sont atteints. Quelle sera ta prochaine fleur d’exception ?</p> : null}
             </> : null}
             {tab === "achievements" ? <>
-              <div className={styles.reward}><Gift size={27} /><div><h3>{data.unlockedFamilies} / 8 familles débloquées</h3><p>Un pack Botte du Chanvrier à 5 familles, puis un à 8. Chaque pack contient 10 cartes.</p><Meter value={data.unlockedFamilies} target={8} label="Familles de succès" /><small>{data.packsGranted} / 2 packs gagnés · chaque récompense une seule fois</small></div><Link prefetch={false} onClick={close} href="/arene/placard?view=shop">Mes packs ↗</Link></div>
+              <div className={styles.reward}><Gift size={27} /><div><h3>Les récompenses de tes succès</h3><KqProgressMeter value={data.unlockedFamilies} max={8} label="Familles débloquées" valueLabel={`${data.unlockedFamilies} / 8`} tone="gold" /><small>{data.packsGranted} / 2 packs gagnés</small><details className={styles.rewardRules}><summary>Les paliers de récompense</summary><p>Un pack Botte du Chanvrier à 5 familles, puis un à 8. Chaque pack contient 10 cartes et chaque récompense est accordée une seule fois.</p></details></div><Link prefetch={false} onClick={close} href="/arene/placard?view=shop">Mes packs ↗</Link></div>
               <div className={styles.filters} aria-label="Filtrer les succès">{(["all", "culture", "dice", "commerce", "arena"] as const).map(key => <button key={key} type="button" aria-pressed={filter === key} onClick={() => setFilter(key)}>{key === "all" ? "Tous" : ACHIEVEMENT_CATEGORIES[key]}</button>)}</div>
               <div className={styles.achievements}>{achievements.filter(a => filter === "all" || a.category === filter).map(a => <article key={a.code} className={styles.achievement} data-earned={a.tier > 0}>
-                <BadgeMedal badge={{ code: `kq-ach-${a.code}-${Math.max(1, a.tier)}`, awardedAt: a.tier ? "earned" : null }} /><div className={styles.achievementBody}><small>{ACHIEVEMENT_CATEGORIES[a.category]} · {a.tier ? BADGE_TIERS[a.tier - 1] : "À débloquer"}</small><h3>{a.name}</h3><p>{a.description}</p><Meter value={a.value} target={a.target} label={a.name} /><span className={styles.progressText}>{a.value} / {a.target} {a.unit}{a.completed ? <Check size={15} aria-label="Terminé" /> : null}</span><div className={styles.tiers}>{a.thresholds.map((n, i) => <span key={n} data-earned={a.value >= n}>{BADGE_TIERS[i]} · {n}</span>)}</div><small className={styles.rewardHint}>{a.title ? `Au dernier palier : titre « ${a.title} »` : a.code === "jury-favorite" ? "Au dernier palier : cadre de portrait doré" : "Distinction permanente pour ta vitrine"}</small>
+                <BadgeMedal badge={{ code: `kq-ach-${a.code}-${Math.max(1, a.tier)}`, awardedAt: a.tier ? "earned" : null }} /><div className={styles.achievementBody}><small>{ACHIEVEMENT_CATEGORIES[a.category]} · {a.tier ? BADGE_TIERS[a.tier - 1] : "À débloquer"}</small><h3>{a.name}</h3><KqProgressMeter value={a.value} max={a.target} label={a.completed ? "Succès terminé" : "Prochain palier"} valueLabel={`${a.value.toLocaleString("fr-FR")} / ${a.target.toLocaleString("fr-FR")} ${a.unit}`} tone={a.completed ? "gold" : "teal"} /><details className={styles.achievementRules}><summary>Condition et récompenses</summary><p>{a.description}</p><div className={styles.tiers}>{a.thresholds.map((n, i) => <span key={n} data-earned={a.value >= n}>{BADGE_TIERS[i]} · {n}</span>)}</div><small className={styles.rewardHint}>{a.title ? `Au dernier palier : titre « ${a.title} »` : a.code === "jury-favorite" ? "Au dernier palier : cadre de portrait doré" : "Distinction permanente pour ta vitrine"}</small></details>
                 <button className={styles.pin} type="button" disabled={saving || (a.completed && data.showcase.tracked !== a.code)} aria-pressed={data.showcase.tracked === a.code} onClick={() => void save({ ...data.showcase, tracked: data.showcase.tracked === a.code ? null : a.code })}><Pin size={13} />{data.showcase.tracked === a.code ? "Objectif épinglé" : "Suivre cet objectif"}</button></div>
               </article>)}</div><p className={styles.footnote}>Les dés finaux et les cultures terminées comptent. Tes succès restent acquis d’une saison à l’autre.</p>
             </> : null}

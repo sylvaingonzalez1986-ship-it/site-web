@@ -12,6 +12,7 @@ import { isKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
 import { isKqWarehouseEnergyQuote } from "./kanab-quest-warehouse-run";
 import { applyKqBuddieYield, isKqBuddieCultivationProfile } from "./kanab-quest-buddie-cultivation";
 import { isKqCampaign } from "./kanab-quest-campaign";
+import { getKqHarvestStageCounts, KQ_HARVEST_TIERS_V2, KQ_LEGENDARY_REQUIREMENTS } from "./kanab-quest-harvest-tiers";
 
 type SaveEnvelope<T> = { version: 1; payload: T };
 const KQ_LEGACY_HAND_SIZE = 10;
@@ -37,6 +38,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       || state.equipment.shared !== undefined || state.equipment.scope !== undefined)) return null;
     const buildingScope = isRecord(state.equipment) && state.equipment.scope === "building";
     if (state.rulesVersion !== undefined && state.rulesVersion !== 2 && state.rulesVersion !== 3) return null;
+    if (state.harvestTierVersion !== undefined && state.harvestTierVersion !== 2) return null;
     const healthRules = state.rulesVersion === 3;
     if (healthRules ? !isKqCareState(state.care) : state.care !== undefined) return null;
     if (state.cultivationProfile !== undefined && (!healthRules || !isKqBuddieCultivationProfile(state.cultivationProfile)
@@ -158,7 +160,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.history.some((entry) => {
       if (!isRecord(entry)) return true;
       if (entry.rescued !== undefined && typeof entry.rescued !== "boolean") return true;
-      if (entry.qualityDelta !== undefined && (!Number.isInteger(entry.qualityDelta) || Number(entry.qualityDelta) < -1 || Number(entry.qualityDelta) > 6)) return true;
+      if (entry.qualityDelta !== undefined && (!Number.isInteger(entry.qualityDelta) || Number(entry.qualityDelta) < -1 || Number(entry.qualityDelta) > 7)) return true;
       if (entry.xpGain !== undefined && (!Number.isInteger(entry.xpGain) || Number(entry.xpGain) < 0 || Number(entry.xpGain) > 20)) return true;
       if (entry.harvestLossPercent !== undefined && (!isFiniteNumber(entry.harvestLossPercent) || Number(entry.harvestLossPercent) < 0 || Number(entry.harvestLossPercent) > 35
         || (!buildingScope && !Number.isInteger(entry.harvestLossPercent)))) return true;
@@ -267,6 +269,18 @@ export function parseKqBattleSave(raw: string | null): KqBattle | null {
     const battle = envelope.payload;
     if (battle.status !== "locked" && battle.status !== "verdict") return null;
     if (!isRecord(battle.playerFlower) || !isRecord(battle.opponentFlower) || !isFiniteNumber(battle.opponentRating)) return null;
+    for (const flower of [battle.playerFlower, battle.opponentFlower]) {
+      if (flower.harvestTierVersion === undefined) {
+        if (flower.successfulStages !== undefined || flower.criticalStages !== undefined) return null;
+        continue;
+      }
+      if (flower.harvestTierVersion !== 2) return null;
+      const counts = getKqHarvestStageCounts({ successfulStages: flower.successfulStages as number, criticalStages: flower.criticalStages as number });
+      if (counts.successfulStages === null || counts.criticalStages === null
+        || !KQ_HARVEST_TIERS_V2.some(tier => tier.name === flower.tier)) return null;
+      if (flower.tier === "Fleur légendaire" && (counts.successfulStages < KQ_LEGENDARY_REQUIREMENTS.minimumSuccessfulStages
+        || counts.criticalStages < KQ_LEGENDARY_REQUIREMENTS.minimumCriticalStages)) return null;
+    }
     if (!Array.isArray(battle.rounds) || typeof battle.id !== "string") return null;
     if (battle.status === "locked" && (battle.playerFlower.status !== "locked" || battle.opponentFlower.status !== "locked" || battle.burnedAt !== null)) return null;
     if (battle.status === "verdict" && (battle.playerFlower.status !== "burned" || battle.opponentFlower.status !== "burned" || battle.rounds.length !== 3 || typeof battle.burnedAt !== "string")) return null;
@@ -312,6 +326,7 @@ export function createKqIntegrityCode(state: KqGameState) {
     ...(state.cultivationProfile ? { cultivationProfile: state.cultivationProfile } : {}),
     ...(state.campaign ? { campaign: state.campaign } : {}),
     ...(state.rulesVersion === 3 ? { rulesVersion: 3, care: state.care } : {}),
+    ...(state.harvestTierVersion === 2 ? { harvestTierVersion: 2 } : {}),
     ...(state.firstCultureRescue === true ? { firstCultureRescue: true } : {}),
     ...(state.domiciliation ? { domiciliation: state.domiciliation } : {}),
     seed: state.seed, varietyCode: state.varietyCode, deckCodes: state.deckCodes, handCodes: getKqHandCodes(state), heritageReserveCodes: state.heritageReserveCodes ?? [], handRedrawsUsed: state.handRedrawsUsed ?? 0, heritageCode: state.heritageCode ?? null, heritageName: state.heritageName ?? null, heritageTiming: state.heritageTiming ?? null, heritageEffect: state.heritageEffect ?? null, heritageProducerName: state.heritageProducerName ?? null, heritageImageUrl: state.heritageImageUrl ?? null, heritageUsed: state.heritageUsed ?? false, situationCodes: state.situationCodes,

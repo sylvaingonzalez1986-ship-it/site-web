@@ -9,6 +9,7 @@ import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqOnlinePackaging } from "@/lib/kanab-quest-online";
 import { getKqShopDashboard } from "@/lib/kanab-quest-shop-strategy";
 import { KqBuddieFlavors } from "./KqBuddieFlavors";
+import { KqAllocationBar, KqBarChart, KqProgressMeter } from "./KqVisuals";
 import styles from "./KqShopOverview.module.css";
 
 type Props = {
@@ -70,7 +71,7 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
 
   return <main className={styles.overview} data-screen="overview">
     <header className={styles.heading}>
-      <div><p className={styles.eyebrow}>Ton commerce · Vue d’ensemble</p><h1 ref={headingRef} data-commerce-view-heading tabIndex={-1}>Ma boutique</h1><p>Ta production, tes clients, tes ventes. Tout part d’ici.</p></div>
+      <div><p className={styles.eyebrow}>Ton commerce · Vue d’ensemble</p><h1 ref={headingRef} data-commerce-view-heading tabIndex={-1}>Ma boutique</h1></div>
       <button type="button" className={styles.refresh} onClick={onRefresh} disabled={loading || refreshing} aria-label="Actualiser le tableau de bord"><RefreshCw size={17} aria-hidden="true" /><span>{refreshing ? "Actualisation…" : "Actualiser"}</span></button>
     </header>
     {error ? <p className={styles.error} role="alert">{error} <button type="button" onClick={onRefresh} disabled={refreshing}>Réessayer</button></p> : null}
@@ -79,8 +80,9 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
         <div className={styles.heroCopy}>
           <span className={styles.status} data-active={online?.site.active || undefined}><span aria-hidden="true" />{!online ? "Suivi en ligne indisponible" : !online.site.createdAt ? "Boutique à ouvrir" : online.site.active ? "Boutique ouverte" : "Boutique en pause"}{data.business?.shop.name ? ` · ${data.business.shop.name}` : ""}</span>
           <p className={styles.eyebrow}><Sparkles size={15} aria-hidden="true" />Ta prochaine étape</p>
-          <h2>{priority.title}</h2><p>{priority.description}</p>
+          <h2>{priority.title}</h2>
           <Destination href={priority.href} onNavigate={priority.navigate} className={styles.primary}>{priority.action}<ArrowRight size={18} aria-hidden="true" /></Destination>
+          <details className={styles.heroDetails}><summary>Pourquoi cette étape ?</summary><p>{priority.description}</p></details>
         </div>
         <div className={styles.heroArt}><Image src="/placard/channel-online-sylvain-v2.webp" alt="" fill sizes="(max-width: 600px) 100vw, 400px" priority /><span><Store size={16} aria-hidden="true" />De la récolte au client</span></div>
       </section>
@@ -96,6 +98,11 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
         <div className={styles.mainColumn}>
           <section className={styles.panel} aria-labelledby={`${id}-journey`}>
             <div className={styles.sectionHeading}><div><p className={styles.eyebrow}>Le chemin de tes produits</p><h2 id={`${id}-journey`}>De la récolte à la vente</h2></div></div>
+            <div className={styles.visual}><KqAllocationBar label="Où se trouve ton stock ?" items={[
+              { label: "Récoltes", value: rawLots.reduce((sum, lot) => sum + lot.harvestGrams, 0), displayValue: `${number(rawLots.reduce((sum, lot) => sum + lot.harvestGrams, 0))} g`, tone: "gold" },
+              { label: "Lots préparés", value: stocks.reduce((sum, stock) => sum + stock.remainingUnits / 10, 0), displayValue: `${number(stocks.reduce((sum, stock) => sum + stock.remainingUnits / 10, 0))} g`, tone: "teal" },
+              ...(online ? [{ label: "Conditionné", value: online.listings.reduce((sum, listing) => sum + listing.remainingPackets * listing.formatGrams, 0), displayValue: `${number(online.listings.reduce((sum, listing) => sum + listing.remainingPackets * listing.formatGrams, 0))} g`, tone: "ink" as const }] : []),
+            ]} emptyLabel="Aucun stock pour le moment" />{!online ? <small>Stock conditionné indisponible.</small> : null}</div>
             <ol className={styles.journey}>
               <li><button type="button" onClick={onPrepareStock}><span className={styles.stepIcon}><Sprout size={25} aria-hidden="true" /><b>1</b></span><strong>Préparer</strong><span>{rawLots.length} récolte{rawLots.length > 1 ? "s" : ""} en attente</span><small>Choisir et transformer<ArrowRight size={14} aria-hidden="true" /></small></button></li>
               <li><button type="button" onClick={onPrepareStock}><span className={styles.stepIcon}><PackageOpen size={25} aria-hidden="true" /><b>2</b></span><strong>Mettre en vente</strong><span>{stocks.length} lot{stocks.length > 1 ? "s" : ""} préparé{stocks.length > 1 ? "s" : ""}</span><small>Choisir son circuit<ArrowRight size={14} aria-hidden="true" /></small></button></li>
@@ -106,7 +113,6 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
           <section className={styles.panel} aria-labelledby={`${id}-demands`}>
             <div className={styles.sectionHeading}><div><p className={styles.eyebrow}><TrendingUp size={14} aria-hidden="true" />À saisir au marché</p><h2 id={`${id}-demands`}>Les envies du moment</h2></div><button type="button" className={styles.textButton} onClick={onViewDemands}>Tout voir<ArrowRight size={15} aria-hidden="true" /></button></div>
             {demand ? <>
-              <p className={styles.explanation}>Les bons arômes peuvent améliorer le prix de tes fleurs.</p>
               <div className={styles.demands}>{demand.requests.map(request => {
                 const circuit = circuits[request.channel];
                 const Icon = circuit.icon;
@@ -115,17 +121,23 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
                   <span className={styles.demandTitle}><Icon size={17} aria-hidden="true" />{circuit.name}</span>
                   <KqBuddieFlavors flavorCodes={request.flavorCodes} compact />
                   <strong className={styles.bonus} data-active={active}>{active ? `Jusqu’à +${number(request.bonusPercent)} %` : demandActive ? "Demande satisfaite" : "Période terminée"}</strong>
+                  <span className={styles.demandCapacity}><span aria-hidden="true" style={{ width: `${request.capacityUnits > 0 ? Math.max(0, Math.min(100, request.remainingUnits / request.capacityUnits * 100)) : 0}%` }} /></span>
+                  <span className={styles.demandHint}>{number(request.remainingUnits / 10)} g restants</span>
                   <span className={styles.demandHint}>Voir les conditions<ChevronRight size={13} aria-hidden="true" /></span>
                 </button>;
               })}</div>
-              <p className={styles.footnote}><Clock3 size={14} aria-hidden="true" />{demandActive ? `Nouvelles envies dans ${hoursRemaining} h environ.` : "Les nouvelles envies sont en cours d’actualisation."} Bonus selon les arômes, la qualité et le volume disponible.</p>
+              <p className={styles.footnote}><Clock3 size={14} aria-hidden="true" />{demandActive ? `Renouvellement dans ${hoursRemaining} h environ` : "Nouvelles envies en cours d’actualisation"}</p>
             </> : <div className={styles.empty}><TrendingUp size={28} aria-hidden="true" /><p>Les demandes sont momentanément indisponibles. Tes lots restent accessibles à la vente.</p><button type="button" className={styles.textButton} onClick={onViewDemands}>Voir les demandes<ArrowRight size={15} aria-hidden="true" /></button></div>}
           </section>
         </div>
 
         <div className={styles.sideColumn}>
+          {online && dashboard ? <section className={styles.panel} aria-label="Rythme estimé de la boutique"><KqBarChart title="Par jour réel · estimation" items={[
+            { label: "Visites", value: dashboard.visitorsPerDay, displayValue: number(dashboard.visitorsPerDay), tone: "gold" },
+            { label: "Commandes", value: dashboard.ordersPerDay, displayValue: number(dashboard.ordersPerDay), tone: "teal" },
+          ]} emptyLabel={online.site.active ? "Pas encore de visites ou commandes estimées" : "Boutique en pause"} /><div className={styles.visual}><KqProgressMeter label="Confiance commerciale" value={online.confidence} max={100} valueLabel={`${number(online.confidence)} / 100`} /></div><details className={styles.explanationDetails}><summary>Lire ces estimations</summary><p>Rythme calculé avec tes prix, ta qualité, ton audience et tes annonces actuelles. Les commandes ne sont pas garanties.</p></details></section> : null}
           <section className={styles.panel} aria-labelledby={`${id}-shelf`}>
-            <div className={styles.sectionHeading}><div><p className={styles.eyebrow}>Ta vitrine en ligne</p><h2 id={`${id}-shelf`}>En rayon</h2></div><span className={styles.count}>{listings.length}</span></div>
+            <div className={styles.sectionHeading}><div><p className={styles.eyebrow}>Ta vitrine en ligne</p><h2 id={`${id}-shelf`}>En rayon</h2></div><span className={styles.count}>{online ? listings.length : "—"}</span></div>
             {listings.length ? <ul className={styles.shelf}>{listings.slice(0, 3).map(({ listing }) => <li key={listing.id}><button type="button" onClick={onViewSales}><Image src={getKqOnlinePackaging(listing.packagingCode)?.image ?? "/placard/equipment-sylvain-v1/packaging-kraft.webp"} alt="" width={58} height={68} /><span><strong>{listing.name}</strong><small>{number(listing.remainingPackets)} paquets · {listing.formatGrams} g</small><b>{formatKqCash(listing.packetPriceCents)}<small> / paquet</small></b></span><ChevronRight size={16} aria-hidden="true" /></button></li>)}</ul> : <div className={styles.empty}><PackageOpen size={32} aria-hidden="true" /><strong>{!online ? "Rayon indisponible" : "Ton rayon attend ses produits"}</strong><p>{!online ? "Réessaie d’actualiser pour retrouver tes annonces." : "Prépare des paquets ou reprends une annonce depuis tes ventes."}</p></div>}
             <button type="button" className={styles.fullLink} onClick={onViewSales}>Gérer mes annonces<ArrowRight size={16} aria-hidden="true" /></button>
           </section>

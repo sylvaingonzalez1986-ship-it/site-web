@@ -10,6 +10,7 @@ import { CommunityMissionWelcome, CommunityMissionsBoard } from "@/components/mi
 import styles from "./KqMissionCenter.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqSupportPackOpening, requestKqSupportPackOpening, type KqOpenedSupportCard } from "./KqSupportPackOpening";
+import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
 
 const TRACKS = {
   culture: { title: "Culture & Buddies", image: "/contest/mascot/arena-scene-placard-v1.png", icon: Sprout },
@@ -130,7 +131,7 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
   };
 
   const claimed = data?.missions.filter((mission) => mission.claimed).length ?? 0;
-  const ready = data?.missions.filter(mission => mission.claimable).length ?? 0;
+  const ready = data?.missions.filter(mission => !mission.claimed && mission.claimable).length ?? 0;
   const total = data?.missions.length ?? Object.keys(KQ_MISSION_COPY).length;
   const availableMissions = data?.missions.filter((mission) => mission.packAvailable && mission.entitlementId && !openedEntitlements.includes(mission.entitlementId)) ?? [];
   const availablePacks = availableMissions.length;
@@ -150,9 +151,13 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
     <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button><button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button></nav>
     {section === "community" ? <><CommunityMissionWelcome /><CommunityMissionsBoard /></> : <>
     <section className={styles.overview} aria-label="Progression de tes défis">
-      <div><small>Le parcours du chanvrier</small><strong>{claimed} / {total} missions accomplies</strong><p>Cinq parcours à avancer à ton rythme. Les objectifs et les récompenses montent en puissance.</p></div>
+      <div className={styles.overviewHeading}><small>Le parcours du chanvrier</small><strong>{data ? `${claimed} / ${total} missions accomplies` : "Tes cinq parcours"}</strong></div>
       {ready > 0 ? <span className={styles.readyCount}><Gift size={20} aria-hidden="true" />{ready} récompense{ready > 1 ? "s" : ""} à récupérer</span> : null}
-      <progress aria-label="Missions accomplies" value={claimed} max={total || 30} />
+      {data ? <div className={styles.overviewVisual}><KqAllocationBar label="État des missions" items={[
+        { label: "Accomplies", value: claimed, displayValue: String(claimed), tone: "teal" },
+        { label: "À récupérer", value: ready, displayValue: String(ready), tone: "gold" },
+        { label: "À accomplir", value: total - claimed - ready, displayValue: String(total - claimed - ready), tone: "ink" },
+      ]} /></div> : null}
     </section>
     <ul className={styles.rewardLegend} aria-label="Types de récompenses"><li><Coins size={16} aria-hidden="true" />Argent du jeu</li><li><Sparkles size={16} aria-hidden="true" />Cartes rares garanties</li><li><Gift size={16} aria-hidden="true" />Packs Botte du Chanvrier</li></ul>
     <div className={styles.toolbar}>
@@ -192,8 +197,9 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
                 <div className={styles.stepHeading}><span className={styles.eyebrow}>Étape {current.step} / {missions.length}</span><span className={styles.difficulty} data-level={copy.difficulty}>{KQ_MISSION_DIFFICULTIES[copy.difficulty]}</span></div>
                 <h2>{copy.title}</h2><p className={styles.description}>{copy.description}</p>
                 {current.claimable ? <span className={styles.reached}><Check size={16} aria-hidden="true" />Objectif atteint !</span> : null}
-                <div className={styles.progressLabel}><span>{copy.progressLabel}</span><b>{current.progress} / {current.target}</b></div>
-                <progress aria-label={`Progression : ${copy.title}`} value={current.progress} max={current.target} />
+                <div className={styles.missionMeter}><KqProgressMeter label={copy.progressLabel} value={current.progress} max={current.target}
+                  valueLabel={`${current.progress.toLocaleString("fr-FR")} / ${current.target.toLocaleString("fr-FR")}`}
+                  tone={current.claimable ? "gold" : "teal"} /></div>
                 <div className={styles.reward} data-kind={currentReward.kind}><RewardArtwork reward={currentReward} /><span><small>À gagner</small><strong>{getKqMissionRewardLabel(currentReward)}</strong>{currentReward.kind === "card" ? <em>Carte précise garantie · Botte du Chanvrier</em> : currentReward.kind === "cash" ? <em>Crédité dans ta trésorerie du jeu</em> : <em>À ouvrir ici ou à la boutique</em>}</span></div>
                 {current.claimable ? <button type="button" className={styles.claim} disabled={rewardUnavailable || busy !== null || loading || opening} onClick={() => void claim(current)}><Gift size={18} aria-hidden="true" />{busy === current.code ? "Récupération…" : currentReward.kind === "pack" ? "Récupérer mon pack" : currentReward.kind === "card" ? "Récupérer ma carte" : "Récupérer ma récompense"}</button>
                   : <button type="button" className={styles.action} disabled={busy !== null || opening} onClick={() => onOpen(copy.destination)}>{copy.action}<ArrowRight size={18} aria-hidden="true" /></button>}
