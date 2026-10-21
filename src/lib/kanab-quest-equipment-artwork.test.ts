@@ -36,16 +36,24 @@ describe("Kanab Quest equipment artwork", () => {
     });
   });
 
-  it("gives each warehouse family three distinct illustrations without changing saved codes", () => {
+  it("covers every warehouse offer with three distinct tier illustrations per family", () => {
     const offers = [...KQ_WAREHOUSE_CATALOG.filter(item => item.purchasable !== false && item.kind !== "processing"), ...KQ_WAREHOUSE_OPTIONS];
-    expect(offers).toHaveLength(36);
+    expect(offers).toHaveLength(39);
     expect(offers.some(item => item.code.startsWith("TENT-"))).toBe(false);
     const artwork = offers.map(item => getKqWarehouseProductArtwork(item.code));
+    // Storage climate machines reuse the established climate-family tier art.
     expect(new Set(artwork.map(item => item?.src)).size).toBe(36);
     for (const [index, item] of artwork.entries()) {
       expect(item?.tier).toBe(offers[index].tier);
       expect(item?.src).toMatch(/^\/placard\/equipment-sylvain-v1\/[a-z]+-[123]\.webp$/);
       expect(existsSync(join(process.cwd(), "public", item!.src.slice(1))), item?.src).toBe(true);
+    }
+    const repeatedSources = [...new Set(artwork.map(item => item!.src))]
+      .filter(src => artwork.filter(item => item!.src === src).length > 1);
+    expect(repeatedSources.sort()).toEqual([1, 2, 3].map(tier => `/placard/equipment-sylvain-v1/climate-${tier}.webp`));
+    for (const suffix of ["01", "02", "03"]) {
+      expect(getKqWarehouseProductArtwork(`SIM-STORAGE-CLIMATE-${suffix}`)?.src)
+        .toBe(getKqWarehouseProductArtwork(`SIM-CLIMATE-${suffix}`)?.src);
     }
     expect(getKqWarehouseProductArtwork("MH-FCE3000")?.src).toBe(getKqWarehouseProductArtwork("SIM-LIGHT-02")?.src);
     expect(getKqWarehouseProductArtwork("UNKNOWN")).toBeNull();

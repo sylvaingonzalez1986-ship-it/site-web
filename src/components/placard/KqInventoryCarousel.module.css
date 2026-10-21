@@ -23,3 +23,17 @@
 .rarityFilter{display:flex;align-items:center;gap:10px;font-weight:800}.rarityFilter select{min-height:44px;max-width:100%;padding:8px;background: #fff8e7;color: #172923;border: 2px solid #172923;border-radius: 10px}.rarity{padding:4px 6px;font-size:.7rem;font-weight:800;color:#425343}.rarity[data-rarity=epic]{background:#f1e0fc;color:#6c308c}.epicNotice{flex-basis:100%;margin:0;font-size:.74rem;line-height:1.5}.card[data-rarity=epic]{border-color:#b582d0}
 .categories button { display: flex; align-items: center; gap: 8px; font-size: .75rem; }
 .categories b { min-width: 20px; padding: 2px 4px; border-radius: 10px; background: #fff8e7; font-variant-numeric: tabular-nums; }
+.filters { flex-basis: 100%; min-width: 0; border-block: 1px solid #17292340; }
+.filters > summary { position: relative; min-height: 44px; padding: 10px 24px 10px 0; cursor: pointer; font-weight: 750; list-style: none; }
+.filters > summary::-webkit-details-marker { display: none; }
+.filters > summary::after { content: "+"; position: absolute; right: 2px; top: 10px; font-size: 18px; }
+.filters[open] > summary::after { content: "−"; }
+.filters > summary small { margin-left: 8px; font-size: 11px; font-weight: 500; }
+.filters > summary:focus-visible { outline: 3px solid #087f7c; outline-offset: 2px; }
+.filters .categories { padding-block: 8px; }
+.filters .rarityFilter { flex-wrap: wrap; margin: 4px 0 12px; }
+@media (max-width: 480px) {
+  .toolbar .ownership { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; gap: 5px; }
+  .ownership button { min-width: 0; padding-inline: 4px; font-size: 11px; }
+  .filters > summary small { display: block; margin: 3px 0 0 15px; }
+}

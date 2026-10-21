@@ -1,4 +1,5 @@
 import type { KqGameState } from './kanab-quest-game';
+import { KQ_BUDDIE_ROTATION_REQUIRED } from './kanab-quest-buddie-rotation';
 import type { KqBattle } from './kanab-quest-battle';
 import type { KqReleveProductionLedgerEntry } from './kanab-quest-releve-production';
 import { createKqTrial, trialQuality } from './kanab-quest-trial';
@@ -391,7 +392,7 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
     if (url.pathname === '/api/arena/placard/storage') return { state: current, payload: getReleveCommerceStorageSnapshot(current) };
     if (url.pathname === '/api/arena/placard/warehouse') return { state: current, payload: getReleveCommerceWarehouse(current) };
     if (url.pathname === '/api/arena/placard/flowers') return { state: current, payload: { flowers: [] } };
-    if (url.pathname === '/api/arena/placard/collection') return { state: current, payload: { ownedBuddieCodes: [...new Set(current.lots.map(lot => lot.game.varietyCode))], buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: current.lots.map(lot => lot.game.varietyCode) } } };
+    if (url.pathname === '/api/arena/placard/collection') return { state: current, payload: { ownedBuddieCodes: [...new Set(current.lots.map(lot => lot.game.varietyCode))], buddieRotation: { requiredDistinctBuddies: KQ_BUDDIE_ROTATION_REQUIRED, recentBuddieCodes: current.lots.map(lot => lot.game.varietyCode) } } };
     throw new Error('Cet espace se visite dans une autre rencontre de Sylvain.');
   }
   requireValue(method === 'POST' || (method === 'PATCH' && ['/api/arena/placard/equipment', '/api/arena/placard/warehouse'].includes(url.pathname)), 'Opération indisponible dans cette visite.');

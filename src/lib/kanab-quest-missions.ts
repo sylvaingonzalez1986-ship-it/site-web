@@ -95,6 +95,27 @@ export type KqMission = {
   entitlementId: string | null; packAvailable: boolean | null;
 };
 export type KqMissionSnapshot = { collectionActive: boolean; missions: KqMission[] };
+export type KqMissionContinuation =
+  | { status: "pending" }
+  | { status: "next"; mission: KqMission }
+  | { status: "complete"; track: KqMissionTrack };
+
+/** A receipt is not a refreshed mission snapshot. Never infer an unlock or a
+ * completed journey from an earlier or incomplete server response. */
+export function getKqMissionContinuation(snapshot: KqMissionSnapshot | null, receivedCode: KqMissionCode): KqMissionContinuation {
+  const definition = KQ_MISSION_DEFINITIONS.find(mission => mission.code === receivedCode);
+  const received = snapshot?.missions.find(mission => mission.code === receivedCode);
+  if (!definition || received?.claimed !== true) return { status: "pending" };
+  const journey = KQ_MISSION_DEFINITIONS.filter(mission => mission.track === definition.track)
+    .map(mission => snapshot!.missions.find(current => current.code === mission.code));
+  if (journey.some(mission => !mission)) return { status: "pending" };
+  const next = journey.find(mission => mission!.claimed !== true);
+  if (!next) return { status: "complete", track: definition.track };
+  if (next.unlocked !== true || !Number.isFinite(next.progress) || next.progress < 0
+    || !Number.isFinite(next.target) || next.target <= 0) return { status: "pending" };
+  return { status: "next", mission: next };
+}
+
 export type KqMissionClaim = {
   entitlementId: string | null; cardCount: number; replayed: boolean; reward: KqMissionReward;
   cardInstanceId?: string | null; cashAfterCents?: number | null;

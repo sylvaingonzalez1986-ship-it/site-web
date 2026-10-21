@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { canPlayKqCard, getKqHandCodes, isKqCultureDead, KQ_ACTIVE_CARDS } from "./kanab-quest-game";
 import { isKqCampaign } from "./kanab-quest-campaign";
+import { getKqBuddieRotationRemaining } from "./kanab-quest-buddie-rotation";
 import { KQ_SUPPLIER_PAYMENT_TERM_MS } from "./kanab-quest-business";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 import { applyKqReleveProductionAction as act, createKqReleveExpansion, createKqReleveProduction, getKqReleveHarvests, getKqReleveLaunchIssues, getKqRelevePlanReview, getKqReleveProductionOutstanding, getKqReleveProductionProgress, suggestKqRelevePlan, type KqReleveProductionState } from "./kanab-quest-releve-production";
@@ -87,6 +88,14 @@ describe("La relève — plans and campaign budget", () => {
 });
 
 describe("La relève — real production rules and persistence", () => {
+  it("records campaign rotation in the same newest-first zone order as the server", () => {
+    const state = act(prepared(2), { type: "launch" });
+    expect(state.recentBuddieCodes).toEqual(["HH2026-010", "HH2026-005"]);
+    expect(getKqBuddieRotationRemaining("HH2026-020", state.recentBuddieCodes)).toBe(0);
+    expect(getKqBuddieRotationRemaining("HH2026-005", state.recentBuddieCodes)).toBe(1);
+    expect(getKqBuddieRotationRemaining("HH2026-010", state.recentBuddieCodes)).toBe(2);
+  });
+
   it("requires revealed, distinct and available Buddies and saved assignments", () => {
     let state = planned(2);
     expect(() => act(state, { type: "assign", zoneId: "culture-1", buddieCode: "HH2026-005" })).toThrow();

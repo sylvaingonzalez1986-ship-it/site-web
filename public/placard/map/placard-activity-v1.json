@@ -1,0 +1,41 @@
+{
+  "date": "2026-10-20",
+  "mode": "built-in imagegen edit",
+  "useCase": "precise-object-edit",
+  "reference": "placard-world-sylvain-v6.webp",
+  "source": "output/imagegen/painted-village/placard-activity-source-v1.png",
+  "generatedSource": "exec-8d50cbd3-8778-4c17-ae39-da13e0b587f0.png",
+  "prompt": "Use case: precise-object-edit.\nAsset type: production artwork for three independent active-building states in an existing browser game map.\nImage 1 is the EDIT TARGET and the sole STYLE REFERENCE. Make a highly localized edit of this exact 1536×1024 village painting. Keep its canvas, framing, perspective, every building position, silhouette and roof, coastline, paths, foliage, sea, sky and all other pixels as unchanged as possible.\nPrimary request: paint activity into only three small areas, as if the original illustrator drew them in the same session:\n1. UPPER LEFT WAREHOUSE, within/around the existing turquoise arched double door (approximately x260–465, y180–345): open those same wooden turquoise doors to reveal a softly lit dark interior with three lush small hemp plants in humble pots on a wooden growing bench. Preserve the wooden arch, surrounding stonework, barrel and original crates. Draw recognisable slender serrated hemp leaves, original ink lines and gentle painted shading. A restrained warm glow falls on the threshold. Do not change the roof or chimney.\n2. MIDDLE LEFT MARKET, on the little empty ground immediately to the right of the existing yellow awning stall (approximately x435–545, y440–625): add a compact stack of slightly crooked WOODEN delivery crates with a few kraft hemp pouches and one jar of green hemp flower buds ready for sale. A modest narrow cloth turquoise pennant tied to a wooden stake can rise just above the crates. Keep the original stall, goods, awning and every existing object unchanged. No vegetables, cabbage, grocery produce, lettering or numerical labels.\n3. MIDDLE RIGHT JURY PAVILION, inside the existing wooden stage below its trophy (approximately x1150–1425, y540–660): set a low wooden judging table with an irregular cream and muted teal cloth, three little glass sample jars with green buds and small gold judging tokens. Two small rustic warm lanterns hang inside the pavilion. Keep the trophy, roof silhouette, bunting, main posts and steps unchanged. Do not add large roof flags.\nStyle matching is the main objective: exactly the existing cosy Breton illustrated storybook map, irregular expressive dark hand-inked contours of varying width, slightly wonky perspective, subtle warm paper grain, wood grain and painterly colour variation, softly painted contact shadows, the same muted turquoise/ochre/cream/green hues. Added objects must feel physically grounded and native to this painting, never like sharp flat vector clip art, geometric UI icons or stickers. Match existing object scale, edge softness and light direction. All the unchanged map must remain identically arranged so the old clickable hit regions still line up.\nConstraints: no UI, text, borders, arrows, icons, watermarks, extra characters, extra buildings, glow outlines or changes outside these three small areas. Return the entire edited map, same 3:2 composition and 1536×1024 resolution.",
+  "canvas": {
+    "width": 1536,
+    "height": 1024
+  },
+  "crops": [
+    {
+      "activity": "culture",
+      "file": "placard-activity-culture-v1.webp",
+      "left": 224,
+      "top": 170,
+      "width": 284,
+      "height": 194
+    },
+    {
+      "activity": "market",
+      "file": "placard-activity-market-v1.webp",
+      "left": 424,
+      "top": 382,
+      "width": 198,
+      "height": 238
+    },
+    {
+      "activity": "jury",
+      "file": "placard-activity-jury-v1.webp",
+      "left": 1168,
+      "top": 542,
+      "width": 246,
+      "height": 140
+    }
+  ],
+  "packaging": "Sharp extract only, WebP quality 94, effort 6. No redraw, recolouring or synthesis outside imagegen.",
+  "integration": "Independent activity regions over the unchanged v6 map; opaque centers, 3-pixel inset masks blurred by 1.75 scene pixels at the boundary. Original building geometry and clickable targets retained."
+}

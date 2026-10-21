@@ -4,9 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Gift, Swords, Trophy } from "lucide-react";
 import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
+import { KqProgressMeter } from "./KqVisuals";
 import styles from "./KqSeasonBoard.module.css";
 
-type Standing = { id: string; rank: number; name: string; placardScore: number; businessScore?: number; isPlayer: boolean };
+type Standing = { id: string; rank: number; name: string; placardScore: number; businessScore?: number | null; isPlayer: boolean };
 const formatScore = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 1 });
 export type KqSeasonBoardProps = {
   seasonCode?: string; rank: number | null; score: number; rating: number; seasonPoints: number; reputation: number;
@@ -22,7 +23,7 @@ export function KqSeasonBoard({ seasonCode, rank, score, rating, seasonPoints, r
   const duelAction = <><Swords size={17} aria-hidden="true" />Engager une fleur<ArrowRight size={17} aria-hidden="true" /></>;
   return <section id="placard-saison" data-kq-season-board className={styles.board} aria-labelledby="placard-season-title">
     <header className={styles.header}>
-      <div><span className={styles.eyebrow}>{local ? "Simulation locale" : season ? `Saison ${season[2]} · ${season[1]}` : "Saison en cours"}</span><h2 id="placard-season-title">Un seul classement.<br /><em>Tous les chanvriers.</em></h2><p>{local ? "Cet aperçu utilise des adversaires simulés." : "Débutants ou habitués, tout le monde peut se rencontrer. Fais grimper ton Score Kanab Quest avec tes cultures, tes duels et le développement de ton entreprise."}</p></div>
+      <div><span className={styles.eyebrow}>{local ? "Simulation locale" : season ? `Saison ${season[2]} · ${season[1]}` : "Saison en cours"}</span><h2 id="placard-season-title">Le tableau<br /><em>du village.</em></h2><p>{local ? "Cet aperçu utilise des adversaires simulés." : "Débutants ou habitués, tous les chanvriers partagent ce classement. Fais-toi un nom avec tes cultures, tes duels et le développement de ton entreprise."}</p></div>
       <Image className={styles.art} src="/contest/mascot/arena-scene-classement-v2.png" alt="" width={360} height={240} sizes="(max-width: 650px) 110px, 240px" />
     </header>
     <div className={styles.body}>
@@ -34,13 +35,16 @@ export function KqSeasonBoard({ seasonCode, rank, score, rating, seasonPoints, r
         </dl>
         <p className={styles.record}><Swords size={16} aria-hidden="true" /><strong>{wins} victoire{wins !== 1 ? "s" : ""}</strong><span>·</span>{losses} défaite{losses !== 1 ? "s" : ""}</p>
         <div className={styles.reward}>
-          <Gift size={26} aria-hidden="true" /><div><strong>Ton prochain pack Botte du Chanvrier</strong><p>Encore {remainingWins} victoire{remainingWins !== 1 ? "s" : ""} d’affilée pour un pack de 10 cartes.</p><div className={styles.steps} aria-label={`${seriesProgress} victoire sur 3 vers le prochain pack`}>{[0, 1, 2].map(n => <i key={n} data-won={n < seriesProgress} />)}</div><small>Série actuelle : {streak} · Une défaite remet la série à zéro.</small></div>
+          <Gift size={26} aria-hidden="true" /><div><strong>Le bonus des séries</strong><p>Encore {remainingWins} victoire{remainingWins !== 1 ? "s" : ""} d’affilée pour un pack Botte de 10 cartes.</p>
+            <KqProgressMeter label="Vers le prochain pack de série" value={seriesProgress} max={3} valueLabel={`${seriesProgress} / 3 victoires`} tone="gold" />
+            <small>Série actuelle : {streak}. Une défaite remet cette série à zéro.</small></div>
         </div>
+        {!local ? <div className={styles.otherPath}><p>Une défaite ne retire pas tes XP métier. Les missions de culture, d’atelier et de commerce offrent aussi des récompenses.</p><Link prefetch={false} href="/arene/placard?view=missions">Choisir un objectif personnel<ArrowRight size={16} aria-hidden="true" /></Link></div> : null}
         {!local ? <div className={styles.play}>{onOpenArena ? <button type="button" onClick={onOpenArena}>{duelAction}</button> : <Link prefetch={false} href="/arene/placard?view=arena">{duelAction}</Link>}<p>Adversaire tiré au sort dans la file commune.</p></div> : null}
       </div>
       <div className={styles.leaders}>
         <div className={styles.sectionLabel}>En tête de Kanab Quest<span>Score</span></div>
-        {leaderboard.length ? <ol>{leaderboard.map(entry => <li key={entry.id} data-player={entry.isPlayer}><b className={styles.place}>#{entry.rank}</b><span className={styles.identity}><span className={styles.name}>{entry.name}{entry.isPlayer ? <small>Toi</small> : null}</span><small>Entreprise {formatScore(entry.businessScore ?? 0)} pts</small></span><strong>{formatScore(entry.placardScore)}</strong></li>)}</ol> : <p className={styles.empty}>Le classement n’est pas encore disponible.</p>}
+        {leaderboard.length ? <ol>{leaderboard.map(entry => <li key={entry.id} data-player={entry.isPlayer}><b className={styles.place}>#{entry.rank}</b><span className={styles.identity}><span className={styles.name}>{entry.name}{entry.isPlayer ? <small>Toi</small> : null}</span><small>{Number.isFinite(entry.businessScore) ? `Entreprise ${formatScore(entry.businessScore!)} pts` : "Score d’entreprise non renseigné"}</small></span><strong>{formatScore(entry.placardScore)}</strong></li>)}</ol> : <p className={styles.empty}>Le classement n’est pas encore disponible.</p>}
         {!local ? <Link className={styles.fullRanking} prefetch={false} href="/arene?vue=classement">Voir tout le classement<ArrowRight size={15} aria-hidden="true" /></Link> : null}
         <p className={styles.openPool}><Swords size={18} aria-hidden="true" />La cote et la qualité de ta fleur ne limitent pas les adversaires que tu peux rencontrer.</p>
       </div>

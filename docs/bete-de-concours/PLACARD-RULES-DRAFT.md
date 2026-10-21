@@ -1,6 +1,6 @@
 # Règlement du Placard — brouillon de lancement
 
-Version de travail `2026-10-18-draft-10`. Ce document n'est pas publié aux
+Version de travail `2026-10-20-draft-14`. Ce document n'est pas publié aux
 clients et ne vaut pas règlement commercial tant que les lots, les dates de
 saison et les probabilités des collections ne sont pas validés.
 
@@ -8,6 +8,20 @@ La campagne commune décrite ici est implémentée localement. Au 13 octobre
 2026, sa migration `20261013000200_kq_shared_campaigns.sql` est appliquée et
 vérifiée en ligne ; le code du site reste à déployer. Voir l’[état de
 l’entrepôt et les validations](PLACARD-ENTREPOT-V2.md#campagne-commune-récoltes-par-buddie--13-octobre-2026).
+
+L’ajustement du 19 octobre ramène la rotation à deux autres variétés.
+La migration `20261019000100_kq_buddie_rotation_two.sql` est appliquée et
+vérifiée sur Supabase le 19 octobre ; le code associé reste à déployer.
+
+Le budget initial de 1 000 € nécessite aussi la migration
+`20261019000300_kq_starting_budget.sql`, appliquée et vérifiée le 19 octobre. Le kit de trois
+espaces équipés est déjà offert ; cette migration ne crédite pas les parties existantes.
+
+Le pack Buddies de départ garanti nécessite la migration
+`20261019000400_kq_starter_buddies.sql`, également appliquée et vérifiée le
+19 octobre. Le rattrapage a complété cinq anciennes collections avec onze
+communes au total. La mission X `20261019000200_warehouse_twitter_mission.sql`
+est aussi appliquée. Voir le [suivi des contrôles](PLACARD-GAME-DESIGN.md).
 
 ## 1. Principe
 
@@ -26,17 +40,37 @@ La carte Buddie d'origine n'est jamais détruite par le Placard. Une carte
 Héritage équipée est permanente et ne brûle jamais.
 
 Après avoir utilisé un Buddie pour démarrer une culture, il faut utiliser
-**cinq autres Buddies différents** avant de pouvoir le réutiliser. Cette
+**deux autres Buddies différents** avant de pouvoir le réutiliser. Cette
 rotation concerne toutes les raretés, y compris les Épiques et les Légendaires.
 Les copies d'une même carte comptent comme un seul Buddie. Une culture
 démarrée compte même si elle échoue ; une tentative de démarrage refusée ne
 compte pas. La rotation est conservée entre les connexions et les saisons,
 et tient compte des cultures déjà démarrées avant son activation.
-Pour une seule zone, il faut donc posséder au moins six Buddies différents
+Pour une seule zone, il faut donc posséder au moins trois Buddies différents
 pour jouer en continu. Pour une campagne, tous les Buddies placés doivent
 être disponibles au lancement ; un même Buddie ne peut occuper deux zones.
 
+Le pack de bienvenue Buddies est gratuit et unique par compte. Les nouveaux packs
+de bienvenue contiennent trois variétés communes différentes, sans carte bonus.
+Ils ne participent pas au tirage des packs ordinaires et ne consomment pas leurs
+quotas de rareté. Les packs ordinaires conservent leur fonctionnement.
+À l'application de la migration du 19 octobre, les comptes ayant déjà réclamé
+l'ancien pack de bienvenue et possédant moins de trois variétés jouables actives
+reçoivent une seule fois les communes manquantes pour atteindre trois variétés.
+Ce complément rejoint directement leur album et ne modifie aucun tirage passé.
+
 ## 2. Cartes La Botte et burns
+
+La version locale du 20 octobre propose une main de **10 cartes au maximum**,
+selon les copies disponibles dans le deck. Elle reste figée pendant l’étape :
+jouer une carte ne la remplace pas immédiatement. L’Héritage Main prévoyante
+permet de piocher jusqu’à **13 cartes** et de composer une main de dix à la
+première étape ; sa réserve reste limitée à trois cartes et son bonus initial
+reste de 2 XP. Ce changement ne permet pas de jouer davantage de cartes par tour.
+Une main déjà enregistrée reste figée jusqu’à l’étape suivante ou un changement
+de main autorisé ; elle n’est pas complétée pendant un lancer ou après avoir
+joué une carte. Cette évolution et sa migration éditoriale
+`20261020000300_kq_ten_card_hand.sql` restent locales.
 
 - Le Sol vivant est la base commune gratuite ; les anciennes cartes Substrat sont archivées.
 - Chaque autre carte La Botte brûle uniquement lorsqu'elle est effectivement
@@ -216,8 +250,12 @@ Toutes les nouvelles cultures utilisent le Sol vivant. Les quatre anciennes cart
 
 L'argent du Placard est une monnaie virtuelle propre au jeu. Il ne correspond
 pas aux points fidélité, ne peut pas être acheté, retiré, remboursé ou converti
-en argent réel. Chaque joueur commence avec `350 €` virtuels ainsi qu'une tente
-90 × 90, une LED 115 W et une extraction de départ.
+en argent réel. Chaque joueur commence avec `1 000 €` virtuels. Son entrepôt reçoit
+gratuitement `1 m²` de culture, `1 m²` de séchage et `1 m²` de stockage, matériel
+installé et aménagement compris, sans débit du budget initial. Le Trésorier conserve
+son bonus unique de `650 €` : il commence avec `1 650 €` et accède au livret.
+Ce nouveau budget s'applique aux nouveaux portefeuilles ; les soldes existants
+restent inchangés.
 
 Le matériel reste dans l'inventaire, mais le matériel de culture acheté s'use
 et doit être remplacé lorsqu'il arrive à 0 % d'état. Une seule pièce peut être
@@ -240,12 +278,12 @@ adaptés à la progression : tamis 550 €, presse 850 €, laveuse 1 250 €.
 | LED spéciale 300 W | 359 € |
 | Extracteur EC 6 pouces | 149 € |
 | Contrôleur climatique AI+ | 139 € |
-| Pollinator à sec Resinator OG | 550 € |
-| Ice washer Mini Osprey 2.0 | 1 250 € |
-| Collecteur AutoSieve | 4 995 € |
-| Séparateur statique Plasmastatic | 22 800 € |
-| Presse à rosin | 850 € |
-| Sécheur de hash HiLyph XL | 7 495 € |
+| Tamis compact | 550 € |
+| Laveuse compacte | 1 250 € |
+| Collecteur compact | 4 995 € |
+| Séparateur compact | 22 800 € |
+| Presse compacte | 850 € |
+| Sécheur compact | 7 495 € |
 | Panneau solaire et batterie | 1 149 € |
 | Caméra de surveillance | 69,99 € |
 | Chien de garde | 1 000 € |
@@ -686,13 +724,135 @@ trois emballages restent utilisées dans le choix du conditionnement.
 | --- | ---: | --- |
 | Photos et fiches produit | 300 € | Conversion +10 %, aucun visiteur créé |
 | Identité par un graphiste | 700 € | Conversion +8 %, doypack imprimé débloqué |
+| Site de base · niveau 1 | Gratuit, sans abonnement | Conversion ×1 |
 | Site amélioré | 900 € puis 30 €/mois de jeu | 5 commandes, confiance ≥45 ; conversion ×1,25 |
 | Site professionnel | 3 000 € au total puis 60 €/mois de jeu | 30 commandes, confiance ≥60 ; conversion ×1,6 |
+| Boutique de créateur · niveau 4 | 6 500 € au total puis 110 €/mois de jeu | 80 commandes, confiance ≥70, 50 abonnés, photos acquises ; conversion ×1,9 |
+| Boutique signature · niveau 5 | 12 000 € au total puis 180 €/mois de jeu | 180 commandes, confiance ≥80, 150 abonnés, photos et identité acquises ; conversion ×2,2 |
+| Maison de référence · niveau 6 | 20 000 € au total puis 280 €/mois de jeu | 350 commandes, confiance ≥88, 300 abonnés, photos et identité acquises ; conversion ×2,5 |
 
 Le passage du site amélioré au professionnel coûte la différence, soit 2 100 €.
+Les six niveaux se débloquent successivement : les niveaux suivants coûtent
+3 500 €, 5 500 € et 8 000 €. Les photos et l’identité restent des achats séparés.
+Les comptes déjà professionnels conservent leur niveau et leur période payée.
+L’interface permet d’explorer chaque niveau sans achat, présente son gain de
+cadence estimée face au site actuel et garde les frais récurrents visibles.
+Les conditions sont contrôlées au moment de l’achat par le serveur. Les niveaux
+4 à 6 nécessitent le catalogue étendu de la migration `20261020000400`, appliquée
+à la base Supabase partagée le 21 octobre 2026, sans déploiement du code.
+Un ancien serveur sans `site.maxLevel` conserve les trois niveaux d’origine.
 Le premier mois est inclus ; un mois de jeu dure 5 jours réels. Les anciens sites
 payants sont repris comme sites améliorés avec leur période déjà payée conservée.
 Les abonnements non réglés suspendent les ventes ; les paquets restent en stock.
+
+L’atelier **Photos et marque** conserve les deux investissements historiques
+comme premiers paliers et ajoute trois progressions indépendantes. Le prix
+indiqué paie uniquement le palier suivant ; chaque progression s’achète dans
+l’ordre, sans abonnement supplémentaire. Un site actif est nécessaire à l’achat.
+
+| Atelier et palier | Prix du palier | Conditions supplémentaires | Effet total de cet atelier |
+| --- | ---: | --- | --- |
+| Photo 1 · Photos et fiches produits | 300 € | Site niveau 1 | Conversion récoltes ×1,10 |
+| Photo 2 · Studio lumière douce | 550 € | Site 2, 15 commandes, confiance ≥55 | Conversion récoltes ×1,18 |
+| Photo 3 · Éditorial de collection | 1 100 € | Site 4, 80 commandes, confiance ≥70 | Conversion récoltes ×1,26 |
+| Identité 1 · Identité par un graphiste | 700 € | Site niveau 1 | Récoltes ×1,08 ; emballages imprimés et accès aux ateliers merch selon leurs conditions |
+| Identité 2 · Charte complète | 1 000 € | Site 3, 40 commandes, confiance ≥65, Photo 1 | Récoltes ×1,14 ; merch ×1,08 |
+| Identité 3 · Univers signature | 1 800 € | Site 5, 180 commandes, confiance ≥80, Photo 2 | Récoltes ×1,20 ; merch ×1,16 |
+| Fiches & récits 1 · Fiches détaillées | 180 € | Site 2, 5 commandes, confiance ≥45, Photo 1 | Conversion +4 % si la direction correspond au produit, −2 % sinon |
+| Fiches & récits 2 · Récits de collection | 450 € | Site 3, 30 commandes, confiance ≥60, Identité 1 | Conversion +8 % si accord, −4 % sinon |
+| Fiches & récits 3 · Direction éditoriale | 950 € | Site 4, 80 commandes, confiance ≥75, Photo 2 et Identité 2 | Conversion +12 % si accord, −6 % sinon |
+
+Les commandes requises sont les commandes en ligne des récoltes et de leurs
+transformations, jamais les articles de merch. Les multiplicateurs de Photo,
+d’Identité et d’éditorial se combinent ; la Photo ne modifie pas le merch.
+Ils ne changent ni l’audience, ni la qualité, ni les références de prix, ni la
+confiance. Les premiers paliers conservent exactement les avantages antérieurs.
+
+Dès Identité 1 ou Fiches & récits 1, une direction peut être choisie gratuitement :
+
+| Direction | Récoltes qui correspondent | Merch qui correspond |
+| --- | --- | --- |
+| Clair & accessible | Qualité vendable, prix ≤105 % de la référence | Stickers et affiches, prix ≤105 % |
+| Atelier artisanal | Qualité ≥7,5/10, prix ≤130 % de la référence | Tote bags et mugs, prix ≤130 % |
+| Collection signature | Qualité ≥8,5/10, prix entre 100 et 150 % de la référence | T-shirts et casquettes, prix entre 100 et 150 % |
+
+Sans Fiches & récits, le choix ne change que la présentation. Avec un palier
+éditorial, une référence mal assortie subit le malus indiqué : aucune direction
+ne donne le meilleur résultat à toute une gamme. La référence utilisée est
+celle de l’offre réelle, y compris une demande client en cours. Le changement
+de direction applique ses effets après le calcul des ventes déjà dues ; il ne
+crée pas de ventes rétroactives. Il reste possible lorsque le site est suspendu.
+La comparaison montre une estimation sur les produits réellement en vente, sans
+inventer de stock ou d’historique ; la maquette visuelle est identifiée comme telle.
+
+Ces règles nécessitent la migration `20261020000600_kq_online_studio.sql`,
+appliquée à la base Supabase partagée le 21 octobre 2026 après vérification locale,
+sans déploiement du code. Les snapshots sans `studio.version = 1` conservent
+l’achat historique des deux premiers paliers ; les extensions restent désactivées.
+Les neuf vignettes, une par palier, sont créées avec l’outil intégré imagegen
+dans la direction artistique existante : fleurs CBD, trichomes, feuilles de
+chanvre, bocaux, sachets et fiches de variétés. Les récits de collection montrent
+les fleurs et leur présentation dans un carnet, puis un catalogue CBD.
+La planche est enregistrée dans `public/placard/studio/atelier-cbd-sprites-v2.png`,
+avec les prompts dans `public/placard/studio/atelier-cbd-sprites-v2.json`.
+
+Le rayon **Merch & collections** ajoute des produits dérivés à la boutique.
+Les trois ateliers sont des achats permanents indépendants, sans abonnement
+supplémentaire. Ils exigent une identité de marque et un site actif :
+
+| Atelier | Achat unique | Conditions | Articles débloqués |
+| --- | ---: | --- | --- |
+| Papeterie de marque | 120 € | Site niveau 2, 5 commandes de récoltes, confiance ≥45 | Stickers, affiche |
+| Collection textile | 650 € | Site niveau 3, 30 commandes de récoltes, confiance ≥60 | Tote bag, T-shirt |
+| Objets du quotidien | 950 € | Site niveau 4, 80 commandes de récoltes, confiance ≥70 | Mug, casquette |
+
+| Article | Fabrication par unité | Prix de référence |
+| --- | ---: | ---: |
+| Stickers | 0,80 € | 4 € |
+| Affiche | 3 € | 12 € |
+| Tote bag | 6,50 € | 18 € |
+| T-shirt | 11 € | 28 € |
+| Mug | 5,50 € | 16 € |
+| Casquette | 8,50 € | 22 € |
+
+La fabrication est payée d’avance et le stock est disponible immédiatement.
+Chaque achat porte sur 1 à 500 articles, dans la limite de 500 en stock par
+référence. Une première série reste hors vitrine jusqu’à sa publication ; un
+réassort conserve le prix et la publication. Le site offre 2 places au niveau 2,
+puis une place supplémentaire par niveau, jusqu’à 6 références. À épuisement,
+la référence sort de la vitrine. Le stock merch ne consomme pas de capacité de
+stockage des récoltes et les invendus ne sont pas rachetés.
+
+Le prix est libre entre 0,01 € et 1 000 €. La cadence estimée utilise l’audience
+naturelle existante, le niveau du site, la confiance et l’acceptation du prix.
+Chaque famille a sa fréquence d’achat : au prix de référence et à audience
+identique, les stickers tournent plus vite que les vêtements. Les facteurs de
+cadence sont respectivement 3 pour les stickers, 1,2 pour l’affiche, 0,9 pour le
+tote bag, 0,65 pour le T-shirt, 1 pour le mug et 0,8 pour la casquette. Cela oppose
+petites marges fréquentes et marges unitaires plus élevées mais moins fréquentes.
+L’audience est partagée entre les références actives ; ajouter des références
+ne la multiplie pas. Les campagnes ciblant les récoltes n’alimentent pas le merch.
+Les ventes continuent hors connexion, s’arrêtent si le site est suspendu et
+consomment le stock réel. Modifier le prix ou la publication remet à zéro la
+progression vers la prochaine vente de cette référence ; les achats déjà réalisés
+restent acquis. Une référence peut être retirée de la vitrine même site suspendu.
+
+Les ventes merch sont comptabilisées séparément : articles, chiffre d’affaires,
+frais, sommes versées et coûts de fabrication vendus. Elles supportent les frais
+de 2,5 %, la TVA et les prélèvements de dettes du jeu applicables. La marge affichée
+avant TVA et autres charges déduit la fabrication et les frais estimés ; le stock
+payé d’avance n’est pas débité une seconde fois lors de la vente. Les arrondis
+de frais se cumulent avec les autres ventes en ligne. Ces ventes ne donnent ni
+commandes de récoltes pour les paliers, ni réputation, qualité ou abonnés.
+
+Le rayon nécessite la migration `20261020000500_kq_online_merch.sql`, appliquée
+à la base Supabase partagée le 21 octobre 2026 après vérification locale, sans
+déploiement du code. Sans `online.merch.version = 1`, l’interface laisse découvrir
+les collections mais désactive les opérations. La démonstration locale utilise
+uniquement des données fictives en mémoire. La planche d’illustrations
+`public/placard/merch/collection-sprites-v1.png` utilise la même direction artistique
+que l’atelier de marque ; son origine et ses prompts sont conservés dans
+`public/placard/merch/collection-sprites-v1.json`.
 
 Les missions sociales sont simulées dans le jeu et distinctes des missions
 communautaires avec preuves réelles. Présenter sa marque dure 24 heures réelles,

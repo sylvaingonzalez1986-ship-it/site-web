@@ -1,6 +1,6 @@
 export const CHANVRIER_STRENGTHS = [
   { code: "green-thumb", name: "Main Verte", stage: "Culture", badge: "+2 XP / culture", description: "Commence chaque culture avec 2 XP supplémentaires. Le bonus de rareté de ton Buddie s’ajoute toujours." },
-  { code: "treasurer", name: "Trésorier", stage: "Installation", badge: "1 000 € + livret à 5 %", description: "Commence avec 1 000 € de monnaie de jeu au lieu de 350 € : un bonus unique de 650 €. Accède au livret d’épargne et place ton argent à 5 % par tranche complète de 24 h." },
+  { code: "treasurer", name: "Trésorier", stage: "Installation", badge: "+650 € + livret à 5 %", description: "Reçois un bonus unique de 650 € de monnaie de jeu à la création de ton personnage. Accède au livret d’épargne et place ton argent à 5 % par tranche complète de 24 h." },
   { code: "merchant", name: "Commercial", stage: "Vente", badge: "Ventes ×1,5", description: "Vends 50 % de volume en plus en ligne et en boutique, et gagne 50 % de plus à quantité égale sur tous les canaux. Le grossiste reprend déjà tout ton stock. La qualité reste essentielle." },
   { code: "handyperson", name: "Bricoleur", stage: "Transformation", badge: "Réparations offertes", description: "Remets gratuitement tes machines en route lorsqu’elles sont usées. Leur entretien reste nécessaire tous les 10 à 20 cycles." },
 ] as const;

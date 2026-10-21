@@ -84,12 +84,13 @@ describe("one physical floor shared by culture, drying and storage", () => {
   });
 });
 
-describe("service installation buys whole physical equipment at sourced prices", () => {
+describe("service installation buys whole physical equipment at current game catalog prices", () => {
+  // Post-harvest prices match 20261018000600_kq_postharvest_prices_and_climate_billing.sql.
   it.each([
-    { code: "SJ-DRYIT90", kind: "drying" as const, quantity: 1, capacity: 1_000, litres: 0, equipmentCents: 3_990, installationCents: 599, totalCents: 16_589 },
-    { code: "LP-SUPER-1L", kind: "storage" as const, quantity: 4, capacity: 1_200, litres: 24, equipmentCents: 8_360, installationCents: 1_254, totalCents: 21_614 },
-    { code: "CURTEC-60L", kind: "storage" as const, quantity: 4, capacity: 12_000, litres: 240, equipmentCents: 34_200, installationCents: 5_130, totalCents: 51_330 },
-    { code: "BROR-JARS-48", kind: "storage" as const, quantity: 1, capacity: 2_400, litres: 48, equipmentCents: 25_720, installationCents: 3_858, totalCents: 41_578 },
+    { code: "SJ-DRYIT90", kind: "drying" as const, quantity: 1, capacity: 1_000, litres: 0, equipmentCents: 14_900, installationCents: 2_235, totalCents: 29_135 },
+    { code: "LP-SUPER-1L", kind: "storage" as const, quantity: 4, capacity: 1_200, litres: 24, equipmentCents: 11_960, installationCents: 1_794, totalCents: 25_754 },
+    { code: "CURTEC-60L", kind: "storage" as const, quantity: 4, capacity: 12_000, litres: 240, equipmentCents: 359_600, installationCents: 53_940, totalCents: 425_540 },
+    { code: "BROR-JARS-48", kind: "storage" as const, quantity: 1, capacity: 2_400, litres: 48, equipmentCents: 64_900, installationCents: 9_735, totalCents: 86_635 },
   ])("prices and equips a 1 m² $code installation", item => {
     const zone = service({ kind: item.kind, deviceCode: item.code });
     const quote = getKqWarehouseServiceZoneQuote(zone);
@@ -107,7 +108,7 @@ describe("service installation buys whole physical equipment at sourced prices",
     const nets = service({ id: "drying", kind: "drying", deviceCode: "SJ-DRYIT90", width: 2 });
     const quote = getKqWarehouseServiceZoneQuote(nets);
     expect(quote).toMatchObject({ areaM2: 2, usableSurfaceM2: 5.027, capacityGrams: 2_000,
-      equipmentCostCents: 7_980, installationCostCents: 1_197, preparationCostCents: 24_000, totalCostCents: 33_177 });
+      equipmentCostCents: 29_800, installationCostCents: 4_470, preparationCostCents: 24_000, totalCostCents: 58_270 });
     expect(getKqWarehouseEquipmentDemand([], [nets, { ...nets, id: "drying-2", x: 4, width: 1 }]))
       .toEqual([{ code: "SJ-DRYIT90", quantity: 3 }]);
   });
@@ -115,8 +116,8 @@ describe("service installation buys whole physical equipment at sourced prices",
   it("charges only added preparation and devices when a storage rectangle grows", () => {
     const original = paid([service()]);
     const quote = getKqWarehouseQuote({ ...original, serviceZones: [service({ width: 2 })] }, original);
-    expect(quote).toMatchObject({ addedAreaM2: 1, equipmentCostCents: 8_360, preparationCostCents: 12_000,
-      installationCostCents: 1_254, totalCostCents: 21_614 });
+    expect(quote).toMatchObject({ addedAreaM2: 1, equipmentCostCents: 11_960, preparationCostCents: 12_000,
+      installationCostCents: 1_794, totalCostCents: 25_754 });
     expect(quote.purchases.map(line => [line.code, line.quantity])).toEqual([["LP-SUPER-1L", 4]]);
     expect(quote.nextState.equipment).toEqual([{ code: "LP-SUPER-1L", quantity: 8 }]);
     expect(getKqWarehouseSummary(quote.nextState).storageCapacityGrams).toBe(2_400);
@@ -141,7 +142,7 @@ describe("service installation buys whole physical equipment at sourced prices",
   it("reuses previous containers after replacing them and never grants a cash refund", () => {
     const jars = paid([service()]);
     const drums = getKqWarehouseQuote({ ...jars, serviceZones: [service({ deviceCode: "CURTEC-60L" })] }, jars);
-    expect(drums.totalCostCents).toBe(39_330);
+    expect(drums.totalCostCents).toBe(413_540);
     expect(drums.purchases.map(line => [line.code, line.quantity])).toEqual([["CURTEC-60L", 4]]);
     expect(getKqWarehouseSummary(drums.nextState)).toMatchObject({ storageCapacityGrams: 12_000, reserve: [{ code: "LP-SUPER-1L", quantity: 4 }] });
     const restored = getKqWarehouseQuote({ ...drums.nextState, serviceZones: [service()] }, drums.nextState);
@@ -155,9 +156,9 @@ describe("service installation buys whole physical equipment at sourced prices",
   });
 
   it("spreads the full investment over every fitted square metre, including service-only plans", () => {
-    expect(getKqWarehouseSummary(paid([service()]))).toMatchObject({ investmentCents: 21_614, investmentPerM2Cents: 21_614 });
+    expect(getKqWarehouseSummary(paid([service()]))).toMatchObject({ investmentCents: 25_754, investmentPerM2Cents: 25_754 });
     expect(getKqWarehouseSummary(paid([service()], [culture()]))).toMatchObject({
-      allocatedAreaM2: 2, investmentCents: 67_884, investmentPerM2Cents: 33_942,
+      allocatedAreaM2: 2, investmentCents: 72_024, investmentPerM2Cents: 36_012,
     });
   });
 

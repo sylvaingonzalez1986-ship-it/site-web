@@ -25,6 +25,8 @@ const fixture=new URLSearchParams(location.search).get('fixture');
 const params=new URLSearchParams(location.search);
 const BASIC_PRICE=500;
 const walletKey='kanab-quest-care-simulation-v1';
+// This payment fixture has its own balance; the game's starter budget is tested separately.
+if(!localStorage.getItem(walletKey))localStorage.setItem(walletKey,JSON.stringify({cashCents:35000,inventory:{}}));
 if(fixture?.startsWith('wallet-')){
   localStorage.removeItem('kanab-quest-dice-prototype-v7');
   localStorage.removeItem('kanab-quest-care-journal-v1');
@@ -440,7 +442,11 @@ try {
   const oldReceiptNotice = await page.$$eval('[role="status"]', nodes => nodes.map(node => node.textContent).join(' '));
   assert.doesNotMatch(oldReceiptNotice, /5,00\s*€|500\s*cent/i, 'A historical zero-charge receipt must not invent a fee');
   pass('a replayed historical zero-charge receipt never claims a new payment');
-  await page.evaluate(() => localStorage.setItem('kanab-quest-care-simulation-v1', JSON.stringify({ cashCents: 35000, inventory: {} })));
+  await page.evaluate(() => {
+    localStorage.setItem('kanab-quest-care-simulation-v1', JSON.stringify({ cashCents: 35000, inventory: {} }));
+    localStorage.removeItem('kanab-quest-dice-prototype-v7');
+    localStorage.removeItem('kanab-quest-care-journal-v1');
+  });
   await page.goto(`${origin}/?fixture=visual`, { waitUntil: 'networkidle0' });
   const labels = ['Réussite exceptionnelle', 'Réussite', 'Fragile', 'Échec'];
   const outcomes = ['critical', 'success', 'fragile', 'failure'];
@@ -458,6 +464,43 @@ try {
     }, {}, options);
     await imagesReady('[data-care-portrait]', 1);
   };
+  await page.locator('[data-care-toggle]').click();
+  await waitCash(35000);
+  await setVisual({ stage: 0, vitality: 100 });
+  await page.waitForSelector('[data-care-choice]');
+  assert.match(await page.$eval('[data-care-choice]', node => node.textContent), /continuer sans entretien/);
+  assert.match(await page.$eval('[data-care-choice]', node => node.textContent), /5,00/);
+  assert.equal(await page.$eval('[data-care-basic]', node => node.getAttribute('aria-describedby').split(' ').some(id => document.getElementById(id)?.hasAttribute('data-care-choice'))), true);
+  const beforeChoice = await localCash();
+  await page.locator('#advance').click();
+  await page.waitForFunction(() => window.__careState.stageIndex === 1);
+  assert.equal(await localCash(), beforeChoice, 'Choosing the next operation without care does not debit the wallet');
+  assert.equal(await page.evaluate(() => window.__careState.care.history.some(item => item.kind === 'intervention' && !item.productCode)), false);
+  pass('healthy culture offers an accessible unpaid next step; continuing does not silently activate or charge care');
+  for (const options of [{ stage: 2, vitality: 89 }, { stage: 2, vitality: 100, problemSeverity: 1 }, { stage: 5, vitality: 100 }, { stage: 2, vitality: 0, dead: true }]) {
+    await setVisual(options);
+    assert.equal(await page.$('[data-care-choice]'), null, 'Advice to save care must not hide a problem, fragile health or a terminal state');
+  }
+  pass('save-care advice disappears with a problem, lower health, death or postharvest');
+  await setVisual({ stage: 2, vitality: 90 });
+  await page.waitForSelector('[data-care-choice]');
+  for (const width of [320, 390]) {
+    await page.setViewport({ width, height: 844 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await (await page.$('[data-care-basic-section]')).screenshot({ path: resolve(output, `care-optional-${width}.png`) });
+  }
+  const careDetails = await page.$eval('[data-care-basic-section]', node => node.textContent);
+  assert.match(careDetails, /Entretien facultatif/);
+  assert.match(careDetails, /cinq étapes représente 25,00/);
+  assert.match(careDetails, /ne garantit ni la note du jury ni le prix de vente/);
+  await page.locator('[data-care-basic]').click();
+  await waitBasicQueued();
+  assert.equal(await page.$('[data-care-choice]'), null, 'A paid action must show its receipt rather than advice to skip it');
+  assert.equal(await localCash(), beforeChoice - 500, 'Explicit payment still charges the exact existing price');
+  pass('optional-care decision fits 320/390px, distinguishes per-step and full-cycle cost, and yields to the paid receipt');
+  // The visual matrix starts a separate panel, without the prior payment notice.
+  await page.goto(`${origin}/?fixture=visual`, { waitUntil: 'networkidle0' });
+  await page.waitForSelector('[data-care-toggle]');
   const portrait = () => page.$eval('[data-care-portrait]', image => ({ src: image.getAttribute('src'), alt: image.alt }));
   const readResult = async () => {
     await page.locator('[data-care-toggle]').click();

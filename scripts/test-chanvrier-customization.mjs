@@ -4,7 +4,7 @@ import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { createServer } from "vite";
-import { PGlite } from "../output/reputation-test-tools/node_modules/@electric-sql/pglite/dist/index.js";
+import { PGlite } from "@electric-sql/pglite";
 
 const db = new PGlite();
 const vite = await createServer({
@@ -142,5 +142,86 @@ try {
   const after=(await db.query('SELECT rpc_kq_commerce_state($1) AS data',[merchant])).rows[0].data;
   assert.equal(after.cashCents,current.cashCents+offer.payoutCents);
   assert.equal(after.shopRecruitment,offer.shopRecruitmentAfter);
-  console.log('PASS: appearance catalog, legacy profiles, one-time capital, XP migration, savings timing, compounding, transfers, retries, permissions, merchant capacity and settled sale.');
+
+  // Replace the fixture-only wallet initializer with its actual production RPC
+  // and the current building-service patch before checking the new default.
+  await db.exec(`
+    ALTER TABLE kq_equipment_wallets ADD COLUMN production_units INTEGER NOT NULL DEFAULT 1,
+      ADD COLUMN equipment_scope_version INTEGER NOT NULL DEFAULT 3;
+    CREATE TABLE kq_player_equipment(user_id UUID,tent_number INTEGER,equipment_code TEXT,purchase_price_cents INTEGER,
+      PRIMARY KEY(user_id,tent_number,equipment_code));
+    ALTER TABLE kq_equipment_loadouts ADD COLUMN tent_number INTEGER NOT NULL DEFAULT 1,ADD COLUMN slot TEXT,
+      ADD UNIQUE(user_id,tent_number,slot);
+    DROP FUNCTION public.rpc_kq_ensure_equipment_profile(UUID);
+  `);
+  const equipmentSql=await migration('20261001000200_kq_tent_equipment_and_shared_workshop.sql');
+  const initializerStart=equipmentSql.indexOf('CREATE OR REPLACE FUNCTION public.rpc_kq_ensure_equipment_profile(');
+  assert(initializerStart>=0,'production initializer exists');
+  await db.exec(equipmentSql.slice(initializerStart,equipmentSql.indexOf('END $$;',initializerStart)+7));
+  const buildingSql=await migration('20261011130000_kq_building_services.sql');
+  await db.exec(buildingSql.slice(buildingSql.indexOf('CREATE TABLE public.kq_building_service_archive'),
+    buildingSql.indexOf('CREATE TABLE public.kq_building_service_conversions')));
+  const conversionStart=buildingSql.indexOf('CREATE FUNCTION public.kq_migrate_building_services(');
+  await db.exec(buildingSql.slice(conversionStart,buildingSql.indexOf('END $$;',conversionStart)+7));
+  const initializerPatchStart=buildingSql.indexOf('DO $$ DECLARE body TEXT; signature TEXT; BEGIN');
+  const initializerPatchEnd=buildingSql.indexOf(' EXECUTE body;',initializerPatchStart)+' EXECUTE body;'.length;
+  assert(initializerPatchStart>=0 && initializerPatchEnd>initializerPatchStart,'production initializer patch exists');
+  await db.exec(buildingSql.slice(initializerPatchStart,initializerPatchEnd)+'\nEND $$;');
+  await db.exec(`
+    REVOKE ALL ON FUNCTION public.rpc_kq_ensure_equipment_profile(UUID) FROM PUBLIC,anon,authenticated;
+    GRANT EXECUTE ON FUNCTION public.rpc_kq_ensure_equipment_profile(UUID) TO service_role;
+    REVOKE ALL ON TABLE public.kq_equipment_wallets FROM PUBLIC,anon,authenticated,service_role;
+    GRANT SELECT ON TABLE public.kq_equipment_wallets TO service_role;
+  `);
+  const ensure=async user=>(await db.query('SELECT rpc_kq_ensure_equipment_profile($1) AS data',[user])).rows[0].data;
+  const cash=async user=>(await db.query('SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1',[user])).rows[0].cash_cents;
+  const wallets=async()=>(await db.query('SELECT to_jsonb(w) AS wallet FROM kq_equipment_wallets w ORDER BY user_id')).rows;
+  const access=async()=>(await db.query(`SELECT
+    (SELECT relacl::TEXT FROM pg_class WHERE oid='public.kq_equipment_wallets'::REGCLASS) AS wallet,
+    (SELECT proacl::TEXT FROM pg_proc WHERE oid='public.rpc_kq_ensure_equipment_profile(uuid)'::REGPROCEDURE) AS initializer,
+    (SELECT proacl::TEXT FROM pg_proc WHERE oid='public.rpc_arena_save_chanvrier(uuid,jsonb)'::REGPROCEDURE) AS profile`)).rows[0];
+  const oldWallet=randomUUID();
+  await db.query('INSERT INTO auth.users VALUES($1)',[oldWallet]);
+  assert.deepEqual(await ensure(oldWallet),{ready:true});
+  assert.equal(await cash(oldWallet),35000,'actual initializer uses the previous 350-euro default');
+  const previousWallets=await wallets(),previousAccess=await access();
+  const budgetMigration=await migration('20261019000300_kq_starting_budget.sql');
+  await db.exec(budgetMigration);
+  assert.deepEqual(await wallets(),previousWallets,'migration preserves every existing wallet and timestamp');
+  assert.deepEqual(await access(),previousAccess,'changing the default preserves table and RPC grants');
+  await ensure(oldWallet); await ensure(treasury);
+  assert.deepEqual(await wallets(),previousWallets,'initialization retries never top up existing balances');
+
+  const newGrower=randomUUID(),newTreasurer=randomUUID(),preinitialized=randomUUID();
+  await db.query('INSERT INTO auth.users VALUES($1),($2),($3)',[newGrower,newTreasurer,preinitialized]);
+  const growerProfile={...profile,nickname:'BudgetGrower',strength:'green-thumb'};
+  const treasurerProfile={...profile,nickname:'BudgetTreasurer'};
+  assert.equal((await save(newGrower,growerProfile)).startingBonusCents,0);
+  assert.equal(await cash(newGrower),100000,'new ordinary profile receives exactly 1000 euros');
+  assert.equal((await save(newTreasurer,treasurerProfile)).startingBonusCents,65000);
+  assert.equal(await cash(newTreasurer),165000,'new Treasurer receives 1000 euros plus the existing 650-euro bonus');
+  assert.equal((await save(newGrower,growerProfile)).startingBonusCents,0);
+  assert.equal((await save(newTreasurer,treasurerProfile)).startingBonusCents,0);
+  await ensure(newGrower); await ensure(newTreasurer);
+  assert.equal(await cash(newGrower),100000,'profile and wallet retries preserve the ordinary starting budget');
+  assert.equal(await cash(newTreasurer),165000,'profile and wallet retries cannot repeat the Treasurer bonus');
+  await ensure(preinitialized);
+  assert.equal(await cash(preinitialized),100000,'opening the game before choosing a specialty uses the same default');
+  assert.equal((await save(preinitialized,{...profile,nickname:'BudgetPrepared'})).startingBonusCents,65000);
+  assert.equal(await cash(preinitialized),165000,'choosing Treasurer after initialization adds only its existing bonus');
+  assert.deepEqual((await db.query('SELECT equipment_code,purchase_price_cents FROM kq_player_equipment WHERE user_id=$1 ORDER BY equipment_code',[newGrower])).rows,[
+    {equipment_code:'AIR-STARTER',purchase_price_cents:0},
+    {equipment_code:'LED-150-STARTER',purchase_price_cents:0},
+    {equipment_code:'TENT-080-STARTER',purchase_price_cents:0},
+  ],'free starter equipment remains free and is never duplicated by retries');
+  const legacyTreasurerProfile={...profile,nickname:'BudgetLegacy'};
+  assert.equal((await save(oldWallet,legacyTreasurerProfile)).startingBonusCents,65000);
+  assert.equal(await cash(oldWallet),100000,'existing 350-euro wallet choosing Treasurer receives only the 650-euro bonus');
+  assert.equal((await save(oldWallet,legacyTreasurerProfile)).startingBonusCents,0);
+  assert.equal(await cash(oldWallet),100000,'retry preserves the existing wallet plus its one-time Treasurer bonus');
+  const afterBudgetWallets=await wallets();
+  await db.exec(budgetMigration);
+  assert.deepEqual(await wallets(),afterBudgetWallets,'reapplying the budget migration changes no existing wallet');
+  assert.deepEqual(await access(),previousAccess,'reapplying the migration preserves grants');
+  console.log('PASS: appearance catalog, legacy profiles, one-time capital, XP migration, savings timing, compounding, transfers, retries, permissions, merchant capacity, settled sale and new-only 1000/1650-euro budgets.');
 } catch (error) { console.error(error.message, error.where ?? ""); process.exitCode=1; } finally { await vite.close(); await db.close(); }

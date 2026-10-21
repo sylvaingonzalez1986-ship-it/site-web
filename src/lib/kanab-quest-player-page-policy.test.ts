@@ -281,7 +281,8 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).toContain("Cap commercial épinglé");
     expect(gameClient).toContain("estimation pré-jury");
     expect(gameClient).toContain("seul le verdict officiel donnera la note commerciale");
-    expect(gameClient).toContain('window.addEventListener("kq:equipment-updated", refreshRoutePlan)');
+    expect(gameClient).toContain('const unsubscribe = api.subscribe(["kq:equipment-updated"], refreshRoutePlan)');
+    expect(gameClient).toContain('return () => { active = false; controller?.abort(); unsubscribe(); }');
     expect(gameClient).toContain("getKqPinnedRouteVerdictStatus");
     expect(gameClient).toContain('aria-label="Résultat commercial du jury"');
     expect(gameClient).toContain("Note du jury au verdict");
@@ -315,9 +316,12 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient.slice(playerHarvestBranch, localBattleEntry)).toContain(
       "Elle n’est pas brûlée maintenant",
     );
-    expect(gameClient.slice(playerHarvestBranch, localBattleEntry)).toContain(
-      "onClick={onOpenArena ?? reset}",
-    );
+    expect(gameClient).toContain('onContinue={isPlayerMode ? onOpenArena : undefined}');
+    expect(gameClient.slice(playerHarvestBranch, localBattleEntry)).toContain('{harvestMoment}');
+    expect(gameClient.slice(playerHarvestBranch, localBattleEntry)).toContain('href="/arene/placard?view=arena"');
+    const harvestMoment = readFileSync(join(process.cwd(), "src/components/placard/KqHarvestMoment.tsx"), "utf8");
+    expect(harvestMoment).toContain('alive && onContinue ? <button');
+    expect(harvestMoment).toContain('onClick={onContinue}');
     expect(playerShell).toContain('onOpenArena={() => openView("arena")}');
   });
 

@@ -30,7 +30,7 @@ const modules = {
     window.__ids={a:a.runId,b:b.runId,done:done.runId};window.__requests=[];window.__holdAction=false;window.__loseStart=false;
     const persist=()=>sessionStorage.setItem('zone-audit-state',JSON.stringify(window.__fixture));
     const active=()=>window.__fixture.runs.filter(run=>run.state.phase!=='complete');
-    const session=()=>({activeRun:active()[0]??null,activeRuns:active(),flowers:[],battles:[],progress:null,buddieRotation:{requiredDistinctBuddies:5,recentBuddieCodes:[]}});
+    const session=()=>({activeRun:active()[0]??null,activeRuns:active(),flowers:[],battles:[],progress:null,buddieRotation:{requiredDistinctBuddies:2,recentBuddieCodes:[]}});
     const original=window.fetch.bind(window);
     window.fetch=async(input,init={})=>{
       const href=String(input);if(!href.startsWith('/api/'))return original(input,init);

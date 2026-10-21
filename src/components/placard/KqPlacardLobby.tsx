@@ -5,10 +5,11 @@ import { ArrowRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { getKqNextEquipmentGoal } from "@/lib/kanab-quest-equipment";
 import { getKqPlacardNextAction } from "@/lib/kanab-quest-hub";
+import { getKqVillageWelcome } from "@/lib/kanab-quest-village";
 import { getKqProductionUnits } from "@/lib/kanab-quest-production";
 import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
-import { getKqStorageRefreshDelay } from "@/lib/kanab-quest-storage-refresh";
+import { getKqStorageRefreshDelay, KQ_STORAGE_REFRESH_MS } from "@/lib/kanab-quest-storage-refresh";
 import { ArenaLearningLauncher } from "../contest/ArenaLearningLauncher";
 import { useKqTentSelection } from "./KqTentSelector";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
@@ -38,16 +39,23 @@ export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding }
 
   useEffect(() => {
     const controller = new AbortController();
-    void fetch(`/api/arena/placard/equipment?tentNumber=${tentNumber}`, { cache: "no-store", signal: controller.signal })
-      .then(async response => {
+    const refresh = async () => {
+      try {
+        const response = await api.request(`/api/arena/placard/equipment?tentNumber=${tentNumber}`, { cache: "no-store", signal: controller.signal });
         if (!response.ok) throw new Error("Résumé indisponible");
         const data = await response.json() as LobbySnapshot;
-        if (typeof data.activeRun !== "boolean" || !Array.isArray(data.ownedCodes) || !Number.isFinite(data.cashCents) || !Number.isFinite(data.readyLotCount) || !Number.isFinite(data.availableFlowerCount)) throw new Error("Résumé incomplet");
+        if (typeof data.activeRun !== "boolean" || !Array.isArray(data.ownedCodes) || !Number.isFinite(data.cashCents)
+          || !Number.isSafeInteger(data.readyLotCount) || data.readyLotCount < 0
+          || !Number.isSafeInteger(data.availableFlowerCount) || data.availableFlowerCount < 0) throw new Error("Résumé incomplet");
         if (!controller.signal.aborted) { setSnapshot(data); setError(false); }
-      })
-      .catch(() => { if (!controller.signal.aborted) setError(true); });
-    return () => controller.abort();
-  }, [revision, tentNumber]);
+      } catch {
+        if (!controller.signal.aborted) { setSnapshot(null); setError(true); }
+      }
+    };
+    const polling = startArenaVisiblePolling(refresh, KQ_STORAGE_REFRESH_MS);
+    const unsubscribe = api.subscribe(["kq:equipment-updated", "kq:storage-updated", "arena:progress-updated"], () => void polling.refresh());
+    return () => { controller.abort(); polling(); unsubscribe(); };
+  }, [api, revision, tentNumber]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -82,6 +90,7 @@ export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding }
 
   const nextGoal = snapshot ? getKqNextEquipmentGoal({ ownedCodes: snapshot.ownedCodes, cashCents: snapshot.cashCents, productionUnits: 1 }) : null;
   const nextAction = snapshot ? getKqPlacardNextAction({ ...snapshot, equipmentGoalAffordable: nextGoal?.affordable ?? false }) : null;
+  const welcome = nextAction ? getKqVillageWelcome(nextAction) : null;
   const exposedLots = storage?.lots.filter(lot => (lot.projection.capacity?.overflowUnits ?? 0) > 0) ?? [];
   const overflowUnits = exposedLots.reduce((total, lot) => total + lot.projection.capacity!.overflowUnits, 0);
   const deadline = exposedLots.map(lot => lot.projection.capacity?.overflowDeadlineAt).filter((date): date is string => Boolean(date)).sort((left, right) => Date.parse(left) - Date.parse(right))[0];
@@ -92,11 +101,11 @@ export function KqPlacardLobby({ onOpen, onOpenCollection, highlightedBuilding }
   return <main className={styles.lobby} data-placard-lobby>
     {overflowUnits > 0 ? <section className={styles.nextAction} aria-label="À faire maintenant" data-priority="storage">
       <span className={styles.guidePortrait} aria-hidden="true"><Image src="/sylvain.png" alt="" width={88} height={88} /></span>
-      <div><span>Récolte à protéger</span><p>{(overflowUnits / 10).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g sans contenant</p><small>{deadlineLabel ? `Prochaine vente automatique au grossiste : le ${deadlineLabel} (heure de Paris).` : "Ce surplus est en attente de stockage. Ouvre tes récoltes pour connaître son échéance."}</small></div>
+      <div><span>Sylvain · côté réserve</span><p>{(overflowUnits / 10).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g sans contenant</p><small>On met ta récolte à l’abri ? {deadlineLabel ? `Prochaine vente automatique au grossiste : le ${deadlineLabel} (heure de Paris).` : "Ce surplus est en attente de stockage. Ouvre tes récoltes pour connaître son échéance."}</small></div>
       <button type="button" onClick={() => onOpen("harvests", { harvestSection: "storage" })}>Protéger ma récolte<ArrowRight size={17} aria-hidden="true" /></button>
     </section> : nextAction ? <section className={styles.nextAction} aria-label="À faire maintenant">
       <span className={styles.guidePortrait} aria-hidden="true"><Image src="/sylvain.png" alt="" width={88} height={88} /></span>
-      <div><span>À faire maintenant</span><p>{nextAction.title}</p></div>
+      <div><span>Sylvain · {nextAction.eyebrow}</span><p>{nextAction.title}</p><small data-village-reply>{welcome?.reply}</small></div>
       <button type="button" onClick={() => onOpen(nextAction.destination === "shop" ? "workshop" : nextAction.destination, nextAction.destination === "shop" ? { catalog: true, equipmentCode: nextGoal?.equipment.code } : undefined)}>{nextAction.buttonLabel}<ArrowRight size={17} aria-hidden="true" /></button>
     </section> : !error ? <div className={styles.loading} role="status">Ton quartier se prépare…</div> : null}
     <KqPlacardMap onOpen={onOpen} onOpenCollection={onOpenCollection} activeRun={snapshot?.activeRun} cashCents={snapshot?.cashCents ?? null} tents={tents} readyLotCount={snapshot?.readyLotCount} availableFlowerCount={snapshot?.availableFlowerCount} recommended={recommended} highlightedBuilding={highlightedBuilding} />

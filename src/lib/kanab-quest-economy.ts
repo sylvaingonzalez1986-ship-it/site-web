@@ -1,4 +1,4 @@
-import { KQ_RETIRED_CARDS, KQ_ACTIVE_CARDS, KQ_CARDS, KQ_HAND_SIZE, KQ_BUDDIES, type KqBuddieEffect, type KqGameState, type KqSupportCard } from "@/lib/kanab-quest-game";
+import { KQ_RETIRED_CARDS, KQ_ACTIVE_CARDS, KQ_CARDS, KQ_HAND_SIZE, KQ_BUDDIES, KQ_SITUATIONS, doesKqCardMatchSituation, type KqBuddieEffect, type KqGameState, type KqSupportCard } from "@/lib/kanab-quest-game";
 
 export function getKqOpeningHandChance(deckSize: number, copies: number, handSize = KQ_HAND_SIZE) {
   const safeDeckSize = Math.max(0, Math.floor(deckSize));
@@ -93,30 +93,59 @@ const RECOMMENDED_DECKS: Record<KqBuddieEffect, { support: string[] }> = {
   "starting-xp-4": { support: ["BOTTE-020", "BOTTE-006", "BOTTE-018", "BOTTE-017"] },
 };
 
-export function buildKqRecommendedDeck(effect: KqBuddieEffect, inventory: Record<string, number>, challengeCodes: string[] = [], buddieCode?: string) {
+export function buildKqRecommendedDeck(effect: KqBuddieEffect, inventory: Record<string, number>, challengeCodes: string[] = [], buddieCode?: string, options?: { startingXp: number | null }) {
   const preferred = RECOMMENDED_DECKS[effect];
-  const available = (code: string) => KQ_ACTIVE_CARDS.some(card => card.code === code) && (inventory[code] ?? 0) > 0;
+  const ownedCopies = (code: string) => Number.isSafeInteger(inventory[code]) && inventory[code] > 0 ? inventory[code] : 0;
+  const available = (code: string) => KQ_ACTIVE_CARDS.some(card => card.code === code) && ownedCopies(code) > 0;
   const playable = KQ_ACTIVE_CARDS.filter(card => available(card.code));
+  const complete = (support: string[]) => {
+    const repeatable = support.filter(code => KQ_ACTIVE_CARDS.find(card => card.code === code)?.rarity !== "epic");
+    while (support.length < KQ_HAND_SIZE) {
+      const previousLength = support.length;
+      for (const code of repeatable) {
+        if (support.length >= KQ_HAND_SIZE) break;
+        if (support.filter(item => item === code).length < ownedCopies(code)) support.push(code);
+      }
+      if (support.length === previousLength) break;
+    }
+    return { support };
+  };
   const buddie = KQ_BUDDIES.find((card) => card.code === buddieCode);
-  if (buddie) {
-    const startingXp = 1 + buddie.advantageLevel;
+  if (buddie || options) {
+    // An explicit null means the player's bonuses have not been loaded. Never
+    // substitute the leader's bonus for an unknown official starting budget.
+    const requestedXp = options ? options.startingXp : 1 + buddie!.advantageLevel;
+    const startingXp = requestedXp !== null && Number.isFinite(requestedXp) ? Math.max(0, requestedXp) : null;
     const selected: KqSupportCard[] = [];
-    const covered = new Set<string>();
+    const coverage = new Map<string, number>();
+    const affordableCoverage = new Map<string, number>();
+    const matches = new Map(playable.map(card => [card.code, KQ_SITUATIONS.filter(situation => doesKqCardMatchSituation(card, situation))]));
+    const stageSizes = new Map(KQ_SITUATIONS.map(situation => [situation.stage, KQ_SITUATIONS.filter(item => item.stage === situation.stage).length]));
     const candidates = [...playable];
-    while (selected.length < 6 && candidates.length) {
-      const score = (card: KqSupportCard) =>
-        card.tags.filter((tag) => !covered.has(tag)).length * 3
-        + (card.xpCost <= startingXp && selected.length === 0 ? 3 : 0)
+    while (selected.length < KQ_HAND_SIZE && candidates.length) {
+      // Separate preparation and reaction options, with diminishing credit for
+      // overlaps. Compatibility is not a win probability: dice and other card
+      // conditions are unknown here, and no future scenario is consulted.
+      const score = (card: KqSupportCard) => (matches.get(card.code) ?? []).reduce((sum, situation) => {
+        const key = `${situation.code}:${card.timing}`;
+        const weight = 1 / stageSizes.get(situation.stage)!;
+        return sum + weight * (6 / (1 + (coverage.get(key) ?? 0))
+          + (startingXp !== null && card.xpCost <= startingXp ? 4 / (1 + (affordableCoverage.get(key) ?? 0)) : 0));
+      }, 0)
         + (getKqCardChallengeFit(card, challengeCodes) ? 3 : 0)
         + (selected.some((item) => item.timing === card.timing) ? 0 : 2)
-        + (card.tags.length === 0 ? 1 : 0) - card.xpCost * 0.35;
+        - card.xpCost * 0.35;
       candidates.sort((left, right) => score(right) - score(left) || left.code.localeCompare(right.code));
       const card = candidates.shift()!;
       if (card.rarity === "epic" && selected.some(item => item.rarity === "epic")) continue;
       selected.push(card);
-      card.tags.forEach((tag) => covered.add(tag));
+      for (const situation of matches.get(card.code) ?? []) {
+        const key = `${situation.code}:${card.timing}`;
+        coverage.set(key, (coverage.get(key) ?? 0) + 1);
+        if (startingXp !== null && card.xpCost <= startingXp) affordableCoverage.set(key, (affordableCoverage.get(key) ?? 0) + 1);
+      }
     }
-    return { support: selected.map((card) => card.code) };
+    return complete(selected.map((card) => card.code));
   }
   const challengeSupport = playable.filter((card) => getKqCardChallengeFit(card, challengeCodes)).slice(0, 2).map((card) => card.code);
   let selectedEpic = false;
@@ -128,6 +157,6 @@ export function buildKqRecommendedDeck(effect: KqBuddieEffect, inventory: Record
       selectedEpic = true;
       return true;
     })
-    .slice(0, 4);
-  return { support };
+    .slice(0, KQ_HAND_SIZE);
+  return complete(support);
 }

@@ -36,11 +36,11 @@
       "name": "Main prévoyante",
       "effect": "opening-hand-reserve",
       "timing": "once-per-run",
-      "description": "+2 XP au départ. À la première étape, pioche 8 cartes et compose une main de 5.",
+      "description": "+2 XP au départ. À la première étape, pioche 13 cartes et compose une main de 10.",
       "drawback": "Échanges gratuits dans la réserve avant le premier lancer. Les cartes échangées sont conservées.",
       "activationLabel": "PRÉPARATION · PREMIÈRE ÉTAPE",
       "illustrationUrl": "/app/kanab-quest/cards/heritage-003-main-prevoyante-producer-v2.webp",
-      "frontUrl": "/app/kanab-quest/card-fronts/heritage-003-main-prevoyante-producer-front-v5.webp",
+      "frontUrl": "/app/kanab-quest/card-fronts/heritage-003-main-prevoyante-producer-front-v6.webp",
       "focalY": 0.35
     },
     {

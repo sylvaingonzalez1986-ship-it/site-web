@@ -1,4 +1,6 @@
 import type { KqMarketRouteCode } from "./kanab-quest-market";
+import type { KqMerchSnapshot } from "./kanab-quest-merch";
+import { getKqStudioFlowerMultiplier, type KqStudioSnapshot } from "./kanab-quest-studio";
 import { getKqActiveCustomerDemand, getKqOnlineFlowerReferenceCents, type KqAppliedCustomerDemand, type KqCustomerDemandSnapshot } from "./kanab-quest-customer-demand";
 import { getKqMarketingFit, type KqMarketingCampaignActive } from "./kanab-quest-marketing";
 
@@ -13,12 +15,20 @@ export const KQ_ONLINE_PACKAGING = [
   { code: "glass-10", family: "glass", formatGrams: 10, name: "Pot en verre ambré · 10 g", unitCostCents: 210, image: "/placard/equipment-sylvain-v1/packaging-glass.webp", protectionRate: .5, satisfactionBonus: 8, requiresBranding: false },
 ] as const;
 export type KqOnlinePackagingCode = typeof KQ_ONLINE_PACKAGING[number]["code"];
+export type KqOnlineSiteTier = "basic" | "improved" | "pro" | "studio" | "signature" | "flagship";
+export type KqOnlineSiteTierDefinition = {
+  code: KqOnlineSiteTier; level: number; name: string; acquisitionCents: number; monthlyCents: number;
+  conversionMultiplier: number; minimumOrders: number; minimumConfidence: number; minimumFollowers: number;
+  requiredUpgrades: readonly KqOnlineUpgradeCode[]; description: string;
+};
 export const KQ_ONLINE_SITE_TIERS = [
-  { code: "basic", name: "Boutique de base", acquisitionCents: 0, monthlyCents: 0, conversionMultiplier: 1, minimumOrders: 0, minimumConfidence: 0, description: "Un modèle simple pour commencer. Aucun abonnement ; 2,5 % de frais sur les ventes." },
-  { code: "improved", name: "Boutique améliorée", acquisitionCents: 90000, monthlyCents: 3000, conversionMultiplier: 1.25, minimumOrders: 5, minimumConfidence: 45, description: "Des fiches plus lisibles et un parcours mobile travaillé pour mieux convertir tes visiteurs." },
-  { code: "pro", name: "Boutique professionnelle", acquisitionCents: 300000, monthlyCents: 6000, conversionMultiplier: 1.6, minimumOrders: 30, minimumConfidence: 60, description: "Une boutique sur mesure pour développer une clientèle déjà présente." },
-] as const;
-export type KqOnlineSiteTier = typeof KQ_ONLINE_SITE_TIERS[number]["code"];
+  { code: "basic", level: 1, name: "Boutique de base", acquisitionCents: 0, monthlyCents: 0, conversionMultiplier: 1, minimumOrders: 0, minimumConfidence: 0, minimumFollowers: 0, requiredUpgrades: [], description: "Un modèle simple pour commencer. Aucun abonnement ; 2,5 % de frais sur les ventes." },
+  { code: "improved", level: 2, name: "Boutique améliorée", acquisitionCents: 90000, monthlyCents: 3000, conversionMultiplier: 1.25, minimumOrders: 5, minimumConfidence: 45, minimumFollowers: 0, requiredUpgrades: [], description: "Des fiches plus lisibles et un parcours mobile travaillé pour mieux convertir tes visiteurs." },
+  { code: "pro", level: 3, name: "Boutique professionnelle", acquisitionCents: 300000, monthlyCents: 6000, conversionMultiplier: 1.6, minimumOrders: 30, minimumConfidence: 60, minimumFollowers: 0, requiredUpgrades: [], description: "Une boutique sur mesure pour développer une clientèle déjà présente." },
+  { code: "studio", level: 4, name: "Boutique de créateur", acquisitionCents: 650000, monthlyCents: 11000, conversionMultiplier: 1.9, minimumOrders: 80, minimumConfidence: 70, minimumFollowers: 50, requiredUpgrades: ["photography"], description: "Tes photos donnent une place centrale aux produits pour aider les visiteurs à choisir, sans ajouter de trafic." },
+  { code: "signature", level: 5, name: "Boutique signature", acquisitionCents: 1200000, monthlyCents: 18000, conversionMultiplier: 2.2, minimumOrders: 180, minimumConfidence: 80, minimumFollowers: 150, requiredUpgrades: ["photography", "branding"], description: "Ta marque et tes produits composent une présentation cohérente pour mieux convertir ton audience existante." },
+  { code: "flagship", level: 6, name: "Maison de référence", acquisitionCents: 2000000, monthlyCents: 28000, conversionMultiplier: 2.5, minimumOrders: 350, minimumConfidence: 88, minimumFollowers: 300, requiredUpgrades: ["photography", "branding"], description: "Une présentation aboutie pour une clientèle établie. La conversion progresse ; le prix et la qualité restent décisifs." },
+] as const satisfies readonly KqOnlineSiteTierDefinition[];
 export const KQ_ONLINE_UPGRADES = [
   { code: "photography", name: "Photos et fiches produits", costCents: 30000, description: "Une présentation soignée aide les visiteurs à choisir. Améliore la conversion de 10 %, sans créer de visites." },
   { code: "branding", name: "Identité par un graphiste", costCents: 70000, description: "Logo, couleurs et maquettes cohérentes. Débloque les doypacks imprimés et améliore la conversion de 8 %." },
@@ -57,7 +67,7 @@ export type KqOnlineSale = {
 export type KqOnlineMarketingCampaign = { version?: 1; id: string; code: KqOnlineMarketingCode; angle: KqOnlineMarketingAngle; startedAt: string; endsAt: string } | KqMarketingCampaignActive;
 export type KqOnlineSnapshot = {
   version: 1; serverNow: string; settledUntil: string;
-  site: { tier: KqOnlineSiteTier; createdAt: string | null; active: boolean; feePercent: number; paidUntil: string | null; renew: boolean };
+  site: { tier: KqOnlineSiteTier; maxLevel?: number; createdAt: string | null; active: boolean; feePercent: number; paidUntil: string | null; renew: boolean };
   upgrades: Record<KqOnlineUpgradeCode, boolean>; confidence: number; followers: number;
   packaging: Array<{ code: KqOnlinePackagingCode; quantity: number; unitCostCents: number }>;
   listings: KqOnlineListing[];
@@ -65,6 +75,8 @@ export type KqOnlineSnapshot = {
     history?: Array<KqOnlineMarketingCampaign & { completedAt: string }> };
   stats: { visitors: number; orders: number; revenueCents: number; netRevenueCents: number; feesCents: number; packagingCostCents: number; soldGrams: number };
   recentSales: KqOnlineSale[];
+  merch?: KqMerchSnapshot;
+  studio?: KqStudioSnapshot;
 };
 
 const clamp = (n: number, min: number, max: number) => Math.max(min, Math.min(max, Number.isFinite(n) ? n : min));
@@ -78,6 +90,59 @@ export function getKqOnlineSaleableHours(quality: number, packagingCode: string)
 export function getKqOnlineSiteTier(code: string) { return KQ_ONLINE_SITE_TIERS.find(item => item.code === code) ?? KQ_ONLINE_SITE_TIERS[0]; }
 export function getKqOnlineUpgradeCost(current: KqOnlineSiteTier, next: KqOnlineSiteTier) {
   return Math.max(0, getKqOnlineSiteTier(next).acquisitionCents - getKqOnlineSiteTier(current).acquisitionCents);
+}
+
+export type KqOnlineTierBlocker = {
+  code: "tier" | "sequence" | "unavailable" | "orders" | "confidence" | "followers" | "upgrade" | "cash";
+  message: string; actual?: number | null; required?: number; upgrade?: KqOnlineUpgradeCode;
+};
+export type KqOnlineTierEligibility = {
+  allowed: boolean; costCents: number | null; nextTier: KqOnlineSiteTier | null; blockers: KqOnlineTierBlocker[];
+};
+
+/** Read-only purchase guidance. Actual purchases are validated again by the server. */
+export function getKqOnlineTierEligibility(
+  online: Pick<KqOnlineSnapshot, "site" | "stats" | "confidence" | "followers" | "upgrades">,
+  targetTier: KqOnlineSiteTier,
+  cashCents: number,
+): KqOnlineTierEligibility {
+  const current = KQ_ONLINE_SITE_TIERS.find(tier => tier.code === online.site.tier);
+  const target = KQ_ONLINE_SITE_TIERS.find(tier => tier.code === targetTier);
+  const next = current ? KQ_ONLINE_SITE_TIERS.find(tier => tier.level === current.level + 1) : undefined;
+  if (!current || !target) return { allowed: false, costCents: null, nextTier: next?.code ?? null,
+    blockers: [{ code: "tier", message: "Cette formule de boutique est inconnue." }] };
+  const costCents = getKqOnlineUpgradeCost(current.code, target.code);
+  const blockers: KqOnlineTierBlocker[] = [];
+  if (target.level !== current.level + 1) {
+    const message = target.level === current.level ? "Cette formule est déjà acquise."
+      : target.level < current.level ? "Tu possèdes déjà une boutique de niveau supérieur."
+      : `Passe d’abord par la ${next!.name.toLocaleLowerCase("fr-FR")}.`;
+    blockers.push({ code: "sequence", message, actual: current.level, required: target.level - 1 });
+  }
+  // Older snapshots advertise only the three original levels. Never offer a
+  // purchase which the connected service has not declared available.
+  const maxLevel = online.site.maxLevel ?? 3;
+  if (!Number.isSafeInteger(maxLevel) || target.level > maxLevel) {
+    blockers.push({ code: "unavailable", message: "Ce niveau n’est pas encore disponible." });
+  }
+  const requirements = [
+    { code: "orders" as const, actual: online.stats.orders, required: target.minimumOrders, valid: Number.isSafeInteger(online.stats.orders) && online.stats.orders >= 0, message: `Réalise ${target.minimumOrders} commandes pour accéder à ce niveau.` },
+    { code: "confidence" as const, actual: online.confidence, required: target.minimumConfidence, valid: Number.isFinite(online.confidence) && online.confidence >= 0 && online.confidence <= 100, message: `Atteins ${target.minimumConfidence}/100 de confiance.` },
+    { code: "followers" as const, actual: online.followers, required: target.minimumFollowers, valid: Number.isSafeInteger(online.followers) && online.followers >= 0, message: `Rassemble ${target.minimumFollowers} abonnés.` },
+  ];
+  for (const requirement of requirements) if (!requirement.valid || requirement.actual < requirement.required) {
+    blockers.push({ code: requirement.code, message: requirement.valid ? requirement.message : "Actualise les données de ta boutique avant de l’améliorer.",
+      actual: requirement.valid ? requirement.actual : null, required: requirement.required });
+  }
+  for (const upgrade of target.requiredUpgrades) if (online.upgrades[upgrade] !== true) {
+    blockers.push({ code: "upgrade", upgrade,
+      message: `Ajoute l’amélioration « ${KQ_ONLINE_UPGRADES.find(item => item.code === upgrade)!.name} ».` });
+  }
+  const validCash = Number.isSafeInteger(cashCents) && cashCents >= 0;
+  if (!validCash || cashCents < costCents) blockers.push({ code: "cash",
+    message: validCash ? "La trésorerie disponible ne couvre pas cette amélioration." : "Actualise ta trésorerie avant cet achat.",
+    actual: validCash ? cashCents : null, required: costCents });
+  return { allowed: blockers.length === 0, costCents, nextTier: next?.code ?? null, blockers };
 }
 
 /** Continuous and bounded. An absurd price has zero demand, never a minimum sale. */
@@ -140,8 +205,8 @@ export function estimateKqOnlineOffer(input: {
   const matchedAudience = visitorsPerDay + (mission && campaign ? mission.visitorsPerDay
     * clamp(input.advertisingMultiplier ?? 1, 1, 2) * (getKqOnlineMarketingFit(campaign.angle, quality, priceRatio) - 1) : 0);
   const tier = getKqOnlineSiteTier(input.online.site.tier);
-  const conversion = .025 * tier.conversionMultiplier * (input.online.upgrades.photography ? 1.1 : 1)
-    * (input.online.upgrades.branding ? 1.08 : 1) * (.4 + .6 * clamp(input.online.confidence, 0, 100) / 100);
+  const conversion = .025 * tier.conversionMultiplier * getKqStudioFlowerMultiplier(input.online, quality, priceRatio)
+    * (.4 + .6 * clamp(input.online.confidence, 0, 100) / 100);
   const qualityInterest = .75 + .25 * clamp((quality - 5.8) / 3.7, 0, 1);
   const competing = Math.max(1, input.activeListingCount ?? input.online.listings.filter(item => item.status === "active" && item.remainingPackets > 0 && item.qualityScore >= 5.8).length);
   const allowed = validPrice && quality >= 5.8 && input.online.site.active && (!packaging.requiresBranding || input.online.upgrades.branding);
@@ -169,10 +234,12 @@ export function createKqOnlinePreview(nowMs: number): KqOnlineSnapshot {
   const now = new Date(nowMs).toISOString();
   return {
     version: 1, serverNow: now, settledUntil: now,
-    site: { tier: "basic", createdAt: now, active: true, feePercent: KQ_ONLINE_FEE_PERCENT, paidUntil: null, renew: false },
+    site: { tier: "basic", maxLevel: 6, createdAt: now, active: true, feePercent: KQ_ONLINE_FEE_PERCENT, paidUntil: null, renew: false },
     upgrades: { photography: false, branding: false }, confidence: 60, followers: 0,
+    studio: { version: 1, levels: { photography: 0, branding: 0, editorial: 0 }, style: "craft" },
     packaging: KQ_ONLINE_PACKAGING.map(item => ({ code: item.code, quantity: 0, unitCostCents: item.unitCostCents })), listings: [],
     marketing: { version: 2, active: null, completedCodes: [], cooldowns: {}, history: [] },
     stats: { visitors: 0, orders: 0, revenueCents: 0, netRevenueCents: 0, feesCents: 0, packagingCostCents: 0, soldGrams: 0 }, recentSales: [],
+    merch: { version: 1, modules: [], inventory: [], stats: { unitsSold: 0, revenueCents: 0, netRevenueCents: 0, feesCents: 0, stockCostCents: 0, costOfGoodsSoldCents: 0, moduleCostCents: 0 }, recentSales: [] },
   };
 }

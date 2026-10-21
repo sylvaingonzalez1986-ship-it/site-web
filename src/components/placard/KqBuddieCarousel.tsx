@@ -6,7 +6,7 @@ import { BuddieCard } from "@/components/lottery/BuddieCard";
 import { hasModernBuddieArtwork } from "@/lib/buddie-artwork";
 import { rarityLabels } from "@/lib/lottery-card-ui";
 import type { KqBuddie } from "@/lib/kanab-quest-game";
-import { getKqBuddieRotationRemaining, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
+import { getKqBuddieRotationRemaining, KQ_BUDDIE_ROTATION_REQUIRED, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { KqCardCarousel } from "./KqCardCarousel";
 import { KqBuddieFlavors } from "./KqBuddieFlavors";
 import { KqBuddieVarietyPopover } from "./KqBuddieVarietyPopover";
@@ -34,9 +34,9 @@ export function KqBuddieCarousel({ buddies, artwork, selectedCode, rotation, onS
   return <><KqCardCarousel id="placard-preparation" title="1. Ton Buddie" label="Tes cartes Buddies" count={buddies.length} tourStep="culture"
     intro={rotationEnabled ? <div className={styles.rotationRule}>
       <strong>Fais tourner tes Buddies</strong>
-      <p>Après avoir lancé une culture avec un Buddie, utilise 5 autres Buddies différents avant de le rejouer. La règle vaut pour toutes les raretés, même si tu possèdes plusieurs copies.</p>
+      <p>Après avoir lancé une culture avec un Buddie, utilise {KQ_BUDDIE_ROTATION_REQUIRED} autres Buddies différents avant de le rejouer. La règle vaut pour toutes les raretés, même si tu possèdes plusieurs copies.</p>
       <small role="status">{rotationLoading ? "Vérification des Buddies disponibles…" : `${availableCount} Buddie${availableCount > 1 ? "s" : ""} disponible${availableCount > 1 ? "s" : ""} sur ${buddies.length}.`}</small>
-      {!rotationLoading && buddies.length > 0 && buddies.length < 6 ? <small>Il te faut au moins 6 Buddies différents dans ton album pour enchaîner les cultures sans interruption.</small> : null}
+      {!rotationLoading && buddies.length > 0 && buddies.length <= KQ_BUDDIE_ROTATION_REQUIRED ? <small>Avec au moins {KQ_BUDDIE_ROTATION_REQUIRED + 1} Buddies différents, tu peux alterner les variétés pour enchaîner les cultures.</small> : null}
     </div> : null}
     footer={!buddies.length ? <p className={shared.empty}>Tes Buddies disponibles apparaîtront ici.</p> : null}>
     {buddies.map(buddie => {

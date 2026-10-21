@@ -39,7 +39,7 @@ import { GET } from "@/app/api/admin/placard/bootstrap/route";
 describe("GET /api/admin/placard/bootstrap", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    getKqAdminBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] });
+    getKqAdminBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 2, recentBuddieCodes: ["HH2026-003"] });
   });
 
   it("refuses unauthenticated bootstrap requests", async () => {
@@ -61,7 +61,7 @@ describe("GET /api/admin/placard/bootstrap", () => {
     expect(response.status).toBe(200);
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(await response.json()).toEqual({
-      buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] },
+      buddieRotation: { requiredDistinctBuddies: 2, recentBuddieCodes: ["HH2026-003"] },
       readiness: { safelyDormant: true },
       seasonRewards: { rewardsLive: false },
       heritage: { collectionActive: false },

@@ -1,4 +1,4 @@
-export const KQ_BUDDIE_ROTATION_REQUIRED = 5;
+export const KQ_BUDDIE_ROTATION_REQUIRED = 2;
 
 export type KqBuddieRotation = {
   requiredDistinctBuddies: typeof KQ_BUDDIE_ROTATION_REQUIRED;

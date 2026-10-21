@@ -6,6 +6,7 @@ import {
   advanceKqStage,
   buildKqScenarioPath,
   canPlayKqCard,
+  canRedrawKqHand,
   getKqHandCodes,
   getKqEffectNoticeKind,
   getKqHarvestBreakdown,
@@ -94,11 +95,26 @@ describe("Kanab Quest dice prototype", () => {
     expect(canPlayKqCard({ ...state, preparationPlayed: false }, KQ_CARDS.find((card) => card.code === "BOTTE-017")!).allowed).toBe(false);
   });
 
-  it("draws a deterministic five-card hand from an unlimited deck", () => {
+  it("draws a deterministic ten-card hand from an unlimited deck", () => {
     const state = startKqGame(77, { deckCodes: ["BOTTE-001", "BOTTE-003", "BOTTE-004", "BOTTE-005", "BOTTE-006", "BOTTE-013", "BOTTE-014", "BOTTE-015", "BOTTE-016", "BOTTE-017", "BOTTE-018", "BOTTE-024"] });
-    expect(getKqHandCodes(state)).toHaveLength(5);
+    expect(getKqHandCodes(state)).toHaveLength(10);
     expect(getKqHandCodes(state)).toEqual(getKqHandCodes(state));
     expect(getKqVisibleActionCards(state).map((card) => card.code).sort()).toEqual([...new Set(getKqHandCodes(state))].sort());
+  });
+
+  it("uses ten current-rule cards without inventing copies in a short or exhausted deck", () => {
+    const deckCodes = KQ_ACTIVE_CARDS.filter(card => card.category !== "substrate" && card.category !== "pbi").slice(0, 15).map(card => card.code);
+    const current = startKqGameCurrent(77, { deckCodes });
+    expect(current.handCodes).toHaveLength(10);
+    expect(current.handCodes?.every(code => deckCodes.includes(code))).toBe(true);
+    const short = startKqGameCurrent(77, { deckCodes: ["BOTTE-005", "BOTTE-005", "BOTTE-006"] });
+    expect([...getKqHandCodes(short)].sort()).toEqual(["BOTTE-005", "BOTTE-005", "BOTTE-006"]);
+    expect(getKqHandCodes({ ...short, handCodes: undefined, usedCards: ["BOTTE-005"] }).sort()).toEqual(["BOTTE-005", "BOTTE-006"]);
+    expect(getKqHandCodes({ ...short, handCodes: undefined, usedCards: [...short.deckCodes] })).toEqual([]);
+    const redrawn = redrawKqHand(current);
+    expect(redrawn.handCodes).toHaveLength(10);
+    expect(redrawn.usedCards).toEqual([]);
+    expect(redrawn.xp).toBe(current.xp);
   });
 
   it("keeps the hand fixed after a card is burned and redraws only on the next stage", () => {
@@ -113,7 +129,7 @@ describe("Kanab Quest dice prototype", () => {
   });
 
   it("allows exactly one mulligan before any action in a culture", () => {
-    const state = startKqGame(80, { deckCodes: ["BOTTE-001", "BOTTE-003", "BOTTE-004", "BOTTE-005", "BOTTE-006", "BOTTE-017", "BOTTE-018"] });
+    const state = startKqGame(80, { deckCodes: KQ_ACTIVE_CARDS.filter(card => !["substrate", "pbi"].includes(card.category)).slice(0, 13).map(card => card.code) });
     const firstHand = getKqHandCodes(state);
     const redrawn = redrawKqHand(state);
     expect(getKqHandCodes(redrawn)).not.toEqual(firstHand);
@@ -124,6 +140,59 @@ describe("Kanab Quest dice prototype", () => {
   it("blocks the mulligan after the dice have been rolled", () => {
     const rolled = rollKqDice(startKqGame(81));
     expect(redrawKqHand(rolled)).toBe(rolled);
+  });
+
+  it("keeps a redraw and the saved hand intact when only its order could change", () => {
+    const state = startKqGameCurrent(80, { deckCodes: ["BOTTE-005", "BOTTE-005", "BOTTE-006"] });
+    const before = structuredClone(state);
+    expect(canRedrawKqHand(state)).toMatchObject({ allowed: false, remaining: 1 });
+    expect(canRedrawKqHand(state).reason).toContain("déjà dans ta main");
+    expect(redrawKqHand(state)).toBe(state);
+    expect(state).toEqual(before);
+    expect(canRedrawKqHand({ ...state, handCodes: [...state.handCodes!].reverse() }).allowed).toBe(false);
+  });
+
+  it("does not spend a redraw on duplicate-only or exhausted pools", () => {
+    const duplicates = startKqGameCurrent(80, { deckCodes: Array(13).fill("BOTTE-005") });
+    expect(duplicates.handCodes).toHaveLength(10);
+    expect(canRedrawKqHand(duplicates).allowed).toBe(false);
+    expect(redrawKqHand(duplicates)).toBe(duplicates);
+    const exhausted = { ...duplicates, usedCards: [...duplicates.deckCodes], handCodes: [] };
+    expect(canRedrawKqHand(exhausted).reason).toContain("aucune carte");
+    expect(redrawKqHand(exhausted)).toBe(exhausted);
+    const empty = startKqGameCurrent(1, { deckCodes: [] });
+    expect(redrawKqHand(empty)).toBe(empty);
+  });
+
+  it("allows a stored five-card hand to grow to ten even with identical copies", () => {
+    const state = startKqGameCurrent(80, { deckCodes: Array(10).fill("BOTTE-005") });
+    state.handCodes = state.handCodes!.slice(0, 5);
+    expect(canRedrawKqHand(state).allowed).toBe(true);
+    const next = redrawKqHand(state);
+    expect(next.handCodes).toHaveLength(10);
+    expect(next.handRedrawsUsed).toBe(1);
+    expect(next.xp).toBe(state.xp);
+    expect(next.usedCards).toEqual([]);
+  });
+
+  it("uses physical copies after burns and does not predict a future draw", () => {
+    const state = startKqGameCurrent(80, { deckCodes: [...Array(10).fill("BOTTE-005"), "BOTTE-006"] });
+    expect(canRedrawKqHand(state).allowed).toBe(true);
+    expect(canRedrawKqHand({ ...state, seed: 999, rollNonce: 99 })).toEqual(canRedrawKqHand(state));
+    const afterBurn = { ...state, usedCards: ["BOTTE-006"], handCodes: Array(10).fill("BOTTE-005") };
+    expect(canRedrawKqHand(afterBurn).allowed).toBe(false);
+    expect(redrawKqHand(afterBurn)).toBe(afterBurn);
+    expect(canRedrawKqHand({ ...state, preparationPlayed: true }).allowed).toBe(false);
+    expect(canRedrawKqHand({ ...state, playedThisStage: ["BOTTE-006"] }).allowed).toBe(false);
+  });
+
+  it("preserves the opening reserve when no different hand is possible", () => {
+    const state = startKqGameCurrent(80, { deckCodes: Array(13).fill("BOTTE-005"), heritageCode: "HERITAGE-003" });
+    expect(state.heritageReserveCodes).toHaveLength(3);
+    expect(redrawKqHand(state)).toBe(state);
+    const varied = startKqGameCurrent(80, { deckCodes: [...Array(10).fill("BOTTE-005"), ...Array(3).fill("BOTTE-006")], heritageCode: "HERITAGE-003" });
+    expect(canRedrawKqHand(varied).allowed).toBe(true);
+    expect(redrawKqHand(varied).heritageReserveCodes).toBeUndefined();
   });
 
   it("returns unplayed cards to the rotation and removes a burned physical copy", () => {
@@ -755,7 +824,7 @@ describe("Kanab Quest dice prototype", () => {
   });
 
   it("grants the reusable second redraw Heritage", () => {
-    const started = startKqGame(12, { heritageCode: "HERITAGE-005" });
+    const started = startKqGame(12, { heritageCode: "HERITAGE-005", deckCodes: KQ_ACTIVE_CARDS.filter(card => !["substrate", "pbi"].includes(card.category)).slice(0, 13).map(card => card.code) });
     const first = redrawKqHand(started);
     const second = redrawKqHand(first);
     const third = redrawKqHand(second);
@@ -784,16 +853,18 @@ describe("Kanab Quest dice prototype", () => {
   });
 
   it("lets Main prévoyante exchange three reserve cards without burning them", () => {
-    const supportCodes = KQ_CARDS.filter((card) => card.category !== "substrate" && card.category !== "pbi").slice(0, 8).map((card) => card.code);
+    const supportCodes = KQ_CARDS.filter((card) => card.category !== "substrate" && card.category !== "pbi").slice(0, 13).map((card) => card.code);
     const started = startKqGame(44, { heritageCode: "HERITAGE-003", deckCodes: ["BOTTE-001", ...supportCodes] });
-    expect(started.handCodes).toHaveLength(5);
+    expect(started.handCodes).toHaveLength(10);
     expect(started.heritageReserveCodes).toHaveLength(3);
-    const outgoing = started.handCodes![0];
+    const outgoing = started.handCodes![9];
     const incoming = started.heritageReserveCodes![0];
-    const swapped = swapKqHeritageHandCard(started, 0, 0);
-    expect(swapped.handCodes![0]).toBe(incoming);
+    const swapped = swapKqHeritageHandCard(started, 9, 0);
+    expect(swapped.handCodes![9]).toBe(incoming);
     expect(swapped.heritageReserveCodes![0]).toBe(outgoing);
     expect(swapped.usedCards).toEqual(started.usedCards);
+    expect([...swapped.handCodes!, ...swapped.heritageReserveCodes!].sort()).toEqual([...supportCodes].sort());
+    expect(swapKqHeritageHandCard(started, 10, 0)).toBe(started);
     expect(rollKqDice(swapped).heritageReserveCodes).toBeUndefined();
   });
 

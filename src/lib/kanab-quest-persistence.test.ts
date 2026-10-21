@@ -26,14 +26,14 @@ describe("Kanab Quest persistence and integrity", () => {
   it("keeps repeated Main prévoyante exchanges reloadable", () => {
     const supportCodes = KQ_CARDS
       .filter((card) => card.category !== "substrate" && card.category !== "pbi")
-      .slice(0, 8)
+      .slice(0, 13)
       .map((card) => card.code);
     let state = startKqGame(44, {
       heritageCode: "HERITAGE-003",
       deckCodes: ["BOTTE-001", ...supportCodes],
     });
     for (let index = 0; index < 20; index += 1) {
-      state = swapKqHeritageHandCard(state, index % 5, index % 2);
+      state = swapKqHeritageHandCard(state, index % 10, index % 3);
     }
     expect(state.effectNotices).toHaveLength(12);
     expect(parseKqGameSave(encodeKqSave(state))).toEqual(state);
@@ -87,9 +87,27 @@ describe("Kanab Quest persistence and integrity", () => {
     expect(parseKqGameSave(encodeKqSave({ ...startKqGame(1), handCodes: Array.from({ length: 11 }, () => "BOTTE-003") }))).toBeNull();
   });
 
-  it("reduces a legacy ten-card hand to the current five-card limit", () => {
-    const legacyHand = Array.from({ length: 10 }, () => "BOTTE-003");
-    expect(parseKqGameSave(encodeKqSave({ ...startKqGame(1), handCodes: legacyHand }))?.handCodes).toHaveLength(5);
+  it("preserves every card and decision in a ten-card save", () => {
+    const state = startKqGameCurrent(1);
+    expect(state.handCodes).toHaveLength(10);
+    expect(parseKqGameSave(encodeKqSave(state))).toEqual(state);
+    const resolved = resolveKqStage({ ...state, phase: "rolled", dice: [4, 4, 5] });
+    expect(resolved.history[0].decision?.handCodes).toHaveLength(10);
+    expect(parseKqGameSave(encodeKqSave(resolved))).toEqual(resolved);
+  });
+
+  it("preserves an already dealt five-card stage until the next ordinary draw", () => {
+    const started = startKqGameCurrent(1);
+    const legacy = { ...started, handCodes: started.handCodes!.slice(0, 5) };
+    const restored = parseKqGameSave(encodeKqSave(legacy))!;
+    expect(restored).toEqual(legacy);
+    const rolled = rollKqDice(restored);
+    expect(rolled.handCodes).toEqual(legacy.handCodes);
+    const resolved = resolveKqStage({ ...rolled, dice: [4, 4, 5] });
+    expect(resolved.handCodes).toEqual(legacy.handCodes);
+    const next = advanceKqStage(resolved);
+    expect(next.handCodes).toHaveLength(10);
+    expect(parseKqGameSave(encodeKqSave(next))).toEqual(next);
   });
 
   it("rejects more than one persisted mulligan", () => {

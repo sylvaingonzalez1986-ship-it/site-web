@@ -5,6 +5,7 @@ import { Check, PackageOpen, Save, Sprout } from "lucide-react";
 import { BuddieCard } from "@/components/lottery/BuddieCard";
 import { getBuddieArtwork } from "@/lib/buddie-artwork";
 import { KQ_BUDDIES } from "@/lib/kanab-quest-game";
+import { KQ_BUDDIE_ROTATION_REQUIRED } from "@/lib/kanab-quest-buddie-rotation";
 import { KQ_RELEVE_BUDDIES, type KqReleveProductionAction, type KqReleveProductionState } from "@/lib/kanab-quest-releve-production";
 import { KqBuddieCarousel } from "./KqBuddieCarousel";
 import { KqWarehousePlan } from "./KqWarehousePlan";
@@ -40,7 +41,7 @@ export function KqReleveBuddies({ state, onAction }: {
       })}</div>
       <div data-releve-buddie-selection data-zone={zone?.id}>
         <KqBuddieCarousel buddies={cards} artwork={Object.fromEntries(cards.map(buddie => [buddie.code, { imageUrl: getBuddieArtwork(buddie.code), ownedCopies: 1 }]))}
-          selectedCode={zone?.buddieCode ?? ""} rotation={{ requiredDistinctBuddies: 5, recentBuddieCodes: state.recentBuddieCodes }}
+          selectedCode={zone?.buddieCode ?? ""} rotation={{ requiredDistinctBuddies: KQ_BUDDIE_ROTATION_REQUIRED, recentBuddieCodes: state.recentBuddieCodes }}
           onInspect={() => { if (!state.milestones.includes("profile-read")) onAction({ type: "mark", milestone: "profile-read" }); }}
           onSelect={code => { if (zone) onAction({ type: "assign", zoneId: zone.id, buddieCode: code }); }} />
       </div>

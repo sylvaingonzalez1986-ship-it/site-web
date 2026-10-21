@@ -1,0 +1,52 @@
+.contract { margin-block: 14px; min-width: 0; border-block: 1px solid #17292350; color: #172923; background: #fff8e7; font-family: var(--font-body), Arial, sans-serif; }
+.contract summary { display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 10px 14px; cursor: pointer; list-style: none; }
+.contract summary::-webkit-details-marker { display: none; }
+.contract summary > svg { flex-shrink: 0; }
+.contract summary > svg:first-child { color: #076c61; }
+.contract summary > svg:last-child { margin-left: 4px; }
+.contract[open] summary > svg:last-child { transform: rotate(180deg); }
+.contract summary > span { min-width: 0; }
+.contract summary strong { display: block; font-size: 14px; line-height: 1.4; }
+.contract summary small { display: block; margin-top: 2px; font-size: 11px; line-height: 1.5; color: #43594c; }
+.summaryMetrics { margin-left: auto; text-align: right; font-variant-numeric: tabular-nums; }
+.summaryMetrics b { font-size: 12px; line-height: 1.5; }
+.summaryMetrics [data-limit-exceeded] { color: #8b3321; }
+.body { padding: 0 16px 16px; }
+.body p { max-width: 76ch; margin: 10px 0; font-size: 14px; line-height: 1.6; }
+.body .issuer { margin-top: 0; color: #076c61; font-size: 11px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+.body .hint { color: #43594c; font-size: 12px; }
+.state { display: flex; align-items: flex-start; gap: 7px; }
+.state svg { flex-shrink: 0; margin-top: 3px; }
+.result { padding: 10px 0; border-block: 1px dashed #17292340; }
+.receipt { display: flex; align-items: center; gap: 14px; margin-block: 14px; padding: 16px; border: 2px solid #172923; border-radius: 14px; background: #fff1d6; }
+.receiptSeal { display: grid; flex: none; place-items: center; width: 54px; height: 54px; border: 2px solid #172923; border-radius: 50%; background: #efc451; box-shadow: 2px 3px 0 #172923; }
+.receipt > div { min-width: 0; }
+.receiptLabel { display: block; margin-bottom: 3px; color: #076c61; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.receipt strong { display: block; font: 900 clamp(26px, 4vw, 38px)/1.1 var(--font-display), Impact, sans-serif; }
+.receipt p { margin: 6px 0 0; font-size: 12px; }
+.receiptCheck { flex: none; margin-left: auto; color: #076c61; }
+.receipt[data-receipt-fresh] .receiptSeal { animation: contract-stamp 450ms ease-out both; }
+@keyframes contract-stamp { from { opacity: 0; transform: translateY(-6px) rotate(-12deg) scale(1.15); } to { opacity: 1; transform: none; } }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.contract button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 2px solid #172923; border-radius: 10px; background: #efc451; color: #172923; font: 700 13px/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; }
+.contract button svg { flex-shrink: 0; }
+.contract button:hover:not(:disabled) { background: var(--game-surface-warm); }
+.contract .secondary { background: transparent; }
+.contract button:disabled { opacity: .55; cursor: default; }
+.contract :where(summary, button):focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.terms { display: block; margin-top: 12px; color: #43594c; font-size: 11px; line-height: 1.6; }
+.error { padding-block: 8px; color: #8b3321; }
+.contract[data-contract-status="succeeded"] { border-color: #076c61; background: #e2f0e5; }
+.contract[data-contract-status="claimed"] { background: #e2f0e5; }
+.contract[data-mode="missions"] { margin-block: 0; border: 2px solid #172923; border-radius: 16px; overflow: hidden; }
+@media (max-width: 480px) {
+  .contract summary { gap: 8px; padding-inline: 10px; }
+  .summaryMetrics { max-width: 110px; }
+  .contract summary > svg:first-child { width: 17px; }
+  .body { padding-inline: 12px; }
+  .actions button { width: 100%; }
+  .receipt { gap: 10px; padding: 12px; }
+  .receiptSeal { width: 42px; height: 42px; }
+  .receiptCheck { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .receipt[data-receipt-fresh] .receiptSeal { animation: none; } }

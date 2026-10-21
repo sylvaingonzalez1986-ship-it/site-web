@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "tool": "Built-in image_gen",
+  "asset": "/placard/studio/atelier-sprites-v1.png",
+  "styleReference": "/placard/market-brand-studio-sylvain-v3.webp",
+  "transparentBackground": true,
+  "columns": 3,
+  "rows": 2,
+  "order": [
+    "photography-basic",
+    "branding-basic",
+    "editorial-basic",
+    "photography-advanced",
+    "branding-advanced",
+    "editorial-advanced"
+  ],
+  "prompts": [
+    "Use case: illustrated game sprite atlas. Create ONE 1536x1024 landscape transparent sprite sheet with EXACTLY SIX isolated small vignettes arranged in THREE equal columns and TWO equal rows. Each 512x512 cell has its own centered vignette with at least70 pixels transparent padding from every edge. Input is style reference only: bold warm hand-inked cartoon outlines, teal, warm gold, cream, apricot, subtle vintage print grain, whimsical French Breton artisanal shop game. No character, no furniture behind the isolated vignettes, no writing, no letters, no arrows, no grids. Top-left: a modest product photography camera on small tripod with a single cream light reflector and a little kraft pouch with botanical emblem. Top-middle: an open cream designer sketchbook with teal botanical leaf logo, mustard pencil and three color swatches. Top-right: a clipboard holding one illustrated product information card, little botanical picture and short neat ink lines, no readable words. Bottom-left: an advanced compact product photography tabletop set, substantial camera, two small softboxes and a beautiful teal botanical product pouch on a cream backdrop sweep, all contained in this cell. Bottom-middle: refined teal-and-gold brand board with leaf emblem, palette chips and two small coordinated printed packaging examples. Bottom-right: an elegant open editorial booklet showing two illustrated scenes of a Breton shop and botanical harvest, a pen, thoughtful cream page composition with abstract short lines but no writing. Equal visual weight, no cropping. Every vignette must look illustrated by the exact same artist as the reference. No photorealistic rendering. Actual transparent alpha background with large clean gutters. Keep all 6 vignettes fully within their own squares: centers256,256;768,256;1280,256;256,768;768,768;1280,768.",
+    "Edit this exact six-vignette game sprite atlas ONLY to add generous transparent spacing. Preserve all6 designs, hand drawn ink style, colors and actual alpha background. Keep1536x1024, threecolumns x tworows of512x512 cells. Each vignette must be reduced to70% of its current size and recentered exactly at256,256;768,256;1280,256;256,768;768,768;1280,768. At least70pixels of entirely transparent padding inside everycell, especially the bottomleft studio equipment which currently crosses itscellborder. Alltripodlegs, softboxes, pens and leaves completelyinsidetheircell. Noobject touches anycelledge. Do not invent backgrounds, grids, text, characters, darkfill or haze. Keep6 unchangedvignettedesigns withusablecleantransparentgutters, readyforCSSspritecropping."
+  ]
+}

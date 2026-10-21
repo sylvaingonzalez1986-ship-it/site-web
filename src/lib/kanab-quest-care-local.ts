@@ -1,5 +1,6 @@
 import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCareProduct, KQ_BASIC_CARE_PRICE_CENTS, performKqBasicCare } from "./kanab-quest-care";
 import type { KqGameState } from "./kanab-quest-game";
+import { KQ_STARTING_CASH_CENTS } from "./kanab-quest-equipment";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 
 export type KqCareStorage = Pick<Storage, "getItem" | "setItem" | "removeItem">;
@@ -29,7 +30,7 @@ export function recoverKqLocalCare(storage: KqCareStorage) {
 export function loadKqLocalCare(storage: KqCareStorage): KqLocalCareWallet {
   recoverKqLocalCare(storage);
   const raw = storage.getItem(walletKey);
-  if (!raw) return { cashCents: 35000, inventory: {} };
+  if (!raw) return { cashCents: KQ_STARTING_CASH_CENTS, inventory: {} };
   const value: unknown = JSON.parse(raw);
   if (!validWallet(value)) throw new Error("Réserve locale illisible.");
   return value;

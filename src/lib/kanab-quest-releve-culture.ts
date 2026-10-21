@@ -1,4 +1,5 @@
 import { createKqFlower } from "./kanab-quest-battle";
+import { KQ_BUDDIE_ROTATION_REQUIRED } from "./kanab-quest-buddie-rotation";
 import { getKqCampaignParticipants, getKqCampaignWarehouse } from "./kanab-quest-campaign";
 import { getKqCannabinoidReport, getKqTerpeneReport, KQ_BASIC_CARE_PRICE_CENTS, KQ_CARE_PRODUCTS } from "./kanab-quest-care";
 import { KQ_HERITAGE_CARDS } from "./kanab-quest-heritage";
@@ -15,7 +16,7 @@ import type { KqEnergyQuote, KqEnergySnapshot } from "./kanab-quest-energy";
 type Port = { getState: () => KqReleveProductionState; setState: (next: KqReleveProductionState) => void };
 const now = (state: KqReleveProductionState) => new Date(state.clock).toISOString();
 const flowerId = (zoneId: string) => `releve-flower-${zoneId}`;
-const rotation = (state: KqReleveProductionState) => ({ requiredDistinctBuddies: 5, recentBuddieCodes: state.recentBuddieCodes });
+const rotation = (state: KqReleveProductionState) => ({ requiredDistinctBuddies: KQ_BUDDIE_ROTATION_REQUIRED, recentBuddieCodes: state.recentBuddieCodes });
 const careInventory = (state: KqReleveProductionState) => Object.entries(state.careInventory).map(([productCode, quantity]) => ({ productCode, quantity }));
 const rank = (state: KqReleveProductionState) => Object.entries(state.battles).reduce((profile, [zoneId, battle]) => state.milestones.includes(`jury-ranked:${zoneId}`)
   ? applyKqBattleToRanking(profile, battle, battle.opponentRating) : profile, createKqRankProfile());
@@ -105,7 +106,9 @@ export function createReleveCultureTransport(port: Port): typeof fetch {
         const next = { ...state, cashCents: state.cashCents - due, ledger: state.ledger.map(row => row.kind === "energy" ? { ...row, status: "paid" as const } : row) };
         port.setState(next); return respond({ paidCents: due, cashCents: next.cashCents });
       }
-      if (method === "GET" && path === "/equipment") return respond({ routePlan: null });
+      // La Relève has no profession bonus; make its absence explicit so the
+      // preparation can distinguish it from an unavailable official profile.
+      if (method === "GET" && path === "/equipment") return respond({ routePlan: null, strength: null });
       if (path === "/care" && method === "GET") {
         if (!state.milestones.includes("health-read")) act({ type: "mark", milestone: "health-read" });
         return respond({ cashCents: state.cashCents, basicCarePriceCents: KQ_BASIC_CARE_PRICE_CENTS, inventory: careInventory(state), catalog: KQ_CARE_PRODUCTS });

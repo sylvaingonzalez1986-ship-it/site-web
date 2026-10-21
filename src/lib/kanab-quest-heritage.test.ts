@@ -3,6 +3,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   drawKqHeritageCard,
+  getKqHeritagePresentationMetadata,
   KQ_HERITAGE_CARDS,
   KQ_HERITAGE_CRAFT_COST,
   KQ_HERITAGE_DUPLICATE_FRAGMENTS,
@@ -62,6 +63,45 @@ describe("Kanab Quest heritage cards", () => {
       expect(migrations).toContain(template.description.replaceAll("'", "''"));
       expect(migrations).toContain(template.drawback.replaceAll("'", "''"));
     });
+  });
+
+  it("presents the current opening hand without rewriting unrelated or custom artwork", () => {
+    const persisted = {
+      code: "HERITAGE-003", effectCode: "opening-hand-reserve",
+      producerId: "producer-1773870509228-7130",
+      description: "+2 XP au départ. À la première étape, pioche 8 cartes et compose une main de 5.",
+      imageUrl: "/app/kanab-quest/card-fronts/heritage-003-main-prevoyante-producer-front-v5.webp",
+    };
+    const current = getKqHeritagePresentationMetadata(persisted);
+    expect(current.description).toContain("pioche 13 cartes et compose une main de 10");
+    expect(current.imageUrl).toBe("/app/kanab-quest/card-fronts/heritage-003-main-prevoyante-producer-front-v6.webp");
+    expect(persisted.description).toContain("pioche 8 cartes");
+    expect(persisted.imageUrl).toContain("front-v5.webp");
+    expect(getKqHeritagePresentationMetadata({ ...persisted, imageUrl: "/custom/terracanna.webp" }))
+      .toEqual({ description: current.description, imageUrl: "/custom/terracanna.webp" });
+    expect(getKqHeritagePresentationMetadata({ ...persisted, producerId: "custom-producer" }).imageUrl)
+      .toBe(persisted.imageUrl);
+    expect(getKqHeritagePresentationMetadata({ ...persisted, effectCode: "five-keep-three" }))
+      .toEqual({ description: persisted.description, imageUrl: persisted.imageUrl });
+  });
+
+  it("renders the current official recto while preserving a saved run's immutable heritage identity", () => {
+    const saved = {
+      heritageCode: "HERITAGE-003", heritageEffect: "opening-hand-reserve" as const,
+      heritageProducerName: "Terracanna", heritageName: "Nom éditorial conservé",
+      heritageImageUrl: "/app/kanab-quest/card-fronts/heritage-003-main-prevoyante-producer-front-v5.webp",
+    };
+    expect(resolveKqHeritageCard(saved)).toMatchObject({
+      name: saved.heritageName,
+      producerName: saved.heritageProducerName,
+      description: "+2 XP au départ. À la première étape, pioche 13 cartes et compose une main de 10.",
+      imageUrl: "/app/kanab-quest/card-fronts/heritage-003-main-prevoyante-producer-front-v6.webp",
+    });
+    expect(saved.heritageImageUrl).toContain("front-v5.webp");
+    expect(resolveKqHeritageCard({ ...saved, heritageImageUrl: "/custom/terracanna.webp" })?.imageUrl)
+      .toBe("/custom/terracanna.webp");
+    expect(resolveKqHeritageCard({ ...saved, heritageProducerName: "Autre producteur" })?.imageUrl)
+      .toBe(saved.heritageImageUrl);
   });
 
   it("uses one identical duplicate reward and crafting cost", () => {

@@ -1,10 +1,57 @@
 import { describe, expect, it } from "vitest";
 import { createKqOpponent, getKqJuryProgram, getKqJuryScoringCriteria, invertKqBattlePerspective, lockKqBattle, resolveKqBattle, type KqBattleRound, type KqFlowerCard } from "./kanab-quest-battle";
-import { getKqJuryAnalysis } from "./kanab-quest-jury-analysis";
+import { getKqJuryAnalysis, getKqJuryTakeaway } from "./kanab-quest-jury-analysis";
 
 const round = (code: string, playerScore: number, opponentScore: number, winner: "player" | "opponent" = playerScore > opponentScore ? "player" : "opponent"): KqBattleRound => ({ code, label: code, explanation: "", playerScore, opponentScore, winner });
 const scores = [round("visual-impact", 90, 91), round("blind-aroma", 60, 50), round("technical-jury", 85, 95)];
 const stats = (overrides: Partial<KqFlowerCard["stats"]> = {}): KqFlowerCard["stats"] => ({ appearance: 70, aroma: 70, vigor: 70, mastery: 70, regularity: 70, ...overrides });
+
+describe("short verdict takeaway", () => {
+  it("makes the measured secondary criterion actionable without claiming a guaranteed win", () => {
+    const takeaway = getKqJuryTakeaway({
+      rounds: [round("visual-impact", 72, 76.2), round("blind-aroma", 50, 70), round("technical-jury", 85, 80)],
+      playerStats: stats({ appearance: 80, vigor: 60 }), opponentStats: stats({ appearance: 81, vigor: 70 }),
+    })!;
+    expect(takeaway).toMatchObject({ kind: "deficit", title: "Consolider le début de culture" });
+    expect(takeaway.explanation).toContain("Vigueur : 60/99 contre 70/99");
+    expect(takeaway.explanation).toContain("avant la variation du jury");
+  });
+
+  it("does not prescribe an improvement when jury variation alone explains the focused loss", () => {
+    const takeaway = getKqJuryTakeaway({
+      rounds: [round("visual-impact", 68, 72), round("blind-aroma", 60, 70), round("technical-jury", 70, 65)],
+      playerStats: stats(), opponentStats: stats(),
+    })!;
+    expect(takeaway.kind).toBe("variation");
+    expect(takeaway.explanation).toContain("ne révèle pas de retard à corriger");
+  });
+
+  it("keeps a lost tied score distinct from a measurable deficit, even without flower snapshots", () => {
+    const takeaway = getKqJuryTakeaway({ rounds: [round("visual-impact", 70, 70), round("blind-aroma", 60, 65), round("technical-jury", 70, 65)] })!;
+    expect(takeaway.kind).toBe("tie");
+    expect(takeaway.explanation).toContain("70 partout");
+    expect(takeaway.explanation).toContain("départage du jury");
+  });
+
+  it("withholds causal advice for missing, incompatible and unknown historical evidence", () => {
+    const rounds = [round("visual-impact", 70, 71), round("blind-aroma", 65, 75), round("technical-jury", 80, 70)];
+    for (const input of [
+      { rounds },
+      { rounds, playerStats: stats({ appearance: 99, vigor: 99 }), opponentStats: stats() },
+      { rounds: [{ ...rounds[0], code: "old-jury" }, ...rounds.slice(1)], playerStats: stats(), opponentStats: stats() },
+    ]) expect(getKqJuryTakeaway(input)?.kind).toBe("unavailable");
+    expect(getKqJuryTakeaway({ rounds: rounds.slice(0, 2) })).toBeNull();
+  });
+
+  it("acknowledges an established strength after a clean win using the recorded scores", () => {
+    const takeaway = getKqJuryTakeaway({
+      rounds: [round("visual-impact", 71, 70), round("blind-aroma", 73, 67), round("technical-jury", 72, 68)],
+      playerStats: stats(), opponentStats: stats(),
+    })!;
+    expect(takeaway.kind).toBe("strength");
+    expect(takeaway.explanation).toContain("71 contre 70");
+  });
+});
 
 describe("jury analysis grounded in the recorded round", () => {
   it("focuses the nearest lost round rather than the lowest absolute score", () => {

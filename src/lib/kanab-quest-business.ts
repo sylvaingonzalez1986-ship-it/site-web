@@ -1,3 +1,5 @@
+import type { KqOnlineSiteTier } from "./kanab-quest-online";
+
 /** Virtual game economy. One game day always lasts four real hours. */
 export const KQ_GAME_DAY_MS = 4 * 60 * 60 * 1000;
 export const KQ_GAME_MONTH_MS = 30 * KQ_GAME_DAY_MS;
@@ -43,7 +45,7 @@ export type KqBusinessState = {
   startedAt: string;
   domiciliation: { mode: KqDomiciliation; paidUntil: string | null; renew: boolean; active: boolean };
   shop: { name: string | null; createdAt: string | null; paidUntil: string | null; renew: boolean; active: boolean;
-    tier?: "basic" | "improved" | "pro"; monthlyCents?: number };
+    tier?: KqOnlineSiteTier; monthlyCents?: number };
   advertising: null | { id: string; kind: KqAdvertisingKind; startedAt: string; endsAt: string; boostPercent: number };
   vat: { ratePercent: number; reservedCents: number; paidCents: number; salesTtcCents: number; nextSettlementAt: string };
   lab: { outstandingCents: number; overdueCents: number; invoices: KqLabInvoice[] };
@@ -105,15 +107,15 @@ export function getKqSaleVatCents(payoutCents: number, previousSalesTtcCents: nu
   return Math.round((previousSalesTtcCents + payoutCents) / 6) - Math.round(previousSalesTtcCents / 6);
 }
 
-export function previewKqBusinessPayment(payoutCents: number, business: KqBusinessState, electricityOutstandingCents: number) {
+export function previewKqBusinessPayment(payoutCents: number, business: KqBusinessState, electricityOutstandingCents: number, transactionFeesCents = 0) {
   const vatCents = getKqSaleVatCents(payoutCents, business.vat.salesTtcCents);
-  const afterVat = payoutCents - vatCents;
-  const collectionBudget = Math.floor(afterVat / 2);
+  const afterCharges = cents(payoutCents - vatCents - cents(transactionFeesCents));
+  const collectionBudget = Math.floor(afterCharges / 2);
   const labPaidCents = Math.min(cents(business.lab.overdueCents), collectionBudget);
   const electricityPaidCents = Math.min(cents(electricityOutstandingCents), collectionBudget - labPaidCents);
   const supplierPaidCents = Math.min(cents(business.suppliers?.overdueCents ?? 0), collectionBudget - labPaidCents - electricityPaidCents);
   return { vatCents, labPaidCents, electricityPaidCents, supplierPaidCents,
-    netPayoutCents: afterVat - labPaidCents - electricityPaidCents - supplierPaidCents,
+    netPayoutCents: afterCharges - labPaidCents - electricityPaidCents - supplierPaidCents,
     electricityRemainingCents: electricityOutstandingCents - electricityPaidCents };
 }
 

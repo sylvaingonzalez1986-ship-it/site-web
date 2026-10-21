@@ -3,9 +3,10 @@ const mocks = vi.hoisted(() => ({ rpc: vi.fn(), insert: vi.fn(), energy: vi.fn()
 vi.mock("./admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc, from: () => ({ insert: mocks.insert }) }) }));
 vi.mock("./kanab-quest-market-backend", () => ({ getKqMarketSnapshot: vi.fn() }));
 vi.mock("./kanab-quest-energy-backend", () => ({ getKqEnergySummary: mocks.energy }));
-import { handleKqCommerceAction } from "./kanab-quest-commerce-backend";
+import { getKqCommerceSnapshot, handleKqCommerceAction } from "./kanab-quest-commerce-backend";
 import { createKqStorageLot, KQ_CURING_DURATION_MS } from "@/lib/kanab-quest-storage";
 import { createKqBusinessPreview } from "@/lib/kanab-quest-business";
+import { createKqOnlinePreview } from "@/lib/kanab-quest-online";
 import { createKqCustomerDemandSnapshot, KQ_CUSTOMER_DEMAND_PERIOD_MS } from "@/lib/kanab-quest-customer-demand";
 const user = "00000000-0000-4000-8000-000000000001", stockId = "00000000-0000-4000-8000-000000000002", flowerId = "00000000-0000-4000-8000-000000000003";
 const now = Date.parse("2026-10-10T12:00:00Z");
@@ -63,6 +64,27 @@ describe("storage-aware server commerce quotes", () => {
       .rejects.toThrow("customer_demand_migration_required");
     expect(mocks.insert).not.toHaveBeenCalled();
   });
+
+  it.each([6, undefined])("preserves the server website capability %s without inventing one for older snapshots", async maxLevel => {
+    const online = createKqOnlinePreview(now);
+    if (maxLevel === undefined) delete online.site.maxLevel;
+    else online.site.maxLevel = maxLevel;
+    mocks.rpc.mockResolvedValue({ data: { ...current(), online }, error: null });
+    const snapshot = await getKqCommerceSnapshot(user, true);
+    expect(snapshot.online?.site.maxLevel).toBe(maxLevel);
+    expect(Object.hasOwn(snapshot.online!.site, "maxLevel")).toBe(maxLevel !== undefined);
+    expect(snapshot.online?.site.tier).toBe(online.site.tier);
+  });
+
+  it.each([true, false])("preserves the optional studio capability without inventing progression: %s", async supported => {
+    const online = createKqOnlinePreview(now);
+    if (supported) online.studio = { version: 1, levels: { photography: 2, branding: 1, editorial: 1 }, style: "signature" };
+    else delete online.studio;
+    mocks.rpc.mockResolvedValue({ data: { ...current(), online }, error: null });
+    const snapshot = await getKqCommerceSnapshot(user, true);
+    expect(snapshot.online?.studio).toEqual(online.studio);
+    expect(Object.hasOwn(snapshot.online!, "studio")).toBe(supported);
+  });
 });
 
 describe("persistent online commerce commands", () => {
@@ -81,6 +103,80 @@ describe("persistent online commerce commands", () => {
       p_user_id: user, p_action: "create-listing", p_payload: listing, p_request_key: requestKey,
     });
     expect(mocks.insert).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["buy-merch-module", { code: "textile" }],
+    ["buy-merch-stock", { code: "tshirt", quantity: 12 }],
+    ["update-merch", { code: "tshirt", priceCents: 2999, active: true }],
+  ])("passes only the explicit merchandise choices for %s", async (command, payload) => {
+    await run(command, { ...payload, userId: "someone-else", costCents: 0, sold: 999, followers: 100000, progress: 1, unitsPerDay: 200 });
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_online_command", {
+      p_user_id: user, p_action: command, p_payload: payload, p_request_key: requestKey,
+    });
+  });
+
+  it.each([
+    ["buy-studio-level", { track: "photography", level: 2 }],
+    ["buy-studio-level", { track: "branding", level: 3 }],
+    ["buy-studio-level", { track: "editorial", level: 1 }],
+    ["choose-studio-style", { style: "clear" }],
+    ["choose-studio-style", { style: "craft" }],
+    ["choose-studio-style", { style: "signature" }],
+  ])("passes only the explicit studio choices for %s", async (command, payload) => {
+    await run(command, { ...payload, userId: "someone-else", costCents: 0, orders: 999, confidence: 100, levels: { photography: 3 }, multiplier: 999 });
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_online_command", {
+      p_user_id: user, p_action: command, p_payload: payload, p_request_key: requestKey,
+    });
+  });
+
+  it.each([0, -1, 1.1, 4, Infinity, NaN, "1", null, undefined])("rejects invalid studio level %s", async level => {
+    await expect(run("buy-studio-level", { track: "photography", level })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it("rejects unknown studio tracks and artistic directions before the RPC", async () => {
+    for (const track of ["free", "__proto__", null, 1]) await expect(run("buy-studio-level", { track, level: 1 })).rejects.toThrow();
+    for (const style of ["free", "__proto__", null, 1]) await expect(run("choose-studio-style", { style })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["online_studio_unknown", "direction artistique"],
+    ["online_studio_sequence", "niveau précédent"],
+    ["online_studio_progression_required", "ateliers requis"],
+    ["online_studio_style_required", "atelier éditorial"],
+  ])("explains the authoritative studio rejection %s", async (code, message) => {
+    mocks.rpc.mockResolvedValue({ data: null, error: { message: code } });
+    await expect(run("buy-studio-level", { track: "photography", level: 1 })).rejects.toThrow(message);
+  });
+
+  it.each([0, -1, 1.1, 501, Infinity, NaN, "10", null])("rejects invalid merchandise quantity %s", async quantity => {
+    await expect(run("buy-merch-stock", { code: "stickers", quantity })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it.each([0, -1, 1.1, 100001, Infinity, NaN, "10", null])("rejects invalid merchandise price %s", async priceCents => {
+    await expect(run("update-merch", { code: "stickers", priceCents, active: true })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it("rejects unknown merchandise choices and non-boolean publication flags", async () => {
+    await expect(run("buy-merch-module", { code: "free" })).rejects.toThrow();
+    await expect(run("buy-merch-stock", { code: "free", quantity: 1 })).rejects.toThrow();
+    for (const active of ["true", 1, null, undefined]) {
+      await expect(run("update-merch", { code: "mug", priceCents: 1600, active })).rejects.toThrow();
+    }
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["online_merch_module_required", "Installe l’atelier"],
+    ["online_merch_slots", "emplacements"],
+    ["online_merch_stock_limit", "500"],
+  ])("explains the authoritative merchandise rejection %s", async (code, message) => {
+    mocks.rpc.mockResolvedValue({ data: null, error: { message: code } });
+    await expect(run("buy-merch-stock", { code: "stickers", quantity: 10 })).rejects.toThrow(message);
   });
 
   it.each([0, -1, 1.001, 1_000_001, Infinity, NaN, "1273", Number.MAX_SAFE_INTEGER])("rejects invalid packet price %s before reaching SQL", async value => {
@@ -126,6 +222,14 @@ describe("persistent online commerce commands", () => {
     await expect(run("start-marketing", { version: 2, code: "harvest", angle: "craft", listingId, budgetCode: "free" })).rejects.toThrow();
     await run("start-marketing", { version: 2, code: "harvest", angle: "craft", listingId, budgetCode: "regional", stockId, followersReward: 1_000_000, costCents: 0 });
     expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_online_command", expect.objectContaining({ p_action: "start-marketing", p_payload: { version: 2, code: "harvest", angle: "craft", listingId, budgetCode: "regional" } }));
+  });
+
+  it.each(["studio", "signature", "flagship"])("passes only the %s identity to SQL and discards forged progress and tariffs", async tier => {
+    await run("upgrade-site", { tier, costCents: 0, monthlyCents: 0, conversion: 999, level: 6,
+      orders: 999999, confidence: 100, followers: 999999, photography: true, branding: true, userId: "another-player" });
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_online_command", {
+      p_user_id: user, p_action: "upgrade-site", p_payload: { tier }, p_request_key: requestKey,
+    });
   });
 
   it.each([

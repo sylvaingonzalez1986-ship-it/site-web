@@ -59,6 +59,15 @@ describe("business calendar and billing previews", () => {
     expect(iso(start + KQ_SUPPLIER_PAYMENT_TERM_MS)).toBe("2026-10-29T22:00:00.000Z");
   });
 
+  it("collects debts after the online fee and VAT while preserving every virtual cent", () => {
+    const business = createKqBusinessPreview(start);
+    business.lab.overdueCents = 4500;
+    const payment = previewKqBusinessPayment(30000, business, 20000, 750);
+    expect(payment).toMatchObject({ vatCents: 5000, labPaidCents: 4500, electricityPaidCents: 7625, netPayoutCents: 12125 });
+    expect(payment.netPayoutCents + payment.vatCents + payment.labPaidCents + payment.electricityPaidCents + 750).toBe(30000);
+    expect(() => previewKqBusinessPayment(1, business, 0, 2)).toThrow('Montant');
+  });
+
   it("does not collect supplier invoices before maturity and keeps old responses compatible", () => {
     const business = createKqBusinessPreview(start);
     const legacy = previewKqBusinessPayment(12000, business, 0);

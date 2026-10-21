@@ -61,8 +61,8 @@ describe("Living market and differentiated cards", () => {
     expect(quote(10).available).toBe(true);
     const inventory = Object.fromEntries(KQ_CARDS.map((card) => [card.code, 1]));
     const deck = buildKqRecommendedDeck("none", inventory, [], "HH2026-020").support;
-    expect(deck).toHaveLength(6);
-    expect(new Set(deck).size).toBe(6);
+    expect(deck).toHaveLength(10);
+    expect(new Set(deck).size).toBe(10);
     const cards = deck.map((code) => KQ_CARDS.find((card) => card.code === code)!);
     expect(new Set(cards.flatMap((card) => card.tags)).size).toBeGreaterThanOrEqual(5);
     expect(new Set(cards.map((card) => card.timing)).size).toBe(2);

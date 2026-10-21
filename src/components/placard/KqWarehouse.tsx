@@ -74,6 +74,10 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   const initialWorkshopShop = initialEquipmentCode === "COMPUTER" || isKqProcessingEquipment(initialEquipmentCode ?? "");
   const initialDevice = getKqWarehouseDevice(initialEquipmentCode ?? "") ?? KQ_WAREHOUSE_CATALOG.find(item => item.legacyCode === initialEquipmentCode);
   const [room, setRoom] = useState<Room>(initialSection === "storage" ? "storage" : initialWorkshopShop ? "processing" : initialDevice?.kind === "drying" ? "drying" : initialDevice?.room ?? "culture");
+  const [storageEquipmentOpen, setStorageEquipmentOpen] = useState(() => Boolean(
+    initialDevice?.room === "storage" && initialDevice.kind !== "drying"
+    || initialSection === "storage" && initialZoneId,
+  ));
   const [snapshot, setSnapshot] = useState<KqWarehouseViewSnapshot | null>(null);
   const [draft, setDraft] = useState<KqWarehouseState | null>(null);
   const [staleDraft, setStaleDraft] = useState<WarehouseDraft | null>(null);
@@ -598,12 +602,12 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
         {adoptingServicePlan && <p className={styles.warning} data-warehouse-adoption>Seul le matériel affecté aux zones comptera dans la capacité. Le reste sera conservé en réserve.{adoptionBlocked && " Agrandis le stockage pour accueillir tes lots."}</p>}
         {adoptionBlocked && !adoptingServicePlan && <p className={styles.warning} data-warehouse-capacity-blocked>Stockage insuffisant pour tes lots. Agrandis la zone ou change de gamme.</p>}
         {!snapshot || !draft || !summary ? <div className={styles.loading} role="status">{loading ? <><LoaderCircle size={25} />Chargement de ton installation…</> : "L’entrepôt n’est pas disponible. Tu peux réessayer avec le bouton Actualiser."}</div> : <>
-          <div className={styles.stats} aria-label="Repères de ton installation">
+          {room !== "storage" && <div className={styles.stats} aria-label="Repères de ton installation">
             <div className={styles.stat}><small><Ruler size={13} />Surface</small><strong>{summary.allocatedAreaM2} <span>m²</span><span className={styles.statTotal}> / {decimal(summary.totalAreaM2)}</span></strong><em>{dimensions.columns} × {dimensions.rows} m</em></div>
             <div className={styles.stat}><small><Package size={13} />En stock</small><strong>{typeof stock === "number" ? mass(stock) : "—"}</strong><em>{typeof storageReserved === "number" ? `${mass(Math.max(0, storageCapacity - storageReserved - reservedHarvest))} de place libre` : "Occupation en cours de lecture"}</em></div>
             <div className={styles.stat}><small><Zap size={13} />Charges / cycle</small><strong>{formatKqCash(summary.operatingCostCents)}</strong><em>{formatKqCash(summary.activeAreaM2 ? Math.round(summary.operatingCostCents / summary.activeAreaM2) : 0)}/m² actif</em></div>
             <div className={styles.stat}><small><Sprout size={13} />Récolte estimée</small><strong>{mass(summary.estimatedHarvestGrams)}</strong><em>{decimal(summary.activeAreaM2 ? summary.estimatedHarvestGrams / summary.activeAreaM2 : 0)} g/m² actif</em></div>
-          </div>
+          </div>}
           <div role="tabpanel" id={`${id}-${room}-panel`} aria-labelledby={`${id}-${room}-tab`}>
             {room === "culture" ? <div className={styles.workspace} ref={workspace} data-warehouse-cultures={zoneCultures || undefined}>
               <div className={styles.sceneColumn}>
@@ -637,7 +641,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
               {showBuddieDock && <KqWarehouseBuddieDock buddies={buddies} runs={activeRuns} zones={draft.zones} disabled={locked} open={buddiesOpen} onOpenChange={setBuddiesOpen} selectedCode={pickedBuddie} onPick={pickBuddie} onDragPoint={dragBuddie} onDrop={dropBuddie} />}
             </div> : <>
               {dirty && <div className={`${styles.equipmentBasket} ${room !== "processing" ? styles.postHarvestBasket : ""}`} data-postharvest-basket><p><strong>{formatKqCash(investment)} d’investissement</strong><small>Appareils, aménagement et pose inclus{creditUsed ? ` · ${formatKqCash(creditUsed)} de crédit de reprise` : ""}. Solde après achat : {formatKqCash(snapshot.cashCents - payable)}.</small>{(draftClimateCost > 0 || installedClimateCost > 0) && <small className={styles.basketClimateCost}><Zap size={13} aria-hidden="true" />Climatisation après installation : {formatKqCash(draftClimateCost)} / mois de jeu{draftClimateCost !== installedClimateCost ? ` (actuellement ${formatKqCash(installedClimateCost)})` : ""}.</small>}</p>{purchaseActions}</div>}
-              {(room === "drying" || room === "storage") && (issues.length ? <div role="alert"><p>{issues[0]}</p><button type="button" className={styles.secondary} onClick={() => setRoom("culture")}>Corriger les dimensions sur le plan</button></div> : <KqWarehousePostHarvest kind={room} state={draft} installedState={snapshot.state} billing={snapshot.storageClimateBilling} disabled={locked} onPlaceDevice={placeDevice} onEditZone={editServiceZone} onUpgradeZone={upgradeServiceZone} onSetStorageClimate={setStorageClimate} />)}
+              {room === "drying" && (issues.length ? <div role="alert"><p>{issues[0]}</p><button type="button" className={styles.secondary} onClick={() => setRoom("culture")}>Corriger les dimensions sur le plan</button></div> : <KqWarehousePostHarvest kind={room} state={draft} installedState={snapshot.state} billing={snapshot.storageClimateBilling} disabled={locked} onPlaceDevice={placeDevice} onEditZone={editServiceZone} onUpgradeZone={upgradeServiceZone} onSetStorageClimate={setStorageClimate} />)}
               {room === "processing" && <>
                 <div className={styles.roomIntro}><div><h3>Transformation</h3><p>Transforme tes lots séchés et stockés.</p></div></div>
                 {dirty ? <p className={styles.warning}>Enregistre ou annule ton aménagement avant de modifier les machines de l’atelier.</p> : <div className={styles.workshop} data-warehouse-workshop>
@@ -648,10 +652,16 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                 </div>}
                 <div className={styles.lots}><div className={styles.sectionTitle}><h3>Lots à transformer</h3><button className={styles.secondary} type="button" disabled={workshopBusy || dirty} onClick={() => { setProcessingFlowerId(undefined); setShowOperations(value => !value); }}>{showOperations ? "Replier" : "Ouvrir les lots"}<ArrowRight size={13} /></button></div>{showOperations && !dirty && <KqCommerceDesk key={processingFlowerId ?? "all"} initialFlowerId={processingFlowerId} mode="sales" onOpenShop={openWorkshopShop} onOpenStorage={() => setRoom("storage")} />}</div>
               </>}
-              {room === "storage" && <KqWarehouseHarvests storage={storage} stockGrams={stock} storageReservedGrams={storageReserved} storageCapacityGrams={savedActualStorageCapacity}
-                disabled={pending || loading || dirty} error={storageError} onRetry={() => void storagePolling.current?.refresh()}
-                onOpenWorkshop={flowerId => { setProcessingFlowerId(flowerId); setShowOperations(true); setRoom("processing"); }}
-                onSellOverflow={flowerId => void sellOverflow(flowerId)} />}
+              {room === "storage" && <>
+                <KqWarehouseHarvests storage={storage} stockGrams={stock} storageReservedGrams={storageReserved} storageCapacityGrams={savedActualStorageCapacity}
+                  disabled={pending || loading || dirty} error={storageError} onRetry={() => void storagePolling.current?.refresh()}
+                  onOpenWorkshop={flowerId => { setProcessingFlowerId(flowerId); setShowOperations(true); setRoom("processing"); }}
+                  onSellOverflow={flowerId => void sellOverflow(flowerId)} />
+                {issues.length ? <div role="alert"><p>{issues[0]}</p><button type="button" className={styles.secondary} onClick={() => setRoom("culture")}>Corriger les dimensions sur le plan</button></div> : <details className={styles.storageEquipment} data-storage-equipment open={storageEquipmentOpen} onToggle={event => setStorageEquipmentOpen(event.currentTarget.open)}>
+                  <summary><strong>Contenants et climat</strong><span>Climatisation : {formatKqCash(snapshot.storageClimateBilling?.monthlyCostCents ?? installedClimateCost)} / mois de jeu</span></summary>
+                  <KqWarehousePostHarvest kind="storage" state={draft} installedState={snapshot.state} billing={snapshot.storageClimateBilling} disabled={locked} onPlaceDevice={placeDevice} onEditZone={editServiceZone} onUpgradeZone={upgradeServiceZone} onSetStorageClimate={setStorageClimate} />
+                </details>}
+              </>}
             </>}
           </div>
           <KqWarehouseDashboard summary={summary} quote={quote} dirty={dirty} migrationCreditCents={snapshot.migrationCreditCents ?? 0} storageCapacity={storageCapacity} storageReserved={storageReserved} reservedHarvest={reservedHarvest} salesGramsPerDay={demand} />

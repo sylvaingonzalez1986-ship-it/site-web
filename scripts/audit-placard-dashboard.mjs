@@ -2,12 +2,13 @@
 import assert from 'node:assert/strict';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
-import {createServer} from 'vite';
+import {createServer, transformWithOxc} from 'vite';
 import tailwindcss from '@tailwindcss/postcss';
 import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const root = process.cwd();
+const seasonOnly = process.env.SEASON_ONLY === '1';
 const output = resolve(root, 'output/placard-workshop/dashboard');
 const modules = {
   'warehouse-assets': `export default ${await readFile(resolve(root,'public/placard/warehouse-v2/manifest.json'),'utf8')};`,
@@ -54,7 +55,7 @@ const modules = {
       return new Response(JSON.stringify(snapshot));
     };
     const open = (destination, code) => window.__opened.push({destination, code});
-    const season = {seasonCode:'KQ-2026-S1',rank:7,score:1337,rating:1160,seasonPoints:87,reputation:246,wins:12,losses:3,streak:2,arenaExperience:420,leaderboard:[{id:'first',rank:1,name:'Fleur des Embruns',placardScore:1490,isPlayer:false},{id:'player',rank:7,name:'Lou.Chanvre',placardScore:1337,isPlayer:true}],onOpenArena:()=>open('arena')};
+    const season = {seasonCode:'KQ-2026-S1',rank:7,score:1337,rating:1160,seasonPoints:87,reputation:246,wins:12,losses:3,streak:Number(new URLSearchParams(location.search).get('streak')??2),arenaExperience:420,local:new URLSearchParams(location.search).has('local'),leaderboard:[{id:'first',rank:1,name:'Fleur des Embruns',placardScore:1490,isPlayer:false},{id:'player',rank:7,name:'Lou.Chanvre',placardScore:1337,businessScore:0,isPlayer:true}],onOpenArena:()=>open('arena')};
     createRoot(document.getElementById('root')).render(scenario === 'season'
       ? React.createElement('main',{style:{maxWidth:1050,margin:'auto',padding:16}},React.createElement(KqSeasonBoard,season)) : scenario === 'lobby'
       ? React.createElement(KqPlacardLobby, {onOpen:destination=>open(destination), onOpenEquipment:code=>open('shop',code)})
@@ -69,7 +70,7 @@ const server = await createServer({
   root, cacheDir:resolve(output, 'vite-cache'), optimizeDeps:{include:['react','react-dom/client','lucide-react']},
   configFile:false, envDir:false, publicDir:resolve(root,'public'), esbuild:{jsx:'automatic'},
   resolve:{alias:{'@':resolve(root,'src')}}, css:{postcss:{plugins:[tailwindcss({base:root})]}},
-  plugins:[{name:'dashboard-audit', enforce:'pre', resolveId(id){if(id.endsWith('/public/placard/warehouse-v2/manifest.json'))return '\0warehouse-assets';if(id in modules)return '\0'+id;}, load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},
+  plugins:[{name:'dashboard-audit', enforce:'pre', resolveId(id){if(id.endsWith('/public/placard/warehouse-v2/manifest.json'))return '\0warehouse-assets';if(id in modules)return '\0'+id;}, async load(id){if(id.startsWith('\0') && modules[id.slice(1)])return (await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;},
     configureServer(vite){vite.middlewares.use((req,res,next)=>{
       if(req.url?.split('?')[0]!=='/')return next();
       res.setHeader('Content-Type','text/html');
@@ -83,7 +84,7 @@ try {
   await mkdir(output,{recursive:true}); await server.listen();
   browser = await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,userDataDir:resolve(output,'chrome-profile'),args:['--no-sandbox','--disable-gpu']});
   const page = await browser.newPage(); page.setDefaultNavigationTimeout(60000);
-  page.on('pageerror',e=>errors.push(e.message));
+  page.on('pageerror',e=>{errors.push(e.message);console.error(e.message);});
   await page.setRequestInterception(true);
   page.on('request',r=>{const u=new URL(r.url());if(u.protocol==='data:'||(u.hostname==='127.0.0.1'&&u.port==='3197'))void r.continue();else void r.abort();});
   const visit = async scenario => {await page.goto('http://127.0.0.1:3197/?scenario='+scenario,{waitUntil:'networkidle0'});await page.waitForSelector('#hud-tab-overview',{timeout:60000});};
@@ -93,6 +94,7 @@ try {
     return result;
   };
   const shot = async name => {await page.screenshot({path:resolve(output,name+'.png'),fullPage:true});};
+  if (!seasonOnly) {
   for(const width of [320,390,768,1440]) {
     await page.setViewport({width,height:844,isMobile:width<700,hasTouch:width<700});
     await visit('populated');
@@ -139,16 +141,34 @@ try {
   assert.equal(await page.$('#hud-tab-overview'),null); await page.click('[role="alert"] button'); await page.waitForSelector('#hud-tab-overview');
   await page.goto('http://127.0.0.1:3197/?scenario=loading',{waitUntil:'domcontentloaded'}); await page.waitForSelector('[role="status"]');
   assert.equal(await page.$('#hud-tab-overview'),null); await page.waitForSelector('#hud-tab-overview');
+  }
   for(const width of [320,390,1440]){
     await page.setViewport({width,height:844,isMobile:width<700,hasTouch:width<700});
     await page.goto('http://127.0.0.1:3197/?scenario=season',{waitUntil:'networkidle0'});await page.waitForSelector('[data-kq-season-board]');
-    assert.equal(await page.$$eval('[data-kq-season-board] i[data-won="true"]',steps=>steps.length),2);
+    assert.equal(await page.$eval('[role="meter"][aria-label="Vers le prochain pack de série"]',meter=>meter.getAttribute('aria-valuenow')),'2');
+    assert.equal(await page.$eval('a[href="/arene/placard?view=missions"]',link=>link.getBoundingClientRect().height >= 44),true);
+    await page.focus('a[href="/arene/placard?view=missions"]');
+    assert.equal(await page.evaluate(()=>document.activeElement.getAttribute('href')),'/arene/placard?view=missions');
+    assert(await page.$eval('[data-kq-season-board]',board=>board.textContent.includes('Score d’entreprise non renseigné')&&board.textContent.includes('Entreprise 0 pts')));
     await page.focus('[data-kq-season-board] button');await page.keyboard.press('Enter');assert.equal(await page.evaluate(()=>window.__opened.at(-1).destination),'arena');
     await shot('season-'+width);await checkLayout();await page.click('[data-kq-season-board] details summary');await shot('season-details-'+width);await checkLayout();
+    results.push({scenario:'season',width,progress:2,missionLink:true,keyboard:true,overflow:false});
   }
+  for(const streak of [0,3]) {
+    await page.setViewport({width:320,height:844,isMobile:true,hasTouch:true});
+    await page.goto('http://127.0.0.1:3197/?scenario=season&streak='+streak,{waitUntil:'networkidle0'});
+    assert.equal(await page.$eval('[role="meter"][aria-label="Vers le prochain pack de série"]',meter=>meter.getAttribute('aria-valuenow')),'0');
+    assert(await page.$eval('[data-kq-season-board]',board=>board.textContent.includes('Encore 3 victoires')&&board.textContent.includes('Une défaite ne retire pas tes XP métier')));
+    await checkLayout();results.push({scenario:'season',streak,progress:0,overflow:false});
+  }
+  await page.goto('http://127.0.0.1:3197/?scenario=season&local=1',{waitUntil:'networkidle0'});
+  assert.equal(await page.$('a[href="/arene/placard?view=missions"]'),null);
+  await checkLayout();results.push({scenario:'season-local',externalMissionLink:false});
+  if (!seasonOnly) {
   await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});await page.goto('http://127.0.0.1:3197/?scenario=lobby',{waitUntil:'networkidle0'});await page.waitForSelector('[data-placard-map]');
   await shot('lobby-390'); await checkLayout();
+  }
   assert.deepEqual(errors,[]);
-  await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,results,destinations:true,pinnedGoal:true,missionRetry:true,complete:true,loadingAndRetry:true,lobby:true,errors},null,2));
+  await writeFile(resolve(output,seasonOnly?'season-report.json':'report.json'),JSON.stringify({passed:true,scope:seasonOnly?'season':'dashboard-and-season',results,errors},null,2));
   console.log(JSON.stringify({passed:true,results,output}));
 } finally {await browser?.close();await server.close();}

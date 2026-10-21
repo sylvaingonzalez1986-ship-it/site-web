@@ -49,7 +49,7 @@ const modules = {
         return Response.json(snapshot());
       }
       if(url==='/api/arena/placard/storage')return Response.json({serverNow:new Date().toISOString(),cashCents,ownedMethodCodes:['STORAGE-GLASS'],defaultMethodCode:'STORAGE-GLASS',catalog:KQ_STORAGE_METHODS,containers:KQ_STORAGE_CONTAINERS,ownedContainers:{'GLASS-1L':2},capacity:{totalUnits:getKqWarehouseSummary(state).storageCapacityGrams*10,usedUnits:0,freeUnits:getKqWarehouseSummary(state).storageCapacityGrams*10,reservedUnits:0,overflowUnits:0},overflowSales:[],lots:[]});
-      if(url==='/api/arena/placard/collection')return Response.json({ownedBuddieCodes:[],buddieRotation:{requiredDistinctBuddies:5,recentBuddieCodes:[]}});
+      if(url==='/api/arena/placard/collection')return Response.json({ownedBuddieCodes:[],buddieRotation:{requiredDistinctBuddies:2,recentBuddieCodes:[]}});
       throw new Error('Unexpected local fixture API: '+url);
     };
     createRoot(document.getElementById('root')).render(<KqWarehouse embedded initialSection={params.get('room')==='drying'?'equipment':'storage'} initialEquipmentCode={params.get('room')==='drying'?'SJ-DRYIT90':undefined} onClose={()=>{}}/>);

@@ -14,7 +14,6 @@ vi.mock("next/image", () => ({
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
 vi.mock("./ArenaJourneyEntry", () => ({ ArenaJourneyEntry: () => createElement("div", { "data-inline-account": true }, "Aide") }));
 vi.mock("./ArenaPrelaunchCharacter", () => ({ ArenaPrelaunchCharacter: () => createElement("button", {}, "Créer mon personnage") }));
-vi.mock("./ArenaPlayerResume", () => ({ ArenaPlayerResume: () => createElement("section", { "data-player-summary": true }, "Ton aventure continue") }));
 
 describe("Arena home", () => {
   it("maps three direct activity links and the profile without the neighborhood tutorial", () => {
@@ -68,12 +67,6 @@ describe("Arena home", () => {
     expect(html).not.toContain("<a ");
     expect(html).not.toContain("data-inline-account");
     expect(html).not.toContain("data-lobby-enter");
-  });
-
-  it("keeps the optional player summary available only after opening", () => {
-    expect(renderToStaticMarkup(createElement(ContestArenaHub, { personalSummaryEnabled: true }))).toContain("data-player-summary");
-    expect(renderToStaticMarkup(createElement(ContestArenaHub, { personalSummaryEnabled: true, activitiesLocked: true }))).not.toContain("data-player-summary");
-    expect(renderToStaticMarkup(createElement(ContestArenaHub))).not.toContain("data-player-summary");
   });
 
 });

@@ -71,7 +71,7 @@ const modules = {
     window.fetch=async(url,init={})=>{
       if(!String(url).startsWith('/api/'))return fetchOriginal(url,init);
       window.__apiCalls.push({url:String(url),method:init.method??'GET'});
-      if(String(url)==='/api/arena/placard/collection')return Response.json({ownedBuddieCodes:query.has('buddieDrag')?Array.from({length:15},(_,index)=>'HH2026-'+String(index+2).padStart(3,'0')):['HH2026-002','HH2026-003','HH2026-004'],buddieRotation:{requiredDistinctBuddies:5,recentBuddieCodes:query.has('buddieDrag')?['HH2026-005','HH2026-002']:['HH2026-002']}});
+      if(String(url)==='/api/arena/placard/collection')return Response.json({ownedBuddieCodes:query.has('buddieDrag')?Array.from({length:15},(_,index)=>'HH2026-'+String(index+2).padStart(3,'0')):['HH2026-002','HH2026-003','HH2026-004'],buddieRotation:{requiredDistinctBuddies:2,recentBuddieCodes:query.has('buddieDrag')?['HH2026-005','HH2026-002']:['HH2026-002']}});
       if(String(url).startsWith('/api/arena/placard/equipment')){
         if(!init.method||init.method==='GET')return Response.json(equipmentSnapshot());
         const body=JSON.parse(init.body);window.__equipmentRequests.push(body);

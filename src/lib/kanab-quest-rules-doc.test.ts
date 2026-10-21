@@ -49,7 +49,7 @@ describe("Kanab Quest Placard rules draft", () => {
 
   it("keeps the active thirty-card contract separate from archived PBI and observation", () => {
     expect(normalizedRules).toContain(`**${KQ_ACTIVE_CARDS.length} cartes actives**`);
-    expect(normalizedRules).toContain("Une seule carte épique peut être jouée par culture");
+    expect(normalizedRules).toContain("Une seule carte épique peut être jouée par campagne");
     expect(normalizedRules).toContain("Les PBI se trouvent dans la boutique de soins");
     expect(normalizedRules).toContain("observations du panneau Santé sont gratuites");
     expect(normalizedRules).toContain("liste explicite de situations compatibles");
@@ -73,7 +73,7 @@ describe("Kanab Quest Placard rules draft", () => {
   });
 
   it("documents the durable equipment economy with the implemented prices", () => {
-    expect(normalizedRules).toContain("Chaque joueur commence avec `350 €` virtuels");
+    expect(normalizedRules).toContain("Chaque joueur commence avec `1 000 €` virtuels");
     expect(normalizedRules).toContain("ne peut pas être acheté, retiré, remboursé ou converti en argent réel");
     expect(normalizedRules).toContain("une seule facture d’analyse de `45 €` pour son lot commun, quel que soit le nombre de tentes");
     KQ_EQUIPMENT_CATALOG.filter((equipment) => equipment.purchasable).forEach((equipment) => {

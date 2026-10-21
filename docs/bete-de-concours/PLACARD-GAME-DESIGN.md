@@ -14,6 +14,477 @@ Cette section décrit l’implémentation préparée pour le lancement du 1er no
 2026. Elle prime sur les propositions historiques ci-dessous. L’application
 des migrations et la publication du site sont des opérations distinctes.
 
+Ajustement du 19 octobre : la rotation ci-dessous passe à deux autres
+variétés. La migration `20261019000100_kq_buddie_rotation_two.sql`, appliquée
+et vérifiée sur Supabase le 19 octobre, convertit les historiques existants.
+Le code associé reste à publier. Avec trois variétés distinctes, le cycle
+A → B → C → A est possible. Une campagne exige toujours que toutes les zones
+actives affectées participent : les zones dont le Buddie est encore bloqué
+doivent être désactivées ou réaffectées avant le lancement.
+
+Le budget de départ passe à 1 000 € pour les nouveaux portefeuilles, avec
+le bonus de 650 € du Trésorier conservé. La migration
+`20261019000300_kq_starting_budget.sql` est appliquée et vérifiée sur Supabase
+le 19 octobre. Les trois espaces équipés de 1 m² sont déjà offerts.
+
+Premier lot d'améliorations après l'audit du 19 octobre, préparé localement :
+
+- **Départ jouable** : le pack de bienvenue Buddies contient trois communes
+  distinctes, sans remplacement par un bonus. Sa provenance est liée au ticket
+  et son ouverture possède un reçu rejouable sans nouvelle attribution. La
+  migration `20261019000400_kq_starter_buddies.sql` complète une seule fois les
+  anciennes collections concernées jusqu'à trois variétés jouables actives.
+  Les tirages, bonus et quotas des packs ordinaires sont conservés. L'offre
+  gratuite est annoncée avant l'achat dans la boutique.
+- **Mission communautaire** : « Ton entrepôt sur X » récompense le partage
+  d'une capture par un pack Buddies, une fois par compte, après validation
+  humaine de la preuve du post. La migration `20261019000200_warehouse_twitter_mission.sql`
+  réutilise l'envoi privé de preuve et l'attribution atomique existants.
+  Aucune publication automatique ni connexion au compte social n'est ajoutée.
+- **Suite des missions** : après une récompense, le centre affiche le prochain
+  objectif du même parcours, sa progression réelle et son gain. Un objectif
+  déjà atteint peut être réclamé directement. Un pack est ouvert avant la suite ;
+  une fin de parcours invite à en choisir un autre. Une réponse absente ou un
+  échec d'actualisation ne crée jamais une progression supposée.
+- **Comprendre les duels** : le verdict présente un repère bref fondé sur
+  l'analyse existante et une action visible pour préparer ou reprendre la culture.
+  Le repère distingue déficit mesuré, égalité, variation du jury et données
+  insuffisantes. Les notes, récompenses et chances de victoire ne changent pas.
+
+Les quatre migrations du 19 octobre sont appliquées à la base distante et
+vérifiées. Les modifications du code du site restent locales.
+
+Validation locale : test PostgreSQL `scripts/test-placard-starter-buddies.mjs`,
+contrôle des permissions sur 329 migrations, tests ciblés missions/jury/règlement,
+ESLint et TypeScript validés. Les sondes Chromium passent 28 scénarios avec
+composants réels et API simulées, dont navigation au clavier et largeur de 320 px :
+[départ offert](../../output/ux-game-improvements-2026-10-19/starter/report.json),
+[continuité des missions](../../output/mission-continuation/report.json),
+[verdicts du jury](../../output/ux-implementation/jury/results.json).
+
+### Bilan local de l'amélioration UX — 19 octobre 2026
+
+La seconde passe termine les points de lisibilité et de continuité de la boucle :
+
+- **Décider après les dés** : « Si tu valides maintenant » utilise la résolution
+  réelle de l'étape pour présenter santé, résultat, secours de première culture
+  et effet automatique de l'Héritage. Les conséquences sur qualité, XP et
+  pression restent dans des détails repliés. Aucun lancer futur ni diagnostic
+  caché n'est révélé. Un Danger explique pourquoi une cible atteinte peut
+  rester fragile ; la pression ne promet plus une quatrième réussite impossible.
+- **Engager une carte en connaissance de cause** : la confirmation rappelle
+  le coût en XP de culture, les XP disponibles, les copies possédées avant le
+  choix, l'avantage et le risque. Le tarif de l'entretien est plus lisible.
+- **Retrouver sa réserve** : Sylvain commente le lot prioritaire dans l'écran
+  existant. Les surplus passent avant les lots affinés, puis les prochaines
+  maturités. Les dates viennent du serveur ; une échéance passée ne suffit pas
+  à annoncer un lot prêt. Le comptoir reste consultable pendant le curing,
+  avec le compromis explicite entre grossiste et boutiques après maturité.
+  Les offres et les confirmations restent celles du commerce.
+- **Se faire un nom au village** : le classement devient le « Tableau du
+  village ». Le pack de série est présenté comme un bonus distinct ; un accès
+  aux objectifs personnels rappelle que les défaites n'effacent pas les XP
+  métier. La progression du bonus utilise la jauge commune avec sa valeur
+  lisible, et une donnée d'entreprise manquante n'est pas présentée comme zéro.
+
+La direction reste celle des Chanvriers Bretons : quartier illustré, Sylvain,
+crème, turquoise, encre et panneaux orange abricot. Les interventions de la
+mascotte répondent à une situation de jeu. La reprise repose sur des objectifs,
+des lots à retrouver et des choix à améliorer ; aucune nouvelle obligation
+de connexion ni minuterie punitive n'a été ajoutée.
+
+**Économie de départ conservée après vérification.** Avec le kit offert dans
+la configuration initiale simulée, une culture complète représente 117,10 € de charges de base : 22 € de
+consommables, 50,10 € d'électricité et 45 € d'analyse. Six cultures sans vente
+ni récompense laissent donc 297,40 €, ou 147,40 € en payant aussi tous les
+entretiens facultatifs. Ce calcul exclut les achats optionnels et les soins
+spécialisés. Il provisionne les charges dès maintenant, même lorsque leur
+échéance effective est ultérieure.
+
+L'[étude économique reproductible](../../output/starter-economy-audit-2026-10-19/six-cycles-report.json)
+teste 24 000 cultures : 500 comptes par scénario, six cycles, quatre stratégies
+et deux circuits commerciaux. Elle conserve le véritable kit, trois variétés
+communes en rotation, les situations précédentes, les cartes consommées, la TVA
+et les quotas. Les missions sont comptées seulement lorsqu'elles sont atteintes
+et réclamées. Aucun compte simulé n'épuise sa trésorerie sur ces six cycles.
+Dans le scénario boutique, le solde médian passe de 1 629 € sans cartes ni soins
+à 1 774 € avec un booster normal utilisé avec parcimonie et de l'entretien ciblé.
+Les rares et épiques du booster sont écartées sans remplacement. Ce sont des
+scénarios calculés, pas des résultats de joueurs ni une stratégie optimale.
+
+Les 1 000 €, les prix et les seuils de qualité sont donc conservés. La rupture
+de débouché à 6,5/10 et les parcours avec achats optionnels resteront des points
+à observer avec de vrais joueurs ; augmenter encore le budget ne serait pas
+justifié par cette simulation.
+
+Appréciation de conception après vérification locale, sur 100 :
+
+| Axe | Note | Motif principal |
+| --- | ---: | --- |
+| Prise en main | 90 | Kit offert, trois variétés distinctes, rotation continue sur une zone. |
+| Lisibilité des décisions | 88 | Résolution conditionnelle fidèle, coûts et risques explicites. |
+| Progression et objectifs | 88 | Suite des missions, reprise des lots, plusieurs voies de progression. |
+| Ambiance et identité | 90 | Village breton, Sylvain et langage visuel cohérent. |
+| Difficulté et choix | 82 | Les décisions influencent le résultat ; le seuil commercial reste abrupt. |
+| Mobile et accessibilité | 84 | Parcours clavier et 320 px vérifiés ; validation sur appareils et aides techniques réels encore nécessaire. |
+| **Ensemble** | **87** | Estimation UX, pas une mesure de rétention. |
+
+Vérifications : 4 053 tests examinés dans la suite globale ; les quinze attentes
+anciennes relevées ont été corrigées puis leurs six suites revalidées. Elles
+concernaient les tarifs et illustrations déjà changés, les abonnements de
+l'interface et la représentation des jauges et factures. TypeScript, ESLint
+ciblé et le contrôle des permissions des 329 migrations passent.
+Les parcours navigateur emploient les vrais composants avec des API locales
+simulées : [culture et confirmations](../../output/placard-culture-clarity/report.json),
+[réserve et comptoir](../../output/storage-continuation/report.json),
+[classement](../../output/placard-workshop/dashboard/season-report.json), en plus
+des parcours de départ, missions et jury cités ci-dessus. Les transitions
+du tutoriel, les erreurs, le clavier et les petits écrans sont inclus.
+
+Après l'audit local, les quatre migrations du 19 octobre ont été appliquées
+sur demande explicite à Supabase `eyowwwpdmfrulhkpvlnf`. Les quatorze contrôles
+distants en lecture seule passent : historique des migrations, rotation solo
+et campagne, défaut de 100 000 centimes, mission X, catalogue de 33 communes,
+permissions et conservation exacte du corps de la fonction de tirage ordinaire.
+Le rattrapage a attribué onze communes à cinq anciens bénéficiaires ; aucun
+ancien bénéficiaire ne reste sous trois variétés jouables actives.
+
+Le lot isolé est à jour. Les quatre migrations distinctes du 18 octobre
+`20261018000500` à `20261018000800` restent en attente et n'ont pas été incluses.
+Les [résultats de vérification](../../output/game-ux-migrations-2026-10-19/verification.json),
+le manifeste et les journaux sont conservés dans `output/game-ux-migrations-2026-10-19/`.
+Le code du site reste à déployer ; aucune publication sur X n'a été effectuée.
+La rétention réelle ne sera mesurable qu'après usage par des joueurs.
+
+### Suite du plan — quartier, choix d'entretien et observation
+
+**Consigne confirmée le 19 octobre : cette suite reste uniquement locale.**
+La préparation de publication a été arrêtée avant création d'un déploiement ;
+le contrôle Vercel en lecture seule confirme la production inchangée. Les quatre
+migrations supplémentaires du 18 octobre restent préparées et non appliquées.
+Les quatre migrations du premier lot, déjà appliquées avant cette consigne,
+ne sont pas annulées. Aucune modification des paramètres d'ouverture n'a été faite.
+
+Le quartier donne la priorité à la carte du village et à la prochaine action.
+Un seul bandeau compact avec le portrait de Sylvain oriente vers la culture,
+le jury, le comptoir ou le matériel ; les récoltes sans contenant gardent la
+priorité. La grande carte de conseil et de progression des ventes a été retirée
+le 20 octobre, à la demande du joueur, pour libérer de la place. Aucune première
+visite ni durée d'absence n'est inventée.
+La carte possède un son de navigation discret, activé explicitement et coupé
+par défaut ; le son utilise le mécanisme existant du menu. Son indisponibilité
+n'empêche aucune action. La recette passe quinze scénarios, dont clavier,
+320/390/768/1440 px, carte isolée du tutoriel, erreur de données et panne audio :
+[rapport du quartier](../../output/placard-village-ambience/report.json).
+
+L'étude économique prolongée couvre 60 000 cultures simulées : 250 comptes
+par scénario, trente cycles espacés de six heures, quatre stratégies et deux
+circuits commerciaux. Elle conserve le kit de départ et provisionne les
+charges immédiatement. Les ventes restantes non réalisées ne sont pas
+valorisées ; les achats d'équipement et les décisions adaptées d'un joueur
+ne sont pas représentés. Les soldes négatifs sont des alertes du modèle,
+pas des faillites observées ni des parties réellement jouées à découvert.
+Le soin systématique et le seul grossiste épuisent la réserve de certains
+scénarios sur la durée. La [simulation](../../output/starter-economy-audit-2026-10-19/thirty-cycles-report.json)
+justifie une aide au choix, sans changement du budget ni des tarifs.
+
+L'entretien est présenté comme facultatif. Quand la santé est au moins à
+90/100 et qu'aucun problème n'est actif, le panneau rappelle la possibilité
+de poursuivre sans payer. Le montant vient du tarif réellement proposé :
+5 € par activation actuellement, jusqu'à 25 € pour les cinq étapes possibles.
+Les effets, erreurs, confirmations et conditions de paiement restent visibles ;
+aucune note de jury ni aucun prix de vente ne sont garantis.
+Les 74 contrôles du [parcours de soins](../../output/culture-care/result.json)
+passent, y compris poursuite sans débit, paiement de 5 €, reprise d'un reçu,
+clavier et petits écrans.
+
+La commande `node scripts/report-placard-player-progression.mjs --linked`
+produit un rapport agrégé en lecture seule, sans identifiant ni nouveau suivi
+navigateur. Elle mesure récolte, deuxième cycle et vente dans les sept premières
+journées, ainsi que l'activité de culture observée entre 24–48 h et 168–192 h.
+Les cohortes sont hebdomadaires en Europe/Paris ; seuls les comptes dont la
+fenêtre est terminée entrent au dénominateur. Une campagne multizone compte
+pour un cycle et une vente automatique ne devient jamais une visite.
+Dix-sept contrôles PostgreSQL vérifient les calculs et leurs bornes.
+
+Le premier relevé distant ne contient que sept comptes ayant lancé une culture,
+avec comptes de test et administrateurs non distingués. Il sert de référence
+technique et ne permet pas de conclure sur la rétention publique. Les visites
+sans action et le tutoriel local ne sont pas mesurables avec ces sources.
+Les essais sur téléphones physiques et lecteurs d'écran restent à effectuer.
+
+Validation de cette suite : 424 fichiers et 4 060 tests unitaires passent ;
+la compilation de production locale, TypeScript et ESLint ciblé passent.
+Les migrations différées ont été répétées dans PostgreSQL isolé : 953 contrôles
+post-récolte et 873 contrôles de l'ordre réel d'application, plus la suite
+bancaire. Le [compte rendu local](../../output/game-followup-release/local-completion.json)
+conserve les résultats et les limites ; il ne constitue pas une publication.
+
+### Village actif et premier contrat — 20 octobre 2026
+
+Le code visuel reste local. Le village représente trois données réelles :
+l'entrepôt ouvre ses portes sur une culture éclairée, le marché expose des
+caisses et un fanion lorsque des lots sont prêts, et le jury installe sa table
+et ses lanternes lorsque des Fleurs sont disponibles. Les scènes
+ont été agrandies après la première recette, où les détails étaient trop
+discrets. Les bâtiments actifs portent un libellé turquoise avec leur état ou
+leur quantité ; les états au repos restent lisibles, y compris à 320 px sans
+zoom. Les valeurs absentes ou invalides n'allument aucun signal et ne sont
+pas présentées comme zéro. Les ajouts restent dans l'illustration existante,
+sans nouveau panneau, sans déplacer les accès et avec respect de la réduction
+des animations.
+
+Une seconde correction remplace les éléments SVG géométriques par trois
+fragments peints à partir de la carte d'origine avec imagegen natif :
+bois, pots, sachets, bocaux, tissu et éclairage reprennent son trait, sa
+perspective et ses textures. La carte v6 et ses huit zones cliquables restent
+la référence ; chaque fragment apparaît indépendamment selon les données.
+Seuls les bords des fragments sont légèrement adoucis, sans rendre les portes
+ou le mobilier transparents. Les halos d'activité permanents sont retirés ;
+les indications de survol, de sélection et de focus sont conservées.
+Les trois WebP pèsent ensemble 54 218 octets. Les fichiers, les coordonnées
+et le prompt exact sont dans
+[le manifeste des illustrations](../../public/placard/map/placard-activity-v1.json).
+
+Le résumé se rafraîchit au retour dans l'onglet, après les événements
+d'équipement, de stockage ou de progression, et toutes les deux minutes
+lorsque la page est visible. Les vérifications du rendu couvrent quatorze
+scénarios sur les composants réels : activité et repos, données inconnues
+ou invalides, grands compteurs, accès aux huit bâtiments, clavier et
+réduction des animations. Les captures attendent le décodage des images et
+couvrent aussi chaque activité séparée et les raccords en zoom à 390 et
+1440 px. TypeScript et ESLint ciblé passent. Rapport et captures dans
+`output/placard-building-activity/`. Le serveur habituel sur le port 3000
+sert les composants modifiés ; ces effets dépendent des données de la partie.
+
+Le premier contrat, **Main légère**, se choisit dans les préparatifs ou dans
+**Missions → Contrats**, avant de lancer la prochaine culture. Il demande au
+moins une récolte vivante à **8 points de Qualité de culture** et **deux cartes
+Botte jouées maximum** sur toute la campagne. Le Sol vivant et l'Héritage ne
+comptent pas. La prime de **30 € de jeu**, unique par compte, reste à réclamer
+après vérification de la récolte enregistrée. Aucun frais, délai ou prélèvement
+de Fleur ; un échec permet de retenter sur une prochaine culture. Le suivi est
+compact pendant la partie et le résultat s'ouvre à la récolte.
+
+Le seuil a été rapproché des simulations existantes du kit de départ :
+1 037 des 3 000 cultures sans cartes remplissent les critères (34,57 %),
+et 470 des 500 comptes y arrivent au moins une fois en six cycles. Il s'agit
+d'un filtrage rétrospectif de `six-cycles-samples.json`, sans acceptation de
+contrat ni stratégie adaptée, pas d'un taux de réussite observé chez les
+joueurs. Le contrat vise le début de progression ; il ne remplace pas un
+défi expert pour les entrepôts avancés.
+
+La migration `20261020000100_kq_light_hand_contract.sql` lie le contrat au
+nouveau leader de campagne, protège l'attribution par verrou et conserve un
+reçu. Sa table est privée ; seules les deux RPC de lecture/action sont
+autorisées à `service_role`. Elle a d'abord été appliquée et testée dans
+PostgreSQL isolé (PGlite).
+
+**Le 20 octobre, après confirmation explicite de la modification de la base
+Supabase partagée avec la production**, les cinq migrations manquantes ont été
+appliquées : `20261018000500` à `20261018000800`, puis `20261020000100`.
+Le SHA du code déjà publié a été contrôlé : il transmet les versions de
+snapshots nécessaires. Les contrôles après application passent pour les
+prix, la qualité, le climat, le crédit et les permissions. Les treize fonctions
+à préserver sont identiques et les 300 lots existants sont conservés.
+La simulation finale ne trouve plus aucune migration en attente.
+Les deux RPC du contrat sont accessibles au serveur et l'accès direct à sa
+table privée est refusé. Le site local habituel utilise désormais ces RPC.
+Son endpoint répond `401` sans session, avec `Cache-Control: private, no-store` ;
+aucune partie connectée ni action sur un compte joueur n'a été effectuée
+pendant ces vérifications. Aucun commit, push ou déploiement applicatif :
+ils attendent la validation locale. Les preuves sont dans
+[le compte rendu d'application](../../output/game-migrations-2026-10-20/application-status.json).
+
+Validation de cette étape : 106 contrôles SQL, 31 tests du modèle/backend/API,
+23 tests de régression ciblés, TypeScript, ESLint et permissions des 330
+migrations. Les recettes navigateur couvrent quinze groupes pour le contrat
+et dix-sept scénarios du quartier, dont 320 px, clavier, erreurs et mise à
+jour des bâtiments au retour dans l'onglet ou après modification du stockage.
+La recette du contrat couvre aussi le rechargement et la reprise d'une
+attribution. Les doublons SQL sont vérifiés dans une seule
+instance PGlite ; la concurrence entre connexions n'est pas testée. Les
+preuves sont dans `output/placard-contract/`,
+`output/village-activity-proof/` et `output/placard-village-ambience/`.
+
+L'aperçu se lance avec `node scripts/preview-placard-contract-playable.mjs`
+sur `http://127.0.0.1:3282/`. Il utilise les composants du jeu, le moteur de
+culture de La Relève et les vraies RPC du contrat dans PGlite, sans fichier
+d'environnement ni compte distant. La partie survit à une actualisation,
+mais est effacée à l'arrêt du serveur. Les autres services du jeu ne sont
+pas reproduits. Les conditions d'essai (entrepôt préparé, graine 2, secours
+de première culture) sont indiquées : cet aperçu ne valide pas l'équilibrage
+de production. La commande avec `--audit` a joué les six étapes depuis
+l'acceptation, obtenu une récolte à 8 points sans carte, réclamé les 30 € et
+vérifié la reprise sans deuxième versement. Rapport et captures dans
+`output/placard-contract-playable/`.
+
+### Récolte, reçus et son du jeu — 20 octobre 2026
+
+Le bilan de récolte remplace son ancien en-tête : illustration de Sylvain,
+quantité récoltée, Qualité en points et accès direct à la réserve. Une récolte
+unique conserve son nom de variété et son palier ; une campagne présente la
+somme des grammes et l'intervalle des Qualités, sans additionner les points.
+Une Fleur n'est annoncée enregistrée que si son identifiant de culture
+correspond. Les valeurs absentes restent inconnues. L'entrée animée est brève,
+uniquement après une fin de culture confirmée, sans masquer de résultat ni
+retarder l'action. Les échecs restent sobres et le mode sans animation est
+respecté.
+
+Le contrat affiche désormais un reçu visible après attribution, avec le
+montant crédité. Réouvrir un reçu ne signifie pas recevoir une nouvelle prime.
+Les missions distinguent aussi une récompense qui vient d'être obtenue d'un
+reçu retrouvé, tout en conservant leur prochain objectif. Ces éléments occupent
+les écrans de résultat existants ; aucun panneau supplémentaire n'est ajouté
+au quartier.
+
+Le bouton **Son du jeu** est commun au quartier et aux activités. Le choix
+reste actif pendant leur navigation, mais le rechargement repart sans son.
+Une note de navigation, de courts impacts pour les dés et des motifs distincts
+pour récolte, prime et verdict accompagnent seulement les actions confirmées.
+Les reçus sont dédupliqués ; montage, historique, actualisation, réponse
+rejouée et erreur ne déclenchent aucune célébration sonore. Passer dans un
+autre onglet coupe le son et exige une nouvelle activation explicite.
+Les packs conservent leur fonctionnement propre.
+
+Les changements restent locaux et n'ajoutent aucune migration, récompense,
+charge ou modification des probabilités. Les tests ciblés couvrent le
+modèle de récolte, les paliers et les courses de démarrage/arrêt audio.
+La recette isolée utilise les vrais composants à 320, 390 et 1440 px :
+[rapport et captures des moments de jeu](../../output/placard-game-moments/report.json).
+Le parcours de culture complet utilise le vrai moteur et le contrat SQL dans
+PGlite : récolte à 8 points, reçu de 30 € et absence de second versement,
+avec preuve du nouvel écran de récolte dans
+[la recette jouable](../../output/placard-contract-playable/report.json).
+Les scénarios du quartier, TypeScript et ESLint ciblé passent également.
+
+La collection de contrats renouvelables est maintenant implémentée et testée
+sur base locale isolée ; son catalogue et ses limites économiques figurent
+en fin de document. L'équilibrage sur la durée avec des stratégies adaptées,
+les mesures auprès de joueurs réels et les essais sur téléphones physiques
+restent à effectuer.
+
+Le 20 octobre, à la demande du joueur, la main passe localement de cinq à
+dix cartes au maximum, selon les copies disponibles. Une main déjà enregistrée
+reste figée jusqu’à l’étape suivante ou un changement de main autorisé.
+Main prévoyante propose treize cartes pour en garder dix ; sa réserve de trois
+cartes et son bonus de 2 XP restent identiques. Les coûts et le nombre de cartes
+jouables par étape ne changent pas. La migration éditoriale locale
+`20261020000300_kq_ten_card_hand.sql` aligne les descriptions de ce seul pouvoir
+et son recto officiel, sans modifier les cultures ni les acquisitions.
+Les anciennes simulations réalisées avec cinq cartes restent des résultats
+historiques : elles ne valident pas l’équilibrage de la main de dix cartes,
+qui doit être réévalué avec ce nouveau choix de jeu.
+
+L’aperçu jouable local de cette version est disponible sur
+`http://127.0.0.1:3290/`. L’instance précédente sur le port 3287 est conservée
+et ne sert pas à valider la nouvelle main. Le texte et le recto Main prévoyante
+s’affichent à jour sans modifier la base partagée : seule leur présentation
+est adaptée ; l’identité Héritage enregistrée reste celle vérifiée par les RPC.
+
+### Lire sa main et comparer une réaction — suite locale du 20 octobre
+
+La main propose un filtre **Jouables / Toutes** et compte des choix distincts,
+sans confondre les copies avec le nombre d’actions autorisées. Les illustrations
+restent visibles ; le coût et le blocage se lisent en premier. Une carte
+indisponible peut être consultée au clavier ou au toucher, mais sa confirmation
+ne permet aucune dépense. Le résumé distingue les copies épuisées, le mauvais
+moment, l’incident incompatible et l’action déjà jouée. Un manque d’XP n’est
+annoncé que si ces XP suffiraient réellement à rendre une carte jouable.
+
+Avant de brûler une réaction déterministe, la confirmation compare le bilan
+**sans cette carte / avec cette carte** à partir des dés présents : résultat,
+santé connue, Qualité, XP et pression. Le moteur inclut les soins, les effets
+de l’Héritage et le secours disponible ; une carte qui dégrade le bilan n’est
+pas présentée comme un progrès. Cette comparaison reste conditionnelle à la
+validation de l’étape. Les préparations et les relances ne calculent ni ne
+révèlent un lancer futur ; la simple consultation ne modifie pas la partie.
+
+Le changement de main est conservé lorsque toutes les copies restantes sont
+déjà distribuées ou qu’elles ne permettent aucune composition différente.
+La vérification porte sur les copies disponibles, sans inspecter la prochaine
+pioche. Un ancien tirage de cinq cartes peut toujours être complété par un
+changement autorisé. Les limites de jeu, coûts, gains et probabilités des dés
+sont inchangés. Ce lot ne nécessite aucune migration et reste local.
+
+Validation du moteur : 272 tests ciblés passent, dont la conservation du
+retirage inutile côté serveur, les copies physiques, les sauvegardes et les
+aperçus sans révélation des relances. TypeScript et ESLint ciblé passent.
+Le parcours isolé de deux cultures conserve deux mains de dix, les cartes,
+les factures et la rotation ; les deux primes sont enregistrées une seule
+fois par tentative. Ces vérifications fonctionnelles ne constituent pas une
+mesure de difficulté ou de rétention auprès de joueurs.
+
+La [recette des décisions](../../output/placard-card-decisions/report.json)
+couvre quinze scénarios dans les vrais composants à 320, 390 et 1440 px :
+filtres, clavier, toucher, inspection sans dépense, comparaison suivie du jeu
+effectif et du bilan, relance sans résultat anticipé et protection pendant
+l’animation. L’essai guidé signale son assistance lorsque celle-ci changerait
+le résultat comparé. Les captures montrent les deux résultats empilés sur
+petit écran, sans couper les libellés.
+
+Les huit scénarios de régression de la main passent également. Un nouvel
+aperçu vierge de ce lot tourne sur `http://127.0.0.1:3292/?view=game` ; les
+parties d’essai des ports 3287 et 3290 sont conservées. Le jeu complet local
+utilise les mêmes composants modifiés. Aucun commit, push ou déploiement
+n’a été effectué pour ce lot.
+
+### Préparer sa main de dix — suite locale du 20 octobre
+
+Le choix des cartes montre désormais les copies sélectionnées, la première
+main possible et les XP de départ. Le stock manquant et les bonus inconnus
+restent signalés. Les coûts accessibles désignent chaque carte prise
+individuellement : elles partagent le même budget d’XP, avec leurs conditions
+d’incident, de timing et de dés. Le détail repliable des six étapes compte les
+compatibilités exactes du catalogue, sans annoncer une probabilité de tirage
+ni une garantie de réussite. Les doublons n’augmentent pas ce nombre
+d’incidents compatibles ; les copies absentes d’un stock vérifié sont exclues.
+
+L’XP de préparation suit le lancement réel : bonus du Chanvrier, maximum des
+avantages Buddies de la campagne et effet de l’Héritage sélectionné. Une donnée
+distante absente ne devient pas un bonus nul. L’essai guidé et le lancement
+local gardent leurs bases distinctes. Le deck conseillé utilise les mêmes
+compatibilités et le budget connu, conserve au maximum dix copies possédées
+et une seule épique. Il ne s’applique qu’au clic ; les favoris restent des
+choix explicites. Les actions de préparation précèdent maintenant le carrousel.
+Sur mobile, elles occupent deux colonnes ; les filtres de catégorie et de
+rareté sont repliables et leur sélection reste annoncée. Les illustrations
+apparaissent ainsi plus tôt sans supprimer les coûts ni la limite des épiques.
+
+L’[étude reproductible des mains](../../output/placard-ten-card-balance/report.md)
+compare 5 280 cultures du moteur v3, avec 330 seeds par configuration, le kit
+offert, un Buddie commun et 1 XP initial. Chaque paire conserve le même deck
+et la même collection. Pour la stratégie économe avec secours initial :
+
+| Collection simulée | Préparations sans choix, main 5 → 10 | Lancers faibles sans réaction possible, main 5 → 10 | Copies consommées par culture, main 5 → 10 |
+| --- | ---: | ---: | ---: |
+| Un pack | 57,5 % → 38,1 % | 89,4 % → 83,2 % | 0,95 → 1,55 |
+| Trois packs | 41,1 % → 14,0 % | 79,6 % → 66,0 % | 1,46 → 2,40 |
+
+Les 1 320 paires témoins sans carte jouée ont exactement les mêmes résultats.
+La Qualité moyenne augmente de 0,33 et 0,51 point avec la stratégie économe,
+sans variation de mortalité. Le manque d’XP seul explique peu des réactions
+indisponibles dans ces configurations. Ce lot ne modifie donc ni les coûts,
+ni les gains d’XP, ni la difficulté des dés. La consommation supplémentaire
+devra être observée sur plusieurs cultures successives avec missions et
+renouvellement du stock ; les trois packs simulés ne constituent pas une
+nouvelle dotation offerte. Cette étude ne mesure ni la rétention ni l’ennui,
+et ne reconstitue pas intégralement l’ancienne version à cinq cartes.
+
+Le nouvel aperçu de préparation est disponible sur
+`http://127.0.0.1:3295/?view=game`. Les instances précédentes sont conservées.
+Ces modifications ne demandent aucune migration et restent locales.
+
+Validation : 262 tests ciblés passent, ainsi que TypeScript, ESLint ciblé et
+le contrôle du diff. La [recette navigateur](../../output/placard-deck-preparation/report.json)
+couvre 21 scénarios à 320, 390 et 1440 px : clavier, filtres, favoris,
+coûts supérieurs aux XP, maximum de campagne, lancement réel conforme au
+bilan et réponses distantes simulées retardées ou absentes. Une vérification
+de collection conserve la culture en cours et les derniers résultats connus ;
+une collection indisponible ne supprime plus les cartes choisies. Le stock
+doit être confirmé avant de remplacer le deck ou de commencer une culture.
+L’aperçu et ces tests n’utilisent aucun compte réel ni connexion Supabase.
+
 La version locale réunit les zones actives avec un Buddie dans une campagne
 commune. Au 13 octobre 2026, `20261013000200_kq_shared_campaigns.sql` est
 appliquée et vérifiée en ligne ; le code du site reste à déployer. Le [contrat détaillé
@@ -29,7 +500,7 @@ Album Kanab Quest
   -> placer un Buddie possédé dans chaque zone choisie de l’entrepôt
   -> enregistrer le plan et réunir les zones actives affectées dans une campagne
   -> commencer sur le Sol vivant commun, avec un seul deck La Botte
-  -> piocher une main de 5 cartes a chaque etape
+  -> piocher une main de 10 cartes a chaque etape, selon les copies disponibles
   -> jouer une seule suite de 6 étapes avec 3 dés pour toutes les zones
   -> observer la santé commune et engager chaque soin une seule fois
   -> gagner et depenser de l'XP pour jouer des cartes
@@ -58,7 +529,7 @@ Regles validees:
 - chaque carte spécialisée déclare ses situations compatibles ; un tag partagé
   ne suffit pas. La même règle décide de la jouabilité et du bonus d’opération pertinente;
 - deck sans limite arbitraire: chaque copie possedee peut etre engagee;
-- main deterministe de 5 cartes, figee pendant toute l'etape; aucune carte
+- main deterministe de 10 cartes au maximum, figee pendant toute l'etape; aucune carte
   brulee n'est remplacee avant l'etape suivante, les cartes non jouees
   retournent alors dans la rotation et les copies brulees en sont retirees;
 - un changement de main gratuit par campagne, uniquement avant toute action;
@@ -79,7 +550,7 @@ Regles validees:
 - vitalité persistante : à zéro, la culture s’arrête ; un secours unique de
   première culture existe. Les résultats des opérations et les interventions
   choisies produisent un bilan, sans dégâts dus à la simple absence;
-- 52 Buddies jouables et non consommables, avec rotation de cinq autres
+- 52 Buddies jouables et non consommables, avec rotation de deux autres
   références différentes avant réutilisation;
 - les profils fictifs v1 distinguent rendement, cannabinoïdes et terpènes,
   sans jets ou actions individuels ; les équipements restent propres à chaque zone;
@@ -98,7 +569,9 @@ Regles validees:
 - classement Elo, ligues Graine / Pousse / Canopee / Fleur / Grand Cru;
 - 1 booster La Botte toutes les 3 victoires consecutives;
 - la Fleur du joueur et celle de l'adversaire sont brulees au verdict;
-- portefeuille matériel initialisé à 350 € de jeu ; achats, usure, niveaux
+- nouveaux portefeuilles initialisés à 1 000 € de jeu (1 650 € pour le Trésorier) ;
+  1 m² de culture, 1 m² de séchage et 1 m² de stockage équipés offerts, sans débit ;
+  les soldes existants restent inchangés ; achats, usure, niveaux
   et transformations suivent le catalogue d’équipements actuel;
 - marche post-recolte avec jury qualite, biomasse, lot brut, dry sift, static
   sift, ice water hash et quatre paliers de rosin selon l'equipement et la note;
@@ -160,7 +633,7 @@ La verticale locale est fonctionnellement complete pour les tests produit:
 - inventaire a exemplaires physiques, boosters et registre de burns;
 - deck sans plafond, raccourcis de composition, probabilites, couverture et
   favori restaure selon le stock restant;
-- main figee de 5 copies par etape et un changement de main par culture;
+- main figee de 10 copies au maximum par etape et un changement de main par culture;
 - 50 situations atteignables, 6 étapes, pression, XP et suivi Santé séparé;
 - carte Fleur unique avec statistiques et code d'integrite;
 - file de duel aleatoire, programme du jury, trois manches et burn des 2 Fleurs;
@@ -975,7 +1448,7 @@ Regles validees:
   façon idempotente;
 - les Heritage ne brulent jamais et restent reutilisables;
 - un seul Heritage peut etre equipe par culture;
-- il reste hors du deck La Botte et de la main de cinq cartes;
+- il reste hors du deck La Botte et de la main de dix cartes;
 - son pouvoir est limite a une utilisation ou une condition par culture;
 - les doublons n'augmentent jamais la puissance de la carte;
 - les variantes brillantes ou dorees sont uniquement cosmetiques;
@@ -1005,7 +1478,7 @@ Familles de pouvoirs:
 
 - Racines solides: annule le premier Danger d'Enracinement;
 - Reserve du jardinier: commence avec un XP supplementaire;
-- Main prevoyante: pioche douze cartes et en conserve dix;
+- Main prevoyante: pioche treize cartes et en conserve dix;
 - Climat stable: annule la premiere hausse de pression climatique;
 - Second regard: offre un changement de main supplementaire;
 - Reprise vigoureuse: rend un XP apres le premier echec;
@@ -1075,7 +1548,7 @@ saison active (`S1`, `S2`, etc.) et ne sont jamais figes sur la premiere saison.
 
 ### Termine techniquement
 
-- boucle de culture a six etapes, main de cinq et deck limite uniquement par les
+- boucle de culture a six etapes, main de dix et deck limite uniquement par les
   copies possedees;
 - effets Buddies, cartes La Botte, PBI apres inspection et Heritage;
 - burns atomiques du mode de culture et de chaque carte jouee;
@@ -1274,3 +1747,85 @@ saison active (`S1`, `S2`, etc.) et ne sont jamais figes sur la premiere saison.
 Cette liste est la source de verite pour la fin de projet. Les anciennes
 sections de simulation quotidienne restent des archives de conception et ne
 doivent pas etre utilisees comme checklist de lancement.
+
+## Contrats renouvelables — implémentation locale du 20 octobre 2026
+
+Après réception de la prime unique **Main légère**, trois choix sont retenus
+dans le catalogue local. Un seul contrat est accepté avant une nouvelle
+culture ; au moins une récolte vivante doit atteindre la Qualité demandée,
+avec le nombre de cartes Botte réellement jouées dans toute la campagne.
+Une campagne donne au maximum une prime, sans livraison de Fleur, délai ni
+pénalité. Le joueur choisit explicitement son prochain contrat après le résultat.
+
+| Contrat | Code | Qualité minimale | Cartes Botte maximum | Prime de jeu |
+| --- | --- | ---: | ---: | ---: |
+| Au naturel | `pure-grower` | 8 points | 0 | 10 € |
+| Le juste geste | `steady-hand` | 10 points | 2 | 15 € |
+| La belle signature | `fine-flower` | 12 points | Sans limite contractuelle | 20 € |
+
+Le [rapport local](../../output/renewable-contracts-balance.json) filtre les
+échantillons existants du 19 octobre, sans nouvelle simulation ni donnée
+joueur. Sur 3 000 cycles de départ sans Botte, les critères sont atteints dans
+34,57 %, 15,63 % et 5,13 % des cycles ; avec la stratégie scriptée
+`support-prudent`, dans 11,77 %, 16,43 % et 7,13 %. Le rapport sépare aussi les
+cycles suivant une première réussite potentielle de Main légère : ce filtre
+ne prouve ni acceptation ni réception effective de sa prime.
+
+Ces choix opposent conservation des cartes, interventions limitées et objectif
+de Qualité plus ambitieux. Les seuils 14 et 20 sont écartés de ce premier
+catalogue : le premier est atteint dans moins de 2 % des cycles de départ
+testés, le second dans aucun. La prime maximale de 20 € représente 17,08 % du
+coût de référence de 117,10 € par cycle dans cette étude ; elle ne valide pas à
+elle seule l'équilibre économique. Les équipements avancés, campagnes de
+plusieurs zones, achats de nouvelles cartes et stratégies adaptées aux
+contrats restent à mesurer. Aucun effet sur les retours des joueurs n'est
+déduit de ces échantillons.
+
+### Parcours et garanties
+
+Le catalogue remplace le contrat initial dans la préparation une fois sa prime
+reçue, et reste accessible dans Missions → Contrats. Le suivi en culture
+affiche les points de Qualité réels, le nombre de cartes jouées et la prochaine
+action. Une réussite donne un reçu avec le montant confirmé ; une nouvelle
+tentative demande un choix explicite. Les anciens reçus restent silencieux.
+Le compte des contrats honorés progresse à chaque versement effectif.
+
+La migration additive `20261020000200_kq_renewable_contracts.sql` conserve chaque
+tentative, ses conditions et son reçu définitif. L'identifiant d'acceptation
+reste stable lors des reprises ; une commande ancienne ne peut ni créer une
+nouvelle tentative ni annuler la suivante. Le serveur attache uniquement une
+nouvelle culture, vérifie une Fleur réellement produite et attribue une seule
+prime pour toute la campagne. Les tables et la séquence sont privées ; seuls
+les RPC nommés sont accessibles au rôle serveur.
+
+Cette migration a été exécutée uniquement dans PGlite, sans accès distant.
+La base Supabase partagée n'a pas été modifiée. Tant que la migration n'y est
+pas appliquée, l'API traite l'absence du nouveau RPC comme une fonctionnalité
+indisponible et conserve Main légère. Une panne réseau ou une réponse
+incomplète reste signalée au joueur.
+
+Validation locale : 321 contrôles PostgreSQL utilisant les vrais parseurs
+TypeScript, 106 contrôles de régression Main légère, 122 tests unitaires des
+deux contrats et de leurs API, contrôle des permissions sur 331 migrations,
+TypeScript et ESLint ciblé. Les audits navigateur couvrent les trois largeurs
+320/390/1440 px, le clavier, les primes et les réponses perdues ; les preuves
+figurent dans `output/placard-renewable-contracts/`. Les doublons SQL sont
+exercés dans une seule instance PGlite : ce résultat ne remplace pas une
+recette de concurrence entre connexions PostgreSQL distinctes.
+
+L'aperçu jouable se lance avec
+`node scripts/preview-placard-contract-playable.mjs --renewable` sur
+`http://127.0.0.1:3287/`. L'option `--audit` vérifie deux cultures successives
+dans les vrais composants avec le moteur de La Relève et les RPC SQL locaux :
+deux primes de 10 €, deux identités de culture distinctes, rotation respectée,
+cartes et factures conservées, ancien reçu inchangé, puis nouveau contrat choisi.
+Le [rapport de parcours](../../output/placard-renewable-playable/report.json)
+archive ces vérifications. Le parcours historique sans option renouvelable
+reste couvert par son propre audit.
+
+L'essai prépare explicitement un ancien contrat Main légère gagné pour ouvrir
+directement le catalogue (1 000 € de départ + 30 € déjà gagnés). Ses tirages
+reproductibles et son secours de première culture servent à vérifier le
+parcours, pas la difficulté réelle. « Nouvelle culture » conserve la partie ;
+« Recommencer l'aperçu » la réinitialise. Aucun compte réel, fichier de
+configuration privé ni connexion Supabase n'est utilisé.

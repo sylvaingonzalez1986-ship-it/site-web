@@ -98,9 +98,9 @@ function updateLessonStorage(state: KqOperationsLessonState, capacity: KqStorage
   state.trial.commerce.stocks = state.trial.commerce.stocks.map(stock => ({ ...stock, storage: projection, storageRevision: state.storage.revision }));
 }
 
-function collectLessonPayment(state: KqOperationsLessonState, payoutCents: number) {
+function collectLessonPayment(state: KqOperationsLessonState, payoutCents: number, transactionFeesCents = 0) {
   const c = state.trial.commerce;
-  const payment = previewKqBusinessPayment(payoutCents, c.business!, state.trial.electricity);
+  const payment = previewKqBusinessPayment(payoutCents, c.business!, state.trial.electricity, transactionFeesCents);
   c.cashCents += payment.netPayoutCents; state.trial.electricity = payment.electricityRemainingCents;
   c.business!.vat.salesTtcCents += payoutCents; c.business!.vat.reservedCents += payment.vatCents;
   let lab = payment.labPaidCents;
@@ -301,7 +301,7 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
     if (body.action === 'online') {
       payload = applyKqOperationsOnline(state, body.command, body.payload, {
         spend,
-        collect: cents => collectLessonPayment(state, cents),
+        collect: (cents, feesCents) => collectLessonPayment(state, cents, feesCents),
         releaseStorage: () => {
           const remaining = c.stocks.reduce((sum, stock) => sum + (stock.initialUnits > 0 ? Math.ceil(stock.equivalentUnits * stock.remainingUnits / stock.initialUnits) : 0), 0);
           updateLessonStorage(state, resizeKqStorageCapacity(state.storage.lot.capacity!, remaining));

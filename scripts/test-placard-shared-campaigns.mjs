@@ -12,7 +12,7 @@ async function createFixtureServer(config) {
   return fixtureVite;
 }
 
-async function campaignChecks({ db, sql, scalar, definition, equal, reject, player, plan, layout, row, start, buddieCodes, getKqWarehouseRunSnapshot }) {
+async function campaignChecks({ db, sql, scalar, definition, equal, reject, player, plan, layout, row, start, buddieCodes, getKqWarehouseRunSnapshot, getKqWarehouseQuote }) {
   await db.exec("COMMIT");
   // Load additional actual production definitions missing from the deliberately
   // smaller commerce fixture. Core snapshot dependencies are not executed here.
@@ -53,6 +53,14 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
   await db.exec("INSERT INTO supabase_migrations.schema_migrations VALUES('20261013000200')");
   await runCatalogCheck("verification", "verification");
   console.log("Applied shared campaign migration after the deployed zone chain.");
+  const oldHistories = (await db.query("SELECT user_id,recent_buddie_codes FROM kq_buddie_rotation")).rows;
+  const rotationMigration = await sql("20261019000100_kq_buddie_rotation_two.sql");
+  await db.exec(rotationMigration);
+  await db.exec(rotationMigration); // Safe to replay without restoring five-code histories.
+  for (const history of oldHistories) equal(
+    await scalar("SELECT recent_buddie_codes FROM kq_buddie_rotation WHERE user_id=$1", [history.user_id]),
+    history.recent_buddie_codes.slice(0, 2), "rotation migration preserves the two latest tracked varieties",
+  );
   await db.exec("BEGIN");
   equal((await row(oldRun.run.id)).state, oldRun.run.state, "existing independent run remains byte-for-byte unchanged");
   const vite = fixtureVite;
@@ -87,6 +95,13 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
     const launch = (owner, prepared, key = randomUUID()) => scalar("SELECT rpc_kq_start_campaign($1,$2,$3,$4,$5,$6)",
       [owner, key, prepared.request, prepared.members, prepared.tokens, prepared.heritageCode]);
     const ownCards = owner => db.query("INSERT INTO lottery_card_instances(user_id,card_definition_id) SELECT $1,id FROM lottery_card_definitions WHERE code LIKE 'BOTTE-ZONE-%'", [owner]);
+    const selectZones = async (owner, zoneIds) => {
+      const before = await layout(owner), quote = getKqWarehouseQuote({ ...before.state,
+        zones: before.state.zones.map(zone => ({ ...zone, active: zoneIds.includes(zone.id) })),
+      }, before.state);
+      return scalar("SELECT rpc_kq_warehouse_save($1,$2,$3,$4,$5,$6,$7)", [owner, randomUUID(),
+        { expectedCostCents: quote.totalCostCents }, before.revision, before.state, quote.nextState, quote.totalCostCents]);
+    };
     const runRows = owner => db.query("SELECT * FROM kq_runs WHERE user_id=$1 ORDER BY warehouse_zone_id", [owner]).then(result => result.rows);
     const action = (owner, saved, next, kind, members) => scalar("SELECT rpc_kq_update_campaign_state($1,$2,$3,$4,$5,$6)",
       [owner, saved.id, saved.updated_at, kind, next, members ?? next.campaign.members.map(member => ({ runId: member.runId,
@@ -96,6 +111,8 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
     await reject(() => launch(historical, historicalPlan), "kq_active_run_exists");
 
     const owner = await player(plan(3)); await ownCards(owner);
+    await db.query(`DELETE FROM lottery_card_instances i USING lottery_card_definitions d
+      WHERE i.card_definition_id=d.id AND i.user_id=$1 AND d.code=ANY($2)`, [owner, buddieCodes.slice(3)]);
     const prepared = await build(owner), key = randomUUID();
     const started = await launch(owner, prepared, key);
     const rows = await runRows(owner), leadId = started.run.id, childId = rows[1].id;
@@ -111,6 +128,8 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
     equal((await layout(owner)).activeRuns.every(run => run.campaignId === rows[0].campaign_id && run.leaderRunId === leadId), true, "warehouse links every zone to common campaign");
     const replay = await launch(owner, { ...prepared, members: [] }, key);
     equal([replay.replayed, replay.run.id], [true, leadId], "start retry precedes changed plan, rotation and input states");
+    equal(await scalar("SELECT recent_buddie_codes FROM kq_buddie_rotation WHERE user_id=$1", [owner]),
+      [buddieCodes[2], buddieCodes[1]], "campaign retry preserves its two-code queue");
     await reject(() => launch(owner, { ...prepared, request: { ...prepared.request, cultureTokens: 2 } }, key), "kq_campaign_request_mismatch");
     await reject(() => start(owner, "zone-2", buddieCodes[2]), "kq_campaign_active");
     await reject(() => scalar("SELECT rpc_kq_update_run_state($1,$2,$3,'roll',$4,NULL)", [owner, leadId, rows[0].updated_at, rows[0].state]), "kq_campaign_action_required");
@@ -187,9 +206,21 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
     equal(Number(await scalar("SELECT count(*) FROM kq_runs WHERE user_id=$1", [tight])), 0, "last-member capacity failure rolls back leader and earlier members");
     equal(Number(await scalar("SELECT count(*) FROM kq_supplier_invoices WHERE user_id=$1", [tight])), 0, "capacity rollback preserves accounting");
     equal((await scalar("SELECT rpc_kq_reserved_cards($1)", [tight])).length, 0, "capacity rollback returns every deck copy");
-    equal(await scalar("SELECT recent_buddie_codes FROM kq_buddie_rotation WHERE user_id=$1", [owner]), buddieCodes.slice(0, 3).reverse(), "rotation updates once in deterministic zone order");
+    equal(Number(await scalar("SELECT count(*) FROM kq_buddie_rotation WHERE user_id=$1", [tight])), 0, "failed campaign cannot consume rotation availability");
+    equal(await scalar("SELECT recent_buddie_codes FROM kq_buddie_rotation WHERE user_id=$1", [owner]), [buddieCodes[2], buddieCodes[1]], "rotation keeps the last two distinct varieties in deterministic zone order");
     const locked = await build(owner);
     await reject(() => launch(owner, locked), "kq_buddie_rotation_locked");
+    equal(await scalar("SELECT recent_buddie_codes FROM kq_buddie_rotation WHERE user_id=$1", [owner]), [buddieCodes[2], buddieCodes[1]], "blocked campaign leaves its queue unchanged");
+
+    // With only three owned varieties, the first zone is available after the
+    // initial A/B/C campaign. Participation remains the player's explicit plan:
+    // deactivate B/C before launching A, with no automatic zone omission.
+    await selectZones(owner, ["zone-0"]);
+    const available = await build(owner, { deck: [], tokens: 0 });
+    equal(available.members.map(member => member.state.varietyCode), [buddieCodes[0]], "explicit available subset is prepared from the saved warehouse");
+    const restarted = await launch(owner, available);
+    equal(restarted.run.state.varietyCode, buddieCodes[0], "three owned varieties can start A again after B and C");
+    equal(await scalar("SELECT recent_buddie_codes FROM kq_buddie_rotation WHERE user_id=$1", [owner]), [buddieCodes[0], buddieCodes[2]], "single-zone campaign advances the same two-code history");
 
     // Rare participant need not be the canonical first zone. Its one maximum
     // bonus and the one owned Heritage affect the same shared XP budget.
@@ -247,7 +278,7 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
         equal(await scalar("SELECT has_function_privilege($1,$2,'EXECUTE')", [role, signature]), role === "service_role", `${role}: only named service campaign RPCs are callable`);
       equal(await scalar("SELECT has_function_privilege($1,'kq_update_run_before_campaign(uuid,uuid,timestamptz,text,jsonb,jsonb)','EXECUTE')", [role]), false, `${role}: private finalizer cannot be used as bypass`);
     }
-    console.log("Shared campaigns: profiles, replay, common cards/care/dice, atomic flowers, costs, capacity and grants passed.");
+    console.log("Shared campaigns: profiles, replay, common cards/care/dice, atomic flowers, costs, capacity, two-variety rotation and grants passed.");
   }
 }
 
@@ -259,7 +290,7 @@ assert(source.includes('refresh.indexOf("END $$;", refreshStart) + 7'), "Heritag
 source = source.replace('refresh.indexOf("END $$;", refreshStart) + 7', 'refresh.lastIndexOf("COMMIT;")');
 const marker = '  console.log("Zone cultures: actual start/play/finish, capacity, replay, preservation and grants passed.");';
 assert(source.includes(marker), "zone fixture end marker changed");
-source = source.replace(marker, marker + '\n  await campaignChecks({ db, sql, scalar, definition, equal, reject, player, plan, layout, row, start, buddieCodes, getKqWarehouseRunSnapshot });')
+source = source.replace(marker, marker + '\n  await campaignChecks({ db, sql, scalar, definition, equal, reject, player, plan, layout, row, start, buddieCodes, getKqWarehouseRunSnapshot, getKqWarehouseQuote });')
   .replace(/^import .*;\n/gm, "").replace('new URL("./test-placard-warehouse.mjs", import.meta.url)', `new URL("./test-placard-warehouse.mjs", ${JSON.stringify(sourceUrl.href)})`);
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 try {

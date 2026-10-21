@@ -3,7 +3,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({ from: vi.fn(), rpc: vi.fn() }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => mocks }));
 vi.mock("@/lib/arena-shared-cache", () => ({ cacheArenaSharedRead: (_key: string, loader: () => unknown) => loader }));
-import { getKqArenaLeaderboardInternal, getKqPlayerProgress, mapKqPlayerCoreSnapshot } from "./kanab-quest-backend";
+import { getKqArenaLeaderboardInternal, getKqPlayerProgress, getKqPublicLeaderboard, mapKqPlayerCoreSnapshot } from "./kanab-quest-backend";
 
 const userId = "00000000-0000-4000-8000-000000000001";
 const generatedAt = "2026-10-11T08:45:13.234Z";
@@ -15,7 +15,7 @@ const profile = {
 function readResult(data: unknown, error: { message: string } | null = null) {
   const result = Promise.resolve({ data, error });
   const builder = {
-    select: vi.fn(() => builder), eq: vi.fn(() => builder), order: vi.fn(() => builder),
+    select: vi.fn(() => builder), eq: vi.fn(() => builder), in: vi.fn(() => builder), order: vi.fn(() => builder),
     limit: vi.fn(() => builder), maybeSingle: vi.fn(() => result),
     then: result.then.bind(result),
   };
@@ -28,6 +28,26 @@ beforeEach(() => {
 });
 
 describe("Arena budget ranking reads", () => {
+  it("preserves unknown business scores through the public ranking without changing actual zeroes or the official total", async () => {
+    mocks.from.mockImplementation((table: string) => {
+      if (table === "kq_seasons") return readResult({ season_code: "KQ-2026-S1" });
+      if (table === "contest_profiles" || table === "arena_chanvrier_profiles") return readResult([]);
+      throw new Error(`Unexpected table ${table}`);
+    });
+    const values = [undefined, null, 0, "0", 426.5, "81.25", "", "unknown"];
+    mocks.rpc.mockResolvedValue({ error: null, data: { generated_at: generatedAt,
+      leaderboard: values.map((businessScore, index) => ({
+        userId: `player-${index}`, rank: index + 1, rating: 1000, seasonPoints: 20,
+        reputation: 400, placardScore: 1305, ...(businessScore !== undefined ? { businessScore } : {}),
+      })),
+    } });
+    const result = await getKqPublicLeaderboard();
+    expect(result.entries.map(entry => entry.businessScore)).toEqual([null, null, 0, 0, 426.5, 81.25, null, null]);
+    expect(result.entries.every(entry => entry.placardScore === 1305)).toBe(true);
+    expect(result.generatedAt).toBe(generatedAt);
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_get_daily_leaderboard", { p_season_code: "KQ-2026-S1" });
+  });
+
   it("reads cached rank while preserving current score and durable claims without calling a refresh RPC", async () => {
     mocks.rpc.mockResolvedValue({ data: { score: 120, production: 30, sales: 60, companyValue: 30, productionAreaM2: 25, companyValueCents: 250_000 }, error: null });
     const snapshots = readResult({ leaderboard: [{ userId, rank: 8, placardScore: 999 }], generated_at: generatedAt });

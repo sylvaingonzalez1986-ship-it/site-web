@@ -53,7 +53,7 @@ const modules = {
       if(!String(url).startsWith('/api/'))return original(url,init);
       const call={url:String(url),method:init.method??'GET',body:init.body?JSON.parse(init.body):null};window.__apiCalls.push(call);
       if(call.url==='/api/arena/placard/warehouse')return Response.json(snapshot);
-      if(call.url==='/api/arena/placard/collection')return Response.json({ownedBuddieCodes:[],buddieRotation:{requiredDistinctBuddies:5,recentBuddieCodes:[]}});
+      if(call.url==='/api/arena/placard/collection')return Response.json({ownedBuddieCodes:[],buddieRotation:{requiredDistinctBuddies:2,recentBuddieCodes:[]}});
       if(call.url==='/api/arena/placard/storage'){
         if(call.method==='POST'){
           window.__overflowCalls.push(call.body);
@@ -124,7 +124,7 @@ if (process.argv.includes('--preview')) {
       overflow:document.documentElement.scrollWidth>innerWidth,
       invalidText:/NaN|Infinity|undefined|Invalid Date/.test(document.body.textContent),
       brokenImages:[...document.images].filter(image=>!image.complete||!image.naturalWidth).map(image=>image.src),
-      controls:[...document.querySelectorAll('[data-conservation-summary] button,[data-conservation-summary] a')].map(node=>({label:node.textContent.trim(),width:node.getBoundingClientRect().width,height:node.getBoundingClientRect().height})),
+      controls:[...document.querySelectorAll('[data-conservation-summary] button,[data-conservation-summary] a,[data-conservation-summary] summary')].filter(node=>node.getClientRects().length>0).map(node=>({label:node.textContent.trim(),width:node.getBoundingClientRect().width,height:node.getBoundingClientRect().height})),
     }));
 
     for (const width of process.argv.includes('--interactions-only')?[]:[1440,390,320]) {
@@ -142,13 +142,16 @@ if (process.argv.includes('--preview')) {
 
     await page.setViewport({width:1440,height:1000});
     await visit('ready');
+    verify(await page.$eval('[data-storage-summary-details]',node=>node.open),false,'Stock and capacity details are initially collapsed');
+    await page.click('[data-storage-summary-details] > summary');
+    await page.waitForFunction(()=>document.querySelector('[data-storage-summary-details]')?.open);
     const normalizedText=await page.$eval('[data-conservation-summary]',node=>node.textContent.replaceAll('\u00a0',' ').replaceAll('\u202f',' '));
     verify(normalizedText.includes('953 g'),true,'Global stock shows 953 g independently of the one raw lot');
     verify(normalizedText.includes('165,5 g'),true,'The current raw lot keeps its own 165.5 g mass');
     verify(normalizedText.includes('3,79 kg'),true,'Reserved containers show 3.79 kg of capacity, not stock');
-    const reservedPercent=await page.$eval('[data-conservation-capacity]',node=>Number(node.getAttribute('aria-valuenow')));
-    verify(Math.abs(reservedPercent-94.75)<.6,true,'Capacity gauge uses reserved 3790 / installed 4000 g');
-    verify(await page.$eval('[data-conservation-capacity]',node=>node.getAttribute('role')),'meter','Container occupancy is a meter rather than a progress task');
+    const capacity=await page.$eval('[data-conservation-capacity] [role="meter"]',node=>({value:Number(node.getAttribute('aria-valuenow')),max:Number(node.getAttribute('aria-valuemax'))}));
+    verify(capacity,{value:3790,max:4000},'Capacity meter uses reserved 3790 / installed 4000 g');
+    verify(await page.$eval('[data-conservation-capacity] [role="meter"]',node=>node.getAttribute('role')),'meter','Container occupancy is a meter rather than a progress task');
     verify(await page.$eval('[data-conservation-summary] a',node=>node.getAttribute('href')),'/arene/placard?view=harvests','All-harvests link is retained');
     await page.focus(`[data-open-workshop="${readyId}"]`);
     await page.keyboard.press('Enter');
@@ -156,25 +159,33 @@ if (process.argv.includes('--preview')) {
 
     await visit('mixed');
     verify(await page.$$eval('[data-conservation-lot]',nodes=>nodes.length),3,'Ready, curing and overflow lots render separately');
-    verify(await page.$$eval('[data-open-workshop]:not(:disabled)',nodes=>nodes.map(node=>node.getAttribute('data-open-workshop'))),[readyId],'Only a ready lot with no surplus can open the workshop');
-    const progress=await page.$eval(`[data-conservation-lot="${curingId}"] [data-curing-progress]`,node=>({value:Number(node.getAttribute('aria-valuenow')??node.getAttribute('value')),max:Number(node.getAttribute('aria-valuemax')??node.getAttribute('max')),label:node.getAttribute('aria-label')}));
+    verify(await page.$$eval('[data-open-workshop]:not(:disabled)',nodes=>nodes.map(node=>node.getAttribute('data-open-workshop'))),[readyId,curingId],'Ready and curing lots without surplus can inspect the commerce desk');
+    await page.click(`[data-open-workshop="${curingId}"]`);
+    verify(await page.evaluate(()=>window.__workshopCalls),[curingId],'Inspecting a curing lot forwards its exact ID without declaring it mature');
+    const progress=await page.$eval(`[data-conservation-lot="${curingId}"] [data-curing-progress] [role="meter"]`,node=>({value:Number(node.getAttribute('aria-valuenow')),max:Number(node.getAttribute('aria-valuemax')),label:node.getAttribute('aria-label'),lotName:node.closest('[data-conservation-lot]').querySelector('h4').textContent}));
     verify(progress.value,50,'Three of six curing hours produce 50% progress');
     verify(progress.max,100,'Curing progress has an explicit 100% maximum');
-    verify(progress.label.includes('Purple Haze CBD'),true,'Curing progress identifies its lot for assistive technology');
+    verify({label:progress.label,lotName:progress.lotName},{label:'Affinage',lotName:'Purple Haze CBD'},'The named curing meter stays inside its identified lot');
     await page.click(`[data-sell-overflow="${overflowId}"]`);
     verify(await page.evaluate(()=>window.__overflowCalls),[overflowId],'Surplus action passes the exact overflow lot ID');
     await page.evaluate(()=>window.__setDisabled(true));
     await page.waitForFunction(id=>document.querySelector(`[data-sell-overflow="${id}"]`)?.disabled,{},overflowId);
-    verify(await page.$eval(`[data-open-workshop="${curingId}"]`,node=>node.disabled),true,'The curing lot cannot bypass its preparation delay');
+    verify(await page.$eval(`[data-open-workshop="${curingId}"]`,node=>node.disabled),true,'The parent disabled guard also blocks opening a curing lot');
+    await page.$eval(`[data-open-workshop="${curingId}"]`,node=>node.click());
+    verify(await page.evaluate(()=>window.__workshopCalls),[curingId],'A disabled commerce action cannot trigger another callback');
     await page.$eval(`[data-sell-overflow="${overflowId}"]`,node=>node.click());
     verify(await page.evaluate(()=>window.__overflowCalls),[overflowId],'Disabled surplus sale cannot trigger another callback');
 
     await visit('ready-by-clock');
-    verify(await page.$$eval('[data-open-workshop]:not(:disabled)',nodes=>nodes.length),0,'Workshop availability waits for a server-confirmed ready stage');
-    verify(await page.$eval('[data-curing-progress]',node=>node.parentElement.textContent.includes('99 %')),true,'A curing lot at 99.9% never appears complete before server confirmation');
+    verify(await page.$$eval('[data-open-workshop]:not(:disabled)',nodes=>nodes.length),1,'A lot awaiting server maturity can still inspect the commerce desk');
+    verify(await page.$eval('[data-curing-status]',node=>node.textContent.trim()),'Curing en cours','Curing status waits for server-confirmed maturity');
+    verify(await page.$eval('[data-curing-progress] [role="meter"]',node=>node.getAttribute('aria-valuetext')),'99 %','A curing lot at 99.9% never appears complete before server confirmation');
+    verify(await page.$eval('[data-conservation-lot]',node=>node.getAttribute('data-ready')),'false','Opening commerce does not mark an unconfirmed lot ready');
     await visit('unknown');
-    verify(await page.$eval('[data-conservation-capacity]',node=>node.hasAttribute('aria-valuenow')),false,'Unknown capacity is not presented as zero-percent occupancy');
-    verify(await page.$eval('[data-conservation-capacity]',node=>node.getAttribute('role')),'img','Unknown capacity has no invalid meter semantics');
+    await page.click('[data-storage-summary-details] > summary');
+    await page.waitForFunction(()=>document.querySelector('[data-storage-summary-details]')?.open);
+    verify(await page.$$eval('[data-conservation-capacity] [role="meter"]',nodes=>nodes.length),0,'Unknown capacity is not presented as zero-percent occupancy');
+    verify(await page.$eval('[data-conservation-capacity]',node=>node.textContent.includes('Capacité à confirmer')),true,'Unknown capacity has an explicit label rather than invalid meter semantics');
     await visit('no-offer');
     verify(await page.$$eval('[data-sell-overflow]',nodes=>nodes.length),0,'Unavailable clearance offers do not expose a sale button');
     verify((await page.$eval(`[data-conservation-lot="${overflowId}"]`,node=>node.textContent)).includes('125'),true,'Surplus mass stays visible without a sale offer');
@@ -219,7 +230,7 @@ if (process.argv.includes('--preview')) {
     await page.evaluate(()=>window.__releaseSale());
     await page.waitForFunction(()=>!document.querySelector('[data-sell-overflow]'));
     verify(await page.$$eval('[data-conservation-lot]',nodes=>nodes.length),3,'Selling surplus preserves the rest of all lots');
-    verify(await page.$$eval('[data-open-workshop]:not(:disabled)',nodes=>nodes.map(node=>node.getAttribute('data-open-workshop'))),[readyId,overflowId],'The protected remainder becomes available to the workshop');
+    verify(await page.$$eval('[data-open-workshop]:not(:disabled)',nodes=>nodes.map(node=>node.getAttribute('data-open-workshop'))),[readyId,overflowId,curingId],'The protected remainder can open commerce alongside the other ready or curing lots');
 
     verify(errors,[],'No browser runtime errors');
     await writeFile(resolve(output,'audit.json'),JSON.stringify({checks,screenshots,errors},null,2));

@@ -25,7 +25,7 @@ const customerId = "11111111-1111-1111-1111-111111111111";
 describe("GET /api/arena/placard/session", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    getKqPlayerBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] });
+    getKqPlayerBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 2, recentBuddieCodes: ["HH2026-003"] });
     process.env.KQ_PLAYER_API_LIVE = "true";
   });
 
@@ -59,7 +59,7 @@ describe("GET /api/arena/placard/session", () => {
     expect(response.headers.get("cache-control")).toContain("no-store");
     expect(getKqPlayerCoreSnapshot).toHaveBeenCalledWith(customerId, {});
     expect(await response.json()).toMatchObject({
-      buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] },
+      buddieRotation: { requiredDistinctBuddies: 2, recentBuddieCodes: ["HH2026-003"] },
       activeRun: { runId: "run-1" },
       flowers: [{ id: "flower-1" }],
       battles: [{ id: "battle-1" }],

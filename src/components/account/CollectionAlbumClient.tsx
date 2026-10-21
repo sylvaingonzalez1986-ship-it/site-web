@@ -400,6 +400,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   };
 
   const welcome = (welcomeEligible || welcomeJustClaimed) ? <div className={arenaStyles.welcome}>
+    <p>Ton pack de bienvenue offert contient 3 Buddies communs différents pour commencer à cultiver.</p>
     {welcomeJustClaimed ? <span role="status">Ton booster gratuit est prêt à être ouvert.</span> :
       <button type="button" disabled={welcomeClaiming} onClick={handleClaimWelcomePack}>
         {welcomeClaiming ? "Attribution en cours…" : "Récupérer mon booster gratuit"}

@@ -5,6 +5,9 @@ import { describe, expect, it } from "vitest";
 const migration = readFileSync(join(
   process.cwd(), "supabase/migrations/20260923000100_kq_buddie_rotation.sql",
 ), "utf8");
+const reducedRotation = readFileSync(join(
+  process.cwd(), "supabase/migrations/20261019000100_kq_buddie_rotation_two.sql",
+), "utf8");
 
 describe("Buddie rotation database guard", () => {
   it("covers every start without counting updates or skipped duplicate inserts", () => {
@@ -38,5 +41,40 @@ describe("Buddie rotation database guard", () => {
     expect(migration).toContain("REVOKE ALL ON TABLE public.kq_buddie_rotation FROM PUBLIC, anon, authenticated");
     expect(migration).toContain("GRANT SELECT ON TABLE public.kq_buddie_rotation TO service_role");
     expect(migration).not.toMatch(/GRANT (?:ALL|INSERT|UPDATE|DELETE)/);
+  });
+});
+
+describe("two-variety rotation migration", () => {
+  it("preserves the latest two tracked codes under the run and history locks", () => {
+    const runLock = reducedRotation.indexOf("LOCK TABLE public.kq_runs");
+    const historyLock = reducedRotation.indexOf("LOCK TABLE public.kq_buddie_rotation");
+    const trim = reducedRotation.indexOf("SET recent_buddie_codes = recent_buddie_codes[1:2]");
+    expect(runLock).toBeGreaterThan(0);
+    expect(historyLock).toBeGreaterThan(runLock);
+    expect(trim).toBeGreaterThan(historyLock);
+    expect(reducedRotation).toContain("CHECK (cardinality(recent_buddie_codes) <= 2)");
+    expect(reducedRotation).not.toContain("UPDATE public.kq_runs");
+  });
+
+  it("keeps the campaign bypass and reports the two-other cooldown for solo starts", () => {
+    expect(reducedRotation).toContain("IF NEW.campaign_id IS NOT NULL THEN RETURN NEW; END IF;");
+    expect(reducedRotation).toContain("'remainingDistinctBuddies', 3 - v_position");
+    expect(reducedRotation).toContain("ARRAY[v_code] || v_recent[1:1]");
+    expect(reducedRotation).not.toContain("DROP TRIGGER");
+  });
+
+  it("changes only the campaign queue bound and fails if that anchor has drifted", () => {
+    expect(reducedRotation).toContain("pg_get_functiondef('public.rpc_kq_start_campaign(uuid,uuid,jsonb,jsonb,integer,text)'::REGPROCEDURE)");
+    expect(reducedRotation).toContain("previous_bound TEXT := '(new_codes||previous_codes)[1:5]'");
+    expect(reducedRotation).toContain("next_bound TEXT := '(new_codes||previous_codes)[1:2]'");
+    expect(reducedRotation).toContain("cardinality(string_to_array(body, previous_bound)) = 2");
+    expect(reducedRotation).toContain("kq_buddie_rotation_campaign_anchor_changed");
+  });
+
+  it("retains server-only read access and named campaign execute access", () => {
+    expect(reducedRotation).toContain("REVOKE ALL ON TABLE public.kq_buddie_rotation FROM PUBLIC, anon, authenticated, service_role");
+    expect(reducedRotation).toContain("GRANT SELECT ON TABLE public.kq_buddie_rotation TO service_role");
+    expect(reducedRotation).toContain("GRANT EXECUTE ON FUNCTION public.rpc_kq_start_campaign(UUID,UUID,JSONB,JSONB,INTEGER,TEXT) TO service_role");
+    expect(reducedRotation).not.toMatch(/GRANT (?:ALL|INSERT|UPDATE|DELETE)/);
   });
 });

@@ -45,7 +45,7 @@ const LESSON_ARTWORK: Partial<Record<ArenaPlayableLessonId, string>> = {
 };
 const CHAPTER_PLACES: Record<ArenaReleveStage, string> = {
   arrival: 'La ferme', plan: 'L’Entrepôt', buddies: 'L’Entrepôt', launch: 'Ma culture', culture: 'Ma culture',
-  jury: 'Mes récoltes · Jury & duels', delivery: 'Mon commerce', shop: 'Mon commerce · Boutique', ledger: 'Mes finances',
+  jury: 'Jury & duels', delivery: 'Mon commerce', shop: 'Mon commerce · Boutique', ledger: 'Mes finances',
 };
 const CHAPTER_NAV: Record<ArenaReleveStage, PlacardNavKey> = { arrival: 'hub', plan: 'workshop', buddies: 'workshop', launch: 'game', culture: 'game', jury: 'harvests', delivery: 'market', shop: 'market', ledger: 'treasury' };
 const NEXT_ACTIONS: Record<ArenaReleveStage, string> = { arrival: 'Aménager l’entrepôt', plan: 'Choisir mes Buddies', buddies: 'Préparer ma campagne', launch: 'Commencer la culture', culture: 'Rejoindre le jury', jury: 'Aller au marché', delivery: 'Ouvrir ma boutique', shop: 'Passer au bureau', ledger: 'Terminer l’aventure' };

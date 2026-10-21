@@ -1,9 +1,7 @@
 "use client";
 
-import { KqHarvestNavigation } from "./KqHarvestNavigation";
-
 import dynamic from "next/dynamic";
-import { ArrowLeft, Hourglass } from "lucide-react";
+import { ArrowLeft, Hourglass, Volume2, VolumeX } from "lucide-react";
 import Link from "@/components/navigation/NavigationLink";
 import { navigateWithDraftGuard } from "@/lib/navigation-guard";
 import { navigateAfterOverlays } from "@/lib/overlay-history";
@@ -14,6 +12,7 @@ import { useGameViewport } from "@/hooks/useGameViewport";
 import retro from "../contest/ArenaRetro.module.css";
 import styles from "./PlacardPlayerShell.module.css";
 import type { KqMarketSection } from "./KqMarketHub";
+import { KqGameSoundProvider, useKqGameSound } from "./KqGameSound";
 
 const NAVIGATION_FEEDBACK_MS = 420;
 
@@ -104,6 +103,11 @@ const PLACARD_RETURN_LABELS: Record<PlacardView, { label: string; accessibleLabe
 };
 
 export function PlacardPlayerShell({ draftOwnerId }: { draftOwnerId?: string } = {}) {
+  return <KqGameSoundProvider><PlacardPlayerShellContent draftOwnerId={draftOwnerId} /></KqGameSoundProvider>;
+}
+
+function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) {
+  const sound = useKqGameSound();
   const location = useSyncExternalStore(subscribePlacardLocation, getPlacardLocation, () => "");
   const params = new URLSearchParams(location);
   const guidedVisit = params.get("guide") === "1";
@@ -237,7 +241,7 @@ export function PlacardPlayerShell({ draftOwnerId }: { draftOwnerId?: string } =
 
   const activeNav: PlacardNavKey = collectionOpen ? "collection" : view === "arena" || (view === "workshop" && warehouseSection === "storage") ? "harvests" : view;
   const currentTitle =
-    view === "hub" ? "Mon quartier" : view === "harvests" ? "Mes récoltes" : view === "workshop" ? (warehouseSection === "storage" ? "Mes récoltes · Stockage" : "L’Entrepôt") : view === "shop" ? "Boutique" : view === "game" ? "Ma culture" : view === "market" ? "Mon commerce" : view === "treasury" ? "Mes finances" : view === "missions" ? "Mes missions" : "Mes récoltes · Jury & duels";
+    view === "hub" ? "Mon quartier" : view === "harvests" ? "Mes récoltes" : view === "workshop" ? (warehouseSection === "storage" ? "Mes récoltes · Stockage" : "L’Entrepôt") : view === "shop" ? "Boutique" : view === "game" ? "Ma culture" : view === "market" ? "Mon commerce" : view === "treasury" ? "Mes finances" : view === "missions" ? "Mes missions" : "Jury & duels";
 
   const returnView: PlacardView = view === "game" ? "workshop"
     : view === "arena" || (view === "workshop" && warehouseSection === "storage") ? "harvests"
@@ -266,6 +270,9 @@ export function PlacardPlayerShell({ draftOwnerId }: { draftOwnerId?: string } =
         {view === "hub" ? <header className={styles.exitHeader}><Link href="/arene"><ArrowLeft size={18} aria-hidden="true" /> Retour à l’Arène</Link><span>{currentTitle}</span></header> : <header className={styles.sectionHeader}>
           <button type="button" data-placard-back={returnView} aria-label={returnLabel.accessibleLabel} onClick={returnToParent}><ArrowLeft size={18} aria-hidden="true" />{returnLabel.label}</button>
           <h1 ref={headingRef} tabIndex={-1}>{currentTitle}</h1>
+          <button type="button" className={styles.soundButton} data-game-sound aria-label="Son du jeu" title={sound.enabled ? "Couper le son du jeu" : "Activer le son du jeu"} aria-pressed={sound.enabled} onClick={sound.toggle}>
+            {sound.enabled ? <Volume2 size={18} aria-hidden="true" /> : <VolumeX size={18} aria-hidden="true" />}<span>Son {sound.enabled ? "activé" : "coupé"}</span>
+          </button>
         </header>}
         {view === "hub" ? (
           <KqPlacardLobby onOpen={openView} onOpenCollection={() => openCollection()} highlightedBuilding={highlightedBuilding} />
@@ -293,13 +300,10 @@ export function PlacardPlayerShell({ draftOwnerId }: { draftOwnerId?: string } =
         ) : view === "market" ? (
           <KqMarketDesk section={marketSection} initialFlowerId={requestedFlowerId} onSectionChange={next => openView("market", { marketSection: next })} onOpenShop={openEquipmentCatalog} onOpenTreasury={() => openView("treasury", { treasuryPole: "accounting" })} onOpenStorage={() => openView("harvests", { harvestSection: "storage" })} onOpenCulture={() => openView("game")} />
         ) : (
-          <>
-            {view === "arena" ? <KqHarvestNavigation onOpenHarvests={section => openView("harvests", { harvestSection: section === "storage" ? "storage" : undefined })} /> : null}
-            <KanabQuestDicePrototype apiScope="player" viewMode={view === "arena" ? "arena" : "game"} showWarehouseNavigation={false} initialFlowerId={requestedFlowerId}
-              initialZoneId={requestedZoneId} initialRunId={requestedRunId} initialCampaign={requestedCampaign}
-              onOpenRun={selection => openView("game", selection)} onOpenWarehouse={zoneId => openView("workshop", { zoneId })}
-              onOpenArena={() => openView("arena")} onOpenMarket={() => openView("market")} onOpenGame={() => openView("game", { zoneId: requestedZoneId, runId: requestedRunId })} />
-          </>
+          <KanabQuestDicePrototype apiScope="player" viewMode={view === "arena" ? "arena" : "game"} showWarehouseNavigation={false} initialFlowerId={requestedFlowerId}
+            initialZoneId={requestedZoneId} initialRunId={requestedRunId} initialCampaign={requestedCampaign}
+            onOpenRun={selection => openView("game", selection)} onOpenWarehouse={zoneId => openView("workshop", { zoneId })}
+            onOpenArena={() => openView("arena")} onOpenMarket={() => openView("market")} onOpenGame={() => openView("game", { zoneId: requestedZoneId, runId: requestedRunId })} />
         )}
       </div>
     </div>

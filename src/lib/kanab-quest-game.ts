@@ -51,7 +51,7 @@ export type KqSupportEffect = "hygrometer-balance" | "water-rescue" | "patient-c
 export type KqSituationTag = "roots" | "water" | "climate" | "pest" | "flower" | "harvest" | "drying" | "energy" | "compliance" | "security" | "light" | "hygiene";
 export type KqPest = "aphids" | "mites" | "thrips";
 export type KqBuddieEffect = "none" | "starting-xp-1" | "starting-xp-2" | "starting-xp-3" | "starting-xp-4";
-export const KQ_HAND_SIZE = 5;
+export const KQ_HAND_SIZE = 10;
 export const KQ_HERITAGE_RESERVE_SIZE = 3;
 const KQ_EFFECT_NOTICE_LIMIT = 12;
 
@@ -637,7 +637,8 @@ export function startKqGame(
   const buddie = KQ_BUDDIES.find((item) => item.code === config.varietyCode) ?? KQ_BUDDIES[0];
   if (config.cultivationProfile && (rulesVersion !== 3 || !isKqBuddieCultivationProfile(config.cultivationProfile)
     || config.cultivationProfile.buddieCode !== buddie.code)) throw new Error("Le profil de simulation ne correspond pas au Buddie.");
-  const requestedDeck = config.deckCodes ?? (rulesVersion === 3 ? KQ_ACTIVE_CARDS : KQ_CARDS).slice(0, 6).map((card) => card.code);
+  const requestedDeck = config.deckCodes ?? (rulesVersion === 3 ? KQ_ACTIVE_CARDS : KQ_CARDS)
+    .filter(card => card.category !== "substrate" && card.category !== "pbi").slice(0, KQ_HAND_SIZE).map((card) => card.code);
   const requestedCards = requestedDeck
     .map((code) => KQ_CARDS.find((card) => card.code === code))
     .filter((card): card is KqSupportCard => Boolean(card) && card?.category !== "pbi" && (rulesVersion === 2 || !isKqCareReplacedCard(card!.code)));
@@ -758,22 +759,25 @@ export function canPlayKqCard(state: KqGameState, card: KqSupportCard) {
   return { allowed: true, reason: card.timing === "before-roll" ? "Prépare le lancer." : "Peut modifier le résultat." };
 }
 
-function drawKqAvailableHandCodes(
-  state: Pick<KqGameState, "deckCodes" | "usedCards" | "seed" | "stageIndex" | "handRedrawsUsed">,
-  limit = KQ_HAND_SIZE,
-) {
+function getKqRemainingSupportCopies(state: Pick<KqGameState, "deckCodes" | "usedCards">) {
   const burnsLeft = state.usedCards.reduce<Record<string, number>>((counts, code) => {
     counts[code] = (counts[code] ?? 0) + 1;
     return counts;
   }, {});
-  const remaining = state.deckCodes.filter((code) => {
+  return state.deckCodes.filter((code) => {
     const card = KQ_CARDS.find((item) => item.code === code);
     if (!card || card.category === "substrate" || card.category === "pbi") return false;
     if ((burnsLeft[code] ?? 0) <= 0) return true;
     burnsLeft[code] -= 1;
     return false;
   });
-  return remaining
+}
+
+function drawKqAvailableHandCodes(
+  state: Pick<KqGameState, "deckCodes" | "usedCards" | "seed" | "stageIndex" | "handRedrawsUsed">,
+  limit = KQ_HAND_SIZE,
+) {
+  return getKqRemainingSupportCopies(state)
     .map((code, index) => ({
       code,
       index,
@@ -788,10 +792,32 @@ export function getKqHandCodes(state: Pick<KqGameState, "deckCodes" | "usedCards
   return Array.isArray(state.handCodes) ? state.handCodes : drawKqAvailableHandCodes(state);
 }
 
-export function redrawKqHand(state: KqGameState): KqGameState {
+/** Checks the remaining physical copies, never the next random draw. */
+export function canRedrawKqHand(state: KqGameState) {
   const supportPlayedThisStage = state.playedThisStage.some((code) => KQ_CARDS.find((card) => card.code === code)?.category !== "substrate");
   const redrawLimit = getKqStateHeritage(state)?.effect === "two-extra-redraws" ? 3 : 1;
-  if (state.phase !== "prepare" || state.preparationPlayed || supportPlayedThisStage || (state.handRedrawsUsed ?? 0) >= redrawLimit) return state;
+  const remaining = Math.max(0, redrawLimit - (state.handRedrawsUsed ?? 0));
+  if (isKqCultureDead(state) || state.phase === "complete") return { allowed: false, remaining, reason: "Cette culture est terminée." };
+  if (state.phase !== "prepare") return { allowed: false, remaining, reason: "La main se change avant le lancer." };
+  if (state.preparationPlayed || supportPlayedThisStage) return { allowed: false, remaining, reason: "Une carte a déjà été jouée : conserve le changement pour une prochaine étape." };
+  if (remaining === 0) return { allowed: false, remaining, reason: "Tous les changements de main de cette culture ont été utilisés." };
+  const pool = getKqRemainingSupportCopies(state);
+  const hand = getKqHandCodes(state);
+  const drawSize = Math.min(KQ_HAND_SIZE, pool.length);
+  const sameCopies = hand.length === drawSize && (pool.length <= KQ_HAND_SIZE
+    ? [...pool].sort().join("|") === [...hand].sort().join("|")
+    : new Set(pool).size === 1 && hand.every(code => code === pool[0]));
+  if (sameCopies) return {
+    allowed: false, remaining,
+    reason: pool.length === 0 ? "Il ne reste aucune carte à piocher dans ce deck."
+      : pool.length <= KQ_HAND_SIZE ? "Toutes les cartes restantes sont déjà dans ta main. Le changement est conservé."
+        : "Les copies restantes ne permettent pas une main différente. Le changement est conservé.",
+  };
+  return { allowed: true, remaining, reason: "Nouvelle pioche parmi les copies restantes, sans garantie de carte jouable." };
+}
+
+export function redrawKqHand(state: KqGameState): KqGameState {
+  if (!canRedrawKqHand(state).allowed) return state;
   const nextState = { ...state, handCodes: undefined, heritageReserveCodes: undefined, handRedrawsUsed: (state.handRedrawsUsed ?? 0) + 1 };
   return { ...nextState, handCodes: drawKqAvailableHandCodes(nextState) };
 }
@@ -820,7 +846,7 @@ export function swapKqHeritageHandCard(state: KqGameState, handIndex: number, re
     ...state,
     handCodes: nextHand,
     heritageReserveCodes: nextReserve,
-    effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} : échange effectué, la main reste à ${KQ_HAND_SIZE} cartes.`),
+    effectNotices: appendKqEffectNotice(state.effectNotices, `${heritage.name} : échange effectué, la main reste à ${nextHand.length} cartes.`),
   };
 }
 

@@ -23,7 +23,7 @@ describe("career requirements in the warehouse", () => {
     expect(html).toContain("encore 200 XP");
     expect(html).toContain("Prochain palier matériel");
     expect(html).toContain("ne servent pas à payer les cartes");
-    expect(html).toContain('value="0"');
+    expect(html).toMatch(/role="meter"[^>]*aria-label="Vers le niveau 2"[^>]*aria-valuemin="0"[^>]*aria-valuemax="200"[^>]*aria-valuenow="0"[^>]*aria-valuetext="0 \/ 200 XP"/);
   });
 
   it("requires career experience for an upgrade even with enough cash and explains it", () => {
@@ -112,9 +112,13 @@ describe("career requirements in the warehouse", () => {
     }));
     const modern = render("building"), legacy = render("tent");
     expect(modern).toContain("Entrepôt 1 · ");
-    expect(modern.match(/Pièce séchoir/g)).toHaveLength(1);
+    // The chart also names the equipment; count only the scoped invoice lines.
+    expect(modern.match(/Entrepôt 1 · Pièce séchoir · niv\. 1/g)).toHaveLength(1);
+    expect(modern).not.toMatch(/Tente \d+ · Pièce séchoir/);
     expect(legacy).not.toContain("Entrepôt 1 · ");
-    expect(legacy.match(/Pièce séchoir/g)).toHaveLength(2);
+    expect(legacy.match(/Tente [12] · Pièce séchoir · niv\. 1/g)).toHaveLength(2);
+    expect(legacy).toContain("Tente 1 · Pièce séchoir");
+    expect(legacy).toContain("Tente 2 · Pièce séchoir");
     expect(legacy).toContain("Ce devis reste inchangé");
   });
 

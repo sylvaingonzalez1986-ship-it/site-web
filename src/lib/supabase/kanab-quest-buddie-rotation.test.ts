@@ -45,13 +45,18 @@ describe("persisted Buddie rotation", () => {
 
   it("reads the authenticated owner across all seasons", async () => {
     const { reads } = database({ recent: ["B", "A"] });
-    expect(await getKqPlayerBuddieRotation(ownerId)).toEqual({ requiredDistinctBuddies: 5, recentBuddieCodes: ["B", "A"] });
+    expect(await getKqPlayerBuddieRotation(ownerId)).toEqual({ requiredDistinctBuddies: 2, recentBuddieCodes: ["B", "A"] });
     expect(reads).toEqual([["select", "recent_buddie_codes"], ["eq", "user_id", ownerId], ["maybeSingle"]]);
   });
 
   it("allows a new player with no rotation row", async () => {
     database({ missing: true });
-    expect(await getKqPlayerBuddieRotation(ownerId)).toEqual({ requiredDistinctBuddies: 5, recentBuddieCodes: [] });
+    expect(await getKqPlayerBuddieRotation(ownerId)).toEqual({ requiredDistinctBuddies: 2, recentBuddieCodes: [] });
+  });
+
+  it("keeps only the two most recent distinct varieties from legacy history", async () => {
+    database({ recent: ["C", "B", "B", code, "E", "F"] });
+    expect(await getKqPlayerBuddieRotation(ownerId)).toEqual({ requiredDistinctBuddies: 2, recentBuddieCodes: ["C", "B"] });
   });
 
   it("refuses invalid owners before making a database query", async () => {
@@ -61,27 +66,27 @@ describe("persisted Buddie rotation", () => {
 
   it("refuses a locked Buddie before the start transaction", async () => {
     const { rpc } = database({ recent: ["B", code] });
-    await expect(startKqPlayerRun(ownerId, startInput)).rejects.toThrow("4 autres Buddies différents");
-    expect(rpc.mock.calls.some(([name]) => name === "rpc_kq_start_run_with_heritage")).toBe(false);
-  });
-
-  it("keeps the fifth preceding Buddie locked until another different one is used", async () => {
-    const { rpc } = database({ recent: ["E", "D", "C", "B", code] });
     await expect(startKqPlayerRun(ownerId, startInput)).rejects.toThrow("1 autre Buddie différent");
     expect(rpc.mock.calls.some(([name]) => name === "rpc_kq_start_run_with_heritage")).toBe(false);
   });
 
+  it("keeps the latest Buddie locked until two other varieties are used", async () => {
+    const { rpc } = database({ recent: [code, "B"] });
+    await expect(startKqPlayerRun(ownerId, startInput)).rejects.toThrow("2 autres Buddies différents");
+    expect(rpc.mock.calls.some(([name]) => name === "rpc_kq_start_run_with_heritage")).toBe(false);
+  });
+
   it("returns the updated rotation after a successful eligible start", async () => {
-    const { rpc } = database({ recent: ["F", "E", "D", "C", "B"] });
+    const { rpc } = database({ recent: ["F", "E", code, "C", "B"] });
     expect(await startKqPlayerRun(ownerId, startInput)).toMatchObject({
-      runId: "run-new", buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: [code, "F", "E", "D", "C"] },
+      runId: "run-new", buddieRotation: { requiredDistinctBuddies: 2, recentBuddieCodes: [code, "F"] },
     });
     expect(rpc).toHaveBeenCalledWith("rpc_kq_start_run_with_heritage", expect.objectContaining({ p_user_id: ownerId, p_buddie_code: code }));
   });
 
   it("translates an atomic rejection when another tab has used the card since the read", async () => {
-    database({ startError: { message: "kq_buddie_rotation_locked", details: JSON.stringify({ remainingDistinctBuddies: 3 }) } });
-    await expect(startKqPlayerRun(ownerId, startInput)).rejects.toThrow("3 autres Buddies différents");
+    database({ startError: { message: "kq_buddie_rotation_locked", details: JSON.stringify({ remainingDistinctBuddies: 1 }) } });
+    await expect(startKqPlayerRun(ownerId, startInput)).rejects.toThrow("1 autre Buddie différent");
   });
 
   it("does not start when durable rotation cannot be verified", async () => {

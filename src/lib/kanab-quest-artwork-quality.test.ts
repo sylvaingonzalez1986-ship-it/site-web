@@ -60,9 +60,15 @@ describe("Kanab Quest artwork production quality", () => {
     cardMetadata.slice(cardIllustrations.length).forEach(({ width, height }) => {
       expect(width! * 3).toBe(height! * 2);
     });
-    squareMetadata.forEach(({ width, height }) => {
-      expect(width).toBeGreaterThanOrEqual(1200);
-      expect(width).toBe(height);
+    squareMetadata.forEach(({ width, height, format, hasAlpha }, index) => {
+      const src = [...situations, ...equipment][index];
+      if (src.startsWith("/placard/equipment-sylvain-v1/")) {
+        // The documented Sylvain object atlas exports transparent 512px sprites.
+        expect({ width, height, format, hasAlpha }, src).toEqual({ width: 512, height: 512, format: "webp", hasAlpha: true });
+      } else {
+        expect(width, src).toBeGreaterThanOrEqual(1200);
+        expect(width, src).toBe(height);
+      }
     });
   });
 

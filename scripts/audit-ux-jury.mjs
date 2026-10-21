@@ -11,6 +11,7 @@ const root=process.cwd(),output=resolve(root,'output/ux-implementation/jury'),po
 const modules={
   'jury-entry': `import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
     import {KanabQuestDicePrototype} from '/src/components/placard/KanabQuestDicePrototype';
+    import {KqBattleVerdictDialog} from '/src/components/placard/KqBattleVerdictDialog';
     import {createKqWarehouseStarter} from '/src/lib/kanab-quest-warehouse';
     import {KQ_BUDDIES} from '/src/lib/kanab-quest-game';
     const flower={id:'flower-demo',runId:'run-demo',varietyCode:KQ_BUDDIES[0].code,varietyName:'Fleur de recette',quality:84,traits:[],combos:[],stats:{aroma:80,resin:70,structure:75,vigor:60},status:'available',createdAt:'2026-10-14T10:00:00Z',queuedAt:null,lockedAt:null,burnedAt:null};
@@ -40,7 +41,19 @@ const modules={
       if(path.endsWith('/rankings'))return Response.json({entries:[]});
       return Response.json({progress:null});
     };
-    window.__showJury=(mode)=>{state.mode=mode;state.readsFail=false;state.finished=false;state.submitted=false;state.requests=[];sessionStorage.clear();localStorage.clear();root.render(<KanabQuestDicePrototype key={++key} apiScope='player' showAdminOperations={false} viewMode='arena' onOpenMarket={()=>{document.body.dataset.navigated='market'}}/>);};window.__showJury('success');`,
+    window.__showJury=(mode)=>{state.mode=mode;state.readsFail=false;state.finished=false;state.submitted=false;state.requests=[];delete document.body.dataset.navigated;sessionStorage.clear();localStorage.clear();root.render(<KanabQuestDicePrototype key={++key} apiScope='player' showAdminOperations={false} viewMode='arena' onOpenGame={()=>{document.body.dataset.navigated='game'}} onOpenMarket={()=>{document.body.dataset.navigated='market'}}/>);};
+    window.__showVerdict=(variant)=>{
+      delete document.body.dataset.navigated;
+      const stats={appearance:70,aroma:70,vigor:70,mastery:70,regularity:70};
+      const playerStats=variant==='deficit'?{...stats,appearance:80,vigor:60,aroma:60}:stats;
+      const opponentStats=variant==='deficit'?{...stats,appearance:81}:stats;
+      const pairs=variant==='deficit'?[[72,76.2],[63.5,70],[72,68]]:variant==='tie'?[[70,70],[67,73],[72,68]]:variant==='win'?[[72,68],[73,67],[71,69]]:[[68,72],[67,73],[72,68]];
+      const rounds=pairs.map(([playerScore,opponentScore],index)=>({code:['visual-impact','blind-aroma','technical-jury'][index],label:['Impact visuel','Arômes à l’aveugle','Jury technique'][index],explanation:'Verdict de recette locale',playerScore,opponentScore,winner:playerScore>opponentScore?'player':'opponent'}));
+      root.render(<KqBattleVerdictDialog key={++key} battleId={'fixture-'+variant} kind='official' winner={variant==='win'?'player':'opponent'} subtitle='Ta Fleur face à la Fleur adverse' rounds={rounds} experience={0.8} challengePoints={0} challenges={[]} cardCount={0}
+        playerStats={variant==='missing'?undefined:playerStats} opponentStats={variant==='missing'?undefined:opponentStats}
+        prepareLabel={variant==='resume'?'Reprendre ma culture en cours':undefined} onPrepare={()=>{document.body.dataset.navigated=variant==='resume'?'resume':'prepare';root.render(<p>Préparation</p>)}}
+        onClose={()=>root.render(<p>Verdict fermé</p>)} receipt='Reçu de recette locale'><p>Détail des critères</p></KqBattleVerdictDialog>);
+    };window.__showJury('success');`,
   'next/image': `import React from 'react';export default function Image({fill,priority,unoptimized,sizes,...props}){return <img {...props} style={{...props.style,...(fill?{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}:{})}}/>}`,
   'next/link': `import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,replace,scroll,...props}){return <a {...props}/>}`,
   'next/navigation': `export const useRouter=()=>({push:()=>{},refresh:()=>{},replace:()=>{}});export const usePathname=()=>'/compte/arene';export const useSearchParams=()=>new URLSearchParams();`,
@@ -61,10 +74,22 @@ try{
     await page.screenshot({path:resolve(output,`confirmation-${width}.png`)});await clickText('Lancer l’entraînement','dialog[open]');await page.waitForSelector('dialog[aria-labelledby="bot-result-title"]');
     await page.evaluate(()=>document.fonts.ready);
     const resultLayout=()=>page.$eval('dialog[open]',dialog=>{const button=dialog.querySelector('footer button'),rect=button.getBoundingClientRect(),body=dialog.querySelector('[data-app-dialog-body]'),title=dialog.querySelector('h2');return {footerVisible:rect.top>=0&&rect.bottom<=innerHeight&&rect.height>=44,bodyHeight:body.scrollHeight,overflow:dialog.scrollWidth>dialog.clientWidth+1,titleClipped:title.scrollWidth>title.clientWidth+1,analysisOpen:dialog.querySelector('[data-verdict-analysis]').open};});
-    const summary=await resultLayout();assert(summary.footerVisible,'Continue stays visible without scrolling');assert(!summary.overflow&&!summary.titleClipped,'Compact verdict fits');assert(!summary.analysisOpen,'Detailed analysis starts closed');assert(summary.bodyHeight<600,'Summary stays short');
+    const summary=await resultLayout();assert(summary.footerVisible,'Next culture action stays visible without scrolling');assert(!summary.overflow&&!summary.titleClipped,'Compact verdict fits');assert(!summary.analysisOpen,'Detailed analysis starts closed');assert(summary.bodyHeight<600,'Verdict and factual takeaway stay compact');
+    assert(await page.$eval('[data-verdict-takeaway]',el=>!el.closest('details')&&el.getClientRects().length>0),'Takeaway is visible outside closed details');
+    assert(await page.$eval('[data-verdict-prepare]',el=>el.textContent==='Préparer ma prochaine culture'&&!!el.closest('footer')),'Preparation is the persistent main action');
     await page.focus('[data-verdict-analysis] > summary');await page.keyboard.press('Enter');await page.waitForSelector('[data-verdict-analysis][open]');assert((await resultLayout()).footerVisible,'Continue remains visible while reading analysis');await page.keyboard.press('Enter');
     results.push({scenario:'compact-verdict',width,...summary});
-    await page.screenshot({path:resolve(output,`result-${width}.png`)});await page.keyboard.press('Escape');await settle();assert.equal(await page.$$eval('dialog[open]',els=>els.length),0);results.push({scenario:'success',width,...dimensions});
+    await page.screenshot({path:resolve(output,`result-${width}.png`)});await page.focus('[data-verdict-prepare]');await page.keyboard.press('Enter');await page.waitForFunction(()=>document.body.dataset.navigated==='game');assert.equal(await page.$$eval('dialog[open]',els=>els.length),0,'Preparation closes the verdict before navigation');assert.equal(await page.evaluate(()=>window.__jury.requests.filter(r=>r.method==='POST').length),1,'Preparing the next culture does not replay the duel');results.push({scenario:'success',width,...dimensions});
+  }
+  await page.setViewport({width:320,height:568,isMobile:true,hasTouch:true});
+  for(const [variant,expected] of [['deficit','deficit'],['tie','tie'],['variation','variation'],['missing','unavailable'],['win','strength'],['resume','variation']]){
+    await page.evaluate(variant=>window.__showVerdict(variant),variant);await page.waitForSelector('[data-verdict-takeaway="'+expected+'"]');
+    const layout=await page.$eval('dialog[open]',dialog=>{const action=dialog.querySelector('[data-verdict-prepare]'),r=action.getBoundingClientRect();return {overflow:dialog.scrollWidth>dialog.clientWidth+1,footerVisible:r.top>=0&&r.bottom<=innerHeight&&r.height>=44,analysisOpen:dialog.querySelector('[data-verdict-analysis]').open,takeaway:dialog.querySelector('[data-verdict-takeaway]').textContent,action:action.textContent};});
+    assert(!layout.overflow&&layout.footerVisible&&!layout.analysisOpen,'Verdict remains usable at 320 px');
+    if(variant==='variation')assert(layout.takeaway.includes('ne révèle pas de retard à corriger'),'Jury variation does not blame cultivation');
+    if(variant==='deficit')assert(layout.takeaway.includes('Vigueur : 60/99 contre 70/99'),'Advice follows the measured secondary criterion');
+    if(variant==='resume')assert.equal(layout.action,'Reprendre ma culture en cours');
+    await page.screenshot({path:resolve(output,`takeaway-${variant}-320.png`)});await page.focus('[data-verdict-prepare]');await page.keyboard.press('Enter');await page.waitForFunction(()=>!!document.body.dataset.navigated);results.push({scenario:'takeaway-'+variant,width:320,...layout});
   }
   await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});await page.evaluate(()=>window.__showJury('slow'));await openTraining();await clickText('Lancer l’entraînement','dialog[open]');await page.waitForFunction(()=>window.__jury.submitted);await page.keyboard.press('Escape');await settle();assert.equal(await page.$$eval('dialog[open]',els=>els.length),0,'Pending request can be closed');await page.waitForFunction(()=>window.__jury.finished);await settle();assert.equal(await page.$$eval('dialog[open]',els=>els.length),0,'Late result does not reopen dismissed dialog');results.push({scenario:'close-pending'});
   await page.evaluate(()=>window.__showJury('timeout'));await openTraining();const started=Date.now();await clickText('Lancer l’entraînement','dialog[open]');await page.waitForFunction(()=>document.querySelector('[data-jury-recovery] button:not([disabled])'));const elapsed=Date.now()-started;assert(elapsed>=19_000&&elapsed<28_000,'20 second timeout');assert.equal(await page.evaluate(()=>window.__jury.requests.filter(r=>r.method==='POST').length),1,'Only one write while uncertain');assert(await page.$eval('dialog[open]',d=>[...d.querySelectorAll('button')].find(b=>b.textContent.includes('Lancer l’entraînement')).disabled),'Retry mutation blocked');

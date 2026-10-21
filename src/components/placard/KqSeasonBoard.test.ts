@@ -41,8 +41,21 @@ describe("season board business development", () => {
     }));
     expect(html).toContain("Simulation locale");
     expect(html).toContain("Dont +0 pour ton entreprise");
-    expect(html).toContain("Entreprise 0 pts");
+    expect(html).toContain("Score d’entreprise non renseigné");
+    expect(html).not.toContain("Entreprise 0 pts");
     expect(html).not.toContain("Score calculé actuellement");
+  });
+
+  it("distinguishes an unknown leaderboard business score from a confirmed zero", () => {
+    const html = renderToStaticMarkup(createElement(KqSeasonBoard, {
+      ...props,
+      leaderboard: [
+        { id: "unknown", rank: 1, name: "Score inconnu", placardScore: 1200, businessScore: null, isPlayer: false },
+        { id: "zero", rank: 2, name: "Score confirmé", placardScore: 1000, businessScore: 0, isPlayer: false },
+      ],
+    }));
+    expect(html.match(/Score d’entreprise non renseigné/g)).toHaveLength(1);
+    expect(html.match(/Entreprise 0 pts/g)).toHaveLength(1);
   });
 
   it("preserves uncapped decimal business scores and explains the new criteria", () => {

@@ -164,6 +164,7 @@ export function KqSupportCardView({ card, state, copies, handCopies, deckCopies,
     && state.usedCards.filter((code) => code === card.code).length >= state.deckCodes.filter((code) => code === card.code).length;
   const active = state.playedThisStage.includes(card.code);
   const unavailable = copies <= 0;
+  const status = active ? "Active puis brûlée" : exhausted ? "Copies du deck brûlées" : unavailable ? "Aucune copie restante" : permission.allowed ? "Jouable maintenant" : permission.reason;
   return (
     <button
       type="button"
@@ -174,18 +175,21 @@ export function KqSupportCardView({ card, state, copies, handCopies, deckCopies,
       data-card-playable={permission.allowed}
       data-situation-match={matchesSituation}
       data-active={active || undefined}
-      disabled={!permission.allowed || unavailable}
+      data-compact={compact || undefined}
       onClick={() => onPlay(card.code)}
-      aria-label={`${card.name}. ${card.description} ${active ? "Active pour cette étape." : exhausted ? "Toutes les copies du deck ont été brûlées." : unavailable ? "Aucune copie restante." : permission.reason}`}
+      aria-label={`Consulter ${card.name}. ${card.xpCost} XP. ${status}. ${card.description}`}
     >
+      {compact ? <span className={styles.cardQuickHeading}><strong>{card.name}</strong><b>{card.xpCost}<small> XP</small></b></span> : null}
+      <span className={styles.cardQuickStatus} data-card-status data-playable={permission.allowed}>{status}</span>
       <KqCardArtwork code={card.code} name={card.name} />
-      <span className={styles.cardCost}>{card.xpCost === 0 ? "∞" : card.xpCost}<small>XP</small></span>
+      {!compact ? <span className={styles.cardCost}>{card.xpCost}<small>XP</small></span> : null}
       <span className={styles.cardCollection}>{card.category === "pbi" ? `Réserve PBI · album ×${copies}` : `Main ×${handCopies} · deck ×${deckCopies} · album ×${copies}`}</span>
-      <strong>{card.name}</strong>
+      {!compact ? <strong>{card.name}</strong> : null}
       {!compact && <><em>{KQ_SUPPORT_CATEGORY_LABELS[card.category]}</em>
       <span className={styles.cardCompatibility} data-matches={matchesSituation}>{matchesSituation ? "Adaptée à cet incident" : "Pour un autre incident"}</span>
       <CardEffectGuide card={card} /></>}
-      <small className={styles.cardReason}>{active ? "Active puis brûlée" : exhausted ? "🔥 Copies du deck brûlées" : unavailable ? "Aucune copie restante" : permission.reason}</small>
+      {compact ? <p className={styles.cardQuickEffect}>{card.description}</p> : null}
+      <small className={styles.cardReason}>{compact ? "Voir l’effet, le risque et le coût" : permission.reason}</small>
     </button>
   );
 }

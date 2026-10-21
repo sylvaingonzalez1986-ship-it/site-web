@@ -135,7 +135,7 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
     // The public discovery hub is local. Real activities and their APIs keep
     // their account/beta checks below and in their own routes.
     if (surface === "arena" && !params.vue && isContestFeatureEnabledServer()) {
-      return <ContestArenaHub key={session?.customerId ?? "guest"} personalSummaryEnabled={!!session && canCustomerAccessContestFeatureServer(session.customer, { adminAuthorized })} />;
+      return <ContestArenaHub key={session?.customerId ?? "guest"} />;
     }
     if (!canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
       if (isContestFeatureEnabledServer() && isContestBetaAccessRestrictedServer() && !session && !adminAuthorized) {

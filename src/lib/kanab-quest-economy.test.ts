@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
 import { buildKqCollectionDeck, buildKqRecommendedDeck, getKqCardChallengeFit, getKqDeckCoverage, getKqOpeningHandChance, sanitizeKqDeckSelection, summarizeKqCardEconomy } from "@/lib/kanab-quest-economy";
-import { KQ_CARDS } from "@/lib/kanab-quest-game";
+import { KQ_ACTIVE_CARDS, KQ_CARDS, KQ_SITUATIONS, doesKqCardMatchSituation } from "@/lib/kanab-quest-game";
 
 describe("Kanab Quest card economy", () => {
   it("explains the opening-hand tradeoff of a larger deck", () => {
-    expect(getKqOpeningHandChance(10, 1)).toBe(50);
-    expect(getKqOpeningHandChance(20, 1)).toBe(25);
-    expect(getKqOpeningHandChance(20, 2)).toBe(45);
+    expect(getKqOpeningHandChance(10, 1)).toBe(100);
+    expect(getKqOpeningHandChance(20, 1)).toBe(50);
+    expect(getKqOpeningHandChance(20, 2)).toBe(76);
+    expect(getKqOpeningHandChance(20, 2, 5)).toBe(45);
     expect(getKqOpeningHandChance(0, 0)).toBe(0);
   });
 
@@ -53,11 +54,11 @@ describe("Kanab Quest card economy", () => {
     expect(sanitizeKqDeckSelection(["BOTTE-003", "BOTTE-003", "BOTTE-003"], { "BOTTE-003": 2 })).toEqual(["BOTTE-003", "BOTTE-003"]);
   });
 
-  it("builds a four-card recommendation without exhausted copies", () => {
-    const inventory = Object.fromEntries(Array.from({ length: 18 }, (_, index) => [`BOTTE-${String(index + 1).padStart(3, "0")}`, 1]));
+  it("builds a ten-card recommendation without exhausted copies", () => {
+    const inventory = Object.fromEntries(KQ_ACTIVE_CARDS.map(card => [card.code, 1]));
     inventory["BOTTE-006"] = 0;
     const deck = buildKqRecommendedDeck("starting-xp-1", inventory);
-    expect(deck.support).toHaveLength(4);
+    expect(deck.support).toHaveLength(10);
     expect(deck.support).not.toContain("BOTTE-006");
     expect(deck).not.toHaveProperty("substrate");
   });
@@ -75,6 +76,56 @@ describe("Kanab Quest card economy", () => {
     const deck = buildKqRecommendedDeck("starting-xp-1", inventory, ["biocontrol"]);
     expect(deck.support).not.toContain("BOTTE-004");
     expect(deck.support).not.toContain("BOTTE-025");
-    expect(deck.support).toHaveLength(4);
+    expect(deck.support).toHaveLength(10);
+  });
+
+  it("fills a recommended hand from owned copies and never adds a second epic", () => {
+    const inventory = { "BOTTE-005": 4, "BOTTE-006": 4, "BOTTE-017": 4, "BOTTE-018": 4 };
+    for (const buddieCode of [undefined, "HH2026-020"]) {
+      const { support } = buildKqRecommendedDeck("none", inventory, [], buddieCode);
+      expect(support).toHaveLength(10);
+      for (const code of new Set(support)) expect(support.filter(item => item === code).length).toBeLessThanOrEqual(inventory[code as keyof typeof inventory]);
+      expect(buildKqRecommendedDeck("none", { "BOTTE-005": 2 }, [], buddieCode).support).toEqual(["BOTTE-005", "BOTTE-005"]);
+      expect(buildKqRecommendedDeck("none", {}, [], buddieCode).support).toEqual([]);
+      const epic = KQ_ACTIVE_CARDS.find(card => card.rarity === "epic")!;
+      expect(buildKqRecommendedDeck("none", { [epic.code]: 12 }, [], buddieCode).support).toEqual([epic.code]);
+    }
+  });
+
+  it("prefers actual incident coverage over broad but misleading card tags", () => {
+    // These cost one XP and are both preparations. Humidity supports eleven
+    // exact situations; the shade veil supports three, despite broad tags.
+    const inventory = { "BOTTE-013": 5, "BOTTE-038": 5 };
+    const { support } = buildKqRecommendedDeck("none", inventory, [], "HH2026-020", { startingXp: 1 });
+    expect(support[0]).toBe("BOTTE-038");
+    expect(support).toHaveLength(10);
+    expect(inventory).toEqual({ "BOTTE-013": 5, "BOTTE-038": 5 });
+  });
+
+  it("uses the actual starting XP to favor affordable alternatives without discarding later options", () => {
+    const inventory = Object.fromEntries(KQ_ACTIVE_CARDS.map(card => [card.code, 2]));
+    const low = buildKqRecommendedDeck("none", inventory, [], "HH2026-020", { startingXp: 1 }).support;
+    const rich = buildKqRecommendedDeck("none", inventory, [], "HH2026-020", { startingXp: 5 }).support;
+    const cheapCount = (codes: string[]) => codes.filter(code => KQ_ACTIVE_CARDS.find(card => card.code === code)!.xpCost <= 1).length;
+    expect(low).not.toEqual(rich);
+    expect(cheapCount(low)).toBeGreaterThan(cheapCount(rich));
+    expect(low.some(code => KQ_ACTIVE_CARDS.find(card => card.code === code)!.xpCost > 1)).toBe(true);
+    for (const deck of [low, rich]) {
+      const cards = deck.map(code => KQ_ACTIVE_CARDS.find(card => card.code === code)!);
+      expect(deck).toHaveLength(10);
+      expect(new Set(cards.map(card => card.timing)).size).toBe(2);
+      expect(cards.filter(card => card.rarity === "epic").length).toBeLessThanOrEqual(1);
+      expect(KQ_SITUATIONS.filter(situation => cards.some(card => doesKqCardMatchSituation(card, situation))).length).toBeGreaterThanOrEqual(40);
+    }
+  });
+
+  it("does not invent a budget from the leader when the official bonuses are unknown", () => {
+    const inventory = Object.fromEntries(KQ_ACTIVE_CARDS.map(card => [card.code, 1]));
+    expect(buildKqRecommendedDeck("none", inventory, [], "HH2026-020", { startingXp: null }))
+      .toEqual(buildKqRecommendedDeck("starting-xp-4", inventory, [], undefined, { startingXp: null }));
+    expect(buildKqRecommendedDeck("none", { "BOTTE-005": .5 }, [], undefined, { startingXp: 1 }).support).toEqual([]);
+    for (const copies of [Infinity, NaN, 1.5, -1, Number.MAX_SAFE_INTEGER + 1]) {
+      expect(buildKqRecommendedDeck("none", { "BOTTE-005": copies }, [], undefined, { startingXp: 1 }).support).toEqual([]);
+    }
   });
 });

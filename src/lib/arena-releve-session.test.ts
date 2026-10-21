@@ -29,7 +29,11 @@ describe('La relève shared session', () => {
 
   it('rewinds just the current chapter including purchases and draft with no duplication', () => {
     const state = planned();
-    expect(state.production.cashCents).toBe(92_257);
+    const purchases = state.production.ledger.filter(entry => entry.kind === 'equipment');
+    expect(purchases).toHaveLength(1);
+    expect(purchases[0].status).toBe('paid');
+    expect(purchases[0].amountCents).toBeGreaterThan(0);
+    expect(state.production.cashCents).toBe(200_000 - purchases[0].amountCents);
     const rewind = restartArenaReleveChapter(state);
     expect(rewind.chapter).toBe(1);
     expect(rewind.renovation).toBe('renovated');
@@ -96,8 +100,9 @@ describe('La relève shared session', () => {
   it('keeps playing in memory and announces unavailable persistence', () => {
     const session = createArenaReleveSession({ getItem: () => { throw Error('denied'); }, setItem: () => { throw Error('quota'); } });
     expect(session.getSnapshot().storageWarning).not.toBe('');
-    session.update(planned());
-    expect(session.getSnapshot().state.production.cashCents).toBe(92_257);
+    const state = planned();
+    session.update(state);
+    expect(session.getSnapshot().state).toEqual(state);
     expect(session.getSnapshot().storageWarning).toContain('ne peut pas');
   });
 

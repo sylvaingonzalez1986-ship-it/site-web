@@ -1,0 +1,221 @@
+/** Actual conservation component and warehouse wiring, entirely synthetic local API. */
+import assert from 'node:assert/strict';
+import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { createServer, transformWithOxc } from 'vite';
+import tailwindcss from '@tailwindcss/postcss';
+import { Launcher } from 'chrome-launcher';
+import puppeteer from 'puppeteer-core';
+
+const root = process.cwd();
+const output = resolve(root, 'output/storage-density');
+const port = Number(process.env.KQ_STORAGE_DENSITY_AUDIT_PORT ?? 3396);
+const origin = `http://127.0.0.1:${port}`;
+const baseline = process.argv.includes('--baseline');
+const capturesOnly = process.argv.includes('--captures-only');
+const baselineNames = ['KqWarehouseHarvests.tsx','KqWarehouseHarvests.module.css','KqWarehouse.tsx','KqWarehouse.module.css'];
+const originals = baseline ? new Map(await Promise.all(baselineNames.map(async name => [resolve(root,'src/components/placard',name).replaceAll('\\','/'), await readFile(resolve(output,'baseline',name),'utf8')]))) : new Map();
+const readyId = 'd98e8471-1111-4111-8111-111111111111';
+const curingId = 'a18f0172-2222-4222-8222-222222222222';
+const overflowId = 'e24c9183-3333-4333-8333-333333333333';
+const modules = {
+  'warehouse-assets': `export default ${await readFile(resolve(root, 'public/placard/warehouse-v2/manifest.json'), 'utf8')};`,
+  'next/image': `import React from 'react';export default function Image({fill,priority,unoptimized,loader,quality,placeholder,blurDataURL,style,...props}){return <img {...props} style={fill?{position:'absolute',inset:0,width:'100%',height:'100%',...style}:style}/>;}`,
+  'next/link': `import React from 'react';export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>;}`,
+  'next/navigation': `const router={push:href=>{window.__navigation=href;}};export const useRouter=()=>router;`,
+  'commerce-witness': `import React from 'react';export function KqCommerceDesk({initialFlowerId}){return <output data-selected-workshop-lot={initialFlowerId}>Lot sélectionné : {initialFlowerId}</output>;}export function KqCommerceComputer(){return null;}`,
+  'workshop-witness': `import React from 'react';export function KqWarehouseEntry(){return <div data-workshop-witness>Atelier</div>;}`,
+  'conservation-entry': `
+    import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
+    import {KqWarehouseHarvests} from '/src/components/placard/KqWarehouseHarvests';
+    import {KqWarehouse} from '/src/components/placard/KqWarehouse';
+    import {createKqWarehouseStarter,getKqWarehouseSummary} from '/src/lib/kanab-quest-warehouse';
+    import {KQ_WAREHOUSE_CATALOG} from '/src/lib/kanab-quest-warehouse-catalog';
+    import {createKqStorageLot,projectKqStorageLot,KQ_STORAGE_METHODS,KQ_STORAGE_CONTAINERS} from '/src/lib/kanab-quest-storage';
+    const query=new URLSearchParams(location.search),scenario=query.get('scenario')??'ready';
+    const now=Date.parse('2026-10-18T12:00:00Z');
+    const baseline={varietyCode:'HH2026-002',juryScore:8.5,aroma:75,care:{terpenes:75,cannabinoidExpression:70,cannabinoidConversion:15,cannabinoidOxidation:0}};
+    function makeLot(flowerId,varietyName,units,ageHours,overflowUnits=0){
+      const protectedUnits=units-overflowUnits;
+      const capacity={totalUnits:units,allocations:protectedUnits?[{containerCode:'GLASS-3L',quantity:Math.ceil(protectedUnits/1500),storedUnits:protectedUnits}]:[],overflowDeadlineAt:overflowUnits?new Date(now+1800000).toISOString():null,automaticOverflowSale:true};
+      const lot=createKqStorageLot({flowerId,harvestedAt:new Date(now-ageHours*3600000).toISOString(),baseline,capacity});
+      return {flowerId,varietyName,harvestGrams:units/10,flowerStatus:'available',projection:projectKqStorageLot(lot,now),...(overflowUnits?{overflowOffer:{units:overflowUnits,payoutCents:6750,netPayoutCents:5400}}:{})};
+    }
+    const ready=makeLot('${readyId}','White Widow CBD',1655,12);
+    const curing=makeLot('${curingId}','Purple Haze CBD',2875,3);
+    const overflow=makeLot('${overflowId}','Critical CBD',5000,12,1250);
+    const dense=[ready,curing,overflow,...[3250,4020,2180,1500,1950].map((units,index)=>makeLot('d98e8471-4444-4444-8444-'+String(index+4).padStart(12,'0'),['Super Skunk CBD','Lemon Haze CBD','Amnesia CBD','Northern Lights CBD','OG Kush CBD'][index],units,index%2?2:12))];
+    const lots=scenario==='empty'?[]:scenario==='dense'?dense:scenario==='mixed'||scenario==='overflow'?[ready,curing,overflow]:[ready];
+    const inventoryUnits=scenario==='empty'?0:scenario==='dense'?dense.reduce((sum,lot)=>sum+lot.projection.capacity.totalUnits,0):9530;
+    if(scenario==='long')ready.varietyName='Une variété au nom particulièrement long pour vérifier la lisibilité des cartes';
+    if(scenario==='ready-by-clock'){ready.projection.stage='curing';ready.projection.progressPercent=99.9;}
+    if(scenario==='no-offer') { lots.splice(0,lots.length,overflow);delete overflow.overflowOffer; }
+    window.__workshopCalls=[];window.__overflowCalls=[];window.__apiCalls=[];window.__retryCalls=0;window.__holdSale=query.has('hold');
+    window.__releaseSale=null;window.__closeCalls=0;window.__fixtures={readyId:ready.flowerId,curingId:curing.flowerId,overflowId:overflow.flowerId,lots:structuredClone(lots)};
+    const storage={serverNow:new Date(now).toISOString(),cashCents:587484,ownedMethodCodes:['STORAGE-GLASS'],defaultMethodCode:'STORAGE-GLASS',catalog:KQ_STORAGE_METHODS,containers:KQ_STORAGE_CONTAINERS,ownedContainers:{'GLASS-3L':30},installedContainers:{'GLASS-3L':30},capacity:{totalUnits:40000,usedUnits:inventoryUnits,freeUnits:scenario==='empty'?40000:2100,reservedUnits:scenario==='empty'?0:37900,overflowUnits:lots.reduce((sum,lot)=>sum+lot.projection.capacity.overflowUnits,0)},overflowSales:[],lots};
+    const state=createKqWarehouseStarter();
+    const snapshot={state,revision:1,cashCents:587484,activeRun:false,activeRuns:[],completedRuns:[],stockGrams:inventoryUnits/10,storageReservedGrams:scenario==='empty'?0:3790,storageCapacityGrams:4000,reservedHarvestGrams:0,salesGramsPerDay:30,context:{available:true}};
+    const original=window.fetch.bind(window);
+    window.fetch=async(url,init={})=>{
+      if(!String(url).startsWith('/api/'))return original(url,init);
+      const call={url:String(url),method:init.method??'GET',body:init.body?JSON.parse(init.body):null};window.__apiCalls.push(call);
+      if(call.url==='/api/arena/placard/warehouse')return Response.json(snapshot);
+      if(call.url==='/api/arena/placard/collection')return Response.json({ownedBuddieCodes:[],buddieRotation:{requiredDistinctBuddies:2,recentBuddieCodes:[]}});
+      if(call.url==='/api/arena/placard/storage'){
+        if(call.method==='POST'){
+          window.__overflowCalls.push(call.body);
+          if(window.__holdSale)await new Promise(resolve=>window.__releaseSale=resolve);
+          const sold=storage.lots.find(lot=>lot.flowerId===call.body.flowerId);
+          sold.projection.capacity.totalUnits-=sold.projection.capacity.overflowUnits;
+          sold.projection.capacity.overflowUnits=0;delete sold.overflowOffer;
+        }
+        return Response.json(storage);
+      }
+      throw new Error('Unexpected local fixture API: '+call.url);
+    };
+    const draftStore=query.has('dirty')?{read:()=>({...state,zones:state.zones.map((zone,index)=>index?zone:{...zone,name:'Brouillon non enregistré'})}),write:()=>{}}:undefined;
+    function Fixture(){
+      const [disabled,setDisabled]=React.useState(query.has('disabled'));
+      React.useEffect(()=>{window.__setDisabled=setDisabled;},[]);
+      return query.has('integration')?<KqWarehouse embedded={!query.has('modal')} initialSection="storage" initialEquipmentCode={query.has('equipment')?KQ_WAREHOUSE_CATALOG.find(device=>device.room==='storage'&&device.kind==='climate').code:undefined} initialZoneId={query.has('zone')?state.serviceZones?.find(zone=>zone.kind==='storage')?.id:undefined} draftStore={draftStore} onClose={()=>window.__closeCalls++}/>:<main data-conservation-fixture><KqWarehouseHarvests storage={['loading','unknown','error'].includes(scenario)?null:storage} stockGrams={scenario==='loading'||scenario==='unknown'?null:snapshot.stockGrams} storageReservedGrams={scenario==='loading'||scenario==='unknown'?null:snapshot.storageReservedGrams} storageCapacityGrams={scenario==='unknown'?null:4000} disabled={disabled} error={scenario.includes('error')?'Lecture des lots interrompue.':undefined} onRetry={()=>window.__retryCalls++} onOpenWorkshop={flowerId=>window.__workshopCalls.push(flowerId)} onSellOverflow={flowerId=>window.__overflowCalls.push(flowerId)}/></main>;
+    }
+    createRoot(document.getElementById('root')).render(<Fixture/>);
+  `,
+};
+const server = await createServer({
+  root, configFile: false, envDir: false, cacheDir: resolve(output, baseline?'vite-cache-before':'vite-cache-after'), publicDir: resolve(root, 'public'),
+  optimizeDeps: { include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'lucide-react'] },
+  resolve: { alias: { '@': resolve(root, 'src') } }, css: { postcss: { plugins: [tailwindcss({ base: root })] } },
+  plugins: [{
+    name: 'conservation-audit', enforce: 'pre',
+    resolveId(id) {
+      if (id in modules) return '\0' + id;
+      if (id.endsWith('/public/placard/warehouse-v2/manifest.json')) return '\0warehouse-assets';
+      if (id === './KqCommerceDesk') return '\0commerce-witness';
+      if (id === './KqWarehouseEntry') return '\0workshop-witness';
+    },
+    async load(id) { if (originals.has(id.replaceAll('\\','/'))) return originals.get(id.replaceAll('\\','/')); if (id.startsWith('\0') && modules[id.slice(1)]) return (await transformWithOxc(modules[id.slice(1)], id + '.tsx', { lang: 'tsx', jsx: { runtime: 'automatic' } })).code; },
+    configureServer(vite) {
+      vite.middlewares.use((req, res, next) => {
+        if (req.url?.split('?')[0] !== '/') return next();
+        res.setHeader('Content-Type', 'text/html');
+        res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Conservation · audit local</title><style>@font-face{font-family:"Warehouse Display";src:url("/src/app/fonts/BarlowCondensed-Latin-Bold.woff2") format("woff2");font-weight:700;font-display:swap}@font-face{font-family:"Warehouse Body";src:url("/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2") format("woff2");font-weight:300 700;font-display:swap}:root{--font-display:"Warehouse Display";--font-body:"Warehouse Body";--font-sans:"Warehouse Body";--ink:#172923;--muted:#536058;--green:#076c61;--line:#17292355}body{margin:0;background:#fff1d6;padding:24px;font-family:var(--font-body),sans-serif;color:#172923}main{max-width:1500px;margin:auto}button,input{font-family:inherit}@media(max-width:600px){body{padding:10px}}</style><div id="root"></div><script type="module" src="/@id/__x00__conservation-entry"></script></html>');
+      });
+    },
+  }], server: { host: '127.0.0.1', port, strictPort: true, hmr: false, watch: null },
+});
+
+const checks = [], errors = [], forbidden = [], measures = [], screenshots = [];
+let browser, page, changingFixture = false, comparisonAvailable = false;
+const verify = (actual, expected, label) => { assert.deepEqual(actual, expected, label); checks.push(label); };
+const phase = baseline ? 'before' : 'after';
+try {
+  await mkdir(output, { recursive: true }); await server.listen();
+  browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', '--disable-gpu'] });
+  page = await browser.newPage(); page.setDefaultTimeout(20000); page.setDefaultNavigationTimeout(60000);
+  page.on('pageerror', error => errors.push(error.message));
+  page.on('dialog', dialog => { if (changingFixture && dialog.type() === 'beforeunload') void dialog.accept(); else { errors.push('Unexpected native dialog: ' + dialog.type()); void dialog.dismiss(); } });
+  page.on('console', message => { if (message.type() === 'error') console.error('Browser:', message.text()); });
+  await page.setRequestInterception(true);
+  page.on('request', request => { const url = new URL(request.url()); if (url.origin === origin || ['data:', 'blob:'].includes(url.protocol)) void request.continue(); else { forbidden.push(request.url()); void request.abort(); } });
+  await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+  const visit = async (scenario = 'dense', extra = '&integration') => {
+    changingFixture = true;
+    try { await page.goto(`${origin}/?scenario=${scenario}${extra}`, { waitUntil: 'networkidle0' }); } finally { changingFixture = false; }
+    await page.waitForSelector('[data-conservation-summary]'); await page.evaluate(() => document.fonts.ready);
+    await page.evaluate(() => Promise.allSettled([...document.images].map(image => image.decode())));
+    console.log('Fixture ready:', scenario + extra);
+  };
+  const text = selector => page.$eval(selector, element => element.textContent.replaceAll('\u00a0', ' ').replaceAll('\u202f', ' '));
+  async function layout(label) {
+    verify(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, label + ': no horizontal overflow');
+    verify(await page.evaluate(() => /NaN|Infinity|undefined|Invalid Date/.test(document.body.textContent)), false, label + ': no invalid numbers');
+  }
+  async function shot(name, fullPage = true) { const file = `${phase}-${name}.png`; await page.screenshot({ path: resolve(output, file), fullPage }); screenshots.push(file); }
+  async function press(selector) { await page.focus(selector); await page.keyboard.press('Enter'); }
+  for (const width of [320, 390, 1440, 1644]) {
+    await page.setViewport({ width, height: 1000, isMobile: width < 700, hasTouch: width < 700 }); await visit();
+    verify(await page.$$eval('[data-conservation-lot]', nodes => nodes.length), 8, `${width}: eight independent lots in the real parent`);
+    await layout(String(width));
+    const measured = await page.evaluate(() => {
+      const lots = [...document.querySelectorAll('[data-conservation-lot]')];
+      const height = lots.map(lot => Math.round(lot.getBoundingClientRect().height));
+      const first = lots[0].getBoundingClientRect();
+      return { viewport: innerWidth, lotHeights: height, medianLotHeight: [...height].sort((a, b) => a - b)[Math.floor(height.length / 2)], firstLotTop: Math.round(first.top + scrollY), firstLotWidth: Math.round(first.width), documentHeight: document.documentElement.scrollHeight,
+        lotsBeforeEquipment: Boolean(document.querySelector('[data-conservation-summary]').compareDocumentPosition(document.querySelector('[data-storage-equipment]') ?? document.querySelector('[data-post-harvest="storage"]')) & Node.DOCUMENT_POSITION_FOLLOWING) };
+    });
+    measures.push(measured); await shot(`parent-${width}`); await shot(`top-${width}`, false);
+    await page.$eval('[data-conservation-lot]', element => element.scrollIntoView({ block: 'start', behavior: 'instant' })); await shot(`first-lots-${width}`, false);
+    if (!baseline) {
+      verify(measured.lotsBeforeEquipment, true, `${width}: flowers precede the equipment and climate`);
+      verify(await page.$$eval('[data-lot-details]', nodes => nodes.every(node => !node.open)), true, `${width}: lot details start closed`);
+      verify(await page.$$eval('[data-lot-quality],[data-curing-progress]', nodes => nodes.every(node => node.getBoundingClientRect().height > 0)), true, `${width}: quality and curing remain visible with details closed`);
+      verify(await page.$$eval('[data-conservation-lot] button,[data-lot-details] > summary', nodes => nodes.filter(node => node.getBoundingClientRect().height > 0).every(node => node.getBoundingClientRect().height >= 44)), true, `${width}: visible lot controls keep 44px touch targets`);
+      verify(await page.$eval('[data-storage-equipment]', node => node.open), false, `${width}: equipment starts closed`);
+      verify((await text('[data-storage-equipment] > summary')).includes('/ mois de jeu'), true, `${width}: installed monthly climate costs stay visible`);
+      verify(await page.$eval('[data-storage-summary-details]', node => node.open), false, `${width}: secondary global statistics start closed`);
+      await press(`[data-conservation-lot="${readyId}"] [data-lot-details] > summary`);
+      verify(await page.$eval(`[data-conservation-lot="${readyId}"] [data-lot-details]`, node => node.open), true, `${width}: lot details open with keyboard`);
+      await press(`[data-conservation-lot="${readyId}"] [data-lot-details] > summary`);
+      await press('[data-storage-equipment] > summary'); await page.waitForSelector('[data-storage-climate-section]', { visible: true });
+      verify(await page.$eval('[data-storage-equipment]', node => node.open), true, `${width}: actual climate controls remain reachable`);
+      await layout(`${width} equipment open`); await press('[data-storage-equipment] > summary');
+    }
+  }
+  await writeFile(resolve(output, `${phase}-measures.json`), JSON.stringify(measures, null, 2));
+
+  if (!baseline && !capturesOnly) {
+    await page.setViewport({ width: 390, height: 1000 }); await visit('mixed', '');
+    const ready = `[data-conservation-lot="${readyId}"]`, curing = `[data-conservation-lot="${curingId}"]`, overflow = `[data-conservation-lot="${overflowId}"]`;
+    verify((await text(ready)).includes('165,5 g'), true, 'Each lot keeps its own current quantity');
+    verify((await text(`${ready} [data-lot-quality]`)).includes('/10'), true, 'Quality remains visible with its own scale');
+    verify(await page.$eval(`${curing} [data-curing-progress] [role="meter"]`, node => Number(node.getAttribute('aria-valuenow'))), 50, 'Three of six hours remains a real 50% curing progress');
+    await press(`[data-open-workshop="${curingId}"]`); verify(await page.evaluate(() => window.__workshopCalls), [curingId], 'A curing lot can open its conditions at the counter with the exact ID');
+    await press(`[data-open-workshop="${readyId}"]`); verify(await page.evaluate(() => window.__workshopCalls), [curingId, readyId], 'Ready lot passes its own ID');
+    const urgentText = await page.$eval(overflow, node => node.innerText.replaceAll('\u00a0', ' ').replaceAll('\u202f', ' '));
+    for (const amount of ['125', '67,50', '54']) verify(urgentText.includes(amount), true, `Urgent surplus retains mass/gross/net: ${amount}`);
+    verify(await page.$eval(`${overflow} [data-overflow-deadline]`, node => Boolean(node.getClientRects().length)), true, 'Automatic sale deadline stays visible without opening details');
+    await press(`[data-sell-overflow="${overflowId}"]`); verify(await page.evaluate(() => window.__overflowCalls), [overflowId], 'Surplus action forwards the exact ID');
+    await page.evaluate(() => window.__setDisabled(true)); await page.waitForFunction(() => [...document.querySelectorAll('[data-open-workshop],[data-sell-overflow]')].every(node => node.disabled));
+    await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.click()); verify(await page.evaluate(() => window.__overflowCalls), [overflowId], 'Disabled action cannot repeat a sale');
+    await visit('ready-by-clock', '');
+    verify((await text('[data-curing-status]')).toLowerCase().includes('terminé'), false, 'Server curing stage does not become ready merely because the clock elapsed');
+    verify((await text('[data-conservation-summary]')).includes('99 %'), true, 'Unconfirmed curing stays at 99% in readable text');
+    await visit('unknown', ''); verify(await page.$$eval('[data-conservation-capacity] [role="meter"]', nodes => nodes.length), 0, 'Unknown capacity is not zero');
+    await visit('no-offer', ''); verify(await page.$$eval('[data-sell-overflow]', nodes => nodes.length), 0, 'No invented sale action without an offer');
+    verify((await text('[data-conservation-lot]')).includes('125'), true, 'Unpriced surplus stays visible');
+    await visit('error', ''); await page.click('[role="alert"] button'); verify(await page.evaluate(() => window.__retryCalls), 1, 'Load error keeps a working retry');
+    await visit('stale-error', ''); verify(await page.$$eval('[data-open-workshop]', nodes => nodes.every(node => node.disabled)), true, 'A refresh error keeps known lots visible but prevents stale actions');
+    for (const scenario of ['empty', 'loading', 'long']) { await visit(scenario, ''); await layout(scenario); }
+
+    await visit('ready'); await press(`[data-open-workshop="${readyId}"]`); await page.waitForSelector('[data-selected-workshop-lot]');
+    verify(await page.$eval('[data-selected-workshop-lot]', node => node.dataset.selectedWorkshopLot), readyId, 'Actual warehouse forwards the selected lot to the counter');
+    verify(await page.$eval('[data-warehouse-room="processing"]', node => node.getAttribute('aria-selected')), 'true', 'Counter action switches the actual warehouse room');
+    await visit('mixed', '&integration&dirty'); verify(await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.disabled), true, 'Unsaved plan disables surplus sales');
+    await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.click()); verify(await page.evaluate(() => window.__overflowCalls.length), 0, 'Unsaved plan cannot send a sale request');
+    await visit('mixed', '&integration&hold'); await press(`[data-sell-overflow="${overflowId}"]`); await page.waitForFunction(() => window.__overflowCalls.length === 1);
+    verify(await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.disabled), true, 'Pending sale cannot be repeated');
+    const sale = await page.evaluate(() => window.__overflowCalls[0]); verify(sale.action, 'sell-overflow', 'Existing sale command preserved'); verify(sale.flowerId, overflowId, 'Pending sale keeps the exact lot'); verify(typeof sale.requestKey, 'string', 'Sale keeps its idempotency key');
+    await page.evaluate(() => window.__releaseSale()); await page.waitForFunction(() => !document.querySelector('[data-sell-overflow]'));
+    verify(await page.$$eval('[data-conservation-lot]', nodes => nodes.length), 3, 'Sale preserves the protected remainder and other lots');
+    for (const target of ['equipment', 'zone']) { await visit('dense', '&integration&' + target); verify(await page.$eval('[data-storage-equipment]', node => node.open), true, `Explicit ${target} entry opens the equipment controls`); }
+    await visit('empty'); verify(await page.$$eval('[data-warehouse-capacity-blocked]', nodes => nodes.length), 0, 'An empty installed warehouse has no capacity warning');
+    verify(await page.$eval('[data-conservation-summary]', node => Number.parseFloat(getComputedStyle(node).paddingTop) >= 16), true, 'The flower heading keeps spacing when no warning precedes it'); await shot('no-warning-390', false);
+    await visit('dense', '&integration&dirty&modal'); await press('[aria-label="Fermer l’entrepôt"]'); await page.waitForSelector('[data-app-dialog]', { visible: true });
+    verify((await text('[data-app-dialog]')).includes('Modifications en cours'), true, 'An unsaved plan still requires the leave confirmation');
+    await page.keyboard.press('Escape'); await page.waitForSelector('[data-app-dialog]', { hidden: true }); verify(await page.evaluate(() => window.__closeCalls), 0, 'Dismissing the leave confirmation preserves the warehouse');
+    await press('[aria-label="Fermer l’entrepôt"]'); await page.waitForSelector('[data-app-dialog]', { visible: true });
+    const leave = await page.evaluateHandle(() => [...document.querySelectorAll('[data-app-dialog] button')].find(button => /Quitter (en gardant|sans enregistrer)/.test(button.textContent)));
+    assert(leave.asElement(), 'The confirmation exposes an explicit leave action');
+    await leave.asElement().focus(); await page.keyboard.press('Enter'); await page.waitForFunction(() => window.__closeCalls === 1); verify(await page.evaluate(() => window.__apiCalls.filter(call => call.method === 'POST').length), 0, 'Leaving with a draft never installs it implicitly');
+    const previous = await readFile(resolve(output, 'before-report.json'), 'utf8').then(JSON.parse).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
+    comparisonAvailable = Boolean(previous?.success && previous.measures);
+    if (comparisonAvailable) for (const measure of measures) { const before = previous.measures.find(item => item.viewport === measure.viewport); if (!before) continue; verify(measure.medianLotHeight < before.medianLotHeight, true, `${measure.viewport}: lot height is smaller than the baseline`); verify(measure.firstLotTop < before.firstLotTop, true, `${measure.viewport}: first flower appears earlier than the baseline`); }
+  }
+  verify(errors, [], 'No browser exception'); verify(forbidden, [], 'No external requests');
+  await writeFile(resolve(output, `${phase}-${capturesOnly ? 'captures-' : ''}report.json`), JSON.stringify({ success: true, baseline, comparisonAvailable, checks: checks.length, results: checks, measures, screenshots, errors, forbidden }, null, 2));
+  console.log(JSON.stringify({ success: true, phase, checks: checks.length, measures, output }, null, 2));
+} catch (error) {
+  await Promise.race([page?.screenshot({ path: resolve(output, `${phase}-failure.png`), fullPage: true }).catch(() => {}), new Promise(resolve => setTimeout(resolve, 3000))]);
+  await writeFile(resolve(output, `${phase}-${capturesOnly ? 'captures-' : ''}report.json`), JSON.stringify({ success: false, error: error.stack, checks, measures, errors, forbidden }, null, 2)); console.error(error.stack); process.exitCode = 1;
+} finally { await browser?.close(); await server.close(); }

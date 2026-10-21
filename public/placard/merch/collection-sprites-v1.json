@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "tool": "Built-in image_gen",
+  "asset": "/placard/merch/collection-sprites-v1.png",
+  "styleReference": "/placard/market-brand-studio-sylvain-v3.webp",
+  "transparentBackground": true,
+  "columns": 3,
+  "rows": 2,
+  "order": [
+    "stickers",
+    "poster",
+    "tote",
+    "tshirt",
+    "mug",
+    "cap"
+  ],
+  "prompts": [
+    "Use case: product-mockup game sprite atlas. Create ONE production-ready sprite sheet for an illustrated French Breton artisanal shop management game. Input image is STYLE REFERENCE ONLY: match its bold hand-inked dark outlines, warm cream paper, mustard gold, saturated teal, apricot accents, gentle vintage print grain and whimsical drawn forms. Do not copy the scene or character. Composition MUST be a regular 3 columns by 2 rows grid, landscape aspect ratio 3:2, SIX equal SQUARE cells, each object entirely inside its own cell with generous 15% transparent padding on all sides. No grid borders, no backgrounds, no furniture, no people, no shadows extending out of cell. Row1 left: small fan of three die-cut botanical stickers (hemp leaf, Breton sun, little flower) in teal gold cream. Row1 middle: vertically oriented cream illustrated botanical print poster with teal frame and small gold sun, no words. Row1 right: natural cream canvas tote bag with visible handles and printed teal botanical hemp leaf gold sun badge. Row2 left: teal short-sleeved T-shirt with small cream/gold botanical leaf emblem on chest. Row2 middle: cream ceramic mug with teal handle and botanical emblem. Row2 right: two-tone teal and mustard baseball cap with small cream leaf patch. These are fictional game merchandise images, not photos. Every shape looks drawn by same illustrator as reference. Consistent facing angle slightly three-quarter, thick softly irregular ink outlines, limited shading and paper-print texture. No text, no letters, no watermarks. Transparent alpha background across the entire sprite sheet outside the six products. Keep each product CENTERED in its exact equal square grid cell, ready for CSS background-position cropping.",
+    "Edit this exact six-product sprite atlas. Preserve all SIX illustrated designs, ink texture, palette, position order, 1536x1024 landscape 3:2 format and actual alpha transparency. ONLY improve spacing so every product fits its own exact 512x512 cell. Uniformly reduce EACH object in its own cell to about 70% of its previous size, center it at (256,256),(768,256),(1280,256),(256,768),(768,768),(1280,768). Large completely transparent gutters between ALL six isolated objects, with at least 65 pixels transparent margins inside every cell. Especially the tote must fit completely inside top-right cell, and tee completely inside bottom-left cell. No pixel of any object touches its cell edge. No dark background, no haze, no shadows, no grid, no text, no added elements. Keep the six designs exactly visually consistent. This must be a usable sprite sheet with six separable equal square tiles."
+  ]
+}

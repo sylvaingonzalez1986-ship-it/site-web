@@ -1,7 +1,7 @@
 import { getKqProductionUnits } from "./kanab-quest-production-scale";
 import { getKqWorkshopMachinePresentation, getKqWorkshopMachineSpecification } from "./kanab-quest-workshop-machines";
 
-export const KQ_STARTING_CASH_CENTS = 35_000;
+export const KQ_STARTING_CASH_CENTS = 100_000;
 
 export const KQ_EQUIPMENT_CATEGORIES = [
   "infrastructure",

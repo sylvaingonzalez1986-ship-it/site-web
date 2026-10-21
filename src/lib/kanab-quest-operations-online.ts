@@ -1,11 +1,13 @@
 import { getKqCommerceCapacity, getKqCommerceStockQuality, isKqCommerceStockMature } from './kanab-quest-commerce';
-import { KQ_GAME_MONTH_MS, type previewKqBusinessPayment } from './kanab-quest-business';
+import { KQ_GAME_MONTH_MS, getKqSaleVatCents, type previewKqBusinessPayment } from './kanab-quest-business';
 import { calculateKqMarketReputation, getKqRouteExpertiseBonusReputation } from './kanab-quest-market';
 import { projectKqStorageLot } from './kanab-quest-storage';
-import { KQ_ONLINE_MARKETING_MISSIONS, KQ_ONLINE_PACKAGING, KQ_ONLINE_SITE_TIERS, KQ_ONLINE_UPGRADES, createKqOnlinePreview, estimateKqOnlineOffer } from './kanab-quest-online';
+import { KQ_ONLINE_MARKETING_MISSIONS, KQ_ONLINE_PACKAGING, KQ_ONLINE_SITE_TIERS, KQ_ONLINE_UPGRADES, createKqOnlinePreview, estimateKqOnlineOffer, getKqOnlineTierEligibility } from './kanab-quest-online';
 import type { KqOperationsLessonState } from './kanab-quest-operations-lesson';
 import { createKqCustomerDemandSnapshot, getKqCustomerDemandPeriod, KQ_CUSTOMER_DEMAND_CHANNELS, type KqAppliedCustomerDemand, type KqCustomerDemandChannel } from './kanab-quest-customer-demand';
 import { KQ_MARKETING_BUDGETS, KQ_MARKETING_CAMPAIGNS, createKqMarketingResults, type KqMarketingBudgetCode } from './kanab-quest-marketing';
+import { KQ_MERCH_MODULES, KQ_MERCH_PRODUCTS, estimateKqMerchOffer, getKqMerchModuleEligibility, getKqMerchSlots } from './kanab-quest-merch';
+import { getKqStudioEligibility, getKqStudioLevels, KQ_STUDIO_LEVELS, KQ_STUDIO_STYLES } from './kanab-quest-studio';
 
 const HOUR = 3_600_000;
 type Payment = ReturnType<typeof previewKqBusinessPayment>;
@@ -32,10 +34,21 @@ function positiveInteger(value: unknown, maximum: number) {
   return value;
 }
 
+/** Fees accrue across flower and merchandise receipts. A 1-cent sale consumed
+ * by cumulative VAT defers its fee until another receipt can cover it. */
+function onlineSaleFee(state: KqOperationsLessonState, online: Online, payoutCents: number) {
+  const merch = online.merch?.stats;
+  const revenueCents = online.stats.revenueCents + (merch?.revenueCents ?? 0);
+  const paidFeesCents = online.stats.feesCents + (merch?.feesCents ?? 0);
+  const dueCents = Math.max(0, Math.round((revenueCents + payoutCents) * .025) - paidFeesCents);
+  const vatCents = getKqSaleVatCents(payoutCents, state.trial.commerce.business!.vat.salesTtcCents);
+  return Math.min(dueCents, Math.max(0, payoutCents - vatCents));
+}
+
 /** The exercise owns its clock and wallet. No server or live request is used here. */
 export function applyKqOperationsOnline(state: KqOperationsLessonState, command: unknown, value: unknown, callbacks: {
   spend: (cents: number) => void;
-  collect: (cents: number) => Payment;
+  collect: (cents: number, transactionFeesCents?: number) => Payment;
   releaseStorage: () => void;
 }) {
   check(typeof command === 'string' && value && typeof value === 'object' && !Array.isArray(value), 'Opération de boutique invalide.');
@@ -49,7 +62,45 @@ export function applyKqOperationsOnline(state: KqOperationsLessonState, command:
     check(row, 'Annonce indisponible dans cet essai.');
     return row;
   };
-  if (command === 'buy-packaging') {
+  if (command === 'buy-merch-module') {
+    const collection = KQ_MERCH_MODULES.find(item => item.code === input.code);
+    check(collection, 'Collection inconnue.');
+    const eligibility = getKqMerchModuleEligibility(online, collection.code, commerce.cashCents);
+    check(eligibility.allowed, eligibility.blockers[0] ?? 'Cette collection est indisponible.');
+    callbacks.spend(collection.costCents);
+    online.merch!.modules.push(collection.code);
+    online.merch!.stats.moduleCostCents += collection.costCents;
+  } else if (command === 'buy-merch-stock') {
+    const merch = online.merch;
+    check(merch?.version === 1, 'Le merchandising n’est pas encore disponible dans cette partie.');
+    const product = KQ_MERCH_PRODUCTS.find(item => item.code === input.code);
+    check(product && merch.modules.includes(product.module), 'Débloque cette collection avant de commander ses articles.');
+    check(online.site.active && online.upgrades.branding, 'Réactive ta boutique et crée ton identité de marque avant cet achat.');
+    const quantity = positiveInteger(input.quantity, 500);
+    const row = merch.inventory.find(item => item.code === product.code);
+    check((row?.quantity ?? 0) + quantity <= 500, 'Le stock est limité à 500 unités par article.');
+    const costCents = product.unitCostCents * quantity;
+    callbacks.spend(costCents);
+    if (row) row.quantity += quantity;
+    else merch.inventory.push({ code: product.code, quantity, priceCents: product.referencePriceCents, active: false, sold: 0, progress: 0 });
+    merch.stats.stockCostCents += costCents;
+  } else if (command === 'update-merch') {
+    const merch = online.merch;
+    check(merch?.version === 1, 'Le merchandising n’est pas encore disponible dans cette partie.');
+    const product = KQ_MERCH_PRODUCTS.find(item => item.code === input.code);
+    const row = merch.inventory.find(item => item.code === input.code);
+    check(product && row && merch.modules.includes(product.module), 'Cet article n’est pas encore en stock.');
+    const priceCents = positiveInteger(input.priceCents, 100000);
+    check(typeof input.active === 'boolean', 'Choisis si cet article est proposé à la vente.');
+    if (input.active) {
+      check(online.site.active && online.upgrades.branding, 'Réactive ta boutique et crée ton identité de marque avant de publier.');
+      check(row.quantity > 0, 'Cet article est épuisé.');
+      check(merch.inventory.filter(item => item.code !== row.code && item.active && item.quantity > 0).length < getKqMerchSlots(online), 'Tous les emplacements de ta collection sont occupés.');
+    }
+    if (row.priceCents !== priceCents || row.active !== input.active) row.progress = 0;
+    row.priceCents = priceCents;
+    row.active = input.active;
+  } else if (command === 'buy-packaging') {
     const packaging = KQ_ONLINE_PACKAGING.find(item => item.code === input.code);
     check(packaging, 'Emballage inconnu.');
     check(!packaging.requiresBranding || online.upgrades.branding, 'Fais créer ton identité de marque avant cet achat.');
@@ -103,20 +154,41 @@ export function applyKqOperationsOnline(state: KqOperationsLessonState, command:
     row.status = 'active';
   } else if (command === 'upgrade-site') {
     const target = KQ_ONLINE_SITE_TIERS.find(item => item.code === input.tier);
-    const previous = KQ_ONLINE_SITE_TIERS.find(item => item.code === online.site.tier);
-    check(target && previous, 'Formule inconnue.');
-    check(target.code !== previous.code, 'Cette formule est déjà active.');
-    check(online.stats.orders >= target.minimumOrders && online.confidence >= target.minimumConfidence, 'Développe encore ton commerce avant cette amélioration.');
-    callbacks.spend(Math.max(0, target.acquisitionCents - previous.acquisitionCents));
+    check(target, 'Formule inconnue.');
+    const eligibility = getKqOnlineTierEligibility(online, target.code, commerce.cashCents);
+    check(eligibility.allowed, eligibility.blockers[0]?.message ?? 'Cette amélioration est indisponible.');
+    callbacks.spend(eligibility.costCents!);
     online.site.tier = target.code;
     online.site.active = true;
-    online.site.paidUntil = target.monthlyCents ? new Date(state.trial.clock + KQ_GAME_MONTH_MS).toISOString() : null;
+    const previouslyPaidUntil = online.site.paidUntil ? Date.parse(online.site.paidUntil) : NaN;
+    online.site.paidUntil = new Date(Math.max(state.trial.clock + KQ_GAME_MONTH_MS,
+      Number.isFinite(previouslyPaidUntil) ? previouslyPaidUntil : 0)).toISOString();
+    online.site.renew = true;
+  } else if (command === 'buy-studio-level') {
+    check(commerce.computerOwned && online.site.createdAt, 'Crée ta boutique et équipe-toi d’un ordinateur.');
+    check(online.studio?.version === 1, 'Cet atelier avancé n’est pas encore disponible dans cette partie.');
+    const target = KQ_STUDIO_LEVELS.find(item => item.track === input.track && item.level === input.level);
+    check(target, 'Amélioration inconnue.');
+    const eligibility = getKqStudioEligibility(online, target.track, target.level, commerce.cashCents);
+    check(eligibility.allowed, eligibility.blockers[0] ?? 'Cette amélioration est indisponible.');
+    callbacks.spend(target.costCents);
+    online.studio.levels = { ...getKqStudioLevels(online), [target.track]: target.level };
+    if (target.track !== 'editorial') online.upgrades[target.track] = true;
+  } else if (command === 'choose-studio-style') {
+    check(commerce.computerOwned && online.site.createdAt, 'Crée ta boutique et équipe-toi d’un ordinateur.');
+    check(online.studio?.version === 1, 'Cet atelier avancé n’est pas encore disponible dans cette partie.');
+    const style = KQ_STUDIO_STYLES.find(item => item.code === input.style);
+    check(style, 'Choisis un univers de marque valide.');
+    const levels = getKqStudioLevels(online);
+    check(levels.branding >= 1 || levels.editorial >= 1, 'Crée ton identité ou rédige tes premières fiches avant de choisir un univers.');
+    online.studio.style = style.code;
   } else if (command === 'buy-upgrade') {
     const upgrade = KQ_ONLINE_UPGRADES.find(item => item.code === input.code);
     check(upgrade, 'Amélioration inconnue.');
     check(!online.upgrades[upgrade.code], 'Cette amélioration est déjà acquise.');
     callbacks.spend(upgrade.costCents);
     online.upgrades[upgrade.code] = true;
+    if (online.studio?.version === 1) online.studio.levels[upgrade.code] = Math.max(getKqStudioLevels(online)[upgrade.code], 1);
   } else if (command === 'start-marketing') {
     if (input.version === 2) {
       const definition = KQ_MARKETING_CAMPAIGNS.find(item => item.code === input.code);
@@ -178,7 +250,62 @@ export function applyKqOperationsOnline(state: KqOperationsLessonState, command:
   return { action: command, cashAfterCents: commerce.cashCents, online };
 }
 
-function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hours: number, collect: (cents: number) => Payment) {
+/** Settle the new range in chronological order, before this hour's flower
+ * simulation. A receipt before renewal can fund it; renewal wins exact ties. */
+function advanceLessonMerch(state: KqOperationsLessonState, online: Online, from: number, until: number,
+  collect: (cents: number, transactionFeesCents?: number) => Payment) {
+  const commerce = state.trial.commerce;
+  const tier = KQ_ONLINE_SITE_TIERS.find(item => item.code === online.site.tier)!;
+  const paidUntil = () => online.site.paidUntil ? Date.parse(online.site.paidUntil) : Infinity;
+  const settleHosting = (at: number) => {
+    while (online.site.active && tier.monthlyCents > 0 && paidUntil() <= at) {
+      if (!online.site.renew || commerce.cashCents < tier.monthlyCents) { online.site.active = false; break; }
+      commerce.cashCents -= tier.monthlyCents;
+      online.site.paidUntil = new Date(paidUntil() + KQ_GAME_MONTH_MS).toISOString();
+    }
+  };
+  let cursor = Math.max(from, Date.parse(online.settledUntil) || from);
+  settleHosting(Math.min(cursor, until));
+  const merch = online.merch?.version === 1 ? online.merch : undefined;
+  while (merch && online.site.active && cursor < until) {
+    const active = merch.inventory.filter(row => row.active && row.quantity > 0);
+    const plans = active.map(row => ({ row, rate: estimateKqMerchOffer({ online, code: row.code, priceCents: row.priceCents,
+      reputation: commerce.reputation, clients: commerce.clients, activeProductCount: active.length }).unitsPerDay }));
+    const nextSale = plans.reduce((next, plan) => plan.rate > 0
+      ? Math.min(next, cursor + Math.max(0, 1 - plan.row.progress) * 24 * HOUR / plan.rate) : next, Infinity);
+    const next = Math.min(until, tier.monthlyCents > 0 ? paidUntil() : Infinity, nextSale);
+    for (const { row, rate } of plans) row.progress += rate * Math.max(0, next - cursor) / (24 * HOUR);
+    cursor = next;
+    settleHosting(cursor);
+    if (!online.site.active) break;
+    for (const { row, rate } of plans) {
+      if (rate <= 0 || row.progress < 1 - 1e-9) continue;
+      const product = KQ_MERCH_PRODUCTS.find(item => item.code === row.code)!;
+      // Debt maturity belongs to the actual sale instant, not the hour's end.
+      state.trial.clock = cursor;
+      if (commerce.business) commerce.business.lab.overdueCents = commerce.business.lab.invoices
+        .reduce((sum, invoice) => sum + (Date.parse(invoice.dueAt) <= cursor ? invoice.remainingCents : 0), 0);
+      const feesCents = onlineSaleFee(state, online, row.priceCents);
+      const payment = collect(row.priceCents, feesCents);
+      merch.stats.unitsSold++;
+      merch.stats.revenueCents += row.priceCents;
+      merch.stats.netRevenueCents += payment.netPayoutCents;
+      merch.stats.feesCents += feesCents;
+      merch.stats.costOfGoodsSoldCents += product.unitCostCents;
+      merch.recentSales.unshift({ id: `operations-merch-sale-${merch.stats.unitsSold}`, code: row.code, quantity: 1,
+        soldAt: new Date(cursor).toISOString(), priceCents: row.priceCents, netPayoutCents: payment.netPayoutCents, feesCents, costCents: product.unitCostCents });
+      row.progress = Math.max(0, row.progress - 1);
+      row.quantity--; row.sold++;
+      if (!row.quantity) { row.active = false; row.progress = 0; }
+    }
+  }
+  settleHosting(until);
+  state.trial.clock = until;
+  if (commerce.business) commerce.business.lab.overdueCents = commerce.business.lab.invoices
+    .reduce((sum, invoice) => sum + (Date.parse(invoice.dueAt) <= until ? invoice.remainingCents : 0), 0);
+}
+
+function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hours: number, collect: (cents: number, transactionFeesCents?: number) => Payment) {
   const commerce = state.trial.commerce;
   const credits = state.onlineOrderCredits ??= {};
   const simulation = state.onlineSimulation!;
@@ -197,14 +324,7 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
       commerce.business.serverNow = now;
       commerce.business.lab.overdueCents = commerce.business.lab.invoices.reduce((sum, invoice) => sum + (Date.parse(invoice.dueAt) <= state.trial.clock ? invoice.remainingCents : 0), 0);
     }
-    const paidUntil = online.site.paidUntil ? Date.parse(online.site.paidUntil) : Infinity;
-    if (online.site.tier !== 'basic' && state.trial.clock >= paidUntil) {
-      const tier = KQ_ONLINE_SITE_TIERS.find(item => item.code === online.site.tier)!;
-      if (online.site.renew && commerce.cashCents >= tier.monthlyCents) {
-        commerce.cashCents -= tier.monthlyCents;
-        online.site.paidUntil = new Date(paidUntil + KQ_GAME_MONTH_MS).toISOString();
-      } else online.site.active = false;
-    }
+    advanceLessonMerch(state, online, intervalStart, state.trial.clock, collect);
     const active = online.listings.filter(row => row.status === 'active' && row.remainingPackets > 0);
     for (const row of online.listings) {
       if (!row.remainingPackets) continue;
@@ -232,12 +352,11 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
         const soldAtMs = preparedCampaign && offer.ordersPerDay > 0 ? Math.min(state.trial.clock, intervalStart + Math.max(0, packet + 1 - previousCredit) / offer.ordersPerDay * 24 * HOUR) : state.trial.clock;
         const saleOffer = quote(soldAtMs);
         if (saleOffer.ordersPerDay <= 0) break;
-        const feesCents = Math.round(row.packetPriceCents * 0.025);
-        const payment = collect(row.packetPriceCents);
+        const feesCents = onlineSaleFee(state, online, row.packetPriceCents);
+        const payment = collect(row.packetPriceCents, feesCents);
         consumeKqOperationsCustomerDemand(state, 'online', saleOffer.customerDemand);
         soldPackets++;
-        commerce.cashCents -= feesCents;
-        const netPayoutCents = payment.netPayoutCents - feesCents;
+        const netPayoutCents = payment.netPayoutCents;
         online.stats.orders++;
         online.stats.revenueCents += row.packetPriceCents;
         online.stats.netRevenueCents += netPayoutCents;
@@ -298,9 +417,10 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
       online.marketing.cooldowns[mission.code] = new Date(Date.parse(mission.startedAt) + definition.cooldownHours * HOUR).toISOString();
       online.marketing.active = null;
     }
-    online.settledUntil = now;
+    online.settledUntil = new Date(Math.max(state.trial.clock, Date.parse(online.settledUntil) || 0)).toISOString();
   }
   online.recentSales = online.recentSales.slice(0, 20);
+  if (online.merch) online.merch.recentSales = online.merch.recentSales.slice(0, 20);
   const storage = projectKqStorageLot(state.storage.lot, state.trial.clock);
   commerce.stocks.forEach(stock => { stock.storage = storage; });
   commerce.customerDemand = getKqOperationsCustomerDemand(state);

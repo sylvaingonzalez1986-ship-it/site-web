@@ -45,6 +45,7 @@ describe("native culture transport for La relève", () => {
       expect(snapshot.collection.inventory).toEqual(before.supportInventory);
       expect(snapshot.heritage.cards).toHaveLength(2);
       expect(snapshot.playerSession.activeRun).toBeNull();
+      expect(await (await sandbox.request("/api/arena/placard/equipment")).json()).toEqual({ routePlan: null, strength: null });
       expect((await sandbox.request("https://example.com/unhandled")).status).toBe(404);
       expect(network).not.toHaveBeenCalled(); expect(sandbox.get()).toEqual(before);
     } finally { network.mockRestore(); }

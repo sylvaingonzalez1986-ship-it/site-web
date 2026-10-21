@@ -1,5 +1,5 @@
 import { ARENA_JOURNEY_STEPS } from "./arena-journey";
-import { activateKqHeritage, advanceKqStage, canActivateKqHeritage, canPlayKqCard, getKqZeroSuccessStageCount, isKqCultureDead, KQ_BUDDIES, KQ_CARDS, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, type KqGameState } from './kanab-quest-game';
+import { activateKqHeritage, advanceKqStage, canActivateKqHeritage, canPlayKqCard, getKqHandCodes, getKqZeroSuccessStageCount, isKqCultureDead, KQ_BUDDIES, KQ_CARDS, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, type KqGameState } from './kanab-quest-game';
 import { createKqFlower, createKqOpponent, lockKqBattle, resolveKqBattle, type KqBattle } from './kanab-quest-battle';
 import { getKqEquipmentDefinition } from './kanab-quest-equipment';
 import { type KqEnergyMode } from './kanab-quest-energy';
@@ -43,7 +43,11 @@ export function createKqTrial(rulesVersion: 2 | 3 = 3): KqTrialState {
  commerce: { business: createKqBusinessPreview(TIME), revision: 0, cashCents: 200000, reputation: 200, clients: 8, shopPartners: 2, computerOwned: false, internetRenew: false, campaign: null, stocks: [], receipts: [], marketVolumes: {}, ownVolumes: {}, routeSales: {} } };
 }
 function teachingHand(game: KqGameState): KqGameState {
- return { ...game, handCodes: HANDS[game.stageIndex].map(code => game.rulesVersion === 3 && code === 'BOTTE-004' ? 'BOTTE-020' : code).filter(code => !game.usedCards.includes(code)).slice(0, 5) };
+ const preferred = HANDS[game.stageIndex].map(code => game.rulesVersion === 3 && code === 'BOTTE-004' ? 'BOTTE-020' : code);
+ const priority = (code: string) => preferred.includes(code) ? preferred.indexOf(code) : preferred.length;
+ // Keep the lesson's useful cards first, with the same real draw limit and
+ // remaining physical copies as the game. The trial lends only nine cards.
+ return { ...game, handCodes: getKqHandCodes({ ...game, handCodes: undefined }).sort((left, right) => priority(left) - priority(right)) };
 }
 // Keep this assistance entirely inside the fictitious tutorial. Display the
 // prepared dice before validation so the ordinary engine still awards exactly

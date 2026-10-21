@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useMemo, useState, type MouseEvent } from "react";
 import { KanabQuestDicePrototype } from "./KanabQuestDicePrototype";
-import { KqHarvestNavigation } from "./KqHarvestNavigation";
 import { KqHarvests } from "./KqHarvests";
 import { createKqTutorialApi, KqTutorialApiProvider } from "./KqTutorialApiContext";
 import { createReleveCultureTransport } from "@/lib/kanab-quest-releve-culture";
@@ -101,15 +100,13 @@ export function KqReleveNativeCulture({ chapter, state, onChange, onOpenWarehous
     <KqTutorialApiProvider api={api}>
       {harvestsOpen ? <KqHarvests section="overview" onSectionChange={openHarvests}
         onOpenArena={flowerId => { setSelectedFlower(flowerId); setHarvestsOpen(false); }}
-        onOpenMarket={flowerId => onOpenMarket?.(flowerId)} onOpenGame={() => { setHarvestsOpen(false); onOpenGame?.(); }} /> : <>
-      {chapter === "jury" ? <KqHarvestNavigation onOpenHarvests={openHarvests} /> : null}
+        onOpenMarket={flowerId => onOpenMarket?.(flowerId)} onOpenGame={() => { setHarvestsOpen(false); onOpenGame?.(); }} /> :
       <KanabQuestDicePrototype key={restart} apiScope="player" viewMode={chapter === "jury" ? "arena" : "game"} showAdminOperations={false}
         initialFlowerId={selectedFlower}
         showWarehouseNavigation={false} initialCampaign isolatedStorage={isolatedStorage}
         initialPreparation={{ deckCodes: state.deckCodes, heritageCode: state.heritageCode }} onPreparationChange={preparation}
         onOpenWarehouse={onOpenWarehouse ?? (() => undefined)} onOpenArena={onOpenArena ?? (() => undefined)}
-        onOpenGame={onOpenGame} onOpenMarket={onOpenMarket} onOpenRun={openRun} />
-      </>}
+        onOpenGame={onOpenGame} onOpenMarket={onOpenMarket} onOpenRun={openRun} />}
     </KqTutorialApiProvider>
   </div>;
 }

@@ -32,6 +32,20 @@ function commerce(preferred='dry-sift') {
  expect(route).toBeDefined();return reduceKqTrial(s,{type:'transform',route:route.route});
 }
 describe('isolated Placard learning run',()=>{
+ it('deals all nine real trial cards under the ten-card limit and excludes used copies on the next stage',()=>{
+  let game=startKqTrialCulture();
+  expect(game.handCodes).toHaveLength(9);
+  expect([...game.handCodes!].sort()).toEqual([...game.deckCodes].sort());
+  let s=prepared().s;
+  s=reduceKqTrial(s,{type:'play',code:'BOTTE-005'});
+  s=reduceKqTrial(s,{type:'roll'});
+  if(canActivateKqHeritage(s.game!).allowed)s=reduceKqTrial(s,{type:'heritage'});
+  s=reduceKqTrial(s,{type:'resolve'});
+  s=reduceKqTrial(s,{type:'advance'});
+  game=s.game!;
+  expect(game.handCodes).not.toContain('BOTTE-005');
+  expect(game.handCodes).toHaveLength(8);
+ });
  it('requires each real interaction before advancing and cannot buy twice',()=>{
   let s=createKqTrial();expect(reduceKqTrial(s,{type:'next'})).toBe(s);
   s=reduceKqTrial(s,{type:'check',value:'notebook'});s=reduceKqTrial(s,{type:'next'});

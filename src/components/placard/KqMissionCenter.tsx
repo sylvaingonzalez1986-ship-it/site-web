@@ -4,13 +4,15 @@ import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, Coins, FlaskConical, Gift, LockKeyhole, RefreshCw, Sparkles, Sprout, Store, Trophy, Users } from "lucide-react";
-import { KQ_MISSION_COPY, KQ_MISSION_DIFFICULTIES, KQ_MISSION_TRACKS, getKqMissionRewardLabel, type KqMission, type KqMissionClaim, type KqMissionDestination, type KqMissionReward, type KqMissionSnapshot, type KqMissionTrack } from "@/lib/kanab-quest-missions";
+import { KQ_MISSION_COPY, KQ_MISSION_DIFFICULTIES, KQ_MISSION_TRACKS, getKqMissionContinuation, getKqMissionRewardLabel, type KqMission, type KqMissionClaim, type KqMissionDestination, type KqMissionReward, type KqMissionSnapshot, type KqMissionTrack } from "@/lib/kanab-quest-missions";
 import { getKqCardArtwork } from "@/lib/kanab-quest-artwork";
 import { CommunityMissionWelcome, CommunityMissionsBoard } from "@/components/missions/CommunityMissionsBoard";
 import styles from "./KqMissionCenter.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqSupportPackOpening, requestKqSupportPackOpening, type KqOpenedSupportCard } from "./KqSupportPackOpening";
 import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
+import { KqCultureContract } from "./KqCultureContract";
+import { useKqGameSound } from "./KqGameSound";
 
 const TRACKS = {
   culture: { title: "Culture & Buddies", image: "/contest/mascot/arena-scene-placard-v1.png", icon: Sprout },
@@ -28,6 +30,10 @@ function missionReward(mission: { reward?: KqMissionReward; cardCount: number })
   return mission.reward ?? { kind: "pack", cardCount: mission.cardCount };
 }
 
+function isRewardUnavailable(mission: KqMission, collectionActive: boolean) {
+  return mission.rewardAvailable === false || (mission.rewardAvailable === undefined && missionReward(mission).kind !== "cash" && !collectionActive);
+}
+
 function RewardArtwork({ reward, large = false }: { reward: KqMissionReward; large?: boolean }) {
   if (reward.kind === "cash") return <span className={styles.rewardIcon}><Coins size={large ? 34 : 28} aria-hidden="true" /></span>;
   const artwork = reward.kind === "card" ? getKqCardArtwork(reward.code) : PACK_IMAGE;
@@ -36,7 +42,8 @@ function RewardArtwork({ reward, large = false }: { reward: KqMissionReward; lar
 
 export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestination) => void }) {
   const api = useKqTutorialApi();
-  const [section, setSection] = useState<"community" | "challenges">("challenges");
+  const sound = useKqGameSound();
+  const [section, setSection] = useState<"community" | "challenges" | "contracts">("challenges");
   const [selectedTrack, setSelectedTrack] = useState<KqMissionTrack | "all">("all");
   const [data, setData] = useState<KqMissionSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
@@ -51,6 +58,9 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
   const [openedEntitlements, setOpenedEntitlements] = useState<string[]>([]);
   const openingLock = useRef(false);
   const claiming = useRef(false);
+  const mounted = useRef(false);
+  const receiptHeading = useRef<HTMLHeadingElement>(null);
+  const allTracksButton = useRef<HTMLButtonElement>(null);
   const requestVersion = useRef(0);
   const invalidateRequests = useCallback(() => { requestVersion.current++; }, []);
 
@@ -70,14 +80,20 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
   }, [api]);
 
   useEffect(() => {
+    mounted.current = true;
     void refresh();
     const update = () => { if (!claiming.current && !openingLock.current) void refresh(); };
     const unsubscribe = api.subscribe(["focus", "kq:market-updated", "kq:boosters-updated", "kq:storage-updated", "arena:progress-updated"], update);
     return () => {
+      mounted.current = false;
       invalidateRequests();
       unsubscribe();
     };
   }, [refresh, invalidateRequests, api]);
+
+  useEffect(() => {
+    if (reward) receiptHeading.current?.focus();
+  }, [reward]);
 
   async function claim(mission: KqMission) {
     if (claiming.current || openingLock.current) return;
@@ -88,9 +104,11 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
         signal: AbortSignal.timeout(15_000),
       });
       const payload = await response.json();
+      if (!mounted.current) return;
       if (!response.ok) throw new Error(payload.error || "Impossible de récupérer cette récompense.");
       const receivedReward = missionReward(payload);
       setReward({ ...payload, reward: receivedReward, code: mission.code });
+      if (payload.replayed === false) sound.playOnce("reward", `mission:${mission.code}`);
       if (receivedReward.kind === "cash") {
         api.notify("kq:equipment-updated");
         api.notify("kq:treasury-updated");
@@ -124,10 +142,20 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
   }
 
   const packIsOpened = (entitlementId: string) => openedEntitlements.includes(entitlementId) || data?.missions.some(mission => mission.entitlementId === entitlementId && mission.packAvailable === false) === true;
-  const continueActivity = (pack: { code: KqMission["code"] }) => {
+  const returnFromPack = (pack: MissionPack) => {
     setActivePack(null);
+    // Existing packs need the same next-objective receipt as newly won packs.
+    // Closing the reveal never claims another reward or skips its explanation.
+    setReward(current => current?.code === pack.code ? current : {
+      ...pack, reward: { kind: "pack", cardCount: pack.cardCount }, replayed: true,
+    });
+    requestAnimationFrame(() => receiptHeading.current?.focus());
+  };
+
+  const chooseAnotherTrack = () => {
+    setSelectedTrack("all");
     setReward(null);
-    if (!api.isTutorial) onOpen(KQ_MISSION_COPY[pack.code].destination);
+    requestAnimationFrame(() => allTracksButton.current?.focus());
   };
 
   const claimed = data?.missions.filter((mission) => mission.claimed).length ?? 0;
@@ -139,6 +167,10 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
   const receivedReward = reward ? missionReward(reward) : null;
   const rewardOpened = reward?.entitlementId ? packIsOpened(reward.entitlementId) : false;
   const receiptPack = receivedReward?.kind === "pack" && reward?.entitlementId ? { entitlementId: reward.entitlementId, cardCount: reward.cardCount, code: reward.code } : null;
+  const continuation = reward && !loading && !error ? getKqMissionContinuation(data, reward.code) : { status: "pending" as const };
+  const nextMission = continuation.status === "next" ? continuation.mission : null;
+  const nextCopy = nextMission ? KQ_MISSION_COPY[nextMission.code] : null;
+  const nextRewardUnavailable = nextMission ? isRewardUnavailable(nextMission, data?.collectionActive === true) : false;
   const rewardTitle = reward && receivedReward ? receivedReward.kind === "cash"
     ? `${getKqMissionRewardLabel(receivedReward)} ${reward.replayed ? "déjà crédités" : "crédités"} !`
     : receivedReward.kind === "card"
@@ -148,8 +180,8 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
 
   return <main className={styles.center}>
     <header className={styles.header}><div><h1>Mes objectifs</h1><p>De ta première récolte aux défis de maître chanvrier : {total} missions pour développer tes cultures, ton atelier et ton commerce.</p></div></header>
-    <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button><button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button></nav>
-    {section === "community" ? <><CommunityMissionWelcome /><CommunityMissionsBoard /></> : <>
+    <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button>{!api.isTutorial ? <button type="button" aria-pressed={section === "contracts"} onClick={() => setSection("contracts")}><FlaskConical size={18} aria-hidden="true" />Contrats</button> : null}<button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button></nav>
+    {section === "community" ? <><CommunityMissionWelcome /><CommunityMissionsBoard /></> : section === "contracts" ? <KqCultureContract mode="missions" onOpenGame={() => onOpen("game")} /> : <>
     <section className={styles.overview} aria-label="Progression de tes défis">
       <div className={styles.overviewHeading}><small>Le parcours du chanvrier</small><strong>{data ? `${claimed} / ${total} missions accomplies` : "Tes cinq parcours"}</strong></div>
       {ready > 0 ? <span className={styles.readyCount}><Gift size={20} aria-hidden="true" />{ready} récompense{ready > 1 ? "s" : ""} à récupérer</span> : null}
@@ -165,16 +197,33 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
       <button type="button" disabled={loading || busy !== null || opening} onClick={() => void refresh()}><RefreshCw size={16} aria-hidden="true" />{loading ? "Actualisation…" : "Actualiser"}</button>
     </div>
     {error ? <div className={styles.error} role="alert"><p>{error}</p>{signedOut ? <Link href="/compte/connexion?next=%2Farene%2Fplacard%3Fview%3Dmissions">Me connecter</Link> : <button type="button" disabled={loading || busy !== null} onClick={() => void refresh()}>Réessayer</button>}</div> : null}
-    {reward && receivedReward ? <div className={styles.receipt} role="status" data-mission-receipt>
-      <RewardArtwork reward={receivedReward} large />
-      <div><strong>{rewardTitle}</strong><p>{receivedReward.kind === "cash" ? "Ta trésorerie du jeu est à jour. La prochaine étape du parcours est débloquée." : receivedReward.kind === "card" ? "Ta carte rare Botte du Chanvrier est prête à être utilisée. La prochaine étape est débloquée." : rewardOpened ? "Tes cartes ont rejoint ta collection. La suite de ton aventure t’attend." : "Découvre tes cartes ici, puis reprends ton activité."}</p></div>
-      {receiptPack && !rewardOpened ? <button type="button" disabled={opening || busy !== null} onClick={() => void openPack(receiptPack)}>Ouvrir mon pack<ArrowRight size={18} aria-hidden="true" /></button> : <button type="button" onClick={() => continueActivity(reward)}>{api.isTutorial ? "Continuer mes défis" : KQ_MISSION_COPY[reward.code].action}<ArrowRight size={18} aria-hidden="true" /></button>}
-    </div> : null}
+    {reward && receivedReward ? <section className={styles.receipt} aria-label="Ta récompense et la suite" data-mission-receipt data-receipt-fresh={reward.replayed === false || undefined}>
+      <div className={styles.receiptHeader}>
+        <RewardArtwork reward={receivedReward} large />
+        <div role="status"><span className={styles.receiptEyebrow}>{reward.replayed ? "Reçu retrouvé" : "Mission accomplie"}</span><h2 ref={receiptHeading} tabIndex={-1}>{rewardTitle}</h2><p>{receivedReward.kind === "cash" ? "Ta trésorerie du jeu est à jour." : receivedReward.kind === "card" ? "Ta carte rare Botte du Chanvrier est prête à être utilisée." : rewardOpened ? "Tes cartes ont rejoint ta collection." : "Découvre tes cartes ici, puis retrouve ton prochain objectif."}</p></div>
+      </div>
+      {receiptPack && !rewardOpened ? <button type="button" disabled={opening || busy !== null} onClick={() => void openPack(receiptPack)}>Ouvrir mon pack<ArrowRight size={18} aria-hidden="true" /></button> : <div className={styles.continuation} data-mission-continuation>
+        {nextMission && nextCopy ? <>
+          <div className={styles.continuationHeading}><small>Ton prochain objectif · {TRACKS[nextMission.track].title}</small><h3>{nextCopy.title}</h3><p>{nextCopy.description}</p></div>
+          <KqProgressMeter label={nextCopy.progressLabel} value={nextMission.progress} max={nextMission.target}
+            valueLabel={`${nextMission.progress.toLocaleString("fr-FR")} / ${nextMission.target.toLocaleString("fr-FR")}`}
+            tone={nextMission.claimable ? "gold" : "teal"} />
+          <p className={styles.continuationReward}><Gift size={17} aria-hidden="true" /><span>{nextMission.claimable ? "Objectif atteint · " : "À gagner · "}<strong>{getKqMissionRewardLabel(missionReward(nextMission))}</strong></span></p>
+          {nextMission.claimable ? <button type="button" disabled={nextRewardUnavailable || busy !== null || opening} onClick={() => void claim(nextMission)}>Récupérer cette récompense<ArrowRight size={18} aria-hidden="true" /></button>
+            : <button type="button" disabled={busy !== null || opening} onClick={() => onOpen(nextCopy.destination)}>{nextCopy.action}<ArrowRight size={18} aria-hidden="true" /></button>}
+          {nextMission.claimable && nextRewardUnavailable ? <p className={styles.unavailable}>Récompense temporairement indisponible. Ton objectif reste enregistré.</p> : null}
+        </> : continuation.status === "complete" ? <>
+          <h3>{TRACKS[continuation.track].title} : parcours terminé !</h3><p>Tu as récupéré toutes les récompenses de ce parcours. Les autres objectifs t’attendent, à ton rythme.</p>
+          <button type="button" onClick={chooseAnotherTrack}>Choisir un autre parcours<ArrowRight size={18} aria-hidden="true" /></button>
+        </> : <><p role="status">{loading ? "Actualisation de ton prochain objectif…" : "Ta récompense est acquise. Actualise pour retrouver la suite de ton parcours."}</p>
+          <button type="button" disabled={loading || busy !== null || opening} onClick={() => void refresh()}><RefreshCw size={17} aria-hidden="true" />Actualiser mes objectifs</button></>}
+      </div>}
+    </section> : null}
     {loading && !data ? <p role="status" className={styles.loading}>On retrouve ta progression…</p> : null}
     {data ? <>
       {!data.collectionActive ? <p className={styles.error}>Les cartes et packs Botte du Chanvrier sont momentanément indisponibles. Tu peux toujours récupérer l’argent du jeu ; toute ta progression est conservée.</p> : null}
       <nav className={styles.trackNav} aria-label="Filtrer les parcours">
-        <button type="button" aria-pressed={selectedTrack === "all"} onClick={() => setSelectedTrack("all")}>Tous les parcours</button>
+        <button ref={allTracksButton} type="button" aria-pressed={selectedTrack === "all"} onClick={() => setSelectedTrack("all")}>Tous les parcours</button>
         {KQ_MISSION_TRACKS.map(track => {
           const missions = data.missions.filter(mission => mission.track === track);
           return <button key={track} type="button" aria-pressed={selectedTrack === track} onClick={() => setSelectedTrack(track)}>{TRACKS[track].title}<small>{missions.filter(mission => mission.claimed).length}/{missions.length}</small></button>;
@@ -188,7 +237,7 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
           const current = missions.find((mission) => !mission.claimed);
           const copy = current ? KQ_MISSION_COPY[current.code] : null;
           const currentReward = current ? missionReward(current) : null;
-          const rewardUnavailable = current?.rewardAvailable === false || (current?.rewardAvailable === undefined && currentReward?.kind !== "cash" && !data.collectionActive);
+          const rewardUnavailable = current ? isRewardUnavailable(current, data.collectionActive) : false;
           return <section key={track} className={styles.track} aria-label={info.title} data-ready={current?.claimable || undefined}>
             <div className={styles.art}><Image src={info.image} alt="" fill sizes="(max-width: 760px) 100vw, 360px" /><span><info.icon size={18} aria-hidden="true" />{info.title}</span></div>
             <div className={styles.body}>
@@ -222,6 +271,6 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
       </footer>
     </> : null}
     </>}
-    {activePack ? <KqSupportPackOpening cards={packCards} cardCount={activePack.cardCount} busy={opening} error={packIsOpened(activePack.entitlementId) && !packCards.length ? "Ce pack a déjà été ouvert. Ses cartes sont dans ta collection." : packError} canRetry={!opening && !packIsOpened(activePack.entitlementId)} onRetry={() => void openPack(activePack)} onClose={() => { if (!openingLock.current || packCards.length) setActivePack(null); }} onContinue={() => continueActivity(activePack)} continueLabel={api.isTutorial ? "Retour aux missions" : KQ_MISSION_COPY[activePack.code].action} /> : null}
+    {activePack ? <KqSupportPackOpening cards={packCards} cardCount={activePack.cardCount} busy={opening} error={packIsOpened(activePack.entitlementId) && !packCards.length ? "Ce pack a déjà été ouvert. Ses cartes sont dans ta collection." : packError} canRetry={!opening && !packIsOpened(activePack.entitlementId)} onRetry={() => void openPack(activePack)} onClose={() => { if (!openingLock.current || packCards.length) setActivePack(null); }} onContinue={() => returnFromPack(activePack)} continueLabel={api.isTutorial ? "Retour aux missions" : "Voir mon prochain objectif"} /> : null}
   </main>;
 }

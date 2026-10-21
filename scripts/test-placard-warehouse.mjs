@@ -28,14 +28,14 @@ try {
   // Reuse the exact online-commerce fixture, including its real chronological
   // market, storage, bank and online migrations. Only its unrelated test cases
   // are omitted. Marker assertions make fixture drift fail visibly.
-  const onlineSource = await readFile(new URL("./test-placard-online.mjs", import.meta.url), "utf8");
+  const onlineSource = (await readFile(new URL("./test-placard-online.mjs", import.meta.url), "utf8")).replaceAll("\r\n", "\n");
   const customerDemandMigration = "20261012002000_kq_variety_market_demands.sql";
   assert(onlineSource.includes(`,'${customerDemandMigration}'`), "customer demand fixture migration marker changed");
   // This migration follows the warehouse migrations in production. Defer it
   // until those migrations have exercised their historical implementations.
   const online = onlineSource.replace(`,'${customerDemandMigration}'`, "");
   const start = online.indexOf(" await db.exec(`");
-  const end = online.indexOf(" // All relative timestamps");
+  const end = online.indexOf(" // A real pre-migration receipt and account must survive the new catalogue.");
   assert(start >= 0 && end > start, "online fixture bootstrap markers changed");
   const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
   await new AsyncFunction("db", "sql", "scalar", online.slice(start, end))(db, sql, scalar);
@@ -827,10 +827,10 @@ try {
   // Use the established online player's real listing/stock setup, then compare
   // one long catch-up with many reads crossing the same supplier deadline.
   const playerSourceStart = online.indexOf(" async function player() {");
-  const playerSourceEnd = online.indexOf(" const p=await player();", playerSourceStart);
+  const playerSourceEnd = online.indexOf("\n }\n", playerSourceStart);
   assert(playerSourceStart >= 0 && playerSourceEnd > playerSourceStart, "online player fixture markers changed");
   const supplierOnlineCommand = (owner, action, payload = {}) => scalar("SELECT rpc_kq_online_command($1,$2,$3,$4)", [owner, action, payload, randomUUID()]);
-  const makeOnlinePlayer = new AsyncFunction("db", "randomUUID", "state", "command", `${online.slice(playerSourceStart, playerSourceEnd)}\nreturn player();`);
+  const makeOnlinePlayer = new AsyncFunction("db", "randomUUID", "state", "command", `${online.slice(playerSourceStart, playerSourceEnd + 3)}\nreturn player();`);
   const prepareSupplierTimeline = async () => {
     const account = await makeOnlinePlayer(db, randomUUID, async owner => {
       const current = await scalar("SELECT rpc_kq_online_state($1)", [owner]);

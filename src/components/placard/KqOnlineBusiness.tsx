@@ -1,13 +1,15 @@
 "use client";
 
 import { useId, useRef, useState, type KeyboardEvent, type ReactNode } from "react";
-import { Activity, ArrowRight, Camera, Check, Globe2, Megaphone, Monitor, Paintbrush, Settings2, Store, Tags } from "lucide-react";
+import { Activity, ArrowRight, Globe2, Megaphone, Monitor, Paintbrush, Settings2, ShoppingBag, Store, Tags } from "lucide-react";
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
-import { KQ_ONLINE_FEE_PERCENT, KQ_ONLINE_SITE_TIERS, KQ_ONLINE_UPGRADES, getKqOnlineUpgradeCost } from "@/lib/kanab-quest-online";
+import { KQ_ONLINE_FEE_PERCENT, KQ_ONLINE_SITE_TIERS } from "@/lib/kanab-quest-online";
 import { KqShopTycoon } from "./KqShopTycoon";
 import { KqMarketingCampaigns } from "./KqMarketingCampaigns";
-import { KqBarChart, KqProgressMeter } from "./KqVisuals";
+import { KqOnlineSiteProgression } from "./KqOnlineSiteProgression";
+import { KqMerchWorkshop } from "./KqMerchWorkshop";
+import { KqBrandStudio } from "./KqBrandStudio";
 import styles from "./KqOnlineBusiness.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -42,18 +44,17 @@ export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepare
   const id = useId();
   const [view, setView] = useState<View>("activity");
   const [pricingListingId, setPricingListingId] = useState("");
-  const [upgradeView, setUpgradeView] = useState<"site" | "brand">("site");
+  const [upgradeView, setUpgradeView] = useState<"site" | "brand" | "merch">("merch");
   const tabs = useRef<Array<HTMLButtonElement | null>>([]);
+  const brandChoice = useRef<HTMLButtonElement | null>(null);
+  const siteChoice = useRef<HTMLButtonElement | null>(null);
+  const merchChoice = useRef<HTMLButtonElement | null>(null);
   const online = data.online;
   if (!online || !data.business) return null;
   const shop = data.business.shop;
   const site = online.site;
   const tier = KQ_ONLINE_SITE_TIERS.find(item => item.code === site.tier) ?? KQ_ONLINE_SITE_TIERS[0];
-  const currentTierIndex = KQ_ONLINE_SITE_TIERS.findIndex(item => item.code === site.tier);
-  const nextTier = KQ_ONLINE_SITE_TIERS[currentTierIndex + 1];
-  const nextCost = nextTier ? getKqOnlineUpgradeCost(site.tier, nextTier.code) : 0;
   const open = Boolean(shop.createdAt);
-  const command = (title: string, description: string, name: string, payload: Record<string, unknown>, cost = 0) => onAsk(title, description, { action: "online", command: name, payload }, cost);
   function selectView(next: View, focus = false) {
     setView(next);
     if (focus) {
@@ -99,34 +100,16 @@ export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepare
       </section>
 
       <div hidden={view !== "upgrades"}>
-      <div className={styles.upgradeChoice} role="group" aria-label="Choisir les améliorations"><button type="button" aria-pressed={upgradeView === "site"} onClick={() => setUpgradeView("site")}><Globe2 size={17} aria-hidden="true" />Le site internet</button><button type="button" aria-pressed={upgradeView === "brand"} onClick={() => setUpgradeView("brand")}><Paintbrush size={17} aria-hidden="true" />Photos et marque</button></div>
+      <div className={styles.upgradeChoice} role="group" aria-label="Choisir les améliorations"><button type="button" ref={merchChoice} aria-pressed={upgradeView === "merch"} onClick={() => setUpgradeView("merch")}><ShoppingBag size={17} aria-hidden="true" />Merch & collections</button><button type="button" ref={siteChoice} aria-pressed={upgradeView === "site"} onClick={() => setUpgradeView("site")}><Globe2 size={17} aria-hidden="true" />Le site internet</button><button type="button" ref={brandChoice} aria-pressed={upgradeView === "brand"} onClick={() => setUpgradeView("brand")}><Paintbrush size={17} aria-hidden="true" />Photos et marque</button></div>
 
-    <section hidden={upgradeView !== "site"} className={styles.section} aria-label="Améliorer et gérer mon site"><h3>La formule de ton site internet</h3>
-      {nextTier ? <div className={styles.nextChapter}><div><small>Objectif · {nextTier.name}</small><div className={styles.requirements}>
-        <KqProgressMeter label="Commandes" value={online.stats.orders} max={nextTier.minimumOrders} valueLabel={`${number(online.stats.orders)} / ${nextTier.minimumOrders}`} />
-        <KqProgressMeter label="Confiance" value={online.confidence} max={nextTier.minimumConfidence} valueLabel={`${number(online.confidence)} / ${nextTier.minimumConfidence}`} />
-        <KqProgressMeter label="Budget disponible" value={data.cashCents} max={nextCost} valueLabel={`${formatKqCash(data.cashCents)} / ${formatKqCash(nextCost)}`} tone="gold" />
-      </div></div></div> : <p><Check size={16} aria-hidden="true" /> La formule professionnelle est installée.</p>}
-      <div className={styles.comparison}><KqBarChart title="Cadence estimée · site de base = 100" items={KQ_ONLINE_SITE_TIERS.map(item => ({ label: item.name.replace("Boutique ", ""), value: Math.round(item.conversionMultiplier * 100), displayValue: `${Math.round(item.conversionMultiplier * 100)}`, tone: item.code === site.tier ? "teal" : "gold" }))} /><KqBarChart title="Hébergement · par mois de jeu" items={KQ_ONLINE_SITE_TIERS.map(item => ({ label: item.name.replace("Boutique ", ""), value: item.monthlyCents, displayValue: formatKqCash(item.monthlyCents), tone: item.code === site.tier ? "teal" : "ink" }))} /></div>
-      <details className={styles.explanation}><summary>Lire la comparaison</summary><p>À offre et audience identiques, le site améliore la cadence estimée sans garantir des commandes. Un mois de jeu dure 5 jours réels. Chaque formule conserve {number(KQ_ONLINE_FEE_PERCENT)} % de frais sur les ventes.</p></details>
-      <div className={styles.tiers}>{KQ_ONLINE_SITE_TIERS.map((item, index) => {
-        const current = item.code === site.tier;
-        const previous = index < currentTierIndex;
-        const cost = getKqOnlineUpgradeCost(site.tier, item.code);
-        const affordable = data.cashCents >= cost;
-        const eligible = online.stats.orders >= item.minimumOrders && online.confidence >= item.minimumConfidence;
-        return <article className={styles.card} key={item.code} data-current={current}><span className={styles.tierStep}>{current ? "Formule actuelle" : previous ? "Formule précédente" : "Formule à débloquer"}</span><h4>{item.name}</h4><strong>{current ? "Installée" : previous ? "Déjà dépassée" : cost ? formatKqCash(cost) : "Gratuit"}</strong><small>{item.monthlyCents ? `${formatKqCash(item.monthlyCents)} / mois de jeu` : "Sans abonnement"}</small>{item.code !== "basic" ? <small>{item.minimumOrders} commandes · {item.minimumConfidence}/100 confiance</small> : null}<details className={styles.explanation}><summary>Ce qui est inclus</summary><p>{item.description}</p>{item.code !== "basic" ? <p>+{Math.round((item.conversionMultiplier - 1) * 100)} % de cadence estimée face au site de base, à offre et audience identiques. Premier mois inclus à l’amélioration.</p> : null}</details>
-          {current ? <span className={styles.owned}>{open ? <Check size={16} aria-hidden="true" /> : <Store size={16} aria-hidden="true" />}{open ? "Version actuelle" : "Site de départ"}</span> : <button className={styles.secondary} disabled={busy || !open || previous || !affordable || !eligible} onClick={() => command(`Passer à la ${item.name.toLocaleLowerCase("fr-FR")}`, `${formatKqCash(cost)} pour cette amélioration, premier mois inclus. Puis ${formatKqCash(item.monthlyCents)} tous les 30 jours de jeu (5 jours réels). Le site améliore la conversion sans garantir des commandes.`, "upgrade-site", { tier: item.code }, cost)}>{!open ? "Ouvre d’abord ta boutique" : previous ? "Version précédente" : !eligible ? "Développe d’abord ta clientèle" : !affordable ? "Trésorerie insuffisante" : "Améliorer le site"}</button>}
-        </article>;
-      })}</div>
+      <div hidden={upgradeView !== "merch"}><KqMerchWorkshop data={data} busy={busy} onAsk={onAsk} onOpenBrand={() => { setUpgradeView("brand"); brandChoice.current?.focus(); }} onOpenSite={() => { setUpgradeView("site"); siteChoice.current?.focus(); }} /></div>
+
+    <section hidden={upgradeView !== "site"}>
+      <KqOnlineSiteProgression online={online} cashCents={data.cashCents} shopName={shop.name ?? "Ma boutique"} busy={busy} onAsk={onAsk} onOpenBrand={() => { setUpgradeView("brand"); brandChoice.current?.focus(); }} onOpenMarketing={() => develop("marketing")} />
       {open && tier.monthlyCents > 0 ? <div className={styles.renewal}><span><strong>{site.active ? "Hébergement de ta boutique" : "Hébergement suspendu"}</strong><small>{site.paidUntil ? `${site.renew ? "Renouvellement" : "Période payée jusqu’au"} : ${date(site.paidUntil)}` : "Aucune période payée"}</small><small>{formatKqCash(tier.monthlyCents)} tous les 5 jours réels.</small></span>{!site.active ? <button className={styles.primary} disabled={busy || data.cashCents < tier.monthlyCents} onClick={() => onAsk("Réactiver la boutique", `${formatKqCash(tier.monthlyCents)} pour 30 jours de jeu, soit 5 jours réels. Les paquets encore en vente pourront retrouver leurs clients.`, { action: "renew-shop" }, tier.monthlyCents)}>Réactiver · {formatKqCash(tier.monthlyCents)}</button> : <button className={styles.secondary} disabled={busy} onClick={() => onAsk(site.renew ? "Désactiver la reconduction" : "Activer la reconduction", site.renew ? "La période déjà payée est conservée. Aucun renouvellement ne sera facturé à son terme." : `${formatKqCash(tier.monthlyCents)} seront prélevés à chaque échéance si les fonds suffisent.`, { action: "shop-renewal", enabled: !site.renew }, 0)}>{site.renew ? "Arrêter la reconduction" : "Activer la reconduction"}</button>}</div> : null}
     </section>
 
-    <section hidden={upgradeView !== "brand"} className={styles.section} aria-label="Photos et identité de marque"><h3>Photos et identité de marque</h3><div className={styles.brandBudget}><KqBarChart title="Investissement unique" items={KQ_ONLINE_UPGRADES.map(upgrade => ({ label: upgrade.name, value: upgrade.costCents, displayValue: formatKqCash(upgrade.costCents), tone: online.upgrades[upgrade.code] ? "teal" : "gold" }))} /></div><details className={styles.explanation}><summary>Effet sur tes produits</summary><p>Ces achats permanents améliorent la présentation et la conversion. Ils n’ajoutent aucun point à la qualité de tes lots.</p></details><div className={styles.upgrades}>{KQ_ONLINE_UPGRADES.map(upgrade => {
-      const owned = online.upgrades[upgrade.code];
-      const Icon = upgrade.code === "photography" ? Camera : Paintbrush;
-      return <article key={upgrade.code} className={`${styles.card} ${styles.contract}`} data-current={owned}><span className={styles.contractLabel}><Icon size={22} aria-hidden="true" />{upgrade.code === "photography" ? "Le coin photo" : "L’atelier du graphiste"}</span><h4>{upgrade.name}</h4><strong>{formatKqCash(upgrade.costCents)}</strong><p>{upgrade.description}</p>{owned ? <span className={styles.owned}><Check size={16} aria-hidden="true" /> Déjà installé</span> : <button className={styles.secondary} disabled={busy || !open || data.cashCents < upgrade.costCents} onClick={() => command(upgrade.name, `${upgrade.description} Achat permanent de ${formatKqCash(upgrade.costCents)}.`, "buy-upgrade", { code: upgrade.code }, upgrade.costCents)}>{!open ? "Ouvre d’abord ta boutique" : data.cashCents < upgrade.costCents ? "Trésorerie insuffisante" : "Investir"}</button>}</article>;
-    })}</div></section>
+    <section hidden={upgradeView !== "brand"}><KqBrandStudio data={data} busy={busy} onAsk={onAsk} onOpenSite={() => { setUpgradeView("site"); siteChoice.current?.focus(); }} onOpenMerch={() => { setUpgradeView("merch"); merchChoice.current?.focus(); }} /></section>
     </div>
 
     <section hidden={view !== "marketing"} aria-label="Faire connaître ma boutique">

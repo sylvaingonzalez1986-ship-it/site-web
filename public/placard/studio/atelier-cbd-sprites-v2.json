@@ -1,0 +1,45 @@
+{
+  "version": 2,
+  "tool": "Built-in image_gen",
+  "asset": "/placard/studio/atelier-cbd-sprites-v2.png",
+  "styleReference": "/placard/market-brand-studio-sylvain-v3.webp",
+  "replaces": "/placard/studio/atelier-sprites-v1.png",
+  "transparentBackground": true,
+  "width": 1254,
+  "height": 1254,
+  "cellSize": 418,
+  "columns": 3,
+  "rows": 3,
+  "order": [
+    "photography-1",
+    "branding-1",
+    "editorial-1",
+    "photography-2",
+    "branding-2",
+    "editorial-2",
+    "photography-3",
+    "branding-3",
+    "editorial-3"
+  ],
+  "subjects": {
+    "photography": [
+      "Fleurs CBD en bocal devant un appareil photo",
+      "Studio éclairé et sachets de fleurs CBD",
+      "Gros plan de trichomes et photos de fleurs"
+    ],
+    "branding": [
+      "Logo chanvre et sachet CBD",
+      "Charte et emballages de fleurs CBD",
+      "Coffret signature, bocal et sachet CBD"
+    ],
+    "editorial": [
+      "Fiche de variété et loupe sur les trichomes",
+      "Carnet des variétés et présentation des fleurs CBD",
+      "Catalogue illustré des collections CBD"
+    ]
+  },
+  "prompts": [
+    "Use case: precise-object-edit.\nAsset type: transparent sprite atlas for the existing French CBD shop game.\nInput 1: EDIT TARGET, old six-vignette atlas whose plants wrongly resemble generic herbs and yellow daisies. Input 2: STYLE REFERENCE, the existing Sylvain illustration. Preserve the warm ink-drawn cartoon art direction, confident dark outlines, cream, teal, warm apricot, mustard accents and subtly printed texture.\nPrimary request: redesign the atlas as NINE unmistakably CBD/hemp-themed studio illustrations, exactly THREE COLUMNS and THREE ROWS on a SQUARE canvas. Each cell is square; keep generous fully transparent padding of 15 percent on all four sides of EVERY cell. Center each object within its own cell. Same visual weight. No cropped objects and no overlap between cells. Intended CSS background-size is 300% 300%.\nBotany is essential: use real-looking illustrated hemp/cannabis palmate leaves with 5 to 7 LONG NARROW pointed serrated fingers, compact green and purple cannabis flower buds, orange pistils and tiny pale resin trichomes. No yellow flowers, daisies, generic kitchen herbs, olive branches, ordinary broad leaves, lavender, roses or tourism postcards. Every vignette must visibly feature CBD flowers or clearly recognizable cannabis leaves. Only permitted readable label: \"CBD\", all other text can be short abstract ink rules. No medical imagery or promises. No consumption accessories.\nROW 1, COLUMN 1: basic product photo. Modest vintage camera beside a clear small glass jar filled with recognizably chunky CBD flower buds and a single loose cannabis bud on a cream card, small reflector behind. Flowers are prominent.\nROW 1, COLUMN 2: basic brand identity. Open cream sketchbook with a bold seven-point cannabis leaf logo, teal/apricot palette swatches and a small kraft flower pouch labeled CBD with a transparent window containing green buds.\nROW 1, COLUMN 3: detailed CBD variety sheet. Cream clipboard with a large close botanical drawing of a dense cannabis bud and its narrow serrated leaf, little pictograms for aroma, a prominent magnifying loupe showing resin trichome dots, and a small real illustrated bud beside it.\nROW 2, COLUMN 1: advanced product photo. Camera and two compact softbox lights arranged around a clear jar of CBD flower buds and a teal CBD pouch on a short cream photography backdrop. No flower blossoms.\nROW 2, COLUMN 2: complete hemp brand kit. Upright brand board with seven-point cannabis leaf seal, palette swatches, CBD printed pouch and matching transparent flower jar. Clear cannabis branding throughout.\nROW 2, COLUMN 3: CBD collection stories. Open illustrated collection notebook: the left page shows THREE distinct chunky green/purple CBD buds with narrow cannabis leaf silhouettes and short variety caption rules; right page contains a storyboard of a cannabis flower closeup then a labeled jar and branded CBD pouch. Cannabis flowers dominate the pages; a chunky pen rests beside it. No scenery or generic garden flowers.\nROW 3, COLUMN 1: premium collection photography. Camera with macro lens, a hero purple-green CBD bud on a low cream pedestal and two small photo prints of cannabis flowers with visible resin texture, small reflector behind.\nROW 3, COLUMN 2: signature hemp brand. Refined deep teal presentation box with gold seven-point cannabis leaf seal, matching CBD jar filled with chunky buds, CBD pouch and cream hang tag with cannabis leaf mark.\nROW 3, COLUMN 3: editorial direction for CBD. Refined open art book/catalogue about CBD varieties: a full-page resinous cannabis bud portrait, a coordinated page of flower sample closeups and a matching teal cover with cannabis leaf seal behind. Small reference jar of actual CBD flower buds alongside. Visually more elaborate than row 2 but legible small.\nBackground MUST be truly transparent alpha, including all gutters, without black fill, colored haze, ambient glow, checkerboard or opaque ground. Individual objects only, no people, furniture, panel frames, title text, grid lines or borders. Flat illustrated light with modest ink shading, not photorealistic or 3D. All nine scenes belong to the exact same illustrated CBD shop world.",
+    "Use case: precise-object-edit.\nEdit this CBD sprite atlas only to fix spacing for CSS slicing. Preserve exactly these nine illustrations, their CBD buds, trichomes, cannabis leaves, labels, colors and ink style. Keep square dimensions 1254 by 1254 pixels, three columns by three rows, each cell 418 by 418 pixels.\nShrink EACH entire vignette to 74% of its current size, including every leaf, pen, tripod, book and loupe; then center the nine vignettes at (209,209), (627,209), (1045,209), (209,627), (627,627), (1045,627), (209,1045), (627,1045), (1045,1045). Preserve the exact cell order. This means each complete vignette fits inside a 306 by 306 pixel region with at least 56 pixels of entirely transparent padding on each of its four sides. Every cell must have clean transparent gutters. In particular, no leaves or camera equipment may reach into a neighboring square.\nDo not redraw or add anything; no frames, grid, new plants, extra text or background. Preserve true transparent alpha. No colored haze, shadows in gutters, black fill or checkerboard. Equal visual scale, unclipped silhouettes. These are cutout game sprites, not a poster."
+  ]
+}

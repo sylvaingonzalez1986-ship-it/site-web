@@ -75,13 +75,25 @@
 .complete { flex: 1; padding: 20px 0; text-align: center; }
 .complete > svg { margin: auto; color: #172923; }
 .complete p { color: #172923; font-size: 13px; line-height: 1.6; }
-.receipt { display: flex; align-items: center; gap: 14px; padding: 20px; margin-bottom: 22px; background: #fffaf0; border: 2px solid #172923; border-radius: 18px; box-shadow: 3px 4px 0 #172923; color: #172923; }
-.receipt > svg { color: #536058; flex-shrink: 0; }
+.receipt { display: grid; gap: 16px; min-width: 0; padding: 20px; margin-bottom: 22px; background: #fffaf0; border: 2px solid #172923; border-radius: 18px; box-shadow: 3px 4px 0 #172923; color: #172923; }
+.receiptHeader { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.receiptHeader > div { min-width: 0; }
+.receiptHeader > img { flex-shrink: 0; object-fit: contain; }
+.receiptEyebrow { display: block; margin-bottom: 5px; color: #076c61; font-size: 10px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
+.receipt[data-receipt-fresh] { border-top: 5px solid #076c61; }
+.receipt[data-receipt-fresh] .receiptHeader > :first-child { animation: mission-reward-arrives 400ms ease-out both; }
+@keyframes mission-reward-arrives { from { opacity: 0; transform: translateY(6px) scale(.94); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .receipt[data-receipt-fresh] .receiptHeader > :first-child { animation: none; } }
+.receipt h2 { margin: 0; font-size: 18px; line-height: 1.3; overflow-wrap: anywhere; }
+.receipt h3 { margin: 4px 0 0; font-size: 17px; line-height: 1.4; overflow-wrap: anywhere; }
+.continuation { display: grid; gap: 14px; min-width: 0; padding-top: 16px; border-top: 1px solid #17292340; }
+.continuationHeading > small { color: #076c61; font-size: 11px; font-weight: 800; }
+.continuationReward { display: flex; align-items: center; gap: 8px; }
+.continuationReward > svg { flex-shrink: 0; }
 .receipt p { margin: 6px 0 0; font-size: 12px; line-height: 1.6; color: #536058; }
 .receipt strong { font-size: 14px; }
-.receipt > img { flex-shrink: 0; object-fit: contain; }
 .receipt button, .footer > button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 14px; background: #fffaf0; color: #172923; border: 2px solid #172923; border-radius: 11px; font-size: 12px; font-weight: 900; box-shadow: 2px 3px 0 #172923; }
-.receipt button { margin-left: auto; flex-shrink: 0; }
+.receipt button { justify-self: start; max-width: 100%; }
 .error { margin: 16px 0; padding: 14px; border-left: 3px solid #172923; background: #f7ded1; color: #8a3427; font-size: 13px; line-height: 1.6; }
 .error button, .error a { color: inherit; text-decoration: underline; background: transparent; border: 0; min-height: 44px; }
 .loading { padding: 50px 0; text-align: center; color: #536058; }
@@ -94,7 +106,7 @@
   .tracks { grid-template-columns: 1fr; }
   .art { height: 150px; }
   .description { min-height: 0; }
-  .receipt { flex-wrap: wrap; }
+  .receipt { padding: 16px; }
   .receipt button { width: 100%; margin: 0; }
   .toolbar { align-items: flex-start; }
   .toolbar > span { max-width: 180px; line-height: 1.5; }

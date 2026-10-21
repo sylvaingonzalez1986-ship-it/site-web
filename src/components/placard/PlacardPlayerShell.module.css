@@ -17,9 +17,13 @@
 .sectionHeader { position: sticky; top: 0; z-index: 90; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: max(8px, env(safe-area-inset-top)) 16px 8px; border-bottom: 2px solid #172923; background: #fff1d6; }
 .sectionHeader button { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; padding: 9px 12px; border: 2px solid #172923; border-radius: 12px; background: var(--game-surface-warm); box-shadow: 2px 2px 0 #172923; font-size: 12px; font-weight: 750; color: #172923; min-height: 44px; cursor: pointer; }
 .sectionHeader h1 { min-width: 0; margin: 0; color: #172923; font-size: 15px; font-weight: 750; outline: none; overflow-wrap: anywhere; }
-.localNav { display: flex; flex-wrap: wrap; gap: 8px; padding: 14px 24px; }
-.localNav button, .localNav span { display: flex; align-items: center; padding: 10px 14px; min-height: 44px; background: #fffaf0; border: 2px solid #172923; border-radius: 13px; box-shadow: 2px 2px 0 #172923; font-size: 12px; font-weight: 700; color: #172923; }
-.localNav [aria-current] { background: #149b8b; color: #172923; }
+.sectionHeader .soundButton { margin-left: auto; background: #fffaf0; }
+.sectionHeader .soundButton[aria-pressed=true] { background: #efc451; }
+.soundButton svg { flex-shrink: 0; }
+@media (max-width: 480px) {
+  .sectionHeader .soundButton { justify-content: center; width: 44px; min-width: 44px; padding: 8px; }
+  .soundButton span { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
 .skipLink { position: absolute; left: 240px; top: 8px; z-index: 400; padding: 12px; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; color: #172923; transform: translateY(-250%); }
 .skipLink:focus { transform: none; }
 .mobileNav { display: none; }
@@ -36,7 +40,7 @@
 @media (hover: hover) {
   .navGroup button:hover { border-color: #172923; background: var(--game-surface-warm); box-shadow: 3px 3px 0 #172923; }
   .navGroup button[aria-current=page]:hover { background: #efc451; }
-  .sectionHeader button:hover, .localNav button:hover, .drawerClose:hover { background: #efc451; }
+  .sectionHeader button:hover, .drawerClose:hover { background: #efc451; }
 }
 @media (max-width: 1000px) {
   .shell { --placard-bottom-nav-height: calc(68px + env(safe-area-inset-bottom, 0px)); display: block; padding-bottom: var(--placard-bottom-nav-height); }
@@ -47,7 +51,6 @@
   .mobileNav [aria-current], .mobileNav [aria-expanded=true] { color: #172923; border-color: #172923; background: #efc451; box-shadow: 2px 2px 0 #172923; }
   .sectionHeader { padding-inline: 12px; gap: 8px; }
   .sectionHeader h1 { font-size: 14px; }
-  .localNav { padding: 12px; }
   .skipLink { left: 12px; }
 }
 .section[data-placard-view] { background: #fff1d6; color: #172923; }

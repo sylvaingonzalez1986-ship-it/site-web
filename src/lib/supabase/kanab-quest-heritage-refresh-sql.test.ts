@@ -14,6 +14,10 @@ const sql = (name: string) => readFileSync(`supabase/migrations/${name}`, "utf8"
 let db: PGlite;
 let drawsBefore: unknown[];
 let cultureBefore: unknown[];
+let otherDefinitionsBefore: unknown[];
+let otherEffectsBefore: unknown[];
+let otherDefinitionsAfter: unknown[];
+let otherEffectsAfter: unknown[];
 
 beforeAll(async () => {
   db = new PGlite();
@@ -99,6 +103,15 @@ beforeAll(async () => {
   drawsBefore = (await db.query("SELECT * FROM public.kq_heritage_draws ORDER BY card_code")).rows;
   cultureBefore = (await db.query("SELECT * FROM public.kq_runs")).rows;
   await db.exec(sql("20261011160000_kq_heritage_culture_refresh.sql"));
+  await db.query(`INSERT INTO public.kq_heritage_card_definitions(
+    code,name,timing,effect_code,description,advantage,drawback,image_url,is_active,auto_managed
+  ) VALUES('HERITAGE-901','Nom personnalisé','once-per-run','opening-hand-reserve',
+    'Ancien texte personnalisé','Ancien avantage','Usage personnalisé','/custom/heritage.webp',FALSE,FALSE)`);
+  otherDefinitionsBefore = (await db.query("SELECT * FROM public.kq_heritage_card_definitions WHERE effect_code<>'opening-hand-reserve' ORDER BY code")).rows;
+  otherEffectsBefore = (await db.query("SELECT * FROM public.kq_heritage_effect_catalog WHERE effect_code<>'opening-hand-reserve' ORDER BY effect_code")).rows;
+  await db.exec(sql("20261020000300_kq_ten_card_hand.sql"));
+  otherDefinitionsAfter = (await db.query("SELECT * FROM public.kq_heritage_card_definitions WHERE effect_code<>'opening-hand-reserve' ORDER BY code")).rows;
+  otherEffectsAfter = (await db.query("SELECT * FROM public.kq_heritage_effect_catalog WHERE effect_code<>'opening-hand-reserve' ORDER BY effect_code")).rows;
 }, 30000);
 
 afterAll(async () => { await db?.close(); });
@@ -169,6 +182,34 @@ describe("Heritage culture refresh migration", () => {
     expect((await start("HERITAGE-002", 13, 2, "HH2026-001")).xp).toBe(13);
     expect((await start(null, 9, 2, "HH2026-001")).xp).toBe(9);
     await db.query("DELETE FROM public.arena_chanvrier_profiles WHERE user_id=$1", [owner]);
+  });
+
+  it("aligns only the enlarged-hand description and preserves custom editorial fields", async () => {
+    expect(otherDefinitionsAfter).toEqual(otherDefinitionsBefore);
+    expect(otherEffectsAfter).toEqual(otherEffectsBefore);
+    const opening = KQ_HERITAGE_EFFECT_TEMPLATES.find(template => template.effect === "opening-hand-reserve")!;
+    expect((await db.query("SELECT name,description,advantage,drawback,image_url,is_active,auto_managed FROM public.kq_heritage_card_definitions WHERE code='HERITAGE-901'")).rows).toEqual([{
+      name: "Nom personnalisé", description: opening.description, advantage: opening.description,
+      drawback: "Usage personnalisé", image_url: "/custom/heritage.webp", is_active: false, auto_managed: false,
+    }]);
+    // Even the canonical producer may have editorial art; only the exact old
+    // stock URL is eligible for the versioned, newly typeset front.
+    const canonical = producerHeritages.cards.find(card => card.code === "HERITAGE-003")!;
+    await db.query("UPDATE public.kq_heritage_card_definitions SET image_url='/custom/terracanna.webp' WHERE code='HERITAGE-003'");
+    await db.exec(sql("20261020000300_kq_ten_card_hand.sql"));
+    expect((await db.query("SELECT image_url FROM public.kq_heritage_card_definitions WHERE code='HERITAGE-003'")).rows).toEqual([{ image_url: "/custom/terracanna.webp" }]);
+    await db.query("UPDATE public.kq_heritage_card_definitions SET image_url=$1 WHERE code='HERITAGE-003'", [canonical.frontUrl]);
+  });
+
+  it("reapplies the editorial alignment without rewriting cards, timestamps or histories", async () => {
+    const definitions = (await db.query("SELECT * FROM public.kq_heritage_card_definitions ORDER BY code")).rows;
+    const effects = (await db.query("SELECT * FROM public.kq_heritage_effect_catalog ORDER BY effect_code")).rows;
+    const runs = (await db.query("SELECT * FROM public.kq_runs ORDER BY id")).rows;
+    await db.exec(sql("20261020000300_kq_ten_card_hand.sql"));
+    expect((await db.query("SELECT * FROM public.kq_heritage_card_definitions ORDER BY code")).rows).toEqual(definitions);
+    expect((await db.query("SELECT * FROM public.kq_heritage_effect_catalog ORDER BY effect_code")).rows).toEqual(effects);
+    expect((await db.query("SELECT * FROM public.kq_runs ORDER BY id")).rows).toEqual(runs);
+    expect((await db.query("SELECT * FROM public.kq_heritage_draws ORDER BY card_code")).rows).toEqual(drawsBefore);
   });
 
   it("retains service-only execution of the atomic start RPC", async () => {

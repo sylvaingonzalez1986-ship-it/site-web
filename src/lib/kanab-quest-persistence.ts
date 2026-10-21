@@ -15,7 +15,6 @@ import { isKqCampaign } from "./kanab-quest-campaign";
 import { getKqHarvestStageCounts, KQ_HARVEST_TIERS_V2, KQ_LEGENDARY_REQUIREMENTS } from "./kanab-quest-harvest-tiers";
 
 type SaveEnvelope<T> = { version: 1; payload: T };
-const KQ_LEGACY_HAND_SIZE = 10;
 
 const isRecord = (value: unknown): value is Record<string, unknown> => typeof value === "object" && value !== null;
 const isFiniteNumber = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value);
@@ -137,7 +136,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
     if (state.completedAt !== undefined && (typeof state.completedAt !== "string" || Number.isNaN(Date.parse(state.completedAt)))) return null;
     if (!Array.isArray(state.deckCodes) || state.deckCodes.some((code) => typeof code !== "string" || !knownCards.has(code))) return null;
     if (healthRules && state.deckCodes.some(code => isKqCareReplacedCard(String(code)))) return null;
-    if (state.handCodes !== undefined && (!Array.isArray(state.handCodes) || state.handCodes.length > KQ_LEGACY_HAND_SIZE || state.handCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
+    if (state.handCodes !== undefined && (!Array.isArray(state.handCodes) || state.handCodes.length > KQ_HAND_SIZE || state.handCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
     if (state.heritageReserveCodes !== undefined && (!Array.isArray(state.heritageReserveCodes) || state.heritageReserveCodes.length > KQ_HERITAGE_RESERVE_SIZE || state.heritageReserveCodes.some((code) => typeof code !== "string" || !knownCards.has(code)))) return null;
     if (state.heritageCode !== undefined) {
       if (typeof state.heritageCode !== "string" || !/^HERITAGE-[0-9]{3,6}$/.test(state.heritageCode)) return null;
@@ -252,9 +251,6 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
       collectionCodes: state.collectionCodes.filter((code) => !isKqRetiredSubstrate(String(code))),
       playedThisStage: state.playedThisStage.filter((code) => !isKqRetiredSubstrate(String(code))),
       usedCards: state.usedCards.filter((code) => !isKqRetiredSubstrate(String(code))),
-      ...(Array.isArray(state.handCodes) && state.handCodes.length > KQ_HAND_SIZE
-        ? { handCodes: state.handCodes.slice(0, KQ_HAND_SIZE) }
-        : {}),
     } as unknown as KqGameState;
   } catch {
     return null;

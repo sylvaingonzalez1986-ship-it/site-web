@@ -1,9 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { applyKqOperationsRequest, createKqOperationsLesson, getKqOperationsCommerce, getKqOperationsProgress, getKqOperationsStorage, type KqOperationsLessonState } from './kanab-quest-operations-lesson';
 import { createKqOperationsSession, restoreKqOperationsLesson } from './kanab-quest-operations-session';
-import { estimateKqOnlineOffer } from './kanab-quest-online';
+import { estimateKqOnlineOffer, KQ_ONLINE_SITE_TIERS, getKqOnlineUpgradeCost, type KqOnlineSiteTier } from './kanab-quest-online';
+import { KQ_GAME_MONTH_MS } from './kanab-quest-business';
 import { KQ_BUDDIE_FLAVOR_PROFILES } from './kanab-quest-buddie-flavors';
 import { getKqCustomerDemandFlavorMatch, KQ_CUSTOMER_DEMAND_PERIOD_MS } from './kanab-quest-customer-demand';
+import { estimateKqMerchOffer, KQ_MERCH_PRODUCTS } from './kanab-quest-merch';
+import { getKqStudioLevels, KQ_STUDIO_LEVELS, type KqStudioTrack } from './kanab-quest-studio';
 
 const action = (command: string, payload: Record<string, unknown>, requestKey?: string) => ({ path: '/api/arena/placard/commerce', method: 'POST', body: { action: 'online', command, payload, requestKey } });
 const run = (state: KqOperationsLessonState, command: string, payload: Record<string, unknown>, requestKey?: string) => applyKqOperationsRequest(state, action(command, payload, requestKey)).state;
@@ -274,6 +277,104 @@ describe('isolated online shop exercise', () => {
     expect(state.trial.commerce.business!.shop.renew).toBe(true);
   });
 
+  it('progresses through all six levels, consuming only each differential and the required upgrades', () => {
+    let state = prepare();
+    state.trial.commerce.cashCents = 2_100_000;
+    const stocks = structuredClone(state.trial.commerce.stocks);
+    for (const target of KQ_ONLINE_SITE_TIERS.slice(1)) {
+      let online = state.trial.commerce.online!;
+      online.stats.orders = target.minimumOrders;
+      online.confidence = target.minimumConfidence;
+      online.followers = target.minimumFollowers;
+      for (const code of target.requiredUpgrades) if (!state.trial.commerce.online!.upgrades[code]) {
+        state = run(state, 'buy-upgrade', { code });
+      }
+      online = state.trial.commerce.online!;
+      const stats = structuredClone(online.stats);
+      const cashBefore = state.trial.commerce.cashCents;
+      const price = getKqOnlineUpgradeCost(online.site.tier, target.code);
+      state = run(state, 'upgrade-site', { tier: target.code }, `level-${target.code}`);
+      expect(state.trial.commerce.cashCents).toBe(cashBefore - price);
+      expect(state.trial.commerce.online!.site).toMatchObject({ tier: target.code, active: true, renew: true,
+        paidUntil: new Date(state.trial.clock + KQ_GAME_MONTH_MS).toISOString(), maxLevel: 6 });
+      expect(state.trial.commerce.business!.shop).toMatchObject({ tier: target.code, monthlyCents: target.monthlyCents, active: true, renew: true });
+      expect(state.trial.commerce.online!.stats).toEqual(stats);
+      expect(state.trial.commerce.online!.confidence).toBe(target.minimumConfidence);
+      expect(state.trial.commerce.online!.followers).toBe(target.minimumFollowers);
+      expect(state.trial.commerce.stocks).toEqual(stocks);
+      expect(run(state, 'upgrade-site', { tier: target.code }, `level-${target.code}`)).toBe(state);
+    }
+    expect(state.trial.commerce.cashCents).toBe(0);
+    expect(state.trial.commerce.online!.upgrades).toEqual({ photography: true, branding: true });
+    expect(state.trial.commerce.online!.site.tier).toBe('flagship');
+  });
+
+  it.each(['basic', 'pro', 'signature', 'flagship'] as const)('rejects a return, repurchase or skipped level toward %s atomically', target => {
+    const state = prepare();
+    const online = state.trial.commerce.online!;
+    online.site.tier = 'pro'; online.stats.orders = 1000; online.confidence = 100; online.followers = 1000;
+    online.upgrades = { photography: true, branding: true };
+    state.trial.commerce.cashCents = 10_000_000;
+    const before = structuredClone(state);
+    expect(() => run(state, 'upgrade-site', { tier: target })).toThrow();
+    expect(state).toEqual(before);
+  });
+
+  it.each([
+    ['orders', 'studio'], ['confidence', 'studio'], ['followers', 'studio'],
+    ['photography', 'studio'], ['branding', 'signature'], ['cash', 'studio'], ['availability', 'studio'],
+  ] as const)('rejects the %s obstacle for %s before spending or changing the site', (obstacle, target) => {
+    const state = prepare();
+    const online = state.trial.commerce.online!;
+    online.site.tier = target === 'signature' ? 'studio' : 'pro';
+    online.stats.orders = 350; online.confidence = 88; online.followers = 300;
+    online.upgrades = { photography: true, branding: true };
+    state.trial.commerce.cashCents = 1_000_000;
+    if (obstacle === 'orders') online.stats.orders = 79;
+    if (obstacle === 'confidence') online.confidence = 69;
+    if (obstacle === 'followers') online.followers = 49;
+    if (obstacle === 'photography' || obstacle === 'branding') online.upgrades[obstacle] = false;
+    if (obstacle === 'cash') state.trial.commerce.cashCents = 349999;
+    if (obstacle === 'availability') delete online.site.maxLevel;
+    const before = structuredClone(state);
+    expect(() => run(state, 'upgrade-site', { tier: target })).toThrow();
+    expect(state).toEqual(before);
+  });
+
+  it.each([null, -KQ_GAME_MONTH_MS, 2 * KQ_GAME_MONTH_MS])('keeps the more distant paid hosting date when the previous offset is %s', offset => {
+    const state = prepare();
+    const online = state.trial.commerce.online!;
+    online.site.tier = 'pro'; online.site.active = false; online.site.renew = false;
+    online.site.paidUntil = offset === null ? null : new Date(state.trial.clock + offset).toISOString();
+    online.stats.orders = 80; online.confidence = 70; online.followers = 50; online.upgrades.photography = true;
+    state.trial.commerce.cashCents = 350000;
+    const next = run(state, 'upgrade-site', { tier: 'studio' });
+    const expectedDate = new Date(state.trial.clock + Math.max(KQ_GAME_MONTH_MS, offset ?? 0)).toISOString();
+    expect(next.trial.commerce.online!.site).toMatchObject({ tier: 'studio', active: true, renew: true, paidUntil: expectedDate });
+    expect(next.trial.commerce.business!.shop).toMatchObject({ tier: 'studio', active: true, renew: true, paidUntil: expectedDate, monthlyCents: 11000 });
+    expect(next.trial.commerce.cashCents).toBe(0);
+  });
+
+  it('renews a flagship shop at its own hosting tariff without inventing orders', () => {
+    let state = prepare();
+    const online = state.trial.commerce.online!;
+    online.site = { ...online.site, tier: 'flagship', renew: true, paidUntil: new Date(state.trial.clock + 1_800_000).toISOString() };
+    state.trial.commerce.cashCents = 28000;
+    const previousPaidUntil = Date.parse(online.site.paidUntil!);
+    state = run(state, 'advance-online-time', { hours: 1 });
+    expect(state.trial.commerce.cashCents).toBe(0);
+    expect(state.trial.commerce.online!.stats.orders).toBe(0);
+    expect(state.trial.commerce.online!.site).toMatchObject({ tier: 'flagship', active: true,
+      paidUntil: new Date(previousPaidUntil + KQ_GAME_MONTH_MS).toISOString() });
+    expect(state.trial.commerce.business!.shop).toMatchObject({ tier: 'flagship', monthlyCents: 28000 });
+  });
+
+  it('rejects an unknown tier without resetting to a free basic shop', () => {
+    const state = prepare(), before = structuredClone(state);
+    expect(() => run(state, 'upgrade-site', { tier: 'other' as KqOnlineSiteTier })).toThrow('inconnue');
+    expect(state).toEqual(before);
+  });
+
   it('makes an expensive disappointing purchase lower confidence and lose clients', () => {
     let state = listed();
     state.trial.commerce.clients = 100;
@@ -316,7 +417,7 @@ describe('isolated online shop exercise', () => {
     expect(() => run(immature, 'create-listing', payload)).toThrow('curing');
     const short = structuredClone(state); short.trial.commerce.stocks[0].remainingUnits = 100;
     expect(() => run(short, 'create-listing', payload)).toThrow('vrac');
-    expect(() => run(state, 'upgrade-site', { tier: 'pro' })).toThrow('Développe');
+    expect(() => run(state, 'upgrade-site', { tier: 'pro' })).toThrow('Passe d’abord');
     expect(() => run(state, 'advance-online-time', { hours: 25 })).toThrow('invalide');
   });
 
@@ -332,5 +433,347 @@ describe('isolated online shop exercise', () => {
     expect(session.getSnapshot().trial.clock).toBe(before + 86_400_000);
     expect(restoreKqOperationsLesson('market', { version: 1, lesson: 'market', actions: commands }).state).toEqual(session.getSnapshot());
     expect(network).not.toHaveBeenCalled();
+  });
+});
+
+function merchReady() {
+  const state = prepare();
+  const online = state.trial.commerce.online!;
+  online.site.tier = 'studio'; online.site.paidUntil = new Date(state.trial.clock + KQ_GAME_MONTH_MS).toISOString();
+  online.upgrades.branding = true; online.stats.orders = 80; online.confidence = 70;
+  state.trial.commerce.cashCents = 1_000_000;
+  state.trial.electricity = 0;
+  return state;
+}
+
+function merchListed(quantity = 20, priceCents = 400) {
+  let state = run(merchReady(), 'buy-merch-module', { code: 'paper' });
+  state = run(state, 'buy-merch-stock', { code: 'stickers', quantity });
+  return run(state, 'update-merch', { code: 'stickers', priceCents, active: true });
+}
+
+describe('isolated merchandise simulation', () => {
+  it('buys independent modules and prepays manufacturing without publishing or adding sales', () => {
+    const initial = merchReady(), initialCash = initial.trial.commerce.cashCents;
+    let state = run(initial, 'buy-merch-module', { code: 'objects' }, 'objects-once');
+    expect(state.trial.commerce.online!.merch!.modules).toEqual(['objects']);
+    expect(run(state, 'buy-merch-module', { code: 'objects' }, 'objects-once')).toBe(state);
+    expect(() => run(state, 'buy-merch-module', { code: 'objects' })).toThrow('déjà');
+    state = run(state, 'buy-merch-stock', { code: 'mug', quantity: 12 }, 'mugs-once');
+    expect(run(state, 'buy-merch-stock', { code: 'mug', quantity: 12 }, 'mugs-once')).toBe(state);
+    expect(state.trial.commerce.cashCents).toBe(initialCash - 95000 - 12 * 550);
+    expect(state.trial.commerce.online!.merch).toMatchObject({
+      inventory: [{ code: 'mug', quantity: 12, active: false, priceCents: 1600, sold: 0, progress: 0 }],
+      stats: { unitsSold: 0, stockCostCents: 6600, moduleCostCents: 95000 }, recentSales: [],
+    });
+    expect(state.trial.commerce.stocks).toEqual(initial.trial.commerce.stocks);
+    expect(state.trial.commerce.online!.stats).toEqual(initial.trial.commerce.online!.stats);
+  });
+
+  it.each([0, -1, 1.5, '2', NaN, Infinity, 501])('rejects invalid stock quantity %s without spending', quantity => {
+    const state = run(merchReady(), 'buy-merch-module', { code: 'paper' }), before = structuredClone(state);
+    expect(() => run(state, 'buy-merch-stock', { code: 'stickers', quantity })).toThrow();
+    expect(state).toEqual(before);
+  });
+
+  it('rejects locked, absent, underfunded and suspended purchases atomically', () => {
+    const initial = merchReady();
+    expect(() => run(initial, 'buy-merch-stock', { code: 'stickers', quantity: 1 })).toThrow('collection');
+    const old = structuredClone(initial); delete old.trial.commerce.online!.merch;
+    expect(() => run(old, 'buy-merch-module', { code: 'paper' })).toThrow('disponible');
+    expect(() => run(old, 'buy-merch-stock', { code: 'stickers', quantity: 1 })).toThrow('disponible');
+    expect(() => run(old, 'update-merch', { code: 'stickers', priceCents: 400, active: true })).toThrow('disponible');
+    const poor = run(initial, 'buy-merch-module', { code: 'paper' }); poor.trial.commerce.cashCents = 79;
+    const before = structuredClone(poor);
+    expect(() => run(poor, 'buy-merch-stock', { code: 'stickers', quantity: 1 })).toThrow('Budget');
+    expect(poor).toEqual(before);
+    poor.trial.commerce.online!.site.active = false;
+    expect(() => run(poor, 'buy-merch-stock', { code: 'stickers', quantity: 1 })).toThrow('Réactive');
+  });
+
+  it('keeps restocks below 500 units and preserves the current price, publication and fractional progress', () => {
+    let state = merchListed(20, 477);
+    state.trial.commerce.online!.merch!.inventory[0].progress = .45;
+    state = run(state, 'buy-merch-stock', { code: 'stickers', quantity: 480 });
+    expect(state.trial.commerce.online!.merch!.inventory[0]).toMatchObject({ quantity: 500, active: true, priceCents: 477, progress: .45 });
+    expect(() => run(state, 'buy-merch-stock', { code: 'stickers', quantity: 1 })).toThrow('500');
+  });
+
+  it('uses real shelf slots and releases one when an article is paused', () => {
+    let state = merchReady();
+    state.trial.commerce.online!.site.tier = 'improved';
+    state.trial.commerce.online!.merch!.modules = ['paper', 'textile'];
+    for (const code of ['stickers', 'poster', 'tote']) state = run(state, 'buy-merch-stock', { code, quantity: 5 });
+    state = run(state, 'update-merch', { code: 'stickers', priceCents: 400, active: true });
+    state = run(state, 'update-merch', { code: 'poster', priceCents: 1200, active: true });
+    expect(() => run(state, 'update-merch', { code: 'tote', priceCents: 1800, active: true })).toThrow('emplacements');
+    state = run(state, 'update-merch', { code: 'stickers', priceCents: 400, active: false });
+    state = run(state, 'update-merch', { code: 'tote', priceCents: 1800, active: true });
+    expect(state.trial.commerce.online!.merch!.inventory.filter(row => row.active).map(row => row.code)).toEqual(['poster', 'tote']);
+  });
+
+  it('preserves unchanged progress, resets price changes and pauses, and validates publication inputs', () => {
+    let state = merchListed(); state.trial.commerce.online!.merch!.inventory[0].progress = .9;
+    state = run(state, 'update-merch', { code: 'stickers', priceCents: 400, active: true });
+    expect(state.trial.commerce.online!.merch!.inventory[0].progress).toBe(.9);
+    for (const payload of [{ priceCents: 0, active: true }, { priceCents: 400.5, active: true }, { priceCents: 100001, active: true }, { priceCents: 400, active: 'true' }]) {
+      expect(() => run(state, 'update-merch', { code: 'stickers', ...payload })).toThrow();
+    }
+    state = run(state, 'update-merch', { code: 'stickers', priceCents: 500, active: true });
+    expect(state.trial.commerce.online!.merch!.inventory[0].progress).toBe(0);
+    state.trial.commerce.online!.site.active = false; state.trial.commerce.online!.merch!.inventory[0].progress = .5;
+    state = run(state, 'update-merch', { code: 'stickers', priceCents: 500, active: false });
+    expect(state.trial.commerce.online!.merch!.inventory[0].progress).toBe(0);
+    expect(() => run(state, 'update-merch', { code: 'stickers', priceCents: 500, active: true })).toThrow('Réactive');
+  });
+
+  it('sells autonomous merchandise without modifying flower sales, quality, reputation or followers', () => {
+    const initial = merchListed(), initialOnline = initial.trial.commerce.online!;
+    const quote = estimateKqMerchOffer({ online: initialOnline, code: 'stickers', priceCents: 400, reputation: initial.trial.commerce.reputation, clients: initial.trial.commerce.clients });
+    const state = run(initial, 'advance-online-time', { hours: 24 }, 'merch-day');
+    const commerce = state.trial.commerce, online = commerce.online!, merch = online.merch!;
+    expect(merch.stats.unitsSold).toBe(Math.floor(quote.unitsPerDay));
+    expect(merch.stats.unitsSold).toBeGreaterThan(0);
+    expect(merch.inventory[0].quantity + merch.stats.unitsSold).toBe(20);
+    expect(merch.stats.revenueCents).toBe(merch.stats.unitsSold * 400);
+    expect(merch.stats.feesCents).toBe(merch.stats.unitsSold * 10);
+    expect(merch.stats.stockCostCents).toBe(1600);
+    expect(merch.stats.costOfGoodsSoldCents).toBe(merch.stats.unitsSold * 80);
+    const vatCents = commerce.business!.vat.reservedCents - initial.trial.commerce.business!.vat.reservedCents;
+    expect(merch.stats.netRevenueCents).toBe(merch.stats.revenueCents - merch.stats.feesCents - vatCents);
+    expect(commerce.cashCents).toBe(initial.trial.commerce.cashCents + merch.stats.netRevenueCents);
+    expect(online.stats).toEqual(initialOnline.stats); expect(online.recentSales).toEqual([]);
+    expect(online.confidence).toBe(initialOnline.confidence); expect(online.followers).toBe(initialOnline.followers);
+    expect(commerce.reputation).toBe(initial.trial.commerce.reputation); expect(commerce.clients).toBe(initial.trial.commerce.clients);
+    expect(commerce.stocks.map(stock => [stock.remainingUnits, stock.juryScore, stock.repExact])).toEqual(initial.trial.commerce.stocks.map(stock => [stock.remainingUnits, stock.juryScore, stock.repExact]));
+    expect(state.customerDemandUsage).toEqual(initial.customerDemandUsage);
+    expect(run(state, 'advance-online-time', { hours: 24 }, 'merch-day')).toBe(state);
+  });
+
+  it('uses existing VAT and debt collection without charging manufacturing twice', () => {
+    let state = merchListed();
+    const commerce = state.trial.commerce;
+    commerce.business!.vat.salesTtcCents = 10_000_000;
+    state.trial.electricity = 300;
+    const before = commerce.cashCents;
+    state = run(state, 'advance-online-time', { hours: 24 });
+    const result = state.trial.commerce, merch = result.online!.merch!;
+    expect(merch.stats.unitsSold).toBeGreaterThan(0);
+    expect(result.business!.vat.reservedCents).toBeGreaterThan(0);
+    expect(state.trial.electricity).toBeLessThan(300);
+    expect(result.cashCents - before).toBe(merch.stats.netRevenueCents);
+    expect(merch.stats.netRevenueCents).toBe(merch.stats.revenueCents - merch.stats.feesCents - result.business!.vat.reservedCents - (300 - state.trial.electricity));
+    expect(merch.stats.stockCostCents).toBe(1600);
+  });
+
+  it('never oversells, unpublishes an exhausted article and does not transfer old credit to fresh stock', () => {
+    let state = merchListed(1, 1);
+    state.trial.commerce.online!.followers = 5000;
+    state = run(state, 'advance-online-time', { hours: 24 });
+    expect(state.trial.commerce.online!.merch!.inventory[0]).toMatchObject({ quantity: 0, sold: 1, active: false, progress: 0 });
+    expect(() => run(state, 'update-merch', { code: 'stickers', priceCents: 400, active: true })).toThrow('épuisé');
+    const before = state.trial.commerce.online!.merch!.stats.unitsSold;
+    state = run(state, 'buy-merch-stock', { code: 'stickers', quantity: 10 });
+    expect(state.trial.commerce.online!.merch!.inventory[0]).toMatchObject({ active: false, priceCents: 1, progress: 0 });
+    state = run(state, 'advance-online-time', { hours: 24 });
+    expect(state.trial.commerce.online!.merch!.stats.unitsSold).toBe(before);
+  });
+
+  it('cumulates fees across flower and merchandise sales without a negative 1-cent receipt', () => {
+    let state = merchListed(2, 1);
+    const online = state.trial.commerce.online!;
+    online.stats.revenueCents = 19; online.stats.feesCents = 0;
+    online.merch!.inventory[0].progress = .999999;
+    state.trial.commerce.business!.vat.salesTtcCents = 2;
+    const cash = state.trial.commerce.cashCents;
+    state = run(state, 'advance-online-time', { hours: 1 });
+    expect(state.trial.commerce.online!.merch!.recentSales[0]).toMatchObject({ priceCents: 1, netPayoutCents: 0, feesCents: 0 });
+    expect(state.trial.commerce.cashCents).toBe(cash);
+    state.trial.commerce.online!.merch!.inventory[0].progress = .999999;
+    state = run(state, 'advance-online-time', { hours: 1 });
+    expect(state.trial.commerce.online!.merch!.recentSales[0]).toMatchObject({ priceCents: 1, netPayoutCents: 0, feesCents: 1 });
+    expect(state.trial.commerce.online!.merch!.stats.feesCents).toBe(1);
+    expect(state.trial.commerce.cashCents).toBe(cash);
+  });
+
+  it('does not accrue demand while inactive, paused or unreasonably priced', () => {
+    for (const reason of ['inactive', 'paused', 'price']) {
+      const initial = merchListed(20, reason === 'price' ? 1000 : 400);
+      if (reason === 'inactive') initial.trial.commerce.online!.site.active = false;
+      if (reason === 'paused') initial.trial.commerce.online!.merch!.inventory[0].active = false;
+      const later = run(initial, 'advance-online-time', { hours: 24 });
+      expect(later.trial.commerce.online!.merch!.inventory[0].progress).toBe(0);
+      expect(later.trial.commerce.online!.merch!.stats.unitsSold).toBe(0);
+    }
+  });
+
+  it('lets a merch receipt before the deadline pay the next hosting period', () => {
+    let state = merchListed();
+    const online = state.trial.commerce.online!;
+    const paidUntil = state.trial.clock + 30 * 60000;
+    online.site.paidUntil = new Date(paidUntil).toISOString(); online.site.renew = true;
+    state.trial.commerce.cashCents = 10900;
+    const rate = estimateKqMerchOffer({ online, code: 'stickers', priceCents: 400, reputation: state.trial.commerce.reputation, clients: state.trial.commerce.clients }).unitsPerDay;
+    online.merch!.inventory[0].progress = 1 - rate * (20 / 60) / 24;
+    state = run(state, 'advance-online-time', { hours: 1 });
+    expect(state.trial.commerce.online!.site.active).toBe(true);
+    expect(Date.parse(state.trial.commerce.online!.site.paidUntil!)).toBe(paidUntil + KQ_GAME_MONTH_MS);
+    expect(Date.parse(state.trial.commerce.online!.merch!.recentSales[0].soldAt)).toBeLessThan(paidUntil);
+    expect(state.trial.commerce.cashCents).toBeLessThan(1000);
+  });
+
+  it('suspends hosting before a sale that lands exactly on its unpaid deadline', () => {
+    let state = merchListed();
+    const online = state.trial.commerce.online!;
+    online.site.paidUntil = new Date(state.trial.clock + 30 * 60000).toISOString(); online.site.renew = false;
+    const rate = estimateKqMerchOffer({ online, code: 'stickers', priceCents: 400, reputation: state.trial.commerce.reputation, clients: state.trial.commerce.clients }).unitsPerDay;
+    online.merch!.inventory[0].progress = 1 - rate * .5 / 24;
+    state = run(state, 'advance-online-time', { hours: 1 });
+    expect(state.trial.commerce.online!.site.active).toBe(false);
+    expect(state.trial.commerce.online!.merch!.stats.unitsSold).toBe(0);
+    expect(state.trial.commerce.online!.merch!.inventory[0].quantity).toBe(20);
+  });
+
+  it('never settles a new article backwards or consumes a future settlement interval twice', () => {
+    let state = run(merchReady(), 'advance-online-time', { hours: 24 });
+    state = run(state, 'buy-merch-module', { code: 'paper' });
+    state = run(state, 'buy-merch-stock', { code: 'stickers', quantity: 20 });
+    state = run(state, 'update-merch', { code: 'stickers', priceCents: 400, active: true });
+    expect(state.trial.commerce.online!.merch!.stats.unitsSold).toBe(0);
+    const purchasedAt = state.trial.clock;
+    state.trial.commerce.online!.settledUntil = new Date(purchasedAt + 2 * 3600000).toISOString();
+    state = run(state, 'advance-online-time', { hours: 2 });
+    expect(state.trial.commerce.online!.merch!.inventory[0].progress).toBe(0);
+    expect(Date.parse(state.trial.commerce.online!.settledUntil)).toBe(purchasedAt + 2 * 3600000);
+    state = run(state, 'advance-online-time', { hours: 24 });
+    expect(state.trial.commerce.online!.merch!.recentSales.every(sale => Date.parse(sale.soldAt) > purchasedAt + 2 * 3600000)).toBe(true);
+  });
+
+  it('shares the current audience across active references instead of multiplying it', () => {
+    let state = merchListed();
+    state = run(state, 'buy-merch-stock', { code: 'poster', quantity: 20 });
+    state = run(state, 'update-merch', { code: 'poster', priceCents: 1200, active: true });
+    const initial = structuredClone(state);
+    state = run(state, 'advance-online-time', { hours: 24 });
+    const rows = state.trial.commerce.online!.merch!.inventory;
+    for (const row of rows) {
+      const expected = estimateKqMerchOffer({ online: initial.trial.commerce.online!, code: row.code, priceCents: row.priceCents,
+        reputation: initial.trial.commerce.reputation, clients: initial.trial.commerce.clients, activeProductCount: 2 }).unitsPerDay;
+      expect(row.sold + row.progress).toBeCloseTo(expected, 8);
+    }
+    expect(KQ_MERCH_PRODUCTS.length).toBe(6);
+  });
+});
+
+function studioReady() {
+  const state = merchReady(), online = state.trial.commerce.online!;
+  state.trial.commerce.cashCents = 2_000_000;
+  online.upgrades = { photography: false, branding: false };
+  online.site.tier = 'flagship'; online.stats.orders = 350; online.confidence = 90;
+  return state;
+}
+
+describe('isolated creative studio purchases', () => {
+  it('buys all nine steps at their incremental costs and preserves sales, stock and audience', () => {
+    const initial = studioReady(); let state = initial, total = 0;
+    const sequence: Array<[KqStudioTrack, number]> = [['photography', 1], ['branding', 1], ['editorial', 1],
+      ['photography', 2], ['branding', 2], ['editorial', 2], ['photography', 3], ['branding', 3], ['editorial', 3]];
+    for (const [track, level] of sequence) {
+      const cost = KQ_STUDIO_LEVELS.find(item => item.track === track && item.level === level)!.costCents;
+      state = run(state, 'buy-studio-level', { track, level, costCents: 1 }, `${track}-${level}`);
+      total += cost;
+      expect(state.trial.commerce.cashCents).toBe(initial.trial.commerce.cashCents - total);
+      expect(getKqStudioLevels(state.trial.commerce.online!)[track]).toBe(level);
+      expect(run(state, 'buy-studio-level', { track, level, costCents: 1 }, `${track}-${level}`)).toBe(state);
+      expect(() => run(state, 'buy-studio-level', { track, level })).toThrow('déjà');
+    }
+    const online = state.trial.commerce.online!;
+    expect(online.studio!.levels).toEqual({ photography: 3, branding: 3, editorial: 3 });
+    expect(online.upgrades).toEqual({ photography: true, branding: true });
+    expect(online.stats).toEqual(initial.trial.commerce.online!.stats);
+    expect(online.followers).toBe(initial.trial.commerce.online!.followers);
+    expect(online.confidence).toBe(initial.trial.commerce.online!.confidence);
+    expect(online.merch).toEqual(initial.trial.commerce.online!.merch);
+    expect(state.trial.commerce.stocks).toEqual(initial.trial.commerce.stocks);
+    expect(state.trial.clock).toBe(initial.trial.clock);
+  });
+
+  it('retains old purchases and advances their tracks from level one without paying again', () => {
+    let state = studioReady();
+    state = run(state, 'buy-upgrade', { code: 'photography' });
+    state = run(state, 'buy-upgrade', { code: 'branding' });
+    expect(state.trial.commerce.online!.studio!.levels).toEqual({ photography: 1, branding: 1, editorial: 0 });
+    const cash = state.trial.commerce.cashCents;
+    state = run(state, 'buy-studio-level', { track: 'photography', level: 2 });
+    expect(state.trial.commerce.cashCents).toBe(cash - 55000);
+    expect(() => run(state, 'buy-upgrade', { code: 'photography' })).toThrow('déjà');
+    expect(state.trial.commerce.online!.studio!.levels.photography).toBe(2);
+  });
+
+  it.each(['legacy', 'computer', 'created', 'inactive', 'site-level', 'orders', 'confidence', 'cash', 'sequence', 'unknown'])('rejects an invalid %s purchase atomically', reason => {
+    const state = studioReady(), online = state.trial.commerce.online!;
+    online.studio!.levels.photography = 1;
+    let track = 'photography', level = 2;
+    if (reason === 'legacy') delete online.studio;
+    if (reason === 'computer') state.trial.commerce.computerOwned = false;
+    if (reason === 'created') online.site.createdAt = null;
+    if (reason === 'inactive') online.site.active = false;
+    if (reason === 'site-level') online.site.tier = 'basic';
+    if (reason === 'orders') online.stats.orders = 14;
+    if (reason === 'confidence') online.confidence = 54;
+    if (reason === 'cash') state.trial.commerce.cashCents = 54999;
+    if (reason === 'sequence') level = 3;
+    if (reason === 'unknown') track = 'unknown';
+    const before = structuredClone(state);
+    expect(() => run(state, 'buy-studio-level', { track, level })).toThrow();
+    expect(state).toEqual(before);
+  });
+
+  it('blocks new commands on old snapshots while retaining the original first purchases', () => {
+    let state = studioReady(); delete state.trial.commerce.online!.studio;
+    expect(() => run(state, 'buy-studio-level', { track: 'photography', level: 1 })).toThrow('disponible');
+    state = run(state, 'buy-upgrade', { code: 'photography' });
+    state = run(state, 'buy-upgrade', { code: 'branding' });
+    expect(getKqStudioLevels(state.trial.commerce.online!)).toEqual({ photography: 1, branding: 1, editorial: 0 });
+    expect(() => run(state, 'choose-studio-style', { style: 'clear' })).toThrow('disponible');
+    expect(state.trial.commerce.online!.studio).toBeUndefined();
+  });
+
+  it('allows a free style choice after identity or editorial work even with suspended hosting', () => {
+    for (const track of ['branding', 'editorial'] as const) {
+      let state = studioReady(); state.trial.commerce.online!.studio!.levels[track] = 1;
+      state.trial.commerce.online!.site.active = false;
+      state.trial.commerce.cashCents = 0;
+      const initial = structuredClone(state);
+      state = run(state, 'choose-studio-style', { style: 'signature' }, 'style-once');
+      expect(state.trial.commerce.online!.studio!.style).toBe('signature');
+      expect(state.trial.commerce.cashCents).toBe(0);
+      expect(state.trial.clock).toBe(initial.trial.clock);
+      expect(state.trial.commerce.online!.stats).toEqual(initial.trial.commerce.online!.stats);
+      expect(state.trial.commerce.online!.merch).toEqual(initial.trial.commerce.online!.merch);
+      expect(run(state, 'choose-studio-style', { style: 'signature' }, 'style-once')).toBe(state);
+    }
+  });
+
+  it.each(['locked', 'computer', 'created', 'unknown'])('rejects %s style changes without touching the state', reason => {
+    const state = studioReady(); state.trial.commerce.online!.studio!.levels.branding = reason === 'locked' ? 0 : 1;
+    if (reason === 'computer') state.trial.commerce.computerOwned = false;
+    if (reason === 'created') state.trial.commerce.online!.site.createdAt = null;
+    const before = structuredClone(state);
+    expect(() => run(state, 'choose-studio-style', { style: reason === 'unknown' ? 'unknown' : 'clear' })).toThrow();
+    expect(state).toEqual(before);
+  });
+
+  it('applies identity and editorial conversion to actual merch sales after the style change', () => {
+    const initial = merchListed(100);
+    const online = initial.trial.commerce.online!;
+    online.studio!.levels = { photography: 0, branding: 3, editorial: 3 };
+    let state = run(initial, 'choose-studio-style', { style: 'clear' });
+    const expected = estimateKqMerchOffer({ online: state.trial.commerce.online!, code: 'stickers', priceCents: 400,
+      reputation: state.trial.commerce.reputation, clients: state.trial.commerce.clients }).unitsPerDay;
+    state = run(state, 'advance-online-time', { hours: 24 });
+    const row = state.trial.commerce.online!.merch!.inventory[0];
+    expect(row.sold + row.progress).toBeCloseTo(expected, 8);
+    expect(row.sold).toBe(Math.floor(expected));
   });
 });

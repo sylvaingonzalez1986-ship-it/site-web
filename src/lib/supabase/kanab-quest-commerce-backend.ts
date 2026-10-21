@@ -8,6 +8,8 @@ import { isKqAdvertisingKind, normalizeKqShopName, previewKqBusinessPayment } fr
 import { isKqStorageLot, projectKqStorageLot } from "../kanab-quest-storage";
 import { KQ_ONLINE_MARKETING_MISSIONS, KQ_ONLINE_PACKAGING, KQ_ONLINE_SITE_TIERS, KQ_ONLINE_UPGRADES } from "../kanab-quest-online";
 import { KQ_MARKETING_BUDGETS } from "../kanab-quest-marketing";
+import { KQ_MERCH_MODULES, KQ_MERCH_PRODUCTS } from "../kanab-quest-merch";
+import { KQ_STUDIO_STYLES, KQ_STUDIO_TRACKS } from "../kanab-quest-studio";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 function uuid(value: unknown) { if (typeof value !== "string" || !UUID.test(value)) throw new Error("Identifiant invalide. Actualise le marché."); return value; }
 function integer(value: unknown) { if (typeof value !== "number" || !Number.isSafeInteger(value) || value < 0) throw new Error("Montant ou quantité invalide."); return value; }
@@ -40,6 +42,22 @@ function onlinePayload(command: unknown, value: unknown): { command: string; pay
   } else if (command === "buy-upgrade") {
     if (!KQ_ONLINE_UPGRADES.some(item => item.code === input.code)) throw new Error("Amélioration inconnue.");
     payload = { code: input.code };
+  } else if (command === "buy-studio-level") {
+    if (!KQ_STUDIO_TRACKS.some(item => item.code === input.track)) throw new Error("Atelier créatif inconnu.");
+    payload = { track: input.track, level: boundedInteger(input.level, 3) };
+  } else if (command === "choose-studio-style") {
+    if (!KQ_STUDIO_STYLES.some(item => item.code === input.style)) throw new Error("Direction artistique inconnue.");
+    payload = { style: input.style };
+  } else if (command === "buy-merch-module") {
+    if (!KQ_MERCH_MODULES.some(item => item.code === input.code)) throw new Error("Atelier de merch inconnu.");
+    payload = { code: input.code };
+  } else if (command === "buy-merch-stock" || command === "update-merch") {
+    if (!KQ_MERCH_PRODUCTS.some(item => item.code === input.code)) throw new Error("Article de merch inconnu.");
+    if (command === "buy-merch-stock") payload = { code: input.code, quantity: boundedInteger(input.quantity, 500) };
+    else {
+      if (typeof input.active !== "boolean") throw new Error("Choisis si cet article est en vente.");
+      payload = { code: input.code, priceCents: boundedInteger(input.priceCents, 100_000), active: input.active };
+    }
   } else if (command === "start-marketing") {
     const mission = KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === input.code);
     if (input.version !== 2 || !mission || typeof input.angle !== "string" || !["value", "craft", "premium"].includes(input.angle)
@@ -68,6 +86,17 @@ function databaseError(message: string, operation?: string): never {
     online_marketing_unknown: "Cette campagne ou ce budget n’existe pas.",
     online_marketing_version: "L’atelier de campagne a évolué. Actualise ta boutique pour préparer une campagne avec les règles actuelles.",
     online_marketing_active: "Une campagne occupe déjà ton atelier, en préparation ou en diffusion.",
+    online_merch_unknown: "Cet atelier ou cet article de merch n’existe pas.",
+    online_merch_module_owned: "Cet atelier de merch est déjà installé.",
+    online_merch_progression_required: "Développe le niveau de ton site, tes commandes et la confiance avant d’installer cet atelier.",
+    online_merch_module_required: "Installe l’atelier correspondant avant de commander ces articles.",
+    online_merch_stock_limit: "Tu peux garder au maximum 500 exemplaires de chaque article.",
+    online_merch_stock_required: "Commande du stock avant de mettre cet article en vente.",
+    online_merch_slots: "Tous les emplacements du rayon sont occupés. Retire un article ou améliore ton site.",
+    online_studio_unknown: "Cet atelier ou cette direction artistique n’existe pas.",
+    online_studio_sequence: "Installe le niveau précédent de cet atelier avant de poursuivre.",
+    online_studio_progression_required: "Développe ton site, tes commandes et les ateliers requis avant cet investissement.",
+    online_studio_style_required: "Installe une identité de marque ou l’atelier éditorial pour choisir une direction artistique.",
     online_request_mismatch: "Cette demande a déjà servi pour une autre opération. Actualise ton commerce.",
     online_legacy_sale: "La vente en ligne passe désormais par les annonces : conditionne tes paquets et choisis leur prix.",
     commerce_storage_overflow: "Une partie de cette récolte manque de contenants. Achète du stockage ou vends son surplus aux grossistes avant de la préparer.",

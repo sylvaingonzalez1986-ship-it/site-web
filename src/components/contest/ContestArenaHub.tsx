@@ -3,7 +3,6 @@
 import { useRef, useState } from "react";
 import { ArenaJourneyEntry } from "./ArenaJourneyEntry";
 import { ArenaPrelaunchCharacter } from "./ArenaPrelaunchCharacter";
-import { ArenaPlayerResume } from "./ArenaPlayerResume";
 import { type ArenaLobbyMode } from "@/lib/arena-lobby";
 import type { ArenaProfileAvailability, ArenaProfileLauncherHandle } from "@/lib/arena-profile-launcher";
 import { ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
@@ -16,10 +15,9 @@ type ArenaHubProps = {
   initialMode?: ArenaLobbyMode;
   /** Kept for incoming prelaunch routes; the opening date is now always visible. */
   initialNotice?: boolean;
-  personalSummaryEnabled?: boolean;
 };
 
-export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer", personalSummaryEnabled = false }: ArenaHubProps) {
+export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer" }: ArenaHubProps) {
   const profileLauncher = useRef<ArenaProfileLauncherHandle | null>(null);
   const [profileAvailability, setProfileAvailability] = useState<ArenaProfileAvailability>("loading");
 
@@ -39,7 +37,6 @@ export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer
         </div>}
 
         <ArenaWorldMap activitiesLocked={activitiesLocked} initialMode={initialMode} profileLauncher={profileLauncher} profileAvailability={profileAvailability} />
-        {personalSummaryEnabled && !activitiesLocked ? <ArenaPlayerResume /> : null}
       </section>
     </main>
   );

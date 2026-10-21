@@ -76,12 +76,16 @@ export default async function ReglementJeuPromoPage() {
                 Chaque pack est ouvrable une seule fois. Les 3 cartes revelees sont determinees
                 cote serveur au moment de l&apos;ouverture.
               </p>
+              <p className="mt-2">
+                Le pack de bienvenue offert une seule fois par compte contient 3 Buddies de
+                rarete commune, tous differents. Ce pack de depart ne contient pas de carte bonus.
+              </p>
             </section>
 
             <section>
               <h2 className="font-display text-2xl">Article 5 - Probabilites</h2>
               <p className="mt-2">
-                Repartition globale des cartes selon la configuration de collection active :
+                Repartition des cartes des packs ordinaires selon la configuration de collection active :
                 commune, silver, gold, epique et legendaire.
               </p>
             </section>

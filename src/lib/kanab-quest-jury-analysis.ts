@@ -25,6 +25,11 @@ export type KqJuryAnalysis = {
   recommendations: KqJuryRecommendation[];
   limits: string[];
 };
+export type KqJuryTakeaway = {
+  kind: "deficit" | "tie" | "variation" | "strength" | "unavailable";
+  title: string;
+  explanation: string;
+};
 
 const LABELS: Record<KqFlowerStat, string> = { appearance: "Apparence", aroma: "Arômes", vigor: "Vigueur", mastery: "Maîtrise", regularity: "Régularité", cannabinoids: "Potentiel cannabinoïde" };
 // These links follow createKqFlower, not a guessed association between scenario
@@ -147,5 +152,35 @@ export function getKqJuryAnalysis({ rounds, playerStats, opponentStats }: KqJury
     focus: { code: focus.code, label: focus.label, margin, tied,
       reason, criteria },
     facts, recommendations, limits,
+  };
+}
+
+/** A short verdict uses the same validated evidence as the detailed analysis.
+ * A close loss alone is never evidence of poor cultivation. */
+export function getKqJuryTakeaway(input: KqJuryAnalysisInput): KqJuryTakeaway | null {
+  const analysis = getKqJuryAnalysis(input);
+  if (!analysis) return null;
+  const { focus } = analysis;
+  if (focus.tied) return {
+    kind: "tie", title: "Une manche départagée à égalité",
+    explanation: `${focus.label} : ${number(input.rounds.find(round => round.code === focus.code)!.playerScore)} partout. Le départage du jury a décidé de cette manche.`,
+  };
+  if (!focus.criteria.length || focus.criteria.some(criterion => criterion.weightedGap === null)) return {
+    kind: "unavailable", title: "Un résultat à relire",
+    explanation: `${analysis.summary} Les données disponibles ne permettent pas d’identifier un critère à corriger.`,
+  };
+  const deficit = focus.criteria.filter(criterion => criterion.weightedGap! < 0)
+    .sort((left, right) => left.weightedGap! - right.weightedGap!)[0];
+  if (deficit) return {
+    kind: "deficit", title: analysis.recommendations[0].title,
+    explanation: `${deficit.label} : ${number(deficit.playerValue!)}/99 contre ${number(deficit.opponentValue!)}/99 sur « ${focus.label} ». Ce critère contribue à l’écart avant la variation du jury.`,
+  };
+  if (analysis.wins < 3) return {
+    kind: "variation", title: "La variation du jury a fait la différence",
+    explanation: `Sur « ${focus.label} », tes critères sont au moins au niveau de ceux de l’adversaire. Cette manche ne révèle pas de retard à corriger.`,
+  };
+  return {
+    kind: "strength", title: "Un point d’appui pour la suite",
+    explanation: `${analysis.summary} Tes critères sont au moins au niveau de ceux de l’adversaire sur cette manche.`,
   };
 }

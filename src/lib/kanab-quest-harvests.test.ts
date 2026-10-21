@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { KqOfficialFlower, KqStorageSnapshot } from "./kanab-quest-api";
-import { getKqHarvestRows } from "./kanab-quest-harvests";
+import { getKqHarvestRows, getKqStorageHarvestOverview } from "./kanab-quest-harvests";
 import { createKqOperationsLesson, getKqOperationsStorage } from "./kanab-quest-operations-lesson";
 import { createKqStorageLot, planKqStorageAllocation, projectKqStorageLot } from "./kanab-quest-storage";
 
@@ -52,5 +52,74 @@ describe("harvest navigation state", () => {
     vi.useFakeTimers();vi.setSystemTime(new Date("2099-12-31T23:59:59Z"));
     expect(getKqHarvestRows([], storage).find(row => row.id === "curing")?.state).toBe("curing");
     expect(storage).toEqual(before);
+  });
+});
+
+describe("storage's next useful lot", () => {
+  it("keeps surplus first, then mature lots, then the earliest server maturity without changing the snapshot", () => {
+    const storage = snapshot();
+    const sooner = structuredClone(storage.lots[0]);
+    sooner.flowerId = "sooner";
+    sooner.projection.readyAt = new Date(now + 60_000).toISOString();
+    storage.lots.push(sooner);
+    const before = structuredClone(storage);
+    const result = getKqStorageHarvestOverview(storage);
+    expect(result.lots.map(lot => lot.flowerId)).toEqual(["overflow", "ready", "sooner", "curing"]);
+    expect(result.advice).toMatchObject({ kind: "overflow", lot: { flowerId: "overflow" }, readyAt: null });
+    expect(storage).toEqual(before);
+  });
+
+  it("puts the earliest existing overflow deadline first and retains the original server offer", () => {
+    const storage = snapshot();
+    const sooner = structuredClone(storage.lots[2]);
+    sooner.flowerId = "earlier-overflow";
+    sooner.projection.capacity!.overflowDeadlineAt = new Date(now + 1_000).toISOString();
+    storage.lots.push(sooner);
+    const result = getKqStorageHarvestOverview(storage);
+    expect(result.lots.slice(0, 2).map(lot => lot.flowerId)).toEqual(["earlier-overflow", "overflow"]);
+    expect(result.advice?.lot).toBe(sooner);
+  });
+
+  it("gives an exact next maturity while leaving an available mature lot the first choice", () => {
+    const storage = snapshot();
+    storage.lots = storage.lots.filter(lot => lot.flowerId !== "overflow");
+    expect(getKqStorageHarvestOverview(storage).advice?.kind).toBe("ready");
+    storage.lots = storage.lots.filter(lot => lot.flowerId !== "ready");
+    vi.useFakeTimers(); vi.setSystemTime(new Date("2099-12-31T23:59:59Z"));
+    expect(getKqStorageHarvestOverview(storage).advice).toMatchObject({
+      kind: "curing", lot: { flowerId: "curing" }, readyAt: storage.lots[0].projection.readyAt,
+    });
+  });
+
+  it("requires a fresh server phase even when a maturity date has passed", () => {
+    const storage = snapshot();
+    storage.lots = [storage.lots[0]];
+    storage.lots[0].projection.readyAt = new Date(now - 1).toISOString();
+    expect(getKqStorageHarvestOverview(storage).advice).toMatchObject({ kind: "refresh", readyAt: null });
+    storage.lots[0].projection.stage = "ready";
+    expect(getKqStorageHarvestOverview(storage).advice?.kind).toBe("ready");
+  });
+
+  it("does not invent availability from missing capacity, dates, an empty stock or an unavailable clock", () => {
+    expect(getKqStorageHarvestOverview(null)).toEqual({ lots: [], advice: null });
+    const storage = snapshot();
+    storage.lots = [storage.lots[1]];
+    storage.lots[0].projection.capacity = undefined;
+    expect(getKqStorageHarvestOverview(storage).advice?.kind).toBe("refresh");
+    storage.lots[0].projection.stage = "curing";
+    storage.lots[0].projection.readyAt = "invalid";
+    expect(getKqStorageHarvestOverview(storage).advice?.kind).toBe("refresh");
+    storage.serverNow = "invalid";
+    expect(getKqStorageHarvestOverview(storage).advice).toBeNull();
+    storage.lots = [];
+    expect(getKqStorageHarvestOverview(storage)).toEqual({ lots: [], advice: null });
+  });
+
+  it("sorts unknown dates last and preserves the order of equally dated lots", () => {
+    const storage = snapshot();
+    const unknown = structuredClone(storage.lots[0]); unknown.flowerId = "unknown"; unknown.projection.readyAt = "invalid";
+    const sameTime = structuredClone(storage.lots[0]); sameTime.flowerId = "same-time";
+    storage.lots = [unknown, storage.lots[0], sameTime];
+    expect(getKqStorageHarvestOverview(storage).lots.map(lot => lot.flowerId)).toEqual(["curing", "same-time", "unknown"]);
   });
 });

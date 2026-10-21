@@ -73,6 +73,7 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose }: { profile:
         <small className={styles.eyebrow}>{profile ? "Ton profil de joueur" : "Bienvenue dans l’Arène"} · {step === "look" ? "1 / 2" : "2 / 2"}</small>
         <h2 id="chanvrier-title">{step === "look" ? "Qui entre dans l’arène ?" : "À chacun sa force."}</h2>
         <p>{step === "look" ? "Un surnom, un style, puis ta spécialité. Donne vie à ton personnage." : "Quatre façons de construire ton aventure. Choisis l’avantage qui te ressemble."}</p>
+        {!profile && !api.isTutorial && step === "look" ? <p><strong>Ton kit de départ est offert :</strong> 1 m² de culture, 1 m² de séchage et 1 m² de stockage, avec le matériel installé.</p> : null}
         {step === "look" ? <>
           <label className={styles.nickname}>Ton surnom<input autoComplete="nickname" value={draft.nickname} maxLength={24} placeholder="Ex. Sylvain29" onChange={event => setDraft({ ...draft, nickname: event.target.value })} /><small>3 à 24 caractères : lettres sans accent, chiffres, . _ -</small></label>
           <fieldset><legend>Silhouette</legend><div className={styles.gender}>{([ ["male", "Masculine"], ["female", "Féminine"] ] as const).map(([value, label]) => <button type="button" key={value} aria-pressed={draft.gender === value} onClick={() => setDraft({ ...draft, appearance, gender: value })}>{label}{draft.gender === value ? <Check size={16} /> : null}</button>)}</div></fieldset>

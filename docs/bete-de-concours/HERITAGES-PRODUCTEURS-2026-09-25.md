@@ -56,3 +56,32 @@ La migration `20260925000100_kq_producer_heritage_editorial.sql` ajoute la méca
 Déployer d’abord le moteur et les fichiers publics, puis appliquer la migration. Le carnet, l’album et le Placard lisent déjà les URL et descriptions des définitions en base. Aucun remplacement des photos de profil des producteurs n’est nécessaire.
 
 Le lot v2 comprend le moteur +3, les illustrations et rectos définitifs, le manifeste, les générateurs et la migration Héritage. La publication suit cet ordre : déploiement des fichiers et du moteur, contrôle des quinze URL publiques, application de `20260925000100`, puis comparaison des quinze définitions distantes avec le manifeste. Les rapports d'exécution sont conservés localement dans `output/heritage-release/`.
+
+## Main de dix cartes — évolution locale du 20 octobre 2026
+
+Main prévoyante affiche désormais « pioche 13 cartes et compose une main de 10 ».
+La réserve reste de trois cartes et le bonus initial de 2 XP est conservé.
+L’illustration Terracanna et le cadrage restent identiques ; seul le texte du
+recto est composé à nouveau par le générateur natif. Le manifeste référence
+`heritage-003-main-prevoyante-producer-front-v6.webp`.
+
+La migration additive `20261020000300_kq_ten_card_hand.sql` met à jour les
+descriptions et avantages du seul effet `opening-hand-reserve`. Elle remplace
+le chemin du recto uniquement pour la carte Terracanna qui utilise exactement
+le fichier officiel v5. Les noms, images personnalisées, autres pouvoirs,
+acquisitions et cultures sont conservés. Cette migration n’est pas appliquée
+à Supabase dans cette étape locale.
+
+Le snapshot Héritage présente ce texte et ce recto officiel dès l’exécution
+du code local, même si la base partagée contient encore les anciens libellés.
+Cette adaptation de lecture ne modifie aucune donnée distante et préserve
+également les images personnalisées.
+Les cultures conservent leur URL Héritage enregistrée, que les RPC et les
+triggers vérifient comme identité immuable. Leur carte affichée emploie
+également le recto v6 lorsque le code, l’effet, le producteur et l’ancien
+chemin officiel correspondent exactement.
+
+Le rendu ciblé utilise un manifeste contenant uniquement HERITAGE-003 et
+`--no-review`, afin de préserver les autres rectos et la galerie complète.
+Les simulations historiques avec une main de cinq cartes ne constituent pas
+une validation de l’équilibrage avec dix cartes.

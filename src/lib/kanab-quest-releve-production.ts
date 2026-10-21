@@ -1,7 +1,7 @@
-import { activateKqHeritage, advanceKqStage, canActivateKqHeritage, canPlayKqCard, isKqCultureDead, KQ_ACTIVE_CARDS, KQ_BUDDIES, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "./kanab-quest-game";
+import { activateKqHeritage, advanceKqStage, canActivateKqHeritage, canPlayKqCard, isKqCultureDead, KQ_ACTIVE_CARDS, KQ_BUDDIES, KQ_HAND_SIZE, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "./kanab-quest-game";
 import { createKqFlower, createKqOpponent, lockKqBattle, resolveKqBattle, type KqBattle } from "./kanab-quest-battle";
 import { getKqCampaignMemberState, getKqCampaignParticipants } from "./kanab-quest-campaign";
-import { getKqBuddieRotationRemaining } from "./kanab-quest-buddie-rotation";
+import { getKqBuddieRotationRemaining, recordKqBuddieUse } from "./kanab-quest-buddie-rotation";
 import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCareProduct, KQ_BASIC_CARE_PRICE_CENTS, performKqBasicCare } from "./kanab-quest-care";
 import { KQ_HERITAGE_CARDS } from "./kanab-quest-heritage";
 import { KQ_LAB_ANALYSIS_CENTS, KQ_SUPPLIER_PAYMENT_TERM_MS } from "./kanab-quest-business";
@@ -31,7 +31,7 @@ export function createKqReleveProduction(): KqReleveProductionState {
   return { version: 1, warehouse, draftWarehouse: structuredClone(warehouse), revision: 0,
     cashCents: 200_000, clock: START_TIME, ownedBuddies: [], recentBuddieCodes: ["HH2026-020"],
     supportInventory: Object.fromEntries(KQ_RELEVE_SUPPORTS.map(code => [code, 2])), careInventory: {},
-    deckCodes: KQ_RELEVE_SUPPORTS.slice(0, 6), heritageCode: "HERITAGE-007", game: null,
+    deckCodes: [...KQ_RELEVE_SUPPORTS, ...KQ_RELEVE_SUPPORTS].slice(0, KQ_HAND_SIZE), heritageCode: "HERITAGE-007", game: null,
     battles: {}, revealedRounds: {}, ledger: [], milestones: [], checkpoint: null };
 }
 
@@ -192,7 +192,7 @@ export function applyKqReleveProductionAction(current: KqReleveProductionState, 
       state.game.xp += maxAdvantage - firstAdvantage;
       for (const member of members) record(state, { id: `supplier:${member.runId}`, kind: "supplier", label: `Fournitures · ${member.warehouse.zones[0].name}`,
         amountCents: member.warehouse.consumablesCostCents, status: "due", dueAt: new Date(state.clock + KQ_SUPPLIER_PAYMENT_TERM_MS).toISOString() });
-      state.recentBuddieCodes = [...new Set([...members.map(member => member.buddieCode), ...state.recentBuddieCodes])].slice(0, 5);
+      state.recentBuddieCodes = members.reduce((recent, member) => recordKqBuddieUse(member.buddieCode, recent), state.recentBuddieCodes);
       checkpoint(state); mark(state, "launched"); return state;
     }
     case "restore-stage":

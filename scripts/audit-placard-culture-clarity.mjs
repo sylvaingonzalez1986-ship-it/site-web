@@ -25,7 +25,7 @@ const modules = {
       let state = startKqGame(270926, {
         rulesVersion: mode === 'danger' || mode === 'first-danger' ? 2 : 3,
         deckCodes: ['BOTTE-003', 'BOTTE-017', 'BOTTE-005', 'BOTTE-006'],
-        heritageCode: mode === 'heritage' ? 'HERITAGE-007' : 'HERITAGE-002',
+        heritageCode: mode === 'heritage' ? 'HERITAGE-007' : mode === 'heritage-recovery' ? 'HERITAGE-006' : 'HERITAGE-002',
         startedAt: '2026-09-27T12:00:00Z'
       });
       state.situationCodes = ['SIT-007','SIT-002','SIT-009','SIT-004','SIT-005','SIT-006'];
@@ -35,6 +35,11 @@ const modules = {
         state = { ...state, phase: 'rolled', dice: [1,1,1] };
       } else if (mode === 'first-danger') {
         state = { ...state, phase: 'rolled', dice: [1,1,1] };
+      } else if (mode === 'health-danger' || mode === 'health-rescue') {
+        state = { ...state, phase: 'rolled', dice: [2,2,2], firstCultureRescue: mode === 'health-rescue',
+          care: { ...state.care, vitality: 5 } };
+      } else if (mode === 'heritage-recovery') {
+        state = { ...state, phase: 'rolled', dice: [2,2,2] };
       } else if (mode === 'rolled' || mode === 'heritage') {
         state = { ...state, phase: 'rolled', dice: [4,2,3] };
       } else if (mode === 'last-resolved') {
@@ -174,6 +179,7 @@ try {
     await page.setViewport({ width, height, isMobile: mobile, hasTouch: mobile });
     await page.goto(origin, { waitUntil: 'networkidle0' });
     await show('prepare');
+    assert.equal(await page.$$('[data-turn-preview]').then(elements => elements.length), 0, `${label}: no forecast before dice`);
     await assertNoOverflow(`prepare ${label}`);
     const prepare = await assertPrimary('roll', `prepare ${label}`, mobile);
     assert.equal(await page.$eval('[data-culture-situation]', el => getComputedStyle(el).display === 'none'), false);
@@ -203,6 +209,7 @@ try {
     assert.match(confirmation, /détruit une copie/);
     assert.match(confirmation, /Avantage/);
     assert.match(confirmation, /Risque/);
+    assert.match(await page.$eval('[data-culture-card-cost]', element => element.textContent), /Coût : \d+ XP de culture\.Tu disposes de \d+ XP\./);
     await assertNoOverflow(`burn ${label}`);
     assert.equal(await page.$eval(actionbar, element => element.hasAttribute('data-suspended')), true, `${label}: main action suspended during burn`);
     const cancelButton = await page.evaluateHandle(() => [...document.querySelectorAll('[role="dialog"] button')].find(element => element.textContent === 'Annuler'));
@@ -240,6 +247,20 @@ try {
     await show('rolled');
     const rolled = await assertPrimary('resolve', `rolled ${label}`, mobile);
     await assertNoOverflow(`rolled ${label}`);
+    assert.match(await page.$eval('[data-turn-preview]', element => element.textContent), /Si tu valides maintenant/);
+    assert.equal(await page.$eval('[data-turn-preview] details', element => element.open), false, `${label}: secondary forecast stays collapsed`);
+    assert.ok(await page.$eval('[data-turn-preview]', element => element.getBoundingClientRect().width
+      >= element.parentElement.getBoundingClientRect().width * .8), `${label}: forecast spans the result panel`);
+    const beforePreview = await page.evaluate(() => JSON.stringify(window.__readCulture()));
+    await page.$eval('[data-turn-preview] summary', element => { element.scrollIntoView({ block: 'center', behavior: 'instant' }); element.focus(); });
+    await page.keyboard.press('Enter');
+    assert.equal(await page.$eval('[data-turn-preview] details', element => element.open), true, `${label}: forecast keyboard disclosure`);
+    await assertNoOverflow(`forecast expanded ${label}`);
+    await assertPrimary('resolve', `forecast expanded ${label}`, mobile);
+    assert.equal(await page.evaluate(() => JSON.stringify(window.__readCulture())), beforePreview, `${label}: reading the forecast never validates the turn`);
+    await page.keyboard.press('Enter');
+    assert.equal(await page.$eval('[data-turn-preview] details', element => element.open), false);
+    await page.screenshot({ path: resolve(output, `decision-viewport-${label}.png`) });
     assert.equal(await page.$eval('[data-culture-result]', element => Boolean(element.compareDocumentPosition(document.querySelector('[data-culture-hand]')) & Node.DOCUMENT_POSITION_FOLLOWING)), true, `${label}: result before optional hand`);
     await page.screenshot({ path: resolve(output, `rolled-${label}.png`), fullPage: true });
     await clickControl('[data-culture-hand] > summary');
@@ -254,6 +275,14 @@ try {
     console.log(JSON.stringify({ viewport: label, passed: true }));
   }
   await page.setViewport({ width: 390, height: 600, isMobile: true, hasTouch: true });
+  for (const mode of ['health-danger', 'health-rescue', 'heritage-recovery']) {
+    await show(mode);
+    const text = await page.$eval('[data-turn-preview]', element => element.textContent);
+    assert.match(text, mode === 'health-danger' ? /culture sera perdue, sans récolte/ : mode === 'health-rescue' ? /santé sera rétablie à 15\/100/ : /Reprise vigoureuse.*transformera.*réussite/);
+    assert.equal(await page.evaluate(() => window.__readCulture()?.phase), 'rolled', `${mode}: prediction does not resolve`);
+    await assertNoOverflow(mode);
+    await assertPrimary('resolve', mode, true);
+  }
   for (const mode of ['first-danger', 'danger']) {
     await show(mode);
     await assertPrimary('resolve', mode, true);

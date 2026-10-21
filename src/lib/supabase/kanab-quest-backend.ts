@@ -17,7 +17,7 @@ import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { getKqArenaExperienceAward, getKqLeague } from "@/lib/kanab-quest-ranking";
 import { evaluateKqChallenges, getKqChallengeDayKey } from "@/lib/kanab-quest-challenges";
 import { getKqNotebookReward, KQ_CULTURE_TOKEN_RUN_CAP, KQ_CULTURE_TOKEN_START_XP, KQ_NOTEBOOK_REWARDS_LIVE } from "@/lib/kanab-quest-notebook-rewards";
-import { isKqHeritageEffect, isKqHeritageTiming, type KqHeritageCard } from "@/lib/kanab-quest-heritage";
+import { getKqHeritagePresentationMetadata, isKqHeritageEffect, isKqHeritageTiming, type KqHeritageCard } from "@/lib/kanab-quest-heritage";
 import { KQ_HERITAGE_PURCHASE_DRAWS_LIVE } from "@/lib/kanab-quest-heritage-purchase";
 import { buildKqSeasonRewardPreview, KQ_SEASON_REWARDS_LIVE } from "@/lib/kanab-quest-season-rewards";
 import { isKqPublicPlayerApiEnabled } from "@/lib/kanab-quest-player-access";
@@ -388,8 +388,13 @@ export async function getKqPlayerHeritageSnapshot(ownerId: string, options: { in
       name: String(card.name),
       timing: String(card.timing),
       effectCode: String(card.effect_code),
-      description: String(card.description),
-      imageUrl: String(card.image_url ?? ""),
+      ...getKqHeritagePresentationMetadata({
+        code: String(card.code),
+        effectCode: String(card.effect_code),
+        description: String(card.description),
+        imageUrl: String(card.image_url ?? ""),
+        producerId: card.producer_id ? String(card.producer_id) : null,
+      }),
       isActive: card.is_active === true,
       ownedCopies: Number(summary.ownedCounts[card.code] ?? 0),
       producerId: card.producer_id ? String(card.producer_id) : null,
@@ -2234,7 +2239,7 @@ export async function finalizeKqAdminBattle(
   return finalizeKqPlayerBattle(ownerId, battleId);
 }
 
-const readCachedPublicLeaderboard = cacheArenaSharedRead("placard-leaderboard-v2-development", () => readKqPublicLeaderboard());
+const readCachedPublicLeaderboard = cacheArenaSharedRead("placard-leaderboard-v3-known-development", () => readKqPublicLeaderboard());
 
 export async function getKqPublicLeaderboard() {
   return readCachedPublicLeaderboard();
@@ -2265,12 +2270,14 @@ async function readKqPublicLeaderboard() {
       const rating = Number(entry.rating ?? 1000);
       const seasonPoints = Number(entry.seasonPoints ?? 0);
       const reputation = Number(entry.reputation ?? 0);
-      const businessScore = Number(entry.businessScore ?? 0);
+      const rawBusinessScore = entry.businessScore;
+      const businessScore = (typeof rawBusinessScore === "number" || typeof rawBusinessScore === "string" && rawBusinessScore.trim() !== "")
+        && Number.isFinite(Number(rawBusinessScore)) ? Number(rawBusinessScore) : null;
       return {
         rank: Number(entry.rank ?? index + 1),
         avatar: avatars.get(String(entry.userId)) ?? null,
         pseudo: pseudoByUser.get(String(entry.userId)) ?? `Cultivateur ${String(index + 1).padStart(2, "0")}`,
-        placardScore: Number(entry.placardScore ?? calculateKqPlacardScore({ rating, seasonPoints, reputation, businessScore }).score),
+        placardScore: Number(entry.placardScore ?? calculateKqPlacardScore({ rating, seasonPoints, reputation, businessScore: businessScore ?? 0 }).score),
         businessScore,
         rating,
         seasonPoints,

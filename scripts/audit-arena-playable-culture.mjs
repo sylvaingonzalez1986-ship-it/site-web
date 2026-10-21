@@ -43,7 +43,7 @@ const modules = {
         const path=typeof input==='string'?input:input.url;
         if(!path.startsWith('/api/'))return realFetch(input,init);
         window.__officialRequests.push({path,method:init?.method??'GET'});
-        if(path.endsWith('/bootstrap'))return Response.json({ownedBuddieCodes:[active.varietyCode],buddieRotation:{requiredDistinctBuddies:5,recentBuddieCodes:[]},collection:{ownerFound:true,collectionActive:true,inventory:Object.fromEntries(KQ_CARDS.map(card=>[card.code,3])),cards:KQ_CARDS},playerSession:session});
+        if(path.endsWith('/bootstrap'))return Response.json({ownedBuddieCodes:[active.varietyCode],buddieRotation:{requiredDistinctBuddies:2,recentBuddieCodes:[]},collection:{ownerFound:true,collectionActive:true,inventory:Object.fromEntries(KQ_CARDS.map(card=>[card.code,3])),cards:KQ_CARDS},playerSession:session});
         if(path.endsWith('/rankings'))return Response.json({entries:[]});
         if(path.endsWith('/me'))return Response.json({progress:null});
         if(path.endsWith('/session'))return Response.json(session);

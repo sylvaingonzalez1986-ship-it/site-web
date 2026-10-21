@@ -33,6 +33,7 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
   const contentId = useId();
   const reserveId = useId();
   const basicCareDescriptionId = useId();
+  const basicCareChoiceId = useId();
   const basicCareStage = state.stageIndex + Number(state.phase === "resolved");
   const basicCareStageLabel = KQ_STAGES[basicCareStage] ? getKqStageDisplayName(KQ_STAGES[basicCareStage]) : "Séchage";
   const busy = useRef({ care: false, shop: false });
@@ -128,6 +129,8 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
   const retryBasic = receipt.current?.action === basicAction;
   const quotedPriceReady = !!balance && !balanceError && balance.basicCarePriceCents === KQ_BASIC_CARE_PRICE_CENTS;
   const insufficientCash = !!balance && balance.cashCents < KQ_BASIC_CARE_PRICE_CENTS;
+  const showHealthyCareChoice = basicCareWindow && permission.allowed && !retryBasic && quotedPriceReady && !insufficientCash
+    && care.vitality >= 90 && problems.length === 0;
   return <section className={styles.panel} aria-label="Suivi vivant de la culture" data-culture-care data-compact={compact || undefined} data-expanded={expanded} data-critical={critical || undefined} data-condition={presentation.condition} aria-busy={busyNow}>
     <div className={styles.summary}>
       <div className={styles.portrait}>
@@ -181,8 +184,9 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
         })}</ul></div> : null}
         {!completed && !dead ? <div className={styles.careActions}>
           <div className={styles.basicCareSection} data-care-basic-section>
+            {showHealthyCareChoice ? <p id={basicCareChoiceId} className={styles.careChoice} data-care-choice><Leaf size={18} aria-hidden="true" /><span><strong>Tu peux continuer sans entretien.</strong> À {care.vitality}/100, sans problème actif, tu peux garder ces {formatCash(KQ_BASIC_CARE_PRICE_CENTS)} pour un prochain besoin et poursuivre l’opération.</span></p> : null}
             <div className={styles.actions}>
-              <button className={styles.basicCare} type="button" data-care-basic data-queued={basicCareQueued || undefined} disabled={disabled || busyNow || !permission.allowed || (!retryBasic && (!quotedPriceReady || insufficientCash))} aria-describedby={basicCareDescriptionId} onClick={() => void apply().catch(() => undefined)}>
+              <button className={styles.basicCare} type="button" data-care-basic data-queued={basicCareQueued || undefined} disabled={disabled || busyNow || !permission.allowed || (!retryBasic && (!quotedPriceReady || insufficientCash))} aria-describedby={[showHealthyCareChoice ? basicCareChoiceId : null, basicCareDescriptionId].filter(Boolean).join(" ")} onClick={() => void apply().catch(() => undefined)}>
                 {basicCareQueued ? <Check size={15} aria-hidden="true" /> : <Heart size={15} aria-hidden="true" />}
                 {pending ? "Enregistrement…" : basicCareQueued ? "Entretien activé" : retryBasic ? "Vérifier l’entretien" : "Payer l’entretien"}{!basicCareQueued ? <span>{retryBasic ? "Sans double débit" : formatCash(KQ_BASIC_CARE_PRICE_CENTS)}</span> : null}
               </button>
@@ -190,15 +194,15 @@ export function KqCultureCarePanel({ state, request, storage, runId, disabled, c
             </div>
             {basicCareWindow ? <div className={styles.careBalance}><span data-care-cash data-cash-cents={balance?.cashCents}>{storage ? "Budget de simulation" : "Trésorerie"} : <b>{balance ? formatCash(balance.cashCents) : "Chargement…"}</b></span><button type="button" onClick={() => void refreshBalance()} disabled={busyNow} aria-label="Actualiser la trésorerie"><RefreshCw size={14} aria-hidden="true" /></button></div> : null}
             {basicCareWindow && !basicCareQueued ? <p className={styles.paymentHint} role="status">{retryBasic ? "Une demande a déjà été envoyée. Vérifie son résultat : elle ne sera pas facturée deux fois." : balanceError || (balance && !quotedPriceReady ? "L’entretien payant est momentanément indisponible. Actualise le suivi pour consulter le tarif." : insufficientCash ? `Trésorerie insuffisante : il manque ${formatCash(KQ_BASIC_CARE_PRICE_CENTS - balance!.cashCents)}.` : "Chaque entretien est payé séparément. Aucun renouvellement automatique.")}</p> : null}
-            <p id={basicCareDescriptionId} className={styles.basicCareEffect}>{basicCareWindow ? <>Au prochain bilan : <strong>+3 santé dans le calcul</strong> et <strong>jusqu’à 2 dégâts en moins par problème persistant</strong>. L’effet arrive quand tu valides l’opération.</> : permission.reason}</p>
+            <p id={basicCareDescriptionId} className={styles.basicCareEffect}>{basicCareWindow ? <>Entretien facultatif. Au prochain bilan : <strong>+3 santé dans le calcul</strong> et <strong>jusqu’à 2 dégâts en moins par problème persistant</strong>. L’effet arrive quand tu valides l’opération.</> : permission.reason}</p>
             {basicCareWindow ? <details className={styles.basicCareDetails}>
               <summary>Comprendre l’entretien</summary>
-              <p>Ce bouton représente les gestes courants de surveillance et d’entretien de Sylvain. Chaque activation coûte {formatCash(KQ_BASIC_CARE_PRICE_CENTS)} de jeu, prélevés une seule fois. Elle ne consomme aucune charge de produit et ne lance aucun dé.</p>
+              <p>Ce bouton représente les gestes courants de surveillance et d’entretien de Sylvain. Chaque activation coûte {formatCash(KQ_BASIC_CARE_PRICE_CENTS)} de jeu, prélevés une seule fois. L’activer aux cinq étapes représente {formatCash(KQ_BASIC_CARE_PRICE_CENTS * 5)} pour la culture. Elle ne consomme aucune charge de produit et ne lance aucun dé.</p>
               <ul>
                 <li>La santé reste plafonnée à 100. Les dégâts peuvent encore la faire baisser : le bonus ne garantit pas une hausse de la jauge.</li>
                 <li>Si l’opération de culture échoue, les problèmes ne gagnent pas de gravité à cause de cet échec.</li>
                 <li>Si elle réussit, l’entretien aide les problèmes à reculer d’un niveau. Ce recul ne se cumule pas avec le même effet d’une opération adaptée.</li>
-                <li>Il ne répare pas les pertes de récolte déjà subies et ne donne aucun bonus direct de terpènes ou de cannabinoïdes.</li>
+                <li>Il ne répare pas les pertes de récolte déjà subies et ne donne aucun bonus direct de terpènes ou de cannabinoïdes. Il ne garantit ni la note du jury ni le prix de vente.</li>
               </ul>
               <p><strong>Exemple de jeu :</strong> avec 50 de santé et un foyer de pucerons de gravité 2, un échec de culture sans autre aide laisse 28 de santé et aggrave le foyer. Avec l’entretien, il reste 33 de santé et le foyer garde sa gravité 2.</p>
             </details> : null}

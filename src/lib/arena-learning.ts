@@ -34,7 +34,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
       "Ouvre tes packs disponibles dans ta collection : les cartes rejoignent ton inventaire et peuvent inclure des doublons.",
       "Dans Kanab Quest, la Boutique propose aussi des packs Botte du Chanvrier : un pack acheté coûte 5 points et contient 10 cartes de soutien.",
       "Choisis un Buddie pour ta variété, des soutiens consommés seulement quand tu les joues, et un Héritage permanent si tu en possèdes un.",
-      "Après une culture, utilise 5 autres Buddies différents avant de reprendre le même. La collection indique les variétés que tu possèdes.",
+      "Après une culture, utilise 2 autres Buddies différents avant de reprendre le même. La collection indique les variétés que tu possèdes.",
     ],
     scenario: "Un pack Buddies gagné avec tes achats attend dans ta collection. Que vas-tu découvrir en l’ouvrant ?",
     choices: [
@@ -54,7 +54,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     features: [
       "Personnalise ton surnom et ton apparence. La spécialité devient définitive à la création ; ton apparence reste modifiable.",
       "Main Verte ajoute 2 XP à chaque culture, en plus du bonus de ton Buddie.",
-      "Trésorier commence avec 1 000 € de jeu au lieu de 350 € et accède au livret à 5 % par tranche complète de 24 h.",
+      "Trésorier reçoit un bonus unique de 650 € de jeu à la création du personnage et accède au livret à 5 % par tranche complète de 24 h.",
       "Commercial améliore les recettes et la capacité de vente. Bricoleur offre les réparations périodiques des machines de transformation.",
       "Le remplacement du matériel de culture usé reste payant, y compris pour le Bricoleur.",
     ],

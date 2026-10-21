@@ -51,7 +51,7 @@ export type KqHeritageEffectTemplate = Pick<KqHeritageCard, "name" | "timing" | 
 export const KQ_HERITAGE_CARDS: readonly KqHeritageCard[] = [
   { code: "HERITAGE-001", name: "Racines solides", timing: "once-per-run", effect: "root-danger-to-spark", description: "+2 XP au départ. En Enracinement, le dé le plus faible devient automatiquement une Étincelle." },
   { code: "HERITAGE-002", name: "Réserve du jardinier", timing: "passive", effect: "starting-xp-two", description: "+4 XP au départ pour financer les soins et les cartes de la culture." },
-  { code: "HERITAGE-003", name: "Main prévoyante", timing: "once-per-run", effect: "opening-hand-reserve", description: "+2 XP au départ. À la première étape, pioche 8 cartes et compose une main de 5." },
+  { code: "HERITAGE-003", name: "Main prévoyante", timing: "once-per-run", effect: "opening-hand-reserve", description: "+2 XP au départ. À la première étape, pioche 13 cartes et compose une main de 10." },
   { code: "HERITAGE-004", name: "Climat stable", timing: "once-per-run", effect: "climate-danger-to-spark", description: "+2 XP au départ. Le dé le plus faible devient une Étincelle face au Climat, ou au Séchage si le pouvoir reste disponible." },
   { code: "HERITAGE-005", name: "Second regard", timing: "passive", effect: "two-extra-redraws", description: "+2 XP au départ. Accorde deux changements de main supplémentaires par culture." },
   { code: "HERITAGE-006", name: "Reprise vigoureuse", timing: "once-per-run", effect: "failure-to-fragile", description: "+2 XP au départ. Le premier échec devient une réussite, avec ses gains de Qualité et d’XP." },
@@ -103,6 +103,30 @@ export function getKqHeritageEffectTemplate(effect: KqHeritageEffect) {
   return KQ_HERITAGE_EFFECT_TEMPLATES.find((card) => card.effect === effect)!;
 }
 
+/** Match the deployed engine while the editorial database migration is pending. */
+export function getKqHeritagePresentationMetadata(card: {
+  code: string;
+  effectCode: string;
+  description: string;
+  imageUrl: string;
+  producerId?: string | null;
+  producerName?: string;
+}) {
+  if (card.effectCode !== "opening-hand-reserve") {
+    return { description: card.description, imageUrl: card.imageUrl };
+  }
+  const officialOldFront = card.code === "HERITAGE-003"
+    && (card.producerId === "producer-1773870509228-7130"
+      || (!card.producerId && card.producerName === "Terracanna"))
+    && card.imageUrl === "/app/kanab-quest/card-fronts/heritage-003-main-prevoyante-producer-front-v5.webp";
+  return {
+    description: getKqHeritageEffectTemplate("opening-hand-reserve").description,
+    imageUrl: officialOldFront
+      ? "/app/kanab-quest/card-fronts/heritage-003-main-prevoyante-producer-front-v6.webp"
+      : card.imageUrl,
+  };
+}
+
 export function resolveKqHeritageCard(input: {
   heritageCode?: string;
   heritageName?: string;
@@ -117,14 +141,23 @@ export function resolveKqHeritageCard(input: {
   if (!effect) return undefined;
   const template = getKqHeritageEffectTemplate(effect);
   const fallback = legacy?.effect === effect ? legacy : template;
+  // Saved runs retain their signed database identity. Only the rendered card
+  // aliases the old official recto; no run or heritage state is rewritten.
+  const presentation = getKqHeritagePresentationMetadata({
+    code: input.heritageCode,
+    effectCode: effect,
+    description: fallback.description,
+    imageUrl: input.heritageImageUrl ?? "",
+    producerName: input.heritageProducerName,
+  });
   return {
     code: input.heritageCode,
     name: input.heritageName?.trim() || fallback.name,
     timing: input.heritageTiming ?? fallback.timing,
     effect,
-    description: fallback.description,
+    description: presentation.description,
     ...(input.heritageProducerName ? { producerName: input.heritageProducerName } : {}),
-    ...(input.heritageImageUrl ? { imageUrl: input.heritageImageUrl } : {}),
+    ...(presentation.imageUrl ? { imageUrl: presentation.imageUrl } : {}),
   };
 }
 

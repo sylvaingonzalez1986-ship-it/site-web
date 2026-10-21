@@ -42,7 +42,7 @@ const progress = {
   seasonPoints: 87, reputation: 246, wins: 12, losses: 3, streak: 2,
   arenaExperience: 51, claimedChallengeCodes: [], leaderboardGeneratedAt: new Date().toISOString(),
 };
-const session = { activeRun: null, flowers: [], battles: [], progress, warnings: [], buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: [] } };
+const session = { activeRun: null, flowers: [], battles: [], progress, warnings: [], buddieRotation: { requiredDistinctBuddies: 2, recentBuddieCodes: [] } };
 const bootstrap = {
   collection: { ownerFound: true, collectionActive: true, inventory: { "BOTTE-003": 4, "BOTTE-017": 3 }, cards: [], cultureTokenBalance: 0 },
   ownedBuddieCodes: ["HH2026-003"], ownedBuddies: [{ code: "HH2026-003", ownedCopies: 2, imageUrl: "" }],

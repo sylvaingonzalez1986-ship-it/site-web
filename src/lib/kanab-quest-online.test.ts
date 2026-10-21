@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createKqOnlinePreview, estimateKqOnlineOffer, getKqOnlineAudience, getKqOnlinePriceAcceptance, getKqOnlineSatisfaction, getKqOnlineUpgradeCost, getKqOnlineSaleableHours, KQ_ONLINE_PACKAGING } from "./kanab-quest-online";
+import { createKqOnlinePreview, estimateKqOnlineOffer, getKqOnlineAudience, getKqOnlinePriceAcceptance, getKqOnlineSatisfaction, getKqOnlineUpgradeCost, getKqOnlineSaleableHours, getKqOnlineTierEligibility, KQ_ONLINE_PACKAGING, KQ_ONLINE_SITE_TIERS, type KqOnlineSiteTier } from "./kanab-quest-online";
 import { createKqBusinessPreview, isKqShopActive } from "./kanab-quest-business";
 import { quoteKqCommerce, type KqCommerceState, type KqCommerceStock } from "./kanab-quest-commerce";
 
@@ -103,6 +103,133 @@ describe("Progressive online commerce", () => {
     expect(isKqShopActive(business, now + 100 * 86400000)).toBe(true);
     business.shop.tier = "improved";
     expect(isKqShopActive(business, now)).toBe(false);
+  });
+});
+
+describe("Six successive online shop levels", () => {
+  function established() {
+    const online = createKqOnlinePreview(now);
+    online.site.tier = "pro";
+    online.stats.orders = 350;
+    online.confidence = 88;
+    online.followers = 300;
+    online.upgrades = { photography: true, branding: true };
+    return online;
+  }
+
+  it("preserves the original tariffs and introduces differential costs without repurchasing previous levels", () => {
+    expect(KQ_ONLINE_SITE_TIERS.map(tier => tier.level)).toEqual([1, 2, 3, 4, 5, 6]);
+    expect(KQ_ONLINE_SITE_TIERS.slice(0, 3).map(tier => [tier.code, tier.acquisitionCents, tier.monthlyCents,
+      tier.conversionMultiplier, tier.minimumOrders, tier.minimumConfidence, tier.minimumFollowers, tier.requiredUpgrades]))
+      .toEqual([["basic", 0, 0, 1, 0, 0, 0, []], ["improved", 90000, 3000, 1.25, 5, 45, 0, []], ["pro", 300000, 6000, 1.6, 30, 60, 0, []]]);
+    expect(KQ_ONLINE_SITE_TIERS.slice(1).map((tier, index) => getKqOnlineUpgradeCost(KQ_ONLINE_SITE_TIERS[index].code, tier.code)))
+      .toEqual([90000, 210000, 350000, 550000, 800000]);
+    expect(KQ_ONLINE_SITE_TIERS.map(tier => tier.monthlyCents)).toEqual([0, 3000, 6000, 11000, 18000, 28000]);
+  });
+
+  it("reports every concrete obstacle without modifying the snapshot", () => {
+    const online = established();
+    online.site.tier = "improved";
+    online.stats.orders = 79; online.confidence = 69; online.followers = 49;
+    online.upgrades.photography = false;
+    const before = structuredClone(online);
+    const eligibility = getKqOnlineTierEligibility(online, "studio", 559999);
+    expect(eligibility).toMatchObject({ allowed: false, costCents: 560000, nextTier: "pro" });
+    expect(eligibility.blockers).toEqual([
+      expect.objectContaining({ code: "sequence", actual: 2, required: 3 }),
+      expect.objectContaining({ code: "orders", actual: 79, required: 80 }),
+      expect.objectContaining({ code: "confidence", actual: 69, required: 70 }),
+      expect.objectContaining({ code: "followers", actual: 49, required: 50 }),
+      expect.objectContaining({ code: "upgrade", upgrade: "photography" }),
+      expect.objectContaining({ code: "cash", actual: 559999, required: 560000 }),
+    ]);
+    expect(online).toEqual(before);
+  });
+
+  it.each(KQ_ONLINE_SITE_TIERS.slice(1))("accepts exact thresholds and exact differential cash for $code", target => {
+    const online = established();
+    online.site.tier = KQ_ONLINE_SITE_TIERS[target.level - 2].code;
+    online.stats.orders = target.minimumOrders;
+    online.confidence = target.minimumConfidence;
+    online.followers = target.minimumFollowers;
+    online.upgrades = { photography: false, branding: false };
+    for (const code of target.requiredUpgrades) online.upgrades[code] = true;
+    const costCents = getKqOnlineUpgradeCost(online.site.tier, target.code);
+    expect(getKqOnlineTierEligibility(online, target.code, costCents))
+      .toEqual({ allowed: true, costCents, nextTier: target.code, blockers: [] });
+    expect(getKqOnlineTierEligibility(online, target.code, costCents - 1).blockers.map(blocker => blocker.code)).toEqual(["cash"]);
+  });
+
+  it("allows only the immediately following level even with abundant money and established demand", () => {
+    const online = established();
+    for (const target of ["basic", "improved", "pro", "signature", "flagship"] as const) {
+      const result = getKqOnlineTierEligibility(online, target, 20_000_000);
+      expect(result.allowed).toBe(false);
+      expect(result.blockers.map(blocker => blocker.code)).toEqual(["sequence"]);
+    }
+    online.site.tier = "flagship";
+    expect(getKqOnlineTierEligibility(online, "flagship", 20_000_000)).toMatchObject({ allowed: false, nextTier: null });
+  });
+
+  it("keeps historical pro snapshots readable while requiring declared availability for new purchases", () => {
+    const online = established();
+    delete online.site.maxLevel;
+    expect(getKqOnlineTierEligibility(online, "studio", 350000).blockers.map(blocker => blocker.code)).toEqual(["unavailable"]);
+    expect(forecast({ online }).ordersPerDay).toBeGreaterThan(0);
+    online.site.tier = "improved";
+    expect(getKqOnlineTierEligibility(online, "pro", 210000).allowed).toBe(true);
+    online.site.maxLevel = 4;
+    online.site.tier = "pro";
+    expect(getKqOnlineTierEligibility(online, "studio", 350000).allowed).toBe(true);
+    expect(createKqOnlinePreview(now).site.maxLevel).toBe(6);
+  });
+
+  it.each([NaN, Infinity, -1, 1.5])("blocks malformed counts or money (%s) instead of treating them as sufficient", invalid => {
+    const online = established();
+    online.stats.orders = invalid; online.followers = invalid;
+    const result = getKqOnlineTierEligibility(online, "studio", invalid);
+    expect(result.allowed).toBe(false);
+    expect(result.blockers).toEqual([
+      expect.objectContaining({ code: "orders", actual: null }),
+      expect.objectContaining({ code: "followers", actual: null }),
+      expect.objectContaining({ code: "cash", actual: null }),
+    ]);
+  });
+
+  it.each([NaN, Infinity, -1, 101])("blocks invalid confidence (%s)", confidence => {
+    const online = established(); online.confidence = confidence;
+    expect(getKqOnlineTierEligibility(online, "studio", 350000).blockers)
+      .toEqual([expect.objectContaining({ code: "confidence", actual: null })]);
+  });
+
+  it("does not silently interpret unknown tiers or non-finite availability as a basic site", () => {
+    const online = established();
+    expect(getKqOnlineTierEligibility(online, "unknown" as KqOnlineSiteTier, 350000))
+      .toMatchObject({ allowed: false, costCents: null, blockers: [{ code: "tier" }] });
+    online.site.maxLevel = Infinity;
+    expect(getKqOnlineTierEligibility(online, "studio", 350000).blockers.map(blocker => blocker.code)).toEqual(["unavailable"]);
+    online.site.tier = "unknown" as KqOnlineSiteTier;
+    expect(getKqOnlineTierEligibility(online, "studio", 350000)).toMatchObject({ allowed: false, nextTier: null, costCents: null });
+  });
+
+  it.each(KQ_ONLINE_SITE_TIERS)("changes only conversion for $code, without creating traffic, quality or a guaranteed order", tier => {
+    const online = established();
+    online.site.tier = "basic";
+    const baseline = forecast({ online });
+    online.site.tier = tier.code;
+    const before = structuredClone(online);
+    const offer = forecast({ online });
+    expect(offer.ordersPerDay).toBeCloseTo(baseline.ordersPerDay * tier.conversionMultiplier, 8);
+    expect(offer.visitorsPerDay).toBe(baseline.visitorsPerDay);
+    expect(offer.referencePacketPriceCents).toBe(baseline.referencePacketPriceCents);
+    expect(offer.satisfaction).toBe(baseline.satisfaction);
+    expect(offer.feeCents).toBe(baseline.feeCents);
+    expect(forecast({ online, quality: 5.79 }).ordersPerDay).toBe(0);
+    expect(forecast({ online, packetPriceCents: 1_000_000 }).ordersPerDay).toBe(0);
+    online.site.active = false;
+    expect(forecast({ online }).ordersPerDay).toBe(0);
+    online.site.active = true;
+    expect(online).toEqual(before);
   });
 });
 

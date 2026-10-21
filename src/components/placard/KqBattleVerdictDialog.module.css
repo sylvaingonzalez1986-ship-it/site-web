@@ -1,7 +1,7 @@
 .dialog { width: min(640px, calc(100vw - 24px)); color: #172923; font-family: var(--font-body),sans-serif; }
 .dialog[data-victory] { box-shadow: 6px 7px 0 #efc451; }
 .body { padding: 18px; }
-.hero { display: flex; align-items: center; gap: 12px; padding: 14px; border: 2px solid #172923; border-radius: 12px; background: #f4dfd5; }
+.hero { display: flex; align-items: center; gap: 12px; padding: 14px; border: 2px solid #172923; border-radius: 12px; background: var(--game-surface-warm); }
 .hero[data-won=true] { background: #dcefe4; }
 .hero > div { min-width: 0; }
 .emblem { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; }
@@ -19,6 +19,9 @@
 .gains dt svg { flex: none; }
 .gains dd { margin: 7px 0 0; font: 900 30px/1 var(--font-display),Impact,sans-serif; }
 .reward { margin: 8px 0 0; font-size: 12px; font-weight: 700; }
+.takeaway { margin-top: 12px; padding: 12px; border-left: 4px solid #076c61; border-radius: 4px 10px 10px 4px; background: #edf3e9; overflow-wrap: anywhere; }
+.takeaway h3 { margin: 0; font-size: 14px; line-height: 1.35; font-weight: 750; }
+.takeaway p { margin: 6px 0 0; font-size: 12px; line-height: 1.5; }
 .rank { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin: 12px 0 0; padding: 12px 0; border-block: 1px solid #17292333; }
 .rank dt { font-size: 11px; color: #536058; }
 .rank dd { margin: 4px 0 0; font-weight: 700; font-size: 16px; }
@@ -42,7 +45,7 @@
 .card img { width: 100px; height: auto; flex: none; object-fit: contain; }
 .card > div { min-width: 0; overflow-wrap: anywhere; }
 .receipt { margin: 12px 0 0; color: #536058; font-size: 10px; line-height: 1.5; }
-.dialog .continue { width: 100%; min-height: 46px; padding: 10px 16px; border: 2px solid #172923; border-radius: 10px; background: #efc451; box-shadow: 2px 3px 0 #172923; color: #172923; font: 800 20px/1.2 var(--font-display),Impact,sans-serif; text-transform: uppercase; cursor: pointer; }
+.dialog .continue { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 46px; padding: 10px 16px; border: 2px solid #172923; border-radius: 10px; background: #efc451; box-shadow: 2px 3px 0 #172923; color: #172923; font: 800 20px/1.2 var(--font-display),Impact,sans-serif; text-align: center; text-decoration: none; text-transform: uppercase; cursor: pointer; }
 @media(max-width:400px) {
   .body { padding: 12px; }
   .hero { gap: 8px; padding: 10px; }

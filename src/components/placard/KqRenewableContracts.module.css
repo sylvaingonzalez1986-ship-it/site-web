@@ -1,0 +1,47 @@
+.board { margin-block: 16px; min-width: 0; padding: 20px; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; color: #172923; font-family: var(--font-body), Arial, sans-serif; }
+.header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
+.header h3 { margin: 2px 0 5px; font: 900 clamp(26px, 4vw, 36px)/1.1 var(--font-display), Impact, sans-serif; }
+.header p { margin: 0; font-size: 13px; line-height: 1.5; }
+.header .eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: #076c61; font-weight: 800; }
+.prize, .count { flex-shrink: 0; text-align: right; font: 900 30px/1.1 var(--font-display), Impact, sans-serif; }
+.prize small, .count small { display: block; max-width: 100px; margin-top: 4px; font: 600 11px/1.4 var(--font-body), Arial, sans-serif; }
+.offers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.offer { display: flex; flex-direction: column; min-width: 0; padding: 16px; border: 1px solid #17292365; border-radius: 12px; background: #fff1d6; }
+.offerTop { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #076c61; }
+.offerTop strong { color: #172923; text-align: right; font: 900 30px/1.1 var(--font-display), Impact, sans-serif; }
+.offerTop small { display: block; margin-top: 3px; font: 500 10px/1.4 var(--font-body), Arial, sans-serif; }
+.offer h4 { margin: 16px 0 3px; font: 900 25px/1.15 var(--font-display), Impact, sans-serif; }
+.offer p { margin: 0; }
+.offer .approach { min-height: 36px; color: #43594c; font-size: 12px; line-height: 1.5; }
+.offer .target { margin-top: 16px; font-size: 13px; line-height: 1.5; }
+.target b { font-size: 22px; }
+.offer .rule { padding-block: 8px 12px; font-size: 12px; font-weight: 750; line-height: 1.5; }
+.board .hint { font-size: 12px; line-height: 1.6; color: #43594c; }
+.offer .hint { flex: 1; padding-bottom: 16px; }
+.board button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; padding: 10px 12px; border: 2px solid #172923; border-radius: 10px; background: #efc451; color: #172923; font: 750 12px/1.5 var(--font-body), Arial, sans-serif; cursor: pointer; }
+.board button:hover:not(:disabled) { background: var(--game-surface-warm); }
+.board button svg { flex-shrink: 0; }
+.board button:disabled { opacity: .55; cursor: default; }
+.board .secondary { background: transparent; }
+.board :where(button, summary):focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.attempt > p { font-size: 14px; line-height: 1.65; }
+.cardCount { font-variant-numeric: tabular-nums; }
+.cardCount[data-limit-exceeded], .error { color: #8b3321; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.receipt { display: flex; align-items: center; gap: 14px; margin-block: 16px; padding: 16px; border: 2px solid #172923; border-radius: 12px; background: #efc451; }
+.receipt > svg { flex-shrink: 0; }
+.receipt > div { min-width: 0; }
+.receipt strong { font: 900 28px/1.2 var(--font-display), Impact, sans-serif; }
+.receipt p { margin: 5px 0 0; font-size: 12px; line-height: 1.6; }
+.receipt > svg:last-child { margin-left: auto; }
+.receipt[data-receipt-fresh] > svg:first-child { animation: contract-stamp 450ms ease-out both; }
+@keyframes contract-stamp { from { opacity: 0; transform: rotate(-15deg) scale(1.2); } to { opacity: 1; transform: none; } }
+.result { padding: 12px; border-left: 4px solid #172923; background: var(--game-surface-warm); font-size: 13px; line-height: 1.6; }
+.rules { margin-top: 18px; border-top: 1px solid #17292340; font-size: 12px; line-height: 1.65; }
+.rules summary { display: flex; align-items: center; gap: 8px; min-height: 44px; cursor: pointer; font-weight: 750; list-style: none; }
+.rules summary::-webkit-details-marker { display: none; }
+.rules[open] summary svg { transform: rotate(180deg); }
+.rules p { margin: 5px 0 12px; max-width: 90ch; }
+@media (max-width: 760px) { .offers { grid-template-columns: 1fr; } .offer .approach { min-height: 0; } .offer h4 { margin-top: 8px; } .offer .target { margin-top: 8px; } }
+@media (max-width: 480px) { .board { padding: 14px; } .header { align-items: flex-start; gap: 10px; } .header h3 { font-size: 27px; } .count, .prize { font-size: 26px; } .count small { max-width: 65px; } .receipt { gap: 10px; padding: 12px; } .receipt > svg:last-child { display: none; } .actions button { width: 100%; } }
+@media (prefers-reduced-motion: reduce) { .receipt[data-receipt-fresh] > svg:first-child { animation: none; } }

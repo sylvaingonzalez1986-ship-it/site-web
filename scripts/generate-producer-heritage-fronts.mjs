@@ -4,7 +4,7 @@ import path from "node:path";
 import sharp from "sharp";
 import { createServer } from "vite";
 
-// Usage: node scripts/generate-producer-heritage-fronts.mjs [manifest.json] [--check]
+// Usage: node scripts/generate-producer-heritage-fronts.mjs [manifest.json] [--check] [--no-review]
 // --check validates the live effect templates and all text without requiring art
 // or writing files. Normal generation preflights every illustration first.
 const ROOT = process.cwd();
@@ -14,9 +14,10 @@ const INK = "#233628";
 const GOLD = "#e4bd51";
 const PAPER = "#fff8e8";
 const CHECK_ONLY = process.argv.includes("--check");
-const arguments_ = process.argv.slice(2).filter((argument) => argument !== "--check");
+const NO_REVIEW = process.argv.includes("--no-review");
+const arguments_ = process.argv.slice(2).filter((argument) => !["--check", "--no-review"].includes(argument));
 if (arguments_.length > 1 || arguments_.some((argument) => argument.startsWith("--"))) {
-  throw new Error("Usage : node scripts/generate-producer-heritage-fronts.mjs [manifest.json] [--check]");
+  throw new Error("Usage : node scripts/generate-producer-heritage-fronts.mjs [manifest.json] [--check] [--no-review]");
 }
 const manifestPath = path.resolve(ROOT, arguments_[0] ?? "src/data/producer-heritage-cards.json");
 const manifest = JSON.parse((await readFile(manifestPath, "utf8")).replace(/^\uFEFF/, ""));
@@ -272,6 +273,6 @@ if (CHECK_ONLY) {
     await sharp(png).webp({ quality: 91, effort: 5 }).toFile(outputPath);
     console.log(`${card.code} · ${card.producerName} → ${card.frontUrl}`);
   }
-  await writeReview(prepared);
+  if (!NO_REVIEW) await writeReview(prepared);
   console.log(`${prepared.length} rectos Héritage générés (${WIDTH} × ${HEIGHT}).`);
 }

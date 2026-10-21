@@ -1,5 +1,6 @@
 import { KQ_ACTIVE_CARDS, isKqCultureDead } from './kanab-quest-game';
 import { getKqCardArtwork } from './kanab-quest-artwork';
+import { KQ_BUDDIE_ROTATION_REQUIRED } from './kanab-quest-buddie-rotation';
 import { getKqWarehouseQuote, getKqWarehouseSummary, isKqWarehouseState } from './kanab-quest-warehouse';
 import { applyKqReleveProductionAction, type KqReleveProductionState } from './kanab-quest-releve-production';
 
@@ -8,7 +9,7 @@ export type ReleveProductionStore = { getState: () => KqReleveProductionState; s
 export function getReleveNativeCollection(state: KqReleveProductionState) {
   return {
     ownedBuddieCodes: state.ownedBuddies,
-    buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: state.recentBuddieCodes },
+    buddieRotation: { requiredDistinctBuddies: KQ_BUDDIE_ROTATION_REQUIRED, recentBuddieCodes: state.recentBuddieCodes },
     collection: {
       ownerFound: true, collectionActive: true, cultureTokenBalance: 0,
       inventory: state.supportInventory, availableInventory: state.supportInventory,

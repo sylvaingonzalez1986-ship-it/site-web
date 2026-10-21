@@ -10,6 +10,7 @@
 .wallet small { display: block; margin-bottom: 3px; color: #35473a; font-size: 10px; }
 .wallet strong { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .mapTools { display: flex; align-items: center; gap: 8px; }
+.soundButton { flex-shrink: 0; }
 .zoomButton, .help summary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 9px 12px; border: 2px solid #172923; border-radius: 13px; background: #fffbef; color: #172923; box-shadow: 2px 2px 0 #172923; font: 700 12px var(--font-body), sans-serif; cursor: pointer; list-style: none; }
 .zoomButton[aria-pressed=true], .help[open] summary { background: #149b8b; }
 .help summary::-webkit-details-marker { display: none; }
@@ -28,15 +29,20 @@
 .buildingLight[data-active] { opacity: 1; }
 .litImage { filter: brightness(1.12) saturate(1.12); }
 .silhouette { fill: #ffe6a51c; stroke: #fff0b9; stroke-width: 2; stroke-linejoin: round; filter: drop-shadow(0 0 3px #ffe385) drop-shadow(0 0 7px #ffd76c99); }
+.activityLayer { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
 .building { position: absolute; z-index: 2; border: 0; padding: 0; overflow: visible; background: transparent; color: #143b2c; pointer-events: none; -webkit-tap-highlight-color: transparent; }
 .buildingHitArea { position: absolute; inset: 0; display: block; clip-path: var(--silhouette); cursor: pointer; pointer-events: auto; }
 .buildingLabel { position: absolute; z-index: 1; left: var(--label-x); top: var(--label-y); transform: translate(-50%, -50%); display: grid; align-content: center; gap: 3px; width: max-content; min-width: 44px; min-height: 44px; box-sizing: border-box; padding: 9px 12px; border: 1px solid #172923; border-radius: 12px; background: #fff1d6; color: #172923; box-shadow: inset 0 0 0 1px #172923, 3px 3px 0 #172923; transition: background 160ms ease; cursor: pointer; pointer-events: auto; }
 .buildingName { display: flex; align-items: center; justify-content: center; gap: 6px; font-size: clamp(11px, 1.05vw, 14px); font-weight: 800; line-height: 1.25; white-space: nowrap; }
 .buildingName > svg { flex-shrink: 0; }
-.buildingStatus { font-size: 10px; font-weight: 500; text-align: center; color: #40554b; white-space: nowrap; }
+.buildingStatus { font-size: 10px; font-weight: 600; line-height: 1.4; text-align: center; color: #40554b; white-space: nowrap; }
+.building[data-map-state="active"] .buildingLabel { background: #076c61; color: #fff8e7; }
+.building[data-map-state="active"] .buildingStatus { color: #fff1d6; }
+.building[data-map-state="active"] .recommendation { background: #efc451; }
 .recommendation, .legend i { width: 6px; height: 6px; flex-shrink: 0; border-radius: 50%; background: #149b8b; box-shadow: 0 0 0 2px #172923; }
 .building[data-selected], .building[data-highlighted], .building:focus-visible { z-index: 3; }
 .building[data-selected] .buildingLabel, .building[data-highlighted] .buildingLabel { background: #efc451; }
+.building:is([data-selected], [data-highlighted]) .buildingLabel, .building:is([data-selected], [data-highlighted]) .buildingStatus { color: #172923; }
 .mapFoot { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px 16px; min-height: 43px; padding: 9px 18px; border-top: 2px solid #172923; color: #40554b; background: #fff1d6; font-size: 11px; }
 .mapFoot > span { display: inline-flex; align-items: center; gap: 7px; }
 .details { padding: 18px 22px 22px; border-top: 2px solid #172923; background: var(--game-surface-warm); scroll-margin-block: 90px; }
@@ -55,7 +61,7 @@
 .world .building:focus-visible { outline: none; box-shadow: none; }
 .building:focus-visible .buildingLabel { outline: 3px solid #164c36; outline-offset: 3px; box-shadow: 0 0 0 6px #fffaf1; }
 .details:focus { outline: none; }
-@media (hover: hover) { .building:hover .buildingLabel { background: #ffedab; } .zoomButton:hover, .help summary:hover, .closePanel:hover { background: #efc451; } .actions button:hover { background: #149b8b; } }
+@media (hover: hover) { .building:hover .buildingLabel { background: #ffedab; color: #172923; } .building:hover .buildingStatus { color: #172923; } .zoomButton:hover, .help summary:hover, .closePanel:hover { background: #efc451; } .actions button:hover { background: #149b8b; } }
 @media (max-width: 1000px) { .mapHeading { gap: 14px 18px; padding: 18px; } .wallet { gap: 15px; } .mapTools { width: 100%; justify-content: flex-end; margin-top: -4px; } .actions { grid-template-columns: 1fr; } .actions button { min-height: 58px; } }
 @media (max-width: 700px) {
   .world { border-radius: 18px; box-shadow: 3px 3px 0 #172923; }
@@ -76,15 +82,21 @@
   .buildingLabel { gap: 0; padding: 7px 6px; border-radius: 6px; }
   .buildingName { gap: 3px; font-size: 10px; }
   .buildingName > svg { display: none; }
-  .buildingStatus { display: none; }
+  .buildingStatus { display: block; padding: 2px 5px; font-size: 10px; line-height: 1.3; white-space: normal; overflow-wrap: anywhere; max-width: 108px; }
   .world:not([data-map-zoomed]) .buildingLabel { padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
   .world:not([data-map-zoomed]) .buildingName { box-sizing: border-box; min-height: 24px; padding: 4px 6px; border: 1px solid #172923; border-radius: 6px; background: #fff1d6; box-shadow: inset 0 0 0 1px #172923, 2px 2px 0 #172923; transition: background 160ms ease; }
+  .world:not([data-map-zoomed]) .building[data-map-state="active"] .buildingName { border-radius: 6px 6px 0 0; background: #076c61; color: #fff8e7; }
+  .world:not([data-map-zoomed]) .buildingStatus { margin-top: -1px; border: 1px solid #172923; border-top: 0; border-radius: 0 0 5px 5px; background: #fff1d6; color: #40554b; box-shadow: 2px 2px 0 #172923; }
+  .world:not([data-map-zoomed]) .building[data-map-state="active"] .buildingStatus { background: #076c61; color: #fff1d6; }
+  .world:not([data-map-zoomed]) .building[data-map-state="idle"] .buildingName { border-radius: 6px 6px 0 0; }
   .world:not([data-map-zoomed]) .building:is([data-selected], [data-highlighted]) .buildingName { background: #efc451; }
+  .world:not([data-map-zoomed]) .building:is([data-selected], [data-highlighted]) .buildingName { color: #172923; }
   .world:not([data-map-zoomed]) .building:focus-visible .buildingLabel { outline: none; box-shadow: none; }
   .world:not([data-map-zoomed]) .building:focus-visible .buildingName { outline: 3px solid #164c36; outline-offset: 3px; box-shadow: 0 0 0 6px #fffaf1; }
   .world[data-map-zoomed] .buildingLabel { padding: 9px 12px; gap: 3px; }
   .world[data-map-zoomed] .buildingName { font-size: 13px; gap: 6px; }
   .world[data-map-zoomed] .buildingName > svg, .world[data-map-zoomed] .buildingStatus { display: block; }
+  .world[data-map-zoomed] .buildingStatus { padding: 0; max-width: none; font-size: 11px; }
   .mapFoot { justify-content: center; min-height: 40px; padding: 9px; font-size: 10px; }
   .mapFoot .legend { display: none; }
   .details { padding: 15px 12px; }
@@ -92,5 +104,5 @@
   .actions button > span { font-size: 12px; }
   .actions small { font-size: 11px; }
 }
-@media (max-width: 700px) and (hover: hover) { .world:not([data-map-zoomed]) .building:hover .buildingName { background: #ffedab; } }
+@media (max-width: 700px) and (hover: hover) { .world:not([data-map-zoomed]) .building:hover .buildingName { background: #ffedab; color: #172923; } }
 @media (prefers-reduced-motion: reduce) { .world *, .world *::before { transition: none; scroll-behavior: auto; } }

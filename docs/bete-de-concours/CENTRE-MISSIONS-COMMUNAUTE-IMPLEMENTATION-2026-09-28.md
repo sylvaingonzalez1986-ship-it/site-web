@@ -11,7 +11,15 @@ Implémentation du 28 septembre 2026, après validation du parcours par capture 
 - La validation attribue le gain automatiquement. Types configurables : packs Buddies, points fidélité, packs La Botte de trois cartes, un Buddy défini par l’admin, argent virtuel du Placard. Les gains vont dans leurs collections/soldes respectifs.
 - La file admin contient tous les dossiers encore ouverts et les 300 dernières décisions. Le catalogue et les réglages existants du parrainage ont leurs propres onglets.
 
-Les nouvelles missions sont créées en brouillon par défaut. La migration prépare « Ta Fleur entre dans l’Arène », désactivée, avec un pack La Botte. Les anciennes missions et leurs acquis sont conservés. Aucune nouvelle campagne de follow ou post rémunéré n’est activée. Les captures restent des preuves à vérifier humainement : aucune détection automatique de fraude ou preuve d’identité sociale n’est annoncée.
+Les nouvelles missions créées dans l’admin sont en brouillon par défaut. La migration du 28 septembre prépare « Ta Fleur entre dans l’Arène », désactivée, avec un pack La Botte. Les anciennes missions et leurs acquis sont conservés. Les captures restent des preuves à vérifier humainement : aucune détection automatique de fraude ou preuve d’identité sociale n’est annoncée.
+
+### Ajout du 19 octobre 2026 : « Ton entrepôt sur X »
+
+La migration `20261019000200_warehouse_twitter_mission.sql` ajoute une mission active au catalogue existant : publier sur X (Twitter) une capture de son entrepôt du jeu, puis joindre au centre de missions une capture du **post publié** montrant le pseudo, le texte et l’image de l’entrepôt. Une capture de l’entrepôt seul ne suffit pas ; le lien HTTPS du post reste facultatif. Le joueur précise son pseudo de jeu dans le message pour l’équipe.
+
+Le gain est de **1 pack Buddies, une seule fois par compte, après validation de l’équipe**. La mission réutilise le dépôt privé, les corrections, la revue admin, le plafond par compte et les reçus transactionnels existants. Elle apparaît dans l’onglet Communauté du centre de missions et dans les missions du compte ; après validation, « Retrouver mon gain » conduit à la collection pour ouvrir le pack. L’icône appareil photo existante est conservée. Il n’y a aucune publication automatique ni connexion à X.
+
+La migration est appliquée sur Supabase le 19 octobre 2026. Le contrôle distant en lecture seule confirme la mission active, le gain d'un pack, la preuve obligatoire et le plafond d'une validation par compte. Le code du site n'a pas été déployé dans cette opération. Les résultats sont conservés dans `output/game-ux-migrations-2026-10-19/verification.json`. Un rejeu conserve les éventuelles modifications apportées à cette mission par l’admin. Cette mission facultative ne remplace pas une solution à la rotation des Buddies : une preuve refusée ou encore en attente ne doit pas empêcher de continuer le jeu.
 
 ## Garanties et permissions
 
@@ -27,7 +35,7 @@ Les routes exigent la session adaptée, la même origine pour les mutations, des
 
 Le test PostgreSQL utilise PGlite 0.5.8 dans les outils locaux isolés : `npm install --prefix output/reputation-test-tools --no-save @electric-sql/pglite@0.5.8`. Cette dépendance de recette n’est pas incluse dans l’application déployée.
 
-- `node scripts/test-community-missions.mjs` : intégration PostgreSQL via PGlite, cinq types de gains, rejeu, snapshots, correction avec ou sans nouveau fichier, révision périmée, anciens dossiers, limites, rollback et droits.
+- `node scripts/test-community-missions.mjs` : intégration PostgreSQL via PGlite, cinq types de gains, rejeu, snapshots, correction avec ou sans nouveau fichier, révision périmée, anciens dossiers, limites, rollback et droits. Inclut la mission entrepôt sur X : seed idempotent, capture obligatoire, dépôt sans URL, refus sans gain, nouvelle preuve, attribution unique et limite d’une récompense par compte.
 - Tests Vitest des routes, de l’encodage des preuves et de la suppression du compte.
 - `node scripts/audit-community-missions.mjs` : composants joueurs réels avec données locales de démonstration, 320/390/768/1440 px, clavier, erreurs, reprise, historique, correction et ancien défi La Botte.
 - `node scripts/audit-admin-community-missions.mjs` : composants admin réels avec API simulée, quatre largeurs, message de correction obligatoire, clé de reprise conservée, double clic, révision, sélection Buddy et conversion des euros virtuels en centimes.

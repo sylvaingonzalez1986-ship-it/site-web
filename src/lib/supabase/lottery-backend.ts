@@ -1689,6 +1689,9 @@ export async function claimWelcomePackInSupabase(userId: string): Promise<{ gran
     if (message.includes("customer_not_found")) {
       throw new Error("Client introuvable.");
     }
+    if (message.includes("starter_buddies_unavailable")) {
+      throw new Error("Le pack de départ est momentanément indisponible. Ton droit au pack est conservé.");
+    }
     throw new Error(`[supabase:rpc_claim_welcome_pack] ${message}`);
   }
 
@@ -2516,6 +2519,9 @@ export async function scratchLotteryTicketInSupabase(input: {
     const message = result.error.message || "Erreur grattage.";
     if (message.includes("ticket_not_found_or_already_scratched")) {
       throw new Error("ticket_not_found_or_already_scratched");
+    }
+    if (message.includes("starter_buddies_unavailable")) {
+      throw new Error("Le pack de départ est momentanément indisponible. Ton pack reste disponible pour une prochaine tentative.");
     }
     throw new Error(`[supabase:rpc_scratch_ticket] ${message}`);
   }

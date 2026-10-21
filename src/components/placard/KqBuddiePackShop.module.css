@@ -27,6 +27,10 @@
 .ready > span > strong { font-size: 21px; font-variant-numeric: tabular-nums; }
 .open { background: #149b8b; }
 .welcome { align-self: start; background: #fffaf0; font-size: 12px; }
+.welcomeOffer { display: grid; gap: 12px; padding: 14px; border: 2px solid #172923; border-radius: 16px; background: var(--game-surface-warm); }
+.welcomeOffer strong { font-size: 15px; }
+.welcomeOffer p { margin: 5px 0 0; font-size: 12px; line-height: 1.6; }
+.welcomeOffer svg { flex-shrink: 0; }
 .verification { padding: 12px; border: 2px solid #172923; border-radius: 13px; background: #f5dfa4; }
 .verification p { margin: 0 0 10px; font-size: 12px; line-height: 1.5; }
 .verification button { background: #fff1d6; font-size: 12px; }

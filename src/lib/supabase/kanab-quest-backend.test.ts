@@ -1,9 +1,12 @@
-import { describe, expect, it } from "vitest";
-import { applyKqRunAction, buildKqLaunchReadiness, buildKqNotebookRewardPreview, countKqInventoryCopies, getKqRandomTrainingBotCode, isKqFinalArtworkUrl, mapKqCardBurnResult, mapKqChallengeClaimKeys, mapKqPlayerCoreSnapshot, mapKqSeasonRolloverPreview, mapKqStartRunResult, prepareKqCardPlay } from "@/lib/supabase/kanab-quest-backend";
-import { KQ_ACTIVE_CARDS, KQ_CARDS, startKqGame } from "@/lib/kanab-quest-game";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+import { applyKqPlayerRunAction, applyKqRunAction, buildKqLaunchReadiness, buildKqNotebookRewardPreview, countKqInventoryCopies, getKqRandomTrainingBotCode, isKqFinalArtworkUrl, mapKqCardBurnResult, mapKqChallengeClaimKeys, mapKqPlayerCoreSnapshot, mapKqSeasonRolloverPreview, mapKqStartRunResult, prepareKqCardPlay, startKqPlayerRun } from "@/lib/supabase/kanab-quest-backend";
+import { KQ_ACTIVE_CARDS, startKqGame, type KqGameState } from "@/lib/kanab-quest-game";
 import { KQ_EQUIPMENT_CATALOG } from "@/lib/kanab-quest-equipment";
 import { KQ_HERITAGE_EFFECTS } from "@/lib/kanab-quest-heritage";
 import { getKqLaunchDossier, KQ_LAUNCH_ODDS_VERSION } from "@/lib/kanab-quest-launch-approvals";
+
+const database = vi.hoisted(() => ({ rpc: vi.fn(), from: vi.fn() }));
+vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => database }));
 
 const APPROVED_LAUNCH_DECISIONS = {
   seasonCalendarApproved: true,
@@ -427,19 +430,136 @@ describe("Kanab Quest Supabase inventory mapping", () => {
   });
 
   it("validates Main prévoyante exchanges on the trusted server engine", () => {
-    const supportCodes = KQ_CARDS
+    const supportCodes = KQ_ACTIVE_CARDS
       .filter((card) => card.category !== "substrate" && card.category !== "pbi")
-      .slice(0, 8)
+      .slice(0, 13)
       .map((card) => card.code);
     const state = startKqGame(44, {
       heritageCode: "HERITAGE-003",
       deckCodes: ["BOTTE-001", ...supportCodes],
     });
-    const firstHandCard = state.handCodes?.[0];
+    expect(state.handCodes).toHaveLength(10);
+    expect(state.heritageReserveCodes).toHaveLength(3);
+    const lastHandCard = state.handCodes?.[9];
     const firstReserveCard = state.heritageReserveCodes?.[0];
-    const swapped = applyKqRunAction(state, "heritage-swap", { handIndex: 0, reserveIndex: 0 });
-    expect(swapped.handCodes?.[0]).toBe(firstReserveCard);
-    expect(swapped.heritageReserveCodes?.[0]).toBe(firstHandCard);
+    const swapped = applyKqRunAction(state, "heritage-swap", { handIndex: 9, reserveIndex: 0 });
+    expect(swapped.handCodes).toHaveLength(10);
+    expect(swapped.heritageReserveCodes).toHaveLength(3);
+    expect(swapped.handCodes?.[9]).toBe(firstReserveCard);
+    expect(swapped.heritageReserveCodes?.[0]).toBe(lastHandCard);
+    expect(swapped.usedCards).toEqual(state.usedCards);
+    expect([...swapped.handCodes!, ...swapped.heritageReserveCodes!].sort())
+      .toEqual([...state.handCodes!, ...state.heritageReserveCodes!].sort());
+    expect(() => applyKqRunAction(state, "heritage-swap", { handIndex: 10, reserveIndex: 0 })).toThrow("pas disponible");
     expect(() => applyKqRunAction(state, "heritage-swap", { handIndex: 99, reserveIndex: 0 })).toThrow("pas disponible");
+  });
+});
+
+describe("ten-card hands through server run actions", () => {
+  const owner = "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa";
+  const runId = "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb";
+  const requestKey = "cccccccc-cccc-4ccc-8ccc-cccccccccccc";
+  const updatedAt = "2026-10-20T12:00:00.000Z";
+  const support = KQ_ACTIVE_CARDS.filter(card => card.category !== "substrate" && card.category !== "pbi").slice(0, 13).map(card => card.code);
+  const initial = () => startKqGame(44, { varietyCode: "HH2026-002", deckCodes: support });
+  const persisted = (state: KqGameState) => {
+    database.from.mockImplementation(() => ({
+      select: vi.fn().mockReturnThis(),
+      eq: vi.fn().mockReturnThis(),
+      maybeSingle: vi.fn().mockResolvedValue({ data: { state, status: "active", updated_at: updatedAt }, error: null }),
+    }));
+    database.rpc.mockImplementation(async (_name: string, args: { p_next_state: KqGameState }) => ({
+      data: { state: args.p_next_state, flower: null }, error: null,
+    }));
+  };
+
+  beforeEach(() => vi.clearAllMocks());
+
+  it("returns all ten persisted cards on a retried server launch without a second draw", async () => {
+    const state = initial();
+    database.rpc.mockResolvedValueOnce({ data: {
+      run: { id: runId, state }, freeSubstrate: true, burnReceipt: null, replayed: true,
+    }, error: null });
+    database.from.mockImplementation(() => ({
+      select: vi.fn().mockReturnThis(), eq: vi.fn().mockReturnThis(),
+      maybeSingle: vi.fn().mockResolvedValue({ data: { recent_buddie_codes: [state.varietyCode] }, error: null }),
+    }));
+    const result = await startKqPlayerRun(owner, { zoneId: "starter", requestKey, buddieCode: state.varietyCode, deckCodes: support });
+    expect(result.state.handCodes).toHaveLength(10);
+    expect(result.state.handCodes).toEqual(state.handCodes);
+    expect(result.replayed).toBe(true);
+    expect(database.rpc).toHaveBeenCalledTimes(1);
+    expect(database.rpc).toHaveBeenCalledWith("rpc_kq_zone_run_receipt", expect.objectContaining({ p_user_id: owner, p_request_key: requestKey }));
+  });
+
+  it("redraws a stored five-card hand to ten without changing XP, stock or played copies", async () => {
+    const state = initial();
+    state.handCodes = state.handCodes!.slice(0, 5);
+    persisted(state);
+    const result = await applyKqPlayerRunAction(owner, runId, "redraw");
+    expect(result.state.handCodes).toHaveLength(10);
+    expect(result.state.handRedrawsUsed).toBe(1);
+    expect(result.state.xp).toBe(state.xp);
+    expect(result.state.deckCodes).toEqual(state.deckCodes);
+    expect(result.state.usedCards).toEqual(state.usedCards);
+    expect(database.rpc).toHaveBeenCalledWith("rpc_kq_update_run_state", expect.objectContaining({
+      p_user_id: owner, p_run_id: runId, p_expected_updated_at: updatedAt, p_action: "redraw",
+    }));
+  });
+
+  it("rejects a pointless redraw before writing or consuming its allowance", async () => {
+    const state = startKqGame(44, { deckCodes: support.slice(0, 10) });
+    const before = structuredClone(state);
+    persisted(state);
+    await expect(applyKqPlayerRunAction(owner, runId, "redraw")).rejects.toThrow("pas disponible");
+    expect(database.rpc).not.toHaveBeenCalled();
+    expect(state).toEqual(before);
+    expect(state.handRedrawsUsed).toBe(0);
+  });
+
+  it("preserves a historical five-card hand when only the dice are rolled", async () => {
+    const state = initial();
+    state.handCodes = state.handCodes!.slice(0, 5);
+    persisted(state);
+    const result = await applyKqPlayerRunAction(owner, runId, "roll");
+    expect(result.state.handCodes).toEqual(state.handCodes);
+    expect(result.state.handCodes).toHaveLength(5);
+  });
+
+  it("draws ten at the next stage through the saved-state server path", async () => {
+    const state = applyKqRunAction({ ...initial(), phase: "rolled", dice: [6, 6, 6] }, "resolve");
+    state.handCodes = state.handCodes!.slice(0, 5);
+    persisted(state);
+    const result = await applyKqPlayerRunAction(owner, runId, "advance");
+    expect(result.state.stageIndex).toBe(1);
+    expect(result.state.handCodes).toHaveLength(10);
+    expect(result.state.usedCards).toEqual(state.usedCards);
+    expect(result.state.deckCodes).toEqual(state.deckCodes);
+  });
+
+  it("sends index nine Heritage swaps with the same physical hand and reserve sizes", async () => {
+    const state = startKqGame(44, { varietyCode: "HH2026-002", deckCodes: support, heritageCode: "HERITAGE-003" });
+    persisted(state);
+    const result = await applyKqPlayerRunAction(owner, runId, "heritage-swap", { handIndex: 9, reserveIndex: 2 });
+    expect(result.state.handCodes).toHaveLength(10);
+    expect(result.state.heritageReserveCodes).toHaveLength(3);
+    expect(result.state.handCodes?.[9]).toBe(state.heritageReserveCodes?.[2]);
+    expect(result.state.heritageReserveCodes?.[2]).toBe(state.handCodes?.[9]);
+    expect(result.state.usedCards).toEqual(state.usedCards);
+    expect(database.rpc).toHaveBeenCalledWith("rpc_kq_swap_heritage_hand", expect.objectContaining({
+      p_user_id: owner, p_run_id: runId, p_expected_updated_at: updatedAt,
+    }));
+  });
+
+  it("does not create extra physical copies or permit a second use of the same copy", async () => {
+    const state = startKqGame(9, { deckCodes: ["BOTTE-017"] });
+    const { nextState } = prepareKqCardPlay(state, "BOTTE-017");
+    expect(nextState.usedCards).toEqual(["BOTTE-017"]);
+    const resolved = applyKqRunAction({ ...nextState, phase: "rolled", dice: [6, 6, 6] }, "resolve");
+    persisted(resolved);
+    const result = await applyKqPlayerRunAction(owner, runId, "advance");
+    expect(result.state.handCodes).toEqual([]);
+    expect(result.state.deckCodes).toEqual(["BOTTE-017"]);
+    expect(() => prepareKqCardPlay(result.state, "BOTTE-017")).toThrow();
   });
 });

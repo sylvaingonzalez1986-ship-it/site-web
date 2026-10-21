@@ -833,7 +833,30 @@
 .handDetails .deckPanel > header { display: block; }
 .handDetails .deckPanel h2 { font-size: 1.35rem; }
 .handDetails .deckPanel header p { margin-top: .35rem; font-size: .7rem; }
-.handDetails .cardRow { display: flex; gap: .75rem; max-width: 100%; margin: .75rem 0 0; padding: .3rem .3rem .65rem; overflow-x: auto; scroll-snap-type: x mandatory; }
+.handDetails .cardRow { display: flex; gap: .75rem; max-width: 100%; margin: .4rem 0 0; padding: .3rem .3rem .65rem; overflow-x: auto; scroll-snap-type: x mandatory; overscroll-behavior-inline: contain; scrollbar-color: #076c61 #fff1d6; }
+.handDetails .cardRow:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.handScrollHint { margin: .65rem 0 0; color: #172923; font-size: .72rem; line-height: 1.5; }
+.handTurnLimit, .handFilterHint { margin: .45rem 0; color: #172923; font-size: .72rem; line-height: 1.5; }
+.handFilterHint { color: #455748; font-size: .67rem; }
+.handFilters { display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .65rem; }
+.handFilters button { display: flex; flex: 1; align-items: center; justify-content: center; gap: .45rem; min-height: 44px; padding: .45rem .65rem; border: 2px solid #172923; border-radius: 10px; background: #fff8e7; color: #172923; font-size: .8rem; font-weight: 750; cursor: pointer; }
+.handFilters button[aria-pressed="true"] { background: #efc451; box-shadow: inset 0 -2px 0 #172923; }
+.handFilters button:disabled { color: #455748; cursor: default; }
+.handFilters b { min-width: 1.3rem; padding: .1rem .25rem; border-radius: 5px; background: #fff8e7; font-variant-numeric: tabular-nums; }
+.cardQuickStatus { display: block; width: 100%; margin: .3rem 0 .5rem; padding: .35rem .45rem; border-left: 3px solid #8b5d27; border-radius: 4px; background: var(--game-surface-warm); color: #172923; font-size: .72rem; line-height: 1.4; font-weight: 750; box-sizing: border-box; }
+.cardQuickStatus[data-playable="true"] { border-color: #076c61; background: #d7efe2; }
+.supportCard[data-compact] { gap: .4rem; padding: .65rem; background: #fff8e7; opacity: 1; cursor: pointer; }
+.cardQuickHeading { display: flex; width: 100%; align-items: start; justify-content: space-between; gap: .5rem; }
+.cardQuickHeading strong { font-size: .9rem; line-height: 1.25; }
+.cardQuickHeading b { flex-shrink: 0; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.cardQuickHeading small { font-size: .65rem; }
+.supportCard[data-compact] > .cardArtwork { align-self: center; width: min(100%, 145px); margin: 0; }
+.supportCard[data-compact] > .cardCollection { max-width: none; font-size: .6rem; line-height: 1.4; }
+.supportCard[data-compact] > .cardQuickEffect { margin: 0; color: #172923; font-size: .75rem; line-height: 1.45; }
+.supportCard[data-compact] > .cardReason { width: 100%; margin-top: auto; padding-top: .5rem; font-size: .65rem; }
+.cardBlockedReason { padding: .6rem; border-left: 3px solid #8b5d27; background: var(--game-surface-warm); font-weight: 750; }
+.cardDialogRules { width: 100%; text-align: left; }
+.cardDialogRules summary { min-height: 44px; padding: .65rem 0; font-size: .8rem; font-weight: 750; cursor: pointer; box-sizing: border-box; }
 .handDetails .supportCard { flex: 0 0 min(240px, 93%); min-width: 0; scroll-snap-align: start; }
 .handDetails .handActions { flex-wrap: wrap; }
 .handDetails .pestReveal, .handDetails .pestHidden, .handDetails .substrate { flex-wrap: wrap; }
@@ -952,6 +975,10 @@
 .setupChoiceDone { margin-top: .8rem; background: #149b8b; color: #172923; }
 .setupDeckActions { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .75rem; }
 .setupDeckActions > button:disabled { opacity: .5; cursor: default; }
+@media (max-width: 600px) {
+  .setupDeckActions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .setupDeckActions > button { min-width: 0; min-height: 44px; padding: .55rem .5rem; font-size: .75rem; line-height: 1.4; }
+}
 .setupChoiceContent > p { font-size: .8rem; }
 .setupChoice summary:focus-visible, .setupChoice button:focus-visible { outline: 3px solid #172923; outline-offset: -3px; }
 .setupLaunch { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: .8rem 1.5rem; margin: 1rem 0; padding: 1.25rem; border-radius: 10px; background: #d7efe2; color: #172923; }

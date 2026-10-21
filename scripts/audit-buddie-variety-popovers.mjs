@@ -10,7 +10,7 @@ source = source.replace("'output/warehouse-v4'", "'output/buddie-variety-popover
 source = source.replace('const server = await createServer', "modules['next/link']+='export const useLinkStatus=()=>({pending:false});';\nconst server = await createServer");
 source = source.replace("import {KqWarehouse} from '/src/components/placard/KqWarehouse';", "import {KqWarehouse} from '/src/components/placard/KqWarehouse'; import {KqBuddieCarousel} from '/src/components/placard/KqBuddieCarousel'; import {KQ_BUDDIES} from '/src/lib/kanab-quest-game';");
 source = source.replace('createRoot(document.getElementById(\'root\')).render(<Fixture/>);', `
-    function Preparation(){const [selected,setSelected]=React.useState('HH2026-004');window.__selected=selected;return <div style={{paddingTop:240,paddingBottom:160}}><KqBuddieCarousel buddies={KQ_BUDDIES} artwork={{}} selectedCode={selected} rotation={{requiredDistinctBuddies:5,recentBuddieCodes:['HH2026-002']}} onSelect={setSelected}/></div>;}
+    function Preparation(){const [selected,setSelected]=React.useState('HH2026-004');window.__selected=selected;return <div style={{paddingTop:240,paddingBottom:160}}><KqBuddieCarousel buddies={KQ_BUDDIES} artwork={{}} selectedCode={selected} rotation={{requiredDistinctBuddies:2,recentBuddieCodes:['HH2026-002']}} onSelect={setSelected}/></div>;}
     createRoot(document.getElementById('root')).render(query.has('preparation')?<Preparation/>:<Fixture/>);
   `);
 source = source.replace("Array.from({length:15},(_,index)=>'HH2026-'+String(index+2)", "Array.from({length:52},(_,index)=>'HH2026-'+String(index+1)");

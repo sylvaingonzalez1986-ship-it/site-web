@@ -43,7 +43,7 @@ const rewardSynchronizations = [
 describe("GET /api/arena/placard/bootstrap", () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    getKqPlayerBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] });
+    getKqPlayerBuddieRotation.mockResolvedValue({ requiredDistinctBuddies: 2, recentBuddieCodes: ["HH2026-003"] });
     process.env.KQ_PLAYER_API_LIVE = "true";
     getCurrentCustomerSessionByBackend.mockResolvedValue({ customerId });
     reconcileKqBootstrapRewards.mockResolvedValue(undefined);
@@ -134,7 +134,7 @@ describe("GET /api/arena/placard/bootstrap", () => {
     expect(getKqEquipmentRoutePlan).toHaveBeenCalledWith(customerId);
     expect(getCurrentCustomerSessionByBackend).toHaveBeenCalledWith("identity");
     expect(await response.json()).toMatchObject({
-      buddieRotation: { requiredDistinctBuddies: 5, recentBuddieCodes: ["HH2026-003"] },
+      buddieRotation: { requiredDistinctBuddies: 2, recentBuddieCodes: ["HH2026-003"] },
       collection: { inventory: { "BOTTE-001": 1 } },
       ownedBuddieCodes: ["HH2026-003"],
       ownedBuddies: [{ code: "HH2026-003", imageUrl: "/cards/buddie-test.webp", ownedCopies: 1 }],

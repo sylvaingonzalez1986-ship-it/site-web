@@ -16,7 +16,7 @@ const check = (condition, message) => { assert.ok(condition, message); checks++;
 const rejects = async (operation, message) => {
   await assert.rejects(operation, error => error.message.includes(message)); checks++;
 };
-const user = randomUUID(), other = randomUUID(), historical = randomUUID();
+const user = randomUUID(), other = randomUUID(), historical = randomUUID(), warehouseUser = randomUUID();
 const card = randomUUID(), otherCard = randomUUID();
 const submit = (missionId, options = {}) => {
   const owner = options.owner ?? user;
@@ -98,7 +98,7 @@ try {
     ADD COLUMN proof_file_size INTEGER,ADD COLUMN proof_uploaded_at TIMESTAMPTZ;
     GRANT SELECT,INSERT,UPDATE ON social_missions,social_mission_submissions TO service_role;
     GRANT SELECT,INSERT,UPDATE ON social_mission_submissions TO authenticated;`);
-  for (const owner of [user, other, historical]) {
+  for (const owner of [user, other, historical, warehouseUser]) {
     await db.query("INSERT INTO auth.users VALUES($1)", [owner]);
     await db.query("INSERT INTO profiles(id) VALUES($1)", [owner]);
     await db.query("INSERT INTO kq_equipment_wallets(user_id) VALUES($1)", [owner]);
@@ -113,6 +113,37 @@ try {
   const duplicates = [];
   for (let i = 0; i < 2; i++) duplicates.push((await one("INSERT INTO social_mission_submissions(user_id,mission_id) VALUES($1,$2) RETURNING id", [other, legacyMission])).id);
   await db.exec(await migration("20260928000200_kq_community_mission_review.sql"));
+  const warehouseMissionSeed = await migration("20261019000200_warehouse_twitter_mission.sql");
+  await db.exec(warehouseMissionSeed);
+  await db.exec(warehouseMissionSeed);
+  const warehouseMissions = await query("SELECT * FROM social_missions WHERE slug='entrepot-sur-x'");
+  check(warehouseMissions.length === 1, "warehouse post mission seed is idempotent");
+  const warehouseMission = warehouseMissions[0];
+  check(warehouseMission.is_active && warehouseMission.requires_proof && warehouseMission.max_completions_per_user === 1,
+    "warehouse post mission is available with mandatory screenshot and one completion per account");
+  check(warehouseMission.reward_type === "packs" && warehouseMission.reward_amount === 1 && warehouseMission.reward_card_id === null,
+    "warehouse post mission promises one Buddies pack");
+  await rejects(() => submit(warehouseMission.id, { owner: warehouseUser, path: null, mime: null, size: null,
+    url: "https://x.com/mon_compte/status/123" }), "mission_proof_required");
+  const warehouseBefore = await counts(warehouseUser);
+  const warehouseSubmission = await submit(warehouseMission.id, { owner: warehouseUser, url: null,
+    text: "Mon pseudo de joueur ; capture du post publié avec mon entrepôt." });
+  check(warehouseSubmission.submission.status === "pending" && !warehouseSubmission.submission.reward_granted,
+    "published-post screenshot enters human review without a mandatory URL");
+  assert.deepEqual(await counts(warehouseUser), warehouseBefore); checks++;
+  await rejects(() => submit(warehouseMission.id, { owner: warehouseUser }), "mission_already_pending");
+  await review(warehouseSubmission.submission.id, { decision: "rejected", note: "Le post publié doit être visible." });
+  assert.deepEqual(await counts(warehouseUser), warehouseBefore); checks++;
+  const warehouseRetry = await submit(warehouseMission.id, { owner: warehouseUser,
+    url: "https://x.com/mon_compte/status/456" });
+  const warehouseApprovalKey = randomUUID();
+  await review(warehouseRetry.submission.id, { key: warehouseApprovalKey });
+  await review(warehouseRetry.submission.id, { key: warehouseApprovalKey });
+  const warehouseAfter = await counts(warehouseUser);
+  check(warehouseAfter.tickets === warehouseBefore.tickets + 1 && warehouseAfter.rewards === warehouseBefore.rewards + 1,
+    "warehouse post approval and its replay issue exactly one Buddies pack and reward receipt");
+  await rejects(() => review(warehouseRetry.submission.id), "mission_already_reviewed");
+  await rejects(() => submit(warehouseMission.id, { owner: warehouseUser }), "mission_completion_limit");
   check((await row(legacyApproved)).status === "approved" && !(await row(legacyApproved)).reward_granted, "historical approval remains unchanged");
   check(await value("(SELECT count(*)::INT FROM social_mission_submissions WHERE user_id=$1)", [other]) === 2, "historical duplicate dossiers preserved");
   check((await one("SELECT is_active,reward_type,reward_amount FROM social_missions WHERE slug='fleur-en-arene'")).is_active === false, "starter mission remains an unpublished draft");

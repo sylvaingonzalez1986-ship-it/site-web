@@ -73,7 +73,6 @@ describe("Arena discovery page access", () => {
     const result = await visit();
     expect(result.type).toBe(ContestArenaHub);
     expect(result.props).not.toHaveProperty("continueAfterTrial");
-    expect(result.props.personalSummaryEnabled).toBe(false);
     expect(mocks.session).not.toHaveBeenCalled();
   });
 
@@ -81,15 +80,14 @@ describe("Arena discovery page access", () => {
     connectOrdinaryCustomer();
     const result = await visit();
     expect(result.type).toBe(ContestArenaHub);
-    expect(result.props.personalSummaryEnabled).toBe(false);
     expect(mocks.session).toHaveBeenCalledOnce();
   });
 
-  it("enables a fresh personal summary for an authorized customer's identity", async () => {
+  it("opens discovery for an authorized customer's identity", async () => {
     mocks.cookieValues.mockReturnValue([{ name: "sb-test-auth-token", value: "session-cookie" }]);
     mocks.session.mockResolvedValue({ customerId: "beta-player", customer: { email: "beta@example.test", contestBetaEnabled: true } });
     const result = await visit();
-    expect(result.props.personalSummaryEnabled).toBe(true);
+    expect(result.type).toBe(ContestArenaHub);
     expect(result.key).toBe("beta-player");
   });
 

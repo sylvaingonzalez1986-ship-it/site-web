@@ -2,7 +2,7 @@
 import assert from "node:assert/strict";
 import { randomUUID } from "node:crypto";
 import { readFile } from "node:fs/promises";
-import { PGlite } from "../output/reputation-test-tools/node_modules/@electric-sql/pglite/dist/index.js";
+import { PGlite } from "@electric-sql/pglite";
 
 const db = new PGlite();
 const migration = (name) => readFile(`supabase/migrations/${name}`, "utf8");
@@ -28,7 +28,7 @@ const player = async () => {
   await db.query("INSERT INTO auth.users VALUES($1)", [owner]);
   await db.query("INSERT INTO kq_culture_token_wallets(user_id,balance) VALUES($1,10)", [owner]);
   // Owning multiple physical copies must not circumvent a card-code cooldown.
-  await db.query("INSERT INTO lottery_card_instances(user_id,card_definition_id) SELECT $1,id FROM lottery_card_definitions CROSS JOIN generate_series(1,2)", [owner]);
+  await db.query("INSERT INTO lottery_card_instances(user_id,card_definition_id) SELECT $1,id FROM lottery_card_definitions CROSS JOIN generate_series(1,2) WHERE code=ANY($2)", [owner, codes.slice(0, 3)]);
   return owner;
 };
 const history = async (owner, sequence) => {
@@ -57,7 +57,7 @@ try {
     CREATE TABLE kq_culture_token_ledger(user_id UUID,run_id UUID,amount INTEGER,reason TEXT,reward_key TEXT UNIQUE);
     CREATE TABLE kq_runs(id UUID PRIMARY KEY DEFAULT gen_random_uuid(),user_id UUID NOT NULL REFERENCES auth.users(id),
       buddie_card_definition_id UUID NOT NULL REFERENCES lottery_card_definitions(id),seed INTEGER,deck_codes TEXT[],scenario_codes TEXT[],
-      state JSONB,status TEXT DEFAULT 'active',culture_tokens_spent INTEGER DEFAULT 0,heritage_code TEXT,
+      state JSONB,status TEXT DEFAULT 'active',culture_tokens_spent INTEGER DEFAULT 0,heritage_code TEXT,campaign_id UUID,
       started_at TIMESTAMPTZ DEFAULT now(),updated_at TIMESTAMPTZ DEFAULT now(),completed_at TIMESTAMPTZ,
       CONSTRAINT kq_runs_deck_codes_check CHECK(cardinality(deck_codes)>=1));
     CREATE UNIQUE INDEX one_active_run ON kq_runs(user_id) WHERE status='active';
@@ -77,25 +77,39 @@ try {
   assert.deepEqual(await rotation(older), codes.slice(1).reverse());
   await locked(legacy, codes[0], 1);
   const olderRun = await start(older, codes[0]); await finish(olderRun.run.id);
+  // Install the actual campaign definition for the migration's asserted patch.
+  // Its dependencies and execution are covered by the shared-campaign suite.
+  const campaigns = await migration("20261013000200_kq_shared_campaigns.sql");
+  const campaignStart = campaigns.indexOf("CREATE FUNCTION public.rpc_kq_start_campaign(");
+  await db.exec("SET check_function_bodies=false");
+  await db.exec(campaigns.slice(campaignStart, campaigns.indexOf("END $$;", campaignStart) + 7));
+  const reduced = await migration("20261019000100_kq_buddie_rotation_two.sql");
+  await db.exec(reduced);
+  await db.exec("SET check_function_bodies=true");
+  assert.deepEqual(await rotation(legacy), [codes[4], codes[3]]);
+  assert.deepEqual(await rotation(older), [codes[0], codes[5]]);
+  await locked(older, codes[0], 2);
+  const legacyUnlocked = await start(legacy, codes[0]); await finish(legacyUnlocked.run.id);
+  assert.deepEqual(await rotation(legacy), [codes[0], codes[4]]);
   assert.deepEqual(await rotation(owner), []);
 
   const first = await start(owner, codes[0]);
   assert.deepEqual(await rotation(owner), [codes[0]]);
   await finish(first.run.id);
   await finish(first.run.id); // Replayed completion must not advance history.
-  await locked(owner, codes[0], 5);
-  await locked(owner, codes[0], 5, { heritage: false });
+  await locked(owner, codes[0], 2);
+  await locked(owner, codes[0], 2, { heritage: false });
   assert.equal(await balance(owner), 10);
   assert.deepEqual(await rotation(owner), [codes[0]]);
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= 2; i++) {
     const result = await start(owner, codes[i], { heritage: i % 2 === 0 });
     await finish(result.run.id, i === 2 ? "abandoned" : "completed");
-    if (i < 5) await locked(owner, codes[0], 5 - i);
+    if (i < 2) await locked(owner, codes[0], 2 - i);
   }
-  assert.deepEqual(await rotation(owner), codes.slice(1).reverse());
+  assert.deepEqual(await rotation(owner), [codes[2], codes[1]]);
   const favorite = await start(owner, codes[0]); await finish(favorite.run.id);
-  assert.deepEqual(await rotation(owner), [codes[0], ...codes.slice(2).reverse()]);
-  await locked(owner, codes[0], 5);
+  assert.deepEqual(await rotation(owner), [codes[0], codes[2]]);
+  await locked(owner, codes[0], 2);
   await locked(owner, codes[2], 1);
 
   // A different account can use the same Buddie immediately.
@@ -116,7 +130,11 @@ try {
   // A skipped INSERT replay neither fails the guard nor advances its history.
   await db.query(`INSERT INTO kq_runs SELECT * FROM kq_runs WHERE id=$1 ON CONFLICT (id) DO NOTHING`, [favorite.run.id]);
   assert.deepEqual(await rotation(owner), before);
-  await db.exec(sql); // Reapplying the migration preserves already tracked history.
+  await db.exec(reduced); // Reapplying the migration preserves already tracked history.
+  assert.deepEqual(await rotation(owner), before);
+  await assert.rejects(() => db.query(
+    "UPDATE kq_buddie_rotation SET recent_buddie_codes=$2 WHERE user_id=$1", [owner, codes.slice(0, 3)],
+  ), /kq_buddie_rotation_two_recent_buddies/);
   assert.deepEqual(await rotation(owner), before);
   const privileges = (await db.query(`SELECT
     has_table_privilege('authenticated','kq_buddie_rotation','UPDATE') AS client_write,
@@ -126,7 +144,11 @@ try {
     has_function_privilege('authenticated','kq_guard_buddie_rotation()','EXECUTE') AS client_execute,
     (SELECT relrowsecurity FROM pg_class WHERE oid='kq_buddie_rotation'::regclass) AS rls`)).rows[0];
   assert.deepEqual(privileges, { client_write: false, client_read: false, server_read: true, server_write: false, client_execute: false, rls: true });
-  console.log("Buddie rotation: PASS (actual starter RPCs, distinct backfill, five-other unlock, failed cultures, duplicate copies, rollback, replay and permissions).");
+  console.log("Buddie rotation: PASS (actual starter RPCs, old-history conversion, A/B/C/A with only three owned varieties, failed cultures, duplicate copies, rollback, replay and permissions).");
+} catch (error) {
+  console.error(error.stack?.split("\n").slice(0, 8).join("\n") ?? error.message);
+  if (error.where) console.error(error.where);
+  process.exitCode = 1;
 } finally {
   await db.close();
 }
