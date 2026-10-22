@@ -1,15 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { buildKqScenarioPath, KQ_SITUATIONS, KQ_STAGES, startKqGame } from "./kanab-quest-game";
+import { buildKqScenarioPath, KQ_SITUATIONS, KQ_STAGES, resolveKqStage, rollKqDice, startKqGame } from "./kanab-quest-game";
+import { createKqBusinessPreview } from "./kanab-quest-business";
 import { createKqIntegrityCode, encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 
 describe("company domicile and culture theft", () => {
-  it("doubles the incident probability at home without multiplying the damage", () => {
+  it("gives retired-address cultures the normal risk while preserving historical home odds", () => {
     const harvest = KQ_STAGES.indexOf("Récolte");
     const pool = KQ_SITUATIONS.filter(s => s.stage === "Récolte");
     let home = 0, external = 0;
     for (let seed = 0; seed < 10000; seed++) {
       const atHome = buildKqScenarioPath(seed, [], [], [], "home");
       const elsewhere = buildKqScenarioPath(seed, [], [], [], "external");
+      expect(buildKqScenarioPath(seed, [], [], [], "retired")).toEqual(elsewhere);
       if (atHome[harvest] === "SIT-027") home++;
       if (elsewhere[harvest] === "SIT-027") {
         external++;
@@ -33,5 +35,22 @@ describe("company domicile and culture theft", () => {
     expect(legacy.domiciliation).toBeUndefined();
     expect(parseKqGameSave(encodeKqSave(legacy))).toEqual(legacy);
     expect(legacy.situationCodes).toEqual(buildKqScenarioPath(42));
+  });
+  it("persists the retired rule in a new culture and its integrity signature", () => {
+    const state = startKqGame(42, { domiciliation: "retired" });
+    expect(parseKqGameSave(encodeKqSave(state))).toEqual(state);
+    expect(state.situationCodes).toEqual(buildKqScenarioPath(42, [], [], [], "external"));
+    expect(createKqIntegrityCode({ ...state, domiciliation: "home" })).not.toBe(createKqIntegrityCode(state));
+  });
+  it.each(["home", "external"] as const)("retains the frozen %s culture and its resolved history", domiciliation => {
+    const state = resolveKqStage(rollKqDice(startKqGame(42, { domiciliation })));
+    const saved = encodeKqSave(state);
+    const integrity = createKqIntegrityCode(state);
+    // A new business snapshot cannot reinterpret an already-started culture.
+    expect(createKqBusinessPreview(0).domiciliation.retired).toBe(true);
+    const restored = parseKqGameSave(saved)!;
+    expect(restored).toEqual(state);
+    expect(restored.history).toHaveLength(1);
+    expect(createKqIntegrityCode(restored)).toBe(integrity);
   });
 });

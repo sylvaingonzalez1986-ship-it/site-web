@@ -58,6 +58,32 @@ describe("Three sales channels", () => {
     expect(storage.conditionScore).toBe(8.8);
   });
 
+  it.each([
+    ["raw", 6.3, 7], ["raw", 8.5, 9.2], ["dry-sift", 8.5, 9.2], ["rosin-trial", 9.4, 10],
+  ] as const)("includes drying and curing gains in %s offers with verdict %s", (route, juryScore, quality) => {
+    const origin = Date.parse("2026-10-10T12:00:00.000Z");
+    const lot = createKqStorageLot({ flowerId: stock.flowerId, harvestedAt: new Date(origin).toISOString(),
+      baseline: { varietyCode: "TEST", juryScore, aroma: 90, care: createKqCareState() },
+      postHarvest: { dryingQualityBonus: .4, storageQualityBonus: .2, climateQualityBonus: .1,
+        aromaRateFactor: 100, chemistryRateFactor: 100 } });
+    const storage = projectKqStorageLot(lot, origin + KQ_CURING_DURATION_MS, juryScore);
+    const item = { ...stock, route, juryScore, storage };
+    expect(storage.conditionScore).toBe(quality);
+    expect(getKqCommerceStockQuality(item)).toBe(quality);
+    for (const channel of ["cbd-shop", "wholesale"] as const) {
+      expect(quoteKqCommerce(state, item, channel)).toEqual(
+        quoteKqCommerce(state, { ...stock, route, juryScore: quality }, channel));
+    }
+    expect(item.juryScore).toBe(juryScore);
+    expect(lot.baseline.juryScore).toBe(juryScore);
+  });
+
+  it("keeps historical scores without storage and clamps quality to the commercial scale", () => {
+    expect(getKqCommerceStockQuality({ juryScore: 8.5 })).toBe(8.5);
+    expect(getKqCommerceStockQuality({ juryScore: 11 })).toBe(10);
+    expect(getKqCommerceStockQuality({ juryScore: -1 })).toBe(0);
+  });
+
   it("keeps fractional shop progress at database precision after crossing a partner threshold", () => {
     const large = { ...stock, initialUnits: 10000, remainingUnits: 10000, equivalentUnits: 10000, originalUnits: 10000 };
     for (const strength of [undefined, "merchant"] as const) {

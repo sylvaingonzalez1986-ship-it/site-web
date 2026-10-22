@@ -78,7 +78,7 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
       "Consulte l’état de tes lampes, tentes et autres équipements. À 0 %, ils perdent leurs bonus ; un remplacement payant conserve leurs niveaux.",
       "Répare séparément les machines de transformation lorsqu’elles arrivent à leur échéance d’entretien. Ces réparations sont gratuites pour le Bricoleur.",
       "Ajoute des tentes selon les conditions et le devis affichés. Chaque tente a son équipement ; les machines de transformation sont communes.",
-      "Compare les protections contre le vol et leurs charges. Au Bureau, la domiciliation extérieure réduit le risque par rapport au domicile et possède un abonnement.",
+      "Compare les équipements de sécurité qui protègent la récolte contre les pertes lors d’un vol. Vérifie leur coût et leurs conditions d’installation avant de confirmer.",
     ],
     scenario: "Ta lampe achetée est hors service à 0 % d’état. Tu es Bricoleur et tu veux retrouver ses bonus pour ta prochaine culture. Quelle action convient ?",
     choices: [
@@ -155,23 +155,24 @@ export const ARENA_LEARNING_MODULES: readonly ArenaLearningModule[] = [
     id: "business",
     title: "Ton commerce et ses charges",
     description: "Ouvre ton site, attire des clients et garde tes comptes lisibles.",
-    location: "Kanab Quest → Bureau → Gestion ou Comptabilité",
-    href: "/arene/placard?view=treasury",
-    // Sources: placard/KqBusinessPanel.tsx; KqTreasuryInvoices.tsx;
-    // KqTreasuryDesk.tsx; kanab-quest-business.ts; kanab-quest-commerce.ts.
+    location: "Marché → Ma boutique",
+    href: "/arene/placard?view=market&section=management",
+    // Sources: placard/KqOnlineBusiness.tsx; KqMerchWorkshop.tsx;
+    // KqBrandStudio.tsx; KqTreasuryInvoices.tsx; kanab-quest-online.ts.
     features: [
-      "Pour vendre en ligne, achète l’ordinateur à 450 € de jeu puis crée ton site à 1 000 €, premier mois inclus. Les boutiques et grossistes restent d’autres débouchés.",
-      "Gère le nom du site, sa réactivation et sa reconduction à 100 € par mois de jeu, soit 5 jours réels.",
-      "Lance une campagne publicitaire à la fois sur un site actif. Elle augmente la demande ; le stock, la qualité et le prix restent déterminants et les ventes sont manuelles.",
-      "Choisis ta domiciliation : domicile gratuit, ou adresse extérieure à 50 € par mois de jeu avec un risque de vol moindre pour les prochaines cultures.",
-      "Consulte et règle les analyses, l’électricité et les soins. La TVA de jeu est réservée sur les ventes ; le journal comptable détaille les mouvements.",
-      "Le calendrier des charges continue hors connexion. Compare les recettes et les dépenses pour comprendre ton résultat.",
+      "Pour vendre en ligne, achète l’ordinateur à 450 € de jeu puis ouvre gratuitement ta boutique de base, sans abonnement. Les boutiques partenaires et les grossistes restent d’autres débouchés.",
+      "Dans Merch, modifie gratuitement le nom de ton entreprise et gère tes collections : ateliers, fabrication, mise en rayon et prix des articles.",
+      "Dans Site internet, compare les niveaux, leurs prérequis et leur abonnement. Les formules payantes se renouvellent tous les 5 jours réels ; tu peux arrêter la reconduction ou réactiver un site suspendu.",
+      "Dans Studio, améliore les photos, l’identité de marque et les fiches de tes produits. Chaque niveau affiche son coût, ses conditions et ses effets.",
+      "Dans Promouvoir, prépare tes campagnes pour faire connaître ta boutique. Les visites ne garantissent pas une commande : le stock, la qualité et le prix restent déterminants.",
+      "Prépare tes paquets et expose tes articles : les ventes en ligne se font automatiquement, même hors connexion, lorsque la boutique est active et qu’une offre trouve des clients.",
+      "Dans Finances, consulte et règle les factures. La TVA de jeu est réservée sur les ventes ; le journal comptable détaille les mouvements. Compare les recettes et les dépenses pour comprendre ton résultat.",
     ],
     scenario: "Tu as acheté l’ordinateur, mais tu n’as jamais créé ton site. Tu veux vendre en ligne. Quelle est la prochaine étape ?",
     choices: [
-      { label: "Lancer immédiatement une campagne publicitaire", correct: false, feedback: "Une campagne demande un site actif. Commence par créer le site au Bureau ; l’ordinateur seul n’ouvre pas les ventes en ligne." },
-      { label: "Créer mon site au Bureau avec le budget requis", correct: true, feedback: "Le site coûte 1 000 € de jeu à créer, premier mois inclus, après l’achat de l’ordinateur. Prévois ensuite son abonnement ; tu peux continuer à vendre aux professionnels avant son ouverture." },
-      { label: "Attendre que l’ordinateur vende automatiquement", correct: false, feedback: "L’ordinateur est un prérequis matériel. Tu dois créer ton site puis choisir et confirmer tes ventes au Marché ; elles ne se font pas toutes seules." },
+      { label: "Lancer immédiatement une campagne publicitaire", correct: false, feedback: "Une campagne demande une boutique active. Commence par l’ouvrir au Marché, dans Ma boutique ; l’ordinateur seul n’ouvre pas les ventes en ligne." },
+      { label: "Ouvrir gratuitement ma boutique au Marché", correct: true, feedback: "Après l’achat de l’ordinateur, la boutique de base s’ouvre gratuitement et sans abonnement. Prépare ensuite des paquets ou une collection merch pour proposer des produits aux clients." },
+      { label: "Attendre que l’ordinateur vende automatiquement", correct: false, feedback: "L’ordinateur est un prérequis matériel. Ouvre ta boutique et mets des produits en vente : les commandes pourront alors arriver automatiquement, même hors connexion." },
     ],
   },
   {

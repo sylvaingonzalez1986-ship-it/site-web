@@ -3,13 +3,14 @@ import { randomUUID } from "node:crypto";
 import { createSupabaseServiceClient } from "./admin";
 import { getKqMarketSnapshot } from "./kanab-quest-market-backend";
 import { getKqEnergySummary } from "./kanab-quest-energy-backend";
-import { KQ_SALES_CHANNELS, quoteKqCommerce, type KqCommerceState, type KqSalesChannel, type KqOnlinePrice } from "../kanab-quest-commerce";
+import { getKqCommerceStockQuality, KQ_SALES_CHANNELS, quoteKqCommerce, type KqCommerceState, type KqSalesChannel, type KqOnlinePrice } from "../kanab-quest-commerce";
 import { isKqAdvertisingKind, normalizeKqShopName, previewKqBusinessPayment } from "../kanab-quest-business";
 import { isKqStorageLot, projectKqStorageLot } from "../kanab-quest-storage";
 import { KQ_ONLINE_MARKETING_MISSIONS, KQ_ONLINE_PACKAGING, KQ_ONLINE_SITE_TIERS, KQ_ONLINE_UPGRADES } from "../kanab-quest-online";
 import { KQ_MARKETING_BUDGETS } from "../kanab-quest-marketing";
 import { KQ_MERCH_MODULES, KQ_MERCH_PRODUCTS } from "../kanab-quest-merch";
 import { KQ_STUDIO_STYLES, KQ_STUDIO_TRACKS } from "../kanab-quest-studio";
+import { isKqCommerceOfferChangedCode, KqCommerceOfferChangedError } from "../kanab-quest-commerce-errors";
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 function uuid(value: unknown) { if (typeof value !== "string" || !UUID.test(value)) throw new Error("Identifiant invalide. Actualise le marché."); return value; }
 function integer(value: unknown) { if (typeof value !== "number" || !Number.isSafeInteger(value) || value < 0) throw new Error("Montant ou quantité invalide."); return value; }
@@ -127,10 +128,13 @@ function databaseError(message: string, operation?: string): never {
     commerce_supplier_unavailable: "Cette facture fournisseur est déjà réglée ou ne t’appartient pas.",
     commerce_supplier_cash: "Trésorerie insuffisante pour solder cette facture. Le solde échu sera réglé progressivement sur les ventes.",
     commerce_legacy_internet: "L’accès en ligne passe désormais par la création de ton shop.",
-    commerce_domiciliation_mode: "Choisis une domiciliation à domicile ou à une adresse extérieure.",
+    commerce_domiciliation_retired: "La domiciliation a été retirée du jeu.",
     commerce_legacy_sale: "Actualise le marché pour choisir ton circuit de vente.",
   };
-  for (const [code, explanation] of Object.entries(errors)) if (message.includes(code)) throw new Error(explanation);
+  for (const [code, explanation] of Object.entries(errors)) if (message.includes(code)) {
+    if (isKqCommerceOfferChangedCode(code)) throw new KqCommerceOfferChangedError(explanation, code);
+    throw new Error(explanation);
+  }
   throw new Error(`[supabase:commerce] ${message}`);
 }
 async function state(userId: string): Promise<KqCommerceState> {
@@ -193,7 +197,8 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
         storage_revision: stock.storageRevision, offer, expires_at: expiresAt });
       if (stored.error) databaseError(stored.error.message);
     }
-    return { quoteId, offer, expiresAt, ...payment };
+    return { quoteId, offer, expiresAt, ...payment,
+      stock: { name: stock.name, route: stock.route, remainingUnits: stock.remainingUnits, quality: getKqCommerceStockQuality(stock) } };
   }
   const requestKey = uuid(body.requestKey);
   if (action === "online") {
@@ -220,8 +225,7 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
   } else if (action === "pay-lab" || action === "pay-supplier") {
     payload = { invoiceId: uuid(body.invoiceId) };
   } else if (action === "domiciliation") {
-    if (body.mode !== "home" && body.mode !== "external") throw new Error("Domiciliation invalide.");
-    payload = { mode: body.mode };
+    throw new Error("La domiciliation a été retirée du jeu.");
   } else if (action === "internet") {
     throw new Error("L’accès en ligne passe désormais par la création de ton shop.");
   } else if (action === "buy-computer" || action === "renew-shop") payload = {};

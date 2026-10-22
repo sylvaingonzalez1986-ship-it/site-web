@@ -9,6 +9,17 @@
 .counts > span[data-warning] { color: #963c21; }
 .lots { display: grid; gap: 10px; }
 .lot { min-width: 0; background: var(--paper); border: 1px solid var(--ink); border-radius: 11px; box-shadow: 1px 2px 0 var(--ink); }
+.lot { scroll-margin-top: 16px; }
+.lot[data-selected] { border-color: var(--green); box-shadow: 0 0 0 2px var(--green); }
+.selectionBadge { display: block; margin: 0 0 5px; color: var(--green); font-size: 10px; font-weight: 800; }
+.selectionNotice { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: 12px; padding: 12px 14px; border: 1px solid var(--ink); border-radius: 9px; background: var(--paper); font-size: 12px; scroll-margin-top: 16px; }
+.selectionNotice > div { min-width: 0; }
+.selectionNotice p { margin: 4px 0 0; line-height: 1.5; }
+.selectionNotice small { display: block; margin-top: 4px; color: var(--muted); }
+.selectionNotice button { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; border: 1px solid var(--ink); border-radius: 8px; padding: 8px 12px; color: var(--ink); background: var(--paper); font: inherit; font-weight: 700; cursor: pointer; }
+.selectionNotice:focus,.selectionNotice button:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+.selectionNotice button:disabled { opacity: .6; cursor: not-allowed; }
+:global([data-placard-view]) .lot, :global([data-placard-view]) .selectionNotice { scroll-margin-top: 92px; }
 .lotRow { display: grid; grid-template-columns: minmax(200px, 1.1fr) minmax(160px, .65fr) minmax(180px, 1fr) minmax(175px, .75fr); align-items: center; gap: 18px; padding: 12px 14px; }
 .lotRow > *, .identity > div { min-width: 0; }
 .identity { display: flex; align-items: center; gap: 10px; }
@@ -55,6 +66,11 @@
 .overflow strong { font-size: 12px; }
 .overflow p, .overflow small { display: block; font-size: 11px; line-height: 1.5; margin: 5px 0 0; }
 .overflow [data-overflow-deadline] { font-weight: 800; }
+.overflowActions { display: grid; gap: 8px; }
+.protect { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 9px 12px; border: 1px solid var(--ink); border-radius: 9px; color: var(--ink); background: var(--paper); font: 700 12px/1.4 var(--font-body),sans-serif; cursor: pointer; }
+.protect svg { flex-shrink: 0; }
+.protect:disabled { opacity: .6; cursor: not-allowed; }
+.protect:focus-visible,.lot:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
 .storageDetails { margin-top: 14px; border: 1px solid #17292340; border-radius: 9px; background: var(--paper); }
 .storageDetails > summary { min-height: 48px; }
 .label { display: block; font-size: 11px; color: var(--muted); }

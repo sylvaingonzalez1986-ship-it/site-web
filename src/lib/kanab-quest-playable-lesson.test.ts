@@ -31,6 +31,7 @@ describe("real game screens in isolated playable lessons", () => {
     expect(game.heritageCode).toBe("HERITAGE-007");
     expect(game.energy?.mode).toBe("eco");
     expect(game.firstCultureRescue).toBeUndefined();
+    expect(game.domiciliation).toBe("retired");
     expect(game.startedAt).toBe("2026-09-16T12:00:00.000Z");
     expect(parseKqGameSave(encodeKqSave(game))).toEqual(game);
   });

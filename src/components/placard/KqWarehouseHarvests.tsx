@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useRef } from "react";
 import { ArrowRight, Check, CircleAlert, Clock3, Package, RefreshCw, ShieldCheck, ShoppingBag } from "lucide-react";
 import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
@@ -32,14 +33,20 @@ type Props = {
   stockGrams?: number | null;
   storageReservedGrams?: number | null;
   storageCapacityGrams?: number | null;
+  initialFlowerId?: string;
   disabled?: boolean;
   error?: string;
   onRetry?: () => void;
   onOpenWorkshop: (flowerId: string) => void;
   onSellOverflow: (flowerId: string) => void;
+  onProtectOverflow?: (flowerId: string) => void;
 };
 
-export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams, storageCapacityGrams, disabled = false, error, onRetry, onOpenWorkshop, onSellOverflow }: Props) {
+export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams, storageCapacityGrams, initialFlowerId, disabled = false, error, onRetry, onOpenWorkshop, onSellOverflow, onProtectOverflow }: Props) {
+  const section = useRef<HTMLElement>(null);
+  const selectionNotice = useRef<HTMLDivElement>(null);
+  const requestedFlower = useRef(initialFlowerId);
+  const focusedFlower = useRef<string | null>(null);
   // Container reservations and global stock are different quantities. Neither
   // substitutes for a lot's remaining stock when that information is missing.
   const capacity = storage ? storage.capacity.totalUnits / 10 : storageCapacityGrams;
@@ -53,8 +60,35 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
   const readyCount = lots.filter(lot => lot.projection.stage === "ready").length;
   const curingCount = lots.filter(lot => lot.projection.stage === "curing").length;
   const overflow = lots.reduce((sum, lot) => sum + (lot.projection.capacity?.overflowUnits ?? 0) / 10, 0);
+  const selectedLot = initialFlowerId ? lots.find(lot => lot.flowerId === initialFlowerId) : undefined;
+  const selection = !initialFlowerId ? "none" : error ? "unavailable" : !storage ? "loading" : selectedLot ? "selected" : "missing";
 
-  return <section className={styles.section} aria-label="Récoltes en conservation" data-conservation-summary>
+  useEffect(() => {
+    if (requestedFlower.current !== initialFlowerId) {
+      requestedFlower.current = initialFlowerId;
+      focusedFlower.current = null;
+    }
+    if (!initialFlowerId || selection === "loading" || focusedFlower.current === initialFlowerId) return;
+    const frame = requestAnimationFrame(() => {
+      const target = selection === "selected"
+        ? Array.from(section.current?.querySelectorAll<HTMLElement>("[data-conservation-lot]") ?? []).find(node => node.dataset.conservationLot === initialFlowerId)
+        : selectionNotice.current;
+      if (!target) return;
+      focusedFlower.current = initialFlowerId;
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ block: "start", behavior: "instant" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [initialFlowerId, selection, storage]);
+
+  function retrySelection() {
+    // An explicit retry may move back to the requested lot; routine polling
+    // must never take focus away from a quantity, button or equipment choice.
+    focusedFlower.current = null;
+    onRetry?.();
+  }
+
+  return <section ref={section} className={styles.section} aria-label="Récoltes en conservation" data-conservation-summary>
     <header className={styles.heading}>
       <div><h3>Mes fleurs stockées</h3>
         {storage && lots.length > 0 && <div className={styles.counts} aria-label="État des lots">
@@ -64,10 +98,14 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
           {overflow > 0 && <span data-warning><CircleAlert size={14} aria-hidden="true" /><b>{mass(overflow)}</b> sans contenant</span>}
         </div>}
       </div>
-      <Link href="/arene/placard?view=harvests">Toutes mes récoltes <ArrowRight size={16} aria-hidden="true" /></Link>
+      <Link href={`/arene/placard?view=harvests${initialFlowerId ? `&flower=${encodeURIComponent(initialFlowerId)}` : ""}`}>Toutes mes récoltes <ArrowRight size={16} aria-hidden="true" /></Link>
     </header>
 
-    {error && <div className={styles.error} role="alert"><CircleAlert size={18} aria-hidden="true" /><span>{error}</span>{onRetry && <button type="button" disabled={disabled} onClick={onRetry}><RefreshCw size={15} aria-hidden="true" /> Réessayer</button>}</div>}
+    {error && !initialFlowerId && <div className={styles.error} role="alert"><CircleAlert size={18} aria-hidden="true" /><span>{error}</span>{onRetry && <button type="button" disabled={disabled} onClick={onRetry}><RefreshCw size={15} aria-hidden="true" /> Réessayer</button>}</div>}
+    {initialFlowerId && selection !== "selected" ? <div ref={selectionNotice} className={styles.selectionNotice} data-storage-selection={selection} tabIndex={-1} role={selection === "unavailable" ? "alert" : "status"}>
+      <div><strong>Lot {initialFlowerId.slice(0, 8)}</strong><p>{selection === "loading" ? "Recherche dans le stockage…" : selection === "missing" ? "Ce lot n’apparaît plus dans le stockage. Il a pu être vendu ou transformé." : "Impossible de vérifier ce lot pour le moment."}</p>{selection === "unavailable" && error ? <small>{error}</small> : null}</div>
+      {onRetry && selection !== "loading" ? <button type="button" data-storage-selection-retry disabled={disabled} onClick={retrySelection}><RefreshCw size={15} aria-hidden="true" /> Réessayer</button> : null}
+    </div> : null}
 
     <div className={styles.lots}>
       {lots.map(lot => {
@@ -85,11 +123,12 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
         const containerCount = allocations.reduce((sum, item) => sum + item.quantity, 0);
         const quality = known(projection.conditionScore) ? Math.max(0, Math.min(10, projection.conditionScore)) : null;
 
-        return <article key={lot.flowerId} className={styles.lot} data-conservation-lot={lot.flowerId} data-ready={ready && lotCapacity?.overflowUnits === 0}>
+        const selected = selection === "selected" && lot.flowerId === initialFlowerId;
+        return <article key={lot.flowerId} className={styles.lot} data-conservation-lot={lot.flowerId} data-ready={ready && lotCapacity?.overflowUnits === 0} data-selected={selected || undefined} aria-label={`Lot ${lot.varietyName} · ${lot.flowerId.slice(0, 8)}`} tabIndex={-1}>
           <div className={styles.lotRow}>
             <div className={styles.identity}>
               <div className={styles.containerArt}>{artwork ? <Image src={artwork.src} alt="" width={64} height={64} sizes="(max-width: 600px) 44px, 60px" /> : <Package size={30} aria-hidden="true" />}</div>
-              <div><h4>{lot.varietyName}</h4><span className={styles.badge} data-state={surplus > 0 ? "warning" : ready ? "ready" : "curing"} data-curing-status>
+              <div><h4>{lot.varietyName}</h4>{selected ? <span className={styles.selectionBadge} data-storage-selection="selected">Lot sélectionné · {lot.flowerId.slice(0, 8)}</span> : null}<span className={styles.badge} data-state={surplus > 0 ? "warning" : ready ? "ready" : "curing"} data-curing-status>
                 {surplus > 0 ? <CircleAlert size={13} aria-hidden="true" /> : ready ? <Check size={13} aria-hidden="true" /> : <Clock3 size={13} aria-hidden="true" />}
                 {surplus > 0 ? "Contenant manquant" : ready ? "Affinage terminé" : "Curing en cours"}
               </span></div>
@@ -114,7 +153,9 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
             <div><strong>{mass(surplus / 10)} à stocker ou à vendre</strong><p>Ajoute des contenants ou vends le surplus. Le reste du lot demeure stocké.</p>
               {lotCapacity?.overflowDeadlineAt && dateLabel(lotCapacity.overflowDeadlineAt) && <p data-overflow-deadline>Vente automatique le {dateLabel(lotCapacity.overflowDeadlineAt)}.</p>}
             </div>
-            <div>{lot.overflowOffer ? <>
+            <div className={styles.overflowActions}>
+              {onProtectOverflow ? <button type="button" className={styles.protect} data-protect-overflow={lot.flowerId} disabled={actionsDisabled} onClick={() => onProtectOverflow(lot.flowerId)}><Package size={17} aria-hidden="true" />Ajouter des contenants<ArrowRight size={17} aria-hidden="true" /></button> : null}
+              {lot.overflowOffer ? <>
               <button type="button" className={styles.action} data-sell-overflow={lot.flowerId} disabled={actionsDisabled} onClick={() => onSellOverflow(lot.flowerId)}>Vendre le surplus · {mass(lot.overflowOffer.units / 10)} <ArrowRight size={17} aria-hidden="true" /></button>
               <small>{formatKqCash(lot.overflowOffer.payoutCents)} TTC · environ {formatKqCash(lot.overflowOffer.netPayoutCents)} nets après TVA et charges. Montant recalculé à la vente, selon le quota grossiste.</small>
             </> : <small>Aucune offre de reprise disponible pour le moment.</small>}</div>
@@ -137,7 +178,7 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
         </article>;
       })}
     </div>
-    {!lots.length && <div className={styles.empty} role="status"><Package size={28} aria-hidden="true" /><strong>{storage ? "Aucune récolte en conservation" : error ? "Les lots ne sont pas disponibles" : "Chargement des récoltes…"}</strong><p>{storage ? "Tes prochains lots apparaîtront ici pour suivre leur affinage et les envoyer au comptoir." : error ? "Réessaie pour retrouver leur état de conservation." : "Le stock et l’avancement de chaque lot arrivent ici."}</p></div>}
+    {!lots.length && !initialFlowerId && <div className={styles.empty} role="status"><Package size={28} aria-hidden="true" /><strong>{storage ? "Aucune récolte en conservation" : error ? "Les lots ne sont pas disponibles" : "Chargement des récoltes…"}</strong><p>{storage ? "Tes prochains lots apparaîtront ici pour suivre leur affinage et les envoyer au comptoir." : error ? "Réessaie pour retrouver leur état de conservation." : "Le stock et l’avancement de chaque lot arrivent ici."}</p></div>}
 
     <details className={styles.storageDetails} data-storage-summary-details>
       <summary><span>Stock et capacité</span><small>{known(free) ? `${mass(free)} libres en contenants` : "Capacité à confirmer"}</small></summary>

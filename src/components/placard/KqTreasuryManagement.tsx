@@ -10,6 +10,7 @@ import type { KqEnergySnapshot } from "@/lib/kanab-quest-energy";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { KqBusinessPanel } from "./KqBusinessPanel";
+import type { KqOnlineBusinessView, KqOnlineUpgradeView } from "./KqOnlineBusiness";
 import { KqTreasuryInvoices } from "./KqTreasuryInvoices";
 import styles from "./KqTreasuryManagement.module.css";
 
@@ -42,8 +43,8 @@ function ManagementConfirmation({ confirmation, busy, error, section, onClose, o
   </dialog>;
 }
 
-export function KqTreasuryManagement({ onOpenShop, onUpdated, onPrepareStock, onViewSales, section = "management" }: {
-  onOpenShop: (equipmentCode?: string) => void; onUpdated?: () => void; onPrepareStock?: () => void; onViewSales?: () => void; section?: "invoices" | "management";
+export function KqTreasuryManagement({ onOpenShop, onUpdated, onPrepareStock, onViewSales, initialView, initialUpgradeView, section = "management" }: {
+  onOpenShop: (equipmentCode?: string) => void; onUpdated?: () => void; onPrepareStock?: () => void; onViewSales?: () => void; initialView?: KqOnlineBusinessView; initialUpgradeView?: KqOnlineUpgradeView; section?: "invoices" | "management";
 }) {
   const api = useKqTutorialApi();
   const [data, setData] = useState<KqCommerceSnapshot | null>(null);
@@ -144,7 +145,7 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, onPrepareStock, on
     {loading ? <p className={styles.loading} role="status"><LoaderCircle size={19} className={styles.spin} aria-hidden="true" /> {section === "invoices" ? "Ouverture des factures…" : "Ouverture de la gestion…"}</p> : null}
     {error && !confirmation ? <p className={styles.error} role="alert">{error}<button type="button" className={styles.secondary} onClick={() => void load()}><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></p> : null}
     {notice ? <p className={styles.notice} role="status"><Check size={18} aria-hidden="true" /> {notice}</p> : null}
-    {data ? section === "invoices" ? <KqTreasuryInvoices data={data} energy={energy} energyError={energyError} now={liveNow} busy={busy} onAsk={ask} onRetry={() => void load()} onPayEnergy={amount => ask("Régler l’électricité et les soins", `Le solde de ${formatKqCash(amount)} sera débité de ta trésorerie disponible pour acquitter les factures d’électricité et de soins. Les factures de laboratoire et fournisseur sont réglées séparément.`, { expectedCents: amount }, amount, "energy")} /> : <KqBusinessPanel data={data} now={liveNow} busy={busy} onAsk={ask} onOpenShop={() => onOpenShop("COMPUTER")} onPrepareStock={onPrepareStock} onViewSales={onViewSales} expanded showAccounting={false} /> : null}
+    {data ? section === "invoices" ? <KqTreasuryInvoices data={data} energy={energy} energyError={energyError} now={liveNow} busy={busy} onAsk={ask} onRetry={() => void load()} onPayEnergy={amount => ask("Régler l’électricité et les soins", `Le solde de ${formatKqCash(amount)} sera débité de ta trésorerie disponible pour acquitter les factures d’électricité et de soins. Les factures de laboratoire et fournisseur sont réglées séparément.`, { expectedCents: amount }, amount, "energy")} /> : <KqBusinessPanel data={data} now={liveNow} busy={busy} onAsk={ask} onOpenShop={() => onOpenShop("COMPUTER")} onPrepareStock={onPrepareStock} onViewSales={onViewSales} initialView={initialView} initialUpgradeView={initialUpgradeView} expanded showAccounting={false} /> : null}
     {confirmation ? <ManagementConfirmation confirmation={confirmation} busy={busy} error={error} section={section} onClose={() => { if (!busy) { setConfirmation(null); setError(""); } }} onConfirm={() => void commit()} /> : null}
   </section>;
 }

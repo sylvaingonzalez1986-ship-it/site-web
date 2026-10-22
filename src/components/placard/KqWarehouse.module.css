@@ -190,6 +190,14 @@
 .storageEquipment > summary { min-height: 44px; padding: 13px 4px; color: var(--ink); font-size: 14px; line-height: 1.5; cursor: pointer; }
 .storageEquipment > summary::marker { color: var(--green); }
 .storageEquipment > summary > span { display: block; margin-left: 16px; color: var(--muted); font-size: 12px; }
+.storageEquipment > summary:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+.protectionTarget { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: 0 0 16px; padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--game-surface-warm); color: var(--ink); }
+.protectionTarget > div { flex: 1 1 220px; min-width: 0; }
+.protectionTarget strong { font-size: 13px; overflow-wrap: anywhere; }
+.protectionTarget p { font-size: 13px; margin: 6px 0; }
+.protectionTarget small { display: block; font-size: 11px; line-height: 1.5; }
+.protectionTarget button { min-height: 44px; }
+.protectionTarget:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
 .lots { margin-top: 32px; }
 .lot { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
 .lot strong,.lot small { display: block; }

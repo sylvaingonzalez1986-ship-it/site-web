@@ -109,6 +109,7 @@ describe("La relève — real production rules and persistence", () => {
 
   it.each([1, 2] as const)("launches %s frozen member(s), invoices supplies per member, and survives a JSON round trip", cultures => {
     const state = act(prepared(cultures), { type: "launch" });
+    expect(state.game?.domiciliation).toBe("retired");
     expect(state.game?.campaign?.members).toHaveLength(cultures);
     expect(isKqCampaign(state.game?.campaign)).toBe(true);
     expect(parseKqGameSave(encodeKqSave(state.game))).toEqual(state.game);

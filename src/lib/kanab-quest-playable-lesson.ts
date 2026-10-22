@@ -53,7 +53,7 @@ export function createKqPlayableLesson(lesson: KqPlayableLessonId, storage: Less
   return {
     repository: createLocalKqRepository(storage), storage, initialGame, setupOpen: lesson === "cards", onProgress,
     startGame: (config) => startKqGame(2, {
-      ...config, startedAt: LESSON_TIME, recentSituationCodes: undefined, challengeDayKey: undefined,
+      ...config, domiciliation: "retired", startedAt: LESSON_TIME, recentSituationCodes: undefined, challengeDayKey: undefined,
       requiredSituationTags: [], startingXp: 1, equipmentCodes: KQ_TRIAL_EQUIPMENT,
       collectionCodes: KQ_CARDS.map(card => card.code), firstCultureRescue: undefined,
     }),

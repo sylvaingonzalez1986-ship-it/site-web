@@ -10,17 +10,27 @@
 .capital strong { font-size: .86rem; }
 .business .siteLink { display: inline-flex; align-items: center; gap: 8px; padding: 5px 0; border: 0; background: transparent; color: #345d4b; font-size: .74rem; text-align: left; }
 .business .siteLink:hover { text-decoration: underline; }
-.tabs { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: thin; padding: 4px 0; border-bottom: 2px solid #172923; }
-.business .tabs button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 18px; min-height: 46px; flex: 1 0 auto; border: 0; border-radius: 8px 8px 0 0; background: transparent; color: #345d4b; font-size: .8rem; font-weight: 700; }
+.tabs { display:grid; grid-template-columns:repeat(6,minmax(0,1fr)); gap:5px; padding:4px 0 9px; border-bottom:2px solid #172923; }
+.business .tabs button { display:flex; flex-direction:column; align-items:flex-start; justify-content:flex-start; gap:8px; min-width:0; min-height:78px; padding:10px; border:1px solid #17292330; border-radius:9px; background:#fff8e7; color:#345d4b; text-align:left; }
+.tabs button > svg { flex-shrink:0; }
+.tabs button > span { display:grid; gap:5px; min-width:0; max-width:100%; overflow-wrap:anywhere; }
+.tabs strong { font-size:.76rem; font-weight:800; line-height:1.3; }
+.tabs small { font-size:.61rem; font-weight:500; line-height:1.4; }
+.business .tabs [data-shop-view="merch"] { border-color:#172923; background:var(--game-surface-warm,#ffad63); color:#172923; }
 .business .tabs button[aria-selected="true"] { background: #172923; color: #fff8e7; }
 .business .tabs button:focus-visible { outline-offset: -4px; outline-color: #c2922e; }
 .viewPanel { padding-top: 20px; }
 .viewPanel:focus-visible { outline: 2px solid #345d4b; outline-offset: 4px; }
-.upgradeChoice { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
-.business .upgradeChoice button { display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 9px 14px; border: 1px solid #17292360; border-radius: 6px; background: #fff8e7; color: #172923; font-size: .77rem; font-weight: 700; }
-.business .upgradeChoice button[aria-pressed="true"] { background: #bfe9db; border-color: #172923; }
-.settingsView > h3 { margin: 0 0 16px; font: 800 1.5rem/1.2 var(--font-display),Impact,sans-serif; }
-.settingsView > form { max-width: 560px; margin-bottom: 24px; }
+.identity { margin-bottom:14px; border:1px solid #17292360; border-radius:10px; background:#fff8e7; }
+.identity > summary { display:flex; align-items:center; gap:12px; min-height:64px; padding:12px 16px; cursor:pointer; list-style:none; }
+.identity > summary::-webkit-details-marker { display:none; }
+.identity summary > span { display:grid; gap:4px; min-width:0; }
+.identity summary small { font-size:.63rem; }
+.identity summary strong { font-size:.9rem; overflow-wrap:anywhere; }
+.identity summary > b { margin-left:auto; font-size:.68rem; text-decoration:underline; text-underline-offset:3px; }
+.identity summary > svg { flex-shrink:0; }
+.identity[open] summary > svg:last-child { transform:rotate(180deg); }
+.identity > div { padding:0 16px 18px; max-width:620px; }
 .eyebrow { display: flex; align-items: center; gap: 7px; margin-bottom: 8px; color: #172923; font: 800 .72rem/1.5 var(--font-body),Arial,sans-serif; text-transform: uppercase; letter-spacing: .08em; }
 .business .heading h2 { margin: 0; font: 900 1.8rem/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; overflow-wrap: anywhere; }
 .business p { color: #172923; font-size: .79rem; line-height: 1.65; }
@@ -134,3 +144,12 @@
 .card .explanation { width: 100%; margin: 0 0 4px; }
 @media(max-width: 850px) { .requirements { grid-template-columns: minmax(0,1fr); gap: 16px; } }
 @media(max-width: 600px) { .comparison { grid-template-columns: minmax(0,1fr); gap: 20px; padding: 16px; } }
+@media(max-width:700px) {
+  .tabs { grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px; }
+  .business .tabs button { padding:9px 7px; min-height:70px; gap:6px; }
+  .tabs strong { font-size:.71rem; }
+  .tabs small { font-size:.59rem; }
+  .identity > summary { padding:10px; gap:8px; flex-wrap:wrap; }
+  .identity summary > span { flex:1; }
+  .identity summary > b { margin-left:28px; }
+}

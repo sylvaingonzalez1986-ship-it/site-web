@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useId, useState } from "react";
+import { useId, useState, type ReactNode } from "react";
 import { ArrowDown, ArrowRight, ArrowUp, Check, Factory, Grid2X2, Leaf, Package, Plus, ShieldCheck, Snowflake, Sparkles, Sun, Wind, Zap } from "lucide-react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import type { KqStorageClimateBilling } from "@/lib/kanab-quest-business";
@@ -21,6 +21,7 @@ type Props = {
   onEditZone: (id: string) => void;
   onUpgradeZone: (id: string, deviceCode: string) => void;
   onSetStorageClimate?: (code: string | null) => void;
+  beforeConfiguration?: ReactNode;
 };
 
 const number = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
@@ -65,7 +66,7 @@ function QualityComparison({ kind }: { kind: "drying" | "storage" }) {
   </section>;
 }
 
-export function KqWarehousePostHarvest({ kind, state, installedState = state, billing, disabled, onPlaceDevice, onEditZone, onUpgradeZone, onSetStorageClimate }: Props) {
+export function KqWarehousePostHarvest({ kind, state, installedState = state, billing, disabled, onPlaceDevice, onEditZone, onUpgradeZone, onSetStorageClimate, beforeConfiguration }: Props) {
   const drying = kind === "drying";
   const devices = KQ_WAREHOUSE_CATALOG.filter(device => device.kind === kind && device.zoneLayout && device.purchasable !== false);
   const zones = (state.serviceZones ?? []).filter(zone => zone.kind === kind);
@@ -120,6 +121,7 @@ export function KqWarehousePostHarvest({ kind, state, installedState = state, bi
     <div className={styles.qualityNote}><Sparkles size={18} aria-hidden="true" /><p>{drying ? "La gamme de séchage améliore la qualité des récoltes issues des cultures lancées après son installation. Le bonus dépend du matériel et de sa capacité dans la salle." : "Les gains de curing s’acquièrent progressivement. Une gamme supérieure apporte un meilleur bonus et ralentit les pertes à partir de son installation."}<span>{drying ? "Qualité finale plafonnée à 10. Les cultures déjà lancées conservent leur bonus de séchage." : "Qualité finale plafonnée à 10. Les améliorations profitent aussi au temps de curing restant des lots en cours."}</span></p></div>
     <QualityComparison kind={kind} />
 
+    {beforeConfiguration}
     <div className={styles.sectionHeading}><div><span className={styles.eyebrow}>Configuration du plan</span><h4>{drying ? "Mes zones de séchage" : "Mes zones de stockage"}</h4></div><span className={styles.count}>{zones.length} zone{zones.length > 1 ? "s" : ""}</span></div>
     {zones.length > 0 ? <div className={styles.zones}>{zones.map(zone => {
       const device = getKqWarehouseDevice(zone.deviceCode)!;

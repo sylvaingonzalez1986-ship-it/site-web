@@ -6,6 +6,7 @@ vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEna
 vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "127.0.0.1", hitRateLimit: mocks.rate, logRateLimitRejection: vi.fn() }));
 vi.mock("@/lib/supabase/kanab-quest-commerce-backend", () => ({ getKqCommerceSnapshot: mocks.snapshot, handleKqCommerceAction: mocks.action }));
 import { GET, POST } from "./route";
+import { KqCommerceOfferChangedError } from "@/lib/kanab-quest-commerce-errors";
 
 const request = (body: unknown) => new Request("http://localhost/api/arena/placard/commerce", { method: "POST", body: JSON.stringify(body) });
 const command = { action: "online", command: "create-listing", payload: { stockId: "stock", formatGrams: 5, packagingCode: "kraft-5", packets: 2, packetPriceCents: 1234 }, requestKey: "key" };
@@ -62,5 +63,13 @@ describe("online commerce endpoint boundaries", () => {
     response = await POST(request(command));
     expect(response.status).toBe(503);
     expect(JSON.stringify(await response.json())).not.toContain("private database detail");
+  });
+
+  it.each(["commerce_offer_changed", "commerce_storage_changed"] as const)("returns a recoverable conflict only for a rejected %s transaction", async code => {
+    const message = "Recalcule l’offre avant de confirmer.";
+    mocks.action.mockRejectedValueOnce(new KqCommerceOfferChangedError(message, code));
+    const response = await POST(request({ action: "sell", quoteId: "quote", expectedPayoutCents: 1000, requestKey: "key" }));
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({ error: message, code });
   });
 });

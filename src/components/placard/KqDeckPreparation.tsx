@@ -9,7 +9,7 @@ export function KqDeckPreparation({ deckCodes, inventory, startingXp, loading = 
 }) {
   const deck = getKqDeckPreparation({ deckCodes, inventory, startingXp });
   const stockKnown = inventory !== null;
-  return <section className={styles.preparation} data-deck-preparation aria-label="Bilan des cartes choisies">
+  return <section className={styles.preparation} data-deck-preparation aria-label="Bilan des cartes choisies" tabIndex={-1}>
     <dl className={styles.numbers}>
       <div><dt>Copies choisies</dt><dd data-deck-copies>{deck.copies}<small>{deck.references} référence{deck.references > 1 ? "s" : ""}</small></dd></div>
       <div><dt>Première main</dt><dd data-deck-opening-hand>{!stockKnown || deck.missingCopies ? "À vérifier" : deck.openingHandSize}<small>sur {deck.handCapacity} maximum</small></dd></div>

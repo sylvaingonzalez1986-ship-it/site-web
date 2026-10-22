@@ -32,6 +32,13 @@
 .steps li[aria-current="step"] > span { background: #efc451; border-color: #172923; }
 .steps li[data-complete="true"] > span { color: #172923; background: #fff1d6; border-color: #172923; }
 .dashboardUnavailable { padding: 22px; border: 2px solid #172923; background: #fff8e7; }
+.missingLot { border-radius: 12px; overflow-wrap: anywhere; }
+.missingLot h2 { margin: 0 0 10px; font: 800 30px/1.15 var(--font-display),sans-serif; }
+.missingLot p { font-size: 13px; line-height: 1.6; }
+.missingLot button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; max-width: 100%; margin: 5px 8px 0 0; padding: 10px 12px; border: 1px solid #172923; border-radius: 9px; background: #fffaf1; color: #172923; font: 650 13px/1.4 var(--font-body),sans-serif; cursor: pointer; }
+.missingLot button.primary { background: #efc451; }
+.missingLot button:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.missingLot button:disabled { opacity: .6; cursor: wait; }
 .lotSummary { margin: 0 0 14px; color: #172923; font-size: .85rem; }
 .inventory { display: grid; grid-template-columns: minmax(150px,.55fr) minmax(0,1fr); gap: 24px; margin-top: 20px; align-items: start; }
 .inventoryArt, .workshopArt, .selectedArt { position: relative; overflow: hidden; border: 2px solid #172923; border-radius: 16px; background: var(--game-surface-warm); }

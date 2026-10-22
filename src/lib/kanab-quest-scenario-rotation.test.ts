@@ -157,6 +157,7 @@ describe("culture situation rotation", () => {
     for (let seed = 0; seed < sampleSize; seed++) {
       const home = buildKqScenarioPath(seed, history, [], [], "home");
       const external = buildKqScenarioPath(seed, history, [], [], "external");
+      expect(buildKqScenarioPath(seed, history, [], [], "retired")).toEqual(external);
       expect(home[harvestIndex] === theft.code).toBe(buildKqScenarioPath(seed, [], [], [], "home")[harvestIndex] === theft.code);
       expect(external[harvestIndex] === theft.code).toBe(buildKqScenarioPath(seed, [], [], [], "external")[harvestIndex] === theft.code);
       if (home[harvestIndex] === theft.code) homeThefts++;
@@ -181,7 +182,7 @@ describe("culture situation rotation", () => {
     let safeDraws = 0;
 
     for (let seed = 0; seed < 100; seed++) {
-      for (const domiciliation of ["home", "external"] as const) {
+      for (const domiciliation of ["home", "external", "retired"] as const) {
         const path = buildKqScenarioPath(seed, history, [], [], domiciliation);
         const harvest = KQ_SITUATIONS.find((situation) => situation.code === path[harvestIndex])!;
         if (harvest.incident === "crop-theft") continue;

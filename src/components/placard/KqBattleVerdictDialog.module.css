@@ -30,7 +30,7 @@
 .details > summary::-webkit-details-marker { display: none; }
 .details > summary svg { flex: none; }
 .details[open] > summary svg { transform: rotate(180deg); }
-.details > summary:focus-visible,.continue:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.details > summary:focus-visible,.continue:focus-visible,.secondary:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
 .analysis,.rewardDetails { padding: 12px; border-top: 1px solid #17292333; }
 .rounds > div { display: grid; grid-template-columns: minmax(0,1fr) 48px 48px; gap: 8px; padding: 10px 8px; border-bottom: 1px solid #17292322; font-size: 12px; }
 .rounds > div[data-won=true] { background: #dcefe4; }
@@ -45,7 +45,12 @@
 .card img { width: 100px; height: auto; flex: none; object-fit: contain; }
 .card > div { min-width: 0; overflow-wrap: anywhere; }
 .receipt { margin: 12px 0 0; color: #536058; font-size: 10px; line-height: 1.5; }
+.nextActions { display: grid; gap: 6px; }
+.continuation { margin-top: 12px; }
+.dialog .secondary { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 7px 10px; border: 1px solid #17292355; border-radius: 9px; background: transparent; color: #172923; font: 650 12px/1.4 var(--font-body),sans-serif; text-align: center; text-decoration: none; cursor: pointer; }
+.continue svg { flex-shrink: 0; }
 .dialog .continue { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 46px; padding: 10px 16px; border: 2px solid #172923; border-radius: 10px; background: #efc451; box-shadow: 2px 3px 0 #172923; color: #172923; font: 800 20px/1.2 var(--font-display),Impact,sans-serif; text-align: center; text-decoration: none; text-transform: uppercase; cursor: pointer; }
+.dialog [data-verdict-open-lot] { gap: 8px; font: 750 13px/1.4 var(--font-body),sans-serif; text-transform: none; }
 @media(max-width:400px) {
   .body { padding: 12px; }
   .hero { gap: 8px; padding: 10px; }

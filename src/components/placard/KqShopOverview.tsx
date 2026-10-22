@@ -8,8 +8,10 @@ import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqOnlinePackaging } from "@/lib/kanab-quest-online";
 import { getKqShopDashboard } from "@/lib/kanab-quest-shop-strategy";
+import { getKqShopActivity } from "@/lib/kanab-quest-shop-activity";
+import { KqMerchActivity } from "./KqMerchActivity";
 import { KqBuddieFlavors } from "./KqBuddieFlavors";
-import { KqAllocationBar, KqBarChart, KqProgressMeter } from "./KqVisuals";
+import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
 import styles from "./KqShopOverview.module.css";
 
 type Props = {
@@ -24,6 +26,7 @@ type Props = {
   onViewSales: () => void;
   onViewDemands: () => void;
   onOpenBusiness?: () => void;
+  onOpenMerch?: () => void;
   onOpenTreasury?: () => void;
   onOpenCulture?: () => void;
 };
@@ -46,10 +49,11 @@ function Destination({ href, onNavigate, className, children }: {
   }}>{children}</Link>;
 }
 
-export function KqShopOverview({ data, loading, refreshing, error, now, headingRef, onRefresh, onPrepareStock, onViewSales, onViewDemands, onOpenBusiness, onOpenTreasury, onOpenCulture }: Props) {
+export function KqShopOverview({ data, loading, refreshing, error, now, headingRef, onRefresh, onPrepareStock, onViewSales, onViewDemands, onOpenBusiness, onOpenMerch, onOpenTreasury, onOpenCulture }: Props) {
   const id = useId();
   const online = data?.online;
   const dashboard = data ? getKqShopDashboard(data) : null;
+  const activity = data ? getKqShopActivity(data) : null;
   const rawLots = data?.rawLots.filter(lot => lot.harvestGrams > 0) ?? [];
   const stocks = data?.stocks.filter(stock => stock.remainingUnits > 0) ?? [];
   const listings = dashboard?.listings ?? [];
@@ -57,19 +61,23 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
   const demandNow = now ?? (demand ? Date.parse(demand.serverNow) : 0);
   const demandActive = Boolean(demand && demandNow < Date.parse(demand.endsAt));
   const hoursRemaining = demand ? Math.max(0, Math.ceil((Date.parse(demand.endsAt) - demandNow) / 3600000)) : 0;
-  const recentSales = [...(online?.recentSales ?? [])].sort((a, b) => Date.parse(b.soldAt) - Date.parse(a.soldAt)).slice(0, 3);
+  const recentSales = activity?.receipts.slice(0, 3) ?? [];
   const hasLots = rawLots.length + stocks.length > 0;
   const needsStock = dashboard?.bottleneck.code === "stock" || dashboard?.bottleneck.code === "restock";
   const hasPausedPackets = online?.listings.some(listing => ["paused", "closed"].includes(listing.status) && listing.remainingPackets > 0 && listing.qualityScore >= 5.8);
   const priority = !online
     ? { title: "Ta production reste accessible", description: "Le suivi de la boutique en ligne est indisponible. Tu peux consulter tes lots et les autres circuits de vente.", action: "Voir mes lots", href: "/arene/placard?view=market&section=sales", navigate: onPrepareStock }
+    : online.site.active && !listings.length && activity?.merch.available && activity.merch.activeUnits === null
+      ? { title: "Vérifie ta collection", description: "Le stock ou son état en vitrine n’est pas confirmé. Retrouve ton atelier avant de choisir la suite.", action: "Voir mon merch", href: "/arene/placard?view=market&section=management", navigate: onOpenMerch ?? onOpenBusiness }
+    : online.site.active && !listings.length && (activity?.merch.inventory?.length ?? 0) > 0
+      ? { title: activity?.merch.soldOut?.length ? "Prépare la prochaine série" : (activity?.merch.activeUnits ?? 0) > 0 ? "Ta collection est en rayon" : "Expose ta collection", description: activity?.merch.soldOut?.length ? "Une référence est épuisée. Choisis les articles à refabriquer et le budget à engager." : "Retrouve tes articles, choisis ceux à exposer et ajuste les prix dans ton atelier merch.", action: "Gérer mon merch", href: "/arene/placard?view=market&section=management", navigate: onOpenMerch ?? onOpenBusiness }
     : needsStock
       ? hasPausedPackets && !listings.length
         ? { title: "Remets tes paquets en rayon", description: "Des paquets sont déjà prêts dans tes annonces en pause. Retrouve-les pour reprendre les ventes.", action: "Voir mes annonces", href: "/arene/placard?view=market&section=dashboard", navigate: onViewSales }
         : { title: hasLots ? "Fais une place à ta récolte" : "Tout commence par une récolte", description: hasLots ? "Choisis un lot, prépare tes produits et trouve le bon circuit de vente." : "Lance ou retrouve tes cultures. Tes prochaines récoltes viendront remplir les rayons.", action: hasLots ? "Préparer mes produits" : "Voir mes cultures", href: hasLots ? "/arene/placard?view=market&section=sales" : "/arene/placard?view=game", navigate: hasLots ? onPrepareStock : onOpenCulture }
       : { title: dashboard?.bottleneck.title ?? "Développe ta boutique", description: dashboard?.bottleneck.description ?? "Retrouve tes prix, ta communication et les améliorations de ta boutique.", action: !online.site.createdAt ? "Ouvrir ma boutique" : !online.site.active ? "Réactiver ma boutique" : "Développer ma boutique", href: "/arene/placard?view=market&section=management", navigate: onOpenBusiness };
 
-  return <main className={styles.overview} data-screen="overview">
+  return <main className={styles.overview} data-screen="overview" data-shop-overview>
     <header className={styles.heading}>
       <div><p className={styles.eyebrow}>Ton commerce · Vue d’ensemble</p><h1 ref={headingRef} data-commerce-view-heading tabIndex={-1}>Ma boutique</h1></div>
       <button type="button" className={styles.refresh} onClick={onRefresh} disabled={loading || refreshing} aria-label="Actualiser le tableau de bord"><RefreshCw size={17} aria-hidden="true" /><span>{refreshing ? "Actualisation…" : "Actualiser"}</span></button>
@@ -91,7 +99,7 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
         <Destination href="/arene/placard?view=treasury&pole=accounting" onNavigate={onOpenTreasury} className={styles.metric}><span className={styles.metricLabel}><Wallet size={18} aria-hidden="true" />Trésorerie</span><strong>{formatKqCash(data.cashCents)}</strong><small>Disponible dans le jeu<ChevronRight size={14} aria-hidden="true" /></small></Destination>
         <button type="button" className={styles.metric} onClick={onPrepareStock}><span className={styles.metricLabel}><Leaf size={18} aria-hidden="true" />Lots en stock</span><strong>{number(rawLots.length + stocks.length)}</strong><small>À préparer ou à vendre<ChevronRight size={14} aria-hidden="true" /></small></button>
         <button type="button" className={styles.metric} onClick={onViewSales}><span className={styles.metricLabel}><Package size={18} aria-hidden="true" />Paquets en rayon</span><strong>{online ? number(dashboard?.remainingPackets ?? 0) : "—"}</strong><small>{!online ? "Suivi indisponible" : !online.site.active ? "Ventes en ligne à l’arrêt" : `${listings.length} annonce${listings.length > 1 ? "s" : ""} active${listings.length > 1 ? "s" : ""}`}<ChevronRight size={14} aria-hidden="true" /></small></button>
-        <button type="button" className={styles.metric} onClick={onViewSales}><span className={styles.metricLabel}><ShoppingBag size={18} aria-hidden="true" />Commandes en ligne</span><strong>{online ? number(online.stats.orders) : "—"}</strong><small>{online ? "Cumul depuis l’ouverture" : "Suivi indisponible"}<ChevronRight size={14} aria-hidden="true" /></small></button>
+        <button type="button" className={styles.metric} data-open-merch onClick={onOpenMerch ?? onOpenBusiness ?? onViewSales}><span className={styles.metricLabel}><ShoppingBag size={18} aria-hidden="true" />Articles merch en rayon</span><strong>{activity?.merch.activeUnits == null ? "—" : number(activity.merch.activeUnits)}</strong><small>{!activity?.merch.available ? "Suivi indisponible" : !online?.site.active ? "Ventes en ligne à l’arrêt" : `${activity.merch.active?.length ?? "—"} références exposées`}<ChevronRight size={14} aria-hidden="true" /></small></button>
       </div>
 
       <div className={styles.columns}>
@@ -132,15 +140,14 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
         </div>
 
         <div className={styles.sideColumn}>
-          {online && dashboard ? <section className={styles.panel} aria-label="Rythme estimé de la boutique"><KqBarChart title="Par jour réel · estimation" items={[
-            { label: "Visites", value: dashboard.visitorsPerDay, displayValue: number(dashboard.visitorsPerDay), tone: "gold" },
-            { label: "Commandes", value: dashboard.ordersPerDay, displayValue: number(dashboard.ordersPerDay), tone: "teal" },
-          ]} emptyLabel={online.site.active ? "Pas encore de visites ou commandes estimées" : "Boutique en pause"} /><div className={styles.visual}><KqProgressMeter label="Confiance commerciale" value={online.confidence} max={100} valueLabel={`${number(online.confidence)} / 100`} /></div><details className={styles.explanationDetails}><summary>Lire ces estimations</summary><p>Rythme calculé avec tes prix, ta qualité, ton audience et tes annonces actuelles. Les commandes ne sont pas garanties.</p></details></section> : null}
+          {online && dashboard ? <section className={styles.panel} aria-label="Rythme estimé de la boutique"><h2 className={styles.rhythmTitle}>Le rythme des rayons</h2><dl className={styles.rhythm}><div><dt>Fleurs et extraits · paquets / jour</dt><dd>{number(dashboard.ordersPerDay)}</dd></div><div><dt>Merch · articles / jour</dt><dd>{activity?.merch.estimatedUnitsPerDay == null ? "—" : number(activity.merch.estimatedUnitsPerDay)}</dd></div></dl><small>Estimations · {number(dashboard.visitorsPerDay)} visites / jour</small><div className={styles.visual}><KqProgressMeter label="Confiance commerciale" value={online.confidence} max={100} valueLabel={`${number(online.confidence)} / 100`} /></div><details className={styles.explanationDetails}><summary>Lire ces estimations</summary><p>Rythme calculé avec tes prix, ton audience et tes produits actuels. Les campagnes ciblées concernent les récoltes et leurs extraits. Les ventes ne sont pas garanties.</p></details></section> : null}
           <section className={styles.panel} aria-labelledby={`${id}-shelf`}>
-            <div className={styles.sectionHeading}><div><p className={styles.eyebrow}>Ta vitrine en ligne</p><h2 id={`${id}-shelf`}>En rayon</h2></div><span className={styles.count}>{online ? listings.length : "—"}</span></div>
+            <div className={styles.sectionHeading}><div><p className={styles.eyebrow}>Ta vitrine en ligne</p><h2 id={`${id}-shelf`}>Fleurs et extraits</h2></div><span className={styles.count}>{online ? listings.length : "—"}</span></div>
             {listings.length ? <ul className={styles.shelf}>{listings.slice(0, 3).map(({ listing }) => <li key={listing.id}><button type="button" onClick={onViewSales}><Image src={getKqOnlinePackaging(listing.packagingCode)?.image ?? "/placard/equipment-sylvain-v1/packaging-kraft.webp"} alt="" width={58} height={68} /><span><strong>{listing.name}</strong><small>{number(listing.remainingPackets)} paquets · {listing.formatGrams} g</small><b>{formatKqCash(listing.packetPriceCents)}<small> / paquet</small></b></span><ChevronRight size={16} aria-hidden="true" /></button></li>)}</ul> : <div className={styles.empty}><PackageOpen size={32} aria-hidden="true" /><strong>{!online ? "Rayon indisponible" : "Ton rayon attend ses produits"}</strong><p>{!online ? "Réessaie d’actualiser pour retrouver tes annonces." : "Prépare des paquets ou reprends une annonce depuis tes ventes."}</p></div>}
             <button type="button" className={styles.fullLink} onClick={onViewSales}>Gérer mes annonces<ArrowRight size={16} aria-hidden="true" /></button>
           </section>
+
+          <KqMerchActivity data={data} compact onOpenMerch={onOpenMerch ?? onOpenBusiness} />
 
           <Destination href="/arene/placard?view=market&section=management" onNavigate={onOpenBusiness} className={styles.growth}>
             <span className={styles.growthIcon}><Megaphone size={25} aria-hidden="true" /></span><span><strong>Fais grandir ta boutique</strong><small>Prix, communication, site et identité.</small></span><ArrowRight size={18} aria-hidden="true" />
@@ -148,7 +155,7 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
 
           {online ? <section className={styles.panel} aria-labelledby={`${id}-sales`}>
             <div className={styles.sectionHeading}><h2 id={`${id}-sales`}>Dernières ventes</h2><Check size={18} aria-hidden="true" /></div>
-            {recentSales.length ? <ul className={styles.sales}>{recentSales.map(sale => <li key={sale.id}><span><strong>{sale.name}</strong><small>{number(sale.packets)} paquet{sale.packets > 1 ? "s" : ""} · {new Date(sale.soldAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</small></span><b>{formatKqCash(sale.payoutCents)}<small>TTC</small></b></li>)}</ul> : <p className={styles.explanation}>Tes prochaines commandes apparaîtront ici, au fil des ventes en ligne.</p>}
+            {recentSales.length ? <ul className={styles.sales}>{recentSales.map(sale => <li key={sale.id}><span><strong>{sale.name}</strong><small>{number(sale.quantity)} {sale.unitLabel} · {new Date(sale.soldAt).toLocaleDateString("fr-FR", { day: "numeric", month: "short" })}</small></span><b>{sale.netPayoutCents === null ? "—" : formatKqCash(sale.netPayoutCents)}<small>Versés en trésorerie</small></b></li>)}</ul> : <p className={styles.explanation}>{activity?.receiptsComplete ? "Tes prochaines ventes de fleurs et de merch apparaîtront ici." : "L’historique complet des deux rayons est momentanément indisponible."}</p>}
           </section> : null}
         </div>
       </div>

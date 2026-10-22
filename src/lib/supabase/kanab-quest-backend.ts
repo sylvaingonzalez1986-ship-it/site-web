@@ -1036,7 +1036,11 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (businessResult.error) throw new Error(`[supabase:commerce] ${businessResult.error.message}`);
   const business = businessResult.data?.business as KqBusinessState | undefined;
   if (business?.version !== 1) throw new Error("[supabase:commerce] business_calendar_migration_required");
-  const domiciliation = business.domiciliation?.mode === "external" && business.domiciliation.active ? "external" : "home";
+  // Keep shared-database runs readable by the previous server: external has
+  // the same ordinary theft risk as retired, which old save parsers reject.
+  // The business capability alone records that no address contract remains.
+  const domiciliation = business.domiciliation?.retired === true ? "external"
+    : business.domiciliation?.mode === "external" && business.domiciliation.active ? "external" : "home";
   const collectionCodes = Object.entries(collection.inventory)
     .filter(([, copies]) => copies > 0)
     .map(([code]) => code);
@@ -1101,7 +1105,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     if (message.includes("kq_active_run_exists")) throw new Error("Une culture Supabase est déjà active.");
     if (message.includes("warehouse_layout_changed")) throw new Error("L’aménagement a changé. Actualise le devis avant de lancer.");
     if (message.includes("warehouse_capacity")) throw new Error("Agrandis le séchage ou libère du stockage pour cette récolte avant de lancer.");
-    if (message.includes("kq_domiciliation_changed")) throw new Error("Ta domiciliation a changé. Actualise avant de lancer la culture.");
+    if (message.includes("kq_domiciliation_changed")) throw new Error("Les règles de cette culture ont changé. Actualise avant de la lancer.");
     if (message.includes("kq_production_units_changed") || message.includes("kq_culture_equipment_changed") || message.includes("kq_shared_equipment_changed") || message.includes("kq_culture_equipment_broken")) throw new Error("L’état du matériel a changé. Actualise le devis avant de lancer la culture.");
     if (message.includes("kq_buddie_rotation_locked")) {
       let remaining = KQ_BUDDIE_ROTATION_REQUIRED;

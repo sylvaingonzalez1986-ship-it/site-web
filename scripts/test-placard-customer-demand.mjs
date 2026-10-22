@@ -65,6 +65,14 @@ try {
   }
   await db.exec(await sql(name));
  }
+ // Exercise the production post-harvest quality calculation in the commerce
+ // fixture too. Its warehouse installation triggers are unrelated to a sale.
+ const postHarvestSql=await sql('20261018000500_kq_postharvest_quality.sql');
+ for (const name of ['kq_storage_settle','kq_storage_condition']) {
+  const definition=postHarvestSql.match(new RegExp(`CREATE OR REPLACE FUNCTION public\\.${name}\\([\\s\\S]*?\\$\\$;`));
+  assert.ok(definition,`production definition for ${name}`);
+  await db.exec(definition[0]);
+ }
  // All relative timestamps are identical across repeated and batched settlement.
  await db.exec('BEGIN');
  const now = await scalar('SELECT now()');
@@ -115,11 +123,11 @@ try {
   equal(priced.payoutExactAfter,Number(await scalar('SELECT round(12345.678901+$1::numeric*$2::numeric/10,6)',[units,precise])),
    'fractional sale accumulates the same exact payout as PostgreSQL '+[base,bonus,units,remaining].join('/'));
  }
- async function storedQuote(account,channel,units) {
+ async function storedQuote(account,channel,units,transformStock=stock=>stock) {
   const snapshot=await scalar('SELECT rpc_kq_commerce_state($1)',[account.user]);
   const rawStock=snapshot.stocks.find(s=>s.id===account.stock);
   const stock={...rawStock,storage:projectKqStorageLot(rawStock.storageState,Date.parse(now),rawStock.juryScore)};
-  const offer=quoteKqCommerce(snapshot,stock,channel,'advised',units,Date.parse(now));
+  const offer=quoteKqCommerce(snapshot,transformStock(stock),channel,'advised',units,Date.parse(now));
   Object.assign(offer,previewKqBusinessPayment(offer.payoutCents,snapshot.business,0));
   const quoteId=randomUUID();
   await db.query(`INSERT INTO kq_commerce_quotes(id,user_id,stock_id,account_revision,campaign_id,campaign_revision,stock_units,reputation,offer,expires_at,storage_revision)
@@ -134,6 +142,34 @@ try {
   await db.query('UPDATE kq_flowers SET variety_code=$2 WHERE id=$1',[account.flower,demand.varietyCode]);
   return demand;
  };
+ // A fresh quote must remain acceptable when drying/curing crosses a quality
+ // band. Previously TS discarded positive qualityDelta while SQL retained it.
+ for (const [route,channel,juryScore,dryingBonus,expectedQuality] of [
+  ['raw','cbd-shop',8.5,.7,9.2],
+  ['raw','cbd-shop',6.3,.7,7],
+  ['raw','wholesale',6.3,.7,7],
+  ['dry-sift','cbd-shop',8.5,.7,9.2],
+  ['dry-sift','wholesale',8.5,.7,9.2],
+  ['rosin-trial','cbd-shop',9.4,.7,10],
+ ]) {
+  const account=await player();
+  await db.query('UPDATE kq_market_lots SET jury_score=$2,selected_route=$3 WHERE flower_id=$1',[account.flower,juryScore,route]);
+  await db.query('UPDATE kq_commerce_batches SET route=$2 WHERE flower_id=$1',[account.flower,route]);
+  await db.query('UPDATE kq_commerce_stock SET route=$2 WHERE id=$1',[account.stock,route]);
+  const profile={dryingQualityBonus:dryingBonus,storageQualityBonus:0,climateQualityBonus:0,
+   containerQualityBonus:0,aromaRateFactor:100,chemistryRateFactor:100,curingBonusWeightedMs:0};
+  await db.query("UPDATE kq_storage_lots SET state=jsonb_set(state,'{postHarvest}',$2::jsonb) WHERE flower_id=$1",[account.flower,JSON.stringify(profile)]);
+  const condition=await scalar('SELECT kq_storage_condition(state,$2,now()) FROM kq_storage_lots WHERE flower_id=$1',[account.flower,juryScore]);
+  equal(condition.conditionScore,expectedQuality,`SQL current quality ${route}/${channel}/${juryScore}`);
+  const quote=await storedQuote(account,channel,50);
+  await sell(account,quote);
+  equal(await scalar('SELECT remaining_units FROM kq_commerce_stock WHERE id=$1',[account.stock]),950,`immediate sale accepts post-harvest quality ${route}/${channel}/${juryScore}`);
+  equal(Number(await scalar('SELECT jury_score FROM kq_market_lots WHERE flower_id=$1',[account.flower])),juryScore,'commercial sale preserves original verdict');
+  if ((channel==='cbd-shop' && juryScore===8.5) || (route==='raw' && channel==='wholesale')) {
+   const legacy=await storedQuote(account,channel,50,item=>({...item,storage:{...item.storage,qualityDelta:Math.min(0,item.storage.qualityDelta)}}));
+   await reject(()=>sell(account,legacy),'commerce_offer_changed');
+  }
+ }
  const plain=await player();
  const shop=await storedQuote(plain,'cbd-shop',50), wholesale=await storedQuote(plain,'wholesale',50);
  equal(shop.offer.unitCents,300,'shop indoor tariff is 3 EUR/g');
@@ -145,7 +181,7 @@ try {
  for (const [channel,wanted] of [['cbd-shop',300],['wholesale',210]]) {
   const account=await player(),demand=await match(account,channel);
   const quote=await storedQuote(account,channel,100),key=randomUUID();
-  equal(quote.offer.unitCents,wanted*(1+demand.bonusPercent/100),'matching mature variety receives current bonus');
+  equal(quote.offer.unitCents,Math.round(wanted*(1+demand.bonusPercent/100)*1e6)/1e6,'matching mature variety receives current bonus');
   equal(quote.offer.customerDemand,{id:demand.id,period:demand.period,bonusPercent:demand.bonusPercent,matchedFlavorCount:2,units:100},'quote carries exact demand usage');
   await sell(account,quote,key);
   equal((await request(account,channel)).remainingUnits,demand.capacityUnits-100,'sale consumes account quota');

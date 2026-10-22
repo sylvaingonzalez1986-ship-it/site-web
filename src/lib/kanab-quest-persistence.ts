@@ -49,7 +49,7 @@ export function parseKqGameSave(raw: string | null): KqGameState | null {
         || JSON.stringify(member.cultivationProfile) !== JSON.stringify(state.cultivationProfile)
         || JSON.stringify(member.warehouse) !== JSON.stringify(warehouse)) return null;
     }
-    if (state.domiciliation !== undefined && state.domiciliation !== "home" && state.domiciliation !== "external") return null;
+    if (state.domiciliation !== undefined && state.domiciliation !== "home" && state.domiciliation !== "external" && state.domiciliation !== "retired") return null;
     const phases = ["prepare", "rolled", "resolved", "complete"];
     const knownCards = new Set<string>([...KQ_CARDS.map((card) => card.code), ...KQ_RETIRED_SUBSTRATE_CODES]);
     const knownSituations = new Set(KQ_SITUATIONS.map((situation) => situation.code));

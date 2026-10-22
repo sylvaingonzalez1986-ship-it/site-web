@@ -34,11 +34,20 @@ describe("storage-aware server commerce quotes", () => {
     const result = await handleKqCommerceAction(user, { action: "quote", stockId, channel: "wholesale", policy: "premium", units: 100,
       unitCents: 999999, payoutCents: 999999, juryScore: 10, event: "restock", wholesalePricePercent: 100 });
     expect(result.offer).toMatchObject({ unitCents: 210, payoutCents: 2100, reputationDelta: 0 });
+    expect(result.stock).toEqual({ name: "Test", route: "raw", remainingUnits: 1200, quality: 9 });
     expect(mocks.insert).toHaveBeenCalledWith(expect.objectContaining({ offer: expect.objectContaining({ unitCents: 210, payoutCents: 2100 }) }));
   });
   it("does not persist a refused immature retail quote", async () => {
     const result = await handleKqCommerceAction(user, { action: "quote", stockId, channel: "cbd-shop", policy: "advised", units: 100 });
     expect(result.offer.reason).toContain("Curing");
+    expect(mocks.insert).not.toHaveBeenCalled();
+  });
+
+  it.each(["commerce_offer_changed", "commerce_storage_changed"])("identifies an authoritative %s rejection for explicit requoting", async code => {
+    mocks.rpc.mockResolvedValueOnce({ data: null, error: { message: code } });
+    await expect(handleKqCommerceAction(user, { action: "sell", quoteId: stockId, expectedPayoutCents: 2100,
+      requestKey: flowerId })).rejects.toMatchObject({ name: "KqCommerceOfferChangedError", code });
+    expect(mocks.rpc).toHaveBeenCalledTimes(1);
     expect(mocks.insert).not.toHaveBeenCalled();
   });
   it("fails closed if SQL has not supplied the storage migration data", async () => {

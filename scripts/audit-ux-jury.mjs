@@ -7,7 +7,7 @@ import tailwindcss from '@tailwindcss/postcss';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
-const root=process.cwd(),output=resolve(root,'output/ux-implementation/jury'),port=3270,origin=`http://127.0.0.1:${port}`;
+const root=process.cwd(),output=resolve(root,'output/ux-implementation/jury'),port=Number(process.env.KQ_JURY_PORT??3270),origin=`http://127.0.0.1:${port}`;
 const modules={
   'jury-entry': `import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
     import {KanabQuestDicePrototype} from '/src/components/placard/KanabQuestDicePrototype';
@@ -60,10 +60,10 @@ const modules={
   'next/dynamic': `export default function dynamic(){return ()=>null;}`,
 };
 const server=await createServer({configFile:false,envDir:false,root,publicDir:resolve(root,'public'),cacheDir:resolve(output,'vite-cache'),resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},optimizeDeps:{include:['react','react-dom/client','react/jsx-runtime','lucide-react']},plugins:[{name:'jury-fixture',enforce:'pre',resolveId(id){if(id in modules)return '\0'+id;},async load(id){if(id.startsWith('\0')&&modules[id.slice(1)])return (await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>@font-face{font-family:Display;src:url("/src/app/fonts/BarlowCondensed-Latin-Black.woff2");font-weight:900}@font-face{font-family:Display;src:url("/src/app/fonts/BarlowCondensed-Latin-ExtraBold.woff2");font-weight:800}@font-face{font-family:Body;src:url("/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2");font-weight:300 700}:root{--font-body:Body;--font-display:Display}body{margin:0}</style><div id="root"></div><script type="module" src="/@id/__x00__jury-entry"></script></html>');});}}],server:{host:'127.0.0.1',port,strictPort:true,hmr:false,watch:null}});
-let browser;const errors=[],results=[];
+let browser,page;const errors=[],results=[];
 try{
   await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,userDataDir:resolve(output,'chrome-profile'),args:['--no-sandbox','--disable-gpu']});
-  const page=await browser.newPage();page.setDefaultTimeout(35000);page.on('pageerror',e=>errors.push(e.message));
+  page=await browser.newPage();page.setDefaultTimeout(35000);page.on('pageerror',e=>errors.push(e.message));
   await page.setRequestInterception(true);page.on('request',r=>{const url=new URL(r.url());if(url.origin===origin||url.protocol==='data:')void r.continue();else void r.abort();});
   const settle=()=>new Promise(resolve=>setTimeout(resolve,200));
   const clickText=async(text,scope='body')=>{const found=await page.evaluate(({text,scope})=>{const target=[...document.querySelectorAll(scope+' button')].find(b=>b.textContent.includes(text)&&!b.disabled);if(!target)return false;target.click();return true;},{text,scope});assert(found,'Clickable button '+text);};
@@ -73,11 +73,25 @@ try{
     const dimensions=await page.$eval('dialog[open]',d=>{const b=d.querySelector('header button'),r=b.getBoundingClientRect();return {w:r.width,h:r.height,visible:r.top>=0&&r.bottom<=innerHeight,overflow:d.scrollWidth>d.clientWidth+1,top:d.matches(':modal')};});assert(dimensions.w>=44&&dimensions.h>=44&&dimensions.visible&&dimensions.top&&!dimensions.overflow);
     await page.screenshot({path:resolve(output,`confirmation-${width}.png`)});await clickText('Lancer l’entraînement','dialog[open]');await page.waitForSelector('dialog[aria-labelledby="bot-result-title"]');
     await page.evaluate(()=>document.fonts.ready);
-    const resultLayout=()=>page.$eval('dialog[open]',dialog=>{const button=dialog.querySelector('footer button'),rect=button.getBoundingClientRect(),body=dialog.querySelector('[data-app-dialog-body]'),title=dialog.querySelector('h2');return {footerVisible:rect.top>=0&&rect.bottom<=innerHeight&&rect.height>=44,bodyHeight:body.scrollHeight,overflow:dialog.scrollWidth>dialog.clientWidth+1,titleClipped:title.scrollWidth>title.clientWidth+1,analysisOpen:dialog.querySelector('[data-verdict-analysis]').open};});
-    const summary=await resultLayout();assert(summary.footerVisible,'Next culture action stays visible without scrolling');assert(!summary.overflow&&!summary.titleClipped,'Compact verdict fits');assert(!summary.analysisOpen,'Detailed analysis starts closed');assert(summary.bodyHeight<600,'Verdict and factual takeaway stay compact');
+    const resultLayout=()=>page.$eval('dialog[open]',dialog=>{
+      const market=dialog.querySelector('[data-verdict-open-lot]'),prepare=dialog.querySelector('[data-verdict-prepare]');
+      const body=dialog.querySelector('[data-app-dialog-body]'),title=dialog.querySelector('h2');
+      const bodyRect=body.getBoundingClientRect(),headerRect=dialog.querySelector('header').getBoundingClientRect(),footerRect=dialog.querySelector('footer').getBoundingClientRect();
+      const visible=element=>{const rect=element.getBoundingClientRect();return !element.disabled&&rect.top>=0&&rect.bottom<=innerHeight&&rect.height>=44&&rect.left>=0&&rect.right<=innerWidth;};
+      return {footerVisible:!!market&&!!prepare&&visible(market)&&visible(prepare),
+        persistentActions:!!market?.closest('footer')&&!!prepare?.closest('footer'),
+        preparationSecondary:!!market&&!!prepare&&market.getBoundingClientRect().bottom<=prepare.getBoundingClientRect().top&&getComputedStyle(market).backgroundColor!==getComputedStyle(prepare).backgroundColor,
+        bodyHeight:body.scrollHeight,bodyViewportHeight:bodyRect.height,
+        bodyCapped:bodyRect.height>0&&bodyRect.top>=headerRect.bottom-1&&bodyRect.bottom<=footerRect.top+1&&bodyRect.top>=0&&bodyRect.bottom<=innerHeight&&bodyRect.height<=innerHeight-headerRect.height-footerRect.height+1,
+        bodyScrolls:getComputedStyle(body).overflowY==='auto',
+        overflow:dialog.scrollWidth>dialog.clientWidth+1,titleClipped:title.scrollWidth>title.clientWidth+1,
+        analysisOpen:dialog.querySelector('[data-verdict-analysis]').open,openDetails:dialog.querySelectorAll('details[open]').length};
+    });
+    const summary=await resultLayout();assert(summary.footerVisible&&summary.persistentActions,'Lot and preparation actions stay visible without scrolling');assert(summary.preparationSecondary,'Preparation remains the secondary footer action after the lot action');assert(!summary.overflow&&!summary.titleClipped,'Compact verdict fits');assert(!summary.analysisOpen&&summary.openDetails===0,'Detailed sections start closed');assert(summary.bodyCapped&&summary.bodyScrolls,'Content stays inside a scrolling viewport between the persistent header and footer');
+    assert(await page.$eval('[data-verdict-continuation]',el=>!el.closest('details')&&el.getClientRects().length>0),'Lot continuation is visible outside closed details');
     assert(await page.$eval('[data-verdict-takeaway]',el=>!el.closest('details')&&el.getClientRects().length>0),'Takeaway is visible outside closed details');
-    assert(await page.$eval('[data-verdict-prepare]',el=>el.textContent==='Préparer ma prochaine culture'&&!!el.closest('footer')),'Preparation is the persistent main action');
-    await page.focus('[data-verdict-analysis] > summary');await page.keyboard.press('Enter');await page.waitForSelector('[data-verdict-analysis][open]');assert((await resultLayout()).footerVisible,'Continue remains visible while reading analysis');await page.keyboard.press('Enter');
+    assert(await page.$eval('[data-verdict-prepare]',el=>el.textContent==='Préparer ma prochaine culture'&&!!el.closest('footer')),'Preparation remains a persistent action');
+    await page.focus('[data-verdict-analysis] > summary');await page.keyboard.press('Enter');await page.waitForSelector('[data-verdict-analysis][open]');const expanded=await resultLayout();assert(expanded.footerVisible&&expanded.bodyCapped,'Both actions remain visible and content stays bounded while reading analysis');await page.keyboard.press('Enter');
     results.push({scenario:'compact-verdict',width,...summary});
     await page.screenshot({path:resolve(output,`result-${width}.png`)});await page.focus('[data-verdict-prepare]');await page.keyboard.press('Enter');await page.waitForFunction(()=>document.body.dataset.navigated==='game');assert.equal(await page.$$eval('dialog[open]',els=>els.length),0,'Preparation closes the verdict before navigation');assert.equal(await page.evaluate(()=>window.__jury.requests.filter(r=>r.method==='POST').length),1,'Preparing the next culture does not replay the duel');results.push({scenario:'success',width,...dimensions});
   }
@@ -96,4 +110,7 @@ try{
   await page.screenshot({path:resolve(output,'timeout-recovery.png')});await page.keyboard.press('Escape');await settle();assert.equal(await page.$$eval('dialog[open]',els=>els.length),0);assert(await page.$('[data-jury-recovery]'),'Recovery remains reachable outside dialog');
   await page.evaluate(()=>{window.__jury.readsFail=false;});await clickText('Vérifier le résultat');await page.waitForFunction(()=>!document.querySelector('[data-jury-recovery]'));assert.equal(await page.evaluate(()=>window.__jury.requests.filter(r=>r.method==='POST').length),1,'Checking a result never repeats the mutation');assert(await page.$('[data-archived-jury-recap]'),'Reconciled verdict is available in history');results.push({scenario:'timeout-then-read-recovery',elapsed});
   assert.deepEqual(errors,[]);await writeFile(resolve(output,'results.json'),JSON.stringify({results,errors},null,2));console.log(JSON.stringify({passed:results.length,results,errors}));
+}catch(error){
+  if(page){await page.screenshot({path:resolve(output,'failure.png')}).catch(()=>{});await writeFile(resolve(output,'failure.json'),JSON.stringify({message:error.message,errors,results,state:await page.evaluate(()=>({jury:window.__jury,text:document.body.innerText})).catch(()=>null)},null,2));}
+  throw error;
 }finally{await browser?.close();await server.close();}

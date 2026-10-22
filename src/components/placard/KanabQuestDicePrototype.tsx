@@ -13,7 +13,9 @@ import { KqBuddieCarousel } from "./KqBuddieCarousel";
 import { getKqBuddieRotationMessage, getKqBuddieRotationRemaining, KQ_BUDDIE_ROTATION_REQUIRED, recordKqBuddieUse, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { KqInventoryCarousel } from "./KqInventoryCarousel";
 import { KqDeckPreparation } from "./KqDeckPreparation";
+import { KqSupportRecovery } from "./KqSupportRecovery";
 import { getKqPreparationStartingXp } from "@/lib/kanab-quest-deck-preparation";
+import { getKqVerifiedPreparationHeritages, reconcileKqPreparationSelection, type KqPreparationSelection } from "@/lib/kanab-quest-preparation-selection";
 import { CHANVRIER_STRENGTHS, type ChanvrierStrength } from "@/lib/arena-chanvrier";
 import { KqHeritageCarousel } from "./KqHeritageCarousel";
 import { KqSeasonBoard } from "./KqSeasonBoard";
@@ -154,6 +156,7 @@ type OfficialLeaderboardEntry = {
 };
 type BotBattleResult = {
   battleId: string;
+  playerFlowerId: string;
   winner: "player" | "opponent";
   burnedAt: string;
   experienceAwarded: number;
@@ -174,6 +177,7 @@ type BotBattleResult = {
 };
 type OfficialBattleResult = {
   battleId: string;
+  playerFlowerId?: string;
   winner: "player" | "opponent";
   burnedAt: string;
   experienceAwarded: number;
@@ -242,11 +246,9 @@ function PinnedRouteFlowerTarget({
 function VerdictMarketTarget({
   route,
   rounds,
-  onOpenMarket,
 }: {
   route: KqMarketRouteCode | null;
   rounds: Array<{ playerScore: number; opponentScore: number }>;
-  onOpenMarket?: () => void;
 }) {
   const juryScore = getKqJuryScoreFromRounds(rounds, "player");
   const routeStatus = getKqPinnedRouteVerdictStatus({ route, rounds });
@@ -254,19 +256,16 @@ function VerdictMarketTarget({
     <section className={styles.verdictMarketTarget} data-qualified={routeStatus?.qualified || undefined} aria-label="Résultat commercial du jury">
       <Banknote aria-hidden="true" />
       <span>
-        <small>Note du jury au verdict</small>
-        <strong>{juryScore.toFixed(1)}/10</strong>
+        <small>Note du jury</small>
+        <strong>{juryScore.toLocaleString("fr-FR", { minimumFractionDigits: 1, maximumFractionDigits: 1 })}/10</strong>
         <b>{routeStatus
           ? routeStatus.qualified
             ? `${routeStatus.name} · seuil qualité atteint`
-            : `${routeStatus.name} · encore +${routeStatus.qualityGap.toFixed(1)} au jury`
-          : "Lot prêt à être valorisé"}</b>
-        <em>{routeStatus?.qualified
-          ? "Le marché vérifiera maintenant la chaîne de matériel installée."
-          : "Biomasse et autres débouchés compatibles resteront proposés au marché."}</em>
-        <em>Le curing dure 6 heures réelles en entrepôt : seul le grossiste reprend le lot pendant ce délai. La conservation fera évoluer sa qualité commerciale.</em>
+            : `${routeStatus.name} · seuil non atteint au jury`
+          : "Ta récolte continue au comptoir"}</b>
+        <em>Affinage : 6 h réelles après le verdict. Avant maturité, reprise grossiste possible selon son quota.</em>
+        <em>Le comptoir confirme le stock, les contenants et les offres.</em>
       </span>
-      {onOpenMarket ? <button type="button" onClick={onOpenMarket}><Banknote /> Valoriser ce lot</button> : null}
     </section>
   );
 }
@@ -359,7 +358,7 @@ type KqDiceProps = {
   viewMode?: "full" | "game" | "arena";
   onOpenArena?: () => void;
   onOpenGame?: () => void;
-  onOpenMarket?: () => void;
+  onOpenMarket?: (flowerId?: string) => void;
   onOpenRun?: (selection: KqClientRunSelection) => void;
   onOpenWarehouse?: (zoneId?: string) => void;
   showWarehouseNavigation?: boolean;
@@ -369,8 +368,9 @@ type KqDiceProps = {
   initialCampaign?: boolean;
   tutorial?: KqPlayableLessonPort;
   isolatedStorage?: { persistent: Pick<Storage, "getItem" | "setItem" | "removeItem">; session: Pick<Storage, "getItem" | "setItem" | "removeItem"> };
-  onPreparationChange?: (preparation: { deckCodes: string[]; heritageCode: string | null }) => void;
-  initialPreparation?: { deckCodes: string[]; heritageCode: string | null };
+  onPreparationChange?: (preparation: KqPreparationSelection) => void;
+  onPreparationConsumed?: () => void;
+  initialPreparation?: KqPreparationSelection;
 };
 
 export function KanabQuestDicePrototype(props: KqDiceProps) {
@@ -395,6 +395,7 @@ function KqGameSession({
   tutorial,
   isolatedStorage,
   onPreparationChange,
+  onPreparationConsumed,
   initialPreparation,
 }: KqDiceProps) {
   const api = useKqTutorialApi();
@@ -440,7 +441,7 @@ function KqGameSession({
   const [contractBusy, setContractBusy] = useState(false);
   const [activeRuns, setActiveRuns] = useState<NonNullable<PlayerSessionPayload["activeRun"]>[]>([]);
   const startInFlight = useRef(false);
-  const [state, setState] = useState<KqGameState>(() => tutorial?.initialGame ?? startKqGame(2026));
+  const [state, setState] = useState<KqGameState>(() => tutorial?.initialGame ?? startKqGame(2026, { domiciliation: "retired" }));
   const cultureDead = isKqCultureDead(state);
   const outcomeArtwork = getKqOutcomeArtwork(state);
   const zeroSuccessStages = getKqUnrescuedZeroSuccessStageCount(state);
@@ -462,8 +463,20 @@ function KqGameSession({
   const [setupOpen, setSetupOpen] = useState(tutorial?.setupOpen ?? true);
   const [setupSection, setSetupSection] = useState<"buddie" | "cards" | "heritage" | null>(null);
   const [selectedBuddie, setSelectedBuddie] = useState(tutorial?.initialGame.varietyCode ?? KQ_BUDDIES[0].code);
-  const [selectedCards, setSelectedCards] = useState<string[]>(initialPreparation?.deckCodes ?? tutorial?.initialGame.deckCodes ?? ["BOTTE-003", "BOTTE-017", "BOTTE-005", "BOTTE-006"]);
+  const initialPreparationRef = useRef(initialPreparation);
+  const [selectedCards, setSelectedCards] = useState<string[]>(() => [...(initialPreparation?.deckCodes ?? tutorial?.initialGame.deckCodes ?? ["BOTTE-003", "BOTTE-017", "BOTTE-005", "BOTTE-006"])]);
   const [selectedHeritage, setSelectedHeritage] = useState(initialPreparation?.heritageCode ?? "");
+  const [preparationNotice, setPreparationNotice] = useState("");
+  const preparationCallbacks = useRef({ change: onPreparationChange, consumed: onPreparationConsumed });
+  const publishedPreparation = useRef<string | null>(null);
+  const consumedPreparationRun = useRef<string | null>(null);
+  useLayoutEffect(() => { preparationCallbacks.current = { change: onPreparationChange, consumed: onPreparationConsumed }; }, [onPreparationChange, onPreparationConsumed]);
+  const consumePreparation = useCallback((runId: string) => {
+    if (consumedPreparationRun.current === runId) return;
+    consumedPreparationRun.current = runId;
+    publishedPreparation.current = null;
+    preparationCallbacks.current.consumed?.();
+  }, []);
   const [heritageSwapOutIndex, setHeritageSwapOutIndex] = useState<number | null>(null);
   const [heritageExchangeTab, setHeritageExchangeTab] = useState<"hand" | "reserve">("hand");
   const [rankProfile, setRankProfile] = useState<KqRankProfile>(() => createKqRankProfile());
@@ -496,6 +509,7 @@ function KqGameSession({
   const [remoteInventory, setRemoteInventory] = useState<Record<string, number>>({});
   const [remoteAvailableInventory, setRemoteAvailableInventory] = useState<Record<string, number>>({});
   const [remoteHeritageOwnedCodes, setRemoteHeritageOwnedCodes] = useState<string[]>([]);
+  const [remoteHeritageVerified, setRemoteHeritageVerified] = useState(false);
   const [remoteHeritageCards, setRemoteHeritageCards] = useState<RemoteHeritageCard[]>([]);
   const [remoteHeritageProducerNames, setRemoteHeritageProducerNames] = useState<Record<string, string[]>>({});
   const [launchReadiness, setLaunchReadiness] = useState<null | {
@@ -584,6 +598,8 @@ function KqGameSession({
   const [officialBattleResult, setOfficialBattleResult] = useState<OfficialBattleResult | null>(null);
   const botRecapBattle = botBattleResult ? officialBattles.find(item => item.id === botBattleResult.battleId) : undefined;
   const officialRecapBattle = officialBattleResult ? officialBattles.find(item => item.id === officialBattleResult.battleId) : undefined;
+  // Bind the continuation to this verdict, never to a subsequently selected Flower.
+  const officialVerdictFlowerId = officialBattleResult?.playerFlowerId ?? officialRecapBattle?.playerFlower.id;
   const [officialChallengeReward, setOfficialChallengeReward] = useState<{ points: number; titles: string[] } | null>(null);
   const [remoteAction, setRemoteAction] = useState<"start" | "card" | "game" | null>(null);
   const [careBusy, setCareBusy] = useState(false);
@@ -616,6 +632,8 @@ function KqGameSession({
         ? "Chaque zone de la campagne doit avoir son propre Buddie. Ajuste le plan."
     : remoteBurnsEnabled && (remoteCollection.loading || remoteCollection.error || !buddieRotation)
     ? remoteCollection.error || "Vérification des Buddies disponibles. Actualise la page si le chargement échoue."
+    : remoteBurnsEnabled && selectedHeritage && !remoteHeritageVerified
+      ? "Ton Héritage doit être vérifié. Actualise la collection ou choisis Sans Héritage."
     : selectedBuddieRemaining > 0
       ? getKqBuddieRotationMessage(selectedBuddieRemaining)
       : isPlayerMode && unavailableParticipant
@@ -698,16 +716,13 @@ function KqGameSession({
     setRecentBattlesLoaded(false);
     setOfficialRankProgress(payload.progress ?? null);
     if (!activeRun) {
-      const currentRemoteInventory = remoteAvailableInventoryRef.current;
       setRemoteRunId(null);
       if (isPlayerMode) {
-        setState(startKqGame(Date.now()));
+        setState(startKqGame(Date.now(), { domiciliation: "retired" }));
         setBattle(null);
         setSetupOpen(true);
       }
       (isolatedStorage?.session ?? window.sessionStorage).removeItem(`${sessionStoragePrefix}-remote-run-id`);
-      if (remoteInventoryVerifiedRef.current) setSelectedCards((current) => sanitizeKqDeckSelection(current, currentRemoteInventory));
-
       setRemoteNotice("");
     } else {
       const receipts = activeRun.burnReceipts.map((receipt) => toLocalReceipt(receipt, activeRun.state.seed));
@@ -784,7 +799,7 @@ function KqGameSession({
         setState(snapshot.game);
         setSelectedBuddie(snapshot.game.varietyCode);
 
-        setSelectedCards(snapshot.game.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")));
+        if (!initialPreparationRef.current || !tutorial?.setupOpen) setSelectedCards(snapshot.game.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")));
         setSetupOpen(tutorial ? tutorial.storage.getItem("setup-open") !== "0" && tutorial.setupOpen : false);
       }
       if (!isPlayerMode) {
@@ -798,8 +813,10 @@ function KqGameSession({
         try {
           const preparation = JSON.parse(tutorial.storage.getItem("preparation") ?? "null") as { buddie?: unknown; cards?: unknown; heritage?: unknown; energy?: unknown } | null;
           if (KQ_BUDDIES.some(item => item.code === preparation?.buddie)) setSelectedBuddie(preparation!.buddie as string);
-          if (Array.isArray(preparation?.cards) && preparation.cards.every(code => typeof code === "string")) setSelectedCards(sanitizeKqDeckSelection(preparation.cards as string[], snapshot.inventory ?? DEFAULT_LOCAL_INVENTORY));
-          if (preparation?.heritage === "" || KQ_HERITAGE_CARDS.some(item => item.code === preparation?.heritage)) setSelectedHeritage(preparation!.heritage as string);
+          if (!initialPreparationRef.current) {
+            if (Array.isArray(preparation?.cards) && preparation.cards.every(code => typeof code === "string")) setSelectedCards(sanitizeKqDeckSelection(preparation.cards as string[], snapshot.inventory ?? DEFAULT_LOCAL_INVENTORY));
+            if (preparation?.heritage === "" || KQ_HERITAGE_CARDS.some(item => item.code === preparation?.heritage)) setSelectedHeritage(preparation!.heritage as string);
+          }
           if (preparation?.energy === "eco" || preparation?.energy === "balanced" || preparation?.energy === "intensive") setEnergyMode(preparation.energy);
         } catch { /* Invalid local preferences do not invalidate the culture. */ }
       }
@@ -823,6 +840,7 @@ function KqGameSession({
     }
     const controller = new AbortController();
     remoteInventoryVerifiedRef.current = false;
+    setRemoteHeritageVerified(false);
     setRemoteCollection(current => ({ ...current, loading: true, error: "" }));
     const bootstrapUrl = isPlayerMode
       ? "/api/arena/placard/bootstrap"
@@ -880,7 +898,10 @@ function KqGameSession({
         setSeasonRolloverPreview(showAdminOperations ? payload.seasonRollover ?? null : null);
         setNotebookRewardPreview(showAdminOperations ? payload.notebookRewards ?? null : null);
         const heritage = payload.heritage ?? {};
-        const heritageCards = (heritage.cards ?? []).flatMap((card) => {
+        const verifiedHeritages = getKqVerifiedPreparationHeritages(heritage.cards);
+        setRemoteHeritageVerified(verifiedHeritages !== null);
+        const heritageCards = (Array.isArray(heritage.cards) ? heritage.cards : []).flatMap((card) => {
+          if (!card || typeof card !== "object") return [];
           const code = String(card.code ?? "");
           const name = String(card.name ?? "");
           const description = String(card.description ?? "");
@@ -900,9 +921,7 @@ function KqGameSession({
           } satisfies RemoteHeritageCard];
         });
         setRemoteHeritageCards(heritageCards);
-        setRemoteHeritageOwnedCodes(heritageCards
-          .filter((card) => card.isActive === true && Number(card.ownedCopies ?? 0) > 0)
-          .map((card) => card.code));
+        setRemoteHeritageOwnedCodes(verifiedHeritages ?? []);
         setRemoteHeritageProducerNames(Object.fromEntries(heritageCards.flatMap((card) => {
           return card.code ? [[card.code, card.producerNames]] : [];
         })));
@@ -1073,8 +1092,32 @@ function KqGameSession({
   }, [energyMode, hydrated, selectedBuddie, selectedCards, selectedHeritage, tutorial]);
 
   useEffect(() => {
-    if (hydrated && setupOpen) onPreparationChange?.({ deckCodes: selectedCards, heritageCode: selectedHeritage || null });
-  }, [hydrated, onPreparationChange, selectedCards, selectedHeritage, setupOpen]);
+    if (!hydrated || !setupOpen || viewMode === "arena"
+      || isPlayerMode && (!selectionReady || selectionError || remoteRunId || activeRuns.length > 0)) return;
+    if (remoteBurnsEnabled && (remoteCollection.loading || remoteCollection.error || !remoteInventoryVerifiedRef.current)) return;
+    const current = { deckCodes: selectedCards, heritageCode: selectedHeritage || null };
+    const reconciled = reconcileKqPreparationSelection(current,
+      remoteBurnsEnabled ? remoteAvailableInventory : inventory,
+      remoteBurnsEnabled && remoteHeritageVerified ? remoteHeritageOwnedCodes : null);
+    if (reconciled.removedCopies || reconciled.removedHeritage) {
+      if (reconciled.removedCopies) setSelectedCards(reconciled.selection.deckCodes);
+      if (reconciled.removedHeritage) setSelectedHeritage("");
+      setPreparationNotice([
+        reconciled.removedCopies ? `${reconciled.removedCopies} copie${reconciled.removedCopies > 1 ? "s" : ""} de soutien indisponible${reconciled.removedCopies > 1 ? "s" : ""} retirée${reconciled.removedCopies > 1 ? "s" : ""}.` : "",
+        reconciled.removedHeritage ? "L’Héritage indisponible a été retiré de la préparation." : "",
+      ].filter(Boolean).join(" "));
+      return;
+    }
+    const signature = JSON.stringify(current);
+    if (publishedPreparation.current === signature) return;
+    publishedPreparation.current = signature;
+    preparationCallbacks.current.change?.({ deckCodes: [...selectedCards], heritageCode: current.heritageCode });
+  }, [activeRuns.length, hydrated, inventory, isPlayerMode, remoteAvailableInventory, remoteBurnsEnabled, remoteCollection.error, remoteCollection.loading, remoteHeritageOwnedCodes, remoteHeritageVerified, remoteRunId, selectedCards, selectedHeritage, selectionError, selectionReady, setupOpen, viewMode]);
+
+  useEffect(() => {
+    if (isPlayerMode && hydrated && selectionReady && !selectionError && !setupOpen && remoteRunId
+      && state.phase !== "complete" && viewMode !== "arena") consumePreparation(remoteRunId);
+  }, [consumePreparation, hydrated, isPlayerMode, remoteRunId, selectionError, selectionReady, setupOpen, state.phase, viewMode]);
 
   useEffect(() => () => {
     if (rollTimerRef.current) window.clearTimeout(rollTimerRef.current);
@@ -1429,14 +1472,15 @@ function KqGameSession({
       setOfficialFlowers(flowersSnapshot.flowers);
       setOfficialBattles(battlesSnapshot.battles);
       setRecentBattlesLoaded(true);
-      const matchedBattle = battlesSnapshot.battles.find((battle) => battle.id === result.battleId);
       if (result.verdict) {
         const verdict = result.verdict;
+        const matchedBattle = battlesSnapshot.battles.find((battle) => battle.id === verdict.battleId);
         if (lifecycle.current.mounted && currentPresentationView.current !== "game" && juryPresentation.current && verdict.replayed === false) {
           sound.playOnce(verdict.winner === "player" ? "victory" : "defeat", `battle:${verdict.battleId}`);
         }
         if (juryPresentation.current) setOfficialBattleResult({
           battleId: verdict.battleId,
+          playerFlowerId: matchedBattle?.playerFlower.id,
           winner: verdict.winner,
           burnedAt: verdict.burnedAt,
           experienceAwarded: verdict.experienceAwarded,
@@ -1514,6 +1558,7 @@ function KqGameSession({
       const opponentName = result.opponentFlower.ownerName || "Bot d’entraînement";
       if (juryPresentation.current) setBotBattleResult({
         battleId: result.battleId,
+        playerFlowerId: trainingFlowerId,
         winner: result.winner,
         burnedAt: result.burnedAt,
         experienceAwarded: result.experienceAwarded,
@@ -1631,12 +1676,16 @@ function KqGameSession({
         sound.playOnce(verdict.winner === "player" ? "victory" : "defeat", `battle:${verdict.battleId}`);
       }
       const resolvedBattle = officialBattles.find((battle) => battle.id === verdict.battleId);
+      // Replace confirmation and result together, before asynchronous refreshes,
+      // so retiring the old overlay cannot dismiss the newly presented verdict.
+      setPendingOfficialVerdictId(null);
       setOfficialBattles((battles) => battles.map((battle) => battle.id === verdict.battleId ? {
         ...battle, status: "verdict", rounds: verdict.rounds, winner: verdict.winner, verdictAt: verdict.burnedAt,
         playerFlower: { ...battle.playerFlower }, opponentFlower: { ...battle.opponentFlower },
       } : battle));
       if (juryPresentation.current) setOfficialBattleResult({
         battleId: verdict.battleId,
+        playerFlowerId: resolvedBattle?.playerFlower.id,
         winner: verdict.winner,
         burnedAt: verdict.burnedAt,
         experienceAwarded: verdict.experienceAwarded,
@@ -1673,7 +1722,6 @@ function KqGameSession({
         api.notify("kq:boosters-updated");
       }
       void refreshOfficialRanking().catch(() => undefined);
-      setPendingOfficialVerdictId(null);
     } catch (error) {
       setRemoteNotice(error instanceof Error ? error.message : "Verdict impossible.");
       juryUncertain.current = true; setJuryCheckNeeded(true);
@@ -1737,6 +1785,7 @@ function KqGameSession({
         setPendingStart(false);
         setSetupOpen(false);
         if (isPlayerMode) {
+          consumePreparation(result.runId);
           clearKqZoneStartRequestKey((isolatedStorage?.session ?? window.sessionStorage), KQ_CAMPAIGN_START_SCOPE);
           onOpenRun?.({ campaign: !!result.state.campaign, runId: result.state.campaign?.leaderRunId ?? result.runId });
         }
@@ -1751,6 +1800,7 @@ function KqGameSession({
     }
     const hasBiocontrolChallenge = rewardableDailyChallenges.some((challenge) => challenge.code === "biocontrol");
     const startConfig: Parameters<typeof startKqGame>[1] = {
+      domiciliation: "retired",
       varietyCode: selectedBuddie,
       deckCodes: [...selectedCards],
       collectionCodes: LOCAL_COLLECTION_CODES.filter((code) => (activeInventory[code] ?? 0) > 0),
@@ -2008,7 +2058,9 @@ function KqGameSession({
     const mostBurned = Object.entries(burnHistory.reduce<Record<string, number>>((counts, receipt) => ({ ...counts, [receipt.cardCode]: (counts[receipt.cardCode] ?? 0) + 1 }), {})).sort((a, b) => b[1] - a[1]).slice(0, 3);
     return (
       <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined} data-admin-operations={showAdminOperations || undefined} data-view-mode={viewMode}>
-        <section className={styles.setupPanel}>
+        <section className={styles.setupPanel}
+          data-preparation-deck={setupOpen && viewMode !== "arena" ? selectedCards.join(",") : undefined}
+          data-preparation-heritage={setupOpen && viewMode !== "arena" ? selectedHeritage : undefined}>
           <header className={styles.cultureIntro} data-culture-intro>
             <h1 className={styles.cultureIntroTitle}>{zoneContext?.name ?? "Cultures"}</h1>
             <Image src="/placard/map/culture-barn-sylvain-v1.webp" alt="" width={1536} height={512} loading="eager" sizes="(max-width: 760px) 100vw, 720px" />
@@ -2074,7 +2126,8 @@ function KqGameSession({
           {lastBooster.length > 0 ? <div className={styles.boosterReveal} aria-live="polite">{lastBooster.map((card, index) => <article key={`${card.code}-${index}`} data-rarity={card.rarity}><CardArtwork code={card.code} name={card.name} /><span>{getKqCardRarityLabel(card.rarity)}</span><strong>{card.name}</strong><small>{remoteBurnsEnabled ? "Aperçu local · aucune copie enregistrée" : `Tu en possèdes maintenant ${inventory[card.code] ?? 0}`}</small></article>)}</div> : null}
           {burnHistory.length > 0 ? <div className={styles.burnArchive}><Flame /><span><small>Registre permanent · {burnHistory.length} burns</small><strong>Cartes les plus utilisées</strong><div>{mostBurned.map(([code, count]) => <b key={code}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code} ×{count}</b>)}</div></span></div> : null}
           {playerPresentation ? <div className={styles.setupChoices} data-culture-setup-choices>
-            {isPlayerMode ? <div data-arena-tour="culture"><KqCampaignSummary participants={campaignParticipants} /><div className={styles.zoneNavigation}>{onOpenWarehouse ? <button type="button" onClick={() => onOpenWarehouse(initialZoneId)}>Modifier le plan</button> : <Link href="/arene/placard?view=workshop">Modifier le plan</Link>}</div></div> : <details className={styles.setupChoice} open={setupSection === "buddie"} data-setup-choice="buddie" data-arena-tour="culture">
+            {preparationNotice ? <p className={styles.preparationNotice} role="status" data-preparation-adjusted>{preparationNotice}</p> : null}
+            {isPlayerMode ? <div data-arena-tour="culture"><KqCampaignSummary participants={campaignParticipants} /><div className={styles.zoneNavigation}>{onOpenWarehouse ? <button type="button" data-preparation-edit-plan onClick={() => onOpenWarehouse(initialZoneId)}>Modifier le plan</button> : <Link href="/arene/placard?view=workshop">Modifier le plan</Link>}</div></div> : <details className={styles.setupChoice} open={setupSection === "buddie"} data-setup-choice="buddie" data-arena-tour="culture">
               <summary onClick={event => { event.preventDefault(); setSetupSection(setupSection === "buddie" ? null : "buddie"); }}>
                 <span className={styles.setupChoiceIcon}><Leaf aria-hidden="true" /></span>
                 <span><small>1 · Ta variété</small><strong>{KQ_BUDDIES.find(buddie => buddie.code === selectedBuddie)?.name ?? "Choisir un Buddie"}</strong><em>{buddieStartBlockReason || "Ton Buddie reste dans ta collection."}</em></span>
@@ -2093,6 +2146,9 @@ function KqGameSession({
               {setupSection === "cards" ? <div className={styles.setupChoiceContent}>
                 <KqDeckPreparation deckCodes={selectedCards} inventory={remoteBurnsEnabled && (remoteCollection.loading || remoteCollection.error) ? null : activeInventory}
                   startingXp={preparationStartingXp} loading={remoteBurnsEnabled && remoteCollection.loading} error={remoteBurnsEnabled ? remoteCollection.error : ""} />
+                {isPlayerMode ? <KqSupportRecovery inventory={remoteCollection.loading || remoteCollection.error ? null : activeInventory}
+                  onReturnToCards={() => document.querySelector<HTMLElement>("[data-deck-preparation]")?.focus({ preventScroll: true })}
+                  onOpenDestination={destination => { if (destination === "market") onOpenMarket?.(); else if (destination === "workshop" || destination === "harvests") onOpenWarehouse?.(initialZoneId); }} /> : null}
                 <div className={styles.setupDeckActions}><button type="button" data-recommended-deck disabled={remoteBurnsEnabled && (remoteCollection.loading || Boolean(remoteCollection.error))} onClick={applyRecommendedDeck}>Deck conseillé</button><button type="button" disabled={selectedCards.length === 0} onClick={saveFavoriteDeck}>{favoriteDeck ? "Enregistrer ce favori" : "Garder comme favori"}</button><button type="button" disabled={!favoriteDeck || remoteBurnsEnabled && (remoteCollection.loading || Boolean(remoteCollection.error))} onClick={restoreFavoriteDeck}>Reprendre mon favori</button><button type="button" disabled={selectedCards.length === 0} onClick={() => setSelectedCards([])}>Retirer les cartes</button></div>
                 {deckNotice ? <p role="status">{deckNotice}</p> : null}
                 <KqInventoryCarousel inventory={activeInventory} selectedCodes={selectedCards} onAdd={addCardCopy} onRemove={removeCardCopy}
@@ -2102,7 +2158,7 @@ function KqGameSession({
             <details className={styles.setupChoice} open={setupSection === "heritage"} data-setup-choice="heritage">
               <summary onClick={event => { event.preventDefault(); setSetupSection(setupSection === "heritage" ? null : "heritage"); }}>
                 <span className={styles.setupChoiceIcon}><Sparkles aria-hidden="true" /></span>
-                <span><small>3 · Ton Héritage · facultatif</small><strong>{selectedHeritageCard?.name ?? "Sans Héritage"}</strong><em>{selectedHeritageCard ? "Son pouvoir t’accompagne. La carte est conservée." : "Tu peux commencer sans ce bonus."}</em></span>
+                <span><small>3 · Ton Héritage · facultatif</small><strong>{selectedHeritageCard?.name ?? (selectedHeritage ? "Héritage à vérifier" : "Sans Héritage")}</strong><em>{selectedHeritageCard ? "Son pouvoir t’accompagne. La carte est conservée." : selectedHeritage ? "Ton choix est conservé pendant la vérification." : "Tu peux commencer sans ce bonus."}</em></span>
                 <span className={styles.setupChoiceEdit}>{setupSection === "heritage" ? "Fermer" : "Modifier"}<ChevronDown size={16} aria-hidden="true" /></span>
               </summary>
               {setupSection === "heritage" ? <div className={styles.setupChoiceContent}><KqHeritageCarousel cards={selectableHeritageCards} ownedCodes={remoteHeritageOwnedCodes}
@@ -2218,9 +2274,10 @@ function KqGameSession({
               prepareHref={!tutorial ? "/arene/placard?view=game" : undefined}
               prepareLabel={remoteRunId && state.phase !== "complete" ? "Reprendre ma culture en cours" : undefined}
               receipt={`Verdict enregistré · ${formatKqDate(botBattleResult.burnedAt)} · reçu ${botBattleResult.battleId.slice(0, 8)}`}
+              continuation={<VerdictMarketTarget route={routePlan?.route ?? null} rounds={botBattleResult.rounds} />}
+              onOpenLot={onOpenMarket && botBattleResult.playerFlowerId ? () => navigateAfterOverlays(() => onOpenMarket(botBattleResult.playerFlowerId)) : undefined}
               onClose={() => setBotBattleResult(null)}>
               <KqJuryRecap rounds={botBattleResult.rounds} playerStats={botRecapBattle?.playerFlower.stats} opponentStats={botRecapBattle?.opponentFlower.stats} />
-              <VerdictMarketTarget route={routePlan?.route ?? null} rounds={botBattleResult.rounds} onOpenMarket={onOpenMarket ? () => navigateAfterOverlays(onOpenMarket) : undefined} />
             </KqBattleVerdictDialog>
           ) : null}
           {officialBattleResult ? (
@@ -2235,9 +2292,10 @@ function KqGameSession({
               prepareHref={!tutorial ? "/arene/placard?view=game" : undefined}
               prepareLabel={remoteRunId && state.phase !== "complete" ? "Reprendre ma culture en cours" : undefined}
               receipt={`Verdict enregistré · ${formatKqDate(officialBattleResult.burnedAt)} · reçu ${officialBattleResult.battleId.slice(0, 8)}`}
+              continuation={<VerdictMarketTarget route={routePlan?.route ?? null} rounds={officialBattleResult.rounds} />}
+              onOpenLot={onOpenMarket && officialVerdictFlowerId ? () => navigateAfterOverlays(() => onOpenMarket(officialVerdictFlowerId)) : undefined}
               onClose={() => setOfficialBattleResult(null)}>
               <KqJuryRecap rounds={officialBattleResult.rounds} playerStats={officialRecapBattle?.playerFlower.stats} opponentStats={officialRecapBattle?.opponentFlower.stats} />
-              <VerdictMarketTarget route={routePlan?.route ?? null} rounds={officialBattleResult.rounds} onOpenMarket={onOpenMarket ? () => navigateAfterOverlays(onOpenMarket) : undefined} />
             </KqBattleVerdictDialog>
           ) : null}
           {pendingOfficialVerdictId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingOfficialVerdictId(null); }} title="Le jury" labelledBy="official-verdict-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Flame /><span>Verdict officiel irréversible</span><h2 id="official-verdict-title">Brûler les deux Fleurs ?</h2><p>Le serveur calculera les trois manches, désignera le gagnant, mettra le classement à jour puis brûlera définitivement les deux Fleurs.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingOfficialVerdictId(null); }}>Fermer</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} data-culture-confirm-verdict onClick={() => void confirmOfficialVerdict()}><Flame /> {matchmakingLoading ? "Jury en cours…" : "Confirmer le verdict"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}

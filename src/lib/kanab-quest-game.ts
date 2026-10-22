@@ -571,7 +571,9 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
     if (domiciliation && KQ_STAGES[stageIndex] === "Récolte") {
       const theft = pool.find(situation => situation.incident === "crop-theft")!;
       // Theft remains an independent risk, including after a recent theft:
-      // 2/N at home and 1/N externally. Rotation applies to the safe outcomes.
+      // New retired-address cultures have the normal 1/N risk. Keep the old
+      // 2/N home rule for deterministic historical replays and older servers.
+      // Rotation applies only to the safe outcomes.
       const risk = domiciliation === "home" ? 2 : 1;
       if (scenarioIndex(seed, 71, pool.length) < risk) return theft.code;
       const safe = leastRecentSituations(pool.filter(situation => situation.incident !== "crop-theft"), recentSituationCodes);
@@ -622,6 +624,9 @@ export function buildKqScenarioPath(seed: number, recentSituationCodes: string[]
   return choices.get(target)?.codes ?? path;
 }
 
+// Callers starting a current local culture pass domiciliation: "retired";
+// a server start uses its advertised capability. Absence stays deterministic
+// for older scenario replays and the prepared, fixed teaching scenarios.
 export function startKqGame(
   seed = Date.now(),
   config: { cultivationProfile?: KqBuddieCultivationProfile; warehouse?: KqWarehouseRunSnapshot; rulesVersion?: 2 | 3; domiciliation?: KqDomiciliation; varietyCode?: string; deckCodes?: string[]; collectionCodes?: string[]; recentSituationCodes?: string[]; challengeDayKey?: string; requiredSituationTags?: KqSituationTag[]; allowedPests?: KqPest[]; startingXp?: number; startedAt?: string; firstCultureRescue?: boolean; heritageCode?: string; heritageCard?: KqHeritageCard; equipmentCodes?: string[]; equipmentLevels?: Record<string, number>; energyMode?: KqEnergyMode; productionUnits?: number; equipmentTents?: KqTentEquipmentProfile[]; equipmentShared?: KqSharedEquipmentRunProfile; equipmentScope?: "installation" | "tent" | "building" } = {},

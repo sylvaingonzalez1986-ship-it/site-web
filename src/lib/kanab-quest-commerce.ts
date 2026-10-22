@@ -88,9 +88,10 @@ function accumulatePayoutExact(previous: number, units: number, unitCents: numbe
   const priceMicros = BigInt(Math.round(unitCents * 1e6));
   return Number(previousMicros + (BigInt(units) * priceMicros + BigInt(5)) / BigInt(10)) / 1e6;
 }
-/** The original verdict remains an archive; conservation changes today's lot. */
+/** Match SQL sale validation: drying/curing gains and conservation losses both
+ * change today's lot. The original verdict remains an archive. */
 export function getKqCommerceStockQuality(stock: Pick<KqCommerceStock, "juryScore" | "storage">) {
-  return Math.round(clamp(stock.juryScore + Math.min(0, stock.storage?.qualityDelta ?? 0), 0, 10) * 100) / 100;
+  return Math.round(clamp(stock.juryScore + (stock.storage?.qualityDelta ?? 0), 0, 10) * 100) / 100;
 }
 export function isKqCommerceStockMature(stock: Pick<KqCommerceStock, "storage">, nowMs?: number) {
   if (!stock.storage) return true;

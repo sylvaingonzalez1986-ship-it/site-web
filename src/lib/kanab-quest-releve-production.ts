@@ -185,7 +185,7 @@ export function applyKqReleveProductionAction(current: KqReleveProductionState, 
       const first = members[0];
       const maxAdvantage = Math.max(...members.map(member => KQ_BUDDIES.find(buddie => buddie.code === member.buddieCode)!.advantageLevel));
       const firstAdvantage = KQ_BUDDIES.find(buddie => buddie.code === first.buddieCode)!.advantageLevel;
-      state.game = { ...startKqGame(2, { rulesVersion: 3, varietyCode: first.buddieCode, warehouse: first.warehouse, cultivationProfile: first.cultivationProfile,
+      state.game = { ...startKqGame(2, { rulesVersion: 3, domiciliation: "retired", varietyCode: first.buddieCode, warehouse: first.warehouse, cultivationProfile: first.cultivationProfile,
         deckCodes: state.deckCodes, collectionCodes: Object.keys(state.supportInventory), heritageCode: state.heritageCode ?? undefined,
         startedAt: new Date(state.clock).toISOString(), startingXp: 1, firstCultureRescue: true }),
         campaign: { version: 1, id: "62000000-0000-4000-8000-000000000001", leaderRunId: first.runId, members } };

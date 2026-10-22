@@ -8,6 +8,8 @@ import { getKqCommerceStockQuality, isKqCommerceStockMature, type KqCommerceSnap
 import { getKqAdvertisingMultiplier } from "@/lib/kanab-quest-business";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KQ_ONLINE_PACKAGING, estimateKqOnlineOffer, getKqOnlineSaleableHours } from "@/lib/kanab-quest-online";
+import { getKqShopActivity } from "@/lib/kanab-quest-shop-activity";
+import { KqMerchActivity } from "./KqMerchActivity";
 import styles from "./KqOnlineStore.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -145,12 +147,14 @@ function listingGroup(listing: Listing, siteActive: boolean): Exclude<ListingFil
   return siteActive ? "active" : "paused";
 }
 
-export function KqOnlineDashboard({ data, busy, onAsk, onOpenBusiness, onOpenShop, onPrepareStock }: {
+export function KqOnlineDashboard({ data, busy, onAsk, onOpenBusiness, onOpenMerch, onOpenShop, onPrepareStock }: {
   data: KqCommerceSnapshot; now?: number; busy: boolean; onAsk: Ask;
-  onOpenBusiness?: () => void; onOpenShop: () => void; onPrepareStock: () => void;
+  onOpenBusiness?: () => void; onOpenMerch?: () => void; onOpenShop: () => void; onPrepareStock: () => void;
 }) {
   const id = useId();
   const [filter, setFilter] = useState<ListingFilter>("all");
+  const [rayon, setRayon] = useState<"flowers" | "merch">((data.online?.listings.length ?? 0) === 0 && (data.online?.merch?.inventory?.length ?? 0) > 0 ? "merch" : "flowers");
+  const activity = getKqShopActivity(data);
   const online = data.online;
   if (!online) return null;
   const groups = Object.fromEntries(listingFilters.map(item => [item.code, online.listings.filter(listing => item.code === "all" || listingGroup(listing, online.site.active) === item.code)])) as Record<ListingFilter, Listing[]>;
@@ -162,13 +166,16 @@ export function KqOnlineDashboard({ data, busy, onAsk, onOpenBusiness, onOpenSho
   const displayedListings = groups[filter];
   return <section className={`${styles.store} ${styles.dashboard}`} aria-label="Mes ventes en ligne">
     <header className={`${styles.heading} ${styles.dashboardHeading}`}>
-      <div><span className={styles.eyebrow}><ShoppingBag size={16} aria-hidden="true" /> Le registre de ta boutique</span><h2>Mes ventes en ligne</h2><p>Suis tes paquets et tes commandes. Ajuste les prix ou retire une annonce du rayon depuis cet espace.</p><span className={styles.status} data-state={online.site.active ? "active" : "paused"}>{online.site.active ? <><Check size={14} aria-hidden="true" />Boutique ouverte</> : online.site.createdAt ? "Boutique suspendue" : "Boutique à ouvrir"}</span></div>
+      <div><span className={styles.eyebrow}><ShoppingBag size={16} aria-hidden="true" /> Le registre de ta boutique</span><h2>Mes ventes en ligne</h2><p>Fleurs, extraits et merch : retrouve tes stocks, tes ventes et les versements de chaque rayon.</p><span className={styles.status} data-state={online.site.active ? "active" : "paused"}>{online.site.active ? <><Check size={14} aria-hidden="true" />Boutique ouverte</> : online.site.createdAt ? "Boutique suspendue" : "Boutique à ouvrir"}</span></div>
       <div className={styles.dashboardArt} aria-hidden="true"><Image src="/placard/market-brand-studio-sylvain-v3.webp" alt="" fill sizes="(max-width: 600px) 100vw, 320px" /></div>
     </header>
 
     <div className={styles.dashboardActions}><button className={styles.primary} disabled={busy} onClick={onPrepareStock}><ShoppingBag size={17} aria-hidden="true" />Préparer une nouvelle annonce<ArrowRight size={17} aria-hidden="true" /></button><Link className={styles.secondary} href="/arene/placard?view=market&section=management" prefetch={false} onClick={event => { if (onOpenBusiness) { event.preventDefault(); onOpenBusiness(); } }}><Settings2 size={16} aria-hidden="true" />Développer ma boutique</Link></div>
     {!online.site.active ? <div className={styles.notice}><Info size={19} aria-hidden="true" /><div><p>{online.site.createdAt ? "Les commandes sont suspendues. Tes annonces et leurs paquets restent ici ; réactive la boutique dans « Ma boutique » pour reprendre les ventes." : "Ouvre gratuitement ta boutique dans « Ma boutique », puis choisis un lot et le circuit de vente en ligne pour préparer ta première annonce."}</p>{!data.computerOwned ? <button className={styles.secondary} disabled={busy} onClick={onOpenShop}>Voir l’ordinateur · 450 €</button> : null}</div></div> : null}
 
+    <div className={styles.filters} role="group" aria-label="Choisir un rayon"><button type="button" aria-pressed={rayon === "flowers"} onClick={() => setRayon("flowers")}>Fleurs et extraits<span>{number(remainingPackets, 0)} paquets</span></button><button type="button" aria-pressed={rayon === "merch"} onClick={() => setRayon("merch")}>Merch<span>{activity.merch.remainingUnits === null ? "—" : number(activity.merch.remainingUnits, 0)} articles</span></button></div>
+    <div hidden={rayon !== "merch"}><KqMerchActivity data={data} onOpenMerch={onOpenMerch ?? onOpenBusiness} /></div>
+    <div hidden={rayon !== "flowers"}>
     <section className={styles.packetLedger} aria-labelledby={`${id}-packets`}>
       <div className={styles.sectionHeading}><h3 id={`${id}-packets`}>Où en sont tes paquets ?</h3><small>Les stocks en vrac restent dans « Vendre mes récoltes ».</small></div>
       <dl className={styles.packetTotals} aria-label="Stock des paquets">
@@ -183,7 +190,7 @@ export function KqOnlineDashboard({ data, busy, onAsk, onOpenBusiness, onOpenSho
     </section>
 
     <section className={styles.results} aria-labelledby={`${id}-results`}>
-      <div className={styles.sectionHeading}><h3 id={`${id}-results`}>Depuis l’ouverture</h3><small>Ventes réellement enregistrées, même hors connexion.</small></div>
+      <div className={styles.sectionHeading}><h3 id={`${id}-results`}>Fleurs et extraits · depuis l’ouverture</h3><small>Ventes réellement enregistrées, même hors connexion.</small></div>
       <dl className={styles.stats} aria-label="Résultats depuis l’ouverture"><div><dt>Commandes</dt><dd>{number(online.stats.orders, 0)}</dd></div><div><dt>Ventes TTC</dt><dd>{formatKqCash(online.stats.revenueCents)}</dd></div><div><dt>Versé en trésorerie</dt><dd>{formatKqCash(online.stats.netRevenueCents)}</dd></div><div><dt>Quantité vendue</dt><dd>{number(online.stats.soldGrams)} <small>g</small></dd></div></dl>
       <p className={styles.ledgerNote}>Les versements sont ceux réellement crédités après les retenues de jeu et les éventuels remboursements automatiques. Ce n’est pas un bénéfice : la culture et les emballages ont leurs propres coûts. Frais de vente cumulés : {formatKqCash(online.stats.feesCents)}.</p>
       <dl className={styles.audienceStrip}><div><dt>Confiance commerciale</dt><dd>{number(online.confidence)} / 100</dd></div><div><dt>Audience de ta marque</dt><dd>{number(online.followers, 0)} abonnés</dd></div><div><dt>Visites cumulées</dt><dd>{number(online.stats.visitors, 0)}</dd></div></dl>
@@ -196,6 +203,21 @@ export function KqOnlineDashboard({ data, busy, onAsk, onOpenBusiness, onOpenSho
       {displayedListings.length ? <ul className={styles.listings}>{displayedListings.map(listing => <ListingCard key={listing.id} listing={listing} data={data} busy={busy} onAsk={onAsk} />)}</ul> : <div className={styles.empty}><PackageOpen size={34} aria-hidden="true" /><p>{online.listings.length ? "Aucune annonce dans ce filtre. Tes autres paquets restent accessibles dans « Toutes »." : "Ton rayon attend ses premiers paquets. Choisis un lot, puis le circuit de vente en ligne pour préparer ta première annonce."}</p>{online.listings.length ? <button className={styles.secondary} onClick={() => setFilter("all")}>Voir toutes les annonces</button> : null}</div>}
     </section>
 
-    <details className={styles.history} open><summary>Dernières commandes automatiques</summary>{online.recentSales.length ? <><p className={styles.ledgerNote}>{online.recentSales.length} commande{online.recentSales.length > 1 ? "s" : ""} récente{online.recentSales.length > 1 ? "s" : ""} affichée{online.recentSales.length > 1 ? "s" : ""} sur {number(online.stats.orders, 0)} au total.</p><ul>{online.recentSales.map(sale => <li key={sale.id}><span><strong>{sale.name} · {sale.packets} × {sale.formatGrams} g</strong><small>{new Date(sale.soldAt).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })} · {formatKqCash(sale.payoutCents)} TTC · satisfaction {number(sale.satisfaction)}/100</small><small>Frais du site : {formatKqCash(sale.feesCents)}. Emballages déjà payés à la préparation.</small></span><strong>{formatKqCash(sale.netPayoutCents)} versés</strong></li>)}</ul></> : <p className={styles.ledgerNote}>Aucune commande pour le moment. Les ventes enregistrées apparaîtront ici.</p>}</details>
+    </div>
+    <details className={styles.history} open>
+      <summary>Dernières ventes · fleurs et merch</summary>
+      {activity.receipts.length ? <>
+        <p className={styles.ledgerNote}>Les reçus récents des deux rayons, classés par date. Les montants versés ne sont pas des bénéfices.</p>
+        <ul>{activity.receipts.map(sale => <li key={sale.id}>
+          <span>
+            <strong>{sale.name} · {sale.quantity} {sale.unitLabel}{sale.kind === "flower" && sale.formatGrams ? ` de ${sale.formatGrams} g` : ""}</strong>
+            <small>{sale.kind === "merch" ? "Merch" : "Fleurs"} · {new Date(sale.soldAt).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}{sale.revenueCents !== null ? ` · ${formatKqCash(sale.revenueCents)} TTC` : ""}</small>
+            <small>Frais du site : {sale.feesCents === null ? "indisponibles" : formatKqCash(sale.feesCents)}.{sale.kind === "flower" ? ` Satisfaction : ${sale.satisfaction === null ? "indisponible" : `${number(sale.satisfaction)}/100`}. Emballages déjà payés à la préparation.` : ` Fabrication déjà payée : ${sale.costCents === null ? "montant indisponible" : formatKqCash(sale.costCents)}.`}</small>
+          </span>
+          <strong>{sale.netPayoutCents === null ? "Versement indisponible" : `${formatKqCash(sale.netPayoutCents)} versés`}</strong>
+        </li>)}</ul>
+      </> : <p className={styles.ledgerNote}>Aucune vente reçue pour le moment.</p>}
+      {!activity.receiptsComplete ? <p className={styles.ledgerNote}>Une partie de l’historique est indisponible. Les reçus connus restent affichés.</p> : null}
+    </details>
   </section>;
 }

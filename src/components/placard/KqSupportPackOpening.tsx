@@ -53,9 +53,9 @@ export function KqSupportPackReveal({ cards, onClose, onContinue = onClose, cont
   </div>;
 }
 
-export function KqSupportPackOpening({ cards, cardCount, busy, error, canRetry, onRetry, onClose, onContinue, continueLabel }: {
+export function KqSupportPackOpening({ cards, cardCount, busy, error, canRetry, onRetry, onClose, onContinue, continueLabel, returnLabel = "Retour aux missions", retryLabel = "Réessayer l’ouverture", busyLabel = "Ouverture de ton pack…" }: {
   cards: readonly KqOpenedSupportCard[]; cardCount: number; busy: boolean; error: string; canRetry: boolean;
-  onRetry: () => void; onClose: () => void; onContinue: () => void; continueLabel: string;
+  onRetry: () => void; onClose: () => void; onContinue: () => void; continueLabel: string; returnLabel?: string; retryLabel?: string; busyLabel?: string;
 }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const titleId = useId();
@@ -78,10 +78,10 @@ export function KqSupportPackOpening({ cards, cardCount, busy, error, canRetry, 
     <div className={styles.content}>
       {cards.length ? <KqSupportPackReveal cards={cards} titleId={titleId} onClose={onClose} onContinue={onContinue} continueLabel={continueLabel} /> : <div className={styles.status}>
         <Gift size={42} aria-hidden="true" /><h2 id={titleId}>Ton pack de {cardCount} cartes</h2>
-        {busy ? <p role="status">Ouverture de ton pack…</p> : <>
+        {busy ? <p role="status">{busyLabel}</p> : <>
           <p role="alert">{error}</p>
-          {canRetry ? <button type="button" onClick={onRetry}>Réessayer l’ouverture</button> : null}
-          <button type="button" onClick={onClose}>Retour aux missions</button>
+          {canRetry ? <button type="button" onClick={onRetry}>{retryLabel}</button> : null}
+          <button type="button" onClick={onClose}>{returnLabel}</button>
         </>}
       </div>}
     </div>

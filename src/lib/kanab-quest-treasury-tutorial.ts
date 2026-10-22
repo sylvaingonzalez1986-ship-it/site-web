@@ -1,5 +1,5 @@
 import { getKqBankLimitCents, getKqBankTerms, KQ_BANK_INSTALLMENT_MS, KQ_BANK_TERM_DAYS, parseKqBankCommand, type KqBankLoan, type KqBankSnapshot } from "./kanab-quest-bank";
-import { createKqBusinessPreview, isKqAdvertisingKind, KQ_ADVERTISING, KQ_DOMICILIATION_MONTHLY_CENTS, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, normalizeKqShopName } from "./kanab-quest-business";
+import { createKqBusinessPreview, isKqAdvertisingKind, KQ_ADVERTISING, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, normalizeKqShopName } from "./kanab-quest-business";
 import { parseSavingsCommand, type ChanvrierSavings } from "./chanvrier-savings";
 import type { KqCommerceSnapshot } from "./kanab-quest-commerce";
 import { createKqCustomerDemandSnapshot } from "./kanab-quest-customer-demand";
@@ -47,6 +47,9 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
   const labId = id();
   const runId = id();
   const business = saved?.business ?? createKqBusinessPreview(started);
+  // Retire only the local contract. Keep its old address, prepaid period,
+  // journal and replay receipts exactly as recorded.
+  business.domiciliation = { ...business.domiciliation, retired: true, active: false, renew: false };
   if (!saved) business.lab = { outstandingCents: 4500, overdueCents: 0, invoices: [{ id: labId, runId, issuedAt: stamp(), dueAt: new Date(started + KQ_GAME_MONTH_MS).toISOString(), amountCents: 4500, remainingCents: 4500 }] };
   let energyDue = saved?.energyDue ?? 414;
   let loan: KqBankLoan | null = saved?.loan ?? null;
@@ -244,13 +247,7 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
       spend("advertising-started", ad.costCents, "expense_advertising");
       business.advertising = { id: id(), kind: body.kind, startedAt: stamp(), endsAt: new Date(clock() + ad.durationDays * KQ_GAME_DAY_MS).toISOString(), boostPercent: ad.boostPercent };
     } else if (body.action === "domiciliation") {
-      if (body.mode !== "home" && body.mode !== "external") throw new Error("Adresse invalide.");
-      if (body.mode === "external") {
-        const paid = business.domiciliation.paidUntil && Date.parse(business.domiciliation.paidUntil) > clock();
-        if (!paid) spend("domicile-paid", KQ_DOMICILIATION_MONTHLY_CENTS, "expense_domiciliation");
-        business.domiciliation = { mode: "external", paidUntil: paid ? business.domiciliation.paidUntil : new Date(clock() + KQ_GAME_MONTH_MS).toISOString(), renew: true, active: true };
-      } else business.domiciliation = { ...business.domiciliation, mode: "home", active: false, renew: false };
-      actions.add("domiciliation");
+      throw new Error("La domiciliation a été retirée du jeu.");
     } else if (body.action === "pay-lab") {
       const invoice = business.lab.invoices.find(item => item.id === body.invoiceId && item.remainingCents > 0);
       if (!invoice) throw new Error("Cette analyse d’essai est déjà réglée.");

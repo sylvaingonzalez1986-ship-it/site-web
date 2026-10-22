@@ -13,11 +13,15 @@ const port = Number(process.env.KQ_STORAGE_DENSITY_AUDIT_PORT ?? 3396);
 const origin = `http://127.0.0.1:${port}`;
 const baseline = process.argv.includes('--baseline');
 const capturesOnly = process.argv.includes('--captures-only');
+const protectionOnly = process.argv.includes('--protection-only');
+assert(!protectionOnly || (!baseline && !capturesOnly), '--protection-only is a separate focused audit');
+const reportSuffix = protectionOnly ? 'protection-' : capturesOnly ? 'captures-' : '';
 const baselineNames = ['KqWarehouseHarvests.tsx','KqWarehouseHarvests.module.css','KqWarehouse.tsx','KqWarehouse.module.css'];
 const originals = baseline ? new Map(await Promise.all(baselineNames.map(async name => [resolve(root,'src/components/placard',name).replaceAll('\\','/'), await readFile(resolve(output,'baseline',name),'utf8')]))) : new Map();
 const readyId = 'd98e8471-1111-4111-8111-111111111111';
 const curingId = 'a18f0172-2222-4222-8222-222222222222';
 const overflowId = 'e24c9183-3333-4333-8333-333333333333';
+const secondOverflowId = 'f65a1274-5555-4555-8555-555555555555';
 const modules = {
   'warehouse-assets': `export default ${await readFile(resolve(root, 'public/placard/warehouse-v2/manifest.json'), 'utf8')};`,
   'next/image': `import React from 'react';export default function Image({fill,priority,unoptimized,loader,quality,placeholder,blurDataURL,style,...props}){return <img {...props} style={fill?{position:'absolute',inset:0,width:'100%',height:'100%',...style}:style}/>;}`,
@@ -44,13 +48,15 @@ const modules = {
     const ready=makeLot('${readyId}','White Widow CBD',1655,12);
     const curing=makeLot('${curingId}','Purple Haze CBD',2875,3);
     const overflow=makeLot('${overflowId}','Critical CBD',5000,12,1250);
+    const secondOverflow=makeLot('${secondOverflowId}','Carmagnola',9250,12,730);
     const dense=[ready,curing,overflow,...[3250,4020,2180,1500,1950].map((units,index)=>makeLot('d98e8471-4444-4444-8444-'+String(index+4).padStart(12,'0'),['Super Skunk CBD','Lemon Haze CBD','Amnesia CBD','Northern Lights CBD','OG Kush CBD'][index],units,index%2?2:12))];
-    const lots=scenario==='empty'?[]:scenario==='dense'?dense:scenario==='mixed'||scenario==='overflow'?[ready,curing,overflow]:[ready];
-    const inventoryUnits=scenario==='empty'?0:scenario==='dense'?dense.reduce((sum,lot)=>sum+lot.projection.capacity.totalUnits,0):9530;
+    const lots=scenario==='empty'?[]:scenario==='dense'?dense:scenario==='multi-overflow'?[ready,curing,overflow,secondOverflow]:['mixed','overflow','partial-offer','stale-overflow-error'].includes(scenario)?[ready,curing,overflow]:[ready];
+    const inventoryUnits=scenario==='empty'?0:['dense','multi-overflow'].includes(scenario)?lots.reduce((sum,lot)=>sum+lot.projection.capacity.totalUnits,0):9530;
     if(scenario==='long')ready.varietyName='Une variété au nom particulièrement long pour vérifier la lisibilité des cartes';
     if(scenario==='ready-by-clock'){ready.projection.stage='curing';ready.projection.progressPercent=99.9;}
     if(scenario==='no-offer') { lots.splice(0,lots.length,overflow);delete overflow.overflowOffer; }
-    window.__workshopCalls=[];window.__overflowCalls=[];window.__apiCalls=[];window.__retryCalls=0;window.__holdSale=query.has('hold');
+    if(scenario==='partial-offer')overflow.overflowOffer={units:250,payoutCents:1350,netPayoutCents:1080};
+    window.__workshopCalls=[];window.__overflowCalls=[];window.__protectionCalls=[];window.__apiCalls=[];window.__retryCalls=0;window.__holdSale=query.has('hold');
     window.__releaseSale=null;window.__closeCalls=0;window.__fixtures={readyId:ready.flowerId,curingId:curing.flowerId,overflowId:overflow.flowerId,lots:structuredClone(lots)};
     const storage={serverNow:new Date(now).toISOString(),cashCents:587484,ownedMethodCodes:['STORAGE-GLASS'],defaultMethodCode:'STORAGE-GLASS',catalog:KQ_STORAGE_METHODS,containers:KQ_STORAGE_CONTAINERS,ownedContainers:{'GLASS-3L':30},installedContainers:{'GLASS-3L':30},capacity:{totalUnits:40000,usedUnits:inventoryUnits,freeUnits:scenario==='empty'?40000:2100,reservedUnits:scenario==='empty'?0:37900,overflowUnits:lots.reduce((sum,lot)=>sum+lot.projection.capacity.overflowUnits,0)},overflowSales:[],lots};
     const state=createKqWarehouseStarter();
@@ -73,11 +79,11 @@ const modules = {
       }
       throw new Error('Unexpected local fixture API: '+call.url);
     };
-    const draftStore=query.has('dirty')?{read:()=>({...state,zones:state.zones.map((zone,index)=>index?zone:{...zone,name:'Brouillon non enregistré'})}),write:()=>{}}:undefined;
+    const draftStore=query.has('dirty')?{read:()=>({...state,zones:state.zones.map((zone,index)=>index?zone:{...zone,name:'Brouillon non enregistré',...(query.has('invalid-plan')?{x:999}:{})})}),write:()=>{}}:undefined;
     function Fixture(){
       const [disabled,setDisabled]=React.useState(query.has('disabled'));
       React.useEffect(()=>{window.__setDisabled=setDisabled;},[]);
-      return query.has('integration')?<KqWarehouse embedded={!query.has('modal')} initialSection="storage" initialEquipmentCode={query.has('equipment')?KQ_WAREHOUSE_CATALOG.find(device=>device.room==='storage'&&device.kind==='climate').code:undefined} initialZoneId={query.has('zone')?state.serviceZones?.find(zone=>zone.kind==='storage')?.id:undefined} draftStore={draftStore} onClose={()=>window.__closeCalls++}/>:<main data-conservation-fixture><KqWarehouseHarvests storage={['loading','unknown','error'].includes(scenario)?null:storage} stockGrams={scenario==='loading'||scenario==='unknown'?null:snapshot.stockGrams} storageReservedGrams={scenario==='loading'||scenario==='unknown'?null:snapshot.storageReservedGrams} storageCapacityGrams={scenario==='unknown'?null:4000} disabled={disabled} error={scenario.includes('error')?'Lecture des lots interrompue.':undefined} onRetry={()=>window.__retryCalls++} onOpenWorkshop={flowerId=>window.__workshopCalls.push(flowerId)} onSellOverflow={flowerId=>window.__overflowCalls.push(flowerId)}/></main>;
+      return query.has('integration')?<KqWarehouse embedded={!query.has('modal')} initialSection="storage" initialEquipmentCode={query.has('equipment')?KQ_WAREHOUSE_CATALOG.find(device=>device.room==='storage'&&device.kind==='climate').code:undefined} initialZoneId={query.has('zone')?state.serviceZones?.find(zone=>zone.kind==='storage')?.id:undefined} draftStore={draftStore} onClose={()=>window.__closeCalls++}/>:<main data-conservation-fixture><KqWarehouseHarvests storage={['loading','unknown','error'].includes(scenario)?null:storage} stockGrams={scenario==='loading'||scenario==='unknown'?null:snapshot.stockGrams} storageReservedGrams={scenario==='loading'||scenario==='unknown'?null:snapshot.storageReservedGrams} storageCapacityGrams={scenario==='unknown'?null:4000} disabled={disabled} error={scenario.includes('error')?'Lecture des lots interrompue.':undefined} onRetry={()=>window.__retryCalls++} onOpenWorkshop={flowerId=>window.__workshopCalls.push(flowerId)} onSellOverflow={flowerId=>window.__overflowCalls.push(flowerId)} onProtectOverflow={query.has('without-protection')?undefined:flowerId=>window.__protectionCalls.push(flowerId)}/></main>;
     }
     createRoot(document.getElementById('root')).render(<Fixture/>);
   `,
@@ -133,7 +139,7 @@ try {
   }
   async function shot(name, fullPage = true) { const file = `${phase}-${name}.png`; await page.screenshot({ path: resolve(output, file), fullPage }); screenshots.push(file); }
   async function press(selector) { await page.focus(selector); await page.keyboard.press('Enter'); }
-  for (const width of [320, 390, 1440, 1644]) {
+  for (const width of protectionOnly ? [] : [320, 390, 1440, 1644]) {
     await page.setViewport({ width, height: 1000, isMobile: width < 700, hasTouch: width < 700 }); await visit();
     verify(await page.$$eval('[data-conservation-lot]', nodes => nodes.length), 8, `${width}: eight independent lots in the real parent`);
     await layout(String(width));
@@ -162,9 +168,10 @@ try {
       await layout(`${width} equipment open`); await press('[data-storage-equipment] > summary');
     }
   }
-  await writeFile(resolve(output, `${phase}-measures.json`), JSON.stringify(measures, null, 2));
+  if (!protectionOnly) await writeFile(resolve(output, `${phase}-measures.json`), JSON.stringify(measures, null, 2));
 
   if (!baseline && !capturesOnly) {
+    if (!protectionOnly) {
     await page.setViewport({ width: 390, height: 1000 }); await visit('mixed', '');
     const ready = `[data-conservation-lot="${readyId}"]`, curing = `[data-conservation-lot="${curingId}"]`, overflow = `[data-conservation-lot="${overflowId}"]`;
     verify((await text(ready)).includes('165,5 g'), true, 'Each lot keeps its own current quantity');
@@ -175,26 +182,88 @@ try {
     const urgentText = await page.$eval(overflow, node => node.innerText.replaceAll('\u00a0', ' ').replaceAll('\u202f', ' '));
     for (const amount of ['125', '67,50', '54']) verify(urgentText.includes(amount), true, `Urgent surplus retains mass/gross/net: ${amount}`);
     verify(await page.$eval(`${overflow} [data-overflow-deadline]`, node => Boolean(node.getClientRects().length)), true, 'Automatic sale deadline stays visible without opening details');
+    verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.map(node => node.dataset.protectOverflow)), [overflowId], 'Only the lot with an actual surplus offers protection');
+    await press(`[data-protect-overflow="${overflowId}"]`); verify(await page.evaluate(() => window.__protectionCalls), [overflowId], 'Protection forwards the selected lot ID by keyboard');
+    verify(await page.evaluate(() => window.__overflowCalls.length), 0, 'Protection does not call the sale callback');
+    verify(await page.evaluate(() => window.__apiCalls.filter(call => call.method !== 'GET').length), 0, 'Protection does not write to any API');
     await press(`[data-sell-overflow="${overflowId}"]`); verify(await page.evaluate(() => window.__overflowCalls), [overflowId], 'Surplus action forwards the exact ID');
-    await page.evaluate(() => window.__setDisabled(true)); await page.waitForFunction(() => [...document.querySelectorAll('[data-open-workshop],[data-sell-overflow]')].every(node => node.disabled));
+    await page.evaluate(() => window.__setDisabled(true)); await page.waitForFunction(() => [...document.querySelectorAll('[data-open-workshop],[data-sell-overflow],[data-protect-overflow]')].every(node => node.disabled));
     await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.click()); verify(await page.evaluate(() => window.__overflowCalls), [overflowId], 'Disabled action cannot repeat a sale');
+    await page.$eval(`[data-protect-overflow="${overflowId}"]`, node => node.click()); verify(await page.evaluate(() => window.__protectionCalls), [overflowId], 'Disabled protection cannot repeat its callback');
     await visit('ready-by-clock', '');
     verify((await text('[data-curing-status]')).toLowerCase().includes('terminé'), false, 'Server curing stage does not become ready merely because the clock elapsed');
     verify((await text('[data-conservation-summary]')).includes('99 %'), true, 'Unconfirmed curing stays at 99% in readable text');
     await visit('unknown', ''); verify(await page.$$eval('[data-conservation-capacity] [role="meter"]', nodes => nodes.length), 0, 'Unknown capacity is not zero');
     await visit('no-offer', ''); verify(await page.$$eval('[data-sell-overflow]', nodes => nodes.length), 0, 'No invented sale action without an offer');
     verify((await text('[data-conservation-lot]')).includes('125'), true, 'Unpriced surplus stays visible');
+    await press(`[data-protect-overflow="${overflowId}"]`); verify(await page.evaluate(() => window.__protectionCalls), [overflowId], 'A surplus can be protected without an available wholesale offer');
+    await visit('mixed', '&without-protection'); verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.length), 0, 'No ineffective protection button when the optional callback is absent');
     await visit('error', ''); await page.click('[role="alert"] button'); verify(await page.evaluate(() => window.__retryCalls), 1, 'Load error keeps a working retry');
     await visit('stale-error', ''); verify(await page.$$eval('[data-open-workshop]', nodes => nodes.every(node => node.disabled)), true, 'A refresh error keeps known lots visible but prevents stale actions');
+    await visit('stale-overflow-error', ''); verify(await page.$eval(`[data-protect-overflow="${overflowId}"]`, node => node.disabled), true, 'A stale conservation snapshot disables protection');
+    await page.$eval(`[data-protect-overflow="${overflowId}"]`, node => node.click()); verify(await page.evaluate(() => window.__protectionCalls.length), 0, 'Stale surplus cannot pass its old context to the equipment');
     for (const scenario of ['empty', 'loading', 'long']) { await visit(scenario, ''); await layout(scenario); }
 
     await visit('ready'); await press(`[data-open-workshop="${readyId}"]`); await page.waitForSelector('[data-selected-workshop-lot]');
     verify(await page.$eval('[data-selected-workshop-lot]', node => node.dataset.selectedWorkshopLot), readyId, 'Actual warehouse forwards the selected lot to the counter');
     verify(await page.$eval('[data-warehouse-room="processing"]', node => node.getAttribute('aria-selected')), 'true', 'Counter action switches the actual warehouse room');
+    }
+    await page.setViewport({ width: 320, height: 900 }); await visit('multi-overflow');
+    verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.length), 2, 'Two independent surplus lots expose their own protection action');
+    const protectionContext = '[data-storage-protection-target]';
+    for (const [flowerId, variety, grams] of [[secondOverflowId, 'Carmagnola', '73'], [overflowId, 'Critical CBD', '125']]) {
+      await press(`[data-protect-overflow="${flowerId}"]`);
+      await page.waitForFunction(id => document.querySelector('[data-storage-equipment]')?.open && document.querySelector('[data-storage-protection-target]')?.getAttribute('data-storage-protection-target') === id, {}, flowerId);
+      await page.waitForFunction(() => document.activeElement === document.querySelector('[data-storage-protection-target]'));
+      verify(await page.evaluate(() => document.activeElement === document.querySelector('[data-storage-protection-target]')), true, `${variety}: keyboard focus reaches the selected lot beside configuration`);
+      const context = await text(protectionContext);
+      verify(context.includes(variety), true, `${variety}: protection context identifies the selected variety`);
+      verify(new RegExp('(?:^|\\s)' + grams + '\\s*g(?:\\s|$|[.,;])').test(await text(`${protectionContext} [role="status"]`)), true, `${variety}: context uses the selected lot's actual surplus grams`);
+      verify(await page.$$eval(protectionContext, nodes => nodes.length), 1, `${variety}: switching lots replaces the previous context`);
+      verify(await page.evaluate(() => window.__apiCalls.filter(call => call.method !== 'GET').length), 0, `${variety}: opening equipment neither buys, allocates nor saves`);
+      verify(await page.$$eval('[data-warehouse-draft]', nodes => nodes.length), 0, `${variety}: navigation does not create a plan draft`);
+      verify(await page.evaluate(() => {
+        const context = document.querySelector('[data-storage-protection-target]');
+        const chart = document.querySelector('[data-postharvest-comparison="storage"]');
+        const zone = document.querySelector('[data-post-harvest="storage"] [data-post-harvest-zone]');
+        return Boolean(context && chart && zone && (chart.compareDocumentPosition(context) & Node.DOCUMENT_POSITION_FOLLOWING) && (context.compareDocumentPosition(zone) & Node.DOCUMENT_POSITION_FOLLOWING));
+      }), true, `${variety}: the original comparison remains above and storage configuration follows the context`);
+      verify(await page.$$eval('[data-post-harvest="storage"] [data-postharvest-upgrade]', nodes => nodes.some(node => { const rect = node.getBoundingClientRect(); return rect.top >= 0 && rect.bottom <= innerHeight && rect.height > 0; })), true, `${variety}: a storage upgrade is visible immediately at 320px without more scrolling`);
+      await layout(`320 protection ${variety}`);
+      await press('[data-return-protection-lot]');
+      verify(await page.evaluate(() => document.activeElement?.getAttribute('data-conservation-lot')), flowerId, `${variety}: keyboard return focuses the same lot`);
+    }
+    await press(`[data-protect-overflow="${overflowId}"]`);
+    await shot('protection-target-320', false);
+    await page.setViewport({ width: 1440, height: 1000 });
+    await page.$eval(protectionContext, element => element.scrollIntoView({ block: 'start', behavior: 'instant' }));
+    await layout('1440 protection context'); await shot('protection-target-1440', false);
+    verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.length), 2, 'Opening equipment preserves both unprotected surpluses');
+    await press(`[data-sell-overflow="${overflowId}"]`);
+    await page.waitForFunction(id => !document.querySelector(`[data-sell-overflow="${id}"]`), {}, overflowId);
+    verify((await text(`${protectionContext} [role="status"]`)).includes('plus de surplus'), true, 'Refreshed protection context stops showing the old surplus after an explicit sale');
+    verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.map(node => node.dataset.protectOverflow)), [secondOverflowId], 'An explicit sale preserves the other lot and its protection action');
+    verify(await page.evaluate(() => window.__apiCalls.filter(call => call.method !== 'GET').map(call => ({method:call.method,action:call.body?.action,flowerId:call.body?.flowerId}))), [{method:'POST',action:'sell-overflow',flowerId:overflowId}], 'Only the separately requested sale produces a write');
+    await page.setViewport({ width: 320, height: 900 });
+    await visit('partial-offer'); await press(`[data-protect-overflow="${overflowId}"]`); await page.waitForSelector(protectionContext, { visible: true });
+    verify(/(?:^|\s)125\s*g(?:\s|$|[.,;])/.test(await text(`${protectionContext} [role="status"]`)), true, 'A partial 25 g wholesale offer does not replace the actual 125 g protection need');
+    verify(await page.evaluate(() => window.__apiCalls.filter(call => call.method !== 'GET').length), 0, 'Partial-offer protection remains navigation only');
+    await visit('no-offer'); await press(`[data-protect-overflow="${overflowId}"]`); await page.waitForSelector(protectionContext, { visible: true });
+    verify((await text(protectionContext)).includes('Critical CBD'), true, 'Real parent opens protection equipment even without a sale offer');
+    await layout('320 protection without offer');
+    if (!protectionOnly) {
     await visit('mixed', '&integration&dirty'); verify(await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.disabled), true, 'Unsaved plan disables surplus sales');
+    verify(await page.$eval(`[data-protect-overflow="${overflowId}"]`, node => node.disabled), true, 'Unsaved plan disables surplus protection navigation');
+    await page.$eval(`[data-protect-overflow="${overflowId}"]`, node => node.click()); verify(await page.$eval('[data-storage-equipment]', node => node.open), false, 'Disabled protection preserves the dirty plan and closed equipment');
+    verify(await page.$$eval(protectionContext, nodes => nodes.length), 0, 'A dirty plan does not receive a stale protection target');
     await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.click()); verify(await page.evaluate(() => window.__overflowCalls.length), 0, 'Unsaved plan cannot send a sale request');
+    await visit('mixed', '&integration&dirty&invalid-plan');
+    verify(await page.$$eval('[data-storage-equipment]', nodes => nodes.length), 0, 'An invalid draft exposes correction instead of absent equipment');
+    verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.length), 0, 'An invalid draft cannot offer navigation to equipment that is not rendered');
+    verify(await page.evaluate(() => window.__apiCalls.filter(call => call.method !== 'GET').length), 0, 'Invalid draft remains local without implicit save');
     await visit('mixed', '&integration&hold'); await press(`[data-sell-overflow="${overflowId}"]`); await page.waitForFunction(() => window.__overflowCalls.length === 1);
     verify(await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.disabled), true, 'Pending sale cannot be repeated');
+    verify(await page.$eval(`[data-protect-overflow="${overflowId}"]`, node => node.disabled), true, 'Pending sale also disables surplus protection');
     const sale = await page.evaluate(() => window.__overflowCalls[0]); verify(sale.action, 'sell-overflow', 'Existing sale command preserved'); verify(sale.flowerId, overflowId, 'Pending sale keeps the exact lot'); verify(typeof sale.requestKey, 'string', 'Sale keeps its idempotency key');
     await page.evaluate(() => window.__releaseSale()); await page.waitForFunction(() => !document.querySelector('[data-sell-overflow]'));
     verify(await page.$$eval('[data-conservation-lot]', nodes => nodes.length), 3, 'Sale preserves the protected remainder and other lots');
@@ -211,11 +280,12 @@ try {
     const previous = await readFile(resolve(output, 'before-report.json'), 'utf8').then(JSON.parse).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
     comparisonAvailable = Boolean(previous?.success && previous.measures);
     if (comparisonAvailable) for (const measure of measures) { const before = previous.measures.find(item => item.viewport === measure.viewport); if (!before) continue; verify(measure.medianLotHeight < before.medianLotHeight, true, `${measure.viewport}: lot height is smaller than the baseline`); verify(measure.firstLotTop < before.firstLotTop, true, `${measure.viewport}: first flower appears earlier than the baseline`); }
+    }
   }
   verify(errors, [], 'No browser exception'); verify(forbidden, [], 'No external requests');
-  await writeFile(resolve(output, `${phase}-${capturesOnly ? 'captures-' : ''}report.json`), JSON.stringify({ success: true, baseline, comparisonAvailable, checks: checks.length, results: checks, measures, screenshots, errors, forbidden }, null, 2));
-  console.log(JSON.stringify({ success: true, phase, checks: checks.length, measures, output }, null, 2));
+  await writeFile(resolve(output, `${phase}-${reportSuffix}report.json`), JSON.stringify({ success: true, baseline, protectionOnly, comparisonAvailable, checks: checks.length, results: checks, measures, screenshots, errors, forbidden }, null, 2));
+  console.log(JSON.stringify({ success: true, phase, protectionOnly, checks: checks.length, measures, output }, null, 2));
 } catch (error) {
   await Promise.race([page?.screenshot({ path: resolve(output, `${phase}-failure.png`), fullPage: true }).catch(() => {}), new Promise(resolve => setTimeout(resolve, 3000))]);
-  await writeFile(resolve(output, `${phase}-${capturesOnly ? 'captures-' : ''}report.json`), JSON.stringify({ success: false, error: error.stack, checks, measures, errors, forbidden }, null, 2)); console.error(error.stack); process.exitCode = 1;
+  await writeFile(resolve(output, `${phase}-${reportSuffix}report.json`), JSON.stringify({ success: false, error: error.stack, checks, measures, errors, forbidden }, null, 2)); console.error(error.stack); process.exitCode = 1;
 } finally { await browser?.close(); await server.close(); }

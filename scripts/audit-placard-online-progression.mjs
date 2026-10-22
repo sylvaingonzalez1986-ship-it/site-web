@@ -139,8 +139,7 @@ if (preview) {
     await handle.asElement().click(); await handle.dispose();
   };
   const showProgression = async () => {
-    await click('Améliorations', '[aria-label="Gérer ma boutique"]');
-    await click('Le site internet');
+    await page.click('[data-shop-view="site"]');
     await page.waitForSelector(progression, { visible: true });
   };
   const snapshot = () => page.evaluate(() => window.fixture());
@@ -211,7 +210,7 @@ if (preview) {
   }
   await page.screenshot({ path: resolve(output, 'missing-photo-brand-320.png'), fullPage: true });
   await click('Voir les photos et la marque', progression);
-  await page.waitForFunction(() => document.activeElement?.textContent.trim() === 'Photos et marque' && document.activeElement.getAttribute('aria-pressed') === 'true');
+  await page.waitForFunction(() => document.activeElement?.getAttribute('data-shop-view') === 'brand' && document.activeElement.getAttribute('aria-selected') === 'true');
   assert.equal(await page.evaluate(() => window.requests.length), 0);
   checks.push('both missing upgrades show their 300/700 euro costs at 320 px and the brand link transfers keyboard focus');
 

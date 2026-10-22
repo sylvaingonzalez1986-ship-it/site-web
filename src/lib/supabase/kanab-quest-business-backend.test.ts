@@ -45,6 +45,7 @@ describe("business actions use authoritative commands", () => {
     { action: "create-shop", name: "x" }, { action: "rename-shop", name: "<script>" },
     { action: "advertise", kind: "constructor" }, { action: "shop-renewal", enabled: "true" },
     { action: "pay-lab", invoiceId: "bad-id" }, { action: "pay-supplier", invoiceId: "bad-id" }, { action: "domiciliation", mode: "anything" },
+    { action: "domiciliation", mode: "home" }, { action: "domiciliation", mode: "external" },
     { action: "internet", enabled: true },
   ])("rejects invalid or obsolete request $action before calling a mutation", async input => {
     await expect(handleKqCommerceAction(user, { ...input, requestKey: user })).rejects.toThrow();
@@ -52,7 +53,7 @@ describe("business actions use authoritative commands", () => {
   });
   it.each([
     { action: "advertise", kind: "radio" }, { action: "pay-lab", invoiceId: stockId }, { action: "pay-supplier", invoiceId: stockId },
-    { action: "domiciliation", mode: "external" }, { action: "shop-renewal", enabled: false }, { action: "renew-shop" },
+    { action: "shop-renewal", enabled: false }, { action: "renew-shop" },
   ])("dispatches $action with the idempotency key", async ({ action, ...payload }) => {
     await handleKqCommerceAction(user, { action, ...payload, requestKey: user });
     expect(mocks.rpc).toHaveBeenCalledWith("rpc_kq_commerce_command", { p_user_id: user, p_action: action, p_payload: payload, p_request_key: user });
@@ -63,6 +64,15 @@ describe("business actions use authoritative commands", () => {
     await expect(getKqCommerceSnapshot(user)).rejects.toThrow("business_calendar_migration_required");
     await expect(handleKqCommerceAction(user, { action: "quote", stockId, channel: "online", policy: "advised" })).rejects.toThrow("business_calendar_migration_required");
     expect(mocks.insert).not.toHaveBeenCalled();
+  });
+  it("preserves the authority's old address contract instead of inventing retirement before migration", async () => {
+    const data = snapshot();
+    data.business!.domiciliation = { mode: "external", active: true, renew: true, paidUntil: new Date(now + KQ_GAME_MONTH_MS).toISOString() };
+    data.business!.ledger = [{ id: stockId, kind: "domiciliation", amountCents: 5000, occurredAt: new Date(now).toISOString() }];
+    const historical = structuredClone(data.business);
+    mocks.rpc.mockResolvedValue({ data, error: null });
+    expect((await getKqCommerceSnapshot(user)).business).toEqual(historical);
+    expect(historical!.domiciliation.retired).toBeUndefined();
   });
   it("never forwards a client-supplied supplier payment amount", async () => {
     await handleKqCommerceAction(user, { action: "pay-supplier", invoiceId: stockId, amountCents: 1, requestKey: user });

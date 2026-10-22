@@ -4,6 +4,311 @@ Statut: recherche initiale conservee + orientation jouable actuelle
 Univers: L'Arene / Hemp Heroes / carnet de degustation  
 Plateforme: web responsive, Next.js, Vercel et Supabase
 
+## Reprise du plan — 21 octobre 2026
+
+Les améliorations précédentes ont été regroupées dans le commit `ff1687c`,
+poussé sur `master` à la demande du joueur. Les mentions « local » dans les
+comptes rendus datés ci-dessous décrivent leur état au moment de la recette.
+Les migrations boutique, merch et studio `20261020000400` à `20261020000600`
+ont été appliquées à la base partagée sur autorisation explicite. À la demande
+du joueur du 21 octobre, les migrations `20261020000200` (contrats renouvelables),
+`20261020000300` (textes et recto de Main prévoyante) et `20261021000100`
+(retrait de la domiciliation) ont également été appliquées et vérifiées.
+L’historique local et distant concorde : aucune migration en attente.
+
+### Débloquer la vente des productions — correction locale du 21 octobre
+
+Le calcul des offres ignorait les bonus positifs de séchage et d’affinage,
+alors que la validation SQL utilisait la qualité commerciale complète.
+Un changement de palier pouvait donc provoquer « Les conditions ont changé »
+immédiatement, même après recalcul. Le calcul partagé utilise maintenant
+les bonus et les pertes, sans modifier la note historique du jury.
+
+Un refus explicite de l’offre ou de sa conservation propose désormais
+« Recalculer l’offre ». Le lot, le circuit et la quantité demandée sont
+conservés ; le nouveau montant est présenté avant une nouvelle confirmation.
+Le contexte du lot dans le bon de commande provient également du serveur.
+Un recalcul échoué ne réactive pas l’ancienne offre. Si seule la réponse de
+vente est perdue, le réessai conserve la même clé de transaction, même après
+expiration, pour retrouver le reçu sans créer une seconde vente.
+Fermer puis rouvrir le dialogue dans le comptoir conserve cette demande ;
+une actualisation en arrière-plan n’efface plus l’erreur de confirmation.
+
+Cette correction reste locale et ne nécessite aucune migration SQL.
+Validation : 134 tests unitaires/API, 164 contrôles SQL isolés et quatre
+groupes navigateur réussis, avec contrôles à 320, 390 et 1 440 px. La recette
+de récupération est reproductible avec
+`node scripts/audit-placard-commerce.mjs --quote-recovery` ; son rapport et
+ses captures sont dans `output/placard-commerce-quote-recovery/`.
+
+### Retrouver sa préparation et son lot — suite locale du 21 octobre
+
+Le détour « Modifier le plan » conserve désormais les cartes choisies, leur
+ordre et leurs copies, ainsi que l’Héritage. Le bouton « Préparation » dans
+l’en-tête de l’entrepôt revient au même contexte de culture. Ces préférences
+restent dans l’onglet, séparées par compte ; sans stockage navigateur, elles
+restent en mémoire pendant la navigation. Un choix volontairement vide est
+conservé. Aucun lancement, réservation de cartes ou achat n’est automatique.
+
+Au retour, les choix sont vérifiés contre l’inventaire confirmé. Seules les
+copies devenues indisponibles et un Héritage confirmé absent sont retirés,
+avec une explication ; aucun remplacement n’est ajouté. Une lecture inconnue
+ou échouée n’efface pas les choix. Le démarrage confirmé ou la reprise d’une
+culture active libère le brouillon. Les archives et la visite du jury ne le
+consomment pas ; les états de jeu enregistrés restent prioritaires.
+
+« Gérer le stockage » et « Protéger le surplus » transmettent maintenant
+l’identifiant exact de la récolte. Après chargement, le lot est repéré par
+un texte et un contour, puis reçoit le focus sous l’en-tête fixe, même à
+320 px. Le retour retrouve sa ligne dans « Mes récoltes ». Les lots homonymes
+ne sont jamais interchangeables. Un lot absent et une lecture indisponible
+ont des messages distincts et une actualisation par lecture seule ; le
+rafraîchissement périodique ne reprend pas le focus pendant une action.
+
+Ce lot reste local : aucune migration, écriture distante, publication,
+modification de prix, récompense ou règle de jeu. La recette des parcours
+utilise les vrais composants et un transport en mémoire dans
+`scripts/audit-placard-journey-continuity.mjs` ; les preuves et captures sont
+regroupées dans `output/placard-journey-continuity/`.
+
+Validation : 50 tests unitaires ciblés, 21 groupes de parcours navigateur
+(320, 390 et 1 440 px), 156 contrôles de stockage et 22 scénarios de préparation
+réussis. TypeScript, ESLint et compilation de production passent également.
+La recette navigateur n’a émis aucune requête distante ni erreur navigateur.
+
+### Application Supabase — 21 octobre 2026
+
+La simulation a limité l’application aux trois migrations ci-dessus. Les
+contrats disposent de leurs index, triggers et RPC ; leur table et leur
+séquence restent privées, avec accès aux deux RPC réservé à `service_role`.
+Les textes Héritage correspondent à la main de 10 cartes et l’illustration
+v6 est disponible sur le site, identique au fichier local. Les renouvellements
+de domiciliation sont retirés, sans règlement ni remboursement rétroactif.
+
+Le retrait a été rendu compatible avec le code précédemment publié avant
+application : les cultures distantes conservent le format `home`/`external`.
+Le backend local utilise `external` pour le risque normal lorsque le serveur
+confirme le retrait ; l’ancien backend peut encore lancer `home`. Le marqueur
+`retired` reste une capacité du bilan commercial, sans être écrit dans ces
+cultures. Le moteur publié garde ainsi son ancien tirage jusqu’au déploiement
+du nouveau code ; les cultures existantes gardent leur scénario de départ.
+
+Validation : 321 contrôles SQL contrats, 110 contrôles SQL retrait, 60 tests
+TypeScript, 285 assertions de lecture et de jeu avec le parser et le moteur
+du commit `ff1687c`, contrôle des permissions sur 336 migrations et ESLint.
+Les vérifications distantes sont en lecture seule, sans appeler de RPC de
+règlement : les empreintes des 339 cultures, 26 portefeuilles, 761 écritures
+et 998 reçus contrôlés sont inchangées, comme les autres fonctions et les
+permissions existantes. L’agrégat des comptes commerciaux a évolué entre les
+lectures sur la base active ; aucune égalité complète de ces lignes n’est
+revendiquée. Le SHA du déploiement Vercel n’a pas pu être confirmé (403) ;
+la compatibilité a été vérifiée avec le code Git, et l’asset public par GET.
+
+Preuves : `output/game-migrations-2026-10-21/application-status.json` et
+`output/retirement-shared-compat/report.json`. Aucun commit, push ou
+déploiement du site n’a été effectué pendant cette application.
+
+### Du verdict au bon lot — continuité locale du 21 octobre
+
+Après un entraînement ou un duel officiel, la note du jury et les conditions
+d’affinage sont visibles dans le verdict, sans ouvrir l’analyse détaillée.
+L’action principale « Voir ce lot au comptoir » conserve l’identité de la
+Fleur jugée jusque dans la rubrique de vente. La prochaine culture reste
+accessible par une seconde action. Les manches, les gains et les reçus
+gardent leurs valeurs ; aucun duel, achat ou traitement n’est relancé par
+la navigation.
+
+La recette a également corrigé une fermeture intempestive du verdict officiel :
+sa confirmation est fermée avec l’ouverture du résultat, avant les lectures de
+rafraîchissement. Le verdict reste ainsi disponible pour choisir la suite.
+
+Le lien se fonde sur la Fleur soumise à l’entraînement ou sur le duel officiel
+correspondant au reçu, jamais sur une autre Fleur sélectionnée entre-temps.
+Une identité absente ne produit pas de lien supposé. Le comptoir retrouve
+le lot brut, ou un produit préparé de cette récolte avec du stock restant.
+Si le lot n’est plus disponible, il le signale et propose de l’actualiser ou
+de consulter volontairement les autres lots. Une réponse de stock incomplète
+reste une erreur de lecture, sans sélection d’un lot de remplacement.
+
+Dans le stockage, un surplus propose aussi « Ajouter des contenants », même
+sans offre grossiste. Ce bouton ouvre et focalise la configuration existante,
+directement devant les zones et leurs actions, avec la variété, une référence
+de lot et le surplus réel en grammes. La quantité
+à protéger ne vient pas de l’offre commerciale, qui peut être partielle.
+Un retour rejoint la fiche du même lot. Le rappel suit l’état actualisé ;
+un échec de lecture ne prétend pas que le besoin est résolu.
+La capacité reste répartie par les règles existantes entre les lots qui en
+ont besoin ; l’achat nécessite toujours le choix puis l’enregistrement du plan.
+Les états occupés, les brouillons non enregistrés et les erreurs conservent
+leurs protections. Un plan invalide renvoie à sa correction.
+
+Ce lot n’ajoute aucune migration et ne modifie ni les règles du jury, ni les
+prix, ni les récompenses, ni la durée d’affinage. Il reste local, sans commit,
+push, modification de Supabase ou déploiement.
+
+Validation : 38 tests ciblés de commerce et sélection du lot, TypeScript,
+ESLint ciblé et compilation locale passent. La recette de stockage conserve
+ses 152 contrôles réussis ; 36 contrôles ciblés supplémentaires valident le
+focus directement sur les choix de capacité. Les captures à 320 et 1440 px
+sont inspectées, avec deux surplus distincts, offre partielle ou absente,
+brouillon, erreur de lecture, retour au même lot et aucune écriture implicite.
+Rapports dans `output/storage-density/after-report.json` et
+`output/storage-density/after-protection-report.json`.
+La recette `scripts/audit-placard-verdict-continuation.mjs` monte le véritable
+écran joueur et vérifie onze parcours, dont entraînement et duel officiel à
+320, 390 et 1440 px, lots homonymes, identité manquante, lot absent et lecture
+indisponible ou malformée. Elle contrôle le focus au comptoir, la conservation
+de l’identifiant et l’absence d’écriture commerciale. Rapport et captures
+dans `output/placard-verdict-continuation/`, avec API en mémoire uniquement.
+Les quatorze scénarios de régression du jury passent également, dont paysage,
+préparation au clavier, fermeture pendant une requête et récupération après
+vingt secondes sans nouvelle mutation. Le rapport existant est actualisé dans
+`output/ux-implementation/jury/results.json`.
+L’aperçu isolé de ce lot est disponible sur `http://127.0.0.1:3421/` :
+entraînement, confirmation, puis accès au lot depuis le verdict.
+
+Les deux suites de continuité repérées après ce lot — préparation pendant
+le détour par le plan et lot ciblé entre récoltes et stockage — sont traitées
+dans la suite locale « Retrouver sa préparation et son lot » ci-dessus.
+
+### Retrouver des soutiens entre deux cultures — suite locale
+
+La préparation de la main propose maintenant un accès aux récompenses quand
+le stock confirmé contient moins de dix soutiens. Elle affiche le nombre
+réel de copies et de références, puis privilégie un pack déjà acquis, le pack
+de bienvenue encore disponible, une récompense de cartes à récupérer ou un
+objectif actuellement débloqué qui en attribue. Les missions d’argent ne sont
+pas présentées comme des packs ; un objectif futur verrouillé n’est pas promis.
+
+Un pack s’ouvre sur place. Les missions s’ouvrent dans une fenêtre sur le
+parcours concerné ; le retour conserve la campagne, l’Héritage et la sélection.
+Les cartes reçues rejoignent l’inventaire sans s’ajouter automatiquement au
+deck. La consultation n’achète, ne réclame et n’ouvre rien automatiquement.
+À partir de dix copies, cet accès disparaît, tout en laissant finir une
+ouverture déjà engagée. Un inventaire inconnu ne devient pas un stock vide.
+L’essai guidé et une culture en cours gardent leurs parcours propres.
+
+Les états indisponibles restent explicites. Après une réponse d’ouverture
+interrompue, l’inventaire et le droit au pack sont relus : une seconde ouverture
+n’est proposée qu’après confirmation du droit restant. La fermeture d’une
+mission pendant son attribution n’empêche plus l’actualisation de la collection.
+En l’absence de récompense immédiate, les missions restent consultables et un
+détail rappelle les conditions d’entraînement : une carte par victoire, une
+Fleur consommée par duel, dix entraînements au maximum par jour.
+
+L’[étude de continuité](../../output/placard-support-continuity/report.md),
+reproductible avec `scripts/audit-placard-support-continuity.mjs`, prolonge
+l’étude de la main de dix : 132 comptes fictifs, trente cultures successives,
+trois politiques et trois circuits, soit **35 640 cultures simulées**.
+La rotation des trois Buddies initiaux, les copies consommées et les
+récompenses effectivement obtenues sont suivies entre chaque culture.
+Pour la politique prudente, le circuit limité aux missions culture/qualité
+termine avec un stock médian de quatre cartes et 9,44 % de cultures sans aucun
+soutien jouable. Avec entraînement, ces valeurs deviennent douze cartes et
+1,84 %. Une collection non vide ne garantit donc pas un choix utilisable.
+
+Ces résultats sont conditionnels : l’économie, l’entretien, les ventes et
+plusieurs autres sources de récompenses sont exclus ; le circuit PvP utilise
+une cohorte fictive. Ils ne démontrent ni financement de trente cultures,
+ni comportement réel des joueurs, ni rétention. Le lot améliore l’accès aux
+gains existants sans modifier dotations, coûts, XP ou difficulté. L’observation
+de parties réelles reste nécessaire avant une décision d’équilibrage.
+
+Validation : 89 tests ciblés, compilation locale et ESLint passent. La recette
+`scripts/audit-placard-support-recovery.mjs` valide 37 groupes de contrôles,
+complétés par six contrôles de focus ciblé à 320, 390 et 1440 px ; la recette
+existante de préparation conserve ses 21 scénarios réussis. Les captures et
+rapports sont dans `output/placard-support-recovery/`. Un contrôle supplémentaire
+valide le pack de mission ouvert malgré une réponse perdue et une lecture
+indisponible : une seule ouverture, actualisation par lecture seule, collection
+réconciliée et sélection conservée. La simulation vérifie
+777 826 égalités de conservation des copies et chacun des 35 640 lancements
+au regard de la rotation. Aucun appel distant ni migration pour ce lot.
+L’aperçu isolé est disponible sur `http://127.0.0.1:3406/`, avec des données
+fictives en mémoire. Aucun commit, push ou déploiement n’est effectué.
+
+### Navigation du commerce et retrait de la domiciliation — lot local suivant
+
+La barre remplace les catégories génériques Améliorations et Réglages par
+six destinations directes : Activité (stocks et ventes), Prix CBD (fleurs et
+extraits), Merch (nom et collections), Promouvoir (audience et campagnes),
+Site internet (niveaux et abonnement) et Studio (photos et identité).
+Chaque onglet indique son rôle. Le Merch reçoit un accent abricot ; tous
+les onglets restent visibles à 320 px et utilisables au clavier.
+
+Le nom de l’entreprise se modifie gratuitement dans Merch, avec confirmation
+et sans perdre les stocks, les ventes ou l’audience. Ce même nom sert au site
+et au Studio. Les liens de prérequis ouvrent directement la bonne rubrique.
+Le calendrier et les mouvements comptables restent accessibles dans un
+détail de Site internet ; les factures conservent leur écran dédié.
+
+La domiciliation sort du parcours et des nouvelles commandes. Les nouvelles
+cultures locales utilisent le risque de vol normal ; les cultures historiques
+conservent leurs conditions de départ et leurs relectures déterministes.
+La migration `20261021000100_kq_retire_domiciliation.sql` arrête les anciens
+renouvellements sans modifier les achats, reçus ou écritures comptables passés.
+Elle préserve les autres échéances et les permissions existantes.
+
+**Migration appliquée à la base partagée le 21 octobre, sur demande du joueur.**
+Supabase confirme désormais ce retrait. Le pont de compatibilité décrit
+ci-dessus permet de continuer les cultures depuis l’ancien et le nouveau
+code sans réécrire leur état. Aucun push ni déploiement n’est effectué pour ce lot.
+
+Recette : `scripts/audit-placard-shop-activity.mjs`, captures et rapport dans
+`output/shop-navigation/`, avec composants réels et données en mémoire.
+Le script SQL `scripts/test-placard-retire-domiciliation.mjs` vérifie localement
+le retrait, les archives, les permissions et la compatibilité des lancements.
+Validation : 36 groupes de contrôles navigateur pour la navigation, le
+renommage et les finances ; 69 contrôles complémentaires des ateliers Merch,
+Studio et Site à 320, 390 et 1440 px ; 69 vérifications SQL de la migration.
+Les tests ciblés du moteur, des sauvegardes, des tutoriels et du backend passent,
+ainsi que TypeScript, ESLint ciblé, la compilation locale et le contrôle des
+permissions sur 336 migrations. L’aide à la découverte
+décrit les nouveaux onglets, l’ouverture gratuite et les ventes automatiques.
+L’aperçu isolé utilise `http://127.0.0.1:3402/`, avec des données fictives.
+
+### Deux rayons dans le pilotage de la boutique — nouveau lot local
+
+Le merch vendait déjà, mais la vue d’ensemble, l’activité et le registre
+continuaient à présenter uniquement les fleurs. Une boutique avec des articles
+exposés pouvait ainsi être décrite comme vide. Ces trois écrans montrent
+maintenant les deux rayons et leurs reçus récents, classés par date.
+
+- Les quantités restent explicites : paquets de fleurs et d’extraits, articles merch.
+  Le merch ne fait pas progresser les prérequis de commandes de fleurs.
+- Les articles conservent leur illustration CBD, leur stock, leur prix et leur
+  état : en rayon, hors vitrine ou épuisés. La suspension du site conserve leur
+  publication et leur stock ; elle arrête les ventes estimées.
+- Le prochain conseil tient compte d’une collection sans fleurs en vente :
+  exposer le stock, gérer les références ou préparer une nouvelle série.
+  Un accès direct ouvre maintenant l’onglet Merch.
+- Le registre propose le choix Fleurs et extraits / Merch, ouvre le merch lorsqu’il est
+  le seul stock connu et conserve les reçus des deux rayons dans un historique
+  commun. Les frais, la satisfaction des fleurs et le coût de fabrication
+  enregistré des articles restent consultables.
+- Les versements affichés viennent des reçus et compteurs enregistrés après
+  les retenues de jeu. Ils ne sont pas présentés comme du bénéfice. Les cadences
+  sont des estimations issues des règles existantes ; elles n’ajoutent ni visites
+  ni ventes. Un état absent reste indisponible, sans faux zéro.
+- L’activité indique les niveaux réels de photo, de marque et de récits.
+- Un inventaire incomplet ne bloque plus l’activité à cause des ateliers
+  montés en arrière-plan : les actions merch attendent un stock confirmé,
+  tandis que les autres rayons restent consultables.
+
+Ce lot ne modifie ni prix, récompenses, moteur de vente, données distantes,
+ni migrations. Les vérifications et captures de la recette isolée se trouvent
+dans `output/shop-activity/`. Elle utilise les composants réels avec
+une API en mémoire, sans compte joueur distant. L’aperçu se lance avec
+`node scripts/audit-placard-shop-activity.mjs --preview`.
+
+Validation : 237 tests ciblés passent (activité, stratégie commerciale, merch,
+studio, ventes et campagnes), ainsi que TypeScript, ESLint ciblé et la
+compilation de production locale. La recette navigateur valide 32 groupes
+de contrôles : onze scénarios à 320 et 1440 px, navigation clavier, données
+absentes, suspension du site et boutons accessibles sans chevauchement.
+L’aperçu isolé de ce lot est disponible sur `http://127.0.0.1:3401/` avec
+des données fictives. Ces tests ne constituent pas une mesure de rétention.
+
 ## 0. Contrat actuel — campagne commune et La Botte, 13 octobre 2026
 
 Les sections historiques plus bas documentent la premiere piste de simulation
@@ -466,8 +771,9 @@ La Qualité moyenne augmente de 0,33 et 0,51 point avec la stratégie économe,
 sans variation de mortalité. Le manque d’XP seul explique peu des réactions
 indisponibles dans ces configurations. Ce lot ne modifie donc ni les coûts,
 ni les gains d’XP, ni la difficulté des dés. La consommation supplémentaire
-devra être observée sur plusieurs cultures successives avec missions et
-renouvellement du stock ; les trois packs simulés ne constituent pas une
+est étudiée sur plusieurs cultures successives dans le lot « Retrouver des
+soutiens entre deux cultures » du 21 octobre ci-dessus, puis devra être
+confrontée à des parties réelles ; les trois packs simulés ne constituent pas une
 nouvelle dotation offerte. Cette étude ne mesure ni la rétention ni l’ennui,
 et ne reconstitue pas intégralement l’ancienne version à cinq cartes.
 

@@ -64,7 +64,7 @@ window.testRejected=body=>{const before=structuredClone(state);try{applyKqOperat
 const api=createKqTutorialApi(async()=>{throw new Error('This isolated component never requests a live API')});
 function App(){
  const[,refresh]=useState(0),[scenario,setScenario]=useState('ready'),[pending,setPending]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState('');const committing=useRef(false);
- useEffect(()=>{if(!${preview})return;let second;const first=requestAnimationFrame(()=>{[...document.querySelectorAll('[aria-label="Gérer ma boutique"] button')].find(node=>node.textContent.trim()==='Améliorations')?.click();second=requestAnimationFrame(()=>{[...document.querySelectorAll('button')].find(node=>node.textContent.trim()==='Photos et marque')?.click()})});return()=>{cancelAnimationFrame(first);if(second)cancelAnimationFrame(second)}},[scenario]);
+ useEffect(()=>{if(!${preview})return;const first=requestAnimationFrame(()=>document.querySelector('[data-shop-view="brand"]')?.click());return()=>cancelAnimationFrame(first)},[scenario]);
  window.setScenario=name=>{if(committing.current)throw new Error('Wait for the local command');makeScenario(name);window.requests=[];window.pending=null;setPending(null);setError('');setBusy(false);setScenario(name);refresh(value=>value+1)};
  window.localCommand=(name,payload)=>{if(committing.current)throw new Error('Wait for the local command');const result=command(name,payload);refresh(value=>value+1);return result};
  const ask=(title,description,body,cost)=>{if(busy)return;const next={title,description,body,cost:cost??0};window.pending=structuredClone(next);setError('');setPending(next)};
@@ -100,7 +100,7 @@ if(preview){
  await page.setRequestInterception(true);page.on('request',request=>{const url=request.url();if((url.startsWith(origin+'/')&&!url.includes('/api/'))||url.startsWith('data:'))void request.continue();else{forbidden.push(url);void request.abort()}});
  await page.setViewport({width:1440,height:1000});await page.goto(origin,{waitUntil:'networkidle0',timeout:60000});await page.evaluate(()=>document.fonts.ready);
  const click=async(text,scope='body')=>{const handle=await page.waitForFunction((text,scope)=>[...document.querySelectorAll(scope+' button')].find(node=>node.textContent.trim()===text&&!node.disabled&&node.getBoundingClientRect().height>0),{},text,scope);await handle.asElement().click();await handle.dispose()};
- const show=async()=>{await click('Améliorations','[aria-label="Gérer ma boutique"]');await click('Photos et marque');await page.waitForSelector(workshop,{visible:true})};
+ const show=async()=>{await page.click('[data-shop-view="brand"]');await page.waitForSelector(workshop,{visible:true})};
  const reset=async name=>{await page.evaluate(name=>window.setScenario(name),name);await page.waitForFunction(name=>document.querySelector('[data-fixture-scenario]').value===name,{},name);await show()};
  const snapshot=()=>page.evaluate(()=>window.fixture());
  const choose=async(track,level)=>{await page.click('[data-studio-track="'+track+'"]');if(level)await page.click('[data-studio-level="'+level+'"]');};
@@ -218,11 +218,11 @@ if(preview){
  }
  await overflow('complete workshop with six merch references');await page.screenshot({path:resolve(output,'studio-merch-320.png'),fullPage:true});
  checks.push('the complete workshop compares all six stocked merch items with real per-item cadence and correct style effects');
- await choose('branding',3);await click('Décliner la marque en merch',workshop);await page.waitForSelector('[data-merch-workshop]',{visible:true});assert.equal(await page.evaluate(()=>document.activeElement.textContent.trim()),'Merch & collections');
- await reset('site');await choose('photography',2);await click('Développer le site',workshop);await page.waitForSelector('[data-online-progression]',{visible:true});assert.equal(await page.evaluate(()=>document.activeElement.textContent.trim()),'Le site internet');
+ await choose('branding',3);await click('Décliner la marque en merch',workshop);await page.waitForSelector('[data-merch-workshop]',{visible:true});assert.equal(await page.evaluate(()=>document.activeElement.getAttribute('data-shop-view')),'merch');
+ await reset('site');await choose('photography',2);await click('Développer le site',workshop);await page.waitForSelector('[data-online-progression]',{visible:true});assert.equal(await page.evaluate(()=>document.activeElement.getAttribute('data-shop-view')),'site');
  await reset('ready');await choose('editorial',1);await click('Voir','[data-studio-investment]');assert.equal(await page.evaluate(()=>document.activeElement.getAttribute('data-studio-track')),'photography');
  checks.push('prerequisite and cross-panel links move keyboard focus onto the visible destination');
- await reset('ready');await click('Merch & collections');await page.waitForSelector('[data-merch-workshop]',{visible:true});await click('Le site internet');await page.waitForSelector('[data-online-progression]',{visible:true});await click('Photos et marque');await page.waitForSelector(workshop,{visible:true});
+ await reset('ready');await page.click('[data-shop-view="merch"]');await page.waitForSelector('[data-merch-workshop]',{visible:true});await page.click('[data-shop-view="site"]');await page.waitForSelector('[data-online-progression]',{visible:true});await page.click('[data-shop-view="brand"]');await page.waitForSelector(workshop,{visible:true});
  checks.push('merch and the six-level website remain accessible beside Photos et marque');
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await page.evaluate(()=>{for(const image of document.images)image.loading='eager'});await page.waitForFunction(()=>[...document.images].every(image=>image.complete));
  assert.deepEqual(await page.evaluate(()=>[...document.images].filter(image=>!image.naturalWidth).map(image=>image.src)),[]);assert.deepEqual(errors,[]);assert.deepEqual(forbidden,[]);assert.deepEqual(failedResponses,[]);

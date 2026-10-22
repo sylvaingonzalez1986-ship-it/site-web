@@ -4,7 +4,8 @@ vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: mocks.clie
 vi.mock("@/lib/supabase/kanab-quest-equipment-backend", () => ({ getKqEquipmentShopSnapshot: mocks.equipment }));
 vi.mock("./kanab-quest-warehouse-backend", () => ({ getKqWarehouseRunSnapshot: vi.fn().mockResolvedValue(null) }));
 import { getKqPlayerBuddieRotation, startKqPlayerRun } from "./kanab-quest-backend";
-import { KQ_BUDDIES } from "../kanab-quest-game";
+import { buildKqScenarioPath, KQ_BUDDIES, resolveKqStage, rollKqDice } from "../kanab-quest-game";
+import { encodeKqSave, parseKqGameSave } from "../kanab-quest-persistence";
 
 const ownerId = "11000000-0000-4000-8000-000000000001";
 const code = KQ_BUDDIES[0].code;
@@ -14,10 +15,11 @@ function database(options: {
   missing?: boolean;
   rotationError?: { message: string };
   startError?: { message: string; details?: string };
+  domiciliation?: { mode: string; active: boolean; retired?: unknown };
 } = {}) {
   const reads: Array<[string, ...unknown[]]> = [];
   const rpc = vi.fn().mockImplementation((name: string, args?: { p_initial_state?: unknown }) => Promise.resolve(name === "rpc_kq_reserved_cards" ? { data: [], error: null } : name === "rpc_kq_commerce_state"
-    ? { error: null, data: { business: { version: 1, domiciliation: { mode: "home", active: true } } } }
+    ? { error: null, data: { business: { version: 1, domiciliation: options.domiciliation ?? { mode: "home", active: true } } } }
     : { error: options.startError ?? null, data: { run: { id: "run-new", state: args?.p_initial_state }, burnReceipt: null } }));
   mocks.equipment.mockResolvedValue({
     strength: "green-thumb", equippedCodes: [], levels: {},
@@ -82,6 +84,39 @@ describe("persisted Buddie rotation", () => {
       runId: "run-new", buddieRotation: { requiredDistinctBuddies: 2, recentBuddieCodes: [code, "F"] },
     });
     expect(rpc).toHaveBeenCalledWith("rpc_kq_start_run_with_heritage", expect.objectContaining({ p_user_id: ownerId, p_buddie_code: code }));
+  });
+
+  it.each([
+    [{ mode: "home", active: false, retired: true }, "external"],
+    [{ mode: "external", active: false, retired: true }, "external"],
+    [{ mode: "home", active: false }, "home"],
+    [{ mode: "external", active: true }, "external"],
+    [{ mode: "external", active: false }, "home"],
+    [{ mode: "home", active: false, retired: "true" }, "home"],
+  ] as const)("uses only the server's confirmed address-retirement capability (%j)", async (domiciliation, expected) => {
+    const { rpc } = database({ domiciliation });
+    await startKqPlayerRun(ownerId, startInput);
+    expect(rpc).toHaveBeenCalledWith("rpc_kq_start_run_with_heritage", expect.objectContaining({
+      p_initial_state: expect.objectContaining({ domiciliation: expected }),
+    }));
+  });
+
+  it("keeps retired-account runs in the legacy-readable normal-risk format through the next turn", async () => {
+    database({ domiciliation: { mode: "home", active: false, retired: true } });
+    const { state } = await startKqPlayerRun(ownerId, startInput);
+    expect(state.domiciliation).toBe("external");
+    expect(state.situationCodes).toEqual(buildKqScenarioPath(state.seed, [], [], [], "retired"));
+    const restored = parseKqGameSave(encodeKqSave(state))!;
+    expect(restored).toEqual(state);
+    const next = resolveKqStage(rollKqDice(restored));
+    expect(next.domiciliation).toBe("external");
+    expect(next.situationCodes).toEqual(state.situationCodes);
+    expect(parseKqGameSave(encodeKqSave(next))).toEqual(next);
+  });
+
+  it("requires a refreshed snapshot when retirement changes before the start transaction", async () => {
+    database({ startError: { message: "kq_domiciliation_changed" } });
+    await expect(startKqPlayerRun(ownerId, startInput)).rejects.toThrow("Les règles de cette culture ont changé. Actualise avant de la lancer.");
   });
 
   it("translates an atomic rejection when another tab has used the card since the read", async () => {

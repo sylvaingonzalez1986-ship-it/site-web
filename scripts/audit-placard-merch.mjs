@@ -52,7 +52,7 @@ window.testRejected=body=>{const before=structuredClone(state);try{applyKqOperat
 const api=createKqTutorialApi(async()=>{throw new Error('This isolated component never requests a live API')});
 function App(){
  const[,refresh]=useState(0),[scenario,setScenario]=useState('ready'),[pending,setPending]=useState(null),[busy,setBusy]=useState(false),[error,setError]=useState('');const committing=useRef(false);
- useEffect(()=>{if(!${preview})return;let second;const first=requestAnimationFrame(()=>{[...document.querySelectorAll('[aria-label="Gérer ma boutique"] button')].find(node=>node.textContent.trim()==='Améliorations')?.click();second=requestAnimationFrame(()=>{[...document.querySelectorAll('button')].find(node=>node.textContent.trim()==='Merch & collections')?.click()})});return()=>{cancelAnimationFrame(first);if(second)cancelAnimationFrame(second)}},[scenario]);
+ useEffect(()=>{if(!${preview})return;const first=requestAnimationFrame(()=>document.querySelector('[data-shop-view="merch"]')?.click());return()=>cancelAnimationFrame(first)},[scenario]);
  window.setScenario=name=>{if(committing.current)throw new Error('Wait for the local command');makeScenario(name);window.requests=[];window.pending=null;setPending(null);setError('');setBusy(false);setScenario(name);refresh(value=>value+1)};
  window.localCommand=(name,payload)=>{if(committing.current)throw new Error('Wait for the local command');const result=command(name,payload);refresh(value=>value+1);return result};
  const ask=(title,description,body,cost)=>{if(busy)return;const next={title,description,body,cost:cost??0};window.pending=structuredClone(next);setError('');setPending(next)};
@@ -89,7 +89,7 @@ if(preview){
  await page.setRequestInterception(true);page.on('request',request=>{const url=request.url();if((url.startsWith(origin+'/')&&!url.includes('/api/'))||url.startsWith('data:'))void request.continue();else{forbidden.push(url);void request.abort()}});
  await page.setViewport({width:1440,height:1000});await page.goto(origin,{waitUntil:'networkidle0',timeout:60000});await page.evaluate(()=>document.fonts.ready);
  const click=async(text,scope='body')=>{const handle=await page.waitForFunction((text,scope)=>[...document.querySelectorAll(scope+' button')].find(node=>node.textContent.trim()===text&&!node.disabled&&node.getBoundingClientRect().height>0),{},text,scope);await handle.asElement().click();await handle.dispose()};
- const show=async()=>{await click('Améliorations','[aria-label="Gérer ma boutique"]');await click('Merch & collections');await page.waitForSelector(workshop,{visible:true})};
+ const show=async()=>{await page.click('[data-shop-view="merch"]');await page.waitForSelector(workshop,{visible:true})};
  const reset=async name=>{await page.evaluate(name=>window.setScenario(name),name);await page.waitForFunction(name=>document.querySelector('[data-fixture-scenario]').value===name,{},name);await show()};
  const snapshot=()=>page.evaluate(()=>window.fixture());
  const choose=async code=>{await page.click('[data-merch-product="'+code+'"]');await page.waitForFunction(code=>document.querySelector('[data-merch-product="'+code+'"]')?.getAttribute('aria-pressed')==='true',{},code)};

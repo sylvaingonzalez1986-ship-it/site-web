@@ -14,12 +14,12 @@ import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
 
 type Snapshot={chanvrierProfile?:ChanvrierProfile|null;equipmentScopeVersion?:2|3;career?:ChanvrierCareerSnapshot;storageCapacity?:{freeUnits:number;totalUnits:number}|null;expansionEnergyCents?:number;tentNumber?:number;tents?:KqTentOverview[];buildings?:KqBuildingEquipmentOverview[];sharedEquipment?:KqSharedEquipmentOverview;ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;productionUnits?:number;production?:KqProductionSnapshot;maintenance?:Record<string,KqMachineCondition>;cultureWear?:Record<string,KqCultureEquipmentCondition>;activeRun?:boolean};
 const EMPTY:Snapshot={ownedCodes:[],purchasedCodes:[],equippedCodes:[],levels:{},cashCents:0};
-type WarehouseEntryProps = {draftOwnerId?:string;embedded?:boolean;workshopOnly?:boolean;initialZoneId?:string|null;initialShopOpen?:boolean;initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage";onClose:()=>void;onOpenShop?:(code?:string)=>void;onBusyChange?:(busy:boolean)=>void};
+type WarehouseEntryProps = {draftOwnerId?:string;embedded?:boolean;workshopOnly?:boolean;initialZoneId?:string|null;initialFlowerId?:string;initialShopOpen?:boolean;initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage";onClose:()=>void;onOpenShop?:(code?:string)=>void;onOpenCulture?:(href:string)=>void;onBusyChange?:(busy:boolean)=>void};
 
 /** Existing teaching sessions keep their isolated equipment fixture and never migrate an account. */
 export function KqWarehouseEntry(props: WarehouseEntryProps) {
   const api = useKqTutorialApi();
-  return (api.isTutorial && !api.nativeWarehouse) || props.workshopOnly ? <LegacyKqWarehouseEntry {...props} /> : <KqWarehouse key={props.draftOwnerId ?? "local"} {...props} draftStore={api.warehouseDraftStore} onOpenCulture={api.onOpenCulture} />;
+  return (api.isTutorial && !api.nativeWarehouse) || props.workshopOnly ? <LegacyKqWarehouseEntry {...props} /> : <KqWarehouse key={props.draftOwnerId ?? "local"} {...props} draftStore={api.warehouseDraftStore} onOpenCulture={props.onOpenCulture ?? api.onOpenCulture} />;
 }
 
 function LegacyKqWarehouseEntry({embedded=false,workshopOnly=false,initialEquipmentCode,initialSection="equipment",onClose,onOpenShop=()=>{},onBusyChange}:WarehouseEntryProps){

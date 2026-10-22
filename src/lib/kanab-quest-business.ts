@@ -10,8 +10,8 @@ export const KQ_SHOP_CREATION_CENTS = 100_000;
 export const KQ_SHOP_MONTHLY_CENTS = 10_000;
 /** One analysis for the session's shared harvest, regardless of tent count. */
 export const KQ_LAB_ANALYSIS_CENTS = 4_500;
-export const KQ_DOMICILIATION_MONTHLY_CENTS = 5_000;
-export type KqDomiciliation = "home" | "external";
+/** Historical culture modes stay readable; new cultures use the normal theft risk. */
+export type KqDomiciliation = "home" | "external" | "retired";
 export const KQ_VAT_PERCENT = 20;
 export const KQ_ADVERTISING = {
   flyers: { name: "Prospectus chez les commerçants", costCents: 6_000, durationDays: 10, boostPercent: 20 },
@@ -43,7 +43,9 @@ export type KqBusinessState = {
   version: 1;
   serverNow: string;
   startedAt: string;
-  domiciliation: { mode: KqDomiciliation; paidUntil: string | null; renew: boolean; active: boolean };
+  domiciliation: { mode: Exclude<KqDomiciliation, "retired">; paidUntil: string | null; renew: boolean; active: boolean;
+    /** Only the migrated authority or an isolated local simulation may assert retirement. */
+    retired?: boolean };
   shop: { name: string | null; createdAt: string | null; paidUntil: string | null; renew: boolean; active: boolean;
     tier?: KqOnlineSiteTier; monthlyCents?: number };
   advertising: null | { id: string; kind: KqAdvertisingKind; startedAt: string; endsAt: string; boostPercent: number };
@@ -124,7 +126,7 @@ export function createKqBusinessPreview(nowMs: number): KqBusinessState {
   const now = new Date(nowMs).toISOString();
   return {
     version: 1, serverNow: now, startedAt: now,
-    domiciliation: { mode: "home", paidUntil: null, renew: false, active: false },
+    domiciliation: { mode: "home", paidUntil: null, renew: false, active: false, retired: true },
     shop: { name: null, createdAt: null, paidUntil: null, renew: false, active: false },
     advertising: null,
     vat: { ratePercent: KQ_VAT_PERCENT, reservedCents: 0, paidCents: 0, salesTtcCents: 0,

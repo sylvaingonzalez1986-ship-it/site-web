@@ -6,7 +6,7 @@
 .tycoon button:disabled { cursor: not-allowed; opacity: .55; }
 .tycoon a { text-decoration: none; }
 .cockpit { overflow: hidden; border: 2px solid var(--ink); border-radius: 14px; box-shadow: 4px 4px 0 var(--ink); }
-.scene { position: relative; isolation: isolate; min-height: 330px; overflow: hidden; background: #193f34; color: var(--cream); }
+.scene { position: relative; display:flex; flex-direction:column; justify-content:space-between; isolation: isolate; min-height: 330px; overflow: hidden; background: #193f34; color: var(--cream); }
 .scene .sceneArt { z-index: -2; object-fit: cover; object-position: right 53%; }
 .scene::after { position: absolute; inset: 0; z-index: -1; content: ""; background: linear-gradient(90deg, #163b30 0%, #163b30f5 25%, #163b30bd 46%, #163b3010 72%); }
 .sceneCopy { position: relative; padding: 26px 28px 78px; max-width: 63%; }
@@ -17,7 +17,7 @@
 .scene h3 em { color: var(--gold); font-style: normal; }
 .tycoon .scene p { max-width: 320px; margin: 12px 0 18px; color: #e4efdf; font-size: .76rem; line-height: 1.65; }
 .tycoon .goldButton { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 16px; border: 2px solid var(--ink); border-radius: 8px; box-shadow: 3px 3px 0 var(--ink); color: var(--ink); background: var(--gold); font-size: .76rem; font-weight: 800; line-height: 1.4; }
-.equipment { position: absolute; inset: auto 18px 14px; display: flex; gap: 7px; flex-wrap: wrap; }
+.equipment { position: relative; display: flex; gap: 7px; flex-wrap: wrap; margin:0 18px 14px; }
 .tycoon .equipment button { display: flex; align-items: center; gap: 7px; min-height: 44px; padding: 7px 10px; border: 1px solid #fff8e750; border-radius: 5px; background: #193f34ec; color: var(--cream); font-size: .65rem; }
 .equipment button > span { opacity: .75; }
 .equipment button[data-owned="true"] { color: #d1f4ca; border-color: #bfe9db70; }
@@ -29,7 +29,7 @@
 .flow { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 26px; list-style: none; margin: 18px 0; padding: 0; }
 .flow li { display: flex; align-items: center; gap: 13px; position: relative; min-width: 0; }
 .flow li > svg { color: #36785b; flex-shrink: 0; }
-.flow li + li::before { content: "→"; position: absolute; left: -23px; color: #69947b; font-size: 1.2rem; }
+.flow li + li::before { content: ""; position: absolute; left: -13px; height:36px; border-left:1px solid #17292325; }
 .flow li > div { display: grid; min-width: 0; gap: 4px; }
 .flow strong { font: 900 clamp(1.5rem,2.6vw,2.25rem)/1 var(--font-display),Impact,sans-serif; overflow-wrap: anywhere; }
 .flow span { font-size: .65rem; }
@@ -49,7 +49,8 @@
 .priceTag { display: inline-flex; justify-content: center; align-items: center; gap: 8px; padding: 5px 7px; margin-top: auto; border: 1px solid var(--ink); border-radius: 4px; background: var(--gold); font-size: .76rem; font-weight: 800; }
 .shelfFooter { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 16px; }
 .tycoon .textButton { display: inline-flex; justify-content: center; align-items: center; gap: 7px; min-height: 44px; color: var(--ink); font-size: .69rem; font-weight: 800; }
-.manager { display: grid; grid-template-rows: 1fr auto; gap: 12px; min-width: 0; }
+.manager { display: grid; align-content:start; gap: 12px; min-width: 0; }
+.rayons { display:grid; align-content:start; gap:16px; min-width:0; }
 .priority { background: #efc451; border: 2px solid var(--ink); border-radius: 12px; padding: 17px; }
 .tycoon .priority h3 { display: block; margin: 9px 0 6px; font: 900 1.5rem/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
 .tycoon .priority p { font-size: .7rem; line-height: 1.55; margin: 8px 0 12px; }
@@ -170,3 +171,6 @@
 .forecastTotal > strong { font: 900 2rem/1 var(--font-display),Impact,sans-serif; overflow-wrap: anywhere; }
 .forecastTotal > small { font-size: .65rem; line-height: 1.5; }
 @media (max-width: 600px) { .stockForecast { grid-template-columns: minmax(0,1fr); gap: 18px; } }
+.scene .sceneCopy { padding-bottom:20px; }
+.scene .equipment { inset:auto; }
+.scene .equipment button > span { display:inline; }

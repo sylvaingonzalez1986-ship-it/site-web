@@ -49,14 +49,14 @@ if(scenario.startsWith('panel-')){
  let bootstrapMode=scenario==='stock-loading'?'pending':scenario==='stock-error'?'error':'known';
  const request=async(input,init)=>{const url=new URL(String(input),location.origin),path=url.pathname,method=init?.method||'GET';window.__calls.push({path,method,signal:init?.signal});
   if(path.endsWith('/equipment')){if(equipmentMode==='pending'){const id=window.__calls.length;window.__pending.push(id);return await new Promise(resolve=>pending.set(id,resolve));}if(equipmentMode==='error')return Response.json({error:'indisponible'},{status:503});if(equipmentMode==='invalid')return Response.json({strength:'not-a-strength'});if(equipmentMode==='green')return Response.json({strength:'green-thumb'});}
-  if(path.endsWith('/bootstrap')){if(bootstrapMode==='pending'){window.__bootstrapPending=true;return await new Promise(resolve=>pending.set('bootstrap',resolve));}if(bootstrapMode==='error')return Response.json({error:'Stock indisponible'},{status:503});if(bootstrapMode==='collection-error'){const payload=await(await transport(input,init)).json();return Response.json({...payload,collection:null});}}
+  if(path.endsWith('/bootstrap')){if(bootstrapMode==='pending'){window.__bootstrapPending=true;return await new Promise(resolve=>pending.set('bootstrap',resolve));}if(bootstrapMode==='error')return Response.json({error:'Stock indisponible'},{status:503});if(bootstrapMode==='collection-error'){const payload=await(await transport(input,init)).json();return Response.json({...payload,collection:null});}if(scenario==='heritage-unavailable'){const payload=await(await transport(input,init)).json();return Response.json({...payload,heritage:null});}}
   if(path.includes('/contracts'))return Response.json({error:'Not in fixture'},{status:404});
   return transport(input,init);
  };
  const api=createKqTutorialApi(request);api.isTutorial=false;
  window.__control={equipment:mode=>{equipmentMode=mode;api.notify('kq:equipment-updated');},resolve:(id,strength)=>{pending.get(id)?.(Response.json({strength}));pending.delete(id);},bootstrap:async()=>{bootstrapMode='known';pending.get('bootstrap')?.(await transport('/api/arena/placard/bootstrap'));window.__bootstrapPending=false;},stock:mode=>{bootstrapMode=mode;api.notify('kq:collection-updated');},refresh:()=>api.notify('kq:collection-updated')};
  const participants=getKqCampaignParticipants(production.warehouse,production.revision);
- window.__fixture={deck:production.deckCodes,participants:participants.map(member=>member.buddieCode),expectedXp:getKqPreparationStartingXp({source:'official',buddieCodes:participants.map(member=>member.buddieCode),heritageCard:KQ_HERITAGE_CARDS.find(card=>card.code===production.heritageCode),chanvrierStrength:null}),stock:production.supportInventory};window.__production=production;
+ window.__fixture={deck:production.deckCodes,heritageCode:production.heritageCode,participants:participants.map(member=>member.buddieCode),expectedXp:getKqPreparationStartingXp({source:'official',buddieCodes:participants.map(member=>member.buddieCode),heritageCard:KQ_HERITAGE_CARDS.find(card=>card.code===production.heritageCode),chanvrierStrength:null}),expectedXpWithoutHeritage:getKqPreparationStartingXp({source:'official',buddieCodes:participants.map(member=>member.buddieCode),heritageCard:null,chanvrierStrength:null}),stock:production.supportInventory};window.__production=production;
  createRoot(document.getElementById('root')).render(<div className={retro.surface}><KqTutorialApiProvider api={api}><KanabQuestDicePrototype apiScope="player" initialCampaign showAdminOperations={false} showWarehouseNavigation={false} initialPreparation={{deckCodes:production.deckCodes,heritageCode:production.heritageCode}} isolatedStorage={storage}/></KqTutorialApiProvider></div>);
 }
 `;
@@ -140,7 +140,18 @@ try {
   await page.evaluate(() => window.__control.equipment('known')); await waitXp(base);
   results.push({ scenario: 'initial unknown, equipment refresh, invalidation, error and stale responses', raceProtected: true });
 
-  for (const scenario of ['equipment-invalid', 'unknown-heritage', 'absent-heritage']) { await load(scenario); await waitXp(null); assert((await text('[data-deck-cost-summary]')).includes('bonus confirmés')); results.push({ scenario, unknownPreserved: true }); }
+  await load('equipment-invalid'); await waitXp(null); assert((await text('[data-deck-cost-summary]')).includes('bonus confirmés')); results.push({ scenario: 'equipment-invalid', unknownPreserved: true });
+  for (const scenario of ['unknown-heritage', 'absent-heritage']) {
+    await load(scenario); await waitXp(await page.evaluate(() => window.__fixture.expectedXpWithoutHeritage));
+    assert.equal(await page.$eval('[data-preparation-heritage]', element => element.dataset.preparationHeritage), '', 'Confirmed absence removes the stale heritage without selecting a replacement');
+    assert((await text('[data-preparation-adjusted]')).includes('Héritage indisponible'), 'The preparation explains the removal');
+    await shot(scenario); results.push({ scenario, confirmedAbsenceExplained: true, xpWithoutUnavailableBonus: true });
+  }
+  await load('heritage-unavailable'); await waitXp(null);
+  assert.equal(await page.$eval('[data-preparation-heritage]', element => element.dataset.preparationHeritage), await page.evaluate(() => window.__fixture.heritageCode), 'Unknown catalogue retains the chosen heritage');
+  assert.equal(await page.$('[data-preparation-adjusted]'), null, 'Unknown catalogue does not invent a removal');
+  assert((await text('[data-deck-cost-summary]')).includes('bonus confirmés')); await shot('heritage-unavailable');
+  results.push({ scenario: 'heritage-unavailable', choicePreserved: true, unknownXpPreserved: true });
   await load('campaign'); assert.equal(await page.evaluate(() => window.__fixture.participants.length), 2); await waitXp(await page.evaluate(() => window.__fixture.expectedXp)); results.push({ scenario: 'campaign XP uses the strongest participant' });
   await load(); await page.evaluate(() => window.__control.stock('pending')); await page.waitForFunction(() => document.querySelector('[data-deck-opening-hand]').textContent.startsWith('À vérifier')); assert((await text('[data-deck-stock-status]')).includes('Vérification')); assert.equal(await page.$eval('[data-recommended-deck]', element => element.disabled), true); assert((await text('[data-deck-copies]')).startsWith('10')); await page.evaluate(() => window.__control.bootstrap()); await page.waitForFunction(() => document.querySelector('[data-deck-opening-hand]').textContent.startsWith('10')); results.push({ scenario: 'real stock loading resolves without inventing zero or erasing selection' });
   await page.evaluate(() => window.__control.stock('collection-error')); await page.waitForFunction(() => document.querySelector('[data-deck-stock-status]')?.textContent.includes('indisponible')); assert((await text('[data-deck-opening-hand]')).startsWith('À vérifier')); assert((await text('[data-deck-copies]')).startsWith('10')); assert.equal(await page.$eval('[data-recommended-deck]', element => element.disabled), true); results.push({ scenario: 'collection-only failure preserves chosen copies and shows unknown stock' });

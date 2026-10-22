@@ -142,3 +142,4 @@
 .store :where(button,summary,a){touch-action:manipulation;min-height: 44px}
 .store :where(button,summary,a,input,select):focus-visible{outline:3px solid #172923;outline-offset:4px}
 .store :where(button,input,select){max-width:100%}
+.dashboard [hidden] { display:none !important; }

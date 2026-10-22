@@ -29,6 +29,11 @@
 .columns { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(250px, 1fr); gap: 20px; align-items: start; }
 .mainColumn, .sideColumn { display: grid; min-width: 0; gap: 20px; }
 .panel { min-width: 0; padding: 20px; border: 1px solid #17292355; border-radius: 14px; background: #fffaf0; }
+.rhythmTitle { margin:0; font:850 1.35rem/1.2 var(--font-display),Impact,sans-serif; }
+.rhythm { display:grid; gap:10px; margin:14px 0; }
+.rhythm > div { display:flex; align-items:center; justify-content:space-between; gap:12px; font-size:.75rem; }
+.rhythm dd { margin:0; font-weight:800; font-size:1.2rem; }
+.rhythm + small { display:block; color:#536154; font-size:.65rem; }
 .sectionHeading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
 .sectionHeading h2 { margin: 4px 0 0; font: 850 1.45rem/1.12 var(--font-display), Impact, sans-serif; }
 .sectionHeading .eyebrow { color: #536154; font-size: .57rem; }

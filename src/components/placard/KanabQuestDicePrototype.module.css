@@ -138,18 +138,16 @@
 [data-verdict-result][data-victory] .burnConfirm>svg{color:#c58a00;filter:drop-shadow(0 3px 0 #f4c43d);animation:verdictTrophyIn .7s .25s cubic-bezier(.18,.9,.28,1.35) both}
 .verdictScore{display:block;margin:.3rem auto .7rem;color:var(--kq-green);font-family:var(--font-display),sans-serif;font-size:clamp(2.8rem,8vw,4.5rem);line-height:1}
 .burnConfirm>.officialResultRewards{display:grid;grid-template-columns:1fr 1fr;margin:.8rem 0;text-align:left}.officialResultRewards p{display:flex;flex-direction:column;margin:0;padding:.65rem;border:2px solid var(--kq-ink);background:#fff;font-size:.7rem}.officialResultRewards p[data-highlight]{grid-column:1/-1;background:var(--kq-yellow)}.officialResultRewards b{color:var(--kq-green);font-size:.58rem;text-transform:uppercase}
-.verdictMarketTarget{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:.55rem;margin:.8rem 0;padding:.7rem;border:2px solid var(--kq-ink);border-radius:12px;background:#fff1d6;box-shadow:3px 3px 0 var(--kq-ink);text-align:left}
+.verdictMarketTarget{display:grid;grid-template-columns:auto minmax(0,1fr);align-items:center;gap:10px;margin:0;padding:12px;border:1px solid var(--kq-ink,#172923);border-radius:10px;background:#fff1d6;text-align:left}
 .verdictMarketTarget[data-qualified]{background:#d7efe2}
 .verdictMarketTarget>svg{width:30px;color:#9b4a17}
 .verdictMarketTarget[data-qualified]>svg{color:#172923}
 .verdictMarketTarget>span{display:grid;min-width:0}
-.verdictMarketTarget small{color:#79500d;font-size:.52rem;font-weight:950;letter-spacing:.07em;text-transform:uppercase}
+.verdictMarketTarget small{color:#536058;font-size:11px;font-weight:700}
 .verdictMarketTarget[data-qualified] small{color:#172923}
-.verdictMarketTarget strong{font-family:var(--font-display),sans-serif;font-size:1.35rem;line-height:1}
-.verdictMarketTarget b{margin-top:.16rem;font-size:.65rem}
-.verdictMarketTarget em{margin-top:.16rem;color:#57534d;font-size:.57rem;font-style:normal;line-height:1.3}
-.verdictMarketTarget>button{display:flex;align-items:center;justify-content:center;gap:.4rem;grid-column:1/-1;width:100%;min-height:44px;padding:.6rem;border:2px solid #172923;border-radius:10px;background:var(--kq-green);color:#172923;text-transform:none;cursor:pointer}
-.verdictMarketTarget>button svg{width:17px}
+.verdictMarketTarget strong{font-family:var(--font-display),sans-serif;font-size:30px;line-height:1.15}
+.verdictMarketTarget b{margin-top:4px;font-size:12px;line-height:1.4}
+.verdictMarketTarget em{margin-top:5px;color:#536058;font-size:11px;font-style:normal;line-height:1.5}
 .burnConfirm>.resultRankSummary{display:grid;grid-template-columns:repeat(3,1fr);margin:.8rem 0}.resultRankSummary span{display:flex;flex-direction:column;padding:.55rem;border:2px solid var(--kq-ink);background:#fff8e7}.resultRankSummary strong{font-size:1.1rem}.resultRankSummary small{font-size:.5rem;font-weight:900;text-transform:uppercase}
 @keyframes verdictBackdropIn{from{opacity:0}to{opacity:1}}@keyframes verdictPopupIn{from{opacity:0;transform:translateY(45px) scale(.82) rotate(-2deg)}65%{transform:translateY(-7px) scale(1.025) rotate(.5deg)}to{opacity:1;transform:none}}@keyframes verdictTrophyIn{from{opacity:0;transform:scale(.2) rotate(-25deg)}to{opacity:1;transform:none}}
 @media(max-width:560px){.burnConfirm>.officialResultRewards,.burnConfirm>.resultRankSummary{grid-template-columns:1fr}.officialResultRewards p[data-highlight]{grid-column:1}}
@@ -958,6 +956,7 @@
 
 /* Preparing a culture starts with three choices, not three open catalogues. */
 .page[data-player-mode] .setupChoices { display: grid; gap: .7rem; margin: 1rem 0; }
+.preparationNotice { margin: 0; color: #172923; font: 600 13px/1.5 var(--font-body),sans-serif; }
 .setupChoice { min-width: 0; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; color: #172923; overflow: hidden; box-shadow:2px 3px 0 #172923; }
 .setupChoice > summary { display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; align-items: center; gap: .8rem; padding: 1rem; cursor: pointer; list-style: none; }
 .setupChoice > summary::-webkit-details-marker { display: none; }

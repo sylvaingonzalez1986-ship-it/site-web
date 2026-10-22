@@ -40,11 +40,11 @@ function RewardArtwork({ reward, large = false }: { reward: KqMissionReward; lar
   return artwork ? <Image src={artwork} alt="" width={large ? 64 : 52} height={reward.kind === "card" ? (large ? 96 : 78) : (large ? 64 : 52)} /> : <span className={styles.rewardIcon}><Sparkles size={28} aria-hidden="true" /></span>;
 }
 
-export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestination) => void }) {
+export function KqMissionCenter({ onOpen, initialTrack = "all", focusInitialTrack = false }: { onOpen: (view: KqMissionDestination) => void; initialTrack?: KqMissionTrack | "all"; focusInitialTrack?: boolean }) {
   const api = useKqTutorialApi();
   const sound = useKqGameSound();
   const [section, setSection] = useState<"community" | "challenges" | "contracts">("challenges");
-  const [selectedTrack, setSelectedTrack] = useState<KqMissionTrack | "all">("all");
+  const [selectedTrack, setSelectedTrack] = useState<KqMissionTrack | "all">(initialTrack);
   const [data, setData] = useState<KqMissionSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<string | null>(null);
@@ -61,6 +61,8 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
   const mounted = useRef(false);
   const receiptHeading = useRef<HTMLHeadingElement>(null);
   const allTracksButton = useRef<HTMLButtonElement>(null);
+  const entryHeading = useRef<HTMLHeadingElement>(null);
+  const entryFocused = useRef(false);
   const requestVersion = useRef(0);
   const invalidateRequests = useCallback(() => { requestVersion.current++; }, []);
 
@@ -95,6 +97,13 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
     if (reward) receiptHeading.current?.focus();
   }, [reward]);
 
+  useEffect(() => {
+    if (!focusInitialTrack || entryFocused.current || loading || !data || !entryHeading.current) return;
+    entryFocused.current = true;
+    entryHeading.current.focus({ preventScroll: true });
+    entryHeading.current.scrollIntoView({ block: "start", behavior: "instant" });
+  }, [data, focusInitialTrack, loading]);
+
   async function claim(mission: KqMission) {
     if (claiming.current || openingLock.current) return;
     claiming.current = true; setBusy(mission.code); setError(""); setReward(null);
@@ -104,16 +113,18 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
         signal: AbortSignal.timeout(15_000),
       });
       const payload = await response.json();
-      if (!mounted.current) return;
       if (!response.ok) throw new Error(payload.error || "Impossible de récupérer cette récompense.");
       const receivedReward = missionReward(payload);
-      setReward({ ...payload, reward: receivedReward, code: mission.code });
-      if (payload.replayed === false) sound.playOnce("reward", `mission:${mission.code}`);
       if (receivedReward.kind === "cash") {
         api.notify("kq:equipment-updated");
         api.notify("kq:treasury-updated");
       } else if (receivedReward.kind === "card") api.notify("kq:collection-updated");
       else api.notify("kq:boosters-updated");
+      // A successful claim still refreshes the parent collection if its dialog
+      // was closed while the server confirmed the reward.
+      if (!mounted.current) return;
+      setReward({ ...payload, reward: receivedReward, code: mission.code });
+      if (payload.replayed === false) sound.playOnce("reward", `mission:${mission.code}`);
       await refresh();
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : "Connexion interrompue. Tu peux réessayer sans perdre ta récompense.");
@@ -129,14 +140,14 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
       setPackCards(cards);
       setOpenedEntitlements(current => [...current, pack.entitlementId]);
       setData(current => current ? { ...current, missions: current.missions.map(mission => mission.entitlementId === pack.entitlementId ? { ...mission, packAvailable: false } : mission) } : current);
-      api.notify("kq:collection-updated");
-      api.notify("kq:boosters-updated");
     } catch (failure) {
       setPackError(failure instanceof Error && failure.name !== "TimeoutError" ? failure.message : "Connexion interrompue. Actualise tes missions avant de réessayer.");
     } finally {
       // Reconcile after an ambiguous response too: the server may have opened
       // the pack even if its response did not reach this browser.
       await refresh();
+      api.notify("kq:collection-updated");
+      api.notify("kq:boosters-updated");
       openingLock.current = false; setOpening(false);
     }
   }
@@ -238,13 +249,13 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
           const copy = current ? KQ_MISSION_COPY[current.code] : null;
           const currentReward = current ? missionReward(current) : null;
           const rewardUnavailable = current ? isRewardUnavailable(current, data.collectionActive) : false;
-          return <section key={track} className={styles.track} aria-label={info.title} data-ready={current?.claimable || undefined}>
+          return <section key={track} className={styles.track} aria-label={info.title} data-mission-track={track} data-ready={current?.claimable || undefined}>
             <div className={styles.art}><Image src={info.image} alt="" fill sizes="(max-width: 760px) 100vw, 360px" /><span><info.icon size={18} aria-hidden="true" />{info.title}</span></div>
             <div className={styles.body}>
               <div className={styles.trackProgress} aria-label={`${missions.filter(mission => mission.claimed).length} étapes accomplies sur ${missions.length}`} role="img">{missions.map(mission => <span key={mission.code} data-complete={mission.claimed || undefined} data-current={mission.code === current?.code || undefined} />)}</div>
               {current && copy && currentReward ? <>
                 <div className={styles.stepHeading}><span className={styles.eyebrow}>Étape {current.step} / {missions.length}</span><span className={styles.difficulty} data-level={copy.difficulty}>{KQ_MISSION_DIFFICULTIES[copy.difficulty]}</span></div>
-                <h2>{copy.title}</h2><p className={styles.description}>{copy.description}</p>
+                <h2 ref={track === initialTrack ? entryHeading : undefined} tabIndex={-1}>{copy.title}</h2><p className={styles.description}>{copy.description}</p>
                 {current.claimable ? <span className={styles.reached}><Check size={16} aria-hidden="true" />Objectif atteint !</span> : null}
                 <div className={styles.missionMeter}><KqProgressMeter label={copy.progressLabel} value={current.progress} max={current.target}
                   valueLabel={`${current.progress.toLocaleString("fr-FR")} / ${current.target.toLocaleString("fr-FR")}`}
@@ -253,7 +264,7 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
                 {current.claimable ? <button type="button" className={styles.claim} disabled={rewardUnavailable || busy !== null || loading || opening} onClick={() => void claim(current)}><Gift size={18} aria-hidden="true" />{busy === current.code ? "Récupération…" : currentReward.kind === "pack" ? "Récupérer mon pack" : currentReward.kind === "card" ? "Récupérer ma carte" : "Récupérer ma récompense"}</button>
                   : <button type="button" className={styles.action} disabled={busy !== null || opening} onClick={() => onOpen(copy.destination)}>{copy.action}<ArrowRight size={18} aria-hidden="true" /></button>}
                 {current.claimable && rewardUnavailable ? <p className={styles.unavailable}>Récompense temporairement indisponible. Ton objectif reste enregistré.</p> : null}
-              </> : <div className={styles.complete}><Trophy size={38} aria-hidden="true" /><h2>Parcours terminé !</h2><p>Tu as remporté toutes les récompenses de ce parcours.</p></div>}
+              </> : <div className={styles.complete}><Trophy size={38} aria-hidden="true" /><h2 ref={track === initialTrack ? entryHeading : undefined} tabIndex={-1}>Parcours terminé !</h2><p>Tu as remporté toutes les récompenses de ce parcours.</p></div>}
               <details className={styles.journey}><summary>Voir les {missions.length} étapes et récompenses</summary><ol>{missions.map(mission => {
                 const missionCopy = KQ_MISSION_COPY[mission.code];
                 return <li key={mission.code} aria-current={mission.code === current?.code ? "step" : undefined} data-complete={mission.claimed || undefined}>
@@ -271,6 +282,11 @@ export function KqMissionCenter({ onOpen }: { onOpen: (view: KqMissionDestinatio
       </footer>
     </> : null}
     </>}
-    {activePack ? <KqSupportPackOpening cards={packCards} cardCount={activePack.cardCount} busy={opening} error={packIsOpened(activePack.entitlementId) && !packCards.length ? "Ce pack a déjà été ouvert. Ses cartes sont dans ta collection." : packError} canRetry={!opening && !packIsOpened(activePack.entitlementId)} onRetry={() => void openPack(activePack)} onClose={() => { if (!openingLock.current || packCards.length) setActivePack(null); }} onContinue={() => returnFromPack(activePack)} continueLabel={api.isTutorial ? "Retour aux missions" : "Voir mon prochain objectif"} /> : null}
+    {activePack ? <KqSupportPackOpening cards={packCards} cardCount={activePack.cardCount} busy={opening || loading && !packCards.length}
+      busyLabel={opening ? "Ouverture de ton pack…" : "Vérification du statut de ce pack…"}
+      error={packIsOpened(activePack.entitlementId) && !packCards.length ? "Ce pack a déjà été ouvert. Ses cartes sont dans ta collection." : packError}
+      canRetry={!opening && !loading && !packIsOpened(activePack.entitlementId)}
+      onRetry={() => { if (error) void refresh(); else void openPack(activePack); }} retryLabel={error ? "Actualiser le statut" : "Réessayer l’ouverture"}
+      onClose={() => { if (!openingLock.current || packCards.length) setActivePack(null); }} onContinue={() => returnFromPack(activePack)} continueLabel={api.isTutorial ? "Retour aux missions" : "Voir mon prochain objectif"} /> : null}
   </main>;
 }

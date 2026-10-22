@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
-import { ChevronDown, Gift, Sparkles, Star, Swords, Trophy } from "lucide-react";
+import { ArrowRight, ChevronDown, Gift, ShoppingBag, Sparkles, Star, Swords, Trophy } from "lucide-react";
 import type { ReactNode } from "react";
 import { AppDialog } from "@/components/ui/AppDialog";
 import type { KqOfficialBattle } from "@/lib/kanab-quest-api";
@@ -28,11 +28,13 @@ type Props = {
   onPrepare?: () => void;
   prepareHref?: string;
   prepareLabel?: string;
+  continuation?: ReactNode;
+  onOpenLot?: () => void;
   children: ReactNode;
   onClose: () => void;
 };
 
-export function KqBattleVerdictDialog({ battleId, kind, winner, subtitle, rounds, experience, challengePoints, challenges, cardCount, rewardCard, rank, trainingProgress, receipt, playerStats, opponentStats, onPrepare, prepareHref, prepareLabel = "Préparer ma prochaine culture", children, onClose }: Props) {
+export function KqBattleVerdictDialog({ battleId, kind, winner, subtitle, rounds, experience, challengePoints, challenges, cardCount, rewardCard, rank, trainingProgress, receipt, playerStats, opponentStats, onPrepare, prepareHref, prepareLabel = "Préparer ma prochaine culture", continuation, onOpenLot, children, onClose }: Props) {
   const won = winner === "player";
   const titleId = kind === "training" ? "bot-result-title" : "official-result-title";
   const playerScore = rounds.filter(round => round.winner === "player").length;
@@ -41,9 +43,12 @@ export function KqBattleVerdictDialog({ battleId, kind, winner, subtitle, rounds
   return <AppDialog open onClose={onClose} title="Verdict du jury" closeLabel="Fermer le verdict" labelledBy={titleId}
     className={styles.dialog} bodyClassName={styles.body}
     dialogProps={{ "data-verdict-result": true, "data-battle-id": battleId, "data-victory": won || undefined }}
-    footer={onPrepare ? <button type="button" className={styles.continue} data-verdict-prepare onClick={onPrepare}>{prepareLabel}</button>
-      : prepareHref ? <Link className={styles.continue} data-verdict-prepare href={prepareHref} prefetch={false}>{prepareLabel}</Link>
-        : <button type="button" className={styles.continue} onClick={onClose}>Continuer</button>}>
+    footer={<div className={styles.nextActions}>
+      {onOpenLot ? <button type="button" className={styles.continue} data-verdict-open-lot onClick={onOpenLot}><ShoppingBag size={18} aria-hidden="true" />Voir ce lot au comptoir<ArrowRight size={18} aria-hidden="true" /></button> : null}
+      {onPrepare ? <button type="button" className={onOpenLot ? styles.secondary : styles.continue} data-verdict-prepare onClick={onPrepare}>{prepareLabel}</button>
+        : prepareHref ? <Link className={onOpenLot ? styles.secondary : styles.continue} data-verdict-prepare href={prepareHref} prefetch={false}>{prepareLabel}</Link>
+          : !onOpenLot ? <button type="button" className={styles.continue} onClick={onClose}>Continuer</button> : null}
+    </div>}>
     <div className={styles.hero} data-won={won}>
       <span className={styles.emblem}>{won ? <Trophy aria-hidden="true" /> : <Swords aria-hidden="true" />}</span>
       <div><span className={styles.eyebrow}>{kind === "training" ? `Entraînement${trainingProgress ? ` · ${trainingProgress}` : ""}` : "Duel officiel"}</span><h2 id={titleId}>{won ? "Victoire !" : "Défaite"}</h2></div>
@@ -56,6 +61,7 @@ export function KqBattleVerdictDialog({ battleId, kind, winner, subtitle, rounds
       <div data-reward={cardCount > 0 || undefined}><dt><Gift size={15} aria-hidden="true" />Cartes gagnées</dt><dd>{cardCount}</dd></div>
     </dl>
     {cardCount > 0 && <p className={styles.reward}>{rewardCard ? rewardCard.name : `Booster Botte du Chanvrier · ${cardCount} cartes`}</p>}
+    {continuation ? <div className={styles.continuation} data-verdict-continuation>{continuation}</div> : null}
     {takeaway && <section className={styles.takeaway} data-verdict-takeaway={takeaway.kind} aria-label="Repère pour la prochaine culture">
       <h3>{takeaway.title}</h3><p>{takeaway.explanation}</p>
     </section>}

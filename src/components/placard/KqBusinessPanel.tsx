@@ -2,10 +2,10 @@
 
 import { useState } from "react";
 import { CalendarClock, Check, ChevronDown, FlaskConical, Megaphone, Monitor, ReceiptText, Store, Wallet } from "lucide-react";
-import { KQ_ADVERTISING, KQ_DOMICILIATION_MONTHLY_CENTS, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_LAB_ANALYSIS_CENTS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, getKqBusinessClock } from "@/lib/kanab-quest-business";
+import { KQ_ADVERTISING, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_LAB_ANALYSIS_CENTS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, getKqBusinessClock } from "@/lib/kanab-quest-business";
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
-import { KqOnlineBusiness } from "./KqOnlineBusiness";
+import { KqOnlineBusiness, type KqOnlineBusinessView, type KqOnlineUpgradeView } from "./KqOnlineBusiness";
 import { KqBarChart, KqProgressMeter } from "./KqVisuals";
 import styles from "./KqBusinessPanel.module.css";
 
@@ -48,8 +48,8 @@ const ledgerLabels: Record<string, string> = {
   "storage-climate-issued": "Climatisation du stockage facturée", "storage-climate-paid": "Climatisation du stockage réglée", "storage-climate-credit": "Crédit de climatisation déjà facturée",
 };
 
-export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, onPrepareStock, onViewSales, expanded = false, showAccounting = true }: {
-  data: KqCommerceSnapshot; now?: number; busy: boolean; onAsk: Ask; onOpenShop: () => void; onPrepareStock?: () => void; onViewSales?: () => void; expanded?: boolean; showAccounting?: boolean;
+export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, onPrepareStock, onViewSales, initialView, initialUpgradeView, expanded = false, showAccounting = true }: {
+  data: KqCommerceSnapshot; now?: number; busy: boolean; onAsk: Ask; onOpenShop: () => void; onPrepareStock?: () => void; onViewSales?: () => void; initialView?: KqOnlineBusinessView; initialUpgradeView?: KqOnlineUpgradeView; expanded?: boolean; showAccounting?: boolean;
 }) {
   const business = data.business;
   if (!business) return null;
@@ -58,9 +58,6 @@ export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, o
   const { shop, vat, lab } = business;
   const active = data.online?.site.active ?? (shop.active && Boolean(shop.paidUntil && Date.parse(shop.paidUntil) > now));
   const advertising = business.advertising && Date.parse(business.advertising.endsAt) > now ? business.advertising : null;
-  const domiciliation = business.domiciliation;
-  const externalActive = Boolean(domiciliation?.mode === "external" && domiciliation.active && domiciliation.paidUntil && Date.parse(domiciliation.paidUntil) > now);
-  const domiciliationCost = domiciliation?.paidUntil && Date.parse(domiciliation.paidUntil) > now ? 0 : KQ_DOMICILIATION_MONTHLY_CENTS;
   const missing = Math.max(0, KQ_SHOP_CREATION_CENTS - data.cashCents);
   const invoices = lab.invoices.filter(invoice => invoice.remainingCents > 0).toSorted((a, b) => Date.parse(a.dueAt) - Date.parse(b.dueAt));
   const calendarPanel = <details className={styles.clockDetails}><summary><CalendarClock size={18} aria-hidden="true" />Calendrier du jeu · Mois {calendar.month}, jour {calendar.dayOfMonth}</summary><div className={styles.calendar}><div><strong>Mois {calendar.month} · Jour {calendar.dayOfMonth}</strong><span>1 jour = 4 h réelles · 1 mois = 5 jours réels</span></div><div className={styles.nextDay}><span>Prochain jour</span><Deadline at={calendar.nextDayAt} now={now} /></div></div><p className={styles.timeNote}>{data.online ? "Les ventes en ligne et le calendrier continuent hors connexion. Un jour de jeu dure 4 heures réelles ; les estimations de commandes sont données par jour réel." : "Le calendrier continue hors connexion. Les ventes se font lorsque tu joues ; les abonnements, publicités et factures suivent le temps réel."}</p></details>;
@@ -85,17 +82,10 @@ export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, o
       })}</div>
     </details>;
   const administrativeSettings = <>
-    <details className={styles.domiciliation}><summary><Store size={20} aria-hidden="true" /><span>L’adresse de mon commerce<small>{externalActive ? "Extérieure · 50 € / 5 jours réels" : "À domicile · gratuit · risque ×2"}</small></span></summary><div className={styles.visual}><KqBarChart title="Exposition au vol · prochaines cultures" items={[{ label: "À domicile", value: 2, displayValue: "×2", tone: "gold" }, { label: "Adresse extérieure", value: 1, displayValue: "×1 · risque habituel", tone: "teal" }]} /></div><details className={styles.explanation}><summary>Quand s’applique le changement</summary><p>Le choix s’applique aux prochaines cultures. Celles déjà lancées gardent leurs conditions.</p></details>
-      <div className={styles.addressChoices}>
-        <article data-selected={!externalActive}><h3>À domicile</h3><strong>Gratuit</strong><p>Risque de vol multiplié par 2.</p><button className={styles.secondary} aria-pressed={!externalActive} disabled={busy || !externalActive} onClick={() => onAsk("Domicilier chez toi", "La domiciliation devient gratuite. Le risque de vol sera multiplié par 2 pour les prochaines cultures. La reconduction de l’adresse extérieure s’arrête immédiatement.", { action: "domiciliation", mode: "home" }, 0)}>{!externalActive ? "Adresse actuelle" : "Choisir mon domicile"}</button></article>
-        <article data-selected={externalActive}><h3>Adresse extérieure</h3><strong>{formatKqCash(KQ_DOMICILIATION_MONTHLY_CENTS)} / mois de jeu</strong><p>Risque de vol habituel. Renouvellement tous les 5 jours réels si la trésorerie suffit.</p><button className={styles.secondary} aria-pressed={externalActive} disabled={busy || externalActive || data.cashCents < domiciliationCost} onClick={() => onAsk("Choisir une adresse extérieure", domiciliationCost ? "50 € pour 30 jours de jeu (5 jours réels), avec reconduction automatique si les fonds suffisent. Les prochaines cultures retrouvent le risque de vol habituel. Sans paiement, retour à domicile." : "Ta période extérieure est déjà payée : aucun nouveau débit. Les prochaines cultures retrouvent le risque de vol habituel. La reconduction reprend à la date prévue.", { action: "domiciliation", mode: "external" }, domiciliationCost)}>{externalActive ? "Adresse actuelle" : data.cashCents < domiciliationCost ? "Trésorerie insuffisante" : domiciliationCost ? "Choisir · 50 €" : "Réactiver la période payée"}</button></article>
-      </div>
-      {externalActive && domiciliation?.paidUntil ? <div className={styles.dueRow}><span>Prochain renouvellement · 50 €</span><Deadline at={domiciliation.paidUntil} now={now} /></div> : null}
-    </details>
     {!data.online ? advertisingPanel : null}
     {business.ledger.length ? <details className={styles.activity}><summary>Derniers mouvements et échéances <ChevronDown size={16} aria-hidden="true" /></summary><ul>{business.ledger.toSorted((a, b) => Date.parse(b.occurredAt) - Date.parse(a.occurredAt)).slice(0, 8).map(entry => <li key={entry.id}><span>{ledgerLabels[entry.kind] ?? "Mouvement de gestion"}<small>{dateLabel(entry.occurredAt)}</small></span><strong>{entry.amountCents ? formatKqCash(Math.abs(entry.amountCents)) : "—"}</strong></li>)}</ul></details> : null}
   </>;
-  if (data.online) return <KqOnlineBusiness data={data} now={now} busy={busy} onAsk={onAsk} onOpenShop={onOpenShop} onPrepareStock={onPrepareStock} onViewSales={onViewSales} advertising={<div className={styles.settings}>{advertisingPanel}</div>} settings={<div className={styles.settings}>{calendarPanel}{accountingPanel}{administrativeSettings}</div>} />;
+  if (data.online) return <KqOnlineBusiness data={data} now={now} busy={busy} onAsk={onAsk} onOpenShop={onOpenShop} onPrepareStock={onPrepareStock} onViewSales={onViewSales} initialView={initialView} initialUpgradeView={initialUpgradeView} advertising={<div className={styles.settings}>{advertisingPanel}</div>} businessDetails={<div className={styles.settings}>{calendarPanel}{accountingPanel}{administrativeSettings}</div>} />;
   return <section className={styles.panel} aria-label="Calendrier et gestion du commerce">
     {calendarPanel}
     <details id="kq-business-management" className={styles.management} open={expanded}>

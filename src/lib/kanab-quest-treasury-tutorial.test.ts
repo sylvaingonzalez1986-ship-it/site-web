@@ -114,6 +114,42 @@ describe("isolated real-screen Bureau tutorial transport", () => {
     expect(treasury.journal.items).toHaveLength(3);
   });
 
+  it.each(["home", "external"])("rejects a new %s address command without debiting the local budget", async mode => {
+    const sandbox = create();
+    const before = sandbox.snapshot();
+    const result = await post(sandbox, "/api/arena/placard/commerce", { action: "domiciliation", mode, requestKey: key() });
+    expect(result.status).toBe(400);
+    expect(result.body.error).toContain("retirée");
+    expect(sandbox.snapshot()).toEqual(before);
+    expect(before.business.domiciliation).toMatchObject({ retired: true, active: false, renew: false });
+  });
+
+  it("retires a restored local contract without rewriting prepaid periods, accounting or old receipts", async () => {
+    let time = now;
+    const saved = create().snapshot();
+    const paidUntil = new Date(now + 432_000_000).toISOString();
+    saved.business.domiciliation = { mode: "external", paidUntil, active: true, renew: true };
+    saved.business.ledger.push({ id: key(), kind: "domiciliation", amountCents: 5000, occurredAt: new Date(now).toISOString() });
+    saved.balances.cash = 495000;
+    saved.balances.expense_domiciliation = 5000;
+    saved.journal.push({ id: key(), occurredAt: new Date(now).toISOString(), kind: "domicile-paid", reference: "Didacticiel · opération fictive", postings: [{ account: "cash", deltaCents: -5000 }, { account: "expense_domiciliation", deltaCents: 5000 }] });
+    const oldKey = key();
+    const oldReceipt = { business: structuredClone(saved.business), cashCents: 495000 };
+    saved.replayed.push([`/api/arena/placard/commerce:${oldKey}`, JSON.stringify(oldReceipt)]);
+    const original = structuredClone(saved);
+    const sandbox = createKqTreasuryTutorial({ now: () => time, state: saved });
+    time += 3 * 432_000_000;
+    const current = await get(sandbox, "/api/arena/placard/commerce");
+    expect(current.business.domiciliation).toEqual({ mode: "external", paidUntil, active: false, renew: false, retired: true });
+    expect(current.cashCents).toBe(495000);
+    const replay = await post(sandbox, "/api/arena/placard/commerce", { action: "domiciliation", mode: "external", requestKey: oldKey });
+    expect(replay.body).toEqual(oldReceipt);
+    expect(sandbox.snapshot().journal).toEqual(original.journal);
+    expect(sandbox.snapshot().business.ledger).toEqual(original.business.ledger);
+    expect(sandbox.snapshot().replayed).toEqual(original.replayed);
+    expect(saved).toEqual(original);
+  });
+
   it("keeps independent lesson budgets and rejects an expired order", async () => {
     let time = now;
     const first = createKqTreasuryTutorial({ now: () => time }); const second = create();
