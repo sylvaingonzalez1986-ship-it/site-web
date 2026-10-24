@@ -2,12 +2,15 @@
 
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { ChevronDown, CircleHelp, UserRound } from "lucide-react";
-import { useEffect, useId, useImperativeHandle, useRef, useState } from "react";
+import { useEffect, useId, useImperativeHandle, useMemo, useRef, useState } from "react";
 import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
 import { parseChanvrierProfile, type ChanvrierProfile } from "@/lib/arena-chanvrier";
+import { createArenaLearningStorage } from "@/lib/arena-introduction";
 import type { ArenaProfileAvailability, ArenaProfileLauncherHandle, ArenaProfileLauncherProps } from "@/lib/arena-profile-launcher";
 import { ChanvrierProfileEditor } from "./ChanvrierProfileEditor";
 import { ChanvrierPlayerCard } from "./ChanvrierPlayerCard";
+import { ArenaLearningLauncher } from "./ArenaLearningLauncher";
+import { ArenaLearningStorageProvider } from "./ArenaLearningStorage";
 import styles from "./ArenaJourneyTour.module.css";
 
 function ProfileLauncher({ launcherRef, onOpen }: Pick<ArenaProfileLauncherProps, "launcherRef"> & { onOpen: (origin: HTMLElement) => boolean }) {
@@ -24,6 +27,7 @@ export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: A
   const [helpOpen, setHelpOpen] = useState(false);
   const { showBanner } = useCookieConsent();
   const [userId, setUserId] = useState<string | null>(null);
+  const learningStorage = useMemo(() => createArenaLearningStorage(userId ?? "guest"), [userId]);
   const [error, setError] = useState("");
   const [retry, setRetry] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -145,7 +149,10 @@ export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: A
         <CircleHelp size={17} aria-hidden="true" />Aide<ChevronDown size={14} aria-hidden="true" />
       </button>
       <div id={helpId} className={styles.helpPanel} hidden={!helpOpen}>
-        <p>Pour apprendre à jouer avec Sylvain, ouvre Kanab Quest puis « Mon quartier ». Le bouton « La relève » se trouve sous la carte du quartier.</p>
+        <p>Apprends avec Sylvain ou reprends ton aventure. Ta ferme d’essai utilise des cartes et des euros fictifs.</p>
+        <ArenaLearningStorageProvider storage={learningStorage}>
+          <ArenaLearningLauncher className={styles.helpAction} disabled={loading} />
+        </ArenaLearningStorageProvider>
         {loading ? <p role="status">Chargement du personnage…</p> : null}
         {error ? <div className={styles.loadError} role="status">
           <p>{error}</p>

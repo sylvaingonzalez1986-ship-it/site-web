@@ -18,8 +18,8 @@
 .state { display: flex; align-items: flex-start; gap: 7px; }
 .state svg { flex-shrink: 0; margin-top: 3px; }
 .result { padding: 10px 0; border-block: 1px dashed #17292340; }
-.receipt { display: flex; align-items: center; gap: 14px; margin-block: 14px; padding: 16px; border: 2px solid #172923; border-radius: 14px; background: #fff1d6; }
-.receiptSeal { display: grid; flex: none; place-items: center; width: 54px; height: 54px; border: 2px solid #172923; border-radius: 50%; background: #efc451; box-shadow: 2px 3px 0 #172923; }
+.receipt { display: flex; align-items: center; gap: 14px; margin-block: 14px; padding: 16px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.receiptSeal { display: grid; flex: none; place-items: center; width: 54px; height: 54px; border: 2px solid #172923; border-radius: 50%; background: #efc451; box-shadow: var(--game-panel-shadow, none); }
 .receipt > div { min-width: 0; }
 .receiptLabel { display: block; margin-bottom: 3px; color: #076c61; font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .receipt strong { display: block; font: 900 clamp(26px, 4vw, 38px)/1.1 var(--font-display), Impact, sans-serif; }
@@ -28,17 +28,19 @@
 .receipt[data-receipt-fresh] .receiptSeal { animation: contract-stamp 450ms ease-out both; }
 @keyframes contract-stamp { from { opacity: 0; transform: translateY(-6px) rotate(-12deg) scale(1.15); } to { opacity: 1; transform: none; } }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-.contract button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 2px solid #172923; border-radius: 10px; background: #efc451; color: #172923; font: 700 13px/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; }
+.contract button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: 700 13px/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .contract button svg { flex-shrink: 0; }
-.contract button:hover:not(:disabled) { background: var(--game-surface-warm); }
+.contract button:hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
 .contract .secondary { background: transparent; }
 .contract button:disabled { opacity: .55; cursor: default; }
 .contract :where(summary, button):focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
 .terms { display: block; margin-top: 12px; color: #43594c; font-size: 11px; line-height: 1.6; }
 .error { padding-block: 8px; color: #8b3321; }
-.contract[data-contract-status="succeeded"] { border-color: #076c61; background: #e2f0e5; }
-.contract[data-contract-status="claimed"] { background: #e2f0e5; }
-.contract[data-mode="missions"] { margin-block: 0; border: 2px solid #172923; border-radius: 16px; overflow: hidden; }
+.contract[data-contract-status="succeeded"] { border-color: #076c61; background: transparent; }
+.contract[data-contract-status="claimed"] { background: transparent; }
+.contract[data-mode="missions"] { margin-block: 0; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.contract[data-mode="missions"][data-contract-status="succeeded"], .contract[data-mode="missions"][data-contract-status="claimed"] { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); border-color: transparent; }
+.contract[data-mode="missions"] summary { padding: 14px 18px; }
 @media (max-width: 480px) {
   .contract summary { gap: 8px; padding-inline: 10px; }
   .summaryMetrics { max-width: 110px; }

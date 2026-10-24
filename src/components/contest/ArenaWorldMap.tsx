@@ -56,6 +56,7 @@ export function ArenaWorldMap({ activitiesLocked, initialMode, profileLauncher, 
 
   return <section className={styles.map} data-arena-map data-map-zoomed={zoomed || undefined} aria-label="Le bureau de Sylvain">
     <div className={styles.heading}>
+      <span>Explore le bureau</span>
       <button type="button" className={styles.zoom} data-arena-map-zoom aria-pressed={zoomed} aria-controls="arena-map-viewport" onClick={toggleZoom}>
         {zoomed ? <Scan size={17} aria-hidden="true" /> : <ZoomIn size={17} aria-hidden="true" />}{zoomed ? "Vue d’ensemble" : "Agrandir"}
       </button>

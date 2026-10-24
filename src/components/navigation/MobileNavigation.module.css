@@ -32,3 +32,22 @@
 @media (hover:hover) { .link:hover:not([aria-current="page"]) { background: #ffffff0d; } }
 @media (prefers-reduced-motion:no-preference) { .menu[open] .content { animation: arrive 180ms ease-out; } @keyframes arrive { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } } }
 @media (max-height:650px) { .heading { margin-bottom: 16px; } .heading h2 { font-size: 3rem; } .link { min-height: 52px; } }
+
+/* Contours only; the dark mobile menu keeps its original colours and geometry. */
+:global(html[data-site-navigation-ui="quartier"]) .menu [data-ui-shape] {
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+:global(html[data-site-navigation-ui="quartier"]) .rail button,
+:global(html[data-site-navigation-ui="quartier"]) .link,
+:global(html[data-site-navigation-ui="quartier"]) .cart {
+  position: relative;
+  --site-ui-material: url("#site-ui-outline-fffaf1");
+  --site-ui-hover-material: var(--site-ui-material);
+}
+:global(html[data-site-navigation-ui="quartier"]) .link[aria-current="page"] { --site-ui-material: url("#site-ui-fill-f4c43d"); }
+:global(html[data-site-navigation-ui="quartier"]) .cart { --site-ui-material: url("#site-ui-fill-fffaf1"); }
+/* The existing hover wash is #fff at 13/255 opacity on #003f30. */
+:global(html[data-site-navigation-ui="quartier"]) .link:not([aria-current="page"]) { --site-ui-hover-material: url("#site-ui-fill-0d493b"); }

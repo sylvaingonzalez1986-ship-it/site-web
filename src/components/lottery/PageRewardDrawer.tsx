@@ -51,7 +51,7 @@ export function PageRewardDrawer({ page, acting, onClaim, onClose }: PageRewardD
           {/* Reward options */}
           <div className="space-y-3">
             {page.rewardOptions.map((option) => (
-              <button
+              <button data-ui-account="reward-option" data-ui-shape="control"
                 key={option.rewardDefinitionId}
                 disabled={acting}
                 onClick={() => onClaim(page.rarity, option.rewardDefinitionId)}

@@ -2,8 +2,8 @@
   composes: surface from "./ArenaRetro.module.css";
   --arena-green: #087b70;
   --arena-green-dark: #172923;
-  --arena-cream: #f5e6c9;
-  --arena-paper: #fff1d6;
+  --arena-cream: #fff1d6;
+  --arena-paper: #fff8e7;
   --arena-yellow: #efc451;
   --arena-tan: var(--game-surface-warm);
   --arena-ink: #172923;
@@ -2014,13 +2014,12 @@
 .personalRankingsGrid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0;
+  gap: 1rem;
   margin-top: 1rem;
-  overflow: hidden;
-  border: 2px solid var(--arena-ink);
-  border-radius: 12px;
-  background: var(--arena-paper);
-  box-shadow: 3px 4px 0 var(--arena-tan);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .personalRankingCard {
@@ -2028,8 +2027,8 @@
   min-width: 0;
   padding: 1rem;
   border: 0;
-  border-left: 2px solid var(--arena-ink);
-  background: #fff8e8;
+  border-top: 3px solid var(--arena-green);
+  background: transparent;
 }
 
 .personalRankingCard:first-child {
@@ -2037,12 +2036,10 @@
 }
 
 .personalRankingCard::before {
-  position: absolute;
-  inset: 0 0 auto;
-  height: 0.35rem;
-  background: var(--arena-yellow);
-  content: "";
+  content: none;
 }
+.personalRankingCard[data-ranking="tasting"] { border-top: 3px solid var(--arena-yellow); }
+.personalRankingCard[data-ranking="general"] { border-top: 3px solid var(--game-surface-warm); }
 
 .personalRankingCard > p {
   margin: 0;
@@ -2102,14 +2099,17 @@
 
 .tastingProgressSummary,
 .placardProfileSummary {
-  padding: 0.85rem;
-  border: 2px solid var(--arena-ink);
-  border-radius: 12px;
-  background: #ddede0;
+  padding: 1.2rem;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  --game-panel-art: var(--game-panel-apricot);
+  border-image: var(--game-panel-art) 48 fill / 15px / 0 stretch;
 }
 
 .tastingProgressSummary {
-  background: #fff7d8;
+  --game-panel-art: var(--game-panel-gold);
 }
 
 .personalProgressLabel,
@@ -2260,9 +2260,9 @@
 .arenaCharacter {
   position: relative;
   display: grid;
-  width: 96px;
-  min-width: 96px;
-  min-height: 96px;
+  width: 112px;
+  min-width: 112px;
+  min-height: 132px;
   place-items: end center;
   border: 0;
   background: transparent;
@@ -2271,19 +2271,14 @@
 }
 
 .arenaCharacter::before {
-  position: absolute;
-  inset: 10px 5px 4px;
-  border: 2px solid var(--arena-ink);
-  border-radius: 50%;
-  background: var(--arena-yellow);
-  content: "";
+  content: none;
 }
 
 .arenaCharacter img {
   position: relative;
   z-index: 1;
-  width: 76px;
-  height: 92px;
+  width: 100px;
+  height: 126px;
   object-fit: contain;
 }
 
@@ -2992,12 +2987,13 @@
 .playerRankingSection .playerStationScore em { border-radius: 0; font-size: .65rem; white-space: normal; line-height: 1.3; }
 .playerRankingSection .playerStationIdentity strong { font-size: .9rem; }
 .playerRankingSection .playerStationBoard :global(.contest-station-row) { min-height: 70px; }
-.rankingProfileDetails { margin-top: 1.5rem; overflow: hidden; border: 2px solid var(--arena-ink); border-radius: 14px; background: var(--arena-paper); box-shadow: 4px 5px 0 var(--arena-tan); }
-.rankingProfileDetails > summary { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: 1rem; min-height: 58px; background: #bfe6d8; color: var(--arena-ink); font-weight: 800; cursor: pointer; list-style: none; }
+.rankingProfileDetails { margin-top: 1.5rem; padding: 8px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-paper) 48 fill / 15px / 0 stretch; }
+.rankingProfileDetails > summary { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: 1rem; min-height: 58px; border: 2px solid transparent; border-radius: 0; background: transparent; color: var(--arena-ink); box-shadow: none; border-image: var(--game-control-apricot) 40 fill / 14px / 0 stretch; font-weight: 800; cursor: pointer; list-style: none; }
 .rankingProfileDetails > summary::-webkit-details-marker { display: none; }
 .rankingProfileDetails > summary svg { color: var(--arena-ink); transition: transform 180ms ease; }
 .rankingProfileDetails[open] > summary svg { transform: rotate(180deg); }
 .rankingProfileDetails .personalGrid { padding: 1rem; margin: 0; }
+.rankingProfileDetails .personalGrid > * { padding: 0; border-radius: 0; border-image: none; background: transparent; }
 .rankingProfileDetails > summary:focus-visible { outline: 3px solid var(--arena-yellow); outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .rankingProfileDetails > summary svg { transition: none; } }
 

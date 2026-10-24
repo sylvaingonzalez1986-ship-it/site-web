@@ -1,0 +1,72 @@
+{
+  "version": 3,
+  "editorialReview": {
+    "status": "V3 implementation: 54 player-authored situations with observed culture prerequisites. Awaiting the user's editorial review.",
+    "reviewedOn": "2026-10-24",
+    "previousFinding": "V2 relayed neighbors' experiences instead of the player's own production. Structural tests did not validate semantic continuity. V2 is retained solely for historical receipts.",
+    "currentSource": "Five actual X posts supplied by the owner in chat (three culture/variety posts and two political texts), summarized in social-producer-source-notes.json. Instagram has not been read: Metricool is suggested but its connection is still unconfirmed.",
+    "implemented": "Player posts, choice-specific reactions and continuation overrides, own indoor run/lot prerequisites, explicit selection when multiple subjects exist, server-side stale-preview rejection, versioned receipts with a compact immutable subject."
+  },
+  "updatedOn": "2026-10-24",
+  "scope": "Fictional social-adventure dialogue about indoor CBD production, written in French. No source text copied into the game.",
+  "catalog": {
+    "situations": 54,
+    "instagram": 27,
+    "x": 27,
+    "choices": 162,
+    "authoredChoiceReplies": 324,
+    "conditionalContinuations": 101
+  },
+  "suppliedAccounts": [
+    {
+      "url": "https://x.com/ChanvriersBret",
+      "access": "Direct feed unavailable to the research tool; no claim to have read the complete feed."
+    },
+    {
+      "url": "https://www.instagram.com/leschanvriersbretons/",
+      "access": "Direct feed unavailable to the research tool; no account credentials requested or used."
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://www.leschanvriersbretons.com/blog/pourquoi-le-site-a-failli-crever-2",
+      "kind": "First-person account on the user's public website",
+      "inspiration": "Producer voice, unglamorous work, drying vigilance, manual preparation, production and sales pressures.",
+      "excluded": "Outdoor weather, personal figures and private events are not attributed to the player; no copied passages or accusations."
+    },
+    {
+      "url": "https://www.leschanvriersbretons.com/a-propos",
+      "kind": "The user's public website",
+      "inspiration": "Distinguishing producer, origin, partner supply, lot information and composition."
+    },
+    {
+      "url": "https://ardechanvre.fr/a-propos/",
+      "kind": "Producer's first-person account",
+      "inspiration": "Work sequence and observation; outdoor calendar excluded from indoor episodes."
+    },
+    {
+      "url": "https://www.brut.media/fr/videos/comment-pousse-le-chanvre",
+      "kind": "Interview with a producer",
+      "inspiration": "Varieties, drying and manual preparation; no exact production settings or timings transferred to the game."
+    },
+    {
+      "url": "https://www.lavilainegraine.com/blog/interview-de-camille-muzelle-les-plantes-de-tomine-b11.html",
+      "kind": "First-person grower interview",
+      "inspiration": "Learning from observation and mistakes, and differences between lots."
+    },
+    {
+      "url": "https://ansm.sante.fr/actualites/augmentation-des-intoxications-causees-par-des-produits-a-base-de-cbd-contenant-dautres-substances",
+      "kind": "ANSM/Anses alert published 2025-06-19",
+      "inspiration": "Distinguish marketing terms from declared substances and lot documentation; do not equate natural with harmless.",
+      "excluded": "No medical advice, guarantees of safety or assertions of current legal status."
+    }
+  ],
+  "boundaries": [
+    "All NPCs, conversations, sponsor offers and companies in the adventure are fictional.",
+    "Use observed indoor runs and available lots for personal crop stories. Empty, failed, borrowed and unknown context never grants a personal harvest or flower story.",
+    "Culture is read by a compact STABLE service-only RPC, returned transiently to the UI, and removed from persisted snapshots. The subject used by a published post stays in its receipt.",
+    "Choices keep existing IDs, intents, tags, effects, costs and branch modifiers. New prose and specific replies are applied at presentation time.",
+    "Narrative version 3 separates the producer stories from the frozen V2 catalogue and older versions. Past publications and gains remain intact; incompatible old branch memory is cleared once.",
+    "Illustrations stay static local WebPs; neither originals nor image payloads are stored in Supabase."
+  ]
+}

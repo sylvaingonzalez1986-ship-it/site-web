@@ -181,7 +181,7 @@ export function CheckoutButton({
 
   return (
     <div>
-      <button
+      <button data-ui-commerce="primary" data-ui-shape="control"
         type="button"
         onClick={handleCheckout}
         disabled={loading || itemsCount === 0 || disabled}

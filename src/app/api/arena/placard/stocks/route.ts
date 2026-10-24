@@ -2,6 +2,7 @@ import { KqStockRequestError, parseKqStockAssetIds } from "@/lib/kanab-quest-sto
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqSameOriginRequest } from "@/lib/kanab-quest-request-origin";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { getKqStockSnapshot, handleKqStockAction } from "@/lib/supabase/kanab-quest-stocks-backend";
 export const runtime = "nodejs";
@@ -31,8 +32,7 @@ export async function GET(request: Request) {
 }
 export async function POST(request: Request) {
  try { const session = await access(request); if (session instanceof Response) return session;
-  const origin = request.headers.get("origin");
-  if ((origin && origin !== new URL(request.url).origin) || request.headers.get("sec-fetch-site") === "cross-site") return NextResponse.json({ error: "Origine non autorisée." }, { status: 403, headers });
+  if (!isKqSameOriginRequest(request)) return NextResponse.json({ error: "Origine non autorisée." }, { status: 403, headers });
   if (Number(request.headers.get("content-length") ?? "0") > 2048) return NextResponse.json({ error: "Ordre boursier invalide." }, { status: 413, headers });
   const reader = request.body?.getReader();
   if (!reader) return NextResponse.json({ error: "Ordre boursier invalide." }, { status: 400, headers });

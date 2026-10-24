@@ -26,7 +26,7 @@ export function ArenaSceneHeader({ mode, title, description, isPlacardPlayerEnab
           </div>
         </div>
         <div className={styles.scene}>
-          <Image src={scene.image} alt="" width={1536} height={mode === "jouer" ? 512 : 1024} loading="eager" fetchPriority="high" sizes="(max-width: 700px) 100vw, 540px" className={styles.art} />
+          <Image src={scene.image} alt="" width={1536} height={mode === "jouer" ? 512 : 1024} loading="eager" fetchPriority="high" sizes="(max-width: 700px) 44vw, 500px" className={styles.art} />
         </div>
         <nav className={styles.modes} aria-label="Espaces de l’Arène">
           {ARENA_LOBBY_MODE_ORDER.filter((id) => id !== "jouer" || isPlacardPlayerEnabled).map((id) => {

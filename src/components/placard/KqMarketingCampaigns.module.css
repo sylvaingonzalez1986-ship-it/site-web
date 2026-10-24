@@ -1,6 +1,7 @@
 .campaigns { color: #172923; min-width: 0; }
 .campaigns h3,.campaigns h4 { font-family: var(--font-display),Impact,sans-serif; text-transform: uppercase; }
-.campaigns button,.campaigns select,.campaigns input { font: inherit; }
+.campaigns button { font: inherit; }
+.campaigns select, .campaigns input { font: inherit; }
 .campaigns :where(button,select,input,summary,a):focus-visible { outline: 3px solid #c2922e; outline-offset: 3px; }
 .heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
 .kicker { display: flex; align-items: center; gap: 7px; font-size: .67rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
@@ -11,12 +12,12 @@
 .slot[data-occupied=true] > span { background: #b36a15; }
 .slot small { flex-basis: 100%; text-align: right; color: #4b6057; font-size: .65rem; font-weight: 500; }
 .objectives { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin-bottom: 16px; }
-.objectives button { display: grid; align-content: start; gap: 8px; min-width: 0; padding: 14px; text-align: left; border: 1px solid #17292355; border-radius: 9px; color: #172923; background: #fff8e7; }
-.objectives button[aria-pressed=true] { background: #efc451; border: 2px solid #172923; padding: 13px; box-shadow: 2px 3px 0 #172923; }
+.objectives button { display: grid; align-content: start; gap: 8px; min-width: 0; padding: 14px; text-align: left; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.objectives button[aria-pressed=true] { border: var(--game-control-border-width, 2px) solid #172923; padding: 13px; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; color: #172923; }
 .objectives button > span { display: flex; justify-content: space-between; align-items: center; gap: 6px; font-size: .62rem; }
 .objectives button strong { font-size: .85rem; line-height: 1.35; }
 .objectives button small { font-size: .62rem; line-height: 1.5; }
-.planner { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(290px,1fr); border: 2px solid #172923; border-radius: 12px; overflow: hidden; }
+.planner { display: grid; grid-template-columns: minmax(0,1.4fr) minmax(290px,1fr); overflow: hidden; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .brief { padding: 22px; min-width: 0; background: #fff8e7; }
 .briefHeading { display: flex; gap: 14px; justify-content: space-between; align-items: center; padding-bottom: 18px; border-bottom: 1px solid #17292330; }
 .brief h4,.forecast h4 { margin: 0 0 7px; font-size: 1.35rem; line-height: 1.15; }
@@ -24,26 +25,26 @@
 .briefHeading img { width: 104px; height: 84px; object-fit: cover; border-radius: 8px; border: 1px solid #17292350; }
 .productField { display: grid; gap: 10px; margin-block: 20px; }
 .productField > label, .brief legend { display: flex; gap: 7px; align-items: center; font-size: .76rem; font-weight: 800; }
-.productField select { width: 100%; min-width: 0; min-height: 44px; padding: 10px; color: #172923; background: #fff1d6; border: 1px solid #17292380; border-radius: 6px; font-size: .76rem; }
+.productField select { width: 100%; min-width: 0; min-height: 44px; padding: 10px; color: #172923; background: #fff1d6; border: 1px solid #17292380; border-radius: var(--game-panel-radius, 2px); font-size: .76rem; }
 .productFacts { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: .68rem; }
 .productFacts strong { margin-left: 4px; }
 .campaigns .textButton { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 0; color: #345d4b; background: transparent; border: 0; text-decoration: underline; font-size: .69rem; font-weight: 700; }
 .brief fieldset { min-width: 0; margin: 0 0 20px; padding: 0; border: 0; }
 .brief legend { margin-bottom: 11px; padding: 0; }
 .audience > div { display: grid; gap: 6px; }
-.audience label { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid #17292330; border-radius: 6px; cursor: pointer; }
+.audience label { display: flex; align-items: flex-start; gap: 10px; padding: 10px 12px; border: 1px solid #17292330; border-radius: var(--game-panel-radius, 2px); cursor: pointer; }
 .audience label[data-selected=true] { background: #bfe9db60; border-color: #347653; }
 .brief input { flex-shrink: 0; width: 16px; height: 16px; margin: 2px 0 0; accent-color: #172923; }
 .audience label > span { display: grid; gap: 4px; }
 .audience strong { font-size: .74rem; }
 .audience small { font-size: .65rem; line-height: 1.5; }
 .budget > div { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; }
-.budget label { display: flex; gap: 7px; align-items: flex-start; min-width: 0; padding: 10px; border: 1px solid #17292340; border-radius: 6px; cursor: pointer; }
+.budget label { display: flex; gap: 7px; align-items: flex-start; min-width: 0; padding: 10px; border: 1px solid #17292340; border-radius: var(--game-panel-radius, 2px); cursor: pointer; }
 .budget label[data-selected=true] { background: #efc45155; border-color: #172923; }
 .budget label > span { display: grid; gap: 5px; min-width: 0; }
 .budget strong { font-size: 1.05rem; }
 .budget small { font-size: .6rem; line-height: 1.4; overflow-wrap: anywhere; }
-.freeTrial { display: flex; gap: 10px; padding: 13px; background: #bfe9db65; border-radius: 6px; }
+.freeTrial { display: flex; gap: 10px; padding: 13px; background: #bfe9db65; border-radius: var(--game-panel-radius, 2px); }
 .freeTrial > span { display: grid; gap: 4px; }
 .freeTrial small { font-size: .68rem; line-height: 1.6; }
 .campaigns .rules { margin: 0; padding-top: 14px; border-top: 1px solid #17292330; color: #4b6057; font-size: .7rem; }
@@ -54,7 +55,7 @@
 .investment dt { font-size: .65rem; line-height: 1.5; color: #d0dfd6; }
 .investment dd { margin: 6px 0 0; color: #efc451; font-size: 1.45rem; font-weight: 800; }
 .investment dd small { font-size: .65rem; color: #fff8e7; font-weight: 500; }
-.fit { padding: 13px; border: 1px solid #efc45180; border-radius: 6px; background: #efc45112; }
+.fit { padding: 13px; border: 1px solid #efc45180; border-radius: var(--game-panel-radius, 2px); background: #efc45112; }
 .fit[data-fit=true] { border-color: #bfe9db70; background: #bfe9db10; }
 .fit > span { display: flex; gap: 7px; align-items: center; font-size: .73rem; font-weight: 800; line-height: 1.5; }
 .campaigns .fit p { color: #e0e7e0; font-size: .67rem; margin: 7px 0 0; }
@@ -73,10 +74,10 @@
 .warnings,.blockers { display: grid; gap: 7px; padding-left: 17px; font-size: .68rem; line-height: 1.6; }
 .warnings { color: #ffd099; }
 .blockers { color: #fff8e7; }
-.campaigns .launch { display: flex; justify-content: center; gap: 9px; align-items: center; margin-top: 18px; width: 100%; min-height: 48px; padding: 12px; border: 1px solid #efc451; border-radius: 7px; background: #efc451; color: #172923; font-size: .8rem; font-weight: 800; }
+.campaigns .launch { display: flex; justify-content: center; gap: 9px; align-items: center; margin-top: 18px; width: 100%; min-height: 48px; padding: 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font-size: .8rem; font-weight: 800; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .commitment { display: block; margin-top: 12px; color: #d0dfd6; font-size: .62rem; line-height: 1.6; text-align: center; }
 .campaigns .footnote { margin: 12px 0 20px; color: #4b6057; font-size: .65rem; }
-.running { border: 2px solid #172923; border-radius: 12px; overflow: hidden; background: #fff8e7; }
+.running { overflow: hidden; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .runningHeader { display: flex; justify-content: space-between; gap: 20px; padding: 22px; background: #bfe9db; }
 .runningHeader h4 { margin: 8px 0; font-size: 1.5rem; }
 .runningHeader p { margin: 0; }
@@ -104,7 +105,7 @@
 .campaigns .runningFooter p { margin: 0; max-width: 70%; font-size: .68rem; }
 .runningFooter button { flex-shrink: 0; }
 .legacy { padding: 22px; }
-.campaigns .warning { margin: 16px; padding: 12px; border-radius: 6px; background: #efc451; color: #172923; font-size: .7rem; }
+.campaigns .warning { margin: 16px; padding: 12px; border-radius: var(--game-panel-radius, 2px); background: #efc451; color: #172923; font-size: .7rem; }
 .forecast .warning { margin-inline: 0; }
 .history,.advertising { margin-top: 22px; border-top: 1px solid #17292350; }
 .history summary,.advertising summary { display: flex; align-items: center; flex-wrap: wrap; gap: 10px; min-height: 56px; padding-block: 12px; cursor: pointer; font-size: .77rem; }
@@ -113,17 +114,17 @@
 .history summary span,.advertising summary span { color: #4b6057; font-size: .67rem; }
 .history > p,.advertising > p { margin-top: 0; font-size: .7rem; }
 .reports { display: grid; gap: 12px; }
-.reports article { padding: 17px; border: 1px solid #17292340; border-radius: 8px; background: #fff8e7; }
+.reports article { padding: 17px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .reports header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; font-size: .78rem; }
 .reports header > div { display: grid; gap: 5px; }
 .reports header small { font-size: .66rem; font-weight: 500; line-height: 1.5; }
-.reports header > span { padding: 4px 7px; border-radius: 5px; background: #efc45150; font-size: .63rem; flex-shrink: 0; }
+.reports header > span { padding: 4px 7px; border-radius: var(--game-panel-radius, 2px); background: #efc45150; font-size: .63rem; flex-shrink: 0; }
 .reports header > span[data-success=true] { background: #bfe9db; }
 .reports dl { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 14px; margin: 17px 0 0; }
 .reports dt { font-size: .65rem; line-height: 1.5; }
 .reports dd { margin: 5px 0 0; font-size: .95rem; font-weight: 800; }
 .goal { display: grid; gap: 24px; align-content: start; }
-.visualCard { padding: 14px; margin-top: 16px; border-radius: 8px; background: #fff8e7; color: #172923; }
+.visualCard { padding: 14px; margin-top: 16px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .visualCard > small { display: block; margin-top: 12px; color: #526157; font-size: .68rem; line-height: 1.5; }
 .campaigns .rules { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .rules dt { font-size: .67rem; line-height: 1.5; }

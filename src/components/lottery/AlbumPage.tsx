@@ -65,7 +65,7 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick, isPrev
 
         <aside className={styles.pageSidebar} aria-label="Récompenses et doublons de la page">
           {showRewardTeaser ? (
-            <section className={`${styles.contextCard} ${page.rewardStatus === "claimable" ? styles.contextCardClaimable : ""}`}>
+            <section data-ui-account="context-panel" data-ui-shape="panel" data-ui-account-claimable={page.rewardStatus === "claimable"} className={`${styles.contextCard} ${page.rewardStatus === "claimable" ? styles.contextCardClaimable : ""}`}>
               <span className={styles.contextBadge}>
                 {page.rewardStatus === "claimed"
                   ? "Réclamé"
@@ -104,7 +104,7 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick, isPrev
               ) : null}
 
               {page.rewardStatus === "claimable" && page.rewardOptions.length > 0 ? (
-                <button
+                <button data-ui-account="green" data-ui-shape="control"
                   type="button"
                   className={styles.contextButton}
                   disabled={isPreview}
@@ -117,7 +117,7 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick, isPrev
           ) : null}
 
           {page.burnOffer ? (
-            <section className={styles.contextCard}>
+            <section data-ui-account="context-panel" data-ui-shape="panel" className={styles.contextCard}>
               <span className={styles.contextBadge}>Doublons</span>
               <h3>Recycler</h3>
               <p>
@@ -126,7 +126,7 @@ export function AlbumPage({ page, onSlotClick, onClaimClick, onBurnClick, isPrev
               {burnableGroups.length > 0 ? (
                 <div className={styles.burnList}>
                   {burnableGroups.map((group) => (
-                    <button
+                    <button data-ui-account="gold" data-ui-shape="control"
                       key={group.cardDefinitionId}
                       type="button"
                       className={styles.burnButton}

@@ -30,7 +30,7 @@ export function LoyaltyBadgeSummary({
   const Heading = headingLevel;
 
   return (
-    <article className={styles.panel}>
+    <article data-ui-account="paper" data-ui-shape="panel" className={styles.panel}>
       <Heading className="section-title">{title}</Heading>
       <p className="mt-3 text-sm leading-relaxed text-charcoal md:text-base">{description}</p>
 
@@ -38,7 +38,7 @@ export function LoyaltyBadgeSummary({
         {publicLoyaltySummary.badges.map((badge) => {
           const benefits = parseBadgeBenefitsLines(getBadgeBenefitsText(profileContent, badge.id));
           return (
-            <section key={badge.id} className={styles.card}>
+            <section data-ui-account="badge-paper" data-ui-shape="panel" key={badge.id} className={styles.card}>
               <div className={styles.identity}>
                 <LoyaltyBadgeIllustration badgeId={badge.id} unlocked size="md" />
                 <div>

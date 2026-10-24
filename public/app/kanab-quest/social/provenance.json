@@ -1,0 +1,26 @@
+{
+  "createdAt": "2026-10-23",
+  "mode": "built-in imagegen, reference-guided generation",
+  "references": [
+    "public/placard/market-social-missions-sylvain-v3.webp",
+    "public/sylvain.png"
+  ],
+  "reused": [
+    "public/placard/market-social-missions-sylvain-v3.webp",
+    "public/contest/mascot/profile-sylvain-member-v2.png",
+    "public/contest/avatars/sylvain-v4/"
+  ],
+  "artDirection": "DA canonique Sylvain : contours noirs épais, formes cartoon, petits yeux ovales, trames, crème, teal et ocre. Les compositions des réseaux sont rendues en HTML/CSS.",
+  "assets": [
+    {
+      "file": "still-life.webp",
+      "prompt": "Use case: illustration-story, a new scene in an EXISTING illustrated game universe. Image 1 is the STRICT ART DIRECTION and workshop reference, image 2 is the CANONICAL SYLVAIN character reference. Match their simple cartoon shapes, very thick confident black ink outlines, FLAT cream, apricot/ochre, saturated teal and mustard fills, sparse printed halftone dots, small friendly oval ink eyes. This must look drawn by the SAME artist as image1; not realistic, not painterly, no rendering, no photo textures. Create a square cropped-overhead still life on Sylvain's workshop table for an Instagram-like in-game illustrated post. A small paper notebook open on abstract unlettered sketch lines, Sylvain's black compact camera, a plain teal mug, a pencil and a folded ochre apron. A little of the canonical Sylvain's rounded cream cartoon hand enters from the left to move the notebook, no body/face. The background is bright cream desk and a little teal wood, ample clean breathing room. No cannabis visible in THIS image: it illustrates a deliberately calm, non-product workshop photograph. Preserve exact cartoon drawing vocabulary fromreference with heavy dark outlines and stippling; do not introduce different aesthetics or realistic hands. Full bleed square, no borders, no words, no letters, no UI, no logo, no watermark."
+    },
+    {
+      "file": "community.webp",
+      "prompt": "Use case: illustration-story, a new scene in the EXISTING Sylvain / Kanab Quest cartoon universe. Reference image1 defines the STRICT ART DIRECTION (thick bold black contours, flat cream/teal/warmochre/apricot/mustard, minimal halftone, very simple friendly round cartoon faces, small solid oval ink eyes); image2 defines the exact mascot Sylvain, with roundcreamface, smallblackeyes, blackhair, teal-and-tan cap withblackbrim, ochre shirt, tealoveralls. Preserve this recognizable character exactly. Make one square illustration of a small local open-workshop gathering: Sylvain at center, his friendly photographer neighbor with short black bob at left holding a small camera, his artisan neighbor with curly hair at right holding a handmade plain teal cup, all drawn in the same simple Sylvain cartoon proportions and face vocabulary. They chat warmly around a modest wooden table with an open sketchbook, a few plain kraft parcels and cups, in front of Sylvain's teal workshop door. Some leafy greenery frames the scene, hint of Breton stone wall. The image is about Sylvain sharing his atelier with neighbors. Clear simple composition, readable at small size, no realism and no detailed human faces; keep exactly flat inked cartoon fromthe references. All figures fully inside frame, three people only, no copies of Sylvain. No words, labels, letters, signs, UI, watermarks or logos. Square fullbleed with cream light and cheerful teal."
+    }
+  ],
+  "status": "Historical source illustrations; current production assets are described in player-provenance.json.",
+  "supersededBy": "player-provenance.json"
+}

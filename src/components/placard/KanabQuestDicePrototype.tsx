@@ -10,6 +10,9 @@ import { getBuddieArtwork } from "@/lib/buddie-artwork";
 import { getKqProductionUnits } from "@/lib/kanab-quest-production";
 import { KqEnergyPanel } from "./KqEnergyPanel";
 import { KqBuddieCarousel } from "./KqBuddieCarousel";
+import { KqCultureBuddies } from "./KqCultureBuddies";
+import type { KqBuddieAssignmentSnapshot } from "@/lib/kanab-quest-buddie-assignment";
+import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import { getKqBuddieRotationMessage, getKqBuddieRotationRemaining, KQ_BUDDIE_ROTATION_REQUIRED, recordKqBuddieUse, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { KqInventoryCarousel } from "./KqInventoryCarousel";
 import { KqDeckPreparation } from "./KqDeckPreparation";
@@ -33,6 +36,7 @@ import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/ka
 
 import Image from "next/image";
 import dynamic from "next/dynamic";
+import { useRouter } from "next/navigation";
 import Link from "@/components/navigation/NavigationLink";
 import { ArrowRight, Banknote, Check, ChevronDown, CircleHelp, Dices, Flame, Layers3, Leaf, RotateCcw, Scale, ShoppingBag, Sparkles, Star, Swords, Target, Trophy, X, Zap } from "lucide-react";
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
@@ -399,6 +403,7 @@ function KqGameSession({
   initialPreparation,
 }: KqDiceProps) {
   const api = useKqTutorialApi();
+  const router = useRouter();
   const sound = useKqGameSound();
   const [freshHarvestKey, setFreshHarvestKey] = useState<string | null>(null);
   const [presentationView, setPresentationView] = useState(viewMode);
@@ -436,6 +441,8 @@ function KqGameSession({
   const sessionStoragePrefix = isPlayerMode ? `kq-player${initialZoneId ? `-zone-${initialZoneId}` : initialRunId ? `-run-${initialRunId}` : ""}` : "kq-admin";
   const [zoneContext, setZoneContext] = useState<KqWarehouseZone | null>(null);
   const [campaignParticipants, setCampaignParticipants] = useState<ReturnType<typeof getKqCampaignParticipants>>([]);
+  const [preparationWarehouse, setPreparationWarehouse] = useState<KqBuddieAssignmentSnapshot | null>(null);
+  const [buddieAssignmentBlocked, setBuddieAssignmentBlocked] = useState(false);
   const [selectionReady, setSelectionReady] = useState(!isPlayerMode);
   const [selectionError, setSelectionError] = useState("");
   const [contractBusy, setContractBusy] = useState(false);
@@ -624,12 +631,14 @@ function KqGameSession({
     ? getKqBuddieRotationRemaining(preparationBuddie, buddieRotation.recentBuddieCodes) : 0;
   const buddieStartBlockReason = isPlayerMode && (!selectionReady || selectionError)
     ? selectionError || "Chargement de la zone…"
+    : isPlayerMode && buddieAssignmentBlocked
+      ? "Vérifie l’enregistrement de tes Buddies avant de commencer."
     : isPlayerMode && activeRuns.length > 0
       ? "Termine tes cultures en cours avant de lancer une nouvelle campagne."
       : isPlayerMode && !campaignParticipants.length
-        ? "Place un Buddie dans une zone active de l’entrepôt."
+        ? "Choisis un Buddie ci-dessus pour au moins une zone active."
       : isPlayerMode && new Set(campaignParticipants.map(member => member.buddieCode)).size !== campaignParticipants.length
-        ? "Chaque zone de la campagne doit avoir son propre Buddie. Ajuste le plan."
+        ? "Choisis un Buddie différent pour chaque zone."
     : remoteBurnsEnabled && (remoteCollection.loading || remoteCollection.error || !buddieRotation)
     ? remoteCollection.error || "Vérification des Buddies disponibles. Actualise la page si le chargement échoue."
     : remoteBurnsEnabled && selectedHeritage && !remoteHeritageVerified
@@ -637,7 +646,7 @@ function KqGameSession({
     : selectedBuddieRemaining > 0
       ? getKqBuddieRotationMessage(selectedBuddieRemaining)
       : isPlayerMode && unavailableParticipant
-        ? "Un Buddie placé est indisponible ou en rotation. Ajuste ton plan avant de commencer."
+        ? "Un Buddie est indisponible ou en rotation. Change-le ou retire-le ci-dessus."
         : "";
 
   const refreshBuddieRotation = useCallback(async () => {
@@ -680,6 +689,7 @@ function KqGameSession({
     const selected = selectKqClientRun(resolved, { zoneId: initialZoneId, runId: initialRunId, campaign: initialCampaign });
     let zone: KqWarehouseZone | null = null;
     let participants: ReturnType<typeof getKqCampaignParticipants> = [];
+    let confirmedWarehouse: KqBuddieAssignmentSnapshot | null = null;
     if (selected) {
       const zoneId = getKqClientRunZoneId(selected);
       zone = selected.state.campaign?.members.find(member => member.zoneId === initialZoneId)?.warehouse.zones[0]
@@ -688,8 +698,10 @@ function KqGameSession({
       throw new Error("Cette culture n’est plus disponible dans la zone choisie. Reviens à l’entrepôt.");
     } else {
       const response = await remoteRequest("/api/admin/placard/warehouse", { cache: "no-store", signal });
-      const warehouse = await response.json() as { state?: unknown; revision?: number; error?: string };
+      const warehouse = await response.json() as KqBuddieAssignmentSnapshot & { error?: string };
       if (!response.ok || !isKqWarehouseState(warehouse.state)) throw new Error(warehouse.error || "La zone est indisponible.");
+      if (!Number.isSafeInteger(warehouse.revision) || warehouse.revision < 1) throw new Error("Le plan doit être actualisé avant de choisir tes Buddies.");
+      confirmedWarehouse = warehouse;
       zone = warehouse.state.zones.find(item => item.id === initialZoneId) ?? null;
       if (initialZoneId && !zone) throw new Error("Cette zone n’existe plus. Choisis une zone dans l’entrepôt.");
       participants = getKqCampaignParticipants(warehouse.state, warehouse.revision ?? 0);
@@ -699,11 +711,20 @@ function KqGameSession({
     if (recoveredZoneId && selected?.state.phase !== "complete") clearKqZoneStartRequestKey((isolatedStorage?.session ?? window.sessionStorage), recoveredZoneId);
     if (selected?.state.campaign) clearKqZoneStartRequestKey((isolatedStorage?.session ?? window.sessionStorage), KQ_CAMPAIGN_START_SCOPE);
     setCampaignParticipants(participants);
+    setPreparationWarehouse(confirmedWarehouse);
+    setEnergyEstimate(null);
     setZoneContext(zone);
     setSelectionError("");
     setSelectionReady(true);
     return { ...resolved, activeRun: selected };
   }, [initialCampaign, initialRunId, initialZoneId, isolatedStorage?.session, isPlayerMode, remoteRequest]);
+
+  const applyBuddieAssignment = useCallback((snapshot: KqBuddieAssignmentSnapshot) => {
+    setPreparationWarehouse(snapshot);
+    setCampaignParticipants(getKqCampaignParticipants(snapshot.state, snapshot.revision));
+    setZoneContext(snapshot.state.zones.find(zone => zone.id === initialZoneId) ?? null);
+    setEnergyEstimate(null);
+  }, [initialZoneId]);
 
   const applyOfficialSessionPayload = useCallback((payload: PlayerSessionPayload) => {
     if (!lifecycle.current.mounted) return;
@@ -2034,6 +2055,9 @@ function KqGameSession({
   const contractRun = isPlayerMode && !api.isTutorial ? <KqCultureContract mode="run" runId={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId}
     refreshKey={`${state.stageIndex}:${state.phase}:${state.usedCards.length}:${state.quality}`} disabled={remoteAction !== null || careBusy} onBusyChange={setContractBusy} /> : null;
 
+  const contextPlan = preparationWarehouse?.state ?? state.warehouse?.sourceState;
+  const contextZoneIdentity = contextPlan && zoneContext ? getKqZoneIdentity(contextPlan, zoneContext.id) : null;
+  const contextZoneLabel = contextZoneIdentity && zoneContext ? `${contextZoneIdentity.label} · ${zoneContext.width * zoneContext.height} m²` : null;
   if (!hydrated) return <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page}><div className={styles.loading}>Ouverture de Botte du Chanvrier…</div></main>;
 
   if (isPlayerMode && viewMode !== "arena" && (!selectionReady || selectionError)) {
@@ -2061,8 +2085,8 @@ function KqGameSession({
         <section className={styles.setupPanel}
           data-preparation-deck={setupOpen && viewMode !== "arena" ? selectedCards.join(",") : undefined}
           data-preparation-heritage={setupOpen && viewMode !== "arena" ? selectedHeritage : undefined}>
-          <header className={styles.cultureIntro} data-culture-intro>
-            <h1 className={styles.cultureIntroTitle}>{zoneContext?.name ?? "Cultures"}</h1>
+          <header className={`${styles.cultureIntro} ${isPlayerMode && viewMode !== "arena" ? styles.preparationIntro : ""}`} data-culture-intro>
+            {isPlayerMode && viewMode !== "arena" ? <div><span>Culture · Préparation</span><h1 className={styles.cultureIntroTitle}>Préparer mes cultures</h1><p>Choisis tes Buddies, puis tes cartes. Tout se prépare ici.</p></div> : <h1 className={styles.cultureIntroTitle}>{contextZoneLabel ?? "Cultures"}</h1>}
             <Image src="/placard/map/culture-barn-sylvain-v1.webp" alt="" width={1536} height={512} loading="eager" sizes="(max-width: 760px) 100vw, 720px" />
           </header>
           <details className={styles.setupRules} data-culture-setup-help>
@@ -2085,7 +2109,7 @@ function KqGameSession({
             <article><span>Collection variétés</span><strong>{KQ_COLLECTIONS.buddies.title}</strong><p><b>{KQ_BUDDIES.length}</b> variétés jouables dans le prototype · {KQ_COLLECTIONS.buddies.totalCards} cartes dans l’album complet</p><div><i style={{ width: `${KQ_BUDDIES.length / KQ_COLLECTIONS.buddies.totalCards * 100}%` }} /></div></article>
             <article><span>Collection auxiliaire</span><strong>{KQ_COLLECTIONS.support.title}</strong><p><b>{ownedBotteCount}</b> références disponibles · {totalBotteCopies} copies · objectif {KQ_COLLECTIONS.support.totalCards}</p><div><i style={{ width: `${ownedBotteCount / KQ_COLLECTIONS.support.totalCards * 100}%` }} /></div></article>
           </div> : null}
-          {isPlayerMode && ownedBuddieCodes.length === 0 ? (
+          {isPlayerMode && !remoteCollection.loading && !remoteCollection.error && ownedBuddieCodes.length === 0 ? (
             <aside className={styles.collectionBlockingNotice} role="status">
               <Flame />
               <div>
@@ -2127,7 +2151,14 @@ function KqGameSession({
           {burnHistory.length > 0 ? <div className={styles.burnArchive}><Flame /><span><small>Registre permanent · {burnHistory.length} burns</small><strong>Cartes les plus utilisées</strong><div>{mostBurned.map(([code, count]) => <b key={code}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code} ×{count}</b>)}</div></span></div> : null}
           {playerPresentation ? <div className={styles.setupChoices} data-culture-setup-choices>
             {preparationNotice ? <p className={styles.preparationNotice} role="status" data-preparation-adjusted>{preparationNotice}</p> : null}
-            {isPlayerMode ? <div data-arena-tour="culture"><KqCampaignSummary participants={campaignParticipants} /><div className={styles.zoneNavigation}>{onOpenWarehouse ? <button type="button" data-preparation-edit-plan onClick={() => onOpenWarehouse(initialZoneId)}>Modifier le plan</button> : <Link href="/arene/placard?view=workshop">Modifier le plan</Link>}</div></div> : <details className={styles.setupChoice} open={setupSection === "buddie"} data-setup-choice="buddie" data-arena-tour="culture">
+            {isPlayerMode ? <div data-arena-tour="culture"><KqCultureBuddies snapshot={preparationWarehouse}
+              ownedCodes={remoteCollection.loading || remoteCollection.error ? null : ownedBuddieCodes}
+              artwork={ownedBuddieArtwork} rotation={buddieRotation} loading={remoteCollection.loading} disabled={remoteAction !== null || careBusy || pendingStart}
+              onSaved={applyBuddieAssignment} onBlockedChange={setBuddieAssignmentBlocked}
+              onOpenWarehouse={() => onOpenWarehouse ? onOpenWarehouse(initialZoneId) : router.push("/arene/placard?view=workshop")}
+              onRefresh={() => setCollectionRefreshNonce(value => value + 1)} />
+              {campaignParticipants.length > 0 ? <details className={styles.cultureDisclosure} data-preparation-projections><summary>Rendements et profils estimés</summary><KqCampaignSummary participants={campaignParticipants} /></details> : null}
+            </div> : <details className={styles.setupChoice} open={setupSection === "buddie"} data-setup-choice="buddie" data-arena-tour="culture">
               <summary onClick={event => { event.preventDefault(); setSetupSection(setupSection === "buddie" ? null : "buddie"); }}>
                 <span className={styles.setupChoiceIcon}><Leaf aria-hidden="true" /></span>
                 <span><small>1 · Ta variété</small><strong>{KQ_BUDDIES.find(buddie => buddie.code === selectedBuddie)?.name ?? "Choisir un Buddie"}</strong><em>{buddieStartBlockReason || "Ton Buddie reste dans ta collection."}</em></span>
@@ -2182,7 +2213,7 @@ function KqGameSession({
           {isPlayerMode && !api.isTutorial ? <KqCultureContract disabled={remoteAction !== null || careBusy || pendingStart} onBusyChange={setContractBusy} /> : null}
           {playerPresentation ? <section className={styles.setupLaunch} data-culture-preparation aria-labelledby="culture-preparation-title">
             <div><h2 id="culture-preparation-title">Prêt à cultiver ?</h2><p>{isPlayerMode ? "6 étapes communes. Dés, cartes et soins font avancer tous tes Buddies." : "6 étapes à jouer. Le sol vivant est inclus ; le coût d’énergie sera présenté avant de commencer."}</p>{buddieStartBlockReason ? <p className={styles.setupLaunchWarning} role="status">{buddieStartBlockReason}</p> : null}</div>
-            <button type="button" disabled={Boolean(buddieStartBlockReason) || remoteAction !== null || careBusy || contractBusy} onClick={() => setPendingStart(true)}>{remoteAction !== null || careBusy || contractBusy ? "Action en cours…" : isPlayerMode ? "Lancer la campagne" : "Lancer ma culture"}<ArrowRight size={20} aria-hidden="true" /></button>
+            <button type="button" data-culture-start-review disabled={Boolean(buddieStartBlockReason) || remoteAction !== null || careBusy || contractBusy} onClick={() => setPendingStart(true)}>{remoteAction !== null || careBusy || contractBusy ? "Action en cours…" : isPlayerMode ? "Vérifier et lancer" : "Lancer ma culture"}<ArrowRight size={20} aria-hidden="true" /></button>
             <details><summary>Comment se déroule une étape ?</summary><p>Lis la situation, utilise une carte ou un soin si tu le souhaites, puis lance les dés. Tu peux encore jouer une réaction avant de valider. Les achats et les cartes consommées demandent toujours ton action.</p></details>
           </section> : <KqCulturePreparation cardCount={selectedCards.length} note="Sol vivant inclus. Seules les cartes jouées sont consommées." disabled={Boolean(buddieStartBlockReason)} disabledReason={buddieStartBlockReason} busy={(remoteAction !== null || careBusy)} onEditDeck={() => {
             const target = document.getElementById("inventory-carousel-title") ?? document.getElementById("placard-deck");
@@ -2530,7 +2561,7 @@ function KqGameSession({
     <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page} data-view-mode={viewMode} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined} data-culture-play>
       {contractRun}
       <header className={styles.topbar}>
-        <div className={styles.gameBrand}><span className={styles.gameBrandMark} aria-hidden="true"><Image src="/mascots/home-welcome.png" alt="" width={1122} height={1402} sizes="64px" /></span><div><span>{tutorial ? "Kanab Quest · Culture d’essai" : isPlayerMode ? "Kanab Quest · Culture officielle" : "Kanab Quest · Prototype local"}</span><h1>{state.campaign ? "Ma campagne" : zoneContext?.name ?? "Ma culture"}</h1></div></div>
+        <div className={styles.gameBrand}><span className={styles.gameBrandMark} aria-hidden="true"><Image src="/mascots/home-welcome.png" alt="" width={1122} height={1402} sizes="64px" /></span><div><span>{tutorial ? "Kanab Quest · Culture d’essai" : isPlayerMode ? "Kanab Quest · Culture officielle" : "Kanab Quest · Prototype local"}</span><h1>{state.campaign ? "Ma campagne" : contextZoneLabel ?? "Ma culture"}</h1></div></div>
         <div className={styles.resources}><span><Zap />{state.xp} XP</span><span><Star /> Qualité {runProjection.projectedQuality}</span><span>Pression {state.pressure}/4</span>{!isPlayerMode ? <button type="button" onClick={reset}><RotateCcw /> Recommencer</button> : null}</div>
       </header>
 

@@ -39,11 +39,25 @@ describe("Kanab Quest player session ownership policy", () => {
     }
   });
 
-  it("uses the lightweight verified identity outside the loyalty shop", () => {
+  it("uses the lightweight verified identity unless specific profile fields are required", () => {
+    // These fields are absent from the verified identity. Keep the exceptions
+    // explicit so a new player endpoint cannot silently load a full profile.
+    const profileFieldsByRoute: Record<string, string[]> = {
+      "/boosters/route.ts": ["session.customer.loyaltyPoints", "session.customer.loyaltyPointsSpent"],
+      "/social/player/route.ts": ["firstName: session.customer.firstName"],
+    };
     for (const route of playerRouteFiles) {
       const relative = route.slice(playerRouteRoot.length).replaceAll("\\", "/");
-      if (relative === "/rankings/route.ts" || relative === "/boosters/route.ts") continue;
-      expect(readFileSync(route, "utf8"), route).toContain('getCurrentCustomerSessionByBackend("identity")');
+      if (relative === "/rankings/route.ts") continue;
+      const source = readFileSync(route, "utf8");
+      const profileFields = profileFieldsByRoute[relative];
+      if (profileFields) {
+        expect(source, route).toContain("getCurrentCustomerSessionByBackend()");
+        for (const field of profileFields) expect(source, route).toContain(field);
+      } else {
+        expect(source, route).toContain('getCurrentCustomerSessionByBackend("identity")');
+        expect(source, route).not.toContain("getCurrentCustomerSessionByBackend()");
+      }
     }
   });
 

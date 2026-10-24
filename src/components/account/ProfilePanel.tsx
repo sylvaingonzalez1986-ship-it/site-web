@@ -276,9 +276,9 @@ export function ProfilePanel() {
 
   if (loading) {
     return (
-      <section className={styles.page}>
+      <section data-ui-account="profile" className={styles.page}>
         <div className={styles.stateShell}>
-          <div className={styles.stateCard} role="status"><p className={styles.eyebrow}>Ton espace personnel</p>Chargement de ton profil…</div>
+          <div data-ui-account="paper" data-ui-shape="panel" className={styles.stateCard} role="status"><p className={styles.eyebrow}>Ton espace personnel</p>Chargement de ton profil…</div>
         </div>
       </section>
     );
@@ -289,22 +289,22 @@ export function ProfilePanel() {
     const loginHref = `/compte/connexion?next=${encodeURIComponent(nextUrl)}`;
 
     return (
-      <section className={styles.page}>
+      <section data-ui-account="profile" className={styles.page}>
         <div className={styles.stateShell}>
-          <article className={styles.stateCard}>
+          <article data-ui-account="paper" data-ui-shape="panel" className={styles.stateCard}>
             <p className={styles.eyebrow}>Ton espace personnel</p>
             <h1>Mon <span>profil.</span></h1>
             <p>
               Connecte-toi pour retrouver ta progression, tes quêtes, tes commandes et tes récompenses.
             </p>
             <div className={styles.stateActions}>
-              <Link
+              <Link data-ui-account="gold" data-ui-shape="control"
                 href="/fidelite"
                 className={styles.secondaryAction}
               >
                 Découvrir la progression
               </Link>
-              <Link
+              <Link data-ui-account="green" data-ui-shape="control"
                 href={loginHref}
                 className={styles.primaryAction}
               >
@@ -529,14 +529,14 @@ export function ProfilePanel() {
   const ActiveTabIcon = activeTabDefinition.icon;
 
   return (
-    <section className={styles.page}>
-      <header className={styles.hero}>
+    <section data-ui-account="profile" className={styles.page}>
+      <header data-ui-account="dark" data-ui-shape="panel" className={styles.hero}>
         <div className={styles.heroCopy}>
           <p className={styles.eyebrow}>Le club des bons vivants</p>
           <h1 className={styles.heroTitle}>Ton coin.<br /><span>Ta progression.</span></h1>
           <p className={styles.heroLead}>Salut {user.firstName || "à toi"} ! Tes points, tes trouvailles et la suite de l’aventure, c’est ici.</p>
           <div className={styles.heroActions}>
-            <Link href="/arene" className={styles.secondaryAction}><Swords size={18} /> Rejoindre l’arène <ArrowUpRight size={17} /></Link>
+            <Link data-ui-account="gold" data-ui-shape="control" href="/arene" className={styles.secondaryAction}><Swords size={18} /> Rejoindre l’arène <ArrowUpRight size={17} /></Link>
             <Link href="/profil/collection" className={styles.heroLink}><BookOpen size={18} /> Mon album <ArrowUpRight size={16} /></Link>
           </div>
         </div>
@@ -546,7 +546,7 @@ export function ProfilePanel() {
       </header>
 
       <div className={styles.shell}>
-        <div className={styles.overview} aria-label="Tes points fidélité">
+        <div data-ui-account="paper" data-ui-shape="panel" className={styles.overview} aria-label="Tes points fidélité">
           <div><span>Points cumulés</span><strong>{loyalty.points}<small> pts</small></strong></div>
           <div><span>Points disponibles</span><strong>{loyalty.spendablePoints}<small> pts</small></strong></div>
           <div><span>Commandes éligibles</span><strong>{loyalty.eligibleOrdersCount}</strong></div>
@@ -560,7 +560,7 @@ export function ProfilePanel() {
             const notification = getTabNotification(tab.key);
 
             return (
-              <button
+              <button data-ui-account="profile-tab" data-ui-shape="control"
                 key={tab.key}
                 id={`profile-tab-${tab.key}`}
                 type="button"
@@ -593,7 +593,7 @@ export function ProfilePanel() {
 
         <div className={styles.profileGrid}>
           <aside className={styles.summaryPanel} aria-label="Résumé du profil">
-            <div className={styles.memberCard}>
+            <div data-ui-account="paper" data-ui-shape="panel" className={styles.memberCard}>
               <div className={styles.memberTop}><span>Carte de membre</span><Star size={16} aria-hidden="true" /></div>
               <div className={styles.memberIdentity}>
                 <span className={styles.avatar}>{getInitials(user.firstName, user.lastName)}</span>
@@ -606,13 +606,13 @@ export function ProfilePanel() {
               </div>
               <button type="button" className={styles.memberEdit} onClick={() => setActiveTabAndSync("infos")}>Modifier mes infos <ArrowUpRight size={16} /></button>
             </div>
-            <Link href="/arene" className={styles.arenaCard}>
+            <Link data-ui-account="dark" data-ui-shape="control" href="/arene" className={styles.arenaCard}>
               <Swords size={22} aria-hidden="true" /><div><strong>L’aventure continue</strong><p>Un tour dans l’arène ?</p></div><ArrowUpRight size={18} aria-hidden="true" />
             </Link>
             <button type="button" onClick={logout} className={styles.logout}><LogOut size={16} /> Se déconnecter</button>
           </aside>
 
-          <div
+          <div data-ui-account="profile-panel" data-ui-shape="panel"
             ref={activePanelRef}
             id={`profile-tabpanel-${activeTab}`}
             role="tabpanel"
@@ -630,7 +630,7 @@ export function ProfilePanel() {
 
           {activeTab === "fidelite" && (
             <>
-              <div className={styles.progressCard}>
+              <div data-ui-account="progress-panel" data-ui-shape="panel" className={styles.progressCard}>
                 <p className={styles.eyebrow}>{loyalty.currentBadge.unlocked ? "Ton palier actuel" : "L’aventure commence"}</p>
                 <div className="mt-3 flex items-center gap-3">
                   <LoyaltyBadgeIllustration
@@ -681,7 +681,7 @@ export function ProfilePanel() {
                 <p className={styles.sectionHint}>Ouvre un palier pour découvrir tous ses avantages.</p>
                 <div className={styles.badgeList}>
                   {loyalty.badges.map((badge) => (
-                    <details key={badge.id} className={styles.badgeDetails} data-unlocked={badge.unlocked}>
+                    <details data-ui-account="badge-panel" data-ui-shape="panel" key={badge.id} className={styles.badgeDetails} data-unlocked={badge.unlocked}>
                       <summary>
                         <LoyaltyBadgeIllustration badgeId={badge.id} unlocked={badge.unlocked} size="sm" />
                         <span className={styles.badgeName}><strong>{badge.label}</strong><small>{badge.minPoints.toLocaleString("fr-FR")} points</small></span>
@@ -703,7 +703,7 @@ export function ProfilePanel() {
                 </div>
               </section>
 
-              <div className={styles.referralCard} data-tutorial="profile-referral">
+              <div data-ui-account="referral-panel" data-ui-shape="panel" className={styles.referralCard} data-tutorial="profile-referral">
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div>
                     <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Parrainage</p>
@@ -725,13 +725,13 @@ export function ProfilePanel() {
                 <details className={styles.referralDetails}>
                   <summary>Mon code, mes bonus et mon parrain <ChevronDown size={16} aria-hidden="true" /></summary>
                 <div className="mt-3 grid gap-3 md:grid-cols-2">
-                  <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
+                  <div data-ui-account="fill-f7f4ee" data-ui-shape="panel" className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
                     <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Mon code</p>
                     <p className="mt-1 font-mono text-lg font-bold text-ink">
                       {referralSummary?.referralCode || user.referralCode || "-"}
                     </p>
                   </div>
-                  <div className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
+                  <div data-ui-account="fill-f7f4ee" data-ui-shape="panel" className="rounded border-2 border-[#1a1a1a] bg-[#f7f4ee] p-3">
                     <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Mon statut filleul</p>
                     <p className="mt-1 text-sm font-semibold text-ink">
                       {referralSummary?.referredByCode
@@ -743,23 +743,23 @@ export function ProfilePanel() {
 
                 {referralSummary && (
                   <div className={styles.referralStats}>
-                    <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
+                    <div data-ui-account="fill-ffffff" data-ui-shape="panel" className="rounded border-2 border-[#1a1a1a] bg-white p-3">
                       <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Filleuls</p>
                       <p className="mt-1 inline-flex items-center gap-2 text-lg font-bold text-ink">
                         <Users size={16} /> {referralSummary.totalReferrals}
                       </p>
                     </div>
-                    <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
+                    <div data-ui-account="fill-ffffff" data-ui-shape="panel" className="rounded border-2 border-[#1a1a1a] bg-white p-3">
                       <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Récompenses</p>
                       <p className="mt-1 inline-flex items-center gap-2 text-lg font-bold text-ink">
                         <Gift size={16} /> {referralSummary.rewardedReferrals}
                       </p>
                     </div>
-                    <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
+                    <div data-ui-account="fill-ffffff" data-ui-shape="panel" className="rounded border-2 border-[#1a1a1a] bg-white p-3">
                       <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points parrains</p>
                       <p className="mt-1 text-lg font-bold text-ink">{referralSummary.pointsEarnedAsReferrer}</p>
                     </div>
-                    <div className="rounded border-2 border-[#1a1a1a] bg-white p-3">
+                    <div data-ui-account="fill-ffffff" data-ui-shape="panel" className="rounded border-2 border-[#1a1a1a] bg-white p-3">
                       <p className="text-xs uppercase tracking-[0.08em] text-charcoal">Points filleul</p>
                       <p className="mt-1 text-lg font-bold text-ink">{referralSummary.pointsEarnedAsReferee}</p>
                     </div>
@@ -813,12 +813,12 @@ export function ProfilePanel() {
             <>
               <h2 className="font-display text-3xl">Mes commandes ({sortedOrders.length})</h2>
               {sortedOrders.length === 0 && (
-                <div className={styles.emptyState}><ShoppingBag size={32} aria-hidden="true" /><h3>Ta première trouvaille t’attend.</h3><p>Tes commandes et leur suivi apparaîtront ici.</p><Link href="/boutique" className={styles.primaryAction}>Explorer la boutique <ArrowUpRight size={16} /></Link></div>
+                <div className={styles.emptyState}><ShoppingBag size={32} aria-hidden="true" /><h3>Ta première trouvaille t’attend.</h3><p>Tes commandes et leur suivi apparaîtront ici.</p><Link data-ui-account="green" data-ui-shape="control" href="/boutique" className={styles.primaryAction}>Explorer la boutique <ArrowUpRight size={16} /></Link></div>
               )}
 
               <div className="mt-4 grid gap-4">
                 {sortedOrders.map((order) => (
-                  <button
+                  <button data-ui-account="order-entry" data-ui-shape="control"
                     key={order.id}
                     type="button"
                     className="card-cartoon w-full bg-white p-4 text-left transition-colors hover:bg-[#f7f4ee]"
@@ -831,10 +831,10 @@ export function ProfilePanel() {
                       </p>
                     </div>
                     <div className="mt-2 flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.08em]">
-                      <span className={`pill-cartoon px-3 py-1 ${getOrderStatusColorClass(order.status)}`}>
+                      <span data-ui-account="order-status" data-ui-shape="panel" className={`pill-cartoon px-3 py-1 ${getOrderStatusColorClass(order.status)}`}>
                         {orderStatusLabels[order.status]}
                       </span>
-                      <span className={`pill-cartoon px-3 py-1 ${getPaymentStateColorClass(order.paymentState)}`}>
+                      <span data-ui-account="order-status" data-ui-shape="panel" className={`pill-cartoon px-3 py-1 ${getPaymentStateColorClass(order.paymentState)}`}>
                         Paiement: {paymentStateLabels[order.paymentState]}
                       </span>
                     </div>
@@ -858,7 +858,7 @@ export function ProfilePanel() {
             <>
               <p className={styles.sectionHint}>Renseigne tes informations personnelles et ton adresse de livraison.</p>
               {!user.dateOfBirth && (
-                <div
+                <div data-ui-account="fill-fef2f2" data-ui-shape="panel"
                   className="mt-4 border-2 border-red-700 bg-red-50 p-4 text-sm text-red-900"
                   role="alert"
                 >
@@ -973,7 +973,7 @@ export function ProfilePanel() {
 
               {status && <p className="mt-3 text-sm font-semibold text-green-700">{status}</p>}
               <div className="mt-8 grid gap-4 md:grid-cols-2">
-                <article className="card-cartoon bg-white p-5">
+                <article data-ui-account="fill-ffffff" data-ui-shape="panel" className="card-cartoon bg-white p-5">
                   <div className="flex items-start gap-3">
                     <span className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-[#fff7e4] text-ink">
                       <Download className="h-5 w-5" aria-hidden="true" />
@@ -998,7 +998,7 @@ export function ProfilePanel() {
                   )}
                 </article>
 
-                <article className="card-cartoon bg-[#fff7e4] p-5">
+                <article data-ui-account="fill-fff7e4" data-ui-shape="panel" className="card-cartoon bg-[#fff7e4] p-5">
                   <h3 className="text-lg font-bold text-ink">Vie privée</h3>
                   <p className="mt-2 text-sm leading-relaxed text-charcoal">
                     Consulte la politique de confidentialité et la politique cookies pour comprendre
@@ -1015,14 +1015,14 @@ export function ProfilePanel() {
                 </article>
               </div>
 
-              <article className="card-cartoon mt-6 border-[3px] border-[#7a1010] bg-[#fff1f1] p-5">
+              <article data-ui-account="fill-fff1f1" data-ui-shape="panel" className="card-cartoon mt-6 border-[3px] border-[#7a1010] bg-[#fff1f1] p-5">
                 <h3 className="text-lg font-bold text-[#7a1010]">Zone sensible</h3>
                 <p className="mt-2 text-sm leading-relaxed text-charcoal">
                   La suppression du compte est irréversible. Les commandes sont conservées pour les
                   obligations comptables, mais les données personnelles associées sont anonymisées.
                 </p>
                 {!showDeleteConfirmation ? (
-                  <button
+                  <button data-ui-account="fill-7a1010" data-ui-shape="control"
                     type="button"
                     onClick={() => {
                       setDeleteStatus(null);
@@ -1045,7 +1045,7 @@ export function ProfilePanel() {
                       onChange={(event) => setDeleteConfirmationEmail(event.target.value)}
                     />
                     <div className="flex flex-wrap gap-2">
-                      <button
+                      <button data-ui-account="fill-7a1010" data-ui-shape="control"
                         type="button"
                         onClick={requestAccountDeletion}
                         disabled={deletingAccount}
@@ -1078,11 +1078,11 @@ export function ProfilePanel() {
             <>
 
               {user.promoCodes.length === 0 ? (
-                <div className={styles.emptyState}><Tag size={32} aria-hidden="true" /><h3>Les bonnes surprises arrivent.</h3><p>Tu retrouveras ici les codes promo attribués à ton compte.</p><button type="button" className={styles.primaryAction} onClick={() => setActiveTabAndSync("missions")}>Découvrir les quêtes <ArrowUpRight size={16} /></button></div>
+                <div className={styles.emptyState}><Tag size={32} aria-hidden="true" /><h3>Les bonnes surprises arrivent.</h3><p>Tu retrouveras ici les codes promo attribués à ton compte.</p><button data-ui-account="green" data-ui-shape="control" type="button" className={styles.primaryAction} onClick={() => setActiveTabAndSync("missions")}>Découvrir les quêtes <ArrowUpRight size={16} /></button></div>
               ) : (
                 <div className="mt-4 grid gap-3 md:grid-cols-2">
                   {user.promoCodes.map((promo) => (
-                    <article key={`${promo.code}-${promo.createdAt}`} className="card-cartoon bg-white p-4">
+                    <article data-ui-account="fill-ffffff" data-ui-shape="panel" key={`${promo.code}-${promo.createdAt}`} className="card-cartoon bg-white p-4">
                       <p className="text-lg font-bold text-ink">{promo.code}</p>
                       <p className="text-sm text-charcoal">{promo.discountPercent}% de réduction</p>
                       <p className="mt-1 text-xs font-semibold text-ink">

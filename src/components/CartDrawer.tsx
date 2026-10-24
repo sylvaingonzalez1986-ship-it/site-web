@@ -625,7 +625,8 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
 
   return (
     <>
-      <dialog
+      <dialog data-ui-commerce="cart" data-ui-shape="panel"
+        data-empty={items.length === 0}
         ref={drawerRef}
         aria-label="Ton panier"
         className={styles.drawer}
@@ -641,7 +642,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             <p className={styles.eyebrow}>Les Chanvriers Bretons · Le Marché</p>
             <h2>Ton panier<span className={styles.itemCount}>{totalItems}</span></h2>
           </div>
-          <button type="button" className={styles.closeButton} onClick={onClose} aria-label="Fermer le panier" autoFocus>
+          <button data-ui-commerce="cart-close" data-ui-shape="control" type="button" className={styles.closeButton} onClick={onClose} aria-label="Fermer le panier" autoFocus>
             <X size={22} aria-hidden="true" />
           </button>
         </header>
@@ -651,20 +652,22 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
           <div className={styles.items}>
             {items.length === 0 && (
               <div className={styles.emptyCart}>
-                <span className={styles.emptyIcon}><ShoppingBag size={36} strokeWidth={1.5} aria-hidden="true" /></span>
-                <p className={styles.kicker}>Le Marché t’attend</p>
-                <h3>Une belle récolte<br />à composer.</h3>
-                <p>Ton panier est vide. Découvre les produits disponibles et ajoute tes favoris.</p>
-                <div className="mt-3">
-                  <button type="button" onClick={() => { onClose(); router.push("/boutique"); }} className="btn-cartoon btn-primary min-h-11 px-3 text-xs">
-                    Découvrir les produits
-                  </button>
+                <span data-ui-commerce="gold" data-ui-shape="panel" className={styles.emptyIcon}><ShoppingBag size={36} strokeWidth={1.5} aria-hidden="true" /></span>
+                <div className={styles.emptyCopy}>
+                  <p className={styles.kicker}>Le Marché t’attend</p>
+                  <h3>Une belle récolte<br />à composer.</h3>
+                  <p>Ton panier est vide. Découvre les produits disponibles et ajoute tes favoris.</p>
+                  <div className="mt-3">
+                    <button data-ui-commerce="primary" data-ui-shape="control" type="button" onClick={() => { onClose(); router.push("/boutique"); }} className={`btn-cartoon btn-primary min-h-11 px-3 text-xs ${styles.emptyAction}`}>
+                      Découvrir les produits
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
 
             {cartError && (
-              <div className={styles.error} role="alert">
+              <div data-ui-commerce="cart-error" data-ui-shape="panel" className={styles.error} role="alert">
                 {cartError}
               </div>
             )}
@@ -674,7 +677,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
               const itemAvailableQuantity = getAvailableQuantity(item, itemVariantId);
 
               return (
-                <article key={item.id} className={styles.product}>
+                <article data-ui-commerce="paper" data-ui-shape="panel" key={item.id} className={styles.product}>
                   <div className={styles.productHead}>
                     <div className={styles.productImage}>
                       {item.image ? <Image src={item.image} alt="" width={88} height={88} sizes="88px" /> : <ShoppingBag aria-hidden="true" />}
@@ -695,7 +698,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                         </p>
                       )}
                     </div>
-                    <button
+                    <button data-ui-commerce="cart-icon" data-ui-shape="control"
                       type="button"
                       onClick={() => {
                         setCartError(null);
@@ -708,7 +711,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     </button>
                   </div>
                   <div className={styles.quantityRow}>
-                    <button
+                    <button data-ui-commerce="cart-icon" data-ui-shape="control"
                       type="button"
                       onClick={() => {
                         setCartError(null);
@@ -742,7 +745,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                       className={styles.quantityInput}
                       aria-label={`Quantite ${item.name}`}
                     />
-                    <button
+                    <button data-ui-commerce="cart-icon" data-ui-shape="control"
                       type="button"
                       onClick={() => {
                         const result = addToCart(item);
@@ -817,12 +820,12 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   placeholder="Téléphone"
                 />
                 </label>
-                <div className={styles.deliveryOptions}>
+                <div data-ui-commerce="sage" data-ui-shape="panel" className={styles.deliveryOptions}>
                   <p className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
                     Mode de livraison
                   </p>
                   <div className={styles.deliverySwitch} role="group" aria-label="Mode de livraison">
-                    <button
+                    <button data-ui-commerce="delivery-choice" data-ui-shape="control"
                       type="button"
                       className={styles.deliveryChoice}
                       aria-pressed={deliveryMethod === "home"}
@@ -830,7 +833,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     >
                       Domicile {homeShippingFee <= 0 ? "(offert)" : `(${formatPrice(homeShippingFee)})`}
                     </button>
-                    <button
+                    <button data-ui-commerce="delivery-choice" data-ui-shape="control"
                       type="button"
                       className={styles.deliveryChoice}
                       aria-pressed={deliveryMethod === "relay"}
@@ -927,7 +930,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     disabled={Boolean(selectedLotteryRewardClaimId)}
                   />
                   </label>
-                  <button
+                  <button data-ui-commerce="secondary" data-ui-shape="control"
                     type="button"
                     className="btn-cartoon btn-secondary h-10 px-3 text-xs"
                     disabled={promoLoading || items.length === 0 || Boolean(selectedLotteryRewardClaimId)}
@@ -963,7 +966,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                     ))}
                   </select>
                   </label>
-                  <button
+                  <button data-ui-commerce="secondary" data-ui-shape="control"
                     type="button"
                     className="btn-cartoon btn-secondary h-10 px-3 text-xs"
                     disabled={lotteryLoading || !selectedLotteryRewardClaimId || items.length === 0 || promoCode.trim().length > 0}
@@ -980,7 +983,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             </section>}
           </div>
 
-        {items.length > 0 && <section className={styles.summary} aria-label="Récapitulatif de la commande">
+        {items.length > 0 && <section data-ui-commerce="cart-summary" data-ui-shape="panel" className={styles.summary} aria-label="Récapitulatif de la commande">
           <p className={styles.kicker}>Le récapitulatif</p>
           <h3>Ta commande</h3>
           <div className="flex items-center justify-between text-base font-extrabold">
@@ -1036,7 +1039,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             </summary>
             <div className={styles.gainsContent}>
               {isAuthenticated && <div className="mt-2 grid grid-cols-2 gap-2">
-                <button
+                <button data-ui-commerce="cart-benefit" data-ui-shape="control"
                   type="button"
                   onClick={() => setSummaryModal("loyalty")}
                   className={styles.benefit}
@@ -1044,7 +1047,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   <p className="text-[10px] font-bold uppercase tracking-[0.06em] text-charcoal">Fidélité</p>
                   <p className="text-xs font-semibold text-ink">+{earnedTotalLoyaltyPoints} pt{earnedTotalLoyaltyPoints > 1 ? "s" : ""}</p>
                 </button>
-                <button
+                <button data-ui-commerce="cart-benefit" data-ui-shape="control"
                   type="button"
                   onClick={() => setSummaryModal("packs")}
                   className={styles.benefit}
@@ -1118,11 +1121,11 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
             {!authLoading && !isAuthenticated && items.length > 0 && (
               <div className="space-y-2">
                 <div className={styles.deliverySwitch} role="group" aria-label="Estimer la livraison">
-                  <button type="button" aria-pressed={deliveryMethod === "home"} className={styles.deliveryChoice} onClick={() => updateCheckoutDraft({ deliveryMethod: "home" })}>Domicile</button>
-                  <button type="button" aria-pressed={deliveryMethod === "relay"} className={styles.deliveryChoice} onClick={() => updateCheckoutDraft({ deliveryMethod: "relay" })}>Point relais</button>
+                  <button data-ui-commerce="delivery-choice" data-ui-shape="control" type="button" aria-pressed={deliveryMethod === "home"} className={styles.deliveryChoice} onClick={() => updateCheckoutDraft({ deliveryMethod: "home" })}>Domicile</button>
+                  <button data-ui-commerce="delivery-choice" data-ui-shape="control" type="button" aria-pressed={deliveryMethod === "relay"} className={styles.deliveryChoice} onClick={() => updateCheckoutDraft({ deliveryMethod: "relay" })}>Point relais</button>
                 </div>
                 <p className="text-xs text-charcoal">Ton panier est conservé sur ce navigateur pendant 48 h. Connecte-toi ou crée ton compte pour poursuivre la commande.</p>
-                <button type="button" onClick={goToLogin} className="btn-cartoon btn-primary min-h-11 w-full px-3 py-3 text-sm">Continuer ma commande</button>
+                <button data-ui-commerce="primary" data-ui-shape="control" type="button" onClick={goToLogin} className="btn-cartoon btn-primary min-h-11 w-full px-3 py-3 text-sm">Continuer ma commande</button>
                 <button type="button" onClick={onClose} className="min-h-11 w-full text-sm font-bold underline">Continuer mes achats</button>
               </div>
             )}
@@ -1146,7 +1149,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                 <p className="text-xs font-semibold text-charcoal">
                   {checkoutEligibility.error ?? "Profil non éligible à la commande."}
                 </p>
-                <button
+                <button data-ui-commerce="secondary" data-ui-shape="control"
                   type="button"
                   onClick={goToProfile}
                   className="btn-cartoon btn-secondary h-9 px-3 text-xs"
@@ -1159,9 +1162,9 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
         </section>}
           </div>
         </div>
-        {open && items.length > 0 && !checkoutVisible && <div className={styles.mobileSummary}>
+        {open && items.length > 0 && !checkoutVisible && <div data-ui-commerce="cart-mobile" className={styles.mobileSummary}>
           <div><span>{isAuthenticated ? "Total à payer" : "Total estimé"}</span><strong>{formatPrice(finalAmountToPay)} TTC</strong></div>
-          <button type="button" onClick={() => {
+          <button data-ui-commerce="mobile-control" data-ui-shape="control" type="button" onClick={() => {
             checkoutAreaRef.current?.scrollIntoView({ block: "center" });
             checkoutAreaRef.current?.focus({ preventScroll: true });
           }}>Récapitulatif</button>

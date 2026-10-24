@@ -50,6 +50,8 @@
 
 .copy .eyebrow { color: var(--market-yellow); }
 
+.identity { display: contents; }
+
 .title {
   margin-top: 0.5rem;
   font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
@@ -244,4 +246,167 @@
     align-items: flex-start;
     flex-direction: column;
   }
+}
+
+/* Expanded companion to the sage producer cards; Original keeps its layout. */
+:global(html[data-site-ui="quartier"]) .panel[data-ui-commerce="producer-panel"] {
+  --site-ui-material: url("#site-ui-fill-93afa0");
+  --producer-gutter: clamp(12px, 2.2vw, 24px);
+  margin: 0 auto;
+}
+
+:global(html[data-site-ui="quartier"]) .hero {
+  grid-template-columns: minmax(220px, .85fr) minmax(0, 1.15fr);
+  align-items: start;
+  gap: var(--producer-gutter);
+  padding: var(--producer-gutter);
+  border: 0;
+}
+
+:global(html[data-site-ui="quartier"]) .image {
+  min-height: 0;
+  aspect-ratio: 1;
+  border-radius: 0;
+}
+
+:global(html[data-site-ui="quartier"]) .photoWindow { background: var(--market-paper); }
+:global(html[data-site-ui="quartier"]) .photo { object-fit: contain; padding: 12px; }
+
+:global(html[data-site-ui="quartier"]) .copy {
+  min-width: 0;
+  padding: 0;
+  background: transparent;
+  color: var(--ink);
+}
+
+:global(html[data-site-ui="quartier"]) :is(.identity, .description, .tag, .productsHeader, .productCount) {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+:global(html[data-site-ui="quartier"]) :is(.identity, .description, .tag, .productsHeader, .productCount)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border: 2px solid transparent;
+  border-image: url("/placard/ui/panel-paper-v1.webp") 48 fill / var(--producer-detail-edge, 12px) / 0 stretch;
+  filter: var(--producer-detail-material);
+}
+
+:global(html[data-site-ui="quartier"]) .identity {
+  --producer-detail-material: url("#site-ui-fill-172923");
+  display: block;
+  padding: clamp(16px, 2.4vw, 26px);
+  color: var(--market-paper);
+}
+
+:global(html[data-site-ui="quartier"]) :is(.identity, .tag, .productCount)::before {
+  border-image-source: url("/placard/ui/control-paper-v2.webp");
+  border-image-slice: 40 fill;
+}
+
+:global(html[data-site-ui="quartier"]) .title {
+  font-size: clamp(2.1rem, 4.5vw, 4.4rem);
+  line-height: .95;
+  letter-spacing: -.035em;
+}
+
+:global(html[data-site-ui="quartier"]) .location {
+  align-items: flex-start;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
+}
+
+:global(html[data-site-ui="quartier"]) .location svg { flex-shrink: 0; }
+
+:global(html[data-site-ui="quartier"]) .description {
+  --producer-detail-material: url("#site-ui-fill-ffffff");
+  margin-top: 14px;
+  padding: clamp(16px, 2vw, 22px);
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+:global(html[data-site-ui="quartier"]) .description::before { opacity: .92; }
+
+:global(html[data-site-ui="quartier"]) .tag {
+  --producer-detail-material: url("#site-ui-fill-efc451");
+  --producer-detail-edge: 7px;
+  max-width: 100%;
+  padding: .5rem .7rem;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+:global(html[data-site-ui="quartier"]) .links {
+  gap: .75rem;
+  padding: 4px;
+}
+
+:global(html[data-site-ui="quartier"]) .facts {
+  align-items: start;
+  gap: 14px;
+  padding: 0 var(--producer-gutter) var(--producer-gutter);
+  border: 0;
+  background: transparent;
+}
+
+:global(html[data-site-ui="quartier"]) .fact[data-ui-commerce="paper"] {
+  --site-ui-material: url("#site-ui-fill-e6ebe0");
+  min-width: 0;
+}
+
+:global(html[data-site-ui="quartier"]) .factSummary { padding: 16px; }
+:global(html[data-site-ui="quartier"]) .factSummary:focus-visible { outline-offset: -6px; box-shadow: none; }
+:global(html[data-site-ui="quartier"]) .factValue { overflow-wrap: anywhere; }
+:global(html[data-site-ui="quartier"]) .factBody {
+  margin: 0 14px;
+  padding: 12px 0 16px 18px;
+  border-top: 1px solid #17292340;
+}
+
+:global(html[data-site-ui="quartier"]) .products { padding: 0 var(--producer-gutter) var(--producer-gutter); }
+:global(html[data-site-ui="quartier"]) .productsHeader {
+  --producer-detail-material: url("#site-ui-fill-172923");
+  align-items: center;
+  padding: 18px 22px;
+  color: var(--market-paper);
+}
+
+:global(html[data-site-ui="quartier"]) .productsHeader > div { min-width: 0; }
+:global(html[data-site-ui="quartier"]) .productsHeader .eyebrow { color: var(--market-yellow); }
+:global(html[data-site-ui="quartier"]) .productsTitle {
+  font-size: clamp(1.8rem, 3.5vw, 3rem);
+  line-height: 1;
+  overflow-wrap: anywhere;
+}
+
+:global(html[data-site-ui="quartier"]) .productsHeader .productCount {
+  --producer-detail-material: url("#site-ui-fill-efc451");
+  --producer-detail-edge: 8px;
+  flex: 0 0 auto;
+  padding: .65rem .8rem;
+  color: var(--ink);
+  letter-spacing: .06em;
+}
+
+:global(html[data-site-ui="quartier"]) .empty[data-ui-commerce="outline-panel"] {
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+  color: var(--ink);
+}
+
+@media (max-width: 900px) {
+  :global(html[data-site-ui="quartier"]) .hero { grid-template-columns: 1fr; }
+  :global(html[data-site-ui="quartier"]) .image { max-width: 420px; justify-self: center; }
+}
+
+@media (max-width: 640px) {
+  :global(html[data-site-ui="quartier"]) .productsHeader { align-items: flex-start; padding: 16px; }
+  :global(html[data-site-ui="quartier"]) .productGrid { grid-template-columns: 1fr; }
 }

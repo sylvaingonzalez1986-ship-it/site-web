@@ -1,0 +1,199 @@
+/* Optional contour treatment. Existing layout, typography and text colours remain
+   owned by the original commerce styles. The filters retain each current fill. */
+html[data-site-ui="quartier"] [data-ui-commerce][data-ui-shape]:not([data-ui-commerce="cart"], [data-ui-commerce="cart-summary"], [data-ui-commerce="benefit-dialog"], [data-ui-commerce="producer-close"], [data-ui-commerce="photo-control"]) {
+  position: relative;
+}
+
+html[data-site-ui="quartier"] :is(
+  [data-ui-commerce="paper"],
+  [data-ui-commerce="product-card"],
+  [data-ui-commerce="product-shell"],
+  [data-ui-commerce="producer-panel"],
+  [data-ui-commerce="cart"],
+  [data-ui-commerce="benefit-dialog"]
+) {
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="gold"] {
+  --site-ui-material: url("#site-ui-fill-efc451");
+}
+
+html[data-site-ui="quartier"] :is([data-ui-commerce="sage"], [data-ui-commerce="cart-summary"]) {
+  --site-ui-material: url("#site-ui-fill-e8efe4");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="order-panel"] {
+  --site-ui-material: url("#site-ui-fill-ebe8ce");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="stock-alert"] {
+  --site-ui-material: url("#site-ui-fill-f8d7da");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="cart-error"] {
+  --site-ui-material: url("#site-ui-fill-fff0e8");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="promo-panel"] {
+  --site-ui-material: url("#site-ui-fill-d35400");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="outline-panel"] {
+  --site-ui-material: url("#site-ui-outline-172923");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="primary"] {
+  --site-ui-material: url("#site-ui-fill-efc451");
+  --site-ui-hover-material: url("#site-ui-fill-087b70");
+}
+
+html[data-site-ui="quartier"] :is([data-ui-commerce="secondary"], [data-ui-commerce="producer-close"]) {
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+  --site-ui-hover-material: url("#site-ui-fill-087b70");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="shop-tab"] {
+  --site-ui-material: url("#site-ui-fill-003f30");
+  --site-ui-hover-material: url("#site-ui-fill-efc451");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="shop-tab"]::before { opacity: .858824; }
+html[data-site-ui="quartier"] [data-ui-commerce="shop-tab"][aria-pressed="true"]::before { opacity: 1; }
+html[data-site-ui="quartier"] [data-ui-commerce="shop-tab"][aria-pressed="true"] {
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="shop-filter"] {
+  --site-ui-material: url("#site-ui-outline-fffaf1");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="shop-filter"][aria-pressed="true"] {
+  --site-ui-material: url("#site-ui-fill-efc451");
+}
+
+html[data-site-ui="quartier"] :is([data-ui-commerce="paper-control"], [data-ui-commerce="tasting-link"], [data-ui-commerce="cart-icon"], [data-ui-commerce="cart-benefit"]) {
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+  --site-ui-hover-material: url("#site-ui-fill-efc451");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="paper-control"] {
+  --site-ui-hover-material: url("#site-ui-fill-fff1d6");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="cart-benefit"]:first-child {
+  --site-ui-material: url("#site-ui-fill-eae7c5");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="notebook-link"] {
+  --site-ui-material: url("#site-ui-fill-efc451");
+  --site-ui-hover-material: url("#site-ui-fill-efc451");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="tasting-summary"] {
+  --site-ui-material: url("#site-ui-fill-087b70");
+  --site-ui-hover-material: url("#site-ui-fill-172923");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="tasting-badge"] {
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+  --site-ui-hover-material: url("#site-ui-fill-f5ebd0");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="cart-close"] {
+  --site-ui-material: url("#site-ui-fill-efc451");
+  --site-ui-hover-material: url("#site-ui-fill-fff1d6");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="benefit-close"] {
+  --site-ui-material: url("#site-ui-fill-20312b");
+  --site-ui-hover-material: url("#site-ui-fill-efc451");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="delivery-choice"] {
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="delivery-choice"][aria-pressed="true"] {
+  --site-ui-material: url("#site-ui-fill-087b70");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="mobile-control"] {
+  --site-ui-material: url("#site-ui-fill-00563f");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="cart-mobile"] [data-ui-commerce="mobile-control"] {
+  --site-ui-material: url("#site-ui-fill-087b70");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="analysis-control"] {
+  --site-ui-material: url("#site-ui-fill-e8f7f2");
+  --site-ui-hover-material: url("#site-ui-fill-d7f0e8");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="video-control"] {
+  --site-ui-material: url("#site-ui-fill-fff3e8");
+  --site-ui-hover-material: url("#site-ui-fill-ffe8d0");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="producer-arrow"] {
+  --site-ui-material: url("#site-ui-fill-efc451");
+  --site-ui-hover-material: url("#site-ui-fill-003f30");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="site-paper"] {
+  --site-ui-material: url("#site-ui-fill-f6f0e6");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="white-panel"] {
+  --site-ui-material: url("#site-ui-fill-ffffff");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="payment-status"] { --site-ui-material: url("#site-ui-fill-fff5da"); }
+html[data-site-ui="quartier"] [data-ui-commerce="payment-status"][class*="bg-[#f8d7da]"] { --site-ui-material: url("#site-ui-fill-f8d7da"); }
+html[data-site-ui="quartier"] [data-ui-commerce="payment-status"][class*="bg-[#d4f5dc]"] { --site-ui-material: url("#site-ui-fill-d4f5dc"); }
+
+html[data-site-ui="quartier"] [data-ui-commerce="recovery-error"] {
+  --site-ui-material: url("#site-ui-fill-fef2f2");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="site-primary"] {
+  --site-ui-material: url("#site-ui-fill-00563f");
+  --site-ui-hover-material: url("#site-ui-fill-111512");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="site-secondary"] {
+  --site-ui-material: url("#site-ui-fill-f6f0e6");
+  --site-ui-hover-material: url("#site-ui-fill-ce5a30");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="quantity-control"] {
+  --site-ui-material: url("#site-ui-fill-f6f0e6");
+}
+
+html[data-site-ui="quartier"] :is([data-ui-commerce="product-card"], [data-ui-commerce="order-panel"]) [data-ui-commerce="quantity-control"] {
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="photo-control"] {
+  --site-ui-material: url("#site-ui-fill-000000");
+}
+
+html[data-site-ui="quartier"] [data-ui-commerce="photo-control"]::before { opacity: .3; }
+
+/* Selected/hover rules in the original modules still determine text colours.
+   Suppress only their rectangular paints above the material layer. */
+html[data-site-ui="quartier"] [data-ui-commerce][data-ui-shape] {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+@media (hover: hover) {
+  html[data-site-ui="quartier"] [data-ui-commerce="shop-tab"]:hover:not(:disabled)::before { opacity: 1; }
+  html[data-site-ui="quartier"] [data-ui-commerce="photo-control"]:hover::before { opacity: .5; }
+}
+
+@media (max-width: 899px) {
+  html[data-site-ui="quartier"] [data-ui-commerce="cart-summary"] { position: relative; }
+}

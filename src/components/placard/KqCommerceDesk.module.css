@@ -8,10 +8,13 @@
 .scenery img { object-fit: cover; opacity: 1; object-position: center; animation: none; }
 .page button, .computer button, .confirm button { cursor: pointer; font: inherit; touch-action: manipulation; }
 .page button:disabled, .computer button:disabled, .confirm button:disabled { cursor: not-allowed; opacity: .55; }
-.page :where(button, a, summary, input, select):focus-visible, .confirm :where(button):focus-visible { outline: 3px solid #172923; outline-offset: 5px; box-shadow: none; }
-.page :where(.preparation, .selectedOffer, .saleDone) :where(button, a, summary, input, select):focus-visible, .confirm :where(button):focus-visible {
+.page :where(button, a, summary, input, select):focus-visible { outline: 3px solid #172923; outline-offset: 5px; box-shadow: none; }
+.confirm :where(button):focus-visible { outline: 3px solid #172923; outline-offset: 5px; box-shadow: none; }
+.page :where(.preparation, .selectedOffer, .saleDone) :where(button, a, summary, input, select):focus-visible {
   outline-color: #172923; }
-.receiptAmounts { display: grid; gap: 12px; width: min(100%, 480px); margin: 20px auto; padding: 18px; background: #fff1d6; border: 2px solid #172923; border-radius: 14px; }
+.confirm :where(button):focus-visible {
+  outline-color: #172923; }
+.receiptAmounts { display: grid; gap: 12px; width: min(100%, 480px); margin: 20px auto; padding: 18px; background: #fff1d6; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); }
 .receiptAmounts > div { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; font-size: .8rem; line-height: 1.5; text-align: left; }
 .receiptAmounts dt { color: #172923; }
 .receiptAmounts dd { margin: 0; font-weight: 800; white-space: nowrap; }
@@ -23,8 +26,8 @@
 .back { min-height: 44px; display: inline-flex; align-items: center; color: #172923; font-size: .78rem !important; font-weight: 700 !important; }
 .back:hover { color: #172923; }
 .standaloneNav { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 2px solid #172923; }
-.standaloneNav button { min-height: 44px; padding: 10px 12px; color: #172923; font-size: .8rem; border: 2px solid #172923; border-radius: 12px; background: #fff8e7; }
-.standaloneNav button[aria-pressed="true"] { color: #172923; font-weight: 800; background: #efc451; border-bottom: 2px solid #172923; }
+.standaloneNav button { min-height: 44px; padding: 10px 12px; color: #172923; font-size: .8rem; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.standaloneNav button[aria-pressed="true"] { color: #172923; font-weight: 800; border-bottom: 2px solid #172923; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .steps { display: flex; flex-wrap: wrap; gap: 10px 22px; padding: 0; margin: 0 0 20px; list-style: none; }
 .steps li { display: flex; align-items: center; gap: 7px; color: #172923; font-size: .74rem; }
 .steps li > span { display: grid; place-items: center; flex: 0 0 23px; height: 23px; border: 2px solid #172923; border-radius: 50%; font-size: .72rem; }
@@ -32,11 +35,15 @@
 .steps li[aria-current="step"] > span { background: #efc451; border-color: #172923; }
 .steps li[data-complete="true"] > span { color: #172923; background: #fff1d6; border-color: #172923; }
 .dashboardUnavailable { padding: 22px; border: 2px solid #172923; background: #fff8e7; }
-.missingLot { border-radius: 12px; overflow-wrap: anywhere; }
+.missingLot { border-radius: var(--game-panel-radius, 2px); overflow-wrap: anywhere; }
 .missingLot h2 { margin: 0 0 10px; font: 800 30px/1.15 var(--font-display),sans-serif; }
 .missingLot p { font-size: 13px; line-height: 1.6; }
-.missingLot button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; max-width: 100%; margin: 5px 8px 0 0; padding: 10px 12px; border: 1px solid #172923; border-radius: 9px; background: #fffaf1; color: #172923; font: 650 13px/1.4 var(--font-body),sans-serif; cursor: pointer; }
-.missingLot button.primary { background: #efc451; }
+.missingLot button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; max-width: 100%; margin: 5px 8px 0 0; padding: 10px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: 650 13px/1.4 var(--font-body),sans-serif; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.missingLot button.primary {
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  color: #172923; }
 .missingLot button:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
 .missingLot button:disabled { opacity: .6; cursor: wait; }
 .lotSummary { margin: 0 0 14px; color: #172923; font-size: .85rem; }
@@ -46,8 +53,8 @@
 .inventoryArt > span, .artLabel { position: absolute; bottom: 20px; left: 20px; z-index: 1; display: flex; align-items: center; gap: 9px; font: 800 .72rem/1.4 var(--font-body),Arial,sans-serif; text-transform: uppercase; letter-spacing: .05em; background: #fff8e7; padding: 8px 12px; border: 2px solid #172923; border-radius: 12px; color: #172923; max-width: calc(100% - 32px); }
 .inventoryArt > span { font: 900 1.6rem/1 var(--font-display),Impact,sans-serif; }
 .lotList { display: grid; gap: 12px; min-width: 0; }
-.lotList > button { display: grid; grid-template-columns: 44px minmax(0,1fr) auto; align-items: center; gap: 14px; width: 100%; min-height: 100px; text-align: left; padding: 18px; transition: border-color 160ms,transform 160ms,background 160ms; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; }
-.lotIcon { display: grid; width: 44px; height: 48px; place-items: center; background: #bfe9db; border: 2px solid #172923; border-radius: 12px; color: #172923; }
+.lotList > button { display: grid; grid-template-columns: 44px minmax(0,1fr) auto; align-items: center; gap: 14px; width: 100%; min-height: 100px; text-align: left; padding: 18px; transition: border-color 160ms,transform 160ms,background 160ms; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; box-shadow: none; color: #172923; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.lotIcon { display: grid; width: 44px; height: 48px; place-items: center; background: #bfe9db; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); color: #172923; }
 .lotText { display: grid; gap: 7px; }
 .lotText strong { font-size: .95rem; overflow-wrap: anywhere; }
 .lotText small { color: #172923; font-size: .75rem; line-height: 1.5; }
@@ -56,22 +63,22 @@
 .preparation, .selectedOffer { display: grid; grid-template-columns: minmax(0,.7fr) minmax(0,1fr); gap: 24px; margin-top: 20px; align-items: start; }
 .preparation > div, .selectedOffer > div { min-width: 0; }
 .workshopArt img, .selectedArt img { display: block; width: 100%; height: auto; max-height: 310px; aspect-ratio: 1.35; object-fit: cover; }
-.preparation > div:last-child, .selectedOffer > div:last-child { padding: 22px; border-top: 2px solid #172923; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; }
+.preparation > div:last-child, .selectedOffer > div:last-child { padding: 22px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .preparation .lotSummary, .selectedOffer .lotSummary { color: #172923; }
 .preparation p, .selectedOffer p { font-size: .88rem; }
 .field { display: grid; gap: 10px; margin-block: 18px; font-weight: 800; font-size: .85rem; }
-.field input, .field select { min-width: 0; width: 100%; min-height: 48px; border: 2px solid #172923; border-radius: 12px; background: #fff8e7; padding: 10px 12px; color: #172923; font: inherit; }
+.field input, .field select { min-width: 0; width: 100%; min-height: 48px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; padding: 10px 12px; color: #172923; font: inherit; }
 .field input { max-width: 240px; }
-.figures { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; margin-block: 22px; padding-block: 18px; border-block: 2px solid #172923; background: #fff1d6; border: 2px solid #172923; border-radius: 12px; padding: 14px; }
+.figures { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; margin-block: 22px; padding-block: 18px; border-block: 2px solid #172923; background: #fff1d6; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); padding: 14px; }
 .figures > span { display: grid; gap: 10px; font: 700 .72rem/1.4 var(--font-body),Arial,sans-serif; text-transform: uppercase; color: #172923; }
 .figures strong { font: 900 clamp(1.5rem,2.8vw,2rem)/1.1 var(--font-display),Impact,sans-serif; color: #172923; }
-.primary { display: inline-flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 52px; padding: 12px 18px; box-shadow: 4px 4px 0 #172923; font-size: .85rem !important; font-weight: 900 !important; text-decoration: none !important; transition: transform 150ms ease,box-shadow 150ms ease; background: #efc451; border: 2px solid #172923; border-radius: 12px; color: #172923; }
+.primary { display: inline-flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 52px; padding: 12px 18px; box-shadow: none; font-size: .85rem !important; font-weight: 900 !important; text-decoration: none !important; transition: transform 150ms ease,box-shadow 150ms ease; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .primary svg { flex-shrink: 0; }
-.primary:active:not(:disabled) { transform: translate(2px,2px); box-shadow: 4px 4px 0 #172923; }
+.primary:active:not(:disabled) { transform: translateY(2px); box-shadow: none; border-color: transparent; }
 .event { display: inline-block; padding: 8px 12px; background: #efc451; color: #172923 !important; font-size: .8rem !important; font-weight: 800; }
 .offers { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 16px; margin-top: 22px; }
-.offerCard { display: flex; flex-direction: column; min-width: 0; text-align: left; border-bottom: 3px solid #172923; padding: 0; transition: transform 180ms ease,border-color 180ms ease; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; }
-.offerHeading { display: flex; align-items: center; gap: 12px; width: 100%; padding: 16px; background: #bfe9db; border-bottom: 2px solid #172923; border-radius: 14px 14px 0 0; margin-bottom: 14px; }
+.offerCard { display: flex; flex-direction: column; min-width: 0; text-align: left; padding: 0; transition: transform 180ms ease,border-color 180ms ease; color: #172923; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.offerHeading { display: flex; align-items: center; gap: 12px; width: 100%; padding: 16px; background: #bfe9db; border-bottom: 2px solid #172923; border-radius: var(--game-panel-radius, 2px); margin-bottom: 14px; }
 .offerArt { position: relative; height: 80px; width: 72px; flex: 0 0 72px; overflow: hidden; border-radius: 12px; background: #fff1d6; }
 .offerArt img { object-fit: cover; object-position: center 35%; transition: transform 240ms ease; }
 .offerCaption { display: grid; min-width: 0; gap: 7px; }
@@ -83,10 +90,14 @@
 .tradeoff > svg { color: #172923; flex-shrink: 0; margin-top: 2px; }
 .tradeoff + .tradeoff > svg { color: #172923; }
 .tradeoff b { display: block; font: 800 .72rem/1.4 var(--font-body),Arial,sans-serif; text-transform: uppercase; letter-spacing: .05em; color: #172923; margin-bottom: 3px; }
-.offerLink { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 46px; margin-top: auto; padding: 10px 12px; color: #172923; font-size: .78rem; font-weight: 900; box-shadow: 4px 4px 0 #172923; background: #efc451; border: 2px solid #172923; border-radius: 10px; }
+.offerLink { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 46px; margin-top: auto; padding: 10px 12px; color: #172923; font-size: .78rem; font-weight: 900; box-shadow: none; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .offerLink > svg { flex-shrink: 0; }
 .offerCard[data-unavailable] .offerAmount { color: #172923; font-size: 1.3rem; }
-.offerCard[data-unavailable] .offerLink { background: #fff8e7; }
+.offerCard[data-unavailable] .offerLink {
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  color: #172923; }
 .unavailableReason { color: #172923; font-size: .78rem; }
 .estimateNote { display: block; margin-top: 18px; font-size: .72rem; line-height: 1.5; color: #172923; }
 .selectedOffer .estimateNote { color: #172923; }
@@ -94,13 +105,13 @@
 .adjustments summary { cursor: pointer; min-height: 44px; align-content: center; font-size: .8rem; font-weight: 800; }
 .prices { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; border: 0; margin-block: 16px; }
 .prices legend { margin-bottom: 10px; font-size: .8rem; font-weight: 800; }
-.prices button { min-height: 44px; padding: 8px 10px; border: 2px solid #172923; background: #fff1d6; color: #172923; font-size: .75rem; }
-.prices button[aria-pressed="true"] { background: #bfe9db; color: #172923; border-color: #172923; }
-.error { padding: 14px; border-left: 3px solid #172923; line-height: 1.5; background: #f8d9bf; color: #8c3d28; border: 2px solid #172923; border-radius: 12px; }
+.prices button { min-height: 44px; padding: 8px 10px; border: var(--game-control-border-width, 2px) solid #172923; color: #172923; font-size: .75rem; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.prices button[aria-pressed="true"] { color: #172923; border-color: transparent; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; }
+.error { padding: 14px; border-left: 3px solid #172923; line-height: 1.5; background: #f8d9bf; color: #8c3d28; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); }
 .error button { text-decoration: underline; margin-inline-start: 10px; min-height: 44px; }
 .loading { display: flex; gap: 12px; align-items: center; padding-block: 30px; }
-.saleDone { max-width: 620px; margin-inline: auto; padding: 32px 24px 38px; text-align: center; border-bottom: 3px solid #172923; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; }
-.successEmblem { display: inline-grid; place-items: center; position: relative; width: 88px; height: 88px; margin: 0 auto 24px; color: #172923; border: 2px solid #172923; border-radius: 50%; box-shadow: 4px 4px 0 #172923; animation: reward-arrive 400ms ease-out both; }
+.saleDone { max-width: 620px; margin-inline: auto; padding: 32px 24px 38px; text-align: center; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.successEmblem { display: inline-grid; place-items: center; position: relative; width: 88px; height: 88px; margin: 0 auto 24px; color: #172923; border: 2px solid #172923; border-radius: 50%; box-shadow: var(--game-panel-shadow, none); animation: reward-arrive 400ms ease-out both; }
 .successEmblem > svg:last-child { position: absolute; top: -10px; right: -10px; background: #fff1d6; }
 .saleDone > small { display: block; color: #172923; font: 800 .72rem var(--font-body),Arial,sans-serif; letter-spacing: .1em; text-transform: uppercase; }
 .saleDone > strong { display: block; margin-top: 12px; font: 900 clamp(2rem,6vw,3.5rem)/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; color: #172923; }
@@ -108,20 +119,20 @@
 .saleDone .primary { margin-top: 16px; }
 .empty { max-width: 700px; margin-top: 24px; }
 .empty img { width: 100%; height: 240px; object-fit: cover; }
-.empty > div { padding: 20px; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; }
+.empty > div { padding: 20px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .actions button { display: inline-flex; gap: 8px; align-items: center; min-height: 44px; text-decoration: underline; }
-.confirm { composes: surface from "../contest/ArenaRetro.module.css"; position: fixed; inset: 0; margin: auto; max-height: calc(100dvh - 32px); width: min(520px,calc(100vw - 32px)); overflow-y: auto; padding: 34px 24px 28px; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; }
+.confirm { composes: surface from "../contest/ArenaRetro.module.css"; position: fixed; inset: 0; margin: auto; max-height: calc(100dvh - 32px); width: min(520px,calc(100vw - 32px)); overflow-y: auto; padding: 34px 24px 28px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .confirm::backdrop { background: #172923b8; }
 .confirm > small { color: #172923; font: 800 .72rem var(--font-body),Arial,sans-serif; text-transform: uppercase; letter-spacing: .07em; }
 .confirm h2 { font: 900 2rem/1.05 var(--font-display),Impact,sans-serif; text-transform: uppercase; margin: 20px 0; }
 .confirm p { line-height: 1.55; font-size: .88rem; }
-.confirm .close { position: absolute; right: 6px; top: 6px; min-width: 44px; min-height: 44px; display: grid; place-items: center; }
+.confirm .close { position: absolute; right: 6px; top: 6px; min-width: 44px; min-height: 44px; display: grid; place-items: center; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; color: #172923; }
 .confirm dl > div { display: flex; justify-content: space-between; gap: 20px; padding-block: 12px; border-bottom: 2px solid #172923; font-size: .85rem; }
 .confirm dl > div:last-child { color: #172923; font-size: 1rem; }
 .confirm dd { font-weight: 800; margin: 0; white-space: nowrap; }
 .confirm footer { display: flex; justify-content: space-between; gap: 16px; margin-top: 22px; }
 .total { display: block; color: #172923; font-size: 2rem; margin-block: 20px; }
-.computer { composes: surface from "../contest/ArenaRetro.module.css"; display: grid; grid-template-columns: minmax(180px,320px) minmax(0,1fr); gap: 24px; align-items: center; padding: 20px; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; }
+.computer { composes: surface from "../contest/ArenaRetro.module.css"; display: grid; grid-template-columns: minmax(180px,320px) minmax(0,1fr); gap: 24px; align-items: center; padding: 20px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .computer img { width: 100%; height: auto; }
 .computer h3 { font: 900 1.8rem/1.05 var(--font-display),Impact,sans-serif; text-transform: uppercase; margin: 10px 0; }
 .computer small { color: #172923; font: 800 .72rem var(--font-body),Arial,sans-serif; text-transform: uppercase; }
@@ -133,7 +144,7 @@
 @keyframes scene-arrive { from { opacity: .3; transform: scale(1.025); } to { opacity: .65; transform: none; } }
 @keyframes flow-arrive { from { opacity: .5; transform: translateY(6px); } to { opacity: 1; transform: none; } }
 @keyframes reward-arrive { from { opacity: .5; transform: scale(.85); } to { opacity: 1; transform: none; } }
-@media(hover:hover) { .offerCard:hover { transform: translateY(-4px); border-bottom-color: #172923; } .offerCard:hover .offerArt img { transform: scale(1.04); } .lotList > button:hover { border-color: #172923; background: #fff1d6; transform: translateY(-2px); } .primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 4px 4px 0 #172923; } }
+@media(hover:hover) { .offerCard:hover { transform: translateY(-4px); --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; } .offerCard:hover .offerArt img { transform: scale(1.04); } .lotList > button:hover:not(:disabled) { border-color: transparent; transform: translateY(-2px); --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; color: #172923; } .primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: none; border-color: transparent; } }
 @media(max-width: 1000px) and (min-width: 701px) { .offers { gap: 12px; } .offerHeading { flex-wrap: wrap; } .offerCopy { padding-inline: 14px; } .inventory { grid-template-columns: .6fr 1.2fr; gap: 20px; } .lotList > button { grid-template-columns: 40px minmax(0,1fr); } .lotList > button > span:last-child { grid-column: 2; } }
 @media(max-width: 700px) {
   .page { padding-top: 16px; }
@@ -156,7 +167,7 @@
 @media(max-width: 360px) { .lotList > button { grid-template-columns: 38px minmax(0,1fr); } .lotList > button > span:last-child { grid-column: 2; } .steps li { font-size: .72rem; } }
 @media(prefers-reduced-motion: reduce) { .page *, .page *::before, .page *::after, .computer *, .confirm * { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
 
-.qualityBadge { display: inline-flex; align-items: center; gap: 9px; padding: 9px 12px; border-radius: 12px; color: #172923; background: #efc451; border: 2px solid #172923; }
+.qualityBadge { display: inline-flex; align-items: center; gap: 9px; padding: 9px 12px; border-radius: var(--game-panel-radius, 2px); color: #172923; background: #efc451; border: 1px solid #172923; }
 .qualityBadge > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; color: #172923; font-size: .76rem; }
 .qualityBadge strong { color: #172923; font-size: 1.05rem; }
 .qualityFit { display: flex; align-items: flex-start; gap: 7px; color: #172923; font-size: .74rem; line-height: 1.5; }
@@ -195,3 +206,6 @@
 .page :where(button,summary,a){touch-action:manipulation;min-height: 44px}
 .page :where(button,summary,a,input,select):focus-visible{outline:3px solid #172923;outline-offset:4px}
 .page :where(button,input,select){max-width:100%}
+
+.offerCard { padding: 9px; }
+.offerHeading { border-bottom: 0; }

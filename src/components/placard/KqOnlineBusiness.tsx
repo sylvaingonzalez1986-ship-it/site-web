@@ -46,6 +46,7 @@ function ShopIdentity({ name, canCreate, busy, onAsk }: { name: string | null; c
 
 export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepareStock, onViewSales, initialView = "activity", initialUpgradeView = "site", businessDetails, advertising }: { data: KqCommerceSnapshot; busy: boolean; now: number; onAsk: Ask; onOpenShop: () => void; onPrepareStock?: () => void; onViewSales?: () => void; initialView?: KqOnlineBusinessView; initialUpgradeView?: KqOnlineUpgradeView; businessDetails?: ReactNode; advertising?: ReactNode }) {
   const id = useId();
+  const availableViews = views;
   const entryView = initialView === "upgrades" ? initialUpgradeView : initialView === "settings" ? "merch" : initialView;
   const [view, setView] = useState<View>(entryView);
   const [pricingListingId, setPricingListingId] = useState("");
@@ -55,11 +56,11 @@ export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepare
   const open = Boolean(data.business?.shop.createdAt);
   useEffect(() => {
     if (!open || !focusEntry.current) return;
-    const target = tabs.current[views.findIndex(item => item.code === view)];
+    const target = tabs.current[availableViews.findIndex(item => item.code === view)];
     focusEntry.current = false;
     target?.focus({ preventScroll: true });
     target?.scrollIntoView({ block: "nearest", inline: "nearest" });
-  }, [open, view]);
+  }, [open, view, availableViews]);
   if (!online || !data.business) return null;
   const shop = data.business.shop;
   const site = online.site;
@@ -67,18 +68,18 @@ export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepare
   function selectView(next: View, focus = false) {
     setView(next);
     if (focus) {
-      const tab = tabs.current[views.findIndex(item => item.code === next)];
+      const tab = tabs.current[availableViews.findIndex(item => item.code === next)];
       tab?.focus({ preventScroll: true });
       tab?.scrollIntoView({ block: "nearest", inline: "nearest" });
     }
   }
   function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    const next = event.key === "ArrowRight" ? (index + 1) % views.length
-      : event.key === "ArrowLeft" ? (index + views.length - 1) % views.length
-        : event.key === "Home" ? 0 : event.key === "End" ? views.length - 1 : null;
+    const next = event.key === "ArrowRight" ? (index + 1) % availableViews.length
+      : event.key === "ArrowLeft" ? (index + availableViews.length - 1) % availableViews.length
+        : event.key === "Home" ? 0 : event.key === "End" ? availableViews.length - 1 : null;
     if (next === null) return;
     event.preventDefault();
-    selectView(views[next].code, true);
+    selectView(availableViews[next].code, true);
   }
   function develop(section: KqOnlineUpgradeView | "marketing") {
     selectView(section, true);
@@ -92,7 +93,7 @@ export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepare
       <ShopIdentity name={null} canCreate={data.computerOwned} busy={busy} onAsk={onAsk} />
       {businessDetails ? <details className={styles.rename}><summary>Calendrier et suivi du commerce</summary>{businessDetails}</details> : null}
     </> : <>
-      <div className={styles.tabs} role="tablist" aria-label="Gérer ma boutique">{views.map((item, index) => {
+      <div className={styles.tabs} role="tablist" aria-label="Gérer ma boutique">{availableViews.map((item, index) => {
         const Icon = item.icon;
         return <button type="button" key={item.code} data-shop-view={item.code} ref={node => { tabs.current[index] = node; }} id={`${id}-${item.code}-tab`} role="tab" aria-label={item.label} aria-describedby={`${id}-${item.code}-hint`} aria-selected={view === item.code} aria-controls={`${id}-panel`} tabIndex={view === item.code ? 0 : -1} onClick={() => selectView(item.code)} onKeyDown={event => navigate(event, index)}><Icon size={18} aria-hidden="true" /><span><strong>{item.label}</strong><small id={`${id}-${item.code}-hint`}>{item.hint}</small></span></button>;
       })}</div>

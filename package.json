@@ -13,6 +13,7 @@
     "test:coverage": "vitest run --coverage",
     "test:crypto:sql": "node scripts/test-placard-crypto-daily.mjs",
     "test:bank:sql": "node scripts/test-placard-bank.mjs",
+    "test:social:sql": "node scripts/test-placard-social.mjs && node scripts/test-placard-social-v2.mjs",
     "test:harvest-tiers:sql": "node scripts/test-placard-harvest-tiers.mjs",
     "test:harvest-tiers:campaigns": "node scripts/test-placard-harvest-tier-campaigns.mjs",
     "seed:supabase": "node scripts/seed-supabase-from-json.mjs",

@@ -1,6 +1,8 @@
 import type { ReleveGuideStep } from './arena-releve-guide';
 import { getKqCommerceStockQuality } from './kanab-quest-commerce';
 import { needsReleveCommerceSample, type KqReleveCommerceChapter, type KqReleveCommerceState } from './kanab-quest-releve-commerce';
+import { getReleveSocialGuide } from './arena-releve-social-guide';
+import { getReleveMerchGuide } from './kanab-quest-releve-merch';
 
 const store = '[aria-label="Préparer des paquets pour la vente en ligne"]';
 const confirmation = 'dialog[open][aria-labelledby="commerce-confirm-title"], dialog[open][aria-labelledby="treasury-management-title"]';
@@ -37,6 +39,8 @@ function prepareFlowers(): ReleveGuideStep[] {
 
 /** Candidates follow the actual desk: its current screen determines the next visible control. */
 export function getReleveCommerceGuide(chapter: KqReleveCommerceChapter, state: KqReleveCommerceState): ReleveGuideStep[] {
+  if (chapter === 'social') return getReleveSocialGuide(state);
+  if (chapter === 'merch') return getReleveMerchGuide(state);
   const has = (milestone: string) => state.milestones.includes(milestone);
   const steps = confirm(chapter === 'delivery'
     ? 'Vérifie le TTC, la TVA et le net versé, puis confirme si cette offre te convient.'
@@ -121,13 +125,19 @@ export function getReleveCommerceGuide(chapter: KqReleveCommerceChapter, state: 
     steps.push(
       button('commerce-first-campaign', 'Fais connaître ton enseigne', 'Prépare ton premier lancement offert. Vérifie le public, les prévisions et ton stock.', 'Préparer mon premier lancement'),
       target('commerce-accessible-audience', 'Choisis un public adapté', 'Essaie le public « Accessible », adapté à un prix proche du repère.', '[aria-label="Préparer une campagne"] input[type="radio"][value="value"]:not(:checked)', 'input'),
-      button('commerce-communication', 'Ouvre le bureau des campagnes', 'Choisis « Communication » pour préparer le lancement de ton enseigne.', 'Communication', '[role="tablist"][aria-label="Gérer ma boutique"]'),
+      target('commerce-promote', 'Ouvre le bureau des campagnes', 'Choisis « Promouvoir » pour préparer le lancement de ton enseigne.', '[data-shop-view="marketing"][aria-selected="false"]'),
       ...navigate('management', 'Rejoins le bureau de ta boutique', 'Retourne dans « Développer ma boutique » pour préparer une campagne.'),
       target('commerce-return-shop', 'Retrouve ta boutique', 'Reviens à la boutique pour préparer ta campagne.', '[data-releve-guide="return-shop"]'),
     );
     return steps;
   }
-  if (!has('online-time')) steps.push(target('commerce-advance-sales', 'Laisse vivre ta boutique', 'Simule 24 heures de ventes. Prix, qualité, stock et audience influenceront les commandes.', '[data-releve-guide="advance-sales"]'));
+  if (!has('online-time') || (chapter === 'business' && state.operations.trial.commerce.online?.marketing.active)) steps.push(target('commerce-advance-sales', 'Laisse vivre ta boutique', `Simule 24 heures de ventes. Prix, qualité, stock et audience influenceront les commandes.${chapter === 'business' ? ' Continue jusqu’à la fin de la campagne pour en lire le bilan.' : ''}`, '[data-releve-guide="advance-sales"]'));
+  else if (!has('report-read') && chapter === 'business') steps.push(
+    target('commerce-campaign-report', 'Ouvre le bilan de ta campagne', 'Lis les commandes satisfaisantes, les ventes versées et les abonnés gagnés. Le montant des ventes n’est pas le bénéfice.', '[data-marketing-history]:not([open]) > summary', 'summary'),
+    target('commerce-promote-report', 'Retrouve tes campagnes', 'Choisis « Promouvoir » pour consulter le bilan terminé.', '[data-shop-view="marketing"][aria-selected="false"]'),
+    ...navigate('management', 'Rejoins le bureau de ta boutique', 'Retourne dans « Développer ma boutique », puis Promouvoir pour lire le bilan.'),
+    target('commerce-return-report', 'Retrouve ta boutique', 'Reviens à ta boutique pour lire le bilan de ta campagne.', '[data-releve-guide="return-shop"]'),
+  );
   else if (!has('report-read')) steps.push(...navigate('dashboard', 'Regarde le résultat', 'Choisis « Mes ventes » pour retrouver tes commandes et les montants encaissés.'));
   return steps;
 }

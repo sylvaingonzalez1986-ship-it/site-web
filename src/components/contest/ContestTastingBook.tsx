@@ -233,7 +233,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
       <button ref={coverRef} data-arena-tour="notebook" type="button" className={styles.cover} tabIndex={open ? -1 : 0} onClick={() => { setOpening(true); setOpen(true); go("contents"); }} aria-label="Ouvrir mon carnet de dégustation" aria-describedby={hasContestBundleOffer ? coverBonusId : undefined}>
         <span className={styles.coverBorder}>
           <span className={styles.coverKicker}>L’Arène · Carnet de dégustation</span>
-          <span className={styles.coverEmblem}><Image src="/contest/mascot/tasting/tasting-start.png" alt="La mascotte avec son carnet" width={408} height={771} sizes="120px" priority /><span aria-hidden="true">À toi de jouer !</span></span>
+          <span className={styles.coverEmblem}><Image src="/contest/mascot/tasting/tasting-start.png" alt="La mascotte avec son carnet" width={390} height={463} sizes="(max-width: 600px) 140px, 190px" preload /></span>
           <span className={styles.coverTitle}>Mon carnet<span>de dégustation</span></span>
           {hasContestBundleOffer
             ? <span id={coverBonusId} className={styles.coverBonus} data-contest-bundle-cover><Gift size={14} aria-hidden="true" /> Bonus Concours à découvrir</span>
@@ -254,12 +254,11 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
           <span className={styles.imprint}>Le carnet de l’Arène</span>
           <span className={styles.guideBadge}><BookOpen size={16} aria-hidden="true" /> À toi de jouer</span>
           <p className={styles.asideTitle}>{view === "contents" ? <>À chaque fleur,<br /><em>sa découverte !</em></> : <>Les fleurs {CONTEST_ENTRY_TRACK_LABELS[chapter.track]}<br /><em>{CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}</em></>}</p>
+          <figure className={styles.chapterScene}>
+            <Image src="/contest/mascot/arena-scene-carnet-v1.png" alt="Sylvain prend ses notes de dégustation à son bureau, entouré de bocaux et de fiches botaniques." width={1536} height={1024} sizes="(min-width: 900px) 500px, 1px" />
+            <figcaption>Prendre le temps. Suivre mes sens.</figcaption>
+          </figure>
           <p>{view === "contents" ? PRODUCER_REWARD_RULE : CULTURES[chapter.category].subtitle}</p>
-          <div className={styles.scrapbook}>
-            <div className={styles.memo}><span>Note à moi-même</span><strong>Prendre le temps.<br />Suivre mes sens.</strong><p>Le meilleur avis,<br />c’est le tien.</p></div>
-            <Image src="/contest/mascot/tasting/tasting-start.png" alt="" width={408} height={771} sizes="130px" className={styles.mascotSticker} />
-            <span className={styles.pencilNote}>Une fleur, une nouvelle page.</span>
-          </div>
           <span className={styles.asideSignature}>{viewerProfile?.pseudo ? `Le carnet de ${viewerProfile.pseudo}` : "Observer · Sentir · Déguster"}</span>
           <span className={styles.ribbon} aria-hidden="true" />
         </aside>
@@ -276,7 +275,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
           <div ref={pageRef} className={`${styles.pageContent} ${view === "tasting" ? styles.tastingContent : ""}`} data-book-scroll>
             {view === "contents" ? <div key={`contents-${turn}`} className={styles.pageTurn}>
               <div className={styles.sylvainWelcome}>
-                <Image src="/contest/mascot/tasting/tasting-start.png" alt="Ton guide de dégustation" width={408} height={771} sizes="64px" />
+                <Image src="/contest/mascot/tasting/tasting-start.png" alt="Ton guide de dégustation" width={390} height={463} sizes="84px" />
                 <p><strong>On déguste ?</strong><span>Regular ou Concours, puis choisis ta culture.</span><small>{PRODUCER_REWARD_RULE}</small></p>
               </div>
               {CONTEST_ENTRY_TRACKS.map((track) => {
@@ -301,7 +300,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
                     const count = entries.filter((item) => item.track === track && item.category === category).length;
                     const index = CHAPTERS.findIndex((item) => item.track === track && item.category === category);
                     const Icon = CULTURES[category].icon;
-                    return <button type="button" key={category} className={styles.contentsRow} data-track={track} data-culture={category} data-selected={chapter.track === track && chapter.category === category || undefined} onClick={() => openChapter({ track, category })} aria-label={`${CONTEST_ENTRY_TRACK_LABELS[track]} · ${CONTEST_ENTRY_CATEGORY_LABELS[category]}, ${count} ${count === 1 ? "fleur" : "fleurs"}`}>
+                    return <button type="button" key={category} className={styles.contentsRow} data-track={track} data-culture={category} data-selected={chapter.track === track && chapter.category === category || undefined} aria-current={chapter.track === track && chapter.category === category ? "page" : undefined} onClick={() => openChapter({ track, category })} aria-label={`${CONTEST_ENTRY_TRACK_LABELS[track]} · ${CONTEST_ENTRY_CATEGORY_LABELS[category]}, ${count} ${count === 1 ? "fleur" : "fleurs"}`}>
                       <Icon size={20} aria-hidden="true" /><span className={styles.contentsCopy}><strong>{CONTEST_ENTRY_CATEGORY_LABELS[category]}</strong><small>{CULTURES[category].description}</small></span><small>{count} {count === 1 ? "fleur" : "fleurs"}</small><span className={styles.pageNumber}>{String(2 + index).padStart(2, "0")}</span>
                     </button>;
                   })}

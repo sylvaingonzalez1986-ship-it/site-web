@@ -411,7 +411,7 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
     const mission = online.marketing.active;
     if (mission && Date.parse(mission.endsAt) <= state.trial.clock) {
       const definition = mission.version === 2 ? KQ_MARKETING_CAMPAIGNS.find(item => item.code === mission.code)! : KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === mission.code)!;
-      online.followers += mission.version === 2 ? mission.results.followersEarned : KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === mission.code)!.followersReward;
+      online.followers = Math.min(100_000, online.followers + (mission.version === 2 ? mission.results.followersEarned : KQ_ONLINE_MARKETING_MISSIONS.find(item => item.code === mission.code)!.followersReward));
       online.marketing.history = [{ ...mission, completedAt: mission.endsAt }, ...(online.marketing.history ?? [])].slice(0, 10);
       if (!online.marketing.completedCodes.includes(mission.code)) online.marketing.completedCodes.push(mission.code);
       online.marketing.cooldowns[mission.code] = new Date(Date.parse(mission.startedAt) + definition.cooldownHours * HOUR).toISOString();

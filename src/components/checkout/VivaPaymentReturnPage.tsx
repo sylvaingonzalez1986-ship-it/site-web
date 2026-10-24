@@ -163,7 +163,7 @@ export async function VivaPaymentReturnPage({
   return (
     <section className="section-band bg-mint halftone-overlay paper-grain pt-36 pb-16">
       <div className="retro-container">
-        <div className="cartoon-border mx-auto max-w-3xl bg-cream p-6 text-center md:p-8">
+        <div data-ui-commerce="site-paper" data-ui-shape="panel" className="cartoon-border mx-auto max-w-3xl bg-cream p-6 text-center md:p-8">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-charcoal">
             {copy.eyebrow}
           </p>
@@ -180,6 +180,8 @@ export async function VivaPaymentReturnPage({
           />
 
           <div
+            data-ui-commerce="payment-status"
+            data-ui-shape="panel"
             className={`cartoon-border-sm mx-auto mt-6 inline-flex px-4 py-2 text-sm font-extrabold uppercase tracking-[0.08em] ${copy.toneClassName}`}
           >
             {copy.statusLabel}
@@ -188,7 +190,7 @@ export async function VivaPaymentReturnPage({
           {details.length > 0 && (
             <dl className="mx-auto mt-6 grid max-w-xl gap-3 text-left sm:grid-cols-2">
               {details.map((detail) => (
-                <div key={detail.label} className="cartoon-border-sm bg-white p-3">
+                <div data-ui-commerce="white-panel" data-ui-shape="panel" key={detail.label} className="cartoon-border-sm bg-white p-3">
                   <dt className="text-[11px] font-bold uppercase tracking-[0.08em] text-charcoal">
                     {detail.label}
                   </dt>
@@ -227,7 +229,7 @@ export async function VivaPaymentReturnPage({
 
           <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
             {resumePaymentUrl && (
-              <a
+              <a data-ui-commerce="site-primary" data-ui-shape="control"
                 href={resumePaymentUrl}
                 className={`${paymentReturnActionClassName} btn-primary`}
               >
@@ -235,7 +237,7 @@ export async function VivaPaymentReturnPage({
               </a>
             )}
             <form action="/profil" method="get">
-              <button
+              <button data-ui-commerce="site-secondary" data-ui-shape="control"
                 type="submit"
                 className={`${paymentReturnActionClassName} btn-secondary cursor-pointer`}
               >
@@ -243,7 +245,7 @@ export async function VivaPaymentReturnPage({
               </button>
             </form>
             <form action="/boutique" method="get">
-              <button
+              <button data-ui-commerce="site-secondary" data-ui-shape="control"
                 type="submit"
                 className={`${paymentReturnActionClassName} btn-secondary cursor-pointer`}
               >

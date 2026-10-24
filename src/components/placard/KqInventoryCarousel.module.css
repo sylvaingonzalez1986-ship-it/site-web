@@ -1,17 +1,17 @@
 .toolbar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; color: #172923; font-size: .78rem; }
 .toolbar nav { display: flex; flex-wrap: wrap; gap: 6px; }
-.toolbar button { min-height: 44px; padding: 8px 12px; border: 2px solid #172923; border-radius: 10px; background: #fff8e7; color: #172923; cursor: pointer; }
-.toolbar button[aria-pressed="true"] { background: #efc451; color: #172923; border-color: #172923; box-shadow: 2px 2px 0 #172923; }
+.toolbar button { min-height: 44px; padding: 8px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.toolbar button[aria-pressed="true"] { color: #172923; border-color: transparent; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
 .card > .artwork { position: relative; display: block; width: 100%; padding: 0; margin: 0 0 12px; border: 0; background: transparent; color: #172923; border-radius: 10px; overflow: hidden; }
 .card > .artwork:hover { background: transparent; }
 .artwork img { display: block; width: 100%; height: auto; }
 .card[data-locked] .artwork img { opacity: .6; filter: grayscale(.8); }
 .card[data-selected] .artwork { outline: 3px solid #172923; outline-offset: 3px; }
-.zoom { position: absolute; bottom: 10px; right: 8px; display: flex; align-items: center; gap: 5px; padding: 5px 8px; font-size: .7rem; background: #fff1d6; color: #172923; border: 2px solid #172923; border-radius: 9px; }
+.zoom { position: absolute; bottom: 10px; right: 8px; display: flex; align-items: center; gap: 5px; padding: 5px 8px; font-size: .7rem; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .role { width: fit-content; padding: 4px 6px; background: var(--card-role); color: #172923; font-size: .72rem; font-weight: 800; }
 .stock { margin-top: auto; padding-bottom: 8px; font-size: .76rem; color: #172923; }
 .quantity { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; gap: 6px; align-items: center; min-height: 44px; }
-.quantity button { min-height: 44px; border-radius: 10px; font-size: 1.2rem; cursor: pointer; background: #bfe9db; color: #172923; border: 2px solid #172923; }
+.quantity button { min-height: 44px; border-radius: 0; font-size: 1.2rem; cursor: pointer; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; box-shadow: none; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .quantity button:disabled { opacity: .4; cursor: default; }
 .quantity > span { text-align: center; color: #172923; font-size: .72rem; }
 .quantity b { color: #172923; }
@@ -20,9 +20,9 @@
 .notice button { display: block; min-height: 44px; margin-top: 8px; border: 0; background: transparent; color: #172923; text-decoration: underline; cursor: pointer; }
 
 .categories { flex-basis: 100%; }
-.rarityFilter{display:flex;align-items:center;gap:10px;font-weight:800}.rarityFilter select{min-height:44px;max-width:100%;padding:8px;background: #fff8e7;color: #172923;border: 2px solid #172923;border-radius: 10px}.rarity{padding:4px 6px;font-size:.7rem;font-weight:800;color:#425343}.rarity[data-rarity=epic]{background:#f1e0fc;color:#6c308c}.epicNotice{flex-basis:100%;margin:0;font-size:.74rem;line-height:1.5}.card[data-rarity=epic]{border-color:#b582d0}
+.rarityFilter{display:flex;align-items:center;gap:10px;font-weight:800}.rarityFilter select{min-height:44px;max-width:100%;padding:8px;background: #fff8e7;color: #172923;border: 1px solid #172923;border-radius: var(--game-panel-radius, 2px)}.rarity{padding:4px 6px;font-size:.7rem;font-weight:800;color:#425343}.rarity[data-rarity=epic]{background:#f1e0fc;color:#6c308c}.epicNotice{flex-basis:100%;margin:0;font-size:.74rem;line-height:1.5}.card[data-rarity=epic]{border-color:#b582d0}
 .categories button { display: flex; align-items: center; gap: 8px; font-size: .75rem; }
-.categories b { min-width: 20px; padding: 2px 4px; border-radius: 10px; background: #fff8e7; font-variant-numeric: tabular-nums; }
+.categories b { min-width: 20px; padding: 2px 4px; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; font-variant-numeric: tabular-nums; }
 .filters { flex-basis: 100%; min-width: 0; border-block: 1px solid #17292340; }
 .filters > summary { position: relative; min-height: 44px; padding: 10px 24px 10px 0; cursor: pointer; font-weight: 750; list-style: none; }
 .filters > summary::-webkit-details-marker { display: none; }

@@ -103,3 +103,32 @@
   .card { transition: none; }
   .page :global(.animate-pulse) { animation: none; }
 }
+
+/* Contour experiment: no copy, type, image or layout changes. */
+:global(html[data-site-ui="quartier"]) :where(.card, .filters, .count, .empty, .article, .panel, .filterButtons button) {
+  position: relative;
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+}
+:global(html[data-site-ui="quartier"]) .filters { --site-ui-material: url("#site-ui-fill-172923"); }
+:global(html[data-site-ui="quartier"]) .articleHeader {
+  position: relative;
+  --site-ui-material: url("#site-ui-outline-172923");
+  background: radial-gradient(ellipse at 100% 0, #00563f, transparent 65%), var(--arcade-dark);
+  border-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: polygon(0 5px, 1% 1px, 12% 3px, 25% 0, 45% 2px, 70% 0, 88% 3px, 99% 0, 100% 6px, calc(100% - 2px) 45%, 100% 75%, calc(100% - 3px) calc(100% - 4px), 85% 100%, 65% calc(100% - 2px), 40% 100%, 18% calc(100% - 3px), 1% 100%, 0 calc(100% - 6px), 2px 65%, 0 30%);
+}
+:global(html[data-site-ui="quartier"]) .shopPanel { --site-ui-material: url("#site-ui-fill-e6ebe0"); }
+:global(html[data-site-ui="quartier"]) .filterButtons button {
+  --site-ui-material: url("#site-ui-outline-fffaf1");
+  --site-ui-hover-material: url("#site-ui-fill-efc451");
+}
+:global(html[data-site-ui="quartier"]) .filterButtons button[aria-pressed="true"] { --site-ui-material: url("#site-ui-fill-fff1d6"); }
+:global(html[data-site-ui="quartier"]) :is(.card, .filters, .count, .empty, .article, .panel, .filterButtons button),
+:global(html[data-site-ui="quartier"]) .filterButtons button:is([aria-pressed="true"], :hover) {
+  background: transparent;
+  border-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}

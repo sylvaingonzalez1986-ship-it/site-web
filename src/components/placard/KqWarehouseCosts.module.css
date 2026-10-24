@@ -11,9 +11,12 @@
   gap: 18px;
   padding: 20px;
   color: #172923;
-  background: #fffaf0;
-  border: 2px solid #172923;
-  border-radius: 13px;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
 
 .heading {
@@ -42,7 +45,7 @@
   gap: 5px;
   padding: 14px 16px;
   background: #d8ece3;
-  border-radius: 9px;
+  border-radius: var(--game-panel-radius, 2px);
 }
 
 .total strong {
@@ -74,7 +77,7 @@
   min-width: 0;
   padding: 12px;
   background: #fff1d6;
-  border-radius: 9px;
+  border-radius: var(--game-panel-radius, 2px);
 }
 
 .rates dt {
@@ -107,7 +110,7 @@
   gap: 6px;
   padding: 14px 16px;
   background: #d8ece3;
-  border-radius: 9px;
+  border-radius: var(--game-panel-radius, 2px);
 }
 
 .credit > span {
@@ -152,7 +155,7 @@
   margin-top: 2px;
   padding: 12px 14px;
   background: #efc451;
-  border-radius: 8px;
+  border-radius: var(--game-panel-radius, 2px);
 }
 
 .payable dt {

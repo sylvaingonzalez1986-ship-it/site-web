@@ -55,6 +55,7 @@ function ToggleRow({
   return (
     <div
       className={`${styles.option} ${disabled ? "bg-[#ece7d8]" : "bg-white/80"}`}
+      data-ui-shape="panel"
     >
       <div className="flex items-start justify-between gap-4">
         <div className="min-w-0">
@@ -180,14 +181,16 @@ export function CookieConsentModal({
         aria-describedby={descriptionId}
         tabIndex={-1}
         className={styles.dialog}
+        data-ui-shape="panel"
+        data-ui-layer="after"
       >
         {dismissible && (
           <div className={styles.cookieToolbar}>
             <span>Préférences cookies</span>
-            <button type="button" onClick={onRequestClose} aria-label="Fermer les preferences cookies">Fermer <span aria-hidden="true">×</span></button>
+            <button type="button" data-ui-shape="control" onClick={onRequestClose} aria-label="Fermer les preferences cookies">Fermer <span aria-hidden="true">×</span></button>
           </div>
         )}
-        <div className={styles.hero}>
+        <div className={styles.hero} data-ui-shape="panel">
           <div className={styles.heroCopy}>
             <p className={styles.eyebrow}>Votre visite, vos choix</p>
             <h2 id={titleId} className={styles.title}>Des cookies sans cachotterie.</h2>
@@ -203,7 +206,7 @@ export function CookieConsentModal({
 
         {!detailed ? (
           <>
-            <div className={`${styles.notice} text-sm leading-relaxed text-ink`}>
+            <div className={`${styles.notice} text-sm leading-relaxed text-ink`} data-ui-shape="panel">
               <p>
                 Vous pouvez accepter, refuser ou personnaliser les cookies non necessaires. Votre
                 choix reste modifiable à tout moment avec « Gérer mes cookies » dans le pied de page.
@@ -216,6 +219,7 @@ export function CookieConsentModal({
                 type="button"
                 onClick={onAcceptAll}
                 className={`${styles.primary} text-sm`}
+                data-ui-shape="control"
               >
                 Tout accepter
               </button>
@@ -223,6 +227,7 @@ export function CookieConsentModal({
                 type="button"
                 onClick={onRejectAll}
                 className={`${styles.secondary} text-sm`}
+                data-ui-shape="control"
               >
                 Tout refuser
               </button>
@@ -269,6 +274,7 @@ export function CookieConsentModal({
                   type="button"
                   onClick={onAcceptAll}
                   className={`${styles.secondary} min-h-[48px] text-xs`}
+                  data-ui-shape="control"
                 >
                   Tout accepter
                 </button>
@@ -276,6 +282,7 @@ export function CookieConsentModal({
                   type="button"
                   onClick={onRejectAll}
                   className={`${styles.secondary} min-h-[48px] text-xs`}
+                  data-ui-shape="control"
                 >
                   Tout refuser
                 </button>
@@ -285,6 +292,7 @@ export function CookieConsentModal({
                 type="button"
                 onClick={() => onSave(draftSelections)}
                 className={`${styles.primary} text-sm`}
+                data-ui-shape="control"
               >
                 Enregistrer
               </button>

@@ -2,12 +2,13 @@
 .header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .header h2 { min-width: 0; overflow-wrap: anywhere; scroll-margin-top: 100px; margin: 0; font-family: var(--font-display), sans-serif; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; text-transform: uppercase; }
 .header nav { flex: 0 0 auto; display: flex; gap: 8px; }
-.header button { display: grid; width: 44px; height: 44px; place-items: center; padding: 0; border-radius: 50%; cursor: pointer; background: #fff8e7; color: #172923; border: 2px solid #172923; box-shadow: 2px 2px 0 #172923; }
-.header button:hover:not(:disabled) { background: #efc451; color: #172923; border-color: #172923; }
+.header button { display: grid; width: 44px; height: 44px; place-items: center; padding: 0; border-radius: 0; cursor: pointer; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.header button:hover:not(:disabled) { color: #172923; border-color: transparent; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
 .header button:disabled { opacity: .3; cursor: default; }
 .track { display: grid; grid-auto-flow: column; grid-auto-columns: clamp(210px, 23vw, 275px); gap: 24px; padding: 8px 5px 20px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x proximity; scroll-padding-inline: 5px; scrollbar-width: thin; scrollbar-color: #149b8b #fff1d6; cursor: grab; }
 .track[data-dragging] { cursor: grabbing; scroll-snap-type: none; user-select: none; }
-.track:focus-visible, .section button:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.track:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.section button:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
 .card { display: flex; min-width: 0; flex-direction: column; align-items: stretch; scroll-snap-align: start; }
 .artwork { position: relative; margin-bottom: 12px; border-radius: 10px; transition: transform 180ms ease; }
 .artwork > span { display: block; margin: 0; width: 100%; }
@@ -18,9 +19,9 @@
 .timing { color: #172923; font-size: .7rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 .card h3 { margin: 6px 0 0; color: #172923; font-size: 1.05rem; line-height: 1.25; }
 .card p { margin: 8px 0 16px; color: #172923; font-size: .8rem; line-height: 1.5; }
-.card > button { width: 100%; min-height: 44px; margin-top: auto; padding: 10px 12px; border-radius: 10px; font-weight: 800; font-size: .78rem; text-transform: uppercase; cursor: pointer; background: #bfe9db; color: #172923; border: 2px solid #172923; box-shadow: 3px 3px 0 #172923; }
-.card > button:hover:not(:disabled), .card[data-selected] > button { background: #efc451; color: #172923; border-color: #172923; }
-.card > button:disabled { background: #fff8e7; color: #172923; border-color: #172923; cursor: default; box-shadow: none; }
+.card > button { width: 100%; min-height: 44px; margin-top: auto; padding: 10px 12px; border-radius: 0; font-weight: 800; font-size: .78rem; text-transform: uppercase; cursor: pointer; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; box-shadow: none; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.card > button:hover:not(:disabled), .card[data-selected] > button { color: #172923; border-color: transparent; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
+.card > button:disabled { color: #172923; border-color: transparent; cursor: default; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; }
 .classic { display: flex; align-items: center; gap: 6px; min-height: 44px; margin-top: 4px; padding: 8px 4px; border: 0; background: transparent; color: #172923; font-size: .8rem; cursor: pointer; }
 .classic[aria-pressed="true"] { color: #172923; }
 .empty { color: #172923; }

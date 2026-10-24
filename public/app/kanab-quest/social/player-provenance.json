@@ -1,0 +1,26 @@
+{
+  "mode": "built-in image_gen",
+  "purpose": "Player-independent cartoon backgrounds; the app renders the real Chanvrier avatar on workshop/community.",
+  "assets": [
+    {
+      "path": "public/app/kanab-quest/social/workshop.webp",
+      "reference": "C:/lesiteinternetquitue/public/placard/market-social-missions-sylvain-v3.webp",
+      "prompt": "Use case: precise-object-edit. Edit the attached canonical Kanab Quest workshop illustration into a square reusable scene background for the game's custom player avatar. Preserve exactly its charming French cartoon style: bold irregular black outlines, cream paper, teal woodwork, warm golden ochre, little halftone texture. Remove Sylvain entirely, all his body, hands, cap, face. No other human. Recompose into a square workshop: on the right half a low workbench with jars of botanical flowers, kraft packet, botanical stems and the camera set on the workbench. Teal workshop walls, botanical frames, shelves behind. On the left half, keep an uncluttered open floor area for a separate full-body avatar that will be rendered by the application: figure center x=27%, head around y=20%, feet around y=93%. No large foreground table covering that left standing area. Keep recognizable original workshop details, a natural level frontal view. Do not draw a character, silhouette, person-shaped outline, dummy or placeholder anywhere. No text. Finished detailed square game illustration, opaque.",
+      "master": "output/imagegen/social-player/source/workshop.png"
+    },
+    {
+      "path": "public/app/kanab-quest/social/community.webp",
+      "reference": "C:/lesiteinternetquitue/public/app/kanab-quest/social/community.webp",
+      "prompt": "Use case: precise-object-edit. Edit the attached square illustration into a reusable game background preserving exactly its bold black outlines, cream and teal cartoon style, small black oval eyes on NPCs, warm ochre and gentle printed halftone. Remove the central Sylvain completely including cap, face, body, arms. Keep the female photographer neighbor on the far left and curly bearded craftsman neighbor on the far right, with matching recognizable appearances. Recompose as three people meeting standing outside the same teal workshop door, but the middle person is NOT drawn: keep center x=50%, from y=20% to y=94% clear for a separate full-body custom avatar composited by app. Show the two neighbors standing at outer left and right with heads near y=24%, feet near y=94%, camera for left, teal mug for right. Move the large foreground table out of the center, leave a small side table only bottom left or right with notebook and plants. Teal door, warm cream stone wall, leafy climbing plants frame scene. No human, silhouette, placeholder or ghost in the central slot. No lettering. Square finished detailed opaque illustration.",
+      "master": "output/imagegen/social-player/source/community.png",
+      "referenceMaster": "output/imagegen/social-sylvain/source/community.png"
+    },
+    {
+      "path": "public/app/kanab-quest/social/still-life.webp",
+      "reference": "C:/lesiteinternetquitue/public/app/kanab-quest/social/still-life.webp",
+      "prompt": "Use case: precise-object-edit. Edit this exact square cartoon still life. Remove ONLY the hand and arm entering at left and restore the cream wooden tabletop underneath. The image must contain NO humans, hands, body parts or clothing worn by a person. Preserve the notebook, sketches, camera, teal coffee cup, pencil, ochre folded fabric at bottom right, composition, thick hand-drawn black lines, cream/teal/ochre palette and halftone texture. Minimal faithful edit, no text, opaque square illustration.",
+      "master": "output/imagegen/social-player/source/still-life.png",
+      "referenceMaster": "output/imagegen/social-sylvain/source/still-life.png"
+    }
+  ]
+}

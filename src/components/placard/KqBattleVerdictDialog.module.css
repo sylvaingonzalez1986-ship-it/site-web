@@ -1,10 +1,10 @@
 .dialog { width: min(640px, calc(100vw - 24px)); color: #172923; font-family: var(--font-body),sans-serif; }
-.dialog[data-victory] { box-shadow: 6px 7px 0 #efc451; }
+.dialog[data-victory] { box-shadow: var(--game-panel-shadow, none); }
 .body { padding: 18px; }
-.hero { display: flex; align-items: center; gap: 12px; padding: 14px; border: 2px solid #172923; border-radius: 12px; background: var(--game-surface-warm); }
-.hero[data-won=true] { background: #dcefe4; }
+.hero { display: flex; align-items: center; gap: 12px; padding: 14px; --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.hero[data-won=true] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .hero > div { min-width: 0; }
-.emblem { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; }
+.emblem { display: grid; place-items: center; flex: none; width: 44px; height: 44px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; }
 .hero[data-won=true] .emblem { background: #efc451; transform: rotate(-5deg); }
 .emblem svg { width: 26px; height: 26px; }
 .eyebrow { font-size: 11px; font-weight: 650; }
@@ -13,24 +13,25 @@
 .score span { font-size: 30px; color: #536058; }
 .matchup { margin: 12px 0; font-size: 13px; line-height: 1.5; overflow-wrap: anywhere; }
 .gains { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin: 0; }
-.gains > div { padding: 10px; border: 1px solid #17292355; border-radius: 9px; background: #fffaf0; }
-.gains > div[data-reward] { background: #f8e6a9; border-color: #b9912b; }
+.gains > div { padding: 10px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.gains > div[data-reward] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .gains dt { display: flex; align-items: center; gap: 5px; font-size: 11px; line-height: 1.3; }
 .gains dt svg { flex: none; }
 .gains dd { margin: 7px 0 0; font: 900 30px/1 var(--font-display),Impact,sans-serif; }
 .reward { margin: 8px 0 0; font-size: 12px; font-weight: 700; }
-.takeaway { margin-top: 12px; padding: 12px; border-left: 4px solid #076c61; border-radius: 4px 10px 10px 4px; background: #edf3e9; overflow-wrap: anywhere; }
+.takeaway { margin-top: 12px; padding: 12px; overflow-wrap: anywhere; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .takeaway h3 { margin: 0; font-size: 14px; line-height: 1.35; font-weight: 750; }
 .takeaway p { margin: 6px 0 0; font-size: 12px; line-height: 1.5; }
 .rank { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin: 12px 0 0; padding: 12px 0; border-block: 1px solid #17292333; }
 .rank dt { font-size: 11px; color: #536058; }
 .rank dd { margin: 4px 0 0; font-weight: 700; font-size: 16px; }
-.details { margin-top: 10px; border: 1px solid #17292355; border-radius: 10px; background: #fffaf0; }
+.details { margin-top: 10px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .dialog .details > summary { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; min-height: 48px; padding: 10px 12px; list-style: none; cursor: pointer; font-size: 13px; font-weight: 700; }
 .details > summary::-webkit-details-marker { display: none; }
 .details > summary svg { flex: none; }
 .details[open] > summary svg { transform: rotate(180deg); }
-.details > summary:focus-visible,.continue:focus-visible,.secondary:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.details > summary:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.continue:focus-visible, .secondary:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
 .analysis,.rewardDetails { padding: 12px; border-top: 1px solid #17292333; }
 .rounds > div { display: grid; grid-template-columns: minmax(0,1fr) 48px 48px; gap: 8px; padding: 10px 8px; border-bottom: 1px solid #17292322; font-size: 12px; }
 .rounds > div[data-won=true] { background: #dcefe4; }
@@ -47,9 +48,9 @@
 .receipt { margin: 12px 0 0; color: #536058; font-size: 10px; line-height: 1.5; }
 .nextActions { display: grid; gap: 6px; }
 .continuation { margin-top: 12px; }
-.dialog .secondary { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 7px 10px; border: 1px solid #17292355; border-radius: 9px; background: transparent; color: #172923; font: 650 12px/1.4 var(--font-body),sans-serif; text-align: center; text-decoration: none; cursor: pointer; }
+.dialog .secondary { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 7px 10px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: 650 12px/1.4 var(--font-body),sans-serif; text-align: center; text-decoration: none; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .continue svg { flex-shrink: 0; }
-.dialog .continue { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 46px; padding: 10px 16px; border: 2px solid #172923; border-radius: 10px; background: #efc451; box-shadow: 2px 3px 0 #172923; color: #172923; font: 800 20px/1.2 var(--font-display),Impact,sans-serif; text-align: center; text-decoration: none; text-transform: uppercase; cursor: pointer; }
+.dialog .continue { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 46px; padding: 10px 16px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; box-shadow: none; color: #172923; font: 800 20px/1.2 var(--font-display),Impact,sans-serif; text-align: center; text-decoration: none; text-transform: uppercase; cursor: pointer; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .dialog [data-verdict-open-lot] { gap: 8px; font: 750 13px/1.4 var(--font-body),sans-serif; text-transform: none; }
 @media(max-width:400px) {
   .body { padding: 12px; }

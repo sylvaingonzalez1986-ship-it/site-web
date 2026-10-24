@@ -3,6 +3,9 @@
 import { useEffect, useLayoutEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
 import { Clock3, RotateCcw } from 'lucide-react';
 import { createReleveCommerceTransport } from '@/lib/kanab-quest-releve-commerce';
+import type { ArenaLearningStorage } from '@/lib/arena-introduction';
+import { useArenaLearningStorage } from '../contest/ArenaLearningStorage';
+import { AppDialog } from '../ui/AppDialog';
 import { createKqReleveWorkshop, getKqReleveWorkshopProgress, KQ_RELEVE_WORKSHOP_STORAGE_KEY, readKqReleveWorkshop, type KqReleveWorkshopState } from '@/lib/kanab-quest-releve-workshop';
 import { KqCommerceDesk } from './KqCommerceDesk';
 import { KqEquipmentCatalogModal } from './KqEquipmentCatalogModal';
@@ -10,33 +13,35 @@ import { KqWarehouseEntry } from './KqWarehouseEntry';
 import { createKqTutorialApi, KqTutorialApiProvider } from './KqTutorialApiContext';
 import styles from './KqReleveWorkshop.module.css';
 
-function restore() {
+function restore(storage?: ArenaLearningStorage) {
   try {
-    const raw = typeof window === 'undefined' ? null : window.localStorage.getItem(KQ_RELEVE_WORKSHOP_STORAGE_KEY);
+    const raw = typeof window === 'undefined' ? null : (storage ?? window.localStorage).getItem(KQ_RELEVE_WORKSHOP_STORAGE_KEY);
     const saved = raw ? readKqReleveWorkshop(JSON.parse(raw)) : null;
     return { state: saved ?? createKqReleveWorkshop(), warning: raw && !saved ? 'Le dossier enregistré était incomplet. Sylvain a préparé un nouvel essai.' : '' };
   } catch { return { state: createKqReleveWorkshop(), warning: 'La reprise sur cet appareil est indisponible. Tu peux terminer cette rencontre pendant cette visite.' }; }
 }
 
 export function KqReleveWorkshop({ onComplete }: { onComplete?: () => void }) {
-  const [saved, setSaved] = useState(restore);
+  const storage = useArenaLearningStorage();
+  const [saved, setSaved] = useState(() => restore(storage));
   const state = saved.state, current = useRef(state), workspace = useRef<HTMLDivElement>(null);
   const completeCallback = useRef(onComplete), notified = useRef(false);
   const [place, setPlace] = useState<'machines' | 'catalog' | 'counter'>('machines');
   const [equipmentCode, setEquipmentCode] = useState('SIFT-TRAY');
   const [notice, setNotice] = useState(''), [deskVersion, setDeskVersion] = useState(0);
   const [busy, setBusy] = useState(false);
+  const [restartOpen, setRestartOpen] = useState(false);
   useLayoutEffect(() => { current.current = state; completeCallback.current = onComplete; }, [state, onComplete]);
   const commit = useRef<(next: KqReleveWorkshopState) => void>(() => undefined);
   useLayoutEffect(() => {
     commit.current = next => {
       current.current = next;
       let warning = '';
-      try { window.localStorage.setItem(KQ_RELEVE_WORKSHOP_STORAGE_KEY, JSON.stringify(next)); }
+      try { (storage ?? window.localStorage).setItem(KQ_RELEVE_WORKSHOP_STORAGE_KEY, JSON.stringify(next)); }
       catch { warning = 'Cette progression reste disponible pendant la visite, mais sa sauvegarde sur cet appareil a échoué.'; }
       setSaved({ state: next, warning });
     };
-  }, []);
+  }, [storage]);
   const api = useMemo(() => createKqTutorialApi(createReleveCommerceTransport({
     getState: () => current.current.commerce,
     setState: commerce => commit.current({ ...current.current, commerce }),
@@ -74,7 +79,7 @@ export function KqReleveWorkshop({ onComplete }: { onComplete?: () => void }) {
   }
   function restart() {
     notified.current = false; commit.current(createKqReleveWorkshop()); setDeskVersion(value => value + 1);
-    setPlace('machines'); setNotice('Un nouveau lot de démonstration est prêt.');
+    setPlace('machines'); setNotice('Un nouveau lot de démonstration est prêt.'); setRestartOpen(false);
   }
   function localLink(event: MouseEvent<HTMLDivElement>) {
     const target = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href]') : null;
@@ -88,12 +93,15 @@ export function KqReleveWorkshop({ onComplete }: { onComplete?: () => void }) {
       <button type="button" data-releve-guide="workshop-counter" aria-pressed={place === 'counter'} onClick={() => setPlace('counter')}>Transformer le lot</button>
       <button type="button" data-releve-guide="workshop-maintenance" aria-pressed={place === 'machines'} onClick={() => { setEquipmentCode('SIFT-TRAY'); setPlace('machines'); }}>Mes machines</button>
       {progress.processing ? <button type="button" data-releve-guide="workshop-finish" disabled={busy} onClick={() => void finishProcessing()}><Clock3 size={19} aria-hidden="true" />Avancer jusqu’à la fin · {remainingMinutes} min</button> : null}
-      <button type="button" className={styles.restart} aria-label="Recommencer ce dossier prêté" data-releve-guide="workshop-restart" onClick={restart}><RotateCcw size={17} aria-hidden="true" /></button>
+      <button type="button" className={styles.restart} aria-label="Recommencer ce dossier prêté" aria-haspopup="dialog" data-releve-guide="workshop-restart" onClick={() => setRestartOpen(true)}><RotateCcw size={17} aria-hidden="true" /></button>
     </nav>
     {saved.warning ? <p className={styles.notice} role="status">{saved.warning}</p> : null}
     {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
     {place === 'catalog' ? <KqEquipmentCatalogModal embedded workshopOnly initialEquipmentCode={equipmentCode} onClose={() => setPlace('machines')} onOpenWorkshop={code => { setEquipmentCode(code ?? 'SIFT-TRAY'); setPlace('machines'); }} />
       : place === 'machines' ? <KqWarehouseEntry key={deskVersion} embedded workshopOnly initialEquipmentCode={equipmentCode} onClose={() => setPlace('counter')} onOpenShop={openCatalog} />
         : <KqCommerceDesk key={deskVersion} mode="sales" initialFlowerId="releve-workshop" onOpenShop={openCatalog} onOpenBusiness={otherVisit} onOpenStorage={otherVisit} onOpenTreasury={otherVisit} onOpenCulture={otherVisit} />}
-  </div></KqTutorialApiProvider>;
+  </div><AppDialog open={restartOpen} onClose={() => setRestartOpen(false)} title="Recommencer l’atelier d’essai ?" dialogProps={{ 'data-releve-workshop-restart': true }}
+    footer={<div className={styles.toolbar}><button type="button" onClick={() => setRestartOpen(false)}>Garder mon dossier</button><button type="button" data-releve-workshop-confirm-restart onClick={restart}>Recommencer l’atelier</button></div>}>
+    <p className={styles.confirmationCopy}>Le lot prêté, le budget et l’état de la machine retrouveront leur point de départ. Les transformations de cette rencontre seront effacées. Ta ferme et les autres rencontres restent conservées.</p>
+  </AppDialog></KqTutorialApiProvider>;
 }

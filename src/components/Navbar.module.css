@@ -45,3 +45,47 @@
   .header :is(a, button, summary):focus-visible { outline: 3px solid #003f30; outline-offset: 3px; }
   .header .control { flex-shrink: 0; }
 }
+
+/* Opt-in contour experiment: the original palette and box metrics stay intact. */
+:global(html[data-site-navigation-ui="quartier"]) .header [data-ui-shape] {
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+:global(html[data-site-navigation-ui="quartier"]) .header .control,
+:global(html[data-site-navigation-ui="quartier"]) .desktopNav :global(.nav-link),
+:global(html[data-site-navigation-ui="quartier"]) .moreMenu summary,
+:global(html[data-site-navigation-ui="quartier"]) .moreLinks a {
+  position: relative;
+  --site-ui-material: url("#site-ui-outline-003f30");
+  --site-ui-hover-material: var(--site-ui-material);
+}
+:global(html[data-site-navigation-ui="quartier"]) .header .cartButton {
+  --site-ui-material: url("#site-ui-fill-fffaf1");
+}
+:global(html[data-site-navigation-ui="quartier"]) .desktopNav :global(.nav-link),
+:global(html[data-site-navigation-ui="quartier"]) .moreLinks a {
+  --site-ui-hover-material: url("#site-ui-fill-f4c43d");
+}
+:global(html[data-site-navigation-ui="quartier"]) .desktopNav :global(.nav-link)[aria-current="page"],
+:global(html[data-site-navigation-ui="quartier"]) .moreMenu summary[data-active],
+:global(html[data-site-navigation-ui="quartier"]) .moreLinks a[aria-current="page"] {
+  --site-ui-material: url("#site-ui-fill-f4c43d");
+}
+:global(html[data-site-navigation-ui="quartier"]) .moreMenu[open] summary,
+:global(html[data-site-navigation-ui="quartier"]) .moreLinks {
+  --site-ui-material: url("#site-ui-fill-fffaf1");
+  --site-ui-hover-material: var(--site-ui-material);
+}
+:global(html[data-site-navigation-ui="quartier"]) .header .cartCount {
+  --site-ui-material: url("#site-ui-fill-f4c43d");
+  --site-ui-hover-material: var(--site-ui-material);
+  --site-ui-edge: 6px;
+}
+@media (max-width: 767px) {
+  /* #fffaf1 at 10/255 opacity over the unchanged #003f30 header. */
+  :global(html[data-site-navigation-ui="quartier"]) .header .menuButton { --site-ui-material: url("#site-ui-fill-0a4638"); }
+  :global(html[data-site-navigation-ui="quartier"]) .header .cartButton { --site-ui-material: url("#site-ui-fill-f4c43d"); }
+  :global(html[data-site-navigation-ui="quartier"]) .header .cartCount { --site-ui-material: url("#site-ui-fill-fffaf1"); }
+}

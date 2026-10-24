@@ -13,6 +13,7 @@ import {
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import { formatContestAverage, formatContestDate, getContestReviewAverage } from "@/lib/contest-ui";
 import { CONTEST_SCORE_MAX } from "@/lib/contest-score";
+import { getProductTastingNotebookHref } from "@/lib/contest-product-tasting";
 import styles from "./ProductTastingSection.module.css";
 
 type ProductTastingProps = {
@@ -29,13 +30,13 @@ export function ProductTastingBadge({ summary }: Pick<ProductTastingProps, "summ
   if (approvedReviewCount === 0) return null;
 
   return (
-    <a href="#avis-degustation" className={styles.badge}>
+    <a data-ui-commerce="tasting-badge" data-ui-shape="control" href="#avis-degustation" className={styles.badge}>
       <span className={styles.badgeScore}>
         <Star size={16} fill="currentColor" aria-hidden="true" />
         {formatContestAverage(averageScore)} <span>/ {CONTEST_SCORE_MAX}</span>
       </span>
       <span className={styles.badgeLabel}>
-        <strong>Les notes du Carnet</strong>
+        <strong>NOTES</strong>
         <span>{formatReviewCount(approvedReviewCount)}</span>
       </span>
       <ArrowDown size={18} aria-hidden="true" />
@@ -63,7 +64,7 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
   const { reviews, hasMore, loading, error, loadMore } = useContestReviewPages(
     summary.reviews, summary.nextReviewCursor, `/api/boutique/tasting/${encodeURIComponent(entry.id)}/reviews`,
   );
-  const notebookHref = `/arene/carnet/${entry.track}?entry=${encodeURIComponent(entry.id)}${entry.season?.code ? `&season=${encodeURIComponent(entry.season.code)}` : ""}`;
+  const notebookHref = getProductTastingNotebookHref(entry);
   const reviewCount = entry.stats.approvedReviewCount;
   const criterionAverages = CONTEST_SCORE_CRITERIA.flatMap((criterion) => {
     const score = entry.stats.criterionAverages[criterion];
@@ -71,7 +72,7 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
   });
 
   return (
-    <section id="avis-degustation" aria-labelledby="avis-degustation-title" className={styles.panel}>
+    <section data-ui-commerce="paper" data-ui-shape="panel" id="avis-degustation" aria-labelledby="avis-degustation-title" className={styles.panel}>
       <header className={styles.header}>
         <div>
           <p className={styles.eyebrow}><BookOpen size={16} aria-hidden="true" /> Le Carnet · les retours de dégustation</p>
@@ -88,7 +89,7 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
 
       <div className={styles.content}>
         <aside className={styles.overview} aria-label="Synthèse des notes de dégustation">
-          <div className={styles.scoreCard}>
+          <div data-ui-commerce="gold" data-ui-shape="panel" className={styles.scoreCard}>
             <p className={styles.label}><Star size={16} aria-hidden="true" /> La note du Carnet</p>
             <div className={styles.average}>
               <strong>{reviewCount > 0 ? formatContestAverage(entry.stats.averageScore) : "—"}</strong>
@@ -111,8 +112,8 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
           <p className={styles.sourceNote}><BookOpen size={18} aria-hidden="true" /><span>Ces notes et critiques concernent le lot indiqué. La moyenne prend en compte tous les avis publiés après modération.</span></p>
           {showArenaLink ? (
             <>
-              <Link href={`${notebookHref}&edit=notes`} className={styles.carnetLink}>
-                Donner mon avis <ArrowUpRight size={17} aria-hidden="true" />
+              <Link href={getProductTastingNotebookHref(entry, true)} className={styles.carnetLink}>
+                Noter cette fleur <ArrowUpRight size={17} aria-hidden="true" />
               </Link>
               <Link href={notebookHref} className={styles.carnetLink}>
                 Ouvrir mon carnet <ArrowUpRight size={17} aria-hidden="true" />
@@ -130,7 +131,7 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
           {reviews.length > 0 ? (
             <div className={styles.reviewList}>
               {reviews.map((review) => (
-                <article key={review.id} className={styles.review}>
+                <article data-ui-commerce="paper" data-ui-shape="panel" key={review.id} className={styles.review}>
                   <header className={styles.reviewHeader}>
                     <div className={styles.author}>
                       <span className={styles.initial} aria-hidden="true">{Array.from(review.pseudo.trim())[0]?.toLocaleUpperCase("fr-FR") ?? "C"}</span>
@@ -139,7 +140,7 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
                         <p>{formatContestDate(review.reviewedAt ?? review.createdAt)}</p>
                       </div>
                     </div>
-                    <span className={styles.reviewScore}>
+                    <span data-ui-commerce="gold" data-ui-shape="panel" className={styles.reviewScore}>
                       <strong>{formatContestAverage(getContestReviewAverage(review.scores))}</strong>
                       <span>/ {CONTEST_SCORE_MAX}</span>
                     </span>
@@ -185,7 +186,7 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
           )}
           {error ? <p role="alert" className={styles.paginationStatus}>{error}</p> : null}
           {hasMore ? (
-            <button type="button" className={styles.loadMore} onClick={() => void loadMore()} disabled={loading}>
+            <button data-ui-commerce="paper-control" data-ui-shape="control" type="button" className={styles.loadMore} onClick={() => void loadMore()} disabled={loading}>
               {loading ? "Chargement des avis…" : error ? "Réessayer de charger les avis" : "Lire les avis suivants"}
             </button>
           ) : null}

@@ -1,4 +1,4 @@
-.recap { box-sizing: border-box; width: 100%; min-width: 0; margin: 1rem 0; padding: 1rem; border: 2px solid #172923; border-radius: 12px; background: #fff8e7; color: #172923; text-align: left; }
+.recap { box-sizing: border-box; width: 100%; min-width: 0; margin: 1rem 0; padding: 1rem; color: #172923; text-align: left; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .recap h3 { margin: 0 0 .75rem; color: #172923; font-size: 1.05rem; line-height: 1.35; text-align: left; }
 .recap h4 { margin: 0; color: #172923; font-size: .88rem; line-height: 1.4; }
 .recap p { margin: .55rem 0 0; color: #172923; font-size: .82rem; line-height: 1.6; }
@@ -10,7 +10,7 @@
 .highlight { margin-top: .75rem; padding: .85rem; border-left: 4px solid #172923; background: #fffdf5; }
 .highlight ul, .explanationList { display: grid; gap: .5rem; margin: .6rem 0 0; padding-left: 1.1rem; color: #172923; font-size: .8rem; line-height: 1.6; }
 .cardList { display: grid; gap: .65rem; margin-top: .8rem; }
-.cardAdvice { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: start; gap: .7rem; padding: .75rem; border: 1px solid #b5c7a9; border-radius: 12px; background: #fffdf5; }
+.cardAdvice { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: start; gap: .7rem; padding: .75rem; border: 1px solid #b5c7a9; border-radius: var(--game-panel-radius, 2px); background: #fffdf5; }
 .cardAdvice > img { display: block; width: 64px; height: 96px; object-fit: contain; border-radius: 12px; }
 .cardAdvice > div { min-width: 0; }
 .cardAdvice small { display: block; margin-top: .25rem; font-size: .72rem; line-height: 1.5; color: #172923; }
@@ -22,9 +22,9 @@
 .recap .disclosure > summary::after { content: "+"; font-size: 1.3rem; }
 .recap .disclosure[open] > summary::after { content: "−"; }
 .recap .stages { display: grid; grid-template-columns: minmax(0, 1fr); gap: .7rem; margin: .7rem 0 0; padding: 0; list-style: none; }
-.recap .stages > li { display: block; min-width: 0; padding: .75rem; border: 1px solid #24574640; border-radius: 12px; background: #fffdf5; }
+.recap .stages > li { display: block; min-width: 0; padding: .75rem; border: 1px solid #24574640; border-radius: var(--game-panel-radius, 2px); background: #fffdf5; }
 .recap .explanationList, .recap .highlight > ul { display: grid; grid-template-columns: minmax(0, 1fr); list-style: disc; }
-.recap .explanationList > li, .recap .highlight > ul > li { display: list-item; width: auto; padding: 0; border: 0; border-radius: 12px; background: none; box-shadow: none; text-align: left; }
+.recap .explanationList > li, .recap .highlight > ul > li { display: list-item; width: auto; padding: 0; border: 0; border-radius: var(--game-panel-radius, 2px); background: none; box-shadow: none; text-align: left; }
 .stages strong { font-size: .82rem; }
 .stages p { font-size: .78rem; }
 .criteria { display: grid; gap: .6rem; margin: .1rem 0 .75rem; }
@@ -36,12 +36,13 @@
 .recap .juryContributions figure li { display: block; padding: 0; border: 0; border-radius: 0; background: none; }
 .recap .juryContributions [aria-hidden="true"] > span { display: block; padding: 0; border: 0; border-radius: 3px; background: var(--visual-color); }
 .recap .juryContributions > p { margin-top: 10px; color: #526157; font-size: 11px; }
-.recap .action { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: .9rem; padding: .7rem; border: 2px solid #172923; border-radius: 12px; background: #efc451; color: #172923; font-size: .8rem; font-weight: 850; line-height: 1.4; text-align: center; text-decoration: none; }
-.recap .action:focus-visible, .disclosure > summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.recap .action { display: flex; align-items: center; justify-content: center; width: 100%; min-height: 48px; margin-top: .9rem; padding: .7rem; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font-size: .8rem; font-weight: 850; line-height: 1.4; text-align: center; text-decoration: none; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.recap .action:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.disclosure > summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
 .recap [hidden] { display: none; }
 
 /* Culture notebook: keep the shared jury recap separate from this layout. */
-.recap.cultureRecap { container-type: inline-size; padding: 0; overflow: hidden; border: 2px solid #172923; border-radius: 20px; background: #fff8e7; box-shadow: 3px 4px 0 #172923; }
+.recap.cultureRecap { container-type: inline-size; padding: 0; overflow: hidden; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .recap .storyHeader { display: grid; grid-template-columns: minmax(0, 1fr) 208px; align-items: center; gap: 28px; padding: 26px; background: #149b8b; }
 .storyOpening { min-width: 0; }
 .recap .bookLabel { display: flex; align-items: center; gap: 8px; color: #172923; font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
@@ -49,12 +50,12 @@
 .recap .storyHeader .variety { margin: 0; color: #172923; font-size: 11px; }
 .recap .storyHeader .storySummary { max-width: 680px; margin-top: 14px; color: #172923; font-size: 13px; line-height: 1.7; }
 .sylvainPortrait { display: block; width: 208px; height: 208px; object-fit: cover; border: 3px solid #172923; border-radius: 18px; box-shadow: 3px 4px 0 #172923; }
-.resultRibbon { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; border-top: 1px solid #ffffff30; border: 2px solid #172923; border-radius: 10px; background: #efc451; color: #172923; padding: 12px; }
+.resultRibbon { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 18px; border-top: 1px solid #ffffff30; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #efc451; color: #172923; padding: 12px; }
 .recap .resultRibbon span { color: #172923; font-size: 11px; }
 .resultRibbon b { margin-right: 4px; color: #172923; font-size: 15px; }
 .storyBody { padding: 22px; }
 .recap .moments { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 14px; }
-.recap .moment { display: grid; align-content: start; gap: 12px; min-width: 0; padding: 15px; border: 1px solid #cfceb0; border-top: 3px solid #172923; border-radius: 10px; background: #fff8e7; }
+.recap .moment { display: grid; align-content: start; gap: 12px; min-width: 0; padding: 15px; border: 1px solid #cfceb0; border-top: 3px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; }
 .recap .moment:has(> img) { grid-template-columns: 72px minmax(0, 1fr); }
 .recap .moment[data-tone="setback"] { border-top-color: #b17544; background: #fff8e7; }
 .recap .moment[data-tone="care"] { border-top-color: #172923; background: #fff8e7; }
@@ -63,7 +64,7 @@
 .recap .moment h4 { font-size: 15px; line-height: 1.3; }
 .recap .moment .eyebrow { font-size: 9px; letter-spacing: .055em; }
 .recap .moment p { margin-top: 7px; font-size: 12px; line-height: 1.65; }
-.harvestProfile { margin-top: 24px; padding: 18px; border: 1px solid #cecbb0; border-radius: 10px; background: #fffdf4; }
+.harvestProfile { margin-top: 24px; padding: 18px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .recap .sectionHeading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; margin-bottom: 16px; }
 .recap .sectionHeading h4 { font-size: 16px; }
 .sectionHeading > small { color: #455748; font-size: 10px; }
@@ -80,13 +81,13 @@
 .recap .profileStat > p { grid-column: 1 / -1; margin-top: 2px; font-size: 11px; line-height: 1.7; color: #172923; }
 .profileStat p strong { font-weight: 600; }
 .cannabinoidRates { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 16px 0; }
-.cannabinoidRates > div { padding: 10px 12px; border: 1px solid #d5d2b8; border-radius: 12px; background: #fff8e7; }
+.cannabinoidRates > div { padding: 10px 12px; border: 1px solid #d5d2b8; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; }
 .cannabinoidRates dt { color: #627052; font-size: 10px; }
 .cannabinoidRates dd { margin: 5px 0 0; color: #172923; font-size: 17px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .recap.cultureRecap [data-cannabinoid-report] > summary { min-height: 44px; padding-top: 9px; padding-bottom: 9px; }
 .recap .noInputs { margin: 16px 0 0; padding-left: 2px; color: #455748; font-size: 11px; }
 .careReceipts { display: grid; gap: 12px; margin-bottom: 16px; }
-.careReceipts > article { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: start; gap: 14px; padding: 10px; border: 1px solid #dad4b8; border-radius: 12px; background: #fffdf4; }
+.careReceipts > article { display: grid; grid-template-columns: 64px minmax(0, 1fr); align-items: start; gap: 14px; padding: 10px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .careReceipts img { width: 64px; height: 64px; object-fit: contain; border-radius: 12px; }
 .recap .careReceipts p { font-size: 11px; }
 .recap .journeyDisclosure { margin-top: 20px; }
@@ -95,7 +96,7 @@
 .journeyDisclosure > summary strong { font-size: 15px; }
 .journeyDisclosure > summary small { font-size: 11px; font-weight: 400; color: #607456; }
 .recap .journey { display: grid; grid-template-columns: minmax(0, 1fr); gap: 14px; margin: 0 0 15px; padding: 0; list-style: none; }
-.recap .journey > li { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 20px; min-width: 0; padding: 16px; border: 1px solid #cbd0b4; border-radius: 10px; background: #fffdf5; box-shadow: none; text-align: left; }
+.recap .journey > li { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 20px; min-width: 0; padding: 16px; border: 1px solid #cbd0b4; border-radius: var(--game-panel-radius, 2px); background: #fffdf5; box-shadow: none; text-align: left; }
 .recap .journey > li[data-tone="negative"] { border-left: 3px solid #b77750; }
 .recap .journey > li[data-tone="mixed"] { border-left: 3px solid #ba9d54; }
 .recap .journey > li[data-tone="positive"] { border-left: 3px solid #172923; }
@@ -109,11 +110,11 @@
 .episodeBody { min-width: 0; }
 .recap .episodeBody > .situation { margin-top: 0; font-size: 13px; font-weight: 700; }
 .recap .episodeBody > p, .recap .episodeBody .explanationList { font-size: 12px; }
-.episodeCare { margin-top: 12px; padding: 10px 12px; border-radius: 12px; background: #fff8e7; }
+.episodeCare { margin-top: 12px; padding: 10px 12px; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; }
 .episodeCare h5 { margin: 0; color: #172923; font-size: 11px; }
 .recap .episodeCare p { font-size: 11px; }
 .recap .nextCulture { margin-top: 24px; }
-.recap .nextCulture .cardAdvice { border-color: #c9c6a7; border-radius: 10px; background: #fff8e7; }
+.recap .nextCulture .cardAdvice { border-color: #c9c6a7; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; }
 .recap .nextCulture .sectionHeading { margin-bottom: 10px; }
 
 @container (max-width: 700px) {
@@ -132,7 +133,7 @@
   .sylvainPortrait { grid-column: 1; grid-row: 2; width: 88px; height: 88px; border-width: 3px; border-radius: 18px; border: 3px solid #172923; box-shadow: 3px 4px 0 #172923; }
   .recap .storyHeader .variety { grid-column: 2; grid-row: 2; font-size: 11px; }
   .recap .storyHeader .storySummary { grid-column: 1 / -1; grid-row: 4; margin: 0; font-size: 12px; }
-  .resultRibbon { grid-column: 1 / -1; grid-row: 5; margin-top: 0; border: 2px solid #172923; border-radius: 10px; background: #efc451; color: #172923; }
+  .resultRibbon { grid-column: 1 / -1; grid-row: 5; margin-top: 0; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #efc451; color: #172923; }
   .storyBody { padding: 14px; }
   .recap .moment { padding: 12px; gap: 10px; }
   .recap .moment:has(> img) { grid-template-columns: 58px minmax(0, 1fr); }

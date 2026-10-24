@@ -251,6 +251,7 @@ export function Navbar() {
     <>
       {showAnnouncement && <AnnouncementBanner />}
       <header
+        data-site-navigation
         data-tutorial="navbar"
         data-announcement={showAnnouncement || undefined}
         className={`${styles.header} game-navbar safe-area-x fixed inset-x-0 z-40 transition-all duration-300 ${
@@ -266,6 +267,7 @@ export function Navbar() {
         <div className={`${styles.bar} retro-container relative flex items-center justify-between gap-4`}>
           <button
             type="button"
+            data-ui-shape="control"
             onClick={() => setMenuOpen((prev) => !prev)}
             className={`${styles.control} ${styles.menuButton} inline-flex h-11 w-11 items-center justify-center border-2 border-[#003f30] bg-[#fffaf1] text-[#003f30] md:hidden`}
             aria-label="Menu"
@@ -298,6 +300,7 @@ export function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
+                  data-ui-shape="control"
                   aria-current={isActiveLink(link.href) ? "page" : undefined}
                   className={`nav-link ${isAccountLink && user ? "inline-flex items-center gap-2" : ""} ${showWelcomePackBadge ? "relative inline-flex items-center" : ""}`}
                   data-tutorial={
@@ -333,10 +336,10 @@ export function Navbar() {
             })}
             {desktopMoreLinks.length > 0 && (
               <details ref={moreMenuRef} className={styles.moreMenu}>
-                <summary data-active={desktopMoreLinks.some(link => isActiveLink(link.href)) || undefined}>Plus <ChevronDown size={14} aria-hidden="true" /></summary>
-                <div className={styles.moreLinks}>
+                <summary data-ui-shape="control" data-active={desktopMoreLinks.some(link => isActiveLink(link.href)) || undefined}>Plus <ChevronDown size={14} aria-hidden="true" /></summary>
+                <div className={styles.moreLinks} data-ui-shape="panel">
                   {desktopMoreLinks.map(link => (
-                    <Link key={link.href} href={link.href} aria-current={isActiveLink(link.href) ? "page" : undefined}
+                    <Link key={link.href} href={link.href} data-ui-shape="control" aria-current={isActiveLink(link.href) ? "page" : undefined}
                       onClick={() => { if (moreMenuRef.current) moreMenuRef.current.open = false; }}>
                       {link.label}
                     </Link>
@@ -348,6 +351,7 @@ export function Navbar() {
 
           <button
             type="button"
+            data-ui-shape="control"
             onClick={() => setCartOpen(true)}
             aria-label="Panier"
             aria-describedby={totalItems > 0 ? "navbar-cart-quantity" : undefined}
@@ -356,7 +360,7 @@ export function Navbar() {
             <ShoppingCart size={19} aria-hidden="true" /><span className={styles.controlLabel}>Panier</span>
             {totalItems > 0 && <span id="navbar-cart-quantity" className="sr-only">{totalItems} article{totalItems > 1 ? "s" : ""} dans le panier</span>}
             {totalItems > 0 && (
-              <span aria-hidden="true" className={`${styles.cartCount} absolute -right-2 -top-2 min-w-5 border border-[#003f30] bg-[#f4c43d] px-1 text-center text-xs font-bold text-[#003f30]`}>
+              <span aria-hidden="true" data-ui-shape="panel" className={`${styles.cartCount} absolute -right-2 -top-2 min-w-5 border border-[#003f30] bg-[#f4c43d] px-1 text-center text-xs font-bold text-[#003f30]`}>
                 {totalItems > 99 ? "99+" : totalItems}
               </span>
             )}

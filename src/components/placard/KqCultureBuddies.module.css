@@ -1,0 +1,40 @@
+.section { min-width: 0; color: #172923; }
+.header { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 14px; }
+.header h2 { margin: 0; font-family: var(--font-display), sans-serif; font-size: clamp(1.4rem, 3vw, 1.9rem); line-height: 1.1; }
+.summary { margin: 5px 0 0; font-size: .8rem; line-height: 1.4; }
+.intro { margin: 8px 0 12px; font-size: .8rem; line-height: 1.5; }
+.section :is(.header, .actions, .empty, .unavailable, .feedback, .pickerBar) button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; padding: 8px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.section :is(.header, .actions, .empty, .unavailable, .feedback, .pickerBar) button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
+.section :is(.header, .actions, .empty, .unavailable, .feedback, .pickerBar) button:disabled { opacity: .55; cursor: default; }
+.section button:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.section [tabindex]:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.section button.secondary { background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.zones { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 10px; }
+.zone { display: flex; min-width: 0; gap: 12px; padding: 12px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.zone[data-open] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.illustration { flex: 0 0 64px; display: flex; align-items: center; justify-content: center; align-self: center; overflow: hidden; width: 64px; min-height: 90px; border-radius: 8px; background: #bfe9db; }
+.illustration > span, .illustration > img { display: block; width: 100%; height: auto; }
+.illustration img { max-width: 100%; height: auto; }
+.zoneContent { min-width: 0; flex: 1; }
+.zoneName { display: flex; align-items: center; gap: 8px; margin: 0 0 7px; font-size: .85rem; line-height: 1.35; }
+.zoneName span { white-space: nowrap; }
+.zoneNumber { display: inline-grid; min-width: 34px; min-height: 32px; padding: 3px 6px; place-items: center; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; color: #172923; font-size: 1rem; font-weight: 900; font-variant-numeric: tabular-nums; }
+.zoneContent h3 { margin: 0; font-family: var(--font-display), sans-serif; font-size: 1.15rem; line-height: 1.15; overflow-wrap: anywhere; }
+.state { display: flex; align-items: center; gap: 5px; margin: 6px 0 8px; font-size: .73rem; line-height: 1.35; }
+.state svg { flex-shrink: 0; }
+.actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.section button.remove { padding-inline: 7px; border-color: transparent; background-color: transparent; font-weight: 500; text-decoration: underline; }
+.empty, .unavailable { margin: 12px 0; padding: 12px; border: 1px dashed #17292380; border-radius: var(--game-panel-radius, 2px); font-size: .8rem; line-height: 1.5; }
+.unavailable { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
+.empty p { margin: 0 0 8px; }
+.feedback { scroll-margin-top: 100px; }
+.feedback:empty { display: none; }
+.feedback p { margin: 10px 0 6px; font-size: .8rem; line-height: 1.5; }
+.feedback [role="alert"] { padding: 10px 12px; border-left: 3px solid #172923; background: var(--game-surface-warm); }
+.picker { min-width: 0; margin-top: 12px; padding: 12px; scroll-margin-top: 100px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.pickerBar { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: .75rem; }
+.picker > section { margin: 10px 0 0; }
+.picker > section > header h2 { font-size: 1.3rem; line-height: 1.2; }
+.picker > section > p { font-size: .78rem; }
+.picker button { min-height: 44px; }
+@media (max-width: 400px) { .zone { gap: 9px; padding: 10px; } .illustration { flex-basis: 52px; width: 52px; min-height: 76px; } .picker { padding: 10px; } .pickerBar { align-items: flex-start; } }

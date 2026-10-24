@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type KeyboardEvent } from "react";
-import { ArrowLeft, ArrowRight, ChevronDown, FlaskConical, LayoutDashboard, ReceiptText, Settings2, ShoppingBag, Store, TrendingUp } from "lucide-react";
+import { ArrowLeft, ArrowRight, ChevronDown, FlaskConical, LayoutDashboard, Settings2, ShoppingBag, TrendingUp } from "lucide-react";
 import { KqCommerceDesk } from "./KqCommerceDesk";
 import { KqTreasuryManagement } from "./KqTreasuryManagement";
+import { KqPrintedArt } from "./KqPrintedArt";
 import type { KqCommerceReceipt } from "@/lib/kanab-quest-commerce";
 import styles from "./KqMarketHub.module.css";
 
@@ -85,7 +86,7 @@ export function KqMarketHub({ onOpenShop, onOpenTreasury, onOpenStorage, onOpenC
     <div className={styles.workspace}>
     <div className={styles.navigation}>
       <div className={styles.navigationHeading}>
-        <div className={styles.identity}><span className={styles.shopMark}><Store size={25} aria-hidden="true" /></span><span><strong>Ma boutique</strong><small>{sidebar ? "Mon espace commerce" : sections.find(item => item.code === activeSection)?.label}</small></span></div>
+        <div className={styles.identity}><KqPrintedArt kind="commerce" className={styles.shopMark} /><span><strong>Ma boutique</strong><small>{sidebar ? "Mon espace commerce" : sections.find(item => item.code === activeSection)?.label}</small></span></div>
         <button type="button" ref={menuToggle} className={styles.menuToggle} hidden={sidebar} aria-expanded={menuOpen} aria-controls={`${id}-navigation`} onClick={() => setMenuOpen(open => !open)}>Rubriques<ChevronDown size={16} aria-hidden="true" /></button>
       </div>
       <div id={`${id}-navigation`} className={styles.tabs} hidden={!sidebar && !menuOpen} role="tablist" aria-label="Ma boutique" aria-orientation={sidebar ? "vertical" : "horizontal"} onKeyDown={event => { if (!sidebar && event.key === "Escape") { event.preventDefault(); setMenuOpen(false); menuToggle.current?.focus(); } }}>{sections.map((item, index) => {
@@ -101,7 +102,11 @@ export function KqMarketHub({ onOpenShop, onOpenTreasury, onOpenStorage, onOpenC
         <h1 className="sr-only" ref={managementHeading} tabIndex={-1}>Développer ma boutique</h1>
         <button type="button" className={styles.back} onClick={() => { focusDestination.current = "overview"; select("overview"); }}><ArrowLeft size={16} aria-hidden="true" />Vue d’ensemble</button>
         <KqTreasuryManagement onOpenShop={onOpenShop} section="management" initialView={managementDestination === "merch" ? "merch" : "activity"} onPrepareStock={() => { focusDestination.current = "sales"; select("sales"); }} onViewSales={() => { focusDestination.current = "dashboard"; select("dashboard"); }} />
-        <Link className={styles.accounting} href="/arene/placard?view=treasury&pole=accounting" prefetch={false} onClick={event => { if (onOpenTreasury) { event.preventDefault(); onOpenTreasury(); } }}><ReceiptText size={19} aria-hidden="true" /><span>Mes factures<small>Montants à régler et prochaines échéances dans Finances.</small></span><ArrowRight size={18} aria-hidden="true" /></Link>
+        <Link className={styles.accounting} href="/arene/placard?view=treasury&pole=accounting" prefetch={false} onClick={event => { if (onOpenTreasury) { event.preventDefault(); onOpenTreasury(); } }}>
+          <KqPrintedArt kind="accounts" className={styles.accountingArt} />
+          <span className={styles.accountingCopy}><span className={styles.accountingEyebrow}>Le comptoir des comptes</span><strong>Mes factures</strong><small>Montants à régler et prochaines échéances dans Finances.</small></span>
+          <span className={styles.accountingAction}>Ouvrir le registre<ArrowRight size={19} aria-hidden="true" /></span>
+        </Link>
       </main>
     </div>}
     </div>

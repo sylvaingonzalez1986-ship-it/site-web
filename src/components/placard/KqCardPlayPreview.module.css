@@ -1,9 +1,9 @@
-.preview, .description { width: 100%; margin: .7rem 0; padding: .7rem; border: 1px solid #afc0ab; border-radius: 12px; background: #fff8e7; color: #172923; text-align: left; box-sizing: border-box; }
+.preview, .description { width: 100%; margin: .7rem 0; padding: .7rem; color: #172923; text-align: left; box-sizing: border-box; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .preview h3 { margin: 0; font-size: .95rem; }
 .preview > p, .description { font-size: .78rem; line-height: 1.5; }
 .preview > p { margin: .25rem 0 .65rem; }
 .results { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
-.results article { display: flex; flex-direction: column; gap: .3rem; padding: .55rem; border: 1px solid #172923; border-radius: 8px; background: #fff1d6; overflow-wrap: anywhere; }
+.results article { display: flex; flex-direction: column; gap: .3rem; padding: .55rem; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; overflow-wrap: anywhere; }
 .results article[data-preview-result="after"] { background: var(--game-surface-warm); }
 .results span, .results small { font-size: .72rem; line-height: 1.4; }
 .results strong { font-size: .9rem; }

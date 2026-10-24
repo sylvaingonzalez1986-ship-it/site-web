@@ -25,7 +25,7 @@ type BlogPostCardProps = {
 
 function BlogPostCard({ post, readMoreLabel, className = "" }: BlogPostCardProps) {
   return (
-    <article key={post.id} className={`${styles.card} ${className}`.trim()}>
+    <article key={post.id} data-ui-shape="panel" className={`${styles.card} ${className}`.trim()}>
       <Link href={`/blog/${post.slug}`} className="block">
         <div className={styles.media}>
           <Image
@@ -106,10 +106,10 @@ function BlogPostGridInner({ posts, readMoreLabel, emptyLabel }: BlogPostGridPro
 
   return (
     <div className={styles.grid}>
-      <div className={styles.filters}>
+      <div data-ui-shape="panel" className={styles.filters}>
         <p className={styles.filterLabel}>Les rubriques du journal</p>
         <div className={styles.filterButtons} role="group" aria-label="Filtrer les articles par rubrique">
-          <button
+          <button data-ui-shape="control"
             type="button"
             onClick={() => setCategory("all")}
             aria-pressed={activeCategory === "all"}
@@ -117,7 +117,7 @@ function BlogPostGridInner({ posts, readMoreLabel, emptyLabel }: BlogPostGridPro
             Tous
           </button>
           {availableCategories.map((category) => (
-            <button
+            <button data-ui-shape="control"
               key={category}
               type="button"
               onClick={() => setCategory(category)}
@@ -131,10 +131,10 @@ function BlogPostGridInner({ posts, readMoreLabel, emptyLabel }: BlogPostGridPro
 
       <div className={styles.sectionHeading}>
         <h2>{activeCategory === "all" ? "Tous les articles" : BLOG_CATEGORY_LABELS[activeCategory]}</h2>
-        <p className={styles.count} role="status">{filteredPosts.length} article{filteredPosts.length > 1 ? "s" : ""}</p>
+        <p data-ui-shape="control" className={styles.count} role="status">{filteredPosts.length} article{filteredPosts.length > 1 ? "s" : ""}</p>
       </div>
       {filteredPosts.length === 0 ? (
-        <div className={styles.empty}>{emptyLabel}</div>
+        <div data-ui-shape="panel" className={styles.empty}>{emptyLabel}</div>
       ) : (
         <>
           <div

@@ -1,5 +1,15 @@
 import type { ContestEntrySummary } from "@/types/contest";
 
+export function getProductTastingNotebookHref(
+  entry: Pick<ContestEntrySummary, "id" | "track" | "season">,
+  editNotes = false,
+): string {
+  const params = new URLSearchParams({ entry: entry.id });
+  if (entry.season?.code) params.set("season", entry.season.code);
+  if (editNotes) params.set("edit", "notes");
+  return `/arene/carnet/${entry.track}?${params.toString()}`;
+}
+
 function timestamp(value: string | undefined): number {
   const parsed = value ? Date.parse(value) : NaN;
   return Number.isFinite(parsed) ? parsed : 0;

@@ -1,4 +1,5 @@
 import { applyKqOperationsRequest, createKqOperationsLesson, type KqOperationsLessonAction, type KqOperationsLessonId } from './kanab-quest-operations-lesson';
+import { normalizeKqSocialSnapshot } from './kanab-quest-social';
 
 export function resetKqPlayableOperationsLesson(lesson: KqOperationsLessonId, scope = 'discovery') {
   try { sessionStorage.removeItem(`kq-playable-operations-v1:${scope}:${lesson}`); } catch { /* Optional storage. */ }
@@ -11,12 +12,44 @@ export function restoreKqOperationsLesson(lesson: KqOperationsLessonId, value: u
   if (row.version !== 1 || row.lesson !== lesson || !Array.isArray(row.actions) || row.actions.length > 500) return initial;
   try {
     let state = initial.state;
+    let catalog: 'original' | 'expanded' | null = null;
+    let narrative: 1 | 2 | 3 | null = null;
+    const upgradeCatalog = () => {
+      if (state.social?.version === 2) {
+        state.social = normalizeKqSocialSnapshot({ ...state.social, storyCatalogVersion: undefined }, state.trial.clock, 2);
+      }
+    };
+    const upgradeNarrative = (version: 2 | 3 = 3) => {
+      if (state.social?.version === 2) {
+        state.social = normalizeKqSocialSnapshot({ ...state.social, narrativeVersion: undefined }, state.trial.clock, version);
+      }
+    };
     const actions: KqOperationsLessonAction[] = [];
     for (const action of row.actions) {
       if (!action || typeof action !== 'object' || typeof action.path !== 'string' || !['POST', 'PATCH'].includes(action.method) || !action.body || typeof action.body !== 'object' || Array.isArray(action.body)) return initial;
-      state = applyKqOperationsRequest(state, action).state;
+      const social = new URL(action.path, 'https://lesson.invalid').pathname === '/api/arena/placard/social';
+      const legacySocial = social && action.body.modelVersion === undefined;
+      const originalCatalog = social && action.body.modelVersion === 2 && action.socialCatalogVersion === undefined;
+      const legacyNarrative = social && action.body.modelVersion === 2 && action.socialNarrativeVersion === undefined;
+      const v2Narrative = social && action.body.modelVersion === 2 && action.socialNarrativeVersion === 2;
+      if (social && action.body.modelVersion === 2) {
+        if (action.socialCatalogVersion !== undefined && action.socialCatalogVersion !== 2) return initial;
+        if (action.socialNarrativeVersion !== undefined && action.socialNarrativeVersion !== 2 && action.socialNarrativeVersion !== 3) return initial;
+        const version = legacyNarrative ? 1 : v2Narrative ? 2 : 3;
+        if (narrative !== null && version < narrative || originalCatalog && !legacyNarrative) return initial;
+        if (narrative !== null && version > narrative) upgradeNarrative(version as 2 | 3);
+        narrative = version;
+        if (originalCatalog && catalog === 'expanded') return initial;
+        if (!originalCatalog && catalog === 'original') upgradeCatalog();
+        catalog = originalCatalog ? 'original' : 'expanded';
+      }
+      state = applyKqOperationsRequest(state, action, legacySocial ? { replaySocialV1: true }
+        : { ...(originalCatalog ? { replaySocialOriginalCatalog: true as const } : {}), ...(legacyNarrative ? { replaySocialLegacyNarrative: true as const } : {}), ...(v2Narrative ? { replaySocialV2Narrative: true as const } : {}) }).state;
       actions.push(action);
     }
+    if (catalog === 'original') upgradeCatalog();
+    if (narrative !== null && narrative < 3) upgradeNarrative();
+    if (state.social) state.social = normalizeKqSocialSnapshot(state.social, state.trial.clock);
     return { state, actions };
   } catch { return initial; }
 }
@@ -47,7 +80,8 @@ export function createKqOperationsSession(lesson: KqOperationsLessonId, scope = 
       const source = init?.body ?? (input instanceof Request && method !== 'GET' ? await input.text() : undefined);
       const body = typeof source === 'string' ? JSON.parse(source) : {};
       if (!body || typeof body !== 'object' || Array.isArray(body)) throw new Error('Action invalide.');
-      const action: KqOperationsLessonAction = { path, method, body };
+      const action: KqOperationsLessonAction = { path, method, body,
+        ...(new URL(path, 'https://lesson.invalid').pathname === '/api/arena/placard/social' ? { socialCatalogVersion: 2 as const, socialNarrativeVersion: 3 as const } : {}) };
       const result = applyKqOperationsRequest(state, action);
       if (result.state !== state) {
         if (actions.length >= 500) throw new Error('Cet essai est rempli. Recommence-le pour poursuivre.');

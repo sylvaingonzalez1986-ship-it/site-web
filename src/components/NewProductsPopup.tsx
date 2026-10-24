@@ -12,6 +12,7 @@ import { AppDialog } from "@/components/ui/AppDialog";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { navigateAfterOverlays } from "@/lib/overlay-history";
 import firstVisitStyles from "@/components/FirstVisitExperience.module.css";
+import photoStyles from "@/components/boutique/ProductPhoto.module.css";
 
 const POPUP_STORAGE_KEY = "lcb_new_products_popup";
 const POPUP_DISMISS_MS = 24 * 60 * 60 * 1000;
@@ -240,14 +241,16 @@ function NewProductsPopupContent({ pathname }: { pathname: string }) {
               data-single={featuredProducts.length === 1 || undefined}
               className={`${firstVisitStyles.productCard} snap-center snap-always overflow-hidden rounded-[24px] border-2 border-[#1a1a1a] bg-white shadow-[5px_5px_0_#1a1a1a] sm:snap-none`}
             >
-              <div className="relative aspect-[3/2] border-b-2 border-[#1a1a1a] bg-[#f3ead8] sm:aspect-[4/3]">
-                <Image
-                  src={product.images?.[0] ?? product.image}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 639px) 78vw, (max-width: 1280px) 50vw, 25vw"
-                  className="object-cover"
-                />
+              <div className={`relative aspect-[3/2] border-b-2 border-[#1a1a1a] bg-[#f3ead8] sm:aspect-[4/3] ${photoStyles.frame}`} data-product-photo="new-arrival">
+                <div className={photoStyles.window}>
+                  <Image
+                    src={product.images?.[0] ?? product.image}
+                    alt={product.name}
+                    fill
+                    sizes="(max-width: 639px) 78vw, (max-width: 1280px) 50vw, 25vw"
+                    className={`object-cover ${photoStyles.image}`}
+                  />
+                </div>
               </div>
 
               <div className="space-y-3 p-3 sm:space-y-4 sm:p-4">

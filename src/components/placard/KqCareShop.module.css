@@ -2,13 +2,15 @@
   container-type: inline-size;
   min-width: 0;
   padding: clamp(14px, 2.2vw, 24px);
-  border: 2px solid #172923;
-  border-radius: 18px;
-  background: #fff1d6;
   color: #172923;
   font-size: 13px;
   line-height: 1.5;
-  box-shadow: 3px 4px 0 #172923;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
 
 .shop[data-reserve] { margin-top: 14px; }
@@ -16,23 +18,24 @@
 .title { flex: 1; min-width: 150px; }
 .title > small { color: #455748; font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .shop .title h2 { margin: 3px 0 0; color: #172923; font-size: 24px; font-weight: 800; line-height: 1.2; letter-spacing: -.025em; }
-.balance { display: flex; align-items: center; gap: 9px; margin: 0; padding: 8px 11px; border: 2px solid #172923; border-radius: 9px; background: #efc451; }
+.balance { display: flex; align-items: center; gap: 9px; margin: 0; padding: 8px 11px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #efc451; }
 .balance > span { display: grid; }
 .balance small { color: #455748; font-size: 9px; }
 .balance strong { color: #172923; font-size: 16px; line-height: 1.3; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .intro { max-width: 640px; margin: 10px 0 16px; color: #172923; font-size: 12px; }
-.shop.shop button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; border: 2px solid #172923; border-radius: 12px; background: #fffdf3; color: #172923; padding: 9px 11px; font-family: inherit; font-size: 12px; font-weight: 750; line-height: 1.3; cursor: pointer; transition: background .15s ease, border-color .15s ease; }
-.shop button:hover:not(:disabled) { border-color: #172923; background: #d7efe2; }
+.shop.shop button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; padding: 9px 11px; font-family: inherit; font-size: 12px; font-weight: 750; line-height: 1.3; cursor: pointer; transition: background .15s ease, border-color .15s ease; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.shop button:hover:not(:disabled) { border-color: transparent; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; color: #172923; }
 .shop button:disabled { opacity: .48; cursor: not-allowed; }
-.shop button:focus-visible, .details summary:focus-visible { outline: 3px solid #b7862e; outline-offset: 3px; }
-.tabs { display: inline-flex; flex-wrap: wrap; gap: 4px; width: fit-content; max-width: 100%; padding: 4px; border: 1px solid #d2d1b7; border-radius: 11px; background: #fff8e7; }
-.shop .tabs button { border-color: transparent; background: transparent; font-size: 11px; }
-.shop .tabs button[aria-pressed="true"], .shop .tabs button[aria-pressed="true"]:hover { border-color: #172923; background: #149b8b; color: #172923; box-shadow: 2px 2px 0 #172923; }
+.shop button:focus-visible { outline: 3px solid #b7862e; outline-offset: 3px; }
+.details summary:focus-visible { outline: 3px solid #b7862e; outline-offset: 3px; }
+.tabs { display: inline-flex; flex-wrap: wrap; gap: 4px; width: fit-content; max-width: 100%; padding: 4px; border: 1px solid #d2d1b7; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; }
+.shop .tabs button { border-color: transparent; font-size: 11px; background: transparent; }
+.shop .tabs button[aria-pressed="true"], .shop .tabs button[aria-pressed="true"]:hover:not(:disabled) { border-color: transparent; color: #fff1d6; box-shadow: none; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; }
 .rayonHint { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2px 10px; margin: 11px 1px 12px; color: #172923; font-size: 11px; }
 .rayonHint > span { color: #455748; font-size: 10px; }
 .products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
-.product { display: flex; min-width: 0; flex-direction: column; overflow: hidden; padding: 16px; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 3px 4px 0 #172923; }
-.product[data-stocked] { border-color: #172923; }
+.product { display: flex; min-width: 0; flex-direction: column; overflow: hidden; padding: 16px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.product[data-stocked] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .productMain { display: grid; grid-template-columns: 136px minmax(0, 1fr); align-items: center; gap: 12px; }
 .illustration { display: grid; place-items: center; overflow: hidden; width: 136px; height: 136px; border-radius: 9px; background: #fff8e7; }
 .productImage { display: block; width: 100%; height: 100%; object-fit: contain; }
@@ -42,7 +45,7 @@
 .stock[data-stocked] { color: #172923; font-weight: 750; }
 .stock[data-stocked]::before { background: #149b8b; }
 .shop .product h3 { margin: 5px 0 9px; color: #172923; font-size: 17px; font-weight: 800; line-height: 1.22; letter-spacing: -.02em; overflow-wrap: anywhere; }
-.target { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 5px; border-radius: 12px; background: #fff1d6; padding: 3px 6px; color: #695927; font-size: 10px; font-weight: 750; }
+.target { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 5px; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; padding: 3px 6px; color: #695927; font-size: 10px; font-weight: 750; }
 .target > span { color: #7b764d; font-size: 9px; font-weight: 500; }
 .role { display: block; margin-top: 7px; color: #172923; font-size: 10px; line-height: 1.45; }
 .details { margin-top: 11px; border-top: 1px solid #e4dec7; }
@@ -55,13 +58,13 @@
 .price { display: grid; align-content: center; }
 .price strong { color: #172923; font-size: 21px; line-height: 1.3; font-variant-numeric: tabular-nums; }
 .price small { color: #455748; font-size: 9px; }
-.shop button.use { grid-column: 1 / -1; width: 100%; border-color: #172923; background: #efc451; color: #172923; border: 2px solid #172923; border-radius: 12px; box-shadow: 3px 4px 0 #172923; }
-.shop .use:hover:not(:disabled) { border-color: #172923; background: var(--game-surface-warm); }
-.shop .use:disabled { border-color: #bbc2a7; background: #d7efe2; color: #455748; opacity: .72; }
+.shop button.use { grid-column: 1 / -1; width: 100%; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; border-color: transparent; }
+.shop .use:hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); color: #172923; background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.shop .use:disabled { color: #455748; opacity: .72; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .reason { display: block; margin-top: 8px; color: #455748; font-size: 10px; line-height: 1.5; }
 .reason[data-available] { color: #172923; }
 .cashHint { display: block; margin-top: 5px; color: #8c6033; font-size: 10px; }
-.notice { margin: 14px 0 0; padding: 11px 13px; border: 1px solid #b9c5a1; border-radius: 12px; background: #d7efe2; color: #172923; font-size: 12px; }
+.notice { margin: 14px 0 0; padding: 11px 13px; border: 1px solid #b9c5a1; border-radius: var(--game-panel-radius, 2px); background: #d7efe2; color: #172923; font-size: 12px; }
 
 @container (max-width: 670px) {
   .products { grid-template-columns: minmax(0, 1fr); gap: 18px; }
@@ -78,7 +81,7 @@
   .tabs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); width: 100%; }
   .shop .tabs button { gap: 5px; padding: 8px 5px; font-size: 10px; text-align: left; }
   .tabs svg { flex-shrink: 0; width: 14px; }
-  .product { padding: 16px; border: 2px solid #172923; border-radius: 16px; box-shadow: 3px 4px 0 #172923; background: #fff8e7; }
+  .product { padding: 16px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
   .productMain { grid-template-columns: 104px minmax(0, 1fr); gap: 10px; }
   .illustration { width: 104px; height: 104px; }
   .shop .product h3 { font-size: 16px; }

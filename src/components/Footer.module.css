@@ -319,3 +319,24 @@
     transition: none;
   }
 }
+
+/* Opt-in shape treatment. Footer surfaces, text and layout are unchanged. */
+:global(html[data-site-ui="quartier"]) .footer [data-ui-shape] {
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+:global(html[data-site-ui="quartier"]) .actionPrimary,
+:global(html[data-site-ui="quartier"]) .actionSecondary,
+:global(html[data-site-ui="quartier"]) .cookieSettings,
+:global(html[data-site-ui="quartier"]) .regionalLinks a {
+  position: relative;
+  --site-ui-material: url("#site-ui-fill-f8f1e5");
+  --site-ui-hover-material: url("#site-ui-fill-f4c43d");
+}
+:global(html[data-site-ui="quartier"]) .actionSecondary,
+:global(html[data-site-ui="quartier"]) .regionalLinks a {
+  --site-ui-material: url("#site-ui-outline-f8f1e5");
+}
+:global(html[data-site-ui="quartier"]) .cookieSettings { --site-ui-hover-material: var(--site-ui-material); }

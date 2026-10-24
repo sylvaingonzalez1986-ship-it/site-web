@@ -14,6 +14,7 @@ import type { Product } from "@/data/products";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import { PRODUCER_CULTURE_LABELS, type Producer } from "@/types/store";
 import styles from "./ProducerDetailPanel.module.css";
+import photoStyles from "./ProductPhoto.module.css";
 
 type ProducerDetailPanelProps = {
   producer: Producer;
@@ -36,7 +37,7 @@ type ProducerFactProps = {
 function ProducerFact({ title, value, details }: ProducerFactProps) {
   if (details.length === 0) {
     return (
-      <div className={styles.fact}>
+      <div data-ui-commerce="paper" data-ui-shape="panel" className={styles.fact}>
         <div className={styles.factSummary}>
           <span>
             <span className={styles.factTitle}>{title}</span>
@@ -48,7 +49,7 @@ function ProducerFact({ title, value, details }: ProducerFactProps) {
   }
 
   return (
-    <details className={`group ${styles.fact}`}>
+    <details data-ui-commerce="paper" data-ui-shape="panel" className={`group ${styles.fact}`}>
       <summary className={styles.factSummary}>
         <span>
           <span className={styles.factTitle}>{title}</span>
@@ -99,42 +100,46 @@ export function ProducerDetailPanel({
   const soilDetails = PRODUCER_SOIL_DETAILS[producer.soil] ?? [];
 
   return (
-    <section
+    <section data-ui-commerce="producer-panel" data-ui-shape="panel"
       id={`producer-panel-${producer.id}`}
       className={`producer-detail-enter ${styles.panel}`}
       aria-labelledby={`producer-title-${producer.id}`}
     >
       <div className={styles.hero}>
-        <div className={styles.image}>
-          <Image
-            src={producer.image}
-            alt={producer.name}
-            fill
-            sizes="(max-width: 900px) 100vw, 42vw"
-            className={styles.photo}
-          />
+        <div className={`${styles.image} ${photoStyles.frame}`}>
+          <div className={`${photoStyles.window} ${styles.photoWindow}`}>
+            <Image
+              src={producer.image}
+              alt={producer.name}
+              fill
+              sizes="(max-width: 900px) 100vw, 42vw"
+              className={`${styles.photo} ${photoStyles.image}`}
+            />
+          </div>
         </div>
 
         <div className={styles.copy}>
-          <p className={styles.eyebrow}>{producerPartnerLabel}</p>
-          <h2 id={`producer-title-${producer.id}`} className={styles.title}>
-            {producer.name}
-          </h2>
+          <div className={styles.identity}>
+            <p className={styles.eyebrow}>{producerPartnerLabel}</p>
+            <h2 id={`producer-title-${producer.id}`} className={styles.title}>
+              {producer.name}
+            </h2>
 
-          <p className={styles.location}>
-            <MapPin size={16} strokeWidth={2.5} aria-hidden="true" />
-            {producerLocation}
-          </p>
+            <p className={styles.location}>
+              <MapPin size={16} strokeWidth={2.5} aria-hidden="true" />
+              {producerLocation}
+            </p>
 
-          {cultureTypes.length > 0 && (
-            <div className={styles.tags} aria-label="Types de culture">
-              {cultureTypes.map((cultureType) => (
-                <span key={cultureType} className={styles.tag}>
-                  {PRODUCER_CULTURE_LABELS[cultureType]}
-                </span>
-              ))}
-            </div>
-          )}
+            {cultureTypes.length > 0 && (
+              <div className={styles.tags} aria-label="Types de culture">
+                {cultureTypes.map((cultureType) => (
+                  <span key={cultureType} className={styles.tag}>
+                    {PRODUCER_CULTURE_LABELS[cultureType]}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
 
           <p className={styles.description}>{longDescription}</p>
 
@@ -151,7 +156,7 @@ export function ProducerDetailPanel({
           {(producer.website || producer.socialLinks) && (
             <div className={styles.links}>
               {producer.website && (
-                <a
+                <a data-ui-commerce="secondary" data-ui-shape="control"
                   href={producer.website}
                   target="_blank"
                   rel="noreferrer noopener"
@@ -170,7 +175,7 @@ export function ProducerDetailPanel({
         </div>
 
         {showCloseButton && (
-          <button
+          <button data-ui-commerce="producer-close" data-ui-shape="control"
             type="button"
             onClick={onClose}
             className={`btn-cartoon btn-secondary inline-flex h-10 w-10 items-center justify-center p-0 ${styles.close}`}
@@ -198,7 +203,7 @@ export function ProducerDetailPanel({
             <p className={styles.eyebrow}>La sélection de</p>
             <h3 className={styles.productsTitle}>{producer.name}</h3>
           </div>
-          <p className={styles.eyebrow}>
+          <p className={`${styles.eyebrow} ${styles.productCount}`}>
             {products.length} produit{products.length > 1 ? "s" : ""}
           </p>
         </div>
@@ -217,7 +222,7 @@ export function ProducerDetailPanel({
             ))}
           </div>
         ) : (
-          <p className={styles.empty}>Aucun produit disponible pour le moment.</p>
+          <p data-ui-commerce="outline-panel" data-ui-shape="panel" className={styles.empty}>Aucun produit disponible pour le moment.</p>
         )}
       </div>
     </section>

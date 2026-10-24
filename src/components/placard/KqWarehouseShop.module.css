@@ -6,17 +6,19 @@
   padding: 0;
   margin: auto;
   overflow: hidden;
-  border: 3px solid #172923;
-  border-radius: 19px 15px 20px 16px;
-  background: #fff1d6;
   color: #172923;
-  box-shadow: 7px 8px 0 #172923, 0 20px 60px #17292355;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
 .dialog[open] { display: flex; flex-direction: column; }
 .dialog::backdrop { backdrop-filter: blur(3px); background: #172923c9; }
 .dialog button { font: inherit; cursor: pointer; }
 .dialog button:disabled { cursor: not-allowed; opacity: .6; filter: saturate(.3); box-shadow: none; }
-.dialog button:focus-visible,
+.dialog button:focus-visible { outline: 3px solid #c29442; outline-offset: 3px; }
 .dialog summary:focus-visible { outline: 3px solid #c29442; outline-offset: 3px; }
 .header {
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
@@ -26,24 +28,27 @@
 .sign > svg { flex-shrink: 0; color: #172923; }
 .sign h2 { margin: 0; font: 900 36px/1.1 var(--font-display), Impact, sans-serif; letter-spacing: .01em; }
 .close {
-  width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; border: 2px solid #172923; background: #fff1d6; color: #172923; border-radius: 10px; box-shadow: 2px 3px 0 #172923;
+  width: 44px; height: 44px; flex-shrink: 0; display: grid; place-items: center; border: var(--game-control-border-width, 2px) solid #172923; color: #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
 }
-.close:hover {
-  background: #efc451; }
+.close:hover:not(:disabled) {
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  color: #172923; }
 
 .layout { display: grid; grid-template-columns: 194px minmax(0, 1fr); flex: 1; min-height: 0; }
 .departments {
   padding: 18px 12px;
-  overflow-y: auto; scrollbar-width: thin; background: #f7dfb8; border-right: 2px solid #172923; scrollbar-color: #17292380 #f7dfb8;
+  overflow-y: auto; scrollbar-width: thin; background: var(--game-surface-warm, #ffae59); border-right: 2px solid #172923; scrollbar-color: #17292380 var(--game-surface-warm, #ffae59);
 }
 .departments button {
-  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 47px; padding: 12px 10px; background: transparent; text-align: left; font-size: 13px; line-height: 1.35; border: 2px solid transparent; color: #172923; border-radius: 9px; font-weight: 750;
+  display: flex; align-items: center; gap: 10px; width: 100%; min-height: 47px; padding: 12px 10px; text-align: left; font-size: 13px; line-height: 1.35; border: var(--game-control-border-width, 2px) solid #172923; color: #172923; border-radius: 0; font-weight: 750; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
 }
 .departments button > svg { flex-shrink: 0; }
 .departments button > svg:last-child { margin-left: auto; opacity: .4; }
-.departments button[aria-selected=true] { background: #efc451; border-color: #172923; color: #172923; box-shadow: 2px 3px 0 #172923; }
+.departments button[aria-selected=true] { border-color: transparent; color: #172923; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
 .departments button[aria-selected=true] > svg:last-child { opacity: 1; }
-.departments button:hover { background: #efc45170; color: #172923; }
+.departments button:hover:not(:disabled) { color: #172923; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; }
 .departments button[data-warehouse-shop-category=drying] { margin-top: 14px; }
 
 .content {
@@ -59,7 +64,7 @@
 .zoneTag > span { overflow-wrap: anywhere; font-size: 13px; line-height: 1.5; }
 .zoneTag strong { display: block; font-weight: 700; font-size: 14px; color: #172923; }
 .warning, .notice {
-  margin: 0 0 22px; padding: 14px 16px; font-size: 13px; line-height: 1.6; border: 2px solid #886126; border-radius: 10px; background: #ffebba; color: #664615;
+  margin: 0 0 22px; padding: 14px 16px; font-size: 13px; line-height: 1.6; border: 1px solid #886126; border-radius: var(--game-panel-radius, 2px); background: #ffebba; color: #664615;
 }
 .notice { display: flex; align-items: flex-start; gap: 9px; background: #dcefe4; color: #174d3e; border-color: #174d3e; }
 .notice svg { flex-shrink: 0; margin-top: 2px; }
@@ -69,9 +74,9 @@
 
 .products { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; align-items: stretch; }
 .product {
-  min-width: 0; position: relative; display: flex; flex-direction: column; overflow: hidden; border: 2px solid #172923; border-radius: 15px 12px 16px 12px; background: #fffaf0; box-shadow: 3px 4px 0 #172923;
+  min-width: 0; position: relative; display: flex; flex-direction: column; overflow: hidden; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
-.product[data-chosen=true] { border-color: #172923; box-shadow: 0 0 0 3px #149b8b, 4px 5px 0 #172923; }
+.product[data-chosen=true] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .tier {
   display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 45px;
   padding: 12px 18px; font-size: 13px; background: var(--game-surface-warm); color: #172923; border-bottom: 2px solid #172923; font-weight: 850;
@@ -104,10 +109,10 @@
 .metrics dt { font-size: 12px; line-height: 1.45; color: #536058; }
 .metrics dt small { display: block; margin-top: 3px; font-size: 10px; line-height: 1.4; }
 .metrics dd { margin: 0; font-size: 15px; line-height: 1.45; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; color: #172923; }
-.metrics .quality { align-items: center; padding: 8px; background: #dcefe4; border-radius: 7px; }
+.metrics .quality { align-items: center; padding: 8px; background: #dcefe4; border-radius: var(--game-panel-radius, 2px); }
 .quality dt { color: #174d3e; font-weight: 700; }
 .quality dd { color: #174d3e; font: 900 24px/1 var(--font-display), Impact, sans-serif; }
-.benefits { margin: 0 18px 16px; padding: 10px 12px; background: #edf4e9; border-left: 3px solid #076c61; border-radius: 0 7px 7px 0; }
+.benefits { margin: 0 18px 16px; padding: 10px 12px; background: #edf4e9; border-left: 3px solid #076c61; border-radius: var(--game-panel-radius, 2px); }
 .product[data-tier=premium] .benefits { background: #fcf0bc; border-color: #916208; }
 .benefits > span, .tradeoff b { display: block; margin: 0 0 5px; font-size: 12px; line-height: 1.4; font-weight: 700; }
 .benefits > span {
@@ -120,27 +125,30 @@
 .extraCharges { display: block; margin-top: 5px; }
 .owned { display: flex; align-items: flex-start; gap: 7px; margin: 0 18px 20px; font-size: 12px; line-height: 1.5; color: #076c61; }
 .owned svg { flex-shrink: 0; margin-top: 2px; }
-.productActions { margin-top: auto; padding: 16px 18px; background: #f7dfb850; border-top: 2px solid #17292355; }
+.productActions { margin-top: auto; padding: 16px 18px; background: color-mix(in srgb, var(--game-surface-warm, #ffae59) 30%, transparent); border-top: 2px solid #17292355; }
 .productActions button {
   width: 100%; min-height: 46px; display: flex; align-items: center; justify-content: center; gap: 8px;
-  padding: 12px 10px; font-size: 13px; line-height: 1.35; border: 2px solid #172923; border-radius: 9px; background: #efc451; color: #172923; font-weight: 850; box-shadow: 2px 3px 0 #172923;
+  padding: 12px 10px; font-size: 13px; line-height: 1.35; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font-weight: 850; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
 }
 .productActions button:hover:not(:disabled) {
-  background: #f5d675; }
-.product[data-chosen=true] .productActions button { opacity: 1; color: #172923; border-color: #172923; background: #a9ded3; box-shadow: none; filter: none; }
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  color: #172923; }
+.product[data-chosen=true] .productActions button { opacity: 1; color: #172923; border-color: transparent; box-shadow: none; filter: none; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; }
 .method { margin-top: 28px; padding-top: 18px; font-size: 13px; line-height: 1.7; color: #536058; border-top: 2px solid #17292355; }
 .method summary { width: fit-content; max-width: 100%; padding: 7px 0; cursor: pointer; font-weight: 650; color: #076c61; }
 .method p { max-width: 72ch; margin: 14px 0 0; }
 
 .workshop {
   display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 64px 28px;
-  text-align: center; background: #f7dfb8; border: 2px solid #172923; border-radius: 14px; color: #076c61;
+  text-align: center; color: #076c61; --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
 .workshop > p { max-width: 380px; margin: 0; font-size: 16px; line-height: 1.7; color: #536058; }
-.workshop > button { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 12px 20px; font-size: 14px; border: 2px solid #172923; border-radius: 10px; background: #efc451; color: #172923; box-shadow: 2px 3px 0 #172923; font-weight: 800; }
+.workshop > button { display: flex; align-items: center; gap: 10px; min-height: 46px; padding: 12px 20px; font-size: 14px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; font-weight: 800; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 18px 28px; flex-shrink: 0; background: var(--game-surface-warm); border-top: 2px solid #172923; }
 .footer > span { font-size: 13px; line-height: 1.5; color: #172923; }
-.footer > button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 12px 18px; font-size: 13px; white-space: nowrap; border: 2px solid #172923; border-radius: 10px; background: #fff1d6; color: #172923; box-shadow: 2px 3px 0 #172923; font-weight: 800; }
+.footer > button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 12px 18px; font-size: 13px; white-space: nowrap; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; font-weight: 800; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 
 .dialog summary:focus-visible {
   outline: 3px solid #172923;
@@ -161,7 +169,7 @@
   .products { gap: 16px; }
 }
 @media (max-width: 740px) {
-  .dialog { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0; }
+  .dialog { width: 100vw; max-width: 100vw; height: 100dvh; max-height: 100dvh; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
   .header { padding: 16px 20px; }
   .sign h2 { font-size: 29px; }
   .departments { padding-inline: 12px; }

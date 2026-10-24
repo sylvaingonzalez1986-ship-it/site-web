@@ -9,6 +9,7 @@ import { getKqBuddieRotationRemaining, type KqBuddieRotation } from "@/lib/kanab
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqWarehouseZoneQuote, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
 import { applyKqBuddieYield, getKqBuddieCultivationProfile } from "@/lib/kanab-quest-buddie-cultivation";
+import type { KqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import styles from "./KqWarehouse.module.css";
 
 export type KqWarehouseCultureSummary = { runId: string; zoneId: string | null; buddieCode: string; stageIndex: number; phase: string; startedAt: string; campaignId?: string; leaderRunId?: string };
@@ -17,8 +18,9 @@ export const warehouseCultureHref = (zoneId: string, runId?: string) => `/arene/
 export const warehouseCampaignHref = (runId?: string) => `/arene/placard?view=game&campaign=1${runId ? `&run=${encodeURIComponent(runId)}` : ""}`;
 export const warehouseCultureStage = (run: KqWarehouseCultureSummary) => KQ_STAGES[run.stageIndex]?.replace("Séchage & affinage", "Séchage") ?? "En cours";
 
-export function KqWarehouseCulture({ zone, run, runs, buddies, disabled, dirty, legacy, onSave, onManage, completedRunId, previewBuddieCode }: {
+export function KqWarehouseCulture({ zone, zoneIdentity, run, runs, buddies, disabled, dirty, legacy, onSave, onManage, completedRunId, previewBuddieCode }: {
   zone: KqWarehouseZone; run?: KqWarehouseCultureSummary; runs: KqWarehouseCultureSummary[];
+  zoneIdentity: KqZoneIdentity | null;
   buddies: KqWarehouseBuddies | null; disabled: boolean; dirty: boolean; legacy: boolean;
   onSave: () => void; onManage: () => void; completedRunId?: string;
   previewBuddieCode?: string | null;
@@ -32,7 +34,7 @@ export function KqWarehouseCulture({ zone, run, runs, buddies, disabled, dirty, 
   const artwork = buddie ? getBuddieArtwork(buddie.code) : "";
   return <div className={styles.culturePanel} data-warehouse-culture={zone.id}>
     <div className={styles.culturePortrait}>{artwork ? <Image src={artwork} alt={buddie!.name} width={320} height={240} /> : <Sprout size={48} />}<span>{run ? warehouseCultureStage(run) : "À préparer"}</span></div>
-    <div className={styles.cultureIdentity}><small>{zone.name} · {zone.width * zone.height} m²</small><h3>{buddie?.name ?? "Choisis ton Buddie"}</h3></div>
+    <div className={styles.cultureIdentity}><small><b className={styles.zoneNumber} style={{ background: zoneIdentity?.color }} aria-label={zoneIdentity?.label ?? "Zone"} data-zone-number={zoneIdentity?.number}>{zoneIdentity?.number ?? "Zone"}</b> · {zone.width * zone.height} m²</small><h3>{buddie?.name ?? "Choisis ton Buddie"}</h3></div>
     {profile && <div className={styles.buddieProfile} data-warehouse-buddie-profile={profile.buddieCode}>
       <dl><div><dt>Rendement estimé</dt><dd>{(applyKqBuddieYield(quote.estimatedHarvestGrams, profile) / quote.areaM2).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g/m²</dd></div><div><dt>CBD potentiel</dt><dd>{profile.cannabinoidTargets.cbd.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} %</dd></div><div><dt>Terpènes potentiels</dt><dd>{profile.terpenePotentialPercent.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} %</dd></div></dl>
       <small>{profile.terpeneNotes.join(" · ")} · simulation{previewBuddieCode ? " · Choisis sa zone sur le plan" : ""}</small>

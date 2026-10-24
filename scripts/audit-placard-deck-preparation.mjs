@@ -117,7 +117,7 @@ try {
     results.push({ scenario: 'compact preparation, keyboard details, favorite and explicit recommendation', width });
   }
   const forecast = await page.evaluate(() => window.__fixture.expectedXp);
-  await button('Lancer la campagne'); await page.waitForSelector('[data-culture-confirm-start]:not(:disabled)'); await page.focus('[data-culture-confirm-start]'); await page.keyboard.press('Enter');
+  await page.focus('[data-culture-start-review]'); await page.keyboard.press('Enter'); await page.waitForSelector('[data-culture-confirm-start]:not(:disabled)'); await page.focus('[data-culture-confirm-start]'); await page.keyboard.press('Enter');
   await page.waitForFunction(() => window.__production.game !== null);
   assert.equal(await page.evaluate(() => window.__production.game.xp), forecast, 'The actual engine launch matches the displayed preparation XP');
   assert.equal(await page.evaluate(() => window.__production.game.usedCards.length), 0);

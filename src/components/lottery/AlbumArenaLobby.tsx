@@ -42,7 +42,7 @@ export function AlbumArenaLobby({ packs, owned, total, rewards, points, onNaviga
     <div className={styles.ambience} aria-hidden="true" />
     <header className={lobby.topBar}>
       <div className={lobby.brand}><span>Kanab Quest</span><h1>Mon album.</h1></div>
-      <Link href="/arene" className={lobby.sound}><ArrowLeft aria-hidden="true" /><span>L’Arène</span></Link>
+      <Link data-ui-account="outline-light" data-ui-shape="control" href="/arene" className={lobby.sound}><ArrowLeft aria-hidden="true" /><span>L’Arène</span></Link>
     </header>
     <div className={styles.stage} aria-hidden="true">
       <div className={styles.halo} />
@@ -54,9 +54,9 @@ export function AlbumArenaLobby({ packs, owned, total, rewards, points, onNaviga
         <h2>{mode.title}</h2><p>{mode.caption}</p>
       </div>
       <nav className={lobby.modeSelector} aria-label="Choisir un espace de l’album" onKeyDown={keyboard}>
-        {ALBUM_DESTINATIONS.map(({ id, label, icon: Icon }) => <button key={id} type="button" data-album-mode-button={id} aria-pressed={selected === id} onClick={() => setSelected(id)} onFocus={() => setSelected(id)}><Icon aria-hidden="true" /><span>{label}</span></button>)}
+        {ALBUM_DESTINATIONS.map(({ id, label, icon: Icon }) => <button data-ui-account="album-mode" data-ui-shape="control" key={id} type="button" data-album-mode-button={id} aria-pressed={selected === id} onClick={() => setSelected(id)} onFocus={() => setSelected(id)}><Icon aria-hidden="true" /><span>{label}</span></button>)}
       </nav>
-      <button type="button" className={lobby.enter} data-album-enter onClick={() => selected === "boosters" && packs > 0 ? onOpenPack() : onNavigate(selected)}><span>{mode.action}</span><ArrowUpRight aria-hidden="true" /></button>
+      <button data-ui-account="gold" data-ui-shape="control" type="button" className={lobby.enter} data-album-enter onClick={() => selected === "boosters" && packs > 0 ? onOpenPack() : onNavigate(selected)}><span>{mode.action}</span><ArrowUpRight aria-hidden="true" /></button>
       <div className={`${lobby.help} ${styles.resources}`}>
         <span>{owned}/{total} cartes</span><span>{points} points</span>
         <button type="button" onClick={() => onNavigate("boosters")}>Obtenir des boosters <ArrowUpRight size={14} aria-hidden="true" /></button>

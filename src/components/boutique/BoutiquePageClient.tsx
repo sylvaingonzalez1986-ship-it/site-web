@@ -222,7 +222,7 @@ export function BoutiquePageClient({
             <div className="mt-6">
               <div className="mx-auto mb-5 w-full max-w-3xl">
                 <div className={`grid w-full grid-cols-2 overflow-hidden border-2 border-[#1a1a1a] bg-white sm:grid-cols-4 ${styles.navigation}`}>
-                  <button
+                  <button data-ui-commerce="shop-tab" data-ui-shape="control"
                     type="button"
                     data-tutorial="tab-mes-produits"
                     aria-pressed={showcaseMode === "products"}
@@ -235,7 +235,7 @@ export function BoutiquePageClient({
                   >
                     <span className="block">Mes produits</span>
                   </button>
-                  <button
+                  <button data-ui-commerce="shop-tab" data-ui-shape="control"
                     type="button"
                     data-tutorial="tab-mes-voisins"
                     aria-pressed={showcaseMode === "neighbors"}
@@ -253,7 +253,7 @@ export function BoutiquePageClient({
                   >
                     <span className="block">Mes voisins</span>
                   </button>
-                  <button
+                  <button data-ui-commerce="shop-tab" data-ui-shape="control"
                     type="button"
                     data-tutorial="tab-les-copains"
                     aria-pressed={showcaseMode === "copains"}
@@ -271,7 +271,7 @@ export function BoutiquePageClient({
                   >
                     <span className="block">Les copains de France et de Navarre</span>
                   </button>
-                  <button
+                  <button data-ui-commerce="shop-tab" data-ui-shape="control"
                     type="button"
                     className={`flex min-h-[58px] items-center justify-center border-l-2 border-t-2 border-[#1a1a1a] px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors sm:border-t-0 md:px-4 md:text-sm md:tracking-[0.1em] ${
                       showcaseMode === "regions"
@@ -293,7 +293,7 @@ export function BoutiquePageClient({
                   <legend>Type de culture</legend>
                   <div className={styles.cultureOptions}>
                     {CULTURE_FILTERS.map((culture) => (
-                      <button
+                      <button data-ui-commerce="shop-filter" data-ui-shape="control"
                         key={culture}
                         type="button"
                         aria-pressed={effectiveCultureFilter === culture}
@@ -339,7 +339,7 @@ export function BoutiquePageClient({
         return (
           <div key={section.id} className={spacingClass}>
             {isNeighborsMode && (
-              <div className={styles.sectionIntro}>
+              <div data-ui-commerce="paper" data-ui-shape="panel" className={styles.sectionIntro}>
                 <h2 className="font-display text-4xl text-ink">Mes voisins</h2>
                 <p className="mt-3 max-w-3xl text-charcoal">
                   Producteurs bretons et du 44. Parce que oui, Nantes fait partie de la Bretagne historique.
@@ -347,7 +347,7 @@ export function BoutiquePageClient({
               </div>
             )}
             {isCopainsMode && (
-              <div className={styles.sectionIntro}>
+              <div data-ui-commerce="paper" data-ui-shape="panel" className={styles.sectionIntro}>
                 <h2 className="font-display text-4xl text-ink">
                   Les copains de France et de Navarre
                 </h2>
@@ -358,7 +358,7 @@ export function BoutiquePageClient({
             )}
 
             {effectiveFilter === "promos" && displayedProducts.length > 0 && (
-              <div className="cartoon-border mb-6 bg-[#d35400] p-5 text-white">
+              <div data-ui-commerce="promo-panel" data-ui-shape="panel" className="cartoon-border mb-6 bg-[#d35400] p-5 text-white">
                 <h3 className="font-display text-3xl text-white">Promotions en cours</h3>
                 <p className="mt-2 text-sm text-white/95">
                   Retrouve ici toutes les offres actives, y compris les packs promo.
@@ -429,7 +429,7 @@ export function BoutiquePageClient({
             )}
 
             {displayedProducts.length === 0 && !loading && (
-              <div className="cartoon-border mt-6 bg-cream p-6 text-center text-charcoal">
+              <div data-ui-commerce="paper" data-ui-shape="panel" className="cartoon-border mt-6 bg-cream p-6 text-center text-charcoal">
                 {effectiveCultureFilter !== "all"
                   ? `Aucun produit en culture ${PRODUCT_CULTURE_LABELS[effectiveCultureFilter]} pour ces filtres.`
                   : effectiveFilter === "promos"
@@ -440,7 +440,7 @@ export function BoutiquePageClient({
                     ? "Aucun produit partenaire pour ce filtre."
                     : boutique.emptyMessage}
                 {effectiveCultureFilter !== "all" && (
-                  <button
+                  <button data-ui-commerce="secondary" data-ui-shape="control"
                     type="button"
                     className="btn-cartoon btn-secondary mx-auto mt-4 block"
                     onClick={() => setCultureFilter("all")}
@@ -471,7 +471,7 @@ export function BoutiquePageClient({
   };
 
   return (
-    <section className={`section-band paper-grain pt-32 ${styles.page}`}>
+    <section data-ui-commerce="shop" className={`section-band paper-grain pt-32 ${styles.page}`}>
       <div className="retro-container">
         {boutiqueSections.map((section, index) => renderBoutiqueSection(section, index))}
       </div>

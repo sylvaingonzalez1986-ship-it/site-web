@@ -15,3 +15,25 @@
  .portrait { width: 150px; }
  .panel { box-shadow: 4px 4px 0 #003f30; }
 }
+
+/* Existing photography, crop and palette remain untouched in the experiment. */
+:global(html[data-site-ui="quartier"]) .section [data-ui-shape] {
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+:global(html[data-site-ui="quartier"]) .panel,
+:global(html[data-site-ui="quartier"]) .empty { position: relative; }
+:global(html[data-site-ui="quartier"]) .panel {
+  --site-ui-material: url("#site-ui-fill-f4f5ec");
+  --site-ui-hover-material: var(--site-ui-material);
+}
+:global(html[data-site-ui="quartier"]) .portraitFrame {
+  --site-ui-material: url("#site-ui-fill-e8efe4");
+  --site-ui-hover-material: var(--site-ui-material);
+}
+:global(html[data-site-ui="quartier"]) .empty {
+  --site-ui-material: url("#site-ui-outline-00563f");
+  --site-ui-hover-material: var(--site-ui-material);
+}

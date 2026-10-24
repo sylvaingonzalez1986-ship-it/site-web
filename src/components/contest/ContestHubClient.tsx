@@ -44,6 +44,9 @@ import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkill
 import { type ContestArenaView } from "@/components/contest/ArenaNavigation";
 import { ProducerRewardJourney } from "@/components/contest/ProducerRewardJourney";
 import arenaStyles from "@/components/contest/ContestArena.module.css";
+import tasterProfileStyles from "./ArenaTasterProfile.module.css";
+import rankingReviewStyles from "./ArenaRankingReviews.module.css";
+import flowerRankingStyles from "./ArenaFlowerRanking.module.css";
 import { QuantitySelector } from "@/components/QuantitySelector";
 import { useCart } from "@/context/CartContext";
 import { categoryLabels, type Product, type ProductCategory } from "@/data/products";
@@ -335,7 +338,7 @@ function ContestHubPanelModal({
   return (
     <dialog
       ref={dialogRef}
-      className="contest-hub-panel-dialog"
+      className={`contest-hub-panel-dialog ${tasterProfileStyles.dialog}`}
       role="dialog"
       aria-label={title}
       onCancel={(event) => {
@@ -349,26 +352,26 @@ function ContestHubPanelModal({
       }}
     >
       <div
-        className="contest-hub-panel-shell relative z-[1] max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded border-4 border-[#1a1a1a] bg-[#fffaf0] p-4 shadow-[7px_7px_0_#1a1a1a] sm:p-5"
+        className={`contest-hub-panel-shell ${tasterProfileStyles.shell}`}
         onClick={(event) => event.stopPropagation()}
       >
-        <div className="mb-4 flex items-start justify-between gap-3">
-          <div className="min-w-0">
-            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
+        <div className={tasterProfileStyles.header}>
+          <div>
+            <p className={tasterProfileStyles.eyebrow}>
               {eyebrow}
             </p>
-            <h2 className="mt-1 text-2xl font-black leading-tight text-ink">{title}</h2>
+            <h2 className={tasterProfileStyles.title}>{title}</h2>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="contest-hub-panel-close inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-white text-ink"
+            className={`contest-hub-panel-close ${tasterProfileStyles.close}`}
             aria-label="Fermer"
           >
             <X size={20} />
           </button>
         </div>
-        {children}
+        <div className={tasterProfileStyles.body} role="region" aria-label={`Contenu : ${title}`} tabIndex={0}>{children}</div>
       </div>
     </dialog>
   );
@@ -385,17 +388,19 @@ function ContestHubHoverPreview({
 }) {
   return (
     <div
-      className="pointer-events-none fixed right-6 top-24 z-[124] hidden max-h-[calc(100vh-8rem)] w-[min(440px,calc(100vw-3rem))] overflow-hidden rounded border-4 border-[#1a1a1a] bg-[#fffaf0] p-4 shadow-[7px_7px_0_#1a1a1a] md:block"
+      className={tasterProfileStyles.preview}
       role="status"
       aria-live="polite"
     >
-      <div className="mb-4">
-        <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-          {eyebrow}
-        </p>
-        <h2 className="mt-1 text-2xl font-black leading-tight text-ink">{title}</h2>
+      <div className={tasterProfileStyles.header}>
+        <div>
+          <p className={tasterProfileStyles.eyebrow}>
+            {eyebrow}
+          </p>
+          <h2 className={tasterProfileStyles.title}>{title}</h2>
+        </div>
       </div>
-      <div className="max-h-[calc(100vh-15rem)] overflow-hidden">{children}</div>
+      <div className={tasterProfileStyles.previewBody}>{children}</div>
     </div>
   );
 }
@@ -425,6 +430,8 @@ function ContestProfileSetupForm({
   compact?: boolean;
   className?: string;
 }) {
+  const pseudoId = useId();
+  const helpId = `${pseudoId}-help`;
   const router = useRouter();
   const [pseudo, setPseudo] = useState("");
   const [message, setMessage] = useState<string | null>(null);
@@ -470,12 +477,13 @@ function ContestProfileSetupForm({
   };
 
   return (
-    <form onSubmit={savePseudo} className={`grid gap-3 ${className}`}>
-      <label className="block text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
+    <form onSubmit={savePseudo} className={`${tasterProfileStyles.setupForm} ${className}`}>
+      <label htmlFor={pseudoId} className={tasterProfileStyles.eyebrow}>
         Pseudo testeur requis
       </label>
-      <div className={compact ? "grid gap-2" : "grid gap-3 sm:grid-cols-[minmax(0,1fr)_auto]"}>
+      <div className={tasterProfileStyles.fields} data-compact={compact || undefined}>
         <input
+          id={pseudoId}
           type="text"
           value={pseudo}
           onChange={(event) => setPseudo(event.target.value)}
@@ -486,22 +494,23 @@ function ContestProfileSetupForm({
           required
           autoComplete="nickname"
           disabled={isBusy}
-          className="h-12 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 text-base text-ink disabled:opacity-60"
+          aria-describedby={helpId}
+          className={tasterProfileStyles.input}
         />
         <button
           type="submit"
           disabled={isBusy}
-          className="btn-cartoon btn-primary inline-flex min-h-[48px] items-center justify-center px-5 text-xs leading-none disabled:opacity-60"
+          className={tasterProfileStyles.action}
         >
           {isBusy ? "Enregistrement..." : "Enregistrer"}
         </button>
       </div>
-      <p className="text-xs font-semibold leading-relaxed text-charcoal">
+      <p id={helpId} className={tasterProfileStyles.help}>
         3 a 24 caracteres: lettres, chiffres, point, tiret ou underscore. Ce pseudo signera tes
         critiques publiques.
       </p>
-      {message ? <p className="text-sm font-semibold text-[#1f5a2f]">{message}</p> : null}
-      {error ? <p className="text-sm font-semibold text-[#7a1010]">{error}</p> : null}
+      {message ? <p className={tasterProfileStyles.notice} role="status">{message}</p> : null}
+      {error ? <p className={tasterProfileStyles.error} role="alert">{error}</p> : null}
     </form>
   );
 }
@@ -517,11 +526,11 @@ function ContestTesterProfileDetails({
 }) {
   if (!isAuthenticated) {
     return (
-      <div className="grid gap-3 text-sm leading-relaxed text-charcoal">
+      <div className={tasterProfileStyles.profileDetails}>
         <p>Connecte-toi pour activer ton profil testeur, suivre tes niveaux et debloquer tes badges.</p>
         <Link
           href="/compte/connexion?next=%2Farene"
-          className="btn-cartoon btn-primary inline-flex min-h-[42px] items-center justify-center px-4 text-xs leading-none"
+          className={tasterProfileStyles.action}
         >
           Voir mon profil
         </Link>
@@ -531,7 +540,7 @@ function ContestTesterProfileDetails({
 
   if (!progress) {
     return (
-      <div className="grid gap-3 text-sm leading-relaxed text-charcoal">
+      <div className={tasterProfileStyles.profileDetails}>
         {showSetupForm ? (
           <ContestProfileSetupForm compact />
         ) : (
@@ -545,7 +554,7 @@ function ContestTesterProfileDetails({
   }
 
   return (
-    <div className="grid gap-3">
+    <div className={tasterProfileStyles.profileDetails}>
       <div className={arenaStyles.progressStatsGrid}>
         <div className={arenaStyles.progressStatCard}>
           <p className={arenaStyles.progressStatLabel}>Niveau actuel</p>
@@ -566,7 +575,7 @@ function ContestTesterProfileDetails({
           <p className={arenaStyles.progressStatValue}>{progress.globalRank ? `#${progress.globalRank}` : "-"}</p>
         </div>
       </div>
-      <div className="rounded border-2 border-[#1a1a1a] bg-yellow p-3 text-xs font-black uppercase leading-relaxed tracking-[0.08em] text-ink">
+      <div className={tasterProfileStyles.rule}>
         Concours uniquement: 20 pts par fleur goutee / 10 pts par terpene trouve / 50 pts si tous les terpenes sont bons.
       </div>
     </div>
@@ -1330,12 +1339,6 @@ function toCartProduct(entry: ContestEntrySummary): Product | null {
   };
 }
 
-function getContestCategoryRank(entry: ContestEntrySummary, fallbackIndex: number) {
-  return entry.ranking?.seasonCategoryRank && entry.ranking.seasonCategoryRank > 0
-    ? entry.ranking.seasonCategoryRank
-    : fallbackIndex + 1;
-}
-
 function getStationRankingEntries(rankings: ContestEntrySummary[], entries: ContestEntrySummary[]) {
   const source = rankings.length > 0 ? rankings : entries;
 
@@ -1405,60 +1408,94 @@ function ContestStationRankingBoard({
   selectedEntryId?: string;
   onSelectEntry: (entryId: string) => void;
 }) {
-  const displayEntries = entries.length > 0 ? entries : [];
   const categoryLabel = CONTEST_ENTRY_CATEGORY_LABELS[activeCategory];
+  const ratedCount = entries.filter((entry) => entry.stats.approvedReviewCount > 0).length;
   const windowRef = useRef<HTMLDivElement | null>(null);
+  const windowId = useId();
 
   const scrollRanking = (direction: -1 | 1) => {
-    windowRef.current?.scrollBy({ top: direction * 168, behavior: "smooth" });
+    const viewport = windowRef.current;
+    if (!viewport) return;
+    viewport.scrollBy({
+      top: direction * viewport.clientHeight * 0.8,
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth",
+    });
   };
 
   return (
-    <div className="contest-station-board" aria-label={`Classement ${categoryLabel}`}>
-      <div className="contest-station-board-toolbar">
-        <strong>{displayEntries.length} lot{displayEntries.length > 1 ? "s" : ""} classé{displayEntries.length > 1 ? "s" : ""}</strong>
-        <span>Fais défiler puis clique pour lire les critiques.</span>
-        <div>
-          <button type="button" onClick={() => scrollRanking(-1)} aria-label="Voir les lots précédents">
-            <ChevronUp aria-hidden="true" />
-          </button>
-          <button type="button" onClick={() => scrollRanking(1)} aria-label="Voir les lots suivants">
-            <ChevronDown aria-hidden="true" />
-          </button>
+    <div className={flowerRankingStyles.board} data-flower-ranking-board aria-label={`Classement ${categoryLabel}`}>
+      <div className={flowerRankingStyles.toolbar}>
+        <div className={flowerRankingStyles.boardTitle}>
+          <span>Le registre · {categoryLabel}</span>
+          <strong>{entries.length} lot{entries.length > 1 ? "s" : ""}<small> · {ratedCount} noté{ratedCount > 1 ? "s" : ""}</small></strong>
+          <p>Choisis une fleur pour lire ses critiques.</p>
         </div>
+        {entries.length > 0 ? (
+          <div className={flowerRankingStyles.scrollControls}>
+            <button type="button" onClick={() => scrollRanking(-1)} aria-label="Voir les lots précédents" aria-controls={windowId}>
+              <ChevronUp aria-hidden="true" />
+            </button>
+            <button type="button" onClick={() => scrollRanking(1)} aria-label="Voir les lots suivants" aria-controls={windowId}>
+              <ChevronDown aria-hidden="true" />
+            </button>
+          </div>
+        ) : null}
       </div>
-      <div className="contest-station-board-header">
-        <span>Classement {categoryLabel}</span>
+      <div className={flowerRankingStyles.columnLabels} aria-hidden="true">
+        <span>Rang</span>
+        <span>Fleur & producteur</span>
         <span>Score /{CONTEST_SCORE_MAX}</span>
-        <span>Avis</span>
       </div>
-      <div ref={windowRef} className="contest-station-board-window" tabIndex={0}>
-        {displayEntries.length > 0 ? (
-          <div className="contest-station-board-track">
-            {displayEntries.map((entry, index) => {
-              const rank = getContestCategoryRank(entry, index);
+      <div ref={windowRef} id={windowId} className={flowerRankingStyles.viewport} tabIndex={entries.length > 0 ? 0 : undefined} role="region" aria-label={`Lots ${categoryLabel}, défilement vertical`}>
+        {entries.length > 0 ? (
+          <ol className={flowerRankingStyles.list}>
+            {entries.map((entry) => {
+              const hasReviews = entry.stats.approvedReviewCount > 0;
+              const hasScore = hasReviews && Number.isFinite(entry.stats.averageScore);
+              const categoryRank = entry.ranking?.seasonCategoryRank;
+              const rank = hasReviews && entry.ranking?.isRankEligible !== false && categoryRank && categoryRank > 0
+                ? categoryRank
+                : null;
               const selected = entry.id === selectedEntryId;
+              const imageUrl = entry.imageUrl || entry.product?.image;
 
               return (
-                <button
-                  key={entry.id}
-                  type="button"
-                  onClick={() => onSelectEntry(entry.id)}
-                  className={`contest-station-row ${selected ? "contest-station-row-active" : ""}`}
-                  aria-label={`Ouvrir les critiques de ${entry.title}`}
-                >
-                  <span className="contest-station-rank">{String(rank).padStart(2, "0")}</span>
-                  <span className="contest-station-title">{entry.title}</span>
-                  <span className="contest-station-score">
-                    {formatContestAverage(entry.stats.averageScore)}
-                  </span>
-                  <span className="contest-station-reviews">{entry.stats.approvedReviewCount}</span>
-                </button>
+                <li key={entry.id}>
+                  <button
+                    type="button"
+                    onClick={() => onSelectEntry(entry.id)}
+                    className={`contest-station-row ${flowerRankingStyles.row}`}
+                    data-selected={selected || undefined}
+                    data-podium={rank !== null && rank <= 3 || undefined}
+                    aria-label={`Ouvrir les critiques de ${entry.title} · ${rank ? `rang ${rank} · ` : ""}${hasScore ? `${formatContestAverage(entry.stats.averageScore)} sur ${CONTEST_SCORE_MAX}` : "pas encore notée"} · ${entry.stats.approvedReviewCount} avis`}
+                    aria-haspopup="dialog"
+                  >
+                    <span className={flowerRankingStyles.rank}>{rank === null ? "—" : String(rank).padStart(2, "0")}</span>
+                    <span className={flowerRankingStyles.identity}>
+                      <span className={flowerRankingStyles.flowerImage} aria-hidden="true">
+                        {imageUrl ? <Image src={imageUrl} alt="" width={72} height={72} sizes="(max-width: 600px) 44px, 64px" /> : <Sprout />}
+                      </span>
+                      <span className={flowerRankingStyles.flowerCopy}>
+                        <strong>{entry.title}</strong>
+                        {entry.producer?.name ? <small>{entry.producer.name}</small> : null}
+                        {!hasReviews ? <em>À déguster</em> : rank === null ? <em>En attente de classement</em> : null}
+                      </span>
+                    </span>
+                    <span className={flowerRankingStyles.score}>
+                      <strong>{hasScore ? formatContestAverage(entry.stats.averageScore) : "—"}<small>/{CONTEST_SCORE_MAX}</small></strong>
+                      <span>{entry.stats.approvedReviewCount} avis</span>
+                    </span>
+                  </button>
+                </li>
               );
             })}
-          </div>
+          </ol>
         ) : (
-          <div className="contest-station-empty">En attente des notes {categoryLabel}</div>
+          <div className={flowerRankingStyles.empty}>
+            <Sprout size={38} aria-hidden="true" />
+            <strong>Le registre attend ses fleurs.</strong>
+            <p>Aucun lot {categoryLabel} pour cette sélection. Choisis une autre culture ou une autre saison.</p>
+          </div>
         )}
       </div>
     </div>
@@ -1466,12 +1503,7 @@ function ContestStationRankingBoard({
 }
 
 function ContestRankingReviewsModal({
-  entry,
-  reviews,
-  loading,
-  error,
-  onClose,
-  onSelectReview,
+  entry, reviews, loading, error, onClose, onSelectReview,
 }: {
   entry: ContestEntrySummary;
   reviews: PublicContestReview[];
@@ -1480,312 +1512,149 @@ function ContestRankingReviewsModal({
   onClose: () => void;
   onSelectReview: (review: PublicContestReview) => void;
 }) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
   useEffect(() => {
-    const onKeyDown = (event: globalThis.KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+    const dialog = dialogRef.current;
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    if (!dialog) return;
+    if (!dialog.open) dialog.showModal();
+    return () => {
+      if (dialog.open) dialog.close();
+      if (opener?.isConnected) opener.focus({ preventScroll: true });
     };
-    window.addEventListener("keydown", onKeyDown);
-    return () => window.removeEventListener("keydown", onKeyDown);
-  }, [onClose]);
+  }, []);
+  const hasReviews = entry.stats.approvedReviewCount > 0;
+  const hasScore = hasReviews && Number.isFinite(entry.stats.averageScore);
+  const categoryRank = entry.ranking?.seasonCategoryRank;
+  const rank = hasReviews && entry.ranking?.isRankEligible !== false && categoryRank && categoryRank > 0 ? categoryRank : null;
 
-  const rank = entry.ranking?.seasonCategoryRank;
-
-  return (
-    <div
-      className={arenaStyles.rankingModalBackdrop}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="ranking-reviews-title"
-      onClick={onClose}
-    >
-      <div className={arenaStyles.rankingModal} onClick={(event) => event.stopPropagation()}>
-        <button type="button" className={arenaStyles.rankingModalClose} onClick={onClose} aria-label="Fermer les critiques">
-          <X aria-hidden="true" />
-        </button>
-
-        <header className={arenaStyles.rankingModalHeader}>
-          <div className={arenaStyles.rankingModalImage}>
-            <Image
-              src={entry.imageUrl || entry.product?.image || "/product_flower.jpg"}
-              alt=""
-              fill
-              sizes="(max-width: 680px) 96px, 150px"
-            />
+  return <dialog ref={dialogRef} className={rankingReviewStyles.dialog} aria-modal="true" aria-labelledby={titleId}
+    onCancel={(event) => { event.preventDefault(); onClose(); }}
+    onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+    <section className={rankingReviewStyles.sheet}>
+      <header className={rankingReviewStyles.header}>
+        <div><p className={rankingReviewStyles.eyebrow}>{CONTEST_ENTRY_CATEGORY_LABELS[entry.category]}{entry.producer?.name ? ` · ${entry.producer.name}` : ""}</p><h2 id={titleId}>{entry.title}</h2></div>
+        <button type="button" className={rankingReviewStyles.close} onClick={onClose} aria-label="Fermer les critiques"><X size={21} aria-hidden="true" /></button>
+      </header>
+      <div className={rankingReviewStyles.body} role="region" aria-label={`Critiques de ${entry.title}`} tabIndex={0}>
+        <div className={rankingReviewStyles.entryOverview}>
+          <div className={rankingReviewStyles.entryImage}>
+            <div className={rankingReviewStyles.entryPhoto}><Image src={entry.imageUrl || entry.product?.image || "/product_flower.jpg"} alt="" fill sizes="(max-width: 680px) 104px, 160px" /></div>
             {rank ? <span>#{String(rank).padStart(2, "0")}</span> : null}
           </div>
-          <div>
-            <p>{CONTEST_ENTRY_CATEGORY_LABELS[entry.category]} · {entry.producer?.name ?? "Producteur français"}</p>
-            <h2 id="ranking-reviews-title">{entry.title}</h2>
-            <div className={arenaStyles.rankingModalStats}>
-              <strong>{formatContestAverage(entry.stats.averageScore)}/{CONTEST_SCORE_MAX}</strong>
-              <span>{entry.stats.approvedReviewCount} critique{entry.stats.approvedReviewCount > 1 ? "s" : ""}</span>
-            </div>
+          <div className={rankingReviewStyles.entryScore}>
+            <span>Note de la communauté</span>
+            <strong>{hasScore ? formatContestAverage(entry.stats.averageScore) : "—"}<small> / {CONTEST_SCORE_MAX}</small></strong>
+            <p>{entry.stats.approvedReviewCount} critique{entry.stats.approvedReviewCount > 1 ? "s" : ""} publiée{entry.stats.approvedReviewCount > 1 ? "s" : ""}</p>
           </div>
-        </header>
-
-        <div className={arenaStyles.rankingModalBody}>
-          <div className={arenaStyles.rankingModalIntro}>
-            <p>Les verdicts de la communauté</p>
-            <span>Clique sur une critique pour afficher toutes les notes et les arômes.</span>
-          </div>
-
-          {loading ? <div className={arenaStyles.rankingModalState}>Chargement des critiques…</div> : null}
-          {!loading && error ? <div className={arenaStyles.rankingModalState}>{error}</div> : null}
-          {!loading && !error && reviews.length === 0 ? (
-            <div className={arenaStyles.rankingModalState}>Aucune critique détaillée n’est encore publiée pour ce lot.</div>
-          ) : null}
-
-          {!loading && !error && reviews.length > 0 ? (
-            <div className={arenaStyles.rankingReviewList}>
-              {reviews.map((review) => (
-                <button
-                  key={review.id}
-                  type="button"
-                  className={arenaStyles.rankingReviewCard}
-                  onClick={() => onSelectReview(review)}
-                >
-                  <span className={arenaStyles.rankingReviewTopline}>
-                    <strong>{review.pseudo}</strong>
-                    <span>{formatContestDate(review.reviewedAt ?? review.createdAt)}</span>
-                  </span>
-                  <span className={arenaStyles.rankingReviewScore}>
-                    {formatContestAverage(getContestReviewAverage(review.scores))}/{CONTEST_SCORE_MAX}
-                    <small>{CONTEST_CONSUMPTION_METHOD_LABELS[review.consumptionMethod]}</small>
-                  </span>
-                  <span className={arenaStyles.rankingReviewQuote}>&quot;{review.comment}&quot;</span>
-                  <span className={arenaStyles.rankingReviewAction}>Voir le détail <ChevronRight aria-hidden="true" /></span>
-                </button>
-              ))}
-            </div>
-          ) : null}
         </div>
+        <div className={rankingReviewStyles.intro}><h3>Les verdicts de la communauté</h3><p>Ouvre une critique pour retrouver les notes et les arômes.</p></div>
+        {loading ? <p className={rankingReviewStyles.state} role="status">Chargement des critiques…</p> : null}
+        {!loading && error ? <p className={rankingReviewStyles.error} role="alert">{error}</p> : null}
+        {!loading && !error && reviews.length === 0 ? <p className={rankingReviewStyles.state} role="status">Aucune critique détaillée n’est encore publiée pour ce lot.</p> : null}
+        {!loading && !error && reviews.length > 0 ? <div className={rankingReviewStyles.reviewList}>
+          {reviews.map((review) => <article key={review.id} className={rankingReviewStyles.reviewRow}>
+            <header className={rankingReviewStyles.reviewTopline}><strong>{review.pseudo}</strong><time dateTime={review.reviewedAt ?? review.createdAt}>{formatContestDate(review.reviewedAt ?? review.createdAt)}</time></header>
+            <div className={rankingReviewStyles.reviewScore}><strong>{formatContestAverage(getContestReviewAverage(review.scores))}<small> / {CONTEST_SCORE_MAX}</small></strong><span>{CONTEST_CONSUMPTION_METHOD_LABELS[review.consumptionMethod]}</span></div>
+            <blockquote className={rankingReviewStyles.reviewQuote}>{review.comment}</blockquote>
+            <button type="button" className={rankingReviewStyles.action} onClick={() => onSelectReview(review)} aria-label={`Lire l'avis de ${review.pseudo}`}>Voir le détail <ChevronRight size={17} aria-hidden="true" /></button>
+          </article>)}
+        </div> : null}
       </div>
-    </div>
-  );
+    </section>
+  </dialog>;
 }
 
-function ContestReviewMarquee({
-  items,
-  onSelectReview,
-}: {
+function ContestReviewMarquee({ items, onSelectReview }: {
   items: ContestFeedItem[];
   onSelectReview: (item: ContestFeedItem) => void;
 }) {
-  const safeItems = useMemo(
-    () =>
-      items
-        .filter((item) => item.excerpt.trim().length > 0)
-        .sort((a, b) => {
-          const aTime = Date.parse(a.validatedAt ?? a.createdAt);
-          const bTime = Date.parse(b.validatedAt ?? b.createdAt);
-          if (Number.isFinite(aTime) && Number.isFinite(bTime) && aTime !== bTime) {
-            return aTime - bTime;
-          }
-          return a.reviewId.localeCompare(b.reviewId);
-        }),
-    [items],
-  );
+  const safeItems = useMemo(() => items.filter((item) => item.excerpt.trim().length > 0).sort((a, b) => {
+    const aTime = Date.parse(a.validatedAt ?? a.createdAt);
+    const bTime = Date.parse(b.validatedAt ?? b.createdAt);
+    return Number.isFinite(aTime) && Number.isFinite(bTime) && aTime !== bTime ? aTime - bTime : a.reviewId.localeCompare(b.reviewId);
+  }), [items]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const effectiveActiveIndex =
-    activeIndex >= 0 && activeIndex < safeItems.length ? activeIndex : 0;
+  const [paused, setPaused] = useState(false);
+  const [interacting, setInteracting] = useState(false);
+  const effectiveActiveIndex = activeIndex >= 0 && activeIndex < safeItems.length ? activeIndex : 0;
   const activeItem = safeItems[effectiveActiveIndex] ?? null;
-
   useEffect(() => {
-    if (safeItems.length <= 1) {
-      return;
-    }
-
+    if (safeItems.length <= 1 || paused || interacting) return;
     const timer = window.setInterval(() => {
-      setActiveIndex((current) => (current + 1) % safeItems.length);
+      if (!document.querySelector("dialog[open]")) setActiveIndex((current) => (current + 1) % safeItems.length);
     }, 5200);
-
     return () => window.clearInterval(timer);
-  }, [safeItems.length]);
+  }, [safeItems.length, paused, interacting]);
 
-  return (
-    <div className="contest-review-marquee" aria-label="Avis clients approuvés">
-      <div className="contest-review-marquee-label">Avis validés</div>
-      <div className="contest-review-marquee-window">
-        {activeItem ? (
-          <button
-            key={activeItem.reviewId}
-            type="button"
-            onClick={() => onSelectReview(activeItem)}
-            className="contest-review-marquee-item contest-review-marquee-item-active"
-            aria-label={`Ouvrir l'avis de ${activeItem.pseudo} pour voter`}
-          >
-            <span className="contest-review-marquee-meta">
-              {activeItem.pseudo} / {CONTEST_CONSUMPTION_METHOD_LABELS[activeItem.consumptionMethod]} /{" "}
-              {formatContestDate(activeItem.validatedAt ?? activeItem.createdAt)}
-            </span>
-            <span className="contest-review-marquee-quote">&quot;{activeItem.excerpt}&quot;</span>
-            <span className="contest-review-marquee-entry">{activeItem.entryTitle}</span>
-          </button>
-        ) : (
-          <div className="contest-review-marquee-empty">
-            Les premiers avis validés défileront ici.
-          </div>
-        )}
-      </div>
-      {safeItems.length > 1 ? (
-        <div className="contest-review-marquee-dots" aria-label="Navigation des avis validÃ©s">
-          {safeItems.map((item, index) => (
-            <button
-              key={item.reviewId}
-              type="button"
-              onClick={() => setActiveIndex(index)}
-              className={`contest-review-marquee-dot ${
-                index === effectiveActiveIndex ? "contest-review-marquee-dot-active" : ""
-              }`}
-              aria-label={`Afficher l'avis validÃ© ${index + 1}`}
-            />
-          ))}
-        </div>
-      ) : null}
-    </div>
-  );
+  return <section className={rankingReviewStyles.marquee} aria-label="Avis clients approuvés"
+    onPointerEnter={() => setInteracting(true)} onPointerLeave={(event) => { if (!event.currentTarget.contains(document.activeElement)) setInteracting(false); }}
+    onFocusCapture={() => setInteracting(true)} onBlurCapture={(event) => { if (!event.currentTarget.contains(event.relatedTarget) && !event.currentTarget.matches(":hover")) setInteracting(false); }}>
+    <header className={rankingReviewStyles.marqueeHeading}><h3>Avis validés</h3>{safeItems.length > 1 ? <button type="button" className={rankingReviewStyles.pause} onClick={() => setPaused((current) => !current)} aria-pressed={paused} aria-label={paused ? "Reprendre le défilement des avis" : "Mettre les avis en pause"}>{paused ? "Reprendre" : "Pause"}</button> : null}</header>
+    {activeItem ? <article className={rankingReviewStyles.marqueeEntry}>
+      <p className={rankingReviewStyles.marqueeMeta}><strong>{activeItem.pseudo}</strong><span>{CONTEST_CONSUMPTION_METHOD_LABELS[activeItem.consumptionMethod]} · {formatContestDate(activeItem.validatedAt ?? activeItem.createdAt)}</span></p>
+      <blockquote className={rankingReviewStyles.marqueeQuote}>{activeItem.excerpt}</blockquote>
+      <p className={rankingReviewStyles.flowerName}>{activeItem.entryTitle}</p>
+      <button type="button" className={rankingReviewStyles.action} onClick={() => onSelectReview(activeItem)} aria-label={`Ouvrir l'avis de ${activeItem.pseudo} pour voter`}>Lire cet avis <ChevronRight size={17} aria-hidden="true" /></button>
+    </article> : <p className={rankingReviewStyles.state}>Les premiers avis validés défileront ici.</p>}
+    {safeItems.length > 1 ? <nav className={rankingReviewStyles.reviewNavigation} aria-label="Navigation des avis validés">
+      {safeItems.map((item, index) => <button key={item.reviewId} type="button" onClick={() => setActiveIndex(index)} aria-pressed={index === effectiveActiveIndex} aria-label={`Afficher l'avis validé ${index + 1}`}>{index + 1}</button>)}
+    </nav> : null}
+  </section>;
 }
 
-function ContestFeedReviewModal({
-  item,
-  busy,
-  error,
-  onClose,
-  onVote,
-}: {
+function ContestFeedReviewModal({ item, busy, error, onClose, onVote }: {
   item: ContestFeedItem;
   busy: boolean;
   error?: string;
   onClose: () => void;
   onVote: (item: ContestFeedItem, value: ContestReviewVoteValue) => void;
 }) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const detailsId = useId();
   const [isDetailsOpen, setIsDetailsOpen] = useState(false);
   const scoreByCriterion = new Map(item.scores.map((score) => [score.criterion, score.score]));
+  const reviewAverage = getContestReviewAverage(item.scores);
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const opener = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    if (!dialog) return;
+    if (!dialog.open) dialog.showModal();
+    return () => {
+      if (dialog.open) dialog.close();
+      if (opener?.isConnected) opener.focus({ preventScroll: true });
+    };
+  }, []);
 
-  return (
-    <div
-      className="fixed inset-0 z-[120] flex items-end justify-center bg-black/55 px-3 py-4 sm:items-center sm:px-5"
-      role="dialog"
-      aria-modal="true"
-      aria-label="Critique publique"
-      onClick={onClose}
-      >
-      <div
-        className="contest-feed-review-modal-shell max-h-[92vh] w-full max-w-2xl overflow-y-auto rounded border-4 border-[#1a1a1a] bg-cream p-4 shadow-[7px_7px_0_#1a1a1a] sm:p-5"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="contest-feed-review-modal-header">
-          <ContestMascotScene
-            variant="review"
-            className="contest-feed-review-modal-mascot contest-mascot-scene-compact"
-          />
-          <div className="min-w-0">
-            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-              Avis public
-            </p>
-            <h2 className="mt-1 text-2xl font-black leading-tight text-ink">{item.pseudo}</h2>
-            <p className="mt-1 text-xs font-semibold text-charcoal">
-              {item.entryTitle} / {CONTEST_CONSUMPTION_METHOD_LABELS[item.consumptionMethod]} /{" "}
-              {formatContestDate(item.validatedAt ?? item.createdAt)}
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="contest-feed-review-modal-close inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-white text-ink"
-            aria-label="Fermer la critique"
-          >
-            <X size={20} />
-          </button>
+  return <dialog ref={dialogRef} className={rankingReviewStyles.dialog} aria-modal="true" aria-label="Critique publique"
+    onCancel={(event) => { event.preventDefault(); onClose(); }}
+    onClick={(event) => { if (event.target === event.currentTarget) onClose(); }}>
+    <section className={rankingReviewStyles.sheet}>
+      <header className={`${rankingReviewStyles.header} ${rankingReviewStyles.publicHeader}`}>
+        <ContestMascotScene variant="review" className={rankingReviewStyles.reviewIllustration} />
+        <div><p className={rankingReviewStyles.eyebrow}>Avis public</p><h2>{item.pseudo}</h2><p className={rankingReviewStyles.reviewMeta}>{item.entryTitle} · {CONTEST_CONSUMPTION_METHOD_LABELS[item.consumptionMethod]} · {formatContestDate(item.validatedAt ?? item.createdAt)}</p></div>
+        <button type="button" className={rankingReviewStyles.close} onClick={onClose} aria-label="Fermer la critique"><X size={21} aria-hidden="true" /></button>
+      </header>
+      <div className={rankingReviewStyles.body} role="region" aria-label={`Avis de ${item.pseudo}`} tabIndex={0}>
+        <div className={rankingReviewStyles.publicScore}><span>Note de cet avis</span><strong>{formatContestAverage(reviewAverage)}<small> / {CONTEST_SCORE_MAX}</small></strong><span>{reviewAverage === null ? "Notes incomplètes" : "Moyenne des critères"}</span></div>
+        <blockquote className={rankingReviewStyles.publicQuote}>{item.comment}</blockquote>
+        <div className={rankingReviewStyles.votes} role="group" aria-label="Donner mon avis sur cette critique">
+          <button type="button" disabled={busy} onClick={() => onVote(item, 1)} className={rankingReviewStyles.vote} data-vote="up" aria-pressed={item.voteSummary?.viewerVote === 1} aria-label="Pouce haut"><ThumbsUp size={21} aria-hidden="true" />{item.voteSummary?.upvoteCount ?? "—"}</button>
+          <button type="button" disabled={busy} onClick={() => onVote(item, -1)} className={rankingReviewStyles.vote} data-vote="down" aria-pressed={item.voteSummary?.viewerVote === -1} aria-label="Pouce bas"><ThumbsDown size={21} aria-hidden="true" />{item.voteSummary?.downvoteCount ?? "—"}</button>
+          {item.voteSummary?.isContested ? <span className={rankingReviewStyles.contested}>Critique signalée</span> : null}
         </div>
-
-        <p className="mt-5 rounded border-2 border-[#1a1a1a] bg-white p-4 text-base leading-relaxed text-charcoal">
-          {item.comment}
-        </p>
-
-        <div className="mt-5 flex flex-wrap items-center gap-3">
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => onVote(item, 1)}
-            className={`inline-flex min-h-[54px] min-w-[96px] items-center justify-center gap-2 rounded border-2 border-[#1a1a1a] px-4 py-3 text-base font-black uppercase tracking-[0.06em] ${
-              item.voteSummary?.viewerVote === 1 ? "bg-yellow text-ink" : "bg-[#fffaf0] text-charcoal"
-            } disabled:opacity-60`}
-            aria-label="Pouce haut"
-          >
-            <ThumbsUp size={24} />
-            {item.voteSummary?.upvoteCount ?? 0}
-          </button>
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => onVote(item, -1)}
-            className={`inline-flex min-h-[54px] min-w-[96px] items-center justify-center gap-2 rounded border-2 border-[#1a1a1a] px-4 py-3 text-base font-black uppercase tracking-[0.06em] ${
-              item.voteSummary?.viewerVote === -1 ? "bg-[#f2b6a0] text-ink" : "bg-[#fffaf0] text-charcoal"
-            } disabled:opacity-60`}
-            aria-label="Pouce bas"
-          >
-            <ThumbsDown size={24} />
-            {item.voteSummary?.downvoteCount ?? 0}
-          </button>
-          {item.voteSummary?.isContested ? (
-            <span className="rounded border-2 border-[#7a1010] bg-white px-3 py-2 text-xs font-black uppercase tracking-[0.06em] text-[#7a1010]">
-              Critique signalee
-            </span>
-          ) : null}
-        </div>
-
-        {error ? <p className="mt-2 text-xs font-bold text-[#7a1010]">{error}</p> : null}
-
-        <div className="mt-5 rounded border-2 border-[#1a1a1a] bg-[#fffaf0]">
-          <button
-            type="button"
-            onClick={() => setIsDetailsOpen((current) => !current)}
-            className="flex min-h-[48px] w-full items-center justify-between gap-3 px-4 py-3 text-left text-xs font-black uppercase tracking-[0.1em] text-ink"
-            aria-expanded={isDetailsOpen}
-          >
-            Details de la critique
-            <ChevronDown
-              size={18}
-              aria-hidden="true"
-              className={`shrink-0 transition-transform ${isDetailsOpen ? "rotate-180" : ""}`}
-            />
-          </button>
-
-          {isDetailsOpen ? (
-            <div className="border-t-2 border-[#1a1a1a] p-4">
-              <div className="grid gap-2 sm:grid-cols-2">
-                {CONTEST_SCORE_CRITERIA.map((criterion) => (
-                  <div
-                    key={criterion}
-                    className="flex items-center justify-between gap-3 rounded border border-[#1a1a1a] bg-white px-3 py-2"
-                  >
-                    <span className="text-xs font-bold text-charcoal">
-                      {CONTEST_SCORE_CRITERION_LABELS[criterion]}
-                    </span>
-                    <span className="rounded-full border border-[#1a1a1a] bg-yellow px-2 py-1 text-xs font-black text-ink">
-                      {scoreByCriterion.get(criterion) ?? "-"} / {CONTEST_SCORE_MAX}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-3 flex flex-wrap gap-2">
-                {item.aromaTags.map((tag) => (
-                  <span
-                    key={`${item.reviewId}-${tag.tag}-${tag.customLabel ?? ""}`}
-                    className="rounded-full border border-[#1a1a1a] bg-yellow px-2 py-1 text-[10px] font-black uppercase tracking-[0.08em] text-ink"
-                  >
-                    {tag.tag === "other" ? tag.customLabel : CONTEST_AROMA_TAG_LABELS[tag.tag]}
-                  </span>
-                ))}
-              </div>
-            </div>
-          ) : null}
+        {error ? <p className={rankingReviewStyles.error} role="alert">{error}</p> : null}
+        <div className={rankingReviewStyles.reviewDetails}>
+          <button type="button" className={rankingReviewStyles.detailsToggle} onClick={() => setIsDetailsOpen((current) => !current)} aria-expanded={isDetailsOpen} aria-controls={detailsId}>Détails de la critique <ChevronDown size={18} aria-hidden="true" /></button>
+          {isDetailsOpen ? <div id={detailsId} className={rankingReviewStyles.detailsBody}>
+            <dl className={rankingReviewStyles.criteria}>{CONTEST_SCORE_CRITERIA.map((criterion) => <div key={criterion}><dt>{CONTEST_SCORE_CRITERION_LABELS[criterion]}</dt><dd>{scoreByCriterion.get(criterion) ?? "—"}<small> / {CONTEST_SCORE_MAX}</small></dd></div>)}</dl>
+            {item.aromaTags.length > 0 ? <div className={rankingReviewStyles.aromas}><h3>Arômes relevés</h3><ul>{item.aromaTags.map((tag) => <li key={`${item.reviewId}-${tag.tag}-${tag.customLabel ?? ""}`}>{tag.tag === "other" ? tag.customLabel : CONTEST_AROMA_TAG_LABELS[tag.tag]}</li>)}</ul></div> : null}
+          </div> : null}
         </div>
       </div>
-    </div>
-  );
+    </section>
+  </dialog>;
 }
 
 export function ContestTesterProfileCard({
@@ -1889,7 +1758,7 @@ export function ContestTesterProfileCard({
 
   if (!isAuthenticated) {
     return (
-      <div className="cartoon-border bg-cream p-5 md:p-6">
+      <div className={tasterProfileStyles.card}>
         <div className="contest-illustrated-card-header">
           <div>
             <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Profil testeur</p>
@@ -1915,7 +1784,7 @@ export function ContestTesterProfileCard({
 
   if (!progress) {
     return (
-      <div className="cartoon-border bg-cream p-5 md:p-6">
+      <div className={tasterProfileStyles.card}>
         <div className="contest-illustrated-card-header">
           <div>
             <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Profil testeur</p>
@@ -1935,7 +1804,7 @@ export function ContestTesterProfileCard({
   }
 
   return (
-    <div className="cartoon-border bg-cream p-5 md:p-6">
+    <div className={tasterProfileStyles.card}>
       <div className="contest-profile-illustrated-layout">
         <div>
           <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Mon profil testeur</p>
@@ -2756,10 +2625,19 @@ export function ContestHubClient({
         title={isFlowerRankingSurface ? "Classement des fleurs" : isNotebookSurface ? "Dégustation" : "Les classements"}
         description={isNotebookSurface && !isFlowerRankingSurface ? "Tes fleurs. Tes notes. Ta collection." : isFlowerRankingSurface ? "Les meilleurs de la saison." : "Déguste, cultive et fais grandir ton entreprise."}
       />
-      {isNotebookSurface ? (
-        <div className={arenaStyles.notebookSurfaceHeader}>
-          <div className={arenaStyles.notebookSurfaceQuickNav}>
-            <nav className={arenaStyles.notebookSurfaceSections} aria-label="Sections du Carnet">
+      {activeArenaView === "classement" || isFlowerRankingSurface ? (
+        <nav className={flowerRankingStyles.rankingNavigation} aria-label="Classements de l’Arène">
+          <Link href="/arene?vue=classement" aria-current={!isFlowerRankingSurface ? "page" : undefined}>
+            <Award aria-hidden="true" /><span>Joueurs</span>
+          </Link>
+          <Link href={getNotebookRankingHref()} aria-current={isFlowerRankingSurface ? "page" : undefined}>
+            <Sprout aria-hidden="true" /><span>Fleurs</span>
+          </Link>
+        </nav>
+      ) : null}
+      {isNotebookSurface && !isFlowerRankingSurface ? (
+        <div className={flowerRankingStyles.notebookNavigation}>
+            <nav className={flowerRankingStyles.notebookSections} aria-label="Sections du Carnet">
               <Link href={getNotebookTrackHref("regular")} data-active={isNotebookDetailSurface && selectedTrack === "regular" || undefined}>
                 <BookOpen aria-hidden="true" />
                 <span><strong>Regular</strong></span>
@@ -2773,7 +2651,6 @@ export function ContestHubClient({
                 <span><strong>Fleurs</strong></span>
               </Link>
             </nav>
-          </div>
         </div>
       ) : null}
       <div className={`retro-container ${arenaStyles.content}`}>
@@ -2919,29 +2796,29 @@ export function ContestHubClient({
           </> : null}
         </section>
 
-        <section hidden={activeArenaView !== "carnet" || isNotebookDetailSurface} id="classement-arene" className={arenaStyles.rankingSection} aria-labelledby="arena-ranking-title">
-          <div className={arenaStyles.sectionHeading}>
+        <section hidden={activeArenaView !== "carnet" || isNotebookDetailSurface} id="classement-arene" className={flowerRankingStyles.section} aria-labelledby="arena-ranking-title">
+          <div className={flowerRankingStyles.heading}>
             <div>
-              <h2 id="arena-ranking-title" className={arenaStyles.sectionTitle}>
+              <h2 id="arena-ranking-title">
                 Palmarès <span>des fleurs.</span>
               </h2>
             </div>
-            <p className={arenaStyles.sectionLead}>
+            <p>
               Notes issues des carnets validés.
             </p>
           </div>
-          <div className={arenaStyles.rankingFilters}>
+          <div className={flowerRankingStyles.filters}>
             {isFlowerRankingSurface ? (
-              <div className={arenaStyles.controlGroup}>
-                <span className={arenaStyles.controlLabel}>Carnet</span>
-                <div className={arenaStyles.categorySwitch} aria-label="Type de carnet">
+              <div className={flowerRankingStyles.controlGroup}>
+                <span className={flowerRankingStyles.controlLabel}>Carnet</span>
+                <div className={flowerRankingStyles.switch} role="group" aria-label="Type de carnet">
                   {CONTEST_ENTRY_TRACKS.map((track) => (
                     <button
                       key={track}
                       type="button"
                       aria-pressed={selectedTrack === track}
                       onClick={() => changeTrack(track)}
-                      className={`${arenaStyles.filterButton} ${selectedTrack === track ? arenaStyles.filterButtonActive : ""}`}
+                      className={flowerRankingStyles.filterButton}
                     >
                       <span>{CONTEST_ENTRY_TRACK_LABELS[track]}</span>
                     </button>
@@ -2949,9 +2826,9 @@ export function ContestHubClient({
                 </div>
               </div>
             ) : null}
-            <div className={arenaStyles.controlGroup}>
-              <span className={arenaStyles.controlLabel}>Culture</span>
-              <div className={arenaStyles.categorySwitch} aria-label="Catégorie de culture">
+            <div className={flowerRankingStyles.controlGroup}>
+              <span className={flowerRankingStyles.controlLabel}>Culture</span>
+              <div className={flowerRankingStyles.switch} role="group" aria-label="Catégorie de culture">
                 {CONTEST_ENTRY_CATEGORIES.map((category) => {
                   const count = categoryCounts[category] ?? 0;
                   const isActive = category === activeCategory;
@@ -2962,30 +2839,33 @@ export function ContestHubClient({
                       disabled={count === 0 && !isActive}
                       aria-pressed={isActive}
                       onClick={() => changeCategory(category)}
-                      className={`${arenaStyles.filterButton} ${isActive ? arenaStyles.filterButtonActive : ""}`}
+                      className={flowerRankingStyles.filterButton}
                     >
                       <span>{CONTEST_ENTRY_CATEGORY_LABELS[category]}</span>
-                      <span className={arenaStyles.filterCount}>{count}</span>
+                      <span className={flowerRankingStyles.filterCount}>{count}</span>
                     </button>
                   );
                 })}
               </div>
             </div>
-            <label className={arenaStyles.controlGroup}>
-              <span className={arenaStyles.controlLabel}>Saison</span>
+            <label className={flowerRankingStyles.controlGroup}>
+              <span className={flowerRankingStyles.controlLabel}>Saison</span>
               <select
                 value={selectedSeasonCode ?? ""}
                 onChange={(event) => changeSeason(event.target.value)}
-                className={arenaStyles.seasonSelect}
+                className={flowerRankingStyles.seasonSelect}
               >
                 {seasons.map((season) => (
                   <option key={season.id} value={season.code}>{season.label}</option>
                 ))}
               </select>
+              <span className={flowerRankingStyles.seasonCaption} aria-hidden="true">
+                {seasons.find((season) => season.code === selectedSeasonCode)?.label}
+              </span>
             </label>
           </div>
-          <div className={arenaStyles.scoreAndReviews}>
-            <div className={arenaStyles.scorePanel}>
+          <div className={flowerRankingStyles.layout}>
+            <div className={flowerRankingStyles.boardColumn}>
               <ContestStationRankingBoard
                 entries={stationRankingEntries}
                 activeCategory={activeCategory}
@@ -2993,7 +2873,7 @@ export function ContestHubClient({
                 onSelectEntry={(entryId) => void openRankingEntryReviews(entryId)}
               />
             </div>
-            <div className={arenaStyles.reviewPanel}>
+            <div className={flowerRankingStyles.reviewColumn}>
               <ContestReviewMarquee
                 items={feedItems}
                 onSelectReview={(item) => setSelectedFeedReviewId(item.reviewId)}

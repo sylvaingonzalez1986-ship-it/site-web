@@ -1,0 +1,334 @@
+{
+  "mode": "builtin",
+  "styleReferences": [
+    "public/placard/market-social-missions-sylvain-v3.webp",
+    "public/app/kanab-quest/social/workshop.webp"
+  ],
+  "commonPrompt": "Create one finished square illustration for the Kanab Quest social-adventure game. Match the supplied canonical Sylvain-universe references: welcoming French comic-book drawing, thick slightly irregular black contours, simple flat colors, cream paper, deep teal woodwork, golden ochre and warm apricot accents, restrained printed halftone and light paper texture. Use the references for the visual language and believable botanical artisan workshop, never copy their protagonist. Draw a concrete scene with clearly readable objects, appealing perspective, natural light and a distinct composition suited to this episode. No photorealism, no generic glossy 3D, no brown wash, no pale peach panels. No people, faces, hands, body parts, character silhouettes, mannequins or placeholder avatars: the player's own character is composited separately by the app. No readable writing, letters, numbers, pseudo-writing, brands, logos, watermarks, platform interfaces, counters, charts, statistics, trophies or money. Documents may have blank color blocks, pictorial sketches and plain ruled lines without glyphs. Screens may show only simple nonverbal pictorial objects. Do not imply that a choice has already been made: depict the situation and its materials, not a victory, punishment, payment or agreed contract. For playerPlacement left, reserve a clear standing area centered at x=25%, head near y=20% and feet at y=94%, with continuous perspective floor to the bottom; keep tables and other foreground objects on the right and do not obstruct this space. For playerPlacement center, reserve the same standing area centered at x=50%, with objects at the outer edges and continuous floor to the bottom. For playerPlacement none, use a rich close-up or still life with no reserved avatar space. Opaque background, square framing, complete illustration to every edge.",
+  "scenes": [
+    {
+      "id": "ig-first-frame",
+      "subject": "A botanical workshop being prepared for its first photo story. On the right, a camera rests beside jars and kraft packets on a low workbench; two mismatched cardboard boxes and a loosely draped cream reflector reveal the improvised photo setup. Teal shelves and warm window light retain the everyday workshop character. Clear floor and empty standing space on the left; nothing has been tidied into a final before-and-after reveal.",
+      "playerPlacement": "left",
+      "alt": "Un appareil photo et des cartons improvisent un décor devant l’établi de l’atelier."
+    },
+    {
+      "id": "ig-comment",
+      "subject": "An affectionate comic still life of an ordinary creased cardboard box treated like a tiny film star under a desk spotlight. A phone with a blank pictorial screen lies beside the box and an open notebook of workshop sketches. Keep the box a real inanimate box, with no face or arms. The surrounding tools and unfinished backdrop suggest the question of what lies behind a pretty set.",
+      "playerPlacement": "none",
+      "alt": "Un carton sous une lampe de bureau, avec un téléphone et un carnet de travail à côté."
+    },
+    {
+      "id": "ig-collab",
+      "subject": "Two neighboring crafts meeting in a small ceramic studio. Three bowls sit on a right-hand workbench: one neatly formed, one slightly lopsided, one delightfully irregular and sculptural. A camera, botanical jar and neatly coiled extension cable connect the photo workshop to the ceramic tools and teal shelves. Warm side light, clear floor and an empty full-body standing area on the left.",
+      "playerPlacement": "left",
+      "alt": "Trois bols de formes différentes, un appareil photo et une rallonge sur l’établi d’un atelier de céramique."
+    },
+    {
+      "id": "ig-sensitive-frame",
+      "subject": "An overhead composition showing three possible photographic subjects side by side on a cream worktable: a sealed glass jar of botanical cannabis flowers, a small arrangement of workshop tools, and a notebook beside a folded ochre cloth. A camera and three empty cardboard framing windows lie nearby. Show the choices of framing as physical objects, without screen warnings or a selected winning composition.",
+      "playerPlacement": "none",
+      "alt": "Un bocal de fleurs, des outils et un carnet entourés de cadres en carton sur une table de prise de vue."
+    },
+    {
+      "id": "ig-moderation",
+      "subject": "A low photographic workbench on the right with a botanical jar partly behind a movable cream background, while a notebook of framing sketches and a camera remain visible. Several different cardboard viewfinders lean against the teal wall, suggesting a discussion of what an image should include. Keep the left floor and standing space empty; the jar is neither hidden forever nor dramatically revealed.",
+      "playerPlacement": "left",
+      "alt": "Des cadres de prise de vue et un fond mobile entourent un bocal, un appareil photo et un carnet."
+    },
+    {
+      "id": "ig-return",
+      "subject": "A borrowed corner of the neighboring ceramic workshop, bathed in a beautiful angled shaft of afternoon light. On the right, an uneven little stool stands beside a low bench with bowls and a folded reflector; one stool leg rests near a spare wooden wedge. A camera bag waits nearby. Leave the left side open with continuous floor for a standing avatar, without a person or a scheduled-event sign.",
+      "playerPlacement": "left",
+      "alt": "Un coin d’atelier lumineux avec des bols, un réflecteur plié et un tabouret un peu bancal."
+    },
+    {
+      "id": "ig-demand",
+      "subject": "Close-up of an improvised planning table: a flattened kraft box carries a simple empty grid drawn in pencil, with a camera, unfinished botanical-workshop sketches and three blank folded question slips clustered beside it. A phone rests face down at the edge. Emphasize the contrast between many questions and a modest amount of work in progress; no dates, quantities, stock promises or completed schedule.",
+      "playerPlacement": "none",
+      "alt": "Une grille de préparation dessinée sur un carton, des brouillons et un téléphone posé face cachée."
+    },
+    {
+      "id": "ig-identity",
+      "subject": "A small portrait setup inside the workshop, with the camera and tripod on the far right facing an empty standing area on the left. An open teal partition divides the visible workbench from a quiet private corner containing a plain closed notebook and coat hook. The scene asks how much of everyday life belongs in the frame; no portrait, human reflection, personal documents or visible identity information.",
+      "playerPlacement": "left",
+      "alt": "Un appareil sur trépied face à un espace libre, près d’une séparation entre l’atelier et un coin privé."
+    },
+    {
+      "id": "ig-open-house",
+      "subject": "The open teal doorway of a neighborhood workshop during preparations for a friendly gathering. Small side tables at the outer edges hold a ceramic bowl, botanical notebook and a camera left on its strap. A modest blank easel stands near climbing plants. Keep a welcoming clear central passage and perspective ground to the bottom for the player's avatar. No people, invitation text, crowd or livestream in progress.",
+      "playerPlacement": "center",
+      "alt": "La porte ouverte d’un atelier, encadrée de petites tables, de plantes et d’un appareil photo au repos."
+    },
+    {
+      "id": "x-first-thread",
+      "subject": "An everyday workshop desk set up for thinking before joining a public discussion. On the right, a propped phone sits beside a notebook with a small illustrated work process, a pencil and a cooling teal cup. The teal shelves behind carry real tools and botanical jars. Keep the standing area on the left clear with floor visible all the way down; no social-feed text or audience metrics on the phone.",
+      "playerPlacement": "left",
+      "alt": "Un téléphone, un carnet d’essais et une tasse sur un bureau au milieu des outils de l’atelier."
+    },
+    {
+      "id": "x-proof",
+      "subject": "A close, slightly angled still life of workshop evidence being compared: an imperfect sample, a more finished sample, two small tool sketches and an open notebook connected by a plain string bookmark. A magnifying glass rests near the relevant material detail, while a phone lies to one side. Show careful reasoning through tangible objects, without diagrams containing figures or fabricated scientific data.",
+      "playerPlacement": "none",
+      "alt": "Des échantillons, une loupe et des croquis de travail réunis pour examiner un raisonnement."
+    },
+    {
+      "id": "x-rival",
+      "subject": "A shared workshop with two small workbenches facing inward from the far left and right, each holding a different arrangement of ordinary tools for the same simple craft task. A matching unfinished wooden tray sits on each side. The central aisle remains completely clear from head height to the floor for the player's avatar. Friendly comparison, no boxing imagery, scoreboards, winners or people.",
+      "playerPlacement": "center",
+      "alt": "Deux petits établis présentent des outils disposés différemment autour d’une allée centrale libre."
+    },
+    {
+      "id": "x-pile-on",
+      "subject": "A tense but gently comic close-up of a phone vibrating near the edge of a cream wooden table, indicated by a few small hand-drawn motion strokes rather than notification counters. Nearby lie an intact notebook and a short torn strip of blank paper, suggesting words removed from their context. A steady teal mug remains safely farther from the edge. No broken device, person, abusive text or disaster.",
+      "playerPlacement": "none",
+      "alt": "Un téléphone près du bord d’une table, à côté d’un carnet et d’une bande de papier détachée."
+    },
+    {
+      "id": "x-spotlight",
+      "subject": "A modest right-hand sorting station in the workshop: several blank question slips are gathered into three shallow trays, with a pencil, open notebook and phone resting beside them. A small desk lamp illuminates the slips, while the wider room stays calm. Reserve unobstructed left floor space for the avatar. The piles are ordinary papers, not measured engagement data or a completed commitment schedule.",
+      "playerPlacement": "left",
+      "alt": "Des questions sur des papiers sans texte sont regroupées dans des plateaux près d’un carnet et d’un téléphone."
+    },
+    {
+      "id": "x-community",
+      "subject": "A welcoming neighborhood conversation corner with two small side tables and stools arranged around a clear central floor area. On one side rests a repaired wooden object; on the other, a lopsided ceramic bowl and a closed notebook. A handheld microphone lies unused on a side table. Keep the middle standing slot empty for the player's avatar; show a place for sharing mistakes rather than competition.",
+      "playerPlacement": "center",
+      "alt": "Des tabourets et des tables de côté entourent un espace d’échange, avec un objet réparé et un bol irrégulier."
+    },
+    {
+      "id": "x-invitation",
+      "subject": "The practical backstage corner of a tiny local-media interview space. A microphone on a low right-hand stand, headphones, a folded blank invitation card and an open notebook sit beside teal acoustic fabric and a warm lamp. The left standing area and floor are entirely clear for the avatar. No broadcasters' logos, on-air text, money, recording statistics or celebrity stage treatment.",
+      "playerPlacement": "left",
+      "alt": "Un microphone, un casque et une carte d’invitation sans texte dans le coin d’un petit studio local."
+    },
+    {
+      "id": "x-brief",
+      "subject": "A close-up of two physical versions of an interview summary on a desk: a short clipped strip beside a fuller notebook page, both containing only blank blocks and tiny nonverbal workshop sketches. A pencil and movable paper brackets suggest checking the surrounding context. A microphone cable curls near the edge. No quotations, readable text, publishing buttons or authoritative correction stamp.",
+      "playerPlacement": "none",
+      "alt": "Un extrait de papier posé près d’une page complète, avec un crayon et le câble d’un microphone."
+    },
+    {
+      "id": "x-line",
+      "subject": "An intimate overhead editorial still life: an open notebook with three distinct pictorial sketches of a speaking microphone, a workshop tool and a pair of cups. A plain phone lies beside the notebook with its screen dark; a pencil rests undecided between the three drawings. Warm late-afternoon light and generous cream space. No clock numbers, metrics, selected path or guaranteed future program.",
+      "playerPlacement": "none",
+      "alt": "Un carnet ouvert sur trois idées illustrées, accompagné d’un crayon et d’un téléphone éteint."
+    },
+    {
+      "id": "ig-credit-source",
+      "subject": "A photographic still life about an image traveling away from its maker: an original workshop photograph printed on textured paper sits beside a smaller cropped copy with its lower margin missing. A camera strap, contact-sheet envelope and blank attribution tag rest nearby. The photo depicts tools and jars, never a person. No names, usernames, copyright symbols, warning badges or completed correction.",
+      "playerPlacement": "none",
+      "alt": "Une photographie d’atelier et sa copie recadrée, près d’un appareil et d’une étiquette encore vierge."
+    },
+    {
+      "id": "ig-credit-repair",
+      "subject": "A close-up editing table with a printed workshop photograph whose cream lower margin has been awkwardly folded under. A tiny blank paper credit tab is almost hidden beneath the fold; a larger blank tab and a blunt pencil wait next to it. A camera lens and a small paper umbrella make the cramped attribution problem gently comic without displaying any words or choosing the solution.",
+      "playerPlacement": "none",
+      "alt": "La marge repliée d’une photographie masque une petite étiquette, à côté d’un crayon et d’une étiquette plus grande."
+    },
+    {
+      "id": "ig-credit-license",
+      "subject": "A practical workshop photography packing station on the right: printed still-life photographs, a camera and a few blank permission cards are laid out beside a very small scrap of paper and a fresh larger sheet. Binder clips and a teal envelope suggest preparing clear reuse instructions together. Leave a natural empty standing area and floor on the left; no legal seals, signatures or signed contract.",
+      "playerPlacement": "left",
+      "alt": "Des photographies, des fiches vierges et une enveloppe sont préparées sur un établi pour organiser leur reprise."
+    },
+    {
+      "id": "ig-live-glitch",
+      "subject": "An improvised live-video test in the workshop, with a phone mounted on a right-hand tripod beside a separate small microphone. On its screen, a simple pictorial view of the empty workshop appears broken into a few frozen rectangular image tiles, without faces or interface text. A loose but intact cable and an awkward stool explain the homemade setup. Reserve clear standing floor on the left; no emergency or failed-device message.",
+      "playerPlacement": "left",
+      "alt": "Un téléphone sur trépied montre une image figée de l’atelier, près d’un microphone et d’un tabouret."
+    },
+    {
+      "id": "ig-live-queue",
+      "subject": "An overhead arrangement of question cards after a video test, differentiated only by small pictorial sketches: a tool, a camera and a delightfully ordinary stool. The stool sketch is placed unexpectedly prominently beside the others. A phone, pen and three empty sorting clips frame the cards. No written questions, invented totals, answer choices or indication that one topic has already won.",
+      "playerPlacement": "none",
+      "alt": "Des fiches illustrées d’un outil, d’un appareil photo et d’un tabouret attendent d’être regroupées."
+    },
+    {
+      "id": "ig-live-edit",
+      "subject": "A tangible video-editing still life made from paper: a sequence of small workshop photo prints spreads across a cream table beside an open notebook, a camera and a coiled audio cable. One photo shows an awkwardly tilted stool, another an actual tool detail, and an empty frame waits between them. Show the process of choosing a coherent story without a computer timeline, written script or finished montage.",
+      "playerPlacement": "none",
+      "alt": "Des petites photographies de visite sont étalées près d’un carnet, d’une caméra et d’un câble audio."
+    },
+    {
+      "id": "ig-filter-doubt",
+      "subject": "Two printed versions of the same botanical-workshop still life sit side by side: one in restrained natural cream and teal light, the other with obviously exaggerated apricot and teal color treatment. A transparent colored filter rests partly over the second print while the real small flower jar stands behind both. Frame the comparison as a question about representation, without declaring either image selected or showing readable software controls.",
+      "playerPlacement": "none",
+      "alt": "Deux versions colorées d’une même nature morte sont comparées devant le bocal qui leur sert de sujet."
+    },
+    {
+      "id": "ig-filter-proof",
+      "subject": "A close photographic experiment with one small botanical jar at the meeting point of two folded background sheets, one cream and one deep teal. A warm desk lamp and soft window light reach the object from different directions. A camera and plain neutral swatch card lie near the lower edge. No numeric color values, test results or split images suggesting different products.",
+      "playerPlacement": "none",
+      "alt": "Un même bocal placé entre deux fonds de couleur reçoit la lumière d’une fenêtre et d’une lampe."
+    },
+    {
+      "id": "ig-filter-style",
+      "subject": "A workshop photo corner ready for a consistent visual style. On the right, a camera, a folded cream backdrop, a teal fabric swatch and a warm reflector surround a low table with an ordinary botanical jar. A board holds a few small pictorial framing sketches, all blank of words. Keep the full left standing space and floor clear; no finished style contract or chosen filter badge.",
+      "playerPlacement": "left",
+      "alt": "Un appareil, des tissus et des croquis de cadrage préparent un coin photo cohérent dans l’atelier."
+    },
+    {
+      "id": "ig-brand-brief",
+      "subject": "A lively paper still life about an overenthusiastic brand brief: an oversized cream folder spills blank proposal sheets with exaggerated decorative starbursts but no writing. A modest notebook, pencil and camera sit calmly beside this pile. Several small clips look comically insufficient to contain the folder. This is only an example under review: no logo, signature, money, gift package or accepted partnership.",
+      "playerPlacement": "none",
+      "alt": "Un dossier de proposition déborde de feuilles décoratives près d’un carnet de notes et d’un appareil photo."
+    },
+    {
+      "id": "ig-brand-claim",
+      "subject": "A tabletop photo backdrop meets ordinary practical limits: a cream background roll curls awkwardly at one corner while a desk lamp casts a strong unexpected shadow across a plain wooden object. A camera rests nearby and a gentle breeze from the open window lifts the edge of the paper. The scene makes a promise of perfect images look questionable through real materials, with no slogan or miracle effect.",
+      "playerPlacement": "none",
+      "alt": "Un fond photo légèrement recourbé et une lampe projettent une ombre sur un objet posé devant l’appareil."
+    },
+    {
+      "id": "ig-brand-editorial",
+      "subject": "An open editorial notebook seen from above, mostly filled with small pictorial workshop sketches and generous blank spaces. One removable apricot card occupies a modest corner rather than covering the whole spread; a camera, pencil and simple ruler lie outside the notebook. The composition represents deciding how much space a future brand topic may take. No contract, endorsement, commercial copy or paid-post badge.",
+      "playerPlacement": "none",
+      "alt": "Une petite carte amovible prend place parmi les croquis d’un carnet éditorial, sans couvrir les autres pages."
+    },
+    {
+      "id": "ig-creative-call",
+      "subject": "A neighborhood creative-challenge setup outside the teal workshop door. Small display surfaces at the far edges hold everyday objects repurposed for still life: a bent spoon, a folded cloth, a jar and an empty cardboard frame. The objects feel accessible and playfully arranged, with no luxury materials or prizes. Leave the central standing area and ground clear for the avatar; no people, podium or contest text.",
+      "playerPlacement": "center",
+      "alt": "Une cuillère tordue et des objets du quotidien composent un petit décor créatif devant l’atelier."
+    },
+    {
+      "id": "ig-creative-rules",
+      "subject": "A simple creative-workshop preparation table with the bent spoon, two clearly different object compositions on small photo cards, blank permission tabs and a pencil. One card has been set beside its original object to emphasize authorship. A plain wooden crate remains a crate, never a podium. Show materials for clarifying a free shared activity without rankings, medals, money or official-looking regulations.",
+      "playerPlacement": "none",
+      "alt": "Des créations photographiées et leurs objets d’origine sont accompagnés de petites fiches vierges."
+    },
+    {
+      "id": "ig-creative-spotlight",
+      "subject": "A warm still-life gallery of small everyday-object photographs clipped along a low display string, each with its own blank cream attribution tab directly attached. The bent spoon composition sits among varied jar, cloth and tool images, all displayed at comparable size without a winner's position. A soft lamp illuminates the full collection, not one central trophy. No readable names or invented participation count.",
+      "playerPlacement": "none",
+      "alt": "Des photographies de créations du quotidien sont exposées avec chacune une petite étiquette, sans classement."
+    },
+    {
+      "id": "ig-feed-overload",
+      "subject": "Three physical photo drafts lie across the same cream table corner. Each depicts the same notebook and camera with the notebook shifted only slightly, making the repetition gently funny. The real notebook and a short pencil sit just above the prints, while warm window shadows create a pleasing composition. No numbered frames, performance results, visible social interface or selected replacement shot.",
+      "playerPlacement": "none",
+      "alt": "Trois brouillons photographiques montrent presque le même coin de table, avec le carnet légèrement déplacé."
+    },
+    {
+      "id": "ig-feed-calendar",
+      "subject": "A quiet planning corner in the workshop. On the right, an overstuffed notebook of pictorial ideas rests beside a sparse blank planning grid, a camera bag and a cup with a tea sachet. The contrast is between many ideas and a modest workspace, not a quantified schedule. Reserve clear left standing floor for the avatar; no dates, clocks with numbers, scheduled-post controls or promised deadlines.",
+      "playerPlacement": "left",
+      "alt": "Un carnet plein d’idées repose près d’une grille de préparation vierge et d’un sac d’appareil photo."
+    },
+    {
+      "id": "ig-feed-offline",
+      "subject": "A convivial neighborhood workshop entrance prepared for an offline conversation. At the far right, a camera strap hangs from a coat hook beside ordinary coats and a phone rests in a shallow wooden tray. Low stools and cups remain at the outer sides, with an open teal doorway behind. Leave the central ground and standing space fully clear; no people or meeting announcement text.",
+      "playerPlacement": "center",
+      "alt": "Un appareil suspendu près des manteaux et un téléphone rangé dans un plateau laissent place à un coin de discussion."
+    },
+    {
+      "id": "x-archive-resurfaces",
+      "subject": "A close-up of an old workshop archive box opened beside a modern phone. A yellowed print showing an earlier tool arrangement emerges from the box, while a smaller recent cropped copy of that image lies on top without its original lower margin. A plain bookmark has slipped away from the old notebook. No dates, quoted posts, identity photos or readable archive labels.",
+      "playerPlacement": "none",
+      "alt": "Une ancienne image d’atelier ressort d’une boîte d’archives, près d’une copie recadrée et d’un téléphone."
+    },
+    {
+      "id": "x-archive-context",
+      "subject": "A right-hand workshop bench displays an older compact hand tool beside a newer differently shaped tool for the same craft task. An old printed still life and an open notebook connect the two setups without numerical diagrams. A slightly dusty shelf contrasts with the fresh work surface. Leave a complete unobstructed standing area and floor on the left for the avatar; no claim that either tool is universally better.",
+      "playerPlacement": "left",
+      "alt": "Deux outils de générations différentes sont comparés près d’une ancienne photographie et d’un carnet."
+    },
+    {
+      "id": "x-archive-correction",
+      "subject": "A careful archival still life: an old workshop photograph, a newer tool sketch and a clean blank note are held together with one broad teal binder clip. A small open folder waits beside a slightly disordered shelf of unlabelled document boxes. Warm light falls on the assembled reference materials. No written verdict, closed-case stamp, final endorsement or erased original page.",
+      "playerPlacement": "none",
+      "alt": "Une ancienne photographie, un croquis récent et une note vierge sont réunis devant des dossiers d’archives."
+    },
+    {
+      "id": "x-number-viral",
+      "subject": "A cropped presentation sheet lies on a worktable with an oversized decorative blank headline block and an obviously missing lower paper strip. A magnifying glass, a closed source folder and a phone surround it. Convey that the original context is absent through the physical crop alone. Absolutely no chart, bar, percentage, number, claim text, technical result or fabricated data visualization.",
+      "playerPlacement": "none",
+      "alt": "Une feuille de présentation recadrée est examinée près d’une loupe et d’un dossier encore fermé."
+    },
+    {
+      "id": "x-number-source",
+      "subject": "The source folder is now open on a cream desk, revealing plain response cards illustrated only with a cup, an ear and a simple conversation motif. Beside it sits a distinct real workshop sample and a small tool, making the difference between an expressed opinion and a physical production result visible through objects. No charts, counts, written survey items, numerical conclusions or invented measurements.",
+      "playerPlacement": "none",
+      "alt": "Un dossier de réponses ouvert est placé à côté d’un échantillon de travail et d’un outil."
+    },
+    {
+      "id": "x-number-nuance",
+      "subject": "A quiet desk after a noisy argument: an open notebook contains three simple pictorial prompts, an envelope, a magnifying glass and a small workshop object, with ample blank space for context. Two dramatic but entirely blank headline cards have been set aside at opposite edges. Emphasize the patient act of checking sources, with no graph, fake statistic, total, slogan or selected conclusion.",
+      "playerPlacement": "none",
+      "alt": "Un carnet de vérification reste ouvert entre une loupe, un objet d’atelier et deux grandes cartes mises de côté."
+    },
+    {
+      "id": "x-double-account",
+      "subject": "Two paper reproductions of similar workshop doorway photographs sit beside a phone on a cream table. One copy has subtle mismatched details, such as the wrong arrangement of a hanging pot and tools, while the actual workshop keys lie nearby. The resemblance raises a question without branding either page as the verified winner. No names, profile portraits, handles, account interface or counterfeit-sale imagery.",
+      "playerPlacement": "none",
+      "alt": "Deux images presque semblables d’une porte d’atelier présentent quelques détails différents près d’un téléphone."
+    },
+    {
+      "id": "x-double-channel",
+      "subject": "A physical reference board leaning against teal workshop woodwork: one full workshop photograph is clipped intact to the board, while smaller cropped copies remain loosely placed on the desk below. Plain string bookmarks connect a notebook and an open folder to the original material. Clear visual hierarchy through paper size and placement, without verification badges, account names, written instructions or a digital navigation diagram.",
+      "playerPlacement": "none",
+      "alt": "Une photographie complète reste accrochée à un panneau, au-dessus de plusieurs copies recadrées et d’un dossier."
+    },
+    {
+      "id": "x-double-clarification",
+      "subject": "The workshop is returning to ordinary work: a small reference board remains quietly in the far-right background, while a fresh unfinished wooden object, botanical jars and useful tools occupy the low right-hand bench. A phone lies face down beside the notebook rather than commanding the room. Clear standing space and perspective floor on the left. No removal victory, banned account, identity portrait or text.",
+      "playerPlacement": "left",
+      "alt": "Un nouvel essai reprend place sur l’établi tandis qu’un petit panneau de référence reste au fond de l’atelier."
+    },
+    {
+      "id": "x-live-invitation",
+      "subject": "A tiny neighborhood discussion space prepared before a live exchange. Two microphones and notebooks rest on separate low side tables at the left and right edges; a plain egg timer with no markings sits beside a teal cup. Empty stools wait farther back. Keep the central standing area and continuous ground unobstructed for the avatar. No participants, event text, scoreboards, duel imagery or audience count.",
+      "playerPlacement": "center",
+      "alt": "Deux microphones et des carnets attendent sur des tables de côté autour d’un espace de discussion."
+    },
+    {
+      "id": "x-live-turns",
+      "subject": "A close, dynamic still life of two tabletop microphones angled too closely toward each other, their cables crossing over several blank question cards. A simple unmarked egg timer and one small stool sketch on a card create a calm focal point among the overlap. Show the practical difficulty of taking turns through objects only, with no speech bubbles, voices, text, countdown numbers or quantified audio waves.",
+      "playerPlacement": "none",
+      "alt": "Deux microphones et leurs câbles se croisent au-dessus de fiches, près d’un petit minuteur sans chiffres."
+    },
+    {
+      "id": "x-live-summary",
+      "subject": "A small discussion desk after the microphones have been switched off: the microphones are laid neatly at the far edge, while two differently arranged tool sketches sit side by side inside an open notebook. A third blank page remains available for unresolved questions, with pencils pointing inward from different sides. No agreement stamp, handshake, winner, quote text or suggestion that the two approaches became identical.",
+      "playerPlacement": "none",
+      "alt": "Des microphones au repos accompagnent un carnet où deux approches de travail restent présentées côte à côte."
+    },
+    {
+      "id": "x-growth-shortcut",
+      "subject": "A shiny but unbranded promotional envelope sits unopened beside a phone, while a plain notebook of genuine workshop sketches and a useful hand tool occupy the warmer, more tactile part of the desk. A row of identical blank card shapes peeks from the envelope, hinting at a mass-produced audience without showing people or counters. No bots bought, money, packages delivered, accepted offer or numerical growth claim.",
+      "playerPlacement": "none",
+      "alt": "Une proposition dans une enveloppe brillante côtoie un carnet de travail et un outil ordinaire."
+    },
+    {
+      "id": "x-growth-proof",
+      "subject": "A glossy cropped promotional phone-image print lies beside a modest handwritten-style notebook that contains only pictorial workshop sketches and plain lines without glyphs. A small magnifying glass is aimed at the print's missing context rather than at any numbers. Two cups and an exchanged question card suggest conversation as a tangible contrast. No visible follower counter, bar chart, paid promotion, numerical result or fake testimonial.",
+      "playerPlacement": "none",
+      "alt": "Une image promotionnelle recadrée est examinée à côté d’un carnet, d’une fiche et de deux tasses."
+    },
+    {
+      "id": "x-growth-peers",
+      "subject": "A neighborhood exchange of practical workshop problems, prepared in a small courtyard. Low tables on the outer left and right hold one imperfect ceramic bowl, one unfinished wooden object and notebooks opened to different pictorial approaches. A camera stays in its bag. Clear central ground and standing space invite the player's avatar. No people, reciprocal-promotion tokens, popularity rankings, contracts or attendance signage.",
+      "playerPlacement": "center",
+      "alt": "Des objets de travail inachevés et des carnets attendent sur des tables de côté dans une cour d’ateliers."
+    },
+    {
+      "id": "x-help-boundaries",
+      "subject": "An artisan's right-hand desk is starting to fill with modest paper folders and blank question slips, leaving a small open patch beside the actual workshop tools. A phone rests in a tray, and a closed personal work notebook remains clearly separate from the incoming papers. Keep full standing space and floor open on the left. Convey limited availability without a service counter, warning sign or invented request total.",
+      "playerPlacement": "left",
+      "alt": "Des dossiers et des demandes sur papier entourent un carnet personnel et les outils d’un établi."
+    },
+    {
+      "id": "x-help-requests",
+      "subject": "One openly shared practical example takes center stage on a cream table: a simple wooden joint sample and its pictorial sketch sit on an open plain folder. Other unlabelled folders remain closed and stacked to one side, preserving the distinction between a public case and private requests. A pencil and magnifier wait beside the sample. No names, personal information, permission signature or one-size-fits-all solution diagram.",
+      "playerPlacement": "none",
+      "alt": "Un exemple d’assemblage et son croquis sont ouverts sur une table, tandis que les autres dossiers restent fermés."
+    },
+    {
+      "id": "x-help-relay",
+      "subject": "A welcoming shared workshop threshold with several modest work corners at the edges: ceramic tools and a bowl on one side, a wooden sample and small hand tools on the other, each with its own closed notebook. A teal doorway and climbing plants frame a clear central standing area with visible ground for the avatar. This is occasional neighborly help, not a staffed reception desk; no people, schedules, guaranteed-service signs or referrals with names.",
+      "playerPlacement": "center",
+      "alt": "Des outils de céramique et de travail du bois encadrent l’entrée commune de plusieurs ateliers."
+    }
+  ]
+}

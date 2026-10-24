@@ -1,4 +1,4 @@
-.flavors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 12px; padding: 8px; list-style: none; border: 2px solid #172923; border-radius: 12px; background: #fff8e7; color: #172923; }
+.flavors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 0 0 12px; padding: 8px; list-style: none; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .flavor { display: flex; min-width: 0; flex-direction: column; align-items: center; justify-content: flex-start; gap: 4px; margin: 0; padding: 0; text-align: center; }
 .flavor img { display: block; width: 64px; max-width: 100%; height: 64px; object-fit: contain; }
 .flavor span { max-width: 100%; font-size: .72rem; line-height: 1.2; font-weight: 800; overflow-wrap: anywhere; }

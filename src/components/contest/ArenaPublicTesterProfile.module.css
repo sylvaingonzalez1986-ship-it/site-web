@@ -1,0 +1,73 @@
+.page {
+  composes: surface from "./ArenaRetro.module.css";
+  min-height: 100svh;
+  padding: clamp(6rem, 10vw, 9rem) 0 4rem;
+  background: #fff1d6;
+  color: #172923;
+  font-family: var(--font-body), Arial, sans-serif;
+}
+.page *, .page *::before, .page *::after { box-sizing: border-box; }
+.container { display: grid; gap: 24px; min-width: 0; }
+.page a:focus-visible { outline: 3px solid #087b70; outline-offset: 4px; }
+.breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: 12px 20px; font-size: 12px; }
+.breadcrumb > span { min-width: 0; overflow-wrap: anywhere; }
+.breadcrumb a {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 12px 20px;
+  border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  color: inherit; font-weight: 800; text-decoration: none;
+}
+.breadcrumb a:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.breadcrumb svg { flex-shrink: 0; }
+.progressSheet, .badges, .reviews {
+  min-width: 0; padding: 25px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+}
+.progressSheet { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); align-items: center; gap: 32px; }
+.numbers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; gap: 16px; }
+.numbers > div { min-width: 0; padding-block: 8px; border-bottom: 3px solid #efc451; }
+.numbers > div:nth-child(2) { border-color: #087b70; }
+.numbers > div:nth-child(3) { border-color: var(--game-surface-warm, #ffb15f); }
+.numbers dt { font-size: 11px; font-weight: 700; }
+.numbers dd { margin: 9px 0 0; font: 900 clamp(23px, 2.5vw, 35px)/1.1 var(--font-display), Impact, sans-serif; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.numbers dd small { font: 700 11px var(--font-body), Arial, sans-serif; }
+.levelComplete { font-size: 13px; line-height: 1.6; }
+.columns { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.8fr); align-items: start; gap: 24px; }
+.badges { --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); }
+.sectionHeading { display: flex; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 2px solid #172923; }
+.sectionHeading svg { flex-shrink: 0; }
+.sectionHeading h2 { margin: 0; font: 900 clamp(25px, 2.5vw, 32px)/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.badgeList { margin: 0; padding: 0; list-style: none; }
+.badgeList li { padding: 19px 0; border-bottom: 1px solid #17292345; overflow-wrap: anywhere; }
+.badgeList li:last-child { border-bottom: 0; padding-bottom: 0; }
+.badgeList strong { font-size: 14px; }
+.badgeList p, .review header p { margin: 7px 0 0; font-size: 11px; line-height: 1.6; }
+.reviewList { display: grid; min-width: 0; }
+.review { padding: 23px 0; border-bottom: 1px solid #17292345; }
+.review:last-child { padding-bottom: 0; border-bottom: 0; }
+.review header { display: flex; align-items: start; gap: 15px; }
+.review header > div { flex: 1; min-width: 0; }
+.review h3 { margin: 0; font-size: 16px; line-height: 1.4; overflow-wrap: anywhere; }
+.review h3 a { color: #005b4a; text-decoration: underline; text-underline-offset: 3px; }
+.reviewScore { flex-shrink: 0; display: grid; justify-items: center; gap: 4px; min-width: 60px; padding: 10px; border: 2px solid transparent; border-image: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")) 48 fill / 10px / 0 stretch; }
+.reviewScore strong { font: 900 27px/1 var(--font-display), Impact, sans-serif; }
+.reviewScore small { font-size: 10px; }
+.reviewComment { margin: 17px 0 0; white-space: pre-line; overflow-wrap: anywhere; font-size: 13px; line-height: 1.8; }
+.empty { margin: 20px 0 0; font-size: 13px; line-height: 1.7; }
+@media (max-width: 900px) {
+  .progressSheet { grid-template-columns: 1fr; gap: 24px; }
+  .columns { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .container { gap: 18px; }
+  .breadcrumb > span { display: none; }
+  .progressSheet, .badges, .reviews { padding: 20px 16px; }
+  .numbers { gap: 10px; }
+  .numbers dt { font-size: 10px; }
+  .numbers dd { font-size: 25px; }
+  .review header { gap: 10px; }
+  .review h3 { font-size: 14px; }
+  .reviewScore { min-width: 54px; padding: 10px 8px; }
+}

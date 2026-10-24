@@ -1,0 +1,49 @@
+{
+  "source": "Publications et captures X fournies directement par le propriétaire dans la conversation le 24 octobre 2026. Instagram encore en attente de connexion Metricool.",
+  "purpose": "Inspiration éditoriale, jamais copie des textes ni transposition des faits de cette ferme au joueur.",
+  "posts": [
+    {
+      "dateLabel": "6 octobre",
+      "title": "Fiction : LAISSER POURRIR",
+      "contentSummary": "Fiction politique explicitement annoncée et écrite au conditionnel : des producteurs construisent une filière et la confiance, des fraudeurs pulvérisent des molécules sur des fleurs et trafiquent des résines, les alertes se perdent dans les dossiers. Les intoxications amalgament plante, synthèse, paysan et fraudeur. Un discours de protection finit par exclure les petits producteurs au profit de gros acteurs. Le paysan a les mains dans la récolte et la tête dans les factures ; défendre chaque lot coûte du temps puis son activité.",
+      "voice": "Colère, satire, images concrètes du travail et des factures, critique des produits maquillés. Fiction clairement annoncée, pas une accusation factuelle à reprendre."
+    },
+    {
+      "dateLabel": "20 octobre",
+      "title": "Payton Strawberry",
+      "excerpts": ["La Payton Strawberry, notre best-seller de la saison dernière", "Des têtes denses, blindées de trichomes. De la fraise, du biscuit beurré…", "Les arômes sont déjà là, le curing va sublimer tout ça.", "Dispo début d’année"],
+      "image": "Une main gantée montre une fleur taillée ; lettrage rose du nom de variété.",
+      "voice": "Fierté du producteur, description sensorielle courte, enthousiasme. Ne pas imposer cette variété, ses parfums, un succès commercial passé ou cette disponibilité au joueur."
+    },
+    {
+      "dateLabel": "13 octobre",
+      "title": "Bilan de saison",
+      "contentSummary": "Choix assumé de ne pas irriguer pendant chaleur et sécheresse, sauf une urgence en août. Chevreuil qui abîme quelques plants, chenilles, oiseaux et nichoirs. Plants plus petits mais fleurs résineuses et terpènes prononcés. Belle arrière-saison, choix de récolter avant la pluie plutôt que de pousser la maturité plus loin. Bilan positif malgré les frayeurs, séchage encore en cours puis curing, patience et fierté.",
+      "excerpts": ["Moins de volume, mais du caractère.", "Une saison avec quelques frayeurs, des compromis, mais de belles fleurs au bout.", "Ça va être beau."],
+      "voice": "Récit d’un arbitrage réel et de ses conséquences, humour paysan, difficultés assumées et joie du résultat. Tous les détails météo/faune sont OUTDOOR et ne doivent jamais être transposés dans l’indoor du jeu."
+    },
+    {
+      "title": "Prise de position sur RIPOST",
+      "contentSummary": "Texte politique en colère sur des sanctions qui pourraient priver des gens de mobilité et donc d’emploi, de revenus et de logement. Lie la vie rurale et les métiers qui exigent une voiture aux discriminations dans les contrôles. Critique le mépris de classe et les annonces punitives, défend prévention et accompagnement, appelle à s’organiser collectivement. Le texte cite Legifrance et le Défenseur des droits.",
+      "voice": "Franchise, phrases fortes et parfois grossières, arguments sourcés, conséquences humaines concrètes, questions directes au lecteur. Pour le jeu : positions générales du producteur et choix de ton ; ne pas importer des affirmations juridiques, chiffres ou accusations non vérifiés."
+    },
+    {
+      "dateLabel": "2 octobre",
+      "title": "Les mains collent",
+      "excerpts": ["Les mains collent. Les fleurs sont denses. Les terps sont dingues.", "Les récoltes ont commencé il y a deux semaines.", "C’est plus petit que l’an dernier, oui.", "Mais regardez-moi ces trichomes… Il ne vous manque que l’odeur."],
+      "contentSummary": "Macro de fleur. Récolte en cours, météo permettant aux dernières fleurs de mûrir. Rendement plus petit expliqué franchement par trois mois de sécheresse et le choix de ne pas irriguer. Enthousiasme tactile et sensoriel malgré le compromis.",
+      "voice": "Court, charnel, fier, imparfait et honnête. Ne pas inventer dans le jeu un historique, une météo, un rendement ni un parfum."
+    }
+  ],
+  "editorialRules": [
+    "Le joueur raconte sa propre production de CBD à la première personne. Les autres personnages réagissent après publication.",
+    "Contexte en deuxième personne, publication en première personne, commentaires qui répondent précisément au texte choisi.",
+    "Les trois choix portent sur le même fait observé ; ils changent le cadrage, le ton et l’effort, pas l’état de la plante.",
+    "Aucune guérison, récolte, vente ou disponibilité créée par un clic social.",
+    "Une majorité de quotidien, variétés et travail de culture ; les collaborations créatives restent secondaires.",
+    "S’appuyer sur la variété, le stade, le symptôme et le lot réellement présents dans la partie. Aucune météo outdoor dans l’indoor.",
+    "Une belle photo honnête n’est pas une faute : si le choix perd de la confiance, rendre sa prise de risque éditoriale intelligible.",
+    "La situation de départ du jeu ne contient pas nécessairement une récolte, des fleurs, un problème ou un lot disponible. Les arcs concernés attendent leur prérequis réel.",
+    "Pas de tic rédactionnel permanent : archives de Jade, explications de Noé, avertissement médical, rappel de stock à chaque ligne."
+  ]
+}

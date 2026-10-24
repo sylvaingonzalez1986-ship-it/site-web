@@ -16,7 +16,7 @@
 }
 
 .replayButton svg { width: 18px; }
-.replayButton:hover { color: #111512; }
+.replayButton:hover:not(:disabled) { color: #111512; }
 .replayButton:focus-visible { outline: 3px solid #f4c43d; outline-offset: 3px; }
 
 .backdrop {
@@ -32,17 +32,20 @@
 }
 
 .dialog {
+  composes: surface from "./ArenaRetro.module.css";
   display: flex;
   flex-direction: column;
   width: min(960px, 100%);
   max-height: calc(100dvh - 2rem);
   overflow: hidden;
-  border: 3px solid #111512;
-  border-radius: 3px;
-  background: #fffaf1;
-  box-shadow: 9px 9px 0 #f4c43d;
   color: #111512;
   animation: arenaTutorialRise 220ms ease-out both;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
 
 .header {
@@ -90,12 +93,21 @@
   height: 44px;
   padding: 0;
   place-items: center;
-  border: 2px solid #111512;
-  background: #fff;
-  box-shadow: 3px 3px 0 #111512;
+  border: var(--game-control-border-width, 2px) solid #172923;
+  box-shadow: none;
+  border-radius: 0;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  color: #172923;
 }
 
-.header > button:hover { background: #f4c43d; }
+.header > button:hover:not(:disabled) {
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  color: #172923; }
 .header > button svg { width: 21px; }
 
 .stepTabs {
@@ -117,12 +129,17 @@
   align-items: center;
   justify-content: center;
   gap: .25rem;
-  border: 0;
-  background: #fffaf1;
+  border: var(--game-control-border-width, 2px) solid #172923;
   color: #111512;
   font-size: .6rem;
   font-weight: 950;
   text-transform: uppercase;
+  border-radius: 0;
+  box-shadow: none;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
 }
 
 .stepTabs button b {
@@ -135,7 +152,11 @@
   font-size: .66rem;
 }
 
-.stepTabs button[aria-current="step"] { background: #f4c43d; }
+.stepTabs button[aria-current="step"] {
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  color: #172923; }
 .stepTabs button[aria-current="step"] b { background: #00563f; color: #fff; }
 
 .stepBody {
@@ -217,7 +238,7 @@
   padding: .72rem;
   border: 2px solid #111512;
   background: #fff;
-  box-shadow: 3px 3px 0 #d9cba9;
+  box-shadow: var(--game-panel-shadow, none);
 }
 
 .features article > svg { width: 28px; color: #00563f; }
@@ -232,17 +253,21 @@
   gap: .4rem;
   margin-top: .9rem;
   padding: .55rem .8rem;
-  border: 2px solid #111512;
-  background: #00563f;
-  box-shadow: 3px 3px 0 #111512;
-  color: #fff;
+  border: var(--game-control-border-width, 2px) solid #172923;
+  box-shadow: none;
+  color: #fff1d6;
   font-size: .7rem;
   font-weight: 950;
   text-decoration: none;
   text-transform: uppercase;
+  border-radius: 0;
+  --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
 }
 
-.stepAction:hover { transform: translateY(-2px); }
+.stepAction:hover:not(:disabled) { transform: translateY(-2px); }
 .stepAction svg { width: 17px; }
 
 .scoreBand {
@@ -278,16 +303,21 @@
   justify-content: center;
   gap: .4rem;
   padding: .55rem .85rem;
-  border: 2px solid #111512;
-  background: #fff;
+  border: var(--game-control-border-width, 2px) solid #172923;
   color: #111512;
   font-size: .7rem;
   font-weight: 950;
   text-transform: uppercase;
+  border-radius: 0;
+  box-shadow: none;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
 }
 
 .footer button svg { width: 17px; }
-.footer .primaryButton { background: #00563f; color: #fff; box-shadow: 3px 3px 0 #111512; }
+.footer .primaryButton { color: #fff1d6; box-shadow: none; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .footer button:focus-visible,
 .stepTabs button:focus-visible,
 .stepAction:focus-visible,
@@ -295,7 +325,7 @@
 
 @media (max-width: 700px) {
   .backdrop { align-items: end; padding: 0; }
-  .dialog { width: 100%; max-height: 100dvh; border: 0; border-radius: 0; box-shadow: none; }
+  .dialog { width: 100%; max-height: 100dvh; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
   .header { padding: .8rem 3.7rem .75rem .85rem; border-bottom-width: 2px; }
   .header h2 { font-size: clamp(1.6rem, 8vw, 2.1rem); }
   .header p { margin-top: .35rem; font-size: .7rem; }
@@ -312,7 +342,7 @@
   .stepContent h3 { font-size: clamp(1.6rem, 8vw, 2.1rem); }
   .stepContent > p { margin-bottom: .7rem; font-size: .72rem; }
   .features { grid-template-columns: minmax(0, 1fr); gap: .4rem; }
-  .features article { grid-template-columns: 28px minmax(0, 1fr); gap: .45rem; padding: .55rem; box-shadow: 2px 2px 0 #d9cba9; }
+  .features article { grid-template-columns: 28px minmax(0, 1fr); gap: .45rem; padding: .55rem; box-shadow: var(--game-panel-shadow, none); }
   .features article > svg { width: 23px; }
   .features article p { font-size: .78rem; }
   .reputationTable table { font-size: .62rem; }
@@ -337,7 +367,7 @@
   .backdrop,
   .dialog,
   .stepBody { animation: none; }
-  .stepAction:hover { transform: none; }
+  .stepAction:hover:not(:disabled) { transform: none; }
 }
 
 @keyframes arenaTutorialFade { from { opacity: 0; } to { opacity: 1; } }

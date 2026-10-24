@@ -34,7 +34,7 @@ export function CartBenefitSummaryModal({
   }, [open]);
 
   return (
-    <dialog
+    <dialog data-ui-commerce="benefit-dialog" data-ui-shape="panel"
       ref={dialogRef}
       className={styles.dialog}
       aria-labelledby={titleId}
@@ -51,7 +51,7 @@ export function CartBenefitSummaryModal({
           <p className={styles.eyebrow}>{eyebrow}</p>
           <h3 id={titleId} className={styles.title}>{title}</h3>
         </div>
-        <button type="button" className={styles.close} onClick={onClose} aria-label="Fermer le récapitulatif">
+        <button data-ui-commerce="benefit-close" data-ui-shape="control" type="button" className={styles.close} onClick={onClose} aria-label="Fermer le récapitulatif">
           <X size={20} aria-hidden="true" />
         </button>
       </header>

@@ -2,11 +2,12 @@
 
 import { getBuddieArtwork } from "@/lib/buddie-artwork";
 import { KQ_WAREHOUSE_ROOM_ARTWORK } from "@/lib/kanab-quest-warehouse-artwork";
-import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
 import { Focus, Grid2X2, Maximize2, Minimize2, Plus, Minus, Move, MousePointer2, Scaling, Scan, CircleHelp, Sprout, Wind, Package, Settings2 } from "lucide-react";
 import { getKqWarehouseDevice } from "@/lib/kanab-quest-warehouse-catalog";
 import { getKqWarehouseOption, type KqWarehouseOptionFamily } from "@/lib/kanab-quest-warehouse-options";
 import { doKqWarehouseZonesOverlap, getKqWarehouseServiceZoneQuote, type KqWarehouseZone, type KqWarehouseServiceZone } from "@/lib/kanab-quest-warehouse";
+import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import styles from "./KqWarehousePlan.module.css";
 
 const COMPACT_GRID = { x: 50, y: 50, cell: 30, columns: 10, rows: 10 } as const;
@@ -37,7 +38,6 @@ const clamp = (value: number, low: number, high: number) => Math.min(high, Math.
 const ZONE_TYPES = [{ code: "culture", label: "Culture", icon: Sprout }, { code: "drying", label: "Séchage", icon: Wind }, { code: "storage", label: "Stockage", icon: Package }] as const;
 const kindOf = (zone: PlanZone): ZoneKind => "kind" in zone ? zone.kind : "culture";
 const zoneLabel = (zone: PlanZone) => ZONE_TYPES.find(type => type.code === kindOf(zone))!.label;
-const zoneColor = (zone: PlanZone) => "kind" in zone ? zone.kind === "drying" ? "#98631a" : "#326b88" : "#08766b";
 type ObjectKind = "plants" | "lighting" | "air" | "pots" | "drying" | "storage" | "panel" | "drum" | "shelf";
 const OBJECTS: ObjectKind[] = ["plants", "lighting", "air", "pots", "drying", "storage", "panel", "drum", "shelf"];
 const tile = (kind: ObjectKind) => ({ source: `/placard/equipment-sylvain-v1/scene-${kind}.webp`, x: 0, y: 0, width: 512, height: 512 });
@@ -88,7 +88,7 @@ export function KqWarehouseModuleObject({ family, optionCode, className }: { fam
   return <svg viewBox="-2 -2 18 18" className={className} aria-hidden="true" focusable="false"><ModuleProp family={family} optionCode={optionCode} /></svg>;
 }
 
-function ZoneIllustration({ zone, id, growing, grid: GRID }: { zone: KqWarehouseZone; id: string; growing: boolean; grid: PlanGrid }) {
+function ZoneIllustration({ zone, id, growing, grid: GRID, tint }: { zone: KqWarehouseZone; id: string; growing: boolean; grid: PlanGrid; tint: string }) {
   const width = zone.width * GRID.cell, height = zone.height * GRID.cell;
   const x = GRID.x + zone.x * GRID.cell, y = GRID.y + zone.y * GRID.cell;
   const area = zone.width * zone.height;
@@ -105,7 +105,7 @@ function ZoneIllustration({ zone, id, growing, grid: GRID }: { zone: KqWarehouse
   const moduleColumns = Math.max(1, Math.floor((width - 4) / 16));
   const visibleModules = modules.slice(0, Math.min(8, moduleColumns * Math.max(1, Math.floor(height / 32))));
   return <g pointerEvents="none" opacity={zone.active ? 1 : .58} data-culture-running={running}>
-    <rect x={x + 1} y={y + 1} width={width - 2} height={height - 2} fill="#eceddf" fillOpacity=".88" stroke="#4a5147" strokeWidth="1.5" />
+    <rect x={x + 1} y={y + 1} width={width - 2} height={height - 2} fill={tint} fillOpacity=".88" stroke="#4a5147" strokeWidth="1.5" />
     <rect x={x + 1} y={y + 1} width={width - 2} height={height - 2} fill={`url(#${id}-${growing && zone.active ? "plants" : "pots"}-rows)`} />
     {running && <rect className={styles.lampGlow} data-warehouse-activity="lighting" x={x + 1} y={y + 1} width={width - 2} height={height - 2} fill={`url(#${id}-lamplight)`} />}
     <g data-equipment-code={zone.lightingCode} data-equipment-count={lights}>{Array.from({ length: lights }, (_, index) => {
@@ -121,12 +121,12 @@ function ZoneIllustration({ zone, id, growing, grid: GRID }: { zone: KqWarehouse
   </g>;
 }
 
-function ServiceZoneIllustration({ zone, id, grid: GRID }: { zone: KqWarehouseServiceZone; id: string; grid: PlanGrid }) {
+function ServiceZoneIllustration({ zone, id, grid: GRID, tint }: { zone: KqWarehouseServiceZone; id: string; grid: PlanGrid; tint: string }) {
   const quote = getKqWarehouseServiceZoneQuote(zone);
   const art = getKqWarehouseDevice(zone.deviceCode)?.zoneLayout?.art;
   const kind: ObjectKind = art === "jars" ? "storage" : art ?? zone.kind;
   return <g pointerEvents="none" data-equipment-code={zone.deviceCode} data-equipment-count={quote.devices.reduce((sum, item) => sum + item.quantity, 0)}>
-    <rect x={GRID.x + zone.x * GRID.cell + 1} y={GRID.y + zone.y * GRID.cell + 1} width={zone.width * GRID.cell - 2} height={zone.height * GRID.cell - 2} fill={zone.kind === "drying" ? "#f2e5c9" : "#dce8e9"} fillOpacity=".94" />
+    <rect x={GRID.x + zone.x * GRID.cell + 1} y={GRID.y + zone.y * GRID.cell + 1} width={zone.width * GRID.cell - 2} height={zone.height * GRID.cell - 2} fill={tint} fillOpacity=".94" />
     <rect x={GRID.x + zone.x * GRID.cell + 1} y={GRID.y + zone.y * GRID.cell + 1} width={zone.width * GRID.cell - 2} height={zone.height * GRID.cell - 2} fill={`url(#${id}-${kind}-rows)`} />
   </g>;
 }
@@ -174,6 +174,7 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
   const selected = allZones.find(zone => zone.id === selectedId);
   const validZones = allZones.filter(zone => [zone.x, zone.y, zone.width, zone.height].every(Number.isSafeInteger) && zone.width > 0 && zone.height > 0 && zone.x >= 0 && zone.y >= 0 && zone.x + zone.width <= GRID.columns && zone.y + zone.height <= GRID.rows);
   const selectedValid = selected && validZones.includes(selected) ? selected : null;
+  const selectedIdentity = selectedValid ? getKqZoneIdentity({ zones, serviceZones }, selectedValid.id) : null;
   const selectedLocked = locked || placingBuddie || !managing || !!selectedId && lockedZoneIds.includes(selectedId);
   const manipulating = managing && !locked && !placingBuddie && (drawing || !selectedLocked && tool !== "inspect");
   const drawingRectangle = drawPreview?.rectangle ?? (anchor ? {
@@ -628,12 +629,29 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
         <image data-warehouse-room-artwork href={roomArtwork ?? KQ_WAREHOUSE_ROOM_ARTWORK} width={sceneWidth} height={sceneHeight} preserveAspectRatio="none" pointerEvents="none" />
         <rect x={GRID.x} y={GRID.y} width={GRID.columns * GRID.cell} height={GRID.rows * GRID.cell} fill="none" stroke="#645d42" strokeOpacity=".45" strokeWidth="1" strokeDasharray="8 8" pointerEvents="none" />
         <g pointerEvents="none" className={styles.measurements} style={{ fontSize: 12 * markerScale }}>{axisMarks(GRID.columns).map(n => <text key={n} x={GRID.x + n * GRID.cell} y={GRID.y - 14} textAnchor="middle">{n} m</text>)}{axisMarks(GRID.rows).map(n => <text key={n} x={GRID.x - 18} y={GRID.y + n * GRID.cell + 4 * markerScale} textAnchor="end">{n}</text>)}</g>
-        {validZones.map((zone, index) => <g key={zone.id} className={styles.zone} data-zone-id={zone.id} data-zone-kind={kindOf(zone)} data-selected={zone.id === selectedId} data-buddie-drop={placingBuddie && buddieDrop?.zoneId === zone.id ? buddieDrop.allowed ? "valid" : "invalid" : undefined} data-buddie-target={placingBuddie && !("kind" in zone) && !lockedZoneIds.includes(zone.id) || undefined}>
-          <title>{zone.name} · {zoneLabel(zone)} · {zone.width * zone.height} m²{"active" in zone && !zone.active ? " · en pause" : ""}</title>
-          {"kind" in zone ? <ServiceZoneIllustration zone={zone} id={id} grid={GRID} /> : <ZoneIllustration zone={zone} id={id} grid={GRID} growing={activeZoneIds ? activeZoneIds.includes(zone.id) : growing} />}
-          <rect className={styles.zoneOutline} x={GRID.x + zone.x * GRID.cell} y={GRID.y + zone.y * GRID.cell} width={zone.width * GRID.cell} height={zone.height * GRID.cell} fill="transparent" stroke={zone.id === selectedId ? "#e8b141" : zoneColor(zone)} strokeWidth={zone.id === selectedId ? 2.5 : 1.2} vectorEffect="non-scaling-stroke" />
-          <g pointerEvents="none">{!("kind" in zone) && zone.buddieCode && getBuddieArtwork(zone.buddieCode) && <g data-zone-buddie={zone.buddieCode}><defs><clipPath id={`${id}-buddie-${index}`}><circle cx={GRID.x + (zone.x + zone.width / 2) * GRID.cell} cy={GRID.y + (zone.y + zone.height / 2) * GRID.cell} r={Math.min(zone.width, zone.height) * GRID.cell * .36} /></clipPath></defs><image href={getBuddieArtwork(zone.buddieCode)} x={GRID.x + (zone.x + zone.width / 2) * GRID.cell - Math.min(zone.width, zone.height) * GRID.cell * .36} y={GRID.y + (zone.y + zone.height / 2) * GRID.cell - Math.min(zone.width, zone.height) * GRID.cell * .36} width={Math.min(zone.width, zone.height) * GRID.cell * .72} height={Math.min(zone.width, zone.height) * GRID.cell * .72} preserveAspectRatio="xMidYMid slice" clipPath={`url(#${id}-buddie-${index})`} /><circle cx={GRID.x + (zone.x + zone.width / 2) * GRID.cell} cy={GRID.y + (zone.y + zone.height / 2) * GRID.cell} r={Math.min(zone.width, zone.height) * GRID.cell * .36} fill="none" stroke={activeZoneIds?.includes(zone.id) ? "#e8b141" : "#f8f1da"} strokeWidth="2" vectorEffect="non-scaling-stroke" /></g>}<circle cx={GRID.x + zone.x * GRID.cell + 3} cy={GRID.y + zone.y * GRID.cell + 3} r={10 * markerScale} fill={zone.id === selectedId ? "#e8b141" : zoneColor(zone)} stroke="#f8f1da" strokeWidth="1.2" vectorEffect="non-scaling-stroke" /><text x={GRID.x + zone.x * GRID.cell + 3} y={GRID.y + zone.y * GRID.cell + 3 + 3.5 * markerScale} textAnchor="middle" fill={zone.id === selectedId ? "#292c21" : "#fff8e9"} fontSize={10 * markerScale} fontWeight="700">{index + 1}</text></g>
-        </g>)}
+        {validZones.map((zone, index) => {
+          const identity = getKqZoneIdentity({ zones, serviceZones }, zone.id)!;
+          const x = GRID.x + zone.x * GRID.cell, y = GRID.y + zone.y * GRID.cell;
+          const area = zone.width * zone.height;
+          const badgeWidth = Math.max(26, String(area).length * 5 + 14);
+          // Keep adjacent small zones distinct; the controls repeat their
+          // number and surface at full size below the plan.
+          const badgeScale = Math.min(markerScale, zone.width * GRID.cell / (badgeWidth + 2), zone.height * GRID.cell / 28);
+          return <g key={zone.id} className={styles.zone} data-zone-id={zone.id} data-zone-kind={kindOf(zone)} data-zone-color={identity.color} style={{ "--zone-color": identity.color, "--zone-tint": identity.tint } as CSSProperties} data-selected={zone.id === selectedId} data-buddie-drop={placingBuddie && buddieDrop?.zoneId === zone.id ? buddieDrop.allowed ? "valid" : "invalid" : undefined} data-buddie-target={placingBuddie && !("kind" in zone) && !lockedZoneIds.includes(zone.id) || undefined}>
+            <title>{identity.label} · {zoneLabel(zone)} · {area} m²{"active" in zone && !zone.active ? " · en pause" : ""}</title>
+            {"kind" in zone ? <ServiceZoneIllustration zone={zone} id={id} grid={GRID} tint={identity.tint} /> : <ZoneIllustration zone={zone} id={id} grid={GRID} tint={identity.tint} growing={activeZoneIds ? activeZoneIds.includes(zone.id) : growing} />}
+            {zone.id === selectedId && <rect className={styles.selectionOutline} x={x - 2 * markerScale} y={y - 2 * markerScale} width={zone.width * GRID.cell + 4 * markerScale} height={zone.height * GRID.cell + 4 * markerScale} rx={2 * markerScale} fill="none" stroke="#172923" strokeWidth="2" vectorEffect="non-scaling-stroke" pointerEvents="none" />}
+            <rect className={styles.zoneOutline} x={x} y={y} width={zone.width * GRID.cell} height={zone.height * GRID.cell} fill="transparent" stroke={identity.color} strokeWidth="2" vectorEffect="non-scaling-stroke" />
+            <g pointerEvents="none">
+              {!("kind" in zone) && zone.buddieCode && getBuddieArtwork(zone.buddieCode) && <g data-zone-buddie={zone.buddieCode}><defs><clipPath id={`${id}-buddie-${index}`}><circle cx={GRID.x + (zone.x + zone.width / 2) * GRID.cell} cy={GRID.y + (zone.y + zone.height / 2) * GRID.cell} r={Math.min(zone.width, zone.height) * GRID.cell * .36} /></clipPath></defs><image href={getBuddieArtwork(zone.buddieCode)} x={GRID.x + (zone.x + zone.width / 2) * GRID.cell - Math.min(zone.width, zone.height) * GRID.cell * .36} y={GRID.y + (zone.y + zone.height / 2) * GRID.cell - Math.min(zone.width, zone.height) * GRID.cell * .36} width={Math.min(zone.width, zone.height) * GRID.cell * .72} height={Math.min(zone.width, zone.height) * GRID.cell * .72} preserveAspectRatio="xMidYMid slice" clipPath={`url(#${id}-buddie-${index})`} /><circle cx={GRID.x + (zone.x + zone.width / 2) * GRID.cell} cy={GRID.y + (zone.y + zone.height / 2) * GRID.cell} r={Math.min(zone.width, zone.height) * GRID.cell * .36} fill="none" stroke={activeZoneIds?.includes(zone.id) ? "#e8b141" : "#f8f1da"} strokeWidth="2" vectorEffect="non-scaling-stroke" /></g>}
+              <g data-zone-number={identity.number} transform={`translate(${x + badgeScale} ${y + badgeScale}) scale(${badgeScale})`}>
+                <rect data-zone-badge-background width={badgeWidth} height="25" rx="4" fill={identity.color} stroke="#172923" strokeWidth=".8" vectorEffect="non-scaling-stroke" />
+                <text x={badgeWidth / 2} y="11" textAnchor="middle" fill="#172923" fontSize="11" fontWeight="800">{identity.number}</text>
+                <text x={badgeWidth / 2} y="21" textAnchor="middle" fill="#172923" fontSize="8.5" fontWeight="700">{area} m²</text>
+              </g>
+            </g>
+          </g>;
+        })}
         {(grid || drawing) && <rect x={GRID.x} y={GRID.y} width={GRID.columns * GRID.cell} height={GRID.rows * GRID.cell} fill={`url(#${id}-grid)`} pointerEvents="none" />}
         {transform && <g pointerEvents="none" data-warehouse-transform-preview data-valid={transform.valid}><rect x={GRID.x + transform.rectangle.x * GRID.cell} y={GRID.y + transform.rectangle.y * GRID.cell} width={transform.rectangle.width * GRID.cell} height={transform.rectangle.height * GRID.cell} fill={transform.valid ? "#c9d7a842" : "#ec735b55"} stroke={transform.valid ? "#f4cf80" : "#ff8f76"} strokeWidth="3" strokeDasharray="7 5" vectorEffect="non-scaling-stroke" /></g>}
         {handleZone && tool === "resize" && !selectedLocked && !drawing && <g data-warehouse-resize-handle className={styles.resizeHandle}><title>Glisser pour redimensionner la zone sélectionnée</title><rect x={GRID.x + (handleZone.x + handleZone.width) * GRID.cell - 22 * markerScale} y={GRID.y + (handleZone.y + handleZone.height) * GRID.cell - 22 * markerScale} width={44 * markerScale} height={44 * markerScale} rx={6 * markerScale} fill="#f1cd86" stroke="#283c30" strokeWidth="2" vectorEffect="non-scaling-stroke" /><path d={`M${GRID.x + (handleZone.x + handleZone.width) * GRID.cell - 8 * markerScale} ${GRID.y + (handleZone.y + handleZone.height) * GRID.cell + 8 * markerScale}l${16 * markerScale} ${-16 * markerScale}`} stroke="#283c30" strokeWidth="2" vectorEffect="non-scaling-stroke" pointerEvents="none" /></g>}
@@ -645,13 +663,13 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
     </div>
     </div>
     {managing && (tool !== "inspect" || drawing) && <button className={styles.finishManipulation} type="button" data-warehouse-action="finish-manipulation" onClick={() => { cancelGesture(); setTool("inspect"); if (drawing) onToggleDrawing(); setNotice("Tu peux à nouveau faire défiler la page."); }}>Terminer la manipulation</button>}
-    {managing && <div className={styles.tools} role="group" aria-label="Outils de la zone sélectionnée"><div className={styles.selectedName}><strong>{selectedValid?.name ?? "Aucune zone"}</strong>{selectedValid && <span>{selectedValid.width * selectedValid.height} m²</span>}</div><div className={styles.toolActions}><button type="button" className={styles.configureButton} data-warehouse-action="configure" disabled={!selectedValid || selectedLocked || drawing || Boolean(preview)} aria-label={selectedValid ? `Configurer ${selectedValid.name}` : "Configurer la zone sélectionnée"} onClick={() => selectedValid && configureZone(selectedValid.id)}><Settings2 size={16} />Configurer</button>{([{ code: "inspect", label: "Voir", icon: MousePointer2 }, { code: "move", label: "Déplacer", icon: Move }, { code: "resize", label: "Taille", icon: Scaling }] as const).map(item => <button key={item.code} type="button" data-warehouse-tool={item.code} aria-label={item.code === "resize" ? "Redimensionner la zone" : item.code === "move" ? "Déplacer la zone" : "Observer la zone"} aria-pressed={tool === item.code && !drawing} disabled={item.code !== "inspect" && (selectedLocked || !selectedValid)} onClick={() => setPlanTool(item.code)}><item.icon size={16} />{item.label}</button>)}</div></div>}
+    {managing && <div className={styles.tools} role="group" aria-label="Outils de la zone sélectionnée"><div className={styles.selectedName}><strong className={styles.selectedLabel} style={selectedIdentity ? { borderColor: selectedIdentity.color } : undefined}>{selectedIdentity?.label ?? "Aucune zone"}</strong>{selectedValid && <span>{selectedValid.width * selectedValid.height} m²</span>}</div><div className={styles.toolActions}><button type="button" className={styles.configureButton} data-warehouse-action="configure" disabled={!selectedValid || selectedLocked || drawing || Boolean(preview)} aria-label={selectedValid ? `Configurer ${selectedIdentity?.label} · ${zoneLabel(selectedValid)} · ${selectedValid.width * selectedValid.height} m²` : "Configurer la zone sélectionnée"} onClick={() => selectedValid && configureZone(selectedValid.id)}><Settings2 size={16} />Configurer</button>{([{ code: "inspect", label: "Voir", icon: MousePointer2 }, { code: "move", label: "Déplacer", icon: Move }, { code: "resize", label: "Taille", icon: Scaling }] as const).map(item => <button key={item.code} type="button" data-warehouse-tool={item.code} aria-label={item.code === "resize" ? "Redimensionner la zone" : item.code === "move" ? "Déplacer la zone" : "Observer la zone"} aria-pressed={tool === item.code && !drawing} disabled={item.code !== "inspect" && (selectedLocked || !selectedValid)} onClick={() => setPlanTool(item.code)}><item.icon size={16} />{item.label}</button>)}</div></div>}
     <div className={styles.support}><p className={styles.help} id={`${id}-help`} role="status">{contextMessage}</p><details className={styles.helpDetails} data-warehouse-plan-help><summary><CircleHelp size={16} />Aide</summary><div className={styles.helpBody}>
       {legacy && <p>Glisse le sol pour déplacer la vue. La molette ajuste le zoom.</p>}
       <p><strong>Nouvelle zone :</strong> appuie, glisse sans lever le doigt, puis relâche pour valider. <strong>Déplacer :</strong> glisse la zone. <strong>Taille :</strong> glisse son coin doré.</p>
       <p><strong>Équipement :</strong> double appui ou double-clic sur une zone, ou utilise Configurer.</p>
       <p><strong>Clavier :</strong> flèches pour avancer, Entrée pour choisir puis configurer la zone sélectionnée. Pendant le dessin, Entrée choisit les deux coins. Échap annule. Les changements attendent ton enregistrement.</p>
-      <div className={styles.footer}><div className={styles.legend}><span><i />Culture</span><span><i />Séchage</span><span><i />Stockage</span></div><small>{GRID.columns} × {GRID.rows} m · 1 case = 1 m²</small></div>
+      <div className={styles.footer}><div className={styles.legend}>{ZONE_TYPES.map(type => <span key={type.code}><type.icon size={14} aria-hidden="true" />{type.label}</span>)}</div><small>{GRID.columns} × {GRID.rows} m · 1 case = 1 m²</small></div>
       {legacy && <label className={styles.zoomRange}>Zoom<input type="range" min={MIN_ZOOM} max={MAX_ZOOM} step={ZOOM_STEP} value={zoom} onChange={event => changeZoom(Number(event.target.value))} aria-label="Zoom du plan" /><output>{zoom}%</output></label>}
     </div></details></div>
     <span className={styles.srOnly} role="status" aria-live="polite">Case {cursor.x + 1} sur {GRID.columns}, rangée {cursor.y + 1} sur {GRID.rows}{drawing && drawingRectangle ? `, surface ${selectionArea} m²` : ""}.</span>

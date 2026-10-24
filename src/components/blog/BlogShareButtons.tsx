@@ -38,7 +38,7 @@ export function BlogShareButtons({ url, title, excerpt }: BlogShareButtonsProps)
   };
 
   return (
-    <div className={styles.panel}>
+    <div data-ui-shape="panel" className={styles.panel}>
       <p className={styles.shareLabel}>Partager cet article</p>
       <div className="mt-3 flex flex-wrap gap-2">
         {links.map((item) => (

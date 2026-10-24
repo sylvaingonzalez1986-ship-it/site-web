@@ -4,6 +4,61 @@ Statut: recherche initiale conservee + orientation jouable actuelle
 Univers: L'Arene / Hemp Heroes / carnet de degustation  
 Plateforme: web responsive, Next.js, Vercel et Supabase
 
+## Préparer une culture au même endroit — 22 octobre 2026, local
+
+Le choix des Buddies était caché derrière Entrepôt → Plan → Cultures,
+alors que les cartes de soutien et l’Héritage se choisissaient ailleurs.
+Le lien « Lancer mes cultures » menait encore à une préparation. Cette
+navigation mélangeait l’aménagement permanent et les choix de la prochaine
+culture, sans expliquer clairement le rôle de chaque écran.
+
+La page « Préparer mes cultures » réunit maintenant les trois choix :
+Buddies et zones, cartes de soutien, puis Héritage. Chaque zone affiche
+sa variété, son illustration, sa surface et son état. « Choisir » ou
+« Changer » ouvre un seul carrousel dans cette page, contextualisé à la
+zone. Une affectation s’enregistre sans frais ; une zone laissée vide ne
+participe pas. Le retrait d’une affectation conserve la carte dans l’album.
+Les cartes et l’Héritage déjà choisis restent en place. Les rendements et
+profils détaillés sont consultables dans un volet replié.
+
+Le plan propose directement « Préparer mes cultures », même sans Buddie
+affecté. Le changement de mode « Cultures » n’est plus requis au repos ;
+le suivi des cultures en cours reste accessible. « Aménager » depuis la
+préparation conserve le retour contextualisé existant. Le dernier bouton
+« Vérifier et lancer » ouvre toujours la confirmation avec les coûts.
+
+L’affectation utilise le PATCH d’entrepôt existant : seuls les Buddies
+changent, avec révision confirmée et coût attendu nul. Les équipements,
+surfaces et brouillons d’aménagement restent distincts. Collection,
+rotation, doublons, zones occupées et zones en pause sont contrôlés.
+Une réponse perdue se vérifie avec la même clé ; un reçu connu mais suivi
+d’un autre changement de plan impose une actualisation explicite. Aucun
+achat, consommation de carte ou démarrage n’est déclenché par consultation.
+
+Cette suite reste locale, sans migration ni publication. Les séances
+d’apprentissage isolées conservent leur parcours guidé.
+
+Les zones sont repérées par un numéro, une couleur et leur surface en m².
+Le même repère est repris sur le plan, les boutons de sélection, la
+préparation, l’inspecteur et les salles de séchage/stockage. La sélection
+ajoute un contour et une coche sans remplacer la couleur de la zone.
+Une icône et le libellé accessible précisent l’activité. Le champ de nom
+libre est retiré ; les noms historiques restent dans les données sans
+migration. La numérotation suit le plan complet, y compris lorsque seuls
+certains Buddies participent à la culture.
+
+Validation locale : 65 tests unitaires réussis, 18 groupes navigateur sur
+la sélection des Buddies (1440, 390 et 320 px), 13 groupes de continuité
+et 22 scénarios de préparation des cartes. Les essais couvrent rotation,
+doublons, zones en pause, retour clavier, erreurs réseau, conflits et
+confirmation du lancement. Aucune requête distante pendant ces recettes.
+Rapport et captures dans `output/placard-culture-buddies/` ; aperçu avec
+données fictives via `node scripts/audit-placard-culture-buddies.mjs --preview`.
+La recette ciblée `--zones-only` vérifie aussi les repères de quatre zones
+à 320 et 1440 px : couleurs identiques entre écrans, sélection au clavier,
+absence du champ de nom et consultation sans mutation. Résultats dans
+`output/placard-culture-buddies/zones-report.json`.
+
 ## Reprise du plan — 21 octobre 2026
 
 Les améliorations précédentes ont été regroupées dans le commit `ff1687c`,
@@ -2135,3 +2190,351 @@ reproductibles et son secours de première culture servent à vérifier le
 parcours, pas la difficulté réelle. « Nouvelle culture » conserve la partie ;
 « Recommencer l'aperçu » la réinitialise. Aucun compte réel, fichier de
 configuration privé ni connexion Supabase n'est utilisé.
+
+## Réseaux sociaux : aventure et partenariats — 23 octobre 2026
+
+Instagram et X ont chacun trois histoires de trois scènes, soit 18 scènes,
+54 choix et 29 suites conditionnelles. Les personnages se souviennent des
+réponses du joueur : elles changent le contexte et certains effets de la
+scène suivante. Les deux premiers épisodes s'enchaînent immédiatement ;
+une pause de cinq minutes suit la fin d'une histoire.
+
+Les trois intentions ont des rôles différents. Chercher la visibilité attire
+plus vite, mais expose à la pression et fragilise la confiance. Soigner le
+contenu coûte plus d'énergie et construit une communauté durable. Garder le
+lien calme les échanges à faible coût, avec peu de nouveaux abonnés. Répéter
+la même intention trois fois réduit les nouvelles adhésions de 45 %. La
+croissance dépend aussi de l'audience existante, de la confiance, de la
+pression et des restrictions ; elle peut devenir une perte nette. La
+fourchette avant le choix reste une estimation, le journal montre le résultat
+tiré côté serveur. Les impressions ne sont pas comptées comme des abonnés.
+
+X gagne moins vite des abonnés et demande davantage d'énergie, particulièrement
+quand les échanges sont hostiles. Instagram valorise le visuel, avec des
+alertes de modération liées aux publications de cannabis dans la fiction ;
+trois alertes réduisent les nouvelles adhésions de moitié. Les haters sont
+représentés par une pression sur 100, jamais par un faux décompte de personnes.
+Elle redescend de deux points par heure ; le mental récupère un point toutes
+les cinq minutes. Le tutoriel utilise uniquement son horloge fictive.
+
+Quatre marques fictives proposent des engagements uniques, à partir de
+75 abonnés Instagram, 200 abonnés X, 500 abonnés Instagram et 1 000 abonnés X.
+Les honoraires nets de jeu sont respectivement 30 €, 60 €, 100 € et 180 €.
+La confiance, la pression et la modération conditionnent aussi l'accès :
+Planche & Pixel exige notamment 75/100 de confiance. Un seul partenariat
+peut être actif. Il demande deux formats distincts, explicitement sponsorisés,
+parmi les quatre prochaines publications sur le réseau concerné. Une
+publication ordinaire consomme aussi une place ; publier sur l'autre réseau
+ne la consomme pas. Aucune échéance hors connexion. Le joueur réclame les
+honoraires après livraison ; abandonner ou manquer le brief ferme l'offre,
+sans paiement ni dette. Refuser définitivement et abandonner demandent une
+confirmation.
+
+Les abonnés influencent la demande future de la boutique selon ses plafonds
+existants. Ils ne créent pas rétroactivement des ventes. Le moteur V2 est
+partagé entre le serveur, les aperçus et les essais ; seul le serveur décide
+des résultats d'une partie réelle. La migration additive
+`20261023000100_kq_social_sponsors.sql` enregistre l'état et les reçus privés,
+vérifie les révisions et verse les honoraires avec leur écriture comptable
+dans une seule transaction. Une reprise ne paie jamais deux fois. Le moteur
+V1 et sa migration restent figés pour préserver les anciens journaux ; la
+transition conserve l'audience, l'énergie et l'historique.
+
+Les simulations de stratégies ont servi à réduire les gains excessifs des
+choix de préservation. Les vérifications couvrent les branches narratives,
+les sauvegardes mixtes V1/V2, les plafonds, les paiements et les reprises.
+L'audit navigateur `scripts/audit-placard-social.mjs` exerce les vrais
+composants à 320, 390 et 1 440 px ; ses preuves sont dans `output/social/`.
+Les tests SQL utilisent PGlite avec les fonctions de comptabilité : ils
+vérifient les conflits de révision et l'atomicité, sans simuler la contention
+entre plusieurs connexions PostgreSQL distantes.
+
+Validation de cette révision : 228 tests de logique et d'intégration, 358
+contrôles SQL V2, régression SQL V1, 12 contrôles navigateur, permissions
+Supabase et compilation de production réussis. La migration V2 a été appliquée
+au projet Supabase lié ; l'historique distant et le contrôle des migrations
+en attente confirment une base à jour.
+
+La présentation reprend maintenant les compositions des réseaux dans la DA
+canonique de Sylvain : contours encre, fonds crème, accents teal, or et orange
+apricot, portraits cartoon et ombres tramées. Instagram accueille une image
+carrée, les personnages de l'épisode et leurs commentaires ; X utilise des
+messages, réponses reliées et citations. Les 54 choix sont rédigés comme des
+brouillons à publier. Le texte effectivement choisi n'apparaît en publication
+qu'après réception de son résultat confirmé. Les 29 suites conditionnelles
+ont aussi un commentaire correspondant au choix mémorisé. Aucun compteur de
+likes, de vues ou de partages n'est inventé.
+
+L'atelier photo et les portraits proviennent des illustrations existantes du
+site. Deux scènes supplémentaires, le carnet d'atelier et la rencontre de
+quartier, ont été générées avec imagegen à partir du Sylvain canonique. Les
+visuels et leurs prompts sont conservés dans
+`public/app/kanab-quest/social/`, avec leur registre `provenance.json`.
+L'image d'un résultat suit le choix publié, notamment pour distinguer le
+contenu sensible de la nature morte. La largeur du fil est contenue sur
+ordinateur pour garder les réponses accessibles après l'image.
+
+Cette évolution visuelle passe 36 tests ciblés, TypeScript, ESLint et 15
+contrôles navigateur à 320, 390 et 1 440 px, dont les reprises, les
+partenariats et les réactions conditionnelles. Les captures des fils et le
+rapport sont disponibles dans `output/social/`.
+
+Le personnage du fil est désormais celui du joueur : prénom du compte,
+identifiant du profil de jeu et avatar Chanvrier existant (visage, peau,
+coiffure, vêtements et accessoires). Les publications, brouillons, réponses
+conditionnelles et publications enregistrées utilisent cette identité à la
+lecture. Les voisins gardent leurs propres noms. Les récits et les reçus de
+jeu ne stockent aucune copie de l'identité personnelle.
+
+Le point de lecture privé `/api/arena/placard/social/player` ne renvoie que
+le prénom et le profil du compte connecté. Un changement de personnage
+actualise le fil sans modifier l'économie ni rejouer une publication. Les
+essais anonymes affichent « Toi » et un portrait neutre, sans appeler le
+compte réel. Sans prénom, le surnom du profil sert de repli.
+
+Les trois décors ont été adaptés avec imagegen intégré : atelier sans
+personnage fixe, voisins devant l'atelier avec une place au centre, carnet
+sans main. L'avatar réel est composé par le moteur Chanvrier dans les deux
+premières scènes. La DA de Sylvain est préservée. Les visuels sont dans
+`public/app/kanab-quest/social/` ; les prompts et références de cette version
+sont dans `player-provenance.json`.
+
+La personnalisation est vérifiée avec deux profils distincts, un changement
+à chaud, un prénom long à 320 px et l'absence de profil. L'audit navigateur
+compte 18 contrôles réussis, sans erreur ni appel à un service externe.
+
+L’aventure comprend maintenant 54 situations distinctes : 27 sur Instagram
+et 27 sur X, organisées en neuf histoires de trois épisodes par réseau.
+Les 162 choix ont chacun un brouillon rédigé. Les 101 suites conditionnelles
+comprennent 72 nouvelles variantes : dans chaque nouvelle histoire, les
+trois réponses possibles à un épisode modifient le contexte, un commentaire
+et les effets d’au moins un choix de l’épisode suivant.
+
+Les nouveaux thèmes Instagram couvrent les crédits photo, le direct raté,
+les couleurs et retouches, l’indépendance face aux marques, le défi créatif
+gratuit et le rythme de publication. X accueille les anciennes opinions
+ressorties du contexte, les chiffres viraux, un compte imitateur, la prise
+de parole en direct, l’amplification artificielle et les limites de
+l’entraide. Le prénom et l’avatar restent ceux du joueur ; les personnages
+du quartier et les décors conservent la même direction artistique.
+
+Les neuf premières situations de chaque réseau gardent leurs identifiants,
+leur ordre et leurs règles. Un marqueur de catalogue dans l’état JSON
+permet de reprendre les anciennes parties au bon épisode. Les journaux
+d’essai rejouent leurs anciennes décisions avec la rotation d’origine,
+puis passent au catalogue étendu. Les abonnés, le mental, la mémoire et
+les partenariats sont conservés ; aucune modification du schéma SQL
+n’est nécessaire pour cette extension.
+
+Validation de l’extension : 26 tests de catalogue, personnalisation,
+progression et compatibilité ; 38 tests du moteur, des adaptateurs et du
+backend ; 469 contrôles PostgreSQL isolés, dont l’enregistrement des
+54 situations. Deux nouvelles histoires complètes sont également jouées
+dans le navigateur à 320, 390 et 1 440 px, sans erreur ni débordement.
+Les captures et le rapport dédié sont dans `output/social/expansion-report.json`.
+
+Chaque situation possède désormais sa propre illustration, soit 54 visuels
+générés avec imagegen intégré dans la DA du site. Instagram les affiche en
+grand et X sous forme de pièces jointes compactes, également reprises dans
+les publications confirmées. Vingt-trois décors réservent une place au
+personnage personnalisé ; les 31 autres montrent les objets de l’histoire.
+Le prénom et le portrait restent ceux du joueur sur les deux réseaux.
+
+Les fichiers publiés sont dans `public/app/kanab-quest/social/scenes/`.
+Les WebP de 768 × 768 px pèsent ensemble 6 844 040 octets, contre
+17 111 068 octets pour la première préparation de 1 024 px, soit 60 % de
+moins. Chaque image reste sous 156 Ko. Les PNG originaux sont conservés
+dans `output/imagegen/social-scenes/source/`, ignoré par Git. Le script
+`scripts/build-social-scene-assets.mjs` reconstruit les WebP depuis ces
+originaux. Les prompts, références et empreintes des fichiers sont dans
+`social-scene-prompts.json` et `social-scenes-provenance.json`, à côté de ce
+document, et ne sont pas publiés comme ressources du site.
+
+Les illustrations sont des ressources statiques locales servies par
+`next/image` : aucune image ni donnée base64 n’est enregistrée dans
+Supabase. Les métadonnées artistiques sont résolues à l’affichage, sans
+alourdir les sauvegardes. Une réponse POST confirmée fournit déjà le nouvel
+état : le GET immédiat redondant a été retiré. Les erreurs et réponses
+perdues conservent leur relecture de vérification et leur clé d’idempotence.
+
+Validation des illustrations : 16 tests de catalogue, fichiers et profil ;
+55 contrôles navigateur couvrant les 54 situations et leurs publications
+à 320 et 1 440 px, avec 108 captures ; 18 contrôles fonctionnels vérifiant
+aussi l’économie de requêtes et la reprise après réponse perdue. Les tests
+contrôlent désormais les 54 WebP distincts, un maximum de 180 Ko par image
+et un total inférieur à 8 Mo. Rapports :
+`output/social/illustrations-report.json` et `output/social/report.json`.
+
+### Première réécriture CBD indoor — 24 octobre 2026, narration à reprendre
+
+Les 54 situations sont désormais centrées sur la production de CBD. Sur
+Instagram : suivi indoor, observations, variétés, préparation des fleurs,
+origine des photos, travail de séchage et gestes du quotidien. La photo
+et les rencontres restent des sujets ponctuels. Sur X : prix du travail,
+origine et composition, promesses des fleurs boostées, néocannabinoïdes,
+lecture des informations d’un lot et discussions entre producteurs.
+Les exemples empruntés aux voisins sont attribués ; aucun stade de la
+culture active, stock disponible ou variété possédée n’est déduit du récit.
+
+Chaque choix a un post et deux réponses écrites pour son contenu :
+162 publications, 324 réactions et 101 suites conditionnelles. Le contexte,
+la légende et la réponse conditionnelle suivent la même branche mémorisée.
+Jade et Noé sont des producteurs voisins, Inès une cliente, Sami un amateur
+critique ; Mila intervient ponctuellement comme photographe. Les quatre
+sponsors soutiennent des séries sur le métier, avec les mêmes seuils,
+tags de livrables et primes qu’auparavant.
+
+Les sources publiques, leurs limites d’accès et les règles de fiction sont
+documentées dans `social-narrative-provenance.json`. Les fils complets X
+et Instagram fournis par l’utilisateur n’ont pas pu être consultés par
+l’outil ; les récits originaux s’inspirent notamment de son site public.
+Les expériences d’extérieur ne sont pas transposées au placard indoor.
+
+Le marqueur `narrativeVersion: 2` distingue les nouvelles décisions. Les
+anciens résultats restent dans le journal avec leurs gains ; ils ne sont
+pas transformés après coup en nouveaux posts. La mémoire des anciennes
+branches est remise à zéro une fois, sans effacer l’avancement, les
+abonnés, les sponsors ou le mental. Les journaux d’essai rejouent les
+catalogues et textes d’origine avant de passer au récit actuel. Aucune
+migration SQL ni lecture supplémentaire de culture dans Supabase.
+
+Neuf illustrations ont été régénérées avec imagegen intégré : premiers
+épisodes, placard, observation, séchage, manucure et incident de ventilation.
+Elles gardent la DA du site et une place libre pour l’avatar personnalisé.
+Leurs fichiers portent le suffixe `-cbd-v2.webp` pour renouveler le cache ;
+les neuf anciens WebP sont archivés hors du dossier publié. Le catalogue
+reste à 54 images, désormais 6 702 252 octets. Les nouveaux originaux sont
+dans `output/imagegen/social-cbd/source/`, les anciens sont conservés ;
+`social-scenes-provenance.json` enregistre les deux versions et leurs prompts.
+
+Validation de la réécriture : 112 tests couvrent notamment les 162 choix,
+la mémoire, les anciennes sauvegardes, les réactions et les budgets image.
+Les 18 contrôles fonctionnels navigateur vérifient les réponses affichées,
+le prénom et l’avatar, les primes uniques, les erreurs et la reprise après
+réponse perdue à 320, 390 et 1 440 px. La vérification des neuf images
+remplacées est isolée dans `output/social/illustrations-selected-report.json`.
+
+### Audit du point de vue — retour utilisateur du 24 octobre 2026
+
+La première réécriture ci-dessus ne satisfait pas le besoin narratif. Les
+tests attestent la mécanique et le rendu, pas le sens des parcours. Le joueur
+doit parler de sa production, de son travail et de ses choix. Généraliser
+les archives de Jade/Noé pour éviter une récolte inventée lui a retiré son
+propre récit. Le corpus de 54 situations reste à reprendre, après lecture
+de publications réelles fournies par l’utilisateur ou accessibles via une
+connexion qu’il choisit. Les liens directs X et Instagram restent bloqués
+pour l’outil de recherche ; aucune lecture de leurs fils n’est revendiquée.
+
+Trois défauts établis dans le corpus actuel :
+
+- `ig-first-frame/postcard` annonce le métier du joueur, puis
+  `ig-comment/process` répond à une question sur son quotidien par les
+  observations de Jade. La réponse doit porter sur le même producteur.
+- `ig-sensitive-frame/craft` précise déjà l’origine de l’exemple ; sa suite
+  invente pourtant un doute sur cette origine. Une nouvelle tension doit
+  avoir un événement déclencheur établi ou découler du message choisi.
+- `ig-filter-style/signature` promet les archives du joueur et publie celles
+  des voisins. Le sujet, sa propriété et l’illustration doivent rester les
+  mêmes entre contexte, action et publication.
+
+Le parcours retenu est : fait vécu disponible, contexte visible hors fil,
+trois brouillons écrits par le joueur, publication confirmée, réactions
+propres au message puis conséquence. La correction du composeur supprime
+le faux post PNJ qui précédait les choix et les commentaires anticipés.
+X utilise aussi « Publier » : « Répondre » supposerait une publication
+précédente explicitement identifiée. Ce correctif de présentation ne vaut
+pas validation des textes encore présents dans le catalogue.
+
+L’entrée live dans `KqMarketHub` ne reçoit actuellement aucun contexte de
+culture. Le sélecteur social ne connaît que réseau, chapitre et mémoire.
+Avant de rédiger des événements personnels, il faut lui fournir un contexte
+compact et vérifié : culture et zone choisies, variété, stade, phase,
+événement résolu, problème observé, éventuel lot et sa disponibilité.
+`situationCodes` contient des événements futurs : seuls les faits déjà
+révélés et l’historique résolu sont utilisables. Un soupçon de problème ne
+doit pas devenir un diagnostic confirmé. Les cultures simultanées, les lots
+en affinage, les stocks épuisés et les récoltes prêtées du didacticiel ont
+besoin d’un traitement explicite. Une lecture échouée n’est pas une absence
+de culture.
+
+L’acquisition de ce contexte reste à implémenter : projection ciblée au
+chargement, réutilisation de données fraîches déjà présentes, validation
+côté serveur au choix, sans multiplier les relectures du fil. Un sujet
+éligible doit rester attaché à son arc ; les épisodes indisponibles sont
+différés. Les prises de position X peuvent exister sans inventer un incident
+de production. Les paramètres qui personnalisent une publication doivent
+rester figés dans son reçu lorsque la culture évolue ensuite.
+
+Avant toute nouvelle rédaction du catalogue, figer les posts et réponses
+de `narrativeVersion: 2` dans une table statique de compatibilité. Leur
+rendu est aujourd’hui reconstruit depuis le catalogue courant : modifier
+ces chaînes en place réécrirait les anciens posts. La prochaine narration
+devra porter une nouvelle version, y compris dans les journaux rejoués,
+en conservant les gains et sans stocker les images ou des copies de tous
+les textes dans Supabase.
+
+La correction du composeur est implémentée et vérifiée : 14 tests ciblés,
+5 contrôles navigateur à 320, 390 et 1 440 px, TypeScript et lint réussis.
+Rapport : `output/social/composer-report.json`. Le composant de composition
+ne reçoit plus d’auteur, légende ou commentaires PNJ ; il reçoit l’identité
+du joueur et le média. Les 54 récits restent inchangés dans cette passe,
+et leur cohérence personnelle n’est pas validée par ces contrôles.
+
+### Narration producteur V3 — 24 octobre 2026
+
+Cette passe remplace les 54 récits proposés au joueur (27 par réseau), avec
+162 publications possibles et des réponses propres au choix. Les cinq
+publications X fournies directement par le propriétaire donnent la voix :
+quotidien du producteur, plaisir de montrer une variété, arbitrages assumés,
+attente du curing et prises de position. Les faits de sa ferme ne sont pas
+attribués au joueur. Le détail des références et les limites de leur usage
+figurent dans `social-producer-source-notes.json`. Instagram n’a pas été lu :
+Metricool est proposé, mais la connexion n’était pas disponible pendant
+cette passe. Les scénarios attendent encore la relecture éditoriale du propriétaire.
+
+Le moteur choisit désormais un arc éligible : sujet général, culture indoor,
+floraison avant coupe, symptôme révélé, récolte pesée, lot en affinage ou lot
+prêt avec stock. Les lots prêtés des exercices ne deviennent pas le passé du
+joueur. Les symptômes suspectés restent des observations, sans diagnostic
+inventé. Le stade « Séchage & affinage » d’une culture ne suffit pas à prouver
+qu’un lot existe en stockage. Quand plusieurs cultures conviennent, le joueur
+choisit explicitement son sujet ; ce sujet reste le même pendant les trois
+épisodes. Un changement incompatible rend la suite indisponible et propose
+un autre sujet admissible. Une publication ne soigne ni ne récolte la plante.
+
+Le serveur relit un contexte compact au choix. La commande lie le sujet au
+brouillon affiché ; un brouillon devenu périmé est refusé avant tout gain ou
+coût. Les reçus gardent la version narrative, le sujet utilisé et la branche,
+sans copier tout le catalogue. La comparaison des faits est indépendante de
+l’ordre des clés JSONB. Le catalogue V2 demeure figé pour les anciens posts,
+et les journaux V1/V2 restent rejouables avec leurs anciennes règles.
+
+La migration `20261024000100_kq_social_culture_context.sql` a été appliquée
+et vérifiée sur le projet lié : fonction STABLE de lecture seule, exécution
+réservée au service, aucune permission supplémentaire sur les tables. Elle
+ignore les anciennes cultures terminées et sélectionne jusqu’à 128 lots
+récents avec stock, filtrés avant la limite. Ce sont des sujets disponibles,
+pas un inventaire complet. Les huit contrôles distants sont conservés dans
+`output/social-culture-migration/application.json`.
+
+Le contexte complet est transitoire et retiré avant stockage. L’actualisation
+périodique du fil passe à cinq minutes, avec lecture aux actions, au retour
+sur l’onglet et aux échéances utiles. Les images restent statiques sur le
+site. Un décor neutre de carnet et de téléphone (82 244 octets, WebP 768 px)
+remplace les images de fleurs ou de récoltes pour les sujets sans production
+attestée ; les décors existants de floraison, récolte et bocaux sont réutilisés
+uniquement avec leurs prérequis. Voir `social-producer-art-provenance.json`.
+
+Les tests couvrent notamment les 465 combinaisons de publications et branches,
+les sujets absents/prêtés/inconnus, les cultures simultanées, les stocks épuisés,
+le changement de stade, les vieux reçus et le passage réel dans JSONB. Le banc
+PostgreSQL isolé valide 469 contrôles de publication, droits, récompenses,
+idempotence et transactions. Ces contrôles techniques accompagnent la relecture
+des textes ; ils ne prouvent pas à eux seuls leur intérêt narratif.
+
+La présentation Instagram convient également aux comptes déjà actifs et ne
+revient pas après avoir été terminée. La validation finale comprend 133 tests
+automatisés du module social et 13 parcours navigateur, dont la publication
+au clavier, les largeurs mobiles dès 320 px, les cultures simultanées et le
+refus d’un sujet devenu périmé. Lint et TypeScript passent. La migration est
+appliquée ; cette passe n’a pas déployé l’application.

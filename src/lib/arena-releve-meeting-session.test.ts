@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { createReleveMeetingSession, releveMeetingStorageKey } from './arena-releve-meeting-session';
 import { applyKqReleveProductionAction, suggestKqRelevePlan } from './kanab-quest-releve-production';
 import { applyReleveCommerceRequest } from './kanab-quest-releve-commerce';
+import { createArenaLearningStorage } from './arena-introduction';
 
 function memory() {
   const rows = new Map<string, string>();
@@ -9,6 +10,22 @@ function memory() {
 }
 
 describe('La relève: pause des rencontres', () => {
+  it.each(['social', 'merch'] as const)('keeps the new %s dossier and each account separate from existing commerce progress', meeting => {
+    const backing = memory();
+    const first = createArenaLearningStorage('first', false, () => backing);
+    const second = createArenaLearningStorage('second', false, () => backing);
+    const business = createReleveMeetingSession('business', first);
+    business.update(current => ({ ...current, business: applyReleveCommerceRequest(current.business!, { path: '/api/releve/commerce', method: 'POST', body: { action: 'borrow-computer' } }).state }));
+    const before = JSON.stringify(business.getSnapshot());
+    const exercise = createReleveMeetingSession(meeting, first);
+    exercise.update(current => ({ ...current, business: { ...current.business!, milestones: [...current.business!.milestones, 'test-marker'] } }));
+    expect(createReleveMeetingSession(meeting, first).getSnapshot()).toEqual(exercise.getSnapshot());
+    expect(createReleveMeetingSession(meeting, second).getSnapshot().state.business!.milestones).not.toContain('test-marker');
+    exercise.restart();
+    expect(JSON.stringify(createReleveMeetingSession('business', first).getSnapshot())).toBe(before);
+    expect([...backing.rows.keys()].every(key => key.endsWith(':first'))).toBe(true);
+  });
+
   it('resumes the expansion purchase and unfinished draft without charging twice', () => {
     const backing = memory(), session = createReleveMeetingSession('expansion', backing);
     let production = session.getSnapshot().state.production;

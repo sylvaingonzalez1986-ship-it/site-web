@@ -19,6 +19,8 @@ export function CategoryFilter({ selected, filters, onChange }: CategoryFilterPr
 
         return (
           <button
+            data-ui-commerce="shop-filter"
+            data-ui-shape="control"
             key={filter}
             type="button"
             aria-pressed={selected === filter}

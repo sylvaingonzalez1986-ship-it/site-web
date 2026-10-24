@@ -149,10 +149,10 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
         <p className="text-sm text-charcoal">{new Date(order.createdAt).toLocaleString("fr-FR")}</p>
 
         <div className="mt-4 flex flex-wrap gap-2 text-sm">
-          <span className={`pill-cartoon px-3 py-1 ${getStatusClass(order.status)}`}>
+          <span data-ui-account="order-status" data-ui-shape="panel" className={`pill-cartoon px-3 py-1 ${getStatusClass(order.status)}`}>
             Statut: {orderStatusLabels[order.status]}
           </span>
-          <span className={`pill-cartoon px-3 py-1 ${getPaymentStateClass(order.paymentState)}`}>
+          <span data-ui-account="order-status" data-ui-shape="panel" className={`pill-cartoon px-3 py-1 ${getPaymentStateClass(order.paymentState)}`}>
             Paiement: {paymentStateLabels[order.paymentState]}
           </span>
         </div>
@@ -161,7 +161,7 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
         <ContestBundleRewardReceipt orderId={order.id} paymentState={order.paymentState} />
 
         {hasShippingInfo && (
-          <div className="mt-6 card-cartoon bg-white p-4">
+          <div data-ui-account="fill-ffffff" data-ui-shape="panel" className="mt-6 card-cartoon bg-white p-4">
             <p className="text-xs font-bold uppercase tracking-[0.08em] text-charcoal">
               Livraison
             </p>
@@ -175,7 +175,7 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
           </div>
         )}
 
-        <div className="mt-6 card-cartoon bg-white p-4">
+        <div data-ui-account="fill-ffffff" data-ui-shape="panel" className="mt-6 card-cartoon bg-white p-4">
           <div className="hidden grid-cols-[minmax(0,1fr)_50px_80px_80px] gap-2 text-xs font-bold uppercase tracking-[0.08em] text-charcoal sm:grid">
             <p>Produit</p>
             <p>Qte</p>
@@ -225,7 +225,7 @@ export function OrderDetailModal({ order, onClose }: OrderDetailModalProps) {
             order.status !== "cancelled" &&
             !order.archivedAt &&
             order.vivaOrderCode && (
-              <div className="mb-4 card-cartoon bg-[#fff5da] p-4">
+              <div data-ui-account="fill-fff5da" data-ui-shape="panel" className="mb-4 card-cartoon bg-[#fff5da] p-4">
                 <p className="text-sm font-bold text-ink">Cette commande attend encore son paiement.</p>
                 <p className="mt-1 text-sm text-charcoal">
                   Reprends la session existante : ne cree pas une nouvelle commande.

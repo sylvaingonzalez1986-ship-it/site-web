@@ -10,6 +10,7 @@ import {
   type ProducerCultureType,
 } from "@/types/store";
 import styles from "./ProducerTcgCard.module.css";
+import photoStyles from "./ProductPhoto.module.css";
 
 type ProducerTcgCardProps = {
   producer: Producer;
@@ -37,6 +38,7 @@ export function ProducerTcgCard({
   const certifications = producer.certifications ?? [];
   const description = producer.philosophy?.trim() || producer.description;
   const onKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.target !== event.currentTarget) return;
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       onClick?.();
@@ -45,6 +47,7 @@ export function ProducerTcgCard({
 
   return (
     <article
+      data-producer-card
       role="button"
       tabIndex={0}
       onClick={onClick}
@@ -79,15 +82,17 @@ export function ProducerTcgCard({
           </div>
         </header>
 
-        <div className={styles.imageFrame}>
-          <Image
-            src={producer.image}
-            alt={producer.name}
-            fill
-            sizes="330px"
-            priority={imagePriority}
-            className={styles.photo}
-          />
+        <div className={`${styles.imageFrame} ${photoStyles.frame}`}>
+          <div className={photoStyles.window}>
+            <Image
+              src={producer.image}
+              alt={producer.name}
+              fill
+              sizes="330px"
+              priority={imagePriority}
+              className={`${styles.photo} ${photoStyles.image}`}
+            />
+          </div>
           <p className={styles.location}>{location}</p>
         </div>
 

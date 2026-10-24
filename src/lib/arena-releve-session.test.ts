@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { ARENA_RELEVE_STORAGE_KEY, advanceArenaReleve, createArenaReleveSession, createArenaReleveState, getArenaReleveProgress, restartArenaReleveChapter, restoreArenaReleveState, type ArenaReleveSessionState } from './arena-releve-session';
+import { ARENA_RELEVE_STORAGE_KEY, advanceArenaReleve, createArenaReleveSession, createArenaReleveState, getArenaReleveProgress, readArenaReleveResume, restartArenaReleveChapter, restoreArenaReleveState, type ArenaReleveSessionState } from './arena-releve-session';
 import { applyKqReleveProductionAction, suggestKqRelevePlan, type KqReleveProductionAction } from './kanab-quest-releve-production';
 import { isKqCultureDead } from './kanab-quest-game';
 
@@ -15,6 +15,24 @@ function planned() {
 }
 
 describe('La relève shared session', () => {
+  it('offers the actual paused chapter without changing the saved budget or restarting it', () => {
+    const state = planned();
+    const raw = JSON.stringify(state);
+    const storage = { getItem: (key: string) => key === ARENA_RELEVE_STORAGE_KEY ? raw : null };
+    expect(readArenaReleveResume(storage)).toEqual({ chapter: 1, completed: false, objective: getArenaReleveProgress(state).instruction });
+    expect(storage.getItem(ARENA_RELEVE_STORAGE_KEY)).toBe(raw);
+    const arrival = { ...createArenaReleveState(), renovation: 'opened' };
+    expect(readArenaReleveResume({ getItem: () => JSON.stringify(arrival) })?.chapter).toBe(0);
+    expect(readArenaReleveResume({ getItem: () => JSON.stringify(createArenaReleveState()) })).toBeNull();
+  });
+
+  it('does not advertise a resumable chapter for damaged or inaccessible saves', () => {
+    for (const raw of ['{broken', JSON.stringify({ version: 1, chapter: 4 }), JSON.stringify({ ...planned(), checkpoint: null })]) {
+      expect(readArenaReleveResume({ getItem: () => raw })).toBeNull();
+    }
+    expect(readArenaReleveResume({ getItem: () => { throw Error('denied'); } })).toBeNull();
+  });
+
   it('blocks the plan before complete renovation without consuming the equipment budget', () => {
     const fresh = createArenaReleveState();
     for (const renovation of ['locked', 'opened', 'emptied'] as const) {

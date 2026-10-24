@@ -7,6 +7,11 @@ import { createKqBusinessPreview, getKqSaleVatCents, KQ_GAME_MONTH_MS, normalize
 import { applyKqOperationsRequest, getKqOperationsCommerce, getKqOperationsEquipment, type KqOperationsLessonAction, type KqOperationsLessonState } from './kanab-quest-operations-lesson';
 import { createChanvrierCareerSnapshot } from './chanvrier-career';
 import { applyKqOperationsOnline, getKqOperationsCustomerDemand } from './kanab-quest-operations-online';
+import { applyKqOperationsSocial, getKqOperationsSocial } from './kanab-quest-operations-social';
+import { isKqSocialSnapshot, parseKqSocialCommand, KQ_SOCIAL_SPONSORS } from './kanab-quest-social';
+import { getReleveSocialLearning, getReleveSocialProgress, getReleveSocialPublications } from './kanab-quest-releve-social';
+import { canReadReleveMerchReport, getReleveMerchProgress, prepareReleveCommerceMerch, recordReleveMerchAction } from './kanab-quest-releve-merch';
+import { projectKqSocialCultureContext } from './kanab-quest-social-culture';
 import { createKqOnlinePreview } from './kanab-quest-online';
 import { changeKqStorageCapacity, changeKqStoragePostHarvest, createKqStorageLot, getKqStorageInventory, KQ_STORAGE_METHODS, KQ_STORAGE_OVERFLOW_CENTS_PER_GRAM, planKqStorageAllocation, projectKqStorageLot, resizeKqStorageCapacity, type KqStorageAllocation, type KqStorageLot } from './kanab-quest-storage';
 import { getKqWarehousePostHarvestProfile, getKqWarehouseRunPostHarvestProfile } from './kanab-quest-post-harvest';
@@ -26,7 +31,7 @@ import type { KqStorageSnapshot } from './kanab-quest-api';
 import { createKqTreasuryTutorial, type KqTreasuryTutorialState } from './kanab-quest-treasury-tutorial';
 import { createKqStorageClimateAccrual, getKqStorageClimateBilling, payKqStorageClimateInvoices, settleKqStorageClimateAccrual, type KqStorageClimateAccrual } from './kanab-quest-storage-climate';
 
-export type KqReleveCommerceChapter = 'delivery' | 'shop' | 'ledger' | 'business';
+export type KqReleveCommerceChapter = 'delivery' | 'shop' | 'ledger' | 'business' | 'social' | 'merch';
 export type KqReleveHarvest = { zoneId: string; game: KqGameState; battle: KqBattle | null };
 type Lot = KqReleveHarvest & { id: string; name: string; storage: KqStorageLot; prepared: boolean; assistance?: boolean };
 export type KqReleveCommerceState = {
@@ -44,6 +49,22 @@ export type KqReleveCommerceState = {
 const COMMERCE = '/api/arena/placard/commerce';
 const HOUR = 3_600_000;
 const stamp = (state: KqReleveCommerceState) => new Date(state.operations.trial.clock).toISOString();
+
+/** Relève carries the player's completed cultures, unlike the borrowed lessons. */
+export function getKqReleveSocialCulture(state: KqReleveCommerceState) {
+  const now = state.operations.trial.clock;
+  const lots = state.lots.filter(lot => !lot.assistance);
+  return projectKqSocialCultureContext({
+    runs: lots.map(lot => ({ id: `releve-culture-${lot.zoneId}`, state: lot.game, updatedAt: lot.game.completedAt ?? stamp(state) })),
+    lots: lots.map(lot => ({ id: lot.id, runId: `releve-culture-${lot.zoneId}`,
+      varietyCode: lot.game.varietyCode, varietyName: lot.game.varietyName, cultivation: lot.game.warehouse ? 'indoor' : 'unknown',
+      storage: lot.storage, harvestGrams: lot.game.harvestGrams ?? null, harvestedAt: lot.storage.harvestedAt,
+      remainingGrams: lot.prepared ? Math.ceil(state.operations.trial.commerce.stocks.filter(stock => stock.flowerId === lot.id)
+        .reduce((sum, stock) => sum + stock.remainingUnits * stock.equivalentUnits / stock.initialUnits, 0)) / 10
+        : lot.storage.capacity ? lot.storage.capacity.totalUnits / 10 : null,
+    })),
+  }, now, state.milestones.includes('business-dossier') ? 'loan' : 'own');
+}
 function requireValue(value: unknown, message: string): asserts value { if (!value) throw new Error(message); }
 function mark(state: KqReleveCommerceState, milestone: string) { if (!state.milestones.includes(milestone)) state.milestones.push(milestone); }
 
@@ -130,6 +151,19 @@ export function createReleveCommerceBusiness(): KqReleveCommerceState {
   state = applyReleveCommerceRequest(state, { path: '/api/releve/commerce', method: 'POST', body: { action: 'mature' } }).state;
   mark(state, 'business-dossier');
   return state;
+}
+
+/** An independent borrowed desk, with a free basic site and no invented audience. */
+export function createReleveCommerceSocial(): KqReleveCommerceState {
+  let state = createReleveCommerceBusiness();
+  state = applyReleveCommerceRequest(state, { path: '/api/releve/commerce', method: 'POST', body: { action: 'borrow-computer' } }).state;
+  state = applyReleveCommerceRequest(state, { path: COMMERCE, method: 'POST', body: { action: 'create-shop', name: 'Le fil de Sylvain · essai' } }).state;
+  mark(state, 'social-dossier');
+  return state;
+}
+
+export function createReleveCommerceMerch(): KqReleveCommerceState {
+  return prepareReleveCommerceMerch(createReleveCommerceBusiness());
 }
 
 function selectLot(state: KqReleveCommerceState, lot: Lot) {
@@ -315,9 +349,9 @@ export function getReleveCommerceOutstanding(state: KqReleveCommerceState) {
 function payInvoices(invoices: KqLabInvoice[], amount: number, now: number, overdueOnly = false) {
   for (const row of invoices) { if (overdueOnly && Date.parse(row.dueAt) > now) continue; const paid = Math.min(amount, row.remainingCents); row.remainingCents -= paid; amount -= paid; }
 }
-function collect(state: KqReleveCommerceState, cents: number) {
+function collect(state: KqReleveCommerceState, cents: number, transactionFeesCents = 0) {
   updateCalendar(state);
-  const trial = state.operations.trial, business = trial.commerce.business!, payment = previewKqBusinessPayment(cents, business, trial.electricity);
+  const trial = state.operations.trial, business = trial.commerce.business!, payment = previewKqBusinessPayment(cents, business, trial.electricity, transactionFeesCents);
   const previousEnergyCents = trial.electricity;
   trial.commerce.cashCents += payment.netPayoutCents; trial.electricity = payment.electricityRemainingCents;
   business.vat.salesTtcCents += cents; business.vat.reservedCents += payment.vatCents;
@@ -367,6 +401,7 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
   const url = new URL(action.path, 'https://releve.invalid');
   requireValue(url.origin === 'https://releve.invalid', 'La visite reste dans sa simulation locale.');
   const method = action.method.toUpperCase(), body = action.body;
+  if (method === 'GET' && url.pathname === '/api/arena/placard/social/player') return { state: current, payload: { firstName: null, profile: null } };
   const roomProfile = getKqWarehousePostHarvestProfile(commerceWarehouse(current));
   const profileKeys = ['storageQualityBonus', 'climateQualityBonus', 'aromaRateFactor', 'chemistryRateFactor'] as const;
   const changedProfiles = current.lots.map(lot => current.postHarvestBalanceVersion !== 2
@@ -384,6 +419,7 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
       current = structuredClone(current); settleStorageClimate(current);
     }
     if (url.pathname === COMMERCE) return { state: current, payload: getReleveCommerceSnapshot(current) };
+    if (url.pathname === '/api/arena/placard/social') return { state: current, payload: getKqOperationsSocial(current.operations, getKqReleveSocialCulture(current)) };
     if (url.pathname === '/api/arena/placard/treasury') return { state: current, payload: getReleveCommerceTreasury(current, { period: ['current', 'previous', 'all'].includes(url.searchParams.get('period') ?? '') ? url.searchParams.get('period') as KqTreasuryPeriod : 'all', offset: Number(url.searchParams.get('offset')) || 0, limit: Number(url.searchParams.get('limit')) || 25 }) };
     if (url.pathname === '/api/arena/placard/energy') return { state: current, payload: energySnapshot(current) };
     if (url.pathname === '/api/arena/placard/missions') return { state: current, payload: getReleveCommerceMissions(current) };
@@ -396,8 +432,14 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
     throw new Error('Cet espace se visite dans une autre rencontre de Sylvain.');
   }
   requireValue(method === 'POST' || (method === 'PATCH' && ['/api/arena/placard/equipment', '/api/arena/placard/warehouse'].includes(url.pathname)), 'Opération indisponible dans cette visite.');
+  requireValue(!current.milestones.includes('social-dossier') || url.pathname !== COMMERCE, 'Retrouve les ventes, les campagnes et le merch dans leurs rencontres dédiées ; cet essai reste consacré aux réseaux.');
+  if (url.pathname === '/api/arena/placard/social') requireValue(parseKqSocialCommand(body), 'Choix de réseau social invalide.');
   const key = typeof body.requestKey === 'string' ? `${url.pathname}:${body.requestKey}` : null;
-  if (key && Object.hasOwn(current.responses, key)) return { state: current, payload: current.responses[key] };
+  if (key && Object.hasOwn(current.responses, key)) {
+    const receipt = current.responses[key];
+    return { state: current, payload: url.pathname === '/api/arena/placard/social' && isKqSocialSnapshot(receipt)
+      ? { ...receipt, culture: getKqReleveSocialCulture(current) } : receipt };
+  }
   const state = structuredClone(current);
   settleStorageClimate(state);
   const before = balances(state);
@@ -416,7 +458,7 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
       while (state.operations.trial.clock < ready) {
         const hours = Math.min(24, Math.floor((ready - state.operations.trial.clock) / HOUR));
         if (!hours) { state.operations.trial.clock = ready; break; }
-        applyKqOperationsOnline(state.operations, 'advance-online-time', { hours }, { spend, collect: cents => collect(state, cents), releaseStorage: () => refreshStocks(state) });
+        applyKqOperationsOnline(state.operations, 'advance-online-time', { hours }, { spend, collect: (cents, fees) => collect(state, cents, fees), releaseStorage: () => refreshStocks(state) });
         refreshStocks(state);
       }
       const ttc = c.business!.vat.salesTtcCents - previousTtc;
@@ -425,7 +467,35 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
     } else if (body.action === 'borrow-computer') { c.computerOwned = true; mark(state, 'computer-loaned'); }
     else if (body.action === 'borrow-sample') lendSample(state);
     else if (body.action === 'read-receipt') { requireValue(c.receipts.length > 0, 'Effectue une livraison avant de lire son reçu.'); mark(state, 'receipt-read'); }
-    else if (body.action === 'read-report') { requireValue(state.milestones.includes('online-time'), 'Avance les ventes avant de lire le bilan.'); mark(state, 'report-read'); }
+    else if (body.action === 'read-report') {
+      requireValue(state.milestones.includes('online-time'), 'Avance les ventes avant de lire le bilan.');
+      if (state.milestones.includes('business-dossier')) {
+        const report = c.online?.marketing.history?.filter(item => item.version === 2).sort((a, b) => Date.parse(b.completedAt) - Date.parse(a.completedAt))[0];
+        requireValue(!c.online?.marketing.active && report && report.id === body.reportId, 'Ouvre le bilan de ta campagne terminée avant de valider sa lecture.');
+      }
+      mark(state, 'report-read');
+    }
+    else if (body.action === 'advance-social-time') {
+      requireValue(state.milestones.includes('social-dossier'), 'Cette horloge appartient au dossier Réseaux.');
+      requireValue(!c.online?.listings.length && !c.online?.marketing.active && !c.online?.merch?.inventory.length, 'Cet ancien essai contient des ventes. Recommence le dossier Réseaux pour utiliser son horloge de 5 minutes.');
+      state.operations.trial.clock += 5 * 60_000;
+      if (c.online) { c.online.serverNow = stamp(state); c.online.settledUntil = stamp(state); }
+    }
+    else if (body.action === 'read-social-result') {
+      requireValue(state.milestones.includes('social-dossier'), 'Cette lecture appartient au dossier Réseaux.');
+      const entry = getReleveSocialPublications(state).find(item => item.id === body.entryId);
+      requireValue(entry, 'Lis le résultat enregistré d’une publication de cet essai.');
+      mark(state, `social-${entry.platform}-published`); mark(state, `social-${entry.platform}-read`);
+    }
+    else if (body.action === 'read-social-partnerships') {
+      requireValue(state.milestones.includes('social-dossier') && getReleveSocialLearning(state).platforms.every(platform => platform.published && platform.read), 'Publie sur les deux réseaux et lis leurs résultats avant les partenariats.');
+      requireValue(KQ_SOCIAL_SPONSORS.some(sponsor => sponsor.id === body.sponsorId), 'Lis les conditions d’une marque proposée.');
+      mark(state, 'social-partnerships-read');
+    }
+    else if (body.action === 'read-merch-report') {
+      requireValue(state.milestones.includes('merch-dossier') && canReadReleveMerchReport(state), 'Mets ta série en vitrine et avance le temps avant de lire son suivi.');
+      mark(state, 'merch-report-read');
+    }
     else if (body.action === 'read-ledger') mark(state, 'ledger-read');
     else if (body.action === 'first-harvest') { requireValue(!state.milestones.includes('first-harvest'), 'La prime a déjà été réclamée.'); c.cashCents += 5000; mark(state, 'first-harvest'); account = 'revenue_rewards'; kind = 'reward'; }
     else throw new Error('Action narrative inconnue.');
@@ -479,6 +549,14 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
   } else if (url.pathname === '/api/arena/placard/energy') {
     requireValue(body.expectedCents === state.operations.trial.electricity, 'La facture a changé.'); spend(state.operations.trial.electricity); state.operations.trial.electricity = 0; kind = 'energy-paid';
     if (state.storageClimate) payKqStorageClimateInvoices(state.storageClimate, getKqStorageClimateBilling(state.storageClimate).outstandingCents);
+  } else if (url.pathname === '/api/arena/placard/social') {
+    const previousCash = c.cashCents;
+    payload = applyKqOperationsSocial(state.operations, body, false, false, getKqReleveSocialCulture(state));
+    if (body.action === 'choose' && state.milestones.includes('social-dossier')) {
+      for (const entry of getReleveSocialPublications(state)) mark(state, `social-${entry.platform}-published`);
+    }
+    kind = c.cashCents > previousCash ? 'social-sponsor-reward' : 'social';
+    if (c.cashCents > previousCash) account = 'revenue_rewards';
   } else if (url.pathname === COMMERCE) {
     if (body.action === 'buy-computer') {
       requireValue(!c.computerOwned, 'Ordinateur déjà disponible.'); spend(KQ_COMPUTER_PRICE_CENTS); c.computerOwned = true; account = 'equipment'; kind = 'equipment-purchase';
@@ -503,7 +581,8 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
         const stock = c.stocks.find(row => row.id === input?.stockId);
         requireValue(!stock?.processingReadyAt || Date.parse(stock.processingReadyAt) <= state.operations.trial.clock, 'Termine le travail de l’atelier avant de conditionner ce produit.');
       }
-      payload = applyKqOperationsOnline(state.operations, body.command, body.payload, { spend, collect: cents => collect(state, cents), releaseStorage: () => refreshStocks(state) });
+      payload = applyKqOperationsOnline(state.operations, body.command, body.payload, { spend, collect: (cents, fees) => collect(state, cents, fees), releaseStorage: () => refreshStocks(state) });
+      recordReleveMerchAction(state, body.command, body.payload);
       if (body.command === 'create-listing') {
         if (!state.milestones.includes('published')) state.milestones = state.milestones.filter(item => item !== 'online-time' && item !== 'report-read');
         mark(state, 'published');
@@ -543,11 +622,17 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
   if (body.action === 'quote') for (const quote of Object.values(state.operations.quotes)) if (quote.revision === c.revision - 1) quote.revision = c.revision;
   journalMutation(state, before, kind, account, revenueCents);
   settleStorageClimate(state);
-  if (key) state.responses[key] = structuredClone(payload);
+  if (key) {
+    const receipt = structuredClone(payload);
+    if (url.pathname === '/api/arena/placard/social' && isKqSocialSnapshot(receipt)) delete receipt.culture;
+    state.responses[key] = receipt;
+  }
   return { state, payload };
 }
 
 export function getReleveCommerceProgress(state: KqReleveCommerceState, chapter: KqReleveCommerceChapter) {
+  if (chapter === 'social') return getReleveSocialProgress(state);
+  if (chapter === 'merch') return getReleveMerchProgress(state);
   const has = (key: string) => state.milestones.includes(key);
   if (chapter === 'delivery') return { complete: has('mature') && has('delivered') && has('receipt-read'), instruction: !has('mature') ? 'Laisse six heures fictives à ta récolte, puis ouvre le lot dans Vendre ma production.' : !has('delivered') ? 'Prépare le lot entier, compare les offres disponibles et livre une petite quantité. Garde au moins 10 g pour la boutique.' : 'Ouvre le reçu : distingue le prix TTC, la TVA, le remboursement des factures et le net reçu.' };
   if (chapter === 'shop' || chapter === 'business') return { complete: has('published') && has('online-time') && has('report-read') && (chapter !== 'business' || has('campaign')), instruction: !state.operations.trial.commerce.computerOwned ? 'Sylvain te prête son ordinateur. Ouvre gratuitement ta boutique de base et choisis son nom.' : !has('published') ? 'Achète quelques emballages, prépare des paquets avec ton stock puis publie-les. Une campagne reste facultative dans l’aventure.' : chapter === 'business' && !has('campaign') ? 'Dans ce dossier séparé, lance la campagne de présentation gratuite et compare son bilan après 24 heures fictives.' : 'Avance de 24 heures fictives et consulte le bilan. Une annonce épuisée reste une publication réussie.' };

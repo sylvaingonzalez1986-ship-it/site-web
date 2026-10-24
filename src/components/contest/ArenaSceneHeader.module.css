@@ -1,19 +1,19 @@
-.header { color: #172923; background: #f5e6c9; border-bottom: 3px solid #172923; }
+.header { composes: surface from "./ArenaRetro.module.css"; color: #172923; background: #fff1d6; border-bottom: 3px double #172923; }
 .inner { display: grid; grid-template-columns: 1fr minmax(0, .85fr); gap: 1.5rem 2.5rem; align-items: center; max-width: 1240px; margin-inline: auto; padding: 1.5rem clamp(1rem, 3vw, 2rem); }
 .heading { min-width: 0; }
-.back { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: .5rem .85rem; border: 2px solid #172923; border-radius: 9px; background: #fff8e8; color: #172923; font-size: .8rem; font-weight: 800; text-decoration: none; box-shadow: 2px 3px 0 #172923; }
+.back { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: .65rem 1rem; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; font-size: .8rem; font-weight: 800; text-decoration: none; box-shadow: none; --game-control-art: var(--game-control-paper); border-image: var(--game-control-art) 40 fill / 13px / 0 stretch; }
 .copy { padding-block: 1.75rem .5rem; }
 .copy > span { display: block; color: #376157; font-size: .68rem; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
 .copy h1 { margin: .65rem 0; color: #172923; font: 900 clamp(2.75rem, 5.5vw, 4.75rem)/.98 var(--font-display), Impact, sans-serif; text-transform: uppercase; overflow-wrap: anywhere; }
 .copy p { max-width: 38ch; margin: .8rem 0 0; color: #39594e; font-size: 1rem; line-height: 1.6; }
-.scene { width: min(100%, 400px); justify-self: end; min-width: 0; overflow: hidden; border: 3px solid #172923; border-radius: 18px 18px 38px 18px; background: #fff1d6; box-shadow: 5px 6px 0 var(--game-surface-warm); transform: rotate(1deg); }
+.scene { width: min(100%, 500px); justify-self: end; min-width: 0; padding: 8px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-paper) 48 fill / 15px / 0 stretch; }
 .art { display: block; width: 100%; height: auto; }
 .modes { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
-.modes a { display: flex; align-items: center; justify-content: center; gap: .6rem; min-height: 52px; padding: .65rem; border: 2px solid #172923; border-radius: 10px; background: #fff8e8; color: #172923; font-weight: 800; text-decoration: none; box-shadow: 0 3px 0 #172923; transition: background 150ms ease, transform 150ms ease; }
+.modes a { display: flex; align-items: center; justify-content: center; gap: .6rem; min-height: 56px; padding: .8rem; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; font-weight: 800; text-decoration: none; box-shadow: none; --game-control-art: var(--game-control-paper); border-image: var(--game-control-art) 40 fill / 14px / 0 stretch; transition: transform 150ms ease; }
 .modes svg { flex-shrink: 0; }
-.modes a[aria-current="page"] { background: #efc451; box-shadow: 0 3px 0 #172923, inset 0 -4px #d7a538; }
+.modes a[aria-current="page"] { --game-control-art: var(--game-control-teal); color: #fff8e7; }
 .header a:focus-visible { outline: 3px solid #08766c; outline-offset: 5px; }
-@media (hover: hover) { .modes a:hover, .back:hover { background: #bfe6d8; transform: translateY(-2px); } }
+@media (hover: hover) { .modes a:hover, .back:hover { --game-control-art: var(--game-control-gold); color: #172923; transform: translateY(-2px); } }
 @media (max-width: 700px) {
   .inner { grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 1rem .8rem; padding: 1rem; }
   .heading { display: contents; }
@@ -22,8 +22,8 @@
   .copy > span { font-size: .56rem; letter-spacing: .04em; }
   .copy h1 { font-size: clamp(1.5rem, 5.5vw, 2.5rem); overflow-wrap: normal; word-break: normal; }
   .copy p { margin-top: .6rem; font-size: .75rem; line-height: 1.5; }
-  .scene { grid-column: 2; grid-row: 2; width: 100%; transform: none; border-radius: 12px; box-shadow: 3px 4px 0 var(--game-surface-warm); }
+  .scene { grid-column: 2; grid-row: 2; width: 100%; padding: 5px; border-image-width: 10px; }
   .modes { gap: .5rem; }
-  .modes a { flex-direction: column; gap: .35rem; min-height: 66px; padding: .5rem .15rem; font-size: .75rem; }
+  .modes a { flex-direction: column; gap: .35rem; min-height: 66px; padding: .7rem .25rem; font-size: .75rem; border-image-width: 11px; }
 }
 @media (prefers-reduced-motion: reduce) { .header a { transition: none; } }

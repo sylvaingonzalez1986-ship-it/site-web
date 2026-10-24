@@ -6,7 +6,8 @@ import {
   sanitizePublicContestProductTastingSummary,
   type PublicContestProductTastingSummary,
 } from "@/lib/contest-public-api";
-import { isProductTastingStorefrontEnabled } from "@/lib/product-tasting-feature";
+import { getProductTastingNotebookHref } from "@/lib/contest-product-tasting";
+import { isProductTastingNotebookLinkEnabled, isProductTastingStorefrontEnabled } from "@/lib/product-tasting-feature";
 
 export async function getProductCardTastingSummaries(
   productIds: string[],
@@ -21,9 +22,13 @@ export async function getProductCardTastingSummaries(
 
   try {
     const summaries = await getContestProductTastingSummaries(productIds, 2);
+    const showNotebookLink = isProductTastingNotebookLinkEnabled();
     return Object.fromEntries(summaries.map((summary) => [
       summary.entry.productId,
-      sanitizePublicContestProductTastingSummary(summary),
+      {
+        ...sanitizePublicContestProductTastingSummary(summary),
+        ...(showNotebookLink ? { notebookHref: getProductTastingNotebookHref(summary.entry, true) } : {}),
+      },
     ]));
   } catch (error) {
     if (!isContestSchemaMissingError(error)) {

@@ -1,4 +1,4 @@
-.coach { display:grid; grid-template-columns:78px minmax(0,1fr) auto; align-items:center; gap:16px; max-width:1280px; margin:auto; color:#173a31; font-family:var(--font-body),sans-serif; }
+.coach { composes: surface from "./ArenaRetro.module.css"; display:grid; grid-template-columns:78px minmax(0,1fr) auto; align-items:center; gap:16px; max-width:1280px; margin:auto; color:#172923; font-family:var(--font-body),sans-serif; }
 .portrait { width:78px; height:78px; border:2px solid #173a31; border-radius:22px; overflow:hidden; background:#c5e5d5; box-shadow:3px 3px 0 #173a31; }
 .portrait img { width:112px; height:112px; max-width:none; object-fit:cover; transform:translate(-17px,-4px); mix-blend-mode:multiply; }
 .message { min-width:0; }
@@ -7,11 +7,11 @@
 .message p { margin:0; max-width:780px; font-size:.88rem; line-height:1.45; }
 .actions { display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:8px; max-width:290px; }
 .actions button { min-height:44px; font:inherit; font-size:.8rem; font-weight:750; cursor:pointer; }
-.show { display:inline-flex; align-items:center; justify-content:center; gap:7px; border:1.5px solid #173a31; border-radius:10px; padding:9px 12px; color:#173a31; background:#fffdf3; }
+.show { display:inline-flex; align-items:center; justify-content:center; gap:7px; border:var(--game-control-border-width, 2px) solid #172923; border-radius:0; padding:9px 12px; color:#173a31; box-shadow:none; --game-control-art:var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background:transparent; border-color:transparent; border-image:var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .show:disabled { opacity:.5; cursor:default; }
-.actions .free { padding:0 5px; min-height:30px; background:none; border:0; color:#4b6256; text-decoration:underline; text-underline-offset:3px; font-size:.72rem; }
+.actions .free { padding:0 5px; min-height:44px; background:none; border:0; color:#4b6256; text-decoration:underline; text-underline-offset:3px; font-size:.72rem; }
 .spotlight { position:fixed; z-index:2147483000; pointer-events:none; border:3px solid #008c7c; border-radius:12px; box-shadow:0 0 0 4px #f8d16abf,0 3px 18px #0b473a33; transition:top .16s ease,left .16s ease,width .16s ease,height .16s ease; }
-.spotlight > span { position:absolute; right:5px; top:-14px; display:flex; gap:4px; align-items:center; background:#ffda73; border:1.5px solid #173a31; color:#173a31; padding:3px 8px; border-radius:20px; font:800 11px/1.2 var(--font-body),sans-serif; white-space:nowrap; }
+.spotlight > span { position:absolute; right:5px; top:-14px; display:flex; gap:4px; align-items:center; background:transparent; border:1.5px solid transparent; color:#172923; padding:3px 8px; border-radius:0; border-image:var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")) var(--game-control-slice, 40) fill / 8px / 0 stretch; font:800 11px/1.2 var(--font-body),sans-serif; white-space:nowrap; }
 .coach :global([data-releve-next]:disabled) { display:none; }
 :global([data-releve-guide-active]) { outline:3px solid #008c7c !important; outline-offset:3px; scroll-margin-block:16px; }
 .coach[data-complete] .portrait { background:#ffdc7f; }
@@ -32,9 +32,11 @@
 .compact .portrait img { width:76px; height:76px; transform:translate(-14px,-3px); }
 .compact .message strong { margin:0 0 3px; color:#087368; font-size:.72rem; }
 .compact .message p { font-size:.8rem; line-height:1.35; }
-.compact .actions { grid-column:auto; width:auto; max-width:210px; gap:6px; flex-wrap:nowrap; }
+.compact .actions { grid-column:auto; width:auto; max-width:260px; gap:6px; flex-wrap:wrap; }
+.compact .actions > div { min-width:0; max-width:100%; }
+.compact .actions button { flex-shrink:0; min-width:44px; }
 .compact .show { width:44px; height:44px; padding:0; }
-.freeIcon { display:grid; place-items:center; width:44px; height:44px; padding:0; border:1px solid #c2c8b7; border-radius:10px; background:transparent; color:#536454; }
+.freeIcon { display:grid; place-items:center; width:44px; height:44px; padding:0; border:var(--game-control-border-width, 2px) solid #172923; border-radius:0; color:#536454; box-shadow:none; --game-control-art:var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background:transparent; border-color:transparent; border-image:var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .controlLabel { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; }
 .coach[data-free=true]:not([data-complete]) { grid-template-columns:36px auto; min-height:0; gap:8px; }
 .coach[data-free=true]:not([data-complete]) .portrait { width:36px; height:36px; border-radius:10px; }
@@ -48,15 +50,15 @@
  .compact .actions { max-width:126px; gap:4px; }
  .compact .actions > :global([data-releve-next]) { padding:8px; font-size:.71rem; line-height:1.25; }
  .compact .actions > :global([data-releve-next]) svg { width:15px; flex-shrink:0; }
- .compact .show,.compact .freeIcon { width:40px; min-width:40px; }
+ .compact .show,.compact .freeIcon { width:44px; min-width:44px; }
 }
 .paced { grid-template-columns:48px minmax(0,1fr); max-width:1000px; }
 .paced .portrait { align-self:start; }
 .paced .message strong { font-size:.88rem; color:#173a31; }
 .lessonProgress { display:block; margin:0 0 5px; color:#52685a; font-size:.66rem; font-weight:700; }
 .paced .actions { grid-column:1/-1; max-width:none; width:100%; flex-wrap:wrap; }
-.acknowledge { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:8px 12px; border:2px solid #173a31; border-radius:10px; background:#00786a; color:white; }
-.acknowledge:disabled { background:#e6e9de; color:#56665b; border-color:#b4bdb0; cursor:default; }
+.acknowledge { display:inline-flex; align-items:center; justify-content:center; gap:6px; padding:8px 12px; border:var(--game-control-border-width, 2px) solid #172923; border-radius:0; color:#fff1d6; box-shadow:none; --game-control-art:var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background:transparent; border-color:transparent; border-image:var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.acknowledge:disabled { color:#56665b; border-color:transparent; cursor:default; --game-control-art:var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background:transparent; }
 .paced .acknowledge { margin-right:auto; }
 .paced[data-free=true]:not([data-complete]) .actions { grid-column:auto; }
 @media(max-width:700px) {
@@ -64,4 +66,23 @@
  .paced .actions { gap:5px; }
  .paced .acknowledge { flex:1 0 100%; margin-right:0; }
  .paced .message strong { font-size:.8rem; }
+}
+
+.actions button:focus-visible { outline:3px solid #087b70; outline-offset:3px; box-shadow:0 0 0 6px #fff1d6; }
+@media(hover:hover) {
+ .show:not(:disabled):hover, .freeIcon:hover { --game-control-art:var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); color:#172923; }
+ .acknowledge:not(:disabled):hover { --game-control-art:var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); }
+}
+@media(max-width:480px) {
+ .compact { grid-template-columns:48px minmax(0,1fr); }
+ .compact .actions { grid-column:1/-1; width:100%; max-width:none; flex-wrap:wrap; }
+ .coach[data-free=true]:not([data-complete]) .actions { grid-column:auto; width:auto; }
+}
+@media(max-width:700px) {
+ .compact { grid-template-columns:48px minmax(0,1fr); }
+ .compact .actions { grid-column:1/-1; width:100%; max-width:none; flex-wrap:wrap; }
+ .compact .show, .compact .freeIcon { display:inline-flex; align-items:center; justify-content:center; gap:5px; width:auto; min-width:44px; height:auto; padding:8px 10px; }
+ .compact .controlLabel { position:static; width:auto; height:auto; margin:0; overflow:visible; clip-path:none; white-space:normal; font-size:.73rem; line-height:1.25; }
+ .compact .show svg, .compact .freeIcon svg { flex-shrink:0; }
+ .coach[data-free=true]:not([data-complete]) .actions { grid-column:auto; width:auto; }
 }

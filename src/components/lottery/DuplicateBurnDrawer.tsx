@@ -93,7 +93,7 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
           </div>
 
           <div className="grid gap-2">
-            <button
+            <button data-ui-account="burn-option" data-ui-shape="control"
               type="button"
               onClick={() => setRewardChoice("discount")}
               className={`rounded-xl border-2 p-3 text-left transition-all ${
@@ -109,7 +109,7 @@ export function DuplicateBurnDrawer({ page, group, acting, onBurn, onClose }: Du
               </p>
             </button>
 
-            <button
+            <button data-ui-account="burn-option" data-ui-shape="control"
               type="button"
               onClick={() => setRewardChoice("gift")}
               className={`rounded-xl border-2 p-3 text-left transition-all ${

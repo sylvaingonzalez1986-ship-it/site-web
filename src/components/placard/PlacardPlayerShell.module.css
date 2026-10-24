@@ -1,73 +1,342 @@
-.shell { --placard-bottom-nav-height: 0px; display: grid; grid-template-columns: 224px minmax(0, 1fr); min-height: 100svh; background: #fff1d6; color: #172923; font-family: var(--font-body), sans-serif; }
+.shell {
+  --placard-bottom-nav-height: 0px;
+  display: grid;
+  grid-template-columns: 224px minmax(0, 1fr);
+  min-height: 100svh;
+  background: #fff1d6;
+  color: #172923;
+  font-family: var(--font-body), sans-serif;
+}
+
 .content { min-width: 0; padding-bottom: 28px; }
-.sidebar { position: sticky; top: 0; align-self: start; height: 100dvh; overflow-y: auto; display: flex; flex-direction: column; padding: 22px 15px 18px; background: #fff1d6; color: #172923; border-right: 3px solid #172923; }
-.navBrand { position: relative; margin: 0 1px 24px; padding: 13px 10px 15px; border: 2px solid #172923; border-radius: 18px 18px 24px 8px; background: #149b8b; box-shadow: 4px 4px 0 #172923; }
-.navBrand > span { font-size: 9px; font-weight: 750; letter-spacing: .055em; text-transform: uppercase; color: #172923; }
-.navBrand > strong { display: block; font: 900 30px/1.2 var(--font-display), Impact, sans-serif; letter-spacing: -.02em; }
-.navBrand > small { display: block; padding-top: 3px; font-size: 10px; font-weight: 650; color: #172923; }
-.navGroup { display: grid; gap: 7px; }
-.navGroup + .navGroup { margin-top: 20px; padding-top: 15px; border-top: 2px dashed #1729234d; }
-.navGroup > small { padding: 0 12px 2px; color: #4b5a4c; font-size: 10px; font-weight: 700; }
-.navGroup button { width: 100%; display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 9px 11px; border: 2px solid transparent; border-radius: 13px; background: transparent; color: #172923; text-align: left; font: 700 13px var(--font-body), sans-serif; cursor: pointer; transition: background 120ms ease, border-color 120ms ease, box-shadow 120ms ease; }
-.navGroup button svg { flex-shrink: 0; stroke-width: 2.4; }
-.navGroup button[aria-current=page] { color: #172923; border-color: #172923; background: #efc451; box-shadow: 3px 3px 0 #172923; }
-.navFooter { margin-top: auto; padding: 22px 10px 0; font-size: 13px; color: #40554b; }
+.socialPage { box-sizing: border-box; width: 100%; max-width: 1180px; min-width: 0; margin-inline: auto; padding: 20px 24px 32px; }
+@media (max-width: 600px) { .socialPage { padding: 12px 12px 24px; } }
+
+.sidebar {
+  position: sticky;
+  top: 0;
+  align-self: start;
+  height: 100dvh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 13px 18px;
+  border-right: 2px solid #172923;
+  background: #fff1d6;
+  color: #172923;
+}
+
+.navBrand {
+  margin-bottom: 20px;
+  padding: 0 3px 13px;
+  border-bottom: 2px solid #172923;
+}
+
+.navMasthead { display: flex; align-items: center; gap: 4px; padding-block: 4px 9px; }
+.navMasthead strong {
+  display: block;
+  flex: 1;
+  color: #005c4b;
+  font: 900 42px/.9 var(--font-display), Impact, sans-serif;
+  letter-spacing: -.025em;
+  text-shadow: 1px 1px 0 #efc451;
+}
+.navMasthead .brandArt { flex: 0 0 76px; width: 76px; transform: rotate(4deg); }
+.navBrand > small { display: block; font-size: 11px; font-weight: 600; }
+
+.navGroup { display: grid; gap: 8px; }
+.navGroup + .navGroup { margin-top: 22px; }
+.navGroup > small {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 1px 2px;
+  color: #005c4b;
+  font: 800 17px/1.1 var(--font-display), Impact, sans-serif;
+}
+.navGroup > small::after { content: ""; flex: 1; height: 3px; border-block: 1px solid #005c4b; }
+
+.navGroup button {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 52px;
+  padding: 6px 11px 7px 10px;
+  border: 2px solid transparent;
+  color: #172923;
+  text-align: left;
+  cursor: pointer;
+  transition: color 120ms ease, transform 120ms ease;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+}
+.navMark { position: relative; flex: 0 0 38px; height: 38px; }
+.navMark .navArt { display: block; width: 38px; }
+.navIndex {
+  position: absolute;
+  inset: auto auto -1px -2px;
+  padding: 1px 2px;
+  border: 1px solid #172923;
+  border-radius: 3px 2px 2px 1px;
+  background: #fff1d6;
+  color: #172923;
+  font: 800 8px/1 var(--font-body), sans-serif;
+  font-variant-numeric: tabular-nums;
+}
+.navLabel { min-width: 0; font: 800 20px/1.05 var(--font-display), Impact, sans-serif; }
+.navArrow { flex-shrink: 0; margin-left: auto; opacity: .35; font: 800 27px/.8 var(--font-display), Impact, sans-serif; }
+.navGroup button[aria-current=page] { color: #fff1d6; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; box-shadow: none; }
+.navGroup button[aria-current=page] .navIndex { background: #efc451; }
+.navGroup button[aria-current=page] .navArrow { opacity: 1; }
+.navGroup button:not(:disabled):active { transform: translateY(2px); box-shadow: none; }
+.navGroup button[aria-current=page]:not(:disabled):active {
+  box-shadow: none; }
+
+.navFooter { margin-top: auto; padding-top: 22px; font-size: 12px; color: #40554b; }
 .navFooter summary, .navFooter a { display: flex; align-items: center; gap: 8px; min-height: 44px; }
+.navFooter summary { border-top: 2px solid #172923; cursor: pointer; font-weight: 700; }
+.navFooter summary::after { content: "+"; margin-left: auto; font-size: 18px; }
+.navFooter details[open] summary::after { content: "−"; }
 .navFooter p { line-height: 1.65; margin: 8px 0 12px; }
-.sectionHeader { position: sticky; top: 0; z-index: 90; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: max(8px, env(safe-area-inset-top)) 16px 8px; border-bottom: 2px solid #172923; background: #fff1d6; }
-.sectionHeader button { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; padding: 9px 12px; border: 2px solid #172923; border-radius: 12px; background: var(--game-surface-warm); box-shadow: 2px 2px 0 #172923; font-size: 12px; font-weight: 750; color: #172923; min-height: 44px; cursor: pointer; }
-.sectionHeader h1 { min-width: 0; margin: 0; color: #172923; font-size: 15px; font-weight: 750; outline: none; overflow-wrap: anywhere; }
-.sectionHeader .soundButton { margin-left: auto; background: #fffaf0; }
-.sectionHeader .soundButton[aria-pressed=true] { background: #efc451; }
+.learningButton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 46px; padding: 10px 12px; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; color: #172923; font: 800 12px/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.learningButton svg { flex-shrink: 0; }
+.learningButton:focus-visible { outline: 3px solid #087b70; outline-offset: 3px; }
+@media (hover: hover) { .learningButton:hover { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff1d6; } }
+
+.sectionHeader, .exitHeader {
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: max(8px, env(safe-area-inset-top)) 16px 8px;
+  border-bottom: 2px solid #172923;
+  background: #fff1d6;
+}
+
+.sectionHeader button, .exitHeader a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+  min-height: 44px;
+  padding: 9px 12px;
+  border: 2px solid transparent;
+  color: #172923;
+  font-size: 12px;
+  font-weight: 750;
+  cursor: pointer;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+}
+
+.sectionHeader h1 {
+  min-width: 0;
+  margin: 0;
+  color: #172923;
+  font: 900 30px/1.05 var(--font-display), Impact, sans-serif;
+  outline: none;
+  overflow-wrap: anywhere;
+}
+.sectionHeader .soundButton { margin-left: auto; }
+.sectionHeader .soundButton[aria-pressed=true] {
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  background: transparent; }
 .soundButton svg { flex-shrink: 0; }
+.exitHeader a { white-space: nowrap; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
+.exitHeader > span { min-width: 0; font-size: 12px; font-weight: 750; }
+
+.skipLink {
+  position: absolute;
+  left: 240px;
+  top: 8px;
+  z-index: 400;
+  padding: 12px;
+  border: 2px solid #172923;
+  background: #fff1d6;
+  color: #172923;
+  transform: translateY(-250%);
+}
+.skipLink:focus { transform: none; }
+.mobileNav { display: none; }
+
+.navDrawer {
+  width: min(360px, 92vw);
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  border-left: 2px solid #172923;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: #fff1d6;
+  color: #172923;
+}
+.navDrawer::backdrop { background: #172923b3; }
+.drawerHeader {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: max(10px, env(safe-area-inset-top)) 18px 10px;
+  border-bottom: 2px solid #172923;
+  background: #fff1d6;
+}
+.drawerHeader > strong { font: 800 25px/1.05 var(--font-display), Impact, sans-serif; }
+.drawerBody { display: flex; flex-direction: column; padding: 12px 18px max(28px, env(safe-area-inset-bottom)); }
+.drawerBody .navBrand { margin-bottom: 14px; padding-bottom: 10px; }
+.drawerBody .navMasthead { justify-content: space-between; padding-block: 0 5px; }
+.drawerBody .navMasthead strong { font-size: 34px; }
+.drawerBody .brandArt { flex-basis: 68px; width: 68px; }
+.drawerBody .navGroup { gap: 7px; }
+.drawerBody .navGroup + .navGroup { margin-top: 18px; }
+.drawerBody .navGroup button { min-height: 48px; }
+.drawerBody .navFooter { padding-top: 18px; }
+.drawerClose {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 2px solid transparent;
+  color: #172923;
+  cursor: pointer;
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+}
+
+.shell :where(button,a,summary):focus-visible, .navDrawer :where(button,summary):focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.navGroup button:focus-visible .navArrow { opacity: 1; }
+
+.sectionHeader button:not(:disabled):active,
+.exitHeader a:not([aria-disabled="true"]):active,
+.drawerClose:not(:disabled):active,
+.section .sectionNav button:not(:disabled):active,
+.section .sectionNav a:not([aria-disabled="true"]):active { transform: translateY(1px); }
+
+.section[data-placard-view] { background: #fff1d6; color: #172923; }
+.section .sectionNav { background: #fff1d6; color: #172923; border-color: #172923; }
+.section .sectionNav button, .section .sectionNav a {
+  border: 2px solid transparent;
+  color: #172923;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+}
+
+.progress {
+  width: min(1100px, calc(100% - 32px));
+  margin: 0 auto 32px;
+  color: #172923;
+  border-top: 3px double #172923;
+  border-bottom: 1px solid #172923;
+  background: #fff1d6;
+}
+.progress > summary { min-height: 60px; padding: 16px 8px; font-weight: 800; cursor: pointer; }
+.progress > summary span { display: block; padding-top: 5px; font-size: 12px; font-weight: 500; }
+.progress > summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.progress[open] > summary { border-bottom: 1px solid #17292366; }
+
+@media (hover: hover) {
+  .navGroup button:not(:disabled):hover:where(:not(:active)) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); transform: translateY(-1px); }
+  .navGroup button:hover .navArrow { opacity: 1; }
+  .navGroup button[aria-current=page]:hover {
+    --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
+    background: transparent; }
+  .sectionHeader button:hover, .exitHeader a:hover, .drawerClose:hover {
+    --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+    background: transparent; }
+  .section .sectionNav button:hover, .section .sectionNav a:hover { border-color: transparent; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
+}
+
+@media (max-width: 1000px) {
+  .shell {
+    --placard-bottom-nav-height: calc(76px + env(safe-area-inset-bottom, 0px));
+    display: block;
+    padding-bottom: var(--placard-bottom-nav-height);
+  }
+  .sidebar { display: none; }
+  .mobileNav {
+    position: fixed;
+    inset: auto 0 0;
+    z-index: 100;
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 6px;
+    height: var(--placard-bottom-nav-height);
+    padding: 5px 7px calc(8px + env(safe-area-inset-bottom, 0px));
+    border-top: 2px solid #172923;
+    background: #fff1d6;
+  }
+  .mobileNav button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    min-width: 0;
+    min-height: 52px;
+    padding: 3px 2px;
+    border: 2px solid transparent;
+    color: #172923;
+    font: 800 15px/1.05 var(--font-display), Impact, sans-serif;
+    cursor: pointer;
+    --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+    border-color: transparent;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+    border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  }
+  .mobileNav .mobileArt { width: 28px; height: 28px; }
+  .mobileNav button svg { width: 28px; height: 28px; stroke-width: 2.5; padding: 2px; }
+  .mobileNav [aria-current], .mobileNav [aria-expanded=true] { color: #fff1d6; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; box-shadow: none; }
+  .mobileNav button:not(:disabled):active { transform: translateY(2px); }
+  .sectionHeader { padding-inline: 12px; gap: 8px; }
+  .sectionHeader h1 { font-size: 22px; }
+  .skipLink { left: 12px; }
+}
+
 @media (max-width: 480px) {
+  .sectionHeader h1 { font-size: 20px; }
   .sectionHeader .soundButton { justify-content: center; width: 44px; min-width: 44px; padding: 8px; }
   .soundButton span { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
-.skipLink { position: absolute; left: 240px; top: 8px; z-index: 400; padding: 12px; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; color: #172923; transform: translateY(-250%); }
-.skipLink:focus { transform: none; }
-.mobileNav { display: none; }
-.navDrawer { width: min(360px, 92vw); max-width: none; height: 100dvh; max-height: none; margin: 0 0 0 auto; padding: 0; border: 0; border-left: 3px solid #172923; background: #fff1d6; color: #172923; }
-.navDrawer::backdrop { background: #172923b3; }
-.drawerHeader { position: sticky; top: 0; z-index: 2; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: max(10px, env(safe-area-inset-top)) 15px 10px; background: #fff1d6; border-bottom: 2px solid #172923; }
-.drawerBody { display: flex; flex-direction: column; padding: 18px 18px max(28px, env(safe-area-inset-bottom)); }
-.drawerClose { flex-shrink: 0; width: 44px; height: 44px; display: grid; place-items: center; border: 2px solid #172923; border-radius: 50%; background: #efc451; color: #172923; box-shadow: 2px 2px 0 #172923; cursor: pointer; }
-.exitHeader { position: sticky; top: 0; z-index: 90; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: max(8px, env(safe-area-inset-top)) 16px 8px; border-bottom: 2px solid #172923; background: #fff1d6; }
-.exitHeader a { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 12px; border: 2px solid #172923; border-radius: 12px; box-shadow: 2px 2px 0 #172923; background: #efc451; color: #172923; font-size: 14px; font-weight: 800; white-space: nowrap; }
-.exitHeader > span { min-width: 0; font-size: 12px; font-weight: 750; }
-@media(max-height:500px) { .exitHeader, .sectionHeader { min-height: 52px; padding-block: max(4px, env(safe-area-inset-top)) 4px; } .exitHeader > span { display: none; } }
-.shell :where(button,a,summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
-@media (hover: hover) {
-  .navGroup button:hover { border-color: #172923; background: var(--game-surface-warm); box-shadow: 3px 3px 0 #172923; }
-  .navGroup button[aria-current=page]:hover { background: #efc451; }
-  .sectionHeader button:hover, .drawerClose:hover { background: #efc451; }
-}
-@media (max-width: 1000px) {
-  .shell { --placard-bottom-nav-height: calc(68px + env(safe-area-inset-bottom, 0px)); display: block; padding-bottom: var(--placard-bottom-nav-height); }
-  .sidebar { display: none; }
-  .mobileNav { position: fixed; inset: auto 0 0; z-index: 100; display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 5px; height: var(--placard-bottom-nav-height); padding: 5px 7px calc(5px + env(safe-area-inset-bottom, 0px)); border-top: 3px solid #172923; background: #fff1d6; box-shadow: 0 -3px 0 var(--game-surface-warm); }
-  .mobileNav button { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; min-width: 0; min-height: 52px; border: 2px solid transparent; border-radius: 13px; background: transparent; color: #172923; font-size: 10px; font-weight: 750; }
-  .mobileNav button svg { stroke-width: 2.5; }
-  .mobileNav [aria-current], .mobileNav [aria-expanded=true] { color: #172923; border-color: #172923; background: #efc451; box-shadow: 2px 2px 0 #172923; }
-  .sectionHeader { padding-inline: 12px; gap: 8px; }
-  .sectionHeader h1 { font-size: 14px; }
-  .skipLink { left: 12px; }
-}
-.section[data-placard-view] { background: #fff1d6; color: #172923; }
-.section .sectionNav { background: #fff1d6; color: #172923; border-color: #172923; }
-.section .sectionNav button, .section .sectionNav a { border: 2px solid #172923; border-radius: 12px; background: #fffaf0; color: #172923; box-shadow: 2px 2px 0 #172923; }
-@media (hover: hover) {
-  .section .sectionNav button:hover, .section .sectionNav a:hover { background: #efc451; border-color: #172923; }
+
+@media (max-height: 500px) {
+  .exitHeader, .sectionHeader { min-height: 52px; padding-block: max(4px, env(safe-area-inset-top)) 4px; }
+  .exitHeader > span { display: none; }
 }
 
-.progress { width: min(1100px, calc(100% - 32px)); margin: 0 auto 32px; color: #172923; border: 2px solid #172923; border-radius: 18px; background: #fff1d6; box-shadow: 4px 4px 0 #172923; }
-.progress > summary { min-height: 60px; padding: 16px 20px; font-weight: 800; cursor: pointer; }
-.progress > summary span { display: block; padding-top: 5px; font-size: 12px; font-weight: 500; }
-.progress > summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
-.progress[open] > summary { border-bottom: 2px solid #172923; }
 @media (prefers-reduced-motion: reduce) { .navGroup button { transition: none; } }
 
-.navGroup button[data-placard-unavailable], .mobileNav button[data-placard-unavailable] { opacity: .46; cursor: not-allowed; box-shadow: none; }
+.navGroup button[data-placard-unavailable], .mobileNav button[data-placard-unavailable] { opacity: .46; cursor: not-allowed; }
 @media (hover: hover) {
-  .navGroup button[data-placard-unavailable]:hover { border-color: transparent; background: transparent; box-shadow: none; }
+  .navGroup button[data-placard-unavailable]:hover { transform: none; }
+  .navGroup button[data-placard-unavailable]:hover .navArrow { opacity: 0; }
 }

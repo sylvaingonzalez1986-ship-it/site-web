@@ -54,10 +54,12 @@
 .panel {
   min-width: 0;
   padding: 18px;
-  border: 2px solid #172923;
-  border-radius: 12px;
-  background: #fffaf0;
-  box-shadow: 2px 3px 0 #172923;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
 
 .panelHeading {
@@ -97,7 +99,7 @@
   margin: 0;
   padding: 14px;
   border: 1px dashed #17292355;
-  border-radius: 8px;
+  border-radius: var(--game-panel-radius, 2px);
   background: #fff1d6;
 }
 

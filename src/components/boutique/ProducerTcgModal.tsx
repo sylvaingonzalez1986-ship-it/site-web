@@ -46,11 +46,11 @@ export function ProducerTcgModal({ open, producers, selectedProducerId, products
       if (!start || !end || Math.abs(end.clientX - start.x) < 50 || Math.abs(end.clientY - start.y) > 35) return;
       go(end.clientX > start.x ? -1 : 1);
     }}>
-    <button type="button" onClick={() => go(-1)} disabled={producers.length < 2} aria-label="Producteur précédent"><ChevronLeft size={20} aria-hidden="true" /></button>
+    <button type="button" data-ui-commerce="secondary" data-ui-shape="control" onClick={() => go(-1)} disabled={producers.length < 2} aria-label="Producteur précédent"><ChevronLeft size={20} aria-hidden="true" /></button>
     <span>Producteurs <strong>{selectedIndex + 1} / {producers.length}</strong></span>
-    <button type="button" onClick={() => go(1)} disabled={producers.length < 2} aria-label="Producteur suivant"><ChevronRight size={20} aria-hidden="true" /></button>
+    <button type="button" data-ui-commerce="secondary" data-ui-shape="control" onClick={() => go(1)} disabled={producers.length < 2} aria-label="Producteur suivant"><ChevronRight size={20} aria-hidden="true" /></button>
   </nav>;
-  return <AppDialog open={open} onClose={onClose} title={controls} label={`Fiche producteur ${selectedProducer.name}`} closeLabel="Fermer la fiche producteur" className={`${theme.surface} ${styles.dialog}`} headerClassName={styles.header}>
+  return <AppDialog open={open} onClose={onClose} title={controls} label={`Fiche producteur ${selectedProducer.name}`} closeLabel="Fermer la fiche producteur" className={`${theme.surface} ${styles.dialog}`} headerClassName={styles.header} bodyClassName={styles.body}>
     <ProducerDetailPanel producer={selectedProducer} products={selectedProducts} addButtonLabel={addButtonLabel}
       lowStockThresholdGrams={lowStockThresholdGrams} producerPartnerLabel={producerPartnerLabel} producerWebsiteLabel={producerWebsiteLabel}
       tastingSummariesByProductId={tastingSummariesByProductId} onClose={onClose} showCloseButton={false} />

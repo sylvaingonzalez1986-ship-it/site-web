@@ -38,12 +38,22 @@ function playerShellJsxProp(component: string, prop: string): string | undefined
   function find(node: ts.Node): ts.Expression | undefined {
     if ((ts.isJsxOpeningElement(node) || ts.isJsxSelfClosingElement(node)) && node.tagName.getText(playerShellAst) === component) {
       const attribute = node.attributes.properties.find((item): item is ts.JsxAttribute => ts.isJsxAttribute(item) && item.name.getText(playerShellAst) === prop);
+      if (attribute?.initializer && ts.isStringLiteral(attribute.initializer)) return attribute.initializer;
       if (attribute?.initializer && ts.isJsxExpression(attribute.initializer)) return attribute.initializer.expression;
     }
     return ts.forEachChild(node, find);
   }
   const expression = find(playerShellAst);
+  if (expression && ts.isStringLiteral(expression)) return JSON.stringify(expression.text);
   return expression ? ts.createPrinter().printNode(ts.EmitHint.Expression, expression, playerShellAst) : undefined;
+}
+function findAstNode<T extends ts.Node>(root: ts.Node, predicate: (node: ts.Node) => node is T): T {
+  function visit(node: ts.Node): T | undefined {
+    return predicate(node) ? node : ts.forEachChild(node, visit);
+  }
+  const found = visit(root);
+  if (!found) throw new Error("Expected player-policy syntax node was not found");
+  return found;
 }
 const placardMap = readFileSync(
   join(process.cwd(), "src/components/placard/KqPlacardMap.tsx"),
@@ -70,6 +80,8 @@ const gameClient = readFileSync(
   join(process.cwd(), "src/components/placard/KanabQuestDicePrototype.tsx"),
   "utf8",
 ).replace(/\r\n/g, "\n");
+const gameClientAst = ts.createSourceFile("KanabQuestDicePrototype.tsx", gameClient, ts.ScriptTarget.Latest, true, ts.ScriptKind.TSX);
+const verdictDialog = readFileSync(join(process.cwd(), "src/components/placard/KqBattleVerdictDialog.tsx"), "utf8");
 const gameBackend = readFileSync(
   join(process.cwd(), "src/lib/supabase/kanab-quest-backend.ts"),
   "utf8",
@@ -137,7 +149,7 @@ describe("Kanab Quest player page access", () => {
   it("mounts the customer-scoped game without duplicate overview requests", () => {
     expect(playerShell).not.toContain("fetch(");
     expect(playerShell).not.toContain("/api/admin/placard");
-    expect(playerShell).toMatch(/<KanabQuestDicePrototype\s+apiScope="player"/);
+    expect(playerShellJsxProp("KanabQuestDicePrototype", "apiScope")).toBe('"player"');
     expect(gameClient).toContain('"/api/arena/placard/bootstrap"');
     expect(gameClient).toContain('"/api/arena/placard/session"');
     expect(playerShell).toContain("<KqPlacardLobby");
@@ -285,9 +297,24 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).toContain('return () => { active = false; controller?.abort(); unsubscribe(); }');
     expect(gameClient).toContain("getKqPinnedRouteVerdictStatus");
     expect(gameClient).toContain('aria-label="Résultat commercial du jury"');
-    expect(gameClient).toContain("Note du jury au verdict");
-    expect(gameClient).toContain("La conservation fera évoluer sa qualité commerciale.");
-    expect(gameClient).toContain("Valoriser ce lot");
+    const verdict = findAstNode(gameClientAst, (node): node is ts.FunctionDeclaration =>
+      ts.isFunctionDeclaration(node) && node.name?.text === "VerdictMarketTarget");
+    // The commercial score comes from the verdict rounds, not a crop projection.
+    expect(verdict.getText(gameClientAst)).toContain('getKqJuryScoreFromRounds(rounds, "player")');
+    expect(verdict.getText(gameClientAst)).toContain("juryScore.toLocaleString");
+    expect(verdict.getText(gameClientAst)).toContain("}/10");
+    const officialVerdict = findAstNode(gameClientAst, (node): node is ts.JsxOpeningElement =>
+      ts.isJsxOpeningElement(node) && node.tagName.getText(gameClientAst) === "KqBattleVerdictDialog"
+      && node.attributes.properties.some(attribute => ts.isJsxAttribute(attribute)
+        && attribute.name.getText(gameClientAst) === "kind"
+        && !!attribute.initializer && ts.isStringLiteral(attribute.initializer) && attribute.initializer.text === "official"));
+    const target = findAstNode(officialVerdict, (node): node is ts.JsxSelfClosingElement =>
+      ts.isJsxSelfClosingElement(node) && node.tagName.getText(gameClientAst) === "VerdictMarketTarget");
+    const rounds = findAstNode(target, (node): node is ts.JsxAttribute =>
+      ts.isJsxAttribute(node) && node.name.getText(gameClientAst) === "rounds");
+    expect(rounds.initializer?.getText(gameClientAst)).toBe("{officialBattleResult.rounds}");
+    expect(gameClient).toContain("onOpenMarket(officialVerdictFlowerId)");
+    expect(verdictDialog).toContain("data-verdict-open-lot onClick={onOpenLot}");
     expect(playerShell).toContain('onOpenMarket={() => openView("market")}');
     expect(gameClient).toContain('aria-label="Gains de l’étape"');
     expect(gameClient).toContain("Lot projeté");
@@ -351,7 +378,20 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).toContain("if (!isPlayerMode && snapshot.game)");
     expect(gameClient).toContain("if (hydrated && !isPlayerMode)");
     expect(gameClient).toContain("if (!hydrated || isPlayerMode) return");
-    expect(gameClient).toMatch(/if \(isPlayerMode\) \{\s+setState\(startKqGame\(Date\.now\(\)\)\)/);
+    const applySession = findAstNode(gameClientAst, (node): node is ts.VariableDeclaration =>
+      ts.isVariableDeclaration(node) && node.name.getText(gameClientAst) === "applyOfficialSessionPayload");
+    const withoutRun = findAstNode(applySession, (node): node is ts.IfStatement =>
+      ts.isIfStatement(node) && node.expression.getText(gameClientAst) === "!activeRun");
+    const playerReset = findAstNode(withoutRun.thenStatement, (node): node is ts.IfStatement =>
+      ts.isIfStatement(node) && node.expression.getText(gameClientAst) === "isPlayerMode");
+    const setState = findAstNode(playerReset.thenStatement, (node): node is ts.CallExpression =>
+      ts.isCallExpression(node) && node.expression.getText(gameClientAst) === "setState");
+    const freshGame = setState.arguments[0];
+    if (!freshGame || !ts.isCallExpression(freshGame)) throw new Error("The empty official session must create a fresh game");
+    expect(freshGame.expression.getText(gameClientAst)).toBe("startKqGame");
+    expect(freshGame.arguments[0]?.getText(gameClientAst)).toBe("Date.now()");
+    // Additional initialization options must not make this assertion depend on syntax.
+    expect(withoutRun.elseStatement?.getText(gameClientAst)).toContain("setState(activeRun.state)");
   });
 
   it("shows player links only from the server-provided access state", () => {

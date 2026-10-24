@@ -49,3 +49,32 @@
   box-shadow: 8px 8px 0 #002d24; transform: translate(-50%, -50%) rotate(-5deg);
 }
 .hero :global(.editorial-world-hero__content) { border-top: 1px solid #fffaf140; }
+
+/* Optional contour trial; retain the market and journal's existing colours. */
+:global(html[data-site-ui="quartier"]) .surface :global(.bg-cream) {
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+}
+:global(html[data-site-ui="quartier"]) .hero:global(.world-hero) {
+  --site-ui-material: url("#site-ui-outline-172923");
+  background: radial-gradient(ellipse at 85% 20%, #00563f, transparent 65%), var(--arcade-dark);
+  border-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+  clip-path: polygon(0 5px, 1% 1px, 12% 3px, 25% 0, 45% 2px, 70% 0, 88% 3px, 99% 0, 100% 6px, calc(100% - 2px) 45%, 100% 75%, calc(100% - 3px) calc(100% - 4px), 85% 100%, 65% calc(100% - 2px), 40% 100%, 18% calc(100% - 3px), 1% 100%, 0 calc(100% - 6px), 2px 65%, 0 30%);
+}
+:global(html[data-site-ui="quartier"]) .hero :global(.editorial-world-hero__copy) > p::before { content: none; }
+:global(html[data-site-ui="quartier"]) .surface :global(.btn-primary) {
+  --site-ui-material: url("#site-ui-fill-efc451");
+  --site-ui-hover-material: url("#site-ui-fill-087b70");
+}
+:global(html[data-site-ui="quartier"]) .surface :global(.btn-secondary) {
+  --site-ui-material: url("#site-ui-fill-fff1d6");
+  --site-ui-hover-material: url("#site-ui-fill-087b70");
+}
+:global(html[data-site-ui="quartier"]) .surface :global(.btn-cartoon),
+:global(html[data-site-ui="quartier"]) .surface :global(.btn-cartoon):hover:not(:disabled) {
+  background: transparent;
+  border-color: transparent;
+  border-radius: 0;
+  box-shadow: none;
+}

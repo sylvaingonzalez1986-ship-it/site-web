@@ -155,7 +155,7 @@ export function PendingPaymentRecoveryModal() {
         aria-label="Fermer le rappel de paiement"
         onClick={close}
       />
-      <section
+      <section data-ui-commerce="site-paper" data-ui-shape="panel"
         role="dialog"
         aria-modal="true"
         aria-labelledby="pending-payment-title"
@@ -171,11 +171,11 @@ export function PendingPaymentRecoveryModal() {
           Tu es revenu de Viva avant la confirmation du paiement. La commande {paymentStatus.orderId}
           est toujours en attente : inutile d&apos;en créer une nouvelle.
         </p>
-        <div className="cartoon-border-sm mx-auto mt-5 max-w-sm bg-white p-3 text-sm font-bold text-ink">
+        <div data-ui-commerce="white-panel" data-ui-shape="panel" className="cartoon-border-sm mx-auto mt-5 max-w-sm bg-white p-3 text-sm font-bold text-ink">
           Montant a regler : {formatPrice(paymentStatus.totalAmount)}
         </div>
         <div className="mt-6 grid gap-3 sm:grid-cols-2">
-          <a
+          <a data-ui-commerce="site-primary" data-ui-shape="control"
             ref={primaryActionRef}
             href={`/api/account/orders/${encodeURIComponent(paymentStatus.orderId)}/resume-payment`}
             aria-disabled={modifyingCart}
@@ -188,7 +188,7 @@ export function PendingPaymentRecoveryModal() {
           >
             Reprendre et payer
           </a>
-          <button
+          <button data-ui-commerce="site-secondary" data-ui-shape="control"
             type="button"
             className="btn-cartoon btn-secondary min-h-12"
             onClick={() => void modifyCart()}
@@ -202,7 +202,7 @@ export function PendingPaymentRecoveryModal() {
           afin que tu puisses en ajouter puis payer le tout en une seule fois.
         </p>
         {modificationError && (
-          <p
+          <p data-ui-commerce="recovery-error" data-ui-shape="panel"
             role="alert"
             className="cartoon-border-sm mt-4 bg-red-50 p-3 text-sm font-bold text-red-800"
           >

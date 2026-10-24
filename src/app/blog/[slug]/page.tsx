@@ -117,7 +117,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
       />
 
       <div className="retro-container">
-        <header className={styles.articleHeader}>
+        <header data-ui-shape="panel" className={styles.articleHeader}>
           <nav className={styles.breadcrumb} aria-label="Fil d'Ariane">
             <Link href="/" className="underline">
               {blogContent.breadcrumbHomeLabel}
@@ -144,7 +144,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
           </div>
         </header>
 
-        <article className={styles.article}>
+        <article data-ui-shape="panel" className={styles.article}>
           <div className={styles.cover}>
             <Image
               src={post.coverImage}
@@ -167,7 +167,7 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               )}
             </div>
 
-            <div className={styles.shopPanel}>
+            <div data-ui-shape="panel" className={styles.shopPanel}>
               <h2 className={styles.panelTitle}>Du journal au marché</h2>
               <div className="mt-4 flex flex-wrap gap-2">
                 {relatedShopLinks.map((link) => (

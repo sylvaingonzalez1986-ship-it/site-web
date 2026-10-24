@@ -302,3 +302,123 @@
     transition: none;
   }
 }
+
+/* Optional Quartier treatment: the original card stays available in the preview. */
+:global(html[data-site-ui="quartier"]) :is(.card, .header, .energy, .stats, .certification, .certificationMuted, .textBox, .discover) {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+:global(html[data-site-ui="quartier"]) :is(.card, .header, .energy, .stats, .certification, .certificationMuted, .textBox, .discover)::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border: 2px solid transparent;
+  border-radius: 0;
+  border-image: url("/placard/ui/panel-paper-v1.webp") 48 fill / var(--producer-edge, 8px) / 0 stretch;
+  filter: var(--producer-material);
+}
+
+:global(html[data-site-ui="quartier"]) .card {
+  --producer-material: url("#site-ui-fill-93afa0");
+  --producer-edge: 12px;
+  aspect-ratio: auto;
+}
+
+:global(html[data-site-ui="quartier"]) .card::after { content: none; }
+
+:global(html[data-site-ui="quartier"]) .card:focus-visible { outline-offset: -4px; }
+
+:global(html[data-site-ui="quartier"]) .header {
+  --producer-material: url("#site-ui-fill-172923");
+  --producer-edge: 9px;
+  flex-shrink: 0;
+  min-height: 4.45rem;
+  margin: -.4rem -.4rem .15rem;
+}
+
+:global(html[data-site-ui="quartier"]) :is(.header, .energy, .discover)::before {
+  border-image-source: url("/placard/ui/control-paper-v2.webp");
+  border-image-slice: 40 fill;
+}
+
+:global(html[data-site-ui="quartier"]) .energy {
+  --producer-material: url("#site-ui-fill-efc451");
+  --producer-edge: 6px;
+}
+
+:global(html[data-site-ui="quartier"]) .imageFrame {
+  border-radius: 0;
+}
+
+:global(html[data-site-ui="quartier"]) .location {
+  inset: auto 8px 8px;
+}
+
+:global(html[data-site-ui="quartier"]) .stats {
+  --producer-material: url("#site-ui-fill-e6ebe0");
+  --producer-edge: 7px;
+}
+
+:global(html[data-site-ui="quartier"]) .stat {
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+}
+
+:global(html[data-site-ui="quartier"]) .stat + .stat { border-left-color: #00563f30; }
+
+:global(html[data-site-ui="quartier"]) .certification {
+  --producer-material: url("#site-ui-fill-efc451");
+  --producer-edge: 5px;
+}
+
+:global(html[data-site-ui="quartier"]) .certificationMuted {
+  --producer-material: url("#site-ui-fill-ffffff");
+  --producer-edge: 5px;
+}
+
+:global(html[data-site-ui="quartier"]) .certificationMuted::before { opacity: .7; }
+
+:global(html[data-site-ui="quartier"]) .textBox {
+  --producer-material: url("#site-ui-fill-ffffff");
+  --producer-edge: 7px;
+  flex: 1 0 auto;
+  min-height: 4.75rem;
+}
+
+:global(html[data-site-ui="quartier"]) .textBox::before { opacity: .78; }
+
+:global(html[data-site-ui="quartier"]) .discover {
+  --producer-material: url("#site-ui-fill-fff1d6");
+  --producer-edge: 7px;
+  padding: .28rem .55rem;
+}
+
+:global(html[data-site-ui="quartier"]) .selected .discover {
+  --producer-material: url("#site-ui-fill-efc451");
+}
+
+:global(html[data-site-ui="quartier"]) .card:focus-visible .photo { transform: scale(1.08); }
+
+@media (hover: hover) and (pointer: fine) {
+  :global(html[data-site-ui="quartier"]) .card:hover .photo { transform: scale(1.08); }
+  :global(html[data-site-ui="quartier"]) .card:hover .discover { --producer-material: url("#site-ui-fill-efc451"); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-site-ui="quartier"]) .card:hover,
+  :global(html[data-site-ui="quartier"]) .selected,
+  :global(html[data-site-ui="quartier"]) .card .photo,
+  :global(html[data-site-ui="quartier"]) .card:hover .photo,
+  :global(html[data-site-ui="quartier"]) .card:focus-visible .photo {
+    transform: none;
+    transition: none;
+  }
+}

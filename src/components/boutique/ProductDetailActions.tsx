@@ -82,7 +82,7 @@ export function ProductDetailActions({
   };
 
   return (
-    <div ref={panelRef} className={styles.panel}>
+    <div data-ui-commerce="order-panel" data-ui-shape="panel" ref={panelRef} className={styles.panel}>
       <p className={styles.heading}>Choisir et commander</p>
       <div className="space-y-4">
       {hasVariants && (
@@ -110,7 +110,7 @@ export function ProductDetailActions({
       )}
 
       {stockInfo.isLowStock && stockInfo.remainingGrams !== null && (
-        <div className={styles.alert}>
+        <div data-ui-commerce="stock-alert" data-ui-shape="panel" className={styles.alert}>
           Plus que {formatRemainingGrams(stockInfo.remainingGrams)} disponible
         </div>
       )}
@@ -128,7 +128,7 @@ export function ProductDetailActions({
             max={stockInfo.maxPurchasableQty}
           />
         )}
-        <button
+        <button data-ui-commerce="primary" data-ui-shape="control"
           ref={addButtonRef}
           type="button"
           onClick={handleAddToCart}
@@ -147,7 +147,7 @@ export function ProductDetailActions({
 
       {product.analysisPdf && (
         <>
-          <button
+          <button data-ui-commerce="secondary" data-ui-shape="control"
             type="button"
             onClick={() => setAnalysisOpen(true)}
             className={`btn-cartoon btn-secondary inline-flex min-h-11 items-center gap-2 px-4 text-xs ${styles.analysis}`}
@@ -170,9 +170,9 @@ export function ProductDetailActions({
       )}
       </div>
       {showMobileAction && inStock && typeof document !== "undefined" && createPortal(
-        <div className={styles.mobileAction} aria-label="Commander ce produit">
+        <div data-ui-commerce="product-mobile" className={styles.mobileAction} aria-label="Commander ce produit">
           <div><span>{selectedVariant?.label || product.name}</span><strong>{formatPrice(selectedVariant?.price ?? product.price)} TTC</strong></div>
-          <button type="button" onClick={() => {
+          <button data-ui-commerce="mobile-control" data-ui-shape="control" type="button" onClick={() => {
             panelRef.current?.scrollIntoView({ block: "center" });
             const target = hasVariants ? panelRef.current?.querySelector("select") : addButtonRef.current;
             target?.focus({ preventScroll: true });

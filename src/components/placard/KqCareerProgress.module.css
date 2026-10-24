@@ -8,7 +8,7 @@
 .identityText > small { display: block; font-size: 10px; line-height: 1.4; font-weight: 750; letter-spacing: .05em; text-transform: uppercase; color: #536058; }
 .nickname { display: block; margin: 2px 0 5px; font-size: 20px; line-height: 1.15; overflow-wrap: anywhere; }
 .identityMeta { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 8px; }
-.level { padding: 3px 7px; border-radius: 8px; background: #149b8b; color: #172923; font-size: 12px; font-weight: 800; white-space: nowrap; border: 1px solid #172923; }
+.level { padding: 3px 7px; border-radius: var(--game-panel-radius, 2px); background: #149b8b; color: #172923; font-size: 12px; font-weight: 800; white-space: nowrap; border: 1px solid #172923; }
 .level > span { font-weight: 500; color: #172923; }
 .strength { font-size: 11px; color: #536058; }
 .progression { flex: 1; min-width: 0; }
@@ -30,7 +30,7 @@
 .detailContent h3 { margin: 0 0 7px; font-size: 13px; line-height: 1.4; font-weight: 800; }
 .detailContent p { margin: 0 0 8px; font-size: 12px; line-height: 1.6; }
 .learning { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-.learning > section { min-width: 0; padding: 12px; border: 2px solid #172923; border-radius: 13px; background: #fffaf0; }
+.learning > section { min-width: 0; padding: 12px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .cultureCount { display: inline-block; margin-top: 3px; font-size: 12px; font-weight: 750; color: #536058; }
 .practice { display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 10px 0; }
 .practice dt { font-size: 11px; text-transform: capitalize; color: #536058; }
@@ -40,14 +40,14 @@
 .practiceRequirements span { color: #536058; }
 .roadmap { margin-top: 16px; }
 .roadmap ol { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; padding: 0; margin: 10px 0 0; list-style: none; }
-.roadmap li { min-width: 0; padding: 10px 12px; border: 1px solid #172923; border-left: 3px solid #172923; border-radius: 11px; background: #fffaf0; }
+.roadmap li { min-width: 0; padding: 10px 12px; border: 1px solid #172923; border-left: 3px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fffaf0; }
 .roadmap li[data-reached] { border-left-color: #172923; }
-.roadmap li[data-current] { border-color: #172923; border-left-width: 3px; background: #f7dfb8; }
+.roadmap li[data-current] { border-color: #172923; border-left-width: 3px; background: var(--game-surface-warm, #ffae59); }
 .milestoneHeading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 3px 8px; margin-bottom: 4px; font-size: 12px; }
 .milestoneHeading > span { font-size: 11px; color: #536058; }
 .roadmap li p { margin: 0; font-size: 11px; overflow-wrap: anywhere; }
 .career[data-compact] { padding-top: 12px; }
-.career button:disabled { opacity: 1; background: #e2dccb; color: #667064; border-color: #899285; box-shadow: none; cursor: not-allowed; }
+.career button:disabled { opacity: 1; background-color: #e2dccb; color: #667064; border-color: #899285; box-shadow: none; cursor: not-allowed; }
 @media (max-width: 700px) {
   .career, .career[data-compact] { padding: 10px 12px 0; }
   .overview { flex-wrap: wrap; gap: 12px; }

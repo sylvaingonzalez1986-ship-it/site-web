@@ -1,0 +1,75 @@
+{
+  "generator": "Built-in image_gen",
+  "date": "2026-10-24",
+  "prompt": "Create one production-ready illustrated asset sheet for Kanab Quest, a French Breton village cultivation board game. 1536x1024 landscape, TRANSPARENT background. Exactly six separate vignette illustrations laid out on an evenly spaced 3 columns by 2 rows grid. Every object group fits entirely inside its own cell with generous transparent margins (60px) so each cell can be cropped separately. No crossing cell boundaries. No words, no letters, no numerals, no UI, no rectangles enclosing the illustrations.\nArt direction: charming 1930s French rubber-hose cartoon / hand-inked Breton village shop illustrations, confident irregular dark ink #172923 outlines, flat screenprint colors, sparse authentic stipple/halftone shading. Cream #fff1d6 paper, petrol teal #087b70, mustard gold #efc451, warm apricot orange #ffad5c. Fine readable detail but bold compact silhouettes. Match a warm artisanal comic game world with tiny Breton slate roofs, old-fashioned clerks and market stalls. No glossy gradients, no 3D plastic, no modern app icon style.\nTop left: a folded illustrated village map, small teal-roof stone cottage and a mustard compass, symbol of neighborhood.\nTop middle: a botanical grower's notebook with a leafy seedling in a terracotta pot, pencil, symbol of growing.\nTop right: a short open wooden produce crate with two teal glass jars holding green herbs and a tied cream label, symbol of harvest storage.\nBottom left: old brass shop bell, folded striped teal and cream shop awning and cream paper grocery bag with a simple leaf drawing, symbol of commerce.\nBottom middle: a handsome fan of cream paper invoices with hand-drawn blank ruled lines, a chunky teal rubber stamp and two gold coins, symbol of bookkeeping and bills.\nBottom right: a little gold trophy with a teal ribbon and fan of three cream collectible cards showing simple botanical motifs, symbol of achievements.\nKeep the groups similarly sized and equally detailed. Delightful crafted print quality. Each vignette is an object illustration, NOT an enclosing frame. Actual transparency outside objects.",
+  "source": "artwork/ui-print-sheet-v1.png",
+  "assets": [
+    {
+      "kind": "quarter",
+      "path": "/placard/ui/quarter-v1.webp",
+      "crop": {
+        "left": 12,
+        "top": 12,
+        "width": 488,
+        "height": 488
+      },
+      "transparentPadding": 12
+    },
+    {
+      "kind": "culture",
+      "path": "/placard/ui/culture-v1.webp",
+      "crop": {
+        "left": 524,
+        "top": 12,
+        "width": 488,
+        "height": 488
+      },
+      "transparentPadding": 12
+    },
+    {
+      "kind": "harvest",
+      "path": "/placard/ui/harvest-v1.webp",
+      "crop": {
+        "left": 1036,
+        "top": 12,
+        "width": 488,
+        "height": 488
+      },
+      "transparentPadding": 12
+    },
+    {
+      "kind": "commerce",
+      "path": "/placard/ui/commerce-v1.webp",
+      "crop": {
+        "left": 12,
+        "top": 524,
+        "width": 488,
+        "height": 488
+      },
+      "transparentPadding": 12
+    },
+    {
+      "kind": "accounts",
+      "path": "/placard/ui/accounts-v1.webp",
+      "crop": {
+        "left": 524,
+        "top": 524,
+        "width": 488,
+        "height": 488
+      },
+      "transparentPadding": 12
+    },
+    {
+      "kind": "achievements",
+      "path": "/placard/ui/achievements-v1.webp",
+      "crop": {
+        "left": 1036,
+        "top": 524,
+        "width": 488,
+        "height": 488
+      },
+      "transparentPadding": 12
+    }
+  ],
+  "processing": "Sharp extraction of six 512×512 cells with a 12px inset crop and transparent padding to remove neighboring artwork at cell boundaries; WebP quality 88, alphaQuality 100. Illustrations remain decorative; all labels and values are HTML."
+}

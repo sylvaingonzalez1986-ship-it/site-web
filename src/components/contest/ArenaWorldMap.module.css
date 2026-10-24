@@ -1,6 +1,6 @@
-.map { overflow: hidden; border: 3px solid #172923; border-radius: 16px; background: var(--game-surface-warm); color: #172923; box-shadow: 5px 7px 0 #172923; }
+.map { padding: 9px; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; box-shadow: none; border-image: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")) 48 fill / 18px / 0 stretch; }
 .heading { display: none; }
-.viewport { overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #087b70 #fff1d6; background: var(--game-surface-warm); }
+.viewport { overflow-x: auto; padding-bottom: 8px; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #087b70 #fff1d6; background: transparent; }
 .terrain { position: relative; width: 100%; aspect-ratio: 3 / 2; isolation: isolate; }
 .terrain > img { object-fit: cover; user-select: none; pointer-events: none; }
 .lightingLayer { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
@@ -11,36 +11,42 @@
 /* Only the traced object and its label accept input, never their bounding box. */
 .place { position: absolute; z-index: 2; padding: 0; border: 0; overflow: visible; background: transparent; color: #173f30; text-decoration: none; pointer-events: none; -webkit-tap-highlight-color: transparent; }
 .hitArea { position: absolute; inset: 0; display: block; clip-path: var(--silhouette); cursor: pointer; pointer-events: auto; }
-.label { position: absolute; z-index: 1; left: var(--label-x); top: var(--label-y); transform: translate(-50%, -50%); display: inline-flex; justify-content: center; align-items: center; gap: 7px; width: max-content; max-width: max(100%, 112px); min-width: 44px; min-height: 42px; padding: 8px 12px; border: 2px solid #172923; border-radius: 8px; background: #fff1d6; box-shadow: 2px 3px 0 #172923; text-align: left; cursor: pointer; pointer-events: auto; transition: background 160ms ease, transform 160ms ease; }
+.label { --label-offset-y: -50%; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); position: absolute; z-index: 1; left: var(--label-x); top: var(--label-y); transform: translate(-50%, var(--label-offset-y)); display: inline-flex; justify-content: center; align-items: center; gap: 7px; width: max-content; max-width: max(100%, 112px); min-width: 44px; min-height: 48px; padding: 12px 16px; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; box-shadow: none; border-image: var(--game-control-art) 40 fill / var(--game-control-edge, 14px) / 0 stretch; text-align: left; cursor: pointer; pointer-events: auto; transition: transform 160ms ease; }
+.place[data-arena-activity="carnet"] .label { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.place[data-arena-activity="jouer"] .label { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff8e7; }
+.place[data-arena-activity="classement"] .label { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); }
 .label strong { display: block; font: 900 clamp(16px, 1.8vw, 24px)/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; white-space: nowrap; }
 .label small { display: block; margin-top: 4px; font-size: 10px; font-weight: 600; line-height: 1.3; }
 .placeIcon { display: grid; place-items: center; flex-shrink: 0; width: 20px; height: 20px; }
 .placeIcon svg { width: 18px; height: 18px; }
 .arrow { flex-shrink: 0; width: 14px; height: 14px; }
-.place[data-current] .label { background: #f4c43d; }
+.place[data-current] .label { background: transparent; border-color: transparent; box-shadow: none; }
+.place[data-current] .label strong { text-decoration: underline; text-underline-offset: 4px; text-decoration-thickness: 2px; }
 .place:disabled :is(.hitArea, .label) { cursor: wait; pointer-events: none; }
-.place:disabled .label { background: #e7e4ce; }
+.place:disabled .label { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); color: #4e6359; }
 .place[data-locked] :is(.hitArea, .label) { cursor: default; pointer-events: none; }
-.place[data-locked] .label { background: #e7dbb4; }
+.place[data-locked] .label { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); color: #4e6359; }
 .soon { display: grid; justify-items: center; gap: 3px; font-size: 10px; line-height: 1.2; color: #4d5e40; }
 .map .place:focus-visible { z-index: 3; outline: none; box-shadow: none; }
-.place:focus-visible .label { outline: 3px solid #173f30; outline-offset: 3px; box-shadow: 0 0 0 6px #fff6df; }
+.place:focus-visible .label { outline: 3px solid #173f30; outline-offset: 3px; box-shadow: none; }
 .map .zoom:focus-visible { outline: 3px solid #173f30; outline-offset: 3px; box-shadow: none; }
 @media (hover: hover) {
   .place:is(a, button):not(:disabled):hover { z-index: 3; }
-  .place:is(a, button):not(:disabled):hover .label { background: #f4c43d; transform: translate(-50%, calc(-50% - 2px)); }
+  .place:is(a, button):not(:disabled):hover .label { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); color: #172923; transform: translate(-50%, calc(var(--label-offset-y) - 2px)); }
 }
 @media (max-width: 700px) {
-  .map { border-radius: 8px; }
-  .heading { display: flex; align-items: center; justify-content: flex-end; padding: 4px 8px; min-height: 52px; border-bottom: 1px solid #123b2f25; }
-  .zoom { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 44px; padding: 8px; border: 1px solid #48604e55; border-radius: 5px; background: #fffaf1; color: #173f30; font: 700 11px var(--font-body), sans-serif; cursor: pointer; }
-  .label { min-height: 28px; padding: 4px 5px; border-radius: 4px; gap: 3px; box-shadow: 0 2px 0 #173f30; }
+  .map { padding: 6px; }
+  .heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 4px 10px; min-height: 58px; }
+  .heading > span { max-width: 14ch; font: 700 10px/1.4 var(--font-body), sans-serif; }
+  .zoom { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 44px; padding: 10px 12px; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; box-shadow: none; border-image: var(--game-control-art) 40 fill / 11px / 0 stretch; font: 700 11px var(--font-body), sans-serif; cursor: pointer; }
+  .zoom[aria-pressed="true"] { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff8e7; }
+  .label { --label-offset-y: -65%; --game-control-edge: 9px; min-height: 44px; padding: 7px 8px; gap: 3px; }
   .label strong { min-width: 0; font: 800 11px/1.15 var(--font-body), sans-serif; text-transform: none; white-space: normal; text-align: center; }
   .label small, .arrow, .placeIcon { display: none; }
   .place[data-locked] .label { flex-wrap: wrap; }
   .soon { display: flex; justify-content: center; align-items: center; gap: 3px; flex-basis: 100%; font-size: 9px; }
   .map[data-map-zoomed] .terrain { width: max(660px, 160%); }
-  .map[data-map-zoomed] .label { gap: 6px; padding: 7px 10px; min-height: 40px; }
+  .map[data-map-zoomed] .label { --label-offset-y: -50%; --game-control-edge: 12px; gap: 6px; padding: 10px 14px; min-height: 48px; }
   .map[data-map-zoomed] .label strong { font: 900 20px/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; white-space: nowrap; }
   .map[data-map-zoomed] .label small { display: block; }
   .map[data-map-zoomed] .placeIcon { display: grid; }

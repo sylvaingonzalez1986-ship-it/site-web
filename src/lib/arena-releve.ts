@@ -3,7 +3,7 @@ import type { ArenaPlayableLessonId } from "./arena-playable-learning";
 export type ArenaReleveStage = "arrival" | "plan" | "buddies" | "launch" | "culture" | "jury" | "delivery" | "shop" | "ledger";
 export type ArenaReleveChapterId = ArenaReleveStage;
 export type ArenaReleveScene = "arrival" | "renovation" | "culture" | "packing";
-export type ArenaReleveMeetingId = "expansion" | "workshop" | "business" | "bank" | "community" | "notebook";
+export type ArenaReleveMeetingId = "expansion" | "workshop" | "business" | "social" | "merch" | "bank" | "community" | "notebook";
 
 export const ARENA_RELEVE_SCENES: Record<ArenaReleveScene, string> = {
   arrival: "/contest/releve/arrival-sylvain-v1.webp",
@@ -151,6 +151,22 @@ export const ARENA_RELEVE_MEETINGS: readonly ArenaReleveMeeting[] = [
     rationale: "Une publicité ne remplace pas une offre disponible et adaptée. Les prévisions restent des estimations. Les rapports permettent de distinguer fréquentation, commandes, satisfaction et argent disponible.",
     hint: "Ouvre une annonce, compare son prix et son stock, puis consulte un rapport de campagne.",
     action: "Étudier mon commerce", milestone: "Développement du commerce étudié",
+  },
+  {
+    id: "social", title: "La voix de ta ferme", scene: "packing", lessons: [],
+    description: "Publie sur Instagram et X, lis les réactions et découvre les conditions des partenariats.",
+    coach: "Les réseaux ont leur place dans le menu du quartier. Je te prête une récolte pour raconter ton métier. Compare les brouillons, choisis ce que tu publies et regarde les réactions avant de continuer.",
+    rationale: "Chaque réseau garde ses abonnés et sa confiance ; les deux partagent ton énergie mentale. Les estimations ne sont pas des résultats. Les partenariats ont des conditions et des contenus à livrer avant tout versement. Tout se déroule dans le jeu, sans compte externe.",
+    hint: "Dans Réseaux, publie un brouillon sur Instagram, lis son résultat, puis essaie X. Consulte ensuite les conditions des partenariats, sans obligation de signer.",
+    action: "Essayer mes réseaux", milestone: "Publications et partenariats découverts",
+  },
+  {
+    id: "merch", title: "Une collection à ton nom", scene: "packing", lessons: [],
+    description: "Débloque la papeterie, fabrique une série et mets tes premiers articles en vitrine.",
+    coach: "Le merch se trouve dans Commerce, puis Développer ma boutique et Merch. Je te prête une entreprise déjà éligible : tu peux essayer la fabrication, choisir ton prix et observer les ventes.",
+    rationale: "Ce dossier prête le site et la marque nécessaires, avec cinq commandes d’exemple. Débloquer un atelier et fabriquer ses articles sont deux dépenses distinctes. Les articles fabriqués restent en stock ; seuls ceux en vitrine peuvent se vendre. La cadence annoncée est une estimation.",
+    hint: "Ouvre Merch, vérifie les conditions de la papeterie et son coût. Fabrique une petite série, choisis ton prix et mets-la en vitrine avant d’avancer l’horloge fictive.",
+    action: "Préparer ma collection", milestone: "Fabrication et vitrine merch découvertes",
   },
   {
     id: "bank", title: "La porte de la banque", scene: "arrival", lessons: ["bank", "investments"],

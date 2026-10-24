@@ -1,4 +1,4 @@
-.overview { composes: surface from "../contest/ArenaRetro.module.css"; margin-top: 10px; border-block: 2px solid #172923; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; overflow: hidden; }
+.overview { composes: surface from "../contest/ArenaRetro.module.css"; margin-top: 10px; color: #172923; overflow: hidden; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .summary { display: flex; align-items: center; gap: 18px; padding: 16px 20px; cursor: pointer; list-style: none; background: #bfe9db; border-bottom: 2px solid #172923; }
 .summary::-webkit-details-marker, .rankDetails > summary::-webkit-details-marker, .moreSales > summary::-webkit-details-marker { display: none; }
 .summary > img { flex-shrink: 0; width: 88px; height: 68px; object-fit: cover; border-radius: 12px; }
@@ -9,8 +9,8 @@
 .chevron { flex-shrink: 0; color: #172923; transition: transform 180ms ease; }
 .overview[open] > .summary .chevron { transform: rotate(180deg); }
 .content { padding: 0 24px 24px; }
-.reputation { display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; overflow: hidden; margin-top: 20px; }
-.officeArt { position: relative; min-height: 270px; overflow: hidden; background: #fff1d6; }
+.reputation { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); color: #172923; overflow: hidden; margin-top: 20px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.officeArt { position: relative; min-height: 320px; overflow: hidden; background: #fff1d6; }
 .officeArt img { object-fit: cover; object-position: center; }
 .rankProgress { min-width: 0; padding: 26px 30px; }
 .eyebrow { display: inline-flex; align-items: center; gap: 8px; font: 800 .72rem/1.5 var(--font-body),Arial,sans-serif; text-transform: uppercase; letter-spacing: .08em; color: #172923; }
@@ -29,7 +29,7 @@
 .rankProgress progress::-moz-progress-bar { background: #efc451; }
 .rankProgress > p { margin: 10px 0 0; color: #172923; font-size: .78rem; line-height: 1.5; }
 .rankProgress > p strong { color: #172923; }
-.rankDetails { padding: 0 20px; background: #fff1d6; border-radius: 12px; margin-top: 16px; }
+.rankDetails { padding: 0 20px; background: #fff1d6; border-radius: var(--game-panel-radius, 2px); margin-top: 16px; }
 .rankDetails > summary, .moreSales > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 48px; color: #172923; cursor: pointer; font-size: .76rem; font-weight: 800; list-style: none; }
 .rankDetails[open] > summary > svg, .moreSales[open] > summary > svg { transform: rotate(180deg); }
 .rankTrack { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; list-style: none; margin: 8px 0 0; padding: 0; }
@@ -42,19 +42,19 @@
 .rankTrack > li[data-state="reached"] > svg { color: #172923; }
 .rankDetails > p { padding-bottom: 18px; font-size: .72rem; color: #172923; line-height: 1.5; }
 .audiences { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; padding-block: 28px; }
-.audiences > section { display: flex; gap: 16px; align-items: flex-start; min-width: 0; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; padding: 18px; }
-.audiences > section > svg { flex: 0 0 46px; width: 46px; height: 46px; padding: 10px; background: #bfe9db; color: #172923; border-radius: 12px; }
+.audiences > section { display: flex; gap: 16px; align-items: flex-start; min-width: 0; color: #172923; padding: 18px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.audiences > section > svg { flex: 0 0 46px; width: 46px; height: 46px; padding: 10px; background: #bfe9db; color: #172923; border-radius: var(--game-panel-radius, 2px); }
 .audiences > section:last-child > svg { background: #efc451; color: #172923; }
 .audiences h3 { font-size: .9rem; line-height: 1.4; margin: 0 0 8px; font-weight: 800; }
 .stat { display: block; font-size: 1.8rem; line-height: 1.2; color: #172923; }
 .stat > span { font-size: .8rem; color: #172923; font-weight: 600; }
 .audiences p { margin: 10px 0 0; max-width: 45ch; font-size: .77rem; line-height: 1.6; color: #172923; }
-.overview .action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 14px; background: #efc451; color: #172923; border-radius: 12px; font-size: .76rem; font-weight: 850; box-shadow: 4px 4px 0 #172923; }
-.overview .secondaryAction { min-height: 44px; padding: 8px 12px; border: 2px solid #172923; border-radius: 12px; color: #172923; font-size: .74rem; font-weight: 700; }
+.overview .action { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 10px 14px; color: #172923; border-radius: 0; font-size: .76rem; font-weight: 850; box-shadow: none; border: var(--game-control-border-width, 2px) solid #172923; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.overview .secondaryAction { min-height: 44px; padding: 8px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font-size: .74rem; font-weight: 700; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .history { padding-top: 28px; }
 .history > header { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 14px; }
 .history h3 { margin: 5px 0 0; font: 900 1.6rem/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
-.overview .shopLink { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 12px; border-radius: 12px; color: #172923; font-size: .78rem; font-weight: 800; background: #efc451; border: 2px solid #172923; }
+.overview .shopLink { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 12px; border-radius: 0; color: #172923; font-size: .78rem; font-weight: 800; border: var(--game-control-border-width, 2px) solid #172923; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .sales { padding: 0; margin: 0; list-style: none; }
 .saleRow { display: grid; grid-template-columns: 56px minmax(0,1fr) auto; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 2px solid #172923; }
 .saleRow > img { width: 56px; height: 56px; object-fit: cover; border-radius: 12px; }
@@ -65,9 +65,9 @@
 .saleAmount { display: grid; text-align: right; gap: 4px; }
 .saleAmount strong { color: #172923; font-size: .95rem; white-space: nowrap; }
 .saleAmount small { color: #172923; font-size: .72rem; }
-.emptyHistory { margin: 0; padding: 18px; font-size: .8rem; line-height: 1.6; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; box-shadow: 4px 4px 0 #172923; color: #172923; }
+.emptyHistory { margin: 0; padding: 18px; font-size: .8rem; line-height: 1.6; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .overview :where(button,summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; box-shadow: none; }
-@media(hover:hover) { .summary:hover { background: #fff1d6; } .overview .action:hover { background: #efc451; } .overview .secondaryAction:hover, .overview .shopLink:hover { border-color: #172923; } }
+@media(hover:hover) { .summary:hover { background: #fff1d6; } .overview .action:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; } .overview .secondaryAction:hover:not(:disabled), .overview .shopLink:hover:not(:disabled) { border-color: transparent; } }
 @media(max-width: 800px) { .rankProgress { padding: 22px; } }
 @media(max-width: 700px) {
   .summary { gap: 12px; padding: 14px 12px; } .summary > img { width: 66px; height: 62px; } .summary > span:first-of-type > strong { font-size: 1.5rem; } .summary small { font-size: .72rem; } .summaryRank { display: none; } .chevron { margin-left: auto; }
@@ -91,3 +91,11 @@
 .saleDetails dl { display: grid; gap: 7px; margin: 0 0 8px; }
 .saleDetails dl > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 5px 12px; }
 .saleDetails dd { margin: 0; font-weight: 750; }
+
+/* Leave a paper margin around the office scene and keep the ledger entries open. */
+.overview { padding: 8px; }
+.summary { border-bottom-width: 1px; background: transparent; }
+.reputation { padding: 9px; }
+.rankDetails { background: transparent; border-top: 1px solid #17292340; border-radius: 0; }
+.rankTrack > li { background: transparent; }
+@media (max-width: 700px) { .overview { padding: 5px; } .reputation { padding: 7px; } }

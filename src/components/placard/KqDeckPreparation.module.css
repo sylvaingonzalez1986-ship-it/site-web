@@ -1,5 +1,5 @@
 .preparation { min-width: 0; color: var(--game-ink, #172923); }
-.numbers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border: 1px solid currentColor; border-radius: 14px; overflow: hidden; }
+.numbers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 0; border: 1px solid currentColor; border-radius: var(--game-panel-radius, 2px); overflow: hidden; }
 .numbers > div { min-width: 0; padding: 12px; background: var(--game-surface-warm, #ffaf58); }
 .numbers > div + div { border-left: 1px solid currentColor; }
 .numbers dt { font-size: 11px; line-height: 1.4; }

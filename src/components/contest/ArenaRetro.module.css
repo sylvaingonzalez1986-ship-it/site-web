@@ -7,6 +7,25 @@
   --arcade-yellow: #efc451;
   --arcade-ink: #172923;
   --arcade-line: rgba(0, 86, 63, .09);
+  /* Quiet paper sheets support the content; cut-out signs identify actions. */
+  --game-panel-radius: 0;
+  --game-control-radius: 0;
+  --game-panel-shadow: none;
+  --game-control-shadow: none;
+  --game-control-border-width: 2px;
+  --game-control-texture: none;
+  --game-control-paper: url("/placard/ui/control-paper-v2.webp");
+  --game-control-gold: url("/placard/ui/control-gold-v2.webp");
+  --game-control-apricot: url("/placard/ui/control-apricot-v2.webp");
+  --game-control-teal: url("/placard/ui/control-teal-v2.webp");
+  --game-control-ink: url("/placard/ui/control-ink-v2.webp");
+  --game-control-slice: 40;
+  --game-control-edge: 14px;
+  --game-panel-paper: url("/placard/ui/panel-paper-v1.webp");
+  --game-panel-apricot: url("/placard/ui/panel-apricot-v1.webp");
+  --game-panel-gold: url("/placard/ui/panel-gold-v1.webp");
+  --game-panel-slice: 48;
+  --game-panel-edge: 15px;
   font-variant-numeric: tabular-nums;
 }
 
@@ -62,8 +81,8 @@
 .menuLabel { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .8rem; border-bottom: 1px solid var(--arcade-line); padding-bottom: .7rem; font: 800 .7rem/1.4 ui-monospace, Consolas, monospace; text-transform: uppercase; letter-spacing: .1em; }
 .menuLabel span { color: var(--arcade-green); }
 .modeMenu { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
-.modeCard { display: grid; grid-template-columns: auto 1fr auto; gap: .85rem; align-items: center; min-height: 112px; padding: 1.1rem; border: 2px solid var(--arcade-green); border-radius: 4px; background: var(--arcade-paper); color: var(--arcade-green); text-decoration: none; box-shadow: 0 5px 0 var(--arcade-green); transition: transform 160ms ease, box-shadow 160ms ease; }
-.modeCard[data-featured] { background: var(--arcade-green); color: var(--arcade-paper); box-shadow: 0 5px 0 var(--arcade-dark); }
+.modeCard { display: grid; grid-template-columns: auto 1fr auto; gap: .85rem; align-items: center; min-height: 112px; padding: 1.1rem; border: 2px solid transparent; border-radius: 0; background: transparent; color: var(--arcade-green); text-decoration: none; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; transition: transform 160ms ease; }
+.modeCard[data-featured] { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: var(--arcade-paper); }
 .modeIcon { display: grid; width: 44px; height: 44px; place-items: center; border: 1px solid currentColor; }
 .modeIcon svg { width: 24px; height: 24px; }
 .modeCard small { display: block; margin-bottom: .35rem; font: 700 .65rem/1.3 ui-monospace, Consolas, monospace; letter-spacing: .08em; }
@@ -87,8 +106,9 @@
 .destination > span:first-child { border-color: var(--arcade-green); }
 
 @media (hover: hover) {
-  .modeCard:hover { transform: translateY(-3px); box-shadow: 0 8px 0 var(--arcade-green); }
+  .modeCard:hover { transform: translateY(-3px); }
 }
+.modeCard:active { transform: translateY(1px); }
 
 @media (max-width: 700px) {
   .landing { padding-top: 6rem; background-size: 40px 40px; }

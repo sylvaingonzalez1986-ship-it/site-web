@@ -40,7 +40,7 @@ export function ProducerCarousel({ itemCount, children }: { itemCount: number; c
   }
 
   return (
-    <section className={styles.carousel} aria-label="Les producteurs">
+    <section data-ui-commerce="paper" data-ui-shape="panel" className={styles.carousel} aria-label="Les producteurs">
       <div className={styles.header}>
         <div><p className={styles.eyebrow}>Du champ à la boutique</p>
           <p className={styles.heading}>Rencontrez les producteurs</p></div>
@@ -59,8 +59,8 @@ export function ProducerCarousel({ itemCount, children }: { itemCount: number; c
       {position.overflowing && <div className={styles.controls}>
         <span>Faites défiler pour découvrir les producteurs</span>
         <div className={styles.buttons}>
-          <button type="button" aria-label="Producteur précédent" aria-controls={id} disabled={position.start} onClick={() => move(-1)}><ArrowLeft size={20} /></button>
-          <button type="button" aria-label="Producteur suivant" aria-controls={id} disabled={position.end} onClick={() => move(1)}><ArrowRight size={20} /></button>
+          <button data-ui-commerce="producer-arrow" data-ui-shape="control" type="button" aria-label="Producteur précédent" aria-controls={id} disabled={position.start} onClick={() => move(-1)}><ArrowLeft size={20} /></button>
+          <button data-ui-commerce="producer-arrow" data-ui-shape="control" type="button" aria-label="Producteur suivant" aria-controls={id} disabled={position.end} onClick={() => move(1)}><ArrowRight size={20} /></button>
         </div>
       </div>}
     </section>

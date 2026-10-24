@@ -1,4 +1,4 @@
-.board { margin-block: 16px; min-width: 0; padding: 20px; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; color: #172923; font-family: var(--font-body), Arial, sans-serif; }
+.board { margin-block: 16px; min-width: 0; padding: 20px; color: #172923; font-family: var(--font-body), Arial, sans-serif; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
 .header h3 { margin: 2px 0 5px; font: 900 clamp(26px, 4vw, 36px)/1.1 var(--font-display), Impact, sans-serif; }
 .header p { margin: 0; font-size: 13px; line-height: 1.5; }
@@ -6,7 +6,7 @@
 .prize, .count { flex-shrink: 0; text-align: right; font: 900 30px/1.1 var(--font-display), Impact, sans-serif; }
 .prize small, .count small { display: block; max-width: 100px; margin-top: 4px; font: 600 11px/1.4 var(--font-body), Arial, sans-serif; }
 .offers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-.offer { display: flex; flex-direction: column; min-width: 0; padding: 16px; border: 1px solid #17292365; border-radius: 12px; background: #fff1d6; }
+.offer { display: flex; flex-direction: column; min-width: 0; padding: 16px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .offerTop { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: #076c61; }
 .offerTop strong { color: #172923; text-align: right; font: 900 30px/1.1 var(--font-display), Impact, sans-serif; }
 .offerTop small { display: block; margin-top: 3px; font: 500 10px/1.4 var(--font-body), Arial, sans-serif; }
@@ -18,8 +18,8 @@
 .offer .rule { padding-block: 8px 12px; font-size: 12px; font-weight: 750; line-height: 1.5; }
 .board .hint { font-size: 12px; line-height: 1.6; color: #43594c; }
 .offer .hint { flex: 1; padding-bottom: 16px; }
-.board button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; padding: 10px 12px; border: 2px solid #172923; border-radius: 10px; background: #efc451; color: #172923; font: 750 12px/1.5 var(--font-body), Arial, sans-serif; cursor: pointer; }
-.board button:hover:not(:disabled) { background: var(--game-surface-warm); }
+.board button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 44px; padding: 10px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: 750 12px/1.5 var(--font-body), Arial, sans-serif; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.board button:hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
 .board button svg { flex-shrink: 0; }
 .board button:disabled { opacity: .55; cursor: default; }
 .board .secondary { background: transparent; }
@@ -28,7 +28,7 @@
 .cardCount { font-variant-numeric: tabular-nums; }
 .cardCount[data-limit-exceeded], .error { color: #8b3321; }
 .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-.receipt { display: flex; align-items: center; gap: 14px; margin-block: 16px; padding: 16px; border: 2px solid #172923; border-radius: 12px; background: #efc451; }
+.receipt { display: flex; align-items: center; gap: 14px; margin-block: 16px; padding: 16px; --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .receipt > svg { flex-shrink: 0; }
 .receipt > div { min-width: 0; }
 .receipt strong { font: 900 28px/1.2 var(--font-display), Impact, sans-serif; }

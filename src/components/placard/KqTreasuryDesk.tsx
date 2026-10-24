@@ -180,15 +180,13 @@ export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initial
   return <main className={styles.page}>
     <header className={styles.header}>
       <figure className={styles.officeArt}>
-        <div className={styles.officePicture}>
-          <div className={styles.welcome}>
-            <small>{pole === "bank" ? <><Landmark size={16} aria-hidden="true" /> Le banquier</> : <><BookOpen size={16} aria-hidden="true" /> Au bureau</>}</small>
-            <h1>{pole === "bank" ? "Banque & placements" : "Mes finances"}</h1>
-            <p>{pole === "bank" ? "Financer un projet ou placer tes euros du jeu." : "Ce que tu peux dépenser, ce qu’il reste à payer."}</p>
-          </div>
-          <div className={styles.officeIllustration}>
-            <Image src={OFFICE_ART[pole].src} alt={OFFICE_ART[pole].alt} fill sizes="(max-width: 650px) calc(100vw - 56px), 420px" preload />
-          </div>
+        <div className={styles.welcome}>
+          <small>{pole === "bank" ? <><Landmark size={16} aria-hidden="true" /> Le banquier</> : <><BookOpen size={16} aria-hidden="true" /> Au bureau</>}</small>
+          <h1>{pole === "bank" ? "Banque & placements" : "Mes finances"}</h1>
+          <p>{pole === "bank" ? "Financer un projet ou placer tes euros du jeu." : "Ce que tu peux dépenser, ce qu’il reste à payer."}</p>
+        </div>
+        <div className={styles.officeIllustration}>
+          <Image src={OFFICE_ART[pole].src} alt={OFFICE_ART[pole].alt} fill sizes="(max-width: 650px) calc(100vw - 64px), (max-width: 1280px) 53vw, 650px" preload />
         </div>
         <figcaption>{OFFICE_ART[pole].caption}</figcaption>
       </figure>

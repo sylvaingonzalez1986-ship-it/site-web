@@ -7,10 +7,10 @@
 .columns header { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
 .columns header > svg { color: #076c61; flex-shrink: 0; }
 .columns h3 { font: 900 1.5rem/1.2 var(--font-display),Impact,sans-serif; text-transform: uppercase; margin: 4px 0; }
-.savings,.reputation,.loans { min-width: 0; padding: 24px; background: #fffaf0; border-top: 2px solid #172923; color: #172923; border: 2px solid #172923; border-radius: 18px; box-shadow: 3px 4px 0 #172923; }
+.savings,.reputation,.loans { min-width: 0; padding: 24px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) 48 fill / 15px / 0 stretch; }
 .savings > header { margin-bottom: 22px; }
 .dossier { display: grid; gap: 20px; }
-.reputation { background: #d8eee3; color: #172923; border-color: #172923; }
+.reputation { color: #172923; --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); }
 .reputation header > svg { color: #172923; }
 .reputation > strong { display: block; font: 900 3rem/1.2 var(--font-display),Impact,sans-serif; margin-top: 22px; }
 .reputation > strong small { font: 700 .85rem/1.5 var(--font-body),sans-serif; }
@@ -20,23 +20,24 @@
 .reputation progress::-webkit-progress-value { background: #149b8b; }
 .reputation p,.loans p,.locked p { font-size: .78rem; line-height: 1.7; }
 .reputation > small,.loans > small { display: block; font-size: .68rem; line-height: 1.7; }
-.loans { border-color: #172923; }
+.loans { --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); }
 .loans header > svg { color: #172923; }
 .loans header > span,.locked > span { padding: 5px 9px; border: 1px solid #17292340; color: #172923; font-size: .65rem; font-weight: 750; }
 .loans p,.loans > small,.locked p { color: #536058; }
-.locked { padding: 22px; border: 2px solid #172923; border-radius: 18px; box-shadow: 3px 4px 0 #172923; background: #f4e4c9; color: #172923; border-style: dashed; }
+.locked { padding: 22px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) 48 fill / 15px / 0 stretch; }
 .locked > svg { color: #172923; }
 .locked h4 { font: 900 1.5rem/1.2 var(--font-display),Impact,sans-serif; margin-block: 14px; }
 .locked > span { display: inline-block; }
-.error { padding: 20px; background: #f7ded1; color: #8a3427; line-height: 1.7; }
-.error button { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 14px; margin-top: 12px; background: #fffaf0; color: #172923; border: 2px solid #172923; border-radius: 11px; box-shadow: 2px 3px 0 #172923; }
-.bank button:disabled { opacity: 1; background: #e2dccb; color: #667064; border-color: #899285; box-shadow: none; cursor: not-allowed; }
+.error { padding: 20px; color: #8a3427; line-height: 1.7; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) 48 fill / 15px / 0 stretch; }
+.error button { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 14px; margin-top: 12px; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.bank button:disabled { opacity: 1; background-color: #e2dccb; color: #667064; border-color: #899285; box-shadow: none; cursor: not-allowed; }
+.bank button:disabled:is(.error button, .desks button) { opacity: 1; color: #667064; cursor: not-allowed; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 @media(max-width: 760px) { .columns { grid-template-columns: 1fr; } }
 @media(max-width: 500px) { .savings,.reputation,.loans { padding: 20px 14px; } .locked { padding: 18px 12px; } }
 
 .desks { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; margin-bottom: 24px; }
-.desks button { display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 54px; padding: 12px; color: #172923; background: #fffaf0; border: 2px solid #172923; font-size: .8rem; font-weight: 750; border-radius: 11px; box-shadow: 2px 3px 0 #172923; }
-.desks button[aria-selected="true"] { color: #172923; background: #149b8b; border-color: #172923; box-shadow: 2px 3px 0 #172923; }
+.desks button { display: flex; justify-content: center; align-items: center; gap: 10px; min-height: 54px; padding: 12px; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; font-size: .8rem; font-weight: 750; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.desks button[aria-selected="true"] { color: #fff1d6; border-color: transparent; box-shadow: none; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; }
 .deskPanel { min-width: 0; min-height: 300px; }
 .deskPanel:focus { outline: none; }
 @media(max-width: 600px) { .desks { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 7px; } .desks button { flex-direction: column; padding: 10px 5px; font-size: .68rem; gap: 8px; } }

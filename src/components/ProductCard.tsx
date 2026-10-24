@@ -1,7 +1,8 @@
 ﻿import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
-import { ChevronDown, Star } from "lucide-react";
+import { BookOpen, ChevronDown, Star } from "lucide-react";
 import styles from "@/components/ProductCard.module.css";
+import photoStyles from "@/components/boutique/ProductPhoto.module.css";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
 import { ProductCardActions } from "@/components/ProductCardActions";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
@@ -85,7 +86,7 @@ export function ProductCard({
       : 0;
 
   return (
-    <article className={`product-card group ${styles.card}`} data-world="market">
+    <article data-ui-commerce="product-card" data-ui-shape="panel" className={`product-card group ${styles.card}`} data-world="market">
       {/* Multi-image: carousel (client), Single-image: static Image (server) */}
       {hasMultipleImages ? (
         <ProductImageCarousel
@@ -95,19 +96,21 @@ export function ProductCard({
           bonusPoints={product.bonusPoints}
           promoText={hasPromo ? `Moins ${product.promoPercent}%` : undefined}
           priority={imagePriority}
-          className={styles.media}
+          className={`${styles.media} ${photoStyles.frame}`}
           sizes={IMAGE_SIZES}
         />
       ) : (
-        <div className={styles.media}>
-          <Image
-            src={firstImage}
-            alt={product.name}
-            fill
-            sizes={IMAGE_SIZES}
-            priority={imagePriority}
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-          />
+        <div className={`${styles.media} ${photoStyles.frame}`} data-product-photo="single">
+          <div className={photoStyles.window}>
+            <Image
+              src={firstImage}
+              alt={product.name}
+              fill
+              sizes={IMAGE_SIZES}
+              priority={imagePriority}
+              className={`object-cover transition-transform duration-300 group-hover:scale-105 ${photoStyles.image}`}
+            />
+          </div>
           {product.badge && (
             <span className="absolute left-3 top-4 z-10 border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 py-1 text-xs font-black uppercase tracking-wide">
               {product.badge}
@@ -180,17 +183,17 @@ export function ProductCard({
         <div className={styles.description}>{product.description}</div>
 
         {tastingSummary && tastingEntry ? (
-          <details className={styles.tasting}>
-            <summary className={styles.tastingSummary}>
+          <details data-ui-commerce="paper" data-ui-shape="panel" className={styles.tasting}>
+            <summary data-ui-commerce="tasting-summary" data-ui-shape="control" className={styles.tastingSummary}>
               <span className={styles.tastingHeading}>
                 <span className={styles.tastingIcon}>
                   <Star size={15} fill="currentColor" aria-hidden="true" />
                 </span>
-                <span className={styles.tastingTitle}>Notes du Carnet</span>
+                <span className={styles.tastingTitle}>NOTES</span>
               </span>
               <span className={styles.tastingMetrics}>
                 {tastingEntry.stats.approvedReviewCount > 0 ? <>
-                  <span className={styles.tastingAverage}><strong>{formatContestAverage(tastingEntry.stats.averageScore)}</strong> / {CONTEST_SCORE_MAX}</span>
+                  <span data-ui-commerce="gold" data-ui-shape="panel" className={styles.tastingAverage}><strong>{formatContestAverage(tastingEntry.stats.averageScore)}</strong> / {CONTEST_SCORE_MAX}</span>
                   <span className={styles.tastingCount}>{tastingEntry.stats.approvedReviewCount} avis</span>
                 </> : <span className={styles.tastingCount}>Aucun avis publié</span>}
               </span>
@@ -220,7 +223,7 @@ export function ProductCard({
               {tastingSummary.reviews.length > 0 ? (
                 <div className={styles.tastingReviews}>
                   {tastingSummary.reviews.map((review) => (
-                    <article key={review.id} className={styles.review}>
+                    <article data-ui-commerce="paper" data-ui-shape="panel" key={review.id} className={styles.review}>
                       <div className={styles.reviewHeading}>
                         <strong>
                           {review.pseudo}
@@ -240,7 +243,7 @@ export function ProductCard({
                 </div>
               ) : null}
 
-              <Link
+              <Link data-ui-commerce="tasting-link" data-ui-shape="control"
                 href={`${productHref}#avis-degustation`}
                 className={styles.tastingLink}
               >
@@ -248,6 +251,18 @@ export function ProductCard({
               </Link>
             </div>
           </details>
+        ) : null}
+
+        {tastingSummary?.notebookHref ? (
+          <Link data-ui-commerce="notebook-link" data-ui-shape="control"
+            href={tastingSummary.notebookHref}
+            className={`${styles.tastingLink} ${styles.notebookLink}`}
+            aria-label={`Noter cette fleur dans le carnet : ${product.name}`}
+            prefetch={false}
+          >
+            <BookOpen size={16} aria-hidden="true" />
+            <span>Noter cette fleur</span>
+          </Link>
         ) : null}
 
         <div className={styles.actions}>

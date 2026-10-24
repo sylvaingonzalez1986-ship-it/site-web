@@ -44,6 +44,8 @@ export function QuantitySelector({
   return (
     <div className="inline-flex items-center gap-1">
       <button
+        data-ui-commerce="quantity-control"
+        data-ui-shape="control"
         type="button"
         onClick={() => onChange(clamp(value - 1))}
         disabled={disabled || value <= min}
@@ -65,6 +67,8 @@ export function QuantitySelector({
         aria-label="Quantite"
       />
       <button
+        data-ui-commerce="quantity-control"
+        data-ui-shape="control"
         type="button"
         onClick={() => onChange(clamp(value + 1))}
         disabled={disabled || value >= max}

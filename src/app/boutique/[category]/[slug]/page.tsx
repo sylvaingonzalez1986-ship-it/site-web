@@ -201,7 +201,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
     isProductCultureModeEligible(product.category) && Boolean(product.cultureMode);
 
   return (
-    <section className={styles.page} data-world="market">
+    <section data-ui-commerce="product-page" className={styles.page} data-world="market">
       <BreadcrumbJsonLd
         items={[
           { name: "Accueil", url: baseUrl },
@@ -238,7 +238,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           <span className="text-ink">{product.name}</span>
         </nav>
 
-        <article className={styles.shell}>
+        <article data-ui-commerce="product-shell" data-ui-shape="panel" className={styles.shell}>
           <div className={styles.grid}>
             {/* Product images */}
             <div className={styles.gallery}>
@@ -307,13 +307,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
               />
 
               <div className={styles.backLinks}>
-                <Link
+                <Link data-ui-commerce="secondary" data-ui-shape="control"
                   href={`/boutique/${categorySlug}`}
                   className="btn-cartoon btn-secondary inline-flex h-10 items-center px-4 text-xs"
                 >
                   ← Retour {categoryLabel}
                 </Link>
-                <Link
+                <Link data-ui-commerce="secondary" data-ui-shape="control"
                   href="/boutique"
                   className="btn-cartoon btn-secondary inline-flex h-10 items-center px-4 text-xs"
                 >
@@ -339,9 +339,9 @@ export default async function ProductPage({ params }: ProductPageProps) {
 
         {/* Prev / Next same-category navigation */}
         {totalInCategory > 1 && (
-          <nav className={styles.pager} aria-label="Autres produits de la même catégorie">
+          <nav data-ui-commerce="gold" data-ui-shape="panel" className={styles.pager} aria-label="Autres produits de la même catégorie">
             {prevHref ? (
-              <Link
+              <Link data-ui-commerce="secondary" data-ui-shape="control"
                 href={prevHref}
                 className="btn-cartoon btn-secondary inline-flex h-10 items-center gap-2 px-4 text-xs"
                 title={prevProduct!.name}
@@ -355,7 +355,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               {currentIndex + 1} / {totalInCategory} — même catégorie
             </span>
             {nextHref ? (
-              <Link
+              <Link data-ui-commerce="secondary" data-ui-shape="control"
                 href={nextHref}
                 className="btn-cartoon btn-secondary inline-flex h-10 items-center gap-2 px-4 text-xs"
                 title={nextProduct!.name}

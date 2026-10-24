@@ -26,7 +26,7 @@ export function HomeBadgePromoBand({ zIndex }: HomeBadgePromoBandProps) {
       style={typeof zIndex === "number" ? { zIndex } : undefined}
     >
       <div className="retro-container">
-        <div className="home-editorial-promo__panel cartoon-border-sm p-4 md:p-6">
+        <div className="home-editorial-promo__panel cartoon-border-sm p-4 md:p-6" data-ui-shape="panel">
           <p className="home-editorial-promo__eyebrow">
             Badge fidélité
           </p>
@@ -48,17 +48,18 @@ export function HomeBadgePromoBand({ zIndex }: HomeBadgePromoBandProps) {
           </ol>
 
           <div className="home-editorial-promo__benefits mt-4 flex flex-wrap items-center gap-2">
-            <span className="pill-cartoon inline-flex items-center gap-1 bg-white px-3 py-1 text-xs uppercase tracking-[0.06em] text-ink">
+            <span className="pill-cartoon inline-flex items-center gap-1 bg-white px-3 py-1 text-xs uppercase tracking-[0.06em] text-ink" data-ui-shape="panel">
               <Award size={14} className="shrink-0" /> Des remises par palier
             </span>
-            <span className="pill-cartoon inline-flex items-center gap-1 bg-white px-3 py-1 text-xs uppercase tracking-[0.06em] text-ink">
+            <span className="pill-cartoon inline-flex items-center gap-1 bg-white px-3 py-1 text-xs uppercase tracking-[0.06em] text-ink" data-ui-shape="panel">
               <Truck size={14} className="shrink-0" /> Des avantages livraison
             </span>
-            <span className="pill-cartoon bg-white px-3 py-1 text-xs uppercase tracking-[0.06em] text-ink">
+            <span className="pill-cartoon bg-white px-3 py-1 text-xs uppercase tracking-[0.06em] text-ink" data-ui-shape="panel">
               Jusqu&apos;à Diamant
             </span>
             <Link
               href={badgeCtaHref}
+              data-ui-shape="control"
               className="btn-cartoon btn-secondary inline-flex h-9 items-center justify-center px-3 text-xs leading-none"
             >
               Voir les paliers

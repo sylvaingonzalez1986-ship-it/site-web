@@ -81,7 +81,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
         <div className={styles.heroNoise} aria-hidden="true" />
         <div className={`retro-container ${styles.heroGrid}`}>
           <div className={styles.heroCopy}>
-            <p className={styles.eyebrow}><Sprout size={16} aria-hidden="true" /> De la graine au marché</p>
+            <p className={styles.eyebrow} data-ui-shape="panel"><Sprout size={16} aria-hidden="true" /> De la graine au marché</p>
             <h1 className={styles.heroTitle}>
               Du CBD vrai.
               <span>Au prix juste.</span>
@@ -90,9 +90,9 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
             <p className={styles.heroLead}>Notre production bretonne et les récoltes de producteurs français identifiés. Un prix juste, dès le premier gramme.</p>
             <div className={styles.heroRule} aria-hidden="true" />
 
-            <div className={styles.mobileHeroStage} aria-hidden="true">
+            <div className={styles.mobileHeroStage} data-ui-shape="panel" aria-hidden="true">
               <span className={styles.mobileSun} />
-              <span className={styles.mobilePriceStamp}>
+              <span className={styles.mobilePriceStamp} data-ui-shape="panel">
                 <strong>CBD</strong>
                 <small>origine identifiée</small>
               </span>
@@ -107,11 +107,11 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
             </div>
 
             <div className={styles.heroActions}>
-              <Link href="/boutique" className={styles.primaryCta}>
+              <Link href="/boutique" className={styles.primaryCta} data-ui-shape="control">
                 {shopLabel}
                 <ArrowRight aria-hidden="true" />
               </Link>
-              <Link href="#notre-philosophie" className={styles.secondaryCta}>
+              <Link href="#notre-philosophie" className={styles.secondaryCta} data-ui-shape="control">
                 Notre philosophie
                 <ArrowDownRight aria-hidden="true" />
               </Link>
@@ -124,8 +124,8 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
             </ul>
           </div>
 
-          <div className={styles.heroStage} aria-label="Sylvain, producteur de chanvre breton">
-            <span className={styles.priceStamp}>
+          <div className={styles.heroStage} data-ui-shape="panel" aria-label="Sylvain, producteur de chanvre breton">
+            <span className={styles.priceStamp} data-ui-shape="panel">
               <strong>CBD</strong>
               <small>origine identifiée</small>
             </span>
@@ -153,7 +153,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
                   Disponibles <span>maintenant.</span>
                 </h2>
               </div>
-              <Link href="/boutique" className={styles.textLink}>
+              <Link href="/boutique" className={styles.textLink} data-ui-shape="control">
                 Tout voir <ArrowRight aria-hidden="true" />
               </Link>
             </div>
@@ -173,7 +173,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
                 ))}
               </div>
             ) : (
-              <div className={styles.emptyProducts}>
+              <div className={styles.emptyProducts} data-ui-shape="panel">
                 Les récoltes arrivent bientôt. En attendant, découvre toute notre démarche.
               </div>
             )}
@@ -211,7 +211,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
               {sellingPoints.map(({ icon: Icon, title, text }, index) => (
                 <article key={title} className={styles.promiseItem}>
                   <span className={styles.number}>0{index + 1}</span>
-                  <span className={styles.roundIcon}><Icon aria-hidden="true" /></span>
+                  <span className={styles.roundIcon} data-ui-shape="panel"><Icon aria-hidden="true" /></span>
                   <div>
                     <h3>{title}</h3>
                     <p>{text}</p>
@@ -233,7 +233,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
             <div className={styles.checkList}>
               {philosophy.map(({ icon: Icon, label, detail }) => (
                 <div key={label} className={styles.checkRow}>
-                  <span className={styles.roundIcon}><Icon aria-hidden="true" /></span>
+                  <span className={styles.roundIcon} data-ui-shape="panel"><Icon aria-hidden="true" /></span>
                   <p><strong>{label}.</strong> {detail}.</p>
                 </div>
               ))}
@@ -306,7 +306,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
           </div>
 
           <div className={styles.bonusCards}>
-            <article className={`${styles.bonusCard} ${styles.bonusCardFeatured}`}>
+            <article className={`${styles.bonusCard} ${styles.bonusCardFeatured}`} data-ui-shape="panel">
               <p className={styles.bonusEyebrow}>01 · Le jeu de l&apos;Arène</p>
               <h3>Joue pour gagner de vraies fleurs.</h3>
               <p className={styles.bonusDescription}>
@@ -316,13 +316,13 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
                 tiré au sort parmi les participants éligibles hors Top 10.
               </p>
               <p className={styles.bonusFinePrint}>Récompenses selon le classement et les conditions d&apos;éligibilité de la saison.</p>
-              <Link href="/arene" className={styles.boosterCta}>
+              <Link href="/arene" className={styles.boosterCta} data-ui-shape="control">
                 Découvrir l&apos;Arène <ArrowRight aria-hidden="true" />
               </Link>
               <Link href="/arene?vue=classement" className={styles.bonusTextLink}>Voir les récompenses du jeu</Link>
             </article>
 
-            <article className={styles.bonusCard}>
+            <article className={styles.bonusCard} data-ui-shape="panel">
               <p className={styles.bonusEyebrow}>02 · Le carnet de dégustation</p>
               <h3>Tes fleurs, ton verdict.</h3>
               <p className={styles.bonusDescription}>
@@ -331,12 +331,12 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
                 les autres à choisir et les producteurs à progresser.
               </p>
               <p className={styles.bonusFinePrint}>Tes avis sont publiés après modération. Les avis validés font aussi progresser ton profil.</p>
-              <Link href="/arene/carnet/regular" className={styles.boosterCta}>
+              <Link href="/arene/carnet/regular" className={styles.boosterCta} data-ui-shape="control">
                 Découvrir le carnet <ArrowRight aria-hidden="true" />
               </Link>
             </article>
 
-            <article className={styles.bonusCard}>
+            <article className={styles.bonusCard} data-ui-shape="panel">
               <p className={styles.bonusEyebrow}>03 · Les boosters de ton album</p>
               <h3>600 € de bons d&apos;achat à gagner.</h3>
               <p className={styles.bonusDescription}>
@@ -345,7 +345,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
                 lot ou d&apos;autres récompenses.
               </p>
               <p className={styles.bonusFinePrint}>Le gros lot : 12 bons d&apos;achat de 50 €, émis à raison d&apos;un par mois pendant 12 mois. Hors frais de port.</p>
-              <Link href="/profil/collection" className={styles.boosterCta}>
+              <Link href="/profil/collection" className={styles.boosterCta} data-ui-shape="control">
                 Ouvrir mon album <ArrowRight aria-hidden="true" />
               </Link>
               <Link href="/reglement-jeu-promo" className={styles.bonusTextLink}>Voir le règlement des boosters</Link>
@@ -372,7 +372,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
 
       <section className={styles.seoSection} aria-labelledby="seo-home-title">
         <div className="retro-container">
-          <div className={styles.seoCard}>
+          <div className={styles.seoCard} data-ui-shape="panel">
             <p className={styles.kicker}>De la graine à votre porte</p>
             <h2 id="seo-home-title">CBD naturel direct producteur en Bretagne</h2>
             <div className={styles.seoColumns}>
@@ -384,8 +384,8 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
               </p>
             </div>
             <div className={styles.seoActions}>
-              <Link href="/cbd-naturel">Découvrir notre CBD naturel</Link>
-              <Link href="/cbd-pas-cher">Comprendre notre prix juste</Link>
+              <Link href="/cbd-naturel" data-ui-shape="control">Découvrir notre CBD naturel</Link>
+              <Link href="/cbd-pas-cher" data-ui-shape="control">Comprendre notre prix juste</Link>
               <ContactEmailButton
                 label="Parler avec nous"
                 buttonClassName={styles.contactLink}

@@ -921,8 +921,8 @@ if(process.argv.includes('--preview')){
         await page.click('[data-warehouse-shop-category="storage"]');
         assert.equal(await page.$eval('[data-warehouse-shop-product][data-tier="premium"] button[data-warehouse-shop-choose]',node=>node.disabled),false,'Shared storage can expand while a culture is active');
         await page.click('[aria-label="Fermer la boutique"]');
-        await clickCell(12,3);await fill('Nom de la zone','La relève libre');
-        await clickAction('save');await page.waitForFunction(()=>window.__snapshot.state.zones.find(zone=>zone.id==='second').name==='La relève libre');
+        await clickCell(12,3);await fill('Position Y (m)',3);
+        await clickAction('save');await page.waitForFunction(()=>window.__snapshot.state.zones.find(zone=>zone.id==='second').y===3);
         assert.equal(await page.evaluate(()=>window.__snapshot.activeRuns.length),1,'Editing a free zone preserves the ongoing culture');
         await clickText('Cultures');await page.evaluate(()=>{window.__navigation=null;});await clickCell(20,3);
         assert.equal(await page.evaluate(()=>window.__navigation),null,'An idle zone does not start a parallel campaign during an independent legacy culture');

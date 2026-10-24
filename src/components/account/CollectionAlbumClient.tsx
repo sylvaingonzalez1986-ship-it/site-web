@@ -98,7 +98,7 @@ function DuplicateManagerModal({
           </p>
           <div className={albumStyles.managerList}>
             {items.map((item) => (
-              <button
+              <button data-ui-account="manager-item" data-ui-shape="control"
                 key={`${item.page.rarity}-${item.group.cardDefinitionId}`}
                 type="button"
                 className={albumStyles.managerItem}
@@ -286,18 +286,18 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     <div className="absolute inset-0 z-10">
       <div className="absolute inset-0 bg-[#f6efe2]/45 backdrop-blur-[1.5px]" />
       <div className="relative flex justify-center px-4 pt-28 md:px-6 md:pt-32">
-        <div className={`${albumStyles.modalShell} p-6 text-center`}>
+        <div data-ui-account="paper" data-ui-shape="panel" className={`${albumStyles.modalShell} p-6 text-center`}>
           <p className="font-display text-2xl leading-tight text-ink">Crée ton compte pour commencer ta collection</p>
           <p className="mt-3 text-sm text-charcoal">
             Ouvre tes boosters, collectionne tes cartes et suis ta progression dans ton album.
           </p>
-          <Link
+          <Link data-ui-account="green" data-ui-shape="control"
             href="/compte/inscription?next=/profil/collection"
             className={`${albumStyles.primaryButton} mt-5`}
           >
             Créer mon compte
           </Link>
-          <Link
+          <Link data-ui-account="gold" data-ui-shape="control"
             href="/compte/connexion?next=/profil/collection"
             className={`${albumStyles.secondaryButton} mt-3`}
           >
@@ -312,7 +312,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     if (embedded) {
       return (
         <div className={albumStyles.experience}>
-          <div className={albumStyles.statusCard}>
+          <div data-ui-account="paper" data-ui-shape="panel" className={albumStyles.statusCard}>
             <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-forest border-t-transparent" />
             <p className="mt-3 font-display text-ink">Chargement de ta collection...</p>
           </div>
@@ -323,7 +323,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     return (
       <section className={albumStyles.pageShell}>
         <div className={albumStyles.pageInner}>
-          <div className={albumStyles.statusCard}>
+          <div data-ui-account="paper" data-ui-shape="panel" className={albumStyles.statusCard}>
             <div className="mx-auto h-8 w-8 animate-spin rounded-full border-4 border-forest border-t-transparent" />
             <p className="mt-3 font-display text-ink">Chargement de ta collection...</p>
           </div>
@@ -336,9 +336,9 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     if (embedded) {
       return (
         <div className={albumStyles.experience}>
-          <div className={albumStyles.statusCard}>
+          <div data-ui-account="paper" data-ui-shape="panel" className={albumStyles.statusCard}>
             <p className="font-display text-lg text-red-600">{error}</p>
-            <button className={`${albumStyles.primaryButton} mt-4`} onClick={() => refreshAll()}>
+            <button data-ui-account="green" data-ui-shape="control" className={`${albumStyles.primaryButton} mt-4`} onClick={() => refreshAll()}>
               Réessayer
             </button>
           </div>
@@ -349,9 +349,9 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     return (
       <section className={albumStyles.pageShell}>
         <div className={albumStyles.pageInner}>
-          <div className={albumStyles.statusCard}>
+          <div data-ui-account="paper" data-ui-shape="panel" className={albumStyles.statusCard}>
             <p className="font-display text-lg text-red-600">{error}</p>
-            <button
+            <button data-ui-account="green" data-ui-shape="control"
               className={`${albumStyles.primaryButton} mt-4`}
               onClick={() => refreshAll()}
             >
@@ -402,7 +402,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   const welcome = (welcomeEligible || welcomeJustClaimed) ? <div className={arenaStyles.welcome}>
     <p>Ton pack de bienvenue offert contient 3 Buddies communs différents pour commencer à cultiver.</p>
     {welcomeJustClaimed ? <span role="status">Ton booster gratuit est prêt à être ouvert.</span> :
-      <button type="button" disabled={welcomeClaiming} onClick={handleClaimWelcomePack}>
+      <button data-ui-account="dark" data-ui-shape="control" type="button" disabled={welcomeClaiming} onClick={handleClaimWelcomePack}>
         {welcomeClaiming ? "Attribution en cours…" : "Récupérer mon booster gratuit"}
       </button>}
   </div> : null;
@@ -418,15 +418,15 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
       /> : <div className={arenaStyles.workspace}>
         <header className={`${lobbyStyles.topBar} ${arenaStyles.workspaceTop}`}>
           <div className={lobbyStyles.brand}><span>Kanab Quest · Mon album</span><h1>{screenTitle}</h1></div>
-          <button type="button" className={lobbyStyles.sound} onClick={() => setScreen("lobby")}><ArrowLeft aria-hidden="true" /><span>Retour à l’album</span></button>
+          <button data-ui-account="outline-light" data-ui-shape="control" type="button" className={lobbyStyles.sound} onClick={() => setScreen("lobby")}><ArrowLeft aria-hidden="true" /><span>Retour à l’album</span></button>
         </header>
         <nav className={`${lobbyStyles.modeSelector} ${arenaStyles.workspaceNav}`} aria-label="Espaces de l’album">
-          {ALBUM_DESTINATIONS.map(({ id, label, icon: Icon }) => <button key={id} type="button" aria-pressed={screen === id} onClick={() => setScreen(id)}><Icon aria-hidden="true" /><span>{label}</span></button>)}
+          {ALBUM_DESTINATIONS.map(({ id, label, icon: Icon }) => <button data-ui-account="album-mode" data-ui-shape="control" key={id} type="button" aria-pressed={screen === id} onClick={() => setScreen(id)}><Icon aria-hidden="true" /><span>{label}</span></button>)}
         </nav>
         <div className={arenaStyles.workspaceBody}>
           {screen === "cards" && <nav className={arenaStyles.collectionNav} aria-label="Collections">
-            <button type="button" aria-pressed={collection === "buddies"} onClick={() => setCollection("buddies")}>Les Buddies</button>
-            <button type="button" aria-pressed={collection === "placard"} onClick={() => setCollection("placard")}>Botte du Chanvrier & Héritages</button>
+            <button data-ui-account="collection-tab" data-ui-shape="control" type="button" aria-pressed={collection === "buddies"} onClick={() => setCollection("buddies")}>Les Buddies</button>
+            <button data-ui-account="collection-tab" data-ui-shape="control" type="button" aria-pressed={collection === "placard"} onClick={() => setCollection("placard")}>Botte du Chanvrier & Héritages</button>
           </nav>}
           {screen === "cards" && collection === "placard" && <BotteAlbumCollection isAuthenticated={isAuthenticated} />}
           {screen === "cards" && collection === "buddies" &&
@@ -451,14 +451,14 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
       {screen === "boosters" && <>
         <div className={arenaStyles.toolIntro}><Ticket aria-hidden="true" /><div><h2>La prochaine découverte.</h2><p>Ouvre tes boosters ou échange tes points pour agrandir ta collection.</p></div></div>
         <div className={arenaStyles.boosterActions}>
-          {availableTickets.length > 0 && <button type="button" className={lobbyStyles.enter} onClick={openAvailablePack}>Ouvrir un booster <ArrowUpRight aria-hidden="true" /></button>}
+          {availableTickets.length > 0 && <button data-ui-account="gold" data-ui-shape="control" type="button" className={lobbyStyles.enter} onClick={openAvailablePack}>Ouvrir un booster <ArrowUpRight aria-hidden="true" /></button>}
           <span>{availableTickets.length} booster{availableTickets.length > 1 ? "s" : ""} disponible{availableTickets.length > 1 ? "s" : ""}</span>
           {welcome}
         </div>
       </>}
       {screen === "rewards" && <div className={arenaStyles.toolIntro}><Gift aria-hidden="true" /><div><h2>À toi de choisir.</h2><p>Les pages complètes et les doublons réunis débloquent tes récompenses.</p></div></div>}
       {screen !== "cards" && <section className={albumStyles.actionGrid} aria-label="Actions de l'album">
-        {screen === "boosters" && <div className={albumStyles.actionCard}>
+        {screen === "boosters" && <div data-ui-account="album-action" data-ui-shape="panel" className={albumStyles.actionCard}>
           <span>
             <span className={albumStyles.actionHeader}>
               <span className={albumStyles.actionIcon}><Sparkles aria-hidden="true" /></span>
@@ -476,7 +476,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
               disabled={isAlbumPreview}
               compact
             />
-            <button
+            <button data-ui-account="points-action" data-ui-shape="control"
               type="button"
               disabled={isAlbumPreview || acting || maxPurchasablePacks < 1}
               onClick={() => void handlePurchasePacks()}
@@ -486,7 +486,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
           </div>
         </div>}
 
-        {screen === "rewards" && <><button
+        {screen === "rewards" && <><button data-ui-account="album-action" data-ui-shape="control" data-ui-account-muted={claimablePages.length === 0}
           type="button"
           className={`${albumStyles.actionCard} ${claimablePages.length === 0 ? albumStyles.actionCardMuted : ""}`}
           disabled={isAlbumPreview || claimablePages.length === 0}
@@ -509,7 +509,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
           <span className={albumStyles.actionLink}>Voir mes gains <ChevronRight aria-hidden="true" /></span>
         </button>
 
-        <button
+        <button data-ui-account="album-action" data-ui-shape="control" data-ui-account-muted={allBurnableGroups.length === 0}
           type="button"
           className={`${albumStyles.actionCard} ${allBurnableGroups.length === 0 ? albumStyles.actionCardMuted : ""}`}
           disabled={isAlbumPreview || allBurnableGroups.length === 0}

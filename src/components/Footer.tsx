@@ -151,6 +151,7 @@ function FooterContent() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className={styles.actionSecondary}
+                data-ui-shape="control"
                 aria-label="Instagram des Chanvriers Bretons"
               >
                 <Instagram size={17} aria-hidden="true" />
@@ -182,7 +183,7 @@ function FooterContent() {
           </div>
           <div className={styles.regionalLinks}>
             {REGIONAL_LINKS.map((link) => (
-              <Link key={link.href} href={link.href}>
+              <Link key={link.href} href={link.href} data-ui-shape="control">
                 {link.label}
               </Link>
             ))}

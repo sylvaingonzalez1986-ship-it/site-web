@@ -1,23 +1,23 @@
-.history { min-width: 0; overflow: hidden; border: 2px solid #172923; border-radius: 18px; background: #fff8e7; color: #172923; box-shadow: 3px 4px 0 #172923; }
+.history { min-width: 0; overflow: hidden; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .heading { display: flex; align-items: center; gap: 16px; padding: 22px; border-bottom: 2px solid #172923; background: #efc451; }
 .heading > div { min-width: 0; }
-.headingIcon { display: grid; flex: 0 0 auto; width: 54px; height: 54px; place-items: center; border: 2px solid #172923; border-radius: 13px; background: #fff1d6; box-shadow: 2px 3px 0 #172923; }
+.headingIcon { display: grid; flex: 0 0 auto; width: 54px; height: 54px; place-items: center; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; box-shadow: var(--game-panel-shadow, none); }
 .headingIcon svg { width: 29px; height: 29px; }
 .eyebrow { font-size: 10px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
 .history .heading h2 { margin: 3px 0 6px; font: 900 clamp(28px, 4vw, 38px)/1.05 var(--font-display), "Arial Narrow", Impact, sans-serif; text-transform: uppercase; }
 .heading p { margin: 0; font-size: 12px; line-height: 1.5; }
 .overview { display: grid; gap: 12px; padding: 18px 20px 14px; }
 .metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0; }
-.metrics > div { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; padding: 10px 14px; border: 1px solid #17292345; border-radius: 10px; background: #fffdf6; }
-.metrics > div[data-wins] { background: #d7efe2; border-color: #149b8b; }
+.metrics > div { display: flex; align-items: center; justify-content: space-between; gap: 6px; min-width: 0; padding: 10px 14px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.metrics > div[data-wins] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .metrics dt { font-size: 11px; font-weight: 750; }
 .metrics dd { margin: 0; font: 900 30px/1.05 var(--font-display), "Arial Narrow", Impact, sans-serif; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .overview > p { margin: 8px 0 0; font-size: 10px; line-height: 1.5; color: #46564c; }
 .list { display: grid; gap: 8px; margin: 0; padding: 0 20px; list-style: none; }
 .list > li { min-width: 0; }
-.receipt { overflow: hidden; border: 1px solid #17292360; border-left: 5px solid #ac5c43; border-radius: 10px; background: #fffdf6; }
-.receipt[data-result="won"] { border-left-color: #138875; }
-.receipt[data-result="cancelled"] { border-left-color: #899188; }
+.receipt { overflow: hidden; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.receipt[data-result="won"] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.receipt[data-result="cancelled"] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .history .receiptSummary { display: grid; grid-template-columns: 78px minmax(0, 1fr) auto 20px; align-items: center; gap: 12px; min-height: 88px; padding: 12px; list-style: none; cursor: pointer; }
 .receiptSummary::-webkit-details-marker { display: none; }
 .receiptSummary:hover { background: #fff1d6; }
@@ -38,21 +38,22 @@
 .receipt[open] .receiptSummary { border-bottom: 1px solid #17292330; background: #fff1d6; }
 .receiptBody { padding: 14px; }
 .rounds { display: grid; gap: 6px; }
-.rounds > div { display: grid; gap: 7px; min-width: 0; padding: 9px 12px; border-left: 3px solid #ac5c43; border-radius: 4px; background: #f5e9db; }
+.rounds > div { display: grid; gap: 7px; min-width: 0; padding: 9px 12px; border-left: 3px solid #ac5c43; border-radius: var(--game-panel-radius, 2px); background: #f5e9db; }
 .rounds > div[data-won] { border-left-color: #138875; background: #e2f1e7; }
 .rounds > div > small { font-size: 10px; color: #46564c; }
 .burnNotice, .cancelledNotice { margin: 10px 0 0; font-size: 11px; line-height: 1.6; }
 .cancelledNotice { margin: 0; }
 .receiptBody > section { margin-bottom: 0; }
 .pagination { display: flex; align-items: center; justify-content: center; gap: 18px; padding: 16px 20px; }
-.history .pagination button { display: grid; width: 44px; height: 44px; flex-shrink: 0; place-items: center; padding: 0; border: 2px solid #172923; border-radius: 10px; background: #efc451; color: #172923; cursor: pointer; }
-.pagination button:disabled { border-color: #17292340; background: #eee6d8; color: #17292360; cursor: default; }
+.history .pagination button { display: grid; width: 44px; height: 44px; flex-shrink: 0; place-items: center; padding: 0; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.pagination button:disabled { color: #17292360; cursor: default; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .pagination button svg { width: 22px; height: 22px; }
 .pagination p { display: grid; gap: 3px; min-width: 90px; margin: 0; text-align: center; }
 .pagination strong { font-size: 12px; }
 .pagination p > span { font-size: 10px; color: #46564c; }
-.history button:focus-visible, .receiptSummary:focus-visible { outline: 3px solid #08715f; outline-offset: -3px; }
-.pendingList { margin: 18px 20px 0; padding: 14px; border: 2px solid #b48222; border-radius: 12px; background: #fff1cf; }
+.history button:focus-visible { outline: 3px solid #08715f; outline-offset: -3px; }
+.receiptSummary:focus-visible { outline: 3px solid #08715f; outline-offset: -3px; }
+.pendingList { margin: 18px 20px 0; padding: 14px; border: 1px solid #b48222; border-radius: var(--game-panel-radius, 2px); background: #fff1cf; }
 .history .pendingList h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 12px; font: 900 23px/1.15 var(--font-display), "Arial Narrow", Impact, sans-serif; text-align: left; text-transform: uppercase; }
 .pendingList h3 svg { width: 20px; height: 20px; flex-shrink: 0; }
 .pendingBattle { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 12px 0; border-top: 1px solid #b4822260; }
@@ -60,7 +61,7 @@
 .pendingBattle strong { display: block; font-size: 13px; line-height: 1.4; overflow-wrap: anywhere; }
 .pendingBattle strong > span { font-size: 11px; font-weight: 500; }
 .pendingBattle p { margin: 5px 0 0; font-size: 11px; line-height: 1.5; }
-.history .pendingBattle > button { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; flex-shrink: 0; padding: 8px 12px; border: 2px solid #172923; border-radius: 9px; background: #efc451; color: #172923; font: 800 19px/1.15 var(--font-display), "Arial Narrow", Impact, sans-serif; text-transform: uppercase; cursor: pointer; }
+.history .pendingBattle > button { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; flex-shrink: 0; padding: 8px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: 800 19px/1.15 var(--font-display), "Arial Narrow", Impact, sans-serif; text-transform: uppercase; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .pendingBattle > button:disabled { opacity: .6; cursor: default; }
 .pendingBattle button svg { width: 18px; height: 18px; }
 .empty { display: grid; justify-items: center; gap: 10px; padding: 32px 22px; text-align: center; }
@@ -69,7 +70,7 @@
 .empty > p { margin: 0; font-size: 12px; line-height: 1.5; }
 .loadRecent { display: grid; justify-items: center; gap: 8px; padding: 0 20px 18px; }
 .loadRecent > p { margin: 0; color: #86432e; font-size: 12px; line-height: 1.5; text-align: center; }
-.history .loadRecent > button { min-height: 44px; padding: 9px 14px; border: 2px solid #172923; border-radius: 9px; background: #d7efe2; color: #172923; font: 800 19px/1.15 var(--font-display), "Arial Narrow", Impact, sans-serif; text-transform: uppercase; cursor: pointer; }
+.history .loadRecent > button { min-height: 44px; padding: 9px 14px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: 800 19px/1.15 var(--font-display), "Arial Narrow", Impact, sans-serif; text-transform: uppercase; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .loadRecent > button:disabled { opacity: .6; cursor: default; }
 
 @media (max-width: 700px) {

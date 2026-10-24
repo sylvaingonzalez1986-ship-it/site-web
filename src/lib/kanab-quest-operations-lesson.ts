@@ -8,6 +8,9 @@ import { KQ_COMPUTER_PRICE_CENTS, KQ_SALES_CHANNELS, getKqCommerceCapacity, getK
 import { KQ_GAME_MONTH_MS, normalizeKqShopName, previewKqBusinessPayment } from './kanab-quest-business';
 import { createKqOnlinePreview, getKqOnlineSiteTier } from './kanab-quest-online';
 import { applyKqOperationsOnline, consumeKqOperationsCustomerDemand, getKqOperationsCustomerDemand } from './kanab-quest-operations-online';
+import { applyKqOperationsSocial, getKqOperationsSocial, replayKqOperationsSocialV1 } from './kanab-quest-operations-social';
+import { parseKqSocialCommand, type KqSocialSnapshot } from './kanab-quest-social';
+import type { KqSocialSnapshot as KqSocialV1Snapshot } from './kanab-quest-social-v1';
 import { createKqCustomerDemandSnapshot } from './kanab-quest-customer-demand';
 import { KQ_MARKET_ROUTES, isKqMarketRouteCode, quoteKqMarketRoutes, type KqMarketRouteCode } from './kanab-quest-market';
 import { getKqMarketWindow } from './kanab-quest-market-demand';
@@ -28,9 +31,10 @@ export type KqOperationsLessonState = {
   quotes: Record<string, PreparedQuote>; receipts: Record<string, unknown>;
   onlineOrderCredits?: Record<string, number>;
   customerDemandUsage?: Record<string, number>;
+  social?: KqSocialSnapshot | KqSocialV1Snapshot;
   onlineSimulation?: { packedQualities: Record<string, number>; promotedFlowerIds: string[]; clientDay: string; clientsStart: number; clientsGained: number; clientsLost: number; loyaltyProgress: number; churnProgress: number };
 };
-export type KqOperationsLessonAction = { path: string; method: string; body: Record<string, unknown> };
+export type KqOperationsLessonAction = { path: string; method: string; body: Record<string, unknown>; socialCatalogVersion?: 2; socialNarrativeVersion?: 2 | 3 };
 const LOT_ID = 'operations-lesson-flower';
 
 function inventory(codes: readonly string[], equipped = codes): Inventory {
@@ -189,10 +193,12 @@ export function getKqOperationsEnergy(state: KqOperationsLessonState) {
 function requireCondition(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(message); }
 
 /** Executes only this exercise. Unknown endpoints fail closed; there is no network fallback. */
-export function applyKqOperationsRequest(current: KqOperationsLessonState, action: KqOperationsLessonAction): { state: KqOperationsLessonState; payload: unknown } {
+export function applyKqOperationsRequest(current: KqOperationsLessonState, action: KqOperationsLessonAction, options: { replaySocialV1?: true; replaySocialOriginalCatalog?: true; replaySocialLegacyNarrative?: true; replaySocialV2Narrative?: true } = {}): { state: KqOperationsLessonState; payload: unknown } {
   const { method, body } = action;
   const url = new URL(action.path, 'https://lesson.invalid');
   requireCondition(url.origin === 'https://lesson.invalid', 'Cette action ne fait pas partie de cet atelier.');
+  // An anonymous exercise has no player profile. Reading identity must never settle its economy.
+  if (method === 'GET' && url.pathname === '/api/arena/placard/social/player') return { state: current, payload: { firstName: null, profile: null } };
   if (projectKqStorageLot(current.storage.lot, current.trial.clock).capacity?.overflowDue) {
     current = structuredClone(current);
     sellLessonOverflow(current, true);
@@ -202,11 +208,20 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
     if (url.pathname === '/api/arena/placard/commerce') return { state: current, payload: getKqOperationsCommerce(current) };
     if (url.pathname === '/api/arena/placard/energy') return { state: current, payload: getKqOperationsEnergy(current) };
     if (url.pathname === '/api/arena/placard/storage') return { state: current, payload: getKqOperationsStorage(current) };
+    if (url.pathname === '/api/arena/placard/social') return { state: current, payload: getKqOperationsSocial(current) };
     throw new Error('Cet espace possède son propre atelier. Reviens aux possibilités pour le découvrir.');
   }
   requireCondition(method === 'POST' || method === 'PATCH', 'Action indisponible dans cet atelier.');
+  if (url.pathname === '/api/arena/placard/social') {
+    requireCondition(method === 'POST', 'Publication indisponible avec cette méthode.');
+    if (!options.replaySocialV1) requireCondition(parseKqSocialCommand(body), 'Choix de réseau social invalide.');
+  }
   const receiptKey = typeof body.requestKey === 'string' ? `${url.pathname}:${body.requestKey}` : null;
-  if (receiptKey && Object.hasOwn(current.receipts, receiptKey)) return { state: current, payload: current.receipts[receiptKey] };
+  if (receiptKey && Object.hasOwn(current.receipts, receiptKey)) {
+    const stored = current.receipts[receiptKey];
+    return { state: current, payload: url.pathname === '/api/arena/placard/social' && stored && typeof stored === 'object'
+      ? { ...stored, culture: getKqOperationsSocial(current).culture } : stored };
+  }
   const state = structuredClone(current);
   const c = state.trial.commerce;
   c.customerDemand = getKqOperationsCustomerDemand(state);
@@ -297,6 +312,8 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
       } else throw new Error('Action de stockage inconnue.');
     }
     payload = getKqOperationsStorage(state);
+  } else if (url.pathname === '/api/arena/placard/social') {
+    payload = options.replaySocialV1 ? replayKqOperationsSocialV1(state, body) : applyKqOperationsSocial(state, body, options.replaySocialOriginalCatalog, options.replaySocialLegacyNarrative, undefined, options.replaySocialV2Narrative);
   } else if (url.pathname === '/api/arena/placard/commerce') {
     if (body.action === 'online') {
       payload = applyKqOperationsOnline(state, body.command, body.payload, {
@@ -397,7 +414,11 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
       c.receipts.push(receipt); payload = receipt;
     } else throw new Error('Cette opération ne fait pas partie de cet essai. La gestion se trouve au Marché et les factures au Bureau.');
   } else throw new Error('Action indisponible dans cet atelier.');
-  if (receiptKey) state.receipts[receiptKey] = payload;
+  if (receiptKey) {
+    const stored = structuredClone(payload);
+    if (url.pathname === '/api/arena/placard/social' && stored && typeof stored === 'object' && 'culture' in stored) delete stored.culture;
+    state.receipts[receiptKey] = stored;
+  }
   return { state, payload };
 }
 

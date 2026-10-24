@@ -9,6 +9,7 @@ import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KQ_ONLINE_MARKETING_MISSIONS, type KqOnlineMarketingAngle } from "@/lib/kanab-quest-online";
 import { KQ_MARKETING_BUDGETS, KQ_MARKETING_CAMPAIGNS, getKqMarketingPreview, type KqMarketingBudgetCode, type KqMarketingCampaignCode } from "@/lib/kanab-quest-marketing";
 import { KqBarChart, KqProgressMeter } from "./KqVisuals";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 import styles from "./KqMarketingCampaigns.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -32,7 +33,7 @@ const audiences: Array<{ code: KqOnlineMarketingAngle; name: string; description
 ];
 
 export function KqMarketingCampaigns({ data, now, busy, onAsk, onOpenPricing, onPrepareStock, advertising }: Props) {
-  const id = useId();
+  const id = useId(), api = useKqTutorialApi();
   const [code, setCode] = useState<KqMarketingCampaignCode>(() => data.online?.marketing.completedCodes.includes("introduction") ? "harvest" : "introduction");
   const [listingId, setListingId] = useState("");
   const [angle, setAngle] = useState<KqOnlineMarketingAngle>("craft");
@@ -97,7 +98,7 @@ export function KqMarketingCampaigns({ data, now, busy, onAsk, onOpenPricing, on
 
         <aside className={styles.forecast} aria-label="Prévision de campagne" aria-live="polite" aria-atomic="true">
           <span className={styles.kicker}><Target size={16} aria-hidden="true" />Avant de t’engager</span><h4>Ce que tu mets en jeu</h4>
-          <dl className={styles.investment}><div><dt>Budget débité au lancement</dt><dd>{formatKqCash(preview.costCents)}</dd></div><div><dt>Créneau occupé</dt><dd>{definition.preparationHours + definition.durationHours} h<small> réelles</small></dd></div></dl>
+          <dl className={styles.investment}><div><dt>Budget débité au lancement</dt><dd>{formatKqCash(preview.costCents)}</dd></div><div><dt>Créneau occupé</dt><dd>{definition.preparationHours + definition.durationHours} h<small> {api.isTutorial ? "fictives" : "réelles"}</small></dd></div></dl>
           <div className={styles.fit} data-fit={preview.fit >= 1}><span>{preview.fit >= 1 ? <Check size={17} aria-hidden="true" /> : <Target size={17} aria-hidden="true" />} {selectedListing ? preview.fit >= 1 ? "Ce public correspond à ton offre" : "Ton offre convainc peu ce public" : "Choisis d’abord une annonce"}</span><p>{selectedListing ? `${number(preview.visitorsPerDay * preview.fit)} visites ciblées / jour après adéquation. ${preview.fit < 1 ? "Adapte le public ou ton prix avant d’investir." : "Le stock et la satisfaction feront la différence."}` : "Il faut un produit disponible pour transformer les visites en commandes."}</p></div>
           {selectedListing ? <>
             <div className={styles.visualCard}><KqProgressMeter label="Satisfaction estimée" value={preview.satisfactionScore} max={100} valueLabel={`${number(preview.satisfactionScore)} / 100`} hint="75/100 minimum pour gagner des abonnés" tone={preview.satisfactionScore >= 75 ? "teal" : "gold"} /></div>
@@ -118,7 +119,7 @@ export function KqMarketingCampaigns({ data, now, busy, onAsk, onOpenPricing, on
       <details className={styles.footnote}><summary>Comment sont calculées les prévisions ?</summary><p>Comparaison avec les ventes estimées sans campagne : après TVA, frais, emballage et budget de campagne, avant coût de production et charges fixes. Prévisions indicatives, limitées par le stock et le temps de vente disponible. Les résultats incluent toutes les commandes du produit pendant la diffusion. La satisfaction évolue avec la qualité et la demande.</p></details>
     </>}
 
-    {history.length ? <details className={styles.history}><summary><ReceiptText size={18} aria-hidden="true" /><strong>Bilans des campagnes</strong><span>{history.length} récent{history.length > 1 ? "s" : ""} · dernier : +{history[0].results.followersEarned} abonnés</span></summary><p>Commandes du produit pendant la diffusion, y compris celles venues naturellement. Le montant des ventes n’est pas le bénéfice de la campagne.</p><div className={styles.reports}>{history.map(report => <article key={report.id} aria-label={`Bilan ${objectives[report.code].name}`}><header><div><strong>{objectives[report.code].name}</strong><small>{report.listingName} · {date(report.completedAt)}</small></div><span data-success={report.results.satisfiedOrders >= report.goalOrders}>{report.results.satisfiedOrders >= report.goalOrders ? "Objectif atteint" : "Objectif partiel"}</span></header><dl><div><dt>Budget engagé</dt><dd>{formatKqCash(report.costCents)}</dd></div><div><dt>Commandes satisfaisantes</dt><dd>{report.results.satisfiedOrders} / {report.goalOrders}</dd></div><div><dt>Ventes versées en trésorerie</dt><dd>{formatKqCash(report.results.netRevenueCents)}</dd></div><div><dt>Abonnés gagnés</dt><dd>+{report.results.followersEarned}</dd></div></dl></article>)}</div></details> : null}
+    {history.length ? <details className={styles.history} data-marketing-history><summary><ReceiptText size={18} aria-hidden="true" /><strong>Bilans des campagnes</strong><span>{history.length} récent{history.length > 1 ? "s" : ""} · dernier : +{history[0].results.followersEarned} abonnés</span></summary><p>Commandes du produit pendant la diffusion, y compris celles venues naturellement. Le montant des ventes n’est pas le bénéfice de la campagne.</p><div className={styles.reports}>{history.map(report => <article key={report.id} data-marketing-report={report.id} aria-label={`Bilan ${objectives[report.code].name}`}><header><div><strong>{objectives[report.code].name}</strong><small>{report.listingName} · {date(report.completedAt)}</small></div><span data-success={report.results.satisfiedOrders >= report.goalOrders}>{report.results.satisfiedOrders >= report.goalOrders ? "Objectif atteint" : "Objectif partiel"}</span></header><dl><div><dt>Budget engagé</dt><dd>{formatKqCash(report.costCents)}</dd></div><div><dt>Commandes satisfaisantes</dt><dd>{report.results.satisfiedOrders} / {report.goalOrders}</dd></div><div><dt>Ventes versées en trésorerie</dt><dd>{formatKqCash(report.results.netRevenueCents)}</dd></div><div><dt>Abonnés gagnés</dt><dd>+{report.results.followersEarned}</dd></div></dl></article>)}</div></details> : null}
     {advertising ? <details className={styles.advertising}><summary><Megaphone size={18} aria-hidden="true" /><strong>Publicité générale de la boutique</strong><span>Un autre levier pour l’audience naturelle</span></summary><p>La publicité générale agit sur les visiteurs habituels de la boutique. Elle ne multiplie pas les visites ciblées de ces campagnes.</p>{advertising}</details> : null}
   </div>;
 }

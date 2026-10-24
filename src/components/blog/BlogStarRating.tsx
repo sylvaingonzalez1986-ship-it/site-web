@@ -97,7 +97,7 @@ export function BlogStarRating({ postId }: BlogStarRatingProps) {
   const displayedRating = hovered ?? stats.userRating ?? Math.round(stats.averageRating);
 
   return (
-    <div className={styles.panel}>
+    <div data-ui-shape="panel" className={styles.panel}>
       <h2 className={styles.panelTitle}>Note de l&apos;article</h2>
       <div className={styles.ratingRow}>
         <div className={styles.stars} role="group" aria-label="Noter cet article">

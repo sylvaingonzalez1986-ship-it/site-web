@@ -44,13 +44,13 @@ export function HomeSeasonGallery({
       style={{ zIndex }}
     >
       <div className="retro-container">
-        <div className={styles.panel}>
+        <div className={styles.panel} data-ui-shape="panel">
           <p className={styles.eyebrow}>Au rythme des saisons</p>
           <h2 className={styles.title}>{title}</h2>
 
           <div className={styles.grid}>
             <div className={styles.portrait}>
-              <div className={styles.portraitFrame}>
+              <div className={styles.portraitFrame} data-ui-shape="panel">
                 <Image
                   src={decorativeBackgroundSrc}
                   alt=""
@@ -74,7 +74,7 @@ export function HomeSeasonGallery({
             </div>
 
             {galleryImages.length === 0 ? (
-              <div className={styles.empty}>
+              <div className={styles.empty} data-ui-shape="panel">
                 Aucune photo de culture pour le moment.
               </div>
             ) : (

@@ -1,0 +1,9 @@
+{
+  "date": "2026-10-24",
+  "tool": "Built-in image_gen",
+  "asset": "public/contest/ui/notebook-cover-material-v1.webp",
+  "source": "docs/bete-de-concours/artwork/notebook-cover-material-v1.png",
+  "prompt": "Use case: stylized-concept. Asset type: complete blank cover material for an interactive illustrated tasting notebook in a French cartoon village game. A single closed notebook seen directly from the front, upright portrait 2:3, flat orthographic without perspective. Draw the whole book silhouette: very dark evergreen hand-inked outline, subtly uneven cloth-covered teal board with modest clipped/worn corners, narrow dark stitched spine on the left with two restrained golden rules, and a very thin cream page stack visible along the right and bottom. The center of the cover is entirely blank deep teal #087b70 with delicate screenprinted cloth grain and tiny ink imperfections. A fine broken gold double rule near the perimeter only. Friendly French/Belgian comic ink and flat print, handcrafted paper-and-ink aesthetic, matching cream #fff1d6, gold #efc451, ink #172923. This is an actual UI material, not a mockup: large clear blank central space for a live HTML title and a separate character illustration. Absolutely no text, letters, logo, leaf, emblem, character, object on top, elastic strap, lighting gradients or photoreal shadows. The book occupies almost all the canvas with a small fully transparent outside margin. No background scene. Keep the spine, page stack and border within the outermost 8% of the image.",
+  "processing": "Sharp: alpha trim threshold10, resize508×740, extend2px transparent peredge, WebPquality92/alpha100. Final512×744.",
+  "usage": "Complete cover silhouette and texture with border-image 70 fill /25px. Titles, actions, signature and mascot remain accessible HTML."
+}

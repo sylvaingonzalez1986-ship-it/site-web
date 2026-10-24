@@ -1,4 +1,4 @@
-.shop { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 24px; width: min(1080px, 100%); margin: 24px auto; padding: 24px; border: 3px solid #172923; border-radius: 24px; background: #fff1d6; color: #172923; box-shadow: 6px 6px 0 #172923; font-family: var(--font-body), sans-serif; }
+.shop { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 24px; width: min(1080px, 100%); margin: 24px auto; padding: 24px; color: #172923; font-family: var(--font-body), sans-serif; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .shop[data-embedded] { margin-block: 0; }
 .presentation { display: flex; align-items: center; gap: 20px; min-width: 0; }
 .packArt { position: relative; flex: 0 0 43%; display: grid; place-items: center; min-width: 0; padding: 14px 4px 25px; border: 2px solid #172923; border-radius: 80px 80px 22px 22px; background: #149b8b; background-image: radial-gradient(#fff1d653 1px, transparent 1px); background-size: 9px 9px; }
@@ -17,26 +17,27 @@
 .summary strong small { display: inline; font-size: 10px; }
 .purchase { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; }
 .purchase > button { flex: 1 1 165px; }
-.shop button, .shop a { -webkit-tap-highlight-color: transparent; }
-.primary, .open, .verification button, .welcome { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 11px 14px; border: 2px solid #172923; border-radius: 13px; background: #efc451; color: #172923; box-shadow: 3px 3px 0 #172923; font: 800 13px/1.35 var(--font-body), sans-serif; cursor: pointer; text-decoration: none; }
+.shop button { -webkit-tap-highlight-color: transparent; }
+.shop a { -webkit-tap-highlight-color: transparent; }
+.primary, .open, .verification button, .welcome { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 11px 14px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; font: 800 13px/1.35 var(--font-body), sans-serif; cursor: pointer; text-decoration: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .primary { flex-direction: column; gap: 3px; }
 .primary small { font-size: 10px; font-weight: 600; }
-.primary:disabled, .open:disabled, .welcome:disabled, .verification button:disabled { opacity: .5; box-shadow: none; cursor: not-allowed; }
-.ready { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 13px; border: 2px solid #172923; border-radius: 16px; background: #ead0a6; }
+.primary:disabled, .open:disabled, .welcome:disabled, .verification button:disabled { opacity: .5; box-shadow: none; cursor: not-allowed; border-color: transparent; }
+.ready { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; padding: 13px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: var(--game-surface-warm, #ffae59); }
 .ready > span { font-size: 12px; }
 .ready > span > strong { font-size: 21px; font-variant-numeric: tabular-nums; }
-.open { background: #149b8b; }
-.welcome { align-self: start; background: #fffaf0; font-size: 12px; }
-.welcomeOffer { display: grid; gap: 12px; padding: 14px; border: 2px solid #172923; border-radius: 16px; background: var(--game-surface-warm); }
+.open { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; border-color: transparent; color: #fff1d6; }
+.welcome { align-self: start; font-size: 12px; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
+.welcomeOffer { display: grid; gap: 12px; padding: 14px; --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .welcomeOffer strong { font-size: 15px; }
 .welcomeOffer p { margin: 5px 0 0; font-size: 12px; line-height: 1.6; }
 .welcomeOffer svg { flex-shrink: 0; }
-.verification { padding: 12px; border: 2px solid #172923; border-radius: 13px; background: #f5dfa4; }
+.verification { padding: 12px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #f5dfa4; }
 .verification p { margin: 0 0 10px; font-size: 12px; line-height: 1.5; }
-.verification button { background: #fff1d6; font-size: 12px; }
+.verification button { font-size: 12px; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
 .notice, .error, .hint { margin: 0; font-size: 12px; line-height: 1.65; overflow-wrap: anywhere; }
 .notice { color: #334f41; }
-.error { padding: 10px 12px; border: 2px solid #9b3e27; border-radius: 12px; background: #fff8e8; color: #83371f; }
+.error { padding: 10px 12px; border: 1px solid #9b3e27; border-radius: var(--game-panel-radius, 2px); background: #fff8e8; color: #83371f; }
 .error button { min-height: 44px; padding: 5px 8px; border: 0; background: transparent; color: inherit; font-weight: 800; text-decoration: underline; cursor: pointer; }
 .hint { font-size: 11px; color: #5a503c; }
 .footer { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-top: auto; }
@@ -44,6 +45,6 @@
 .album { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 5px 0; border: 0; background: transparent; color: #172923; font: 750 12px var(--font-body), sans-serif; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .album:disabled { opacity: .5; cursor: not-allowed; }
 .shop :where(button, a, input):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
-@media (hover: hover) { .primary:not(:disabled):hover, .welcome:not(:disabled):hover, .verification button:not(:disabled):hover { background: var(--game-surface-warm); } .open:not(:disabled):hover { background: #efc451; } }
+@media (hover: hover) { .primary:not(:disabled):hover, .welcome:not(:disabled):hover, .verification button:not(:disabled):hover { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; color: #172923; } .open:not(:disabled):hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; } }
 @media (max-width: 900px) { .shop { grid-template-columns: 1fr; gap: 24px; } .presentation { gap: 24px; } .packArt { flex-basis: 120px; } .packArt img { max-height: 166px; } .intro p { max-width: 36ch; } .price { margin-top: 12px; } }
-@media (max-width: 500px) { .shop { padding: 16px 13px; border-radius: 18px; box-shadow: 3px 3px 0 #172923; } .presentation { gap: 16px; } .packArt { flex-basis: 96px; padding: 10px 2px 16px; } .packArt img { max-height: 130px; } .intro h3 { font-size: 31px; } .intro p { font-size: 12px; } .eyebrow { font-size: 9px; gap: 4px; } .eyebrow svg { width: 12px; } .price { font-size: 25px; } .price small { font-size: 10px; } .counter { gap: 14px; } .purchase { justify-content: center; } .purchase > button { flex-basis: 100%; } .ready { padding: 12px 10px; } .open { flex: 1 1 100%; } .welcome { width: 100%; } .footer { gap: 2px; } }
+@media (max-width: 500px) { .shop { padding: 16px 13px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; } .presentation { gap: 16px; } .packArt { flex-basis: 96px; padding: 10px 2px 16px; } .packArt img { max-height: 130px; } .intro h3 { font-size: 31px; } .intro p { font-size: 12px; } .eyebrow { font-size: 9px; gap: 4px; } .eyebrow svg { width: 12px; } .price { font-size: 25px; } .price small { font-size: 10px; } .counter { gap: 14px; } .purchase { justify-content: center; } .purchase > button { flex-basis: 100%; } .ready { padding: 12px 10px; } .open { flex: 1 1 100%; } .welcome { width: 100%; } .footer { gap: 2px; } }

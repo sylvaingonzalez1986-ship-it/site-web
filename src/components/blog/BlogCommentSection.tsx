@@ -94,7 +94,7 @@ export function BlogCommentSection({ postId }: BlogCommentSectionProps) {
   };
 
   return (
-    <div id="commentaires" className={styles.panel} style={{ scrollMarginTop: "7rem" }}>
+    <div id="commentaires" data-ui-shape="panel" className={styles.panel} style={{ scrollMarginTop: "7rem" }}>
       <h2 className={styles.panelTitle}>Commentaires</h2>
       {loadError && <div className="mt-3 text-sm" role="status">
         <p>Les commentaires n’ont pas pu être chargés.</p>

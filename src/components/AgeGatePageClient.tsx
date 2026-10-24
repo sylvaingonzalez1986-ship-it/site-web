@@ -43,8 +43,8 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
 
   return (
     <section className="min-h-dvh bg-[#254f40] px-4 pb-10 pt-28 md:pt-36">
-      <div className={`${styles.dialog} mx-auto`}>
-        <div className={styles.hero}>
+      <div className={`${styles.dialog} mx-auto`} data-ui-shape="panel" data-ui-layer="after">
+        <div className={styles.hero} data-ui-shape="panel">
           <div className={styles.heroCopy}>
             <p className={styles.eyebrow}>Bienvenue chez nous</p>
             <h1 className={styles.title}>Avant d&apos;entrer, une seule question.</h1>
@@ -62,6 +62,7 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
                 <button
                   type="button"
                   className={styles.primary}
+                  data-ui-shape="control"
                   onClick={confirmMajority}
                   disabled={loading}
                 >
@@ -70,6 +71,7 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
                 <button
                   type="button"
                   className={styles.secondary}
+                  data-ui-shape="control"
                   onClick={() => setDenied(true)}
                   disabled={loading}
                 >
@@ -78,7 +80,7 @@ export function AgeGatePageClient({ nextPathParam }: AgeGatePageClientProps) {
               </div>
             </>
           ) : (
-            <div className={`${styles.notice} mt-6`}>
+            <div className={`${styles.notice} mt-6`} data-ui-shape="panel">
               <p className="font-semibold text-ink">
                 Ce site est reserve aux personnes majeures.
               </p>

@@ -1,0 +1,193 @@
+.section {
+  composes: surface from "./ArenaRetro.module.css";
+  min-width: 0;
+  color: #172923;
+  scroll-margin-top: 5rem;
+}
+
+.rankingNavigation {
+  composes: surface from "./ArenaRetro.module.css";
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .75rem;
+  width: min(100%, 700px);
+  margin: 1.25rem auto 0;
+  padding-inline: clamp(.75rem, 3vw, 2rem);
+}
+
+.notebookNavigation {
+  composes: surface from "./ArenaRetro.module.css";
+  max-width: 1240px;
+  margin: 1.25rem auto 0;
+  padding-inline: clamp(.75rem, 3vw, 2rem);
+}
+
+.notebookSections { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; }
+.rankingNavigation a, .notebookSections a,
+.filterButton, .seasonSelect, .scrollControls button {
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  display: flex;
+  min-width: 0;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  padding: .75rem 1rem;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  color: #172923;
+  font: 800 .85rem/1.35 var(--font-body), Arial, sans-serif;
+  text-decoration: none;
+  text-align: center;
+  cursor: pointer;
+}
+.rankingNavigation a { min-height: 54px; font-size: .95rem; }
+.rankingNavigation svg, .notebookSections svg { flex-shrink: 0; width: 20px; height: 20px; }
+.rankingNavigation a[aria-current="page"], .notebookSections a[data-active],
+.filterButton[aria-pressed="true"] {
+  --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
+  color: #fff8e7;
+}
+.filterButton:disabled { opacity: .5; cursor: not-allowed; }
+.heading { display: flex; align-items: end; justify-content: space-between; gap: 1rem; margin-bottom: 1.25rem; }
+.heading h2 { margin: 0; font: 900 clamp(1.9rem, 3vw, 2.8rem)/1.08 var(--font-display), Impact, sans-serif; }
+.heading h2 span { color: #087b70; }
+.heading p { max-width: 30ch; margin: 0; color: #456052; font-size: .85rem; line-height: 1.5; }
+.filters { display: grid; grid-template-columns: minmax(180px, .9fr) minmax(320px, 1.55fr) minmax(160px, .8fr); gap: 1rem; align-items: end; margin-bottom: 1.5rem; padding-bottom: 1.25rem; border-bottom: 1px solid #17292355; }
+.controlGroup { display: grid; min-width: 0; gap: .5rem; }
+.controlLabel { color: #376157; font: 800 .68rem/1.5 var(--font-mono), ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; }
+.switch { display: flex; align-items: stretch; gap: .5rem; }
+.filterButton { flex: 1 1 0; padding-inline: .65rem; }
+.filterCount { padding-left: .4rem; border-left: 1px solid currentColor; font-size: .75rem; }
+.seasonSelect { display: block; width: 100%; padding-right: 1.8rem; text-align: left; }
+.seasonSelect option { background: #fff8e7; color: #172923; }
+.seasonCaption { display: none; }
+.layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, .85fr); align-items: start; gap: 1.5rem; }
+.boardColumn, .reviewColumn { min-width: 0; }
+.board {
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  min-width: 0;
+  padding: 1.25rem;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+}
+.toolbar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; }
+.boardTitle { min-width: 0; }
+.boardTitle > span { color: #376157; font: 800 .67rem/1.5 var(--font-mono), ui-monospace, monospace; letter-spacing: .06em; text-transform: uppercase; }
+.boardTitle > strong { display: block; margin-top: .3rem; font: 900 1.9rem/1.15 var(--font-display), Impact, sans-serif; }
+.boardTitle > strong small { color: #456052; font: 700 .8rem/1.5 var(--font-body), Arial, sans-serif; white-space: nowrap; }
+.boardTitle p { margin: .5rem 0 0; color: #456052; font-size: .78rem; line-height: 1.5; }
+.scrollControls { display: flex; flex: 0 0 auto; gap: .35rem; }
+.scrollControls button { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); width: 44px; height: 44px; min-height: 44px; padding: .5rem; }
+.scrollControls svg { width: 20px; height: 20px; }
+.columnLabels { display: grid; grid-template-columns: 32px minmax(0, 1fr) 77px; gap: .7rem; align-items: end; margin-inline: .35rem; padding: .7rem .7rem; border-block: 1px solid #17292355; color: #456052; font: 800 .6rem/1.5 var(--font-mono), ui-monospace, monospace; text-transform: uppercase; }
+.columnLabels span:last-child { text-align: right; }
+.viewport { position: relative; isolation: isolate; max-height: 570px; overflow: hidden auto; overscroll-behavior-y: contain; scrollbar-width: thin; scrollbar-color: #087b70 #fff1d6; scroll-padding-block: 10px; padding: 8px 6px 10px; }
+.list { display: grid; gap: .4rem; margin: 0; padding: 0; list-style: none; }
+.list > li { min-width: 0; }
+.board .row {
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  display: grid;
+  grid-template-columns: 32px minmax(0, 1fr) 77px;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  min-height: 94px;
+  gap: .7rem;
+  padding: .8rem .7rem;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / 12px / 0 stretch;
+  color: #172923;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  scroll-margin-block: 8px;
+}
+.rank { align-self: start; padding-top: .15rem; color: #456052; font: 900 1.5rem/1.1 var(--font-display), Impact, sans-serif; text-align: center; }
+.row[data-podium] .rank { color: #172923; border-bottom: 4px solid #efc451; padding-bottom: .2rem; }
+.identity { display: flex; min-width: 0; align-items: center; gap: .75rem; }
+.flowerImage { display: grid; place-items: center; flex: 0 0 64px; height: 64px; color: #087b70; }
+.flowerImage img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.flowerImage > svg { width: 32px; height: 32px; }
+.flowerCopy { display: grid; min-width: 0; gap: .25rem; }
+.flowerCopy strong { color: #172923; font: 800 .85rem/1.4 var(--font-body), Arial, sans-serif; overflow-wrap: anywhere; }
+.flowerCopy small, .flowerCopy em { color: #456052; font-size: .7rem; line-height: 1.4; overflow-wrap: anywhere; }
+.flowerCopy em { color: #087b70; font-style: normal; font-weight: 800; }
+.score { display: grid; min-width: 0; gap: .25rem; justify-items: end; text-align: right; }
+.score > strong { color: #087b70; font: 900 1.65rem/1 var(--font-display), Impact, sans-serif; white-space: nowrap; }
+.score > strong small { display: block; margin-top: .15rem; color: #456052; font: 700 .65rem/1.3 var(--font-body), Arial, sans-serif; }
+.score > span { color: #456052; font-size: .68rem; white-space: nowrap; }
+.board .row[data-selected] { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.empty { display: grid; justify-items: center; gap: .75rem; padding: 2.5rem .75rem; text-align: center; }
+.empty svg { color: #087b70; }
+.empty strong { font: 900 1.6rem/1.2 var(--font-display), Impact, sans-serif; }
+.empty p { max-width: 38ch; margin: 0; color: #456052; font-size: .85rem; line-height: 1.6; }
+.section :where(button, select):focus-visible,
+.rankingNavigation a:focus-visible, .notebookSections a:focus-visible,
+.board .row:focus-visible, .viewport:focus-visible {
+  outline: 3px solid #087b70;
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px #fff1d6;
+}
+.viewport:focus-visible { outline-offset: -3px; box-shadow: none; }
+@media (hover: hover) {
+  .rankingNavigation a:hover, .notebookSections a:hover,
+  .filterButton:not(:disabled):hover, .scrollControls button:hover,
+  .board .row:hover {
+    --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+    color: #172923;
+  }
+}
+@media (max-width: 1000px) {
+  .filters { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .filters > .controlGroup:nth-last-child(2) { grid-column: 1 / -1; grid-row: 2; }
+  .layout { grid-template-columns: minmax(0, 1.4fr) minmax(250px, 1fr); gap: 1rem; }
+  .flowerImage { flex-basis: 48px; height: 48px; }
+  .identity { gap: .5rem; }
+}
+@media (max-width: 780px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+  .heading { align-items: start; flex-direction: column; gap: .6rem; }
+  .heading p { max-width: none; }
+  .board { padding: 1rem .7rem; }
+}
+@media (max-width: 480px) {
+  .rankingNavigation, .notebookNavigation { margin-top: 1rem; }
+  .rankingNavigation { gap: .5rem; }
+  .notebookSections { gap: .35rem; }
+  .notebookSections a { flex-direction: column; padding: .7rem .3rem; font-size: .75rem; gap: .3rem; }
+  .filters { grid-template-columns: minmax(0, 1fr); gap: .85rem; }
+  .filters > .controlGroup:nth-last-child(2) { grid-column: auto; grid-row: auto; }
+  .switch { gap: .35rem; }
+  .filterButton { gap: .3rem; padding: .7rem .45rem; font-size: .75rem; }
+  .filterButton:has(.filterCount) { flex-direction: column; gap: .15rem; }
+  .seasonSelect { font-size: .75rem; padding-left: .65rem; }
+  .seasonCaption { display: block; color: #456052; font-size: .72rem; line-height: 1.5; overflow-wrap: anywhere; }
+  .filterCount { font-size: .65rem; padding-left: 0; border-left: 0; }
+  .board { padding-inline: .5rem; }
+  .toolbar { gap: .5rem; padding: .25rem .25rem .85rem; }
+  .boardTitle > strong { font-size: 1.7rem; }
+  .boardTitle > strong small { display: block; margin-top: .3rem; font-size: .72rem; }
+  .boardTitle > span { font-size: .6rem; }
+  .scrollControls { gap: .2rem; }
+  .scrollControls button { width: 44px; }
+  .columnLabels { grid-template-columns: 23px minmax(0, 1fr) 57px; gap: .45rem; padding-inline: .35rem; font-size: .53rem; }
+  .viewport { max-height: 520px; padding-inline: 5px; }
+  .board .row { grid-template-columns: 23px minmax(0, 1fr) 57px; gap: .45rem; padding: .75rem .45rem; }
+  .rank { font-size: 1.25rem; }
+  .identity { display: grid; grid-template-columns: minmax(0, 1fr); gap: .4rem; }
+  .flowerImage { width: 44px; height: 44px; }
+  .flowerCopy strong { font-size: .8rem; }
+  .flowerCopy small, .flowerCopy em { font-size: .65rem; }
+  .score > strong { font-size: 1.5rem; }
+  .score > span { font-size: .65rem; }
+}

@@ -1,0 +1,12 @@
+{
+  "version": 3,
+  "generator": "Built-in image_gen, imagegen skill",
+  "generatedAt": "2026-10-24",
+  "asset": "public/app/kanab-quest/social/scenes/producer-journal-v3.webp",
+  "master": "output/imagegen/social-producer/producer-journal-v3.png",
+  "encoding": { "width": 768, "height": 768, "format": "webp", "quality": 72, "effort": 6, "bytes": 82244 },
+  "intent": "Un décor utilisable avant toute récolte, au démarrage de la culture et pendant les discussions générales. Les illustrations de fleurs et de lots ne sont choisies qu’avec le prérequis de culture correspondant.",
+  "prompt": "Use case: illustration-story. Create one square game background illustration in the established Les Chanvriers Bretons / Sylvain cartoon village art direction: warm cream paper grain, hand inked confident dark outlines, teal painted wooden walls, warm apricot wooden desk, muted golden lamplight, cozy French artisan grower's room. This illustration is used for social network choices BEFORE the player has any crop or harvest and for discussions about the work. Close view of a simple desk with an open blank observation notebook, pencil, generic smartphone on a small wooden stand showing a blank cream screen, a ceramic teal mug. One botanical hemp LEAF drawing pinned to the teal wall identifies the producer's world; it is a drawing, NOT a living plant. A few EMPTY tidy wooden shelves behind. Leave uncluttered open space at the lower left for the game's separate customizable player avatar. Rich pleasing illustrated texture consistent with a hand drawn village game, readable small on mobile. NO people, NO hands, NO faces. Absolutely NO live plants, NO cannabis flowers, NO harvested buds, NO jars of product, NO dried hanging crop, NO bags of sale products, NO weather, NO exterior crops, NO words, NO letters, NO logo, NO social app branding, NO watermarks. The phone/notebook belong to the player; do not imply a photographer's story. Full bleed square illustration, opaque background.",
+  "reuse": { "flowering": "ig-open-house-cbd-v2.webp", "harvest": "ig-identity-cbd-v2.webp", "curing": "ig-filter-proof.webp", "ready": "ig-filter-doubt.webp" },
+  "storage": "Fichier statique du site, aucun upload Supabase. Les 54 anciennes illustrations restent disponibles pour les anciens reçus."
+}

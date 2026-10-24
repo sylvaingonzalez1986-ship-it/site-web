@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
+import photoStyles from "./ProductPhoto.module.css";
 
 type ProductImageCarouselProps = {
   images: string[];
@@ -140,6 +141,7 @@ export function ProductImageCarousel({
   return (
     <div
       className={`product-carousel group/product-carousel relative aspect-square overflow-hidden ${className}`}
+      data-product-photo="carousel"
       role={hasMultipleImages ? "group" : undefined}
       aria-roledescription={hasMultipleImages ? "Carrousel" : undefined}
       aria-label={hasMultipleImages ? `Images de ${alt}` : undefined}
@@ -150,37 +152,39 @@ export function ProductImageCarousel({
       onTouchEnd={onTouchEnd}
       onTouchCancel={resetSwipe}
     >
-      <div
-        className={`product-carousel-track ${isSwiping ? "swiping" : ""}`}
-        style={{ transform: trackTransform }}
-      >
-        {sanitizedImages.map((image, index) => {
-          const shouldPrioritizeFrame = priority && index === 0;
-          const imageSrc = failedRemoteImages.has(image) ? FALLBACK_IMAGE_SRC : image;
+      <div className={photoStyles.window}>
+        <div
+          className={`product-carousel-track ${isSwiping ? "swiping" : ""}`}
+          style={{ transform: trackTransform }}
+        >
+          {sanitizedImages.map((image, index) => {
+            const shouldPrioritizeFrame = priority && index === 0;
+            const imageSrc = failedRemoteImages.has(image) ? FALLBACK_IMAGE_SRC : image;
 
-          return (
-            <div key={`${image}-${index}`} className="relative min-w-full">
-              <Image
-                src={imageSrc}
-                alt={hasMultipleImages ? `${alt} - photo ${index + 1}` : alt}
-                fill
-                sizes={sizes}
-                priority={shouldPrioritizeFrame}
-                className="object-cover transition-transform duration-300 group-hover/product-carousel:scale-105"
-                onError={() => {
-                  setFailedRemoteImages((current) => {
-                    if (current.has(image)) {
-                      return current;
-                    }
-                    const next = new Set(current);
-                    next.add(image);
-                    return next;
-                  });
-                }}
-              />
-            </div>
-          );
-        })}
+            return (
+              <div key={`${image}-${index}`} className={`relative min-w-full ${photoStyles.slide}`}>
+                <Image
+                  src={imageSrc}
+                  alt={hasMultipleImages ? `${alt} - photo ${index + 1}` : alt}
+                  fill
+                  sizes={sizes}
+                  priority={shouldPrioritizeFrame}
+                  className={`object-cover transition-transform duration-300 group-hover/product-carousel:scale-105 ${photoStyles.image}`}
+                  onError={() => {
+                    setFailedRemoteImages((current) => {
+                      if (current.has(image)) {
+                        return current;
+                      }
+                      const next = new Set(current);
+                      next.add(image);
+                      return next;
+                    });
+                  }}
+                />
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       {badge && (
@@ -203,6 +207,8 @@ export function ProductImageCarousel({
         <button
           type="button"
           className="product-carousel-arrow product-carousel-arrow--left text-xl font-bold leading-none"
+          data-ui-commerce="photo-control"
+          data-ui-shape="control"
           onClick={(event) => {
             event.stopPropagation();
             goPrev();
@@ -217,6 +223,8 @@ export function ProductImageCarousel({
         <button
           type="button"
           className="product-carousel-arrow product-carousel-arrow--right text-xl font-bold leading-none"
+          data-ui-commerce="photo-control"
+          data-ui-shape="control"
           onClick={(event) => {
             event.stopPropagation();
             goNext();

@@ -1,0 +1,5 @@
+.art { display: inline-block; flex-shrink: 0; width: 112px; max-width: 100%; vertical-align: middle; pointer-events: none; }
+.art > img { display: block; width: 100%; height: auto; object-fit: contain; }
+.sectionMark { width: 56px; margin-block: -4px; }
+@media (max-width: 600px) { .sectionMark { width: 34px; margin-block: 0; } }
+@media (prefers-reduced-motion: reduce) { .art { animation: none; } }

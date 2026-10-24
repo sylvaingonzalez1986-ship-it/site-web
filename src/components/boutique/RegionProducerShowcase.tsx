@@ -266,7 +266,7 @@ export function RegionProducerShowcase({
   }, [regionFlight]);
 
   return (
-    <div ref={showcaseRef} className={`region-showcase ${styles.showcase}`}>
+    <div data-ui-commerce="region-showcase" ref={showcaseRef} className={`region-showcase ${styles.showcase}`}>
       <div ref={mapContainerRef} className={`region-map-container ${styles.board}`}>
         <div className="region-map-intro">
           <div>
@@ -332,7 +332,7 @@ export function RegionProducerShowcase({
               </p>
             </div>
             <div className="region-showcase-actions">
-              <button
+              <button data-ui-commerce="secondary" data-ui-shape="control"
                 type="button"
                 className="btn-cartoon btn-secondary region-reset-button"
                 onClick={() => setSelectedRegion(null)}
@@ -347,7 +347,7 @@ export function RegionProducerShowcase({
               <p className="font-handwritten text-3xl text-charcoal">
                 Aucun producteur dans cette région pour le moment… mais ça pousse !
               </p>
-              <button
+              <button data-ui-commerce="secondary" data-ui-shape="control"
                 type="button"
                 className="btn-cartoon btn-secondary mt-6"
                 onClick={() => setSelectedRegion(null)}

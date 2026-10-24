@@ -154,7 +154,7 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
 
   if (phase === "checking") {
     return (
-      <div role="status" className="mt-6 rounded-md border border-[#1a1a1a] bg-white px-4 py-3 text-sm font-semibold text-charcoal">
+      <div data-ui-account="fill-ffffff" data-ui-shape="panel" role="status" className="mt-6 rounded-md border border-[#1a1a1a] bg-white px-4 py-3 text-sm font-semibold text-charcoal">
         Verification du lien en cours...
       </div>
     );
@@ -163,7 +163,7 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
   if (phase === "invalid") {
     return (
       <div className="mt-6 grid gap-3">
-        <p role="alert" className="rounded-md border border-[#1a1a1a] bg-red-100 px-4 py-3 text-sm font-semibold text-red-700">
+        <p data-ui-account="fill-fee2e2" data-ui-shape="panel" role="alert" className="rounded-md border border-[#1a1a1a] bg-red-100 px-4 py-3 text-sm font-semibold text-red-700">
           {error || "Lien invalide ou expire. Redemande un nouvel email."}
         </p>
         <Link

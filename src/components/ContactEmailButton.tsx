@@ -88,7 +88,7 @@ export function ContactEmailButton({
 
   return (
     <div>
-      <button type="button" onClick={() => void handleClick()} className={buttonClassName}>
+      <button data-ui-shape="control" type="button" onClick={() => void handleClick()} className={buttonClassName}>
         <Mail size={14} className={iconClassName} /> {label}
       </button>
       {status ? (

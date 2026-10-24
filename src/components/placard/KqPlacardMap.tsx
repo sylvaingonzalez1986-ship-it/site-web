@@ -164,7 +164,7 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
 
   return <section className={styles.world} aria-label="Carte de Kanab Quest" data-placard-map data-map-zoomed={zoomed || undefined}>
     <header className={styles.mapHeading}>
-      <div className={styles.mapIdentity}><span>Les Chanvriers Bretons</span><h1>Mon quartier<span>.</span></h1></div>
+      <div className={styles.mapIdentity}><h1>Mon quartier<span>.</span></h1></div>
       <div className={styles.wallet} aria-label="Résumé de ta partie Kanab Quest">
         <span><Wallet size={17} aria-hidden="true" /><span><small>Argent du jeu</small><strong>{cashCents !== null ? formatKqCash(cashCents) : "—"}</strong></span></span>
       </div>

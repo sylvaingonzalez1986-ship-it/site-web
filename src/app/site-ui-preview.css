@@ -1,0 +1,54 @@
+/* The navigation keeps the chosen contours on game routes, independently of the game UI. */
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) :is([data-ui-shape], .btn-cartoon, .pill-cartoon, .cartoon-border, .cartoon-border-sm, .cartoon-panel, .card-cartoon):not(:where([data-world="arena"], [data-world="arena"] *)) {
+  isolation: isolate;
+  --site-ui-active-material: initial;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) :is(.btn-cartoon, .pill-cartoon, .cartoon-border, .cartoon-border-sm, .cartoon-panel, .card-cartoon):not([data-ui-shape]):not(:where([data-world="arena"], [data-world="arena"] *)) { position: relative; }
+
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) .btn-cartoon:not([data-ui-layer="after"])::after { content: none; }
+
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) :is([data-ui-shape]:not([data-ui-layer="after"]), .btn-cartoon:not([data-ui-layer="after"]), .pill-cartoon:not([data-ui-layer="after"]), .cartoon-border:not([data-ui-layer="after"]), .cartoon-border-sm:not([data-ui-layer="after"]), .cartoon-panel:not([data-ui-layer="after"]), .card-cartoon:not([data-ui-layer="after"])):not(:where([data-world="arena"], [data-world="arena"] *))::before,
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) [data-ui-shape][data-ui-layer="after"]::after {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+  width: auto;
+  height: auto;
+  border-image: url("/placard/ui/control-paper-v2.webp") 40 fill / var(--site-ui-edge, 14px) / 0 stretch;
+  filter: var(--site-ui-active-material, var(--site-ui-material, url("#site-ui-fill-f6f0e6")));
+}
+
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) :is([data-ui-shape="panel"], .cartoon-border, .cartoon-border-sm, .cartoon-panel, .card-cartoon):not([data-ui-layer="after"]):not(:where([data-world="arena"], [data-world="arena"] *))::before,
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) [data-ui-shape="panel"][data-ui-layer="after"]::after {
+  border-image-source: url("/placard/ui/panel-paper-v1.webp");
+  border-image-slice: 48 fill;
+  border-image-width: var(--site-ui-edge, 15px);
+}
+
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) .btn-primary { --site-ui-material: url("#site-ui-fill-00563f"); }
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) .btn-secondary { --site-ui-material: url("#site-ui-fill-f6f0e6"); }
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) .btn-primary { --site-ui-hover-material: url("#site-ui-fill-111512"); }
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) .btn-secondary { --site-ui-hover-material: url("#site-ui-fill-ce5a30"); }
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) :is(.cartoon-border, .cartoon-border-sm) { --site-ui-material: url("#site-ui-outline-172923"); }
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) :is(.bg-cream, .pill-cartoon, .card-cartoon, .cartoon-panel) { --site-ui-material: url("#site-ui-fill-f6f0e6"); }
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) .bg-mint { --site-ui-material: url("#site-ui-fill-dfe6d4"); }
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) :is(.bg-white, [data-ui-fill="white"]) { --site-ui-material: url("#site-ui-fill-ffffff"); }
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) .bg-yellow { --site-ui-material: url("#site-ui-fill-f4c43d"); }
+:is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) .bg-teal { --site-ui-material: url("#site-ui-fill-00563f"); }
+
+@media (hover: hover) {
+  :is(html[data-site-ui="quartier"], html[data-site-navigation-ui="quartier"] :where([data-site-navigation])) :is([data-ui-shape="control"], .btn-cartoon, .pill-cartoon):not(:disabled):hover { --site-ui-active-material: var(--site-ui-hover-material, var(--site-ui-material, url("#site-ui-fill-f6f0e6"))); }
+}

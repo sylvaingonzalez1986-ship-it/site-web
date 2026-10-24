@@ -40,7 +40,7 @@ export function KqTreasuryInvoices({ data, energy, energyError, now: liveNow, bu
       <article><small>Trésorerie disponible</small><strong>{money(data.cashCents)}</strong><span>{due > data.cashCents ? `${money(due - data.cashCents)} manquent pour tout régler` : `${money(data.cashCents - due)} après règlement des factures`}</span></article>
       <article><small>TVA déjà réservée</small><strong>{money(vat.reservedCents)}</strong><span>Mise de côté, séparée de ton disponible</span></article>
     </div>
-    <div className={styles.calendarGrid}>
+    <div className={`${styles.calendarGrid} ${styles.financialOverview}`}>
       <section className={styles.calendar}><KqAllocationBar label="Factures restant à régler" emptyLabel="Toutes les factures sont réglées." items={[
         { label: "Fournisseurs", value: suppliers?.outstandingCents ?? 0, displayValue: money(suppliers?.outstandingCents ?? 0), tone: "ink" },
         { label: "Laboratoire", value: lab.outstandingCents, displayValue: money(lab.outstandingCents), tone: "gold" },

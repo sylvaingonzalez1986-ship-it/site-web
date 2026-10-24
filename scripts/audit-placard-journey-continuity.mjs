@@ -135,7 +135,7 @@ if (preview) {
     return { selected, heritageText };
   }
   async function openPlan() {
-    await button('Modifier le plan'); await page.waitForSelector('[data-warehouse-v4]', { visible: true });
+    await keyClick('[data-preparation-edit-plan]'); await page.waitForSelector('[data-warehouse-v4]', { visible: true });
     await page.waitForSelector('[data-warehouse-map]'); assert.equal(new URL(page.url()).searchParams.get('from'), 'game');
     assert.equal((await mutations()).length, 0, 'Opening the plan does not launch a culture or buy equipment');
   }
@@ -162,7 +162,6 @@ if (preview) {
   await page.reload({ waitUntil: 'networkidle0' }); await page.waitForSelector('[data-placard-back="game"]'); await keyClick('[data-placard-back="game"]');
   await assertPreparation(expected); results.push({ scenario: 'tab reload during plan preserves owner-scoped preparation' });
   await load('preparation'); expected = await prepare(); await openPlan();
-  await button('Cultures', '[data-warehouse-v4]');
   await keyClick('[data-warehouse-campaign-action="start"]'); await assertPreparation(expected);
   results.push({ scenario: 'warehouse launch CTA returns to preserved choices without submitting a culture' });
   await load('preparation', 320); expected = await prepare({ empty: true, noHeritage: true }); await openPlan(); await keyClick('[data-placard-back="game"]');
@@ -192,7 +191,7 @@ if (preview) {
   await load('preparation'); expected = await prepare(); await openPlan(); await page.evaluate(() => window.__control.launch());
   const launched = (await fixture()).production.game;
   await keyClick('[data-placard-back="game"]');
-  await page.waitForFunction(() => document.querySelector('[data-culture-play]') || [...document.querySelectorAll('[data-culture-selection] button')].some(node => node.textContent.includes('La première zone')));
+  await page.waitForFunction(() => document.querySelector('[data-culture-play]') || [...document.querySelectorAll('[data-culture-selection] button')].some(node => !node.disabled && node.getClientRects().length));
   if (!await page.$('[data-culture-play]')) await keyClick('[data-culture-selection] button');
   await page.waitForSelector('[data-culture-play]', { visible: true });
   assert.equal(await page.$eval('[data-culture-play]', node => node.dataset.cultureRun), launched.campaign.leaderRunId);

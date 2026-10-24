@@ -127,12 +127,12 @@ const SCORE_GROUPS: Array<{
   },
 ];
 
-const TASTING_STEP_MASCOTS: Record<TastingStepMascotKey, string> = {
-  start: "/contest/mascot/tasting/tasting-start.png",
-  aspect: "/contest/mascot/tasting/tasting-aspect.png",
-  smell: "/contest/mascot/tasting/tasting-smell.png",
-  taste: "/contest/mascot/tasting/tasting-taste.png",
-  verdict: "/contest/mascot/tasting/tasting-verdict.png",
+const TASTING_STEP_MASCOTS: Record<TastingStepMascotKey, { src: string; width: number; height: number }> = {
+  start: { src: "/contest/mascot/tasting/tasting-start.png", width: 390, height: 463 },
+  aspect: { src: "/contest/mascot/tasting/tasting-aspect.png", width: 400, height: 428 },
+  smell: { src: "/contest/mascot/tasting/tasting-smell.png", width: 346, height: 442 },
+  taste: { src: "/contest/mascot/tasting/tasting-taste.png", width: 370, height: 440 },
+  verdict: { src: "/contest/mascot/tasting/tasting-verdict.png", width: 390, height: 463 },
 };
 
 function buildInitialScores(): ReviewScoreMap {
@@ -325,11 +325,7 @@ function ScoreBandGuide({
       {guide.scoreBands.map((band, index) => (
         <div
           key={`${guide.criterion}-${band.range}`}
-          className={`rounded border-2 px-3 py-2 text-xs leading-relaxed ${
-            index === activeBand
-              ? "border-[#1a1a1a] bg-yellow text-ink"
-              : "border-[#1a1a1a] bg-[#f7f4ee] text-charcoal"
-          }`}
+          className={`${styles.scoreBand} ${index === activeBand ? styles.scoreBandActive : ""}`}
         >
           <p className="font-black uppercase tracking-[0.08em]">
             {band.range} · {band.label}
@@ -357,12 +353,12 @@ function CriterionGuideCard({
           </p>
           <h4 className="text-lg font-black leading-tight text-ink">{guide.shortTitle}</h4>
         </div>
-        <span className="rounded-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-1 text-xs font-black text-ink">
+        <span className={styles.numberStamp}>
           {score}/{CONTEST_SCORE_MAX}
         </span>
       </div>
       <p className="mt-3 text-sm leading-relaxed text-charcoal">{guide.promise}</p>
-      <div className="mt-4 rounded border-2 border-[#1a1a1a] bg-[#fffaf0] p-3">
+      <div className={styles.methodNote}>
         <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">
           Comment faire
         </p>
@@ -373,7 +369,7 @@ function CriterionGuideCard({
         </ol>
       </div>
       <div className="mt-3 grid gap-3 sm:grid-cols-2">
-        <div className="rounded border-2 border-[#1a1a1a] bg-[#f0fff3] p-3">
+        <div className={styles.positiveNote}>
           <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#1f5a2f]">
             Bons signes
           </p>
@@ -381,7 +377,7 @@ function CriterionGuideCard({
             <GuideBullets items={guide.positiveSignals.slice(0, 3)} />
           </div>
         </div>
-        <div className="rounded border-2 border-[#1a1a1a] bg-[#fff1ee] p-3">
+        <div className={styles.warningNote}>
           <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#7a1010]">
             A surveiller
           </p>
@@ -421,7 +417,7 @@ function AromaLexiconGrid() {
   return (
     <div className="grid gap-2 sm:grid-cols-2">
       {CONTEST_AROMA_LEXICON_GUIDE.map((family) => (
-        <div key={family.family} className="rounded border-2 border-[#1a1a1a] bg-white p-3">
+        <div key={family.family} className={styles.registerEntry}>
           <p className="text-sm font-black uppercase tracking-[0.08em] text-ink">{family.family}</p>
           <p className="mt-1 text-xs leading-relaxed text-charcoal">{family.cues}</p>
           <p className="mt-2 text-[11px] font-semibold leading-relaxed text-charcoal">
@@ -458,11 +454,9 @@ function ContestTastingStepMascot({
   return (
     <div className={compact ? styles.compactMascot : styles.stepMascot} aria-hidden="true">
       <Image
-        src={TASTING_STEP_MASCOTS[step]}
+        {...TASTING_STEP_MASCOTS[step]}
         alt=""
-        width={408}
-        height={771}
-        sizes={compact ? "72px" : "(max-width: 768px) 78px, 118px"}
+        sizes={compact ? "84px" : "(max-width: 480px) 76px, 116px"}
         className="h-auto w-full"
       />
     </div>
@@ -708,6 +702,9 @@ function ContestNotebookEditor({
     viewerReview?.aromaTags.find((tag) => tag.tag === "other")?.customLabel ?? "";
   const isReviewReadOnly = Boolean(viewerReview && !isEditingReview);
   const visibleScores = isReviewReadOnly && savedScores ? savedScores : scores;
+  const visibleEvaluatedCriteria = isReviewReadOnly && viewerReview
+    ? CONTEST_SCORE_CRITERIA.filter((criterion) => viewerReview.scores.some((score) => score.criterion === criterion && Number.isFinite(score.score)))
+    : evaluatedCriteria;
   const visibleScoreAverage = isReviewReadOnly && viewerReview
     ? getContestReviewAverage(viewerReview.scores)
     : scoreAverage;
@@ -1043,13 +1040,13 @@ function ContestNotebookEditor({
   const renderLockedState = () => {
     if (eligibility.reason === "not_authenticated") {
       return (
-        <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
+        <div className={styles.paperPanel}>
           <p className="text-sm text-charcoal">
             La publication d&apos;une note est réservée aux clients connectés.
           </p>
           <Link
             href={loginHref}
-            className="btn-cartoon btn-primary mt-4 inline-flex min-h-[44px] items-center justify-center px-5 text-xs leading-none"
+            className={`${styles.actionButton} ${styles.actionButtonPrimary} ${styles.actionSpaced}`}
           >
             Se connecter pour déguster
           </Link>
@@ -1059,7 +1056,7 @@ function ContestNotebookEditor({
 
     if (!viewerProfile) {
       return (
-        <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
+        <div className={styles.paperPanel}>
           <label htmlFor={`${fieldId}-pseudo`} className="block text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
             Pseudo dégustateur
           </label>
@@ -1069,7 +1066,7 @@ function ContestNotebookEditor({
             value={pseudo}
             onChange={(event) => setPseudo(event.target.value)}
             placeholder="Ex: BretonTerpene"
-            className="mt-2 h-12 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 text-base text-ink"
+            className={styles.textInput}
           />
           <p className="mt-2 text-xs text-charcoal">
             Ce pseudo signera toutes tes critiques publiées dans l&apos;espace concours.
@@ -1078,7 +1075,7 @@ function ContestNotebookEditor({
             type="button"
             onClick={savePseudo}
             disabled={isPending || isSavingPseudo}
-            className="btn-cartoon btn-primary mt-4 inline-flex min-h-[44px] items-center justify-center px-5 text-xs leading-none disabled:opacity-60"
+            className={`${styles.actionButton} ${styles.actionButtonPrimary} ${styles.actionSpaced}`}
           >
             {isPending || isSavingPseudo ? "Enregistrement..." : "Enregistrer mon pseudo"}
           </button>
@@ -1090,14 +1087,14 @@ function ContestNotebookEditor({
 
     if (eligibility.reason === "not_purchased") {
       return (
-        <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
+        <div className={styles.paperPanel}>
           <p className="text-sm leading-relaxed text-charcoal">
             L&apos;avis public n&apos;est ouvert qu&apos;aux clients ayant acheté ce lot.
           </p>
           {productHref ? (
             <Link
               href={productHref}
-              className="btn-cartoon btn-secondary mt-4 inline-flex min-h-[44px] items-center justify-center px-5 text-xs leading-none"
+              className={`${styles.actionButton} ${styles.actionSpaced}`}
             >
               Aller au produit
             </Link>
@@ -1123,12 +1120,19 @@ function ContestNotebookEditor({
         <div data-score="player"><span>Ta note</span><strong>{formatContestAverage(visibleScoreAverage)}<small>/100</small></strong></div>
         <div data-score="community"><span>Moyenne des joueurs</span><strong>{entry.stats.approvedReviewCount > 0 ? <>{formatContestAverage(entry.stats.averageScore)}<small>/100</small></> : "—"}</strong></div>
       </div>
-      <ContestReviewSkillRadar
-        review={{ scores: CONTEST_SCORE_CRITERIA.filter((criterion) => isReviewReadOnly || evaluatedCriteria.includes(criterion)).map((criterion) => ({ criterion, score: visibleScores[criterion] })) }}
-        comparisonScores={entry.stats.approvedReviewCount > 0 ? entry.stats.criterionAverages : undefined}
-        showValues={false}
-        showTotals={false}
-      />
+      {CONTEST_SCORE_CRITERIA.every((criterion) => visibleEvaluatedCriteria.includes(criterion)) ? (
+        <ContestReviewSkillRadar
+          review={{ scores: CONTEST_SCORE_CRITERIA.map((criterion) => ({ criterion, score: visibleScores[criterion] })) }}
+          comparisonScores={entry.stats.approvedReviewCount > 0 ? entry.stats.criterionAverages : undefined}
+          showValues={false}
+          showTotals={false}
+        />
+      ) : (
+        <p className={styles.bookScoreCaption} data-notebook-score-progress>
+          <strong>{visibleEvaluatedCriteria.length}/{CONTEST_SCORE_CRITERIA.length} critères évalués.</strong>{" "}
+          Ton profil graphique apparaîtra une fois toutes tes notes renseignées.
+        </p>
+      )}
       <p className={styles.bookScoreCaption}>{entry.stats.approvedReviewCount > 0
         ? `Moyenne calculée sur ${entry.stats.approvedReviewCount} avis validé${entry.stats.approvedReviewCount > 1 ? "s" : ""}.`
         : "Pas encore d’avis validé : la moyenne apparaîtra après les premières validations."}</p>
@@ -1172,7 +1176,7 @@ function ContestNotebookEditor({
     return (
       <div className="contest-guide-verdict-review space-y-4">
         {isBookDisplayMode ? renderBookScoreSummary() : null}
-        <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
+        <div className={styles.paperPanel}>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="space-y-1">
               <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
@@ -1181,7 +1185,7 @@ function ContestNotebookEditor({
               <h3 className="text-2xl font-bold text-ink">{viewerReview.pseudo}</h3>
             </div>
             <div className="flex items-start gap-3 self-start">
-              <div className="rounded-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-2 text-sm font-black text-ink">
+              <div className={styles.statusStamp}>
                 {CONTEST_REVIEW_STATUS_LABELS[viewerReview.status]}
               </div>
               <ContestTastingStepMascot step="verdict" compact />
@@ -1189,7 +1193,7 @@ function ContestNotebookEditor({
           </div>
 
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <div className="flex min-h-[88px] flex-col justify-between rounded border border-[#1a1a1a] bg-[#f7f4ee] px-3 py-3">
+            <div className={styles.reviewFact}>
               <p className="text-[11px] font-black uppercase tracking-[0.12em] text-charcoal">
                 Moyenne personnelle
               </p>
@@ -1197,7 +1201,7 @@ function ContestNotebookEditor({
                 {formatContestAverage(getContestReviewAverage(viewerReview.scores))} / {CONTEST_SCORE_MAX}
               </p>
             </div>
-            <div className="flex min-h-[88px] flex-col justify-between rounded border border-[#1a1a1a] bg-[#f7f4ee] px-3 py-3">
+            <div className={styles.reviewFact}>
               <p className="text-[11px] font-black uppercase tracking-[0.12em] text-charcoal">
                 Mode consommation
               </p>
@@ -1211,12 +1215,12 @@ function ContestNotebookEditor({
             {viewerReview.scores.map((score) => (
               <div
                 key={score.criterion}
-                className="flex items-start justify-between gap-3 rounded border border-[#1a1a1a] bg-white px-3 py-2 sm:items-center"
+                className={styles.reviewScoreRow}
               >
                 <span className="text-sm leading-relaxed text-charcoal">
                   {CONTEST_SCORE_CRITERION_LABELS[score.criterion]}
                 </span>
-                <span className="mt-0.5 rounded-full border border-[#1a1a1a] bg-[#fffaf0] px-2 py-1 text-xs font-black text-ink sm:mt-0">
+                <span className={styles.reviewScoreValue}>
                   {score.score}/{CONTEST_SCORE_MAX}
                 </span>
               </div>
@@ -1228,7 +1232,7 @@ function ContestNotebookEditor({
               {viewerReview.aromaTags.map((tag) => (
                 <span
                   key={`${tag.tag}-${tag.customLabel ?? ""}`}
-                  className="rounded-full border-2 border-[#1a1a1a] bg-yellow px-3 py-1 text-[11px] font-black uppercase tracking-[0.08em] text-ink"
+                  className={styles.aromaStamp}
                 >
                   {tag.tag === "other" ? tag.customLabel : CONTEST_AROMA_TAG_LABELS[tag.tag]}
                 </span>
@@ -1237,7 +1241,7 @@ function ContestNotebookEditor({
           ) : null}
 
           {isConcoursEntry && viewerReview.terpeneGuesses.length > 0 ? (
-            <div className="mt-4 rounded border-2 border-[#1a1a1a] bg-[#fffaf0] p-4">
+            <div className={styles.methodNote}>
               <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
                 Terpènes cochés
               </p>
@@ -1247,7 +1251,7 @@ function ContestNotebookEditor({
                   return (
                     <span
                       key={code}
-                      className="rounded-full border-2 border-[#1a1a1a] bg-white px-3 py-1 text-[11px] font-black uppercase tracking-[0.08em] text-ink"
+                      className={styles.aromaStamp}
                     >
                       {option?.label ?? code}
                     </span>
@@ -1255,7 +1259,7 @@ function ContestNotebookEditor({
                 })}
               </div>
               {savedTerpeneRewardUnlocked && viewerReview.status === "approved" ? (
-                <p className="mt-3 rounded border-2 border-[#1a1a1a] bg-yellow px-3 py-2 text-sm font-black text-ink">
+                <p className={styles.matchNote}>
                   Ta sélection correspond aux terpènes du lot.
                 </p>
               ) : null}
@@ -1263,7 +1267,7 @@ function ContestNotebookEditor({
           ) : null}
 
           {viewerReview.comment.trim() ? (
-            <div className="mt-4 rounded border-2 border-[#1a1a1a] bg-[#fffaf0] p-4 text-sm leading-relaxed text-charcoal">
+            <div className={styles.writtenNote}>
               {viewerReview.comment}
             </div>
           ) : null}
@@ -1283,7 +1287,7 @@ function ContestNotebookEditor({
             <button
               type="button"
               onClick={startReviewEdit}
-              className="btn-cartoon btn-secondary mt-5 inline-flex min-h-[44px] items-center justify-center px-5 text-xs leading-none"
+              className={`${styles.actionButton} ${styles.actionSpaced}`}
             >
               {viewerReview.status === "rejected" ? "Corriger et renvoyer mon guide" : "Modifier mon guide"}
             </button>
@@ -1318,7 +1322,7 @@ function ContestNotebookEditor({
         event.stopPropagation();
         openGuide();
       }}
-      className="btn-cartoon btn-primary inline-flex min-h-[52px] items-center justify-center px-6 text-sm leading-none"
+      className={`${styles.actionButton} ${styles.actionButtonPrimary}`}
       aria-label="Ouvrir mes notes de degustation"
     >
       {label}
@@ -1342,24 +1346,24 @@ function ContestNotebookEditor({
     const commentText = viewerReview.comment.trim();
 
     return (
-      <section className="contest-review-summary-card" aria-label="Resume de mes notes validees">
-        <div className="contest-review-summary-header">
+      <section className={styles.summaryCard} aria-label="Resume de mes notes validees">
+        <div className={styles.summaryHeader}>
           <div className="min-w-0">
-            <p className="contest-review-summary-eyebrow">Notes validees</p>
+            <p className={styles.summaryEyebrow}>Notes validees</p>
             <h3>{entry.title}</h3>
-            <p className="contest-review-summary-meta">
+            <p className={styles.summaryMeta}>
               {CONTEST_CONSUMPTION_METHOD_LABELS[viewerReview.consumptionMethod]}
               {viewerReview.consumptionDetails?.trim() ? ` - ${viewerReview.consumptionDetails.trim()}` : ""}
             </p>
           </div>
-          <div className="contest-review-summary-badge">
+          <div className={styles.summaryBadge}>
             <strong>{formatContestAverage(getContestReviewAverage(viewerReview.scores))}</strong>
             <span>/100</span>
           </div>
         </div>
 
-        <div className="contest-review-summary-grid">
-          <article className="contest-review-summary-chart-box">
+        <div className={styles.summaryGrid}>
+          <article className={styles.summaryChartBox}>
             <ContestReviewSkillRadar
               review={viewerReview}
               comparisonScores={entry.stats.criterionAverages}
@@ -1369,48 +1373,48 @@ function ContestNotebookEditor({
             />
           </article>
 
-          <div className="contest-review-summary-side">
-            <article className="contest-review-summary-box">
-              <p className="contest-review-summary-eyebrow">Gouts & terpenes</p>
-              <div className="contest-review-summary-chip-group">
+          <div className={styles.summarySide}>
+            <article className={styles.summaryBox}>
+              <p className={styles.summaryEyebrow}>Gouts & terpenes</p>
+              <div className={styles.summaryChipGroup}>
                 {aromaLabels.length > 0 ? (
                   aromaLabels.map((label) => (
-                    <span key={`aroma-${label}`} className="contest-review-summary-chip contest-review-summary-chip-yellow">
+                    <span key={`aroma-${label}`} className={`${styles.summaryChip} ${styles.summaryChipYellow}`}>
                       {label}
                     </span>
                   ))
                 ) : (
-                  <p className="contest-review-summary-empty">Aucun gout renseigne.</p>
+                  <p className={styles.summaryEmpty}>Aucun gout renseigne.</p>
                 )}
               </div>
 
-              <div className="contest-review-summary-terpenes">
+              <div className={styles.summaryTerpenes}>
                 <p>Terpenes</p>
-                <div className="contest-review-summary-chip-group">
+                <div className={styles.summaryChipGroup}>
                   {terpeneLabels.length > 0 ? (
                     terpeneLabels.map((label) => (
-                      <span key={`terpene-${label}`} className="contest-review-summary-chip">
+                      <span key={`terpene-${label}`} className={styles.summaryChip}>
                         {label}
                       </span>
                     ))
                   ) : (
-                    <span className="contest-review-summary-empty">Aucun terpene coche.</span>
+                    <span className={styles.summaryEmpty}>Aucun terpene coche.</span>
                   )}
                 </div>
               </div>
               {savedTerpeneRewardUnlocked ? (
-                <p className="contest-review-summary-reward">Ta sélection correspond aux terpènes du lot.</p>
+                <p className={styles.summaryReward}>Ta sélection correspond aux terpènes du lot.</p>
               ) : null}
             </article>
 
-            <article className="contest-review-summary-box contest-review-summary-written">
-              <p className="contest-review-summary-eyebrow">Resume ecrit</p>
+            <article className={`${styles.summaryBox} ${styles.summaryWritten}`}>
+              <p className={styles.summaryEyebrow}>Resume ecrit</p>
               <p>{commentText || "Aucun resume renseigne."}</p>
             </article>
           </div>
         </div>
 
-        <div className="contest-review-summary-actions">{renderNotesOpenButton("Ouvrir mes notes")}</div>
+        <div className={styles.summaryActions}>{renderNotesOpenButton("Ouvrir mes notes")}</div>
       </section>
     );
   };
@@ -1427,9 +1431,9 @@ function ContestNotebookEditor({
     const isPendingReview = viewerReview.status === "pending";
 
     return (
-      <section className="contest-review-summary-state">
+      <section className={styles.summaryState}>
         <div>
-          <p className="contest-review-summary-eyebrow">
+          <p className={styles.summaryEyebrow}>
             {CONTEST_REVIEW_STATUS_LABELS[viewerReview.status]}
           </p>
           <h3>{isPendingReview ? "Notes soumises" : "Notes a revoir"}</h3>
@@ -1439,7 +1443,7 @@ function ContestNotebookEditor({
               : "Cette note n'a pas ete validee. Ouvre le carnet pour consulter le retour de moderation."}
           </p>
           {viewerReview.status === "rejected" && viewerReview.adminNote.trim() ? (
-            <p className="contest-review-summary-admin-note">{viewerReview.adminNote}</p>
+            <p className={styles.summaryAdminNote}>{viewerReview.adminNote}</p>
           ) : null}
         </div>
         {renderNotesOpenButton(isPendingReview ? "Voir / modifier" : "Ouvrir mes notes")}
@@ -1572,7 +1576,7 @@ function ContestNotebookEditor({
                 mascotStep="start"
               />
               {isConcoursEntry ? (
-                <div className="rounded border-2 border-[#1a1a1a] bg-[#fff0c9] p-4 shadow-[3px_3px_0_rgba(23,19,14,0.25)]">
+                <div className={styles.goldPanel}>
                   <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#6d4b00]">
                     Repères aromatiques
                   </p>
@@ -1589,16 +1593,16 @@ function ContestNotebookEditor({
                 {quickStepSummary.map((step, index) => (
                   <div
                     key={step}
-                    className="flex items-center gap-3 rounded border-2 border-[#1a1a1a] bg-white px-3 py-2 text-sm font-bold text-charcoal"
+                    className={styles.preparationRow}
                   >
-                    <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border-2 border-[#1a1a1a] bg-yellow text-xs font-black text-ink">
+                    <span className={styles.preparationNumber}>
                       {index + 1}
                     </span>
                     <span>{step}</span>
                   </div>
                 ))}
               </div>
-              <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
+              <div className={styles.paperPanel}>
                 <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
                   Ton mode de dégustation
                 </p>
@@ -1617,11 +1621,7 @@ function ContestNotebookEditor({
                       disabled={isReviewReadOnly}
                       aria-pressed={visibleConsumptionMethod === method}
                       data-notebook-method={method}
-                      className={`flex min-h-[54px] items-center rounded border-2 px-3 py-2 text-left ${
-                        visibleConsumptionMethod === method
-                          ? "border-[#1a1a1a] bg-yellow text-ink"
-                          : "border-[#1a1a1a] bg-[#f7f4ee] text-charcoal"
-                      } disabled:cursor-default`}
+                      className={`${styles.methodButton} ${visibleConsumptionMethod === method ? styles.methodButtonActive : ""}`}
                     >
                       <span className="text-xs font-black uppercase leading-tight tracking-[0.06em]">
                         {CONTEST_CONSUMPTION_METHOD_LABELS[method]}
@@ -1638,7 +1638,7 @@ function ContestNotebookEditor({
                   data-notebook-mode-details
                   maxLength={300}
                   placeholder="Optionnel: température, roulage, matériel..."
-                  className="mt-3 h-12 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 text-sm text-ink"
+                  className={styles.textInput}
                 />
               </div>
             </>
@@ -1666,7 +1666,7 @@ function ContestNotebookEditor({
                     ["Culture", CONTEST_ENTRY_CATEGORY_LABELS[entry.category]],
                     ["Récolte", formatHarvestDate(technicalSheet.harvestDate)],
                   ].map(([label, value]) => (
-                    <div key={label} className="rounded border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-2">
+                    <div key={label} className={styles.registerEntry}>
                       <p className="text-[10px] font-black uppercase tracking-[0.12em] text-charcoal">{label}</p>
                       <p className="mt-1 text-sm font-bold text-ink">{value}</p>
                     </div>
@@ -1724,7 +1724,7 @@ function ContestNotebookEditor({
                 mascotStep="smell"
               />
               {isConcoursEntry ? (
-                <div className="rounded border-2 border-[#1a1a1a] bg-yellow p-4 shadow-[3px_3px_0_rgba(23,19,14,0.25)]">
+                <div className={styles.goldPanel}>
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
                       <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#6d4b00]">
@@ -1734,7 +1734,7 @@ function ContestNotebookEditor({
                         Quels terpènes reconnais-tu ?
                       </h4>
                     </div>
-                    <span className="rounded-full border-2 border-[#1a1a1a] bg-white px-3 py-1 text-xs font-black text-ink">
+                    <span className={styles.numberStamp}>
                       {visibleSelectedTerpenes.length} coché(s)
                     </span>
                   </div>
@@ -1743,15 +1743,13 @@ function ContestNotebookEditor({
                     tes impressions olfactives.
                   </p>
                   {expectedTerpenes.length > 0 ? (
-                    <p className={`mt-3 rounded border-2 border-[#1a1a1a] px-3 py-2 text-sm font-black ${
-                      visibleTerpeneRewardUnlocked ? "bg-[#f0fff3] text-[#1f5a2f]" : "bg-[#fffaf0] text-charcoal"
-                    }`}>
+                    <p className={`${styles.terpeneNote} ${visibleTerpeneRewardUnlocked ? styles.terpeneNoteMatched : ""}`}>
                       {visibleTerpeneRewardUnlocked
                         ? "Combo exact détecté: garde cette sélection avant d'envoyer ton avis."
                         : "Compare les arômes perçus avec les terpènes proposés."}
                     </p>
                   ) : null}
-                  <details className="mt-4 rounded border-2 border-[#1a1a1a] bg-[#fffaf0] p-3">
+                  <details className={styles.methodNote}>
                     <summary className="cursor-pointer text-xs font-black uppercase tracking-[0.1em] text-ink">
                       Choisir mes terpènes ({visibleSelectedTerpenes.length})
                     </summary>
@@ -1761,11 +1759,7 @@ function ContestNotebookEditor({
                         return (
                           <label
                             key={terpene.code}
-                            className={`flex min-h-[44px] items-center gap-3 rounded border-2 px-3 py-2 ${
-                              checked
-                                ? "border-[#1a1a1a] bg-white"
-                                : "border-[#1a1a1a] bg-[#f6f0e6]"
-                            }`}
+                            className={`${styles.checkOption} ${checked ? styles.checkOptionActive : ""}`}
                           >
                             <input
                               type="checkbox"
@@ -1784,7 +1778,7 @@ function ContestNotebookEditor({
                   </details>
                 </div>
               ) : null}
-              <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
+              <div className={styles.paperPanel}>
                 <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
                   Arômes perçus
                 </p>
@@ -1794,11 +1788,7 @@ function ContestNotebookEditor({
                     return (
                       <label
                         key={tag}
-                        className={`flex items-center gap-3 rounded border-2 px-3 py-2 ${
-                          checked
-                            ? "border-[#1a1a1a] bg-[#fff0c9]"
-                            : "border-[#1a1a1a] bg-[#f7f4ee]"
-                        }`}
+                        className={`${styles.checkOption} ${checked ? styles.checkOptionActive : ""}`}
                       >
                         <input
                           type="checkbox"
@@ -1826,7 +1816,7 @@ function ContestNotebookEditor({
                   data-notebook-filled={Boolean(visibleOtherAromaLabel.trim())}
                   maxLength={80}
                     placeholder="Autre arôme détecté"
-                    className="mt-3 h-12 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 text-sm text-ink"
+                    className={styles.textInput}
                   />
                 ) : null}
               </div>
@@ -1893,7 +1883,7 @@ function ContestNotebookEditor({
                 body="Donne ton impression générale. Une phrase suffit si tes notes sont claires."
                 mascotStep="verdict"
               />
-              {isBookDisplayMode ? renderBookScoreSummary() : <div className="rounded border-2 border-[#1a1a1a] bg-yellow p-4">
+              {isBookDisplayMode ? renderBookScoreSummary() : <div className={styles.goldPanel}>
                 <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#6d4b00]">
                   Score actuel
                 </p>
@@ -1909,7 +1899,7 @@ function ContestNotebookEditor({
                 onChange={handleScoreChange}
                 disabled={isReviewReadOnly}
               />
-              <div className="rounded border-2 border-[#1a1a1a] bg-white p-4">
+              <div className={styles.paperPanel}>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
                     Critique rédigée
@@ -1920,7 +1910,7 @@ function ContestNotebookEditor({
                       onClick={fillCommentDraft}
                       disabled={Boolean(comment.trim())}
                       title={comment.trim() ? "Ton texte est conservé. Vide le champ pour utiliser le modèle." : "Créer un modèle à partir de tes notes"}
-                      className="rounded-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-2 text-[10px] font-black uppercase tracking-[0.08em] text-ink"
+                      className={styles.smallAction}
                     >
                       Préremplir
                     </button>
@@ -1942,7 +1932,7 @@ function ContestNotebookEditor({
                   maxLength={2000}
                   rows={5}
                   placeholder="Ex: Belle fleur, nez fruité, bouche douce, bonne impression générale."
-                  className={`${styles.verdictTextarea} mt-3 w-full border-2 border-[#1a1a1a] bg-[#fffaf0] px-3 py-3 text-sm leading-relaxed text-ink`}
+                  className={styles.verdictTextarea}
                 />
               </div>
               {isReviewReadOnly ? null : (
@@ -1951,7 +1941,7 @@ function ContestNotebookEditor({
                   onClick={submitReview}
                   data-notebook-submit
                   disabled={isPending || isSubmitting}
-                  className="btn-cartoon btn-primary inline-flex min-h-[48px] items-center justify-center px-6 text-xs leading-none disabled:opacity-60"
+                  className={`${styles.actionButton} ${styles.actionButtonPrimary}`}
                 >
                   {isPending || isSubmitting ? "Envoi..." : viewerReview?.status === "rejected" && isEditingReview ? "Renvoyer mon avis corrigé" : isEditingReview ? "Enregistrer mes modifications" : "Envoyer mon avis"}
                 </button>
@@ -2014,11 +2004,9 @@ function ContestNotebookEditor({
             <div className={styles.teaserArt} aria-hidden="true">
               <div className={styles.teaserMascot}>
                 <Image
-                  src={TASTING_STEP_MASCOTS.start}
+                  {...TASTING_STEP_MASCOTS.start}
                   alt=""
-                  width={408}
-                  height={771}
-                  sizes="(max-width: 767px) 70px, 112px"
+                  sizes="(max-width: 767px) 96px, 160px"
                   className="h-auto w-full"
                 />
               </div>

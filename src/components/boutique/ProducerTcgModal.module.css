@@ -7,3 +7,58 @@ dialog.dialog { width: min(1120px, calc(100vw - 24px)); background: #003f30; }
 .controls > span { font-size: 12px; line-height: 1.3; color: #fffaf1; text-align: center; }
 .controls strong { display: block; }
 @media (max-width: 380px) { .controls { gap: 4px; } .controls > span { font-size: 10px; } }
+
+/* The original modal stays intact when the contour preview is disabled. */
+:global(html[data-site-ui="quartier"]) dialog.dialog {
+  background: transparent;
+  border-color: transparent;
+}
+
+:global(html[data-site-ui="quartier"]) .header {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  color: #fff1d6;
+  box-shadow: none;
+}
+
+:global(html[data-site-ui="quartier"]) .header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border: 1px solid transparent;
+  border-image: url("/placard/ui/control-paper-v2.webp") 40 fill / 14px / 0 stretch;
+  filter: url("#site-ui-fill-172923");
+}
+
+:global(html[data-site-ui="quartier"]) .body {
+  padding-top: 4px;
+  scroll-padding-block: 8px;
+}
+
+:global(html[data-site-ui="quartier"]) .controls > button {
+  --site-ui-hover-material: url("#site-ui-fill-efc451");
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  color: #172923;
+  box-shadow: none;
+}
+
+:global(html[data-site-ui="quartier"]) .controls > button:focus-visible,
+:global(html[data-site-ui="quartier"]) .header > button:focus-visible {
+  outline: 3px solid #efc451;
+  outline-offset: 3px;
+  box-shadow: none;
+}
+
+:global(html[data-site-ui="quartier"]) .controls > span { color: #fff1d6; }
+:global(html[data-site-ui="quartier"]) .controls strong {
+  color: #efc451;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}

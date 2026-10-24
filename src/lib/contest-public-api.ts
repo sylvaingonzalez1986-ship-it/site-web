@@ -30,6 +30,8 @@ export type PublicContestEntryDetail = Omit<
 };
 export type PublicContestProductTastingSummary = Omit<ContestProductTastingSummary, "reviews"> & {
   reviews: PublicContestReview[];
+  /** Supplied by the storefront only when the notebook is publicly accessible. */
+  notebookHref?: string;
 };
 export type PublicContestTesterProfile = Omit<
   ContestPublicTesterProfile,

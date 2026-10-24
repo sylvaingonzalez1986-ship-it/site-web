@@ -1,38 +1,38 @@
-.panel { --green: #172923; --paper: #fff8e7; --cream: #fff1d6; --wood: var(--game-surface-warm); --gold: #efc451; --turquoise: #149b8b; color: var(--green); background: var(--paper); border: 3px solid var(--green); border-radius: 20px; overflow: hidden; box-shadow: 5px 6px 0 var(--green); margin: 0 6px 1.5rem 0; min-width: 0; }
+.panel { --green: #172923; --paper: #fff8e7; --cream: #fff1d6; --wood: var(--game-surface-warm); --gold: #efc451; color: var(--green); min-width: 0; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; margin: 0 0 1.5rem; overflow: visible; padding: 6px; --turquoise: #087b70; }
 .panel * { box-sizing: border-box; }
-.heading { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; padding: 1.1rem clamp(1rem, 2.5vw, 1.5rem); background: var(--wood); color: var(--green); border-bottom: 3px solid var(--green); }
+.heading { display: flex; align-items: center; justify-content: space-between; gap: 1.25rem; padding: 1.1rem clamp(1rem, 2.5vw, 1.5rem); color: var(--green); background: transparent; border: 0; border-radius: 0; box-shadow: none; border-bottom: 2px solid var(--green); }
 .heading > div { min-width: 0; }
 .eyebrow { display: inline-flex; align-items: center; gap: .45rem; font-size: .72rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
-.heading .eyebrow { color: var(--green); background: var(--cream); padding: .4rem .55rem; border: 2px solid var(--green); border-radius: 8px; font-size: .66rem; }
+.heading .eyebrow { font-size: .66rem; background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: 0; color: #00563f; }
 .heading h2 { margin: .45rem 0; text-transform: uppercase; letter-spacing: .01em; font: 900 clamp(1.4rem, 2.7vw, 2.2rem)/1.1 var(--font-display), Impact, sans-serif; text-wrap: balance; }
 .heading h2 > span { color: var(--green); text-decoration: underline; text-decoration-color: var(--cream); text-decoration-thickness: .12em; text-underline-offset: .12em; }
 .overview { display: grid; grid-template-columns: 1.1fr 1fr; align-items: center; }
 .numbers { padding: 1.5rem clamp(1.1rem, 3vw, 2rem); min-width: 0; }
 .season { font-weight: 750; text-transform: uppercase; letter-spacing: .04em; }
 .season, .deadline { font-size: .76rem; line-height: 1.5; }
-.amount { display: grid; gap: .3rem; flex-shrink: 0; max-width: 100%; padding: .8rem 1rem; border: 2px solid var(--green); border-radius: 14px; background: var(--gold); box-shadow: 3px 3px 0 var(--green); text-align: right; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.amount { display: grid; gap: .3rem; flex-shrink: 0; max-width: 100%; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; padding: 16px 20px; text-align: left; }
 .amount > strong { color: var(--green); font: 900 clamp(2rem, 4vw, 3rem)/1 var(--font-display), Impact, sans-serif; }
 .amount strong small { font-size: .45em; }
 .amount > span { font-size: .76rem; }
 .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.metrics > div { min-width: 0; background: var(--cream); padding: .75rem; display: grid; align-content: start; gap: .25rem; border: 2px solid var(--green); border-radius: 12px; }
+.metrics > div { min-width: 0; display: grid; align-content: start; gap: .25rem; background: transparent; border: 0; border-radius: 0; box-shadow: none; border-left: 2px solid #087b70; padding: .25rem 0 .25rem .8rem; }
 .metrics strong { font-size: 1.4rem; }
 .metrics span { font-size: .8rem; line-height: 1.4; }
 .actions { display: flex; flex-wrap: wrap; gap: .6rem; margin-top: 1rem; }
-.actions :is(a, button), .personal :is(a, button), .diceAction :is(a, button) { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px; max-width: 100%; padding: .6rem .85rem; border: 2px solid var(--green); border-radius: 10px; background: var(--turquoise); color: #10231e; box-shadow: 2px 3px 0 var(--green); font-size: .82rem; font-weight: 800; text-decoration: none; cursor: pointer; transition: background 150ms ease, transform 150ms ease; }
-.actions button { color: var(--green); background: var(--cream); }
-.jar { display: grid; position: relative; padding: 0 0 2.5rem; border: 0; background: #d7efe2; border-left: 2px solid var(--green); color: var(--green); width: 100%; min-width: 0; overflow: hidden; text-align: center; }
+.actions :is(a, button), .personal :is(a, button), .diceAction :is(a, button) { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; min-height: 44px; max-width: 100%; font-size: .82rem; font-weight: 800; text-decoration: none; cursor: pointer; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff1d6; padding: 12px 18px; transition: transform 150ms ease; }
+.actions button { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); color: var(--green); }
+.jar { display: grid; position: relative; padding: 0 0 2.5rem; border: 0; color: var(--green); width: 100%; min-width: 0; overflow: hidden; text-align: center; background: transparent; border-left: 0; }
 .jar > img { grid-area: 1/1; width: 100%; height: 320px; object-fit: contain; transition: clip-path 900ms ease; }
-.jarLabel { display: inline-flex; position: relative; justify-self: center; align-items: center; gap: .5rem; max-width: calc(100% - 1.5rem); background: var(--cream); border: 2px solid var(--green); border-radius: 10px; padding: .65rem .85rem; box-shadow: 3px 3px 0 var(--green); font-weight: 850; font-size: .8rem; margin-top: -2rem; transition: transform 180ms ease; }
+.jarLabel { display: inline-flex; position: relative; justify-self: center; align-items: center; gap: .5rem; max-width: calc(100% - 1.5rem); font-weight: 850; font-size: .8rem; transition: transform 180ms ease; background: transparent; border: 0; border-radius: 0; box-shadow: none; padding: .65rem .85rem; border-bottom: 2px solid #172923; margin-top: -1.4rem; }
 .jarScale { position: absolute; bottom: .75rem; left: .5rem; right: .5rem; font-size: .65rem; }
-.growth { position: absolute; left: 45%; top: 20%; color: var(--green); background: var(--gold); padding: .65rem; border: 2px solid var(--green); border-radius: 20px; display: flex; gap: .4rem; align-items: center; animation: harvest 2s ease both; }
-.split { display: grid; grid-template-columns: 1fr 1fr; background: var(--wood); color: var(--green); border-block: 2px solid var(--green); padding: 1rem clamp(1.1rem, 3vw, 2rem); gap: 1rem; }
+.growth { position: absolute; left: 45%; top: 20%; color: var(--green); padding: .65rem; display: flex; gap: .4rem; align-items: center; animation: harvest 2s ease both; --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; --game-panel-edge: 10px; }
+.split { display: grid; grid-template-columns: 1fr 1fr; color: var(--green); padding: 1rem clamp(1.1rem, 3vw, 2rem); gap: 1rem; background: transparent; border: 0; border-radius: 0; box-shadow: none; border-block: 1px solid #17292355; }
 .split > div { display: flex; gap: .75rem; align-items: center; }
 .split svg { flex-shrink: 0; color: var(--green); width: 26px; height: 26px; }
 .split span { display: grid; gap: .25rem; }
 .split strong { font-size: .95rem; }
 .split small { font-size: .78rem; line-height: 1.4; }
-.personal { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: 1rem; padding: .85rem; background: #d7efe2; border: 2px solid var(--green); border-radius: 14px; }
+.personal { display: flex; align-items: center; justify-content: space-between; gap: 1rem; --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; padding: 20px; margin: 18px 14px; }
 .personal > div { min-width: 0; overflow-wrap: anywhere; }
 .personal p { margin: .35rem 0; line-height: 1.5; font-size: .9rem; }
 .personal small { font-size: .78rem; }
@@ -42,18 +42,18 @@
 .sectionHeading h3, .details h3 { margin: 0; font: 900 1.6rem/1.1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .sectionHeading > span { font-size: .78rem; }
 .ranks { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: .4rem; }
-.ranks button { display: grid; gap: .3rem; justify-items: center; align-content: center; min-height: 62px; min-width: 0; padding: .5rem .2rem; border: 2px solid var(--green); border-radius: 10px; background: var(--cream); color: var(--green); font-weight: 900; cursor: pointer; transition: background 150ms, transform 150ms; }
-.ranks button[aria-pressed="true"] { background: var(--gold); color: var(--green); border-color: var(--green); box-shadow: 2px 3px 0 var(--green); transform: translateY(-2px); }
-.ranks button[aria-pressed="true"] small { color: var(--green); }
+.ranks button { display: grid; gap: .3rem; justify-items: center; align-content: center; min-height: 62px; min-width: 0; color: var(--green); font-weight: 900; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; padding: 12px 4px; --game-control-edge: 9px; transition: transform 150ms ease; }
+.ranks button[aria-pressed="true"] { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff1d6; transform: none; }
+.ranks button[aria-pressed="true"] small { color: #fff1d6; }
 .ranks small { font-size: .66rem; font-weight: 700; }
-.rankDetail { display: flex; gap: .85rem; align-items: center; margin-top: 1rem; padding: 1rem; background: var(--cream); border: 2px solid var(--green); border-radius: 14px; }
+.rankDetail { display: flex; gap: .85rem; align-items: center; margin-top: 1rem; --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; padding: 20px; }
 .rankDetail > svg { flex-shrink: 0; }
 .rankDetail > div { flex: 1; min-width: 0; overflow-wrap: anywhere; }
 .rankDetail strong { font-size: .92rem; }
 .rankDetail p { margin: .3rem 0 0; font-size: .8rem; line-height: 1.4; }
 .rankDetail > b { display: grid; gap: .2rem; font-size: 1.55rem; white-space: nowrap; }
 .rankDetail small { font-size: .65rem; font-weight: 600; }
-.note { font-size: .76rem; line-height: 1.6; margin: .85rem 0 0; color: #62584b; }
+.note { font-size: .76rem; line-height: 1.6; margin: .85rem 0 0; color: #38594f; }
 .availability { margin: 1rem; font-size: .82rem; line-height: 1.5; }
 .rewardDetails { border-top: 2px solid var(--green); }
 .rewardDetails > summary { display: flex; align-items: center; gap: .75rem; min-height: 64px; padding: .9rem 1rem; cursor: pointer; font-size: .88rem; font-weight: 850; list-style: none; }
@@ -61,26 +61,26 @@
 .rewardDetails > summary > span { flex: 1; min-width: 0; }
 .rewardDetails > summary small { display: block; margin-top: .2rem; font-size: .74rem; font-weight: 500; line-height: 1.4; }
 .rewardDetails > summary > svg { flex-shrink: 0; }
-.rewardDetails[open] > summary { background: #d7efe2; border-bottom: 2px solid var(--green); }
+.rewardDetails[open] > summary { background: transparent; border-bottom: 1px solid #17292355; }
 .rewardDetails[open] > summary > svg:last-child { transform: rotate(180deg); }
-.details { background: var(--cream); border-block: 2px solid var(--green); }
+.details { background: transparent; border: 0; border-radius: 0; box-shadow: none; border-block: 1px solid #17292355; }
 .steps { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
 .steps li { font-size: .82rem; line-height: 1.5; }
 .steps b { display: block; margin-bottom: .35rem; }
-.formula { display: grid; gap: .5rem; background: var(--paper); border: 2px solid var(--green); border-radius: 12px; padding: 1rem; }
+.formula { display: grid; gap: .5rem; background: transparent; border: 0; border-radius: 0; box-shadow: none; border-left: 3px solid #087b70; padding: 5px 0 5px 14px; }
 .formula span { font-size: .8rem; line-height: 1.5; }
-.dice { margin: 1rem clamp(1.1rem, 3vw, 2rem) 1.5rem; border: 2px solid var(--green); border-radius: 14px; overflow: hidden; }
+.dice { margin: 1rem clamp(1.1rem, 3vw, 2rem) 1.5rem; background: transparent; border: 0; border-radius: 0; box-shadow: none; overflow: visible; border-block: 1px solid #17292355; }
 .dice summary { display: flex; align-items: center; gap: .8rem; cursor: pointer; min-height: 64px; padding: .85rem; font-weight: 850; list-style: none; }
 .dice summary::-webkit-details-marker { display: none; }
 .dice summary span { flex: 1; }
 .dice summary small { display: block; margin-top: .25rem; font-size: .76rem; font-weight: 500; }
-.dice summary { background: var(--gold); color: var(--green); }
+.dice summary { color: var(--green); }
 .dice summary > svg { color: var(--green); }
-.dice[open] summary { background: var(--turquoise); color: #10231e; border-bottom: 2px solid var(--green); }
+.dice[open] summary { background: transparent; color: var(--green); border-bottom: 1px solid #17292355; }
 .diceBody { padding: 0 1rem 1rem; font-size: .85rem; }
 .diceRates { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: .5rem; }
-.diceRates > span { display: grid; min-width: 0; text-align: center; gap: .3rem; padding: .75rem .3rem; border: 2px solid var(--green); border-radius: 10px; background: var(--cream); }
-.diceRates > span[data-active] { background: var(--gold); border-color: var(--green); }
+.diceRates > span { display: grid; min-width: 0; text-align: center; gap: .3rem; padding: .75rem .3rem; background: transparent; border: 0; border-radius: 0; box-shadow: none; border-bottom: 2px solid #17292355; }
+.diceRates > span[data-active] { background: transparent; border-color: #087b70; color: #00563f; }
 .diceAction { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .8rem; margin-top: 1rem; }
 .diceQuick { margin: 0 1rem 1rem; font-size: .82rem; }
 .diceQuick .diceAction { margin-top: 0; }
@@ -91,7 +91,7 @@
 .panel :is(a, button, summary):focus-visible { outline: 3px solid var(--green); outline-offset: 3px; box-shadow: 0 0 0 6px var(--paper); }
 @keyframes harvest { 0% { opacity: 0; transform: translateY(-30px); } 20%,75% { opacity: 1; } 100% { opacity: 0; transform: translateY(50px); } }
 @keyframes roll { to { transform: rotate(360deg); } }
-@media (hover:hover) { .ranks button:hover { background: var(--gold); } .actions :is(a,button):hover, .personal :is(a,button):hover, .diceAction :is(a,button):not(:disabled):hover { background: var(--gold); transform: translateY(-1px); } .rewardDetails > summary:hover { background: #d7efe2; } }
+@media (hover:hover) { .ranks button:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); color: var(--green); } .actions :is(a,button):hover, .personal :is(a,button):hover, .diceAction :is(a,button):not(:disabled):hover { --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); color: #fff1d6; transform: translateY(-1px); } .rewardDetails > summary:hover { background: transparent; color: #00563f; } }
 @media (max-width: 700px) {
   .overview { grid-template-columns: minmax(0, 1fr); }
   .heading { flex-wrap: wrap; gap: .85rem; }
@@ -111,3 +111,28 @@
 }
 @media (max-width: 380px) { .metrics, .steps { grid-template-columns: minmax(0, 1fr); } .rankDetail { flex-wrap: wrap; } .rankDetail > b { margin-left: auto; } .diceRates { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (prefers-reduced-motion: reduce) { .panel *, .panel *::before { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+.jar > img { height: 350px; }
+.fill { pointer-events: none; }
+.diceAction :is(a, button) svg, .personal :is(a, button) svg, .actions :is(a, button) svg { flex: 0 0 auto; }
+.ranks button:active, .actions :is(a,button):active, .personal :is(a,button):active, .diceAction :is(a,button):active:not(:disabled) { transform: translateY(1px); }
+.ranks button[aria-pressed="true"]:hover { --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); color: #fff1d6; }
+.metrics strong { font: 900 30px/1.1 var(--font-display), Impact, sans-serif; }
+.rewardDetails > summary { margin-inline: 12px; padding-inline: 0; }
+.dice summary { padding-inline: 0; }
+.diceBody { padding-inline: 0; }
+.diceRates > span[data-active] b { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 700px) {
+  .heading { padding: 18px 14px; }
+  .amount { padding: 14px 20px; }
+  .personal { margin: 16px 8px; padding: 18px 16px; }
+  .personal :is(a, button) { width: 100%; }
+  .jar > img { height: 250px; }
+  .jar { border-top: 0; }
+  .rankDetail { padding: 18px 16px; }
+}
+@media (max-width: 380px) {
+  .ranks { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px; }
+  .ranks button { --game-control-edge: 8px; font-size: 12px; }
+  .ranks small { font-size: 9px; }
+  .rankDetail > b { margin-left: 0; }
+}

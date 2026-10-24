@@ -92,7 +92,7 @@ export function ProductCardActions({
       {(product.analysisPdf || product.videoUrl) && (
         <div className="mt-4 flex flex-wrap gap-2 border-t border-[#1a1a1a]/25 pb-4 pt-3">
           {product.analysisPdf && (
-            <button
+            <button data-ui-commerce="analysis-control" data-ui-shape="control"
               type="button"
               onClick={() => setAnalysisOpen(true)}
               className="inline-flex min-h-[38px] items-center border-2 border-[#1a1a1a] bg-[#e8f7f2] px-3 py-1 text-[11px] font-black uppercase tracking-[0.1em] text-[#0a7b61] transition-colors hover:bg-[#d7f0e8]"
@@ -101,7 +101,7 @@ export function ProductCardActions({
             </button>
           )}
           {product.videoUrl && (
-            <button
+            <button data-ui-commerce="video-control" data-ui-shape="control"
               type="button"
               onClick={() => setVideoOpen(true)}
               className="inline-flex min-h-[38px] items-center gap-1.5 border-2 border-[#d35400] bg-[#fff3e8] px-3 py-1 text-[11px] font-black uppercase tracking-[0.1em] text-[#d35400] transition-colors hover:bg-[#ffe8d0]"
@@ -128,7 +128,7 @@ export function ProductCardActions({
           </div>
         )}
         <div className={`mt-3 flex flex-wrap items-center gap-2 ${styles.controls}`}>
-          <Link
+          <Link data-ui-commerce="secondary" data-ui-shape="control"
             href={productHref}
             className="btn-cartoon btn-secondary inline-flex min-h-[44px] flex-1 items-center justify-center px-4 py-3 text-xs"
           >
@@ -145,7 +145,7 @@ export function ProductCardActions({
               compact
             />
           )}
-          <button
+          <button data-ui-commerce="primary" data-ui-shape="control"
             type="button"
             onClick={handleAddToCart}
             disabled={cartLoading || !inStock}

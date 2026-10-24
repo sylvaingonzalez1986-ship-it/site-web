@@ -47,7 +47,7 @@ export function PackOpeningFlowModal({ ticket, onClose, onOpen, inline = false }
   const modal = (
     <div ref={dialogRef} className={`${modalClassName} ${styles.modal}`} data-inline={inline || undefined} role="dialog" aria-modal="true" aria-label="Ouverture du booster">
       {/* Close — always visible */}
-      <button
+      <button data-ui-account="pack-close" data-ui-shape="control"
         type="button"
         className={styles.close}
         onClick={onClose}

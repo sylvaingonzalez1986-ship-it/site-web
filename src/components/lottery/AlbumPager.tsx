@@ -27,7 +27,7 @@ export function AlbumPager({ pages, activeIndex, onPageChange, isPreview = false
 
   return (
     <nav className={styles.pager} aria-label="Pages de l'album">
-      <button
+      <button data-ui-account="gold" data-ui-shape="control"
         type="button"
         className={styles.pagerArrow}
         disabled={!canGoPrevious}
@@ -43,7 +43,7 @@ export function AlbumPager({ pages, activeIndex, onPageChange, isPreview = false
           const claimable = page.rewardStatus === "claimable";
 
           return (
-            <button
+            <button data-ui-account="pager-tab" data-ui-shape="control"
               key={page.rarity}
               type="button"
               onClick={() => {
@@ -75,7 +75,7 @@ export function AlbumPager({ pages, activeIndex, onPageChange, isPreview = false
           );
         })}
       </div>
-      <button
+      <button data-ui-account="gold" data-ui-shape="control"
         type="button"
         className={styles.pagerArrow}
         disabled={!canGoNext}

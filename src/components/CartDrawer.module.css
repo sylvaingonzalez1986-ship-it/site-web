@@ -113,10 +113,11 @@
 .steps { display: flex; justify-content: space-between; gap: 6px; margin: 0 0 14px; padding: 0; list-style: none; font-size: .6rem; font-weight: 800; color: #365345; }
 .steps li:last-child { color: var(--arcade-green); }
 .emptyCart { display: grid; justify-items: center; gap: 16px; padding: clamp(32px, 8vh, 80px) 12px; text-align: center; }
+.emptyCopy { display: contents; }
 .emptyIcon { display: grid; width: 76px; height: 76px; place-items: center; border: 2px solid var(--arcade-green); background: var(--arcade-yellow); box-shadow: 4px 4px 0 var(--arcade-green); transform: rotate(-6deg); }
 .emptyCart .kicker { margin: 8px 0 0; }
 .emptyCart h3 { color: var(--arcade-green); font-size: clamp(2.8rem, 8vw, 4rem); }
-.emptyCart > p:last-of-type { max-width: 340px; margin: 0; font-size: .9rem; line-height: 1.7; color: #365345; }
+.emptyCopy > p:last-of-type { max-width: 340px; margin: 0; font-size: .9rem; line-height: 1.7; color: #365345; }
 .error { padding: 14px; border: 1px solid #922e25; background: #fff0e8; color: #922e25; font-size: .875rem; font-weight: 700; }
 .drawer :global(.mondial-relay-widget) > div { border-color: var(--arcade-green); border-radius: 2px; }
 @media (min-width: 900px) {
@@ -150,3 +151,128 @@
 }
 @keyframes arrive { from { transform: translateX(40px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .drawer[open] { animation: none; } .closeButton, .iconButton { transition: none; } }
+
+/* The empty basket follows the navigation's chosen DA, including on game routes.
+   Original and the populated basket retain their existing layout and materials. */
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] {
+  isolation: isolate;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border: 0 solid transparent;
+  border-image: url("/placard/ui/panel-paper-v1.webp") 48 fill / 16px / 0 stretch;
+  filter: url("#site-ui-fill-fff1d6");
+}
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .header {
+  position: relative;
+  isolation: isolate;
+  margin: 10px 10px 0;
+  padding: max(20px, env(safe-area-inset-top)) 22px 24px;
+  border: 0;
+  background: transparent;
+}
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  border: 0 solid transparent;
+  border-image: url("/placard/ui/panel-paper-v1.webp") 48 fill / 14px / 0 stretch;
+  filter: url("#site-ui-fill-172923");
+}
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] :is(.itemCount, .closeButton, .emptyAction) {
+  position: relative;
+  isolation: isolate;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  color: var(--arcade-dark);
+  transform: none;
+}
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] :is(.itemCount, .closeButton, .emptyAction)::before {
+  content: "";
+  display: block;
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: auto;
+  height: auto;
+  pointer-events: none;
+  border: 0 solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  transform: none;
+  border-image: url("/placard/ui/control-paper-v2.webp") 40 fill / 12px / 0 stretch;
+  filter: url("#site-ui-fill-efc451");
+}
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyAction::after { content: none; }
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .itemCount { min-width: 36px; height: 36px; }
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyIcon { display: none; }
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyCart {
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
+  gap: 24px;
+  min-height: clamp(450px, calc(100dvh - 210px), 640px);
+  padding: 24px 16px;
+  text-align: center;
+}
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyCopy {
+  display: grid;
+  justify-items: center;
+  gap: 18px;
+  min-width: 0;
+  max-width: 570px;
+}
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyCopy h3 { font-size: clamp(2.75rem, 5.4vw, 3.8rem); line-height: 1.04; }
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyCopy .kicker { margin: 0; }
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyAction {
+  min-height: 56px;
+  max-width: 100%;
+  padding: 15px 24px;
+  font-size: .8rem;
+  transition: color 160ms ease;
+}
+
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyAction:focus-visible { outline: 2px solid var(--arcade-green); outline-offset: 4px; }
+:global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .closeButton:focus-visible { outline: 2px solid var(--arcade-paper); outline-offset: 4px; }
+
+@media (max-width: 599px) {
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .header { margin: 6px 6px 0; padding: max(16px, env(safe-area-inset-top)) 15px 20px; gap: 10px; }
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .header h2 { font-size: clamp(2rem, 8vw, 2.8rem); gap: 9px; }
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .eyebrow { max-width: 220px; font-size: .54rem; }
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .scrollArea { padding-top: 8px; }
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyCart { gap: 12px; min-height: min(440px, calc(100dvh - 160px)); padding: 24px 8px; }
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyCopy { justify-items: center; gap: 12px; }
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyCopy h3 { font-size: clamp(2.3rem, 9vw, 3rem); }
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyAction { min-height: 52px; padding: 13px 20px; font-size: .75rem; }
+}
+
+@media (hover: hover) {
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .closeButton:hover::before { filter: url("#site-ui-fill-fff1d6"); }
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyAction:hover { color: var(--arcade-paper); }
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyAction:hover::before { filter: url("#site-ui-fill-087b70"); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html:is([data-site-ui="quartier"], [data-site-navigation-ui="quartier"])) .drawer[data-empty="true"] .emptyAction { transition: none; }
+}

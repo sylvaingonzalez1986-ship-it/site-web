@@ -9,6 +9,7 @@ import { getKqPostHarvestDeviceBenefits, getKqPostHarvestTierBenefits, getKqWare
 import { getKqWarehouseServiceZoneQuote, getKqWarehouseStorageClimateQuote, getKqWarehouseSummary, KQ_STORAGE_CLIMATE_KWH_PER_M2_MONTH, KQ_WAREHOUSE_SIMULATION, type KqWarehouseState } from "@/lib/kanab-quest-warehouse";
 import { KQ_WAREHOUSE_CATALOG, KQ_WAREHOUSE_TIERS, getKqWarehouseDevice, type KqWarehouseDevice } from "@/lib/kanab-quest-warehouse-catalog";
 import { getKqWarehouseProductArtwork } from "@/lib/kanab-quest-warehouse-product-artwork";
+import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import styles from "./KqWarehousePostHarvest.module.css";
 
 type Props = {
@@ -124,12 +125,13 @@ export function KqWarehousePostHarvest({ kind, state, installedState = state, bi
     {beforeConfiguration}
     <div className={styles.sectionHeading}><div><span className={styles.eyebrow}>Configuration du plan</span><h4>{drying ? "Mes zones de séchage" : "Mes zones de stockage"}</h4></div><span className={styles.count}>{zones.length} zone{zones.length > 1 ? "s" : ""}</span></div>
     {zones.length > 0 ? <div className={styles.zones}>{zones.map(zone => {
+      const identity = getKqZoneIdentity(state, zone.id);
       const device = getKqWarehouseDevice(zone.deviceCode)!;
       const quote = getKqWarehouseServiceZoneQuote(zone);
       const benefit = getKqPostHarvestDeviceBenefits(device.code);
       const upgrades = devices.filter(candidate => tierIndex(candidate) > tierIndex(device));
       return <article className={styles.zone} key={zone.id} data-post-harvest-zone={zone.id}>
-        <div className={styles.zoneIdentity}><DeviceArt device={device} className={styles.zoneArt} sizes="96px" /><div><small>{tierLabel(device)}</small><h5>{zone.name}</h5><span>{number(quote.areaM2)} m² · {mass(quote.capacityGrams)} de capacité</span></div><button className={styles.iconButton} type="button" disabled={disabled} onClick={() => onEditZone(zone.id)} aria-label={`Configurer ${zone.name}`}><Grid2X2 size={18} aria-hidden="true" /></button></div>
+        <div className={styles.zoneIdentity}><DeviceArt device={device} className={styles.zoneArt} sizes="96px" /><div><small>{tierLabel(device)}</small><h5><b className={styles.zoneNumber} style={{ backgroundColor: identity?.color }} aria-label={identity?.label ?? "Zone"} data-zone-number={identity?.number}>{identity?.number ?? "Zone"}</b><span>{number(quote.areaM2)} m²</span></h5><span>{mass(quote.capacityGrams)} de capacité</span></div><button className={styles.iconButton} type="button" disabled={disabled} onClick={() => onEditZone(zone.id)} aria-label={`Configurer la ${(identity?.label ?? "zone").toLowerCase()}`}><Grid2X2 size={18} aria-hidden="true" /></button></div>
         <div className={styles.zoneBonus}><Sparkles size={15} aria-hidden="true" /><span>Bonus de cette gamme</span><strong>+{number(benefit.qualityBonus)} / 10</strong></div>
         {upgrades.length > 0 ? <div className={styles.upgrades}>{upgrades.map(upgrade => <button type="button" className={styles.upgradeButton} key={upgrade.code} disabled={disabled} onClick={() => onUpgradeZone(zone.id, upgrade.code)} data-postharvest-upgrade={zone.id} data-device-code={upgrade.code}><span><ArrowUp size={15} aria-hidden="true" />Améliorer · {tierLabel(upgrade)}</span><small>{mass(capacityPerM2(upgrade) * quote.areaM2)} · +{number(getKqPostHarvestDeviceBenefits(upgrade.code).qualityBonus)} / 10</small></button>)}</div> : <div className={styles.maximum}><Check size={16} aria-hidden="true" />Meilleure gamme installée sur le plan</div>}
       </article>;

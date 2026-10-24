@@ -1162,3 +1162,63 @@
 @media (prefers-reduced-motion: reduce) {
   .boosterCta, .page :global(.btn-cartoon) { transition: none; }
 }
+
+/* Opt-in materials only: keep every original colour, font, size and position. */
+:global(html[data-site-ui="quartier"]) .page [data-ui-shape] {
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+:global(html[data-site-ui="quartier"]) .primaryCta,
+:global(html[data-site-ui="quartier"]) .secondaryCta,
+:global(html[data-site-ui="quartier"]) .textLink,
+:global(html[data-site-ui="quartier"]) .boosterCta,
+:global(html[data-site-ui="quartier"]) .seoActions > a,
+:global(html[data-site-ui="quartier"]) .contactLink,
+:global(html[data-site-ui="quartier"]) .eyebrow,
+:global(html[data-site-ui="quartier"]) .roundIcon,
+:global(html[data-site-ui="quartier"]) .emptyProducts,
+:global(html[data-site-ui="quartier"]) .bonusCard,
+:global(html[data-site-ui="quartier"]) .seoCard,
+:global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .btn-cartoon),
+:global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .pill-cartoon) {
+  position: relative;
+}
+:global(html[data-site-ui="quartier"]) .primaryCta,
+:global(html[data-site-ui="quartier"]) .secondaryCta,
+:global(html[data-site-ui="quartier"]) .textLink,
+:global(html[data-site-ui="quartier"]) .boosterCta,
+:global(html[data-site-ui="quartier"]) .heroStage,
+:global(html[data-site-ui="quartier"]) .mobileHeroStage,
+:global(html[data-site-ui="quartier"]) .eyebrow,
+:global(html[data-site-ui="quartier"]) .priceStamp,
+:global(html[data-site-ui="quartier"]) .mobilePriceStamp,
+:global(html[data-site-ui="quartier"]) .roundIcon,
+:global(html[data-site-ui="quartier"]) .emptyProducts,
+:global(html[data-site-ui="quartier"]) .bonusCard,
+:global(html[data-site-ui="quartier"]) .seoCard,
+:global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__panel),
+:global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .btn-cartoon),
+:global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .pill-cartoon) {
+  --site-ui-material: url("#site-ui-fill-fffaf1");
+  --site-ui-hover-material: var(--site-ui-material);
+}
+:global(html[data-site-ui="quartier"]) .primaryCta,
+:global(html[data-site-ui="quartier"]) .bonusCardFeatured .boosterCta { --site-ui-material: url("#site-ui-fill-f4c43d"); }
+:global(html[data-site-ui="quartier"]) .heroStage,
+:global(html[data-site-ui="quartier"]) .mobileHeroStage,
+:global(html[data-site-ui="quartier"]) .eyebrow { --site-ui-material: url("#site-ui-fill-e8efe4"); }
+:global(html[data-site-ui="quartier"]) .boosterCta,
+:global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .btn-cartoon) { --site-ui-material: url("#site-ui-fill-00563f"); }
+:global(html[data-site-ui="quartier"]) .bonusCardFeatured { --site-ui-material: url("#site-ui-fill-003f30"); }
+:global(html[data-site-ui="quartier"]) .seoCard { --site-ui-material: url("#site-ui-outline-00563f"); }
+:global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .pill-cartoon) { --site-ui-material: url("#site-ui-fill-ffffff"); }
+:global(html[data-site-ui="quartier"]) .textLink { --site-ui-hover-material: url("#site-ui-fill-f4c43d"); }
+:global(html[data-site-ui="quartier"]) .seoActions > a,
+:global(html[data-site-ui="quartier"]) .contactLink {
+  --site-ui-material: url("#site-ui-outline-003f30");
+  --site-ui-hover-material: url("#site-ui-fill-00563f");
+}
+:global(html[data-site-ui="quartier"]) .eyebrow,
+:global(html[data-site-ui="quartier"]) .roundIcon { --site-ui-edge: 9px; }

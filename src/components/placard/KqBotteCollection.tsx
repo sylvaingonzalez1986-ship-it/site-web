@@ -10,6 +10,7 @@ import { getKqCardGuide, getKqCardRole, KQ_CARD_ROLES, KQ_CARD_RARITY_LABELS } f
 import { useKqCollectionDialog as useCardDialog, clickedCollectionBackdrop as clickedBackdrop } from "./KqCollectionDialog";
 import { KqBuddiesCollection } from "./KqBuddiesCollection";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { KqChapterHeading } from "./KqChapterHeading";
 import styles from "./KqBotteCollection.module.css";
 
 const RARITIES = KQ_CARD_RARITY_LABELS;
@@ -90,7 +91,7 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
   return createPortal(<>
     <dialog ref={dialog} className={styles.collectionDialog} data-placard-collections aria-labelledby="botte-collection-title" onCancel={(event) => { event.preventDefault(); onClose(); }} onKeyDown={(event) => { if (event.key === "Escape") event.stopPropagation(); }} onClick={(event) => { if (clickedBackdrop(event)) onClose(); }}>
       <div className={styles.albumLayout}>
-        <header className={styles.header}><div><small><BookOpen size={16} aria-hidden="true" /> Les albums du quartier</small><h2 id="botte-collection-title">Collections</h2><p>Tes cartes, tes Buddies et tes prochaines découvertes.</p></div><button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button></header>
+        <KqChapterHeading art="collection" title="Collections" titleId="botte-collection-title" eyebrow={<><BookOpen size={16} aria-hidden="true" /> Les albums du quartier</>} compact actions={<button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button>}><p>Tes cartes, tes Buddies et tes prochaines découvertes.</p></KqChapterHeading>
         <div className={styles.albumTabs} role="tablist" aria-label="Choisir une collection">
           {(["botte", "buddies"] as const).map(kind => <button key={kind} type="button" role="tab" id={`collection-tab-${kind}`} data-collection-tab={kind} aria-selected={album === kind} aria-controls={`collection-panel-${kind}`} tabIndex={album === kind ? 0 : -1} onClick={() => setAlbum(kind)} onKeyDown={event => {
             if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;

@@ -73,3 +73,34 @@
   .hero { min-height: 190px; }
   .heroVisual { align-self: end; }
 }
+
+/* Reversible contours only; consent choices and original colours stay intact. */
+:global(html[data-site-ui="quartier"]) .dialog[data-ui-shape],
+:global(html[data-site-ui="quartier"]) .dialog [data-ui-shape] {
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  --site-ui-hover-material: var(--site-ui-material);
+}
+:global(html[data-site-ui="quartier"]) .primary,
+:global(html[data-site-ui="quartier"]) .secondary,
+:global(html[data-site-ui="quartier"]) .notice,
+:global(html[data-site-ui="quartier"]) .option,
+:global(html[data-site-ui="quartier"]) .cookieToolbar button { position: relative; }
+:global(html[data-site-ui="quartier"]) .dialog[data-ui-shape] {
+  --site-ui-material: url("#site-ui-outline-172923");
+  /* Keep the original paper behind the entire scroll viewport. An absolute
+     filled sheet only covers its initial height when this dialog scrolls. */
+  background: #f7f1e5;
+  clip-path: polygon(0 3px, 14% 1px, 33% 2px, 54% 0, 76% 2px, calc(100% - 2px) 1px, 100% 3px, calc(100% - 1px) 34%, 100% 69%, calc(100% - 2px) calc(100% - 2px), 76% 100%, 51% calc(100% - 1px), 25% 100%, 1px calc(100% - 2px), 0 67%, 1px 31%);
+}
+:global(html[data-site-ui="quartier"]) .dialog[data-ui-shape]::after { content: none; }
+:global(html[data-site-ui="quartier"]) .hero[data-ui-shape] { --site-ui-material: url("#site-ui-fill-254f40"); }
+:global(html[data-site-ui="quartier"]) .primary { --site-ui-material: url("#site-ui-fill-bd4938"); }
+:global(html[data-site-ui="quartier"]) .secondary { --site-ui-material: url("#site-ui-fill-e4ddca"); }
+:global(html[data-site-ui="quartier"]) .notice,
+:global(html[data-site-ui="quartier"]) .option { --site-ui-material: url("#site-ui-fill-fffdf7"); }
+:global(html[data-site-ui="quartier"]) .notice::before,
+:global(html[data-site-ui="quartier"]) .option::before { opacity: .78; }
+:global(html[data-site-ui="quartier"]) .cookieToolbar button { --site-ui-material: url("#site-ui-fill-f4c43d"); }

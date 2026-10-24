@@ -1,8 +1,8 @@
-.preview { box-sizing: border-box; grid-column: 1 / -1; width: 100%; min-width: 0; margin: .4rem 0; padding: .65rem .75rem; border: 1px solid #b7c8b1; border-radius: 12px; background: #fff8e7; color: #172923; text-align: left; font-size: .8rem; line-height: 1.45; }
+.preview { box-sizing: border-box; grid-column: 1 / -1; width: 100%; min-width: 0; margin: .4rem 0; padding: .65rem .75rem; color: #172923; text-align: left; font-size: .8rem; line-height: 1.45; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .preview header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .2rem .65rem; }
 .preview header > span { color: #455748; font-size: .75rem; }
 .preview header > strong { color: #172923; font-size: .9rem; }
-.preview[data-danger] { border-color: #984b30; }
+.preview[data-danger] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .health { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: .2rem .5rem; margin-top: .35rem; }
 .health strong { font-variant-numeric: tabular-nums; }
 .health small { font-size: .75rem; font-weight: 500; }

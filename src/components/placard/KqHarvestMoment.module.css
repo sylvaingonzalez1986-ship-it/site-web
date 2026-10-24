@@ -7,11 +7,14 @@
   margin-block: 20px;
   padding: clamp(18px, 3vw, 32px);
   overflow: hidden;
-  border: 2px solid #172923;
-  border-radius: 22px;
-  background: var(--game-surface-warm);
   color: #172923;
   font-family: var(--font-body), Arial, sans-serif;
+  --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp"));
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
 
 .illustration { position: relative; min-width: 0; align-self: center; }
@@ -29,11 +32,15 @@
 .metrics dd { margin: 4px 0 0; font-size: clamp(27px, 4vw, 40px); font-weight: 900; line-height: 1.15; }
 .metrics dd small { font-size: 13px; font-weight: 700; white-space: nowrap; }
 .metrics > div > span { display: block; margin-top: 3px; font-size: 11px; }
-.continue { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px; margin-top: 20px; padding: 10px 16px; border: 2px solid #172923; border-radius: 10px; background: #172923; color: #fff8e7; font: 800 13px/1.5 var(--font-body), Arial, sans-serif; cursor: pointer; }
+.continue { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px; margin-top: 20px; padding: 10px 16px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #fff1d6; font: 800 13px/1.5 var(--font-body), Arial, sans-serif; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .continue svg { width: 18px; height: 18px; }
-.continue:hover { background: #076c61; }
+.continue:hover:not(:disabled) {
+  --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
+  background: transparent;
+  border-color: transparent;
+  color: #fff1d6; }
 .continue:focus-visible { outline: 3px solid #076c61; outline-offset: 4px; }
-.moment[data-outcome="dead"], .moment[data-outcome="empty"] { background: #fff8e7; }
+.moment[data-outcome="dead"], .moment[data-outcome="empty"] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .moment[data-outcome="dead"] .illustration, .moment[data-outcome="empty"] .illustration { opacity: .85; }
 
 .moment[data-fresh] .illustration { animation: harvestArrival 620ms cubic-bezier(.2, .7, .2, 1) both; }
@@ -53,7 +60,7 @@
   .metrics { gap: 12px 22px; }
 }
 @media (max-width: 480px) {
-  .moment { grid-template-columns: minmax(0, 1fr); margin-block: 14px; padding: 18px 16px; gap: 10px; border-radius: 18px; }
+  .moment { grid-template-columns: minmax(0, 1fr); margin-block: 14px; padding: 18px 16px; gap: 10px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
   .illustration img { width: 110px; margin-inline: 0; }
   .content h1 { max-width: none; }
   .content > p { font-size: 13px; }

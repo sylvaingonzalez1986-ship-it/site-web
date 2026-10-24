@@ -1,23 +1,20 @@
-﻿.character { display: grid; justify-items: end; gap: 10px; color: #172923; min-width: 0; max-width: min(100%, 360px); text-align: right; font-size: .75rem; overflow-wrap: anywhere; }
-.characterButton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 14px; min-height: 44px; max-width: 100%; border: 2px solid #172923; border-radius: 12px; background: #efc451; box-shadow: 3px 3px 0 #172923; color: #172923; text-decoration: none; font: 800 .75rem/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; transition: background 150ms ease, transform 150ms ease; }
-.characterButton svg, .saved svg { flex-shrink: 0; }
-.saved { display: flex; align-items: center; gap: 6px; padding: .35rem .55rem; border: 1px solid #172923; border-radius: 8px; background: #d7efe2; font-size: .7rem; line-height: 1.5; color: #172923; }
-.entry { position: relative; grid-area: 1 / 2; }
+.character { composes: surface from "./ArenaRetro.module.css"; display: grid; justify-items: end; gap: 12px; color: #172923; min-width: 0; max-width: min(100%,360px); text-align: right; font-size: 12px; overflow-wrap: anywhere; }
+.characterButton { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 12px 18px; min-height: 48px; max-width: 100%; color: #172923; text-decoration: none; font: 800 12px/1.4 var(--font-body),Arial,sans-serif; cursor: pointer; }
+.characterButton svg,.saved svg { flex-shrink: 0; }
+.saved { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid #17292355; font-size: 11px; line-height: 1.5; color: #087b70; }
+.entry { composes: surface from "./ArenaRetro.module.css"; position: relative; grid-area: 1 / 2; }
 .entry > button { width: 100%; cursor: pointer; text-align: left; }
-.bubble { position: absolute; z-index: 5; bottom: calc(100% + 16px); right: 0; width: min(330px, calc(100vw - 2rem)); padding: 22px 42px 22px 20px; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; color: #172923; box-shadow: 5px 5px 0 #172923; text-shadow: none; }
-.bubble::after { content: ""; position: absolute; right: 30px; bottom: -9px; width: 16px; height: 16px; background: #fff8e7; border-right: 2px solid #172923; border-bottom: 2px solid #172923; transform: rotate(45deg); }
-.bubble small { display: block; margin-bottom: 8px; color: #096a60; font: 800 .65rem/1.4 var(--font-body), Arial, sans-serif; letter-spacing: .08em; text-transform: uppercase; }
-.bubble strong { display: block; font: 900 1.8rem/1 var(--font-display), Impact, sans-serif; }
-.bubble p { margin-top: 10px; font-size: .8rem; line-height: 1.55; }
-.dismiss { position: absolute; top: 0; right: 0; display: grid; place-items: center; width: 44px; height: 44px; cursor: pointer; }
-.helpButton { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: .5rem .7rem; border: 2px solid #172923; border-radius: 10px; background: #fff8e7; color: #172923; font-size: 12px; font-weight: 800; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+.bubble { --game-panel-art: var(--game-panel-paper,url("/placard/ui/panel-paper-v1.webp")); position: absolute; z-index: 5; bottom: calc(100% + 16px); right: 0; width: min(330px,calc(100vw - 2rem)); padding: 24px 54px 24px 22px; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; box-shadow: none; text-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice,48) fill / var(--game-panel-edge,15px) / 0 stretch; }
+.bubble small { display: block; margin-bottom: 9px; color: #087b70; font: 800 10px/1.4 ui-monospace,Consolas,monospace; letter-spacing: .08em; text-transform: uppercase; }
+.bubble strong { display: block; font: 900 29px/1.05 var(--font-display),Impact,sans-serif; }
+.bubble p { margin-top: 12px; font-size: 13px; line-height: 1.6; }
+.dismiss { position: absolute; top: 7px; right: 7px; display: grid; place-items: center; width: 44px; height: 44px; color: #172923; cursor: pointer; }
+.helpButton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 12px 17px; color: #172923; font-size: 12px; font-weight: 800; text-decoration: none; cursor: pointer; }
 .invitation { text-align: left; cursor: pointer; }
-.character :where(a, button):focus-visible, .entry :where(a, button):focus-visible, .helpButton:focus-visible { outline: 3px solid #172923; outline-offset: 3px; box-shadow: 0 0 0 6px #fff8e7; }
-@media (hover: hover) { .characterButton:hover, .helpButton:hover { background: #149b8b; color: #10231e; transform: translateY(-1px); } }
-@media (max-width: 700px) {
-  .entry { grid-area: 3 / 1; }
-  .characterButton { padding: 10px; font-size: .72rem; }
-  .saved { font-size: .65rem; }
-  .bubble { right: 0; width: 100%; }
-}
-@media (prefers-reduced-motion: reduce) { .characterButton { transition: none; } }
+.characterButton,.helpButton,.dismiss { --game-control-art: var(--game-control-paper,url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; }
+.characterButton { --game-control-art: var(--game-control-gold,url("/placard/ui/control-gold-v2.webp")); }
+.dismiss { --game-control-edge: 10px; }
+.character :where(a,button):focus-visible,.entry :where(a,button):focus-visible,.helpButton:focus-visible { outline: 3px solid #087b70; outline-offset: 3px; box-shadow: 0 0 0 5px #fff8e7; }
+@media(hover:hover) { .characterButton:hover,.helpButton:hover,.dismiss:hover { --game-control-art: var(--game-control-apricot,url("/placard/ui/control-apricot-v2.webp")); } }
+@media(max-width:700px) { .entry { grid-area: 3 / 1; } .characterButton { padding-inline: 15px; font-size: 12px; } .saved { font-size: 11px; } .bubble { right: 0; width: 100%; } }
+@media(prefers-reduced-motion:no-preference) { .characterButton:active,.helpButton:active,.dismiss:active { transform: translateY(1px); } }

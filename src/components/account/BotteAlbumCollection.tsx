@@ -113,18 +113,18 @@ function HeritageCraftModal({
             <h2 className="font-display text-2xl uppercase leading-none text-ink sm:text-3xl" id="heritage-craft-title">Choisis une carte manquante</h2>
             <p className="mt-2 text-sm text-charcoal">Solde disponible : <strong>{fragmentBalance} fragments</strong></p>
           </div>
-          <button className="grid size-11 shrink-0 place-items-center border-2 border-ink bg-white" type="button" onClick={onClose} aria-label="Fermer l’atelier Héritage"><X aria-hidden="true" /></button>
+          <button data-ui-account="fill-ffffff" data-ui-shape="control" className="grid size-11 shrink-0 place-items-center border-2 border-ink bg-white" type="button" onClick={onClose} aria-label="Fermer l’atelier Héritage"><X aria-hidden="true" /></button>
         </header>
 
         <div className="p-4 sm:p-5">
-          {notice ? <p className="mb-4 border-2 border-ink bg-white p-3 text-sm font-bold" role="status">{notice}</p> : null}
+          {notice ? <p data-ui-account="fill-ffffff" data-ui-shape="panel" className="mb-4 border-2 border-ink bg-white p-3 text-sm font-bold" role="status">{notice}</p> : null}
           {cards.length > 0 ? (
             <div className="grid gap-3 sm:grid-cols-2">
               {cards.map((card) => {
                 const artwork = card.imageUrl || getKqCardArtwork(card.code);
                 const busy = craftingCode === card.code;
                 return (
-                  <button className="grid min-h-32 grid-cols-[82px_1fr] gap-3 border-2 border-ink bg-white p-3 text-left shadow-[3px_3px_0_#1a1a1a] disabled:cursor-wait disabled:opacity-60" type="button" key={card.code} disabled={craftingCode !== null || fragmentBalance < 5} onClick={() => onCraft(card)}>
+                  <button data-ui-account="fill-ffffff" data-ui-shape="control" className="grid min-h-32 grid-cols-[82px_1fr] gap-3 border-2 border-ink bg-white p-3 text-left shadow-[3px_3px_0_#1a1a1a] disabled:cursor-wait disabled:opacity-60" type="button" key={card.code} disabled={craftingCode !== null || fragmentBalance < 5} onClick={() => onCraft(card)}>
                     <span className="relative block aspect-[2/3] overflow-hidden border-2 border-ink bg-[#d7d1c5]">
                       {artwork ? <Image src={artwork} alt="" fill sizes="82px" className="object-cover" /> : null}
                     </span>
@@ -139,7 +139,7 @@ function HeritageCraftModal({
               })}
             </div>
           ) : (
-            <p className="border-2 border-ink bg-white p-5 text-center text-sm font-bold">Tu possèdes déjà tous les Héritages producteurs actuellement disponibles.</p>
+            <p data-ui-account="fill-ffffff" data-ui-shape="panel" className="border-2 border-ink bg-white p-5 text-center text-sm font-bold">Tu possèdes déjà tous les Héritages producteurs actuellement disponibles.</p>
           )}
         </div>
       </section>
@@ -242,18 +242,18 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
       </header>
 
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-3" aria-label="Progression Botte du Chanvrier">
-        <div className="border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#1a1a1a]">
+        <div data-ui-account="fill-ffffff" data-ui-shape="panel" className="border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#1a1a1a]">
           <strong className="font-display text-2xl text-ink">{supportOwned}/{KQ_CARDS.length}</strong>
           <span className="block text-xs text-charcoal">Cartes Botte du Chanvrier découvertes</span>
         </div>
-        <div className="border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#1a1a1a]">
+        <div data-ui-account="fill-ffffff" data-ui-shape="panel" className="border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#1a1a1a]">
           <strong className="font-display text-2xl text-ink">{heritageOwned}/{heritageCards.filter((card) => card.isActive).length}</strong>
           <span className="block text-xs text-charcoal">Héritages découverts</span>
         </div>
-        <div className="col-span-2 border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#1a1a1a] sm:col-span-1">
+        <div data-ui-account="fill-ffffff" data-ui-shape="panel" className="col-span-2 border-2 border-ink bg-white p-3 shadow-[3px_3px_0_#1a1a1a] sm:col-span-1">
           <strong className="font-display text-2xl text-ink">{fragmentBalance}</strong>
           <span className="block text-xs text-charcoal">Fragments Héritage</span>
-          <button className="mt-2 min-h-10 w-full border-2 border-ink bg-[#f4bc3c] px-2 text-xs font-black uppercase text-ink disabled:cursor-not-allowed disabled:bg-[#ddd8ce] disabled:text-charcoal" type="button" disabled={!canOpenCraft} onClick={() => { setCraftNotice(""); setCraftOpen(true); }}>
+          <button data-ui-account="craft-action" data-ui-shape="control" className="mt-2 min-h-10 w-full border-2 border-ink bg-[#f4bc3c] px-2 text-xs font-black uppercase text-ink disabled:cursor-not-allowed disabled:bg-[#ddd8ce] disabled:text-charcoal" type="button" disabled={!canOpenCraft} onClick={() => { setCraftNotice(""); setCraftOpen(true); }}>
             {craftableHeritages.length === 0 && snapshot?.heritage?.collectionActive
               ? "Collection complète"
               : fragmentBalance < 5
@@ -264,10 +264,10 @@ export function BotteAlbumCollection({ isAuthenticated }: { isAuthenticated: boo
       </section>
 
       {loading ? (
-        <div className="border-2 border-ink bg-white p-5 text-sm font-bold">Chargement de tes cartes…</div>
+        <div data-ui-account="fill-ffffff" data-ui-shape="panel" className="border-2 border-ink bg-white p-5 text-sm font-bold">Chargement de tes cartes…</div>
       ) : null}
       {error ? (
-        <div className="border-2 border-red-700 bg-red-50 p-5 text-sm font-bold text-red-800">{error}</div>
+        <div data-ui-account="fill-fef2f2" data-ui-shape="panel" className="border-2 border-red-700 bg-red-50 p-5 text-sm font-bold text-red-800">{error}</div>
       ) : null}
 
       <section>

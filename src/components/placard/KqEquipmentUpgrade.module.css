@@ -1,6 +1,6 @@
-.upgrade.upgrade { padding: 14px; text-align: left; min-width: 0; --level-accent: #149b8b; border: 2px solid #172923; background: #fff1d6; color: #172923; border-radius: 12px 10px 13px 11px; box-shadow: 2px 3px 0 #172923; }
-.upgrade.upgrade[data-tier="5"] { --level-accent: #149b8b; border-color: #172923; }
-.upgrade.upgrade[data-tier="10"] { --level-accent: #efc451; border-color: #172923; box-shadow: 3px 4px 0 #172923; }
+.upgrade.upgrade { padding: 14px; text-align: left; min-width: 0; --level-accent: #149b8b; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.upgrade.upgrade[data-tier="5"] { --level-accent: #149b8b; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.upgrade.upgrade[data-tier="10"] { --level-accent: #efc451; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .heading { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
 .heading strong { font-size: 22px; font-weight: 900; color: #172923; }
 .heading span { text-transform: uppercase; font-size: 11px; font-weight: 800; letter-spacing: .1em; }
@@ -13,12 +13,12 @@
 .upgrade.upgrade p { display: flex; align-items: center; gap: 6px; margin: 12px 0 4px; font-size: 12px; line-height: 1.5; color: #172923; }
 .upgrade.upgrade ul { padding-left: 18px; margin: 6px 0 12px; font-size: 12px; line-height: 1.7; }
 .upgrade.upgrade .evolution { font-weight: 700; color: #076c61; }
-.upgrade.upgrade button { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 10px; font-weight: 900; font-size: 12px; cursor: pointer; border: 2px solid #172923; background: #efc451; color: #172923; border-radius: 9px; box-shadow: 2px 3px 0 #172923; }
-.upgrade.upgrade button:disabled { cursor: default; opacity: 1; background: #deded2; color: #536058; border-color: #778078; box-shadow: none; }
+.upgrade.upgrade button { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; min-height: 44px; padding: 10px; font-weight: 900; font-size: 12px; cursor: pointer; border: var(--game-control-border-width, 2px) solid #172923; color: #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.upgrade.upgrade button:disabled { cursor: default; opacity: 1; color: #536058; border-color: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; }
 .upgrade.upgrade button:focus-visible { outline-offset: 3px; outline: 3px solid #172923; }
 .upgrade.upgrade .error { display: block; color: #873321; }
 
 .upgrade.upgrade .heading small { display: inline; }
 .upgrade.upgrade li { font-size: 12px; font-weight: 600; color: #172923; }
-.upgrade.upgrade .gate { display: block; padding: 9px; border-left: 4px solid #172923; background: #f7dfb8; color: #172923; border-radius: 0 8px 8px 0; }
+.upgrade.upgrade .gate { display: block; padding: 9px; border-left: 4px solid #172923; background: var(--game-surface-warm, #ffae59); color: #172923; border-radius: var(--game-panel-radius, 2px); }
 @media (max-width: 420px) { .milestones { flex-wrap: wrap; line-height: 1.5; } .heading { flex-wrap: wrap; } }

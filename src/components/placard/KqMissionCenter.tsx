@@ -13,6 +13,7 @@ import { KqSupportPackOpening, requestKqSupportPackOpening, type KqOpenedSupport
 import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
 import { KqCultureContract } from "./KqCultureContract";
 import { useKqGameSound } from "./KqGameSound";
+import { KqChapterHeading } from "./KqChapterHeading";
 
 const TRACKS = {
   culture: { title: "Culture & Buddies", image: "/contest/mascot/arena-scene-placard-v1.png", icon: Sprout },
@@ -190,7 +191,7 @@ export function KqMissionCenter({ onOpen, initialTrack = "all", focusInitialTrac
     : "";
 
   return <main className={styles.center}>
-    <header className={styles.header}><div><h1>Mes objectifs</h1><p>De ta première récolte aux défis de maître chanvrier : {total} missions pour développer tes cultures, ton atelier et ton commerce.</p></div></header>
+    <KqChapterHeading art="missions" title="Mes objectifs" level={1} eyebrow="Le tableau du quartier"><p>De ta première récolte aux défis de maître chanvrier : {total} missions pour développer tes cultures, ton atelier et ton commerce.</p></KqChapterHeading>
     <nav className={styles.sections} aria-label="Parcours des missions"><button type="button" aria-pressed={section === "challenges"} onClick={() => setSection("challenges")}><Trophy size={18} aria-hidden="true" />Mes défis{availablePacks > 0 ? <span>{availablePacks} pack{availablePacks > 1 ? "s" : ""}</span> : null}</button>{!api.isTutorial ? <button type="button" aria-pressed={section === "contracts"} onClick={() => setSection("contracts")}><FlaskConical size={18} aria-hidden="true" />Contrats</button> : null}<button type="button" aria-pressed={section === "community"} onClick={() => setSection("community")}><Users size={18} aria-hidden="true" />Communauté</button></nav>
     {section === "community" ? <><CommunityMissionWelcome /><CommunityMissionsBoard /></> : section === "contracts" ? <KqCultureContract mode="missions" onOpenGame={() => onOpen("game")} /> : <>
     <section className={styles.overview} aria-label="Progression de tes défis">

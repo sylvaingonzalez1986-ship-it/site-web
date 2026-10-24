@@ -1,7 +1,7 @@
 .lesson{min-width:0;max-width:100%;background:#fff1d6;color:#172923}
 .nav{display:flex;flex-wrap:wrap;gap:7px;padding:10px 12px;background:#bfe9db;border-bottom:2px solid #172923}
-.nav button,.completion button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 12px;border:2px solid #172923;border-radius:12px;background:#fff8e7;color:#172923;font:inherit;font-size:13px;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 #172923}
-.nav button[aria-pressed=true]{background:#efc451;color:#172923}
+.nav button,.completion button{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 12px;border:var(--game-control-border-width, 2px) solid #172923;border-radius:0;color:#172923;font:inherit;font-size:13px;font-weight:700;cursor:pointer;box-shadow:none;--game-control-art:var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));background:transparent;border-color:transparent;border-image:var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch}
+.nav button[aria-pressed=true]{color:#172923;--game-control-art:var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));background:transparent;border-color:transparent}
 .lesson button:focus-visible{outline:3px solid #172923;outline-offset:3px}
 .surface{min-width:0;position:relative}
 .energy{padding:16px;max-width:980px;margin:auto}
@@ -9,8 +9,8 @@
 .completion{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px;border-top:2px solid #172923;background:#bfe9db;font-size:14px}
 .business{max-width:1080px;margin:auto;padding:16px}
 .clock{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;font-size:14px}
-.clock button,.confirmation button{min-height:44px;padding:8px 12px;background:#efc451;color:#172923;border:2px solid #172923;border-radius:12px;font:inherit;font-weight:700;cursor:pointer;box-shadow:3px 3px 0 #172923}
-.confirmation{width:min(560px,calc(100vw - 32px));box-sizing:border-box;border:3px solid #172923;border-radius:16px;padding:24px;background:#fff1d6;color:#172923;box-shadow:6px 6px 0 #172923}
+.clock button,.confirmation button{min-height:44px;padding:8px 12px;color:#172923;border:var(--game-control-border-width, 2px) solid #172923;border-radius:0;font:inherit;font-weight:700;cursor:pointer;box-shadow:none;--game-control-art:var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));background:transparent;border-color:transparent;border-image:var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch}
+.confirmation{width:min(560px,calc(100vw - 32px));box-sizing:border-box;padding:24px;color:#172923;--game-panel-art:var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));border:2px solid transparent;border-radius:0;background:transparent;box-shadow:none;border-image:var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch}
 .confirmation::backdrop{background:#001c16c9}
 .confirmation h2{margin-top:0}.confirmation p{line-height:1.6}.confirmation footer{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:10px}
 @media(max-width:420px){.nav{gap:5px;padding:8px}.nav button{flex:1;font-size:12px;padding:8px}.energy{padding:8px}.completion{padding:12px}}

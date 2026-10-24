@@ -1,1160 +1,369 @@
+/* A tasting register in the Quartier: quiet sheets, ink rules, cut-paper controls. */
 .panelRoot {
-  --notebook-cream: #f6f0e6;
-  --notebook-paper: #fffaf1;
-  --notebook-green: #00563f;
-  --notebook-yellow: #f4c43d;
-  --notebook-ink: #111512;
-  --notebook-muted: #4f554f;
+  composes: surface from "./ArenaRetro.module.css";
+  --notebook-cream: #fff1d6;
+  --notebook-paper: #fff8e7;
+  --notebook-green: #087b70;
+  --notebook-dark: #172923;
+  --notebook-yellow: #efc451;
+  --notebook-ink: #172923;
+  --notebook-muted: #4f5d52;
   min-width: 0;
   width: 100%;
   color: var(--notebook-ink);
+  font-variant-numeric: tabular-nums;
 }
-
-.inlinePanelRoot {
-  height: 100%;
-  min-height: 0;
-}
-
-.teaser {
-  overflow: hidden;
-  border: 3px solid var(--notebook-ink);
-  border-radius: 8px;
-  background: var(--notebook-cream);
-  box-shadow: 7px 7px 0 var(--notebook-ink);
-}
-
-.teaserTop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  border-bottom: 3px solid var(--notebook-ink);
-  background: var(--notebook-green);
-  color: white;
-  padding: 0.75rem 1rem;
-}
-
-.eyebrow {
+.inlinePanelRoot { height: 100%; min-height: 0; }
+.eyebrow, .cardEyebrow, .summaryEyebrow {
   margin: 0;
-  font-size: 0.68rem;
-  font-weight: 900;
-  letter-spacing: 0.16em;
-  line-height: 1.1;
+  color: var(--notebook-green);
+  font: 800 10px/1.5 ui-monospace, Consolas, monospace;
+  letter-spacing: .1em;
   text-transform: uppercase;
 }
-
-.teaserScore,
-.headerScore {
-  display: inline-flex;
-  min-width: 74px;
-  min-height: 42px;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--notebook-ink);
-  border-radius: 4px;
-  background: var(--notebook-yellow);
-  color: var(--notebook-ink);
-  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
-  font-size: 1.15rem;
-  font-weight: 950;
-  line-height: 1;
-  padding: 0.45rem 0.65rem;
-  white-space: nowrap;
-}
-
-.teaserBody {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 150px;
-  align-items: stretch;
-}
-
-.teaserCopy {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  align-items: flex-start;
-  padding: clamp(1.15rem, 3vw, 2rem);
-}
-
-.teaserTitle,
-.notebookTitle,
-.stepTitle {
+.teaserTitle, .notebookTitle, .stepTitle, .cardTitle {
   margin: 0;
   font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
   font-weight: 950;
-  letter-spacing: -0.02em;
+  letter-spacing: -.02em;
   text-transform: uppercase;
-  overflow-wrap: normal !important;
-  word-break: normal !important;
+  overflow-wrap: normal;
+  word-break: normal;
   hyphens: none;
 }
 
-.teaserTitle {
-  max-width: 14ch;
-  color: var(--notebook-green);
-  font-size: clamp(2.2rem, 5vw, 4rem);
-  line-height: 0.86;
+/* The artwork paints the complete surface, including its irregular contour. */
+.teaser, .notebook, .paperPanel, .goldPanel, .guideCardYellow,
+.bookScoreSummary, .bookWrittenNotes, .summaryCard, .summaryState {
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  min-width: 0;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
 }
-
-.teaserText {
-  max-width: 54ch;
-  margin: 1rem 0 0;
-  color: var(--notebook-muted);
-  font-size: 0.96rem;
-  font-weight: 650;
-  line-height: 1.55;
-}
-
-.teaserAction,
-.navButton,
-.closeButton {
+.goldPanel, .guideCardYellow { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); }
+.paperPanel, .goldPanel { padding: 19px; }
+.teaserAction, .navButton, .closeButton, .actionButton, .smallAction,
+.confirmScore, .methodButton, .checkOption, .stepTab {
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
   display: inline-flex;
+  min-width: 0;
   min-height: 46px;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--notebook-ink);
-  border-radius: 4px;
-  box-shadow: 3px 3px 0 var(--notebook-ink);
-  cursor: pointer;
-  font-size: 0.74rem;
-  font-weight: 950;
-  letter-spacing: 0.08em;
-  line-height: 1;
-  padding: 0.75rem 1rem;
-  text-transform: uppercase;
-  transition: transform 150ms ease, box-shadow 150ms ease;
-}
-
-.teaserAction {
-  margin-top: 1.25rem;
-  background: var(--notebook-yellow);
-  color: var(--notebook-ink);
-}
-
-.teaserAction:hover,
-.navButton:hover:not(:disabled),
-.closeButton:hover {
-  box-shadow: 1px 1px 0 var(--notebook-ink);
-  transform: translate(2px, 2px);
-}
-
-.teaserArt {
-  position: relative;
-  display: flex;
-  min-height: 230px;
-  align-items: flex-end;
-  justify-content: center;
-  overflow: hidden;
-  border-left: 3px solid var(--notebook-ink);
-  background: var(--notebook-yellow);
-  padding: 1rem 0.7rem 0;
-}
-
-.teaserArt::before {
-  position: absolute;
-  inset: 14px;
-  border: 2px solid var(--notebook-ink);
-  content: "";
-}
-
-.teaserMascot {
-  position: relative;
-  z-index: 1;
-  width: min(100%, 112px);
-}
-
-.teaserMeta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  margin-top: 1rem;
-}
-
-.chip {
-  border: 1.5px solid var(--notebook-ink);
-  border-radius: 3px;
-  background: white;
-  font-size: 0.62rem;
-  font-weight: 900;
-  letter-spacing: 0.06em;
-  line-height: 1;
-  padding: 0.42rem 0.55rem;
-  text-transform: uppercase;
-}
-
-.modalOverlay {
-  position: fixed;
-  inset: 0;
-  z-index: 10000;
-  display: grid;
-  place-items: center;
-  overflow: hidden;
-  background: rgba(17, 21, 18, 0.72);
-  padding: 1rem;
-}
-
-.modalPanel {
-  width: min(1180px, 100%);
-  height: min(900px, calc(100dvh - 2rem));
-  min-height: 0;
-}
-
-.notebook {
-  display: grid;
-  width: 100%;
-  height: 100%;
-  min-height: 0;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
-  overflow: hidden;
-  border: 3px solid var(--notebook-ink);
-  border-radius: 8px;
-  background: var(--notebook-cream);
-  box-shadow: 8px 8px 0 var(--notebook-ink);
-  color: var(--notebook-ink);
-}
-
-.inlineNotebook {
-  height: 100%;
-  min-height: 560px;
-  box-shadow: none;
-}
-
-.notebookHeader {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 1rem;
-  border-bottom: 3px solid var(--notebook-ink);
-  background: var(--notebook-green);
-  color: white;
-  padding: 0.9rem 1rem;
-}
-
-.headerIdentity {
-  display: flex;
-  min-width: 0;
-  align-items: center;
-  gap: 0.9rem;
-}
-
-.headerCopy {
-  min-width: 0;
-}
-
-.notebookTitle {
-  margin-top: 0.18rem;
-  color: white;
-  font-size: clamp(1.9rem, 3.4vw, 3.1rem);
-  line-height: 0.88;
-}
-
-.notebookSubtitle {
-  overflow: hidden;
-  margin: 0.45rem 0 0;
-  color: rgba(255, 255, 255, 0.84);
-  font-size: 0.78rem;
-  font-weight: 750;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.compactMascot {
-  width: 70px;
-  flex: 0 0 70px;
-  overflow: hidden;
-}
-
-.headerIdentity .compactMascot {
-  align-self: flex-end;
-  margin-bottom: -0.9rem;
-}
-
-.headerActions {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-}
-
-.closeButton {
-  min-width: 46px;
-  background: white;
-  color: var(--notebook-ink);
-}
-
-.stepNav {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  border-bottom: 3px solid var(--notebook-ink);
-  background: var(--notebook-paper);
-}
-
-.stepTab {
-  display: grid;
-  min-width: 0;
-  min-height: 62px;
-  grid-template-columns: 28px minmax(0, 1fr);
-  align-items: center;
-  gap: 0.55rem;
-  border: 0;
-  border-right: 2px solid var(--notebook-ink);
+  gap: 8px;
+  padding: 12px 18px;
+  border: 2px solid transparent;
+  border-radius: 0;
   background: transparent;
+  box-shadow: none;
   color: var(--notebook-ink);
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.35;
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
-  padding: 0.65rem 0.75rem;
-  text-align: left;
+  transition: transform 150ms ease;
 }
-
-.stepTab:last-child {
-  border-right: 0;
+.teaserAction, .navButtonPrimary { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.actionButtonPrimary { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: var(--notebook-paper); }
+.actionSpaced { margin-top: 18px; }
+.smallAction { --game-control-edge: 10px; padding: 10px 15px; font-size: 11px; }
+.confirmScore { --game-control-edge: 10px; margin-top: 8px; padding: 10px 14px; font-size: 11px; }
+.teaserAction:hover:not(:disabled), .navButton:hover:not(:disabled), .closeButton:hover:not(:disabled),
+.actionButton:hover:not(:disabled), .smallAction:hover:not(:disabled), .confirmScore:hover:not(:disabled),
+.methodButton:hover:not(:disabled), .checkOption:hover, .stepTab:hover:not(:disabled) {
+  --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp"));
+  color: var(--notebook-ink);
 }
+.teaserAction:active:not(:disabled), .navButton:active:not(:disabled), .closeButton:active:not(:disabled),
+.actionButton:active:not(:disabled), .smallAction:active:not(:disabled), .confirmScore:active:not(:disabled),
+.methodButton:active:not(:disabled), .stepTab:active:not(:disabled) { transform: translateY(1px); }
+.panelRoot :is(button, input):disabled { cursor: not-allowed; opacity: .55; }
+.panelRoot :is(button, a, input, textarea, summary):focus-visible {
+  outline: 3px solid var(--notebook-green);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px var(--notebook-paper);
+}
+.panelRoot [hidden] { display: none !important; }
 
-.stepTabNumber {
+/* Invitation and independent modal. */
+.teaser { padding: 6px; }
+.teaserTop { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin: 0 16px; padding: 14px 0; border-bottom: 1px solid var(--notebook-ink); }
+.teaserScore, .headerScore, .numberStamp, .statusStamp {
   display: inline-flex;
-  width: 28px;
-  height: 28px;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--notebook-ink);
-  border-radius: 50%;
-  background: white;
-  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
-  font-size: 1rem;
-  font-weight: 950;
-  line-height: 1;
-}
-
-.stepTabLabel {
-  overflow: hidden;
-  font-size: 0.68rem;
-  font-weight: 950;
-  letter-spacing: 0.06em;
-  text-overflow: ellipsis;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-
-.stepTabActive {
-  background: var(--notebook-yellow);
-}
-
-.stepTabActive .stepTabNumber {
-  background: var(--notebook-green);
-  color: white;
-}
-
-.contentViewport {
-  min-height: 0;
-  overflow-x: hidden;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  padding: clamp(1rem, 2.4vw, 1.8rem);
-  scroll-behavior: smooth;
-  scrollbar-color: var(--notebook-green) transparent;
-  scrollbar-width: thin;
-  -webkit-overflow-scrolling: touch;
-}
-
-.stepGrid {
-  display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.85fr);
-  align-items: start;
-  gap: clamp(1rem, 2vw, 1.5rem);
-}
-
-.stepPrimary,
-.stepAside {
-  display: grid;
-  min-width: 0;
-  align-content: start;
-  gap: 1rem;
-}
-
-.stepAside {
-  position: static;
-}
-
-.notebookFooter {
-  display: grid;
-  grid-template-columns: minmax(140px, auto) minmax(160px, 1fr) minmax(140px, auto);
-  align-items: center;
-  gap: 0.6rem;
-  border-top: 3px solid var(--notebook-ink);
-  background: white;
-  padding: 0.45rem 0.7rem;
-}
-
-.navButton {
-  min-height: 42px;
-  background: white;
+  min-height: 36px;
+  padding: 6px 10px;
+  border-block: 1px solid var(--notebook-ink);
   color: var(--notebook-ink);
-  padding: 0.55rem 0.75rem;
-}
-
-.navButtonPrimary {
-  background: var(--notebook-yellow);
-}
-
-.navButton:disabled {
-  cursor: not-allowed;
-  opacity: 0.42;
-}
-
-.progressLabel {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.7rem;
-  margin-bottom: 0.2rem;
-  color: var(--notebook-muted);
-  font-size: 0.56rem;
-  font-weight: 900;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.progressTrack {
-  height: 8px;
-  overflow: hidden;
-  border: 1.5px solid var(--notebook-ink);
-  border-radius: 2px;
-  background: var(--notebook-cream);
-}
-
-.progressFill {
-  display: block;
-  height: 100%;
-  background: var(--notebook-green);
-  transition: width 220ms ease;
-}
-
-.scoreCard,
-.guideCard,
-.criterionCard,
-.helpCard {
-  border: 2px solid var(--notebook-ink);
-  border-radius: 5px;
-  background: white;
-}
-
-.scoreCard {
-  display: block;
-  padding: 1rem;
-}
-
-.scoreTop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.scoreLabel {
-  color: var(--notebook-ink);
-  font-size: 0.92rem;
   font-weight: 850;
-  line-height: 1.25;
+  font-size: 12px;
 }
+.teaserScore, .headerScore { font: 900 24px/1 var(--font-display), Impact, sans-serif; }
+.teaserBody { display: grid; grid-template-columns: minmax(0, 1fr) minmax(120px, .4fr); align-items: center; }
+.teaserCopy { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; padding: clamp(20px, 3vw, 32px); }
+.teaserTitle { max-width: 14ch; color: var(--notebook-green); font-size: clamp(38px, 5vw, 64px); line-height: .95; }
+.teaserText { max-width: 54ch; margin: 16px 0 0; color: var(--notebook-muted); font-size: 14px; line-height: 1.6; }
+.teaserAction { margin-top: 20px; }
+.teaserArt { display: flex; min-height: 260px; align-items: center; justify-content: center; padding: 14px 16px 14px 0; }
+.teaserMascot { width: min(100%, 160px); }
+.teaserMeta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
+.chip, .aromaStamp, .summaryChip { padding: 4px 0; border-bottom: 2px solid var(--notebook-green); font: 800 10px/1.5 ui-monospace, Consolas, monospace; }
+.modalOverlay { position: fixed; inset: 0; z-index: 10000; display: grid; place-items: center; overflow: hidden; background: #172923b8; padding: 16px; }
+.modalPanel { width: min(1180px, 100%); height: min(900px, calc(100dvh - 32px)); min-height: 0; }
+.notebook { display: grid; width: 100%; height: 100%; min-height: 0; grid-template-rows: auto auto minmax(0, 1fr) auto; overflow: hidden; padding: 9px; color: var(--notebook-ink); }
+.inlineNotebook { height: 100%; min-height: 560px; }
+.notebookHeader { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; margin: 0 14px; padding: 14px 0; border-bottom: 1px solid var(--notebook-ink); }
+.headerIdentity { display: flex; min-width: 0; align-items: center; gap: 18px; }
+.headerCopy { min-width: 0; }
+.notebookTitle { margin-top: 5px; color: var(--notebook-ink); font-size: clamp(29px, 3.4vw, 48px); line-height: .95; }
+.notebookSubtitle { overflow: hidden; margin: 8px 0 0; color: var(--notebook-muted); font-size: 12px; font-weight: 650; text-overflow: ellipsis; white-space: nowrap; }
+.compactMascot { width: 60px; flex: 0 0 60px; }
+.compactMascot img, .stepMascot img { display: block; width: 100%; height: auto; }
+.headerIdentity .compactMascot { width: 44px; flex-basis: 44px; }
+.headerActions { display: flex; align-items: center; gap: 12px; }
+.closeButton { min-width: 48px; }
 
-.scorePill {
-  display: inline-flex;
-  min-width: 64px;
-  min-height: 38px;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid var(--notebook-ink);
-  border-radius: 3px;
-  background: var(--notebook-yellow);
-  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
-  font-size: 1.15rem;
-  font-weight: 950;
-}
+/* Five loose chapter tabs, then the scrollable page. */
+.stepNav { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; padding: 12px 14px 4px; }
+.stepTab { --game-control-edge: 10px; min-height: 62px; flex-direction: column; gap: 4px; padding: 9px 6px; }
+.stepTabActive { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: var(--notebook-paper); }
+.stepTabNumber { display: inline-flex; align-items: center; justify-content: center; width: 23px; height: 23px; font: 900 20px/1 var(--font-display), Impact, sans-serif; }
+.stepTabLabel { display: block; max-width: 100%; font: 800 10px/1.2 ui-monospace, Consolas, monospace; letter-spacing: 0; }
+.contentViewport { min-height: 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; padding: clamp(16px, 2.4vw, 28px); scrollbar-color: var(--notebook-green) transparent; scrollbar-width: thin; -webkit-overflow-scrolling: touch; }
+.stepGrid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(280px, .85fr); align-items: start; gap: clamp(18px, 2vw, 28px); }
+.stepPrimary, .stepAside { display: grid; min-width: 0; align-content: start; gap: 20px; }
+.stepIntro { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 18px; padding: 3px 0 18px; border-bottom: 1px solid var(--notebook-ink); }
+.stepIntroCopy { min-width: 0; }
+.stepTitle { margin-top: 8px; color: var(--notebook-ink); font-size: clamp(30px, 3.2vw, 44px); line-height: 1; }
+.stepBody { max-width: 52ch; margin: 10px 0 0; color: var(--notebook-muted); font-size: 13px; font-weight: 500; line-height: 1.6; }
+.stepMascot { width: 108px; align-self: center; }
+.notebookFooter { display: grid; grid-template-columns: minmax(110px, auto) minmax(100px, 1fr) minmax(110px, auto); align-items: center; gap: 14px; margin-inline: 14px; padding: 12px 0; border-top: 1px solid var(--notebook-ink); }
+.navButton { min-height: 46px; padding: 12px 16px; }
+.progressLabel { display: flex; justify-content: space-between; gap: 7px; margin-bottom: 5px; color: var(--notebook-muted); font: 800 9px/1.3 ui-monospace, Consolas, monospace; }
+.progressTrack { height: 8px; overflow: hidden; border: 1px solid var(--notebook-ink); background: var(--notebook-cream); }
+.progressFill { display: block; height: 100%; background: var(--notebook-green); transition: width 180ms ease; }
 
-.scoreRange {
-  width: 100%;
-  margin-top: 0.85rem;
-  accent-color: var(--notebook-green);
-}
-
-.scoreRange::-webkit-slider-runnable-track {
-  height: 8px;
-  border: 1.5px solid var(--notebook-ink);
-  border-radius: 2px;
-  background: linear-gradient(90deg, #e7a5a0, var(--notebook-yellow), #72b895);
-}
-
-.scoreRange::-webkit-slider-thumb {
-  width: 22px;
-  height: 22px;
-  margin-top: -8px;
-  border: 2px solid var(--notebook-ink);
-  border-radius: 50%;
-  background: white;
-  box-shadow: 2px 2px 0 var(--notebook-ink);
-  -webkit-appearance: none;
-}
-
-.scoreHint {
-  margin: 0.55rem 0 0;
-  color: var(--notebook-muted);
-  font-size: 0.74rem;
-  font-weight: 700;
-}
-
-.guideCard,
-.criterionCard,
-.helpCard {
-  padding: 1rem;
-}
-
-.guideCardYellow {
-  background: var(--notebook-yellow);
-}
-
-.guideCardCream {
-  background: var(--notebook-paper);
-}
-
-.cardEyebrow {
-  margin: 0;
-  color: var(--notebook-green);
-  font-size: 0.62rem;
-  font-weight: 950;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
-.cardTitle {
-  margin: 0.18rem 0 0;
-  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
-  font-size: 1.35rem;
-  font-weight: 950;
-  line-height: 0.95;
-  text-transform: uppercase;
-  overflow-wrap: normal !important;
-  word-break: normal !important;
-  hyphens: none;
-}
-
-.cardBody {
-  margin-top: 0.75rem;
-  color: var(--notebook-muted);
-  font-size: 0.86rem;
-  font-weight: 600;
-  line-height: 1.5;
-}
-
-.bullets {
-  display: grid;
-  gap: 0.55rem;
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.bullet {
-  display: flex;
-  gap: 0.55rem;
-}
-
-.bulletMark {
-  width: 7px;
-  height: 7px;
-  flex: 0 0 7px;
-  margin-top: 0.48rem;
-  border-radius: 50%;
-  background: var(--notebook-green);
-}
-
-.helpCard > summary {
-  cursor: pointer;
-  font-size: 0.7rem;
-  font-weight: 950;
-  letter-spacing: 0.11em;
-  list-style: none;
-  text-transform: uppercase;
-}
-
-.helpCard > summary::-webkit-details-marker {
-  display: none;
-}
-
-.helpCard > summary::after {
-  float: right;
-  color: var(--notebook-green);
-  content: "+";
-  font-size: 1.2rem;
-  line-height: 0.65;
-}
-
-.helpCard[open] > summary::after {
-  content: "−";
-}
-
-.helpContent {
-  display: grid;
-  gap: 0.75rem;
-  margin-top: 0.8rem;
-}
-
-.stepIntro {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  gap: 0.8rem;
-  overflow: hidden;
-  border: 2px solid var(--notebook-ink);
-  border-radius: 5px;
-  background: var(--notebook-yellow);
-  padding: 1rem;
-}
-
-.stepIntroCopy {
-  min-width: 0;
-}
-
-.stepTitle {
-  margin-top: 0.25rem;
-  font-size: clamp(1.8rem, 3.2vw, 2.8rem);
-  line-height: 0.88;
-}
-
-.stepBody {
-  max-width: 56ch;
-  margin: 0.7rem 0 0;
-  color: #333a34;
-  font-size: 0.88rem;
-  font-weight: 700;
-  line-height: 1.45;
-}
-
-.stepMascot {
-  width: 106px;
-  max-height: 116px;
-  align-self: end;
-  overflow: hidden;
-}
-
-.stepMascot img {
-  width: 100%;
-  height: auto;
-  transform: translateY(6px);
-}
-
-.scoreStack,
-.criterionStack {
-  display: grid;
-  gap: 0.8rem;
-}
-
-.criterionStack {
-  max-height: none;
-  overflow: visible;
-}
-
-.notebook :global(.rounded) {
-  border-radius: 5px;
-}
-
-.notebook :global(.btn-cartoon) {
-  border-radius: 4px;
-  box-shadow: 3px 3px 0 var(--notebook-ink);
-}
-
-.notebook :global(input[type="text"]),
-.notebook textarea {
-  border-radius: 3px;
-  font-size: max(16px, 0.9rem);
-}
-
-.verdictTextarea {
+/* A register of criteria, not a stack of boxed cards. */
+.scoreStack, .criterionStack { display: grid; gap: 0; }
+.scoreCard { min-width: 0; padding: 15px 2px; border-bottom: 1px solid #17292355; }
+.scoreCard:first-child { padding-top: 0; }
+.scoreTop { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.scoreLabel { color: var(--notebook-ink); font-size: 14px; font-weight: 850; line-height: 1.35; }
+.scorePill { display: inline-flex; min-width: 76px; min-height: 42px; align-items: center; justify-content: center; padding: 9px 12px; border: 1px solid transparent; background: transparent; border-image: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")) 48 fill / 9px / 0 stretch; color: var(--notebook-ink); font: 900 22px/1 var(--font-display), Impact, sans-serif; }
+.scoreRange { width: 100%; min-height: 44px; margin: 4px 0 0; appearance: none; background: transparent; touch-action: pan-y; accent-color: var(--notebook-green); }
+.scoreRange::-webkit-slider-runnable-track { height: 8px; border: 1px solid var(--notebook-ink); background: var(--notebook-yellow); }
+.scoreRange::-webkit-slider-thumb { width: 24px; height: 24px; margin-top: -9px; border: 2px solid var(--notebook-ink); border-radius: 50%; background: var(--notebook-green); box-shadow: 1px 2px 0 var(--notebook-ink); -webkit-appearance: none; }
+.scoreRange::-moz-range-track { height: 6px; border: 1px solid var(--notebook-ink); background: var(--notebook-yellow); }
+.scoreRange::-moz-range-thumb { width: 20px; height: 20px; border: 2px solid var(--notebook-ink); border-radius: 50%; background: var(--notebook-green); box-shadow: 1px 2px 0 var(--notebook-ink); }
+.scoreHint { margin: 0; color: var(--notebook-muted); font-size: 11px; line-height: 1.5; }
+.guideCard:not(.guideCardYellow), .criterionCard { min-width: 0; padding: 16px 0; border-bottom: 1px solid #17292355; }
+.guideCardYellow { padding: 18px; }
+.guideCardCream { color: var(--notebook-ink); }
+.cardTitle { margin: 5px 0 0; font-size: 25px; line-height: 1.05; }
+.cardBody { margin-top: 12px; color: var(--notebook-muted); font-size: 13px; line-height: 1.6; }
+.bullets { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.bullet { display: flex; gap: 9px; }
+.bulletMark { width: 5px; height: 5px; flex: 0 0 5px; margin-top: 8px; background: var(--notebook-green); }
+.helpCard { min-width: 0; padding: 0 2px; border-block: 1px solid #17292366; }
+.helpCard > summary { display: flex; min-height: 48px; align-items: center; justify-content: space-between; gap: 16px; cursor: pointer; color: var(--notebook-ink); font: 800 11px/1.4 ui-monospace, Consolas, monospace; list-style: none; }
+.helpCard > summary::-webkit-details-marker { display: none; }
+.helpCard > summary::after { content: "+"; font-size: 22px; line-height: 1; color: var(--notebook-green); }
+.helpCard[open] > summary::after { content: "−"; }
+.helpContent { display: grid; gap: 16px; padding-bottom: 16px; }
+.methodNote, .registerEntry, .positiveNote, .warningNote { padding: 12px 0; border-bottom: 1px solid #17292355; }
+.methodNote { margin-top: 16px; }
+.positiveNote { border-top: 3px solid var(--notebook-green); }
+.warningNote { border-top: 3px solid var(--game-surface-warm, #ffad5a); }
+.scoreBand { padding: 12px 10px; border-left: 3px solid #17292338; font-size: 11px; line-height: 1.6; color: var(--notebook-muted); }
+.scoreBandActive { border-left-color: var(--notebook-green); background: #efc45138; color: var(--notebook-ink); }
+.methodButton { justify-content: flex-start; min-height: 54px; text-align: left; }
+.methodButtonActive { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: var(--notebook-paper); }
+.checkOption { --game-control-edge: 11px; justify-content: flex-start; min-height: 48px; gap: 10px; padding: 12px 15px; text-align: left; }
+.checkOptionActive { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.checkOption input { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--notebook-green); }
+.checkOption span { min-width: 0; font-size: 12px; }
+.terpeneNote, .matchNote { margin-top: 14px; padding: 10px 0; border-block: 1px solid #17292355; color: var(--notebook-muted); font-size: 12px; line-height: 1.5; }
+.terpeneNoteMatched { color: var(--notebook-green); font-weight: 800; }
+.preparationRow { display: flex; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid #17292355; font-size: 13px; }
+.preparationNumber { width: 23px; flex-shrink: 0; color: var(--notebook-green); font: 900 24px/1 var(--font-display), Impact, sans-serif; }
+.textInput, .verdictTextarea, .olderDraft textarea {
   display: block;
   width: 100%;
-  min-height: 150px;
-  max-height: 50dvh;
-  overflow-y: auto;
+  min-width: 0;
+  margin-top: 14px;
+  padding: 12px;
+  border: 1px solid #17292366;
+  border-bottom: 2px solid var(--notebook-green);
+  border-radius: 0;
+  background: var(--notebook-paper);
   color: var(--notebook-ink);
   caret-color: var(--notebook-green);
-  resize: vertical;
-  scroll-margin-block: 22dvh;
-  -webkit-text-fill-color: var(--notebook-ink);
+  font-size: 16px;
 }
-
-.verdictTextarea::placeholder {
-  color: #666b66;
-  opacity: 1;
-}
-
-.notebook button:focus-visible,
-.notebook input:focus-visible,
-.notebook textarea:focus-visible,
-.notebook summary:focus-visible,
-.teaserAction:focus-visible {
-  outline: 3px solid white;
-  outline-offset: 3px;
-}
-
-.notebook input:focus-visible,
-.notebook textarea:focus-visible {
-  outline-color: var(--notebook-green);
-}
-
-@media (max-width: 900px) {
-  .stepGrid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .stepAside {
-    position: static;
-  }
-
-  .stepTab {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 0.3rem;
-    padding-inline: 0.35rem;
-    text-align: center;
-  }
-
-  .notebookFooter {
-    position: sticky;
-    bottom: 0;
-    z-index: 5;
-    align-self: end;
-    grid-template-columns: minmax(76px, 0.72fr) minmax(96px, 1fr) minmax(76px, 0.72fr);
-    gap: 0.35rem;
-    padding: 0.28rem 0.4rem max(0.28rem, env(safe-area-inset-bottom, 0px));
-  }
-
-  .progress {
-    grid-column: 2;
-    grid-row: 1;
-    align-self: center;
-  }
-
-  .progressLabel {
-    gap: 0.3rem;
-    margin-bottom: 0.12rem;
-    font-size: 0.48rem;
-    letter-spacing: 0.04em;
-  }
-
-  .progressTrack {
-    height: 6px;
-    border-width: 1px;
-  }
-
-  .navButton {
-    min-height: 40px;
-    padding: 0.38rem 0.3rem;
-    box-shadow: 2px 2px 0 var(--notebook-ink);
-    font-size: 0.59rem;
-    letter-spacing: 0.05em;
-  }
-}
-
-@media (max-width: 767px) {
-  .inlinePanelRoot {
-    height: auto;
-  }
-
-  .notebookFooter {
-    display: none;
-  }
-
-  .verdictTextarea {
-    height: 190px;
-    min-height: 190px;
-    max-height: 42dvh;
-    padding: 0.9rem;
-    line-height: 1.5;
-    touch-action: manipulation;
-  }
-
-  .modalOverlay {
-    align-items: stretch;
-    padding: 0;
-  }
-
-  .modalPanel {
-    width: 100%;
-    height: 100dvh;
-  }
-
-  .notebook {
-    border: 0;
-    border-radius: 0;
-    box-shadow: none;
-  }
-
-  .inlineNotebook {
-    height: auto;
-    min-height: 0;
-    overflow: visible;
-    border: 2px solid var(--notebook-ink);
-    border-radius: 5px;
-  }
-
-  .notebookHeader {
-    position: relative;
-    gap: 0.55rem;
-    padding: calc(0.65rem + env(safe-area-inset-top, 0px)) 0.7rem 0.65rem;
-  }
-
-  .headerIdentity {
-    gap: 0.55rem;
-  }
-
-  .compactMascot {
-    display: none;
-  }
-
-  .notebookTitle {
-    font-size: clamp(1.28rem, 6.1vw, 1.55rem);
-    white-space: nowrap;
-  }
-
-  .notebookSubtitle {
-    max-width: 48vw;
-    font-size: 0.68rem;
-  }
-
-  .headerScore {
-    display: none;
-  }
-
-  .closeButton {
-    min-width: 42px;
-    min-height: 42px;
-    padding: 0.55rem;
-    font-size: 0.62rem;
-  }
-
-  .stepNav {
-    position: relative;
-    z-index: 3;
-  }
-
-  .stepTab {
-    min-height: 52px;
-    border-right-width: 1.5px;
-    padding: 0.42rem 0.2rem;
-  }
-
-  .stepTabNumber {
-    width: 25px;
-    height: 25px;
-    font-size: 0.86rem;
-  }
-
-  .stepTabLabel {
-    display: none;
-  }
-
-  .stepTabActive .stepTabLabel {
-    display: block;
-    max-width: 100%;
-    font-size: 0.53rem;
-  }
-
-  .contentViewport {
-    padding: 0.8rem;
-  }
-
-  .inlineNotebook .contentViewport {
-    overflow: visible;
-  }
-
-  .stepGrid,
-  .stepPrimary,
-  .stepAside {
-    gap: 0.75rem;
-  }
-
-  .stepIntro {
-    min-height: 112px;
-    gap: 0.45rem;
-    padding: 0.8rem;
-  }
-
-  .stepTitle {
-    font-size: clamp(1.55rem, 8vw, 2rem);
-  }
-
-  .stepBody {
-    margin-top: 0.45rem;
-    font-size: 0.78rem;
-    line-height: 1.35;
-  }
-
-  .stepMascot {
-    width: 64px;
-    max-height: 76px;
-  }
-
-  .scoreCard,
-  .guideCard,
-  .criterionCard,
-  .helpCard {
-    padding: 0.8rem;
-  }
-
-  .scoreLabel {
-    font-size: 0.84rem;
-  }
-
-  .teaser {
-    box-shadow: 4px 4px 0 var(--notebook-ink);
-  }
-
-  .teaserBody {
-    grid-template-columns: minmax(0, 1fr) 92px;
-  }
-
-  .teaserCopy {
-    padding: 1rem 0.8rem;
-  }
-
-  .teaserTitle {
-    font-size: clamp(1.9rem, 10vw, 2.65rem);
-  }
-
-  .teaserText {
-    margin-top: 0.7rem;
-    font-size: 0.82rem;
-    line-height: 1.4;
-  }
-
-  .teaserArt {
-    min-height: 210px;
-    padding-inline: 0.35rem;
-  }
-
-  .teaserMascot {
-    width: 70px;
-  }
-
-  .teaserMeta {
-    display: none;
-  }
-
-  .teaserAction {
-    width: 100%;
-    margin-top: 0.9rem;
-    padding-inline: 0.55rem;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .teaserAction,
-  .navButton,
-  .closeButton,
-  .progressFill {
-    transition: none;
-  }
-}
-
-/* Pages of the immersive book: one scrolling reading area, controls at the thumb. */
-.bookPanel {
-  --notebook-cream: #f6f0e6;
-  --notebook-paper: #fffaf1;
-  --notebook-green: #00563f;
-  --notebook-dark: #003f30;
-  --notebook-yellow: #f4c43d;
-  --notebook-ink: #111512;
-  --notebook-muted: #4f554f;
-  height: 100%;
-  min-height: 0;
-  overflow-y: auto;
-  font-variant-numeric: tabular-nums;
-}
-
-.bookPanel .notebook {
-  height: 100%;
-  min-height: 0;
-  overflow: hidden;
-  grid-template-rows: auto minmax(0, 1fr) auto;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  background: transparent;
-}
-
-.bookPanel .notebookHeader { display: none; }
-
-.bookPanel .stepNav {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  margin: 0 16px;
-  overflow: hidden;
-  border: 2px solid var(--notebook-ink);
-  border-radius: 3px;
-  background: var(--notebook-dark);
-  box-shadow: 3px 3px 0 var(--notebook-ink);
-}
-
-.bookPanel .stepTab {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5px;
-  min-height: 62px;
-  padding: 7px 2px;
-  border: 0;
-  border-right: 1px solid #fffaf140;
-  background: transparent;
-  color: var(--notebook-paper);
-}
-
-.bookPanel .stepTab:last-child { border-right: 0; }
-.bookPanel .stepTabNumber { width: 24px; height: 24px; border: 1px solid currentColor; border-radius: 2px; background: transparent; color: inherit; font: 900 14px/1 var(--font-display), Impact, sans-serif; }
-.bookPanel .stepTabLabel { display: block; font: 800 9px/1.2 ui-monospace, Consolas, monospace; letter-spacing: 0; text-transform: uppercase; }
-.bookPanel .stepTabActive { background: var(--notebook-yellow); color: var(--notebook-ink); }
-.bookPanel .stepTabActive .stepTabNumber { border-color: var(--notebook-ink); background: var(--notebook-ink); color: var(--notebook-yellow); }
-.bookPanel .notebook .contentViewport { min-height: 0; overflow-y: auto; padding: 18px 20px 24px; scroll-behavior: auto; }
-.bookPanel .stepGrid { grid-template-columns: minmax(0, 1fr); gap: 16px; }
-
-.bookPanel .stepIntro {
-  min-height: 0;
-  gap: 10px;
-  padding: 14px;
-  border: 2px solid var(--notebook-ink);
-  border-radius: 3px;
-  background: var(--notebook-green);
-  box-shadow: 4px 4px 0 var(--notebook-ink);
-  color: var(--notebook-paper);
-}
-
-.bookPanel .stepIntro .eyebrow { display: block; color: var(--notebook-yellow); font: 800 9px/1.3 ui-monospace, Consolas, monospace; letter-spacing: .1em; }
-.bookPanel .stepMascot { display: block; width: 64px; max-height: 110px; }
-.bookPanel .stepTitle { margin-top: 7px; color: var(--notebook-paper); font: 900 29px/.98 var(--font-display), Impact, sans-serif; text-transform: uppercase; letter-spacing: -.02em; }
-.bookPanel .stepBody { margin-top: 9px; color: var(--notebook-paper); font-size: 12px; font-weight: 550; line-height: 1.6; }
-
-.bookPanel .notebookFooter {
-  display: grid;
-  position: static;
-  grid-template-columns: minmax(70px, 1fr) minmax(64px, .8fr) minmax(70px, 1fr);
-  min-height: 64px;
-  margin: 0 12px;
-  padding: 8px 0;
-  border-top: 2px solid var(--notebook-ink);
-  background: var(--notebook-paper);
-}
-
-.bookPanel .navButton { min-height: 44px; padding: 8px 6px; border: 2px solid var(--notebook-ink); border-radius: 3px; background: var(--notebook-paper); box-shadow: 3px 3px 0 var(--notebook-ink); font: 800 10px/1.3 ui-monospace, Consolas, monospace; letter-spacing: 0; text-transform: uppercase; }
-.bookPanel .navButtonPrimary { background: var(--notebook-yellow); color: var(--notebook-ink); }
-.bookPanel .progressLabel { color: var(--notebook-dark); font: 800 8px/1.3 ui-monospace, Consolas, monospace; letter-spacing: 0; }
-.bookPanel .progressTrack { height: 7px; border: 1px solid var(--notebook-ink); border-radius: 1px; background: var(--notebook-cream); }
-.bookPanel .progressFill { background: var(--notebook-green); }
-
-.bookPanel .scoreCard,
-.bookPanel .criterionCard,
-.bookPanel .guideCard,
-.bookPanel .helpCard {
-  padding: 13px;
-  border: 2px solid var(--notebook-ink);
-  border-radius: 3px;
-  background: var(--notebook-paper);
-  box-shadow: 3px 3px 0 var(--notebook-ink);
-}
-
-.bookPanel .scoreCard { border-left: 6px solid var(--notebook-green); }
-.bookPanel .guideCardYellow { position: relative; background: var(--notebook-yellow); }
-.bookPanel .guideCardYellow::before {
-  position: absolute;
-  top: -8px;
-  left: calc(50% - 25px);
-  width: 50px;
-  height: 15px;
-  border: 1px solid #11151226;
-  background: #fffaf1a6;
-  content: "";
-  pointer-events: none;
-  transform: rotate(-5deg);
-}
-.bookPanel .cardEyebrow { font-family: ui-monospace, Consolas, monospace; }
-.bookPanel .helpCard > summary { min-height: 24px; align-content: center; font-family: ui-monospace, Consolas, monospace; font-size: 10px; letter-spacing: .06em; }
-.bookPanel .scorePill { min-width: 66px; border: 2px solid var(--notebook-ink); border-radius: 3px; background: var(--notebook-yellow); color: var(--notebook-ink); font-size: 18px; }
-.bookPanel .scoreLabel { color: var(--notebook-dark); font-size: 13px; font-weight: 850; }
-.bookPanel .scoreHint { margin-top: 0; font-size: 11px; }
-.bookPanel .scoreRange { min-height: 44px; margin-top: 4px; appearance: none; background: transparent; touch-action: pan-y; accent-color: var(--notebook-green); }
-.bookPanel .scoreRange::-webkit-slider-runnable-track { height: 8px; border: 2px solid var(--notebook-ink); border-radius: 2px; background: var(--notebook-yellow); }
-.bookPanel .scoreRange::-webkit-slider-thumb { width: 24px; height: 24px; margin-top: -10px; border: 2px solid var(--notebook-ink); border-radius: 3px; background: var(--notebook-green); box-shadow: 2px 2px 0 var(--notebook-ink); -webkit-appearance: none; }
-.bookPanel .scoreRange::-moz-range-track { height: 6px; border: 2px solid var(--notebook-ink); border-radius: 2px; background: var(--notebook-yellow); }
-.bookPanel .scoreRange::-moz-range-thumb { width: 20px; height: 20px; border: 2px solid var(--notebook-ink); border-radius: 3px; background: var(--notebook-green); box-shadow: 2px 2px 0 var(--notebook-ink); }
-.bookPanel .scoreRange:disabled { opacity: .65; }
-
-.bookPanel .notebook :global(.rounded) { border-width: 2px; border-color: var(--notebook-ink); border-radius: 3px; }
-.bookPanel .notebook label:has(input[type="checkbox"]:checked) { background: var(--notebook-yellow); box-shadow: 2px 2px 0 var(--notebook-ink); }
-.bookPanel .notebook input[type="checkbox"] { accent-color: var(--notebook-green); }
-.bookPanel .notebook :global(input[type="text"]), .bookPanel .notebook textarea { border: 2px solid var(--notebook-ink); border-radius: 3px; background: var(--notebook-paper); font-size: 16px; color: var(--notebook-ink); }
-.bookPanel .notebook :global(.btn-cartoon) { border-width: 2px; border-radius: 3px; box-shadow: 3px 3px 0 var(--notebook-ink); text-transform: uppercase; letter-spacing: .04em; }
-.bookPanel .notebook :global(.btn-primary) { background: var(--notebook-green); color: var(--notebook-paper); }
-.bookPanel .verdictTextarea { min-height: 130px; height: 150px; max-height: none; }
-.bookPanel [hidden] { display: none !important; }
-.bookPanel button { min-height: 44px; }
-.bookPanel :is(button, input, textarea, summary):focus-visible { outline: 3px solid var(--notebook-green); outline-offset: 3px; box-shadow: 0 0 0 6px var(--notebook-paper); }
-.bookPanel .stepTab:focus-visible { position: relative; outline: 3px solid var(--notebook-yellow); outline-offset: -4px; box-shadow: none; }
-.bookPanel .stepTabActive:focus-visible { outline-color: var(--notebook-ink); }
-
-.bookNotes { display: grid; gap: 16px; padding: 8px 18px 0; min-width: 0; }
-.bookScoreSummary { min-width: 0; padding: 14px 12px; border: 2px solid var(--notebook-ink); border-radius: 3px; background: var(--notebook-paper); box-shadow: 4px 4px 0 var(--notebook-ink); }
-.bookScoreHeading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: -14px -12px 0; padding: 14px 12px; border-bottom: 2px solid var(--notebook-ink); background: var(--notebook-dark); color: var(--notebook-paper); }
-.bookScoreHeading > div:first-child { min-width: 0; }
-.bookScoreHeading p { margin: 0 0 7px; color: var(--notebook-yellow); font: 800 9px/1.4 ui-monospace, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
-.bookScoreHeading h3 { margin: 0; color: var(--notebook-paper); font: 900 32px/.95 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
-.bookScoreHeading > :last-child { max-width: 62px; }
-.bookScoreHeading .compactMascot { display: block; flex-shrink: 0; width: 52px; }
-.bookReviewStatus { margin: 12px 0; color: var(--notebook-muted); font: 700 10px/1.5 ui-monospace, Consolas, monospace; }
-.bookScoreTotals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.bookScoreTotals > div { display: grid; align-content: space-between; gap: 10px; padding: 12px 10px; border: 2px solid var(--notebook-ink); border-radius: 3px; background: var(--notebook-yellow); color: var(--notebook-ink); box-shadow: 2px 2px 0 var(--notebook-ink); }
-.bookScoreTotals > div[data-score="community"] { background: var(--notebook-green); color: var(--notebook-paper); }
-.bookScoreTotals span { font: 800 10px/1.4 ui-monospace, Consolas, monospace; text-transform: uppercase; }
-.bookScoreTotals strong { font: 900 34px/1 var(--font-display), Impact, sans-serif; }
-.bookScoreTotals small { margin-left: 3px; font: 700 10px ui-monospace, Consolas, monospace; }
-.bookScoreSummary :global(.contest-review-skill-chart) { padding: 10px 12px 0; }
-.bookScoreSummary :global(.contest-review-skill-radar) { width: min(100%, 300px); }
-.bookScoreSummary :global(.contest-review-skill-area) { fill: #f4c43d75; stroke: #9a7100; }
-.bookScoreSummary :global(.contest-review-skill-area-average) { fill: #00563f24; stroke: var(--notebook-green); stroke-dasharray: 5 3; }
-.bookScoreSummary :global(.contest-review-skill-point) { fill: var(--notebook-yellow); stroke: var(--notebook-ink); }
-.bookScoreSummary :global(.contest-review-skill-point-average) { fill: var(--notebook-green); stroke: var(--notebook-ink); }
-.bookScoreSummary :global(.contest-review-skill-legend) { position: static; opacity: 1; transform: none; pointer-events: auto; padding: 8px 10px; border: 2px solid var(--notebook-ink); border-radius: 2px; background: var(--notebook-paper); box-shadow: none; font: 800 10px/1 ui-monospace, Consolas, monospace; }
-.bookScoreSummary :global(.contest-review-skill-legend-self)::before { background: var(--notebook-yellow); border-color: var(--notebook-ink); border-radius: 1px; }
-.bookScoreSummary :global(.contest-review-skill-legend-average)::before { background: var(--notebook-green); border-color: var(--notebook-ink); border-radius: 1px; }
-.bookScoreCaption { margin: 12px 0 0; color: var(--notebook-muted); font-size: 11px; line-height: 1.6; }
-
-.bookWrittenNotes {
-  padding: 14px;
-  border: 2px solid var(--notebook-ink);
-  border-top: 6px solid var(--notebook-green);
-  border-radius: 3px;
-  background: var(--notebook-paper);
-  box-shadow: 3px 3px 0 var(--notebook-ink);
-}
-
-.bookWrittenNotes h3 { margin: 0 0 10px; color: var(--notebook-dark); font: 900 23px/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
-.bookWrittenNotes p {
-  margin: 0;
-  background: repeating-linear-gradient(transparent 0 calc(1.75em - 1px), #00563f24 calc(1.75em - 1px) 1.75em);
-  color: var(--notebook-ink);
-  font-size: 13px;
-  line-height: 1.75;
-  white-space: pre-wrap;
-  overflow-wrap: anywhere;
-}
-.bookNotesActions { position: sticky; z-index: 9; bottom: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 0; border-top: 2px solid var(--notebook-ink); background: var(--notebook-paper); }
-
-@media (max-width: 359px) {
-  .bookPanel .notebook .contentViewport { padding-inline: 14px; }
-  .bookPanel .stepTitle { font-size: 24px; }
-  .bookPanel .stepTabLabel { font-size: 8px; }
-  .bookPanel .navButton { font-size: 9px; }
-}
+.textInput { min-height: 48px; }
+.verdictTextarea { height: 166px; min-height: 150px; max-height: 50dvh; overflow-y: auto; background: repeating-linear-gradient(transparent 0 calc(1.75em - 1px), #087b701f calc(1.75em - 1px) 1.75em), var(--notebook-paper); background-origin: content-box; line-height: 1.75; resize: vertical; scroll-margin-block: 22dvh; -webkit-text-fill-color: var(--notebook-ink); }
+.verdictTextarea::placeholder { color: #646e63; opacity: 1; }
 .formFields { margin: 0; padding: 0; min-width: 0; border: 0; }
 .feedback:empty { display: none; }
-.feedback { margin-bottom: 12px; font-size: 13px; line-height: 1.5; }
+.feedback { margin-bottom: 12px; padding: 10px 0; border-bottom: 1px solid var(--notebook-ink); font-size: 13px; line-height: 1.5; }
 .feedback p { margin: 0 0 8px; }
-.feedback [role="alert"] { color: #7a1010; font-weight: 700; }
-.confirmScore { min-height: 44px; padding: 8px 12px; margin-top: 8px; border: 2px solid currentColor; border-radius: 4px; background: #fffaf0; font-size: 13px; font-weight: 700; }
-.olderDraft { margin: 0 0 16px; padding: 12px; border: 2px solid currentColor; border-radius: 4px; font-size: 13px; }
+.feedback [role="alert"], .summaryAdminNote { color: #7a1010; font-weight: 700; }
+.olderDraft { margin: 0 0 16px; padding: 12px 0; border-block: 1px solid var(--notebook-ink); font-size: 13px; line-height: 1.6; }
 .olderDraft summary { min-height: 44px; cursor: pointer; font-weight: 700; }
-.olderDraft textarea { width: 100%; }
 .olderDraft dl > div { display: flex; justify-content: space-between; gap: 12px; margin: 8px 0; }
+
+/* Saved notes remain a real comparison, with an unaltered radar geometry. */
+.bookNotes { display: grid; gap: 18px; padding: 8px 18px 0; min-width: 0; }
+.bookScoreSummary { padding: 20px 16px; }
+.bookScoreHeading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--notebook-ink); }
+.bookScoreHeading > div:first-child { min-width: 0; }
+.bookScoreHeading p { margin: 0 0 7px; color: var(--notebook-green); font: 800 9px/1.5 ui-monospace, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
+.bookScoreHeading h3 { margin: 0; color: var(--notebook-ink); font: 900 36px/.98 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.bookScoreHeading .compactMascot { display: block; width: 56px; flex-basis: 56px; }
+.bookReviewStatus { margin: 14px 0; color: var(--notebook-muted); font: 700 10px/1.6 ui-monospace, Consolas, monospace; }
+.bookScoreTotals { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.bookScoreTotals > div, .reviewFact, .summaryBadge { display: grid; min-width: 0; align-content: space-between; gap: 10px; padding: 14px 12px; border: 1px solid transparent; background: transparent; border-image: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")) 48 fill / 10px / 0 stretch; color: var(--notebook-ink); }
+.bookScoreTotals > div[data-score="community"] { border-image-source: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); }
+.bookScoreTotals span { font: 800 10px/1.45 ui-monospace, Consolas, monospace; }
+.bookScoreTotals strong { font: 900 34px/1 var(--font-display), Impact, sans-serif; }
+.bookScoreTotals small { margin-left: 3px; font: 700 10px ui-monospace, Consolas, monospace; }
+.bookScoreSummary :global(.contest-review-skill-chart) { padding: 12px 0 0; }
+.bookScoreSummary :global(.contest-review-skill-radar) { width: min(100%, 300px); }
+.bookScoreSummary :global(.contest-review-skill-area) { fill: #efc45175; stroke: #806011; }
+.bookScoreSummary :global(.contest-review-skill-area-average) { fill: #087b7024; stroke: var(--notebook-green); stroke-dasharray: 5 3; }
+.bookScoreSummary :global(.contest-review-skill-point) { fill: var(--notebook-yellow); stroke: var(--notebook-ink); }
+.bookScoreSummary :global(.contest-review-skill-point-average) { fill: var(--notebook-green); stroke: var(--notebook-ink); }
+.bookScoreSummary :global(.contest-review-skill-legend) { position: static; opacity: 1; transform: none; pointer-events: auto; padding: 8px 0; border: 0; border-bottom: 1px solid #17292355; border-radius: 0; background: transparent; box-shadow: none; font: 800 10px/1 ui-monospace, Consolas, monospace; }
+.bookScoreSummary :global(.contest-review-skill-legend-self)::before { background: var(--notebook-yellow); border-color: var(--notebook-ink); }
+.bookScoreSummary :global(.contest-review-skill-legend-average)::before { background: var(--notebook-green); border-color: var(--notebook-ink); }
+.bookScoreCaption { margin: 12px 0 0; color: var(--notebook-muted); font-size: 11px; line-height: 1.6; }
+.bookWrittenNotes { padding: 20px 16px; }
+.bookWrittenNotes h3 { margin: 0 0 12px; color: var(--notebook-ink); font: 900 27px/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.bookWrittenNotes p, .writtenNote { margin: 0; background: repeating-linear-gradient(transparent 0 calc(1.75em - 1px), #087b7026 calc(1.75em - 1px) 1.75em); color: var(--notebook-ink); font-size: 13px; line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere; }
+.writtenNote { margin-top: 18px; }
+.bookNotesActions { position: sticky; z-index: 9; bottom: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 12px 0; border-top: 1px solid var(--notebook-ink); background: var(--notebook-paper); }
+.reviewScoreRow { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid #17292355; }
+.reviewScoreValue { flex-shrink: 0; color: var(--notebook-green); font: 900 20px/1 var(--font-display), Impact, sans-serif; }
+.summaryCard, .summaryState { padding: 22px; }
+.summaryHeader { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 18px; border-bottom: 1px solid var(--notebook-ink); }
+.summaryHeader h3, .summaryState h3 { margin: 8px 0; font: 900 32px/1 var(--font-display), Impact, sans-serif; }
+.summaryMeta, .summaryEmpty { margin: 0; color: var(--notebook-muted); font-size: 12px; line-height: 1.5; }
+.summaryBadge { flex-shrink: 0; justify-items: center; gap: 3px; padding: 13px 20px; }
+.summaryBadge strong { font: 900 34px/1 var(--font-display), Impact, sans-serif; }
+.summaryBadge span { font: 800 10px/1 ui-monospace, Consolas, monospace; }
+.summaryGrid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 22px; margin-top: 20px; }
+.summaryChartBox { min-width: 0; align-content: center; }
+.summarySide { display: grid; min-width: 0; align-content: start; gap: 18px; }
+.summaryBox { min-width: 0; padding: 0 0 16px; border-bottom: 1px solid #17292355; }
+.summaryChipGroup { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 12px; }
+.summaryChipYellow { border-bottom-color: #b48a17; }
+.summaryTerpenes { margin-top: 18px; font-size: 12px; }
+.summaryReward { margin-top: 16px; color: var(--notebook-green); font-size: 12px; font-weight: 700; }
+.summaryWritten > p:last-child { margin-top: 12px; font-size: 13px; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; }
+.summaryActions { margin-top: 20px; }
+.summaryState { display: grid; gap: 20px; font-size: 13px; line-height: 1.6; }
+
+/* The outer book supplies the page and binding; the editor supplies its ink. */
+.bookPanel { height: 100%; min-height: 0; overflow-y: auto; }
+.bookPanel .notebook { height: 100%; min-height: 0; overflow: hidden; grid-template-rows: auto minmax(0, 1fr) auto; padding: 0; border: 0; border-image: none; background: transparent; }
+.bookPanel .notebookHeader { display: none; }
+.bookPanel .stepNav { gap: 5px; padding: 0 16px 4px; }
+.bookPanel .stepTab { min-height: 61px; }
+.bookPanel .stepTabLabel { font-size: 9px; }
+.bookPanel .contentViewport { position: relative; isolation: isolate; min-height: 0; overflow: hidden auto; padding: 18px 20px 24px; scroll-behavior: auto; }
+.bookPanel .stepGrid { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+.bookPanel .stepTitle { font-size: 33px; }
+.bookPanel .stepMascot { width: 84px; }
+.bookPanel .stepBody { font-size: 12px; }
+.bookPanel .stepIntro { gap: 12px; }
+.bookPanel .notebookFooter { position: relative; z-index: 2; grid-template-columns: minmax(70px, 1fr) minmax(64px, .8fr) minmax(70px, 1fr); gap: 8px; min-height: 66px; margin: 0 12px; padding: 9px 0; background: var(--notebook-paper); }
+.bookPanel .navButton { --game-control-edge: 10px; min-height: 46px; padding: 10px 11px; font-size: 11px; }
+.bookPanel .progressLabel { font-size: 8px; }
+.bookPanel .progressTrack { height: 7px; }
+.bookPanel .paperPanel, .bookPanel .goldPanel { padding: 17px; }
+.bookPanel .verdictTextarea { min-height: 150px; height: 166px; max-height: none; }
+
+@media (max-width: 900px) {
+  .stepGrid { grid-template-columns: minmax(0, 1fr); }
+  .notebookFooter { grid-template-columns: minmax(78px, .8fr) minmax(88px, 1fr) minmax(78px, .8fr); gap: 8px; }
+  .navButton { --game-control-edge: 10px; padding: 10px 11px; font-size: 11px; }
+  .summaryGrid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 767px) {
+  .inlinePanelRoot { height: auto; }
+  .modalOverlay { align-items: stretch; padding: 0; }
+  .modalPanel { width: 100%; height: 100dvh; }
+  .notebook { padding: 7px; }
+  .inlineNotebook { height: auto; min-height: 0; overflow: visible; }
+  .inlineNotebook .contentViewport { overflow: visible; }
+  .notebookHeader { gap: 8px; margin: 0 7px; padding: calc(10px + env(safe-area-inset-top, 0px)) 0 12px; }
+  .headerIdentity { gap: 8px; }
+  .headerIdentity .compactMascot, .headerScore { display: none; }
+  .notebookTitle { font-size: clamp(23px, 6.1vw, 29px); line-height: 1.05; }
+  .notebookSubtitle { max-width: 48vw; font-size: 11px; }
+  .closeButton { --game-control-edge: 9px; min-width: 46px; padding: 10px 12px; font-size: 11px; }
+  .stepNav { gap: 4px; padding: 12px 4px 4px; }
+  .stepTab { --game-control-edge: 8px; min-height: 60px; padding: 9px 3px; }
+  .stepTabLabel { font-size: 8px; }
+  .stepTabNumber { font-size: 20px; }
+  .contentViewport { padding: 16px 10px; }
+  .stepPrimary, .stepAside { gap: 16px; }
+  .stepIntro { gap: 12px; padding-bottom: 15px; }
+  .stepTitle { font-size: 30px; }
+  .stepBody { margin-top: 8px; font-size: 12px; line-height: 1.6; }
+  .stepMascot { width: 76px; }
+  .paperPanel, .goldPanel { padding: 17px; }
+  .scoreLabel { font-size: 13px; }
+  .notebookFooter { margin: 0 4px; padding: 9px 0 max(9px, env(safe-area-inset-bottom, 0px)); }
+  .progressLabel { font-size: 8px; }
+  .teaserBody { grid-template-columns: minmax(0, 1fr) 88px; }
+  .teaserCopy { padding: 20px 12px; }
+  .teaserTitle { font-size: clamp(31px, 9vw, 42px); }
+  .teaserText { margin-top: 12px; font-size: 13px; }
+  .teaserArt { min-height: 200px; padding: 12px 8px 12px 0; }
+  .teaserMascot { width: 96px; }
+  .teaserMeta { gap: 6px; }
+  .teaserAction { width: 100%; margin-top: 16px; padding-inline: 13px; }
+  .teaserTop { margin-inline: 12px; }
+  .teaserScore { font-size: 21px; }
+  .bookPanel { height: 100%; }
+  .bookPanel .notebook { height: 100%; }
+  .bookPanel .stepNav { padding-inline: 12px; }
+  .bookPanel .stepTab { --game-control-edge: 8px; }
+  .bookPanel .contentViewport { overflow: hidden auto; padding-inline: 16px; }
+  .bookPanel .stepTitle { font-size: 30px; }
+  .bookPanel .stepMascot { width: 76px; }
+  .bookPanel .notebookFooter { margin-inline: 10px; }
+  .summaryHeader { gap: 12px; }
+  .summaryCard, .summaryState { padding: 18px; }
+}
+@media (max-width: 359px) {
+  .bookPanel .stepNav { padding-inline: 10px; gap: 3px; }
+  .bookPanel .stepTabLabel { font-size: 8px; }
+  .bookPanel .contentViewport { padding-inline: 13px; }
+  .bookPanel .stepTitle { font-size: 27px; }
+  .bookPanel .stepIntro { gap: 9px; }
+  .bookPanel .stepMascot { width: 64px; }
+  .bookPanel .navButton { font-size: 10px; padding-inline: 9px; }
+  .bookPanel .notebookFooter { gap: 5px; }
+  .bookScoreTotals strong { font-size: 30px; }
+  .bookScoreTotals span { font-size: 9px; }
+  .bookNotes { padding-inline: 12px; }
+  .bookScoreSummary, .bookWrittenNotes { padding-inline: 13px; }
+  .paperPanel, .goldPanel, .bookPanel .paperPanel, .bookPanel .goldPanel { padding-inline: 14px; }
+  .teaserBody { grid-template-columns: minmax(0, 1fr) 72px; }
+  .teaserAction { font-size: 11px; }
+  .summaryHeader h3 { font-size: 27px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .teaserAction, .navButton, .closeButton, .actionButton, .smallAction,
+  .confirmScore, .methodButton, .checkOption, .stepTab, .progressFill { transition: none; }
+}

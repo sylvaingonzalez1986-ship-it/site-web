@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useMemo, useRef, useState, type KeyboardEvent } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Check, CircleAlert, Factory, Fan, Grid2X2, LoaderCircle, Package, Plus, RefreshCw, Ruler, Save, ShoppingBag, Sprout, Trash2, Warehouse, X, Zap } from "lucide-react";
@@ -23,6 +23,7 @@ import { KqCommerceComputer, KqCommerceDesk } from "./KqCommerceDesk";
 import { KqWarehouseHarvests } from "./KqWarehouseHarvests";
 import { KqWarehouseEntry } from "./KqWarehouseEntry";
 import { KqWarehousePlan } from "./KqWarehousePlan";
+import { KqPrintedArt } from "./KqPrintedArt";
 import { KqWarehousePostHarvest } from "./KqWarehousePostHarvest";
 import { KqEquipmentCatalogModal } from "./KqEquipmentCatalogModal";
 import { KqWarehouseShop } from "./KqWarehouseShop";
@@ -30,6 +31,7 @@ import { KqWarehouseCulture, warehouseCultureHref, warehouseCampaignHref, wareho
 import { KqWarehouseDashboard } from "./KqWarehouseDashboard";
 import { KqWarehouseBuddieDock } from "./KqWarehouseBuddieDock";
 import { getKqBuddieRotationRemaining } from "@/lib/kanab-quest-buddie-rotation";
+import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import styles from "./KqWarehouse.module.css";
 
 type Room = "culture" | "drying" | "processing" | "storage";
@@ -54,6 +56,7 @@ type Point = { x: number; y: number };
 type ZoneKind = "culture" | "drying" | "storage";
 type PlanZone = KqWarehouseZone | KqWarehouseServiceZone;
 const ZONE_LABELS: Record<ZoneKind, string> = { culture: "Culture", drying: "Séchage", storage: "Stockage" };
+const ZONE_ICONS = { culture: Sprout, drying: Fan, storage: Package };
 const ROOMS = [
   { code: "culture", label: "Plan", icon: Sprout },
   { code: "drying", label: "Séchage", icon: Fan },
@@ -213,6 +216,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   const planZones = draft ? [...draft.zones, ...(draft.serviceZones ?? [])] : [];
   const dimensions = getKqWarehouseDimensions(draft ?? snapshot?.state);
   const selected = planZones.find(zone => zone.id === selectedId);
+  const selectedIdentity = draft && selected ? getKqZoneIdentity(draft, selected.id) : null;
   const selectedKind: ZoneKind = selected && "kind" in selected ? selected.kind : "culture";
   const zoneQuote = selected && !issues.length ? "kind" in selected ? getKqWarehouseServiceZoneQuote(selected) : getKqWarehouseZoneQuote(selected) : null;
   const dirty = !!draft && !!snapshot && JSON.stringify(draft) !== JSON.stringify(snapshot.state);
@@ -242,9 +246,10 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
     return () => { unregister(); window.removeEventListener("beforeunload", beforeUnload); document.removeEventListener("click", interceptLink, true); };
   }, [dirty, api.isTutorial, router]);
   const zoneCultures = Array.isArray(snapshot?.activeRuns);
-  const editing = managing || !zoneCultures;
-  const showBuddieDock = zoneCultures && room === "culture" && !editing && !shopOpen;
   const activeRuns = snapshot?.activeRuns ?? [];
+  const directPreparation = !api.isTutorial;
+  const editing = managing || !zoneCultures || (directPreparation && activeRuns.length === 0);
+  const showBuddieDock = !directPreparation && zoneCultures && room === "culture" && !editing && !shopOpen;
   const activeCampaign = activeRuns.find(run => run.campaignId);
   const campaignZones = draft?.zones.filter(zone => zone.active && zone.buddieCode) ?? [];
   const campaignReady = !!campaignZones.length && !!buddies && !activeRuns.length
@@ -475,7 +480,8 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
       delete freed.buddieCode;
       return freed;
     }) } : current);
-    setSelectedId(target.id); setError(""); setNotice(`Buddie affecté à ${target.name}. Enregistre pour valider.`);
+    const identity = draft ? getKqZoneIdentity(draft, target.id) : null;
+    setSelectedId(target.id); setError(""); setNotice(`Buddie affecté à la ${(identity?.label ?? "zone").toLowerCase()}. Enregistre pour valider.`);
     pickBuddie(null);
   }
   function zoneAtPointer(point: Point): PlanZone | undefined {
@@ -562,10 +568,9 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   const zoneDialogOpen = !!zoneDialogId && zoneDialogId === selectedId && !!selected && room === "culture" && editing;
   const zoneDialogError = error || issues[0] || (!affordable && snapshot ? `Il manque ${formatKqCash(payable - snapshot.cashCents)} pour cet aménagement.` : "") || (adoptionBlocked ? "Stockage insuffisant pour tes lots. Agrandis la zone ou change de gamme." : "");
   const zoneEditor = selected && draft && snapshot ? <>
-    <div className={styles.zoneDialogSummary}><strong>{selected.name}</strong><span>{ZONE_LABELS[selectedKind]} · {selected.width * selected.height} m²</span></div>
+    <div className={styles.zoneDialogSummary} style={{ backgroundColor: selectedIdentity?.tint }}><strong><span className={styles.zoneNumber} style={{ backgroundColor: selectedIdentity?.color }} aria-label={selectedIdentity?.label}>{selectedIdentity?.number ?? "—"}</span> {selected.width * selected.height} m²</strong><span>{ZONE_LABELS[selectedKind]}</span></div>
     <div className={styles.inspectorBody} data-warehouse-zone-kind={selectedKind}>
                   <details className={styles.zoneSettings} data-warehouse-zone-settings key={selected.id}><summary>Ajuster la zone</summary><div>
-                  <label className={styles.field}>Nom de la zone<input value={selected.name} maxLength={80} disabled={selectedLocked} onChange={event => updateZone({ name: event.target.value })} /></label>
                   <div className={styles.dimensions}><label className={styles.field}>Largeur (m)<input type="number" min="1" max={dimensions.columns - selected.x} step="1" value={selected.width} disabled={selectedLocked} onChange={event => updateZone({ width: Number(event.target.value) })} /></label><label className={styles.field}>Profondeur (m)<input type="number" min="1" max={dimensions.rows - selected.y} step="1" value={selected.height} disabled={selectedLocked} onChange={event => updateZone({ height: Number(event.target.value) })} /></label></div>
                   <div className={styles.dimensions}><label className={styles.field}>Position X (m)<input type="number" min="0" max={dimensions.columns - selected.width} step="1" value={selected.x} disabled={selectedLocked} onChange={event => updateZone({ x: Number(event.target.value) })} /></label><label className={styles.field}>Position Y (m)<input type="number" min="0" max={dimensions.rows - selected.height} step="1" value={selected.y} disabled={selectedLocked} onChange={event => updateZone({ y: Number(event.target.value) })} /></label></div>
                   </div></details>
@@ -622,7 +627,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
       if (!event.shiftKey && document.activeElement === nodes.at(-1)) { event.preventDefault(); nodes[0]?.focus(); }
     }}>
       <header className={styles.header}>
-        <div className={styles.workshopSign}><span className={styles.signMark} aria-hidden="true"><Warehouse size={25} strokeWidth={1.5} /></span><h2 id={`${id}-title`} data-arena-tour="warehouse">Entrepôt</h2></div>
+        <div className={styles.workshopSign}><KqPrintedArt kind="warehouse" className={styles.signMark} sizes="(max-width: 650px) 72px, 100px" /><h2 id={`${id}-title`} data-arena-tour="warehouse">Entrepôt</h2></div>
         <div className={styles.headerActions}><div className={styles.cash}><small>Trésorerie</small><strong>{snapshot ? formatKqCash(snapshot.cashCents) : "—"}</strong></div><button className={styles.shopButton} type="button" data-warehouse-action="shop" data-warehouse-shop-counter disabled={!draft || loading || pending || workshopBusy} onClick={() => setShopOpen(true)}><ShoppingBag size={17} /><span>Boutique</span></button><button className={styles.iconButton} type="button" aria-label="Actualiser l’entrepôt" disabled={pending || loading || dirty || workshopBusy} onClick={() => void load()}><RefreshCw size={16} /></button>{!embedded && <button ref={close} className={styles.iconButton} type="button" onClick={() => navigateWithDraftGuard(onClose)} aria-label="Fermer l’entrepôt"><X size={18} /></button>}</div>
       </header>
       <nav className={styles.tabs} role="tablist" aria-label="L’entrepôt et ses activités">{ROOMS.map((item, index) => <button type="button" ref={node => { tabs.current[index] = node; }} key={item.code} className={styles.tab} id={`${id}-${item.code}-tab`} data-warehouse-room={item.code} aria-controls={`${id}-${item.code}-panel`} role="tab" disabled={workshopBusy} aria-selected={room === item.code} tabIndex={room === item.code ? 0 : -1} onKeyDown={event => keyTab(event, index)} onClick={() => changeRoom(item.code)}><item.icon size={17} />{item.label}</button>)}</nav>
@@ -645,20 +650,35 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
           <div role="tabpanel" id={`${id}-${room}-panel`} aria-labelledby={`${id}-${room}-tab`}>
             {room === "culture" ? <div className={styles.workspace} ref={workspace} data-warehouse-cultures={zoneCultures || undefined}>
               <div className={styles.sceneColumn}>
-                {zoneCultures && <div className={styles.cultureToolbar}><div role="group" aria-label="Mode du plan"><button type="button" aria-pressed={editing} disabled={pending} onClick={() => { setManaging(true); setBuddiesOpen(false); }}>Aménager</button><button type="button" aria-pressed={!editing} disabled={dirty || pending} onClick={() => { setManaging(false); setBuddiesOpen(false); setDrawing(false); setAnchor(null); }}>Cultures</button></div><span>{activeRuns.length} en cours</span></div>}
-                {zoneCultures && !editing && <div className={styles.campaignLaunch} data-warehouse-campaign>
-                  <span>{activeCampaign ? "Une campagne · tous tes Buddies" : activeRuns.length ? "Termine tes cultures en cours" : `${campaignZones.length} Buddie${campaignZones.length > 1 ? "s" : ""} placé${campaignZones.length > 1 ? "s" : ""} pour la campagne`}</span>
+                {zoneCultures && (!directPreparation || activeRuns.length > 0) && <div className={styles.cultureToolbar}><div role="group" aria-label="Mode du plan"><button type="button" aria-pressed={editing} disabled={pending} onClick={() => { setManaging(true); setBuddiesOpen(false); }}>Aménager</button><button type="button" aria-pressed={!editing} disabled={dirty || pending} onClick={() => { setManaging(false); setBuddiesOpen(false); setDrawing(false); setAnchor(null); }}>{directPreparation ? "Suivre les cultures" : "Cultures"}</button></div><span>{activeRuns.length} en cours</span></div>}
+                {zoneCultures && (directPreparation || !editing) && <div className={`${styles.campaignLaunch} ${directPreparation ? styles.preparationAccess : ""}`} data-warehouse-campaign>
+                  <span>{directPreparation ? <><strong>{activeRuns.length ? "Tes cultures en cours" : "Prêt à cultiver ?"}</strong><small>{activeRuns.length ? `${activeRuns.length} culture${activeRuns.length > 1 ? "s" : ""} à suivre.` : "Choisis tes Buddies et tes cartes sur la page de préparation."}</small></> : activeCampaign ? "Une campagne · tous tes Buddies" : activeRuns.length ? "Termine tes cultures en cours" : `${campaignZones.length} Buddie${campaignZones.length > 1 ? "s" : ""} placé${campaignZones.length > 1 ? "s" : ""} pour la campagne`}</span>
                   {dirty ? <button type="button" className={styles.primary} data-warehouse-campaign-action="save" disabled={locked || !affordable || adoptionBlocked} onClick={() => void save()}>Enregistrer le plan</button>
                     : activeCampaign && !locked ? onOpenCulture
-                      ? <button type="button" className={styles.primary} data-warehouse-campaign-action="resume" onClick={() => onOpenCulture(warehouseCampaignHref(activeCampaign.leaderRunId ?? activeCampaign.runId))}>Reprendre la campagne<ArrowRight size={15} /></button>
-                      : <Link className={styles.primary} data-warehouse-campaign-action="resume" href={warehouseCampaignHref(activeCampaign.leaderRunId ?? activeCampaign.runId)}>Reprendre la campagne<ArrowRight size={15} /></Link>
+                      ? <button type="button" className={styles.primary} data-warehouse-campaign-action="resume" onClick={() => onOpenCulture(warehouseCampaignHref(activeCampaign.leaderRunId ?? activeCampaign.runId))}>{directPreparation ? "Reprendre mes cultures" : "Reprendre la campagne"}<ArrowRight size={15} /></button>
+                      : <Link className={styles.primary} data-warehouse-campaign-action="resume" href={warehouseCampaignHref(activeCampaign.leaderRunId ?? activeCampaign.runId)}>{directPreparation ? "Reprendre mes cultures" : "Reprendre la campagne"}<ArrowRight size={15} /></Link>
+                      : directPreparation && !locked ? onOpenCulture
+                        ? <button type="button" className={styles.primary} data-warehouse-campaign-action={activeRuns.length ? "resume" : "start"} onClick={() => onOpenCulture(warehouseCampaignHref())}>{activeRuns.length ? "Reprendre mes cultures" : "Préparer mes cultures"}<ArrowRight size={15} /></button>
+                        : <Link className={styles.primary} data-warehouse-campaign-action={activeRuns.length ? "resume" : "start"} href={warehouseCampaignHref()}>{activeRuns.length ? "Reprendre mes cultures" : "Préparer mes cultures"}<ArrowRight size={15} /></Link>
                       : campaignReady && !locked ? onOpenCulture
                         ? <button type="button" className={styles.primary} data-warehouse-campaign-action="start" onClick={() => onOpenCulture(warehouseCampaignHref())}>Lancer mes cultures<ArrowRight size={15} /></button>
                         : <Link className={styles.primary} data-warehouse-campaign-action="start" href={warehouseCampaignHref()}>Lancer mes cultures<ArrowRight size={15} /></Link>
-                        : <button type="button" className={styles.primary} disabled>Lancer mes cultures</button>}
+                        : <button type="button" className={styles.primary} disabled>{directPreparation ? "Préparer mes cultures" : "Lancer mes cultures"}</button>}
                 </div>}
                 <div className={styles.zoneNavigation}>
-                  <div className={styles.zones} aria-label="Sélection des zones">{planZones.map((zone, index) => <button key={zone.id} type="button" className={styles.zoneChip} data-zone-kind={"kind" in zone ? zone.kind : "culture"} aria-pressed={selectedId === zone.id} onClick={() => selectZone(zone)}><span>{String(index + 1).padStart(2, "0")}</span><span>{zone.name}<small>{activeRuns.find(run => run.zoneId === zone.id) ? warehouseCultureStage(activeRuns.find(run => run.zoneId === zone.id)!) : ZONE_LABELS["kind" in zone ? zone.kind : "culture"]} · {zone.width * zone.height} m²</small></span></button>)}</div>
+                  <div className={styles.zones} aria-label="Sélection des zones">{planZones.map(zone => {
+                    const identity = getKqZoneIdentity(draft, zone.id)!;
+                    const kind = "kind" in zone ? zone.kind : "culture";
+                    const ZoneIcon = ZONE_ICONS[kind];
+                    const run = activeRuns.find(run => run.zoneId === zone.id);
+                    const label = `${identity.label} · ${ZONE_LABELS[kind]} · ${zone.width * zone.height} m²${run ? ` · ${warehouseCultureStage(run)}` : ""}`;
+                    return <button key={zone.id} type="button" className={styles.zoneChip} data-zone-kind={kind} data-zone-id={zone.id} data-warehouse-zone-chip={zone.id}
+                      style={{ "--zone-color": identity.color, "--zone-tint": identity.tint } as CSSProperties}
+                      title={label} aria-label={label} aria-pressed={selectedId === zone.id} onClick={() => selectZone(zone)}>
+                      <span className={styles.zoneNumber}>{identity.number}</span><span className={styles.zoneArea}><ZoneIcon size={15} aria-hidden="true" />{zone.width * zone.height} m²</span>
+                      <Check size={13} className={styles.zoneSelected} aria-hidden="true" />
+                    </button>;
+                  })}</div>
                   {editing && <button type="button" className={`${styles.primary} ${styles.newZone}`} data-warehouse-action="draw" aria-pressed={drawing} disabled={locked} onClick={toggleDrawing}>{drawing ? <X size={16} aria-hidden="true" /> : <Plus size={16} aria-hidden="true" />}{drawing ? "Annuler le tracé" : "Nouvelle zone"}</button>}
                 </div>
                 <KqWarehousePlan dimensions={dimensions} zones={draft.zones} serviceZones={draft.serviceZones ?? []} selectedId={selectedId} drawing={drawing} drawingKind={drawingKind} anchor={anchor} cursor={cursor} zoom={zoom} locked={locked} growing={snapshot.activeRun} managing={editing} activeZoneIds={zoneCultures ? occupiedZoneIds : undefined} lockedZoneIds={occupiedZoneIds} placingBuddie={!!pickedBuddie} buddieDrop={buddieDrop}
@@ -670,7 +690,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                 {notice && <p className={styles.notice} role="status"><Check size={17} />{notice}</p>}
               </div>
               <div className={styles.inspector} ref={inspector} tabIndex={-1}>
-                {selected && !("kind" in selected) && !editing ? <KqWarehouseCulture key={selected.id} zone={selected} run={selectedRun} previewBuddieCode={pickedBuddie} runs={activeRuns} buddies={buddies} disabled={locked || !affordable || adoptionBlocked} dirty={dirty} legacy={!!snapshot.legacyActiveRun} onSave={() => void save()} onManage={() => setManaging(true)} completedRunId={snapshot.completedRuns?.find(run => run.zoneId === selected.id)?.runId} /> : selected ? <><div className={styles.inspectorHeader}><div><small>{ZONE_LABELS[selectedKind]} · {[...snapshot.state.zones, ...(snapshot.state.serviceZones ?? [])].some(zone => zone.id === selected.id) ? "Zone installée" : "Avant achat"}</small><h3>{selected.name}</h3><span>{selected.width * selected.height} m² · {selectedKind === "culture" ? (zoneCultures ? !!selectedRun : snapshot.activeRun) && "active" in selected && selected.active ? "Culture en cours" : "active" in selected && !selected.active ? "En pause" : "Prête à cultiver" : selectedKind === "drying" ? "Filets de séchage" : "Réserve de stockage"}</span></div><Grid2X2 size={22} /></div><div className={styles.inspectorBody}>
+                {selected && !("kind" in selected) && !editing ? <KqWarehouseCulture key={selected.id} zone={selected} zoneIdentity={selectedIdentity} run={selectedRun} previewBuddieCode={pickedBuddie} runs={activeRuns} buddies={buddies} disabled={locked || !affordable || adoptionBlocked} dirty={dirty} legacy={!!snapshot.legacyActiveRun} onSave={() => void save()} onManage={() => setManaging(true)} completedRunId={snapshot.completedRuns?.find(run => run.zoneId === selected.id)?.runId} /> : selected ? <><div className={styles.inspectorHeader} style={{ backgroundColor: selectedIdentity?.tint }}><div><small>{ZONE_LABELS[selectedKind]} · {[...snapshot.state.zones, ...(snapshot.state.serviceZones ?? [])].some(zone => zone.id === selected.id) ? "Zone installée" : "Avant achat"}</small><h3><b className={styles.zoneNumber} style={{ backgroundColor: selectedIdentity?.color }} aria-label={selectedIdentity?.label}>{selectedIdentity?.number ?? "—"}</b> {selected.width * selected.height} m²</h3><span>{selectedKind === "culture" ? (zoneCultures ? !!selectedRun : snapshot.activeRun) && "active" in selected && selected.active ? "Culture en cours" : "active" in selected && !selected.active ? "En pause" : "Prête à cultiver" : selectedKind === "drying" ? "Filets de séchage" : "Réserve de stockage"}</span></div><Grid2X2 size={22} /></div><div className={styles.inspectorBody}>
                   <p className={styles.zoneEditorHint}>Double-tape cette zone sur le plan pour choisir son équipement et la valider.</p>
                   <button type="button" className={styles.primary} disabled={selectedLocked} data-warehouse-action="configure-selected" onClick={() => configureZone(selected.id)}>Configurer cette zone</button>
                   {dirty && purchaseActions}

@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { ProductVideoModal } from "./ProductVideoModal";
 import styles from "./ProductImageGallery.module.css";
+import photoStyles from "./ProductPhoto.module.css";
 
 type ProductImageGalleryProps = {
   images: string[];
@@ -40,15 +41,17 @@ export function ProductImageGallery({
           onClose={() => setVideoOpen(false)}
         />
       )}
-      <div className={styles.main}>
-        <Image
-          src={currentSrc}
-          alt={productName}
-          fill
-          priority
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-cover"
-        />
+      <div className={`${styles.main} ${photoStyles.frame}`} data-product-photo="gallery">
+        <div className={photoStyles.window}>
+          <Image
+            src={currentSrc}
+            alt={productName}
+            fill
+            priority
+            sizes="(max-width: 768px) 100vw, 50vw"
+            className={`object-cover ${photoStyles.image}`}
+          />
+        </div>
         {badge && (
           <span className={styles.badge}>
             {badge}
@@ -68,22 +71,26 @@ export function ProductImageGallery({
               key={item.src}
               type="button"
               onClick={() => setSelectedIndex(idx)}
-              className={`${styles.thumb} ${idx === selectedIndex ? styles.thumbActive : ""}`}
+              className={`${styles.thumb} ${photoStyles.frame} ${photoStyles.thumbnail} ${idx === selectedIndex ? styles.thumbActive : ""}`}
+              data-product-photo="thumbnail"
+              aria-pressed={idx === selectedIndex}
             >
-              <Image
-                src={item.src}
-                alt={`${productName} - vue ${idx + 1}`}
-                fill
-                sizes="80px"
-                className="object-cover"
-              />
+              <span className={photoStyles.window}>
+                <Image
+                  src={item.src}
+                  alt={`${productName} - vue ${idx + 1}`}
+                  fill
+                  sizes="80px"
+                  className={`object-cover ${photoStyles.image}`}
+                />
+              </span>
             </button>
           ))}
         </div>
       )}
 
       {videoUrl && (
-        <button
+        <button data-ui-commerce="primary" data-ui-shape="control"
           type="button"
           onClick={() => setVideoOpen(true)}
           className="btn-cartoon btn-primary mt-1 inline-flex w-full items-center justify-center gap-2"

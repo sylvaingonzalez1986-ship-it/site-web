@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
+import { isKqSameOriginRequest } from "@/lib/kanab-quest-request-origin";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { parseKqBankCommand } from "@/lib/kanab-quest-bank";
 import { getKqBank, KqBankError } from "@/lib/supabase/kanab-quest-bank-backend";
@@ -12,10 +13,7 @@ async function handle(request: Request, mutation = false) {
     if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
     const session = await getCurrentCustomerSessionByBackend("identity");
     if (!session) return NextResponse.json({ error: "Connecte-toi pour ouvrir ton dossier bancaire." }, { status: 401, headers });
-    if (mutation) {
-      const origin = request.headers.get("origin");
-      if ((origin && origin !== new URL(request.url).origin) || request.headers.get("sec-fetch-site") === "cross-site") return NextResponse.json({ error: "Origine non autorisée." }, { status: 403, headers });
-    }
+    if (mutation && !isKqSameOriginRequest(request)) return NextResponse.json({ error: "Origine non autorisée." }, { status: 403, headers });
     const key = `kq_bank:${session.customerId}`;
     const rate = await hitRateLimit({ key, windowSeconds: 60, maxHits: 30 });
     if (!rate.allowed) {

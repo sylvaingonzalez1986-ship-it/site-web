@@ -72,14 +72,14 @@ export function PioneerPackReward({ onClaimed }: { onClaimed?: () => void | Prom
       </ul>
       <p className={styles.terms}>Offert une seule fois par compte pour une commande payée et non annulée, passée depuis l’ouverture du site jusqu’au <strong>10 octobre 2026 inclus</strong> (heure de Paris).</p>
       <div className={styles.action} aria-live="polite">
-        {loading ? <p>Recherche de ton pack…</p> : !isAuthenticated ? <Link className={styles.button} href="/compte/connexion?next=/profil/collection%23pack-pionniers">Me connecter <ArrowUpRight size={18} aria-hidden="true" /></Link>
+        {loading ? <p>Recherche de ton pack…</p> : !isAuthenticated ? <Link data-ui-account="pioneer-action" data-ui-shape="control" className={styles.button} href="/compte/connexion?next=/profil/collection%23pack-pionniers">Me connecter <ArrowUpRight size={18} aria-hidden="true" /></Link>
           : state?.claimed ? <div className={styles.success}>
             <strong><Check size={18} aria-hidden="true" /> Ton pack a rejoint ta collection.</strong>
             {state.goldCard && <p>Ton Buddie {state.goldCard.rarity === "epic" ? "épique" : "or"} : <b>{state.goldCard.name}</b>.</p>}
             {isArenaPrelaunch() ? <p>{ARENA_OPENING_MESSAGE} pour ouvrir tes packs Botte du Chanvrier.</p>
               : <Link href="/arene/placard?view=shop">Ouvrir mes packs Botte du Chanvrier <ArrowUpRight size={16} aria-hidden="true" /></Link>}
           </div> : state?.eligible ? <>
-            <button type="button" className={styles.button} disabled={isPioneerPackPrelaunch() || claiming || !state.available} onClick={() => void claim()}>{isPioneerPackPrelaunch() ? PIONEER_PACK_OPENING_MESSAGE : claiming ? "Ton pack arrive…" : "Recevoir mon pack offert"}<Gift size={18} aria-hidden="true" /></button>
+            <button data-ui-account="pioneer-action" data-ui-shape="control" type="button" className={styles.button} disabled={isPioneerPackPrelaunch() || claiming || !state.available} onClick={() => void claim()}>{isPioneerPackPrelaunch() ? PIONEER_PACK_OPENING_MESSAGE : claiming ? "Ton pack arrive…" : "Recevoir mon pack offert"}<Gift size={18} aria-hidden="true" /></button>
             {!state.available && <p>Ton pack est réservé. Son contenu est momentanément indisponible.</p>}
           </> : state ? <p>Aucune commande éligible pour le moment. Si tu as commandé sans compte, utilise la même adresse e-mail et vérifie-la.</p> : null}
       </div>

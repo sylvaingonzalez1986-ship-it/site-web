@@ -1,29 +1,29 @@
 .lobby { position: relative; padding: 22px clamp(12px, 2.5vw, 36px) 30px; color: #172923; background: #e6e6c9; background-image: radial-gradient(#17292316 .7px, transparent .8px); background-size: 8px 8px; font-family: var(--font-body), Arial, sans-serif; }
 .lobby > * { max-width: 1400px; margin-inline: auto; }
-.nextAction { display: flex; align-items: center; gap: 16px; min-height: 88px; margin-bottom: 20px; padding: 10px 17px 10px 12px; border: 2px solid #172923; border-radius: 20px 20px 20px 8px; background: #fff1d6; box-shadow: 4px 4px 0 #172923; }
+.nextAction { display: flex; align-items: center; gap: 16px; min-height: 88px; margin-bottom: 20px; padding: 10px 17px 10px 12px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .guidePortrait { position: relative; display: block; flex-shrink: 0; width: 64px; height: 68px; overflow: hidden; border: 2px solid #172923; border-radius: 50% 50% 42% 42%; background: #fff; box-shadow: 2px 2px 0 var(--game-surface-warm); }
 .guidePortrait > img { position: absolute; width: 88px; max-width: none; height: 88px; left: -12px; top: -8px; object-fit: contain; }
 .nextAction > div { flex: 1; min-width: 0; }
 .nextAction > div > span { display: block; margin-bottom: 4px; font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; color: #435f50; }
 .nextAction p { margin: 0; font-size: 14px; font-weight: 700; line-height: 1.4; }
 .nextAction small { display: block; margin-top: 5px; font-size: 11px; line-height: 1.5; color: #5a503c; }
-.nextAction[data-priority="storage"] { background: #f7dfa0; }
-.nextAction button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 11px 16px; border: 2px solid #172923; border-radius: 13px; background: #efc451; color: #172923; box-shadow: 3px 3px 0 #172923; font: 800 12px var(--font-body), sans-serif; cursor: pointer; transition: background 120ms ease, box-shadow 120ms ease; }
+.nextAction[data-priority="storage"] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.nextAction button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 11px 16px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; font: 800 12px var(--font-body), sans-serif; cursor: pointer; transition: background 120ms ease, box-shadow 120ms ease; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .nextAction button > svg { flex-shrink: 0; }
 .loading { display: flex; align-items: center; min-height: 88px; margin-bottom: 20px; padding: 16px 18px; font-size: 13px; color: #40554b; }
-.status { margin-block: 20px 0; padding: 10px 14px; border: 2px solid #172923; border-radius: 14px; background: #fff1d6; font-size: 12px; text-align: center; }
+.status { margin-block: 20px 0; padding: 10px 14px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; font-size: 12px; text-align: center; }
 .status button { min-height: 44px; padding: 4px 8px; color: #172923; background: transparent; border: 0; font-weight: 750; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
 .learning { display: flex; padding-top: 20px; }
-.learningButton { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 46px; padding: 11px 16px; border: 2px solid #172923; border-radius: 12px; background: #fff1d6; color: #172923; box-shadow: 3px 3px 0 #172923; font: 800 12px/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; }
+.learningButton { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 46px; padding: 11px 16px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; font: 800 12px/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .learningButton svg { flex-shrink: 0; }
-.learningButton:hover { background: #efc451; }
-.learningButton:active { box-shadow: 1px 1px 0 #172923; }
+.learningButton:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
+.learningButton:active:not(:disabled) { box-shadow: none; border-color: transparent; }
 .lobby :where(button, a, summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
-.nextAction button:active { box-shadow: 1px 1px 0 #172923; }
-@media (hover: hover) { .nextAction button:hover { background: #149b8b; } }
+.nextAction button:active:not(:disabled) { box-shadow: none; border-color: transparent; }
+@media (hover: hover) { .nextAction button:hover:not(:disabled) { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; border-color: transparent; color: #fff1d6; } }
 @media (max-width: 700px) {
   .lobby { padding: 12px max(10px, env(safe-area-inset-right)) 18px max(10px, env(safe-area-inset-left)); }
-  .nextAction { flex-wrap: wrap; gap: 10px 12px; padding: 12px; margin-bottom: 16px; border-radius: 16px 16px 16px 7px; }
+  .nextAction { flex-wrap: wrap; gap: 10px 12px; padding: 12px; margin-bottom: 16px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
   .guidePortrait { width: 48px; height: 52px; }
   .guidePortrait > img { width: 68px; height: 68px; left: -10px; top: -6px; }
   .nextAction > div { flex-basis: calc(100% - 64px); }

@@ -4,34 +4,36 @@
 .header p { max-width: 65ch; margin: 12px 0; color: #536058; font-size: 14px; line-height: 1.7; }
 .header > img { object-fit: contain; width: clamp(85px, 16vw, 140px); height: auto; filter: drop-shadow(2px 3px 0 #172923); }
 .eyebrow { color: #076c61; font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: .1em; }
-.overview { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 24px; padding: 20px; border: 2px solid #172923; border-radius: 16px; background: #fff8e7; color: #172923; }
+.overview { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px 24px; padding: 20px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .overviewHeading > strong { display: block; margin-top: 6px; font: 900 clamp(25px, 3vw, 36px)/1.12 var(--font-display), Impact, sans-serif; }
 .overviewHeading > small { font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .overviewVisual { grid-column: 1 / -1; min-width: 0; }
-.readyCount { display: flex; align-items: center; gap: 8px; align-self: center; padding: 10px 12px; border: 1px solid #9a7720; border-radius: 12px; background: #efc451; color: #172923; font-size: 12px; font-weight: 800; }
+.readyCount { display: flex; align-items: center; gap: 8px; align-self: center; padding: 10px 12px; border: 1px solid #9a7720; border-radius: var(--game-panel-radius, 2px); background: #efc451; color: #172923; font-size: 12px; font-weight: 800; }
 .rewardLegend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 14px 0 0; padding: 0; list-style: none; color: #536058; }
 .rewardLegend li { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; }
 .trackNav { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 22px; }
-.trackNav button { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 8px 12px; border: 1px solid #17292370; border-radius: 10px; background: #fffaf0; color: #172923; font-size: 12px; font-weight: 700; }
-.trackNav button[aria-pressed=true] { border-color: #172923; background: #172923; color: #fff1d6; }
-.trackNav small { padding: 2px 5px; border-radius: 6px; background: #17292312; font-size: 10px; }
+.trackNav button { display: inline-flex; align-items: center; gap: 7px; min-height: 44px; padding: 8px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font-size: 12px; font-weight: 700; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.trackNav button[aria-pressed=true] { border-color: transparent; color: #fff1d6; --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); background: transparent; }
+.trackNav small { padding: 2px 5px; border-radius: var(--game-panel-radius, 2px); background: #17292312; font-size: 10px; }
 .trackNav button[aria-pressed=true] small { background: #fff1d622; }
 .toolbar { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin: 22px 0; padding-block: 14px; border-block: 1px solid #17292340; }
-.toolbar > span, .toolbar button { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
+.toolbar > span { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
+.toolbar button { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; }
 .toolbar > span > svg { color: #536058; }
-.center button, .center a { cursor: pointer; }
-.toolbar button { padding: 10px; min-height: 44px; border: 2px solid #172923; color: #172923; background: #fffaf0; border-radius: 11px; box-shadow: 2px 3px 0 #172923; }
+.center button { cursor: pointer; }
+.center a { cursor: pointer; }
+.toolbar button { padding: 10px; min-height: 44px; border: var(--game-control-border-width, 2px) solid #172923; color: #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .tracks { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 20px; }
 .sections { display: flex; flex-wrap: wrap; gap: 10px; margin: 0 0 30px; }
-.sections button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 12px 18px; border: 2px solid #172923; border-radius: 11px; background: #fffaf0; color: #172923; font-size: 13px; font-weight: 800; box-shadow: 2px 3px 0 #172923; }
-.sections button[aria-pressed=true] { background: #149b8b; color: #172923; }
-.sections span { padding: 3px 6px; background: #17292314; border-radius: 12px; font-size: 10px; }
-.track { min-width: 0; display: flex; flex-direction: column; overflow: hidden; border: 2px solid #172923; background: #fffaf0; border-radius: 18px; color: #172923; box-shadow: 3px 4px 0 #172923; }
-.track[data-ready] { border-color: #172923; box-shadow: 4px 5px 0 #172923; }
-.art { position: relative; height: 158px; background: var(--game-surface-warm); border-bottom: 2px solid #172923; }
+.sections button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 12px 18px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font-size: 13px; font-weight: 800; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.sections button[aria-pressed=true] { color: #fff1d6; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; border-color: transparent; }
+.sections span { padding: 3px 6px; background: #17292314; border-radius: var(--game-panel-radius, 2px); font-size: 10px; }
+.track { min-width: 0; display: flex; flex-direction: column; overflow: hidden; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.track[data-ready] { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.art { position: relative; height: 210px; background: var(--game-surface-warm); border-bottom: 2px solid #172923; }
 .art img { object-fit: cover; object-position: center 40%; }
 .art::after { content: ""; position: absolute; inset: 0; background: #fff1d6; display: none; }
-.art > span { position: absolute; bottom: 12px; left: 18px; right: auto; z-index: 1; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; background: #fff1d6; border: 2px solid #172923; border-radius: 11px; padding: 8px 10px; max-width: calc(100% - 36px); color: #172923; box-shadow: 2px 3px 0 #172923; }
+.art > span { position: absolute; bottom: 12px; left: 18px; right: auto; z-index: 1; display: flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900; background: #fff1d6; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); padding: 8px 10px; max-width: calc(100% - 36px); color: #172923; box-shadow: var(--game-panel-shadow, none); }
 .art svg { color: #172923; }
 .body { display: flex; flex-direction: column; flex: 1; padding: 18px; }
 .trackProgress { display: flex; gap: 5px; margin-bottom: 15px; }
@@ -39,13 +41,13 @@
 .trackProgress span[data-complete] { background: #076c61; }
 .trackProgress span[data-current] { background: #efc451; }
 .stepHeading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
-.difficulty { padding: 4px 7px; border: 1px solid #17292330; border-radius: 6px; color: #536058; font-size: 10px; font-weight: 800; }
-.difficulty[data-level="4"], .difficulty[data-level="5"], .difficulty[data-level="6"] { background: #f7dfb8; color: #744221; border-color: #b98652; }
+.difficulty { padding: 4px 7px; border: 1px solid #17292330; border-radius: var(--game-panel-radius, 2px); color: #536058; font-size: 10px; font-weight: 800; }
+.difficulty[data-level="4"], .difficulty[data-level="5"], .difficulty[data-level="6"] { background: var(--game-surface-warm, #ffae59); color: #744221; border-color: #b98652; }
 .reached { display: inline-flex; align-items: center; gap: 5px; margin: 0 0 12px; color: #076c61; font-size: 12px; font-weight: 800; }
 .body h2 { margin: 10px 0; font: 900 clamp(24px, 2.5vw, 32px)/1.08 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .description { margin: 0 0 20px; min-height: 0; color: #536058; font-size: 13px; line-height: 1.65; }
 .missionMeter { margin: auto 0 16px; min-width: 0; }
-.reward { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; background: #f7dfb8; padding: 10px; border: 1px solid #172923; border-radius: 12px; }
+.reward { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; background: var(--game-surface-warm, #ffae59); padding: 10px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); }
 .reward img { object-fit: contain; }
 .reward[data-kind="card"] { background: #e4e1f4; }
 .reward[data-kind="cash"] { background: #e1eee4; }
@@ -54,9 +56,10 @@
 .reward em { display: block; margin-top: 5px; color: #536058; font-size: 10px; font-style: normal; line-height: 1.5; }
 .reward small { display: block; margin-bottom: 5px; color: #536058; font-size: 11px; }
 .reward strong { color: #172923; font-size: 13px; }
-.claim, .action { min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; padding: 10px; border: 2px solid #172923; border-radius: 11px; background: #fffaf0; color: #172923; font-size: 12px; font-weight: 900; box-shadow: 2px 3px 0 #172923; }
-.claim { background: #efc451; color: #172923; border-color: #172923; box-shadow: 2px 3px 0 #172923; }
-.center button:disabled { opacity: 1; cursor: not-allowed; background: #e2dccb; color: #667064; border-color: #899285; box-shadow: none; }
+.claim, .action { min-height: 48px; display: flex; align-items: center; justify-content: center; gap: 9px; width: 100%; padding: 10px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font-size: 12px; font-weight: 900; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.claim { color: #172923; box-shadow: none; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; border-color: transparent; }
+.center button:disabled { opacity: 1; cursor: not-allowed; background-color: #e2dccb; color: #667064; border-color: #899285; box-shadow: none; }
+.center button:disabled:is(.trackNav button, .toolbar button, .sections button, .claim, .action, .receipt button, .footer > button) { opacity: 1; cursor: not-allowed; color: #667064; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .center :where(button, a, summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; box-shadow: none; }
 .journey { margin-top: 20px; border-top: 1px solid #17292340; padding-top: 10px; }
 .journey summary, .footer summary { min-height: 44px; align-content: center; color: #172923; font-size: 12px; cursor: pointer; }
@@ -75,12 +78,12 @@
 .complete { flex: 1; padding: 20px 0; text-align: center; }
 .complete > svg { margin: auto; color: #172923; }
 .complete p { color: #172923; font-size: 13px; line-height: 1.6; }
-.receipt { display: grid; gap: 16px; min-width: 0; padding: 20px; margin-bottom: 22px; background: #fffaf0; border: 2px solid #172923; border-radius: 18px; box-shadow: 3px 4px 0 #172923; color: #172923; }
+.receipt { display: grid; gap: 16px; min-width: 0; padding: 20px; margin-bottom: 22px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .receiptHeader { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .receiptHeader > div { min-width: 0; }
 .receiptHeader > img { flex-shrink: 0; object-fit: contain; }
 .receiptEyebrow { display: block; margin-bottom: 5px; color: #076c61; font-size: 10px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
-.receipt[data-receipt-fresh] { border-top: 5px solid #076c61; }
+.receipt[data-receipt-fresh] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .receipt[data-receipt-fresh] .receiptHeader > :first-child { animation: mission-reward-arrives 400ms ease-out both; }
 @keyframes mission-reward-arrives { from { opacity: 0; transform: translateY(6px) scale(.94); } to { opacity: 1; transform: none; } }
 @media (prefers-reduced-motion: reduce) { .receipt[data-receipt-fresh] .receiptHeader > :first-child { animation: none; } }
@@ -92,16 +95,17 @@
 .continuationReward > svg { flex-shrink: 0; }
 .receipt p { margin: 6px 0 0; font-size: 12px; line-height: 1.6; color: #536058; }
 .receipt strong { font-size: 14px; }
-.receipt button, .footer > button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 14px; background: #fffaf0; color: #172923; border: 2px solid #172923; border-radius: 11px; font-size: 12px; font-weight: 900; box-shadow: 2px 3px 0 #172923; }
+.receipt button, .footer > button { display: flex; align-items: center; justify-content: center; gap: 10px; min-height: 44px; padding: 10px 14px; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; font-size: 12px; font-weight: 900; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .receipt button { justify-self: start; max-width: 100%; }
 .error { margin: 16px 0; padding: 14px; border-left: 3px solid #172923; background: #f7ded1; color: #8a3427; font-size: 13px; line-height: 1.6; }
-.error button, .error a { color: inherit; text-decoration: underline; background: transparent; border: 0; min-height: 44px; }
+.error button { color: inherit; text-decoration: underline; background: transparent; border: 0; min-height: 44px; }
+.error a { color: inherit; text-decoration: underline; background: transparent; border: 0; min-height: 44px; }
 .loading { padding: 50px 0; text-align: center; color: #536058; }
 .footer { margin-top: 24px; }
 .footer > button { margin: 0 0 20px auto; }
 .footer details { border-top: 1px solid #17292340; }
 .footer p { max-width: 90ch; color: #536058; font-size: 12px; line-height: 1.7; margin: 8px 0; }
-.action { background: #149b8b; color: #172923; }
+.action { color: #fff1d6; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; border-color: transparent; }
 @media (max-width: 760px) {
   .tracks { grid-template-columns: 1fr; }
   .art { height: 150px; }
@@ -120,3 +124,9 @@
   .trackNav button { font-size: 11px; padding: 8px 10px; }
 }
 .footer summary { color: #536058; }
+
+/* The scene belongs to the sheet; its inset leaves the drawn paper edge visible. */
+.track { padding: 10px; }
+.art { border-bottom: 0; }
+.body { padding: 18px 10px 10px; }
+@media (max-width: 700px) { .track { padding: 8px; } .body { padding: 16px 8px 8px; } }

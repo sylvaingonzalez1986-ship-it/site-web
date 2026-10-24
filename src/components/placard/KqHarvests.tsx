@@ -10,6 +10,7 @@ import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqWarehouseEntry } from "./KqWarehouseEntry";
 import { KqStorageStatus } from "./KqStorageStatus";
 import { KqAllocationBar } from "./KqVisuals";
+import { KqChapterHeading } from "./KqChapterHeading";
 import styles from "./KqHarvests.module.css";
 
 const labels: Record<KqHarvestState, string> = { jury: "À présenter au jury", queued: "Adversaire recherché", duel: "Duel en cours", overflow: "Du surplus à protéger", curing: "En affinage", ready: "Prête à vendre" };
@@ -111,7 +112,7 @@ export function KqHarvests({ section, initialFlowerId, draftOwnerId, onSectionCh
     ] : []),
   ];
   return <main ref={page} className={styles.page} data-placard-harvests>
-    <header className={styles.heading}><div><small>Du jury à la vente</small><h2>Mes récoltes</h2></div></header>
+    <KqChapterHeading art="harvest" title="Mes récoltes" eyebrow="Du jury à la vente" />
     <nav className={styles.tabs} aria-label="Parcours des récoltes">
       <button type="button" data-harvest-overview aria-current={section === "overview" ? "page" : undefined} onClick={() => onSectionChange("overview", targetFlowerId)}>Toutes mes récoltes</button>
       <button type="button" onClick={() => onOpenArena()}>Jury & duels</button>

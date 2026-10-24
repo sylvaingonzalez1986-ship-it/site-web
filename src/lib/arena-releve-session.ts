@@ -86,6 +86,18 @@ export function restoreArenaReleveState(value: unknown): ArenaReleveSessionState
   } catch { return null; }
 }
 
+/** Read the same validated save as the story, without starting or resetting it. */
+export function readArenaReleveResume(backing?: Pick<Storage, 'getItem'>) {
+  try {
+    const storage = backing ?? (typeof window !== 'undefined' ? window.localStorage : undefined);
+    const saved = storage?.getItem(ARENA_RELEVE_STORAGE_KEY);
+    if (!saved) return null;
+    const state = restoreArenaReleveState(JSON.parse(saved));
+    if (!state || (state.chapter === 0 && state.renovation === 'locked')) return null;
+    return { chapter: state.chapter, completed: state.completed, objective: getArenaReleveProgress(state).instruction || ARENA_RELEVE_CHAPTERS[state.chapter].description };
+  } catch { return null; }
+}
+
 /** Own key and memory fallback. This store never reads or writes a player save. */
 export function createArenaReleveSession(backing?: Backing) {
   let snapshot: ArenaReleveSessionSnapshot = { state: createArenaReleveState(), storageWarning: '' };

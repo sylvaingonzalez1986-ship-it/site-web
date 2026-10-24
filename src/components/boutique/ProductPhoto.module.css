@@ -1,0 +1,69 @@
+/* The photo window keeps badges and carousel controls outside the zoom. */
+.window {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+:global(html[data-site-ui="quartier"]) .frame {
+  --photo-edge: 12px;
+  --photo-inset: 8px;
+  --photo-material: url("#site-ui-fill-fff1d6");
+  isolation: isolate;
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+:global(html[data-site-ui="quartier"]) .frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  border: 2px solid transparent;
+  border-image: url("/placard/ui/panel-paper-v1.webp") 48 / var(--photo-edge) / 0 stretch;
+  filter: var(--photo-material);
+}
+
+:global(html[data-site-ui="quartier"]) .frame > .window { inset: var(--photo-inset); }
+:global(html[data-site-ui="quartier"]) .frame > :global(.pill-cartoon) { position: absolute; }
+:global(html[data-site-ui="quartier"]) .frame .slide { overflow: hidden; }
+:global(html[data-site-ui="quartier"]) .frame .image {
+  scale: 1;
+  transform: scale(1);
+  transform-origin: center;
+  transition: transform 320ms cubic-bezier(.2, .65, .3, 1);
+}
+
+:global(html[data-site-ui="quartier"]) .thumbnail {
+  --photo-edge: 6px;
+  --photo-inset: 4px;
+}
+:global(html[data-site-ui="quartier"]) .thumbnail[aria-pressed="true"] {
+  --photo-edge: 9px;
+  --photo-material: url("#site-ui-fill-087b70");
+}
+
+:global(html[data-site-ui="quartier"]) .frame:focus-visible {
+  outline: 3px solid var(--teal, #00563f);
+  outline-offset: -6px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :global(html[data-site-ui="quartier"]) .frame:hover .image { transform: scale(1.08); }
+}
+
+:global(html[data-site-ui="quartier"]) .frame:has(:focus-visible) .image,
+:global(html[data-site-ui="quartier"]) .frame:focus-visible .image { transform: scale(1.08); }
+
+@media (prefers-reduced-motion: reduce) {
+  :global(html[data-site-ui="quartier"]) .frame .image,
+  :global(html[data-site-ui="quartier"]) .frame:hover .image,
+  :global(html[data-site-ui="quartier"]) .frame:has(:focus-visible) .image,
+  :global(html[data-site-ui="quartier"]) .frame:focus-visible .image {
+    transform: none;
+    transition: none;
+  }
+  :global(html[data-site-ui="quartier"]) .frame :global(.product-carousel-track) { transition: none; }
+}

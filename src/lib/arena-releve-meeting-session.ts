@@ -1,7 +1,7 @@
 import { ARENA_RELEVE_MEETINGS, type ArenaReleveMeetingId } from './arena-releve';
 import type { ArenaPlayableLessonId } from './arena-playable-learning';
 import { createKqReleveExpansion, getKqRelevePlanReview, getKqReleveProductionProgress, type KqReleveProductionState } from './kanab-quest-releve-production';
-import { createReleveCommerceBusiness, getReleveCommerceCash, getReleveCommerceProgress, getReleveCommerceSnapshot, getReleveCommerceTreasury, type KqReleveCommerceState } from './kanab-quest-releve-commerce';
+import { createReleveCommerceBusiness, createReleveCommerceSocial, createReleveCommerceMerch, getReleveCommerceCash, getReleveCommerceProgress, getReleveCommerceSnapshot, getReleveCommerceTreasury, type KqReleveCommerceState } from './kanab-quest-releve-commerce';
 import { isKqWarehouseState } from './kanab-quest-warehouse';
 import { encodeKqSave, parseKqBattleSave, parseKqGameSave } from './kanab-quest-persistence';
 
@@ -15,7 +15,7 @@ type Backing = Pick<Storage, 'getItem' | 'setItem'>;
 
 export const releveMeetingStorageKey = (meeting: ArenaReleveMeetingId) => `arena-releve-meeting-${meeting}-v1`;
 function initialState(meeting: ArenaReleveMeetingId): ReleveMeetingState {
-  return { production: createKqReleveExpansion(), business: meeting === 'business' ? createReleveCommerceBusiness() : null, completed: [] };
+  return { production: createKqReleveExpansion(), business: meeting === 'merch' ? createReleveCommerceMerch() : meeting === 'social' ? createReleveCommerceSocial() : meeting === 'business' ? createReleveCommerceBusiness() : null, completed: [] };
 }
 function record(value: unknown): value is Record<string, unknown> { return !!value && typeof value === 'object' && !Array.isArray(value); }
 function strings(value: unknown): value is string[] { return Array.isArray(value) && value.every(item => typeof item === 'string'); }
@@ -67,7 +67,7 @@ function restore(meeting: ArenaReleveMeetingId, raw: string): ReleveMeetingState
     getKqReleveProductionProgress('expansion', state.production);
     // Invalid geometry in an unfinished draft remains editable after a pause.
     getKqRelevePlanReview(state.production);
-    if (meeting === 'business') {
+    if (meeting === 'business' || meeting === 'social' || meeting === 'merch') {
       const business = state.business;
       if (!record(business) || business.version !== 1 || !strings(business.milestones)
         || !validLedger(business.productionLedger) || !Array.isArray(business.journal) || !Array.isArray(business.lots)
@@ -76,7 +76,7 @@ function restore(meeting: ArenaReleveMeetingId, raw: string): ReleveMeetingState
       if (!Number.isSafeInteger(getReleveCommerceCash(value)) || getReleveCommerceCash(value) < 0) return null;
       const commerce = getReleveCommerceSnapshot(value);
       if (!commerce.online || !record(commerce.online.stats) || !record(commerce.online.site)) return null;
-      getReleveCommerceProgress(value, 'business'); getReleveCommerceTreasury(value);
+      getReleveCommerceProgress(value, meeting); getReleveCommerceTreasury(value);
     } else if (state.business !== null) return null;
     const lessons = ARENA_RELEVE_MEETINGS.find(item => item.id === meeting)!.lessons;
     const completed = state.completed;

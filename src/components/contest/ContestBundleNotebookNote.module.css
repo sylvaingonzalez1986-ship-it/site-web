@@ -1,7 +1,6 @@
-.note { position: relative; display: grid; gap: 7px; min-width: 0; margin: 18px 2px 20px; padding: 15px 13px 8px; border: 1px solid #b89838; background: #f9df7f; color: #002d24; box-shadow: 3px 4px 0 #002d243b; transform: rotate(-.5deg); overflow-wrap: anywhere; }
-.note::before { content: ""; position: absolute; top: -9px; left: 36%; width: 65px; height: 18px; border: 1px solid #d5cbb180; background: #fffaf1b3; box-shadow: 0 1px 2px #002d2426; transform: rotate(5deg); pointer-events: none; }
-.note p { margin: 0; font: 500 12px/1.5 var(--font-body), Arial, sans-serif; }
-.note .title { display: flex; align-items: center; gap: 7px; font: 700 24px/1.15 var(--font-handwritten), cursive; }
+.note { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); position: relative; display: grid; gap: 11px; min-width: 0; margin: 20px 0; padding: 22px 20px 17px; border: 2px solid transparent; border-radius: 0; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; background: transparent; color: #172923; box-shadow: none; overflow-wrap: anywhere; }
+.note p { margin: 0; font: 500 12px/1.65 var(--font-body), Arial, sans-serif; }
+.note .title { display: flex; align-items: center; gap: 8px; font: 800 27px/1.1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .title svg { flex-shrink: 0; }
 .title strong { font-weight: 700; }
 .note .condition strong { font-weight: 800; }
@@ -9,7 +8,7 @@
 .rewards li::before { content: "+"; margin-right: 6px; font-weight: 900; }
 .rewards strong { font-weight: 850; }
 .note .rule { font-size: 10.5px; line-height: 1.5; }
-.details { min-width: 0; border-top: 1px dashed #75683080; }
+.details { min-width: 0; border-top: 1px solid #17292355; }
 .details summary { display: list-item; min-height: 44px; padding: 12px 0 9px; cursor: pointer; color: #003f30; font-size: 11px; line-height: 1.4; font-weight: 800; }
 .details summary:focus-visible, .details button:focus-visible { outline: 2px solid #003f30; outline-offset: 2px; box-shadow: 0 0 0 4px #fffaf1; }
 .details > p { margin: 0 0 9px; font-size: 11px; }
@@ -20,8 +19,8 @@
 .details button > span { min-width: 0; }
 .details button > svg { flex-shrink: 0; }
 .flowerName { display: block; padding: 10px 2px; font-size: 11px; line-height: 1.5; }
-.progress { display: grid; gap: 7px; padding-top: 8px; border-top: 1px dashed #75683080; }
-.progress progress { display: block; width: 100%; height: 8px; border: 0; border-radius: 5px; accent-color: #00563f; }
+.progress { display: grid; gap: 10px; padding-top: 12px; border-top: 1px solid #17292355; }
+.progress progress { display: block; width: 100%; height: 10px; border: 1px solid #172923; border-radius: 0; accent-color: #087b70; }
 .checklist { display: grid; margin: 0; padding: 0; list-style: none; }
 .checklist li { display: flex; align-items: flex-start; gap: 9px; min-width: 0; padding: 8px 0; border-top: 1px solid #9e914a66; }
 .checklist li > div { flex: 1; min-width: 0; }
@@ -32,15 +31,17 @@
 .checklist button > svg { flex-shrink: 0; }
 .checklist .flowerName { min-height: 44px; padding-block: 12px; font-weight: 800; }
 .note .checklist p { margin-top: -2px; font-size: 10.5px; }
-.note .claim { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: 44px; padding: 10px; border: 2px solid #002d24; border-radius: 4px; background: #003f30; color: #fffaf1; font: 800 12px/1.4 var(--font-body), Arial, sans-serif; }
-.claim:disabled { opacity: .6; }
-.note .error { padding: 8px; border: 1px solid #a15237; background: #fff1e9; color: #7d2823; font-size: 11px; }
-.success { display: grid; gap: 4px; padding-top: 8px; border-top: 1px dashed #75683080; }
+.note .claim { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 48px; padding: 12px 18px; border: 2px solid transparent; border-radius: 0; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; background: transparent; box-shadow: none; color: #fff1d6; font: 800 12px/1.5 var(--font-body), Arial, sans-serif; cursor: pointer; }
+.claim svg { flex: 0 0 auto; }
+.claim:disabled { opacity: .55; cursor: not-allowed; }
+.claim:active:not(:disabled) { transform: translateY(1px); }
+.note .error { padding: 7px 0 7px 10px; border-left: 3px solid #8a3027; color: #7d2823; font-size: 11px; }
+.success { display: grid; gap: 4px; padding-top: 12px; border-top: 1px solid #17292355; }
 .success p, .success nav { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
 .success a, .login a { color: #003f30; font-size: 11px; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
 .success a { display: inline-flex; align-items: center; min-height: 44px; margin-right: 9px; }
 .checklist button:focus-visible, .claim:focus-visible, .note a:focus-visible { outline: 2px solid #003f30; outline-offset: 3px; box-shadow: 0 0 0 5px #fffaf1; }
 .note[data-compact] { margin-block: 16px 20px; }
-.note[data-compact] .title { font-size: 22px; }
-@media (max-width: 359px) { .note { padding-inline: 11px; gap: 6px; } .note .title { gap: 5px; font-size: 22px; } .note p, .rewards { font-size: 11.5px; } .note .rule { font-size: 10px; } .details > p { font-size: 10.5px; } }
-@media (prefers-reduced-motion: reduce) { .note { transform: none; } }
+.note[data-compact] .title { font-size: 25px; }
+@media (hover: hover) { .note .claim:hover:not(:disabled) { --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); } }
+@media (max-width: 359px) { .note { padding: 18px 14px 15px; gap: 9px; } .note .title { gap: 6px; font-size: 24px; } .note p, .rewards { font-size: 11.5px; } .note .rule { font-size: 10.5px; } .details > p { font-size: 11px; } }

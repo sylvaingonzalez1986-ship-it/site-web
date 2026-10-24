@@ -20,11 +20,11 @@ export function BlogRelatedPosts({ currentPostId, currentCategory, posts }: Blog
   }
 
   return (
-    <div className={styles.panel}>
+    <div data-ui-shape="panel" className={styles.panel}>
       <h2 className={styles.panelTitle}>À lire aussi</h2>
       <div className="mt-4 grid gap-3 md:grid-cols-3">
         {related.map((post) => (
-          <article key={post.id} className={styles.relatedCard}>
+          <article key={post.id} data-ui-shape="panel" className={styles.relatedCard}>
             <Link href={`/blog/${post.slug}`} className="block">
               <div className={styles.media}>
                 <Image

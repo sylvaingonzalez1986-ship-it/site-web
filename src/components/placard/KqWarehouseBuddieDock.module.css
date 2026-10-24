@@ -1,18 +1,19 @@
-.dock { position: sticky; bottom: 8px; z-index: 20; grid-column: 1 / -1; min-width: 0; padding: 6px 9px 4px; border: 3px solid #172923; border-radius: 15px 12px 16px 13px; background: #fff1d6; color: #172923; box-shadow: 3px 4px 0 #172923; }
+.dock { position: sticky; bottom: 8px; z-index: 20; grid-column: 1 / -1; min-width: 0; padding: 6px 9px 4px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; }
 .header > div:first-child { min-width: 0; }
 .header h3 { margin: 0; font-family: var(--font-display),"Arial Narrow",Impact,sans-serif; font-size: 22px; line-height: 1.2; font-weight: 800; letter-spacing: .025em; text-transform: uppercase; color: #172923; }
-.toggle { display: flex; align-items: center; justify-content: space-between; gap: 5px; min-height: 44px; max-width: 100%; padding: 0 3px; border: 0; border-radius: 7px; background: transparent; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; text-align: left; }
+.toggle { display: flex; align-items: center; justify-content: space-between; gap: 5px; min-height: 44px; max-width: 100%; padding: 0 3px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; text-align: left; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .toggle svg { flex: none; }
 .toggle small { margin-left: 4px; font-size: 11px; color: #076c61; }
-.toggle:hover { background: #dcefe4; }
-.dock[data-open="false"] .header > div:first-child, .dock[data-open="false"] .toggle { width: 100%; }
-.dock[data-open="false"] { padding: 0; border: 0; background: transparent; box-shadow: none; }
-.dock[data-open="false"] .toggle { padding: 10px 14px; border: 2px solid #172923; border-radius: 11px; background: #efc451; box-shadow: 3px 4px 0 #172923; }
-.dock[data-open="false"] .toggle:hover { background: #f5d675; }
+.toggle:hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
+.dock[data-open="false"] .header > div:first-child { width: 100%; }
+.dock[data-open="false"] .toggle { width: 100%; }
+.dock[data-open="false"] { padding: 0; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.dock[data-open="false"] .toggle { padding: 10px 14px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; color: #172923; }
+.dock[data-open="false"] .toggle:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
 .header p { margin: 3px 0 0; overflow: hidden; font-size: 11px; line-height: 1.25; text-overflow: ellipsis; white-space: nowrap; color: #536058; }
 .actions { display: flex; flex: none; gap: 4px; }
-.actions button { display: grid; place-items: center; width: 44px; min-height: 44px; padding: 0; cursor: pointer; border: 2px solid #172923; border-radius: 9px; background: #efc451; color: #172923; box-shadow: 1px 2px 0 #172923; }
+.actions button { display: grid; place-items: center; width: 44px; min-height: 44px; padding: 0; cursor: pointer; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .actions button:disabled { opacity: .36; cursor: default; }
 .track { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; scrollbar-width: none; touch-action: pan-x pan-y; }
 .track::-webkit-scrollbar { display: none; }
@@ -40,6 +41,7 @@
 .empty { margin: 0; min-height: 120px; display: grid; place-items: center; padding: 12px; font-size: 12px; text-align: center; color: #536058; }
 .ghost { position: fixed; z-index: 2147483000; width: 88px; pointer-events: none; transform: rotate(-7deg); filter: drop-shadow(4px 5px 0 #17292380); }
 .ghost * { pointer-events: none; }
-.toggle:focus-visible, .actions button:focus-visible, .card:focus-visible, .track:focus-visible, .scrollBand:focus-visible { outline-offset: -3px; outline: 3px solid #172923; }
+.toggle:focus-visible, .actions button:focus-visible { outline-offset: -3px; outline: 3px solid #172923; }
+.card:focus-visible, .track:focus-visible, .scrollBand:focus-visible { outline-offset: -3px; outline: 3px solid #172923; }
 @media (max-width: 480px) { .dock { bottom: 4px; padding-inline: 6px; } .slot { width: 88px; } .artwork { width: 64px; } .actions { gap: 2px; } .header { gap: 4px; } .header h3 { font-size: 20px; } .header p { font-size: 10px; } }
 @media (prefers-reduced-motion: reduce) { .artwork { transition: none; } }

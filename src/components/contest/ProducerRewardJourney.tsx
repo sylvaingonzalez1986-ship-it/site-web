@@ -148,28 +148,29 @@ export function ProducerRewardJourney({
     }
   };
 
-  if (!isAuthenticated) return <p className="rounded border-2 border-ink bg-cream p-4 text-sm font-semibold"><Link href="/compte/connexion" className="font-black underline">Connecte-toi</Link> pour suivre tes dégustations et retrouver tes récompenses.</p>;
+  if (!isAuthenticated) return <p className={styles.login}><Link href="/compte/connexion">Connecte-toi</Link> pour suivre tes dégustations et retrouver tes récompenses.</p>;
   if (loaded && !campaign && !error) return null;
 
-  return <section className={(embedded ? "" : "mb-8 ") + "min-w-0 rounded border-2 border-ink bg-cream p-4 shadow-[4px_4px_0_#17130e]"} aria-labelledby={titleId}>
-    <header>
-      <p className="text-[10px] font-black uppercase tracking-[0.14em] text-green">Les découvertes du producteur</p>
-      <h2 id={titleId} className="mt-1 break-words font-display text-3xl uppercase leading-tight text-ink">{campaign?.producerName ?? "Ton parcours de dégustation"}</h2>
-      {!embedded ? <p className="mt-2 text-sm leading-relaxed text-charcoal">Regular ou Concours, chaque fleur compte dans le même parcours.</p> : null}
+  return <section className={styles.journey} data-embedded={embedded || undefined} aria-labelledby={titleId}>
+    <header className={styles.header}>
+      <p className={styles.eyebrow}>Les découvertes du producteur</p>
+      <h2 id={titleId}>{campaign?.producerName ?? "Ton parcours de dégustation"}</h2>
+      {!embedded ? <p className={styles.intro}>Regular ou Concours, chaque fleur compte dans le même parcours.</p> : null}
     </header>
-    {!entryId && campaigns.length > 1 ? <label className="mt-3 block text-xs font-bold">Choisir un producteur<select value={campaign?.producerId ?? ""} onChange={(event) => { setSelectedProducerId(event.target.value); setNotice(""); }} className="mt-1 min-h-11 w-full rounded border-2 border-ink bg-white px-3">{campaigns.map((item) => <option key={item.producerId} value={item.producerId}>{item.producerName}</option>)}</select></label> : null}
-    {!loaded ? <p role="status" className="mt-4 text-sm">Chargement de tes dégustations…</p> : null}
-    {campaign ? <div className="mt-4 grid min-w-0 gap-4">
+    {!entryId && campaigns.length > 1 ? <label className={styles.producerSelect}>Choisir un producteur<select value={campaign?.producerId ?? ""} onChange={(event) => { setSelectedProducerId(event.target.value); setNotice(""); }}>{campaigns.map((item) => <option key={item.producerId} value={item.producerId}>{item.producerName}</option>)}</select></label> : null}
+    {!loaded ? <p role="status" className={styles.loading}>Chargement de tes dégustations…</p> : null}
+    {campaign ? <div className={styles.sections}>
       {campaign.heritageCode ? <ProducerHeritageReward key={`${campaign.producerId}:${campaign.heritageCode}:${campaign.heritageImage}`} campaign={campaign} /> : null}
-      <div className="rounded border-2 border-ink bg-white p-3">
-        <div className="flex flex-wrap items-center justify-between gap-2 text-sm font-black"><span>{campaign.reviewedCount} / {campaign.requiredCount} fleurs dégustées</span><span className="text-green">{formatGameEuros(campaign.completionReward.cashCents) + (campaign.completionReward.granted ? " reçus dans le jeu" : " dans le jeu")}</span></div>
-        <progress className="mt-3 block h-3 w-full accent-green" value={campaign.reviewedCount} max={Math.max(1, campaign.requiredCount)} aria-label="Fleurs dégustées avec un avis validé" />
+
+      <div className={styles.completion}>
+        <div className={styles.completionNumbers}><span>{campaign.reviewedCount} / {campaign.requiredCount} fleurs dégustées</span><span>{formatGameEuros(campaign.completionReward.cashCents) + (campaign.completionReward.granted ? " reçus dans le jeu" : " dans le jeu")}</span></div>
+        <progress className={styles.progress} value={campaign.reviewedCount} max={Math.max(1, campaign.requiredCount)} aria-label="Fleurs dégustées avec un avis validé" />
         <p className="mt-3 text-xs leading-relaxed text-charcoal">{campaign.completionReward.granted ? "Tu as reçu le bonus de ce producteur. Continue tes découvertes à ton rythme." : campaign.completionReward.cashCents === getKqProducerCompletionCashCents(campaign.requiredCount) ? "Goûte toutes ses fleurs du carnet et fais valider tes avis : 100 € de monnaie de jeu par fleur, versés ensemble à la fin du parcours, une fois par producteur." : "Goûte toutes ses fleurs du carnet et fais valider tes avis pour recevoir le bonus, une fois par producteur."}</p>
         {campaign.completed && !campaign.completionReward.granted ? <button type="button" disabled={!!pending} onClick={() => void claim("completion")} className={styles.claimButton} data-tone="completion"><Gift size={17} aria-hidden="true" />{pending === "completion" ? "Attribution…" : "Récupérer mon bonus"}</button> : null}
       </div>
 
-      {campaign.quantityRewardsAvailable && campaign.quantityReward ? <section className="rounded border-2 border-green bg-white p-3" aria-label="Bonus quantité par fleur">
-        <h3 className="flex items-center gap-2 font-display text-xl uppercase"><Gift size={20} aria-hidden="true" /> Plus de grammes, plus de bonus</h3>
+      {campaign.quantityRewardsAvailable && campaign.quantityReward ? <section className={styles.quantity} aria-label="Bonus quantité par fleur">
+        <h3 className={styles.sectionTitle}><Gift size={20} aria-hidden="true" /> Plus de grammes, plus de bonus</h3>
         <p className="mt-2 text-xs leading-relaxed">Regroupe les grammes d’une même fleur dans une commande pour augmenter ton bonus garanti en monnaie de jeu.</p>
         <NotebookQuantityTiers />
         <p className="text-xs leading-relaxed">Ces totaux comprennent les 100 € de découverte, versés à la fin du parcours producteur. Le supplément se récupère dès que l’avis de la fleur est validé.</p>
@@ -178,19 +179,19 @@ export function ProducerRewardJourney({
           <summary>Voir les règles du bonus</summary>
           <p>Les commandes séparées ne s’additionnent pas. Si tu passes à un palier supérieur, tu reçois uniquement la différence encore due. Les quantités intermédiaires donnent 100 € de jeu par gramme, majorés de 10 % dès 3 g, 20 % dès 5 g et 30 % dès 10 g.</p>
         </details>
-        <div className="mt-3 flex flex-wrap gap-x-4 gap-y-2 text-xs font-black">
+        <div className={styles.quantityNumbers}>
           <span>{formatGameEuros(campaign.quantityReward.grantedCashCents)} de supplément reçus</span>
           <span className="text-green">{formatGameEuros(campaign.quantityReward.availableCashCents)} à récupérer</span>
         </div>
         {campaign.quantityReward.availableCashCents > 0 ? <button type="button" disabled={!!pending} onClick={() => void claim("quantity-bonus")} className={styles.claimButton}><Gift size={17} aria-hidden="true" />{pending === "quantity-bonus" ? "Attribution…" : `Récupérer mes ${formatGameEuros(campaign.quantityReward.availableCashCents)} de supplément`}</button> : null}
       </section> : null}
 
-      <ul className="grid gap-2" aria-label="Fleurs du producteur">
-        {campaign.entries.map((flower) => <li key={flower.productId || flower.entryId} className="flex flex-wrap items-center gap-2 rounded border border-ink/20 bg-white/70 px-3 py-2 text-xs">
+      <ul className={styles.flowers} aria-label="Fleurs du producteur">
+        {campaign.entries.map((flower) => <li key={flower.productId || flower.entryId}>
           <span className="min-w-0 flex-1 break-words font-bold">{flower.title}</span>
           <span className={flower.purchased ? "inline-flex items-center gap-1 text-green" : "inline-flex items-center gap-1 text-charcoal"}><ShoppingBag size={13} aria-hidden="true" />{flower.purchased ? "Achetée" : "À découvrir"}</span>
           <span className={flower.reviewed ? "inline-flex items-center gap-1 font-bold text-green" : "inline-flex items-center gap-1 font-bold text-charcoal"}>{flower.reviewed ? <Check size={14} aria-hidden="true" /> : null}{flower.reviewed ? "Avis validé" : "À déguster"}</span>
-          {campaign.quantityRewardsAvailable && flower.quantityReward ? <div className="w-full border-t border-ink/10 pt-2 leading-relaxed text-charcoal">
+          {campaign.quantityRewardsAvailable && flower.quantityReward ? <div className={styles.flowerQuantity}>
             <p>{flower.quantityReward.bestOrderGrams > 0
               ? `Plus gros achat : ${new Intl.NumberFormat("fr-FR").format(flower.quantityReward.bestOrderGrams)} g dans une commande · ${formatGameEuros(flower.quantityReward.totalCashCents)} au total dans le jeu.`
               : "Regroupe tes grammes dans une commande pour améliorer ton bonus."}</p>
@@ -203,17 +204,17 @@ export function ProducerRewardJourney({
         </li>)}
       </ul>
 
-      <div className="rounded border-2 border-ink bg-[#fff3c4] p-3">
-        <h3 className="flex items-center gap-2 font-display text-xl uppercase"><Dices size={20} aria-hidden="true" /> Ton Buddie surprise</h3>
-        {campaign.purchaseReward.odds ? <div className="mt-3 rounded border border-ink/20 bg-white/80 p-3">
+      <div className={styles.surprise}>
+        <h3 className={styles.sectionTitle}><Dices size={20} aria-hidden="true" /> Ton Buddie surprise</h3>
+        {campaign.purchaseReward.odds ? <div className={styles.odds}>
           <p className="text-xs font-black">{campaign.purchaseReward.granted ? "Chances lors du tirage" : "Tes chances actuelles"}</p>
-          <dl className="mt-2 flex flex-wrap gap-x-5 gap-y-2 text-xs" aria-label="Probabilités du tirage Buddie">
+          <dl className={styles.oddsValues} aria-label="Probabilités du tirage Buddie">
             <div><dt>Commun</dt><dd className="font-black">{formatOdds(campaign.purchaseReward.odds.common)}</dd></div>
             <div><dt>Argent</dt><dd className="font-black">{formatOdds(campaign.purchaseReward.odds.silver)}</dd></div>
             <div><dt>Or</dt><dd className="font-black">{formatOdds(campaign.purchaseReward.odds.gold)}</dd></div>
           </dl>
         </div> : null}
-        {campaign.purchaseReward.granted ? campaign.purchaseReward.card ? <div className="mt-3 flex items-center gap-3">
+        {campaign.purchaseReward.granted ? campaign.purchaseReward.card ? <div className={styles.buddieReward}>
           {campaign.purchaseReward.card.imageUrl ? <Image src={campaign.purchaseReward.card.imageUrl} alt={campaign.purchaseReward.card.name} width={96} height={144} sizes="96px" className="h-auto w-24 shrink-0 rounded" /> : null}
           <div className="min-w-0"><p className="text-xs font-black uppercase">Buddie {campaign.purchaseReward.card.rarity === "gold" ? "Or" : campaign.purchaseReward.card.rarity === "silver" ? "Argent" : "Commun"}</p><strong className="mt-1 block break-words">{campaign.purchaseReward.card.name}</strong><Link href="/profil/collection" className="mt-2 inline-flex min-h-11 items-center text-xs font-black underline">Ouvrir ma collection</Link></div>
         </div> : <p className="mt-3 text-xs font-bold">Tu as déjà reçu le Buddie de ce producteur.</p> : <>
@@ -232,7 +233,7 @@ export function ProducerRewardJourney({
       </div>
 
     </div> : null}
-    {notice ? <p role="status" className="mt-3 text-sm font-bold text-green">{notice}</p> : null}
-    {error ? <p role="alert" className="mt-3 text-sm font-bold text-red-800">{error}</p> : null}
+    {notice ? <p role="status" className={styles.notice}>{notice}</p> : null}
+    {error ? <p role="alert" className={styles.error}>{error}</p> : null}
   </section>;
 }

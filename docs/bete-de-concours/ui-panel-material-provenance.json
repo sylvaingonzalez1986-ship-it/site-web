@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "createdAt": "2026-10-24",
+  "tool": "Built-in image_gen",
+  "purpose": "Quiet inked paper sheets for game content, coordinated with control plates v2. All live content remains HTML.",
+  "processing": "Sharp: alpha trim threshold10, resize508×508, extend2px transparent eachside; WebPquality92 alphaQuality100. Final512×512.",
+  "nineSlice": {
+    "slice": 48,
+    "width": "15px",
+    "repeat": "stretch",
+    "fill": true
+  },
+  "assets": [
+    {
+      "kind": "paper",
+      "path": "public/placard/ui/panel-paper-v1.webp",
+      "source": "docs/bete-de-concours/artwork/panel-paper-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: production 9-slice UI background for a French cartoon village management game, not a mockup. Create ONE blank rectangular sheet of thick printed paper, straight-on orthographic, square 1:1 canvas. Entire sheet visible inside a narrow truly transparent outer margin. The paper has gently irregular mostly straight hand-cut edges and modest clipped corners, delicately uneven very dark evergreen ink outer line, a second fragmentary thin ink inner line 12px inside the edge, a tiny dark ink offset along lower-right edge. Hand-drawn French/Belgian comic printing, restrained fine paper fibres and occasional tiny ink flecks. This is a large readable content panel, calmer and more regular than a jagged sign button: NO deep tears, spikes, curls or scallops. Broad flat EMPTY central area for live HTML numbers, text and charts. Keep all outlined ornament within the outermost 40 pixels of a 1024px square. No internal lines, no icons, no writing, no text, no perspective, no scene, no objects, no gradients, no photographic shadow, no rounded rectangle UI. Exterior fully transparent. Color palette: Warm ivory cream #fff8e7, extremely subtle paper grain, clean readable flat center. Ink #172923."
+    },
+    {
+      "kind": "apricot",
+      "path": "public/placard/ui/panel-apricot-v1.webp",
+      "source": "docs/bete-de-concours/artwork/panel-apricot-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: production 9-slice UI background for a French cartoon village management game, not a mockup. Create ONE blank rectangular sheet of thick printed paper, straight-on orthographic, square 1:1 canvas. Entire sheet visible inside a narrow truly transparent outer margin. The paper has gently irregular mostly straight hand-cut edges and modest clipped corners, delicately uneven very dark evergreen ink outer line, a second fragmentary thin ink inner line 12px inside the edge, a tiny dark ink offset along lower-right edge. Hand-drawn French/Belgian comic printing, restrained fine paper fibres and occasional tiny ink flecks. This is a large readable content panel, calmer and more regular than a jagged sign button: NO deep tears, spikes, curls or scallops. Broad flat EMPTY central area for live HTML numbers, text and charts. Keep all outlined ornament within the outermost 40 pixels of a 1024px square. No internal lines, no icons, no writing, no text, no perspective, no scene, no objects, no gradients, no photographic shadow, no rounded rectangle UI. Exterior fully transparent. Color palette: Rich warm apricot orange #ffad58, extremely subtle paper grain, clean readable flat center. Not beige or pale peach. Ink #172923."
+    },
+    {
+      "kind": "gold",
+      "path": "public/placard/ui/panel-gold-v1.webp",
+      "source": "docs/bete-de-concours/artwork/panel-gold-v1.png",
+      "prompt": "Use case: stylized-concept. Asset type: production 9-slice UI background for a French cartoon village management game, not a mockup. Create ONE blank rectangular sheet of thick printed paper, straight-on orthographic, square 1:1 canvas. Entire sheet visible inside a narrow truly transparent outer margin. The paper has gently irregular mostly straight hand-cut edges and modest clipped corners, delicately uneven very dark evergreen ink outer line, a second fragmentary thin ink inner line 12px inside the edge, a tiny dark ink offset along lower-right edge. Hand-drawn French/Belgian comic printing, restrained fine paper fibres and occasional tiny ink flecks. This is a large readable content panel, calmer and more regular than a jagged sign button: NO deep tears, spikes, curls or scallops. Broad flat EMPTY central area for live HTML numbers, text and charts. Keep all outlined ornament within the outermost 40 pixels of a 1024px square. No internal lines, no icons, no writing, no text, no perspective, no scene, no objects, no gradients, no photographic shadow, no rounded rectangle UI. Exterior fully transparent. Color palette: Ochre sunny gold #efc451, extremely subtle paper grain, clean readable flat center. Ink #172923."
+    }
+  ]
+}

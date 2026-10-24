@@ -1,12 +1,13 @@
 .tools { display: flex; justify-content: flex-end; gap: 8px; padding: 14px 0 4px; }
-.tools button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 44px; min-height: 44px; padding: 8px 13px; border: 2px solid #172923; border-radius: 11px; background: #fff8e7; color: #172923; font: 800 .75rem/1.25 var(--font-body), sans-serif; box-shadow: 2px 2px 0 #172923; cursor: pointer; }
+.tools button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-width: 44px; min-height: 44px; padding: 8px 13px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: 800 .75rem/1.25 var(--font-body), sans-serif; box-shadow: none; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .tools svg { flex-shrink: 0; }
-.tools button:focus-visible, .dialog button:focus-visible, .dialog summary:focus-visible { outline: 3px solid #007d70; outline-offset: 4px; }
-.dialog { width: min(760px, calc(100vw - 24px)); background: #fff8e7; color: #172923; }
+.tools button:focus-visible, .dialog button:focus-visible { outline: 3px solid #007d70; outline-offset: 4px; }
+.dialog summary:focus-visible { outline: 3px solid #007d70; outline-offset: 4px; }
+.dialog { composes: surface from "./ArenaRetro.module.css"; width: min(760px, calc(100vw - 24px)); background: #fff8e7; color: #172923; }
 .body { padding: 0; }
 .scene { position: relative; overflow: hidden; border-bottom: 2px solid #172923; }
 .scene > img { display: block; width: 100%; height: clamp(180px, 32dvh, 300px); object-fit: cover; }
-.scene > span { position: absolute; bottom: 12px; left: 16px; padding: 6px 10px; border: 2px solid #172923; border-radius: 8px; background: #f4c858; font-size: .7rem; font-weight: 850; }
+.scene > span { position: absolute; bottom: 12px; left: 16px; padding: 6px 10px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #f4c858; font-size: .7rem; font-weight: 850; }
 .notes { padding: 20px; }
 .notes h2 { margin: 0 0 13px; font: 900 clamp(1.2rem, 3vw, 1.6rem)/1.1 var(--font-display), sans-serif; }
 .notes p { font-size: .9rem; line-height: 1.65; }
@@ -18,26 +19,26 @@
 .notes summary::-webkit-details-marker { display: none; }
 .letter p { font-family: Georgia, serif; font-style: italic; }
 .journey { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 15px; padding: 20px; margin: 0; list-style: none; }
-.journey li { min-width: 0; overflow: hidden; border: 2px solid #172923; border-radius: 12px; background: #fffcf4; }
-.journey li[aria-current="step"] { box-shadow: 3px 3px 0 #007d70; border-color: #007d70; }
+.journey li { min-width: 0; overflow: hidden; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.journey li[aria-current="step"] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .thumbnail { position: relative; border-bottom: 2px solid #172923; }
 .thumbnail > img { display: block; width: 100%; height: 120px; object-fit: cover; }
 .number { position: absolute; top: 8px; left: 8px; display: grid; place-items: center; width: 27px; height: 27px; border: 2px solid #172923; border-radius: 50%; background: #fff8e7; color: #172923; font-size: .75rem; font-weight: 850; }
 .journey li[data-done="true"] .number { background: #a6ddc6; }
-.chapterIcon { position: absolute; right: 9px; bottom: 9px; display: grid; place-items: center; width: 40px; height: 40px; border: 2px solid #172923; border-radius: 10px; background: #fff8e7ee; }
+.chapterIcon { position: absolute; right: 9px; bottom: 9px; display: grid; place-items: center; width: 40px; height: 40px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff8e7ee; }
 .caption { padding: 11px; }
 .caption strong { display: block; font-size: .79rem; line-height: 1.35; }
 .caption > span { display: block; margin-top: 8px; font-size: .65rem; color: #58675f; }
 .journey li[aria-current="step"] .caption { background: #d7efe2; }
 .journey li[aria-current="step"] .caption > span { color: #006456; font-weight: 850; }
 .options { display: grid; gap: 13px; padding: 20px; }
-.options button { display: flex; align-items: center; gap: 15px; width: 100%; min-height: 72px; padding: 15px; border: 2px solid #172923; border-radius: 12px; background: #fffcf4; color: #172923; text-align: left; font: inherit; cursor: pointer; }
-.options button:first-child { background: #d7efe2; }
+.options button { display: flex; align-items: center; gap: 15px; width: 100%; min-height: 72px; padding: 15px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; text-align: left; font: inherit; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.options button:first-child { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
 .options svg { flex-shrink: 0; }
 .options strong, .options small { display: block; }
 .options strong { font-size: .9rem; line-height: 1.3; }
 .options small { margin-top: 6px; color: #58675f; font-size: .75rem; line-height: 1.4; }
-@media (hover: hover) { .tools button:hover, .options button:hover { background: #f4c858; } }
+@media (hover: hover) { .tools button:hover:not(:disabled), .options button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; } }
 @media (max-width: 700px) {
   .tools { justify-content: center; gap: 7px; }
   .tools button { flex: 1; max-width: 130px; padding: 8px; font-size: .7rem; }

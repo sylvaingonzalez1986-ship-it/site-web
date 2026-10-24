@@ -8,6 +8,7 @@ import { KQ_BUDDIES, getKqRunProjection, isKqCultureDead, type KqGameState } fro
 import { getKqCannabinoidReport, getKqTerpeneReport } from "@/lib/kanab-quest-care";
 import { KqCannabinoidReport } from "./KqCannabinoidReport";
 import { KqHarvestTierProgress } from "./KqHarvestTierProgress";
+import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import type { KqOfficialFlower } from "@/lib/kanab-quest-api";
 import styles from "./KqCampaignSummary.module.css";
 
@@ -35,8 +36,9 @@ export function KqCampaignSummary({ participants = [], state, flowers = [] }: {
     <div className={styles.rows}>{rows.map(({ member, own, projection, report, flower, cannabinoid, grams, terpenes }) => {
       const buddie = KQ_BUDDIES.find(item => item.code === member.buddieCode);
       const profile = member.cultivationProfile;
+      const zoneIdentity = getKqZoneIdentity(member.warehouse.sourceState, member.zoneId);
       return <article key={member.zoneId} className={styles.member} data-campaign-member={member.zoneId} data-campaign-buddie={member.buddieCode}>
-        <div className={styles.identity}><Image src={getBuddieArtwork(member.buddieCode)} width={72} height={72} alt="" /><span><strong>{buddie?.name ?? member.buddieCode}</strong><small>{member.warehouse.zones[0]?.name} · {archetypes[profile.archetype]}</small></span></div>
+        <div className={styles.identity}><Image src={getBuddieArtwork(member.buddieCode)} width={72} height={72} alt="" /><span><strong>{buddie?.name ?? member.buddieCode}</strong><small className={styles.zoneIdentity}><b className={styles.zoneNumber} style={{ backgroundColor: zoneIdentity?.color }} aria-label={zoneIdentity?.label ?? "Zone"} data-zone-number={zoneIdentity?.number}>{zoneIdentity?.number ?? "Zone"}</b><span>{member.warehouse.activeAreaM2} m² · {archetypes[profile.archetype]}</span></small></span></div>
         <dl><div><dt>{complete ? "Récolte" : "Rendement estimé"}</dt><dd>{grams.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g</dd></div><div><dt>{cannabinoid?.[0].toUpperCase()} {own ? "simulé" : "potentiel"}</dt><dd>{dead ? "—" : percent(cannabinoid?.[1] ?? 0)}</dd></div><div><dt>Terpènes {own ? "simulés" : "potentiels"}</dt><dd>{dead ? "—" : percent(terpenes?.totalPercent ?? profile.terpenePotentialPercent)}</dd></div></dl>
         <p className={styles.notes}>{dead ? "Aucun lot récolté" : profile.terpeneNotes.join(" · ")}{complete && own && !dead ? ` · Qualité ${own.quality}` : ""}</p>
         {projection && !dead ? <details><summary>{flower?.tier ?? projection.tier}</summary><p className={styles.notes}><KqHarvestTierProgress projection={projection} /></p></details> : null}

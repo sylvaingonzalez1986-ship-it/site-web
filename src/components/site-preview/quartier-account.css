@@ -1,0 +1,105 @@
+/* Reversible account/album contours. Cards, booster artwork, avatars and charts
+   keep their original geometry; text, layout and typography stay in their modules. */
+html[data-site-ui="quartier"] [data-ui-account][data-ui-shape]:not([data-ui-account="pack-close"]) { position: relative; }
+html[data-site-ui="quartier"] [data-ui-account][data-ui-shape] {
+  background: transparent !important;
+  border-color: transparent !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html[data-site-ui="quartier"] :is([data-ui-account="paper"], [data-ui-account="profile-panel"]) { --site-ui-material: url("#site-ui-fill-fffaf1"); }
+html[data-site-ui="quartier"] [data-ui-account="dark"] { --site-ui-material: url("#site-ui-fill-003f30"); }
+html[data-site-ui="quartier"] [data-ui-account="green"] { --site-ui-material: url("#site-ui-fill-00563f"); }
+html[data-site-ui="quartier"] [data-ui-account="gold"] { --site-ui-material: url("#site-ui-fill-f4c43d"); }
+html[data-site-ui="quartier"] [data-ui-account="outline-light"] { --site-ui-material: url("#site-ui-outline-fffaf1"); }
+html[data-site-ui="quartier"] [data-ui-account="progress-panel"] { --site-ui-material: url("#site-ui-fill-e9eee3"); }
+html[data-site-ui="quartier"] :is([data-ui-account="badge-paper"], [data-ui-account="badge-panel"]) { --site-ui-material: url("#site-ui-fill-fffdf8"); }
+html[data-site-ui="quartier"] [data-ui-account="badge-panel"][data-unlocked="true"] { --site-ui-material: url("#site-ui-fill-f1f5ea"); }
+html[data-site-ui="quartier"] [data-ui-account="referral-panel"] { --site-ui-material: url("#site-ui-fill-f3eedf"); }
+html[data-site-ui="quartier"] [data-ui-account="mission-panel"] { --site-ui-material: url("#site-ui-fill-fff1d6"); }
+
+html[data-site-ui="quartier"] [data-ui-account="profile-panel"] .btn-primary {
+  --site-ui-material: url("#site-ui-fill-00563f");
+  --site-ui-hover-material: url("#site-ui-fill-00563f");
+}
+html[data-site-ui="quartier"] [data-ui-account="profile-panel"] .btn-secondary {
+  --site-ui-material: url("#site-ui-fill-fffaf1");
+  --site-ui-hover-material: url("#site-ui-fill-fffaf1");
+}
+html[data-site-ui="quartier"] [data-ui-account="profile-tab"] {
+  --site-ui-material: url("#site-ui-fill-fffaf1");
+  --site-ui-hover-material: url("#site-ui-fill-e9eee3");
+}
+html[data-site-ui="quartier"] [data-ui-account="profile-tab"][aria-selected="true"] {
+  --site-ui-material: url("#site-ui-fill-00563f");
+  --site-ui-hover-material: url("#site-ui-fill-00563f");
+}
+html[data-site-ui="quartier"] [data-ui-account="order-entry"] {
+  --site-ui-material: url("#site-ui-fill-ffffff");
+  --site-ui-hover-material: url("#site-ui-fill-f7f4ee");
+}
+html[data-site-ui="quartier"] [data-ui-account="order-status"] { --site-ui-material: url("#site-ui-fill-f7f4ee"); }
+html[data-site-ui="quartier"] [data-ui-account="order-status"][class*="bg-[#ffe8e8]"] { --site-ui-material: url("#site-ui-fill-ffe8e8"); }
+html[data-site-ui="quartier"] [data-ui-account="order-status"][class*="bg-[#fff1db]"] { --site-ui-material: url("#site-ui-fill-fff1db"); }
+html[data-site-ui="quartier"] [data-ui-account="order-status"][class*="bg-[#e8f7f2]"] { --site-ui-material: url("#site-ui-fill-e8f7f2"); }
+
+html[data-site-ui="quartier"] [data-ui-account="pioneer-action"] {
+  --site-ui-material: url("#site-ui-fill-f4c43d");
+  --site-ui-hover-material: url("#site-ui-fill-ffda60");
+}
+html[data-site-ui="quartier"] [data-ui-account="album-mode"] {
+  --site-ui-material: url("#site-ui-fill-003f30");
+  --site-ui-hover-material: url("#site-ui-fill-f4c43d");
+}
+html[data-site-ui="quartier"] [data-ui-account="album-mode"]::before { opacity: .858824; }
+html[data-site-ui="quartier"] [data-ui-account="album-mode"][aria-pressed="true"] { --site-ui-material: url("#site-ui-fill-fffaf1"); }
+html[data-site-ui="quartier"] [data-ui-account="album-mode"][aria-pressed="true"]::before { opacity: 1; }
+html[data-site-ui="quartier"] [data-ui-account="collection-tab"] { --site-ui-material: url("#site-ui-outline-fffaf1"); }
+html[data-site-ui="quartier"] [data-ui-account="collection-tab"][aria-pressed="true"] { --site-ui-material: url("#site-ui-outline-f4c43d"); }
+html[data-site-ui="quartier"] [data-ui-account="album-action"] {
+  --site-ui-material: url("#site-ui-fill-004b39");
+  --site-ui-hover-material: url("#site-ui-fill-086449");
+}
+html[data-site-ui="quartier"] [data-ui-account="album-action"][data-ui-account-muted="true"] { --site-ui-material: url("#site-ui-fill-003f30"); }
+html[data-site-ui="quartier"] button[data-ui-account="album-action"]:focus-visible:not(:disabled) { --site-ui-active-material: url("#site-ui-fill-086449"); }
+html[data-site-ui="quartier"] [data-ui-account="points-action"] { --site-ui-material: url("#site-ui-fill-f4c43d"); }
+html[data-site-ui="quartier"] [data-ui-account="points-action"]:disabled { --site-ui-material: url("#site-ui-fill-93afa0"); }
+html[data-site-ui="quartier"] [data-ui-account="manager-item"] {
+  --site-ui-material: url("#site-ui-fill-f4ead8");
+  --site-ui-hover-material: url("#site-ui-fill-fff4cb");
+}
+html[data-site-ui="quartier"] [data-ui-account="manager-item"]:focus-visible { --site-ui-active-material: url("#site-ui-fill-fff4cb"); }
+html[data-site-ui="quartier"] [data-ui-account="pager-tab"] { --site-ui-material: url("#site-ui-fill-f2eadc"); }
+html[data-site-ui="quartier"] [data-ui-account="pager-tab"][aria-current="page"] { --site-ui-material: url("#site-ui-fill-f4c43d"); }
+html[data-site-ui="quartier"] [data-ui-account="context-panel"] { --site-ui-material: url("#site-ui-fill-e7eedf"); }
+html[data-site-ui="quartier"] [data-ui-account="context-panel"][data-ui-account-claimable="true"] { --site-ui-material: url("#site-ui-fill-e2f0dc"); }
+html[data-site-ui="quartier"] [data-ui-account="reward-option"] {
+  --site-ui-material: url("#site-ui-fill-fffaf1");
+  --site-ui-hover-material: url("#site-ui-fill-fff4cb");
+}
+html[data-site-ui="quartier"] [data-ui-account="burn-option"] { --site-ui-material: url("#site-ui-outline-172923"); }
+html[data-site-ui="quartier"] [data-ui-account="burn-option"][class*="bg-amber-50"] { --site-ui-material: url("#site-ui-fill-fffbeb"); }
+html[data-site-ui="quartier"] [data-ui-account="craft-action"] { --site-ui-material: url("#site-ui-fill-f4bc3c"); }
+html[data-site-ui="quartier"] [data-ui-account="craft-action"]:disabled { --site-ui-material: url("#site-ui-fill-ddd8ce"); }
+html[data-site-ui="quartier"] [data-ui-account="pack-close"] { --site-ui-material: url("#site-ui-fill-0b281f"); }
+html[data-site-ui="quartier"] [data-ui-account="pack-close"]::before { opacity: .701961; }
+
+html[data-site-ui="quartier"] [data-ui-account="fill-f7f4ee"] { --site-ui-material: url("#site-ui-fill-f7f4ee"); }
+html[data-site-ui="quartier"] [data-ui-account="fill-ffffff"] { --site-ui-material: url("#site-ui-fill-ffffff"); }
+html[data-site-ui="quartier"] [data-ui-account="fill-fef2f2"] { --site-ui-material: url("#site-ui-fill-fef2f2"); }
+html[data-site-ui="quartier"] [data-ui-account="fill-fff7e4"] { --site-ui-material: url("#site-ui-fill-fff7e4"); }
+html[data-site-ui="quartier"] [data-ui-account="fill-fff1f1"] { --site-ui-material: url("#site-ui-fill-fff1f1"); }
+html[data-site-ui="quartier"] [data-ui-account="fill-7a1010"] { --site-ui-material: url("#site-ui-fill-7a1010"); }
+html[data-site-ui="quartier"] [data-ui-account="fill-fff5da"] { --site-ui-material: url("#site-ui-fill-fff5da"); }
+html[data-site-ui="quartier"] [data-ui-account="fill-fee2e2"] { --site-ui-material: url("#site-ui-fill-fee2e2"); }
+
+/* The existing global card rule takes precedence over these utility fills. */
+html[data-site-ui="quartier"] [data-ui-account="profile-panel"] .card-cartoon {
+  --site-ui-material: url("#site-ui-fill-f6f0e6");
+  --site-ui-hover-material: url("#site-ui-fill-f6f0e6");
+}
+
+@media (hover: hover) {
+  html[data-site-ui="quartier"] [data-ui-account="album-mode"]:hover:not(:disabled)::before { opacity: 1; }
+}
