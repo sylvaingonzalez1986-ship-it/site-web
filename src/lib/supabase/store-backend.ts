@@ -17,6 +17,7 @@ import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import { sanitizePublicProductCopy } from "@/lib/regulated-product-copy";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { deleteContestEntry } from "@/lib/supabase/contest-backend";
+import { readSupabaseQuery } from "@/lib/supabase/read-query";
 import { sanitizeOrderVatRate } from "@/lib/tax";
 import { sanitizeDisplayText, sanitizeNestedText } from "@/lib/text-encoding-repair";
 import {
@@ -237,11 +238,13 @@ function isMissingProductFreshnessColumn(
 
 async function selectProductRows(
   supabase: ReturnType<typeof createSupabaseServiceClient>,
+  signal?: AbortSignal,
 ) {
-  const result = await supabase
+  const query = supabase
     .from("products")
     .select(SELECT_PRODUCTS_COLUMNS)
     .order("position", { ascending: true });
+  const result = await (signal ? query.abortSignal(signal) : query);
 
   if (!isMissingProductFreshnessColumn(result.error)) {
     return result;
@@ -249,10 +252,11 @@ async function selectProductRows(
 
   // Keeps deployments available while the additive migration is applied.
   // The sitemap uses created_at until updated_at becomes available.
-  return supabase
+  const fallbackQuery = supabase
     .from("products")
     .select(SELECT_PRODUCTS_WITHOUT_UPDATED_AT)
     .order("position", { ascending: true });
+  return signal ? fallbackQuery.abortSignal(signal) : fallbackQuery;
 }
 
 function toOptionalIsoString(value: unknown): string | undefined {
@@ -1194,34 +1198,34 @@ export async function readPublicStoreFromSupabase(): Promise<PublicStoreResponse
     siteContentResult,
     sectionsResult,
   ] = await Promise.all([
-    supabase
+    readSupabaseQuery("read public producers", (signal) => supabase
       .from("producers")
       .select(SELECT_PRODUCERS_COLUMNS)
-      .order("position", { ascending: true }),
-    selectProductRows(supabase),
-    supabase.from("pack_components").select("pack_id,product_id"),
-    supabase
+      .order("position", { ascending: true })
+      .abortSignal(signal)),
+    readSupabaseQuery("read public products", (signal) => selectProductRows(supabase, signal)),
+    readSupabaseQuery("read public pack_components", (signal) => supabase
+      .from("pack_components")
+      .select("pack_id,product_id")
+      .abortSignal(signal)),
+    readSupabaseQuery("read public blog_posts", (signal) => supabase
       .from("blog_posts")
       .select(SELECT_BLOG_COLUMNS)
-      .order("created_at", { ascending: false }),
-    supabase
+      .order("created_at", { ascending: false })
+      .abortSignal(signal)),
+    readSupabaseQuery("read public site_content", (signal) => supabase
       .from("site_content")
       .select(SELECT_SITE_CONTENT_COLUMNS)
       .eq("id", 1)
-      .maybeSingle(),
-    supabase
+      .abortSignal(signal)
+      .maybeSingle()),
+    readSupabaseQuery("read public page_sections", (signal) => supabase
       .from("page_sections")
       .select(SELECT_PAGE_SECTIONS_COLUMNS)
       .eq("id", 1)
-      .maybeSingle(),
+      .abortSignal(signal)
+      .maybeSingle()),
   ]);
-
-  failIfError(producersResult.error, "read public producers");
-  failIfError(productsResult.error, "read public products");
-  failIfError(packComponentsResult.error, "read public pack_components");
-  failIfError(blogResult.error, "read public blog_posts");
-  failIfError(siteContentResult.error, "read public site_content");
-  failIfError(sectionsResult.error, "read public page_sections");
 
   const packProductIdsByPackId = new Map<string, string[]>();
   for (const rawRow of packComponentsResult.data ?? []) {
