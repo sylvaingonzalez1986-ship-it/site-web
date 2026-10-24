@@ -2,25 +2,24 @@
 
 import { useLayoutEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { SITE_UI_COOKIE, type SiteUiVariant } from "@/lib/site-ui-preview";
+import { getSiteUiVariants, SITE_UI_COOKIE, type SiteUiVariant } from "@/lib/site-ui-preview";
 import styles from "./SiteUiPreview.module.css";
 
-export function SiteUiPreview({ initialVariant }: { initialVariant: SiteUiVariant }) {
+export function SiteUiPreview({ initialVariant, enabled }: { initialVariant: SiteUiVariant; enabled: boolean }) {
   const pathname = usePathname();
   const [variant, setVariant] = useState(initialVariant);
-  const excluded = /^\/(?:arene|bete-de-concours|admin|dev)(?:\/|$)/.test(pathname);
-  const navigationExcluded = /^\/(?:admin|dev)(?:\/|$)/.test(pathname);
+  const ui = getSiteUiVariants(pathname, enabled ? variant : "quartier");
   useLayoutEffect(() => {
-    document.documentElement.dataset.siteUi = excluded ? "original" : variant;
-    document.documentElement.dataset.siteNavigationUi = navigationExcluded ? "original" : variant;
-  }, [excluded, navigationExcluded, variant]);
+    document.documentElement.dataset.siteUi = ui.content;
+    document.documentElement.dataset.siteNavigationUi = ui.navigation;
+  }, [ui.content, ui.navigation]);
 
   const changeVariant = (next: SiteUiVariant) => {
     document.cookie = `${SITE_UI_COOKIE}=${next}; Path=/; Max-Age=2592000; SameSite=Lax${location.protocol === "https:" ? "; Secure" : ""}`;
     setVariant(next);
   };
 
-  if (excluded) return null;
+  if (!enabled || !ui.allowPreview) return null;
   return <details className={styles.preview} data-site-ui-preview>
     <summary>Essai des contours</summary>
     <div className={styles.panel}>

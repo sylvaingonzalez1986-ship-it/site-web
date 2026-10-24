@@ -68,10 +68,11 @@ describe("middleware policy helpers", () => {
       .toEqual(["https://www.vivapayments.com", "https://eyowwwpdmfrulhkpvlnf.supabase.co"]);
   });
 
-  it("passes its fresh nonce and policy to Next instead of trusting request-supplied headers", async () => {
+  it("passes its fresh nonce, policy and pathname to Next instead of trusting request-supplied headers", async () => {
     const request = () => new NextRequest("https://example.test/", {
       headers: {
         "x-nonce": "attacker-nonce",
+        "x-site-ui-pathname": "/admin",
         "Content-Security-Policy": "script-src 'unsafe-inline'",
       },
     });
@@ -84,6 +85,7 @@ describe("middleware policy helpers", () => {
       expect(nonce).toMatch(/^[a-f0-9]{32}$/);
       expect(policy).toContain(`'nonce-${nonce}'`);
       expect(response.headers.get("x-middleware-request-content-security-policy")).toBe(policy);
+      expect(response.headers.get("x-middleware-request-x-site-ui-pathname")).toBe("/");
       expect(parsePolicy(policy!).get("script-src")).not.toContain("'unsafe-inline'");
     }
     expect(first.headers.get("x-middleware-request-x-nonce"))

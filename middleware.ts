@@ -5,6 +5,7 @@ import { isPioneerPackPrelaunch, PIONEER_PACK_OPENING_AT, PIONEER_PACK_OPENING_M
 import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
 import { getSupabasePublicOrigin } from "@/lib/supabase-public-origin";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
+import { SITE_UI_PATHNAME_HEADER } from "@/lib/site-ui-preview";
 
 const MUTATIVE_METHODS = new Set(["POST", "PUT", "PATCH", "DELETE"]);
 const AGE_GATE_COOKIE_NAME = "age_verified";
@@ -307,6 +308,7 @@ export async function middleware(request: NextRequest) {
 
   const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
+  requestHeaders.set(SITE_UI_PATHNAME_HEADER, pathname);
   requestHeaders.set("Content-Security-Policy", cspHeader);
 
   const response = NextResponse.next({ request: { headers: requestHeaders } });

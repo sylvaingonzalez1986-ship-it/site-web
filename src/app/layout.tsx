@@ -19,7 +19,7 @@ import { WebVitals } from "@/components/WebVitals";
 import { CartProvider } from "@/context/CartContext";
 import { SiteUiMaterials } from "@/components/site-preview/SiteUiMaterials";
 import { SiteUiPreview } from "@/components/site-preview/SiteUiPreview";
-import { isSiteUiPreviewEnabled, SITE_UI_COOKIE, siteUiVariant } from "@/lib/site-ui-preview";
+import { getSiteUiVariants, isSiteUiPreviewEnabled, SITE_UI_COOKIE, SITE_UI_PATHNAME_HEADER, siteUiVariant } from "@/lib/site-ui-preview";
 import "./globals.css";
 import "./site-ui-preview.css";
 import "@/components/site-preview/quartier-commerce.css";
@@ -169,13 +169,15 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const nonce = (await headers()).get("x-nonce") ?? undefined;
+  const requestHeaders = await headers();
+  const nonce = requestHeaders.get("x-nonce") ?? undefined;
   const cookieStore = await cookies();
   const initialCookieConsent = parseConsentCookieValue(cookieStore.get(COOKIE_CONSENT_COOKIE_NAME)?.value ?? "");
   const uiPreviewEnabled = isSiteUiPreviewEnabled();
   const initialUiVariant = siteUiVariant(cookieStore.get(SITE_UI_COOKIE)?.value);
+  const ui = getSiteUiVariants(requestHeaders.get(SITE_UI_PATHNAME_HEADER) ?? "/", initialUiVariant);
   return (
-    <html lang="fr" nonce={nonce}>
+    <html lang="fr" nonce={nonce} data-site-ui={ui.content} data-site-navigation-ui={ui.navigation}>
       <head>
         <link
           rel="alternate"
@@ -194,7 +196,8 @@ export default async function RootLayout({
         className={`${bodyFont.variable} ${displayFont.variable} ${handwrittenFont.variable} bg-mint text-ink antialiased`}
       >
         <a href="#main-content" className="site-skip-link">Aller au contenu</a>
-        {uiPreviewEnabled ? <><SiteUiMaterials /><SiteUiPreview initialVariant={initialUiVariant} /></> : null}
+        <SiteUiMaterials />
+        <SiteUiPreview initialVariant={initialUiVariant} enabled={uiPreviewEnabled} />
         <OrganizationJsonLd />
         <WebSiteJsonLd />
         {process.env.NODE_ENV !== "production" && (
