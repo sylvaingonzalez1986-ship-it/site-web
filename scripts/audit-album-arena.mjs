@@ -8,8 +8,11 @@ import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const root = process.cwd(), output = resolve(root, 'output/placard-workshop/album');
+const controlsOnly = process.argv.includes('--controls-only');
 const modules = {
   'album-entry': `import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
+    import '/src/app/site-ui-preview.css';import '/src/components/site-preview/quartier-commerce.css';import '/src/components/site-preview/quartier-account.css';
+    import {SiteUiMaterials} from '/src/components/site-preview/SiteUiMaterials';
     import {CollectionAlbumContent} from '/src/components/account/CollectionAlbumClient';
     import {LOTTERY_POINTS_PACK_COST} from '/src/lib/lottery-collection';
     import {RARITY_ORDER,rarityLabels} from '/src/lib/lottery-card-ui';
@@ -46,24 +49,78 @@ const modules = {
       if(url==='/api/account/collection/burn'){pages[0].duplicateGroups=[];return json({claim:{id:'burn-1'}});}
       return json({error:'Route absente de la démonstration'});
     };
-    createRoot(document.getElementById('root')).render(React.createElement(CollectionAlbumContent,{embedded:params.has('embedded')}));`,
+    createRoot(document.getElementById('root')).render(React.createElement(React.Fragment,null,React.createElement(SiteUiMaterials),React.createElement(CollectionAlbumContent,{embedded:params.has('embedded')})));`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}`,
-  'next/link': `import React from 'react';export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}`,
+  'next/link': `import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}`,
   'next/navigation': `export const useRouter=()=>({push:()=>{},refresh:()=>{},replace:()=>{}});export const usePathname=()=>'/profil/collection';export const useSearchParams=()=>new URLSearchParams();`,
   '/src/context/CartContext.tsx': `export const useCart=()=>({isAuthenticated:!new URLSearchParams(location.search).has('preview'),authLoading:false});`,
 };
-const server = await createServer({root, configFile:false, envDir:false, cacheDir:resolve(output,'vite-cache'), publicDir:resolve(root,'public'), esbuild:{jsx:'automatic'}, optimizeDeps:{include:['react','react-dom','react-dom/client','react/jsx-runtime','react/jsx-dev-runtime','lucide-react']},resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'album-audit',enforce:'pre',resolveId(id){if(id.replaceAll('\\','/').endsWith('/src/context/CartContext'))return '\0/src/context/CartContext.tsx';if(id in modules)return '\0'+id;},load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Album</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0}</style><div id="root"></div><script type="module" src="/@id/__x00__album-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3197,strictPort:true,hmr:false,watch:{ignored:['**/output/**','**/.next/**']}}});
-let browser;const errors=[],results=[];
+const server = await createServer({root, configFile:false, envDir:false, cacheDir:resolve(output,'vite-cache'), publicDir:resolve(root,'public'), esbuild:{jsx:'automatic'}, optimizeDeps:{include:['react','react-dom','react-dom/client','react/jsx-runtime','react/jsx-dev-runtime','lucide-react']},resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'album-audit',enforce:'pre',resolveId(id){if(id.replaceAll('\\','/').endsWith('/src/context/CartContext'))return '\0/src/context/CartContext.tsx';if(id in modules)return '\0'+id;},load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr" data-site-ui="quartier"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Album</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0}</style><div id="root"></div><script type="module" src="/@id/__x00__album-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3197,strictPort:true,hmr:false,watch:{ignored:['**/output/**','**/.next/**']}}});
+let browser,page;const errors=[],results=[];
 try {
   await mkdir(output,{recursive:true});await server.listen();
-  browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,userDataDir:resolve(output,'chrome-profile'),args:['--no-sandbox','--disable-gpu']});
-  const page=await browser.newPage();page.setDefaultTimeout(30000);page.on('pageerror',e=>errors.push(e.message));
+  browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,defaultViewport:{width:320,height:900,isMobile:true,hasTouch:true},userDataDir:resolve(output,'chrome-profile'),args:['--no-sandbox','--disable-gpu']});
+  page=await browser.newPage();page.setDefaultTimeout(30000);page.on('pageerror',e=>errors.push(e.message));
   await page.setRequestInterception(true);page.on('request',r=>{const u=new URL(r.url());if(u.protocol==='data:'||(u.hostname==='127.0.0.1'&&u.port==='3197'))void r.continue();else void r.abort();});
-  const visit=async(query='')=>{await page.goto('http://127.0.0.1:3197/'+query,{waitUntil:'networkidle0'});await page.waitForSelector('[data-album-lobby]');};
+  const visit=async(query='')=>{await page.goto('http://127.0.0.1:3197/'+query,{waitUntil:'networkidle0',timeout:90000});await page.waitForSelector('[data-album-lobby]');};
   const enter=async(mode)=>{await page.click(`[data-album-mode-button="${mode}"]`);await page.click('[data-album-enter]');};
   const back=async()=>page.locator('::-p-text(Retour à l’album)').click();
-  const shot=async(name)=>page.screenshot({path:resolve(output,name+'.png')});
+  const shot=async(name)=>{
+    await page.evaluate(async()=>{await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
+    return page.screenshot({path:resolve(output,name+'.png')});
+  };
   const layout=()=>page.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth+1,brokenImages:[...document.images].filter(i=>i.complete&&!i.naturalWidth).map(i=>i.src)}));
+  if (controlsOnly) {
+    await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
+    const checkReturn = async (label) => {
+      const control = await page.$eval('[data-album-return]', node => {
+        const style = getComputedStyle(node), box = node.getBoundingClientRect();
+        const icon = node.querySelector('svg').getBoundingClientRect(), text = node.querySelector('span').getBoundingClientRect();
+        return { label: node.textContent, height: box.height, art: style.borderImageSource, slice: style.borderImageSlice,
+          aligned: Math.abs(icon.y + icon.height / 2 - text.y - text.height / 2) <= 2,
+          contained: icon.left >= box.left + 8 && icon.right < text.left && text.right <= box.right - 8,
+          overflow: document.documentElement.scrollWidth > innerWidth + 1 };
+      });
+      assert.equal(control.label, label);
+      assert.ok(control.height >= 44, 'return controls retain a touch target');
+      assert.match(control.art, /control-(?:paper|gold)-v2\.webp/, 'complete plate artwork');
+      assert.match(control.slice, /fill/, 'the plate includes a filled centre');
+      assert.ok(control.aligned && control.contained, 'icon and text are centred inside the plate');
+      assert.equal(control.overflow, false);
+      return control;
+    };
+    for (const width of [320,390,768,1440]) {
+      console.log('Album control audit:',width);
+      await page.setViewport({width,height:900,isMobile:width<700,hasTouch:width<700});
+      await visit();
+      results.push({width,screen:'lobby',...await checkReturn('L’Arène')});
+      await page.$('[data-album-return]').then(button=>button.screenshot({path:resolve(output,`return-arena-${width}.png`)}));
+      await page.keyboard.press('Tab');await page.focus('[data-album-return]');
+      assert.ok(await page.$eval('[data-album-return]', node => node.matches(':focus-visible') && getComputedStyle(node).outlineStyle !== 'none'));
+      await shot(`controls-lobby-${width}`);
+      for (const mode of ['cards','boosters','rewards']) {
+        if(mode==='boosters')await page.locator('::-p-text(Obtenir des boosters)').click();else await enter(mode);
+        await page.waitForSelector(`[data-album-screen="${mode}"]`);
+        results.push({width,screen:mode,...await checkReturn('Retour à l’album')});
+        if(mode==='boosters') {
+          const points=await page.$eval('[data-ui-account="album-action"]',node=>({text:node.textContent,foreground:getComputedStyle(node.querySelector('strong')).color,input:getComputedStyle(node.querySelector('input')).backgroundColor}));
+          assert.match(points.text,/Points disponibles/);
+          console.log(JSON.stringify({width,points}));
+        }
+        await shot(`controls-${mode}-${width}`);
+        if(mode==='cards')await page.$('[data-album-return]').then(button=>button.screenshot({path:resolve(output,`return-album-${width}.png`)}));
+        await page.focus('[data-album-return]');await page.keyboard.press('Enter');await page.waitForSelector('[data-album-lobby]');
+      }
+    }
+    await visit('?embedded=1');
+    await page.evaluate(()=>{document.documentElement.dataset.siteUi='original';});
+    results.push({embedded:true,...await checkReturn('L’Arène')});
+    await enter('cards');await page.waitForSelector('[data-album-screen="cards"]');
+    results.push({embedded:true,...await checkReturn('Retour à l’album')});
+    assert.deepEqual(errors,[]);
+    await writeFile(resolve(output,'controls-report.json'),JSON.stringify({passed:true,results,errors},null,2));
+    console.log(JSON.stringify({passed:true,checks:results.length,output}));
+  } else {
   for(const width of [320,390,768,1440]) {
     console.log('Album and booster audit:',width);
     await page.setViewport({width,height:width<700?844:1000,isMobile:width<700,hasTouch:width<700});await visit();
@@ -141,4 +198,9 @@ try {
   await page.keyboard.press('Escape');
   assert.deepEqual(errors,[]);await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,results,purchase:true,claim:true,duplicates:true,empty:true,preview:true,reducedMotion:true,pack:{touch:true,keyboard:true,allRarities:true,bonus:true,noDuplicateRequests:true,retry:true,skip:true,manualRecap:true,shortViewport:true,focusTrap:true},errors},null,2));
   console.log(JSON.stringify({passed:true,output}));
+  }
+} catch(error) {
+  await page?.screenshot({path:resolve(output,'failure.png')}).catch(()=>{});
+  console.error(JSON.stringify({errors,results,error:error.message}));
+  throw error;
 } finally {await browser?.close();await server.close();}

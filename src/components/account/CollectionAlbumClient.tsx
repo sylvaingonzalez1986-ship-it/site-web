@@ -418,7 +418,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
       /> : <div className={arenaStyles.workspace}>
         <header className={`${lobbyStyles.topBar} ${arenaStyles.workspaceTop}`}>
           <div className={lobbyStyles.brand}><span>Kanab Quest · Mon album</span><h1>{screenTitle}</h1></div>
-          <button data-ui-account="outline-light" data-ui-shape="control" type="button" className={lobbyStyles.sound} onClick={() => setScreen("lobby")}><ArrowLeft aria-hidden="true" /><span>Retour à l’album</span></button>
+          <button data-album-return type="button" className={arenaStyles.returnLink} onClick={() => setScreen("lobby")}><ArrowLeft aria-hidden="true" /><span>Retour à l’album</span></button>
         </header>
         <nav className={`${lobbyStyles.modeSelector} ${arenaStyles.workspaceNav}`} aria-label="Espaces de l’album">
           {ALBUM_DESTINATIONS.map(({ id, label, icon: Icon }) => <button data-ui-account="album-mode" data-ui-shape="control" key={id} type="button" aria-pressed={screen === id} onClick={() => setScreen(id)}><Icon aria-hidden="true" /><span>{label}</span></button>)}

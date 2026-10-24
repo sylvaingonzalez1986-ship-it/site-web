@@ -40,9 +40,9 @@ export function AlbumArenaLobby({ packs, owned, total, rewards, points, onNaviga
 
   return <div className={`${retro.surface} ${lobby.lobby} ${styles.lobby}`} data-album-lobby data-album-mode={selected}>
     <div className={styles.ambience} aria-hidden="true" />
-    <header className={lobby.topBar}>
+    <header className={`${lobby.topBar} ${styles.albumTopBar}`}>
       <div className={lobby.brand}><span>Kanab Quest</span><h1>Mon album.</h1></div>
-      <Link data-ui-account="outline-light" data-ui-shape="control" href="/arene" className={lobby.sound}><ArrowLeft aria-hidden="true" /><span>L’Arène</span></Link>
+      <Link data-album-return href="/arene" className={styles.returnLink}><ArrowLeft aria-hidden="true" /><span>L’Arène</span></Link>
     </header>
     <div className={styles.stage} aria-hidden="true">
       <div className={styles.halo} />
