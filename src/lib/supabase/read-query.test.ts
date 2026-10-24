@@ -14,6 +14,7 @@ const failedResult = (error: QueryError, status = 0): QueryResult => ({
 
 beforeEach(() => {
   vi.useFakeTimers();
+  vi.spyOn(Math, "random").mockReturnValue(0);
 });
 
 afterEach(() => {
@@ -37,13 +38,13 @@ describe("public Supabase read recovery", () => {
     "TypeError: fetch failed",
     "TypeError: Failed to fetch",
     "TypeError: Network request failed",
-  ])("recovers a status-zero %s failure after 250 ms", async (message) => {
+  ])("recovers a status-zero %s failure after 500 ms", async (message) => {
     const query = vi.fn()
       .mockResolvedValueOnce(failedResult({ message }))
       .mockResolvedValue(successfulResult);
     const pending = readSupabaseQuery(context, query);
 
-    await vi.advanceTimersByTimeAsync(249);
+    await vi.advanceTimersByTimeAsync(499);
     expect(query).toHaveBeenCalledTimes(1);
     await vi.advanceTimersByTimeAsync(1);
 
@@ -57,13 +58,13 @@ describe("public Supabase read recovery", () => {
       .mockResolvedValue(successfulResult);
     const pending = readSupabaseQuery(context, query);
 
-    await vi.advanceTimersByTimeAsync(250);
+    await vi.advanceTimersByTimeAsync(500);
 
     expect(await pending).toBe(successfulResult);
     expect(query).toHaveBeenCalledTimes(2);
   });
 
-  it("waits 250 then 500 ms and preserves the final error after three failed reads", async () => {
+  it("waits 500, 1,000 then 2,000 ms and preserves the final error after four failed reads", async () => {
     const firstError = { message: "TypeError: fetch failed", details: "first transport failure" };
     const lastError = {
       message: "TypeError: fetch failed",
@@ -76,21 +77,76 @@ describe("public Supabase read recovery", () => {
       .mockResolvedValue(failedResult(lastError));
     const pending = readSupabaseQuery(context, query).catch((error: unknown) => error);
 
-    await vi.advanceTimersByTimeAsync(249);
+    await vi.advanceTimersByTimeAsync(499);
     expect(query).toHaveBeenCalledTimes(1);
     await vi.advanceTimersByTimeAsync(1);
     expect(query).toHaveBeenCalledTimes(2);
-    await vi.advanceTimersByTimeAsync(499);
+    await vi.advanceTimersByTimeAsync(999);
     expect(query).toHaveBeenCalledTimes(2);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(query).toHaveBeenCalledTimes(3);
+    await vi.advanceTimersByTimeAsync(1_999);
+    expect(query).toHaveBeenCalledTimes(3);
     await vi.advanceTimersByTimeAsync(1);
 
     const error = await pending;
     expect(error).toBeInstanceOf(Error);
-    expect(error).toMatchObject({ message: `[supabase:${context}] TypeError: fetch failed` });
+    expect(error).toMatchObject({
+      message: `[supabase:${context}] TypeError: fetch failed`, attempts: 4, elapsedMs: 3_500,
+    });
     expect((error as Error).cause).toBe(lastError);
     expect((error as Error).message).not.toContain("diagnostic-private-token");
     await vi.advanceTimersByTimeAsync(10_000);
-    expect(query).toHaveBeenCalledTimes(3);
+    expect(query).toHaveBeenCalledTimes(4);
+  });
+
+  it("recovers when an outage outlasts the former 750 ms retry window", async () => {
+    const recoversAt = Date.now() + 3_000;
+    const query = vi.fn(async () => Date.now() < recoversAt
+      ? failedResult({ message: "TypeError: fetch failed" }) : successfulResult);
+    const pending = readSupabaseQuery(context, query);
+
+    await vi.advanceTimersByTimeAsync(3_500);
+
+    expect(await pending).toBe(successfulResult);
+    expect(query).toHaveBeenCalledTimes(4);
+  });
+
+  it("jitters retries so concurrent readers do not always restart together", async () => {
+    vi.mocked(Math.random).mockReturnValue(0.999);
+    const query = vi.fn().mockResolvedValueOnce(failedResult({ message: "TypeError: fetch failed" }))
+      .mockResolvedValue(successfulResult);
+    const pending = readSupabaseQuery(context, query);
+
+    await vi.advanceTimersByTimeAsync(749);
+    expect(query).toHaveBeenCalledTimes(1);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(await pending).toBe(successfulResult);
+  });
+
+  it("recovers a socket closed while reading a response body", async () => {
+    const query = vi.fn().mockResolvedValueOnce(failedResult({
+      message: "TypeError: terminated",
+      details: "TypeError: terminated\n\nCaused by: SocketError: other side closed (UND_ERR_SOCKET)",
+    })).mockResolvedValue(successfulResult);
+    const pending = readSupabaseQuery(context, query);
+
+    await vi.advanceTimersByTimeAsync(500);
+
+    expect(await pending).toBe(successfulResult);
+    expect(query).toHaveBeenCalledTimes(2);
+  });
+
+  it("recovers a rejected connection error identified by its cause", async () => {
+    const query = vi.fn().mockRejectedValueOnce(new TypeError("terminated", {
+      cause: Object.assign(new Error("other side closed"), { code: "UND_ERR_SOCKET" }),
+    })).mockResolvedValue(successfulResult);
+    const pending = readSupabaseQuery(context, query);
+
+    await vi.advanceTimersByTimeAsync(500);
+
+    expect(await pending).toBe(successfulResult);
+    expect(query).toHaveBeenCalledTimes(2);
   });
 
   it.each([
@@ -126,7 +182,7 @@ describe("public Supabase read recovery", () => {
       .mockResolvedValue(successfulResult);
     const pending = readSupabaseQuery(context, query);
 
-    await vi.advanceTimersByTimeAsync(250);
+    await vi.advanceTimersByTimeAsync(500);
 
     expect(await pending).toBe(successfulResult);
     expect(query).toHaveBeenCalledTimes(2);
@@ -144,7 +200,7 @@ describe("public Supabase read recovery", () => {
     expect(query).toHaveBeenCalledTimes(1);
   });
 
-  it("uses fresh five-second signals and stops after 15,750 ms if every attempt times out", async () => {
+  it("bounds all requests and backoff to 16 seconds if every attempt times out", async () => {
     const startedAt = Date.now();
     const timeout = vi.spyOn(AbortSignal, "timeout").mockImplementation((milliseconds) => {
       const controller = new AbortController();
@@ -162,14 +218,14 @@ describe("public Supabase read recovery", () => {
     });
     const pending = readSupabaseQuery(context, query).catch((error: unknown) => ({ error, endedAt: Date.now() }));
 
-    await vi.advanceTimersByTimeAsync(15_750);
+    await vi.advanceTimersByTimeAsync(16_000);
 
     expect(await pending).toMatchObject({
-      endedAt: startedAt + 15_750,
-      error: { message: `[supabase:${context}] ${originalError.message}`, cause: originalError },
+      endedAt: startedAt + 16_000,
+      error: { message: `[supabase:${context}] ${originalError.message}`, cause: originalError, attempts: 3, elapsedMs: 16_000 },
     });
     expect(query).toHaveBeenCalledTimes(3);
-    expect(timeout.mock.calls.map(([milliseconds]) => milliseconds)).toEqual([5_000, 5_000, 5_000]);
+    expect(timeout.mock.calls.map(([milliseconds]) => milliseconds)).toEqual([5_000, 5_000, 4_500]);
     expect(new Set(signals).size).toBe(3);
     expect(signals.every((signal) => signal.aborted)).toBe(true);
   });
