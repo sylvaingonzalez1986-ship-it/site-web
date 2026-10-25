@@ -19,7 +19,6 @@
 .philosophy,
 .transparency,
 .products,
-.bonusIntro,
 .seoSection {
   position: relative;
 }
@@ -89,7 +88,6 @@
 .heroTitle,
 .sectionTitle,
 .promiseHeading h2,
-.bonusIntro h2,
 .seoCard h2 {
   font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
   font-weight: 900;
@@ -316,8 +314,7 @@
 }
 
 .promiseHeading > p:last-child,
-.transparencyLead,
-.bonusLead {
+.transparencyLead {
   max-width: 620px;
   margin: 1.75rem 0 0;
   font-size: clamp(1rem, 1.6vw, 1.25rem);
@@ -577,13 +574,6 @@
   font-weight: 800;
 }
 
-.bonusIntro {
-  overflow: hidden;
-  padding: clamp(2.5rem, 5vw, 4.5rem) 0;
-  background: var(--poster-cream);
-  color: var(--poster-ink);
-}
-
 .page :global(.home-editorial-promo) {
   padding: clamp(3rem, 6vw, 5rem) 0;
 }
@@ -672,153 +662,6 @@
 .page :global(.home-editorial-promo__benefits .btn-cartoon:hover) {
   box-shadow: 4px 4px 0 var(--poster-ink);
   transform: translate(-2px, -2px);
-}
-
-.bonusIntro .kicker {
-  color: var(--poster-green);
-}
-
-.bonusIntro h2 {
-  max-width: 720px;
-  margin: 0.8rem 0 0;
-  font-size: clamp(3rem, 5.5vw, 5.5rem);
-  line-height: 1;
-}
-
-.bonusLead {
-  max-width: 760px;
-  color: var(--poster-charcoal, #343b36);
-}
-
-.bonusOpening {
-  margin: 1rem 0 0;
-  color: var(--poster-green);
-  font-size: .85rem;
-  font-weight: 700;
-}
-
-.bonusCards {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.25rem;
-  margin-top: 2rem;
-}
-
-.bonusCard {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  min-width: 0;
-  padding: clamp(1.2rem, 2vw, 1.75rem);
-  border: 2px solid var(--poster-green);
-  border-top: 5px solid var(--poster-green);
-  background: var(--poster-cream);
-  box-shadow: 0 5px 0 #003f3020;
-}
-
-.bonusCardFeatured {
-  border-top-color: var(--poster-yellow);
-  background: var(--poster-green-dark);
-  color: var(--poster-cream);
-}
-
-.bonusEyebrow {
-  margin: 0;
-  color: var(--poster-green);
-  font-size: 0.68rem;
-  font-weight: 900;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-}
-
-.bonusCard h3 {
-  margin: 1rem 0 0;
-  color: inherit;
-  font-family: var(--font-display), "Arial Narrow", Impact, sans-serif;
-  font-size: clamp(1.85rem, 2.8vw, 2.65rem);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.035em;
-  text-transform: uppercase;
-}
-
-.bonusDescription {
-  margin: 1.15rem 0 0;
-  color: var(--poster-charcoal, #343b36);
-  font-size: .95rem;
-  line-height: 1.65;
-}
-
-.bonusFinePrint {
-  margin: 1rem 0 1.5rem;
-  color: var(--poster-charcoal);
-  font-size: .8rem;
-  line-height: 1.6;
-}
-
-.bonusCardFeatured .bonusEyebrow { color: var(--poster-yellow); }
-.bonusCardFeatured .bonusDescription { color: var(--poster-cream); }
-.bonusCardFeatured .bonusFinePrint { color: #d0dfd4; }
-
-.boosterCta {
-  display: inline-flex;
-  min-height: 48px;
-  align-items: center;
-  gap: 0.65rem;
-  margin-top: auto;
-  padding: 0.75rem 1rem;
-  border: 2px solid var(--poster-ink);
-  background: var(--poster-green);
-  box-shadow: 4px 4px 0 var(--poster-ink);
-  color: #fff;
-  font-size: 0.76rem;
-  font-weight: 900;
-  letter-spacing: 0.075em;
-  text-transform: uppercase;
-  transition: transform 160ms ease, box-shadow 160ms ease;
-}
-
-.boosterCta:hover {
-  box-shadow: 2px 2px 0 var(--poster-ink);
-  transform: translate(2px, 2px);
-}
-
-.boosterCta svg {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
-}
-
-.bonusCardFeatured .boosterCta {
-  background: var(--poster-yellow);
-  color: var(--poster-green-dark);
-}
-
-.page .bonusCardFeatured a:focus-visible { outline-color: var(--poster-yellow); }
-
-@media (min-width: 1051px) {
-  .bonusCard > .boosterCta:last-child { margin-bottom: calc(44px + .65rem); }
-}
-
-.bonusTextLink {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  margin-top: .65rem;
-  font-size: .8rem;
-  text-decoration: underline;
-  text-underline-offset: 4px;
-}
-
-@media (max-width: 1050px) {
-  .bonusCards { grid-template-columns: 1fr; }
-  .bonusCard { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr); column-gap: 2rem; }
-  .bonusCard > * { grid-column: 2; }
-  .bonusCard > .bonusEyebrow, .bonusCard > h3 { grid-column: 1; }
-  .bonusCard > .bonusEyebrow { grid-row: 1; }
-  .bonusCard > h3 { grid-row: 2 / span 3; }
-  .bonusDescription { grid-row: 1 / span 2; margin-top: 0; }
-  .boosterCta { justify-self: start; }
 }
 
 .seoSection {
@@ -1025,8 +868,7 @@
   }
 
   .promiseHeading h2,
-  .sectionTitle,
-  .bonusIntro h2 {
+  .sectionTitle {
     font-size: clamp(2.6rem, 12vw, 4rem);
   }
 
@@ -1101,14 +943,6 @@
     grid-template-columns: 1fr;
   }
 
-  .bonusCard { display: flex; }
-  .bonusDescription { margin-top: 1rem; }
-
-  .boosterCta {
-    width: 100%;
-    justify-content: center;
-  }
-
   .page :global(.home-editorial-promo__panel) {
     box-shadow: 5px 5px 0 var(--poster-ink);
   }
@@ -1160,7 +994,7 @@
   .loyaltyTiers :global([data-badge-tone]) { width: min(100%, 48px); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .boosterCta, .page :global(.btn-cartoon) { transition: none; }
+  .page :global(.btn-cartoon) { transition: none; }
 }
 
 /* Opt-in materials only: keep every original colour, font, size and position. */
@@ -1173,13 +1007,11 @@
 :global(html[data-site-ui="quartier"]) .primaryCta,
 :global(html[data-site-ui="quartier"]) .secondaryCta,
 :global(html[data-site-ui="quartier"]) .textLink,
-:global(html[data-site-ui="quartier"]) .boosterCta,
 :global(html[data-site-ui="quartier"]) .seoActions > a,
 :global(html[data-site-ui="quartier"]) .contactLink,
 :global(html[data-site-ui="quartier"]) .eyebrow,
 :global(html[data-site-ui="quartier"]) .roundIcon,
 :global(html[data-site-ui="quartier"]) .emptyProducts,
-:global(html[data-site-ui="quartier"]) .bonusCard,
 :global(html[data-site-ui="quartier"]) .seoCard,
 :global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .btn-cartoon),
 :global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .pill-cartoon) {
@@ -1188,7 +1020,6 @@
 :global(html[data-site-ui="quartier"]) .primaryCta,
 :global(html[data-site-ui="quartier"]) .secondaryCta,
 :global(html[data-site-ui="quartier"]) .textLink,
-:global(html[data-site-ui="quartier"]) .boosterCta,
 :global(html[data-site-ui="quartier"]) .heroStage,
 :global(html[data-site-ui="quartier"]) .mobileHeroStage,
 :global(html[data-site-ui="quartier"]) .eyebrow,
@@ -1196,7 +1027,6 @@
 :global(html[data-site-ui="quartier"]) .mobilePriceStamp,
 :global(html[data-site-ui="quartier"]) .roundIcon,
 :global(html[data-site-ui="quartier"]) .emptyProducts,
-:global(html[data-site-ui="quartier"]) .bonusCard,
 :global(html[data-site-ui="quartier"]) .seoCard,
 :global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__panel),
 :global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .btn-cartoon),
@@ -1204,14 +1034,11 @@
   --site-ui-material: url("#site-ui-fill-fffaf1");
   --site-ui-hover-material: var(--site-ui-material);
 }
-:global(html[data-site-ui="quartier"]) .primaryCta,
-:global(html[data-site-ui="quartier"]) .bonusCardFeatured .boosterCta { --site-ui-material: url("#site-ui-fill-f4c43d"); }
+:global(html[data-site-ui="quartier"]) .primaryCta { --site-ui-material: url("#site-ui-fill-f4c43d"); }
 :global(html[data-site-ui="quartier"]) .heroStage,
 :global(html[data-site-ui="quartier"]) .mobileHeroStage,
 :global(html[data-site-ui="quartier"]) .eyebrow { --site-ui-material: url("#site-ui-fill-e8efe4"); }
-:global(html[data-site-ui="quartier"]) .boosterCta,
 :global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .btn-cartoon) { --site-ui-material: url("#site-ui-fill-00563f"); }
-:global(html[data-site-ui="quartier"]) .bonusCardFeatured { --site-ui-material: url("#site-ui-fill-003f30"); }
 :global(html[data-site-ui="quartier"]) .seoCard { --site-ui-material: url("#site-ui-outline-00563f"); }
 :global(html[data-site-ui="quartier"]) .page :global(.home-editorial-promo__benefits .pill-cartoon) { --site-ui-material: url("#site-ui-fill-ffffff"); }
 :global(html[data-site-ui="quartier"]) .textLink { --site-ui-hover-material: url("#site-ui-fill-f4c43d"); }

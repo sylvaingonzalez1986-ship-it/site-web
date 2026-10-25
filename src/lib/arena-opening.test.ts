@@ -31,6 +31,19 @@ describe("arena preopening", () => {
     vi.stubEnv("NODE_ENV", "development");
     expect(isArenaPrelaunch()).toBe(false);
   });
+  it.each(["/api/contest/monthly-draw", "/api/contest/monthly-draw/"])("keeps the monthly review draw visible before the game opens: %s", async path => {
+    for (const signedIn of [false, true]) {
+      const req = request(path);
+      if (signedIn) req.cookies.set("sb-project-auth-token", "untrusted-cookie");
+      expect((await middleware(req)).headers.get("x-middleware-next")).toBe("1");
+    }
+    expect(mocks.beta).not.toHaveBeenCalled();
+  });
+  it.each(["/api/contest/monthly-draw/claim", "/api/contest/producer-rewards", "/api/contest/badges/claim", "/api/arena/rewards"])("does not extend the monthly draw exception to game reward routes: %s", async path => {
+    const response = await middleware(request(path));
+    expect(response.status).toBe(423);
+    expect(await response.json()).toMatchObject({ opensAt: ARENA_OPENING_AT });
+  });
   it("opens only character creation and public navigation while the game is off", async () => {
     expect(await isArenaCharacterRequestEnabled()).toBe(true);
     expect(await isKqPlayerRequestEnabled()).toBe(false);

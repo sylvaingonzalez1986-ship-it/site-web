@@ -1,0 +1,96 @@
+.section {
+  --reward-ink: var(--poster-ink, #003f30);
+  --reward-muted: var(--poster-charcoal, #365345);
+  padding-block: clamp(2.5rem, 5vw, 4.5rem);
+  color: var(--reward-ink);
+}
+.heading { margin-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+.kicker, .eyebrow { margin: 0; font-size: .72rem; font-weight: 800; letter-spacing: .08em; line-height: 1.5; text-transform: uppercase; }
+.heading h2, .section h3, .grams { font-family: var(--font-display), "Arial Narrow", Impact, sans-serif; font-weight: 900; letter-spacing: -.025em; text-transform: uppercase; }
+.heading h2 { margin: .6rem 0 1rem; font-size: clamp(2.65rem, 5.5vw, 5rem); line-height: 1; }
+.heading h2 span { display: block; }
+.lead { max-width: 760px; margin: 0; font-size: clamp(1rem, 1.5vw, 1.15rem); line-height: 1.65; color: var(--reward-muted); }
+.draw, .card, .prize {
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  min-width: 0;
+  border: 2px solid transparent;
+  border-radius: 0;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 16px) / 0 stretch;
+  background: transparent;
+  box-shadow: none;
+}
+.draw { display: grid; grid-template-columns: minmax(210px, .72fr) minmax(0, 1.55fr); align-items: start; gap: clamp(1.5rem, 3.5vw, 3.5rem); padding: clamp(1.15rem, 3vw, 2.5rem); }
+.prize { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); display: flex; flex-direction: column; align-items: center; padding: 2rem 1.2rem; text-align: center; }
+.prize .eyebrow { font-size: .75rem; }
+.grams { margin: .2rem 0 0; font-size: clamp(6rem, 10vw, 10.5rem); line-height: 1; white-space: nowrap; }
+.grams span { font-size: .58em; text-transform: none; }
+.prizeLabel { margin: .3rem 0 0; font-size: 1rem; font-weight: 700; }
+.calendar { display: flex; align-items: center; gap: .7rem; margin-top: 1.5rem; padding-top: 1.2rem; border-top: 1px solid #003f304d; text-align: left; }
+.calendar > svg { flex-shrink: 0; }
+.calendar p { margin: 0; }
+.calendar strong, .calendar span { display: block; }
+.calendar strong { font-size: 1rem; }
+.calendar span { margin-top: .3rem; font-size: .75rem; line-height: 1.5; }
+.section h3 { margin: .65rem 0 1rem; font-size: clamp(1.85rem, 2.7vw, 2.6rem); line-height: 1.05; }
+.drawCopy > p:not(.eyebrow), .card > p { margin: 0 0 1rem; font-size: .98rem; line-height: 1.65; color: var(--reward-muted); }
+.steps { display: flex; flex-wrap: wrap; gap: .6rem 1.4rem; padding: 0; margin: 1.2rem 0; list-style: none; }
+.steps li { display: flex; align-items: center; gap: .45rem; font-size: .78rem; font-weight: 700; line-height: 1.5; }
+.steps li > span { font-family: var(--font-display), Impact, sans-serif; font-size: 1.5rem; color: var(--reward-ink); }
+.drawCopy > .reminder { font-size: .85rem; }
+.drawCopy > .claim { display: flex; gap: .7rem; padding-top: 1rem; margin-top: 1rem; border-top: 1px solid #003f3033; color: var(--reward-ink); font-size: .9rem; }
+.claim > svg { flex-shrink: 0; margin-top: .25rem; }
+.section .action {
+  --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
+  display: inline-flex; align-items: center; justify-content: center; gap: .7rem;
+  min-height: 48px; max-width: 100%; padding: .8rem 1.2rem;
+  border: 2px solid transparent; border-radius: 0;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  background: transparent; box-shadow: none;
+  color: #fffaf1; font-size: .8rem; font-weight: 800; line-height: 1.45; text-decoration: none; text-align: center;
+}
+.action > svg { flex-shrink: 0; }
+.activities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); margin-top: 1.5rem; }
+.card { display: flex; flex-direction: column; align-items: stretch; padding: clamp(1.15rem, 2.5vw, 2rem); }
+.cardHeading { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+.cardHeading > div { min-width: 0; }
+.cardHeading .art { width: clamp(74px, 8vw, 120px); }
+.card h3 { font-size: clamp(1.8rem, 2.6vw, 2.35rem); }
+.rewardLine { border-top: 1px solid #003f3033; padding-top: 1rem; margin: .2rem 0 1.2rem; }
+.rewardLine > strong { display: block; font-size: 1rem; line-height: 1.5; }
+.rewardLine > p { margin: .35rem 0 0; font-size: .88rem; line-height: 1.65; color: var(--reward-muted); }
+.card > .opening { font-size: .83rem; font-weight: 700; }
+.cardActions { display: flex; align-items: flex-start; flex-direction: column; margin-top: auto; }
+.textLink { display: inline-flex; align-items: center; min-height: 44px; margin-top: .35rem; color: inherit; font-size: .8rem; line-height: 1.5; text-decoration: underline; text-underline-offset: 3px; }
+.rules { margin-top: 1rem; border-top: 1px solid #003f3033; }
+.rules summary { padding-block: .9rem; min-height: 44px; color: var(--reward-ink); font-size: .82rem; font-weight: 700; line-height: 1.5; cursor: pointer; }
+.rules p { margin: 0 0 .75rem; color: var(--reward-muted); font-size: .83rem; line-height: 1.7; }
+.section :is(a, summary):focus-visible { outline: 3px solid var(--reward-ink); outline-offset: 4px; }
+@media (hover: hover) { .section .action:hover { --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); } }
+@media (max-width: 850px) {
+  .draw { grid-template-columns: minmax(180px, .7fr) minmax(0, 1.3fr); gap: 1.25rem; }
+  .prize { padding: 1.5rem .8rem; }
+  .activities { grid-template-columns: 1fr; }
+  .cardHeading .art { width: 100px; }
+}
+@media (max-width: 600px) {
+  .draw { grid-template-columns: minmax(0, 1fr); }
+  .prize { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 1rem; align-items: center; padding: 1rem; text-align: left; }
+  .prize > .eyebrow { grid-column: 1 / -1; }
+  .grams { grid-row: 2 / span 2; font-size: 5.8rem; }
+  .prizeLabel { font-size: .85rem; line-height: 1.4; }
+  .calendar { grid-column: 2; margin-top: .5rem; padding-top: .5rem; gap: .4rem; }
+  .calendar > svg { display: none; }
+  .calendar strong { font-size: .83rem; }
+  .calendar span { font-size: .72rem; }
+  .steps { display: grid; gap: .2rem; margin-block: .7rem; }
+  .section .action { width: 100%; }
+  .cardHeading { align-items: flex-start; }
+  .cardHeading .art { width: 74px; margin-top: 1.4rem; }
+  .section h3 { overflow-wrap: anywhere; }
+}
+@media (max-width: 359px) {
+  .prize { column-gap: .55rem; padding: 1rem .8rem; }
+  .grams { font-size: 4.6rem; }
+  .cardHeading { flex-wrap: wrap; }
+  .cardHeading .art { order: -1; width: 66px; margin: 0; }
+}

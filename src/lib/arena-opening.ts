@@ -10,6 +10,8 @@ export function isArenaPrelaunch(now = Date.now()): boolean {
 
 export function isArenaActivityApi(pathname: string): boolean {
   const path = pathname.replace(/\/+$/, "");
+  // The Carnet draw is available independently of the game's opening.
+  if (path === "/api/contest/monthly-draw") return false;
   if (path === "/api/arena/chanvrier") return false;
   if (path === "/api/contest/access") return false;
   return path === "/api/arena" || path.startsWith("/api/arena/") || path === "/api/contest" || path.startsWith("/api/contest/");

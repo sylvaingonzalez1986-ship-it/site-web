@@ -18,8 +18,9 @@ import { CustomSection } from "@/components/CustomSection";
 import { ProductCard } from "@/components/ProductCard";
 import { HomeBadgePromoBand } from "@/components/home/HomeBadgePromoBand";
 import { HomeSeasonGallery } from "@/components/home/HomeSeasonGallery";
+import { HomeRewardsSection } from "@/components/home/HomeRewardsSection";
 import { CBD_NATUREL_CANONICAL_ANSWER } from "@/lib/cbd-natural-answer";
-import { ARENA_OPENING_MESSAGE, isArenaPrelaunch } from "@/lib/arena-opening";
+import { isArenaPrelaunch } from "@/lib/arena-opening";
 import { getOwnProducer, resolveProductProducer } from "@/lib/own-producer";
 import { getHomeFeaturedProducts } from "@/lib/home-featured-products";
 import type { HomeSection, PublicStoreResponse } from "@/types/store";
@@ -287,72 +288,7 @@ export function HomeEditorialExperience({ initialStore, rotationDay }: HomeEdito
 
 
 
-      <section
-        id="ticket-grattage-home"
-        className={styles.bonusIntro}
-        aria-labelledby="bonus-title"
-        data-tutorial="ticket-promo-band"
-      >
-        <div className="retro-container">
-          <div className={styles.bonusCopy}>
-            <p className={styles.kicker}>Et en bonus ?</p>
-            <h2 id="bonus-title">Du fun et des cadeaux.</h2>
-            <p className={styles.bonusLead}>
-              Des fleurs à découvrir, un jeu à explorer et des cadeaux à gagner.
-              Entre dans l&apos;Arène, partage ton avis sur les fleurs que tu as achetées
-              et enrichis ton album en ouvrant tes boosters.
-            </p>
-            {arenaPrelaunch && <p className={styles.bonusOpening}>{ARENA_OPENING_MESSAGE} pour le jeu et le carnet.</p>}
-          </div>
-
-          <div className={styles.bonusCards}>
-            <article className={`${styles.bonusCard} ${styles.bonusCardFeatured}`} data-ui-shape="panel">
-              <p className={styles.bonusEyebrow}>01 · Le jeu de l&apos;Arène</p>
-              <h3>Joue pour gagner de vraies fleurs.</h3>
-              <p className={styles.bonusDescription}>
-                Cultive ta fleur virtuelle dans Kanab Quest, affronte les autres joueurs
-                et grimpe au classement. En fin de saison, le Pot de la Canopée offre
-                de vraies fleurs aux joueurs éligibles du Top 10, mais aussi à un joueur
-                tiré au sort parmi les participants éligibles hors Top 10.
-              </p>
-              <p className={styles.bonusFinePrint}>Récompenses selon le classement et les conditions d&apos;éligibilité de la saison.</p>
-              <Link href="/arene" className={styles.boosterCta} data-ui-shape="control">
-                Découvrir l&apos;Arène <ArrowRight aria-hidden="true" />
-              </Link>
-              <Link href="/arene?vue=classement" className={styles.bonusTextLink}>Voir les récompenses du jeu</Link>
-            </article>
-
-            <article className={styles.bonusCard} data-ui-shape="panel">
-              <p className={styles.bonusEyebrow}>02 · Le carnet de dégustation</p>
-              <h3>Tes fleurs, ton verdict.</h3>
-              <p className={styles.bonusDescription}>
-                Aspect, arômes, goût : note les fleurs que tu as achetées et raconte
-                ce que tu en penses. Coup de cœur ou avis mitigé, ta critique aide
-                les autres à choisir et les producteurs à progresser.
-              </p>
-              <p className={styles.bonusFinePrint}>Tes avis sont publiés après modération. Les avis validés font aussi progresser ton profil.</p>
-              <Link href="/arene/carnet/regular" className={styles.boosterCta} data-ui-shape="control">
-                Découvrir le carnet <ArrowRight aria-hidden="true" />
-              </Link>
-            </article>
-
-            <article className={styles.bonusCard} data-ui-shape="panel">
-              <p className={styles.bonusEyebrow}>03 · Les boosters de ton album</p>
-              <h3>600 € de bons d&apos;achat à gagner.</h3>
-              <p className={styles.bonusDescription}>
-                Chaque commande payée te donne 1 pack pour 5 € TTC. Ouvre tes boosters
-                dans Mon Album, complète ta collection et tente de décrocher le gros
-                lot ou d&apos;autres récompenses.
-              </p>
-              <p className={styles.bonusFinePrint}>Le gros lot : 12 bons d&apos;achat de 50 €, émis à raison d&apos;un par mois pendant 12 mois. Hors frais de port.</p>
-              <Link href="/profil/collection" className={styles.boosterCta} data-ui-shape="control">
-                Ouvrir mon album <ArrowRight aria-hidden="true" />
-              </Link>
-              <Link href="/reglement-jeu-promo" className={styles.bonusTextLink}>Voir le règlement des boosters</Link>
-            </article>
-          </div>
-        </div>
-      </section>
+      <HomeRewardsSection arenaPrelaunch={arenaPrelaunch} />
 
       <HomeBadgePromoBand />
 
