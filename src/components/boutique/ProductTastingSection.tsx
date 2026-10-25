@@ -112,6 +112,7 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
           <p className={styles.sourceNote}><BookOpen size={18} aria-hidden="true" /><span>Ces notes et critiques concernent le lot indiqué. La moyenne prend en compte tous les avis publiés après modération.</span></p>
           {showArenaLink ? (
             <>
+              <p className={styles.sourceNote}><span><strong>10 g de fleurs à gagner chaque mois.</strong> Un seul avis validé sur une fleur achetée te fait participer aux tirages du 1er de chaque mois, quelle que soit ta note. Tes anciens avis comptent aussi. Un gagnant, un bon à réclamer avec une commande. Règles dans le Carnet.</span></p>
               <Link href={getProductTastingNotebookHref(entry, true)} className={styles.carnetLink}>
                 Noter cette fleur <ArrowUpRight size={17} aria-hidden="true" />
               </Link>

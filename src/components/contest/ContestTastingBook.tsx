@@ -15,6 +15,7 @@ import { CONTEST_ENTRY_CATEGORIES, CONTEST_ENTRY_CATEGORY_LABELS, CONTEST_ENTRY_
 import { ContestFlowerImage } from "./ContestFlowerImage";
 import { ContestBundleNotebookNote } from "./ContestBundleNotebookNote";
 import { ContestNotebookHelp } from "./ContestNotebookHelp";
+import { MonthlyReviewDraw } from "./MonthlyReviewDraw";
 import styles from "./ContestTastingBook.module.css";
 import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 
@@ -359,6 +360,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
         </span>
       </button>
       <div className={styles.closedActions}>
+        {!api.isTutorial && <p className={styles.closedHint}>10 g à gagner chaque mois avec tes avis · règles dans le sommaire</p>}
         {!api.isTutorial && !open ? <ContestNotebookHelp className={styles.helpButton} /> : null}
         <p className={styles.closedHint}>{seasonLabel}</p>
       </div>
@@ -394,6 +396,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
                 <Image src="/contest/mascot/tasting/tasting-start.png" alt="Ton guide de dégustation" width={390} height={463} sizes="84px" />
                 <p><strong>On déguste ?</strong><span>Regular ou Concours, puis choisis ta culture.</span><small>{PRODUCER_REWARD_RULE}</small></p>
               </div>
+              {!api.isTutorial && <MonthlyReviewDraw loginHref={bundleLoginHref} onChooseFlower={() => openChapter(chapter)} />}
               {CONTEST_ENTRY_TRACKS.map((track) => {
                 const TrackIcon = track === "concours" ? Trophy : Leaf;
                 const trackCount = entries.filter((item) => item.track === track).length;
@@ -476,7 +479,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
                 <NotebookPanel entry={item} draftOwnerId={draftOwnerId} viewerProfile={viewerProfile} viewerReview={unlockById.get(id)?.review ?? null} eligibility={eligibilityFor(item)} loginHref={loginHrefFor(item)} productHref={getContestProductHref(item.product)} displayMode="book" defaultGuideOpen={!unlockById.get(id)?.review} onCloseGuide={() => go("flower")} />
               </div>;
             })}
-            {view === "rewards" && entry ? <div className={styles.rewardsPage}><NotebookRewards isAuthenticated={isAuthenticated} badges={badges} entryId={entry.id} entryTitle={entry.title} entryTrack={entry.track} reviewApproved={unlockById.get(entry.id)?.review?.status === "approved"} /></div> : null}
+            {view === "rewards" && entry ? <div className={styles.rewardsPage}>{!api.isTutorial && <MonthlyReviewDraw loginHref={bundleLoginHref} onChooseFlower={() => go("contents")} />}<NotebookRewards isAuthenticated={isAuthenticated} badges={badges} entryId={entry.id} entryTitle={entry.title} entryTrack={entry.track} reviewApproved={unlockById.get(entry.id)?.review?.status === "approved"} /></div> : null}
           </div>
           {view !== "tasting" ? <footer className={styles.pageFooter}>
             <button type="button" onClick={() => flip(-1)} disabled={view === "contents" || view === "rewards" || (view === "flowers" ? chapterIndex === 0 : flowerIndex <= 0)} aria-label={view === "flower" ? "Fleur précédente" : "Chapitre précédent"}><ChevronLeft size={18} /></button>

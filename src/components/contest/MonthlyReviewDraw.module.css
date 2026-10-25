@@ -1,0 +1,26 @@
+.panel { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); display: grid; gap: 12px; min-width: 0; margin: 16px 0 22px; padding: 22px 18px; border: 2px solid transparent; border-radius: 0; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; background: transparent; color: var(--arcade-ink, #172923); box-shadow: none; overflow-wrap: anywhere; }
+.panel p { margin: 0; font: 500 12px/1.6 var(--font-body), Arial, sans-serif; }
+.header { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.header > svg { flex-shrink: 0; }
+.panel .eyebrow { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
+.header h3 { display: block; margin: 4px 0 0; padding: 0; border: 0; color: inherit; background: transparent; font: 900 25px/1.1 var(--font-display), Impact, sans-serif; }
+.date, .participation { display: flex; align-items: flex-start; gap: 8px; }
+.date > svg, .participation > svg { flex-shrink: 0; margin-top: 2px; }
+.date strong, .date small { display: block; }
+.date small { margin-top: 3px; font-size: 11px; }
+.panel .participation { font-weight: 800; }
+.panel .detail { font-size: 11px; }
+.win { display: grid; gap: 10px; padding-top: 12px; border-top: 1px solid #17292355; }
+.win > strong { display: flex; align-items: center; gap: 7px; font-size: 16px; }
+.win ul { margin: 0; padding-left: 17px; font-size: 12px; line-height: 1.6; }
+.panel .action, .panel .refresh { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 0; min-height: 44px; padding: 10px 12px; border: 2px solid transparent; border-color: transparent; border-radius: 0; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; color: var(--arcade-paper, #fff1d6); background: transparent; box-shadow: none; font: 800 12px/1.5 var(--font-body), Arial, sans-serif; text-decoration: none; text-align: center; cursor: pointer; }
+.action svg, .refresh svg { flex-shrink: 0; }
+.panel .refresh { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); color: var(--arcade-ink, #172923); }
+.refresh:disabled { opacity: .55; cursor: wait; }
+.rules { border-top: 1px solid #17292355; min-width: 0; }
+.rules summary { min-height: 44px; padding: 12px 0; font-size: 12px; font-weight: 800; cursor: pointer; }
+.rules p + p { margin-top: 9px; }
+.panel .error { color: #7d2823; border-left: 3px solid #7d2823; padding-left: 9px; }
+.panel :is(a, button, summary):focus-visible { outline: 2px solid #00563f; outline-offset: 3px; box-shadow: 0 0 0 5px #fffaf1; }
+@media (hover: hover) { .panel .action:hover { --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); } .panel .refresh:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); } }
+@media (max-width: 359px) { .panel { padding: 18px 12px; gap: 10px; } .header h3 { font-size: 23px; } .header { gap: 7px; } }

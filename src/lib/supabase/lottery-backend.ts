@@ -1856,7 +1856,7 @@ export async function getLotteryInventoryForCustomerFromSupabase(userId: string)
   }
 
   const supabase = createSupabaseServiceClient();
-  const [collectionResult, definitionsResult, instancesResult, burnLogsResult, completionsResult] = await Promise.all([
+  const [collectionResult, definitionsResult, instancesResult, claimsResult] = await Promise.all([
     supabase
       .from("lottery_card_collections")
       .select(SELECT_CARD_COLLECTION_COLUMNS)
@@ -1874,18 +1874,17 @@ export async function getLotteryInventoryForCustomerFromSupabase(userId: string)
       .select("card_definition_id,created_at")
       .eq("user_id", safeUserId),
     supabase
-      .from("lottery_collection_burn_log")
-      .select("reward_claim_id")
-      .eq("user_id", safeUserId),
-    supabase
-      .from("lottery_collection_page_completions")
-      .select("reward_claim_id")
-      .eq("user_id", safeUserId),
+      .from("lottery_reward_claims")
+      .select(SELECT_REWARD_CLAIM_COLUMNS)
+      .eq("user_id", safeUserId)
+      .eq("status", "available")
+      .order("created_at", { ascending: false }),
   ]);
 
   failIfError(collectionResult.error, "read lottery_card_collections inventory");
   failIfError(definitionsResult.error, "list lottery_card_definitions inventory");
   failIfError(instancesResult.error, "list lottery_card_instances inventory");
+  failIfError(claimsResult.error, "list available lottery_reward_claims inventory");
 
   const collection = collectionResult.data
     ? mapCardCollectionRow(collectionResult.data as Record<string, unknown>)
@@ -1912,31 +1911,9 @@ export async function getLotteryInventoryForCustomerFromSupabase(userId: string)
   const duplicateCopies = Math.max(0, totalOwnedCopies - uniqueOwned);
   const completionPercent = totalCards > 0 ? Math.round((uniqueOwned / totalCards) * 100) : 0;
 
-  // Collect all claim IDs from burn logs and page completions
-  const allClaimIds = new Set<string>();
-  for (const raw of (burnLogsResult.data ?? []) as Record<string, unknown>[]) {
-    const claimId = toNullableText(raw.reward_claim_id);
-    if (claimId) allClaimIds.add(claimId);
-  }
-  for (const raw of (completionsResult.data ?? []) as Record<string, unknown>[]) {
-    const claimId = toNullableText(raw.reward_claim_id);
-    if (claimId) allClaimIds.add(claimId);
-  }
-
-  // Fetch available claims
-  const availableClaims: LotteryRewardClaim[] = [];
-  if (allClaimIds.size > 0) {
-    const claimsResult = await supabase
-      .from("lottery_reward_claims")
-      .select(SELECT_REWARD_CLAIM_COLUMNS)
-      .in("id", Array.from(allClaimIds))
-      .eq("status", "available");
-    if (claimsResult.data) {
-      for (const raw of claimsResult.data as Record<string, unknown>[]) {
-        availableClaims.push(mapRewardClaimRow(raw));
-      }
-    }
-  }
+  // Checkout accepts every available reward owned by this customer, including
+  // monthly notebook prizes that have no collection page or duplicate burn.
+  const availableClaims = (claimsResult.data ?? []).map((row) => mapRewardClaimRow(row as Record<string, unknown>));
 
   return {
     collection,
