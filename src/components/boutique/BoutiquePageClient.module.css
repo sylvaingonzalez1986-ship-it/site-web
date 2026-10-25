@@ -3,24 +3,121 @@
   background: linear-gradient(#00563f09 1px, transparent 1px), linear-gradient(90deg, #00563f09 1px, transparent 1px), #f6f0e6;
   background-size: 64px 64px;
 }
-.hero { composes: hero from "../EditorialTheme.module.css"; }
-.navigation { gap: .5rem; overflow: visible; border: 0; background: transparent; box-shadow: none; }
-.navigation button { border: 1px solid #fffaf16b; background: #003f30db; color: var(--market-paper); }
-.navigation button[aria-pressed="true"] {
-  border-color: var(--market-yellow); background: var(--market-paper); color: var(--market-dark);
-  box-shadow: inset 0 -4px var(--market-yellow);
+.hero {
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  position: relative;
+  padding: clamp(22px, 3.5vw, 44px);
+  border: 2px solid transparent;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+  background: transparent;
+  color: var(--market-dark);
+  box-shadow: none;
 }
-.navigation button:hover:not(:disabled) { background: var(--market-yellow); color: var(--market-dark); }
-.page [data-tutorial="category-filter"] { justify-content: center; }
-.page :is([data-tutorial="category-filter"], .cultureOptions) button {
-  border: 1px solid #fffaf16b; border-radius: 2px; background: transparent; color: var(--market-paper); box-shadow: none;
-  font: 700 .7rem/1.4 ui-monospace, monospace;
+.heroIntro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, 280px);
+  grid-template-areas: "copy character" "description character";
+  align-items: center;
+  gap: 14px clamp(20px, 5vw, 72px);
 }
-.page :is([data-tutorial="category-filter"], .cultureOptions) button[aria-pressed="true"] { border-color: var(--market-yellow); background: var(--market-yellow); color: var(--market-dark); }
-.cultureFilter { min-width: 0; margin-top: 20px; padding: 0; border: 0; }
-.cultureFilter legend { margin: 0 auto 8px; color: var(--market-paper); font: 700 .7rem/1.4 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .08em; }
-.cultureOptions { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
-.hero :where(button):focus-visible { outline: 3px solid var(--market-yellow); outline-offset: 3px; box-shadow: none; }
+.heroCopy { grid-area: copy; align-self: end; min-width: 0; }
+.heroEyebrow {
+  margin: 0 0 14px;
+  color: var(--market-green);
+  font: 800 .75rem/1.5 var(--font-body), sans-serif;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.heroTitle {
+  margin: 0;
+  font: 900 clamp(64px, 6.7vw, 94px)/.9 var(--font-display), sans-serif;
+  letter-spacing: -.015em;
+  text-transform: uppercase;
+}
+.heroTitle span { display: block; color: var(--market-green); }
+.heroDescription {
+  grid-area: description;
+  align-self: start;
+  max-width: 58ch;
+  margin: 0;
+  color: var(--market-dark);
+  font-size: clamp(14px, 1.3vw, 17px);
+  line-height: 1.65;
+}
+.heroCharacter { grid-area: character; justify-self: center; }
+.heroCharacter img { display: block; width: 240px; height: 270px; object-fit: contain; }
+.heroCatalogue { margin-top: 24px; padding-top: 20px; border-top: 1px solid #087b7040; }
+.catalogueLabel {
+  margin: 0 0 12px;
+  color: var(--market-green);
+  font: 900 1.25rem/1.2 var(--font-display), sans-serif;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.navigation { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-bottom: 18px; }
+.page .hero button {
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  min-height: 44px;
+  border: 2px solid transparent;
+  border-radius: 0;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  background: transparent;
+  color: var(--market-dark);
+  box-shadow: none;
+  font: 700 .75rem/1.4 var(--font-body), sans-serif;
+  letter-spacing: .025em;
+}
+/* This frame uses the original textured artwork, without the site's recolouring layer. */
+:global(html) .page .hero button[data-ui-shape]::before { content: none; }
+.page .hero button[aria-pressed="true"] {
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+.page .hero .shopTab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 62px;
+  padding: 12px;
+  text-align: center;
+  text-transform: uppercase;
+}
+.page .hero .shopTab[aria-pressed="true"] {
+  --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
+  color: var(--market-paper);
+}
+.page .hero button:disabled { opacity: .5; }
+.tabDetail { display: block; font-size: .65rem; font-weight: 500; letter-spacing: 0; text-transform: none; }
+.page [data-tutorial="category-filter"] { justify-content: flex-start; }
+.cultureFilter { min-width: 0; margin-top: 16px; padding: 0; border: 0; }
+.cultureFilter legend { margin-bottom: 8px; color: var(--market-green); font: 700 .7rem/1.4 var(--font-body), sans-serif; text-transform: uppercase; letter-spacing: .08em; }
+.cultureOptions { display: flex; flex-wrap: wrap; gap: 8px; }
+.page .hero button:focus-visible { outline: 3px solid var(--market-green); outline-offset: 4px; box-shadow: none; }
+@media (hover: hover) {
+  .page .hero button:hover:not(:disabled) {
+    --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+    color: var(--market-dark);
+  }
+}
+@media (max-width: 899px) {
+  .heroIntro { grid-template-columns: minmax(0, 1fr) 180px; }
+  .heroCharacter img { width: 180px; height: 230px; }
+}
+@media (max-width: 639px) {
+  .hero { padding: 22px 18px; }
+  .heroIntro { grid-template-columns: minmax(0, 1fr) 82px; grid-template-areas: "copy character" "description description"; gap: 16px 6px; }
+  .heroCopy { align-self: center; }
+  .heroEyebrow { margin-bottom: 10px; font-size: .65rem; letter-spacing: .1em; }
+  .heroTitle { font-size: clamp(40px, 10.5vw, 64px); }
+  .heroCharacter img { width: 100px; max-width: none; height: 154px; }
+  .heroCatalogue { margin-top: 18px; padding-top: 16px; }
+  .navigation { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-bottom: 14px; }
+  .page .hero .shopTab { padding: 12px 8px; font-size: .7rem; }
+  .tabDetail { font-size: .6rem; }
+  .page .hero :is([data-tutorial="category-filter"], .cultureOptions) button { padding-inline: 12px; font-size: .65rem; }
+}
 .sectionIntro { margin-bottom: 24px; padding: clamp(18px, 3vw, 32px); border: 1px solid var(--market-green); border-left: 6px solid var(--market-green); background: var(--market-paper); }
 .sectionIntro h2 { text-transform: uppercase; font-size: clamp(28px, 4vw, 46px); line-height: 1; }
 .catalogueHeading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; margin: 32px 0 24px; padding-bottom: 14px; border-bottom: 2px solid var(--market-green); }

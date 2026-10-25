@@ -1,10 +1,10 @@
 "use client";
 
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useMemo, useState, useSyncExternalStore } from "react";
 import { CategoryFilter } from "@/components/CategoryFilter";
 import { CustomSection } from "@/components/CustomSection";
-import { EditorialWorldHero } from "@/components/EditorialWorldHero";
 import { ProductCard } from "@/components/ProductCard";
 import { ProducerBar } from "@/components/boutique/ProducerBar";
 import { ProducerTcgCard } from "@/components/boutique/ProducerTcgCard";
@@ -209,28 +209,36 @@ export function BoutiquePageClient({
     switch (section.type) {
       case "header":
         return (
-          <EditorialWorldHero
+          <header
             key={section.id}
-            world="market"
-            eyebrow={boutique.eyebrow}
-            title="Chanvre Naturel"
-            description={boutique.description}
-            imageSrc="/mascots/boutique-market.png"
-            imageAlt="Charles présente la sélection de produits de la boutique"
+            data-boutique-hero
             className={`${spacingClass} ${styles.hero}`}
           >
-            <div className="mt-6">
-              <div className="mx-auto mb-5 w-full max-w-3xl">
-                <div className={`grid w-full grid-cols-2 overflow-hidden border-2 border-[#1a1a1a] bg-white sm:grid-cols-4 ${styles.navigation}`}>
+            <div className={styles.heroIntro}>
+              <div className={styles.heroCopy}>
+                <p className={styles.heroEyebrow}>{boutique.eyebrow || "La boutique"}</p>
+                <h1 className={styles.heroTitle}>Chanvre <span>naturel</span></h1>
+              </div>
+              <div className={styles.heroCharacter}>
+                <Image
+                  src="/mascots/boutique-market.png"
+                  alt="Charles présente la sélection de produits de la boutique"
+                  width={1024}
+                  height={1536}
+                  sizes="(max-width: 639px) 100px, (max-width: 899px) 180px, 240px"
+                  preload
+                />
+              </div>
+              {boutique.description.trim() ? <p className={styles.heroDescription}>{boutique.description}</p> : null}
+            </div>
+            <div className={styles.heroCatalogue}>
+              <p className={styles.catalogueLabel}>Faites votre marché</p>
+              <div className={styles.navigation} role="group" aria-label="Origine des produits">
                   <button data-ui-commerce="shop-tab" data-ui-shape="control"
                     type="button"
                     data-tutorial="tab-mes-produits"
                     aria-pressed={showcaseMode === "products"}
-                    className={`flex min-h-[58px] items-center justify-center px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:px-4 md:text-sm md:tracking-[0.1em] ${
-                      showcaseMode === "products"
-                        ? "bg-[#0a7b61] text-white"
-                        : "text-ink hover:bg-[#f2ede2]"
-                    }`}
+                    className={styles.shopTab}
                     onClick={() => setShowcaseMode("products")}
                   >
                     <span className="block">Mes produits</span>
@@ -239,11 +247,7 @@ export function BoutiquePageClient({
                     type="button"
                     data-tutorial="tab-mes-voisins"
                     aria-pressed={showcaseMode === "neighbors"}
-                    className={`flex min-h-[58px] items-center justify-center border-l-2 border-[#1a1a1a] px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors md:px-4 md:text-sm md:tracking-[0.1em] ${
-                      showcaseMode === "neighbors"
-                        ? "bg-[#0a7b61] text-white"
-                        : "text-ink hover:bg-[#f2ede2]"
-                    } ${voisinProducts.length === 0 ? "cursor-not-allowed opacity-50" : ""}`}
+                    className={styles.shopTab}
                     onClick={() => {
                       if (voisinProducts.length > 0) {
                         setShowcaseMode("neighbors");
@@ -257,11 +261,7 @@ export function BoutiquePageClient({
                     type="button"
                     data-tutorial="tab-les-copains"
                     aria-pressed={showcaseMode === "copains"}
-                    className={`flex min-h-[58px] items-center justify-center border-t-2 border-[#1a1a1a] px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors sm:border-t-0 sm:border-l-2 md:px-4 md:text-sm md:tracking-[0.1em] ${
-                      showcaseMode === "copains"
-                        ? "bg-[#0a7b61] text-white"
-                        : "text-ink hover:bg-[#f2ede2]"
-                    } ${copainsProducts.length === 0 ? "cursor-not-allowed opacity-50" : ""}`}
+                    className={styles.shopTab}
                     onClick={() => {
                       if (copainsProducts.length > 0) {
                         setShowcaseMode("copains");
@@ -269,21 +269,16 @@ export function BoutiquePageClient({
                     }}
                     disabled={copainsProducts.length === 0}
                   >
-                    <span className="block">Les copains de France et de Navarre</span>
+                    <span>Les copains <span className={styles.tabDetail}>de France et de Navarre</span></span>
                   </button>
                   <button data-ui-commerce="shop-tab" data-ui-shape="control"
                     type="button"
-                    className={`flex min-h-[58px] items-center justify-center border-l-2 border-t-2 border-[#1a1a1a] px-2 py-3 text-center text-[11px] font-bold uppercase leading-tight tracking-[0.08em] transition-colors sm:border-t-0 md:px-4 md:text-sm md:tracking-[0.1em] ${
-                      showcaseMode === "regions"
-                        ? "bg-[#0a7b61] text-white"
-                        : "text-ink hover:bg-[#f2ede2]"
-                    }`}
+                    className={styles.shopTab}
                     aria-pressed={showcaseMode === "regions"}
                     onClick={() => setShowcaseMode("regions")}
                   >
                     <span className="block">Par région</span>
                   </button>
-                </div>
               </div>
               {showcaseMode !== "regions" && availableFilters.length > 1 && (
                 <CategoryFilter selected={effectiveFilter} filters={availableFilters} onChange={setFilter} />
@@ -307,7 +302,7 @@ export function BoutiquePageClient({
                 </fieldset>
               )}
             </div>
-          </EditorialWorldHero>
+          </header>
         );
       case "products": {
         if (showcaseMode === "regions") {
