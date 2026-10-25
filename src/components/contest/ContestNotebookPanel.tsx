@@ -1923,6 +1923,7 @@ function ContestNotebookEditor({
                   data-notebook-comment
                   data-notebook-filled={Boolean(visibleComment.trim())}
                   onFocus={(event) => {
+                    if (isBookDisplayMode) return;
                     const field = event.currentTarget;
                     window.setTimeout(() => {
                       if (document.activeElement === field) field.scrollIntoView({ behavior: "smooth", block: "center" });

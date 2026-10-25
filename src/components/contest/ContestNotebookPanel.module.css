@@ -367,3 +367,14 @@
   .teaserAction, .navButton, .closeButton, .actionButton, .smallAction,
   .confirmScore, .methodButton, .checkOption, .stepTab, .progressFill { transition: none; }
 }
+@media (max-width: 899px), (pointer: coarse) {
+  :global([data-book-input-open="true"]) .bookPanel .notebook { grid-template-rows: minmax(0, 1fr); }
+  :global([data-book-input-open="true"]) .bookPanel .stepNav,
+  :global([data-book-input-open="true"]) .bookPanel .notebookFooter { display: none; }
+  :global([data-book-input-open="true"]) .bookPanel .contentViewport { padding: 12px; }
+  :global([data-book-input-open="true"]) .bookPanel .verdictTextarea {
+    height: var(--book-input-height, clamp(112px, calc(var(--book-height, 100dvh) - 112px), 166px));
+    min-height: min(112px, var(--book-input-height, 112px));
+    scroll-margin-block: 12px;
+  }
+}

@@ -135,19 +135,123 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
   useEffect(() => {
     const alreadyOpen = document.body.classList.contains("contest-notebook-open");
     document.body.classList.add("contest-notebook-open");
+    const desk = deskRef.current;
+    const viewport = window.visualViewport;
+    let restingHeight = viewport?.height ?? window.innerHeight;
+    let viewportWidth = window.innerWidth;
+    let rotatedDuringInput = false;
+    let smallestInputHeight = restingHeight;
+    let inputRequested = false;
+    let keyboardReduced = false;
+    let blurPending = false;
+    let revealFrame = 0;
+    let blurTimer = 0;
+    const getField = () => {
+      const active = document.activeElement;
+      if (!desk?.contains(active) || !(active instanceof HTMLTextAreaElement || active instanceof HTMLInputElement)) return null;
+      if (active.readOnly || active.disabled || (active instanceof HTMLInputElement && !["text", "search", "email", "url", "tel", "number", "password"].includes(active.type))) return null;
+      return active;
+    };
+    const revealField = () => {
+      const field = getField();
+      const scroll = field?.closest<HTMLElement>("[data-tasting-scroll]") ?? pageRef.current;
+      if (!field || !scroll) return;
+      const inset = 12;
+      if (desk?.dataset.bookInputOpen === "true") {
+        desk.style.setProperty("--book-input-height", `${Math.max(28, Math.min(166, scroll.clientHeight - inset * 2))}px`);
+      }
+      const fieldRect = field.getBoundingClientRect();
+      const scrollRect = scroll.getBoundingClientRect();
+      // Move only the form's scroll area. Native textarea scrolling keeps the
+      // caret visible inside long comments; moving the entire book fights it.
+      if (fieldRect.top < scrollRect.top + inset || fieldRect.height > scroll.clientHeight - inset * 2) {
+        scroll.scrollTop += fieldRect.top - scrollRect.top - inset;
+      } else if (fieldRect.bottom > scrollRect.bottom - inset) {
+        scroll.scrollTop += fieldRect.bottom - scrollRect.bottom + inset;
+      }
+    };
     const syncViewport = () => {
-      const viewport = window.visualViewport;
-      deskRef.current?.style.setProperty("--book-height", `${viewport?.height ?? window.innerHeight}px`);
-      deskRef.current?.style.setProperty("--book-top", `${viewport?.offsetTop ?? 0}px`);
+      // Pinch zoom pans the browser's visual viewport; it must not squeeze the
+      // book a second time. Keyboard resizing at normal scale still applies.
+      const zoomed = Boolean(viewport && Math.abs(viewport.scale - 1) > 0.05);
+      const height = viewport?.height ?? window.innerHeight;
+      if (!zoomed) {
+        desk?.style.setProperty("--book-height", `${height}px`);
+        desk?.style.setProperty("--book-top", `${viewport?.offsetTop ?? 0}px`);
+        if (window.innerWidth !== viewportWidth) {
+          // Rotation changes the resting height too, including on browsers
+          // that resize both the layout and visual viewports for the keyboard.
+          viewportWidth = window.innerWidth;
+          restingHeight = Math.max(height, window.innerHeight);
+          smallestInputHeight = height;
+          rotatedDuringInput = inputRequested;
+          keyboardReduced = false;
+        }
+        if (inputRequested) smallestInputHeight = Math.min(smallestInputHeight, height);
+      }
+      const field = getField();
+      const finishFocused = document.activeElement?.hasAttribute("data-book-finish-input");
+      if (!zoomed && inputRequested && height < restingHeight - 80) keyboardReduced = true;
+      // The system keyboard can close while the textarea retains focus.
+      if (!zoomed && !blurPending && ((keyboardReduced && height >= restingHeight - 40)
+        || (rotatedDuringInput && height >= smallestInputHeight + 100))) {
+        inputRequested = false;
+        keyboardReduced = false;
+        rotatedDuringInput = false;
+      }
+      // Native dismissal can leave the field focused. Keep following the
+      // closing animation so the next keyboard opening uses the full height.
+      if (!zoomed && !inputRequested) restingHeight = height;
+      const compact = inputRequested && Boolean(field || finishFocused || blurPending)
+        && window.matchMedia("(max-width: 899px), (pointer: coarse)").matches;
+      if (desk) desk.dataset.bookInputOpen = String(compact);
+      window.cancelAnimationFrame(revealFrame);
+      if (field && !zoomed) revealFrame = window.requestAnimationFrame(revealField);
+    };
+    const beginInput = () => {
+      if (!getField()) return;
+      if (!inputRequested) smallestInputHeight = viewport?.height ?? window.innerHeight;
+      inputRequested = true;
+      blurPending = false;
+      window.clearTimeout(blurTimer);
+      syncViewport();
+    };
+    const endInput = () => {
+      window.clearTimeout(blurTimer);
+      blurPending = true;
+      // Let a tap on Submit/Close finish before restoring the navigation;
+      // otherwise the button can move between pointerdown and click.
+      blurTimer = window.setTimeout(() => {
+        blurPending = false;
+        if (!getField() && !document.activeElement?.hasAttribute("data-book-finish-input")) {
+          inputRequested = false;
+          keyboardReduced = false;
+          rotatedDuringInput = false;
+        }
+        syncViewport();
+      }, 150);
+    };
+    const resumeInput = (event: MouseEvent) => {
+      // A native keyboard dismissal can keep focus on the field. Wait until
+      // the next tap finishes before moving it, so the browser keeps focus.
+      if (event.target === getField() && !inputRequested) beginInput();
     };
     syncViewport();
-    window.visualViewport?.addEventListener("resize", syncViewport);
-    window.visualViewport?.addEventListener("scroll", syncViewport);
+    desk?.addEventListener("focusin", beginInput);
+    desk?.addEventListener("focusout", endInput);
+    desk?.addEventListener("click", resumeInput);
+    viewport?.addEventListener("resize", syncViewport);
+    viewport?.addEventListener("scroll", syncViewport);
     window.addEventListener("resize", syncViewport);
     return () => {
       if (!alreadyOpen) document.body.classList.remove("contest-notebook-open");
-      window.visualViewport?.removeEventListener("resize", syncViewport);
-      window.visualViewport?.removeEventListener("scroll", syncViewport);
+      window.cancelAnimationFrame(revealFrame);
+      window.clearTimeout(blurTimer);
+      desk?.removeEventListener("focusin", beginInput);
+      desk?.removeEventListener("focusout", endInput);
+      desk?.removeEventListener("click", resumeInput);
+      viewport?.removeEventListener("resize", syncViewport);
+      viewport?.removeEventListener("scroll", syncViewport);
       window.removeEventListener("resize", syncViewport);
     };
   }, []);
@@ -218,6 +322,11 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
     onKeyDown={(event) => {
       if (event.key !== "Escape") return;
       event.stopPropagation();
+      if (deskRef.current?.dataset.bookInputOpen === "true" && document.activeElement instanceof HTMLElement) {
+        event.preventDefault();
+        document.activeElement.blur();
+        return;
+      }
       if (!open) return;
       if (view === "contents") close();
       else go(view === "tasting" || view === "rewards" ? "flower" : view === "flower" ? "flowers" : "contents");
@@ -226,6 +335,13 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
       {api.isTutorial ? <button type="button" className={styles.tutorialExit} onClick={onExitTutorial}><ArrowLeft size={17} aria-hidden="true" /> Retour au carnet</button> : <Link href="/arene" className={styles.arenaExit}><ArrowLeft size={17} aria-hidden="true" /> Retour à l’Arène</Link>}
       <span>Les Chanvriers Bretons</span>
       {open ? <button type="button" onClick={close} aria-label="Replier le carnet" title="Replier le carnet"><X size={18} aria-hidden="true" /></button> : <BookOpen size={18} aria-hidden="true" />}
+      <button type="button" className={styles.finishInput} data-book-finish-input
+        onPointerDown={(event) => event.preventDefault()}
+        onClick={(event) => {
+          const field = deskRef.current?.querySelector<HTMLInputElement | HTMLTextAreaElement>("textarea:focus, input:focus");
+          field?.blur();
+          event.currentTarget.blur();
+        }}>Fermer le clavier</button>
     </header>
 
     <h1 className={styles.srOnly}>Mon carnet de dégustation</h1>

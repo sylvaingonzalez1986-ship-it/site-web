@@ -39,6 +39,7 @@
 @media (max-width: 600px) { .deskHeader > span { display: none; } }
 .deskHeader > button { display: grid; place-items: center; width: 44px; height: 44px; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-color: transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .deskHeader .tutorialExit { display: flex; gap: 6px; width: auto; min-height: 44px; padding-inline: 10px; color: #172923; font-size: 12px; font-weight: 700; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-color: transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.deskHeader .finishInput { display: none; width: auto; padding-inline: 10px; font-size: 12px; font-weight: 800; }
 .closedStage { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 0; gap: 24px; perspective: 1400px; }
 .cover { display: block; position: relative; flex-shrink: 1; min-height: 0; max-height: calc(100% - 52px); aspect-ratio: .69; transform: rotate(-4deg); transition: transform 260ms ease; text-align: center; width: min(80vw, 380px); padding: 20px 22px 20px 32px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: url("/contest/ui/notebook-cover-material-v1.webp") 70 fill / 25px / 0 stretch; }
 .cover:hover { transform: rotate(-2deg) translateY(-4px); }
@@ -235,6 +236,21 @@
 @media (prefers-reduced-motion: reduce) {
   .closedStage[data-opening] { display: none; }
   .desk *, .desk *::before, .desk *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+/* The keyboard gets a real writing viewport instead of sharing its remaining
+   height with the book's headings and two sets of navigation controls. */
+@media (max-width: 899px), (pointer: coarse) {
+  .desk[data-book-input-open="true"] { padding: env(safe-area-inset-top, 0px) 8px 6px; }
+  .desk[data-book-input-open="true"] .deskHeader { min-height: 44px; gap: 8px; }
+  .desk[data-book-input-open="true"] .deskHeader > span,
+  .desk[data-book-input-open="true"] .deskHeader > button:not(.finishInput):not(.tutorialExit),
+  .desk[data-book-input-open="true"] .pageHeader,
+  .desk[data-book-input-open="true"] .pageHeading,
+  .desk[data-book-input-open="true"] .frontispiece { display: none; }
+  .desk[data-book-input-open="true"] .finishInput { display: flex; }
+  .desk[data-book-input-open="true"] .bookStage { padding: 2px 0 3px; }
+  .desk[data-book-input-open="true"] .book { grid-template-columns: minmax(0, 1fr); max-height: none; padding: 6px; }
+  .desk[data-book-input-open="true"] .page { grid-template-rows: minmax(0, 1fr); }
 }
 .chapterScene { display: flex; flex-direction: column; justify-content: center; align-self: stretch; flex: 1; min-height: 0; margin: 0; }
 .chapterScene > img { display: block; width: 100%; height: auto; min-height: 0; max-height: 340px; object-fit: contain; }
