@@ -34,7 +34,7 @@
   "dependencies": {
     "@3d-dice/dice-box-threejs": "^0.0.12",
     "@napi-rs/canvas": "^0.1.95",
-    "@sentry/nextjs": "^10.42.0",
+    "@sentry/nextjs": "^10.76.2",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.95.3",
     "@vercel/analytics": "^2.0.1",
@@ -42,7 +42,7 @@
     "gsap": "^3.14.2",
     "lucide-react": "^0.564.0",
     "next": "16.4.1",
-    "nodemailer": "^10.0.13",
+    "nodemailer": "^10.2.1",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.5.207",
     "pdfkit": "^0.17.2",
@@ -60,7 +60,7 @@
     "@types/pdfkit": "^0.17.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "@vitest/coverage-v8": "^4.1.0",
+    "@vitest/coverage-v8": "^4.1.12",
     "babel-plugin-react-compiler": "1.0.0",
     "chrome-launcher": "^1.2.1",
     "eslint": "9.39.2",
@@ -68,7 +68,7 @@
     "lighthouse": "^13.0.3",
     "tailwindcss": "^4",
     "typescript": "^5",
-    "vitest": "^4.1.0"
+    "vitest": "^4.1.12"
   },
   "overrides": {
     "@humanfs/node": "0.16.8",
