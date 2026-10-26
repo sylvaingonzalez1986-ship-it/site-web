@@ -8,6 +8,8 @@ const mocks = vi.hoisted(() => ({
   session: vi.fn(),
   admin: vi.fn(),
   activityRead: vi.fn(),
+  entries: vi.fn(),
+  unlocks: vi.fn(),
 }));
 
 vi.mock("next/headers", () => ({
@@ -16,17 +18,17 @@ vi.mock("next/headers", () => ({
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/admin-guard", () => ({ isCurrentRequestAdminAuthorized: mocks.admin }));
 vi.mock("@/lib/contest-backend", () => ({
-  getContestFeed: mocks.activityRead,
-  getContestNotebookUnlocks: mocks.activityRead,
-  getContestProfile: mocks.activityRead,
-  getContestProfileBadges: mocks.activityRead,
-  getContestRankings: mocks.activityRead,
-  getContestSeasons: mocks.activityRead,
-  getContestTesterProgress: mocks.activityRead,
-  getPublicContestEntries: mocks.activityRead,
+  getContestFeed: async () => ({ items: [] }),
+  getContestNotebookUnlocks: mocks.unlocks,
+  getContestProfile: async () => null,
+  getContestProfileBadges: async () => [],
+  getContestRankings: async () => ({ entries: [] }),
+  getContestSeasons: async () => [],
+  getContestTesterProgress: async () => null,
+  getPublicContestEntries: mocks.entries,
   isContestSchemaMissingError: () => false,
 }));
-vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.activityRead }));
+vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: async () => false }));
 vi.mock("@/lib/supabase/contest-bundle-rewards-backend", () => ({ getContestBundleRewards: mocks.activityRead }));
 vi.mock("./ContestArenaHub", () => ({ ContestArenaHub: () => null }));
 vi.mock("./ContestHubClient", () => ({ ContestHubClient: () => null }));
@@ -35,6 +37,8 @@ vi.mock("./ContestSchemaUnavailable", () => ({ ContestSchemaUnavailable: () => n
 
 import { ContestArenaPage, type ContestArenaPageProps } from "./ContestArenaPage";
 import { ContestArenaHub } from "./ContestArenaHub";
+import { ContestTastingBook } from "./ContestTastingBook";
+import { ContestHubClient } from "./ContestHubClient";
 
 type SearchParams = Awaited<ContestArenaPageProps["searchParams"]>;
 const visit = (params: SearchParams = {}, surface: ContestArenaPageProps["surface"] = "arena") =>
@@ -54,10 +58,13 @@ beforeEach(() => {
   vi.stubEnv("CONTEST_FEATURE_ENABLED", "true");
   vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "true");
   vi.stubEnv("CONTEST_BETA_ACCESS_ENABLED", "true");
+  vi.stubEnv("CONTEST_NOTEBOOK_ENABLED", "true");
   vi.spyOn(Date, "now").mockReturnValue(openingAt + 1);
   mocks.cookieValues.mockReturnValue([]);
   mocks.session.mockResolvedValue(null);
   mocks.admin.mockResolvedValue(false);
+  mocks.entries.mockResolvedValue({ entries: [], selectedSeason: null });
+  mocks.unlocks.mockResolvedValue([]);
   mocks.activityRead.mockImplementation(() => { throw new Error("Unexpected activity data access"); });
 });
 
@@ -100,8 +107,6 @@ describe("Arena discovery page access", () => {
   );
 
   it.each([
-    { surface: "notebook" as const, params: {}, next: "/arene/carnet/regular" },
-    { surface: "notebook-ranking" as const, params: {}, next: "/arene/carnet/classement" },
     { surface: "arena" as const, params: { vue: "classement" }, next: "/arene?vue=classement" },
     { surface: "arena" as const, params: { vue: "jouer" }, next: "/arene?vue=jouer" },
     { surface: "arena" as const, params: { vue: "classement", season: "automne" }, next: "/arene?season=automne&vue=classement" },
@@ -134,5 +139,47 @@ describe("Arena discovery page access", () => {
     const result = await visit({ "premiere-culture": "inconnue" });
     expect(result.type).toBe(ContestArenaHub);
     expect(result.props).not.toHaveProperty("continueAfterTrial");
+  });
+});
+
+describe("Public tasting notebook", () => {
+  it.each([false, true])("opens to an ordinary visitor before the game, authenticated=%s", async authenticated => {
+    vi.mocked(Date.now).mockReturnValue(openingAt - 1);
+    vi.stubEnv("CONTEST_FEATURE_ENABLED", "false");
+    vi.stubEnv("CONTEST_FEATURE_ALLOW_PRODUCTION", "false");
+    if (authenticated) connectOrdinaryCustomer();
+
+    const result = await visit({ track: "concours", entry: "selected-flower", edit: "notes" }, "notebook");
+    expect(result.type).toBe(ContestTastingBook);
+    expect(result.props).toMatchObject({
+      isAuthenticated: authenticated,
+      initialTrack: "concours", initialEntryId: "selected-flower", initialEditNotes: true,
+      draftOwnerId: authenticated ? "ordinary-customer" : null,
+    });
+    expect(mocks.entries).toHaveBeenCalledOnce();
+    expect(mocks.unlocks).toHaveBeenCalledWith({
+      customerId: authenticated ? "ordinary-customer" : undefined,
+      customerEmail: authenticated ? "ordinary@example.test" : undefined,
+      seasonCode: undefined,
+    });
+  });
+
+  it("keeps the notebook and its flower ranking public after the game opening", async () => {
+    expect((await visit({}, "notebook")).type).toBe(ContestTastingBook);
+    expect((await visit({}, "notebook-ranking")).type).toBe(ContestHubClient);
+  });
+
+  it("keeps the selected flower and note editor when following a legacy notebook link", async () => {
+    vi.mocked(Date.now).mockReturnValue(openingAt - 1);
+    await expect(visit({ vue: "carnet", track: "concours", entry: "flower", edit: "notes" })).rejects.toMatchObject({
+      digest: "NEXT_REDIRECT;replace;/arene/carnet/concours?entry=flower&edit=notes;307;",
+    });
+    expect(mocks.entries).not.toHaveBeenCalled();
+  });
+
+  it("honors a notebook-specific shutdown without reading data", async () => {
+    vi.stubEnv("CONTEST_NOTEBOOK_ENABLED", "false");
+    await expect(visit({}, "notebook")).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
+    expect(mocks.entries).not.toHaveBeenCalled();
   });
 });

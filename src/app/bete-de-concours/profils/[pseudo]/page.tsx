@@ -1,13 +1,7 @@
 import type { Metadata } from "next";
-import { notFound, permanentRedirect, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ContestSchemaUnavailable } from "@/components/contest/ContestSchemaUnavailable";
-import {
-  canCustomerAccessContestFeatureServer,
-  isContestBetaAccessRestrictedServer,
-  isContestFeatureEnabledServer,
-} from "@/lib/contest-feature";
-import { isCurrentRequestAdminAuthorized } from "@/lib/admin-guard";
-import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
+import { isContestNotebookEnabledServer } from "@/lib/contest-notebook-access";
 import {
   getPublicContestTesterProfile,
   isContestSchemaMissingError,
@@ -17,7 +11,6 @@ import {
   type ContestEntryTrack,
 } from "@/types/contest";
 import { ArenaPublicTesterProfile } from "@/components/contest/ArenaPublicTesterProfile";
-import type { PublicCustomer } from "@/types/customer";
 
 export const revalidate = 60;
 
@@ -25,21 +18,6 @@ type TesterProfilePageProps = {
   params: Promise<{ pseudo: string }>;
   searchParams: Promise<{ season?: string; track?: string }>;
 };
-
-async function getOptionalContestSession(): Promise<{
-  customerId: string;
-  customer: PublicCustomer;
-} | null> {
-  try {
-    return await getCurrentCustomerSessionByBackend();
-  } catch (error) {
-    const message = error instanceof Error ? error.message : "";
-    if (message.includes("[supabase:auth.getUser]")) {
-      return null;
-    }
-    throw error;
-  }
-}
 
 export async function generateMetadata({ params }: TesterProfilePageProps): Promise<Metadata> {
   const { pseudo } = await params;
@@ -51,17 +29,9 @@ export async function generateMetadata({ params }: TesterProfilePageProps): Prom
 }
 
 export async function ArenaTesterProfilePage({ params, searchParams }: TesterProfilePageProps) {
+  if (!isContestNotebookEnabledServer()) notFound();
   const { pseudo } = await params;
   const { season, track } = await searchParams;
-  const session = await getOptionalContestSession();
-  const adminAuthorized = await isCurrentRequestAdminAuthorized();
-  if (!canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
-    if (isContestFeatureEnabledServer() && isContestBetaAccessRestrictedServer() && !session && !adminAuthorized) {
-      redirect(`/compte/connexion?next=${encodeURIComponent(`/arene/profils/${pseudo}`)}`);
-    }
-    notFound();
-  }
-
   let profile = null;
   try {
     profile = await getPublicContestTesterProfile({
@@ -83,7 +53,7 @@ export async function ArenaTesterProfilePage({ params, searchParams }: TesterPro
   const safeTrack = CONTEST_ENTRY_TRACKS.includes(track as ContestEntryTrack)
     ? (track as ContestEntryTrack)
     : undefined;
-  const contestParams = new URLSearchParams({ vue: "classement" });
+  const contestParams = new URLSearchParams();
   if (season) {
     contestParams.set("season", season);
   }
@@ -91,7 +61,7 @@ export async function ArenaTesterProfilePage({ params, searchParams }: TesterPro
     contestParams.set("track", safeTrack);
   }
   const contestQuery = contestParams.toString();
-  const contestHref = `/arene?${contestQuery}`;
+  const contestHref = `/arene/carnet/classement${contestQuery ? `?${contestQuery}` : ""}`;
 
   return <ArenaPublicTesterProfile profile={profile} backHref={contestHref} />;
 }

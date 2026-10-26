@@ -1,9 +1,10 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { applyReleveCommerceRequest, createReleveCommerceBusiness, createReleveCommerceSocial, createReleveCommerceTransport, getReleveCommerceProgress, getReleveCommerceSnapshot, type KqReleveCommerceState } from './kanab-quest-releve-commerce';
-import { getReleveSocialLearning } from './kanab-quest-releve-social';
+import { getReleveSocialLearning, getReleveSocialPublications } from './kanab-quest-releve-social';
 import { getReleveCommerceGuide } from './arena-releve-commerce-guide';
 import { getKqSocialAdventure } from './kanab-quest-social-adventure';
 import { KQ_SOCIAL_SPONSORS, type KqSocialPlatform, type KqSocialSnapshot } from './kanab-quest-social';
+import { createReleveMeetingSession } from './arena-releve-meeting-session';
 
 const socialPath = '/api/arena/placard/social';
 function snapshot(state: KqReleveCommerceState) {
@@ -20,7 +21,7 @@ function publication(state: KqReleveCommerceState, platform: KqSocialPlatform) {
     choiceId: adventure.scene.choices[0].id, narrativeVersion: 3, subjectId: adventure.subject?.id, contextKey: adventure.contextKey,
   } }).state;
 }
-afterEach(() => vi.unstubAllGlobals());
+afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 
 describe('the independent social practice desk', () => {
   it('lends the basic site without inventing followers or changing another dossier', () => {
@@ -70,6 +71,36 @@ describe('the independent social practice desk', () => {
     expect(state.operations.trial.commerce.online?.settledUntil).toBe(new Date(before + 300_000).toISOString());
     expect(() => narrative(createReleveCommerceBusiness(), 'advance-social-time')).toThrow('dossier Réseaux');
     expect(() => applyReleveCommerceRequest(state, { path: '/api/arena/placard/commerce', method: 'POST', body: { action: 'online', command: 'start-marketing' } })).toThrow('rencontres dédiées');
+  });
+
+  it('keeps the real daily quota across a meeting reload and releases it only at Paris midnight', () => {
+    const clock = vi.spyOn(Date, 'now').mockReturnValue(Date.parse('2026-10-25T22:59:59Z'));
+    const rows = new Map<string, string>(), backing = { getItem: (key: string) => rows.get(key) ?? null,
+      setItem: (key: string, value: string) => { rows.set(key, value); } };
+    const session = createReleveMeetingSession('social', backing);
+    const published = publication(session.getSnapshot().state.business!, 'instagram');
+    session.update(current => ({ ...current, business: narrative(published, 'advance-social-time') }));
+    const saved = session.getSnapshot().state.business!;
+    const reloaded = createReleveMeetingSession('social', backing).getSnapshot();
+    expect(reloaded.storageWarning).toBe('');
+    expect(reloaded.state.business).toEqual(saved);
+    expect(reloaded.state.business!.operations.social!.history).toEqual(published.operations.social!.history);
+    expect(() => publication(reloaded.state.business!, 'instagram')).toThrow(/déjà publié/);
+    clock.mockReturnValue(Date.parse('2026-10-25T23:00:00Z'));
+    const nextDay = publication(reloaded.state.business!, 'instagram');
+    expect(nextDay.operations.social!.platforms.instagram).toMatchObject({ publishedDay: '2026-10-26' });
+    expect(nextDay.operations.social!.history.slice(1)).toEqual(saved.operations.social!.history);
+  });
+
+  it('keeps replies and ignored comments out of publication prerequisites and result readings', () => {
+    const published = publication(createReleveCommerceSocial(), 'x');
+    for (const interaction of ['reply', 'ignore'] as const) {
+      const state = structuredClone(published);
+      if (state.operations.social?.version !== 2) throw new Error('Expected a social snapshot');
+      state.operations.social.history[0].action = interaction;
+      expect(getReleveSocialPublications(state)).toEqual([]);
+      expect(() => narrative(state, 'read-social-result', { entryId: state.operations.social!.history[0].id })).toThrow('résultat enregistré');
+    }
   });
 
   it('does not count a recovery event or a legacy history entry as a publication read', () => {

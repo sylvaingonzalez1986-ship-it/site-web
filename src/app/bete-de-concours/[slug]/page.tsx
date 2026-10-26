@@ -1,14 +1,9 @@
 import type { Metadata } from "next";
-import { notFound, permanentRedirect, redirect } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import { ContestDetailClient } from "@/components/contest/ContestDetailClient";
 import { ContestSchemaUnavailable } from "@/components/contest/ContestSchemaUnavailable";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
-import {
-  canCustomerAccessContestFeatureServer,
-  isContestBetaAccessRestrictedServer,
-  isContestFeatureEnabledServer,
-} from "@/lib/contest-feature";
-import { isCurrentRequestAdminAuthorized } from "@/lib/admin-guard";
+import { isContestNotebookEnabledServer } from "@/lib/contest-notebook-access";
 import { getContestEntryDetailBySlug, isContestSchemaMissingError } from "@/lib/contest-backend";
 import { sanitizePublicContestEntryDetail } from "@/lib/contest-public-api";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -38,7 +33,7 @@ async function getOptionalContestSession(): Promise<{
 export async function generateMetadata({
   params,
 }: ContestDetailPageProps): Promise<Metadata> {
-  if (!isContestFeatureEnabledServer() || isContestBetaAccessRestrictedServer()) {
+  if (!isContestNotebookEnabledServer()) {
     return {
       title: "L'Arène",
       robots: { index: false, follow: false },
@@ -81,19 +76,12 @@ export async function generateMetadata({
 }
 
 export async function ContestArenaDetailPage({ params }: ContestDetailPageProps) {
+  if (!isContestNotebookEnabledServer()) notFound();
   const { slug } = await params;
   let detail = null;
   let session: Awaited<ReturnType<typeof getOptionalContestSession>> = null;
   try {
     session = await getOptionalContestSession();
-    const adminAuthorized = await isCurrentRequestAdminAuthorized();
-    if (!canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
-      if (isContestFeatureEnabledServer() && isContestBetaAccessRestrictedServer() && !session && !adminAuthorized) {
-        redirect(`/compte/connexion?next=${encodeURIComponent(`/arene/${slug}`)}`);
-      }
-      notFound();
-    }
-
     detail = await getContestEntryDetailBySlug(slug, session?.customerId, session?.customer.email);
   } catch (error) {
     if (isContestSchemaMissingError(error)) {

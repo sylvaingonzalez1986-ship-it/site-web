@@ -4,14 +4,14 @@ import {
   getContestTesterProgress,
   isContestSchemaMissingError,
 } from "@/lib/contest-backend";
-import { getContestFeatureAccessDeniedResponse } from "@/lib/contest-feature";
+import { getContestNotebookAccessDeniedResponse } from "@/lib/contest-notebook-access";
 import { sanitizePublicContestProgress } from "@/lib/contest-public-api";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) {
     return denied;
   }

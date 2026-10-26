@@ -15,7 +15,7 @@ import { hasActiveProductPromo } from "@/lib/product-promo";
 import { isRemoteImageUrl } from "@/lib/image-source";
 import { isProductCultureModeEligible, type Product } from "@/data/products";
 import { getContestProductTastingSummary, isContestSchemaMissingError } from "@/lib/contest-backend";
-import { isContestFeatureEnabledServer } from "@/lib/contest-feature";
+import { isContestNotebookEnabledServer } from "@/lib/contest-notebook-access";
 import {
   sanitizePublicContestProductTastingSummary,
   type PublicContestProductTastingSummary,
@@ -96,7 +96,7 @@ async function findProduct(
 async function findProductTastingSummary(
   productId: string,
 ): Promise<PublicContestProductTastingSummary | null> {
-  if (!isProductTastingStorefrontEnabled() || !isContestFeatureEnabledServer()) {
+  if (!isProductTastingStorefrontEnabled() || !isContestNotebookEnabledServer()) {
     return null;
   }
 

@@ -35,7 +35,7 @@ function envelope(value: unknown) {
   if ((!isKqSocialSnapshot(row.state) && !isLegacySnapshot(row.state)) || typeof row.reputation !== "number" || !Number.isFinite(row.reputation)
     || !Number.isSafeInteger(row.cashCents) || (row.cashCents as number) < 0 || typeof row.replayed !== "boolean") throw new KqSocialError("Données des réseaux indisponibles.", 503);
   const now = Date.parse(row.state.serverNow);
-  const snapshot = refreshKqSocialSnapshot(normalizeKqSocialSnapshot(row.state, now), now, row.reputation);
+  const snapshot = refreshKqSocialSnapshot(normalizeKqSocialSnapshot(row.state, now), now, row.reputation, 3, { publicationNow: now });
   if (row.replayed) snapshot.replayed = true;
   return { snapshot, now, reputation: row.reputation, cashCents: row.cashCents as number };
 }
@@ -63,7 +63,7 @@ export async function getKqSocial(userId: string, command?: KqSocialCommand): Pr
   if (current.snapshot.replayed) return current.snapshot;
   if (!parsed) return current.snapshot;
   let next: KqSocialSnapshot;
-  try { next = applyKqSocialCommand(current.snapshot, parsed, current.now, current.reputation, randomInt(0, 101)); }
+  try { next = applyKqSocialCommand(current.snapshot, parsed, current.now, current.reputation, randomInt(0, 101), false, false, false, false, { publicationNow: current.now }); }
   catch (error) { throw new KqSocialError(error instanceof Error ? error.message : "Ce choix n’est plus disponible.", 409); }
   const reward = next.sponsors.earnedCents - current.snapshot.sponsors.earnedCents;
   if (current.cashCents + reward > 2147483647) throw new KqSocialError(errors.social_wallet_limit[0], 409);

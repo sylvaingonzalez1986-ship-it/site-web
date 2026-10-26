@@ -4,7 +4,7 @@ import {
   getPublicContestTesterProfile,
   isContestSchemaMissingError,
 } from "@/lib/contest-backend";
-import { getContestFeatureAccessDeniedResponse } from "@/lib/contest-feature";
+import { getContestNotebookAccessDeniedResponse } from "@/lib/contest-notebook-access";
 import { sanitizePublicContestTesterProfile } from "@/lib/contest-public-api";
 
 export const runtime = "nodejs";
@@ -14,7 +14,7 @@ type RouteContext = {
 };
 
 export async function GET(request: Request, context: RouteContext) {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) {
     return denied;
   }

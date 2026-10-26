@@ -8,7 +8,7 @@ import {
   submitContestReview,
   updateContestReview,
 } from "@/lib/contest-backend";
-import { getContestFeatureAccessDeniedResponse } from "@/lib/contest-feature";
+import { getContestNotebookAccessDeniedResponse } from "@/lib/contest-notebook-access";
 import { sanitizeViewerContestReview } from "@/lib/contest-public-api";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
@@ -19,7 +19,7 @@ import { ContestReviewVersionConflictError, isContestReviewVersion } from "@/lib
 export const runtime = "nodejs";
 
 export async function GET(request: Request) {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) {
     return denied;
   }
@@ -47,7 +47,7 @@ export async function GET(request: Request) {
 }
 
 export async function POST(request: Request) {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) {
     return denied;
   }
@@ -124,7 +124,7 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) {
     return denied;
   }

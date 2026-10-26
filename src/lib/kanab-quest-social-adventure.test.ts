@@ -20,6 +20,10 @@ const lot = (overrides: Partial<KqSocialCultureLot> = {}): KqSocialCultureLot =>
 function state(runs: KqSocialCultureRun[] = [], lots: KqSocialCultureLot[] = []) {
   const snapshot = createKqSocialSnapshot(now);
   snapshot.culture = { ...createKqSocialCultureContext(now, "own"), runs, lots };
+  // These regressions exercise the original culture stories after discovering debates.
+  for (const scene of KQ_SOCIAL_SCENARIOS.filter(scene => scene.episode === 1 && /^(?:ig|x)-debate-/.test(scene.id))) {
+    snapshot.platforms[scene.platform].memory[scene.id] = scene.choices[0].id;
+  }
   return snapshot;
 }
 function choose(snapshot: KqSocialSnapshot, platform: KqSocialPlatform, choice = 0, subjectId?: string): KqSocialCommand {
@@ -36,11 +40,11 @@ describe("producer adventures use the player's observed culture", () => {
     for (let index = 0; index < 7; index++) {
       const adventure = getKqSocialAdventure(snapshot, "instagram");
       const care = adventure.scene.choices.findIndex(choice => choice.intent === "care");
-      snapshot = applyKqSocialCommand(snapshot, choose(snapshot, "instagram", care), now + index * 300_000);
+      snapshot = applyKqSocialCommand(snapshot, choose(snapshot, "instagram", care), now + index * 86_400_000);
       published.push(snapshot.history[0].scenarioId);
     }
     expect(published.filter(id => id === "ig-first-frame")).toHaveLength(1);
-    expect(published[6]).toBe("ig-feed-overload");
+    expect(published[6]).toBe("ig-debate-foin-post");
   });
   it("keeps general topics playable with no culture, unavailable data or a borrowed exercise", () => {
     for (const source of ["own", "loan", "unknown"] as const) {
@@ -120,7 +124,7 @@ describe("producer adventures use the player's observed culture", () => {
   it("covers all 54 situations, every choice and every actual continuation using one coherent subject", () => {
     const snapshot = state([run({ stageIndex: 3, problem: { symptom: "Quelques feuilles pâlissent.", status: "suspected", diagnosis: null } })], [lot(), lot({ id: "ready-lot", stage: "ready" })]);
     let publications = 0;
-    for (const scene of KQ_SOCIAL_SCENARIOS) {
+    for (const scene of KQ_SOCIAL_SCENARIOS.filter(scene => !/^(?:ig|x)-debate-/.test(scene.id))) {
       const requirement = getKqSocialProducerNarrative(scene.id).requirement;
       const subject = getKqSocialSubjects(snapshot, requirement)[0];
       expect(subject, scene.id).toBeDefined();
@@ -148,7 +152,7 @@ describe("producer adventures use the player's observed culture", () => {
         }
       }
     }
-    expect(Object.keys(KQ_SOCIAL_PRODUCER_NARRATIVES)).toHaveLength(54);
+    expect(Object.keys(KQ_SOCIAL_PRODUCER_NARRATIVES).filter(id => !/^(?:ig|x)-debate-/.test(id))).toHaveLength(54);
     expect(publications).toBe(465);
   });
   it("upgrades V2 without relabelling its posted text, losing followers, money or a partnership", () => {

@@ -1,21 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { KQ_SOCIAL_SCENARIOS, KQ_SOCIAL_SPONSORS } from "./kanab-quest-social-stories";
+import { KQ_SOCIAL_SCENARIOS, KQ_SOCIAL_SPONSORS, KQ_SOCIAL_LEGACY_SPONSORS, KQ_SOCIAL_SPONSOR_REGISTRY } from "./kanab-quest-social-stories";
 import type { KqSocialEffects } from "./kanab-quest-social-types";
 
 const effectKeys: Array<keyof KqSocialEffects> = ["followersMin", "followersMax", "haters", "trust", "moderation", "energy"];
 
 describe("social narrative graph and meaningful choices", () => {
-  it("has nine complete three-episode arcs on each network, with unique command identifiers and authored scenes", () => {
-    expect(KQ_SOCIAL_SCENARIOS).toHaveLength(54);
+  it("has twenty-five complete three-episode arcs on each network, with unique command identifiers and authored scenes", () => {
+    expect(KQ_SOCIAL_SCENARIOS).toHaveLength(150);
     expect(new Set(KQ_SOCIAL_SCENARIOS.map(scene => scene.id)).size).toBe(KQ_SOCIAL_SCENARIOS.length);
-    expect(new Set(KQ_SOCIAL_SCENARIOS.map(scene => scene.title)).size).toBe(54);
-    expect(new Set(KQ_SOCIAL_SCENARIOS.map(scene => scene.body)).size).toBe(54);
-    expect(KQ_SOCIAL_SCENARIOS.flatMap(scene => scene.choices)).toHaveLength(162);
+    expect(new Set(KQ_SOCIAL_SCENARIOS.map(scene => scene.title)).size).toBe(150);
+    expect(new Set(KQ_SOCIAL_SCENARIOS.map(scene => scene.body)).size).toBe(150);
+    expect(KQ_SOCIAL_SCENARIOS.flatMap(scene => scene.choices)).toHaveLength(450);
     for (const platform of ["instagram", "x"] as const) {
       const scenes = KQ_SOCIAL_SCENARIOS.filter(scene => scene.platform === platform);
-      expect(scenes).toHaveLength(27);
+      expect(scenes).toHaveLength(75);
       const arcs = [...new Set(scenes.map(scene => scene.arc))];
-      expect(arcs).toHaveLength(9);
+      expect(arcs).toHaveLength(25);
       for (const arc of arcs) expect(scenes.filter(scene => scene.arc === arc).map(scene => scene.episode)).toEqual([1, 2, 3]);
       for (const scene of scenes) {
         expect(new Set(scene.choices.map(choice => choice.id)).size).toBe(3);
@@ -27,7 +27,7 @@ describe("social narrative graph and meaningful choices", () => {
   });
 
   it("makes every follow-up reachable from an earlier decision in the same arc", () => {
-    expect(KQ_SOCIAL_SCENARIOS.flatMap(scene => scene.followups ?? [])).toHaveLength(101);
+    expect(KQ_SOCIAL_SCENARIOS.flatMap(scene => scene.followups ?? [])).toHaveLength(293);
     for (const [index, scene] of KQ_SOCIAL_SCENARIOS.entries()) {
       if (scene.episode === 1) continue;
       expect(scene.followups?.length, scene.id).toBeGreaterThanOrEqual(2);
@@ -108,9 +108,10 @@ describe("social narrative graph and meaningful choices", () => {
 
 describe("fictional partnership briefs", () => {
   it("provides progressively available, distinct two-publication contracts on both networks", () => {
-    expect(new Set(KQ_SOCIAL_SPONSORS.map(sponsor => sponsor.id)).size).toBe(4);
-    expect(KQ_SOCIAL_SPONSORS.map(sponsor => sponsor.minimumFollowers)).toEqual([75, 200, 500, 1000]);
-    for (const platform of ["instagram", "x"] as const) expect(KQ_SOCIAL_SPONSORS.filter(sponsor => sponsor.platform === platform)).toHaveLength(2);
+    expect(KQ_SOCIAL_SPONSORS).toHaveLength(8);
+    expect(new Set(KQ_SOCIAL_SPONSORS.map(sponsor => sponsor.id)).size).toBe(8);
+    expect(KQ_SOCIAL_SPONSORS.map(sponsor => sponsor.minimumFollowers)).toEqual([75, 200, 500, 1000, 2500, 5000, 10000, 12000]);
+    for (const platform of ["instagram", "x"] as const) expect(KQ_SOCIAL_SPONSORS.filter(sponsor => sponsor.platform === platform)).toHaveLength(4);
     for (const sponsor of KQ_SOCIAL_SPONSORS) {
       expect(new Set(sponsor.requiredTags).size).toBe(2);
       expect(sponsor.requiredTags.every(tag => ["visual", "craft", "dialogue", "community"].includes(tag))).toBe(true);
@@ -119,7 +120,31 @@ describe("fictional partnership briefs", () => {
       expect(sponsor.maxHaters).toBeLessThan(100);
       expect(sponsor.rewardCents).toBeGreaterThan(0);
       expect(Number.isSafeInteger(sponsor.rewardCents)).toBe(true);
+      expect(sponsor.pricingVersion).toBe(1);
+      expect(sponsor.sector).toBeTruthy();
+      expect(sponsor.maxRewardCents).toBeGreaterThan(sponsor.rewardCents);
+      expect(Number.isSafeInteger(sponsor.maxRewardCents)).toBe(true);
+      expect(Object.keys(sponsor.deliverables ?? {}).sort()).toEqual([...sponsor.requiredTags].sort());
+      expect(new Set(Object.values(sponsor.deliverables ?? {}).map(deliverable => deliverable.title)).size).toBe(2);
+      for (const tag of sponsor.requiredTags) {
+        expect(sponsor.deliverables?.[tag]?.title).toBeTruthy();
+        expect(sponsor.deliverables?.[tag]?.description).toBeTruthy();
+      }
       expect(sponsor.brief).toContain("Partenariat rémunéré");
+    }
+  });
+
+  it("preserves the four fixed-price historical agreements outside new offers", () => {
+    expect(KQ_SOCIAL_LEGACY_SPONSORS.map(({ id, rewardCents }) => ({ id, rewardCents }))).toEqual([
+      { id: "atelier-marne", rewardCents: 3000 }, { id: "carnet-brut", rewardCents: 6000 },
+      { id: "planche-pixel", rewardCents: 10000 }, { id: "decibel-club", rewardCents: 18000 },
+    ]);
+    expect(KQ_SOCIAL_LEGACY_SPONSORS.every(sponsor => sponsor.pricingVersion === undefined)).toBe(true);
+    expect(KQ_SOCIAL_SPONSOR_REGISTRY).toHaveLength(12);
+    expect(new Set(KQ_SOCIAL_SPONSOR_REGISTRY.map(sponsor => sponsor.id)).size).toBe(12);
+    for (const sponsor of KQ_SOCIAL_LEGACY_SPONSORS) {
+      expect(KQ_SOCIAL_SPONSORS.some(current => current.id === sponsor.id)).toBe(false);
+      expect(KQ_SOCIAL_SPONSOR_REGISTRY.find(registered => registered.id === sponsor.id)).toBe(sponsor);
     }
   });
 });

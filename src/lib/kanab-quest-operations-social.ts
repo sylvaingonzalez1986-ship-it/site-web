@@ -3,6 +3,7 @@ import { createKqOnlinePreview } from './kanab-quest-online';
 import { applyKqSocialCommand, createKqSocialSnapshot, getKqSocialLocalRoll, normalizeKqSocialSnapshot, parseKqSocialCommand, refreshKqSocialSnapshot } from './kanab-quest-social';
 import { applyKqSocialCommand as applyV1Command, createKqSocialSnapshot as createV1Snapshot, parseKqSocialCommand as parseV1Command, refreshKqSocialSnapshot as refreshV1Snapshot } from './kanab-quest-social-v1';
 import { projectKqSocialCultureContext, type KqSocialCultureContext } from './kanab-quest-social-culture';
+import type { KqSocialCadenceOptions } from './kanab-quest-social-daily';
 
 /** Operations exercises lend their harvest. It is never the player's own past. */
 export function getKqOperationsSocialCulture(state: KqOperationsLessonState): KqSocialCultureContext {
@@ -20,22 +21,25 @@ export function getKqOperationsSocialCulture(state: KqOperationsLessonState): Kq
 }
 
 /** Reads older exercise saves without creating state or spending their energy. */
-export function getKqOperationsSocial(state: KqOperationsLessonState, culture = getKqOperationsSocialCulture(state), narrativeVersion: 2 | 3 = 3) {
+export function getKqOperationsSocial(state: KqOperationsLessonState, culture = getKqOperationsSocialCulture(state), narrativeVersion: 2 | 3 = 3, cadence: KqSocialCadenceOptions = {}) {
   const now = state.trial.clock;
   const online = state.trial.commerce.online;
   const audienceFollowers = online?.followers ?? 0;
   const siteActive = online?.site.active ?? false;
   const stored = state.social ? normalizeKqSocialSnapshot(state.social, now, narrativeVersion) : createKqSocialSnapshot(now, audienceFollowers, siteActive, narrativeVersion);
-  return refreshKqSocialSnapshot({ ...stored, audienceFollowers, siteActive, culture }, now, state.trial.commerce.reputation, narrativeVersion);
+  return refreshKqSocialSnapshot({ ...stored, audienceFollowers, siteActive, culture }, now, state.trial.commerce.reputation, narrativeVersion,
+    { publicationNow: Date.now(), inferLegacyPublications: false, ...cadence, legacyCadence: cadence.legacyCadence ?? narrativeVersion === 2 });
 }
 
 /** The exercise advances and settles shop time in a single synchronous action.
  * A post therefore changes future demand, never already settled visits or sales. */
-export function applyKqOperationsSocial(state: KqOperationsLessonState, body: unknown, replayOriginalCatalog = false, replayLegacyNarrative = false, culture?: KqSocialCultureContext, replayV2Narrative = false) {
+export function applyKqOperationsSocial(state: KqOperationsLessonState, body: unknown, replayOriginalCatalog = false, replayLegacyNarrative = false, culture?: KqSocialCultureContext, replayV2Narrative = false, replayV3Catalog = false, cadence: KqSocialCadenceOptions = {}) {
   const command = parseKqSocialCommand(body);
   if (!command) throw new Error('Choix de réseau social invalide.');
-  const previous = getKqOperationsSocial(state, culture, replayOriginalCatalog || replayLegacyNarrative || replayV2Narrative ? 2 : 3);
-  const social = applyKqSocialCommand(previous, command, state.trial.clock, state.trial.commerce.reputation, getKqSocialLocalRoll(command.requestKey), replayOriginalCatalog, replayLegacyNarrative, replayV2Narrative);
+  const timing = { publicationNow: Date.now(), inferLegacyPublications: false, ...cadence,
+    legacyCadence: cadence.legacyCadence || replayOriginalCatalog || replayLegacyNarrative || replayV2Narrative || replayV3Catalog };
+  const previous = getKqOperationsSocial(state, culture, replayOriginalCatalog || replayLegacyNarrative || replayV2Narrative ? 2 : 3, timing);
+  const social = applyKqSocialCommand(previous, command, state.trial.clock, state.trial.commerce.reputation, getKqSocialLocalRoll(command.requestKey), replayOriginalCatalog, replayLegacyNarrative, replayV2Narrative, replayV3Catalog, timing);
   const commerce = state.trial.commerce;
   const rewardCents = social.sponsors.earnedCents - previous.sponsors.earnedCents;
   if (!Number.isSafeInteger(rewardCents) || rewardCents < 0) throw new Error('Récompense de partenariat invalide.');
@@ -57,7 +61,8 @@ export function applyKqOperationsSocial(state: KqOperationsLessonState, body: un
   delete stored.culture;
   state.social = stored;
   commerce.revision++;
-  state.events.push(command.action === 'choose' ? 'social-post' : `social-${command.action}`);
+  const interaction = social.history[0].action;
+  state.events.push(command.action === 'choose' ? interaction === 'reply' || interaction === 'ignore' ? `social-${interaction}` : 'social-post' : `social-${command.action}`);
   return social;
 }
 

@@ -1,11 +1,13 @@
-import { KQ_SOCIAL_LEGACY_SCENARIOS, KQ_SOCIAL_ORIGINAL_SCENARIOS, KQ_SOCIAL_SCENARIOS, KQ_SOCIAL_SPONSORS, KQ_SOCIAL_V2_SCENARIOS } from "./kanab-quest-social-stories";
+import { KQ_SOCIAL_LEGACY_SCENARIOS, KQ_SOCIAL_ORIGINAL_SCENARIOS, KQ_SOCIAL_SCENARIOS, KQ_SOCIAL_SPONSORS, KQ_SOCIAL_SPONSOR_REGISTRY, KQ_SOCIAL_V2_SCENARIOS, KQ_SOCIAL_PRE_DAILY_SCENARIOS } from "./kanab-quest-social-stories";
 import { getKqSocialAdventure } from "./kanab-quest-social-adventure";
 import { isKqSocialSubject } from "./kanab-quest-social-producer";
 import { isKqSocialCultureContext } from "./kanab-quest-social-culture";
 import { isKqSocialSnapshot as isV1, getKqSocialVisits, isKqSocialUuid, type KqSocialSnapshot as V1Snapshot } from "./kanab-quest-social-v1";
-import type { KqSocialAccount, KqSocialChoice, KqSocialChoicePreview, KqSocialCommand, KqSocialHistoryEntry, KqSocialPlatform, KqSocialScenario, KqSocialSnapshot, KqSocialSponsorOffer, KqSocialTag } from "./kanab-quest-social-types";
+import { applyKqSocialDailyCadence, getKqSocialPublicationDay, isKqSocialPublicationDay, type KqSocialCadenceOptions } from "./kanab-quest-social-daily";
+import { getKqSocialSponsorPricing, isKqSocialSponsorPricing, KQ_SOCIAL_MAX_SPONSOR_REWARD_CENTS } from "./kanab-quest-social-sponsor-pricing";
+import type { KqSocialAccount, KqSocialChoice, KqSocialChoicePreview, KqSocialCommand, KqSocialHistoryEntry, KqSocialPlatform, KqSocialScenario, KqSocialSnapshot, KqSocialSponsorDefinition, KqSocialSponsorOffer, KqSocialTag } from "./kanab-quest-social-types";
 export type * from "./kanab-quest-social-types";
-export { KQ_SOCIAL_SCENARIOS, KQ_SOCIAL_SPONSORS };
+export { KQ_SOCIAL_SCENARIOS, KQ_SOCIAL_SPONSORS, KQ_SOCIAL_SPONSOR_REGISTRY };
 export { getKqSocialAdventure };
 export { getKqSocialFame, getKqSocialVisits, isKqSocialUuid, KQ_SOCIAL_PLATFORMS } from "./kanab-quest-social-v1";
 export const KQ_SOCIAL_POST_MS = 5 * 60_000;
@@ -28,12 +30,15 @@ export function parseKqSocialCommand(v: unknown): KqSocialCommand | null {
   const allowed = ["modelVersion", "action", "requestKey", "expectedRevision"];
   if (v.action === "choose") allowed.push("platform", "scenarioId", "choiceId", "narrativeVersion", "subjectId", "contextKey");
   if (v.action === "sponsor-accept" || v.action === "sponsor-decline") allowed.push("sponsorId");
+  if (v.action === "sponsor-accept") allowed.push("expectedRewardCents");
   if (v.action === "sponsor-post") allowed.push("tag");
   if (Object.keys(v).some(key => !allowed.includes(key))) return null;
   if (v.action === "recover" || v.action === "sponsor-claim" || v.action === "sponsor-cancel") return { ...base, action: v.action };
   if (v.action === "sponsor-accept" || v.action === "sponsor-decline") {
-    if (typeof v.sponsorId !== "string" || !KQ_SOCIAL_SPONSORS.some(s => s.id === v.sponsorId)) return null;
-    return { ...base, action: v.action, sponsorId: v.sponsorId };
+    if (typeof v.sponsorId !== "string" || !KQ_SOCIAL_SPONSOR_REGISTRY.some(s => s.id === v.sponsorId)) return null;
+    if (v.action === "sponsor-accept" && v.expectedRewardCents !== undefined && !integer(v.expectedRewardCents, KQ_SOCIAL_MAX_SPONSOR_REWARD_CENTS)) return null;
+    return { ...base, action: v.action, sponsorId: v.sponsorId,
+      ...(v.action === "sponsor-accept" && v.expectedRewardCents !== undefined ? { expectedRewardCents: v.expectedRewardCents as number } : {}) };
   }
   if (v.action === "sponsor-post") return tags.includes(v.tag as KqSocialTag) ? { ...base, action: "sponsor-post", tag: v.tag as KqSocialTag } : null;
   if (v.action !== "choose" || !platforms.includes(v.platform as KqSocialPlatform) || typeof v.scenarioId !== "string" || typeof v.choiceId !== "string") return null;
@@ -52,12 +57,15 @@ export function isKqSocialSnapshot(v: unknown): v is KqSocialSnapshot {
     || !integer(v.audienceFollowers, 100000) || !integer(v.socialFollowers, 100000) || typeof v.siteActive !== "boolean" || typeof v.additionalVisitsPerDay !== "number" || !Number.isFinite(v.additionalVisitsPerDay) || v.additionalVisitsPerDay < 0 || !object(v.platforms)) return false;
   if (v.storyCatalogVersion !== undefined && v.storyCatalogVersion !== 2) return false;
   if (v.narrativeVersion !== undefined && v.narrativeVersion !== 2 && v.narrativeVersion !== 3) return false;
+  if (v.cadenceVersion !== undefined && v.cadenceVersion !== 1 || v.publicationNow !== undefined && !time(v.publicationNow)) return false;
   if (v.culture !== undefined && !isKqSocialCultureContext(v.culture)) return false;
   for (const platform of platforms) {
     const p = v.platforms[platform];
     if (!object(p) || !integer(p.followers, 50000) || !integer(p.haters, 100) || !integer(p.moderation, 5) || !integer(p.chapter) || !nullableTime(p.nextPostAt)
       || !integer(p.trust, 100) || (p.lastIntent !== null && !intents.includes(p.lastIntent as typeof intents[number])) || !integer(p.intentStreak) || !time(p.pressureUpdatedAt)
       || !object(p.memory) || Object.keys(p.memory).length > 100 || !Object.entries(p.memory).every(([k, val]) => k.length <= 100 && typeof val === "string" && val.length <= 100)) return false;
+    if (p.publishedDay !== undefined && p.publishedDay !== null && !isKqSocialPublicationDay(p.publishedDay)) return false;
+    if (v.cadenceVersion === 1 && (p.publishedDay === undefined || !time(v.publicationNow))) return false;
     if (p.story !== undefined) {
       const story = p.story;
       if (!object(story) || typeof story.startId !== "string" || !KQ_SOCIAL_SCENARIOS.some(scene => scene.id === story.startId && scene.platform === platform && scene.episode === 1) || !isKqSocialSubject(story.subject)) return false;
@@ -68,18 +76,33 @@ export function isKqSocialSnapshot(v: unknown): v is KqSocialSnapshot {
   if (!Array.isArray(v.history) || v.history.length > 20 || !v.history.every(h => object(h) && typeof h.id === "string" && (h.platform === null || platforms.includes(h.platform as KqSocialPlatform))
     && typeof h.scenarioId === "string" && typeof h.choiceId === "string" && time(h.createdAt) && typeof h.outcome === "string" && [h.followersDelta, h.hatersDelta, h.moderationDelta, h.energyDelta].every(Number.isSafeInteger)
     && (h.narrativeVersion === undefined || h.narrativeVersion === 2 || h.narrativeVersion === 3)
+    && (h.action === undefined || h.action === "publish" || h.action === "reply" || h.action === "ignore")
     && (h.subject === undefined || isKqSocialSubject(h.subject)) && (h.previousChoice === undefined || typeof h.previousChoice === "string" && h.previousChoice.length <= 100)
+    && (h.parentChoice === undefined || typeof h.parentChoice === "string" && h.parentChoice.length <= 100)
     && (h.trustDelta === undefined || Number.isSafeInteger(h.trustDelta)) && (h.rewardCents === undefined || integer(h.rewardCents)) && (h.reasons === undefined || strings(h.reasons)))) return false;
   const s = v.sponsors;
   if (!object(s) || !strings(s.completedIds) || !strings(s.declinedIds) || !integer(s.earnedCents) || new Set(s.completedIds).size !== s.completedIds.length || new Set(s.declinedIds).size !== s.declinedIds.length
-    || [...s.completedIds, ...s.declinedIds].some(id => !KQ_SOCIAL_SPONSORS.some(def => def.id === id))) return false;
+    || [...s.completedIds, ...s.declinedIds].some(id => !KQ_SOCIAL_SPONSOR_REGISTRY.some(def => def.id === id))) return false;
   const declined = s.declinedIds;
   if (s.completedIds.some(id => declined.includes(id))) return false;
+  if (s.paidRewardsCents !== undefined) {
+    if (!object(s.paidRewardsCents)) return false;
+    let paid = 0;
+    for (const [id, reward] of Object.entries(s.paidRewardsCents)) {
+      const def = KQ_SOCIAL_SPONSOR_REGISTRY.find(sponsor => sponsor.id === id);
+      if (!def || def.pricingVersion !== 1 || !s.completedIds.includes(id) || !integer(reward, Math.min(def.maxRewardCents ?? KQ_SOCIAL_MAX_SPONSOR_REWARD_CENTS, KQ_SOCIAL_MAX_SPONSOR_REWARD_CENTS)) || reward === 0) return false;
+      paid += reward;
+    }
+    if (paid > s.earnedCents) return false;
+  }
   if (s.active !== null) {
     const a = s.active;
     if (!object(a) || typeof a.sponsorId !== "string" || !time(a.startedAt) || !integer(a.publicationsLeft, 4) || !integer(a.rewardCents) || !strings(a.progressTags) || new Set(a.progressTags).size !== a.progressTags.length) return false;
-    const def = KQ_SOCIAL_SPONSORS.find(d => d.id === a.sponsorId);
-    if (!def || a.platform !== def.platform || a.rewardCents !== def.rewardCents || a.progressTags.some(tag => !def.requiredTags.includes(tag as KqSocialTag)) || s.completedIds.includes(def.id) || declined.includes(def.id)) return false;
+    const def = KQ_SOCIAL_SPONSOR_REGISTRY.find(d => d.id === a.sponsorId);
+    if (!def || a.platform !== def.platform || a.progressTags.some(tag => !def.requiredTags.includes(tag as KqSocialTag)) || s.completedIds.includes(def.id) || declined.includes(def.id)) return false;
+    if (def.pricingVersion === 1) {
+      if (!isKqSocialSponsorPricing(a.pricing, def) || !object(a.pricing) || a.rewardCents !== a.pricing.rewardCents) return false;
+    } else if (a.pricing !== undefined || a.rewardCents !== def.rewardCents) return false;
   }
   return true;
 }
@@ -123,7 +146,7 @@ export function normalizeKqSocialSnapshot(snapshot: KqSocialSnapshot | V1Snapsho
   return next;
 }
 
-export function refreshKqSocialSnapshot(snapshot: KqSocialSnapshot | V1Snapshot, now: number, reputation = 0, narrativeVersion: 2 | 3 = 3): KqSocialSnapshot {
+export function refreshKqSocialSnapshot(snapshot: KqSocialSnapshot | V1Snapshot, now: number, reputation = 0, narrativeVersion: 2 | 3 = 3, cadence: KqSocialCadenceOptions = {}): KqSocialSnapshot {
   const next = normalizeKqSocialSnapshot(snapshot, now, narrativeVersion);
   const elapsed = Math.max(0, Math.floor((now - Date.parse(next.energyUpdatedAt)) / KQ_SOCIAL_ENERGY_TICK_MS));
   next.energy = Math.min(100, next.energy + elapsed);
@@ -137,6 +160,7 @@ export function refreshKqSocialSnapshot(snapshot: KqSocialSnapshot | V1Snapshot,
   next.serverNow = new Date(now).toISOString();
   next.socialFollowers = next.platforms.instagram.followers + next.platforms.x.followers;
   next.additionalVisitsPerDay = getKqSocialVisits(next.audienceFollowers, next.socialFollowers, reputation);
+  if (!cadence.legacyCadence) applyKqSocialDailyCadence(next, cadence.publicationNow ?? now, cadence.inferLegacyPublications ?? true);
   delete next.replayed;
   return next;
 }
@@ -160,14 +184,16 @@ export function getKqSocialChoicePreview(snapshot: KqSocialSnapshot, platform: K
   const reasons: string[] = [];
   const reach = 1 + Math.min(3, Math.sqrt(a.followers) / 20), affinity = (65 + a.trust) / 120, pressure = 1 - a.haters / 200;
   const moderation = platform === "instagram" && a.moderation >= 3 ? .5 : 1;
-  const repeat = a.lastIntent === choice.intent && a.intentStreak >= 2 ? .55 : 1;
+  const repeat = choice.action !== "ignore" && a.lastIntent === choice.intent && a.intentStreak >= 2 ? .55 : 1;
   const churn = Math.floor(a.followers * Math.max(0, 45 - a.trust) / 2500) + (choice.effects.trust < 0 ? Math.floor(a.followers * -choice.effects.trust / 1500) : 0);
-  if (a.followers >= 100) reasons.push("Ta communauté élargit la portée, avec une croissance progressive.");
-  if (a.trust >= 70) reasons.push("La confiance aide les nouveaux visiteurs à rester.");
+  const speaking = choice.action !== "ignore";
+  if (!speaking) reasons.push("Tu ne publies aucune réponse : le commentaire reste visible et la discussion peut continuer sans toi.");
+  if (speaking && a.followers >= 100) reasons.push("Ta communauté élargit la portée, avec une croissance progressive.");
+  if (speaking && a.trust >= 70) reasons.push("La confiance aide les nouveaux visiteurs à rester.");
   if (a.trust < 45) reasons.push("La confiance fragilisée provoque aussi des désabonnements.");
-  if (a.haters >= 25) reasons.push("La pression des haters réduit la conversion des lecteurs en abonnés.");
-  if (moderation < 1) reasons.push("La restriction Instagram réduit de moitié les nouvelles adhésions.");
-  if (repeat < 1) reasons.push("Troisième publication de même intention : ton public se lasse, la portée baisse de 45 %.");
+  if (speaking && a.haters >= 25) reasons.push("La pression des haters réduit la conversion des lecteurs en abonnés.");
+  if (speaking && moderation < 1) reasons.push("La restriction Instagram réduit de moitié les nouvelles adhésions.");
+  if (repeat < 1) reasons.push(choice.action === "reply" ? "Troisième prise de parole de même intention : ton public se lasse, la portée baisse de 45 %." : "Troisième publication de même intention : ton public se lasse, la portée baisse de 45 %.");
   const delta = (base: number) => {
     const raw = base > 0 ? Math.floor(base * reach * affinity * pressure * moderation * repeat) - churn : Math.floor(base * reach) - churn;
     const limited = clamp(a.followers + raw, 0, 50000) - a.followers;
@@ -180,8 +206,7 @@ export function getKqSocialChoicePreview(snapshot: KqSocialSnapshot, platform: K
     moderation: clamp(a.moderation + choice.effects.moderation, 0, 5) - a.moderation, energy: cost, reasons };
 }
 
-export function getKqSponsorOffers(snapshot: KqSocialSnapshot): KqSocialSponsorOffer[] {
-  return KQ_SOCIAL_SPONSORS.map(sponsor => {
+function sponsorOffer(snapshot: KqSocialSnapshot, sponsor: KqSocialSponsorDefinition): KqSocialSponsorOffer {
     const a = snapshot.platforms[sponsor.platform], blockers: string[] = [];
     if (a.followers < sponsor.minimumFollowers) blockers.push(`${sponsor.minimumFollowers} abonnés sur ${sponsor.platform === "x" ? "X" : "Instagram"} requis (${a.followers} actuellement).`);
     if (a.trust < sponsor.minimumTrust) blockers.push(`Confiance : ${sponsor.minimumTrust}/100 requis (${a.trust}/100).`);
@@ -190,15 +215,28 @@ export function getKqSponsorOffers(snapshot: KqSocialSnapshot): KqSocialSponsorO
     if (snapshot.sponsors.active && snapshot.sponsors.active.sponsorId !== sponsor.id) blockers.push("Termine ton partenariat en cours avant d’en signer un autre.");
     const status = snapshot.sponsors.completedIds.includes(sponsor.id) ? "completed" : snapshot.sponsors.declinedIds.includes(sponsor.id) ? "declined"
       : snapshot.sponsors.active?.sponsorId === sponsor.id ? "active" : blockers.length ? "locked" : "available";
-    return { sponsor, eligible: status === "available", blockers, status };
-  });
+    const active = snapshot.sponsors.active?.sponsorId === sponsor.id ? snapshot.sponsors.active : null;
+    const pricing = status === "active" ? active?.pricing : status === "available" || status === "locked"
+      ? sponsor.pricingVersion === 1 ? getKqSocialSponsorPricing(sponsor, a) : undefined : undefined;
+    const rewardCents = status === "completed" ? snapshot.sponsors.paidRewardsCents?.[sponsor.id]
+      ?? snapshot.history.find(entry => entry.scenarioId === sponsor.id && entry.choiceId === "sponsor-claim")?.rewardCents ?? null
+      : status === "declined" ? null : active?.rewardCents ?? pricing?.rewardCents ?? sponsor.rewardCents;
+    return { sponsor, eligible: status === "available", blockers, status, rewardCents, ...(pricing ? { pricing } : {}) };
+}
+
+export function getKqSponsorOffers(snapshot: KqSocialSnapshot): KqSocialSponsorOffer[] {
+  const currentIds = new Set(KQ_SOCIAL_SPONSORS.map(sponsor => sponsor.id));
+  const legacy = KQ_SOCIAL_SPONSOR_REGISTRY.filter(sponsor => !currentIds.has(sponsor.id) && (snapshot.sponsors.active?.sponsorId === sponsor.id
+    || snapshot.sponsors.completedIds.includes(sponsor.id) || snapshot.sponsors.declinedIds.includes(sponsor.id)));
+  return [...KQ_SOCIAL_SPONSORS, ...legacy].map(sponsor => sponsorOffer(snapshot, sponsor));
 }
 
 function sponsorChoice(snapshot: KqSocialSnapshot, tag: KqSocialTag): KqSocialChoice {
-  const active = snapshot.sponsors.active, def = KQ_SOCIAL_SPONSORS.find(d => d.id === active?.sponsorId);
+  const active = snapshot.sponsors.active, def = KQ_SOCIAL_SPONSOR_REGISTRY.find(d => d.id === active?.sponsorId);
   if (!active || !def || !def.requiredTags.includes(tag)) throw new Error("Ce format ne correspond pas au partenariat en cours.");
-  return { id: tag, label: KQ_SOCIAL_TAG_LABELS[tag], description: def.brief, upside: "Une publication du brief réalisée.", downside: "Cette place dans ton fil est consacrée à un message sponsorisé.",
-    outcome: `Partenariat rémunéré avec ${def.name}, annoncé clairement. ${KQ_SOCIAL_TAG_LABELS[tag]} : le public découvre ton travail avec la marque, certains lecteurs préfèrent les publications sans publicité.`, intent: "craft", tag,
+  const deliverable = def.deliverables?.[tag], label = deliverable?.title ?? KQ_SOCIAL_TAG_LABELS[tag];
+  return { id: tag, label, description: deliverable?.description ?? def.brief, upside: "Une publication du brief réalisée.", downside: "Cette place dans ton fil est consacrée à un message sponsorisé.",
+    outcome: `Partenariat rémunéré avec ${def.name}, annoncé clairement. ${label} : le public découvre ton travail avec la marque, certains lecteurs préfèrent les publications sans publicité.`, intent: "craft", tag,
     effects: { followersMin: active.platform === "instagram" ? 4 : 2, followersMax: active.platform === "instagram" ? 12 : 7, haters: 3, trust: -2, moderation: 0, energy: active.platform === "instagram" ? -14 : -18 } };
 }
 export function getKqSponsorPostPreview(snapshot: KqSocialSnapshot, tag: KqSocialTag): KqSocialChoicePreview {
@@ -212,15 +250,17 @@ export function getKqSocialLocalRoll(requestKey: string): number {
   return (hash >>> 0) % 101;
 }
 
-export function applyKqSocialCommand(snapshot: KqSocialSnapshot | V1Snapshot, command: KqSocialCommand, now: number, reputation = 0, roll = 50, replayOriginalCatalog = false, replayLegacyNarrative = false, replayV2Narrative = false): KqSocialSnapshot {
+export function applyKqSocialCommand(snapshot: KqSocialSnapshot | V1Snapshot, command: KqSocialCommand, now: number, reputation = 0, roll = 50, replayOriginalCatalog = false, replayLegacyNarrative = false, replayV2Narrative = false, replayV3Catalog = false, cadence: KqSocialCadenceOptions = {}): KqSocialSnapshot {
   if (!parseKqSocialCommand(command)) throw new Error("Choix de réseau social invalide.");
   if (!integer(roll, 100)) throw new Error("Résolution de la publication invalide.");
   // Internal replay flags are never accepted in a player command. Preserve the
   // actual old text and rules instead of relabelling a saved choice as a new story.
-  const catalog = replayOriginalCatalog ? KQ_SOCIAL_ORIGINAL_SCENARIOS : replayLegacyNarrative ? KQ_SOCIAL_LEGACY_SCENARIOS : replayV2Narrative ? KQ_SOCIAL_V2_SCENARIOS : KQ_SOCIAL_SCENARIOS;
+  const catalog = replayOriginalCatalog ? KQ_SOCIAL_ORIGINAL_SCENARIOS : replayLegacyNarrative ? KQ_SOCIAL_LEGACY_SCENARIOS : replayV2Narrative ? KQ_SOCIAL_V2_SCENARIOS
+    : replayV3Catalog ? KQ_SOCIAL_SCENARIOS.filter(scene => !/^(?:ig|x)-debate-/.test(scene.id)) : cadence.replayFirstDebates ? KQ_SOCIAL_PRE_DAILY_SCENARIOS : KQ_SOCIAL_SCENARIOS;
   const replay = replayOriginalCatalog || replayLegacyNarrative || replayV2Narrative;
+  const timing = { ...cadence, legacyCadence: cadence.legacyCadence || replay || replayV3Catalog, publicationNow: cadence.publicationNow ?? now };
   const next = refreshKqSocialSnapshot(replay && snapshot.version === 2
-    ? { ...snapshot, ...(replayOriginalCatalog ? { storyCatalogVersion: 2 as const } : {}), narrativeVersion: 2 } : snapshot, now, reputation, replay ? 2 : 3);
+    ? { ...snapshot, ...(replayOriginalCatalog ? { storyCatalogVersion: 2 as const } : {}), narrativeVersion: 2 } : snapshot, now, reputation, replay ? 2 : 3, timing);
   if (next.revision !== command.expectedRevision) throw new Error("La situation a changé. Actualise les réseaux avant de choisir.");
   const entry: KqSocialHistoryEntry = { id: command.requestKey, platform: null, scenarioId: command.action, choiceId: command.action, createdAt: next.serverNow, outcome: "", followersDelta: 0, hatersDelta: 0, moderationDelta: 0, energyDelta: 0, trustDelta: 0, rewardCents: 0, reasons: [] };
   if (command.action === "recover") {
@@ -230,23 +270,30 @@ export function applyKqSocialCommand(snapshot: KqSocialSnapshot | V1Snapshot, co
     next.recoverReadyAt = new Date(now + KQ_SOCIAL_RECOVER_MS).toISOString();
     entry.outcome = "Tu poses le téléphone et prends du recul. L’atelier peut attendre une réponse ; ton attention revient.";
   } else if (command.action === "sponsor-accept" || command.action === "sponsor-decline") {
-    const offer = getKqSponsorOffers(next).find(o => o.sponsor.id === command.sponsorId)!;
+    // Archived clients and lesson journals can finish old invitations at their
+    // original fixed price, although they no longer appear as new offers.
+    const offer = sponsorOffer(next, KQ_SOCIAL_SPONSOR_REGISTRY.find(sponsor => sponsor.id === command.sponsorId)!);
     if (!offer.eligible) throw new Error(offer.blockers[0] ?? "Cette proposition n’est plus disponible.");
     const def = offer.sponsor; entry.platform = def.platform; entry.scenarioId = def.id;
     if (command.action === "sponsor-decline") {
       next.sponsors.declinedIds.push(def.id);
       entry.outcome = `Tu déclines l’invitation de ${def.name}. Aucun coût ni perte de confiance ; cette proposition est close.`;
     } else {
-      next.sponsors.active = { sponsorId: def.id, platform: def.platform, rewardCents: def.rewardCents, progressTags: [], publicationsLeft: def.publicationBudget, startedAt: next.serverNow };
+      if (offer.rewardCents === null || def.pricingVersion === 1 && command.expectedRewardCents !== offer.rewardCents
+        || command.expectedRewardCents !== undefined && command.expectedRewardCents !== offer.rewardCents) throw new Error("Le montant de cette proposition a changé. Actualise et relis les honoraires avant de signer.");
+      next.sponsors.active = { sponsorId: def.id, platform: def.platform, rewardCents: offer.rewardCents, progressTags: [], publicationsLeft: def.publicationBudget, startedAt: next.serverNow,
+        ...(offer.pricing ? { pricing: structuredClone(offer.pricing) } : {}) };
       entry.outcome = `${def.contact} confirme le partenariat avec ${def.name}. Deux formats distincts, annoncés comme sponsorisés, parmi tes quatre prochaines publications sur ce réseau. La prime sera disponible après réalisation.`;
     }
   } else if (command.action === "sponsor-claim" || command.action === "sponsor-cancel") {
-    const active = next.sponsors.active, def = KQ_SOCIAL_SPONSORS.find(d => d.id === active?.sponsorId);
+    const active = next.sponsors.active, def = KQ_SOCIAL_SPONSOR_REGISTRY.find(d => d.id === active?.sponsorId);
     if (!active || !def) throw new Error("Aucun partenariat en cours.");
     entry.platform = active.platform; entry.scenarioId = def.id;
     if (command.action === "sponsor-claim") {
       if (!def.requiredTags.every(tag => active.progressTags.includes(tag))) throw new Error("Réalise les deux formats du brief avant de demander la prime.");
+      if (!integer(next.sponsors.earnedCents + active.rewardCents)) throw new Error("Le total des honoraires dépasse le plafond de cet historique.");
       next.sponsors.earnedCents += active.rewardCents; entry.rewardCents = active.rewardCents;
+      if (def.pricingVersion === 1) (next.sponsors.paidRewardsCents ??= {})[def.id] = active.rewardCents;
       next.sponsors.completedIds.push(def.id); entry.outcome = def.completionText;
     } else {
       next.sponsors.declinedIds.push(def.id);
@@ -257,38 +304,50 @@ export function applyKqSocialCommand(snapshot: KqSocialSnapshot | V1Snapshot, co
     const platform = command.action === "choose" ? command.platform : next.sponsors.active?.platform;
     if (!platform) throw new Error("Aucun partenariat en cours.");
     const account = next.platforms[platform];
-    const adventure = !replay && command.action === "choose" ? getKqSocialAdventure(next, platform, command.subjectId) : null;
+    const adventure = !replay && command.action === "choose" ? getKqSocialAdventure(next, platform, command.subjectId, replayV3Catalog, cadence.replayFirstDebates) : null;
     const scene = adventure?.scene ?? getKqSocialScenario(platform, account.chapter, account.memory, catalog);
     if (adventure && (command.action !== "choose" || command.narrativeVersion !== 3 || !adventure.subject
       || command.subjectId !== adventure.subject.id || command.contextKey !== adventure.contextKey)) throw new Error("Ta culture ou cette publication a changé. Actualise avant de publier.");
     const selected = command.action === "choose" ? scene.choices.find(c => c.id === command.choiceId) : command.action === "sponsor-post" ? sponsorChoice(next, command.tag) : undefined;
     if (!selected || (command.action === "choose" && command.scenarioId !== scene.id)) throw new Error("Cette histoire a changé. Actualise avant de choisir.");
-    if (account.nextPostAt && Date.parse(account.nextPostAt) > now) throw new Error("Laisse vivre ta publication avant de continuer sur ce réseau.");
+    const action = selected.action ?? "publish";
+    if (action === "publish" && account.nextPostAt && Date.parse(account.nextPostAt) > (timing.legacyCadence ? now : timing.publicationNow)) {
+      throw new Error(timing.legacyCadence ? "Laisse vivre ta publication avant de continuer sur ce réseau." : "Tu as déjà publié aujourd’hui sur ce réseau. Prochaine publication à minuit, heure de Paris. Tu peux continuer à répondre aux commentaires.");
+    }
     if (command.action === "sponsor-post" && next.sponsors.active?.progressTags.includes(command.tag)) throw new Error("Ce format est déjà réalisé. Choisis l’autre format du brief.");
     const effects = getKqSocialChoicePreview(next, platform, selected);
     if (next.energy + effects.energy < 0) throw new Error("Ton énergie mentale ne suffit pas. Fais une pause ou reviens plus tard.");
     const followers = effects.followersMin + Math.floor((effects.followersMax - effects.followersMin) * roll / 100);
     account.followers += followers; next.audienceFollowers += followers;
     account.haters += effects.haters; account.trust += effects.trust; account.moderation += effects.moderation; next.energy += effects.energy;
-    account.intentStreak = account.lastIntent === selected.intent ? account.intentStreak + 1 : 1; account.lastIntent = selected.intent;
-    account.nextPostAt = new Date(now + (command.action === "sponsor-post" || scene.episode === 3 ? KQ_SOCIAL_POST_MS : 0)).toISOString();
+    if (action !== "ignore") {
+      account.intentStreak = account.lastIntent === selected.intent ? account.intentStreak + 1 : 1; account.lastIntent = selected.intent;
+    }
+    if (action === "publish") {
+      if (timing.legacyCadence) account.nextPostAt = new Date(now + (command.action === "sponsor-post" || scene.episode === 3 ? KQ_SOCIAL_POST_MS : 0)).toISOString();
+      else { account.publishedDay = getKqSocialPublicationDay(timing.publicationNow); entry.action = "publish"; }
+    }
     if (command.action === "choose") {
       if (scene.episode === 1) for (const s of catalog.filter(s => s.platform === platform && s.arc === scene.arc)) delete account.memory[s.id];
       account.memory[scene.id] = selected.id;
       account.chapter = adventure ? adventure.chapter + 1 : account.chapter + 1;
       if (adventure?.subject) {
         entry.narrativeVersion = 3; entry.subject = structuredClone(adventure.subject);
+        if (selected.action) entry.action = selected.action;
         if (scene.previousChoice) entry.previousChoice = scene.previousChoice;
+        if (scene.parentChoice) entry.parentChoice = scene.parentChoice;
         if (scene.episode === 1) account.story = { startId: scene.id, subject: structuredClone(adventure.subject) };
         if (scene.episode === 3) delete account.story;
       } else if (replayV2Narrative) entry.narrativeVersion = 2;
     }
     Object.assign(entry, { platform, scenarioId: command.action === "choose" ? scene.id : next.sponsors.active!.sponsorId, choiceId: selected.id, outcome: selected.outcome,
       followersDelta: followers, hatersDelta: effects.haters, trustDelta: effects.trust, moderationDelta: effects.moderation, energyDelta: effects.energy,
-      reasons: [...effects.reasons, followers > 0 ? "Des lecteurs ont choisi de rester ; les impressions ne comptent pas comme des abonnés." : followers < 0 ? "Les départs dépassent les nouvelles adhésions sur cette publication." : "Le solde de ta communauté reste stable sur cette publication."] });
+      reasons: [...effects.reasons, followers > 0 ? "Des lecteurs ont choisi de rester ; les impressions ne comptent pas comme des abonnés." : followers < 0
+        ? action === "publish" ? "Les départs dépassent les nouvelles adhésions sur cette publication." : "Les départs dépassent les nouvelles adhésions après ce choix."
+        : action === "publish" ? "Le solde de ta communauté reste stable sur cette publication." : "Le solde de ta communauté reste stable après ce choix."] });
     const active = next.sponsors.active;
-    if (active?.platform === platform) {
-      const def = KQ_SOCIAL_SPONSORS.find(s => s.id === active.sponsorId)!;
+    if (active?.platform === platform && action === "publish") {
+      const def = KQ_SOCIAL_SPONSOR_REGISTRY.find(s => s.id === active.sponsorId)!;
       if (!def.requiredTags.every(tag => active.progressTags.includes(tag))) {
         active.publicationsLeft = Math.max(0, active.publicationsLeft - 1);
         if (command.action === "sponsor-post") active.progressTags.push(command.tag);
@@ -302,5 +361,5 @@ export function applyKqSocialCommand(snapshot: KqSocialSnapshot | V1Snapshot, co
   }
   next.revision += 1; next.history = [entry, ...next.history].slice(0, 20);
   next.socialFollowers = next.platforms.instagram.followers + next.platforms.x.followers;
-  return refreshKqSocialSnapshot(next, now, reputation, replay ? 2 : 3);
+  return refreshKqSocialSnapshot(next, now, reputation, replay ? 2 : 3, timing);
 }

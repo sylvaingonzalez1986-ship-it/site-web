@@ -7,6 +7,7 @@ import {
   isContestFeatureEnabledServer,
 } from "@/lib/contest-feature";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
+import { isContestNotebookEnabledServer } from "@/lib/contest-notebook-access";
 import type { PublicCustomer } from "@/types/customer";
 
 export const runtime = "nodejs";
@@ -33,13 +34,15 @@ export async function GET() {
     getOptionalCustomerSession(),
   ]);
 
-  if (isArenaPrelaunch()) return NextResponse.json({ enabled: true, betaRestricted: false, canAccess: true, activitiesOpen: isContestFeatureEnabledServer() && hasArenaBetaAccess(session?.customer, adminAuthorized), opensAt: ARENA_OPENING_AT }, { headers: { "Cache-Control": "private, no-store" } });
+  const notebookOpen = isContestNotebookEnabledServer();
+  if (isArenaPrelaunch()) return NextResponse.json({ enabled: true, betaRestricted: false, canAccess: true, notebookOpen, activitiesOpen: isContestFeatureEnabledServer() && hasArenaBetaAccess(session?.customer, adminAuthorized), opensAt: ARENA_OPENING_AT }, { headers: { "Cache-Control": "private, no-store" } });
 
   return NextResponse.json({
-    enabled: isContestFeatureEnabledServer(),
+    enabled: notebookOpen || isContestFeatureEnabledServer(),
+    notebookOpen,
     betaRestricted: isContestBetaAccessRestrictedServer(),
-    canAccess: canCustomerAccessContestFeatureServer(session?.customer ?? null, {
+    canAccess: notebookOpen || canCustomerAccessContestFeatureServer(session?.customer ?? null, {
       adminAuthorized,
     }),
-  });
+  }, { headers: { "Cache-Control": "private, no-store" } });
 }

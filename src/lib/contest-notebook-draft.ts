@@ -1,10 +1,13 @@
 import { CONTEST_AROMA_TAGS, CONTEST_CONSUMPTION_METHODS, CONTEST_SCORE_CRITERIA, type ContestReviewSubmissionInput, type ContestScoreCriterion } from "@/types/contest";
 import type { ViewerContestReview } from "@/lib/contest-public-api";
 
+// Public opening starts a fresh notebook, including unsent test-phase drafts.
+export const CONTEST_NOTEBOOK_DRAFT_VERSION = 2;
+
 export type ContestNotebookDraft = ContestReviewSubmissionInput & {
   comment: string;
   consumptionDetails: string;
-  version: 1;
+  version: typeof CONTEST_NOTEBOOK_DRAFT_VERSION;
   ownerId: string;
   baseReviewVersion: string;
   savedAt: number;
@@ -17,7 +20,7 @@ export function contestReviewVersion(review: ViewerContestReview | null): string
 }
 
 export function contestDraftKey(ownerId: string, entryId: string): string {
-  return `contest-notebook-draft:v1:${encodeURIComponent(ownerId)}:${encodeURIComponent(entryId)}`;
+  return `contest-notebook-draft:v${CONTEST_NOTEBOOK_DRAFT_VERSION}:${encodeURIComponent(ownerId)}:${encodeURIComponent(entryId)}`;
 }
 
 /** Storage is untrusted and a draft must never replace a newer server review. */
@@ -25,7 +28,7 @@ export function readContestDraft(raw: string | null, ownerId: string, entryId: s
   if (!raw || (!forComparisonOnly && review?.status === "approved")) return null;
   try {
     const draft = JSON.parse(raw) as ContestNotebookDraft;
-    if (draft.version !== 1 || draft.ownerId !== ownerId || draft.entryId !== entryId || typeof draft.baseReviewVersion !== "string" || (!forComparisonOnly && draft.baseReviewVersion !== contestReviewVersion(review))) return null;
+    if (draft.version !== CONTEST_NOTEBOOK_DRAFT_VERSION || draft.ownerId !== ownerId || draft.entryId !== entryId || typeof draft.baseReviewVersion !== "string" || (!forComparisonOnly && draft.baseReviewVersion !== contestReviewVersion(review))) return null;
     if (!Number.isFinite(draft.savedAt) || draft.savedAt > now + 60_000 || now - draft.savedAt > 30 * 24 * 60 * 60 * 1000) return null;
     if (!draft.scores || CONTEST_SCORE_CRITERIA.some((criterion) => !Number.isInteger(draft.scores[criterion]) || draft.scores[criterion] < 1 || draft.scores[criterion] > 100)) return null;
     if (!Array.isArray(draft.evaluatedCriteria) || draft.evaluatedCriteria.some((criterion) => !CONTEST_SCORE_CRITERIA.includes(criterion))) return null;

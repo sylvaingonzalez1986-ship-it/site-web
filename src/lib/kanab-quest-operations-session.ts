@@ -14,6 +14,8 @@ export function restoreKqOperationsLesson(lesson: KqOperationsLessonId, value: u
     let state = initial.state;
     let catalog: 'original' | 'expanded' | null = null;
     let narrative: 1 | 2 | 3 | null = null;
+    let interactions = false;
+    let dailyCadence = false, lastRealAt = 0;
     const upgradeCatalog = () => {
       if (state.social?.version === 2) {
         state.social = normalizeKqSocialSnapshot({ ...state.social, storyCatalogVersion: undefined }, state.trial.clock, 2);
@@ -32,9 +34,25 @@ export function restoreKqOperationsLesson(lesson: KqOperationsLessonId, value: u
       const originalCatalog = social && action.body.modelVersion === 2 && action.socialCatalogVersion === undefined;
       const legacyNarrative = social && action.body.modelVersion === 2 && action.socialNarrativeVersion === undefined;
       const v2Narrative = social && action.body.modelVersion === 2 && action.socialNarrativeVersion === 2;
+      const originalV3Catalog = social && action.body.modelVersion === 2 && action.socialNarrativeVersion === 3 && action.socialInteractionVersion === undefined;
+      const firstDebates = social && action.socialInteractionVersion === 1 && action.socialCadenceVersion === undefined;
+      let publicationNow: number | undefined;
       if (social && action.body.modelVersion === 2) {
         if (action.socialCatalogVersion !== undefined && action.socialCatalogVersion !== 2) return initial;
         if (action.socialNarrativeVersion !== undefined && action.socialNarrativeVersion !== 2 && action.socialNarrativeVersion !== 3) return initial;
+        if (action.socialInteractionVersion !== undefined && (action.socialInteractionVersion !== 1 || action.socialNarrativeVersion !== 3)) return initial;
+        if (interactions && action.socialInteractionVersion !== 1) return initial;
+        if (action.socialInteractionVersion === 1) interactions = true;
+        if (action.socialCadenceVersion !== undefined && (action.socialCadenceVersion !== 1 || action.socialInteractionVersion !== 1)) return initial;
+        if (dailyCadence && action.socialCadenceVersion !== 1) return initial;
+        if (action.socialCadenceVersion === 1) {
+          if (typeof action.socialRealAt !== 'string') return initial;
+          publicationNow = Date.parse(action.socialRealAt);
+          if (!Number.isFinite(publicationNow) || publicationNow < Date.parse('2020-01-01T00:00:00Z')
+            || publicationNow > Date.now() + 60_000 || publicationNow < lastRealAt
+            || new Date(publicationNow).toISOString() !== action.socialRealAt) return initial;
+          dailyCadence = true; lastRealAt = publicationNow;
+        } else if (action.socialRealAt !== undefined) return initial;
         const version = legacyNarrative ? 1 : v2Narrative ? 2 : 3;
         if (narrative !== null && version < narrative || originalCatalog && !legacyNarrative) return initial;
         if (narrative !== null && version > narrative) upgradeNarrative(version as 2 | 3);
@@ -44,7 +62,8 @@ export function restoreKqOperationsLesson(lesson: KqOperationsLessonId, value: u
         catalog = originalCatalog ? 'original' : 'expanded';
       }
       state = applyKqOperationsRequest(state, action, legacySocial ? { replaySocialV1: true }
-        : { ...(originalCatalog ? { replaySocialOriginalCatalog: true as const } : {}), ...(legacyNarrative ? { replaySocialLegacyNarrative: true as const } : {}), ...(v2Narrative ? { replaySocialV2Narrative: true as const } : {}) }).state;
+        : { ...(originalCatalog ? { replaySocialOriginalCatalog: true as const } : {}), ...(legacyNarrative ? { replaySocialLegacyNarrative: true as const } : {}), ...(v2Narrative ? { replaySocialV2Narrative: true as const } : {}), ...(originalV3Catalog ? { replaySocialV3Catalog: true as const } : {}),
+          ...(social ? { socialCadence: { publicationNow, legacyCadence: action.socialCadenceVersion !== 1, replayFirstDebates: firstDebates } } : {}) }).state;
       actions.push(action);
     }
     if (catalog === 'original') upgradeCatalog();
@@ -80,9 +99,12 @@ export function createKqOperationsSession(lesson: KqOperationsLessonId, scope = 
       const source = init?.body ?? (input instanceof Request && method !== 'GET' ? await input.text() : undefined);
       const body = typeof source === 'string' ? JSON.parse(source) : {};
       if (!body || typeof body !== 'object' || Array.isArray(body)) throw new Error('Action invalide.');
+      const social = new URL(path, 'https://lesson.invalid').pathname === '/api/arena/placard/social';
+      const publicationNow = Date.now();
       const action: KqOperationsLessonAction = { path, method, body,
-        ...(new URL(path, 'https://lesson.invalid').pathname === '/api/arena/placard/social' ? { socialCatalogVersion: 2 as const, socialNarrativeVersion: 3 as const } : {}) };
-      const result = applyKqOperationsRequest(state, action);
+        ...(social ? { socialCatalogVersion: 2 as const, socialNarrativeVersion: 3 as const, socialInteractionVersion: 1 as const,
+          socialCadenceVersion: 1 as const, socialRealAt: new Date(publicationNow).toISOString() } : {}) };
+      const result = applyKqOperationsRequest(state, action, social ? { socialCadence: { publicationNow } } : {});
       if (result.state !== state) {
         if (actions.length >= 500) throw new Error('Cet essai est rempli. Recommence-le pour poursuivre.');
         state = result.state; actions = [...actions, action];

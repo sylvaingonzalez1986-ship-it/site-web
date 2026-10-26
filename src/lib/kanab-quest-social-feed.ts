@@ -1,15 +1,20 @@
-import { KQ_SOCIAL_CONTENT } from "./kanab-quest-social-stories";
+import { KQ_SOCIAL_CONTENT, KQ_SOCIAL_SCENARIOS } from "./kanab-quest-social-stories";
 import { DEFAULT_KQ_SOCIAL_PLAYER, type KqSocialPlayer } from "./kanab-quest-social-player";
 import { getKqSocialArtwork, getKqSocialProducerArtwork, type KqSocialArtwork } from "./kanab-quest-social-art";
 import type { KqSocialContentMessage } from "./kanab-quest-social-content";
 import type { KqSocialHistoryEntry, KqSocialScenario } from "./kanab-quest-social-types";
 import { getKqSocialProducerNarrative, renderKqSocialSubject } from "./kanab-quest-social-producer";
+import type { KqSocialProducerNarrative, KqSocialSubject } from "./kanab-quest-social-producer-types";
 
 export type KqSocialFeedPerson = { name: string; handle: string; avatar: "mila" | "jade" | "noe" | "ines" | "sam" | "player"; profile?: KqSocialPlayer["profile"] };
 export type KqSocialFeedMessage = { id: string; author: KqSocialFeedPerson; text: string; kind?: "reply" | "quote" };
+export type KqSocialFeedThread = {
+  scenarioId: string; text: string; comments: KqSocialFeedMessage[]; targetCommentId: string;
+};
 export type KqSocialFeedPresentation = {
   author: KqSocialFeedPerson; caption: string; image: "workshop" | "still-life" | "community";
   imageAlt: string; artwork?: KqSocialArtwork; location: string; comments: KqSocialFeedMessage[]; choicePosts: Record<string, string>;
+  thread?: KqSocialFeedThread;
 };
 
 /** Fictional recurring voices and two visitors discovering the producer's posts. */
@@ -60,13 +65,47 @@ function commentsForPlayer(comments: KqSocialContentMessage[], player: KqSocialP
 
 const stories = new Map(KQ_SOCIAL_CONTENT.map(content => [content.scenario.id, content]));
 
+/** A reply belongs to the exact chosen post, even after that receipt leaves the journal. */
+function getDiscussionThread(story: KqSocialProducerNarrative, previousChoice: string | undefined, subject: KqSocialSubject | undefined, player: KqSocialPlayer, scenarioId: string, parentChoice?: string): KqSocialFeedThread | undefined {
+  if (!story.replyTo || !previousChoice) return undefined;
+  const scene = KQ_SOCIAL_SCENARIOS.find(scene => scene.id === scenarioId);
+  if (scene?.episode === 3 && !parentChoice) return undefined;
+  const openingChoice = parentChoice ?? previousChoice;
+  const parent = getKqSocialProducerNarrative(story.replyTo.scenarioId).choices[openingChoice];
+  if (!parent || !parent.replies[story.replyTo.commentIndex]) return undefined;
+  const prefix = `${story.replyTo.scenarioId}:${openingChoice}`;
+  let comments = commentsForPlayer(parent.replies.map((reply, index) => ({ ...reply, id: `${prefix}:reply:${index}`, text: renderKqSocialSubject(reply.text, subject) })), player);
+  if (scene?.episode === 3) {
+    const predecessorId = scene.followups?.find(branch => branch.fromChoiceId === previousChoice)?.fromScenarioId;
+    if (!predecessorId) return undefined;
+    const predecessor = getKqSocialProducerNarrative(predecessorId, openingChoice);
+    const earlier = predecessor.choices[previousChoice];
+    if (!earlier || predecessor.replyTo?.scenarioId !== story.replyTo.scenarioId) return undefined;
+    if (earlier.action === "reply") {
+      const earlierMessages = [
+        { id: `${prefix}:${predecessorId}:player-reply`, author: player, text: personalize(renderKqSocialSubject(earlier.post, subject), player) },
+        ...commentsForPlayer(earlier.replies.map((reply, index) => ({ ...reply, id: `${prefix}:${predecessorId}:reply:${index}`, text: renderKqSocialSubject(reply.text, subject) })), player),
+      ];
+      comments = comments.flatMap((comment, index) => index === predecessor.replyTo!.commentIndex ? [comment, ...earlierMessages] : [comment]);
+    } else if (earlier.action !== "ignore") return undefined;
+  }
+  return {
+    scenarioId: story.replyTo.scenarioId,
+    text: personalize(renderKqSocialSubject(parent.post, subject), player),
+    comments,
+    targetCommentId: `${prefix}:reply:${story.replyTo.commentIndex}`,
+  };
+}
+
 /** The caption, context and reply all follow the same committed memory branch as the game. */
 export function getKqSocialFeed(scene: KqSocialScenario, memory: Record<string, string> = {}, player: KqSocialPlayer = DEFAULT_KQ_SOCIAL_PLAYER): KqSocialFeedPresentation {
   if (scene.narrativeVersion === 3) {
     const story = getKqSocialProducerNarrative(scene.id, scene.previousChoice);
     const artwork = getKqSocialProducerArtwork(scene.subject);
+    const thread = getDiscussionThread(story, scene.previousChoice, scene.subject, player, scene.id, scene.parentChoice);
     return { author: player, caption: "", comments: [], image: story.image,
       imageAlt: artwork?.alt ?? getArtworkAlt(story.image, player), artwork, location: "Ton journal de producteur",
+      ...(thread ? { thread } : {}),
       choicePosts: Object.fromEntries(Object.entries(story.choices).map(([id, choice]) => [id, personalize(renderKqSocialSubject(choice.post, scene.subject), player)])) };
   }
   const content = stories.get(scene.id);
@@ -89,15 +128,21 @@ export function getKqSocialFeed(scene: KqSocialScenario, memory: Record<string, 
 }
 
 /** Old receipts retain their original journal outcome; never rewrite their published message. */
-export function getKqSocialFeedOutcome(entry: KqSocialHistoryEntry, player: KqSocialPlayer = DEFAULT_KQ_SOCIAL_PLAYER): { author: KqSocialFeedPerson; text: string; comments: KqSocialFeedMessage[]; image: KqSocialFeedPresentation["image"]; imageAlt: string; artwork?: KqSocialArtwork } | null {
+export function getKqSocialFeedOutcome(entry: KqSocialHistoryEntry, player: KqSocialPlayer = DEFAULT_KQ_SOCIAL_PLAYER): { author: KqSocialFeedPerson; text: string; comments: KqSocialFeedMessage[]; image: KqSocialFeedPresentation["image"]; imageAlt: string; artwork?: KqSocialArtwork; action?: "publish" | "reply" | "ignore"; thread?: KqSocialFeedThread } | null {
   if (entry.narrativeVersion === 3) {
     if (!entry.subject || !entry.platform || !Number.isSafeInteger(entry.trustDelta)) return null;
+    if (!KQ_SOCIAL_SCENARIOS.some(scene => scene.id === entry.scenarioId && scene.platform === entry.platform)) return null;
     const story = getKqSocialProducerNarrative(entry.scenarioId, entry.previousChoice), choice = story.choices[entry.choiceId];
     if (!choice) return null;
+    const action = choice.action ?? "publish";
+    if (entry.action !== undefined && entry.action !== action) return null;
+    const thread = getDiscussionThread(story, entry.previousChoice, entry.subject, player, entry.scenarioId, entry.parentChoice);
+    if (action !== "publish" && !thread) return null;
     const artwork = getKqSocialProducerArtwork(entry.subject);
     return { author: player, text: personalize(renderKqSocialSubject(choice.post, entry.subject), player),
       comments: commentsForPlayer(choice.replies.map((reply, index) => ({ ...reply, id: `${entry.id}:reply:${index}`, text: renderKqSocialSubject(reply.text, entry.subject) })), player),
-      image: story.image, imageAlt: artwork?.alt ?? getArtworkAlt(story.image, player), artwork };
+      image: story.image, imageAlt: artwork?.alt ?? getArtworkAlt(story.image, player), artwork,
+      ...(action !== "publish" ? { action, thread } : {}) };
   }
   if (entry.narrativeVersion !== 2 || typeof entry.trustDelta !== "number" || !Number.isSafeInteger(entry.trustDelta)) return null;
   const content = stories.get(entry.scenarioId);

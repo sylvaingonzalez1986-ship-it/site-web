@@ -11,6 +11,7 @@ import {
   isContestFeatureEnabledServer,
 } from "@/lib/contest-feature";
 import { isCurrentRequestAdminAuthorized } from "@/lib/admin-guard";
+import { isContestNotebookEnabledServer } from "@/lib/contest-notebook-access";
 import {
   getContestFeed,
   getContestNotebookUnlocks,
@@ -121,23 +122,26 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
   try {
     const params = await searchParams;
     const arenaView = surface === "arena" ? parseArenaView(params.vue) : "carnet";
+    const notebookRequested = surface !== "arena" || params.vue === "carnet";
+    const notebookOpen = isContestNotebookEnabledServer();
     const requestedCategory = parseCategory(params.category);
     const selectedTrack = parseTrack(params.track);
     const [session, adminAuthorized] = await Promise.all([
       getOptionalContestSession(),
       isCurrentRequestAdminAuthorized(),
     ]);
-    if (isArenaPrelaunch() && !hasArenaBetaAccess(session?.customer, adminAuthorized)) {
+    if (!notebookRequested && isArenaPrelaunch() && !hasArenaBetaAccess(session?.customer, adminAuthorized)) {
       const requested = params.mode ?? params.vue;
       const initialMode = requested === "carnet" || requested === "classement" ? requested : "jouer";
-      return <ContestArenaHub activitiesLocked initialMode={initialMode} initialNotice={params.ouverture === "1" || !!params.vue || surface !== "arena"} />;
+      return <ContestArenaHub activitiesLocked notebookOpen={notebookOpen} initialMode={initialMode} initialNotice={params.ouverture === "1" || !!params.vue} />;
     }
     // The public discovery hub is local. Real activities and their APIs keep
     // their account/beta checks below and in their own routes.
     if (surface === "arena" && !params.vue && isContestFeatureEnabledServer()) {
-      return <ContestArenaHub key={session?.customerId ?? "guest"} />;
+      return <ContestArenaHub key={session?.customerId ?? "guest"} notebookOpen={notebookOpen} />;
     }
-    if (!canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
+    if (notebookRequested ? !notebookOpen : !canCustomerAccessContestFeatureServer(session?.customer ?? null, { adminAuthorized })) {
+      if (notebookRequested) notFound();
       if (isContestFeatureEnabledServer() && isContestBetaAccessRestrictedServer() && !session && !adminAuthorized) {
         const basePath = surface === "arena"
           ? "/arene"
@@ -161,7 +165,11 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
     }
 
     if (surface === "arena" && arenaView === "carnet") {
-      redirect("/arene/carnet/regular");
+      const query = new URLSearchParams(Object.entries({
+        season: params.season, category: params.category, entry: params.entry,
+        edit: params.edit, view: params.view,
+      }).filter((entry): entry is [string, string] => typeof entry[1] === "string"));
+      redirect(`/arene/carnet/${selectedTrack}${query.size ? `?${query.toString()}` : ""}`);
     }
     if (surface === "arena" && arenaView === "jouer") {
       redirect("/arene/placard");

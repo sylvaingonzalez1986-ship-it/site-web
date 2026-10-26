@@ -1,0 +1,227 @@
+{
+  "reviewedAt": "2026-10-25",
+  "jurisdiction": "France et Union européenne",
+  "purpose": "Repères factuels pour les débats fictifs des réseaux sociaux du jeu. Les opinions des personnages restent leurs opinions ; ces notes ne changent pas les règles de production ou de vente du jeu.",
+  "sources": [
+    {
+      "id": "cbd-food-france-2026",
+      "title": "Denrées alimentaires contenant du cannabidiol (CBD) : des produits illégaux qui doivent être retirés du marché",
+      "publisher": "Ministère de l’Agriculture",
+      "publishedAt": "2026-05-20",
+      "url": "https://agriculture.gouv.fr/node/110883",
+      "facts": [
+        "Les denrées incorporant du CBD ne disposent pas de l’autorisation requise par la réglementation européenne sur les nouveaux aliments ; le communiqué annonce un renforcement des contrôles.",
+        "Les graines de chanvre et leurs dérivés, ainsi que les feuilles exclusivement destinées à une infusion aqueuse, bénéficient d’un historique de consommation distinct, sous conditions de composition et de teneur en THC."
+      ],
+      "boundaries": [
+        "Ne pas présenter le communiqué comme une nouvelle loi interdisant tous les aliments issus du chanvre.",
+        "Les exceptions alimentaires ne permettent pas l’enrichissement en extraits de cannabinoïdes, en THC, en autres stupéfiants ou en autres parties de la plante.",
+        "L’existence d’un produit en rayon ne prouve pas qu’il possède une autorisation."
+      ]
+    },
+    {
+      "id": "efsa-cbd-2026",
+      "title": "Limite de sécurité provisoire pour le cannabidiol en tant que nouvel aliment",
+      "publisher": "Autorité européenne de sécurité des aliments",
+      "publishedAt": "2026-02-09",
+      "url": "https://www.efsa.europa.eu/fr/news/provisional-safe-level-cannabidiol-novel-food",
+      "facts": [
+        "L’EFSA a défini un niveau provisoire pour certaines formulations de compléments alimentaires au CBD répondant à des conditions précises, tout en confirmant des lacunes scientifiques."
+      ],
+      "boundaries": [
+        "Une évaluation scientifique provisoire ne vaut pas autorisation générale de commercialisation.",
+        "Ne pas convertir cette publication en conseil de dosage ni en promesse d’innocuité pour les produits du joueur."
+      ]
+    },
+    {
+      "id": "hemp-order-2021",
+      "title": "Article 1 de l’arrêté du 30 décembre 2021 portant application de l’article R. 5132-86 du code de la santé publique",
+      "publisher": "Légifrance",
+      "publishedAt": "2021-12-31",
+      "url": "https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000044793222",
+      "facts": [
+        "L’arrêté prévoit notamment une teneur en delta-9-THC n’excédant pas 0,30 % pour les variétés autorisées inscrites aux catalogues concernés.",
+        "Les dispositions relatives au THC ne remplacent pas les autres réglementations applicables aux usages et aux produits."
+      ],
+      "boundaries": [
+        "Cette page présente le texte initial : son interdiction générale de vendre les fleurs et feuilles brutes a ensuite été annulée par le Conseil d’État.",
+        "Ne pas inventer une tolérance automatique au dépassement, ni confondre seuil juridique et seuil universel de danger.",
+        "Le seuil de 0,30 % ne constitue pas une autorisation alimentaire."
+      ]
+    },
+    {
+      "id": "council-state-flowers-2022",
+      "title": "CBD : annulation de l’arrêté interdisant la vente des fleurs et feuilles de cannabis sans propriétés stupéfiantes",
+      "publisher": "Conseil d’État",
+      "publishedAt": "2022-12-29",
+      "url": "https://conseil-etat.fr/actualites/cbd-annulation-de-l-arrete-interdisant-la-vente-des-fleurs-et-feuilles-de-cannabis-sans-proprietes-stupefiantes",
+      "facts": [
+        "Le Conseil d’État a annulé l’interdiction générale et absolue de commercialisation des fleurs et feuilles brutes de cannabis à faible teneur en THC.",
+        "Les teneurs en CBD et en THC varient selon les variétés de cannabis."
+      ],
+      "boundaries": [
+        "L’annulation ne vaut pas autorisation de toutes les utilisations alimentaires.",
+        "Pour expliquer la plante, parler de variétés et de profils cannabinoïdes différents ; ne pas promettre des effets identiques ni une absence générale de risques."
+      ]
+    },
+    {
+      "id": "ansm-hhc-2023",
+      "title": "La surveillance des médicaments : bilan 2023",
+      "publisher": "Agence nationale de sécurité du médicament et des produits de santé",
+      "publishedAt": "2024-09-06",
+      "url": "https://ansm.sante.fr/uploads/2024/09/06/2-la-surveillance-des-medicaments.pdf",
+      "facts": [
+        "Le HHC, le HHCO et le HHCP ont été classés comme stupéfiants ; leur production, leur vente et leur usage sont notamment interdits en France depuis le 13 juin 2023."
+      ],
+      "boundaries": [
+        "Ne pas présenter ces substances nommées comme des alternatives actuellement autorisées au cannabis."
+      ]
+    },
+    {
+      "id": "ansm-cannabinoids-2024",
+      "title": "L’ANSM inscrit de nouveaux cannabinoïdes sur la liste des stupéfiants",
+      "publisher": "Agence nationale de sécurité du médicament et des produits de santé",
+      "publishedAt": "2024-05-24",
+      "updatedAt": "2025-03-11",
+      "url": "https://ansm.sante.fr/actualites/lansm-inscrit-de-nouveaux-cannabinoides-sur-la-liste-des-stupefiants",
+      "facts": [
+        "Le classement applicable en juin 2024 inclut notamment le H4-CBD, le H2-CBD et certaines familles de cannabinoïdes dont le THCP et le HHCPO.",
+        "Des effets graves, des risques de dépendance et des écarts entre composition réelle et annoncée ont motivé les alertes.",
+        "Le classement comporte des exceptions précisées par l’actualisation du 4 juin 2024, notamment pour certaines substances présentes à faible concentration dans le chanvre."
+      ],
+      "boundaries": [
+        "Néocannabinoïde est un terme commercial imprécis, pas une catégorie juridique suffisante pour déclarer chaque molécule légale ou interdite.",
+        "Ne pas assimiler tous les cannabinoïdes naturels aux substances de synthèse visées ni déclarer tous les THCA interdits sans leurs conditions.",
+        "Ne pas attribuer un risque ou une composition précise à un produit du joueur ou d’un commerçant sans donnée correspondante."
+      ]
+    },
+    {
+      "id": "anses-ansm-intoxications-2025",
+      "title": "Augmentation des intoxications causées par des produits à base de CBD contenant d’autres substances",
+      "publisher": "ANSES et ANSM",
+      "publishedAt": "2025-06-19",
+      "url": "https://www.anses.fr/fr/system/files/press-2025-08.pdf",
+      "facts": [
+        "Les agences ont signalé une hausse d’intoxications après consommation de produits présentés comme contenant du CBD.",
+        "Dans la majorité des cas signalés, des substances interdites non annoncées ou des teneurs en THC supérieures au seuil étaient en cause."
+      ],
+      "boundaries": [
+        "Ne pas extrapoler les cas signalés en taux de contamination de tous les produits du marché.",
+        "Cette alerte n’établit ni la composition d’un lot du joueur ni celle d’un concurrent fictif."
+      ]
+    },
+    {
+      "id": "customs-false-cbd-2025",
+      "title": "CBD : quand l’étiquette masque des substances dangereuses",
+      "publisher": "Direction générale des douanes et droits indirects",
+      "publishedAt": "2025-10-06",
+      "url": "https://www.douane.gouv.fr/actualites/cbd-quand-letiquette-masque-des-substances-dangereuses",
+      "facts": [
+        "Les Douanes décrivent des produits présentés comme du CBD et illégalement enrichis en substances de synthèse, ainsi que le travail d’identification des laboratoires."
+      ],
+      "boundaries": [
+        "Un personnage peut dénoncer une impression de traitement inégal ; le narrateur ne doit pas affirmer que les revendeurs ne sont jamais contrôlés.",
+        "Les chiffres globaux de saisies de drogues de synthèse cités dans l’article ne sont pas des chiffres de saisies de seuls cannabinoïdes."
+      ]
+    }
+  ],
+  "editorialRules": [
+    "Distinguer dans le texte les faits sourcés, l’expérience personnelle réellement connue et les opinions politiques des personnages.",
+    "Autoriser une colère franche, une critique des règles ou une réponse sèche sans attribuer au narrateur une intention politique non démontrée.",
+    "Ne pas inventer une analyse, un certificat, une conformité, une composition, un taux, une saisie, une intoxication ou une vente concernant le joueur.",
+    "Ne pas transformer une publication en promesse médicale ni en affirmation générale d’innocuité ou d’efficacité.",
+    "Les commentaires répondent au texte effectivement publié ; les réponses du joueur restent rattachées au commentaire visé.",
+    "Laisser les désaccords exister : expliquer ne convertit pas nécessairement le provocateur, et une personne critique n’est pas automatiquement malveillante.",
+    "Différencier producteurs, clients, curieux, commerçants et provocateurs ; aucun groupe ne partage nécessairement une opinion unique.",
+    "Ignorer signifie laisser le commentaire sans réponse, pas le supprimer. Une réponse ne doit pas réécrire rétroactivement la publication.",
+    "Les choix font varier le ton, le travail de réponse et les conséquences sociales ; ils ne changent pas rétroactivement la plante, le stock, le lot ou le droit.",
+    "Conserver les contraintes du jeu indoor et les conditions réelles nécessaires aux photos, récoltes, problèmes de culture ou lots mentionnés.",
+    "Traiter les sources comme des repères datés à revoir si la réglementation évolue, sans faire passer un débat fictif pour une consultation juridique."
+  ],
+  "debateThemes": [
+    {
+      "id": "cbd-is-hay",
+      "theme": "Le CBD, c’est du foin",
+      "conflict": "Un provocateur réduit le travail du producteur à l’absence des effets qu’il recherche.",
+      "responseSpace": ["Réplique sèche ou insulte", "Expliquer les profils de la plante et accepter les préférences", "Laisser le commentaire sans réponse"],
+      "coherence": "Le provocateur peut rester hostile même si d’autres lecteurs apprécient la réponse. Ne pas promettre un effet pour gagner le débat."
+    },
+    {
+      "id": "food-cbd-and-hemp",
+      "theme": "CBD alimentaire et débouchés du chanvre",
+      "conflict": "Une prise de position sur les restrictions pousse une cliente à demander si l’huile de graines est elle aussi concernée.",
+      "responseSpace": ["Distinguer les ingrédients et les usages", "Défendre une revendication politique", "Ne pas prolonger le fil"],
+      "coherence": "Ne pas confondre extraits de CBD, graines de chanvre et feuilles destinées aux infusions aqueuses."
+    },
+    {
+      "id": "grower-working-conditions",
+      "theme": "Le quotidien économique des chanvriers",
+      "conflict": "Un producteur exprime son ras-le-bol administratif ; un lecteur rappelle l’objectif des contrôles sanitaires.",
+      "responseSpace": ["Coup de gueule assumé", "Demande collective précise", "Retour au travail concret"],
+      "coherence": "Le personnage peut défendre une réglementation différente sans inventer une facture, une perte ou un contrôle du joueur."
+    },
+    {
+      "id": "neo-cannabinoids-and-trust",
+      "theme": "Néocannabinoïdes et composition opaque",
+      "conflict": "Un compte commercial valorise des effets puissants ; le producteur défend la traçabilité et critique les produits maquillés.",
+      "responseSpace": ["Confrontation", "Discussion de la composition et des preuves disponibles", "Ignorer la surenchère"],
+      "coherence": "Ne pas déclarer ces produits tous autorisés, tous identiques ou jamais contrôlés. Ne pas accuser une enseigne réelle."
+    },
+    {
+      "id": "thc-threshold",
+      "theme": "Le couperet du taux de THC",
+      "conflict": "Un lecteur questionne le sens d’un seuil numérique et la proportion des contraintes supportées par les producteurs.",
+      "responseSpace": ["Critiquer la règle", "Distinguer seuil juridique et danger", "Refuser un débat réduit à une décimale"],
+      "coherence": "Aucun dépassement ni résultat de laboratoire du joueur n’est créé pour alimenter le scénario."
+    },
+    {
+      "id": "consumer-traceability",
+      "theme": "La confiance après les alertes sanitaires",
+      "conflict": "Un abonné inquiet demande comment savoir ce que contient réellement un produit.",
+      "responseSpace": ["Répondre avec les seules preuves disponibles", "Reconnaître les limites", "Contester l’amalgame avec les produits trompeurs"],
+      "coherence": "Ne proposer de montrer une analyse que si le jeu possède réellement cette donnée ; l’inquiétude n’est pas une attaque de hater."
+    },
+    {
+      "id": "unverified-review",
+      "theme": "Un avis défavorable sans achat vérifiable",
+      "conflict": "Un commentaire affirme avoir été déçu, sans donner assez d’éléments pour relier son expérience à la production du joueur.",
+      "responseSpace": ["Se braquer contre l’accusation", "Demander les éléments permettant de comprendre", "Laisser le commentaire sans réponse"],
+      "coherence": "Une absence de preuve disponible ne prouve ni un faux avis ni un achat réel. Ne pas inventer de commande, d’identité client ou de remboursement."
+    },
+    {
+      "id": "origin-suspicion",
+      "theme": "Le soupçon de revente sous une image de producteur",
+      "conflict": "Un lecteur soupçonne une origine importée derrière les images du compte et demande ce qui permet de faire confiance.",
+      "responseSpace": ["Réagir à la mise en cause", "Expliquer la différence entre récit et preuve de traçabilité", "Ignorer le procès d’intention"],
+      "coherence": "Ne pas fabriquer un certificat d’origine, une analyse ou une preuve d’achat. Ne pas présenter une origine importée comme synonyme de fraude ou de mauvaise qualité."
+    },
+    {
+      "id": "medical-promises",
+      "theme": "Le témoignage miracle proposé au producteur",
+      "conflict": "Un lecteur demande une promesse de santé ou voudrait que le producteur reprenne un témoignage spectaculaire.",
+      "responseSpace": ["Refuser sèchement la promesse", "Accueillir l’expérience sans la transformer en garantie", "Ne pas prolonger la discussion"],
+      "coherence": "Ne pas confirmer de diagnostic, de guérison, de substitution à un traitement ou de résultat garanti. Un témoignage individuel ne démontre pas un effet général du produit."
+    },
+    {
+      "id": "cropped-quotation",
+      "theme": "Une citation qui enlève le contexte",
+      "conflict": "Une reprise du post isole une phrase et lui fait porter un sens plus absolu que le message initial.",
+      "responseSpace": ["Attaquer l’auteur de la reprise", "Rétablir précisément les mots et leur contexte", "Refuser d’alimenter la circulation"],
+      "coherence": "La citation tronquée doit provenir du texte réellement choisi. Ne pas attribuer au joueur une formulation appartenant à une autre branche."
+    },
+    {
+      "id": "producer-solidarity",
+      "theme": "Rester solidaires sans être tous d’accord",
+      "conflict": "Un autre producteur partage des difficultés mais conteste la manière de les défendre publiquement.",
+      "responseSpace": ["Exiger un ralliement", "Défendre une action commune en acceptant le désaccord", "Poser une limite au débat"],
+      "coherence": "Le désaccord ne prouve pas la trahison ni le confort économique de l’interlocuteur. Ne pas inventer une adhésion, une réunion ou une action collective déjà réalisée."
+    },
+    {
+      "id": "sponsor-editorial-pressure",
+      "theme": "La parole de producteur face à une proposition commerciale",
+      "conflict": "Une demande de discours imposé ou une accusation de complaisance interroge la liberté de parole du compte.",
+      "responseSpace": ["Renvoyer l’accusation", "Dire ce qu’on accepterait et ce qu’on refuserait", "Ne pas négocier publiquement"],
+      "coherence": "Une proposition ne vaut pas contrat accepté. Ne pas inventer de rémunération, de livraison commerciale ni d’engagement actif ; les partenariats réels du jeu restent gérés par leur propre mécanisme."
+    }
+  ]
+}

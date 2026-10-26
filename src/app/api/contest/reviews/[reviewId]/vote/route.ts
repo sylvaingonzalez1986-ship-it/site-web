@@ -6,7 +6,7 @@ import {
   isContestSchemaMissingError,
   voteContestReview,
 } from "@/lib/contest-backend";
-import { getContestFeatureAccessDeniedResponse } from "@/lib/contest-feature";
+import { getContestNotebookAccessDeniedResponse } from "@/lib/contest-notebook-access";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import type { ContestReviewVoteValue } from "@/types/contest";
@@ -23,7 +23,7 @@ function toVoteValue(value: unknown): ContestReviewVoteValue | null {
 }
 
 export async function POST(request: Request, context: RouteContext) {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) {
     return denied;
   }

@@ -22,4 +22,7 @@
 .composerMedia { min-width: 0; }
 .feed[data-social-feed=x] .composerMedia { width: calc(100% - 24px); max-width: 320px; margin-inline: auto; }
 .feed .mediaNote { padding: 10px 18px 13px; font-size: .7rem; line-height: 1.5; color: #476256; }
+.targetComment { display: block; margin-bottom: 8px; padding-left: 8px; border-left: 3px solid var(--feed-teal); font-size: .75rem; line-height: 1.5; color: var(--feed-teal); }
+.feed .replyContext { padding: 10px 18px; border-top: 1px solid #17292340; font-size: .75rem; line-height: 1.5; overflow-wrap: anywhere; }
+.draftBadge { white-space: normal; max-width: 45%; overflow-wrap: anywhere; }
 @media (max-width: 520px) { .feed { padding: 5px; } .draft { padding: 15px 12px; } }

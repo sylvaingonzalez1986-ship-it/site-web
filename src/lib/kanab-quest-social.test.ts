@@ -1,8 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { applyKqSocialCommand, createKqSocialSnapshot, getKqSocialChoicePreview, getKqSocialScenario, getKqSponsorOffers, getKqSponsorPostPreview, isKqSocialSnapshot, KQ_SOCIAL_SCENARIOS, KQ_SOCIAL_SPONSORS, normalizeKqSocialSnapshot, parseKqSocialCommand, refreshKqSocialSnapshot, type KqSocialCommand, type KqSocialPlatform, type KqSocialSnapshot } from "./kanab-quest-social";
+import { applyKqSocialCommand, createKqSocialSnapshot, getKqSocialChoicePreview, getKqSocialScenario, getKqSponsorOffers, getKqSponsorPostPreview, isKqSocialSnapshot, KQ_SOCIAL_SPONSORS, normalizeKqSocialSnapshot, parseKqSocialCommand, refreshKqSocialSnapshot, type KqSocialCommand, type KqSocialPlatform, type KqSocialSnapshot } from "./kanab-quest-social";
 import { createKqSocialSnapshot as createV1, applyKqSocialCommand as applyV1 } from "./kanab-quest-social-v1";
-import { KQ_SOCIAL_LEGACY_SCENARIOS } from "./kanab-quest-social-stories";
+import { KQ_SOCIAL_LEGACY_SCENARIOS, KQ_SOCIAL_V2_SCENARIOS } from "./kanab-quest-social-stories";
 import { getKqSocialAdventure } from "./kanab-quest-social-adventure";
+import { getKqSocialNextMidnight } from "./kanab-quest-social-daily";
 const now = Date.parse("2026-10-23T10:00:00Z");
 const key = (n = 1) => `10000000-0000-4000-8000-${n.toString().padStart(12, "0")}`;
 const base = (s: KqSocialSnapshot) => ({ modelVersion: 2 as const, requestKey: key(s.revision + 1), expectedRevision: s.revision });
@@ -19,7 +20,8 @@ function ready() {
 }
 function accepted() {
   const s = ready(), sponsor = KQ_SOCIAL_SPONSORS[0];
-  return { sponsor, snapshot: applyKqSocialCommand(s, { ...base(s), action: "sponsor-accept", sponsorId: sponsor.id }, now) };
+  const expectedRewardCents = getKqSponsorOffers(s).find(offer => offer.sponsor.id === sponsor.id)!.rewardCents!;
+  return { sponsor, snapshot: applyKqSocialCommand(s, { ...base(s), action: "sponsor-accept", sponsorId: sponsor.id, expectedRewardCents }, now) };
 }
 
 describe("social RPG v2", () => {
@@ -80,23 +82,23 @@ describe("social RPG v2", () => {
     } });
     expect(old).toEqual(before);
     expect(updated.history[0]).not.toHaveProperty("narrativeVersion");
-    const fresh = applyKqSocialCommand(updated, choose(updated, "instagram", "care"), now);
+    const fresh = applyKqSocialCommand(updated, choose(updated, "instagram", "care"), now + 86_400_000);
     expect(fresh.platforms.instagram.memory).toEqual({ [fresh.history[0].scenarioId]: fresh.history[0].choiceId });
     expect(normalizeKqSocialSnapshot(JSON.parse(JSON.stringify(fresh)), now)).toEqual(fresh);
     expect(refreshKqSocialSnapshot(fresh, now).platforms.instagram.memory).toEqual(fresh.platforms.instagram.memory);
     expect(fresh.history[1]).toEqual(before.history[0]);
   });
-  it("branches the second scene from the actual remembered choice and keeps three-scene pacing", () => {
+  it("preserves the actual story branch while applying daily publishing to older three-post arcs", () => {
     const initial = createKqSocialSnapshot(now);
     const first = applyKqSocialCommand(initial, choose(initial, "instagram", "reach"), now);
     const p = first.platforms.instagram;
     const scene = getKqSocialScenario("instagram", p.chapter, p.memory);
     expect(scene.body).not.toBe(getKqSocialScenario("instagram", p.chapter).body);
-    expect(p.nextPostAt).toBe(new Date(now).toISOString());
-    const second = applyKqSocialCommand(first, choose(first, "instagram", "care"), now);
-    const third = applyKqSocialCommand(second, choose(second, "instagram", "care"), now);
-    expect(Date.parse(third.platforms.instagram.nextPostAt!)).toBe(now + 300000);
-    expect(() => applyKqSocialCommand(third, choose(third), now)).toThrow(/publication/);
+    expect(p.nextPostAt).toBe(new Date(getKqSocialNextMidnight(now)).toISOString());
+    const second = applyKqSocialCommand(first, choose(first, "instagram", "care"), now + 86_400_000);
+    const third = applyKqSocialCommand(second, choose(second, "instagram", "care"), now + 2 * 86_400_000);
+    expect(Date.parse(third.platforms.instagram.nextPostAt!)).toBe(getKqSocialNextMidnight(now + 2 * 86_400_000));
+    expect(() => applyKqSocialCommand(third, choose(third), now + 2 * 86_400_000)).toThrow(/publication/);
   });
   it("reduces repeated reach and makes distrust cause departures, not endless positive farming", () => {
     const s = ready(), c = getKqSocialScenario("instagram", 0).choices.find(c => c.intent === "reach")!;
@@ -115,8 +117,8 @@ describe("social RPG v2", () => {
   });
   it("keeps every realized state valid across all base scenes, intents, branches and extremes", () => {
     for (const platform of ["instagram", "x"] as const) for (const followers of [0, 100, 50000]) for (const trust of [0, 55, 100]) {
-      for (const scene of KQ_SOCIAL_SCENARIOS.filter(s => s.platform === platform)) for (const c of scene.choices) {
-        const s = createKqSocialSnapshot(now, followers + 37), index = KQ_SOCIAL_SCENARIOS.filter(s => s.platform === platform).indexOf(scene);
+      for (const scene of KQ_SOCIAL_V2_SCENARIOS.filter(s => s.platform === platform)) for (const c of scene.choices) {
+        const s = createKqSocialSnapshot(now, followers + 37), index = KQ_SOCIAL_V2_SCENARIOS.filter(s => s.platform === platform).indexOf(scene);
         Object.assign(s.platforms[platform], { followers, trust, chapter: index, haters: 55, moderation: 3 }); s.socialFollowers = followers;
         const result = applyKqSocialCommand(s, { ...base(s), action: "choose", platform, scenarioId: scene.id, choiceId: c.id }, now, 0, 50, false, false, true);
         expect(isKqSocialSnapshot(result), `${scene.id}/${c.id}/${followers}/${trust}`).toBe(true);
@@ -134,17 +136,18 @@ describe("social RPG v2", () => {
   });
   it("requires two distinct disclosed posts and lets the earned fee be claimed exactly once", () => {
     const { sponsor, snapshot } = accepted(); let s = snapshot;
+    const rewardCents = snapshot.sponsors.active!.rewardCents;
     expect(s.sponsors.earnedCents).toBe(0);
     expect(() => applyKqSocialCommand(s, { ...base(s), action: "sponsor-claim" }, now)).toThrow(/deux formats/);
     const preview = getKqSponsorPostPreview(s, sponsor.requiredTags[0]);
     s = applyKqSocialCommand(s, { ...base(s), action: "sponsor-post", tag: sponsor.requiredTags[0] }, now);
     expect(s.history[0].energyDelta).toBe(preview.energy);
     expect(s.history[0].outcome).toContain("annoncé clairement");
-    expect(() => applyKqSocialCommand(s, { ...base(s), action: "sponsor-post", tag: sponsor.requiredTags[0] }, now + 300000)).toThrow(/déjà réalisé/);
-    s = applyKqSocialCommand(s, { ...base(s), action: "sponsor-post", tag: sponsor.requiredTags[1] }, now + 300000);
-    const claimed = applyKqSocialCommand(s, { ...base(s), action: "sponsor-claim" }, now + 300000);
-    expect(claimed.sponsors.earnedCents).toBe(sponsor.rewardCents);
-    expect(claimed.history[0].rewardCents).toBe(sponsor.rewardCents);
+    expect(() => applyKqSocialCommand(s, { ...base(s), action: "sponsor-post", tag: sponsor.requiredTags[0] }, now + 86_400_000)).toThrow(/déjà réalisé/);
+    s = applyKqSocialCommand(s, { ...base(s), action: "sponsor-post", tag: sponsor.requiredTags[1] }, now + 86_400_000);
+    const claimed = applyKqSocialCommand(s, { ...base(s), action: "sponsor-claim" }, now + 86_400_000);
+    expect(claimed.sponsors.earnedCents).toBe(rewardCents);
+    expect(claimed.history[0].rewardCents).toBe(rewardCents);
     expect(claimed.sponsors.active).toBeNull();
     expect(getKqSponsorOffers(claimed).find(o => o.sponsor.id === sponsor.id)?.status).toBe("completed");
     expect(() => applyKqSocialCommand(claimed, { ...base(claimed), action: "sponsor-claim" }, now + 300000)).toThrow(/Aucun/);
@@ -155,7 +158,7 @@ describe("social RPG v2", () => {
     let s = snapshot;
     s = applyKqSocialCommand(s, choose(s, sponsor.platform === "x" ? "instagram" : "x", "care"), now);
     expect(s.sponsors.active?.publicationsLeft).toBe(4);
-    for (let i = 0; i < 4; i++) s = applyKqSocialCommand(s, choose(s, sponsor.platform, "care"), now + i * 300000);
+    for (let i = 0; i < 4; i++) s = applyKqSocialCommand(s, choose(s, sponsor.platform, "care"), now + i * 86_400_000);
     expect(s.sponsors.active).toBeNull(); expect(s.sponsors.earnedCents).toBe(0);
     expect(s.history[0].reasons?.join(" ")).toContain("sans dette");
   });

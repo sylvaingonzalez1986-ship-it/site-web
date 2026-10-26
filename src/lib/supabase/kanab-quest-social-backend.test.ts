@@ -3,15 +3,16 @@ const { rpc, random } = vi.hoisted(() => ({ rpc: vi.fn(), random: vi.fn(() => 50
 vi.mock("./admin", () => ({ createSupabaseServiceClient: () => ({ rpc }) }));
 vi.mock("node:crypto", () => ({ randomInt: random }));
 import { getKqSocial, getKqSocialCulture, KqSocialError } from "./kanab-quest-social-backend";
-import { createKqSocialSnapshot, type KqSocialCommand, type KqSocialSnapshot } from "../kanab-quest-social";
+import { applyKqSocialCommand, createKqSocialSnapshot, getKqSponsorOffers, type KqSocialCommand, type KqSocialSnapshot } from "../kanab-quest-social";
 import { getKqSocialAdventure } from "../kanab-quest-social-adventure";
 import { projectKqSocialCultureContext } from "../kanab-quest-social-culture";
-import { KQ_SOCIAL_SCENARIOS } from "../kanab-quest-social-stories";
+import { KQ_SOCIAL_SCENARIOS, KQ_SOCIAL_SPONSORS } from "../kanab-quest-social-stories";
 import { getKqSocialProducerNarrative } from "../kanab-quest-social-producer";
 import { createKqSocialSnapshot as createV1 } from "../kanab-quest-social-v1";
 const id = "12345678-1234-4123-8123-123456789abc", now = Date.parse("2026-10-23T12:00:00Z");
 function serverState() {
   const state = createKqSocialSnapshot(now, 80);
+  for (const scene of KQ_SOCIAL_SCENARIOS.filter(scene => scene.episode === 1 && scene.id.includes("-debate-"))) state.platforms[scene.platform].memory[scene.id] = scene.choices[0].id;
   state.platforms.instagram.chapter = KQ_SOCIAL_SCENARIOS.filter(scene => scene.platform === 'instagram')
     .findIndex(scene => scene.episode === 1 && getKqSocialProducerNarrative(scene.id).requirement === 'culture');
   return state;
@@ -29,6 +30,21 @@ function choose(snapshot: KqSocialSnapshot = { ...serverState(), culture: projec
     narrativeVersion: 3, subjectId: adventure.subject!.id, contextKey: adventure.contextKey } as const;
 }
 let command: ReturnType<typeof choose>;
+function sponsorReady() {
+  const state = createKqSocialSnapshot(now, 5000), sponsor = KQ_SOCIAL_SPONSORS[0];
+  Object.assign(state.platforms[sponsor.platform], { followers: 5000, trust: 90, haters: 40 });
+  state.socialFollowers = 5000;
+  const quote = getKqSponsorOffers(state).find(offer => offer.sponsor.id === sponsor.id)!;
+  const accept: KqSocialCommand = { modelVersion: 2, requestKey: id, expectedRevision: 0, action: "sponsor-accept", sponsorId: sponsor.id, expectedRewardCents: quote.rewardCents! };
+  return { state, sponsor, accept, rewardCents: quote.rewardCents! };
+}
+function completedSponsor() {
+  const { state, sponsor, accept, rewardCents } = sponsorReady();
+  let signed = applyKqSocialCommand(state, accept, now);
+  for (const [index, tag] of sponsor.requiredTags.entries()) signed = applyKqSocialCommand(signed, { modelVersion: 2, requestKey: `96000000-0000-4000-8000-00000000000${index + 1}`, expectedRevision: signed.revision, action: "sponsor-post", tag }, now + index * 86_400_000);
+  const claim: KqSocialCommand = { modelVersion: 2, requestKey: "96000000-0000-4000-8000-000000000003", expectedRevision: signed.revision, action: "sponsor-claim" };
+  return { state: signed, sponsor, claim, rewardCents };
+}
 beforeEach(() => { vi.clearAllMocks(); command = choose(); rpc.mockImplementation(async (name, args) => ({ error: null, data: name.endsWith("commit") ? envelope(args.p_next_state)
   : name === "rpc_kq_social_culture" ? culture() : envelope() })); });
 describe("trusted social server engine and atomic persistence", () => {
@@ -53,9 +69,23 @@ describe("trusted social server engine and atomic persistence", () => {
     const persisted = rpc.mock.calls.at(-1)![1].p_next_state as KqSocialSnapshot;
     expect(persisted).not.toHaveProperty("culture");
     expect(persisted.history[0]).toMatchObject({ narrativeVersion: 3, subject: { id: "run:run-one", variety: "Ma variété plantée" } });
+    expect(persisted).toMatchObject({ cadenceVersion: 1, publicationNow: new Date(now).toISOString(),
+      platforms: { instagram: { publishedDay: "2026-10-23", nextPostAt: "2026-10-23T22:00:00.000Z" } } });
     expect(result.culture?.runs[0].id).toBe("run-one");
     rpc.mockClear();
     await expect(getKqSocial(id, { ...command, rewardCents: 9000 } as unknown as KqSocialCommand)).rejects.toMatchObject({ status: 400 });
+    expect(rpc).not.toHaveBeenCalled();
+  });
+  it("rejects a second publication using database time before committing, regardless of a client clock", async () => {
+    const state = serverState();
+    state.cadenceVersion = 1; state.publicationNow = new Date(now - 86_400_000).toISOString();
+    state.platforms.instagram.publishedDay = "2026-10-23"; state.platforms.x.publishedDay = null;
+    state.platforms.instagram.nextPostAt = null;
+    rpc.mockResolvedValueOnce({ data: envelope(state), error: null });
+    await expect(getKqSocial(id, command)).rejects.toMatchObject({ status: 409, message: expect.stringContaining("déjà publié") });
+    expect(rpc.mock.calls.some(call => call[0].endsWith("commit"))).toBe(false);
+    rpc.mockClear();
+    await expect(getKqSocial(id, { ...command, publicationNow: now + 86_400_000 } as unknown as KqSocialCommand)).rejects.toMatchObject({ status: 400 });
     expect(rpc).not.toHaveBeenCalled();
   });
   it("returns a committed retry without rerolling, mutating or paying again", async () => {
@@ -64,6 +94,47 @@ describe("trusted social server engine and atomic persistence", () => {
     expect(result.replayed).toBe(true); expect(result.culture?.source).toBe("own");
     expect(rpc).toHaveBeenCalledTimes(2); expect(random).not.toHaveBeenCalled();
     expect(rpc.mock.calls.map(call => call[0])).toEqual(["rpc_kq_social_v2_read", "rpc_kq_social_culture"]);
+  });
+  it("signs the server's dynamic offer and never accepts a different requested fee", async () => {
+    const { state, accept, rewardCents } = sponsorReady();
+    rpc.mockResolvedValueOnce({ data: envelope(state), error: null });
+    const signed = await getKqSocial(id, accept);
+    expect(signed.sponsors.active).toMatchObject({ rewardCents, pricing: { version: 1, followers: 5000, trust: 90, haters: 40 } });
+    expect(rpc).toHaveBeenLastCalledWith("rpc_kq_social_v2_commit", expect.objectContaining({ p_reward_cents: 0,
+      p_next_state: expect.objectContaining({ sponsors: expect.objectContaining({ active: signed.sponsors.active }) }) }));
+    rpc.mockClear(); rpc.mockResolvedValueOnce({ data: envelope(state), error: null });
+    await expect(getKqSocial(id, { ...accept, expectedRewardCents: rewardCents + 500 } as KqSocialCommand)).rejects.toMatchObject({ status: 409 });
+    expect(rpc.mock.calls.some(call => call[0].endsWith("commit"))).toBe(false);
+    rpc.mockClear();
+    await expect(getKqSocial(id, { ...accept, pricing: signed.sponsors.active!.pricing } as unknown as KqSocialCommand)).rejects.toMatchObject({ status: 400 });
+    expect(rpc).not.toHaveBeenCalled();
+  });
+  it("rechecks a quoted fee after server pressure decay even when the revision did not change", async () => {
+    const { state, accept } = sponsorReady();
+    state.serverNow = new Date(now + 2 * 3_600_000).toISOString();
+    rpc.mockResolvedValueOnce({ data: envelope(state), error: null });
+    await expect(getKqSocial(id, accept)).rejects.toMatchObject({ status: 409, message: expect.stringContaining("montant") });
+    expect(rpc.mock.calls.some(call => call[0].endsWith("commit"))).toBe(false);
+  });
+  it("pays the frozen fee above the old cap and a committed retry never pays it twice", async () => {
+    const { state, sponsor, claim, rewardCents } = completedSponsor();
+    expect(rewardCents).toBeGreaterThan(18_000);
+    state.platforms[sponsor.platform].trust = 1;
+    rpc.mockResolvedValueOnce({ data: envelope(state), error: null });
+    const paid = await getKqSocial(id, claim);
+    expect(paid.sponsors).toMatchObject({ active: null, earnedCents: rewardCents, paidRewardsCents: { [sponsor.id]: rewardCents } });
+    expect(rpc).toHaveBeenLastCalledWith("rpc_kq_social_v2_commit", expect.objectContaining({ p_reward_cents: rewardCents }));
+    rpc.mockClear(); random.mockClear(); rpc.mockResolvedValueOnce({ data: envelope(paid, true), error: null });
+    expect((await getKqSocial(id, claim)).sponsors.earnedCents).toBe(rewardCents);
+    expect(random).not.toHaveBeenCalled();
+    expect(rpc.mock.calls.some(call => call[0].endsWith("commit"))).toBe(false);
+  });
+  it("rejects a dynamic payment above the wallet limit without consuming its contract", async () => {
+    const { state, claim, rewardCents } = completedSponsor(), before = structuredClone(state);
+    rpc.mockResolvedValueOnce({ data: { ...envelope(state), cashCents: 2_147_483_647 - rewardCents + 1 }, error: null });
+    await expect(getKqSocial(id, claim)).rejects.toMatchObject({ status: 409 });
+    expect(rpc.mock.calls.some(call => call[0].endsWith("commit"))).toBe(false);
+    expect(state).toEqual(before);
   });
   it("never commits a stale or exhausted choice", async () => {
     const s = createKqSocialSnapshot(now); s.energy = 0;

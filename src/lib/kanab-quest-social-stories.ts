@@ -3,6 +3,8 @@ import { KQ_SOCIAL_INSTAGRAM_EXPANSION } from "./kanab-quest-social-instagram-ex
 import { KQ_SOCIAL_X_EXPANSION } from "./kanab-quest-social-x-expansion";
 import { applyKqSocialNarrative } from "./kanab-quest-social-narrative";
 import { applyKqSocialProducerNarrative } from "./kanab-quest-social-producer";
+import { KQ_SOCIAL_DEBATE_SCENARIOS, KQ_SOCIAL_INITIAL_DEBATE_SCENARIOS } from "./kanab-quest-social-debates";
+import { KQ_SOCIAL_CURRENT_SPONSORS } from "./kanab-quest-social-sponsors";
 
 /** Fictional situations and brands. Moderation is a game rule, not a claim about real platform policy. */
 function choice(
@@ -277,9 +279,12 @@ export const KQ_SOCIAL_V2_SCENARIOS = KQ_SOCIAL_V2_CONTENT.map(content => conten
 // Kept for old receipt renderers; V3 publications use the producer registry.
 export const KQ_SOCIAL_CONTENT = KQ_SOCIAL_V2_CONTENT;
 export const KQ_SOCIAL_EXPANSION = KQ_SOCIAL_CONTENT.slice(KQ_SOCIAL_ORIGINAL_SCENARIOS.length);
-export const KQ_SOCIAL_SCENARIOS: KqSocialScenario[] = KQ_SOCIAL_LEGACY_SCENARIOS.map(applyKqSocialProducerNarrative);
+/** Replay catalogue for sessions recorded before daily publishing and two comment exchanges. */
+export const KQ_SOCIAL_PRE_DAILY_SCENARIOS: KqSocialScenario[] = [...KQ_SOCIAL_LEGACY_SCENARIOS, ...KQ_SOCIAL_INITIAL_DEBATE_SCENARIOS].map(applyKqSocialProducerNarrative);
+export const KQ_SOCIAL_SCENARIOS: KqSocialScenario[] = [...KQ_SOCIAL_LEGACY_SCENARIOS, ...KQ_SOCIAL_DEBATE_SCENARIOS].map(applyKqSocialProducerNarrative);
 
-export const KQ_SOCIAL_SPONSORS: KqSocialSponsorDefinition[] = [
+/** Immutable old contracts remain resolvable for saved commitments and receipts. */
+export const KQ_SOCIAL_LEGACY_SPONSORS: KqSocialSponsorDefinition[] = [
   {
     id: "atelier-marne", name: "Atelier Marne", contact: "Lila · céramique locale", platform: "instagram",
     minimumFollowers: 75, minimumTrust: 45, maxHaters: 65, maxModeration: 3, rewardCents: 3_000,
@@ -313,3 +318,6 @@ export const KQ_SOCIAL_SPONSORS: KqSocialSponsorDefinition[] = [
     completionText: "Romy confirme les deux publications convenues. La campagne Décibel Club est terminée et la prime convenue rejoint ta trésorerie de jeu.",
   },
 ];
+
+export const KQ_SOCIAL_SPONSORS: KqSocialSponsorDefinition[] = KQ_SOCIAL_CURRENT_SPONSORS;
+export const KQ_SOCIAL_SPONSOR_REGISTRY: KqSocialSponsorDefinition[] = [...KQ_SOCIAL_LEGACY_SPONSORS, ...KQ_SOCIAL_SPONSORS];

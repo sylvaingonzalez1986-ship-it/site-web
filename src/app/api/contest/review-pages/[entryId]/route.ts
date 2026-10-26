@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getContestEntryReviewsPage } from "@/lib/contest-backend";
-import { getContestFeatureAccessDeniedResponse } from "@/lib/contest-feature";
+import { getContestNotebookAccessDeniedResponse } from "@/lib/contest-notebook-access";
 import { sanitizePublicContestReview } from "@/lib/contest-public-api";
 import { parseContestReviewCursor } from "@/lib/contest-review-pagination";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -9,7 +9,7 @@ export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
 
 export async function GET(request: Request, context: { params: Promise<{ entryId: string }> }) {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) return denied;
   const cursor = new URL(request.url).searchParams.get("cursor");
   try { parseContestReviewCursor(cursor); } catch {

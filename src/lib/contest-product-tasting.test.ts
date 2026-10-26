@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { selectContestProductTastingEntry } from "@/lib/contest-product-tasting";
+import { getProductTastingNotebookHref, selectContestProductTastingEntry } from "@/lib/contest-product-tasting";
 import type { ContestEntrySummary } from "@/types/contest";
 
 function entry(
@@ -9,6 +9,15 @@ function entry(
 ): ContestEntrySummary {
   return { id, createdAt: updatedAt, updatedAt, season } as ContestEntrySummary;
 }
+
+describe("product tasting notebook links", () => {
+  it.each(["regular", "concours"] as const)("opens the chosen %s flower in the editor with its season", track => {
+    const href = getProductTastingNotebookHref({ id: "flower & lot", track, season: { code: "2026/été" } as ContestEntrySummary["season"] }, true);
+    const url = new URL(href, "https://example.test");
+    expect(url.pathname).toBe(`/arene/carnet/${track}`);
+    expect(Object.fromEntries(url.searchParams)).toEqual({ entry: "flower & lot", season: "2026/été", edit: "notes" });
+  });
+});
 
 describe("selectContestProductTastingEntry", () => {
   it("prefers the active non-archived season over a newer inactive lot", () => {

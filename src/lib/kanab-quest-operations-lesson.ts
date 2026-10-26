@@ -34,7 +34,7 @@ export type KqOperationsLessonState = {
   social?: KqSocialSnapshot | KqSocialV1Snapshot;
   onlineSimulation?: { packedQualities: Record<string, number>; promotedFlowerIds: string[]; clientDay: string; clientsStart: number; clientsGained: number; clientsLost: number; loyaltyProgress: number; churnProgress: number };
 };
-export type KqOperationsLessonAction = { path: string; method: string; body: Record<string, unknown>; socialCatalogVersion?: 2; socialNarrativeVersion?: 2 | 3 };
+export type KqOperationsLessonAction = { path: string; method: string; body: Record<string, unknown>; socialCatalogVersion?: 2; socialNarrativeVersion?: 2 | 3; socialInteractionVersion?: 1; socialCadenceVersion?: 1; socialRealAt?: string };
 const LOT_ID = 'operations-lesson-flower';
 
 function inventory(codes: readonly string[], equipped = codes): Inventory {
@@ -193,7 +193,7 @@ export function getKqOperationsEnergy(state: KqOperationsLessonState) {
 function requireCondition(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(message); }
 
 /** Executes only this exercise. Unknown endpoints fail closed; there is no network fallback. */
-export function applyKqOperationsRequest(current: KqOperationsLessonState, action: KqOperationsLessonAction, options: { replaySocialV1?: true; replaySocialOriginalCatalog?: true; replaySocialLegacyNarrative?: true; replaySocialV2Narrative?: true } = {}): { state: KqOperationsLessonState; payload: unknown } {
+export function applyKqOperationsRequest(current: KqOperationsLessonState, action: KqOperationsLessonAction, options: { replaySocialV1?: true; replaySocialOriginalCatalog?: true; replaySocialLegacyNarrative?: true; replaySocialV2Narrative?: true; replaySocialV3Catalog?: true; socialCadence?: import('./kanab-quest-social-daily').KqSocialCadenceOptions } = {}): { state: KqOperationsLessonState; payload: unknown } {
   const { method, body } = action;
   const url = new URL(action.path, 'https://lesson.invalid');
   requireCondition(url.origin === 'https://lesson.invalid', 'Cette action ne fait pas partie de cet atelier.');
@@ -313,7 +313,7 @@ export function applyKqOperationsRequest(current: KqOperationsLessonState, actio
     }
     payload = getKqOperationsStorage(state);
   } else if (url.pathname === '/api/arena/placard/social') {
-    payload = options.replaySocialV1 ? replayKqOperationsSocialV1(state, body) : applyKqOperationsSocial(state, body, options.replaySocialOriginalCatalog, options.replaySocialLegacyNarrative, undefined, options.replaySocialV2Narrative);
+    payload = options.replaySocialV1 ? replayKqOperationsSocialV1(state, body) : applyKqOperationsSocial(state, body, options.replaySocialOriginalCatalog, options.replaySocialLegacyNarrative, undefined, options.replaySocialV2Narrative, options.replaySocialV3Catalog, options.socialCadence);
   } else if (url.pathname === '/api/arena/placard/commerce') {
     if (body.action === 'online') {
       payload = applyKqOperationsOnline(state, body.command, body.payload, {

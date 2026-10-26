@@ -4,7 +4,7 @@ import {
   getContestTesterRankings,
   isContestSchemaMissingError,
 } from "@/lib/contest-backend";
-import { getContestFeatureAccessDeniedResponse } from "@/lib/contest-feature";
+import { getContestNotebookAccessDeniedResponse } from "@/lib/contest-notebook-access";
 import { sanitizePublicContestRankingItem } from "@/lib/contest-public-api";
 import type { ContestTesterRankingScope } from "@/types/contest";
 
@@ -15,7 +15,7 @@ function parseScope(value: string | null): ContestTesterRankingScope {
 }
 
 export async function GET(request: Request) {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) {
     return denied;
   }

@@ -4,7 +4,7 @@ import {
   getContestEntryDetailBySlug,
   isContestSchemaMissingError,
 } from "@/lib/contest-backend";
-import { getContestFeatureAccessDeniedResponse } from "@/lib/contest-feature";
+import { getContestNotebookAccessDeniedResponse } from "@/lib/contest-notebook-access";
 import { sanitizePublicContestEntryDetail } from "@/lib/contest-public-api";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 
@@ -15,7 +15,7 @@ type RouteContext = {
 };
 
 export async function GET(_: Request, context: RouteContext) {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) {
     return denied;
   }

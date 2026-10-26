@@ -7,7 +7,7 @@ import {
   isContestSchemaMissingError,
   upsertContestProfile,
 } from "@/lib/contest-backend";
-import { getContestFeatureAccessDeniedResponse } from "@/lib/contest-feature";
+import { getContestNotebookAccessDeniedResponse } from "@/lib/contest-notebook-access";
 import { sanitizePublicContestProfile } from "@/lib/contest-public-api";
 import { getPublicContestError } from "@/lib/contest-api-error";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -16,7 +16,7 @@ import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/securit
 export const runtime = "nodejs";
 
 export async function GET() {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) {
     return denied;
   }
@@ -38,7 +38,7 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
-  const denied = await getContestFeatureAccessDeniedResponse();
+  const denied = await getContestNotebookAccessDeniedResponse();
   if (denied) {
     return denied;
   }

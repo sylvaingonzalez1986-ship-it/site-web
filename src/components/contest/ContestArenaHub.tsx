@@ -12,12 +12,13 @@ import styles from "./ArenaHome.module.css";
 
 type ArenaHubProps = {
   activitiesLocked?: boolean;
+  notebookOpen?: boolean;
   initialMode?: ArenaLobbyMode;
   /** Kept for incoming prelaunch routes; the opening date is now always visible. */
   initialNotice?: boolean;
 };
 
-export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer" }: ArenaHubProps) {
+export function ContestArenaHub({ activitiesLocked = false, notebookOpen = true, initialMode = "jouer" }: ArenaHubProps) {
   const profileLauncher = useRef<ArenaProfileLauncherHandle | null>(null);
   const [profileAvailability, setProfileAvailability] = useState<ArenaProfileAvailability>("loading");
 
@@ -32,11 +33,12 @@ export function ContestArenaHub({ activitiesLocked = false, initialMode = "jouer
 
       <section className={styles.activities} aria-label="Activités de l’Arène">
         {activitiesLocked && <div className={styles.intro}>
-          <span className={styles.eyebrow}>Ouverture de l’Arène</span>
+          <span className={styles.eyebrow}>Ouverture du jeu</span>
           <h2>{ARENA_OPENING_MESSAGE}</h2>
+          {notebookOpen && <p>Le Carnet est ouvert : tu peux déjà noter les fleurs que tu as achetées.</p>}
         </div>}
 
-        <ArenaWorldMap activitiesLocked={activitiesLocked} initialMode={initialMode} profileLauncher={profileLauncher} profileAvailability={profileAvailability} />
+        <ArenaWorldMap activitiesLocked={activitiesLocked} notebookOpen={notebookOpen} initialMode={initialMode} profileLauncher={profileLauncher} profileAvailability={profileAvailability} />
       </section>
     </main>
   );

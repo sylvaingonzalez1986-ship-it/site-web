@@ -10,6 +10,9 @@ const root = process.cwd(), output = resolve(root, 'output/social');
 const communityOnly = process.argv.includes('--community-only');
 const expansionOnly = process.argv.includes('--expansion-only');
 const producerOnly = process.argv.includes('--producer-only');
+const debatesOnly = process.argv.includes('--debates-only');
+const sponsorsOnly = process.argv.includes('--sponsors-only');
+const expectedDebateCount = Number(process.env.KQ_SOCIAL_DEBATE_COUNT ?? 32);
 const composerOnly = process.argv.includes('--composer-only') || producerOnly;
 const illustrationsSmoke = process.argv.includes('--illustrations-smoke');
 const illustrationIdsArgument=process.argv.find(argument=>argument.startsWith('--illustration-ids='));
@@ -28,12 +31,21 @@ import {applyKqOperationsSocial,getKqOperationsSocial} from '/src/lib/kanab-ques
 import {getKqSocialAdventure} from '/src/lib/kanab-quest-social-adventure';
 import {projectKqSocialCultureContext} from '/src/lib/kanab-quest-social-culture';
 import {getKqSocialProducerNarrative} from '/src/lib/kanab-quest-social-producer';
-import {createKqSocialSnapshot,getKqSocialScenario,getKqSocialChoicePreview,KQ_SOCIAL_SPONSORS} from '/src/lib/kanab-quest-social';
+import {createKqSocialSnapshot as createSocialSnapshot,getKqSocialScenario,getKqSocialChoicePreview,getKqSponsorOffers,KQ_SOCIAL_SPONSORS,KQ_SOCIAL_SPONSOR_REGISTRY} from '/src/lib/kanab-quest-social';
+import {formatKqCash} from '/src/lib/kanab-quest-equipment';
 import {getKqSocialFeed,getKqSocialFeedOutcome} from '/src/lib/kanab-quest-social-feed';
 import {getKqSocialPlayer} from '/src/lib/kanab-quest-social-player';
 import {KQ_SOCIAL_SCENARIOS} from '/src/lib/kanab-quest-social-stories';
 import {DEFAULT_CHANVRIER_APPEARANCE} from '/src/lib/arena-chanvrier';
-let state=createKqOperationsLesson('market'),mode='ready',refresh=()=>{},cultureOverride=null;
+const createKqSocialSnapshot=(...args)=>{
+ const snapshot=createSocialSnapshot(...args);
+ if(!${debatesOnly})for(const scene of KQ_SOCIAL_SCENARIOS)if(scene.episode===1&&/^(?:ig|x)-debate-/.test(scene.id))snapshot.platforms[scene.platform].memory[scene.id]=scene.choices[0].id;
+ return snapshot;
+};
+const createAuditState=()=>{const next=createKqOperationsLesson('market');next.social=createKqSocialSnapshot(next.trial.clock,next.trial.commerce.online.followers,true);return next};
+let state=createAuditState(),mode='ready',refresh=()=>{},cultureOverride=null;
+let publicationClock=Date.parse('2026-10-25T12:00:00.000Z');
+const cadence=()=>${debatesOnly || sponsorsOnly}?{publicationNow:publicationClock}:{legacyCadence:true};
 const identities={
  elodie:{firstName:'Élodie',profile:{nickname:'elodie.atelier',gender:'female',skin:'brown',clothing:'berry',strength:'merchant',appearance:{...DEFAULT_CHANVRIER_APPEARANCE,hair:'braids',hairColor:'black',face:'round',eyes:'bright',top:'apron',bottom:'skirt',bottomColor:'violet'}}},
  mehdi:{firstName:'Mehdi',profile:{nickname:'mehdi.latelier',gender:'male',skin:'honey',clothing:'teal',strength:'green-thumb',appearance:{...DEFAULT_CHANVRIER_APPEARANCE,hair:'quiff',hairColor:'ginger',face:'square',eyes:'relaxed',facialHair:'stubble',top:'hoodie',bottom:'cargo',bottomColor:'sage'}}},
@@ -41,14 +53,14 @@ const identities={
  missing:{firstName:null,profile:null},
 };
 let identity=identities.elodie;
-window.requests=[];window.notifications=[];
-const socialSnapshot=()=>getKqOperationsSocial(state,cultureOverride??undefined);
+window.requests=[];window.notifications=[];window.readPublications=[];
+const socialSnapshot=()=>getKqOperationsSocial(state,cultureOverride??undefined,3,cadence());
 const execute=(path,method,body={})=>{
- if(path==='/api/arena/placard/social'&&cultureOverride){
+ if(path==='/api/arena/placard/social'){
   if(method==='GET')return socialSnapshot();
   const key=path+':'+body.requestKey;
-  if(state.receipts[key])return {...state.receipts[key],culture:cultureOverride};
-  const next=structuredClone(state),payload=applyKqOperationsSocial(next,body,false,false,cultureOverride);
+  if(state.receipts[key])return {...state.receipts[key],culture:socialSnapshot().culture};
+  const next=structuredClone(state),payload=applyKqOperationsSocial(next,body,false,false,cultureOverride??undefined,false,false,cadence());
   next.receipts[key]=structuredClone(payload);delete next.receipts[key].culture;state=next;return payload;
  }
  const result=applyKqOperationsRequest(state,{path,method,body});state=result.state;return result.payload
@@ -56,12 +68,15 @@ const execute=(path,method,body={})=>{
 window.fixture=()=>structuredClone(socialSnapshot());
 window.commerce=()=>structuredClone(getKqOperationsCommerce(state));
 window.catalog=()=>structuredClone(KQ_SOCIAL_SPONSORS);
+window.offers=()=>structuredClone(getKqSponsorOffers(socialSnapshot()));
+window.cash=cents=>formatKqCash(cents);
 window.scene=platform=>{const snapshot=socialSnapshot(),available=getKqSocialAdventure(snapshot,platform),id=document.querySelector('[data-social-subject][aria-pressed="true"]')?.dataset.socialSubject;return (id&&available.subjects.some(subject=>subject.id===id)?getKqSocialAdventure(snapshot,platform,id):available).scene};
 window.sceneRequirement=platform=>getKqSocialProducerNarrative(window.scene(platform).id).requirement;
 window.player=()=>getKqSocialPlayer(identity);
-window.feedPresentation=platform=>getKqSocialFeed(window.scene(platform),getKqOperationsSocial(state).platforms[platform].memory,window.player());
-window.feedOutcome=id=>getKqSocialFeedOutcome(getKqOperationsSocial(state).history.find(entry=>entry.id===id),window.player());
-window.artScenes=()=>KQ_SOCIAL_SCENARIOS.map(scene=>({id:scene.id,platform:scene.platform,chapter:KQ_SOCIAL_SCENARIOS.filter(item=>item.platform===scene.platform).findIndex(item=>item.id===scene.id)}));
+window.feedPresentation=platform=>getKqSocialFeed(window.scene(platform),socialSnapshot().platforms[platform].memory,window.player());
+window.feedOutcome=id=>getKqSocialFeedOutcome(socialSnapshot().history.find(entry=>entry.id===id),window.player());
+window.artScenes=()=>KQ_SOCIAL_SCENARIOS.filter(scene=>!/^(?:ig|x)-debate-/.test(scene.id)).map(scene=>({id:scene.id,platform:scene.platform,chapter:KQ_SOCIAL_SCENARIOS.filter(item=>item.platform===scene.platform).findIndex(item=>item.id===scene.id)}));
+window.debateScenes=()=>KQ_SOCIAL_SCENARIOS.filter(scene=>/^(?:ig|x)-debate-/.test(scene.id)&&scene.episode===1).map(scene=>({id:scene.id,platform:scene.platform,choices:scene.choices.map(choice=>choice.id)}));
 window.preview=(platform,choiceId)=>getKqSocialChoicePreview(socialSnapshot(),platform,window.scene(platform).choices.find(c=>c.id===choiceId));
 window.setFailure=name=>{mode=name};
 const api=createKqTutorialApi(async(path,options={})=>{
@@ -87,7 +102,7 @@ const makeCulture=name=>{
 window.changeCulture=(name,notify=true)=>{cultureOverride=makeCulture(name);if(notify){api.notify('kq:social-updated');refresh()}};
 window.showCulture=(name,requirement,platform='instagram')=>{
  const revision=socialSnapshot().revision+1;
- state=createKqOperationsLesson('market');mode='ready';cultureOverride=makeCulture(name);window.requests=[];window.notifications=[];
+ state=createAuditState();mode='ready';cultureOverride=makeCulture(name);window.requests=[];window.notifications=[];
  state.social=createKqSocialSnapshot(state.trial.clock,state.trial.commerce.online.followers,true);
  state.social.revision=revision;
  const scenes=KQ_SOCIAL_SCENARIOS.filter(scene=>scene.platform===platform),index=scenes.findIndex(scene=>scene.episode===1&&getKqSocialProducerNarrative(scene.id).requirement===requirement);
@@ -95,12 +110,50 @@ window.showCulture=(name,requirement,platform='instagram')=>{
  state.social.platforms[platform].chapter=index;window.requestedCultureScene=scenes[index].id;api.notify('kq:social-updated');refresh();
 };
 window.showCommunity=()=>{state.social=createKqSocialSnapshot(state.trial.clock,state.trial.commerce.online.followers,true);state.social.platforms.instagram.chapter=8;api.notify('kq:social-updated');refresh()};
+window.showDebate=(platform,startId)=>{
+ const revision=socialSnapshot().revision+1;
+ publicationClock=Date.parse('2026-10-25T12:00:00.000Z');
+ state=createAuditState();mode='ready';cultureOverride=makeCulture('empty');window.requests=[];window.notifications=[];window.readPublications=[];
+ state.social=createKqSocialSnapshot(state.trial.clock,state.trial.commerce.online.followers,true);state.social.revision=revision;
+ const scenes=KQ_SOCIAL_SCENARIOS.filter(scene=>scene.platform===platform),index=scenes.findIndex(scene=>scene.id===startId&&scene.episode===1);
+ if(index<0)throw Error('Missing debate '+startId);
+ const account=state.social.platforms[platform];account.chapter=index;
+ for(const scene of scenes.slice(0,index))if(scene.episode===1&&/^(?:ig|x)-debate-/.test(scene.id))account.memory[scene.id]=scene.choices[0].id;
+ api.notify('kq:social-updated');refresh();
+};
 window.showExpansion=platform=>{state.social=createKqSocialSnapshot(state.trial.clock,state.trial.commerce.online.followers,true);state.social.platforms[platform].chapter=9;api.notify('kq:social-updated');refresh()};
 window.showIllustration=(platform,chapter)=>{const revision=getKqOperationsSocial(state).revision+1;state.social=createKqSocialSnapshot(state.trial.clock,state.trial.commerce.online.followers,true);state.social.revision=revision;state.social.platforms[platform].chapter=chapter;api.notify('kq:social-updated');refresh()};
 window.advance=hours=>{execute('/api/arena/placard/commerce','POST',{action:'online',command:'advance-online-time',payload:{hours},requestKey:crypto.randomUUID()});api.notify('kq:social-updated');refresh()};
+window.setPublicationClock=at=>{publicationClock=at;api.notify('kq:social-updated');refresh()};
+window.setSponsorProfile=(profile,notify=true)=>{
+ const previousTotal=state.social.socialFollowers;
+ for(const platform of ['instagram','x'])Object.assign(state.social.platforms[platform],{followers:profile.followers,haters:profile.haters,trust:profile.trust??95,moderation:profile.moderation??0,pressureUpdatedAt:new Date(state.trial.clock).toISOString()});
+ state.social.socialFollowers=profile.followers*2;state.trial.commerce.online.followers+=state.social.socialFollowers-previousTotal;
+ if(notify){state.social.revision++;api.notify('kq:social-updated');refresh()}
+};
+window.showSponsorProfile=profile=>{
+ const revision=socialSnapshot().revision+1;publicationClock=Date.parse('2026-10-25T12:00:00.000Z');
+ state=createAuditState();mode='ready';cultureOverride=makeCulture('empty');window.requests=[];window.notifications=[];
+ state.social.revision=revision;window.setSponsorProfile(profile);
+};
+window.showUnknownPaidSponsor=id=>{
+ state.social.sponsors={active:null,completedIds:[id],declinedIds:[],earnedCents:45000};state.social.history=[];state.social.revision++;
+ api.notify('kq:social-updated');refresh();
+};
+window.showLegacySponsor=()=>{
+ const legacy=KQ_SOCIAL_SPONSOR_REGISTRY.find(def=>!KQ_SOCIAL_SPONSORS.some(current=>current.id===def.id));
+ state.social.sponsors={active:{sponsorId:legacy.id,platform:legacy.platform,rewardCents:legacy.rewardCents,progressTags:[],publicationsLeft:4,startedAt:new Date(state.trial.clock).toISOString()},completedIds:[],declinedIds:[],earnedCents:0};
+ state.social.revision++;api.notify('kq:social-updated');refresh();return legacy;
+};
+window.attemptCurrentPost=async platform=>{
+ const snapshot=socialSnapshot(),adventure=getKqSocialAdventure(snapshot,platform),choice=adventure.scene.choices.find(choice=>(choice.action??'publish')==='publish');
+ const response=await api.request('/api/arena/placard/social',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({modelVersion:2,requestKey:crypto.randomUUID(),expectedRevision:snapshot.revision,action:'choose',platform,scenarioId:adventure.scene.id,choiceId:choice.id,narrativeVersion:3,subjectId:adventure.subject.id,contextKey:adventure.contextKey})});
+ return {status:response.status,body:await response.json()};
+};
 function App(){const[revision,setRevision]=useState(0),[scenario,setScenario]=useState('ready');refresh=()=>setRevision(value=>value+1);
- window.reset=name=>{state=createKqOperationsLesson('market');cultureOverride=null;mode=name;window.requests=[];window.notifications=[];if(['tired','pressure','sponsors'].includes(name)){state.social=createKqSocialSnapshot(state.trial.clock,state.trial.commerce.online.followers,true);if(name==='tired')state.social.energy=2;else{const ig=state.social.platforms.instagram,x=state.social.platforms.x;ig.followers=name==='sponsors'?1200:600;x.followers=name==='sponsors'?1200:200;ig.moderation=name==='pressure'?3:0;x.haters=name==='pressure'?50:0;if(name==='sponsors'){ig.trust=90;x.trust=90}state.social.socialFollowers=ig.followers+x.followers;state.trial.commerce.online.followers+=state.social.socialFollowers;state.social.audienceFollowers=state.trial.commerce.online.followers}}setScenario(name+'-'+(revision+1));setRevision(value=>value+1)};
- return <KqTutorialApiProvider api={api}><aside className="fixture-tools"><strong>Démo locale · aventure sociale</strong><p>Données fictives en mémoire. Aucun compte externe ni partie réelle n’est modifié.</p></aside><main className="audit-surface"><KqSocialNetworks key={scenario}/></main></KqTutorialApiProvider>
+ window.reset=name=>{state=createAuditState();cultureOverride=null;mode=name;window.requests=[];window.notifications=[];if(['tired','pressure','sponsors'].includes(name)){state.social=createKqSocialSnapshot(state.trial.clock,state.trial.commerce.online.followers,true);if(name==='tired')state.social.energy=2;else{const ig=state.social.platforms.instagram,x=state.social.platforms.x;ig.followers=name==='sponsors'?1200:600;x.followers=name==='sponsors'?1200:200;ig.moderation=name==='pressure'?3:0;x.haters=name==='pressure'?50:0;if(name==='sponsors'){ig.trust=90;x.trust=90}state.social.socialFollowers=ig.followers+x.followers;state.trial.commerce.online.followers+=state.social.socialFollowers;state.social.audienceFollowers=state.trial.commerce.online.followers}}setScenario(name+'-'+(revision+1));setRevision(value=>value+1)};
+ const readPublication=async id=>{const entry=socialSnapshot().history.find(item=>item.id===id);if((entry?.action??'publish')!=='publish')throw Error('Comment incorrectly consumed a tutorial publication');window.readPublications.push(id)};
+ return <KqTutorialApiProvider api={api}><aside className="fixture-tools"><strong>Démo locale · aventure sociale</strong><p>Données fictives en mémoire. Aucun compte externe ni partie réelle n’est modifié.</p></aside><main className="audit-surface"><KqSocialNetworks key={scenario} onTutorialResultRead={${debatesOnly}?readPublication:undefined}/></main></KqTutorialApiProvider>
 }
 createRoot(document.getElementById('root')).render(<App/>);`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,preload,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
@@ -230,7 +283,310 @@ try {
     await illustration(selector,entry.scenarioId,outcome.artwork,outcome.imageAlt);
     assert.doesNotMatch(await page.$eval(selector, node => node.innerText), /\b\d[\d\s.,]*\s*(?:likes|vues|reposts|retweets|j[’']aime)\b/i, 'Recorded posts show no fictional engagement counters');
   };
-  if (composerOnly) {
+  if (sponsorsOnly) {
+    await ready();await page.evaluate(()=>document.fonts.ready);
+    const sponsorEvidence=[];
+    const showProfile=async profile=>{
+      const before=(await snapshot()).revision;await page.evaluate(profile=>window.showSponsorProfile(profile),profile);
+      await page.waitForFunction(revision=>window.fixture().revision>revision,{},before);
+      await page.click('[data-social-view="sponsors"]');
+      await page.waitForFunction(()=>document.querySelectorAll('[data-social-offer]').length===8);
+      await page.waitForFunction(()=>!document.querySelector('[data-social-networks] [aria-busy="true"]'));
+      return page.evaluate(()=>window.offers());
+    };
+    const firstCatalog=await page.evaluate(()=>window.catalog()),first=firstCatalog[0];
+    assert.equal(firstCatalog.length,8);
+    for(const profile of [{followers:25,haters:0},{followers:1200,haters:0},{followers:50000,haters:0},{followers:50000,haters:80}]){
+      const offers=await showProfile(profile);
+      for(const offer of offers){
+        const selector='[data-social-offer="'+offer.sponsor.id+'"]';
+        await page.waitForFunction(({selector,reward})=>Number(document.querySelector(selector+' [data-social-offer-amount]')?.dataset.socialOfferAmount)===reward,{}, {selector,reward:offer.rewardCents});
+        assert.ok(offer.sponsor.sector);assert.ok(await page.$eval(selector,(node,text)=>node.innerText.includes(text),offer.sponsor.sector));
+        assert.equal(offer.pricing.followers,profile.followers);assert.equal(offer.pricing.haters,profile.haters);
+        assert.equal(offer.pricing.baseCents+offer.pricing.audienceBonusCents-offer.pricing.hatersPenaltyCents-offer.pricing.roundingCents,offer.rewardCents);
+        assert.equal(await page.$eval(selector+' [data-social-sponsor-accept]',node=>node.disabled),!offer.eligible);
+        if(offer.status==='locked')assert.match(await page.$eval(selector,node=>node.innerText),/Proposition sous conditions/);
+      }
+      sponsorEvidence.push({profile,offers:offers.map(offer=>({id:offer.sponsor.id,rewardCents:offer.rewardCents,status:offer.status}))});
+    }
+    for(const [index,offer] of sponsorEvidence[2].offers.entries()){
+      assert.ok(offer.rewardCents>=sponsorEvidence[1].offers[index].rewardCents,'More followers cannot reduce the quoted fee, including when the brand cap is reached');
+      assert.ok(offer.rewardCents>sponsorEvidence[0].offers[index].rewardCents,'A large audience earns more than the base profile');
+      assert.ok(offer.rewardCents>sponsorEvidence[3].offers[index].rewardCents,'Hater pressure reduces the quoted fee');
+    }
+    checks.push('Eight fictional sector-specific businesses display exact current fees, network stats and conditional eligibility across four profiles');
+    await showProfile({followers:1200,haters:20});
+    const staleOffer=(await page.evaluate(()=>window.offers())).find(offer=>offer.sponsor.id===first.id);
+    assert.ok(staleOffer.eligible);
+    await page.click('[data-social-sponsor-accept="'+first.id+'"]');await page.waitForSelector('[data-social-confirm][open]');
+    const oldFee=await page.evaluate(cents=>window.cash(cents),staleOffer.rewardCents);
+    assert.ok(await page.$eval('[data-social-confirm]',(node,text)=>node.innerText.includes(text),oldFee));
+    await page.evaluate(()=>window.setSponsorProfile({followers:1200,haters:0},false));
+    await page.click('[data-social-confirm-action]');await closed();
+    await page.waitForSelector('[data-social-networks] [role="alert"]');
+    assert.equal((await snapshot()).sponsors.active,null,'A changed fee is never silently signed');
+    assert.match(await page.$eval('[data-social-networks] [role="alert"]',node=>node.innerText),/montant|prime|proposition/i);
+    assert.equal((await posts()).at(-1).body.expectedRewardCents,staleOffer.rewardCents);
+    const freshOffer=(await page.evaluate(()=>window.offers())).find(offer=>offer.sponsor.id===first.id);
+    assert.notEqual(freshOffer.rewardCents,staleOffer.rewardCents);
+    await page.waitForFunction(({id,fee})=>Number(document.querySelector('[data-social-offer="'+id+'"] [data-social-offer-amount]').dataset.socialOfferAmount)===fee,{}, {id:first.id,fee:freshOffer.rewardCents});
+    const offerSelector='[data-social-offer="'+first.id+'"]';
+    await page.click(offerSelector+' [data-social-pricing] summary');
+    for(const width of [320,390,1440]){
+      await page.setViewport({width,height:1000});await overflow('Current sponsor offer '+width);
+      if(width!==390)await (await page.$(offerSelector)).screenshot({path:resolve(output,'sponsors-offer-'+width+'.png')});
+    }
+    await page.focus('[data-social-sponsor-accept="'+first.id+'"]');await page.keyboard.press('Enter');await page.waitForSelector('[data-social-confirm][open]');
+    assert.match(await page.$eval('[data-social-confirm]',node=>node.innerText),/fixé à la signature/);
+    await page.keyboard.press('Escape');await closed();assert.equal((await snapshot()).sponsors.active,null);
+    await page.click('[data-social-sponsor-accept="'+first.id+'"]');await act('[data-social-confirm-action]');await closed();
+    const signedContract=structuredClone((await snapshot()).sponsors.active),signedFee=signedContract.rewardCents;
+    assert.equal(signedFee,freshOffer.rewardCents);assert.equal((await posts()).at(-1).body.expectedRewardCents,signedFee);
+    await continueStory();
+    await page.evaluate(()=>window.setSponsorProfile({followers:50000,haters:40}));
+    await page.waitForFunction(()=>window.fixture().platforms.instagram.followers===50000);
+    assert.equal((await snapshot()).sponsors.active.rewardCents,signedFee);
+    assert.deepEqual((await snapshot()).sponsors.active.pricing,signedContract.pricing,'The calculation used at signing remains frozen');
+    await page.waitForFunction(fee=>Number(document.querySelector('[data-social-partnership] [data-social-signed-amount]')?.dataset.socialSignedAmount)===fee,{},signedFee);
+    await page.click('[data-social-partnership] [data-social-pricing] summary');
+    for(const width of [320,390,1440]){
+      await page.setViewport({width,height:1000});await overflow('Signed sponsor contract '+width);
+      if(width!==390)await (await page.$('[data-social-partnership]')).screenshot({path:resolve(output,'sponsors-contract-'+width+'.png')});
+    }
+    for(const tag of first.requiredTags){assert.ok(first.deliverables[tag]);assert.ok(await page.$eval('[data-social-partnership]',(node,text)=>node.innerText.includes(text),first.deliverables[tag].description));}
+    checks.push('Keyboard review is cancellable; stale fee is rejected; the signed amount and its pricing inputs remain fixed when account stats change');
+    const cashBefore=(await page.evaluate(()=>window.commerce())).cashCents;
+    await act('[data-social-sponsored-post="'+first.requiredTags[0]+'"]');await continueStory();
+    assert.equal((await snapshot()).sponsors.active.publicationsLeft,3);
+    assert.equal(await page.$eval('[data-social-sponsored-post="'+first.requiredTags[1]+'"]',node=>node.disabled),true);
+    const nextPostAt=(await snapshot()).platforms[first.platform].nextPostAt;
+    await page.evaluate(()=>window.advance(24));
+    assert.equal(await page.$eval('[data-social-sponsored-post="'+first.requiredTags[1]+'"]',node=>node.disabled),true,'Fictional time does not unlock a second sponsored post');
+    await page.evaluate(at=>window.setPublicationClock(Date.parse(at)),nextPostAt);
+    await page.waitForFunction(tag=>!document.querySelector('[data-social-sponsored-post="'+tag+'"]').disabled,{},first.requiredTags[1]);
+    await act('[data-social-sponsored-post="'+first.requiredTags[1]+'"]');await continueStory();
+    assert.equal((await snapshot()).sponsors.earnedCents,0);assert.equal((await page.evaluate(()=>window.commerce())).cashCents,cashBefore);
+    const beforeClaim=await snapshot();
+    await page.evaluate(()=>window.setFailure('lost-result'));await page.click('[data-social-sponsor-claim]');await page.waitForSelector('[data-social-retry]');
+    assert.equal((await snapshot()).sponsors.earnedCents,signedFee);
+    await page.click('[data-social-retry]');await page.waitForFunction(()=>!document.querySelector('[data-social-retry]'));
+    assert.equal((await snapshot()).revision,beforeClaim.revision+1);assert.equal((await page.evaluate(()=>window.commerce())).cashCents,cashBefore+signedFee);
+    const claims=(await posts()).filter(request=>request.body.action==='sponsor-claim');assert.equal(claims.length,2);assert.equal(claims[0].body.requestKey,claims[1].body.requestKey);
+    await page.waitForFunction(({id,fee})=>Number(document.querySelector('[data-social-offer="'+id+'"] [data-social-offer-amount]')?.dataset.socialOfferAmount)===fee,{}, {id:first.id,fee:signedFee});
+    await page.evaluate(()=>window.setSponsorProfile({followers:300,haters:0}));
+    assert.equal((await page.evaluate(()=>window.offers())).find(offer=>offer.sponsor.id===first.id).rewardCents,signedFee,'Completed contracts keep the actual payment rather than today’s quote');
+    checks.push('Two disclosed contents occupy two real calendar days; fictional time cannot skip the quota; claim pays the agreed amount exactly once after a lost response');
+    await continueStory();await page.evaluate(id=>window.showUnknownPaidSponsor(id),first.id);
+    await page.waitForFunction(id=>!document.querySelector('[data-social-offer="'+id+'"] [data-social-offer-amount]'),{},first.id);
+    assert.match(await page.$eval(offerSelector,node=>node.innerText),/terminé et payé/);
+    assert.equal((await page.evaluate(()=>window.offers())).find(offer=>offer.sponsor.id===first.id).rewardCents,null);
+    await showProfile({followers:1200,haters:0});
+    await page.click('[data-social-sponsor-decline="'+first.id+'"]');await act('[data-social-confirm-action]');await closed();
+    assert.equal(await page.$$eval(offerSelector+' [data-social-offer-amount]',nodes=>nodes.length),0,'Closed offers show no hypothetical payment');
+    await continueStory();const legacy=await page.evaluate(()=>window.showLegacySponsor());
+    await page.waitForSelector('[data-social-partnership]',{visible:true});
+    assert.equal(Number(await page.$eval('[data-social-partnership] [data-social-signed-amount]',node=>node.dataset.socialSignedAmount)),legacy.rewardCents);
+    assert.equal(await page.$$eval('[data-social-partnership] [data-social-pricing]',nodes=>nodes.length),0,'Legacy contracts never invent historical pricing inputs');
+    checks.push('Paid cards use actual historical amounts, missing historical amounts stay absent, declined cards show no price, and legacy active contracts retain their signed fee');
+    assert.deepEqual(errors,[]);assert.deepEqual(forbidden,[]);assert.deepEqual(failures,[]);
+    await writeFile(resolve(output,'sponsors-report.json'),JSON.stringify({success:true,checks,sponsorEvidence,signedFee,legacyFee:legacy.rewardCents,errors,forbidden,failures},null,2));
+    console.log(JSON.stringify({success:true,checks:checks.length,profiles:sponsorEvidence.length,output},null,2));
+  } else if (debatesOnly) {
+    await ready(); await page.evaluate(()=>document.fonts.ready);
+    const debateScenes=await page.evaluate(()=>window.debateScenes()), debateEvidence=[], secondCommentEvidence=[];
+    assert.equal(debateScenes.length,expectedDebateCount,'All expected debate arcs are available');
+    let keyboardChecked=false;
+    for(const [arcIndex,start] of debateScenes.entries()){
+      const captureArc=/^(?:ig-debate-(?:filter|gift)|x-debate-(?:photo-credit|giveaway))-post$/.test(start.id);
+      for(const [openingIndex,openingId] of [...start.choices.entries()].filter(([index])=>index===arcIndex%3)){
+        for(let responseIndex=0;responseIndex<3;responseIndex++){
+          await page.setViewport({width:390,height:1000});
+          await page.evaluate(({platform,id})=>window.showDebate(platform,id),start);
+          await page.click('[data-platform="'+start.platform+'"]');
+          await page.waitForFunction(id=>document.querySelector('[data-social-scene]')?.dataset.socialScene===id,{},start.id);
+          await page.waitForFunction(()=>[...document.querySelectorAll('[data-social-choice]')].every(button=>!button.disabled));
+          const openingPresentation=await page.evaluate(platform=>window.feedPresentation(platform),start.platform);
+          const originalText=openingPresentation.choicePosts[openingId];
+          assert.equal(await page.$$eval('[data-social-scene] [data-social-thread], [data-social-scene] [data-social-comment]',nodes=>nodes.length),0,'A debate starts with the player composing a post');
+          await act('[data-social-choice="'+openingId+'"]');
+          const parentSnapshot=await snapshot(),parentEntry=parentSnapshot.history[0],publicationDeadline=parentSnapshot.platforms[start.platform].nextPostAt;
+          assert.equal(parentSnapshot.platforms[start.platform].publishedDay,'2026-10-25','A publication consumes the current Paris calendar day');
+          assert.equal(publicationDeadline,'2026-10-25T23:00:00.000Z','The next publication opens at Paris midnight, including the winter clock change');
+          await continueStory();
+          const presentation=await page.evaluate(platform=>window.feedPresentation(platform),start.platform);
+          const responseScene=await page.evaluate(platform=>window.scene(platform),start.platform);
+          const thread=presentation.thread;
+          assert.ok(thread,'The second episode is attached to its original publication');
+          assert.equal(thread.scenarioId,start.id);
+          assert.equal(thread.text,originalText,'The discussion keeps the exact selected original post');
+          const threadSelector='[data-social-scene] [data-social-thread="'+start.id+'"]';
+          await page.waitForSelector(threadSelector,{visible:true});
+          assert.ok(await page.$eval(threadSelector,(node,text)=>node.innerText.includes(text),originalText));
+          const target=thread.comments.find(comment=>comment.id===thread.targetCommentId);
+          assert.ok(target,'A concrete comment is selected for the response');
+          assert.ok(await page.$eval(threadSelector,(node,text)=>node.innerText.includes(text),target.text),'The original intervention remains visible');
+          assert.equal(await page.$$eval('[data-social-scene] [data-social-draft]',nodes=>nodes.length),2,'Exactly two player replies are offered');
+          assert.equal(await page.$$eval('[data-social-scene] [data-social-decision]',nodes=>nodes.length),1,'Ignoring is a decision, not a publication draft');
+          assert.deepEqual(await page.$$eval('[data-social-scene] [data-social-choice]',nodes=>nodes.map(node=>node.textContent.trim()).sort()),['Ne pas répondre','Répondre','Répondre'].sort());
+          assert.equal(await page.$$eval('[data-social-decision] [data-social-player-avatar]',nodes=>nodes.length),0,'The ignore option does not fabricate a player message');
+          for(const comment of thread.comments){
+            assert.ok(await page.$eval(threadSelector,(node,text)=>node.innerText.includes(text),comment.text),'All original comments survive into the discussion');
+          }
+          await overflow(start.id+' '+openingId+' response choices');
+          if(responseIndex===0){
+            await playerPortrait();
+            await page.waitForFunction(()=>[...document.querySelectorAll('[data-social-scene] img')].every(image=>image.complete&&image.naturalWidth>0));
+            for(const width of [320,390,1440]){
+              await page.setViewport({width,height:1000});await overflow(start.id+' discussion '+width);
+              await page.$eval('[data-social-scene]',node=>node.scrollIntoView({block:'start'}));
+              if(captureArc)await page.screenshot({path:resolve(output,'debates-'+start.id+'-discussion-'+width+'.png'),fullPage:true});
+            }
+            await page.setViewport({width:390,height:1000});
+          }
+          const response=responseScene.choices[responseIndex],selector='[data-social-choice="'+response.id+'"]';
+          if(!keyboardChecked){
+            const before=(await snapshot()).revision,reads=await socialReads();
+            await page.focus(selector);assert.equal(await page.$eval(selector,node=>node===document.activeElement),true);
+            await page.keyboard.press('Enter');
+            await page.waitForFunction(revision=>window.fixture().revision>revision,{},before);
+            await page.waitForSelector('[data-social-result]');
+            assert.equal(await socialReads(),reads);keyboardChecked=true;
+          }else await act(selector);
+          const receipt=(await snapshot()).history[0],outcome=await page.evaluate(id=>window.feedOutcome(id),receipt.id);
+          const resultSelector='[data-social-result] [data-social-reaction="'+receipt.id+'"]';
+          await page.waitForSelector(resultSelector,{visible:true});
+          assert.equal(receipt.previousChoice,openingId,'The receipt preserves the original selected publication branch');
+          assert.equal(outcome.thread.scenarioId,start.id);
+          assert.equal(outcome.thread.text,originalText,'The saved reply is attached to the same exact original post');
+          assert.ok(await page.$eval(resultSelector,(node,text)=>node.innerText.includes(text),target.text),'The target comment remains visible after replying or ignoring');
+          assert.equal(await page.$$eval(resultSelector+' [data-social-thread="'+start.id+'"]',nodes=>nodes.length),1,'The result contains its single original thread');
+          assert.equal(await page.$$eval('[data-social-published="'+receipt.id+'"]',nodes=>nodes.length),0,'A response receipt is never displayed as a new top-level publication');
+          if(response.action==='ignore'){
+            assert.equal(outcome.text,'','Ignoring produces no player text');
+            assert.equal(await page.$$eval(resultSelector+' [data-social-comment] [data-person="player"]',nodes=>nodes.length),0,'Ignoring leaves no invented player reply');
+            assert.equal(await page.$$eval(resultSelector+' [data-social-comment]',nodes=>nodes.length),thread.comments.length,'Ignoring neither deletes comments nor creates a conversation');
+            assert.match(await page.$eval(resultSelector,node=>node.innerText),/Tu n’as pas répondu à ce commentaire/);
+          }else{
+            const replySelector=resultSelector+' [data-social-comment="'+receipt.id+':player-reply"]';
+            assert.equal(await page.$$eval(replySelector,nodes=>nodes.length),1,'The reply appears exactly once beneath its original thread');
+            assert.ok(await page.$eval(replySelector,(node,text)=>node.innerText.includes(text),presentation.choicePosts[response.id]),'The published reply matches its selected draft exactly');
+          }
+          assert.equal((await posts()).length,2,'Each path sends exactly one publication and one response decision');
+          assert.equal((await snapshot()).platforms[start.platform].nextPostAt,publicationDeadline,'Replying or ignoring does not consume another publication');
+          assert.equal((await snapshot()).history.find(entry=>entry.id===parentEntry.id)?.choiceId,openingId,'Responding preserves the original receipt');
+          await overflow(start.id+' '+openingId+'/'+response.id+' result');
+          if(captureArc){
+            await page.$eval(resultSelector,node=>node.scrollIntoView({block:'start'}));
+            await page.screenshot({path:resolve(output,'debates-'+start.id+'-'+response.id+'-390.png'),fullPage:true});
+            await page.click('[data-social-journal] > summary');
+            await page.click('[data-social-journal] li:first-child details > summary');
+            const journalSelector='[data-social-journal] [data-social-reaction="'+receipt.id+'"]';
+            await page.waitForSelector(journalSelector,{visible:true});
+            assert.ok(await page.$eval(journalSelector,(node,text)=>node.innerText.includes(text),originalText),'Reopening the journal preserves the original post');
+            assert.ok(await page.$eval(journalSelector,(node,text)=>node.innerText.includes(text),target.text),'Reopening the journal preserves the targeted comment');
+            assert.equal(await page.$$eval(journalSelector+' [data-social-comment] [data-person="player"]',nodes=>nodes.length),response.action==='ignore'?0:1,'The journal preserves whether the player replied or ignored');
+            await overflow(start.id+' reopened journal');
+            await page.click('[data-social-journal] li:first-child details > summary');
+            await page.click('[data-social-journal] > summary');
+          }
+          debateEvidence.push({platform:start.platform,startId:start.id,openingId,responseId:response.id,action:response.action,parentScenario:outcome.thread.scenarioId,targetComment:target.text});
+          await continueStory();
+          const secondPresentation=await page.evaluate(platform=>window.feedPresentation(platform),start.platform);
+          if(secondPresentation.thread){
+            const secondScene=await page.evaluate(platform=>window.scene(platform),start.platform),secondThread=secondPresentation.thread;
+            assert.equal(secondScene.parentChoice,openingId,'The second comment retains the original publication branch');
+            assert.equal(secondScene.previousChoice,response.id,'The second comment remembers the first response');
+            assert.equal(secondThread.scenarioId,start.id);assert.equal(secondThread.text,originalText);
+            const secondTarget=secondThread.comments.find(comment=>comment.id===secondThread.targetCommentId);
+            assert.ok(secondTarget);assert.notEqual(secondTarget.id,target.id,'The third episode targets another original comment');
+            assert.equal(secondTarget.id,thread.comments[1].id,'The third episode responds to original comment 1');
+            const previousPlayerReplies=response.action==='ignore'?0:1;
+            await page.waitForSelector(threadSelector,{visible:true});
+            for(const comment of thread.comments)assert.ok(secondThread.comments.some(current=>current.id===comment.id&&current.text===comment.text),'Every original comment survives to the next interaction');
+            assert.equal(await page.$$eval(threadSelector+' [data-social-comment] [data-person="player"]',nodes=>nodes.length),previousPlayerReplies,'The earlier player reply is retained, with no invented reply after ignoring');
+            if(previousPlayerReplies)assert.ok(await page.$eval(threadSelector,(node,text)=>node.innerText.includes(text),presentation.choicePosts[response.id]),'The first reply remains readable under the same post');
+            assert.equal(await page.$$eval('[data-social-scene] [data-social-draft]',nodes=>nodes.length),2);
+            assert.equal(await page.$$eval('[data-social-scene] [data-social-decision]',nodes=>nodes.length),1);
+            assert.equal(await page.$$eval('[data-social-scene] [data-social-choice]',nodes=>nodes.every(button=>!button.disabled)),true,'The daily publication limit leaves comment interactions available');
+            if(responseIndex===0){
+              for(const width of [320,390,1440]){
+                await page.setViewport({width,height:1000});await overflow(start.id+' second comment '+width);
+                await page.$eval('[data-social-scene]',node=>node.scrollIntoView({block:'start'}));
+                if(captureArc)await page.screenshot({path:resolve(output,'debates-'+start.id+'-second-comment-'+width+'.png'),fullPage:true});
+              }
+              await page.setViewport({width:390,height:1000});
+            }
+            const secondResponse=secondScene.choices[(openingIndex+responseIndex)%3];
+            await act('[data-social-choice="'+secondResponse.id+'"]');
+            const finalSnapshot=await snapshot(),finalReceipt=finalSnapshot.history[0],finalOutcome=await page.evaluate(id=>window.feedOutcome(id),finalReceipt.id);
+            const finalSelector='[data-social-result] [data-social-reaction="'+finalReceipt.id+'"]';
+            await page.waitForSelector(finalSelector,{visible:true});
+            assert.equal(finalReceipt.parentChoice,openingId);assert.equal(finalReceipt.previousChoice,response.id);
+            assert.equal(finalOutcome.thread.scenarioId,start.id);assert.equal(finalOutcome.thread.text,originalText);
+            assert.equal(finalOutcome.thread.targetCommentId,secondTarget.id);
+            assert.equal(await page.$$eval(finalSelector+' [data-social-comment] [data-person="player"]',nodes=>nodes.length),previousPlayerReplies+(secondResponse.action==='ignore'?0:1),'The result retains previous exchanges and adds only the chosen new reply');
+            for(const comment of thread.comments)assert.ok(await page.$eval(finalSelector,(node,text)=>node.innerText.includes(text),comment.text));
+            if(previousPlayerReplies)assert.ok(await page.$eval(finalSelector,(node,text)=>node.innerText.includes(text),presentation.choicePosts[response.id]));
+            if(secondResponse.action==='ignore'){
+              assert.equal(finalOutcome.text,'');assert.deepEqual(finalOutcome.comments,[],'Ignoring adds no NPC exchange either');
+              assert.match(await page.$eval(finalSelector,node=>node.innerText),/les échanges précédents sont conservés/);
+            }else{
+              const newReplySelector=finalSelector+' [data-social-comment="'+finalReceipt.id+':player-reply"]';
+              assert.equal(await page.$$eval(newReplySelector,nodes=>nodes.length),1);
+              assert.ok(await page.$eval(newReplySelector,(node,text)=>node.innerText.includes(text),secondPresentation.choicePosts[secondResponse.id]));
+            }
+            assert.equal(finalSnapshot.platforms[start.platform].nextPostAt,publicationDeadline);assert.equal(finalSnapshot.platforms[start.platform].publishedDay,'2026-10-25');
+            assert.equal((await posts()).length,3,'One original publication supports two independent comment decisions');
+            assert.equal(finalSnapshot.history.find(entry=>entry.id===parentEntry.id)?.choiceId,openingId);
+            await overflow(start.id+' second response result');
+            if(captureArc&&secondResponse.action==='ignore'&&previousPlayerReplies){
+              await page.$eval(finalSelector,node=>node.scrollIntoView({block:'start'}));
+              await page.screenshot({path:resolve(output,'debates-'+start.id+'-ignore-second-keep-first-390.png'),fullPage:true});
+            }
+            secondCommentEvidence.push({platform:start.platform,startId:start.id,openingId,firstResponseId:response.id,secondResponseId:secondResponse.id,secondAction:secondResponse.action,retainedPlayerReplies:previousPlayerReplies,targetComment:secondTarget.text});
+            await continueStory();
+          }
+          await page.waitForFunction(()=>[...document.querySelectorAll('[data-social-choice]')].every(button=>button.disabled));
+          assert.match(await page.$eval('[data-social-networks]',node=>node.innerText),/Post du jour déjà publié/,'The next original publication waits until the next real calendar day');
+          assert.deepEqual(await page.evaluate(()=>window.readPublications),[parentEntry.id],'Continuing after replies never consumes another tutorial publication');
+        }
+      }
+      checks.push(start.id+': one selected publication branch × all 3 response decisions keep exact thread, comments and player choice');
+      console.log('Verified debate '+start.id);
+    }
+    assert.equal(debateEvidence.length,debateScenes.length*3);assert.ok(keyboardChecked);
+    assert.equal(secondCommentEvidence.length,60,'All 20 new arcs exercise three paths through both original comments');
+    const quotaPlatform=debateScenes.at(-1).platform,otherPlatform=quotaPlatform==='x'?'instagram':'x';
+    const beforeAdvance=await snapshot();
+    await page.evaluate(()=>window.advance(24));
+    await page.waitForFunction(before=>Date.parse(window.fixture().serverNow)>Date.parse(before),{},beforeAdvance.serverNow);
+    const afterAdvance=await snapshot();
+    assert.equal(afterAdvance.publicationNow,beforeAdvance.publicationNow,'Advancing fictional gameplay time does not advance the real publication clock');
+    assert.equal(afterAdvance.platforms[quotaPlatform].nextPostAt,beforeAdvance.platforms[quotaPlatform].nextPostAt);
+    assert.equal(await page.$$eval('[data-social-choice]',nodes=>nodes.every(button=>button.disabled)),true);
+    const rejection=await page.evaluate(platform=>window.attemptCurrentPost(platform),quotaPlatform);
+    assert.equal(rejection.status,409);assert.match(rejection.body.error,/minuit/i);
+    assert.equal((await snapshot()).revision,afterAdvance.revision,'Rejected duplicate publications leave state unchanged');
+    await page.click('[data-platform="'+otherPlatform+'"]');
+    await page.waitForFunction(()=>[...document.querySelectorAll('[data-social-choice]')].some(button=>!button.disabled));
+    await act('[data-social-choice]');await continueStory();
+    const otherPublished=await snapshot();
+    assert.equal(otherPublished.platforms[otherPlatform].publishedDay,'2026-10-25','The other platform has its independent daily publication allowance');
+    assert.equal(otherPublished.platforms[quotaPlatform].nextPostAt,beforeAdvance.platforms[quotaPlatform].nextPostAt);
+    await page.click('[data-platform="'+quotaPlatform+'"]');
+    await page.evaluate(at=>window.setPublicationClock(Date.parse(at)),beforeAdvance.platforms[quotaPlatform].nextPostAt);
+    await page.waitForFunction(()=>[...document.querySelectorAll('[data-social-choice]')].some(button=>!button.disabled));
+    await act('[data-social-choice]');
+    const nextDay=await snapshot();
+    assert.equal(nextDay.platforms[quotaPlatform].publishedDay,'2026-10-26');
+    assert.equal(nextDay.platforms[quotaPlatform].nextPostAt,'2026-10-26T23:00:00.000Z');
+    const cadenceEvidence={timezone:'Europe/Paris',initialDay:'2026-10-25',midnight:beforeAdvance.platforms[quotaPlatform].nextPostAt,fictionalHoursAdvanced:24,duplicatePostStatus:rejection.status,independentPlatforms:true,nextDay:nextDay.platforms[quotaPlatform].publishedDay};
+    assert.deepEqual(errors,[]);assert.deepEqual(forbidden,[]);assert.deepEqual(failures,[]);
+    checks.push('All '+debateScenes.length+' first-comment screens and all 20 second-comment screens fit 320, 390 and 1440 px; one response is committed with the keyboard; no real API or external network request');
+    checks.push('One real publication per Paris calendar day and platform; comments remain available; fictional time cannot unlock a post; midnight unlocks the next day');
+    await writeFile(resolve(output,'debates-report.json'),JSON.stringify({success:true,checks,debateEvidence,secondCommentEvidence,cadenceEvidence,errors,forbidden,failures},null,2));
+    console.log(JSON.stringify({success:true,paths:debateEvidence.length,secondCommentPaths:secondCommentEvidence.length,checks:checks.length,output},null,2));
+  } else if (composerOnly) {
     await ready();await page.evaluate(()=>document.fonts.ready);
     for(const platform of ['instagram','x']){
       await reset('ready');await page.click('[data-platform="'+platform+'"]');
@@ -537,6 +893,7 @@ try {
   await page.click('[data-social-sponsor-accept="'+offer.id+'"]'); await page.waitForSelector('[data-social-confirm][open]');
   await act('[data-social-confirm-action]'); await closed();
   assert.equal((await snapshot()).sponsors.active.publicationsLeft,4);
+  const contractedReward=(await snapshot()).sponsors.active.rewardCents;
   const sponsoredCash = (await page.evaluate(()=>window.commerce())).cashCents;
   assert.equal((await snapshot()).sponsors.earnedCents,0);
   for(const width of [320,390,1440]){await page.setViewport({width,height:1000});await overflow('Active contract '+width);await page.screenshot({path:resolve(output,'active-sponsor-'+width+'.png'),fullPage:true})}
@@ -560,10 +917,10 @@ try {
   await page.waitForSelector('[data-social-retry]');
   await page.waitForFunction(reads=>window.requests.filter(request=>request.method==='GET'&&request.path==='/api/arena/placard/social').length===reads+1,{},readsBeforeClaim);
   assert.equal(await socialReads(),readsBeforeClaim+1,'A lost reward response still triggers exactly one verification read');
-  assert.equal((await snapshot()).sponsors.earnedCents,offer.rewardCents);
+  assert.equal((await snapshot()).sponsors.earnedCents,contractedReward);
   await page.click('[data-social-retry]');await page.waitForFunction(()=>!document.querySelector('[data-social-retry]'));
   assert.equal((await snapshot()).revision,beforeClaim.revision+1);
-  assert.equal((await page.evaluate(()=>window.commerce())).cashCents,sponsoredCash+offer.rewardCents);
+  assert.equal((await page.evaluate(()=>window.commerce())).cashCents,sponsoredCash+contractedReward);
   const claims=(await posts()).filter(request=>request.body.action==='sponsor-claim');assert.equal(claims.length,2);assert.equal(claims[0].body.requestKey,claims[1].body.requestKey);
   assert.equal(await socialReads(),readsBeforeClaim+1,'The acknowledged retry adds no read and retains its original request UUID');
   assert.ok((await snapshot()).sponsors.completedIds.includes(offer.id));
@@ -672,7 +1029,7 @@ try {
   }
 } catch (error) {
   if (page) await page.screenshot({ path: resolve(output, 'failure.png'), fullPage: true }).catch(() => {});
-  await writeFile(resolve(output, producerOnly ? 'producer-report.json' : composerOnly ? 'composer-report.json' : illustrationsOnly ? illustrationsReport : expansionOnly ? 'expansion-report.json' : communityOnly ? 'community-report.json' : 'report.json'), JSON.stringify({ success: false, checks, artworkEvidence, identityEvidence, errors, forbidden,failures,failure:String(error) }, null, 2));
+  await writeFile(resolve(output, sponsorsOnly ? 'sponsors-report.json' : debatesOnly ? 'debates-report.json' : producerOnly ? 'producer-report.json' : composerOnly ? 'composer-report.json' : illustrationsOnly ? illustrationsReport : expansionOnly ? 'expansion-report.json' : communityOnly ? 'community-report.json' : 'report.json'), JSON.stringify({ success: false, checks, artworkEvidence, identityEvidence, errors, forbidden,failures,failure:String(error) }, null, 2));
   throw error;
 } finally { if (browser) await browser.close(); await server.close(); }
 

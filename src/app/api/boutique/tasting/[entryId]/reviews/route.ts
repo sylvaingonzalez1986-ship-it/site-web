@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getContestEntryReviewsPage } from "@/lib/contest-backend";
-import { isContestFeatureEnabledServer } from "@/lib/contest-feature";
+import { isContestNotebookEnabledServer } from "@/lib/contest-notebook-access";
 import { sanitizePublicContestReview } from "@/lib/contest-public-api";
 import { parseContestReviewCursor } from "@/lib/contest-review-pagination";
 import { readPublicStoreByBackend } from "@/lib/data-backend";
@@ -10,7 +10,7 @@ export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store" };
 
 export async function GET(request: Request, context: { params: Promise<{ entryId: string }> }) {
-  if (!isProductTastingStorefrontEnabled() || !isContestFeatureEnabledServer()) {
+  if (!isProductTastingStorefrontEnabled() || !isContestNotebookEnabledServer()) {
     return NextResponse.json({ error: "Module désactivé." }, { status: 404, headers });
   }
   const cursor = new URL(request.url).searchParams.get("cursor");

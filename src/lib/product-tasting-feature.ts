@@ -1,11 +1,10 @@
 import "server-only";
-import { isArenaPrelaunch } from "@/lib/arena-opening";
-import { isContestBetaAccessRestrictedServer, isContestFeatureEnabledServer } from "@/lib/contest-feature";
+import { isContestNotebookEnabledServer } from "@/lib/contest-notebook-access";
 
 export function isProductTastingStorefrontEnabled(): boolean {
-  return process.env.PRODUCT_TASTING_STOREFRONT_ENABLED?.trim().toLowerCase() === "true";
+  return process.env.PRODUCT_TASTING_STOREFRONT_ENABLED?.trim().toLowerCase() !== "false";
 }
 
 export function isProductTastingNotebookLinkEnabled(): boolean {
-  return isContestFeatureEnabledServer() && !isContestBetaAccessRestrictedServer() && !isArenaPrelaunch();
+  return isContestNotebookEnabledServer();
 }

@@ -59,26 +59,28 @@ async function player({ followers = 0, reputation = 0, cash = 10000, active = tr
   await query("INSERT INTO kq_commerce_accounts(user_id,computer_owned,shop_created_at) VALUES($1,$2,CASE WHEN $2 THEN now() ELSE NULL END)", [id, active]);
   return id;
 }
-// Model elapsed cooldowns without waiting. Both copies are kept in sync, just
-// as commit does; the real engine still computes every game transition.
+// Reset the daily allowance only inside this isolated fixture to traverse the
+// catalogue without waiting months. Daily-clock enforcement has separate checks.
 async function readyToPost(id) {
   await query("UPDATE kq_social_platforms SET next_post_at=NULL WHERE user_id=$1", [id]);
   await query(`UPDATE kq_social_accounts SET energy=100,energy_updated_at=now(),
-    game_state=jsonb_set(jsonb_set(jsonb_set(jsonb_set(game_state,'{energy}','100'),
-      '{energyUpdatedAt}',to_jsonb(now())),'{platforms,instagram,nextPostAt}','null'),'{platforms,x,nextPostAt}','null')
+    game_state=jsonb_set(jsonb_set(jsonb_set(jsonb_set(jsonb_set(jsonb_set(game_state,'{energy}','100'),
+      '{energyUpdatedAt}',to_jsonb(now())),'{platforms,instagram,nextPostAt}','null'),'{platforms,x,nextPostAt}','null'),
+      '{platforms,instagram,publishedDay}','null'),'{platforms,x,publishedDay}','null')
     WHERE user_id=$1`, [id]);
 }
-async function maturePlayer(options = {}) {
-  const id = await player({ followers: 8000, ...options });
+async function maturePlayer(options = {}, followersPerPlatform = 15000) {
+  const id = await player({ followers: 40000, ...options });
   await read(id);
-  await query("UPDATE kq_social_platforms SET followers=3000 WHERE user_id=$1", [id]);
+  await query("UPDATE kq_social_platforms SET followers=$2 WHERE user_id=$1", [id, followersPerPlatform]);
   const state = view(await read(id));
   for (const platform of ["instagram", "x"]) state.platforms[platform].trust = 90;
   await query("UPDATE kq_social_accounts SET game_state=$2::jsonb WHERE user_id=$1", [id, JSON.stringify(state)]);
   return id;
 }
 async function finishBrief(id, sponsor = engine.KQ_SOCIAL_SPONSORS[0]) {
-  await perform(id, state => ({ ...base(state), action: "sponsor-accept", sponsorId: sponsor.id }));
+  await perform(id, state => ({ ...base(state), action: "sponsor-accept", sponsorId: sponsor.id,
+    ...(sponsor.pricingVersion === 1 ? { expectedRewardCents: engine.getKqSponsorOffers(state).find(offer => offer.sponsor.id === sponsor.id).rewardCents } : {}) }));
   for (const tag of sponsor.requiredTags) {
     await readyToPost(id);
     await perform(id, state => ({ ...base(state), action: "sponsor-post", tag }));
@@ -141,12 +143,19 @@ try {
   const old = await legacy(upgraded, oldCommand);
   await db.exec(await migration("20261023000100_kq_social_sponsors.sql"));
   checks.push("V2 applies cleanly after V1 with existing player data");
+  const oldSponsors = (await vite.ssrLoadModule("/src/lib/kanab-quest-social-stories.ts")).KQ_SOCIAL_LEGACY_SPONSORS;
+  const legacyOwner = await maturePlayer(), legacyClaim = await finishBrief(legacyOwner, oldSponsors[0]);
+  await db.exec(await migration("20261025000200_kq_social_sponsor_fees.sql"));
+  check("fee migration preserves an existing legacy campaign and its agreed payment", (await commit(legacyOwner, legacyClaim)).cashCents, 10000 + oldSponsors[0].rewardCents);
 
   const oldRead = await read(upgraded), normalized = view(oldRead);
   check("upgrade retains actual followers and separate marketing audience", [normalized.socialFollowers, normalized.audienceFollowers], [32, 112]);
   check("upgrade retains the existing journal and energy", [normalized.history, normalized.energy], [old.history, old.energy]);
   check("new narrative starts at chapter zero with existing moderation and haters", normalized.platforms.instagram,
-    { ...old.platforms.instagram, chapter: 0, trust: 55, lastIntent: null, intentStreak: 0, memory: {}, pressureUpdatedAt: new Date(oldRead.state.serverNow).toISOString() });
+    { ...old.platforms.instagram, nextPostAt: normalized.platforms.instagram.nextPostAt, publishedDay: normalized.platforms.instagram.publishedDay,
+      chapter: 0, trust: 55, lastIntent: null, intentStreak: 0, memory: {}, pressureUpdatedAt: new Date(oldRead.state.serverNow).toISOString() });
+  check("upgrade reserves today's Instagram post from the legacy receipt", normalized.platforms.instagram.publishedDay,
+    (await vite.ssrLoadModule("/src/lib/kanab-quest-social-daily.ts")).getKqSocialPublicationDay(Date.parse(old.history[0].createdAt)));
   await rejects("a V1 receipt key cannot be reused by V2 read", () => read(upgraded, { ...choose(normalized, "x"), requestKey: oldCommand.requestKey }), /social_request_mismatch/);
   await rejectsWithoutWrites("a V1 receipt key cannot be reused by V2 commit", upgraded,
     resolve(oldRead, { ...choose(normalized, "x"), requestKey: oldCommand.requestKey }), /social_request_mismatch/);
@@ -200,7 +209,7 @@ try {
     ["null model version", p => { p.next.version = null; }],
     ["string model version", p => { p.next.version = "2"; }],
     ["negative reward", p => { p.reward = -1; }],
-    ["reward above maximum", p => { p.reward = 18001; }],
+    ["reward above maximum", p => { p.reward = 600001; }],
     ["reward attached to a normal choice", p => { p.reward = 1; p.next.sponsors.earnedCents = 1; p.next.history[0].rewardCents = 1; }],
   ];
   for (const field of ["energy", "serverNow", "energyUpdatedAt", "platforms"]) {
@@ -233,6 +242,30 @@ try {
     await rejectsWithoutWrites(`rejects inconsistent ${name}`, invalidOwner, malformed, /social_invalid/);
   }
 
+  const signingOwner = await maturePlayer(), signingEnvelope = await read(signingOwner);
+  const signingState = view(signingEnvelope), signingOffer = engine.getKqSponsorOffers(signingState)[0];
+  const signature = resolve(signingEnvelope, { ...base(signingState), action: "sponsor-accept", sponsorId: signingOffer.sponsor.id, expectedRewardCents: signingOffer.rewardCents });
+  const unconfirmed = structuredClone(signature); unconfirmed.command.expectedRewardCents -= 500;
+  await rejectsWithoutWrites("database rejects a new fee different from the confirmed offer", signingOwner, unconfirmed, /social_invalid/);
+  const missingQuote = structuredClone(signature); delete missingQuote.command.expectedRewardCents;
+  await rejectsWithoutWrites("new variable campaign requires explicit fee confirmation", signingOwner, missingQuote, /social_invalid/);
+  await commit(signingOwner, signature);
+  const signedEnvelope = await read(signingOwner);
+  const delivery = resolve(signedEnvelope, { ...base(view(signedEnvelope)), action: "sponsor-post", tag: signingOffer.sponsor.requiredTags[0] });
+  for (const [name, mutate] of [
+    ["signed fee", next => { next.sponsors.active.rewardCents += 500; }],
+    ["signing statistics", next => { next.sponsors.active.pricing.followers += 1; }],
+    ["missing signing figures", next => { delete next.sponsors.active.pricing; }],
+    ["campaign identity", next => { next.sponsors.active.sponsorId = engine.KQ_SOCIAL_SPONSORS[1].id; }],
+    ["signature timestamp", next => { next.sponsors.active.startedAt = new Date(Date.now() - 86400000).toISOString(); }],
+    ["invented past payout", next => { next.sponsors.paidRewardsCents = { invented: 500 }; }],
+  ]) {
+    const altered = structuredClone(delivery); mutate(altered.next);
+    await rejectsWithoutWrites(`delivery cannot alter ${name}`, signingOwner, altered, /social_invalid/);
+  }
+  const delivered = await commit(signingOwner, delivery);
+  check("valid delivery retains the exact fee and signing figures", delivered.state.sponsors.active.pricing, signature.next.sponsors.active.pricing);
+
   const incompleteOwner = await maturePlayer(), incompleteClaim = await finishBrief(incompleteOwner);
   const completeStoredState = (await read(incompleteOwner)).state;
   for (const progress of [[], [engine.KQ_SOCIAL_SPONSORS[0].requiredTags[0]], null, undefined]) {
@@ -257,16 +290,20 @@ try {
     await rejectsWithoutWrites(`${sponsor.id}: missing completion list cannot bypass payment validation`, sponsorOwner, absentCompletions, /social_invalid/);
     const unclosed = structuredClone(claim); unclosed.next.sponsors.active = (await read(sponsorOwner)).state.sponsors.active;
     await rejectsWithoutWrites(`${sponsor.id}: paid contract must be closed`, sponsorOwner, unclosed, /social_invalid/);
-    const paid = await commit(sponsorOwner, claim); totalReward += sponsor.rewardCents;
+    const lostPaidFee = structuredClone(claim); delete lostPaidFee.next.sponsors.paidRewardsCents[sponsor.id];
+    await rejectsWithoutWrites(`${sponsor.id}: claim must preserve the actual paid amount`, sponsorOwner, lostPaidFee, /social_invalid/);
+    const signedReward = claim.reward;
+    const paid = await commit(sponsorOwner, claim); totalReward += signedReward;
     check(`${sponsor.id}: wallet receives exact contractual fee`, paid.cashCents, 10000 + totalReward);
     check(`${sponsor.id}: earnings remain cumulative`, paid.state.sponsors.earnedCents, totalReward);
+    check(`${sponsor.id}: completed campaign keeps its actual paid fee`, paid.state.sponsors.paidRewardsCents[sponsor.id], signedReward);
     check(`${sponsor.id}: paid result satisfies shared contract`, engine.isKqSocialSnapshot(paid.state), true);
     const replayed = await commit(sponsorOwner, claim);
     check(`${sponsor.id}: duplicate claim neither pays nor advances twice`, [replayed.cashCents, replayed.state.revision, replayed.replayed], [paid.cashCents, paid.state.revision, true]);
     check(`${sponsor.id}: one permanent reward receipt`, await scalar("SELECT count(*)::INTEGER FROM kq_social_v2_receipts WHERE user_id=$1 AND request_key=$2", [sponsorOwner, claim.command.requestKey]), 1);
     check(`${sponsor.id}: one reward ledger transaction`, await scalar("SELECT count(*)::INTEGER FROM kq_treasury_journal WHERE user_id=$1 AND source_key=$2", [sponsorOwner, `kq-social-sponsor:${claim.command.requestKey}`]), 1);
     const ledger = await scalar("SELECT postings FROM kq_treasury_journal WHERE user_id=$1 AND source_key=$2", [sponsorOwner, `kq-social-sponsor:${claim.command.requestKey}`]);
-    check(`${sponsor.id}: balanced reward posting`, ledger, [{ account: "suspense", deltaCents: sponsor.rewardCents }, { account: "revenue_rewards", deltaCents: -sponsor.rewardCents }]);
+    check(`${sponsor.id}: balanced reward posting`, ledger, [{ account: "suspense", deltaCents: signedReward }, { account: "revenue_rewards", deltaCents: -signedReward }]);
     firstClaim ??= claim;
   }
   check("wallet cash reconciles with actual treasury balance", Number(await scalar("SELECT balance_cents FROM kq_treasury_balances WHERE user_id=$1 AND account='cash'", [sponsorOwner])), 10000 + totalReward);
@@ -279,14 +316,20 @@ try {
   const boundedHistory = (await read(sponsorOwner)).state.history;
   check("visible history remains bounded after more than 20 actions", boundedHistory.length, 20);
   check("old paid receipt has left the visible history", boundedHistory.some(entry => entry.id === firstClaim.command.requestKey), false);
-  check("durable receipts remain after history truncation", await scalar("SELECT count(*)::INTEGER FROM kq_social_v2_receipts WHERE user_id=$1", [sponsorOwner]), 24);
+  check("durable receipts remain after history truncation", await scalar("SELECT count(*)::INTEGER FROM kq_social_v2_receipts WHERE user_id=$1", [sponsorOwner]), engine.KQ_SOCIAL_SPONSORS.length * 4 + 8);
+  check("completed card retains its paid fee after the claim leaves the visible history", engine.getKqSponsorOffers(view(await read(sponsorOwner))).find(offer => offer.sponsor.id === engine.KQ_SOCIAL_SPONSORS[0].id).rewardCents, firstClaim.reward);
   const finalRevision = (await read(sponsorOwner)).state.revision;
   check("old paid retry stays idempotent after other sponsor payments", [(await commit(sponsorOwner, firstClaim)).cashCents, (await read(sponsorOwner, firstClaim.command)).state.revision], [10000 + totalReward, finalRevision]);
+
+  const maximumOwner = await maturePlayer({ followers: 100000 }, 50000);
+  const maximumClaim = await finishBrief(maximumOwner, engine.KQ_SOCIAL_SPONSORS.at(-1));
+  check("the largest campaign can reach the actual 6000 euro budget ceiling", maximumClaim.reward, 600000);
+  check("the database pays the full authorized campaign ceiling", (await commit(maximumOwner, maximumClaim)).cashCents, 610000);
 
   const overflowOwner = await maturePlayer({ cash: 2147483647 - 2999 });
   const overflowClaim = await finishBrief(overflowOwner);
   await rejectsWithoutWrites("wallet integer overflow rejects payment atomically", overflowOwner, overflowClaim, /social_wallet_limit/);
-  await query("UPDATE kq_equipment_wallets SET cash_cents=2147483647-3000 WHERE user_id=$1", [overflowOwner]);
+  await query("UPDATE kq_equipment_wallets SET cash_cents=2147483647-$2 WHERE user_id=$1", [overflowOwner, overflowClaim.reward]);
   const exactLimit = await commit(overflowOwner, overflowClaim);
   check("payment can reach the exact wallet limit", exactLimit.cashCents, 2147483647);
   check("overflow retry only pays once after capacity is available", (await commit(overflowOwner, overflowClaim)).cashCents, 2147483647);
@@ -298,7 +341,22 @@ try {
   await rejectsWithoutWrites("ledger failure rolls back wallet and entire claim", atomicOwner, atomicClaim, /fixture_reward_ledger_failure/);
   check("failed claim also rolls back newly initialized treasury account", await scalar("SELECT count(*)::INTEGER FROM kq_treasury_accounts WHERE user_id=$1", [atomicOwner]), 0);
   await db.exec("DROP TRIGGER fixture_fail_reward_ledger ON kq_treasury_journal");
-  check("same failed request can succeed once the ledger is repaired", (await commit(atomicOwner, atomicClaim)).cashCents, 13000);
+  check("same failed request can succeed once the ledger is repaired", (await commit(atomicOwner, atomicClaim)).cashCents, 10000 + atomicClaim.reward);
+
+  const dailyOwner = await player();
+  const dailyInstagram = await perform(dailyOwner, state => choose(state, "instagram"));
+  const dailyReload = await read(dailyOwner);
+  check("daily allowance survives a database reload", dailyReload.state.platforms.instagram.publishedDay, dailyInstagram.prepared.next.platforms.instagram.publishedDay);
+  check("Paris midnight survives a database reload", dailyReload.state.platforms.instagram.nextPostAt, dailyInstagram.prepared.next.platforms.instagram.nextPostAt);
+  const dailyBefore = await stored(dailyOwner);
+  assert.throws(() => resolve(dailyReload, choose(view(dailyReload), "instagram")), /déjà publié aujourd’hui/);
+  check("a second same-day post leaves state and receipts untouched", await stored(dailyOwner), dailyBefore);
+  const dailyX = await perform(dailyOwner, state => choose(state, "x"));
+  check("Instagram publication leaves the independent X daily allowance available", dailyX.result.state.history[0].platform, "x");
+  const dailyReply = await perform(dailyOwner, state => choose(state, "x"));
+  check("a comment reply commits after the X post of the day", dailyReply.result.state.history[0].action, "reply");
+  check("reply retains the same real midnight", dailyReply.result.state.platforms.x.nextPostAt, dailyX.result.state.platforms.x.nextPostAt);
+  check("replaying the publication does not reset the daily allowance", (await read(dailyOwner, dailyX.prepared.command)).state.platforms.x.publishedDay, dailyX.result.state.platforms.x.publishedDay);
 
   const expandedOwner = await player();
   const observedAt = new Date().toISOString();
@@ -310,15 +368,23 @@ try {
       stage, harvestGrams: 125, remainingGrams: 80, harvestedAt: observedAt })) };
   for (const platform of ["instagram", "x"]) {
     const catalog = engine.KQ_SOCIAL_SCENARIOS.filter(scene => scene.platform === platform);
-    check(`${platform}: expanded catalogue has 27 distinct situations`, new Set(catalog.map(scene => scene.id)).size, 27);
-    for (const [index, scene] of catalog.entries()) {
+    check(`${platform}: expanded catalogue has 75 distinct situations`, new Set(catalog.map(scene => scene.id)).size, 75);
+    const seen = new Set();
+    for (let index = 0; index < catalog.length; index++) {
       await readyToPost(expandedOwner);
-      const published = await perform(expandedOwner, state => choose(state, platform, ["reach", "craft", "care"][index % 3]));
+      const offered = engine.getKqSocialAdventure(view(await read(expandedOwner)), platform);
+      const scene = offered.scene;
+      assert(!seen.has(scene.id), `${platform}: discovery must not repeat a story before covering the catalogue`);
+      seen.add(scene.id);
+      const published = await perform(expandedOwner, state => choose(state, platform, ["reach", "craft", "care"][Math.floor(index / 3) % 3]));
       check(`${scene.id}: database commits the authored situation`, published.result.state.history[0].scenarioId, scene.id);
-      check(`${scene.id}: catalogue marker and cursor survive SQL storage`, [published.result.state.storyCatalogVersion, published.result.state.platforms[platform].chapter], [2, index + 1]);
+      check(`${scene.id}: catalogue marker and cursor survive SQL storage`, [published.result.state.storyCatalogVersion, published.result.state.platforms[platform].chapter], [2, offered.chapter + 1]);
+      check(`${scene.id}: interaction survives SQL storage`, published.result.state.history[0].action, published.prepared.next.history[0].action);
+      check(`${scene.id}: original post choice survives SQL storage`, published.result.state.history[0].parentChoice, published.prepared.next.history[0].parentChoice);
     }
+    check(`${platform}: every situation is discoverable`, [...seen].sort(), catalog.map(scene => scene.id).sort());
   }
-  check("all 54 expanded situations retain durable receipts", await scalar("SELECT count(*)::INTEGER FROM kq_social_v2_receipts WHERE user_id=$1", [expandedOwner]), 54);
+  check("all 150 expanded situations retain durable receipts", await scalar("SELECT count(*)::INTEGER FROM kq_social_v2_receipts WHERE user_id=$1", [expandedOwner]), 150);
 
   for (const role of ["anon", "authenticated", "service_role"]) {
     for (const table of ["kq_social_accounts", "kq_social_platforms", "kq_social_requests", "kq_social_v2_receipts"]) {

@@ -4,7 +4,7 @@ import { resolve } from "node:path";
 import sharp from "sharp";
 import { describe, expect, it } from "vitest";
 import { getKqSocialArtwork, getKqSocialProducerArtwork, KQ_SOCIAL_ARTWORK } from "./kanab-quest-social-art";
-import { KQ_SOCIAL_SCENARIOS } from "./kanab-quest-social-stories";
+import { KQ_SOCIAL_V2_SCENARIOS as KQ_SOCIAL_SCENARIOS } from "./kanab-quest-social-stories";
 
 const revisedScenes = new Set(["ig-first-frame", "ig-comment", "ig-collab", "ig-return", "ig-demand", "ig-identity", "ig-open-house", "ig-creative-call", "ig-live-glitch"]);
 

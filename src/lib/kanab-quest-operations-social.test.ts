@@ -1,16 +1,18 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { applyKqOperationsRequest, createKqOperationsLesson, getKqOperationsCommerce, type KqOperationsLessonAction, type KqOperationsLessonState } from './kanab-quest-operations-lesson';
 import { createKqOperationsSession, restoreKqOperationsLesson } from './kanab-quest-operations-session';
 import { getKqOperationsSocial } from './kanab-quest-operations-social';
 import { getKqSocialAdventure } from './kanab-quest-social-adventure';
 import { getKqOnlineAudience } from './kanab-quest-online';
 import { getKqSocialScenario, getKqSponsorOffers, isKqSocialSnapshot, normalizeKqSocialSnapshot, type KqSocialPlatform, type KqSocialSnapshot } from './kanab-quest-social';
-import { KQ_SOCIAL_LEGACY_SCENARIOS, KQ_SOCIAL_V2_SCENARIOS } from './kanab-quest-social-stories';
+import { KQ_SOCIAL_LEGACY_SCENARIOS, KQ_SOCIAL_LEGACY_SPONSORS, KQ_SOCIAL_V2_SCENARIOS } from './kanab-quest-social-stories';
 import { applyReleveCommerceRequest, createReleveCommerceBusiness, createReleveCommerceTransport } from './kanab-quest-releve-commerce';
 
 const SOCIAL = '/api/arena/placard/social';
+let realNow = Date.parse('2026-10-25T12:00:00Z');
+const nextRealDay = () => { realNow += 86_400_000; };
 const uuid = (number: number) => `10000000-0000-4000-8000-${number.toString(16).padStart(12, '0')}`;
-const post = (body: Record<string, unknown>): KqOperationsLessonAction => ({ path: SOCIAL, method: 'POST', socialCatalogVersion: 2, socialNarrativeVersion: 3, body: { modelVersion: 2, ...body } });
+const post = (body: Record<string, unknown>): KqOperationsLessonAction => ({ path: SOCIAL, method: 'POST', socialCatalogVersion: 2, socialNarrativeVersion: 3, socialInteractionVersion: 1, socialCadenceVersion: 1, socialRealAt: new Date(realNow).toISOString(), body: { modelVersion: 2, ...body } });
 const online = (command: string, payload: Record<string, unknown>): KqOperationsLessonAction => ({ path: '/api/arena/placard/commerce', method: 'POST', body: { action: 'online', command, payload } });
 function choose(state: KqOperationsLessonState, platform: KqSocialPlatform = 'instagram', requestKey = uuid(1)) {
   const snapshot = getKqOperationsSocial(state);
@@ -27,7 +29,9 @@ function sponsorReady(state = createKqOperationsLesson('market')) {
   return state;
 }
 function sponsorCommand(state: KqOperationsLessonState, action: string, request: number, values: Record<string, unknown> = {}) {
-  return post({ action, expectedRevision: getKqOperationsSocial(state).revision, requestKey: uuid(request), ...values });
+  const snapshot = getKqOperationsSocial(state);
+  const offer = action === 'sponsor-accept' ? getKqSponsorOffers(snapshot).find(row => row.sponsor.id === values.sponsorId) : undefined;
+  return post({ action, expectedRevision: snapshot.revision, requestKey: uuid(request), ...(offer?.rewardCents != null ? { expectedRewardCents: offer.rewardCents } : {}), ...values });
 }
 function completedPartnership() {
   let state = sponsorReady();
@@ -36,12 +40,68 @@ function completedPartnership() {
   state = applyKqOperationsRequest(state, sponsorCommand(state, 'sponsor-accept', 100, { sponsorId: sponsor.id })).state;
   state = applyKqOperationsRequest(state, sponsorCommand(state, 'sponsor-post', 101, { tag: sponsor.requiredTags[0] })).state;
   state = advance(state, 1);
+  nextRealDay();
   state = applyKqOperationsRequest(state, sponsorCommand(state, 'sponsor-post', 102, { tag: sponsor.requiredTags[1] })).state;
-  return { state, sponsor, cash };
+  return { state, sponsor, cash, rewardCents: getKqOperationsSocial(state).sponsors.active!.rewardCents };
 }
-afterEach(() => vi.unstubAllGlobals());
+beforeEach(() => { realNow = Date.parse('2026-10-25T12:00:00Z'); vi.spyOn(Date, 'now').mockImplementation(() => realNow); });
+afterEach(() => { vi.unstubAllGlobals(); vi.restoreAllMocks(); });
 
 describe('local social adventure and commerce', () => {
+  it('restores the original V3 rotation and then resumes the new comment adventures without resetting the lesson', () => {
+    let state = createKqOperationsLesson('market');
+    const actions: KqOperationsLessonAction[] = [];
+    for (let index = 0; index < 6; index++) {
+      const clock = online('advance-online-time', { hours: 1 });
+      state = applyKqOperationsRequest(state, clock).state; actions.push(clock);
+      const platform = index < 3 ? 'instagram' : 'x';
+      const snapshot = getKqOperationsSocial(state), adventure = getKqSocialAdventure(snapshot, platform, undefined, true);
+      const saved: KqOperationsLessonAction = { path: SOCIAL, method: 'POST', socialCatalogVersion: 2, socialNarrativeVersion: 3,
+        body: { modelVersion: 2, action: 'choose', platform, scenarioId: adventure.scene.id,
+          choiceId: adventure.scene.choices.find(choice => choice.intent === 'care')!.id,
+          narrativeVersion: 3, subjectId: adventure.subject!.id, contextKey: adventure.contextKey,
+          requestKey: uuid(700 + index), expectedRevision: snapshot.revision } };
+      state = applyKqOperationsRequest(state, saved, { replaySocialV3Catalog: true }).state; actions.push(saved);
+    }
+    const archived = structuredClone(state.social!.history);
+    const restored = restoreKqOperationsLesson('market', { version: 1, lesson: 'market', actions });
+    expect(restored.actions).toEqual(actions);
+    expect(restored.state).toEqual(state);
+    expect(getKqSocialAdventure(getKqOperationsSocial(restored.state), 'x').scene.id).toMatch(/^x-debate-/);
+    const clock = online('advance-online-time', { hours: 1 });
+    state = applyKqOperationsRequest(state, clock).state; actions.push(clock);
+    const fresh = choose(state, 'x', uuid(710));
+    state = applyKqOperationsRequest(state, fresh).state; actions.push(fresh);
+    const mixed = restoreKqOperationsLesson('market', { version: 1, lesson: 'market', actions });
+    expect(mixed.state).toEqual(state);
+    expect(mixed.state.social!.history.slice(1)).toEqual(archived);
+    expect(restoreKqOperationsLesson('market', { version: 1, lesson: 'market', actions: mixed.actions }).state).toEqual(state);
+  });
+
+  it('replays the first debate catalogue past its final arc before offering the additional stories', () => {
+    let state = createKqOperationsLesson('market');
+    const actions: KqOperationsLessonAction[] = [];
+    const cadence = { legacyCadence: true, replayFirstDebates: true };
+    for (let index = 0; index < 19; index++) {
+      const clock = online('advance-online-time', { hours: 1 });
+      state = applyKqOperationsRequest(state, clock).state; actions.push(clock);
+      const snapshot = getKqOperationsSocial(state, undefined, 3, cadence);
+      const adventure = getKqSocialAdventure(snapshot, 'x', undefined, false, true);
+      if (index === 18) expect(getKqSocialAdventure(snapshot, 'x').scene.id).not.toBe(adventure.scene.id);
+      const saved: KqOperationsLessonAction = { path: SOCIAL, method: 'POST', socialCatalogVersion: 2, socialNarrativeVersion: 3, socialInteractionVersion: 1,
+        body: { modelVersion: 2, action: 'choose', platform: 'x', scenarioId: adventure.scene.id,
+          choiceId: adventure.scene.choices.find(choice => choice.intent === 'care')!.id,
+          narrativeVersion: 3, subjectId: adventure.subject!.id, contextKey: adventure.contextKey,
+          requestKey: uuid(800 + index), expectedRevision: snapshot.revision } };
+      state = applyKqOperationsRequest(state, saved, { socialCadence: cadence }).state; actions.push(saved);
+    }
+    const restored = restoreKqOperationsLesson('market', { version: 1, lesson: 'market', actions });
+    expect(restored.actions).toEqual(actions);
+    expect(restored.state).toEqual(state);
+    expect(restored.state.social).not.toHaveProperty('cadenceVersion');
+    expect(restored.state.social!.history).toEqual(state.social!.history);
+  });
+
   it('keeps anonymous exercise identity neutral without settling elapsed game time', () => {
     const exercise = createKqOperationsLesson('market');
     exercise.trial.clock += 30 * 24 * 60 * 60 * 1000;
@@ -129,7 +189,10 @@ describe('local social adventure and commerce', () => {
     expect(() => applyKqOperationsRequest(result.state, post({ action: 'recover', expectedRevision: 1, requestKey: 'invalid' }))).toThrow('invalide');
     expect(() => applyKqOperationsRequest(result.state, { ...choose(result.state, 'x', uuid(4)), method: 'PATCH' })).toThrow('méthode');
     expect(result.state).toEqual(before);
+    expect(() => applyKqOperationsRequest(result.state, choose(result.state, 'instagram', uuid(3)))).toThrow(/déjà publié/);
+    nextRealDay();
     let chained = applyKqOperationsRequest(result.state, choose(result.state, 'instagram', uuid(3))).state;
+    nextRealDay();
     chained = applyKqOperationsRequest(chained, choose(chained, 'instagram', uuid(5))).state;
     expect(chained.trial.clock).toBe(initial.trial.clock);
     expect(() => applyKqOperationsRequest(chained, choose(chained, 'instagram', uuid(6)))).toThrow();
@@ -166,6 +229,7 @@ describe('local social adventure and commerce', () => {
     await execute(choose(session.getSnapshot()));
     await execute(choose(session.getSnapshot(), 'x', uuid(2)));
     await execute(online('advance-online-time', { hours: 1 }));
+    nextRealDay();
     await execute(choose(session.getSnapshot(), 'instagram', uuid(3)));
     const read = await session.request(SOCIAL);
     expect(read.ok).toBe(true);
@@ -335,24 +399,59 @@ describe('local social adventure and commerce', () => {
     expect(state.social!.platforms.x.haters).toBe(60);
   });
 
+  it('restores an archived signed partnership at its original fee, prose and wallet balance', () => {
+    let state = createKqOperationsLesson('market');
+    const actions: KqOperationsLessonAction[] = [], sponsor = KQ_SOCIAL_LEGACY_SPONSORS[0];
+    const execute = (action: KqOperationsLessonAction) => {
+      state = applyKqOperationsRequest(state, action, { replaySocialV3Catalog: true }).state;
+      actions.push(action);
+    };
+    const saved = (body: Record<string, unknown>): KqOperationsLessonAction => ({ path: SOCIAL, method: 'POST', socialCatalogVersion: 2, socialNarrativeVersion: 3,
+      body: { modelVersion: 2, expectedRevision: state.social?.revision ?? 0, requestKey: uuid(900 + actions.length), ...body } });
+    for (let index = 0; index < 20 && getKqOperationsSocial(state).platforms[sponsor.platform].followers < sponsor.minimumFollowers; index++) {
+      execute(online('advance-online-time', { hours: 2 }));
+      const snapshot = getKqOperationsSocial(state), adventure = getKqSocialAdventure(snapshot, sponsor.platform, undefined, true);
+      execute(saved({ action: 'choose', platform: sponsor.platform, scenarioId: adventure.scene.id,
+        choiceId: adventure.scene.choices.find(choice => choice.intent === 'craft')!.id,
+        narrativeVersion: 3, subjectId: adventure.subject!.id, contextKey: adventure.contextKey }));
+    }
+    const cash = state.trial.commerce.cashCents;
+    execute(saved({ action: 'sponsor-accept', sponsorId: sponsor.id }));
+    expect(getKqOperationsSocial(state).sponsors.active?.rewardCents).toBe(sponsor.rewardCents);
+    expect(getKqOperationsSocial(state).sponsors.active).not.toHaveProperty('pricing');
+    expect(restoreKqOperationsLesson('market', { version: 1, lesson: 'market', actions }).state).toEqual(state);
+    for (const tag of sponsor.requiredTags) {
+      execute(online('advance-online-time', { hours: 1 }));
+      execute(saved({ action: 'sponsor-post', tag }));
+    }
+    execute(saved({ action: 'sponsor-claim' }));
+    expect(state.trial.commerce.cashCents).toBe(cash + sponsor.rewardCents);
+    expect(state.social!.history[0].outcome).toBe(sponsor.completionText);
+    expect(getKqOperationsSocial(state).sponsors).not.toHaveProperty('paidRewardsCents');
+    const restored = restoreKqOperationsLesson('market', { version: 1, lesson: 'market', actions });
+    expect(restored.actions).toEqual(actions);
+    expect(restored.state).toEqual(state);
+    expect(applyKqOperationsRequest(restored.state, actions.at(-1)!).state).toBe(restored.state);
+  });
+
   it('pays a completed partnership once as a net reward and records the cash movement', () => {
-    const { state, sponsor, cash } = completedPartnership();
+    const { state, sponsor, cash, rewardCents } = completedPartnership();
     expect(state.trial.commerce.cashCents).toBe(cash);
     expect(getKqOperationsSocial(state).sponsors.active?.progressTags).toEqual(sponsor.requiredTags);
     const beforeVat = structuredClone(state.trial.commerce.business!.vat);
     const action = sponsorCommand(state, 'sponsor-claim', 103);
     const claimed = applyKqOperationsRequest(state, action);
-    expect(claimed.state.trial.commerce.cashCents).toBe(cash + sponsor.rewardCents);
+    expect(claimed.state.trial.commerce.cashCents).toBe(cash + rewardCents);
     expect(claimed.state.trial.commerce.business!.vat).toEqual(beforeVat);
-    expect(claimed.state.trial.commerce.business!.ledger).toContainEqual({ id: `social-sponsor-${uuid(103)}`, kind: 'social-sponsor-reward', amountCents: sponsor.rewardCents, occurredAt: getKqOperationsSocial(claimed.state).serverNow });
-    expect(getKqOperationsSocial(claimed.state).sponsors).toMatchObject({ earnedCents: sponsor.rewardCents, completedIds: [sponsor.id], active: null });
+    expect(claimed.state.trial.commerce.business!.ledger).toContainEqual({ id: `social-sponsor-${uuid(103)}`, kind: 'social-sponsor-reward', amountCents: rewardCents, occurredAt: getKqOperationsSocial(claimed.state).serverNow });
+    expect(getKqOperationsSocial(claimed.state).sponsors).toMatchObject({ earnedCents: rewardCents, completedIds: [sponsor.id], active: null });
     expect(applyKqOperationsRequest(claimed.state, action).state).toBe(claimed.state);
     expect(() => applyKqOperationsRequest(claimed.state, sponsorCommand(claimed.state, 'sponsor-claim', 104))).toThrow();
   });
 
   it('rejects a reward that would overflow the wallet without consuming the completed partnership', () => {
-    const { state, sponsor } = completedPartnership();
-    state.trial.commerce.cashCents = 2_147_483_647 - sponsor.rewardCents + 1;
+    const { state, rewardCents } = completedPartnership();
+    state.trial.commerce.cashCents = 2_147_483_647 - rewardCents + 1;
     const before = structuredClone(state);
     const action = sponsorCommand(state, 'sponsor-claim', 103);
     expect(() => applyKqOperationsRequest(state, action)).toThrow('trésorerie');
@@ -380,14 +479,16 @@ describe('local social adventure and commerce', () => {
     state = applyReleveCommerceRequest(state, sponsorCommand(state.operations, 'sponsor-accept', 100, { sponsorId: sponsor.id })).state;
     state = applyReleveCommerceRequest(state, sponsorCommand(state.operations, 'sponsor-post', 101, { tag: sponsor.requiredTags[0] })).state;
     state = applyReleveCommerceRequest(state, online('advance-online-time', { hours: 1 })).state;
+    nextRealDay();
     state = applyReleveCommerceRequest(state, sponsorCommand(state.operations, 'sponsor-post', 102, { tag: sponsor.requiredTags[1] })).state;
     const cash = state.operations.trial.commerce.cashCents;
+    const rewardCents = getKqOperationsSocial(state.operations).sponsors.active!.rewardCents;
     const claim = sponsorCommand(state.operations, 'sponsor-claim', 103);
     state = applyReleveCommerceRequest(state, claim).state;
-    expect(state.operations.trial.commerce.cashCents).toBe(cash + sponsor.rewardCents);
+    expect(state.operations.trial.commerce.cashCents).toBe(cash + rewardCents);
     const entry = state.journal.find(row => row.kind === 'social-sponsor-reward')!;
-    expect(entry.postings).toContainEqual({ account: 'cash', deltaCents: sponsor.rewardCents });
-    expect(entry.postings).toContainEqual({ account: 'revenue_rewards', deltaCents: -sponsor.rewardCents });
+    expect(entry.postings).toContainEqual({ account: 'cash', deltaCents: rewardCents });
+    expect(entry.postings).toContainEqual({ account: 'revenue_rewards', deltaCents: -rewardCents });
     expect(entry.postings.reduce((sum, row) => sum + row.deltaCents, 0)).toBe(0);
     expect(applyReleveCommerceRequest(state, claim).state).toBe(state);
   });

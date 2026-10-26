@@ -4,7 +4,8 @@ import type { KqSocialHistoryEntry, KqSocialPlatform } from './kanab-quest-socia
 /** Only a recorded narrative publication counts, never a recovery or sponsor event. */
 export function getReleveSocialPublications(state: KqReleveCommerceState): KqSocialHistoryEntry[] {
   return state.operations.social?.version === 2
-    ? state.operations.social.history.filter(entry => entry.narrativeVersion === 3 && !!entry.subject && (entry.platform === 'instagram' || entry.platform === 'x'))
+    ? state.operations.social.history.filter(entry => entry.narrativeVersion === 3 && !!entry.subject
+      && (entry.action === undefined || entry.action === 'publish') && (entry.platform === 'instagram' || entry.platform === 'x'))
     : [];
 }
 

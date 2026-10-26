@@ -14,7 +14,7 @@ import { getKqSocialAdventure } from "./kanab-quest-social-adventure";
 const createKqSocialSnapshot = (now: number, audience = 0, active = true) => createSnapshot(now, audience, active, 2);
 const getKqSocialScenario: typeof getScene = (p, chapter, memory = {}, catalog = KQ_SOCIAL_SCENARIOS) => getScene(p, chapter, memory, catalog);
 const applyKqSocialCommand: typeof applyCommand = (s, c, n, r = 0, roll = 50, original = false, legacy = false) => applyCommand(s, c, n, r, roll, original, legacy, !original && !legacy);
-const refreshKqSocialSnapshot: typeof refreshSnapshot = (s, n, r = 0) => refreshSnapshot(s, n, r, 2);
+const refreshKqSocialSnapshot: typeof refreshSnapshot = (s, n, r = 0) => refreshSnapshot(s, n, r, 2, { legacyCadence: true });
 const normalizeKqSocialSnapshot: typeof normalizeSnapshot = (s, n) => normalizeSnapshot(s, n, 2);
 
 const now = Date.parse("2026-10-23T12:00:00Z");
@@ -231,12 +231,14 @@ describe("catalog expansion preserves saved adventures", () => {
     expect(snapshot.audienceFollowers).toBe(expected.audienceFollowers);
     expect(snapshot.energy).toBe(expected.energy);
     expect(snapshot.history).toEqual(expected.history);
-    expect(snapshot.platforms[platform]).toEqual({ ...expected.platforms[platform], chapter: 0, memory: {} });
+    expect(snapshot.platforms[platform]).toEqual({ ...expected.platforms[platform], chapter: 0, memory: {}, publishedDay: null, nextPostAt: null });
     const adventure = getKqSocialAdventure(snapshot, platform), scene = adventure.scene;
     expect(adventure.subject?.requirement).toBe("general");
-    const marked: KqOperationsLessonAction = { path: "/api/arena/placard/social", method: "POST", socialCatalogVersion: 2, socialNarrativeVersion: 3,
+    const realNow = Date.now();
+    const marked: KqOperationsLessonAction = { path: "/api/arena/placard/social", method: "POST", socialCatalogVersion: 2, socialNarrativeVersion: 3, socialInteractionVersion: 1,
+      socialCadenceVersion: 1, socialRealAt: new Date(realNow).toISOString(),
       body: { ...command(snapshot, scene, scene.choices.find(choice => choice.intent === "care")!.id, 8_000), narrativeVersion: 3, subjectId: adventure.subject!.id, contextKey: adventure.contextKey } };
-    const next = applyKqOperationsRequest(restored.state, marked).state;
+    const next = applyKqOperationsRequest(restored.state, marked, { socialCadence: { publicationNow: realNow } }).state;
     const replay = restoreKqOperationsLesson("market", { version: 1, lesson: "market", actions: [...actions, marked] });
     expect(replay.state).toEqual(next);
     expect(replay.actions).toHaveLength(actions.length + 1);

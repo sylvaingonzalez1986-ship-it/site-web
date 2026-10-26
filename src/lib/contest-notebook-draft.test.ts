@@ -1,17 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { contestDraftKey, contestReviewVersion, readContestDraft, type ContestNotebookDraft } from "./contest-notebook-draft";
+import { CONTEST_NOTEBOOK_DRAFT_VERSION, contestDraftKey, contestReviewVersion, readContestDraft, type ContestNotebookDraft } from "./contest-notebook-draft";
 import { CONTEST_SCORE_CRITERIA } from "@/types/contest";
 import type { ViewerContestReview } from "./contest-public-api";
 
 const now = 1_800_000_000_000;
 const draft: ContestNotebookDraft = {
-  version: 1, ownerId: "alice", entryId: "flower", baseReviewVersion: "new", savedAt: now, pageIndex: 2,
+  version: CONTEST_NOTEBOOK_DRAFT_VERSION, ownerId: "alice", entryId: "flower", baseReviewVersion: "new", savedAt: now, pageIndex: 2,
   scores: Object.fromEntries(CONTEST_SCORE_CRITERIA.map((criterion) => [criterion, 70])) as ContestNotebookDraft["scores"],
   evaluatedCriteria: ["appearance"], consumptionMethod: "vaporizer", consumptionDetails: "", comment: "Mes impressions privées", aromaTags: [], terpeneGuesses: [],
 };
 const review = { id: "review", updatedAt: "2026-10-01T12:00:00Z", status: "pending" } as ViewerContestReview;
 
 describe("private notebook drafts", () => {
+  it("starts public opening without restoring test-phase notes", () => {
+    expect(contestDraftKey("alice", "flower")).toBe("contest-notebook-draft:v2:alice:flower");
+    expect(readContestDraft(JSON.stringify({ ...draft, version: 1 }), "alice", "flower", null, now)).toBeNull();
+  });
   it("restores the matching owner, flower and assessed criteria", () => {
     expect(readContestDraft(JSON.stringify(draft), "alice", "flower", null, now)).toEqual(draft);
     expect(contestDraftKey("alice", "flower")).not.toBe(contestDraftKey("bob", "flower"));

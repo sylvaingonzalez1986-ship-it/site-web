@@ -14,12 +14,16 @@ export function isArenaActivityApi(pathname: string): boolean {
   if (path === "/api/contest/monthly-draw") return false;
   if (path === "/api/arena/chanvrier") return false;
   if (path === "/api/contest/access") return false;
+  // Only notebook routes are public here. Game rewards keep their opening gate.
+  if (/^\/api\/contest\/(?:entries(?:\/[^/]+)?|feed|profile|rankings|review-pages\/[^/]+|reviews(?:\/[^/]+\/vote)?|seasons|tester\/progress|testers\/[^/]+)$/.test(path)) return false;
   return path === "/api/arena" || path.startsWith("/api/arena/") || path === "/api/contest" || path.startsWith("/api/contest/");
 }
 
 export function getArenaClosedPageMode(pathname: string): "carnet" | "jouer" | "classement" | null {
   const path = pathname.replace(/\/+$/, "");
   if (path.startsWith("/arene/placard")) return "jouer";
+  if (/^\/arene\/(?:carnet(?:\/(?:regular|concours|classement))?|profils\/[^/]+|[^/]+)$/.test(path)) return null;
+  if (path === "/bete-de-concours" || /^\/bete-de-concours\/(?:profils\/[^/]+|[^/]+)$/.test(path)) return null;
   if (path.includes("classement") && path.startsWith("/arene/")) return "classement";
   if (path.startsWith("/arene/") || path === "/bete-de-concours" || path.startsWith("/bete-de-concours/")) return "carnet";
   return null;

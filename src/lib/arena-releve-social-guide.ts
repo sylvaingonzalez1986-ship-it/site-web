@@ -17,7 +17,7 @@ export function getReleveSocialGuide(state: KqReleveCommerceState): ReleveGuideS
       { id: `social-network-${platform}`, title: `Essaie ${name}`, instruction: `Choisis ${name}. Chaque réseau a ses situations et ses réactions.`, selector: `[data-platform="${platform}"][aria-pressed="false"]` },
       { id: `social-publish-${platform}`, title: `Choisis ton message sur ${name}`, instruction: 'Lis la situation et compare les brouillons, leur coût mental et leurs enjeux. Publie celui qui te convient.', selector: `[data-social-scene][data-network="${platform}"] [data-social-choice]:not(:disabled)` },
       { id: 'social-recover', title: 'Retrouve de l’énergie mentale', instruction: 'Une pause peut rendre jusqu’à 30 points. Son prochain délai est affiché.', selector: '[data-social-recover]:not(:disabled)' },
-      { id: 'social-time', title: 'Fais avancer l’essai', instruction: 'Avance de 5 minutes fictives pour laisser reposer le fil et récupérer du mental. Aucune attente réelle.', selector: '[data-releve-guide="advance-social-time"]' },
+      { id: 'social-time', title: 'Récupère du mental dans l’essai', instruction: 'Avance de 5 minutes fictives pour récupérer du mental. Le post quotidien de chaque réseau se renouvelle uniquement à minuit réel, heure de Paris.', selector: '[data-releve-guide="advance-social-time"]' },
     );
   } else {
     steps.push(

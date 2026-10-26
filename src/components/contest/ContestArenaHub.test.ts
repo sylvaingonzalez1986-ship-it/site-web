@@ -55,18 +55,29 @@ describe("Arena home", () => {
     expect(existsSync(resolve("public/contest/mascot/arena-lobby-sylvain-v1.png"))).toBe(true);
   });
 
-  it.each([false, true])("shows the opening date and character creation without unavailable activity links (notice %s)", initialNotice => {
+  it.each([false, true])("opens the notebook while the game waits for its opening date (notice %s)", initialNotice => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub, { activitiesLocked: true, initialNotice }));
     expect(html).toContain(ARENA_OPENING_MESSAGE);
     expect(html).toContain("Créer mon personnage");
     expect(html).not.toContain("La relève · Apprendre à jouer");
     expect(html).not.toContain("Ta première culture");
-    expect(html.match(/Bientôt/g)).toHaveLength(3);
-    expect(html.match(/aria-disabled="true"/g)).toHaveLength(3);
+    expect(html).toContain("Le Carnet est ouvert");
+    expect(html.match(/Bientôt/g)).toHaveLength(2);
+    expect(html.match(/aria-disabled="true"/g)).toHaveLength(2);
     expect(html.match(/data-arena-profile-trigger/g)).toHaveLength(1);
-    expect(html).not.toContain("<a ");
+    expect(html.match(/<a /g)).toHaveLength(1);
+    expect(html).toMatch(/<a[^>]*data-arena-activity="carnet"[^>]*href="\/arene\/carnet\/regular"/);
+    expect(html).not.toContain('href="/arene/placard"');
     expect(html).not.toContain("data-inline-account");
     expect(html).not.toContain("data-lobby-enter");
+  });
+
+  it("honors the notebook emergency switch without announcing an open notebook", () => {
+    const html = renderToStaticMarkup(createElement(ContestArenaHub, { activitiesLocked: true, notebookOpen: false }));
+    expect(html).not.toContain("Le Carnet est ouvert");
+    expect(html).not.toContain("<a ");
+    expect(html.match(/aria-disabled="true"/g)).toHaveLength(3);
+    expect(html).toContain("Indisponible");
   });
 
 });

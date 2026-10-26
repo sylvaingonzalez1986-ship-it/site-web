@@ -18,6 +18,7 @@ beforeEach(() => {
   mocks.session.mockResolvedValue(null); mocks.admin.mockResolvedValue(false); mocks.beta.mockResolvedValue(false);
   vi.stubEnv("NODE_ENV", "production");
   vi.stubEnv("CONTEST_FEATURE_ENABLED", "false");
+  vi.stubEnv("CONTEST_NOTEBOOK_ENABLED", "true");
   vi.stubEnv("KQ_PLAYER_API_LIVE", "false");
   vi.spyOn(Date, "now").mockReturnValue(Date.parse("2026-09-19T12:00:00Z"));
 });
@@ -44,12 +45,12 @@ describe("arena preopening", () => {
     expect(response.status).toBe(423);
     expect(await response.json()).toMatchObject({ opensAt: ARENA_OPENING_AT });
   });
-  it("opens only character creation and public navigation while the game is off", async () => {
+  it("opens the notebook, character creation and public navigation while the game is off", async () => {
     expect(await isArenaCharacterRequestEnabled()).toBe(true);
     expect(await isKqPlayerRequestEnabled()).toBe(false);
-    expect(await (await access()).json()).toMatchObject({ enabled: true, canAccess: true, betaRestricted: false, activitiesOpen: false });
+    expect(await (await access()).json()).toMatchObject({ enabled: true, canAccess: true, betaRestricted: false, notebookOpen: true, activitiesOpen: false });
   });
-  it.each(["/api/arena/placard/runs", "/api/arena/tutorial", "/api/arena/chanvrier/savings", "/api/contest/leaderboard"])("blocks activity reads and writes: %s", async path => {
+  it.each(["/api/arena/placard/runs", "/api/arena/tutorial", "/api/arena/chanvrier/savings", "/api/contest/leaderboard", "/api/contest/badges/claim", "/api/contest/producer-rewards"])("blocks activity reads and writes: %s", async path => {
     for (const method of ["GET", "POST"]) {
       const response = await middleware(request(path, method));
       expect(response.status).toBe(423);
@@ -57,17 +58,31 @@ describe("arena preopening", () => {
       expect(response.headers.get("cache-control")).toContain("no-store");
     }
   });
-  it.each([["/arene/placard", "jouer"], ["/arene/carnet/regular", "carnet"], ["/bete-de-concours/carnet", "carnet"]])("redirects direct entry %s to its preview", async (path, mode) => {
+  it.each([["/arene/placard", "jouer"]])("redirects direct entry %s to its preview", async (path, mode) => {
     const response = await middleware(request(path));
     expect(response.status).toBe(307);
     expect(response.headers.get("location")).toBe(`https://example.test/arene?mode=${mode}&ouverture=1`);
   });
-  it.each(["/arene", "/api/arena/chanvrier", "/api/contest/access"])("allows %s through to normal route authentication", async path => {
+  it.each([
+    "/arene", "/api/arena/chanvrier", "/api/contest/access",
+    "/arene/carnet", "/arene/carnet/regular", "/arene/carnet/concours", "/arene/carnet/classement",
+    "/arene/selected-flower", "/arene/profils/tester", "/bete-de-concours/carnet",
+    "/api/contest/entries", "/api/contest/entries/selected-flower", "/api/contest/reviews", "/api/contest/review-pages/entry-id",
+    "/api/contest/reviews/review-id/vote", "/api/contest/profile", "/api/contest/feed", "/api/contest/rankings",
+    "/api/contest/seasons", "/api/contest/tester/progress", "/api/contest/testers/rankings", "/api/contest/testers/pseudo",
+  ])("allows %s through to normal route authentication", async path => {
     expect((await middleware(request(path))).headers.get("x-middleware-next")).toBe("1");
   });
   it("protects character writes against cross-origin requests", async () => {
     expect((await middleware(request("/api/arena/chanvrier", "POST", "https://elsewhere.test"))).status).toBe(403);
     expect((await middleware(request("/api/arena/chanvrier", "POST"))).headers.get("x-middleware-next")).toBe("1");
+  });
+  it("keeps notebook writes behind origin validation without requiring beta access", async () => {
+    expect((await middleware(request("/api/contest/reviews", "POST", "https://elsewhere.test"))).status).toBe(403);
+    for (const path of ["/api/contest/reviews", "/api/contest/profile", "/api/contest/reviews/review-id/vote"]) {
+      expect((await middleware(request(path, "POST"))).headers.get("x-middleware-next")).toBe("1");
+    }
+    expect(mocks.beta).not.toHaveBeenCalled();
   });
   it("keeps gift eligibility visible but prevents early distribution", async () => {
     expect(isArenaActivityApi("/api/account/pioneer-pack")).toBe(false);
@@ -110,7 +125,7 @@ it.each([true, false])("preopening server policy respects verified beta=%s even 
 });
 it.each([true, false])("middleware checks live beta status for a signed-in request: %s", async beta => {
   mocks.beta.mockResolvedValue(beta);
-  for (const path of ["/arene/placard", "/arene/carnet/regular", "/api/arena/tutorial", "/api/arena/placard/runs", "/api/contest/rankings"]) {
+  for (const path of ["/arene/placard", "/api/arena/tutorial", "/api/arena/placard/runs", "/api/contest/producer-rewards", "/api/contest/badges/claim"]) {
     const req = request(path); req.cookies.set("sb-project-auth-token", "untrusted-cookie");
     const result = await middleware(req);
     expect(result.status).toBe(beta ? 200 : path.startsWith("/api/") ? 423 : 307);

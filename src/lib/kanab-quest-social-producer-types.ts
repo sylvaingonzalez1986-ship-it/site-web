@@ -1,16 +1,19 @@
 import type { KqSocialContentImage, KqSocialContentMessage } from "./kanab-quest-social-content";
+import type { KqSocialAction } from "./kanab-quest-social-types";
 
 export type KqSocialRequirement = "general" | "culture" | "flowering" | "problem" | "harvest" | "curing" | "ready";
 export type KqSocialProducerChoice = {
   label: string; description: string; upside: string; downside: string;
   outcome: string; post: string;
-  replies: [KqSocialContentMessage, KqSocialContentMessage];
+  action?: KqSocialAction;
+  replies: KqSocialContentMessage[];
 };
-/** The player writes every post. NPCs appear only in the resulting replies. */
+/** NPC interventions attach to the player's own, previously chosen publication. */
 export type KqSocialProducerNarrative = {
   requirement: KqSocialRequirement;
   arc: string; title: string; body: string; audience: string; character: string;
   image: KqSocialContentImage;
+  replyTo?: { scenarioId: string; commentIndex: number };
   choices: Record<string, KqSocialProducerChoice>;
   continuations?: Record<string, {
     body: string;

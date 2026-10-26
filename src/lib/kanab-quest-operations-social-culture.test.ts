@@ -78,6 +78,9 @@ describe('actual and borrowed local social culture', () => {
   });
   it('keeps only the immutable chosen subject in Relève receipts and refreshes presentation on retry', () => {
     const state = owned(), snapshot = getKqOperationsSocial(state.operations, getKqReleveSocialCulture(state));
+    for (const scene of KQ_SOCIAL_SCENARIOS.filter(scene => scene.platform === 'instagram' && scene.episode === 1 && scene.id.startsWith('ig-debate-'))) {
+      snapshot.platforms.instagram.memory[scene.id] = scene.choices[0].id;
+    }
     snapshot.platforms.instagram.chapter = KQ_SOCIAL_SCENARIOS.filter(scene => scene.platform === 'instagram')
       .findIndex(scene => scene.episode === 1 && getKqSocialProducerNarrative(scene.id).requirement === 'harvest');
     state.operations.social = { ...snapshot }; delete state.operations.social.culture;

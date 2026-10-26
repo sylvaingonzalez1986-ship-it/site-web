@@ -5,7 +5,7 @@ const mocks = vi.hoisted(() => ({ page: vi.fn(), store: vi.fn(), session: vi.fn(
 vi.mock("@/lib/contest-backend", () => ({ getContestEntryReviewsPage: mocks.page }));
 vi.mock("@/lib/data-backend", () => ({ readPublicStoreByBackend: mocks.store }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
-vi.mock("@/lib/contest-feature", () => ({ isContestFeatureEnabledServer: mocks.enabled, getContestFeatureAccessDeniedResponse: mocks.denied }));
+vi.mock("@/lib/contest-notebook-access", () => ({ isContestNotebookEnabledServer: mocks.enabled, getContestNotebookAccessDeniedResponse: mocks.denied }));
 vi.mock("@/lib/product-tasting-feature", () => ({ isProductTastingStorefrontEnabled: mocks.storefront }));
 import { GET as storefront } from "./route";
 import { GET as notebook } from "@/app/api/contest/review-pages/[entryId]/route";
@@ -42,9 +42,9 @@ describe("review pages access and privacy", () => {
     mocks.store.mockResolvedValue({ products: [] });
     expect((await storefront(request(), context)).status).toBe(404);
   });
-  it("keeps notebook opening restrictions even when storefront notes are public", async () => {
-    mocks.denied.mockResolvedValue(NextResponse.json({ error: "Closed" }, { status: 423 }));
-    expect((await notebook(request(), context)).status).toBe(423);
+  it("honors the notebook emergency switch for notebook API reads", async () => {
+    mocks.denied.mockResolvedValue(NextResponse.json({ error: "Module désactivé." }, { status: 404 }));
+    expect((await notebook(request(), context)).status).toBe(404);
     expect(mocks.page).not.toHaveBeenCalled();
   });
   it("rejects malformed cursors before querying data", async () => {

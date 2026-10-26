@@ -1,10 +1,11 @@
 import { KQ_SOCIAL_PRODUCER_INSTAGRAM } from "./kanab-quest-social-producer-instagram";
 import { KQ_SOCIAL_PRODUCER_X } from "./kanab-quest-social-producer-x";
+import { KQ_SOCIAL_DEBATE_NARRATIVES } from "./kanab-quest-social-debates";
 import type { KqSocialScenario } from "./kanab-quest-social-types";
 import type { KqSocialProducerNarrative, KqSocialSubject } from "./kanab-quest-social-producer-types";
 
 export const KQ_SOCIAL_PRODUCER_NARRATIVES: Record<string, KqSocialProducerNarrative> = {
-  ...KQ_SOCIAL_PRODUCER_INSTAGRAM, ...KQ_SOCIAL_PRODUCER_X,
+  ...KQ_SOCIAL_PRODUCER_INSTAGRAM, ...KQ_SOCIAL_PRODUCER_X, ...KQ_SOCIAL_DEBATE_NARRATIVES,
 };
 
 export function getKqSocialProducerNarrative(id: string, previousChoice?: string): KqSocialProducerNarrative {
@@ -38,7 +39,7 @@ export function applyKqSocialProducerNarrative(original: KqSocialScenario): KqSo
       const authored = story.choices[choice.id];
       if (!authored) throw new Error(`Missing producer choice: ${original.id}/${choice.id}`);
       const { label, description, upside, downside, outcome } = authored;
-      return { ...choice, label, description, upside, downside, outcome };
+      return { ...choice, label, description, upside, downside, outcome, ...(authored.action ? { action: authored.action } : {}) };
     }),
     followups: original.followups?.map(followup => {
       const branch = story.continuations?.[followup.fromChoiceId];

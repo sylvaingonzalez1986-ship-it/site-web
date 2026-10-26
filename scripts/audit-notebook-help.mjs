@@ -51,8 +51,8 @@ const criteria=['appearance','manicure','drying_curing','cold_aroma','aroma_inte
 const lessonScope='dialog[open][data-playable-lesson="notebook"]';
 const lessonSelector=selector=>`${lessonScope} ${selector}`;
 const settle=()=>page.evaluate(()=>new Promise(resolve=>setTimeout(resolve,350)));
-const draftKey='contest-notebook-draft:v1:notebook-help-owner:real-flower';
-const draft=JSON.stringify({version:1,ownerId:'notebook-help-owner',entryId:'real-flower',comment:'Mes notes personnelles doivent rester intactes.',savedAt:123456});
+const draftKey='contest-notebook-draft:v2:notebook-help-owner:real-flower';
+const draft=JSON.stringify({version:2,ownerId:'notebook-help-owner',entryId:'real-flower',comment:'Mes notes personnelles doivent rester intactes.',savedAt:123456});
 async function geometry(){return{configuredViewport:page.viewport(),dom:await page.evaluate(()=>{
   const target=document.querySelector('dialog[open] [data-releve-guide-active]');
   const inspect=element=>element?{tag:element.tagName,class:element.className,rect:element.getBoundingClientRect().toJSON(),scrollTop:element.scrollTop,scrollHeight:element.scrollHeight,clientHeight:element.clientHeight,overflow:getComputedStyle(element).overflowY}:null;

@@ -1,7 +1,7 @@
 import "server-only";
 
 import { getContestProductTastingSummaries, isContestSchemaMissingError } from "@/lib/contest-backend";
-import { isContestFeatureEnabledServer } from "@/lib/contest-feature";
+import { isContestNotebookEnabledServer } from "@/lib/contest-notebook-access";
 import {
   sanitizePublicContestProductTastingSummary,
   type PublicContestProductTastingSummary,
@@ -16,7 +16,7 @@ export async function getProductCardTastingSummaries(
     return {};
   }
 
-  if (!isContestFeatureEnabledServer() || productIds.length === 0) {
+  if (!isContestNotebookEnabledServer() || productIds.length === 0) {
     return {};
   }
 

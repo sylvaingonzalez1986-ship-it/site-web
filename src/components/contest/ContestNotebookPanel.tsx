@@ -8,7 +8,7 @@ import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkillRadar";
 import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
 import styles from "./ContestNotebookPanel.module.css";
-import { contestDraftKey, contestReviewVersion, readContestDraft, type ContestNotebookDraft } from "@/lib/contest-notebook-draft";
+import { CONTEST_NOTEBOOK_DRAFT_VERSION, contestDraftKey, contestReviewVersion, readContestDraft, type ContestNotebookDraft } from "@/lib/contest-notebook-draft";
 import {
   CONTEST_AROMA_TAG_LABELS,
   CONTEST_AROMA_TAGS,
@@ -656,7 +656,7 @@ function ContestNotebookEditor({
   useEffect(() => {
     if (!draftLoaded || !draftKey || !draftOwnerId || !hasDraftEdits || (viewerReview && !isEditingReview)) return;
     const draft: ContestNotebookDraft = {
-      version: 1, ownerId: draftOwnerId, entryId: entry.id, baseReviewVersion: contestReviewVersion(viewerReview), savedAt: Date.now(), pageIndex,
+      version: CONTEST_NOTEBOOK_DRAFT_VERSION, ownerId: draftOwnerId, entryId: entry.id, baseReviewVersion: contestReviewVersion(viewerReview), savedAt: Date.now(), pageIndex,
       scores, consumptionMethod, consumptionDetails, comment, evaluatedCriteria,
       aromaTags: selectedTags.map((tag) => tag === "other" ? { tag, customLabel: otherAromaLabel } : { tag }),
       terpeneGuesses: selectedTerpenes,
