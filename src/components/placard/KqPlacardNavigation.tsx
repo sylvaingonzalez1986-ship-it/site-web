@@ -17,6 +17,7 @@ const primary = [
   { key: "market", label: "Commerce", art: "commerce", building: "market" },
   { key: "social", label: "Réseaux", art: "social", building: null },
 ] as const;
+const mobilePrimary = primary.filter(({ key }) => key === "hub" || key === "game" || key === "harvests" || key === "social");
 const secondary = [
   { key: "treasury", label: "Finances", art: "accounts", building: "office" },
   { key: "collection", label: "Collections", art: "collection", building: "collection" },
@@ -95,7 +96,7 @@ export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailab
   return <>
     <aside className={styles.sidebar}>{items()}</aside>
     <nav className={styles.mobileNav} aria-label="Accès rapides de Kanab Quest">
-      {primary.slice(0, 3).map(item => <button key={item.key} type="button" aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)}><KqPrintedArt kind={item.art} className={styles.mobileArt} /><span>{item.key === "hub" ? "Quartier" : item.key === "harvests" ? "Récoltes" : item.label}</span></button>)}
+      {mobilePrimary.map(item => <button key={item.key} type="button" aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)}><KqPrintedArt kind={item.art} className={styles.mobileArt} /><span>{item.key === "hub" ? "Quartier" : item.key === "harvests" ? "Récoltes" : item.label}</span></button>)}
       <button type="button" ref={trigger} aria-haspopup="dialog" aria-expanded={open} onClick={() => { drawer.current?.showModal(); setOpen(true); }}><Menu size={21} aria-hidden="true" /><span>Menu</span></button>
     </nav>
     <dialog ref={drawer} className={styles.navDrawer} aria-label="Menu de Kanab Quest" onKeyDown={event => { if (event.key === "Escape") event.stopPropagation(); }} onCancel={event => { if (event.target !== event.currentTarget) return; event.preventDefault(); event.stopPropagation(); history.close(); }} onClick={event => { if (event.target === event.currentTarget) history.close(); }}>
