@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useRef, useState, type KeyboardEvent, type TouchEvent } from "react";
+import { ProductImageZoom } from "./ProductImageZoom";
 import photoStyles from "./ProductPhoto.module.css";
 
 type ProductImageCarouselProps = {
@@ -79,6 +80,7 @@ export function ProductImageCarousel({
   };
 
   const onTouchStart = (event: TouchEvent<HTMLDivElement>) => {
+    if (event.target instanceof Element && event.target.closest("[data-product-image-dialog]")) return;
     if (!hasMultipleImages) {
       return;
     }
@@ -123,6 +125,7 @@ export function ProductImageCarousel({
   };
 
   const onKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (event.target instanceof Element && event.target.closest("[data-product-image-dialog]")) return;
     if (!hasMultipleImages) {
       return;
     }
@@ -187,18 +190,23 @@ export function ProductImageCarousel({
         </div>
       </div>
 
+      <ProductImageZoom
+        src={failedRemoteImages.has(sanitizedImages[activeIndex]) ? FALLBACK_IMAGE_SRC : sanitizedImages[activeIndex]}
+        productName={alt}
+      />
+
       {badge && (
-        <span className="absolute left-3 top-3 z-10 border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 py-1 text-xs font-bold uppercase tracking-wide">
+        <span className="pointer-events-none absolute left-3 top-3 z-10 border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 py-1 text-xs font-bold uppercase tracking-wide">
           {badge}
         </span>
       )}
       {promoText && (
-        <span className="promo-banner absolute right-3 top-3 z-10 px-3 py-1 text-xs">
+        <span className="promo-banner pointer-events-none absolute right-3 top-3 z-10 px-3 py-1 text-xs">
           {promoText}
         </span>
       )}
       {safeBonusPoints > 0 && (
-        <span className="pill-cartoon absolute bottom-3 left-3 z-10 border-[#1a1a1a] bg-yellow px-3 py-1 text-xs font-bold text-ink">
+        <span className="pill-cartoon pointer-events-none absolute bottom-3 left-3 z-10 border-[#1a1a1a] bg-yellow px-3 py-1 text-xs font-bold text-ink">
           +{safeBonusPoints} pts {"\u2605"}
         </span>
       )}

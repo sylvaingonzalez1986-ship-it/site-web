@@ -4,6 +4,7 @@ import { BookOpen, ChevronDown, Star } from "lucide-react";
 import styles from "@/components/ProductCard.module.css";
 import photoStyles from "@/components/boutique/ProductPhoto.module.css";
 import { ProductImageCarousel } from "@/components/boutique/ProductImageCarousel";
+import { ProductImageZoom } from "@/components/boutique/ProductImageZoom";
 import { ProductCardActions } from "@/components/ProductCardActions";
 import { ProductCultureBadge } from "@/components/ProductCultureBadge";
 import {
@@ -87,7 +88,7 @@ export function ProductCard({
 
   return (
     <article data-ui-commerce="product-card" data-ui-shape="panel" className={`product-card group ${styles.card}`} data-world="market">
-      {/* Multi-image: carousel (client), Single-image: static Image (server) */}
+      {/* Keep the single photo server-rendered; its zoom trigger is interactive. */}
       {hasMultipleImages ? (
         <ProductImageCarousel
           images={allImages}
@@ -111,18 +112,19 @@ export function ProductCard({
               className={`object-cover transition-transform duration-300 group-hover:scale-105 ${photoStyles.image}`}
             />
           </div>
+          <ProductImageZoom src={firstImage} productName={product.name} />
           {product.badge && (
-            <span className="absolute left-3 top-4 z-10 border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 py-1 text-xs font-black uppercase tracking-wide">
+            <span className="pointer-events-none absolute left-3 top-4 z-10 border-2 border-[#1a1a1a] bg-[#f7f4ee] px-3 py-1 text-xs font-black uppercase tracking-wide">
               {product.badge}
             </span>
           )}
           {hasPromo && (
-            <span className="promo-banner absolute right-3 top-3 z-10 px-3 py-1 text-xs">
+            <span className="promo-banner pointer-events-none absolute right-3 top-3 z-10 px-3 py-1 text-xs">
               Moins {product.promoPercent}%
             </span>
           )}
           {safeBonusPoints > 0 && (
-            <span className="absolute bottom-3 left-3 z-10 border-2 border-[#1a1a1a] bg-yellow px-3 py-1 text-xs font-black uppercase text-ink">
+            <span className="pointer-events-none absolute bottom-3 left-3 z-10 border-2 border-[#1a1a1a] bg-yellow px-3 py-1 text-xs font-black uppercase text-ink">
               +{safeBonusPoints} pts {"\u2605"}
             </span>
           )}

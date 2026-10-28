@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { ProductVideoModal } from "./ProductVideoModal";
+import { ProductImageZoom } from "./ProductImageZoom";
 import styles from "./ProductImageGallery.module.css";
 import photoStyles from "./ProductPhoto.module.css";
 
@@ -52,6 +53,7 @@ export function ProductImageGallery({
             className={`object-cover ${photoStyles.image}`}
           />
         </div>
+        <ProductImageZoom src={currentSrc} productName={productName} />
         {badge && (
           <span className={styles.badge}>
             {badge}
