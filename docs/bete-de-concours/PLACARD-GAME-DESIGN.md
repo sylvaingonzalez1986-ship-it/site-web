@@ -867,11 +867,11 @@ Album Kanab Quest
   -> gagner et depenser de l'XP pour jouer des cartes
   -> subir des incidents Energie, DDTM et Securite avec des reponses dediees
   -> obtenir une récolte, une Fleur et des factures distinctes par zone/Buddie
+  -> reserver les contenants et accomplir 6 heures reelles de curing
   -> déposer chaque Fleur dans la file de duel aléatoire
   -> appariement automatique puis 3 manches de jury
   -> bruler les 2 Fleurs au verdict
-  -> commencer le curing de 6 heures reelles
-  -> reserver les contenants et regler le surplus sous 1 heure reelle
+  -> conserver le stock recolte et gerer sa capacite de stockage
   -> vendre en biomasse ou en brut, ou transformer avec le materiel possede
   -> gagner de l'argent et une reputation qualite permanente
   -> reinvestir dans le catalogue d'equipements durables
@@ -882,7 +882,7 @@ Regles validees:
 
 - 3 des: `1` Danger, `2-3` neutre, `4-6` reussite, `6` Etincelle;
 - 6 etapes: Germination, Enracinement, Croissance, Floraison, Recolte,
-  Sechage ; l’affinage commence après le jury et le duel;
+  Sechage ; l’affinage commence dès la récolte et se termine avant le jury et le duel;
 - 30 cartes actives dans `La Botte du Chanvrier` : 12 communes, 7 peu communes,
   7 rares et 4 épiques;
 - une préparation avant les dés et une réaction après, avec une seule carte
@@ -936,10 +936,12 @@ Regles validees:
   et transformations suivent le catalogue d’équipements actuel;
 - marche post-recolte avec jury qualite, biomasse, lot brut, dry sift, static
   sift, ice water hash et quatre paliers de rosin selon l'equipement et la note;
-- curing de 6 heures réelles après le verdict, indépendant du calendrier du jeu ; seul le grossiste
-  achète avant maturité. Contenants achetés en quantité, réservés par lot sans mélange;
-- surplus sans contenant : 1 heure réelle après le verdict pour acheter de la place ou vendre,
-  puis vente automatique au grossiste du seul surplus, même hors connexion;
+- curing de 6 heures réelles dès la récolte, avant le jury, indépendant du calendrier du jeu ;
+  aucune vente avant le verdict, qui ne redémarre pas l’attente. Les lots historiques
+  conservent leur échéance enregistrée. Contenants achetés en quantité, réservés par lot sans mélange;
+- surplus sans contenant : pas de vente automatique des lots issus de l’entrepôt.
+  Les lots historiques hors entrepôt gardent 1 heure réelle après le verdict pour acheter
+  de la place ou vendre, puis vente automatique au grossiste du seul surplus, même hors connexion;
 - la qualite pilote le prix et la reputation; la reputation departage le
   classement officiel apres cote et points de saison, avant le bilan sportif;
 - pas de moteur 2D ni de WebSocket ; les bilans de culture suivent les opérations,
@@ -1021,8 +1023,9 @@ local.
 ## Archives de conception — propositions et étapes historiques
 
 Les sections suivantes conservent la recherche initiale et les anciennes étapes
-de livraison. Les mentions de modes Substrat, PBI après Loupe, 36 cartes ou
-d’affinage avant jury y décrivent les anciennes propositions. Le contrat actuel
+de livraison. Les mentions de modes Substrat, PBI après Loupe ou 36 cartes
+y décrivent les anciennes propositions. L’affinage avant jury est désormais
+retenu pour les nouvelles récoltes depuis le 29 octobre 2026. Le contrat actuel
 est la section 0 ci-dessus ; aucune de ces archives ne réactive une règle retirée.
 
 ## 1. Vision

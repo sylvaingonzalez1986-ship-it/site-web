@@ -63,7 +63,7 @@ describe("Kanab Quest player session ownership policy", () => {
 
   it("rate limits every player mutation after authentication", () => {
     const mutationRoutes = playerRouteFiles.filter((route) =>
-      readFileSync(route, "utf8").includes("export async function POST"));
+      /export async function (POST|PUT|PATCH|DELETE)\(/.test(readFileSync(route, "utf8")));
     expect(mutationRoutes.length).toBeGreaterThanOrEqual(5);
     for (const route of mutationRoutes) {
       const source = readFileSync(route, "utf8");

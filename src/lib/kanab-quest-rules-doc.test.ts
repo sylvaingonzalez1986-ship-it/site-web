@@ -62,14 +62,19 @@ describe("Kanab Quest Placard rules draft", () => {
     }
   });
 
-  it("places timed curing after the jury and states the one-hour surplus deadline", () => {
+  it("places timed curing before the jury and preserves the legacy surplus deadline", () => {
     expect(normalizedRules).toContain("avant le jury et le duel");
-    expect(normalizedRules).toContain("après leur verdict");
+    expect(normalizedRules).toContain("commence dès la récolte");
     expect(normalizedRules).toContain("6 heures réelles, indépendamment du calendrier du jeu");
+    expect(normalizedRules).toContain("Aucune vente n’est possible avant le verdict");
+    expect(normalizedRules).toContain("ne redémarre pas l’affinage");
     expect(normalizedRules).toContain("1 heure réelle après le duel");
     expect(normalizedRules).toContain("seul le surplus est vendu automatiquement");
+    expect(normalizedRules).toContain("Les lots issus de l’entrepôt ne sont pas vendus automatiquement");
+    expect(currentDesign).toContain("curing de 6 heures réelles dès la récolte, avant le jury");
+    expect(currentDesign).not.toContain("l’affinage commence après le jury");
     expect(currentDesign).toContain("Aucune ne soigne directement un parasite");
-    expect(care).toContain("aucune carte ne raccourcit ses 6 heures réelles");
+    expect(care).toContain("aucune carte ne raccourcit les 6 heures d’affinage réelles");
   });
 
   it("documents the durable equipment economy with the implemented prices", () => {

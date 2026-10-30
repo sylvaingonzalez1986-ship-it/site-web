@@ -501,24 +501,28 @@ appliquer un nouveau gain.
 
 ## 7. Jury, marché et réputation
 
-Après le verdict d'un duel humain ou d'un entraînement bot, la Fleur brûlée
-devient un lot valorisable. La note du jury est la moyenne des trois manches,
+Après le verdict d'un duel humain ou d'un entraînement bot, la Fleur d’Arène
+est consommée et son stock récolté devient valorisable. La note du jury est la moyenne des trois manches,
 ramenée sur 10 et conservée au dixième. Les ventes peuvent être fractionnées,
 mais une même quantité ne peut pas être vendue deux fois. La vente, le gain
 d'argent virtuel et la réputation produisent un reçu serveur idempotent.
 
-Le séchage est joué **avant le jury et le duel**. L’affinage, ou curing, commence
-**après leur verdict** et dure 6 heures réelles, indépendamment du calendrier
-du jeu. Une vente avant cette maturité reste possible uniquement
-au grossiste. Une carte de séchage ne supprime pas ce délai.
+Le séchage est joué **avant le jury et le duel**. Pour les nouvelles récoltes,
+l’affinage, ou curing, commence dès la récolte et dure 6 heures réelles,
+indépendamment du calendrier du jeu. Il doit être terminé avant de présenter
+la Fleur au jury. Aucune vente n’est possible avant le verdict, qui conserve
+le stock récolté et ne redémarre pas l’affinage. Une carte de séchage ne supprime
+pas ce délai. Les lots historiques conservent leur échéance déjà enregistrée.
 
 L’entrepôt réserve des contenants achetés à l’unité, sans mélanger deux récoltes
-dans le même contenant. Le joueur dispose d’**1 heure réelle après le duel**
+dans le même contenant dès la récolte. Les lots issus de l’entrepôt ne sont pas
+vendus automatiquement. Pour les lots historiques hors entrepôt, le joueur dispose d’**1 heure réelle après le duel**
 pour acheter la capacité manquante ou vendre le surplus au grossiste. Après
 l’échéance, seul le surplus est vendu automatiquement, y compris hors connexion ;
 le traitement programmé passe toutes les cinq minutes. Acheter ou déplacer des
-contenants ne repousse pas cette échéance. La note archivée du jury reste fixe,
-tandis que la qualité commerciale du lot dépend ensuite de sa conservation.
+contenants ne repousse pas cette échéance. La conservation acquise est intégrée
+une seule fois au jury des nouvelles récoltes. Sa note archivée reste ensuite
+fixe ; la qualité commerciale reflète les changements de conservation ultérieurs.
 
 | Voie | Note minimale | Rendement de base | Prix de base du produit |
 | --- | ---: | ---: | ---: |

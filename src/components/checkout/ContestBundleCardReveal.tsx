@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type MouseEvent } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore, type MouseEvent } from "react";
 import { ArrowRight, Sparkles } from "lucide-react";
 import Link from "@/components/navigation/NavigationLink";
 import { AppDialog } from "@/components/ui/AppDialog";
@@ -14,6 +14,14 @@ import styles from "./ContestBundleCardReveal.module.css";
 const BACK = "/app/lottery/tcg-card-back-sylvain-v2.webp";
 type Phase = "sealed" | "revealing" | "revealed";
 
+function subscribeToStoredReveal(onStoreChange: () => void) {
+  window.addEventListener("storage", onStoreChange);
+  return () => window.removeEventListener("storage", onStoreChange);
+}
+
+// Storage is unknown during SSR and hydration, so an already-seen card never flashes open.
+const getServerSeen = () => null;
+
 /** Presentation only: the paid reward and random card already exist on the server. */
 export function ContestBundleCardReveal(props: { receipt: ContestBundleReceipt; autoOpen?: boolean }) {
   return <CardReveal key={`${props.receipt.orderId}:${props.receipt.grantedAt}`} {...props} />;
@@ -21,19 +29,25 @@ export function ContestBundleCardReveal(props: { receipt: ContestBundleReceipt; 
 
 function CardReveal({ receipt, autoOpen = false }: { receipt: ContestBundleReceipt; autoOpen?: boolean }) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [seen, setSeen] = useState(false);
-  const [phase, setPhase] = useState<Phase>("sealed");
+  const [openOverride, setOpen] = useState<boolean | null>(null);
+  const [previousAutoOpen, setPreviousAutoOpen] = useState(autoOpen);
+  const [animationPhase, setPhase] = useState<Phase>("sealed");
   const [imageFailed, setImageFailed] = useState(false);
   const storageKey = `contest-bundle-revealed:${receipt.orderId}:${receipt.grantedAt}`;
+  const getStoredSeen = useCallback(() => {
+    try { return localStorage.getItem(storageKey) === "1"; } catch { return false; }
+  }, [storageKey]);
+  const storedSeen = useSyncExternalStore(subscribeToStoredReveal, getStoredSeen, getServerSeen);
+  const seen = storedSeen === true || animationPhase === "revealed";
+  const phase = seen ? "revealed" : animationPhase;
+  const open = openOverride ?? (autoOpen && storedSeen === false);
 
-  useEffect(() => {
-    let alreadySeen = false;
-    try { alreadySeen = localStorage.getItem(storageKey) === "1"; } catch { /* Storage is optional. */ }
-    setSeen(alreadySeen);
-    setPhase(alreadySeen ? "revealed" : "sealed");
-    if (autoOpen && !alreadySeen) setOpen(true);
-  }, [storageKey, autoOpen]);
+  // A later auto-open request can reopen an unseen card; withdrawing it does not close a dialog.
+  if (previousAutoOpen !== autoOpen) {
+    setPreviousAutoOpen(autoOpen);
+    if (autoOpen && !seen) setOpen(true);
+    else if (openOverride === null) setOpen(previousAutoOpen && storedSeen === false);
+  }
 
   useEffect(() => {
     if (!open || phase !== "revealing") return;
@@ -47,7 +61,6 @@ function CardReveal({ receipt, autoOpen = false }: { receipt: ContestBundleRecei
 
   useEffect(() => {
     if (phase !== "revealed") return;
-    setSeen(true);
     try { localStorage.setItem(storageKey, "1"); } catch { /* Never needed to keep the reward. */ }
   }, [phase, storageKey]);
 
@@ -55,7 +68,11 @@ function CardReveal({ receipt, autoOpen = false }: { receipt: ContestBundleRecei
     setOpen(false);
     if (phase === "revealing") setPhase("sealed");
   };
-  const reveal = () => setPhase(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "revealed" : "revealing");
+  const reveal = () => {
+    // Keep an automatically opened dialog visible after its seen flag is persisted.
+    setOpen(true);
+    setPhase(window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "revealed" : "revealing");
+  };
   const revealed = phase === "revealed";
   const navigate = (event: MouseEvent<HTMLAnchorElement>, href: string) => {
     if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;

@@ -71,7 +71,7 @@ describe("Kanab Quest random duel queue", () => {
     expect(playerRoute).toContain("enqueueKqPlayerRandomBattle(session.customerId, flowerId)");
     expect(playerRoute).not.toContain("rivalFlowerId");
     expect(gameUi).toContain("Duel aléatoire");
-    expect(gameUi).toContain("Le serveur choisira au hasard une Fleur appartenant à un autre joueur");
+    expect(gameUi).toContain("Une Fleur d’un autre joueur est tirée au hasard");
     expect(gameUi).toContain("pollKqRemoteRandomBattleQueue");
     expect(gameUi).toContain("quelle que soit sa qualité");
     expect(gameUi).not.toContain("compatible à ±8 qualité");

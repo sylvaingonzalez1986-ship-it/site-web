@@ -18,7 +18,28 @@ La réduction du curing à **6 heures réelles** a été appliquée le 10 octobr
 
 Le délai du surplus sans contenant a ensuite été ramené à **1 heure réelle après le verdict** avec `20261010000800_storage_overflow_one_hour.sql`, appliquée le 10 octobre 2026 à 17 h 34, heure de Paris. Seule cette migration a été proposée puis appliquée au même projet ; le registre distant et la prévisualisation du lot isolé confirment l’application. Les délais existants plus longs ont été raccourcis sans redémarrer l’attente ; les surplus déjà échus sont traités par le mécanisme habituel, sans vente exécutée par la migration. Validation : tests ciblés réussis, 144 assertions SQL capacité, 237 assertions SQL stockage, contrôle des permissions sur 282 migrations et 34 contrôles navigateur. Cette opération ne publie pas le code de l’interface. Reçu : `output/storage-overflow-one-hour/application.json`.
 
-## Parcours retenu
+## Parcours actuel — 29 octobre 2026
+
+La migration `20261029000300_kq_curing_before_jury.sql` fait entrer les nouvelles
+récoltes en stockage dès leur création. Le parcours est désormais **récolte et
+séchage → rangement et affinage de 6 heures réelles → jury/duel → vente**.
+Le jury attend la maturité du lot ; aucune vente, même de surplus, n’est possible
+avant son verdict. Le stock récolté est conservé quand la Fleur d’Arène est
+consommée et l’échéance d’affinage ne redémarre pas. La conservation acquise est
+intégrée une seule fois aux statistiques du jury ; les offres commerciales
+reflètent ensuite seulement ses évolutions ultérieures.
+
+Les horloges de stockage déjà enregistrées sont conservées. Les Fleurs bêta
+encore disponibles sans lot commencent leur attente lors de leur reprise en
+stockage ; aucune protection passée n’est inventée. Les lots issus de l’entrepôt
+gardent leur règle sans vente automatique. Pour les lots historiques hors
+entrepôt, le délai de surplus reste d’1 heure après le verdict, jamais pendant
+l’attente du jury.
+
+Les sections suivantes décrivent la mise en place initiale du 10 octobre ; leur
+ordre jury puis affinage est remplacé par le parcours actuel ci-dessus.
+
+## Parcours initial — 10 octobre 2026
 
 La sixième opération devient **Séchage** à l’écran. L’identifiant historique `Séchage & affinage` reste interne pour préserver les situations, illustrations et historiques. Terminer cette opération ne signifie plus que le lot a terminé son affinage commercial.
 

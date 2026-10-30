@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 const mocks = vi.hoisted(() => ({
-  session: vi.fn(), enabled: vi.fn(), rate: vi.fn(), snapshot: vi.fn(), save: vi.fn(), quote: vi.fn(), remove: vi.fn(),
+  session: vi.fn(), enabled: vi.fn(), rate: vi.fn(), logRateLimit: vi.fn(), snapshot: vi.fn(), save: vi.fn(), quote: vi.fn(), remove: vi.fn(),
 }));
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerRequestEnabled: mocks.enabled }));
-vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "test", hitRateLimit: mocks.rate }));
+vi.mock("@/lib/security-rate-limit", () => ({ getRequestIp: () => "test", hitRateLimit: mocks.rate, logRateLimitRejection: mocks.logRateLimit }));
 vi.mock("@/lib/supabase/kanab-quest-warehouse-backend", () => ({
   getKqWarehouseSnapshot: mocks.snapshot, saveKqWarehouseLayout: mocks.save,
   quoteKqWarehouseZoneRemoval: mocks.quote, removeKqWarehouseCultureZone: mocks.remove,
@@ -66,12 +66,22 @@ describe("warehouse API access", () => {
     expect(mocks.save).not.toHaveBeenCalled();
   });
 
-  it("rate limits writes before body processing", async () => {
+  it.each(["PATCH", "POST"] as const)("logs and rate limits %s before body processing", async (method) => {
     mocks.rate.mockResolvedValue({ allowed: false, retryAfterSeconds: 17 });
-    const response = await PATCH(new Request("https://example.test/api/arena/placard/warehouse", { method: "PATCH", body: "{}" }));
+    const request = new Request("https://example.test/api/arena/placard/warehouse", { method, body: "invalid JSON" });
+    const response = await (method === "PATCH" ? PATCH : POST)(request);
     expect(response.status).toBe(429);
     expect(response.headers.get("Retry-After")).toBe("17");
+    expect(response.headers.get("Cache-Control")).toBe("no-store");
+    expect(mocks.rate).toHaveBeenCalledWith({ key: "kq_warehouse:authenticated-owner:test", windowSeconds: 60, maxHits: 30 });
+    expect(mocks.logRateLimit).toHaveBeenCalledExactlyOnceWith({
+      endpoint: `${method} /api/arena/placard/warehouse`, key: "kq_warehouse:authenticated-owner:test", ip: "test",
+      retryAfterSeconds: 17, maxHits: 30, windowSeconds: 60,
+    });
+    expect(request.bodyUsed).toBe(false);
     expect(mocks.save).not.toHaveBeenCalled();
+    expect(mocks.quote).not.toHaveBeenCalled();
+    expect(mocks.remove).not.toHaveBeenCalled();
   });
 
   it("does not disclose database errors or silently report success", async () => {

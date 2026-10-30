@@ -12,10 +12,12 @@ describe("Kanab Quest onboarding", () => {
     expect(gameClient).toContain("Cultive. Transforme. Réinvestis.");
     expect(gameClient).toContain("1. Prépare ton atelier");
     expect(gameClient).toContain("2. Passe les 6 étapes");
-    expect(gameClient).toContain("3. Affronte le jury");
-    expect(gameClient).toContain("4. Choisis ton débouché");
-    expect(gameClient).toContain("5. Réinvestis intelligemment");
-    expect(gameClient).toContain("Vends le lot brut");
+    expect(gameClient).toContain("3. Range et affine ta récolte");
+    expect(gameClient).toContain("Les 6 heures réelles d’affinage commencent à la récolte");
+    expect(gameClient).toContain("4. Affronte le jury");
+    expect(gameClient).toContain("5. Choisis ton débouché");
+    expect(gameClient).toContain("6. Réinvestis intelligemment");
+    expect(gameClient).toContain("Après le verdict, vends le lot brut");
     expect(gameClient).toContain("en biomasse");
     expect(gameClient).toContain("ta réputation");
     expect(gameClient).not.toContain("1. Ouvre tes packs");

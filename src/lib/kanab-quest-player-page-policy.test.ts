@@ -249,7 +249,14 @@ describe("Kanab Quest player page access", () => {
     expect(equipmentCatalog).toContain("createClientRequestKey()");
     expect(boosterShop).toContain("createClientRequestKey()");
     expect(playerShellJsxProp("KqMarketDesk", "onOpenShop")).toBe("openEquipmentCatalog");
-    expect(playerShellJsxProp("KqSupportBoosterShop", "onExit")).toBe("() => openView(shopReturnView, { marketSection: shopReturnMarketSection })");
+    expect(playerShellJsxProp("KqSupportBoosterShop", "onExit")).toBe("returnToParent");
+    const returnToParent = findAstNode(playerShellAst, (node): node is ts.VariableDeclaration =>
+      ts.isVariableDeclaration(node) && node.name.getText(playerShellAst) === "returnToParent");
+    expect(returnToParent.getText(playerShellAst)).toContain("openView(returnView,");
+    expect(returnToParent.getText(playerShellAst)).toContain('returnView === "market" ? { marketSection: shopReturnMarketSection');
+    const returnView = findAstNode(playerShellAst, (node): node is ts.VariableDeclaration =>
+      ts.isVariableDeclaration(node) && node.name.getText(playerShellAst) === "returnView");
+    expect(returnView.getText(playerShellAst)).toContain('view === "shop" ? shopReturnView');
     expect(placardHud).toContain("Progression principale terminée");
     expect(placardHud).toContain("Filière épinglée · objectif sauvegardé");
     expect(placardHud).toContain("getKqEquipmentPaybackScenarios");
@@ -270,10 +277,14 @@ describe("Kanab Quest player page access", () => {
   it("exposes the complete production loop from the Placard HUD", () => {
     expect(placardHud).toContain('aria-label="Cycle de production"');
     expect(placardHud).toContain("Étape 1 · Culture");
-    expect(placardHud).toContain("Étape 2 · Jury");
-    expect(placardHud).toContain("Étape 3 · Vente");
+    expect(placardHud).toContain("Étape 2 · Stockage");
+    expect(placardHud).toContain("Étape 3 · Jury");
+    expect(placardHud).toContain("Étape 4 · Vente");
+    expect(placardHud).toContain("snapshot.curingFlowerCount");
     expect(placardHud).toContain("snapshot?.availableFlowerCount");
     expect(placardHud).toContain("snapshot?.readyLotCount");
+    expect(placardHud).toContain("onClick={onOpenStorage}");
+    expect(placardHud).toContain("onClick={onOpenArena}");
     expect(placardHud).toContain("onClick={onOpenMarket}");
   });
 
@@ -319,7 +330,8 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).toContain('aria-label="Gains de l’étape"');
     expect(gameClient).toContain("Lot projeté");
     expect(gameClient).toContain('aria-label="Bulletin de la récolte"');
-    expect(gameClient).toContain("Pourquoi cette note ?");
+    expect(gameClient).toContain("Détail de la qualité de culture");
+    expect(gameClient).toContain("Des points de culture, distincts de la future note du jury sur 10.");
     expect(gameClient).not.toContain("Math.max(0, state.quality)");
   });
 
@@ -328,34 +340,36 @@ describe("Kanab Quest player page access", () => {
     expect(playerShell).not.toContain("tutorial=");
     expect(gameClient).toContain("const showAdminOperations = !tutorial && requestedAdminOperations");
     expect(gameClient).toContain("useState(isPlayerMode)");
-    expect(gameClient).toContain("if (isPlayerMode || tutorial) return");
+    const setRemoteMode = findAstNode(gameClientAst, (node): node is ts.VariableDeclaration =>
+      ts.isVariableDeclaration(node) && node.name.getText(gameClientAst) === "setRemoteMode");
+    expect(setRemoteMode.getText(gameClientAst)).toMatch(/if \(isPlayerMode \|\| tutorial(?: \|\|[^)]*)?\) return;/);
     expect(gameClient).toContain("!isPlayerMode ? <button");
     expect(gameClient).toContain("!isPlayerMode && (showAdminOperations || showPackLab) ? <details");
   });
 
-  it("routes an official harvest back to the server-backed reserve", () => {
-    const playerHarvestBranch = gameClient.indexOf("if (isPlayerMode) {", gameClient.indexOf('state.phase === "complete"'));
-    const localBattleEntry = gameClient.indexOf("Battle Fleur contre Fleur", playerHarvestBranch);
-    expect(playerHarvestBranch).toBeGreaterThan(-1);
-    expect(gameClient.slice(playerHarvestBranch, localBattleEntry)).toContain(
-      "Voir ma réserve et entrer dans la file",
-    );
-    expect(gameClient.slice(playerHarvestBranch, localBattleEntry)).toContain(
-      "Elle n’est pas brûlée maintenant",
-    );
-    expect(gameClient).toContain('onContinue={isPlayerMode ? onOpenArena : undefined}');
-    expect(gameClient.slice(playerHarvestBranch, localBattleEntry)).toContain('{harvestMoment}');
-    expect(gameClient.slice(playerHarvestBranch, localBattleEntry)).toContain('href="/arene/placard?view=arena"');
+  it("routes an official harvest to storage before the jury without consuming its stock", () => {
+    const completed = findAstNode(gameClientAst, (node): node is ts.IfStatement =>
+      ts.isIfStatement(node) && node.expression.getText(gameClientAst) === 'state.phase === "complete"');
+    const playerHarvest = findAstNode(completed.thenStatement, (node): node is ts.IfStatement =>
+      ts.isIfStatement(node) && node.expression.getText(gameClientAst) === "isPlayerMode");
+    expect(playerHarvest.getText(gameClientAst)).toContain("Au jury, seule la Fleur d’Arène est consommée. Ta récolte reste disponible pour la vente après le verdict.");
+    expect(playerHarvest.getText(gameClientAst)).toContain("{harvestMoment}");
+    expect(completed.getText(gameClientAst)).toContain("onContinue={isPlayerMode ? () => openStorage(state.campaign ? undefined : persistedFlowerId ?? initialFlowerId) : undefined}");
+    const openStorage = findAstNode(gameClientAst, (node): node is ts.VariableDeclaration =>
+      ts.isVariableDeclaration(node) && node.name.getText(gameClientAst) === "openStorage");
+    expect(openStorage.getText(gameClientAst)).toContain("onOpenStorage(flowerId)");
+    expect(openStorage.getText(gameClientAst)).toContain("/arene/placard?view=workshop&section=storage");
     const harvestMoment = readFileSync(join(process.cwd(), "src/components/placard/KqHarvestMoment.tsx"), "utf8");
     expect(harvestMoment).toContain('alive && onContinue ? <button');
     expect(harvestMoment).toContain('onClick={onContinue}');
-    expect(playerShell).toContain('onOpenArena={() => openView("arena")}');
+    expect(harvestMoment).toContain("Ranger ma récolte");
+    expect(playerShellJsxProp("KanabQuestDicePrototype", "onOpenStorage")).toBe('flowerId => openView("workshop", { warehouseSection: "storage", flowerId, from: view, fromFlowerId: flowerId })');
   });
 
   it("never asks the player to choose a human or training opponent", () => {
     expect(hubActions).toContain("adversaire tiré au hasard");
-    expect(gameClient).toContain("Entraînement aléatoire");
-    expect(gameClient).toContain("bot tiré au hasard");
+    expect(gameClient).toContain("Entraînement immédiat");
+    expect(gameClient).toContain("Verdict immédiat contre un adversaire automatique tiré au hasard.");
     expect(gameClient).not.toContain("choisir un rival");
     expect(gameClient).not.toContain("Affronter ce bot");
     expect(gameClient).not.toContain("selectedRemoteRivalId");

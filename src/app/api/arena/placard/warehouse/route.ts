@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
-import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
+import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { getKqWarehouseSnapshot, KqWarehouseError, saveKqWarehouseLayout, quoteKqWarehouseZoneRemoval, removeKqWarehouseCultureZone } from "@/lib/supabase/kanab-quest-warehouse-backend";
 
 export const runtime = "nodejs";
@@ -51,10 +51,15 @@ export async function PATCH(request: Request) {
   if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers: noStore });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401, headers: noStore });
-  const rate = await hitRateLimit({ key: `kq_warehouse:${session.customerId}:${getRequestIp(request)}`, windowSeconds: 60, maxHits: 30 });
-  if (!rate.allowed) return NextResponse.json({ error: "Trop de modifications. Réessaie dans un instant.", retryAfterSeconds: rate.retryAfterSeconds }, {
-    status: 429, headers: { ...noStore, "Retry-After": String(rate.retryAfterSeconds) },
-  });
+  const ip = getRequestIp(request);
+  const key = `kq_warehouse:${session.customerId}:${ip}`;
+  const rate = await hitRateLimit({ key, windowSeconds: 60, maxHits: 30 });
+  if (!rate.allowed) {
+    logRateLimitRejection({ endpoint: "PATCH /api/arena/placard/warehouse", key, ip, retryAfterSeconds: rate.retryAfterSeconds, maxHits: 30, windowSeconds: 60 });
+    return NextResponse.json({ error: "Trop de modifications. Réessaie dans un instant.", retryAfterSeconds: rate.retryAfterSeconds }, {
+      status: 429, headers: { ...noStore, "Retry-After": String(rate.retryAfterSeconds) },
+    });
+  }
   try {
     const payload = await readPayload(request);
     return NextResponse.json(await saveKqWarehouseLayout({
@@ -69,8 +74,13 @@ export async function POST(request: Request) {
   if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers: noStore });
   const session = await getCurrentCustomerSessionByBackend("identity");
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401, headers: noStore });
-  const rate = await hitRateLimit({ key: `kq_warehouse:${session.customerId}:${getRequestIp(request)}`, windowSeconds: 60, maxHits: 30 });
-  if (!rate.allowed) return NextResponse.json({ error: "Trop de demandes. Réessaie dans un instant." }, { status: 429, headers: { ...noStore, "Retry-After": String(rate.retryAfterSeconds) } });
+  const ip = getRequestIp(request);
+  const key = `kq_warehouse:${session.customerId}:${ip}`;
+  const rate = await hitRateLimit({ key, windowSeconds: 60, maxHits: 30 });
+  if (!rate.allowed) {
+    logRateLimitRejection({ endpoint: "POST /api/arena/placard/warehouse", key, ip, retryAfterSeconds: rate.retryAfterSeconds, maxHits: 30, windowSeconds: 60 });
+    return NextResponse.json({ error: "Trop de demandes. Réessaie dans un instant." }, { status: 429, headers: { ...noStore, "Retry-After": String(rate.retryAfterSeconds) } });
+  }
   try {
     const payload = await readPayload(request);
     const input = { userId: session.customerId, zoneId: payload.zoneId as string, expectedRevision: payload.expectedRevision as number };

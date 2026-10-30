@@ -8,6 +8,10 @@ import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
 vi.mock("@/components/cookies/CookieConsentProvider", () => ({
   useCookieConsent: () => ({ showBanner: false }),
 }));
+vi.mock("next/navigation", () => ({
+  usePathname: () => "/arene",
+  useRouter: () => ({ push: vi.fn() }),
+}));
 vi.mock("next/dynamic", () => ({ default: () => () => null }));
 
 const profile: ChanvrierProfile = {

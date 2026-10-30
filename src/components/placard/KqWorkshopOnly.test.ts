@@ -16,6 +16,7 @@ const machineCodes = ["PRESS-0600", "WASHER-25L"];
 const inventory: ComponentProps<typeof KqEquipmentInventoryModal> = {
   workshopOnly: true,
   embedded: true,
+  inventoryKnown: true,
   ownedCodes: [...KQ_STARTING_EQUIPMENT_CODES, ...machineCodes],
   purchasedCodes: machineCodes,
   equippedCodes: [...KQ_STARTING_EQUIPMENT_CODES, ...machineCodes],
@@ -37,6 +38,7 @@ describe("processing workshop embedded in the warehouse", () => {
       "sifting", "washing", "filtration", "static-separation", "press", "drying",
     ]);
     expect(html).toContain('aria-label="Atelier de transformation, vue de dessus"');
+    expect(html).toContain('data-inventory-balance="known"');
     expect(html).not.toContain('data-workshop-machine-dialog');
     expect(html).toContain("Mes machines");
     expect(html).not.toContain("Voir le décor");
@@ -135,12 +137,18 @@ describe("processing workshop embedded in the warehouse", () => {
     expect(render(condition.repairCents)).toContain("Il manque");
   });
 
-  it("opens the actual workshop entry on a live account without nesting the new warehouse", () => {
+  it("opens the live workshop entry while waiting for its inventory without nesting the new warehouse", () => {
     const html = renderToStaticMarkup(createElement(KqWarehouseEntry, {
       workshopOnly: true, embedded: true, initialSection: "storage", onClose: vi.fn(), onOpenShop: vi.fn(),
     }));
     expect(html).toContain('data-workshop-only="true"');
-    expect(html.match(/data-warehouse-slot=/g)).toHaveLength(6);
+    // Server rendering cannot fetch the account inventory. Keep ownership and
+    // cash unknown until the request succeeds, rather than inventing an empty shop.
+    expect(html).toContain('data-inventory-state="loading" role="status"');
+    expect(html).toContain("Vérification de ton inventaire…");
+    expect(html).toContain('data-inventory-balance="unknown"');
+    expect(html).toContain('aria-label="Trésorerie indisponible">—</strong>');
+    expect(html).not.toContain("data-warehouse-slot=");
     expect(html).toContain("Mes machines");
     expect(html).not.toContain("Chambre de culture");
   });

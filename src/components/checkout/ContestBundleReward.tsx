@@ -77,37 +77,41 @@ export function ContestBundleRewardPreview({ items, active }: { items: ContestBu
 }
 
 export function ContestBundleRewardReceipt({ orderId, paymentState }: { orderId: string; paymentState: CmsOrder["paymentState"] }) {
-  const titleId = useId();
-  const [loaded, setLoaded] = useState<{ orderId: string; receipt: ContestBundleRewards["receipts"][number] | null } | null>(null);
-  const [failure, setFailure] = useState<{ orderId: string; message: string } | null>(null);
+  if (paymentState !== "paid") return null;
+  return <PaidContestBundleReward key={orderId} orderId={orderId} />;
+}
+
+function PaidContestBundleReward({ orderId }: { orderId: string }) {
   const [attempt, setAttempt] = useState(0);
+  return <ContestBundleRewardAttempt key={attempt} orderId={orderId} onRetry={() => setAttempt(value => value + 1)} />;
+}
+
+function ContestBundleRewardAttempt({ orderId, onRetry }: { orderId: string; onRetry: () => void }) {
+  const titleId = useId();
+  const [receipt, setReceipt] = useState<ContestBundleRewards["receipts"][number] | null>(null);
+  const [failure, setFailure] = useState<string | null>(null);
 
   useEffect(() => {
-    if (paymentState !== "paid") return;
     const controller = new AbortController();
-    setFailure(null);
-    setLoaded(null);
     void loadRewards(controller.signal, "POST")
       .then((result) => {
         if (controller.signal.aborted) return;
         if (result.progress?.eligible && !result.progress.rewarded) {
-          setFailure({ orderId, message: "Ton objectif est atteint. L’attribution de la carte et des packs reste à confirmer : tu peux réessayer." });
+          setFailure("Ton objectif est atteint. L’attribution de la carte et des packs reste à confirmer : tu peux réessayer.");
           return;
         }
-        setLoaded({ orderId, receipt: result.receipts.find((receipt) => receipt.orderId === orderId) ?? null });
+        setReceipt(result.receipts.find((receipt) => receipt.orderId === orderId) ?? null);
       })
       .catch((cause: unknown) => {
-        if (!controller.signal.aborted) setFailure({ orderId, message: cause instanceof Error ? cause.message : "La vérification de ton bonus Concours est momentanément indisponible." });
+        if (!controller.signal.aborted) setFailure(cause instanceof Error ? cause.message : "La vérification de ton bonus Concours est momentanément indisponible.");
       });
     return () => controller.abort();
-  }, [orderId, paymentState, attempt]);
+  }, [orderId]);
 
-  const receipt = loaded?.orderId === orderId ? loaded.receipt : null;
-  if (paymentState !== "paid") return null;
-  if (failure?.orderId === orderId) return <aside className={styles.card} aria-labelledby={titleId}>
+  if (failure) return <aside className={styles.card} aria-labelledby={titleId}>
     <p className={styles.title} id={titleId}>Ton bonus Concours</p>
-    <p role="alert">{failure.message} Ton paiement reste confirmé.</p>
-    <button type="button" className={styles.retry} onClick={() => setAttempt(value => value + 1)}>Réessayer la vérification</button>
+    <p role="alert">{failure} Ton paiement reste confirmé.</p>
+    <button type="button" className={styles.retry} onClick={onRetry}>Réessayer la vérification</button>
     <Link className={styles.claimLink} href="/arene/carnet/concours">Retrouver mon bonus dans le Carnet</Link>
   </aside>;
   if (!receipt) return null;
