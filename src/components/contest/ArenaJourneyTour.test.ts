@@ -23,21 +23,14 @@ const profile: ChanvrierProfile = {
 };
 
 describe("inline Arena account controls", () => {
-  it("offers one collapsed help entry without opening the profile or trial", () => {
+  it("keeps account status available without help or automatically opening the profile", () => {
     const html = renderToStaticMarkup(createElement(ArenaJourneyTour));
-    const helpTrigger = html.match(/<button\b[^>]*data-arena-help-trigger[^>]*>/)?.[0];
-    const helpPanel = html.match(/<div\b[^>]*id="([^"]+)"[^>]*hidden=""[^>]*>([\s\S]*?)<\/div>/);
     expect(html).toContain("data-arena-account-controls");
-    expect(html.match(/data-arena-help-trigger/g)).toHaveLength(1);
-    expect(helpTrigger).toContain('aria-expanded="false"');
-    expect(helpPanel).not.toBeNull();
-    expect(helpTrigger).toContain(`aria-controls="${helpPanel?.[1]}"`);
-    // The manual launcher belongs only to the collapsed help panel. It stays
-    // disabled until the player's identity and isolated learning save are ready.
-    expect(html.match(/data-arena-learning-trigger/g)).toHaveLength(1);
-    const learningTrigger = helpPanel?.[2].match(/<button\b[^>]*data-arena-learning-trigger[^>]*>/)?.[0];
-    expect(learningTrigger).toContain('aria-haspopup="dialog"');
-    expect(learningTrigger).toContain('disabled=""');
+    expect(html).not.toContain("data-arena-help-trigger");
+    expect(html).not.toContain('hidden=""');
+    expect(html).not.toContain("data-arena-learning-trigger");
+    expect(html).toContain('role="status"');
+    expect(html).toContain("Chargement du personnage");
     expect(html).not.toContain("Lire le guide");
     expect(html).not.toContain("Approfondir avec le parcours complet");
     expect(html).not.toContain("data-arena-trial-trigger");

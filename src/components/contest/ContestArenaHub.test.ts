@@ -12,7 +12,7 @@ vi.mock("next/image", () => ({
   default: ({ src, alt }: ImgHTMLAttributes<HTMLImageElement>) => createElement("img", { src, alt }),
 }));
 vi.mock("next/navigation", () => ({ useRouter: () => ({ push: vi.fn() }) }));
-vi.mock("./ArenaJourneyEntry", () => ({ ArenaJourneyEntry: () => createElement("div", { "data-inline-account": true }, "Aide") }));
+vi.mock("./ArenaJourneyEntry", () => ({ ArenaJourneyEntry: () => createElement("div", { "data-inline-account": true }) }));
 vi.mock("./ArenaPrelaunchCharacter", () => ({ ArenaPrelaunchCharacter: () => createElement("button", {}, "Créer mon personnage") }));
 
 describe("Arena home", () => {
@@ -29,7 +29,7 @@ describe("Arena home", () => {
     expect(html).toContain("data-arena-map");
     expect(html).toContain('id="arena-map-viewport"');
     expect(html).toMatch(/<button[^>]*data-arena-map-zoom[^>]*aria-pressed="false"/);
-    expect(html).toContain("Aide");
+    expect(html).toContain("data-inline-account");
     expect(html).not.toContain("La relève · Apprendre à jouer");
     expect(html).not.toContain("data-arena-learning-trigger");
     expect(html).not.toContain("data-arena-first-culture");
