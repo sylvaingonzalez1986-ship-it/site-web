@@ -92,10 +92,11 @@ if(preview){
  const show=async()=>{await page.click('[data-shop-view="merch"]');await page.waitForSelector(workshop,{visible:true})};
  const reset=async name=>{await page.evaluate(name=>window.setScenario(name),name);await page.waitForFunction(name=>document.querySelector('[data-fixture-scenario]').value===name,{},name);await show()};
  const snapshot=()=>page.evaluate(()=>window.fixture());
- const choose=async code=>{await page.click('[data-merch-product="'+code+'"]');await page.waitForFunction(code=>document.querySelector('[data-merch-product="'+code+'"]')?.getAttribute('aria-pressed')==='true',{},code)};
+ const reveal=async selector=>{await page.$eval(selector,node=>{for(let parent=node.parentElement;parent;parent=parent.parentElement)if(parent instanceof HTMLDetailsElement)parent.open=true})};
+ const choose=async code=>{const selector='[data-merch-product="'+code+'"]';await reveal(selector);await page.click(selector);await page.waitForFunction(code=>document.querySelector('[data-merch-product="'+code+'"]')?.getAttribute('aria-pressed')==='true',{},code)};
  const overflow=async label=>{assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),label+': no horizontal overflow');assert.doesNotMatch(await page.$eval(workshop,node=>node.innerText),/NaN|undefined|Infinity/)};
  const confirm=async()=>{await page.waitForSelector('dialog[open][data-app-dialog]');await page.click('[data-confirm-merch]',{clickCount:2,delay:20});await page.waitForFunction(()=>!document.querySelector('dialog[open]'))};
- const field=async(selector,value)=>{await page.$eval(selector,(node,value)=>{const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;setter.call(node,value);node.dispatchEvent(new Event('input',{bubbles:true}));node.dispatchEvent(new Event('change',{bubbles:true}))},String(value))};
+ const field=async(selector,value)=>{await reveal(selector);await page.$eval(selector,(node,value)=>{const setter=Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set;setter.call(node,value);node.dispatchEvent(new Event('input',{bubbles:true}));node.dispatchEvent(new Event('change',{bubbles:true}))},String(value))};
  await show();const catalog=await page.evaluate(()=>window.catalog());
  assert.deepEqual(catalog.products.map(row=>row.code),['stickers','poster','tote','tshirt','mug','cap']);
  assert.equal(await page.$$eval('[data-merch-product]',nodes=>nodes.length),6);
@@ -142,4 +143,8 @@ if(preview){
 }catch(error){
  if(page)await Promise.race([page.screenshot({path:resolve(output,'failure.png'),fullPage:true}).catch(()=>{}),new Promise(done=>setTimeout(done,3000))]);
  await writeFile(resolve(output,'report.json'),JSON.stringify({success:false,checks,measures,errors,forbidden,failedResponses,failure:String(error)},null,2));throw error;
-}finally{if(browser)await browser.close();await server.close()}
+}finally{
+ const closeOwned=async(close,fallback)=>{let timeout;await Promise.race([close().catch(()=>{}),new Promise(done=>{timeout=setTimeout(()=>{fallback?.();done()},15000);timeout.unref?.()})]);clearTimeout(timeout)};
+ if(browser)await closeOwned(()=>browser.close(),()=>browser.process()?.kill());
+ await closeOwned(()=>server.close(),()=>server.httpServer?.closeAllConnections());
+}

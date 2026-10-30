@@ -1,180 +1,136 @@
 "use client";
 
-import { useId, useRef, useState, type KeyboardEvent } from "react";
-import Image from "next/image";
-import { ArrowRight, Camera, Check, ChevronRight, Feather, Leaf, LockKeyhole, Paintbrush } from "lucide-react";
+import { useRef, useState, type KeyboardEvent } from "react";
+import { ArrowRight, Check, ChevronRight, LockKeyhole } from "lucide-react";
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
-import { getKqAdvertisingMultiplier } from "@/lib/kanab-quest-business";
-import { estimateKqMerchOffer } from "@/lib/kanab-quest-merch";
-import { getKqShopActivity } from "@/lib/kanab-quest-shop-activity";
-import { estimateKqOnlineOffer, getKqOnlineSiteTier, type KqOnlineSnapshot } from "@/lib/kanab-quest-online";
-import { KQ_STUDIO_LEVELS, KQ_STUDIO_STYLES, KQ_STUDIO_TRACKS, getKqStudioEditorialFit, getKqStudioEligibility, getKqStudioFlowerMultiplier, getKqStudioLevels, getKqStudioStyle, type KqStudioLevelDefinition, type KqStudioStyle, type KqStudioTrack } from "@/lib/kanab-quest-studio";
-import { KqBarChart, KqProgressMeter } from "./KqVisuals";
+import { KQ_ONLINE_SITE_TIERS } from "@/lib/kanab-quest-online";
+import { KQ_STUDIO_LEVELS, KQ_STUDIO_STYLES, KQ_STUDIO_TRACKS, getKqStudioEligibility, getKqStudioLevels, getKqStudioStyle, type KqStudioLevelDefinition, type KqStudioTrack } from "@/lib/kanab-quest-studio";
+import { KqBrandDirection } from "./KqBrandDirection";
+import { compareKqStudioOffers, kqStudioStyleLabels } from "./kq-studio-preview";
+import { KqProgressMeter } from "./KqVisuals";
 import styles from "./KqBrandStudio.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
 type Props = { data: KqCommerceSnapshot; busy: boolean; onAsk: Ask; onOpenSite: () => void; onOpenMerch: () => void };
-const icons = { photography: Camera, branding: Paintbrush, editorial: Feather };
 const number = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
-const percent = (multiplier: number) => `${multiplier >= 1 ? "+" : ""}${number(Math.round((multiplier - 1) * 10_000) / 100)} %`;
-const styleLabels = { clear: "Clair", craft: "Atelier", signature: "Signature" };
-const known = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value);
-
+const countKnown = (value: unknown): value is number => typeof value === "number" && Number.isSafeInteger(value) && value >= 0;
 const artCaptions: Record<KqStudioTrack, readonly string[]> = {
-  photography: ["Tes fleurs CBD sous l’objectif", "Le studio photo des récoltes", "Les trichomes en gros plan"],
-  branding: ["Une identité pour tes fleurs CBD", "Bocaux et sachets à ta marque", "La signature de tes collections CBD"],
-  editorial: ["Le portrait de chaque variété", "L’histoire de tes collections CBD", "Le catalogue de tes fleurs CBD"],
+  photography: ["Tes récoltes sous l’objectif", "Le studio photo des récoltes", "Les trichomes en gros plan"],
+  branding: ["Une identité pour tes récoltes", "Bocaux et sachets à ta marque", "La signature de tes collections"],
+  editorial: ["Le portrait de chaque variété", "L’histoire de tes collections", "Le catalogue de tes récoltes"],
 };
 
 function AtelierArt({ track, level = 1 }: { track: KqStudioTrack; level?: number }) {
   return <span className={styles.art} data-track={track} data-level={Math.max(1, Math.min(3, level))} aria-hidden="true" />;
 }
 
-/** Compare the same real offers. No placeholder stock or historical results. */
-function compareOffers(data: KqCommerceSnapshot, candidate: KqOnlineSnapshot) {
-  const online = data.online!;
-  const flowers = online.listings.filter(row => row.status === "active" && row.remainingPackets > 0 && row.qualityScore >= 5.8);
-  const flowerRows = flowers.map(row => {
-    const estimate = estimateKqOnlineOffer({ online, listingId: row.id, route: row.route, varietyCode: row.varietyCode, customerDemand: data.customerDemand,
-      quality: row.qualityScore, baseUnitCents: row.baseUnitCents, formatGrams: row.formatGrams, packagingCode: row.packagingCode,
-      packetPriceCents: row.packetPriceCents, reputation: data.reputation, clients: data.clients, activeListingCount: flowers.length,
-      advertisingMultiplier: getKqAdvertisingMultiplier(data.business, Date.parse(online.serverNow)) });
-    const ratio = known(row.offer?.valueRatio) ? row.offer.valueRatio : estimate.priceRatio;
-    const before = online.site.active ? known(row.offer?.ordersPerDay) ? row.offer.ordersPerDay : estimate.ordersPerDay : 0;
-    const after = before * getKqStudioFlowerMultiplier(candidate, row.qualityScore, ratio) / getKqStudioFlowerMultiplier(online, row.qualityScore, ratio);
-    return { id: row.id, name: row.name, unit: "paquets / jour", before, after,
-      fit: getKqStudioEditorialFit(candidate, { quality: row.qualityScore, priceRatio: ratio }),
-      detail: `${number(row.qualityScore)}/10 · ${formatKqCash(row.packetPriceCents)} / ${row.formatGrams} g`,
-      reference: `Prix de référence : ${formatKqCash(row.offer?.referencePacketCents ?? estimate.referencePacketPriceCents)}` };
-  });
-  const activity = getKqShopActivity(data).merch;
-  const merchUnavailable = !activity.available || activity.active === null || activity.estimatedUnitsPerDay === null
-    || !Array.isArray(online.merch?.modules) || activity.active.some(row => row.priceCents === null || row.quantity === null);
-  const merch = merchUnavailable ? [] : activity.active!;
-  return { merchUnavailable, offers: [...flowerRows, ...merch.map(row => {
-    const product = row.product;
-    const priceCents = row.priceCents!;
-    const quote = (snapshot: KqOnlineSnapshot) => estimateKqMerchOffer({ online: snapshot, code: row.code, priceCents, reputation: data.reputation, clients: data.clients, activeProductCount: merch.length }).unitsPerDay;
-    return { id: `merch-${row.code}`, name: product.name, unit: "articles / jour", before: quote(online), after: quote(candidate),
-      fit: getKqStudioEditorialFit(candidate, { merchCode: row.code, priceRatio: priceCents / product.referencePriceCents }),
-      detail: `${row.quantity} en stock · ${formatKqCash(priceCents)} / article`, reference: `Prix de référence : ${formatKqCash(product.referencePriceCents)}` };
-  })] };
-}
-
-function DirectionPreview({ name, style, online }: { name: string; style: KqStudioStyle; online: KqOnlineSnapshot }) {
+function initialTrack(data: KqCommerceSnapshot): KqStudioTrack {
+  const online = data.online;
+  if (!online?.upgrades || !online.site || !online.stats) return "photography";
   const levels = getKqStudioLevels(online);
-  const headline = style === "clear" ? "Les récoltes, simplement." : style === "craft" ? "Les gestes font la différence." : "La sélection de la maison.";
-  return <figure className={styles.maquette} data-studio-preview data-direction={style}>
-    <div className={styles.previewBrand}><Leaf size={levels.branding >= 2 ? 27 : 20} aria-hidden="true" /><strong>{name}</strong><small>{styleLabels[style]}</small></div>
-    <div className={styles.previewBody} data-photo-level={levels.photography}><Image src="/placard/market-brand-studio-sylvain-v3.webp" alt="" width={600} height={400} sizes="(max-width: 700px) 280px, 400px" /><div><small>{levels.branding >= 3 ? "Une maison, une signature" : "Les Chanvriers bretons"}</small><h4>{headline}</h4>{levels.editorial > 0 ? <p>{style === "clear" ? "Des informations lisibles pour choisir à ton rythme." : style === "craft" ? "De l’atelier à la récolte, notre travail en images." : "Des pièces choisies avec attention, présentées dans le détail."}</p> : null}</div></div>
-    {levels.branding >= 2 ? <div className={styles.previewSeal}><Leaf size={14} aria-hidden="true" />{levels.branding === 3 ? "Collection de la maison" : "L’identité de notre atelier"}</div> : null}
-    <figcaption>Maquette de présentation · {styleLabels[style]}<br />Les images et le texte illustrent une mise en page.</figcaption>
-  </figure>;
-}
-
-function BrandDirection({ data, online, busy, onAsk, onChooseTrack }: Props & { online: KqOnlineSnapshot; onChooseTrack: (track: KqStudioTrack) => void }) {
-  const id = useId();
-  const [draft, setDraft] = useState<KqStudioStyle | null>(null);
-  const [selection, setSelection] = useState("");
-  const current = getKqStudioStyle(online);
-  const selected = draft ?? current;
-  const levels = getKqStudioLevels(online);
-  const supported = online.studio?.version === 1;
-  const enabled = supported && data.computerOwned && Boolean(online.site.createdAt) && (levels.branding >= 1 || levels.editorial >= 1);
-  const candidate: KqOnlineSnapshot = { ...online, studio: { version: 1, levels, style: selected } };
-  const direction = KQ_STUDIO_STYLES.find(item => item.code === selected)!;
-  const { offers, merchUnavailable } = compareOffers(data, candidate);
-  const offer = offers.find(item => item.id === selection) ?? offers[0];
-  return <section className={styles.direction} aria-label="Direction de la boutique">
-    <header className={styles.subheading}><div><h3>Donner du caractère à ta marque</h3></div><span className={styles.free}>Changement gratuit</span></header>
-    <div className={styles.styleChoices} role="group" aria-label="Explorer les directions de marque">{KQ_STUDIO_STYLES.map(item => <button type="button" key={item.code} data-studio-style={item.code} data-direction={item.code} aria-pressed={selected === item.code} onClick={() => setDraft(item.code)}><span className={styles.swatches} aria-hidden="true"><i /><i /><i /></span><strong>{styleLabels[item.code]}</strong><small>{supported && current === item.code ? <><Check size={12} aria-hidden="true" />Appliquée</> : "Voir l’aperçu"}</small></button>)}</div>
-    <div className={styles.directionLayout}>
-      <DirectionPreview name={data.business?.shop.name ?? "Ma boutique"} style={selected} online={online} />
-      <div className={styles.directionDecision}>
-        <h4>{direction.name}</h4><p>{direction.description}</p>
-        <div className={styles.fitRules}><span><Leaf size={15} aria-hidden="true" /><strong>Récoltes</strong></span><p>{direction.flowerHint}</p><span><Paintbrush size={15} aria-hidden="true" /><strong>Produits dérivés</strong></span><p>{direction.merchHint}</p></div>
-        <p className={styles.effectNote}>{levels.editorial > 0 ? `Fiches & récits niveau ${levels.editorial} : ${percent([1, 1.04, 1.08, 1.12][levels.editorial])} de conversion si l’offre correspond, ${percent([1, .98, .96, .94][levels.editorial])} sinon. Les autres bonus restent acquis.` : "La direction change l’apparence de ta boutique. Les effets liés au type de produits se débloquent avec Fiches & récits."}</p>
-        {merchUnavailable ? <p className={styles.empty}>Aperçu des produits dérivés indisponible. Les comparaisons de récoltes restent accessibles.</p> : null}
-        {offer ? <div className={styles.offerComparison} data-studio-style-comparison data-before={offer.before} data-after={offer.after}>
-          <label htmlFor={`${id}-offer`}>Observer un produit en vente<select id={`${id}-offer`} value={offer.id} onChange={event => setSelection(event.target.value)}>{offers.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
-          <small>{offer.detail}<br />{offer.reference}</small>
-          <KqBarChart title={`Cadence estimée · ${offer.unit}`} items={[{ label: "Direction actuelle", value: offer.before, displayValue: number(offer.before), tone: "ink" }, { label: `Avec ${styleLabels[selected]}`, value: offer.after, displayValue: number(offer.after), tone: offer.after < offer.before ? "red" : "teal" }]} />
-          <p className={styles.match} data-match={offer.fit.matched}>{offer.fit.matched ? <Check size={14} aria-hidden="true" /> : <LockKeyhole size={14} aria-hidden="true" />}{offer.fit.matched ? "Ce produit correspond à cette direction." : "Ce produit ne correspond pas à cette direction."}</p>
-        </div> : !merchUnavailable ? <p className={styles.empty}>Mets un produit en vente pour comparer la cadence sur ton offre réelle.</p> : null}
-        <button type="button" className={styles.primary} data-studio-apply-style disabled={busy || !enabled || selected === current} onClick={() => onAsk(`Adopter la direction ${styleLabels[selected]}`, `${direction.description} Changement gratuit appliqué à toute la boutique. ${levels.editorial > 0 ? "Les produits qui correspondent au ton choisi gagnent en conversion, les autres en perdent : les stocks et prix restent identiques." : "Pour l’instant, seule la présentation change ; Fiches & récits débloquera les effets sur la conversion."} Aucun visiteur ni point de qualité n’est ajouté.`, { action: "online", command: "choose-studio-style", payload: { style: selected } }, 0)}>{supported && selected === current ? "Direction appliquée" : "Appliquer cette direction"}<ArrowRight size={16} aria-hidden="true" /></button>
-        {!supported ? <small className={styles.hint}>Les directions ne sont pas encore disponibles dans cette partie.</small> : !enabled ? <button type="button" className={styles.textButton} onClick={() => onChooseTrack("branding")}>Débloquer l’identité de marque<ChevronRight size={15} aria-hidden="true" /></button> : null}
-        <small className={styles.hint}>Même audience, mêmes prix et stocks. Les prévisions ne garantissent aucune vente.</small>
-      </div>
-    </div>
-  </section>;
+  return KQ_STUDIO_TRACKS.find(item => levels[item.code] < 3 && getKqStudioEligibility(online, item.code, levels[item.code] + 1, data.cashCents).allowed)?.code
+    ?? KQ_STUDIO_TRACKS.find(item => levels[item.code] < 3)?.code ?? "photography";
 }
 
 export function KqBrandStudio(props: Props) {
   const { data, busy, onAsk, onOpenSite, onOpenMerch } = props;
-  const [track, setTrack] = useState<KqStudioTrack>("photography");
-  const [selection, setSelection] = useState<number | null>(null);
+  const [track, setTrack] = useState<KqStudioTrack>(() => initialTrack(data));
+  // Advance after a confirmed purchase, but preserve choices during a mere refresh.
+  const [selection, setSelection] = useState<{ level: number; fromLevel: number } | null>(null);
   const tracks = useRef<Array<HTMLButtonElement | null>>([]);
   const levelsButtons = useRef<Array<HTMLButtonElement | null>>([]);
+  const decision = useRef<HTMLHeadingElement>(null);
   const online = data.online;
   if (!online) return null;
-  const levels = getKqStudioLevels(online);
-  const currentStyle = getKqStudioStyle(online);
   const supported = online.studio?.version === 1;
-  const level = selection ?? Math.min(3, levels[track] + 1);
+  const stateKnown = typeof online.upgrades?.photography === "boolean" && typeof online.upgrades?.branding === "boolean"
+    && (online.studio === undefined || (supported && KQ_STUDIO_TRACKS.every(item => countKnown(online.studio?.levels?.[item.code]) && online.studio!.levels[item.code] <= 3)
+      && KQ_STUDIO_STYLES.some(item => item.code === online.studio?.style)));
+  const levels = online.upgrades ? getKqStudioLevels(online) : { photography: 0, branding: 0, editorial: 0 };
+  const currentStyle = getKqStudioStyle(online);
+  const currentLevel = levels[track];
+  const level = selection?.fromLevel === currentLevel ? selection.level : Math.min(3, currentLevel + 1);
   const target: KqStudioLevelDefinition = KQ_STUDIO_LEVELS.find(item => item.track === track && item.level === level)!;
-  const eligibility = getKqStudioEligibility(online, track, level, data.cashCents);
-  const owned = level <= levels[track];
-  const candidate = { ...online, studio: { version: 1 as const, levels: { ...levels, [track]: Math.max(level, levels[track]) }, style: currentStyle } };
-  const { offers: impacts } = compareOffers(data, candidate);
-  const currentSite = getKqOnlineSiteTier(online.site.tier).level;
+  const owned = level <= currentLevel;
+  const future = level > currentLevel + 1;
+  const cash = countKnown(data.cashCents) ? data.cashCents : null;
+  const currentSite = KQ_ONLINE_SITE_TIERS.find(item => item.code === online.site?.tier)?.level ?? null;
+  const orders = countKnown(online.stats?.orders) ? online.stats.orders : null;
+  const confidence = typeof online.confidence === "number" && Number.isFinite(online.confidence) && online.confidence >= 0 && online.confidence <= 100 ? online.confidence : null;
+  const eligibility = stateKnown && online.site && online.stats
+    ? getKqStudioEligibility(online, track, level, data.cashCents)
+    : { allowed: false, costCents: null, blockers: [] };
+  const allowed = stateKnown && data.computerOwned === true && eligibility.allowed;
+  const candidate = { ...online, studio: { version: 1 as const, levels: { ...levels, [track]: Math.max(level, currentLevel) }, style: currentStyle } };
+  const { offers: impacts, merchUnavailable, flowersUnavailable } = compareKqStudioOffers(data, candidate);
   const total = Object.values(levels).reduce((sum, value) => sum + value, 0);
+  const remainingCost = KQ_STUDIO_LEVELS.filter(item => item.track === track && item.level > currentLevel && item.level <= level).reduce((sum, item) => sum + item.costCents, 0);
+  const requirements = [
+    { label: "Niveau du site", value: currentSite, goal: target.minimumSiteLevel },
+    ...(target.minimumOrders || orders === null ? [{ label: "Commandes de récoltes", value: orders, goal: target.minimumOrders }] : []),
+    ...(target.minimumConfidence || confidence === null ? [{ label: "Confiance", value: confidence, goal: target.minimumConfidence }] : []),
+  ];
+  const missing = requirements.filter(item => item.value === null || item.value < item.goal);
+  const met = requirements.filter(item => item.value !== null && item.value >= item.goal);
+  const prerequisites = KQ_STUDIO_TRACKS.flatMap(item => target.requiredLevels[item.code] ? [{ ...item, level: target.requiredLevels[item.code]! }] : []);
+  const missingTracks = prerequisites.filter(item => levels[item.code] < item.level);
+  const metTracks = prerequisites.filter(item => levels[item.code] >= item.level);
+  const benefit = target.description.replaceAll("fleurs", "récoltes").replace(/×(\d+,\d+)/g, (_, value: string) => `+${number(Math.round((Number(value.replace(",", ".")) - 1) * 100))} %`);
+
   function chooseTrack(next: KqStudioTrack, focus = false) {
     setTrack(next); setSelection(null);
     if (focus) tracks.current[KQ_STUDIO_TRACKS.findIndex(item => item.code === next)]?.focus();
+  }
+  function chooseLevel(next: number, focus = false) {
+    setSelection({ level: next, fromLevel: currentLevel });
+    if (focus) requestAnimationFrame(() => decision.current?.focus());
   }
   function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number, mode: "tracks" | "levels") {
     const next = event.key === "ArrowRight" ? (index + 1) % 3 : event.key === "ArrowLeft" ? (index + 2) % 3 : event.key === "Home" ? 0 : event.key === "End" ? 2 : null;
     if (next === null) return;
     event.preventDefault();
     if (mode === "tracks") chooseTrack(KQ_STUDIO_TRACKS[next].code, true);
-    else { setSelection(next + 1); levelsButtons.current[next]?.focus(); }
+    else { chooseLevel(next + 1); levelsButtons.current[next]?.focus(); }
   }
-  const requirements = [
-    { label: "Niveau du site", value: currentSite, goal: target.minimumSiteLevel },
-    ...(target.minimumOrders ? [{ label: "Commandes de récoltes", value: online.stats.orders, goal: target.minimumOrders }] : []),
-    ...(target.minimumConfidence ? [{ label: "Confiance /100", value: online.confidence, goal: target.minimumConfidence }] : []),
-  ];
-  const prerequisites = KQ_STUDIO_TRACKS.flatMap(item => target.requiredLevels[item.code] ? [{ ...item, level: target.requiredLevels[item.code]! }] : []);
+  function returnToNext() { setSelection(null); decision.current?.focus(); }
   function purchase() {
-    if (busy || !eligibility.allowed || !eligibility.costCents) return;
+    if (busy || !allowed || !eligibility.costCents) return;
     const legacy = !supported && target.level === 1 && target.track !== "editorial";
-    onAsk(`${target.name} · niveau ${target.level}`, `${formatKqCash(target.costCents)} pour ce palier, sans abonnement. ${target.description} Les niveaux précédents restent acquis. La direction ${styleLabels[currentStyle]} reste appliquée. Aucun visiteur ni point de qualité n’est ajouté.`, { action: "online", command: legacy ? "buy-upgrade" : "buy-studio-level", payload: legacy ? { code: target.track } : { track: target.track, level: target.level } }, target.costCents);
+    onAsk(`${target.name} · niveau ${target.level}`, `${formatKqCash(target.costCents)} pour ce palier, sans abonnement. ${benefit} Les bonus indiqués sont ceux de ce niveau, pas un ajout aux bonus précédents. Les niveaux précédents restent acquis.${supported ? ` La direction ${kqStudioStyleLabels[currentStyle]} reste appliquée.` : ""} Aucun visiteur ni point de qualité n’est ajouté.`, { action: "online", command: legacy ? "buy-upgrade" : "buy-studio-level", payload: legacy ? { code: target.track } : { track: target.track, level: target.level } }, target.costCents);
   }
+
   return <section className={styles.studio} data-brand-studio aria-label="Atelier photo et identité de marque">
-    <header className={styles.heading}><div><h2>Une marque qui se reconnaît.</h2><p>Soigne tes images, construis ton identité, trouve le ton juste.</p></div><div className={styles.completed}><strong>{total}<small> / 9</small></strong><span>paliers acquis</span></div></header>
-    <div className={styles.tracks} role="group" aria-label="Choisir un atelier">{KQ_STUDIO_TRACKS.map((item, index) => {
-      const Icon = icons[item.code];
-      return <button type="button" key={item.code} ref={node => { tracks.current[index] = node; }} data-studio-track={item.code} aria-pressed={track === item.code} onClick={() => chooseTrack(item.code)} onKeyDown={event => navigate(event, index, "tracks")}><AtelierArt track={item.code} level={levels[item.code]} /><span><strong><Icon size={15} aria-hidden="true" />{item.name}</strong><small>Niveau {levels[item.code]} / 3</small><span className={styles.steps} aria-hidden="true">{[1, 2, 3].map(value => <i key={value} data-owned={levels[item.code] >= value} />)}</span></span></button>;
-    })}</div>
-    <div className={styles.workbench}>
-      <div className={styles.levels} role="group" aria-label="Explorer les paliers">{KQ_STUDIO_LEVELS.filter(item => item.track === track).map((item, index) => <button type="button" key={item.level} ref={node => { levelsButtons.current[index] = node; }} data-studio-level={item.level} aria-pressed={item.level === level} data-owned={item.level <= levels[track]} onClick={() => setSelection(item.level)} onKeyDown={event => navigate(event, index, "levels")}><span>{item.level <= levels[track] ? <Check size={15} aria-hidden="true" /> : item.level}</span><div><strong>{item.name}</strong><small>{item.level <= levels[track] ? "Acquis" : formatKqCash(item.costCents)}</small></div></button>)}</div>
+    <header className={styles.heading}><h2>Photos et marque</h2><span>{stateKnown ? <><strong>{total} / 9</strong> paliers acquis</> : "Paliers à confirmer"}</span></header>
+    <div className={styles.tracks} role="group" aria-label="Choisir un atelier">{KQ_STUDIO_TRACKS.map((item, index) => <button type="button" key={item.code} ref={node => { tracks.current[index] = node; }} data-studio-track={item.code} aria-pressed={track === item.code} onClick={() => chooseTrack(item.code)} onKeyDown={event => navigate(event, index, "tracks")}>
+      <AtelierArt track={item.code} level={levels[item.code]} /><span><strong>{item.name}</strong><small>{stateKnown ? `Niveau ${levels[item.code]} / 3` : "À confirmer"}</small><span className={styles.steps} aria-hidden="true">{[1, 2, 3].map(value => <i key={value} data-owned={stateKnown && levels[item.code] >= value} />)}</span></span>
+    </button>)}</div>
+    {stateKnown ? <div className={styles.workbench}>
       <article className={styles.investment} data-studio-investment={track} data-level={level}>
-        <div className={styles.illustration}><AtelierArt track={track} level={level} /><span>{artCaptions[track][level - 1]}</span></div>
-        <div className={styles.decision}><span className={styles.eyebrow}>Niveau {level} · {owned ? "acquis" : "à développer"}</span><h3>{target.name}</h3><p>{target.description.replaceAll("fleurs", "récoltes")}</p>
-          <div className={styles.cost}><span>{owned ? "Investissement déjà acquis" : "Achat unique de ce palier"}<strong>{formatKqCash(target.costCents)}</strong></span><small>Trésorerie : {formatKqCash(data.cashCents)}</small></div>
-          {!owned ? <>
-            <div className={styles.requirements}>{requirements.map(item => <KqProgressMeter key={item.label} label={item.label} value={item.value} max={item.goal} valueLabel={`${number(item.value)} / ${item.goal}`} tone={item.value >= item.goal ? "teal" : "gold"} />)}</div>
-            {prerequisites.length ? <ul className={styles.prerequisites}>{prerequisites.map(item => <li key={item.code}><span>{levels[item.code] >= item.level ? <Check size={14} aria-hidden="true" /> : <LockKeyhole size={14} aria-hidden="true" />}{item.name} · niveau {item.level}</span>{levels[item.code] < item.level ? <button type="button" className={styles.textButton} onClick={() => chooseTrack(item.code, true)}>Voir<ChevronRight size={14} aria-hidden="true" /></button> : <strong>Acquis</strong>}</li>)}</ul> : null}
-            {currentSite < target.minimumSiteLevel ? <button type="button" className={styles.textButton} onClick={onOpenSite}>Développer le site<ArrowRight size={14} aria-hidden="true" /></button> : null}
-            <button type="button" className={styles.primary} data-studio-buy disabled={busy || !eligibility.allowed} onClick={purchase}>Investir · {formatKqCash(target.costCents)}<ArrowRight size={16} aria-hidden="true" /></button>
-            {eligibility.blockers.length ? <p className={styles.blocked}><LockKeyhole size={14} aria-hidden="true" />{eligibility.blockers[0]}</p> : null}
-          </> : <div className={styles.acquired}><Check size={17} aria-hidden="true" />Ce palier est acquis.{levels[track] < 3 ? <button type="button" className={styles.textButton} onClick={() => setSelection(levels[track] + 1)}>Prochain palier<ChevronRight size={14} aria-hidden="true" /></button> : null}</div>}
-          {track === "branding" && levels.branding >= 1 ? <button type="button" className={styles.textButton} onClick={onOpenMerch}>Voir les produits dérivés<ArrowRight size={14} aria-hidden="true" /></button> : null}
-        </div>
+        <p className={styles.status}>{KQ_STUDIO_TRACKS.find(item => item.code === track)!.name} · niveau actuel {currentLevel} / 3{owned ? " · palier acquis" : ` → niveau ${level}`}</p>
+        <h3 ref={decision} tabIndex={-1}>{target.name}</h3>
+        <p className={styles.benefit}>{benefit}</p>
+        <p className={styles.hint}>Bonus total de ce niveau. Les ventes dépendent aussi de ton audience et de tes prix.</p>
+        {owned ? <div className={styles.acquired}><Check size={18} aria-hidden="true" /><strong>{currentLevel === 3 ? "Atelier au niveau maximal" : "Ce palier est acquis"}</strong>{currentLevel < 3 ? <button type="button" className={styles.secondary} onClick={returnToNext}>Prochain palier<ChevronRight size={16} aria-hidden="true" /></button> : null}</div> : <>
+          <div className={styles.cost} data-studio-cost><div><span>{future ? "Ce palier seul" : "Achat unique"}</span><strong>{formatKqCash(target.costCents)}</strong><small>Sans abonnement</small></div><div><span>Trésorerie</span><strong>{cash === null ? "À confirmer" : formatKqCash(cash)}</strong>{cash !== null && cash < target.costCents ? <small>Il manque {formatKqCash(target.costCents - cash)}</small> : null}</div></div>
+          {future ? <div className={styles.blocked}><p>Les paliers se débloquent dans l’ordre. Prévois {formatKqCash(remainingCost)} pour les {level - currentLevel} paliers restants de cet atelier.</p><button type="button" className={styles.secondary} onClick={returnToNext}>Voir le prochain palier<ChevronRight size={16} aria-hidden="true" /></button></div> : null}
+          {!supported && !(level === 1 && track !== "editorial") ? <p className={styles.blocked}>Ce palier avancé n’est pas encore disponible dans cette partie.</p> : null}
+          {data.computerOwned !== true ? <p className={styles.blocked}>Un ordinateur est nécessaire pour gérer le Studio.</p> : null}
+          {online.site?.active !== true || !online.site?.createdAt ? <div className={styles.blocked}><p>{online.site?.createdAt ? "Les ventes sont suspendues. Active la boutique avant cet achat." : "Crée et active ta boutique avant cet achat."}</p><button type="button" className={styles.secondary} onClick={onOpenSite}>{online.site?.createdAt ? "Activer ma boutique" : "Créer ma boutique"}<ArrowRight size={16} aria-hidden="true" /></button></div> : null}
+          {missing.length || missingTracks.length ? <div className={styles.requirements} data-studio-requirements-missing><h4>Avant cet achat</h4>{missing.map(item => <div key={item.label}>{item.value === null ? <p>{item.label} : à confirmer{item.goal ? ` · requis : ${item.goal}` : ""}</p> : <KqProgressMeter label={item.label} value={item.value} max={item.goal} valueLabel={`${number(item.value)} / ${item.goal}`} tone="gold" />}</div>)}
+            {missingTracks.map(item => <div className={styles.prerequisite} key={item.code}><span><LockKeyhole size={16} aria-hidden="true" />{item.name} · niveau {item.level}</span><button type="button" className={styles.secondary} aria-label={`Voir ${item.name}, niveau ${item.level}`} onClick={() => chooseTrack(item.code, true)}>Voir<ChevronRight size={16} aria-hidden="true" /></button></div>)}
+            {(currentSite === null || currentSite < target.minimumSiteLevel) && online.site?.active === true ? <button type="button" className={styles.secondary} onClick={onOpenSite}>Développer le site<ArrowRight size={16} aria-hidden="true" /></button> : null}
+          </div> : null}
+          <button type="button" className={styles.primary} data-studio-buy disabled={busy || !allowed} onClick={purchase}>{busy ? "Validation en cours…" : "Examiner l’amélioration"}<ArrowRight size={17} aria-hidden="true" /></button>
+          {cash === null ? <p className={styles.hint}>La trésorerie doit être confirmée avant cet achat.</p> : null}
+          {met.length + metTracks.length ? <details className={styles.details} data-studio-requirements-met><summary>Conditions remplies<span>{met.length + metTracks.length}</span></summary><ul className={styles.met}>{met.map(item => <li key={item.label}><Check size={16} aria-hidden="true" />{item.label} : {number(item.value!)} / {item.goal}</li>)}{metTracks.map(item => <li key={item.code}><Check size={16} aria-hidden="true" />{item.name} · niveau {item.level} acquis</li>)}</ul></details> : null}
+        </>}
+        {track === "branding" && levels.branding >= 1 ? <button type="button" className={styles.secondary} onClick={onOpenMerch}>Voir les produits dérivés<ArrowRight size={16} aria-hidden="true" /></button> : null}
       </article>
-      {!owned && impacts.length ? <details className={styles.impactDetails}><summary>Effet estimé sur mes produits en vente<span>{impacts.length} référence{impacts.length > 1 ? "s" : ""}</span></summary><div>{impacts.map(item => <div className={styles.impactRow} key={item.id}><span><strong>{item.name}</strong><small>{item.unit}</small></span><span>{number(item.before)}<ArrowRight size={13} aria-hidden="true" /><strong>{number(item.after)}</strong></span></div>)}</div><p>Même audience, mêmes prix et direction actuelle. Les paliers manquants restent nécessaires avant cet achat.</p></details> : null}
-    </div>
-    <BrandDirection {...props} online={online} onChooseTrack={next => chooseTrack(next, true)} />
+      {!owned && (impacts.length || flowersUnavailable || merchUnavailable) ? <details className={styles.details} data-studio-impacts><summary>Effet estimé sur mes produits<span>{impacts.length ? `${impacts.length} référence${impacts.length > 1 ? "s" : ""}` : "À confirmer"}</span></summary><p className={styles.hint}>Cadence actuelle → avec ce niveau. Même audience, mêmes prix et direction actuelle. Les ventes restent estimées ; les paliers précédents sont nécessaires.</p>{impacts.map(item => <div className={styles.impactRow} key={item.id}><span><strong>{item.name}</strong><small>{item.unit}</small></span><span>{number(item.before)}<ArrowRight size={15} aria-hidden="true" /><strong>{number(item.after)}</strong></span></div>)}{flowersUnavailable ? <p className={styles.hint}>Certaines prévisions de récoltes sont indisponibles.</p> : null}{merchUnavailable ? <p className={styles.hint}>Prévisions des produits dérivés indisponibles.</p> : null}</details> : null}
+      <details className={styles.details} data-studio-levels-details><summary>Tous les paliers de cet atelier<span>{currentLevel} / 3 acquis</span></summary><div className={styles.levels} role="group" aria-label="Explorer les paliers">{KQ_STUDIO_LEVELS.filter(item => item.track === track).map((item, index) => <button type="button" key={item.level} ref={node => { levelsButtons.current[index] = node; }} data-studio-level={item.level} aria-pressed={item.level === level} data-owned={item.level <= currentLevel} onClick={() => chooseLevel(item.level, true)} onKeyDown={event => navigate(event, index, "levels")}><span>{item.level <= currentLevel ? <Check size={17} aria-hidden="true" /> : item.level}</span><span><strong>{item.name}</strong><small>{item.level <= currentLevel ? "Acquis" : `${formatKqCash(item.costCents)} · ce palier seul`}</small></span></button>)}</div></details>
+      <details className={styles.details} data-studio-art-details><summary>Voir l’atelier illustré</summary><figure className={styles.illustration}><AtelierArt track={track} level={level} /><figcaption>{artCaptions[track][level - 1]}</figcaption></figure></details>
+    </div> : <p className={styles.unavailable}>Les niveaux de tes ateliers sont à confirmer. Actualise la boutique pour retrouver tes améliorations.</p>}
+    <KqBrandDirection data={data} online={online} busy={busy} onAsk={onAsk} onChooseTrack={next => chooseTrack(next, true)} />
   </section>;
 }

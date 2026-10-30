@@ -8,6 +8,7 @@ import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KQ_ONLINE_FEE_PERCENT, KQ_ONLINE_SITE_TIERS } from "@/lib/kanab-quest-online";
 import { KqMarketingCampaigns } from "./KqMarketingCampaigns";
+import { KqAdvertisingPanel } from "./KqAdvertisingPanel";
 import { KqOnlineSiteProgression } from "./KqOnlineSiteProgression";
 import { KqMerchWorkshop } from "./KqMerchWorkshop";
 import { KqBrandStudio } from "./KqBrandStudio";
@@ -139,7 +140,7 @@ export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepare
     <section hidden={view !== "brand"} aria-label="Studio photo et identité"><KqBrandStudio data={data} busy={busy} onAsk={onAsk} onOpenSite={() => develop("site")} onOpenMerch={() => develop("merch")} /></section>
 
     <section hidden={view !== "marketing"} aria-label="Faire connaître ma boutique">
-      <KqMarketingCampaigns data={data} now={now} busy={busy} onAsk={onAsk} onOpenPricing={listingId => { if (onViewSales) onViewSales(listingId); else router.push("/arene/placard?view=market&section=dashboard"); }} onPrepareStock={onPrepareStock} advertising={advertising} />
+      <KqMarketingCampaigns data={data} now={now} busy={busy} onAsk={onAsk} onOpenPricing={listingId => { if (onViewSales) onViewSales(listingId); else router.push("/arene/placard?view=market&section=dashboard"); }} onPrepareStock={onPrepareStock} advertising={advertising ?? <KqAdvertisingPanel data={data} now={now} busy={busy} onAsk={onAsk} onOpenSite={() => develop("site")} onOpenSales={() => { if (onViewSales) onViewSales(); else router.push("/arene/placard?view=market&section=dashboard"); }} />} />
     </section>
     </div>
     </>}

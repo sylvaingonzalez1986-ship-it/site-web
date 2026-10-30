@@ -2,13 +2,13 @@
 .clockDetails { border-bottom: 2px solid #172923; }
 .clockDetails > summary { display: flex; align-items: center; gap: 9px; min-height: 44px; padding: 10px 20px; color: #172923; font-size: .72rem; cursor: pointer; }
 .clockDetails > p { padding: 14px 20px; margin: 0; }
-.domiciliation > summary, .advertising > summary { display: flex; align-items: center; gap: 12px; min-height: 48px; list-style: none; cursor: pointer; }
-.domiciliation > summary::-webkit-details-marker, .advertising > summary::-webkit-details-marker { display: none; }
-.domiciliation > summary > svg, .advertising > summary > svg { color: #172923; flex-shrink: 0; }
-.domiciliation > summary > span, .advertising > summary > span { display: grid; gap: 6px; font-size: .88rem; font-weight: 800; }
-.domiciliation > summary small, .advertising > summary small { color: #172923; font-size: .72rem; line-height: 1.45; font-weight: 500; }
-.domiciliation > summary::after, .advertising > summary::after { content: "+"; margin-left: auto; color: #172923; font-size: 1.25rem; }
-.domiciliation[open] > summary::after, .advertising[open] > summary::after { content: "−"; }
+.domiciliation > summary { display: flex; align-items: center; gap: 12px; min-height: 48px; list-style: none; cursor: pointer; }
+.domiciliation > summary::-webkit-details-marker { display: none; }
+.domiciliation > summary > svg { color: #172923; flex-shrink: 0; }
+.domiciliation > summary > span { display: grid; gap: 6px; font-size: .88rem; font-weight: 800; }
+.domiciliation > summary small { color: #172923; font-size: .72rem; line-height: 1.45; font-weight: 500; }
+.domiciliation > summary::after { content: "+"; margin-left: auto; color: #172923; font-size: 1.25rem; }
+.domiciliation[open] > summary::after { content: "−"; }
 .calendar { display: flex; gap: 14px; align-items: center; padding: 18px 20px; border-bottom: 2px solid #172923; background: #bfe9db; border-radius: var(--game-panel-radius, 2px); }
 .calendar > svg { flex-shrink: 0; color: #172923; }
 .calendar > div { display: grid; gap: 5px; }
@@ -80,17 +80,6 @@
 .invoices > li > .deadline { text-align: right; }
 .invoices > li > button { grid-column: 1 / -1; justify-self: start; }
 :is(.content,.settings) .overdue, :is(.content,.settings) .overdue dt, :is(.content,.settings) .warning { color: #8c3d28; }
-.advertising { margin-top: 24px; padding: 20px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.advertising header > svg { color: #172923; }
-.activeAd { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; padding: 14px; background: #bfe9db; border-left: 2px solid #172923; font-size: .82rem; }
-.activeAd > small { flex-basis: 100%; }
-.adCards { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; margin-top: 18px; }
-.adCards article { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 16px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.adCards h3 { margin: 0; min-height: 2.8em; color: #172923; }
-.adCards p { margin: 0; font-size: .72rem; }
-.adBoost { font-size: 1.8rem; color: #172923; }
-.adBoost > small { display: block; font-size: .72rem; font-weight: 500; }
-.adCards article > button { margin-top: auto; width: 100%; }
 .activity { margin-top: 18px; padding: 0 16px; background: #fff1d6; }
 .activity > summary { display: flex; justify-content: space-between; gap: 14px; padding: 15px 0; font-size: .78rem; font-weight: 700; list-style: none; cursor: pointer; }
 .activity ul { margin: 0; padding: 0; list-style: none; }
@@ -99,8 +88,8 @@
 .activity li > strong { white-space: nowrap; }
 :is(.panel,.settings) :where(button,input,summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
 @media(hover:hover) { .management > summary:hover { background: #fff1d6; } :is(.panel,.settings) .primary:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; } :is(.panel,.settings) .secondary:hover:not(:disabled) { border-color: transparent; } }
-@media(max-width: 850px) { .columns { grid-template-columns: 1fr; } .adCards { gap: 10px; } .adCards article { padding: 14px 12px; } }
-@media(max-width: 600px) { .calendar { flex-wrap: wrap; padding: 16px 14px; gap: 10px; } .calendar > div > strong { font-size: 1.15rem; } .calendar > div > span { font-size: .72rem; } .calendar .nextDay { flex: 1 0 100%; display: flex; align-items: center; justify-content: space-between; border-top: 2px solid #172923; padding-top: 10px; } .nextDay > .deadline { display: flex; gap: 8px; } .management > summary { padding: 16px 14px; gap: 10px; } .management > summary small { font-size: .72rem; } :is(.content,.settings) { padding: 0 12px 16px; } .shop, .accounts, .advertising { padding: 16px 12px; } .adCards { grid-template-columns: 1fr; } .adCards h3 { min-height: 0; } .adCards article { padding: 18px; } .dueRow { flex-wrap: wrap; } .dueRow > .deadline { text-align: left; } :is(.content,.settings) h2 { font-size: 1.15rem; } .badge { font-size: .72rem; } }
+@media(max-width: 850px) { .columns { grid-template-columns: 1fr; } }
+@media(max-width: 600px) { .calendar { flex-wrap: wrap; padding: 16px 14px; gap: 10px; } .calendar > div > strong { font-size: 1.15rem; } .calendar > div > span { font-size: .72rem; } .calendar .nextDay { flex: 1 0 100%; display: flex; align-items: center; justify-content: space-between; border-top: 2px solid #172923; padding-top: 10px; } .nextDay > .deadline { display: flex; gap: 8px; } .management > summary { padding: 16px 14px; gap: 10px; } .management > summary small { font-size: .72rem; } :is(.content,.settings) { padding: 0 12px 16px; } .shop, .accounts { padding: 16px 12px; } .dueRow { flex-wrap: wrap; } .dueRow > .deadline { text-align: left; } :is(.content,.settings) h2 { font-size: 1.15rem; } .badge { font-size: .72rem; } }
 
 .domiciliation { margin-top: 24px; padding: 20px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .addressChoices { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-block: 16px; }
@@ -121,9 +110,7 @@
 .explanation > summary::before { content: "+"; }
 .explanation[open] > summary::before { content: "−"; }
 :is(.content,.settings) .explanation p { margin: 0 0 12px; }
-.comparison { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; margin-top: 20px; }
 .visual { margin-top: 18px; }
 .facts { display: grid; gap: 12px; margin: 16px 0; }
 .facts > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 8px 12px; font-size: .76rem; }
 .facts dd { margin: 0; font-size: .88rem; font-weight: 800; }
-@media(max-width: 600px) { .comparison { grid-template-columns: minmax(0,1fr); gap: 18px; } }

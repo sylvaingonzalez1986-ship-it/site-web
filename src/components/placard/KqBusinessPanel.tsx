@@ -1,11 +1,12 @@
 "use client";
 
 import { useState } from "react";
-import { CalendarClock, Check, ChevronDown, FlaskConical, Megaphone, Monitor, ReceiptText, Store, Wallet } from "lucide-react";
-import { KQ_ADVERTISING, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_LAB_ANALYSIS_CENTS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, getKqBusinessClock } from "@/lib/kanab-quest-business";
+import { CalendarClock, Check, ChevronDown, FlaskConical, Monitor, ReceiptText, Store, Wallet } from "lucide-react";
+import { KQ_GAME_MONTH_MS, KQ_LAB_ANALYSIS_CENTS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, getKqBusinessClock } from "@/lib/kanab-quest-business";
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KqOnlineBusiness, type KqOnlineBusinessTab, type KqOnlineBusinessView, type KqOnlineUpgradeView } from "./KqOnlineBusiness";
+import { KqAdvertisingPanel } from "./KqAdvertisingPanel";
 import { KqBarChart, KqProgressMeter } from "./KqVisuals";
 import styles from "./KqBusinessPanel.module.css";
 
@@ -57,7 +58,6 @@ export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, o
   const calendar = getKqBusinessClock(business.startedAt, now);
   const { shop, vat, lab } = business;
   const active = data.online?.site.active ?? (shop.active && Boolean(shop.paidUntil && Date.parse(shop.paidUntil) > now));
-  const advertising = business.advertising && Date.parse(business.advertising.endsAt) > now ? business.advertising : null;
   const missing = Math.max(0, KQ_SHOP_CREATION_CENTS - data.cashCents);
   const invoices = lab.invoices.filter(invoice => invoice.remainingCents > 0).toSorted((a, b) => Date.parse(a.dueAt) - Date.parse(b.dueAt));
   const calendarPanel = <details className={styles.clockDetails}><summary><CalendarClock size={18} aria-hidden="true" />Calendrier du jeu · Mois {calendar.month}, jour {calendar.dayOfMonth}</summary><div className={styles.calendar}><div><strong>Mois {calendar.month} · Jour {calendar.dayOfMonth}</strong><span>1 jour = 4 h réelles · 1 mois = 5 jours réels</span></div><div className={styles.nextDay}><span>Prochain jour</span><Deadline at={calendar.nextDayAt} now={now} /></div></div><p className={styles.timeNote}>{data.online ? "Les ventes en ligne et le calendrier continuent hors connexion. Un jour de jeu dure 4 heures réelles ; les estimations de commandes sont données par jour réel." : "Le calendrier continue hors connexion. Les ventes se font lorsque tu joues ; les abonnements, publicités et factures suivent le temps réel."}</p></details>;
@@ -71,21 +71,12 @@ export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, o
       {lab.overdueCents > 0 ? <p className={styles.overdue}>Les analyses échues sont remboursées en priorité sur tes prochaines ventes. Avec l’électricité, la retenue est limitée à 50 % de la recette après TVA.</p> : null}
     </div>
   </section> : null;
-  const advertisingPanel = <details className={styles.advertising}><summary><Megaphone size={20} aria-hidden="true" /><span>Publicité payante<small>{advertising ? `En cours · fin le ${dateLabel(advertising.endsAt)}` : "Attirer plus de visiteurs"}</small></span></summary>
-      <div className={styles.comparison}><KqBarChart title="Gain de fréquentation" items={Object.values(KQ_ADVERTISING).map(ad => ({ label: ad.name, value: ad.boostPercent, displayValue: `+${ad.boostPercent} %`, tone: "teal" }))} /><KqBarChart title="Budget par campagne" items={Object.values(KQ_ADVERTISING).map(ad => ({ label: ad.name, value: ad.costCents, displayValue: formatKqCash(ad.costCents), tone: "gold" }))} /></div>
-      <details className={styles.explanation}><summary>Effet sur les ventes</summary><p>Une campagne à la fois augmente la fréquentation et la demande en ligne. Le prix, la qualité et le stock déterminent tes ventes.</p></details>
-      {advertising ? <div className={styles.activeAd}><strong>{KQ_ADVERTISING[advertising.kind].name} · +{advertising.boostPercent} % de fréquentation</strong><Deadline at={advertising.endsAt} now={now} />{!active ? <small>Le site est suspendu : le bonus est indisponible, la campagne continue de s’écouler.</small> : null}</div> : !active ? <p className={styles.requirement}>Ouvre ton site pour lancer une campagne.</p> : null}
-      <div className={styles.adCards}>{(Object.keys(KQ_ADVERTISING) as Array<keyof typeof KQ_ADVERTISING>).map(kind => {
-        const ad = KQ_ADVERTISING[kind];
-        const subscriptionEndsFirst = Boolean(shop.paidUntil && Date.parse(shop.paidUntil) < now + ad.durationDays * KQ_GAME_DAY_MS);
-        return <article key={kind}><h3>{ad.name}</h3><strong className={styles.adBoost}>+{ad.boostPercent} % <small>de fréquentation</small></strong><p>{ad.durationDays} jours de jeu · {ad.durationDays * 4} h réelles</p><strong>{formatKqCash(ad.costCents)}</strong>{active && !advertising && subscriptionEndsFirst ? <small className={styles.warning}>Ton abonnement arrive à échéance avant la fin de cette campagne.</small> : null}<button className={styles.secondary} disabled={busy || !active || Boolean(advertising) || data.cashCents < ad.costCents} onClick={() => onAsk(`Lancer ${ad.name}`, `+${ad.boostPercent} % de fréquentation pendant ${ad.durationDays} jours de jeu (${ad.durationDays * 4} h réelles). Paiement unique, sans reconduction. ${subscriptionEndsFirst ? "Ton abonnement expire avant la fin : le site doit rester actif pour profiter du bonus." : data.online ? "Les annonces actives continuent à vendre automatiquement, selon leur prix et leur qualité." : "Les ventes restent manuelles."}`, { action: "advertise", kind }, ad.costCents)}>{advertising ? "Une campagne est déjà en cours" : !active ? "Site actif requis" : data.cashCents < ad.costCents ? "Trésorerie insuffisante" : "Lancer la campagne"}</button></article>;
-      })}</div>
-    </details>;
+  const advertisingPanel = <KqAdvertisingPanel data={data} now={now} busy={busy} onAsk={onAsk} />;
   const administrativeSettings = <>
     {!data.online ? advertisingPanel : null}
     {business.ledger.length ? <details className={styles.activity}><summary>Derniers mouvements et échéances <ChevronDown size={16} aria-hidden="true" /></summary><ul>{business.ledger.toSorted((a, b) => Date.parse(b.occurredAt) - Date.parse(a.occurredAt)).slice(0, 8).map(entry => <li key={entry.id}><span>{ledgerLabels[entry.kind] ?? "Mouvement de gestion"}<small>{dateLabel(entry.occurredAt)}</small></span><strong>{entry.amountCents ? formatKqCash(Math.abs(entry.amountCents)) : "—"}</strong></li>)}</ul></details> : null}
   </>;
-  if (data.online) return <KqOnlineBusiness data={data} now={now} busy={busy} onAsk={onAsk} onOpenShop={onOpenShop} onPrepareStock={onPrepareStock} onViewSales={onViewSales} view={view} onViewChange={onViewChange} initialView={initialView} initialUpgradeView={initialUpgradeView} advertising={<div className={styles.settings}>{advertisingPanel}</div>} businessDetails={<div className={styles.settings}>{calendarPanel}{accountingPanel}{administrativeSettings}</div>} />;
+  if (data.online) return <KqOnlineBusiness data={data} now={now} busy={busy} onAsk={onAsk} onOpenShop={onOpenShop} onPrepareStock={onPrepareStock} onViewSales={onViewSales} view={view} onViewChange={onViewChange} initialView={initialView} initialUpgradeView={initialUpgradeView} businessDetails={<div className={styles.settings}>{calendarPanel}{accountingPanel}{administrativeSettings}</div>} />;
   return <section className={styles.panel} aria-label="Calendrier et gestion du commerce">
     {calendarPanel}
     <details id="kq-business-management" className={styles.management} open={expanded}>
