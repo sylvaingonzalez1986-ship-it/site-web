@@ -37,6 +37,7 @@ import {
   getShippingPricingConfig,
 } from "@/lib/shipping";
 import { formatPrice } from "@/lib/utils";
+import { normalizeShippingCountryCode } from "@/lib/shipping-country";
 
 const CheckoutButton = dynamic(
   () => import("@/components/CheckoutButton").then((mod) => mod.CheckoutButton),
@@ -817,7 +818,7 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   onChange={(event) => updateCheckoutDraft({ shippingPhone: event.target.value })}
                   aria-label="Téléphone"
                   autoComplete="tel"
-                  placeholder="Téléphone"
+                  placeholder={normalizeShippingCountryCode(shippingCountry) === "BE" ? "+32 470 12 34 56" : "Téléphone"}
                 />
                 </label>
                 <div data-ui-commerce="sage" data-ui-shape="panel" className={styles.deliveryOptions}>
@@ -899,11 +900,17 @@ export function CartDrawer({ open, onClose }: CartDrawerProps) {
                   onChange={(event) => updateCheckoutDraft({ shippingCountry: event.target.value })}
                   aria-label="Pays"
                   autoComplete="country-name"
-                  placeholder="Pays"
+                  list="checkout-shipping-countries"
+                  placeholder="France ou Belgique"
                 />
+                <datalist id="checkout-shipping-countries">
+                  <option value="France" />
+                  <option value="Belgique" />
+                </datalist>
                 </label>
                 {deliveryMethod === "relay" && (
                   <MondialRelayPicker
+                    key={`${normalizeShippingCountryCode(shippingCountry)}:${shippingPostalCode.trim()}:${shippingCity.trim()}`}
                     postalCode={shippingPostalCode}
                     city={shippingCity}
                     country={shippingCountry}

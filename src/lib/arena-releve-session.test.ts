@@ -84,6 +84,7 @@ describe('La relève shared session', () => {
     state = production(state, { type: 'mark', milestone: 'recap-read' });
     state = advanceArenaReleve(state);
     expect(state.chapter).toBe(5);
+    state = production(state, { type: 'mature' });
     for (const zoneId of ['culture-1', 'culture-2']) {
       state = production(state, { type: 'duel', zoneId });
       state = production(state, { type: 'verdict', zoneId });

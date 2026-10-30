@@ -7,10 +7,12 @@ import { getKqCardArtwork } from "./kanab-quest-artwork";
 import { KQ_ACTIVE_CARDS } from "./kanab-quest-game";
 import { KQ_REWARD_BALANCE } from "./kanab-quest-reward-balance";
 import { applyKqBattleToRanking, createKqRankProfile } from "./kanab-quest-ranking";
-import { applyKqReleveProductionAction, getKqReleveHarvests, type KqReleveProductionAction, type KqReleveProductionState } from "./kanab-quest-releve-production";
+import { applyKqReleveProductionAction, getKqReleveHarvests, getKqReleveStorageContainers, type KqReleveProductionAction, type KqReleveProductionState } from "./kanab-quest-releve-production";
 import { createReleveWarehouseTransport, getReleveNativeCollection } from "./kanab-quest-releve-warehouse";
-import { createReleveCommerce, getReleveCommerceStorageSnapshot } from "./kanab-quest-releve-commerce";
-import type { KqApiBurnReceipt, KqOfficialBattle, KqOfficialFlower } from "./kanab-quest-api";
+import type { KqApiBurnReceipt, KqOfficialBattle, KqOfficialFlower, KqStorageSnapshot } from "./kanab-quest-api";
+import { getKqStorageInventory, KQ_STORAGE_METHODS, projectKqStorageLot } from "./kanab-quest-storage";
+import { getKqStorageStockBreakdown } from "./kanab-quest-storage-breakdown";
+import { getKqJuryScoreFromRounds } from "./kanab-quest-market";
 import type { KqEnergyQuote, KqEnergySnapshot } from "./kanab-quest-energy";
 
 type Port = { getState: () => KqReleveProductionState; setState: (next: KqReleveProductionState) => void };
@@ -22,15 +24,32 @@ const rank = (state: KqReleveProductionState) => Object.entries(state.battles).r
   ? applyKqBattleToRanking(profile, battle, battle.opponentRating) : profile, createKqRankProfile());
 
 export function getReleveNativeFlowers(state: KqReleveProductionState): KqOfficialFlower[] {
-  return getKqReleveHarvests(state).map(({ zoneId, game, battle }) => {
+  return getKqReleveHarvests(state).map(({ zoneId, game, battle, storage }) => {
     const flower = createKqFlower(game, "La ferme d’essai");
     return { id: flowerId(zoneId), runId: state.game!.campaign!.members.find(member => member.zoneId === zoneId)!.runId,
       varietyCode: game.varietyCode, varietyName: game.varietyName, quality: game.quality, traits: game.traits, combos: game.combos,
-      stats: flower.stats, status: battle?.status === "verdict" ? "burned" : battle ? "locked" : "available", createdAt: game.completedAt ?? now(state),
+      stats: battle?.playerFlower.stats ?? flower.stats, status: battle?.status === "verdict" ? "burned" : battle ? "locked" : "available", createdAt: game.completedAt ?? now(state),
+      storage: projectKqStorageLot(storage, state.clock, storage.juryApplied && battle?.status === "verdict" ? getKqJuryScoreFromRounds(battle.rounds, "player") : undefined),
       queuedAt: null, lockedAt: battle ? now(state) : null, burnedAt: battle?.burnedAt ?? null,
       rulesVersion: game.rulesVersion, cultivationProfile: game.cultivationProfile,
       cannabinoidReport: getKqCannabinoidReport(game), terpeneReport: getKqTerpeneReport(game) };
   });
+}
+
+export function getReleveProductionStorageSnapshot(state: KqReleveProductionState): KqStorageSnapshot {
+  const harvests = getKqReleveHarvests(state), ownedContainers = getKqReleveStorageContainers(state);
+  const containers = getKqStorageInventory(ownedContainers, harvests.flatMap(row => row.storage.capacity!.allocations));
+  const lots = harvests.map(({ zoneId, game, battle, storage }) => ({ flowerId: flowerId(zoneId), varietyName: game.varietyName,
+    harvestGrams: game.harvestGrams!, flowerStatus: battle?.status === "verdict" ? "burned" : battle ? "locked" : "available",
+    projection: projectKqStorageLot(storage, state.clock, storage.juryApplied && battle?.status === "verdict" ? getKqJuryScoreFromRounds(battle.rounds, "player") : undefined) }));
+  const totalUnits = containers.reduce((sum, row) => sum + row.ownedQuantity * row.capacityUnits, 0);
+  const usedUnits = lots.reduce((sum, row) => sum + row.projection.capacity!.totalUnits, 0);
+  const reservedUnits = lots.reduce((sum, row) => sum + row.projection.capacity!.reservedCapacityUnits, 0);
+  const stockBreakdown = getKqStorageStockBreakdown({ capacities: harvests.map(row => row.storage.capacity!), listings: [], stocks: [] })!;
+  return { serverNow: now(state), cashCents: state.cashCents, catalog: KQ_STORAGE_METHODS, containers, lots, stockBreakdown,
+    ownedContainers, installedContainers: ownedContainers, ownedMethodCodes: [...new Set(containers.filter(row => row.ownedQuantity > 0).map(row => row.methodCode))],
+    defaultMethodCode: "STORAGE-GLASS", overflowSales: [],
+    capacity: { totalUnits, usedUnits, reservedUnits, freeUnits: Math.max(0, totalUnits - reservedUnits), overflowUnits: stockBreakdown.bulkOverflowUnits } };
 }
 
 export function getReleveNativeBattles(state: KqReleveProductionState): KqOfficialBattle[] {
@@ -93,10 +112,12 @@ export function createReleveCultureTransport(port: Port): typeof fetch {
       if (method === "GET" && path === "/me") return respond({ progress: null });
       if (method === "GET" && path === "/flowers") return respond({ flowers: getReleveNativeFlowers(state) });
       if (method === "GET" && path === "/storage") {
-        const harvests = getKqReleveHarvests(state).filter(harvest => harvest.battle?.burnedAt);
-        if (!harvests.length) return respond({ serverNow: now(state), lots: [] });
-        const commerce = createReleveCommerce({ cashCents: state.cashCents, clock: state.clock, harvests, ledger: state.ledger });
-        return respond(getReleveCommerceStorageSnapshot(commerce));
+        return respond(getReleveProductionStorageSnapshot(state));
+      }
+      if (method === "POST" && path === "/storage") {
+        if (body.action !== "place") throw new Error("Choisis le contenant de chaque variété dans cet essai.");
+        const next = act({ type: "storage-place", flowerId: String(body.flowerId), containerCode: String(body.containerCode) });
+        return respond(getReleveProductionStorageSnapshot(next));
       }
       if (method === "GET" && path === "/battles") return respond({ battles: getReleveNativeBattles(state) });
       if (method === "GET" && path === "/energy") return respond(energySnapshot(state));

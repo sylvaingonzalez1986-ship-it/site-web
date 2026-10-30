@@ -1,4 +1,5 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { KQ_STAGES } from "@/lib/kanab-quest-game";
 
 const { getCurrentCustomerSessionByBackend, playKqPlayerCard, hitRateLimit } = vi.hoisted(() => ({
   getCurrentCustomerSessionByBackend: vi.fn(),
@@ -57,6 +58,26 @@ describe("POST /api/arena/placard/runs/[runId]/cards", () => {
   it("rejects a missing code without attempting a burn", async () => {
     expect((await POST(request({}), context)).status).toBe(400);
     expect(playKqPlayerCard).not.toHaveBeenCalled();
+  });
+
+  it.each([0, KQ_STAGES.length - 1])("forwards the inspected stage %s with the authenticated owner", async expectedStageIndex => {
+    playKqPlayerCard.mockResolvedValue({ state: {}, burnReceipt: { id: "burn-1" } });
+    const response = await POST(request({ cardCode: "BOTTE-004", expectedStageIndex }), context);
+    expect(response.status).toBe(200);
+    expect(playKqPlayerCard).toHaveBeenCalledWith(customerId, runId, "BOTTE-004", { expectedStageIndex });
+  });
+
+  it.each([null, "0", false, [], {}, -1, 0.5, KQ_STAGES.length, Number.MAX_SAFE_INTEGER + 1])("rejects a malformed stage %j before any burn", async expectedStageIndex => {
+    const response = await POST(request({ cardCode: "BOTTE-004", expectedStageIndex }), context);
+    expect(response.status).toBe(400);
+    expect(playKqPlayerCard).not.toHaveBeenCalled();
+  });
+
+  it("returns a conflict when a delayed card belongs to an earlier stage", async () => {
+    playKqPlayerCard.mockRejectedValue(new Error("La culture a changé d’étape. Vérifie la culture avant de jouer une carte."));
+    const response = await POST(request({ cardCode: "BOTTE-004", expectedStageIndex: 0 }), context);
+    expect(response.status).toBe(409);
+    expect(await response.json()).toEqual({ error: "La culture a changé d’étape. Vérifie la culture avant de jouer une carte." });
   });
 
   it("stops excessive actions before the atomic operation", async () => {

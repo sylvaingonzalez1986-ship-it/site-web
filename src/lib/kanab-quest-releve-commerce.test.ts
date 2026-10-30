@@ -6,6 +6,7 @@ import { applyReleveCommerceRequest, createReleveCommerce, createReleveCommerceB
 import { getKqTreasuryReport, isKqTreasurySnapshot } from './kanab-quest-treasury';
 import { KQ_GAME_MONTH_MS } from './kanab-quest-business';
 import { KQ_CURING_DURATION_MS, projectKqStorageLot } from './kanab-quest-storage';
+import { getKqShopActivity } from './kanab-quest-shop-activity';
 
 function fixture(count = 2, grams = 200) {
   const trial = createKqWorkshop('market');
@@ -35,7 +36,147 @@ function sell(state: KqReleveCommerceState, units: number, stockId = state.opera
 const online = (state: KqReleveCommerceState, command: string, payload: Record<string, unknown>) => run(state, { action: 'online', command, payload }).state;
 afterEach(() => vi.unstubAllGlobals());
 
+describe('exact placement in the shared commerce simulation', () => {
+  it('keeps a fully packaged 735 g harvest out of bulk containers without losing it from physical stock', () => {
+    let state = prepare(run(fixture(1, 735), { action: 'mature' }, true).state);
+    state = run(state, { action: 'borrow-computer' }, true).state;
+    state = run(state, { action: 'create-shop', name: 'Stock visible' }).state;
+    state = online(state, 'buy-packaging', { code: 'kraft-5', quantity: 147 });
+    state = online(state, 'create-listing', { stockId: state.operations.trial.commerce.stocks[0].id, formatGrams: 5, packagingCode: 'kraft-5', packets: 147, packetPriceCents: 1000 });
+    const snapshot = getReleveCommerceStorageSnapshot(state);
+    expect(snapshot.lots).toEqual([]);
+    expect(snapshot.stockBreakdown).toEqual({ bulkUnits: 0, bulkProtectedUnits: 0, bulkOverflowUnits: 0,
+      packedUnits: 7350, packedActiveUnits: 7350, packedPausedUnits: 0, packedOtherUnits: 0, packedPackets: 147 });
+    expect(snapshot.capacity).toMatchObject({ usedUnits: 7350, reservedUnits: 7350, freeUnits: 4650, overflowUnits: 0 });
+    const paused = online(state, 'pause-listing', { listingId: state.operations.trial.commerce.online!.listings[0].id });
+    expect(getReleveCommerceStorageSnapshot(paused).stockBreakdown).toMatchObject({ packedUnits: 7350, packedActiveUnits: 0, packedPausedUnits: 7350 });
+  });
+  it('moves one of two lots of the same variety and leaves the other reservation untouched', () => {
+    const initial = fixture();
+    initial.operations.storage.ownedContainers['GLASS-2L'] = 2;
+    const before = structuredClone(initial), target = initial.lots[0];
+    const action = { path: '/api/arena/placard/storage', method: 'POST', body: { action: 'place', flowerId: target.id, containerCode: 'GLASS-2L', requestKey: 'exact-lot' } };
+    const placed = applyReleveCommerceRequest(initial, action);
+    expect(placed.state.lots[0].storage.capacity!.allocations).toEqual([{ containerCode: 'GLASS-2L', quantity: 2, storedUnits: 2000 }]);
+    expect(placed.state.lots[1]).toEqual(initial.lots[1]);
+    expect(placed.state.lots[0].storage.readyAt).toBe(target.storage.readyAt);
+    expect(placed.state.operations.trial.commerce.cashCents).toBe(initial.operations.trial.commerce.cashCents);
+    expect(applyReleveCommerceRequest(placed.state, action).state).toEqual(placed.state);
+    expect(initial).toEqual(before);
+    const second = { ...action, body: { ...action.body, flowerId: initial.lots[1].id, requestKey: 'other-lot' } };
+    expect(() => applyReleveCommerceRequest(placed.state, second)).toThrow('Pas assez');
+  });
+  it('rejects nonexistent lots and unavailable models without changing inventory', () => {
+    const initial = fixture(), before = structuredClone(initial);
+    for (const body of [{ flowerId: 'forged', containerCode: 'GLASS-1L' }, { flowerId: initial.lots[0].id, containerCode: 'CANNATROL' }]) {
+      expect(() => applyReleveCommerceRequest(initial, { path: '/api/arena/placard/storage', method: 'POST', body: { action: 'place', ...body } })).toThrow();
+      expect(initial).toEqual(before);
+    }
+  });
+  it('keeps physical room for packets already in an online listing', () => {
+    let state = prepare(run(fixture(1, 50), { action: 'mature' }, true).state);
+    state = run(state, { action: 'borrow-computer' }, true).state;
+    state = run(state, { action: 'create-shop', name: 'Essai stockage' }).state;
+    state = online(state, 'buy-packaging', { code: 'kraft-5', quantity: 1 });
+    state = online(state, 'create-listing', { stockId: state.operations.trial.commerce.stocks[0].id, formatGrams: 5, packagingCode: 'kraft-5', packets: 1, packetPriceCents: 1000 });
+    state.operations.storage.ownedContainers = { 'GLASS-1L': 1 };
+    const before = structuredClone(state);
+    expect(() => applyReleveCommerceRequest(state, { path: '/api/arena/placard/storage', method: 'POST', body: {
+      action: 'place', flowerId: state.lots[0].id, containerCode: 'GLASS-1L',
+    } })).toThrow('stocks conditionnés');
+    expect(state).toEqual(before);
+  });
+});
+
 describe('La Relève: the same harvest and wallet through commerce', () => {
+  it('pays all issued invoices together, including invoices not yet due, without settling VAT or subscriptions', () => {
+    const state = fixture(1);
+    const business = state.operations.trial.commerce.business!;
+    for (const group of [business.lab, business.suppliers!]) group.invoices.forEach(row => { row.dueAt = new Date(state.operations.trial.clock + KQ_GAME_MONTH_MS).toISOString(); });
+    business.vat.reservedCents = 3200;
+    business.vat.nextSettlementAt = new Date(state.operations.trial.clock - 1).toISOString();
+    const before = structuredClone(state);
+    const action = { action: 'pay-all-invoices', expectedCents: 10_700, requestKey: 'settle-all' };
+    const paid = run(state, action);
+    expect(paid.payload).toEqual({ action: 'pay-all-invoices', paidCents: 10_700, supplierPaidCents: 2200, labPaidCents: 4500,
+      electricityPaidCents: 4000, storageClimatePaidCents: 0, invoiceCount: 3, cashAfterCents: 79_300, replayed: false });
+    const after = paid.state.operations.trial;
+    expect(after.electricity).toBe(0);
+    for (const group of [after.commerce.business!.lab, after.commerce.business!.suppliers!]) {
+      expect(group.outstandingCents).toBe(0);
+      expect(group.invoices.every(row => row.remainingCents === 0)).toBe(true);
+    }
+    expect(after.commerce.business!.vat).toEqual(before.operations.trial.commerce.business!.vat);
+    expect(after.commerce.business!.shop).toEqual(before.operations.trial.commerce.business!.shop);
+    expect(paid.state.journal[0].postings).toEqual(expect.arrayContaining([
+      { account: 'cash', deltaCents: -10_700 }, { account: 'lab_payable', deltaCents: 4500 },
+      { account: 'supplier_payable', deltaCents: 2200 }, { account: 'energy_payable', deltaCents: 4000 },
+    ]));
+    expect(run(paid.state, action)).toEqual({ state: paid.state, payload: { ...paid.payload as object, replayed: true } });
+    expect(() => run(paid.state, { ...action, expectedCents: 10_699 })).toThrow('autre règlement');
+    expect(() => run(paid.state, { ...action, expectedCents: 0, requestKey: 'again' })).toThrow();
+    expect(state).toEqual(before);
+  });
+
+  it('rejects a stale total or insufficient funds without paying any invoice', () => {
+    for (const [cash, expectedCents] of [[90_000, 10_699], [10_699, 10_700], [90_000, 2_147_483_648], [90_000, -1], [90_000, 10_700.5]]) {
+      const state = fixture(); state.operations.trial.commerce.cashCents = cash;
+      const before = structuredClone(state);
+      expect(() => run(state, { action: 'pay-all-invoices', expectedCents, requestKey: 'failed' })).toThrow();
+      expect(state).toEqual(before);
+    }
+  });
+
+  it('rejects a payment key previously used by another commerce action', () => {
+    const old = run(fixture(), { action: 'pay-lab', expectedCents: 4500, requestKey: 'shared-key' }).state;
+    const before = structuredClone(old);
+    expect(() => run(old, { action: 'pay-all-invoices', expectedCents: 6200, requestKey: 'shared-key' })).toThrow('autre règlement');
+    expect(old).toEqual(before);
+  });
+
+  it('leaves future-dated lab, supplier and energy rows outside the confirmed batch', () => {
+    const source = fixture(1), later = new Date(source.operations.trial.clock + KQ_GAME_MONTH_MS).toISOString();
+    const state = createReleveCommerce({ cashCents: 90_000, clock: source.operations.trial.clock, harvests: source.lots,
+      ledger: [...source.productionLedger, ...(['lab', 'supplier', 'energy'] as const).map((kind, index) => ({
+        id: `future-${kind}`, kind, label: 'Facture future', amountCents: 500 + index * 100, status: 'due' as const, issuedAt: later, dueAt: later,
+      }))] });
+    const paid = run(state, { action: 'pay-all-invoices', expectedCents: 10_700, requestKey: 'issued-only' });
+    expect(paid.payload).toMatchObject({ paidCents: 10_700, invoiceCount: 3 });
+    expect(paid.state.operations.trial.electricity).toBe(700);
+    expect(paid.state.operations.trial.commerce.business!.lab.outstandingCents).toBe(500);
+    expect(paid.state.operations.trial.commerce.business!.suppliers!.outstandingCents).toBe(600);
+  });
+
+  it('counts unpaid climate only once in the shared electricity total and keeps its next billing untouched', () => {
+    let state = fixture();
+    const previous = state.lots[0].game.warehouse!.sourceState;
+    const candidate = { ...previous, storageClimateCode: 'SIM-STORAGE-CLIMATE-01' };
+    state = applyReleveCommerceRequest(state, { path: '/api/arena/placard/warehouse', method: 'PATCH', body: {
+      state: candidate, expectedRevision: 0, expectedCostCents: getKqWarehouseQuote(candidate, previous).totalCostCents } }).state;
+    state.operations.trial.commerce.cashCents = 50;
+    state.operations.trial.clock += KQ_GAME_MONTH_MS;
+    state = applyReleveCommerceRequest(state, { path: '/api/arena/placard/energy', method: 'GET', body: {} }).state;
+    state.operations.trial.commerce.cashCents = 50_000;
+    const nextBillingAt = state.storageClimate!.nextBillingAt;
+    state.operations.trial.clock = nextBillingAt!;
+    const paid = run(state, { action: 'pay-all-invoices', expectedCents: 10_800, requestKey: 'all-with-climate' });
+    expect(paid.payload).toMatchObject({ paidCents: 10_800, electricityPaidCents: 4100, storageClimatePaidCents: 100, invoiceCount: 4, cashAfterCents: 39_200 });
+    expect(paid.state.storageClimate!.invoices).toHaveLength(1);
+    expect(paid.state.storageClimate!.invoices[0].remainingCents).toBe(0);
+    expect(paid.state.storageClimate!.nextBillingAt).toBe(nextBillingAt);
+    expect(paid.state.operations.trial.electricity).toBe(0);
+  });
+
+  it('includes billed care in electricity and leaves an accounting entry balanced', () => {
+    const source = fixture(1), stamp = new Date(source.operations.trial.clock).toISOString();
+    const state = createReleveCommerce({ cashCents: 90_000, clock: source.operations.trial.clock, harvests: source.lots,
+      ledger: [...source.productionLedger, { id: 'care-due', kind: 'care', label: 'Soin facturé', amountCents: 600, status: 'due', issuedAt: stamp }] });
+    const paid = run(state, { action: 'pay-all-invoices', expectedCents: 11_300, requestKey: 'all-with-care' });
+    expect(paid.payload).toMatchObject({ paidCents: 11_300, electricityPaidCents: 4600, invoiceCount: 4 });
+    expect(getKqTreasuryReport(getReleveCommerceTreasury(paid.state)).reconciled).toBe(true);
+    expect(getKqTreasuryReport(getReleveCommerceTreasury(paid.state)).balanceSheet.differenceCents).toBe(0);
+  });
+
   it('keeps historical drying at harvest while using the current storage equipment', () => {
     const trial = createKqWorkshop('market');
     const planned = suggestKqRelevePlan(createKqReleveProduction(), 2);
@@ -292,7 +433,7 @@ describe('La Relève: the same harvest and wallet through commerce', () => {
     expect(getReleveCommerceSnapshot(state).wholesale!.remainingEquivalentUnits).toBe(10000);
   });
 
-  it('opens a free basic site after the explicit computer loan, charges packaging and accepts sold-out publication', () => {
+  it('opens a free basic site after the explicit computer loan, charges packaging and accepts sold-out publication', async () => {
     let state = prepare(run(fixture(1), { action: 'mature' }, true).state);
     expect(() => run(state, { action: 'create-shop', name: 'La ferme' })).toThrow('ordinateur');
     state = run(state, { action: 'borrow-computer' }, true).state;
@@ -312,6 +453,23 @@ describe('La Relève: the same harvest and wallet through commerce', () => {
     expect(report.income.revenueCents).toBe(833);
     expect(state.operations.trial.commerce.online!.stats.feesCents).toBe(25);
     expect(report.balanceSheet.differenceCents).toBe(0);
+
+    const receipts = getKqShopActivity(getReleveCommerceSnapshot(state)).receipts;
+    expect(receipts).toHaveLength(1);
+    // History reads must not migrate saved storage profiles or bill an elapsed month.
+    delete state.postHarvestBalanceVersion;
+    state.operations.trial.clock += KQ_GAME_MONTH_MS;
+    const beforeRead = structuredClone(state), setState = vi.fn(), network = vi.fn();
+    vi.stubGlobal('fetch', network);
+    const request = createReleveCommerceTransport({ getState: () => state, setState });
+    const response = await request('/api/arena/placard/commerce/sales?limit=1');
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ receipts, nextCursor: null });
+    expect((await request('/api/arena/placard/commerce/sales?cursor=invalid')).status).toBe(400);
+    expect((await request('https://example.com/api/arena/placard/commerce/sales')).status).toBe(400);
+    expect(state).toEqual(beforeRead);
+    expect(setState).not.toHaveBeenCalled();
+    expect(network).not.toHaveBeenCalled();
   });
 
   it('offers a separately named sample only after consent, retaining the original verdict and depleted lot', () => {

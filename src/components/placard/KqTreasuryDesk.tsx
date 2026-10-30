@@ -5,12 +5,13 @@ import { useKqTutorialApi } from "./KqTutorialApiContext";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowDownLeft, ArrowRight, ArrowUpRight, BookOpen, CalendarClock, ChartNoAxesCombined, Check, ChevronLeft, ChevronRight, FileText, Landmark, LoaderCircle, ReceiptText, RefreshCw, Search, Wallet } from "lucide-react";
+import { ArrowDownLeft, ArrowRight, ArrowUpRight, BookOpen, CalendarClock, ChartNoAxesCombined, Check, ChevronLeft, ChevronRight, FileText, LoaderCircle, ReceiptText, RefreshCw, Search, Wallet } from "lucide-react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqBusinessClock } from "@/lib/kanab-quest-business";
 import { KQ_TREASURY_ACCOUNTS, KQ_TREASURY_EXPENSE_ACCOUNTS, KQ_TREASURY_REVENUE_ACCOUNTS, KQ_TREASURY_PERIODS, getKqTreasuryEntryLabel, getKqTreasuryReport, isKqTreasurySnapshot, type KqTreasuryAccount, type KqTreasuryEntry, type KqTreasuryLine, type KqTreasuryPeriod, type KqTreasurySnapshot } from "@/lib/kanab-quest-treasury";
 import { KqTreasuryManagement } from "./KqTreasuryManagement";
 import { KqTreasuryBank } from "./KqTreasuryBank";
+import { KqChapterHeading } from "./KqChapterHeading";
 import { KqAllocationBar, KqBarChart } from "./KqVisuals";
 import styles from "./KqTreasuryDesk.module.css";
 
@@ -58,7 +59,7 @@ function CashChart({ data }: { data: KqTreasurySnapshot }) {
   const path = points.map((point, position) => `${position ? "L" : "M"}${x(position)},${y(point.cashClosingCents)}`).join(" ");
   const barWidth = Math.min(22, (width - 2 * pad) / Math.max(1, points.length) / 2.6);
   const label = (position: number) => data.period.key === "all" ? `Mois ${getKqBusinessClock(data.businessStartedAt, Date.parse(points[position].from)).month}` : `Jour ${getKqBusinessClock(data.businessStartedAt, Date.parse(points[position].from)).dayOfMonth}`;
-  return <section className={styles.card} aria-label="Évolution de la trésorerie"><header className={styles.cardHeader}><div><small className={styles.eyebrow}>Les euros qui entrent et sortent</small><h2>Évolution de la trésorerie</h2></div><div className={styles.toggle} aria-label="Données du graphique"><button type="button" aria-pressed={mode === "balance"} onClick={() => setMode("balance")}>Solde</button><button type="button" aria-pressed={mode === "flows"} onClick={() => setMode("flows")}>Entrées / sorties</button></div></header>
+  return <section className={styles.card} aria-label="Évolution de la trésorerie"><header className={styles.cardHeader}><div><h2>Évolution de la trésorerie</h2></div><div className={styles.toggle} aria-label="Données du graphique"><button type="button" aria-pressed={mode === "balance"} onClick={() => setMode("balance")}>Solde</button><button type="button" aria-pressed={mode === "flows"} onClick={() => setMode("flows")}>Entrées / sorties</button></div></header>
     <div className={styles.chartSummary} aria-live="polite"><span>{label(index)} · {shortDate(active.from)}</span><strong>{mode === "balance" ? money(active.cashClosingCents) : `${money(active.inflowsCents)} / ${money(active.outflowsCents)}`}</strong><small>{mode === "balance" ? `Solde au début : ${money(active.cashOpeningCents)}` : "Entrées / sorties de trésorerie"}</small></div>
     <div className={styles.plot}><div className={styles.axis} aria-hidden="true"><span>{money(maximum)}</span><span>{money(Math.round(maximum / 2))}</span><span>0 €</span></div><svg role="img" aria-label={`${mode === "balance" ? "Solde disponible" : "Encaissements et décaissements"}, de ${shortDate(points[0].from)} à ${shortDate(points.at(-1)!.to)}. Données détaillées dans le tableau ci-dessous.`} viewBox={`0 0 ${width} ${height}`} preserveAspectRatio="none" onPointerMove={event => {
       const rect = event.currentTarget.getBoundingClientRect();
@@ -81,7 +82,7 @@ function ExpenseChart({ rows }: { rows: KqTreasuryLine[] }) {
   const [selected, setSelected] = useState<string | null>(null);
   const maximum = Math.max(1, ...nonzero.map(row => Math.abs(row.cents)));
   const current = nonzero.find(row => row.account === selected);
-  return <section className={styles.card} aria-label="Répartition des charges"><small className={styles.eyebrow}>Comprendre tes coûts</small><h2>Répartition des charges</h2><p className={styles.explanation}>Les charges de la période, y compris les factures restant à payer et l’amortissement du matériel.</p>
+  return <section className={styles.card} aria-label="Répartition des charges"><h2>Répartition des charges</h2><p className={styles.explanation}>Les charges de la période, y compris les factures restant à payer et l’amortissement du matériel.</p>
     {nonzero.length ? <><ul className={styles.expenseBars}>{nonzero.map(row => <li key={row.account}><button type="button" aria-pressed={selected === row.account} onClick={() => setSelected(row.account)}><span>{row.label}<strong>{money(row.cents)}</strong></span><svg viewBox="0 0 100 8" preserveAspectRatio="none" aria-hidden="true"><rect width="100" height="8" className={styles.expenseTrack} /><rect width={Math.abs(row.cents) / maximum * 100} height="8" className={row.cents < 0 ? styles.inflowBar : styles.outflowBar} /></svg></button></li>)}</ul><p className={styles.chartHint} aria-live="polite">{current ? `${current.label} : ${money(current.cents)}.${current.cents < 0 ? " Ce montant réduit les charges de la période." : ""}` : "Sélectionne un poste pour lire son montant. Une variation de stock négative réduit les charges."}</p></> : <p className={styles.empty}>Aucune charge sur cette période.</p>}
   </section>;
 }
@@ -127,7 +128,7 @@ function ChartOfAccounts({ data }: { data: KqTreasurySnapshot }) {
   const normalize = (value: string) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLocaleLowerCase("fr");
   const groups = ACCOUNT_GROUPS.map(group => ({ ...group, accounts: group.accounts.filter(account => normalize(`${group.title} ${KQ_TREASURY_ACCOUNTS[account]}`).includes(normalize(search.trim()))) })).filter(group => group.accounts.length);
   return <section className={styles.accountPlan} aria-label="Plan comptable">
-    <header className={styles.cardHeader}><div><small className={styles.eyebrow}>Les comptes de ton entreprise</small><h2>Plan comptable</h2></div><label className={styles.accountSearch}><Search size={17} aria-hidden="true" /><input type="search" aria-label="Rechercher un compte" placeholder="Rechercher un compte…" value={search} onChange={event => setSearch(event.target.value)} /></label></header>
+    <header className={styles.cardHeader}><div><h2>Plan comptable</h2></div><label className={styles.accountSearch}><Search size={17} aria-hidden="true" /><input type="search" aria-label="Rechercher un compte" placeholder="Rechercher un compte…" value={search} onChange={event => setSearch(event.target.value)} /></label></header>
     <p className={styles.explanation}>Retrouve chaque compte utilisé dans ton bilan, ton résultat et ton journal. Les soldes correspondent à la fin de la période sélectionnée, depuis l’ouverture des comptes.</p>
     <div className={styles.accountGroups}>{groups.map(group => <section className={styles.accountGroup} key={group.title}><header><h3>{group.title}</h3><span>{group.accounts.length} compte{group.accounts.length > 1 ? "s" : ""}</span></header><p>{group.description}</p><dl>{group.accounts.map(account => { const cents = data.closingBalances[account] ?? 0; return <div key={account} data-account={account}><dt>{KQ_TREASURY_ACCOUNTS[account]}</dt><dd><strong>{money(Math.abs(cents))}</strong><small>{cents > 0 ? "Solde débiteur" : cents < 0 ? "Solde créditeur" : "Soldé"}</small></dd></div>; })}</dl></section>)}</div>
     {!groups.length ? <p className={styles.empty} role="status">Aucun compte ne correspond à cette recherche.</p> : null}
@@ -178,10 +179,9 @@ export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initial
   }, [api, pole]);
   function selectTab(next: Tab) { setTab(next); }
   return <main className={styles.page}>
-    <header className={styles.header}>
+    {pole === "accounting" ? <KqChapterHeading art="accounts" title="Mes finances" /> : <header className={styles.header}>
       <figure className={styles.officeArt}>
         <div className={styles.welcome}>
-          <small>{pole === "bank" ? <><Landmark size={16} aria-hidden="true" /> Le banquier</> : <><BookOpen size={16} aria-hidden="true" /> Au bureau</>}</small>
           <h1>{pole === "bank" ? "Banque & placements" : "Mes finances"}</h1>
           <p>{pole === "bank" ? "Financer un projet ou placer tes euros du jeu." : "Ce que tu peux dépenser, ce qu’il reste à payer."}</p>
         </div>
@@ -190,7 +190,7 @@ export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initial
         </div>
         <figcaption>{OFFICE_ART[pole].caption}</figcaption>
       </figure>
-    </header>
+    </header>}
     <nav className={styles.financeNav} aria-label="Mes finances">
       {pole === "accounting" ? <button type="button" aria-pressed={tab === "invoices"} onClick={() => selectTab("invoices")}>Factures & disponible</button> : <Link href="/arene/placard?view=treasury&pole=accounting" prefetch={false} onClick={event => { if (onPoleChange) { event.preventDefault(); onPoleChange("accounting"); } }}>Factures & disponible</Link>}
       <Link href="/arene/placard?view=treasury&pole=bank" prefetch={false} aria-current={pole === "bank" ? "page" : undefined} onClick={event => { if (onPoleChange) { event.preventDefault(); onPoleChange("bank"); } }}>Banque & placements</Link>
@@ -221,7 +221,7 @@ export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initial
             ]} /></section></div>
             <div className={styles.chartColumns}><CashChart key={`cash:${period}:${data.period.from}`} data={data} /><ExpenseChart key={`expenses:${period}:${data.period.from}`} rows={report.income.expenses} /></div>
             <section className={styles.managementCallout}><ReceiptText size={26} aria-hidden="true" /><div><h2>Tes prochaines échéances</h2><p>Consulte les factures en cours et les montants restant à régler.</p></div><button type="button" className={styles.primary} onClick={() => selectTab("invoices")}>Voir mes factures <ArrowRight size={18} aria-hidden="true" /></button></section>
-          </> : tab === "accounts" ? <Accounts data={data} report={report} /> : tab === "chartOfAccounts" ? <ChartOfAccounts data={data} /> : <section className={styles.card} aria-label="Journal comptable"><header className={styles.cardHeader}><div><small className={styles.eyebrow}>Chaque opération, sa trace</small><h2>Journal des opérations</h2></div><span className={styles.journalCount}>{data.journal.total.toLocaleString("fr-FR")} écriture{data.journal.total > 1 ? "s" : ""}</span></header><p className={styles.explanation}>Ouvre une opération pour voir les comptes débités et crédités. Le montant affiché correspond à son effet sur la trésorerie disponible.</p>{data.journal.items.length ? <ul className={styles.journal}>{data.journal.items.map(entry => <JournalEntry key={entry.id} entry={entry} />)}</ul> : <p className={styles.empty}>Aucune écriture sur cette période.</p>}<nav className={styles.pagination} aria-label="Pages du journal"><button type="button" disabled={data.journal.offset === 0} onClick={() => setOffset(Math.max(0, data.journal.offset - data.journal.limit))}><ChevronLeft size={18} aria-hidden="true" /> Précédent</button><span>{data.journal.total ? `${data.journal.offset + 1}–${Math.min(data.journal.offset + data.journal.items.length, data.journal.total)} sur ${data.journal.total}` : "0 écriture"}</span><button type="button" disabled={data.journal.offset + data.journal.limit >= data.journal.total} onClick={() => setOffset(data.journal.offset + data.journal.limit)}>Suivant <ChevronRight size={18} aria-hidden="true" /></button></nav><button type="button" className={styles.inlineLink} onClick={() => selectTab("invoices")}>Consulter les prochaines échéances <ArrowRight size={16} aria-hidden="true" /></button></section>}
+          </> : tab === "accounts" ? <Accounts data={data} report={report} /> : tab === "chartOfAccounts" ? <ChartOfAccounts data={data} /> : <section className={styles.card} aria-label="Journal comptable"><header className={styles.cardHeader}><div><h2>Journal des opérations</h2></div><span className={styles.journalCount}>{data.journal.total.toLocaleString("fr-FR")} écriture{data.journal.total > 1 ? "s" : ""}</span></header><p className={styles.explanation}>Ouvre une opération pour voir les comptes débités et crédités. Le montant affiché correspond à son effet sur la trésorerie disponible.</p>{data.journal.items.length ? <ul className={styles.journal}>{data.journal.items.map(entry => <JournalEntry key={entry.id} entry={entry} />)}</ul> : <p className={styles.empty}>Aucune écriture sur cette période.</p>}<nav className={styles.pagination} aria-label="Pages du journal"><button type="button" disabled={data.journal.offset === 0} onClick={() => setOffset(Math.max(0, data.journal.offset - data.journal.limit))}><ChevronLeft size={18} aria-hidden="true" /> Précédent</button><span>{data.journal.total ? `${data.journal.offset + 1}–${Math.min(data.journal.offset + data.journal.items.length, data.journal.total)} sur ${data.journal.total}` : "0 écriture"}</span><button type="button" disabled={data.journal.offset + data.journal.limit >= data.journal.total} onClick={() => setOffset(data.journal.offset + data.journal.limit)}>Suivant <ChevronRight size={18} aria-hidden="true" /></button></nav><button type="button" className={styles.inlineLink} onClick={() => selectTab("invoices")}>Consulter les prochaines échéances <ArrowRight size={16} aria-hidden="true" /></button></section>}
         </> : null}
       </>}
     </section>

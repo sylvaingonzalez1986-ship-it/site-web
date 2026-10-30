@@ -1,10 +1,9 @@
 .rayon { min-width:0; overflow:hidden; color:#172923; --game-panel-art:var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border:2px solid transparent; border-radius:0; background:transparent; box-shadow:none; border-image:var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .rayon * { box-sizing:border-box; }
 .heading { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:6px 16px; padding:12px 16px; background:var(--game-surface-warm,#ffad63); border-bottom:1px solid #17292340; }
-.heading > div > span { display:flex; align-items:center; gap:6px; font-size:.62rem; font-weight:750; letter-spacing:.05em; text-transform:uppercase; }
 .rayon .heading h3 { margin:5px 0 0; font:900 1.45rem/1.1 var(--font-display),Impact,sans-serif; }
 .rayon .heading button { display:flex; align-items:center; justify-content:space-between; gap:8px; min-height:44px; padding:8px 0; border:0; background:transparent; color:inherit; font:750 .72rem/1.4 var(--font-body),sans-serif; text-decoration:underline; text-underline-offset:3px; cursor:pointer; }
-.rayon :where(button,summary):focus-visible { outline:3px solid #172923; outline-offset:3px; }
+.rayon :where(button,summary,[tabindex]):focus-visible { outline:3px solid #172923; outline-offset:3px; }
 .metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin:0; padding:14px 16px; }
 .metrics > div { min-width:0; }
 .metrics dt,.metrics small { font-size:.64rem; line-height:1.5; }

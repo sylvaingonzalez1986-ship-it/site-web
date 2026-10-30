@@ -13,16 +13,16 @@ const primary = [
   { key: "hub", label: "Mon quartier", art: "quarter", building: null },
   { key: "game", label: "Culture", art: "culture", building: "warehouse" },
   { key: "harvests", label: "Mes récoltes", art: "harvest", building: "warehouse" },
-  { key: "workshop", label: "Entrepôt", art: "warehouse", building: "warehouse" },
   { key: "market", label: "Commerce", art: "commerce", building: "market" },
-  { key: "social", label: "Réseaux", art: "social", building: null },
+  { key: "workshop", label: "Entrepôt", art: "warehouse", building: "warehouse" },
 ] as const;
-const mobilePrimary = primary.filter(({ key }) => key === "hub" || key === "game" || key === "harvests" || key === "social");
+const mobilePrimary = primary.filter(({ key }) => key !== "workshop");
 const secondary = [
   { key: "treasury", label: "Finances", art: "accounts", building: "office" },
+  { key: "social", label: "Réseaux", art: "social", building: null },
   { key: "collection", label: "Collections", art: "collection", building: "collection" },
   { key: "missions", label: "Missions", art: "missions", building: "missions" },
-  { key: "shop", label: "Boutique", art: "card-shop", building: "shop" },
+  { key: "shop", label: "Packs de cartes", art: "card-shop", building: "shop" },
 ] as const;
 
 export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailable, localNavigation = false }: {
@@ -69,35 +69,32 @@ export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailab
         <strong>KANAB<br />QUEST</strong>
         <KqPrintedArt kind="quarter" className={styles.brandArt} />
       </div>
-      <small>Ton quartier, tes récoltes.</small>
     </div>
     <nav aria-label={mobile ? "Toutes les activités de Kanab Quest" : "Navigation de Kanab Quest"}>
       <div className={styles.navGroup}>
-        <small>La vie du quartier</small>
-        {primary.map((item, index) => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}>
-          <span className={styles.navMark} aria-hidden="true"><KqPrintedArt kind={item.art} className={styles.navArt} /><span className={styles.navIndex}>{String(index + 1).padStart(2, "0")}</span></span>
+        {primary.map(item => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}>
+          <span className={styles.navMark} aria-hidden="true"><KqPrintedArt kind={item.art} className={styles.navArt} /></span>
           <span className={styles.navLabel}>{item.label}</span>
           <span className={styles.navArrow} aria-hidden="true">›</span>
         </button>)}
       </div>
       <div className={styles.navGroup}>
-        <small>Les bonnes adresses</small>
-        {secondary.map((item, index) => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}>
-          <span className={styles.navMark} aria-hidden="true"><KqPrintedArt kind={item.art} className={styles.navArt} /><span className={styles.navIndex}>{String(index + primary.length + 1).padStart(2, "0")}</span></span>
+        {secondary.map(item => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}>
+          <span className={styles.navMark} aria-hidden="true"><KqPrintedArt kind={item.art} className={styles.navArt} /></span>
           <span className={styles.navLabel}>{item.label}</span>
           <span className={styles.navArrow} aria-hidden="true">›</span>
         </button>)}
       </div>
     </nav>
     <div className={styles.navFooter}>
-      <details><summary><CircleHelp size={17} aria-hidden="true" /> Comment jouer</summary><p>Cultive, présente ta récolte au jury, puis prépare sa vente. « Mes récoltes » indique à chaque fois ce que tu peux faire.</p><p>L’Entrepôt regroupe les achats et la gestion du matériel. La Boutique propose les packs de cartes ; Collections réunit tes albums.</p><p>Réseaux réunit tes publications, les aventures et les partenariats.</p>{!localNavigation ? <ArenaLearningLauncher className={styles.learningButton} /> : null}</details>
+      <details><summary><CircleHelp size={17} aria-hidden="true" /> Comment jouer</summary><p>Cultive, retrouve ta récolte, puis prépare sa vente dans Commerce. « Mes récoltes » indique à chaque fois ce que tu peux faire.</p><p>L’Entrepôt regroupe les achats et la gestion du matériel. Packs de cartes permet d’acquérir et d’ouvrir tes packs ; Collections réunit tes albums.</p><p>Réseaux réunit tes publications, les aventures et les partenariats.</p>{!localNavigation ? <ArenaLearningLauncher className={styles.learningButton} onOpenQuarter={() => navigate("hub")} /> : null}</details>
     </div>
   </>;
   return <>
     <aside className={styles.sidebar}>{items()}</aside>
     <nav className={styles.mobileNav} aria-label="Accès rapides de Kanab Quest">
       {mobilePrimary.map(item => <button key={item.key} type="button" aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)}><KqPrintedArt kind={item.art} className={styles.mobileArt} /><span>{item.key === "hub" ? "Quartier" : item.key === "harvests" ? "Récoltes" : item.label}</span></button>)}
-      <button type="button" ref={trigger} aria-haspopup="dialog" aria-expanded={open} onClick={() => { drawer.current?.showModal(); setOpen(true); }}><Menu size={21} aria-hidden="true" /><span>Menu</span></button>
+      <button type="button" ref={trigger} aria-haspopup="dialog" aria-label="Plus d’activités" aria-expanded={open} onClick={() => { drawer.current?.showModal(); setOpen(true); }}><Menu size={21} aria-hidden="true" /><span>Plus</span></button>
     </nav>
     <dialog ref={drawer} className={styles.navDrawer} aria-label="Menu de Kanab Quest" onKeyDown={event => { if (event.key === "Escape") event.stopPropagation(); }} onCancel={event => { if (event.target !== event.currentTarget) return; event.preventDefault(); event.stopPropagation(); history.close(); }} onClick={event => { if (event.target === event.currentTarget) history.close(); }}>
       <header className={styles.drawerHeader}><strong>Le guide du quartier</strong><button className={styles.drawerClose} type="button" aria-label="Fermer le menu" onClick={history.close}><X size={22} aria-hidden="true" /></button></header>

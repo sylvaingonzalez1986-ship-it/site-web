@@ -324,8 +324,10 @@ try {
   report.keyboardTargets = keyboardTargets;
   await page.evaluate(() => document.body.style.setProperty('--placard-bottom-nav-height', '68px'));
   assert.equal(await page.$eval(actionbar, element => Math.round(innerHeight - element.getBoundingClientRect().bottom)), 68, 'Culture actions leave room for the mobile navigation');
-  await clickText(`${actionbar} button`, 'Voir mes possibilités');
-  await page.waitForFunction(() => document.activeElement?.hasAttribute('data-culture-options'));
+  await page.click('[data-culture-options-action]');
+  await page.waitForFunction(() => document.querySelector('[data-culture-options-action]')?.getAttribute('data-culture-options-action') === 'cards'
+    ? document.activeElement === document.querySelector('[data-culture-hand] > summary') && document.querySelector('[data-culture-hand]').open
+    : document.activeElement?.hasAttribute('data-culture-options'));
   await page.evaluate(() => document.body.style.removeProperty('--placard-bottom-nav-height'));
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   await show('prepare-motion');

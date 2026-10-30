@@ -1,5 +1,5 @@
 .page {
-  composes: surface from "./ArenaRetro.module.css";
+  composes: gameSurface from "./ArenaRetro.module.css";
   --arena-green: #087b70;
   --arena-green-dark: #172923;
   --arena-cream: #fff1d6;
@@ -46,7 +46,6 @@
 }
 
 .eyebrow,
-.sectionKicker,
 .controlLabel,
 .cardKicker {
   margin: 0;
@@ -627,10 +626,6 @@
   grid-template-columns: minmax(0, 1fr) minmax(240px, 42ch);
   align-items: end;
   gap: .35rem 2rem;
-}
-
-.arenaHubHeading .sectionKicker {
-  grid-column: 1 / -1;
 }
 
 .arenaHubHeading h2 {
@@ -2041,17 +2036,8 @@
 .personalRankingCard[data-ranking="tasting"] { border-top: 3px solid var(--arena-yellow); }
 .personalRankingCard[data-ranking="general"] { border-top: 3px solid var(--game-surface-warm); }
 
-.personalRankingCard > p {
-  margin: 0;
-  color: var(--arena-muted);
-  font-size: 0.55rem;
-  font-weight: 950;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
 .personalRankingCard h3 {
-  margin: 0.2rem 0 0.7rem;
+  margin: 0 0 0.7rem;
   color: var(--arena-ink);
   font-family: var(--font-display), sans-serif;
   font-size: 1.5rem;
@@ -2455,10 +2441,6 @@
   .arenaHubHeading,
   .arenaHubCards {
     grid-template-columns: minmax(0, 1fr);
-  }
-
-  .arenaHubHeading .sectionKicker {
-    grid-column: auto;
   }
 
   .arenaHubCard {

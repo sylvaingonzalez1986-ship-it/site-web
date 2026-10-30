@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import type { Product } from "@/data/products";
 import { readBrowserCart, saveBrowserCart } from "@/lib/cart-session-storage";
-import { alignCheckoutDraft, resolveCheckoutDraft, type CheckoutDraft, type CheckoutDraftState } from "@/lib/checkout-draft";
+import { alignCheckoutDraft, patchCheckoutDraft, resolveCheckoutDraft, type CheckoutDraft, type CheckoutDraftState } from "@/lib/checkout-draft";
 import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import { addCartItem, changeCartQuantity, type CartActionResult } from "@/lib/cart-mutations";
 export type { CartActionResult } from "@/lib/cart-mutations";
@@ -93,11 +93,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   }, [applyUser]);
 
   const updateCheckoutDraft = useCallback((patch: Partial<CheckoutDraft>) => {
-    setCheckoutDraftState(current => {
-      const scoped = alignCheckoutDraft(current, user?.id ?? null);
-      return { ...scoped, edits: { ...scoped.edits, ...patch } };
-    });
-  }, [user?.id]);
+    setCheckoutDraftState(current => patchCheckoutDraft(current, user, patch));
+  }, [user]);
 
   useEffect(() => {
     const storedItems = readBrowserCart();

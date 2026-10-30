@@ -1,0 +1,31 @@
+.dialog { width: min(560px, calc(100vw - 24px)); }
+.title { margin: 0; font: inherit; text-transform: none; }
+.body { padding: 14px 16px; font-size: .875rem; line-height: 1.5; text-align: left; }
+.effect { margin: 0 0 .6rem; }
+.limit { margin: 0 0 .8rem; padding-left: .7rem; border-left: 3px solid #b27b20; }
+.blocked, .assistance { margin: 0 0 .8rem; padding: .65rem; border-left: 3px solid #986226; background: var(--game-surface-warm, #f6b76e); font-weight: 700; }
+.timing { margin: .6rem 0; color: #445e54; font-size: .8125rem; }
+.rules { border-top: 1px solid #17292340; }
+.dialog .rules > summary { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: .5rem; min-height: 44px; padding: .65rem 0; box-sizing: border-box; font-size: .8125rem; font-weight: 750; text-align: left; list-style: none; cursor: pointer; }
+.rules summary::-webkit-details-marker { display: none; }
+.rules summary > svg { flex: 0 0 auto; }
+.rules[open] summary > svg { transform: rotate(180deg); }
+.rules summary:focus-visible, .actions button:focus-visible, .notice:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.cost { display: grid; gap: .2rem; margin-bottom: .65rem; font-size: .8125rem; line-height: 1.45; font-variant-numeric: tabular-nums; }
+.cost strong { font-size: .875rem; }
+.cost span { color: #445e54; }
+.actions { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr); gap: .5rem; }
+.actions button { display: flex; align-items: center; justify-content: center; gap: .3rem; min-width: 0; min-height: 44px; padding: .6rem .5rem; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; color: #172923; font: 750 .8125rem/1.35 var(--font-body), Arial, sans-serif; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.actions .confirm { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.actions button:not(:disabled):hover { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); }
+.actions button:disabled { opacity: .55; cursor: not-allowed; }
+.actions svg { flex: 0 0 auto; }
+.notice { max-height: 18dvh; margin: 0 0 .65rem; padding: .5rem .65rem; overflow-y: auto; overflow-wrap: anywhere; border-left: 3px solid #9b3412; color: #782719; background: var(--game-surface-warm, #f6b76e); font-size: .8125rem; line-height: 1.45; }
+@media (max-width: 480px) { .dialog { width: calc(100vw - 16px); } .body { padding: 12px 10px; } }
+.recovery, .recovered { margin: .8rem 0; padding: 1rem; color: #172923; font-size: .875rem; line-height: 1.5; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.recovery h2 { margin: 0 0 .4rem; font: 900 1.4rem/1.2 var(--font-display), sans-serif; }
+.recovery p { margin: .4rem 0; }
+.recovery .actions { grid-template-columns: minmax(0, 1fr); max-width: 19rem; margin: .75rem 0 .4rem; }
+.recovery small { font-size: .8125rem; }
+.recoveryStatus { overflow-wrap: anywhere; }
+.recoveryStatus:focus-visible, .recovered:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }

@@ -1,4 +1,4 @@
-.dialog { composes: surface from "./ArenaRetro.module.css"; position: fixed; inset: 0; z-index: 340; width: 100%; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: max(16px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); border: 0; background: transparent; color: #172923; overflow: visible; font-family: var(--font-body), Arial, sans-serif; }
+.dialog { composes: gameSurface from "./ArenaRetro.module.css"; position: fixed; inset: 0; z-index: 340; width: 100%; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: max(16px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left)); border: 0; background: transparent; color: #172923; overflow: visible; font-family: var(--font-body), Arial, sans-serif; }
 .dialog[open] { display: flex; align-items: center; justify-content: center; }
 .dialog::backdrop { background: #172923b8; }
 .sheet, .marquee, .publicScore, .entryImage { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); min-width: 0; border: 2px solid transparent; border-radius: 0; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; background: transparent; box-shadow: none; }
@@ -40,7 +40,7 @@
 .reviewScore strong small { color: #38594f; font: 750 11px/1 var(--font-body), Arial, sans-serif; }
 .reviewScore > span { color: #38594f; font-size: 11px; }
 .reviewQuote { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 4; margin: 0; overflow: hidden; color: #172923; font-size: 14px; line-height: 1.75; overflow-wrap: anywhere; }
-.marquee { composes: surface from "./ArenaRetro.module.css"; display: flex; flex-direction: column; gap: 18px; height: 100%; padding: 25px; color: #172923; overflow-wrap: anywhere; }
+.marquee { composes: gameSurface from "./ArenaRetro.module.css"; display: flex; flex-direction: column; gap: 18px; height: 100%; padding: 25px; color: #172923; overflow-wrap: anywhere; }
 .marqueeHeading { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-bottom: 14px; border-bottom: 2px solid #172923; }
 .marqueeHeading h3 { margin: 0; font: 850 30px/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .pause { --game-control-edge: 10px; min-height: 44px; padding: 9px 13px; font-size: 11px; }

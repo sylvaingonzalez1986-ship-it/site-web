@@ -272,12 +272,10 @@ function getScoreBandIndex(score: number): number {
 
 function GuideCard({
   title,
-  eyebrow,
   children,
   tone = "white",
 }: {
   title: string;
-  eyebrow?: string;
   children: ReactNode;
   tone?: "white" | "cream" | "yellow";
 }) {
@@ -289,9 +287,6 @@ function GuideCard({
 
   return (
     <div className={`${styles.guideCard} ${toneClass}`}>
-      {eyebrow ? (
-        <p className={styles.cardEyebrow}>{eyebrow}</p>
-      ) : null}
       <h4 className={styles.cardTitle}>{title}</h4>
       <div className={styles.cardBody}>{children}</div>
     </div>
@@ -348,9 +343,6 @@ function CriterionGuideCard({
     <article className={styles.criterionCard}>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
-          <p className="text-[10px] font-black uppercase tracking-[0.16em] text-charcoal">
-            Méthode de note
-          </p>
           <h4 className="text-lg font-black leading-tight text-ink">{guide.shortTitle}</h4>
         </div>
         <span className={styles.numberStamp}>
@@ -469,7 +461,7 @@ function QuickStepIntro({
   body,
   mascotStep,
 }: {
-  eyebrow: string;
+  eyebrow?: string;
   title: string;
   body: string;
   mascotStep?: TastingStepMascotKey;
@@ -477,7 +469,7 @@ function QuickStepIntro({
   return (
     <div className={styles.stepIntro}>
       <div className={styles.stepIntroCopy}>
-        <p className={styles.eyebrow}>{eyebrow}</p>
+        {eyebrow ? <p className={styles.eyebrow}>{eyebrow}</p> : null}
         <h3 className={styles.stepTitle}>{title}</h3>
         <p className={styles.stepBody}>{body}</p>
       </div>
@@ -1109,7 +1101,7 @@ function ContestNotebookEditor({
   const renderBookScoreSummary = () => (
     <section className={styles.bookScoreSummary} aria-label="Comparaison de mes notes">
       <div className={styles.bookScoreHeading}>
-        <div><p>Mon profil de dégustation</p><h3>Mes notes</h3></div>
+        <div><h3>Mes notes</h3></div>
         <ContestTastingStepMascot step="verdict" compact />
       </div>
       <p className={styles.bookReviewStatus}>
@@ -1179,9 +1171,6 @@ function ContestNotebookEditor({
         <div className={styles.paperPanel}>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
             <div className="space-y-1">
-              <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                Ton guide
-              </p>
               <h3 className="text-2xl font-bold text-ink">{viewerReview.pseudo}</h3>
             </div>
             <div className="flex items-start gap-3 self-start">
@@ -1570,17 +1559,13 @@ function ContestNotebookEditor({
           left={
             <>
               <QuickStepIntro
-                eyebrow="Mode rapide"
                 title={displayMode === "book" ? "Avant la première impression" : "Note cette fleur en 2 minutes"}
                 body={displayMode === "book" ? "Installe-toi, prépare ta fleur et choisis ton mode de dégustation. Avance à ton rythme." : "Tu peux avancer sans lire le guide complet. Les aides restent disponibles si tu bloques."}
                 mascotStep="start"
               />
               {isConcoursEntry ? (
                 <div className={styles.goldPanel}>
-                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#6d4b00]">
-                    Repères aromatiques
-                  </p>
-                  <h4 className="mt-1 text-xl font-black leading-tight text-ink">
+                  <h4 className="text-xl font-black leading-tight text-ink">
                     Reconnais les terpènes dominants
                   </h4>
                   <p className="mt-2 text-sm font-semibold leading-relaxed text-charcoal">
@@ -1646,11 +1631,11 @@ function ContestNotebookEditor({
           right={
             <>
               <QuickHelp title="Voir les règles et conseils">
-                <GuideCard title="La règle du concours" eyebrow="Analyse et dégustation" tone="yellow">
+                <GuideCard title="La règle du concours" tone="yellow">
                   <GuideBullets items={CONTEST_CBD_TASTING_RULES} />
                 </GuideCard>
                 {CONTEST_PREPARATION_GUIDE.map((section) => (
-                  <GuideCard key={section.title} title={section.title} eyebrow="Préparation" tone="cream">
+                  <GuideCard key={section.title} title={section.title} tone="cream">
                     <p>{section.body}</p>
                     <div className="mt-3">
                       <GuideBullets items={section.bullets} />
@@ -1727,10 +1712,7 @@ function ContestNotebookEditor({
                 <div className={styles.goldPanel}>
                   <div className="flex flex-wrap items-start justify-between gap-3">
                     <div>
-                      <p className="text-[11px] font-black uppercase tracking-[0.16em] text-[#6d4b00]">
-                        Repères aromatiques
-                      </p>
-                      <h4 className="mt-1 text-xl font-black leading-tight text-ink">
+                      <h4 className="text-xl font-black leading-tight text-ink">
                         Quels terpènes reconnais-tu ?
                       </h4>
                     </div>
@@ -1861,7 +1843,7 @@ function ContestNotebookEditor({
           }
           right={
             <QuickHelp>
-              <GuideCard title="Selon ton matériel" eyebrow="Contexte important" tone="cream">
+              <GuideCard title="Selon ton matériel" tone="cream">
                 Le vaporisateur met souvent mieux en avant les nuances. La combustion juge davantage
                 la douceur et l&apos;absence d&apos;âcreté.
               </GuideCard>
@@ -1951,14 +1933,14 @@ function ContestNotebookEditor({
           }
           right={
             <QuickHelp>
-              <GuideCard title="Verdict final" eyebrow="Simple et utile" tone="yellow">
+              <GuideCard title="Verdict final" tone="yellow">
                 Dis ce que tu as vu, senti, goûté, puis ton impression générale. Une critique courte
                 mais précise vaut mieux qu&apos;un long texte vague.
               </GuideCard>
-              <GuideCard title="Repères de note" eyebrow="Avant d'envoyer" tone="cream">
+              <GuideCard title="Repères de note" tone="cream">
                 <GuideBullets items={CONTEST_STANDARD_GUIDE.positives.slice(0, 3)} />
               </GuideCard>
-              <GuideCard title="Structure possible" eyebrow="Si tu veux détailler" tone="white">
+              <GuideCard title="Structure possible" tone="white">
                 <GuideBullets items={CONTEST_VERDICT_GUIDE} />
               </GuideCard>
             </QuickHelp>
@@ -1979,7 +1961,7 @@ function ContestNotebookEditor({
       ) : (
         <section className={styles.teaser} aria-label="Carnet de dégustation">
           <div className={styles.teaserTop}>
-            <p className={styles.eyebrow}>Jury client · {entry.season?.label ?? "Saison active"}</p>
+            <p className={styles.eyebrow}>{entry.season?.label ?? "Saison active"}</p>
             <div className={styles.teaserScore}>
               {formatContestAverage(viewerReview ? getContestReviewAverage(viewerReview.scores) : scoreAverage)}/{CONTEST_SCORE_MAX}
             </div>

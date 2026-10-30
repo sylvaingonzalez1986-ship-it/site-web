@@ -73,7 +73,6 @@
 .studio .impactDetails p { font-size:.65rem; }
 .direction { margin-top:26px; }
 .subheading { display:flex; align-items:center; justify-content:space-between; gap:15px; margin-bottom:12px; }
-.subheading > div > span { font-size:.62rem; text-transform:uppercase; letter-spacing:.07em; }
 .studio .subheading h3 { margin:5px 0 0; font:900 1.6rem/1.15 var(--font-display),Impact,sans-serif; }
 .free { flex-shrink:0; border:1px solid #17292340; border-radius:var(--game-panel-radius, 2px); padding:7px 10px; font-size:.62rem; background:#c2e9dc; }
 .styleChoices { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; margin-bottom:14px; }

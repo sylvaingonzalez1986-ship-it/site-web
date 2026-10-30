@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
-import { ArrowUpRight, BookOpen, LockKeyhole, Monitor, Scan, Trophy, UserRound, ZoomIn } from "lucide-react";
+import { ArrowUpRight, BookOpen, LockKeyhole, Scan, Swords, Trophy, UserRound, ZoomIn } from "lucide-react";
 import { useId, useRef, useState, type CSSProperties, type PointerEvent, type RefObject } from "react";
 import { ARENA_LOBBY_MODES, ARENA_LOBBY_MODE_ORDER, type ArenaLobbyMode } from "@/lib/arena-lobby";
 import type { ArenaProfileAvailability, ArenaProfileLauncherHandle } from "@/lib/arena-profile-launcher";
@@ -11,7 +11,7 @@ import styles from "./ArenaWorldMap.module.css";
 
 const PLACES = {
   carnet: { Icon: BookOpen },
-  jouer: { Icon: Monitor },
+  jouer: { Icon: Swords },
   classement: { Icon: Trophy },
 } as const;
 const coordinates = (place: ReturnType<typeof getArenaMapPlaceGeometry>) => ({
@@ -55,9 +55,8 @@ export function ArenaWorldMap({ activitiesLocked, notebookOpen, initialMode, pro
     };
   };
 
-  return <section className={styles.map} data-arena-map data-map-zoomed={zoomed || undefined} aria-label="Le bureau de Sylvain">
+  return <section className={styles.map} data-arena-map data-map-zoomed={zoomed || undefined} aria-label="L’Arène avec Sylvain">
     <div className={styles.heading}>
-      <span>Explore le bureau</span>
       <button type="button" className={styles.zoom} data-arena-map-zoom aria-pressed={zoomed} aria-controls="arena-map-viewport" onClick={toggleZoom}>
         {zoomed ? <Scan size={17} aria-hidden="true" /> : <ZoomIn size={17} aria-hidden="true" />}{zoomed ? "Vue d’ensemble" : "Agrandir"}
       </button>

@@ -269,10 +269,18 @@ if(preview){
   await page.click('[data-arena-help-trigger]'); await page.click('[data-arena-trial-trigger]');
   await page.waitForSelector('[data-chanvrier-profile][open]',{visible:true});
   await page.click('[aria-label="Fermer le profil"]'); await noModal();
+  const nextProfileStep=async step=>{
+    await page.locator('[data-chanvrier-profile][open] [data-profile-next]').click();
+    await page.waitForSelector(`[data-chanvrier-profile][open][data-profile-step="${step}"]`,{visible:true});
+  };
   const saveProfile=async nickname=>{
+    await page.waitForSelector('[data-chanvrier-profile][open][data-profile-step="inheritance"]',{visible:true});
+    await nextProfileStep('look');
     await page.type('input[autocomplete="nickname"]',nickname);
-    await clickText('Choisir ma force');
-    await clickText('Créer mon chanvrier');
+    await nextProfileStep('strength');
+    await nextProfileStep('review');
+    await page.locator('[data-chanvrier-profile][open] input[name="confirm-strength"]').click();
+    await page.locator('[data-chanvrier-profile][open] [data-profile-next]').click();
     await page.waitForFunction(()=>!document.querySelector('[data-chanvrier-profile][open]'));
   };
   await load('new');
@@ -299,7 +307,7 @@ if(preview){
   await page.keyboard.press('Escape');await noModal();await assertProfileFocus();
   await page.locator('[data-arena-profile-trigger]').click();await page.waitForSelector('[data-chanvrier-palmares][open]',{visible:true});
   await clickText('Personnaliser mon personnage');await page.waitForSelector('[data-chanvrier-profile][open]',{visible:true});
-  await clickText('Choisir ma force');await clickText('Enregistrer mon profil');await page.waitForSelector('[data-chanvrier-profile][open]',{hidden:true});await noModal();await assertProfileFocus();
+  await nextProfileStep('review');await page.locator('[data-chanvrier-profile][open] [data-profile-next]').click();await page.waitForSelector('[data-chanvrier-profile][open]',{hidden:true});await noModal();await assertProfileFocus();
   assert.deepEqual(requests.slice(returningEditStart).filter(request=>request.method==='POST').map(request=>request.path),['/api/arena/chanvrier']);
   for(const state of ['error','prelaunch-error']){
     await load(state);const retryStart=requests.length;await page.locator('[data-arena-profile-trigger]').click();

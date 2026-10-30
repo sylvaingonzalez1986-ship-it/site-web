@@ -5,6 +5,7 @@ import { KqCardEffectGuide as CardEffectGuide, KqCardRoleLegend } from "./KqCard
 import { KQ_SITUATION_TAG_LABELS, KQ_CARD_RARITY_LABELS, getKqCardRarityLabel } from "@/lib/kanab-quest-card-guide";
 import { AppDialog } from "@/components/ui/AppDialog";
 import { navigateAfterOverlays } from "@/lib/overlay-history";
+import { createClientRequestKey } from "@/lib/client-request-key";
 import { useGameViewport } from "@/hooks/useGameViewport";
 import { getBuddieArtwork } from "@/lib/buddie-artwork";
 import { getKqProductionUnits } from "@/lib/kanab-quest-production";
@@ -23,13 +24,20 @@ import { CHANVRIER_STRENGTHS, type ChanvrierStrength } from "@/lib/arena-chanvri
 import { KqHeritageCarousel } from "./KqHeritageCarousel";
 import { KqSeasonBoard } from "./KqSeasonBoard";
 import { KqBattleHistory } from "./KqBattleHistory";
+import { KqChapterHeading } from "./KqChapterHeading";
+import { getKqJuryTarget } from "@/lib/kanab-quest-jury-target";
 import { KqBattleVerdictDialog } from "./KqBattleVerdictDialog";
 import { KqCulturePreparation } from "./KqCulturePreparation";
 import { KqCultureContract } from "./KqCultureContract";
 import { useKqGameSound } from "./KqGameSound";
 import { KqHarvestMoment } from "./KqHarvestMoment";
+import { getKqHarvestMoment } from "@/lib/kanab-quest-harvest-moment";
+import { KqProgressMeter } from "./KqVisuals";
 import { KqHarvestTierProgress } from "./KqHarvestTierProgress";
-import { KqCardPlayPreview } from "./KqCardPlayPreview";
+import { KqCardChoiceDialog } from "./KqCardChoiceDialog";
+import { KqCardRecoveryNotice } from "./KqCardRecoveryNotice";
+import { KqHandAdjustment } from "./KqHandAdjustment";
+import { readKqCardRecovery, verifyKqCardPlayResult, type KqCardAttempt } from "@/lib/kanab-quest-card-recovery";
 import { getKqCardPlayPreview } from "@/lib/kanab-quest-card-preview";
 import { KQ_HARVEST_TIERS_LEGACY, KQ_HARVEST_TIERS_V2, KQ_LEGENDARY_REQUIREMENTS } from "@/lib/kanab-quest-harvest-tiers";
 import { KQ_ENERGY_MODES, type KqEnergyMode, type KqEnergyQuote } from "@/lib/kanab-quest-energy";
@@ -46,6 +54,7 @@ import {
   activateKqHeritage,
   canActivateKqHeritage,
   canRedrawKqHand,
+  canSwapKqHeritageHandCard,
   getKqHandCodes,
   getKqEffectNoticeKind,
   getKqHarvestBreakdown,
@@ -55,7 +64,6 @@ import {
   getKqStageTarget,
   getKqUnrescuedZeroSuccessStageCount,
   hasKqFirstCultureRescue,
-  getKqCardTradeoff,
   KQ_LIVING_SOIL,
   getKqCultureSystemSituationStatus,
   getKqSituation,
@@ -111,7 +119,7 @@ import { getKqPressureHint, getKqTurnPreview } from "@/lib/kanab-quest-turn-prev
 import { KqTurnPreview } from "./KqTurnPreview";
 import { KqCultureRecap, KqJuryRecap } from "./KqPersonalRecap";
 import { clearKqZoneStartRequestKey, getKqClientRunZoneId, getKqZoneStartRequestKey, KQ_CAMPAIGN_START_SCOPE, selectKqClientRun, type KqClientRunSelection } from "@/lib/kanab-quest-client-run-selection";
-import { getKqCampaignMemberState, getKqCampaignParticipants } from "@/lib/kanab-quest-campaign";
+import { getKqCampaignMemberState, getKqCampaignParticipants, getKqCampaignTotals } from "@/lib/kanab-quest-campaign";
 import { KqCampaignSummary } from "./KqCampaignSummary";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { isKqWarehouseState, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
@@ -267,7 +275,7 @@ function VerdictMarketTarget({
             ? `${routeStatus.name} · seuil qualité atteint`
             : `${routeStatus.name} · seuil non atteint au jury`
           : "Ta récolte continue au comptoir"}</b>
-        <em>Affinage : 6 h réelles après le verdict. Avant maturité, reprise grossiste possible selon son quota.</em>
+        <em>L’affinage déjà accompli est conservé. Le verdict ouvre les débouchés de ton lot.</em>
         <em>Le comptoir confirme le stock, les contenants et les offres.</em>
       </span>
     </section>
@@ -339,13 +347,15 @@ function HarvestYieldBreakdown({ state }: { state: KqGameState }) {
 function HarvestScoreSheet({ state }: { state: KqGameState }) {
   const breakdown = getKqHarvestBreakdown(state);
   const signed = (value: number) => `${value > 0 ? "+" : ""}${value}`;
+  const zone = state.warehouse?.version === 2 ? getKqZoneIdentity(state.warehouse.sourceState, state.warehouse.zoneId) : null;
   return (
     <section className={styles.harvestScoreSheet} aria-label="Bulletin de la récolte">
-      <header><span><Trophy aria-hidden="true" /><small>Bulletin de culture</small><strong>Pourquoi cette note ?</strong></span><p>Chaque chiffre vient du moteur de la partie.</p></header>
+      <header><span><Trophy aria-hidden="true" /><strong>Détail de la qualité de culture</strong></span><p>Des points de culture, distincts de la future note du jury sur 10.</p></header>
+      {state.campaign ? <p className={styles.harvestNote} data-harvest-score-scope>Calcul pour {state.varietyName}{zone ? ` · ${zone.label}` : ""}. Les quantités et qualités des autres variétés figurent dans « Tes récoltes ».</p> : null}
       <div className={styles.qualityEquation} aria-label={`${breakdown.stageQuality} points de culture plus ${breakdown.equipmentQualityBonus} points de matériel donnent ${breakdown.finalQuality} points de qualité`}>
-        <article><small>Résultats des 6 étapes</small><strong>{signed(breakdown.stageQuality)}</strong></article><b>+</b>
-        <article><small>Matériel durable</small><strong>{signed(breakdown.equipmentQualityBonus)}</strong></article><b>=</b>
-        <article data-final><small>Qualité finale</small><strong>{breakdown.finalQuality}</strong></article>
+        <article><small>Résultats des {state.history.length} étapes</small><strong>{signed(breakdown.stageQuality)} pts</strong></article><b>+</b>
+        <article><small>Matériel durable</small><strong>{signed(breakdown.equipmentQualityBonus)} pts</strong></article><b>=</b>
+        <article data-final><small>Qualité de culture</small><strong>{breakdown.finalQuality} pts</strong></article>
       </div>
       <HarvestYieldBreakdown state={state} />
       <ol className={styles.harvestStageLedger}>
@@ -363,8 +373,10 @@ type KqDiceProps = {
   onOpenArena?: () => void;
   onOpenGame?: () => void;
   onOpenMarket?: (flowerId?: string) => void;
+  onOpenStorage?: (flowerId?: string) => void;
   onOpenRun?: (selection: KqClientRunSelection) => void;
   onOpenWarehouse?: (zoneId?: string) => void;
+  onOpenBuddiePacks?: () => void;
   showWarehouseNavigation?: boolean;
   initialFlowerId?: string;
   initialZoneId?: string;
@@ -390,12 +402,14 @@ function KqGameSession({
   onOpenArena,
   onOpenGame,
   onOpenMarket,
+  onOpenStorage,
   initialFlowerId,
   initialZoneId,
   initialRunId,
   initialCampaign = false,
   onOpenRun,
   onOpenWarehouse,
+  onOpenBuddiePacks,
   tutorial,
   isolatedStorage,
   onPreparationChange,
@@ -405,6 +419,10 @@ function KqGameSession({
   const api = useKqTutorialApi();
   const router = useRouter();
   const sound = useKqGameSound();
+  const openStorage = (flowerId?: string) => {
+    if (onOpenStorage) onOpenStorage(flowerId);
+    else router.push(`/arene/placard?view=workshop&section=storage${flowerId ? `&flower=${encodeURIComponent(flowerId)}` : ""}`);
+  };
   const [freshHarvestKey, setFreshHarvestKey] = useState<string | null>(null);
   const [presentationView, setPresentationView] = useState(viewMode);
   const currentPresentationView = useRef(viewMode);
@@ -417,6 +435,7 @@ function KqGameSession({
   useLayoutEffect(() => { currentPresentationView.current = viewMode; }, [viewMode]);
   const isPlayerMode = !tutorial && apiScope === "player";
   const playerPresentation = isPlayerMode || Boolean(tutorial);
+  const practiceSession = Boolean(tutorial) || api.isTutorial;
   const showAdminOperations = !tutorial && requestedAdminOperations;
   const lifecycle = useRef<{ mounted: boolean; controller: AbortController | null }>({ mounted: false, controller: null });
   useEffect(() => {
@@ -484,8 +503,6 @@ function KqGameSession({
     publishedPreparation.current = null;
     preparationCallbacks.current.consumed?.();
   }, []);
-  const [heritageSwapOutIndex, setHeritageSwapOutIndex] = useState<number | null>(null);
-  const [heritageExchangeTab, setHeritageExchangeTab] = useState<"hand" | "reserve">("hand");
   const [rankProfile, setRankProfile] = useState<KqRankProfile>(() => createKqRankProfile());
   const [pendingBurnCode, setPendingBurnCode] = useState<string | null>(null);
   const [handFilterChoice, setHandFilterChoice] = useState<{ scope: string; value: "playable" | "all" } | null>(null);
@@ -571,22 +588,14 @@ function KqGameSession({
   const [persistedFlowerId, setPersistedFlowerId] = useState<string | null>(null);
   const [officialFlowers, setOfficialFlowers] = useState<KqOfficialFlower[]>([]);
   const focusedFlowerId = useRef<string | null>(null);
-  useEffect(() => {
-    if (!hydrated || viewMode !== "arena" || !initialFlowerId || focusedFlowerId.current === initialFlowerId || !officialFlowers.some(flower => flower.id === initialFlowerId)) return;
-    const frame = window.requestAnimationFrame(() => {
-      const target = document.getElementById(`placard-flower-${initialFlowerId}`);
-      if (!target) return;
-      focusedFlowerId.current = initialFlowerId;
-      target.scrollIntoView({ block: "start", behavior: "instant" });
-      target.focus({ preventScroll: true });
-    });
-    return () => window.cancelAnimationFrame(frame);
-  }, [hydrated, initialFlowerId, officialFlowers, viewMode]);
+  const requestedJuryFlower = useRef(initialFlowerId);
+  const jurySelectionNotice = useRef<HTMLDivElement>(null);
   const queuedFlowerIdsKey = useMemo(() => officialFlowers
     .filter((flower) => flower.status === "queued")
     .map((flower) => flower.id)
     .sort()
     .join(","), [officialFlowers]);
+  const curingFlowersNeedRefresh = officialFlowers.some(flower => flower.status === "available" && flower.storage?.stage !== "ready");
   const [botBattleResult, setBotBattleResult] = useState<BotBattleResult | null>(null);
   const [matchmakingLoading, setMatchmakingLoading] = useState(false);
   const [juryCheckNeeded, setJuryCheckNeeded] = useState(false);
@@ -607,8 +616,47 @@ function KqGameSession({
   const officialRecapBattle = officialBattleResult ? officialBattles.find(item => item.id === officialBattleResult.battleId) : undefined;
   // Bind the continuation to this verdict, never to a subsequently selected Flower.
   const officialVerdictFlowerId = officialBattleResult?.playerFlowerId ?? officialRecapBattle?.playerFlower.id;
+  const reserveFlowers = officialFlowers
+    .filter(flower => flower.status !== "burned" && !officialBattles.some(battle => battle.playerFlower.id === flower.id && battle.status === "verdict"))
+    .map(flower => officialBattles.some(battle => battle.playerFlower.id === flower.id && battle.status === "locked") ? { ...flower, status: "locked" as const } : flower);
+  const juryDataReady = selectionReady && !selectionError && !remoteCollection.loading;
+  const juryTarget = getKqJuryTarget(officialFlowers, officialBattles, initialFlowerId);
+  useEffect(() => {
+    if (requestedJuryFlower.current !== initialFlowerId) { requestedJuryFlower.current = initialFlowerId; focusedFlowerId.current = null; }
+    if (!hydrated || viewMode !== "arena" || !juryDataReady || !initialFlowerId || focusedFlowerId.current === initialFlowerId || juryTarget.kind === "battle") return;
+    const frame = requestAnimationFrame(() => {
+      const target = juryTarget.kind === "flower" ? document.getElementById(`placard-flower-${initialFlowerId}`) : jurySelectionNotice.current;
+      if (!target) return;
+      focusedFlowerId.current = initialFlowerId;
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ block: "start", behavior: "instant" });
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [hydrated, viewMode, juryDataReady, initialFlowerId, juryTarget.kind, recentBattlesLoaded]);
   const [officialChallengeReward, setOfficialChallengeReward] = useState<{ points: number; titles: string[] } | null>(null);
   const [remoteAction, setRemoteAction] = useState<"start" | "card" | "game" | null>(null);
+  const cardOperation = useRef(false);
+  const cardSyncGeneration = useRef(0);
+  const cardRecoveryRef = useRef<KqCardAttempt | null>(null);
+  const [cardRecovery, setCardRecovery] = useState<KqCardAttempt | null>(null);
+  const [cardChecking, setCardChecking] = useState(false);
+  const [cardRecoveryMessage, setCardRecoveryMessage] = useState("");
+  const [cardRecoveryResult, setCardRecoveryResult] = useState("");
+  const cardContextKey = `${apiScope}:${initialRunId ?? ""}:${initialZoneId ?? ""}:${Boolean(initialCampaign)}`;
+  const cardContext = useRef(cardContextKey);
+  useLayoutEffect(() => {
+    if (cardContext.current === cardContextKey) return;
+    cardContext.current = cardContextKey;
+    cardSyncGeneration.current += 1;
+    cardOperation.current = false;
+    cardRecoveryRef.current = null;
+    setCardRecovery(null);
+    setCardChecking(false);
+    setCardRecoveryMessage("");
+    setCardRecoveryResult("");
+    setPendingBurnCode(null);
+    setRemoteAction(current => current === "card" || current === "game" ? null : current);
+  }, [cardContextKey]);
   const [careBusy, setCareBusy] = useState(false);
   const careStorage = !remoteBurnsEnabled && typeof window !== "undefined" ? tutorial?.storage ?? (isolatedStorage?.persistent ?? window.localStorage) : undefined;
   const [remoteNotice, setRemoteNotice] = useState("");
@@ -635,6 +683,8 @@ function KqGameSession({
       ? "Vérifie l’enregistrement de tes Buddies avant de commencer."
     : isPlayerMode && activeRuns.length > 0
       ? "Termine tes cultures en cours avant de lancer une nouvelle campagne."
+      : isPlayerMode && !remoteCollection.loading && !remoteCollection.error && ownedBuddieCodes.length === 0
+        ? "Il te faut au moins un Buddie dans ta collection. Les Packs Buddies sont accessibles ci-dessus."
       : isPlayerMode && !campaignParticipants.length
         ? "Choisis un Buddie ci-dessus pour au moins une zone active."
       : isPlayerMode && new Set(campaignParticipants.map(member => member.buddieCode)).size !== campaignParticipants.length
@@ -675,6 +725,7 @@ function KqGameSession({
   }, [api, isPlayerMode]);
 
   const resolveSelectedSession = useCallback(async (payload: PlayerSessionPayload, signal: AbortSignal): Promise<PlayerSessionPayload> => {
+    const generation = cardSyncGeneration.current;
     if (!isPlayerMode) return payload;
     let resolved = payload;
     if (initialZoneId || initialRunId) {
@@ -706,7 +757,7 @@ function KqGameSession({
       if (initialZoneId && !zone) throw new Error("Cette zone n’existe plus. Choisis une zone dans l’entrepôt.");
       participants = getKqCampaignParticipants(warehouse.state, warehouse.revision ?? 0);
     }
-    if (signal.aborted || !lifecycle.current.mounted) throw new DOMException("Culture fermée", "AbortError");
+    if (signal.aborted || !lifecycle.current.mounted || generation !== cardSyncGeneration.current || cardOperation.current || cardRecoveryRef.current) throw new DOMException("Culture fermée", "AbortError");
     const recoveredZoneId = selected ? getKqClientRunZoneId(selected) : undefined;
     if (recoveredZoneId && selected?.state.phase !== "complete") clearKqZoneStartRequestKey((isolatedStorage?.session ?? window.sessionStorage), recoveredZoneId);
     if (selected?.state.campaign) clearKqZoneStartRequestKey((isolatedStorage?.session ?? window.sessionStorage), KQ_CAMPAIGN_START_SCOPE);
@@ -727,7 +778,7 @@ function KqGameSession({
   }, [initialZoneId]);
 
   const applyOfficialSessionPayload = useCallback((payload: PlayerSessionPayload) => {
-    if (!lifecycle.current.mounted) return;
+    if (!lifecycle.current.mounted || cardOperation.current || cardRecoveryRef.current) return;
     if (payload.buddieRotation !== undefined) setBuddieRotation(payload.buddieRotation);
     const activeRun = isPlayerMode ? selectKqClientRun(payload, { zoneId: initialZoneId, runId: initialRunId, campaign: initialCampaign }) : payload.activeRun ?? null;
     setActiveRuns(payload.activeRuns ?? (payload.activeRun ? [payload.activeRun] : []));
@@ -860,6 +911,8 @@ function KqGameSession({
       return;
     }
     const controller = new AbortController();
+    if (cardOperation.current || cardRecoveryRef.current) return;
+    const generation = cardSyncGeneration.current;
     remoteInventoryVerifiedRef.current = false;
     setRemoteHeritageVerified(false);
     setRemoteCollection(current => ({ ...current, loading: true, error: "" }));
@@ -910,7 +963,7 @@ function KqGameSession({
           routePlan?: KqRoutePlan | null;
           playerSession?: PlayerSessionPayload | null;
         };
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted || generation !== cardSyncGeneration.current) return;
         if (!response.ok) throw new Error(payload.error || "Initialisation de Kanab Quest indisponible.");
         setBuddieRotation(payload.buddieRotation ?? payload.playerSession?.buddieRotation ?? null);
         if ((payload.warnings?.length ?? 0) > 0) setRemoteNotice(payload.warnings!.join(" · "));
@@ -982,7 +1035,7 @@ function KqGameSession({
         if (isPlayerMode && payload.playerSession && sessionReusable) {
           skipNextSessionFetchRef.current = true;
           const selectedSession = await resolveSelectedSession(payload.playerSession, controller.signal);
-          if (controller.signal.aborted) return;
+          if (controller.signal.aborted || generation !== cardSyncGeneration.current) return;
           applyOfficialSessionPayload(selectedSession);
           const warnings = [...(payload.warnings ?? []), ...(payload.playerSession.warnings ?? [])];
           if (warnings.length > 0) setRemoteNotice(warnings.join(" · "));
@@ -993,7 +1046,7 @@ function KqGameSession({
         }
       })
       .catch((error: unknown) => {
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted || generation !== cardSyncGeneration.current) return;
         if (error instanceof DOMException && error.name === "AbortError") return;
         const message = error instanceof Error ? error.message : "Initialisation de Kanab Quest indisponible.";
         if (isPlayerMode) { setSelectionError(message); setSelectionReady(true); }
@@ -1005,6 +1058,8 @@ function KqGameSession({
 
   useEffect(() => {
     if (remoteBurnsEnabled && remoteCollection.loading) return;
+    if (cardOperation.current || cardRecoveryRef.current) return;
+    const generation = cardSyncGeneration.current;
     if (!remoteBurnsEnabled || !remoteCollection.ownerFound) {
       setOfficialFlowers([]);
       setOfficialBattles([]);
@@ -1031,18 +1086,20 @@ function KqGameSession({
           battles?: KqOfficialBattle[];
           progress?: OfficialRankProgress | null;
         };
+        if (controller.signal.aborted || generation !== cardSyncGeneration.current) return;
         if (!response.ok) throw new Error(payload.error || "Session Kanab Quest indisponible.");
         const selectedSession = await resolveSelectedSession(payload, controller.signal);
-        if (controller.signal.aborted) return;
+        if (controller.signal.aborted || generation !== cardSyncGeneration.current) return;
         applyOfficialSessionPayload(selectedSession);
       })
       .catch((error: unknown) => {
+        if (generation !== cardSyncGeneration.current) return;
         if (error instanceof DOMException && error.name === "AbortError") return;
         const message = error instanceof Error ? error.message : "Session Kanab Quest indisponible.";
         if (isPlayerMode) { setSelectionError(message); setSelectionReady(true); }
         setRemoteNotice(message);
       })
-      .finally(() => setRemoteAction(null));
+      .finally(() => { if (generation === cardSyncGeneration.current) setRemoteAction(null); });
     return () => controller.abort();
   }, [api, applyOfficialSessionPayload, isPlayerMode, remoteBurnsEnabled, remoteCollection.loading, remoteCollection.ownerFound, resolveSelectedSession]);
 
@@ -1083,6 +1140,16 @@ function KqGameSession({
       stopPolling();
     };
   }, [queuedFlowerIdsKey, refreshOfficialRanking, remoteBurnsEnabled, remoteRequest]);
+
+  useEffect(() => {
+    if (!remoteBurnsEnabled || viewMode !== "arena" || !curingFlowersNeedRefresh) return;
+    let active = true;
+    const stopPolling = startArenaVisiblePolling(async () => {
+      const snapshot = await getKqRemoteFlowers(remoteRequest);
+      if (active) setOfficialFlowers(snapshot.flowers);
+    });
+    return () => { active = false; stopPolling(); };
+  }, [curingFlowersNeedRefresh, remoteBurnsEnabled, remoteRequest, viewMode]);
 
   useEffect(() => {
     if (hydrated && !isPlayerMode) void repositoryRef.current?.saveGame(state);
@@ -1187,7 +1254,15 @@ function KqGameSession({
   const handCodes = useMemo(() => getKqHandCodes(state), [state]);
   const supportDeckSize = state.deckCodes.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")).length;
   const burnedSupportCount = state.usedCards.filter((code) => !["substrate", "pbi"].includes(KQ_CARDS.find((card) => card.code === code)?.category ?? "")).length;
-  const redrawPermission = canRedrawKqHand(state);
+  const handAdjustmentBusy = remoteAction !== null || careBusy || rolling || diceVisualSyncing || (remoteBurnsEnabled && remoteCollection.loading);
+  const handAdjustmentBlockedReason = cardRecovery ? "Vérifie la culture avant d’ajuster ta main."
+    : pendingBurnCode ? "Ferme la carte consultée avant d’ajuster ta main."
+      : rolling || diceVisualSyncing ? "Attends la fin du lancer."
+        : remoteAction !== null || careBusy ? "Attends la confirmation en cours."
+          : remoteBurnsEnabled && remoteCollection.loading ? "Attends la fin du chargement de ta culture." : undefined;
+  const handAdjustmentScope = JSON.stringify([remoteRunId, state.startedAt, state.seed, state.stageIndex, state.phase,
+    state.preparationPlayed, state.playedThisStage, state.heritageCode, state.heritageUsed, state.handRedrawsUsed, handCodes, state.heritageReserveCodes,
+    Boolean(cardRecovery), Boolean(pendingBurnCode), handAdjustmentBusy]);
 
   useEffect(() => {
     if (state.phase !== "rolled" || !physicsDiceActive || !state.dice) return;
@@ -1223,7 +1298,7 @@ function KqGameSession({
   };
 
   const applyGameAction = async (action: "roll" | "resolve" | "advance" | "redraw" | "heritage", deferState = false): Promise<KqGameState | null> => {
-    if (careBusy) return null;
+    if (careBusy || cardOperation.current || cardRecoveryRef.current) return null;
     setGameActionError("");
     if (!remoteBurnsEnabled) {
       const next = action === "roll" ? rollKqDice(state) : action === "resolve" ? resolveKqStage(state) : action === "advance" ? advanceKqStage(state) : action === "redraw" ? redrawKqHand(state) : activateKqHeritage(state);
@@ -1270,35 +1345,46 @@ function KqGameSession({
     }
   };
 
-  const swapHeritageCard = async (reserveIndex: number) => {
-    if (heritageSwapOutIndex === null || (remoteAction !== null || careBusy)) return;
-    if (!remoteBurnsEnabled) {
-      const swapped = swapKqHeritageHandCard(state, heritageSwapOutIndex, reserveIndex);
-      const nextState = tutorial ? assistKqPlayableLesson(swapped) : swapped;
-      setState(nextState);
-      setHeritageSwapOutIndex(null);
-      setHeritageExchangeTab("hand");
-      await repositoryRef.current?.saveGame(nextState);
-      return;
-    }
-    if (!remoteRunId) return;
+  const adjustHand = async (exchange?: { handIndex: number; reserveIndex: number }): Promise<boolean> => {
+    if (cardOperation.current || cardRecoveryRef.current || rollInFlightRef.current || pendingBurnCode || handAdjustmentBusy) return false;
+    const permission = exchange ? canSwapKqHeritageHandCard(state, exchange.handIndex, exchange.reserveIndex) : canRedrawKqHand(state);
+    if (!permission.allowed) throw new Error(permission.reason);
+    if (remoteBurnsEnabled && !remoteRunId) throw new Error("La culture n’est plus synchronisée. Actualise-la avant de continuer.");
+    // The synchronous lock also suspends card plays, care and stale background reads.
+    // Repeating a swap while its first response is pending could undo that swap.
+    cardOperation.current = true;
+    const generation = ++cardSyncGeneration.current;
     setRemoteAction("game");
+    setRemoteNotice("");
+    setGameActionError("");
     try {
-      const result = await swapKqRemoteHeritageCard(remoteRunId, heritageSwapOutIndex, reserveIndex, remoteRequest);
-      if (!lifecycle.current.mounted) return;
-      setState(result.state);
-      setHeritageSwapOutIndex(null);
-      setHeritageExchangeTab("hand");
-      setRemoteNotice("Échange Main prévoyante confirmé par le serveur.");
+      let nextState: KqGameState;
+      if (remoteBurnsEnabled && remoteRunId) {
+        const result = exchange
+          ? await swapKqRemoteHeritageCard(remoteRunId, exchange.handIndex, exchange.reserveIndex, remoteRequest)
+          : await applyKqRemoteAction(remoteRunId, "redraw", remoteRequest);
+        nextState = result.state;
+      } else {
+        const next = exchange ? swapKqHeritageHandCard(state, exchange.handIndex, exchange.reserveIndex) : redrawKqHand(state);
+        nextState = tutorial ? assistKqPlayableLesson(next) : next;
+        await repositoryRef.current?.saveGame(nextState);
+      }
+      if (!lifecycle.current.mounted || generation !== cardSyncGeneration.current) return false;
+      setState(nextState);
+      return true;
     } catch (error) {
-      setRemoteNotice(error instanceof Error ? error.message : "Échange impossible.");
+      if (!lifecycle.current.mounted || generation !== cardSyncGeneration.current) return false;
+      throw error instanceof Error ? error : new Error("La confirmation n’a pas été reçue. Actualise la culture avant de réessayer.");
     } finally {
-      setRemoteAction(null);
+      if (generation === cardSyncGeneration.current) {
+        cardOperation.current = false;
+        setRemoteAction(null);
+      }
     }
   };
 
   const roll = async () => {
-    if (rollInFlightRef.current || rolling || (remoteAction !== null || careBusy) || state.phase !== "prepare") return;
+    if (cardOperation.current || cardRecoveryRef.current || rollInFlightRef.current || rolling || (remoteAction !== null || careBusy) || state.phase !== "prepare") return;
     rollInFlightRef.current = true;
     setRolling(true);
     try {
@@ -1363,7 +1449,7 @@ function KqGameSession({
   };
 
   const reset = () => {
-    if (careBusy) return;
+    if (careBusy || cardOperation.current || cardRecoveryRef.current) return;
     if (isPlayerMode && remoteRunId && state.phase !== "complete") {
       setRemoteNotice("Ta culture officielle est toujours active. Termine-la avant d’en préparer une nouvelle.");
       return;
@@ -1381,7 +1467,7 @@ function KqGameSession({
   };
 
   const setRemoteMode = (enabled: boolean) => {
-    if (isPlayerMode || tutorial) return;
+    if (isPlayerMode || tutorial || cardOperation.current || cardRecoveryRef.current) return;
     setRemoteBurnsEnabled(enabled);
     if (enabled && selectedHeritage && !remoteHeritageOwnedCodes.includes(selectedHeritage)) setSelectedHeritage("");
     setRemoteNotice(enabled
@@ -1397,6 +1483,7 @@ function KqGameSession({
 
   const loadRecentBattles = async () => {
     if (recentBattlesLoading || matchmakingLoading) return;
+    if (jurySelectionNotice.current?.contains(document.activeElement)) focusedFlowerId.current = null;
     setRecentBattlesLoading(true);
     setRecentBattlesError("");
     try {
@@ -1468,6 +1555,10 @@ function KqGameSession({
 
   const joinRandomBattleQueue = async (flowerId: string) => {
     if (juryMutationLock.current || juryUncertain.current) return;
+    if (officialFlowers.find(flower => flower.id === flowerId)?.storage?.stage !== "ready") {
+      setRemoteNotice("L’affinage doit être terminé avant de présenter cette Fleur d’Arène au jury. Vérifie son état dans le stockage.");
+      return;
+    }
     juryMutationLock.current = true;
     juryPresentation.current = true;
     juryPending.current = { flowerId };
@@ -1565,6 +1656,10 @@ function KqGameSession({
     if (!pendingTrainingFlowerId) return;
     const trainingFlowerId = pendingTrainingFlowerId;
     if (juryMutationLock.current || juryUncertain.current) return;
+    if (officialFlowers.find(flower => flower.id === trainingFlowerId)?.storage?.stage !== "ready") {
+      setRemoteNotice("L’affinage doit être terminé avant de présenter cette Fleur d’Arène au jury. Vérifie son état dans le stockage.");
+      return;
+    }
     juryMutationLock.current = true;
     juryPresentation.current = true;
     juryPending.current = { flowerId: trainingFlowerId };
@@ -1755,7 +1850,7 @@ function KqGameSession({
   };
 
   const startSelectedGame = async () => {
-    if (startInFlight.current || remoteAction !== null || careBusy || contractBusy) return;
+    if (cardOperation.current || cardRecoveryRef.current || startInFlight.current || remoteAction !== null || careBusy || contractBusy) return;
     if (buddieStartBlockReason) {
       setRemoteNotice(buddieStartBlockReason);
       return;
@@ -1779,10 +1874,11 @@ function KqGameSession({
           cultureTokens: 0,
           energyMode,
           expectedEnergyCents: isPlayerMode ? energyEstimate?.totalCents : undefined,
+          expectedWarehouseRevision: isPlayerMode ? campaignParticipants[0]?.warehouse.revision : undefined,
           heritageCode: selectedHeritage || undefined,
           ...(isPlayerMode ? { campaign: true } : {}),
         };
-        const requestKey = isPlayerMode ? getKqZoneStartRequestKey((isolatedStorage?.session ?? window.sessionStorage), KQ_CAMPAIGN_START_SCOPE, { ...input, participants: campaignParticipants }, () => crypto.randomUUID()) : undefined;
+        const requestKey = isPlayerMode ? getKqZoneStartRequestKey((isolatedStorage?.session ?? window.sessionStorage), KQ_CAMPAIGN_START_SCOPE, { ...input, participants: campaignParticipants }, createClientRequestKey) : undefined;
         const result = await startKqRemoteRun({ ...input, ...(requestKey ? { requestKey } : {}) }, remoteRequest);
         if (!lifecycle.current.mounted) return;
         setBuddieRotation((current) => result.buddieRotation ?? {
@@ -1842,8 +1938,85 @@ function KqGameSession({
     setSetupOpen(false);
   };
 
+  const openCardInspection = (code: string) => {
+    setRemoteNotice("");
+    setPendingBurnCode(code);
+  };
+
+  const focusCardRecovery = (afterClose = false) => {
+    const generation = cardSyncGeneration.current;
+    const focus = () => window.requestAnimationFrame(() => {
+      if (!lifecycle.current.mounted || currentPresentationView.current === "arena" || generation !== cardSyncGeneration.current) return;
+      const target = document.querySelector<HTMLElement>("[data-card-choice-notice]")
+        ?? gameViewportRef.current?.querySelector<HTMLElement>("[data-card-recovery-status]");
+      target?.focus({ preventScroll: true });
+      (target?.closest<HTMLElement>("[data-card-recovery]") ?? target)?.scrollIntoView({ block: "nearest", behavior: "instant" });
+    });
+    // Closing a dialog retires its history entry. Restore the notice after the
+    // browser's scroll restoration as well as after the React update.
+    if (afterClose) window.addEventListener("popstate", focus, { once: true, signal: AbortSignal.timeout(1_000) });
+    focus();
+  };
+
+  const checkCardRecovery = async () => {
+    const attempt = cardRecoveryRef.current;
+    if (!attempt || cardOperation.current || remoteAction !== null || careBusy) return;
+    cardOperation.current = true;
+    const generation = ++cardSyncGeneration.current;
+    setCardChecking(true);
+    setCardRecoveryMessage("Vérification de la culture et des copies de l’album…");
+    try {
+      const timeout = AbortSignal.timeout(20_000);
+      const request: typeof fetch = (input, init) => remoteRequest(input, { ...init, signal: timeout });
+      const result = await readKqCardRecovery(attempt, request);
+      const completed = result.run.state.phase === "complete";
+      const harvestedFlowers = completed ? await getKqRemoteFlowers(request) : null;
+      if (!lifecycle.current.mounted || generation !== cardSyncGeneration.current) return;
+      setState(result.run.state);
+      setRemoteRunId(completed ? null : result.run.runId);
+      setActiveRuns(current => completed ? current.filter(run => run.runId !== result.run.runId) : current.some(run => run.runId === result.run.runId)
+        ? current.map(run => run.runId === result.run.runId ? result.run : run) : [...current, result.run]);
+      if (harvestedFlowers) {
+        setOfficialFlowers(harvestedFlowers.flowers);
+        const flower = harvestedFlowers.flowers.find(item => item.runId === result.run.runId);
+        setPersistedFlowerId(flower?.id ?? null);
+        const session = isolatedStorage?.session ?? window.sessionStorage;
+        session.removeItem(`${sessionStoragePrefix}-remote-run-id`);
+        if (flower) session.setItem(`${sessionStoragePrefix}-remote-flower-id`, flower.id);
+        else session.removeItem(`${sessionStoragePrefix}-remote-flower-id`);
+      }
+      remoteInventoryRef.current = result.inventory;
+      remoteAvailableInventoryRef.current = result.availableInventory;
+      remoteInventoryVerifiedRef.current = true;
+      setRemoteInventory(result.inventory);
+      setRemoteAvailableInventory(result.availableInventory);
+      setRemoteCollection(current => ({ ...current, loading: false, error: "", totalCopies: Object.values(result.inventory).reduce((sum, value) => sum + value, 0) }));
+      const receipts = result.run.burnReceipts.map(receipt => toLocalReceipt(receipt, result.run.state.seed));
+      setBurnHistory(history => [...receipts, ...history.filter(entry => !receipts.some(receipt => receipt.id === entry.id))].slice(0, 100));
+      cardRecoveryRef.current = null;
+      setCardRecovery(null);
+      setCardRecoveryMessage("");
+      setCardRecoveryResult(result.receipt
+        ? "Carte déjà jouée : son effet et les copies de l’album sont actualisés. Tu peux continuer."
+        : "Culture et album actualisés. Aucun reçu trouvé pour cette carte à cette étape. Consulte les cartes avant de décider de la suite.");
+      setRemoteNotice("");
+      setPendingBurnCode(null);
+      focusCardRecovery(true);
+    } catch (error) {
+      if (!lifecycle.current.mounted || generation !== cardSyncGeneration.current) return;
+      setCardRecoveryMessage(error instanceof Error && error.name !== "TimeoutError" ? error.message : "La vérification n’a pas abouti. Réessaie quand la connexion revient.");
+      focusCardRecovery();
+    } finally {
+      if (generation === cardSyncGeneration.current) {
+        cardOperation.current = false;
+        setCardChecking(false);
+      }
+    }
+  };
+
   const closeCardInspection = () => {
     setPendingBurnCode(null);
+    if (cardRecoveryRef.current) { focusCardRecovery(true); return; }
     window.requestAnimationFrame(() => {
       if (document.activeElement === document.body || !document.activeElement?.isConnected) {
         gameViewportRef.current?.querySelector<HTMLElement>("[data-culture-hand] > summary")?.focus();
@@ -1852,23 +2025,35 @@ function KqGameSession({
   };
 
   const playAndBurnCard = async (code: string) => {
-    if (careBusy || remoteAction !== null || rolling || diceVisualSyncing) return;
+    if (cardOperation.current || cardRecoveryRef.current || careBusy || remoteAction !== null || rolling || diceVisualSyncing) return;
     const selectedCard = KQ_CARDS.find(card => card.code === code);
     if (!selectedCard || !getKqPlayerCardPermission(state, selectedCard, activeInventory[code] ?? 0).allowed) return;
     if (remoteBurnsEnabled) {
+      if (remoteCollection.loading || remoteCollection.error || !remoteInventoryVerifiedRef.current) return;
       if (!remoteRunId) {
         setRemoteNotice("Cette culture n’est pas enregistrée. Recommence-la en mode officiel.");
         closeCardInspection();
         return;
       }
+      cardOperation.current = true;
+      const generation = ++cardSyncGeneration.current;
+      const attempt: KqCardAttempt = { runId: remoteRunId, cardCode: code, stageIndex: state.stageIndex, seed: state.seed,
+        receiptIds: [...new Set([...(activeRuns.find(run => run.runId === remoteRunId)?.burnReceipts.map(receipt => receipt.id) ?? []),
+          ...burnHistory.filter(receipt => receipt.runSeed === state.seed).map(receipt => receipt.id)])],
+        inventoryCodes: Object.keys(remoteInventoryRef.current) };
+      setCardRecoveryResult("");
       setRemoteAction("card");
       setRemoteNotice("");
       try {
-        const result = await playKqRemoteCard(remoteRunId, code, remoteRequest);
-        if (!lifecycle.current.mounted) return;
-        const nextInventory = { ...remoteInventory, [code]: Math.max(0, (remoteInventory[code] ?? 0) - 1) };
+        const timeout = AbortSignal.timeout(20_000);
+        const request: typeof fetch = (input, init) => remoteRequest(input, { ...init, signal: timeout });
+        const result = verifyKqCardPlayResult(await playKqRemoteCard(remoteRunId, code, request, { expectedStageIndex: attempt.stageIndex }), attempt);
+        if (!lifecycle.current.mounted || generation !== cardSyncGeneration.current) return;
+        const nextInventory = { ...remoteInventoryRef.current, [code]: Math.max(0, (remoteInventoryRef.current[code] ?? 0) - 1) };
         const receipt = toLocalReceipt(result.burnReceipt, result.state.seed);
         setState(result.state);
+        setActiveRuns(current => current.map(run => run.runId === remoteRunId
+          ? { ...run, state: result.state, burnReceipts: [...run.burnReceipts.filter(item => item.id !== result.burnReceipt.id), result.burnReceipt] } : run));
         remoteInventoryRef.current = nextInventory;
         setRemoteInventory(nextInventory);
         setBurnHistory((history) => [receipt, ...history.filter((entry) => entry.id !== receipt.id)].slice(0, 100));
@@ -1876,9 +2061,18 @@ function KqGameSession({
         setRemoteNotice(`${KQ_CARDS.find((card) => card.code === code)?.name ?? code} appliquée · reçu ${receipt.id.slice(0, 8)}.`);
         closeCardInspection();
       } catch (error) {
-        setRemoteNotice(error instanceof Error ? error.message : "Validation distante impossible.");
+        if (!lifecycle.current.mounted || generation !== cardSyncGeneration.current) return;
+        cardRecoveryRef.current = attempt;
+        setCardRecovery(attempt);
+        remoteInventoryVerifiedRef.current = false;
+        setRemoteNotice("");
+        setCardRecoveryMessage(error instanceof Error && error.name !== "TimeoutError" ? error.message : "La confirmation n’a pas été reçue.");
+        focusCardRecovery();
       } finally {
-        setRemoteAction(null);
+        if (generation === cardSyncGeneration.current) {
+          cardOperation.current = false;
+          setRemoteAction(null);
+        }
       }
       return;
     }
@@ -2053,7 +2247,7 @@ function KqGameSession({
   };
 
   const contractRun = isPlayerMode && !api.isTutorial ? <KqCultureContract mode="run" runId={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId}
-    refreshKey={`${state.stageIndex}:${state.phase}:${state.usedCards.length}:${state.quality}`} disabled={remoteAction !== null || careBusy} onBusyChange={setContractBusy} /> : null;
+    refreshKey={`${state.stageIndex}:${state.phase}:${state.usedCards.length}:${state.quality}`} disabled={Boolean(cardRecovery) || remoteAction !== null || careBusy} onBusyChange={setContractBusy} /> : null;
 
   const contextPlan = preparationWarehouse?.state ?? state.warehouse?.sourceState;
   const contextZoneIdentity = contextPlan && zoneContext ? getKqZoneIdentity(contextPlan, zoneContext.id) : null;
@@ -2079,55 +2273,7 @@ function KqGameSession({
     const totalBotteCopies = KQ_ACTIVE_CARDS.reduce((sum, card) => sum + (activeInventory[card.code] ?? 0), 0);
     const selectedReferenceCount = new Set(selectedCards).size;
     const deckCoverage = getKqDeckCoverage(selectedCards);
-    const mostBurned = Object.entries(burnHistory.reduce<Record<string, number>>((counts, receipt) => ({ ...counts, [receipt.cardCode]: (counts[receipt.cardCode] ?? 0) + 1 }), {})).sort((a, b) => b[1] - a[1]).slice(0, 3);
-    return (
-      <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined} data-admin-operations={showAdminOperations || undefined} data-view-mode={viewMode}>
-        <section className={styles.setupPanel}
-          data-preparation-deck={setupOpen && viewMode !== "arena" ? selectedCards.join(",") : undefined}
-          data-preparation-heritage={setupOpen && viewMode !== "arena" ? selectedHeritage : undefined}>
-          <header className={`${styles.cultureIntro} ${isPlayerMode && viewMode !== "arena" ? styles.preparationIntro : ""}`} data-culture-intro>
-            {isPlayerMode && viewMode !== "arena" ? <div><span>Culture · Préparation</span><h1 className={styles.cultureIntroTitle}>Préparer mes cultures</h1><p>Choisis tes Buddies, puis tes cartes. Tout se prépare ici.</p></div> : <h1 className={styles.cultureIntroTitle}>{contextZoneLabel ?? "Cultures"}</h1>}
-            <Image src="/placard/map/culture-barn-sylvain-v1.webp" alt="" width={1536} height={512} loading="eager" sizes="(max-width: 760px) 100vw, 720px" />
-          </header>
-          <details className={styles.setupRules} data-culture-setup-help>
-            <summary><CircleHelp size={16} aria-hidden="true" />Aide<ChevronDown size={14} aria-hidden="true" /></summary>
-            <p>{tutorial ? "Essai assisté : un dé peut être ajusté avant validation pour poursuivre jusqu’à la récolte fictive." : <>La vitalité suit les opérations et les problèmes rencontrés. À 0 avant la récolte, la culture meurt.{isPlayerMode ? " Pour la toute première culture du compte, un secours gratuit permet de continuer une fois, avec les pénalités de l’étape." : null}</>}</p>
-          </details>
-          {showAdminOperations && !isPlayerMode ? <div className={styles.remoteCollectionStatus} data-error={remoteCollection.error || undefined}>
-            <span>{isPlayerMode ? "Mes cartes Botte du Chanvrier" : "Données sécurisées · test admin"}</span>
-            {remoteCollection.loading ? <strong>Chargement de tes cartes…</strong> : remoteCollection.error ? <strong>{remoteCollection.error}</strong> : <strong>{remoteCollection.totalCopies} carte{remoteCollection.totalCopies > 1 ? "s" : ""} disponible{remoteCollection.totalCopies > 1 ? "s" : ""}</strong>}
-            <small>{remoteCollection.loading ? "Connexion à ton album…" : remoteCollection.error ? "Ta collection est momentanément indisponible." : isPlayerMode ? "Seules les cartes réellement jouées seront brûlées." : `${remoteCollection.ownerFound ? "Compte admin retrouvé" : "Aucun compte collection associé"} · collection ${remoteCollection.collectionActive ? "active" : "inactive"}.`}</small>
-            {!isPlayerMode ? <button type="button" className={styles.remoteModeButton} disabled={remoteCollection.loading || !remoteCollection.ownerFound || (remoteAction !== null || careBusy)} data-active={remoteBurnsEnabled || undefined} aria-pressed={remoteBurnsEnabled} onClick={() => setRemoteMode(!remoteBurnsEnabled)}>{remoteBurnsEnabled ? "🔥 Burns officiels activés" : "Simulation locale"}</button> : null}
-          </div> : null}
-          {remoteNotice ? <div className={styles.remoteNotice} data-tone={getKqFeedbackTone(remoteNotice)} role="status" aria-live="polite">{remoteNotice}</div> : null}
-          {juryCheckNeeded ? juryRecovery : null}
-          {launchReadiness ? <details className={styles.launchReadiness} data-safe={launchReadiness.safelyDormant || undefined}><summary><span>Préflight de lancement</span><strong>{launchReadiness.readyForActivation ? "Contenu complet · activation encore verrouillée" : `${launchReadiness.blockers.length} blocage${launchReadiness.blockers.length > 1 ? "s" : ""} restant${launchReadiness.blockers.length > 1 ? "s" : ""}`}</strong><small>{launchReadiness.contentReady ? "Contenu : complet" : "Contenu : incomplet"} · {launchReadiness.safelyDormant ? "Sécurité : tous les verrous sont fermés" : "Alerte : un verrou de lancement est déjà ouvert"}</small></summary><div>{launchReadiness.checks.map((check) => { const safetyCheck = check.code.endsWith("-dormant"); return <p key={check.code} data-ready={check.ready || undefined} data-kind={safetyCheck ? "safety" : "content"}><b>{check.ready ? "✓" : "○"}</b><span>{check.label}</span><strong>{check.ready ? safetyCheck ? "Fermé" : "Prêt" : safetyCheck ? "À refermer" : "À terminer"}</strong></p>; })}<section className={styles.activationSequence}><h3>Fenêtre de lancement coordonnée</h3><small>Cette liste est volontairement informative : aucune activation automatique depuis cet écran.</small><ol>{launchReadiness.activationStillRequired.map((step) => <li key={step}>{step}</li>)}</ol></section></div></details> : null}
-          {seasonRewardPreview ? <details className={styles.seasonRewardPreview}><summary><span>Fin de saison · {seasonRewardPreview.rewardsLive ? "distribution active" : "aperçu dormant"}</span><strong>{seasonRewardPreview.eligiblePlayers} joueur(s) éligible(s)</strong><small>{seasonRewardPreview.rewardsLive ? "La commande applique les reçus idempotents après confirmation." : "Aucune récompense n’est distribuée pendant les tests."}</small></summary><div><b>{seasonRewardPreview.pendingGrants}<small>attributions en attente</small></b><b>{seasonRewardPreview.alreadyGranted}<small>déjà attribuées</small></b><b>{seasonRewardPreview.totalSupportBoosters}<small>boosters Botte du Chanvrier prévus</small></b><b>{seasonRewardPreview.totalHeritageFragments}<small>fragments Héritage prévus</small></b></div><p>Distribution {seasonRewardPreview.rewardsLive ? "active" : "dormante"} · palier minimum : 3 duels terminés. Les titres, cadres et rubans restent prioritaires sur la puissance.</p><button type="button" className={styles.seasonDistributionButton} disabled={!seasonRewardPreview.rewardsLive || seasonRewardPreview.pendingGrants <= 0 || seasonDistributionPending} title={!seasonRewardPreview.rewardsLive ? "Le verrou KQ_SEASON_REWARDS_LIVE est désactivé." : undefined} onClick={() => void distributeSeasonRewards()}>{seasonDistributionPending ? "Distribution en cours…" : seasonRewardPreview.rewardsLive ? "Distribuer les récompenses" : "Distribution verrouillée"}</button></details> : null}
-          {seasonRolloverPreview ? <details className={styles.seasonRewardPreview}><summary><span>Passage de saison · préflight seul</span><strong>{seasonRolloverPreview.fromSeason} → {seasonRolloverPreview.toSeason ?? "à planifier"}</strong><small>{seasonRolloverPreview.ready ? "Toutes les conditions techniques sont réunies." : "La clôture reste impossible tant que les blocages ne sont pas levés."}</small></summary><div><b>{seasonRolloverPreview.players}<small>joueurs classés</small></b><b>{seasonRolloverPreview.eligiblePlayers}<small>éligibles aux lots</small></b><b>{seasonRolloverPreview.missingRewardGrants}<small>récompenses manquantes</small></b><b>{seasonRolloverPreview.lockedBattles}<small>duels verrouillés</small></b></div><p>{seasonRolloverPreview.blockers.length > 0 ? seasonRolloverPreview.blockers.join(" · ") : "Archive et remise à zéro prêtes. Aucune exécution n’est exposée dans l’interface."}</p><button type="button" className={styles.seasonDistributionButton} disabled>Clôture non activée</button></details> : null}
-          {notebookRewardPreview ? <details className={styles.notebookRewardPreview}><summary><span>Carnet → Kanab Quest · {notebookRewardPreview.rewardsLive ? "actif" : "aperçu dormant"}</span><strong>{notebookRewardPreview.pendingBadges} badge{notebookRewardPreview.pendingBadges > 1 ? "s" : ""} avec gains prévus</strong><small>La note donnée n’influence jamais la récompense.</small></summary><div className={styles.notebookRewardTotals}><b>{notebookRewardPreview.pendingSupportBoosters}<small>boosters Botte du Chanvrier prévus</small></b><b>{notebookRewardPreview.pendingCultureTokens}<small>jetons Coup de pouce prévus</small></b><b>{notebookRewardPreview.alreadyGranted}<small>badges déjà traités</small></b></div><ul>{notebookRewardPreview.badges.map((badge) => <li key={badge.profileBadgeId} data-granted={badge.granted || undefined}><span><strong>{badge.label}</strong><small>{badge.granted ? "Déjà attribué" : notebookRewardPreview.rewardsLive ? "À attribuer automatiquement" : "Prévu au lancement"}</small></span><b>{badge.supportBoosters > 0 ? `${badge.supportBoosters} booster${badge.supportBoosters > 1 ? "s" : ""}` : ""}{badge.supportBoosters > 0 && badge.cultureTokens > 0 ? " + " : ""}{badge.cultureTokens > 0 ? `${badge.cultureTokens} jeton${badge.cultureTokens > 1 ? "s" : ""}` : ""}</b></li>)}</ul><p>Aucun bouton client de réclamation : les gains seront attribués automatiquement et une seule fois après validation du badge.</p><button type="button" className={styles.notebookRetroButton} disabled={!notebookRewardPreview.rewardsLive || notebookRetroCursor === null || notebookRetroPending} title={!notebookRewardPreview.rewardsLive ? "Le verrou KQ_NOTEBOOK_REWARDS_LIVE est désactivé." : undefined} onClick={() => void runNotebookRetroBatch()}>{notebookRetroPending ? "Traitement du lot…" : !notebookRewardPreview.rewardsLive ? "Rétro-attribution verrouillée" : notebookRetroCursor === null ? "Rétro-attribution terminée" : notebookRetroCursor === 0 ? "Lancer la rétro-attribution" : "Traiter le lot suivant"}</button></details> : null}
-          {!playerPresentation ? <div className={styles.albumSummary}>
-            <article><span>Collection variétés</span><strong>{KQ_COLLECTIONS.buddies.title}</strong><p><b>{KQ_BUDDIES.length}</b> variétés jouables dans le prototype · {KQ_COLLECTIONS.buddies.totalCards} cartes dans l’album complet</p><div><i style={{ width: `${KQ_BUDDIES.length / KQ_COLLECTIONS.buddies.totalCards * 100}%` }} /></div></article>
-            <article><span>Collection auxiliaire</span><strong>{KQ_COLLECTIONS.support.title}</strong><p><b>{ownedBotteCount}</b> références disponibles · {totalBotteCopies} copies · objectif {KQ_COLLECTIONS.support.totalCards}</p><div><i style={{ width: `${ownedBotteCount / KQ_COLLECTIONS.support.totalCards * 100}%` }} /></div></article>
-          </div> : null}
-          {isPlayerMode && !remoteCollection.loading && !remoteCollection.error && ownedBuddieCodes.length === 0 ? (
-            <aside className={styles.collectionBlockingNotice} role="status">
-              <Flame />
-              <div>
-                <strong>Ta collection n’est pas encore prête pour une culture</strong>
-                <p>Il te faut au moins une carte Buddie dans ton album pour choisir la variété.</p>
-                <small>Les Buddies et les cartes non consommées restent dans ton album. Seules les cartes Botte du Chanvrier confirmées brûlent.</small>
-              </div>
-              <Link href="/profil/collection">Voir mon album</Link>
-            </aside>
-          ) : null}
-          {viewMode === "arena" ? (
-            <header className={styles.arenaModeHero}>
-              <span>Compétition officielle</span>
-              <h1>L’Arène des Fleurs</h1>
-              <p>Dépose ta Fleur. Adversaire aléatoire, verdict automatique.</p>
-            </header>
-          ) : null}
-          <KqSeasonBoard
+    const seasonBoard = (<KqSeasonBoard
             seasonCode={officialRankProgress?.seasonCode} rank={displayedRank} score={displayedPlacardScore}
             rating={displayedRating} seasonPoints={displayedSeasonPoints} reputation={isPlayerMode ? officialRankProgress?.reputation ?? 0 : 0}
             businessScore={displayedBusinessScore}
@@ -2140,7 +2286,41 @@ function KqGameSession({
                 reserve.focus({ preventScroll: true });
               } else onOpenArena?.();
             }}
-          />
+          />);
+    const mostBurned = Object.entries(burnHistory.reduce<Record<string, number>>((counts, receipt) => ({ ...counts, [receipt.cardCode]: (counts[receipt.cardCode] ?? 0) + 1 }), {})).sort((a, b) => b[1] - a[1]).slice(0, 3);
+    return (
+      <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined} data-admin-operations={showAdminOperations || undefined} data-view-mode={viewMode}>
+        <section className={styles.setupPanel}
+          data-preparation-deck={setupOpen && viewMode !== "arena" ? selectedCards.join(",") : undefined}
+          data-preparation-heritage={setupOpen && viewMode !== "arena" ? selectedHeritage : undefined}>
+          <header className={`${styles.cultureIntro} ${isPlayerMode && viewMode !== "arena" ? styles.preparationIntro : ""}`} data-culture-intro>
+            {isPlayerMode && viewMode !== "arena" ? <div><h1 className={styles.cultureIntroTitle}>Préparer mes cultures</h1><p>Choisis tes Buddies, puis tes cartes. Tout se prépare ici.</p></div> : <h1 className={styles.cultureIntroTitle}>{contextZoneLabel ?? "Cultures"}</h1>}
+            <Image src="/placard/map/culture-barn-sylvain-v1.webp" alt="" width={1536} height={512} loading="eager" sizes="(max-width: 760px) 100vw, 720px" />
+          </header>
+          <details className={styles.setupRules} data-culture-setup-help>
+            <summary><CircleHelp size={16} aria-hidden="true" />Aide<ChevronDown size={14} aria-hidden="true" /></summary>
+            <p>{tutorial ? "Essai assisté : un dé peut être ajusté avant validation pour poursuivre jusqu’à la récolte fictive." : <>La vitalité suit les opérations et les problèmes rencontrés. À 0 avant la récolte, la culture meurt.{isPlayerMode ? " Pour la toute première culture du compte, un secours gratuit permet de continuer une fois, avec les pénalités de l’étape." : null}</>}</p>
+          </details>
+          {showAdminOperations && !isPlayerMode ? <div className={styles.remoteCollectionStatus} data-error={remoteCollection.error || undefined}>
+            <span>{isPlayerMode ? "Mes cartes Botte du Chanvrier" : "Données sécurisées · test admin"}</span>
+            {remoteCollection.loading ? <strong>Chargement de tes cartes…</strong> : remoteCollection.error ? <strong>{remoteCollection.error}</strong> : <strong>{remoteCollection.totalCopies} carte{remoteCollection.totalCopies > 1 ? "s" : ""} disponible{remoteCollection.totalCopies > 1 ? "s" : ""}</strong>}
+            <small>{remoteCollection.loading ? "Connexion à ton album…" : remoteCollection.error ? "Ta collection est momentanément indisponible." : isPlayerMode ? "Seules les cartes réellement jouées seront brûlées." : `${remoteCollection.ownerFound ? "Compte admin retrouvé" : "Aucun compte collection associé"} · collection ${remoteCollection.collectionActive ? "active" : "inactive"}.`}</small>
+            {!isPlayerMode ? <button type="button" className={styles.remoteModeButton} disabled={Boolean(cardRecovery) || remoteCollection.loading || !remoteCollection.ownerFound || (remoteAction !== null || careBusy)} data-active={remoteBurnsEnabled || undefined} aria-pressed={remoteBurnsEnabled} onClick={() => setRemoteMode(!remoteBurnsEnabled)}>{remoteBurnsEnabled ? "🔥 Burns officiels activés" : "Simulation locale"}</button> : null}
+          </div> : null}
+          {remoteNotice ? <div className={styles.remoteNotice} data-tone={getKqFeedbackTone(remoteNotice)} role="status" aria-live="polite">{remoteNotice}</div> : null}
+          {juryCheckNeeded ? juryRecovery : null}
+          {launchReadiness ? <details className={styles.launchReadiness} data-safe={launchReadiness.safelyDormant || undefined}><summary><span>Préflight de lancement</span><strong>{launchReadiness.readyForActivation ? "Contenu complet · activation encore verrouillée" : `${launchReadiness.blockers.length} blocage${launchReadiness.blockers.length > 1 ? "s" : ""} restant${launchReadiness.blockers.length > 1 ? "s" : ""}`}</strong><small>{launchReadiness.contentReady ? "Contenu : complet" : "Contenu : incomplet"} · {launchReadiness.safelyDormant ? "Sécurité : tous les verrous sont fermés" : "Alerte : un verrou de lancement est déjà ouvert"}</small></summary><div>{launchReadiness.checks.map((check) => { const safetyCheck = check.code.endsWith("-dormant"); return <p key={check.code} data-ready={check.ready || undefined} data-kind={safetyCheck ? "safety" : "content"}><b>{check.ready ? "✓" : "○"}</b><span>{check.label}</span><strong>{check.ready ? safetyCheck ? "Fermé" : "Prêt" : safetyCheck ? "À refermer" : "À terminer"}</strong></p>; })}<section className={styles.activationSequence}><h3>Fenêtre de lancement coordonnée</h3><small>Cette liste est volontairement informative : aucune activation automatique depuis cet écran.</small><ol>{launchReadiness.activationStillRequired.map((step) => <li key={step}>{step}</li>)}</ol></section></div></details> : null}
+          {seasonRewardPreview ? <details className={styles.seasonRewardPreview}><summary><span>Fin de saison · {seasonRewardPreview.rewardsLive ? "distribution active" : "aperçu dormant"}</span><strong>{seasonRewardPreview.eligiblePlayers} joueur(s) éligible(s)</strong><small>{seasonRewardPreview.rewardsLive ? "La commande applique les reçus idempotents après confirmation." : "Aucune récompense n’est distribuée pendant les tests."}</small></summary><div><b>{seasonRewardPreview.pendingGrants}<small>attributions en attente</small></b><b>{seasonRewardPreview.alreadyGranted}<small>déjà attribuées</small></b><b>{seasonRewardPreview.totalSupportBoosters}<small>boosters Botte du Chanvrier prévus</small></b><b>{seasonRewardPreview.totalHeritageFragments}<small>fragments Héritage prévus</small></b></div><p>Distribution {seasonRewardPreview.rewardsLive ? "active" : "dormante"} · palier minimum : 3 duels terminés. Les titres, cadres et rubans restent prioritaires sur la puissance.</p><button type="button" className={styles.seasonDistributionButton} disabled={!seasonRewardPreview.rewardsLive || seasonRewardPreview.pendingGrants <= 0 || seasonDistributionPending} title={!seasonRewardPreview.rewardsLive ? "Le verrou KQ_SEASON_REWARDS_LIVE est désactivé." : undefined} onClick={() => void distributeSeasonRewards()}>{seasonDistributionPending ? "Distribution en cours…" : seasonRewardPreview.rewardsLive ? "Distribuer les récompenses" : "Distribution verrouillée"}</button></details> : null}
+          {seasonRolloverPreview ? <details className={styles.seasonRewardPreview}><summary><span>Passage de saison · préflight seul</span><strong>{seasonRolloverPreview.fromSeason} → {seasonRolloverPreview.toSeason ?? "à planifier"}</strong><small>{seasonRolloverPreview.ready ? "Toutes les conditions techniques sont réunies." : "La clôture reste impossible tant que les blocages ne sont pas levés."}</small></summary><div><b>{seasonRolloverPreview.players}<small>joueurs classés</small></b><b>{seasonRolloverPreview.eligiblePlayers}<small>éligibles aux lots</small></b><b>{seasonRolloverPreview.missingRewardGrants}<small>récompenses manquantes</small></b><b>{seasonRolloverPreview.lockedBattles}<small>duels verrouillés</small></b></div><p>{seasonRolloverPreview.blockers.length > 0 ? seasonRolloverPreview.blockers.join(" · ") : "Archive et remise à zéro prêtes. Aucune exécution n’est exposée dans l’interface."}</p><button type="button" className={styles.seasonDistributionButton} disabled>Clôture non activée</button></details> : null}
+          {notebookRewardPreview ? <details className={styles.notebookRewardPreview}><summary><span>Carnet → Kanab Quest · {notebookRewardPreview.rewardsLive ? "actif" : "aperçu dormant"}</span><strong>{notebookRewardPreview.pendingBadges} badge{notebookRewardPreview.pendingBadges > 1 ? "s" : ""} avec gains prévus</strong><small>La note donnée n’influence jamais la récompense.</small></summary><div className={styles.notebookRewardTotals}><b>{notebookRewardPreview.pendingSupportBoosters}<small>boosters Botte du Chanvrier prévus</small></b><b>{notebookRewardPreview.pendingCultureTokens}<small>jetons Coup de pouce prévus</small></b><b>{notebookRewardPreview.alreadyGranted}<small>badges déjà traités</small></b></div><ul>{notebookRewardPreview.badges.map((badge) => <li key={badge.profileBadgeId} data-granted={badge.granted || undefined}><span><strong>{badge.label}</strong><small>{badge.granted ? "Déjà attribué" : notebookRewardPreview.rewardsLive ? "À attribuer automatiquement" : "Prévu au lancement"}</small></span><b>{badge.supportBoosters > 0 ? `${badge.supportBoosters} booster${badge.supportBoosters > 1 ? "s" : ""}` : ""}{badge.supportBoosters > 0 && badge.cultureTokens > 0 ? " + " : ""}{badge.cultureTokens > 0 ? `${badge.cultureTokens} jeton${badge.cultureTokens > 1 ? "s" : ""}` : ""}</b></li>)}</ul><p>Aucun bouton client de réclamation : les gains seront attribués automatiquement et une seule fois après validation du badge.</p><button type="button" className={styles.notebookRetroButton} disabled={!notebookRewardPreview.rewardsLive || notebookRetroCursor === null || notebookRetroPending} title={!notebookRewardPreview.rewardsLive ? "Le verrou KQ_NOTEBOOK_REWARDS_LIVE est désactivé." : undefined} onClick={() => void runNotebookRetroBatch()}>{notebookRetroPending ? "Traitement du lot…" : !notebookRewardPreview.rewardsLive ? "Rétro-attribution verrouillée" : notebookRetroCursor === null ? "Rétro-attribution terminée" : notebookRetroCursor === 0 ? "Lancer la rétro-attribution" : "Traiter le lot suivant"}</button></details> : null}
+          {!playerPresentation ? <div className={styles.albumSummary}>
+            <article><span>Collection variétés</span><strong>{KQ_COLLECTIONS.buddies.title}</strong><p><b>{KQ_BUDDIES.length}</b> variétés jouables dans le prototype · {KQ_COLLECTIONS.buddies.totalCards} cartes dans l’album complet</p><div><i style={{ width: `${KQ_BUDDIES.length / KQ_COLLECTIONS.buddies.totalCards * 100}%` }} /></div></article>
+            <article><span>Collection auxiliaire</span><strong>{KQ_COLLECTIONS.support.title}</strong><p><b>{ownedBotteCount}</b> références disponibles · {totalBotteCopies} copies · objectif {KQ_COLLECTIONS.support.totalCards}</p><div><i style={{ width: `${ownedBotteCount / KQ_COLLECTIONS.support.totalCards * 100}%` }} /></div></article>
+          </div> : null}
+          {viewMode === "arena" ? (
+            <div className={styles.arenaModeHero}><KqChapterHeading art="harvest" title="Jury & duels" level={1} compact><p>Après l’affinage, fais juger ta Fleur d’Arène. Le stock récolté reste disponible pour la vente.</p></KqChapterHeading></div>
+          ) : null}
+          {viewMode !== "arena" ? seasonBoard : null}
           <details className={styles.packFormat}>
             <summary><span>Deux collections · deux parcours</span><strong>Les boosters Buddies restent inchangés</strong><small>Botte du Chanvrier possède sa boutique dans L’Arène.</small></summary>
             <div><b>Buddies · album habituel</b><b>Botte du Chanvrier · 10 cartes</b><b>Prix Botte du Chanvrier · 5 points</b></div>
@@ -2156,6 +2336,7 @@ function KqGameSession({
               artwork={ownedBuddieArtwork} rotation={buddieRotation} loading={remoteCollection.loading} disabled={remoteAction !== null || careBusy || pendingStart}
               onSaved={applyBuddieAssignment} onBlockedChange={setBuddieAssignmentBlocked}
               onOpenWarehouse={() => onOpenWarehouse ? onOpenWarehouse(initialZoneId) : router.push("/arene/placard?view=workshop")}
+              onOpenBuddiePacks={onOpenBuddiePacks}
               onRefresh={() => setCollectionRefreshNonce(value => value + 1)} />
               {campaignParticipants.length > 0 ? <details className={styles.cultureDisclosure} data-preparation-projections><summary>Rendements et profils estimés</summary><KqCampaignSummary participants={campaignParticipants} /></details> : null}
             </div> : <details className={styles.setupChoice} open={setupSection === "buddie"} data-setup-choice="buddie" data-arena-tour="culture">
@@ -2213,7 +2394,7 @@ function KqGameSession({
           {isPlayerMode && !api.isTutorial ? <KqCultureContract disabled={remoteAction !== null || careBusy || pendingStart} onBusyChange={setContractBusy} /> : null}
           {playerPresentation ? <section className={styles.setupLaunch} data-culture-preparation aria-labelledby="culture-preparation-title">
             <div><h2 id="culture-preparation-title">Prêt à cultiver ?</h2><p>{isPlayerMode ? "6 étapes communes. Dés, cartes et soins font avancer tous tes Buddies." : "6 étapes à jouer. Le sol vivant est inclus ; le coût d’énergie sera présenté avant de commencer."}</p>{buddieStartBlockReason ? <p className={styles.setupLaunchWarning} role="status">{buddieStartBlockReason}</p> : null}</div>
-            <button type="button" data-culture-start-review disabled={Boolean(buddieStartBlockReason) || remoteAction !== null || careBusy || contractBusy} onClick={() => setPendingStart(true)}>{remoteAction !== null || careBusy || contractBusy ? "Action en cours…" : isPlayerMode ? "Vérifier et lancer" : "Lancer ma culture"}<ArrowRight size={20} aria-hidden="true" /></button>
+            <button type="button" data-culture-start-review disabled={Boolean(buddieStartBlockReason) || remoteAction !== null || careBusy || contractBusy} onClick={() => { setEnergyEstimate(null); setPendingStart(true); }}>{remoteAction !== null || careBusy || contractBusy ? "Action en cours…" : isPlayerMode ? "Vérifier et lancer" : "Lancer ma culture"}<ArrowRight size={20} aria-hidden="true" /></button>
             <details><summary>Comment se déroule une étape ?</summary><p>Lis la situation, utilise une carte ou un soin si tu le souhaites, puis lance les dés. Tu peux encore jouer une réaction avant de valider. Les achats et les cartes consommées demandent toujours ton action.</p></details>
           </section> : <KqCulturePreparation cardCount={selectedCards.length} note="Sol vivant inclus. Seules les cartes jouées sont consommées." disabled={Boolean(buddieStartBlockReason)} disabledReason={buddieStartBlockReason} busy={(remoteAction !== null || careBusy)} onEditDeck={() => {
             const target = document.getElementById("inventory-carousel-title") ?? document.getElementById("placard-deck");
@@ -2223,49 +2404,46 @@ function KqGameSession({
           {remoteBurnsEnabled ? (
             <section id="placard-reserve" tabIndex={-1} className={styles.officialFlowerReserve}>
               <header>
-                <span>Réserve officielle</span>
                 <h2>Mes Fleurs d’Arène</h2>
-                <p>{officialFlowers.length} Fleur{officialFlowers.length > 1 ? "s" : ""} dans ta réserve.</p>
+                {juryDataReady ? <p>{reserveFlowers.length} Fleur{reserveFlowers.length > 1 ? "s" : ""} en réserve. Les Fleurs déjà jugées se retrouvent dans Mes duels.</p> : null}
               </header>
-              <details className={styles.duelHelp}>
-                <summary>Duels : règles et récompenses</summary>
-                <aside className={styles.duelRewardGuide} aria-label="Comparaison des récompenses de duel">
-                <div data-mode="pvp">
-                  <Swords />
-                  <span><strong>Duel aléatoire · classé</strong><small>{KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points directs · {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP</small><b>Elo + série · {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes au gagnant</b></span>
-                </div>
-                <div data-mode="training">
-                  <Dices />
-                  <span><strong>Entraînement · immédiat</strong><small>0 point direct · {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP</small><b>Sans Elo ni série · {KQ_REWARD_BALANCE.training.winnerCardCount} carte si victoire</b></span>
-                </div>
-                <p><Star /> Défis communs aux deux modes : <strong>jusqu’à +{remainingDailyChallengePoints} points encore disponibles aujourd’hui</strong>, encaissés une seule fois.</p>
-                </aside>
-              </details>
-              {officialFlowers.length > 0 ? (
+              {!juryDataReady ? <div className={styles.jurySelection} role={selectionError ? "alert" : "status"} data-jury-loading><p>{selectionError || "Ouverture de tes Fleurs d’Arène…"}</p>{selectionError ? <button type="button" onClick={() => setCollectionRefreshNonce(value => value + 1)}>Réessayer</button> : null}</div> : initialFlowerId && juryTarget.kind === "missing" ? <div ref={jurySelectionNotice} className={styles.jurySelection} data-jury-selection="missing" tabIndex={-1} role="status"><strong>Lot {initialFlowerId.slice(0, 8)}</strong><p>{recentBattlesLoaded ? "Ce lot n’apparaît ni dans la réserve ni dans les duels récents chargés." : "Cette Fleur n’apparaît plus dans la réserve. Son verdict peut se trouver dans les duels récents."}</p>{!recentBattlesLoaded ? <button type="button" disabled={recentBattlesLoading} onClick={() => void loadRecentBattles()}>{recentBattlesLoading ? "Recherche du verdict…" : "Rechercher son verdict"}</button> : null}<button type="button" onClick={() => openStorage(initialFlowerId)}>Retrouver ce lot dans le stockage</button>{recentBattlesError ? <p role="alert">{recentBattlesError}</p> : null}</div> : null}
+              {juryDataReady && reserveFlowers.length > 0 ? (
                 <div className={styles.officialFlowerGrid}>
-                  {officialFlowers.map((flower) => (
-                    <div className={styles.officialFlowerSlot} key={flower.id} id={`placard-flower-${flower.id}`} tabIndex={-1} data-requested={initialFlowerId === flower.id || undefined}>
-                      <FlowerTcgCard
-                        varietyName={flower.varietyName}
-                        varietyCode={flower.varietyCode}
-                        tier={flower.tier ?? getKqHarvestTier(flower.quality, flower)}
-                        quality={flower.quality}
-                        stats={flower.stats}
-                        imageUrl={ownedBuddieArtwork[flower.varietyCode]?.imageUrl}
-                        reference={`Fleur ${flower.id.slice(0, 8)}`}
-                        status={flower.status}
-                        selected={pendingTrainingFlowerId === flower.id || pendingRandomQueueFlowerId === flower.id}
-                      />
-                      {flower.cannabinoidReport ? <KqCannabinoidReport report={flower.cannabinoidReport} /> : null}
-                      <PinnedRouteFlowerTarget route={routePlan?.route ?? null} stats={flower.stats} />
+                  {reserveFlowers.map((flower) => (
+                    <div className={styles.officialFlowerSlot} key={flower.id} id={`placard-flower-${flower.id}`} role="group" aria-labelledby={`jury-flower-name-${flower.id}`} tabIndex={-1} data-requested={initialFlowerId === flower.id || undefined}>
+                      <div className={styles.juryFlowerIdentity}>
+                        <h3 id={`jury-flower-name-${flower.id}`}>{flower.varietyName}</h3>
+                        <p>Qualité de culture : <strong>{flower.quality.toLocaleString("fr-FR")} pts</strong> · Fleur {flower.id.slice(0, 8)}</p>
+                      </div>
+                      {flower.status === "locked" ? <p className={styles.curingStatus}>Duel engagé</p> : null}
                       {flower.status === "available" ? (
-                        <>
-                          <button type="button" disabled={matchmakingLoading || juryCheckNeeded} onClick={() => setPendingRandomQueueFlowerId(flower.id)}>
-                            <Swords /> Duel aléatoire · classé
-                          </button>
-                          <button type="button" disabled={matchmakingLoading || juryCheckNeeded} data-culture-training-flower={flower.id} onClick={() => { setRemoteNotice(""); setPendingTrainingFlowerId(flower.id); }}>
-                            <Dices /> Entraînement · {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP
-                          </button>
+                        flower.storage?.stage === "ready" ? <>
+                          <p className={styles.curingStatus}>Affinage terminé · prête pour le jury</p>
+                          <p className={styles.juryFlowerConsequence} id={`jury-flower-use-${flower.id}`}>Dans les deux modes, la Fleur d’Arène est consommée au verdict. Ton stock récolté est conservé.</p>
+                          <div className={styles.juryFlowerChoices}>
+                            <div>
+                              <button type="button" disabled={matchmakingLoading || juryCheckNeeded} data-culture-ranked-flower={flower.id} aria-describedby={`jury-ranked-${flower.id} jury-flower-use-${flower.id}`} onClick={() => { setRemoteNotice(""); setPendingRandomQueueFlowerId(flower.id); }}>
+                                <Swords aria-hidden="true" /> Duel classé
+                              </button>
+                              <p id={`jury-ranked-${flower.id}`}>Contre un joueur · attente possible.<br />Classement et série en jeu.</p>
+                            </div>
+                            <div>
+                              <button type="button" disabled={matchmakingLoading || juryCheckNeeded} data-culture-training-flower={flower.id} aria-describedby={`jury-training-${flower.id} jury-flower-use-${flower.id}`} onClick={() => { setRemoteNotice(""); setPendingTrainingFlowerId(flower.id); }}>
+                                <Dices aria-hidden="true" /> Entraînement immédiat
+                              </button>
+                              <p id={`jury-training-${flower.id}`}>Adversaire automatique · sans attente.<br />Sans effet sur le classement ni la série.</p>
+                            </div>
+                          </div>
+                        </> : <>
+                          <div className={styles.curingStatus} data-culture-curing={flower.id}>
+                            {flower.storage?.stage === "curing" ? <KqProgressMeter label="Affinage avant jury" value={flower.storage.progressPercent} max={100}
+                              valueLabel={`${flower.storage.progressPercent.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} %`}
+                              hint={`Fin prévue : ${formatKqDate(flower.storage.readyAt)}`} />
+                              : <p>État de l’affinage à vérifier. Le jury sera accessible une fois l’affinage terminé.</p>}
+                            {flower.storage?.capacity && flower.storage.capacity.overflowUnits > 0 ? <p>Une partie de cette récolte attend un contenant.</p> : null}
+                          </div>
+                          <button type="button" data-culture-open-storage={flower.id} onClick={() => openStorage(flower.id)}>Voir le stockage <ArrowRight aria-hidden="true" /></button>
                         </>
                       ) : flower.status === "queued" ? (
                         <>
@@ -2274,24 +2452,103 @@ function KqGameSession({
                             <X /> Retirer de la file
                           </button>
                         </>
-                      ) : null}
+                      ) : flower.status === "locked" ? <button type="button" data-culture-follow-duel={flower.id} onClick={() => {
+                        const battle = officialBattles.find(battle => battle.status === "locked" && battle.playerFlower.id === flower.id);
+                        const target = Array.from(gameViewportRef.current?.querySelectorAll<HTMLElement>("[data-pending-battle]") ?? []).find(node => node.dataset.battleId === battle?.id);
+                        if (target) { target.focus({ preventScroll: true }); target.scrollIntoView({ block: "start", behavior: "instant" }); }
+                        else void loadRecentBattles();
+                      }}>Voir le duel <ArrowRight aria-hidden="true" /></button> : null}
+                      <details className={styles.juryFlowerDetails} data-jury-flower-details={flower.id}>
+                        <summary>Carte et analyses <ChevronDown aria-hidden="true" /></summary>
+                        <div className={styles.juryFlowerDetailContent}>
+                          <FlowerTcgCard
+                            varietyName={flower.varietyName}
+                            varietyCode={flower.varietyCode}
+                            tier={flower.tier ?? getKqHarvestTier(flower.quality, flower)}
+                            quality={flower.quality}
+                            stats={flower.stats}
+                            imageUrl={ownedBuddieArtwork[flower.varietyCode]?.imageUrl}
+                            reference={`Fleur ${flower.id.slice(0, 8)}`}
+                            status={flower.status}
+                            statusLabel={flower.status === "available" ? flower.storage?.stage === "ready" ? "Prête pour le jury" : flower.storage?.stage === "curing" ? "En affinage" : "Affinage à vérifier" : undefined}
+                            selected={pendingTrainingFlowerId === flower.id || pendingRandomQueueFlowerId === flower.id}
+                          />
+                          <div className={styles.juryFlowerAnalysis}>
+                            {flower.cannabinoidReport ? <KqCannabinoidReport report={flower.cannabinoidReport} /> : null}
+                            <PinnedRouteFlowerTarget route={routePlan?.route ?? null} stats={flower.stats} />
+                          </div>
+                        </div>
+                      </details>
                     </div>
                   ))}
                 </div>
-              ) : <p className={styles.emptyFlowerReserve}>Termine une culture officielle pour créer ta première Fleur officielle.</p>}
+              ) : juryDataReady ? <p className={styles.emptyFlowerReserve}>Aucune Fleur en attente de jury. Retrouve les verdicts dans Mes duels ou poursuis tes cultures.</p> : null}
+              <details className={styles.duelHelp}>
+                <summary>Duels : règles et récompenses <ChevronDown aria-hidden="true" /></summary>
+                <aside className={styles.duelRewardGuide} aria-label="Comparaison des récompenses de duel">
+                  <div data-mode="pvp">
+                    <Swords />
+                    <span><strong>Duel aléatoire · classé</strong><small>{KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points directs · {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP</small><b>Elo + série · {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes au gagnant</b></span>
+                  </div>
+                  <div data-mode="training">
+                    <Dices />
+                    <span><strong>Entraînement · immédiat</strong><small>0 point direct · {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP</small><b>Sans Elo ni série · {KQ_REWARD_BALANCE.training.winnerCardCount} carte si victoire</b></span>
+                  </div>
+                  <p><Star /> Défis communs aux deux modes : <strong>jusqu’à +{remainingDailyChallengePoints} points encore disponibles aujourd’hui</strong>, encaissés une seule fois.</p>
+                </aside>
+              </details>
             </section>
           ) : null}
-          {remoteBurnsEnabled && officialBattles.length > 0 ? <section className={styles.officialBattles}>
+          {remoteBurnsEnabled && juryDataReady ? <section className={styles.officialBattles}>
             {officialChallengeReward ? <div className={styles.officialChallengeReward}><Star /><span><strong>+{officialChallengeReward.points} points de défis</strong><small>{officialChallengeReward.titles.length > 0 ? officialChallengeReward.titles.join(" · ") : "Aucun défi supplémentaire validé"}</small></span></div> : null}
             <KqBattleHistory battles={officialBattles} pending={matchmakingLoading || juryCheckNeeded} onRequestVerdict={setPendingOfficialVerdictId}
+              initialBattleId={viewMode === "arena" && juryTarget.kind === "battle" ? juryTarget.id : undefined} onOpenLot={onOpenMarket}
               onLoadRecent={() => void loadRecentBattles()} loadingRecent={recentBattlesLoading} recentLoaded={recentBattlesLoaded} recentError={recentBattlesError} />
           </section> : null}
+          {viewMode === "arena" ? <details className={styles.jurySeason} data-jury-season><summary>Classement et progression <ChevronDown aria-hidden="true" /></summary>{officialRankProgress || !isPlayerMode || api.isTutorial ? seasonBoard : <p>Le classement est momentanément indisponible.</p>}</details> : null}
           {battleHistory.length > 0 ? <section className={styles.battleHistory}><span>Archives locales</span><h2>Derniers concours</h2><div>{battleHistory.slice(0, 5).map((receipt) => <article key={receipt.id}><Flame /><span><strong>{receipt.playerFlower.variety} vs {receipt.opponentFlower.variety}</strong><small>{receipt.winner === "player" ? "Victoire" : "Défaite"} · brûlées le {formatKqDate(receipt.burnedAt)}</small></span><b>{receipt.rounds.filter((round) => round.winner === "player").length}–{receipt.rounds.filter((round) => round.winner === "opponent").length}</b></article>)}</div></section> : null}
         </section>
-        {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation" onClick={closeOnboarding}><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title" aria-describedby="kq-guide-intro" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.onboardingClose} aria-label="Fermer les règles" onClick={closeOnboarding}><X /></button><span>Kanab Quest · la boucle en 1 minute</span><h2 id="kq-guide-title">Cultive. Transforme. Réinvestis.</h2><p id="kq-guide-intro" className={styles.onboardingIntro}>Tes choix de culture fabriquent une récolte unique. Sa qualité ouvre de meilleurs débouchés, finance ton atelier et construit ta réputation.</p><div className={styles.onboardingSteps}><article><ShoppingBag /><b>1. Prépare ton atelier</b><p>Tout pousse sur sol vivant. Choisis ton Buddie et tes cartes <strong>Botte du Chanvrier</strong>. Les équipements durables déjà achetés renforcent chaque nouvelle partie.</p></article><article><Dices /><b>2. Passe les 6 étapes</b><p>Lance les dés, réponds aux situations et dépense tes cartes au bon moment. Protège à la fois la <strong>qualité</strong> et la quantité récoltée.</p></article><article><Scale /><b>3. Affronte le jury</b><p>À la récolte, le jury note la fleur. La note détermine son palier, sa valeur brute et les transformations réellement accessibles.</p></article><article><Flame /><b>4. Choisis ton débouché</b><p>Vends le lot brut, transforme-le en hash ou rosin, ou valorise-le en biomasse. Après le duel, 6 heures réelles de curing commencent : seul le grossiste achète avant maturité.</p></article><article><Trophy /><b>5. Réinvestis intelligemment</b><p>Utilise ton argent pour améliorer tente, lumière et machines. La qualité vendue augmente aussi ta <strong>réputation</strong> et départage le classement.</p></article></div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>C’est parti · préparer mon atelier</button></section></div> : null}
-          {pendingStart ? <AppDialog open onClose={() => setPendingStart(false)} title="Ma culture" labelledBy="culture-system-burn-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Flame /><span>Démarrage sur sol vivant</span><h2 id="culture-system-burn-title">{isPlayerMode ? "Commencer la campagne ?" : "Commencer la culture ?"}</h2><p>Le sol vivant est inclus et aucune carte n’est consommée au lancement. Les {selectedCards.length} cartes du deck ne brûleront que si tu les joues, copie par copie.</p>{playerPresentation ? <KqEnergyPanel campaign={isPlayerMode} disabled={(remoteAction !== null || careBusy)} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}{buddieStartBlockReason || remoteNotice ? <small className={styles.modalNotice}>{buddieStartBlockReason || remoteNotice}</small> : null}<div><button type="button" onClick={() => setPendingStart(false)}>{remoteAction === "start" ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={(remoteAction !== null || careBusy) || Boolean(buddieStartBlockReason) || (playerPresentation && (!energyEstimate || energyEstimate.mode !== energyMode))} data-culture-confirm-start onClick={() => void startSelectedGame()}><Flame /> {remoteAction === "start" ? "Confirmation…" : "Commencer"}</button></div></AppDialog> : null}
-          {pendingRandomQueueFlowerId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingRandomQueueFlowerId(null); }} title="Le jury" labelledBy="random-queue-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Swords /><span>Arène aléatoire · classée</span><h2 id="random-queue-title">Mettre cette Fleur à disposition ?</h2><p>Le serveur choisira au hasard une Fleur appartenant à un autre joueur, quelle que soit sa qualité. Tu pourras retirer la tienne tant qu’elle attend ; dès qu’un adversaire arrive, le jury se lance et les deux Fleurs brûlent automatiquement.</p><small>Gain garanti au verdict : {KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points de saison directs et {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP. Le gagnant reçoit {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes Botte du Chanvrier.</small>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingRandomQueueFlowerId(null); }}>{matchmakingLoading ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} onClick={() => void joinRandomBattleQueue(pendingRandomQueueFlowerId)}><Swords /> {matchmakingLoading ? "Recherche…" : "Entrer dans la file"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}
-          {pendingTrainingFlowerId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingTrainingFlowerId(null); }} title="Le jury" labelledBy="remote-battle-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Swords /><span>Entraînement aléatoire</span><h2 id="remote-battle-title">Confier cette Fleur au jury ?</h2><p>Le serveur tirera le bot au hasard et le révélera avec le verdict. Le duel immédiat brûlera ta Fleur et rapportera {KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP d’Arène et une carte seulement en cas de victoire. Il ne modifie ni ton Elo ni ta série ; les défis du jour validés peuvent toutefois ajouter leurs points de saison.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingTrainingFlowerId(null); }}>{matchmakingLoading ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} data-culture-confirm-training onClick={() => void confirmRemoteBattle()}><Swords /> {matchmakingLoading ? "Tirage et jury…" : "Lancer l’entraînement"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}
+        {showOnboarding ? <div className={styles.onboardingBackdrop} role="presentation" onClick={closeOnboarding}><section className={styles.onboarding} role="dialog" aria-modal="true" aria-labelledby="kq-guide-title" aria-describedby="kq-guide-intro" onClick={(event) => event.stopPropagation()}><button type="button" className={styles.onboardingClose} aria-label="Fermer les règles" onClick={closeOnboarding}><X /></button><h2 id="kq-guide-title">Cultive. Transforme. Réinvestis.</h2><p id="kq-guide-intro" className={styles.onboardingIntro}>Tes choix de culture fabriquent une récolte unique. Sa qualité ouvre de meilleurs débouchés, finance ton atelier et construit ta réputation.</p><div className={styles.onboardingSteps}>
+          <article><ShoppingBag /><b>1. Prépare ton atelier</b><p>Tout pousse sur sol vivant. Choisis ton Buddie et tes cartes <strong>Botte du Chanvrier</strong>. Les équipements durables déjà achetés renforcent chaque nouvelle partie.</p></article>
+          <article><Dices /><b>2. Passe les 6 étapes</b><p>Lance les dés, réponds aux situations et dépense tes cartes au bon moment. Protège à la fois la <strong>qualité</strong> et la quantité récoltée.</p></article>
+          <article><Layers3 /><b>3. Range et affine ta récolte</b><p>Choisis les contenants de chaque lot, en gardant les variétés séparées. Les 6 heures réelles d’affinage commencent à la récolte ; tes équipements protègent les fleurs pendant cette attente.</p></article>
+          <article><Scale /><b>4. Affronte le jury</b><p>Une fois l’affinage terminé, le jury note la Fleur d’Arène et la consomme. Le stock récolté est conservé. La note détermine sa valeur brute et les transformations accessibles.</p></article>
+          <article><Flame /><b>5. Choisis ton débouché</b><p>Après le verdict, vends le lot brut, transforme-le en hash ou rosin, ou valorise-le en biomasse. L’affinage déjà accompli reste acquis.</p></article>
+          <article><Trophy /><b>6. Réinvestis intelligemment</b><p>Utilise ton argent pour améliorer tente, lumière et machines. La qualité vendue augmente aussi ta <strong>réputation</strong> et départage le classement.</p></article>
+        </div><button type="button" className={styles.primaryButton} onClick={closeOnboarding}>C’est parti · préparer mon atelier</button></section></div> : null}
+          {pendingStart ? <AppDialog open onClose={() => setPendingStart(false)}
+            title={<span id="culture-system-burn-title">{isPlayerMode ? "Lancer mes cultures ?" : "Commencer la culture ?"}</span>}
+            labelledBy="culture-system-burn-title" className={styles.verdictDialog} bodyClassName={styles.startConfirm}>
+            {practiceSession ? <p className={styles.startTrialNotice}>Essai · cartes et budget fictifs</p> : null}
+            {isPlayerMode && campaignParticipants.length > 0 ? <p className={styles.startScope} data-culture-launch-scope><strong>{campaignParticipants.length} Buddie{campaignParticipants.length > 1 ? "s" : ""} · {getKqCampaignTotals(campaignParticipants).areaM2.toLocaleString("fr-FR")} m²</strong></p> : null}
+            {playerPresentation ? <KqEnergyPanel campaign={isPlayerMode} disabled={(remoteAction !== null || careBusy)} selectedMode={energyMode} onModeChange={setEnergyMode} onQuoteChange={setEnergyEstimate} /> : null}
+            {isPlayerMode && campaignParticipants.length > 0 ? <details data-culture-launch-participants><summary>Buddies et zones</summary>
+              <ul className={styles.startParticipants}>{campaignParticipants.map(member => <li key={member.zoneId}>
+                <strong>{KQ_BUDDIES.find(buddie => buddie.code === member.buddieCode)?.name ?? member.buddieCode}</strong>
+                <span>{getKqZoneIdentity(member.warehouse.sourceState, member.zoneId)?.label ?? member.warehouse.zones[0]?.name ?? "Zone"} · {member.warehouse.activeAreaM2.toLocaleString("fr-FR")} m²</span>
+              </li>)}</ul>
+              <p>Ces Buddies, leurs zones et leur équipement sont figés au lancement. Ils partagent les mêmes étapes et les mêmes cartes.</p>
+            </details> : null}
+            <p>Sol vivant inclus. <strong>Aucune carte consommée au départ.</strong></p>
+            {playerPresentation ? <p data-culture-timing>{practiceSession
+              ? "Dans ta partie personnelle : 6 heures réelles d’affinage après la récolte, avant le jury et la vente."
+              : "Après la récolte : 6 heures réelles d’affinage avant le jury et la vente, même hors connexion."}</p> : null}
+            <details data-culture-launch-cards><summary>Cartes et déroulement</summary><p>Les {selectedCards.length} cartes choisies restent disponibles dans ton deck. Seules les copies que tu joues pendant la culture sont consommées. Tu avances à ton rythme, étape par étape.</p></details>
+            {buddieStartBlockReason || remoteNotice ? <p className={styles.modalNotice} role="status">{buddieStartBlockReason || remoteNotice}</p> : null}
+            {isPlayerMode && remoteNotice && remoteAction === null ? <button type="button" className={styles.startRecovery} data-culture-refresh-preparation disabled={careBusy || contractBusy} onClick={() => {
+              setPendingStart(false);
+              setRemoteNotice("");
+              setEnergyEstimate(null);
+              setCollectionRefreshNonce(value => value + 1);
+            }}>Actualiser la préparation</button> : null}
+            <div className={styles.startConfirmActions}>
+              <button type="button" onClick={() => setPendingStart(false)}>{remoteAction === "start" ? "Fermer" : "Annuler"}</button>
+              <button type="button" disabled={(remoteAction !== null || careBusy) || Boolean(buddieStartBlockReason) || (playerPresentation && (!energyEstimate || energyEstimate.mode !== energyMode))}
+                data-culture-confirm-start onClick={() => void startSelectedGame()}>{remoteAction === "start" ? "Confirmation…" : isPlayerMode ? "Lancer mes cultures" : "Commencer"}<ArrowRight size={18} aria-hidden="true" /></button>
+            </div>
+          </AppDialog> : null}
+          {pendingRandomQueueFlowerId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingRandomQueueFlowerId(null); }} title="Le jury" labelledBy="random-queue-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Swords /><span>{practiceSession ? "Duel classé d’essai" : "Duel aléatoire · classé"}</span><h2 id="random-queue-title">Entrer dans le duel classé ?</h2><p data-jury-confirm-flower={pendingRandomQueueFlowerId}>{officialFlowers.find(flower => flower.id === pendingRandomQueueFlowerId)?.varietyName} · Fleur {pendingRandomQueueFlowerId.slice(0, 8)}</p><p>Une Fleur d’un autre joueur est tirée au hasard, quelle que soit sa qualité. Tu peux retirer la tienne pendant l’attente. Dès qu’un adversaire est trouvé, le verdict est automatique et les deux Fleurs d’Arène sont définitivement consommées.</p><p data-jury-stock-consequence>Ton stock récolté{practiceSession ? " dans cet essai" : ""} est conservé. Le verdict ouvre ses possibilités de vente ; la Fleur d’Arène ne pourra plus servir en duel.</p><small>Gain garanti au verdict : {KQ_REWARD_BALANCE.pvp.directSeasonPoints.min} à {KQ_REWARD_BALANCE.pvp.directSeasonPoints.max} points de saison directs et {KQ_REWARD_BALANCE.pvp.arenaExperience.min} à {KQ_REWARD_BALANCE.pvp.arenaExperience.max} EXP. Le gagnant reçoit {KQ_REWARD_BALANCE.pvp.winnerCardCount} cartes Botte du Chanvrier.</small>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingRandomQueueFlowerId(null); }}>{matchmakingLoading ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} onClick={() => void joinRandomBattleQueue(pendingRandomQueueFlowerId)}><Swords /> {matchmakingLoading ? "Recherche…" : "Entrer dans la file"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}
+          {pendingTrainingFlowerId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingTrainingFlowerId(null); }} title="Le jury" labelledBy="remote-battle-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Swords /><span>{practiceSession ? "Entraînement d’essai" : "Entraînement immédiat"}</span><h2 id="remote-battle-title">Évaluer cette Fleur ?</h2><p data-jury-confirm-flower={pendingTrainingFlowerId}>{officialFlowers.find(flower => flower.id === pendingTrainingFlowerId)?.varietyName} · Fleur {pendingTrainingFlowerId.slice(0, 8)}</p><p data-jury-stock-consequence>Ton stock récolté{practiceSession ? " dans cet essai" : ""} est conservé. La Fleur d’Arène sera définitivement consommée : elle ne pourra plus servir en duel.</p><p>Verdict immédiat contre un adversaire automatique tiré au hasard. Le lot pourra ensuite être vendu selon les offres disponibles.</p><small>{KQ_REWARD_BALANCE.training.arenaExperience.min.toLocaleString("fr-FR")} EXP d’Arène · 1 carte si victoire. Sans effet sur ton Elo ni ta série.</small><details><summary>Défis du jour</summary><p>Les défis validés peuvent ajouter leurs points de saison.</p></details>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingTrainingFlowerId(null); }}>{matchmakingLoading ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} data-culture-confirm-training onClick={() => void confirmRemoteBattle()}><Swords /> {matchmakingLoading ? "Tirage et jury…" : "Lancer l’entraînement"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}
           {botBattleResult ? (
             <KqBattleVerdictDialog battleId={botBattleResult.battleId} kind="training" winner={botBattleResult.winner}
               subtitle={`Face à ${botBattleResult.opponentName} · ${botBattleResult.varietyName}.`}
@@ -2329,33 +2586,37 @@ function KqGameSession({
               <KqJuryRecap rounds={officialBattleResult.rounds} playerStats={officialRecapBattle?.playerFlower.stats} opponentStats={officialRecapBattle?.opponentFlower.stats} />
             </KqBattleVerdictDialog>
           ) : null}
-          {pendingOfficialVerdictId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingOfficialVerdictId(null); }} title="Le jury" labelledBy="official-verdict-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Flame /><span>Verdict officiel irréversible</span><h2 id="official-verdict-title">Brûler les deux Fleurs ?</h2><p>Le serveur calculera les trois manches, désignera le gagnant, mettra le classement à jour puis brûlera définitivement les deux Fleurs.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingOfficialVerdictId(null); }}>Fermer</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} data-culture-confirm-verdict onClick={() => void confirmOfficialVerdict()}><Flame /> {matchmakingLoading ? "Jury en cours…" : "Confirmer le verdict"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}
+          {pendingOfficialVerdictId ? <AppDialog open onClose={() => { juryPresentation.current = false; setPendingOfficialVerdictId(null); }} title="Le jury" labelledBy="official-verdict-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Flame /><span>{practiceSession ? "Verdict d’essai" : "Verdict officiel irréversible"}</span><h2 id="official-verdict-title">Confirmer le verdict ?</h2><p>Le jury compare les trois manches, désigne le gagnant et met le classement à jour. Les deux Fleurs d’Arène sont définitivement consommées et ne pourront plus servir en duel.</p><p data-jury-stock-consequence>Ton stock récolté{practiceSession ? " dans cet essai" : ""} est conservé. Le verdict ouvre ses possibilités de vente.</p>{remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}<div><button type="button" onClick={() => { juryPresentation.current = false; setPendingOfficialVerdictId(null); }}>Fermer</button><button type="button" className={styles.burnButton} disabled={matchmakingLoading || juryCheckNeeded} data-culture-confirm-verdict onClick={() => void confirmOfficialVerdict()}><Flame /> {matchmakingLoading ? "Jury en cours…" : "Confirmer le verdict"}</button></div>{matchmakingLoading ? <p className={styles.modalNotice}>Tu peux fermer cette fenêtre : l’action soumise au jury continue.</p> : null}{juryCheckNeeded ? juryRecovery : null}</AppDialog> : null}
       </main>
     );
   }
 
   if (state.phase === "complete") {
+    const recoveredCardNotice = <KqCardRecoveryNotice pending={false} checking={false} message="" result={cardRecoveryResult} onCheck={() => void checkCardRecovery()} />;
     const economy = summarizeKqCardEconomy(state);
     const burnedCards = economy.burnedCodes.map((code) => KQ_CARDS.find((card) => card.code === code)).filter((card): card is KqSupportCard => Boolean(card));
     const preservedCards = economy.preservedCodes.map((code) => KQ_CARDS.find((card) => card.code === code)).filter((card): card is KqSupportCard => Boolean(card));
     const harvestMoment = <KqHarvestMoment state={state} flowers={isPlayerMode ? officialFlowers : undefined}
       runId={remoteRunId ?? initialRunId ?? officialFlowers.find(item => item.id === persistedFlowerId)?.runId}
       artwork={outcomeArtwork ?? undefined} fresh={freshHarvestKey === (state.campaign?.id ?? `${state.startedAt}:${state.seed}`)}
-      onContinue={isPlayerMode ? onOpenArena : undefined} />;
+      onContinue={isPlayerMode ? () => openStorage(state.campaign ? undefined : persistedFlowerId ?? initialFlowerId) : undefined} />;
     if (isPlayerMode && state.campaign) {
       return <main data-culture-run={state.campaign.leaderRunId} data-culture-campaign={state.campaign.id} data-culture-phase={state.phase} ref={gameViewportRef} className={styles.page} data-player-mode="true">
+        {recoveredCardNotice}
         {harvestMoment}
         <KqCampaignSummary state={state} flowers={officialFlowers} />
         {contractRun}
-        <details className={styles.cultureDisclosure} data-culture-campaign-recap><summary>Journal et cartes de la campagne</summary><KqCultureRecap state={state} /><HarvestScoreSheet state={state} /><p>{burnedCards.length} copie{burnedCards.length > 1 ? "s" : ""} brûlée{burnedCards.length > 1 ? "s" : ""} · {preservedCards.length} conservée{preservedCards.length > 1 ? "s" : ""}, pour l’ensemble de la campagne.</p><KqCultureCarePanel state={state} request={remoteRequest} runId={state.campaign.leaderRunId} disabled onStateChange={setState} onBusyChange={setCareBusy} /></details>
-        <details className={styles.cultureDisclosure}><summary>Charges et factures</summary><KqEnergyPanel campaign campaignMembers={state.campaign.members} runId={state.campaign.leaderRunId} /></details>
-        {!cultureDead && !onOpenArena && <Link className={styles.primaryButton} href="/arene/placard?view=arena"><Swords /> Voir ma réserve</Link>}
+        <div className={styles.cultureDetails}>
+          <details className={styles.harvestDetails} data-culture-campaign-recap><summary><span>Journal et cartes de la campagne</span><ChevronDown size={18} aria-hidden="true" /></summary><div className={styles.harvestDetailsBody}><KqCultureRecap state={state} /><HarvestScoreSheet state={state} /><p>{burnedCards.length} copie{burnedCards.length > 1 ? "s" : ""} brûlée{burnedCards.length > 1 ? "s" : ""} · {preservedCards.length} conservée{preservedCards.length > 1 ? "s" : ""}, pour l’ensemble de la campagne.</p><KqCultureCarePanel state={state} request={remoteRequest} runId={state.campaign.leaderRunId} disabled onStateChange={setState} onBusyChange={setCareBusy} /></div></details>
+          <details className={styles.harvestDetails} data-harvest-charges><summary><span>Charges et factures</span><ChevronDown size={18} aria-hidden="true" /></summary><div className={styles.harvestDetailsBody}><KqEnergyPanel campaign campaignMembers={state.campaign.members} runId={state.campaign.leaderRunId} /></div></details>
+        </div>
         <div className={styles.zoneNavigation}>{onOpenWarehouse ? <button type="button" onClick={() => onOpenWarehouse()}>Retour à l’entrepôt</button> : <Link href="/arene/placard?view=workshop">Retour à l’entrepôt</Link>}</div>
       </main>;
     }
     if (cultureDead) {
       return (
         <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page} data-player-mode={playerPresentation || undefined} data-view-mode={viewMode}>
+          {recoveredCardNotice}
           {contractRun}
           <section className={styles.cultureDeath} aria-labelledby="culture-death-title" data-outcome="dead" data-outcome-stage={outcomeArtwork?.stage}>
             {outcomeArtwork?.outcome === "dead" ? (
@@ -2381,7 +2642,7 @@ function KqGameSession({
               <button type="button" data-culture-recovery-action="trial" onClick={() => setRecoveryTrialOpen(true)}>M’entraîner sans frais</button>
             </div>
           </section>
-          <KqCultureCarePanel state={state} request={remoteRequest} storage={careStorage} runId={remoteRunId} disabled={careBusy || remoteAction !== null || rolling || diceVisualSyncing || Boolean(pendingBurnCode)} onStateChange={setState} onBusyChange={setCareBusy} />
+          <KqCultureCarePanel state={state} request={remoteRequest} storage={careStorage} runId={remoteRunId} disabled={Boolean(cardRecovery) || careBusy || remoteAction !== null || rolling || diceVisualSyncing || Boolean(pendingBurnCode)} onStateChange={setState} onBusyChange={setCareBusy} />
           <section className={styles.traitsPanel}>
             <h2>L’histoire de cette culture</h2>
             <ol className={styles.cultureDeathHistory} aria-label="Résultats des étapes validées">
@@ -2402,51 +2663,67 @@ function KqGameSession({
         </main>
       );
     }
-    const flower = createKqFlower(state);
     const harvestProjection = getKqRunProjection(state);
-    const recentJuryCodes = battleHistory.slice(0, 3).flatMap((entry) => entry.rounds.map((round) => round.code));
-    const juryProgram = getKqJuryProgram(state.seed, recentJuryCodes, state.rulesVersion);
     if (isPlayerMode) {
+      const runId = remoteRunId ?? initialRunId ?? officialFlowers.find(item => item.id === persistedFlowerId)?.runId;
+      const result = getKqHarvestMoment(state, officialFlowers, runId);
+      const hasHarvest = result?.outcome === "harvest";
+      const recordedFlower = hasHarvest && runId ? officialFlowers.find(item => item.runId === runId) : undefined;
       return (
         <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page} data-player-mode="true">
+          {recoveredCardNotice}
           {harvestMoment}
           {contractRun}
-          <section className={styles.traitsPanel}>
-            <h2>Ta Fleur rejoint la réserve officielle</h2>
-            {harvestProjection.nextTier && harvestProjection.qualityToNextTier === 0 ? <p><KqHarvestTierProgress projection={harvestProjection} /></p> : null}
-            <p>
-              Elle n’est pas brûlée maintenant. Elle reste dans ta réserve jusqu’à son premier duel,
-              puis le verdict la brûle définitivement.
-            </p>
-            <p>Le jury et le duel passent en premier. Après le verdict, ton lot commence ses 6 heures réelles de curing en entrepôt ; pendant ce délai, seul le grossiste peut le reprendre.</p>
+          {hasHarvest ? <p className={styles.harvestNote}>Au jury, seule la Fleur d’Arène est consommée. Ta récolte reste disponible pour la vente après le verdict.</p> : null}
+          <div className={styles.cultureDetails}>
+          <details className={styles.harvestDetails} data-harvest-journal>
+            <summary><span>Journal et cartes<small>{state.history.length} étapes enregistrées · {burnedCards.length} copie{burnedCards.length === 1 ? "" : "s"} consommée{burnedCards.length === 1 ? "" : "s"}</small></span><ChevronDown aria-hidden="true" size={18} /></summary>
+            <div className={styles.harvestDetailsBody}>
             <div className={styles.cultureReceipt}>
-              <article><Flame /><span><small>Copies brûlées · {burnedCards.length}</small><div>{burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>)}</div></span></article>
+              <article><Flame /><span><small>Copies consommées · {burnedCards.length}</small><div>{burnedCards.length > 0 ? burnedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune copie consommée</em>}</div></span></article>
               <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte conservée</em>}</div></span></article>
             </div>
-            {state.energy ? <KqEnergyPanel lockedQuote={state.energy} lockedWarehouse={state.warehouse} lockedTents={state.equipment?.tents} lockedScope={state.equipment?.scope} productionUnits={state.equipment?.productionUnits} runId={remoteRunId ?? initialRunId} zoneId={initialZoneId} /> : null}
             <KqCultureRecap state={state} />
-            <KqCultureCarePanel state={state} request={remoteRequest} storage={careStorage} runId={remoteRunId} disabled={careBusy || remoteAction !== null || rolling || diceVisualSyncing || Boolean(pendingBurnCode)} onStateChange={setState} onBusyChange={setCareBusy} />
-            <HarvestScoreSheet state={state} />
-            <div className={styles.traitsList}>{flower.traits.map((trait, index) => <span key={`${trait}-${index}`}><Star />{trait}</span>)}</div>
+            <KqCultureCarePanel state={state} request={remoteRequest} storage={careStorage} runId={runId} disabled onStateChange={setState} onBusyChange={setCareBusy} />
+            {hasHarvest && Number.isFinite(state.quality) ? <HarvestScoreSheet state={state} /> : <p>Le journal conserve le parcours de la culture. Aucun bulletin de récolte n’est présenté sans quantité récoltée connue.</p>}
+            </div>
+          </details>
+          {state.energy ? <details className={styles.harvestDetails} data-harvest-charges>
+            <summary><span>Charges et factures</span><ChevronDown aria-hidden="true" size={18} /></summary>
+            <div className={styles.harvestDetailsBody}><KqEnergyPanel lockedQuote={state.energy} lockedWarehouse={state.warehouse} lockedTents={state.equipment?.tents} lockedScope={state.equipment?.scope} productionUnits={state.equipment?.productionUnits} runId={runId} zoneId={initialZoneId} /></div>
+          </details> : null}
+          {hasHarvest ? <details className={styles.harvestDetails} data-harvest-flower>
+            <summary><span>Ma Fleur d’Arène<small>{recordedFlower ? "Caractéristiques et traits" : "Fleur à confirmer"}</small></span><ChevronDown aria-hidden="true" size={18} /></summary>
+            <div className={styles.harvestDetailsBody}>
+            {recordedFlower ? <>
+            {harvestProjection.nextTier && harvestProjection.qualityToNextTier === 0 ? <p><KqHarvestTierProgress projection={harvestProjection} /></p> : null}
+            <div className={styles.traitsList}>{recordedFlower.traits.map((trait, index) => <span key={`${trait}-${index}`}><Star />{trait}</span>)}</div>
             <section className={styles.harvestFlowerCard} aria-label="Carte Fleur obtenue">
               <FlowerTcgCard
-                varietyName={flower.variety}
-                varietyCode={state.varietyCode}
-                tier={flower.tier}
-                quality={state.quality}
-                stats={flower.stats}
+                varietyName={recordedFlower.varietyName}
+                varietyCode={recordedFlower.varietyCode}
+                tier={recordedFlower.tier ?? harvestProjection.tier}
+                quality={recordedFlower.quality}
+                stats={recordedFlower.stats}
                 imageUrl={ownedBuddieArtwork[state.varietyCode]?.imageUrl}
-                reference={flower.integrityCode}
-                status="new"
+                reference={recordedFlower.id.slice(0, 8)}
+                status={recordedFlower.status}
+                statusLabel={recordedFlower.status === "available" ? "Fleur enregistrée" : undefined}
               />
             </section>
-            {!onOpenArena ? <Link className={styles.primaryButton} href="/arene/placard?view=arena"><Swords /> Voir ma réserve et entrer dans la file</Link> : null}
-          </section>
+            </> : <p>La Fleur d’Arène de cette culture n’a pas encore été retrouvée. Consulte le stockage pour vérifier ce lot.</p>}
+            </div>
+          </details> : null}
+          </div>
         </main>
       );
     }
+    const flower = createKqFlower(state);
+    const recentJuryCodes = battleHistory.slice(0, 3).flatMap((entry) => entry.rounds.map((round) => round.code));
+    const juryProgram = getKqJuryProgram(state.seed, recentJuryCodes, state.rulesVersion);
     return (
       <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined}>
+        {recoveredCardNotice}
         {harvestMoment}
         <p className={styles.integrityCode}>Culture #{String(state.seed).padStart(5, "0")} · Empreinte {flower.integrityCode}</p>
         <section className={styles.traitsPanel}>
@@ -2457,7 +2734,7 @@ function KqGameSession({
             <article><Sparkles /><span><small>Cartes conservées · {preservedCards.length}</small><div>{preservedCards.length > 0 ? preservedCards.map((card, index) => <b key={`${card.code}-${index}`}>{card.name}</b>) : <em>Aucune carte du deck conservée</em>}</div></span></article>
           </div>
           <KqCultureRecap state={state} />
-          <KqCultureCarePanel state={state} request={remoteRequest} storage={careStorage} runId={remoteRunId} disabled={careBusy || remoteAction !== null || rolling || diceVisualSyncing || Boolean(pendingBurnCode)} onStateChange={setState} onBusyChange={setCareBusy} />
+          <KqCultureCarePanel state={state} request={remoteRequest} storage={careStorage} runId={remoteRunId} disabled={Boolean(cardRecovery) || careBusy || remoteAction !== null || rolling || diceVisualSyncing || Boolean(pendingBurnCode)} onStateChange={setState} onBusyChange={setCareBusy} />
             <HarvestScoreSheet state={state} />
           <div className={styles.traitsList}>{flower.traits.map((trait, index) => <span key={`${trait}-${index}`}><Star />{trait}</span>)}</div>
           {state.combos.length > 0 ? <div className={styles.comboList}>{state.combos.map((combo) => <span key={combo}><Sparkles />Combo · {combo}</span>)}</div> : null}
@@ -2502,7 +2779,7 @@ function KqGameSession({
               <button type="button" className={styles.primaryButton} onClick={() => setPendingBattleVerdict(true)}>Lancer le verdict du jury</button>
             </div>
           ) : null}
-          {battle?.status === "locked" && pendingBattleVerdict ? <AppDialog open onClose={() => setPendingBattleVerdict(false)} title="Le jury" labelledBy="flower-burn-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Flame /><span>{tutorial ? "Verdict d’essai" : "Verdict irréversible"}</span><h2 id="flower-burn-title">Brûler les deux fleurs ?</h2><p>{battle.playerFlower.variety} et {battle.opponentFlower.variety} seront détruites après les trois manches. {tutorial ? "Seules les Fleurs prêtées et le classement fictif de cet essai sont concernés." : "Le résultat sera ajouté au classement et ne pourra pas être rejoué."}</p><div><button type="button" onClick={() => setPendingBattleVerdict(false)}>Retour au duel</button><button type="button" className={styles.burnButton} onClick={judgeBattle}><Flame /> Confirmer le verdict</button></div></AppDialog> : null}
+          {battle?.status === "locked" && pendingBattleVerdict ? <AppDialog open onClose={() => setPendingBattleVerdict(false)} title="Le jury" labelledBy="flower-burn-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}><Flame /><span>{tutorial ? "Verdict d’essai" : "Verdict irréversible"}</span><h2 id="flower-burn-title">Confirmer le verdict ?</h2><p>Les Fleurs d’Arène {battle.playerFlower.variety} et {battle.opponentFlower.variety} seront définitivement consommées après les trois manches et ne pourront plus servir en duel. {tutorial ? "Seules les Fleurs prêtées et le classement fictif de cet essai sont concernés." : "Le résultat sera ajouté au classement et ne pourra pas être rejoué."}</p><div><button type="button" onClick={() => setPendingBattleVerdict(false)}>Retour au duel</button><button type="button" className={styles.burnButton} onClick={judgeBattle}><Flame /> Confirmer le verdict</button></div></AppDialog> : null}
           {battle?.status === "verdict" ? (
             <div className={styles.verdictPanel}>
               <span className={styles.verdictKicker}>{tutorial ? "Verdict fictif" : "Verdict officiel"}</span>
@@ -2546,7 +2823,7 @@ function KqGameSession({
     });
   };
   const performTurnAction = async () => {
-    if (pendingBurnCode || rolling || (remoteAction !== null || careBusy) || diceVisualSyncing) return;
+    if (cardOperation.current || cardRecoveryRef.current || pendingBurnCode || rolling || (remoteAction !== null || careBusy) || diceVisualSyncing) return;
     if (primaryAction === "roll") {
       focusTurnElement("[data-culture-decision]");
       await roll();
@@ -2556,14 +2833,29 @@ function KqGameSession({
       else if (nextState?.phase === "resolved" && !isKqCultureDead(nextState)) focusTurnElement("[data-culture-result]");
     }
   };
+  const showTurnOptions = () => {
+    if (cardChoices.playableCount > 0) {
+      const hand = gameViewportRef.current?.querySelector<HTMLDetailsElement>("[data-culture-hand]");
+      if (hand) {
+        setHandFilterChoice({ scope: handFilterScope, value: "playable" });
+        hand.open = true;
+        focusTurnElement("[data-culture-hand] > summary");
+        return;
+      }
+    }
+    focusTurnElement("[data-culture-options]");
+  };
 
   return (
     <main data-culture-run={state.campaign?.leaderRunId ?? remoteRunId ?? initialRunId} data-culture-campaign={state.campaign?.id} data-culture-zone={zoneContext?.id} data-culture-phase={state.phase} data-culture-stage={state.stageIndex} data-culture-variety={state.varietyCode} ref={gameViewportRef} className={styles.page} data-view-mode={viewMode} data-player-mode={playerPresentation || undefined} data-playable-lesson={Boolean(tutorial) || undefined} data-culture-play>
       {contractRun}
       <header className={styles.topbar}>
-        <div className={styles.gameBrand}><span className={styles.gameBrandMark} aria-hidden="true"><Image src="/mascots/home-welcome.png" alt="" width={1122} height={1402} sizes="64px" /></span><div><span>{tutorial ? "Kanab Quest · Culture d’essai" : isPlayerMode ? "Kanab Quest · Culture officielle" : "Kanab Quest · Prototype local"}</span><h1>{state.campaign ? "Ma campagne" : contextZoneLabel ?? "Ma culture"}</h1></div></div>
-        <div className={styles.resources}><span><Zap />{state.xp} XP</span><span><Star /> Qualité {runProjection.projectedQuality}</span><span>Pression {state.pressure}/4</span>{!isPlayerMode ? <button type="button" onClick={reset}><RotateCcw /> Recommencer</button> : null}</div>
+        <div className={styles.gameBrand}><span className={styles.gameBrandMark} aria-hidden="true"><Image src="/mascots/home-welcome.png" alt="" width={1122} height={1402} sizes="64px" /></span><div><span>{tutorial ? "Culture d’essai" : isPlayerMode ? "Culture officielle" : "Prototype local"}</span><h1>{state.campaign ? "Ma campagne" : contextZoneLabel ?? "Ma culture"}</h1></div></div>
+        <div className={styles.resources}><span><Zap />{cardRecovery ? "XP à vérifier" : `${state.xp} XP`}</span><span data-culture-quality><Star /> Qualité de culture · {runProjection.projectedQuality} pts estimés</span><span>Pression {state.pressure}/4</span>{!isPlayerMode ? <button type="button" onClick={reset}><RotateCcw /> Recommencer</button> : null}</div>
       </header>
+
+      <KqCardRecoveryNotice pending={Boolean(cardRecovery)} checking={cardChecking} message={cardRecoveryMessage}
+        result={cardRecoveryResult} onCheck={() => void checkCardRecovery()} />
 
       <nav className={styles.stageTrack} aria-label="Étapes de production">
         {KQ_STAGES.map((stage, index) => <span key={stage} data-current={index === state.stageIndex || undefined} data-done={index < state.stageIndex || undefined} aria-current={index === state.stageIndex ? "step" : undefined}><b>{index + 1}</b><small>{getKqStageDisplayName(stage)}</small></span>)}
@@ -2620,7 +2912,7 @@ function KqGameSession({
             <span data-kind="danger"><b>1</b> Danger</span>
             <span data-kind="neutral"><b>2–3</b> Neutre</span>
             <span data-kind="success"><b>4–5</b> Réussite</span>
-            <span data-kind="spark"><b>6</b> Étincelle</span>
+            <span data-kind="spark"><b>6</b><span>Réussite +1 XP<small>Étincelle</small></span></span>
           </div>
           {state.phase === "rolled" && preview ? (
             <div className={styles.rollResult} data-culture-result tabIndex={-1} aria-live="polite">
@@ -2654,22 +2946,22 @@ function KqGameSession({
             </div>
           ) : null}
           <div className={styles.turnActions} data-culture-actionbar data-suspended={Boolean(pendingBurnCode) || undefined}>
-            {state.phase !== "resolved" ? <button type="button" className={styles.turnOptionsLink} onClick={() => focusTurnElement("[data-culture-options]")}>Voir mes possibilités{cardChoices.playableCount > 0 ? ` · ${cardChoices.playableCount} carte${cardChoices.playableCount > 1 ? "s" : ""}` : ""}</button> : null}
+            {state.phase !== "resolved" ? <button type="button" className={styles.turnOptionsLink} data-culture-options-action={cardChoices.playableCount > 0 ? "cards" : "options"} onClick={showTurnOptions}>{cardChoices.playableCount > 0 ? `Voir mes cartes jouables · ${cardChoices.playableCount}` : "Voir mes possibilités"}</button> : null}
             <small className={styles.turnActionContext} data-warning={state.phase === "rolled" && (turnPreview?.dead || turnPreview?.rescued || preview?.total === 0) || undefined}>{actionContext}</small>
             <button type="button" className={state.phase === "prepare" ? styles.rollButton : styles.primaryButton}
               data-culture-primary-action data-action={primaryAction}
-              disabled={Boolean(pendingBurnCode) || (remoteAction !== null || careBusy) || rolling || diceVisualSyncing}
+              disabled={Boolean(cardRecovery) || Boolean(pendingBurnCode) || (remoteAction !== null || careBusy) || rolling || diceVisualSyncing}
               aria-busy={(remoteAction !== null || careBusy) || rolling || diceVisualSyncing}
               onClick={() => void performTurnAction()}>
               {state.phase === "prepare" ? <Dices aria-hidden="true" /> : null}
-              {rolling ? "Les dés roulent…" : diceVisualSyncing ? "Mise à jour des dés…" : (remoteAction !== null || careBusy) ? "Confirmation…"
+              {cardRecovery ? "Culture à vérifier" : rolling ? "Les dés roulent…" : diceVisualSyncing ? "Mise à jour des dés…" : (remoteAction !== null || careBusy) ? "Confirmation…"
                 : state.phase === "prepare" ? "Lancer les dés" : state.phase === "rolled" ? "Valider le résultat"
                   : state.stageIndex === KQ_STAGES.length - 1 ? "Révéler la Récolte" : "Étape suivante"}
             </button>
           </div>
           <section className={styles.turnOptions} data-culture-options tabIndex={-1} aria-label="Tes possibilités pour cette étape">
             <header><strong>{state.phase === "resolved" ? "Pour la suite" : state.phase === "rolled" ? "Avant de valider" : "Avant de lancer"}</strong><small>{state.phase === "resolved" ? "Retrouve ta santé et les cartes conservées." : "Les cartes et les soins sont facultatifs."}</small></header>
-            <KqCultureCarePanel compact state={state} request={remoteRequest} storage={careStorage} runId={remoteRunId} disabled={careBusy || remoteAction !== null || rolling || diceVisualSyncing || Boolean(pendingBurnCode)} onStateChange={setState} onBusyChange={setCareBusy} />
+            <KqCultureCarePanel compact state={state} request={remoteRequest} storage={careStorage} runId={remoteRunId} disabled={Boolean(cardRecovery) || careBusy || remoteAction !== null || rolling || diceVisualSyncing || Boolean(pendingBurnCode)} onStateChange={setState} onBusyChange={setCareBusy} />
           {activeHeritage && activeHeritage.timing === "once-per-run" && (heritagePermission.allowed || state.heritageArmed) ? (
             <aside className={styles.heritageInPlay} data-used={state.heritageUsed || undefined} data-armed={state.heritageArmed || undefined} aria-label={`Héritage équipé : ${activeHeritage.name}`}>
               <CardArtwork code={activeHeritage.code} name={activeHeritage.name} producerName={activeHeritage.producerName} imageUrl={activeHeritage.imageUrl} />
@@ -2680,7 +2972,7 @@ function KqGameSession({
               </div>
               <footer>
                 <small>{state.heritageArmed ? "Pouvoir armé" : "Pouvoir disponible"}</small>
-                <button type="button" disabled={!heritagePermission.allowed || (remoteAction !== null || careBusy)} onClick={() => void applyGameAction("heritage")}>
+                <button type="button" disabled={Boolean(cardRecovery) || !heritagePermission.allowed || (remoteAction !== null || careBusy)} onClick={() => void applyGameAction("heritage")}>
                   {state.heritageArmed ? "Pouvoir armé" : remoteAction === "game" ? "Activation…" : "Activer le pouvoir"}
                 </button>
               </footer>
@@ -2708,22 +3000,17 @@ function KqGameSession({
                   if (event.target !== event.currentTarget || !["ArrowLeft", "ArrowRight"].includes(event.key)) return;
                   event.preventDefault();
                   event.currentTarget.scrollBy({ left: (event.key === "ArrowRight" ? 1 : -1) * event.currentTarget.clientWidth * .85, behavior: "auto" });
-                }}>{displayedCards.map((card) => { const usedCopies = state.usedCards.filter((code) => code === card.code).length; const deckCopies = card.category === "pbi" ? 0 : Math.max(0, state.deckCodes.filter((code) => code === card.code).length - usedCopies); return <SupportCard key={card.code} card={card} state={state} copies={activeInventory[card.code] ?? 0} handCopies={card.category === "pbi" ? 0 : handCodes.filter((code) => code === card.code).length} deckCopies={deckCopies} onPlay={setPendingBurnCode} compact />; })}</div>
+                }}>{displayedCards.map((card) => { const usedCopies = state.usedCards.filter((code) => code === card.code).length; const deckCopies = card.category === "pbi" ? 0 : Math.max(0, state.deckCodes.filter((code) => code === card.code).length - usedCopies); return <SupportCard key={card.code} card={card} state={state} copies={activeInventory[card.code] ?? 0} handCopies={card.category === "pbi" ? 0 : handCodes.filter((code) => code === card.code).length} deckCopies={deckCopies} onPlay={openCardInspection} compact />; })}</div>
               <details className={styles.handGuide}><summary>Rôle des cartes</summary><KqCardRoleLegend /></details>
-              <div className={styles.handActions}><span data-hand-redraw-reason>{redrawPermission.remaining} changement{redrawPermission.remaining > 1 ? "s" : ""} restant{redrawPermission.remaining > 1 ? "s" : ""}. {redrawPermission.reason}</span><button type="button" data-hand-redraw disabled={!redrawPermission.allowed || remoteAction !== null || careBusy || rolling || diceVisualSyncing} onClick={() => void applyGameAction("redraw")}><RotateCcw /> Changer ma main</button></div>
-              {(state.heritageReserveCodes?.length ?? 0) > 0 ? (
-                <section className={styles.heritageHandExchange}>
-                  <header><Sparkles /><span><strong>Main prévoyante · {handCodes.length + (state.heritageReserveCodes?.length ?? 0)} cartes vues</strong><small>Choisis une carte de ta main, puis une carte de réserve à faire entrer. Tu peux recommencer avant le lancer.</small></span></header>
-                  <nav className={styles.heritageExchangeTabs} aria-label="Main prévoyante">
-                    <button type="button" data-active={heritageExchangeTab === "hand" || undefined} aria-pressed={heritageExchangeTab === "hand"} onClick={() => setHeritageExchangeTab("hand")}>Ma main <small>{handCodes.length} cartes</small></button>
-                    <button type="button" data-active={heritageExchangeTab === "reserve" || undefined} aria-pressed={heritageExchangeTab === "reserve"} onClick={() => setHeritageExchangeTab("reserve")}>Ma réserve <small>{state.heritageReserveCodes?.length ?? 0} cartes</small></button>
-                  </nav>
-                  <div className={styles.heritageExchangePanels}>
-                    <div data-active={heritageExchangeTab === "hand" || undefined}><b>Choisis la carte à sortir</b>{handCodes.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={(remoteAction !== null || careBusy)} data-selected={heritageSwapOutIndex === index || undefined} onClick={() => { setHeritageSwapOutIndex(index); setHeritageExchangeTab("reserve"); }}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}</button>)}</div>
-                    <div data-active={heritageExchangeTab === "reserve" || undefined}><b>Choisis la carte à faire entrer</b>{state.heritageReserveCodes?.map((code, index) => <button key={`${code}-${index}`} type="button" disabled={heritageSwapOutIndex === null || (remoteAction !== null || careBusy)} onClick={() => void swapHeritageCard(index)}>{KQ_CARDS.find((card) => card.code === code)?.name ?? code}<small>{remoteAction === "game" ? "Confirmation…" : heritageSwapOutIndex === null ? "Choisis d’abord une carte à sortir" : "Faire entrer"}</small></button>)}</div>
-                  </div>
-                </section>
-              ) : null}
+              <KqHandAdjustment
+                key={`${cardContextKey}:${remoteRunId ?? `${state.startedAt}:${state.seed}`}`}
+                state={state}
+                selectionScope={handAdjustmentScope}
+                busy={handAdjustmentBusy}
+                blockedReason={handAdjustmentBlockedReason}
+                onSwap={(handIndex, reserveIndex) => adjustHand({ handIndex, reserveIndex })}
+                onRedraw={() => adjustHand()}
+              />
               {state.care ? null : state.revealedPest ? <div className={styles.pestReveal}><strong>🔎 {PEST_LABELS[state.revealedPest]} révélés</strong><span>{availableCards.filter((card) => card.category === "pbi").length} auxiliaire(s) compatible(s) de ta collection affiché(s).</span></div> : situation.pest ? <div className={styles.pestHidden}><strong>Ravageur inconnu</strong><span>Joue la Loupe d’inspection avant les dés pour ouvrir la réserve PBI.</span></div> : null}
               <div className={styles.substrate} data-tone={cultureSystemStatus?.tone}><Sparkles /><span><small>Culture indoor</small><strong>{activeSubstrate.name}</strong><em>{cultureSystemStatus?.detail ?? activeSubstrate.description}</em></span>{cultureSystemStatus ? <b className={styles.cultureSystemStatus}>{cultureSystemStatus.label}</b> : null}</div>
             </section>
@@ -2741,7 +3028,7 @@ function KqGameSession({
           <section className={styles.runProjection} aria-label="Projection de la récolte">
             <header><span>Trajectoire actuelle</span><small>Recalculée après chaque étape</small></header>
             <div>
-              <article><Star aria-hidden="true" /><span><strong>{runProjection.projectedQuality}</strong><small>Qualité projetée{runProjection.equipmentQualityBonus > 0 ? ` · +${runProjection.equipmentQualityBonus} matériel` : ""}</small></span></article>
+              <article><Star aria-hidden="true" /><span><strong>{runProjection.projectedQuality} pts</strong><small>Qualité de culture estimée{runProjection.equipmentQualityBonus > 0 ? ` · +${runProjection.equipmentQualityBonus} matériel` : ""}</small></span></article>
               <article><Trophy aria-hidden="true" /><span><strong>{runProjection.tier}</strong><small>Palier actuel</small></span></article>
               <article><Scale aria-hidden="true" /><span><strong>{displayedHarvestGrams.toLocaleString("fr-FR")} g</strong><small>Total estimé · {state.warehouse ? `${state.warehouse.activeAreaM2} m²` : `${getKqProductionUnits(state.equipment?.productionUnits)} tente${getKqProductionUnits(state.equipment?.productionUnits)>1?"s":""}`}{runProjection.harvestLossPercent > 0 ? " · après pertes" : ""}</small></span></article>
               <article><Sparkles aria-hidden="true" /><span><strong>{runProjection.remainingStages}</strong><small>Étape{runProjection.remainingStages > 1 ? "s" : ""} encore ouverte{runProjection.remainingStages > 1 ? "s" : ""}</small></span></article>
@@ -2794,10 +3081,12 @@ function KqGameSession({
       {pendingBurnCode ? (() => {
         const card = KQ_CARDS.find((item) => item.code === pendingBurnCode);
         if (!card) return null;
-        const tradeoff = getKqCardTradeoff(card);
         const permission = getKqPlayerCardPermission(state, card, activeInventory[card.code] ?? 0);
-        const busy = remoteAction !== null || careBusy || rolling || diceVisualSyncing;
-        const blockedReason = !permission.allowed ? permission.reason : busy ? "Attends la fin de l’action en cours pour jouer cette carte." : null;
+        const inventoryUnavailable = remoteBurnsEnabled && (remoteCollection.loading || Boolean(remoteCollection.error) || !remoteInventoryVerifiedRef.current);
+        const busy = Boolean(cardRecovery) || inventoryUnavailable || remoteAction !== null || careBusy || rolling || diceVisualSyncing;
+        const blockedReason = cardRecovery ? "Vérifie la culture et ton album avant de jouer une carte."
+          : inventoryUnavailable ? remoteCollection.error || "Vérification des copies de ton album en cours…"
+          : !permission.allowed ? permission.reason : busy ? "Attends la fin de l’action en cours pour jouer cette carte." : null;
         const cardPreview = !busy ? getKqCardPlayPreview(state, card, activeInventory[card.code] ?? 0) : null;
         let teachingAssistance = false;
         if (tutorial && cardPreview?.kind === "deterministic") {
@@ -2805,24 +3094,17 @@ function KqGameSession({
           const assisted = assistKqPlayableLesson(played);
           teachingAssistance = assisted.care?.vitality !== played.care?.vitality || assisted.dice?.join() !== played.dice?.join();
         }
-        return <AppDialog open onClose={closeCardInspection} title="Consulter une carte" labelledBy="burn-confirm-title" className={styles.verdictDialog} bodyClassName={styles.burnConfirm}>
-          <Flame /><span>{permission.allowed ? "Jouer une carte" : "Carte conservée"}</span>
-          <h2 id="burn-confirm-title">{permission.allowed ? `Brûler ${card.name} ?` : card.name}</h2>
-          {blockedReason ? <p className={styles.cardBlockedReason} id="card-blocked-reason" data-card-blocked-reason role="status">{blockedReason}</p> : null}
-          <p>Jouer cette carte détruit une copie de ton album. Copies disponibles : {activeInventory[card.code] ?? 0}.</p>
-          <p data-culture-card-cost><strong>Coût : {card.xpCost} XP de culture.</strong><br />Tu disposes de {state.xp} XP.</p>
-          {teachingAssistance ? <p data-card-teaching-assistance>Dans cet essai, un secours accompagne les situations critiques.</p> : cardPreview ? <KqCardPlayPreview preview={cardPreview} /> : null}
-          <div className={styles.tradeoff}><p><b>Avantage</b>{tradeoff.benefit}</p><p><b>Risque</b>{tradeoff.risk}</p></div>
-          <details className={styles.cardDialogRules}><summary>Règles et situations adaptées</summary><CardEffectGuide card={card} /></details>
-          {remoteNotice ? <small className={styles.modalNotice}>{remoteNotice}</small> : null}
-          <div><button type="button" onClick={closeCardInspection}>{blockedReason ? "Fermer" : "Annuler"}</button><button type="button" className={styles.burnButton} disabled={Boolean(blockedReason)} aria-describedby={blockedReason ? "card-blocked-reason" : undefined} data-culture-confirm-card onClick={() => void playAndBurnCard(card.code)}><Flame /> {remoteAction === "card" ? "Confirmation…" : "Brûler et jouer"}</button></div>
-        </AppDialog>;
+        return <KqCardChoiceDialog card={card} copies={activeInventory[card.code] ?? 0} xp={state.xp}
+          preview={cardPreview} blockedReason={blockedReason} teachingAssistance={teachingAssistance}
+          confirming={remoteAction === "card"} notice={cardRecovery ? cardRecoveryMessage : remoteNotice}
+          recovery={cardRecovery ? { checking: cardChecking, onCheck: () => void checkCardRecovery() } : undefined}
+          onClose={closeCardInspection} onConfirm={() => void playAndBurnCard(card.code)} />;
       })() : null}
 
       {gameActionError ? (
         <div className={styles.gameActionError} role="alert">
           <p>{gameActionError}</p>
-          <button type="button" disabled={(remoteAction !== null || careBusy) || rolling} onClick={() => {
+          <button type="button" disabled={Boolean(cardRecovery) || (remoteAction !== null || careBusy) || rolling} onClick={() => {
             setGameActionError("");
             setCollectionRefreshNonce((value) => value + 1);
           }}>Actualiser la culture</button>

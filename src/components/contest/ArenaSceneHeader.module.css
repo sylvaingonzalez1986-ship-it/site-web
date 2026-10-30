@@ -1,10 +1,9 @@
-.header { composes: surface from "./ArenaRetro.module.css"; color: #172923; background: #fff1d6; border-bottom: 3px double #172923; }
+.header { composes: gameSurface from "./ArenaRetro.module.css"; color: #172923; background: #fff1d6; border-bottom: 3px double #172923; }
 .inner { display: grid; grid-template-columns: 1fr minmax(0, .85fr); gap: 1.5rem 2.5rem; align-items: center; max-width: 1240px; margin-inline: auto; padding: 1.5rem clamp(1rem, 3vw, 2rem); }
 .heading { min-width: 0; }
 .back { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: .65rem 1rem; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; font-size: .8rem; font-weight: 800; text-decoration: none; box-shadow: none; --game-control-art: var(--game-control-paper); border-image: var(--game-control-art) 40 fill / 13px / 0 stretch; }
 .copy { padding-block: 1.75rem .5rem; }
-.copy > span { display: block; color: #376157; font-size: .68rem; font-weight: 850; letter-spacing: .09em; text-transform: uppercase; }
-.copy h1 { margin: .65rem 0; color: #172923; font: 900 clamp(2.75rem, 5.5vw, 4.75rem)/.98 var(--font-display), Impact, sans-serif; text-transform: uppercase; overflow-wrap: anywhere; }
+.copy h1 { margin: 0; color: #172923; font: 900 clamp(2.75rem, 5.5vw, 4.75rem)/.98 var(--font-display), Impact, sans-serif; text-transform: uppercase; overflow-wrap: anywhere; }
 .copy p { max-width: 38ch; margin: .8rem 0 0; color: #39594e; font-size: 1rem; line-height: 1.6; }
 .scene { width: min(100%, 500px); justify-self: end; min-width: 0; padding: 8px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-paper) 48 fill / 15px / 0 stretch; }
 .art { display: block; width: 100%; height: auto; }
@@ -19,7 +18,6 @@
   .heading { display: contents; }
   .back { grid-column: 1 / -1; justify-self: start; }
   .copy { grid-column: 1; grid-row: 2; min-width: 0; padding: .2rem 0; }
-  .copy > span { font-size: .56rem; letter-spacing: .04em; }
   .copy h1 { font-size: clamp(1.5rem, 5.5vw, 2.5rem); overflow-wrap: normal; word-break: normal; }
   .copy p { margin-top: .6rem; font-size: .75rem; line-height: 1.5; }
   .scene { grid-column: 2; grid-row: 2; width: 100%; padding: 5px; border-image-width: 10px; }

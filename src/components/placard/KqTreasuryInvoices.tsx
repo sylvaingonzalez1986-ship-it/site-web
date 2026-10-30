@@ -26,6 +26,7 @@ export function KqTreasuryInvoices({ data, energy, energyError, now: liveNow, bu
   const siteStatus = !site.createdAt ? "Site non créé" : !site.active ? "Site suspendu" : siteMonthlyCents === 0 ? "Boutique de base · sans abonnement" : site.paidUntil ? `${site.renew ? "Renouvellement" : "Fin d’accès"} le ${date(site.paidUntil)}` : "Aucune période payée";
   const energyDue = energy?.outstandingCents ?? data.electricityOutstandingCents;
   const due = lab.outstandingCents + energyDue + (suppliers?.outstandingCents ?? 0);
+  const canPayAll = Boolean(energy && !energyError && suppliers);
   const invoices = lab.invoices.filter(invoice => invoice.remainingCents > 0).toSorted((a, b) => Date.parse(a.dueAt) - Date.parse(b.dueAt));
   const energyInvoices = energy?.invoices.filter(invoice => invoice.remainingCents > 0) ?? [];
   const paidEnergy = energy?.invoices.filter(invoice => invoice.remainingCents === 0) ?? [];
@@ -35,33 +36,31 @@ export function KqTreasuryInvoices({ data, energy, energyError, now: liveNow, bu
   const supplierInvoices = suppliers?.invoices.filter(invoice => invoice.remainingCents > 0).toSorted((a, b) => Date.parse(a.dueAt) - Date.parse(b.dueAt)) ?? [];
   const paidSuppliers = suppliers?.invoices.filter(invoice => invoice.remainingCents === 0).toSorted((a, b) => Date.parse(b.issuedAt) - Date.parse(a.issuedAt)) ?? [];
   return <div className={styles.desk}>
-    <div className={styles.summary}>
-      <article><small>Factures à régler</small><strong>{money(due)}</strong><span>Fournisseurs, laboratoire, électricité et soins</span></article>
-      <article><small>Trésorerie disponible</small><strong>{money(data.cashCents)}</strong><span>{due > data.cashCents ? `${money(due - data.cashCents)} manquent pour tout régler` : `${money(data.cashCents - due)} après règlement des factures`}</span></article>
-      <article><small>TVA déjà réservée</small><strong>{money(vat.reservedCents)}</strong><span>Mise de côté, séparée de ton disponible</span></article>
-    </div>
-    <div className={`${styles.calendarGrid} ${styles.financialOverview}`}>
-      <section className={styles.calendar}><KqAllocationBar label="Factures restant à régler" emptyLabel="Toutes les factures sont réglées." items={[
-        { label: "Fournisseurs", value: suppliers?.outstandingCents ?? 0, displayValue: money(suppliers?.outstandingCents ?? 0), tone: "ink" },
-        { label: "Laboratoire", value: lab.outstandingCents, displayValue: money(lab.outstandingCents), tone: "gold" },
-        { label: "Électricité et soins", value: energyDue, displayValue: money(energyDue), tone: "teal" },
-      ]} /></section>
-      <section className={styles.calendar}><KqProgressMeter label="Couverture par ta trésorerie" value={Math.min(data.cashCents, due)} max={due}
-        valueLabel={due > 0 ? `${Math.floor(Math.min(1, data.cashCents / due) * 100)} % des factures` : "Aucune facture à payer"}
-        tone={data.cashCents < due ? "gold" : "teal"} hint={data.cashCents < due ? `Il manque ${money(due - data.cashCents)}` : `${money(data.cashCents - due)} disponibles après règlement`} /></section>
-    </div>
     <section className={styles.inbox} aria-label="Factures à régler">
-      <header className={styles.heading}><div><small>Le courrier du bureau</small><h2>Factures & échéances</h2></div><button type="button" className={styles.secondary} disabled={busy} onClick={onRetry} aria-label="Actualiser les factures"><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></header>
+      <header className={styles.heading}><div><h2>Factures & échéances</h2></div><button type="button" className={styles.secondary} disabled={busy} onClick={onRetry} aria-label="Actualiser les factures"><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></header>
+      <dl className={styles.summary} aria-label="Situation avant règlement">
+        <div><dt>Total à régler</dt><dd><strong>{canPayAll ? money(due) : "À actualiser"}</strong></dd></div>
+        <div><dt>Trésorerie disponible</dt><dd><strong>{money(data.cashCents)}</strong><span>{!canPayAll ? "Solde après règlement à confirmer" : due > data.cashCents ? `Il manque ${money(due - data.cashCents)} pour tout régler` : `${money(data.cashCents - due)} après règlement`}</span></dd></div>
+      </dl>
+      <div className={styles.bulkPayment}>
+        <button type="button" className={styles.primary} data-pay-all-invoices disabled={busy || !canPayAll || due <= 0 || data.cashCents < due}
+          aria-describedby="pay-all-invoices-help"
+          onClick={() => onAsk("Régler toutes les factures",
+            `Tu vas régler toutes les factures déjà émises, même avant leur échéance : fournisseurs ${money(suppliers!.outstandingCents)}, laboratoire ${money(lab.outstandingCents)}, électricité et soins (climatisation comprise) ${money(energyDue)}. Le total de ${money(due)} sera débité de ta trésorerie disponible. Il te restera ${money(data.cashCents - due)}.`,
+            { action: "pay-all-invoices", expectedCents: due }, due)}>
+          <Check size={18} aria-hidden="true" /> Régler toutes les factures · {canPayAll ? money(due) : "Total à actualiser"}
+        </button>
+        <small id="pay-all-invoices-help">{!canPayAll ? "Actualise les factures pour charger le total complet." : due <= 0 ? "Toutes tes factures sont réglées." : data.cashCents < due ? `Il manque ${money(due - data.cashCents)} pour tout régler. Tu peux encore payer certaines factures séparément.` : "Toutes les catégories, y compris les factures non échues."}</small>
+      </div>
       <div className={styles.filters} role="group" aria-label="Type de factures">{([{ id: "all", label: "Toutes" }, { id: "suppliers", label: "Fournisseurs" }, { id: "lab", label: "Laboratoire" }, { id: "energy", label: "Électricité & soins" }] as const).map(item => <button type="button" key={item.id} aria-pressed={filter === item.id} onClick={() => setFilter(item.id)}>{item.label}</button>)}</div>
-      {filter === "all" || filter === "suppliers" ? <section className={styles.folder} aria-label="Factures fournisseurs"><header><Package size={20} aria-hidden="true" /><h3>Fournisseurs · consommables</h3><strong>{money(suppliers?.outstandingCents ?? 0)}</strong></header>
+      {filter === "all" || filter === "suppliers" ? <section className={styles.folder} aria-label="Factures fournisseurs"><header><Package size={20} aria-hidden="true" /><h3>Fournisseurs · consommables</h3><strong>{suppliers ? money(suppliers.outstandingCents) : "À actualiser"}</strong></header>
         <p>À régler sous 30 jours de jeu, soit 5 jours réels après le lancement.</p>
-        <details className={styles.history}><summary>Comment sont réglés les consommables ?</summary><p>Le lancement crée la facture sans prélèvement immédiat. Tu peux la régler ici avant l’échéance. Un prélèvement automatique est tenté une fois à l’échéance, dans la limite des fonds disponibles ; tout solde impayé reste dû.</p></details>
         {supplierInvoices.length ? <ul className={styles.invoices}>{supplierInvoices.map(invoice => { const overdue = Date.parse(invoice.dueAt) <= now; return <li key={invoice.id} data-supplier-invoice={invoice.id}>
           <div className={styles.invoiceTitle}><strong>Consommables de culture</strong><small>Culture {invoice.runId.slice(0, 8)} · facturée le <time dateTime={invoice.issuedAt}>{date(invoice.issuedAt)}</time></small><span className={styles.status} data-overdue={overdue}>{overdue ? "Échue" : invoice.remainingCents < invoice.amountCents ? "Partiellement réglée" : "À régler"}</span></div>
           <div className={styles.invoiceDue}><small>Échéance</small><time dateTime={invoice.dueAt}>{date(invoice.dueAt)}</time><small>30 jours de jeu · 5 jours réels après le lancement</small></div>
           <div className={styles.invoiceAmount}><small>Reste à payer</small><strong>{money(invoice.remainingCents)}</strong><small>Facture initiale : {money(invoice.amountCents)}</small></div>
           <div className={styles.invoiceAction}><button type="button" className={styles.primary} disabled={busy || data.cashCents < invoice.remainingCents} aria-label={`Régler les consommables de la culture ${invoice.runId.slice(0, 8)} de ${money(invoice.remainingCents)}`} onClick={() => onAsk("Régler le fournisseur", `Le solde de ${money(invoice.remainingCents)} des consommables de la culture ${invoice.runId.slice(0, 8)} sera débité de ta trésorerie. L’échéance de cette facture est le ${date(invoice.dueAt)}.`, { action: "pay-supplier", invoiceId: invoice.id }, invoice.remainingCents)}>Régler · {money(invoice.remainingCents)}</button>{data.cashCents < invoice.remainingCents ? <small>Il manque {money(invoice.remainingCents - data.cashCents)} pour ce règlement.</small> : null}</div>
-        </li>; })}</ul> : <p className={styles.clear}><Check size={17} aria-hidden="true" /> {suppliers ? "Aucune facture fournisseur à régler." : "Les nouvelles factures fournisseur apparaîtront ici."}</p>}
+        </li>; })}</ul> : <p className={styles.clear}>{suppliers ? <><Check size={17} aria-hidden="true" /> Aucune facture fournisseur à régler.</> : "Factures fournisseur indisponibles. Actualise pour les consulter."}</p>}
         {suppliers && suppliers.outstandingCents > supplierInvoices.reduce((sum, invoice) => sum + invoice.remainingCents, 0) ? <p>Seules les dernières factures sont détaillées ici. Le solde inclut aussi les plus anciennes.</p> : null}
         {(suppliers?.overdueCents ?? 0) > 0 ? <p className={styles.warning}>{money(suppliers!.overdueCents)} de factures fournisseur échues. Règle-les ici ou laisse tes prochaines ventes les rembourser progressivement.</p> : null}
         {paidSuppliers.length ? <details className={styles.history}><summary>Dernières factures fournisseur réglées · {paidSuppliers.length}</summary><ul>{paidSuppliers.map(invoice => <li key={invoice.id}><span>Culture {invoice.runId.slice(0, 8)} · <time dateTime={invoice.issuedAt}>{date(invoice.issuedAt)}</time></span><strong>{money(invoice.amountCents)}</strong><span>Réglée</span></li>)}</ul></details> : null}
@@ -87,12 +86,49 @@ export function KqTreasuryInvoices({ data, energy, energyError, now: liveNow, bu
         {paidEnergy.length ? <details className={styles.history}><summary>Dernières factures d’énergie réglées · {paidEnergy.length}</summary><ul>{paidEnergy.map(invoice => <li key={invoice.runId}><time dateTime={invoice.createdAt}>{date(invoice.createdAt)}</time><strong>{money(invoice.totalCents)}</strong><span>Réglée</span></li>)}</ul></details> : null}
         {paidClimate.length > 0 && <details className={styles.history}><summary>Dernières factures de climatisation réglées · {paidClimate.length}</summary><ul>{paidClimate.map(invoice => <li key={invoice.id}><span>Climatisation · <time dateTime={invoice.periodEndedAt}>{date(invoice.periodEndedAt)}</time></span><strong>{money(invoice.amountCents)}</strong><span>Réglée</span></li>)}</ul></details>}
       </section> : null}
-      <details className={styles.history}><summary>Ordre des retenues sur les ventes</summary><p className={styles.note}>Les retenues sur les ventes règlent d’abord les analyses échues, puis l’électricité et les soins, puis les fournisseurs échus. Elles partagent une limite totale de 50 % de la recette après TVA et, pour les ventes en ligne, après les frais. Les règlements sont aussi visibles dans le journal comptable.</p></details>
     </section>
-    <div className={styles.calendarGrid}>
-      {climate && (climate.code || climate.accruedCents > 0) && <section className={styles.calendar} aria-label="Échéance de la climatisation"><header><Snowflake size={21} aria-hidden="true" /><h3>Climatisation du stockage</h3><span className={styles.status}>Mensuel</span></header><strong className={styles.reserve}>{money(climate.monthlyCostCents)} / mois de jeu</strong><p>{climate.areaM2} m² de stockage · {climate.monthlyKwh} kWh / mois. Consommation au prorata du temps installé, facturée tous les 30 jours de jeu (5 jours réels).</p><dl><div><dt>Consommation engagée</dt><dd>{money(climate.accruedCents)}</dd></div>{climate.nextBillingAt && <div><dt>Prochain débit automatique</dt><dd><time dateTime={climate.nextBillingAt}>{date(climate.nextBillingAt)}</time></dd></div>}</dl><small>Le montant dépend des changements de surface ou de climatiseur pendant le mois. Tout solde impayé reste dans les factures d’électricité.</small></section>}
-      <section className={styles.calendar} aria-label="TVA réservée"><header><ReceiptText size={21} aria-hidden="true" /><h3>TVA · déjà mise de côté</h3><span className={styles.status}>Automatique</span></header><strong className={styles.reserve}>{money(vat.reservedCents)}</strong><p>La TVA de jeu ({vat.ratePercent} %) est réservée à chaque vente. Son reversement ne débite pas une seconde fois ta trésorerie disponible.</p><dl><div><dt>Prochain reversement</dt><dd><time dateTime={vat.nextSettlementAt}>{date(vat.nextSettlementAt)}</time></dd></div><div><dt>Déjà reversé</dt><dd>{money(vat.paidCents)}</dd></div></dl></section>
-      <section className={styles.calendar} aria-label="Échéances des abonnements"><header><CalendarClock size={21} aria-hidden="true" /><h3>Prochains abonnements</h3></header><p>1 mois de jeu = 5 jours réels. Retrouve les niveaux et le renouvellement dans Ma boutique → Site internet.</p><dl><div><dt>Site internet <small>{siteStatus}</small></dt><dd>{site.active && siteMonthlyCents === 0 ? "Sans abonnement" : site.active && site.renew && site.paidUntil ? money(siteMonthlyCents) : "Pas de prélèvement"}</dd></div>{domiciliation?.retired !== true && domiciliation?.active && domiciliation.renew && domiciliation.paidUntil ? <div data-legacy-domiciliation><dt>Ancienne domiciliation <small>Abonnement encore actif · renouvellement le {date(domiciliation.paidUntil)}</small></dt><dd>50 €</dd></div> : null}</dl><small>Un renouvellement à venir n’est pas encore une facture impayée.</small></section>
-    </div>
+    <details className={styles.breakdown} data-invoice-analysis>
+      <summary>Répartition et règles de règlement</summary>
+      {canPayAll ? <div className={styles.financialOverview}>
+        <KqAllocationBar label="Factures restant à régler" emptyLabel="Toutes les factures sont réglées." items={[
+          { label: "Fournisseurs", value: suppliers!.outstandingCents, displayValue: money(suppliers!.outstandingCents), tone: "ink" },
+          { label: "Laboratoire", value: lab.outstandingCents, displayValue: money(lab.outstandingCents), tone: "gold" },
+          { label: "Électricité et soins", value: energyDue, displayValue: money(energyDue), tone: "teal" },
+        ]} />
+        <KqProgressMeter label="Couverture par ta trésorerie" value={Math.min(data.cashCents, due)} max={due}
+          valueLabel={due > 0 ? `${Math.floor(Math.min(1, data.cashCents / due) * 100)} % des factures` : "Aucune facture à payer"}
+          tone={data.cashCents < due ? "gold" : "teal"} hint={data.cashCents < due ? `Il manque ${money(due - data.cashCents)}` : `${money(data.cashCents - due)} disponibles après règlement`} />
+      </div> : <p>Actualise les factures pour consulter leur répartition complète.</p>}
+      <h3>Consommables de culture</h3><p>Le lancement crée la facture sans prélèvement immédiat. Tu peux la régler ici avant l’échéance. Un prélèvement automatique est tenté une fois à l’échéance, dans la limite des fonds disponibles ; tout solde impayé reste dû.</p>
+      <h3>Retenues sur les ventes</h3><p>Les retenues sur les ventes règlent d’abord les analyses échues, puis l’électricité et les soins, puis les fournisseurs échus. Elles partagent une limite totale de 50 % de la recette après TVA et, pour les ventes en ligne, après les frais. Les règlements sont aussi visibles dans le journal comptable.</p>
+    </details>
+    <section className={styles.calendarPanel} aria-label="À venir et TVA" data-upcoming-finances>
+      <h2>À venir et TVA</h2>
+      <div className={styles.calendarGrid}>
+        {climate && (climate.code || climate.accruedCents > 0) && <section className={styles.calendar} aria-label="Échéance de la climatisation">
+          <header><Snowflake size={20} aria-hidden="true" /><h3>Climatisation du stockage</h3></header>
+          <strong className={styles.reserve}>{money(climate.monthlyCostCents)} <small>/ mois de jeu</small></strong>
+          <dl><div><dt>Consommation engagée</dt><dd>{money(climate.accruedCents)}</dd></div>{climate.nextBillingAt && <div><dt>Prochain débit automatique</dt><dd><time dateTime={climate.nextBillingAt}>{date(climate.nextBillingAt)}</time></dd></div>}</dl>
+        </section>}
+        <section className={styles.calendar} aria-label="TVA réservée">
+          <header><ReceiptText size={20} aria-hidden="true" /><h3>TVA déjà mise de côté</h3></header>
+          <strong className={styles.reserve}>{money(vat.reservedCents)}</strong>
+          <p>Reversement automatique · aucun nouveau débit du disponible.</p>
+          <dl><div><dt>Prochain reversement</dt><dd><time dateTime={vat.nextSettlementAt}>{date(vat.nextSettlementAt)}</time></dd></div></dl>
+        </section>
+        <section className={styles.calendar} aria-label="Échéances des abonnements">
+          <header><CalendarClock size={20} aria-hidden="true" /><h3>Site internet</h3></header>
+          <strong className={styles.reserve}>{site.active && siteMonthlyCents === 0 ? "Sans abonnement" : site.active && site.renew && site.paidUntil ? <>{money(siteMonthlyCents)} <small>au renouvellement</small></> : "Pas de prélèvement"}</strong>
+          <p>{siteStatus}</p>
+          {domiciliation?.retired !== true && domiciliation?.active && domiciliation.renew && domiciliation.paidUntil ? <dl><div data-legacy-domiciliation><dt>Ancienne domiciliation <small>Renouvellement le {date(domiciliation.paidUntil)}</small></dt><dd>50 €</dd></div></dl> : null}
+        </section>
+      </div>
+      <details className={styles.history} data-upcoming-rules>
+        <summary>Comprendre les montants à venir</summary>
+        <p>Un renouvellement à venir n’est pas encore une facture impayée. Retrouve les niveaux et le renouvellement dans Commerce → Développer → Site internet. Un mois de jeu correspond à 5 jours réels.</p>
+        {climate && (climate.code || climate.accruedCents > 0) ? <p>Climatisation : {climate.areaM2} m² de stockage · {climate.monthlyKwh} kWh par mois de jeu. La consommation est calculée au prorata du temps installé et facturée tous les 30 jours de jeu (5 jours réels). Le montant dépend des changements de surface ou de climatiseur pendant le mois. Tout solde impayé reste dans les factures d’électricité.</p> : null}
+        <p>La TVA de jeu ({vat.ratePercent} %) est réservée à chaque vente. Son reversement ne débite pas une seconde fois ta trésorerie disponible. Déjà reversé : {money(vat.paidCents)}.</p>
+      </details>
+    </section>
   </div>;
 }

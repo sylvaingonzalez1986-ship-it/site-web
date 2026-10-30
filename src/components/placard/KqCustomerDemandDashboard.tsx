@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useId } from "react";
-import { ArrowRight, Check, Clock3, Globe2, Leaf, PackageOpen, RefreshCw, Sprout, Star, Store, TrendingUp, Truck } from "lucide-react";
+import { ArrowRight, Check, Clock3, Globe2, Leaf, PackageOpen, RefreshCw, Sprout, Star, Store, Truck } from "lucide-react";
 import { KQ_FLAVORS } from "@/lib/kanab-quest-buddie-flavors";
 import { getKqCommerceStockQuality, isKqCommerceStockMature, type KqCommerceSnapshot, type KqSalesChannel } from "@/lib/kanab-quest-commerce";
 import { getKqCustomerDemandFlavorMatch, getKqOnlineFlowerReferenceCents, type KqCustomerDemandRequest } from "@/lib/kanab-quest-customer-demand";
@@ -84,13 +84,13 @@ export function KqCustomerDemandDashboard({ data, now, busy = false, onChooseLot
   const id = useId();
   const demand = data?.customerDemand;
   if (!data || !demand) return <section className={styles.dashboard} aria-labelledby={`${id}-title`}>
-    <header className={styles.heading}><div><span className={styles.eyebrow}><TrendingUp size={17} aria-hidden="true" />Les envies des clients</span><h2 id={`${id}-title`}>Demandes du moment</h2><p>Retrouve ici les profils recherchés en ligne, par les shops et les grossistes.</p></div></header>
+    <header className={styles.heading}><div><h2 id={`${id}-title`}>Demandes du moment</h2><p>Retrouve ici les profils recherchés en ligne, par les shops et les grossistes.</p></div></header>
     <div className={styles.unavailable} role="status"><Clock3 size={28} aria-hidden="true" /><div><h3>Les demandes sont momentanément indisponibles</h3><p>Tu peux continuer à vendre ta production et consulter tes ventes. Réessaie pour retrouver les envies des clients et leurs bonus.</p><div className={styles.recoveryActions}><button type="button" disabled={busy} onClick={onRetry}><RefreshCw size={17} aria-hidden="true" />{busy ? "Actualisation…" : "Réessayer"}</button><button type="button" disabled={busy} onClick={onBrowseLots}>Vendre ma production<ArrowRight size={17} aria-hidden="true" /></button></div></div></div>
   </section>;
   const current = Math.max(Date.parse(demand.serverNow), now ?? Date.parse(demand.serverNow));
   const expired = current >= Date.parse(demand.endsAt);
   return <section className={styles.dashboard} aria-labelledby={`${id}-title`}>
-    <header className={styles.heading}><div><span className={styles.eyebrow}><TrendingUp size={17} aria-hidden="true" />Les envies des clients</span><h2 id={`${id}-title`}>Demandes du moment</h2><button type="button" className={styles.browse} disabled={busy} onClick={onBrowseLots}><PackageOpen size={16} aria-hidden="true" />Voir mes lots<ArrowRight size={15} aria-hidden="true" /></button></div><span className={styles.timer}><Clock3 size={18} aria-hidden="true" /><strong>{timeLeft(Date.parse(demand.endsAt) - current)}</strong><small>Renouvellement toutes les 72 h réelles</small></span></header>
+    <header className={styles.heading}><div><h2 id={`${id}-title`}>Demandes du moment</h2><button type="button" className={styles.browse} disabled={busy} onClick={onBrowseLots}><PackageOpen size={16} aria-hidden="true" />Voir mes lots<ArrowRight size={15} aria-hidden="true" /></button></div><span className={styles.timer}><Clock3 size={18} aria-hidden="true" /><strong>{timeLeft(Date.parse(demand.endsAt) - current)}</strong><small>Renouvellement toutes les 72 h réelles</small></span></header>
     <div className={styles.cards}>{circuits.map(circuit => {
       const request = demand.requests.find(item => item.channel === circuit.code);
       return request ? <DemandCard key={request.id} request={request} data={data} now={current} expired={expired} busy={busy} onChooseLot={onChooseLot} onOpenCulture={onOpenCulture} onOpenListings={onOpenListings} /> : null;

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { createPortal } from 'react-dom';
 import { createContext, useContext, useEffect, useRef, useState, type ReactNode } from 'react';
-import { ArrowRight, Check, Compass, MousePointer2, ScanLine } from 'lucide-react';
+import { ArrowRight, Compass, MousePointer2, ScanLine } from 'lucide-react';
 import type { ReleveGuideStep } from '@/lib/arena-releve-guide';
 import styles from './ArenaReleveGuide.module.css';
 
@@ -178,8 +178,7 @@ export function ArenaReleveGuide({ steps, instruction, complete = false, childre
     <aside ref={anchor} className={`${styles.coach}${compact ? ` ${styles.compact}` : ''}${paced ? ` ${styles.paced}` : ''}`} data-releve-guide-card data-releve-coach data-guide-step={active?.step.id ?? (complete ? 'complete' : 'waiting')} data-complete={complete || undefined} data-free={free || undefined}>
       <div className={styles.portrait}><Image src="/sylvain.png" alt="Sylvain, ton guide" width={96} height={96} sizes={compact ? '48px' : '80px'} /></div>
       <div className={styles.message}>
-        {compact ? <><strong>{paced && active ? active.step.title : 'Sylvain'}</strong>{paced && active?.step.progressLabel ? <span className={styles.lessonProgress}>Sylvain · {active.step.progressLabel}</span> : null}</> : <><span className={styles.eyebrow}>{complete ? <Check size={14} aria-hidden="true" /> : <MousePointer2 size={14} aria-hidden="true" />} Sylvain · {complete ? 'Bien joué !' : free ? 'À ton rythme' : 'On joue ensemble'}</span>
-          <strong>{active?.step.title ?? (complete ? 'Cette étape est réussie' : 'À toi de jouer')}</strong></>}
+        {compact ? <><strong>{paced && active ? active.step.title : 'Sylvain'}</strong>{paced && active?.step.progressLabel ? <span className={styles.lessonProgress}>{active.step.progressLabel}</span> : null}</> : <strong>{active?.step.title ?? (complete ? 'Cette étape est réussie' : 'À toi de jouer')}</strong>}
         <p role="status" aria-live="polite">{free ? compact ? 'Explore à ton rythme. Je reste là pour te guider.' : 'Explore librement. Je garde ta progression ; reprends le guidage quand tu veux.' : active?.step.instruction ?? instruction}</p>
       </div>
       <div className={styles.actions}>

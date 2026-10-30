@@ -17,6 +17,46 @@ const post = async (sandbox: ReturnType<typeof create>, path: string, body: obje
 afterEach(() => vi.unstubAllGlobals());
 
 describe("isolated real-screen Bureau tutorial transport", () => {
+  it("pays the issued lab and energy bills together and replays without another debit", async () => {
+    const sandbox = create();
+    const before = sandbox.snapshot();
+    expect(before.business.suppliers).toEqual({ outstandingCents: 0, overdueCents: 0, invoices: [] });
+    const action = { action: "pay-all-invoices", expectedCents: 4914, requestKey: key() };
+    const paid = await post(sandbox, "/api/arena/placard/commerce", action);
+    expect(paid.status).toBe(200);
+    expect(paid.body).toEqual({ action: "pay-all-invoices", paidCents: 4914, labPaidCents: 4500, supplierPaidCents: 0,
+      electricityPaidCents: 414, storageClimatePaidCents: 0, invoiceCount: 2, cashAfterCents: 495086, replayed: false });
+    const saved = sandbox.snapshot();
+    expect(saved.business.lab.outstandingCents).toBe(0);
+    expect(saved.energyDue).toBe(0);
+    expect(saved.business.vat).toEqual(before.business.vat);
+    expect(saved.business.shop).toEqual(before.business.shop);
+    expect(saved.actions).toContain("lab-paid");
+    expect((await post(sandbox, "/api/arena/placard/commerce", action)).body).toEqual({ ...paid.body, replayed: true });
+    expect((await post(sandbox, "/api/arena/placard/commerce", { ...action, expectedCents: 4913 })).status).toBe(400);
+    expect(sandbox.snapshot()).toEqual(saved);
+    const report = getKqTreasuryReport(await get(sandbox, "/api/arena/placard/treasury"));
+    expect(report.reconciled).toBe(true); expect(report.balanceSheet.differenceCents).toBe(0);
+  });
+
+  it("does not partly pay when the global amount changed or exceeds the fictitious wallet", async () => {
+    for (const [cash, expectedCents] of [[500000, 4913], [4913, 4914], [500000, 2_147_483_648], [500000, -1], [500000, 4914.5]]) {
+      const sandbox = createKqTreasuryTutorial({ now: () => now, initialCashCents: cash });
+      const before = sandbox.snapshot();
+      expect((await post(sandbox, "/api/arena/placard/commerce", { action: "pay-all-invoices", expectedCents, requestKey: key() })).status).toBe(400);
+      expect(sandbox.snapshot()).toEqual(before);
+    }
+  });
+
+  it("rejects reusing an individual invoice payment key for a global payment", async () => {
+    const sandbox = create(), requestKey = key();
+    const invoiceId = sandbox.snapshot().business.lab.invoices[0].id;
+    expect((await post(sandbox, "/api/arena/placard/commerce", { action: "pay-lab", invoiceId, requestKey })).status).toBe(200);
+    const before = sandbox.snapshot();
+    expect((await post(sandbox, "/api/arena/placard/commerce", { action: "pay-all-invoices", expectedCents: 414, requestKey })).status).toBe(400);
+    expect(sandbox.snapshot()).toEqual(before);
+  });
+
   it("returns snapshots accepted by all live screen validators", async () => {
     const sandbox = create();
     expect(isKqBankSnapshot(await get(sandbox, "/api/arena/placard/bank"))).toBe(true);

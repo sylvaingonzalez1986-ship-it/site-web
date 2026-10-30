@@ -1,0 +1,48 @@
+.dialog { composes: gameSurface from "./ArenaRetro.module.css"; width: min(720px, calc(100vw - 24px)); max-width: none; max-height: calc(100dvh - 24px); padding: 0; margin: auto; color: #172923; overflow: hidden; background: transparent; border: 2px solid transparent; border-radius: 0; box-shadow: none; --game-panel-art: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.dialog[open] { display: flex; flex-direction: column; }
+.dialog::backdrop { background: #142219b8; }
+.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 20px; border-bottom: 1px solid #17292355; }
+.top > strong { font-size: 1rem; line-height: 1.4; }
+.top > button { flex-shrink: 0; width: 44px; padding: 8px; }
+.content { min-height: 0; overflow-y: auto; overscroll-behavior: contain; padding: 16px 24px 28px; }
+.content > [data-kq-chapter] { padding: 8px 0 12px; grid-template-columns: minmax(0,1fr) 72px; gap: 12px; background: transparent; }
+.content > [data-kq-chapter] h2 { font-size: clamp(25px, 4vw, 34px); overflow-wrap: normal; }
+.content > [data-kq-chapter] > span { max-width: 72px; }
+.dialog p { margin: 16px 0; line-height: 1.55; font-size: 1rem; }
+.dialog p.notice { font-size: .875rem; margin: 0 0 12px; }
+.focusHeading { font-size: .875rem; line-height: 1.5; margin: 12px 0 18px; font-weight: 600; }
+.focusHeading:focus { outline: none; }
+.dialog h4 { font-size: 1.1rem; line-height: 1.4; margin: 16px 0 8px; }
+.dialog button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; min-height: 48px; max-width: 100%; padding: 12px 16px; font-family: inherit; font-size: 1rem; font-weight: 700; line-height: 1.45; color: #172923; cursor: pointer; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.dialog button.primary { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); margin-top: 16px; }
+.dialog button:disabled { cursor: not-allowed; color: #536058; }
+.dialog button > svg { flex-shrink: 0; }
+.dialog button:focus-visible,.dialog summary:focus-visible,.dialog input:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.dialog button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); }
+.choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-block: 20px; }
+.choices > button { flex-direction: column; justify-content: flex-start; align-items: flex-start; padding: 20px 18px; text-align: left; }
+.choices > button span { font-size: .875rem; line-height: 1.5; font-weight: 400; }
+.choices > button span:last-child { margin-top: auto; padding-top: 10px; font-weight: 700; }
+.choices > button span svg { display: inline; vertical-align: middle; }
+.numbers { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; padding-block: 12px; border-block: 1px solid #17292355; }
+.numbers dt { font-size: .875rem; line-height: 1.5; }
+.numbers dd { font-size: 1.7rem; line-height: 1.4; font-weight: 800; margin: 8px 0 0; overflow-wrap: anywhere; }
+.stats { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 20px; font-size: .875rem; line-height: 1.5; }
+.dice { display: flex; gap: 12px; justify-content: center; margin-block: 20px; }
+.dice > div { flex: 1; min-width: 0; max-width: 120px; padding: 12px 4px; border: 2px solid #172923; border-radius: 12px; text-align: center; background: #fff8e7; }
+.dice > div[data-success='true'] { background: #bfe9db; }
+.dice strong { display: block; font-size: 2rem; }
+.dice span { font-size: .875rem; line-height: 1.4; display: block; }
+.support { padding: 4px 0 16px; border-block: 1px solid #17292355; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.actions > button.primary { margin-top: 0; }
+.dialog p.secondary { font-size: .875rem; color: #536058; }
+.dialog details { border-top: 1px solid #17292355; margin-top: 20px; padding-block: 4px; }
+.dialog summary { cursor: pointer; min-height: 44px; align-content: center; font-size: .875rem; line-height: 1.5; }
+.dialog li { font-size: .875rem; line-height: 1.6; }
+.warning { border-left: 3px solid #172923; padding: 12px; background: var(--game-surface-warm, #ffad5c); }
+.quantity { display: grid; gap: 8px; max-width: 250px; font-size: 1rem; }
+.quantity input { width: 100%; min-width: 0; min-height: 48px; padding: 10px 12px; font: inherit; color: inherit; border: 2px solid transparent; background: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.breakdown > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 20px; padding-block: 12px; border-bottom: 1px solid #17292355; }
+.breakdown dd { margin: 0; font-variant-numeric: tabular-nums; }
+@media(max-width: 500px) { .dialog { width: calc(100vw - 16px); max-height: calc(100dvh - 16px); } .top { padding: 12px; } .content { padding: 14px 16px 24px; } .choices { grid-template-columns: 1fr; gap: 12px; } .choices > button { padding: 16px; } .numbers { gap: 12px; } .numbers dd { font-size: 1.5rem; } .actions > button { width: 100%; } .dice { gap: 8px; } }

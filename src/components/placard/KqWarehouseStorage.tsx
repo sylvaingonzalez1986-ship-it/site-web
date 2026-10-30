@@ -13,11 +13,14 @@ import { getKqStorageRefreshDelay, KQ_STORAGE_REFRESH_MS } from "@/lib/kanab-que
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqCannabinoidReport } from "./KqCannabinoidReport";
 import { KqStorageStatus } from "./KqStorageStatus";
+import { KqStorageInventory } from "./KqStorageInventory";
+import { KqStoragePlacement } from "./KqStoragePlacement";
 import styles from "./KqWarehouseStorage.module.css";
 
 type StorageAction = { action: "buy"; containerCode: string; quantity: number }
   | { action: "select-default"; methodCode: string }
   | { action: "assign"; methodCode: string; flowerId: string }
+  | { action: "place"; containerCode: string; flowerId: string }
   | { action: "sell-overflow"; flowerId: string };
 const METHOD_PRESENTATION = {
   "STORAGE-GLASS": { family: "Verre à vis", protection: "Standard", level: 1, detail: "Un bocal réutilisable pour accueillir tes premières récoltes." },
@@ -72,8 +75,8 @@ export function KqWarehouseStorage({ onChanged, onBusyChange }: { onChanged?: ()
     polling.current = stop;
     return () => { stop(); polling.current = null; invalidateReads(); };
   }, [load, invalidateReads]);
-  const act = async (body: StorageAction) => {
-    if (lock.current) return;
+  const act = async (body: StorageAction): Promise<boolean> => {
+    if (lock.current || loadFailed.current) return false;
     lock.current = true; invalidateReads(); onBusyChange?.(true);
     setPending(body.action === "buy" ? body.containerCode : body.action === "select-default" ? "default" : body.flowerId); setNotice(""); setError("");
     try {
@@ -83,37 +86,39 @@ export function KqWarehouseStorage({ onChanged, onBusyChange }: { onChanged?: ()
       const result = await response.json();
       if (!response.ok) throw new Error(result.error || "Modification du stockage impossible.");
       receipt.current = null; loadFailed.current = false; acceptSnapshot(result);
-      setNotice(body.action === "buy" ? "Contenants ajoutés. La place disponible est attribuée aux lots qui en ont besoin." : body.action === "assign" ? "Répartition actualisée. Les pertes passées et les échéances restent inchangées." : body.action === "sell-overflow" ? "Surplus vendu au grossiste. La partie stockée est conservée." : "Préférence enregistrée pour les prochains lots.");
+      setNotice(body.action === "buy" ? "Contenants ajoutés. La place disponible est attribuée aux lots qui en ont besoin." : body.action === "assign" || body.action === "place" ? "Rangement enregistré. Les pertes passées et les échéances restent inchangées." : body.action === "sell-overflow" ? "Surplus vendu au grossiste. La partie stockée est conservée." : "Préférence enregistrée pour les prochains lots.");
       api.notify("kq:storage-updated"); api.notify("kq:equipment-updated"); onChanged?.();
-    } catch (reason) { setError(reason instanceof Error ? reason.message : "Modification impossible."); }
+      return true;
+    } catch (reason) { loadFailed.current = true; setError(reason instanceof Error ? reason.message : "Modification impossible."); return false; }
     finally { lock.current = false; setPending(null); onBusyChange?.(false); polling.current?.reschedule(); }
   };
   const containers = snapshot?.containers ?? KQ_STORAGE_CONTAINERS;
   const nowMs = snapshot ? Date.parse(snapshot.serverNow) : undefined;
-  const inventory = getKqStorageInventory(snapshot?.ownedContainers ?? {}, (snapshot?.lots ?? []).flatMap(lot => lot.projection.capacity?.allocations ?? []));
+  const inventory = getKqStorageInventory(snapshot?.installedContainers ?? snapshot?.ownedContainers ?? {}, (snapshot?.lots ?? []).flatMap(lot => lot.projection.capacity?.allocations ?? []));
   const capacity = snapshot?.capacity;
   const firstOverflowDeadline = snapshot?.lots.filter(lot => (lot.projection.capacity?.overflowUnits ?? 0) > 0)
     .map(lot => lot.projection.capacity?.overflowDeadlineAt).filter((date): date is string => Boolean(date))
     .sort((left, right) => Date.parse(left) - Date.parse(right))[0];
   return <section className={styles.section} aria-labelledby="warehouse-storage-title" data-warehouse-storage>
-    <header className={styles.heading}><div><small>Ton entrepôt · après le jury et le duel</small><h3 id="warehouse-storage-title" ref={heading} tabIndex={-1}>Stockage & curing</h3><p>À chaque récolte, le bon contenant. Protège tes fleurs et leurs arômes jusqu’à la vente.</p></div><button type="button" onClick={() => void polling.current?.refresh()} disabled={!!pending} aria-label="Actualiser le stockage"><RefreshCw size={18} /></button></header>
-    <div className={styles.timeline} aria-label="Parcours de la récolte"><span><Check size={15} /> Récolte</span><span><Check size={15} /> Jury et duel</span><strong><Clock3 size={15} /> Curing · 6 heures réelles</strong><span>Vente</span></div>
-    <p className={styles.help}>Le curing dure <strong>6 heures réelles</strong> après le verdict. Un surplus sans contenant doit être stocké ou vendu au plus tard <strong>1 heure réelle</strong> après le verdict, puis il est vendu automatiquement au grossiste.</p>
+    <header className={styles.heading}><div><h3 id="warehouse-storage-title" ref={heading} tabIndex={-1}>Stockage & affinage</h3><p>À chaque récolte, le bon contenant. Protège tes fleurs et leurs arômes jusqu’à la vente.</p></div><button type="button" onClick={() => void polling.current?.refresh()} disabled={!!pending} aria-label="Actualiser le stockage"><RefreshCw size={18} /></button></header>
+    <KqStorageInventory snapshot={snapshot} />
+    <div className={styles.timeline} aria-label="Parcours de la récolte"><span><Check size={15} /> Récolte</span><span><PackageCheck size={15} /> Rangement</span><strong><Clock3 size={15} /> Affinage · 6 heures réelles</strong><span>Jury et duel</span><span>Vente</span></div>
+    <p className={styles.help}>L’affinage dure <strong>6 heures réelles dès la récolte, avant le jury</strong>. Range tes fleurs par variété pour améliorer leur conservation. Après le verdict, un surplus sans contenant doit être stocké ou vendu dans le délai indiqué ; la reprise automatique au grossiste ne commence pas avant le jury.</p>
     {error ? <p className={styles.error} role="alert">{error}<button type="button" onClick={() => void polling.current?.refresh()} disabled={!!pending}>Réessayer</button></p> : null}
     {notice ? <p className={styles.notice} role="status">{notice}</p> : null}
-    {capacity ? <section className={styles.capacity} aria-label="Capacité de stockage" data-storage-capacity>
-      <div className={styles.capacityMain}><div className={styles.capacityLabel}><PackageCheck size={18} aria-hidden="true" /> Place disponible</div><strong className={styles.availableCapacity}>{grams(capacity.freeUnits)}</strong><span className={styles.totalCapacity}>sur {grams(capacity.totalUnits)} de capacité achetée</span><div className={styles.capacityTrack} role="progressbar" aria-label="Capacité réservée" aria-valuemin={0} aria-valuemax={Math.max(1, capacity.totalUnits)} aria-valuenow={capacity.reservedUnits} aria-valuetext={`${grams(capacity.reservedUnits)} réservés sur ${grams(capacity.totalUnits)}`}><span style={{ width: `${Math.min(100, capacity.reservedUnits / Math.max(1, capacity.totalUnits) * 100)}%` }} /></div></div>
-      <dl className={styles.capacityDetails}><div><dt>Contenants réservés</dt><dd>{grams(capacity.reservedUnits)}</dd><small>{grams(capacity.usedUnits)} de récolte protégés</small></div><div data-alert={capacity.overflowUnits > 0 || undefined}><dt>Surplus sans contenant</dt><dd>{grams(capacity.overflowUnits)}</dd><small>{capacity.overflowUnits > 0 ? "À stocker ou à vendre" : "Tout est à sa place"}</small></div></dl>
+    {firstOverflowDeadline ? <div className={styles.overflowDeadline}><Clock3 size={20} aria-hidden="true" /><div><strong>Première vente automatique : {new Date(firstOverflowDeadline).toLocaleString("fr-FR")}.</strong><a href="#storage-lots-title">Voir les lots et vendre le surplus <ArrowUpRight size={15} aria-hidden="true" /></a></div></div> : null}
+    {capacity ? <details className={styles.capacityDetailsPanel}><summary>Comprendre la capacité réservée</summary><section className={styles.capacity} aria-label="Capacité de stockage" data-storage-capacity>
+      <div className={styles.capacityMain}><div className={styles.capacityLabel}><PackageCheck size={18} aria-hidden="true" /> Place disponible</div><strong className={styles.availableCapacity}>{grams(capacity.freeUnits)}</strong><span className={styles.totalCapacity}>sur {grams(capacity.totalUnits)} de capacité de stockage</span><div className={styles.capacityTrack} role="progressbar" aria-label="Capacité réservée" aria-valuemin={0} aria-valuemax={Math.max(1, capacity.totalUnits)} aria-valuenow={capacity.reservedUnits} aria-valuetext={`${grams(capacity.reservedUnits)} réservés sur ${grams(capacity.totalUnits)}`}><span style={{ width: `${Math.min(100, capacity.reservedUnits / Math.max(1, capacity.totalUnits) * 100)}%` }} /></div></div>
+      <dl className={styles.capacityDetails}><div><dt>Place réservée</dt><dd>{grams(capacity.reservedUnits)}</dd><small>Contenants des lots et paquets préparés</small></div><div data-alert={(snapshot?.stockBreakdown?.bulkOverflowUnits ?? 0) > 0 || undefined}><dt>Vrac sans contenant</dt><dd>{snapshot?.stockBreakdown ? grams(snapshot.stockBreakdown.bulkOverflowUnits) : "À confirmer"}</dd><small>{snapshot?.stockBreakdown ? snapshot.stockBreakdown.bulkOverflowUnits > 0 ? "À ranger ou à vendre" : "Aucun surplus de vrac" : "Répartition du stock indisponible"}</small></div></dl>
       <p className={styles.starterNote}>Deux bocaux de 1 L offerts au départ · 100 g de capacité dans le jeu.</p>
-      {firstOverflowDeadline ? <div className={styles.overflowDeadline}><Clock3 size={20} aria-hidden="true" /><div><strong>Première vente automatique : {new Date(firstOverflowDeadline).toLocaleString("fr-FR")}.</strong><a href="#storage-lots-title">Voir les lots et vendre le surplus <ArrowUpRight size={15} aria-hidden="true" /></a></div></div> : null}
-    </section> : null}
-    <section className={styles.lots} aria-labelledby="storage-lots-title"><h4 id="storage-lots-title">Mes fleurs stockées & en curing {snapshot ? `· ${snapshot.lots.length}` : ""}</h4>
-      {!snapshot ? <p role="status">Chargement des lots…</p> : !snapshot.lots.length ? <p className={styles.empty}>Après une récolte, passe le jury et le duel. Le jeu répartira le lot dans tes contenants disponibles.</p> : snapshot.lots.map(lot => {
+    </section></details> : null}
+    <section className={styles.lots} aria-labelledby="storage-lots-title"><h4 id="storage-lots-title">Mes fleurs stockées & en affinage {snapshot ? `· ${snapshot.lots.length}` : ""}</h4>
+      {!snapshot ? <p role="status">Chargement des lots…</p> : !snapshot.lots.length ? <p className={styles.empty}>Tes fleurs arrivent ici dès la récolte. Choisis leurs contenants, laisse-les s’affiner, puis présente-les au jury.</p> : snapshot.lots.map(lot => {
         const placement = lot.projection.capacity;
-        return <article key={lot.flowerId} className={styles.lot}><header><div><h5>{lot.varietyName}</h5><small>Récolte initiale {lot.harvestGrams.toLocaleString("fr-FR")} g · lot {lot.flowerId.slice(0, 8)}</small></div><span>Expression des terpènes <b>{lot.projection.terpenes.toLocaleString("fr-FR", { maximumFractionDigits: 1 })}/99</b></span></header><KqStorageStatus storage={lot.projection} nowMs={nowMs} />
+        return <article key={lot.flowerId} className={styles.lot}><header><div><h5>{lot.varietyName}</h5><small>Récolte initiale {lot.harvestGrams.toLocaleString("fr-FR")} g · lot {lot.flowerId.slice(0, 8)}</small></div><span>Expression des terpènes <b>{lot.projection.terpenes.toLocaleString("fr-FR", { maximumFractionDigits: 1 })}/99</b></span></header><KqStorageStatus storage={lot.projection} flowerStatus={lot.flowerStatus} nowMs={nowMs} />
           {placement ? <><p><strong>{grams(placement.protectedUnits)} stockés</strong> sur {grams(placement.totalUnits)} restants.</p><ul className={styles.allocations}>{placement.allocations.map(allocation => <li key={allocation.containerCode}><span>{allocation.quantity} × {containers.find(container => container.code === allocation.containerCode)?.name ?? allocation.containerCode}</span><strong>{grams(allocation.storedUnits)}</strong></li>)}</ul>
             {placement.overflowUnits > 0 ? <div className={styles.overflow} data-storage-overflow><strong>{grams(placement.overflowUnits)} sans contenant</strong><p>Achète des contenants avant l’échéance pour conserver ce surplus, ou vends-le maintenant au tarif grossiste. Le reste du lot demeure stocké.</p>{lot.overflowOffer ? <p>{formatKqCash(lot.overflowOffer.payoutCents)} TTC · environ <strong>{formatKqCash(lot.overflowOffer.netPayoutCents)} versés</strong> après TVA et charges échues. Le net est recalculé à la vente.</p> : null}<button type="button" disabled={!!pending} onClick={() => void act({ action: "sell-overflow", flowerId: lot.flowerId })}>{pending === lot.flowerId ? "Enregistrement…" : `Vendre les ${grams(placement.overflowUnits)} de surplus`}</button></div> : null}</> : null}
-          <label>Répartir ce lot en privilégiant<select value={lot.projection.methodCode} disabled={!!pending} onChange={event => void act({ action: "assign", methodCode: event.target.value, flowerId: lot.flowerId })}>{KQ_STORAGE_METHODS.filter(method => snapshot.ownedMethodCodes.includes(method.code)).map(method => <option key={method.code} value={method.code}>{method.name}</option>)}</select></label><small>Changer de contenant ne prolonge pas ce délai d’une heure et ne restaure pas les pertes passées. Après transformation, la place reste calculée en équivalent fleurs et se libère au fil des ventes.</small><KqCannabinoidReport report={lot.projection.cannabinoidReport} /></article>;
+          <KqStoragePlacement snapshot={snapshot} flowerId={lot.flowerId} disabled={!!pending || !!error} onPlace={(flowerId, containerCode) => act({ action: "place", flowerId, containerCode })} /><KqCannabinoidReport report={lot.projection.cannabinoidReport} /></article>;
       })}
     </section>
     <details className={styles.purchasePanel} data-storage-shop>
@@ -122,7 +127,7 @@ export function KqWarehouseStorage({ onChanged, onBusyChange }: { onChanged?: ()
     <p className={styles.help}>Prix, capacités et niveaux de protection : valeurs du jeu.</p>
     <div className={styles.catalog}>{containers.map(container => {
       const item = inventory.find(item => item.code === container.code);
-      const owned = item?.ownedQuantity ?? 0, occupied = item?.occupiedQuantity ?? 0, free = item?.freeQuantity ?? 0;
+      const owned = snapshot?.ownedContainers?.[container.code] ?? 0, occupied = item?.occupiedQuantity ?? 0, free = item?.freeQuantity ?? 0;
       const quantity = Number(quantities[container.code] ?? "1");
       const validQuantity = Number.isInteger(quantity) && quantity >= 1 && quantity <= 100;
       const total = validQuantity ? quantity * container.priceCents : 0;

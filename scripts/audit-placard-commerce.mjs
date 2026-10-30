@@ -79,7 +79,7 @@ const modules={
   'next/link': `import React from 'react'; export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}`,
   'next/navigation': `export const useRouter=()=>({push:()=>{},refresh:()=>{},replace:()=>{}});export const usePathname=()=>'/arene/placard';export const useSearchParams=()=>new URLSearchParams();`,
 };
-const server=await createServer({root,cacheDir:resolve(output,"vite-cache"),optimizeDeps:{include:["react","react-dom/client","lucide-react"]},configFile:false,envDir:false,publicDir:resolve(root,'public'),esbuild:{jsx:'automatic'},resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'workshop-audit',enforce:'pre',resolveId(id){if(id.endsWith('/public/placard/warehouse-v2/manifest.json'))return '\0warehouse-assets';if(id in modules)return '\0'+id;},load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Placard · Atelier</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__workshop-entry"></script></html>');});}}],server:{host:'127.0.0.1',port,strictPort:true,hmr:false,watch:null}});
+const server=await createServer({root,cacheDir:resolve(output,"vite-cache"),optimizeDeps:{include:["react","react-dom","react-dom/client","react/jsx-runtime","react/jsx-dev-runtime","lucide-react"]},configFile:false,envDir:false,publicDir:resolve(root,'public'),esbuild:{jsx:'automatic'},resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'workshop-audit',enforce:'pre',resolveId(id){if(id.endsWith('/public/placard/warehouse-v2/manifest.json'))return '\0warehouse-assets';if(id in modules)return '\0'+id;},load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Placard · Atelier</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__workshop-entry"></script></html>');});}}],server:{host:'127.0.0.1',port,strictPort:true,hmr:false,watch:null}});
 let browser;const errors=[],results=[];
 try {
  await mkdir(output,{recursive:true});await server.listen();
@@ -119,9 +119,9 @@ try {
     await page.click('[aria-label="Tes lots"] button');
     await page.waitForSelector('[aria-label="Voir l’offre Grossistes"]');
     await page.click('[aria-label="Voir l’offre Grossistes"]');
-    await page.$eval('details:has(input[type="number"]) summary',element=>element.click());
+    await page.focus('input[type="number"]');await page.keyboard.down('Control');await page.keyboard.press('A');await page.keyboard.up('Control');await page.keyboard.press('Backspace');
     await page.type('input[type="number"]','20');
-    await click('Vendre ce lot');await page.waitForSelector('dialog[open]');
+    await click('Voir le montant net');await page.waitForSelector('dialog[open]');
     assert.equal(await page.evaluate(()=>window.__sales.length),0,'Reading a quote does not sell anything');
     return page.$eval('dialog[open] dl',element=>element.innerText);
   };
@@ -174,7 +174,7 @@ try {
   assert(await page.$eval('dialog[open] [role="status"]',element=>element.textContent.includes('même demande')),'Reopening clearly explains idempotent verification');
   assert.equal(await page.evaluate(()=>window.__quotes.length),1,'Verifying a pending sale never creates another quote');
   await dialogButton('Revenir');await page.waitForSelector('[data-pending-commerce-sale]');
-  await click('Vendre ce lot');await page.waitForSelector('dialog[open]');
+  await click('Voir le montant net');await page.waitForSelector('dialog[open]');
   assert.equal(await page.evaluate(()=>window.__quotes.length),1,'The normal sale action also resumes the pending request');
   assert.equal(await page.evaluate(()=>window.__sales.length),1,'Closing and reopening never submits a sale');
   await dialogButton('Confirmer');await page.waitForFunction(()=>!document.querySelector('dialog[open]'));
@@ -192,18 +192,18 @@ try {
   await page.click('[aria-label="Voir l’offre Vente en ligne"]');
   await page.waitForSelector('input[type="number"]');
   assert((await visibleText()).includes('Qualité du lot 9,0/10'));
-  assert.equal(await page.$eval('input[type="number"]',e=>e.closest('details').open),false);
-  assert.equal((await visibleText()).includes('Quantité à vendre (g)'),false,'Quantity is optional');
-  await page.$eval('details summary',e=>e.click());
+  assert.equal(await page.$eval('input[type="number"]',e=>e.checkVisibility()),true);
+  assert.equal((await visibleText()).includes('Quantité à vendre (g)'),true,'Quantity is directly editable');
+  await page.focus('input[type="number"]');await page.keyboard.down('Control');await page.keyboard.press('A');await page.keyboard.up('Control');await page.keyboard.press('Backspace');
   await page.waitForSelector('input[type="number"]',{visible:true});await page.type('input[type="number"]','20');
-  await click('Vendre ce lot');await page.waitForSelector('dialog[open]');assert((await page.$eval('dialog',e=>e.innerText)).includes('Qualité 9,0/10'));await shot('confirmation-'+width);await confirm();
+  await click('Voir le montant net');await page.waitForSelector('dialog[open]');assert((await page.$eval('dialog',e=>e.innerText)).includes('Qualité 9,0/10'));await shot('confirmation-'+width);await confirm();
   await page.waitForFunction(()=>document.body.textContent.includes('100 g restants'));await noOverflow();
   assert((await visibleText()).includes('Clients satisfaits'));assert((await visibleText()).includes('Aucun nouveau client cette fois'));
   await shot('vente-terminee-'+width);
   assert.equal(await page.$('[aria-label="Circuits de vente"]'),null,'Receipt is its own step');
   await click('Vendre le reste');await page.waitForSelector('[aria-label="Circuits de vente"]');
   await page.click('[aria-label="Voir l’offre Grossistes"]');
-  await click('Vendre ce lot');await confirm();
+  await click('Voir le montant net');await confirm();
   assert((await visibleText()).includes('Clientèle directe inchangée'));await click('Retour aux lots');
   await page.waitForFunction(()=>document.body.textContent.includes('Ta réserve est vide'));
   assert.equal(await page.evaluate(()=>window.__sales.length),2);
@@ -219,7 +219,7 @@ try {
  await shot('ordinateur-boutique-390');
  await page.click('[aria-labelledby="equipment-catalog-title"] header button:first-child');
  await click('Activer Internet');await confirm();
- await page.waitForFunction(()=>document.body.innerText.includes('Vendre ce lot'));
+ await page.waitForFunction(()=>document.body.innerText.includes('Voir le montant net'));
  // Prepared inventory can be resumed without paying for preparation again.
  await click('← Comparer les offres');await click('← Changer de lot');
  await page.waitForSelector('[aria-label="Tes lots"]');
@@ -227,14 +227,14 @@ try {
  await page.$eval('[aria-label="Tes lots"] button:first-child',e=>e.click());
  await page.waitForSelector('[aria-label="Circuits de vente"]');
  await page.click('[aria-label="Voir l’offre CBD shops"]');
- await click('Vendre ce lot');await confirm();
+ await click('Voir le montant net');await confirm();
  await page.waitForFunction(()=>document.body.innerText.includes('Tout ce produit a été vendu.'));
  await noOverflow();
  // Satisfaction and actual clientele changes are separate outcomes.
  for(const scenario of [{score:9,label:'Clients satisfaits',change:'+3 clients fidèles'}, {score:7.5,label:'Clients mitigés',change:'Aucun nouveau client cette fois'}, {score:6,label:'Clients déçus',change:'11 clients perdus'}]) {
    await page.goto(origin+'/?loyal&quality='+scenario.score,{waitUntil:'networkidle0'});
    await prepare(scenario.score);await page.click('[aria-label="Voir l’offre Vente en ligne"]');
-   await click('Vendre ce lot');await confirm();
+   await click('Voir le montant net');await confirm();
    await page.waitForSelector('[aria-label="Bilan clientèle"]');
    const feedback=await page.$eval('[aria-label="Bilan clientèle"]',e=>e.innerText);
    assert(feedback.includes(scenario.label));assert(feedback.includes(scenario.change));
@@ -245,7 +245,7 @@ try {
    await prepare(scenario.score);await page.click('[aria-label="Voir l’offre CBD shops"]');
    await page.$eval('details summary',e=>e.click());
    assert((await visibleText()).includes('20 partenaires maximum'));
-   await click('Vendre ce lot');await confirm();await page.waitForSelector('[aria-label="Bilan clientèle"]');
+   await click('Voir le montant net');await confirm();await page.waitForSelector('[aria-label="Bilan clientèle"]');
    const feedback=await page.$eval('[aria-label="Bilan clientèle"]',e=>e.innerText);
    assert(feedback.includes(scenario.label));assert(feedback.includes(scenario.change));
    await noOverflow();await shot('partenaires-'+scenario.key);
@@ -263,12 +263,12 @@ try {
  assert((await visibleText()).includes('Hash tamisé'));
  assert((await visibleText()).includes('min. 7,5/10'));
  assert((await visibleText()).includes('Qualité du lot 9,0/10'));
- await page.click('[aria-label="Voir l’offre Grossistes"]');await click('Vendre ce lot');await confirm();
+ await page.click('[aria-label="Voir l’offre Grossistes"]');await click('Voir le montant net');await confirm();
  await click('Retour aux lots');await page.waitForSelector('[aria-label="Tes lots"]');
  assert((await visibleText()).includes('Fleurs entières'));
  await page.$eval('[aria-label="Tes lots"] button:first-child',e=>e.click());
  await page.waitForSelector('[aria-label="Circuits de vente"]');
- await page.click('[aria-label="Voir l’offre Grossistes"]');await click('Vendre ce lot');await confirm();
+ await page.click('[aria-label="Voir l’offre Grossistes"]');await click('Voir le montant net');await confirm();
  await click('Retour aux lots');await page.waitForFunction(()=>document.body.innerText.includes('Ta réserve est vide'));
  // The illustrated overview keeps progression, subscription and sales easy to inspect.
  for(const width of [320,390,768,1440]) {

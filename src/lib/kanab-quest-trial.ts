@@ -6,7 +6,7 @@ import { type KqEnergyMode } from './kanab-quest-energy';
 import { getKqJuryScoreFromRounds, quoteKqMarketRoutes, type KqMarketRouteCode } from './kanab-quest-market';
 import { KQ_COMPUTER_PRICE_CENTS, getKqCommerceCapacity, getKqShopBudget, quoteKqCommerce, type KqCommerceOffer, type KqCommerceState, type KqCommerceStock, type KqOnlinePrice, type KqSalesChannel } from './kanab-quest-commerce';
 import { createKqBusinessPreview, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_LAB_ANALYSIS_CENTS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, previewKqBusinessPayment } from './kanab-quest-business';
-import { createKqStorageLot, planKqStorageAllocation, projectKqStorageLot } from './kanab-quest-storage';
+import { createKqStorageLot, KQ_CURING_DURATION_MS, planKqStorageAllocation, projectKqStorageLot } from './kanab-quest-storage';
 
 export const KQ_TRIAL_VERSION = 3;
 export const KQ_TRIAL_CHAPTERS = ARENA_JOURNEY_STEPS.map(step=>step.title);
@@ -17,7 +17,7 @@ export const KQ_TRIAL_EQUIPMENT = ['TENT-080-STARTER', 'AIR-STARTER', 'LED-300',
 const TIME = Date.parse('2026-09-16T12:00:00Z');
 const TRIAL_RESCUE_NOTICE = 'Essai guidé : un dé passe à 4 pour éviter la mort et poursuivre jusqu’à la récolte fictive.';
 export const KQ_TUTORIAL_CARE_RESCUE_NOTICE = 'Essai assisté : la vitalité est rétablie à 100 avant validation pour poursuivre jusqu’à la récolte fictive. Les dés, les problèmes et les pertes déjà subies sont conservés.';
-export const KQ_TUTORIAL_STORAGE_NOTICE = 'Affinage simulé : cet essai avance de 6 heures après le verdict, avec assez de bocaux prêtés pour comparer tous les circuits de vente. Aucun temps réel ni délai de ton compte ne sont modifiés.';
+export const KQ_TUTORIAL_STORAGE_NOTICE = 'Affinage simulé : cet essai prête les bocaux et termine les six heures d’affinage avant le jury. Dans ta vraie partie, l’affinage dure six heures réelles dès la récolte.';
 const HANDS = [
  ['BOTTE-005','BOTTE-024','BOTTE-006','BOTTE-003','BOTTE-004'],
  ['BOTTE-024','BOTTE-006','BOTTE-003','BOTTE-004','BOTTE-015'],
@@ -30,6 +30,7 @@ export type KqTrialState = {
  rulesVersion: 2 | 3;
  chapter: number; checked: string[]; bought: boolean; installed: string[]; mode: KqEnergyMode;
  game: KqGameState | null; battle: KqBattle | null; rounds: number; clock: number;
+ curingBeforeJury?: boolean;
  commerce: KqCommerceState; electricity: number; receipts: Array<KqCommerceOffer & { net: number; electricity: number }>;
 };
 export type KqTrialAction =
@@ -123,7 +124,7 @@ function trialStorage(s: KqTrialState, nowMs = s.clock) {
  const harvestUnits=Math.round((g.harvestGrams??0)*10);
  const remainingUnits=s.commerce.stocks.length?s.commerce.stocks.reduce((sum,stock)=>sum+(stock.initialUnits>0?Math.ceil(stock.equivalentUnits*stock.remainingUnits/stock.initialUnits):0),0):harvestUnits;
  return projectKqStorageLot(createKqStorageLot({
-  flowerId:'TRIAL-FLOWER',harvestedAt:g.completedAt,curingStartedAt:battle.burnedAt,
+  flowerId:'TRIAL-FLOWER',harvestedAt:g.completedAt,curingStartedAt:s.curingBeforeJury?g.completedAt:battle.burnedAt,
   capacity:planKqStorageAllocation({totalUnits:Math.min(harvestUnits,remainingUnits),ownedContainers:{'GLASS-1L':Math.max(2,Math.ceil(harvestUnits/500))},preferredMethodCode:'STORAGE-GLASS',nowMs:Date.parse(battle.burnedAt)}),
   baseline:{varietyCode:g.varietyCode,juryScore:trialQuality(s),aroma:battle.playerFlower.stats.aroma,
    care:{terpenes,cannabinoidExpression,cannabinoidConversion,cannabinoidOxidation}},
@@ -189,7 +190,11 @@ export function reduceKqTrial(s: KqTrialState, a: KqTrialAction): KqTrialState {
  business.lab = {outstandingCents:KQ_LAB_ANALYSIS_CENTS,overdueCents:0,invoices:[{id:'TRIAL-LAB',runId:'TRIAL',issuedAt:new Date(s.clock).toISOString(),dueAt:new Date(s.clock+KQ_GAME_MONTH_MS).toISOString(),amountCents:KQ_LAB_ANALYSIS_CENTS,remainingCents:KQ_LAB_ANALYSIS_CENTS}]};
  return {...s,chapter:5,game,electricity:game.energy?.totalCents??0,commerce:{...c,business}};
  }
- case 'duel': return s.chapter===6&&g?.phase==='complete'&&!s.battle?{...s,battle:resolveKqBattle(lockKqBattle(createKqFlower(g,'Toi · essai'),createKqOpponent(2026,{ownerName:'Sylvain · entraînement',rulesVersion:g.rulesVersion}),2026),2026,new Date(s.clock))}:s;
+ case 'duel': {
+  if(s.chapter!==6||g?.phase!=='complete'||s.battle)return s;
+  const matured=s.rulesVersion===3&&g.completedAt?advanceKqTrialClock(s,Math.max(s.clock,Date.parse(g.completedAt)+KQ_CURING_DURATION_MS)):s;
+  return {...matured,curingBeforeJury:s.rulesVersion===3,battle:resolveKqBattle(lockKqBattle(createKqFlower(g,'Toi · essai'),createKqOpponent(2026,{ownerName:'Sylvain · entraînement',rulesVersion:g.rulesVersion}),2026),2026,new Date(matured.clock))};
+ }
  case 'round': return s.chapter===6&&s.battle&&s.rounds<3?{...s,rounds:s.rounds+1}:s;
  case 'transform': {
  if(s.chapter!==7)return s;

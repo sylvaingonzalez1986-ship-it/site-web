@@ -26,6 +26,14 @@ describe("server storage API", () => {
     await getKqStorageRecords(user);
     expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_storage_state", { p_user_id: user });
   });
+  it("passes through explicit stock pools and leaves absent metadata unknown", async () => {
+    const stockBreakdown = { bulkUnits: 0, bulkProtectedUnits: 0, bulkOverflowUnits: 0,
+      packedUnits: 7350, packedActiveUnits: 5000, packedPausedUnits: 2350, packedOtherUnits: 0, packedPackets: 147 };
+    mocks.rpc.mockResolvedValue({ data: { ...stored(), lots: [], stockBreakdown }, error: null });
+    expect((await getKqStorageSnapshot(user)).stockBreakdown).toEqual(stockBreakdown);
+    mocks.rpc.mockResolvedValue({ data: { ...stored(), lots: [], capacity: { ...stored().capacity, usedUnits: 7350 } }, error: null });
+    expect((await getKqStorageSnapshot(user)).stockBreakdown).toBeUndefined();
+  });
   it("never sends client prices, dates, exposures or owner to the transaction", async () => {
     await handleKqStorageAction(user, { action: "buy", containerCode: "GROVE-1LB", quantity: 3, requestKey: key, userId: "forged", priceCents: 0, state: {}, readyAt: "past" });
     expect(mocks.rpc).toHaveBeenCalledWith("rpc_kq_storage_capacity_command", {
@@ -35,6 +43,25 @@ describe("server storage API", () => {
   it("passes only the selected lot identity for a reassignment", async () => {
     await handleKqStorageAction(user, { action: "assign", methodCode: "STORAGE-GLASS", flowerId: flower, requestKey: key });
     expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_storage_capacity_command", expect.objectContaining({ p_flower_id: flower, p_user_id: user }));
+  });
+  it("places the exact model using the authenticated owner and server-computed quantity", async () => {
+    await handleKqStorageAction(user, { action: "place", containerCode: "GLASS-2L", flowerId: flower, requestKey: key, userId: "forged", totalUnits: 1 });
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_storage_capacity_command", {
+      p_user_id: user, p_action: "place", p_method_code: null, p_container_code: "GLASS-2L", p_quantity: null, p_flower_id: flower, p_request_key: key,
+    });
+  });
+  it.each([
+    { containerCode: "FORGED" }, { flowerId: undefined }, { quantity: 1 }, { methodCode: "STORAGE-GLASS" },
+  ])("rejects ambiguous or invalid exact placement %s", async invalid => {
+    await expect(handleKqStorageAction(user, { action: "place", containerCode: "GLASS-2L", flowerId: flower, requestKey: key, ...invalid })).rejects.toThrow();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+  it.each([
+    ["storage_container_not_installed", "pas installé"], ["storage_container_capacity", "Pas assez"],
+    ["warehouse_service_capacity_in_use", "cultures en cours"],
+  ])("exposes actionable placement failures for %s", async (code, message) => {
+    mocks.rpc.mockResolvedValue({ data: null, error: { message: code } });
+    await expect(handleKqStorageAction(user, { action: "place", containerCode: "GLASS-2L", flowerId: flower, requestKey: key })).rejects.toThrow(message);
   });
   it("sells only the server-computed surplus, never a client quantity or payout", async () => {
     await handleKqStorageAction(user, { action: "sell-overflow", flowerId: flower, requestKey: key, units: 99999, payoutCents: 99999 });

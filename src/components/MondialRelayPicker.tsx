@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { MondialRelayPoint } from "@/lib/shipping";
+import { normalizeShippingCountryCode } from "@/lib/shipping-country";
 
 type MondialRelayPickerProps = {
   postalCode: string;
@@ -17,14 +18,6 @@ type RelayLookupResponse = {
   message?: string;
   error?: string;
 };
-
-function sanitizeCountry(value: string | undefined): string {
-  const safe = (value || "FR").trim().toUpperCase();
-  if (safe.length < 2) {
-    return "FR";
-  }
-  return safe.slice(0, 2);
-}
 
 export function MondialRelayPicker({
   postalCode,
@@ -44,13 +37,20 @@ export function MondialRelayPicker({
   const pickerHeightClassName = minHeightClassName.trim() || "min-h-[420px]";
   const normalizedPostalCode = useMemo(() => postalCode.trim(), [postalCode]);
   const normalizedCity = useMemo(() => city.trim(), [city]);
-  const normalizedCountry = useMemo(() => sanitizeCountry(country), [country]);
+  const normalizedCountry = useMemo(() => normalizeShippingCountryCode(country), [country]);
 
   useEffect(() => {
     onSelectRef.current = onSelect;
   }, [onSelect]);
 
   useEffect(() => {
+    if (!normalizedCountry) {
+      setPoints([]);
+      setStatus("Renseigne le pays de livraison (par exemple : Belgique).");
+      setIsLoading(false);
+      setLookupFailed(false);
+      return;
+    }
     const hasPostalCode = normalizedPostalCode.length >= 4;
     if (!hasPostalCode) {
       setPoints([]);
@@ -93,7 +93,9 @@ export function MondialRelayPicker({
           return;
         }
 
-        const nextPoints = Array.isArray(data?.points) ? data.points : [];
+        const nextPoints = Array.isArray(data?.points)
+          ? data.points.filter((point) => normalizeShippingCountryCode(point.country) === normalizedCountry)
+          : [];
         setPoints(nextPoints);
 
         if (nextPoints.length === 0) {
@@ -132,10 +134,11 @@ export function MondialRelayPicker({
         {points.length > 0 ? (
           <div className="grid gap-2">
             {points.map((point) => {
-              const isSelected = selectedPoint?.id === point.id;
+              const isSelected = selectedPoint?.id === point.id &&
+                normalizeShippingCountryCode(selectedPoint.country) === normalizeShippingCountryCode(point.country);
               return (
                 <button
-                  key={point.id}
+                  key={`${point.country}-${point.id}`}
                   type="button"
                   aria-pressed={isSelected}
                   className={`w-full rounded-[2px] border-2 px-3 py-3 text-left transition-colors ${

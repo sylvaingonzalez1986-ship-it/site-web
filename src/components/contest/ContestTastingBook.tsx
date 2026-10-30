@@ -85,7 +85,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
   const chapterLabel = `${CONTEST_ENTRY_TRACK_LABELS[chapter.track]} · ${CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}`;
   const flowerIndex = flowers.findIndex((item) => item.id === entryId);
   const CultureIcon = CULTURES[chapter.category].icon;
-  const hasContestBundleOffer = Boolean(contestBundleOffer?.available && contestBundleOffer.flowers.length > 0);
+  const hasContestBundleOffer = Boolean(contestBundleOffer?.progress?.rewarded || (contestBundleOffer?.available && contestBundleOffer.flowers.length > 0));
   const inFlower = view === "flower" || view === "tasting" || view === "rewards";
   const pageTitle = view === "contents" ? "Table des matières" : view === "flowers" ? CONTEST_ENTRY_CATEGORY_LABELS[chapter.category] : entry?.title ?? "Ta fleur";
 
@@ -334,7 +334,6 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
     }}>
     <header className={styles.deskHeader}>
       {api.isTutorial ? <button type="button" className={styles.tutorialExit} onClick={onExitTutorial}><ArrowLeft size={17} aria-hidden="true" /> Retour au carnet</button> : <Link href="/arene" className={styles.arenaExit}><ArrowLeft size={17} aria-hidden="true" /> Retour à l’Arène</Link>}
-      <span>Les Chanvriers Bretons</span>
       {open ? <button type="button" onClick={close} aria-label="Replier le carnet" title="Replier le carnet"><X size={18} aria-hidden="true" /></button> : <BookOpen size={18} aria-hidden="true" />}
       <button type="button" className={styles.finishInput} data-book-finish-input
         onPointerDown={(event) => event.preventDefault()}
@@ -349,12 +348,9 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
     {!open || opening ? <div className={styles.closedStage} data-opening={opening || undefined} aria-hidden={open || undefined}>
       <button ref={coverRef} data-arena-tour="notebook" type="button" className={styles.cover} tabIndex={open ? -1 : 0} onClick={() => { setOpening(true); setOpen(true); go("contents"); }} aria-label="Ouvrir mon carnet de dégustation" aria-describedby={hasContestBundleOffer ? coverBonusId : undefined}>
         <span className={styles.coverBorder}>
-          <span className={styles.coverKicker}>L’Arène · Carnet de dégustation</span>
           <span className={styles.coverEmblem}><Image src="/contest/mascot/tasting/tasting-start.png" alt="La mascotte avec son carnet" width={390} height={463} sizes="(max-width: 600px) 140px, 190px" preload /></span>
           <span className={styles.coverTitle}>Mon carnet<span>de dégustation</span></span>
-          {hasContestBundleOffer
-            ? <span id={coverBonusId} className={styles.coverBonus} data-contest-bundle-cover><Gift size={14} aria-hidden="true" /> Bonus Concours à découvrir</span>
-            : <span className={styles.coverSubtitle}>Tes fleurs. Tes notes. Tes découvertes.</span>}
+          {hasContestBundleOffer ? <span id={coverBonusId} className={styles.coverBonus} data-contest-bundle-cover><Gift size={14} aria-hidden="true" /> Bonus Concours à découvrir</span> : null}
           <span className={styles.coverSignature}>{viewerProfile?.pseudo || "À toi d’écrire la suite"}</span>
           <span className={styles.coverAction}>Ouvrir le carnet <ArrowRight size={18} aria-hidden="true" /></span>
         </span>
@@ -369,8 +365,6 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
     <div className={styles.bookStage} hidden={!open}>
       <div className={styles.book}>
         <aside className={styles.frontispiece} aria-label="Repères du carnet">
-          <span className={styles.imprint}>Le carnet de l’Arène</span>
-          <span className={styles.guideBadge}><BookOpen size={16} aria-hidden="true" /> À toi de jouer</span>
           <p className={styles.asideTitle}>{view === "contents" ? <>À chaque fleur,<br /><em>sa découverte !</em></> : <>Les fleurs {CONTEST_ENTRY_TRACK_LABELS[chapter.track]}<br /><em>{CONTEST_ENTRY_CATEGORY_LABELS[chapter.category]}</em></>}</p>
           <figure className={styles.chapterScene}>
             <Image src="/contest/mascot/arena-scene-carnet-v1.png" alt="Sylvain prend ses notes de dégustation à son bureau, entouré de bocaux et de fiches botaniques." width={1536} height={1024} sizes="(min-width: 900px) 500px, 1px" />
@@ -387,7 +381,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
             <button type="button" onClick={() => go("contents")} aria-label="Table des matières"><List size={19} aria-hidden="true" /></button>
           </header>
           <div className={styles.pageHeading}>
-            <p>{view === "contents" ? "Choisis ta prochaine dégustation" : view === "flowers" ? CULTURES[chapter.category].description : view === "tasting" ? "Les pages de dégustation" : view === "rewards" ? "Tes découvertes récompensées" : "La fiche botanique"}</p>
+            {inFlower ? <p>{view === "tasting" ? "Dégustation" : view === "rewards" ? "Récompenses" : "Fiche botanique"}</p> : null}
             <h2 ref={headingRef} tabIndex={-1}>{pageTitle}</h2>
           </div>
           <div ref={pageRef} className={`${styles.pageContent} ${view === "tasting" ? styles.tastingContent : ""}`} data-book-scroll>
@@ -443,7 +437,7 @@ export function ContestTastingBook({ entries, unlocks, viewerProfile, badges, is
             {view === "flower" && entry ? <article key={`flower-${turn}`} className={`${styles.flowerPage} ${styles.pageTurn}`}>
               <div className={styles.specimen}><ContestFlowerImage entry={entry} alt={entry.title} sizes="(max-width: 767px) 85vw, 450px" fallbackSize={90} /><span><CultureIcon size={14} /> {CONTEST_ENTRY_CATEGORY_LABELS[entry.category]}</span></div>
               <div className={styles.flowerActions}><button type="button" className={styles.primary} onClick={startNotes}><BookOpen size={18} />{unlockById.get(entry.id)?.review ? "Retrouver mes notes" : "Déguster cette fleur"}<ArrowRight size={18} /></button><button type="button" className={styles.rewardButton} onClick={() => go("rewards")} aria-label="Voir les récompenses de cette fleur"><Gift size={19} /></button></div>
-              {entry.track === "concours" && contestBundleOffer?.flowers.some((flower) => flower.productId === entry.productId) && <ContestBundleNotebookNote offer={contestBundleOffer} flowerEntries={bundleFlowerEntries} onSelectFlower={openFlower} onOfferChange={updateBundleOffer} loginHref={bundleLoginHref} compact />}
+              {entry.track === "concours" && (contestBundleOffer?.progress?.rewarded || contestBundleOffer?.flowers.some((flower) => flower.productId === entry.productId)) && <ContestBundleNotebookNote offer={contestBundleOffer} flowerEntries={bundleFlowerEntries} onSelectFlower={openFlower} onOfferChange={updateBundleOffer} loginHref={bundleLoginHref} compact />}
               <dl className={styles.facts}>
                 <div><dt>Producteur</dt><dd>{entry.producer?.name || "Non renseigné"}</dd></div>
                 <div><dt>Origine</dt><dd>{entry.producer?.region || entry.producer?.location || String(entry.technicalSheet.origin || "Non renseignée")}</dd></div>

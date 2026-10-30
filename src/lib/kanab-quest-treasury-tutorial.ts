@@ -47,6 +47,7 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
   const labId = id();
   const runId = id();
   const business = saved?.business ?? createKqBusinessPreview(started);
+  business.suppliers ??= { outstandingCents: 0, overdueCents: 0, invoices: [] };
   // Retire only the local contract. Keep its old address, prepaid period,
   // journal and replay receipts exactly as recorded.
   business.domiciliation = { ...business.domiciliation, retired: true, active: false, renew: false };
@@ -117,7 +118,7 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
         outflowsCents: rows.reduce((sum, row) => sum + Math.max(0, -(row.postings.find(item => item.account === "cash")?.deltaCents ?? 0)), 0), revenueCents: 0, expenseCents: 0 }],
       journal: { items: rows.slice(offset, offset + 25), total: rows.length, offset, limit: 25 },
       checks: { walletCashCents: cash(), vatReserveCents: 0, savingsCents: balances.savings ?? 0, labDebtCents: business.lab.outstandingCents,
-        energyDebtCents: energyDue, vatDebtCents: 0, loanDebtCents: loan?.remainingCents ?? 0,
+        energyDebtCents: energyDue, supplierDebtCents: business.suppliers!.outstandingCents, vatDebtCents: 0, loanDebtCents: loan?.remainingCents ?? 0,
         cryptoCostCents: balances.crypto_assets ?? 0, securitiesCostCents: balances.securities_assets ?? 0 } };
   }
   function positionRows(market: "stocks" | "crypto") {
@@ -248,6 +249,37 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
       business.advertising = { id: id(), kind: body.kind, startedAt: stamp(), endsAt: new Date(clock() + ad.durationDays * KQ_GAME_DAY_MS).toISOString(), boostPercent: ad.boostPercent };
     } else if (body.action === "domiciliation") {
       throw new Error("La domiciliation a été retirée du jeu.");
+    } else if (body.action === "pay-all-invoices") {
+      if (typeof body.requestKey !== "string" || !body.requestKey.trim()) throw new Error("Identifiant de règlement manquant.");
+      const labInvoices = business.lab.invoices.filter(row => Date.parse(row.issuedAt) <= clock());
+      const supplierInvoices = business.suppliers!.invoices.filter(row => Date.parse(row.issuedAt) <= clock());
+      const climateInvoices = business.storageClimate?.invoices.filter(row => Date.parse(row.periodEndedAt) <= clock()) ?? [];
+      const labPaidCents = labInvoices.reduce((sum, row) => sum + row.remainingCents, 0);
+      const supplierPaidCents = supplierInvoices.reduce((sum, row) => sum + row.remainingCents, 0);
+      const storageClimatePaidCents = climateInvoices.reduce((sum, row) => sum + row.remainingCents, 0);
+      const electricityPaidCents = (started <= clock() ? energyDue - (business.storageClimate?.outstandingCents ?? 0) : 0) + storageClimatePaidCents;
+      const invoiceCount = [...labInvoices, ...supplierInvoices, ...climateInvoices].filter(row => row.remainingCents > 0).length + (electricityPaidCents > storageClimatePaidCents ? 1 : 0);
+      const paidCents = labPaidCents + supplierPaidCents + electricityPaidCents;
+      if (!Number.isSafeInteger(body.expectedCents) || Number(body.expectedCents) < 1 || Number(body.expectedCents) > 2_147_483_647) throw new Error("Montant de règlement invalide.");
+      if (body.expectedCents !== paidCents) throw new Error("Le total des factures a changé. Actualise avant de confirmer.");
+      if (paidCents <= 0) throw new Error("Toutes les factures sont déjà réglées.");
+      afford(paidCents);
+      post("invoices-paid", [{ account: "cash", deltaCents: -paidCents },
+        { account: "lab_payable", deltaCents: labPaidCents }, { account: "supplier_payable", deltaCents: supplierPaidCents },
+        { account: "energy_payable", deltaCents: electricityPaidCents }].filter(row => row.deltaCents !== 0) as KqTreasuryPosting[]);
+      [...labInvoices, ...supplierInvoices, ...climateInvoices].forEach(invoice => { invoice.remainingCents = 0; });
+      for (const group of [business.lab, business.suppliers!]) {
+        group.outstandingCents = group.invoices.reduce((sum, row) => sum + row.remainingCents, 0);
+        group.overdueCents = group.invoices.filter(row => Date.parse(row.dueAt) <= clock()).reduce((sum, row) => sum + row.remainingCents, 0);
+      }
+      if (business.storageClimate) {
+        business.storageClimate.outstandingCents -= storageClimatePaidCents;
+      }
+      energyDue -= electricityPaidCents;
+      if (labPaidCents) actions.add("lab-paid");
+      if (supplierPaidCents) actions.add("supplier-paid");
+      if (electricityPaidCents) actions.add("energy-paid");
+      return { action: "pay-all-invoices", paidCents, labPaidCents, supplierPaidCents, electricityPaidCents, storageClimatePaidCents, invoiceCount, cashAfterCents: cash(), replayed: false };
     } else if (body.action === "pay-lab") {
       const invoice = business.lab.invoices.find(item => item.id === body.invoiceId && item.remainingCents > 0);
       if (!invoice) throw new Error("Cette analyse d’essai est déjà réglée.");
@@ -270,7 +302,14 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
         if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("Action d’essai invalide.");
         const record = body as Record<string, unknown>;
         const key = typeof record.requestKey === "string" ? `${url.pathname}:${record.requestKey}` : null;
-        if (key && replayed.has(key)) return new Response(replayed.get(key), { headers: { "content-type": "application/json" } });
+        if (key && replayed.has(key)) {
+          if (record.action === "pay-all-invoices") {
+            const receipt = JSON.parse(replayed.get(key)!);
+            if (receipt.action !== "pay-all-invoices" || receipt.paidCents !== record.expectedCents) throw new Error("Cet identifiant correspond à un autre règlement.");
+            return Response.json({ ...receipt, replayed: true });
+          }
+          return new Response(replayed.get(key), { headers: { "content-type": "application/json" } });
+        }
         const result = command(url.pathname, record);
         const encoded = JSON.stringify(result);
         if (key) replayed.set(key, encoded);

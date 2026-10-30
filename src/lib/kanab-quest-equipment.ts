@@ -954,9 +954,9 @@ export function isKqEquipmentSuperseded(equipmentCode: string, ownedCodes: strin
   });
 }
 
-export function getKqEquipmentProgressionStatus(ownedCodes: string[]) {
+export function getKqEquipmentProgressionStatus(ownedCodes: string[], category?: KqEquipmentCategory) {
   const owned = new Set(ownedCodes);
-  const remaining = KQ_EQUIPMENT_CATALOG.filter((equipment) => equipment.purchasable && !owned.has(equipment.code));
+  const remaining = KQ_EQUIPMENT_CATALOG.filter((equipment) => equipment.purchasable && !owned.has(equipment.code) && (!category || equipment.category === category));
   const alternatives = remaining.filter((equipment) => isKqEquipmentSuperseded(equipment.code, ownedCodes));
   return {
     catalogComplete: remaining.length === 0,
@@ -989,10 +989,12 @@ export function getKqNextEquipmentGoal(input: {
   ownedCodes: string[];
   cashCents: number;
   productionUnits?: number;
+  category?: KqEquipmentCategory;
 }) {
   const candidates = KQ_EQUIPMENT_CATALOG
     .filter((equipment) => (
       equipment.purchasable
+      && (!input.category || equipment.category === input.category)
       && !input.ownedCodes.includes(equipment.code)
       && !isKqEquipmentSuperseded(equipment.code, input.ownedCodes)
       && getKqEquipmentRequirementState({

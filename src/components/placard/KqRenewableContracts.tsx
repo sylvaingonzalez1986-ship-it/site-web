@@ -124,7 +124,7 @@ export function KqRenewableContracts({ mode = "preparation", runId, refreshKey, 
     : current?.status === "succeeded" ? "Contrat réussi · prime à récupérer" : choices ? "Choisis ton prochain défi" : loading ? "Lecture des commandes…" : "Suivi à actualiser";
 
   return <section className={styles.board} data-kq-renewable-contracts data-contract-status={current?.status ?? (error ? "error" : board ? "available" : "loading")} aria-label="Contrats du comptoir">
-    <header className={styles.header}><div><p className={styles.eyebrow}>Le comptoir des chanvriers</p><h3>{title}</h3><p>{subtitle}</p></div>
+    <header className={styles.header}><div><h3>{title}</h3><p>{subtitle}</p></div>
       {current && !choices ? <strong className={styles.prize}>{money(current.rewardCents)}<small>à gagner</small></strong>
         : board && board.completedCount > 0 ? <span className={styles.count}>{board.completedCount}<small>contrat{board.completedCount > 1 ? "s" : ""} honoré{board.completedCount > 1 ? "s" : ""}</small></span> : null}
     </header>

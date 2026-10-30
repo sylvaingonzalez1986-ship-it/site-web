@@ -10,6 +10,8 @@ import { isKqEnergyMode, type KqEnergyMode } from "@/lib/kanab-quest-energy";
 import { normalizeEmail } from "@/lib/admin-allowlist";
 import { activateKqHeritage, advanceKqStage, canPlayKqCard, getKqHarvestTier, isKqCultureDead, KQ_BUDDIES, KQ_CARDS, KQ_SITUATIONS, KQ_STAGES, playKqCard, redrawKqHand, resolveKqStage, rollKqDice, startKqGame, swapKqHeritageHandCard, type KqGameState } from "@/lib/kanab-quest-game";
 import { getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse-backend";
+import { getKqStorageRecords, projectKqStoredStorageLot, type KqStoredStorageLot } from "./kanab-quest-storage-backend";
+import { applyKqStorageToJury } from "@/lib/kanab-quest-storage";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { createKqFlower, createKqOpponent, invertKqBattlePerspective, lockKqBattle, resolveKqBattle, type KqBattle, type KqFlowerCard } from "@/lib/kanab-quest-battle";
 import { KQ_BATTLE_HISTORY_LIMIT, selectKqBattleHistory } from "@/lib/kanab-quest-battle-history-policy";
@@ -891,6 +893,7 @@ export type KqStartRunInput = {
   requestKey?: string;
   energyMode?: KqEnergyMode;
   expectedEnergyCents?: number;
+  expectedWarehouseRevision?: number;
   buddieCode: string;
   deckCodes: string[];
   cultureTokens?: number;
@@ -946,6 +949,7 @@ export async function getKqRecentSituationCodes(ownerId: string): Promise<string
 }
 
 export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) {
+  if (input.expectedWarehouseRevision !== undefined && (!Number.isSafeInteger(input.expectedWarehouseRevision) || input.expectedWarehouseRevision < 1)) throw new Error("Révision de l’aménagement invalide.");
   if (input.campaign !== undefined && typeof input.campaign !== "boolean") throw new Error("Campagne invalide.");
   if (input.campaign && input.zoneId !== undefined) throw new Error("La campagne comprend toutes les zones affectées.");
   if (input.zoneId !== undefined && (typeof input.zoneId !== "string" || !input.zoneId.trim() || input.zoneId.length > 80)) throw new Error("Zone de culture invalide.");
@@ -1019,8 +1023,14 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     getKqPlayerBuddieRotation(ownerId),
     input.zoneId === undefined ? getKqWarehouseRunSnapshot(ownerId) : getKqWarehouseRunSnapshot(ownerId, input.zoneId),
   ]);
+  // A receipt above remains replayable after the layout changes. For a new
+  // launch, preserve the exact preparation the player reviewed; SQL rechecks
+  // this snapshot's revision under its layout lock before inserting the runs.
+  if (input.expectedWarehouseRevision !== undefined && input.expectedWarehouseRevision !== storedWarehouse?.revision) {
+    throw new Error("L’aménagement ou les Buddies ont changé. Actualise la préparation avant de lancer.");
+  }
   const participants = input.campaign && storedWarehouse
-    ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision) : [];
+    ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision, storedWarehouse.cultureEquipment) : [];
   if (input.campaign && (!participants.length || participants[0].buddieCode !== input.buddieCode)) {
     throw new Error("Affecte tes Buddies aux zones, puis actualise la préparation de la campagne.");
   }
@@ -1104,6 +1114,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
     if (message.includes("warehouse_zone_invalid")) throw new Error("Cette zone n’est plus disponible. Actualise l’entrepôt.");
     if (message.includes("kq_active_run_exists")) throw new Error("Une culture Supabase est déjà active.");
     if (message.includes("warehouse_layout_changed")) throw new Error("L’aménagement a changé. Actualise le devis avant de lancer.");
+    if (message.includes("warehouse_condition_changed") || message.includes("warehouse_condition_invalid")) throw new Error("L’usure ou l’affectation du matériel a changé. Actualise la préparation avant de lancer.");
     if (message.includes("warehouse_capacity")) throw new Error("Agrandis le séchage ou libère du stockage pour cette récolte avant de lancer.");
     if (message.includes("kq_domiciliation_changed")) throw new Error("Les règles de cette culture ont changé. Actualise avant de la lancer.");
     if (message.includes("kq_production_units_changed") || message.includes("kq_culture_equipment_changed") || message.includes("kq_shared_equipment_changed") || message.includes("kq_culture_equipment_broken")) throw new Error("L’état du matériel a changé. Actualise le devis avant de lancer la culture.");
@@ -1253,10 +1264,18 @@ function mapKqHarvestTierFields(quality: number, row: {
   return { ...context, tier: getKqHarvestTier(quality, context) };
 }
 
+function getKqFlowerStoragePreview(lot: KqStoredStorageLot | undefined, stats: Record<string, number>, nowMs: number) {
+  const storage = lot ? projectKqStoredStorageLot(lot, nowMs) : undefined;
+  // Use the same pure calculation as submission, at database time. Reading a
+  // mature flower previews its stats without freezing or saving jury evidence.
+  return { storage, stats: lot?.state.preJury && storage?.stage === "ready"
+    ? applyKqStorageToJury(lot.state, stats, nowMs).stats : stats };
+}
+
 export async function getKqPlayerFlowers(ownerId: string) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const supabase = createSupabaseServiceClient();
-  const [result, queueResult] = await Promise.all([
+  const [result, queueResult, storage] = await Promise.all([
     supabase.from("kq_flowers")
       .select("id,run_id,variety_code,variety_name,quality,harvest_tier_version,successful_stages,critical_stages,traits,combos,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at,locked_at,burned_at")
       .eq("owner_id", ownerId)
@@ -1266,12 +1285,15 @@ export async function getKqPlayerFlowers(ownerId: string) {
     supabase.from("kq_random_battle_queue")
       .select("flower_id,queued_at")
       .eq("owner_id", ownerId),
+    getKqStorageRecords(ownerId),
   ]);
   if (result.error) throw new Error(`[supabase:kq_flowers] ${result.error.message}`);
   if (queueResult.error) throw new Error(`[supabase:kq_random_battle_queue] ${queueResult.error.message}`);
   const queuedFlowers = new Map((queueResult.data ?? []).map((entry) => (
     [String(entry.flower_id), String(entry.queued_at)] as const
   )));
+  const storedLots = new Map(storage.lots.map(lot => [lot.flowerId, lot]));
+  const storageNowMs = Date.parse(storage.serverNow);
   return (result.data ?? []).map((flower) => ({
     id: String(flower.id),
     runId: String(flower.run_id),
@@ -1281,7 +1303,8 @@ export async function getKqPlayerFlowers(ownerId: string) {
     ...mapKqHarvestTierFields(Number(flower.quality), flower),
     traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
     combos: Array.isArray(flower.combos) ? flower.combos.map(String) : [],
-    stats: flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats : {},
+    ...getKqFlowerStoragePreview(storedLots.get(String(flower.id)),
+      flower.battle_stats && typeof flower.battle_stats === "object" ? flower.battle_stats : {}, storageNowMs),
     rulesVersion: Number(flower.rules_version ?? 2),
     cannabinoidReport: flower.cannabinoid_report ?? undefined,
     cultivationProfile: (flower.cultivation_profile ?? undefined) as KqFlowerCard["cultivationProfile"],
@@ -1486,16 +1509,18 @@ export function mapKqChallengeClaimKeys(rows: unknown) {
 export async function getKqPlayerCoreSnapshot(ownerId: string, selection: KqRunSelection = {}) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   const supabase = createSupabaseServiceClient();
-  const [result, queueResult, claimsResult, runs] = await Promise.all([
+  const [result, queueResult, claimsResult, runs, storage] = await Promise.all([
     supabase.rpc("rpc_kq_player_core_snapshot", { p_user_id: ownerId }),
     supabase.from("kq_random_battle_queue").select("flower_id,queued_at").eq("owner_id", ownerId),
     supabase.from("kq_daily_challenge_claims").select("challenge_day,challenge_code")
       .eq("user_id", ownerId).order("challenge_day", { ascending: false }).limit(64),
     getKqPlayerRunsSnapshot(ownerId, selection),
+    getKqStorageRecords(ownerId),
   ]);
   if (queueResult.error) throw new Error(`[supabase:kq_random_battle_queue] ${queueResult.error.message}`);
   if (claimsResult.error) throw new Error(`[supabase:kq_daily_challenge_claims] ${claimsResult.error.message}`);
-  if (!result.error) return { ...mapKqPlayerCoreSnapshot(
+  if (!result.error) {
+    const snapshot = mapKqPlayerCoreSnapshot(
     { ...result.data, activeRuns: runs.activeRuns },
     (queueResult.data ?? []).map((entry) => ({
       flowerId: String(entry.flower_id),
@@ -1503,7 +1528,12 @@ export async function getKqPlayerCoreSnapshot(ownerId: string, selection: KqRunS
     })),
     mapKqChallengeClaimKeys(claimsResult.data),
     selection,
-  ), ...runs };
+    );
+    const storedLots = new Map(storage.lots.map(lot => [lot.flowerId, lot]));
+    const storageNowMs = Date.parse(storage.serverNow);
+    return { ...snapshot, ...runs, flowers: snapshot.flowers.map(flower => ({ ...flower,
+      ...getKqFlowerStoragePreview(storedLots.get(flower.id), flower.stats as Record<string, number>, storageNowMs) })) };
+  }
   if (!isMissingKqPlayerCoreSnapshotRpc(result.error)) {
     throw new Error(`[supabase:rpc_kq_player_core_snapshot] ${result.error.message}`);
   }
@@ -1659,12 +1689,25 @@ export async function getKqPlayerFlowerRivals(ownerId: string, flowerId: string)
   });
 }
 
+function explainKqJuryReadinessError(message: string) {
+  if (message.includes("kq_curing_required")) throw new Error("L’affinage de cette récolte est encore en cours. Attends sa fin dans Stockage avant de passer le jury.");
+  if (message.includes("kq_storage_required")) throw new Error("Le stockage de cette récolte doit être vérifié avant le jury. Ouvre Stockage pour retrouver le lot.");
+  if (message.includes("kq_flower_unavailable")) throw new Error("Cette Fleur n’est plus disponible pour le jury.");
+}
+
 export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: string) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId) || !/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Duel d’entraînement invalide.");
   const dayKey = getKqChallengeDayKey();
   const botCode = getKqRandomTrainingBotCode(ownerId, flowerId, dayKey);
   const definition = KQ_TRAINING_BOTS.find((bot) => bot.code === botCode)!;
   const supabase = createSupabaseServiceClient();
+  // Freeze the matured flower before computing rounds; SQL also checks the
+  // final transaction, so a direct or stale request cannot bypass curing.
+  const prepared = await supabase.rpc("rpc_kq_prepare_flower_jury", { p_user_id: ownerId, p_flower_id: flowerId });
+  if (prepared.error) {
+    explainKqJuryReadinessError(prepared.error.message);
+    throw new Error(`[supabase:rpc_kq_prepare_flower_jury] ${prepared.error.message}`);
+  }
   const flowerResult = await supabase.from("kq_flowers")
     .select("id,run_id,variety_name,quality,harvest_tier_version,successful_stages,critical_stages,traits,battle_stats,rules_version,cannabinoid_report,cultivation_profile,terpene_report,status,created_at")
     .eq("id", flowerId).eq("owner_id", ownerId).maybeSingle();
@@ -1704,6 +1747,7 @@ export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: strin
   });
   if (result.error) {
     const message = result.error.message || "Duel d’entraînement impossible.";
+    explainKqJuryReadinessError(message);
     if (message.includes("kq_bot_daily_limit")) throw new Error("Tes 10 duels contre des bots ont déjà été joués aujourd’hui.");
     if (message.includes("kq_flower_unavailable")) throw new Error("Ta Fleur n’est plus disponible.");
     throw new Error(`[supabase:rpc_kq_finalize_bot_battle_with_challenges] ${message}`);
@@ -1776,6 +1820,7 @@ export async function enqueueKqPlayerRandomBattle(
   });
   if (result.error) {
     const message = result.error.message || "File de duel indisponible.";
+    explainKqJuryReadinessError(message);
     if (message.includes("kq_random_queue_flower_not_owned")) throw new Error("Cette Fleur ne t’appartient pas.");
     if (message.includes("kq_random_queue_owner_already_waiting")) throw new Error("Tu as déjà une Fleur dans la file aléatoire.");
     if (message.includes("kq_random_queue_flower_unavailable")) throw new Error("Cette Fleur n’est plus disponible.");
@@ -2554,9 +2599,22 @@ export function mapKqCardBurnResult(data: unknown) {
   };
 }
 
-export async function playKqPlayerCard(ownerId: string, runId: string, cardCode: string) {
+function validateKqCardStage(expectedStageIndex: number | undefined) {
+  if (expectedStageIndex !== undefined && (!Number.isSafeInteger(expectedStageIndex)
+    || expectedStageIndex < 0 || expectedStageIndex >= KQ_STAGES.length)) {
+    throw new Error("Étape de carte invalide.");
+  }
+}
+
+export async function playKqPlayerCard(
+  ownerId: string,
+  runId: string,
+  cardCode: string,
+  options: { expectedStageIndex?: number } = {},
+) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(runId)) throw new Error("Culture invalide.");
+  validateKqCardStage(options.expectedStageIndex);
 
   const supabase = createSupabaseServiceClient();
   const runResult = await supabase
@@ -2570,6 +2628,11 @@ export async function playKqPlayerCard(ownerId: string, runId: string, cardCode:
 
   const state = parseKqGameSave(encodeKqSave(runResult.data.state));
   if (!state) throw new Error("État de culture invalide.");
+  // A delayed request must stay in its original stage; SQL still checks the
+  // loaded version to catch changes between this read and the atomic burn.
+  if (options.expectedStageIndex !== undefined && options.expectedStageIndex !== state.stageIndex) {
+    throw new Error("La culture a changé d’étape. Vérifie la culture avant de jouer une carte.");
+  }
   if (state.campaign && state.campaign.leaderRunId !== runId) throw new Error("Ouvre la campagne commune pour jouer cette carte.");
   const { nextState, useKind } = prepareKqCardPlay(state, cardCode);
   const result = await supabase.rpc("rpc_kq_play_support_card", {
@@ -2591,10 +2654,16 @@ export async function playKqPlayerCard(ownerId: string, runId: string, cardCode:
   return mapKqCardBurnResult(result.data);
 }
 
-export async function playKqAdminCard(adminEmail: string, runId: string, cardCode: string) {
+export async function playKqAdminCard(
+  adminEmail: string,
+  runId: string,
+  cardCode: string,
+  options: { expectedStageIndex?: number } = {},
+) {
+  validateKqCardStage(options.expectedStageIndex);
   const ownerId = await findKqUserIdByEmail(adminEmail);
   if (!ownerId) throw new Error("Compte collection admin introuvable.");
-  return playKqPlayerCard(ownerId, runId, cardCode);
+  return playKqPlayerCard(ownerId, runId, cardCode, options);
 }
 
 export type KqRunAction = "roll" | "resolve" | "advance" | "redraw" | "heritage" | "heritage-swap";

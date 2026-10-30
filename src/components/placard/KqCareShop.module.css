@@ -16,76 +16,76 @@
 .shop[data-reserve] { margin-top: 14px; }
 .heading { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 18px; }
 .title { flex: 1; min-width: 150px; }
-.title > small { color: #455748; font-size: 9px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
 .shop .title h2 { margin: 3px 0 0; color: #172923; font-size: 24px; font-weight: 800; line-height: 1.2; letter-spacing: -.025em; }
-.balance { display: flex; align-items: center; gap: 9px; margin: 0; padding: 8px 11px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #efc451; }
+.balance { display: flex; align-items: center; gap: 9px; margin: 0; padding: 0; border: 0; border-radius: var(--game-panel-radius, 2px); background: none; }
 .balance > span { display: grid; }
-.balance small { color: #455748; font-size: 9px; }
+.balance small { color: #455748; font-size: 13px; }
 .balance strong { color: #172923; font-size: 16px; line-height: 1.3; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.intro { max-width: 640px; margin: 10px 0 16px; color: #172923; font-size: 12px; }
-.shop.shop button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; padding: 9px 11px; font-family: inherit; font-size: 12px; font-weight: 750; line-height: 1.3; cursor: pointer; transition: background .15s ease, border-color .15s ease; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.intro { max-width: 640px; margin: 10px 0 12px; color: #172923; font-size: 13px; }
+.shop.shop button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; color: #172923; padding: 9px 11px; font-family: inherit; font-size: 13px; font-weight: 750; line-height: 1.3; cursor: pointer; transition: background .15s ease, border-color .15s ease; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .shop button:hover:not(:disabled) { border-color: transparent; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; color: #172923; }
 .shop button:disabled { opacity: .48; cursor: not-allowed; }
-.shop button:focus-visible { outline: 3px solid #b7862e; outline-offset: 3px; }
-.details summary:focus-visible { outline: 3px solid #b7862e; outline-offset: 3px; }
-.tabs { display: inline-flex; flex-wrap: wrap; gap: 4px; width: fit-content; max-width: 100%; padding: 4px; border: 1px solid #d2d1b7; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; }
-.shop .tabs button { border-color: transparent; font-size: 11px; background: transparent; }
+.shop button:focus-visible, .details summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 6px; width: auto; max-width: 100%; padding: 0; border: 0; border-radius: var(--game-panel-radius, 2px); background: none; }
+.shop .tabs button { border-color: transparent; font-size: 13px; background: transparent; }
 .shop .tabs button[aria-pressed="true"], .shop .tabs button[aria-pressed="true"]:hover:not(:disabled) { border-color: transparent; color: #fff1d6; box-shadow: none; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; }
-.rayonHint { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 2px 10px; margin: 11px 1px 12px; color: #172923; font-size: 11px; }
-.rayonHint > span { color: #455748; font-size: 10px; }
-.products { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
-.product { display: flex; min-width: 0; flex-direction: column; overflow: hidden; padding: 16px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.product[data-stocked] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.productMain { display: grid; grid-template-columns: 136px minmax(0, 1fr); align-items: center; gap: 12px; }
-.illustration { display: grid; place-items: center; overflow: hidden; width: 136px; height: 136px; border-radius: 9px; background: #fff8e7; }
+.rayonHint { display: block; margin: 12px 0; color: #172923; font-size: 13px; }
+.rayonHint > span { display: block; margin-top: 4px; color: #455748; font-size: 13px; }
+/* A compact register keeps stocks and actions ahead of product explanations. */
+.products { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; align-items: start; }
+.product, .product[data-stocked] { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, .8fr); min-width: 0; gap: 8px 20px; padding: 18px 0; overflow: visible; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 0; border-bottom: 1px solid #17292340; border-radius: 0; border-image: none; background: none; box-shadow: none; }
+.productMain { display: grid; grid-template-columns: 72px minmax(0, 1fr); align-items: center; gap: 12px; }
+.illustration { display: grid; place-items: center; overflow: hidden; width: 72px; height: 72px; border-radius: 0; background: none; }
 .productImage { display: block; width: 100%; height: 100%; object-fit: contain; }
 .productIdentity { min-width: 0; }
-.stock { display: inline-flex; align-items: center; gap: 5px; color: #455748; font-size: 10px; }
+.stock { display: inline-flex; align-items: center; gap: 5px; color: #455748; font-size: 13px; }
 .stock::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: #b0b29a; }
 .stock[data-stocked] { color: #172923; font-weight: 750; }
 .stock[data-stocked]::before { background: #149b8b; }
-.shop .product h3 { margin: 5px 0 9px; color: #172923; font-size: 17px; font-weight: 800; line-height: 1.22; letter-spacing: -.02em; overflow-wrap: anywhere; }
-.target { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 5px; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; padding: 3px 6px; color: #695927; font-size: 10px; font-weight: 750; }
-.target > span { color: #7b764d; font-size: 9px; font-weight: 500; }
-.role { display: block; margin-top: 7px; color: #172923; font-size: 10px; line-height: 1.45; }
-.details { margin-top: 11px; border-top: 1px solid #e4dec7; }
-.shop .details summary { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; list-style: none; color: #455748; font-size: 11px; cursor: pointer; }
+.shop .product h3 { margin: 4px 0; color: #172923; font-size: 17px; font-weight: 800; line-height: 1.22; letter-spacing: -.02em; overflow-wrap: anywhere; }
+.target { display: inline-flex; align-items: baseline; flex-wrap: wrap; gap: 5px; border-radius: var(--game-panel-radius, 2px); background: none; padding: 0; color: #172923; font-size: 13px; font-weight: 750; }
+.target > span { color: #455748; font-size: 13px; font-weight: 500; }
+.role { display: block; margin-top: 4px; color: #172923; font-size: 13px; line-height: 1.45; }
+.details { grid-column: 1 / -1; margin: 0; border: 0; }
+.shop .details summary { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; list-style: none; color: #455748; font-size: 13px; cursor: pointer; }
 .details summary::-webkit-details-marker { display: none; }
 .details[open] summary { color: #172923; }
 .details[open] summary svg { transform: rotate(180deg); }
-.details p { margin: 0 0 7px; color: #172923; font-size: 12px; line-height: 1.65; }
-.productActions { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; margin-top: auto; padding-top: 9px; border-top: 1px solid #e4dec7; }
+.details p { margin: 0 0 8px; color: #172923; font-size: 13px; line-height: 1.65; }
+.productActions { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; align-items: center; align-content: start; margin: 0; padding: 0; border: 0; }
 .price { display: grid; align-content: center; }
-.price strong { color: #172923; font-size: 21px; line-height: 1.3; font-variant-numeric: tabular-nums; }
-.price small { color: #455748; font-size: 9px; }
-.shop button.use { grid-column: 1 / -1; width: 100%; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; border-color: transparent; }
+.price strong { color: #172923; font-size: 18px; line-height: 1.3; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.price small { color: #455748; font-size: 13px; }
+.shop button.use { grid-column: 1 / -1; width: 100%; color: #172923; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .shop .use:hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); color: #172923; background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .shop .use:disabled { color: #455748; opacity: .72; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
-.reason { display: block; margin-top: 8px; color: #455748; font-size: 10px; line-height: 1.5; }
+.reason { display: block; grid-column: 1 / -1; margin: 0; color: #455748; font-size: 13px; line-height: 1.5; }
 .reason[data-available] { color: #172923; }
-.cashHint { display: block; margin-top: 5px; color: #8c6033; font-size: 10px; }
-.notice { margin: 14px 0 0; padding: 11px 13px; border: 1px solid #b9c5a1; border-radius: var(--game-panel-radius, 2px); background: #d7efe2; color: #172923; font-size: 12px; }
+.cashHint { display: block; grid-column: 1 / -1; margin: 0; color: #8c6033; font-size: 13px; }
+.notice { margin: 10px 0; padding: 10px 0; border: 0; border-block: 1px solid #17292340; border-radius: var(--game-panel-radius, 2px); background: none; color: #172923; font-size: 13px; }
+.error { color: #8a3427; }
+.empty { margin: 16px 0; font-size: 14px; }
 
 @container (max-width: 670px) {
-  .products { grid-template-columns: minmax(0, 1fr); gap: 18px; }
-  .productMain { grid-template-columns: 120px minmax(0, 1fr); }
-  .illustration { width: 120px; height: 120px; }
+  .product, .product[data-stocked] { grid-template-columns: minmax(0, 1fr); gap: 10px; }
 }
 
 @container (max-width: 380px) {
   .title { min-width: 115px; }
   .shop .title h2 { font-size: 21px; }
-  .balance { gap: 5px; padding: 7px 8px; border: 2px solid #172923; background: #efc451; }
+  .balance { gap: 5px; }
   .balance > svg { display: none; }
   .balance strong { font-size: 14px; }
-  .tabs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); width: 100%; }
-  .shop .tabs button { gap: 5px; padding: 8px 5px; font-size: 10px; text-align: left; }
+  .tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shop[data-reserve] .tabs button:first-child { grid-column: 1 / -1; }
+  .shop .tabs button { min-width: 0; gap: 5px; padding: 10px; text-align: center; }
+  .tabs button span { min-width: 0; overflow-wrap: anywhere; }
   .tabs svg { flex-shrink: 0; width: 14px; }
-  .product { padding: 16px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-  .productMain { grid-template-columns: 104px minmax(0, 1fr); gap: 10px; }
-  .illustration { width: 104px; height: 104px; }
-  .shop .product h3 { font-size: 16px; }
-  .shop button.buy { padding-right: 9px; padding-left: 9px; font-size: 11px; }
+  .productMain { grid-template-columns: 64px minmax(0, 1fr); }
+  .illustration { width: 64px; height: 64px; }
+  .shop button.buy { padding-right: 9px; padding-left: 9px; font-size: 13px; }
+  .productActions { grid-template-columns: minmax(0, 1fr); }
+  .price { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 8px; }
 }
 
 @media (prefers-reduced-motion: reduce) { .shop button { transition: none; } }

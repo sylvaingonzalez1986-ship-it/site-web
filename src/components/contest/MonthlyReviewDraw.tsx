@@ -49,7 +49,7 @@ export function MonthlyReviewDraw({ loginHref = "/compte/connexion?next=%2Farene
   return <section className={styles.panel} aria-labelledby={titleId} data-monthly-review-draw>
     <header className={styles.header}>
       <Gift size={25} aria-hidden="true" />
-      <div><p className={styles.eyebrow}>Le tirage du Carnet</p><h3 id={titleId}>{draw ? `${draw.prizeGrams} g` : "10 g"} de fleurs à gagner</h3></div>
+      <h3 id={titleId}>{draw ? `${draw.prizeGrams} g` : "10 g"} de fleurs à gagner</h3>
     </header>
     <p>Chaque 1er du mois : un gagnant parmi les joueurs ayant déjà fait valider un avis sur une fleur achetée.</p>
     {loading ? <p role="status">Vérification du prochain tirage…</p> : null}

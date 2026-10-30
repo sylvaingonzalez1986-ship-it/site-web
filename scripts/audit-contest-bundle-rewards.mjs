@@ -50,9 +50,11 @@ createRoot(document.getElementById('root')).render(React.createElement(App));
 const modules = {
   "contest-bundle-entry": entry,
   "contest-bundle-link": "import React from 'react';export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}",
+  "next/image": "import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src:typeof src==='string'?src:src.src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}",
+  "next/navigation": "export const useRouter=()=>({push:href=>{window.__navigation={href,overlays:history.state?.lcbOverlays??[]}}});",
 };
 const server = await createServer({
-  root, configFile: false, envDir: false, publicDir: false,
+  root, configFile: false, envDir: false, publicDir: resolve(root, "public"),
   cacheDir: resolve(output, "vite-cache"), esbuild: { jsx: "automatic" },
   resolve: { alias: { "@": resolve(root, "src") }, dedupe: ["react", "react-dom"] },
   optimizeDeps: { include: ["react", "react-dom/client", "react/jsx-runtime", "lucide-react"] },
@@ -84,13 +86,14 @@ const server = await createServer({
   server: { host: "127.0.0.1", port, strictPort: true, hmr: false, watch: null },
 });
 
-let browser;
+let browser, page;
 try {
   await mkdir(output, { recursive: true });
   await server.listen();
   browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ["--no-sandbox", "--disable-gpu"] });
-  const page = await browser.newPage();
-  page.setDefaultTimeout(15_000);
+  page = await browser.newPage();
+  page.setDefaultTimeout(30_000);
+  page.setDefaultNavigationTimeout(60_000);
   page.on("pageerror", (error) => browserErrors.push(error.message));
   await page.setRequestInterception(true);
   page.on("request", (request) => {
@@ -193,8 +196,20 @@ try {
 
     fixture.rewards.receipts = [paidReceipt];
     fixture.rewards.progress = makeProgress(3, true);
+    await page.evaluate(() => localStorage.clear());
     await open("?receipt"); await page.waitForSelector("aside"); await layout();
-    assert.match(await text(), /La Gardienne des fleurs/);
+    await page.waitForSelector('dialog[data-contest-card-reveal][open][data-phase="sealed"]');
+    assert.equal(await page.$eval('[data-contest-card-reward] > p', element => element.textContent), "Ton Buddie épique est prêt à être découvert.");
+    assert.equal(await page.$eval('[data-contest-card-reveal] [role="status"]', element => element.textContent), "Une carte tirée au sort parmi les Buddies épiques.");
+    await page.focus('[data-contest-card-turn]'); await page.keyboard.press('Enter');
+    await page.waitForSelector('[data-contest-card-reveal][data-phase="revealing"]');
+    await page.waitForSelector('[data-contest-card-reveal][data-phase="revealed"]');
+    assert.match(await page.$eval('[data-contest-card-reveal] [role="status"]', element => element.textContent), /La Gardienne des fleurs/);
+    assert.equal(await page.$eval('[data-contest-card-reveal] a', element => element.getAttribute('href')), '/profil/collection');
+    await layout();
+    await page.screenshot({ path: resolve(output, `reveal-${width}.png`), fullPage: true });
+    await page.keyboard.press('Escape');
+    await page.waitForFunction(() => !document.querySelector('[data-contest-card-reveal]'));
     assert.deepEqual(await page.$$eval('ul[aria-label="Packs crédités"] > li', rows => rows.map(row => ({
       label: row.querySelector("strong").textContent,
       size: row.querySelector("span").textContent,
@@ -205,6 +220,12 @@ try {
     assert.deepEqual(requests, [{ method: "POST" }]);
     await page.screenshot({ path: resolve(output, `receipt-${width}.png`), fullPage: true });
     record("owned-paid-receipt-is-displayed", width);
+    await open("?receipt"); await page.waitForSelector('[data-contest-card-open]');
+    assert.equal(await page.$('[data-contest-card-reveal]'), null, 'Refreshing a seen receipt never opens a fresh draw');
+    await page.click('[data-contest-card-open]');
+    await page.waitForSelector('[data-contest-card-reveal][data-phase="revealed"]');
+    assert.deepEqual(requests, [{ method: "POST" }], 'Reopening the presentation never requests another reward');
+    record("keyboard-reveal-and-reload-preserve-the-original-card", width);
   }
 
   await page.setViewport({ width: 390, height: 844 });
@@ -243,21 +264,69 @@ try {
   fixture.rewards = { ...initialRewards(), available: false, receipts: [paidReceipt] };
   await open("?receipt"); await page.waitForSelector("aside");
   assert.match(await text(), /La Gardienne des fleurs/);
+  const switchedResponse = page.waitForResponse(response => response.url().endsWith('/api/account/contest-bundle-rewards'));
   await page.evaluate(() => window.__setOrderId("order-two"));
   await page.waitForFunction(() => !document.querySelector("aside"));
-  await page.waitForNetworkIdle(); await noCard();
+  await switchedResponse; await noCard();
   record("historical-receipt-survives-closed-offer-and-clears-on-order-switch", 390);
 
   for (const status of [401, 503]) {
     fixture = { status, rewards: initialRewards() };
     await open(); await noCard();
-    await open("?receipt"); await noCard();
-    record(`api-${status}-hides-unverified-reward-gracefully`, 390);
+    await open("?receipt"); await page.waitForSelector('[role="alert"]');
+    assert.equal(await page.$('[data-contest-card-open]'), null);
+    assert.match(await text(), /Ton paiement reste confirmé/);
+    fixture = { status: 200, rewards: { ...initialRewards(), progress: makeProgress(3, true), receipts: [paidReceipt] } };
+    await page.click('aside button');
+    await page.waitForSelector('[data-contest-card-open]');
+    assert.deepEqual(requests, [{ method: "POST" }, { method: "POST" }]);
+    record(`api-${status}-shows-error-and-recovers-without-invented-reward`, 390);
   }
+
+  fixture = { status: 200, rewards: { ...initialRewards(), progress: makeProgress(3) } };
+  await open('?receipt'); await page.waitForSelector('[role="alert"]');
+  assert.match(await text(), /L’attribution de la carte et des packs reste à confirmer/);
+  assert.equal(await page.$('[data-contest-card-open]'), null);
+  record('eligible-without-server-receipt-can-retry-but-never-celebrates', 390);
+
+  fixture = { status: 200, rewards: { ...initialRewards(), progress: makeProgress(3, true), receipts: [paidReceipt] } };
+  await page.evaluate(() => localStorage.clear());
+  await open('?receipt'); await page.waitForSelector('[data-contest-card-reveal][data-phase="sealed"]');
+  await page.keyboard.press('Escape'); await page.waitForFunction(() => !document.querySelector('[data-contest-card-reveal]'));
+  await page.click('[data-contest-card-open]'); await page.click('[data-contest-card-turn]');
+  await page.waitForSelector('[data-contest-card-reveal][data-phase="revealing"]');
+  await page.keyboard.press('Escape'); await page.waitForFunction(() => !document.querySelector('[data-contest-card-reveal]'));
+  await page.click('[data-contest-card-open]'); await page.waitForSelector('[data-contest-card-reveal][data-phase="sealed"]');
+  await page.click('[data-contest-card-turn]'); await page.click('[data-contest-card-turn]');
+  await page.waitForSelector('[data-contest-card-reveal][data-phase="revealed"]');
+  assert.deepEqual(requests, [{ method: "POST" }]);
+  record('closing-mid-animation-and-skip-preserve-the-receipt-with-no-new-request', 390);
+
+  await page.evaluate(() => localStorage.clear());
+  await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
+  await open('?receipt'); await page.waitForSelector('[data-contest-card-reveal][data-phase="sealed"]');
+  await page.click('[data-contest-card-turn]'); await page.waitForSelector('[data-contest-card-reveal][data-phase="revealed"]');
+  assert.equal(await page.$eval('[data-contest-card-reveal] [data-phase] > div:nth-child(2)', element => getComputedStyle(element).transitionDuration), '0s');
+  await layout();
+  record('reduced-motion-shows-the-same-card-without-rotation', 390);
+  for (const href of ['/profil/collection', '/arene/placard?view=shop']) {
+    await open('?receipt'); await page.waitForSelector('[data-contest-card-open]');
+    await page.click('[data-contest-card-open]');
+    await page.waitForSelector('[data-contest-card-reveal][data-phase="revealed"]');
+    await page.click(`[data-contest-card-reveal] a[href="${href}"]`);
+    await page.waitForFunction(() => Boolean(window.__navigation));
+    assert.deepEqual(await page.evaluate(() => window.__navigation), { href, overlays: [] });
+    assert.deepEqual(requests, [{ method: 'POST' }]);
+  }
+  record('collection-and-packs-navigation-consume-dialog-history-before-routing', 390);
   assert.deepEqual(browserErrors, []);
   assert.deepEqual(blockedRequests, []);
   await writeFile(resolve(output, "report.json"), JSON.stringify({ passed: true, widths, results, browserErrors, blockedRequests }, null, 2));
   console.log(`Contest bundle rewards audit passed: ${results.length} checks.`);
+} catch (error) {
+  console.error(JSON.stringify({ results, browserErrors, blockedRequests, requests }, null, 2));
+  await page?.screenshot({ path: resolve(output, 'failure.png'), fullPage: true }).catch(() => {});
+  throw error;
 } finally {
   await browser?.close();
   await server.close();

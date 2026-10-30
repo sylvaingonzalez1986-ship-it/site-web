@@ -1,6 +1,7 @@
 import type { KqOfficialFlower, KqStorageSnapshot } from "./kanab-quest-api";
 
-export type KqHarvestState = "overflow" | "jury" | "queued" | "duel" | "curing" | "ready";
+export type KqHarvestState = "overflow" | "storage" | "jury" | "queued" | "duel" | "curing" | "ready" | "empty";
+export type KqHarvestMarketSection = "sales" | "dashboard";
 export type KqHarvestRow = {
   id: string;
   name: string;
@@ -8,7 +9,59 @@ export type KqHarvestRow = {
   flower?: KqOfficialFlower;
   lot?: KqStorageSnapshot["lots"][number];
 };
-const order: Record<KqHarvestState, number> = { overflow: 0, jury: 1, duel: 2, queued: 3, ready: 4, curing: 5 };
+const order: Record<KqHarvestState, number> = { overflow: 0, storage: 1, jury: 2, duel: 3, queued: 4, ready: 5, curing: 6, empty: 7 };
+const knownAmount = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0;
+
+export function isKqHarvestBeforeJury(lot: Pick<StorageLot, "flowerStatus">) {
+  return lot.flowerStatus !== "burned";
+}
+
+/** The journey stage stays available even when surplus takes priority in the list. */
+export function getKqHarvestStep(status: string, projection?: StorageLot["projection"]): Exclude<KqHarvestState, "overflow"> {
+  if (!["available", "queued", "locked", "burned"].includes(status)) return "storage";
+  if (status === "queued") return "queued";
+  if (status === "locked") return "duel";
+  const total = projection?.capacity?.totalUnits;
+  if (status === "burned" && total === 0) return "empty";
+  if (!projection || !["ready", "curing"].includes(projection.stage)) return "storage";
+  if (status === "burned" && (!knownAmount(total) || !knownAmount(projection.capacity?.overflowUnits))) return "storage";
+  if (projection.stage === "curing") return "curing";
+  return status === "burned" ? "ready" : "jury";
+}
+
+function harvestState(status: string, projection?: StorageLot["projection"]): KqHarvestState {
+  const overflow = projection?.capacity?.overflowUnits;
+  if (knownAmount(overflow) && overflow > 0) return "overflow";
+  return getKqHarvestStep(status, projection);
+}
+
+export function isKqHarvestAtJury(row: KqHarvestRow) {
+  const step = getKqHarvestStep(row.lot?.flowerStatus ?? row.flower?.status ?? "unknown", row.lot?.projection ?? row.flower?.storage);
+  return step === "jury" || step === "queued" || step === "duel";
+}
+
+type HarvestAction = { destination: "storage"; label: string }
+  | { destination: "arena"; label: string }
+  | { destination: "market"; label: string; section: KqHarvestMarketSection };
+
+export function getKqHarvestActions(row: KqHarvestRow): HarvestAction[] {
+  const status = row.lot?.flowerStatus ?? row.flower?.status ?? "unknown";
+  const step = getKqHarvestStep(status, row.lot?.projection ?? row.flower?.storage);
+  const overflow = row.state === "overflow";
+  const actions: HarvestAction[] = [];
+  if (overflow) actions.push({ destination: "storage", label: "Protéger le surplus" });
+  if (step === "jury" || step === "queued" || step === "duel") {
+    actions.push({ destination: "arena", label: step === "jury" ? "Présenter au jury" : "Suivre le duel" });
+  } else if (step === "empty") {
+    actions.push({ destination: "market", section: "dashboard", label: "Voir mon stock en vente" });
+  } else if (status === "burned" && (step === "ready" || step === "curing")) {
+    actions.push({ destination: "market", section: "sales", label: step === "ready" && !overflow ? "Préparer la vente" : "Voir l’offre grossiste" });
+  }
+  if (!overflow && step !== "empty" && (row.lot || !isKqHarvestAtJury(row))) {
+    actions.push({ destination: "storage", label: step === "storage" ? "Vérifier le stockage" : isKqHarvestAtJury(row) ? "Voir le stockage" : "Gérer le stockage" });
+  }
+  return actions;
+}
 
 type StorageLot = KqStorageSnapshot["lots"][number];
 export type KqStorageHarvestAdvice = { kind: "curing"; lot: StorageLot; readyAt: string }
@@ -54,12 +107,12 @@ export function getKqStorageHarvestOverview(storage: KqStorageSnapshot | null): 
 export function getKqHarvestRows(flowers: readonly KqOfficialFlower[], storage: KqStorageSnapshot | null): KqHarvestRow[] {
   const rows = new Map<string, KqHarvestRow>();
   for (const lot of storage?.lots ?? []) {
-    const state = (lot.projection.capacity?.overflowUnits ?? 0) > 0 ? "overflow" : lot.projection.stage === "ready" ? "ready" : "curing";
+    const state = harvestState(lot.flowerStatus, lot.projection);
     rows.set(lot.flowerId, { id: lot.flowerId, name: lot.varietyName, state, lot });
   }
   for (const flower of flowers) {
     if (flower.status === "burned" || rows.has(flower.id)) continue;
-    rows.set(flower.id, { id: flower.id, name: flower.varietyName, state: flower.status === "available" ? "jury" : flower.status === "queued" ? "queued" : "duel", flower });
+    rows.set(flower.id, { id: flower.id, name: flower.varietyName, state: harvestState(flower.status, flower.storage), flower });
   }
   return [...rows.values()].sort((a, b) => order[a.state] - order[b.state]);
 }

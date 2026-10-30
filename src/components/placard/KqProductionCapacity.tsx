@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ArrowRight, Building2, Check, ChevronDown, LoaderCircle, Plus } from "lucide-react";
 import { useRef, useState } from "react";
+import { createClientRequestKey } from "@/lib/client-request-key";
 import { formatKqCash, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { getKqProductionExpansion } from "@/lib/kanab-quest-production";
 import { getChanvrierCareerGate, getChanvrierExpansionRequiredLevel, type ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
@@ -42,7 +43,7 @@ export function KqProductionCapacity({ production, cashCents, career, storageCap
     inFlight.current = true;
     setPending(true); onPendingChange(true); setError(""); setNotice("");
     if (request.current?.units !== production.units || request.current.cost !== production.totalCostCents) {
-      request.current = { units: production.units, cost: production.totalCostCents, key: crypto.randomUUID() };
+      request.current = { units: production.units, cost: production.totalCostCents, key: createClientRequestKey() };
     }
     try {
       const response = await api.request("/api/arena/placard/equipment", {

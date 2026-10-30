@@ -10,7 +10,7 @@
 
 .heading { display: flex; align-items: flex-start; gap: 16px; }
 .heading > div { flex: 1; min-width: 0; }
-.heading small, .catalogHeading > div > small {
+.catalogHeading > div > small {
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .12em;
@@ -288,3 +288,5 @@
   .section button { transition: none; }
   .catalogChevron { transition: none; }
 }
+.capacityDetailsPanel > summary { min-height: 44px; padding: 12px 0; font-size: .875rem; font-weight: 700; cursor: pointer; }
+.capacityDetailsPanel > summary:focus-visible { outline: 3px solid #087e70; outline-offset: 3px; }

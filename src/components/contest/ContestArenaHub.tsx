@@ -23,9 +23,9 @@ export function ContestArenaHub({ activitiesLocked = false, notebookOpen = true,
   const [profileAvailability, setProfileAvailability] = useState<ArenaProfileAvailability>("loading");
 
   return (
-    <main data-world="arena" data-lobby-mode={initialMode} className={`${retro.surface} ${styles.home}`}>
+    <main data-world="arena" data-lobby-mode={initialMode} className={`${retro.gameSurface} ${styles.home}`}>
       <header className={styles.topBar}>
-        <div className={styles.brand}><span>Kanab Quest · Le bureau du village</span><h1>L’Arène<span>.</span></h1><p>Déguste, cultive et fais grandir ton entreprise.</p></div>
+        <div className={styles.brand}><h1>L’Arène<span>.</span></h1></div>
         <div className={styles.tools}>
           {activitiesLocked ? <ArenaPrelaunchCharacter launcherRef={profileLauncher} onProfileAvailabilityChange={setProfileAvailability} /> : <ArenaJourneyEntry launcherRef={profileLauncher} onProfileAvailabilityChange={setProfileAvailability} />}
         </div>
@@ -33,7 +33,6 @@ export function ContestArenaHub({ activitiesLocked = false, notebookOpen = true,
 
       <section className={styles.activities} aria-label="Activités de l’Arène">
         {activitiesLocked && <div className={styles.intro}>
-          <span className={styles.eyebrow}>Ouverture du jeu</span>
           <h2>{ARENA_OPENING_MESSAGE}</h2>
           {notebookOpen && <p>Le Carnet est ouvert : tu peux déjà noter les fleurs que tu as achetées.</p>}
         </div>}

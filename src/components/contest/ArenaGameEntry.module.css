@@ -2,3 +2,27 @@
 .loading img { object-fit: cover; object-position: center 42%; }
 .loading span { position: relative; margin: 24px; padding: 12px 20px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; font-family: var(--font-body), sans-serif; font-weight: 700; box-shadow: var(--game-panel-shadow, none); }
 @media (max-width: 700px) { .loading img { object-position: 40% center; } }
+
+.entry { composes: gameSurface from './ArenaRetro.module.css'; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); min-height: 100dvh; background: #fff1d6; color: #172923; font-family: var(--font-body), sans-serif; }
+.entry * { box-sizing: border-box; }
+.content { align-self: center; min-width: 0; width: 100%; max-width: 850px; margin-inline: auto; padding: clamp(20px, 4vw, 64px); }
+.heading h1 { margin: 0 0 12px; font: 900 clamp(2rem, 4vw, 3.5rem)/1.05 var(--font-display, Impact), sans-serif; }
+.heading p { margin: 0 0 24px; max-width: 52ch; line-height: 1.6; }
+.quick { --game-panel-art: var(--game-panel-gold, url('/placard/ui/panel-gold-v1.webp')); display: flex; gap: 14px; padding: 24px; border: 2px solid transparent; background: transparent; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.quick > svg { flex-shrink: 0; margin-top: 3px; color: #087e74; }
+.quick > div { min-width: 0; }
+.entry h2 { margin: 0; font: 900 1.65rem/1.15 var(--font-display, Impact), sans-serif; }
+.entry section p { margin: 8px 0 0; font-size: .88rem; line-height: 1.55; }
+.entry button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; max-width: 100%; padding: 11px 16px; border: 2px solid transparent; border-radius: 0; background: transparent; color: inherit; box-shadow: none; border-image: var(--game-control-art, var(--game-control-paper, url('/placard/ui/control-paper-v2.webp'))) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; font: 750 .88rem/1.4 var(--font-body), sans-serif; text-align: center; cursor: pointer; }
+.entry button svg { flex-shrink: 0; }
+.entry button:focus-visible { outline: 3px solid #087e74; outline-offset: 3px; }
+.entry .primary { --game-control-art: var(--game-control-teal, url('/placard/ui/control-teal-v2.webp')); margin-top: 18px; color: #fff1d6; }
+.alternatives { margin-top: 14px; }
+.alternative { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; padding-block: 20px; border-bottom: 1px solid #17292333; }
+.alternative > div { flex: 1 1 230px; }
+.warning { margin: 18px 0 0; font-size: .85rem; line-height: 1.6; }
+.scene { position: relative; min-width: 0; overflow: hidden; }
+.scene img { object-fit: cover; object-position: 42% center; }
+@media (hover: hover) and (pointer: fine) { .entry button:hover { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); color: #172923; } }
+@media (max-width: 850px) { .entry { grid-template-columns: minmax(0, 1fr); } .scene { display: none; } .content { max-width: 680px; padding: 28px 20px; } }
+@media (max-width: 480px) { .content { padding: 24px 14px; } .heading p { margin-bottom: 18px; font-size: .9rem; } .quick { gap: 10px; padding: 18px 14px; } .quick > svg { display: none; } .entry h2 { font-size: 1.55rem; } .entry button { width: 100%; } .alternative { padding-block: 16px; gap: 12px; } .alternatives { margin-top: 2px; } }

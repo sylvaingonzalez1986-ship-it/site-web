@@ -1,6 +1,6 @@
 /* A tasting register in the Quartier: quiet sheets, ink rules, cut-paper controls. */
 .panelRoot {
-  composes: surface from "./ArenaRetro.module.css";
+  composes: gameSurface from "./ArenaRetro.module.css";
   --notebook-cream: #fff1d6;
   --notebook-paper: #fff8e7;
   --notebook-green: #087b70;
@@ -14,7 +14,7 @@
   font-variant-numeric: tabular-nums;
 }
 .inlinePanelRoot { height: 100%; min-height: 0; }
-.eyebrow, .cardEyebrow, .summaryEyebrow {
+.eyebrow, .summaryEyebrow {
   margin: 0;
   color: var(--notebook-green);
   font: 800 10px/1.5 ui-monospace, Consolas, monospace;
@@ -225,7 +225,6 @@
 .bookScoreSummary { padding: 20px 16px; }
 .bookScoreHeading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--notebook-ink); }
 .bookScoreHeading > div:first-child { min-width: 0; }
-.bookScoreHeading p { margin: 0 0 7px; color: var(--notebook-green); font: 800 9px/1.5 ui-monospace, Consolas, monospace; letter-spacing: .08em; text-transform: uppercase; }
 .bookScoreHeading h3 { margin: 0; color: var(--notebook-ink); font: 900 36px/.98 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .bookScoreHeading .compactMascot { display: block; width: 56px; flex-basis: 56px; }
 .bookReviewStatus { margin: 14px 0; color: var(--notebook-muted); font: 700 10px/1.6 ui-monospace, Consolas, monospace; }

@@ -12,7 +12,7 @@ export function KqCulturePreparation({ cardCount, note, disabled, disabledReason
   return <section className={styles.preparation} aria-labelledby="culture-preparation-title" data-culture-preparation>
     <div className={styles.intro}>
       <div className={styles.deckStamp} aria-hidden="true"><Layers3 /><b>{cardCount}</b><span>CARTE{cardCount > 1 ? "S" : ""}</span></div>
-      <div className={styles.heading}><span>DERNIERS PRÉPARATIFS</span><h2 id="culture-preparation-title">À toi de jouer.</h2>{cardCount === 0 ? <p>Sans carte Botte du Chanvrier · départ possible avec les dés.</p> : null}</div>
+      <div className={styles.heading}><h2 id="culture-preparation-title">À toi de jouer.</h2>{cardCount === 0 ? <p>Sans carte Botte du Chanvrier · départ possible avec les dés.</p> : null}</div>
       <button type="button" className={styles.edit} disabled={busy} onClick={onEditDeck}><SlidersHorizontal size={16} />Ajuster mon deck</button>
     </div>
     <ol className={styles.steps} aria-label="Le déroulement d’un tour">

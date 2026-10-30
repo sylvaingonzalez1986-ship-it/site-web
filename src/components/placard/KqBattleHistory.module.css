@@ -3,7 +3,6 @@
 .heading > div { min-width: 0; }
 .headingIcon { display: grid; flex: 0 0 auto; width: 54px; height: 54px; place-items: center; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; box-shadow: var(--game-panel-shadow, none); }
 .headingIcon svg { width: 29px; height: 29px; }
-.eyebrow { font-size: 10px; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
 .history .heading h2 { margin: 3px 0 6px; font: 900 clamp(28px, 4vw, 38px)/1.05 var(--font-display), "Arial Narrow", Impact, sans-serif; text-transform: uppercase; }
 .heading p { margin: 0; font-size: 12px; line-height: 1.5; }
 .overview { display: grid; gap: 12px; padding: 18px 20px 14px; }
@@ -103,3 +102,21 @@
 @media (prefers-reduced-motion: reduce) {
   .expandIcon { transition: none; }
 }
+
+.history .heading { background: transparent; border-bottom: 1px solid #17292330; }
+.history .receipt { background: transparent; border: 0; border-bottom: 1px solid #17292330; border-image: none; box-shadow: none; }
+.history .receipt:focus-visible,.pendingBattle:focus-visible { outline: 3px solid #087e70; outline-offset: -3px; }
+.history [data-battle-id] { scroll-margin-top: 6rem; }
+.history .metadata,.history .matchup > small,.history .matchup > span,.history .pendingBattle p,.history .burnNotice,.history .cancelledNotice { font-size: 12px; line-height: 1.5; }
+.history .matchup > strong { font-size: 14px; }
+.history .pendingList { background: transparent; border: 0; border-bottom: 1px solid #17292330; }
+.history .overview { display: block; }
+.overview > summary { min-height: 44px; padding: 10px 0; cursor: pointer; font-size: 13px; font-weight: 700; }
+.overview > summary:focus-visible { outline: 3px solid #087e70; outline-offset: 3px; }
+.overview > figure { margin-block: 12px; }
+.overview > p { font-size: 12px; }
+.lotContinuation { margin-bottom: 14px; }
+.lotContinuation p { margin: 0 0 10px; font-size: 14px; line-height: 1.6; }
+.history .lotContinuation button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; max-width: 100%; min-height: 44px; padding: 9px 14px; color: #172923; font: 700 13px/1.5 var(--font-body),sans-serif; cursor: pointer; --game-control-art:var(--game-control-gold,url("/placard/ui/control-gold-v2.webp")); border:2px solid transparent; background:transparent; box-shadow:none; border-image:var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; }
+.lotContinuation button:hover { --game-control-art:var(--game-control-apricot,url("/placard/ui/control-apricot-v2.webp")); }
+.lotContinuation button svg { flex-shrink: 0; }

@@ -5,7 +5,6 @@
 .workshop button:disabled { cursor:not-allowed; opacity:.55; }
 .heading { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:20px 24px; --game-panel-art:var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); border:2px solid transparent; border-radius:0; background:transparent; box-shadow:none; border-image:var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .heading > div { min-width:0; }
-.eyebrow { display:flex; align-items:center; gap:7px; font-size:.65rem; font-weight:800; text-transform:uppercase; letter-spacing:.09em; }
 .workshop .heading h2 { font:900 clamp(1.8rem,3vw,2.5rem)/1 var(--font-display),Impact,sans-serif; margin:9px 0 6px; }
 .workshop .heading p { margin:0; font-size:.78rem; }
 .stamp { flex-shrink:0; padding:13px; border:2px dashed #172923; border-radius:50%; text-align:center; font-size:.65rem; line-height:1.6; transform:rotate(6deg); }

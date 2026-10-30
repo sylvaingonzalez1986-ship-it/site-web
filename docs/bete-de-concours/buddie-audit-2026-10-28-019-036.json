@@ -1,0 +1,1250 @@
+{
+  "reviewedAt": "2026-10-28",
+  "scope": {
+    "codes": "HH2026-019 à HH2026-036",
+    "files": [
+      "src/data/buddie-varieties/001-026.json",
+      "src/data/buddie-varieties/027-052.json",
+      "src/lib/kanab-quest-buddie-flavors.ts",
+      "docs/bete-de-concours/BUDDIES-PARFUMS-PROPOSITION-2026-10-12.csv"
+    ],
+    "method": "Navigation réelle ; distinction page ouverte, extrait moteur et échec d’accès. Les déclarations des sélectionneurs et vendeurs sont attribuées, sans les présenter comme preuves indépendantes. Aucun effet médical, conseil de culture ou chiffre de jeu ajouté.",
+    "status": "complet — 18 fiches contrôlées ; 3 sources de produits accessibles uniquement dans l’index moteur",
+    "recommendationPolicy": "Les paires recommended évaluent la documentation ; les paires current restent des valeurs de simulation, sans modification économique."
+  },
+  "entries": [
+    {
+      "code": "HH2026-019",
+      "name": "Special Sauce",
+      "verdict": "correction de provenance",
+      "findings": [
+        "Lignée et pistils roses présents dans le texte du sélectionneur repris par Sunset Lake.",
+        "Le CSV confond Chemberry et Bubblegum. Sonoma rattache explicitement Special Sauce à Bubblegum ; Chemberry est une autre rubrique.",
+        "Baies/floral décrit cette sélection commerciale, pas une signature mesurée universelle."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://sunsetlakecbd.com/product/special-sauce-hemp-flower/",
+          "label": "Sunset Lake CBD — Special Sauce",
+          "sourceType": "producteur et citation du sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Parenté Special Sauce × Early Resin Berry ; attribution Oregon CBD ; baies et pistils roses.",
+          "limitations": "Généalogie déclarée, sans vérification génétique indépendante."
+        },
+        {
+          "url": "https://sonomahillsfarm.com/terpenes/",
+          "label": "Sonoma Hills Farm — Terpenes",
+          "sourceType": "producteur",
+          "access": "page ouverte",
+          "evidence": "Rubrique Bubblegum (Special Sauce, CBD) : baies et crème florale.",
+          "limitations": "Description aromatique commerciale ; page consacrée à une gamme de terpènes."
+        },
+        {
+          "url": "https://www.globenewswire.com/news-release/2019/09/24/1920029/0/en/Exactus-Inc-Hemp-Farm-on-Track-to-Produce-Approximately-30-000-Pounds-of-Top-Flower.html",
+          "label": "Exactus — communiqué du 24 septembre 2019",
+          "sourceType": "communiqué commercial",
+          "access": "page ouverte",
+          "evidence": "Description de Special Sauce mentionnant baies et pistils roses.",
+          "limitations": "Diffusion GlobeNewswire ne constitue pas une validation indépendante ; pas de floral."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-019",
+        "identity": "documented",
+        "summary": "Special Sauce est une lignée d’Oregon CBD, décrite avec des nuances de baies dans le texte du sélectionneur repris par Sunset Lake.",
+        "history": "Sunset Lake publie la parenté Special Sauce × Early Resin Berry. Sonoma Hills Farm présente une sélection sous le nom Bubblegum, distincte de sa rubrique Chemberry.",
+        "origin": "Oregon CBD, selon Sunset Lake CBD.",
+        "lineage": "Special Sauce × Early Resin Berry, parenté déclarée par Sunset Lake.",
+        "characteristics": [
+          "Baies et pistils roses dans le texte attribué au sélectionneur.",
+          "Baies et crème florale pour la sélection Bubblegum de Sonoma Hills Farm."
+        ],
+        "caveat": "Les descriptions concernent des sélections précises ; Bubblegum ne démontre aucune parenté avec les autres variétés portant ce nom.",
+        "sources": [
+          {
+            "label": "Sunset Lake CBD — Special Sauce et description d’Oregon CBD",
+            "url": "https://sunsetlakecbd.com/product/special-sauce-hemp-flower/"
+          },
+          {
+            "label": "Sonoma Hills Farm — sélection Bubblegum, Special Sauce CBD",
+            "url": "https://sonomahillsfarm.com/terpenes/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Baies et floral : notes décrites par Sonoma Hills Farm pour sa sélection Bubblegum de Special Sauce."
+      },
+      "flavorReview": {
+        "current": [
+          "baies",
+          "floral"
+        ],
+        "recommended": [
+          "baies",
+          "floral"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Corriger Chemberry en Bubblegum dans la portée CSV. Deux notes documentées sur la sélection Sonoma ; aucune preuve sensorielle indépendante.",
+        "sources": [
+          "https://sonomahillsfarm.com/terpenes/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-020",
+      "name": "Strawberry CBD",
+      "verdict": "confirmé dans une portée commerciale",
+      "findings": [
+        "Page anglaise Maionais inaccessible ; remplacement espagnol ouvert et concordant.",
+        "Mandala indique CBD+ Buds et ne teste que graines/germination, pas les caractéristiques de plantes matures.",
+        "Filiation commune non démontrée. Aucun terpène ou effet médical déduit des descriptions."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://maionais.com/en/cbd-flowers/strawberry-cbd-buds/",
+          "label": "Maionais — Strawberry CBD, anglais",
+          "sourceType": "vendeur",
+          "access": "ouverture en échec ; extrait moteur seulement",
+          "evidence": "L’index retrouve fraise et épices.",
+          "limitations": "Non considérée comme page ouverte."
+        },
+        {
+          "url": "https://maionais.com/cogollos-cbd/strawberry-cbd/",
+          "label": "Maionais — Strawberry CBD, espagnol",
+          "sourceType": "vendeur",
+          "access": "page ouverte",
+          "evidence": "Fraise, fond légèrement épicé, fleurs compactes et allongées.",
+          "limitations": "Auto-description commerciale ; pas de pedigree ou analyse sensorielle indépendante."
+        },
+        {
+          "url": "https://shop.mandalaseeds.com/collections/all-1/products/strawberry-cbd",
+          "label": "Mandala Seeds — Strawberry CBD",
+          "sourceType": "revendeur de CBD+ Buds",
+          "access": "page ouverte",
+          "evidence": "Graines de CBD+ Buds ; parfum doux, fruité et fraise.",
+          "limitations": "Pas de parents nommés ; germination testée, plantes matures non testées par Mandala."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-020",
+        "identity": "commercial-name",
+        "summary": "Strawberry CBD est une appellation commerciale utilisée pour plusieurs sélections au registre de fraise.",
+        "history": "Mandala Seeds distribue une sélection de CBD+ Buds. Maionais présente une fleur homonyme avec une note de fraise et un fond légèrement épicé. Ces catalogues ne démontrent pas une origine commune.",
+        "origin": "Plusieurs fournisseurs ; origine botanique unique non établie.",
+        "lineage": "Parents non publiés dans les fiches retenues.",
+        "characteristics": [
+          "Fraise et nuances épicées décrites par Maionais.",
+          "Fleurs compactes et allongées selon ce vendeur."
+        ],
+        "caveat": "Le nom ne prouve pas une filiation avec Strawberry Cough. Les arômes restent des descriptions commerciales de produits précis.",
+        "sources": [
+          {
+            "label": "Maionais — Strawberry CBD",
+            "url": "https://maionais.com/cogollos-cbd/strawberry-cbd/"
+          },
+          {
+            "label": "Mandala Seeds — sélection CBD+ Buds",
+            "url": "https://shop.mandalaseeds.com/collections/all-1/products/strawberry-cbd"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Fraise et épices : description du produit Maionais, sans garantie pour toutes les Strawberry CBD."
+      },
+      "flavorReview": {
+        "current": [
+          "fraise",
+          "epices"
+        ],
+        "recommended": [
+          "fraise",
+          "epices"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Paire confirmée dans la version espagnole Maionais. Mandala étaye la fraise seule ; remplacer l’URL principale inaccessible.",
+        "sources": [
+          "https://maionais.com/cogollos-cbd/strawberry-cbd/",
+          "https://shop.mandalaseeds.com/collections/all-1/products/strawberry-cbd"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-021",
+      "name": "Amnesia Haze CBD",
+      "verdict": "confirmé avec réserve sur le nom commercial",
+      "findings": [
+        "Soma confirme le récit historique et les prix annoncés, sans validation indépendante des récompenses.",
+        "CBDMania affiche Kompolti dans sa fiche technique tout en évoquant l’Amnesia historique dans son marketing ; cette contradiction interdit d’en déduire une descendance.",
+        "Citron et encens explicitement présents dans son texte aromatique."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.somaseeds.nl/product/amnesia-haze",
+          "label": "Soma Seeds — Amnesia Haze",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte après redirection",
+          "evidence": "Origines sud-est asiatiques, jamaïcaines et afghano-hawaïennes ; prix 2004 et 2012 annoncés.",
+          "limitations": "Récit du créateur ; ne concerne pas la fleur CBDMania."
+        },
+        {
+          "url": "https://www.cbdmania.eu/shop/weed/amnesia-haze-cbd",
+          "label": "CBDMania — Amnesia Haze CBD",
+          "sourceType": "vendeur",
+          "access": "page ouverte",
+          "evidence": "Tableau : Kompolti ; texte aromatique : citron, encens, pin et nuances boisées.",
+          "limitations": "Contradiction interne entre rhétorique de filiation historique et tableau. Pas de preuve génétique."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-021",
+        "identity": "commercial-name",
+        "summary": "Amnesia Haze CBD reprend un nom historique, mais la fleur CBDMania est commercialisée avec la mention Kompolti.",
+        "history": "Soma décrit son Amnesia Haze comme un assemblage de lignées sud-est asiatiques, jamaïcaines et afghano-hawaïennes, récompensé en 2004. CBDMania emploie ce nom pour une fleur dont la fiche technique indique Kompolti.",
+        "origin": "Soma Seeds pour la référence historique ; sélection CBD non identifiée génétiquement.",
+        "lineage": "Kompolti selon le tableau de CBDMania ; filiation avec Amnesia Haze non démontrée.",
+        "characteristics": [
+          "Citron et encens dans la description CBDMania.",
+          "Fond épicé et boisé annoncé par ce vendeur."
+        ],
+        "caveat": "Un nom commercial et une déclaration de vendeur ne constituent pas une authentification génétique.",
+        "sources": [
+          {
+            "label": "Soma Seeds — Amnesia Haze historique",
+            "url": "https://www.somaseeds.nl/product/amnesia-haze"
+          },
+          {
+            "label": "CBDMania — produit et génétique déclarée",
+            "url": "https://www.cbdmania.eu/shop/weed/amnesia-haze-cbd"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Citron et encens : notes commerciales de la fleur CBDMania ; leur présence varie selon le produit."
+      },
+      "flavorReview": {
+        "current": [
+          "citron",
+          "encens"
+        ],
+        "recommended": [
+          "citron",
+          "encens"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Deux notes explicites du texte CBDMania, sans validation sensorielle indépendante ni généralisation.",
+        "sources": [
+          "https://www.cbdmania.eu/shop/weed/amnesia-haze-cbd"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-022",
+      "name": "White Widow CBD",
+      "verdict": "confirmé avec réserve sur le vendeur",
+      "findings": [
+        "Green House publie Brésil × Inde du Sud et la victoire de 1995.",
+        "321CBD décrit bois et poivre blanc mais son tableau aromatique donne aussi fruits exotiques/menthe/sucré : description interne hétérogène.",
+        "Aucune preuve de parenté du produit CBD avec White Widow historique."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://shop.greenhouseseeds.nl/award-winning-seeds/high-times-cannabis-cup/white-widow/",
+          "label": "Green House — White Widow",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Brésil × Inde du Sud ; prix 1995 ; fleurs denses et trichomes.",
+          "limitations": "Déclarations du sélectionneur pour sa propre variété."
+        },
+        {
+          "url": "https://www.321cbd.com/en/cbd-flowers/866-white-widow-cbd-flower-321cbd.html",
+          "label": "321CBD — White Widow CBD",
+          "sourceType": "vendeur",
+          "access": "page ouverte",
+          "evidence": "Texte : bois, résine, poivre blanc ; fleurs compactes, trichomes.",
+          "limitations": "Tableau aromatique différent du texte ; allégations médicales et explications causales non retenues."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-022",
+        "identity": "commercial-name",
+        "summary": "White Widow CBD est une appellation commerciale qui reprend le nom d’une variété néerlandaise.",
+        "history": "Green House décrit sa White Widow historique comme Brésil × Inde du Sud et annonce une victoire en 1995. 321CBD utilise ce nom pour une fleur CBD au bouquet présenté comme boisé et poivré, sans établir sa parenté.",
+        "origin": "Pays-Bas pour la référence Green House ; Italie annoncée par 321CBD pour sa fleur.",
+        "lineage": "Brésil × Inde du Sud pour la White Widow de Green House ; parents de la fleur CBD non établis.",
+        "characteristics": [
+          "Bois, résine et poivre blanc dans le texte de 321CBD.",
+          "Fleurs compactes et couvertes de trichomes selon ce vendeur."
+        ],
+        "caveat": "La fiche du vendeur présente des descriptions aromatiques différentes selon ses rubriques. Le nom ne prouve aucune filiation génétique.",
+        "sources": [
+          {
+            "label": "Green House Seed Company — White Widow historique",
+            "url": "https://shop.greenhouseseeds.nl/award-winning-seeds/high-times-cannabis-cup/white-widow/"
+          },
+          {
+            "label": "321CBD — sa fleur White Widow CBD",
+            "url": "https://www.321cbd.com/en/cbd-flowers/866-white-widow-cbd-flower-321cbd.html"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Bois et poivre : notes du texte de 321CBD ; son tableau aromatique n’est pas entièrement concordant."
+      },
+      "flavorReview": {
+        "current": [
+          "bois",
+          "poivre"
+        ],
+        "recommended": [
+          "bois",
+          "poivre"
+        ],
+        "confidence": "description commerciale avec incohérence interne",
+        "notes": "Paire présente dans le texte vendeur, mais tableau aromatique divergent. À conserver comme choix de jeu attribué, pas propriété botanique certaine.",
+        "sources": [
+          "https://www.321cbd.com/en/cbd-flowers/866-white-widow-cbd-flower-321cbd.html"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-023",
+      "name": "Skywalker OG CBD",
+      "verdict": "contrôle partiel ; source aromatique non ouverte",
+      "findings": [
+        "Dutch Passion confirme Mazar femelle × Blueberry mâle pour Skywalker, référence distincte de Skywalker OG CBD.",
+        "Le texte GreenLeafCBD est retrouvé dans l’index moteur mais ses pages ne s’ouvrent pas. Aucun contrôle direct revendiqué.",
+        "Retirer toute origine californienne affirmée pour le produit CBD."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://dutch-passion.com/en/cannabis-seeds/skywalker",
+          "label": "Dutch Passion — Skywalker",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Skywalker est Mazar × Blueberry ; fiche marquée arrêtée.",
+          "limitations": "Aucune preuve sur la version OG CBD."
+        },
+        {
+          "url": "https://greenleafcbd.de/blogs/cannabis-wiki/skywalker-og",
+          "label": "GreenLeafCBD — Skywalker OG",
+          "sourceType": "vendeur",
+          "access": "ouverture en échec ; texte indexé seulement",
+          "evidence": "L’index décrit une interprétation en chanvre, terre/herbes et fond boisé.",
+          "limitations": "Page directe non consultable ; récit commercial non indépendamment vérifié."
+        },
+        {
+          "url": "https://greenleafcbd.de/products/cbd-blueten-premium-skywalker-og",
+          "label": "GreenLeafCBD — produit Skywalker OG",
+          "sourceType": "vendeur",
+          "access": "ouverture en échec ; variante indexée seulement",
+          "evidence": "Produit homonyme retrouvé dans l’index.",
+          "limitations": "Ne confirme pas son pedigree ni le contenu courant de la page."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-023",
+        "identity": "commercial-name",
+        "summary": "Skywalker OG CBD est une appellation commerciale dont la filiation précise reste à confirmer.",
+        "history": "Dutch Passion documente Skywalker comme Mazar × Blueberry. Cette référence ne permet pas d’attribuer les mêmes parents à une fleur Skywalker OG CBD. GreenLeafCBD présente sa version comme une interprétation aromatique en chanvre.",
+        "origin": "Produit commercial GreenLeafCBD ; origine génétique non établie.",
+        "lineage": "Parents de la version CBD non publiés dans les éléments vérifiables.",
+        "characteristics": [
+          "Terre, herbes et bois évoqués par GreenLeafCBD, sans confirmation indépendante.",
+          "Skywalker et Skywalker OG CBD ne sont pas interchangeables."
+        ],
+        "caveat": "La filiation et le profil aromatique de cette version CBD restent insuffisamment vérifiés.",
+        "sources": [
+          {
+            "label": "Dutch Passion — Skywalker historique",
+            "url": "https://dutch-passion.com/en/cannabis-seeds/skywalker"
+          },
+          {
+            "label": "GreenLeafCBD — présentation de son interprétation Skywalker OG CBD",
+            "url": "https://greenleafcbd.de/blogs/cannabis-wiki/skywalker-og"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Terre et bois : notes de jeu attribuées à GreenLeafCBD, encore insuffisamment vérifiées."
+      },
+      "flavorReview": {
+        "current": [
+          "terre",
+          "bois"
+        ],
+        "recommended": null,
+        "confidence": "provisoire ; index moteur seulement",
+        "notes": "Deux notes retrouvées dans l’index GreenLeafCBD, mais aucune page directe consultable. Dutch Passion ne valide pas les arômes de ce produit CBD.",
+        "sources": [
+          "https://greenleafcbd.de/blogs/cannabis-wiki/skywalker-og"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-024",
+      "name": "Bubba Kush CBD",
+      "verdict": "description du sélectionneur confirmée",
+      "findings": [
+        "Dinafem confirme parents, structure et arômes. Attribution commerciale nécessaire ; ni effets thérapeutiques ni universalité ajoutés."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.dinafem.org/en/blog/bubba-kush-cbd-legendary-indica-suitable-all-users/",
+          "label": "Dinafem — Bubba Kush CBD",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Pre’98 Bubba Kush × mère Pure CBD ; café, terre ; port trapu et fleurs compactes.",
+          "limitations": "Description du créateur, sans confirmation indépendante du pedigree ou des arômes."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-024",
+        "identity": "commercial-name",
+        "summary": "Dinafem décrit sa Bubba Kush CBD comme une adaptation CBD de Pre’98 Bubba Kush.",
+        "history": "Le sélectionneur annonce un croisement de Pre’98 Bubba Kush avec sa lignée mère Pure CBD pour conserver certains caractères aromatiques et morphologiques.",
+        "origin": "Programme de sélection Dinafem.",
+        "lineage": "Pre’98 Bubba Kush × mère Pure CBD, selon Dinafem.",
+        "characteristics": [
+          "Café et terre dans le bouquet annoncé.",
+          "Port trapu, grandes feuilles et fleurs compactes selon le sélectionneur."
+        ],
+        "caveat": "Cette description concerne la version Dinafem ; le nom seul ne garantit ni ce croisement ni ces arômes.",
+        "sources": [
+          {
+            "label": "Dinafem — création et caractéristiques de Bubba Kush CBD",
+            "url": "https://www.dinafem.org/en/blog/bubba-kush-cbd-legendary-indica-suitable-all-users/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Café et terre : notes publiées par Dinafem pour sa sélection."
+      },
+      "flavorReview": {
+        "current": [
+          "cafe",
+          "terre"
+        ],
+        "recommended": [
+          "cafe",
+          "terre"
+        ],
+        "confidence": "description du sélectionneur vérifiée",
+        "notes": "Paire explicite chez Dinafem ; aucune analyse sensorielle indépendante consultée.",
+        "sources": [
+          "https://www.dinafem.org/en/blog/bubba-kush-cbd-legendary-indica-suitable-all-users/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-025",
+      "name": "OG Kush CBD",
+      "verdict": "confirmé comme compte rendu particulier",
+      "findings": [
+        "Le croisement figure dans un compte rendu signé Green Born Identity, publié par Dinafem. Ne pas transformer deux plantes observées en propriété universelle."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.dinafem.org/en/blog/og-kush-cbd-grow-report-green-medicine/",
+          "label": "Dinafem — OG Kush CBD, compte rendu Green Born Identity",
+          "sourceType": "compte rendu publié par le sélectionneur",
+          "access": "page ouverte",
+          "evidence": "OG Kush × Dancehall ; deux plantes à dominante pétrolée, avec citron ou pin.",
+          "limitations": "Observation limitée ; diesel est une normalisation éditoriale de carburant/pétrole."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-025",
+        "identity": "commercial-name",
+        "summary": "Le compte rendu publié par Dinafem décrit une OG Kush CBD aux notes de carburant, de citron ou de pin.",
+        "history": "Green Born Identity rapporte l’observation de deux plantes et donne la parenté OG Kush × Dancehall. Leurs formes et leurs notes aromatiques secondaires diffèrent.",
+        "origin": "Sélection Dinafem décrite dans ce compte rendu.",
+        "lineage": "OG Kush × Dancehall, selon le compte rendu.",
+        "characteristics": [
+          "Fond pétrolé accompagné de citron ou de pin.",
+          "Fleurs résineuses et ports différents sur les deux plantes observées."
+        ],
+        "caveat": "Ces observations ponctuelles ne définissent pas tous les produits OG Kush CBD.",
+        "sources": [
+          {
+            "label": "Dinafem — OG Kush CBD, génétique et observations",
+            "url": "https://www.dinafem.org/en/blog/og-kush-cbd-grow-report-green-medicine/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Citron et diesel : choix de jeu tiré d’un compte rendu ; diesel résume les notes de carburant décrites."
+      },
+      "flavorReview": {
+        "current": [
+          "citron",
+          "diesel"
+        ],
+        "recommended": [
+          "citron",
+          "diesel"
+        ],
+        "confidence": "observation publiée ; normalisation éditoriale",
+        "notes": "Citron confirmé sur une plante ; diesel normalise pétrole/carburant. Pas une dégustation représentative de toute la lignée.",
+        "sources": [
+          "https://www.dinafem.org/en/blog/og-kush-cbd-grow-report-green-medicine/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-026",
+      "name": "Gelato CBD",
+      "verdict": "description commerciale confirmée ; URL remplacée",
+      "findings": [
+        "Sherbinskis confirme la famille historique, sans rapport établi avec le produit CBD.",
+        "Crème non indiquée sur CBWEED Italie, mais confirmée dans la description portugaise accessible. L’ancienne URL portugaise ne s’ouvre pas."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://sherbinskis.com/gelato",
+          "label": "Sherbinskis — famille Gelato",
+          "sourceType": "créateur",
+          "access": "page ouverte",
+          "evidence": "Parents Sunset Sherbert et Thin Mint Cookies ; plusieurs cultivars aux profils distincts.",
+          "limitations": "Aucun lien avec la fleur CBDWEED démontré."
+        },
+        {
+          "url": "https://cbweed.com/prodotto/cannabis-light-gelato-cbd-1g/",
+          "label": "CBWEED Italie — Gelato CBD",
+          "sourceType": "producteur/vendeur",
+          "access": "page ouverte",
+          "evidence": "Aroma frais, doux et fruité évoquant un sorbet.",
+          "limitations": "Pas de fruit précis ni pedigree ; les notes attribuées aux terpènes ne valent pas dégustation du produit."
+        },
+        {
+          "url": "https://loja.cbweed.pt/en/collections/flores/products/gelato-1g",
+          "label": "CBWEED Portugal — ancienne URL",
+          "sourceType": "vendeur",
+          "access": "ouverture en échec",
+          "evidence": "Aucun contenu directement vérifié sur cette URL.",
+          "limitations": "Remplacée par l’URL courte du même produit."
+        },
+        {
+          "url": "https://loja.cbweed.pt/products/gelato-1g",
+          "label": "CBWEED Portugal — Gelato 1g",
+          "sourceType": "vendeur",
+          "access": "page ouverte",
+          "evidence": "Notes douces et fruitées, fond légèrement crémeux.",
+          "limitations": "Description commerciale subjective ; génétique non publiée."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-026",
+        "identity": "commercial-name",
+        "summary": "Gelato CBD est un nom commercial utilisé par CBWEED pour un bouquet doux et fruité.",
+        "history": "La famille Gelato de Sherbinskis provient, selon son créateur, de Sunset Sherbert × Thin Mint Cookies. CBWEED décrit sa fleur CBD séparément, sans publier de lien généalogique avec cette famille.",
+        "origin": "Produit CBWEED ; parenté avec la famille historique non établie.",
+        "lineage": "Parents de Gelato CBD non publiés ; ne pas lui attribuer ceux de Gelato historique.",
+        "characteristics": [
+          "Douceur et notes fruitées dans la description CBWEED.",
+          "Fond légèrement crémeux annoncé par CBWEED Portugal."
+        ],
+        "caveat": "Ces notes concernent un produit commercial ; elles ne garantissent ni une origine Sherbinskis ni le profil de chaque Gelato CBD.",
+        "sources": [
+          {
+            "label": "Sherbinskis — famille Gelato",
+            "url": "https://sherbinskis.com/gelato"
+          },
+          {
+            "label": "CBWEED — Gelato CBD",
+            "url": "https://cbweed.com/prodotto/cannabis-light-gelato-cbd-1g/"
+          },
+          {
+            "label": "CBWEED Portugal — Gelato 1g",
+            "url": "https://loja.cbweed.pt/products/gelato-1g"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Crème et fruité : description de CBWEED Portugal, sans fruit précis ni profil universel garanti."
+      },
+      "flavorReview": {
+        "current": [
+          "creme",
+          "fruite"
+        ],
+        "recommended": [
+          "creme",
+          "fruite"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Paire étayée sur la page portugaise courte, accessible. Remplacer l’ancienne URL ; ne pas déduire crème du seul mot sorbet.",
+        "sources": [
+          "https://loja.cbweed.pt/products/gelato-1g",
+          "https://cbweed.com/prodotto/cannabis-light-gelato-cbd-1g/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-027",
+      "name": "Gorilla Glue CBD",
+      "verdict": "description commerciale confirmée ; histoire secondaire attribuée",
+      "findings": [
+        "L’histoire initiale repose sur Leafly citant un porte-parole GG Strains ; recherche de source du créateur non concluante.",
+        "321CBD décrit diesel/chocolat mais son marketing ne démontre pas la filiation GG4. Séparer les deux références."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.leafly.com/news/strains-products/rest-in-peace-joesy-whales-co-creator-of-cannabis-strain-original-glue",
+          "label": "Leafly — hommage à Joesy Whales",
+          "sourceType": "presse spécialisée avec témoignage attribué",
+          "access": "page ouverte",
+          "evidence": "Joesy Whales et Lone Watty associés à Original Glue, également appelée GG4.",
+          "limitations": "Source secondaire ; récit de création partiellement légendaire. Pas de preuve sur la fleur CBD."
+        },
+        {
+          "url": "https://www.321cbd.com/en/cbd-flowers/337-cbd-gorilla-glue-indoor-19.html",
+          "label": "321CBD — Gorilla Glue CBD",
+          "sourceType": "vendeur",
+          "access": "page ouverte",
+          "evidence": "Diesel, chocolat noir et fleurs riches en résine dans la description du produit.",
+          "limitations": "Description commerciale, sans traçabilité génétique publiée. Allégations santé non retenues."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-027",
+        "identity": "commercial-name",
+        "summary": "Gorilla Glue CBD est un nom commercial repris par 321CBD pour une fleur décrite avec des notes de diesel et de chocolat.",
+        "history": "Leafly attribue la création d’Original Glue, aussi appelée GG4, à Joesy Whales et Lone Watty. Ce récit concerne la variété historique ; il ne documente pas la parenté de la fleur CBD homonyme.",
+        "origin": "Produit 321CBD ; origine génétique non établie.",
+        "lineage": "Parents de la fleur CBD non établis ; le nom ne démontre pas une descendance de GG4.",
+        "characteristics": [
+          "Diesel et chocolat noir dans la description de 321CBD.",
+          "Fleurs denses et résineuses selon le vendeur."
+        ],
+        "caveat": "La filiation historique et les notes commerciales proviennent de sources de nature différente.",
+        "sources": [
+          {
+            "label": "Leafly — Joesy Whales et la création d’Original Glue",
+            "url": "https://www.leafly.com/news/strains-products/rest-in-peace-joesy-whales-co-creator-of-cannabis-strain-original-glue"
+          },
+          {
+            "label": "321CBD — Gorilla Glue CBD",
+            "url": "https://www.321cbd.com/en/cbd-flowers/337-cbd-gorilla-glue-indoor-19.html"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Diesel et chocolat : notes annoncées par 321CBD pour son produit, sans validation sensorielle indépendante."
+      },
+      "flavorReview": {
+        "current": [
+          "diesel",
+          "chocolat"
+        ],
+        "recommended": [
+          "diesel",
+          "chocolat"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Paire explicite chez 321CBD ; elle ne confirme pas la génétique ni le profil de tous les homonymes.",
+        "sources": [
+          "https://www.321cbd.com/en/cbd-flowers/337-cbd-gorilla-glue-indoor-19.html"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-028",
+      "name": "Blue Dream CBD",
+      "verdict": "description du sélectionneur confirmée",
+      "findings": [
+        "Parents, morphologie et baies/agrumes retrouvés dans le texte de Humboldt Seed Organization, indépendamment des avis clients."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.humboldtseeds.net/en/blue-dream-cbd/",
+          "label": "Humboldt Seed Organization — Blue Dream CBD",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Blue Dream × California Orange CBD ; baies, agrumes, poivre ; feuilles fines et fleurs résineuses.",
+          "limitations": "Récit commercial du créateur ; coloration conditionnelle, aucun profil universel mesuré."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-028",
+        "identity": "documented",
+        "summary": "Humboldt Seed Organization présente Blue Dream CBD comme Blue Dream croisée avec California Orange CBD.",
+        "history": "Cette sélection CBD est distincte de la Blue Dream historique. Le créateur décrit un bouquet de baies, d’agrumes et de poivre.",
+        "origin": "Programme de sélection Humboldt Seed Organization.",
+        "lineage": "Blue Dream × California Orange CBD, selon le sélectionneur.",
+        "characteristics": [
+          "Baies, agrumes et poivre annoncés.",
+          "Feuilles fines et fleurs résineuses ; coloration parfois bleutée ou pourpre selon le créateur."
+        ],
+        "caveat": "La fiche concerne cette sélection précise et ses descriptions commerciales.",
+        "sources": [
+          {
+            "label": "Humboldt Seed Organization — Blue Dream CBD",
+            "url": "https://www.humboldtseeds.net/en/blue-dream-cbd/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Baies et agrumes : deux notes publiées par Humboldt Seed Organization pour sa sélection."
+      },
+      "flavorReview": {
+        "current": [
+          "baies",
+          "agrumes"
+        ],
+        "recommended": [
+          "baies",
+          "agrumes"
+        ],
+        "confidence": "description du sélectionneur vérifiée",
+        "notes": "Les deux notes sont présentes dans le descriptif du créateur ; elles ne viennent pas seulement des avis clients.",
+        "sources": [
+          "https://www.humboldtseeds.net/en/blue-dream-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-029",
+      "name": "Pineapple Express CBD",
+      "verdict": "provenance corrigée vers un produit vérifiable",
+      "findings": [
+        "Mama Kana nomme désormais le produit Pineapple Express CBD : la réserve CSV disant seulement Pineapple est obsolète.",
+        "Ananas/agrumes explicitement décrits sur ce produit ; aucune relation généalogique avec Barney’s Farm démontrée.",
+        "High Standards seulement indexé ; remplacer ses détails morphologiques et son origine par la référence Mama Kana directement consultée."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.barneysfarm.com/us/pineapple-express-weed-strain-609",
+          "label": "Barney’s Farm — Pineapple Express",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Hawaiian × Trainwreck ; notes tropicales, ananas et agrumes.",
+          "limitations": "Concerne sa propre version, pas les fleurs CBD homonymes."
+        },
+        {
+          "url": "https://mamakana.co.uk/products/pineapple-cbd",
+          "label": "Mama Kana — Pineapple Express CBD",
+          "sourceType": "vendeur",
+          "access": "page ouverte",
+          "evidence": "Titre exact Pineapple Express CBD ; tableau ananas/agrumes et origine suisse annoncée.",
+          "limitations": "Description commerciale ; parents non publiés."
+        },
+        {
+          "url": "https://high-standards.de/en/products/cbd-flowers-pineapple-express",
+          "label": "High Standards — Pineapple Express CBD",
+          "sourceType": "vendeur",
+          "access": "ouverture en échec ; extrait moteur seulement",
+          "evidence": "L’index présente un nom marketing, ananas/terre et origine suisse.",
+          "limitations": "Non retenu comme page directement vérifiée ; profil différent de Mama Kana."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-029",
+        "identity": "commercial-name",
+        "summary": "Pineapple Express CBD est une appellation commerciale ; Mama Kana décrit sa fleur autour de l’ananas et des agrumes.",
+        "history": "Barney’s Farm donne Hawaiian × Trainwreck pour sa Pineapple Express. Le produit CBD homonyme de Mama Kana est présenté séparément, sans parents publiés ni lien démontré avec cette sélection.",
+        "origin": "Suisse selon Mama Kana pour sa fleur CBD ; origine génétique non établie.",
+        "lineage": "Parents du produit CBD non publiés. Hawaiian × Trainwreck concerne la sélection Barney’s Farm.",
+        "characteristics": [
+          "Ananas et agrumes annoncés par Mama Kana.",
+          "Nuances d’herbes fraîches dans la même description."
+        ],
+        "caveat": "L’histoire d’une Pineapple Express ne prouve pas la génétique de tous les produits portant ce nom.",
+        "sources": [
+          {
+            "label": "Barney’s Farm — Pineapple Express",
+            "url": "https://www.barneysfarm.com/us/pineapple-express-weed-strain-609"
+          },
+          {
+            "label": "Mama Kana — Pineapple Express CBD",
+            "url": "https://mamakana.co.uk/products/pineapple-cbd"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Ananas et agrumes : notes du produit Pineapple Express CBD de Mama Kana."
+      },
+      "flavorReview": {
+        "current": [
+          "ananas",
+          "agrumes"
+        ],
+        "recommended": [
+          "ananas",
+          "agrumes"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Mettre à jour portée CSV : le produit Mama Kana porte bien le nom Pineapple Express CBD. Les deux notes proviennent de la même fiche.",
+        "sources": [
+          "https://mamakana.co.uk/products/pineapple-cbd"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-030",
+      "name": "Lemon Haze CBD",
+      "verdict": "note pin insuffisamment étayée ; provenance à corriger",
+      "findings": [
+        "Kilogrammes redirige vers l’accueil. La recherche retrouve le pin dans un avis client Théo L., pas une attestation de producteur.",
+        "Carrément Chanvre confirme citron et épices pour sa fleur ; pas le pin.",
+        "Weedmaps distingue plusieurs versions historiques, sans lien établi avec cette fleur CBD."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://kilogrammes.com/en/product/lemon-haze/",
+          "label": "Kilogrammes — ancienne fiche Lemon Haze",
+          "sourceType": "vendeur et avis client",
+          "access": "URL redirigée vers l’accueil ; avis retrouvé dans l’index",
+          "evidence": "Un avis client indexé mentionne une touche de pin.",
+          "limitations": "La fiche produit n’a pas pu être reconsultée ; témoignage individuel, non profil certifié."
+        },
+        {
+          "url": "https://www.carrementchanvre.fr/products/lemon-haze-cbd",
+          "label": "Carrément Chanvre — Lemon Haze CBD",
+          "sourceType": "producteur",
+          "access": "page ouverte",
+          "evidence": "Fleur de leur exploitation : citron, caractère acidulé et épices.",
+          "limitations": "Parents non publiés ; aucun pin dans la description."
+        },
+        {
+          "url": "https://weedmaps.com/strains/lemon-haze",
+          "label": "Weedmaps — Lemon Haze",
+          "sourceType": "base spécialisée secondaire",
+          "access": "page ouverte",
+          "evidence": "Plusieurs origines, dont des versions Lemon Skunk × Haze.",
+          "limitations": "Ne documente pas la génétique du produit CBD ; retirée du pedigree de la fiche corrigée."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-030",
+        "identity": "commercial-name",
+        "summary": "Lemon Haze CBD est un nom commercial ; Carrément Chanvre décrit sa propre fleur avec des notes de citron et d’épices.",
+        "history": "Plusieurs sélections utilisent le nom Lemon Haze. La fiche de Carrément Chanvre décrit sa fleur CBD, mais ne publie pas ses parents.",
+        "origin": "Fleur décrite par Carrément Chanvre sur son exploitation ; origine génétique non établie.",
+        "lineage": "Parents de la sélection CBD non publiés.",
+        "characteristics": [
+          "Citron et caractère acidulé selon Carrément Chanvre.",
+          "Nuances épicées dans la même description."
+        ],
+        "caveat": "Le pin retenu dans le jeu n’est pas confirmé par la description du producteur ; sa source retrouvée est un avis individuel.",
+        "sources": [
+          {
+            "label": "Carrément Chanvre — Lemon Haze CBD",
+            "url": "https://www.carrementchanvre.fr/products/lemon-haze-cbd"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Citron documenté chez Carrément Chanvre ; pin issu d’un avis client, non confirmé pour cette sélection."
+      },
+      "flavorReview": {
+        "current": [
+          "citron",
+          "pin"
+        ],
+        "recommended": [
+          "citron",
+          "epices"
+        ],
+        "confidence": "citron confirmé commercialement ; pin très faible",
+        "notes": "Paire actuelle de simulation conservable avec réserve visible. Paire documentable sur une seule sélection : citron/épices chez Carrément Chanvre.",
+        "sources": [
+          "https://www.carrementchanvre.fr/products/lemon-haze-cbd",
+          "https://kilogrammes.com/en/product/lemon-haze/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-031",
+      "name": "Critical Mass CBD",
+      "verdict": "paire aromatique composite à signaler",
+      "findings": [
+        "Filiation historique retrouvée sur l’ancienne page officielle Mr Nice ; l’URL initiale répond 403.",
+        "Miel chez CBD Crew, floral chez Cannara phénotype 1 : deux sélections différentes, aucune preuve de leur cooccurrence.",
+        "PDF Cannara : exercice 2021, publication 7 décembre 2021 malgré chemin 2024 ; texte du tableau page 5 lu, capture indisponible."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://cbdcrew.org/varieties/cbd-critical-mass/",
+          "label": "CBD Crew — CBD Critical Mass",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Grosses fleurs et douceur de miel ; parent CBD non détaillé.",
+          "limitations": "Analyse cannabinoïde publiée, sans preuve de l’arôme floral ni du pedigree complet."
+        },
+        {
+          "url": "https://mrnice.nl/product/critical-mass-copy-3/",
+          "label": "Mr Nice — ancienne URL commerciale",
+          "sourceType": "sélectionneur",
+          "access": "ouverture en échec : 403",
+          "evidence": "Aucun contenu lu.",
+          "limitations": "Remplacée par page officielle historique."
+        },
+        {
+          "url": "https://mrnice.nl/dhtml/strains.php?id=17",
+          "label": "Mr Nice — Critical Mass, catalogue historique",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Reprise de Big Bud ; Afghani × Skunk #1.",
+          "limitations": "Concerne Critical Mass historique, pas le croisement CBD Crew complet."
+        },
+        {
+          "url": "https://www.cannara.ca/wp-content/uploads/2024/11/m21q1234.pdf",
+          "label": "Cannara — rapport annuel de gestion 2021, page 5",
+          "sourceType": "producteur, rapport d’entreprise",
+          "access": "PDF texte ouvert ; capture page en échec",
+          "evidence": "Phénotype Critical Mass CBD #1 décrit comme doux et floral.",
+          "limitations": "Description de son propre cultivar ; pas de rattachement démontré à la sélection CBD Crew."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-031",
+        "identity": "documented",
+        "summary": "CBD Crew décrit sa Critical Mass CBD par des fleurs volumineuses et une douceur aromatique de miel.",
+        "history": "Mr Nice rattache Critical Mass à une reprise de Big Bud issue d’Afghani et de Skunk #1. CBD Crew propose une version CBD, sans publier ici tous les parents de son croisement.",
+        "origin": "CBD Crew ; référence historique Critical Mass de Mr Nice.",
+        "lineage": "Base Critical Mass ; parents complets de la version CBD non détaillés.",
+        "characteristics": [
+          "Fleurs volumineuses selon CBD Crew.",
+          "Miel dans sa description aromatique."
+        ],
+        "caveat": "La note florale provient d’un autre phénotype commercialisé par Cannara ; la paire miel/floral n’est pas vérifiée sur une même sélection.",
+        "sources": [
+          {
+            "label": "CBD Crew — CBD Critical Mass",
+            "url": "https://cbdcrew.org/varieties/cbd-critical-mass/"
+          },
+          {
+            "label": "Mr Nice — Critical Mass historique",
+            "url": "https://mrnice.nl/dhtml/strains.php?id=17"
+          },
+          {
+            "label": "Cannara — rapport annuel 2021, phénotype Critical Mass CBD #1",
+            "url": "https://www.cannara.ca/wp-content/uploads/2024/11/m21q1234.pdf"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Miel chez CBD Crew, floral chez Cannara : deux descriptions distinctes réunies pour le jeu."
+      },
+      "flavorReview": {
+        "current": [
+          "miel",
+          "floral"
+        ],
+        "recommended": null,
+        "confidence": "chaque note documentée séparément ; paire non vérifiée",
+        "notes": "Miel et floral ont deux sources primaires commerciales, mais concernent deux sélections. Conserver seulement comme association de jeu explicitement composite.",
+        "sources": [
+          "https://cbdcrew.org/varieties/cbd-critical-mass/",
+          "https://www.cannara.ca/wp-content/uploads/2024/11/m21q1234.pdf"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-032",
+      "name": "Super Lemon Haze CBD",
+      "verdict": "date et valeur probante du rapport corrigées",
+      "findings": [
+        "Le PDF au nom 09_04_2025 est daté du 17 avril 2024, essais 16–17 avril 2024 ; corriger le libellé de source.",
+        "Fibranova est un nom d’échantillon fourni par le client, pas le résultat d’une identification génétique. L’analyse concerne cannabinoïdes/humidité.",
+        "Citron/bois confirmé dans le catalogue CBWEED page imprimée 16 ; ne pas mélanger avec sa référence italienne page 12, décrite citron/terre.",
+        "Rapport texte ouvert et capture demandée ; catalogue texte ouvert, capture page 16 indisponible."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://shop.greenhouseseeds.nl/feminised-cannabis-seeds/1-seed-pack/super-lemon-haze/?variation_id=26",
+          "label": "Green House — Super Lemon Haze",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Lemon Skunk × Super Silver Haze ; prix 2008 et 2009 annoncés ; citron et bois.",
+          "limitations": "Variété historique, pas preuve de filiation du produit CBWEED."
+        },
+        {
+          "url": "https://cbweed.com/wp-content/uploads/laboratory-analysis/09_04_2025_SUPER-LEMON-HAZE-CBD-EU.pdf",
+          "label": "Ambra pour CBWEED — rapport 2024-1325, 17 avril 2024",
+          "sourceType": "laboratoire sur échantillon fourni par le client",
+          "access": "PDF ouvert",
+          "evidence": "Émission 17/04/2024 ; Fibranova dans les données déclarées par le client.",
+          "limitations": "Aucune analyse génétique ; résultat limité à l’échantillon. Nom de fichier non fiable pour dater le rapport."
+        },
+        {
+          "url": "https://www.cbweed.com/wp-content/uploads/2022/03/Catalogo-CBWEED-35-LOW.pdf",
+          "label": "CBWEED — catalogue, page 16",
+          "sourceType": "producteur/vendeur",
+          "access": "PDF texte ouvert ; capture page en échec",
+          "evidence": "La référence Super Lemon Haze CBD de cette page est décrite citronnée et boisée.",
+          "limitations": "Description commerciale ; plusieurs produits homonymes dans le catalogue."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-032",
+        "identity": "commercial-name",
+        "summary": "Super Lemon Haze CBD est un nom commercial utilisé pour des références distinctes, dont une fleur citronnée et boisée chez CBWEED.",
+        "history": "Green House annonce Lemon Skunk × Super Silver Haze pour sa Super Lemon Haze historique. Un rapport Ambra du 17 avril 2024 porte, pour CBWEED, un nom d’échantillon associant Super Lemon Haze CBD à Fibranova, renseigné par le client.",
+        "origin": "Produit CBWEED ; référence historique distincte chez Green House.",
+        "lineage": "Fibranova est déclarée pour l’échantillon CBWEED, sans vérification génétique par le laboratoire.",
+        "characteristics": [
+          "Citron et bois dans le catalogue CBWEED, page 16.",
+          "Appellation partagée entre plusieurs références commerciales."
+        ],
+        "caveat": "Une analyse de cannabinoïdes n’authentifie pas une filiation. Le rapport ne concerne qu’un échantillon.",
+        "sources": [
+          {
+            "label": "Green House — Super Lemon Haze historique",
+            "url": "https://shop.greenhouseseeds.nl/feminised-cannabis-seeds/1-seed-pack/super-lemon-haze/?variation_id=26"
+          },
+          {
+            "label": "Ambra pour CBWEED — rapport du 17 avril 2024",
+            "url": "https://cbweed.com/wp-content/uploads/laboratory-analysis/09_04_2025_SUPER-LEMON-HAZE-CBD-EU.pdf"
+          },
+          {
+            "label": "CBWEED — catalogue, page 16",
+            "url": "https://www.cbweed.com/wp-content/uploads/2022/03/Catalogo-CBWEED-35-LOW.pdf"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Citron et bois : description du produit CBWEED page 16 de son catalogue, sans généralisation aux homonymes."
+      },
+      "flavorReview": {
+        "current": [
+          "citron",
+          "bois"
+        ],
+        "recommended": [
+          "citron",
+          "bois"
+        ],
+        "confidence": "description de catalogue vérifiée",
+        "notes": "Paire explicite page imprimée 16. Le rapport de cannabinoïdes ne valide ni les arômes ni la génétique ; séparer les usages des deux sources.",
+        "sources": [
+          "https://www.cbweed.com/wp-content/uploads/2022/03/Catalogo-CBWEED-35-LOW.pdf"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-033",
+      "name": "Skunk CBD",
+      "verdict": "contrôle partiel ; arômes provisoires",
+      "findings": [
+        "Sensi documente les origines de Skunk #1, pas celles de la fleur CBD générique.",
+        "Le Jardin du CBD reste inaccessible directement ; l’index mentionne floral/terre dans le texte et agrumes/fruité/terre dans le tableau.",
+        "Aucune origine génétique commune démontrée pour les Skunk CBD ; détails historiques attribués à Sensi."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://sensiseeds.com/fr/blog/quest-ce-que-lherbe-skunk-petit-guide-dintroduction-au-skunk/",
+          "label": "Sensi Seeds — famille Skunk",
+          "sourceType": "sélectionneur, récit historique",
+          "access": "page ouverte",
+          "evidence": "Afghani, Acapulco Gold et Colombian Gold ; développement américain puis diffusion européenne.",
+          "limitations": "Récit du secteur, pas authentification des produits CBD homonymes."
+        },
+        {
+          "url": "https://lejardinducbd.com/product/skunk-cbd/",
+          "label": "Le Jardin du CBD — Skunk CBD",
+          "sourceType": "vendeur",
+          "access": "ouverture en échec ; texte moteur seulement",
+          "evidence": "Texte indexé floral/terre ; tableau agrumes/fruité/terre.",
+          "limitations": "Contenu courant non directement consulté ; profil interne variable, aucune preuve indépendante."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-033",
+        "identity": "commercial-name",
+        "summary": "Skunk CBD est une appellation commerciale qui ne désigne pas un croisement CBD unique.",
+        "history": "Sensi Seeds rattache la famille Skunk #1 aux sélections américaines des années 1970 et à des ascendances afghane, mexicaine et colombienne. Cette histoire ne démontre pas les parents des fleurs vendues comme Skunk CBD.",
+        "origin": "États-Unis pour la famille Skunk #1 selon Sensi ; origine de la version CBD non établie.",
+        "lineage": "Parents de la version CBD non confirmés.",
+        "characteristics": [
+          "Le nom renvoie à une famille historique aux expressions variées.",
+          "Terre et floral attribués au produit Le Jardin du CBD, avec une documentation insuffisante."
+        ],
+        "caveat": "Le profil aromatique CBD reste provisoire ; Skunk CBD ne se confond pas avec Skunk Haze ou Skunk Dream CBD.",
+        "sources": [
+          {
+            "label": "Sensi Seeds — histoire et génétique de la famille Skunk",
+            "url": "https://sensiseeds.com/fr/blog/quest-ce-que-lherbe-skunk-petit-guide-dintroduction-au-skunk/"
+          },
+          {
+            "label": "Le Jardin du CBD — Skunk CBD",
+            "url": "https://lejardinducbd.com/product/skunk-cbd/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Terre et floral : notes de jeu attribuées à un vendeur, encore insuffisamment vérifiées."
+      },
+      "flavorReview": {
+        "current": [
+          "terre",
+          "floral"
+        ],
+        "recommended": null,
+        "confidence": "provisoire ; source directe inaccessible",
+        "notes": "Paire présente seulement dans l’index de la fiche vendeur ; tableau différent. Sensi ne prouve pas les arômes de cette fleur CBD.",
+        "sources": [
+          "https://lejardinducbd.com/product/skunk-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-034",
+      "name": "Afghan CBD",
+      "verdict": "contrôle partiel ; sélection à mieux documenter",
+      "findings": [
+        "JGL-USC retrouvé dans l’index, mais page directe et variantes d’URL inaccessibles ; ne pas qualifier ce contenu de page vérifiée.",
+        "ACE confirme HashTonic et ses propres arômes ; cela ne prouve ni les parents ni le profil du descendant Afghan CBD.",
+        "Origine France retirée faute d’élément primaire directement vérifié dans les sources examinées. THCV conservé uniquement comme nom de parent."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://jglusc.fr/produit/afghan-cbd/",
+          "label": "JGL-USC — Afghan CBD",
+          "sourceType": "sélectionneur",
+          "access": "ouverture en échec ; texte moteur seulement",
+          "evidence": "Index : Afghan THCV cut × HashTonic, notes terre/pin/hash/café, structure compacte.",
+          "limitations": "Description non directement reconsultable ; aucun certificat génétique ou résultat sensoriel vérifié."
+        },
+        {
+          "url": "https://www.aceseeds.org/en/seeds/hashtonic-regular-seeds/",
+          "label": "ACE Seeds — HashTonic Regular",
+          "sourceType": "sélectionneur du parent revendiqué",
+          "access": "page ouverte",
+          "evidence": "HashTonic Regular : CBD #1 × ErdPurt ; profil terre/pin/café et structure compacte.",
+          "limitations": "Ne confirme pas le descendant JGL-USC ; impossible d’inférer tous ses traits depuis un parent."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-034",
+        "identity": "documented",
+        "summary": "JGL-USC présente Afghan CBD comme un croisement du clone Afghan THCV cut avec HashTonic ; cette attribution reste à confirmer.",
+        "history": "La description attribuée à JGL-USC annonce une première génération issue de ces deux parents. ACE Seeds documente HashTonic séparément, ce qui ne valide pas à lui seul le croisement Afghan CBD.",
+        "origin": "Sélection attribuée à JGL-USC ; origine précise non confirmée.",
+        "lineage": "Afghan THCV cut × HashTonic, selon la description attribuée à JGL-USC, insuffisamment vérifiée.",
+        "characteristics": [
+          "Terre et café torréfié attribués à la sélection JGL-USC.",
+          "Structure compacte annoncée, sans confirmation indépendante."
+        ],
+        "caveat": "Documentation limitée pour cette sélection. THCV appartient au nom du parent et ne mesure pas la composition du Buddie.",
+        "sources": [
+          {
+            "label": "JGL-USC — Afghan CBD, description à confirmer",
+            "url": "https://jglusc.fr/produit/afghan-cbd/"
+          },
+          {
+            "label": "ACE Seeds — HashTonic, parent revendiqué",
+            "url": "https://www.aceseeds.org/en/seeds/hashtonic-regular-seeds/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Terre et café : notes de jeu attribuées à JGL-USC ; profil de cette sélection encore à confirmer."
+      },
+      "flavorReview": {
+        "current": [
+          "terre",
+          "cafe"
+        ],
+        "recommended": null,
+        "confidence": "provisoire ; index du sélectionneur seulement",
+        "notes": "Paire explicitement indexée chez JGL-USC mais page inaccessible. La description ACE du parent ne valide pas le profil du descendant.",
+        "sources": [
+          "https://jglusc.fr/produit/afghan-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-035",
+      "name": "Cheese CBD",
+      "verdict": "description du sélectionneur confirmée",
+      "findings": [
+        "Parents, morphologie et fromage/fleurs sont présents dans le descriptif Dinafem. Aucun effet thérapeutique repris."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.dinafem.org/en/cheese-cbd/",
+          "label": "Dinafem — Cheese CBD",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Cheese × Pure CBD ; fleurs allongées résineuses, feuilles fines ; fromage affiné et fleurs.",
+          "limitations": "Description du créateur, pas évaluation indépendante."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-035",
+        "identity": "documented",
+        "summary": "Dinafem décrit sa Cheese CBD avec des notes de fromage affiné, de fleurs et de Skunk.",
+        "history": "Le sélectionneur annonce le croisement de Cheese avec sa lignée Pure CBD pour conserver une partie du caractère aromatique de Cheese.",
+        "origin": "Programme de sélection Dinafem.",
+        "lineage": "Cheese × Pure CBD, selon Dinafem.",
+        "characteristics": [
+          "Fleurs allongées et résineuses, feuilles fines selon le sélectionneur.",
+          "Fromage affiné et nuances florales annoncés."
+        ],
+        "caveat": "La parenté et le bouquet concernent cette version Dinafem, sans garantie pour tous les produits homonymes.",
+        "sources": [
+          {
+            "label": "Dinafem — Cheese CBD",
+            "url": "https://www.dinafem.org/en/cheese-cbd/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Fromage et floral : notes publiées par Dinafem pour sa sélection Cheese CBD."
+      },
+      "flavorReview": {
+        "current": [
+          "fromage",
+          "floral"
+        ],
+        "recommended": [
+          "fromage",
+          "floral"
+        ],
+        "confidence": "description du sélectionneur vérifiée",
+        "notes": "Fromage affiné et fleurs explicitement présents dans la rubrique arômes ; aucune mesure sensorielle indépendante.",
+        "sources": [
+          "https://www.dinafem.org/en/cheese-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-036",
+      "name": "Mango Haze CBD",
+      "verdict": "description du sélectionneur confirmée",
+      "findings": [
+        "CBD Crew cite une sortie en 2013, l’héritage Haze, les notes aromatiques et la morphologie ; ne détaille pas le croisement complet."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://cbdcrew.org/varieties/cbd-mango-haze/",
+          "label": "CBD Crew — CBD Mango Haze",
+          "sourceType": "sélectionneur",
+          "access": "page ouverte",
+          "evidence": "Sortie 2013 ; mangue, ananas, épices, poivre ; petites fleurs et résine.",
+          "limitations": "Description commerciale ; tableau d’analyse sans résultats chiffrés, aucune validation sensorielle indépendante."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-036",
+        "identity": "documented",
+        "summary": "CBD Crew présente Mango Haze CBD avec un bouquet de mangue, d’ananas, d’épices et de poivre.",
+        "history": "Le sélectionneur indique une sortie en 2013 et un héritage Haze, sans publier tous les parents du croisement CBD.",
+        "origin": "Programme de sélection CBD Crew.",
+        "lineage": "Héritage Haze déclaré ; parents précis non détaillés.",
+        "characteristics": [
+          "Mangue et poivre parmi les notes annoncées.",
+          "Fleurs relativement petites et résineuses selon CBD Crew."
+        ],
+        "caveat": "Cette palette décrit les expressions annoncées par le sélectionneur ; chaque plante ne présente pas nécessairement toutes les notes.",
+        "sources": [
+          {
+            "label": "CBD Crew — CBD Mango Haze",
+            "url": "https://cbdcrew.org/varieties/cbd-mango-haze/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Mangue et poivre : deux notes publiées par CBD Crew parmi une palette plus large."
+      },
+      "flavorReview": {
+        "current": [
+          "mangue",
+          "poivre"
+        ],
+        "recommended": [
+          "mangue",
+          "poivre"
+        ],
+        "confidence": "description du sélectionneur vérifiée",
+        "notes": "Deux notes explicites dans le tableau aromatique du créateur ; aucune généralisation à toutes les plantes.",
+        "sources": [
+          "https://cbdcrew.org/varieties/cbd-mango-haze/"
+        ]
+      }
+    }
+  ]
+}

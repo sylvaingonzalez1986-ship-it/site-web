@@ -35,6 +35,41 @@ beforeEach(() => {
 });
 
 describe("business actions use authoritative commands", () => {
+  it.each([1, 22_000, 2_147_483_647])("sends only the confirmed total %i to one atomic invoice command", async expectedCents => {
+    const receipt = { action: "pay-all-invoices", paidCents: expectedCents, cashAfterCents: 28_000, replayed: true };
+    mocks.rpc.mockResolvedValue({ data: receipt, error: null });
+    const result = await handleKqCommerceAction(user, {
+      action: "pay-all-invoices", expectedCents, requestKey: stockId,
+      userId: stockId, amountCents: 1, cashCents: 999_999, supplierPaidCents: 0, electricityPaidCents: 0,
+      invoiceIds: [], payload: { expectedCents: 1 }, filter: "lab",
+    });
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_commerce_command", {
+      p_user_id: user, p_action: "pay-all-invoices", p_payload: { expectedCents }, p_request_key: stockId,
+    });
+    expect(result).toEqual(receipt);
+    expect(mocks.energy).not.toHaveBeenCalled();
+    expect(mocks.market).not.toHaveBeenCalled();
+    expect(mocks.insert).not.toHaveBeenCalled();
+  });
+  it.each([undefined, null, 0, -1, 1.5, "22000", NaN, Infinity, -Infinity, 2_147_483_648, Number.MAX_SAFE_INTEGER])("rejects invalid batch-payment amount %s before any database call", async expectedCents => {
+    await expect(handleKqCommerceAction(user, { action: "pay-all-invoices", expectedCents, requestKey: stockId })).rejects.toThrow(/Montant ou quantité/);
+    expect(mocks.rpc).not.toHaveBeenCalled();
+    expect(mocks.insert).not.toHaveBeenCalled();
+  });
+  it.each([undefined, null, "", "invalid-key"])("requires a valid idempotency key %s for global invoice payment", async requestKey => {
+    await expect(handleKqCommerceAction(user, { action: "pay-all-invoices", expectedCents: 22_000, requestKey })).rejects.toThrow("Identifiant invalide");
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+  it.each([
+    ["commerce_invoices_changed", "Actualise le récapitulatif avant de confirmer"],
+    ["commerce_invoices_cash", "Aucun règlement n’a été effectué"],
+    ["commerce_request_mismatch", "déjà servi pour une autre opération"],
+  ])("explains rejected global invoice payment %s without retrying", async (code, explanation) => {
+    mocks.rpc.mockResolvedValue({ data: null, error: { message: code } });
+    await expect(handleKqCommerceAction(user, { action: "pay-all-invoices", expectedCents: 22_000, requestKey: stockId })).rejects.toThrow(explanation);
+    expect(mocks.rpc).toHaveBeenCalledTimes(1);
+    expect(mocks.insert).not.toHaveBeenCalled();
+  });
   it("normalizes the shop name and never forwards a client supplied creation price", async () => {
     await handleKqCommerceAction(user, { action: "create-shop", name: "  Mes   fleurs  ", costCents: 0, requestKey: user });
     expect(mocks.rpc).toHaveBeenCalledWith("rpc_kq_commerce_command", {

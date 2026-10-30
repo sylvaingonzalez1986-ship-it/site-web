@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { BookOpen, FlaskConical, Heart, Leaf } from "lucide-react";
+import { FlaskConical, Heart, Leaf } from "lucide-react";
 import { getKqStageDisplayName, KQ_STAGES, type KqGameState } from "@/lib/kanab-quest-game";
 import { getKqPersonalCultureSummary, getKqPersonalJurySummary } from "@/lib/kanab-quest-player-feedback";
 import { getKqCultureAnalysis, type KqCultureCardAdvice } from "@/lib/kanab-quest-culture-analysis";
@@ -65,7 +65,6 @@ export function KqCultureRecap({ state }: { state: KqGameState }) {
   return <section className={`${styles.recap} ${styles.cultureRecap}`} data-culture-personal-recap data-analysis-coverage={analysis.coverage} aria-label="Bilan de ta culture">
     <header className={styles.storyHeader}>
       <div className={styles.storyOpening}>
-        <small className={styles.bookLabel}><BookOpen size={15} aria-hidden="true" />Le carnet de Sylvain</small>
         <h3>{story.title}</h3>
         <p className={styles.variety}>{state.varietyName} · {state.cultureDead ? "Culture interrompue" : "Culture terminée"}</p>
         <p className={styles.storySummary}>{story.summary}</p>

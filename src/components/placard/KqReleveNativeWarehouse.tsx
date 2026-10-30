@@ -16,6 +16,7 @@ type Props = {
 };
 
 export function KqReleveNativeWarehouse({ chapter, state, onChange, onOpenCulture }: Props) {
+  const [notice, setNotice] = useState('');
   const [store] = useState(() => {
     let current = state, change = onChange;
     return {
@@ -42,10 +43,10 @@ export function KqReleveNativeWarehouse({ chapter, state, onChange, onOpenCultur
   };
   const observe = (event: MouseEvent<HTMLDivElement>) => {
     if (!(event.target instanceof Element)) return;
-    if (event.target.closest('[data-warehouse-action="configure"], [data-warehouse-action="configure-selected"]')) mark('zone-inspected');
+    if (event.target.closest('[data-warehouse-action="configure"], [data-warehouse-action="configure-selected"], [data-warehouse-zone-action="furnish"], [data-warehouse-zone-action="dimensions"]')) mark('zone-inspected');
     if (event.target.closest('[data-warehouse-quote-details] > summary')) mark('quote-read');
     if (event.target.closest('[data-warehouse-summary-tab="costs"]')) mark('charges-read');
-    if (event.target.closest('[data-warehouse-buddie-card]')) mark('profile-read');
+    if (event.target.closest('[data-warehouse-buddie-card], [data-buddie-variety-card]')) mark('profile-read');
     const link = event.target.closest<HTMLAnchorElement>('a[href]');
     if (link && new URL(link.href, window.location.href).pathname.startsWith('/arene')) {
       event.preventDefault(); event.stopPropagation();
@@ -71,7 +72,10 @@ export function KqReleveNativeWarehouse({ chapter, state, onChange, onOpenCultur
   };
   return <KqTutorialApiProvider api={api}><div data-releve-production={chapter} data-releve-native="warehouse" onClickCapture={observe} onAuxClickCapture={observe}
     onKeyDownCapture={event => { if (ticket && event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); setTicket(null); } }}>
-    <KqWarehouse embedded draftStore={draftStore} onOpenCulture={() => onOpenCulture?.()} onClose={() => {}} />
+    {notice ? <p role="status">{notice}</p> : null}
+    <KqWarehouse embedded draftStore={draftStore} onOpenCulture={() => onOpenCulture?.()} onClose={() => {}}
+      onOpenHarvests={() => setNotice('Cette rencontre prépare ton installation. La conservation des récoltes se découvre dans la suite de La Relève.')}
+      onOpenMarket={() => setNotice('Cette rencontre prépare ton installation. La vente se découvre dans la rencontre Commerce de La Relève.')} />
     <PackOpeningFlowModal inline ticket={ticket} onOpen={openPack} onClose={() => setTicket(null)} />
     {chapter === 'buddies' && !ticket && state.ownedBuddies.length < 3 ? <button type="button" data-releve-guide="buddie-pack" onClick={() => setTicket({ id: 'releve-buddies', userId: 'releve', ticketNumber: 'Le pack prêté par Sylvain', orderAmount: 0, status: 'available', createdAt: new Date(state.clock).toISOString() })}>Ouvrir le pack prêté par Sylvain</button> : null}
   </div></KqTutorialApiProvider>;

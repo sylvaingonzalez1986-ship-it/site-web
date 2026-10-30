@@ -81,7 +81,7 @@ export function getKqCarePresentation(state: KqGameState): KqCarePresentation {
   if (state.cultureDead) stageCaption = "La culture s’est arrêtée à cette étape. Son suivi reste consultable.";
   else if (!state.care) stageCaption = `${harvested ? "Le lot est récolté." : STAGE_CAPTIONS[stage]} La santé n’a pas été enregistrée pour cette culture.`;
   else if (harvested) stageCaption = state.phase === "complete"
-    ? "Le lot est récolté et séché. La santé conserve le bilan à la récolte ; le curing suit le jury et le duel."
+    ? "Le lot est récolté et séché. La santé conserve le bilan à la récolte ; l’affinage vient avant le jury et la vente."
     : STAGE_CAPTIONS[stage];
   else if (critical) stageCaption += healthCritical ? " La santé est basse : la culture est en difficulté."
     : " Un problème actif a atteint le niveau critique.";

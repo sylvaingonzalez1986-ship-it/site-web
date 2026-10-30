@@ -114,7 +114,7 @@ try {
   checks.push("A different cultivar sharing one aroma can earn the partial bonus");
   await visit("unmatched&section=sales"); await page.click('[aria-label="Tes lots"] button'); await page.waitForSelector('[data-screen="distribution"]');
   await page.click('[aria-label="Voir l’offre CBD shops"]'); await page.waitForSelector('[data-screen="offer"]');
-  assert.ok(await page.evaluate(() => !document.body.textContent.includes("Demande du moment") && [...document.querySelectorAll("button")].some(button => button.textContent.includes("Vendre ce lot") && !button.disabled)));
+  assert.ok(await page.evaluate(() => !document.body.textContent.includes("Demande du moment") && [...document.querySelectorAll("button")].some(button => button.textContent.includes("Voir le montant net") && !button.disabled)));
   checks.push("An unrelated aroma profile remains sellable at the normal tariff");
   await visit("packaged"); await page.click('article[data-channel="online"] button'); await page.waitForSelector('[data-screen="dashboard"]');
   assert.ok(await page.evaluate(() => document.activeElement?.hasAttribute("data-online-listings-heading")));

@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+import { KQ_STAGES } from "@/lib/kanab-quest-game";
 
 const { getValidatedAdminContext, playKqAdminCard } = vi.hoisted(() => ({
   getValidatedAdminContext: vi.fn(),
@@ -41,6 +42,19 @@ describe("POST /api/admin/placard/runs/[runId]/cards", () => {
   it("rejects a missing card code before touching Supabase", async () => {
     getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
     expect((await POST(request({}), context)).status).toBe(400);
+    expect(playKqAdminCard).not.toHaveBeenCalled();
+  });
+
+  it.each([0, KQ_STAGES.length - 1])("forwards the inspected stage %s for admin play", async expectedStageIndex => {
+    getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
+    playKqAdminCard.mockResolvedValue({ state: {}, burnReceipt: { id: "burn-1" } });
+    expect((await POST(request({ cardCode: "BOTTE-004", expectedStageIndex }), context)).status).toBe(200);
+    expect(playKqAdminCard).toHaveBeenCalledWith("admin@example.test", "11111111-1111-1111-1111-111111111111", "BOTTE-004", { expectedStageIndex });
+  });
+
+  it.each([null, "0", false, [], {}, -1, 0.5, KQ_STAGES.length, Number.MAX_SAFE_INTEGER + 1])("rejects a malformed stage %j before any burn", async expectedStageIndex => {
+    getValidatedAdminContext.mockResolvedValue({ email: "admin@example.test" });
+    expect((await POST(request({ cardCode: "BOTTE-004", expectedStageIndex }), context)).status).toBe(400);
     expect(playKqAdminCard).not.toHaveBeenCalled();
   });
 });

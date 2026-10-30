@@ -1,0 +1,34 @@
+.editor { margin-block: 18px; padding-block: 18px; border-block: 1px solid var(--game-ink, #172923); color: #172923; }
+.editor h4 { margin: 0 0 14px; font-size: 1rem; }
+.editor :where(button,input,summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
+.editor button { min-height: 44px; padding: 12px 15px; color: #172923; font: inherit; font-size: .875rem; font-weight: 800; cursor: pointer; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.editor button:disabled { cursor: not-allowed; opacity: .55; }
+.plans { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-bottom: 18px; }
+.plans button { display: flex; flex-direction: column; align-items: stretch; gap: 10px; min-width: 0; text-align: left; }
+.plans button[aria-pressed="true"] { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff8e7; }
+.plans button > span { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+.plans strong { font-size: 1.25rem; }
+.plans small { font-size: .75rem; font-weight: 500; line-height: 1.55; }
+.price { display: grid; gap: 8px; max-width: 520px; font-size: .875rem; font-weight: 800; }
+.price input { width: 100%; max-width: 220px; min-width: 0; min-height: 44px; padding: 10px 12px; color: #172923; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; font: inherit; font-size: 1rem; }
+.price small { font-size: .75rem; font-weight: 500; line-height: 1.5; }
+.forecast { margin-block: 18px; }
+.forecast > dl { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; }
+.forecast dl > div { min-width: 0; }
+.forecast dt { font-size: .875rem; line-height: 1.5; }
+.forecast dd { margin: 5px 0 0; font-size: 1.15rem; font-weight: 800; overflow-wrap: anywhere; }
+.editor p { font-size: .78rem; line-height: 1.6; }
+.risk { display: flex; gap: 8px; align-items: flex-start; font-weight: 750; }
+.risk svg { flex-shrink: 0; margin-top: 3px; }
+.details > summary { display: flex; align-items: center; gap: 8px; min-height: 44px; font-size: .8rem; cursor: pointer; font-weight: 750; }
+.details > summary::before { content: "+"; }
+.details[open] > summary::before { content: "−"; }
+.details p { max-width: 85ch; }
+.breakdown > div { display: flex; justify-content: space-between; gap: 16px; padding-block: 6px; border-bottom: 1px solid #17292330; }
+.breakdown dd { margin: 0; flex-shrink: 0; font-size: .8rem; }
+.effect { font-weight: 750; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.actions button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.actions .apply { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+@media (hover:hover) { .editor button:hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); } .plans button[aria-pressed="true"]:hover:not(:disabled) { --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); } }
+@media (max-width:600px) { .plans { grid-template-columns: minmax(0,1fr); gap: 9px; } .plans button { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 8px; } .plans button > small { grid-column: 1/-1; } .plans strong { font-size: 1rem; } .forecast > dl { grid-template-columns: minmax(0,1fr); gap: 12px; } .forecast > dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; } .forecast > dl dt { max-width: 65%; } .forecast > dl dd { margin: 0; flex-shrink: 0; font-size: 1rem; } .actions > button { flex: 1 1 auto; } }

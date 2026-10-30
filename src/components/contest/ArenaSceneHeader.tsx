@@ -20,9 +20,8 @@ export function ArenaSceneHeader({ mode, title, description, isPlacardPlayerEnab
         <div className={styles.heading}>
           <Link href="/arene" className={styles.back}><ArrowLeft size={18} aria-hidden="true" /> Retour à l’Arène</Link>
           <div className={styles.copy}>
-            <span>Kanab Quest · Le village des chanvriers</span>
             <h1>{title ?? scene.name}</h1>
-            <p>{description ?? scene.label}</p>
+            {description && <p>{description}</p>}
           </div>
         </div>
         <div className={styles.scene}>

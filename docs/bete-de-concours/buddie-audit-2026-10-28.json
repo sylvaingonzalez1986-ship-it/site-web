@@ -1,0 +1,1746 @@
+{
+  "reviewedAt": "2026-10-28",
+  "scope": "52 fiches : histoire, origine, lignée, caractéristiques, deux arômes de jeu et provenance.",
+  "method": [
+    "Priorité aux déclarations des créateurs pour leur propre sélection, aux producteurs pour leurs propres lots et aux publications scientifiques pour les limites générales.",
+    "Une déclaration commerciale est attribuée à son auteur ; elle ne constitue ni une authentification génétique indépendante ni une analyse du lot du joueur.",
+    "Les échecs de consultation et les extraits indexés sont distingués des pages ouvertes. Une source inaccessible ne devient pas une preuve confirmée.",
+    "Les arômes de jeu restent des valeurs de simulation, synchronisées avec les règles SQL. Leur niveau de confirmation réel est indiqué dans chaque fiche.",
+    "Les liens restent dans les données et dans ce dossier ; ils ne sont pas affichés dans les fiches."
+  ],
+  "background": [
+    {
+      "url": "https://www.nature.com/articles/s41477-021-01003-y",
+      "label": "Watts et al., Nature Plants (2021)",
+      "access": "page ouverte",
+      "finding": "Dans cet échantillon, des noms identiques ne garantissent pas une identité génétique ou chimique identique.",
+      "limitation": "Étude principalement sur cannabis à THC ; elle ne vérifie pas individuellement les 52 fiches CBD."
+    },
+    {
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0267498",
+      "label": "Smith et al., PLOS ONE (2022)",
+      "access": "page ouverte",
+      "finding": "La cohérence chimique associée aux noms commerciaux varie selon les noms et les produits.",
+      "limitation": "Données commerciales américaines ; ne certifie pas la parenté ni les arômes de nos fiches. Un auteur était affilié à Leafly."
+    }
+  ],
+  "evidenceFiles": [
+    "docs/bete-de-concours/buddie-audit-2026-10-28-001-018.json",
+    "docs/bete-de-concours/buddie-audit-2026-10-28-019-036.json",
+    "docs/bete-de-concours/buddie-audit-2026-10-28-037-052.json"
+  ],
+  "changes": [
+    {
+      "code": "HH2026-001",
+      "name": "L’Arbre Mère — Toutes Variétés",
+      "verdict": "fiction cohérente",
+      "changedFields": [
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire, origine et lignée sont explicitement fictives dans les données du jeu ; aucune validation botanique externe pertinente.",
+        "Pin/terre est un choix de simulation, cohérent entre le CSV et le module généré."
+      ],
+      "flavorReview": {
+        "current": [
+          "pin",
+          "terre"
+        ],
+        "recommended": null,
+        "confidence": "sans objet : fiction",
+        "notes": "Aucune paire botanique à recommander ; conserver la paire comme convention du jeu.",
+        "sources": []
+      }
+    },
+    {
+      "code": "HH2026-002",
+      "name": "Charlotte’s Web",
+      "verdict": "histoire corroborée par la marque ; arômes secondaires",
+      "changedFields": [
+        "history",
+        "characteristics",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire et origine : chronologie des Stanley au Colorado corroborée par les publications de la marque.",
+        "Lignée : parenté complète non publiée dans les sources consultées ; ne pas l’inventer.",
+        "Caractéristiques : richesse en CBD décrite par la marque, sans généralisation de composition ; pin/floral seulement dans une synthèse d’avis."
+      ],
+      "flavorReview": {
+        "current": [
+          "pin",
+          "floral"
+        ],
+        "recommended": null,
+        "confidence": "faible",
+        "notes": "Les deux notes figurent sur Leafly ; aucune paire aromatique primaire ni lot correspondant retrouvé. Le CSV reste provisoire.",
+        "sources": [
+          "https://www.leafly.com/strains/charlottes-web"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-003",
+      "name": "Cannatonic",
+      "verdict": "généalogie confirmée comme déclaration du créateur ; arômes à requalifier",
+      "changedFields": [
+        "history",
+        "origin",
+        "characteristics",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/lignée : correction officielle datée du 10 novembre 2015 ; Reina Madre × NYCD est bien la version actuelle de Resin Seeds.",
+        "Récompenses et port indica sont des déclarations du créateur ; aucun certificat indépendant ajouté.",
+        "Arômes : terre confirmée directement ; bois seulement chez Industrial Hemp Farms, dont le pedigree est obsolète. La source primaire préfère citron/lime."
+      ],
+      "flavorReview": {
+        "current": [
+          "terre",
+          "bois"
+        ],
+        "recommended": [
+          "terre",
+          "citron"
+        ],
+        "confidence": "élevée pour la description du créateur, non universelle",
+        "notes": "Terre validée ; bois non confirmé par la source primaire. Recommandation documentaire uniquement : ne pas modifier les bonus du jeu. Remplacer la provenance IHF par Resin Seeds et expliciter la réserve sur bois.",
+        "sources": [
+          "https://resinseeds.net/es/shop/cannatonic-semillas/",
+          "https://industrialhempfarms.com/hemp-strains/cannatonic-cbd-hemp-flower-strain-review/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-004",
+      "name": "Harlequin",
+      "verdict": "corriger le rôle historique ; description du producteur vérifiée",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire : Wade Laughter est le découvreur/diffuseur selon Project CBD, qui précise qu’il ne revendiquait pas la création.",
+        "Origine : histoire californienne, distincte de la sélection Simply Bare.",
+        "Lignée/caractéristiques : ascendance à deux parents, fleurs légères et notes mangue/terre valables pour la sélection du producteur ; pedigree historique incomplet."
+      ],
+      "flavorReview": {
+        "current": [
+          "mangue",
+          "terre"
+        ],
+        "recommended": [
+          "mangue",
+          "terre"
+        ],
+        "confidence": "élevée pour la sélection Simply Bare",
+        "notes": "Deux notes explicites, sur une même source primaire commerciale. Pas de confirmation universelle ni d’inférence à partir d’un terpène.",
+        "sources": [
+          "https://www.simplybare.com/cultivars-2/harlequin/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-005",
+      "name": "ACDC",
+      "verdict": "histoire secondaire attribuée ; paire actuelle confirmée pour CBD Seed Labs",
+      "changedFields": [
+        "summary",
+        "history",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine/lignée : le portrait de Courtney rapporte la sélection de Cannatonic ; attribution à conserver comme récit journalistique.",
+        "L’ancien PDF aromatique n’a pas pu être ouvert. La page actuelle CBD Seed Labs confirme les deux notes.",
+        "Caractéristiques : dominante CBD décrite, sans identité garantie entre clone historique et semences commerciales."
+      ],
+      "flavorReview": {
+        "current": [
+          "citron",
+          "diesel"
+        ],
+        "recommended": [
+          "citron",
+          "diesel"
+        ],
+        "confidence": "élevée pour la sélection CBD Seed Labs",
+        "notes": "Citron et diesel explicitement présents sur la page actuelle. Remplacer l’ancien PDF inaccessible par cette URL ; ne pas assimiler cette sélection au clone initial.",
+        "sources": [
+          "https://cbdseedlabs.com/acdc/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-006",
+      "name": "Sour Space Candy",
+      "verdict": "profil vérifié dans son périmètre commercial",
+      "changedFields": [
+        "history",
+        "origin",
+        "lineage",
+        "sources",
+        "reviewedAt",
+        "caveat",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine : la fiche de marque Oregon CBD renforce l’attribution du croisement ; East Fork documente sa propre sélection.",
+        "Lignée : Sour Tsunami × ERB corroborée ; Early Resin Berry est développé dans le communiqué Azalla.",
+        "Caractéristiques/arômes : les trois terpènes et pomme confite/cerise sont explicitement publiés par East Fork."
+      ],
+      "flavorReview": {
+        "current": [
+          "pomme-confite",
+          "cerise"
+        ],
+        "recommended": [
+          "pomme-confite",
+          "cerise"
+        ],
+        "confidence": "élevée pour la sélection East Fork",
+        "notes": "Paire explicitement décrite sur une même page de producteur ; aucune extrapolation à toutes les récoltes.",
+        "sources": [
+          "https://eastforkcultivars.com/cultivars/p/sour-space-candy"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-007",
+      "name": "Hawaiian Haze",
+      "verdict": "profil vérifié ; ancienne source remplacée",
+      "changedFields": [
+        "history",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine : Oregon CBD apparaît comme fournisseur dans l’essai universitaire ; le nom ne prouve pas une origine hawaïenne.",
+        "Lignée : DC Haze CC × ERB concorde entre marque et producteur.",
+        "Caractéristiques/arômes : ananas, fleurs et terpènes sont explicitement documentés par East Fork ; ancienne URL inaccessible remplacée."
+      ],
+      "flavorReview": {
+        "current": [
+          "ananas",
+          "floral"
+        ],
+        "recommended": [
+          "ananas",
+          "floral"
+        ],
+        "confidence": "élevée pour la sélection East Fork",
+        "notes": "Deux notes explicites sur la page actuelle. Remplacer le domaine Squarespace inaccessible ; les résultats universitaires ne démontrent pas les goûts.",
+        "sources": [
+          "https://eastforkcultivars.com/cultivars/p/hawaiian-haze"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-008",
+      "name": "Lifter",
+      "verdict": "arômes confirmés ; divergence de filiation à signaler",
+      "changedFields": [
+        "history",
+        "lineage",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine : attribution à Oregon CBD corroborée par sa fiche de marque.",
+        "Lignée : le créateur publie SH50 × ERB ; l’ancienne fiche Sunset développe Early Resin Berry, tandis que l’extrait actuel dit KAP. Ne pas prétendre ces noms équivalents.",
+        "Caractéristiques : myrtille/fromage attestés sur la page de marque Sunset effectivement ouverte, pour une récolte précise."
+      ],
+      "flavorReview": {
+        "current": [
+          "myrtille",
+          "fromage"
+        ],
+        "recommended": [
+          "myrtille",
+          "fromage"
+        ],
+        "confidence": "moyenne à élevée pour la récolte Sunset publiée",
+        "notes": "Les deux notes sont vérifiables sur la page de marque hébergée par Leafly. La page directe demeure inaccessible ; ne pas la marquer comme ouverte. Pairage aromatique indépendant de la divergence KAP/ERB.",
+        "sources": [
+          "https://www.leafly.com/brands/sunset-lake-cbd/products/sunset-lake-cbd-lifter-pre-rolls-hemp-cbd-flower"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-009",
+      "name": "Elektra",
+      "verdict": "profil commercial confirmé ; création à attribuer",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "sources",
+        "reviewedAt",
+        "caveat",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine/lignée : Cannaflower attribue Oregon CBD et ACDC × ERB ; la page créateur essayée n’a pas été accessible.",
+        "Caractéristiques : densité, couleur, pistils et résine présents dans la fiche ; les garder propres à cette sélection.",
+        "Arômes : orange et chocolat sont explicitement décrits, même si le résumé du produit met aussi en avant agrumes/terre/pin."
+      ],
+      "flavorReview": {
+        "current": [
+          "orange",
+          "chocolat"
+        ],
+        "recommended": [
+          "orange",
+          "chocolat"
+        ],
+        "confidence": "élevée pour la description Cannaflower",
+        "notes": "Paire publiée dans le même descriptif commercial ; ni dégustation indépendante ni caractère universel.",
+        "sources": [
+          "https://cannaflower.com/product/elektra/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-010",
+      "name": "Suver Haze",
+      "verdict": "récit du créateur retrouvé ; paire confirmée",
+      "changedFields": [
+        "history",
+        "lineage",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine : le texte de la marque Oregon CBD relie Suver Road à son premier site de recherche.",
+        "Lignée : Suver #8 × ERB est confirmée comme déclaration du créateur ; développer systématiquement ERB en Berry serait imprudent puisque Sunset écrit Bud.",
+        "Caractéristiques/arômes : robustesse attribuée au créateur ; pomme verte/poivre explicites sur une page Sunset ouverte."
+      ],
+      "flavorReview": {
+        "current": [
+          "pomme-verte",
+          "poivre"
+        ],
+        "recommended": [
+          "pomme-verte",
+          "poivre"
+        ],
+        "confidence": "élevée pour la sélection Sunset Lake",
+        "notes": "Paire confirmée sur la page Prerolls du même producteur, dont le texte aromatique décrit sa fleur. Remplacer la page directe refusée ; ne pas confondre Sour Suver Haze.",
+        "sources": [
+          "https://sunsetlakecbd.com/product/suver-haze-prerolls/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-011",
+      "name": "Cherry Wine",
+      "verdict": "profil commercial corroboré ; créateur historique attribué",
+      "changedFields": [
+        "history",
+        "sources",
+        "reviewedAt",
+        "caveat",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine : High Grade Hemp Seed Co est une attribution de Cannaflower, non une confirmation directe retrouvée.",
+        "Lignée : deux vendeurs concordent sur The Wife × Charlotte’s Cherries ; pas de test indépendant du pedigree.",
+        "Caractéristiques/arômes : cerise et pin sont explicitement publiés par les deux sources, avec nuances florales/poivrées."
+      ],
+      "flavorReview": {
+        "current": [
+          "cerise",
+          "pin"
+        ],
+        "recommended": [
+          "cerise",
+          "pin"
+        ],
+        "confidence": "élevée pour les descriptions commerciales consultées",
+        "notes": "Même paire sur deux pages de vendeurs ; cette concordance ne garantit pas le goût d’un lot particulier.",
+        "sources": [
+          "https://blueforestfarms.us/shop/cherry-wine-hemp-seeds/",
+          "https://cannaflower.com/product/cherry-wine/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-012",
+      "name": "Ringo’s Gift",
+      "verdict": "profil confirmé pour une sélection descendante",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire, origine et lignée concordent avec la présentation Tweedle, qui distingue sa sélection de l’originale.",
+        "Les caractéristiques morphologiques et les deux notes sont présentes ; l’attribution doit rester commerciale et limitée à cette sélection."
+      ],
+      "flavorReview": {
+        "current": [
+          "agrumes",
+          "fruits-tropicaux"
+        ],
+        "recommended": [
+          "agrumes",
+          "fruits-tropicaux"
+        ],
+        "confidence": "élevée pour le produit décrit",
+        "notes": "Les deux familles aromatiques sont explicites ; aucun fruit tropical précis n’est démontré.",
+        "sources": [
+          "https://tweedlefarms.com/ringos-gift/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-013",
+      "name": "Remedy",
+      "verdict": "corriger la chronologie Z7 ; profil du produit vérifié",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire : l’affirmation « Z7 puis renommée Remedy » simplifie des récits divergents ; retirer cet ordre assuré.",
+        "Origine/lignée : famille Cannatonic/Afghan Skunk rapportée ; les archives décrivent des sélections et recroisements distincts.",
+        "Caractéristiques/arômes : citron, pin et les terpènes cités figurent sur la fiche Cannaflower ; valables comme description de son produit."
+      ],
+      "flavorReview": {
+        "current": [
+          "citron",
+          "pin"
+        ],
+        "recommended": [
+          "citron",
+          "pin"
+        ],
+        "confidence": "élevée pour le produit Cannaflower",
+        "notes": "Paire directement décrite ; cela ne valide pas la chronologie Z7 ni l’identité de toutes les Remedy.",
+        "sources": [
+          "https://cannaflower.com/product/remedy/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-014",
+      "name": "Sour Tsunami",
+      "verdict": "histoire secondaire cohérente ; arômes à déclasser",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine : contexte californien corroboré par Project CBD ; sélection par Ringo rapportée par Leafly.",
+        "Lignée : Sour Diesel × NYC Diesel reste un résumé secondaire, pas le pedigree exhaustif validé.",
+        "Caractéristiques/arômes : agrumes/carburant présents dans IHF et Leafly, mais aucune dégustation du créateur ou lot identifié retrouvé."
+      ],
+      "flavorReview": {
+        "current": [
+          "agrumes",
+          "diesel"
+        ],
+        "recommended": null,
+        "confidence": "faible à moyenne, secondaire",
+        "notes": "Agrumes est explicite ; diesel normalise un fond carburant chez IHF et figure sur Leafly. Leur présence est attestée comme description secondaire, sans base suffisante pour « Documenté » au sens producteur/lot.",
+        "sources": [
+          "https://industrialhempfarms.com/hemp-strains/sour-tsunami-hemp-strain-review/",
+          "https://www.leafly.com/strains/sour-tsunami"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-015",
+      "name": "Harle-Tsu",
+      "verdict": "à conserver comme synthèse secondaire",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine/lignée : attribution Southern Humboldt et croisement Harlequin/Sour Tsunami présents sur Leafly ; pas de page créateur détaillée retrouvée.",
+        "Caractéristiques : dominante CBD et notes bois/épices restent des descriptions secondaires ; aucun bouquet universel validé."
+      ],
+      "flavorReview": {
+        "current": [
+          "bois",
+          "epices"
+        ],
+        "recommended": null,
+        "confidence": "faible",
+        "notes": "Bois et épices/herbes figurent sur Leafly. Une paire de créateur ou de producteur identifiant son lot n’a pas été retrouvée ; conserver le statut provisoire.",
+        "sources": [
+          "https://www.leafly.com/strains/harle-tsu"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-016",
+      "name": "Stephen Hawking Kush",
+      "verdict": "description historique attribuée, corroboration partielle du vendeur",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/lignée : série Great Minds, hommage et parents concordent dans deux sources secondaires susceptibles de reprendre le même texte.",
+        "Caractéristiques : trois phénotypes, couleurs/structure et cerise/menthe sont dans la description attribuée au créateur.",
+        "Juniper confirme menthe et baies pour son produit, mais pas la cerise ; ne pas en faire une validation indépendante de toute la paire."
+      ],
+      "flavorReview": {
+        "current": [
+          "cerise",
+          "menthe"
+        ],
+        "recommended": [
+          "cerise",
+          "menthe"
+        ],
+        "confidence": "moyenne : description historique attribuée",
+        "notes": "Deux notes explicites dans SeedFinder et Leafly ; sources probablement dépendantes. Juniper confirme seulement la menthe parmi ces deux notes. Statut provisoire/description attribuée à conserver.",
+        "sources": [
+          "https://seedfinder.eu/en/strain-info/stephen-hawking-kush/alphakronik-genes",
+          "https://www.leafly.com/strains/stephen-hawking-kush",
+          "https://www.junipercannabis.com/product/stephen-hawking-kush"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-017",
+      "name": "Pennywise",
+      "verdict": "paire renforcée par une fiche de marque",
+      "changedFields": [
+        "history",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine/lignée : la fiche de marque Subcool publiée sur Leafly soutient les années de recherche et Harlequin × Jack the Ripper.",
+        "Caractéristiques : quatre phénotypes et variations de forme/couleur y sont décrits.",
+        "Café/poivre est aussi écrit dans la description de marque : la provenance peut être renforcée au-delà des seuls retours Weedmaps."
+      ],
+      "flavorReview": {
+        "current": [
+          "cafe",
+          "poivre"
+        ],
+        "recommended": [
+          "cafe",
+          "poivre"
+        ],
+        "confidence": "moyenne à élevée pour la description de marque",
+        "notes": "Les deux notes sont explicites sur la fiche Subcool hébergée par Leafly. Remplacer la provenance principale Weedmaps par cette description de marque, sans prétendre à une analyse indépendante.",
+        "sources": [
+          "https://www.leafly.ca/brands/tga-subcool/products/tga-subcool-pennywise-harliquin-x-jack-the-ripper",
+          "https://weedmaps.com/strains/pennywise"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-018",
+      "name": "Sweet and Sour Widow",
+      "verdict": "profil créateur confirmé ; musqué est une interprétation non démontrée",
+      "changedFields": [
+        "summary",
+        "history",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire/origine/lignée : CBD Crew présente une White Widow enrichie en CBD et ne nomme pas son second parent.",
+        "Morphologie et parfum d’oignon sont confirmés dans la fiche.",
+        "Musqué traduit librement une odeur corporelle ; ces termes ne sont pas équivalents et la deuxième note n’est pas démontrée."
+      ],
+      "flavorReview": {
+        "current": [
+          "oignon",
+          "musque"
+        ],
+        "recommended": null,
+        "confidence": "élevée pour oignon ; insuffisante pour musqué",
+        "notes": "Une seule des deux notes est explicite. Odeur corporelle ne valide pas musqué ; il n’existe pas de seconde note suffisamment précise pour recommander une paire botanique.",
+        "sources": [
+          "https://cbdcrew.org/varieties/cbd-sweet-and-sour-widow/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-019",
+      "name": "Special Sauce",
+      "verdict": "correction de provenance",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Lignée et pistils roses présents dans le texte du sélectionneur repris par Sunset Lake.",
+        "Le CSV confond Chemberry et Bubblegum. Sonoma rattache explicitement Special Sauce à Bubblegum ; Chemberry est une autre rubrique.",
+        "Baies/floral décrit cette sélection commerciale, pas une signature mesurée universelle."
+      ],
+      "flavorReview": {
+        "current": [
+          "baies",
+          "floral"
+        ],
+        "recommended": [
+          "baies",
+          "floral"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Corriger Chemberry en Bubblegum dans la portée CSV. Deux notes documentées sur la sélection Sonoma ; aucune preuve sensorielle indépendante.",
+        "sources": [
+          "https://sonomahillsfarm.com/terpenes/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-020",
+      "name": "Strawberry CBD",
+      "verdict": "confirmé dans une portée commerciale",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Page anglaise Maionais inaccessible ; remplacement espagnol ouvert et concordant.",
+        "Mandala indique CBD+ Buds et ne teste que graines/germination, pas les caractéristiques de plantes matures.",
+        "Filiation commune non démontrée. Aucun terpène ou effet médical déduit des descriptions."
+      ],
+      "flavorReview": {
+        "current": [
+          "fraise",
+          "epices"
+        ],
+        "recommended": [
+          "fraise",
+          "epices"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Paire confirmée dans la version espagnole Maionais. Mandala étaye la fraise seule ; remplacer l’URL principale inaccessible.",
+        "sources": [
+          "https://maionais.com/cogollos-cbd/strawberry-cbd/",
+          "https://shop.mandalaseeds.com/collections/all-1/products/strawberry-cbd"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-021",
+      "name": "Amnesia Haze CBD",
+      "verdict": "confirmé avec réserve sur le nom commercial",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Soma confirme le récit historique et les prix annoncés, sans validation indépendante des récompenses.",
+        "CBDMania affiche Kompolti dans sa fiche technique tout en évoquant l’Amnesia historique dans son marketing ; cette contradiction interdit d’en déduire une descendance.",
+        "Citron et encens explicitement présents dans son texte aromatique."
+      ],
+      "flavorReview": {
+        "current": [
+          "citron",
+          "encens"
+        ],
+        "recommended": [
+          "citron",
+          "encens"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Deux notes explicites du texte CBDMania, sans validation sensorielle indépendante ni généralisation.",
+        "sources": [
+          "https://www.cbdmania.eu/shop/weed/amnesia-haze-cbd"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-022",
+      "name": "White Widow CBD",
+      "verdict": "confirmé avec réserve sur le vendeur",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Green House publie Brésil × Inde du Sud et la victoire de 1995.",
+        "321CBD décrit bois et poivre blanc mais son tableau aromatique donne aussi fruits exotiques/menthe/sucré : description interne hétérogène.",
+        "Aucune preuve de parenté du produit CBD avec White Widow historique."
+      ],
+      "flavorReview": {
+        "current": [
+          "bois",
+          "poivre"
+        ],
+        "recommended": [
+          "bois",
+          "poivre"
+        ],
+        "confidence": "description commerciale avec incohérence interne",
+        "notes": "Paire présente dans le texte vendeur, mais tableau aromatique divergent. À conserver comme choix de jeu attribué, pas propriété botanique certaine.",
+        "sources": [
+          "https://www.321cbd.com/en/cbd-flowers/866-white-widow-cbd-flower-321cbd.html"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-023",
+      "name": "Skywalker OG CBD",
+      "verdict": "contrôle partiel ; source aromatique non ouverte",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Dutch Passion confirme Mazar femelle × Blueberry mâle pour Skywalker, référence distincte de Skywalker OG CBD.",
+        "Le texte GreenLeafCBD est retrouvé dans l’index moteur mais ses pages ne s’ouvrent pas. Aucun contrôle direct revendiqué.",
+        "Retirer toute origine californienne affirmée pour le produit CBD."
+      ],
+      "flavorReview": {
+        "current": [
+          "terre",
+          "bois"
+        ],
+        "recommended": null,
+        "confidence": "provisoire ; index moteur seulement",
+        "notes": "Deux notes retrouvées dans l’index GreenLeafCBD, mais aucune page directe consultable. Dutch Passion ne valide pas les arômes de ce produit CBD.",
+        "sources": [
+          "https://greenleafcbd.de/blogs/cannabis-wiki/skywalker-og"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-024",
+      "name": "Bubba Kush CBD",
+      "verdict": "description du sélectionneur confirmée",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Dinafem confirme parents, structure et arômes. Attribution commerciale nécessaire ; ni effets thérapeutiques ni universalité ajoutés."
+      ],
+      "flavorReview": {
+        "current": [
+          "cafe",
+          "terre"
+        ],
+        "recommended": [
+          "cafe",
+          "terre"
+        ],
+        "confidence": "description du sélectionneur vérifiée",
+        "notes": "Paire explicite chez Dinafem ; aucune analyse sensorielle indépendante consultée.",
+        "sources": [
+          "https://www.dinafem.org/en/blog/bubba-kush-cbd-legendary-indica-suitable-all-users/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-025",
+      "name": "OG Kush CBD",
+      "verdict": "confirmé comme compte rendu particulier",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Le croisement figure dans un compte rendu signé Green Born Identity, publié par Dinafem. Ne pas transformer deux plantes observées en propriété universelle."
+      ],
+      "flavorReview": {
+        "current": [
+          "citron",
+          "diesel"
+        ],
+        "recommended": [
+          "citron",
+          "diesel"
+        ],
+        "confidence": "observation publiée ; normalisation éditoriale",
+        "notes": "Citron confirmé sur une plante ; diesel normalise pétrole/carburant. Pas une dégustation représentative de toute la lignée.",
+        "sources": [
+          "https://www.dinafem.org/en/blog/og-kush-cbd-grow-report-green-medicine/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-026",
+      "name": "Gelato CBD",
+      "verdict": "description commerciale confirmée ; URL remplacée",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Sherbinskis confirme la famille historique, sans rapport établi avec le produit CBD.",
+        "Crème non indiquée sur CBWEED Italie, mais confirmée dans la description portugaise accessible. L’ancienne URL portugaise ne s’ouvre pas."
+      ],
+      "flavorReview": {
+        "current": [
+          "creme",
+          "fruite"
+        ],
+        "recommended": [
+          "creme",
+          "fruite"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Paire étayée sur la page portugaise courte, accessible. Remplacer l’ancienne URL ; ne pas déduire crème du seul mot sorbet.",
+        "sources": [
+          "https://loja.cbweed.pt/products/gelato-1g",
+          "https://cbweed.com/prodotto/cannabis-light-gelato-cbd-1g/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-027",
+      "name": "Gorilla Glue CBD",
+      "verdict": "description commerciale confirmée ; histoire secondaire attribuée",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "L’histoire initiale repose sur Leafly citant un porte-parole GG Strains ; recherche de source du créateur non concluante.",
+        "321CBD décrit diesel/chocolat mais son marketing ne démontre pas la filiation GG4. Séparer les deux références."
+      ],
+      "flavorReview": {
+        "current": [
+          "diesel",
+          "chocolat"
+        ],
+        "recommended": [
+          "diesel",
+          "chocolat"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Paire explicite chez 321CBD ; elle ne confirme pas la génétique ni le profil de tous les homonymes.",
+        "sources": [
+          "https://www.321cbd.com/en/cbd-flowers/337-cbd-gorilla-glue-indoor-19.html"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-028",
+      "name": "Blue Dream CBD",
+      "verdict": "description du sélectionneur confirmée",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Parents, morphologie et baies/agrumes retrouvés dans le texte de Humboldt Seed Organization, indépendamment des avis clients."
+      ],
+      "flavorReview": {
+        "current": [
+          "baies",
+          "agrumes"
+        ],
+        "recommended": [
+          "baies",
+          "agrumes"
+        ],
+        "confidence": "description du sélectionneur vérifiée",
+        "notes": "Les deux notes sont présentes dans le descriptif du créateur ; elles ne viennent pas seulement des avis clients.",
+        "sources": [
+          "https://www.humboldtseeds.net/en/blue-dream-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-029",
+      "name": "Pineapple Express CBD",
+      "verdict": "provenance corrigée vers un produit vérifiable",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Mama Kana nomme désormais le produit Pineapple Express CBD : la réserve CSV disant seulement Pineapple est obsolète.",
+        "Ananas/agrumes explicitement décrits sur ce produit ; aucune relation généalogique avec Barney’s Farm démontrée.",
+        "High Standards seulement indexé ; remplacer ses détails morphologiques et son origine par la référence Mama Kana directement consultée."
+      ],
+      "flavorReview": {
+        "current": [
+          "ananas",
+          "agrumes"
+        ],
+        "recommended": [
+          "ananas",
+          "agrumes"
+        ],
+        "confidence": "description commerciale vérifiée",
+        "notes": "Mettre à jour portée CSV : le produit Mama Kana porte bien le nom Pineapple Express CBD. Les deux notes proviennent de la même fiche.",
+        "sources": [
+          "https://mamakana.co.uk/products/pineapple-cbd"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-030",
+      "name": "Lemon Haze CBD",
+      "verdict": "note pin insuffisamment étayée ; provenance à corriger",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Kilogrammes redirige vers l’accueil. La recherche retrouve le pin dans un avis client Théo L., pas une attestation de producteur.",
+        "Carrément Chanvre confirme citron et épices pour sa fleur ; pas le pin.",
+        "Weedmaps distingue plusieurs versions historiques, sans lien établi avec cette fleur CBD."
+      ],
+      "flavorReview": {
+        "current": [
+          "citron",
+          "pin"
+        ],
+        "recommended": [
+          "citron",
+          "epices"
+        ],
+        "confidence": "citron confirmé commercialement ; pin très faible",
+        "notes": "Paire actuelle de simulation conservable avec réserve visible. Paire documentable sur une seule sélection : citron/épices chez Carrément Chanvre.",
+        "sources": [
+          "https://www.carrementchanvre.fr/products/lemon-haze-cbd",
+          "https://kilogrammes.com/en/product/lemon-haze/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-031",
+      "name": "Critical Mass CBD",
+      "verdict": "paire aromatique composite à signaler",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Filiation historique retrouvée sur l’ancienne page officielle Mr Nice ; l’URL initiale répond 403.",
+        "Miel chez CBD Crew, floral chez Cannara phénotype 1 : deux sélections différentes, aucune preuve de leur cooccurrence.",
+        "PDF Cannara : exercice 2021, publication 7 décembre 2021 malgré chemin 2024 ; texte du tableau page 5 lu, capture indisponible."
+      ],
+      "flavorReview": {
+        "current": [
+          "miel",
+          "floral"
+        ],
+        "recommended": null,
+        "confidence": "chaque note documentée séparément ; paire non vérifiée",
+        "notes": "Miel et floral ont deux sources primaires commerciales, mais concernent deux sélections. Conserver seulement comme association de jeu explicitement composite.",
+        "sources": [
+          "https://cbdcrew.org/varieties/cbd-critical-mass/",
+          "https://www.cannara.ca/wp-content/uploads/2024/11/m21q1234.pdf"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-032",
+      "name": "Super Lemon Haze CBD",
+      "verdict": "date et valeur probante du rapport corrigées",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Le PDF au nom 09_04_2025 est daté du 17 avril 2024, essais 16–17 avril 2024 ; corriger le libellé de source.",
+        "Fibranova est un nom d’échantillon fourni par le client, pas le résultat d’une identification génétique. L’analyse concerne cannabinoïdes/humidité.",
+        "Citron/bois confirmé dans le catalogue CBWEED page imprimée 16 ; ne pas mélanger avec sa référence italienne page 12, décrite citron/terre.",
+        "Rapport texte ouvert et capture demandée ; catalogue texte ouvert, capture page 16 indisponible."
+      ],
+      "flavorReview": {
+        "current": [
+          "citron",
+          "bois"
+        ],
+        "recommended": [
+          "citron",
+          "bois"
+        ],
+        "confidence": "description de catalogue vérifiée",
+        "notes": "Paire explicite page imprimée 16. Le rapport de cannabinoïdes ne valide ni les arômes ni la génétique ; séparer les usages des deux sources.",
+        "sources": [
+          "https://www.cbweed.com/wp-content/uploads/2022/03/Catalogo-CBWEED-35-LOW.pdf"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-033",
+      "name": "Skunk CBD",
+      "verdict": "contrôle partiel ; arômes provisoires",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Sensi documente les origines de Skunk #1, pas celles de la fleur CBD générique.",
+        "Le Jardin du CBD reste inaccessible directement ; l’index mentionne floral/terre dans le texte et agrumes/fruité/terre dans le tableau.",
+        "Aucune origine génétique commune démontrée pour les Skunk CBD ; détails historiques attribués à Sensi."
+      ],
+      "flavorReview": {
+        "current": [
+          "terre",
+          "floral"
+        ],
+        "recommended": null,
+        "confidence": "provisoire ; source directe inaccessible",
+        "notes": "Paire présente seulement dans l’index de la fiche vendeur ; tableau différent. Sensi ne prouve pas les arômes de cette fleur CBD.",
+        "sources": [
+          "https://lejardinducbd.com/product/skunk-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-034",
+      "name": "Afghan CBD",
+      "verdict": "contrôle partiel ; sélection à mieux documenter",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "JGL-USC retrouvé dans l’index, mais page directe et variantes d’URL inaccessibles ; ne pas qualifier ce contenu de page vérifiée.",
+        "ACE confirme HashTonic et ses propres arômes ; cela ne prouve ni les parents ni le profil du descendant Afghan CBD.",
+        "Origine France retirée faute d’élément primaire directement vérifié dans les sources examinées. THCV conservé uniquement comme nom de parent."
+      ],
+      "flavorReview": {
+        "current": [
+          "terre",
+          "cafe"
+        ],
+        "recommended": null,
+        "confidence": "provisoire ; index du sélectionneur seulement",
+        "notes": "Paire explicitement indexée chez JGL-USC mais page inaccessible. La description ACE du parent ne valide pas le profil du descendant.",
+        "sources": [
+          "https://jglusc.fr/produit/afghan-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-035",
+      "name": "Cheese CBD",
+      "verdict": "description du sélectionneur confirmée",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Parents, morphologie et fromage/fleurs sont présents dans le descriptif Dinafem. Aucun effet thérapeutique repris."
+      ],
+      "flavorReview": {
+        "current": [
+          "fromage",
+          "floral"
+        ],
+        "recommended": [
+          "fromage",
+          "floral"
+        ],
+        "confidence": "description du sélectionneur vérifiée",
+        "notes": "Fromage affiné et fleurs explicitement présents dans la rubrique arômes ; aucune mesure sensorielle indépendante.",
+        "sources": [
+          "https://www.dinafem.org/en/cheese-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-036",
+      "name": "Mango Haze CBD",
+      "verdict": "description du sélectionneur confirmée",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "CBD Crew cite une sortie en 2013, l’héritage Haze, les notes aromatiques et la morphologie ; ne détaille pas le croisement complet."
+      ],
+      "flavorReview": {
+        "current": [
+          "mangue",
+          "poivre"
+        ],
+        "recommended": [
+          "mangue",
+          "poivre"
+        ],
+        "confidence": "description du sélectionneur vérifiée",
+        "notes": "Deux notes explicites dans le tableau aromatique du créateur ; aucune généralisation à toutes les plantes.",
+        "sources": [
+          "https://cbdcrew.org/varieties/cbd-mango-haze/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-037",
+      "name": "Dinamed CBD",
+      "verdict": "Confirmé comme description du sélectionneur ; raisin anecdotique",
+      "changedFields": [
+        "summary",
+        "history",
+        "lineage",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Parenté, ascendance, morphologie et orange retrouvées chez Dinafem.",
+        "Raisin : uniquement l’avis Home Grower signé Rob Brown."
+      ],
+      "flavorReview": {
+        "current": [
+          "orange",
+          "raisin"
+        ],
+        "recommended": null,
+        "confidence": "Orange : description primaire ; raisin : faible",
+        "notes": "L’orange est documentée ; le raisin a bien une source consultable, mais seulement un témoignage isolé. La paire reste une convention de jeu.",
+        "sources": [
+          "https://www.dinafem.org/en/dinamed-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-038",
+      "name": "Baox",
+      "verdict": "Confirmé avec attribution commerciale",
+      "changedFields": [
+        "summary",
+        "history",
+        "characteristics",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Fortuna nomme Centennial Seeds et donne Hindu Kush × Otto II ; pin, encens, herbes et couleurs vert/pourpre sont explicites.",
+        "Le communiqué FRB identifie Centennial au Colorado et Ben Holmes comme propriétaire, pas explicitement comme fondateur : formulation resserrée."
+      ],
+      "flavorReview": {
+        "current": [
+          "pin",
+          "encens"
+        ],
+        "recommended": [
+          "pin",
+          "encens"
+        ],
+        "confidence": "Moyenne — description primaire commerciale",
+        "notes": "Les deux notes sont explicites chez Fortuna ; elles ne prouvent pas un profil universel de Baox.",
+        "sources": [
+          "https://fortunahemp.com/baox-feminized-hemp-seeds/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-039",
+      "name": "Berry Blossom",
+      "verdict": "À corriger — détails sensoriels et morphologiques non retrouvés",
+      "changedFields": [
+        "summary",
+        "history",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "La page actuelle Oakhenge conserve la parenté et baies/floral, mais ne contient plus mûre, açaï, rose, densité ni fond boisé/terreux.",
+        "Blacklands confirme Cherry Kandahar × Chardonnay et floral/baies pour sa sélection ; le créateur initial reste non établi."
+      ],
+      "flavorReview": {
+        "current": [
+          "baies",
+          "floral"
+        ],
+        "recommended": [
+          "baies",
+          "floral"
+        ],
+        "confidence": "Moyenne — deux descriptions de producteurs",
+        "notes": "Paire confirmée comme description commerciale ; rose, mûre et açaï retirés faute de confirmation actuelle.",
+        "sources": [
+          "https://oakhengefarmscbd.com/product/berry-blossom-flower/",
+          "https://blacklandsbotanicals.org/high-cbd-hemp-plants/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-040",
+      "name": "The Wife",
+      "verdict": "Confirmé avec réserve sur l’identité commune",
+      "changedFields": [
+        "summary",
+        "history",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Springhill décrit explicitement floral, kiwi, mangue et pin.",
+        "Fortuna attribue Spectrum × Wife à Foundation Seeds ; Oregon Green Seed attribue son parent The Wife à 303 Seeds. Ces appellations ne permettent pas de conclure à une identité commune."
+      ],
+      "flavorReview": {
+        "current": [
+          "kiwi",
+          "floral"
+        ],
+        "recommended": [
+          "kiwi",
+          "floral"
+        ],
+        "confidence": "Moyenne — description primaire commerciale",
+        "notes": "Les deux notes sont explicites chez Springhill ; Blacklands propose une autre expression, cerise.",
+        "sources": [
+          "https://thespringhillfarm.com/pages/our-plants-and-processes"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-041",
+      "name": "Therapy CBD",
+      "verdict": "Confirmé avec réserve sur la variabilité",
+      "changedFields": [
+        "summary",
+        "history",
+        "characteristics",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Histoire et palette aromatique retrouvées ; la variabilité annoncée concerne aussi les cannabinoïdes."
+      ],
+      "flavorReview": {
+        "current": [
+          "fruits",
+          "truffe"
+        ],
+        "recommended": [
+          "fruits",
+          "truffe"
+        ],
+        "confidence": "Moyenne — description primaire, palette variable",
+        "notes": "Les deux évocations sont publiées, sans garantie de présence simultanée.",
+        "sources": [
+          "https://cbdcrew.org/varieties/cbd-therapy/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-042",
+      "name": "Dancehall",
+      "verdict": "Confirmé comme description du créateur",
+      "changedFields": [
+        "summary",
+        "history",
+        "lineage",
+        "reviewedAt",
+        "caveat",
+        "flavorNote"
+      ],
+      "findings": [
+        "Reggae Seeds indique 2006, Juanita la Lagrimosa × Kalijah, peu de ramifications, pourpre possible et sous-bois/encens."
+      ],
+      "flavorReview": {
+        "current": [
+          "sous-bois",
+          "encens"
+        ],
+        "recommended": [
+          "sous-bois",
+          "encens"
+        ],
+        "confidence": "Moyenne — description primaire du créateur",
+        "notes": "La normalisation de terre des bois en sous-bois est fidèle ; la pointe de fruits acidulés est laissée hors de la paire.",
+        "sources": [
+          "https://www.reggaeseeds.com/fra/p/product/product/produits-seeds-cannabis/dancehall.htm"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-043",
+      "name": "Frank’s Gift",
+      "verdict": "Partiellement confirmé — sources secondaires",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "SeedFinder conserve un texte attribué à Oregon Microgrowers Guild : sélection de Skunk Haze, S1 Frank’s Gift × Frank’s Gift.",
+        "Bois et terre apparaissent chez Leafly comme retours d’utilisateurs ; SeedFinder n’a aucune donnée aromatique. Source directe du créateur non retrouvée."
+      ],
+      "flavorReview": {
+        "current": [
+          "bois",
+          "terre"
+        ],
+        "recommended": null,
+        "confidence": "Faible — retours utilisateurs",
+        "notes": "La paire est bien présente sur Leafly, mais aucune source primaire sensorielle fiable n’a été retrouvée.",
+        "sources": [
+          "https://www.leafly.ca/strains/franks-gift"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-044",
+      "name": "Valentine X",
+      "verdict": "À nuancer — créateur et arômes non établis",
+      "changedFields": [
+        "summary",
+        "history",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Leafly confirme son propre récit ACDC/St. Valentine, sans documenter le sélectionneur.",
+        "La source terre/pin n’a pas été récupérée ; Leafly affiche myrtille, ananas et fraise. Aucune paire robuste ne peut être retenue."
+      ],
+      "flavorReview": {
+        "current": [
+          "terre",
+          "pin"
+        ],
+        "recommended": null,
+        "confidence": "Très faible",
+        "notes": "Terre/pin non vérifiés ; ne pas remplacer par une autre paire sur la seule base d’une agrégation d’avis.",
+        "sources": [
+          "https://www.leafly.ca/strains/valentine-x",
+          "https://thenewyorkcannabisclub.com/strains/valentine-x"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-045",
+      "name": "Carmagnola",
+      "verdict": "Identité confirmée ; arômes non généralisables",
+      "changedFields": [
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "CREA confirme le caractère dioïque et les usages fibre/biomasse ; l’étude distingue Carmagnola et Carmagnola Selezionata, originaires d’Italie.",
+        "CBDMania affiche Carmagnola et citron/pin dans son tableau, mais revendique Orange Bud/Skunk dans le récit : attribution commerciale contradictoire, insuffisante pour le cultivar.",
+        "De Pata Verde décrit un bouquet tropical différent."
+      ],
+      "flavorReview": {
+        "current": [
+          "agrumes",
+          "pin"
+        ],
+        "recommended": null,
+        "confidence": "Faible pour la paire ; élevée pour l’identité botanique",
+        "notes": "Le seul appui agrumes/pin est un produit Orange CBD déclaré Carmagnola dans un tableau et Orange Bud/Skunk ailleurs. Les sources scientifiques ne valident pas ses arômes.",
+        "sources": [
+          "https://www.cbdmania.eu/shop/weed/orange-cbd",
+          "https://depataverde.es/carmagnola-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-046",
+      "name": "Cherry Abacus",
+      "verdict": "Confirmé comme création déclarée par Diesel Hemp",
+      "changedFields": [
+        "summary",
+        "history",
+        "lineage",
+        "reviewedAt",
+        "caveat",
+        "flavorNote"
+      ],
+      "findings": [
+        "La page historique indique une création interne après plusieurs années de sélection, Original Cherry croisée avec Original Abacus.",
+        "La page actuelle confirme cerise et baies sauvages ; Colorado est indiqué. Ces pages ne sont pas des validations génétiques indépendantes."
+      ],
+      "flavorReview": {
+        "current": [
+          "cerise",
+          "fruits-des-bois"
+        ],
+        "recommended": [
+          "cerise",
+          "fruits-des-bois"
+        ],
+        "confidence": "Moyenne — description primaire du créateur",
+        "notes": "Les deux notes sont explicites ; fruits des bois normalise baies sauvages.",
+        "sources": [
+          "https://dieselhemp.com/products/cbd-flower-cherry-abacus-1"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-047",
+      "name": "Magic Bullet",
+      "verdict": "Confirmé comme description du vendeur ; mangue à qualifier",
+      "changedFields": [
+        "summary",
+        "history",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Parenté et description du lot retrouvées ; la mangue relève du commentaire commercial sur le myrcène."
+      ],
+      "flavorReview": {
+        "current": [
+          "mangue",
+          "poivre"
+        ],
+        "recommended": [
+          "fruits-tropicaux",
+          "poivre"
+        ],
+        "confidence": "Moyenne pour tropical/poivre ; faible à moyenne pour mangue",
+        "notes": "Tropical/poivre est directement décrit ; la précision mangue reste une interprétation commerciale.",
+        "sources": [
+          "https://greenunicornfarms.com/cbd-hemp-flower/magic-bullet/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-048",
+      "name": "Otto II",
+      "verdict": "Histoire attribuée ; mandarine non confirmée",
+      "changedFields": [
+        "summary",
+        "history",
+        "lineage",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "EFN confirme Ben Holmes/Centennial au Colorado, une population à pollinisation libre et les deux sexes.",
+        "Le début en 2009 et Bob Winnicki sont retrouvés seulement dans le texte de Centennial repris par SeedFinder ; l’original n’a pas pu être ouvert.",
+        "CBDuck décrit agrumes/pin pour son Otto II ; Plain Jane ne fournit qu’un portail d’âge, donc mandarine/Franklin non revérifiés."
+      ],
+      "flavorReview": {
+        "current": [
+          "mandarine",
+          "pin"
+        ],
+        "recommended": [
+          "agrumes",
+          "pin"
+        ],
+        "confidence": "Moyenne pour agrumes/pin sur le lot CBDuck ; faible pour mandarine",
+        "notes": "Agrumes/pin constituent une description de producteur consultable ; la précision mandarine n’a pas été confirmée.",
+        "sources": [
+          "https://www.cbduckvt.com/information/about-the-hemp-strain-otto-ii-yrjkj",
+          "https://plainjane.com/blogs/news/us-hemp-15-high-cbd-strains-for-2020"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-049",
+      "name": "Swiss Dream CBD",
+      "verdict": "Confirmé comme description de Kannabia",
+      "changedFields": [
+        "summary",
+        "history",
+        "reviewedAt",
+        "caveat",
+        "flavorNote"
+      ],
+      "findings": [
+        "Kannabia confirme plusieurs années de croisements, sans donner les parents, une large ramification, diesel/gingembre et fond d’agrumes.",
+        "La version avec paramètres est lisible ; l’URL sans paramètres a échoué."
+      ],
+      "flavorReview": {
+        "current": [
+          "diesel",
+          "gingembre"
+        ],
+        "recommended": [
+          "diesel",
+          "gingembre"
+        ],
+        "confidence": "Moyenne — description primaire du créateur",
+        "notes": "Les deux notes sont explicites dans le texte du sélectionneur ; aucun effet thérapeutique n’est déduit de ce profil.",
+        "sources": [
+          "https://www.kannabia.com/es/semillas-marihuana-feminizadas/swiss-dream-cbd?clang=es&filtrar_faq=it"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-050",
+      "name": "CB Dream",
+      "verdict": "Confirmé comme description de Crop King Seeds",
+      "changedFields": [
+        "summary",
+        "history",
+        "lineage",
+        "caveat",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "La page actuelle confirme Blueberry × Original Haze, port compact/buissonnant, fleurs denses, myrtille, citron et pin.",
+        "L’ancienne URL des arômes échoue : remplacer la provenance par la fiche actuelle."
+      ],
+      "flavorReview": {
+        "current": [
+          "myrtille",
+          "citron"
+        ],
+        "recommended": [
+          "myrtille",
+          "citron"
+        ],
+        "confidence": "Moyenne — description primaire commerciale",
+        "notes": "Paire confirmée dans le texte et le tableau aromatique du fournisseur.",
+        "sources": [
+          "https://www.cropkingseeds.com/high-yielding-strain/cb-dream-marijuana-seeds/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-051",
+      "name": "CBD Kush",
+      "verdict": "Parenté confirmée ; arômes issus d’une dégustation",
+      "changedFields": [
+        "summary",
+        "history",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Dutch Passion confirme la collaboration CBD Crew et Kandy Kush × parent CBD non nommé.",
+        "Clark French décrit bien terre et anis, plus douceur/noix ; c’est une observation individuelle publiée par la marque.",
+        "Le catalogue PDF dépasse la limite de lecture ; la fiche produit accessible suffit pour la parenté."
+      ],
+      "flavorReview": {
+        "current": [
+          "terre",
+          "anis"
+        ],
+        "recommended": [
+          "terre",
+          "anis"
+        ],
+        "confidence": "Faible à moyenne — témoignage sensoriel attribué",
+        "notes": "Les deux notes sont vérifiables comme observations de Clark French, mais pas comme caractères universels de la variété.",
+        "sources": [
+          "https://dutch-passion.blog/dutch-passion-review-cbd-kush-by-clark-french/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-052",
+      "name": "Diesel CBD",
+      "verdict": "Source primaire retrouvée — attribution renforcée",
+      "changedFields": [
+        "summary",
+        "history",
+        "origin",
+        "lineage",
+        "characteristics",
+        "caveat",
+        "sources",
+        "reviewedAt",
+        "flavorNote"
+      ],
+      "findings": [
+        "Source officielle retrouvée : parenté, type et bouquet confirmés comme description du fournisseur.",
+        "Remplacer GrowDiaries et retirer la réserve sur l’absence de fiche primaire."
+      ],
+      "flavorReview": {
+        "current": [
+          "diesel",
+          "agrumes"
+        ],
+        "recommended": [
+          "diesel",
+          "agrumes"
+        ],
+        "confidence": "Moyenne — description primaire commerciale",
+        "notes": "Paire présente dans une fiche officielle consultée.",
+        "sources": [
+          "https://weedseedsexpress.nl/product/diesel-cbd-zaden"
+        ]
+      }
+    }
+  ]
+}

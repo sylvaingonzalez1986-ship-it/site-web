@@ -1,0 +1,155 @@
+{
+  "version": 6,
+  "date": "2026-10-29",
+  "mode": "Built-in image_gen; transparent edits. No CLI/API fallback.",
+  "direction": "Refined hand-inked cartoon village: variable weight contours, sculpted locks, gouache planes and selective printed texture. Preserve complete customization, registered geometry and all stored option codes.",
+  "assets": [
+    {
+      "name": "head-crop",
+      "prompt": "Use case: style-transfer.\nAsset type: a registered, modular game character head sprite, transparent square.\nInput image 1 is the exact edit target and geometry template. Input image 2 is supporting style reference for the hand-inked French coastal village world.\nRedraw ONLY the head in image 1 with noticeably more accomplished, beautiful editorial storybook drawing: variable-weight expressive dark ink, refined fine inner lines, sculpted chestnut hair with several graceful curved locks and warm light/shadow planes, softly modelled cream cheek, nose and ear, restrained fine stipple in the shadow only. Charming cartoon human, same familiar friendly identity, no realistic skin rendering. Add readable cream eye whites, small warm brown irises with black pupils and tiny cream catchlights, delicately drawn upper eyelids and subtle natural eyebrows. A joyful mouth with cream upper teeth and muted coral tongue, refined lips and cheek dimple. Keep face feature centers in their EXACT existing positions and fit details inside their current bounding shapes.\nCritical registration: retain the exact square canvas, huge transparent margins, current head scale, outline footprint, ear position, hair silhouette, face tilt, lower chin and every facial feature position. Do NOT enlarge, recenter, rotate or crop the head. No neck, torso, props, background, text or shadows outside head. Keep overall chestnut hair #694432, light cream skin. Render more attractive ink-and-gouache 2D illustration with subtle selective printed texture, no plastic/3D look and no heavy uniform marker outlines. Genuine alpha transparency.",
+      "sources": [
+        "public/contest/avatars/sylvain-v4/head-crop.webp",
+        "public/contest/releve/arrival-sylvain-v1.webp"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/head-crop.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/head-crop.webp"
+    },
+    {
+      "name": "patch-nose-small",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit the provided bald head master. Change ONLY the nose to a clearly smaller, delicate button nose: a short tapered ink curve and small warm shaded tip. Its center stays exactly at the current nose center. It must be visibly smaller than the original long C shape. No change to either eye or smile. EVERYTHING else must remain precisely unchanged: exact face outline, ink texture, eyes, brows, ear, scalp, position, angle, scale, huge transparent margins, overall square canvas. Same beautiful illustrated ink-and-gouache style, cream skin and source palette. Do not recenter, resize or crop the head. Do not add any object or text. Return full original frame with genuine transparent background.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-nose-small.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-nose-small.webp"
+    },
+    {
+      "name": "patch-nose-wide",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit the provided bald head master. Change ONLY the nose to a visibly broader rounded cartoon nose with two subtle nostril marks and gently shaded tip, finely tapered ink. Keep its center and preserve both eyes and mouth, fit entirely between the original eyes and mouth. Warm cream matching surrounding skin. EVERYTHING else must remain precisely unchanged: exact face outline, ink texture, eyes, brows, ear, scalp, position, angle, scale, huge transparent margins, overall square canvas. Same beautiful illustrated ink-and-gouache style, cream skin and source palette. Do not recenter, resize or crop the head. Do not add any object or text. Return full original frame with genuine transparent background.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-nose-wide.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-nose-wide.webp"
+    },
+    {
+      "name": "patch-mouth-smile",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit the provided bald head master. Change ONLY the mouth expression to a lovely CLOSED gentle smile: lips together, one fine upward sweeping ink line, subtle warm lower-lip shadow, tiny dimples. No teeth, tongue or open mouth. Keep smile corners and center in the same region as original, erase ALL old open mouth and fill with matching skin shading. EVERYTHING else must remain precisely unchanged: exact face outline, ink texture, eyes, brows, ear, scalp, position, angle, scale, huge transparent margins, overall square canvas. Same beautiful illustrated ink-and-gouache style, cream skin and source palette. Do not recenter, resize or crop the head. Do not add any object or text. Return full original frame with genuine transparent background.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-mouth-smile.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-mouth-smile.webp"
+    },
+    {
+      "name": "patch-mouth-calm",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit the provided bald head master. Change ONLY the mouth to a small relaxed CLOSED neutral mouth: a short delicately curved ink line near the center of the old smile region, tiny lower-lip shadow, peaceful friendly expression. Clearly subtler and shorter than a big smile. Erase all old teeth, tongue and open mouth with matching softly modelled skin. EVERYTHING else stays precisely unchanged: exact face outline, all ink and gouache texture, eyes, nose, ears, scalp, position, angle, scale, huge transparent margins and square canvas. Same beautiful illustration style and cream skin. Do not recenter, resize or crop the head. No objects or text. Return full original frame with true transparency.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-mouth-calm.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-mouth-calm.webp"
+    },
+    {
+      "name": "patch-eyebrows-thick",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit the provided bald head master. Change ONLY the two eyebrows to thick expressive chestnut brows with a graceful natural arch, tapered ends and a few fine individual hairs, more substantial than original. Keep them in the SAME existing eyebrow positions and do not let them touch the eyes. EVERYTHING else stays precisely unchanged: exact face outline, all ink and gouache texture, eyes, nose, ears, scalp, position, angle, scale, huge transparent margins and square canvas. Same beautiful illustration style and cream skin. Do not recenter, resize or crop the head. No objects or text. Return full original frame with true transparency.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-eyebrows-thick.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-eyebrows-thick.webp"
+    },
+    {
+      "name": "patch-eyebrows-arched",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit the provided bald head master. Change ONLY the two eyebrows to elegant thin high-arched chestnut eyebrows, delicately tapered, one graceful sweep each, a few fine hairs. Stronger arch than original and lighter weight. Keep same general eyebrow regions, do not touch or move the eyes. EVERYTHING else stays precisely unchanged: exact face outline, all ink and gouache texture, eyes, nose, ears, scalp, position, angle, scale, huge transparent margins and square canvas. Same beautiful illustration style and cream skin. Do not recenter, resize or crop the head. No objects or text. Return full original frame with true transparency.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-eyebrows-arched.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-eyebrows-arched.webp"
+    },
+    {
+      "name": "patch-facialHair-stubble",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit provided bald head master. Add ONLY a close-trimmed chestnut stubble beard on lower cheeks and chin, short tapered hair strokes with a soft warm shadow base. Beautiful ink illustration, not a flat dot pattern, not a solid beard mass. Keep full happy mouth and nose clearly visible and unchanged. Do not alter jaw outline. No hair above the cheeks, retain bald scalp. EVERYTHING else must stay precisely unchanged: face outline, exact eyes, nose, ear, head size/placement/angle, square canvas and enormous transparent margins. Match polished ink-and-gouache printed storybook drawing. Chestnut #694432 source hair palette with shadow/highlight planes; cream skin. Do not resize, crop or recenter. No objects or text. Genuine transparent full original frame.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-facialHair-stubble.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-facialHair-stubble.webp"
+    },
+    {
+      "name": "patch-facialHair-beard",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit provided bald head master. Add ONLY a handsome short full chestnut beard from sideburn near ear across lower cheeks and around chin, with sculpted tufts, fine individual hair strokes, warm lighter tips and dark recesses. Keep original friendly mouth with teeth and tongue fully visible in a clean opening. No moustache over the lips. Beard follows existing jaw curve without enlarging overall face silhouette. Retain bald scalp, eyes and nose. EVERYTHING else must stay precisely unchanged: face outline, exact eyes, nose, ear, head size/placement/angle, square canvas and enormous transparent margins. Match polished ink-and-gouache printed storybook drawing. Chestnut #694432 source hair palette with shadow/highlight planes; cream skin. Do not resize, crop or recenter. No objects or text. Genuine transparent full original frame.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-facialHair-beard.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-facialHair-beard.webp"
+    },
+    {
+      "name": "patch-facialHair-moustache",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit provided bald head master. Add ONLY a neat chestnut moustache below the nose, two softly swept tapered halves, refined fine hairs and a few warm highlights. Width no greater than the smile, dark recess under nose. It must fit between nose and smile line, leaving the mouth fully visible and unchanged. No beard, keep bald scalp. EVERYTHING else must stay precisely unchanged: face outline, exact eyes, nose, ear, head size/placement/angle, square canvas and enormous transparent margins. Match polished ink-and-gouache printed storybook drawing. Chestnut #694432 source hair palette with shadow/highlight planes; cream skin. Do not resize, crop or recenter. No objects or text. Genuine transparent full original frame.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-facialHair-moustache.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-facialHair-moustache.webp"
+    },
+    {
+      "name": "patch-accessory-glasses",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit the provided bald head. Add ONLY a beautiful pair of slightly rounded RECTANGULAR ink-dark eyeglasses precisely aligned to the eyes, fine elegant dark frames, subtle tiny cream reflection along upper rim, thin temple reaching ear. Both eyes must remain completely visible and unchanged through crystal-clear colorless lenses. Frames distinctly rectangular, not circular. Everything except the new glasses must stay pixel-aligned and unchanged: facial features, skin shading/texture, outline, scalp, ear, head center/size/angle, square canvas and transparent margins. Match fine varied dark ink and printed storybook illustration. No tint, glare, white cloudy lens fill, new eyebrow or smile. Do not crop, resize or recenter. Genuine transparency outside the existing head.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-accessory-glasses.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-accessory-glasses.webp"
+    },
+    {
+      "name": "patch-accessory-round-glasses",
+      "prompt": "Use case: precise-object-edit. Asset type: registered transparent game face variant. Edit the provided bald head. Add ONLY a beautiful pair of ROUND ink-dark eyeglasses precisely aligned to the eyes, two circular lenses with fine elegant dark frames, delicate bridge, tiny cream light edge and thin temple toward ear. Eyes fully visible unchanged through crystal-clear colorless lenses. Clearly round rather than rectangular. Everything except the new glasses must stay pixel-aligned and unchanged: facial features, skin shading/texture, outline, scalp, ear, head center/size/angle, square canvas and transparent margins. Match fine varied dark ink and printed storybook illustration. No tint, glare, white cloudy lens fill, new eyebrow or smile. Do not crop, resize or recenter. Genuine transparency outside the existing head.",
+      "sources": [
+        "output/imagegen/chanvrier-v6/source/head-bald.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/patch-accessory-round-glasses.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/patch-accessory-round-glasses.webp"
+    },
+    {
+      "name": "accessory-earrings",
+      "prompt": "Use case: style-transfer. Asset type: transparent modular 2D game character accessory. Image 1 edit target with locked silhouette/crop. Image 2 style reference only. Upgrade the drawing to the accomplished ink-and-gouache storybook quality of image 2. A small gold hoop earring with delicate engraved edge, subtle brass shadow and warm cream highlights, elegant finely varied dark ink outline. Preserve one and only one hoop with its exact silhouette and fastening. Keep the transparent cutout tightly framed as in original, no surrounding scene, no head. Preserve aspect ratio, full object outline, orientation and registration. Do not enlarge margins or add anything. No text, background or external shadow.",
+      "sources": [
+        "public/contest/avatars/sylvain-v3/accessory-earrings.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/accessory-earrings.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/accessory-earrings.webp"
+    },
+    {
+      "name": "accessory-scarf",
+      "prompt": "Use case: style-transfer. Asset type: transparent modular 2D game character accessory. Image 1 edit target with locked silhouette/crop. Image 2 style reference only. Upgrade the drawing to the accomplished ink-and-gouache storybook quality of image 2. A tied ochre cotton neckerchief with beautifully drawn graceful folds, restrained woven texture, small fine seam lines, warm amber plane shading and cream highlights. Fine variable dark ink, elegantly drawn fabric. Keep the exact same single knot, loop and two tails, same silhouette. Transparent tight crop, no head or clothing. Preserve aspect ratio, full object outline, orientation and registration. Do not enlarge margins or add anything. No text, background or external shadow.",
+      "sources": [
+        "public/contest/avatars/sylvain-v3/accessory-scarf.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "sourceOutput": "output/imagegen/chanvrier-v6/source/accessory-scarf.png",
+      "runtime": "public/contest/avatars/chanvrier-v6/accessory-scarf.webp"
+    }
+  ],
+  "packaging": "node scripts/prepare-chanvrier-v6-features.mjs. Complete untrimmed square heads resized to 768×768. Ornaments keep prior display aspect. Alpha retained; lossless WebP.",
+  "hairProvenance": "docs/bete-de-concours/chanvrier-v6-hair-prompts.json",
+  "bodyProvenance": "docs/bete-de-concours/chanvrier-body-v6-prompts.json",
+  "assetDirectories": {
+    "headsAndFeatures": "public/contest/avatars/chanvrier-v6/",
+    "outfits": "public/contest/avatars/chanvrier-body-v6/",
+    "totalImages": 41
+  },
+  "validation": {
+    "typecheck": "tsc --noEmit passed",
+    "lint": "ESLint passed for the three runtime components and head audit",
+    "assetIntegrity": "All 41 WebP files have alpha; head and clothing frames validated",
+    "journey": "Creation, editing, validation, keyboard focus and save flow passed at 320, 390 and 1440 pixels",
+    "heads": "72 hair/face combinations plus 28 grids passed; semantic iris/pupil/eye-white checks passed; no browser errors",
+    "outfits": "16 bottom/shoe combinations, 6 tops, 12 skin/silhouette combinations and 6 colours passed; joints visually reviewed",
+    "showcase": "output/chanvrier-v6-comparison/nouveaux-personnages.png",
+    "localPreview": "http://localhost:3000/arene/test-personnage"
+  }
+}

@@ -9,6 +9,11 @@
 }
 
 .content { min-width: 0; padding-bottom: 28px; }
+.loadingView { display: grid; place-items: center; min-height: 55vh; max-width: 1152px; margin-inline: auto; padding: 48px 16px; }
+.statusSign { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; padding: 12px 16px; color: #172923; font: 700 14px/1.5 var(--font-body), sans-serif; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.statusSign svg { flex-shrink: 0; }
+.navigationFeedback { position: fixed; z-index: 120; top: 80px; left: 50%; transform: translateX(-50%); width: max-content; max-width: calc(100vw - 24px); pointer-events: none; }
+.navigationFeedback .statusSign { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 .socialPage { box-sizing: border-box; width: 100%; max-width: 1180px; min-width: 0; margin-inline: auto; padding: 20px 24px 32px; }
 @media (max-width: 600px) { .socialPage { padding: 12px 12px 24px; } }
 
@@ -42,19 +47,9 @@
   text-shadow: 1px 1px 0 #efc451;
 }
 .navMasthead .brandArt { flex: 0 0 76px; width: 76px; transform: rotate(4deg); }
-.navBrand > small { display: block; font-size: 11px; font-weight: 600; }
 
 .navGroup { display: grid; gap: 8px; }
 .navGroup + .navGroup { margin-top: 22px; }
-.navGroup > small {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 0 1px 2px;
-  color: #005c4b;
-  font: 800 17px/1.1 var(--font-display), Impact, sans-serif;
-}
-.navGroup > small::after { content: ""; flex: 1; height: 3px; border-block: 1px solid #005c4b; }
 
 .navGroup button {
   position: relative;
@@ -78,21 +73,9 @@
 }
 .navMark { position: relative; flex: 0 0 38px; height: 38px; }
 .navMark .navArt { display: block; width: 38px; }
-.navIndex {
-  position: absolute;
-  inset: auto auto -1px -2px;
-  padding: 1px 2px;
-  border: 1px solid #172923;
-  border-radius: 3px 2px 2px 1px;
-  background: #fff1d6;
-  color: #172923;
-  font: 800 8px/1 var(--font-body), sans-serif;
-  font-variant-numeric: tabular-nums;
-}
 .navLabel { min-width: 0; font: 800 20px/1.05 var(--font-display), Impact, sans-serif; }
 .navArrow { flex-shrink: 0; margin-left: auto; opacity: .35; font: 800 27px/.8 var(--font-display), Impact, sans-serif; }
 .navGroup button[aria-current=page] { color: #fff1d6; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; box-shadow: none; }
-.navGroup button[aria-current=page] .navIndex { background: #efc451; }
 .navGroup button[aria-current=page] .navArrow { opacity: 1; }
 .navGroup button:not(:disabled):active { transform: translateY(2px); box-shadow: none; }
 .navGroup button[aria-current=page]:not(:disabled):active {
@@ -280,6 +263,8 @@
     display: block;
     padding-bottom: var(--placard-bottom-nav-height);
   }
+  .shell[data-placard-view="game"] { --placard-bottom-nav-height: 0px; }
+  .shell[data-placard-view="game"] > .mobileNav { display: none; }
   .sidebar { display: none; }
   .mobileNav {
     position: fixed;

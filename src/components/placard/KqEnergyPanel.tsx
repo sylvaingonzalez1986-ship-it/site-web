@@ -3,6 +3,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { Check, Leaf, RefreshCw, Zap } from "lucide-react";
+import { createClientRequestKey } from "@/lib/client-request-key";
 import { formatKqCash, getKqEquipmentBuildingNumber, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KQ_ENERGY_MODES, quoteKqEnergy, quoteKqTentEnergy, type KqEnergyMode, type KqEnergyQuote, type KqEnergySnapshot } from "@/lib/kanab-quest-energy";
 import { getKqEffectiveTentProfiles, getKqProductionUnits } from "@/lib/kanab-quest-production";
@@ -15,6 +16,7 @@ import { getKqCampaignTotals, type KqCampaignMember } from "@/lib/kanab-quest-ca
 import { KqAllocationBar, KqBarChart, KqProgressMeter } from "./KqVisuals";
 
 const kwh = (wattHours: number) => `${(wattHours / 1000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kWh`;
+const finiteNonNegative = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value) && value >= 0;
 
 export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, lockedQuote, lockedTents, lockedScope, lockedWarehouse, runId, zoneId, campaign = false, campaignMembers, productionUnits = 1, disabled = false }: {
   campaign?: boolean;
@@ -33,6 +35,7 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
 }) {
   const api = useKqTutorialApi();
   const [snapshot, setSnapshot] = useState<KqEnergySnapshot | null>(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [pending, setPending] = useState(false);
@@ -41,6 +44,7 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   const generation = useRef(0);
   const refresh = useCallback(async () => {
     const id = ++generation.current;
+    setLoading(true);
     try {
       const params = new URLSearchParams();
       if (zoneId) params.set("zoneId", zoneId);
@@ -52,6 +56,8 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
       if (id === generation.current) { setSnapshot(body); setError(""); }
     } catch (reason) {
       if (id === generation.current) setError(reason instanceof Error ? reason.message : "Compteur indisponible.");
+    } finally {
+      if (id === generation.current) setLoading(false);
     }
   }, [api, campaign, runId, zoneId]);
   useEffect(() => {
@@ -61,8 +67,17 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
     const invalidate = () => { generation.current++; };
     return () => { invalidate(); unsubscribe(); };
   }, [refresh, api]);
-  const quote = lockedQuote ?? (campaign ? snapshot?.quotes.balanced : selectedMode ? snapshot?.quotes[selectedMode] : undefined);
+  const quote = lockedQuote ?? (campaign ? snapshot?.quotes?.balanced : selectedMode ? snapshot?.quotes?.[selectedMode] : undefined);
   const warehouse = lockedQuote ? lockedWarehouse : snapshot?.warehouse;
+  const recordedCampaign = Boolean(campaignMembers?.length);
+  const campaignTotals = campaign && campaignMembers?.length ? getKqCampaignTotals(campaignMembers) : null;
+  const campaignEnergy = campaignTotals?.energyCostCents ?? quote?.totalCents;
+  const campaignConsumables = campaignTotals?.consumablesCostCents ?? warehouse?.consumablesCostCents;
+  const campaignArea = campaignTotals?.areaM2 ?? warehouse?.activeAreaM2;
+  const campaignBudget = finiteNonNegative(campaignEnergy) && finiteNonNegative(campaignConsumables)
+    && finiteNonNegative(campaignArea) && Number.isFinite(campaignEnergy + campaignConsumables)
+    ? { energy: campaignEnergy, consumables: campaignConsumables, area: campaignArea, total: campaignEnergy + campaignConsumables } : null;
+  const campaignQuoteIncomplete = campaign && !recordedCampaign && !campaignBudget;
   const physicalQuote = !!warehouse || quote?.lines.some(line => line.code === "WAREHOUSE-CULTURE");
   useEffect(() => { if (warehouse && selectedMode && selectedMode !== "balanced") onModeChange?.("balanced"); }, [warehouse, selectedMode, onModeChange]);
   const sharedInstallation = Boolean(lockedQuote && lockedScope === "installation");
@@ -105,8 +120,8 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   const wearCostCents = wearPreviews.reduce((sum, item) => sum + item.wearCostCents, 0);
   const brokenEquipment = wearProfiles.flatMap(tent => tent.equippedCodes.filter(code => tent.cultureWear[code]?.due).map(code => scopedEquipmentName(tent.destination, code)));
   const fallbackEquipment = wearProfiles.flatMap(tent => tent.cultureOperationalCodes.filter(code => !tent.equippedCodes.includes(code)).map(code => scopedEquipmentName(tent.destination, code)));
-  useEffect(() => { onQuoteChange?.(error ? null : quote ?? null); }, [quote, error, onQuoteChange]);
-  const invoice = snapshot?.invoices.find((item) => item.runId === runId);
+  useEffect(() => { onQuoteChange?.(error || campaignQuoteIncomplete || campaign && !recordedCampaign && loading ? null : quote ?? null); }, [quote, error, campaignQuoteIncomplete, campaign, recordedCampaign, loading, onQuoteChange]);
+  const invoice = snapshot?.invoices?.find((item) => item.runId === runId);
   const supplierInvoice = lockedQuote ? snapshot?.supplierInvoices?.find(item => item.runId === runId)
     ?? (snapshot?.supplierInvoice && snapshot.supplierInvoice.runId === runId ? snapshot.supplierInvoice : null) : null;
   const consumptionByEquipment = new Map<string, { label: string; value: number }>();
@@ -124,7 +139,7 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   const pay = async () => {
     if (inFlight.current || !snapshot || due <= 0 || snapshot.cashCents < due) return;
     inFlight.current = true; setPending(true); setError(""); setNotice("");
-    if (payment.current?.amount !== due) payment.current = { amount: due, key: crypto.randomUUID() };
+    if (payment.current?.amount !== due) payment.current = { amount: due, key: createClientRequestKey() };
     try {
       const response = await api.request("/api/arena/placard/energy", { method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ requestKey: payment.current.key, expectedCents: due }) });
@@ -137,20 +152,25 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
   };
 
   if (campaign) {
-    const totals = campaignMembers?.length ? getKqCampaignTotals(campaignMembers) : null;
-    const energy = totals?.energyCostCents ?? quote?.totalCents;
-    const consumables = totals?.consumablesCostCents ?? warehouse?.consumablesCostCents;
-    const area = totals?.areaM2 ?? warehouse?.activeAreaM2;
     const invoices = (snapshot?.supplierInvoices ?? []).filter(item => campaignMembers?.some(member => member.runId === item.runId));
-    return <section className={styles.panel} aria-label="Charges de la campagne" data-campaign-energy>
-      <header><Zap aria-hidden="true" /><div><small>{campaignMembers ? "Installation enregistrée" : "Avant de commencer"}</small><h3>Charges de la campagne</h3></div><button type="button" aria-label="Actualiser les charges" disabled={disabled} onClick={() => void refresh()}><RefreshCw size={16} /></button></header>
-      {energy !== undefined && consumables !== undefined ? <><div className={styles.budgetHeader}><span>{area} m² engagés</span><strong>{formatKqCash(energy + consumables)}<small>Budget de la campagne</small></strong></div><KqAllocationBar label="Répartition des charges" items={[
-        { label: "Électricité", value: energy, displayValue: formatKqCash(energy), tone: "gold" },
-        { label: "Consommables", value: consumables, displayValue: formatKqCash(consumables), tone: "teal" },
-      ]} /><details><summary>Facturation et soins</summary><p>Consommables facturés à 5 jours réels. Les cartes jouées et les soins sont consommés une seule fois pour la campagne.</p></details></> : <p role="status">Calcul des charges…</p>}
+    const visibleBudget = recordedCampaign || !loading && !error ? campaignBudget : null;
+    const chargeStatus = visibleBudget ? "ready" : loading ? "loading" : error ? "error" : "incomplete";
+    return <section className={styles.panel} aria-label="Charges de la campagne" data-campaign-energy data-campaign-charge-status={chargeStatus} aria-busy={loading}>
+      <header><Zap aria-hidden="true" /><div><h3>{recordedCampaign ? "Charges enregistrées" : "Charges prévues"}</h3></div><button type="button" aria-label="Actualiser les charges" disabled={disabled} onClick={() => void refresh()}><RefreshCw size={16} /></button></header>
+      {visibleBudget ? <><div className={styles.budgetHeader}><span>{visibleBudget.area.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} m² engagés</span><strong data-campaign-budget>{formatKqCash(visibleBudget.total)}<small>Électricité et consommables</small></strong></div>
+        <dl className={styles.campaignBilling} data-campaign-billing>
+          <div><dt>Électricité</dt><dd>{formatKqCash(visibleBudget.energy)}</dd><dd className={styles.billingTiming}>Facturée à la récolte.</dd></div>
+          <div><dt>Consommables</dt><dd>{formatKqCash(visibleBudget.consumables)}</dd><dd className={styles.billingTiming}>À régler sous 5 jours réels après le lancement.</dd></div>
+        </dl>
+        <details><summary>Répartition des charges</summary><KqAllocationBar label="Répartition des charges" items={[
+          { label: "Électricité", value: visibleBudget.energy, displayValue: formatKqCash(visibleBudget.energy), tone: "gold" },
+          { label: "Consommables", value: visibleBudget.consumables, displayValue: formatKqCash(visibleBudget.consumables), tone: "teal" },
+        ]} /><p>Les cartes jouées et les soins sont consommés une seule fois pour toutes les cultures réunies. Les soins choisis pendant la culture ne sont pas compris dans ces charges.</p></details>
+      </> : loading ? <p role="status">{snapshot ? "Actualisation des charges…" : "Calcul des charges…"}</p>
+        : !error ? <p className={styles.error} role="alert">Les charges sont incomplètes. Actualise pour vérifier les montants et la surface avant de commencer.</p> : null}
       {campaignMembers && <details><summary>Détail par zone</summary><ul>{campaignMembers.map(member => <li key={member.runId}><span>{member.warehouse.zones[0]?.name}</span><b>{formatKqCash(member.warehouse.operatingCostCents)}</b></li>)}</ul>{invoices.map(item => <p key={item.runId}>{campaignMembers.find(member => member.runId === item.runId)?.warehouse.zones[0]?.name} : {formatKqCash(item.remainingCents)} restant.</p>)}</details>}
       {campaignMembers && <p><Link href="/arene/placard?view=treasury&pole=accounting">Consulter les factures</Link></p>}
-      {error && <p role="alert">{error}</p>}
+      {error && !loading && <p className={styles.error} role="alert">{error} Actualise les charges pour réessayer.</p>}
     </section>;
   }
   return <section className={styles.panel} aria-label="Charges de Kanab Quest">

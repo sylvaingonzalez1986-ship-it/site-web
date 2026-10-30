@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "@/components/navigation/NavigationLink";
 import { Check, Leaf, LockKeyhole, Pencil, RotateCw, X } from "lucide-react";
 import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { BuddieCard } from "@/components/lottery/BuddieCard";
@@ -25,6 +26,7 @@ type Props = {
   onSaved: (snapshot: KqBuddieAssignmentSnapshot) => void;
   onBlockedChange: (blocked: boolean) => void;
   onOpenWarehouse: () => void;
+  onOpenBuddiePacks?: () => void;
   onRefresh: () => void;
 };
 type AssignmentRequest = ReturnType<typeof getKqBuddieAssignmentRequest>;
@@ -33,7 +35,7 @@ type Status = "idle" | "saving" | "uncertain" | "conflict";
 
 /** Saves a single free assignment. Equipment and warehouse drafts stay untouched. */
 export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disabled = false, loading = false,
-  onSaved, onBlockedChange, onOpenWarehouse, onRefresh }: Props) {
+  onSaved, onBlockedChange, onOpenWarehouse, onOpenBuddiePacks, onRefresh }: Props) {
   const api = useKqTutorialApi();
   const id = useId();
   const [selectedZoneId, setSelectedZoneId] = useState<string | null>(null);
@@ -98,6 +100,7 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
     || !!snapshot?.activeRuns?.some(run => !run.zoneId);
   const occupied = (zoneId: string) => legacyBusy || !!snapshot?.activeRuns?.some(run => run.zoneId === zoneId);
   const buddies = KQ_BUDDIES.filter(buddie => ownedCodes?.includes(buddie.code));
+  const emptyCollection = ownedCodes !== null && ownedCodes.length === 0;
   const unavailableReasons: Record<string, string> = {};
   if (selectedZone) for (const buddie of buddies) {
     const elsewhere = zones.find(zone => zone.id !== selectedZone.id && zone.buddieCode === buddie.code);
@@ -173,6 +176,11 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
         onClick={onOpenWarehouse}><Pencil size={15} aria-hidden="true" /> Aménager</button>
     </header>
     <p className={styles.intro}>Un Buddie par zone, les mêmes cartes pour toutes. Une zone vide ne participe pas.</p>
+    {emptyCollection ? <div className={styles.empty} data-empty-buddie-collection>
+      <p role="status"><strong>Un Buddie pour commencer</strong><br />Il te faut une carte Buddie dans ta collection pour choisir une variété. Elle est conservée pendant la culture.</p>
+      {onOpenBuddiePacks ? <button type="button" disabled={disabled || blocked} onClick={onOpenBuddiePacks}>Découvrir les Packs Buddies</button>
+        : !api.isTutorial ? <Link href="/arene/placard?view=shop&section=buddies&from=game" aria-disabled={disabled || blocked || undefined} onClick={event => { if (disabled || blocked) event.preventDefault(); }}>Découvrir les Packs Buddies</Link> : null}
+    </div> : null}
     {!snapshot ? <div className={styles.empty}><p>{loading ? "Lecture des zones de culture…" : "Les zones de culture sont indisponibles."}</p><button type="button" disabled={disabled || blocked || loading} onClick={onRefresh}>Actualiser</button></div>
       : !zones.length ? <p className={styles.empty}>Ajoute une zone de culture dans ton entrepôt pour accueillir un Buddie.</p>
         : <div className={styles.zones}>
@@ -199,13 +207,13 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
                 <h3>{buddie?.name ?? (zone.buddieCode ? "Buddie à vérifier" : "Choisis ton Buddie")}</h3>
                 <p className={styles.state}>{busy || remaining ? <LockKeyhole size={13} aria-hidden="true" /> : zone.active && zone.buddieCode && rotation && ownedCodes?.includes(zone.buddieCode) ? <Check size={13} aria-hidden="true" /> : null}{statusLabel}</p>
                 <div className={styles.actions}>
-                  <button type="button" ref={node => { if (node) triggers.current.set(zone.id, node); else triggers.current.delete(zone.id); }}
+                  {!emptyCollection ? <button type="button" ref={node => { if (node) triggers.current.set(zone.id, node); else triggers.current.delete(zone.id); }}
                     data-culture-buddie-change={zone.id} disabled={unavailable || ownedCodes === null || rotation === null}
                     aria-label={`${zone.buddieCode ? "Changer" : "Choisir"} le Buddie de la ${label.toLowerCase()}`}
                     aria-expanded={selectedZoneId === zone.id} aria-controls={selectedZoneId === zone.id ? `${id}-picker` : undefined}
                     onClick={() => { setSelectedZoneId(previous => previous === zone.id ? null : zone.id); setError(""); setNotice(""); }}>
                     {zone.buddieCode ? "Changer" : "Choisir"}
-                  </button>
+                  </button> : null}
                   {zone.buddieCode ? <button type="button" className={styles.remove} data-culture-buddie-remove={zone.id}
                     disabled={unavailable || ownedCodes === null || rotation === null} aria-label={`Retirer l’affectation de ${buddie?.name ?? "ce Buddie"} à la ${label.toLowerCase()}`}
                     onClick={() => choose(zone.id, null)}>Retirer</button> : null}
@@ -225,7 +233,7 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
       {status === "uncertain" ? <button type="button" data-culture-buddie-retry onClick={() => { if (attempt.current) void send(attempt.current); }}><RotateCw size={15} aria-hidden="true" /> Réessayer la même demande</button> : null}
       {status === "conflict" ? <button type="button" data-culture-buddie-refresh onClick={refresh}><RotateCw size={15} aria-hidden="true" /> Actualiser les affectations</button> : null}
     </div>
-    {selectedZone ? <div ref={picker} id={`${id}-picker`} tabIndex={-1} className={styles.picker} data-culture-buddie-picker={selectedZone.id}>
+    {selectedZone && !emptyCollection ? <div ref={picker} id={`${id}-picker`} tabIndex={-1} className={styles.picker} data-culture-buddie-picker={selectedZone.id}>
       <div className={styles.pickerBar}><span>{selectedZone.width * selectedZone.height} m² · Affectation gratuite</span><button type="button" className={styles.secondary} disabled={blocked} aria-label="Fermer le choix du Buddie" onClick={() => { setSelectedZoneId(null); restoreFocus(selectedZone.id); }}><X size={15} aria-hidden="true" /> Fermer</button></div>
       <KqBuddieCarousel key={selectedZone.id} id={`${id}-choices`} title={`Un Buddie pour la ${(selectedIdentity?.label ?? "zone").toLowerCase()}`} buddies={buddies} artwork={artwork}
         selectedCode={selectedZone.buddieCode ?? ""} rotation={rotation} compactRotation

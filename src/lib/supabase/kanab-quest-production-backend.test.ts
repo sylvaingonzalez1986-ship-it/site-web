@@ -48,7 +48,7 @@ describe("production backend", () => {
       kq_equipment_loadouts:[{equipment_code:"LED-300"},{tent_number:2,equipment_code:"LED-300"}],
     };
     createSupabaseServiceClient.mockReturnValue({rpc:vi.fn().mockImplementation((name:string)=>Promise.resolve({error:null,
-      data:name==="rpc_kq_chanvrier_career"?createChanvrierCareerSnapshot():null})),from:(table:string)=>{
+      data:name==="rpc_kq_jury_readiness"?{availableFlowerCount:0,curingFlowerCount:0}:name==="rpc_kq_chanvrier_career"?createChanvrierCareerSnapshot():null})),from:(table:string)=>{
       const query={select:()=>query,eq:()=>query,order:()=>query,single:()=>query,then:(resolve:(value:unknown)=>unknown)=>Promise.resolve({data:rows[table]??[],error:null,count:0}).then(resolve)};
       return query;
     }});

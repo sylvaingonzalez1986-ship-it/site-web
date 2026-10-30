@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { KQ_GAME_DAY_MS } from "./kanab-quest-business";
+import { planKqStoragePlacement, type KqStorageCapacity } from "./kanab-quest-storage";
 import { createKqCareState } from "./kanab-quest-care";
 import { getKqStageDisplayName, KQ_STAGES } from "./kanab-quest-game";
 import { changeKqStorageCapacity, changeKqStorageMethod, createKqStorageLot, fillKqStorageCapacity, getKqStorageExposureRates, getKqStorageInventory, isKqStorageCapacity, isKqStorageLot, KQ_CURING_DURATION_MS, KQ_STARTER_STORAGE_CONTAINERS, KQ_STORAGE_CONTAINERS, KQ_STORAGE_METHODS, KQ_STORAGE_OVERFLOW_GRACE_MS, planKqStorageAllocation, projectKqStorageCapacity, projectKqStorageLot, resizeKqStorageCapacity, settleKqStorageLot } from "./kanab-quest-storage";
@@ -9,6 +10,27 @@ const baseline = { varietyCode: "KANAB-001", juryScore: 9, aroma: 92,
   care: { ...createKqCareState(), terpenes: 92, cannabinoidExpression: 90 } };
 const createLot = () => createKqStorageLot({ flowerId: "flower-1", harvestedAt: new Date(origin - 3 * KQ_GAME_DAY_MS).toISOString(), curingStartedAt: new Date(origin).toISOString(), baseline });
 const atDay = (days: number) => origin + days * KQ_GAME_DAY_MS;
+
+describe("exact container placement", () => {
+  const capacity: KqStorageCapacity = { totalUnits: 501, allocations: [{ containerCode: "GLASS-1L", quantity: 1, storedUnits: 500 }], overflowDeadlineAt: new Date(origin).toISOString() };
+  it("reserves only the chosen model, rounds up whole containers and preserves the deadline", () => {
+    const before = structuredClone(capacity);
+    expect(planKqStoragePlacement({ capacity, containerCode: "GLASS-1L", ownedContainers: { "GLASS-1L": 3, "CANNATROL": 1 },
+      reservedAllocations: [{ containerCode: "GLASS-1L", quantity: 1, storedUnits: 20 }] })).toEqual({ ...capacity,
+      allocations: [{ containerCode: "GLASS-1L", quantity: 2, storedUnits: 501 }] });
+    expect(capacity).toEqual(before);
+  });
+  it("never borrows another lot’s spare capacity or falls back to an available different model", () => {
+    expect(() => planKqStoragePlacement({ capacity, containerCode: "GLASS-1L", ownedContainers: { "GLASS-1L": 2, "CANNATROL": 1 },
+      reservedAllocations: [{ containerCode: "GLASS-1L", quantity: 1, storedUnits: 1 }] })).toThrow("Pas assez");
+    expect(() => planKqStoragePlacement({ capacity, containerCode: "CANNATROL", ownedContainers: { "GLASS-1L": 10 } })).toThrow("pas installé");
+  });
+  it("reuses this lot’s reservation and preserves warehouse overflow rules", () => {
+    const full: KqStorageCapacity = { ...capacity, totalUnits: 500, automaticOverflowSale: false, overflowDeadlineAt: null };
+    expect(planKqStoragePlacement({ capacity: full, containerCode: "GLASS-1L", ownedContainers: { "GLASS-1L": 1 } })).toEqual(full);
+    expect(() => planKqStoragePlacement({ capacity: { ...full, totalUnits: 0, allocations: [] }, containerCode: "GLASS-1L", ownedContainers: { "GLASS-1L": 1 } })).toThrow("plus disponible");
+  });
+});
 
 describe("warehouse curing and conservation", () => {
   it("starts six real hours at the verdict, independently of harvest", () => {

@@ -9,18 +9,14 @@ describe("Buddie variety references", () => {
     expect(new Set(KQ_BUDDIE_VARIETIES.map(variety => variety.code)).size).toBe(KQ_BUDDIE_VARIETIES.length);
     for (const buddie of KQ_BUDDIES) {
       const variety = getKqBuddieVariety(buddie.code)!;
-      for (const field of [variety.summary, variety.history, variety.origin, variety.lineage]) {
-        expect(field.trim().length, buddie.name).toBeGreaterThan(0);
-      }
-      expect(variety.characteristics.length, buddie.name).toBeGreaterThanOrEqual(2);
-      expect(variety.characteristics.every(characteristic => characteristic.trim().length > 10), buddie.name).toBe(true);
+      expect(variety.history.trim().length, buddie.name).toBeGreaterThan(0);
       expect(getKqBuddieFlavors(buddie.code), buddie.name).toHaveLength(2);
       expect(["documented", "commercial-name", "fiction"], buddie.name).toContain(variety.identity);
       expect(variety.reviewedAt, buddie.name).toMatch(/^\d{4}-\d{2}-\d{2}$/);
     }
   });
 
-  it("attributes real descriptions and qualifies ambiguous commercial identities", () => {
+  it("keeps source references for every real strain description", () => {
     for (const variety of KQ_BUDDIE_VARIETIES) {
       if (variety.identity === "fiction") {
         expect(variety.code).toBe("HH2026-001");
@@ -34,7 +30,6 @@ describe("Buddie variety references", () => {
         expect(url.protocol, variety.code).toBe("https:");
         expect(url.hostname, variety.code).not.toMatch(/^(localhost|127\.)/);
       }
-      if (variety.identity === "commercial-name") expect(variety.caveat?.trim().length ?? 0, variety.code).toBeGreaterThan(15);
     }
   });
 

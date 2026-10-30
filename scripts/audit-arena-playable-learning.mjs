@@ -63,7 +63,7 @@ async function playOperations(id){
   } else {
     await button('Transformer');await page.waitForSelector('[data-screen="preparation"]');await page.select('[data-screen="preparation"] select','dry-sift');await button('Transformer et continuer');
     await page.waitForSelector('dialog[aria-labelledby="commerce-confirm-title"][open]');await coachCheck(id);await screenshot('market-preparation-confirmation-390');
-    await button('Confirmer','dialog[aria-labelledby="commerce-confirm-title"][open]');await page.waitForSelector('[data-screen="distribution"]');await button('Grossistes');await button('Vendre ce lot');
+    await button('Confirmer','dialog[aria-labelledby="commerce-confirm-title"][open]');await page.waitForSelector('[data-screen="distribution"]');await button('Grossistes');await button('Voir le montant net');
     await page.waitForSelector('dialog[aria-labelledby="commerce-confirm-title"][open]');await coachCheck(id);await button('Confirmer','dialog[aria-labelledby="commerce-confirm-title"][open]');await page.waitForSelector('[data-screen="receipt"]');
   }
   await page.waitForSelector(`${lessonDialog(id)} [data-playable-coach][data-complete="true"]`);
@@ -73,7 +73,12 @@ async function playDiscovery(id){
     await button('Ouvrir le pack');await page.waitForSelector('[data-pack-phase="cards"]');await button('Tout révéler');await page.waitForSelector('[data-pack-phase="recap"]');await button('Ranger dans mon album');
     await page.waitForFunction(()=>document.querySelector('[data-playable-discovery="collection"]')?.textContent.includes('3 cartes'));
   } else if(id==='specialties'){
-    await page.type('dialog[data-chanvrier-profile] input[autocomplete="nickname"]','ApprentiAudit');await button('Féminine');await button('Choisir ma force');await button('Bricoleur');await button('Créer mon chanvrier');
+    const profileDialog='dialog[data-chanvrier-profile][open]';
+    await page.waitForSelector(`${profileDialog}[data-profile-step="look"]`);
+    await page.type(`${profileDialog} input[autocomplete="nickname"]`,'ApprentiAudit');await button('Féminine');
+    await click(`${profileDialog} [data-profile-next]`);await page.waitForSelector(`${profileDialog}[data-profile-step="strength"]`);await button('Bricoleur');
+    await click(`${profileDialog} [data-profile-next]`);await page.waitForSelector(`${profileDialog}[data-profile-step="review"]`);
+    await click(`${profileDialog} input[name="confirm-strength"]`);await click(`${profileDialog} [data-profile-next]`);
   } else if(id==='missions'){
     await button('Tous mes défis');await button('Récupérer mon pack');await button('Ouvrir mon pack',`${lessonDialog(id)} [data-mission-receipt]`);await page.waitForSelector('dialog[data-mission-pack-opening][open] [data-support-pack-reveal]');
     assert.equal(await page.$$eval('dialog[data-mission-pack-opening] [data-support-pack-reveal] article',cards=>cards.length),3);await page.waitForFunction(()=>[...document.querySelectorAll('dialog[data-mission-pack-opening] [data-support-pack-reveal] img')].every(img=>img.complete&&img.naturalWidth>0));await coachCheck(id);

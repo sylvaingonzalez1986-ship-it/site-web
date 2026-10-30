@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { ARENA_RELEVE_VISITS_KEY, arenaIntroductionKey, arenaLearningAccountKey, createArenaLearningStorage, hasSeenArenaIntroduction, markArenaIntroductionCompleted, rememberArenaIntroduction } from './arena-introduction';
-import { ARENA_RELEVE_STORAGE_KEY, createArenaReleveSession } from './arena-releve-session';
+import { ARENA_LEARNING_ENTRY_KEY, ARENA_RELEVE_VISITS_KEY, arenaIntroductionKey, arenaLearningAccountKey, createArenaLearningStorage, getArenaLearningEntryScreen, hasSeenArenaIntroduction, markArenaIntroductionCompleted, readArenaLearningEntryChoice, rememberArenaIntroduction, rememberArenaLearningEntryChoice } from './arena-introduction';
+import { ARENA_RELEVE_STORAGE_KEY, createArenaReleveSession, readArenaReleveResume } from './arena-releve-session';
 
 function backing() {
   const rows = new Map<string, string>();
@@ -74,5 +74,87 @@ describe('First game introduction', () => {
     expect(session.getSnapshot().state.renovation).toBe('opened');
     expect(session.getSnapshot().storageWarning).not.toBe('');
     expect(() => markArenaIntroductionCompleted(scoped)).not.toThrow();
+  });
+
+  it('offers new and uncertain accounts a choice without forcing a lesson on returning players', () => {
+    expect(getArenaLearningEntryScreen('new', false, null)).toBe('choice');
+    expect(getArenaLearningEntryScreen('unavailable', false, null)).toBe('choice');
+    expect(getArenaLearningEntryScreen('seen', false, null)).toBe('quarter');
+    expect(getArenaLearningEntryScreen('unavailable', true, null)).toBe('quarter');
+  });
+
+  it('remembers an interrupted lesson as a choice to resume, then honors a direct quarter choice', () => {
+    const store = backing();
+    const scoped = createArenaLearningStorage('choosing-player', false, () => store);
+    const session = createArenaReleveSession(scoped);
+    session.update(state => ({ ...state, renovation: 'opened' }));
+    const save = scoped.getItem(ARENA_RELEVE_STORAGE_KEY);
+    rememberArenaLearningEntryChoice('choosing-player', scoped, 'story');
+    const interrupted = readArenaLearningEntryChoice('choosing-player', scoped);
+    expect(getArenaLearningEntryScreen('seen', true, interrupted.choice)).toBe('choice');
+    expect(readArenaReleveResume(scoped)?.chapter).toBe(0);
+    rememberArenaLearningEntryChoice('choosing-player', scoped, 'quarter');
+    expect(getArenaLearningEntryScreen('new', false, readArenaLearningEntryChoice('choosing-player', scoped).choice)).toBe('quarter');
+    expect(scoped.getItem(ARENA_RELEVE_STORAGE_KEY)).toBe(save);
+  });
+
+  it('separates entry choices by account and never consumes a partial story save', () => {
+    const store = backing();
+    const first = createArenaLearningStorage('partial-choice-player', false, () => store);
+    const second = createArenaLearningStorage('new-choice-player', false, () => store);
+    first.setItem(ARENA_RELEVE_STORAGE_KEY, '{"version":1,"chapter":4}');
+    const original = first.getItem(ARENA_RELEVE_STORAGE_KEY);
+    expect(readArenaReleveResume(first)).toBe(null);
+    expect(readArenaLearningEntryChoice('partial-choice-player', first).choice).toBe(null);
+    rememberArenaLearningEntryChoice('partial-choice-player', first, 'quick');
+    expect(readArenaLearningEntryChoice('new-choice-player', second).choice).toBe(null);
+    expect(second.getItem(ARENA_LEARNING_ENTRY_KEY)).toBe(null);
+    expect(first.getItem(ARENA_RELEVE_STORAGE_KEY)).toBe(original);
+    expect(store.getItem(ARENA_LEARNING_ENTRY_KEY)).toBe(null);
+  });
+
+  it('keeps a deliberate choice for this account in memory while reporting unavailable storage', () => {
+    const inaccessible = createArenaLearningStorage('inaccessible-choice', false, () => { throw Error('blocked'); });
+    expect(readArenaLearningEntryChoice('inaccessible-choice', inaccessible)).toEqual({ choice: null, storageUnavailable: true });
+    expect(rememberArenaLearningEntryChoice('inaccessible-choice', inaccessible, 'quarter')).toBe(false);
+    expect(readArenaLearningEntryChoice('inaccessible-choice', inaccessible)).toEqual({ choice: 'quarter', storageUnavailable: true });
+    expect(readArenaLearningEntryChoice('other-inaccessible-choice', inaccessible).choice).toBe(null);
+  });
+
+  it('ignores an obsolete preference without rewriting it or starting an adventure', () => {
+    const store = backing();
+    const scoped = createArenaLearningStorage('obsolete-choice', false, () => store);
+    scoped.setItem(ARENA_LEARNING_ENTRY_KEY, 'removed-lesson');
+    expect(readArenaLearningEntryChoice('obsolete-choice', scoped)).toEqual({ choice: null, storageUnavailable: false });
+    expect(scoped.getItem(ARENA_LEARNING_ENTRY_KEY)).toBe('removed-lesson');
+    expect(scoped.getItem(ARENA_RELEVE_STORAGE_KEY)).toBe(null);
+  });
+
+  it('honors a quarter choice made by the learning launcher using the same scoped storage', () => {
+    const store = backing();
+    const scoped = createArenaLearningStorage('launcher-choice', false, () => store);
+    rememberArenaLearningEntryChoice('launcher-choice', scoped, 'quick');
+    scoped.setItem(ARENA_LEARNING_ENTRY_KEY, 'quarter');
+    expect(readArenaLearningEntryChoice('launcher-choice', scoped).choice).toBe('quarter');
+    expect(getArenaLearningEntryScreen('new', false, readArenaLearningEntryChoice('launcher-choice', scoped).choice)).toBe('quarter');
+  });
+
+  it('synchronizes launcher choices with a failed-write fallback and then recovered storage', () => {
+    const store = backing();
+    let writable = false;
+    const scoped = createArenaLearningStorage('launcher-recovery', false, () => ({ ...store, setItem(key, value) {
+      if (!writable) throw Error('quota');
+      store.setItem(key, value);
+    } }));
+    expect(rememberArenaLearningEntryChoice('launcher-recovery', scoped, 'quick')).toBe(false);
+    expect(() => scoped.setItem(ARENA_LEARNING_ENTRY_KEY, 'quarter')).toThrow('quota');
+    expect(readArenaLearningEntryChoice('launcher-recovery', scoped).choice).toBe('quarter');
+    expect(readArenaLearningEntryChoice('other-launcher-recovery', createArenaLearningStorage('other-launcher-recovery', false, () => store)).choice).toBe(null);
+    writable = true;
+    scoped.setItem(ARENA_LEARNING_ENTRY_KEY, 'story');
+    expect(readArenaLearningEntryChoice('launcher-recovery', scoped).choice).toBe('story');
+    scoped.setItem(ARENA_LEARNING_ENTRY_KEY, 'quarter');
+    expect(readArenaLearningEntryChoice('launcher-recovery', scoped).choice).toBe('quarter');
+    expect(scoped.getItem(ARENA_RELEVE_STORAGE_KEY)).toBe(null);
   });
 });

@@ -37,9 +37,9 @@
 .claim:active:not(:disabled) { transform: translateY(1px); }
 .note .error { padding: 7px 0 7px 10px; border-left: 3px solid #8a3027; color: #7d2823; font-size: 11px; }
 .success { display: grid; gap: 4px; padding-top: 12px; border-top: 1px solid #17292355; }
-.success p, .success nav { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
-.success a, .login a { color: #003f30; font-size: 11px; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
-.success a { display: inline-flex; align-items: center; min-height: 44px; margin-right: 9px; }
+.success > p, .success > nav { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
+.success > nav a, .login a { color: #003f30; font-size: 11px; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
+.success > nav a { display: inline-flex; align-items: center; min-height: 44px; margin-right: 9px; }
 .checklist button:focus-visible, .claim:focus-visible, .note a:focus-visible { outline: 2px solid #003f30; outline-offset: 3px; box-shadow: 0 0 0 5px #fffaf1; }
 .note[data-compact] { margin-block: 16px 20px; }
 .note[data-compact] .title { font-size: 25px; }

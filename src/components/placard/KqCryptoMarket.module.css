@@ -2,7 +2,7 @@
 .header { display:flex; gap:18px; align-items:center; }
 .header h3 { margin:5px 0; font:900 clamp(1.65rem,3vw,2.1rem)/1.1 var(--font-display),Impact,sans-serif; text-transform:uppercase; }
 .header p { margin:0; color:#536058; font-size:.9rem; }
-.header small,.orderHeader small { font:750 .66rem/1.5 ui-monospace,monospace; text-transform:uppercase; letter-spacing:.07em; color:#344a40; }
+.orderHeader small { font:750 .66rem/1.5 ui-monospace,monospace; text-transform:uppercase; letter-spacing:.07em; color:#344a40; }
 .icon { display:grid; place-items:center; width:68px; height:72px; flex-shrink:0; border:1px solid #172923; background:#149b8b; box-shadow:var(--game-panel-shadow, none); color:#172923; transform:rotate(-4deg); border-radius:var(--game-panel-radius, 2px); }
 .stamp { margin-left:auto; padding:10px; border:1px dashed #172923; color:#172923; font:800 .62rem/1.7 ui-monospace,monospace; text-align:center; transform:rotate(5deg); border-color:#172923; border-radius:var(--game-panel-radius, 2px); background:var(--game-surface-warm, #ffae59); }
 .disclaimer,.source { color:#536058; font-size:.78rem; line-height:1.7; }

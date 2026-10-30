@@ -90,6 +90,20 @@ describe("POST /api/arena/placard/runs", () => {
     expect(startKqPlayerRun).toHaveBeenCalledWith(customerId, expect.objectContaining(payload));
   });
 
+  it("forwards the reviewed warehouse revision with a campaign launch", async () => {
+    startKqPlayerRun.mockResolvedValue({ runId: "run-1" });
+    const payload = { campaign: true, requestKey: "11111111-1111-4111-8111-111111111111", buddieCode: "HH2026-003", deckCodes: [], expectedWarehouseRevision: 4 };
+    expect((await POST(request(payload))).status).toBe(201);
+    expect(startKqPlayerRun).toHaveBeenCalledWith(customerId, expect.objectContaining(payload));
+  });
+
+  it.each([null, "4", 0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1])("rejects an invalid reviewed revision instead of dropping its precondition: %j", async expectedWarehouseRevision => {
+    const response = await POST(request({ campaign: true, buddieCode: "HH2026-003", deckCodes: [], expectedWarehouseRevision }));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error: "Révision de l’aménagement invalide." });
+    expect(startKqPlayerRun).not.toHaveBeenCalled();
+  });
+
   it("starts the atomic run for the authenticated owner only", async () => {
     startKqPlayerRun.mockResolvedValue({ runId: "run-1", burnReceipt: { id: "burn-1" } });
     const payload = {

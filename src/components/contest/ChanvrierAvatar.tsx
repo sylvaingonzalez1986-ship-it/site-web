@@ -13,7 +13,7 @@ function loadAccessory(name: string) {
     const image = new Image();
     image.onload = () => resolve(image);
     image.onerror = () => { accessories.delete(name); reject(new Error("Accessoire indisponible.")); };
-    image.src = `/contest/avatars/sylvain-v3/accessory-${name}.webp`;
+    image.src = `/contest/avatars/chanvrier-v6/accessory-${name}.webp`;
   });
   accessories.set(name, promise);
   return promise;
@@ -48,8 +48,8 @@ export function ChanvrierAvatar({ profile, className, view = "full" }: { profile
       const destination = canvas.current.getContext("2d")!;
       destination.clearRect(0, 0, 768, view === "portrait" ? 768 : 1280);
       destination.imageSmoothingQuality = "high";
-      // Keep the longest braids and leftmost ponytail inside the closer face view.
-      if (view === "portrait") destination.drawImage(frame, 80, 40, 560, 560, 0, 0, 768, 768);
+      // Leave room around the registered v6 braids and the leftmost ponytail.
+      if (view === "portrait") destination.drawImage(frame, 64, 40, 592, 592, 0, 0, 768, 768);
       else destination.drawImage(frame, 0, 0);
       setFailed(false); setRendered(signature);
     }).catch(() => { if (!cancelled) setFailed(true); });

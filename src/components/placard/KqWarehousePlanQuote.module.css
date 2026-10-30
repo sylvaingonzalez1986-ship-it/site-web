@@ -1,0 +1,58 @@
+.sheet {
+  display: grid;
+  gap: 14px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  color: #172923;
+  font-size: 14px;
+  line-height: 1.5;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+}
+
+.heading h3 { margin: 0; font-family: var(--font-display), Impact, sans-serif; font-size: 26px; line-height: 1.15; }
+.heading p,.note { margin: 4px 0 0; color: #536058; font-size: 14px; }
+.payment,.invoice { display: grid; gap: 8px; margin: 0; }
+.payment > div,.invoice > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 3px 12px; }
+.payment dt,.invoice dt { min-width: 0; }
+.payment dd,.invoice dd { margin: 0; font-weight: 700; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.payable { color: #087c6c; font-weight: 700; }
+.payable dd { font-family: var(--font-display), Impact, sans-serif; font-size: 32px; line-height: 1.15; }
+.shortfall { margin: 0; color: #873321; }
+.details { min-width: 0; border-top: 1px solid #17292335; }
+.details > summary { padding: 12px 2px; min-height: 44px; box-sizing: border-box; cursor: pointer; font-weight: 600; }
+.details > summary::marker { color: #087c6c; }
+.details > summary:focus-visible { outline: 3px solid #087c6c; outline-offset: 3px; }
+.detailBody { display: grid; gap: 14px; padding: 0 2px 8px; }
+.changes,.purchases ul { list-style: none; padding: 0; margin: 0; }
+.changes li { padding: 10px 0; border-bottom: 1px solid #17292325; }
+.changes li:first-child { padding-top: 0; }
+.changes li > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 10px; }
+.changes li > div > span { color: #536058; }
+.changes p { margin: 4px 0 0; overflow-wrap: anywhere; }
+.invoice small { display: block; color: #536058; font-size: 14px; }
+.total { padding-top: 8px; border-top: 1px solid #17292335; font-weight: 700; }
+.purchases h4 { margin: 0 0 6px; font-size: 14px; }
+.purchases li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding: 7px 0; border-bottom: 1px solid #17292325; }
+.purchases li span { flex: 1 1 170px; min-width: 0; overflow-wrap: anywhere; }
+.purchases strong { font-variant-numeric: tabular-nums; }
+.aside,.actions { min-width: 0; }
+.aside > :first-child { margin-top: 0; }
+.aside > :last-child { margin-bottom: 0; }
+.actions > button { max-width: 100%; white-space: normal; }
+.compact { padding: 0; gap: 8px; border: 0; border-image: none; }
+.compact .heading h3 { display: none; }
+.compact .heading p { margin: 0; }
+.compact .payable dd { font-size: 26px; }
+.compact .details > summary { padding-top: 8px; padding-bottom: 8px; }
+@media (max-width: 420px) {
+  .sheet { padding: 15px; }
+  .compact { padding: 0; }
+  .heading h3 { font-size: 24px; }
+}

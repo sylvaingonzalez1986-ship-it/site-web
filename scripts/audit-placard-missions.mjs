@@ -93,12 +93,12 @@ try {
  await page.waitForFunction(()=>document.body.innerText.includes('Bravo ! Un pack de 10 cartes gagné.'));
  await page.waitForFunction(selector=>document.querySelector(selector).textContent.includes('Parcours terminé'),{},culture);
  await shot('claimed-390');
- assert.equal(await page.$$eval('footer button',buttons=>buttons.some(button=>button.textContent.includes('de mission'))),true,'Earned packs remain accessible in the mission footer');
- await clickText('Vente en ligne','nav[aria-label="Filtrer les parcours"] button');
+ assert.equal(await page.$$eval('[data-mission-receipt] button',buttons=>buttons.some(button=>button.textContent.includes('Ouvrir mon pack'))),true,'The newly earned pack remains accessible in its receipt');
+ await page.select('select[aria-label="Filtrer les parcours"]','online');
  assert.equal(await page.$$('details ol').then(items=>items.length),1);
- await clickText('Tous les parcours','nav[aria-label="Filtrer les parcours"] button');
+ await page.select('select[aria-label="Filtrer les parcours"]','all');
  await page.click('section[aria-label="Vente en ligne"] button');await waitClaim('first-online-sale');
- await page.evaluate(()=>{window.__counts.clients=1;});await clickText('Actualiser');
+ await page.evaluate(()=>{window.__counts.clients=1;});await page.click('[aria-label="Actualiser les objectifs"]');
  await page.waitForFunction(()=>document.querySelector('section[aria-label="Vente en ligne"] button').textContent.includes('Vendre en ligne'));
  await page.click('section[aria-label="Vente en ligne"] button');assert.equal(await page.evaluate(()=>window.__destination),'market');
  for(const scenario of ['guest','error','inactive','unavailable-card','legacy','complete']) {
@@ -116,10 +116,10 @@ try {
   }
   if(scenario==='unavailable-card')assert.equal(await page.$eval(culture+' button',button=>button.disabled),true,'Individual missing card disabled even with active collection');
   if(scenario==='legacy'){
-   await clickText('de mission à ouvrir','footer button');await page.waitForSelector('[data-support-pack-reveal]');
+   await clickText('de mission à ouvrir','[data-mission-packs] button');await page.waitForSelector('[data-support-pack-reveal]');
    assert.deepEqual(await page.evaluate(()=>window.__opened),['legacy-pack']);
    await page.click('[aria-label="Fermer le pack ouvert"]');
-   assert.equal(await page.$$('footer > button').then(items=>items.length),0);
+   assert.equal(await page.$$('[data-mission-packs] button').then(items=>items.length),0);
   }
   if(scenario==='complete')assert.equal(await page.$$eval('h2',els=>els.filter(el=>el.textContent.includes('Parcours terminé')).length),5);
  }

@@ -10,14 +10,14 @@ import { KqPlacardMapActivity } from "./KqPlacardMapActivity";
 import styles from "./KqPlacardMap.module.css";
 
 export type PlacardMapView = "game" | "harvests" | "market" | "treasury" | "shop" | "arena" | "missions" | "workshop";
-export type PlacardMapOpen = (view: PlacardMapView, options?: { treasuryPole?: "accounting" | "bank"; marketSection?: "sales" | "dashboard" | "management"; warehouseSection?: "storage"; harvestSection?: "storage"; catalog?: boolean; equipmentCode?: string }) => void;
+export type PlacardMapOpen = (view: PlacardMapView, options?: { treasuryPole?: "accounting" | "bank"; marketSection?: "sales" | "dashboard" | "management"; warehouseSection?: "storage"; harvestSection?: "storage"; catalog?: boolean; equipmentCode?: string; listingId?: string }) => void;
 
 const BUILDINGS = [
   { id: "warehouse", name: "Entrepôt", action: "Cultiver, aménager et suivre mes récoltes", Icon: Warehouse },
   { id: "bank", name: "Banque", action: "Prêts, épargne et placements", Icon: Landmark },
   { id: "office", name: "Bureau", action: "Factures et comptabilité", Icon: BriefcaseBusiness },
-  { id: "market", name: "Marché", action: "Transformer, vendre et gérer mon commerce", Icon: Store },
-  { id: "shop", name: "Boutique", action: "Acheter et ouvrir des packs Buddies et Botte du Chanvrier", Icon: ShoppingBag },
+  { id: "market", name: "Commerce", action: "Transformer, vendre et gérer mes annonces", Icon: Store },
+  { id: "shop", name: "Packs de cartes", action: "Acheter et ouvrir des packs Buddies et Botte du Chanvrier", Icon: ShoppingBag },
   { id: "arena", name: "Jury & duels", action: "Présenter mes Fleurs et participer aux duels", Icon: Swords },
   { id: "missions", name: "Missions", action: "Voir mes défis et récompenses", Icon: Target },
   { id: "collection", name: "Collections", action: "Ouvrir mes albums Buddies et Botte du Chanvrier", Icon: BookOpen },
@@ -45,7 +45,7 @@ export function KqPlacardMap(props: Parameters<typeof KqPlacardMapContent>[0]) {
   return <KqGameSoundProvider><KqPlacardMapContent {...props} /></KqGameSoundProvider>;
 }
 
-function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, readyLotCount, availableFlowerCount, recommended, highlightedBuilding, isolated = false }: {
+function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, readyLotCount, availableFlowerCount, curingFlowerCount, recommended, highlightedBuilding, isolated = false }: {
   onOpen: PlacardMapOpen;
   onOpenCollection: () => void;
   activeRun?: boolean;
@@ -53,6 +53,7 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
   tents: number | null;
   readyLotCount?: number;
   availableFlowerCount?: number;
+  curingFlowerCount?: number;
   recommended?: string;
   highlightedBuilding?: string | null;
   isolated?: boolean;
@@ -79,6 +80,7 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
   const hasCulture = activeRun === true;
   const hasReadyLots = typeof readyLotCount === "number" && Number.isSafeInteger(readyLotCount) && readyLotCount > 0;
   const hasAvailableFlowers = typeof availableFlowerCount === "number" && Number.isSafeInteger(availableFlowerCount) && availableFlowerCount > 0;
+  const hasCuringFlowers = typeof curingFlowerCount === "number" && Number.isSafeInteger(curingFlowerCount) && curingFlowerCount > 0;
 
   useEffect(() => {
     const node = viewport.current;
@@ -102,6 +104,20 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
     sound.playNavigation(392);
     updateMap({ zoomed: !zoomed });
     requestAnimationFrame(() => centerBuilding(selected ?? recommendedBuilding));
+  }
+  function revealFocusedLabel(button: HTMLButtonElement) {
+    const node = viewport.current;
+    const label = button.querySelector<HTMLElement>("[data-map-label]");
+    if (!node || !label || !button.isConnected) return;
+    const frame = node.getBoundingClientRect(), bounds = label.getBoundingClientRect();
+    // A building's illustrated bounds and its HTML sign are deliberately separate.
+    // Native focus scrolls the former; keep the sign and its focus ring in view too.
+    const inset = 8;
+    const left = bounds.left < frame.left + inset ? bounds.left - frame.left - inset
+      : Math.max(0, bounds.right - frame.left - node.clientWidth + inset);
+    const top = bounds.top < frame.top + inset ? bounds.top - frame.top - inset
+      : Math.max(0, bounds.bottom - frame.top - node.clientHeight + inset);
+    node.scrollBy({ left, top, behavior: "instant" });
   }
   function visit(id: BuildingId, origin: HTMLButtonElement) {
     sound.playNavigation(id === "warehouse" ? 293.66 : id === "market" ? 440 : 329.63);
@@ -148,15 +164,15 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
     if (event.currentTarget.hasPointerCapture(event.pointerId)) event.currentTarget.releasePointerCapture(event.pointerId);
   }
   function buildingStatus(id: BuildingId) {
-    if (id === "warehouse") return hasCulture ? "En culture" : activeRun === false ? "À cultiver" : null;
+    if (id === "warehouse") return hasCulture ? "En culture" : hasCuringFlowers ? `${curingFlowerCount} lot${curingFlowerCount > 1 ? "s" : ""} en affinage` : activeRun === false ? "À cultiver" : null;
     if (id === "market" && hasReadyLots) return `${readyLotCount} lot${readyLotCount > 1 ? "s" : ""} à vendre`;
     if (id === "market" && readyLotCount === 0) return "Aucun lot prêt";
     if (id === "arena" && hasAvailableFlowers) return `${availableFlowerCount} Fleur${availableFlowerCount > 1 ? "s prêtes" : " prête"}`;
-    if (id === "arena" && availableFlowerCount === 0) return "Aucune Fleur";
+    if (id === "arena" && availableFlowerCount === 0) return "Aucune Fleur prête";
     return null;
   }
   function buildingState(id: BuildingId) {
-    if (id === "warehouse") return hasCulture ? "active" : activeRun === false ? "idle" : "unknown";
+    if (id === "warehouse") return hasCulture || hasCuringFlowers ? "active" : activeRun === false ? "idle" : "unknown";
     if (id === "market") return hasReadyLots ? "active" : readyLotCount === 0 ? "idle" : "unknown";
     if (id === "arena") return hasAvailableFlowers ? "active" : availableFlowerCount === 0 ? "idle" : "unknown";
     return undefined;
@@ -171,9 +187,14 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
       <div className={styles.mapTools}>
         <button type="button" className={`${styles.zoomButton} ${styles.soundButton}`} data-map-sound aria-label="Son du jeu" title={sound.enabled ? "Couper le son du jeu" : "Activer le son du jeu"} aria-pressed={sound.enabled} onClick={sound.toggle}>{sound.enabled ? <Volume2 size={18} aria-hidden="true" /> : <VolumeX size={18} aria-hidden="true" />}<span>Son {sound.enabled ? "activé" : "coupé"}</span></button>
         <button type="button" className={styles.zoomButton} data-map-zoom-toggle aria-label={zoomed ? "Voir tout le quartier" : "Agrandir la carte"} aria-pressed={zoomed} aria-controls={viewportId} onClick={toggleZoom}>{zoomed ? <Scan size={18} aria-hidden="true" /> : <ZoomIn size={18} aria-hidden="true" />}<span>{zoomed ? "Tout le quartier" : "Agrandir"}</span></button>
-        <details className={styles.help}>
+        <details className={styles.help} onKeyDown={event => {
+          if (event.key !== "Escape" || !event.currentTarget.open) return;
+          event.preventDefault(); event.stopPropagation();
+          event.currentTarget.open = false;
+          event.currentTarget.querySelector("summary")?.focus({ preventScroll: true });
+        }}>
           <summary aria-label="Aide du quartier"><CircleHelp size={18} aria-hidden="true" /><span>Aide</span><ChevronDown size={13} aria-hidden="true" /></summary>
-          <div className={styles.helpContent}><strong>Entre dans ton quartier.</strong><p>Touche un bâtiment pour l’ouvrir. L’Entrepôt et le Marché proposent plusieurs activités juste sous la carte.</p><p>Agrandis pour explorer le décor en le faisant glisser. Les noms restent visibles ; le menu de Kanab Quest donne aussi accès à tous les lieux.</p><p>La Boutique propose les packs de cartes. Collections réunit tes albums. Pour le matériel, ouvre l’Entrepôt. Le Marché sert à vendre ; le Bureau et la Banque s’occupent des finances.</p></div>
+          <div className={styles.helpContent}><strong>Entre dans ton quartier.</strong><p>Touche un bâtiment pour l’ouvrir. L’Entrepôt et Commerce proposent plusieurs activités juste sous la carte.</p><p>Agrandis pour explorer le décor en le faisant glisser. Les noms restent visibles ; le menu de Kanab Quest donne aussi accès à tous les lieux.</p><p>Packs de cartes permet d’acquérir et d’ouvrir tes packs. Collections réunit tes albums. Pour le matériel, ouvre l’Entrepôt. Commerce sert à vendre ; le Bureau et la Banque s’occupent des finances.</p></div>
         </details>
       </div>
     </header>
@@ -208,7 +229,10 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
               data-map-hit-point={geometry.hitPoint} data-map-ground-point={geometry.groundPoint}
               style={{ left: geometry.left, top: geometry.top, width: geometry.width, height: geometry.height, "--label-x": geometry.labelLeft, "--label-y": geometry.labelTop, "--silhouette": geometry.clipPath } as CSSProperties}
               onPointerEnter={event => { if (event.pointerType !== "touch") setHoveredBuilding(id); }} onPointerLeave={() => setHoveredBuilding(current => current === id ? null : current)}
-              onFocus={() => setFocusedBuilding(id)} onBlur={() => setFocusedBuilding(current => current === id ? null : current)}
+              onFocus={event => {
+                setFocusedBuilding(id);
+                if (zoomed) { const button = event.currentTarget; requestAnimationFrame(() => revealFocusedLabel(button)); }
+              }} onBlur={() => setFocusedBuilding(current => current === id ? null : current)}
               aria-label={`${name} · ${action}${status ? ` · ${status}` : ""}`} aria-expanded={contextual ? selected === id : undefined} aria-controls={contextual ? panelId : undefined} aria-haspopup={id === "collection" ? "dialog" : undefined} onClick={event => visit(id, event.currentTarget)}>
               <span className={styles.buildingHitArea} data-map-hit-area={id} aria-hidden="true" />
               <span className={styles.buildingLabel} data-map-label={id}><span className={styles.buildingName}><Icon size={15} aria-hidden="true" />{name}{recommendedBuilding === id ? <i className={styles.recommendation} aria-label="Activité conseillée" /> : null}</span>{status ? <span className={styles.buildingStatus} data-map-status={id}>{status}</span> : null}</span>
@@ -219,15 +243,15 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
     </div>
     <div className={styles.mapFoot}><span><MapPin size={15} aria-hidden="true" /> Choisis un lieu pour continuer.</span>{zoomed ? <span><Move size={15} aria-hidden="true" /> Fais glisser pour explorer</span> : <span className={styles.legend}><i /> Ta prochaine action</span>}</div>
     {contextualBuilding ? <aside ref={panel} tabIndex={-1} className={styles.details} id={panelId} aria-labelledby={panelTitleId} onKeyDown={event => { if (event.key === "Escape") { if (isolated) { event.preventDefault(); event.stopPropagation(); } closePanel(); } }}>
-      <div className={styles.detailHeading}><div><span>{contextualBuilding === "warehouse" ? "Tes cultures et ton installation" : "Tes récoltes deviennent des ventes"}</span><h2 id={panelTitleId}>{contextualBuilding === "warehouse" ? "L’Entrepôt" : "Le Marché"}</h2></div><button type="button" className={styles.closePanel} aria-label="Fermer les activités du bâtiment" onClick={closePanel}><X size={18} aria-hidden="true" /></button></div>
-      <nav className={styles.actions} aria-label={`Activités · ${contextualBuilding === "warehouse" ? "L’Entrepôt" : "Le Marché"}`}>
+      <div className={styles.detailHeading}><div><h2 id={panelTitleId}>{contextualBuilding === "warehouse" ? "L’Entrepôt" : "Commerce"}</h2></div><button type="button" className={styles.closePanel} aria-label="Fermer les activités du bâtiment" onClick={closePanel}><X size={18} aria-hidden="true" /></button></div>
+      <nav className={styles.actions} aria-label={`Activités · ${contextualBuilding === "warehouse" ? "L’Entrepôt" : "Commerce"}`}>
         {contextualBuilding === "warehouse" ? <>
           <button type="button" data-placard-activity="game" onClick={() => onOpen("game")}><Sprout size={20} aria-hidden="true" /><span>{activeRun ? "Reprendre ma culture" : "Commencer une culture"}<small>Cultiver et récolter</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           <button type="button" data-placard-activity="workshop" onClick={() => onOpen("workshop")}><Warehouse size={20} aria-hidden="true" /><span>Aménager l’entrepôt<small>Zones, matériel et entretien</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           <button type="button" data-placard-activity="storage" onClick={() => onOpen("harvests")}><PackageCheck size={20} aria-hidden="true" /><span>Mes récoltes<small>Stockage, affinage et jury</small></span><ArrowRight size={17} aria-hidden="true" /></button>
         </> : <>
-          <button type="button" data-placard-activity="market" onClick={() => onOpen("market")}><Store size={20} aria-hidden="true" /><span>Transformer et vendre<small>{readyLotCount ? `${readyLotCount} lot${readyLotCount > 1 ? "s" : ""} à valoriser` : "Préparer mes ventes"}</small></span><ArrowRight size={17} aria-hidden="true" /></button>
-          <button type="button" data-placard-activity="dashboard" onClick={() => onOpen("market", { marketSection: "dashboard" })}><PackageCheck size={20} aria-hidden="true" /><span>Suivre mes ventes<small>Paquets, annonces et commandes</small></span><ArrowRight size={17} aria-hidden="true" /></button>
+          <button type="button" data-placard-activity="market" onClick={() => onOpen("market", { marketSection: "sales" })}><Store size={20} aria-hidden="true" /><span>Transformer et vendre<small>{readyLotCount ? `${readyLotCount} lot${readyLotCount > 1 ? "s" : ""} à valoriser` : "Préparer mes ventes"}</small></span><ArrowRight size={17} aria-hidden="true" /></button>
+          <button type="button" data-placard-activity="dashboard" onClick={() => onOpen("market", { marketSection: "dashboard" })}><PackageCheck size={20} aria-hidden="true" /><span>Mon stock en vente<small>Paquets, annonces et commandes</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           <button type="button" data-placard-activity="management" onClick={() => onOpen("market", { marketSection: "management" })}><Target size={20} aria-hidden="true" /><span>Développer mon commerce<small>Boutique en ligne, marque et audience</small></span><ArrowRight size={17} aria-hidden="true" /></button>
         </>}
       </nav>

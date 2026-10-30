@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 
 import {
   computeShippingFee,
@@ -17,10 +17,40 @@ const ORIGINAL_ENV = {
 };
 
 afterEach(() => {
-  Object.assign(process.env, ORIGINAL_ENV);
+  for (const [key, value] of Object.entries(ORIGINAL_ENV)) {
+    if (value === undefined) delete process.env[key];
+    else process.env[key] = value;
+  }
+  vi.unstubAllGlobals();
 });
 
 describe("shipping", () => {
+  it("uses the configured public prices in the browser", () => {
+    vi.stubGlobal("window", {});
+    process.env.SHIPPING_HOME_FEE_EUR = "50";
+    process.env.SHIPPING_RELAY_FEE_EUR = "40";
+    process.env.SHIPPING_FREE_THRESHOLD_EUR = "200";
+    process.env.NEXT_PUBLIC_SHIPPING_HOME_FEE_EUR = "7.90";
+    process.env.NEXT_PUBLIC_SHIPPING_RELAY_FEE_EUR = "5.90";
+    process.env.NEXT_PUBLIC_SHIPPING_FREE_THRESHOLD_EUR = "99";
+    expect(getShippingPricingConfig()).toEqual({ homeFeeEur: 7.9, relayFeeEur: 5.9, freeShippingThresholdEur: 99 });
+  });
+
+  it("uses the server prices to calculate the actual payment", () => {
+    process.env.SHIPPING_HOME_FEE_EUR = "7.90";
+    process.env.SHIPPING_RELAY_FEE_EUR = "5.90";
+    process.env.SHIPPING_FREE_THRESHOLD_EUR = "99";
+    process.env.NEXT_PUBLIC_SHIPPING_RELAY_FEE_EUR = "4.90";
+    expect(computeShippingFee({ method: "relay", subtotalAfterDiscount: 40, config: getShippingPricingConfig() })).toBe(5.9);
+  });
+
+  it("does not turn blank configuration into free shipping", () => {
+    process.env.SHIPPING_HOME_FEE_EUR = " ";
+    process.env.SHIPPING_RELAY_FEE_EUR = " ";
+    process.env.SHIPPING_FREE_THRESHOLD_EUR = " ";
+    expect(getShippingPricingConfig()).toEqual({ homeFeeEur: 6.9, relayFeeEur: 4.9, freeShippingThresholdEur: 89 });
+  });
+
   it("uses configured fallbacks when env vars are missing", () => {
     delete process.env.SHIPPING_HOME_FEE_EUR;
     delete process.env.SHIPPING_RELAY_FEE_EUR;

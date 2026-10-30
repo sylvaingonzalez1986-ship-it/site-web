@@ -36,11 +36,9 @@ try {
     await page.setViewport({width,height,isMobile:width<600,hasTouch:width<600});
     await visit('compact&cultures&buddieDrag');await enter();
     await openCard('HH2026-003',width<600);
-    let g=await geometry('[data-warehouse-buddie-carousel]');fits(g);assert(g.sourceLinks.length>0);
+    let g=await geometry('[data-warehouse-buddie-carousel]');fits(g);assert.equal(g.sourceLinks.length,0,'Buddie profiles do not display source links');
     assert.equal(await page.$('[data-warehouse-buddie-card][data-selected]'),null,'Reading does not arm placement');
     await noWrites();await page.screenshot({path:resolve(output,'warehouse-'+width+'.png'),fullPage:true});
-    await page.$eval(popup+' details',node=>{node.open=true;node.scrollIntoView({block:'nearest',behavior:'instant'});});await settle();
-    assert.equal(await page.$eval(popup+' details a',node=>{const r=node.getBoundingClientRect(),p=node.closest('[data-buddie-variety-popover]').getBoundingClientRect();return r.bottom>p.top&&r.top<p.bottom;}),true,'Sources are reachable by scrolling the profile');
     await page.keyboard.press('Escape');await page.waitForSelector(popup,{hidden:true});
     assert.equal(await page.$eval(card('HH2026-003'),node=>document.activeElement===node),true,'Escape returns focus to the card');
     await openCard('HH2026-002',width<600);fits(await geometry('[data-warehouse-buddie-carousel]'));

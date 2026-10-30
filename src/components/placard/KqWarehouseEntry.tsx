@@ -1,5 +1,7 @@
 "use client";
 
+import type { KqHarvestMarketSection } from "@/lib/kanab-quest-harvests";
+
 import { useCallback, useEffect, useState } from "react";
 import { getKqEquipmentBuildingNumber, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipment";
 import { KqEquipmentInventoryModal } from "./KqEquipmentInventoryModal";
@@ -14,7 +16,7 @@ import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
 
 type Snapshot={chanvrierProfile?:ChanvrierProfile|null;equipmentScopeVersion?:2|3;career?:ChanvrierCareerSnapshot;storageCapacity?:{freeUnits:number;totalUnits:number}|null;expansionEnergyCents?:number;tentNumber?:number;tents?:KqTentOverview[];buildings?:KqBuildingEquipmentOverview[];sharedEquipment?:KqSharedEquipmentOverview;ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;productionUnits?:number;production?:KqProductionSnapshot;maintenance?:Record<string,KqMachineCondition>;cultureWear?:Record<string,KqCultureEquipmentCondition>;activeRun?:boolean};
 const EMPTY:Snapshot={ownedCodes:[],purchasedCodes:[],equippedCodes:[],levels:{},cashCents:0};
-type WarehouseEntryProps = {draftOwnerId?:string;embedded?:boolean;workshopOnly?:boolean;initialZoneId?:string|null;initialFlowerId?:string;initialShopOpen?:boolean;initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage";onClose:()=>void;onOpenShop?:(code?:string)=>void;onOpenCulture?:(href:string)=>void;onBusyChange?:(busy:boolean)=>void};
+type WarehouseEntryProps = {draftOwnerId?:string;embedded?:boolean;workshopOnly?:boolean;initialZoneId?:string|null;initialFlowerId?:string;initialShopOpen?:boolean;initialStorageEquipmentOpen?:boolean;initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage";onClose:()=>void;onOpenShop?:(code?:string)=>void;onOpenCulture?:(href:string)=>void;onOpenMarket?: (flowerId?: string, section?: KqHarvestMarketSection) => void;onOpenHarvests?:(flowerId?:string)=>void;onBusyChange?:(busy:boolean)=>void};
 
 /** Existing teaching sessions keep their isolated equipment fixture and never migrate an account. */
 export function KqWarehouseEntry(props: WarehouseEntryProps) {
@@ -28,6 +30,7 @@ function LegacyKqWarehouseEntry({embedded=false,workshopOnly=false,initialEquipm
   const selectedTentNumber=useKqTentSelection();
   const tentNumber=workshopOnly?1:selectedTentNumber;
   const [snapshot,setSnapshot]=useState<Snapshot>(EMPTY);
+  const [snapshotKnown,setSnapshotKnown]=useState(false);
   const [loading,setLoading]=useState(true);
   const [error,setError]=useState("");
   const [revision,setRevision]=useState(0);
@@ -39,7 +42,7 @@ function LegacyKqWarehouseEntry({embedded=false,workshopOnly=false,initialEquipm
       const response=await api.request("/api/arena/placard/equipment?tentNumber="+tentNumber,{cache:"no-store",signal:controller.signal});const body=await response.json();
       if(!response.ok)throw new Error(body.error||"Entrepôt indisponible.");
       if(!body||!Array.isArray(body.ownedCodes)||!Array.isArray(body.purchasedCodes)||!Array.isArray(body.equippedCodes)||!body.levels||!Number.isFinite(body.cashCents))throw new Error("Les informations de l’entrepôt sont incomplètes.");
-      if(!cancelled){setSnapshot(body);setError("");if(!workshopOnly&&body.tentNumber && body.tentNumber!==tentNumber)selectKqTent(body.tentNumber);}
+      if(!cancelled){setSnapshot(body);setSnapshotKnown(true);setError("");if(!workshopOnly&&body.tentNumber && body.tentNumber!==tentNumber)selectKqTent(body.tentNumber);}
     }catch(reason){if(!cancelled)setError(reason instanceof Error?reason.message:"Entrepôt indisponible.");}
     finally{if(!cancelled)setLoading(false);}})();
     return()=>{cancelled=true;controller.abort();};
@@ -55,6 +58,7 @@ function LegacyKqWarehouseEntry({embedded=false,workshopOnly=false,initialEquipm
   const shared=snapshot.sharedEquipment;
   const building=snapshot.equipmentScopeVersion===3?snapshot.buildings?.find(item=>item.buildingNumber===getKqEquipmentBuildingNumber(tentNumber)):undefined;
   return <KqEquipmentInventoryModal embedded={embedded} workshopOnly={workshopOnly} onBusyChange={onBusyChange} {...snapshot} {...(selected??EMPTY)}
+    inventoryKnown={snapshotKnown&&selected!==null}
     cashCents={snapshot.cashCents}
     career={snapshot.career}
     chanvrierProfile={snapshot.chanvrierProfile}
@@ -66,6 +70,6 @@ function LegacyKqWarehouseEntry({embedded=false,workshopOnly=false,initialEquipm
     levels={{...selected?.levels,...building?.levels,...shared?.levels}}
     maintenance={{...selected?.maintenance,...building?.maintenance,...shared?.maintenance}} cultureWear={{...selected?.cultureWear,...building?.cultureWear}}
     tentNumber={tentNumber} tents={snapshot.tents??[]} onSelectTent={selectTent}
-    loading={loading||(!error&&!selected)} loadError={error} onRetry={refresh} onClose={onClose} onOpenShop={onOpenShop}
+    loading={loading} loadError={error||(snapshotKnown&&!selected?"L’inventaire de cet emplacement n’est pas disponible.":"")} onRetry={refresh} onClose={onClose} onOpenShop={onOpenShop}
     initialSection={workshopOnly?"equipment":initialSection} initialSlot={getKqEquipmentDefinition(initialEquipmentCode??"")?.slot}/>;
 }

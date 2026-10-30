@@ -1,7 +1,7 @@
 "use client";
 
 import { useId, useRef, useState, type KeyboardEvent } from "react";
-import { ArrowRight, Check, ChevronRight, CircleHelp, LockKeyhole, Package, Paintbrush, ShoppingBag, Store } from "lucide-react";
+import { ArrowRight, Check, ChevronRight, CircleHelp, LockKeyhole, Package, Paintbrush, Store } from "lucide-react";
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KQ_MERCH_MODULES, KQ_MERCH_PRODUCTS, estimateKqMerchOffer, getKqMerchModuleEligibility, getKqMerchSlots, type KqMerchProductCode } from "@/lib/kanab-quest-merch";
@@ -57,14 +57,14 @@ function MerchProductEditor({ data, online, product, inventoryReady, busy, onAsk
     { label: "Identité de marque", met: online.upgrades.branding },
   ];
   return <article className={styles.editor} data-merch-editor={product.code} aria-label={`Gérer : ${product.name}`}>
-    <header className={styles.productHeading}><ProductArt code={product.code} /><div><small>{moduleLabels[product.module]} · ta collection</small><h3>{product.name}</h3><p>{product.description}</p></div></header>
+    <header className={styles.productHeading}><ProductArt code={product.code} /><div><small>{moduleLabels[product.module]}</small><h3>{product.name}</h3><p>{product.description}</p></div></header>
     <div className={styles.module} data-merch-module={collection.code} data-owned={owned}>
       <div className={styles.moduleTitle}><span>{owned ? <Check size={17} aria-hidden="true" /> : <LockKeyhole size={17} aria-hidden="true" />}<strong>{collection.name}</strong></span><b>{owned ? "Débloqué" : formatKqCash(collection.costCents)}</b></div>
       {!owned ? <>
         <p>Ouvre {KQ_MERCH_PRODUCTS.filter(item => item.module === collection.code).map(item => item.name.toLocaleLowerCase("fr-FR")).join(" + ")}. Achat unique, fabrication des articles en supplément.</p>
         <ul className={styles.requirements}>{prerequisites.map(item => <li key={item.label} data-met={item.met}>{item.met ? <Check size={13} aria-hidden="true" /> : <LockKeyhole size={13} aria-hidden="true" />}{item.label}</li>)}</ul>
-        {!online.upgrades.branding ? <button type="button" className={styles.textButton} onClick={onOpenBrand}><Paintbrush size={14} aria-hidden="true" />Créer ma marque · 700 €<ArrowRight size={14} aria-hidden="true" /></button> : null}
-        {level < collection.minimumLevel ? <button type="button" className={styles.textButton} onClick={onOpenSite}>Voir les niveaux du site<ArrowRight size={14} aria-hidden="true" /></button> : null}
+        {!online.upgrades.branding ? <button type="button" className={styles.textButton} onClick={onOpenBrand}><Paintbrush size={14} aria-hidden="true" />Créer ma marque au Studio · 700 €<ArrowRight size={14} aria-hidden="true" /></button> : null}
+        {level < collection.minimumLevel ? <button type="button" className={styles.textButton} onClick={onOpenSite}>Voir le site internet<ArrowRight size={14} aria-hidden="true" /></button> : null}
         <button type="button" className={styles.primary} data-merch-buy-module={collection.code} disabled={busy || !eligibility.allowed} onClick={() => order(`Débloquer : ${collection.name}`, `${formatKqCash(collection.costCents)} pour cet atelier permanent. Les articles se fabriquent ensuite à l’unité, avec paiement du stock à la commande. Aucun abonnement supplémentaire.`, "buy-merch-module", { code: collection.code }, collection.costCents)}>Débloquer · {formatKqCash(collection.costCents)}<ArrowRight size={16} aria-hidden="true" /></button>
         {!eligibility.allowed ? <small className={styles.hint}>{eligibility.blockers[0]}</small> : null}
       </> : null}
@@ -122,15 +122,15 @@ export function KqMerchWorkshop(props: Props) {
     event.preventDefault(); setSelected(KQ_MERCH_PRODUCTS[next].code); buttons.current[next]?.focus();
   }
   const stockValue = inventoryReady ? activity.inventory!.reduce((sum, item) => sum + item.quantity! * item.product.unitCostCents, 0) : null;
-  return <section className={styles.workshop} data-merch-workshop aria-label="Merch et collections">
-    <header className={styles.heading}><div><span className={styles.eyebrow}><ShoppingBag size={16} aria-hidden="true" />Les petites séries du quartier</span><h2>Ta marque, à emporter.</h2><p>Choisis tes collections, engage ton stock et trouve le bon prix.</p></div><span className={styles.stamp}>3 ateliers<br /><strong>6 produits</strong></span></header>
+  return <section className={styles.workshop} data-merch-workshop aria-label="Produits dérivés et collections">
+    <header className={styles.heading}><div><h2>Produits dérivés</h2><p>Choisis tes collections, engage ton stock et trouve le bon prix.</p></div><span className={styles.stamp}>3 ateliers<br /><strong>6 produits</strong></span></header>
     {!supported ? <p className={styles.notice}>Ce rayon n’est pas encore disponible dans cette partie. Tu peux découvrir les collections et leurs coûts.</p> : null}
     {supported && (!inventoryReady || !modulesReady) ? <p className={styles.notice}>Le stock ou les collections sont indisponibles. Actualise la boutique avant de fabriquer ou de modifier une offre. Les coûts restent consultables.</p> : null}
-    <dl className={styles.metrics}><div><dt>Articles vendus</dt><dd>{activity.unitsSold === null ? "—" : number(activity.unitsSold)}</dd></div><div><dt>Chiffre d’affaires merch</dt><dd>{activity.revenueCents === null ? "—" : formatKqCash(activity.revenueCents)}</dd></div><div><dt>Valeur du stock au coût d’achat</dt><dd>{stockValue === null ? "—" : formatKqCash(stockValue)}</dd></div></dl>
+    <dl className={styles.metrics}><div><dt>Articles vendus</dt><dd>{activity.unitsSold === null ? "—" : number(activity.unitsSold)}</dd></div><div><dt>Chiffre d’affaires</dt><dd>{activity.revenueCents === null ? "—" : formatKqCash(activity.revenueCents)}</dd></div><div><dt>Valeur du stock au coût d’achat</dt><dd>{stockValue === null ? "—" : formatKqCash(stockValue)}</dd></div></dl>
     <div className={styles.layout}>
       <div className={styles.collection}>
         <div className={styles.sectionHeading}><h3>Composer ta collection</h3><small>Choisis un article</small></div>
-        <div className={styles.catalog} role="group" aria-label="Choisir un produit merch">{KQ_MERCH_PRODUCTS.map((item, index) => {
+        <div className={styles.catalog} role="group" aria-label="Choisir un produit dérivé">{KQ_MERCH_PRODUCTS.map((item, index) => {
           const stock = activity.inventory?.find(row => row.code === item.code);
           const owned = supported && modulesReady && merch.modules.includes(item.module);
           const collection = KQ_MERCH_MODULES.find(collection => collection.code === item.module)!;
@@ -138,13 +138,13 @@ export function KqMerchWorkshop(props: Props) {
         })}</div>
         <div className={styles.vitrine}>
           {supported && activeCount !== null ? <KqProgressMeter label="Places en vitrine" value={activeCount} max={slots} valueLabel={`${activeCount} / ${slots} références`} hint="Chaque référence partage la même audience. Un rayon plus grand ne crée pas de visiteurs." /> : <p>{supported ? "Occupation de la vitrine indisponible." : "Places en vitrine : disponibles à partir du site niveau 2."}</p>}
-          <button type="button" className={styles.textButton} onClick={onOpenSite}>Agrandir avec le site<ChevronRight size={16} aria-hidden="true" /></button>
+          <button type="button" className={styles.textButton} onClick={onOpenSite}>Agrandir avec le site internet<ChevronRight size={16} aria-hidden="true" /></button>
         </div>
-        <details className={styles.details}><summary><CircleHelp size={15} aria-hidden="true" />Comment le rayon fonctionne</summary><p>La fabrication est payée d’avance. Les ventes continuent hors connexion tant que ta boutique est ouverte, avec du stock en vitrine. Les articles ne consomment pas la place réservée aux fleurs.</p><p>L’audience naturelle et la confiance alimentent la demande ; un prix trop élevé peut l’arrêter. Les campagnes de récoltes n’apportent pas de visites supplémentaires au merch. Ses ventes ne débloquent pas les paliers fondés sur les commandes de récoltes : fleurs, résines et autres produits préparés.</p><p>Tu peux mettre une référence en réserve sans perdre le stock. Un changement de prix ou de mise en vitrine remet à zéro sa progression vers la prochaine vente. À épuisement, la référence sort de la vitrine.</p></details>
+        <details className={styles.details}><summary><CircleHelp size={15} aria-hidden="true" />Comment le rayon fonctionne</summary><p>La fabrication est payée d’avance. Les ventes continuent hors connexion tant que ta boutique est ouverte, avec du stock en vitrine. Les articles ne consomment pas la place réservée aux fleurs.</p><p>L’audience naturelle et la confiance alimentent la demande ; un prix trop élevé peut l’arrêter. Les campagnes de récoltes n’apportent pas de visites supplémentaires aux produits dérivés. Leurs ventes ne débloquent pas les paliers fondés sur les commandes de récoltes : fleurs, résines et autres produits préparés.</p><p>Tu peux mettre une référence en réserve sans perdre le stock. Un changement de prix ou de mise en vitrine remet à zéro sa progression vers la prochaine vente. À épuisement, la référence sort de la vitrine.</p></details>
       </div>
       <MerchProductEditor key={`${selected}:${row?.priceCents}:${row?.status}`} {...props} online={online} product={product} inventoryReady={inventoryReady} />
     </div>
-    {supported && Array.isArray(merch.recentSales) && merch.recentSales.length > 0 ? <details className={`${styles.details} ${styles.sales}`}><summary>Dernières ventes merch <span>{activity.unitsSold === null ? "Cumul indisponible" : `${number(activity.unitsSold)} article${activity.unitsSold > 1 ? "s" : ""} vendu${activity.unitsSold > 1 ? "s" : ""}`}</span></summary><ul>{merch.recentSales.slice(0, 6).map(sale => <li key={sale.id}><ProductArt code={sale.code} /><div><strong>{sale.quantity} × {KQ_MERCH_PRODUCTS.find(product => product.code === sale.code)!.name}</strong><small>{new Date(sale.soldAt).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</small></div><div><strong>{formatKqCash(sale.netPayoutCents)}</strong><small>versés après prélèvements</small></div></li>)}</ul><p>La fabrication a déjà été payée à la commande du stock ; le montant versé n’est pas le bénéfice.</p></details> : null}
+    {supported && Array.isArray(merch.recentSales) && merch.recentSales.length > 0 ? <details className={`${styles.details} ${styles.sales}`}><summary>Dernières ventes de produits dérivés <span>{activity.unitsSold === null ? "Cumul indisponible" : `${number(activity.unitsSold)} article${activity.unitsSold > 1 ? "s" : ""} vendu${activity.unitsSold > 1 ? "s" : ""}`}</span></summary><ul>{merch.recentSales.slice(0, 6).map(sale => <li key={sale.id}><ProductArt code={sale.code} /><div><strong>{sale.quantity} × {KQ_MERCH_PRODUCTS.find(product => product.code === sale.code)!.name}</strong><small>{new Date(sale.soldAt).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</small></div><div><strong>{formatKqCash(sale.netPayoutCents)}</strong><small>versés après prélèvements</small></div></li>)}</ul><p>La fabrication a déjà été payée à la commande du stock ; le montant versé n’est pas le bénéfice.</p></details> : null}
     {busy ? <span className={styles.srOnly} role="status">Opération en cours.</span> : null}
   </section>;
 }

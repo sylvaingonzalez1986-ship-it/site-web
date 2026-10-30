@@ -4,6 +4,7 @@ import { useId, useRef, useState, type KeyboardEvent } from "react";
 import Link from "next/link";
 import { ArrowRight, BarChart3, ChevronDown, Coins, Package, Ruler, Sprout } from "lucide-react";
 import type { KqWarehouseQuote, KqWarehouseSummary } from "@/lib/kanab-quest-warehouse";
+import type { KqWarehouseCondition } from "@/lib/kanab-quest-warehouse-condition";
 import { WarehouseBars, WarehouseStackedBar } from "./KqWarehouseCharts";
 import { KqWarehouseCosts } from "./KqWarehouseCosts";
 import { KqWarehouseReserve } from "./KqWarehouseReserve";
@@ -16,9 +17,13 @@ const TABS = [
 ] as const;
 const mass = (grams: number) => grams >= 1_000 ? `${(grams / 1_000).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} kg` : `${grams.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g`;
 const area = (value: number) => `${value.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} m²`;
+export type KqWarehouseDashboardTab = (typeof TABS)[number]["id"];
 
-export function KqWarehouseDashboard({ summary, quote, dirty, migrationCreditCents, storageCapacity, storageReserved, reservedHarvest, salesGramsPerDay }: {
+export function KqWarehouseDashboard({ summary, installedSummary, condition, projectedCondition, quote, dirty, migrationCreditCents, storageCapacity, storageReserved, reservedHarvest, salesGramsPerDay, open, onOpenChange, tab: controlledTab, onTabChange }: {
   summary: KqWarehouseSummary;
+  installedSummary?: KqWarehouseSummary;
+  condition?: KqWarehouseCondition | null;
+  projectedCondition?: KqWarehouseCondition | null;
   quote: KqWarehouseQuote | null;
   dirty: boolean;
   migrationCreditCents: number;
@@ -26,9 +31,21 @@ export function KqWarehouseDashboard({ summary, quote, dirty, migrationCreditCen
   storageReserved: number | null | undefined;
   reservedHarvest: number;
   salesGramsPerDay: number | null | undefined;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  tab?: KqWarehouseDashboardTab;
+  onTabChange?: (tab: KqWarehouseDashboardTab) => void;
 }) {
   const id = useId();
-  const [tab, setTab] = useState<(typeof TABS)[number]["id"]>("performance");
+  const [localTab, setLocalTab] = useState<KqWarehouseDashboardTab>("performance");
+  const [localOpen, setLocalOpen] = useState(false);
+  const tab = controlledTab ?? localTab;
+  const expanded = open ?? localOpen;
+  const reservePreviewOnly = dirty && !installedSummary;
+  function setTab(value: KqWarehouseDashboardTab) {
+    if (controlledTab === undefined) setLocalTab(value);
+    onTabChange?.(value);
+  }
   const buttons = useRef<Array<HTMLButtonElement | null>>([]);
   const storageKnown = typeof storageReserved === "number";
   const occupied = storageKnown ? Math.max(0, storageReserved) : 0;
@@ -47,11 +64,15 @@ export function KqWarehouseDashboard({ summary, quote, dirty, migrationCreditCen
     buttons.current[target]?.focus();
   }
 
-  return <details className={styles.dashboard} data-warehouse-forecast data-warehouse-dashboard>
+  return <details className={styles.dashboard} data-warehouse-forecast data-warehouse-dashboard open={expanded} onToggle={event => {
+    const nextOpen = event.currentTarget.open;
+    if (open === undefined) setLocalOpen(nextOpen);
+    if (nextOpen !== expanded) onOpenChange?.(nextOpen);
+  }}>
     <summary className={styles.heading}><BarChart3 size={23} aria-hidden="true" /><span><strong>Ton entrepôt en chiffres</strong><small>Performances, coûts et réserve</small></span><ChevronDown className={styles.chevron} size={20} aria-hidden="true" /></summary>
     <div className={styles.body}>
       <div className={styles.tabs} role="tablist" aria-label="Bilan de l’entrepôt">{TABS.map((item, index) => <button key={item.id} ref={node => { buttons.current[index] = node; }} type="button" role="tab" id={`${id}-${item.id}-tab`} aria-controls={`${id}-${item.id}-panel`} aria-selected={tab === item.id} tabIndex={tab === item.id ? 0 : -1} onKeyDown={event => navigateTabs(event, index)} onClick={() => setTab(item.id)} data-warehouse-summary-tab={item.id}><item.icon size={17} aria-hidden="true" />{item.label}</button>)}</div>
-      {dirty && <p className={styles.draft}>Aperçu avec tes modifications. Enregistre le plan pour les appliquer.</p>}
+      {dirty && <p className={styles.draft}>{tab === "reserve" && installedSummary ? "Ta réserve actuelle reste inchangée tant que le plan n’est pas enregistré." : "Aperçu avec tes modifications. Enregistre le plan pour les appliquer."}</p>}
       <div role="tabpanel" id={`${id}-performance-panel`} aria-labelledby={`${id}-performance-tab`} hidden={tab !== "performance"} tabIndex={0}>
         <div className={styles.panels}>
           <article className={styles.panel}>
@@ -86,7 +107,11 @@ export function KqWarehouseDashboard({ summary, quote, dirty, migrationCreditCen
         <div className={styles.outlets}><p><strong>Débouchés sur 24 h</strong><span>{typeof salesGramsPerDay === "number" ? `Potentiel de vente : ${mass(salesGramsPerDay)}, selon ta clientèle et ton stock prêt à vendre.` : "Les ventes dépendent de ta clientèle et de ton stock prêt à vendre."}</span></p><Link href="/arene/placard?view=market">Voir le marché <ArrowRight size={14} aria-hidden="true" /></Link></div>
       </div>
       <div role="tabpanel" id={`${id}-costs-panel`} aria-labelledby={`${id}-costs-tab`} hidden={tab !== "costs"} tabIndex={0}><KqWarehouseCosts summary={summary} quote={quote} dirty={dirty} migrationCreditCents={migrationCreditCents} /></div>
-      <div role="tabpanel" id={`${id}-reserve-panel`} aria-labelledby={`${id}-reserve-tab`} hidden={tab !== "reserve"} tabIndex={0}><KqWarehouseReserve summary={summary} /></div>
+      <div role="tabpanel" id={`${id}-reserve-panel`} aria-labelledby={`${id}-reserve-tab`} hidden={tab !== "reserve"} tabIndex={0}>
+        {reservePreviewOnly && <p className={styles.draft}>{quote ? "La réserve enregistrée n’est pas disponible dans cette vue. Les quantités ci-dessous sont un aperçu du plan." : "La réserve enregistrée n’est pas disponible dans cette vue. Corrige le plan pour prévisualiser la réserve après installation."}</p>}
+        {(!reservePreviewOnly || quote) && <KqWarehouseReserve summary={installedSummary ?? summary} condition={reservePreviewOnly ? projectedCondition : condition} mode={reservePreviewOnly ? "preview" : "current"} />}
+        {dirty && installedSummary && <details className={styles.reserveProjection} data-warehouse-reserve-projection><summary>Après installation du plan<ChevronDown size={18} aria-hidden="true" /></summary>{quote ? <KqWarehouseReserve summary={summary} condition={projectedCondition} mode="preview" /> : <p className={styles.draft} data-warehouse-reserve-preview-unavailable>Corrige le plan pour prévisualiser la réserve après installation.</p>}</details>}
+      </div>
     </div>
   </details>;
 }

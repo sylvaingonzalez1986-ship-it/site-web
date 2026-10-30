@@ -2,7 +2,7 @@
 
 import { useId, useRef, useState, type KeyboardEvent } from "react";
 import Image from "next/image";
-import { ArrowRight, Camera, Check, ChevronRight, Feather, Leaf, LockKeyhole, Paintbrush, Sparkles } from "lucide-react";
+import { ArrowRight, Camera, Check, ChevronRight, Feather, Leaf, LockKeyhole, Paintbrush } from "lucide-react";
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqAdvertisingMultiplier } from "@/lib/kanab-quest-business";
@@ -87,15 +87,15 @@ function BrandDirection({ data, online, busy, onAsk, onChooseTrack }: Props & { 
   const { offers, merchUnavailable } = compareOffers(data, candidate);
   const offer = offers.find(item => item.id === selection) ?? offers[0];
   return <section className={styles.direction} aria-label="Direction de la boutique">
-    <header className={styles.subheading}><div><span>Un ton, une gamme, une cohérence</span><h3>Donner du caractère à ta marque</h3></div><span className={styles.free}>Changement gratuit</span></header>
+    <header className={styles.subheading}><div><h3>Donner du caractère à ta marque</h3></div><span className={styles.free}>Changement gratuit</span></header>
     <div className={styles.styleChoices} role="group" aria-label="Explorer les directions de marque">{KQ_STUDIO_STYLES.map(item => <button type="button" key={item.code} data-studio-style={item.code} data-direction={item.code} aria-pressed={selected === item.code} onClick={() => setDraft(item.code)}><span className={styles.swatches} aria-hidden="true"><i /><i /><i /></span><strong>{styleLabels[item.code]}</strong><small>{supported && current === item.code ? <><Check size={12} aria-hidden="true" />Appliquée</> : "Voir l’aperçu"}</small></button>)}</div>
     <div className={styles.directionLayout}>
       <DirectionPreview name={data.business?.shop.name ?? "Ma boutique"} style={selected} online={online} />
       <div className={styles.directionDecision}>
         <h4>{direction.name}</h4><p>{direction.description}</p>
-        <div className={styles.fitRules}><span><Leaf size={15} aria-hidden="true" /><strong>Récoltes</strong></span><p>{direction.flowerHint}</p><span><Paintbrush size={15} aria-hidden="true" /><strong>Merch</strong></span><p>{direction.merchHint}</p></div>
+        <div className={styles.fitRules}><span><Leaf size={15} aria-hidden="true" /><strong>Récoltes</strong></span><p>{direction.flowerHint}</p><span><Paintbrush size={15} aria-hidden="true" /><strong>Produits dérivés</strong></span><p>{direction.merchHint}</p></div>
         <p className={styles.effectNote}>{levels.editorial > 0 ? `Fiches & récits niveau ${levels.editorial} : ${percent([1, 1.04, 1.08, 1.12][levels.editorial])} de conversion si l’offre correspond, ${percent([1, .98, .96, .94][levels.editorial])} sinon. Les autres bonus restent acquis.` : "La direction change l’apparence de ta boutique. Les effets liés au type de produits se débloquent avec Fiches & récits."}</p>
-        {merchUnavailable ? <p className={styles.empty}>Aperçu du merch indisponible. Les comparaisons de récoltes restent accessibles.</p> : null}
+        {merchUnavailable ? <p className={styles.empty}>Aperçu des produits dérivés indisponible. Les comparaisons de récoltes restent accessibles.</p> : null}
         {offer ? <div className={styles.offerComparison} data-studio-style-comparison data-before={offer.before} data-after={offer.after}>
           <label htmlFor={`${id}-offer`}>Observer un produit en vente<select id={`${id}-offer`} value={offer.id} onChange={event => setSelection(event.target.value)}>{offers.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
           <small>{offer.detail}<br />{offer.reference}</small>
@@ -152,7 +152,7 @@ export function KqBrandStudio(props: Props) {
     onAsk(`${target.name} · niveau ${target.level}`, `${formatKqCash(target.costCents)} pour ce palier, sans abonnement. ${target.description} Les niveaux précédents restent acquis. La direction ${styleLabels[currentStyle]} reste appliquée. Aucun visiteur ni point de qualité n’est ajouté.`, { action: "online", command: legacy ? "buy-upgrade" : "buy-studio-level", payload: legacy ? { code: target.track } : { track: target.track, level: target.level } }, target.costCents);
   }
   return <section className={styles.studio} data-brand-studio aria-label="Atelier photo et identité de marque">
-    <header className={styles.heading}><div><span className={styles.eyebrow}><Sparkles size={15} aria-hidden="true" />L’atelier de Sylvain</span><h2>Une marque qui se reconnaît.</h2><p>Soigne tes images, construis ton identité, trouve le ton juste.</p></div><div className={styles.completed}><strong>{total}<small> / 9</small></strong><span>paliers acquis</span></div></header>
+    <header className={styles.heading}><div><h2>Une marque qui se reconnaît.</h2><p>Soigne tes images, construis ton identité, trouve le ton juste.</p></div><div className={styles.completed}><strong>{total}<small> / 9</small></strong><span>paliers acquis</span></div></header>
     <div className={styles.tracks} role="group" aria-label="Choisir un atelier">{KQ_STUDIO_TRACKS.map((item, index) => {
       const Icon = icons[item.code];
       return <button type="button" key={item.code} ref={node => { tracks.current[index] = node; }} data-studio-track={item.code} aria-pressed={track === item.code} onClick={() => chooseTrack(item.code)} onKeyDown={event => navigate(event, index, "tracks")}><AtelierArt track={item.code} level={levels[item.code]} /><span><strong><Icon size={15} aria-hidden="true" />{item.name}</strong><small>Niveau {levels[item.code]} / 3</small><span className={styles.steps} aria-hidden="true">{[1, 2, 3].map(value => <i key={value} data-owned={levels[item.code] >= value} />)}</span></span></button>;
@@ -170,7 +170,7 @@ export function KqBrandStudio(props: Props) {
             <button type="button" className={styles.primary} data-studio-buy disabled={busy || !eligibility.allowed} onClick={purchase}>Investir · {formatKqCash(target.costCents)}<ArrowRight size={16} aria-hidden="true" /></button>
             {eligibility.blockers.length ? <p className={styles.blocked}><LockKeyhole size={14} aria-hidden="true" />{eligibility.blockers[0]}</p> : null}
           </> : <div className={styles.acquired}><Check size={17} aria-hidden="true" />Ce palier est acquis.{levels[track] < 3 ? <button type="button" className={styles.textButton} onClick={() => setSelection(levels[track] + 1)}>Prochain palier<ChevronRight size={14} aria-hidden="true" /></button> : null}</div>}
-          {track === "branding" && levels.branding >= 1 ? <button type="button" className={styles.textButton} onClick={onOpenMerch}>Décliner la marque en merch<ArrowRight size={14} aria-hidden="true" /></button> : null}
+          {track === "branding" && levels.branding >= 1 ? <button type="button" className={styles.textButton} onClick={onOpenMerch}>Voir les produits dérivés<ArrowRight size={14} aria-hidden="true" /></button> : null}
         </div>
       </article>
       {!owned && impacts.length ? <details className={styles.impactDetails}><summary>Effet estimé sur mes produits en vente<span>{impacts.length} référence{impacts.length > 1 ? "s" : ""}</span></summary><div>{impacts.map(item => <div className={styles.impactRow} key={item.id}><span><strong>{item.name}</strong><small>{item.unit}</small></span><span>{number(item.before)}<ArrowRight size={13} aria-hidden="true" /><strong>{number(item.after)}</strong></span></div>)}</div><p>Même audience, mêmes prix et direction actuelle. Les paliers manquants restent nécessaires avant cet achat.</p></details> : null}

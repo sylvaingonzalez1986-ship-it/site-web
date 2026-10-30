@@ -1,0 +1,12 @@
+.summary { min-width: 0; color: #172923; }
+.summary .quantities { display: flex; align-items: center; gap: 14px; margin: 16px 0; }
+.summary .quantities > div { display: grid; gap: 5px; flex: 1; min-width: 0; border: 0; padding: 0; font-size: .8rem; }
+.quantities > svg { flex-shrink: 0; color: #087f73; }
+.summary .quantities dd { margin: 0; font: 800 clamp(1.5rem, 3vw, 2rem)/1.15 var(--font-display), Impact, sans-serif; white-space: normal; }
+.summary .remainder { margin: 0 0 12px; font-size: .8rem; line-height: 1.5; }
+.summary .terms { margin: 0 0 16px; }
+.summary .terms > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; padding: 12px 0; border-bottom: 1px solid #17292335; font-size: .85rem; }
+.terms dt { flex: 1 0 90px; }
+.summary .terms dd { flex: 1 1 160px; margin: 0; font-weight: 750; text-align: right; white-space: normal; }
+.terms small { display: block; margin-top: 4px; font-size: .75rem; font-weight: 400; line-height: 1.45; }
+@media (max-width: 400px) { .summary .terms dd { flex-basis: 120px; } }

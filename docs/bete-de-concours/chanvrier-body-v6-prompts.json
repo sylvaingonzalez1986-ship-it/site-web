@@ -1,0 +1,190 @@
+{
+  "mode": "built-in image_gen",
+  "useCase": "precise-object-edit",
+  "date": "2026-10-29",
+  "styleReference": "output/imagegen/chanvrier-v6/source/head-crop.png",
+  "sourceFrames": "971 x 1619 RGBA; full original frame normalized without trimming",
+  "runtimeCanvas": {
+    "width": 768,
+    "height": 1280,
+    "transparent": true
+  },
+  "assets": "public/contest/avatars/chanvrier-body-v6/",
+  "preparation": "node scripts/prepare-chanvrier-body-v6.mjs",
+  "recoloring": "Ochre garments, teal bottoms and peach skin remain separate. Painted skin highlights use rose chroma within exposed arm/leg regions, excluding ochre folds, cream gloves and charcoal stockings.",
+  "validation": "node scripts/audit-chanvrier-outfits.mjs passes: 16 bottom/footwear pairs, 6 tops, 12 silhouette/skin combinations and 6 clothing colors. Final screenshots in output/chanvrier-outfit-audit/after were inspected for hems, collars, skin highlights and joint alignment.",
+  "compositionOrder": [
+    "legs",
+    "shoes",
+    "bottom",
+    "top"
+  ],
+  "inventory": {
+    "tops": 6,
+    "bottoms": 4,
+    "shoes": 4,
+    "legs": 2
+  },
+  "generations": [
+    {
+      "name": "top-overalls",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/top-overalls.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/top-overalls.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/top-overalls.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the ochre overall bib, cream long sleeves and cream work gloves. Keep straps, chest pocket, buttons and garment shapes. Refine the folds at elbows and cuffs, bib seam detailing and glove fingertip articulation while keeping their exact positions. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "bottom-jeans",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/bottom-jeans.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/bottom-jeans.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/bottom-jeans.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the two teal trouser legs and rolled teal cuffs ONLY. Keep the trouser waist and every lower ankle opening precisely registered. Refine the fly, pocket welts, double stitching, natural knee folds and turned cuffs without adding feet, torso, belt or skin. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "top-tee",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/top-tee.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/top-tee.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/top-tee.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the ochre T-shirt, peach bare forearms and cream work gloves. Keep chest pocket, rolled ribbed collar and sleeve hems. Refine the soft cotton drape, sparse waist and underarm folds, chest pocket double stitching and glove fingertip articulation; improve gentle peach forearm modeling. The skin must remain rosy peach, distinct from the ochre fabric. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "top-hoodie",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/top-hoodie.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/top-hoodie.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/top-hoodie.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the ochre hoodie with cream drawstrings and cream work gloves. Keep folded hood, metal drawstring eyelets, kangaroo pocket, ribbed hem and cuffs. Refine supple cotton folds and the sewn pocket construction, refined ribbing and glove fingertip articulation. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "top-jacket",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/top-jacket.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/top-jacket.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/top-jacket.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the ochre work jacket over an ivory shirt and cream work gloves. Keep folded lapel collar, three brass buttons, two low patch pockets and straight sleeve cuffs. Refine tailored jacket seams, useful pocket welts, lightly burnished buttons, underarm folds and glove fingertip articulation. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "top-shirt",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/top-shirt.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/top-shirt.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/top-shirt.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the ochre buttoned work shirt, peach bare forearms and cream work gloves. Keep neat pointed collar, vertical button placket, small chest pocket and rolled sleeves. Refine cloth drape, double seam details, folded sleeve construction, gentle peach forearm shading and glove fingertip articulation. The skin must remain rosy peach, separate from ochre cloth. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "top-apron",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/top-apron.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/top-apron.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/top-apron.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the ochre craft apron over an ivory T-shirt, peach bare forearms and cream work gloves. Keep neck straps with metal rings, large two-part patch pocket, side ties and curved lower hem. Refine sturdy canvas weave, apron seams, tiny brushed metal rings, natural cloth folds, peach skin shading and glove fingertip articulation. The skin must remain rosy peach, separate from the ochre apron. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "bottom-cargo",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/bottom-cargo.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/bottom-cargo.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/bottom-cargo.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the two teal cargo trouser legs and rolled teal cuffs ONLY. Keep the trouser waist and lower ankle openings precisely registered. Refine the two side cargo pockets with stitched flaps, inner gussets, reinforced knee seams and soft natural folds. No extra pockets beyond the existing garment silhouette and no addition of feet, torso, belt or skin. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "bottom-shorts",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/bottom-shorts.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/bottom-shorts.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/bottom-shorts.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the teal knee-length shorts ONLY. Keep waist, two front pockets, fly, crotch gap and two leg-opening hems precisely registered. Refine sturdy brushed cotton, tidy double hems, real pocket welts and supple local folds. No addition of bare legs, feet, torso, skin or belt. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "bottom-skirt",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/bottom-skirt.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/bottom-skirt.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/bottom-skirt.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the teal above-knee A-line skirt ONLY. Keep waist, side pockets, two vertical panel seams, curved double hem and exact flared silhouette. Refine soft structured fabric, graceful sparse folds, panel seam stitching and natural volume. No addition of legs, stockings, feet, torso, skin or belt. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "shoes-work",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/shoes-work.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/shoes-work.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/shoes-work.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the two low ochre work shoes with cream soles and cream laces ONLY, at the very bottom of the full character frame. Keep their exact outer silhouette, ankle collar openings, toe directions, stance and shared ground line. Refine supple leather panels, stitched cap-toe seams, small metal eyelets, cream laces and subtle sole bevels. No legs, socks, trousers, person, torso or head may be added. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "shoes-boots",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/shoes-boots.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/shoes-boots.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/shoes-boots.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the two ochre ankle-high work boots with cream lug soles and cream laces ONLY, at the very bottom of the full character frame. Keep exact collar openings, boot heights, toe directions, stance and shared ground line. Refine sturdy leather panel seams, gentle toe highlights, stitched eyelet panels, cream lace rows and separate tread notches. No legs, socks, trousers, person, torso or head may be added. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "shoes-sneakers",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/shoes-sneakers.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/shoes-sneakers.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/shoes-sneakers.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the two low ochre canvas sneakers with cream toe caps, cream sole sidewalls and cream laces ONLY, at the very bottom of the full character frame. Keep their exact outer silhouette, ankle collar openings, toe directions, stance and shared ground line. Refine woven canvas texture, fine side seams, metal eyelets, laces and subtle rubber edging. No legs, socks, trousers, person, torso or head may be added. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "shoes-high-tops",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/shoes-high-tops.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/shoes-high-tops.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/shoes-high-tops.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the two ankle-high ochre canvas sneakers with cream toe caps, cream sole sidewalls and cream laces ONLY, at the very bottom of the full character frame. Keep exact collar openings, high-top heights, toe directions, stance and shared ground line. Refine textured canvas panels, fine double seams, metal eyelets, crossed cream laces and supple creases. No legs, socks, trousers, person, torso or head may be added. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "legs-shorts",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/legs-shorts.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/legs-shorts.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/legs-shorts.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the two small bare peach lower-leg segments near the bottom of the frame ONLY. They are behind the separate shorts and shoes layers, not a complete body. Keep both exact leg widths, heights, gap, top cut boundaries and ankle ends at the identical coordinates. Add only gentle peach watercolor volume, fine modulated side outlines and sparse skin pigment texture. Base flesh must stay rosy PEACH #fbb897, NEVER ivory, brown or gold. No feet, shoes, shorts, skirt, torso, head, clothing or other objects may be added. Keep all currently empty pixels transparent. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    },
+    {
+      "name": "legs-skirt",
+      "references": [
+        "public/contest/avatars/sylvain-outfits-v5/legs-skirt.webp",
+        "output/imagegen/chanvrier-v6/source/head-crop.png"
+      ],
+      "source": "output/imagegen/chanvrier-body-v6/source/legs-skirt.png",
+      "output": "public/contest/avatars/chanvrier-body-v6/legs-skirt.webp",
+      "prompt": "Use case: precise-object-edit. Asset: exactly registered transparent game avatar clothing layer in a 768 x 1280 full character frame. Image 1 is the EDIT TARGET and determines every pixel position and empty margin. Image 2 is STYLE REFERENCE ONLY: its elegant variable-width ink and subtle printed gouache shading. DO NOT ADD its head or any part of that reference into the target. Improve ONLY the two small dark charcoal stocking-covered lower-leg segments with tiny peach ankle ends near the bottom of the frame ONLY. They sit behind the separate skirt and shoes layers, not a complete body. Keep both exact leg widths, heights, gap, top cut boundaries and ankle ends at identical coordinates. Add only subtle charcoal knitted volume and fine modulated side outlines; peach ankle skin stays #f0a88c. No feet, shoes, skirt, shorts, torso, head or other objects may be added. Remove stray teal fragments along the very top if any, because the skirt is a separate layer. Keep the rest transparent. Preserve the target's complete tall canvas, exact silhouette boundaries, pose, size, placement and large transparent areas. The artwork must stay at its current position in the full character frame; do not center, crop, enlarge, shift, extend or trim it. Upgrade the flat simplistic drawing into polished village storybook clothing: controlled finer modulated dark ink, varied tapered internal lines, localized warm light and cool shadow, subtle dry-brush pigment and linen grain, natural tailored construction. Keep the same friendly cartoon anatomy. Strong but tasteful visible improvement, not photorealism, not 3D, no plastic gradients. Important runtime color separation: ochre fabric remains #c89536 family (R greater than G, G much greater than B), teal fabric remains #087f7c family (G and B much higher than R), bare skin remains peach #e8a08d family, cream fabric/gloves stay neutral ivory. Keep those color families, including shadows. No new objects or new body parts, no background, no ground shadow, no text, no collage. Deliver only this single isolated layer on a genuinely transparent background, same full-frame placement."
+    }
+  ]
+}

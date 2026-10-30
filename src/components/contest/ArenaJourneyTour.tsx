@@ -38,7 +38,7 @@ export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: A
   const profileOrigin = useRef<HTMLElement | null>(null);
   const playerCard = useRef<ArenaProfileLauncherHandle | null>(null);
   const help = useRef<HTMLDivElement>(null);
-  const profileAvailability: ArenaProfileAvailability = showBanner || profileOpen
+  const profileAvailability: ArenaProfileAvailability = showBanner
     ? "blocked" : loading ? "loading" : error && !userId ? "error" : "ready";
 
   useEffect(() => { onProfileAvailabilityChange?.(profileAvailability); }, [onProfileAvailabilityChange, profileAvailability]);
@@ -94,7 +94,9 @@ export function ArenaJourneyTour({ launcherRef, onProfileAvailabilityChange }: A
     setProfileOpen(true);
   };
   const requestProfile = (origin: HTMLElement): boolean => {
-    if (profileAvailability === "blocked" || profileAvailability === "loading") return false;
+    // The native modal makes the map inert. Keep its opener enabled so closing
+    // the editor can restore focus before any parent availability update.
+    if (profileOpen || profileAvailability === "blocked" || profileAvailability === "loading") return false;
     if (profileAvailability === "error") {
       setError("");
       setLoading(true);

@@ -33,12 +33,12 @@ export function ArenaNavigation({ activeView, previewMode, onPreviewMode }: {
   if (activeView === "hub") {
     return (
       <nav className={retro.modeMenu} aria-label="Espaces de l'Arène" onKeyDown={navigateModes}>
-        {VIEWS.map(({ id, label, href, Icon }, index) => (
+        {VIEWS.map(({ id, label, href, Icon }) => (
           <Link key={id} href={href} className={retro.modeCard} data-featured={id === "jouer" || undefined}
             data-mode={id} data-preview={previewMode === id || undefined}
             onPointerEnter={() => onPreviewMode?.(id)} onFocus={() => onPreviewMode?.(id)}>
             <span className={retro.modeIcon}><Icon aria-hidden="true" /></span>
-            <span><small>0{index + 1} · {id === "carnet" ? "Dégustation" : id === "jouer" ? "Kanab Quest" : "Records"}</small><strong>{label}</strong></span>
+            <span><strong>{label}</strong></span>
             <ChevronRight aria-hidden="true" />
           </Link>
         ))}

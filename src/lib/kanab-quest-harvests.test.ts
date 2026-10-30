@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import type { KqOfficialFlower, KqStorageSnapshot } from "./kanab-quest-api";
-import { getKqHarvestRows, getKqStorageHarvestOverview } from "./kanab-quest-harvests";
+import { getKqHarvestActions, getKqHarvestRows, getKqStorageHarvestOverview, isKqHarvestAtJury } from "./kanab-quest-harvests";
 import { createKqOperationsLesson, getKqOperationsStorage } from "./kanab-quest-operations-lesson";
 import { createKqStorageLot, planKqStorageAllocation, projectKqStorageLot } from "./kanab-quest-storage";
 
@@ -8,7 +8,7 @@ const now = Date.parse("2026-10-10T10:00:00Z");
 const lesson = createKqOperationsLesson("warehouse");
 function flower(id: string, status: KqOfficialFlower["status"]): KqOfficialFlower {
   return { id, runId: `run-${id}`, varietyCode: lesson.storage.lot.baseline.varietyCode, varietyName: id,
-    quality: 70, stats: {}, traits: [], combos: [], status, createdAt: new Date(now).toISOString(),
+    quality: 70, stats: {}, traits: [], combos: [], status, storage: status === "available" ? snapshot().lots[1].projection : undefined, createdAt: new Date(now).toISOString(),
     queuedAt: null, lockedAt: null, burnedAt: null };
 }
 function snapshot(): KqStorageSnapshot {
@@ -52,6 +52,87 @@ describe("harvest navigation state", () => {
     vi.useFakeTimers();vi.setSystemTime(new Date("2099-12-31T23:59:59Z"));
     expect(getKqHarvestRows([], storage).find(row => row.id === "curing")?.state).toBe("curing");
     expect(storage).toEqual(before);
+  });
+
+  it("keeps a harvest in curing before jury, then opens jury rather than commerce", () => {
+    const storage = snapshot();
+    storage.lots = storage.lots.slice(0, 2).map(lot => ({ ...lot, flowerStatus: "available" }));
+    const rows = getKqHarvestRows([flower("curing", "available"), flower("ready", "available")], storage);
+    expect(rows.map(row => [row.id, row.state])).toEqual([["ready", "jury"], ["curing", "curing"]]);
+    expect(rows.filter(row => row.id === "ready")).toHaveLength(1);
+    storage.lots[1].flowerStatus = "burned";
+    expect(getKqHarvestRows([], storage).find(row => row.id === "ready")?.state).toBe("ready");
+  });
+
+  it("does not mark missing conservation as jury-ready, and retains a locked duel", () => {
+    expect(getKqHarvestRows([{ ...flower("missing", "available"), storage: undefined }], null)[0].state).toBe("storage");
+    expect(getKqHarvestRows([{ ...flower("curing", "available"), storage: snapshot().lots[0].projection }], null)[0].state).toBe("curing");
+    const storage = snapshot();
+    storage.lots = [{ ...storage.lots[1], flowerStatus: "locked" }];
+    expect(getKqHarvestRows([], storage)[0].state).toBe("duel");
+  });
+
+  it("does not infer jury eligibility from maturity when the flower status is unknown", () => {
+    const storage = snapshot();
+    storage.lots = [{ ...storage.lots[1], flowerStatus: "unknown" }];
+    expect(getKqHarvestRows([], storage)[0].state).toBe("storage");
+  });
+
+  it("does not infer jury eligibility from maturity when the flower status is unknown", () => {
+    const storage = snapshot();
+    storage.lots = [{ ...storage.lots[1], flowerStatus: "unknown" }];
+    expect(getKqHarvestRows([], storage)[0].state).toBe("storage");
+  });
+});
+
+describe("harvest actions follow the confirmed lot", () => {
+  it.each(["available", "queued", "locked"])("retains jury access for %s despite priority surplus", status => {
+    const storage = snapshot();
+    const lot = storage.lots[2];
+    lot.flowerStatus = status;
+    lot.projection.stage = "ready";
+    storage.lots = [lot];
+    const row = getKqHarvestRows([], storage)[0];
+    expect(row.state).toBe("overflow");
+    expect(isKqHarvestAtJury(row)).toBe(true);
+    expect(getKqHarvestActions(row)).toEqual([
+      { destination: "storage", label: "Protéger le surplus" },
+      { destination: "arena", label: status === "available" ? "Présenter au jury" : "Suivre le duel" },
+    ]);
+  });
+
+  it("keeps curing before jury and offers no commerce before the verdict", () => {
+    const storage = snapshot();
+    storage.lots = [{ ...storage.lots[0], flowerStatus: "available" }];
+    const row = getKqHarvestRows([], storage)[0];
+    expect(isKqHarvestAtJury(row)).toBe(false);
+    expect(getKqHarvestActions(row)).toEqual([{ destination: "storage", label: "Gérer le stockage" }]);
+  });
+
+  it("opens the sales inventory for a confirmed empty bulk lot without claiming it is sold", () => {
+    const storage = snapshot();
+    const lot = storage.lots[1];
+    Object.assign(lot.projection.capacity!, { totalUnits: 0, protectedUnits: 0, overflowUnits: 0 });
+    storage.lots = [lot];
+    const row = getKqHarvestRows([], storage)[0];
+    expect(row.state).toBe("empty");
+    expect(getKqHarvestActions(row)).toEqual([{ destination: "market", section: "dashboard", label: "Voir mon stock en vente" }]);
+  });
+
+  it.each([undefined, NaN, -1, Infinity])("does not offer a sale or empty-stock route for an unknown quantity (%s)", totalUnits => {
+    const storage = snapshot();
+    storage.lots = [storage.lots[1]];
+    Object.assign(storage.lots[0].projection.capacity!, { totalUnits });
+    const row = getKqHarvestRows([], storage)[0];
+    expect(row.state).toBe("storage");
+    expect(getKqHarvestActions(row)).toEqual([{ destination: "storage", label: "Vérifier le stockage" }]);
+  });
+
+  it("does not describe an unrecognized phase as curing or sellable", () => {
+    const storage = snapshot();
+    storage.lots = [storage.lots[1]];
+    Object.assign(storage.lots[0].projection, { stage: "unknown" });
+    expect(getKqHarvestRows([], storage)[0].state).toBe("storage");
   });
 });
 

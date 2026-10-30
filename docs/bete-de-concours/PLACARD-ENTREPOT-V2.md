@@ -4,6 +4,52 @@
 
 ## Entrepôt au m² — octobre 2026
 
+### Confirmer les cultures et leurs charges — 30 octobre 2026
+
+Après l’affectation des Buddies et le choix des cartes, **Vérifier et lancer** ouvre **Lancer mes cultures ?**. La confirmation rappelle le nombre de Buddies et la surface. Le registre **Buddies et zones**, replié, permet de vérifier les variétés et leurs emplacements sans répéter leurs projections de rendement.
+
+Les **Charges prévues** proviennent du devis serveur. L’électricité est facturée à la récolte ; les consommables sont à régler sous cinq jours réels après le lancement. Ces échéances sont visibles avec leurs montants. Le graphique et les explications secondaires restent repliés. Un chargement, une erreur ou un devis incomplet bloque le lancement sans afficher un faux zéro ni conserver un ancien prix comme devis valide.
+
+Le lancement transmet la révision du plan présenté. Le serveur refuse une préparation modifiée entre-temps, même si son coût électrique reste identique. **Actualiser la préparation** permet de relire les affectations après une erreur. La reprise d’un lancement déjà validé conserve son reçu et sa clé de demande. Les anciennes requêtes restent compatibles ; aucune migration n’est nécessaire. Détail et validation dans le lot 21 de [l’audit de clarté](AUDIT-CLARTE-ET-PARCOURS-2026-10-29.md). Changements locaux, à publier.
+
+### Devis commun du plan — 30 octobre 2026
+
+Le récapitulatif **Devis du plan** précède les commandes d’installation dans le plan, le choix des Buddies, l’éditeur et la garde de sortie. Il présente le prélèvement, le crédit déjà déduit, la trésorerie restante et le nombre de zones concernées ; le détail regroupe les changements et les achats de tout le plan. Les prix neufs de la seule zone restent des références séparées.
+
+**Voir le devis** dans la boutique ferme celle-ci et donne le focus au récapitulatif sans achat. **Annuler les modifications du plan** rétablit le plan enregistré. Les devis invalides gardent un montant inconnu et les budgets insuffisants expliquent le manque. L’enregistrement conserve les mêmes contrôles, montants attendus et clés de reprise. Rapport de recette locale : `output/clarity-lot20/report.json` ; détail dans le lot 20 de l’audit de clarté. Cette évolution ne nécessite aucune migration et reste à publier.
+
+### Réserve et réutilisation avant achat — 30 octobre 2026
+
+Le bouton **Ma réserve** ouvre directement l’onglet existant du bilan de l’entrepôt et lui donne le focus. Le registre montre les appareils disponibles par modèle, puis les modules en m². Pour le matériel de culture, les quantités sont distinguées par usure ; un état absent reste « à vérifier ». Les graphiques par type et par famille sont secondaires et repliés.
+
+La réserve principale provient du plan enregistré. Modifier les zones ne transforme plus le brouillon en matériel déjà possédé. Une comparaison **Après installation du plan** reste disponible dans un volet distinct, seulement lorsque le devis est valide. Consulter la réserve ne modifie ni le plan ni les cultures.
+
+Dans la boutique d’une zone, le réemploi et les achats neufs sont distingués avant l’ajout au devis. Le matériel conserve son usure pendant la projection ; les quantités et les coûts restent calculés par le moteur d’aménagement existant. Cette évolution de présentation n’ajoute ni réparation, ni sélection manuelle des appareils, ni règle économique.
+
+Validation : 72 tests ciblés, 17 scénarios navigateur dédiés et les 22 scénarios des actions par zone passent, ainsi que TypeScript global et ESLint ciblé. Rapport et captures dans `output/clarity-lot19/` ; détail dans le lot 19 de [l’audit de clarté](AUDIT-CLARTE-ET-PARCOURS-2026-10-29.md). Les sauvegardes de recette utilisent des réponses locales simulées. Ce lot n’ajoute aucune migration et reste à publier.
+
+### Actions par zone, usure et occasion — 30 octobre 2026
+
+Un clic, un appui court ou la sélection au clavier ouvre le menu de la zone. **Aménager** ouvre la boutique sur cette zone : les appareils entiers, les modules et la pose sont calculés pour sa surface, en tenant compte du matériel déjà possédé. **Buddies** ouvre le carrousel pour cette seule zone. **Supprimer** demande de garder le matériel en réserve ou de revendre les éléments dont le prix payé est connu. Les dimensions et réglages secondaires restent repliés. Une culture en cours permet de consulter son état, mais bloque les modifications.
+
+Le menu indique l’usure du matériel et le rendement associé. Le suivi concerne les éclairages, extracteurs et modules des zones de culture. Chaque groupe d’équipements garde sa quantité, son prix réellement financé, son usure et son affectation ; déplacer ou réutiliser du matériel ne le remet pas à neuf. La réserve ne s’use pas.
+
+Règles de simulation retenues :
+
+- Reprise = prix d’achat financé × quantité × état restant, arrondie au centime inférieur. À 20 % d’usure, reprise de 80 % ; à 50 %, reprise de 50 % ; à 100 %, reprise nulle. La pose et la préparation du sol ne sont pas remboursées. Un crédit de conversion n’est pas transformable en espèces par revente.
+- Rendement lié au matériel = 100 % − moitié de l’usure moyenne, pondérée par les quantités installées. À 50 % d’usure, le potentiel de récolte vaut 75 % de celui du même aménagement neuf ; à 100 %, il vaut 50 %. Les autres effets du jeu continuent de s’appliquer.
+- Une culture terminée ajoute 5 points d’usure, une seule fois, avec un maximum de 100 %. Le rendement est figé au lancement. Les anciennes parties ne sont pas recalculées. Le traitement SQL accepte également les modes historiques Éco/Intensif (2/10 points) ; les nouvelles cultures de l’entrepôt utilisent le mode Équilibré.
+
+L’historique antérieur ne permet pas d’attribuer un prix payé fiable à chaque appareil : ces bases restent inconnues, distinctes des cadeaux à prix nul. Ces équipements commencent le suivi prospectif à zéro usure et restent en réserve lors d’une suppression, même si le joueur revend les nouveaux appareils de la même zone. L’interface le signale avant confirmation.
+
+Le devis de reprise vient du serveur. Sa confirmation vérifie le montant, la révision du plan, l’inventaire, la disponibilité de la zone et la comptabilité dans une seule transaction. Une réponse réseau perdue se vérifie avec la même demande, sans deuxième crédit. Les aménagements préparés mais non enregistrés doivent être enregistrés ou annulés avant la suppression d’une zone installée. Les zones de service conservent leur suppression en brouillon avec matériel en réserve.
+
+La migration `20261030000100_kq_warehouse_condition_and_resale.sql` a été appliquée le 30 octobre 2026 à la base Supabase liée, à la demande du propriétaire. Elle ajoute le suivi privé et les RPC de sauvegarde et de suppression. Les 10 vérifications préalables et les 11 contrôles après application passent ; les quatre fonctions précédentes sont conservées à l’identique sous leurs nouveaux noms privés et les quatre RPC sont présentes dans le schéma de l’API serveur. Les 349 migrations locales et distantes sont synchronisées, sans migration en attente. L’application n’a initialisé aucun suivi joueur ni reçu d’usure. Preuves : `output/warehouse-condition-migration/completion.json`, `preflight.json`, `postflight.json`, `api-verification.json` et `dry-run-after.json`. Le site n’a pas été publié par cette opération ; le nouveau serveur initialise le suivi lors de son utilisation.
+
+Validation locale : 148 tests ciblés sur 12 fichiers ; 767 contrôles PostgreSQL via `scripts/test-placard-warehouse-condition.mjs`, incluant les transactions de revente, la comptabilité, les anciens parcours et les crédits partiels. La recette `scripts/test-placard-warehouse-condition-campaigns.mjs` passe 938 contrôles sur sa chaîne : campagne réelle de trois zones à 20, 50 et 80 % d’usure, finalisation et reçus uniques, puis finalisations indépendantes de deux cultures. Les deux chaînes reprennent des contrôles historiques communs ; leurs totaux ne représentent pas des cas tous distincts. Les droits explicites sont vérifiés sur 349 migrations.
+
+La recette navigateur `scripts/audit-warehouse-zone-actions.mjs` passe 22 scénarios : menu à 320, 390, 844 et 1440 px, ciblage boutique/Buddie, gestes, verrouillages, récupération après réponse perdue et entraînement avec son vrai transport local. La boutique projette l’usure des appareils conservés et de la réserve pour chaque gamme : l’achat d’un éclairage neuf conserve bien l’extraction à 50 % d’usure dans la recette. TypeScript global, ESLint ciblé et vérification du diff passent. Les captures ont été inspectées et le rapport est conservé dans `output/warehouse-zone-actions/`. La recette utilise les composants réels avec une API simulée, sans transaction sur un compte réel.
+
 ### Départ à 100 m² et agrandissements — évolution du 13 octobre 2026
 
 Le nouveau départ utilise un **entrepôt de 100 m², soit 10 × 10 cases**, réparti en zones de culture, de séchage et de stockage. Ces zones partagent la même surface disponible : 100 m² de bâtiment ne signifient pas 100 m² de culture en plus des services. Une case représente toujours 1 m² ; le joueur aménage les zones, choisit leurs équipements et affecte ses Buddies comme auparavant. Le compteur distingue la surface occupée de la surface totale.

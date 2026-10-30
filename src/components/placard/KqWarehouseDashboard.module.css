@@ -15,6 +15,13 @@
 .tabs button:focus-visible { outline: 3px solid #a8650a; outline-offset: -3px; }
 .body [hidden] { display: none; }
 .draft { margin: 0 0 16px; padding: 9px 12px; border-radius: var(--game-panel-radius, 2px); background: #efe0b6; color: #72531d; font-size: 12px; line-height: 1.5; }
+.reserveProjection { margin-top: 20px; padding-top: 8px; border-top: 1px solid #17292340; }
+.reserveProjection > summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 10px 0; color: #076c61; font-size: 14px; font-weight: 750; line-height: 1.5; list-style: none; cursor: pointer; }
+.reserveProjection > summary::-webkit-details-marker { display: none; }
+.reserveProjection > summary svg { flex-shrink: 0; }
+.reserveProjection[open] > summary svg { transform: rotate(180deg); }
+.reserveProjection > summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.reserveProjection > section { margin-top: 10px; }
 .panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .panel { min-width: 0; padding: 20px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .panelHeading { display: flex; gap: 8px; align-items: center; margin-bottom: 14px; }

@@ -1,6 +1,7 @@
 import "server-only";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import type { ArenaPlayerSummary } from "@/lib/arena-player-summary";
+import { getKqJuryReadiness } from "./kanab-quest-jury-readiness";
 
 const PAGE_SIZE = 500;
 const unavailable = () => new Error("Résumé de l’Arène indisponible.");
@@ -43,12 +44,11 @@ async function countReadyHarvests(db: ReturnType<typeof createSupabaseServiceCli
 export async function getArenaPlayerSummary(userId: string): Promise<ArenaPlayerSummary> {
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(userId)) throw new Error("Compte invalide.");
   const db = createSupabaseServiceClient();
-  const [results, readyLotCount] = await Promise.all([Promise.all([
+  const [results, readyLotCount, jury] = await Promise.all([Promise.all([
     db.from("kq_runs").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "active"),
-    db.from("kq_flowers").select("id", { count: "exact", head: true }).eq("owner_id", userId).eq("status", "available"),
     db.from("kq_support_booster_entitlements").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "available"),
     db.from("lottery_tickets").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "available"),
-  ]), countReadyHarvests(db, userId)]);
+  ]), countReadyHarvests(db, userId), getKqJuryReadiness(userId)]);
   if (results.some(result => result.error || !Number.isSafeInteger(result.count) || result.count! < 0)) throw unavailable();
-  return { activeRun: results[0].count! > 0, readyLotCount, availableFlowerCount: results[1].count!, supportPackCount: results[2].count!, buddiePackCount: results[3].count! };
+  return { activeRun: results[0].count! > 0, readyLotCount, ...jury, supportPackCount: results[1].count!, buddiePackCount: results[2].count! };
 }

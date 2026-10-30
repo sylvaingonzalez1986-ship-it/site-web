@@ -2,8 +2,7 @@
 .panel p { margin: 0; font: 500 12px/1.6 var(--font-body), Arial, sans-serif; }
 .header { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .header > svg { flex-shrink: 0; }
-.panel .eyebrow { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
-.header h3 { display: block; margin: 4px 0 0; padding: 0; border: 0; color: inherit; background: transparent; font: 900 25px/1.1 var(--font-display), Impact, sans-serif; }
+.header h3 { display: block; margin: 0; padding: 0; border: 0; color: inherit; background: transparent; font: 900 25px/1.1 var(--font-display), Impact, sans-serif; }
 .date, .participation { display: flex; align-items: flex-start; gap: 8px; }
 .date > svg, .participation > svg { flex-shrink: 0; margin-top: 2px; }
 .date strong, .date small { display: block; }

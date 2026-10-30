@@ -20,7 +20,9 @@ function stateWith(stack: string[]) {
 function onPopState() {
   const current = ids();
   for (const entry of [...entries.values()].reverse()) {
-    if (entry.url === window.location.href && current.includes(entry.id)) continue;
+    // A reload can reuse a React id still present in an older history entry.
+    // An explicit close must retire it before its navigation callback runs.
+    if (!entry.closing && entry.url === window.location.href && current.includes(entry.id)) continue;
     entries.delete(entry.id);
     if (!entry.disposed && !entry.closing) entry.close();
   }

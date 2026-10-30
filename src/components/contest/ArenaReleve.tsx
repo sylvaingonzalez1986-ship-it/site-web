@@ -49,7 +49,7 @@ const CHAPTER_PLACES: Record<ArenaReleveStage, string> = {
   jury: 'Jury & duels', delivery: 'Mon commerce', shop: 'Mon commerce · Boutique', ledger: 'Mes finances',
 };
 const CHAPTER_NAV: Record<ArenaReleveStage, PlacardNavKey> = { arrival: 'hub', plan: 'workshop', buddies: 'workshop', launch: 'game', culture: 'game', jury: 'harvests', delivery: 'market', shop: 'market', ledger: 'treasury' };
-const NEXT_ACTIONS: Record<ArenaReleveStage, string> = { arrival: 'Aménager l’entrepôt', plan: 'Choisir mes Buddies', buddies: 'Préparer ma campagne', launch: 'Commencer la culture', culture: 'Rejoindre le jury', jury: 'Aller au marché', delivery: 'Ouvrir ma boutique', shop: 'Passer au bureau', ledger: 'Terminer l’aventure' };
+const NEXT_ACTIONS: Record<ArenaReleveStage, string> = { arrival: 'Aménager l’entrepôt', plan: 'Choisir mes Buddies', buddies: 'Préparer ma campagne', launch: 'Commencer la culture', culture: 'Rejoindre le jury', jury: 'Ouvrir Commerce', delivery: 'Ouvrir ma boutique', shop: 'Passer au bureau', ledger: 'Terminer l’aventure' };
 const NEXT_REPLIES: Record<ArenaReleveStage, string> = { arrival: 'La chambre est prête. Passons au plan !', plan: 'Matériel installé ! Choisissons les Buddies de tes zones.', buddies: 'Tes Buddies sont en place. Préparons leur campagne.', launch: 'Tout est prêt. À toi de cultiver !', culture: 'La récolte est là ! Le jury attend tes Fleurs.', jury: 'Verdict reçu ! Retrouvons ton lot au marché.', delivery: 'Première vente ! Donnons maintenant une enseigne à la ferme.', shop: 'La boutique est ouverte. Regardons ce qui reste en caisse.', ledger: 'Le registre se remplit. Tu peux faire vivre ta ferme.' };
 const NAV_KEYS: PlacardNavKey[] = ['hub', 'workshop', 'game', 'harvests', 'market', 'social', 'treasury', 'collection', 'missions', 'shop'];
 const COMMERCE_NAV: Record<KqReleveDestination, PlacardNavKey> = { market: 'market', social: 'social', accounts: 'treasury', bank: 'treasury', missions: 'missions', storage: 'harvests', equipment: 'workshop' };
@@ -74,7 +74,7 @@ function StoryFrame({ title, onClose, children, coach, immersive = false, naviga
   }, [gameFrame]);
   return <ReleveGuideProvider><AppDialog open onClose={onClose} title={<span className={styles.frameTitle}><Sprout size={20} aria-hidden="true" /><span>{title}{navigation ? <small>La relève · Partie d’essai</small> : null}</span></span>} label={label}
     className={`${styles.dialog} ${navigation ? styles.gameDialog : ''}`} bodyClassName={`${styles.body} ${immersive ? styles.immersiveBody : navigation ? styles.gameBody : ''}`} headerClassName={`${styles.frameHeader} ${navigation ? styles.gameHeader : ''}`} closeLabel="Mettre l’essai en pause" dialogProps={{ 'data-releve': true }} footer={!coachHost && !gameFrame ? coach : undefined}>
-    {navigation ? <div className={`${retro.surface} ${placardStyles.shell} ${styles.gameShell}`}>{navigation}<div ref={content} className={placardStyles.content}>{children}</div></div> : <div ref={content}>{children}</div>}
+    {navigation ? <div className={`${retro.gameSurface} ${placardStyles.shell} ${styles.gameShell}`}>{navigation}<div ref={content} className={placardStyles.content}>{children}</div></div> : <div ref={content}>{children}</div>}
     {coachHost ? createPortal(<div className={styles.nestedCoach} data-releve-floating-guide>{coach}</div>, coachHost) : null}
     {gameFrame && !coachHost ? <div className={`${styles.nestedCoach} ${styles.screenCoach}`} data-releve-floating-guide>{coach}</div> : null}
   </AppDialog></ReleveGuideProvider>;

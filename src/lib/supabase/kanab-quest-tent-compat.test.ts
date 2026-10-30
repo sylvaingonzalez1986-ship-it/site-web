@@ -30,7 +30,7 @@ function database(fixture = structuredClone(productionFixture), equipmentScopeVe
   const reads: Array<{ table: string; columns: string }> = [];
   const rpc = vi.fn().mockImplementation(async (name: string, args?: { p_initial_state?: unknown }) => ({
     error: null,
-    data: name === "rpc_kq_reserved_cards" ? [] : name === "rpc_kq_chanvrier_career"
+    data: name === "rpc_kq_jury_readiness" ? { availableFlowerCount: 0, curingFlowerCount: 0 } : name === "rpc_kq_reserved_cards" ? [] : name === "rpc_kq_chanvrier_career"
       ? createChanvrierCareerSnapshot()
       : name === "rpc_kq_commerce_state"
       ? { business: { version: 1, domiciliation: { mode: "home", active: true } } }

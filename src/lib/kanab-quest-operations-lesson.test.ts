@@ -14,6 +14,28 @@ const commerce = (body: Record<string, unknown>): KqOperationsLessonAction => ({
 const storage = (body: Record<string, unknown>): KqOperationsLessonAction => ({ path: '/api/arena/placard/storage', method: 'POST', body });
 afterEach(() => vi.unstubAllGlobals());
 
+describe('exact placement in the operations lesson', () => {
+  it('uses the exact model, preserves the clock and wallet and replays once', () => {
+    const initial = createKqOperationsLesson('warehouse');
+    initial.storage.ownedContainers['GLASS-2L'] = 10;
+    const before = structuredClone(initial), lot = initial.storage.lot;
+    const action = storage({ action: 'place', flowerId: lot.flowerId, containerCode: 'GLASS-2L', requestKey: 'place-once' });
+    const placed = applyKqOperationsRequest(initial, action);
+    expect(placed.state.storage.lot.capacity!.allocations).toEqual([{ containerCode: 'GLASS-2L', quantity: Math.ceil(lot.capacity!.totalUnits / 1000), storedUnits: lot.capacity!.totalUnits }]);
+    expect(placed.state.storage.lot.readyAt).toBe(lot.readyAt);
+    expect(placed.state.storage.lot.capacity!.overflowDeadlineAt).toBe(lot.capacity!.overflowDeadlineAt);
+    expect(placed.state.trial.commerce.cashCents).toBe(initial.trial.commerce.cashCents);
+    expect(placed.state.trial.clock).toBe(initial.trial.clock);
+    expect(applyKqOperationsRequest(placed.state, action).state).toEqual(placed.state);
+    expect(initial).toEqual(before);
+  });
+  it('rejects insufficient or absent models without mutating the lesson', () => {
+    const initial = createKqOperationsLesson('warehouse'), before = structuredClone(initial);
+    expect(() => applyKqOperationsRequest(initial, storage({ action: 'place', flowerId: initial.storage.lot.flowerId, containerCode: 'CANNATROL' }))).toThrow('pas installé');
+    expect(initial).toEqual(before);
+  });
+});
+
 function demandStock(channel: KqCustomerDemandChannel, matchedNotes: 0 | 1 | 2) {
   let state = createKqOperationsLesson('market');
   const request = getKqOperationsCommerce(state).customerDemand!.requests.find(row => row.channel === channel)!;

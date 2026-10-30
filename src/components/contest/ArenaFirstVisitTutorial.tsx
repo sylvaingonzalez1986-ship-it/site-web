@@ -121,7 +121,6 @@ export function ArenaFirstVisitTutorial({ label = "Comment fonctionne l’Arène
       >
         <header className={styles.header}>
           <div>
-            <span>Le guide de l’Arène · nouvelle édition</span>
             <h2 id={titleId}>De la carte à la réputation.</h2>
             <p id={descriptionId}>Huit étapes. Tu peux aller directement au sujet qui t’intéresse.</p>
           </div>

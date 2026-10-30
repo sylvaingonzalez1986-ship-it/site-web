@@ -1,4 +1,6 @@
 import type { DeliveryMethod, MondialRelayPoint } from "@/lib/shipping";
+import { normalizeShippingCountryCode } from "@/lib/shipping-country";
+import { normalizeShippingPhone } from "@/lib/shipping-phone";
 import type { PublicCustomer } from "@/types/customer";
 
 export type CheckoutDraft = {
@@ -39,10 +41,10 @@ export function resolveCheckoutDraft(
   customer: PublicCustomer | null,
 ): CheckoutDraft {
   const { edits } = alignCheckoutDraft(state, customer?.id ?? null);
-  return {
+  const draft: CheckoutDraft = {
     shippingName: customer ? `${customer.firstName} ${customer.lastName}`.trim() : "",
     shippingEmail: customer?.email ?? "",
-    shippingPhone: customer?.phone ?? "",
+    shippingPhone: normalizeShippingPhone(customer?.phone, customer?.country || "France") || customer?.phone || "",
     shippingAddress: customer?.address ?? "",
     shippingCity: customer?.city ?? "",
     shippingPostalCode: customer?.postalCode ?? "",
@@ -51,4 +53,30 @@ export function resolveCheckoutDraft(
     selectedRelayPoint: null,
     ...edits,
   };
+  if (
+    draft.selectedRelayPoint &&
+    normalizeShippingCountryCode(draft.selectedRelayPoint.country) !==
+      normalizeShippingCountryCode(draft.shippingCountry)
+  ) {
+    draft.selectedRelayPoint = null;
+  }
+  return draft;
+}
+
+/** A relay must be selected again after the customer changes the search location. */
+export function patchCheckoutDraft(
+  state: CheckoutDraftState,
+  customer: PublicCustomer | null,
+  patch: Partial<CheckoutDraft>,
+): CheckoutDraftState {
+  const scoped = alignCheckoutDraft(state, customer?.id ?? null);
+  const previous = resolveCheckoutDraft(scoped, customer);
+  const next = { ...previous, ...patch };
+  const locationChanged =
+    normalizeShippingCountryCode(previous.shippingCountry) !== normalizeShippingCountryCode(next.shippingCountry) ||
+    previous.shippingPostalCode.trim().toUpperCase() !== next.shippingPostalCode.trim().toUpperCase() ||
+    previous.shippingCity.trim().toUpperCase() !== next.shippingCity.trim().toUpperCase();
+  const edits = { ...scoped.edits, ...patch };
+  if (locationChanged) edits.selectedRelayPoint = null;
+  return { ...scoped, edits };
 }

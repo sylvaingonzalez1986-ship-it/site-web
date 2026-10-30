@@ -1,4 +1,4 @@
-﻿/** Local UI audit. Real lobby, shell, collection and progression; destination stubs isolate navigation. */
+/** Local UI audit. Real lobby, shell, collection and progression; destination stubs isolate navigation. */
 import assert from 'node:assert/strict';
 import {mkdir, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
@@ -8,9 +8,10 @@ import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const root=process.cwd(), output=resolve(root,'output/placard-navigation'), port=Number(process.env.NAVIGATION_AUDIT_PORT??3248), origin=`http://127.0.0.1:${port}`, preview=process.argv.includes('--preview');
-const MAP_ASSET='/placard/map/placard-world-sylvain-v5.webp';
+const clarityOnly=process.argv.includes('--clarity-only');
+const MAP_ASSET='/placard/map/placard-world-sylvain-v6.webp';
 const BUILDING_IDS=['warehouse','bank','office','market','shop','arena','missions','collection'];
-// Independently inspected landmarks in the 1536 x 1024 v5 painting. These do
+// Independently inspected landmarks in the 1536 x 1024 v6 painting. These do
 // not come from the app's polygons, so a wrongly traced mask cannot self-pass.
 const MAP_LANDMARKS={warehouse:[365,255],bank:[800,221],office:[1180,320],market:[275,551],shop:[809,796],arena:[1235,619],missions:[753,453],collection:[284,831]};
 const MAP_GROUND_POINTS=[[950,320],[530,410]];
@@ -24,10 +25,10 @@ function fixturePayload(path,scenario){
 const previewFetch=preview?`const fixturePayload=${fixturePayload.toString()};const nativeFetch=window.fetch.bind(window);let failed=false;window.fetch=async(input,init={})=>{const url=new URL(input instanceof Request?input.url:String(input),location.href);if(!url.pathname.startsWith('/api/'))return nativeFetch(input,init);const scenario=new URLSearchParams(location.search).get('scenario')||'starter';const method=init.method||(input instanceof Request?input.method:'GET');if(method!=='GET')return new Response(JSON.stringify({error:'Prévisualisation locale : lecture seule'}),{status:405,headers:{'Content-Type':'application/json'}});if(scenario==='error'&&!failed&&url.pathname==='/api/arena/placard/equipment'){failed=true;return new Response(JSON.stringify({error:'Essai local'}),{status:503,headers:{'Content-Type':'application/json'}});}const body=fixturePayload(url.pathname,scenario);return new Response(JSON.stringify(body||{error:'API non simulée'}),{status:body?200:404,headers:{'Content-Type':'application/json'}});};`:'';
 const stub=(name,body)=>`import React from 'react';export function ${name}(props){return <section data-destination="${name}" style={{padding:24}}><p data-simulated-destination>Destination simulée · vérification de navigation uniquement.</p>${body}</section>}`;
 const destinations={
- './KqHarvests':stub('KqHarvests','<h1>Mes récoltes</h1><p data-harvest-section>{props.section}</p><button onClick={()=>props.onSectionChange("storage")}>Stockage et affinage</button><button onClick={()=>props.onOpenArena("fixture-flower")}>Présenter au jury</button><button onClick={()=>props.onOpenMarket("fixture-flower")}>Vendre cette récolte</button>'),
+ './KqHarvests':stub('KqHarvests','<h1>Mes récoltes</h1><p data-harvest-section>{props.section}</p><p data-harvest-flower>{props.initialFlowerId}</p><button onClick={()=>props.onSectionChange("storage","fixture-flower")}>Stockage et affinage</button><button onClick={()=>props.onOpenWarehouse("fixture-flower")}>Augmenter la capacité</button><button onClick={()=>props.onOpenArena("fixture-flower")}>Présenter au jury</button><button onClick={()=>props.onOpenMarket("fixture-flower")}>Vendre cette récolte</button>'),
  './KanabQuestDicePrototype':stub('KanabQuestDicePrototype','<h1>{props.viewMode === "arena" ? "Jury & duels" : "La culture"}</h1>'),
- './KqWarehouseEntry':stub('KqWarehouseEntry','<h1>Entrepôt</h1><p data-equipment>{props.initialEquipmentCode}</p><p data-catalog>{props.initialShopOpen ? "Matériel" : "Plan"}</p><button onClick={()=>props.onOpenShop("LED-500")}>Acheter une lampe</button>'),
- './KqMarketDesk':stub('KqMarketDesk','<h1>Ma boutique</h1><p data-market-section>{props.section}</p><button onClick={()=>props.onSectionChange("overview")}>Vue d’ensemble</button><button onClick={()=>props.onSectionChange("demands")}>Demandes clients</button><button onClick={()=>props.onSectionChange("sales")}>Vendre ma production</button><button onClick={()=>props.onSectionChange("dashboard")}>Mes ventes</button><button onClick={()=>props.onSectionChange("management")}>Développer ma boutique</button><button onClick={()=>props.onOpenShop("COMPUTER")}>Acheter un ordinateur</button>'),
+ './KqWarehouseEntry':stub('KqWarehouseEntry','<h1>Entrepôt</h1><p data-equipment>{props.initialEquipmentCode}</p><p data-warehouse-flower>{props.initialFlowerId}</p><p data-storage-configuration>{String(Boolean(props.initialStorageEquipmentOpen))}</p><p data-catalog>{props.initialShopOpen ? "Matériel" : "Plan"}</p><button onClick={()=>props.onOpenShop("LED-500")}>Acheter une lampe</button><button onClick={()=>props.onOpenMarket("fixture-flower")}>Préparer la vente</button>'),
+ './KqMarketDesk':stub('KqMarketDesk','<h1>Ma boutique</h1><p data-market-section>{props.section}</p><p data-market-flower>{props.initialFlowerId}</p><p data-market-listing>{props.initialListingId}</p><button onClick={()=>props.onSectionChange("overview")}>Vue d’ensemble</button><button onClick={()=>props.onSectionChange("demands")}>Demandes clients</button><button onClick={()=>props.onSectionChange("sales")}>Vendre ma production</button><button onClick={()=>props.onSectionChange("dashboard")}>Mes ventes</button><button onClick={()=>props.onSectionChange("dashboard","fixture-listing")}>Voir l’annonce ciblée</button><button onClick={()=>props.onSectionChange("management")}>Développer ma boutique</button><button onClick={()=>props.onOpenShop("COMPUTER",props.initialFlowerId)}>Acheter un ordinateur</button>'),
  './KqTreasuryDesk':stub('KqTreasuryDesk','<h1>{props.initialPole === "bank" ? "La Banque" : "Le Bureau"}</h1><p data-treasury-pole>{props.initialPole}</p>'),
  './KqSupportBoosterShop':stub('KqSupportBoosterShop','<h1>Boutique</h1><p data-catalog>Packs</p><p data-shop-section>{props.initialSection}</p><button onClick={()=>props.onSectionChange("buddies")}>Packs Buddies</button><button onClick={props.onExit}>Quitter la boutique</button><button data-open-shop-collection onClick={()=>props.onOpenCollection(props.initialSection)}>Collections</button>'),
  './KqMissionCenter':stub('KqMissionCenter','<h1>Missions</h1><button onClick={()=>props.onOpen("shop")}>Mes packs</button>'),
@@ -49,7 +50,7 @@ if(preview){ await server.listen(); console.log(`Prévisualisation navigation : 
 else try {
  await server.listen();
  browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});
- const page=await browser.newPage(); page.setDefaultTimeout(20000);
+ const page=await browser.newPage(); page.setDefaultTimeout(60000); page.setDefaultNavigationTimeout(90000);
  page.on('pageerror',error=>errors.push(error.message));
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
  await page.setRequestInterception(true);
@@ -78,6 +79,23 @@ else try {
   const building=selector.match(/^\[data-map-building="([a-z]+)"\]$/)?.[1];
   if(building){const point=await mapPoint(building);if((await page.viewport()).hasTouch)await page.touchscreen.tap(point.x,point.y);else await page.mouse.click(point.x,point.y);return;}
   const handle=await visible(selector);await handle.asElement().click();await handle.dispose();
+ };
+ const clickMapZoom=async()=>{
+  const handle=await visible('[data-map-zoom-toggle]');
+  try {
+   // Full-page captures and touch panning can leave the tool row behind the
+   // sticky shell header. Centre the real control and verify its hit target.
+   await handle.asElement().evaluate(element=>element.scrollIntoView({block:'center',inline:'center',behavior:'instant'}));
+   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+   const point=await handle.asElement().evaluate(element=>{
+    const rect=element.getBoundingClientRect(),x=rect.left+rect.width/2,y=rect.top+rect.height/2;
+    const hit=document.elementFromPoint(x,y);
+    if(!hit||!element.contains(hit))throw new Error(`Zoom control is covered by ${hit?.tagName??'the viewport edge'}: ${hit?.textContent?.slice(0,100)??''}`);
+    return {x,y};
+   });
+   if((await page.viewport()).hasTouch)await page.touchscreen.tap(point.x,point.y);
+   else await page.mouse.click(point.x,point.y);
+  }finally{await handle.dispose();}
  };
  const clickText=async text=>{const handle=await page.waitForFunction(text=>[...document.querySelectorAll('button')].find(element=>element.checkVisibility()&&element.textContent.trim()===text),{},text);await handle.asElement().click();await handle.dispose();};
  const screenshot=async name=>{await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));return page.screenshot({path:resolve(output,`${name}.png`),fullPage:true});};
@@ -169,6 +187,40 @@ else try {
   assert.equal(await page.$eval('[data-map-building="warehouse"]',element=>element===document.activeElement),true,'Keyboard activation restores the original building after Escape');
   return {geometry,landmarks};
  };
+ if(clarityOnly){
+  for(width of [320,390,1440]){
+   await page.setViewport({width,height:844,isMobile:width<=390,hasTouch:width<=390,deviceScaleFactor:1});
+   await visit('starter');await view('hub');
+   await page.focus('[data-map-building="market"]');await page.keyboard.press('Enter');
+   await page.waitForSelector('#placard-building-details');
+   await click('[data-placard-activity="market"]');await view('market');
+   assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'sales','The map action opens Vendre directly');
+   await navTo('market');
+   assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'overview','Generic Commerce still opens Synthèse');
+   for(const section of ['overview','storage']){
+    await visit('starter',`view=harvests&flower=fixture-flower${section==='storage'?'&section=storage':''}`);await view('harvests');
+    await clickText('Présenter au jury');await view('arena');
+    assert.equal(new URL(page.url()).searchParams.get('flower'),'fixture-flower');
+    await click('button[data-placard-back="harvests"]');await view('harvests');
+    assert.equal(await page.$eval('[data-harvest-section]',element=>element.textContent),section,'Jury returns to the original harvest sub-section');
+    assert.equal(await page.$eval('[data-harvest-flower]',element=>element.textContent),'fixture-flower');
+   }
+   await visit('starter','view=arena&flower=fixture-flower&from=workshop&fromSection=storage&fromFlower=fixture-flower');await view('arena');
+   await click('button[data-placard-back="workshop"]');await view('workshop');
+   assert.equal(new URL(page.url()).searchParams.get('section'),'storage');
+   assert.equal(await page.$eval('[data-warehouse-flower]',element=>element.textContent),'fixture-flower');
+   assert.equal(await page.$eval('[data-storage-configuration]',element=>element.textContent),'false','Returning from the jury does not open storage configuration');
+   await visit('starter','view=harvests&section=storage&flower=fixture-flower');await view('harvests');
+   await clickText('Augmenter la capacité');await view('workshop');
+   assert.equal(new URL(page.url()).searchParams.get('configure'),'storage');
+   assert.equal(await page.$eval('[data-storage-configuration]',element=>element.textContent),'true','The capacity action explicitly requests storage configuration');
+   await click('button[data-placard-back="harvests"]');await view('harvests');
+   assert.equal(await page.$eval('[data-harvest-flower]',element=>element.textContent),'fixture-flower');
+   assert.equal(new URL(page.url()).searchParams.has('configure'),false,'The equipment request is scoped to its warehouse entry');
+   await assertNoOverflow('Navigation destinations');
+   results.push({width,scenario:'clarity-navigation',mapSale:true,genericSummary:true,juryReturns:['overview','storage','workshop'],selectedLot:true});
+  }
+ }else{
  for(width of (process.env.NAVIGATION_AUDIT_WIDTHS?.split(',').map(Number)??[320,390,768,1440])) {
   await page.setViewport({width,height:width<=390?844:1000,isMobile:width<=390,hasTouch:width<=390,deviceScaleFactor:1});
   await visit('active');await view('hub');
@@ -209,7 +261,7 @@ else try {
   await click('[data-map-building="warehouse"]');await click('[data-placard-activity="storage"]');await view('harvests');
   assert.equal(new URL(page.url()).searchParams.get('view'),'harvests');
   await page.goBack();await view('hub');assert.equal(await page.$eval('[data-map-building="warehouse"]',element=>element.dataset.selected),'true','Selection survives return');
-  await click('[data-map-zoom-toggle]');await page.waitForSelector('[data-map-zoomed]');
+  await clickMapZoom();await page.waitForSelector('[data-map-zoomed]');
   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
   await page.$eval('#placard-map-viewport',element=>{element.scrollLeft=100;element.scrollTop=70;});
   await page.waitForFunction(()=>document.querySelector('#placard-map-viewport').scrollLeft>0);
@@ -224,7 +276,7 @@ else try {
   else {await page.mouse.move(panPoint.x,panPoint.y);await page.mouse.down();await page.mouse.move(panPoint.x-70,panPoint.y,{steps:10});await page.mouse.up();}
   await page.waitForFunction(start=>document.querySelector('#placard-map-viewport')?.scrollLeft>start+10,{},panStart);await view('hub');
   results.at(-1).afterPanLayout=await page.evaluate(()=>({windowScroll:scrollY,scrollContainers:[...document.querySelectorAll('*')].filter(element=>element.scrollTop>0).map(element=>({tag:element.tagName,className:String(element.className),top:element.scrollTop,clientHeight:element.clientHeight,scrollHeight:element.scrollHeight})),panelChildren:[...document.querySelector('#placard-building-details').children].map(element=>({tag:element.tagName,text:element.textContent.slice(0,40),rect:element.getBoundingClientRect().toJSON(),overflow:getComputedStyle(element).overflow}))}));
-  await screenshot(`quartier-zoom-${width}`);await click('[data-map-zoom-toggle]');await page.waitForSelector('[data-map-zoomed]',{hidden:true});
+  await screenshot(`quartier-zoom-${width}`);await clickMapZoom();await page.waitForSelector('[data-map-zoomed]',{hidden:true});
   await click('[data-map-building="bank"]');await view('treasury');assert.equal(new URL(page.url()).searchParams.get('pole'),'bank');
   await page.goBack();await view('hub');await click('[data-map-building="office"]');await view('treasury');assert.equal(new URL(page.url()).searchParams.get('pole'),'accounting');
   await page.goBack();await view('hub');await click('[data-map-building="collection"]');await page.waitForSelector(album+'[open]');await page.keyboard.press('Escape');await page.waitForSelector(album+'[open]',{hidden:true});
@@ -236,11 +288,40 @@ else try {
   }
   await page.focus('[data-map-building="market"]');await page.keyboard.press('Space');await page.waitForSelector('#placard-building-details');
   await click('[data-placard-activity="market"]');await view('market');
+  assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'sales','Transformer et vendre opens the sale directly');
   await page.goBack();await view('hub');
   await navTo('collection');await page.waitForSelector(album+'[open]');await page.keyboard.press('Escape');await page.waitForSelector(album+'[open]',{hidden:true});
   await navTo('harvests');await clickText('Présenter au jury');await view('arena');assert.equal(new URL(page.url()).searchParams.get('flower'),'fixture-flower');
   await page.goBack();await view('harvests');await clickText('Vendre cette récolte');await view('market');assert.equal(new URL(page.url()).searchParams.get('flower'),'fixture-flower');
   assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'sales','A harvest shortcut still opens its sale');
+  await click('button[data-placard-back="harvests"]');await view('harvests');
+  assert.equal(await page.$eval('[data-harvest-flower]',element=>element.textContent),'fixture-flower','Returning from the sale retains the harvest');
+  await clickText('Stockage et affinage');await clickText('Augmenter la capacité');await view('workshop');
+  assert.equal(await page.$eval('[data-warehouse-flower]',element=>element.textContent),'fixture-flower','Capacity opens for the selected harvest');
+  assert.equal(await page.$eval('aside [data-placard-nav="workshop"]',element=>element.getAttribute('aria-current')),'page','Storage equipment belongs to the warehouse');
+  await click('button[data-placard-back="harvests"]');await view('harvests');
+  assert.equal(await page.$eval('[data-harvest-section]',element=>element.textContent),'storage','Capacity returns to conservation');
+  assert.equal(await page.$eval('[data-harvest-flower]',element=>element.textContent),'fixture-flower');
+  await clickText('Présenter au jury');await view('arena');
+  assert.equal(new URL(page.url()).searchParams.get('fromSection'),'storage','The jury remembers the storage sub-section');
+  await click('button[data-placard-back="harvests"]');await view('harvests');
+  assert.equal(await page.$eval('[data-harvest-section]',element=>element.textContent),'storage','Returning from the jury restores conservation');
+  assert.equal(await page.$eval('[data-harvest-flower]',element=>element.textContent),'fixture-flower','Returning from the jury restores the selected harvest');
+  await clickText('Vendre cette récolte');await view('market');
+  await clickText('Vue d’ensemble');await page.waitForFunction(()=>document.querySelector('[data-market-section]').textContent==='overview');
+  assert.equal(new URL(page.url()).searchParams.get('flower'),'fixture-flower','Summary preserves the selected lot without forcing sales');
+  await clickText('Vendre ma production');await clickText('Acheter un ordinateur');await view('workshop');
+  assert.equal(await page.$eval('[data-warehouse-flower]',element=>element.textContent),'fixture-flower','The equipment catalog keeps the sale lot for its commercial shortcut');
+  await click('button[data-placard-back="market"]');await view('market');
+  assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'sales');
+  assert.equal(await page.$eval('[data-market-flower]',element=>element.textContent),'fixture-flower','Equipment returns to the same commercial lot');
+  await clickText('Voir l’annonce ciblée');await page.waitForFunction(()=>document.querySelector('[data-market-listing]').textContent==='fixture-listing');
+  await page.reload({waitUntil:'networkidle0'});await view('market');
+  assert.equal(await page.$eval('[data-market-listing]',element=>element.textContent),'fixture-listing','Listing deep link survives reload');
+  await clickText('Acheter un ordinateur');await view('workshop');await click('button[data-placard-back="market"]');await view('market');
+  assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'dashboard');
+  assert.equal(await page.$eval('[data-market-listing]',element=>element.textContent),'fixture-listing','Equipment returns to the same listing');
+  if(width<=1000)assert.deepEqual(await page.$$eval('nav[aria-label="Accès rapides de Kanab Quest"] button',elements=>elements.map(element=>element.textContent.trim())),['Quartier','Culture','Récoltes','Commerce','Plus']);
   await navTo('market');await assertNoOverflow('Commerce');await screenshot(`commerce-navigation-${width}`);
   assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'overview','The market navigation opens the shop overview');
   await navTo('workshop');await clickText('Acheter une lampe');await view('workshop');await page.waitForFunction(()=>document.querySelector('[data-catalog]')?.textContent==='Matériel');assert.equal(new URL(page.url()).searchParams.get('equipment'),'LED-500');
@@ -251,6 +332,7 @@ else try {
   await visit(state);await view('hub');await page.waitForSelector('[aria-label="À faire maintenant"]');await screenshot(`${state}-390`);
   const expected={starter:'game',lots:'market',jury:'arena',investment:'workshop'}[state];
   await click('[aria-label="À faire maintenant"] button');await view(expected);
+  if(state==='lots')assert.equal(new URL(page.url()).searchParams.get('section'),'sales','Ready lots open the sale directly');
   if(state==='investment'){assert.equal(new URL(page.url()).searchParams.get('catalog'),'equipment');assert(new URL(page.url()).searchParams.get('equipment'));}
   results.push({scenario:state,destination:expected});
  }
@@ -286,6 +368,11 @@ else try {
  await page.goBack();await page.waitForFunction(()=>document.querySelector('[data-market-section]')?.textContent==='sales');
  results.push({scenario:'market-back-navigation',section:'sales'});
  await visit('starter','view=workshop&section=storage');await view('workshop');assert.equal(await page.$eval('[data-placard-view]',element=>element.dataset.placardView),'workshop');
+ await visit('starter','view=arena&flower=fixture-flower&from=workshop&fromSection=storage&fromFlower=fixture-flower');await view('arena');
+ await click('button[data-placard-back="workshop"]');await view('workshop');
+ assert.equal(new URL(page.url()).searchParams.get('section'),'storage','The jury returns to the warehouse storage when opened there');
+ assert.equal(await page.$eval('[data-warehouse-flower]',element=>element.textContent),'fixture-flower','The warehouse return restores the jury lot');
+ results.push({scenario:'jury-warehouse-return',section:'storage',flower:'fixture-flower'});
  for(const equipment of ['LED-500','COMPUTER','HASH_SIFTER']){
   await visit('starter',`view=shop&catalog=equipment&equipment=${equipment}`);await view('workshop');
   await page.waitForFunction(()=>new URLSearchParams(location.search).get('view')==='workshop');
@@ -296,8 +383,9 @@ else try {
  await visit('starter','view=shop&section=buddies');await view('shop');assert.equal(await page.$eval('[data-shop-section]',element=>element.textContent),'buddies');
  await click('[data-open-shop-collection]');await page.waitForSelector(album+'[open]');assert.equal(await page.$eval('[data-collection-tab=buddies]',element=>element.getAttribute('aria-selected')),'true');await page.keyboard.press('Escape');
  results.push({scenario:'buddies-shop-album',initialSection:'buddies'});
+ }
  assert.deepEqual(errors,[]);assert(requests.every(request=>request.method==='GET'),'Audit never mutates real state');
- await writeFile(resolve(output,'report.json'),JSON.stringify({results,errors,requests},null,2));
+ await writeFile(resolve(output,clarityOnly?'clarity-report.json':'report.json'),JSON.stringify({results,errors,requests},null,2));
  console.log(JSON.stringify({success:true,output,widths:results.filter(result=>result.width).map(result=>result.width),scenarios:results.filter(result=>result.scenario).length,errors:errors.length},null,2));
 }catch(error){
  if(browser){const pages=await browser.pages();await pages.at(-1)?.screenshot({path:resolve(output,'failure.png'),fullPage:true}).catch(()=>{});}

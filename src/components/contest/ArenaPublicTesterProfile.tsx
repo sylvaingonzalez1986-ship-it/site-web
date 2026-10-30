@@ -16,7 +16,7 @@ export function ArenaPublicTesterProfile({ profile, backHref }: { profile: Conte
         <span>{profile.profile.pseudo}</span>
       </nav>
 
-      <KqChapterHeading art="collection" level={1} eyebrow="Profil testeur" title={profile.profile.pseudo}>
+      <KqChapterHeading art="collection" level={1} title={`Profil de ${profile.profile.pseudo}`}>
         <p>{progress.currentLevel.label}</p>
       </KqChapterHeading>
 

@@ -2,7 +2,7 @@ import { KQ_GAME_DAY_MS } from "./kanab-quest-business";
 import { createKqCareState, getKqCannabinoidReport, type KqCareState } from "./kanab-quest-care";
 import type { KqPostHarvestProfile } from "./kanab-quest-post-harvest";
 
-/** Six real hours after the verdict, independent of the accelerated game clock. */
+/** Six real hours after harvest, before the jury, independent of the game clock. */
 export const KQ_CURING_DURATION_MS = 6 * 60 * 60 * 1000;
 /** One real hour after the verdict, independent of the accelerated game clock. */
 export const KQ_STORAGE_OVERFLOW_GRACE_MS = 60 * 60 * 1000;
@@ -99,7 +99,7 @@ export function isKqStorageCapacity(value: unknown): value is KqStorageCapacity 
 /** Reserve whole containers for one lot. The chosen method is filled first,
  * then the other methods from highest protection to lowest. No fractional jar
  * is shared between two harvests. The caller supplies other lots' reservations.
- * Initial nowMs is the verdict time; reallocations keep overflowDeadlineAt,
+ * Initial nowMs is the storage entry time; reallocations keep overflowDeadlineAt,
  * including lots that initially fit completely inside their containers. */
 export function planKqStorageAllocation(input: {
   totalUnits: number; ownedContainers: Readonly<Record<string, number>>; reservedAllocations?: readonly KqStorageAllocation[];
@@ -136,6 +136,20 @@ export function planKqStorageAllocation(input: {
     overflowDeadlineAt: input.overflowDeadlineAt ?? new Date(input.nowMs + KQ_STORAGE_OVERFLOW_GRACE_MS).toISOString() };
   if (!isKqStorageCapacity(result)) throw new Error("Allocation de stockage invalide.");
   return result;
+}
+
+/** Place the entire lot in one exact model. Pass only installed/usable containers
+ * and other lots' reservations: the lot may reuse its own containers. */
+export function planKqStoragePlacement(input: {
+  capacity: KqStorageCapacity; containerCode: KqStorageContainerCode;
+  ownedContainers: Readonly<Record<string, number>>; reservedAllocations?: readonly KqStorageAllocation[];
+}): KqStorageCapacity {
+  if (!isKqStorageCapacity(input.capacity) || input.capacity.totalUnits <= 0) throw new Error("Ce lot n’est plus disponible dans ton entrepôt.");
+  const container = getKqStorageInventory(input.ownedContainers, input.reservedAllocations).find(item => item.code === input.containerCode);
+  if (!container || container.ownedQuantity === 0) throw new Error("Ce modèle de contenant n’est pas installé dans ton entrepôt.");
+  const quantity = Math.ceil(input.capacity.totalUnits / container.capacityUnits);
+  if (container.freeQuantity < quantity) throw new Error("Pas assez de contenants libres de ce modèle pour accueillir tout le lot.");
+  return { ...input.capacity, allocations: [{ containerCode: container.code, quantity, storedUnits: input.capacity.totalUnits }] };
 }
 
 export function projectKqStorageCapacity(capacity: KqStorageCapacity, nowMs: number): KqStorageCapacityProjection {
@@ -225,6 +239,10 @@ export type KqStorageLot = {
   capacity?: KqStorageCapacity;
   /** Absent in historical saves: their quality and exposure stay unchanged. */
   postHarvest?: KqStoragePostHarvest;
+  /** New lifecycle; historical judged lots retain their original storage clock. */
+  preJury?: boolean;
+  /** Acquired effects frozen at the first jury engagement; never applied twice. */
+  juryApplied?: { at: string; qualityDelta: number; originalStats: Record<string, number>; stats: Record<string, number> };
 };
 export type KqStorageProjection = {
   stage: "curing" | "ready"; serverNow: string; harvestedAt: string; curingStartedAt: string;
@@ -301,6 +319,11 @@ export function isKqStorageLot(value: unknown): value is KqStorageLot {
     && Number.isSafeInteger(lot.exposure?.aromaWeightedMs) && lot.exposure.aromaWeightedMs >= 0
     && Number.isSafeInteger(lot.exposure?.chemistryWeightedMs) && lot.exposure.chemistryWeightedMs >= 0
     && (lot.capacity === undefined || isKqStorageCapacity(lot.capacity))
+    && (lot.preJury === undefined || typeof lot.preJury === "boolean")
+    && (lot.juryApplied === undefined || (lot.juryApplied !== null && typeof lot.juryApplied.at === "string" && Number.isFinite(Date.parse(lot.juryApplied.at))
+      && inRange(lot.juryApplied.qualityDelta, -10, 10)
+      && [lot.juryApplied.originalStats, lot.juryApplied.stats].every(stats => stats && typeof stats === "object" && !Array.isArray(stats)
+        && Object.values(stats).every(value => typeof value === "number" && Number.isFinite(value)))))
     && (lot.postHarvest === undefined || (validPostHarvest(lot.postHarvest)
       // Earlier local saves could earn 210 centipoints; new equipment tops out at 140.
       && lot.postHarvest.curingBonusWeightedMs <= (timestamps[2] - timestamps[1]) * 210));
@@ -310,6 +333,7 @@ export function createKqStorageLot(input: {
   baseline: KqStorageBaseline; curingDurationMs?: number;
   capacity?: KqStorageCapacity;
   postHarvest?: KqPostHarvestProfile;
+  preJury?: boolean;
 }): KqStorageLot {
   const started = dateMs(input.curingStartedAt ?? input.harvestedAt);
   const duration = input.curingDurationMs ?? KQ_CURING_DURATION_MS;
@@ -322,6 +346,7 @@ export function createKqStorageLot(input: {
       care: { terpenes: input.baseline.care.terpenes, cannabinoidExpression: input.baseline.care.cannabinoidExpression,
         cannabinoidConversion: input.baseline.care.cannabinoidConversion, cannabinoidOxidation: input.baseline.care.cannabinoidOxidation } },
     exposure: { aromaWeightedMs: 0, chemistryWeightedMs: 0 },
+    ...(input.preJury !== undefined ? { preJury: input.preJury } : {}),
     ...(input.capacity ? { capacity: structuredClone(input.capacity) } : {}),
   };
   if (input.postHarvest) lot.postHarvest = { ...input.postHarvest, containerQualityBonus: getKqStorageContainerQualityBonus(lot), curingBonusWeightedMs: 0 };
@@ -373,7 +398,7 @@ export function changeKqStoragePostHarvest(lot: KqStorageLot, profile: KqPostHar
 }
 /** Reading is pure and stable within a game day. A method change creates a new
  * exact checkpoint and invalidates earlier quotations. Maturity uses the exact
- * server timestamp; chemistry uses complete game days since the verdict. */
+ * server timestamp; chemistry uses complete game days since storage started. */
 export function projectKqStorageLot(lot: KqStorageLot, nowMs: number, juryScoreOverride?: number): KqStorageProjection {
   if (!isKqStorageLot(lot) || !Number.isSafeInteger(nowMs)) throw new Error("Horloge ou lot de conservation invalide.");
   const started = dateMs(lot.curingStartedAt), settled = dateMs(lot.lastSettledAt), ready = dateMs(lot.readyAt);
@@ -401,9 +426,15 @@ export function projectKqStorageLot(lot: KqStorageLot, nowMs: number, juryScoreO
     : methods.length > 1 ? "Contenants mixtes" : getKqStorageMethod(methods[0])!.name;
   const curingQualityBonus = lot.postHarvest ? Math.round(curingBonusAt(lot, now) / (ready - started)) / 100 : 0;
   const qualityBonus = qualityCentiSum(lot.postHarvest?.dryingQualityBonus ?? 0, curingQualityBonus) / 100;
-  const conditionScore = lot.postHarvest
+  let conditionScore = lot.postHarvest
     ? Math.max(0, Math.min(1000, qualityCentiSum(juryScore, qualityBonus, -qualityLoss))) / 100
     : Math.max(0, round2(juryScore - qualityLoss));
+  if (lot.juryApplied && juryScoreOverride !== undefined) {
+    const currentDelta = lot.postHarvest
+      ? Math.max(0, Math.min(1000, qualityCentiSum(baseline.juryScore, qualityBonus, -qualityLoss))) / 100 - baseline.juryScore
+      : -qualityLoss;
+    conditionScore = Math.max(0, Math.min(1000, qualityCentiSum(juryScore, currentDelta, -lot.juryApplied.qualityDelta))) / 100;
+  }
   return {
     stage: now >= ready ? "ready" : "curing", serverNow: new Date(now).toISOString(), harvestedAt: lot.harvestedAt,
     curingStartedAt: lot.curingStartedAt, readyAt: lot.readyAt, nextChangeAt, elapsedGameDays,
@@ -411,11 +442,29 @@ export function projectKqStorageLot(lot: KqStorageLot, nowMs: number, juryScoreO
     methodCode: lot.methodCode, methodName,
     aroma, terpenes, terpeneRetentionPercent: round2(terpenes / initial.terpenes * 100),
     cannabinoidReport: getKqCannabinoidReport({ varietyCode: baseline.varietyCode, care }),
-    qualityLoss, qualityDelta: lot.postHarvest ? qualityCentiSum(conditionScore, -juryScore) / 100 : qualityLoss === 0 ? 0 : -qualityLoss, conditionScore,
+    qualityLoss, qualityDelta: lot.postHarvest || lot.juryApplied ? qualityCentiSum(conditionScore, -juryScore) / 100 : qualityLoss === 0 ? 0 : -qualityLoss, conditionScore,
     ...(capacity ? { capacity } : {}),
     ...(lot.postHarvest ? { postHarvest: { dryingQualityBonus: lot.postHarvest.dryingQualityBonus,
       storageQualityBonus: lot.postHarvest.storageQualityBonus, climateQualityBonus: lot.postHarvest.climateQualityBonus,
       containerQualityBonus: lot.postHarvest.containerQualityBonus, aromaRateFactor: lot.postHarvest.aromaRateFactor,
       chemistryRateFactor: lot.postHarvest.chemistryRateFactor, curingQualityBonus, qualityBonus } } : {}),
   };
+}
+
+/** Freeze the quality actually acquired in storage before submitting a flower.
+ * The harvest evidence and baseline remain immutable. Trading later supplies
+ * the final jury score to projectKqStorageLot, which removes this applied delta. */
+export function applyKqStorageToJury(lot: KqStorageLot, stats: Record<string, number>, nowMs: number): { lot: KqStorageLot; stats: Record<string, number> } {
+  const settled = settleKqStorageLot(lot, nowMs);
+  const projection = projectKqStorageLot(settled, nowMs);
+  if (projection.stage !== "ready") throw new Error("Le curing doit être terminé avant de présenter cette fleur au jury.");
+  if (lot.juryApplied) return { lot, stats: { ...lot.juryApplied.stats } };
+  if (!Object.values(stats).every(value => typeof value === "number" && Number.isFinite(value))) throw new Error("Statistiques de fleur invalides.");
+  const categories = new Set(["appearance", "aroma", "vigor", "mastery", "regularity", "cannabinoids"]);
+  const prepared = Object.fromEntries(Object.entries(stats).map(([key, value]) => [key,
+    categories.has(key) ? Math.max(0, Math.min(99, Math.round(value + projection.qualityDelta * 10))) : value]));
+  const next = { ...settled, juryApplied: {
+    at: new Date(nowMs).toISOString(), qualityDelta: projection.qualityDelta, originalStats: { ...stats }, stats: prepared,
+  } };
+  return { lot: next, stats: prepared };
 }

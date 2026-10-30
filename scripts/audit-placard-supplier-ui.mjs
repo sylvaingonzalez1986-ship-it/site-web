@@ -107,7 +107,7 @@ try{
   assert.equal(result.requests.length,2);assert.equal(result.requests[0].requestKey,result.requests[1].requestKey,'Lost payment response reuses its idempotency key');
   assert.deepEqual({action:result.requests[0].action,invoiceId:result.requests[0].invoiceId},{action:'pay-supplier',invoiceId:'future'});assert.equal(result.cash,5800,'One debit only');assert.equal(result.due,1800);
   assert.equal(await page.$('[data-supplier-invoice="future"]'),null,'Paid invoice leaves unpaid list');assert.ok(await page.evaluate(()=>document.body.textContent.includes('Dernières factures fournisseur réglées · 2')));checks.push('supplier early payment, pending lock, lost-response retry and paid history');
-  await page.setViewport({width:390,height:1000});await visit('view=sales');await page.click('[aria-label="Voir l’offre Grossistes"]');await clickText('Vendre ce lot');await page.waitForSelector('dialog[open]');
+  await page.setViewport({width:390,height:1000});await visit('view=sales');await page.click('[aria-label="Voir l’offre Grossistes"]');await clickText('Voir le montant net');await page.waitForSelector('dialog[open]');
   assert.equal(await page.evaluate(()=>window.__supplier.prepared.supplierPaidCents),1800,'Authoritative sale includes overdue suppliers');
   const deduction=()=>[...document.querySelectorAll('dt')].find(node=>node.textContent==='Fournisseurs échus réglés')?.nextElementSibling?.textContent;
   assert.match(await page.evaluate(deduction),/18\s*€/,'Supplier deduction shown before selling');await layout();

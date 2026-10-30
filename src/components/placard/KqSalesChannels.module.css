@@ -1,0 +1,48 @@
+.choices {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 20px 6px;
+  color: #172923;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+}
+.choice { display: flex; flex-direction: column; min-width: 0; padding: 0 18px; }
+.choice + .choice { border-left: 1px solid #17292335; }
+.heading { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.heading img { flex-shrink: 0; width: 42px; height: 48px; object-fit: cover; object-position: center 35%; border-radius: 4px; }
+.heading > div { min-width: 0; }
+.heading h3 { margin: 0; font: 800 1rem/1.3 var(--font-body), Arial, sans-serif; overflow-wrap: anywhere; }
+.heading small { display: block; margin-top: 4px; font-size: .75rem; line-height: 1.4; }
+.amount { margin-bottom: 10px; }
+.amount strong { display: inline-block; font: 800 clamp(1.4rem, 2.5vw, 1.8rem)/1.2 var(--font-display), Impact, sans-serif; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.amount > span { display: inline-block; margin-left: 7px; font-size: .75rem; }
+.amount small { display: block; margin-top: 5px; font-size: .8rem; line-height: 1.5; }
+.notes { display: grid; gap: 8px; font-size: .8rem; line-height: 1.5; margin-bottom: 16px; }
+.notes p { margin: 0; }
+.warning { color: #782719; }
+.action {
+  display: inline-flex; justify-content: space-between; align-items: center; gap: 8px;
+  width: 100%; min-height: 48px; margin-top: auto; padding: 11px 14px;
+  font-size: .8rem !important; font-weight: 750 !important; text-align: left; color: #172923;
+  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
+  background: transparent; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; box-shadow: none;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+}
+.action svg { flex-shrink: 0; }
+.choice[data-unavailable] .action { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
+.action:hover { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); }
+.explanation { margin-top: 18px; border-top: 1px solid #17292335; font-size: .8rem; }
+.explanation > summary { padding-block: 12px; cursor: pointer; min-height: 44px; font-weight: 650; }
+.explanation p { max-width: 75ch; }
+@media(max-width: 1000px) {
+  .choices { grid-template-columns: 1fr; padding: 6px 18px; }
+  .choice { padding: 18px 0; }
+  .choice + .choice { border-left: 0; border-top: 1px solid #17292335; }
+  .heading { margin-bottom: 10px; }
+  .action { width: auto; min-width: 180px; align-self: flex-start; }
+}
+@media(max-width: 400px) { .action { width: 100%; } }

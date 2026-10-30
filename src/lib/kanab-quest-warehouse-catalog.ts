@@ -406,7 +406,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "checkedAt": "2026-10-18",
     "priceBasis": "simulation",
     "priceNote": "Prix fictif du jeu ; pose calculée séparément dans le devis.",
-    "specification": "Stabilise la salle de stockage. Jusqu’à +0,10 de qualité pendant le curing et 10 % de pertes en moins.",
+    "specification": "Stabilise la salle de stockage. Jusqu’à +0,10 de qualité pendant l’affinage et 10 % de pertes en moins.",
     "gameCapacity": { "unit": "m2", "value": 100, "note": "Un appareil actif pour toute la salle de stockage du jeu." }
   },
   {
@@ -424,7 +424,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "checkedAt": "2026-10-18",
     "priceBasis": "simulation",
     "priceNote": "Prix fictif du jeu ; pose calculée séparément dans le devis.",
-    "specification": "Régule la salle de stockage. Jusqu’à +0,20 de qualité pendant le curing et 20 % de pertes en moins.",
+    "specification": "Régule la salle de stockage. Jusqu’à +0,20 de qualité pendant l’affinage et 20 % de pertes en moins.",
     "gameCapacity": { "unit": "m2", "value": 100, "note": "Un appareil actif pour toute la salle de stockage du jeu." }
   },
   {
@@ -442,7 +442,7 @@ export const KQ_WAREHOUSE_CATALOG: readonly KqWarehouseDevice[] = [
     "checkedAt": "2026-10-18",
     "priceBasis": "simulation",
     "priceNote": "Prix fictif du jeu ; pose calculée séparément dans le devis.",
-    "specification": "Régulation renforcée de la salle. Jusqu’à +0,30 de qualité pendant le curing et 30 % de pertes en moins.",
+    "specification": "Régulation renforcée de la salle. Jusqu’à +0,30 de qualité pendant l’affinage et 30 % de pertes en moins.",
     "gameCapacity": { "unit": "m2", "value": 100, "note": "Un appareil actif pour toute la salle de stockage du jeu." }
   },
   {

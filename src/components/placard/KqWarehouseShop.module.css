@@ -19,6 +19,8 @@
 .dialog button { font: inherit; cursor: pointer; }
 .dialog button:disabled { cursor: not-allowed; opacity: .6; filter: saturate(.3); box-shadow: none; }
 .dialog button:focus-visible { outline: 3px solid #c29442; outline-offset: 3px; }
+.product:focus { outline: 3px solid #076c61; outline-offset: -3px; }
+.product[data-targeted] { scroll-margin-top: 12px; }
 .dialog summary:focus-visible { outline: 3px solid #c29442; outline-offset: 3px; }
 .header {
   display: flex; align-items: center; justify-content: space-between; gap: 20px;
@@ -104,6 +106,21 @@
 .zonePrice { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 6px; margin: 12px 0 0; font-size: 13px; line-height: 1.5; color: #536058; }
 .zonePrice b { font-size: 17px; font-weight: 650; color: #076c61; }
 .unitPrice { margin: 6px 0 0; font-size: 11px; line-height: 1.5; color: #536058; }
+.reuse { display: grid; gap: 6px; margin: 14px 0 0; font-size: 12px; line-height: 1.5; }
+.reuse > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 8px; }
+.reuse dt { color: #536058; }
+.reuse dd { margin: 0; color: #172923; font-weight: 700; font-variant-numeric: tabular-nums; }
+.referencePrice { margin-top: 12px; padding-top: 8px; border-top: 1px solid #17292335; }
+.referencePrice summary, .reuseDetails summary { padding: 7px 0; color: #076c61; font-size: 12px; line-height: 1.5; font-weight: 650; cursor: pointer; }
+.referencePrice > strong { color: #172923; font-size: 19px; font-variant-numeric: tabular-nums; }
+.referencePrice .priceLabel { margin-top: 6px; }
+.referencePrice .zonePrice { margin-top: 6px; }
+.reuseDetails { margin: 0 18px 16px; padding-top: 8px; border-top: 1px solid #17292335; font-size: 12px; line-height: 1.5; color: #536058; }
+.reuseDetails summary span { display: block; font-weight: 400; color: #536058; }
+.reuseDetails ul { margin: 6px 0; padding: 0; list-style: none; }
+.reuseDetails li { display: flex; flex-wrap: wrap; gap: 2px 8px; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #17292325; }
+.reuseDetails li > strong { color: #172923; font-variant-numeric: tabular-nums; }
+.reuseDetails p { margin: 10px 0 0; }
 .metrics { display: grid; gap: 12px; margin: 0 18px 18px; padding: 14px 0; border-top: 2px solid #17292355; border-bottom: 2px solid #17292355; }
 .metrics > div { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
 .metrics dt { font-size: 12px; line-height: 1.45; color: #536058; }
@@ -187,7 +204,7 @@
   .tier { padding-inline: 22px; font-size: 14px; }
   .metrics { margin-inline: 22px; }
   .benefits { margin-inline: 22px; }
-  .tradeoff, .owned { margin-inline: 22px; }
+  .tradeoff, .owned, .reuseDetails { margin-inline: 22px; }
   .productActions { padding-inline: 22px; }
   .footer { flex-wrap: wrap; gap: 12px; padding: 16px 20px; }
   .footer > span { font-size: 12px; }

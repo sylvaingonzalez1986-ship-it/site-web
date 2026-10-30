@@ -1,5 +1,5 @@
 .page {
-  composes: surface from "../contest/ArenaRetro.module.css";
+  composes: gameSurface from "../contest/ArenaRetro.module.css";
   min-height: calc(100vh - 70px);
   padding: clamp(18px, 3vw, 42px);
 }
@@ -26,10 +26,7 @@
 }
 
 .heroCopy { position: relative; z-index: 1; max-width: 760px; }
-.heroCopy > span,
 .lotHeader small,
-.routeHeading small,
-.lotRail header small,
 .confirmModal > small,
 .receiptModal > small {
   font: 900 11px/1.2 var(--font-sans), sans-serif;
@@ -366,7 +363,6 @@
 /* One workshop, one selected machine: the scene replaces the wall of cards. */
 .page { background: #fff1d6; color: #172923; }
 .hero { overflow: visible; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; box-shadow: var(--game-panel-shadow, none); color: #172923; padding: clamp(18px,3vw,30px); }
-.heroCopy > span { color: #172923; }
 .heroCopy h1 { color: #172923; font-size: clamp(36px, 6vw, 62px); }
 .heroCopy p { color: #172923; font-size: 13px; }
 .walletGrid { gap: 12px; }
@@ -385,7 +381,6 @@
 .lotRail { color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .lotRail > header { border-bottom: 2px solid #172923; padding: 14px; background: var(--game-surface-warm); border-radius: var(--game-panel-radius, 2px); }
 .lotRail h2 { font-size: 20px; }
-.lotRail header small { color: #172923; }
 .lotRail button { border: var(--game-control-border-width, 2px) solid #172923; border-bottom: 2px solid #172923; padding: 14px; color: #172923; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .lotRail button:hover:not(:disabled), .lotRail button[data-selected] {
   --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
@@ -410,7 +405,6 @@
 .cultureDetails p { margin: 0 0 12px; }
 .routeHeading { gap: 10px; margin: 12px 0; }
 .routeHeading h3 { color: #172923; font-size: clamp(22px, 4vw, 32px); }
-.routeHeading small { color: #172923; }
 .routeHeading button { min-height: 44px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .workshopScene { position: relative; height: clamp(210px, 33vw, 360px); overflow: hidden; isolation: isolate; border: 2px solid #172923; background: var(--game-surface-warm); border-radius: 16px; margin-top: 18px; }
 .workshopScene > img { object-fit: cover; object-position: 50% 25%; }

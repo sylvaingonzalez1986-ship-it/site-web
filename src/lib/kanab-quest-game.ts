@@ -827,23 +827,33 @@ export function redrawKqHand(state: KqGameState): KqGameState {
   return { ...nextState, handCodes: drawKqAvailableHandCodes(nextState) };
 }
 
-export function swapKqHeritageHandCard(state: KqGameState, handIndex: number, reserveIndex: number): KqGameState {
+/** Omit both positions to check whether the opening reserve can still be arranged. */
+export function canSwapKqHeritageHandCard(state: KqGameState, handIndex?: number, reserveIndex?: number) {
   const heritage = getKqStateHeritage(state);
   const hand = getKqHandCodes(state);
   const reserve = state.heritageReserveCodes ?? [];
-  if (
-    heritage?.effect !== "opening-hand-reserve"
-    || state.stageIndex !== 0
-    || state.phase !== "prepare"
-    || state.heritageUsed
-    || state.preparationPlayed
-    || !Number.isInteger(handIndex)
-    || !Number.isInteger(reserveIndex)
-    || handIndex < 0
-    || handIndex >= hand.length
-    || reserveIndex < 0
-    || reserveIndex >= reserve.length
-  ) return state;
+  if (heritage?.effect !== "opening-hand-reserve") return { allowed: false, reason: "Cet Héritage ne donne pas de réserve à échanger." };
+  if (state.stageIndex !== 0) return { allowed: false, reason: "La réserve se compose uniquement à la première étape." };
+  if (state.phase !== "prepare") return { allowed: false, reason: "La réserve se compose avant le premier lancer." };
+  if (state.heritageUsed) return { allowed: false, reason: "Le pouvoir de cette réserve a déjà été utilisé." };
+  if (state.preparationPlayed) return { allowed: false, reason: "Une préparation est déjà jouée : la main est fixée pour cette étape." };
+  if (hand.length === 0 || reserve.length === 0) return { allowed: false, reason: "Aucune carte de réserve à échanger avec ta main." };
+  if (handIndex !== undefined || reserveIndex !== undefined) {
+    if (typeof handIndex !== "number" || typeof reserveIndex !== "number"
+      || !Number.isInteger(handIndex) || !Number.isInteger(reserveIndex)
+      || handIndex < 0 || handIndex >= hand.length || reserveIndex < 0 || reserveIndex >= reserve.length) {
+      return { allowed: false, reason: "Choisis une carte de ta main et une carte de réserve encore disponibles." };
+    }
+  }
+  return { allowed: true, reason: "Échange gratuit : aucun XP dépensé, aucune copie brûlée." };
+}
+
+export function swapKqHeritageHandCard(state: KqGameState, handIndex: number, reserveIndex: number): KqGameState {
+  if (!Number.isInteger(handIndex) || !Number.isInteger(reserveIndex)
+    || !canSwapKqHeritageHandCard(state, handIndex, reserveIndex).allowed) return state;
+  const heritage = getKqStateHeritage(state)!;
+  const hand = getKqHandCodes(state);
+  const reserve = state.heritageReserveCodes ?? [];
   const nextHand = [...hand];
   const nextReserve = [...reserve];
   [nextHand[handIndex], nextReserve[reserveIndex]] = [nextReserve[reserveIndex], nextHand[handIndex]];

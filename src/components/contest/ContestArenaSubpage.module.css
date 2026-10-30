@@ -1,5 +1,5 @@
 .page {
-  composes: surface from "./ArenaRetro.module.css";
+  composes: gameSurface from "./ArenaRetro.module.css";
   --arena-green: #00563f;
   --arena-cream: #f6f0e6;
   --arena-paper: #fffaf1;

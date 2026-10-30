@@ -2,6 +2,23 @@ import { describe, expect, it, vi } from "vitest";
 import { createKqScopedRequest, enqueueKqRemoteRandomBattle, finalizeKqRemoteBattle, finalizeKqRemoteBotBattle, getKqRemoteActiveRun, getKqRemoteBattles, getKqRemoteFlowerRivals, getKqRemoteFlowers, leaveKqRemoteRandomBattleQueue, playKqRemoteCard, pollKqRemoteRandomBattleQueue, startKqRemoteRun, swapKqRemoteHeritageCard } from "@/lib/kanab-quest-api";
 
 describe("Kanab Quest browser API", () => {
+  it("binds a card to the inspected stage and preserves player routing", async () => {
+    const request = vi.fn().mockImplementation(async () => new Response(JSON.stringify({ state: {}, burnReceipt: {} }), { status: 200 }));
+    await playKqRemoteCard("run/one", "BOTTE-017", createKqScopedRequest("player", request), { expectedStageIndex: 0 });
+    expect(request).toHaveBeenCalledWith("/api/arena/placard/runs/run%2Fone/cards", expect.objectContaining({
+      method: "POST", body: JSON.stringify({ cardCode: "BOTTE-017", expectedStageIndex: 0 }),
+    }));
+    expect(request).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps the legacy card request body when no stage precondition is supplied", async () => {
+    const request = vi.fn().mockResolvedValue(new Response(JSON.stringify({ state: {}, burnReceipt: {} }), { status: 200 }));
+    await playKqRemoteCard("run-1", "BOTTE-017", request);
+    expect(request).toHaveBeenCalledWith("/api/admin/placard/runs/run-1/cards", expect.objectContaining({
+      body: JSON.stringify({ cardCode: "BOTTE-017" }),
+    }));
+  });
+
   it("preserves explicit selection and the idempotent zone launch intent", async () => {
     const request = vi.fn().mockImplementation(async () => new Response(JSON.stringify({ activeRun: null, activeRuns: [], runId: "run-new" }), { status: 200 }));
     const scoped = createKqScopedRequest("player", request);

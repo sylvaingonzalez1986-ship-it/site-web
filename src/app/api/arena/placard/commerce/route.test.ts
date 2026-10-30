@@ -10,8 +10,9 @@ import { KqCommerceOfferChangedError } from "@/lib/kanab-quest-commerce-errors";
 
 const request = (body: unknown) => new Request("http://localhost/api/arena/placard/commerce", { method: "POST", body: JSON.stringify(body) });
 const command = { action: "online", command: "create-listing", payload: { stockId: "stock", formatGrams: 5, packagingCode: "kraft-5", packets: 2, packetPriceCents: 1234 }, requestKey: "key" };
+const payAllCommand = { action: "pay-all-invoices", expectedCents: 22_000, requestKey: "11111111-1111-4111-8111-111111111111" };
 
-describe("online commerce endpoint boundaries", () => {
+describe("commerce endpoint boundaries", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.enabled.mockResolvedValue(true);
@@ -28,18 +29,37 @@ describe("online commerce endpoint boundaries", () => {
     expect(await response.json()).toEqual({ action: "create-listing", cashAfterCents: 9000 });
   });
 
-  it("keeps access, authentication and rate limits ahead of mutations", async () => {
+  it.each([false, true])("dispatches global invoice payment for the authenticated owner and returns its receipt (replayed: %s)", async replayed => {
+    const receipt = { action: "pay-all-invoices", paidCents: 22_000, cashAfterCents: 28_000, replayed };
+    mocks.action.mockResolvedValue(receipt);
+    const response = await POST(request({ ...payAllCommand, userId: "other-player" }));
+    expect(response.status).toBe(200);
+    expect(mocks.action).toHaveBeenCalledExactlyOnceWith("session-owner", { ...payAllCommand, userId: "other-player" });
+    expect(await response.json()).toEqual(receipt);
+    expect(mocks.snapshot).not.toHaveBeenCalled();
+  });
+
+  it.each([command, payAllCommand])("keeps access, authentication and rate limits ahead of $action mutations", async input => {
     mocks.enabled.mockResolvedValue(false);
-    expect((await POST(request(command))).status).toBe(404);
+    expect((await POST(request(input))).status).toBe(404);
     expect(mocks.session).not.toHaveBeenCalled();
     mocks.enabled.mockResolvedValue(true); mocks.session.mockResolvedValue(null);
-    expect((await POST(request(command))).status).toBe(401);
+    expect((await POST(request(input))).status).toBe(401);
     mocks.session.mockResolvedValue({ customerId: "session-owner", customer: {} });
     mocks.rate.mockResolvedValue({ allowed: false, retryAfterSeconds: 9 });
-    const response = await POST(request(command));
+    const response = await POST(request(input));
     expect(response.status).toBe(429);
     expect(response.headers.get("retry-after")).toBe("9");
     expect(mocks.action).not.toHaveBeenCalled();
+  });
+
+  it("returns a rejected invoice total for review without replaying the mutation", async () => {
+    const error = "Le total des factures a changé. Actualise le récapitulatif avant de confirmer.";
+    mocks.action.mockRejectedValue(new Error(error));
+    const response = await POST(request(payAllCommand));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ error });
+    expect(mocks.action).toHaveBeenCalledTimes(1);
   });
 
   it("returns private uncached snapshots and honors the lightweight shop read", async () => {

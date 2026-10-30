@@ -5,7 +5,6 @@
 .deckStamp b { font: 900 36px/1.1 var(--font-display),Impact,sans-serif; }
 .deckStamp span { font-size: 9px; letter-spacing: .12em; font-weight: 900; }
 .heading { flex: 1; min-width: 0; }
-.heading>span { color: #172923; font: 800 10px/1.4 ui-monospace,monospace; letter-spacing: .13em; }
 .heading h2 { margin: 5px 0 8px; color: #172923; font: 900 clamp(30px,3.5vw,44px)/1 var(--font-display),Impact,sans-serif; }
 .heading p { max-width: 50ch; margin: 0; color: #172923; font-size: 13px; line-height: 1.6; }
 .preparation button { cursor: pointer; font-family: inherit; }

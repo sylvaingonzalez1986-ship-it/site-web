@@ -10,13 +10,17 @@ Les nouvelles tables à inclure dans la procédure de reset du jeu sont `kq_care
 
 ## Boucle de jeu
 
+La clarification locale du 30 octobre 2026 ajoute une entrée **Produits de soin** avant l’entretien général. La réserve ouvre **Pour cette culture**, qui regroupe les produits ciblant les problèmes observés. Les rayons Intrants et Protection biologique restent accessibles. Une correspondance de cible n’annule pas les restrictions d’utilisation : chaleur, stade trop avancé, cible déjà suivie et limites d’apports restent indiqués.
+
+Le registre présente stock, utilisation et prix d’achat avant les explications repliées. Acheter ajoute une charge ; utiliser consomme une charge possédée, avec effet au bilan. Le stock et les prix inconnus sont indiqués comme tels et peuvent être actualisés. Les tarifs viennent du catalogue serveur ; la simulation locale conserve son propre catalogue. Une demande interrompue se vérifie avec la même clé tant que la réserve reste ouverte, y compris après épuisement du budget ou du stock par la première demande. Voir le lot 22 de [l’audit de clarté](AUDIT-CLARTE-ET-PARCOURS-2026-10-29.md) pour les validations. Ces changements n’ajoutent aucune migration et restent à publier.
+
 - Une vitalité de 0 à 100. À zéro avant la récolte, la culture s'arrête. Un secours unique existe pour la première culture.
 - Trois niveaux de gravité, une tendance et un journal. Douze familles de problèmes disposent chacune de deux formulations de symptômes. Les apparitions ambiantes s'arrêtent dès que deux troubles sont présents ; une situation explicite reste toujours prise en compte, sans effacer les foyers précédents. Au plus un nouveau trouble par étape vivante, donc cinq au maximum pour la persistance.
 - Aucun dommage lié à la consultation ou au temps hors connexion. Un bilan intervient à la validation d'une opération.
 - L’entretien de base coûte 5 € de jeu par étape. Il ne peut être payé qu’une fois pour le bilan concerné et exige la trésorerie disponible. Observer reste gratuit et ne demande aucune carte.
 - Quatre intrants, au plus deux apports différents par culture et un par bilan. Le bonus cumulé de rendement est plafonné à 10 %. Les pertes antérieures ne disparaissent pas quand la plante récupère.
 - Six auxiliaires biologiques ciblés, suivis sur deux bilans. Les coccinelles commencent à réduire le foyer au premier bilan ; les cinq autres après installation, au second. Aucun effet à l'achat ou au clic d'application. Un auxiliaire incompatible ne peut pas être consommé. Pas d'empilement sur une cible déjà suivie.
-- Après récolte, la vitalité conserve son bilan. La sixième opération est le séchage, qui concerne la conservation du lot et de son profil. Le verdict du jury déclenche ensuite 6 heures réelles d’affinage, indépendamment du calendrier du jeu ; avant cette maturité commerciale, seul le grossiste reprend le lot. Voir [Stockage et affinage](STOCKAGE-CURING-2026-10-15.md).
+- Après récolte, la vitalité conserve son bilan. La sixième opération est le séchage, qui concerne la conservation du lot et de son profil. Le lot suit ensuite 6 heures réelles d’affinage avant le jury, indépendamment du calendrier du jeu. La vente devient accessible après ce verdict, selon les règles du circuit choisi. Voir [Stockage et affinage](STOCKAGE-CURING-2026-10-15.md).
 
 Ces points, prix, durées en tours et pourcentages de bonus sont des **paramètres d'équilibrage du jeu**, pas des résultats expérimentaux ni des consignes agronomiques.
 
@@ -44,10 +48,31 @@ Les instruments donnent une correction ou un choix utile après la mesure ;
 ils ne verrouillent jamais les observations. Tri et isolement peut contenir
 le danger d’un pollen indésirable, sans promettre une guérison du lot.
 
+La confirmation d’une carte présente son effet et sa limite, avec le coût en XP,
+la copie détruite et les réserves disponibles à côté du bouton **Jouer la carte**.
+Ces commandes restent visibles pendant le défilement. Une réaction déterministe
+compare le bilan sans et avec la carte ; la santé utilise une échelle de 0 à 100.
+Les préparations et relances aléatoires ne dévoilent aucun résultat futur.
+Règles, exemples et chiffres complémentaires se déplient à la demande.
+Consulter ou annuler ne dépense rien ; fermer pendant une confirmation déjà
+envoyée n’annule pas la demande. Voir le lot 23 de l’audit de clarté.
+
+Si la confirmation est perdue ou incomplète, **Vérifier ma culture** remplace
+l’action de jeu. Les actions de culture sont suspendues ; le panneau de reprise
+reste disponible après fermeture du dialogue. La vérification relit la culture,
+son album, puis la même culture et exige deux états concordants avant de reprendre.
+Elle ne renvoie aucune consommation. Les XP et copies sont remplacés par les
+valeurs vérifiées ; une lecture en erreur ou incomplète conserve le blocage.
+Un reçu retrouvé confirme la carte jouée ; son absence est annoncée sans affirmer
+que la demande a échoué. Chaque nouvelle demande précise son étape, vérifiée côté
+serveur avant la transaction existante, pour empêcher une demande retardée de
+s’appliquer à l’étape suivante. La confirmation attend également la fin du
+chargement de l’album. Voir le lot 24 de l’audit de clarté.
+
 Les situations du dernier tour concernent le séchoir : plateau
 surchargé, condensation du local, porte mal fermée. L’achat et la capacité des
-bocaux se gèrent ensuite dans l’entrepôt. Le séchage précède le jury et le duel ;
-le curing commence après le verdict et aucune carte ne raccourcit ses 6 heures
+bocaux se gèrent ensuite dans l’entrepôt. Le séchage puis l’affinage précèdent le
+jury et le duel ; aucune carte ne raccourcit les 6 heures d’affinage
 réelles. Les règles détaillées et les six nouvelles cartes
 figurent dans [le règlement de travail](PLACARD-RULES-DRAFT.md).
 
@@ -146,11 +171,26 @@ La sixième note de la Fleur est le **potentiel cannabinoïde** développé puis
 
 ## Persistance et vérification
 
+Le volet **Ajuster ma main** sépare l’échange avec **Main prévoyante** de la nouvelle pioche. L’échange suit trois choix visibles : carte à retirer, carte à faire entrer, confirmation. Il ne joue aucune carte, ne dépense aucun XP et ne brûle aucune copie ; les coûts pour jouer la carte restent dans ses détails. Le moteur autorise ces échanges uniquement à la première étape, avant la préparation ou le lancer. Repiocher utilise un changement limité pour toute la culture et retire la réserve éventuelle : cette conséquence est annoncée et confirmée avant l’action, sans perte des copies dans l’album. Les commandes attendent la fin des confirmations ou d’une vérification de carte ; les choix périmés sont effacés. Voir le lot 26 de l’audit de clarté.
+
 Le panneau de santé reste repliable. Le portrait de Sylvain reprend les illustrations existantes de chaque étape : scène de préparation, réaction au résultat validé, ou état préoccupant si la santé ou la gravité d'un foyer le justifie. Une alerte de santé prime sur une réussite des dés ; la dernière opération et sa variation de santé restent affichées séparément. Après avancement, l'image montre bien la nouvelle étape. Au séchage, elle représente le lot et la santé conserve le bilan à la récolte. Une culture arrêtée montre son étape réelle, sans soin disponible ni faux profil de récolte. La jauge segmentée, les niveaux de gravité, les tendances et les produits illustrés rendent les observations et interventions lisibles ; les illustrations ne diagnostiquent pas un ravageur précis. Cette présentation ne modifie aucun calcul, tirage ou état sauvegardé.
 
 Le bouton « Entretenir la culture » affiche son prix et son effet avant utilisation, puis devient « Entretien activé » pour l'étape nommée. L'entretien coûte 5 € de jeu et est engagé une seule fois pour un bilan ; après un résultat déjà validé, il vise l'étape suivante, qui nécessite un nouveau paiement. Les fonds insuffisants empêchent l'activation. Il n'agit jamais au clic : au bilan, il ajoute 3 au calcul de santé, plafonnée à 100, et retranche jusqu'à 2 dégâts par problème persistant. Sur une opération biologique, il empêche l'aggravation liée à l'échec et participe au recul d'un niveau sur réussite, sans doubler le même recul déjà accordé par une opération adaptée. L'aide dépliable donne un exemple chiffré et précise l'absence de réparation des pertes antérieures ou de bonus direct de terpènes/cannabinoïdes. Les règles de santé restent inchangées. En simulation locale, le débit et l'entretien sont enregistrés dans le même journal de reprise ; une relance après interruption ou depuis l'ancien état ne facture pas à nouveau la même étape.
 
 Le bilan de fin de culture prend la forme du carnet de Sylvain : récit issu des résultats enregistrés, moments marquants illustrés, lecture des trois indices de récolte, puis parcours et conseils dépliables. « Potentiel cannabinoïde » remplace le libellé « fidélité » dans le suivi, la Fleur et le jury. L'indice sur 99 est expliqué séparément des pourcentages simulés de CBD, CBG et THC ; les variations enregistrées en floraison, récolte et séchage restent consultables. Les soins sont décrits à partir de leurs bilans propres, sans leur attribuer toute la variation de santé. Une disparition des problèmes au séchage n'est pas présentée comme une guérison. Une culture interrompue ne présente aucun faux profil de récolte ; les anciens parcours signalent les détails manquants. Aucun calcul, gain ou reçu sauvegardé n'est modifié par cette présentation.
+
+Le bilan met d’abord en avant la quantité récoltée, la qualité de culture en
+points et **Ranger ma récolte**. En solo, **Journal et cartes**, **Charges et
+factures** et **Ma Fleur d’Arène** sont repliés ; les contrats et récompenses
+restent visibles. La campagne présente les résultats de chaque variété, avec
+les profils et taux simulés derrière **Profil et détails**. Son bulletin détaillé
+identifie la variété et la zone auxquelles son calcul s’applique, sans présenter
+le rendement du meneur comme le total de la campagne. Une quantité inconnue
+reste indisponible, distincte d’un zéro confirmé. En solo, le bulletin de récolte
+et la carte ne sont pas présentés sans quantité positive connue. La carte
+officielle doit correspondre à cette culture ; sans correspondance, le bilan
+indique **Fleur à confirmer**. Le suivi et les faits du journal restent
+consultables. Voir le lot 25 de l’audit de clarté.
 
 Les soins officiels passent par des routes authentifiées. Prix et stock sont vérifiés côté serveur ; achat et consommation utilisent des clés d'idempotence. Le stock, la version de la culture et son état sont mis à jour dans une transaction. Les permissions SQL sont explicites. Le mode local utilise un budget de simulation indépendant et un journal de reprise des écritures.
 

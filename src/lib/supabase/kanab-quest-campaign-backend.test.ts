@@ -98,10 +98,38 @@ describe("shared campaign backend", () => {
   });
   it("replays the campaign before re-reading the changed warehouse or drawing new IDs", async () => {
     const state = game();
-    database({ replay: { run: { id: ids[0], state }, replayed: true } });
-    expect(await startKqPlayerRun(owner, { campaign: true, requestKey, buddieCode: members[0].buddieCode, deckCodes: [] }))
+    const rpc = database({ replay: { run: { id: ids[0], state }, replayed: true } });
+    expect(await startKqPlayerRun(owner, { campaign: true, requestKey, buddieCode: members[0].buddieCode, deckCodes: [], expectedWarehouseRevision: 3 }))
       .toMatchObject({ runId: ids[0], state, replayed: true });
     expect(mocks.warehouse).not.toHaveBeenCalled();
+    expect(rpc.mock.calls[0][1].p_request).not.toHaveProperty("expectedWarehouseRevision");
+  });
+  it("starts the reviewed warehouse revision without changing the stored SQL intention", async () => {
+    const rpc = database();
+    await startKqPlayerRun(owner, { campaign: true, requestKey, buddieCode: members[0].buddieCode,
+      deckCodes: [], expectedWarehouseRevision: warehouse.revision });
+    const args = rpc.mock.calls.find(([name]) => name === "rpc_kq_start_campaign")![1];
+    expect(args.p_members).toHaveLength(2);
+    expect(args.p_members.every((member: { state: KqGameState }) => member.state.warehouse?.revision === warehouse.revision)).toBe(true);
+    expect(args.p_request).not.toHaveProperty("expectedWarehouseRevision");
+  });
+  it("rejects a changed second Buddie even when the leader and electricity cost are unchanged", async () => {
+    const changedLayout = { ...layout, zones: layout.zones.map(zone => zone.id === "b" ? { ...zone, buddieCode: "HH2026-004" } : zone) };
+    const changedMembers = getKqCampaignParticipants(changedLayout, 5);
+    const confirmedEnergy = getKqCampaignTotals(members).energyCostCents;
+    expect(changedMembers[0].buddieCode).toBe(members[0].buddieCode);
+    expect(getKqCampaignTotals(changedMembers).energyCostCents).toBe(confirmedEnergy);
+    mocks.warehouse.mockResolvedValue(getKqWarehouseRunSnapshot(changedLayout, 5));
+    const rpc = database();
+    await expect(startKqPlayerRun(owner, { campaign: true, requestKey, buddieCode: members[0].buddieCode,
+      deckCodes: [], expectedEnergyCents: confirmedEnergy, expectedWarehouseRevision: warehouse.revision }))
+      .rejects.toThrow("L’aménagement ou les Buddies ont changé. Actualise la préparation avant de lancer.");
+    expect(rpc.mock.calls.some(([name]) => name === "rpc_kq_start_campaign")).toBe(false);
+  });
+  it.each([0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY, Number.MAX_SAFE_INTEGER + 1, "4", null])("rejects an invalid reviewed revision before reading the database: %s", async revision => {
+    await expect(startKqPlayerRun(owner, { campaign: true, requestKey, buddieCode: members[0].buddieCode,
+      deckCodes: [], expectedWarehouseRevision: revision as number })).rejects.toThrow("Révision de l’aménagement invalide.");
+    expect(mocks.client).not.toHaveBeenCalled();
   });
   it("requires a request key and rejects mixed individual/campaign intention before SQL", async () => {
     database();

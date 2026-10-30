@@ -2,7 +2,7 @@
 .campaigns h3,.campaigns h4 { font-family: var(--font-display),Impact,sans-serif; text-transform: uppercase; }
 .campaigns button { font: inherit; }
 .campaigns select, .campaigns input { font: inherit; }
-.campaigns :where(button,select,input,summary,a):focus-visible { outline: 3px solid #c2922e; outline-offset: 3px; }
+.campaigns :where(button,select,input,summary,a,[tabindex]):focus-visible { outline: 3px solid #c2922e; outline-offset: 3px; }
 .heading { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-bottom: 22px; }
 .kicker { display: flex; align-items: center; gap: 7px; font-size: .67rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .heading h3 { margin: 8px 0; font-size: clamp(1.5rem,3vw,2rem); line-height: 1.1; }

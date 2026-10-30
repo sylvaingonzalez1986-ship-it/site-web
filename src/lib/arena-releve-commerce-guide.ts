@@ -1,6 +1,6 @@
 import type { ReleveGuideStep } from './arena-releve-guide';
 import { getKqCommerceStockQuality } from './kanab-quest-commerce';
-import { needsReleveCommerceSample, type KqReleveCommerceChapter, type KqReleveCommerceState } from './kanab-quest-releve-commerce';
+import { getReleveCommerceSnapshot, needsReleveCommerceSample, type KqReleveCommerceChapter, type KqReleveCommerceState } from './kanab-quest-releve-commerce';
 import { getReleveSocialGuide } from './arena-releve-social-guide';
 import { getReleveMerchGuide } from './kanab-quest-releve-merch';
 
@@ -25,8 +25,7 @@ function confirm(instruction: string): ReleveGuideStep[] {
 function navigate(section: 'sales' | 'management' | 'dashboard', title: string, instruction: string): ReleveGuideStep[] {
   const elsewhere = `[data-releve-commerce][data-releve-section]:not([data-releve-section="${section}"])`;
   return [
-    target(`commerce-open-${section}`, title, instruction, `${elsewhere} button[role="tab"][id$="-${section}-tab"]`),
-    button(`commerce-menu-${section}`, 'Ouvre les rubriques', `Ouvre « Rubriques », puis choisis « ${section === 'sales' ? 'Vendre ma production' : section === 'dashboard' ? 'Mes ventes' : 'Développer ma boutique'} ».`, 'Rubriques', elsewhere),
+    target(`commerce-open-${section}`, title, instruction, `${elsewhere} [data-market-section="${section}"]`),
   ];
 }
 
@@ -63,7 +62,7 @@ export function getReleveCommerceGuide(chapter: KqReleveCommerceChapter, state: 
   if (chapter === 'delivery') {
     if (!has('mature')) return [...steps, target('commerce-mature', 'La récolte prend son temps', 'Avance l’horloge de six heures fictives pour terminer l’affinage de ton lot.', '[data-releve-guide="mature"]')];
     if (has('delivered')) {
-      if (!has('receipt-read')) steps.push(target('commerce-receipt', 'Suis l’argent de ta livraison', 'Lis le reçu du comptoir : vente, TVA, factures réglées et montant ajouté à ta caisse.', '[data-screen="receipt"] [role="status"]', 'element'), ...navigate('sales', 'Retrouve ton reçu', 'Ouvre Vendre ma production pour retrouver le reçu de cette livraison.'));
+      if (!has('receipt-read')) steps.push(target('commerce-receipt', 'Suis l’argent de ta livraison', 'Lis le reçu du comptoir : vente, TVA, factures réglées et montant ajouté à ta caisse.', '[data-screen="receipt"] [role="status"]', 'element'), ...navigate('sales', 'Retrouve ton reçu', 'Ouvre « Vendre » pour retrouver le reçu de cette livraison.'));
       return steps;
     }
     steps.push(
@@ -74,7 +73,7 @@ export function getReleveCommerceGuide(chapter: KqReleveCommerceChapter, state: 
       ...prepareFlowers(),
       button('commerce-harvest', 'Retrouve le fruit de ta culture', 'Ouvre ta récolte : tu retrouves ici sa quantité, son verdict et sa conservation.', 'Préparer ou vendre', '[aria-label="Tes lots"]'),
       button('commerce-prepared-harvest', 'Ouvre ton lot préparé', 'Ce lot est déjà prêt. Ouvre-le pour choisir son circuit de vente.', 'Vendre', '[aria-label="Tes lots"]'),
-      ...navigate('sales', 'Passe au comptoir', 'Choisis « Vendre ma production » pour retrouver ta récolte.'),
+      ...navigate('sales', 'Passe au comptoir', 'Choisis « Vendre » pour retrouver ta récolte.'),
       target('commerce-return-shop', 'Retourne au comptoir', 'Reviens à la boutique pour retrouver ta récolte et les offres de livraison.', '[data-releve-guide="return-shop"]'),
     );
     if (state.operations.trial.commerce.wholesale?.remainingEquivalentUnits === 0) steps.push(target('commerce-next-slot', 'Le grossiste a rempli son créneau', 'Avance au prochain créneau fictif pour retrouver des offres disponibles.', '[data-releve-guide="next-slot"]'));
@@ -86,7 +85,7 @@ export function getReleveCommerceGuide(chapter: KqReleveCommerceChapter, state: 
     return [...steps,
       button('commerce-create-site', 'Ouvre ta boutique', 'Ouvre gratuitement ta boutique. Les frais seront prélevés sur les ventes.', 'Ouvrir gratuitement', '[aria-label="Développer ma boutique en ligne"]'),
       target('commerce-brand', 'Donne un nom à la ferme', 'Donne un nom à ta boutique : entre 3 et 40 caractères.', 'input[placeholder="Ton nom de marque"]', 'input'),
-      ...navigate('management', 'Rejoins ton bureau', 'Choisis « Développer ma boutique » pour créer ton enseigne.'),
+      ...navigate('management', 'Rejoins ton bureau', 'Choisis « Développer » pour créer ton enseigne.'),
       target('commerce-return-shop', 'Retrouve ta boutique', 'Reviens à la boutique pour poursuivre sa création.', '[data-releve-guide="return-shop"]'),
     ];
   }
@@ -112,10 +111,10 @@ export function getReleveCommerceGuide(chapter: KqReleveCommerceChapter, state: 
     );
     const prepared = state.operations.trial.commerce.stocks.find(stock => stock.route !== 'biomass' && stock.remainingUnits >= 100 && getKqCommerceStockQuality(stock) >= 5.8)
       ?? state.operations.trial.commerce.stocks.find(stock => stock.route !== 'biomass' && stock.remainingUnits >= 50 && getKqCommerceStockQuality(stock) >= 5.8);
-    const raw = state.lots.find(lot => !lot.prepared && lot.storage.baseline.juryScore >= 5.8 && lot.storage.capacity!.totalUnits >= 100);
-    if (prepared || raw) steps.push(button('commerce-online-lot', 'Choisis le lot à mettre en rayon', 'Ouvre ce lot pour préparer tes premiers paquets.', (prepared ?? raw)!.name, '[aria-label="Tes lots"]'));
+    const raw = getReleveCommerceSnapshot(state).rawLots.find(lot => (lot.storage?.conditionScore ?? lot.juryScore) >= 5.8 && lot.harvestGrams >= 10);
+    if (prepared || raw) steps.push(button('commerce-online-lot', 'Choisis le lot à mettre en rayon', 'Ouvre ce lot pour préparer tes premiers paquets.', prepared?.name ?? raw!.varietyName, '[aria-label="Tes lots"]'));
     steps.push(
-      ...navigate('sales', 'Retourne à ta réserve', 'Choisis « Vendre ma production » pour préparer les paquets de ta boutique.'),
+      ...navigate('sales', 'Retourne à ta réserve', 'Choisis « Vendre » pour préparer les paquets de ta boutique.'),
       target('commerce-return-shop', 'Retrouve ta boutique', 'Reviens à la boutique pour préparer tes paquets.', '[data-releve-guide="return-shop"]'),
     );
     return steps;
@@ -126,7 +125,7 @@ export function getReleveCommerceGuide(chapter: KqReleveCommerceChapter, state: 
       button('commerce-first-campaign', 'Fais connaître ton enseigne', 'Prépare ton premier lancement offert. Vérifie le public, les prévisions et ton stock.', 'Préparer mon premier lancement'),
       target('commerce-accessible-audience', 'Choisis un public adapté', 'Essaie le public « Accessible », adapté à un prix proche du repère.', '[aria-label="Préparer une campagne"] input[type="radio"][value="value"]:not(:checked)', 'input'),
       target('commerce-promote', 'Ouvre le bureau des campagnes', 'Choisis « Promouvoir » pour préparer le lancement de ton enseigne.', '[data-shop-view="marketing"][aria-selected="false"]'),
-      ...navigate('management', 'Rejoins le bureau de ta boutique', 'Retourne dans « Développer ma boutique » pour préparer une campagne.'),
+      ...navigate('management', 'Rejoins le bureau de ta boutique', 'Choisis « Développer », puis « Promouvoir » pour préparer une campagne.'),
       target('commerce-return-shop', 'Retrouve ta boutique', 'Reviens à la boutique pour préparer ta campagne.', '[data-releve-guide="return-shop"]'),
     );
     return steps;
@@ -134,11 +133,13 @@ export function getReleveCommerceGuide(chapter: KqReleveCommerceChapter, state: 
   if (!has('online-time') || (chapter === 'business' && state.operations.trial.commerce.online?.marketing.active)) steps.push(target('commerce-advance-sales', 'Laisse vivre ta boutique', `Simule 24 heures de ventes. Prix, qualité, stock et audience influenceront les commandes.${chapter === 'business' ? ' Continue jusqu’à la fin de la campagne pour en lire le bilan.' : ''}`, '[data-releve-guide="advance-sales"]'));
   else if (!has('report-read') && chapter === 'business') steps.push(
     target('commerce-campaign-report', 'Ouvre le bilan de ta campagne', 'Lis les commandes satisfaisantes, les ventes versées et les abonnés gagnés. Le montant des ventes n’est pas le bénéfice.', '[data-marketing-history]:not([open]) > summary', 'summary'),
+    target('commerce-read-campaign-report', 'Lis le bilan de ta campagne', 'Compare le budget engagé, les commandes satisfaisantes et les ventes versées. Le montant des ventes n’est pas le bénéfice.', '[data-marketing-history][open] [data-marketing-report]', 'element'),
+    target('commerce-read-campaign-report', 'Lis le bilan de ta campagne', 'Compare le budget engagé, les commandes satisfaisantes et les ventes versées. Le montant des ventes n’est pas le bénéfice.', '[data-marketing-history][open] [data-marketing-report]', 'element'),
     target('commerce-promote-report', 'Retrouve tes campagnes', 'Choisis « Promouvoir » pour consulter le bilan terminé.', '[data-shop-view="marketing"][aria-selected="false"]'),
-    ...navigate('management', 'Rejoins le bureau de ta boutique', 'Retourne dans « Développer ma boutique », puis Promouvoir pour lire le bilan.'),
+    ...navigate('management', 'Rejoins le bureau de ta boutique', 'Choisis « Développer », puis « Promouvoir » pour lire le bilan.'),
     target('commerce-return-report', 'Retrouve ta boutique', 'Reviens à ta boutique pour lire le bilan de ta campagne.', '[data-releve-guide="return-shop"]'),
   );
-  else if (!has('report-read')) steps.push(...navigate('dashboard', 'Regarde le résultat', 'Choisis « Mes ventes » pour retrouver tes commandes et les montants encaissés.'));
+  else if (!has('report-read')) steps.push(...navigate('dashboard', 'Regarde le résultat', 'Choisis « Mon stock en vente » pour retrouver tes commandes et les montants encaissés.'));
   return steps;
 }
 

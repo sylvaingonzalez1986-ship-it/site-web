@@ -58,6 +58,7 @@ type EquipmentHudSnapshot = {
   maintenance?: Record<string, KqMachineCondition>;
   readyLotCount: number;
   availableFlowerCount: number;
+  curingFlowerCount?: number;
   routePlan: { route: KqMarketRouteCode; equipmentCode: string } | null;
   routeMasteries: Array<{
     route: KqMarketRouteCode;
@@ -76,12 +77,14 @@ export function KqPlacardHud({
   onOpenShop,
   onOpenGame,
   onOpenArena,
+  onOpenStorage,
   onOpenMarket,
   mode = "dashboard",
 }: {
   onOpenShop: (equipmentCode?: string) => void;
   onOpenGame: () => void;
   onOpenArena: () => void;
+  onOpenStorage: () => void;
   onOpenMarket: () => void;
   mode?: "dashboard" | "progression";
 }) {
@@ -154,7 +157,8 @@ export function KqPlacardHud({
     ownedCodes: snapshot?.ownedCodes ?? [],
     cashCents: snapshot?.cashCents ?? 0,
     productionUnits: 1,
-  }), [snapshot]);
+    category: mode === "progression" ? "processing" : undefined,
+  }), [snapshot, mode]);
   const routeGoalScenario = useMemo(() => snapshot?.routePlan
     ? getKqEquipmentPaybackScenarios(snapshot.routePlan.equipmentCode, {
       ownedCodes: snapshot.ownedCodes,
@@ -166,15 +170,16 @@ export function KqPlacardHud({
     cashCents: snapshot?.cashCents ?? 0,
   }) : null, [routeGoalScenario, snapshot?.cashCents]);
   const equipmentProgression = useMemo(
-    () => getKqEquipmentProgressionStatus(snapshot?.ownedCodes ?? []),
-    [snapshot?.ownedCodes],
+    () => getKqEquipmentProgressionStatus(snapshot?.ownedCodes ?? [], mode === "progression" ? "processing" : undefined),
+    [snapshot?.ownedCodes, mode],
   );
   const nextAction = useMemo(() => getKqPlacardNextAction({
     activeRun: snapshot?.activeRun ?? false,
     readyLotCount: snapshot?.readyLotCount ?? 0,
     availableFlowerCount: snapshot?.availableFlowerCount ?? 0,
+    curingFlowerCount: snapshot?.curingFlowerCount,
     equipmentGoalAffordable: routeGoalProgress?.affordable ?? nextGoal?.affordable ?? false,
-  }), [nextGoal?.affordable, routeGoalProgress?.affordable, snapshot?.activeRun, snapshot?.availableFlowerCount, snapshot?.readyLotCount]);
+  }), [nextGoal?.affordable, routeGoalProgress?.affordable, snapshot?.activeRun, snapshot?.availableFlowerCount, snapshot?.curingFlowerCount, snapshot?.readyLotCount]);
   const reputationProgress = useMemo(
     () => getKqReputationProgress(snapshot?.reputation ?? 0),
     [snapshot?.reputation],
@@ -182,6 +187,7 @@ export function KqPlacardHud({
   const openDestination: Record<KqPlacardHubDestination, () => void> = {
     game: onOpenGame,
     arena: onOpenArena,
+    storage: onOpenStorage,
     market: onOpenMarket,
     shop: () => onOpenShop(snapshot?.routePlan?.equipmentCode ?? nextGoal?.equipment.code),
   };
@@ -225,6 +231,7 @@ export function KqPlacardHud({
 
   const actionArtwork = {
     game: "/contest/mascot/arena-scene-placard-v1.png",
+    storage: "/contest/mascot/arena-scene-placard-v1.png",
     market: "/placard/market-workshop-sylvain-v2.webp",
     arena: "/contest/mascot/arena-scene-classement-v2.png",
     shop: "/placard/card-shop-sylvain-v1.webp",
@@ -236,7 +243,7 @@ export function KqPlacardHud({
     <>
     <section className={styles.dashboard} aria-labelledby="placard-hud-title" aria-busy={loading || undefined} data-placard-dashboard>
       <header className={styles.header}>
-        <div><p>{mode === "progression" ? "Progression" : "Tableau de bord"}</p><h2 id="placard-hud-title">{mode === "progression" ? "Tes objectifs d’atelier" : "Ton atelier"}</h2></div>
+        <div><h2 id="placard-hud-title">{mode === "progression" ? "Tes objectifs d’atelier" : "Ton atelier"}</h2></div>
         <button type="button" onClick={requestRefresh} disabled={loading} aria-label="Actualiser le tableau de bord"><RefreshCw size={18} aria-hidden="true" /></button>
       </header>
       {error ? <div className={styles.error} role="alert"><CircleAlert size={22} aria-hidden="true" /><p>{error}</p><button type="button" onClick={requestRefresh}>Réessayer</button></div> : loading && !snapshot ? <p className={styles.loading} role="status">Ouverture de ton atelier…</p> : snapshot ? <>
@@ -253,20 +260,21 @@ export function KqPlacardHud({
             </article>
             <nav className={styles.cycle} aria-label="Cycle de production">
               <button type="button" onClick={onOpenGame}><small>Étape 1 · Culture</small><strong>{snapshot?.activeRun ? "En cours" : "À démarrer"}</strong></button>
-              <button type="button" onClick={onOpenArena}><small>Étape 2 · Jury</small><strong>{snapshot?.availableFlowerCount ?? 0} fleur{snapshot.availableFlowerCount > 1 ? "s" : ""}</strong></button>
-              <button type="button" onClick={onOpenMarket}><small>Étape 3 · Vente</small><strong>{snapshot?.readyLotCount ?? 0} lot{snapshot.readyLotCount > 1 ? "s" : ""}</strong></button>
+              <button type="button" onClick={onOpenStorage}><small>Étape 2 · Stockage</small><strong>{snapshot.curingFlowerCount === undefined ? "Ranger et affiner" : `${snapshot.curingFlowerCount} lot${snapshot.curingFlowerCount > 1 ? "s" : ""} en affinage`}</strong></button>
+              <button type="button" onClick={onOpenArena}><small>Étape 3 · Jury</small><strong>{snapshot?.availableFlowerCount ?? 0} fleur{snapshot.availableFlowerCount > 1 ? "s" : ""}</strong></button>
+              <button type="button" onClick={onOpenMarket}><small>Étape 4 · Vente</small><strong>{snapshot?.readyLotCount ?? 0} lot{snapshot.readyLotCount > 1 ? "s" : ""}</strong></button>
             </nav>
           </> : null}
           {activeTab === "energy" ? <KqEnergyPanel productionUnits={productionUnits} /> : null}
           {activeTab === "equipment" ? <>
-            <div className={styles.sectionIntro}><Image src="/placard/collection-chest.png" alt="" width={100} height={100} sizes="80px" /><div><p>Ton matériel durable</p><h3>{summary.installed.length} équipement{summary.installed.length > 1 ? "s" : ""} installé{summary.installed.length > 1 ? "s" : ""}</h3><span>{summary.purchased.length ? `${summary.purchased.length} investissement${summary.purchased.length > 1 ? "s" : ""} acquis` : "Ton kit de départ est opérationnel."}</span></div></div>
+            <div className={styles.sectionIntro}><Image src="/placard/collection-chest.png" alt="" width={100} height={100} sizes="80px" /><div><h3>{summary.installed.length} équipement{summary.installed.length > 1 ? "s" : ""} installé{summary.installed.length > 1 ? "s" : ""}</h3><span>{summary.purchased.length ? `${summary.purchased.length} investissement${summary.purchased.length > 1 ? "s" : ""} acquis` : "Ton kit de départ est opérationnel."}</span></div></div>
             {preview.length ? <ul className={styles.equipmentList}>{preview.map((equipment) => <li key={equipment.code}><span>{equipment.name} · Niv. {snapshot?.levels?.[equipment.code] ?? 1}</span><small data-installed={equipment.equipped && !snapshot?.cultureWear?.[equipment.code]?.due}>{snapshot?.cultureWear?.[equipment.code]?.due ? "Hors service" : equipment.equipped ? "Installé" : "En réserve"}</small></li>)}</ul> : <p className={styles.hint}>Retrouve tes équipements de base dans l’inventaire et choisis ceux à installer.</p>}
             {hiddenCount > 0 ? <p className={styles.hint}>Et {hiddenCount} autre{hiddenCount > 1 ? "s" : ""} dans ton inventaire.</p> : null}
             <p className={styles.hint}>Matériel de la tente {tentNumber} · {productionUnits} tente{productionUnits>1?"s":""} en service. Aménage chaque tente depuis l’inventaire.</p>
             <div className={styles.actions}><button type="button" className={styles.primary} onClick={() => setInventoryOpen(true)}><PackageCheck size={18} aria-hidden="true" /> Ouvrir l’Inventaire</button><button type="button" className={styles.secondary} onClick={() => onOpenShop()}><ShoppingBag size={17} aria-hidden="true" /> Boutique</button></div>
           </> : null}
           {activeTab === "goals" ? <>
-            <div className={styles.sectionIntro}><Image src="/contest/mascot/tasting/tasting-verdict.png" alt="" width={100} height={120} sizes="75px" /><div><p>Un palier à la fois</p><h3>Ton prochain objectif</h3><span>Construis ton atelier à ton rythme.</span></div></div>
+            <div className={styles.sectionIntro}><Image src="/contest/mascot/tasting/tasting-verdict.png" alt="" width={100} height={120} sizes="75px" /><div><h3>Ton prochain objectif</h3><span>{mode === "progression" ? "Machines de transformation. Le matériel de culture se choisit dans l’Entrepôt." : "Construis ton atelier à ton rythme."}</span></div></div>
             <section className={styles.goal} aria-label="Prochain investissement">
               {routeGoalScenario && routeGoalProgress && snapshot?.routePlan ? <>
                 <p>Filière épinglée · objectif sauvegardé</p><h4>{routeGoalScenario.name}</h4><span>Jury ≥ {routeGoalScenario.minimumJuryScore.toFixed(1)}/10</span>
@@ -280,7 +288,7 @@ export function KqPlacardHud({
                 <p>{nextGoal.affordable ? "Budget atteint · disponible dans le catalogue" : `Encore ${formatKqCash(nextGoal.remainingCents)} à réunir`}</p>
                 <button type="button" className={styles.primary} onClick={() => onOpenShop(nextGoal.equipment.code)}>Voir l’équipement <ArrowRight size={17} aria-hidden="true" /></button>
                 <details className={styles.fundingDetails}><summary>Ce que cet équipement apporte</summary><p>{nextGoal.equipment.benefit}</p></details>
-              </> : <><Sparkles size={26} aria-hidden="true" /><h4>Progression principale terminée</h4><p>{equipmentProgression.catalogComplete ? "Tout le catalogue durable est acquis." : `${equipmentProgression.alternativeCount} modèles alternatifs restent disponibles.`}</p>{!equipmentProgression.catalogComplete ? <button type="button" className={styles.secondary} onClick={() => onOpenShop()}>Voir les alternatives</button> : null}</>}
+              </> : <><Sparkles size={26} aria-hidden="true" /><h4>Progression principale terminée</h4><p>{equipmentProgression.catalogComplete ? mode === "progression" ? "Toutes les machines de transformation sont acquises." : "Tout le catalogue durable est acquis." : `${equipmentProgression.alternativeCount} modèles alternatifs restent disponibles.`}</p>{!equipmentProgression.catalogComplete ? <button type="button" className={styles.secondary} onClick={() => onOpenShop()}>Voir les alternatives</button> : null}</>}
             </section>
             <details className={styles.detail} aria-label="Mission d’atelier"><summary>Mission d’atelier <small>{expertiseMission?.name ?? "Toutes terminées"}</small></summary>
               {expertiseMission ? <div className={styles.detailBody}><h4>{expertiseMission.name} · {expertiseMission.targetTier.name}</h4>{progressBar(`Mission ${expertiseMission.name}`, expertiseMission.progressPercent)}<p>Encore {expertiseMission.salesRemaining} vente{expertiseMission.salesRemaining > 1 ? "s" : ""}{expertiseMission.bonusReputation > 0 ? ` · prime +${expertiseMission.bonusReputation} réputation si qualité suffisante` : " pour une première maîtrise"}.</p>
@@ -292,7 +300,7 @@ export function KqPlacardHud({
             <details className={styles.detail} aria-label="Filières maîtrisées"><summary>Palmarès permanent <small>{masteredRoutes.length}/{KQ_TRANSFORMATION_ROUTE_COUNT} filières</small></summary><div className={styles.detailBody}>
               <p>{masteredRouteSales} vente{masteredRouteSales > 1 ? "s" : ""} en transformation.</p>
               {masteredRoutes.length ? <ul className={styles.masteries}>{masteredRoutes.map((mastery) => <li key={mastery.route}><strong>{mastery.name}</strong><span>{mastery.expertise.tier.name} · {mastery.saleCount} ventes · record {mastery.bestJuryScore.toFixed(1)}/10</span>{progressBar(`Expertise ${mastery.name}`, mastery.expertise.progressPercent)}<small>{mastery.expertise.nextTier ? `Encore ${mastery.expertise.salesToNext} pour ${mastery.expertise.nextTier.name}` : "Rang maximal"}</small></li>)}</ul> : <p>Ta première transformation ouvrira ce palmarès.</p>}
-              <button type="button" className={styles.secondary} onClick={onOpenMarket}>Aller au marché</button>
+              <button type="button" className={styles.secondary} onClick={onOpenMarket}>Ouvrir Commerce</button>
             </div></details>
             <details className={styles.detail}><summary>Réputation <small>{reputationProgress.tier.name}</small></summary><div className={styles.detailBody}>{progressBar("Progression de réputation", reputationProgress.progressPercent)}<p>{reputationProgress.nextTier ? `${reputationProgress.pointsToNext} points avant ${reputationProgress.nextTier.name}.` : "Palier maximal atteint."}</p></div></details>
           </> : null}

@@ -3,10 +3,14 @@
 .section * { box-sizing: border-box; }
 .section :is(h3,h4,h5,p) { margin: 0; }
 .section :is(h3,h4,h5) { font-family: var(--font-display), Impact, "Arial Narrow", sans-serif; font-weight: 900; letter-spacing: .015em; }
-.section :is(button,a,input):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
+.section :is(button,a,input,summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
 .section button:disabled { cursor: not-allowed; opacity: .55; }
 .section button { font-family: inherit; }
-.journey { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 8px; list-style: none; margin: 0; padding: 0; }
+.qualityGuide { min-width: 0; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.qualityGuide > summary { min-height: 48px; padding: 14px 16px; cursor: pointer; font-size: 13px; font-weight: 750; line-height: 1.5; overflow-wrap: anywhere; }
+.qualityGuideBody { display: grid; gap: 20px; min-width: 0; padding: 4px 14px 16px; }
+@media(max-width:600px) { .qualityGuide > summary { padding: 12px; font-size: 12px; } .qualityGuideBody { gap: 16px; padding: 2px 8px 12px; } }
+.journey { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 8px; list-style: none; margin: 0; padding: 0; }
 .journey li { display: flex; position: relative; align-items: center; gap: 10px; min-width: 0; padding: 12px 22px 12px 12px; border: 1px solid #17292333; border-radius: var(--game-panel-radius, 2px); color: var(--muted); background: #fff9ed; }
 .journey li[data-current=true] { color: var(--ink); border: 2px solid var(--ink); background: var(--room-light); padding: 11px 21px 11px 11px; box-shadow: var(--game-panel-shadow, none); }
 .journey li > span { display: grid; place-items: center; width: 31px; height: 31px; border: 1px solid #17292333; border-radius: 50%; flex: 0 0 auto; }

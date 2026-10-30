@@ -38,21 +38,22 @@ export function KqWorkshopScene({ purchasedCodes, equippedCodes, levels, mainten
           const level = owned ? levels[placement.code] ?? 1 : 0;
           const machine = getKqWorkshopMachineSpecification(placement.code, level || 1)!;
           const condition = owned && maintenance[placement.code]?.due;
-          const state = !owned ? "À acquérir" : condition ? "À entretenir" : installed ? "Installée" : "En réserve";
+          const state = !owned ? "À acquérir" : condition ? "À entretenir" : installed ? "Installée" : "À installer";
+          const action = !owned ? "Acheter" : condition ? "Voir l’entretien" : installed ? "Gérer et améliorer" : "Installer";
           const position = getKqWorkshopPlacementStyle(placement);
           return <div key={placement.code} className={styles.station} style={position}>
             {placement.bench && <span className={styles.bench} aria-hidden="true" style={{ width: `${placement.bench.widthM / placement.widthM * 100}%`, height: `${placement.bench.depthM / placement.depthM * 100}%` }} />}
             <button type="button" className={styles.machine} data-workshop-machine={placement.code} data-warehouse-slot={placement.slot}
               data-owned={owned} data-installed={installed} data-level={level} data-maintenance-due={condition || undefined}
               aria-haspopup="dialog" aria-expanded={selectedSlot === placement.slot} disabled={disabled}
-              aria-label={`${placement.label} · ${machine.name} · ${state}${owned ? ` · niveau ${level}` : ""} · ${owned ? "Gérer et améliorer" : "Acheter"}`}
+              aria-label={`${placement.label} · ${machine.name} · ${state}${owned ? ` · niveau ${level}` : ""} · ${action}`}
               onClick={() => onSelect(placement.slot)} style={{ "--label-offset": `${Math.max(placement.depthM, placement.bench?.depthM ?? 0) / placement.depthM * 50}%` } as CSSProperties}>
               <span className={styles.machineGlow} aria-hidden="true" />
               <span className={styles.artwork} data-workshop-sprite={placement.sprite} aria-hidden="true">
                 <Image src={`/placard/workshop-v1/${placement.sprite}.webp`} alt="" width={512} height={512} sizes="160px" draggable={false} />
               </span>
-              <span className={styles.label}><strong>{placement.label}</strong><small>{condition ? <Wrench size={11} aria-hidden="true" /> : null}{owned ? `Niv. ${level}` : "À acquérir"}<i data-state={installed ? "installed" : owned ? "reserve" : "unowned"} aria-hidden="true" /></small></span>
-              <span className={styles.tooltip} aria-hidden="true"><strong>{machine.name}</strong><span>{state}{owned ? ` · niveau ${level}` : ""}</span><small>{owned ? "Cliquer pour améliorer" : "Cliquer pour acheter"}</small></span>
+              <span className={styles.label}><strong>{placement.label}</strong>{owned&&<small>Niv. {level}</small>}<span className={styles.machineStatus} data-workshop-machine-state>{condition ? <Wrench size={11} aria-hidden="true" /> : null}{state}</span></span>
+              <span className={styles.tooltip} aria-hidden="true"><strong>{machine.name}</strong><span>{state}{owned ? ` · niveau ${level}` : ""}</span><small>{action}</small></span>
             </button>
           </div>;
         })}
@@ -60,7 +61,7 @@ export function KqWorkshopScene({ purchasedCodes, equippedCodes, levels, mainten
       </div>
     </div>
     <div className={styles.legend}>
-      <p><MousePointer2 size={16} aria-hidden="true" />Sélectionne une machine pour l’acheter ou l’améliorer.</p>
+      <p><MousePointer2 size={16} aria-hidden="true" />Sélectionne une machine pour l’installer, l’entretenir ou consulter ses options.</p>
       <div><span><i className={styles.ownedDot} />Acquise</span><span><i className={styles.ghostDot} />À acquérir</span><span><Ruler size={14} aria-hidden="true" />5 × 5 m</span></div>
     </div>
   </section>;

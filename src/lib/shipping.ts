@@ -30,6 +30,7 @@ function formatThresholdAmount(value: number): string {
 }
 
 function parseNonNegativeNumber(value: string | undefined, fallback: number): number {
+  if (!value?.trim()) return fallback;
   const num = Number(value);
   if (!Number.isFinite(num) || num < 0) {
     return fallback;
@@ -38,25 +39,25 @@ function parseNonNegativeNumber(value: string | undefined, fallback: number): nu
   return num;
 }
 
-function resolveEnvValue(serverVar: string, publicVar: string): string | undefined {
+function resolveEnvValue(serverValue: string | undefined, publicValue: string | undefined): string | undefined {
   if (typeof window === "undefined") {
-    return process.env[serverVar] || process.env[publicVar];
+    return serverValue || publicValue;
   }
 
-  return process.env[publicVar];
+  return publicValue;
 }
 
 export function getShippingPricingConfig(): ShippingPricingConfig {
   const homeFeeEur = parseNonNegativeNumber(
-    resolveEnvValue("SHIPPING_HOME_FEE_EUR", "NEXT_PUBLIC_SHIPPING_HOME_FEE_EUR"),
+    resolveEnvValue(process.env.SHIPPING_HOME_FEE_EUR, process.env.NEXT_PUBLIC_SHIPPING_HOME_FEE_EUR),
     6.9,
   );
   const relayFeeEur = parseNonNegativeNumber(
-    resolveEnvValue("SHIPPING_RELAY_FEE_EUR", "NEXT_PUBLIC_SHIPPING_RELAY_FEE_EUR"),
+    resolveEnvValue(process.env.SHIPPING_RELAY_FEE_EUR, process.env.NEXT_PUBLIC_SHIPPING_RELAY_FEE_EUR),
     4.9,
   );
   const freeShippingThresholdEur = parseNonNegativeNumber(
-    resolveEnvValue("SHIPPING_FREE_THRESHOLD_EUR", "NEXT_PUBLIC_SHIPPING_FREE_THRESHOLD_EUR"),
+    resolveEnvValue(process.env.SHIPPING_FREE_THRESHOLD_EUR, process.env.NEXT_PUBLIC_SHIPPING_FREE_THRESHOLD_EUR),
     89,
   );
 

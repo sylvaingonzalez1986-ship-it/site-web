@@ -2,473 +2,528 @@
   {
     "code": "HH2026-001",
     "identity": "fiction",
-    "summary": "L’Arbre Mère est une figure imaginaire de Kanab Quest qui représente la diversité des variétés.",
-    "history": "Cette carte appartient à l’univers du jeu, pas à un catalogue botanique. Son intitulé « Toutes Variétés » est symbolique : il ne désigne ni un ancêtre commun identifié ni un croisement réel.",
-    "origin": "Univers fictif de Kanab Quest.",
-    "lineage": "Aucune filiation botanique : personnage imaginaire.",
-    "characteristics": [
-      "Personnage symbolique de la collection Buddies.",
-      "Les notes de pin et de terre sont des choix de jeu."
-    ],
-    "caveat": "Aucune variété réelle ne possède un profil universel réunissant toutes les autres.",
+    "history": "L’Arbre Mère est un personnage de Kanab Quest qui symbolise la diversité des variétés. Il ne représente ni une variété réelle ni leur ancêtre botanique commun.",
+    "origin": "Univers de Kanab Quest.",
+    "lineage": "",
     "sources": [],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-002",
     "identity": "documented",
-    "summary": "Charlotte’s Web est une sélection riche en CBD devenue emblématique grâce à l’histoire de Charlotte Figi.",
-    "history": "Les frères Stanley ont développé cette lignée au Colorado et lui ont donné le nom de Charlotte Figi. Le documentaire de CNN diffusé en août 2013 a fait connaître son histoire à un large public et a contribué à placer le CBD dans le débat public américain.",
-    "origin": "Colorado, États-Unis ; frères Stanley.",
-    "lineage": "Sélection des frères Stanley ; parenté complète non précisée dans les sources retenues.",
-    "characteristics": [
-      "Lignée sélectionnée pour sa richesse en CBD.",
-      "Son nom désigne aussi la marque issue de cette histoire."
-    ],
-    "caveat": "Cette histoire ne permet pas d’attribuer une composition ou des propriétés médicales identiques à tous les produits portant ce nom.",
+    "history": "Les frères Stanley développent cette sélection au Colorado à partir de 2010, sous le nom Hippie’s Disappointment. Elle devient Charlotte’s Web après leur rencontre avec Charlotte Figi en 2012, puis acquiert une notoriété internationale grâce au documentaire Weed de CNN, diffusé le 11 août 2013.",
+    "origin": "Colorado, États-Unis ; sélection des frères Stanley.",
+    "lineage": "",
     "sources": [
-      { "label": "Charlotte’s Web — hommage à Charlotte Figi", "url": "https://ca.charlottesweb.com/blogs/learn/charlotte-figi-the-girl-who-changed-the-world" },
-      { "label": "Charlotte’s Web — chronologie publiée par la marque", "url": "https://www.prnewswire.com/news-releases/charlottes-web-celebrates-cbd-industrys-1st-decade-with-its-new-charlotte-figi-family-grant-program-301519948.html" }
+      {
+        "label": "Charlotte’s Web — prospectus officiel d’août 2018, historique de la sélection",
+        "url": "https://hempindustrydaily.com/wp-content/uploads/2018/08/charlottes-web-aug-2018-filing.pdf"
+      },
+      {
+        "label": "Westword — enquête contradictoire sur Charlotte’s Web (2014)",
+        "url": "https://www.westword.com/news/charlottes-web-untangling-one-of-colorados-biggest-cannabis-success-stories-6050830/"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-003",
     "identity": "documented",
-    "summary": "Cannatonic est une création de Resin Seeds qui compte parmi les références historiques du cannabis riche en CBD.",
-    "history": "Resin Seeds présente Cannatonic comme une sélection issue de Reina Madre et de NYC Diesel, primée à Amsterdam en 2008 puis en 2013. En novembre 2015, le créateur a corrigé officiellement son ancienne attribution génétique à MK Ultra et G13 : cette version ancienne reste pourtant souvent recopiée.",
-    "origin": "Resin Seeds, Espagne.",
-    "lineage": "Reina Madre × NYCD, selon la correction officielle de Resin Seeds.",
-    "characteristics": [
-      "Hybride sélectionné pour l’expression du CBD.",
-      "Port décrit comme indica par le créateur, malgré une ascendance hybride."
-    ],
-    "caveat": "Le nom ne garantit pas un taux ou un rapport CBD/THC fixe pour chaque plante.",
+    "history": "Cannatonic est sélectionnée en Espagne par Jaime de Resin Seeds, puis primée à la Cannabis Cup d’Amsterdam en 2008. Le 10 novembre 2015, le sélectionneur publie sa parenté corrigée : Reina Madre × NYCD. Elle devient une souche fondatrice dont sont notamment issus ACDC et les premiers croisements de CBD Crew.",
+    "origin": "Espagne ; Jaime, Resin Seeds, dans la scène de sélection de Gérone.",
+    "lineage": "Reina Madre × NYCD, parenté corrigée et publiée par Resin Seeds en 2015.",
     "sources": [
-      { "label": "Resin Seeds — Cannatonic", "url": "https://resinseeds.net/cannatonic/" },
-      { "label": "Resin Seeds — correction officielle de la généalogie", "url": "https://resinseeds.net/new-cannatonic-information/" }
+      {
+        "label": "Resin Seeds — correction officielle de Cannatonic, 10 novembre 2015",
+        "url": "https://resinseeds.net/new-cannatonic-information/"
+      },
+      {
+        "label": "Soft Secrets — enquête sur les premières lignées CBD, 2014",
+        "url": "https://softsecrets.com/es-ES/articulo/ola-cbd-primer-decenio-2004-2014"
+      },
+      {
+        "label": "Soft Secrets — Cannatonic et ses descendants américains (2017)",
+        "url": "https://softsecrets.com/en-GB/article/cannatonic-cornerstone-cbd-rich-plants-bred-usa"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-004",
     "identity": "documented",
-    "summary": "Harlequin est une lignée pionnière du renouveau du CBD en Californie du Nord, associée au sélectionneur Wade Laughter.",
-    "history": "Project CBD rattache Harlequin au travail de Wade Laughter et aux premières lignées riches en CBD identifiées en Californie du Nord autour de 2010. Des producteurs ont ensuite diffusé leurs propres sélections ; Simply Bare décrit la sienne comme un croisement de Colombian Gold et d’une lignée thaïlandaise traditionnelle.",
-    "origin": "Californie du Nord, États-Unis ; histoire associée à Wade Laughter.",
-    "lineage": "Colombian Gold × Thai Landrace pour la sélection décrite par Simply Bare ; pedigree historique complet non établi ici.",
-    "characteristics": [
-      "Notes de mangue sur un fond de terre musquée chez Simply Bare.",
-      "Fleurs décrites comme légères et aérées dans cette sélection.",
-      "Présence de CBD et de THC dans la lignée historique."
-    ],
-    "caveat": "Les généalogies publiées divergent : celle d’un producteur ne décrit pas nécessairement toutes les Harlequin.",
+    "history": "Harlequin est une sélection de Wade Laughter, diffusée par boutures en Californie au début des années 2010. Elle provient d’une plante initialement destinée au haschisch, réunissant Colombian Gold, une lignée thaïlandaise des montagnes proches du Laos, une population suisse et une lignée du Mustang népalais. Laughter partage ses clones avec les collectifs de la baie de San Francisco.",
+    "origin": "Californie du Nord ; sélection et diffusion par Wade Laughter.",
+    "lineage": "Ascendances décrites par Wade Laughter : Colombian Gold des années 1970, Thaïlande, Suisse et Mustang au Népal.",
     "sources": [
-      { "label": "Project CBD — histoire des premières lignées riches en CBD", "url": "https://projectcbd.org/about/" },
-      { "label": "Project CBD — hommage à Wade Laughter", "url": "https://projectcbd.org/newsletter/project-cbd-newsletter-remembering-wade-laughter-the-unsung-hero-of-cbd-plus-hemp-thc-legislation-state-cannabis-policy-updates-and-cbd-research-on-alzheimers-disease/" },
-      { "label": "Simply Bare — sa sélection Harlequin", "url": "https://www.simplybare.com/cultivars-2/harlequin/" }
+      {
+        "label": "O’Shaughnessy’s — témoignage de Wade Laughter, automne 2011",
+        "url": "https://beyondthc.com/wp-content/uploads/2021/06/2011-SCC-Documenting-Effects.pdf"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-005",
     "identity": "documented",
-    "summary": "ACDC est une sélection de Cannatonic devenue une référence des lignées à dominante CBD.",
-    "history": "Dans un portrait consacré à William Courtney, High Times raconte comment ce médecin de Californie du Nord a rapporté des graines de Cannatonic de chez Resin Seeds. La sélection qu’il en a tirée a circulé sous le nom ACDC, au sein de la première vague de lignées recherchées pour leur CBD.",
-    "origin": "Californie du Nord, États-Unis ; sélection attribuée à William Courtney.",
-    "lineage": "Sélection de Cannatonic ; ne pas confondre avec les croisements ultérieurs portant le nom ACDC.",
-    "characteristics": [
-      "Identité liée à une sélection particulière au sein de Cannatonic.",
-      "Lignée connue pour une expression du CBD nettement supérieure à celle du THC."
-    ],
-    "caveat": "Les versions commerciales et les descendants d’ACDC ne partagent pas automatiquement la composition de la sélection initiale.",
+    "history": "William Courtney sélectionne ACDC dans le comté de Mendocino, à partir de graines de Cannatonic rapportées de Resin Seeds à Barcelone. Conservée et diffusée comme clone, elle devient ensuite parent de plusieurs créations américaines, dont Elektra et Ringo’s Gift. Son nom signifie Alternative Cannabinoid Dietary Cannabis.",
+    "origin": "Mendocino, Californie ; William Courtney, à partir de Cannatonic espagnole.",
+    "lineage": "Sélection de Cannatonic ; Reina Madre × NYCD selon la parenté publiée par Resin Seeds.",
     "sources": [
-      { "label": "High Times — portrait de William Courtney", "url": "https://hightimes.com/culture/people/higher-profile-dr-william-courtney/" },
-      { "label": "Leafly — histoire de l’émergence des lignées CBD", "url": "https://www.leafly.com/news/cannabis-101/cbd-marijuana-strains-history" }
+      {
+        "label": "High Times — portrait de William Courtney (2020)",
+        "url": "https://hightimes.com/culture/people/higher-profile-dr-william-courtney/"
+      },
+      {
+        "label": "Resin Seeds — correction officielle de Cannatonic, 10 novembre 2015",
+        "url": "https://resinseeds.net/new-cannatonic-information/"
+      },
+      {
+        "label": "Oregon CBD — catalogue original Early Series 2018",
+        "url": "https://cbd.ganja.com/wp-content/uploads/2018/10/oregoncbd_2018_early_catalog.pdf"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-006",
     "identity": "documented",
-    "summary": "Sour Space Candy associe la famille Sour Tsunami à ERB dans une lignée CBD au registre fruité et acidulé.",
-    "history": "Cette variété s’inscrit dans les croisements de chanvre CBD associant Sour Tsunami à Early Resin Berry. East Fork Cultivars documente cette filiation et décrit sa sélection par des évocations de pomme confite et de cerise, sur une base terreuse.",
-    "origin": "Filière américaine du chanvre CBD ; sélection documentée par East Fork Cultivars.",
-    "lineage": "Sour Tsunami × ERB, ou Early Resin Berry.",
-    "characteristics": [
-      "Bouquet fruité, doux et acidulé dans la sélection East Fork.",
-      "Fond terreux qui accompagne les notes de confiserie.",
-      "Myrcène, caryophyllène et ocimène cités par le producteur."
-    ],
+    "history": "Sour Space Candy est créée en Oregon par les frères Seth et Eric Crawford, au sein d’Oregon CBD. Ils associent une sélection de Sour Tsunami à leur lignée Early Resin Berry, dite ERB, dans la série commercialisée en 2018. Sa branche Sour Tsunami prolonge le travail de Lawrence Ringo sur les familles Diesel.",
+    "origin": "Oregon, États-Unis ; Seth et Eric Crawford, Oregon CBD.",
+    "lineage": "Sour Tsunami × Early Resin Berry (ERB). La branche Sour Tsunami réunit NYC Diesel, Sour Diesel et Ferrari.",
     "sources": [
-      { "label": "East Fork Cultivars — Sour Space Candy", "url": "https://eastforkcultivars.com/cultivars/p/sour-space-candy" },
-      { "label": "Azalla — présentation de Sour Space Candy et de sa filiation", "url": "https://www.pr.com/press-release/801193" }
+      {
+        "label": "Oregon CBD — catalogue original Early Series 2018",
+        "url": "https://cbd.ganja.com/wp-content/uploads/2018/10/oregoncbd_2018_early_catalog.pdf"
+      },
+      {
+        "label": "Oregon CBD / GTR Seeds — fiche du sélectionneur",
+        "url": "https://gtrseeds.com/products/sour-space-candy"
+      },
+      {
+        "label": "O’Shaughnessy’s — histoire racontée par Lawrence Ringo",
+        "url": "https://beyondthc.com/remembering-ringo/"
+      },
+      {
+        "label": "GTR Seeds — Seth et Eric Crawford, fondateurs d’Oregon CBD",
+        "url": "https://gtrseeds.com/pages/about-us"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-007",
     "identity": "documented",
-    "summary": "Hawaiian Haze est une lignée de chanvre CBD dont la sélection East Fork met en avant l’ananas et les fleurs.",
-    "history": "Hawaiian Haze apparaît dans les essais variétaux américains parmi les lignées fournies par Oregon CBD. East Fork Cultivars publie pour sa sélection la parenté DC Haze « CC » × ERB ; le nom hawaïen ne suffit donc pas à établir un lieu de naissance à Hawaï.",
-    "origin": "Programme américain de chanvre CBD ; lignée référencée chez Oregon CBD.",
-    "lineage": "DC Haze « CC » × ERB, selon East Fork Cultivars.",
-    "characteristics": [
-      "Ananas et agrumes au nez dans la sélection East Fork.",
-      "Nuances florales et légèrement terreuses.",
-      "Myrcène, pinène et caryophyllène signalés par le producteur."
-    ],
-    "caveat": "Cette fiche concerne la lignée CBD documentée ; des variétés homonymes peuvent avoir une autre ascendance.",
+    "history": "Pour créer Hawaiian Haze, Oregon CBD part d’un croisement ACDC × Neville’s Haze. Après deux générations de sélection, neuf plantes sont comparées et la mère « CC » est retenue ; son croisement avec Early Resin Berry donne la variété diffusée en 2018. Son nom évoque les fleurs hawaïennes qui inspiraient les sélectionneurs.",
+    "origin": "Oregon, États-Unis ; Oregon CBD, frères Crawford.",
+    "lineage": "DC Haze « CC » × Early Resin Berry (ERB). DC Haze descend d’ACDC × Neville’s Haze.",
     "sources": [
-      { "label": "East Fork Cultivars — Hawaiian Haze", "url": "https://eastfork.squarespace.com/cultivars/p/hawaiian-haze" },
-      { "label": "Université du Wisconsin — rapport d’essais variétaux 2023", "url": "https://cropsandsoils.extension.wisc.edu/files/2024/01/2023-Cultivar-Check-Report-Final.pdf" }
+      {
+        "label": "Oregon CBD — catalogue original Early Series 2018",
+        "url": "https://cbd.ganja.com/wp-content/uploads/2018/10/oregoncbd_2018_early_catalog.pdf"
+      },
+      {
+        "label": "Oregon CBD / GTR Seeds — fiche du sélectionneur",
+        "url": "https://gtrseeds.com/products/hawaiian-haze"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-008",
     "identity": "documented",
-    "summary": "Lifter est une lignée d’Oregon CBD dont certaines récoltes associent des notes de baies à une touche fromagère.",
-    "history": "Sunset Lake CBD attribue Lifter à Oregon CBD et décrit un croisement entre Suver Haze #50 et Early Resin Berry. La ferme a notamment présenté une récolte évoquant la tarte à la myrtille et le brie, une expression aromatique précise plutôt qu’une définition de toutes les Lifter.",
-    "origin": "Oregon, États-Unis ; Oregon CBD.",
-    "lineage": "Suver Haze #50 × Early Resin Berry, selon la fiche de Sunset Lake CBD.",
-    "characteristics": [
-      "Lignée de chanvre sélectionnée pour le CBD.",
-      "Registre de baies mûres et de fromage dans la récolte Sunset Lake citée."
-    ],
-    "caveat": "Les deux notes retenues décrivent cette récolte ; elles ne constituent pas une signature identique de chaque lot.",
+    "history": "Lifter naît chez Oregon CBD d’une sélection Special Sauce × Haze, retravaillée sur deux générations pour obtenir la mère SH50. Croisée avec Early Resin Berry, celle-ci donne la version originale diffusée en 2018. Son nom rend hommage à la tomate Mortgage Lifter et à la mère des frères Crawford, connue pour ses plants de tomates dans la Rogue Valley.",
+    "origin": "Oregon, États-Unis ; Seth et Eric Crawford, Oregon CBD.",
+    "lineage": "Version originale de 2018 : SH50 × Early Resin Berry (ERB). SH50 provient de Special Sauce × Haze dite « New World ».",
     "sources": [
-      { "label": "Sunset Lake CBD — Lifter", "url": "https://sunsetlakecbd.com/product/lifter-prerolls/" },
-      { "label": "Sunset Lake CBD sur Leafly — filiation de Lifter", "url": "https://www.leafly.com/brands/sunset-lake-cbd/products/sunset-lake-cbd-lifter-pre-rolls-hemp-cbd-flower" }
+      {
+        "label": "Oregon CBD — catalogue original Early Series 2018",
+        "url": "https://cbd.ganja.com/wp-content/uploads/2018/10/oregoncbd_2018_early_catalog.pdf"
+      },
+      {
+        "label": "GTR Seeds — origine du nom Lifter racontée par le sélectionneur",
+        "url": "https://gtrseeds.com/blogs/news/lifter-the-queen-of-cbd-seeds"
+      },
+      {
+        "label": "GTR Seeds — fiche actuelle Lifter, parenté SH50 × KAP",
+        "url": "https://gtrseeds.com/products/lifter-organic"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-009",
     "identity": "documented",
-    "summary": "Elektra est un croisement d’ACDC et d’Early Resin Berry développé dans la filière CBD de l’Oregon.",
-    "history": "Cannaflower attribue la création d’Elektra à Oregon CBD et la rattache à ACDC, elle-même issue de Cannatonic. L’ajout d’Early Resin Berry inscrit Elektra dans une famille de croisements largement diffusés dans le chanvre CBD américain.",
-    "origin": "Oregon, États-Unis ; Oregon CBD.",
-    "lineage": "ACDC × Early Resin Berry.",
-    "characteristics": [
-      "Notes d’orange et de chocolat dans la sélection Cannaflower.",
-      "Fleurs décrites comme denses, vertes et ponctuées de pistils orange.",
-      "Présence visible de trichomes résineux."
-    ],
+    "history": "Elektra est le croisement d’ACDC avec Early Resin Berry réalisé par Oregon CBD et annoncé pour le printemps 2018. Elle transpose une sélection californienne de Cannatonic dans la série « Early » des frères Crawford, dont ERB constitue le parent commun. Elle appartient ainsi à la descendance directe du clone ACDC de William Courtney.",
+    "origin": "Oregon, États-Unis ; Oregon CBD, frères Crawford ; sortie au printemps 2018.",
+    "lineage": "ACDC × Early Resin Berry (ERB). ACDC est une sélection de Cannatonic.",
     "sources": [
-      { "label": "Cannaflower — Elektra, histoire et description", "url": "https://cannaflower.com/product/elektra/" }
+      {
+        "label": "Oregon CBD — catalogue original Early Series 2018",
+        "url": "https://cbd.ganja.com/wp-content/uploads/2018/10/oregoncbd_2018_early_catalog.pdf"
+      },
+      {
+        "label": "Oregon CBD / GTR Seeds — fiche du sélectionneur",
+        "url": "https://gtrseeds.com/products/elektra"
+      },
+      {
+        "label": "High Times — origine d’ACDC",
+        "url": "https://hightimes.com/culture/people/higher-profile-dr-william-courtney/"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-010",
     "identity": "documented",
-    "summary": "Suver Haze est une création d’Oregon CBD dont le nom rappelle Suver Road, lieu de ses premiers travaux de sélection.",
-    "history": "Dans le texte du sélectionneur repris par Sunset Lake CBD, Suver Haze rend hommage à la route où se trouvait son premier véritable site de recherche. La lignée associe Suver #8 à ERB et appartient aux variétés qui ont accompagné le développement du chanvre CBD américain.",
-    "origin": "Oregon, États-Unis ; Oregon CBD, secteur de Suver Road.",
-    "lineage": "Suver #8 × ERB, nommé Early Resin Bud sur la fiche Sunset Lake CBD.",
-    "characteristics": [
-      "Pomme verte acidulée et poivre noir dans la récolte Sunset Lake décrite.",
-      "Structure robuste mise en avant par le sélectionneur."
-    ],
-    "caveat": "Suver Haze et Sour Suver Haze sont des appellations distinctes ; leurs descriptions ne sont pas interchangeables.",
+    "history": "Suver Haze tire son nom de Suver Road, où Oregon CBD installe son premier centre de recherche. Son histoire commence en 2015 avec Special Sauce × Neville’s Haze : la sélection Suver #8 est retenue dans la deuxième génération. Son union avec Early Resin Berry donne Suver Haze, présentée dans la gamme de 2018.",
+    "origin": "Suver Road, Oregon ; sélection d’Oregon CBD commencée en 2015.",
+    "lineage": "Suver #8 × Early Resin Berry (ERB). Suver #8 est une sélection F2 de Special Sauce × Neville’s Haze.",
     "sources": [
-      { "label": "Sunset Lake CBD — Suver Haze et témoignage du sélectionneur", "url": "https://sunsetlakecbd.com/product/suver-haze-hemp-flower/" }
+      {
+        "label": "Oregon CBD — catalogue original Early Series 2018",
+        "url": "https://cbd.ganja.com/wp-content/uploads/2018/10/oregoncbd_2018_early_catalog.pdf"
+      },
+      {
+        "label": "Oregon CBD / GTR Seeds — fiche du sélectionneur",
+        "url": "https://gtrseeds.com/products/suver-haze"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-011",
     "identity": "documented",
-    "summary": "Cherry Wine réunit deux lignées CBD, The Wife et Charlotte’s Cherries, autour d’un bouquet de cerise et de pin.",
-    "history": "Cannaflower attribue la première sélection de Cherry Wine à High Grade Hemp Seed Co. La filiation The Wife × Charlotte’s Cherries est également publiée par Blue Forest Farms, qui décrit un profil de cerise accompagné de pin et d’épices.",
-    "origin": "États-Unis ; sélection attribuée à High Grade Hemp Seed Co par Cannaflower.",
-    "lineage": "The Wife × Charlotte’s Cherries.",
-    "characteristics": [
-      "Cerise mûre et pin dans les descriptions de plusieurs producteurs.",
-      "Nuances florales et poivrées selon la sélection.",
-      "Hybride issu de deux parents connus pour leur richesse en CBD."
-    ],
+    "history": "Créée au Colorado par Bodhi Urban, fondateur de High Grade Hemp Seed, Cherry Wine réunit The Wife et Charlotte’s Cherries. Greenpoint Seeds, qui a ensuite travaillé une génération F2 de Cherry Wine, décrit Charlotte’s Cherries comme un croisement Charlotte’s Web × Colorado Cherry. Cette branche relie donc la création aux premières sélections américaines de chanvre à fleurs.",
+    "origin": "Colorado, États-Unis ; Bodhi Urban, High Grade Hemp Seed.",
+    "lineage": "The Wife × Charlotte’s Cherries. Charlotte’s Cherries = Charlotte’s Web × Colorado Cherry, parenté publiée par Greenpoint Seeds.",
     "sources": [
-      { "label": "Blue Forest Farms — Cherry Wine", "url": "https://blueforestfarms.us/shop/cherry-wine-hemp-seeds/" },
-      { "label": "Cannaflower — histoire et génétique de Cherry Wine", "url": "https://cannaflower.com/product/cherry-wine/" }
+      {
+        "label": "INTA / ministère argentin de la Santé — origine et sélectionneur du matériel Cherry Wine (2021)",
+        "url": "https://servicios.infoleg.gob.ar/infolegInternet/anexos/350000-354999/352055/res1983.pdf"
+      },
+      {
+        "label": "SeedFinder — description originale de Cherry Wine F2 attribuée à Greenpoint Seeds",
+        "url": "https://seedfinder.eu/en/strain-info/cherry-wine-f2/greenpoint-seeds"
+      },
+      {
+        "label": "Agronomy (2022) — matériel végétal Cherry Wine",
+        "url": "https://www.mdpi.com/2073-4395/12/8/1809"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-012",
     "identity": "documented",
-    "summary": "Ringo’s Gift prolonge l’héritage génétique de Lawrence Ringo en réunissant Harle-Tsu et ACDC.",
-    "history": "La lignée s’inscrit dans le travail sur le CBD mené autour de Lawrence Ringo en Californie du Nord. Tweedle Farms décrit une sélection descendante réalisée par Professor P, de Relic Seeds et Dynasty Genetics, à partir de cet héritage ; elle ne doit pas être confondue avec la toute première sélection.",
-    "origin": "Héritage de Californie du Nord ; sélection décrite de Relic Seeds et Dynasty Genetics.",
-    "lineage": "Harle-Tsu × ACDC.",
-    "characteristics": [
-      "Agrumes et fruits tropicaux dans la sélection Tweedle Farms.",
-      "Fleurs épaisses et couverture abondante de trichomes.",
-      "Fond terreux, épicé et légèrement carburant."
-    ],
-    "caveat": "Les caractéristiques décrites concernent la sélection descendante commercialisée par Tweedle Farms.",
+    "history": "Ringo’s Gift prolonge le travail de Lawrence Ringo au Southern Humboldt Seed Collective, en Californie, avec l’union d’ACDC et de Harle-Tsu. Oregon CBD rapporte avoir reçu ce clone avant de l’utiliser pour créer Pine Berry. La lignée est aussi conservée par HENDRX sous deux sélections nommées Katie’s Cut et Levi’s Cut.",
+    "origin": "Southern Humboldt, Californie ; lignée de Lawrence Ringo et SoHum Seeds.",
+    "lineage": "ACDC × Harle-Tsu ; ACDC est une sélection de Cannatonic, et Harle-Tsu provient de Harlequin × Sour Tsunami.",
     "sources": [
-      { "label": "Tweedle Farms — Ringo’s Gift, origine et sélection", "url": "https://tweedlefarms.com/ringos-gift/" }
+      {
+        "label": "Oregon CBD — catalogue original Early Series 2018",
+        "url": "https://cbd.ganja.com/wp-content/uploads/2018/10/oregoncbd_2018_early_catalog.pdf"
+      },
+      {
+        "label": "HENDRX — conservatoire des sélections Katie’s Cut et Levi’s Cut de Ringo’s Gift",
+        "url": "https://www.hendrx.farm/clone-menu/"
+      },
+      {
+        "label": "O’Shaughnessy’s — Harle-Tsu, hiver-printemps 2013",
+        "url": "https://beyondthc.com/wp-content/uploads/2013/11/CBD-2013.pdf"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-013",
     "identity": "documented",
-    "summary": "Remedy appartient à la famille de Cannatonic et se distingue par un registre discret de citron et de pin.",
-    "history": "Cannaflower rattache Remedy à une collaboration entre Resin Seeds, CBD Crew et Mr. Nice Seedbank. Selon ce récit, le croisement de Cannatonic avec Afghan Skunk a d’abord été connu sous le nom Z7, avant sa diffusion comme Remedy.",
-    "origin": "Travail associé à Resin Seeds, CBD Crew et Mr. Nice Seedbank, selon Cannaflower.",
-    "lineage": "Cannatonic × Afghan Skunk, selon l’historique publié par Cannaflower.",
-    "characteristics": [
-      "Bouquet peu démonstratif de citron et de pin.",
-      "Sélection décrite comme riche en CBD.",
-      "Pinène, myrcène et bêta-caryophyllène cités par le producteur."
-    ],
-    "caveat": "L’équivalence historique avec Z7 est rapportée par le producteur cité ; elle ne certifie pas tous les produits nommés Remedy.",
+    "history": "La lignée historique The Remedy apparaît chez CBD Crew dès 2010, dans le travail commun de Jaime de Resin Seeds et de Shantibaba de Mr. Nice. Elle associe une Cannatonic femelle à un mâle Afghan Skunk, aussi appelé Nordle. Deux sélections de cette descendance, Z6 et Z7, donnent ensuite plusieurs versions régulières et féminisées.",
+    "origin": "CBD Crew ; collaboration entre Resin Seeds et Mr. Nice, dès 2010.",
+    "lineage": "The Remedy : Cannatonic × Afghan Skunk (Nordle). Les sélections Z6 et Z7 sont ensuite recroisées avec Nordle ou Cannatonic selon la version.",
     "sources": [
-      { "label": "Cannaflower — Remedy, histoire et profil", "url": "https://cannaflower.com/product/remedy/" }
+      {
+        "label": "Mr. Nice — archive The Remedy, ouverte en 2010",
+        "url": "https://mrnice.nl/forum/threads/cbd-crew-grow-the-remedy.4789/"
+      },
+      {
+        "label": "Mr. Nice — témoignages sur les sélections Z6, Z7 et Z8 (2013)",
+        "url": "https://mrnice.nl/forum/threads/z8-x-afghan-haze.11084/"
+      },
+      {
+        "label": "SeedFinder — description de Z7 attribuée à CBD Crew",
+        "url": "https://seedfinder.eu/en/strain-info/z7/cbd-crew"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-014",
     "identity": "documented",
-    "summary": "Sour Tsunami est l’une des lignées qui ont marqué les débuts de la sélection moderne pour le CBD en Californie.",
-    "history": "Lawrence Ringo, du Southern Humboldt Seed Collective, a développé Sour Tsunami dans son travail de sélection de plantes riches en CBD. Project CBD la cite parmi les lignées identifiées par les nouveaux laboratoires de Californie du Nord autour de 2010 ; Leafly décrit un travail de croisement entre Sour Diesel et NYC Diesel.",
-    "origin": "Humboldt, Californie, États-Unis ; Lawrence Ringo et Southern Humboldt Seed Collective.",
-    "lineage": "Croisements Sour Diesel × NYC Diesel dans le récit publié par Leafly.",
-    "characteristics": [
-      "Identité historique liée à la sélection pour le CBD.",
-      "Ascendance rattachée à la famille Diesel."
-    ],
-    "caveat": "Cette parenté résume un travail de sélection sur plusieurs générations ; elle ne constitue pas un pedigree exhaustif.",
+    "history": "Lawrence Ringo développe Sour Tsunami à Humboldt et la présente en 2011 après plusieurs années de sélection. Son récit part d’un croisement NYC Diesel × Sour Diesel, retravaillé vers Sour Diesel sous le nom Double Diesel. Il y introduit ensuite le clone Ferrari, puis effectue un nouveau croisement avec Sour Diesel.",
+    "origin": "Southern Humboldt, Californie ; Lawrence Ringo, Southern Humboldt Seed Collective.",
+    "lineage": "Double Diesel (NYC Diesel × Sour Diesel, puis rétrocroisements vers Sour Diesel) × Ferrari, puis nouveau croisement avec Sour Diesel.",
     "sources": [
-      { "label": "Leafly — Sour Tsunami", "url": "https://www.leafly.com/strains/sour-tsunami" },
-      { "label": "Project CBD — repères historiques", "url": "https://projectcbd.org/about/" }
+      {
+        "label": "O’Shaughnessy’s — histoire racontée par Lawrence Ringo",
+        "url": "https://beyondthc.com/remembering-ringo/"
+      },
+      {
+        "label": "O’Shaughnessy’s, automne 2011 — présentation de Sour Tsunami",
+        "url": "https://beyondthc.com/wp-content/uploads/2021/06/2011-SCC-Documenting-Effects.pdf"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-015",
     "identity": "documented",
-    "summary": "Harle-Tsu réunit Harlequin et Sour Tsunami, deux lignées majeures de l’histoire du CBD californien.",
-    "history": "Leafly attribue ce croisement au Southern Humboldt Seed Collective. Son nom abrège celui de ses deux parents et témoigne de la rencontre entre deux familles sélectionnées pour leur expression du CBD.",
-    "origin": "Southern Humboldt Seed Collective, Californie, États-Unis.",
-    "lineage": "Harlequin × Sour Tsunami.",
-    "characteristics": [
-      "Hybride connu pour sa dominante CBD.",
-      "Notes boisées, épicées et terreuses dans les descriptions réunies par Leafly."
-    ],
-    "caveat": "Le profil aromatique repose ici sur une synthèse secondaire ; aucun bouquet identique n’est garanti pour chaque sélection.",
+    "history": "Lawrence Ringo crée Harle-Tsu au Southern Humboldt Seed Collective en croisant un clone Harlequin avec un mâle Sour Tsunami. La lignée est récompensée à l’Emerald Cup en 2012 et 2013. SoHum poursuit ensuite la sélection en croisant des Harle-Tsu entre elles, avant que cette famille ne serve notamment à Ringo’s Gift et Stephen Hawking Kush.",
+    "origin": "Southern Humboldt, Californie ; Lawrence Ringo et SoHum Seeds.",
+    "lineage": "Croisement fondateur : Harlequin femelle × Sour Tsunami mâle. Générations ultérieures de SoHum : Harle-Tsu × Harle-Tsu.",
     "sources": [
-      { "label": "Leafly — Harle-Tsu", "url": "https://www.leafly.com/strains/harle-tsu" }
+      {
+        "label": "SeedFinder — description originale de Harle-Tsu par Southern Humboldt Seeds Collective",
+        "url": "https://seedfinder.eu/en/strain-info/harle-tsu/southern-humboldt-seeds-collective"
+      },
+      {
+        "label": "O’Shaughnessy’s — Harle-Tsu, hiver-printemps 2013",
+        "url": "https://beyondthc.com/wp-content/uploads/2013/11/CBD-2013.pdf"
+      },
+      {
+        "label": "Oregon CBD — catalogue original Early Series 2018",
+        "url": "https://cbd.ganja.com/wp-content/uploads/2018/10/oregoncbd_2018_early_catalog.pdf"
+      },
+      {
+        "label": "SeedFinder — description originale de Stephen Hawking Kush par Alphakronik Genes",
+        "url": "https://seedfinder.eu/en/strain-info/stephen-hawking-kush/alphakronik-genes"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-016",
     "identity": "documented",
-    "summary": "Stephen Hawking Kush est une création d’Alphakronik Genes qui associe l’héritage CBD de Harle-Tsu à Sin City Kush.",
-    "history": "Cette variété constitue la deuxième sortie de la série « Great Minds » d’Alphakronik Genes, nommée en hommage au physicien Stephen Hawking. La description du sélectionneur conservée par SeedFinder la rattache aussi à sa gamme CBD+, avec plusieurs expressions de couleur et de structure.",
-    "origin": "Alphakronik Genes, États-Unis.",
-    "lineage": "Harle-Tsu femelle × Sin City Kush mâle.",
-    "characteristics": [
-      "Registre de cerise et de baies avec une nuance mentholée.",
-      "Plusieurs phénotypes, dont certains présentent des teintes pourpres.",
-      "Structure variable selon la plante sélectionnée."
-    ],
-    "caveat": "Les descriptions historiques sont conservées par des sources secondaires ; le nom ne garantit pas un rapport CBD/THC fixe.",
+    "history": "Stephen Hawking Kush est la deuxième création de la série « Great Minds » d’Alphakronik Genes et la première de sa gamme CBD+. Nommée en hommage au physicien, elle réunit un clone Harle-Tsu et un mâle Sin City Kush. Ce dernier apporte la branche Las Vegas Purple Kush × Snowdawg BX à la famille Harlequin–Sour Tsunami.",
+    "origin": "États-Unis ; Alphakronik Genes, série « Great Minds ».",
+    "lineage": "Harle-Tsu × Sin City Kush. Harle-Tsu = Harlequin × Sour Tsunami ; Sin City Kush = Las Vegas Purple Kush × Snowdawg BX.",
     "sources": [
-      { "label": "SeedFinder — description attribuée à Alphakronik Genes", "url": "https://seedfinder.eu/en/strain-info/stephen-hawking-kush/alphakronik-genes" },
-      { "label": "Leafly — Stephen Hawking Kush", "url": "https://www.leafly.com/strains/stephen-hawking-kush" }
+      {
+        "label": "SeedFinder — description originale de Stephen Hawking Kush par Alphakronik Genes",
+        "url": "https://seedfinder.eu/en/strain-info/stephen-hawking-kush/alphakronik-genes"
+      },
+      {
+        "label": "Hempedelic n° 6 (2018), p. 35 — archive de Hambourg",
+        "url": "https://epub.sub.uni-hamburg.de/epub/volltexte/2018/82466/pdf/hempedelic_2018_3.pdf"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-017",
     "identity": "documented",
-    "summary": "Pennywise est un croisement de TGA Subcool qui fait entrer Harlequin dans la famille de Jack the Ripper.",
-    "history": "Subcool présente Pennywise comme le résultat de plusieurs années de recherche pour réunir CBD et caractère aromatique. La fiche publiée sous sa marque décrit quatre principaux phénotypes, avec des variations de forme et de couleur des fleurs.",
-    "origin": "TGA Subcool Seeds, ensuite présenté sous la marque Subcool’s The Dank.",
-    "lineage": "Harlequin × Jack the Ripper.",
-    "characteristics": [
-      "Café et poivre sur certains phénotypes, citron et confiserie sur d’autres.",
-      "Fleurs vert pâle ou pourpres selon la sélection.",
-      "Formes de fleurs arrondies ou plus allongées."
-    ],
-    "caveat": "La paire aromatique du jeu correspond à l’une des expressions décrites par le sélectionneur.",
+    "history": "Pennywise est créée par Joel Taylor, dit Chef Joel de Norstar Genetics, puis diffusée par TGA Subcool. Dans son récit, Subcool explique que Joel avait obtenu le clone Harlequin auprès de Harborside avant de l’associer au mâle Jack the Ripper de l’équipe. Le nom fait référence au clown de Stephen King.",
+    "origin": "Californie ; Joel Taylor / Norstar Genetics et TGA Subcool.",
+    "lineage": "Harlequin femelle × Jack the Ripper mâle. Jack the Ripper = Jack’s Cleaner × Space Queen, selon Subcool.",
     "sources": [
-      { "label": "Subcool’s The Dank sur Leafly — Pennywise", "url": "https://www.leafly.ca/brands/tga-subcool/products/tga-subcool-pennywise-harliquin-x-jack-the-ripper" }
+      {
+        "label": "Overgrow — récit de création publié par Subcool, 14 juin 2018",
+        "url": "https://overgrow.com/t/new-high-cbd-strain-from-subcool-seeds/3788"
+      },
+      {
+        "label": "SeedFinder — description de Pennywise attribuée à TGA Subcool",
+        "url": "https://seedfinder.eu/en/strain-info/pennywise/subcools-the-dank"
+      },
+      {
+        "label": "SeedFinder — récit original de Jack the Ripper par Subcool",
+        "url": "https://seedfinder.eu/en/strain-info/jack-the-ripper/subcools-the-dank"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-018",
     "identity": "documented",
-    "summary": "Sweet and Sour Widow est l’interprétation enrichie en CBD de la famille White Widow proposée par CBD Crew.",
-    "history": "CBD Crew présente cette variété dans sa gamme de graines régulières, avec une sélection centrée sur l’expression du CBD. Sa description conserve l’identité résineuse de White Widow tout en soulignant un parfum singulier d’oignon aigre.",
-    "origin": "Programme de sélection de CBD Crew.",
-    "lineage": "Base White Widow enrichie en CBD ; le second parent n’est pas précisé sur la fiche du créateur.",
-    "characteristics": [
-      "Parfum marqué d’oignon aigre et de notes corporelles.",
-      "Amas floraux décrits comme plutôt aérés au début de leur formation.",
-      "Fleurs fortement résineuses à maturité."
-    ],
-    "caveat": "La note « musqué » du jeu traduit librement la note corporelle décrite par CBD Crew.",
+    "history": "Sweet and Sour Widow appartient aux premières créations de CBD Crew, le partenariat entre Resin Seeds et Mr. Nice lancé en 2009. Sa base est la White Widow de Shantibaba ; l’enquête de Soft Secrets rattache son développement au programme de 2011–2012 utilisant Dulce Canna. Elle est diffusée en graines régulières sous ce nouveau nom.",
+    "origin": "CBD Crew ; Resin Seeds et Mr. Nice, programme de 2011–2012.",
+    "lineage": "Base White Widow ; apport de Dulce Canna dans le programme CBD Crew, selon Soft Secrets. White Widow réunit une sativa brésilienne et un hybride du sud de l’Inde.",
     "sources": [
-      { "label": "CBD Crew — CBD Sweet and Sour Widow", "url": "https://cbdcrew.org/varieties/cbd-sweet-and-sour-widow/" }
+      {
+        "label": "CBD Crew — fiche originale Sweet and Sour Widow",
+        "url": "https://cbdcrew.org/varieties/cbd-sweet-and-sour-widow/"
+      },
+      {
+        "label": "Soft Secrets — enquête sur les premières lignées CBD, 2014",
+        "url": "https://softsecrets.com/es-ES/articulo/ola-cbd-primer-decenio-2004-2014"
+      },
+      {
+        "label": "Shantibaba — Black Widow, lignée originale White Widow",
+        "url": "https://shantibabaseeds.com/products/black-widow"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-019",
     "identity": "documented",
-    "summary": "Special Sauce est une lignée phare d’Oregon CBD, connue pour ses nuances de baies et ses expressions aromatiques variées.",
-    "history": "La version CBD diffusée par Oregon CBD associe une lignée appelée Special Sauce à Early Resin Berry. Des producteurs en ont retenu des sélections différentes : Sonoma Hills Farm décrit actuellement la sienne sous le nom Bubblegum, avec des notes de baies et de crème florale.",
-    "origin": "Oregon, États-Unis ; Oregon CBD.",
-    "lineage": "Special Sauce, lignée d’origine, × Early Resin Berry.",
-    "characteristics": [
-      "Nuances de baies dans la description du sélectionneur.",
-      "Pistils roses signalés dans la lignée d’Oregon CBD.",
-      "Expression florale et douce dans la sélection Sonoma Hills Farm."
-    ],
-    "caveat": "Bubblegum est ici le nom d’une sélection de Special Sauce chez Sonoma Hills Farm, pas une preuve de parenté avec toutes les variétés Bubblegum.",
+    "history": "Special Sauce est une lignée phare créée en Oregon par Oregon CBD. La sélection diffusée dans sa série 2018 croise son clone mère Special Sauce, conservé pour la reproduction, avec Early Resin Berry, une lignée développée pendant plusieurs années. Ce même clone mère entre aussi dans l’ascendance de Lifter et de Suver Haze.",
+    "origin": "Oregon, États-Unis — Oregon CBD ; série 2018.",
+    "lineage": "Special Sauce 2018 = clone Special Sauce × Early Resin Berry (ERB).",
     "sources": [
-      { "label": "Sunset Lake CBD — Special Sauce et description d’Oregon CBD", "url": "https://sunsetlakecbd.com/product/special-sauce-hemp-flower/" },
-      { "label": "Sonoma Hills Farm — sélection Bubblegum, Special Sauce CBD", "url": "https://sonomahillsfarm.com/terpenes/" }
+      {
+        "label": "Oregon CBD — catalogue original Early Series 2018",
+        "url": "https://cbd.ganja.com/wp-content/uploads/2018/10/oregoncbd_2018_early_catalog.pdf"
+      },
+      {
+        "label": "GTR Seeds / Oregon CBD — Special Sauce",
+        "url": "https://gtrseeds.com/products/special-sauce"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-020",
-    "identity": "commercial-name",
-    "summary": "Strawberry CBD est une appellation commerciale qui met en avant un registre aromatique de fraise, sans pedigree unique établi.",
-    "history": "Le nom apparaît dans plusieurs catalogues de fleurs et de graines CBD. Mandala Seeds commercialise par exemple une sélection provenant de CBD+ Buds, tandis que Maionais décrit une fleur au parfum de fraise légèrement épicé ; ces références ne démontrent pas une origine commune.",
-    "origin": "Appellation utilisée par plusieurs fournisseurs ; origine botanique unique non établie.",
-    "lineage": "Parenté non publiée pour les sélections consultées.",
-    "characteristics": [
-      "Registre fruité et sucré évoquant la fraise.",
-      "Fond légèrement épicé dans la fleur décrite par Maionais.",
-      "Fleurs compactes et allongées dans cette même sélection."
-    ],
-    "caveat": "Le nom Strawberry CBD ne prouve pas une filiation avec Strawberry Cough ou une autre variété historique nommée Strawberry.",
+    "identity": "documented",
+    "history": "La Strawberry CBD de Hemp Like Weed est présentée comme la sélection « Strawberry Swiss Original Clone » : un phénotype de Dinamed CBD croisé avec un hybride Tangie × Strawberry. Le projet Hemp Like Weed naît en 2017 de l’association de TBS et The Weed Shop. Sa branche Dinamed remonte aux sélections Dancehall de Dinafem.",
+    "origin": "Sélection Hemp Like Weed — projet italien fondé en 2017 ; clone Strawberry Swiss.",
+    "lineage": "Strawberry CBD (Hemp Like Weed) = Dinamed CBD × (Tangie × Strawberry). Dinamed CBD descend de Dancehall, elle-même Juanita la Lagrimosa × Kalijah.",
     "sources": [
-      { "label": "Maionais — Strawberry CBD", "url": "https://maionais.com/en/cbd-flowers/strawberry-cbd-buds/" },
-      { "label": "Mandala Seeds — sélection Strawberry CBD de CBD+ Buds", "url": "https://shop.mandalaseeds.com/collections/all-1/products/strawberry-cbd" }
+      {
+        "label": "SeedFinder — description attribuée à Hemp Like Weed, Strawberry CBD",
+        "url": "https://seedfinder.eu/en/strain-info/strawberry-cbd/hlw-seedbank"
+      },
+      {
+        "label": "SeedFinder — présentation de Hemp Like Weed",
+        "url": "https://seedfinder.eu/en/database/breeder/hlw-seedbank"
+      },
+      {
+        "label": "Dinafem — Breeding CBD, origine de Dinamed",
+        "url": "https://www.dinafem.org/en/blog/breeding-cbd/"
+      },
+      {
+        "label": "Soft Secrets — CBD Wave, histoire des croisements Reggae Seeds",
+        "url": "https://softsecrets.com/en-GB/article/cbd-wave-first-decade-2004-2014"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-021",
-    "identity": "commercial-name",
-    "summary": "Amnesia Haze CBD reprend un nom célèbre de la scène néerlandaise, mais les fleurs CBD ainsi nommées n’en partagent pas forcément la génétique.",
-    "history": "Soma Seeds présente son Amnesia Haze historique comme un assemblage de lignées d’Asie du Sud-Est, jamaïcaines et afghano-hawaïennes, primé notamment en 2004. Sur le marché CBD, CBDMania emploie ce même nom pour une fleur dont la fiche indique pourtant la génétique Kompolti.",
-    "origin": "Référence historique : Soma Seeds, Pays-Bas ; origine des versions CBD variable.",
-    "lineage": "Kompolti pour le produit CBDMania consulté ; aucune filiation universelle avec Amnesia Haze démontrée.",
-    "characteristics": [
-      "Citron et encens dans le profil publié par CBDMania.",
-      "Fond boisé, terreux et épicé pour cette fleur CBD.",
-      "Nom partagé entre une famille historique et des produits commerciaux distincts."
-    ],
-    "caveat": "L’histoire d’Amnesia Haze décrit la variété de Soma ; elle ne certifie pas le pedigree de toutes les versions CBD.",
+    "identity": "documented",
+    "history": "Élite Seeds développe Amnesia Haze Ultra CBD en croisant son Amnesia Haze avec une lignée riche en CBD. Le programme vise aussi à raccourcir la floraison de la plante de départ, tout en conservant une silhouette à dominante sativa et le caractère de la famille Haze.",
+    "origin": "Espagne ; Élite Seeds, sélection Amnesia Haze Ultra CBD.",
+    "lineage": "Amnesia Haze Ultra CBD d’Élite Seeds = Amnesia Haze × lignée riche en CBD.",
     "sources": [
-      { "label": "Soma Seeds — Amnesia Haze historique", "url": "https://somaseeds.nl/product/amnesia-haze/" },
-      { "label": "CBDMania — Amnesia Haze CBD, génétique annoncée Kompolti", "url": "https://www.cbdmania.eu/shop/weed/amnesia-haze-cbd" }
+      {
+        "label": "Élite Seeds — récit du sélectionneur sur sa page de marque",
+        "url": "https://weedmaps.com/brands/elite-seeds/products/elite-seeds-amnesia-haze-ultra-cbd"
+      },
+      {
+        "label": "SeedFinder — description et généalogie d’Amnesia Haze Ultra CBD attribuées à Élite Seeds",
+        "url": "https://seedfinder.eu/en/strain-info/amnesia-haze-ultra-cbd/elite-seeds"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-022",
-    "identity": "commercial-name",
-    "summary": "White Widow CBD emprunte le nom d’un classique néerlandais réputé pour ses fleurs résineuses.",
-    "history": "Green House Seed Company décrit la White Widow historique comme un croisement de lignées brésilienne et sud-indienne, récompensé à la High Times Cannabis Cup de 1995. Le nom a ensuite été repris pour des sélections CBD, notamment une fleur de 321CBD au profil boisé et poivré.",
-    "origin": "Référence historique : Pays-Bas ; provenance des versions CBD variable.",
-    "lineage": "Brésil × Inde du Sud pour la White Widow historique de Green House ; parenté de la version CBD non établie.",
-    "characteristics": [
-      "Héritage nominal associé à une couverture visible de trichomes.",
-      "Bois, résine et poivre dans la fleur CBD de 321CBD.",
-      "Nuances épicées également décrites dans la variété historique."
-    ],
-    "caveat": "Le nom et la ressemblance aromatique ne démontrent pas que chaque White Widow CBD descend de la variété historique.",
+    "identity": "documented",
+    "history": "La White Widow CBD de Trikoma Seeds figure déjà dans son catalogue de 2020. Elle associe sa White Widow à une lignée riche en CBD. Le sélectionneur conserve ses propres mères à Barcelone et décrit sa White Widow comme l’union de Widow Bilbo et Widow BCN, deux sélections de la famille Widow.",
+    "origin": "Barcelone, Espagne ; Trikoma Seeds, version CBD présente au catalogue 2020.",
+    "lineage": "White Widow CBD de Trikoma = White Widow × lignée CBD ; White Widow de Trikoma = Widow Bilbo × Widow BCN.",
     "sources": [
-      { "label": "Green House Seed Company — White Widow historique", "url": "https://shop.greenhouseseeds.nl/award-winning-seeds/high-times-cannabis-cup/white-widow/" },
-      { "label": "321CBD — sa fleur White Widow CBD", "url": "https://www.321cbd.com/en/cbd-flowers/866-white-widow-cbd-flower-321cbd.html" }
+      {
+        "label": "Trikoma Seeds — catalogue officiel 2020, White Widow CBD, page 11",
+        "url": "https://www.trikomaseeds.com/wp-content/uploads/2020/09/catalogotrikoma_espanol_portugues_2020_web_compressed.pdf"
+      },
+      {
+        "label": "Trikoma Seeds — fiche originale White Widow CBD",
+        "url": "https://www.trikomaseeds.com/en/semillas/white-widow-cbd/"
+      },
+      {
+        "label": "Trikoma Seeds — généalogie de sa sélection White Widow et origine de ses mères",
+        "url": "https://www.trikomaseeds.com/semillas/white-widow/"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-023",
     "identity": "commercial-name",
-    "summary": "Skywalker OG CBD est un nom commercial qui évoque la famille Kush et ses registres terreux et boisés.",
-    "history": "Le nom Skywalker recouvre déjà plusieurs références : Dutch Passion documente sa Skywalker historique comme un croisement Mazar × Blueberry. GreenLeafCBD présente sa propre Skywalker OG CBD comme une interprétation en chanvre du profil aromatique recherché, et précise qu’il ne s’agit pas du clone californien original.",
-    "origin": "Références historiques néerlandaises et américaines ; origine de la sélection CBD non établie.",
-    "lineage": "Non publiée pour la fleur CBD ; Mazar × Blueberry concerne la Skywalker historique de Dutch Passion.",
-    "characteristics": [
-      "Base terreuse et herbacée chez GreenLeafCBD.",
-      "Nuances boisées et légèrement sucrées.",
-      "Fleurs décrites comme compactes et résineuses dans cette sélection."
-    ],
-    "caveat": "Skywalker, Skywalker OG et leurs versions CBD ne sont pas des identités génétiques interchangeables.",
+    "history": "Le Skywalker OG californien est une sélection conservée par clone dans la famille OG Kush. Dans son témoignage transmis à 420 Magazine, Ron Cabrera, surnommé Luke Skywalker, raconte la détenir depuis 2002. Le nom se diffuse avec ses fleurs au Sunset Collective de West Hollywood ; cette histoire concerne le clone OG de Los Angeles.",
+    "origin": "Los Angeles, Californie — clone de Ron « Luke Skywalker » Cabrera, détenu depuis 2002 selon son récit.",
+    "lineage": "Skywalker OG californien = sélection clonale de la famille OG Kush.",
     "sources": [
-      { "label": "Dutch Passion — Skywalker historique", "url": "https://dutch-passion.com/en/cannabis-seeds/skywalker" },
-      { "label": "GreenLeafCBD — présentation de son interprétation Skywalker OG CBD", "url": "https://greenleafcbd.de/blogs/cannabis-wiki/skywalker-og" }
+      {
+        "label": "420 Magazine — témoignage de Ron Cabrera, message relayé par le fondateur",
+        "url": "https://www.420magazine.com/community/threads/sativa-og-kush-aka-skywalker-og-legal-medical-marijuana-grow.87299/page-7"
+      },
+      {
+        "label": "SeedFinder — Skywalker OG, clone de Los Angeles",
+        "url": "https://seedfinder.eu/en/strain-info/skywalker-og/clone-only-strains"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-024",
-    "identity": "commercial-name",
-    "summary": "Bubba Kush CBD désigne des adaptations CBD d’un nom Kush, dont une sélection précisément documentée par Dinafem.",
-    "history": "Dinafem explique avoir croisé sa Pre’98 Bubba Kush avec sa propre lignée mère riche en CBD. Le projet visait à conserver le caractère aromatique et la structure de Bubba Kush dans une nouvelle sélection ; cette histoire concerne la version Dinafem, sans authentifier tous les produits homonymes.",
-    "origin": "Sélection documentée : Dinafem, Espagne, à partir de Pre’98 Bubba Kush.",
-    "lineage": "Pre’98 Bubba Kush × lignée mère CBD de Dinafem pour la sélection citée.",
-    "characteristics": [
-      "Café et terre dans le bouquet décrit par Dinafem.",
-      "Port trapu et grandes feuilles dans cette sélection.",
-      "Fleurs épaisses et compactes."
-    ],
-    "caveat": "Sans sélectionneur ou traçabilité précisés, le seul nom Bubba Kush CBD ne prouve pas ce croisement.",
+    "identity": "documented",
+    "history": "Dinafem lance Bubba Kush CBD dans sa collection 2016, à partir du clone américain Pre-98 Bubba Kush et de sa sélection Dancehall #654. Cette dernière provient du travail de Reggae Seeds à Gérone : Dancehall est créée en 2006 en réunissant Juanita la Lagrimosa et Kalijah. La lignée relie ainsi un ancien clone Kush aux premières sélections CBD espagnoles.",
+    "origin": "Espagne — Dinafem, collection 2016 ; Pre-98 Bubba Kush américain et Dancehall de Gérone.",
+    "lineage": "Lignées fondatrices : Pre-98 Bubba Kush × Dancehall #654. Dancehall = Juanita la Lagrimosa × Kalijah ; Juanita = Reina Madre × NYCD ; Kalijah = Blue Heaven × NYCD.",
     "sources": [
-      { "label": "Dinafem — création et caractéristiques de Bubba Kush CBD", "url": "https://www.dinafem.org/en/blog/bubba-kush-cbd-legendary-indica-suitable-all-users/" }
+      {
+        "label": "Dinafem — présentation de la collection CBD 2016",
+        "url": "https://www.dinafem.org/en/blog/cvd-year-2016-catalogue-dinafem-marihuana-cannabis-cannabidiol/"
+      },
+      {
+        "label": "Dinafem / Green Born Identity — Pre-98 Bubba Kush et Dancehall #654",
+        "url": "https://www.dinafem.org/en/blog/bubba-kush-cbd-grow-report-weed-more-kaboom/"
+      },
+      {
+        "label": "Soft Secrets — histoire des croisements Reggae Seeds, 2004–2014",
+        "url": "https://softsecrets.com/en-GB/article/cbd-wave-first-decade-2004-2014"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-025",
-    "identity": "commercial-name",
-    "summary": "OG Kush CBD reprend le caractère aromatique de la famille OG dans des sélections dont la filiation dépend du créateur.",
-    "history": "Dinafem a intégré OG Kush à son programme de variétés CBD et documente une sélection OG Kush × Dancehall. Son compte rendu rapporte des expressions différentes d’une plante à l’autre, avec un fond de carburant accompagné tantôt de citron, tantôt de pin.",
-    "origin": "Sélection documentée : Dinafem, Espagne, à partir de la famille OG Kush.",
-    "lineage": "OG Kush × Dancehall pour la sélection Dinafem citée.",
-    "characteristics": [
-      "Citron, pin et notes pétrolées selon le phénotype.",
-      "Fleurs très résineuses dans le compte rendu de Dinafem.",
-      "Variations visibles de port entre les plantes décrites."
-    ],
-    "caveat": "Cette filiation appartient à une sélection précise ; elle ne certifie pas tous les produits vendus sous le nom OG Kush CBD.",
+    "identity": "documented",
+    "history": "L’OG Kush CBD de Dinafem apparaît dans la collection 2016 et associe OG Kush à une sélection CBD de Dancehall. Son parent OG appartient à la lignée passée de Floride à Los Angeles en 1996 avec Matt Berger et Josh D. Le côté CBD vient de la famille espagnole Juanita la Lagrimosa × Kalijah.",
+    "origin": "Espagne — Dinafem, 2016 ; branche OG passée de Floride à Los Angeles.",
+    "lineage": "OG Kush CBD de Dinafem = OG Kush × Dancehall. Dancehall = Juanita la Lagrimosa × Kalijah ; Juanita = Reina Madre × NYCD ; Kalijah = Blue Heaven × NYCD.",
     "sources": [
-      { "label": "Dinafem — OG Kush CBD, génétique et observations", "url": "https://www.dinafem.org/en/blog/og-kush-cbd-grow-report-green-medicine/" }
+      {
+        "label": "Dinafem — collection CBD 2016",
+        "url": "https://www.dinafem.org/en/blog/cvd-year-2016-catalogue-dinafem-marihuana-cannabis-cannabidiol/"
+      },
+      {
+        "label": "Dinafem / Green Born Identity — OG Kush CBD, parents déclarés",
+        "url": "https://www.dinafem.org/en/blog/og-kush-cbd-grow-report-green-medicine/"
+      },
+      {
+        "label": "LA Weekly — entretien avec Josh D, histoire d’OG Kush",
+        "url": "https://www.laweekly.com/og-kush-a-quarter-century-of-gas/"
+      },
+      {
+        "label": "Soft Secrets — généalogie de Dancehall",
+        "url": "https://softsecrets.com/en-GB/article/cbd-wave-first-decade-2004-2014"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   },
   {
     "code": "HH2026-026",
     "identity": "commercial-name",
-    "summary": "Gelato CBD reprend le nom d’une famille californienne célèbre, souvent pour évoquer un bouquet doux et fruité.",
-    "history": "Sherbinskis documente la famille Gelato historique comme le croisement de Sunset Sherbert et de Thin Mint Cookies, dont sont issues plusieurs sélections nommées. Sur le marché CBD, CBWEED utilise Gelato pour une fleur au parfum fruité rappelant le sorbet, sans publier de lien généalogique avec cette famille.",
-    "origin": "Famille historique : Californie, Sherbinskis ; origine génétique du produit CBD non précisée.",
-    "lineage": "Sunset Sherbert × Thin Mint Cookies pour la famille Gelato historique ; parenté de Gelato CBD non établie.",
-    "characteristics": [
-      "Registre doux, frais et fruité chez CBWEED.",
-      "La famille historique comprend plusieurs sélections aux arômes distincts.",
-      "Nom de dessert utilisé pour une identité aromatique, sans fruit précis garanti."
-    ],
-    "caveat": "Le nom Gelato CBD ne prouve pas une descendance des sélections de Sherbinskis ni un profil identique à Gelato #33 ou #41.",
+    "history": "La Gelato historique naît vers 2014 à San Francisco du travail de Sherbinski et Jigga : Sunset Sherbert est croisée avec Thin Mint Cookies. Sherbert descend déjà de Cookies et de Pink Panties, née d’OG Kush et de Burmese Blackberry Kush. Les numéros 25, 33 ou 41 correspondent aux pots des plantes retenues pendant la sélection.",
+    "origin": "San Francisco, Californie — Sherbinski et Jigga, vers 2014.",
+    "lineage": "Gelato = Sunset Sherbert × Thin Mint Cookies. Sunset Sherbert = Thin Mint Cookies × Pink Panties ; Pink Panties = OG Kush × Burmese Blackberry Kush.",
     "sources": [
-      { "label": "Sherbinskis — famille et généalogie Gelato", "url": "https://sherbinskis.com/gelato" },
-      { "label": "CBWEED — Gelato CBD", "url": "https://cbweed.com/prodotto/cannabis-light-gelato-cbd-1g/" }
+      {
+        "label": "Cannabis Now — entretien de Sherbinski avec Jimi Devine, 2017",
+        "url": "https://cannabisnow.com/sherbinski-sitdown-gelato/"
+      }
     ],
-    "reviewedAt": "2026-10-14"
+    "reviewedAt": "2026-10-30"
   }
 ]

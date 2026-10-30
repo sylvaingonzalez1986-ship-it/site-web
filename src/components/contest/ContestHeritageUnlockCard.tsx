@@ -67,8 +67,7 @@ export function ContestHeritageUnlockCard({
       <div className="p-3 sm:p-4">
         <div className="flex flex-wrap items-start justify-between gap-2">
           <div className="min-w-0">
-            <p className="text-[10px] font-black uppercase tracking-[0.13em] text-[#7d4b11]">Récompense du producteur</p>
-            <h3 id={`heritage-${campaign.campaignId}`} className="mt-1 font-display text-xl uppercase leading-none text-ink">{campaign.heritageName}</h3>
+            <h3 id={`heritage-${campaign.campaignId}`} className="font-display text-xl uppercase leading-none text-ink">{campaign.heritageName}</h3>
           </div>
           <span className={`inline-flex min-h-8 items-center gap-1.5 rounded-full border-2 border-ink px-2.5 py-1 text-[10px] font-black uppercase leading-tight ${campaign.heritageGranted ? "bg-green text-white" : campaign.heritageEligible ? "bg-yellow text-ink" : "bg-white text-ink"}`}>
             {campaign.heritageGranted ? <Gift size={14} aria-hidden="true" /> : <LockKeyhole size={14} aria-hidden="true" />}

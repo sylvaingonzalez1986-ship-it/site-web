@@ -221,6 +221,7 @@ try {
   await page.screenshot({ path: resolve(output, 'care-expanded-desktop.png'), fullPage: true });
   await page.locator('[data-care-reserve-toggle]').click();
   await reserveCash(34500);
+  await clickText('Intrants du sol vivant');
   await imagesReady('[aria-label="Intrants et protection biologique"] article img', 4);
   pass('four illustrated inputs loaded');
   assert.equal(await page.$$eval('[aria-label="Intrants et protection biologique"] article details', nodes => nodes.every(node => !node.open)), true);
@@ -322,6 +323,7 @@ try {
   await page.goto(`${origin}/?remote=1`, { waitUntil: 'networkidle0' });
   await page.locator('[data-care-toggle]').click();
   await page.locator('[data-care-reserve-toggle]').click();
+  await clickText('Intrants du sol vivant');
   await clickText('Acheter 1 charge');
   await page.waitForFunction(() => typeof window.__releasePurchase === 'function');
   assert.equal(await page.$eval('[data-care-toggle]', node => node.disabled), true);

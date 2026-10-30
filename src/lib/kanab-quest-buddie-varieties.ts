@@ -1,16 +1,14 @@
 import firstVarieties from "@/data/buddie-varieties/001-026.json";
 import lastVarieties from "@/data/buddie-varieties/027-052.json";
 
-/** Editorial references describe real selections; game balancing lives elsewhere. */
+/** Strain history and pedigrees, scoped to the breeder's selection where needed. */
 export type KqBuddieVariety = Readonly<{
   code: string;
   identity: "documented" | "commercial-name" | "fiction";
-  summary: string;
   history: string;
   origin: string;
   lineage: string;
-  characteristics: readonly string[];
-  caveat?: string;
+  /** Breeder records, named firsthand accounts, archives and corroborating references. */
   sources: readonly Readonly<{ label: string; url: string }>[];
   reviewedAt: string;
 }>;

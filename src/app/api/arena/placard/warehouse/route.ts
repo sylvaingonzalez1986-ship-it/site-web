@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
-import { getKqWarehouseSnapshot, KqWarehouseError, saveKqWarehouseLayout } from "@/lib/supabase/kanab-quest-warehouse-backend";
+import { getKqWarehouseSnapshot, KqWarehouseError, saveKqWarehouseLayout, quoteKqWarehouseZoneRemoval, removeKqWarehouseCultureZone } from "@/lib/supabase/kanab-quest-warehouse-backend";
 
 export const runtime = "nodejs";
 const MAX_BODY_BYTES = 300_000;
@@ -62,5 +62,22 @@ export async function PATCH(request: Request) {
       expectedRevision: payload.expectedRevision as number, state: payload.state,
       expectedCostCents: payload.expectedCostCents as number,
     }), { headers: noStore });
+  } catch (error) { return failure(error); }
+}
+
+export async function POST(request: Request) {
+  if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers: noStore });
+  const session = await getCurrentCustomerSessionByBackend("identity");
+  if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401, headers: noStore });
+  const rate = await hitRateLimit({ key: `kq_warehouse:${session.customerId}:${getRequestIp(request)}`, windowSeconds: 60, maxHits: 30 });
+  if (!rate.allowed) return NextResponse.json({ error: "Trop de demandes. Réessaie dans un instant." }, { status: 429, headers: { ...noStore, "Retry-After": String(rate.retryAfterSeconds) } });
+  try {
+    const payload = await readPayload(request);
+    const input = { userId: session.customerId, zoneId: payload.zoneId as string, expectedRevision: payload.expectedRevision as number };
+    if (payload.action === "quote-zone-removal") return NextResponse.json(await quoteKqWarehouseZoneRemoval(input), { headers: noStore });
+    if (payload.action === "remove-zone") return NextResponse.json(await removeKqWarehouseCultureZone({ ...input,
+      requestKey: payload.requestKey as string, resellEquipment: payload.resellEquipment as boolean, expectedResaleCents: payload.expectedResaleCents as number,
+    }), { headers: noStore });
+    throw new KqWarehouseError("Action d’entrepôt inconnue.");
   } catch (error) { return failure(error); }
 }

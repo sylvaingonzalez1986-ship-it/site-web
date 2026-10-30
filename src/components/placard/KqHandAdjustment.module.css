@@ -1,0 +1,73 @@
+.adjustment { margin-top: 1rem; border-top: 1px solid #17292340; color: #172923; font: .875rem/1.5 var(--font-body), Arial, sans-serif; text-align: left; }
+.adjustment.adjustment > summary { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: .75rem; min-height: 52px; padding: .7rem 0; cursor: pointer; list-style: none; }
+.adjustment > summary > span { display: grid; gap: .2rem; min-width: 0; }
+.adjustment > summary strong { font-size: .9375rem; }
+.adjustment > summary small { font-size: .8125rem; line-height: 1.4; font-weight: 500; color: #445e54; }
+.adjustment.adjustment :is(summary, .chooseCard), .adjustment.adjustment :is(summary, .chooseCard) :where(span, strong, small) { font-family: var(--font-body), Arial, sans-serif !important; text-transform: none !important; }
+.adjustment.adjustment > summary small { font-weight: 500 !important; }
+.adjustment > summary > svg { flex: 0 0 auto; }
+.adjustment > summary::-webkit-details-marker, .cardRules > summary::-webkit-details-marker { display: none; }
+.adjustment[open] > summary > svg, .cardRules[open] > summary > svg { transform: rotate(180deg); }
+.body { display: grid; gap: 1.1rem; padding: .5rem 0 .75rem; }
+.body h3 { margin: 0 0 .35rem; font: 850 1.15rem/1.25 var(--font-display), sans-serif; }
+.intro { margin: .35rem 0 .75rem; font-size: .8125rem; line-height: 1.5; }
+.stepHeader { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem; margin: .9rem 0 .5rem; }
+.stepHeader h4 { margin: 0; font: 750 .875rem/1.4 var(--font-body), Arial, sans-serif; }
+.adjustment.adjustment button { min-width: 0; min-height: 44px; padding: .6rem .75rem; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; color: #172923; background: transparent; box-shadow: none; font: 750 .8125rem/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.adjustment button:not(:disabled):hover { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); }
+.adjustment button:disabled { opacity: .58; cursor: not-allowed; }
+.adjustment button:focus-visible, .adjustment summary:focus-visible, .stepHeader h4:focus-visible, .review:focus-visible, .redrawConfirmation:focus-visible, .status:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.adjustment button.back { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; padding: .5rem .65rem; }
+.back svg, .primary svg, .redrawButton svg { flex: 0 0 auto; }
+.outgoing { margin: .5rem 0 .75rem; font-size: .8125rem; }
+.choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: .75rem; max-height: min(30rem, 60dvh); padding: 8px; overflow-y: auto; scrollbar-gutter: stable; border-top: 1px solid #17292330; border-bottom: 1px solid #17292330; }
+.choice { min-width: 0; }
+.adjustment .chooseCard { display: grid; gap: .3rem; width: 100%; text-align: left; }
+.chooseCard strong { font-size: .875rem; line-height: 1.35; }
+.adjustment.adjustment .chooseCard > span { font-size: .8125rem; line-height: 1.45; font-weight: 500 !important; }
+.choice[data-selected] .chooseCard { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.cardRules { margin: 0 .45rem; font-size: .8125rem; line-height: 1.5; }
+.adjustment.adjustment .cardRules > summary { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: .5rem; min-height: 44px; margin: 0; padding: .4rem .1rem; list-style: none; font-size: .8125rem; font-weight: 650 !important; cursor: pointer; }
+.cardRules > summary > svg { flex: 0 0 auto; }
+.cardRules p { margin: .4rem 0 .65rem; }
+.reserveLibrary { margin-top: .65rem; border-bottom: 1px solid #17292330; font-size: .8125rem; }
+.adjustment .reserveLibrary > summary { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: .6rem; min-height: 44px; padding: .5rem 0; list-style: none; font-size: .8125rem; font-weight: 700; cursor: pointer; }
+.reserveLibrary > summary::-webkit-details-marker { display: none; }
+.reserveLibrary > summary > svg { flex: 0 0 auto; }
+.reserveLibrary[open] > summary > svg { transform: rotate(180deg); }
+.reserveCards { display: grid; gap: .65rem; max-height: min(26rem, 55dvh); padding: .25rem 5px; overflow-y: auto; scrollbar-gutter: stable; }
+.reserveCards > div + div { padding-top: .65rem; border-top: 1px solid #17292330; }
+.reserveCards p { margin: .25rem 0; }
+.reserveCards .cardRules { margin-inline: 0; }
+.review { margin-top: .8rem; padding: .25rem 0; }
+.review > p:first-child { display: grid; justify-items: start; gap: .1rem; margin: 0 0 .6rem; }
+.review > p:first-child > span { font-size: .8125rem; color: #445e54; }
+.review > p:first-child > svg { margin: .25rem 0; }
+.review > p:first-child > strong { font-size: .875rem; }
+.identical { margin: .65rem 0; padding-left: .65rem; border-left: 3px solid #b27b20; font-size: .8125rem; }
+.cost { margin: .65rem 0; font-size: .8125rem; font-weight: 750; }
+.adjustment button.primary { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.redraw { border-top: 1px solid #17292340; padding-top: 1.1rem; }
+.redraw:first-of-type { border-top: 0; padding-top: 0; }
+.quota { margin: .35rem 0; font-size: .875rem; font-weight: 750; }
+.blocked, .status { margin: .6rem 0; padding: .6rem .75rem; border-left: 3px solid #986226; background: var(--game-surface-warm, #f6b76e); font-size: .8125rem; line-height: 1.5; overflow-wrap: anywhere; }
+.status { margin: 0; border-left-color: #076c61; background: #076c6110; }
+.status[data-error] { border-left-color: #9b3412; background: var(--game-surface-warm, #f6b76e); }
+.status:empty { display: none; }
+.permission, .reserveNotice { margin: .5rem 0 .75rem; font-size: .8125rem; line-height: 1.5; }
+.reserveNotice { padding-left: .65rem; border-left: 3px solid #b27b20; }
+.adjustment .redrawButton { display: inline-flex; align-items: center; justify-content: center; gap: .4rem; }
+.redrawConfirmation { margin: .8rem 0 0; padding: .85rem; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; font-size: .8125rem; --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.redrawConfirmation > p { margin: .4rem 0 .7rem; }
+.actions { display: flex; flex-wrap: wrap; gap: .5rem; }
+.actions button { flex: 1 1 6rem; }
+.actions .primary { flex-basis: 12rem; }
+.stepHeader h4, .review, .redrawConfirmation, .status, .redrawButton { scroll-margin-top: 10px; }
+@media (max-width: 540px) {
+  .choices { grid-template-columns: minmax(0, 1fr); max-height: min(26rem, 55dvh); }
+  .stepHeader { align-items: flex-start; }
+  .stepHeader h4 { width: 100%; }
+  .review > .primary, .redrawButton { width: 100%; }
+  .actions { display: grid; grid-template-columns: minmax(0, 1fr); }
+  .adjustment .actions .primary { grid-row: 1; }
+}

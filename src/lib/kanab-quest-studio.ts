@@ -14,17 +14,17 @@ export type KqStudioLevelDefinition = {
 };
 export const KQ_STUDIO_TRACKS = [
   { code: 'photography', name: 'Photo', description: 'Travaille la lumière et les compositions pour rendre tes fleurs plus lisibles.' },
-  { code: 'branding', name: 'Identité', description: 'Construis un univers cohérent pour les fleurs, les emballages et le merch.' },
+  { code: 'branding', name: 'Identité', description: 'Construis un univers cohérent pour les fleurs, les emballages et les produits dérivés.' },
   { code: 'editorial', name: 'Fiches & récits', description: 'Choisis un ton et des produits qui lui correspondent : un bon accord aide à vendre.' },
 ] as const;
 /** Each amount pays only the next step; acquired work is retained. */
 export const KQ_STUDIO_LEVELS = [
-  { track: 'photography', level: 1, name: 'Photos et fiches produits', costCents: 30000, minimumSiteLevel: 1, minimumOrders: 0, minimumConfidence: 0, requiredLevels: {}, description: 'Des images nettes : conversion des fleurs ×1,10. Aucun effet sur le merch.' },
+  { track: 'photography', level: 1, name: 'Photos et fiches produits', costCents: 30000, minimumSiteLevel: 1, minimumOrders: 0, minimumConfidence: 0, requiredLevels: {}, description: 'Des images nettes : conversion des fleurs ×1,10. Aucun effet sur les produits dérivés.' },
   { track: 'photography', level: 2, name: 'Studio lumière douce', costCents: 55000, minimumSiteLevel: 2, minimumOrders: 15, minimumConfidence: 55, requiredLevels: {}, description: 'Des prises de vue régulières : conversion des fleurs ×1,18 au total.' },
   { track: 'photography', level: 3, name: 'Éditorial de collection', costCents: 110000, minimumSiteLevel: 4, minimumOrders: 80, minimumConfidence: 70, requiredLevels: {}, description: 'Des compositions abouties : conversion des fleurs ×1,26 au total.' },
-  { track: 'branding', level: 1, name: 'Identité par un graphiste', costCents: 70000, minimumSiteLevel: 1, minimumOrders: 0, minimumConfidence: 0, requiredLevels: {}, description: 'Une première identité : fleurs ×1,08, doypacks imprimés et ateliers de merch accessibles selon leurs prérequis.' },
-  { track: 'branding', level: 2, name: 'Charte complète', costCents: 100000, minimumSiteLevel: 3, minimumOrders: 40, minimumConfidence: 65, requiredLevels: { photography: 1 }, description: 'Une gamme cohérente : conversion des fleurs ×1,14 et du merch ×1,08 au total.' },
-  { track: 'branding', level: 3, name: 'Univers signature', costCents: 180000, minimumSiteLevel: 5, minimumOrders: 180, minimumConfidence: 80, requiredLevels: { photography: 2 }, description: 'Un univers reconnaissable : conversion des fleurs ×1,20 et du merch ×1,16 au total.' },
+  { track: 'branding', level: 1, name: 'Identité par un graphiste', costCents: 70000, minimumSiteLevel: 1, minimumOrders: 0, minimumConfidence: 0, requiredLevels: {}, description: 'Une première identité : fleurs ×1,08, doypacks imprimés et ateliers de produits dérivés accessibles selon leurs prérequis.' },
+  { track: 'branding', level: 2, name: 'Charte complète', costCents: 100000, minimumSiteLevel: 3, minimumOrders: 40, minimumConfidence: 65, requiredLevels: { photography: 1 }, description: 'Une gamme cohérente : conversion des fleurs ×1,14 et des produits dérivés ×1,08 au total.' },
+  { track: 'branding', level: 3, name: 'Univers signature', costCents: 180000, minimumSiteLevel: 5, minimumOrders: 180, minimumConfidence: 80, requiredLevels: { photography: 2 }, description: 'Un univers reconnaissable : conversion des fleurs ×1,20 et des produits dérivés ×1,16 au total.' },
   { track: 'editorial', level: 1, name: 'Fiches détaillées', costCents: 18000, minimumSiteLevel: 2, minimumOrders: 5, minimumConfidence: 45, requiredLevels: { photography: 1 }, description: 'Ton et offre en accord : conversion +4 %. Si le produit ne correspond pas : −2 %.' },
   { track: 'editorial', level: 2, name: 'Récits de collection', costCents: 45000, minimumSiteLevel: 3, minimumOrders: 30, minimumConfidence: 60, requiredLevels: { branding: 1 }, description: 'Ton et offre en accord : conversion +8 %. Si le produit ne correspond pas : −4 %.' },
   { track: 'editorial', level: 3, name: 'Direction éditoriale', costCents: 95000, minimumSiteLevel: 4, minimumOrders: 80, minimumConfidence: 75, requiredLevels: { photography: 2, branding: 2 }, description: 'Ton et offre en accord : conversion +12 %. Si le produit ne correspond pas : −6 %.' },

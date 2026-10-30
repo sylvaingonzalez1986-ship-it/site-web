@@ -1,6 +1,7 @@
 "use client";
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { Check, LoaderCircle, Wrench } from "lucide-react";
+import { createClientRequestKey } from "@/lib/client-request-key";
 import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { formatKqCash, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import styles from "./KqEquipmentUpgrade.module.css";
@@ -18,7 +19,7 @@ export function KqMachineMaintenance({ code, condition, cashCents, tentNumber = 
   const repair = async () => {
     if (locked.current || condition.cycles <= 0 || cashCents < condition.repairCents || disabled) return;
     locked.current = true; setBusy(true); setError("");
-    if (request.current?.version !== condition.version || request.current.tentNumber !== targetTent) request.current = { version: condition.version, tentNumber: targetTent, key: crypto.randomUUID() };
+    if (request.current?.version !== condition.version || request.current.tentNumber !== targetTent) request.current = { version: condition.version, tentNumber: targetTent, key: createClientRequestKey() };
     try {
       const response = await api.request("/api/arena/placard/equipment", { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({
         action: "repair", tentNumber: targetTent, expectedUnits: productionUnits, equipmentCode: code, requestKey: request.current.key, expectedVersion: condition.version, expectedCostCents: condition.repairCents,

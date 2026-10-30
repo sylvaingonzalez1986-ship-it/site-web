@@ -5,7 +5,7 @@ type Box = readonly [number, number, number, number];
 type Rgb = readonly [number, number, number];
 const SIZE = 768;
 const SCALE = SIZE / 1254;
-const ROOT = "/contest/avatars/sylvain-v4/";
+const ROOT = "/contest/avatars/chanvrier-v6/";
 const images = new Map<string, Promise<HTMLImageElement>>();
 const rendered = new Map<string, HTMLCanvasElement>();
 const pending = new Map<string, Promise<HTMLCanvasElement>>();
@@ -41,9 +41,45 @@ const clamp = (value: number, min = 0, max = 1) => Math.max(min, Math.min(max, v
 const smooth = (value: number) => { const x = clamp(value); return x * x * (3 - 2 * x); };
 const rgb = (hex: string): Rgb => [parseInt(hex.slice(1, 3), 16), parseInt(hex.slice(3, 5), 16), parseInt(hex.slice(5, 7), 16)];
 const lightness = (r: number, g: number, b: number) => .2126 * r + .7152 * g + .0722 * b;
-// Chestnut fill is appreciably more saturated than skin antialiasing around black
-// facial ink. A loose hue threshold would incorrectly protect old mouth edges.
-const isHair = (r: number, g: number, b: number) => r > 35 && r < 200 && r > g * 1.24 && g > b * 1.17 && b < 135 && r < g * 2.8;
+// The painted chestnut has both deep umber strands and copper highlights. Keep
+// warm skin, the coral tongue and dark antialiasing out of that colour range.
+const isHair = (r: number, g: number, b: number) => r > 30 && r < 242 && r > g * 1.3 && g > b * 1.15 && b < 150 && r < g * 2.8;
+const EYE_BOXES: readonly Box[] = [[625, 575, 744, 718], [753, 540, 864, 673]];
+const inEyes = (x: number, y: number) => EYE_BOXES.some(([left, top, right, bottom]) => x >= left * SCALE && x <= right * SCALE && y >= top * SCALE && y <= bottom * SCALE);
+const inMouth = (x: number, y: number) => x >= 665 * SCALE && x <= 850 * SCALE && y >= 755 * SCALE && y <= 870 * SCALE;
+const isTongue = (r: number, g: number, b: number, x: number, y: number) => inMouth(x, y) && r > 100 && r > g * 1.85 && b > g * .5;
+const isNeutral = (r: number, g: number, b: number) => r < g * 1.055 && g < b * 1.16;
+
+/** Separate actual eye whites / teeth from isolated pale pixels at ink edges.
+ * Keeping every pale edge would leave an ivory outline on darker skin tones. */
+function creamMask(source: Uint8ClampedArray) {
+  const candidates = new Uint8Array(SIZE * SIZE);
+  const mask = new Uint8Array(candidates.length);
+  for (const box of [...EYE_BOXES, [665, 755, 850, 870] as const]) {
+    const [left, top, right, bottom] = box.map(value => Math.round(value * SCALE));
+    for (let y = top; y <= bottom; y++) for (let x = left; x <= right; x++) {
+      const pixel = y * SIZE + x, i = pixel * 4;
+      const r = source[i], g = source[i + 1], b = source[i + 2];
+      if (source[i + 3] > 25 && r > 180 && g > 180 && b > 170 && isNeutral(r, g, b)) candidates[pixel] = 1;
+    }
+  }
+  for (let pixel = 0; pixel < candidates.length; pixel++) {
+    if (!candidates[pixel]) continue;
+    const component = [pixel];
+    candidates[pixel] = 0;
+    for (let cursor = 0; cursor < component.length; cursor++) {
+      const current = component[cursor];
+      for (const next of [current - 1, current + 1, current - SIZE, current + SIZE]) {
+        if (!candidates[next]) continue;
+        candidates[next] = 0;
+        component.push(next);
+      }
+    }
+    const minimum = inEyes(pixel % SIZE, Math.floor(pixel / SIZE)) ? 8 : 32;
+    if (component.length >= minimum) for (const index of component) mask[index] = 1;
+  }
+  return mask;
+}
 
 /** Protect the entire inked edge of a hairstyle as well as its brown fill. */
 function hairMask(data: Uint8ClampedArray) {
@@ -53,7 +89,9 @@ function hairMask(data: Uint8ClampedArray) {
   const radius = 5;
   for (let i = 0; i < mask.length; i++) {
     const offset = i * 4;
-    if (data[offset + 3] > 25 && isHair(data[offset], data[offset + 1], data[offset + 2])) colored[i] = 1;
+    // Brown irises are part of the face, never protected locks of hair.
+    const x = i % SIZE, y = Math.floor(i / SIZE);
+    if (data[offset + 3] > 25 && !inEyes(x, y) && !isTongue(data[offset], data[offset + 1], data[offset + 2], x, y) && isHair(data[offset], data[offset + 1], data[offset + 2])) colored[i] = 1;
   }
   // Isolated warm pixels are ink/skin antialiasing, not a strand of chestnut.
   // Seed only continuous colored areas, then expand over their black outline.
@@ -160,6 +198,19 @@ function eyeWarp(image: ImageData, box: Box, center: readonly [number, number], 
   }
 }
 
+function protectBrows(image: ImageData, protectedHair: Uint8Array) {
+  const mask = new Uint8Array(protectedHair);
+  for (const box of [[600, 520, 720, 592], [745, 480, 850, 542]]) {
+    const [left, top, right, bottom] = box.map(value => Math.round(value * SCALE));
+    for (let y = top; y <= bottom; y++) for (let x = left; x <= right; x++) {
+      const pixel = y * SIZE + x, offset = pixel * 4;
+      if (lightness(image.data[offset], image.data[offset + 1], image.data[offset + 2]) >= 100) continue;
+      for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) mask[pixel + dy * SIZE + dx] = 1;
+    }
+  }
+  return mask;
+}
+
 function faceWarp(image: ImageData, face: ChanvrierAppearance["face"], protectedHair: Uint8Array) {
   const source = new Uint8ClampedArray(image.data);
   const distance = new Uint8Array(SIZE * SIZE);
@@ -223,26 +274,37 @@ function faceWarp(image: ImageData, face: ChanvrierAppearance["face"], protected
   }
 }
 
-function recolor(image: ImageData, skinHex: string, hairHex: string, eyesHex: string) {
+function recolor(image: ImageData, skinHex: string, hairHex: string, eyesHex: string, hairRegion?: Uint8Array) {
   const skin = rgb(skinHex), hair = rgb(hairHex), eyes = rgb(eyesHex);
   const source = new Uint8ClampedArray(image.data);
+  const cream = creamMask(source);
   for (let i = 0; i < source.length; i += 4) {
     if (source[i + 3] < 8) continue;
     const r = source[i], g = source[i + 1], b = source[i + 2], light = lightness(r, g, b);
-    let target: Rgb | undefined, shade = 1;
-    if (isHair(r, g, b)) { target = hair; shade = clamp(light / 73, .3, 1.35); }
-    else if (r > g * 1.018 && g > b * 1.01 && b > 105 && light > 125) { target = skin; shade = clamp(light / 231, .55, 1.12); }
-    if (target) for (let channel = 0; channel < 3; channel++) image.data[i + channel] = Math.min(255, target[channel] * shade);
-  }
-  // Keep the black outer ink and cream glints of Sylvain's vertical eyes.
-  for (const [cx, cy, rx, ry] of [[682, 651, 40, 61], [809, 613, 40, 61]]) {
-    for (let y = Math.floor((cy - ry) * SCALE); y < Math.ceil((cy + ry) * SCALE); y++) {
-      for (let x = Math.floor((cx - rx) * SCALE); x < Math.ceil((cx + rx) * SCALE); x++) {
-        const i = (y * SIZE + x) * 4;
-        if (Math.hypot((x / SCALE - cx) / rx, (y / SCALE - cy) / ry) > 1 || source[i + 3] < 245) continue;
-        const interior = [i, i - 8, i + 8, i - SIZE * 8, i + SIZE * 8].every(offset => source[offset + 3] > 245 && lightness(source[offset], source[offset + 1], source[offset + 2]) < 40);
-        if (interior) for (let channel = 0; channel < 3; channel++) image.data[i + channel] = eyes[channel];
+    const pixel = i / 4;
+    const x = pixel % SIZE, y = Math.floor(pixel / SIZE);
+    const eye = inEyes(x, y), neutral = isNeutral(r, g, b);
+    const iris = eye && r > 35 && r < 200 && light > 25 && r > g * 1.35 && r < g * 3.2 && g > b * 1.1;
+    // The whites, teeth and reflected pinpoints stay cream. Real black pupils
+    // also retain their ink; only the warm painted iris receives the eye colour.
+    if (light < 12 || (eye && light < 60 && !iris) || cream[pixel] || isTongue(r, g, b, x, y)) continue;
+    if (iris) {
+      const shade = clamp(light / 53, .2, 1.45);
+      for (let channel = 0; channel < 3; channel++) image.data[i + channel] = Math.min(255, eyes[channel] * shade);
+    } else if (!eye && hairRegion?.[pixel] && (isHair(r, g, b) || neutral)) {
+      const shade = light / 84;
+      for (let channel = 0; channel < 3; channel++) {
+        // A highlight approaches light gently instead of clipping blonde hair
+        // to white or flattening dark hair into one solid swatch.
+        image.data[i + channel] = shade <= 1
+          ? hair[channel] * shade
+          : hair[channel] + (255 - hair[channel]) * clamp((shade - 1) * .35, 0, .45);
       }
+    } else if (neutral || (r >= g * .985 && r < g * 1.9 && g >= b * .98 && b > 10)) {
+      // Per-channel ratios retain the warm cheek wash, lower-jaw shadow and
+      // paper grain for every skin tone, including the darkest palettes.
+      const paperSkin = [252, 227, 192] as const;
+      for (let channel = 0; channel < 3; channel++) image.data[i + channel] = Math.min(255, skin[channel] * source[i + channel] / paperSkin[channel]);
     }
   }
 }
@@ -272,25 +334,28 @@ async function render(profile: Profile): Promise<HTMLCanvasElement> {
     const protectedFacialHair = facialHair === "none" ? protectedHair : hairMask(result.data);
     patch(result, mouth, [640, 730, 885, 884], protectedFacialHair);
   }
-  const protectedFacialHair = facialHair === "none" ? protectedHair : hairMask(result.data);
+  const paintedHair = hairMask(result.data);
+  const protectedFacialHair = facialHair === "none" ? protectedHair : paintedHair;
+  const protectedBrows = appearance.eyes === "almond" ? protectedHair : protectBrows(result, protectedHair);
   const palette = [CHANVRIER_SKINS.find(option => option.code === profile.skin)!.color, OPTIONS.hairColor.find(option => option.code === appearance.hairColor)!.color, OPTIONS.eyeColor.find(option => option.code === appearance.eyeColor)!.color] as const;
   // Tint the registered eyes before reshaping them, preserving their ink and glints.
-  recolor(result, ...palette);
+  recolor(result, ...palette, paintedHair);
   if (appearance.eyes !== "almond") {
-    const scale: readonly [number, number] = appearance.eyes === "round" ? [1.34, .88] : appearance.eyes === "relaxed" ? [1.14, .4] : [1.35, 1.16];
-    const bright = appearance.eyes === "bright";
-    eyeWarp(result, [625, 575, 744, 710], [682, bright ? 678 : 651], scale, protectedHair);
-    eyeWarp(result, [753, 540, 864, 665], [809, bright ? 640 : 613], scale, protectedHair);
+    const scale: readonly [number, number] = appearance.eyes === "round" ? [1.2, .94] : appearance.eyes === "relaxed" ? [1.06, .65] : [1.2, 1.1];
+    // Anchor the lower eyelid. The v6 sclera extends further down than the old
+    // pill eyes: a centre-anchored squeeze would strand a white strip beneath it.
+    eyeWarp(result, [625, 575, 744, 716], [682, 709], scale, protectedBrows);
+    eyeWarp(result, [753, 540, 864, 676], [809, 671], scale, protectedBrows);
   }
   // The master supplies the round nose. Separate nose drawings are applied after
   // the eyes and expressions. Three small skin patches avoid resetting any eye.
   if (appearance.nose !== "round") {
     const nose = parts.get(`patch-nose-${appearance.nose}`)!;
     recolor(nose, ...palette);
-    patch(result, nose, [745, 662, 875, 754], protectedFacialHair, 3);
+    patch(result, nose, [745, 657, 875, 758], protectedFacialHair, 3);
     if (appearance.nose === "wide") {
-      patch(result, nose, [704, 707, 756, 754], protectedFacialHair, 3);
-      patch(result, nose, [723, 686, 756, 726], protectedFacialHair, 3);
+      patch(result, nose, [714, 696, 756, 758], protectedFacialHair, 3);
+      patch(result, nose, [729, 680, 756, 714], protectedFacialHair, 3);
     }
   }
   faceWarp(result, appearance.face, protectedHair);

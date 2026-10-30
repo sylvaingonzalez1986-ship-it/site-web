@@ -6,7 +6,6 @@
 .dashboard button:disabled:is(.header button, .tabs button, .primary, .secondary, .error button) { opacity: 1; cursor: not-allowed; color: #667064; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .dashboard :where(button, summary):focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
 .header { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 20px 22px 14px; background: #149b8b; color: #172923; border-bottom: 2px solid #172923; margin-bottom: 18px; }
-.header p { margin: 0 0 5px; color: #172923; font-size: 10px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .header h2 { margin: 0; font: 900 30px/1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .header button { display: grid; place-items: center; width: 44px; height: 44px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .stats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0 22px 20px; gap: 18px; }
@@ -29,14 +28,13 @@
 .primary { color: var(--ink); box-shadow: none; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .secondary { color: var(--ink); border-color: transparent; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; }
 .actionCopy .primary { margin-top: auto; }
-.cycle { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+.cycle { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
 .cycle button { display: grid; gap: 7px; justify-items: start; min-height: 65px; padding: 10px 6px; border: 0; border-bottom: 1px solid #172923; color: var(--ink); background: transparent; text-align: left; }
 .cycle small { font-size: 10px; color: #536058; }
 .cycle strong { font-size: 13px; }
 .sectionIntro { display: flex; align-items: center; gap: 18px; margin-bottom: 18px; }
 .sectionIntro > img { width: 75px; height: 95px; flex-shrink: 0; object-fit: contain; }
 .sectionIntro > div { min-width: 0; }
-.sectionIntro p { margin: 0 0 7px; font-size: 10px; font-weight: 800; color: #536058; text-transform: uppercase; }
 .sectionIntro h3 { margin: 0 0 7px; font: 900 25px/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .sectionIntro span { font-size: 12px; line-height: 1.6; }
 .equipmentList, .masteries { list-style: none; margin: 0; padding: 0; }
@@ -83,7 +81,7 @@
  .actionCopy > span { font-size: 12px; }
  .actionCopy h3 { font-size: 26px; }
  .actionCopy .primary { width: 100%; margin-top: 6px; }
- .cycle { gap: 5px; }
+ .cycle { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
  .cycle small { font-size: 9px; }
  .cycle strong { font-size: 12px; }
  .sectionIntro { gap: 12px; }

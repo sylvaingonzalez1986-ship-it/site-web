@@ -1,6 +1,8 @@
 import "server-only";
 
 import type { Product } from "@/data/products";
+import { normalizeShippingCountryCode } from "@/lib/shipping-country";
+import { normalizeShippingPhone } from "@/lib/shipping-phone";
 import type { PublicCustomer } from "@/types/customer";
 import type { CmsOrder } from "@/types/store";
 
@@ -11,7 +13,6 @@ const MIAM_BONUS_GRAMS = 100;
 const TEXT_ALLOWED = /[^0-9A-Z_\-'., /]/g;
 const CITY_ALLOWED = /[^A-Z_\-' ]/g;
 const ARTICLE_ALLOWED = /[<>&']/g;
-const PHONE_FR_REGEX = /^((00|\+)33|0)[0-9][0-9]{8}$/;
 
 export type MondialRelayExportConfig = {
   collectionType: "R" | "D";
@@ -50,35 +51,12 @@ function sanitizeEmail(value: string): string {
   return normalizeMrText(value).replace(/\s+/g, "").slice(0, 70);
 }
 
-function normalizeCountryCode(value: string | undefined): string {
-  const normalized = normalizeMrText(value ?? "").replace(/[^A-Z]/g, "");
-  if (!normalized) {
-    return "";
-  }
-  if (normalized === "FRANCE") {
-    return "FR";
-  }
-  return normalized.slice(0, 2);
-}
-
 function normalizePostalCode(value: string | undefined, countryCode: string): string {
   const digits = String(value ?? "").replace(/[^0-9]/g, "");
   if (countryCode === "FR") {
     return digits.slice(0, 5);
   }
   return digits.slice(0, 10);
-}
-
-function normalizePhone(value: string | undefined): string {
-  const raw = String(value ?? "").trim();
-  if (!raw) {
-    return "";
-  }
-  const cleaned = raw.replace(/[^\d+]/g, "");
-  if (PHONE_FR_REGEX.test(cleaned)) {
-    return cleaned;
-  }
-  return "";
 }
 
 function normalizeRelayId(value: string | undefined): string {
@@ -105,6 +83,11 @@ function buildConsigneeName(input: {
   customer?: PublicCustomer | null;
   orderName?: string | null;
 }): { text: string; firstName: string; lastName: string } {
+  if (input.orderName?.trim()) {
+    const name = splitName(input.orderName);
+    return { ...name, text: [name.lastName, name.firstName].filter(Boolean).join(" ") };
+  }
+
   const customer = input.customer;
   if (customer?.firstName || customer?.lastName) {
     const firstName = sanitizeText(customer.firstName ?? "", 32);
@@ -113,9 +96,39 @@ function buildConsigneeName(input: {
     return { text, firstName, lastName };
   }
 
-  const fallback = splitName(input.orderName ?? "");
-  const text = [fallback.lastName, fallback.firstName].filter(Boolean).join(" ").trim();
-  return { text, firstName: fallback.firstName, lastName: fallback.lastName };
+  return { text: "", firstName: "", lastName: "" };
+}
+
+function getConsigneeAddress(order: CmsOrder, customer?: PublicCustomer | null) {
+  const shipping = {
+    address: order.shippingAddress,
+    city: order.shippingCity,
+    postalCode: order.shippingPostalCode,
+    country: order.shippingCountry,
+  };
+  // An incomplete order snapshot must be corrected, not combined with a later profile address.
+  if (Object.values(shipping).some((value) => value?.trim())) {
+    return shipping;
+  }
+
+  if (order.deliveryMethod === "relay") {
+    const relay = {
+      address: order.relayAddress,
+      city: order.relayCity,
+      postalCode: order.relayPostalCode,
+      country: order.relayCountry,
+    };
+    if (Object.values(relay).some((value) => value?.trim())) {
+      return relay;
+    }
+  }
+
+  return {
+    address: customer?.address,
+    city: customer?.city,
+    postalCode: customer?.postalCode,
+    country: customer?.country,
+  };
 }
 
 function computeOrderWeight(order: CmsOrder, productsById: Map<string, Product>): number {
@@ -185,22 +198,16 @@ export function buildMondialRelayCsv(input: {
   for (const order of input.orders) {
     const customer = order.customerId ? input.customersById.get(order.customerId) : null;
     const consigneeName = buildConsigneeName({ customer, orderName: order.customerName });
-    const customerAddress = customer?.address?.trim() ? customer.address : "";
-    const customerCity = customer?.city?.trim() ? customer.city : "";
-    const customerPostal = customer?.postalCode?.trim() ? customer.postalCode : "";
-    const customerCountry = customer?.country?.trim() ? customer.country : "";
-
+    const address = getConsigneeAddress(order, customer);
     const deliveryMethod = order.deliveryMethod === "relay" ? "relay" : "home";
-    const countryCode = normalizeCountryCode(customerCountry || order.shippingCountry);
-    const addressLine = sanitizeText(
-      customerAddress || order.shippingAddress || "",
-      32,
-    );
-    const city = sanitizeCity(customerCity || order.shippingCity || "", 25);
-    const postalCode = normalizePostalCode(customerPostal || order.shippingPostalCode, countryCode);
-    const email = sanitizeEmail(order.customerEmail ?? "");
-    const phone = normalizePhone(
-      customer?.phone?.trim() || order.shippingPhone?.trim() || "",
+    const countryCode = normalizeShippingCountryCode(address.country);
+    const addressLine = sanitizeText(address.address ?? "", 32);
+    const city = sanitizeCity(address.city ?? "", 25);
+    const postalCode = normalizePostalCode(address.postalCode, countryCode);
+    const email = sanitizeEmail(order.customerEmail?.trim() || customer?.email || "");
+    const phone = normalizeShippingPhone(
+      order.shippingPhone?.trim() || customer?.phone,
+      order.shippingPhone?.trim() ? countryCode : customer?.country || countryCode,
     );
 
     if (!ensureLength(consigneeName.text, 2)) {
@@ -234,7 +241,7 @@ export function buildMondialRelayCsv(input: {
 
     if (input.config.collectionType === "R") {
       const relayId = normalizeRelayId(input.config.collectionRelayId);
-      const relayCountry = normalizeCountryCode(input.config.collectionCountry);
+      const relayCountry = normalizeShippingCountryCode(input.config.collectionCountry);
       if (!relayId || relayId.length < 6 || !relayCountry) {
         errors.push(`${order.id}: infos Point Relais collecte manquantes.`);
         continue;
@@ -243,7 +250,7 @@ export function buildMondialRelayCsv(input: {
 
     if (deliveryMethod === "relay") {
       const relayId = normalizeRelayId(order.relayId);
-      const relayCountry = normalizeCountryCode(order.relayCountry || order.shippingCountry);
+      const relayCountry = normalizeShippingCountryCode(order.relayCountry || order.shippingCountry);
       if (!relayId || relayId.length < 6 || !relayCountry) {
         errors.push(`${order.id}: infos Point Relais livraison manquantes.`);
         continue;
@@ -258,7 +265,7 @@ export function buildMondialRelayCsv(input: {
       deliveryMethod === "relay" ? normalizeRelayId(order.relayId) : "";
     const deliveryRelayCountry =
       deliveryMethod === "relay"
-        ? normalizeCountryCode(order.relayCountry || order.shippingCountry)
+        ? normalizeShippingCountryCode(order.relayCountry || order.shippingCountry)
         : "";
 
     const row = [
@@ -276,7 +283,7 @@ export function buildMondialRelayCsv(input: {
       email, // L Email
       input.config.collectionType, // M Collection type
       input.config.collectionType === "R" ? normalizeRelayId(input.config.collectionRelayId) : "", // N Collection relay
-      input.config.collectionType === "R" ? normalizeCountryCode(input.config.collectionCountry) : "", // O Collection country
+      input.config.collectionType === "R" ? normalizeShippingCountryCode(input.config.collectionCountry) : "", // O Collection country
       deliveryMethod === "relay" ? "R" : "D", // P Delivery type
       deliveryRelayId, // Q Delivery relay id
       deliveryRelayCountry, // R Delivery country

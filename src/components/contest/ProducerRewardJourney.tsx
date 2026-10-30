@@ -153,7 +153,6 @@ export function ProducerRewardJourney({
 
   return <section className={styles.journey} data-embedded={embedded || undefined} aria-labelledby={titleId}>
     <header className={styles.header}>
-      <p className={styles.eyebrow}>Les découvertes du producteur</p>
       <h2 id={titleId}>{campaign?.producerName ?? "Ton parcours de dégustation"}</h2>
       {!embedded ? <p className={styles.intro}>Regular ou Concours, chaque fleur compte dans le même parcours.</p> : null}
     </header>

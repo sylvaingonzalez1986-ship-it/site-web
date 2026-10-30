@@ -179,7 +179,7 @@ export function KqEquipmentCatalogModal(props: {
   onBusyChange?: (busy: boolean) => void;
 }) {
   const api = useKqTutorialApi();
-  return (api.isTutorial && !api.nativeWarehouse) || props.workshopOnly ? <LegacyKqEquipmentCatalogModal {...props} /> : <KqWarehouse embedded={props.embedded} initialEquipmentCode={props.initialEquipmentCode} draftStore={api.warehouseDraftStore} onOpenCulture={api.onOpenCulture} onClose={props.onClose} />;
+  return (api.isTutorial && !api.nativeWarehouse) || props.workshopOnly ? <LegacyKqEquipmentCatalogModal {...props} /> : <KqWarehouse embedded={props.embedded} initialShopOpen initialEquipmentCode={props.initialEquipmentCode} draftStore={api.warehouseDraftStore} onOpenCulture={api.onOpenCulture} onClose={props.onClose} />;
 }
 
 function LegacyKqEquipmentCatalogModal({
@@ -566,7 +566,6 @@ function LegacyKqEquipmentCatalogModal({
       <header className={styles.catalogHeader}>
         <button type="button" disabled={mutationPending} onClick={onClose} className={styles.backButton} aria-label={workshopOnly?"Retour aux machines":"Retour à la boutique"}><ArrowLeft aria-hidden="true" />{workshopOnly?"Mes machines":"Boutique"}</button>
         <div className={styles.catalogBrand}>
-          <small>{workshopOnly?"Entrepôt · Transformation":"Botte du Chanvrier · Le fond de la boutique"}</small>
           <h2 id="equipment-catalog-title">{workshopOnly?"Équiper mon atelier":"Le rayon matériel"}</h2>
         </div>
         <div className={styles.accountSummary}>

@@ -1,0 +1,1116 @@
+{
+  "reviewedAt": "2026-10-28",
+  "scope": {
+    "codes": "HH2026-037 à HH2026-052",
+    "count": 16,
+    "files": [
+      "src/data/buddie-varieties/027-052.json",
+      "src/lib/kanab-quest-buddie-flavors.ts",
+      "docs/bete-de-concours/BUDDIES-PARFUMS-PROPOSITION-2026-10-12.csv"
+    ],
+    "method": "Ouverture réelle des pages citées, lecture ciblée des affirmations, recherche de sources primaires de remplacement. Les descriptions commerciales, témoignages, textes repris et études scientifiques sont distingués. Aucun effet médical, taux de cannabinoïde, rendement ou résultat de jeu n’est validé par cet audit.",
+    "accessNote": "La date d’audit est celle de la consultation ; les dates de crawl du moteur ne prouvent pas une publication ni une mise à jour. Les preuves retenues ci-dessous viennent de pages ouvertes, pas de seuls extraits moteur.",
+    "integrationNote": "Les arômes actuels restent des paramètres de simulation. Les recommandations n’impliquent aucune modification des valeurs de jeu ; flavorNote permet d’exposer les limites documentaires sans liens dans l’interface."
+  },
+  "entries": [
+    {
+      "code": "HH2026-037",
+      "name": "Dinamed CBD",
+      "verdict": "Confirmé comme description du sélectionneur ; raisin anecdotique",
+      "findings": [
+        "Parenté, ascendance, morphologie et orange retrouvées chez Dinafem.",
+        "Raisin : uniquement l’avis Home Grower signé Rob Brown."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.dinafem.org/en/dinamed-cbd/",
+          "label": "Dinafem — Dinamed CBD",
+          "sourceType": "primaire — sélectionneur, avec avis utilisateur",
+          "access": "page ouverte — texte lu",
+          "evidence": "Dinafem donne Pure CBD 4 × Pure CBD 4, l’ascendance Dancehall et l’orange. Un avis décrit un nez de raisin.",
+          "limitations": "Description commerciale ; avis individuel sans protocole sensoriel indépendant."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-037",
+        "identity": "documented",
+        "summary": "Dinamed CBD est une sélection Dinafem issue de Dancehall, décrite avec un parfum d’orange.",
+        "history": "Dinafem rapporte deux années de sélection à partir de deux individus Pure CBD 4, d’ascendance Dancehall. Sa description associe feuilles fines et allongées, ramifications latérales développées et notes d’orange.",
+        "origin": "Programme de sélection de Dinafem.",
+        "lineage": "Pure CBD 4 × Pure CBD 4 ; ascendance Dancehall selon Dinafem.",
+        "characteristics": [
+          "Feuilles longues et fines",
+          "Ramifications latérales développées",
+          "Parfum d’orange décrit par Dinafem"
+        ],
+        "caveat": "Le raisin est rapporté par un seul avis publié chez Dinafem, sans confirmation dans la description du sélectionneur.",
+        "sources": [
+          {
+            "label": "Dinafem — Dinamed CBD",
+            "url": "https://www.dinafem.org/en/dinamed-cbd/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Arômes de jeu : orange décrite par Dinafem ; raisin rapporté dans un avis individuel."
+      },
+      "flavorReview": {
+        "current": [
+          "orange",
+          "raisin"
+        ],
+        "recommended": null,
+        "confidence": "Orange : description primaire ; raisin : faible",
+        "notes": "L’orange est documentée ; le raisin a bien une source consultable, mais seulement un témoignage isolé. La paire reste une convention de jeu.",
+        "sources": [
+          "https://www.dinafem.org/en/dinamed-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-038",
+      "name": "Baox",
+      "verdict": "Confirmé avec attribution commerciale",
+      "findings": [
+        "Fortuna nomme Centennial Seeds et donne Hindu Kush × Otto II ; pin, encens, herbes et couleurs vert/pourpre sont explicites.",
+        "Le communiqué FRB identifie Centennial au Colorado et Ben Holmes comme propriétaire, pas explicitement comme fondateur : formulation resserrée."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://fortunahemp.com/baox-feminized-hemp-seeds/",
+          "label": "Fortuna Hemp — BaOX",
+          "sourceType": "primaire — vendeur de sa sélection",
+          "access": "page ouverte — texte lu",
+          "evidence": "Parenté Hindu Kush × Otto II attribuée à Centennial ; fleurs vertes/pourpres, nez pin musqué et saveur d’encens.",
+          "limitations": "Documentation commerciale, sans preuve génétique indépendante."
+        },
+        {
+          "url": "https://www.prnewswire.com/news-releases/front-range-biosciences-reaches-licensing-agreement-with-centennial-seeds-to-lead-production-of-new-hemp-varieties-300998589.html",
+          "label": "Front Range Biosciences — accord avec Centennial Seeds",
+          "sourceType": "primaire — communiqué d’entreprise diffusé par PR Newswire",
+          "access": "page ouverte — texte lu",
+          "evidence": "Le communiqué du 4 février 2020 rattache BaOx et Otto II à Centennial Seeds, au Colorado ; Ben Holmes est présenté comme propriétaire.",
+          "limitations": "PR Newswire héberge un communiqué, pas une enquête indépendante. Un appel find a échoué ; le corps du texte a ensuite été lu en ouverture."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-038",
+        "identity": "documented",
+        "summary": "Baox est rattachée à Centennial Seeds et décrite par Fortuna Hemp avec des notes de pin musqué et d’encens.",
+        "history": "Fortuna Hemp attribue Baox à Centennial Seeds et présente sa sélection comme Hindu Kush × Otto II. Un communiqué de Front Range Biosciences confirme que Centennial, installé au Colorado et dirigé par Ben Holmes, diffuse Baox et Otto II.",
+        "origin": "Centennial Seeds, Colorado, États-Unis.",
+        "lineage": "Hindu Kush × Otto II, selon Fortuna Hemp.",
+        "characteristics": [
+          "Fleurs vertes à pourpres décrites par Fortuna Hemp",
+          "Pin doux et musqué",
+          "Nuances d’encens et d’herbes"
+        ],
+        "caveat": "Le profil aromatique décrit ici est celui de la sélection diffusée par Fortuna Hemp.",
+        "sources": [
+          {
+            "label": "Fortuna Hemp — Baox",
+            "url": "https://fortunahemp.com/baox-feminized-hemp-seeds/"
+          },
+          {
+            "label": "Front Range Biosciences — partenariat avec Centennial Seeds",
+            "url": "https://www.prnewswire.com/news-releases/front-range-biosciences-reaches-licensing-agreement-with-centennial-seeds-to-lead-production-of-new-hemp-varieties-300998589.html"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Pin et encens décrivent la sélection commercialisée par Fortuna Hemp."
+      },
+      "flavorReview": {
+        "current": [
+          "pin",
+          "encens"
+        ],
+        "recommended": [
+          "pin",
+          "encens"
+        ],
+        "confidence": "Moyenne — description primaire commerciale",
+        "notes": "Les deux notes sont explicites chez Fortuna ; elles ne prouvent pas un profil universel de Baox.",
+        "sources": [
+          "https://fortunahemp.com/baox-feminized-hemp-seeds/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-039",
+      "name": "Berry Blossom",
+      "verdict": "À corriger — détails sensoriels et morphologiques non retrouvés",
+      "findings": [
+        "La page actuelle Oakhenge conserve la parenté et baies/floral, mais ne contient plus mûre, açaï, rose, densité ni fond boisé/terreux.",
+        "Blacklands confirme Cherry Kandahar × Chardonnay et floral/baies pour sa sélection ; le créateur initial reste non établi."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://oakhengefarmscbd.com/product/berry-blossom-flower/",
+          "label": "Oakhenge Farms — Berry Blossom",
+          "sourceType": "primaire — producteur de son lot",
+          "access": "page ouverte — texte lu",
+          "evidence": "Le producteur du Michigan décrit une parenté Cherry Kandahar/Chardonnay et des notes de baies et de fleurs.",
+          "limitations": "La page actuelle précise que l’arôme et l’aspect varient selon la récolte ; pas de notes de fruits ou de fleurs plus précises."
+        },
+        {
+          "url": "https://blacklandsbotanicals.org/high-cbd-hemp-plants/",
+          "label": "Blacklands Botanicals — Berry Blossom",
+          "sourceType": "primaire — producteur de ses clones",
+          "access": "page ouverte — texte lu",
+          "evidence": "Sa rubrique Berry Blossom donne Cherry Kandahar × Chardonnay et des notes florales et de baies sucrées.",
+          "limitations": "Confirme la description de sa sélection, pas la création historique ni une analyse sensorielle indépendante."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-039",
+        "identity": "documented",
+        "summary": "Berry Blossom est décrite par Oakhenge Farms avec une parenté Cherry Kandahar et Chardonnay et un bouquet de baies et de fleurs.",
+        "history": "Oakhenge Farms, dans le Michigan, rattache sa Berry Blossom à Cherry Kandahar et Chardonnay. Blacklands Botanicals donne la même parenté pour sa sélection. Ces producteurs décrivent des notes de baies et de fleurs, sans établir ici le créateur initial de la lignée.",
+        "origin": "Lignée diffusée aux États-Unis ; sélection décrite par Oakhenge Hemp Farms, Michigan.",
+        "lineage": "Cherry Kandahar × Chardonnay, selon Oakhenge Hemp Farms.",
+        "characteristics": [
+          "Notes de baies décrites par les producteurs",
+          "Nuances florales",
+          "Aspect et arôme variables selon la récolte"
+        ],
+        "caveat": "Les sources consultées ne précisent ni le créateur initial ni une date de création ; les descriptions concernent les sélections des producteurs.",
+        "sources": [
+          {
+            "label": "Oakhenge Farms — Berry Blossom",
+            "url": "https://oakhengefarmscbd.com/product/berry-blossom-flower/"
+          },
+          {
+            "label": "Blacklands Botanicals — Berry Blossom",
+            "url": "https://blacklandsbotanicals.org/high-cbd-hemp-plants/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Baies et floral sont décrits chez Oakhenge et Blacklands, sans fruit ou fleur précis confirmé."
+      },
+      "flavorReview": {
+        "current": [
+          "baies",
+          "floral"
+        ],
+        "recommended": [
+          "baies",
+          "floral"
+        ],
+        "confidence": "Moyenne — deux descriptions de producteurs",
+        "notes": "Paire confirmée comme description commerciale ; rose, mûre et açaï retirés faute de confirmation actuelle.",
+        "sources": [
+          "https://oakhengefarmscbd.com/product/berry-blossom-flower/",
+          "https://blacklandsbotanicals.org/high-cbd-hemp-plants/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-040",
+      "name": "The Wife",
+      "verdict": "Confirmé avec réserve sur l’identité commune",
+      "findings": [
+        "Springhill décrit explicitement floral, kiwi, mangue et pin.",
+        "Fortuna attribue Spectrum × Wife à Foundation Seeds ; Oregon Green Seed attribue son parent The Wife à 303 Seeds. Ces appellations ne permettent pas de conclure à une identité commune."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://thespringhillfarm.com/pages/our-plants-and-processes",
+          "label": "Springhill Farm — The Wife",
+          "sourceType": "primaire — producteur de sa sélection",
+          "access": "page ouverte — texte lu",
+          "evidence": "La rubrique The Wife décrit un bouquet floral, avec kiwi, mangue et pin.",
+          "limitations": "Description du producteur, sans parenté publiée ni protocole sensoriel indépendant."
+        },
+        {
+          "url": "https://fortunahemp.com/the-wife-feminized-hemp-seeds/",
+          "label": "Fortuna Hemp — The Wife",
+          "sourceType": "primaire — vendeur de sa sélection",
+          "access": "page ouverte — texte lu",
+          "evidence": "La fiche donne Spectrum × Wife, attribué à Foundation Seeds, et plusieurs expressions aromatiques.",
+          "limitations": "Source commerciale ; des attributions différentes existent sous ce nom."
+        },
+        {
+          "url": "https://oregongreenseed.com/shop/willamette-valley-hemp-seed/td-pih1650/cherry-wine/",
+          "label": "Oregon Green Seed — Cherry Wine",
+          "sourceType": "primaire — sélectionneur de ce croisement",
+          "access": "page ouverte — texte lu",
+          "evidence": "La description attribue le parent The Wife de Cherry Wine à 303 Seeds.",
+          "limitations": "Renseigne le parent de ce croisement seulement ; ne relie pas ce matériel à la sélection Springhill."
+        },
+        {
+          "url": "https://blacklandsbotanicals.org/high-cbd-hemp-plants/",
+          "label": "Blacklands Botanicals — The Wife",
+          "sourceType": "primaire — producteur de ses clones",
+          "access": "page ouverte — texte lu",
+          "evidence": "La rubrique indique une génétique inconnue et un arôme de cerises fraîches.",
+          "limitations": "Autre sélection ; ne confirme pas la paire kiwi/floral."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-040",
+        "identity": "commercial-name",
+        "summary": "The Wife est un nom utilisé par plusieurs catalogues CBD ; Springhill décrit sa sélection avec des notes florales et de kiwi.",
+        "history": "Springhill Farm décrit sa The Wife par les fleurs, le kiwi, la mangue et le pin, sans publier sa parenté. Fortuna Hemp attribue sa version Spectrum × Wife à Foundation Seeds. Oregon Green Seed rattache le parent The Wife de son Cherry Wine à 303 Seeds. Le lien génétique entre ces références n’est pas établi.",
+        "origin": "États-Unis ; plusieurs sélectionneurs et producteurs.",
+        "lineage": "Variable selon la sélection ; Spectrum × Wife pour la version Fortuna Hemp.",
+        "characteristics": [
+          "Bouquet floral chez Springhill Farm",
+          "Nuances de kiwi, de mangue et de pin dans cette sélection"
+        ],
+        "caveat": "Les sources ne démontrent pas que toutes les fleurs appelées The Wife possèdent une identité génétique commune.",
+        "sources": [
+          {
+            "label": "Springhill Farm — plantes et profils aromatiques",
+            "url": "https://thespringhillfarm.com/pages/our-plants-and-processes"
+          },
+          {
+            "label": "Fortuna Hemp — The Wife",
+            "url": "https://fortunahemp.com/the-wife-feminized-hemp-seeds/"
+          },
+          {
+            "label": "Oregon Green Seed — origine du parent The Wife dans Cherry Wine",
+            "url": "https://oregongreenseed.com/shop/willamette-valley-hemp-seed/td-pih1650/cherry-wine/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Kiwi et floral décrivent la sélection Springhill, pas toutes les fleurs portant ce nom."
+      },
+      "flavorReview": {
+        "current": [
+          "kiwi",
+          "floral"
+        ],
+        "recommended": [
+          "kiwi",
+          "floral"
+        ],
+        "confidence": "Moyenne — description primaire commerciale",
+        "notes": "Les deux notes sont explicites chez Springhill ; Blacklands propose une autre expression, cerise.",
+        "sources": [
+          "https://thespringhillfarm.com/pages/our-plants-and-processes"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-041",
+      "name": "Therapy CBD",
+      "verdict": "Confirmé avec réserve sur la variabilité",
+      "findings": [
+        "Histoire et palette aromatique retrouvées ; la variabilité annoncée concerne aussi les cannabinoïdes."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://cbdcrew.org/varieties/cbd-therapy/",
+          "label": "CBD Crew — CBD Therapy",
+          "sourceType": "primaire — sélectionneur",
+          "access": "page ouverte — texte lu",
+          "evidence": "CBD Crew décrit quatre ans de travail à partir de lignées à THC, une variabilité et une gamme fruit/truffe.",
+          "limitations": "Description du sélectionneur ; les deux arômes sont des expressions possibles, sans garantie de coexpression."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-041",
+        "identity": "documented",
+        "summary": "CBD Crew décrit Therapy CBD avec une palette allant du fruit sucré à des nuances de terre évoquant la truffe.",
+        "history": "CBD Crew rapporte quatre années de travail à partir de lignées initialement riches en THC, sans nommer les parents. Le sélectionneur reconnaît des variations entre les plantes et décrit plusieurs expressions aromatiques.",
+        "origin": "Programme de sélection de CBD Crew.",
+        "lineage": "Parents non divulgués ; sélection issue de lignées de cannabis à THC selon CBD Crew.",
+        "characteristics": [
+          "Fruits sucrés",
+          "Variantes terreuses évoquant la truffe",
+          "Variabilité reconnue par CBD Crew"
+        ],
+        "caveat": "Fruits et truffe décrivent des expressions possibles ; leur présence simultanée n’est pas garantie.",
+        "sources": [
+          {
+            "label": "CBD Crew — CBD Therapy",
+            "url": "https://cbdcrew.org/varieties/cbd-therapy/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Fruits et truffe désignent des expressions possibles décrites par CBD Crew, pas une paire garantie."
+      },
+      "flavorReview": {
+        "current": [
+          "fruits",
+          "truffe"
+        ],
+        "recommended": [
+          "fruits",
+          "truffe"
+        ],
+        "confidence": "Moyenne — description primaire, palette variable",
+        "notes": "Les deux évocations sont publiées, sans garantie de présence simultanée.",
+        "sources": [
+          "https://cbdcrew.org/varieties/cbd-therapy/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-042",
+      "name": "Dancehall",
+      "verdict": "Confirmé comme description du créateur",
+      "findings": [
+        "Reggae Seeds indique 2006, Juanita la Lagrimosa × Kalijah, peu de ramifications, pourpre possible et sous-bois/encens."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.reggaeseeds.com/fra/p/product/product/produits-seeds-cannabis/dancehall.htm",
+          "label": "Reggae Seeds — Dancehall",
+          "sourceType": "primaire — sélectionneur",
+          "access": "page ouverte — texte lu",
+          "evidence": "La fiche donne 2006, les deux parents, la morphologie et les notes de terre des bois, d’encens et de fruits acidulés.",
+          "limitations": "Déclarations du créateur ; ni vérification génétique ni étude sensorielle indépendante."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-042",
+        "identity": "documented",
+        "summary": "Reggae Seeds décrit Dancehall comme une création de 2006 aux notes de sous-bois, d’encens et de fruits acidulés.",
+        "history": "Reggae Seeds date Dancehall de 2006 et donne le croisement Juanita la Lagrimosa × Kalijah. Sa description mentionne peu de ramifications et des teintes pourpres possibles.",
+        "origin": "Programme de sélection de Reggae Seeds.",
+        "lineage": "Juanita la Lagrimosa × Kalijah, selon Reggae Seeds.",
+        "characteristics": [
+          "Ramification relativement limitée",
+          "Teintes pourpres possibles",
+          "Sous-bois, encens et pointe de fruits acidulés"
+        ],
+        "sources": [
+          {
+            "label": "Reggae Seeds — Dancehall",
+            "url": "https://www.reggaeseeds.com/fra/p/product/product/produits-seeds-cannabis/dancehall.htm"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "caveat": "La parenté, la date et les arômes sont documentés par le sélectionneur.",
+        "flavorNote": "Sous-bois et encens reprennent la description aromatique de Reggae Seeds."
+      },
+      "flavorReview": {
+        "current": [
+          "sous-bois",
+          "encens"
+        ],
+        "recommended": [
+          "sous-bois",
+          "encens"
+        ],
+        "confidence": "Moyenne — description primaire du créateur",
+        "notes": "La normalisation de terre des bois en sous-bois est fidèle ; la pointe de fruits acidulés est laissée hors de la paire.",
+        "sources": [
+          "https://www.reggaeseeds.com/fra/p/product/product/produits-seeds-cannabis/dancehall.htm"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-043",
+      "name": "Frank’s Gift",
+      "verdict": "Partiellement confirmé — sources secondaires",
+      "findings": [
+        "SeedFinder conserve un texte attribué à Oregon Microgrowers Guild : sélection de Skunk Haze, S1 Frank’s Gift × Frank’s Gift.",
+        "Bois et terre apparaissent chez Leafly comme retours d’utilisateurs ; SeedFinder n’a aucune donnée aromatique. Source directe du créateur non retrouvée."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://seedfinder.eu/en/strain-info/franks-gift-s1/oregon-microgrowers-guild",
+          "label": "SeedFinder — Frank’s Gift S1",
+          "sourceType": "secondaire — reproduction attribuée au sélectionneur",
+          "access": "page ouverte — texte lu",
+          "evidence": "Le texte attribué à Oregon Microgrowers Guild décrit sa sélection de Skunk Haze en S1 et la variabilité des descendants.",
+          "limitations": "La publication directe du sélectionneur n’a pas été vérifiée ; aucune donnée d’arôme sur cette fiche."
+        },
+        {
+          "url": "https://www.leafly.ca/strains/franks-gift",
+          "label": "Leafly — Frank’s Gift",
+          "sourceType": "secondaire — fiche éditoriale et témoignages",
+          "access": "page ouverte — texte lu",
+          "evidence": "Leafly parle d’un phénotype de Skunk Haze surtout diffusé en Oregon ; les goûts utilisateurs incluent bois et terre.",
+          "limitations": "Ni créateur ni analyse génétique ; retours sensoriels non contrôlés."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-043",
+        "identity": "documented",
+        "summary": "Frank’s Gift est décrite comme une sélection de Skunk Haze liée à l’Oregon Microgrowers Guild ; son histoire reste documentée indirectement.",
+        "history": "SeedFinder reproduit un texte attribué à l’Oregon Microgrowers Guild présentant Frank’s Gift comme sa sélection de Skunk Haze, puis une descendance S1. Leafly rapporte sa diffusion depuis l’Oregon et des retours boisés et terreux. Aucune publication directe du sélectionneur n’a été retrouvée lors de cet audit.",
+        "origin": "Oregon, États-Unis ; attribution à l’Oregon Microgrowers Guild par les sources consultées.",
+        "lineage": "Sélection de Skunk Haze ; S1 Frank’s Gift × Frank’s Gift dans le texte repris par SeedFinder.",
+        "characteristics": [
+          "Héritage Skunk Haze rapporté",
+          "Notes de bois et de terre rapportées sur Leafly",
+          "Descendance S1 décrite comme variable"
+        ],
+        "caveat": "L’attribution historique reste indirecte ; les arômes proviennent de retours d’utilisateurs.",
+        "sources": [
+          {
+            "label": "SeedFinder — description de Frank’s Gift S1 par Oregon Microgrowers Guild",
+            "url": "https://seedfinder.eu/en/strain-info/franks-gift-s1/oregon-microgrowers-guild"
+          },
+          {
+            "label": "Leafly — Frank’s Gift et retours aromatiques",
+            "url": "https://www.leafly.ca/strains/franks-gift"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Arômes de jeu : bois et terre rapportés sur Leafly, sans confirmation du créateur."
+      },
+      "flavorReview": {
+        "current": [
+          "bois",
+          "terre"
+        ],
+        "recommended": null,
+        "confidence": "Faible — retours utilisateurs",
+        "notes": "La paire est bien présente sur Leafly, mais aucune source primaire sensorielle fiable n’a été retrouvée.",
+        "sources": [
+          "https://www.leafly.ca/strains/franks-gift"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-044",
+      "name": "Valentine X",
+      "verdict": "À nuancer — créateur et arômes non établis",
+      "findings": [
+        "Leafly confirme son propre récit ACDC/St. Valentine, sans documenter le sélectionneur.",
+        "La source terre/pin n’a pas été récupérée ; Leafly affiche myrtille, ananas et fraise. Aucune paire robuste ne peut être retenue."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.leafly.ca/strains/valentine-x",
+          "label": "Leafly — Valentine X",
+          "sourceType": "secondaire — fiche éditoriale et témoignages",
+          "access": "page ouverte — texte lu",
+          "evidence": "Leafly donne St. Valentine comme synonyme et présente une variante d’ACDC ; les saveurs rapportées sont fruitées.",
+          "limitations": "Pas de publication du créateur ni d’identification génétique ; retours utilisateurs non contrôlés."
+        },
+        {
+          "url": "https://thenewyorkcannabisclub.com/strains/valentine-x",
+          "label": "The New York Cannabis Club — Valentine X",
+          "sourceType": "secondaire — source éditoriale",
+          "access": "échec d’ouverture — Cache miss",
+          "evidence": "Aucun contenu récupéré lors de l’ouverture.",
+          "limitations": "Ne permet pas de confirmer terre/pin."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-044",
+        "identity": "documented",
+        "summary": "Valentine X est présentée par Leafly comme une variante d’ACDC ; son créateur et ses arômes restent insuffisamment documentés.",
+        "history": "Leafly emploie aussi le nom St. Valentine et rattache Valentine X à ACDC. Cette source secondaire ne permet pas d’établir le sélectionneur, une date de création ou une parenté détaillée.",
+        "origin": "Origine géographique et sélectionneur non confirmés.",
+        "lineage": "Variante d’ACDC selon Leafly.",
+        "characteristics": [
+          "Synonyme St. Valentine rapporté par Leafly",
+          "Lien à ACDC attribué à cette source",
+          "Profil aromatique non établi par une source du créateur"
+        ],
+        "caveat": "Terre et pin restent des arômes de jeu non confirmés ; les retours fruités de Leafly ne suffisent pas non plus à fixer un profil universel.",
+        "sources": [
+          {
+            "label": "Leafly — Valentine X",
+            "url": "https://www.leafly.ca/strains/valentine-x"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Arômes de jeu : terre et pin ; paire non confirmée par une source fiable."
+      },
+      "flavorReview": {
+        "current": [
+          "terre",
+          "pin"
+        ],
+        "recommended": null,
+        "confidence": "Très faible",
+        "notes": "Terre/pin non vérifiés ; ne pas remplacer par une autre paire sur la seule base d’une agrégation d’avis.",
+        "sources": [
+          "https://www.leafly.ca/strains/valentine-x",
+          "https://thenewyorkcannabisclub.com/strains/valentine-x"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-045",
+      "name": "Carmagnola",
+      "verdict": "Identité confirmée ; arômes non généralisables",
+      "findings": [
+        "CREA confirme le caractère dioïque et les usages fibre/biomasse ; l’étude distingue Carmagnola et Carmagnola Selezionata, originaires d’Italie.",
+        "CBDMania affiche Carmagnola et citron/pin dans son tableau, mais revendique Orange Bud/Skunk dans le récit : attribution commerciale contradictoire, insuffisante pour le cultivar.",
+        "De Pata Verde décrit un bouquet tropical différent."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.crea.gov.it/-/variet%C3%A0-di-canapa-dioica-carmagnola-licenza-esclusiva-rif.-2020-11-",
+          "label": "CREA — Carmagnola",
+          "sourceType": "primaire — organisme public de recherche",
+          "access": "page ouverte — texte lu",
+          "evidence": "L’avis institutionnel nomme explicitement la variété dioïque Carmagnola.",
+          "limitations": "Avis administratif ; aucune description aromatique."
+        },
+        {
+          "url": "https://carifit.crea.gov.it/wp-content/uploads/2024/10/Poster-CaRiFIT-SIGA-2024_.pdf",
+          "label": "CREA — poster CaRiFIT",
+          "sourceType": "primaire — communication scientifique",
+          "access": "PDF ouvert — texte extrait ; capture indisponible",
+          "evidence": "Le tableau extrait du PDF classe séparément Carmagnola et CS : dioïques, fibre/biomasse.",
+          "limitations": "Texte du PDF lu ; capture de page demandée mais échouée (Cache miss). Aucun arôme étudié."
+        },
+        {
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full",
+          "label": "Frontiers in Plant Science — Variability in Seed Traits",
+          "sourceType": "primaire — étude scientifique",
+          "access": "page ouverte — texte lu",
+          "evidence": "Le tableau 1 identifie séparément Carmagnola et Carmagnola Selezionata comme variétés dioïques italiennes.",
+          "limitations": "Étude des graines ; ne mesure pas le bouquet de fleurs."
+        },
+        {
+          "url": "https://www.cbdmania.eu/shop/weed/orange-cbd",
+          "label": "CBDMania — Orange CBD",
+          "sourceType": "primaire — vendeur de son produit",
+          "access": "page ouverte — texte lu",
+          "evidence": "Le tableau donne Carmagnola, citron et pin ; le récit invoque aussi Orange Bud/Skunk.",
+          "limitations": "Identification incohérente au sein de la fiche ; aucun lien démontré avec l’ensemble du cultivar Carmagnola."
+        },
+        {
+          "url": "https://depataverde.es/carmagnola-cbd/",
+          "label": "De Pata Verde — Carmagnola CBD",
+          "sourceType": "primaire — vendeur de son produit",
+          "access": "page ouverte — texte lu",
+          "evidence": "La fleur Carmagnola est décrite avec un arôme tropical.",
+          "limitations": "Description commerciale d’un produit ; pas de profil universel ni de vérification génétique indépendante."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-045",
+        "identity": "documented",
+        "summary": "Carmagnola est une variété italienne de chanvre à fibres, distincte des noms commerciaux modernes de fleurs CBD.",
+        "history": "Carmagnola appartient aux variétés italiennes de chanvre étudiées pour la fibre et la biomasse. Le CREA la documente comme une variété dioïque, avec des plantes mâles et femelles séparées. Les publications scientifiques la distinguent de Carmagnola Selezionata, qui est une autre entrée variétale.",
+        "origin": "Italie.",
+        "lineage": "Variété de chanvre italienne ; à distinguer de Carmagnola Selezionata.",
+        "characteristics": [
+          "Variété dioïque",
+          "Usage fibre et biomasse documenté",
+          "Identité variétale distincte de Carmagnola Selezionata"
+        ],
+        "caveat": "Agrumes et pin sont des arômes de jeu tirés d’un produit commercial à l’identité contradictoire ; ils ne sont pas établis pour la variété Carmagnola.",
+        "sources": [
+          {
+            "label": "CREA — variété dioïque Carmagnola",
+            "url": "https://www.crea.gov.it/-/variet%C3%A0-di-canapa-dioica-carmagnola-licenza-esclusiva-rif.-2020-11-"
+          },
+          {
+            "label": "CREA — comparaison des variétés du projet CaRiFIT",
+            "url": "https://carifit.crea.gov.it/wp-content/uploads/2024/10/Poster-CaRiFIT-SIGA-2024_.pdf"
+          },
+          {
+            "label": "Frontiers in Plant Science — origines des variétés étudiées, tableau 1",
+            "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.00688/full"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Arômes de jeu : agrumes et pin ; aucun profil aromatique universel confirmé pour Carmagnola."
+      },
+      "flavorReview": {
+        "current": [
+          "agrumes",
+          "pin"
+        ],
+        "recommended": null,
+        "confidence": "Faible pour la paire ; élevée pour l’identité botanique",
+        "notes": "Le seul appui agrumes/pin est un produit Orange CBD déclaré Carmagnola dans un tableau et Orange Bud/Skunk ailleurs. Les sources scientifiques ne valident pas ses arômes.",
+        "sources": [
+          "https://www.cbdmania.eu/shop/weed/orange-cbd",
+          "https://depataverde.es/carmagnola-cbd/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-046",
+      "name": "Cherry Abacus",
+      "verdict": "Confirmé comme création déclarée par Diesel Hemp",
+      "findings": [
+        "La page historique indique une création interne après plusieurs années de sélection, Original Cherry croisée avec Original Abacus.",
+        "La page actuelle confirme cerise et baies sauvages ; Colorado est indiqué. Ces pages ne sont pas des validations génétiques indépendantes."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.dieselhemp.com/product/cherry-abacus-cbd-flower-1-ounce-bag/",
+          "label": "Diesel Hemp — Cherry Abacus, fiche historique",
+          "sourceType": "primaire — créateur/producteur",
+          "access": "page ouverte — texte lu",
+          "evidence": "Diesel Hemp revendique la création interne ; le récit nomme Original Cherry et Original Abacus et plusieurs années de sélection.",
+          "limitations": "Parenté déclarée ; le tableau donne aussi (OG Kush × Purple Urkle) × Original Cherry, sans protocole génétique."
+        },
+        {
+          "url": "https://dieselhemp.com/products/cbd-flower-cherry-abacus-1",
+          "label": "Diesel Hemp — Cherry Abacus, fiche actuelle",
+          "sourceType": "primaire — producteur",
+          "access": "page ouverte — texte lu",
+          "evidence": "La fiche décrit cerise douce et baies sauvages et indique une production au Colorado.",
+          "limitations": "Description commerciale du produit, sans dégustation indépendante."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-046",
+        "identity": "documented",
+        "summary": "Diesel Hemp présente Cherry Abacus comme sa création aux notes de cerise et de fruits des bois.",
+        "history": "Diesel Hemp rapporte plusieurs années de sélection à partir d’Original Cherry et d’Original Abacus. Le producteur revendique une création interne et décrit des notes de cerise douce et de baies sauvages.",
+        "origin": "Diesel Hemp, Colorado, États-Unis.",
+        "lineage": "Original Cherry et Original Abacus, selon le récit de sélection de Diesel Hemp.",
+        "characteristics": [
+          "Bouquet de cerise douce",
+          "Nuances de baies sauvages",
+          "Sélection aromatique propre à Diesel Hemp"
+        ],
+        "sources": [
+          {
+            "label": "Diesel Hemp — création et sélection de Cherry Abacus",
+            "url": "https://www.dieselhemp.com/product/cherry-abacus-cbd-flower-1-ounce-bag/"
+          },
+          {
+            "label": "Diesel Hemp — fiche actuelle Cherry Abacus",
+            "url": "https://dieselhemp.com/products/cbd-flower-cherry-abacus-1"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "caveat": "Le pedigree et les arômes sont déclarés par Diesel Hemp ; ils n’ont pas été établis par une étude indépendante.",
+        "flavorNote": "Cerise et fruits des bois reprennent les notes décrites par Diesel Hemp."
+      },
+      "flavorReview": {
+        "current": [
+          "cerise",
+          "fruits-des-bois"
+        ],
+        "recommended": [
+          "cerise",
+          "fruits-des-bois"
+        ],
+        "confidence": "Moyenne — description primaire du créateur",
+        "notes": "Les deux notes sont explicites ; fruits des bois normalise baies sauvages.",
+        "sources": [
+          "https://dieselhemp.com/products/cbd-flower-cherry-abacus-1"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-047",
+      "name": "Magic Bullet",
+      "verdict": "Confirmé comme description du vendeur ; mangue à qualifier",
+      "findings": [
+        "Parenté et description du lot retrouvées ; la mangue relève du commentaire commercial sur le myrcène."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://greenunicornfarms.com/cbd-hemp-flower/magic-bullet/",
+          "label": "Green Unicorn Farms — Magic Bullet",
+          "sourceType": "primaire — vendeur de sa sélection",
+          "access": "page ouverte — texte lu",
+          "evidence": "Otto II × Wife, fleurs vert clair, tropical et poivre ; mangue dans le commentaire sur le myrcène.",
+          "limitations": "Description commerciale ; aucune mesure sensorielle indépendante."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-047",
+        "identity": "documented",
+        "summary": "Green Unicorn Farms décrit Magic Bullet comme Otto II × Wife, au bouquet tropical et poivré.",
+        "history": "Green Unicorn Farms donne Otto II × Wife et décrit son lot par des fleurs vert clair et des notes tropicales, florales et poivrées. La mangue apparaît dans son commentaire sur le myrcène.",
+        "origin": "Lignée diffusée aux États-Unis ; sélection décrite par Green Unicorn Farms.",
+        "lineage": "Otto II × Wife, selon Green Unicorn Farms.",
+        "characteristics": [
+          "Fleurs vert clair et trichomes décrits sur le lot",
+          "Notes tropicales et florales",
+          "Nuances de poivre et de houblon"
+        ],
+        "caveat": "Description commerciale d’un lot, sans identification du créateur initial.",
+        "sources": [
+          {
+            "label": "Green Unicorn Farms — Magic Bullet",
+            "url": "https://greenunicornfarms.com/cbd-hemp-flower/magic-bullet/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Arômes de jeu : poivre décrit par le vendeur ; mangue non confirmée comme note du lot."
+      },
+      "flavorReview": {
+        "current": [
+          "mangue",
+          "poivre"
+        ],
+        "recommended": [
+          "fruits-tropicaux",
+          "poivre"
+        ],
+        "confidence": "Moyenne pour tropical/poivre ; faible à moyenne pour mangue",
+        "notes": "Tropical/poivre est directement décrit ; la précision mangue reste une interprétation commerciale.",
+        "sources": [
+          "https://greenunicornfarms.com/cbd-hemp-flower/magic-bullet/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-048",
+      "name": "Otto II",
+      "verdict": "Histoire attribuée ; mandarine non confirmée",
+      "findings": [
+        "EFN confirme Ben Holmes/Centennial au Colorado, une population à pollinisation libre et les deux sexes.",
+        "Le début en 2009 et Bob Winnicki sont retrouvés seulement dans le texte de Centennial repris par SeedFinder ; l’original n’a pas pu être ouvert.",
+        "CBDuck décrit agrumes/pin pour son Otto II ; Plain Jane ne fournit qu’un portail d’âge, donc mandarine/Franklin non revérifiés."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://seedfinder.eu/en/strain-info/otto-nr2/centennial-seeds",
+          "label": "SeedFinder — Otto II",
+          "sourceType": "secondaire — reproduction attribuée au sélectionneur",
+          "access": "page ouverte — texte lu",
+          "evidence": "Le texte attribué à Centennial mentionne 2009 et un échantillon inconnu reçu de Bob Winnicki de Full Spectrum Labs.",
+          "limitations": "Source historique indirecte."
+        },
+        {
+          "url": "https://store.experimentalfarmnetwork.org/products/otto-ii-hemp",
+          "label": "Experimental Farm Network — Otto II",
+          "sourceType": "primaire — vendeur de sa population ; témoignage de sélectionneur reproduit",
+          "access": "page ouverte — texte lu",
+          "evidence": "EFN décrit ses graines à pollinisation libre, mâles et femelles, et cite Ben Holmes de Centennial Seeds au Colorado.",
+          "limitations": "Renseigne le lot d’EFN ; récit du sélectionneur reproduit, sans généalogie complète."
+        },
+        {
+          "url": "https://www.cbduckvt.com/information/about-the-hemp-strain-otto-ii-yrjkj",
+          "label": "CBDuck/SHO — son Otto II",
+          "sourceType": "primaire — producteur",
+          "access": "page ouverte — texte lu",
+          "evidence": "Le producteur décrit ses propres récoltes par les agrumes, la terre, le pin et la réglisse.",
+          "limitations": "Observation du producteur ; aucun agrume précis ni profil universel démontré."
+        },
+        {
+          "url": "https://plainjane.com/blogs/news/us-hemp-15-high-cbd-strains-for-2020",
+          "label": "Plain Jane — variétés CBD",
+          "sourceType": "primaire commerciale — contenu non récupéré",
+          "access": "page ouverte — portail d’âge uniquement",
+          "evidence": "Seule une vérification d’âge est visible.",
+          "limitations": "Aucune confirmation actuelle de la note mandarine ou de la sélection Franklin."
+        },
+        {
+          "url": "https://www.centennialseeds.com/2015/01/23/otto-ii-high-cbd-seed/",
+          "label": "Centennial Seeds — Otto II",
+          "sourceType": "primaire — sélectionneur, inaccessible",
+          "access": "échec d’ouverture — non accessible",
+          "evidence": "Aucun contenu récupéré.",
+          "limitations": "Ne pas présenter cette page comme consultée avec succès."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-048",
+        "identity": "documented",
+        "summary": "Otto II est rattachée à Ben Holmes de Centennial Seeds, au Colorado ; EFN la diffuse sous forme de population à pollinisation libre.",
+        "history": "Experimental Farm Network attribue Otto II à Ben Holmes de Centennial Seeds. Un texte du sélectionneur repris par SeedFinder situe le départ en 2009, avec des graines d’origine inconnue reçues de Bob Winnicki de Full Spectrum Labs. EFN décrit une population à pollinisation libre, avec plantes mâles et femelles.",
+        "origin": "Centennial Seeds, Colorado, États-Unis.",
+        "lineage": "Population d’origine inconnue ; récit de sélection à partir de 2009 attribué à Centennial Seeds par SeedFinder.",
+        "characteristics": [
+          "Population à pollinisation libre",
+          "Plantes mâles et femelles",
+          "Nuances d’agrumes et de pin décrites par CBDuck"
+        ],
+        "caveat": "L’histoire détaillée repose sur un texte reproduit ; la mandarine n’est pas confirmée pour Otto II. CBDuck décrit seulement des agrumes et du pin sur ses plantes.",
+        "sources": [
+          {
+            "label": "SeedFinder — histoire d’Otto II par Centennial Seeds",
+            "url": "https://seedfinder.eu/en/strain-info/otto-nr2/centennial-seeds"
+          },
+          {
+            "label": "Experimental Farm Network — Otto II et témoignage de Ben Holmes",
+            "url": "https://store.experimentalfarmnetwork.org/products/otto-ii-hemp"
+          },
+          {
+            "label": "CBDuck — description d’Otto II",
+            "url": "https://www.cbduckvt.com/information/about-the-hemp-strain-otto-ii-yrjkj"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Arômes de jeu : mandarine et pin ; agrumes et pin décrits par CBDuck, mandarine non confirmée."
+      },
+      "flavorReview": {
+        "current": [
+          "mandarine",
+          "pin"
+        ],
+        "recommended": [
+          "agrumes",
+          "pin"
+        ],
+        "confidence": "Moyenne pour agrumes/pin sur le lot CBDuck ; faible pour mandarine",
+        "notes": "Agrumes/pin constituent une description de producteur consultable ; la précision mandarine n’a pas été confirmée.",
+        "sources": [
+          "https://www.cbduckvt.com/information/about-the-hemp-strain-otto-ii-yrjkj",
+          "https://plainjane.com/blogs/news/us-hemp-15-high-cbd-strains-for-2020"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-049",
+      "name": "Swiss Dream CBD",
+      "verdict": "Confirmé comme description de Kannabia",
+      "findings": [
+        "Kannabia confirme plusieurs années de croisements, sans donner les parents, une large ramification, diesel/gingembre et fond d’agrumes.",
+        "La version avec paramètres est lisible ; l’URL sans paramètres a échoué."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.kannabia.com/es/semillas-marihuana-feminizadas/swiss-dream-cbd?clang=es&filtrar_faq=it",
+          "label": "Kannabia — Swiss Dream CBD",
+          "sourceType": "primaire — sélectionneur",
+          "access": "page ouverte — texte lu",
+          "evidence": "Le texte décrit plusieurs années de stabilisation, sans nommer les parents ; arômes diesel, gingembre, agrumes et légère épice.",
+          "limitations": "Description commerciale ; ne démontre pas une origine génétique suisse."
+        },
+        {
+          "url": "https://www.kannabia.com/es/semillas-marihuana-feminizadas/swiss-dream-cbd",
+          "label": "Kannabia — Swiss Dream CBD, URL simple",
+          "sourceType": "primaire — sélectionneur, URL inaccessible",
+          "access": "échec d’ouverture — Error fetching",
+          "evidence": "Aucun texte récupéré sur cette variante d’URL.",
+          "limitations": "Le contenu a été vérifié sur l’URL paramétrée."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-049",
+        "identity": "documented",
+        "summary": "Kannabia décrit Swiss Dream CBD avec des notes de diesel et de gingembre sur un fond d’agrumes.",
+        "history": "Kannabia rapporte plusieurs années de croisements et de stabilisation, sans dévoiler les parents. Sa fiche décrit une plante ramifiée et un bouquet de diesel, de gingembre et d’agrumes légèrement épicé.",
+        "origin": "Programme de sélection de Kannabia.",
+        "lineage": "Parents non divulgués par Kannabia.",
+        "characteristics": [
+          "Ramifications développées",
+          "Diesel et gingembre",
+          "Fond d’agrumes légèrement épicé"
+        ],
+        "sources": [
+          {
+            "label": "Kannabia — Swiss Dream CBD",
+            "url": "https://www.kannabia.com/es/semillas-marihuana-feminizadas/swiss-dream-cbd?clang=es&filtrar_faq=it"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "caveat": "Le nom Swiss Dream n’établit pas une origine génétique suisse ; le pedigree reste non publié.",
+        "flavorNote": "Diesel et gingembre sont explicitement décrits par Kannabia."
+      },
+      "flavorReview": {
+        "current": [
+          "diesel",
+          "gingembre"
+        ],
+        "recommended": [
+          "diesel",
+          "gingembre"
+        ],
+        "confidence": "Moyenne — description primaire du créateur",
+        "notes": "Les deux notes sont explicites dans le texte du sélectionneur ; aucun effet thérapeutique n’est déduit de ce profil.",
+        "sources": [
+          "https://www.kannabia.com/es/semillas-marihuana-feminizadas/swiss-dream-cbd?clang=es&filtrar_faq=it"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-050",
+      "name": "CB Dream",
+      "verdict": "Confirmé comme description de Crop King Seeds",
+      "findings": [
+        "La page actuelle confirme Blueberry × Original Haze, port compact/buissonnant, fleurs denses, myrtille, citron et pin.",
+        "L’ancienne URL des arômes échoue : remplacer la provenance par la fiche actuelle."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://www.cropkingseeds.com/high-yielding-strain/cb-dream-marijuana-seeds/",
+          "label": "Crop King Seeds — CB Dream",
+          "sourceType": "primaire — fournisseur de cette sélection",
+          "access": "page ouverte — texte lu",
+          "evidence": "La fiche donne Blueberry × Original Haze, port compact/buissonnant, fleurs denses et notes de myrtille, agrumes, citron et pin.",
+          "limitations": "Description commerciale, sans date de création ni validation génétique indépendante."
+        },
+        {
+          "url": "https://www.cropkingseeds.com/high-cbd/cb-dream-marijuana-seeds/",
+          "label": "Crop King Seeds — ancienne URL CB Dream",
+          "sourceType": "primaire — URL inaccessible",
+          "access": "échec d’ouverture — Cache miss",
+          "evidence": "Aucun contenu récupéré.",
+          "limitations": "Ne pas employer cette URL comme preuve actuelle."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-050",
+        "identity": "documented",
+        "summary": "Crop King Seeds présente CB Dream comme Blueberry × Original Haze, avec des notes de myrtille et de citron.",
+        "history": "Le catalogue de Crop King Seeds donne Blueberry et Original Haze comme parents. Il décrit un port compact et buissonnant, des fleurs denses et un bouquet de myrtille, d’agrumes et de pin, sans préciser la date de création.",
+        "origin": "Catalogue de Crop King Seeds.",
+        "lineage": "Blueberry × Original Haze, selon Crop King Seeds.",
+        "characteristics": [
+          "Port compact et buissonnant",
+          "Fleurs denses",
+          "Myrtille, citron et nuances de pin"
+        ],
+        "caveat": "La parenté et le bouquet proviennent du catalogue commercial ; ils ne sont pas une validation indépendante de chaque plante.",
+        "sources": [
+          {
+            "label": "Crop King Seeds — CB Dream",
+            "url": "https://www.cropkingseeds.com/high-yielding-strain/cb-dream-marijuana-seeds/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Myrtille et citron figurent dans la description de Crop King Seeds."
+      },
+      "flavorReview": {
+        "current": [
+          "myrtille",
+          "citron"
+        ],
+        "recommended": [
+          "myrtille",
+          "citron"
+        ],
+        "confidence": "Moyenne — description primaire commerciale",
+        "notes": "Paire confirmée dans le texte et le tableau aromatique du fournisseur.",
+        "sources": [
+          "https://www.cropkingseeds.com/high-yielding-strain/cb-dream-marijuana-seeds/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-051",
+      "name": "CBD Kush",
+      "verdict": "Parenté confirmée ; arômes issus d’une dégustation",
+      "findings": [
+        "Dutch Passion confirme la collaboration CBD Crew et Kandy Kush × parent CBD non nommé.",
+        "Clark French décrit bien terre et anis, plus douceur/noix ; c’est une observation individuelle publiée par la marque.",
+        "Le catalogue PDF dépasse la limite de lecture ; la fiche produit accessible suffit pour la parenté."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://dutch-passion.com/nl/wietzaden/cbd-kush",
+          "label": "Dutch Passion — CBD Kush",
+          "sourceType": "primaire — sélectionneur",
+          "access": "page ouverte — texte lu",
+          "evidence": "La fiche donne Kandy Kush × variété dominante en CBD et une collaboration avec CBD Crew.",
+          "limitations": "Parent CBD non nommé ; pas de validation génétique indépendante."
+        },
+        {
+          "url": "https://dutch-passion.blog/dutch-passion-review-cbd-kush-by-clark-french/",
+          "label": "Dutch Passion — dégustation par Clark French",
+          "sourceType": "témoignage individuel publié par le sélectionneur",
+          "access": "page ouverte — texte lu",
+          "evidence": "Le compte rendu sensoriel décrit terre et anis au goût ; nez doux, évoquant les noix.",
+          "limitations": "Observation d’un dégustateur, sans protocole contrôlé ; pas un profil garanti pour tous les lots."
+        },
+        {
+          "url": "https://dutch-passion.com/img/cms/download/brochures/big-catalogue-english-2020.pdf",
+          "label": "Dutch Passion — catalogue 2020",
+          "sourceType": "primaire — document non récupéré",
+          "access": "échec d’ouverture — document trop volumineux",
+          "evidence": "Lecture refusée par l’outil car le document dépasse sa taille maximale.",
+          "limitations": "Aucune conclusion issue de ce PDF dans cet audit."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-051",
+        "identity": "documented",
+        "summary": "CBD Kush est une collaboration de Dutch Passion et CBD Crew ; une dégustation publiée décrit des notes de terre et d’anis.",
+        "history": "Dutch Passion donne Kandy Kush et un parent dominant en CBD non nommé comme origine de CBD Kush, développée avec CBD Crew. Terre et anis proviennent d’une dégustation de Clark French publiée par Dutch Passion, qui décrit aussi douceur et nuances de noix.",
+        "origin": "Collaboration Dutch Passion et CBD Crew.",
+        "lineage": "Kandy Kush × lignée dominante en CBD non nommée.",
+        "characteristics": [
+          "Héritage Kandy Kush",
+          "Registre terreux dans la dégustation de Clark French",
+          "Nuances d’anis, de douceur et de fruits à coque"
+        ],
+        "caveat": "Terre et anis décrivent une dégustation individuelle ; ces notes ne sont pas garanties sur toutes les expressions de CBD Kush.",
+        "sources": [
+          {
+            "label": "Dutch Passion — CBD Kush",
+            "url": "https://dutch-passion.com/nl/wietzaden/cbd-kush"
+          },
+          {
+            "label": "Dutch Passion — dégustation de CBD Kush par Clark French",
+            "url": "https://dutch-passion.blog/dutch-passion-review-cbd-kush-by-clark-french/"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Terre et anis proviennent d’une dégustation individuelle de Clark French, publiée par Dutch Passion."
+      },
+      "flavorReview": {
+        "current": [
+          "terre",
+          "anis"
+        ],
+        "recommended": [
+          "terre",
+          "anis"
+        ],
+        "confidence": "Faible à moyenne — témoignage sensoriel attribué",
+        "notes": "Les deux notes sont vérifiables comme observations de Clark French, mais pas comme caractères universels de la variété.",
+        "sources": [
+          "https://dutch-passion.blog/dutch-passion-review-cbd-kush-by-clark-french/"
+        ]
+      }
+    },
+    {
+      "code": "HH2026-052",
+      "name": "Diesel CBD",
+      "verdict": "Source primaire retrouvée — attribution renforcée",
+      "findings": [
+        "Source officielle retrouvée : parenté, type et bouquet confirmés comme description du fournisseur.",
+        "Remplacer GrowDiaries et retirer la réserve sur l’absence de fiche primaire."
+      ],
+      "sourcesChecked": [
+        {
+          "url": "https://weedseedsexpress.nl/product/diesel-cbd-zaden",
+          "label": "WeedSeedsExpress NL — Diesel CBD",
+          "sourceType": "primaire — fournisseur de sa sélection",
+          "access": "page ouverte — texte lu",
+          "evidence": "Le catalogue donne NY Diesel × CBD, un type photopériodique et des notes de carburant, agrumes, pin et douceur.",
+          "limitations": "Le parent CBD n’est pas nommé ; aucune validation génétique indépendante."
+        },
+        {
+          "url": "https://growdiaries.com/seedbank/weed-seed-express/diesel-cbd-feminized-seeds",
+          "label": "GrowDiaries — Diesel CBD de WeedSeedsExpress",
+          "sourceType": "secondaire — fiche de catalogue reprise",
+          "access": "page ouverte — texte lu",
+          "evidence": "La fiche reprend le même fournisseur, NY Diesel × CBD et les notes diesel/agrumes/pin.",
+          "limitations": "Ne constitue pas une confirmation indépendante du catalogue."
+        }
+      ],
+      "profile": {
+        "code": "HH2026-052",
+        "identity": "commercial-name",
+        "summary": "WeedSeedsExpress décrit sa Diesel CBD comme NY Diesel croisée avec un parent CBD non nommé, aux notes de diesel et d’agrumes.",
+        "history": "Le catalogue officiel de WeedSeedsExpress documente sa sélection Diesel CBD. Il indique NY Diesel et un parent riche en CBD non nommé, avec un bouquet de carburant, d’agrumes et de pin. Cette parenté concerne la sélection du fournisseur.",
+        "origin": "Catalogue de WeedSeedsExpress.",
+        "lineage": "NY Diesel × parent CBD non nommé, selon WeedSeedsExpress.",
+        "characteristics": [
+          "Notes de diesel et d’agrumes",
+          "Nuances de pin et de douceur",
+          "Sélection photopériodique décrite par WeedSeedsExpress"
+        ],
+        "caveat": "Le même nom peut désigner d’autres produits ; la fiche du fournisseur n’établit pas leur identité génétique.",
+        "sources": [
+          {
+            "label": "WeedSeedsExpress NL — Diesel CBD",
+            "url": "https://weedseedsexpress.nl/product/diesel-cbd-zaden"
+          }
+        ],
+        "reviewedAt": "2026-10-28",
+        "flavorNote": "Diesel et agrumes sont décrits dans le catalogue officiel de WeedSeedsExpress."
+      },
+      "flavorReview": {
+        "current": [
+          "diesel",
+          "agrumes"
+        ],
+        "recommended": [
+          "diesel",
+          "agrumes"
+        ],
+        "confidence": "Moyenne — description primaire commerciale",
+        "notes": "Paire présente dans une fiche officielle consultée.",
+        "sources": [
+          "https://weedseedsexpress.nl/product/diesel-cbd-zaden"
+        ]
+      }
+    }
+  ]
+}

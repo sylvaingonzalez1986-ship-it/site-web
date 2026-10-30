@@ -36,4 +36,7 @@
 .links a { display: inline-flex; align-items: center; min-height: 44px; color: #00563f; font-size: .75rem; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
 .claimLink { display: inline-flex; align-items: center; min-height: 44px; color: #00563f; font-size: .8rem; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
 .claimLink:focus-visible { outline: 2px solid #00563f; outline-offset: 3px; }
+.retry { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 12px 16px; border: 2px solid transparent; border-radius: 0; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; background: transparent; box-shadow: none; color: #fff1d6; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; }
+.retry:focus-visible { outline: 3px solid #087b70; outline-offset: 4px; }
+@media (hover: hover) { .retry:hover { --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); } }
 @media (max-width: 380px) { .card { padding: 12px; } .rewards li { display: grid; gap: 5px; padding-inline: 6px; } .rewards li > strong { font-size: 1.3rem; } .flowerStatus { font-size: .62rem; } .receiptPacks { grid-template-columns: minmax(0, 1fr); gap: 0; } }

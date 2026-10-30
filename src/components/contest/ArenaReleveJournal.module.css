@@ -3,7 +3,7 @@
 .tools svg { flex-shrink: 0; }
 .tools button:focus-visible, .dialog button:focus-visible { outline: 3px solid #007d70; outline-offset: 4px; }
 .dialog summary:focus-visible { outline: 3px solid #007d70; outline-offset: 4px; }
-.dialog { composes: surface from "./ArenaRetro.module.css"; width: min(760px, calc(100vw - 24px)); background: #fff8e7; color: #172923; }
+.dialog { composes: gameSurface from "./ArenaRetro.module.css"; width: min(760px, calc(100vw - 24px)); background: #fff8e7; color: #172923; }
 .body { padding: 0; }
 .scene { position: relative; overflow: hidden; border-bottom: 2px solid #172923; }
 .scene > img { display: block; width: 100%; height: clamp(180px, 32dvh, 300px); object-fit: cover; }

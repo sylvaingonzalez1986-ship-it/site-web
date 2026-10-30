@@ -22,5 +22,13 @@ describe("Arena next activity", () => {
     expect(parseArenaPlayerSummary(null)).toBeNull();
     expect(parseArenaPlayerSummary({ activeRun: false })).toBeNull();
     for (const count of [-1, 1.5, "3", Infinity, NaN]) expect(parseArenaPlayerSummary({ ...empty, supportPackCount: count })).toBeNull();
+    for (const count of [-1, 1.5, "3", Infinity, NaN, null]) expect(parseArenaPlayerSummary({ ...empty, curingFlowerCount: count })).toBeNull();
+    expect(parseArenaPlayerSummary({ ...empty, curingFlowerCount: 2 })?.curingFlowerCount).toBe(2);
+  });
+  it("guides curing lots to storage before suggesting a new culture or packs", () => {
+    const actions = getArenaResumeActions({ ...empty, curingFlowerCount: 2, supportPackCount: 1 });
+    expect(actions.map(action => action.id)).toEqual(["storage", "support"]);
+    expect(actions[0]).toMatchObject({ title: "2 lots en affinage", href: "/arene/placard?view=workshop&section=storage" });
+    expect(getArenaResumeActions({ ...empty, availableFlowerCount: 1, curingFlowerCount: 2 }).map(action => action.id)).toEqual(["jury", "storage"]);
   });
 });

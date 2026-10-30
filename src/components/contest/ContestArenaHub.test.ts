@@ -41,14 +41,14 @@ describe("Arena home", () => {
     expect(html).not.toContain("Un village. Mille façons de te faire un nom.");
   });
 
-  it.each(["jouer", "carnet", "classement"] as const)("uses one illustrated desk and highlights the %s destination", initialMode => {
+  it.each(["jouer", "carnet", "classement"] as const)("uses one illustrated Roman arena and highlights the %s destination", initialMode => {
     const html = renderToStaticMarkup(createElement(ContestArenaHub, { initialMode }));
     expect(html.match(/<img /g)).toHaveLength(1);
-    expect(html).toContain('/contest/map/arena-desk-sylvain-v6.webp');
+    expect(html).toContain('/contest/map/arena-roman-sylvain-v7.webp');
     expect(html).toContain(`data-arena-scene="${initialMode}"`);
     expect(html.match(new RegExp(`<a[^>]*data-arena-activity="${initialMode}"[^>]*>`))?.[0]).toContain('data-current="true"');
     expect(html.match(/data-current="true"/g)).toHaveLength(1);
-    expect(existsSync(resolve("public/contest/map/arena-desk-sylvain-v6.webp"))).toBe(true);
+    expect(existsSync(resolve("public/contest/map/arena-roman-sylvain-v7.webp"))).toBe(true);
     for (const mode of Object.values(ARENA_LOBBY_MODES)) {
       expect(existsSync(resolve("public" + mode.image))).toBe(true);
     }

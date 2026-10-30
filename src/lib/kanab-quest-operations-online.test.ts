@@ -7,6 +7,8 @@ import { KQ_BUDDIE_FLAVOR_PROFILES } from './kanab-quest-buddie-flavors';
 import { getKqCustomerDemandFlavorMatch, KQ_CUSTOMER_DEMAND_PERIOD_MS } from './kanab-quest-customer-demand';
 import { estimateKqMerchOffer, KQ_MERCH_PRODUCTS } from './kanab-quest-merch';
 import { getKqStudioLevels, KQ_STUDIO_LEVELS, type KqStudioTrack } from './kanab-quest-studio';
+import { getKqShopActivity } from './kanab-quest-shop-activity';
+import type { KqOnlineSalesPage } from './kanab-quest-online-sales';
 
 const action = (command: string, payload: Record<string, unknown>, requestKey?: string) => ({ path: '/api/arena/placard/commerce', method: 'POST', body: { action: 'online', command, payload, requestKey } });
 const run = (state: KqOperationsLessonState, command: string, payload: Record<string, unknown>, requestKey?: string) => applyKqOperationsRequest(state, action(command, payload, requestKey)).state;
@@ -23,6 +25,17 @@ function listed(price = 1, packagingCode = 'kraft-5') {
   return run(state, 'create-listing', { stockId: state.trial.commerce.stocks[0].id, formatGrams: 5, packagingCode, packets: 10, packetPriceCents: price });
 }
 
+describe('storage inventory after packaging in the operations lesson', () => {
+  it('removes packed mass from bulk and reports it once with the original conversion ratio', () => {
+    const state = listed();
+    const snapshot = getKqOperationsStorage(state);
+    const listing = state.trial.commerce.online!.listings[0];
+    expect(listing.equivalentUnitsPerProductUnit).toBe(1);
+    expect(snapshot.stockBreakdown).toMatchObject({ packedUnits: 500, packedActiveUnits: 500, packedPackets: 10 });
+    expect(snapshot.stockBreakdown!.bulkUnits + snapshot.stockBreakdown!.packedUnits).toBe(Math.round(state.trial.game!.harvestGrams! * 10));
+  });
+});
+
 function demandListing(matches: 0 | 1 | 2, price = 1) {
   let state = prepare();
   const request = getKqOperationsCommerce(state).customerDemand!.requests.find(row => row.channel === 'online')!;
@@ -37,6 +50,86 @@ function demandListing(matches: 0 | 1 | 2, price = 1) {
 afterEach(() => vi.unstubAllGlobals());
 
 describe('isolated online shop exercise', () => {
+  it('restarts only the next order when changing a price and preserves past sales', () => {
+    let state = listed(3000);
+    const listingId = state.trial.commerce.online!.listings[0].id;
+    state.onlineOrderCredits = { [listingId]: 1 };
+    state = run(state, 'advance-online-time', { hours: 1 });
+    expect(state.trial.commerce.online!.stats.orders).toBeGreaterThan(0);
+    const before = structuredClone(state.trial.commerce.online!);
+    const cash = state.trial.commerce.cashCents;
+    state.onlineOrderCredits![listingId] = .75;
+
+    const changed = run(state, 'update-listing', { listingId, packetPriceCents: 3200 }, 'change-price');
+    expect(changed.onlineOrderCredits?.[listingId] ?? 0).toBe(0);
+    expect(changed.trial.commerce.online!.listings[0]).toEqual({ ...before.listings[0], packetPriceCents: 3200 });
+    expect(changed.trial.commerce.online!.recentSales).toEqual(before.recentSales);
+    expect(changed.trial.commerce.online!.stats).toEqual(before.stats);
+    expect(changed.trial.commerce.cashCents).toBe(cash);
+    expect(state.onlineOrderCredits![listingId]).toBe(.75);
+
+    changed.onlineOrderCredits![listingId] = .25;
+    const repeated = run(changed, 'update-listing', { listingId, packetPriceCents: 3200 }, 'change-price');
+    expect(repeated).toBe(changed);
+    expect(repeated.onlineOrderCredits![listingId]).toBe(.25);
+    expect(() => run(changed, 'update-listing', { listingId, packetPriceCents: 0 })).toThrow();
+    expect(changed.onlineOrderCredits![listingId]).toBe(.25);
+  });
+
+  it.each([
+    ['pause-listing', 'active', 'paused'],
+    ['close-listing', 'active', 'closed'],
+    ['resume-listing', 'paused', 'active'],
+    ['resume-listing', 'closed', 'active'],
+  ] as const)('%s from %s resets only that listing’s progress and preserves its stock, price and sales', (command, status, expectedStatus) => {
+    let state = listed(3000);
+    const listingId = state.trial.commerce.online!.listings[0].id;
+    state.onlineOrderCredits = { [listingId]: 1 };
+    state = run(state, 'advance-online-time', { hours: 1 });
+    expect(state.trial.commerce.online!.recentSales.length).toBeGreaterThan(0);
+    state = run(state, 'buy-packaging', { code: 'kraft-5', quantity: 2 });
+    state = run(state, 'create-listing', {
+      stockId: state.trial.commerce.stocks[0].id, formatGrams: 5, packagingCode: 'kraft-5', packets: 2, packetPriceCents: 3217,
+    });
+    const online = state.trial.commerce.online!;
+    const otherId = online.listings[1].id;
+    online.listings[0].status = status;
+    state.onlineOrderCredits = { [listingId]: .75, [otherId]: .4 };
+    const before = structuredClone(state);
+
+    const changed = run(state, command, { listingId }, 'change-status');
+    expect(changed.onlineOrderCredits).toEqual({ [otherId]: .4 });
+    expect(changed.trial.commerce.online).toEqual({
+      ...before.trial.commerce.online!,
+      listings: [{ ...online.listings[0], status: expectedStatus }, online.listings[1]],
+    });
+    expect(changed.trial.commerce.stocks).toEqual(before.trial.commerce.stocks);
+    expect(changed.trial.commerce.cashCents).toBe(before.trial.commerce.cashCents);
+    expect(changed.storage).toEqual(before.storage);
+    expect(state).toEqual(before);
+
+    changed.onlineOrderCredits![listingId] = .2;
+    expect(run(changed, command, { listingId }, 'change-status')).toBe(changed);
+    expect(changed.onlineOrderCredits).toEqual({ [listingId]: .2, [otherId]: .4 });
+  });
+
+  it.each(['quality', 'site-suspended', 'sold-out'] as const)('keeps progress and state intact when resuming is refused because of %s', reason => {
+    const state = listed(3000);
+    const online = state.trial.commerce.online!;
+    const row = online.listings[0];
+    row.status = 'closed';
+    if (reason === 'quality') row.qualityScore = 5.7;
+    if (reason === 'site-suspended') online.site.active = false;
+    if (reason === 'sold-out') row.remainingPackets = 0;
+    state.onlineOrderCredits = { [row.id]: .75 };
+    const before = structuredClone(state);
+
+    expect(() => run(state, 'resume-listing', { listingId: row.id })).toThrow(
+      reason === 'site-suspended' ? 'Réactive ton site' : 'Ces paquets ne peuvent plus',
+    );
+    expect(state).toEqual(before);
+  });
+
   it('invests once, occupies preparation, and awards only earned followers at the campaign end', () => {
     let initial = listed(3000);
     const listingId = initial.trial.commerce.online!.listings[0].id;
@@ -451,6 +544,70 @@ function merchListed(quantity = 20, priceCents = 400) {
   state = run(state, 'buy-merch-stock', { code: 'stickers', quantity });
   return run(state, 'update-merch', { code: 'stickers', priceCents, active: true });
 }
+
+describe('isolated complete online sales journal', () => {
+  it('keeps more than twenty actual sales in each circuit and paginates tied dates without changing the exercise', () => {
+    let state = merchListed(45, 1);
+    const online = state.trial.commerce.online!, stock = state.trial.commerce.stocks[0];
+    online.stats.orders = 0;
+    online.site.tier = 'flagship'; online.followers = 5000; online.confidence = 95;
+    state.trial.commerce.reputation = 500; state.trial.commerce.clients = 100;
+    const packets = Math.min(50, Math.floor(stock.remainingUnits / 50));
+    expect(packets).toBeGreaterThan(20);
+    state = run(state, 'buy-packaging', { code: 'kraft-5', quantity: packets });
+    state = run(state, 'create-listing', { stockId: stock.id, formatGrams: 5, packagingCode: 'kraft-5', packets, packetPriceCents: 1 });
+    for (let day = 0; day < 7; day++) state = run(state, 'advance-online-time', { hours: 24 });
+    const sold = state.trial.commerce.online!;
+    expect(sold.recentSales.length).toBeGreaterThan(20);
+    expect(sold.merch!.recentSales.length).toBeGreaterThan(20);
+    expect(sold.recentSales.reduce((sum, sale) => sum + sale.packets, 0)).toBe(sold.stats.orders);
+    expect(sold.merch!.recentSales.reduce((sum, sale) => sum + sale.quantity, 0)).toBe(sold.merch!.stats.unitsSold);
+    const expected = getKqShopActivity(getKqOperationsCommerce(state)).receipts;
+    expect(new Set(expected.map(sale => sale.soldAt)).size).toBeLessThan(expected.length);
+    const before = structuredClone(state), received: KqOnlineSalesPage['receipts'] = [];
+    let cursor: string | null = null;
+    do {
+      const result = applyKqOperationsRequest(state, { method: 'GET', body: {}, path: '/api/arena/placard/commerce/sales?limit=7' + (cursor ? `&cursor=${encodeURIComponent(cursor)}` : '') });
+      expect(result.state).toBe(state);
+      const page = result.payload as KqOnlineSalesPage;
+      expect(page.receipts.length).toBeLessThanOrEqual(7);
+      received.push(...page.receipts); cursor = page.nextCursor;
+      expect(received.length).toBeLessThanOrEqual(expected.length);
+    } while (cursor);
+    expect(received).toEqual(expected);
+    expect(new Set(received.map(sale => sale.id)).size).toBe(received.length);
+    expect(state).toEqual(before);
+  });
+
+  it('does not settle overdue storage overflow while reading or rejecting a journal query', () => {
+    const state = createKqOperationsLesson('warehouse');
+    state.trial.clock = Date.parse(state.storage.lot.capacity!.overflowDeadlineAt!) + 1000;
+    expect(getKqOperationsStorage(state).lots[0].projection.capacity!.overflowDue).toBe(true);
+    const before = structuredClone(state);
+    const result = applyKqOperationsRequest(state, { path: '/api/arena/placard/commerce/sales', method: 'GET', body: {} });
+    expect(result.state).toBe(state);
+    expect(result.payload).toEqual({ receipts: [], nextCursor: null });
+    for (const query of ['limit=0', 'limit=101', 'limit=1.5', 'cursor=invalid', 'cursor=trial:%7B%7D']) {
+      expect(() => applyKqOperationsRequest(state, { path: `/api/arena/placard/commerce/sales?${query}`, method: 'GET', body: {} })).toThrow();
+    }
+    expect(state).toEqual(before);
+  });
+
+  it('does not invent missing historical receipts and keeps tutorial reads off the live network', async () => {
+    const state = merchListed();
+    state.trial.commerce.online!.stats.orders = 900;
+    const result = applyKqOperationsRequest(state, { path: '/api/arena/placard/commerce/sales', method: 'GET', body: {} });
+    expect(result.payload).toEqual({ receipts: [], nextCursor: null });
+    const network = vi.fn(); vi.stubGlobal('fetch', network);
+    const session = createKqOperationsSession('market', 'sales-journal');
+    const before = session.getSnapshot();
+    const response = await session.request('/api/arena/placard/commerce/sales?limit=50');
+    expect(response.ok).toBe(true);
+    expect(await response.json()).toEqual({ receipts: [], nextCursor: null });
+    expect(session.getSnapshot()).toBe(before);
+    expect(network).not.toHaveBeenCalled();
+  });
+});
 
 describe('isolated merchandise simulation', () => {
   it('buys independent modules and prepays manufacturing without publishing or adding sales', () => {

@@ -196,7 +196,7 @@ describe('isolated Placard learning run',()=>{
   expect(getKqCommerceReplenishment(s.commerce,'online',s.clock)!.availableFraction).toBeLessThan(.02);
   s=reduceKqTrial(s,{type:'wait'});expect(getKqCommerceReplenishment(s.commerce,'online',s.clock)!.availableFraction).toBe(1);
  });
- it('loans a mature lot exactly six hours after its verdict without paying future charges early',()=>{
+ it('keeps harvest curing before the verdict and does not add a second wait before commerce',()=>{
   let {s}=culture();
   const harvestedAt=s.game!.completedAt!, harvestClock=s.clock;
   s={...s,clock:s.clock+3*KQ_GAME_DAY_MS};
@@ -204,9 +204,9 @@ describe('isolated Placard learning run',()=>{
   const verdict=s.battle!, before=s.commerce.cashCents, labDue=s.commerce.business!.lab.outstandingCents;
   expect(Date.parse(verdict.burnedAt!)).toBe(harvestClock+3*KQ_GAME_DAY_MS);
   const soldLesson=reduceKqTrial(s,{type:'transform',route:'raw'});
-  expect(soldLesson.clock).toBe(Date.parse(verdict.burnedAt!)+6*3600000);
-  expect(soldLesson.clock-Date.parse(verdict.burnedAt!)).toBe(KQ_CURING_DURATION_MS);
-  expect(soldLesson.commerce.stocks[0].storage).toMatchObject({stage:'ready',progressPercent:100,remainingMs:0,harvestedAt,curingStartedAt:verdict.burnedAt});
+  expect(soldLesson.clock).toBe(Date.parse(verdict.burnedAt!));
+  expect(Date.parse(soldLesson.commerce.stocks[0].storage!.readyAt)-Date.parse(harvestedAt)).toBe(KQ_CURING_DURATION_MS);
+  expect(soldLesson.commerce.stocks[0].storage).toMatchObject({stage:'ready',progressPercent:100,remainingMs:0,harvestedAt,curingStartedAt:harvestedAt});
   expect(soldLesson.commerce.business!.lab.outstandingCents).toBe(labDue);
   expect(soldLesson.commerce.business!.lab.overdueCents).toBe(0);
   expect(soldLesson.commerce.cashCents).toBe(before);
@@ -214,25 +214,28 @@ describe('isolated Placard learning run',()=>{
   expect(s.clock).toBe(Date.parse(verdict.burnedAt!));
   const later=reduceKqTrial(soldLesson,{type:'wait'});
   expect(later.clock-soldLesson.clock).toBe(KQ_GAME_DAY_MS);
-  expect(later.commerce.stocks[0].storage!.elapsedGameDays).toBe(2);
+  expect(later.commerce.stocks[0].storage!.elapsedGameDays).toBe(4);
   expect(later.commerce.stocks[0].storage!.conditionScore).toBeLessThanOrEqual(soldLesson.commerce.stocks[0].storage!.conditionScore);
   expect(later.commerce.cashCents).toBe(soldLesson.commerce.cashCents);
   expect(later.battle).toBe(verdict);
  });
  it('settles charges falling inside the final partial day of simulated curing exactly once',()=>{
   let {s}=culture();
-  for(const action of [{type:'next'},{type:'duel'},{type:'round'},{type:'round'},{type:'round'},{type:'next'}] as KqTrialAction[])s=reduceKqTrial(s,action);
+  s=reduceKqTrial(s,{type:'next'});
   const business=s.commerce.business!,before=s.commerce.cashCents,labDue=business.lab.outstandingCents;
   const dueAt=new Date(s.clock+5*3600000).toISOString();
   business.lab.invoices[0].dueAt=dueAt;
   business.shop={name:'Essai',createdAt:new Date(s.clock).toISOString(),paidUntil:dueAt,renew:true,active:true};
   business.vat={...business.vat,reservedCents:3200,nextSettlementAt:dueAt};
-  const matured=reduceKqTrial(s,{type:'transform',route:'raw'});
+  let matured=reduceKqTrial(s,{type:'duel'});
   expect(matured.clock-s.clock).toBe(6*3600000);
   expect(matured.commerce.cashCents).toBe(before-labDue-KQ_SHOP_MONTHLY_CENTS);
   expect(matured.commerce.business!.lab).toMatchObject({outstandingCents:0,overdueCents:0});
   expect(matured.commerce.business!.shop.paidUntil).toBe(new Date(Date.parse(dueAt)+KQ_GAME_MONTH_MS).toISOString());
   expect(matured.commerce.business!.vat).toMatchObject({paidCents:3200,reservedCents:0,nextSettlementAt:new Date(Date.parse(dueAt)+KQ_GAME_MONTH_MS).toISOString()});
+  const juryClock=matured.clock;
+  for(const action of [{type:'round'},{type:'round'},{type:'round'},{type:'next'},{type:'transform',route:'raw'}] as KqTrialAction[])matured=reduceKqTrial(matured,action);
+  expect(matured.clock).toBe(juryClock);
   const later=reduceKqTrial(matured,{type:'wait'});
   expect(later.commerce.cashCents).toBe(matured.commerce.cashCents);
   expect(later.commerce.business!.lab).toEqual(matured.commerce.business!.lab);

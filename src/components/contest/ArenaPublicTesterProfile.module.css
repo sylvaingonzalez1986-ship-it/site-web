@@ -1,5 +1,5 @@
 .page {
-  composes: surface from "./ArenaRetro.module.css";
+  composes: gameSurface from "./ArenaRetro.module.css";
   min-height: 100svh;
   padding: clamp(6rem, 10vw, 9rem) 0 4rem;
   background: #fff1d6;

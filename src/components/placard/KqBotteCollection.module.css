@@ -1,3 +1,5 @@
+.collectionDialog { composes: gameSurface from "../contest/ArenaRetro.module.css"; }
+.detailDialog { composes: gameSurface from "../contest/ArenaRetro.module.css"; }
 .collectionDialog,.detailDialog{position:fixed;inset:0;margin:auto;padding:0;max-width:calc(100vw - 28px);max-height:calc(100dvh - 28px);font-family:var(--font-body),Arial,sans-serif;overflow:hidden;color:#172923;--game-panel-art:var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));border:2px solid transparent;border-radius:0;background:transparent;box-shadow:none;border-image:var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch}
 .collectionDialog{width:1180px;height:min(920px,calc(100dvh - 40px))}
 .collectionDialog::backdrop,.detailDialog::backdrop{backdrop-filter:blur(5px);background:#172923cf}

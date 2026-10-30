@@ -1,18 +1,18 @@
 "use client";
 
-import { useId, useState } from "react";
+import { useId } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, BarChart3, Camera, Check, Clock3, Megaphone, Package, PackageOpen, Paintbrush, ReceiptText, ShoppingBag, Sparkles, Target, TrendingUp, Users, Zap } from "lucide-react";
+import { ArrowRight, BarChart3, Camera, Megaphone, Package, PackageOpen, Paintbrush, ReceiptText, ShoppingBag, Sparkles, Users } from "lucide-react";
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqOnlinePackaging, KQ_ONLINE_MARKETING_MISSIONS } from "@/lib/kanab-quest-online";
 import { KQ_MARKETING_CAMPAIGNS } from "@/lib/kanab-quest-marketing";
-import { getKqShopDashboard, getKqShopStrategyPlans, type KqShopStrategyPlan } from "@/lib/kanab-quest-shop-strategy";
+import { getKqShopDashboard } from "@/lib/kanab-quest-shop-strategy";
 import { getKqShopActivity } from "@/lib/kanab-quest-shop-activity";
 import { getKqStudioLevels } from "@/lib/kanab-quest-studio";
 import { KqMerchActivity } from "./KqMerchActivity";
-import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
+import { KqProgressMeter } from "./KqVisuals";
 import styles from "./KqShopTycoon.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -27,7 +27,7 @@ type Props = {
   onSelectListing: (id: string) => void;
   onOpenPricing: () => void;
   onPrepareStock?: () => void;
-  onViewSales?: () => void;
+  onViewSales?: (listingId?: string) => void;
 };
 const number = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 1 });
 const timestamp = (value: string) => new Date(value).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
@@ -39,17 +39,13 @@ function MarketLink({ children, section, onNavigate, className }: { children: Re
   }}>{children}</Link>;
 }
 
-export function KqShopTycoon({ data, now, busy, view, listingId, onSelectListing, onOpenPricing, onAsk, onDevelop, onPrepareStock, onViewSales }: Props) {
+export function KqShopTycoon({ data, now, view, onSelectListing, onOpenPricing, onDevelop, onPrepareStock, onViewSales }: Props) {
   const id = useId();
-  const [strategy, setStrategy] = useState<KqShopStrategyPlan["code"]>("balance");
   const online = data.online;
   const dashboard = getKqShopDashboard(data);
   const activity = getKqShopActivity(data);
   if (!online || !dashboard) return null;
   const listings = online.listings.filter(listing => listing.status === "active" && listing.remainingPackets > 0 && listing.qualityScore >= 5.8);
-  const selectedListing = listings.find(listing => listing.id === listingId) ?? listings[0];
-  const plans = selectedListing ? getKqShopStrategyPlans(data, selectedListing.id) : [];
-  const plan = plans.find(item => item.code === strategy) ?? plans[0];
   const activeMission = online.marketing.active;
   const mission = (activeMission?.version === 2 ? KQ_MARKETING_CAMPAIGNS : KQ_ONLINE_MARKETING_MISSIONS).find(item => item.code === activeMission?.code);
   const preparing = activeMission?.version === 2 && Date.parse(activeMission.launchesAt) > now;
@@ -129,7 +125,7 @@ export function KqShopTycoon({ data, now, busy, view, listingId, onSelectListing
       </div>
 
       <aside className={styles.manager} aria-label="Priorités de la boutique">
-        <div className={styles.priority}><span className={styles.kicker}><Target size={16} aria-hidden="true" />Ton prochain mouvement</span><h3>{priority.title}</h3>{merchPriority ? <button type="button" data-open-merch className={styles.textButton} onClick={() => onDevelop("merch")}>Ouvrir l’atelier merch <ArrowRight size={15} aria-hidden="true" /></button> : <span className={styles.coverage}><Package size={15} aria-hidden="true" />Stock de paquets au rythme actuel <strong>{days(dashboard.stockDays)}</strong></span>}<details className={styles.explanation}><summary>Pourquoi cette priorité ?</summary><p>{priority.description}</p></details></div>
+        <div className={styles.priority}><h3>{priority.title}</h3>{merchPriority ? <button type="button" data-open-merch className={styles.textButton} onClick={() => onDevelop("merch")}>Ouvrir l’atelier merch <ArrowRight size={15} aria-hidden="true" /></button> : <span className={styles.coverage}><Package size={15} aria-hidden="true" />Stock de paquets au rythme actuel <strong>{days(dashboard.stockDays)}</strong></span>}<details className={styles.explanation}><summary>Pourquoi cette priorité ?</summary><p>{priority.description}</p></details></div>
         <div className={styles.campaign}><button type="button" className={styles.campaignAction} onClick={() => onDevelop("marketing")}>
           <span className={styles.kicker}><Megaphone size={16} aria-hidden="true" />{preparing ? "Campagne récolte en préparation" : activeMission ? "Campagne récolte en cours" : "Communication des récoltes"}</span>
           <strong>{mission?.name ?? "Ta prochaine campagne"}</strong>
@@ -138,33 +134,8 @@ export function KqShopTycoon({ data, now, busy, view, listingId, onSelectListing
       </aside>
     </div>
 
-    <section hidden={view !== "pricing"} className={styles.strategy} aria-label="Stratégie commerciale">
-      <div className={styles.sectionTitle}><div><h3>Choisir le prix de tes paquets</h3></div><span className={styles.horizon}><Clock3 size={14} aria-hidden="true" />Projection sur 7 jours réels</span></div>
-      {selectedListing && plan ? <>
-        <div className={styles.lotPicker}><label htmlFor={`${id}-listing`}>Lot à piloter<select id={`${id}-listing`} aria-label="Lot à piloter" disabled={busy} value={selectedListing.id} onChange={event => onSelectListing(event.target.value)}>{listings.map(listing => <option key={listing.id} value={listing.id}>{listing.name} · {listing.formatGrams} g</option>)}</select></label><span>Prix actuel<strong>{formatKqCash(selectedListing.packetPriceCents)}</strong></span><span>Stock disponible<strong>{selectedListing.remainingPackets} paquets</strong></span></div>
-        <div className={styles.plans} role="group" aria-label="Choisir une stratégie de prix">{plans.map((item, index) => {
-          const selected = item.code === plan.code;
-          const Icon = index === 0 ? Zap : index === 1 ? Target : Sparkles;
-          return <div key={item.code} className={styles.planOption} data-selected={selected}><button type="button" className={styles.plan} aria-pressed={selected} disabled={busy} onClick={() => setStrategy(item.code)}>
-            <span className={styles.planHeading}><Icon size={18} aria-hidden="true" /><strong>{item.name}</strong><span className={styles.radio} aria-hidden="true">{selected ? <Check size={12} /> : null}</span></span>
-            <span className={styles.planPrice}>{formatKqCash(item.packetPriceCents)}<small> / paquet</small></span>
-            <span className={styles.planDescription}>{item.description}</span>
-            <span className={styles.planMetric}><span>Débit estimé</span><strong>{number(item.ordersPerDay)} / jour</strong></span>
-            <span className={styles.planMetric}><span>Contribution / paquet*</span><strong>{formatKqCash(item.contributionPerPacketCents)}</strong></span>
-          </button><div className={styles.planMeter}><KqProgressMeter label="Satisfaction estimée" value={item.satisfactionScore} max={100} valueLabel={`${number(item.satisfactionScore)} / 100`} tone={item.satisfactionScore >= 75 ? "teal" : "gold"} /></div></div>;
-        })}</div>
-        <div className={styles.forecast} aria-live="polite" aria-atomic="true">
-          <div className={styles.forecastHeading}><TrendingUp size={22} aria-hidden="true" /><div><strong>Si tu choisis « {plan.name} »</strong><small>Projection limitée par le stock et sa durée de vente.</small></div></div>
-          <div className={styles.stockForecast}><KqAllocationBar label={`Tes ${number(selectedListing.remainingPackets)} paquets après 7 jours · estimation`} items={[
-            { label: "Vendus", value: plan.projectedPackets, displayValue: `≈ ${number(plan.projectedPackets)}`, tone: "teal" },
-            { label: "Restants, encore vendables", value: Math.max(0, plan.remainingPackets - plan.atRiskPackets), displayValue: `≈ ${number(Math.max(0, plan.remainingPackets - plan.atRiskPackets))}`, tone: "gold" },
-            { label: "Restants, qualité trop basse", value: plan.atRiskPackets, displayValue: `≈ ${number(plan.atRiskPackets)}`, tone: "red" },
-          ]} /><div className={styles.forecastTotal}><span>Contribution estimée*</span><strong>{formatKqCash(Math.round(plan.projectedContributionCents))}</strong><small>Avant culture et charges fixes</small></div></div>
-          {plan.atRiskPackets > 0 ? <p className={styles.risk}><Clock3 size={16} aria-hidden="true" />Environ {number(plan.atRiskPackets)} paquets risquent de passer sous le seuil de qualité avant d’être vendus sur cette période.</p> : null}
-          <div className={styles.apply}><p>{!online.site.active ? "Réactive le site pour reprendre les ventes." : plan.current ? "Ce prix est déjà appliqué à ton annonce." : "Le prix change pour les prochaines ventes. La progression vers la prochaine commande repart de zéro : choisis ton cap avant de l’appliquer."}</p><button type="button" className={styles.goldButton} disabled={busy || !online.site.active || plan.current} onClick={() => onAsk(`Appliquer la stratégie ${plan.name.toLocaleLowerCase("fr-FR")}`, `« ${selectedListing.name} » : ${formatKqCash(selectedListing.packetPriceCents)} → ${formatKqCash(plan.packetPriceCents)} TTC le paquet de ${selectedListing.formatGrams} g. La progression vers la prochaine commande repart de zéro ; les ventes passées restent inchangées. La projection sur 7 jours est indicative et ne garantit aucune vente.`, { action: "online", command: "update-listing", payload: { listingId: selectedListing.id, packetPriceCents: plan.packetPriceCents } }, 0)}>{plan.current ? <><Check size={16} aria-hidden="true" />Prix appliqué</> : <>Appliquer ce prix <ArrowRight size={16} aria-hidden="true" /></>}</button></div>
-        </div>
-      </> : <div className={styles.emptyStrategy}><Target size={28} aria-hidden="true" /><p>Le banc d’essai s’active avec une annonce en vente. Tu pourras comparer trois stratégies sur tes propres produits.</p><MarketLink className={styles.textButton} section="sales" onNavigate={onPrepareStock}>Préparer mon premier lot <ArrowRight size={15} aria-hidden="true" /></MarketLink></div>}
-      <details className={styles.footnote}><summary>Calcul et limites de la projection</summary><p>Contribution après TVA, frais de vente et emballage, avant culture et charges fixes : ce n’est pas le bénéfice ni le versement en trésorerie. Projection à audience et confiance constantes, sans nouvelle campagne ni renouvellement d’hébergement. Le stock, son vieillissement et la fin des campagnes en cours sont pris en compte ; la demande reste partagée entre tes annonces.</p></details>
+    <section hidden={view !== "pricing"} className={styles.strategy} aria-label="Prix des annonces">
+      <MarketLink className={styles.goldButton} section="dashboard" onNavigate={onViewSales}>Mon stock en vente <ArrowRight size={16} aria-hidden="true" /></MarketLink>
     </section>
 
     <details hidden={view !== "activity"} className={styles.activity} aria-labelledby={`${id}-activity`}>

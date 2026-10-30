@@ -302,12 +302,10 @@ function ArenaCharacter({
 }
 
 function ContestHubPanelModal({
-  eyebrow,
   title,
   children,
   onClose,
 }: {
-  eyebrow: string;
   title: string;
   children: ReactNode;
   onClose: () => void;
@@ -357,9 +355,6 @@ function ContestHubPanelModal({
       >
         <div className={tasterProfileStyles.header}>
           <div>
-            <p className={tasterProfileStyles.eyebrow}>
-              {eyebrow}
-            </p>
             <h2 className={tasterProfileStyles.title}>{title}</h2>
           </div>
           <button
@@ -378,11 +373,9 @@ function ContestHubPanelModal({
 }
 
 function ContestHubHoverPreview({
-  eyebrow,
   title,
   children,
 }: {
-  eyebrow: string;
   title: string;
   children: ReactNode;
 }) {
@@ -394,9 +387,6 @@ function ContestHubHoverPreview({
     >
       <div className={tasterProfileStyles.header}>
         <div>
-          <p className={tasterProfileStyles.eyebrow}>
-            {eyebrow}
-          </p>
           <h2 className={tasterProfileStyles.title}>{title}</h2>
         </div>
       </div>
@@ -691,10 +681,7 @@ export function ContestNotebookCollectionDashboard({
     <section className="contest-notebook-collection-dashboard">
       <div className="contest-notebook-collection-header">
         <div className="min-w-0">
-          <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">
-            Collection de cartes
-          </p>
-          <h3 className="mt-1 text-xl font-black leading-tight text-ink">Progression de l&apos;album</h3>
+          <h3 className="text-xl font-black leading-tight text-ink">Progression de l&apos;album</h3>
           <p className="mt-1 truncate text-xs font-semibold text-charcoal">{collectionTitle}</p>
         </div>
         <span className="contest-notebook-collection-chip">{completionPercent}%</span>
@@ -970,7 +957,6 @@ function ContestNotebookEntryCarousel({
           aria-label="Ouvrir la collection et les badges"
           aria-current={activeView === "collection" ? "page" : undefined}
         >
-          <span className="contest-notebook-carousel-kicker">Album</span>
           <span className="contest-notebook-carousel-title">Collection</span>
           <span className="contest-notebook-carousel-state">
             {unlockedBadgeCount}/{CONTEST_ACHIEVEMENT_BADGE_CATALOG.length} badges
@@ -1021,7 +1007,6 @@ function ContestTestedFlowerCarousel({
     <section className="contest-tested-carousel-section" aria-label="Fiches des fleurs testees">
       <div className="contest-tested-carousel-header">
         <div>
-          <p className="contest-tested-carousel-eyebrow">Carnet testeur</p>
           <h2>Fleurs testees</h2>
         </div>
         <span className="contest-tested-carousel-count">
@@ -1128,7 +1113,6 @@ function ContestTestedFlowerCard({
           )}
           <div className="contest-tested-card-overlay contest-tested-card-overlay-top">
             <div className="min-w-0">
-              <p>Fleur testee</p>
               <h3 title={getContestBookmarkLabel(entry)}>
                 {getContestBookmarkLabel(entry)}
               </h3>
@@ -1230,7 +1214,6 @@ function ContestLabEntryPage({
       <article className="contest-lab-specimen-card contest-lab-specimen-card-identity">
         <div className="contest-lab-specimen-header">
           <div className="min-w-0">
-            <p>Fiche variété</p>
             <h3>{entry.title}</h3>
           </div>
           <span>{entry.season?.label ?? "Saison"}</span>
@@ -1633,7 +1616,7 @@ function ContestFeedReviewModal({ item, busy, error, onClose, onVote }: {
     <section className={rankingReviewStyles.sheet}>
       <header className={`${rankingReviewStyles.header} ${rankingReviewStyles.publicHeader}`}>
         <ContestMascotScene variant="review" className={rankingReviewStyles.reviewIllustration} />
-        <div><p className={rankingReviewStyles.eyebrow}>Avis public</p><h2>{item.pseudo}</h2><p className={rankingReviewStyles.reviewMeta}>{item.entryTitle} · {CONTEST_CONSUMPTION_METHOD_LABELS[item.consumptionMethod]} · {formatContestDate(item.validatedAt ?? item.createdAt)}</p></div>
+        <div><h2>Avis de {item.pseudo}</h2><p className={rankingReviewStyles.reviewMeta}>{item.entryTitle} · {CONTEST_CONSUMPTION_METHOD_LABELS[item.consumptionMethod]} · {formatContestDate(item.validatedAt ?? item.createdAt)}</p></div>
         <button type="button" className={rankingReviewStyles.close} onClick={onClose} aria-label="Fermer la critique"><X size={21} aria-hidden="true" /></button>
       </header>
       <div className={rankingReviewStyles.body} role="region" aria-label={`Avis de ${item.pseudo}`} tabIndex={0}>
@@ -1761,8 +1744,7 @@ export function ContestTesterProfileCard({
       <div className={tasterProfileStyles.card}>
         <div className="contest-illustrated-card-header">
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Profil testeur</p>
-            <h2 className="mt-1 font-display text-3xl leading-none text-ink">Connecte-toi</h2>
+            <h2 className="font-display text-3xl leading-none text-ink">Profil : connecte-toi</h2>
           </div>
           <ArenaCharacter
             variant="profile"
@@ -1787,8 +1769,7 @@ export function ContestTesterProfileCard({
       <div className={tasterProfileStyles.card}>
         <div className="contest-illustrated-card-header">
           <div>
-            <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Profil testeur</p>
-            <h2 className="mt-1 font-display text-3xl leading-none text-ink">Pseudo requis</h2>
+            <h2 className="font-display text-3xl leading-none text-ink">Profil : pseudo requis</h2>
           </div>
           <ArenaCharacter
             variant="profile"
@@ -1807,8 +1788,7 @@ export function ContestTesterProfileCard({
     <div className={tasterProfileStyles.card}>
       <div className="contest-profile-illustrated-layout">
         <div>
-          <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">Mon profil testeur</p>
-          <h2 className="mt-1 font-display text-3xl leading-none text-ink">{progress.pseudo}</h2>
+          <h2 className="font-display text-3xl leading-none text-ink">Profil de {progress.pseudo}</h2>
           <p className="mt-2 text-sm font-bold text-charcoal">{progress.currentLevel.label}</p>
         </div>
         <ArenaCharacter
@@ -1822,7 +1802,6 @@ export function ContestTesterProfileCard({
 
       <div className={arenaStyles.personalRankingsGrid}>
         <section className={arenaStyles.personalRankingCard} data-ranking="tasting">
-          <p>Classement personnel</p>
           <h3>Dégustation</h3>
           <dl>
             <div><dt>Points de saison</dt><dd>{tastingProgressUnavailable.season ? "Indisponible" : tastingProgress.season === undefined ? "…" : formatPersonalScore(tastingProgress.season?.score ?? 0)}</dd></div>
@@ -1832,7 +1811,6 @@ export function ContestTesterProfileCard({
         </section>
 
         <section className={arenaStyles.personalRankingCard} data-ranking="placard">
-          <p>Classement personnel</p>
           <h3>Kanab Quest</h3>
           <dl>
             <div><dt>Score Kanab Quest</dt><dd>{placardProgress ? formatPersonalScore(placardProgress.placardScore) : "—"}</dd></div>
@@ -1843,7 +1821,6 @@ export function ContestTesterProfileCard({
         </section>
 
         <section className={arenaStyles.personalRankingCard} data-ranking="general">
-          <p>Classement personnel</p>
           <h3>Général</h3>
           <dl>
             <div><dt>Score Arène</dt><dd>{generalProgress ? formatPersonalScore(generalProgress.score) : "—"}</dd></div>
@@ -2106,9 +2083,6 @@ export function ContestBadgeGallery({
             <Award size={20} aria-hidden="true" />
           </span>
           <div className="min-w-0">
-          <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-            Galerie des badges
-          </p>
           <h2 className="font-display text-3xl leading-none text-ink">Badges dégustateur</h2>
           </div>
         </div>
@@ -2656,7 +2630,6 @@ export function ContestHubClient({
       <div className={`retro-container ${arenaStyles.content}`}>
         <nav hidden className={arenaStyles.arenaHub} aria-labelledby="arena-hub-title">
           <div className={arenaStyles.arenaHubHeading}>
-            <p className={arenaStyles.sectionKicker}>Choisis ton espace</p>
             <h2 id="arena-hub-title">Que veux-tu faire ?</h2>
             <p>Tu peux commencer où tu veux. Tes dégustations dans le Carnet t’aident à progresser dans Kanab Quest et ses classements.</p>
           </div>
@@ -2722,7 +2695,6 @@ export function ContestHubClient({
         <section hidden={activeArenaView !== "jouer"} id="placard-arene" className={arenaStyles.placardSection} aria-labelledby="arena-placard-title">
           <div className={arenaStyles.placardIntro}>
             <div className={arenaStyles.placardCopy}>
-              <p className={arenaStyles.sectionKicker}>Le jeu de L’Arène</p>
               <h2 id="arena-placard-title" className={arenaStyles.sectionTitle}>
                 Du carnet à <span>Kanab Quest.</span>
               </h2>
@@ -3098,10 +3070,7 @@ export function ContestHubClient({
                     />
                     <div className="contest-lab-sheet-header">
                       <div className="min-w-0">
-                        <p className="text-[10px] font-black uppercase tracking-[0.14em] text-charcoal">
-                          Fiche du lot
-                        </p>
-                        <h2 className="mt-1 text-xl font-black leading-tight text-ink">
+                        <h2 className="text-xl font-black leading-tight text-ink">
                           {getContestBookmarkLabel(selectedEntry)}
                         </h2>
                       </div>
@@ -3199,27 +3168,26 @@ export function ContestHubClient({
       </div>
 
       {visibleHoverMascotPanel === "intro" ? (
-        <ContestHubHoverPreview eyebrow="Mode d'emploi" title="L'Arène">
+        <ContestHubHoverPreview title="Mode d’emploi de l’Arène">
           <ContestIntroPopupContent />
         </ContestHubHoverPreview>
       ) : null}
 
       {visibleHoverMascotPanel === "profile" ? (
-        <ContestHubHoverPreview eyebrow="Profil testeur" title="Progression">
+        <ContestHubHoverPreview title="Progression du testeur">
           <ContestTesterProfileDetails progress={viewerProgress} isAuthenticated={isAuthenticated} />
         </ContestHubHoverPreview>
       ) : null}
 
       {visibleHoverMascotPanel === "leaderboard" ? (
-        <ContestHubHoverPreview eyebrow="Top testeurs" title="Classement">
+        <ContestHubHoverPreview title="Classement testeurs">
           <ContestTesterLeaderboardDetails />
         </ContestHubHoverPreview>
       ) : null}
 
       {activeMascotPanel === "intro" ? (
         <ContestHubPanelModal
-          eyebrow="Mode d'emploi"
-          title="L'Arène"
+          title="Mode d’emploi de l’Arène"
           onClose={() => setActiveMascotPanel(null)}
         >
           <ContestIntroPopupContent />
@@ -3228,8 +3196,7 @@ export function ContestHubClient({
 
       {activeMascotPanel === "profile" ? (
         <ContestHubPanelModal
-          eyebrow="Profil testeur"
-          title="Progression"
+          title="Progression du testeur"
           onClose={() => setActiveMascotPanel(null)}
         >
           <ContestTesterProfileDetails
@@ -3242,8 +3209,7 @@ export function ContestHubClient({
 
       {activeMascotPanel === "leaderboard" ? (
         <ContestHubPanelModal
-          eyebrow="Top testeurs"
-          title="Classement"
+          title="Classement testeurs"
           onClose={() => setActiveMascotPanel(null)}
         >
           <ContestTesterLeaderboardDetails />
@@ -3252,7 +3218,6 @@ export function ContestHubClient({
 
       {isMobileLeaderboardOpen ? (
         <ContestHubPanelModal
-          eyebrow="Top testeurs"
           title="Classement testeurs"
           onClose={() => setIsMobileLeaderboardOpen(false)}
         >

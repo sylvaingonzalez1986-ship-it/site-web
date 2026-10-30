@@ -1,4 +1,4 @@
-.popover { position: fixed; inset: auto; z-index: 2147483001; display: flex; flex-direction: column; box-sizing: border-box; margin: 0; padding: 0; visibility: hidden; overflow: hidden; color: #172923; font-family: var(--font-body, sans-serif); text-align: left; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.popover { composes: gameSurface from "../contest/ArenaRetro.module.css"; position: fixed; inset: auto; z-index: 2147483001; display: flex; flex-direction: column; box-sizing: border-box; margin: 0; padding: 0; visibility: hidden; overflow: hidden; color: #172923; font-family: var(--font-body, sans-serif); text-align: left; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .popover::backdrop { background: transparent; pointer-events: none; }
 .header { display: flex; flex: none; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 12px; border-bottom: 2px solid #172923; background: #efc451; }
 .header > div { min-width: 0; }
@@ -8,31 +8,17 @@
 .close:hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
 .body { min-height: 0; padding: 12px 14px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #076c61 #fff1d6; font-size: 13px; line-height: 1.55; }
 .flavors { margin: 0 0 12px; }
-.flavorNote { margin: 6px 0 0; color: #536058; font-size: 10px; line-height: 1.4; }
-.identity { display: inline-block; margin-bottom: 7px; padding: 2px 7px; border: 1px solid #076c61; border-radius: var(--game-panel-radius, 2px); background: #dcefe4; color: #076c61; font-size: 10px; font-weight: 800; }
-.summary { margin: 0 0 14px; font-weight: 700; }
 .body h4 { margin: 0 0 5px; color: #076c61; font-size: 13px; font-weight: 850; }
 .story p { margin: 0; }
-.origins { display: grid; gap: 9px; margin: 14px 0; padding: 10px 12px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #dcefe4; }
-.origins dt { font-size: 10px; font-weight: 850; text-transform: uppercase; letter-spacing: .05em; }
+.origins { display: grid; gap: 9px; margin: 12px 0 0; padding-top: 10px; border-top: 1px solid #172923; }
+.origins dt { color: #076c61; font-size: 12px; font-weight: 850; }
 .origins dd { margin: 2px 0 0; }
-.traits ul { display: grid; gap: 7px; padding: 0; margin: 8px 0 0; list-style: none; }
-.traits li { display: flex; align-items: flex-start; gap: 7px; }
-.traits svg { flex: none; margin-top: 3px; color: #076c61; }
-.caveat { margin: 14px 0 0; padding-left: 10px; border-left: 3px solid #b77f12; font-size: 11px; }
-.sources { margin-top: 14px; padding-top: 9px; border-top: 1px dashed #17292366; font-size: 11px; }
-.sources summary { min-height: 30px; cursor: pointer; font-weight: 700; }
-.sources ul { margin: 0; padding-left: 18px; }
-.sources li + li { margin-top: 7px; }
-.sources a { color: #076c61; text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
-.sources svg { display: inline-block; margin-left: 5px; vertical-align: baseline; }
 .footer { flex: none; padding: 8px 12px; border-top: 2px solid #172923; background: #fff8e8; }
 .footer:empty { display: none; }
 .footer button { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; min-height: 44px; padding: 8px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: inherit; font-size: 13px; font-weight: 800; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .footer button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
 .footer p { margin: 0; padding: 3px 0; font-size: 12px; font-weight: 700; line-height: 1.4; }
 .popover button:focus-visible { outline: 3px solid #076c61; outline-offset: 2px; }
-.popover a:focus-visible, .sources summary:focus-visible { outline: 3px solid #076c61; outline-offset: 2px; }
 .popover[data-compact-height="true"] { display: block; overflow-y: auto; overscroll-behavior: contain; }
 .popover[data-compact-height="true"] .header { position: sticky; top: 0; z-index: 1; }
 .popover[data-compact-height="true"] .body { overflow: visible; }

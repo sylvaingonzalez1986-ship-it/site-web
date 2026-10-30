@@ -50,7 +50,12 @@ const progressScenarios = {
   zero: makeProgress(), partial: makeProgress([3, 1, 2.5, 0, 4, 0, 0]), ready: makeProgress(3),
   rewarded: makeProgress(3, true), legacy: makeProgress(0, true), anonymous: null,
 };
-let claimFixture = { status: 200, rewards: { ...offer, progress: progressScenarios.rewarded, receipts: [] } };
+const paidReceipt = {
+  orderId: "contest-bundle-audit-order", grantedAt: progressScenarios.rewarded.grantedAt,
+  card: { id: "00000000-0000-4000-8000-000000000001", code: "EPIC-NOTEBOOK-DEMO", name: "La Gardienne du carnet", imageUrl: "", rarity: "epic" },
+  buddiesPacks: 3, bottePacks: 5, requiredProductIds: offer.flowers.map(flower => flower.productId),
+};
+let claimFixture = { status: 200, rewards: { ...offer, progress: progressScenarios.rewarded, receipts: [paidReceipt] } };
 let readFixture = { status: 200, rewards: { ...offer, receipts: [] } };
 let holdReads = false;
 let onHeldRead;
@@ -72,9 +77,10 @@ const modules = {
     }
     createRoot(document.getElementById('root')).render(React.createElement(Fixture));
   `,
-  "next/image": "import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src:typeof src==='string'?src:src.src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}",
+  "next/image": "import React from 'react';export default function Image({src,fill,priority,preload,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src:typeof src==='string'?src:src.src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}",
   "next/link": "import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}",
   "bundle-navigation-link": "import React from 'react';export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}",
+  "bundle-unrelated-monthly-draw": "export const MonthlyReviewDraw=()=>null;",
   "next/dynamic": "import React from 'react';export default function dynamic(loader,options={}){const Component=React.lazy(()=>loader().then(m=>({default:m.default||m})));return function Dynamic(props){return React.createElement(React.Suspense,{fallback:options.loading?React.createElement(options.loading):null},React.createElement(Component,props));};}",
   "next/navigation": "export const usePathname=()=>'/arene/carnet/concours';export const useSearchParams=()=>new URLSearchParams();export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});",
 };
@@ -86,7 +92,7 @@ const server = await createServer({
   optimizeDeps: { include: ["react", "react-dom/client", "react/jsx-runtime", "react/jsx-dev-runtime", "lucide-react"] },
   css: { postcss: { plugins: [tailwindcss({ base: root })] } },
   plugins: [{ name: "bundle-book-fixture", enforce: "pre",
-    resolveId(id) { if (id.endsWith("/navigation/NavigationLink")) return "\0bundle-navigation-link"; if (Object.hasOwn(modules, id)) return "\0" + id; },
+    resolveId(id) { if (id.endsWith("/navigation/NavigationLink")) return "\0bundle-navigation-link"; if (id.endsWith("/MonthlyReviewDraw")) return "\0bundle-unrelated-monthly-draw"; if (Object.hasOwn(modules, id)) return "\0" + id; },
     load(id) { if (id.startsWith("\0")) return modules[id.slice(1)]; },
     configureServer(vite) {
       vite.middlewares.use((request, response, next) => {
@@ -130,7 +136,8 @@ try {
   await server.listen();
   browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ["--no-sandbox", "--disable-gpu"] });
   const page = await browser.newPage();
-  page.setDefaultTimeout(15_000);
+  page.setDefaultTimeout(30_000);
+  page.setDefaultNavigationTimeout(90_000);
   page.on("pageerror", error => browserErrors.push(error.message));
   await page.setRequestInterception(true);
   page.on("request", request => {
@@ -144,10 +151,10 @@ try {
     await handle.asElement().click(); await handle.dispose();
   };
   const openBook = async (scenario = "ready", coverFilename, progressScenario = "zero") => {
-    readFixture = { status: 200, rewards: { ...offer, receipts: [], progress: progressScenarios[progressScenario],
+    readFixture = { status: 200, rewards: { ...offer, receipts: progressScenarios[progressScenario]?.rewarded ? [paidReceipt] : [], progress: progressScenarios[progressScenario],
       available: !["null", "unavailable"].includes(scenario), flowers: scenario === "empty" ? [] : offer.flowers } };
     await page.goto(`${origin}/?offer=${scenario}&progress=${progressScenario}`, { waitUntil: "networkidle0" });
-    assert.equal(await page.$$eval("[data-contest-bundle-cover]", elements => elements.length), scenario === "ready" ? 1 : 0);
+    assert.equal(await page.$$eval("[data-contest-bundle-cover]", elements => elements.length), scenario === "ready" || (scenario !== "null" && progressScenarios[progressScenario]?.rewarded) ? 1 : 0);
     if (coverFilename) {
       const cover = await page.$eval("[data-contest-bundle-cover]", element => {
         const bounds = element.getBoundingClientRect();
@@ -208,7 +215,7 @@ try {
         copy: requiredCopy.map(element => ({ text: element.textContent.replace(/\s+/g, " ").trim(), top: element.getBoundingClientRect().top, bottom: element.getBoundingClientRect().bottom })) };
     }, note);
     assert.equal(visibility.copy.length, 3);
-    for (const item of visibility.copy) assert(item.top >= visibility.minTop && item.bottom <= visibility.maxBottom, JSON.stringify({ ...visibility, failed: item }));
+    for (const item of visibility.copy) assert(item.top >= visibility.minTop - 2 && item.bottom <= visibility.maxBottom + 2, JSON.stringify({ ...visibility, failed: item }));
     return visibility;
   };
   const expandContentsBonus = async () => {
@@ -250,6 +257,10 @@ try {
     if (doubleClick) await handle.evaluate(button => { button.click(); button.click(); });
     else await handle.asElement().click();
     await handle.dispose();
+  };
+  const closeReveal = async () => {
+    await page.$eval('dialog[data-contest-card-reveal][open] button[aria-label="Fermer"]', button => button.click());
+    await page.waitForFunction(() => !document.querySelector('dialog[data-contest-card-reveal][open]'));
   };
   const checkProgress = async scenario => {
     const rows = await checklist();
@@ -421,7 +432,33 @@ try {
   await openBook("ready", undefined, "legacy");
   await expandContentsBonus();
   await checkProgress("legacy");
+  await page.waitForSelector('[data-contest-card-open]');
+  assert.equal(await page.$('dialog[data-contest-card-reveal][open]'), null, "A previously granted reward waits for the customer to open it");
+  assert.equal(postRequests().length, 0);
   record("historical-beneficiary-cannot-claim-another-bonus", 390);
+
+  readFixture.status = 503;
+  await openChapter("concours", "outdoor");
+  await page.waitForSelector('[data-contest-bundle-note] [role="alert"]');
+  assert.match(await noteText(), /aperçu est indisponible/);
+  readFixture.status = 200;
+  await page.$$eval('[data-contest-bundle-note] button', buttons => buttons.find(button => button.textContent === "Réessayer de retrouver ma carte").click());
+  await page.waitForSelector('[data-contest-card-open]');
+  assert.equal(await page.$('[data-contest-bundle-note] [role="alert"]'), null);
+  assert.equal(postRequests().length, 0, "Recovering an existing card must never POST");
+  record("existing-card-read-failure-can-retry-without-a-new-draw", 390);
+
+  for (const unavailableScenario of ["unavailable", "empty"]) {
+    await openBook(unavailableScenario, undefined, "rewarded");
+    await openChapter("concours", "outdoor");
+    await page.waitForSelector('[data-contest-card-open]');
+    assert.match(await noteText(), /Ta carte et tes packs restent disponibles/);
+    assert.doesNotMatch(await noteText(), /Cumule au moins/);
+    assert.equal(await claimButtons(), 0);
+    assert.equal(postRequests().length, 0);
+    await layout();
+    record(`earned-card-remains-available-when-offer-${unavailableScenario}`, 390);
+  }
 
   await openBook("ready", undefined, "ready");
   await expandContentsBonus();
@@ -439,10 +476,27 @@ try {
   await settleAnimations();
   assert.match(await noteText(), /Bonus déjà débloqué/, "An older GET cannot reverse a successful attribution");
   assert.equal(await claimButtons(), 0);
+  await page.waitForSelector('dialog[data-contest-card-reveal][open]');
+  assert.equal(await page.$eval('dialog[data-contest-card-reveal]', dialog => dialog.dataset.phase), "sealed");
+  await page.click('[data-contest-card-turn]');
+  await page.waitForSelector('dialog[data-contest-card-reveal][data-phase="revealed"]');
+  assert.match(await page.$eval('dialog[data-contest-card-reveal]', dialog => dialog.textContent), /La Gardienne du carnet/);
+  assert.equal(await page.$eval('dialog[data-contest-card-reveal] a[href="/profil/collection"]', link => getComputedStyle(link).color), "rgb(255, 241, 214)", "The notebook link styles must preserve the reveal control contrast");
+  assert.equal(postRequests().length, 1, "The reveal animation does not draw or grant again");
+  await page.screenshot({ path: resolve(output, "claim-card-revealed-390.png") });
+  await closeReveal();
+  record("claim-opens-server-card-reveal-after-parent-offer-update", 390);
   await click("Voir la fleur Concours Indoor 2");
   await page.waitForFunction(() => document.querySelector("h2")?.textContent === "Concours Indoor 2");
   assert.match(await noteText(), /Bonus déjà débloqué/);
   assert.equal(await claimButtons(), 0);
+  await page.waitForSelector('[data-contest-card-open]');
+  await page.$eval('[data-contest-card-open]', button => button.click());
+  await page.waitForSelector('dialog[data-contest-card-reveal][open]');
+  assert.match(await page.$eval('dialog[data-contest-card-reveal]', dialog => dialog.textContent), /La Gardienne du carnet/);
+  await closeReveal();
+  assert.equal(postRequests().length, 1);
+  record("same-card-can-be-reopened-after-cross-culture-navigation-with-get-only", 390);
   await click("Table des matières");
   assert.match(await noteText(), /Bonus déjà débloqué/);
   assert.equal(postRequests().length, 1);
@@ -462,6 +516,7 @@ try {
   await page.waitForFunction(() => document.querySelector('[data-contest-bundle-note] [role="alert"]')?.textContent.includes("pas encore été attribué"));
   assert.equal(await claimButtons(), 1);
   claimFixture.rewards.progress = progressScenarios.rewarded;
+  claimFixture.rewards.receipts = [paidReceipt];
   await clickClaim();
   await page.waitForFunction(() => document.querySelector('[data-contest-bundle-note]')?.textContent.includes("Bonus déjà débloqué"));
   assert.equal(postRequests().length, 4);

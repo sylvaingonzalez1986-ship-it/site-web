@@ -35,6 +35,7 @@ export function KqFlowerTcgCard({
   imageUrl,
   reference,
   status = "available",
+  statusLabel,
   selected = false,
 }: {
   varietyName: string;
@@ -45,6 +46,7 @@ export function KqFlowerTcgCard({
   imageUrl?: string;
   reference: string;
   status?: KqFlowerTcgStatus;
+  statusLabel?: string;
   selected?: boolean;
 }) {
   const buddie = KQ_BUDDIES.find((item) => item.code === varietyCode || item.name === varietyName);
@@ -57,7 +59,7 @@ export function KqFlowerTcgCard({
       className={styles.flowerTcgCard}
       data-status={status}
       data-selected={selected || undefined}
-      aria-label={`Carte Fleur ${varietyName}, qualité ${quality}, ${statusCopy.label}`}
+      aria-label={`Carte Fleur ${varietyName}, qualité ${quality}, ${statusLabel ?? statusCopy.label}`}
     >
       <header className={styles.flowerTcgHeader}>
         <span>Kanab Quest · Carte Fleur</span>
@@ -93,7 +95,7 @@ export function KqFlowerTcgCard({
         ))}
       </dl>
       <footer className={styles.flowerTcgFooter}>
-        <span><Flame /> {statusCopy.label}</span>
+        <span><Flame /> {statusLabel ?? statusCopy.label}</span>
         <small>{statusCopy.note}</small>
       </footer>
     </article>

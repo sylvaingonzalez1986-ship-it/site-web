@@ -1,6 +1,6 @@
 /* The player's register uses the same paper and ink as the Quartier. */
-.dock { composes: surface from "./ArenaRetro.module.css"; }
-.card { composes: surface from "./ArenaRetro.module.css"; }
+.dock { composes: gameSurface from "./ArenaRetro.module.css"; }
+.card { composes: gameSurface from "./ArenaRetro.module.css"; }
 .dock, .card { font-family: var(--font-body), Arial, sans-serif; color: #172923; }
 .dock { position: fixed; right: max(16px, env(safe-area-inset-right)); bottom: calc(76px + env(safe-area-inset-bottom)); z-index: 85; }
 .trigger { display: flex; align-items: center; gap: 12px; max-width: 260px; min-height: 58px; padding: 10px 16px 10px 12px; cursor: pointer; text-align: left; }
@@ -21,7 +21,7 @@
 .card :is(button,a,summary,select):focus-visible, .trigger:focus-visible { outline: 3px solid #087b70; outline-offset: 3px; box-shadow: 0 0 0 5px #fff8e7; }
 .card a { color: inherit; text-underline-offset: 4px; }
 .sheet { min-width: 0; }
-.header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 18px; padding: 10px 0; border-bottom: 1px solid #17292366; color: #087b70; font: 800 10px/1.4 ui-monospace, Consolas, monospace; letter-spacing: .1em; }
+.header { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin: 0 18px; padding: 10px 0; border-bottom: 1px solid #17292366; color: #087b70; font: 800 10px/1.4 ui-monospace, Consolas, monospace; letter-spacing: .1em; }
 .header button { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; color: #172923; }
 .hero { display: grid; grid-template-columns: 150px minmax(0,1fr); align-items: center; gap: 26px; padding: 24px 26px; color: #172923; min-height: 213px; }
 .portrait { position: relative; align-self: start; display: grid; place-items: center; overflow: hidden; height: 178px; background: #087b7024; border: 2px solid #172923; }
@@ -29,7 +29,6 @@
 .avatar { display: block; width: 134px; height: 178px; object-fit: contain; }
 .portrait > span { position: absolute; bottom: 0; left: 0; right: 0; background: #172923ed; color: #fff1d6; text-align: center; font-size: 10px; padding: 5px; font-weight: 800; }
 .identity { min-width: 0; }
-.identity > small { font: 800 9px/1.5 ui-monospace, Consolas, monospace; letter-spacing: .1em; color: #087b70; }
 .identity h2 { color: #172923; font: 900 clamp(30px,4vw,44px)/1.05 var(--font-display), Impact, sans-serif; overflow-wrap: anywhere; }
 .chosenTitle { margin-top: 8px !important; color: #486353; font-weight: 700; font-size: 13px; }
 .pinned { display: flex; align-items: center; gap: 9px; margin: 14px 0; }
@@ -171,7 +170,6 @@
   .hero { grid-template-columns: 100px minmax(0,1fr); align-items: start; gap: 14px; padding: 18px 12px; min-height: 0; }
   .portrait { height: 150px; }
   .avatar { width: 108px; height: 150px; }
-  .identity > small { font-size: 8px; }
   .identity h2 { margin-top: 5px; font-size: 29px; }
   .chosenTitle { font-size: 11px; }
   .pinned { gap: 5px; margin-block: 12px; flex-wrap: wrap; }

@@ -404,7 +404,7 @@
 .editorial :global(.contest-notebook-view-tabs button span) {
   overflow: visible !important;
   font-size: clamp(0.66rem, 1.3vw, 0.82rem) !important;
-  font-weight: 950 !important;
+  font-weight: 800 !important;
   letter-spacing: 0.05em !important;
   text-overflow: clip !important;
   white-space: nowrap !important;

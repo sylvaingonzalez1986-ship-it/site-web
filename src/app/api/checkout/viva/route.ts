@@ -42,6 +42,8 @@ import {
   getShippingPricingConfig,
   type DeliveryMethod,
 } from "@/lib/shipping";
+import { normalizeShippingCountryCode } from "@/lib/shipping-country";
+import { normalizeShippingPhone } from "@/lib/shipping-phone";
 import { applyDiscountOnLines, computeFromTtc, computeOrderTaxTotals, distributePackDiscount, sanitizeOrderVatRate } from "@/lib/tax";
 import {
   buildVivaCheckoutUrl,
@@ -290,19 +292,6 @@ function sanitizeLotteryRewardClaimId(value: unknown): string {
 
 function sanitizeDeliveryMethod(value: unknown): DeliveryMethod {
   return value === "relay" ? "relay" : "home";
-}
-
-function toCountryCode(country: string): string {
-  const value = country.trim().toUpperCase();
-  if (value.length === 2 && /^[A-Z]{2}$/.test(value)) {
-    return value;
-  }
-
-  if (value === "FRANCE") {
-    return "FR";
-  }
-
-  return "";
 }
 
 export async function POST(request: Request) {
@@ -592,28 +581,36 @@ export async function POST(request: Request) {
     sanitizeText(payload.shippingName, 120) ||
     (customer ? `${customer.firstName} ${customer.lastName}`.trim() : "");
   const shippingEmail = sanitizeText(payload.shippingEmail, 120) || customer?.email || "";
-  const shippingPhone = sanitizePhone(payload.shippingPhone) || customer?.phone || "";
+  const shippingPhoneInput = sanitizeText(payload.shippingPhone, 40);
   const requestedDeliveryMethod = sanitizeDeliveryMethod(payload.deliveryMethod);
   const shippingAddressInput = sanitizeText(payload.shippingAddress, 180) || customer?.address || "";
   const shippingCity = sanitizeText(payload.shippingCity, 120) || customer?.city || "";
   const shippingPostalCode =
     sanitizeText(payload.shippingPostalCode, 16) || customer?.postalCode || "";
-  const shippingCountry =
-    sanitizeText(payload.shippingCountry, 80) || customer?.country || "France";
+  const shippingCountry = normalizeShippingCountryCode(
+    sanitizeText(payload.shippingCountry, 80) || customer?.country || "France",
+  );
   const relayId = sanitizeText(payload.relayId, 120);
   const relayName = sanitizeText(payload.relayName, 180);
   const relayAddress = sanitizeText(payload.relayAddress, 200);
   const relayCity = sanitizeText(payload.relayCity, 120);
   const relayPostalCode = sanitizeText(payload.relayPostalCode, 16);
-  const relayCountry = sanitizeText(payload.relayCountry, 80) || shippingCountry;
-  const shippingCountryCode = toCountryCode(
-    requestedDeliveryMethod === "relay" ? relayCountry : shippingCountry,
+  const relayCountry = normalizeShippingCountryCode(
+    sanitizeText(payload.relayCountry, 80) || shippingCountry,
   );
+  const shippingCountryCode = shippingCountry;
+  const shippingPhoneRaw = shippingPhoneInput || customer?.phone || "";
+  const shippingPhoneCountry = shippingPhoneInput
+    ? shippingCountry
+    : normalizeShippingCountryCode(customer?.country) || shippingCountry;
+  const shippingPhone = shippingCountry === "FR" || shippingCountry === "BE"
+    ? normalizeShippingPhone(shippingPhoneRaw, shippingPhoneCountry)
+    : sanitizePhone(shippingPhoneRaw);
 
   if (
     !shippingName ||
     !shippingEmail ||
-    !shippingPhone ||
+    !shippingPhoneRaw ||
     (requestedDeliveryMethod === "home" &&
       (!shippingCity || !shippingPostalCode || !shippingCountry))
   ) {
@@ -629,10 +626,18 @@ export async function POST(request: Request) {
     !/^[A-Za-z0-9 -]{3,16}$/.test(
       requestedDeliveryMethod === "relay" ? relayPostalCode : shippingPostalCode,
     ) ||
-    !shippingCountryCode
+    !shippingCountryCode ||
+    (requestedDeliveryMethod === "relay" && !relayCountry)
   ) {
     return NextResponse.json(
       { error: "Email, telephone, code postal ou pays invalide." },
+      { status: 400 },
+    );
+  }
+
+  if (requestedDeliveryMethod === "relay" && relayCountry !== shippingCountryCode) {
+    return NextResponse.json(
+      { error: "Le Point Relais doit se trouver dans le pays de livraison sélectionné." },
       { status: 400 },
     );
   }

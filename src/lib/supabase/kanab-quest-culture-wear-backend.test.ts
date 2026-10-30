@@ -22,7 +22,7 @@ function snapshotDb(productionUnits = 1) {
     kq_equipment_loadouts: ["TENT-120", "LED-300", "AIR-EC6", "SOLAR-BACKUP", "PRESS-0600"].map(equipment_code => ({ equipment_code })),
   };
   const rpc = vi.fn().mockImplementation((name: string) => Promise.resolve({ error: null,
-    data: name === "rpc_kq_chanvrier_career" ? createChanvrierCareerSnapshot()
+    data: name === "rpc_kq_jury_readiness" ? { availableFlowerCount: 0, curingFlowerCount: 0 } : name === "rpc_kq_chanvrier_career" ? createChanvrierCareerSnapshot()
       : name === "rpc_kq_energy_snapshot" ? { outstandingCents: 0, invoiceCount: 0, bestGramsPerKwh: null, invoices: [] } : null }));
   mocks.client.mockReturnValue({ rpc, from: (table: string) => {
     const query = { select: () => query, eq: () => query, order: () => query, single: () => query,

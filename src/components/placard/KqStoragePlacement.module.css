@@ -1,0 +1,41 @@
+.placement { min-width: 0; margin-top: 16px; padding-inline: 14px; border-top: 1px solid #17292355; color: #172923; scroll-margin-block-start: 110px; }
+.placement > summary { display: flex; align-items: center; gap: 8px; min-height: 48px; cursor: pointer; font-size: .9rem; font-weight: 750; }
+.placement > summary > svg { flex-shrink: 0; }
+.summaryCopy { display: grid; gap: 5px; min-width: 0; padding-block: 10px; }
+.summaryCopy strong { font-weight: 750; }
+.summaryCopy small { color: #456052; font-size: .8rem; font-weight: 500; line-height: 1.5; overflow-wrap: anywhere; }
+.placement > summary > svg:last-child { margin-left: auto; transition: transform .15s ease; }
+.placement[open] > summary > svg:last-child { transform: rotate(180deg); }
+.placement :where(button, select, summary):focus-visible { outline: 3px solid #147665; outline-offset: 4px; }
+.editor { min-width: 0; padding: 10px 0 14px; }
+.field { display: grid; gap: 9px; font-size: .9rem; font-weight: 750; }
+.placement select, .placement button { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; color: #172923; font: inherit; }
+.placement select { width: 100%; min-width: 0; min-height: 48px; padding: 10px 12px; font-weight: 600; font-size: .875rem; text-overflow: ellipsis; }
+.placement option { color: #172923; background: #fff8e7; }
+.placement button { min-height: 46px; max-width: 100%; padding: 11px 14px; cursor: pointer; font-size: .875rem; font-weight: 750; touch-action: manipulation; }
+.placement button.primary { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.placement button:disabled, .placement select:disabled { cursor: not-allowed; opacity: .6; }
+.scope, .help, .notice { color: #456052; font-size: .85rem; line-height: 1.6; }
+.scope { margin: 10px 0 14px; }
+.help { display: flex; align-items: flex-start; gap: 6px; margin: 10px 0; }
+.help svg { flex-shrink: 0; margin-top: 3px; }
+.preview { display: flex; align-items: center; gap: 14px; padding: 12px 0; border-block: 1px solid #17292330; }
+.art { width: 66px; height: 74px; flex-shrink: 0; object-fit: contain; }
+.preview dl { display: grid; gap: 9px; flex: 1; min-width: 0; margin: 0; }
+.preview dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; font-size: .85rem; line-height: 1.45; }
+.preview dt { min-width: 0; }
+.preview dd { margin: 0; flex-shrink: 0; font-weight: 800; }
+.warning { padding: 10px 12px; border-left: 3px solid #ac5731; background: var(--game-surface-warm, #ffc074); font-size: .85rem; line-height: 1.6; }
+.editor > button { margin-top: 14px; }
+.confirmation { margin-top: 16px; padding: 16px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.confirmation h4 { margin: 0; font-size: 1rem; }
+.confirmation p { font-size: .85rem; line-height: 1.6; }
+.actions { display: flex; flex-wrap: wrap; align-items: stretch; gap: 10px; margin-top: 14px; }
+.actions > button { flex: 1 1 150px; }
+@media (hover: hover) { .placement button:hover:not(:disabled), .placement select:hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); } }
+@media (max-width: 420px) {
+  .preview { gap: 10px; }
+  .art { width: 46px; height: 60px; }
+  .preview dl > div { gap: 8px; font-size: .8rem; }
+  .confirmation { padding: 13px 11px; }
+}

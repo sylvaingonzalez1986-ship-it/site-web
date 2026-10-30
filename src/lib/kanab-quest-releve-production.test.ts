@@ -4,6 +4,9 @@ import { isKqCampaign } from "./kanab-quest-campaign";
 import { getKqBuddieRotationRemaining } from "./kanab-quest-buddie-rotation";
 import { KQ_SUPPLIER_PAYMENT_TERM_MS } from "./kanab-quest-business";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
+import { KQ_CURING_DURATION_MS, projectKqStorageLot } from "./kanab-quest-storage";
+import { createReleveCommerce, getReleveCommerceStorageSnapshot } from "./kanab-quest-releve-commerce";
+import { getKqJuryScoreFromRounds } from "./kanab-quest-market";
 import { applyKqReleveProductionAction as act, createKqReleveExpansion, createKqReleveProduction, getKqReleveHarvests, getKqReleveLaunchIssues, getKqRelevePlanReview, getKqReleveProductionOutstanding, getKqReleveProductionProgress, suggestKqRelevePlan, type KqReleveProductionState } from "./kanab-quest-releve-production";
 
 function planned(cultures: 1 | 2 = 1) {
@@ -180,6 +183,13 @@ describe("La relève — real production rules and persistence", () => {
 
   it("resolves a real jury for each distinct flower, keeps harvest lots, and cannot burn or invoice twice", () => {
     let state = completed(2);
+    const harvestedAt = state.clock;
+    const initialLots = getKqReleveHarvests(state);
+    expect(initialLots.every(row => row.storage.curingStartedAt === row.game.completedAt)).toBe(true);
+    expect(() => act(state, { type: "duel", zoneId: initialLots[0].zoneId })).toThrow("affinage");
+    state = act(state, { type: "mature" });
+    expect(state.clock).toBe(harvestedAt + KQ_CURING_DURATION_MS);
+    expect(act(state, { type: "mature" })).toEqual(state);
     const before = { cash: state.cashCents, ledger: structuredClone(state.ledger), harvests: getKqReleveHarvests(state).map(item => item.game.harvestGrams) };
     for (const harvest of getKqReleveHarvests(state)) {
       const zoneId = harvest.zoneId;
@@ -196,5 +206,37 @@ describe("La relève — real production rules and persistence", () => {
     expect(state.cashCents).toBe(before.cash);
     expect(state.ledger).toEqual(before.ledger);
     expect(getKqReleveHarvests(state).map(item => item.game.harvestGrams)).toEqual(before.harvests);
+    const harvests = getKqReleveHarvests(state);
+    const commerce = createReleveCommerce({ cashCents: state.cashCents, clock: state.clock, harvests, ledger: state.ledger });
+    const snapshot = getReleveCommerceStorageSnapshot(commerce);
+    expect(commerce.milestones).toContain("mature");
+    expect(commerce.lots.map(row => row.storage)).toEqual(harvests.map(row => row.storage));
+    for (const [index, row] of snapshot.lots.entries()) {
+      expect(row.projection.stage).toBe("ready");
+      expect(row.projection.readyAt).toBe(initialLots[index].storage.readyAt);
+      expect(row.projection.conditionScore).toBe(getKqJuryScoreFromRounds(harvests[index].battle!.rounds, "player"));
+      expect(harvests[index].storage.juryApplied).toMatchObject({ at: new Date(state.clock).toISOString(), qualityDelta: projectKqStorageLot(harvests[index].storage, state.clock).qualityDelta });
+    }
+  });
+
+  it("judges the acquired curing gain once and carries the same score into commerce", () => {
+    let state = completed();
+    const harvest = getKqReleveHarvests(state)[0];
+    // Furnished trial fixture: room and climate bonuses accrue during this lot's six hours.
+    harvest.storage.postHarvest!.storageQualityBonus = .6;
+    harvest.storage.postHarvest!.climateQualityBonus = .5;
+    state.storageLots = { [harvest.zoneId]: harvest.storage };
+    state = act(state, { type: "mature" });
+    state = act(state, { type: "duel", zoneId: harvest.zoneId });
+    const applied = state.storageLots![harvest.zoneId].juryApplied!;
+    expect(applied.qualityDelta).toBeGreaterThan(0);
+    expect(applied.stats.aroma).toBeGreaterThan(applied.originalStats.aroma);
+    const frozen = structuredClone(applied);
+    state = act(state, { type: "verdict", zoneId: harvest.zoneId });
+    const commerce = createReleveCommerce({ cashCents: state.cashCents, clock: state.clock, harvests: getKqReleveHarvests(state), ledger: state.ledger });
+    expect(commerce.lots[0].storage.juryApplied).toEqual(frozen);
+    expect(getReleveCommerceStorageSnapshot(commerce).lots[0].projection).toMatchObject({
+      stage: "ready", qualityDelta: 0, conditionScore: getKqJuryScoreFromRounds(state.battles[harvest.zoneId].rounds, "player"),
+    });
   });
 });

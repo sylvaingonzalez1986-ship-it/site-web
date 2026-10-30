@@ -76,8 +76,16 @@ try {
     assert.match(await page.$eval('body',el=>el.textContent),/Rendez-vous le 1er novembre/);
   }
   await clickText('Créer mon personnage'); await page.waitForSelector('dialog[open]');
+  await page.waitForSelector('[data-chanvrier-profile][data-profile-step="inheritance"]');
+  await page.locator('[data-chanvrier-profile] [data-profile-next]').click();
+  await page.waitForSelector('[data-chanvrier-profile][data-profile-step="look"]');
   await page.type('input[autocomplete="nickname"]','Camille29');
-  await clickText('Choisir ma force'); await clickText('Créer mon chanvrier');
+  await page.locator('[data-chanvrier-profile] [data-profile-next]').click();
+  await page.waitForSelector('[data-chanvrier-profile][data-profile-step="strength"]');
+  await page.locator('[data-chanvrier-profile] [data-profile-next]').click();
+  await page.waitForSelector('[data-chanvrier-profile][data-profile-step="review"]');
+  await page.locator('[data-chanvrier-profile] input[name="confirm-strength"]').click();
+  await page.locator('[data-chanvrier-profile] [data-profile-next]').click();
   await page.waitForFunction(()=>document.body.textContent.includes('ton personnage est prêt.'));
   assert.equal(profile.nickname,'Camille29');
   await clickText('Modifier mon personnage'); await page.waitForSelector('dialog[open]');

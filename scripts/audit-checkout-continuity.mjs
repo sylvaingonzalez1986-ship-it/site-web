@@ -42,6 +42,7 @@ const initialUser={id:'customer-a',email:'camille@example.test',firstName:'Camil
 const secondUser={...initialUser,id:'customer-b',email:'alex@example.test',firstName:'Alex'};
 const product={id:'audit-product',name:'Produit de démonstration',category:'fleurs',price:14.9,image:'',description:'Produit fictif pour audit local',trackStock:false};
 const relay={id:'AUDIT-RELAY',name:'Relais de démonstration',address:'8 rue du Test',city:'Rennes',postalCode:'35000',country:'FR'};
+const belgianRelay={id:'AUDIT-RELAY-BE',name:'Relais belge de démonstration',address:'12 rue du Test',city:'Bruxelles',postalCode:'1000',country:'BE'};
 localStorage.clear();sessionStorage.clear();
 window.__fixture={user:scenario?null:initialUser,requests:[],unexpected:[],navigation:[],relay,meMode:'ready',releaseMe:null};
 const nativeFetch=window.fetch.bind(window);
@@ -49,7 +50,7 @@ window.fetch=async(input,init={})=>{
  const url=new URL(typeof input==='string'?input:input.url,location.href);
  if(!url.pathname.startsWith('/api/'))return nativeFetch(input,init);
  const state=window.__fixture,method=init.method||'GET',body=init.body?JSON.parse(init.body):null;
- state.requests.push({path:url.pathname,method,body});
+ state.requests.push({path:url.pathname,query:Object.fromEntries(url.searchParams),method,body});
  if(url.pathname==='/api/account/me'){
   if(state.meMode==='unavailable')return Response.json({error:'Panne de démonstration.'},{status:503});
   if(state.meMode==='network-error')throw new TypeError('Synthetic network failure');
@@ -64,7 +65,7 @@ window.fetch=async(input,init={})=>{
  if(url.pathname==='/api/account/orders')return Response.json({orders:[]});
  if(url.pathname==='/api/account/tickets')return Response.json({tickets:[],inventory:null,config:null});
  if(url.pathname==='/api/account/welcome-pack')return Response.json({eligible:false});
- if(url.pathname==='/api/relay/points')return Response.json({points:[relay]});
+ if(url.pathname==='/api/relay/points')return Response.json({points:[relay,belgianRelay].filter(point=>point.country===url.searchParams.get('country')&&point.postalCode===url.searchParams.get('postalCode'))});
  if(url.pathname==='/api/checkout/viva'&&method==='POST')return Response.json({error:'Paiement fictif arrêté par le harnais.'},{status:503});
  state.unexpected.push({path:url.pathname,method});
  return Response.json({error:'Unexpected fixture API'},{status:503});
@@ -133,6 +134,7 @@ try {
   await server.listen();
   browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ["--no-sandbox", "--disable-gpu"] });
   const page = await browser.newPage();
+  page.setDefaultNavigationTimeout(60_000);
   page.on("pageerror", error => errors.push(error.message));
   await page.setRequestInterception(true);
   page.on("request", request => {
@@ -154,7 +156,7 @@ try {
   const fill = (label, value) => fillSelector(`input[aria-label="${label}"]`, value);
   const assertDraftNotPersisted = async () => {
     const persisted = await page.evaluate(() => JSON.stringify([localStorage, sessionStorage].map(storage => Object.fromEntries(Object.keys(storage).filter(key => key !== 'checkout:viva:attempt').map(key => [key, storage.getItem(key)])))));
-    for (const enteredValue of ['Camille Livraison', 'livraison@example.test', '0612345678', '12 rue de la Commande', 'AUDIT-RELAY']) assert.equal(persisted.includes(enteredValue), false, 'Order draft must stay in memory: ' + enteredValue);
+    for (const enteredValue of ['Camille Livraison', 'livraison@example.test', '0612345678', '+32470123456', '12 rue de la Commande', 'AUDIT-RELAY']) assert.equal(persisted.includes(enteredValue), false, 'Order draft must stay in memory: ' + enteredValue);
   };
   const valueOf = label => page.$eval(`input[aria-label="${label}"]`, input => input.value);
   const waitPayment = disabled => page.waitForFunction(expected => {
@@ -174,7 +176,8 @@ try {
     await page.waitForSelector('dialog[open] input[aria-label="Nom complet"]');
   };
   const snapshot = () => page.$$eval("dialog[open] input[aria-label]", inputs => Object.fromEntries(inputs.filter(input => input.type !== "number").map(input => [input.getAttribute("aria-label"), input.value])));
-  const relaySelected = () => page.waitForFunction(() => [...document.querySelectorAll(".mondial-relay-widget button")].some(button => button.getAttribute("aria-pressed") === "true" && button.textContent.includes("Relais de démonstration")));
+  const relayAvailable = (name = "Relais de démonstration") => page.waitForFunction(expected => [...document.querySelectorAll(".mondial-relay-widget button")].some(button => button.textContent.includes(expected)), {}, name);
+  const relaySelected = (name = "Relais de démonstration") => page.waitForFunction(expected => [...document.querySelectorAll(".mondial-relay-widget button")].some(button => button.getAttribute("aria-pressed") === "true" && button.textContent.includes(expected)), {}, name);
   const fillOrder = async () => {
     for (const [label, value] of Object.entries({ "Nom complet": "Camille Livraison", "Email": "livraison@example.test", "Téléphone": "0612345678", "Adresse de livraison": "12 rue de la Commande", "Ville": "Rennes", "Code postal": "35000", "Pays": "France" })) await fill(label, value);
   };
@@ -255,9 +258,53 @@ try {
     await page.evaluate(() => { window.__fixture.meMode = 'ready'; });
     record("temporary-session-errors-preserve-customer-and-draft", width);
 
-    await fill('Ville', ''); await fill('Code postal', '');
-    await waitPayment(false);
+    await fill('Ville', ''); await waitPayment(true);
+    await relayAvailable();
+    await clickButton('Relais de démonstration'); await relaySelected(); await waitPayment(false);
+    record("changing-city-requires-a-new-relay-selection", width);
+
+    await fill('Code postal', ''); await waitPayment(true);
+    await fill('Code postal', '35000'); await relayAvailable();
+    await clickButton('Relais de démonstration'); await relaySelected(); await waitPayment(false);
+    record("changing-postcode-requires-a-new-relay-selection", width);
+
+    await clickButton('Domicile'); await fill('Adresse de livraison', '');
+    await clickButton('Point relais'); await relaySelected(); await waitPayment(false);
     record("selected-relay-does-not-require-a-home-address", width);
+
+    await fill('Pays', 'Belgique'); await fill('Code postal', '1000');
+    await fill('Ville', 'Bruxelles'); await fill('Téléphone', '+32470123456');
+    await waitPayment(true); await relayAvailable('Relais belge de démonstration');
+    const belgianLookup = await page.evaluate(() => window.__fixture.requests.filter(request => request.path === '/api/relay/points').at(-1));
+    assert.deepEqual(belgianLookup.query, { postalCode: '1000', country: 'BE', city: 'Bruxelles' });
+    await clickButton('Relais belge de démonstration'); await relaySelected('Relais belge de démonstration');
+    await waitPayment(false); await clickButton('Payer ');
+    await page.waitForFunction(() => window.__fixture.requests.filter(request => request.path === '/api/checkout/viva').length === 3);
+    const belgianRequest = await page.evaluate(() => window.__fixture.requests.filter(request => request.path === '/api/checkout/viva').at(-1).body);
+    assert.equal(belgianRequest.shippingCountry, 'Belgique');
+    assert.equal(belgianRequest.shippingPhone, '+32470123456');
+    assert.equal(belgianRequest.deliveryMethod, 'relay');
+    assert.equal(belgianRequest.deliveryFeeEur, relayRequest.deliveryFeeEur);
+    assert.equal(belgianRequest.relayId, 'AUDIT-RELAY-BE');
+    assert.equal(belgianRequest.relayCountry, 'BE');
+    assert.equal(belgianRequest.relayPostalCode, '1000');
+    assert.equal(belgianRequest.relayCity, 'Bruxelles');
+    await assertDraftNotPersisted();
+    await page.screenshot({ path: resolve(output, `belgian-relay-${width}.png`), fullPage: true });
+    record("belgian-country-name-and-phone-reach-relay-checkout", width);
+
+    await fill('Pays', 'France'); await waitPayment(true);
+    assert.equal(await page.$$eval('.mondial-relay-widget button[aria-pressed="true"]', buttons => buttons.length), 0);
+    assert.equal(await page.$eval('.mondial-relay-widget', widget => widget.textContent.includes('Point sélectionné:')), false);
+    await fill('Code postal', '35000'); await fill('Ville', 'Rennes'); await relayAvailable();
+    await clickButton('Relais de démonstration'); await relaySelected(); await waitPayment(false);
+    await clickButton('Payer ');
+    await page.waitForFunction(() => window.__fixture.requests.filter(request => request.path === '/api/checkout/viva').length === 4);
+    const switchedCountryRequest = await page.evaluate(() => window.__fixture.requests.filter(request => request.path === '/api/checkout/viva').at(-1).body);
+    assert.equal(switchedCountryRequest.shippingCountry, 'France');
+    assert.equal(switchedCountryRequest.relayId, 'AUDIT-RELAY');
+    assert.equal(switchedCountryRequest.relayCountry, 'FR');
+    record("changing-country-clears-belgian-relay-and-allows-french-selection", width);
 
     await trigger("#fixture-second");
     await page.waitForFunction(() => document.querySelector('input[aria-label="Nom complet"]')?.value === "Alex Exemple");
@@ -316,8 +363,8 @@ try {
 
     await page.goto(`http://127.0.0.1:${port}/?scenario=register`, { waitUntil: 'networkidle0' });
     await page.waitForSelector('#fixture-state[data-ready="true"]');
-    await fillSelector('#fixture-register input[placeholder="Prenom"]', 'Camille');
-    await fillSelector('#fixture-register input[placeholder="Nom"]', 'Exemple');
+    await fillSelector('#fixture-register input[name="given-name"]', 'Camille');
+    await fillSelector('#fixture-register input[name="family-name"]', 'Exemple');
     await fillSelector('#fixture-register input[type="email"]', 'camille@example.test');
     await fillSelector('#fixture-register input[type="password"]', 'demonstration-only-password');
     await page.$eval('#fixture-register input[type="date"]', input => {

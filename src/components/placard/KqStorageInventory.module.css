@@ -1,0 +1,53 @@
+.inventory { min-width: 0; color: #172923; }
+.inventory h3 { margin: 0 0 16px; font: 850 clamp(1.4rem, 3vw, 1.85rem)/1.15 var(--font-display), Impact, sans-serif; }
+.metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 0 0 8px; }
+.metrics > div { min-width: 0; padding: 16px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.metrics > div[data-warning] { --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); }
+.metrics dt { display: flex; align-items: center; gap: 7px; font-size: .875rem; font-weight: 750; }
+.metrics dt svg { flex-shrink: 0; }
+.metrics dd { margin: 10px 0 6px; font: 850 clamp(1.3rem, 2.5vw, 1.8rem)/1.1 var(--font-display), Impact, sans-serif; overflow-wrap: anywhere; }
+.metrics small { font-size: .875rem; line-height: 1.45; }
+.packedDetails { display: flex; flex-wrap: wrap; gap: 6px 26px; margin: 0 0 12px; padding-left: 18px; font-size: .875rem; line-height: 1.6; }
+.overflow { margin: 14px 0; padding: 12px; background: var(--game-surface-warm, #ffc074); color: #172923; font-size: .875rem; line-height: 1.5; }
+.overflow > p { display: flex; align-items: flex-start; gap: 8px; margin: 0; }
+.overflow svg { flex-shrink: 0; margin-top: 2px; }
+.tableHeading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 18px; margin: 16px 0 8px; }
+.tableHeading h4 { margin: 0; font-size: 1rem; }
+.tableHeading p { margin: 0; color: #456052; font-size: .875rem; line-height: 1.5; }
+.table { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: .875rem; }
+.table th, .table td { padding: 11px 5px; border-bottom: 1px solid #17292333; overflow-wrap: anywhere; vertical-align: middle; text-align: center; }
+.table th:first-child { width: 48%; padding-left: 0; text-align: left; }
+.table thead th { font-size: .875rem; font-weight: 750; }
+.table tbody th { font-weight: 650; }
+.table small { display: block; margin-top: 4px; color: #456052; font-size: .875rem; font-weight: 500; line-height: 1.4; }
+.table td strong { color: #00634d; }
+.notice, .help { color: #456052; font-size: .875rem; line-height: 1.5; }
+.help { margin: 14px 0 0; }
+.units { margin: 0; color: #456052; font-size: .875rem; line-height: 1.5; }
+.quickActions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.quickActions button { display: inline-flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 44px; padding: 10px 14px; color: #172923; font: 700 .875rem/1.4 var(--font-body), sans-serif; text-align: left; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.quickActions button:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.quickActions small { display: block; margin-top: 3px; font-size: .875rem; font-weight: 500; }
+.quickActions svg { flex-shrink: 0; }
+.details { margin-top: 14px; border-top: 1px solid #17292333; }
+.details > summary { min-height: 44px; padding: 12px 0; font-size: .875rem; line-height: 1.5; font-weight: 650; cursor: pointer; }
+.details > div { padding: 0 0 12px; }
+.details :global(figure) { margin-top: 12px; }
+.inventory :is(button, summary):focus-visible { outline: 3px solid #08786b; outline-offset: 3px; }
+@media (max-width: 600px) {
+  .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+  .metrics > div { padding: 10px 12px; }
+  .metrics > div:first-child { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 4px 10px; }
+  .metrics > div:first-child dd { margin: 0; }
+  .metrics > div:first-child small { grid-column: 1 / -1; }
+  .metrics dt { flex-wrap: wrap; gap: 5px; }
+  .metrics dd { font-size: 1.45rem; }
+  .table thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .table tbody { display: block; }
+  .table tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); padding: 10px 0; border-bottom: 1px solid #17292333; }
+  .table th:first-child { grid-column: 1 / -1; width: auto; padding: 0; border: 0; }
+  .table th small { display: inline; margin: 0 0 0 8px; }
+  .table td { display: flex; flex-direction: column; gap: 2px; padding: 8px 3px 0; border: 0; }
+  .table td::before { content: attr(data-label); color: #456052; font-size: .875rem; }
+  .quickActions button { width: 100%; }
+}

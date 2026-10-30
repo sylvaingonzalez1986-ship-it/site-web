@@ -193,9 +193,6 @@ export function ContestDetailClient({
 
               {galleryImages.length > 0 ? (
                 <div className="mt-5">
-                  <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                    Carrousel fleurs
-                  </p>
                   <div className="mt-3 flex snap-x gap-3 overflow-x-auto pb-2">
                     {galleryImages.map((imageUrl, index) => (
                       <div
@@ -218,9 +215,6 @@ export function ContestDetailClient({
               <div className="mt-5 rounded border-2 border-[#1a1a1a] bg-white p-4">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="space-y-1">
-                    <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                      Achat du lot premium
-                    </p>
                     <h2 className="text-2xl font-bold leading-tight text-ink">
                       {detail.entry.product?.name ?? detail.entry.title}
                     </h2>
@@ -414,9 +408,6 @@ export function ContestDetailClient({
           <div className="cartoon-border bg-cream p-5 md:p-6">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div className="space-y-1">
-                <p className="text-[11px] font-black uppercase tracking-[0.16em] text-charcoal">
-                  Avis publics
-                </p>
                 <h2 className="font-display text-3xl leading-none text-ink">Carnets publiés</h2>
                 <p className="text-sm text-charcoal" aria-live="polite">{reviews.length} avis {reviews.length > 1 ? "affichés" : "affiché"} · plus récents d’abord</p>
               </div>

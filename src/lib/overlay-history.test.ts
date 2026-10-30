@@ -54,6 +54,23 @@ describe("transient overlay browser history", () => {
     window.history.go(-1); await settle(); expect(window.location.href).toMatch(/\/arene$/);
   });
 
+  it("retires a closing overlay when reload reused its id in the previous history entry", async () => {
+    // A reload preserves history.state but resets the in-memory registry and
+    // React's useId sequence. Opening again can reuse the persisted identifier.
+    window.history.replaceState({ ...window.history.state, lcbOverlays: ["_r_2_"] }, "");
+    const { registerOverlayHistory, navigateAfterOverlays, hasOverlayHistory } = await import("./overlay-history");
+    const close = vi.fn();
+    registerOverlayHistory("_r_2_", close);
+    const navigate = vi.fn(() => ({ state: window.history.state, hasOverlay: hasOverlayHistory() }));
+
+    navigateAfterOverlays(navigate);
+    await settle();
+
+    expect(close).toHaveBeenCalledOnce();
+    expect(navigate).toHaveBeenCalledOnce();
+    expect(navigate.mock.results[0].value).toEqual({ state: { __NA: true, tree: "shop" }, hasOverlay: false });
+  });
+
   it("replaces a closed window with its next step in one render", async () => {
     const { registerOverlayHistory } = await import("./overlay-history");
     const dispose = registerOverlayHistory("duplicates", vi.fn());

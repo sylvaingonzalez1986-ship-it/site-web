@@ -17,7 +17,7 @@
 .toolbar button:focus-visible,.helpDialog button:focus-visible { outline: 3px solid #08796e; outline-offset: 3px; }
 .notice { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 12px; padding: 14px 16px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")) 48 fill / 12px / 0 stretch; font: .84rem/1.45 var(--font-body), sans-serif; }
 .notice > button { width: 36px; height: 36px; border: 0; background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
-.helpDialog { width: min(560px,calc(100vw - 24px)); }
+.helpDialog { composes: gameSurface from "../contest/ArenaRetro.module.css"; width: min(560px,calc(100vw - 24px)); }
 .helpDialog p { margin: 15px 0; color: #365044; font-size: .88rem; line-height: 1.6; }
 .helpBudget { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 0 0 20px; }
 .helpBudget div { padding: 12px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")) 48 fill / 10px / 0 stretch; }

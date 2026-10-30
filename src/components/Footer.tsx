@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "@/components/navigation/NavigationLink";
-import { ArrowRight, Instagram, MapPin } from "lucide-react";
+import { ArrowRight, Instagram } from "lucide-react";
 import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import {
@@ -127,13 +127,9 @@ function FooterContent() {
       <div className={`retro-container ${styles.inner}`}>
         <div className={styles.top}>
           <section className={styles.brand} aria-labelledby="footer-brand-title">
-            <p className={styles.eyebrow}>
-              <MapPin size={15} strokeWidth={2.4} aria-hidden="true" />
-              Maison bretonne · producteurs identifiés
-            </p>
             <h2 id="footer-brand-title" className={styles.brandTitle}>
-              Les Chanvriers
-              <span>Bretons</span>
+              LES CHANVRIERS{" "}
+              <span>BRETONS</span>
             </h2>
             <p className={styles.lead}>
               Notre production bretonne et des références de producteurs partenaires, distinguées sur chaque fiche.
@@ -161,15 +157,13 @@ function FooterContent() {
           </section>
 
           <nav className={styles.navigation} aria-label="Navigation du pied de page">
-            <section className={styles.column}>
-              <p className={styles.columnIndex}>01</p>
-              <h3 className={styles.columnTitle}>Le marché</h3>
+            <section className={styles.column} aria-labelledby="footer-market-title">
+              <h2 id="footer-market-title" className={styles.columnTitle}>Le marché</h2>
               <FooterLinkList links={marketLinks} />
             </section>
 
-            <section className={styles.column}>
-              <p className={styles.columnIndex}>02</p>
-              <h3 className={styles.columnTitle}>Informations</h3>
+            <section className={styles.column} aria-labelledby="footer-information-title">
+              <h2 id="footer-information-title" className={styles.columnTitle}>Informations</h2>
               <FooterLinkList links={legalLinks} />
               <CookieSettingsButton className={styles.cookieSettings} />
             </section>
@@ -178,12 +172,11 @@ function FooterContent() {
 
         <nav className={styles.regional} aria-label="CBD en Bretagne">
           <div className={styles.regionalHeading}>
-            <p className={styles.columnIndex}>03</p>
-            <h3>CBD en Bretagne</h3>
+            <h2>CBD en Bretagne</h2>
           </div>
           <div className={styles.regionalLinks}>
             {REGIONAL_LINKS.map((link) => (
-              <Link key={link.href} href={link.href} data-ui-shape="control">
+              <Link key={link.href} href={link.href}>
                 {link.label}
               </Link>
             ))}
@@ -193,7 +186,6 @@ function FooterContent() {
         <div className={styles.bottom}>
           <p>{footer.copyright}</p>
           <a href={CONTACT_MAILTO}>{CONTACT_EMAIL}</a>
-          <p>CBD naturel · Origines identifiées · Traçabilité par référence</p>
         </div>
       </div>
     </footer>

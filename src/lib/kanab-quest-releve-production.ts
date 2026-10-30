@@ -5,7 +5,10 @@ import { getKqBuddieRotationRemaining, recordKqBuddieUse } from "./kanab-quest-b
 import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCareProduct, KQ_BASIC_CARE_PRICE_CENTS, performKqBasicCare } from "./kanab-quest-care";
 import { KQ_HERITAGE_CARDS } from "./kanab-quest-heritage";
 import { KQ_LAB_ANALYSIS_CENTS, KQ_SUPPLIER_PAYMENT_TERM_MS } from "./kanab-quest-business";
-import { getKqWarehouseQuote, getKqWarehouseSummary, validateKqWarehouseState, type KqWarehouseState } from "./kanab-quest-warehouse";
+import { getKqWarehouseEquipmentDemand, getKqWarehouseQuote, getKqWarehouseSummary, validateKqWarehouseState, type KqWarehouseState } from "./kanab-quest-warehouse";
+import { applyKqStorageToJury, changeKqStorageCapacity, createKqStorageLot, getKqStorageContainer, planKqStorageAllocation, planKqStoragePlacement, projectKqStorageLot, type KqStorageLot, type KqStorageAllocation } from "./kanab-quest-storage";
+import { getKqJuryScoreFromRounds, getKqJuryScoreFromStats } from "./kanab-quest-market";
+import { getKqWarehouseRunPostHarvestProfile } from "./kanab-quest-post-harvest";
 
 export type KqReleveProductionChapter = "plan" | "buddies" | "launch" | "culture" | "jury" | "expansion";
 export type KqReleveProductionLedgerEntry = {
@@ -19,6 +22,7 @@ export type KqReleveProductionState = {
   supportInventory: Record<string, number>; careInventory: Record<string, number>;
   deckCodes: string[]; heritageCode: string | null; game: KqGameState | null;
   battles: Record<string, KqBattle>; revealedRounds: Record<string, number>;
+  storageLots?: Record<string, KqStorageLot>;
   ledger: KqReleveProductionLedgerEntry[]; milestones: string[]; checkpoint: Checkpoint | null;
 };
 export const KQ_RELEVE_BUDDIES = ["HH2026-005", "HH2026-010", "HH2026-020"] as const;
@@ -100,8 +104,32 @@ export function getKqReleveLaunchIssues(state: KqReleveProductionState): string[
 export function getKqReleveHarvests(state: KqReleveProductionState) {
   const game = state.game;
   if (!game?.campaign || game.phase !== "complete" || isKqCultureDead(game)) return [];
-  return game.campaign.members.map(member => ({ zoneId: member.zoneId,
-    game: getKqCampaignMemberState(game, member), battle: state.battles[member.zoneId] ?? null }));
+  const reserved: KqStorageAllocation[] = [];
+  return game.campaign.members.map(member => {
+    const harvest = getKqCampaignMemberState(game, member);
+    const battle = state.battles[member.zoneId] ?? null;
+    const flower = createKqFlower(harvest, "La ferme d’essai");
+    const storage = state.storageLots?.[member.zoneId] ?? {
+      ...createKqStorageLot({ flowerId: `releve-flower-${member.zoneId}`, harvestedAt: harvest.completedAt!,
+        ...(battle?.burnedAt ? { curingStartedAt: battle.burnedAt } : {}),
+        baseline: { varietyCode: harvest.varietyCode, juryScore: battle?.burnedAt ? getKqJuryScoreFromRounds(battle.rounds, "player") : getKqJuryScoreFromStats(flower.stats), aroma: flower.stats.aroma, care: harvest.care! },
+        capacity: { ...planKqStorageAllocation({ totalUnits: Math.round((harvest.harvestGrams ?? 0) * 10),
+          ownedContainers: getKqReleveStorageContainers(state), reservedAllocations: reserved, nowMs: Date.parse(harvest.completedAt!) }), automaticOverflowSale: false, overflowDeadlineAt: null },
+        ...(harvest.warehouse ? { postHarvest: getKqWarehouseRunPostHarvestProfile(harvest.warehouse, state.warehouse) } : {}),
+      }), ...(!battle ? { preJury: true as const } : {}),
+    };
+    reserved.push(...storage.capacity!.allocations);
+    return { zoneId: member.zoneId, game: harvest, battle, storage };
+  });
+}
+
+export function getKqReleveStorageContainers(state: KqReleveProductionState): Record<string, number> {
+  const owned: Record<string, number> = {};
+  for (const item of getKqWarehouseEquipmentDemand(state.warehouse.zones, state.warehouse.serviceZones)) {
+    if (item.code === 'LP-SUPER-1L' || item.code === 'BROR-JARS-48') owned['GLASS-1L'] = (owned['GLASS-1L'] ?? 0) + item.quantity * (item.code === 'LP-SUPER-1L' ? 6 : 48);
+    if (item.code === 'CURTEC-60L') owned['CURTEC-60L'] = (owned['CURTEC-60L'] ?? 0) + item.quantity;
+  }
+  return owned;
 }
 
 export type KqReleveProductionAction =
@@ -113,6 +141,7 @@ export type KqReleveProductionAction =
   | { type: "play"; code: string } | { type: "heritage" } | { type: "heritage-swap"; handIndex: number; reserveIndex: number } | { type: "redraw" }
   | { type: "basic-care" } | { type: "buy-care"; code: string } | { type: "apply-care"; code: string }
   | { type: "assist" } | { type: "restore-stage" }
+  | { type: "mature" } | { type: "storage-place"; flowerId: string; containerCode: string }
   | { type: "duel"; zoneId: string } | { type: "verdict"; zoneId: string } | { type: "round"; zoneId: string };
 
 function requireAction(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(message); }
@@ -197,16 +226,38 @@ export function applyKqReleveProductionAction(current: KqReleveProductionState, 
     }
     case "restore-stage":
       requireAction(state.checkpoint, "Aucun point de contrôle de culture disponible.");
-      Object.assign(state, structuredClone(state.checkpoint)); state.battles = {}; state.revealedRounds = {}; mark(state, "stage-restored"); return state;
+      Object.assign(state, structuredClone(state.checkpoint)); state.battles = {}; state.revealedRounds = {}; state.storageLots = {}; mark(state, "stage-restored"); return state;
     case "assist":
       requireAction(game?.care && game.phase !== "complete", "Reprends d’abord le point de contrôle de cette étape.");
       state.game = { ...game, care: { ...game.care, vitality: 100 }, effectNotices: [...(game.effectNotices ?? []), "Aide de l’essai demandée : vitalité rétablie à 100. Les dés, problèmes et pertes précédentes sont conservés."].slice(-12) };
       mark(state, "assisted"); return state;
+    case "mature": {
+      const harvests = getKqReleveHarvests(state);
+      requireAction(harvests.length, "Récolte les fleurs avant leur affinage.");
+      state.storageLots = Object.fromEntries(harvests.map(harvest => [harvest.zoneId, harvest.storage]));
+      state.clock = Math.max(state.clock, ...harvests.map(harvest => Date.parse(harvest.storage.readyAt)));
+      mark(state, "mature"); return state;
+    }
+    case "storage-place": {
+      const harvests = getKqReleveHarvests(state);
+      const harvest = harvests.find(row => row.storage.flowerId === action.flowerId);
+      requireAction(harvest, "Choisis une récolte de cette campagne.");
+      const container = getKqStorageContainer(action.containerCode);
+      requireAction(container, "Choisis un modèle de contenant connu.");
+      const capacity = planKqStoragePlacement({ capacity: harvest.storage.capacity!, containerCode: container.code,
+        ownedContainers: getKqReleveStorageContainers(state), reservedAllocations: harvests.filter(row => row.zoneId !== harvest.zoneId).flatMap(row => row.storage.capacity!.allocations) });
+      state.storageLots = Object.fromEntries(harvests.map(row => [row.zoneId, row.zoneId === harvest.zoneId ? changeKqStorageCapacity(row.storage, capacity, state.clock) : row.storage]));
+      mark(state, "storage-placed"); return state;
+    }
     case "duel": {
       const harvest = getKqReleveHarvests(state).find(item => item.zoneId === action.zoneId); requireAction(harvest, "Termine la culture avant de présenter cette Fleur.");
       if (state.battles[action.zoneId]) return current;
+      requireAction(projectKqStorageLot(harvest.storage, state.clock).stage === "ready", "Termine les six heures d’affinage avant le jury. Avance l’horloge fictive de l’essai.");
       const seed = 2026 + getKqReleveHarvests(state).findIndex(item => item.zoneId === action.zoneId);
-      state.battles[action.zoneId] = lockKqBattle(createKqFlower(harvest.game, "La ferme d’essai"), createKqOpponent(seed, { rulesVersion: 3, ownerName: "Sylvain · entraînement" }), seed);
+      const flower = createKqFlower(harvest.game, "La ferme d’essai");
+      const prepared = applyKqStorageToJury(harvest.storage, Object.fromEntries(Object.entries(flower.stats).filter((entry): entry is [string, number] => typeof entry[1] === "number")), state.clock);
+      state.storageLots = { ...Object.fromEntries(getKqReleveHarvests(state).map(row => [row.zoneId, row.storage])), [action.zoneId]: prepared.lot };
+      state.battles[action.zoneId] = lockKqBattle({ ...flower, stats: prepared.stats as typeof flower.stats }, createKqOpponent(seed, { rulesVersion: 3, ownerName: "Sylvain · entraînement" }), seed);
       state.revealedRounds[action.zoneId] = 0; return state;
     }
     case "verdict": {
@@ -274,5 +325,5 @@ export function getKqReleveProductionProgress(chapter: KqReleveProductionChapter
     instruction: "Observe, prépare si tu le souhaites, lance, réagis et valide. Le suivi gratuit explique les effets au prochain bilan." };
   const harvests = getKqReleveHarvests(state);
   return { complete: harvests.length > 0 && harvests.every(item => item.battle?.status === "verdict" && state.milestones.includes(`jury-read:${item.zoneId}`)),
-    instruction: "Présente chaque Fleur au jury et découvre ses trois manches. Le lot commercial reste dans la ferme après le duel." };
+    instruction: "Range les fleurs, termine leur affinage avec l’horloge fictive, puis présente chaque Fleur au jury. Le lot reste disponible après le duel." };
 }

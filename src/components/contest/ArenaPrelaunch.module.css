@@ -1,8 +1,8 @@
-.character { composes: surface from "./ArenaRetro.module.css"; display: grid; justify-items: end; gap: 12px; color: #172923; min-width: 0; max-width: min(100%,360px); text-align: right; font-size: 12px; overflow-wrap: anywhere; }
+.character { composes: gameSurface from "./ArenaRetro.module.css"; display: grid; justify-items: end; gap: 12px; color: #172923; min-width: 0; max-width: min(100%,360px); text-align: right; font-size: 12px; overflow-wrap: anywhere; }
 .characterButton { display: inline-flex; align-items: center; justify-content: center; gap: 9px; padding: 12px 18px; min-height: 48px; max-width: 100%; color: #172923; text-decoration: none; font: 800 12px/1.4 var(--font-body),Arial,sans-serif; cursor: pointer; }
 .characterButton svg,.saved svg { flex-shrink: 0; }
 .saved { display: flex; align-items: center; gap: 8px; padding: 9px 0; border-bottom: 1px solid #17292355; font-size: 11px; line-height: 1.5; color: #087b70; }
-.entry { composes: surface from "./ArenaRetro.module.css"; position: relative; grid-area: 1 / 2; }
+.entry { composes: gameSurface from "./ArenaRetro.module.css"; position: relative; grid-area: 1 / 2; }
 .entry > button { width: 100%; cursor: pointer; text-align: left; }
 .bubble { --game-panel-art: var(--game-panel-paper,url("/placard/ui/panel-paper-v1.webp")); position: absolute; z-index: 5; bottom: calc(100% + 16px); right: 0; width: min(330px,calc(100vw - 2rem)); padding: 24px 54px 24px 22px; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; box-shadow: none; text-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice,48) fill / var(--game-panel-edge,15px) / 0 stretch; }
 .bubble small { display: block; margin-bottom: 9px; color: #087b70; font: 800 10px/1.4 ui-monospace,Consolas,monospace; letter-spacing: .08em; text-transform: uppercase; }

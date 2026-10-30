@@ -25,7 +25,7 @@ export async function getKqEnergySnapshot(userId: string, selection: KqRunSelect
       : selection.zoneId ? getKqWarehouseRunSnapshot(userId, selection.zoneId) : getKqWarehouseRunSnapshot(userId),
   ]);
   const campaignMembers = selected?.state.campaign?.members ?? (selection.campaign && storedWarehouse
-    ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision) : null);
+    ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision, storedWarehouse.cultureEquipment) : null);
   const warehouse = campaignMembers ? getKqCampaignWarehouse(campaignMembers) : storedWarehouse;
   const supplierInvoices = rawSummary.supplierInvoices ?? (rawSummary.supplierInvoice ? [rawSummary.supplierInvoice] : []);
   const memberRunIds = selected?.state.campaign?.members.map(member => member.runId);

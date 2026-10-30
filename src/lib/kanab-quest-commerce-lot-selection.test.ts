@@ -38,4 +38,30 @@ describe("verdict harvest selection at the counter", () => {
   it("leaves the generic counter unselected when no exact identity was supplied", () => {
     expect(getKqCommerceFlowerSelection({ rawLots: [raw("other")], stocks: [stock("other")] })).toEqual({ status: "none" });
   });
+
+  it("restores the exact transformed product even when a raw remainder exists", () => {
+    const otherProduct = { ...stock("judged"), id: "dry-sift-product", route: "dry-sift" as const };
+    const snapshot = { rawLots: [raw("judged")], stocks: [stock("judged"), otherProduct] };
+    expect(getKqCommerceFlowerSelection(snapshot, "judged", otherProduct.id))
+      .toEqual({ status: "selected", flowerId: "judged", selectedId: otherProduct.id });
+    expect(getKqCommerceFlowerSelection(snapshot, undefined, otherProduct.id))
+      .toEqual({ status: "selected", flowerId: "judged", selectedId: otherProduct.id });
+  });
+
+  it("never replaces an explicit missing product with the harvest's raw remainder", () => {
+    expect(getKqCommerceFlowerSelection({ rawLots: [raw("judged")], stocks: [stock("judged")] }, "judged", "missing-product"))
+      .toEqual({ status: "missing", flowerId: "judged" });
+  });
+
+  it("rejects conflicting harvest and product identities", () => {
+    expect(getKqCommerceFlowerSelection({ rawLots: [raw("other")], stocks: [stock("other")] }, "judged", "stock-other"))
+      .toEqual({ status: "missing", flowerId: "judged" });
+    expect(getKqCommerceFlowerSelection({ rawLots: [raw("other")], stocks: [] }, "judged", "raw:other"))
+      .toEqual({ status: "missing", flowerId: "judged" });
+  });
+
+  it("does not restore a sold-out product when another product remains", () => {
+    expect(getKqCommerceFlowerSelection({ rawLots: [], stocks: [{ ...stock("judged", 0), id: "empty" }, stock("judged")] }, "judged", "empty"))
+      .toEqual({ status: "missing", flowerId: "judged" });
+  });
 });

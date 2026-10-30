@@ -21,16 +21,16 @@ const SCENARIO = ['SIT-001', 'SIT-002', 'SIT-009', 'SIT-004', 'SIT-005', 'SIT-00
 const DEMO_TIME = '2026-10-07T12:00:00.000Z';
 
 /** A prepared, reproducible learning scenario. The normal engine remains unchanged. */
-export function createKqFirstCulture(): KqGameState {
+export function createKqFirstCulture(varietyCode?: string): KqGameState {
   const game = startKqGame(1178, {
-    varietyCode: KQ_BUDDIES.find(buddie => buddie.rarity === 'gold')!.code,
+    varietyCode: varietyCode ?? KQ_BUDDIES.find(buddie => buddie.rarity === 'gold')!.code,
     deckCodes: [KQ_FIRST_CULTURE_SUPPORT.code],
     collectionCodes: [KQ_FIRST_CULTURE_SUPPORT.code],
     equipmentCodes: KQ_FIRST_CULTURE_EQUIPMENT,
     energyMode: 'balanced',
     startedAt: DEMO_TIME,
   });
-  return { ...game, varietyName: 'Buddie d’essai', situationCodes: [...SCENARIO] };
+  return { ...game, ...(!varietyCode ? { varietyName: 'Buddie d’essai' } : {}), situationCodes: [...SCENARIO] };
 }
 
 export function reduceKqFirstCulture(game: KqGameState, action: KqFirstCultureAction): KqGameState {

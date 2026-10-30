@@ -1,0 +1,13 @@
+.empty { max-width: 760px; padding: clamp(16px, 3vw, 24px); color: #172923; background: transparent; border: 2px solid transparent; border-image: var(--game-panel-art, url("/placard/ui/panel-paper-v1.webp")) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; overflow-wrap: anywhere; }
+.empty h3 { margin: 0 0 14px; font: 900 clamp(24px, 4vw, 32px)/1.1 var(--font-display), sans-serif; }
+.empty p { margin: 0 0 14px; font-size: 14px; line-height: 1.6; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.primary, .secondary, .error button { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; max-width: 100%; padding: 11px 15px; color: #172923; font: 650 14px/1.4 var(--font-body), sans-serif; text-decoration: none; text-align: center; cursor: pointer; background: transparent; border: var(--game-control-border-width, 2px) solid transparent; box-shadow: none; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.primary { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.secondary, .error button { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
+.empty :where(a, button):hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.empty :where(a, button):focus-visible { outline: 3px solid #076c61; outline-offset: 4px; }
+.empty svg { flex-shrink: 0; }
+.packets { margin: 18px 0; }
+.error { padding-top: 14px; font-weight: 600; }
+.error button { margin-top: 8px; }

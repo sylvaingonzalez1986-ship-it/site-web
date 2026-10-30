@@ -197,6 +197,8 @@ describe("La relève — guidance follows the player's production state", () => 
   it("points to the real campaign recap, native training confirmation and verdict analysis for each harvest", () => {
     let state = harvested(2);
     expect(ids("culture", state)).toContain("culture:recap");
+    expect(ids("jury", state)).toEqual(["jury:storage", "jury:mature"]);
+    state = act(state, { type: "mature" });
     for (const harvest of getKqReleveHarvests(state)) {
       const zoneId = harvest.zoneId;
       expect(ids("jury", state)).toEqual(["jury:confirm-training", "jury:confirm-verdict", "jury:return-jury", `jury:present-${zoneId}`]);

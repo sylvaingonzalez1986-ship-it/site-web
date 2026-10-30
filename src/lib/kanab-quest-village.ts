@@ -2,7 +2,9 @@ import type { KqPlacardNextAction } from "./kanab-quest-hub";
 
 /** Keep Sylvain's reply tied to the next action, without inventing a visit history. */
 export function getKqVillageWelcome(action: KqPlacardNextAction) {
-  const reply = action.destination === "arena"
+  const reply = action.destination === "storage"
+    ? "La récolte s’affine avant de rencontrer le jury. Retrouvons tes lots et leurs contenants dans le stockage."
+    : action.destination === "arena"
     ? "Tes Fleurs ont quitté l’atelier. Voyons ce que le jury reconnaît dans ton travail."
     : action.destination === "market"
       ? "Le verdict est là. Au comptoir, prends le temps de comparer ce que ton lot peut devenir."

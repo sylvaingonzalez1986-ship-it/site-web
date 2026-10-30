@@ -4,6 +4,7 @@ import type { KqGameState } from "@/lib/kanab-quest-game";
 import type { KqCareProduct, getKqCannabinoidReport, KqTerpeneReport } from "@/lib/kanab-quest-care";
 import type { KqBuddieCultivationProfile } from "@/lib/kanab-quest-buddie-cultivation";
 import type { KqStorageContainer, KqStorageMethod, KqStorageMethodCode, KqStorageProjection } from "@/lib/kanab-quest-storage";
+import type { KqStorageStockBreakdown } from "@/lib/kanab-quest-storage-breakdown";
 
 export type KqApiBurnReceipt = {
   id: string;
@@ -15,6 +16,8 @@ export type KqApiBurnReceipt = {
 };
 
 export type KqOfficialFlower = {
+  /** Authoritative conservation state; jury eligibility starts when curing is ready. */
+  storage?: KqStorageProjection;
   /** Absent on historical responses; the original harvest scale then applies. */
   harvestTierVersion?: 2;
   successfulStages?: number;
@@ -110,7 +113,7 @@ export function createKqScopedRequest(
   };
 }
 
-async function readKqResponse<T>(response: Response): Promise<T> {
+export async function readKqResponse<T>(response: Response): Promise<T> {
   let payload: T & ApiError;
   try {
     payload = await response.json() as T & ApiError;
@@ -123,6 +126,8 @@ async function readKqResponse<T>(response: Response): Promise<T> {
 
 export type KqCareInventory = Array<{ productCode: string; quantity: number }>;
 export type KqStorageSnapshot = {
+  /** Optional on older servers. Do not infer packet status from capacity.usedUnits. */
+  stockBreakdown?: KqStorageStockBreakdown;
   serverNow: string; cashCents: number; ownedMethodCodes: KqStorageMethodCode[]; defaultMethodCode: KqStorageMethodCode;
   catalog: readonly KqStorageMethod[];
   containers: readonly KqStorageContainer[];
@@ -138,7 +143,7 @@ export async function getKqRemoteStorage(request: typeof fetch = fetch) {
   return readKqResponse<KqStorageSnapshot>(await request("/api/admin/placard/storage", { cache: "no-store" }));
 }
 export async function changeKqRemoteStorage(input: {
-  action: "buy" | "select-default" | "assign" | "sell-overflow"; methodCode?: KqStorageMethodCode;
+  action: "buy" | "select-default" | "assign" | "place" | "sell-overflow"; methodCode?: KqStorageMethodCode;
   containerCode?: string; quantity?: number; flowerId?: string; requestKey: string;
 }, request: typeof fetch = fetch) {
   return readKqResponse<KqStorageSnapshot>(await request("/api/admin/placard/storage", {
@@ -164,7 +169,7 @@ export async function applyKqRemoteCare(runId: string, input: { productCode?: st
 }
 
 export async function startKqRemoteRun(
-  input: { buddieCode: string; deckCodes: string[]; cultureTokens?: number; heritageCode?: string; energyMode?: KqEnergyMode; expectedEnergyCents?: number; zoneId?: string; campaign?: boolean; requestKey?: string },
+  input: { buddieCode: string; deckCodes: string[]; cultureTokens?: number; heritageCode?: string; energyMode?: KqEnergyMode; expectedEnergyCents?: number; expectedWarehouseRevision?: number; zoneId?: string; campaign?: boolean; requestKey?: string },
   request: typeof fetch = fetch,
 ) {
   const response = await request("/api/admin/placard/runs", {
@@ -294,11 +299,12 @@ export async function playKqRemoteCard(
   runId: string,
   cardCode: string,
   request: typeof fetch = fetch,
+  options: { expectedStageIndex?: number } = {},
 ) {
   const response = await request(`/api/admin/placard/runs/${encodeURIComponent(runId)}/cards`, {
     method: "POST",
     headers: { "content-type": "application/json" },
-    body: JSON.stringify({ cardCode }),
+    body: JSON.stringify({ cardCode, expectedStageIndex: options.expectedStageIndex }),
   });
   return readKqResponse<{ state: KqGameState; burnReceipt: KqApiBurnReceipt }>(response);
 }

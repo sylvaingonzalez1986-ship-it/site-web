@@ -204,7 +204,7 @@ function KqSupportBoosterCounter({
           else if (!event.shiftKey && (document.activeElement === last || document.activeElement === event.currentTarget)) { event.preventDefault(); first?.focus(); }
         }}>
         <header className={styles.header}>
-          <h2 id="kq-shop-title">Boutique</h2>
+          <h2 id="kq-shop-title">Packs de cartes</h2>
           <div className={styles.headerActions}>
             {onOpenCollection ? <button type="button" disabled={busy} onClick={() => onOpenCollection(section)} aria-haspopup="dialog"><BookOpen size={18} aria-hidden="true" /><span>Collections</span></button> : null}
             <button type="button" className={styles.exit} disabled={busy} aria-label="Quitter la boutique" onClick={closeShop}><X aria-hidden="true" /></button>

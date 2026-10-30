@@ -1,0 +1,20 @@
+{
+  "date": "2026-10-28",
+  "mode": "built-in imagegen edit",
+  "useCase": "precise-object-edit",
+  "source": "exec-b7a73197-cd6e-40c0-8f0d-8171e0150191.png",
+  "file": "arena-roman-sylvain-v7.webp",
+  "replaces": "public/contest/map/arena-roman-sylvain-v5.webp",
+  "editTarget": "public/contest/map/arena-roman-sylvain-v5.webp",
+  "previousProvenance": "public/contest/map/arena-roman-sylvain-v5.json",
+  "characterReference": "public/sylvain.png",
+  "supportingReference": "public/app-character.png",
+  "change": "Balanced direct rear-view cap: orange back and sides. The teal front and forward black visor are hidden on the far side. Remove invented crown button, radial seams and the erroneous left-projecting visor. Incorporates the user's correction that the teal belongs only to the front, never to the left side.",
+  "prompt": "Use case: precise-object-edit.\nINPUT IMAGE 1 is the EDIT TARGET: the existing Roman arena scene, 1536x1024.\nINPUT IMAGE 2 is ONLY the original mascot identity/reference. Its cap is teal on the FACE-FORWARD FRONT ONLY, orange on BOTH SIDES AND THE BACK, and has a black forward visor.\nWe are correcting the cap as seen DIRECTLY FROM BEHIND in image 1. The previous attempt incorrectly put a teal wedge on the left SIDE; do not do this. The green frontal face is away from the camera and therefore concealed in this rear view.\n\nEdit ONLY the foreground mascot's cap:\n- Draw a balanced rounded ORANGE rear crown centered over the existing back of his head and the existing rear opening. Both left and right visible sides are also ORANGE.\n- There must be NO GREEN on the visible cap: its green face-forward front is out of sight, beyond the crown. Do not put teal on the left side, right side, or around the rear.\n- Remove the invented top button, vertical radial rear seam, and diagonal arc across the rear. The visible orange fabric is one continuous simple rounded surface, like the clean original character drawing.\n- Correct the large sideways black projection at the UPPER LEFT: it is an incorrect sideways visor. The real black visor points FORWARD away from the camera and is hidden behind the cap in this direct rear view. Remove this leftward projection so the rear cap outline is balanced, not bulging on the left. Preserve the surrounding black hair beneath the cap.\n- Keep the rear black adjustment opening and small orange strap centered, keep cap size, head location, ears and face-hidden rear pose.\nSame orange as the sweater, same bold smooth black contour and halftone texture.\n\nSTRICT INVARIANTS: Preserve the entire rest of image 1: arena and gradins, ranking board on the left, horizontal village on table under glass dome, Sylvain's body/clothes/hands, smartphone at his right and its screen content, framing, camera, lighting, object locations and dimensions. Only redraw the cap silhouette/material locally as described. Do not add any text or any object. Return the full 1536x1024 scene.",
+  "export": {
+    "width": 1536,
+    "height": 1024,
+    "format": "webp",
+    "quality": 88
+  }
+}

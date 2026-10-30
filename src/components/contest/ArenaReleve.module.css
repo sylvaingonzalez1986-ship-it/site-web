@@ -1,4 +1,4 @@
-.dialog { composes: surface from "./ArenaRetro.module.css"; width: 100vw; max-width: none; height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0; background: #fff1d6; color: #172923; font-family: var(--font-body), sans-serif; }
+.dialog { composes: gameSurface from "./ArenaRetro.module.css"; width: 100vw; max-width: none; height: 100dvh; max-height: 100dvh; border: 0; border-radius: 0; background: #fff1d6; color: #172923; font-family: var(--font-body), sans-serif; }
 .dialog * { box-sizing: border-box; }
 .body { padding: 0 24px 20px; }
 .body > div:not([data-releve-floating-guide]) { max-width: 1280px; width: 100%; margin: 0 auto; }
@@ -126,11 +126,11 @@
 .coachText p { margin: 5px 0 0; font-size: .83rem; line-height: 1.45; }
 .coachActions { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; flex-shrink: 0; }
 .coachActions button { font-size: .85rem; }
-.nestedCoach { composes: surface from "./ArenaRetro.module.css"; position:fixed; bottom:12px; left:50%; transform:translateX(-50%); width:min(660px,calc(100vw - 24px)); z-index:2147482999; padding:12px; color:#172923; }
+.nestedCoach { composes: gameSurface from "./ArenaRetro.module.css"; position:fixed; bottom:12px; left:50%; transform:translateX(-50%); width:min(660px,calc(100vw - 24px)); z-index:2147482999; padding:12px; color:#172923; }
 .nestedCoach[data-side=top] { top:12px; bottom:auto; }
 @media(max-width:1000px) { .screenCoach:not([data-side=top]) { bottom:calc(80px + env(safe-area-inset-bottom,0px)); } }
 .nestedCoach[data-guide-free=true] { top:80px; bottom:auto; left:auto; right:12px; transform:none; width:auto; padding:6px; }
-.confirm { composes: surface from "./ArenaRetro.module.css"; max-width: 540px; background: transparent; color: #172923; }
+.confirm { composes: gameSurface from "./ArenaRetro.module.css"; max-width: 540px; background: transparent; color: #172923; }
 .completion { min-width: 0; }
 .completionScene { position: relative; overflow: hidden; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); box-shadow: var(--game-panel-shadow, none); }
 .completionScene > img { display: block; width: 100%; height: clamp(320px, 50dvh, 520px); object-fit: cover; }

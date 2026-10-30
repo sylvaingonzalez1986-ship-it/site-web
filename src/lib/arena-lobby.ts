@@ -3,8 +3,8 @@ export const ARENA_LOBBY_MODES = {
     number: "01", name: "Le Carnet", label: "Déguste. Note. Collectionne.",
     description: "Tes dégustations ont du pouvoir.",
     href: "/arene/carnet/regular", action: "Ouvrir mon Carnet", frequency: 330,
-    image: "/contest/map/arena-desk-sylvain-v6.webp",
-    imageAlt: "Sylvain note sa dégustation dans son carnet, à la lumière de son bureau.",
+    image: "/contest/map/arena-roman-sylvain-v7.webp",
+    imageAlt: "Au premier plan, Sylvain vu de dos se tient en hauteur dans les gradins de l’arène romaine. Son smartphone à droite affiche son carnet de dégustation et le panneau des classements se trouve à sa gauche. En contrebas, au centre de la piste, une estrade porte une table sur laquelle le village du jeu est disposé à plat sous une bulle de verre.",
   },
   jouer: {
     number: "02", name: "Kanab Quest", label: "Cultive. Affronte. Recommence.",

@@ -130,3 +130,59 @@
 .art { border-bottom: 0; }
 .body { padding: 18px 10px 10px; }
 @media (max-width: 700px) { .track { padding: 8px; } .body { padding: 16px 8px 8px; } }
+
+/* Decisions first; the full journey and global breakdown remain optional. */
+.center { padding: 16px clamp(16px, 3vw, 32px) 40px; }
+.center > [data-kq-chapter] { grid-template-columns: minmax(0, 1fr) 80px; padding: 8px 0 16px; background: transparent; margin-bottom: 16px; }
+.sections { margin-bottom: 16px; }
+.summary { margin: 0 0 12px; font-size: 14px; line-height: 1.5; }
+.summary strong { color: #076c61; }
+.toolbar { margin: 0 0 12px; padding: 0; border: 0; align-items: center; }
+.toolbar > button { justify-content: center; width: 44px; height: 44px; flex: 0 0 auto; }
+.trackFilter { position: relative; display: block; min-width: 0; width: min(100%, 400px); }
+.trackFilter select { appearance: none; min-height: 44px; width: 100%; padding: 9px 34px 9px 12px; color: #172923; font: 700 14px/1.5 var(--font-body),sans-serif; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art:var(--game-control-paper,url("/placard/ui/control-paper-v2.webp")); border-image:var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; }
+.trackFilter > svg { position: absolute; right: 12px; top: 13px; pointer-events: none; }
+.trackFilter select:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.tracks { align-items: start; gap: 16px; }
+.track { overflow: visible; padding: 16px; }
+.trackHeading { display: flex; align-items: center; gap: 12px; min-width: 0; margin-bottom: 12px; }
+.trackHeading > img { width: 72px; height: 60px; flex: 0 0 auto; object-fit: cover; }
+.trackHeading > span { font-size: 14px; line-height: 1.4; font-weight: 700; }
+.body { padding: 0; }
+.body h2 { margin: 8px 0; font-size: 26px; text-transform: none; overflow-wrap: anywhere; }
+.description { margin-bottom: 12px; font-size: 14px; line-height: 1.5; }
+.eyebrow { font-size: 12px; text-transform: none; letter-spacing: 0; }
+.difficulty { font-size: 12px; }
+.missionMeter { margin: 0 0 12px; }
+.reward { border: 0; border-block: 1px solid #17292330; border-radius: 0; background: transparent; padding: 8px 0; gap: 8px; }
+.reward[data-kind="cash"],.reward[data-kind="card"] { background: transparent; }
+.reward img { max-width: 44px; max-height: 60px; }
+.reward .rewardIcon { width: 36px; height: 36px; flex-basis: 36px; }
+.reward small { margin-bottom: 2px; font-size: 12px; }
+.reward strong { font-size: 14px; }
+.reward em { font-size: 12px; margin-top: 2px; }
+.claim,.action { font-size: 14px; }
+.reached,.unavailable { font-size: 13px; line-height: 1.5; }
+.journey { margin-top: 12px; padding-top: 0; }
+.journey > summary,.footer summary { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 8px; min-height: 44px; padding: 10px 0; font-size: 14px; line-height: 1.5; cursor: pointer; }
+.journey > summary { list-style: none; }
+.journey > summary::-webkit-details-marker { display: none; }
+.journey > summary svg,.footer summary svg { flex: 0 0 auto; }
+.journey[open] > summary svg,.footer details[open] > summary svg { transform: rotate(180deg); }
+.journey strong,.journey small,.journey p,.journey .journeyStatus,.footer p,.rewardLegend li { font-size: 13px; }
+.overview { display: block; padding: 12px 0; border: 0; border-image: none; }
+.packs { margin: 12px 0 16px; padding: 12px 0; border-block: 1px solid #17292330; }
+.packs p { margin: 0 0 8px; font-size: 14px; }
+.packs button,.empty button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; max-width: 100%; padding: 10px 14px; font-size: 14px; font-weight: 700; color: #172923; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art:var(--game-control-gold,url("/placard/ui/control-gold-v2.webp")); border-image:var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; }
+.packs button svg { flex: 0 0 auto; }
+.center .packs button:disabled { border-color: transparent; background: transparent; opacity: .6; }
+.center :is(.sections button,.toolbar button,.claim,.action,.packs button,.empty button):hover:not(:disabled),.trackFilter select:hover:not(:disabled) { color: #172923; --game-control-art:var(--game-control-gold,url("/placard/ui/control-gold-v2.webp")); }
+.empty { margin: 16px 0; font-size: 14px; line-height: 1.6; }
+@media (max-width: 600px) { .center > [data-kq-chapter] { grid-template-columns: minmax(0, 1fr) 64px; } }
+@media (max-width: 760px) {
+  .sections { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }
+  .sections button { padding: 8px 4px; flex-direction: column; gap: 4px; font-size: 13px; }
+  .track { padding: 12px; }
+  .trackHeading { margin-bottom: 8px; }
+  .trackHeading > img { width: 64px; height: 48px; }
+}

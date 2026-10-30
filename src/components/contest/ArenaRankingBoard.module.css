@@ -35,7 +35,6 @@
   border-bottom: 2px solid var(--ink);
 }
 .heading > div { min-width: 0; }
-.board .eyebrow { display: flex; align-items: center; gap: 7px; margin-bottom: 9px; font-size: 11px; line-height: 1.3; font-weight: 900; text-transform: uppercase; letter-spacing: .12em; }
 .board .heading h3 { font-family: var(--font-display), Impact, sans-serif; font-size: clamp(28px, 3.2vw, 43px); line-height: 1.02; font-weight: 900; text-transform: uppercase; letter-spacing: -.025em; color: var(--ink); }
 .board .intro { max-width: 62ch; margin-top: 11px; font-size: 12px; line-height: 1.6; font-weight: 600; }
 .seal { display: grid; justify-items: center; flex: 0 0 104px; text-align: center; background: transparent; border: 0; border-radius: 0; box-shadow: none; flex-basis: 150px; gap: 0; padding: 0; transform: none; }
@@ -129,7 +128,7 @@ a.row:hover { background: transparent; border-color: transparent; }
 .playerName { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; }
 .playerName strong { overflow-wrap: anywhere; font-size: 14px; line-height: 1.25; font-weight: 900; }
 .playerName em { padding: 2px 6px; font-size: 9px; font-weight: 900; font-style: normal; background: transparent; border: 0; border-radius: 0; box-shadow: none; border-bottom: 2px solid #087b70; color: #00563f; }
-.board .eyebrow, .board .intro, .playerName em { color: #10231e; }
+.board .intro, .playerName em { color: #10231e; }
 .contributions { display: flex; flex-wrap: wrap; gap: 5px 11px; margin-top: 7px; }
 .contributions > span { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; color: #536058; }
 .contributions b { color: var(--ink); font-variant-numeric: tabular-nums; }
@@ -190,8 +189,6 @@ a.row:hover { background: transparent; border-color: transparent; }
   .board { padding: 7px; }
   .heading { align-items: flex-start; gap: 10px; padding: 19px 14px 17px; }
   .board .heading h3 { max-width: 13ch; font-size: 29px; }
-  .board .eyebrow { gap: 5px; font-size: 8px; letter-spacing: .07em; }
-  .board .eyebrow svg { width: 12px; height: 12px; }
   .board .intro { font-size: 11px; line-height: 1.6; }
   .seal { flex-basis: 70px; margin-top: 5px; padding: 8px 4px; }
   .seal svg { width: 19px; height: 19px; }

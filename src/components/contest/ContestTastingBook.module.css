@@ -2,7 +2,7 @@
 :global(.site-background):has(.desk) > :not(:global(main)) { visibility: hidden; }
 
 .desk {
-  composes: surface from "./ArenaRetro.module.css";
+  composes: gameSurface from "./ArenaRetro.module.css";
   position: fixed;
   z-index: 70;
   inset: var(--book-top, 0px) 0 auto;
@@ -34,9 +34,7 @@
 .desk button, .desk a { -webkit-tap-highlight-color: transparent; }
 .deskHeader { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 56px; margin: 0 auto; color: #172923; width: min(1180px, 100%); }
 .deskHeader a { display: flex; align-items: center; gap: 6px; min-height: 44px; text-decoration: none; color: #172923; font-size: 12px; font-weight: 700; }
-.deskHeader > span { font-size: 9px; letter-spacing: .12em; text-transform: uppercase; }
 .deskHeader .arenaExit { min-height: 44px; padding: 8px 12px; color: #172923; font-size: 14px; font-weight: 900; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); border: 2px solid transparent; border-color: transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
-@media (max-width: 600px) { .deskHeader > span { display: none; } }
 .deskHeader > button { display: grid; place-items: center; width: 44px; height: 44px; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-color: transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .deskHeader .tutorialExit { display: flex; gap: 6px; width: auto; min-height: 44px; padding-inline: 10px; color: #172923; font-size: 12px; font-weight: 700; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-color: transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .deskHeader .finishInput { display: none; width: auto; padding-inline: 10px; font-size: 12px; font-weight: 800; }
@@ -44,7 +42,6 @@
 .cover { display: block; position: relative; flex-shrink: 1; min-height: 0; max-height: calc(100% - 52px); aspect-ratio: .69; transform: rotate(-4deg); transition: transform 260ms ease; text-align: center; width: min(80vw, 380px); padding: 20px 22px 20px 32px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: url("/contest/ui/notebook-cover-material-v1.webp") 70 fill / 25px / 0 stretch; }
 .cover:hover { transform: rotate(-2deg) translateY(-4px); }
 .coverBorder { display: flex; flex-direction: column; align-items: center; justify-content: space-between; height: 100%; min-height: 0; color: #fff5da; padding: 12px 8px; border: 0; border-radius: 0; background: transparent; gap: 12px; }
-.coverKicker { font-weight: 900; text-transform: uppercase; letter-spacing: .08em; padding: 0; border: 0; border-radius: 0; background: transparent; color: #fff1d6; box-shadow: none; transform: none; font-size: 10px; }
 .coverEmblem { position: relative; display: grid; place-items: center; flex: 1; width: 100%; isolation: isolate; min-height: 78px; max-height: 210px; }
 .coverEmblem img { position: absolute; object-fit: contain; width: 100%; height: 100%; filter: none; }
 .coverTitle { margin: 0; color: #fff5da; font-family: var(--font-display), Impact, sans-serif; line-height: 1; font-weight: 900; text-transform: uppercase; text-shadow: none; font-size: clamp(32px, 9vw, 52px); }
@@ -52,7 +49,6 @@
 .closedStage[data-opening] { position: absolute; inset: 56px 12px 14px; z-index: 5; pointer-events: none; }
 .closedStage[data-opening] .closedHint { visibility: hidden; }
 .closedStage[data-opening] .cover { transform-origin: left center; animation: unfoldCover 650ms cubic-bezier(.25,.7,.25,1) both; backface-visibility: hidden; }
-.coverSubtitle { font-size: 10px; line-height: 1.5; color: #d0f3e4; }
 .coverBonus { display: flex; align-items: center; justify-content: center; gap: 5px; font-size: 10px; font-weight: 900; line-height: 1.5; color: var(--gold); }
 .coverBonus svg { flex-shrink: 0; }
 .coverSignature { font-size: 11px; font-weight: 800; border-bottom: 1px solid #fff1d680; padding: 5px 10px; }
@@ -67,7 +63,6 @@
 .bookStage { display: grid; place-items: center; min-height: 0; perspective: 1500px; padding: 6px 5px 8px 0; }
 .book { display: grid; grid-template-columns: minmax(0, 1fr); width: min(100%, 530px); height: 100%; max-height: 850px; min-height: 0; color: var(--ink); animation: bookOpen 480ms cubic-bezier(.2,.7,.2,1) both; transform-origin: left center; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: 3px 3px 0 #fff8e7, 4px 4px 0 #172923, 7px 7px 0 #fff1d6, 8px 8px 0 #172923; padding: 9px; border-image: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")) 48 fill / 15px / 0 stretch; }
 .frontispiece { display: none; padding: 22px 26px; gap: 16px; border-radius: 0; background: transparent; color: var(--ink); border-right: 3px double #17292370; }
-.guideBadge { display: inline-flex; align-items: center; gap: 7px; font: 900 11px/1.2 ui-monospace, Consolas, monospace; text-transform: uppercase; transform: none; box-shadow: none; border: 0; border-radius: 0; padding: 0; background: transparent; color: var(--green); }
 .sylvainWelcome { position: relative; display: flex; align-items: center; border-radius: 2px; color: var(--ink); padding: 0; margin: 0 0 18px; border: 0; background: transparent; box-shadow: none; transform: none; gap: 12px; min-height: 96px; }
 .sylvainWelcome img { flex-shrink: 0; object-fit: contain; width: 80px; height: 96px; align-self: center; }
 .sylvainWelcome p { display: grid; gap: 5px; margin: 0; padding-block: 8px; }
@@ -185,7 +180,6 @@
   .book { grid-template-columns: .9fr 1.1fr; width: min(100%, 1160px); max-height: 850px; }
   .frontispiece { position: relative; display: flex; flex-direction: column; align-items: flex-start; min-height: 0; overflow: hidden; background-size: 5px 5px, auto; padding: 22px 26px; gap: 16px; border-radius: 0; background: transparent; color: var(--ink); border-right: 3px double #17292370; }
   .frontispiece::after { content: ""; position: absolute; pointer-events: none; inset: 0 0 0 auto; width: 12px; box-shadow: inset -6px 0 9px #17292308; }
-  .imprint { flex-shrink: 0; padding-bottom: 4px; font: 800 9px/1.4 ui-monospace, Consolas, monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
   .asideTitle { flex-shrink: 0; margin: 2px 0 0; font: 900 clamp(34px, 3.2vw, 45px)/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; text-shadow: none; }
   .asideTitle em { font-style: normal; color: var(--green); }
   .frontispiece > p:not(.asideTitle) { flex-shrink: 0; margin: 0; max-width: 34ch; font: 500 13px/1.7 var(--font-body), Arial, sans-serif; color: var(--muted); }
@@ -205,7 +199,6 @@
 @media (max-height: 700px) {
   .coverBorder { gap: 8px; padding-block: 12px; }
   .coverEmblem { min-height: 65px; max-height: 130px; }
-  .coverSubtitle { display: none; }
   .closedStage { gap: 15px; }
   .pageHeading { padding-block: 10px; }
   .pageHeading h2 { font-size: 25px; }
@@ -220,7 +213,6 @@
 }
 @media (max-width: 359px) {
   .desk { padding-inline: 8px; }
-  .deskHeader > span { font-size: 8px; letter-spacing: .04em; }
   .pageContent, .pageHeading { padding-inline: 16px; }
   .tastingContent { padding: 0; }
   .contentsRow { gap: 6px; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-color: transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
@@ -242,7 +234,6 @@
 @media (max-width: 899px), (pointer: coarse) {
   .desk[data-book-input-open="true"] { padding: env(safe-area-inset-top, 0px) 8px 6px; }
   .desk[data-book-input-open="true"] .deskHeader { min-height: 44px; gap: 8px; }
-  .desk[data-book-input-open="true"] .deskHeader > span,
   .desk[data-book-input-open="true"] .deskHeader > button:not(.finishInput):not(.tutorialExit),
   .desk[data-book-input-open="true"] .pageHeader,
   .desk[data-book-input-open="true"] .pageHeading,
@@ -274,7 +265,6 @@
 @media (max-height: 700px) {
   .coverBorder { padding-block: 8px; gap: 6px; }
   .coverTitle { font-size: 32px; }
-  .coverKicker { font-size: 8px; }
   .coverSignature { font-size: 10px; padding-block: 2px; }
   .coverEmblem { max-height: 130px; min-height: 58px; }
 }

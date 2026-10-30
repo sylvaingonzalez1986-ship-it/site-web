@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { alignCheckoutDraft, resolveCheckoutDraft, type CheckoutDraftState } from "@/lib/checkout-draft";
+import { alignCheckoutDraft, patchCheckoutDraft, resolveCheckoutDraft, type CheckoutDraftState } from "@/lib/checkout-draft";
 import type { PublicCustomer } from "@/types/customer";
 
 const customer: PublicCustomer = {
@@ -11,11 +11,48 @@ const customer: PublicCustomer = {
 const relay = { id: "relay-a", name: "Relais choisi", address: "2 rue du Relais", city: "Brest", postalCode: "29200", country: "FR" };
 
 describe("checkout draft", () => {
+  it("clears the selected relay when changing from France to Belgium and does not restore it on return", () => {
+    const original: CheckoutDraftState = { customerId: customer.id, edits: { selectedRelayPoint: relay, deliveryMethod: "relay" } };
+    const belgian = patchCheckoutDraft(original, customer, { shippingCountry: "Belgique" });
+    expect(resolveCheckoutDraft(belgian, customer)).toMatchObject({ shippingCountry: "Belgique", selectedRelayPoint: null });
+    const french = patchCheckoutDraft(belgian, customer, { shippingCountry: "France" });
+    expect(resolveCheckoutDraft(french, customer).selectedRelayPoint).toBeNull();
+  });
+
+  it.each([{ shippingPostalCode: "1000" }, { shippingCity: "Bruxelles" }])(
+    "requires a new relay after editing the search location: %j",
+    (patch) => {
+      const original: CheckoutDraftState = { customerId: customer.id, edits: { selectedRelayPoint: relay } };
+      expect(resolveCheckoutDraft(patchCheckoutDraft(original, customer, patch), customer).selectedRelayPoint).toBeNull();
+    },
+  );
+
+  it("keeps the relay when the country code is just replaced by its equivalent name", () => {
+    const belgianRelay = { ...relay, country: "BE", postalCode: "1000", city: "Bruxelles" };
+    const original: CheckoutDraftState = { customerId: customer.id, edits: { shippingCountry: "BE", selectedRelayPoint: belgianRelay } };
+    expect(resolveCheckoutDraft(patchCheckoutDraft(original, customer, { shippingCountry: "Belgique" }), customer).selectedRelayPoint).toEqual(belgianRelay);
+  });
+
+  it("does not invalidate a relay for a phone edit", () => {
+    const original: CheckoutDraftState = { customerId: customer.id, edits: { selectedRelayPoint: relay } };
+    expect(resolveCheckoutDraft(patchCheckoutDraft(original, customer, { shippingPhone: "+32470123456" }), customer).selectedRelayPoint).toEqual(relay);
+  });
+
+  it("does not expose a relay from a different country after a profile refresh", () => {
+    const original: CheckoutDraftState = { customerId: customer.id, edits: { selectedRelayPoint: relay } };
+    expect(resolveCheckoutDraft(original, { ...customer, country: "Belgique" }).selectedRelayPoint).toBeNull();
+  });
+
+  it("keeps a French profile phone's prefix when the delivery country becomes Belgium", () => {
+    const state = patchCheckoutDraft({ customerId: customer.id, edits: {} }, customer, { shippingCountry: "Belgique" });
+    expect(resolveCheckoutDraft(state, customer)).toMatchObject({ shippingPhone: "+33600000000", shippingCountry: "Belgique" });
+  });
+
   it("prefills delivery from the customer as soon as the session arrives", () => {
     const visitor: CheckoutDraftState = { customerId: null, edits: {} };
     expect(resolveCheckoutDraft(visitor, customer)).toMatchObject({
       shippingName: "Anne Test", shippingEmail: customer.email, shippingAddress: customer.address,
-      shippingPhone: customer.phone, deliveryMethod: "home", selectedRelayPoint: null,
+      shippingPhone: "+33600000000", deliveryMethod: "home", selectedRelayPoint: null,
     });
   });
 
@@ -34,7 +71,7 @@ describe("checkout draft", () => {
   it("uses updated profile values only for fields the client has not edited", () => {
     const draft: CheckoutDraftState = { customerId: customer.id, edits: { shippingCity: "Brest" } };
     expect(resolveCheckoutDraft(draft, { ...customer, phone: "0677777777", city: "Nantes" })).toMatchObject({
-      shippingPhone: "0677777777", shippingCity: "Brest",
+      shippingPhone: "+33677777777", shippingCity: "Brest",
     });
   });
 

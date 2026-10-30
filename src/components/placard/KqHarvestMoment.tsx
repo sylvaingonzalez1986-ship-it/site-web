@@ -43,7 +43,7 @@ export function KqHarvestMoment({ state, flowers, runId, artwork, fresh, onConti
   const description = lost
     ? "Prends le temps de lire le bilan avant la prochaine culture."
     : reserveConfirmed
-      ? `${result.confirmedFlowers === 1 ? "Ta Fleur est enregistrée" : `${result.confirmedFlowers} Fleurs sont enregistrées`}. La suite se joue dans ta réserve.`
+      ? `${result.confirmedFlowers === 1 ? "Ta Fleur d’Arène est enregistrée" : `${result.confirmedFlowers} Fleurs d’Arène sont enregistrées`}. Choisis les contenants de chaque variété. L’affinage dure 6 heures réelles dès la récolte, avant le jury.`
       : alive
         ? "Le fruit de tes choix. Retrouve le détail de chaque récolte ci-dessous."
         : "Les valeurs de cette récolte ne sont pas encore disponibles.";
@@ -64,7 +64,6 @@ export function KqHarvestMoment({ state, flowers, runId, artwork, fresh, onConti
       {soloTier ? <p className={styles.identity} data-harvest-identity>
         {result.rows[0].varietyName} · <strong>{soloTier}</strong>
       </p> : null}
-      <p>{description}</p>
       {!lost ? <dl className={styles.metrics}>
         <div>
           <dt><Scale aria-hidden="true" />{campaign ? "Récolte totale" : "Récolte"}</dt>
@@ -72,13 +71,14 @@ export function KqHarvestMoment({ state, flowers, runId, artwork, fresh, onConti
           {result.totalGrams === null ? <span>Quantité indisponible</span> : null}
         </div>
         <div>
-          <dt><Sprout aria-hidden="true" />Qualité{campaign ? " par récolte" : ""}</dt>
+          <dt><Sprout aria-hidden="true" />Qualité de culture{campaign ? " par variété" : ""}</dt>
           <dd>{qualityText}{quality ? <small> points</small> : null}</dd>
           {!quality ? <span>Qualité indisponible</span> : null}
         </div>
       </dl> : null}
+      <p>{description}</p>
       {alive && onContinue ? <button type="button" className={styles.continue} onClick={onContinue}>
-        Voir ma réserve <ArrowRight aria-hidden="true" />
+        Ranger ma récolte <ArrowRight aria-hidden="true" />
       </button> : null}
     </div>
   </section>;

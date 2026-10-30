@@ -127,6 +127,8 @@ function databaseError(message: string, operation?: string): never {
     commerce_lab_unavailable: "Cette analyse est déjà réglée ou ne t’appartient pas.",
     commerce_supplier_unavailable: "Cette facture fournisseur est déjà réglée ou ne t’appartient pas.",
     commerce_supplier_cash: "Trésorerie insuffisante pour solder cette facture. Le solde échu sera réglé progressivement sur les ventes.",
+    commerce_invoices_changed: "Le total des factures a changé. Actualise le récapitulatif avant de confirmer.",
+    commerce_invoices_cash: "Trésorerie insuffisante pour régler toutes les factures. Aucun règlement n’a été effectué.",
     commerce_legacy_internet: "L’accès en ligne passe désormais par la création de ton shop.",
     commerce_domiciliation_retired: "La domiciliation a été retirée du jeu.",
     commerce_legacy_sale: "Actualise le marché pour choisir ton circuit de vente.",
@@ -224,6 +226,8 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
     payload = { kind: body.kind };
   } else if (action === "pay-lab" || action === "pay-supplier") {
     payload = { invoiceId: uuid(body.invoiceId) };
+  } else if (action === "pay-all-invoices") {
+    payload = { expectedCents: boundedInteger(body.expectedCents, 2_147_483_647) };
   } else if (action === "domiciliation") {
     throw new Error("La domiciliation a été retirée du jeu.");
   } else if (action === "internet") {

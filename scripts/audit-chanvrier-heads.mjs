@@ -147,12 +147,22 @@ try {
       const pixels = canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data;
       let opaque = 0;
       for (let index = 3; index < pixels.length; index += 4) if (pixels[index] > 32) opaque++;
+      // Probe the registered drawing through the real portrait/full-frame crop.
+      // These semantic checks catch palette bleed that distinct hashes cannot.
+      const probe = (masterX, masterY) => {
+        const frameX = masterX * 768 / 1254, frameY = masterY * 768 / 1254 - 86;
+        const x = Math.round(canvas.height === 768 ? (frameX - 64) * 768 / 592 : frameX);
+        const y = Math.round(canvas.height === 768 ? (frameY - 40) * 768 / 592 : frameY);
+        const offset = (y * canvas.width + x) * 4;
+        return [...pixels.slice(offset, offset + 3)];
+      };
       return {
         choice: figure.dataset.choice,
         state: canvas.dataset.avatarState,
         occupiedPixels: opaque,
         width: canvas.width,
         height: canvas.height,
+        palette: { white: probe(662, 657), pupil: probe(690, 658), iris: probe(700, 690) },
         image: canvas.toDataURL(),
       };
     }));
@@ -256,6 +266,22 @@ try {
   for (const choice of ['eyes', 'eyebrows', 'nose', 'mouth', 'facialHair', 'accessory', 'hairColor', 'eyeColor', 'skin']) {
     microchoices[choice] = await capture(`micro=${choice}&hair=crop`, `choices-${choice}`);
   }
+  for (const field of ['hairColor', 'eyeColor', 'skin']) {
+    const colours = microchoices[field].portraits.map(portrait => portrait.palette.white.join(','));
+    assert.equal(new Set(colours).size, 1, `${field}: the eye white must retain its own colour`);
+    const pupils = microchoices[field].portraits.map(portrait => portrait.palette.pupil);
+    assert.ok(pupils.every(pupil => Math.max(...pupil) < 16), `${field}: the pupil must remain black ink`);
+    // High-quality portrait resampling rings by 1–4 RGB levels against different
+    // skin tones. Allow that interpolation, never an iris-coloured pupil.
+    for (let channel = 0; channel < 3; channel++) {
+      const values = pupils.map(pupil => pupil[channel]);
+      assert.ok(Math.max(...values) - Math.min(...values) <= 8, `${field}: pupil ink must stay stable`);
+    }
+  }
+  assert.equal(new Set(microchoices.hairColor.portraits.map(portrait => portrait.palette.iris.join(','))).size, 1,
+    'Changing hair colour must not recolour the iris');
+  assert.equal(new Set(microchoices.eyeColor.portraits.map(portrait => portrait.palette.iris.join(','))).size, 4,
+    'Every selected eye colour must tint the iris');
   const bodychoices = {};
   for (const choice of ['top', 'bottom', 'shoes', 'gender', 'accessory']) {
     bodychoices[choice] = await capture(`micro=${choice}&hair=crop&view=full`, `body-${choice}`);

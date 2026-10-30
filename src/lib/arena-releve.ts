@@ -41,9 +41,9 @@ export type ArenaReleveMeeting = {
 };
 
 export const ARENA_RELEVE_LETTER = [
-  "Je te confie la ferme. Les bêtes ont quitté la grange depuis un moment, mais elle peut encore servir. Tu trouveras mon vieux registre sur place. Il reste beaucoup de pages blanches.",
-  "Tout l’intérieur est à refaire. Fais-en une vraie chambre de culture, puis choisis ce que tu veux y installer. Si tu as besoin d’un coup de main, Sylvain connaît le chemin.",
-  "Je suis curieux de voir ce que tu vas en faire. — Grand-père",
+  "Je te lègue la maison et sa grange. Les bêtes l’ont quittée depuis un moment, mais elle peut encore servir. Tu trouveras mon vieux registre sur place. Il reste beaucoup de pages blanches.",
+  "Tout l’intérieur de la grange est à refaire. Transforme-la en ferme indoor : une chambre de culture, de la place pour sécher et de quoi ranger tes récoltes. Si tu as besoin d’un coup de main, Sylvain connaît le chemin.",
+  "Prends soin de ce lieu. À toi d’écrire la suite. — Grand-père",
 ] as const;
 
 export const ARENA_RELEVE_ACTS = [
@@ -55,8 +55,8 @@ export const ARENA_RELEVE_ACTS = [
 export const ARENA_RELEVE_CHAPTERS: readonly ArenaReleveChapter[] = [
   {
     id: "arrival", stage: "arrival", act: 1, title: "Les portes turquoise", scene: "arrival",
-    description: "Reçois les clés, vide l’ancienne étable et rénove entièrement l’intérieur.",
-    coach: "Ton grand-père m’a confié les clés. On vide la grange, puis on refait tout l’intérieur. Les premières plantes viendront quand la chambre de culture sera prête.",
+    description: "Reçois les clés de la maison léguée par ton grand-père et transforme sa grange en ferme indoor.",
+    coach: "Ton grand-père t’a légué sa maison et cette grange. On la vide, puis on refait tout l’intérieur pour ta ferme indoor. Les premières plantes viendront quand la chambre de culture sera prête.",
     rationale: "La rénovation transforme les 100 m² avant toute plante : sol propre, parois et plafond techniques blancs. Elle est prise en charge dans cet essai. Ton budget servira aux équipements et au fonctionnement, sans facture de chantier réelle.",
     hint: "Ouvre la porte, choisis Vider la grange, puis Rénover tout l’intérieur. La lettre peut se lire plus tard dans le registre.",
     action: "Ouvrir la grange", milestone: "Chambre de culture rénovée",
@@ -95,11 +95,11 @@ export const ARENA_RELEVE_CHAPTERS: readonly ArenaReleveChapter[] = [
   },
   {
     id: "jury", stage: "jury", act: 2, title: "La récolte rencontre le quartier", scene: "packing",
-    description: "Présente ta Fleur, découvre le verdict et retrouve son lot en stockage.",
-    coach: "Voilà ta récolte. Le jury donne son avis ; gagner le duel et obtenir une bonne note sont deux choses différentes. Retrouvons ensuite ton lot et regardons sa maturité.",
-    rationale: "La Fleur ne sert qu’une fois au duel, tandis que le lot reste à gérer. Le verdict lance le curing de six heures. L’horloge de cet essai peut avancer explicitement ; elle ne raccourcit pas les délais du jeu réel.",
-    hint: "Présente la Fleur au jury, ouvre le verdict, puis consulte la quantité, la place réservée et la maturité du lot.",
-    action: "Présenter ma Fleur", milestone: "Verdict et stockage découverts",
+    description: "Range tes fleurs, termine l’affinage, puis découvre le verdict du jury.",
+    coach: "Voilà ta récolte. Choisissons ses contenants et laissons ses arômes s’affiner avant de la présenter. Ensuite, le jury donnera son avis : gagner le duel et obtenir une bonne note sont deux choses différentes.",
+    rationale: "Les six heures d’affinage commencent à la récolte. Les gains acquis comptent au jury, puis le lot reste disponible pour la vente. L’horloge de cet essai avance explicitement, sans raccourcir les délais du jeu réel.",
+    hint: "Ouvre Stockage, vérifie chaque variété et son contenant, puis termine les six heures fictives. Retourne au jury et découvre le verdict.",
+    action: "Affiner puis présenter ma Fleur", milestone: "Affinage et jury découverts",
   },
   {
     id: "delivery", stage: "delivery", act: 3, title: "La première livraison", scene: "packing",
@@ -163,10 +163,10 @@ export const ARENA_RELEVE_MEETINGS: readonly ArenaReleveMeeting[] = [
   {
     id: "merch", title: "Une collection à ton nom", scene: "packing", lessons: [],
     description: "Débloque la papeterie, fabrique une série et mets tes premiers articles en vitrine.",
-    coach: "Le merch se trouve dans Commerce, puis Développer ma boutique et Merch. Je te prête une entreprise déjà éligible : tu peux essayer la fabrication, choisir ton prix et observer les ventes.",
+    coach: "Dans Commerce, choisis Développer, puis Produits dérivés. Je te prête une entreprise déjà éligible : tu peux essayer la fabrication, choisir ton prix et observer les ventes.",
     rationale: "Ce dossier prête le site et la marque nécessaires, avec cinq commandes d’exemple. Débloquer un atelier et fabriquer ses articles sont deux dépenses distinctes. Les articles fabriqués restent en stock ; seuls ceux en vitrine peuvent se vendre. La cadence annoncée est une estimation.",
-    hint: "Ouvre Merch, vérifie les conditions de la papeterie et son coût. Fabrique une petite série, choisis ton prix et mets-la en vitrine avant d’avancer l’horloge fictive.",
-    action: "Préparer ma collection", milestone: "Fabrication et vitrine merch découvertes",
+    hint: "Ouvre Produits dérivés, vérifie les conditions de la papeterie et son coût. Fabrique une petite série, choisis ton prix et mets-la en vitrine avant d’avancer l’horloge fictive.",
+    action: "Préparer ma collection", milestone: "Fabrication et vitrine des produits dérivés découvertes",
   },
   {
     id: "bank", title: "La porte de la banque", scene: "arrival", lessons: ["bank", "investments"],

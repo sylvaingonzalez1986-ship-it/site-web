@@ -1,24 +1,22 @@
 .progression { --ink: #172923; --muted: #536058; --teal: #08786b; --paper: #fffaf0; color: var(--ink); min-width: 0; }
 .progression *, .progression *::before, .progression *::after { box-sizing: border-box; }
-.heading { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 16px; }
-.heading > div { min-width: 0; }
-.heading > div > span { font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.heading h3 { font-family: var(--font-display), Impact, sans-serif; font-size: 28px; line-height: 1.1; margin: 5px 0 0; text-transform: uppercase; }
-.heading > strong { flex-shrink: 0; font-size: 18px; font-variant-numeric: tabular-nums; }
-.heading > strong > small { font-size: 12px; font-weight: 500; color: var(--muted); }
+.heading { display: grid; gap: 8px; margin-bottom: 4px; }
+.heading h3 { font-family: var(--font-display), Impact, sans-serif; font-size: 28px; line-height: 1.1; margin: 0; }
+.progression .heading p { margin: 0; font-size: 13px; line-height: 1.5; }
+.heading strong { font-variant-numeric: tabular-nums; }
+.explorer { margin-bottom: 12px; }
+.progression :is(.explorer, .previewDetails, .metConditions, .comparison) > summary { min-height: 44px; padding: 12px 0; font-size: 13px; font-weight: 700; line-height: 1.5; cursor: pointer; }
 .levels { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; margin-bottom: 16px; }
 .progression .levels button { display: grid; justify-items: center; gap: 5px; min-width: 0; padding: 10px 6px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: var(--ink); cursor: pointer; font-size: 12px; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .levels button[data-owned=true] { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); color: #172923; background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .levels button[aria-pressed=true] { border: var(--game-control-border-width, 2px) solid var(--ink); padding: 9px 5px; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); color: #172923; background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .levelNumber { display: grid; place-items: center; width: 26px; height: 26px; border: 1px solid var(--ink); border-radius: 50%; background: var(--paper); font-size: 12px; font-weight: 800; }
 .levels button[data-current=true] .levelNumber { background: var(--teal); color: var(--paper); }
-.levels small { font-size: 10px; color: var(--muted); }
-.focusCard { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); align-items: start; gap: 18px 24px; padding: 20px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.tierHeading { grid-column: 1 / -1; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
-.tierHeading > div { min-width: 0; flex: 1; }
-.tierBadge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 700; color: var(--teal); }
-.tierHeading h4 { margin: 5px 0 0; font-family: var(--font-display), Impact, sans-serif; font-size: 31px; line-height: 1.05; text-transform: uppercase; }
-.progression .tierHeading > p { max-width: 43%; margin: 0; color: var(--muted); font-size: 12px; line-height: 1.5; }
+.levels small { font-size: 12px; color: var(--muted); }
+.focusCard { padding: 20px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.tierHeading { margin-bottom: 18px; }
+.tierBadge { display: inline-flex; align-items: center; gap: 5px; font-size: 13px; font-weight: 700; color: var(--teal); }
+.tierHeading h4 { margin: 5px 0 0; font-family: var(--font-display), Impact, sans-serif; font-size: 28px; line-height: 1.15; }
 .preview { margin: 0; min-width: 0; padding: 18px; border: 1px solid #17292340; border-radius: var(--game-panel-radius, 2px); background: var(--game-surface-warm, #ffae59); }
 .browser { overflow: hidden; border: 1px solid var(--ink); border-radius: var(--game-panel-radius, 2px); background: #fff7e7; box-shadow: var(--game-panel-shadow, none); }
 .browserBar { display: flex; align-items: center; justify-content: center; gap: 5px; position: relative; min-height: 28px; padding: 4px 48px; border-bottom: 1px solid #17292360; background: #e4e6d7; font-size: 9px; color: var(--muted); }
@@ -55,57 +53,65 @@
 .browser[data-direction="craft"] .mockHero { background:var(--game-surface-warm, #ffae59); }
 .browser[data-direction="signature"] .mockBrand { background:var(--ink); color:#efc451; }
 .browser[data-direction="signature"] .mockHero { background:#efc451; }
-.preview figcaption { margin-top: 12px; text-align: center; font-size: 10px; line-height: 1.4; color: var(--ink); }
+.preview figcaption { margin-top: 12px; text-align: center; font-size: 13px; line-height: 1.4; color: var(--ink); }
+.previewDetails { border-top: 1px solid #17292340; margin-top: 12px; }
+.progression .previewDetails > p { font-size: 13px; margin: 0 0 12px; line-height: 1.6; }
+.previewDetails .preview { max-width: 540px; margin: 0 auto 8px; }
 .decision { min-width: 0; }
-.metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0 0 14px; }
+.metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px 24px; margin: 0 0 12px; }
 .metrics > div { min-width: 0; }
-.metrics dt { font-size: 11px; color: var(--muted); }
+.metrics dt { font-size: 13px; color: var(--muted); line-height: 1.5; }
 .metrics dd { font-family: var(--font-display), Impact, sans-serif; font-size: 32px; font-weight: 900; line-height: 1.15; margin: 5px 0; font-variant-numeric: tabular-nums; }
-.metrics > div:first-child dd { color: var(--teal); }
-.metrics small { display: block; font-size: 10px; line-height: 1.5; color: var(--muted); }
-.budget { display: grid; gap: 5px; padding: 10px 12px; margin-bottom: 16px; border: 1px solid #17292335; border-radius: var(--game-panel-radius, 2px); background: #f6edd7; }
-.budget > span { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 12px; font-size: 12px; }
-.budget strong { font-size: 19px; font-variant-numeric: tabular-nums; }
-.budget > small { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #8a3b23; }
-.budget[data-met=true] > small { color: var(--teal); }
+.metrics > div:last-child dd { color: var(--teal); }
+.metrics small { display: block; font-size: 13px; line-height: 1.5; color: var(--muted); }
+.progression .estimate { font-size: 13px; line-height: 1.5; margin: 0 0 14px; color: var(--muted); }
+.budget { display: grid; gap: 6px; padding: 12px 0; border-block: 1px solid #17292335; }
+.budget > span { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; font-size: 13px; }
+.budget strong { font-size: 16px; font-variant-numeric: tabular-nums; }
+.budget > small { display: flex; align-items: flex-start; gap: 6px; font-size: 13px; line-height: 1.5; color: #8a3b23; }
+.budget svg { flex-shrink: 0; margin-top: 2px; }
+.conditions { margin: 16px 0; }
+.conditions h5 { font: 700 14px/1.5 var(--font-body), sans-serif; margin: 0 0 10px; }
 .requirements { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 16px; margin-bottom: 14px; }
 .requirements > div:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .requiredUpgrades { display: grid; gap: 6px; margin: 0 0 14px; padding: 0; list-style: none; }
-.requiredUpgrades li { display: flex; align-items: center; gap: 6px; font-size: 11px; }
-.requiredUpgrades li > svg { flex-shrink: 0; }
-.requiredUpgrades li > strong { margin-left: auto; flex-shrink: 0; color: #8a3b23; font-size: 10px; }
-.requiredUpgrades li[data-met=true] > strong { color: var(--teal); }
-.progression .textAction { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 7px 0; border: 0; background: transparent; color: var(--teal); font-size: 12px; font-weight: 700; text-align: left; }
+.requiredUpgrades li { display: flex; align-items: flex-start; gap: 6px; font-size: 13px; line-height: 1.5; }
+.requiredUpgrades li > svg { flex-shrink: 0; margin-top: 3px; }
+.requiredUpgrades strong { display: block; color: #8a3b23; font-size: 13px; }
+.requiredUpgrades li[data-met=true] { color: var(--teal); }
+.progression .textAction { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 9px 12px; color: var(--teal); font-size: 13px; font-weight: 700; text-align: left; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.actions:empty { display: none; }
+.metConditions { margin-top: 8px; }
 .textAction svg { flex-shrink: 0; }
-.progression .blocked { display: flex; align-items: flex-start; gap: 6px; margin: 8px 0; font-size: 11px; line-height: 1.5; }
+.progression .blocked { display: flex; align-items: flex-start; gap: 6px; margin: 12px 0; font-size: 13px; line-height: 1.5; }
 .blocked svg { flex-shrink: 0; margin-top: 1px; }
 .progression .purchase { display: flex; justify-content: center; align-items: center; gap: 8px; width: 100%; min-height: 46px; padding: 11px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: var(--ink); box-shadow: none; font-size: 13px; font-weight: 800; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .purchase svg { flex-shrink: 0; }
-.purchase:disabled { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); color: #172923; background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
-.progression .terms { margin: 9px 0 0; color: var(--muted); font-size: 11px; line-height: 1.5; }
-.acquired { display: grid; justify-items: start; gap: 8px; padding: 16px; border: 1px solid #739c88; border-radius: var(--game-panel-radius, 2px); background: #dceee1; }
+.progression.progression button:disabled { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); color: #536058; opacity: 1; cursor: not-allowed; background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.progression .terms { margin: 12px 0; color: var(--muted); font-size: 13px; line-height: 1.5; }
+.acquired { display: grid; justify-items: start; gap: 8px; padding: 16px 0; border-top: 1px solid #739c88; }
 .acquired > strong { font-size: 15px; }
-.progression .acquired p { margin: 0; font-size: 12px; }
-.progression .note { margin: 16px 0 8px; font-size: 11px; line-height: 1.6; color: var(--muted); }
+.progression .acquired p { margin: 0; font-size: 13px; }
+.progression .note { margin: 16px 0 8px; font-size: 13px; line-height: 1.6; color: var(--muted); }
 .comparison { border-top: 1px solid #17292340; }
 .comparison > summary { min-height: 44px; padding: 12px 0; font-size: 12px; font-weight: 700; cursor: pointer; }
-.comparison > div { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 16px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.progression .comparison > p { font-size: 11px; color: var(--muted); margin: 10px 0; }
+.comparison > div { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; padding: 12px 0; }
+.progression .comparison > p { font-size: 13px; color: var(--muted); margin: 10px 0; line-height: 1.5; }
 .progression :is(button, summary):focus-visible { outline: 3px solid var(--teal); outline-offset: 3px; }
+@media (hover: hover) { .progression button:hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); } }
 @media (max-width: 950px) {
-  .focusCard { gap: 16px; padding: 16px; }
-  .tierHeading { align-items: flex-start; flex-direction: column; gap: 8px; }
-  .progression .tierHeading > p { max-width: none; }
+  .focusCard { padding: 16px; }
   .preview { padding: 12px; }
   .mockBrand strong { font-size: 18px; }
   .mockHero strong { font-size: 21px; }
 }
 @media (max-width: 700px) {
   .heading h3 { font-size: 25px; }
-  .heading > strong { font-size: 15px; }
   .levels { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .focusCard { grid-template-columns: minmax(0, 1fr); }
-  .tierHeading h4 { font-size: 28px; }
+  .tierHeading h4 { font-size: 25px; }
+  .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .metrics > div:last-child:nth-child(3) { grid-column: 1 / -1; }
   .preview { padding: 12px 18px; }
   .browser { max-width: 440px; margin-inline: auto; }
   .mockHero { min-height: 80px; }
@@ -127,12 +133,10 @@
   .metrics dd { font-size: 30px; }
 }
 @media (max-width: 400px) {
-  .heading { align-items: flex-start; }
-  .heading > strong { display: grid; gap: 2px; text-align: right; }
   .focusCard { padding: 12px; }
   .preview { padding: 10px; }
   .mockHero strong { font-size: 19px; }
   .requirements { grid-template-columns: minmax(0, 1fr); }
   .metrics dd { font-size: 28px; }
-  .comparison > div { grid-template-columns: minmax(0, 1fr); padding: 12px; }
+  .comparison > div { grid-template-columns: minmax(0, 1fr); }
 }

@@ -98,6 +98,11 @@ describe("native culture transport for La relève", () => {
     expect(sandbox.get().ledger.some(row => row.kind === "lab")).toBe(true);
     const flower = getReleveNativeFlowers(sandbox.get())[0];
     expect(flower.status).toBe("available");
+    expect(flower.storage?.stage).toBe("curing");
+    const early = await sandbox.request("/api/arena/placard/bot-battles", { method: "POST", body: JSON.stringify({ flowerId: flower.id }) });
+    expect(early.status).toBe(400);
+    expect(await early.json()).toMatchObject({ error: expect.stringContaining("affinage") });
+    sandbox.set(act(sandbox.get(), { type: "mature" }));
     const result = await sandbox.post("/bot-battles", { flowerId: flower.id });
     expect(result.status).toBe("verdict"); expect(result.rounds).toHaveLength(3);
     expect(result.opponentFlower.ownerName).toContain("Sylvain");
@@ -109,7 +114,7 @@ describe("native culture transport for La relève", () => {
   });
 
   it("resumes a saved locked battle through the native verdict route without awarding twice", async () => {
-    const sandbox = port(act(harvestFixture(), { type: "duel", zoneId: "culture-1" }));
+    const sandbox = port(act(act(harvestFixture(), { type: "mature" }), { type: "duel", zoneId: "culture-1" }));
     const battleId = sandbox.get().battles["culture-1"].id;
     const result = await sandbox.post(`/battles/${encodeURIComponent(battleId)}/verdict`, {});
     expect(result.battleId).toBe(battleId);
@@ -126,16 +131,20 @@ describe("native culture transport for La relève", () => {
   it("keeps both judged lots and waiting Flowers visible in the native harvest overview without mutating production", async () => {
     const sandbox = port(harvestFixture(2));
     const flowers = getReleveNativeFlowers(sandbox.get());
+    const earlyStorage = await (await sandbox.request("/api/arena/placard/storage")).json();
+    expect(earlyStorage.lots).toHaveLength(2);
+    expect(earlyStorage.lots.every((row: { flowerStatus: string; projection: { stage: string } }) => row.flowerStatus === "available" && row.projection.stage === "curing")).toBe(true);
+    sandbox.set(act(sandbox.get(), { type: "mature" }));
     await sandbox.post("/bot-battles", { flowerId: flowers[0].id });
     const before = structuredClone(sandbox.get());
     const storage = await (await sandbox.request("/api/arena/placard/storage")).json();
-    expect(storage.lots).toHaveLength(1);
+    expect(storage.lots).toHaveLength(2);
     expect(storage.lots[0].harvestGrams).toBeGreaterThan(0);
-    expect(storage.lots[0].projection.stage).toBe("curing");
+    expect(storage.lots[0].projection.stage).toBe("ready");
     const rows = getKqHarvestRows(getReleveNativeFlowers(sandbox.get()), storage);
     expect(rows).toHaveLength(2);
     expect(rows.map(row => row.state)).toContain("jury");
-    expect(rows.map(row => row.state)).toContain("curing");
+    expect(rows.map(row => row.state)).toContain("ready");
     expect(sandbox.get()).toEqual(before);
   });
 
@@ -146,5 +155,23 @@ describe("native culture transport for La relève", () => {
     await expect(sandbox.request("/api/arena/placard/care", { method: "POST", signal: controller.signal,
       body: JSON.stringify({ productCode: KQ_CARE_PRODUCTS[0].code }) })).rejects.toMatchObject({ name: "AbortError" });
     expect(sandbox.get()).toEqual(before);
+  });
+
+  it("assigns a harvested variety to installed containers before jury without resetting curing or another lot", async () => {
+    const sandbox = port(harvestFixture(2));
+    const before = await (await sandbox.request("/api/arena/placard/storage")).json();
+    const target = before.lots[0], other = before.lots[1];
+    const request = { action: "place", flowerId: target.flowerId, containerCode: "GLASS-1L", requestKey: "place-before-jury" };
+    const placed = await sandbox.post("/storage", request);
+    expect(placed.lots[0].projection.readyAt).toBe(target.projection.readyAt);
+    expect(placed.lots[0].projection.stage).toBe("curing");
+    expect(placed.lots[0].projection.capacity.allocations.every((row: { containerCode: string }) => row.containerCode === "GLASS-1L")).toBe(true);
+    expect(placed.lots[1]).toEqual(other);
+    const saved = structuredClone(sandbox.get());
+    await sandbox.post("/storage", request);
+    expect(sandbox.get()).toEqual(saved);
+    const invalid = await sandbox.request("/api/arena/placard/storage", { method: "POST", body: JSON.stringify({ ...request, containerCode: "CANNATROL", requestKey: "uninstalled" }) });
+    expect(invalid.status).toBe(400);
+    expect(sandbox.get()).toEqual(saved);
   });
 });

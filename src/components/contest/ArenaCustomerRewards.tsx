@@ -171,7 +171,6 @@ export function ArenaCustomerRewardPot({
     <section className={styles.panel} aria-labelledby={titleId}>
       <header className={styles.heading}>
         <div>
-        <span className={styles.eyebrow}><Gift size={16} aria-hidden="true" /> Des fleurs à gagner, pour de vrai</span>
         <h2 id={titleId}>Le Pot de la Canopée<span>.</span></h2>
         <span className={styles.season}>{rewardPool ? `Saison ${rewardPool.seasonCode}` : "Récompenses de saison"} · {settled ? "Récompenses attribuées" : open ? "En cours" : rewardPool ? "Lancers fermés" : loading ? "Chargement" : "Compteur indisponible"}</span>
         </div>

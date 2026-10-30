@@ -1,6 +1,7 @@
 ﻿import { createHash } from "node:crypto";
 import { NextResponse } from "next/server";
 import type { MondialRelayPoint } from "@/lib/shipping";
+import { normalizeShippingCountryCode } from "@/lib/shipping-country";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
@@ -30,19 +31,6 @@ function sanitizeCity(value: string | null): string {
     .trim()
     .replace(/[<>]/g, "")
     .slice(0, 80);
-}
-
-function sanitizeCountry(value: string | null): string {
-  if (!value) {
-    return DEFAULT_COUNTRY;
-  }
-
-  const normalized = value.trim().toUpperCase().replace(/[^A-Z]/g, "");
-  if (normalized.length < 2) {
-    return DEFAULT_COUNTRY;
-  }
-
-  return normalized.slice(0, 2);
 }
 
 function xmlDecode(value: string): string {
@@ -95,7 +83,7 @@ function parsePointsFromXml(xml: string, fallbackCountry: string): {
     const name = readXmlTag(block, ["LgAdr1", "Nom"]).slice(0, 120);
     const postalCode = readXmlTag(block, ["CP"]).slice(0, 16);
     const city = readXmlTag(block, ["Ville"]).slice(0, 120);
-    const country = readXmlTag(block, ["Pays"]).slice(0, 4) || fallbackCountry;
+    const country = normalizeShippingCountryCode(readXmlTag(block, ["Pays"]) || fallbackCountry);
 
     const addressParts = [
       readXmlTag(block, ["LgAdr1", "Adresse1"]),
@@ -106,7 +94,7 @@ function parsePointsFromXml(xml: string, fallbackCountry: string): {
       .map((part) => part.trim())
       .filter(Boolean);
 
-    if (!id || dedupe.has(id)) {
+    if (!id || country !== fallbackCountry || dedupe.has(id)) {
       blockMatch = blockRegex.exec(xml);
       continue;
     }
@@ -270,7 +258,11 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const postalCode = sanitizePostalCode(url.searchParams.get("postalCode"));
   const city = sanitizeCity(url.searchParams.get("city"));
-  const country = sanitizeCountry(url.searchParams.get("country"));
+  const country = normalizeShippingCountryCode(url.searchParams.get("country")?.trim() || DEFAULT_COUNTRY);
+
+  if (!country) {
+    return NextResponse.json({ error: "Pays invalide pour la recherche Point Relais." }, { status: 400 });
+  }
 
   if (postalCode.length < 4) {
     return NextResponse.json(

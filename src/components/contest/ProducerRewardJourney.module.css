@@ -15,7 +15,6 @@
 .journey[data-embedded] { margin-bottom: 0; padding: 0; border: 0; border-image: none; }
 .login a { display: inline-flex; align-items: center; min-height: 44px; color: #00563f; font-weight: 800; text-decoration: underline; text-underline-offset: 3px; }
 .header { padding-bottom: 16px; border-bottom: 2px solid #172923; }
-.eyebrow { margin: 0; color: #00563f; font: 700 10px/1.5 var(--font-mono), monospace; letter-spacing: .06em; text-transform: uppercase; }
 .header h2 { margin: 6px 0 0; color: #172923; font: 850 clamp(27px, 3vw, 34px)/1.1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
 .intro { margin: 10px 0 0; font-size: 13px; }
 .producerSelect { display: grid; gap: 7px; min-width: 0; margin-top: 16px; font-weight: 800; }

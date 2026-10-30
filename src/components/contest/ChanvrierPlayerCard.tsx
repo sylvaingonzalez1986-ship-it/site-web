@@ -133,10 +133,10 @@ export function ChanvrierPlayerCard({ profile, onEdit, inline = false, showTrigg
     </div>}
     {open ? createPortal(<dialog ref={dialog} id={id} aria-labelledby={`${id}-name`} className={styles.card} data-chanvrier-palmares onCancel={event => { event.preventDefault(); close(); }} onClick={event => { if (event.target === event.currentTarget) close(); }}>
       <div className={styles.sheet}>
-        <header className={styles.header}><span>LA GUILDE DES CHANVRIERS</span><button type="button" aria-label="Replier ma carte" onClick={close}><X size={20} /></button></header>
+        <header className={styles.header}><button type="button" aria-label="Replier ma carte" onClick={close}><X size={20} /></button></header>
         <div className={styles.hero}>
           <div className={styles.portrait} data-gold={goldFrame}><ChanvrierAvatar profile={profile} className={styles.avatar} /><span>{strength.name}</span></div>
-          <div className={styles.identity}><small>MON PERSONNAGE · MON HISTOIRE</small><h2 id={`${id}-name`}>{profile.nickname}</h2><p className={styles.chosenTitle}>{chosenTitle || (profile.gender === "female" ? "Chanvrière de la guilde" : "Chanvrier de la guilde")}</p>
+          <div className={styles.identity}><h2 id={`${id}-name`}>{profile.nickname}</h2><p className={styles.chosenTitle}>{chosenTitle || (profile.gender === "female" ? "Chanvrière de la guilde" : "Chanvrier de la guilde")}</p>
             <div className={styles.pinned} aria-label="Mes trois distinctions"><span className={styles.pinnedLabel}>Ma vitrine</span>{[0, 1, 2].map(index => <button key={index} type="button" title={pinned[index]?.label || "Choisir un badge"} aria-label={pinned[index]?.label || `Choisir le badge ${index + 1}`} onClick={() => { setTab("badges"); setSelectedBadge(pinned[index]?.id ?? null); }}>{pinned[index] ? <BadgeMedal badge={pinned[index]} /> : <Medal size={22} />}</button>)}</div>
             <details className={styles.specialty}><summary>Ma spécialité · {strength.badge}</summary><p>{strength.description}</p></details>
             <button type="button" className={styles.edit} onClick={() => { const origin = returnFocus.current ?? trigger.current; close(); onEdit(origin ?? undefined); }}><Pencil size={13} />Personnaliser mon personnage</button>

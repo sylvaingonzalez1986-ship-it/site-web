@@ -62,7 +62,7 @@ window.fixture=()=>structuredClone(getKqOperationsCommerce(state));
 window.activity=()=>structuredClone(getKqShopActivity(getKqOperationsCommerce(state)));
 const api=createKqTutorialApi(async(input,init={})=>{
  const url=new URL(typeof input==='string'?input:input.url,location.origin),method=init.method??'GET';
- if(url.origin!==location.origin||!['/api/arena/placard/commerce','/api/arena/placard/energy'].includes(url.pathname))throw new Error('Unsupported isolated API: '+url.pathname);
+ if(url.origin!==location.origin||!['/api/arena/placard/commerce','/api/arena/placard/commerce/sales','/api/arena/placard/energy'].includes(url.pathname))throw new Error('Unsupported isolated API: '+url.pathname);
  const body=init.body?JSON.parse(init.body):undefined;window.requests.push({path:url.pathname+url.search,method,body});
  if(body?.action==='rename-shop'){await new Promise(done=>setTimeout(done,180));if(window.rejectRename)return new Response(JSON.stringify({error:'Renommage refusé dans cette simulation. Aucun changement.'}),{status:400,headers:{'Content-Type':'application/json'}})}
  try{const result=applyKqOperationsRequest(state,{path:url.pathname+url.search,method,body});state=result.state;return new Response(JSON.stringify(result.payload),{status:200,headers:{'Content-Type':'application/json'}})}
@@ -175,11 +175,20 @@ if (preview) {
         if (scenario === 'merch') assert.equal(await page.$eval('[aria-label="Choisir un rayon"] button:nth-child(2)', node => node.getAttribute('aria-pressed')), 'true', 'Merch-only inventory opens the merch register');
         await page.click('[aria-label="Choisir un rayon"] button:nth-child(2)'); await checkMerch(scenario + '/ledger'); await overflow(scenario + '/ledger/' + width);
         if (scenario === 'recent') {
-          const rows = await page.$$eval('[aria-label="Mes ventes en ligne"] details[open] li', nodes => nodes.map(node => node.innerText));
+          await page.focus('[data-online-sales-journal] summary'); await page.keyboard.press('Enter');
+          await page.waitForSelector('[data-online-sale]');
+          for (let pageNumber = 0; await page.$('[data-online-sales-more]:not(:disabled)'); pageNumber++) {
+            assert.ok(pageNumber < 20, 'Sales pagination terminates');
+            const beforeCount = await page.$$eval('[data-online-sale]', nodes => nodes.length);
+            await page.click('[data-online-sales-more]');
+            await page.waitForFunction(count => document.querySelectorAll('[data-online-sale]').length > count, {}, beforeCount);
+          }
+          const rows = await page.$$eval('[data-online-sale]', nodes => nodes.map(node => node.innerText));
           const receipts = (await page.evaluate(() => window.activity())).receipts;
           assert.equal(rows.length, before.online.recentSales.length + before.online.merch.recentSales.length, 'Every displayed receipt comes from an actual flower or merch sale');
           for (const [index, receipt] of receipts.entries()) {
-            assert.ok(rows[index].includes(receipt.name + ' · ' + receipt.quantity + ' ' + receipt.unitLabel), 'Receipt order, source and units');
+            const unit = receipt.quantity === 1 ? receipt.unitLabel.replace(/s$/, '') : receipt.unitLabel;
+            assert.ok(rows[index].includes(receipt.name + ' · ' + receipt.quantity + ' ' + unit), 'Receipt order, source and units');
             assert.match(rows[index], /Frais du site/);
             assert.match(rows[index], receipt.kind === 'flower' ? /Satisfaction.*Emballages déjà payés/ : /Fabrication déjà payée/);
           }

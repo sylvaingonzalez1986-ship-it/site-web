@@ -1,5 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { createClientRequestKey } from "@/lib/client-request-key";
+
+afterEach(() => vi.unstubAllGlobals());
 
 describe("client request keys", () => {
   it("uses a native UUID when secure-context crypto supports it", () => {
@@ -15,6 +17,19 @@ describe("client request keys", () => {
         return values;
       },
     })).toBe("00000000-0000-4000-8000-000000000000");
+  });
+
+  it("uses browser crypto when the global randomUUID method is missing", () => {
+    const browserCrypto = {
+      getRandomValues: vi.fn(function (this: unknown, values: Uint8Array) {
+        expect(this).toBe(browserCrypto);
+        return values.fill(0xa5);
+      }),
+    };
+    vi.stubGlobal("crypto", browserCrypto);
+
+    expect(createClientRequestKey()).toBe("a5a5a5a5-a5a5-45a5-a5a5-a5a5a5a5a5a5");
+    expect(browserCrypto.getRandomValues).toHaveBeenCalledTimes(1);
   });
 
   it("still creates a valid UUID when no Web Crypto API is exposed", () => {

@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
+import { KQ_STAGES } from "@/lib/kanab-quest-game";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { playKqPlayerCard } from "@/lib/supabase/kanab-quest-backend";
@@ -44,9 +45,16 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
     : {};
   const cardCode = typeof body.cardCode === "string" ? body.cardCode : "";
   if (!cardCode) return NextResponse.json({ error: "Carte manquante." }, { status: 400 });
+  const expectedStageIndex = body.expectedStageIndex;
+  if ("expectedStageIndex" in body && (typeof expectedStageIndex !== "number"
+    || !Number.isSafeInteger(expectedStageIndex) || expectedStageIndex < 0 || expectedStageIndex >= KQ_STAGES.length)) {
+    return NextResponse.json({ error: "Étape de carte invalide." }, { status: 400 });
+  }
   const { runId } = await context.params;
   try {
-    const result = await playKqPlayerCard(session.customerId, runId, cardCode);
+    const result = typeof expectedStageIndex === "number"
+      ? await playKqPlayerCard(session.customerId, runId, cardCode, { expectedStageIndex })
+      : await playKqPlayerCard(session.customerId, runId, cardCode);
     return NextResponse.json(result, {
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });

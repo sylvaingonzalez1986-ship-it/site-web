@@ -60,10 +60,6 @@
   color: #254f40; font-weight: 750; text-decoration: underline; text-decoration-color: #bd4938;
   text-decoration-thickness: 2px; text-underline-offset: 4px;
 }
-.productsDialog { width: min(1024px, calc(100vw - 24px)); }
-.productCard { flex: 0 0 min(78vw, 360px); min-width: 0; max-width: 100%; }
-.productCard[data-single] { flex-basis: 100%; }
-@media (min-width: 640px) { .productCard { max-width: none; } }
 .cookieToolbar { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 16px; background: #f7f1e5; color: #254f40; border-bottom: 1px solid #254f4040; font-size: .85rem; font-weight: 800; }
 .cookieToolbar button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 8px 12px; border: 1px solid #254f40; border-radius: 8px; background: #f4c43d; color: #254f40; cursor: pointer; }
 .cookieToolbar button:focus-visible { outline: 3px solid #254f40; outline-offset: 3px; }

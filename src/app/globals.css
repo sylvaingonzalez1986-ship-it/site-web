@@ -2967,7 +2967,6 @@ body.contest-notebook-open header[data-tutorial="navbar"] {
 
 .contest-lab-notebook :is(
   .contest-lab-terminal-bar,
-  .contest-lab-specimen-header p,
   .contest-lab-specimen-title-row span,
   .contest-lab-origin-grid span,
   .contest-lab-chip-row span,
@@ -3132,8 +3131,6 @@ body.contest-notebook-open header[data-tutorial="navbar"] {
     var(--contest-paper-warm);
   padding: 0.72rem 0.78rem;
 }
-
-.contest-lab-specimen-header p,
 .contest-lab-specimen-title-row span,
 .contest-lab-origin-grid span {
   color: var(--contest-lab-green-dark);
@@ -7899,16 +7896,6 @@ body.contest-guide-open .contest-hub-flipbook .contest-guide-flipbook .contest-n
   gap: 1rem;
 }
 
-.contest-tested-carousel-eyebrow {
-  margin: 0;
-  color: var(--charcoal);
-  font-size: 0.68rem;
-  font-weight: 950;
-  letter-spacing: 0.14em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
 .contest-tested-carousel-header h2 {
   margin: 0.2rem 0 0;
   color: var(--ink);
@@ -8039,19 +8026,9 @@ body.contest-guide-open .contest-hub-flipbook .contest-guide-flipbook .contest-n
   padding: 0.34rem 0.45rem 0.42rem;
 }
 
-.contest-tested-card-overlay-top p {
-  margin: 0;
-  color: var(--charcoal);
-  font-size: 0.55rem;
-  font-weight: 950;
-  letter-spacing: 0.12em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-
 .contest-tested-card-overlay-top h3 {
   display: -webkit-box;
-  margin: 0.14rem 0 0;
+  margin: 0;
   overflow: hidden;
   color: var(--ink);
   font-family: var(--font-display), cursive;

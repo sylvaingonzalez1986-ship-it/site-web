@@ -1,5 +1,5 @@
 .dialog {
-  composes: surface from "./ArenaRetro.module.css";
+  composes: gameSurface from "./ArenaRetro.module.css";
   position: fixed;
   inset: 0;
   margin: 0;
@@ -22,7 +22,7 @@
 .dialog button:focus-visible { outline: 3px solid #172923; outline-offset: 3px; box-shadow: none; }
 
 /* Full illustrated sheets and signs replace every native rounded rectangle. */
-.top, .sandbox, .story, .storyBody, .acts li, .meeting, .completion, .warning {
+.top, .sandbox, .story, .storyBody, .quick, .acts li, .meeting, .completion, .warning {
   border: 2px solid transparent;
   border-radius: 0;
   background: transparent;
@@ -43,17 +43,17 @@
   z-index: 5;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   gap: 12px;
   margin: 4px 6px 0;
   padding: 10px 20px;
 }
-.top > span { display: flex; align-items: center; gap: 10px; font-weight: 850; letter-spacing: .06em; font-size: .8rem; }
 .top button { display: grid; place-items: center; width: 44px; height: 44px; flex-shrink: 0; color: #172923; }
+.top .quarter { display: inline-flex; justify-content: center; gap: 8px; width: auto; max-width: calc(100% - 56px); padding-inline: 14px; font-size: .85rem; font-weight: 700; }
 .content { max-width: 1200px; margin: auto; padding: 24px 24px 40px; }
 .heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
 .heading h2 { margin: 0; font: 900 clamp(2rem, 5vw, 3rem)/1 var(--font-display, Impact), sans-serif; }
-.eyebrow { display: block; color: #096a60; font-size: .7rem; font-weight: 850; letter-spacing: .08em; line-height: 1.5; }
+.eyebrow { display: block; color: #096a60; font-size: .8rem; font-weight: 750; line-height: 1.5; }
 .sandbox { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); --game-panel-edge: 8px; display: inline-block; max-width: 100%; padding: 9px 12px; color: #172923; font-size: .72rem; line-height: 1.5; }
 .shortcuts { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
 .shortcuts button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 10px 16px; color: #172923; font-size: .85rem; font-weight: 800; }
@@ -65,13 +65,13 @@
   --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp"));
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
   align-items: center;
   gap: 16px;
   padding: 16px;
 }
 .heroImage, .thumbnail, .actImage { position: relative; display: block; min-width: 0; overflow: hidden; isolation: isolate; }
-.heroImage { min-height: 340px; height: 100%; }
+.heroImage { min-height: 240px; height: 100%; }
 .heroImage::after, .thumbnail::after, .actImage::after {
   content: "";
   position: absolute;
@@ -89,6 +89,14 @@
 .storyBody p { margin: 0; font-size: .88rem; line-height: 1.6; }
 .primary { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; max-width: 100%; margin-top: 16px; padding: 12px 16px; color: #172923; font-weight: 850 !important; }
 .done { display: flex; align-items: center; gap: 8px; margin-top: 16px; font-size: .8rem; color: #096a60; }
+.quick { --game-panel-art: var(--game-panel-gold, url('/placard/ui/panel-gold-v1.webp')); padding: clamp(20px, 3vw, 36px); }
+.quickBody { max-width: 68ch; }
+.quick h3 { margin: 0 0 12px; font: 900 clamp(1.8rem, 3vw, 2.5rem)/1.1 var(--font-display, Impact), sans-serif; }
+.quick p { margin: 0; font-size: .9rem; line-height: 1.6; }
+.quick .quickNote { margin-top: 12px; font-size: .82rem; }
+.storyDetails { margin-top: 20px; border-top: 1px solid #17292333; }
+.storyDetails summary { padding-block: 14px; cursor: pointer; font-size: .88rem; }
+.storyDetails summary:focus-visible { outline: 3px solid #096a60; outline-offset: 3px; }
 
 .acts { list-style: none; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 22px 0 0; padding: 0; }
 .acts li { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); --game-panel-edge: 10px; position: relative; display: flex; align-items: center; gap: 10px; min-width: 0; padding: 8px; line-height: 1.4; font-size: .82rem; }
@@ -125,12 +133,12 @@
 }
 @media (max-width: 700px) {
   .top { padding: 8px 12px; }
-  .top > span { font-size: .65rem; letter-spacing: .02em; }
   .content { padding: 18px 12px 28px; }
   .heading { gap: 10px; }
   .sandbox { font-size: .68rem; }
   .story { grid-template-columns: 1fr; gap: 10px; padding: 10px; }
   .heroImage { min-height: 0; height: auto; aspect-ratio: 16 / 10; }
+  .heroImage { order: 2; }
   .heroImage img { object-position: center; }
   .storyBody { padding: 18px; }
   .storyBody h3 { font-size: 1.8rem; }

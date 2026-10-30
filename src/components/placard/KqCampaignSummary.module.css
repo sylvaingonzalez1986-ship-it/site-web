@@ -20,3 +20,63 @@
 .caption { display: block; margin-top: 12px; font-size: 11px; line-height: 1.5; color: #172923; }
 .link { display: inline-flex; align-items: center; min-height: 44px; font-size: 12px; font-weight: 700; color: #172923; }
 @media(max-width:480px) { .summary { padding: 18px; color: #172923; --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; } .summary h2 { font-size: 22px; } .summary > header { gap: 8px; } .summary header > strong { font-size: 22px; } .member { padding: 14px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff8e7; } }
+
+.summary.complete { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); }
+.complete > header { flex-wrap: wrap; margin-bottom: 0; }
+.complete header p, .complete header > strong small { font-size: 13px; line-height: 1.5; }
+.complete .rows { display: block; }
+.complete .member {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 12px 24px;
+  padding: 20px 0;
+  border: 0;
+  border-bottom: 1px solid #17292340;
+  border-radius: 0;
+  background: transparent;
+}
+.complete .member:last-child { padding-bottom: 0; border-bottom: 0; }
+.complete .identity strong { font-size: 16px; line-height: 1.4; overflow-wrap: anywhere; }
+.complete .identity small { font-size: 13px; line-height: 1.5; }
+.complete .harvestMetrics, .complete .profileMetrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.complete .member dt { min-height: 0; color: #344a40; font-size: 13px; line-height: 1.5; }
+.complete .member dd { font-size: 20px; line-height: 1.4; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.complete .harvestMetrics small { display: block; font-size: 13px; font-weight: 500; line-height: 1.5; }
+.complete .link { justify-self: start; grid-column: 1 / -1; font-size: 14px; line-height: 1.5; }
+.complete .harvestStatus { grid-column: 1 / -1; margin: 0; font-size: 14px; line-height: 1.5; }
+.complete .harvestProfile { grid-column: 1 / -1; min-width: 0; }
+.complete .harvestProfile > summary {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 44px;
+  padding: 9px 12px;
+  color: #172923;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.5;
+  cursor: pointer;
+  list-style: none;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  border: var(--game-control-border-width, 2px) solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+}
+.complete .harvestProfile > summary::-webkit-details-marker { display: none; }
+.complete .harvestProfile > summary > svg { width: 18px; height: 18px; flex-shrink: 0; }
+.complete .harvestProfile[open] > summary { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff1d6; }
+.complete .harvestProfile[open] > summary > svg { transform: rotate(180deg); }
+.complete .harvestProfile > summary:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); color: #172923; }
+.complete .harvestProfile > summary:focus-visible, .complete .link:focus-visible { outline: 3px solid #076c61; outline-offset: 4px; }
+.complete .harvestProfile > .notes { margin-block: 14px; }
+.complete .notes, .complete .tier { color: #344a40; font-size: 13px; line-height: 1.6; }
+.complete .tier p { margin-block: 12px; }
+@media (max-width: 600px) {
+  .complete .member { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .complete .harvestMetrics { gap: 12px; }
+}

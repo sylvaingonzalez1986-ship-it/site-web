@@ -2,6 +2,7 @@
 
 import { type CSSProperties, useEffect, useRef, useState } from "react";
 import { ArrowUp, Check, LoaderCircle } from "lucide-react";
+import { createClientRequestKey } from "@/lib/client-request-key";
 import { formatKqCash, getKqEquipmentAtLevel, getKqEquipmentBuildingNumber, getKqEquipmentImpactLabels, getKqEquipmentUpgradeCost, isKqBuildingEquipment, isKqSharedEquipment } from "@/lib/kanab-quest-equipment";
 import { getChanvrierCareerGate, getChanvrierEquipmentUpgradeRequiredLevel, type ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
 import { getKqWorkshopMachineSpecification } from "@/lib/kanab-quest-workshop-machines";
@@ -49,7 +50,7 @@ export function KqEquipmentUpgrade({ code, level, cashCents, career, productionU
     if (inFlight.current || tierBusy || maintenanceDue || !affordable || !careerGate?.allowed || disabled || level < completedLevel) return;
     inFlight.current = true;
     setPending(true); setError(""); setNotice("");
-    if (request.current?.level !== level || request.current.units !== productionUnits || request.current.tentNumber !== targetTent) request.current = { level, units: productionUnits, tentNumber: targetTent, key: crypto.randomUUID() };
+    if (request.current?.level !== level || request.current.units !== productionUnits || request.current.tentNumber !== targetTent) request.current = { level, units: productionUnits, tentNumber: targetTent, key: createClientRequestKey() };
     try {
       const response = await api.request("/api/arena/placard/equipment", {
         method: "PATCH", headers: { "Content-Type": "application/json" },

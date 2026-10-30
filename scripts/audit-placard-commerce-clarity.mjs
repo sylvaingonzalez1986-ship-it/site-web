@@ -88,10 +88,10 @@ try {
     await noOverflow();await shot('preparation-'+width);
     await click('Préparer les fleurs et continuer');await page.waitForSelector('dialog[open]');
     await click('Confirmer');await page.waitForSelector('[aria-label="Circuits de vente"]');
-    assert.equal(await page.$$eval('[aria-label="Circuits de vente"] > button',items=>items.length),3);
+    assert.equal(await page.$$eval('[aria-label="Circuits de vente"] button',items=>items.length),3);
     await noOverflow();await shot('circuits-'+width);
     await page.click('[aria-label="Voir l’offre Grossistes"]');
-    await click('Vendre ce lot');await page.waitForSelector('dialog[open]');
+    await click('Voir le montant net');await page.waitForSelector('dialog[open]');
     assert(await page.$eval('dialog[open]',element=>element.textContent.includes('Versé au portefeuille')),'Net payout visible before committing');
     await click('Confirmer');await page.waitForFunction(()=>document.querySelector('#commerce-step-title')?.textContent==='Vente terminée');
     assert.deepEqual(await page.evaluate(()=>window.__actions.map(action=>action.action)),['prepare','quote','sell']);

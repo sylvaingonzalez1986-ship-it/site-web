@@ -3,10 +3,10 @@
 .header h2 { margin: 0; font-family: var(--font-display), sans-serif; font-size: clamp(1.4rem, 3vw, 1.9rem); line-height: 1.1; }
 .summary { margin: 5px 0 0; font-size: .8rem; line-height: 1.4; }
 .intro { margin: 8px 0 12px; font-size: .8rem; line-height: 1.5; }
-.section :is(.header, .actions, .empty, .unavailable, .feedback, .pickerBar) button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; padding: 8px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
-.section :is(.header, .actions, .empty, .unavailable, .feedback, .pickerBar) button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
+.section :is(.header, .actions, .empty, .unavailable, .feedback, .pickerBar) :is(button, a) { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 40px; padding: 8px 12px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font: inherit; font-size: .8rem; font-weight: 700; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.section :is(.header, .actions, .empty, .unavailable, .feedback, .pickerBar) :is(button, a):hover:not(:disabled):not([aria-disabled="true"]) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; }
 .section :is(.header, .actions, .empty, .unavailable, .feedback, .pickerBar) button:disabled { opacity: .55; cursor: default; }
-.section button:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.section :is(button, a):focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
 .section [tabindex]:focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
 .section button.secondary { background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .zones { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 10px; }
@@ -27,6 +27,8 @@
 .empty, .unavailable { margin: 12px 0; padding: 12px; border: 1px dashed #17292380; border-radius: var(--game-panel-radius, 2px); font-size: .8rem; line-height: 1.5; }
 .unavailable { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; }
 .empty p { margin: 0 0 8px; }
+.empty :is(button, a) { min-height: 44px; max-width: 100%; text-decoration: none; }
+.empty a[aria-disabled="true"] { opacity: .55; cursor: default; }
 .feedback { scroll-margin-top: 100px; }
 .feedback:empty { display: none; }
 .feedback p { margin: 10px 0 6px; font-size: .8rem; line-height: 1.5; }

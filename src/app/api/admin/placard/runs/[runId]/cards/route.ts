@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
+import { KQ_STAGES } from "@/lib/kanab-quest-game";
 import { playKqAdminCard } from "@/lib/supabase/kanab-quest-backend";
 
 export const runtime = "nodejs";
@@ -19,9 +20,16 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
   const cardCode = typeof body.cardCode === "string" ? body.cardCode : "";
   const { runId } = await context.params;
   if (!cardCode) return NextResponse.json({ error: "Carte manquante." }, { status: 400 });
+  const expectedStageIndex = body.expectedStageIndex;
+  if ("expectedStageIndex" in body && (typeof expectedStageIndex !== "number"
+    || !Number.isSafeInteger(expectedStageIndex) || expectedStageIndex < 0 || expectedStageIndex >= KQ_STAGES.length)) {
+    return NextResponse.json({ error: "Étape de carte invalide." }, { status: 400 });
+  }
 
   try {
-    const result = await playKqAdminCard(admin.email, runId, cardCode);
+    const result = typeof expectedStageIndex === "number"
+      ? await playKqAdminCard(admin.email, runId, cardCode, { expectedStageIndex })
+      : await playKqAdminCard(admin.email, runId, cardCode);
     return NextResponse.json(result, {
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });

@@ -155,7 +155,7 @@ try {
       if (scenario === "solo") {
         assert(text.includes("184,5"), "Saved solo harvest is displayed rather than a projection");
         assert(!text.includes("Autre récolte"), "Unrelated old flowers are excluded");
-        assert(text.includes("Ta Fleur est enregistrée"), "Exactly the run's own Fleur is confirmed");
+        assert(text.includes("Ta Fleur d’Arène est enregistrée"), "Exactly the run's own Fleur is confirmed");
         assert(await page.$("[data-harvest-identity]"), "The solo harvest retains the variety and tier");
         await page.focus("[data-harvest-moment] button"); await page.keyboard.press("Enter");
         assert.equal(await page.evaluate(() => window.__fixture.continues), 1, "The reserve is reachable by keyboard");
@@ -219,7 +219,14 @@ try {
         await page.waitForFunction(() => typeof window.__releaseAction === "function");
         await page.evaluate(() => window.__unmount()); await page.waitForSelector("[data-audit-unmounted]");
         await page.evaluate(() => window.__releaseAction()); await frames(); await quiet();
-        assert.deepEqual(await page.evaluate(() => window.__fixture.notifications), [], "Late unmounted response has no notification or sound");
+        // A confirmed mission reward refreshes the parent inventory even when
+        // its dialog was closed; presentation and sound remain unmounted.
+        const expectedNotifications = kind === "mission"
+          ? ["kq:missions-updated", "kq:equipment-updated", "kq:treasury-updated"]
+          : [];
+        assert.deepEqual(await page.evaluate(() => window.__fixture.notifications), expectedNotifications, "Only the intended parent refresh events survive closing");
+        assert.equal(await page.$("[data-mission-receipt], [data-contract-receipt]"), null, "A late response does not reopen a reward receipt");
+        assert.equal(await page.$eval("#root", element => element.getAnimations({ subtree: true }).length), 0, "No reward animation after closing");
       } else {
         await page.waitForSelector("[data-mission-receipt]");
         if (scenario === "succeeded") await page.waitForFunction(() => window.__audioAudit.notes > 0);

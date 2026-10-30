@@ -12,7 +12,7 @@
 .place { position: absolute; z-index: 2; padding: 0; border: 0; overflow: visible; background: transparent; color: #173f30; text-decoration: none; pointer-events: none; -webkit-tap-highlight-color: transparent; }
 .hitArea { position: absolute; inset: 0; display: block; clip-path: var(--silhouette); cursor: pointer; pointer-events: auto; }
 .label { --label-offset-y: -50%; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); position: absolute; z-index: 1; left: var(--label-x); top: var(--label-y); transform: translate(-50%, var(--label-offset-y)); display: inline-flex; justify-content: center; align-items: center; gap: 7px; width: max-content; max-width: max(100%, 112px); min-width: 44px; min-height: 48px; padding: 12px 16px; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; box-shadow: none; border-image: var(--game-control-art) 40 fill / var(--game-control-edge, 14px) / 0 stretch; text-align: left; cursor: pointer; pointer-events: auto; transition: transform 160ms ease; }
-.place[data-arena-activity="carnet"] .label { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.place[data-arena-activity="carnet"] .label { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); max-width: none; }
 .place[data-arena-activity="jouer"] .label { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff8e7; }
 .place[data-arena-activity="classement"] .label { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); }
 .label strong { display: block; font: 900 clamp(16px, 1.8vw, 24px)/1.05 var(--font-display), Impact, sans-serif; text-transform: uppercase; white-space: nowrap; }
@@ -36,12 +36,11 @@
 }
 @media (max-width: 700px) {
   .map { padding: 6px; }
-  .heading { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 6px 4px 10px; min-height: 58px; }
-  .heading > span { max-width: 14ch; font: 700 10px/1.4 var(--font-body), sans-serif; }
+  .heading { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding: 6px 4px 10px; min-height: 58px; }
   .zoom { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-height: 44px; padding: 10px 12px; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; box-shadow: none; border-image: var(--game-control-art) 40 fill / 11px / 0 stretch; font: 700 11px var(--font-body), sans-serif; cursor: pointer; }
   .zoom[aria-pressed="true"] { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff8e7; }
   .label { --label-offset-y: -65%; --game-control-edge: 9px; min-height: 44px; padding: 7px 8px; gap: 3px; }
-  .label strong { min-width: 0; font: 800 11px/1.15 var(--font-body), sans-serif; text-transform: none; white-space: normal; text-align: center; }
+  .label strong { min-width: 0; font: 800 11px/1.15 var(--font-display), "Arial Narrow", Impact, sans-serif; text-transform: uppercase; white-space: normal; text-align: center; }
   .label small, .arrow, .placeIcon { display: none; }
   .place[data-locked] .label { flex-wrap: wrap; }
   .soon { display: flex; justify-content: center; align-items: center; gap: 3px; flex-basis: 100%; font-size: 9px; }

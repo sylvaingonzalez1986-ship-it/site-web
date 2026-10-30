@@ -14,13 +14,16 @@ const modules={
     import {KqBattleVerdictDialog} from '/src/components/placard/KqBattleVerdictDialog';
     import {createKqWarehouseStarter} from '/src/lib/kanab-quest-warehouse';
     import {KQ_BUDDIES} from '/src/lib/kanab-quest-game';
+    import {createKqCareState} from '/src/lib/kanab-quest-care';
+    import {createKqStorageLot,projectKqStorageLot} from '/src/lib/kanab-quest-storage';
     const flower={id:'flower-demo',runId:'run-demo',varietyCode:KQ_BUDDIES[0].code,varietyName:'Fleur de recette',quality:84,traits:[],combos:[],stats:{aroma:80,resin:70,structure:75,vigor:60},status:'available',createdAt:'2026-10-14T10:00:00Z',queuedAt:null,lockedAt:null,burnedAt:null};
+    const storageLot=createKqStorageLot({flowerId:flower.id,harvestedAt:flower.createdAt,baseline:{varietyCode:flower.varietyCode,juryScore:7,aroma:80,care:createKqCareState()}});
     const rounds=[1,2,3].map(i=>({code:'round-'+i,label:'Manche '+i,explanation:'Recette locale',playerScore:80,opponentScore:60,winner:'player'}));
     const battle={id:'battle-demo',status:'verdict',seed:123,playerFlower:{id:flower.id,variety:flower.varietyName,stats:flower.stats},opponentFlower:{id:'opponent-demo',variety:'Fleur adverse',stats:flower.stats},rounds,winner:'player',lockedAt:flower.createdAt,verdictAt:flower.createdAt,opponentType:'bot',experienceAwarded:100};
     const receipt={battleId:battle.id,winner:'player',burnedAt:flower.createdAt,experienceAwarded:100,todayCount:1,dailyLimit:5,opponentFlower:{...battle.opponentFlower,ownerName:'Bot de recette'},rounds,challengePoints:0,completedChallenges:[],rewardCard:null};
     const root=createRoot(document.getElementById('root'));let key=0;const network=fetch.bind(window);
     const state={mode:'success',readsFail:false,finished:false,submitted:false,requests:[]};window.__jury=state;
-    const session=()=>({activeRun:null,activeRuns:[],flowers:[{...flower,status:state.finished?'burned':'available'}],battles:state.finished?[battle]:[],progress:null});
+    const session=()=>({activeRun:null,activeRuns:[],flowers:[{...flower,status:state.finished?'burned':'available',storage:state.mode==='unknown'?undefined:projectKqStorageLot(storageLot,Date.parse(flower.createdAt)+(state.mode==='curing'?3:7)*3600000)}],battles:state.finished?[battle]:[],progress:null});
     window.fetch=async(input,init={})=>{
       const url=String(input);if(!url.startsWith('/api/'))return network(input,init);
       const path=new URL(url,location.origin).pathname,method=init.method??'GET';state.requests.push({path,method,time:performance.now()});
@@ -35,13 +38,13 @@ const modules={
       if(state.readsFail&&(path.endsWith('/flowers')||path.endsWith('/battles')))return Response.json({error:'Lecture momentanément indisponible'},{status:503});
       if(path.endsWith('/bootstrap'))return Response.json({collection:{ownerFound:true,collectionActive:true,inventory:{},availableInventory:{},cards:[]},ownedBuddieCodes:[flower.varietyCode],playerSession:session(),heritage:{cards:[]}});
       if(path.endsWith('/session'))return Response.json(session());
-      if(path.endsWith('/warehouse'))return Response.json({state:createKqWarehouseStarter(),revision:0});
+      if(path.endsWith('/warehouse'))return Response.json({state:createKqWarehouseStarter(),revision:1});
       if(path.endsWith('/flowers'))return Response.json({flowers:session().flowers});
       if(path.endsWith('/battles'))return Response.json({battles:session().battles});
       if(path.endsWith('/rankings'))return Response.json({entries:[]});
       return Response.json({progress:null});
     };
-    window.__showJury=(mode)=>{state.mode=mode;state.readsFail=false;state.finished=false;state.submitted=false;state.requests=[];delete document.body.dataset.navigated;sessionStorage.clear();localStorage.clear();root.render(<KanabQuestDicePrototype key={++key} apiScope='player' showAdminOperations={false} viewMode='arena' onOpenGame={()=>{document.body.dataset.navigated='game'}} onOpenMarket={()=>{document.body.dataset.navigated='market'}}/>);};
+    window.__showJury=(mode)=>{state.mode=mode;state.readsFail=false;state.finished=false;state.submitted=false;state.requests=[];delete document.body.dataset.navigated;sessionStorage.clear();localStorage.clear();root.render(<KanabQuestDicePrototype key={++key} apiScope='player' showAdminOperations={false} viewMode='arena' onOpenGame={()=>{document.body.dataset.navigated='game'}} onOpenStorage={id=>{document.body.dataset.navigated='storage:'+id}} onOpenMarket={()=>{document.body.dataset.navigated='market'}}/>);};
     window.__showVerdict=(variant)=>{
       delete document.body.dataset.navigated;
       const stats={appearance:70,aroma:70,vigor:70,mastery:70,regularity:70};
@@ -67,7 +70,31 @@ try{
   await page.setRequestInterception(true);page.on('request',r=>{const url=new URL(r.url());if(url.origin===origin||url.protocol==='data:')void r.continue();else void r.abort();});
   const settle=()=>new Promise(resolve=>setTimeout(resolve,200));
   const clickText=async(text,scope='body')=>{const found=await page.evaluate(({text,scope})=>{const target=[...document.querySelectorAll(scope+' button')].find(b=>b.textContent.includes(text)&&!b.disabled);if(!target)return false;target.click();return true;},{text,scope});assert(found,'Clickable button '+text);};
-  const openTraining=async()=>{await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(b=>b.textContent.includes('Entraînement ·')&&!b.disabled));await clickText('Entraînement ·');await page.waitForSelector('#remote-battle-title');};
+  const openTraining=async()=>{await page.waitForFunction(()=>document.querySelector('[data-culture-training-flower]:not(:disabled)'));await clickText('Entraînement immédiat');await page.waitForSelector('#remote-battle-title');};
+  for(const width of [320,390,1440]){
+    await page.setViewport({width,height:900,isMobile:width<700,hasTouch:width<700});await page.goto(origin,{waitUntil:'networkidle0'});await page.waitForFunction(()=>typeof window.__showJury==='function');
+    for(const mode of ['curing','unknown']){
+      await page.evaluate(mode=>window.__showJury(mode),mode);await page.waitForSelector('[data-culture-open-storage]');
+      assert.equal(await page.$$eval('[data-culture-training-flower]',els=>els.length),0,'Immature or unverified harvest cannot start training');
+      assert(!await page.$eval('[data-status="available"]',el=>el.textContent.includes('Prête à jouer')),'Card status must not claim readiness before curing');
+      assert.equal(await page.$$eval('[data-culture-ranked-flower]',els=>els.length),0,'Immature or unverified harvest cannot join ranked queue');
+      if(mode==='curing')assert.equal(await page.$eval('[data-culture-curing] [role="meter"]',el=>el.getAttribute('aria-valuenow')),'50','Progress comes from server projection');
+      else assert.match(await page.$eval('[data-culture-curing]',el=>el.textContent),/à vérifier/,'Missing readiness is explicit');
+      assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'No horizontal overflow at '+width);
+      await page.screenshot({path:resolve(output,'before-jury-'+mode+'-'+width+'.png'),fullPage:true});
+      await page.focus('[data-culture-open-storage]');await page.keyboard.press('Enter');
+      await page.waitForFunction(()=>document.body.dataset.navigated==='storage:flower-demo');
+      assert.equal(await page.evaluate(()=>window.__jury.requests.filter(r=>r.method==='POST').length),0,'Storage handoff does not submit a duel');
+      results.push({scenario:'before-jury-'+mode,width});
+      if(mode==='curing'){
+        await page.evaluate(()=>{window.__jury.mode='success';window.dispatchEvent(new Event('focus'));});
+        await page.waitForSelector('[data-culture-training-flower]');
+        assert.equal(await page.$$eval('[data-culture-open-storage]',els=>els.length),0,'Server readiness unlocks the jury on refresh');
+        assert.equal(await page.evaluate(()=>window.__jury.requests.filter(r=>r.method==='POST').length),0,'Readiness refresh never starts a duel');
+        results.push({scenario:'server-readiness-unlocks-jury',width});
+      }
+    }
+  }
   for(const [width,height] of [[320,568],[844,390],[1440,1000]]){
     await page.setViewport({width,height,isMobile:width<700,hasTouch:width<700});await page.goto(origin,{waitUntil:'networkidle0'});await openTraining();
     const dimensions=await page.$eval('dialog[open]',d=>{const b=d.querySelector('header button'),r=b.getBoundingClientRect();return {w:r.width,h:r.height,visible:r.top>=0&&r.bottom<=innerHeight,overflow:d.scrollWidth>d.clientWidth+1,top:d.matches(':modal')};});assert(dimensions.w>=44&&dimensions.h>=44&&dimensions.visible&&dimensions.top&&!dimensions.overflow);
@@ -80,7 +107,7 @@ try{
       const visible=element=>{const rect=element.getBoundingClientRect();return !element.disabled&&rect.top>=0&&rect.bottom<=innerHeight&&rect.height>=44&&rect.left>=0&&rect.right<=innerWidth;};
       return {footerVisible:!!market&&!!prepare&&visible(market)&&visible(prepare),
         persistentActions:!!market?.closest('footer')&&!!prepare?.closest('footer'),
-        preparationSecondary:!!market&&!!prepare&&market.getBoundingClientRect().bottom<=prepare.getBoundingClientRect().top&&getComputedStyle(market).backgroundColor!==getComputedStyle(prepare).backgroundColor,
+        preparationSecondary:!!market&&!!prepare&&market.getBoundingClientRect().bottom<=prepare.getBoundingClientRect().top&&getComputedStyle(market).borderImageSource!==getComputedStyle(prepare).borderImageSource,
         bodyHeight:body.scrollHeight,bodyViewportHeight:bodyRect.height,
         bodyCapped:bodyRect.height>0&&bodyRect.top>=headerRect.bottom-1&&bodyRect.bottom<=footerRect.top+1&&bodyRect.top>=0&&bodyRect.bottom<=innerHeight&&bodyRect.height<=innerHeight-headerRect.height-footerRect.height+1,
         bodyScrolls:getComputedStyle(body).overflowY==='auto',

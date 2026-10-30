@@ -59,18 +59,19 @@ export function getReleveMerchProgress(state: KqReleveCommerceState) {
   const merch = state.operations.trial.commerce.online?.merch;
   const row = merch?.inventory.find(item => item.code === stickers.code);
   const complete = canReadReleveMerchReport(state) && state.milestones.includes('merch-report-read');
-  const instruction = !merch || merch.version !== 1 ? 'Le stock merch doit être disponible avant de poursuivre cet essai.'
-    : !merch.modules.includes(paper.code) ? 'Dans Commerce, ouvre Développer ma boutique puis Merch. Compare les prérequis prêtés et le coût de la papeterie avant de la débloquer.'
+  const instruction = !merch || merch.version !== 1 ? 'Le stock de produits dérivés doit être disponible avant de poursuivre cet essai.'
+    : !merch.modules.includes(paper.code) ? 'Dans Commerce, ouvre Développer puis Produits dérivés. Compare les prérequis prêtés et le coût de la papeterie avant de la débloquer.'
       : !row || row.quantity + row.sold === 0 ? 'Fabrique une petite série de stickers. La fabrication est payée maintenant ; les invendus restent à ta charge.'
         : !state.milestones.includes('merch-published') ? 'Compare le prix, la marge et la cadence estimée. Coche Proposer en vitrine, puis enregistre ton offre.'
           : !state.milestones.includes('merch-time') ? 'Avance de 24 heures fictives pour observer ton offre. Le nombre de ventes dépend de ton audience et de ton prix.'
-            : !complete ? 'Dans Activité, ouvre Stock, rythme et versements du rayon merch. Compare les articles restants et les montants réellement versés ; zéro vente reste un résultat possible.'
-              : 'Tu as préparé et observé ton rayon merch. Les versements ne sont pas un bénéfice : l’atelier et la fabrication ont été payés séparément.';
+            : !complete ? 'Dans Mon stock en vente, choisis Produits dérivés puis ouvre Stock, rythme et versements. Compare les articles restants et les montants réellement versés ; zéro vente reste un résultat possible.'
+              : 'Tu as préparé et observé tes produits dérivés. Les versements ne sont pas un bénéfice : l’atelier et la fabrication ont été payés séparément.';
   return { complete, instruction };
 }
 
 const button = (id: string, title: string, instruction: string, selector: string): ReleveGuideStep => ({ id, title, instruction, selector, kind: 'button' });
 const management = '[data-releve-commerce="merch"][data-releve-section]:not([data-releve-section="management"])';
+const outsideDashboard = '[data-releve-commerce="merch"][data-releve-section]:not([data-releve-section="dashboard"])';
 const editor = '[data-merch-editor="stickers"]';
 
 /** Points to the real Merch controls. Prices, stock, confirmations and sales stay native. */
@@ -95,15 +96,19 @@ export function getReleveMerchGuide(state: KqReleveCommerceState): ReleveGuideSt
     steps.push(button('merch-time', 'Laisse vivre ta collection', 'Avance de 24 heures fictives. Le prix, ton audience et le stock déterminent les ventes ; aucune quantité vendue n’est promise.', '[data-releve-guide="advance-sales"]'));
   } else if (!has('merch-report-read')) {
     steps.push({ id: 'merch-report', title: 'Lis les résultats du rayon', instruction: 'Ouvre Stock, rythme et versements : retrouve ce qui reste en stock et ce qui a rejoint la trésorerie. Les coûts de fabrication et d’atelier sont déjà payés séparément.', selector: '[data-merch-activity] details:not([open]) > summary', kind: 'summary' },
-      button('merch-activity', 'Retrouve le suivi de la boutique', 'Choisis Activité pour consulter le vrai suivi du rayon merch, ses stocks et ses versements.', '[data-shop-view="activity"][aria-selected="false"]'));
+      { id: 'merch-report-read', title: 'Compare le stock et les versements', instruction: 'Lis le bilan ouvert : distingue le stock restant, le rythme estimé et les versements déjà reçus. Les frais de fabrication restent à ta charge.', selector: '[data-merch-activity] details[open]', kind: 'element' },
+      { id: 'merch-report-read', title: 'Compare le stock et les versements', instruction: 'Lis le bilan ouvert : distingue le stock restant, le rythme estimé et les versements déjà reçus. Les frais de fabrication restent à ta charge.', selector: '[data-merch-activity] details[open]', kind: 'element' },
+      button('merch-activity', 'Retrouve tes articles', 'Dans Mon stock en vente, choisis Produits dérivés pour retrouver les stocks et les versements de ta collection.', '[data-screen="dashboard"] [data-online-rayon="merch"]:not([aria-pressed="true"])'),
+      button('merch-dashboard', 'Retrouve le suivi des ventes', 'Choisis Mon stock en vente pour consulter les résultats de ta collection.', `${outsideDashboard} [data-market-section="dashboard"]`));
   }
   if (!has('merch-published')) {
     steps.push(button('merch-stickers', 'Commence par les stickers', 'Choisis Stickers pour essayer une petite série de papeterie.', '[data-merch-product="stickers"][aria-pressed="false"]'),
-      button('merch-open', 'Retrouve les collections de ta marque', 'Ouvre Merch dans Développer ma boutique. Les articles disposent de leur propre stock, distinct des fleurs.', '[data-shop-view="merch"][aria-selected="false"]'));
+      button('merch-open', 'Retrouve les collections de ta marque', 'Dans Développer, choisis Produits dérivés. Les articles disposent de leur propre stock, distinct des fleurs.', '[data-shop-view="merch"][aria-selected="false"]'));
   }
+  if (!has('merch-published')) steps.push(
+    button('merch-management', 'Retrouve l’atelier de ta marque', 'Choisis Développer, puis Produits dérivés pour fabriquer ta collection et préparer sa mise en vitrine.', `${management} [data-market-section="management"]`),
+  );
   if (!has('merch-report-read')) steps.push(
-    button('merch-management', 'Rejoins le bureau de ta boutique', 'Ouvre Développer ma boutique pour retrouver ton rayon merch et son activité.', `${management} button[role="tab"][id$="-management-tab"]`),
-    { id: 'merch-menu', title: 'Ouvre les rubriques du commerce', instruction: 'Choisis Rubriques, puis Développer ma boutique.', text: 'Rubriques', scope: management, kind: 'button' },
     button('merch-return', 'Retourne à ta boutique', 'Reviens au commerce pour poursuivre cette collection d’essai.', '[data-releve-guide="return-shop"]'),
   );
   return steps;

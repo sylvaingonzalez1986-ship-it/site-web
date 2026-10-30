@@ -1,8 +1,7 @@
-.coach { composes: surface from "./ArenaRetro.module.css"; display:grid; grid-template-columns:78px minmax(0,1fr) auto; align-items:center; gap:16px; max-width:1280px; margin:auto; color:#172923; font-family:var(--font-body),sans-serif; }
+.coach { composes: gameSurface from "./ArenaRetro.module.css"; display:grid; grid-template-columns:78px minmax(0,1fr) auto; align-items:center; gap:16px; max-width:1280px; margin:auto; color:#172923; font-family:var(--font-body),sans-serif; }
 .portrait { width:78px; height:78px; border:2px solid #173a31; border-radius:22px; overflow:hidden; background:#c5e5d5; box-shadow:3px 3px 0 #173a31; }
 .portrait img { width:112px; height:112px; max-width:none; object-fit:cover; transform:translate(-17px,-4px); mix-blend-mode:multiply; }
 .message { min-width:0; }
-.eyebrow { display:flex; align-items:center; gap:5px; font-size:.68rem; font-weight:850; letter-spacing:.04em; color:#087368; text-transform:uppercase; }
 .message strong { display:block; margin:4px 0; font-size:1rem; font-weight:850; }
 .message p { margin:0; max-width:780px; font-size:.88rem; line-height:1.45; }
 .actions { display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:8px; max-width:290px; }
@@ -19,7 +18,6 @@
  .coach { grid-template-columns:48px minmax(0,1fr); gap:8px 12px; }
  .portrait { width:48px; height:54px; border-radius:14px; align-self:start; }
  .portrait img { width:76px; height:76px; transform:translate(-14px,-3px); }
- .eyebrow { font-size:.58rem; }
  .message strong { font-size:.85rem; margin:3px 0; }
  .message p { font-size:.77rem; line-height:1.4; }
  .actions { grid-column:1/-1; width:100%; max-width:none; justify-content:flex-end; gap:6px; }

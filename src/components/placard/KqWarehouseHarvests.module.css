@@ -2,7 +2,8 @@
 .section *, .section *::before, .section *::after { box-sizing: border-box; }
 .heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 6px 16px; margin-bottom: 12px; }
 .heading h3 { font-family: var(--font-display), Impact, sans-serif; font-size: 27px; font-weight: 900; line-height: 1.15; text-transform: uppercase; margin: 0; }
-.heading a { display: inline-flex; align-items: center; gap: 8px; color: var(--green); font-size: 12px; text-decoration: none; min-height: 44px; }
+.heading a, .heading button { display: inline-flex; align-items: center; gap: 8px; color: var(--green); font-size: 12px; text-decoration: none; min-height: 44px; }
+.heading button { padding: 8px 12px; font-family: inherit; font-weight: 700; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; background: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .heading a:hover { text-decoration: underline; }
 .counts { display: flex; flex-wrap: wrap; gap: 5px 16px; margin-top: 7px; }
 .counts > span { display: inline-flex; gap: 5px; align-items: center; font-size: 11px; color: var(--muted); }
@@ -10,6 +11,7 @@
 .lots { display: grid; gap: 10px; }
 .lot { min-width: 0; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .lot { scroll-margin-top: 16px; }
+.lotSheet { padding: 18px; }
 .lot[data-selected] { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .selectionBadge { display: block; margin: 0 0 5px; color: var(--green); font-size: 10px; font-weight: 800; }
 .selectionNotice { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-bottom: 12px; padding: 12px 14px; border: 1px solid var(--ink); border-radius: var(--game-panel-radius, 2px); background: var(--paper); font-size: 12px; scroll-margin-top: 16px; }
@@ -39,6 +41,7 @@
 .curing > small { display: block; margin-top: 5px; font-size: 11px; color: var(--muted); }
 .curing > p { font-size: 12px; margin: 0; }
 .lotAction { display: grid; gap: 5px; }
+.lotAction > span { display: flex; align-items: center; gap: 7px; }
 .lotAction > small { font-size: 10px; line-height: 1.4; text-align: center; color: var(--muted); }
 .action { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 8px 10px; border: var(--game-control-border-width, 2px) solid #172923; color: var(--ink); border-radius: 0; box-shadow: none; cursor: pointer; font: inherit; font-size: 12px; font-weight: 800; line-height: 1.4; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .action svg { flex-shrink: 0; }
@@ -70,7 +73,8 @@
 .overflowActions { display: grid; gap: 8px; }
 .protect { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 9px 12px; border: 1px solid var(--ink); font: 700 12px/1.4 var(--font-body),sans-serif; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; color: #172923; }
 .protect svg { flex-shrink: 0; }
-.protect:disabled { opacity: .6; cursor: not-allowed; }
+.protect:disabled, .protect[aria-disabled=true] { opacity: .6; cursor: not-allowed; }
+.protect { text-decoration: none; }
 .protect:focus-visible,.lot:focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
 .storageDetails { margin-top: 14px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .storageDetails > summary { min-height: 48px; }

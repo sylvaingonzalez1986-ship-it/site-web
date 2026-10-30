@@ -42,13 +42,15 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
   }, [chapter, onDestinationChange]);
   const [harvestSection, setHarvestSection] = useState<'overview' | 'storage'>('storage');
   const [equipmentCode, setEquipmentCode] = useState<string>();
+  const [equipmentMode, setEquipmentMode] = useState<'catalog' | 'storage'>('catalog');
   const [flowerId, setFlowerId] = useState<string>();
   const equipmentOrigin = useRef<KqReleveDestination>('market');
   const [notice, setNotice] = useState(''), [busy, setBusy] = useState(false), [helpOpen, setHelpOpen] = useState(false);
   const commerce = state.operations.trial.commerce, due = getReleveCommerceOutstanding(state);
   const socialLearning = getReleveSocialLearning(state);
   const has = (key: string) => state.milestones.includes(key);
-  function openEquipment(code?: string) { equipmentOrigin.current = place; setEquipmentCode(code); setPlace('equipment'); }
+  function openEquipment(code?: string, id?: string) { if (place !== 'equipment') equipmentOrigin.current = place; if (id) setFlowerId(id); setEquipmentMode('catalog'); setEquipmentCode(code); setPlace('equipment'); }
+  function openStorageEquipment(id?: string) { equipmentOrigin.current = 'storage'; setEquipmentMode('storage'); setEquipmentCode(undefined); setFlowerId(id); setPlace('equipment'); }
   function openHarvests(next: 'overview' | 'storage' = 'storage') { setHarvestSection(next); setPlace('storage'); }
   const record = useCallback(async (name: string, values: Record<string, unknown> = {}) => {
     const response = await api.request('/api/releve/commerce', { method: 'POST', body: JSON.stringify({ action: name, ...values }) });
@@ -94,7 +96,7 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
     event.preventDefault(); event.stopPropagation();
     if (url.searchParams.get('view') === 'treasury') setPlace(url.searchParams.get('pole') === 'bank' ? 'bank' : 'accounts');
     else if (url.searchParams.get('view') === 'harvests') openHarvests(url.searchParams.get('section') === 'storage' ? 'storage' : 'overview');
-    else if (url.searchParams.get('view') === 'workshop' && url.searchParams.get('section') === 'storage') openHarvests();
+    else if (url.searchParams.get('view') === 'workshop' && url.searchParams.get('section') === 'storage') openStorageEquipment(url.searchParams.get('flower') ?? undefined);
     else if (url.searchParams.get('view') === 'workshop' || url.searchParams.get('view') === 'shop') openEquipment(url.searchParams.get('equipment') ?? undefined);
     else if (url.searchParams.get('view') === 'social' || (url.searchParams.get('view') === 'market' && url.searchParams.get('section') === 'social')) setPlace('social');
     else if (url.searchParams.get('view') === 'market') {
@@ -118,15 +120,16 @@ function CommerceVisit({ chapter, state, onChange, initialDestination, destinati
       </div>
       <button type="button" className={styles.help} aria-label="Comprendre les comptes et les règles de cette étape" title="Les conseils de Sylvain" aria-haspopup="dialog" onClick={() => setHelpOpen(true)}><CircleHelp size={20} aria-hidden="true" /></button>
     </div>
-    {merchChapter ? <p className={styles.notice} data-releve-merch-loan>Dossier merch prêté : 5 000 € fictifs au départ, un ordinateur, une boutique de niveau 2 avec sa première période payée, une identité de marque et 5 commandes d’exemple. Ces prérequis sont fournis pour l’essai ; tu paies ici l’atelier et la fabrication.</p> : null}
+    {merchChapter ? <p className={styles.notice} data-releve-merch-loan>Dossier Produits dérivés prêté : 5 000 € fictifs au départ, un ordinateur, une boutique de niveau 2 avec sa première période payée, une identité de marque et 5 commandes d’exemple. Ces prérequis sont fournis pour l’essai ; tu paies ici l’atelier et la fabrication.</p> : null}
     {chapter === 'social' ? <ol className={styles.socialObjectives} aria-label="Objectifs de la rencontre Réseaux" data-releve-social-objectives>{socialLearning.platforms.map(platform => <li key={platform.platform} data-complete={platform.read}><strong>{platform.platform === 'instagram' ? 'Instagram' : 'X'}</strong><span>{platform.read ? 'Résultat lu ✓' : platform.published ? 'Résultat à lire' : 'À publier'}</span></li>)}<li data-complete={socialLearning.partnershipsRead}><strong>Partenariats</strong><span>{socialLearning.partnershipsRead ? 'Conditions lues ✓' : 'À découvrir'}</span></li></ol> : null}
     {notice ? <p className={styles.notice} role="status">{notice}<button type="button" aria-label="Fermer le message" onClick={() => setNotice('')}><X size={18} aria-hidden="true" /></button></p> : null}
     {place === 'missions' ? <KqMissionCenter onOpen={() => setNotice('Les autres parcours se découvrent dans la rencontre Missions du quartier.')} />
       : place === 'social' ? <KqSocialNetworks busy={busy} initialTutorialResultId={chapter === 'social' ? socialLearning.pendingResultId : undefined} onTutorialResultRead={chapter === 'social' ? entryId => record('read-social-result', { entryId }) : undefined} onTutorialPartnershipRead={chapter === 'social' && !socialLearning.partnershipsRead && socialLearning.platforms.every(platform => platform.published && platform.read) ? sponsorId => record('read-social-partnerships', { sponsorId }) : undefined} />
       : place === 'accounts' || place === 'bank' ? <KqTreasuryDesk key={place} onOpenShop={openEquipment} initialPole={place === 'bank' ? 'bank' : 'accounting'} onPoleChange={pole => setPlace(pole === 'bank' ? 'bank' : 'accounts')} />
-        : place === 'equipment' ? <KqWarehouseEntry embedded initialShopOpen initialEquipmentCode={equipmentCode} onOpenShop={openEquipment} onClose={() => setPlace(equipmentOrigin.current)} />
-          : place === 'storage' ? <KqHarvests section={harvestSection} onSectionChange={setHarvestSection} onOpenArena={() => setNotice('Les verdicts de cette campagne sont terminés. Tes lots sont prêts pour la conservation et la vente.')} onOpenMarket={id => { setFlowerId(id); setSection('sales'); setPlace('market'); }} onOpenGame={() => setNotice('Reviens au quartier pour retrouver le parcours de culture.')} />
-            : <KqMarketDesk section={section} onSectionChange={setSection} initialFlowerId={flowerId} initialReceipt={chapter === 'delivery' ? commerce.receipts.at(-1) : undefined} onOpenShop={openEquipment} onOpenTreasury={() => setPlace('accounts')} onOpenStorage={() => openHarvests()} onOpenCulture={() => setNotice('Ta récolte vient de la campagne que tu viens de terminer.')} />}
+        : place === 'equipment' ? <KqWarehouseEntry key={`${equipmentMode}:${equipmentCode ?? ''}`} embedded initialShopOpen={equipmentMode === 'catalog'} initialSection={equipmentMode === 'storage' ? 'storage' : 'equipment'} initialFlowerId={flowerId} initialEquipmentCode={equipmentCode} onOpenShop={openEquipment} onClose={() => setPlace(equipmentOrigin.current)}
+          onOpenHarvests={id => { setFlowerId(id); openHarvests(); }} onOpenMarket={id => { setFlowerId(id); setSection('sales'); setPlace('market'); }} />
+          : place === 'storage' ? <KqHarvests section={harvestSection} initialFlowerId={flowerId} onSectionChange={(next, id) => { setHarvestSection(next); setFlowerId(id); }} onOpenWarehouse={openStorageEquipment} onOpenArena={() => setNotice('Les verdicts de cette campagne sont terminés. Tes lots sont prêts pour la conservation et la vente.')} onOpenMarket={id => { setFlowerId(id); setSection('sales'); setPlace('market'); }} onOpenGame={() => setNotice('Reviens au quartier pour retrouver le parcours de culture.')} />
+            : <KqMarketDesk section={section} onSectionChange={setSection} initialFlowerId={flowerId} initialReceipt={chapter === 'delivery' ? commerce.receipts.at(-1) : undefined} onOpenShop={openEquipment} onOpenTreasury={() => setPlace('accounts')} onOpenStorage={id => { setFlowerId(id); openHarvests(); }} onOpenCulture={() => setNotice('Ta récolte vient de la campagne que tu viens de terminer.')} />}
     {helpOpen ? createPortal(<AppDialog open onClose={() => setHelpOpen(false)} title="Les repères de Sylvain" className={styles.helpDialog} dialogProps={{ 'data-releve-commerce-help': true }}>
       <dl className={styles.helpBudget}><div><dt>Disponible fictif</dt><dd>{formatKqCash(getReleveCommerceCash(state))}</dd></div><div><dt>Factures restant à payer</dt><dd>{formatKqCash(due.totalCents)}</dd></div><div><dt>TVA réservée</dt><dd>{formatKqCash(commerce.business!.vat.reservedCents)}</dd></div></dl>
       {chapter === 'business' ? <p>Dossier d’entreprise séparé : une récolte déjà affinée, une réserve équipée et 5 000 € fictifs sont prêtés.</p> : null}

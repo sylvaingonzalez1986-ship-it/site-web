@@ -1,4 +1,4 @@
-.dialog { composes: surface from "./ArenaRetro.module.css"; }
+.dialog { composes: gameSurface from "./ArenaRetro.module.css"; }
 .dialog:global(.contest-hub-panel-dialog) {
   position: fixed;
   inset: 0;
@@ -67,9 +67,9 @@
 .action:disabled { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); color: #172923; }
 .action:active:not(:disabled), .close:active, .card :global(.btn-cartoon):active { transform: translateY(1px); }
 .dialog :where(a, button, input, summary):focus-visible, .card :where(a, button, input, summary):focus-visible { outline: 3px solid #087b70; outline-offset: 4px; box-shadow: 0 0 0 6px #fff1d6; }
-.preview { composes: surface from "./ArenaRetro.module.css"; position: fixed; top: 96px; right: 24px; z-index: 124; display: none; width: min(440px, calc(100vw - 48px)); max-height: calc(100dvh - 128px); overflow: hidden; pointer-events: none; }
+.preview { composes: gameSurface from "./ArenaRetro.module.css"; position: fixed; top: 96px; right: 24px; z-index: 124; display: none; width: min(440px, calc(100vw - 48px)); max-height: calc(100dvh - 128px); overflow: hidden; pointer-events: none; }
 .previewBody { max-height: calc(100dvh - 260px); margin-top: 18px; overflow: hidden; }
-.card { composes: surface from "./ArenaRetro.module.css"; min-height: 100%; padding: clamp(18px, 3vw, 26px); }
+.card { composes: gameSurface from "./ArenaRetro.module.css"; min-height: 100%; padding: clamp(18px, 3vw, 26px); }
 .setupForm { display: grid; gap: 12px; min-width: 0; }
 .fields { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 12px; min-width: 0; }
 .fields[data-compact] { grid-template-columns: minmax(0, 1fr); }

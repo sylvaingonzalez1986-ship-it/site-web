@@ -3,6 +3,7 @@ import type { ReleveGuideStep } from "@/lib/arena-releve-guide";
 import { canPerformKqBasicCare, KQ_BASIC_CARE_PRICE_CENTS } from "./kanab-quest-care";
 import { canActivateKqHeritage, canPlayKqCard, getKqHandCodes, getKqStageDisplayName, isKqCultureDead, KQ_ACTIVE_CARDS, KQ_STAGES } from "./kanab-quest-game";
 import { getKqReleveHarvests, type KqReleveProductionChapter, type KqReleveProductionState } from "./kanab-quest-releve-production";
+import { projectKqStorageLot } from "./kanab-quest-storage";
 
 const attribute = (name: string, value: string) => `[data-${name}=${JSON.stringify(value)}]`;
 
@@ -77,9 +78,14 @@ export function getReleveProductionGuide(chapter: KqReleveProductionChapter, sta
   }
 
   if (chapter === "jury") {
+    if (getKqReleveHarvests(state).some(harvest => !harvest.battle && projectKqStorageLot(harvest.storage, state.clock).stage === "curing")) {
+      add("storage", "Affine ta récolte avant le jury", "Ouvre ton stockage pour voir chaque variété et son contenant.", "[data-releve-jury-storage]");
+      add("mature", "Laisse les arômes se développer", "Vérifie tes contenants, puis termine les six heures d’affinage avec l’horloge fictive de cet essai.", '[data-releve-guide="mature"]');
+      return steps;
+    }
     add("confirm-training", "Ton premier entraînement", "Confirme le jury. La Fleur de cet essai sera consommée, ton lot reste disponible.", "[data-culture-confirm-training]");
     add("confirm-verdict", "Le jury est prêt", "Confirme ce verdict pour découvrir les trois manches de la rencontre.", "[data-culture-confirm-verdict]");
-    add("return-jury", "Retrouve ta Fleur au jury", "Cette vue réunit tes récoltes. Retourne au jury pour poursuivre la rencontre.", '[data-placard-harvests] [aria-label="Parcours des récoltes"] > button:nth-child(2)');
+    add("return-jury", "Retrouve ta Fleur au jury", "L’affinage est terminé. Retourne au jury pour présenter ta Fleur.", '[data-releve-jury-return]');
     for (const { zoneId, game: harvest, battle } of getKqReleveHarvests(state)) {
       if (!battle) {
         add(`present-${zoneId}`, "Présente ta Fleur au jury", `Choisis Entraînement pour ${harvest.varietyName}. Ton lot restera disponible pour la vente.`, `[data-culture-training-flower="releve-flower-${zoneId}"]`);

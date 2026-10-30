@@ -1,6 +1,6 @@
 "use client";
 
-import { ExternalLink, Sprout, X } from "lucide-react";
+import { Sprout, X } from "lucide-react";
 import { useLayoutEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { getKqBuddieVariety } from "@/lib/kanab-quest-buddie-varieties";
@@ -115,23 +115,20 @@ export function KqBuddieVarietyPopover({ id, buddie, anchor, trigger, onClose, o
 
   return createPortal(<div ref={panel} id={id} popover="manual" role="dialog" aria-labelledby={`${id}-title`} className={styles.popover} data-buddie-variety-popover={buddie.code}>
     <header className={styles.header}>
-      <div><span className={styles.eyebrow}>La fiche du Buddie · {rarityLabels[buddie.rarity]}</span><h3 id={`${id}-title`}>{buddie.name}</h3></div>
+      <div><span className={styles.eyebrow}>{rarityLabels[buddie.rarity]}</span><h3 id={`${id}-title`}>{buddie.name}</h3></div>
       <button ref={closeButton} type="button" className={styles.close} data-buddie-variety-close aria-label={`Fermer la fiche de ${buddie.name}`} onClick={close}><X size={20} aria-hidden="true" /></button>
     </header>
     <div className={styles.body}>
       <section className={styles.flavors} aria-label="Les goûts du Buddie">
         <KqBuddieFlavors varietyCode={buddie.code} compact />
-        <p className={styles.flavorNote}>Deux notes retenues pour le jeu. Le profil varie selon la sélection.</p>
       </section>
       {variety ? <>
-        <span className={styles.identity}>{variety.identity === "documented" ? "Variété documentée" : variety.identity === "commercial-name" ? "Nom commercial" : "Création de Kanab Quest"}</span>
-        <p className={styles.summary}>{variety.summary}</p>
-        <section className={styles.story}><h4>Son histoire</h4><p>{variety.history}</p></section>
-        <dl className={styles.origins}><div><dt>Origine</dt><dd>{variety.origin}</dd></div><div><dt>Lignée</dt><dd>{variety.lineage}</dd></div></dl>
-        <section className={styles.traits}><h4>Ce qui la caractérise</h4><ul>{variety.characteristics.map(characteristic => <li key={characteristic}><Sprout size={15} aria-hidden="true" /><span>{characteristic}</span></li>)}</ul></section>
-        {variety.caveat && <p className={styles.caveat}>{variety.caveat}</p>}
-        {variety.sources.length > 0 && <details className={styles.sources}><summary>Sources de la fiche</summary><ul>{variety.sources.map(source => <li key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label}<ExternalLink size={12} aria-hidden="true" /></a></li>)}</ul></details>}
-      </> : <p className={styles.summary}>L’histoire de cette variété arrive bientôt dans le carnet du village.</p>}
+        <section className={styles.story}><h4>Histoire</h4><p>{variety.history}</p></section>
+        {(variety.origin || variety.lineage) && <dl className={styles.origins}>
+          {variety.origin && <div><dt>Origine</dt><dd>{variety.origin}</dd></div>}
+          {variety.lineage && <div><dt>Généalogie</dt><dd>{variety.lineage}</dd></div>}
+        </dl>}
+      </> : null}
     </div>
     <footer className={styles.footer}>
       {unavailableReason ? <p>{unavailableReason}</p> : onChoose && <button type="button" data-buddie-variety-choose onClick={() => { close(); onChoose(); }}><Sprout size={18} aria-hidden="true" />{chooseLabel}</button>}

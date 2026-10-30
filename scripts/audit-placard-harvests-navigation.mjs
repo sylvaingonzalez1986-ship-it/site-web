@@ -25,6 +25,7 @@ const modules = {
     import {KqTutorialApiProvider,createKqTutorialApi} from '/src/components/placard/KqTutorialApiContext';
     import {createKqOperationsLesson,getKqOperationsEquipment,getKqOperationsStorage} from '/src/lib/kanab-quest-operations-lesson';
     import {createKqStorageLot,projectKqStorageLot,planKqStorageAllocation} from '/src/lib/kanab-quest-storage';
+    import {createKqWarehouseStarter} from '/src/lib/kanab-quest-warehouse';
     import {KQ_CARE_PRODUCTS} from '/src/lib/kanab-quest-care';
     import styles from '/src/components/placard/PlacardPlayerShell.module.css';
     const query=new URLSearchParams(location.search),now=Date.parse('2026-10-10T10:00:00Z');
@@ -39,8 +40,10 @@ const modules = {
     };
     const lots=[makeLot('ready-flower',420,1000),makeLot('curing-flower',30,1000),makeLot('overflow-flower',30,1800)];
     const storage={...getKqOperationsStorage(lesson),serverNow:new Date(now).toISOString(),ownedContainers,lots,
+      stockBreakdown:{bulkUnits:3800,bulkProtectedUnits:3000,bulkOverflowUnits:800,packedUnits:0,packedActiveUnits:0,packedPausedUnits:0,packedOtherUnits:0,packedPackets:0},
       capacity:{totalUnits:3000,usedUnits:3000,reservedUnits:3000,freeUnits:0,overflowUnits:800}};
-    const flower=(id,status)=>({id,runId:'run-'+id,varietyCode:lesson.storage.lot.baseline.varietyCode,varietyName:'Récolte '+id,quality:70,traits:[],combos:[],stats:{aroma:70},status,createdAt:new Date(now).toISOString(),queuedAt:status==='queued'?new Date(now).toISOString():null,lockedAt:status==='locked'?new Date(now).toISOString():null,burnedAt:status==='burned'?new Date(now).toISOString():null});
+    // An available flower can enter the jury only when its server projection confirms completed curing.
+    const flower=(id,status)=>({id,runId:'run-'+id,varietyCode:lesson.storage.lot.baseline.varietyCode,varietyName:'Récolte '+id,quality:70,traits:[],combos:[],stats:{aroma:70},status,storage:status==='available'?structuredClone(lots[0].projection):undefined,createdAt:new Date(now).toISOString(),queuedAt:status==='queued'?new Date(now).toISOString():null,lockedAt:status==='locked'?new Date(now).toISOString():null,burnedAt:status==='burned'?new Date(now).toISOString():null});
     const flowers=[flower('jury-flower','available'),flower('queued-flower','queued'),flower('locked-flower','locked'),flower('spent-flower','burned'),flower('ready-flower','burned')];
     if(query.has('empty')){flowers.length=0;storage.lots=[];}
     if(query.has('jury-only'))storage.lots=[];
@@ -53,7 +56,7 @@ const modules = {
       if(method!=='GET')throw new Error('Read-only fixture rejected mutation '+method+' '+path);
       const key=path.split('/').at(-1);
       if(failing.has(key))return Response.json({error:'Indisponibilité locale simulée.'},{status:503});
-      const payload={flowers:{flowers},storage,equipment,boosters:shop,care:{cashCents:500000,inventory:[],catalog:KQ_CARE_PRODUCTS},commerce:{computerOwned:true,cashCents:500000}}[key];
+      const payload={flowers:{flowers},storage,equipment,warehouse:{state:createKqWarehouseStarter(),revision:1,cashCents:500000,activeRun:false,activeRuns:[],stockGrams:380,storageReservedGrams:300,storageCapacityGrams:300,salesGramsPerDay:0},collection:{ownedBuddieCodes:[],buddieRotation:{recentBuddieCodes:[]}},boosters:shop,care:{cashCents:500000,inventory:[],catalog:KQ_CARE_PRODUCTS},commerce:{computerOwned:true,cashCents:500000}}[key];
       if(!payload)throw new Error('Unexpected API fixture request '+path);
       return Response.json(payload);
     };
@@ -61,13 +64,13 @@ const modules = {
     const api={...createKqTutorialApi(request),isTutorial:false};
     sessionStorage.setItem('kq:selected-tent','1');
     function App(){
-      const[view,setView]=useState('harvests'),[section,setSection]=useState('overview');
-      const navigate=next=>{setView(next);setSection('overview');};
+      const[view,setView]=useState('harvests'),[section,setSection]=useState('overview'),[flowerId,setFlowerId]=useState(),[configureStorage,setConfigureStorage]=useState(false);
+      const navigate=next=>{setView(next);setSection('overview');setConfigureStorage(false);};
       return <KqTutorialApiProvider api={api}><div className={styles.shell}>
         <KqPlacardNavigation active={view} onNavigate={navigate} onHighlight={()=>{}}/>
         <div className={styles.content} data-fixture-content>
-          {view==='harvests'?<KqHarvests section={section} onSectionChange={setSection} onOpenArena={flowerId=>window.__links.push({view:'arena',flowerId})} onOpenMarket={flowerId=>window.__links.push({view:'market',flowerId})} onOpenGame={()=>navigate('game')}/>
-          :view==='workshop'?<KqWarehouseEntry embedded onClose={()=>navigate('hub')} onOpenShop={()=>navigate('shop')}/>
+          {view==='harvests'?<KqHarvests section={section} initialFlowerId={flowerId} onSectionChange={(section,id)=>{setSection(section);setFlowerId(id);}} onOpenWarehouse={id=>{setFlowerId(id);setSection('storage');setConfigureStorage(true);setView('workshop');}} onOpenArena={flowerId=>window.__links.push({view:'arena',flowerId})} onOpenMarket={flowerId=>window.__links.push({view:'market',flowerId})} onOpenGame={()=>navigate('game')}/>
+          :view==='workshop'?<KqWarehouseEntry embedded initialSection={section==='storage'?'storage':'equipment'} initialStorageEquipmentOpen={configureStorage} initialFlowerId={flowerId} onOpenHarvests={id=>{setFlowerId(id);setSection('storage');setConfigureStorage(false);setView('harvests');}} onOpenMarket={id=>window.__links.push({view:'market',flowerId:id})} onClose={()=>navigate('hub')} onOpenShop={()=>navigate('shop')}/>
           :view==='shop'?<KqSupportBoosterShop embedded autoOpen autoClaimWelcome={false} onExit={()=>navigate('hub')} onOpenWorkshop={()=>navigate('workshop')}/>
           :<main data-fixture-destination={view}><h1>{view}</h1></main>}
           <button type='button' data-fixture-after>Fin de la page</button>
@@ -119,24 +122,40 @@ try {
       await page.waitForFunction(id=>window.__links.at(-1)?.flowerId===id,{},id);
       assert.deepEqual(await page.evaluate(()=>window.__links.at(-1)),{view:'arena',flowerId:id});
     }
-    for(const[id,label]of [['ready-flower','Préparer ou vendre'],['curing-flower','Voir l’offre grossiste'],['overflow-flower','Voir l’offre grossiste']]){
+    for(const[id,label]of [['ready-flower','Préparer la vente'],['curing-flower','Voir l’offre grossiste'],['overflow-flower','Voir l’offre grossiste']]){
       await clickText(label,'[data-harvest-id="'+id+'"]');assert.deepEqual(await page.evaluate(()=>window.__links.at(-1)),{view:'market',flowerId:id});
     }
     await page.select('[data-placard-harvests] select','jury');assert.deepEqual(await states(),['jury','duel','queued']);
     await page.select('[data-placard-harvests] select','stock');assert.deepEqual(await states(),['overflow','ready','curing']);
     assert.equal(await page.$eval('[data-placard-harvests] figcaption',node=>node.textContent),'6 récoltes par étape','Filtering the list preserves the complete harvest summary');
     await page.select('[data-placard-harvests] select','all');
-    if(harvestsOnly){await unchanged();checks.push({width,height,states:6,summaryCounts:true,filters:true,flowerLinks:true,noOverflow:true,noMutations:true});continue;}
-    await clickText('Protéger le surplus');await page.waitForSelector('[data-storage-capacity]');
-    assert.equal(await page.$eval('[data-storage-shop]',node=>node.open),false,'Container catalogue starts collapsed');
-    assert.equal(await page.$$eval('[data-storage-overflow]',nodes=>nodes.length),1);
+    await clickText('Protéger le surplus');await page.waitForSelector('[data-conservation-summary]');
+    assert.equal(await page.$('[data-warehouse-room]'),null,'Conservation never embeds the warehouse navigation');
+    assert.equal(await page.$$eval('[data-protect-overflow]',nodes=>nodes.length),1);
+    assert.equal(await page.$eval('[data-conservation-lot="overflow-flower"]',node=>node===document.activeElement),true,'Conservation focuses the selected lot');
     await unlocked();await screenshot('storage-'+width);
-    await clickText('Toutes mes récoltes');await page.waitForSelector('[data-harvest-id]');assert.deepEqual(await states(),['overflow','jury','duel','queued','ready','curing']);
+    await clickSelector('[data-protect-overflow="overflow-flower"]');await page.waitForSelector('[data-storage-protection-target="overflow-flower"]');
+    assert.equal(await page.$$eval('[data-conservation-summary]',nodes=>nodes.length),1,'The warehouse reuses one shared lot manager');
+    assert.equal(await page.$eval('[data-conservation-lot="overflow-flower"] [data-lot-summary]',node=>node.dataset.lotSummary),'overflow-flower','The warehouse keeps the same canonical lot identity');
+    assert.equal(await page.$eval('[data-storage-equipment]',node=>node.open),true,'Adding containers opens the requested configuration directly');
+    await clickSelector('[data-storage-equipment] > summary');
+    assert.equal(await page.$eval('[data-storage-equipment]',node=>node.open),false,'The player can close the configuration');
+    const storageReads=await page.evaluate(()=>window.__calls.filter(call=>call.path.endsWith('/storage')).length);
+    await clickSelector('[aria-label="Actualiser le stockage"]');
+    await page.waitForFunction(count=>window.__calls.filter(call=>call.path.endsWith('/storage')).length>count,{},storageReads);
+    await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+    assert.equal(await page.$eval('[data-storage-equipment]',node=>node.open),false,'Refreshing the selected lot respects the voluntary close');
+    await clickSelector('[data-storage-equipment] > summary');
+    await clickSelector('[data-return-protection-lot]');await page.waitForSelector('[data-conservation-lot="overflow-flower"]');
+    await clickText('Toutes mes récoltes','[aria-label="Parcours des récoltes"]');await page.waitForSelector('[data-harvest-id]');assert.deepEqual(await states(),['overflow','jury','duel','queued','ready','curing']);
     await navigate('workshop',width);await page.waitForSelector('[data-arena-tour-surface="warehouse"]');
     await page.waitForFunction(()=>!document.body.textContent.includes('Actualisation de l’atelier…'));
     assert.equal(await page.$eval('[data-arena-tour-surface="warehouse"]',node=>node.getAttribute('role')),'region');
     assert.equal(await page.$('[aria-label="Fermer l’inventaire"]'),null,'Embedded warehouse has no modal close button');
+    await clickSelector('[data-warehouse-room="storage"]');await page.waitForSelector('[data-storage-equipment]');
+    assert.equal(await page.$eval('[data-storage-equipment]',node=>node.open),false,'A normal warehouse visit keeps storage configuration collapsed');
     await unlocked();await screenshot('warehouse-'+width);
+    if(harvestsOnly){await unchanged();checks.push({width,height,states:6,summaryCounts:true,filters:true,flowerLinks:true,storageJourney:true,lotFocus:true,targetedConfigurationOpen:true,voluntaryCloseRespected:true,normalStorageCollapsed:true,embeddedWarehouse:true,noOverflow:true,noMutations:true});continue;}
     await navigate('shop',width);await page.waitForSelector('[data-shop-page] [aria-label="Ouvrir le rayon matériel"]');
     await page.waitForFunction(()=>!document.querySelector('[aria-label^="Acheter un booster"]').disabled);
     assert.equal(await page.$eval('[data-arena-tour-surface="shop"]',node=>node.getAttribute('role')),'region');

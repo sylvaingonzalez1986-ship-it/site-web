@@ -5,7 +5,7 @@ import { CalendarClock, Check, ChevronDown, FlaskConical, Megaphone, Monitor, Re
 import { KQ_ADVERTISING, KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS, KQ_LAB_ANALYSIS_CENTS, KQ_SHOP_CREATION_CENTS, KQ_SHOP_MONTHLY_CENTS, getKqBusinessClock } from "@/lib/kanab-quest-business";
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
-import { KqOnlineBusiness, type KqOnlineBusinessView, type KqOnlineUpgradeView } from "./KqOnlineBusiness";
+import { KqOnlineBusiness, type KqOnlineBusinessTab, type KqOnlineBusinessView, type KqOnlineUpgradeView } from "./KqOnlineBusiness";
 import { KqBarChart, KqProgressMeter } from "./KqVisuals";
 import styles from "./KqBusinessPanel.module.css";
 
@@ -48,8 +48,8 @@ const ledgerLabels: Record<string, string> = {
   "storage-climate-issued": "Climatisation du stockage facturée", "storage-climate-paid": "Climatisation du stockage réglée", "storage-climate-credit": "Crédit de climatisation déjà facturée",
 };
 
-export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, onPrepareStock, onViewSales, initialView, initialUpgradeView, expanded = false, showAccounting = true }: {
-  data: KqCommerceSnapshot; now?: number; busy: boolean; onAsk: Ask; onOpenShop: () => void; onPrepareStock?: () => void; onViewSales?: () => void; initialView?: KqOnlineBusinessView; initialUpgradeView?: KqOnlineUpgradeView; expanded?: boolean; showAccounting?: boolean;
+export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, onPrepareStock, onViewSales, view, onViewChange, initialView, initialUpgradeView, expanded = false, showAccounting = true }: {
+  data: KqCommerceSnapshot; now?: number; busy: boolean; onAsk: Ask; onOpenShop: () => void; onPrepareStock?: () => void; onViewSales?: (listingId?: string) => void; view?: KqOnlineBusinessTab; onViewChange?: (view: KqOnlineBusinessTab) => void; initialView?: KqOnlineBusinessView; initialUpgradeView?: KqOnlineUpgradeView; expanded?: boolean; showAccounting?: boolean;
 }) {
   const business = data.business;
   if (!business) return null;
@@ -85,7 +85,7 @@ export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, o
     {!data.online ? advertisingPanel : null}
     {business.ledger.length ? <details className={styles.activity}><summary>Derniers mouvements et échéances <ChevronDown size={16} aria-hidden="true" /></summary><ul>{business.ledger.toSorted((a, b) => Date.parse(b.occurredAt) - Date.parse(a.occurredAt)).slice(0, 8).map(entry => <li key={entry.id}><span>{ledgerLabels[entry.kind] ?? "Mouvement de gestion"}<small>{dateLabel(entry.occurredAt)}</small></span><strong>{entry.amountCents ? formatKqCash(Math.abs(entry.amountCents)) : "—"}</strong></li>)}</ul></details> : null}
   </>;
-  if (data.online) return <KqOnlineBusiness data={data} now={now} busy={busy} onAsk={onAsk} onOpenShop={onOpenShop} onPrepareStock={onPrepareStock} onViewSales={onViewSales} initialView={initialView} initialUpgradeView={initialUpgradeView} advertising={<div className={styles.settings}>{advertisingPanel}</div>} businessDetails={<div className={styles.settings}>{calendarPanel}{accountingPanel}{administrativeSettings}</div>} />;
+  if (data.online) return <KqOnlineBusiness data={data} now={now} busy={busy} onAsk={onAsk} onOpenShop={onOpenShop} onPrepareStock={onPrepareStock} onViewSales={onViewSales} view={view} onViewChange={onViewChange} initialView={initialView} initialUpgradeView={initialUpgradeView} advertising={<div className={styles.settings}>{advertisingPanel}</div>} businessDetails={<div className={styles.settings}>{calendarPanel}{accountingPanel}{administrativeSettings}</div>} />;
   return <section className={styles.panel} aria-label="Calendrier et gestion du commerce">
     {calendarPanel}
     <details id="kq-business-management" className={styles.management} open={expanded}>

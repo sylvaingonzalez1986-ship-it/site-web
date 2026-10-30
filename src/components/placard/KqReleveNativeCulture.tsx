@@ -7,6 +7,8 @@ import { createKqTutorialApi, KqTutorialApiProvider } from "./KqTutorialApiConte
 import { createReleveCultureTransport } from "@/lib/kanab-quest-releve-culture";
 import type { KqClientRunSelection } from "@/lib/kanab-quest-client-run-selection";
 import { applyKqReleveProductionAction, getKqReleveHarvests, getKqReleveProductionProgress, type KqReleveProductionState } from "@/lib/kanab-quest-releve-production";
+import { projectKqStorageLot } from "@/lib/kanab-quest-storage";
+import styles from "./KqReleveProduction.module.css";
 
 type Props = { chapter: "launch" | "culture" | "jury"; state: KqReleveProductionState; onChange: (next: KqReleveProductionState) => void;
   onOpenWarehouse?: () => void; onOpenArena?: () => void; onOpenGame?: () => void;
@@ -32,6 +34,7 @@ export function KqReleveNativeCulture({ chapter, state, onChange, onOpenWarehous
   const [port] = useState(() => createPort(state, onChange));
   const [restart, setRestart] = useState(0);
   const [harvestsOpen, setHarvestsOpen] = useState(false);
+  const [harvestSection, setHarvestSection] = useState<"overview" | "storage">("storage");
   const [selectedFlower, setSelectedFlower] = useState<string>();
   useEffect(() => { port.sync(state, onChange); }, [port, state, onChange]);
   const { getState, setState } = port;
@@ -52,9 +55,15 @@ export function KqReleveNativeCulture({ chapter, state, onChange, onOpenWarehous
     if (onOpenRun) onOpenRun(selection);
     else onOpenGame?.();
   };
-  const openHarvests = (section: "overview" | "storage") => {
+  const openHarvests = (section: "overview" | "storage", flowerId?: string) => {
+    if (flowerId) setSelectedFlower(flowerId);
     if (section === "storage" && onOpenStorage && getKqReleveProductionProgress("jury", getState()).complete) onOpenStorage();
-    else setHarvestsOpen(true);
+    else { setHarvestSection(section); setHarvestsOpen(true); }
+  };
+  const curing = getKqReleveHarvests(state).some(harvest => !harvest.battle && projectKqStorageLot(harvest.storage, state.clock).stage === "curing");
+  const mature = () => {
+    setState(applyKqReleveProductionAction(getState(), { type: "mature" }));
+    setRestart(value => value + 1);
   };
   const observe = (event: MouseEvent<HTMLDivElement>) => {
     const target = event.target instanceof Element ? event.target : null;
@@ -98,7 +107,12 @@ export function KqReleveNativeCulture({ chapter, state, onChange, onOpenWarehous
   return <div data-releve-native-culture={chapter} data-releve-production={chapter} onClickCapture={observe}
     onAuxClickCapture={event => { if (event.target instanceof Element && event.target.closest('a[href^="/arene/placard"]')) observe(event); }}>
     <KqTutorialApiProvider api={api}>
-      {harvestsOpen ? <KqHarvests section="overview" onSectionChange={openHarvests}
+      {chapter === "jury" ? <div className={styles.actions}>
+        {!harvestsOpen ? <button type="button" data-releve-jury-storage onClick={() => openHarvests("storage")}>Stockage et affinage avant le jury</button>
+          : <><button type="button" data-releve-jury-return onClick={() => setHarvestsOpen(false)}>Retour au jury</button>
+            {curing ? <button type="button" className={styles.primary} data-releve-guide="mature" onClick={mature}>Terminer les 6 heures d’affinage · horloge fictive</button> : null}</>}
+      </div> : null}
+      {harvestsOpen ? <KqHarvests key={restart} section={harvestSection} initialFlowerId={selectedFlower} onSectionChange={openHarvests} onOpenWarehouse={onOpenWarehouse}
         onOpenArena={flowerId => { setSelectedFlower(flowerId); setHarvestsOpen(false); }}
         onOpenMarket={flowerId => onOpenMarket?.(flowerId)} onOpenGame={() => { setHarvestsOpen(false); onOpenGame?.(); }} /> :
       <KanabQuestDicePrototype key={restart} apiScope="player" viewMode={chapter === "jury" ? "arena" : "game"} showAdminOperations={false}
@@ -106,7 +120,8 @@ export function KqReleveNativeCulture({ chapter, state, onChange, onOpenWarehous
         showWarehouseNavigation={false} initialCampaign isolatedStorage={isolatedStorage}
         initialPreparation={{ deckCodes: state.deckCodes, heritageCode: state.heritageCode }} onPreparationChange={preparation}
         onOpenWarehouse={onOpenWarehouse ?? (() => undefined)} onOpenArena={onOpenArena ?? (() => undefined)}
-        onOpenGame={onOpenGame} onOpenMarket={onOpenMarket} onOpenRun={openRun} />}
+        onOpenGame={onOpenGame} onOpenMarket={onOpenMarket} onOpenRun={openRun}
+        onOpenStorage={flowerId => openHarvests("storage", flowerId)} />}
     </KqTutorialApiProvider>
   </div>;
 }

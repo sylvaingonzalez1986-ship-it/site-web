@@ -8,6 +8,7 @@ import { createKqCustomerDemandSnapshot, getKqCustomerDemandPeriod, KQ_CUSTOMER_
 import { KQ_MARKETING_BUDGETS, KQ_MARKETING_CAMPAIGNS, createKqMarketingResults, type KqMarketingBudgetCode } from './kanab-quest-marketing';
 import { KQ_MERCH_MODULES, KQ_MERCH_PRODUCTS, estimateKqMerchOffer, getKqMerchModuleEligibility, getKqMerchSlots } from './kanab-quest-merch';
 import { getKqStudioEligibility, getKqStudioLevels, KQ_STUDIO_LEVELS, KQ_STUDIO_STYLES } from './kanab-quest-studio';
+import { trialQuality } from './kanab-quest-trial';
 
 const HOUR = 3_600_000;
 type Payment = ReturnType<typeof previewKqBusinessPayment>;
@@ -128,6 +129,7 @@ export function applyKqOperationsOnline(state: KqOperationsLessonState, command:
     inventory.quantity -= packets;
     stock.remainingUnits -= packets * input.formatGrams * 10;
     online.listings.push({ id: `operations-listing-${online.listings.length + 1}`, stockId: stock.id, varietyCode: stock.varietyCode, name: stock.name, route: stock.route,
+      equivalentUnitsPerProductUnit: stock.equivalentUnits / stock.initialUnits,
       formatGrams: input.formatGrams, packagingCode: packaging.code, packetPriceCents, initialPackets: packets, remainingPackets: packets,
       status: 'active', qualityScore, baseUnitCents: stock.baseUnitCents, createdAt: now(), soldPackets: 0 });
     simulation.packedQualities[online.listings.at(-1)!.id] = qualityScore;
@@ -137,10 +139,14 @@ export function applyKqOperationsOnline(state: KqOperationsLessonState, command:
     const row = listing();
     check(row.remainingPackets > 0, 'Cette annonce est épuisée.');
     row.packetPriceCents = positiveInteger(input.packetPriceCents, 1_000_000);
+    // Match the live update-listing RPC: a new price restarts order progress.
+    if (state.onlineOrderCredits) delete state.onlineOrderCredits[row.id];
   } else if (command === 'pause-listing' || command === 'close-listing') {
     const row = listing();
     check(row.remainingPackets > 0, 'Cette annonce est épuisée.');
     row.status = command === 'pause-listing' ? 'paused' : 'closed';
+    // Match the live RPC: status changes restart this listing's order progress.
+    if (state.onlineOrderCredits) delete state.onlineOrderCredits[row.id];
   } else if (command === 'discard-listing') {
     const row = listing();
     check(row.remainingPackets > 0 || row.status === 'discarded', 'Cette annonce est épuisée.');
@@ -152,6 +158,7 @@ export function applyKqOperationsOnline(state: KqOperationsLessonState, command:
     check(row.remainingPackets > 0 && row.qualityScore >= 5.8, 'Ces paquets ne peuvent plus être proposés en ligne.');
     check(online.site.active, 'Réactive ton site avant de publier.');
     row.status = 'active';
+    if (state.onlineOrderCredits) delete state.onlineOrderCredits[row.id];
   } else if (command === 'upgrade-site') {
     const target = KQ_ONLINE_SITE_TIERS.find(item => item.code === input.tier);
     check(target, 'Formule inconnue.');
@@ -419,9 +426,9 @@ function advanceLessonOnline(state: KqOperationsLessonState, online: Online, hou
     }
     online.settledUntil = new Date(Math.max(state.trial.clock, Date.parse(online.settledUntil) || 0)).toISOString();
   }
-  online.recentSales = online.recentSales.slice(0, 20);
-  if (online.merch) online.merch.recentSales = online.merch.recentSales.slice(0, 20);
-  const storage = projectKqStorageLot(state.storage.lot, state.trial.clock);
+  // The exercise keeps its recorded receipts for the paginated sales journal.
+  // Earlier snapshots may have already lost receipts; never recreate those rows.
+  const storage = projectKqStorageLot(state.storage.lot, state.trial.clock, state.storage.lot.juryApplied ? trialQuality(state.trial) : undefined);
   commerce.stocks.forEach(stock => { stock.storage = storage; });
   commerce.customerDemand = getKqOperationsCustomerDemand(state);
   state.events.push('online-time');

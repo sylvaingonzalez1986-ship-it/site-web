@@ -23,6 +23,8 @@
 .plan summary:focus-visible {
   outline: 3px solid var(--ink); outline-offset: 3px;
 }
+.zoneCreation { background: var(--game-surface-warm, #ffae59); }
+.zoneCreation > span { display: block; padding: 12px 14px 0; font-size: 13px; font-weight: 700; }
 .zoneTypes {
   display: flex; align-items: center; gap: 8px; padding: 12px 14px;
   background: var(--game-surface-warm, #ffae59); border-bottom: 2px solid var(--ink);

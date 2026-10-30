@@ -32,6 +32,7 @@ const modules = {
   'conservation-entry': `
     import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
     import {KqWarehouseHarvests} from '/src/components/placard/KqWarehouseHarvests';
+    import {KqHarvestStorage} from '/src/components/placard/KqHarvestStorage';
     import {KqWarehouse} from '/src/components/placard/KqWarehouse';
     import {createKqWarehouseStarter,getKqWarehouseSummary} from '/src/lib/kanab-quest-warehouse';
     import {KQ_WAREHOUSE_CATALOG} from '/src/lib/kanab-quest-warehouse-catalog';
@@ -57,7 +58,7 @@ const modules = {
     if(scenario==='no-offer') { lots.splice(0,lots.length,overflow);delete overflow.overflowOffer; }
     if(scenario==='partial-offer')overflow.overflowOffer={units:250,payoutCents:1350,netPayoutCents:1080};
     window.__workshopCalls=[];window.__overflowCalls=[];window.__protectionCalls=[];window.__apiCalls=[];window.__retryCalls=0;window.__holdSale=query.has('hold');
-    window.__releaseSale=null;window.__closeCalls=0;window.__fixtures={readyId:ready.flowerId,curingId:curing.flowerId,overflowId:overflow.flowerId,lots:structuredClone(lots)};
+    window.__releaseSale=null;window.__closeCalls=0;window.__failStorage=false;window.__failNextSale=false;window.__fixtures={readyId:ready.flowerId,curingId:curing.flowerId,overflowId:overflow.flowerId,lots:structuredClone(lots)};
     const storage={serverNow:new Date(now).toISOString(),cashCents:587484,ownedMethodCodes:['STORAGE-GLASS'],defaultMethodCode:'STORAGE-GLASS',catalog:KQ_STORAGE_METHODS,containers:KQ_STORAGE_CONTAINERS,ownedContainers:{'GLASS-3L':30},installedContainers:{'GLASS-3L':30},capacity:{totalUnits:40000,usedUnits:inventoryUnits,freeUnits:scenario==='empty'?40000:2100,reservedUnits:scenario==='empty'?0:37900,overflowUnits:lots.reduce((sum,lot)=>sum+lot.projection.capacity.overflowUnits,0)},overflowSales:[],lots};
     const state=createKqWarehouseStarter();
     const snapshot={state,revision:1,cashCents:587484,activeRun:false,activeRuns:[],completedRuns:[],stockGrams:inventoryUnits/10,storageReservedGrams:scenario==='empty'?0:3790,storageCapacityGrams:4000,reservedHarvestGrams:0,salesGramsPerDay:30,context:{available:true}};
@@ -68,8 +69,10 @@ const modules = {
       if(call.url==='/api/arena/placard/warehouse')return Response.json(snapshot);
       if(call.url==='/api/arena/placard/collection')return Response.json({ownedBuddieCodes:[],buddieRotation:{requiredDistinctBuddies:2,recentBuddieCodes:[]}});
       if(call.url==='/api/arena/placard/storage'){
+        if(window.__failStorage)return Response.json({error:'Lecture des lots interrompue.'},{status:503});
         if(call.method==='POST'){
           window.__overflowCalls.push(call.body);
+          if(window.__failNextSale){window.__failNextSale=false;return Response.json({error:'La reprise du surplus a été interrompue.'},{status:503});}
           if(window.__holdSale)await new Promise(resolve=>window.__releaseSale=resolve);
           const sold=storage.lots.find(lot=>lot.flowerId===call.body.flowerId);
           sold.projection.capacity.totalUnits-=sold.projection.capacity.overflowUnits;
@@ -82,8 +85,12 @@ const modules = {
     const draftStore=query.has('dirty')?{read:()=>({...state,zones:state.zones.map((zone,index)=>index?zone:{...zone,name:'Brouillon non enregistré',...(query.has('invalid-plan')?{x:999}:{})})}),write:()=>{}}:undefined;
     function Fixture(){
       const [disabled,setDisabled]=React.useState(query.has('disabled'));
+      const [area,setArea]=React.useState(query.has('dirty')||query.has('equipment')||query.has('zone')?'warehouse':'harvests');
+      const [flowerId,setFlowerId]=React.useState(query.get('flower')??undefined);
       React.useEffect(()=>{window.__setDisabled=setDisabled;},[]);
-      return query.has('integration')?<KqWarehouse embedded={!query.has('modal')} initialSection="storage" initialEquipmentCode={query.has('equipment')?KQ_WAREHOUSE_CATALOG.find(device=>device.room==='storage'&&device.kind==='climate').code:undefined} initialZoneId={query.has('zone')?state.serviceZones?.find(zone=>zone.kind==='storage')?.id:undefined} draftStore={draftStore} onClose={()=>window.__closeCalls++}/>:<main data-conservation-fixture><KqWarehouseHarvests storage={['loading','unknown','error'].includes(scenario)?null:storage} stockGrams={scenario==='loading'||scenario==='unknown'?null:snapshot.stockGrams} storageReservedGrams={scenario==='loading'||scenario==='unknown'?null:snapshot.storageReservedGrams} storageCapacityGrams={scenario==='unknown'?null:4000} disabled={disabled} error={scenario.includes('error')?'Lecture des lots interrompue.':undefined} onRetry={()=>window.__retryCalls++} onOpenWorkshop={flowerId=>window.__workshopCalls.push(flowerId)} onSellOverflow={flowerId=>window.__overflowCalls.push(flowerId)} onProtectOverflow={query.has('without-protection')?undefined:flowerId=>window.__protectionCalls.push(flowerId)}/></main>;
+      const openMarket=id=>{window.__workshopCalls.push(id);setFlowerId(id);setArea('commerce');};
+      const openHarvests=id=>{setFlowerId(id);setArea('harvests');};
+      return query.has('integration')?area==='warehouse'?<KqWarehouse embedded={!query.has('modal')} initialSection="storage" initialFlowerId={flowerId} initialEquipmentCode={query.has('equipment')?KQ_WAREHOUSE_CATALOG.find(device=>device.room==='storage'&&device.kind==='climate').code:undefined} initialZoneId={query.has('zone')?state.serviceZones?.find(zone=>zone.kind==='storage')?.id:undefined} draftStore={draftStore} onOpenMarket={openMarket} onOpenHarvests={openHarvests} onClose={()=>window.__closeCalls++}/>:area==='commerce'?<output data-selected-workshop-lot={flowerId}>Commerce · {flowerId}</output>:<main><KqHarvestStorage initialFlowerId={flowerId} onOpenMarket={openMarket} onOpenOverview={openHarvests} onOpenWarehouse={query.has('without-protection')?undefined:id=>{setFlowerId(id);setArea('warehouse');}}/></main>:<main data-conservation-fixture><KqWarehouseHarvests storage={['loading','unknown','error'].includes(scenario)?null:storage} stockGrams={scenario==='loading'||scenario==='unknown'?null:snapshot.stockGrams} storageReservedGrams={scenario==='loading'||scenario==='unknown'?null:snapshot.storageReservedGrams} storageCapacityGrams={scenario==='unknown'?null:4000} disabled={disabled} error={scenario.includes('error')?'Lecture des lots interrompue.':undefined} onRetry={()=>window.__retryCalls++} onOpenWorkshop={flowerId=>window.__workshopCalls.push(flowerId)} onSellOverflow={flowerId=>window.__overflowCalls.push(flowerId)} onProtectOverflow={query.has('without-protection')?undefined:flowerId=>window.__protectionCalls.push(flowerId)}/></main>;
     }
     createRoot(document.getElementById('root')).render(<Fixture/>);
   `,
@@ -128,7 +135,7 @@ try {
   const visit = async (scenario = 'dense', extra = '&integration') => {
     changingFixture = true;
     try { await page.goto(`${origin}/?scenario=${scenario}${extra}`, { waitUntil: 'networkidle0' }); } finally { changingFixture = false; }
-    await page.waitForSelector('[data-conservation-summary]'); await page.evaluate(() => document.fonts.ready);
+    await page.waitForSelector('[data-conservation-summary], [data-warehouse-harvests-access]'); await page.evaluate(() => document.fonts.ready);
     await page.evaluate(() => Promise.allSettled([...document.images].map(image => image.decode())));
     console.log('Fixture ready:', scenario + extra);
   };
@@ -148,24 +155,25 @@ try {
       const height = lots.map(lot => Math.round(lot.getBoundingClientRect().height));
       const first = lots[0].getBoundingClientRect();
       return { viewport: innerWidth, lotHeights: height, medianLotHeight: [...height].sort((a, b) => a - b)[Math.floor(height.length / 2)], firstLotTop: Math.round(first.top + scrollY), firstLotWidth: Math.round(first.width), documentHeight: document.documentElement.scrollHeight,
-        lotsBeforeEquipment: Boolean(document.querySelector('[data-conservation-summary]').compareDocumentPosition(document.querySelector('[data-storage-equipment]') ?? document.querySelector('[data-post-harvest="storage"]')) & Node.DOCUMENT_POSITION_FOLLOWING) };
+        equipmentOutsideHarvests: !document.querySelector('[data-storage-equipment], [data-warehouse-room]') };
     });
     measures.push(measured); await shot(`parent-${width}`); await shot(`top-${width}`, false);
     await page.$eval('[data-conservation-lot]', element => element.scrollIntoView({ block: 'start', behavior: 'instant' })); await shot(`first-lots-${width}`, false);
     if (!baseline) {
-      verify(measured.lotsBeforeEquipment, true, `${width}: flowers precede the equipment and climate`);
+      verify(measured.equipmentOutsideHarvests, true, `${width}: conservation contains no equipment manager or warehouse navigation`);
       verify(await page.$$eval('[data-lot-details]', nodes => nodes.every(node => !node.open)), true, `${width}: lot details start closed`);
       verify(await page.$$eval('[data-lot-quality],[data-curing-progress]', nodes => nodes.every(node => node.getBoundingClientRect().height > 0)), true, `${width}: quality and curing remain visible with details closed`);
       verify(await page.$$eval('[data-conservation-lot] button,[data-lot-details] > summary', nodes => nodes.filter(node => node.getBoundingClientRect().height > 0).every(node => node.getBoundingClientRect().height >= 44)), true, `${width}: visible lot controls keep 44px touch targets`);
-      verify(await page.$eval('[data-storage-equipment]', node => node.open), false, `${width}: equipment starts closed`);
-      verify((await text('[data-storage-equipment] > summary')).includes('/ mois de jeu'), true, `${width}: installed monthly climate costs stay visible`);
       verify(await page.$eval('[data-storage-summary-details]', node => node.open), false, `${width}: secondary global statistics start closed`);
       await press(`[data-conservation-lot="${readyId}"] [data-lot-details] > summary`);
       verify(await page.$eval(`[data-conservation-lot="${readyId}"] [data-lot-details]`, node => node.open), true, `${width}: lot details open with keyboard`);
       await press(`[data-conservation-lot="${readyId}"] [data-lot-details] > summary`);
-      await press('[data-storage-equipment] > summary'); await page.waitForSelector('[data-storage-climate-section]', { visible: true });
-      verify(await page.$eval('[data-storage-equipment]', node => node.open), true, `${width}: actual climate controls remain reachable`);
-      await layout(`${width} equipment open`); await press('[data-storage-equipment] > summary');
+      await press('[data-harvest-open-warehouse]'); await page.waitForSelector('[data-storage-climate-section]', { visible: true });
+      verify(await page.$eval('[data-storage-equipment]', node => node.open), true, `${width}: explicit capacity action opens the warehouse equipment`);
+      verify((await text('[data-storage-equipment] > summary')).includes('/ mois de jeu'), true, `${width}: installed monthly climate costs remain visible`);
+      verify(await page.$$eval('[data-conservation-lot]', nodes => nodes.length), 0, `${width}: warehouse has no second lot manager`);
+      await layout(`${width} equipment open`);
+      await press('[data-warehouse-harvests-access] button'); await page.waitForSelector('[data-harvest-storage]');
     }
   }
   if (!protectionOnly) await writeFile(resolve(output, `${phase}-measures.json`), JSON.stringify(measures, null, 2));
@@ -205,8 +213,8 @@ try {
     for (const scenario of ['empty', 'loading', 'long']) { await visit(scenario, ''); await layout(scenario); }
 
     await visit('ready'); await press(`[data-open-workshop="${readyId}"]`); await page.waitForSelector('[data-selected-workshop-lot]');
-    verify(await page.$eval('[data-selected-workshop-lot]', node => node.dataset.selectedWorkshopLot), readyId, 'Actual warehouse forwards the selected lot to the counter');
-    verify(await page.$eval('[data-warehouse-room="processing"]', node => node.getAttribute('aria-selected')), 'true', 'Counter action switches the actual warehouse room');
+    verify(await page.$eval('[data-selected-workshop-lot]', node => node.dataset.selectedWorkshopLot), readyId, 'Conservation forwards the selected lot to Commerce');
+    verify(await page.$$eval('[data-warehouse-room]', nodes => nodes.length), 0, 'Preparing a sale never mounts a warehouse room');
     }
     await page.setViewport({ width: 320, height: 900 }); await visit('multi-overflow');
     verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.length), 2, 'Two independent surplus lots expose their own protection action');
@@ -231,6 +239,7 @@ try {
       verify(await page.$$eval('[data-post-harvest="storage"] [data-postharvest-upgrade]', nodes => nodes.some(node => { const rect = node.getBoundingClientRect(); return rect.top >= 0 && rect.bottom <= innerHeight && rect.height > 0; })), true, `${variety}: a storage upgrade is visible immediately at 320px without more scrolling`);
       await layout(`320 protection ${variety}`);
       await press('[data-return-protection-lot]');
+      await page.waitForFunction(id => document.activeElement?.getAttribute('data-conservation-lot')===id, {}, flowerId);
       verify(await page.evaluate(() => document.activeElement?.getAttribute('data-conservation-lot')), flowerId, `${variety}: keyboard return focuses the same lot`);
     }
     await press(`[data-protect-overflow="${overflowId}"]`);
@@ -238,10 +247,11 @@ try {
     await page.setViewport({ width: 1440, height: 1000 });
     await page.$eval(protectionContext, element => element.scrollIntoView({ block: 'start', behavior: 'instant' }));
     await layout('1440 protection context'); await shot('protection-target-1440', false);
-    verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.length), 2, 'Opening equipment preserves both unprotected surpluses');
+    await press('[data-return-protection-lot]'); await page.waitForSelector('[data-harvest-storage]');
+    verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.length), 2, 'Returning from equipment preserves both unprotected surpluses');
     await press(`[data-sell-overflow="${overflowId}"]`);
     await page.waitForFunction(id => !document.querySelector(`[data-sell-overflow="${id}"]`), {}, overflowId);
-    verify((await text(`${protectionContext} [role="status"]`)).includes('plus de surplus'), true, 'Refreshed protection context stops showing the old surplus after an explicit sale');
+    verify(await page.$eval(`[data-conservation-lot="${overflowId}"] [data-curing-status]`, node => node.textContent.includes('Contenant manquant')), false, 'Refreshed lot stops showing the old surplus after an explicit sale');
     verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.map(node => node.dataset.protectOverflow)), [secondOverflowId], 'An explicit sale preserves the other lot and its protection action');
     verify(await page.evaluate(() => window.__apiCalls.filter(call => call.method !== 'GET').map(call => ({method:call.method,action:call.body?.action,flowerId:call.body?.flowerId}))), [{method:'POST',action:'sell-overflow',flowerId:overflowId}], 'Only the separately requested sale produces a write');
     await page.setViewport({ width: 320, height: 900 });
@@ -252,11 +262,10 @@ try {
     verify((await text(protectionContext)).includes('Critical CBD'), true, 'Real parent opens protection equipment even without a sale offer');
     await layout('320 protection without offer');
     if (!protectionOnly) {
-    await visit('mixed', '&integration&dirty'); verify(await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.disabled), true, 'Unsaved plan disables surplus sales');
-    verify(await page.$eval(`[data-protect-overflow="${overflowId}"]`, node => node.disabled), true, 'Unsaved plan disables surplus protection navigation');
-    await page.$eval(`[data-protect-overflow="${overflowId}"]`, node => node.click()); verify(await page.$eval('[data-storage-equipment]', node => node.open), false, 'Disabled protection preserves the dirty plan and closed equipment');
-    verify(await page.$$eval(protectionContext, nodes => nodes.length), 0, 'A dirty plan does not receive a stale protection target');
-    await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.click()); verify(await page.evaluate(() => window.__overflowCalls.length), 0, 'Unsaved plan cannot send a sale request');
+    await visit('mixed', '&integration&dirty'); verify(await page.$$eval('[data-sell-overflow],[data-protect-overflow]', nodes => nodes.length), 0, 'An unsaved warehouse plan contains no sale or lot manager');
+    verify(await page.$eval('[data-warehouse-harvests-access] button', node => node.disabled), true, 'A plan must be saved or cancelled before using the contextual return');
+    await page.$eval('[data-warehouse-harvests-access] button', node => node.click()); verify(await page.$$eval('[data-harvest-storage]', nodes => nodes.length), 0, 'Disabled return keeps the unsaved plan in place');
+    verify(await page.evaluate(() => window.__overflowCalls.length), 0, 'Unsaved plan cannot send a sale request');
     await visit('mixed', '&integration&dirty&invalid-plan');
     verify(await page.$$eval('[data-storage-equipment]', nodes => nodes.length), 0, 'An invalid draft exposes correction instead of absent equipment');
     verify(await page.$$eval('[data-protect-overflow]', nodes => nodes.length), 0, 'An invalid draft cannot offer navigation to equipment that is not rendered');
@@ -267,7 +276,22 @@ try {
     const sale = await page.evaluate(() => window.__overflowCalls[0]); verify(sale.action, 'sell-overflow', 'Existing sale command preserved'); verify(sale.flowerId, overflowId, 'Pending sale keeps the exact lot'); verify(typeof sale.requestKey, 'string', 'Sale keeps its idempotency key');
     await page.evaluate(() => window.__releaseSale()); await page.waitForFunction(() => !document.querySelector('[data-sell-overflow]'));
     verify(await page.$$eval('[data-conservation-lot]', nodes => nodes.length), 3, 'Sale preserves the protected remainder and other lots');
+    await visit('mixed'); await page.evaluate(() => { window.__failNextSale=true; }); await press(`[data-sell-overflow="${overflowId}"]`); await page.waitForSelector('[role="alert"]');
+    verify(await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.disabled), true, 'A failed sale requires refreshing its offer before retry');
+    await press('[role="alert"] button'); await page.waitForSelector('[role="alert"]', {hidden:true});
+    await press(`[data-sell-overflow="${overflowId}"]`); await page.waitForFunction(() => window.__overflowCalls.length===2 && !document.querySelector('[data-sell-overflow]'));
+    verify(await page.evaluate(() => window.__overflowCalls[0].requestKey===window.__overflowCalls[1].requestKey), true, 'Retrying an interrupted sale retains its idempotency key');
+    await visit('mixed'); await page.evaluate(() => { window.__failStorage=true; }); await press('[aria-label="Actualiser le stockage"]'); await page.waitForSelector('[role="alert"]');
+    verify(await page.$$eval('[data-open-commerce],[data-sell-overflow],[data-protect-overflow]', nodes => nodes.every(node => node.disabled)), true, 'A failed real refresh disables all stale lot actions');
+    await page.evaluate(() => { window.__failStorage=false; }); await press('[role="alert"] button'); await page.waitForSelector('[role="alert"]', {hidden:true});
+    verify(await page.$eval(`[data-sell-overflow="${overflowId}"]`, node => node.disabled), false, 'Retry restores an authoritative offer and enables its action');
+    await visit('mixed', '&integration&without-protection');
+    verify(await page.$eval(`[data-protect-overflow="${overflowId}"]`, node => new URL(node.href).searchParams.get('flower')), overflowId, 'Standalone protection link preserves its lot');
+    verify(await page.$eval(`[data-protect-overflow="${overflowId}"]`, node => new URL(node.href).searchParams.get('view')), 'workshop', 'Standalone protection link opens the warehouse');
     for (const target of ['equipment', 'zone']) { await visit('dense', '&integration&' + target); verify(await page.$eval('[data-storage-equipment]', node => node.open), true, `Explicit ${target} entry opens the equipment controls`); }
+    await visit('ready', '&integration&equipment&flower='+readyId); await press('[data-warehouse-room="processing"]'); await page.waitForSelector('[data-warehouse-commerce-access] button');
+    verify(await page.$$eval('[data-selected-workshop-lot]', nodes => nodes.length), 0, 'Atelier no longer embeds the Commerce sales manager');
+    await press('[data-warehouse-commerce-access] button'); await page.waitForSelector('[data-selected-workshop-lot]'); verify(await page.$eval('[data-selected-workshop-lot]', node => node.dataset.selectedWorkshopLot), readyId, 'Atelier opens Commerce with the same lot');
     await visit('empty'); verify(await page.$$eval('[data-warehouse-capacity-blocked]', nodes => nodes.length), 0, 'An empty installed warehouse has no capacity warning');
     verify(await page.$eval('[data-conservation-summary]', node => Number.parseFloat(getComputedStyle(node).paddingTop) >= 16), true, 'The flower heading keeps spacing when no warning precedes it'); await shot('no-warning-390', false);
     await visit('dense', '&integration&dirty&modal'); await press('[aria-label="Fermer l’entrepôt"]'); await page.waitForSelector('[data-app-dialog]', { visible: true });

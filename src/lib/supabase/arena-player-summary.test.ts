@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const { from } = vi.hoisted(() => ({ from: vi.fn() }));
+const { from, rpc } = vi.hoisted(() => ({ from: vi.fn(), rpc: vi.fn() }));
 vi.mock("server-only", () => ({}));
-vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ from }) }));
+vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ from, rpc }) }));
 import { getArenaPlayerSummary } from "./arena-player-summary";
 
 const userId = "11111111-1111-4111-8111-111111111111";
@@ -17,6 +17,7 @@ const stock = (id: string, flower_id: string, remaining_units: number, user_id =
 
 beforeEach(() => {
   vi.clearAllMocks(); failure = null; emptySecondPage = false; calls = [];
+  rpc.mockResolvedValue({ data: { availableFlowerCount: 1, curingFlowerCount: 2 }, error: null });
   rows = {
     kq_runs: [{ id: "run", user_id: userId, status: "active" }, { id: "foreign-run", user_id: "other", status: "active" }],
     kq_flowers: [flower("new-harvest"), flower("ready-harvest"), flower("processed"), flower("sold"), flower("exhausted"), flower("to-judge", "available"), flower("foreign", "burned", "other")],
@@ -48,7 +49,8 @@ beforeEach(() => {
 });
 describe("read-only personal Arena summary", () => {
   it("includes unpersisted harvests, ready lots and partially sold products once per harvest", async () => {
-    expect(await getArenaPlayerSummary(userId)).toEqual({ activeRun: true, readyLotCount: 3, availableFlowerCount: 1, supportPackCount: 1, buddiePackCount: 1 });
+    expect(await getArenaPlayerSummary(userId)).toEqual({ activeRun: true, readyLotCount: 3, availableFlowerCount: 1, curingFlowerCount: 2, supportPackCount: 1, buddiePackCount: 1 });
+    expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_jury_readiness", { p_user_id: userId });
     for (const call of calls) {
       expect(call.options.count).toBe("exact");
       expect(call.filters).toContainEqual({ method: "eq", column: ["kq_flowers", "kq_market_lots"].includes(call.table) ? "owner_id" : "user_id", value: userId });
@@ -58,6 +60,10 @@ describe("read-only personal Arena summary", () => {
   it("does not double count a harvest when raw and processed reads overlap preparation", async () => {
     rows.kq_commerce_stock.push(stock("overlapping-stock", "ready-harvest", 50));
     expect((await getArenaPlayerSummary(userId)).readyLotCount).toBe(3);
+  });
+  it("does not replace unavailable curing counts with zero", async () => {
+    rpc.mockResolvedValue({ data: null, error: { message: "unavailable" } });
+    await expect(getArenaPlayerSummary(userId)).rejects.toThrow("affinage");
   });
   it("excludes fully sold harvests and prepared lots with no remaining units", async () => {
     rows.kq_flowers = [flower("sold"), flower("exhausted"), flower("to-judge", "available")];

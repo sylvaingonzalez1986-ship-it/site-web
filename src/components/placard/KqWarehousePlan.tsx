@@ -3,7 +3,7 @@
 import { getBuddieArtwork } from "@/lib/buddie-artwork";
 import { KQ_WAREHOUSE_ROOM_ARTWORK } from "@/lib/kanab-quest-warehouse-artwork";
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
-import { Focus, Grid2X2, Maximize2, Minimize2, Plus, Minus, Move, MousePointer2, Scaling, Scan, CircleHelp, Sprout, Wind, Package, Settings2 } from "lucide-react";
+import { Focus, Grid2X2, Maximize2, Minimize2, Plus, Minus, Move, MousePointer2, Scaling, Scan, CircleHelp, Sprout, Wind, Package } from "lucide-react";
 import { getKqWarehouseDevice } from "@/lib/kanab-quest-warehouse-catalog";
 import { getKqWarehouseOption, type KqWarehouseOptionFamily } from "@/lib/kanab-quest-warehouse-options";
 import { doKqWarehouseZonesOverlap, getKqWarehouseServiceZoneQuote, type KqWarehouseZone, type KqWarehouseServiceZone } from "@/lib/kanab-quest-warehouse";
@@ -25,7 +25,6 @@ type PlanTool = "inspect" | "move" | "resize";
 type TransformPreview = { zoneId: string; rectangle: ZoneRectangle; valid: boolean };
 type DrawPreview = { start: Point; end: Point; rectangle: ZoneRectangle; valid: boolean };
 type InspectionTap = { pointerId: number; pointerType: string; zoneId: string; client: Point; startedAt: number; moved: boolean };
-type CompletedInspectionTap = { pointerType: string; zoneId: string; client: Point; endedAt: number; count: number };
 type PlanGesture = { pointerId: number; client: Point; moved: boolean } & (
   | { kind: "pan"; scroll: Point }
   | { kind: "move" | "resize"; origin: PlanZone; point: Point; preview: TransformPreview }
@@ -33,7 +32,7 @@ type PlanGesture = { pointerId: number; client: Point; moved: boolean } & (
 );
 type CameraTarget = { x: number; y: number; offsetX: number; offsetY: number };
 const MIN_ZOOM = 100, MAX_ZOOM = 1000, ZOOM_STEP = 25;
-const TAP_MAX_DURATION = 500, TAP_MAX_TRAVEL = 12, DOUBLE_TAP_DELAY = 450, DOUBLE_TAP_DISTANCE = 32;
+const TAP_MAX_DURATION = 500, TAP_MAX_TRAVEL = 12;
 const clamp = (value: number, low: number, high: number) => Math.min(high, Math.max(low, value));
 const ZONE_TYPES = [{ code: "culture", label: "Culture", icon: Sprout }, { code: "drying", label: "Séchage", icon: Wind }, { code: "storage", label: "Stockage", icon: Package }] as const;
 const kindOf = (zone: PlanZone): ZoneKind => "kind" in zone ? zone.kind : "culture";
@@ -131,7 +130,7 @@ function ServiceZoneIllustration({ zone, id, grid: GRID, tint }: { zone: KqWareh
   </g>;
 }
 
-export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, interactionHint, selectedId, drawing, drawingKind, anchor, cursor, zoom, locked, growing, managing = true, activeZoneIds, lockedZoneIds = [], placingBuddie = false, buddieDrop, onZoom, onDrawingKind, onToggleDrawing, onSelectPoint, onDrawZone, onConfigureZone, onCursor, onKeyDown, onTransformZone }: {
+export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, interactionHint, selectedId, drawing, drawingKind, anchor, cursor, zoom, locked, growing, managing = true, activeZoneIds, lockedZoneIds = [], placingBuddie = false, buddieDrop, onZoom, onDrawingKind, onToggleDrawing, onSelectPoint, onDrawZone, onConfigureZone, onOpenZoneMenu, onCursor, onKeyDown, onTransformZone }: {
   zones: KqWarehouseZone[]; serviceZones: KqWarehouseServiceZone[]; selectedId: string | null; drawing: boolean; drawingKind: ZoneKind; anchor: Point | null; cursor: Point;
   dimensions?: { columns: number; rows: number };
   roomArtwork?: string;
@@ -143,6 +142,8 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
   onSelectPoint: (point: Point) => void; onCursor: (point: Point) => void; onKeyDown: (event: KeyboardEvent<SVGSVGElement>) => void;
   onDrawZone: (start: Point, end: Point) => boolean;
   onConfigureZone: (zoneId: string) => void;
+  /** Read-only menu access; edit actions retain their own lock checks. */
+  onOpenZoneMenu?: (zoneId: string) => void;
   onTransformZone: (zoneId: string, patch: ZoneRectangle) => void;
 }) {
   const legacy = dimensions?.columns === 40 && dimensions.rows === 25;
@@ -155,9 +156,7 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
   const map = useRef<SVGSVGElement>(null);
   const gesture = useRef<PlanGesture | null>(null);
   const inspectionTap = useRef<InspectionTap | null>(null);
-  const lastInspectionTap = useRef<CompletedInspectionTap | null>(null);
-  const mouseDoubleClick = useRef<{ zoneId: string; endedAt: number } | null>(null);
-  const touchConfiguration = useRef<{ zoneId: string; endedAt: number } | null>(null);
+  const inspectionReady = useRef<{ zoneId: string; endedAt: number } | null>(null);
   const releaseScrollLock = useRef<(() => void) | null>(null);
   const pendingCamera = useRef<CameraTarget | null>(null);
   const framedSelection = useRef<{ initialized: boolean; id: string | null; layout: string }>({ initialized: false, id: null, layout: layoutKey });
@@ -222,13 +221,20 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
     return managing && !locked && !placingBuddie && !drawing && !gesture.current
       && !lockedZoneIds.includes(zoneId) && validZones.some(zone => zone.id === zoneId);
   }
+  function canInspectZone(zoneId: string) {
+    return !!onOpenZoneMenu && !placingBuddie && !drawing && !gesture.current && validZones.some(zone => zone.id === zoneId);
+  }
   const resetInspection = useCallback(() => {
     inspectionTap.current = null;
-    lastInspectionTap.current = null;
-    mouseDoubleClick.current = null;
-    touchConfiguration.current = null;
+    inspectionReady.current = null;
   }, []);
   function configureZone(zoneId: string, focusPlan = false) {
+    if (canInspectZone(zoneId)) {
+      resetInspection(); setTool("inspect"); setNotice("");
+      if (focusPlan) map.current?.focus({ preventScroll: true });
+      onOpenZoneMenu?.(zoneId);
+      return;
+    }
     if (!canConfigureZone(zoneId)) return;
     resetInspection();
     setTool("inspect");
@@ -242,30 +248,18 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
     inspectionTap.current = null;
     const now = performance.now();
     if (current.moved || now - current.startedAt > TAP_MAX_DURATION
-      || !canConfigureZone(current.zoneId) || zoneAtCell(pointerCell(event))?.id !== current.zoneId
+      || !(canInspectZone(current.zoneId) || canConfigureZone(current.zoneId)) || zoneAtCell(pointerCell(event))?.id !== current.zoneId
       || Math.hypot(event.clientX - current.client.x, event.clientY - current.client.y) > TAP_MAX_TRAVEL) {
+      suppressClick.current = true;
       resetInspection(); return;
-    }
-    const previous = lastInspectionTap.current;
-    const sameTarget = previous?.zoneId === current.zoneId && previous.pointerType === current.pointerType
-      && Math.hypot(event.clientX - previous.client.x, event.clientY - previous.client.y) <= DOUBLE_TAP_DISTANCE
-      && (current.pointerType === "mouse" || now - previous.endedAt <= DOUBLE_TAP_DELAY);
-    const count = sameTarget ? previous.count + 1 : 1;
-    lastInspectionTap.current = { pointerType: current.pointerType, zoneId: current.zoneId,
-      client: { x: event.clientX, y: event.clientY }, endedAt: now, count };
-    if (count < 2) return;
-    if (current.pointerType === "mouse") {
-      // Let the browser's own double-click timing decide desktop activation.
-      mouseDoubleClick.current = { zoneId: current.zoneId, endedAt: now };
-      return;
     }
     // Open from the following click, whose target is still the plan. Opening on
     // pointerup can send a delayed compatibility click into the new dialog.
-    touchConfiguration.current = { zoneId: current.zoneId, endedAt: now };
+    inspectionReady.current = { zoneId: current.zoneId, endedAt: now };
   }
 
   useEffect(() => {
-    const reset = () => resetInspection();
+    const reset = () => { if (inspectionTap.current || inspectionReady.current) suppressClick.current = true; resetInspection(); };
     window.addEventListener("scroll", reset, { capture: true, passive: true });
     window.addEventListener("wheel", reset, { capture: true, passive: true });
     return () => {
@@ -368,11 +362,12 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
 
   const cancelGesture = useCallback(() => {
     const current = gesture.current;
+    const wasInspecting = !!inspectionTap.current || !!inspectionReady.current;
     gesture.current = null;
     resetInspection();
     unlockScrolling();
     if (current && map.current?.hasPointerCapture(current.pointerId)) map.current.releasePointerCapture(current.pointerId);
-    suppressClick.current = Boolean(current);
+    suppressClick.current = Boolean(current) || wasInspecting;
     setPreview(null);
     setDrawPreview(null);
     setPanning(false);
@@ -415,8 +410,7 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
     if (event.button !== 0 || gesture.current || (event.pointerType === "touch" && !event.isPrimary)) { resetInspection(); return; }
     // An interrupted inspection (for example mouse release outside the SVG) is not a tap.
     if (inspectionTap.current) resetInspection();
-    mouseDoubleClick.current = null;
-    touchConfiguration.current = null;
+    inspectionReady.current = null;
     if (drawing) {
       resetInspection();
       if (locked || placingBuddie || !managing) return;
@@ -439,7 +433,7 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
     const resizeHandle = target.closest("[data-warehouse-resize-handle]");
     const point = scenePoint(event.clientX, event.clientY);
     const inspectedZone = zoneAtCell(pointerCell(event));
-    if ((tool === "inspect" || tool === "resize" && !resizeHandle) && inspectedZone && canConfigureZone(inspectedZone.id)) {
+    if ((tool === "inspect" || tool === "resize" && !resizeHandle) && inspectedZone && (canInspectZone(inspectedZone.id) || canConfigureZone(inspectedZone.id))) {
       inspectionTap.current = { pointerId: event.pointerId, pointerType: event.pointerType, zoneId: inspectedZone.id,
         client: { x: event.clientX, y: event.clientY }, startedAt: performance.now(), moved: false };
       return;
@@ -474,8 +468,7 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
       const tap = inspectionTap.current;
       if (tap?.pointerId === event.pointerId && Math.hypot(event.clientX - tap.client.x, event.clientY - tap.client.y) > TAP_MAX_TRAVEL) {
         tap.moved = true;
-        lastInspectionTap.current = null;
-        mouseDoubleClick.current = null;
+        inspectionReady.current = null;
       }
       if (!drawing || !anchor) return;
       const point = pointerCell(event);
@@ -533,7 +526,7 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
     if (current.kind === "draw") {
       if (locked || placingBuddie || !managing || !drawing) return;
       if (!current.preview.valid) { setNotice("Cette zone chevauche une zone existante. Trace-la dans un espace libre."); return; }
-      if (onDrawZone(current.preview.start, current.preview.end)) setNotice("Zone tracée. Double appui dessus pour choisir son équipement.");
+      if (onDrawZone(current.preview.start, current.preview.end)) setNotice("Zone tracée. Appuie dessus pour l’aménager ou choisir un Buddie.");
       else setNotice("Cette zone ne peut pas être créée ici. Ajuste ton tracé.");
       return;
     }
@@ -569,7 +562,7 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
     : selectedLocked && selectedValid ? "Culture en cours : cette zone est verrouillée."
     : tool === "move" ? "Glisse la zone pour la déplacer."
     : tool === "resize" ? "Glisse le coin doré pour ajuster la taille."
-    : selectedValid ? "Double appui sur la zone ou Configurer pour choisir son équipement." : "Sélectionne une zone sur le plan."));
+    : onOpenZoneMenu ? "Appuie sur une zone pour l’aménager ou choisir un Buddie." : "Appuie sur une zone pour la sélectionner."));
 
   const dimensionRectangle = drawing ? drawingRectangle : transform?.rectangle;
   const dimensionX = dimensionRectangle ? clamp(GRID.x + (dimensionRectangle.x + dimensionRectangle.width / 2) * GRID.cell - 70 * markerScale, 4 * markerScale, sceneWidth - 144 * markerScale) : 0;
@@ -581,7 +574,7 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
       event.preventDefault(); event.stopPropagation(); cancelGesture(); setTool("inspect"); setNotice("Manipulation annulée.");
       if (drawing) onToggleDrawing();
     }}>
-    {managing && <div className={styles.zoneTypes} role="group" aria-label="Tracer une nouvelle zone">{ZONE_TYPES.map(type => <button key={type.code} type="button" data-warehouse-draw-kind={type.code} aria-pressed={drawing && drawingKind === type.code} disabled={locked} onClick={() => { cancelGesture(); setTool("inspect"); setNotice(""); onDrawingKind(type.code); }}><type.icon size={16} />{type.label}</button>)}</div>}
+    {managing && <div className={styles.zoneCreation}><span>Tracer une nouvelle zone</span><div className={styles.zoneTypes} role="group" aria-label="Tracer une nouvelle zone">{ZONE_TYPES.map(type => <button key={type.code} type="button" data-warehouse-action={type.code === "culture" ? "draw" : undefined} data-warehouse-draw-kind={type.code} aria-pressed={drawing && drawingKind === type.code} disabled={locked} onClick={() => { cancelGesture(); setTool("inspect"); setNotice(""); onDrawingKind(type.code); }}><type.icon size={16} />{type.label}</button>)}</div></div>}
     <div className={styles.toolbar}>
       {!legacy && <strong>10 × 10 m · 100 m²</strong>}
       {legacy && <div className={styles.cameraControls}><button type="button" data-warehouse-action="zoom-out" disabled={zoom <= MIN_ZOOM} onClick={() => changeZoom(zoom - ZOOM_STEP)} aria-label="Réduire le zoom"><Minus size={15} /></button><output aria-label="Niveau de zoom">{zoom}%</output><button type="button" data-warehouse-action="zoom-in" disabled={zoom >= MAX_ZOOM} onClick={() => changeZoom(zoom + ZOOM_STEP)} aria-label="Augmenter le zoom"><Plus size={15} /></button><span className={styles.divider} /><button type="button" data-warehouse-action="focus" disabled={!selectedValid} onClick={() => selectedValid && frameZone(selectedValid)} aria-label="Centrer la zone sélectionnée" title="Centrer la zone sélectionnée"><Focus size={15} /><span>Ma zone</span></button><button type="button" data-warehouse-action="overview" onClick={overview} aria-label="Voir tout l’entrepôt" title="Voir tout l’entrepôt"><Scan size={15} /><span>Ensemble</span></button></div>}
@@ -590,11 +583,11 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
     <div className={styles.scene}>
     <div ref={viewport} className={styles.viewport} data-warehouse-map-viewport data-panning={panning} data-fixed-camera={!legacy} data-manipulating={manipulating}>
       <div className={styles.canvas} style={{ width: Math.max(viewportSize.width, renderedWidth), height: Math.max(viewportSize.height, renderedHeight) }}>
-      <svg ref={map} className={styles.map} style={{ width: renderedWidth, height: renderedHeight }} viewBox={`0 0 ${sceneWidth} ${sceneHeight}`} role="img" aria-label={`Entrepôt illustré vu du dessus, ${(GRID.columns * GRID.rows).toLocaleString("fr-FR")} cases de 1 m² pour culture, séchage et stockage. Flèches pour se déplacer, Entrée pour sélectionner, configurer la zone sélectionnée ou tracer.`} aria-describedby={`${id}-help`} tabIndex={0}
+      <svg ref={map} className={styles.map} style={{ width: renderedWidth, height: renderedHeight }} viewBox={`0 0 ${sceneWidth} ${sceneHeight}`} role="img" aria-label={`Entrepôt illustré vu du dessus, ${(GRID.columns * GRID.rows).toLocaleString("fr-FR")} cases de 1 m² pour culture, séchage et stockage. Flèches pour se déplacer, Entrée pour ouvrir la zone ou tracer.`} aria-describedby={`${id}-help`} tabIndex={0}
         data-warehouse-map data-grid-origin-x={GRID.x} data-grid-origin-y={GRID.y} data-grid-cell-size={GRID.cell} data-grid-columns={GRID.columns} data-grid-rows={GRID.rows} data-drawing={drawing} data-tool={!selectedLocked && !drawing ? tool : "inspect"}
         onKeyDown={event => {
           if (!gesture.current) {
-            if (event.key === "Enter" && !drawing && selectedValid && zoneAtCell(cursor)?.id === selectedValid.id && canConfigureZone(selectedValid.id)) {
+            if (event.key === "Enter" && !drawing && selectedValid && zoneAtCell(cursor)?.id === selectedValid.id && (canInspectZone(selectedValid.id) || canConfigureZone(selectedValid.id))) {
               event.preventDefault();
               if (!event.repeat) configureZone(selectedValid.id);
               return;
@@ -605,10 +598,10 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
           if (event.key === "Tab") cancelGesture();
           if (event.key === "Enter" || event.key === " ") event.preventDefault();
         }} onClick={event => {
-          const ready = touchConfiguration.current;
-          touchConfiguration.current = null;
+          const ready = inspectionReady.current;
+          inspectionReady.current = null;
           const point = pointerCell(event);
-          if (ready && performance.now() - ready.endedAt <= 1000 && zoneAtCell(point)?.id === ready.zoneId && canConfigureZone(ready.zoneId)) {
+          if (ready && performance.now() - ready.endedAt <= 1000 && zoneAtCell(point)?.id === ready.zoneId && (canInspectZone(ready.zoneId) || canConfigureZone(ready.zoneId))) {
             event.preventDefault(); event.stopPropagation();
             suppressClick.current = false;
             configureZone(ready.zoneId, true);
@@ -617,12 +610,6 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
           if (suppressClick.current) { suppressClick.current = false; return; }
           if (drawing && event.detail > 0) return;
           if (point) onSelectPoint(point);
-        }}
-        onDoubleClick={event => {
-          const ready = mouseDoubleClick.current;
-          const zone = zoneAtCell(pointerCell(event));
-          if (!ready || !zone || ready.zoneId !== zone.id || performance.now() - ready.endedAt > 1000 || !canConfigureZone(zone.id)) return;
-          event.preventDefault(); configureZone(zone.id, true);
         }}
         onPointerDown={beginGesture} onPointerMove={movePointer} onPointerUp={finishGesture} onPointerCancel={cancelGesture} onLostPointerCapture={event => { if (gesture.current?.pointerId === event.pointerId) cancelGesture(); }}>
         <SceneDefinitions id={id} grid={GRID} />
@@ -663,12 +650,12 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
     </div>
     </div>
     {managing && (tool !== "inspect" || drawing) && <button className={styles.finishManipulation} type="button" data-warehouse-action="finish-manipulation" onClick={() => { cancelGesture(); setTool("inspect"); if (drawing) onToggleDrawing(); setNotice("Tu peux à nouveau faire défiler la page."); }}>Terminer la manipulation</button>}
-    {managing && <div className={styles.tools} role="group" aria-label="Outils de la zone sélectionnée"><div className={styles.selectedName}><strong className={styles.selectedLabel} style={selectedIdentity ? { borderColor: selectedIdentity.color } : undefined}>{selectedIdentity?.label ?? "Aucune zone"}</strong>{selectedValid && <span>{selectedValid.width * selectedValid.height} m²</span>}</div><div className={styles.toolActions}><button type="button" className={styles.configureButton} data-warehouse-action="configure" disabled={!selectedValid || selectedLocked || drawing || Boolean(preview)} aria-label={selectedValid ? `Configurer ${selectedIdentity?.label} · ${zoneLabel(selectedValid)} · ${selectedValid.width * selectedValid.height} m²` : "Configurer la zone sélectionnée"} onClick={() => selectedValid && configureZone(selectedValid.id)}><Settings2 size={16} />Configurer</button>{([{ code: "inspect", label: "Voir", icon: MousePointer2 }, { code: "move", label: "Déplacer", icon: Move }, { code: "resize", label: "Taille", icon: Scaling }] as const).map(item => <button key={item.code} type="button" data-warehouse-tool={item.code} aria-label={item.code === "resize" ? "Redimensionner la zone" : item.code === "move" ? "Déplacer la zone" : "Observer la zone"} aria-pressed={tool === item.code && !drawing} disabled={item.code !== "inspect" && (selectedLocked || !selectedValid)} onClick={() => setPlanTool(item.code)}><item.icon size={16} />{item.label}</button>)}</div></div>}
+    {managing && <div className={styles.tools} role="group" aria-label="Outils de la zone sélectionnée"><div className={styles.selectedName}><strong className={styles.selectedLabel} style={selectedIdentity ? { borderColor: selectedIdentity.color } : undefined}>{selectedIdentity?.label ?? "Aucune zone"}</strong>{selectedValid && <span>{selectedValid.width * selectedValid.height} m²</span>}</div><div className={styles.toolActions}>{([{ code: "inspect", label: "Voir", icon: MousePointer2 }, { code: "move", label: "Déplacer", icon: Move }, { code: "resize", label: "Taille", icon: Scaling }] as const).map(item => <button key={item.code} type="button" data-warehouse-tool={item.code} aria-label={item.code === "resize" ? "Redimensionner la zone" : item.code === "move" ? "Déplacer la zone" : "Observer la zone"} aria-pressed={tool === item.code && !drawing} disabled={item.code !== "inspect" && (selectedLocked || !selectedValid)} onClick={() => setPlanTool(item.code)}><item.icon size={16} />{item.label}</button>)}</div></div>}
     <div className={styles.support}><p className={styles.help} id={`${id}-help`} role="status">{contextMessage}</p><details className={styles.helpDetails} data-warehouse-plan-help><summary><CircleHelp size={16} />Aide</summary><div className={styles.helpBody}>
       {legacy && <p>Glisse le sol pour déplacer la vue. La molette ajuste le zoom.</p>}
       <p><strong>Nouvelle zone :</strong> appuie, glisse sans lever le doigt, puis relâche pour valider. <strong>Déplacer :</strong> glisse la zone. <strong>Taille :</strong> glisse son coin doré.</p>
-      <p><strong>Équipement :</strong> double appui ou double-clic sur une zone, ou utilise Configurer.</p>
-      <p><strong>Clavier :</strong> flèches pour avancer, Entrée pour choisir puis configurer la zone sélectionnée. Pendant le dessin, Entrée choisit les deux coins. Échap annule. Les changements attendent ton enregistrement.</p>
+      <p>{onOpenZoneMenu ? <><strong>Menu de la zone :</strong> un clic ou un appui ouvre Aménager, Buddies et Supprimer.</> : <><strong>Sélection :</strong> un clic ou un appui choisit la zone.</>} Au clavier, utilise les boutons numérotés ou les flèches puis Entrée sur le plan.</p>
+      <p><strong>Clavier :</strong> flèches pour avancer, Entrée pour ouvrir la zone. Pendant le dessin, Entrée choisit les deux coins. Échap annule. Les changements attendent ton enregistrement.</p>
       <div className={styles.footer}><div className={styles.legend}>{ZONE_TYPES.map(type => <span key={type.code}><type.icon size={14} aria-hidden="true" />{type.label}</span>)}</div><small>{GRID.columns} × {GRID.rows} m · 1 case = 1 m²</small></div>
       {legacy && <label className={styles.zoomRange}>Zoom<input type="range" min={MIN_ZOOM} max={MAX_ZOOM} step={ZOOM_STEP} value={zoom} onChange={event => changeZoom(Number(event.target.value))} aria-label="Zoom du plan" /><output>{zoom}%</output></label>}
     </div></details></div>

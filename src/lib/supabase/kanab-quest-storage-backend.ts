@@ -16,7 +16,11 @@ function databaseError(message: string): never {
     storage_already_owned: "Tu possèdes déjà cette installation.", storage_not_owned: "Achète cette installation avant de l’utiliser.",
     storage_insufficient_cash: "Trésorerie insuffisante pour cette installation.",
     storage_lot_unavailable: "Ce lot n’est plus disponible dans ton entrepôt.",
+    storage_jury_required: "Termine le curing puis présente cette fleur au jury avant de vendre le surplus.",
     storage_invalid_quantity: "Choisis entre 1 et 1 000 contenants par achat.",
+    storage_container_not_installed: "Ce modèle de contenant n’est pas installé dans ton entrepôt.",
+    storage_container_capacity: "Pas assez de contenants libres de ce modèle pour accueillir tout le lot.",
+    warehouse_service_capacity_in_use: "Cette place est réservée aux stocks et aux cultures en cours. Choisis un autre contenant ou agrandis le stockage.",
     warehouse_storage_purchase: "Ajoute ou agrandis une zone de stockage sur le plan de l’entrepôt pour acheter les contenants correspondants.",
     warehouse_storage_method_not_installed: "Cette méthode de conservation n’est pas installée dans une zone du plan.",
     storage_prepared_overflow: "Ce stock transformé nécessite des contenants supplémentaires.",
@@ -57,13 +61,16 @@ export async function getKqStorageSnapshot(userId: string) {
 export async function handleKqStorageAction(userId: string, body: Record<string, unknown>) {
   uuid(userId);
   const action = String(body.action);
-  const needsLot = action === "assign" || action === "sell-overflow";
-  if (!["buy", "select-default", "assign", "sell-overflow"].includes(action)
+  const needsLot = action === "assign" || action === "place" || action === "sell-overflow";
+  if (!["buy", "select-default", "assign", "place", "sell-overflow"].includes(action)
     || (!needsLot && body.flowerId !== undefined)) throw new Error("Demande de stockage invalide.");
   if (action === "buy") {
     if (typeof body.containerCode !== "string" || !getKqStorageContainer(body.containerCode)
       || typeof body.quantity !== "number" || !Number.isSafeInteger(body.quantity) || body.quantity < 1 || body.quantity > 1000
       || body.methodCode !== undefined) throw new Error("Quantité ou contenant invalide.");
+  } else if (action === "place") {
+    if (typeof body.containerCode !== "string" || !getKqStorageContainer(body.containerCode)
+      || body.methodCode !== undefined || body.quantity !== undefined) throw new Error("Demande de placement invalide.");
   } else if (action === "select-default" || action === "assign") {
     if (typeof body.methodCode !== "string" || !getKqStorageMethod(body.methodCode)
       || body.containerCode !== undefined || body.quantity !== undefined) throw new Error("Demande de stockage invalide.");

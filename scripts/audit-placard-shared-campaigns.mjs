@@ -22,7 +22,7 @@ const modules = {
     import {quoteKqWarehouseEnergy} from '/src/lib/kanab-quest-warehouse-run';
     import {getKqCampaignParticipants,getKqCampaignTotals,getKqCampaignWarehouse,getKqCampaignMemberState} from '/src/lib/kanab-quest-campaign';
     const initial=createKqWarehouseStarter();
-    const layout=getKqWarehouseQuote({...initial,zones:['a','b'].map((id,i)=>({...initial.zones[0],id,name:['Chambre Expression','Chambre Rendement'][i],x:10+i*3,y:10,width:1,height:1,buddieCode:'HH2026-00'+(i+3)}))}).nextState;
+    const layout=getKqWarehouseQuote({...initial,zones:['a','b'].map((id,i)=>({...initial.zones[0],id,name:['Chambre Expression','Chambre Rendement'][i],x:1+i*3,y:1,width:1,height:1,buddieCode:'HH2026-00'+(i+3)}))}).nextState;
     const members=getKqCampaignParticipants(layout,1).map((member,i)=>({...member,runId:i===0?'11111111-1111-4111-8111-111111111111':'22222222-2222-4222-8222-222222222222'}));
     const campaign={version:1,id:'33333333-3333-4333-8333-333333333333',leaderRunId:members[0].runId,members};
     window.__fixture=JSON.parse(sessionStorage.getItem('campaign-audit-state')??'null')??{runs:[],flowers:[],receipts:{},starts:[],actions:[],created:0};
@@ -87,6 +87,8 @@ const report={passed:false,checks,errors,blockedRequests,backend:'Browser-local 
 try{
   await mkdir(output,{recursive:true});await server.listen();
   browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});page=await browser.newPage();page.setDefaultTimeout(20000);page.setDefaultNavigationTimeout(90000);
+  // Reproduce mobile browsers where randomUUID is unavailable, including HTTP LAN access.
+  await page.evaluateOnNewDocument(()=>Object.defineProperty(globalThis.crypto,'randomUUID',{value:undefined,configurable:true}));
   page.on('pageerror',error=>errors.push(error.message));await page.setRequestInterception(true);
   page.on('request',request=>{const url=new URL(request.url());if(url.origin===origin||url.protocol==='data:')void request.continue();else{blockedRequests.push(request.url());void request.abort();}});
   const click=async(selector)=>{await page.$eval(selector,node=>node.scrollIntoView({block:'center',behavior:'instant'}));await page.click(selector);};
@@ -94,17 +96,19 @@ try{
   const profiles=()=>page.$$eval('[data-campaign-member]',nodes=>nodes.map(node=>({zone:node.dataset.campaignMember,buddie:node.dataset.campaignBuddie,values:[...node.querySelectorAll('dl dd')].map(dd=>dd.textContent.trim())})));
   const responsive=async(phase)=>{for(const width of [1440,390,320]){await page.setViewport({width,height:width===1440?1100:950,isMobile:width<760,hasTouch:width<760});await page.waitForSelector('[data-campaign-summary]');await page.$eval('[data-campaign-summary]',node=>node.scrollIntoView({block:'start',behavior:'instant'}));await page.evaluate(()=>document.fonts.ready);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,phase+' overflow '+width);assert.equal((await profiles()).length,2);await page.screenshot({path:resolve(output,phase+'-'+width+'.png')});checks.push(phase+' shows both distinct profiles within '+width+'px viewport');}};
   await page.setViewport({width:1440,height:1100});await page.goto(origin+'/?campaign=1',{waitUntil:'networkidle0'});
+  assert.equal(await page.evaluate(()=>typeof crypto.randomUUID),'undefined');
   await page.waitForSelector('[data-campaign-summary][data-campaign-phase="preparation"]');
   const preparation=await profiles();assert.deepEqual(preparation.map(row=>row.buddie),['HH2026-003','HH2026-004']);assert.notDeepEqual(preparation[0].values,preparation[1].values);
   assert.equal(await page.evaluate(()=>window.__fixture.starts.length),0);checks.push('preparation includes every assigned active zone and distinct profile estimates without automatic launch');
-  await responsive('preparation');await page.setViewport({width:1440,height:1100});
-  await clickText('Lancer la campagne');await page.waitForSelector('[aria-labelledby="culture-system-burn-title"]');
-  await page.waitForFunction(()=>[...document.querySelectorAll('button')].some(button=>button.textContent.trim()==='Commencer'&&!button.disabled));
+  await responsive('preparation');await page.setViewport({width:390,height:950,isMobile:true,hasTouch:true});
+  await click('[data-culture-start-review]');await page.waitForSelector('[aria-labelledby="culture-system-burn-title"]');
+  await page.waitForSelector('[data-culture-confirm-start]:not(:disabled)');
   assert.match(await page.$eval('[data-campaign-energy]',node=>node.innerText),/2 m² engagés/);checks.push('one confirmation presents combined costs and a single shared deck');
-  await page.evaluate(()=>{window.__loseStart=true;});await clickText('Commencer');
-  await page.waitForFunction(()=>document.body.innerText.includes('Réponse perdue après validation. Réessaie.'));await clickText('Commencer');
+  await page.evaluate(()=>{window.__loseStart=true;});await page.click('[data-culture-confirm-start]');
+  await page.waitForFunction(()=>document.body.innerText.includes('Réponse perdue après validation. Réessaie.'));await page.click('[data-culture-confirm-start]');
   await page.waitForSelector('main[data-culture-play]');
   const started=await page.evaluate(()=>({starts:window.__fixture.starts,created:window.__fixture.created,runs:window.__fixture.runs,totals:window.__totals}));
+  assert.match(started.starts[0]?.requestKey??'',/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);checks.push('culture launch works without crypto.randomUUID and sends a valid UUID request key');
   assert.equal(started.starts.length,2);assert.equal(started.created,1);assert.equal(started.runs.length,2);assert.equal(started.starts[0].campaign,true);assert.equal(started.starts[0].zoneId,undefined);assert.equal(started.starts[0].requestKey,started.starts[1].requestKey);assert.equal(started.starts[0].expectedEnergyCents,started.totals.energyCostCents);
   checks.push('lost confirmation reuses one request key and creates one campaign with two members');
   await page.waitForFunction(()=>document.querySelector('[data-culture-primary-action]')?.dataset.action==='roll');await click('[data-culture-primary-action]');

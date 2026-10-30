@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useState } from "react";
-import { Check, Gift, Sparkles } from "lucide-react";
+import { Check, Gift } from "lucide-react";
 import Link from "@/components/navigation/NavigationLink";
 import {
   getContestBundleCartProgress,
@@ -9,6 +9,7 @@ import {
   type ContestBundleRewards,
 } from "@/lib/contest-bundle-rewards";
 import type { CmsOrder } from "@/types/store";
+import { ContestBundleCardReveal } from "./ContestBundleCardReveal";
 import styles from "./ContestBundleReward.module.css";
 
 const rewardsUrl = "/api/account/contest-bundle-rewards";
@@ -16,9 +17,12 @@ const formatGrams = (grams: number) => new Intl.NumberFormat("fr-FR", { maximumF
 
 async function loadRewards(signal: AbortSignal, method: "GET" | "POST") {
   const response = await fetch(rewardsUrl, { method, credentials: "include", cache: "no-store", signal });
-  if (!response.ok) return null;
+  if (!response.ok) throw new Error(response.status === 401
+    ? "Connecte-toi pour retrouver ton bonus Concours."
+    : "La vérification de ton bonus Concours est momentanément indisponible.");
   const payload = await response.json() as { rewards?: ContestBundleRewards };
-  return payload.rewards ?? null;
+  if (!payload.rewards) throw new Error("La vérification de ton bonus Concours est momentanément indisponible.");
+  return payload.rewards;
 }
 
 export function ContestBundleRewardPreview({ items, active }: { items: ContestBundleCartItem[]; active: boolean }) {
@@ -39,7 +43,7 @@ export function ContestBundleRewardPreview({ items, active }: { items: ContestBu
   if (rewards.progress?.rewarded) return <aside className={styles.card} aria-labelledby={titleId}>
     <p className={styles.title} id={titleId}><Check size={18} aria-hidden="true" /> Bonus Concours déjà débloqué</p>
     <p>Ta carte épique et tes packs ont été crédités. Ce bonus est unique pour ton compte.</p>
-    <nav className={styles.links} aria-label="Mes récompenses Concours"><Link href="/profil/collection">Mes Buddies</Link><Link href="/arene/placard?view=shop">Mes packs Botte du Chanvrier</Link></nav>
+    <nav className={styles.links} aria-label="Mes récompenses Concours"><Link href="/arene/carnet/concours">Découvrir ma carte dans le Carnet</Link><Link href="/profil/collection">Mes Buddies</Link><Link href="/arene/placard?view=shop">Mes packs Botte du Chanvrier</Link></nav>
   </aside>;
   if (!rewards.available || progress.requiredCount === 0) return null;
 
@@ -67,6 +71,7 @@ export function ContestBundleRewardPreview({ items, active }: { items: ContestBu
       {rewards.progress?.eligible && <Link className={styles.claimLink} href="/arene/carnet/concours">Débloquer mon bonus dans le Carnet</Link>}
       <p className={styles.detail}>Estimation : seuls les achats payés comptent. Tes commandes précédentes s’ajoutent aux prochaines, jusqu’à atteindre le seuil de chaque fleur.</p>
       <p className={styles.detail}>Un seul bonus par compte, sans avis à déposer. Tes récompenses habituelles s’y ajoutent.</p>
+      <p className={styles.detail}>Après le paiement qui complète ton grand tour, révèle ta carte sur la confirmation de commande. Tu peux aussi la retrouver dans le Carnet Concours.</p>
     </aside>
   );
 }
@@ -74,27 +79,45 @@ export function ContestBundleRewardPreview({ items, active }: { items: ContestBu
 export function ContestBundleRewardReceipt({ orderId, paymentState }: { orderId: string; paymentState: CmsOrder["paymentState"] }) {
   const titleId = useId();
   const [loaded, setLoaded] = useState<{ orderId: string; receipt: ContestBundleRewards["receipts"][number] | null } | null>(null);
+  const [failure, setFailure] = useState<{ orderId: string; message: string } | null>(null);
+  const [attempt, setAttempt] = useState(0);
 
   useEffect(() => {
     if (paymentState !== "paid") return;
     const controller = new AbortController();
+    setFailure(null);
+    setLoaded(null);
     void loadRewards(controller.signal, "POST")
       .then((result) => {
-        if (!controller.signal.aborted) setLoaded({ orderId, receipt: result?.receipts.find((receipt) => receipt.orderId === orderId) ?? null });
+        if (controller.signal.aborted) return;
+        if (result.progress?.eligible && !result.progress.rewarded) {
+          setFailure({ orderId, message: "Ton objectif est atteint. L’attribution de la carte et des packs reste à confirmer : tu peux réessayer." });
+          return;
+        }
+        setLoaded({ orderId, receipt: result.receipts.find((receipt) => receipt.orderId === orderId) ?? null });
       })
-      .catch(() => { if (!controller.signal.aborted) setLoaded({ orderId, receipt: null }); });
+      .catch((cause: unknown) => {
+        if (!controller.signal.aborted) setFailure({ orderId, message: cause instanceof Error ? cause.message : "La vérification de ton bonus Concours est momentanément indisponible." });
+      });
     return () => controller.abort();
-  }, [orderId, paymentState]);
+  }, [orderId, paymentState, attempt]);
 
   const receipt = loaded?.orderId === orderId ? loaded.receipt : null;
-  if (paymentState !== "paid" || !receipt) return null;
+  if (paymentState !== "paid") return null;
+  if (failure?.orderId === orderId) return <aside className={styles.card} aria-labelledby={titleId}>
+    <p className={styles.title} id={titleId}>Ton bonus Concours</p>
+    <p role="alert">{failure.message} Ton paiement reste confirmé.</p>
+    <button type="button" className={styles.retry} onClick={() => setAttempt(value => value + 1)}>Réessayer la vérification</button>
+    <Link className={styles.claimLink} href="/arene/carnet/concours">Retrouver mon bonus dans le Carnet</Link>
+  </aside>;
+  if (!receipt) return null;
 
   return (
     <aside className={styles.card} aria-labelledby={titleId}>
       <p className={styles.title} id={titleId}><Gift size={18} aria-hidden="true" /> Ton bonus concours</p>
       <p className={styles.credited}><Check size={17} aria-hidden="true" /> Récompenses Concours créditées</p>
       <p>Tes achats payés ont complété le cumul requis des fleurs concours. Ton bonus a été ajouté à tes collections :</p>
-      <div className={styles.epicCard}><Sparkles size={22} aria-hidden="true" /><span><small>1 carte Buddies épique</small><strong>{receipt.card.name}</strong></span></div>
+      <ContestBundleCardReveal receipt={receipt} autoOpen />
       <ul className={styles.receiptPacks} aria-label="Packs crédités">
         <li><strong>{receipt.buddiesPacks} pack{receipt.buddiesPacks > 1 ? "s" : ""} Buddies</strong><span>3 cartes par pack</span></li>
         <li><strong>{receipt.bottePacks} pack{receipt.bottePacks > 1 ? "s" : ""} Botte du Chanvrier</strong><span>10 cartes par pack</span></li>

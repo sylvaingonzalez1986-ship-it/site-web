@@ -1,0 +1,36 @@
+.journal { margin: 20px 0; color: #172923; }
+.journal > summary, .journal button { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); display: flex; align-items: center; gap: 9px; min-height: 44px; padding: 12px 16px; border: 2px solid transparent; border-radius: 0; background: transparent; color: inherit; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; cursor: pointer; font: 800 12px/1.4 var(--font-body), sans-serif; }
+.journal > summary { list-style: none; }
+.journal > summary::-webkit-details-marker { display: none; }
+.journal > summary strong { font: 900 clamp(20px, 3vw, 26px)/1.2 var(--font-display), sans-serif; }
+.journal > summary svg, .journal button svg { flex-shrink: 0; }
+.chevron { margin-left: auto; }
+.journal[open] > summary { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.journal[open] > summary .chevron { transform: rotate(180deg); }
+.body { margin-top: 10px; padding: 18px 20px; border: 2px solid transparent; background: transparent; border-image: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.toolbar, .footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.journal p { margin: 0; font-size: 12px; line-height: 1.6; }
+.toolbar p { max-width: 65ch; }
+.receipts { list-style: none; padding: 0; margin: 18px 0; }
+.receipts > li { padding: 16px 0; border-top: 1px solid #17292355; overflow-wrap: anywhere; }
+.identity { display: grid; gap: 6px; }
+.identity strong { font-size: 14px; line-height: 1.5; }
+.identity > span { font-size: 12px; color: #39594e; }
+.amounts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin: 12px 0; }
+.amounts dt { font-size: 11px; line-height: 1.5; }
+.amounts dd { margin: 3px 0 0; font-weight: 800; font-size: 14px; }
+.amounts > div:last-child dd { color: #076c61; }
+.journal .receiptNote { font-size: 11px; color: #39594e; }
+.journal .notice, .error { margin: 14px 0; padding-left: 12px; border-left: 3px solid #b87522; }
+.error button { margin-top: 10px; }
+.journal :is(button, summary):focus-visible { outline: 3px solid #08766c; outline-offset: 4px; }
+.journal button:disabled { cursor: default; color: #526258; }
+@media (hover: hover) { .journal > summary:hover, .journal button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); } }
+@media (max-width: 600px) {
+  .body { padding: 16px 12px; }
+  .toolbar, .footer { align-items: stretch; flex-direction: column; }
+  .toolbar button { align-self: flex-start; }
+  .amounts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .amounts > div:last-child { grid-column: 1 / -1; }
+  .footer button { justify-content: center; }
+}

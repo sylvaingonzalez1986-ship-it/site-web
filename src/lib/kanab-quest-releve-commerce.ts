@@ -13,7 +13,7 @@ import { getReleveSocialLearning, getReleveSocialProgress, getReleveSocialPublic
 import { canReadReleveMerchReport, getReleveMerchProgress, prepareReleveCommerceMerch, recordReleveMerchAction } from './kanab-quest-releve-merch';
 import { projectKqSocialCultureContext } from './kanab-quest-social-culture';
 import { createKqOnlinePreview } from './kanab-quest-online';
-import { changeKqStorageCapacity, changeKqStoragePostHarvest, createKqStorageLot, getKqStorageInventory, KQ_STORAGE_METHODS, KQ_STORAGE_OVERFLOW_CENTS_PER_GRAM, planKqStorageAllocation, projectKqStorageLot, resizeKqStorageCapacity, type KqStorageAllocation, type KqStorageLot } from './kanab-quest-storage';
+import { changeKqStorageCapacity, changeKqStorageMethod, changeKqStoragePostHarvest, createKqStorageLot, getKqStorageContainer, getKqStorageInventory, KQ_STORAGE_METHODS, KQ_STORAGE_OVERFLOW_CENTS_PER_GRAM, planKqStorageAllocation, planKqStoragePlacement, projectKqStorageLot, resizeKqStorageCapacity, type KqStorageAllocation, type KqStorageLot } from './kanab-quest-storage';
 import { getKqWarehousePostHarvestProfile, getKqWarehouseRunPostHarvestProfile } from './kanab-quest-post-harvest';
 import { getKqWarehouseEquipmentDemand, getKqWarehouseQuote, getKqWarehouseRunSnapshot, isKqWarehouseState, type KqWarehouseState } from './kanab-quest-warehouse';
 import { createKqWorkshop } from './kanab-quest-workshops';
@@ -22,17 +22,18 @@ import { quoteKqWarehouseEnergy } from './kanab-quest-warehouse-run';
 import { getKqWorkshopMachineSpecification } from './kanab-quest-workshop-machines';
 import { getKqEquipmentDefinition } from './kanab-quest-equipment';
 import { getKqMachineCondition } from './kanab-quest-maintenance';
-import { KQ_MARKET_ROUTES, quoteKqMarketRoutes, type KqMarketRouteCode } from './kanab-quest-market';
+import { getKqJuryScoreFromRounds, KQ_MARKET_ROUTES, quoteKqMarketRoutes, type KqMarketRouteCode } from './kanab-quest-market';
 import { getKqMarketWindow } from './kanab-quest-market-demand';
 import { getKqCommerceStockQuality, KQ_COMPUTER_PRICE_CENTS, type KqCommerceSnapshot, type KqCommerceStock } from './kanab-quest-commerce';
 import type { KqTreasuryAccount, KqTreasuryBalances, KqTreasuryEntry, KqTreasuryPeriod, KqTreasurySnapshot } from './kanab-quest-treasury';
 import { KQ_MISSION_DEFINITIONS, type KqMissionSnapshot } from './kanab-quest-missions';
 import type { KqStorageSnapshot } from './kanab-quest-api';
+import { getKqStorageStockBreakdown } from './kanab-quest-storage-breakdown';
 import { createKqTreasuryTutorial, type KqTreasuryTutorialState } from './kanab-quest-treasury-tutorial';
 import { createKqStorageClimateAccrual, getKqStorageClimateBilling, payKqStorageClimateInvoices, settleKqStorageClimateAccrual, type KqStorageClimateAccrual } from './kanab-quest-storage-climate';
 
 export type KqReleveCommerceChapter = 'delivery' | 'shop' | 'ledger' | 'business' | 'social' | 'merch';
-export type KqReleveHarvest = { zoneId: string; game: KqGameState; battle: KqBattle | null };
+export type KqReleveHarvest = { zoneId: string; game: KqGameState; battle: KqBattle | null; storage?: KqStorageLot };
 type Lot = KqReleveHarvest & { id: string; name: string; storage: KqStorageLot; prepared: boolean; assistance?: boolean };
 export type KqReleveCommerceState = {
   version: 1; operations: KqOperationsLessonState; lots: Lot[];
@@ -49,6 +50,12 @@ export type KqReleveCommerceState = {
 const COMMERCE = '/api/arena/placard/commerce';
 const HOUR = 3_600_000;
 const stamp = (state: KqReleveCommerceState) => new Date(state.operations.trial.clock).toISOString();
+function releveJuryScore(lot: Lot) {
+  return lot.storage.juryApplied && lot.battle?.status === 'verdict' ? getKqJuryScoreFromRounds(lot.battle.rounds, 'player') : lot.storage.baseline.juryScore;
+}
+function projectReleveLot(lot: Lot, clock: number) {
+  return projectKqStorageLot(lot.storage, clock, lot.storage.juryApplied ? releveJuryScore(lot) : undefined);
+}
 
 /** Relève carries the player's completed cultures, unlike the borrowed lessons. */
 export function getKqReleveSocialCulture(state: KqReleveCommerceState) {
@@ -104,7 +111,7 @@ export function createReleveCommerce(input: { cashCents: number; clock?: number;
   const ledger = structuredClone(input.ledger ?? []), business = createKqBusinessPreview(clock);
   business.lab.invoices = invoiceRows(ledger, 'lab');
   business.suppliers = { outstandingCents: 0, overdueCents: 0, invoices: invoiceRows(ledger, 'supplier') };
-  trial.electricity = ledger.filter(row => row.kind === 'energy' && row.status === 'due').reduce((sum, row) => sum + row.amountCents, 0);
+  trial.electricity = ledger.filter(row => (row.kind === 'energy' || row.kind === 'care') && row.status === 'due').reduce((sum, row) => sum + row.amountCents, 0);
   trial.commerce = { ...trial.commerce, cashCents: input.cashCents, reputation: 0, clients: 0, shopPartners: 0, computerOwned: false, business, online: createKqOnlinePreview(clock) };
   Object.assign(trial.commerce.online!.site, { active: false, createdAt: null });
   const room = first.game.warehouse?.sourceState;
@@ -116,19 +123,20 @@ export function createReleveCommerce(input: { cashCents: number; clock?: number;
   }
   const reserved: KqStorageAllocation[] = [];
   const lots: Lot[] = harvests.map((harvest, index) => {
-    const id = `releve-${harvest.zoneId}`, game = structuredClone(harvest.game), battle = structuredClone(harvest.battle!);
+    const id = harvest.storage?.flowerId ?? `releve-${harvest.zoneId}`, game = structuredClone(harvest.game), battle = structuredClone(harvest.battle!);
     requireValue(game.care && battle.burnedAt, 'Cette récolte ne possède pas de bilan de conservation.');
     const capacity = { ...planKqStorageAllocation({ totalUnits: Math.round(game.harvestGrams! * 10), ownedContainers, reservedAllocations: reserved, nowMs: clock }), automaticOverflowSale: false, overflowDeadlineAt: null };
-    reserved.push(...capacity.allocations);
-    const storage = createKqStorageLot({ flowerId: id, harvestedAt: game.completedAt!, curingStartedAt: battle.burnedAt, capacity,
+    const storage = harvest.storage ? structuredClone(harvest.storage) : createKqStorageLot({ flowerId: id, harvestedAt: game.completedAt!, curingStartedAt: battle.burnedAt, capacity,
       ...(game.warehouse?.sourceState ? { postHarvest: getKqWarehouseRunPostHarvestProfile(game.warehouse, room) } : {}),
       baseline: { varietyCode: game.varietyCode, juryScore: trialQuality({ ...trial, game, battle }), aroma: battle.playerFlower.stats.aroma, care: game.care } });
+    reserved.push(...storage.capacity!.allocations);
     return { ...harvest, game, battle, id, name: `${game.varietyName} · récolte ${index + 1}`, storage, prepared: false };
   });
   const inventory = { ownedCodes: [] as string[], purchasedCodes: [] as string[], equippedCodes: [] as string[], levels: {}, maintenance: {}, cultureWear: {} };
   const operations: KqOperationsLessonState = { lesson: 'market', trial, tents: [{ ...structuredClone(inventory), tentNumber: 1 }], buildings: [{ ...structuredClone(inventory), buildingNumber: 1, anchorTentNumber: 1 }], shared: inventory,
     storage: { ownedContainers, defaultMethodCode: 'STORAGE-GLASS', lot: lots[0].storage, revision: 0, overflowSales: [] }, prepared: false, events: [], routePlan: null, quotes: {}, receipts: {}, customerDemandUsage: {} };
   const state: KqReleveCommerceState = { version: 1, postHarvestBalanceVersion: 2, operations, lots, productionLedger: ledger, milestones: [], openingBalances: {}, journal: [], startedAt: ledger.map(row => row.issuedAt).sort()[0] ?? new Date(clock).toISOString(), responses: {}, wholesaleSales: [] };
+  if (lots.every(lot => projectKqStorageLot(lot.storage, clock).stage === 'ready')) mark(state, 'mature');
   state.storageClimate = createKqStorageClimateAccrual(commerceWarehouse(state), clock);
   updateCalendar(state);
   const initialCash = input.cashCents + ledger.filter(row => row.status === 'paid').reduce((sum, row) => sum + row.amountCents, 0);
@@ -178,7 +186,7 @@ function physicalRoutes(state: KqReleveCommerceState, lot: Lot) {
   const shared = state.operations.shared, c = state.operations.trial.commerce, clock = state.operations.trial.clock;
   const equipmentCodes = shared.equippedCodes.filter(code => !shared.maintenance[code]?.due);
   const specs = Object.fromEntries(equipmentCodes.map(code => [code, getKqWorkshopMachineSpecification(code, shared.levels[code])]));
-  const storage = projectKqStorageLot(lot.storage, clock);
+  const storage = projectReleveLot(lot, clock);
   return quoteKqMarketRoutes({ juryScore: storage.conditionScore, harvestGrams: lot.storage.capacity!.totalUnits / 10,
     // The backend uses this compatibility unlock for whole flowers; no tent is granted to the farm.
     equipmentCodes: ['TENT-080-STARTER', ...equipmentCodes], equipmentLevels: shared.levels, processWholeLot: true,
@@ -204,8 +212,8 @@ function prepareLot(state: KqReleveCommerceState, body: Record<string, unknown>)
   const starts = Math.max(clock, ...pending.map(stock => Date.parse(stock.processingReadyAt!)));
   const readyAt = quote.processingDurationSeconds > 0 ? new Date(starts + quote.processingDurationSeconds * 1000).toISOString() : null;
   const makeStock = (id: string, route: KqMarketRouteCode, grams: number, equivalent: number, base: number): KqCommerceStock => ({ id, flowerId: lot.id, name: lot.name, varietyCode: lot.game.varietyCode,
-    route, batchRoute: quote.route, juryScore: lot.storage.baseline.juryScore, initialUnits: Math.round(grams * 10), remainingUnits: Math.round(grams * 10), equivalentUnits: Math.round(equivalent * 10), originalUnits: Math.round(lot.game.harvestGrams! * 10),
-    baseUnitCents: base, payoutExact: 0, payoutRounded: 0, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false, processingReadyAt: route === quote.route ? readyAt : null, storage: projectKqStorageLot(lot.storage, clock) });
+    route, batchRoute: quote.route, juryScore: releveJuryScore(lot), initialUnits: Math.round(grams * 10), remainingUnits: Math.round(grams * 10), equivalentUnits: Math.round(equivalent * 10), originalUnits: Math.round(lot.game.harvestGrams! * 10),
+    baseUnitCents: base, payoutExact: 0, payoutRounded: 0, repExact: 0, repRounded: 0, professionalUnits: 0, counted: false, processingReadyAt: route === quote.route ? readyAt : null, storage: projectReleveLot(lot, clock) });
   const stock = makeStock(`${lot.id}:product`, quote.route, quote.productGrams, quote.processedInputGrams, quote.productBaseUnitCents ?? 30);
   c.stocks.push(stock);
   if (quote.remainderGrams > 0) {
@@ -232,7 +240,7 @@ function refreshStocks(state: KqReleveCommerceState) {
       const remaining = stocks.reduce((sum, stock) => sum + (stock.initialUnits ? Math.ceil(stock.equivalentUnits * stock.remainingUnits / stock.initialUnits) : 0), 0);
       lot.storage = changeKqStorageCapacity(lot.storage, resizeKqStorageCapacity(lot.storage.capacity!, Math.min(remaining, lot.storage.capacity!.totalUnits)), clock);
     }
-    for (const stock of stocks) { stock.storage = projectKqStorageLot(lot.storage, clock); stock.storageRevision = commerce.revision; }
+    for (const stock of stocks) { stock.storage = projectReleveLot(lot, clock); stock.storageRevision = commerce.revision; }
   }
   selectLot(state, state.lots[0]); updateCalendar(state);
 }
@@ -252,22 +260,27 @@ export function getReleveCommerceStorageSnapshot(current: KqReleveCommerceState)
   refreshStocks(state);
   const containers = getKqStorageInventory(state.operations.storage.ownedContainers, state.lots.flatMap(lot => lot.storage.capacity!.allocations));
   const lots = state.lots.filter(lot => lot.storage.capacity!.totalUnits > 0).map(lot => {
-    const projection = projectKqStorageLot(lot.storage, state.operations.trial.clock);
+    const projection = projectReleveLot(lot, state.operations.trial.clock);
     const units = lot.prepared ? 0 : Math.min(projection.capacity!.overflowUnits, state.operations.trial.commerce.wholesale?.remainingEquivalentUnits ?? 0);
     const payoutCents = Math.round(units * KQ_STORAGE_OVERFLOW_CENTS_PER_GRAM / 10);
     const payment = previewKqBusinessPayment(payoutCents, state.operations.trial.commerce.business!, state.operations.trial.electricity);
     return { flowerId: lot.id, varietyName: lot.name, harvestGrams: lot.game.harvestGrams!, flowerStatus: lot.battle!.playerFlower.status, projection,
       ...(units > 0 ? { overflowOffer: { units, payoutCents, netPayoutCents: payment.netPayoutCents } } : {}) };
   });
+  const stockBreakdown = getKqStorageStockBreakdown({ capacities: state.lots.map(lot => lot.storage.capacity!),
+    listings: state.operations.trial.commerce.online?.listings ?? [], stocks: state.operations.trial.commerce.stocks });
+  requireValue(stockBreakdown, 'Les quantités de stock de cet essai sont incomplètes. Actualise la visite avant de continuer.');
+  const totalUnits = containers.reduce((sum, item) => sum + item.ownedQuantity * item.capacityUnits, 0);
+  const packedUnits = stockBreakdown.packedUnits;
+  const reservedUnits = lots.reduce((sum, lot) => sum + lot.projection.capacity!.reservedCapacityUnits, 0) + packedUnits;
+  const usedUnits = lots.reduce((sum, lot) => sum + lot.projection.capacity!.totalUnits, 0) + packedUnits;
   return { serverNow: stamp(state), cashCents: getReleveCommerceCash(state), catalog: KQ_STORAGE_METHODS, containers,
+    stockBreakdown,
     ownedMethodCodes: [...new Set(containers.filter(item => item.ownedQuantity > 0).map(item => item.methodCode))],
     ownedContainers: state.operations.storage.ownedContainers, installedContainers: state.operations.storage.ownedContainers,
     defaultMethodCode: state.operations.storage.defaultMethodCode, overflowSales: state.operations.storage.overflowSales,
-    capacity: { totalUnits: containers.reduce((sum, item) => sum + item.ownedQuantity * item.capacityUnits, 0),
-      usedUnits: lots.reduce((sum, lot) => sum + lot.projection.capacity!.protectedUnits, 0),
-      reservedUnits: lots.reduce((sum, lot) => sum + lot.projection.capacity!.reservedCapacityUnits, 0),
-      freeUnits: containers.reduce((sum, item) => sum + item.freeQuantity * item.capacityUnits, 0),
-      overflowUnits: lots.reduce((sum, lot) => sum + lot.projection.capacity!.overflowUnits, 0) }, lots };
+    capacity: { totalUnits, usedUnits, reservedUnits, freeUnits: Math.max(0, totalUnits - reservedUnits),
+      overflowUnits: Math.max(lots.reduce((sum, lot) => sum + lot.projection.capacity!.overflowUnits, 0), usedUnits - totalUnits) }, lots };
 }
 function commerceWarehouse(state: KqReleveCommerceState): KqWarehouseState {
   return state.warehouseState ?? state.lots[0].game.warehouse?.sourceState ?? { version: 1, floor: { columns: 10, rows: 10 }, zones: [], serviceZones: [], equipment: [], preparedAreaM2: 0 };
@@ -326,7 +339,7 @@ export function getReleveCommerceMissions(state: KqReleveCommerceState): KqMissi
   })) };
 }
 export function needsReleveCommerceSample(state: KqReleveCommerceState) {
-  return !state.lots.some(lot => !lot.prepared && lot.storage.baseline.juryScore >= 5.8 && lot.storage.capacity!.totalUnits >= 100)
+  return !state.lots.some(lot => !lot.prepared && releveJuryScore(lot) >= 5.8 && lot.storage.capacity!.totalUnits >= 100)
     && !state.operations.trial.commerce.stocks.some(stock => stock.route !== 'biomass' && stock.remainingUnits >= 50 && getKqCommerceStockQuality(stock) >= 5.8);
 }
 function lendSample(state: KqReleveCommerceState) {
@@ -388,7 +401,7 @@ export function getReleveCommerceTreasury(state: KqReleveCommerceState, options:
     checks: { walletCashCents: closing.cash ?? 0, vatReserveCents: closing.vat_reserve ?? 0, savingsCents: closing.savings ?? 0, loanDebtCents: -(closing.loan_payable ?? 0), cryptoCostCents: closing.crypto_assets ?? 0, securitiesCostCents: closing.securities_assets ?? 0, labDebtCents: -(closing.lab_payable ?? 0), energyDebtCents: -(closing.energy_payable ?? 0), supplierDebtCents: -(closing.supplier_payable ?? 0), vatDebtCents: -(closing.vat_payable ?? 0) } };
 }
 function energySnapshot(state: KqReleveCommerceState): KqEnergySnapshot {
-  const quote = quoteKqEnergy([]), rows = state.productionLedger.filter(row => row.kind === 'energy');
+  const quote = quoteKqEnergy([]), rows = state.productionLedger.filter(row => row.kind === 'energy' || row.kind === 'care' && row.status === 'due');
   const climate = state.storageClimate ? getKqStorageClimateBilling(state.storageClimate) : undefined;
   let paid = rows.reduce((sum, row) => sum + row.amountCents, 0) - (state.operations.trial.electricity - (climate?.outstandingCents ?? 0));
   return { cashCents: getReleveCommerceCash(state), outstandingCents: state.operations.trial.electricity, invoiceCount: rows.length, bestGramsPerKwh: null, storageClimate: climate, quotes: { eco: quote, balanced: quote, intensive: quote },
@@ -401,7 +414,48 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
   const url = new URL(action.path, 'https://releve.invalid');
   requireValue(url.origin === 'https://releve.invalid', 'La visite reste dans sa simulation locale.');
   const method = action.method.toUpperCase(), body = action.body;
+  if (method === 'POST' && url.pathname === COMMERCE && body.action === 'pay-all-invoices') {
+    requireValue(typeof body.requestKey === 'string' && body.requestKey.trim(), 'Identifiant de règlement manquant.');
+    const key = `${COMMERCE}:${body.requestKey}`;
+    requireValue(Number.isSafeInteger(body.expectedCents) && Number(body.expectedCents) >= 1 && Number(body.expectedCents) <= 2_147_483_647, 'Montant de règlement invalide.');
+    if (Object.hasOwn(current.responses, key)) {
+      const receipt = current.responses[key] as { action?: unknown; paidCents?: unknown } | null;
+      requireValue(receipt?.action === 'pay-all-invoices' && receipt.paidCents === body.expectedCents, 'Cet identifiant correspond à un autre règlement.');
+      return { state: current, payload: { ...receipt, replayed: true } };
+    }
+    // Paying issued bills does not advance billing, settle VAT or renew subscriptions.
+    const state = structuredClone(current);
+    updateCalendar(state);
+    const c = state.operations.trial.commerce, clock = state.operations.trial.clock;
+    const labInvoices = c.business!.lab.invoices.filter(row => Date.parse(row.issuedAt) <= clock);
+    const supplierInvoices = c.business!.suppliers!.invoices.filter(row => Date.parse(row.issuedAt) <= clock);
+    const climateInvoices = state.storageClimate?.invoices.filter(row => Date.parse(row.periodEndedAt) <= clock) ?? [];
+    const energyInvoices = energySnapshot(state).invoices.filter(row => Date.parse(row.createdAt) <= clock);
+    const sum = (invoices: Array<{ remainingCents: number }>) => invoices.reduce((total, row) => total + row.remainingCents, 0);
+    const storageClimatePaidCents = sum(climateInvoices);
+    const due = { labCents: sum(labInvoices), supplierCents: sum(supplierInvoices), energyCents: sum(energyInvoices) + storageClimatePaidCents };
+    const totalCents = due.labCents + due.supplierCents + due.energyCents;
+    requireValue(body.expectedCents === totalCents, 'Le total des factures a changé. Actualise avant de confirmer.');
+    requireValue(c.cashCents >= totalCents, 'Trésorerie fictive insuffisante.');
+    const invoiceCount = [...labInvoices, ...supplierInvoices, ...energyInvoices, ...climateInvoices].filter(row => row.remainingCents > 0).length;
+    const before = balances(state);
+    c.cashCents -= totalCents;
+    payInvoices(labInvoices, due.labCents, clock);
+    payInvoices(supplierInvoices, due.supplierCents, clock);
+    state.operations.trial.electricity -= due.energyCents;
+    climateInvoices.forEach(row => { row.remainingCents = 0; });
+    updateCalendar(state); c.revision++;
+    journalMutation(state, before, 'invoices-paid', 'expense_other');
+    const payload = { action: 'pay-all-invoices', paidCents: totalCents, labPaidCents: due.labCents,
+      supplierPaidCents: due.supplierCents, electricityPaidCents: due.energyCents, storageClimatePaidCents, invoiceCount, cashAfterCents: c.cashCents, replayed: false };
+    state.responses[key] = structuredClone(payload);
+    return { state, payload };
+  }
   if (method === 'GET' && url.pathname === '/api/arena/placard/social/player') return { state: current, payload: { firstName: null, profile: null } };
+  if (method === 'GET' && url.pathname === '/api/arena/placard/commerce/sales') {
+    const result = applyKqOperationsRequest(current.operations, { path: `${url.pathname}${url.search}`, method, body });
+    return { state: current, payload: result.payload };
+  }
   const roomProfile = getKqWarehousePostHarvestProfile(commerceWarehouse(current));
   const profileKeys = ['storageQualityBonus', 'climateQualityBonus', 'aromaRateFactor', 'chemistryRateFactor'] as const;
   const changedProfiles = current.lots.map(lot => current.postHarvestBalanceVersion !== 2
@@ -432,7 +486,7 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
     throw new Error('Cet espace se visite dans une autre rencontre de Sylvain.');
   }
   requireValue(method === 'POST' || (method === 'PATCH' && ['/api/arena/placard/equipment', '/api/arena/placard/warehouse'].includes(url.pathname)), 'Opération indisponible dans cette visite.');
-  requireValue(!current.milestones.includes('social-dossier') || url.pathname !== COMMERCE, 'Retrouve les ventes, les campagnes et le merch dans leurs rencontres dédiées ; cet essai reste consacré aux réseaux.');
+  requireValue(!current.milestones.includes('social-dossier') || url.pathname !== COMMERCE, 'Retrouve les ventes, les campagnes et les produits dérivés dans leurs rencontres dédiées ; cet essai reste consacré aux réseaux.');
   if (url.pathname === '/api/arena/placard/social') requireValue(parseKqSocialCommand(body), 'Choix de réseau social invalide.');
   const key = typeof body.requestKey === 'string' ? `${url.pathname}:${body.requestKey}` : null;
   if (key && Object.hasOwn(current.responses, key)) {
@@ -524,15 +578,36 @@ export function applyReleveCommerceRequest(current: KqReleveCommerceState, actio
     });
     payload = getReleveCommerceWarehouse(state); account = 'equipment'; kind = 'equipment-purchase';
   } else if (url.pathname === '/api/arena/placard/storage') {
-    requireValue(body.action === 'sell-overflow', 'Ajoute les contenants depuis le plan de l’entrepôt.');
-    const lot = state.lots.find(item => item.id === body.flowerId);
-    const offer = getReleveCommerceStorageSnapshot(state).lots.find(item => item.flowerId === body.flowerId)?.overflowOffer;
-    requireValue(lot && offer && !lot.prepared, 'Aucun surplus disponible pour cette offre.');
-    const payment = collect(state, offer.payoutCents);
-    lot.storage = changeKqStorageCapacity(lot.storage, resizeKqStorageCapacity(lot.storage.capacity!, lot.storage.capacity!.totalUnits - offer.units), state.operations.trial.clock);
-    state.operations.storage.overflowSales.push({ flowerId: lot.id, ...offer, netPayoutCents: payment.netPayoutCents, soldAt: stamp(state), automatic: false });
-    state.wholesaleSales.push({ at: state.operations.trial.clock, equivalentUnits: offer.units });
-    updateCalendar(state); payload = getReleveCommerceStorageSnapshot(state); revenueCents = offer.payoutCents - payment.vatCents; account = 'revenue_wholesale'; kind = 'sale';
+    if (body.action === 'place') {
+      const lot = state.lots.find(item => item.id === body.flowerId);
+      const container = getKqStorageContainer(String(body.containerCode ?? ''));
+      requireValue(lot && lot.storage.capacity!.totalUnits > 0, 'Ce lot n’est plus disponible dans ton entrepôt.');
+      requireValue(container && body.methodCode === undefined && body.quantity === undefined, 'Demande de placement invalide.');
+      const capacity = planKqStoragePlacement({ capacity: lot.storage.capacity!, containerCode: container.code,
+        ownedContainers: state.operations.storage.ownedContainers,
+        reservedAllocations: state.lots.filter(item => item.id !== lot.id).flatMap(item => item.storage.capacity!.allocations) });
+      const freeUnits = getKqStorageInventory(state.operations.storage.ownedContainers,
+        state.lots.filter(item => item.id !== lot.id).flatMap(item => item.storage.capacity!.allocations))
+        .reduce((sum, item) => sum + item.freeQuantity * item.capacityUnits, 0);
+      const packedUnits = (c.online?.listings ?? []).reduce((sum, listing) => {
+        const stock = c.stocks.find(item => item.id === listing.stockId);
+        return sum + (stock && stock.initialUnits > 0 ? listing.remainingPackets * listing.formatGrams * 10 * stock.equivalentUnits / stock.initialUnits : 0);
+      }, 0);
+      requireValue(capacity.allocations[0].quantity * container.capacityUnits + packedUnits <= freeUnits,
+        'Cette place est réservée aux stocks conditionnés. Choisis un autre contenant ou agrandis le stockage.');
+      lot.storage = changeKqStorageMethod(changeKqStorageCapacity(lot.storage, capacity, state.operations.trial.clock), container.methodCode, state.operations.trial.clock);
+      payload = getReleveCommerceStorageSnapshot(state);
+    } else {
+      requireValue(body.action === 'sell-overflow', 'Ajoute les contenants depuis le plan de l’entrepôt.');
+      const lot = state.lots.find(item => item.id === body.flowerId);
+      const offer = getReleveCommerceStorageSnapshot(state).lots.find(item => item.flowerId === body.flowerId)?.overflowOffer;
+      requireValue(lot && offer && !lot.prepared, 'Aucun surplus disponible pour cette offre.');
+      const payment = collect(state, offer.payoutCents);
+      lot.storage = changeKqStorageCapacity(lot.storage, resizeKqStorageCapacity(lot.storage.capacity!, lot.storage.capacity!.totalUnits - offer.units), state.operations.trial.clock);
+      state.operations.storage.overflowSales.push({ flowerId: lot.id, ...offer, netPayoutCents: payment.netPayoutCents, soldAt: stamp(state), automatic: false });
+      state.wholesaleSales.push({ at: state.operations.trial.clock, equivalentUnits: offer.units });
+      updateCalendar(state); payload = getReleveCommerceStorageSnapshot(state); revenueCents = offer.payoutCents - payment.vatCents; account = 'revenue_wholesale'; kind = 'sale';
+    }
   } else if (url.pathname === '/api/arena/placard/equipment') {
     requireValue(body.action === 'repair', 'Le matériel est prêté pour cet essai. Les conditions métier affichées restent nécessaires pour l’acquérir.');
     const code = String(body.equipmentCode ?? ''), condition = state.operations.shared.maintenance[code];
@@ -634,7 +709,7 @@ export function getReleveCommerceProgress(state: KqReleveCommerceState, chapter:
   if (chapter === 'social') return getReleveSocialProgress(state);
   if (chapter === 'merch') return getReleveMerchProgress(state);
   const has = (key: string) => state.milestones.includes(key);
-  if (chapter === 'delivery') return { complete: has('mature') && has('delivered') && has('receipt-read'), instruction: !has('mature') ? 'Laisse six heures fictives à ta récolte, puis ouvre le lot dans Vendre ma production.' : !has('delivered') ? 'Prépare le lot entier, compare les offres disponibles et livre une petite quantité. Garde au moins 10 g pour la boutique.' : 'Ouvre le reçu : distingue le prix TTC, la TVA, le remboursement des factures et le net reçu.' };
+  if (chapter === 'delivery') return { complete: has('mature') && has('delivered') && has('receipt-read'), instruction: !has('mature') ? 'Laisse six heures fictives à ta récolte, puis ouvre le lot dans Vendre.' : !has('delivered') ? 'Prépare le lot entier, compare les offres disponibles et livre une petite quantité. Garde au moins 10 g pour la boutique.' : 'Ouvre le reçu : distingue le prix TTC, la TVA, le remboursement des factures et le net reçu.' };
   if (chapter === 'shop' || chapter === 'business') return { complete: has('published') && has('online-time') && has('report-read') && (chapter !== 'business' || has('campaign')), instruction: !state.operations.trial.commerce.computerOwned ? 'Sylvain te prête son ordinateur. Ouvre gratuitement ta boutique de base et choisis son nom.' : !has('published') ? 'Achète quelques emballages, prépare des paquets avec ton stock puis publie-les. Une campagne reste facultative dans l’aventure.' : chapter === 'business' && !has('campaign') ? 'Dans ce dossier séparé, lance la campagne de présentation gratuite et compare son bilan après 24 heures fictives.' : 'Avance de 24 heures fictives et consulte le bilan. Une annonce épuisée reste une publication réussie.' };
   return { complete: has('ledger-read') && has('first-harvest'), instruction: 'Rapproche les ventes des factures de ta campagne. La prime Première récolte ajoute 50 € fictifs, une seule fois.' };
 }

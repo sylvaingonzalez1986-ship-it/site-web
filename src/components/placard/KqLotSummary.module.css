@@ -1,0 +1,28 @@
+.sheet { width: 100%; min-width: 0; color: #172923; }
+.identity { display: flex; align-items: flex-start; gap: 14px; }
+.identity > div:last-child { min-width: 0; flex: 1; }
+.identity :is(h3,h4) { margin: 0; font: 750 1.125rem/1.35 var(--font-body),sans-serif; overflow-wrap: anywhere; text-transform: none; }
+.sheet .reference,.sheet .product { margin: 6px 0 0; color: #455748; font-size: .875rem; line-height: 1.5; }
+.sheet .product { font-weight: 700; color: #172923; }
+.artwork { display: grid; place-items: center; flex: 0 0 48px; width: 48px; min-height: 48px; }
+.artwork img { width: 48px; height: 48px; object-fit: contain; }
+.selected { display: block; margin-top: 6px; color: #075e53; font-size: .875rem; font-weight: 750; }
+.state { display: inline-block; margin-top: 12px; color: #075e53; font-size: .875rem; font-weight: 750; line-height: 1.5; }
+.facts { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px 20px; margin: 12px 0; padding-block: 12px; border-block: 1px solid #17292335; }
+.facts dt { color: #455748; font-size: .875rem; line-height: 1.5; }
+.facts dd { margin: 4px 0 0; font-size: 1.25rem; font-weight: 750; line-height: 1.4; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.facts dd span { font-size: .875rem; font-weight: 500; }
+.facts dd small { display: block; font-size: .875rem; font-weight: 500; line-height: 1.5; }
+.progress { max-width: 420px; margin-block: 12px; }
+.sheet .next,.sheet .timing,.sheet .warning { margin: 8px 0; font-size: .875rem; line-height: 1.6; }
+.sheet .warning { color: #782719; font-weight: 700; }
+.timing { font-weight: 700; }
+.sheet .scope { margin: 0 0 8px; font-size: .875rem; line-height: 1.5; color: #455748; grid-column: 1 / -1; }
+.actions { margin-top: 14px; }
+.actions > div { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px; max-width: none; }
+.sheet .actions :is(button,a) { font-size: .875rem; min-height: 44px; }
+.details { margin-top: 12px; }
+.details summary { cursor: pointer; min-height: 44px; align-content: center; font-size: .875rem; line-height: 1.5; }
+.sheet .details p { margin: 4px 0 12px; font-size: .875rem; line-height: 1.6; }
+.details summary:focus-visible { outline: 3px solid #087e70; outline-offset: 3px; }
+@media(min-width: 900px) { .sheet { display: grid; grid-template-columns: minmax(0,1fr) minmax(250px,.7fr); column-gap: 24px; } .identity,.state { grid-column: 1; } .facts { grid-column: 2; grid-row: 1 / 3; margin: 0; align-self: start; } .next,.warning,.timing,.progress,.actions,.details { grid-column: 1 / -1; } }

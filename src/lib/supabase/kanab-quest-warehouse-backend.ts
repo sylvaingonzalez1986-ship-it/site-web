@@ -14,6 +14,8 @@ import { createSupabaseServiceClient } from "./admin";
 import { getKqWarehouseSalesForecast, type KqWarehouseSalesForecast } from "./kanab-quest-warehouse-flow-backend";
 import { getKqEquipmentShopSnapshot, type KqEquipmentShopSnapshot } from "./kanab-quest-equipment-backend";
 import { getKqWorkshopMachineSpecification } from "../kanab-quest-workshop-machines";
+import { initializeKqWarehouseCondition, isKqWarehouseCondition, reconcileKqWarehouseCondition, getKqWarehouseRemovalQuote, removeKqWarehouseZone,
+  type KqWarehouseCondition, type KqWarehouseRemovalQuote } from "../kanab-quest-warehouse-condition";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const MAX_INTEGER = 2_147_483_647;
@@ -42,6 +44,8 @@ export type KqWarehouseCompletedRun = {
 };
 
 export type KqWarehouseSnapshot = {
+  cultureEquipment?: KqWarehouseCondition | null;
+  removalReceipt?: { resaleCents: number; soldCount: number; keptCount: number; requestKey?: string; replayed?: boolean };
   state: KqWarehouseState;
   revision: number;
   cashCents: number;
@@ -73,6 +77,14 @@ function assertUuid(value: unknown): asserts value is string {
 
 function databaseError(message: string): never {
   const failures: [string, string, number][] = [
+    ["warehouse_condition_required", "Actualise l’entrepôt pour retrouver l’état de ton matériel.", 409],
+    ["warehouse_condition_changed", "L’usure ou l’affectation du matériel a changé. Actualise le devis.", 409],
+    ["warehouse_condition_invalid", "L’état du matériel doit être actualisé avant cette opération.", 409],
+    ["warehouse_condition_inventory", "L’inventaire du matériel a changé. Actualise l’entrepôt.", 409],
+    ["warehouse_asset_basis_changed", "La valeur comptable du matériel a changé. Actualise le devis de reprise.", 409],
+    ["warehouse_purchase_basis_unknown", "Le prix d’achat de ce matériel est inconnu. Garde-le en réserve.", 409],
+    ["warehouse_resale_changed", "Le montant de reprise a changé. Consulte le nouveau devis avant de confirmer.", 409],
+    ["warehouse_removal_invalid", "Cette suppression ne correspond plus au matériel de la zone. Actualise le devis.", 409],
     ["warehouse_zone_busy", "Cette zone accueille une culture. Termine-la avant de modifier son aménagement.", 409],
     ["kq_buddie_not_owned", "Choisis un Buddie présent dans ta collection.", 400],
     ["warehouse_zone_in_use", "Cette zone accueille une culture. Termine-la avant de modifier son aménagement.", 409],
@@ -113,7 +125,8 @@ function storedSnapshot(result: RpcResult): StoredSnapshot {
     || (data.reservedHarvestGrams !== undefined && (!Number.isFinite(data.reservedHarvestGrams) || data.reservedHarvestGrams < 0))
     || (data.storageReservedGrams !== undefined && (!Number.isFinite(data.storageReservedGrams) || data.storageReservedGrams < data.stockGrams))
     || !Number.isFinite(data.storageCapacityGrams) || data.storageCapacityGrams < 0
-    || (data.state !== null && !isKqWarehouseState(data.state))) {
+    || (data.state !== null && !isKqWarehouseState(data.state))
+    || (data.cultureEquipment != null && !isKqWarehouseCondition(data.cultureEquipment))) {
     throw new Error("[supabase:warehouse] invalid_snapshot");
   }
   return data;
@@ -143,7 +156,11 @@ function cleanState(value: unknown): KqWarehouseState {
 }
 
 function publicSnapshot(data: StoredSnapshot): KqWarehouseSnapshot {
-  return { ...data, state: data.state ?? createKqWarehouseStarter() };
+  const receipt = data.receipt as (KqWarehouseReceipt & { resaleCents?: number; soldCount?: number; keptCount?: number }) | undefined;
+  return { ...data, state: data.state ?? createKqWarehouseStarter(),
+    ...(receipt && [receipt.resaleCents, receipt.soldCount, receipt.keptCount].every(value => Number.isSafeInteger(value) && value! >= 0)
+      ? { removalReceipt: { resaleCents: receipt.resaleCents!, soldCount: receipt.soldCount!, keptCount: receipt.keptCount!, requestKey: receipt.requestKey, replayed: receipt.replayed } } : {}),
+  };
 }
 
 async function salesForecast(userId: string): Promise<KqWarehouseSalesForecast | null> {
@@ -161,6 +178,16 @@ function withSales(snapshot: KqWarehouseSnapshot, forecast: KqWarehouseSalesFore
 async function readStoredSnapshot(userId: string): Promise<StoredSnapshot> {
   assertUuid(userId);
   return storedSnapshot(await createSupabaseServiceClient().rpc("rpc_kq_warehouse_snapshot", { p_user_id: userId }));
+}
+
+async function ensureCondition(userId: string, current: StoredSnapshot, freeStarter = false): Promise<StoredSnapshot> {
+  // An absent field supports a rolling deployment. Null explicitly requests initialization.
+  if (!current.state || current.cultureEquipment !== null) return current;
+  const condition = initializeKqWarehouseCondition(current.state, freeStarter);
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_warehouse_condition_initialize", {
+    p_user_id: userId, p_expected_revision: current.revision, p_assets: condition.assets,
+  });
+  return storedSnapshot(result);
 }
 
 async function compactIdleWarehouse(userId: string, current: StoredSnapshot): Promise<StoredSnapshot> {
@@ -190,12 +217,13 @@ export async function getKqWarehouseSnapshot(userId: string): Promise<KqWarehous
     initial = storedSnapshot(await createSupabaseServiceClient().rpc("rpc_kq_warehouse_initialize", {
       p_user_id: userId, p_starter_state: createKqWarehouseStarter(),
     }));
+    initial = await ensureCondition(userId, initial, true);
   }
   await compactIdleWarehouse(userId, initial);
   const forecast = await salesForecast(userId);
   // Commerce may settle pending proceeds, even before an optional forecast fails.
   // Always return the wallet after that settlement and any conversion.
-  return withSales(publicSnapshot(await readStoredSnapshot(userId)), forecast);
+  return withSales(publicSnapshot(await ensureCondition(userId, await readStoredSnapshot(userId))), forecast);
 }
 
 export async function saveKqWarehouseLayout(input: {
@@ -227,7 +255,7 @@ export async function saveKqWarehouseLayout(input: {
   if (candidate.equipment.some(item => KQ_WAREHOUSE_CATALOG.find(device => device.code === item.code)?.kind === "processing")) {
     databaseError("warehouse_workshop_purchase");
   }
-  const current = await readStoredSnapshot(input.userId);
+  const current = await ensureCondition(input.userId, await readStoredSnapshot(input.userId));
   if (!current.state || current.revision !== input.expectedRevision) {
     const concurrentReceipt = await replay();
     if (concurrentReceipt) return concurrentReceipt;
@@ -253,10 +281,15 @@ export async function saveKqWarehouseLayout(input: {
     throw new KqWarehouseError("Cet aménagement dépasse la limite d’investissement.");
   }
   if (quote.totalCostCents !== input.expectedCostCents) databaseError("warehouse_price_changed");
-  return withSales(publicSnapshot(storedSnapshot(await supabase.rpc("rpc_kq_warehouse_save", {
+  const condition = current.cultureEquipment ? reconcileKqWarehouseCondition(current.state, quote.nextState, current.cultureEquipment, {
+    requestKey: input.requestKey, fundedFraction: quote.totalCostCents ? Math.max(0, quote.totalCostCents - current.migrationCreditCents) / quote.totalCostCents : 0,
+    fundedCents: Math.max(0, quote.totalCostCents - current.migrationCreditCents), investmentCents: quote.totalCostCents,
+  }) : undefined;
+  return withSales(publicSnapshot(storedSnapshot(await supabase.rpc(condition ? "rpc_kq_warehouse_save_condition" : "rpc_kq_warehouse_save", {
     p_user_id: input.userId, p_request_key: input.requestKey, p_request: request,
     p_expected_revision: input.expectedRevision, p_previous_state: current.state,
     p_next_state: quote.nextState, p_cost_cents: quote.totalCostCents,
+    ...(condition ? { p_previous_assets: current.cultureEquipment!.assets, p_next_assets: condition.assets } : {}),
   }))), forecast);
 }
 
@@ -268,9 +301,65 @@ export async function getKqWarehouseRunSnapshot(userId: string, zoneId?: string)
     current = storedSnapshot(await createSupabaseServiceClient().rpc("rpc_kq_warehouse_initialize", {
       p_user_id: userId, p_starter_state: createKqWarehouseStarter(),
     }));
+    current = await ensureCondition(userId, current, true);
   }
   current = await compactIdleWarehouse(userId, current);
-  return current.state ? deriveWarehouseRunSnapshot(current.state, current.revision, zoneId) : null;
+  current = await ensureCondition(userId, current);
+  return current.state ? deriveWarehouseRunSnapshot(current.state, current.revision, zoneId, 2, 2, 2, current.cultureEquipment ?? undefined) : null;
+}
+
+function assertRemovalInput(input: { userId: string; zoneId: string; expectedRevision: number }) {
+  assertUuid(input.userId);
+  if (typeof input.zoneId !== "string" || !input.zoneId.trim() || input.zoneId.length > 80
+    || !Number.isSafeInteger(input.expectedRevision) || input.expectedRevision < 1 || input.expectedRevision >= MAX_INTEGER) throw new KqWarehouseError("Zone ou révision invalide.");
+}
+
+async function removalSnapshot(input: { userId: string; zoneId: string; expectedRevision: number }) {
+  const current = await ensureCondition(input.userId, await readStoredSnapshot(input.userId));
+  if (!current.state || current.revision !== input.expectedRevision) databaseError("warehouse_revision_changed");
+  if (!current.cultureEquipment) throw new KqWarehouseError("La mise à jour du suivi du matériel est nécessaire pour supprimer une zone.", 503);
+  if (current.legacyActiveRun || (current.activeRun && !current.activeRuns?.length) || current.activeRuns?.some(run => !run.zoneId || run.zoneId === input.zoneId)) databaseError("warehouse_zone_busy");
+  if (!current.state.zones.some(zone => zone.id === input.zoneId)) throw new KqWarehouseError("Cette zone de culture n’existe plus.", 409);
+  return { ...current, state: current.state, cultureEquipment: current.cultureEquipment };
+}
+
+export async function quoteKqWarehouseZoneRemoval(input: { userId: string; zoneId: string; expectedRevision: number }): Promise<KqWarehouseRemovalQuote> {
+  assertRemovalInput(input);
+  const current = await removalSnapshot(input);
+  return getKqWarehouseRemovalQuote(current.state, current.cultureEquipment, input.zoneId, current.revision);
+}
+
+export async function removeKqWarehouseCultureZone(input: { userId: string; zoneId: string; expectedRevision: number; resellEquipment: boolean; expectedResaleCents: number; requestKey: string }): Promise<KqWarehouseSnapshot> {
+  assertRemovalInput(input); assertUuid(input.requestKey);
+  if (typeof input.resellEquipment !== "boolean" || !Number.isSafeInteger(input.expectedResaleCents) || input.expectedResaleCents < 0 || input.expectedResaleCents > MAX_INTEGER) throw new KqWarehouseError("Choix de reprise invalide.");
+  const request = { action: "remove-zone", zoneId: input.zoneId, expectedRevision: input.expectedRevision, resellEquipment: input.resellEquipment, expectedResaleCents: input.expectedResaleCents };
+  const supabase = createSupabaseServiceClient();
+  const replay = async () => {
+    const result = await supabase.rpc("rpc_kq_warehouse_receipt", { p_user_id: input.userId, p_request_key: input.requestKey, p_request: request });
+    if (result.error) databaseError(result.error.message);
+    return result.data ? publicSnapshot(storedSnapshot(result)) : null;
+  };
+  const receipt = await replay();
+  if (receipt) return receipt;
+  let current: Awaited<ReturnType<typeof removalSnapshot>>;
+  try { current = await removalSnapshot(input); }
+  catch (error) {
+    // The first attempt may commit between receipt lookup and reading the plan.
+    if (error instanceof KqWarehouseError && error.status === 409) {
+      const concurrentReceipt = await replay();
+      if (concurrentReceipt) return concurrentReceipt;
+    }
+    throw error;
+  }
+  const quote = getKqWarehouseRemovalQuote(current.state, current.cultureEquipment, input.zoneId, current.revision);
+  const resaleCents = input.resellEquipment ? quote.resaleCents : 0;
+  if (resaleCents !== input.expectedResaleCents) databaseError("warehouse_resale_changed");
+  const next = removeKqWarehouseZone(current.state, current.cultureEquipment, input.zoneId, input.resellEquipment);
+  return publicSnapshot(storedSnapshot(await supabase.rpc("rpc_kq_warehouse_remove_zone", {
+    p_user_id: input.userId, p_request_key: input.requestKey, p_request: request, p_expected_revision: input.expectedRevision,
+    p_previous_state: current.state, p_previous_assets: current.cultureEquipment.assets,
+    p_next_state: next.state, p_next_assets: next.condition.assets, p_resale_cents: resaleCents,
+  })));
 }
 
 export async function getKqWarehouseProcessingEquipment(userId: string, existingShop?: {

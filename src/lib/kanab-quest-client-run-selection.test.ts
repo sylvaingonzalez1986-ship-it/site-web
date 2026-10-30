@@ -1,5 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { createClientRequestKey } from "./client-request-key";
 import { clearKqZoneStartRequestKey, getKqZoneStartRequestKey, KQ_CAMPAIGN_START_SCOPE, selectKqClientRun } from "./kanab-quest-client-run-selection";
+
+afterEach(() => vi.unstubAllGlobals());
 
 const legacy = { runId: "legacy", zoneId: null, state: {} };
 const first = { runId: "first", zoneId: "a", state: {} };
@@ -46,6 +49,25 @@ describe("culture selection", () => {
 });
 
 describe("zone start retry", () => {
+  it("preserves the mobile fallback key across campaign retries until the receipt is cleared", () => {
+    let generated = 0;
+    vi.stubGlobal("crypto", {
+      getRandomValues: (values: Uint8Array) => values.fill(++generated),
+    });
+    const values = new Map<string, string>();
+    const storage = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); }, removeItem: (key: string) => { values.delete(key); } };
+    const input = { campaign: true, participants: ["a", "b"], deckCodes: [] };
+
+    const firstKey = getKqZoneStartRequestKey(storage, KQ_CAMPAIGN_START_SCOPE, input, createClientRequestKey);
+    expect(firstKey).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/);
+    expect(getKqZoneStartRequestKey({ ...storage }, KQ_CAMPAIGN_START_SCOPE, input, createClientRequestKey)).toBe(firstKey);
+    expect(generated).toBe(1);
+
+    clearKqZoneStartRequestKey(storage, KQ_CAMPAIGN_START_SCOPE);
+    expect(getKqZoneStartRequestKey(storage, KQ_CAMPAIGN_START_SCOPE, input, createClientRequestKey)).not.toBe(firstKey);
+    expect(generated).toBe(2);
+  });
+
   it("uses one persistent campaign receipt independently of the clicked zone", () => {
     const values = new Map<string, string>();
     const storage = { getItem: (key: string) => values.get(key) ?? null, setItem: (key: string, value: string) => { values.set(key, value); }, removeItem: (key: string) => { values.delete(key); } };

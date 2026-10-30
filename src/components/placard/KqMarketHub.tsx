@@ -1,50 +1,48 @@
 "use client";
 
-import Link from "next/link";
-import { useEffect, useId, useRef, useState, useSyncExternalStore, type KeyboardEvent } from "react";
-import { ArrowLeft, ArrowRight, ChevronDown, FlaskConical, LayoutDashboard, Settings2, ShoppingBag, TrendingUp } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowLeft, ArrowRight, FlaskConical, LayoutDashboard, Settings2, ShoppingBag, TrendingUp } from "lucide-react";
 import { KqCommerceDesk } from "./KqCommerceDesk";
 import { KqTreasuryManagement } from "./KqTreasuryManagement";
+import type { KqOnlineBusinessTab } from "./KqOnlineBusiness";
 import { KqPrintedArt } from "./KqPrintedArt";
 import type { KqCommerceReceipt } from "@/lib/kanab-quest-commerce";
 import styles from "./KqMarketHub.module.css";
 
+/** Keep the existing section URLs and tutorial destinations. */
 export type KqMarketSection = "overview" | "demands" | "sales" | "dashboard" | "management";
 
 const sections = [
-  { code: "overview", label: "Vue d’ensemble", icon: LayoutDashboard },
-  { code: "demands", label: "Demandes clients", icon: TrendingUp },
-  { code: "sales", label: "Vendre ma production", icon: FlaskConical },
-  { code: "dashboard", label: "Mes ventes", icon: ShoppingBag },
-  { code: "management", label: "Développer ma boutique", icon: Settings2 },
+  { code: "sales", label: "Vendre", icon: FlaskConical },
+  { code: "dashboard", label: "Mon stock en vente", icon: ShoppingBag },
+  { code: "management", label: "Développer", icon: Settings2 },
 ] as const;
 
-const sidebarQuery = "(min-width: 981px)";
-function subscribeSidebar(listener: () => void) {
-  const query = window.matchMedia(sidebarQuery);
-  query.addEventListener("change", listener);
-  return () => query.removeEventListener("change", listener);
-}
-const getSidebarLayout = () => window.matchMedia(sidebarQuery).matches;
-const getServerSidebarLayout = () => false;
-
-export function KqMarketHub({ onOpenShop, onOpenTreasury, onOpenStorage, onOpenCulture, section, onSectionChange, initialFlowerId, initialReceipt }: {
-  onOpenShop: (equipmentCode?: string) => void;
+export function KqMarketHub({ onOpenShop, onOpenTreasury, onOpenStorage, onOpenCulture, section, onSectionChange, managementView, onManagementViewChange, initialFlowerId, initialLotId, onLotSelectionChange, initialReceipt, initialListingId }: {
+  onOpenShop: (equipmentCode?: string, flowerId?: string) => void;
   onOpenTreasury?: () => void;
-  onOpenStorage?: () => void;
+  onOpenStorage?: (flowerId?: string, lotId?: string) => void;
   onOpenCulture?: () => void;
   section?: KqMarketSection;
-  onSectionChange?: (section: KqMarketSection) => void;
+  onSectionChange?: (section: KqMarketSection, listingId?: string, businessView?: KqOnlineBusinessTab) => void;
+  managementView?: KqOnlineBusinessTab;
+  onManagementViewChange?: (view: KqOnlineBusinessTab) => void;
   initialFlowerId?: string;
+  initialLotId?: string;
+  onLotSelectionChange?: (selectedId: string | undefined, flowerId?: string) => void;
   initialReceipt?: KqCommerceReceipt;
+  initialListingId?: string;
 }) {
-  const id = useId();
-  const [localSection, setLocalSection] = useState<KqMarketSection>(initialFlowerId ? "sales" : "overview");
-  const [managementDestination, setManagementDestination] = useState<"activity" | "merch">("activity");
-  const [menuOpen, setMenuOpen] = useState(false);
-  const sidebar = useSyncExternalStore(subscribeSidebar, getSidebarLayout, getServerSidebarLayout);
-  const tabs = useRef<Array<HTMLButtonElement | null>>([]);
-  const menuToggle = useRef<HTMLButtonElement>(null);
+  const [localSection, setLocalSection] = useState<KqMarketSection>(initialListingId ? "dashboard" : initialFlowerId || initialLotId ? "sales" : "overview");
+  const [localManagementView, setLocalManagementView] = useState<KqOnlineBusinessTab>("site");
+  const managementDestination = managementView ?? localManagementView;
+  const [listingSelection, setListingSelection] = useState({ entry: initialListingId, value: initialListingId });
+  // URL history can change the target without remounting the whole commerce hub.
+  // Keep local destinations (notably the merch workshop) when leaving that target.
+  if (listingSelection.entry !== initialListingId) {
+    setListingSelection({ entry: initialListingId, value: initialListingId });
+  }
+  const selectedListingId = listingSelection.entry === initialListingId ? listingSelection.value : initialListingId;
   const managementHeading = useRef<HTMLHeadingElement>(null);
   const commercePanel = useRef<HTMLDivElement>(null);
   const focusDestination = useRef<KqMarketSection | null>(null);
@@ -52,63 +50,44 @@ export function KqMarketHub({ onOpenShop, onOpenTreasury, onOpenStorage, onOpenC
   useEffect(() => {
     if (activeSection === focusDestination.current) {
       focusDestination.current = null;
-      // A request can target the packet register directly. Keep the desk's
-      // precise destination instead of moving focus back to the page heading.
-      if (commercePanel.current?.contains(document.activeElement) && document.activeElement?.hasAttribute("data-online-listings-heading")) return;
+      // A demand or campaign can target an individual listing. Preserve that focus.
+      if (commercePanel.current?.contains(document.activeElement) && document.activeElement?.closest("[data-online-listings-heading], [data-online-listing]")) return;
       const target = activeSection === "management" ? managementHeading.current : commercePanel.current?.querySelector<HTMLHeadingElement>("[data-commerce-view-heading]");
       target?.focus();
     }
   }, [activeSection]);
-  function select(next: KqMarketSection, destination: "activity" | "merch" = "activity") {
-    if (next === "management") setManagementDestination(destination);
+  function select(next: KqMarketSection, destination?: KqOnlineBusinessTab, listingId?: string) {
+    if (destination) setLocalManagementView(destination);
+    if (next === "dashboard") setListingSelection({ entry: initialListingId, value: listingId });
+    focusDestination.current = next;
     setLocalSection(next);
-    onSectionChange?.(next);
+    onSectionChange?.(next, listingId, destination ?? managementDestination);
   }
-  function selectTab(next: KqMarketSection) {
-    if (!sidebar) {
-      setMenuOpen(false);
-      if (next === activeSection) menuToggle.current?.focus();
-      else focusDestination.current = next;
-    }
-    select(next);
-  }
-  function navigate(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    const next = event.key === "ArrowRight" || (sidebar && event.key === "ArrowDown") ? (index + 1) % sections.length
-      : event.key === "ArrowLeft" || (sidebar && event.key === "ArrowUp") ? (index + sections.length - 1) % sections.length
-        : event.key === "Home" ? 0 : event.key === "End" ? sections.length - 1 : null;
-    if (next === null) return;
-    event.preventDefault();
-    select(sections[next].code);
-    tabs.current[next]?.focus({ preventScroll: true });
-    tabs.current[next]?.scrollIntoView({ block: "nearest", inline: "nearest" });
+  function viewSales(listingId?: string) {
+    select("dashboard", undefined, listingId);
   }
   return <div className={styles.hub}>
     <div className={styles.workspace}>
-    <div className={styles.navigation}>
-      <div className={styles.navigationHeading}>
-        <div className={styles.identity}><KqPrintedArt kind="commerce" className={styles.shopMark} /><span><strong>Ma boutique</strong><small>{sidebar ? "Mon espace commerce" : sections.find(item => item.code === activeSection)?.label}</small></span></div>
-        <button type="button" ref={menuToggle} className={styles.menuToggle} hidden={sidebar} aria-expanded={menuOpen} aria-controls={`${id}-navigation`} onClick={() => setMenuOpen(open => !open)}>Rubriques<ChevronDown size={16} aria-hidden="true" /></button>
-      </div>
-      <div id={`${id}-navigation`} className={styles.tabs} hidden={!sidebar && !menuOpen} role="tablist" aria-label="Ma boutique" aria-orientation={sidebar ? "vertical" : "horizontal"} onKeyDown={event => { if (!sidebar && event.key === "Escape") { event.preventDefault(); setMenuOpen(false); menuToggle.current?.focus(); } }}>{sections.map((item, index) => {
-      const Icon = item.icon;
-      const active = item.code === activeSection;
-      return <button key={item.code} type="button" ref={node => { tabs.current[index] = node; }} id={`${id}-${item.code}-tab`} role="tab" aria-selected={active} aria-controls={`${id}-${item.code}-panel`} tabIndex={active ? 0 : -1} onClick={() => selectTab(item.code)} onKeyDown={event => navigate(event, index)}><Icon size={18} aria-hidden="true" /><span>{item.label}</span></button>;
-    })}</div></div>
-    {activeSection !== "management" ? <div className={styles.content} ref={commercePanel} id={`${id}-${activeSection}-panel`} role="tabpanel" aria-labelledby={`${id}-${activeSection}-tab`}>
-      {activeSection !== "overview" ? <button type="button" className={styles.back} onClick={() => { focusDestination.current = "overview"; select("overview"); }}><ArrowLeft size={16} aria-hidden="true" />Vue d’ensemble</button> : null}
-      <KqCommerceDesk key={initialFlowerId ?? ""} initialFlowerId={initialFlowerId} initialReceipt={initialReceipt} mode={activeSection} onModeChange={next => { focusDestination.current = next; select(next); }} onOpenShop={onOpenShop} onOpenTreasury={onOpenTreasury} onOpenStorage={onOpenStorage} onOpenCulture={onOpenCulture} onOpenBusiness={() => { focusDestination.current = "management"; select("management"); }} onOpenMerch={() => { focusDestination.current = "management"; select("management", "merch"); }} />
-    </div> : <div className={styles.content} id={`${id}-management-panel`} role="tabpanel" aria-labelledby={`${id}-management-tab`}>
-      <main className={styles.management}>
-        <h1 className="sr-only" ref={managementHeading} tabIndex={-1}>Développer ma boutique</h1>
-        <button type="button" className={styles.back} onClick={() => { focusDestination.current = "overview"; select("overview"); }}><ArrowLeft size={16} aria-hidden="true" />Vue d’ensemble</button>
-        <KqTreasuryManagement onOpenShop={onOpenShop} section="management" initialView={managementDestination === "merch" ? "merch" : "activity"} onPrepareStock={() => { focusDestination.current = "sales"; select("sales"); }} onViewSales={() => { focusDestination.current = "dashboard"; select("dashboard"); }} />
-        <Link className={styles.accounting} href="/arene/placard?view=treasury&pole=accounting" prefetch={false} onClick={event => { if (onOpenTreasury) { event.preventDefault(); onOpenTreasury(); } }}>
-          <KqPrintedArt kind="accounts" className={styles.accountingArt} />
-          <span className={styles.accountingCopy}><span className={styles.accountingEyebrow}>Le comptoir des comptes</span><strong>Mes factures</strong><small>Montants à régler et prochaines échéances dans Finances.</small></span>
-          <span className={styles.accountingAction}>Ouvrir le registre<ArrowRight size={19} aria-hidden="true" /></span>
-        </Link>
-      </main>
-    </div>}
+      <nav className={styles.navigation} aria-label="Commerce">
+        <div className={styles.navigationHeading}>
+          <div className={styles.identity}><KqPrintedArt kind="commerce" className={styles.shopMark} /><strong>Commerce</strong></div>
+          <button type="button" className={styles.summaryLink} aria-current={activeSection === "overview" ? "page" : undefined} onClick={() => select("overview")}><LayoutDashboard size={16} aria-hidden="true" />Synthèse</button>
+        </div>
+        <div className={styles.tabs}>{sections.map(item => {
+          const Icon = item.icon;
+          const active = item.code === activeSection || (item.code === "sales" && activeSection === "demands");
+          return <button key={item.code} type="button" data-market-section={item.code} aria-current={active ? "page" : undefined} onClick={() => item.code === "dashboard" ? viewSales() : select(item.code)}><Icon size={18} aria-hidden="true" /><span>{item.label}</span></button>;
+        })}</div>
+      </nav>
+      {activeSection !== "management" ? <div className={styles.content} ref={commercePanel}>
+        {activeSection === "sales" ? <div className={styles.contextLinks}><button type="button" className={styles.back} onClick={() => select("demands")}><TrendingUp size={16} aria-hidden="true" />Demandes clients · voir les primes<ArrowRight size={16} aria-hidden="true" /></button></div> : activeSection === "demands" ? <button type="button" className={styles.back} onClick={() => select("sales")}><ArrowLeft size={16} aria-hidden="true" />Retour à mes lots</button> : null}
+        <KqCommerceDesk initialFlowerId={initialFlowerId} initialLotId={initialLotId} onLotSelectionChange={onLotSelectionChange} initialReceipt={initialReceipt} initialListingId={selectedListingId} mode={activeSection} onModeChange={(next, listingId) => select(next, undefined, listingId)} onOpenShop={onOpenShop} onOpenTreasury={onOpenTreasury} onOpenStorage={onOpenStorage} onOpenCulture={onOpenCulture} onOpenBusiness={() => select("management")} onOpenMerch={() => select("management", "merch")} />
+      </div> : <div className={styles.content}>
+        <main className={styles.management}>
+          <h1 className="sr-only" ref={managementHeading} tabIndex={-1}>Développer ma boutique</h1>
+          <KqTreasuryManagement onOpenShop={onOpenShop} section="management" view={managementDestination} onViewChange={next => { setLocalManagementView(next); onManagementViewChange?.(next); }} onPrepareStock={() => select("sales")} onViewSales={viewSales} />
+        </main>
+      </div>}
     </div>
   </div>;
 }

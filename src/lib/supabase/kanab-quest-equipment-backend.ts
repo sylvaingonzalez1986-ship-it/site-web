@@ -1,4 +1,5 @@
 import "server-only";
+import { getKqJuryReadiness } from "./kanab-quest-jury-readiness";
 import type { ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
 import { getChanvrierCareer, getChanvrierCareerError } from "./chanvrier-career-backend";
 import { quoteKqEnergy } from "@/lib/kanab-quest-energy";
@@ -89,6 +90,7 @@ export type KqEquipmentShopSnapshot = {
   activeRun: boolean;
   readyLotCount: number;
   availableFlowerCount: number;
+  curingFlowerCount?: number;
   routePlan: KqEquipmentRoutePlan | null;
   routeMasteries: KqRouteMasterySummary[];
   catalog: typeof KQ_EQUIPMENT_CATALOG;
@@ -147,7 +149,7 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
     supabase.from("kq_equipment_loadouts").select("tent_number,equipment_code").eq("user_id", userId).order("slot"),
     supabase.from("kq_runs").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "active"),
     supabase.from("kq_market_lots").select("flower_id", { count: "exact", head: true }).eq("owner_id", userId).eq("status", "ready"),
-    supabase.from("kq_flowers").select("id", { count: "exact", head: true }).eq("owner_id", userId).eq("status", "available"),
+    getKqJuryReadiness(userId),
     supabase.from("kq_player_route_masteries")
       .select("route,sale_count,best_jury_score,total_payout_cents,total_reputation,mastered_at")
       .eq("user_id", userId)
@@ -159,7 +161,6 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
   if (loadout.error) throw new Error(`[supabase:kq_equipment_loadouts] ${loadout.error.message}`);
   if (activeRuns.error) throw new Error(`[supabase:kq_runs] ${activeRuns.error.message}`);
   if (readyLots.error) throw new Error(`[supabase:kq_market_lots] ${readyLots.error.message}`);
-  if (availableFlowers.error) throw new Error(`[supabase:kq_flowers] ${availableFlowers.error.message}`);
   if (routeMasteries.error) throw new Error(`[supabase:kq_player_route_masteries] ${routeMasteries.error.message}`);
   const routePlan = parseKqEquipmentRoutePlan(wallet.data);
   const productionUnits = getKqProductionUnits(Number(wallet.data.production_units ?? 1));
@@ -225,7 +226,8 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
     reputation: Number(wallet.data.reputation ?? 0),
     activeRun: Number(activeRuns.count ?? 0) > 0,
     readyLotCount: Number(readyLots.count ?? 0),
-    availableFlowerCount: Number(availableFlowers.count ?? 0),
+    availableFlowerCount: availableFlowers.availableFlowerCount,
+    curingFlowerCount: availableFlowers.curingFlowerCount,
     routePlan,
     routeMasteries: (routeMasteries.data ?? []).flatMap((row) => {
       const route = String(row.route ?? "");

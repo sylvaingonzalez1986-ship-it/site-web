@@ -127,7 +127,6 @@ export function KqFirstCultureTrial({ storageKey, onClose, onContinue, continueL
   >
     <header className={styles.header}>
       <div>
-        <span className={styles.eyebrow}>KANAB QUEST · PREMIERS PAS</span>
         <h2 id={titleId}>{complete ? 'Ta première récolte !' : 'Ta première culture'}</h2>
       </div>
       <button type="button" className={styles.close} aria-label="Fermer l’essai" onClick={onClose}><X size={21} aria-hidden="true" /></button>
@@ -145,7 +144,6 @@ export function KqFirstCultureTrial({ storageKey, onClose, onContinue, continueL
         <div className={styles.scene}>
           {artwork ? <Image key={artwork.src} src={artwork.src} alt={artwork.alt} width={200} height={200} sizes="(max-width: 420px) 92px, 140px" loading="eager" /> : null}
           <div>
-            <span className={styles.eyebrow}>{game.phase === 'resolved' ? 'ÇA POUSSE !' : 'TA SITUATION'}</span>
             <h4>{game.phase === 'resolved' ? lastResult?.trait : situation.name}</h4>
             <p>{game.phase === 'resolved' ? KQ_OUTCOME_LABELS[lastResult!.outcome] : situation.story}</p>
           </div>
@@ -169,7 +167,6 @@ export function KqFirstCultureTrial({ storageKey, onClose, onContinue, continueL
         </div>
 
         {canSupport ? <section className={styles.support} aria-label="Un petit choix tactique">
-          <span className={styles.eyebrow}>À TOI DE CHOISIR</span>
           <h4>{KQ_FIRST_CULTURE_SUPPORT.name} <span>· 1 carte prêtée</span></h4>
           <p>Dépense 2 XP pour transformer le dé neutre en 6 : une réussite exceptionnelle et de meilleurs gains. {game.stageIndex === 5 ? 'Tu peux aussi valider ce dernier lancer tel quel.' : 'Tu peux aussi garder ta carte pour plus tard.'}</p>
           <button type="button" data-first-culture-action="support" onClick={() => dispatch({ type: 'play', action: 'support' })}><Sparkles size={17} aria-hidden="true" /> Améliorer mon lancer · 2 XP</button>

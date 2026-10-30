@@ -505,7 +505,6 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
     <main ref={pageRef} className={styles.page}>
       <section className={styles.hero}>
         <div className={styles.heroCopy}>
-          <span>Kanab Quest · Atelier & marché</span>
           <h1>Le Marché</h1>
           <p>Ta récolte. Tes machines. Ton prochain palier.</p>
         </div>
@@ -541,7 +540,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
       {!loading && snapshot && snapshot.lots.length > 0 ? (
         <div className={styles.marketLayout}>
           <aside className={styles.lotRail} aria-label="Lots disponibles">
-            <header><div><small>Dossiers du jury</small><h2>{readyCount} lot{readyCount > 1 ? "s" : ""} à décider</h2></div><PackageCheck /></header>
+            <header><div><h2>{readyCount} lot{readyCount > 1 ? "s" : ""} à décider</h2></div><PackageCheck /></header>
             <div>
               {snapshot.lots.map((lot) => (
                 <button key={lot.flowerId} type="button" data-selected={lot.flowerId === selectedLot?.flowerId || undefined} data-sold={lot.status === "sold" || undefined} onClick={() => setSelectedFlowerId(lot.flowerId)}>
@@ -564,7 +563,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
               <div className={styles.soldSummary}><PackageCheck /><div><small>Lot valorisé le {formatDate(selectedLot.settledAt)}</small><h3>{selectedLot.options.find((option) => option.route === selectedLot.selectedRoute)?.name ?? selectedLot.selectedRoute}</h3><p><strong>+{formatKqCash(selectedLot.netPayoutCents ?? selectedLot.payoutCents ?? 0)}</strong><span>{formatKqReputationDelta(selectedLot.reputationGain ?? 0)} réputation</span></p></div></div>
             ) : (
               <>
-                <div className={styles.routeHeading}><div><small>Choisis ton poste</small><h3>L’atelier de transformation</h3></div><button type="button" onClick={() => onOpenShop()}><ShoppingBag /> Équiper l’atelier</button></div>
+                <div className={styles.routeHeading}><div><h3>L’atelier de transformation</h3></div><button type="button" onClick={() => onOpenShop()}><ShoppingBag /> Équiper l’atelier</button></div>
                 <section className={styles.workshopScene} aria-label="Atelier du lot sélectionné" data-family={activeQuote?.family}>
                   <Image src="/placard/market-workshop-sylvain-v2.webp" alt="Atelier de jeu avec une presse, des tamis et une laveuse" fill sizes="(max-width: 900px) 100vw, 900px" priority />
                   <div className={styles.sceneCaption}><span>{activeQuote?.available ? <><Check size={15} /> Poste disponible</> : <><LockKeyhole size={15} /> Conditions à remplir</>}</span><strong>{activeQuote?.name}</strong><small>{activeQuote?.available ? "Prêt pour ce lot" : activeQuote?.blockedReason}</small></div>

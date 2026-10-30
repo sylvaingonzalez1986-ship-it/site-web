@@ -46,7 +46,6 @@
 .mapFoot > span { display: inline-flex; align-items: center; gap: 7px; }
 .details { padding: 18px 22px 22px; border-top: 2px solid #172923; background: var(--game-surface-warm); scroll-margin-block: 90px; }
 .detailHeading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
-.detailHeading span { font-size: 11px; color: #35473a; }
 .detailHeading h2 { margin: 4px 0 0; font: 900 26px/1.1 var(--font-display), Impact, sans-serif; }
 .closePanel { display: inline-grid; place-items: center; flex-shrink: 0; width: 44px; height: 44px; border: 2px solid transparent; color: #172923; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-color: transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .actions { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
@@ -77,6 +76,10 @@
   .wallet strong { font-size: 12px; }
   .wallet svg { width: 15px; }
   .mapTools { width: auto; gap: 5px; margin: 0; }
+  .mapTools:has(.help[open]) { width: 100%; flex-wrap: wrap; justify-content: flex-end; }
+  .help[open] { width: 100%; }
+  .help[open] summary { display: flex; width: 44px; margin-left: auto; }
+  .helpContent { position: static; width: 100%; margin-top: 10px; font-size: 14px; }
   .zoomButton, .help summary { padding: 9px; }
   .zoomButton > span, .help summary > span, .help summary > svg:last-child { display: none; }
   .zoomButton { min-width: 44px; }
@@ -104,6 +107,10 @@
   .detailHeading h2 { font-size: 24px; }
   .actions button > span { font-size: 12px; }
   .actions small { font-size: 11px; }
+}
+@media (max-width: 360px) {
+  .world:not([data-map-zoomed]) .building[data-map-building="arena"] .buildingLabel { left: auto; right: 0; max-width: 88px; transform: translateY(-50%); }
+  .world:not([data-map-zoomed]) .building[data-map-building="arena"] .buildingStatus { max-width: 100%; }
 }
 @media (max-width: 700px) and (hover: hover) { .world:not([data-map-zoomed]) .building:hover .buildingName { color: #172923; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; } }
 @media (prefers-reduced-motion: reduce) { .world *, .world *::before { transition: none; scroll-behavior: auto; } }

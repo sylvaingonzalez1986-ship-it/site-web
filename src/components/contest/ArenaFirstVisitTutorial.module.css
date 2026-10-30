@@ -32,7 +32,7 @@
 }
 
 .dialog {
-  composes: surface from "./ArenaRetro.module.css";
+  composes: gameSurface from "./ArenaRetro.module.css";
   display: flex;
   flex-direction: column;
   width: min(960px, 100%);
@@ -60,7 +60,6 @@
   background: #e4efe8;
 }
 
-.header > div > span,
 .stepContent > span {
   color: #00563f;
   font-size: .65rem;

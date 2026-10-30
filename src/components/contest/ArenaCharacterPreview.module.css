@@ -1,0 +1,45 @@
+.page {
+  composes: gameSurface from "./ArenaRetro.module.css";
+  min-height: 100svh;
+  padding: 110px 20px 40px;
+  background: #fff1d6;
+  color: #172923;
+  font-family: var(--font-body), Arial, sans-serif;
+}
+.content { width: min(960px, 100%); margin: auto; }
+.sheet {
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  padding: 24px;
+  border: 2px solid transparent;
+  background: transparent;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+}
+.sheet p { line-height: 1.7; }
+.result { display: grid; grid-template-columns: 170px minmax(0, 1fr); align-items: center; gap: 24px; }
+.avatar { display: block; width: 100%; height: 240px; object-fit: contain; }
+.result h2 { font: 900 34px/1.1 var(--font-display), Impact, sans-serif; overflow-wrap: anywhere; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; margin-block: 20px; }
+.actions :is(button, a) {
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 12px 18px;
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  color: #172923;
+  font: 800 13px/1.4 var(--font-body), Arial, sans-serif;
+  text-decoration: none;
+}
+.actions button:first-child { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.actions :is(button, a):hover { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); }
+.note { color: #455748; font-size: 12px; }
+@media (max-width: 500px) {
+  .page { padding-inline: 12px; }
+  .sheet { padding: 18px; }
+  .result { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .avatar { height: 180px; }
+}

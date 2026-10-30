@@ -14,8 +14,8 @@ const origin = `http://127.0.0.1:${port}`;
 const ids = ['carnet', 'jouer', 'classement', 'profil'];
 const routes = { carnet: '/arene/carnet/regular', jouer: '/arene/placard', classement: '/arene?vue=classement' };
 // Read independently from the source artwork, not copied from the geometry implementation.
-const landmarks = { profil: [180, 150], carnet: [580, 785], jouer: [1100, 550], classement: [1200, 210] };
-const emptyDecor = [[45, 30], [920, 90], [1100, 930], [935, 395]];
+const landmarks = { profil: [580, 880], carnet: [877, 697], jouer: [1085, 400], classement: [215, 490] };
+const emptyDecor = [[20, 30], [600, 200], [1450, 950], [480, 395]];
 const modules = {
   entry: `import React from 'react';import {createRoot} from 'react-dom/client';
     import '/src/app/globals.css';
@@ -28,7 +28,7 @@ const modules = {
     const launcher={current:{open:origin=>window.auditActions.push({type:'profile',origin:origin.getAttribute('data-arena-place')})}};
     createRoot(document.getElementById('root')).render(React.createElement('main',{className:retro.surface+' '+styles.home,'data-world':'arena'},
       React.createElement('section',{className:styles.activities},React.createElement(ArenaWorldMap,{
-        activitiesLocked:params.get('locked')==='1',initialMode:params.get('mode')||'jouer',profileLauncher:launcher,profileAvailability:params.get('profile')||'ready'
+        activitiesLocked:params.get('locked')==='1',notebookOpen:params.get('locked')!=='1',initialMode:params.get('mode')||'jouer',profileLauncher:launcher,profileAvailability:params.get('profile')||'ready'
       }))));`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src:typeof src==='string'?src:src.src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}})}`,
   'next/link': `import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props)}`,
@@ -59,6 +59,7 @@ try {
   browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', '--disable-gpu'] });
   page = await browser.newPage();
   page.setDefaultTimeout(20000);
+  page.setDefaultNavigationTimeout(60000);
   page.on('pageerror', error => errors.push(error.message));
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   await page.setRequestInterception(true);
