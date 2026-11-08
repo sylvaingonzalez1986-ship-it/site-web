@@ -1,5 +1,6 @@
 "use client";
 
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { Check, LoaderCircle, ShoppingCart } from "lucide-react";
@@ -8,6 +9,7 @@ import { formatKqCash, getKqEquipmentDefinition } from "@/lib/kanab-quest-equipm
 import { getChanvrierCareerGate, getChanvrierEquipmentAccess, getChanvrierEquipmentUpgradeRequiredLevel, type ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
 import { getKqWorkshopMachineSpecification, getKqWorkshopTierPrice, KQ_WORKSHOP_MACHINE_TIERS, type KqWorkshopTierLevel } from "@/lib/kanab-quest-workshop-machines";
 import { getKqWorkshopProductArtwork } from "@/lib/kanab-quest-warehouse-product-artwork";
+import { getKqProcessingMachineReference } from "@/lib/kanab-quest-processing-profiles";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import styles from "./KqWorkshopTiers.module.css";
 
@@ -38,7 +40,7 @@ export function KqWorkshopTiers({ code, level = 0, cashCents, career, maintenanc
       : !gate?.allowed ? gate?.reason ?? "Progression du joueur indisponible."
         : maintenanceDue ? "Entretiens la machine avant de changer de gamme."
           : price !== null && cashCents < price ? `Il manque ${formatKqCash(price - cashCents)}.` : null;
-    return { ...tier, machine, price, reason, attained: currentLevel >= tier.level, artwork: getKqWorkshopProductArtwork(code, tier.level) };
+    return { ...tier, machine, price, reason, attained: currentLevel >= tier.level, artwork: getKqWorkshopProductArtwork(code, tier.level), reference: getKqProcessingMachineReference(code, isCurrentTier ? currentLevel : tier.level) };
   });
   const chosen = offers.find(tier => tier.level === selected);
   const buy = async () => {
@@ -71,6 +73,16 @@ export function KqWorkshopTiers({ code, level = 0, cashCents, career, maintenanc
       <small>{offer.label}</small><strong>{offer.machine.name}</strong>
       {offer.artwork && <Image className={styles.artwork} src={offer.artwork.src} alt="" width={512} height={512} sizes="(max-width: 700px) 160px, 180px" data-workshop-tier-artwork={offer.level} />}
       <dl><div><dt>Capacité de jeu</dt><dd>{offer.machine.capacityGrams} g / lot</dd></div><div><dt>Précision de jeu</dt><dd>{offer.machine.precision.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} %</dd></div></dl>
+      {offer.reference ? <><p>{offer.reference.gramsPerHour === null ? "Attente autonome estimée" : `${offer.reference.gramsPerHour.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g/h de jeu estimés`} · {offer.reference.material}.</p><details><summary>Cadence et source fabricant</summary><KqHelpDashboard>
+        <KqHelpGrid art="help-workshop" items={[
+          { label: "Modèle de référence", value: offer.reference.model, art: "help-workshop" },
+          { label: "Donnée fabricant", value: offer.reference.specification, art: "help-plan" },
+          { label: "Cadence affichée", value: "Avant la compétence", art: "help-training" },
+          { label: "1 h de jeu", value: "10 min réelles", art: "help-time" },
+        ]} />
+        <KqHelpNote>{offer.reference.note}</KqHelpNote>
+        <a href={offer.reference.sourceUrl} target="_blank" rel="noreferrer">Fiche fabricant</a>
+      </KqHelpDashboard></details></> : null}
       <b>{offer.attained ? "Acquise" : formatKqCash(offer.price ?? 0)}</b>
       <span>{offer.attained ? `Niveau actuel ${currentLevel}` : currentLevel > 0 ? "Passage de gamme · achat unique" : "Machine complète · achat unique"}</span>
       {offer.attained ? <p className={styles.owned}><Check size={16} aria-hidden="true" />{currentLevel < (offer.level === 1 ? 4 : offer.level === 4 ? 7 : 11) ? "Ta gamme actuelle" : "Incluse dans ta machine"}</p>

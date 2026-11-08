@@ -1,0 +1,286 @@
+{
+  "checkedAt": "2026-11-08",
+  "scope": "Cotes des six familles actives et des modèles historiques encore utilisés par leurs illustrations. Recherche bornée aux sources officielles ; aucune instruction opératoire.",
+  "catalogFiles": [
+    "src/lib/kanab-quest-workshop-machines.ts",
+    "src/lib/kanab-quest-warehouse-product-artwork.ts",
+    "src/lib/kanab-quest-equipment-artwork.ts"
+  ],
+  "conventions": [
+    "1 pouce = 2,54 cm exactement. Les valeurs converties ne gagnent pas en précision métrologique.",
+    "dimensionsCm contient les dimensions constructeur. null signifie non publié ou non vérifié, jamais zéro.",
+    "Un tuple sans noms d'axes reste sans attribution W/D/H ; son orientation proposée apparaît seulement dans visualTemplates.",
+    "Les gabarits visuels sont des choix de dessin. Ils ne sont ni des cotes fabricant ni un plan d'installation réel.",
+    "L'enveloppe rectangulaire au sol est donnée, pas la distance mesurée entre pieds ou roulettes : cet empattement réel n'est pas publié dans les sources retenues.",
+    "Les trois gammes fictives commencent aux niveaux 1, 4 et 7. Un niveau ne multiplie pas mécaniquement les dimensions de la machine.",
+    "Les illustrations comportent des écarts au modèle de référence. Ne pas attribuer les cotes d'une marque à une silhouette fictive différente."
+  ],
+  "manufacturerReferences": [
+    {
+      "id": "resinator-og",
+      "familyCode": "SIFT-TRAY",
+      "model": "The Original Resinator OG",
+      "sourceUrl": "https://www.theoriginalresinator.com/wp-content/uploads/2024/11/XL-_-OG-Spec-Sheet-S.pdf",
+      "sourceKind": "manufacturer-spec-sheet",
+      "sourceLocation": "Page 2, Footprint Assembled, colonne OG",
+      "originalDimensions": { "length": 29, "width": 22, "height": 24, "unit": "in" },
+      "dimensionsCm": { "width": 55.88, "depth": 73.66, "height": 60.96 },
+      "orientation": "La longueur fabricant est conservée comme profondeur du rectangle de référence ; la face opérateur n'est pas identifiée dans ces libellés. Rotation de ce rectangle possible dans la scène.",
+      "confidence": "high-for-assembled-envelope-medium-for-front-orientation",
+      "limitations": "Dimensions assemblées, pas celles de la chambre, du tambour ou de l'emballage. L'illustration SIFT-TRAY actuelle montre deux plateaux manuels ; ces cotes OG ne lui sont pas applicables."
+    },
+    {
+      "id": "mini-osprey-2",
+      "familyCode": "WASHER-25L",
+      "model": "Lowtemp Mini Osprey 2.0",
+      "sourceUrl": "https://www.lowtemp-plates.com/products/mini-osprey-30-gallon-washing-machine",
+      "sourceKind": "manufacturer-product-page",
+      "sourceLocation": "tech specs / Dimensions",
+      "originalDimensions": { "tuple": [28, 22, 26.5], "axes": null, "unit": "in" },
+      "dimensionsCm": { "width": null, "depth": null, "height": null, "unassignedTuple": [71.12, 55.88, 67.31] },
+      "orientation": "La fiche ne nomme pas les trois axes. Le gabarit propose 71,12 de façade ×55,88 de profondeur ×67,31 de haut ; cette attribution reste une hypothèse visuelle.",
+      "confidence": "high-for-published-tuple-medium-for-visual-axis-assignment",
+      "limitations": "Machine prévue sur un support ; ce support, les sacs et les flexibles ne sont pas dimensionnés. L'illustration compacte du jeu n'est pas une reproduction exacte."
+    },
+    {
+      "id": "osprey-75",
+      "familyCode": "WASHER-25L",
+      "artworkCode": "WASHER-75G",
+      "model": "Lowtemp Osprey 75 Gallon",
+      "sourceUrl": "https://www.lowtemp-plates.com/products/theosprey",
+      "sourceKind": "manufacturer-product-page",
+      "sourceLocation": "tech specs, fiche courante ouverte le 8 novembre 2026",
+      "originalDimensions": { "width": 33.375, "depth": 47.75, "height": 65, "depthIncludingDrainValve": 60.375, "unit": "in" },
+      "dimensionsCm": { "width": 84.7725, "depth": 121.285, "height": 165.1, "depthIncludingDrainValve": 153.3525 },
+      "orientation": "W/D/H nommés explicitement par le fabricant.",
+      "confidence": "high-for-current-closed-machine",
+      "limitations": "Le résultat de recherche et certaines pages de bundle conservent l'ancien tuple 64 ×33 1/8 ×45 1/8 pouces. Ne pas l'utiliser comme hauteur 45 1/8. La fiche actuelle explicite une hauteur de 65 pouces. Dimensions couvercle fermé ; scène avec couvercle ouvert potentiellement plus haute.",
+      "olderOfficialDrawing": {
+        "sourceUrl": "https://cdn.shopify.com/s/files/1/1635/5437/files/Osprey_Nest_Spec_and_ROI.pdf?v=1639694895",
+        "page": 3,
+        "lidOpenHeightCm": 236.22,
+        "lidClosedHeightCm": 164.465,
+        "limitations": "Dessin ancien lié depuis la fiche courante : 93 pouces ouvert et 64 3/4 fermé. À utiliser seulement comme preuve que l'ouverture dépasse largement la hauteur fermée, sans mélanger les générations."
+      }
+    },
+    {
+      "id": "forza-tss-225",
+      "familyCode": "WASHER-25L",
+      "artworkCode": "TSS-225",
+      "model": "Forza TSS-225",
+      "sourceUrl": "https://www.forzasolventless.com/products/tss-225",
+      "sourceKind": "manufacturer-product-page",
+      "sourceLocation": "Technical Specifications",
+      "originalDimensions": { "width": 113.66, "depth": 59.35, "height": 88.39, "unit": "in" },
+      "dimensionsCm": { "width": 288.6964, "depth": 150.749, "height": 224.5106 },
+      "orientation": "W/D/H nommés explicitement par le fabricant.",
+      "confidence": "high",
+      "limitations": "Enveloppe de l'installation décrite ; dégagements opérateur, mouvement de cuve et éventuels refroidisseurs externes non inclus dans le gabarit proposé."
+    },
+    {
+      "id": "autosieve",
+      "familyCode": "AUTO-SIEVE",
+      "model": "Lowtemp AutoSieve Collection System",
+      "sourceUrl": "https://www.lowtemp-plates.com/products/the-autosieve",
+      "sourceKind": "manufacturer-product-page",
+      "sourceLocation": "tech specs / faq",
+      "originalDimensions": { "screenDiameter": 20.75, "unit": "in" },
+      "dimensionsCm": { "width": null, "depth": null, "height": null, "screenDiameter": 52.705 },
+      "orientation": "Tamis circulaires ; diamètre du tamis, pas diamètre hors-tout avec moteur.",
+      "confidence": "high-for-screen-diameter-unknown-for-overall-envelope",
+      "limitations": "Hors-tout et hauteur non publiés. Le fabricant impose un Nest ; la pile seule n'est pas une installation autonome. Le support et la cuve de la scène restent des simplifications illustratives.",
+      "relatedVariant": {
+        "model": "Mini AutoSieve Collection System",
+        "sourceUrl": "https://www.lowtemp-plates.com/products/mini-auto-sieve-collection-system",
+        "screenDiameterCm": 52.705,
+        "limitations": "La variante Mini publie le même diamètre de tamis et un adaptateur Mini Nest ; son nom ne prouve pas une pile plus petite. Aucun modèle distinct n'est utilisé par les trois gammes du jeu."
+      }
+    },
+    {
+      "id": "plasmastatic-v1-8",
+      "familyCode": "STATIC-PLASMA",
+      "model": "SC Filtration Plasmastatic V1 / Electrostatic Separator V1.8",
+      "sourceUrl": "https://sambocreeck.com/products/separatore-tribostatico",
+      "sourceKind": "manufacturer-product-page",
+      "sourceLocation": "Specifications sous Electrostatic Separator V1.8",
+      "originalDimensions": { "tuple": [107, 45, 170], "unit": "cm", "alternativeInches": [42, 18, 67] },
+      "dimensionsCm": { "width": null, "depth": null, "height": 170, "longHorizontalAxis": 107, "shortHorizontalAxis": 45 },
+      "orientation": "La FAQ nomme le tuple L×W×H ; pour le dessin on place le grand axe horizontal en façade. Cette orientation de façade est une interprétation.",
+      "confidence": "high-for-body-envelope-medium-for-front-orientation",
+      "limitations": "Les pouces et les centimètres publiés sont arrondis différemment ; les centimètres de la fiche V1.8 sont retenus. Compresseur non inclus. L'illustration du jeu ajoute traitement d'air et compresseur : son hors-tout ne vaut pas 107×45 cm.",
+      "axisSourceUrl": "https://sambocreeck.com/pages/separatore-plasmastatic-faq"
+    },
+    {
+      "id": "lowtemp-v2-3x5",
+      "familyCode": "PRESS-0600",
+      "model": "Lowtemp V2 3×5",
+      "sourceUrl": "https://www.lowtemp-plates.com/products/lowtemp-v2-rosin-press",
+      "sourceKind": "manufacturer-product-page",
+      "sourceLocation": "tech specs / 3x5",
+      "originalDimensions": { "tuple": [8.75, 5, 11], "axes": null, "unit": "in" },
+      "dimensionsCm": { "width": null, "depth": null, "height": null, "unassignedTuple": [22.225, 12.7, 27.94] },
+      "orientation": "Axes non nommés ; ne pas faire passer une attribution visuelle pour un W/D/H confirmé.",
+      "confidence": "high-for-published-tuple-low-for-full-installed-system",
+      "limitations": "Cotes du corps de presse sans enveloppe complète pompe/commande/flexibles. L'illustration PRESS-0600 est une presse à vis fictive, différente de cette machine."
+    },
+    {
+      "id": "lowtemp-v2-4x7",
+      "familyCode": "PRESS-0600",
+      "model": "Lowtemp V2 4×7",
+      "sourceUrl": "https://www.lowtemp-plates.com/products/lowtemp-v2-rosin-press",
+      "sourceKind": "manufacturer-product-page",
+      "sourceLocation": "tech specs / 4x7",
+      "originalDimensions": { "tuple": [10, 10, 6], "axes": null, "unit": "in" },
+      "dimensionsCm": { "width": null, "depth": null, "height": null, "unassignedTuple": [25.4, 25.4, 15.24] },
+      "orientation": "Le tuple ne précise pas les axes ; ne pas interpréter automatiquement 6 pouces comme hauteur.",
+      "confidence": "high-for-published-tuple-low-for-full-installed-system",
+      "limitations": "La fiche ne donne ni encombrement de station complète ni échelle des illustrations fictives. Les variantes 3×5 et 4×7 ne correspondent pas aux gammes du jeu."
+    },
+    {
+      "id": "purepressure-longs-peak",
+      "familyCode": "PRESS-0600",
+      "artworkCode": "PRESS-10T",
+      "model": "PurePressure Longs Peak",
+      "sourceUrl": "https://gopurepressure.com/products/longs-peak-rosin-press",
+      "sourceKind": "manufacturer-url-unavailable",
+      "sourceStatus": "404-on-check",
+      "dimensionsCm": { "width": null, "depth": null, "height": null },
+      "confidence": "unknown",
+      "limitations": "Aucune cote directement vérifiée sur un hébergement officiel fabricant. Les chiffres revendeurs sont exclus. L'illustration PRESS-10T est une presse hydraulique stylisée et non une reproduction garantie de la Longs Peak."
+    },
+    {
+      "id": "nugsmasher-iq-pro",
+      "familyCode": "PRESS-0600",
+      "artworkCode": "PRESS-20T",
+      "model": "NugSmasher IQ Pro",
+      "sourceUrl": "https://nugsmasher.com/product/nugsmasher-iq-pro/",
+      "sourceKind": "manufacturer-product-page",
+      "dimensionsCm": { "width": null, "depth": null, "height": null },
+      "confidence": "unknown-for-overall-envelope",
+      "limitations": "La fiche accessible donne des plaques de 10×7 pouces, pas les cotes hors-tout. Ces plaques ne permettent pas de dimensionner le châssis illustré ; PRESS-20T reste une grande presse fictive."
+    },
+    {
+      "id": "hilyph-hash-xl",
+      "familyCode": "FREEZE-DRYER",
+      "model": "HiLyph Hash Dryer XL",
+      "sourceUrl": "https://theoriginalresinator.com/collections/freeze-dryers/products/hilyph-hash-dryer",
+      "sourceKind": "official-associated-brand-product-page",
+      "sourceLocation": "XL Hash Dryer Specs",
+      "sourceRelationship": "Le pied de page TCI nomme conjointement The Original Resinator LLC et TCI Scientific Innovations LLC pour leurs systèmes HiLyph. La page TCI propre au XL ne publie pas ces cotes.",
+      "relationshipSourceUrl": "https://www.tciscientific.com/hilyph_hash_dryer_xl",
+      "originalDimensions": { "width": 25.25, "depth": 33.5, "height": 37.5, "unit": "in" },
+      "dimensionsCm": { "width": 64.135, "depth": 85.09, "height": 95.25 },
+      "orientation": "W/D/H explicitement nommés.",
+      "confidence": "high-for-body-envelope-official-associated-brand",
+      "limitations": "Pompe externe et débattement de porte à ajouter. Le dessin de jeu présente quatre plateaux, pas les dix plateaux XL ; il s'agit d'une illustration générique et non d'une preuve de variante.",
+      "externalPump": { "unassignedTupleCm": [16.51, 50.8, 22.86], "axesVerified": false },
+      "relatedVariantsNotMappedToGame": [
+        { "model": "HiLyph Hash Medium", "dimensionsCm": { "width": 50.8, "depth": 66.04, "height": 78.74 } },
+        { "model": "HiLyph Hash Large", "dimensionsCm": { "width": 55.88, "depth": 73.66, "height": 87.63 } }
+      ]
+    }
+  ],
+  "visualScaleProposal": {
+    "kind": "illustrative-scene-only-not-installation-plan",
+    "roomCm": { "width": 600, "depth": 500 },
+    "referencePersonHeightCm": 170,
+    "referencePersonFootprintCm": { "width": 45, "depth": 30, "status": "drawing-choice-not-anthropometric-measurement" },
+    "projection": "Même échelle du monde pour tous les objets, même projection axonométrique, tailles appliquées à la silhouette visible plutôt qu'au carré transparent de l'image.",
+    "instructions": [
+      "Caler les pieds sur un sol commun. Une machine posée sur un support conserve sa propre hauteur et reçoit séparément la hauteur du support.",
+      "Les estimations ci-dessous servent à la cohérence du dessin existant ; ne pas les afficher comme dimensions réelles au joueur.",
+      "Une gamme avec la même illustration conserve le même gabarit. Seuls les changements de silhouette laveuse/presse changent ce gabarit.",
+      "Le TSS-225 occupe au moins 290×155 cm dans le dessin ; prévoir une zone plus large que celle d'une petite machine et préserver un passage lisible.",
+      "Le séparateur doit atteindre environ la tête d'une personne de 170 cm ; le TSS-225 dépasse cette personne d'environ 55 cm.",
+      "Les enveloppes indiquées ne comprennent pas les zones techniques ni les débattements non documentés."
+    ],
+    "visualTemplates": [
+      {
+        "familyCode": "SIFT-TRAY", "tiers": ["economy", "standard", "premium"], "artworkCode": "SIFT-TRAY",
+        "bodyCm": { "width": 60, "depth": 45, "height": 15 },
+        "supportHeightCm": 90, "floorEnvelopeCm": { "width": 90, "depth": 60 }, "topFromFloorCm": 105,
+        "bodyHeightPerPerson": 0.088, "topHeightPerPerson": 0.618,
+        "basis": "fictional-artwork-estimate", "confidence": "low",
+        "limitations": "Deux plateaux manuels sur établi. Aucun lien dimensionnel avec le Resinator OG ; estimation explicitement demandée pour préserver cette illustration."
+      },
+      {
+        "familyCode": "WASHER-25L", "tiers": ["economy"], "artworkCode": "WASHER-25L",
+        "bodyCm": { "width": 71, "depth": 56, "height": 67 },
+        "supportHeightCm": 55, "floorEnvelopeCm": { "width": 85, "depth": 75 }, "topFromFloorCm": 122,
+        "bodyHeightPerPerson": 0.394, "topHeightPerPerson": 0.718,
+        "basis": "manufacturer-tuple-with-inferred-orientation-and-fictional-support", "referenceId": "mini-osprey-2", "confidence": "medium",
+        "limitations": "Support bas et cotes arrondies choisis pour la scène ; couvercle ouvert, sacs et tuyaux ne sont pas mesurés."
+      },
+      {
+        "familyCode": "WASHER-25L", "tiers": ["standard"], "artworkCode": "WASHER-75G",
+        "bodyCm": { "width": 85, "depth": 122, "height": 165 },
+        "supportHeightCm": 0, "floorEnvelopeCm": { "width": 85, "depth": 154 }, "topFromFloorCm": 165,
+        "bodyHeightPerPerson": 0.971, "topHeightPerPerson": 0.971,
+        "basis": "rounded-current-manufacturer-envelope", "referenceId": "osprey-75", "confidence": "high-for-closed-body",
+        "limitations": "Inclut la saillie de vanne dans l'enveloppe au sol. Couvercle ouvert : hauteur supérieure non reprise dans ce gabarit fermé."
+      },
+      {
+        "familyCode": "WASHER-25L", "tiers": ["premium"], "artworkCode": "TSS-225",
+        "bodyCm": { "width": 290, "depth": 155, "height": 225 },
+        "supportHeightCm": 0, "floorEnvelopeCm": { "width": 290, "depth": 155 }, "topFromFloorCm": 225,
+        "bodyHeightPerPerson": 1.324, "topHeightPerPerson": 1.324,
+        "basis": "rounded-manufacturer-envelope", "referenceId": "forza-tss-225", "confidence": "high",
+        "limitations": "Installation complète à conserver sensiblement plus grande que la personne ; pas de réduction indépendante pour rentrer dans une carte."
+      },
+      {
+        "familyCode": "AUTO-SIEVE", "tiers": ["economy", "standard", "premium"], "artworkCode": "AUTO-SIEVE",
+        "bodyCm": { "width": 65, "depth": 65, "height": 70 },
+        "supportHeightCm": 45, "floorEnvelopeCm": { "width": 90, "depth": 80 }, "topFromFloorCm": 115,
+        "bodyHeightPerPerson": 0.412, "topHeightPerPerson": 0.676,
+        "basis": "fictional-artwork-estimate-constrained-by-52.705-cm-screen", "referenceId": "autosieve", "confidence": "low",
+        "limitations": "Moteur, hauteur de pile et support de collecte estimés. Le support dessiné ne prétend pas reproduire le Nest réel ; raccordement de collecte à rendre visible."
+      },
+      {
+        "familyCode": "STATIC-PLASMA", "tiers": ["economy", "standard", "premium"], "artworkCode": "STATIC-PLASMA",
+        "bodyCm": { "width": 107, "depth": 45, "height": 170 },
+        "supportHeightCm": 0, "floorEnvelopeCm": { "width": 175, "depth": 65 }, "topFromFloorCm": 170,
+        "bodyHeightPerPerson": 1, "topHeightPerPerson": 1,
+        "basis": "manufacturer-body-plus-estimated-illustrated-auxiliaries", "referenceId": "plasmastatic-v1-8", "confidence": "medium",
+        "limitations": "Garder 107×45×170 pour le caisson, mais réserver 175×65 pour l'ensemble dessiné avec traitement d'air et compresseur. Les annexes sont estimées."
+      },
+      {
+        "familyCode": "PRESS-0600", "tiers": ["economy"], "artworkCode": "PRESS-0600",
+        "bodyCm": { "width": 45, "depth": 35, "height": 65 },
+        "supportHeightCm": 75, "floorEnvelopeCm": { "width": 75, "depth": 60 }, "topFromFloorCm": 140,
+        "bodyHeightPerPerson": 0.382, "topHeightPerPerson": 0.824,
+        "basis": "fictional-artwork-estimate", "confidence": "low",
+        "limitations": "Presse à vis illustrée ; proportions choisies pour le dessin. Ne pas la présenter comme une Lowtemp V2 dimensionnée."
+      },
+      {
+        "familyCode": "PRESS-0600", "tiers": ["standard"], "artworkCode": "PRESS-10T",
+        "bodyCm": { "width": 65, "depth": 50, "height": 105 },
+        "supportHeightCm": 35, "floorEnvelopeCm": { "width": 80, "depth": 65 }, "topFromFloorCm": 140,
+        "bodyHeightPerPerson": 0.618, "topHeightPerPerson": 0.824,
+        "basis": "fictional-artwork-estimate", "confidence": "low",
+        "limitations": "Presse à manomètre fictive, sans cotes Longs Peak vérifiées. Petit piètement séparé ; ne pas étirer indépendamment ses axes dans la scène."
+      },
+      {
+        "familyCode": "PRESS-0600", "tiers": ["premium"], "artworkCode": "PRESS-20T",
+        "bodyCm": { "width": 90, "depth": 65, "height": 150 },
+        "supportHeightCm": 0, "floorEnvelopeCm": { "width": 100, "depth": 70 }, "topFromFloorCm": 150,
+        "bodyHeightPerPerson": 0.882, "topHeightPerPerson": 0.882,
+        "basis": "fictional-artwork-estimate", "confidence": "low",
+        "limitations": "Grande presse au sol fictive ; aucune correspondance hors-tout NugSmasher IQ Pro vérifiée."
+      },
+      {
+        "familyCode": "FREEZE-DRYER", "tiers": ["economy", "standard", "premium"], "artworkCode": "FREEZE-DRYER",
+        "bodyCm": { "width": 65, "depth": 86, "height": 96 },
+        "supportHeightCm": 35, "floorEnvelopeCm": { "width": 95, "depth": 90 }, "topFromFloorCm": 131,
+        "bodyHeightPerPerson": 0.565, "topHeightPerPerson": 0.771,
+        "basis": "rounded-official-xl-body-with-fictional-support-and-pump-reserve", "referenceId": "hilyph-hash-xl", "confidence": "medium",
+        "limitations": "La réserve latérale de pompe et le support sont des choix graphiques. Prévoir visuellement la porte ouverte ; son débattement n'est pas coté. Même dessin aux trois gammes, donc même gabarit."
+      }
+    ]
+  },
+  "validation": {
+    "sourcePolicy": "Sources constructeur ou canal officiel associé identifié ; aucun chiffre revendeur repris.",
+    "productionCodeChanged": false,
+    "artworkMismatchReviewed": ["SIFT-TRAY", "PRESS-0600", "PRESS-10T", "PRESS-20T", "FREEZE-DRYER"],
+    "finishCondition": "Six familles couvertes, variantes visuelles documentées, valeurs inconnues explicites et gabarits de scène séparés."
+  }
+}

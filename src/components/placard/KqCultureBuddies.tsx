@@ -167,7 +167,9 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
     onRefresh();
   }
 
-  return <section className={styles.section} data-culture-buddies aria-labelledby={`${id}-title`} aria-busy={status === "saving"}>
+  return <section className={styles.section} data-culture-buddies aria-labelledby={`${id}-title`} aria-busy={status === "saving"}
+    data-guide-saved-zone-count={snapshot?.state.zones.length}
+    data-guide-assigned-zone-count={snapshot ? assignedZones.length : undefined}>
     <header className={styles.header}>
       <div><h2 id={`${id}-title`}>1 · Tes Buddies</h2>
         {snapshot ? <p className={styles.summary} data-culture-buddie-summary><strong>{assignedZones.length}</strong> zone{assignedZones.length > 1 ? "s" : ""} affectée{assignedZones.length > 1 ? "s" : ""} · <strong>{assignedArea} m²</strong></p> : null}

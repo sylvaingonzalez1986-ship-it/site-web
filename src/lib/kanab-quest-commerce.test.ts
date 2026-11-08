@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { quoteKqCommerce, getKqCommerceReplenishment, getKqCommerceCapacity, getKqCommerceStockQuality, type KqCommerceState, type KqCommerceStock, type KqCommerceOffer } from "./kanab-quest-commerce";
+import { quoteKqCommerce, getKqCommerceReplenishment, getKqCommerceCapacity, getKqCommerceStockQuality, getKqShopBudget, getKqShopNetworkBonus, type KqCommerceState, type KqCommerceStock, type KqCommerceOffer } from "./kanab-quest-commerce";
 import { createKqStorageLot, KQ_CURING_DURATION_MS, planKqStorageAllocation, projectKqStorageLot } from "./kanab-quest-storage";
 import { createKqCareState } from "./kanab-quest-care";
 import { getKqSaleVatCents, KQ_GAME_DAY_MS, KQ_LAB_ANALYSIS_CENTS } from "./kanab-quest-business";
@@ -14,6 +14,47 @@ function consume(s: KqCommerceState, item: KqCommerceStock, q: KqCommerceOffer) 
   if (s.campaign) { s.campaign.directUsed += q.directCost; s.campaign.shopUsed += q.shopCost; s.campaign.shopGoodUnits=q.shopGoodUnitsAfter; s.campaign.shopBadUnits=q.shopBadUnitsAfter; s.campaign.goodUnits = q.goodUnitsAfter; s.campaign.disappointmentUnits = q.disappointmentAfter; }
 }
 describe("Three sales channels", () => {
+  it.each([20, 21, 100, 101, 1000])("keeps volume growth and periodic recruitment beyond %i partners, with bounded prices", (partners) => {
+    const established = { ...state, shopPartners: partners, campaign: { ...state.campaign!, shopPartnersStart: partners } };
+    const units = 1_000_000;
+    const large = { ...stock, initialUnits: units, remainingUnits: units, equivalentUnits: units, originalUnits: units };
+    expect(getKqShopBudget(partners)).toBe(4000 + partners * 250);
+    expect(getKqShopBudget(partners, "restock")).toBe((4000 + partners * 250) * 1.25);
+    expect(getKqShopBudget(partners, "promotion")).toBe((4000 + partners * 250) * .75);
+    expect(getKqShopNetworkBonus(partners)).toBe(4);
+    const first = quoteKqCommerce(established, large, "cbd-shop", "advised", 2000);
+    expect(first).toMatchObject({ maxUnits: 4000 + partners * 250, shopPartnersAfter: partners + 1, shopPricePercent: 59 });
+    consume(established, large, first);
+    const second = quoteKqCommerce(established, large, "cbd-shop");
+    expect(second.shopPartnersAfter).toBe(partners + 1);
+    expect(second.shopPricePercent).toBe(59);
+    const neutral = { ...established, campaign: { ...state.campaign!, shopPartnersStart: partners + 1 } };
+    expect(quoteKqCommerce(neutral, { ...large, juryScore: 7 }, "cbd-shop").shopPartnersAfter).toBe(partners + 1);
+    for (const channel of ["online", "wholesale"] as const) {
+      expect(quoteKqCommerce(established, large, channel).shopPartnersAfter).toBe(partners + 1);
+    }
+  });
+
+  it("preserves merchant carry, split delivery equivalence and demand debt above 100 partners", () => {
+    const established: KqCommerceState = { ...state, strength: "merchant", shopPartners: 125,
+      campaign: { ...state.campaign!, shopPartnersStart: 125, shopRecruitmentStart: 4000.1 },
+      demand: { onlineDebt: 0, shopDebt: .5, updatedAt: "2026-11-07T12:00:00.000Z", serverNow: "2026-11-07T12:00:00.000Z", growthResetsAt: "2026-11-08T12:00:00.000Z" } };
+    const large = { ...stock, initialUnits: 10000, remainingUnits: 10000, equivalentUnits: 10000, originalUnits: 10000 };
+    const whole = quoteKqCommerce(established, large, "cbd-shop", "advised", 3000);
+    expect(whole).toMatchObject({ shopPartnersAfter: 127, shopRecruitmentAfter: 1000.1 });
+    expect(quoteKqCommerce(established, { ...large, remainingUnits: 100000 }, "cbd-shop").maxUnits).toBe(Math.floor((4000 + 125 * 250) * 1.5 * .5));
+    const split = structuredClone(established), item = structuredClone(large);
+    let income = 0;
+    for (let i = 0; i < 30; i++) {
+      const offer = quoteKqCommerce(split, item, "cbd-shop", "advised", 100);
+      income += offer.payoutCents; consume(split, item, offer);
+    }
+    expect(split.shopPartners).toBe(whole.shopPartnersAfter);
+    expect(split.shopRecruitment).toBe(whole.shopRecruitmentAfter);
+    expect(income).toBe(whole.payoutCents);
+    expect(established.demand!.shopDebt).toBe(.5);
+  });
+
   it("does not turn an unprotected surplus into retail stock by waiting for maturity", () => {
     const origin = Date.parse("2026-10-10T12:00:00.000Z");
     const lot = createKqStorageLot({ flowerId: stock.flowerId, harvestedAt: new Date(origin).toISOString(),
@@ -129,7 +170,7 @@ describe("Three sales channels", () => {
     const full=quoteKqCommerce(state,large,"cbd-shop");
     expect(full.maxUnits).toBe(4000);expect(full.shopPartnersAfter).toBe(1);
     const established={...state,shopPartners:20,campaign:{...state.campaign!,shopPartnersStart:20}};
-    expect(quoteKqCommerce(established,large,"cbd-shop")).toMatchObject({maxUnits:9000,shopPartnersAfter:20});
+    expect(quoteKqCommerce(established,large,"cbd-shop")).toMatchObject({maxUnits:9000,shopPartnersAfter:21});
     expect(quoteKqCommerce(established,{...large,juryScore:6.5},"cbd-shop").shopPartnersAfter).toBe(15);
   });
   it("does not lose a whole partner for a tiny bad sale or increase prices by splitting a lot", () => {

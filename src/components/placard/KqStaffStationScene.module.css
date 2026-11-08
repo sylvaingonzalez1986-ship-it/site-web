@@ -1,0 +1,83 @@
+.scene {
+  position: relative;
+  display: block;
+  isolation: isolate;
+  width: 100%;
+  height: 160px;
+  min-width: 0;
+  pointer-events: none;
+}
+
+.scene .vignette {
+  position: absolute;
+  z-index: 0;
+  right: 50%;
+  bottom: 3%;
+  width: 150px;
+  max-width: 100%;
+  height: 94%;
+  transform: translateX(50%);
+}
+.scene .vignette > img { width: 100%; height: 100%; object-fit: contain; }
+.scene[data-staff-station-scene="training"] .vignette { width: 190px; }
+.scene[data-station-actor] .vignette { right: 0; width: 68%; max-width: 190px; height: 87%; transform: none; }
+
+.actor {
+  position: absolute;
+  z-index: 1;
+  top: 2%;
+  left: 0;
+  display: block;
+  width: 55%;
+  height: 96%;
+  transform-origin: 50% 90%;
+}
+.scene .actor canvas, .scene .actor img, .scene .actor > svg { display: block; width: 100%; height: 100%; max-width: 100%; max-height: 100%; min-width: 0; min-height: 0; object-fit: contain; }
+
+.tool {
+  position: absolute;
+  z-index: 2;
+  left: 35%;
+  top: 56%;
+  width: 12%;
+  max-width: 32px;
+  aspect-ratio: 1;
+  transform-origin: 30% 65%;
+}
+.tool > img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.scene[data-staff-station-scene="communication"] .tool { left: 34%; top: 44%; width: 10%; max-width: 26px; }
+.scene[data-staff-station-scene="training"] .tool { left: 32%; top: 55%; }
+.preview { position: absolute; z-index: 3; inset: 0; }
+
+.scene[data-station-activity="working"] .actor { animation: workNod 3.4s ease-in-out infinite paused; }
+.scene[data-station-activity="working"] .tool { animation: workGesture 3.4s ease-in-out infinite paused; }
+.scene[data-station-animated="true"] :is(.actor, .tool) { animation-play-state: running; }
+.scene[data-staff-station-scene="culture"][data-station-activity="working"] .tool { animation-name: waterGesture; }
+.scene[data-staff-station-scene="communication"][data-station-activity="working"] .tool { animation-name: phoneGesture; }
+
+@keyframes workNod {
+  0%, 18%, 84%, 100% { transform: translateY(0) rotate(0); }
+  42%, 62% { transform: translateY(1px) rotate(1.2deg); }
+}
+@keyframes workGesture {
+  0%, 18%, 84%, 100% { transform: translateY(0) rotate(0); }
+  42%, 62% { transform: translateY(-1px) rotate(-5deg); }
+}
+@keyframes waterGesture {
+  0%, 18%, 84%, 100% { transform: rotate(0); }
+  42%, 62% { transform: rotate(14deg); }
+}
+@keyframes phoneGesture {
+  0%, 18%, 84%, 100% { transform: translateY(0) rotate(0); }
+  42%, 62% { transform: translateY(-1px) rotate(5deg); }
+}
+
+@media (max-width: 600px) {
+  .scene { height: 120px; }
+  .scene .vignette { width: 112px; }
+  .scene[data-staff-station-scene="training"] .vignette { width: 140px; }
+  .scene[data-station-actor] .vignette { width: 68%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scene[data-staff-station-scene][data-station-activity] :is(.actor, .tool) { animation: none; }
+}

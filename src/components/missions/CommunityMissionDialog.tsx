@@ -6,6 +6,7 @@ import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { Camera, Check, Send, X } from "lucide-react";
 import { MISSION_PROOF_ACCEPT_ATTRIBUTE, MISSION_PROOF_UPLOAD_MAX_BYTES, isSupportedMissionProofMimeType } from "@/lib/mission-proof-policy";
 import { formatMissionReward } from "@/lib/community-missions";
+import { createClientRequestKey } from "@/lib/client-request-key";
 import type { MissionSubmission, MissionWithUserStatus } from "@/types/missions";
 import styles from "./CommunityMissions.module.css";
 import { useKqTutorialApi } from "../placard/KqTutorialApiContext";
@@ -47,7 +48,7 @@ export function CommunityMissionDialog({ mission, correction, onClose, onSubmitt
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const sending = useRef(false);
-  const requestKey = useRef(crypto.randomUUID());
+  const [requestKey] = useState(() => createClientRequestKey());
   const revision = useRef(correction?.revision);
   const baseId = useId();
   useEffect(() => {
@@ -69,7 +70,7 @@ export function CommunityMissionDialog({ mission, correction, onClose, onSubmitt
     sending.current = true; setBusy(true); setError("");
     try {
       const body = new FormData();
-      body.set("missionId", mission.id); body.set("requestKey", requestKey.current);
+      body.set("missionId", mission.id); body.set("requestKey", requestKey);
       body.set("proofUrl", proofUrl.trim()); body.set("proofText", proofText.trim());
       if (file) body.set("file", file);
       if (correction) { body.set("submissionId", correction.id); body.set("expectedRevision", String(revision.current)); }

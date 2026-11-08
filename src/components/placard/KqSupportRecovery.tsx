@@ -10,6 +10,7 @@ import { getKqSupportContinuity, getKqSupportContinuityInventory, parseKqSupport
 import { KQ_MISSION_COPY, getKqMissionRewardLabel, type KqMissionDestination, type KqMissionTrack } from "@/lib/kanab-quest-missions";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqProgressMeter } from "./KqVisuals";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import { KqSupportPackOpening, requestKqSupportPackOpening, type KqOpenedSupportCard } from "./KqSupportPackOpening";
 import styles from "./KqSupportRecovery.module.css";
 
@@ -151,7 +152,14 @@ export function KqSupportRecovery({ inventory, onReturnToCards, onOpenDestinatio
               : continuity.status === "ready" ? <button type="button" data-support-recovery-action="missions" onClick={() => setMissionTrack(mission?.track ?? "all")}>{action?.kind === "mission-reward" ? "Récupérer ma récompense" : action?.kind === "mission-goal" ? "Voir cet objectif" : "Voir mes missions"}<ArrowRight size={16} aria-hidden="true" /></button>
                 : continuity.status === "unavailable" || continuity.status === "closed" ? <button type="button" data-support-recovery-retry onClick={refresh}><RefreshCw size={15} aria-hidden="true" />Actualiser</button> : null}
         </div>
-        {continuity.status === "ready" && !action ? <details className={styles.sources}><summary>Gagner des cartes avec les duels</summary><p>Une victoire d’entraînement rapporte 1 carte Botte. Chaque duel consomme ta Fleur, même en cas de défaite ; tu peux jouer jusqu’à 10 entraînements par jour.</p><p>Après une récolte, retrouve l’entraînement dans Jury & duels.</p></details> : null}
+        {continuity.status === "ready" && !action ? <details className={styles.sources}><summary>Gagner des cartes avec les duels</summary><KqHelpDashboard>
+          <KqHelpGrid art="help-training" items={[
+            { label: "Victoire d’entraînement", value: "1 carte Botte", art: "collection" },
+            { label: "Par jour", value: "10 entraînements max.", art: "help-time" },
+            { label: "Chaque duel", value: "Fleur consommée", detail: "Même en cas de défaite.", art: "harvest" },
+          ]} />
+          <KqHelpNote>Après la récolte, ouvre Jury & duels pour t’entraîner.</KqHelpNote>
+        </KqHelpDashboard></details> : null}
         {notice ? <p role="status">{notice}</p> : null}
         <p className={styles.optional}>Tu peux aussi cultiver sans soutien. Les nouvelles cartes ne sont pas ajoutées automatiquement à ta sélection.</p>
       </div>

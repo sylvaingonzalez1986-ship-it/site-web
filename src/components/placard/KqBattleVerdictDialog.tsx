@@ -11,6 +11,7 @@ import styles from "./KqBattleVerdictDialog.module.css";
 
 type Props = {
   battleId?: string;
+  flowerId?: string;
   kind: "official" | "training";
   winner: "player" | "opponent";
   subtitle: string;
@@ -34,7 +35,7 @@ type Props = {
   onClose: () => void;
 };
 
-export function KqBattleVerdictDialog({ battleId, kind, winner, subtitle, rounds, experience, challengePoints, challenges, cardCount, rewardCard, rank, trainingProgress, receipt, playerStats, opponentStats, onPrepare, prepareHref, prepareLabel = "Préparer ma prochaine culture", continuation, onOpenLot, children, onClose }: Props) {
+export function KqBattleVerdictDialog({ battleId, flowerId, kind, winner, subtitle, rounds, experience, challengePoints, challenges, cardCount, rewardCard, rank, trainingProgress, receipt, playerStats, opponentStats, onPrepare, prepareHref, prepareLabel = "Préparer ma prochaine culture", continuation, onOpenLot, children, onClose }: Props) {
   const won = winner === "player";
   const titleId = kind === "training" ? "bot-result-title" : "official-result-title";
   const playerScore = rounds.filter(round => round.winner === "player").length;
@@ -42,7 +43,8 @@ export function KqBattleVerdictDialog({ battleId, kind, winner, subtitle, rounds
   const takeaway = getKqJuryTakeaway({ rounds, playerStats, opponentStats });
   return <AppDialog open onClose={onClose} title="Verdict du jury" closeLabel="Fermer le verdict" labelledBy={titleId}
     className={styles.dialog} bodyClassName={styles.body}
-    dialogProps={{ "data-verdict-result": true, "data-battle-id": battleId, "data-victory": won || undefined }}
+    dialogProps={{ "data-verdict-result": true, "data-battle-id": battleId, "data-victory": won || undefined,
+      "data-guide-jury-verdict": Boolean(battleId) || undefined, "data-guide-flower-id": flowerId }}
     footer={<div className={styles.nextActions}>
       {onOpenLot ? <button type="button" className={styles.continue} data-verdict-open-lot onClick={onOpenLot}><ShoppingBag size={18} aria-hidden="true" />Voir ce lot dans Commerce<ArrowRight size={18} aria-hidden="true" /></button> : null}
       {onPrepare ? <button type="button" className={onOpenLot ? styles.secondary : styles.continue} data-verdict-prepare onClick={onPrepare}>{prepareLabel}</button>

@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: vi.fn().mockResolvedValue(undefined) }));
 const mocks = vi.hoisted(() => ({ rpc: vi.fn(), insert: vi.fn(), energy: vi.fn(), market: vi.fn() }));
 vi.mock("./admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc, from: () => ({ insert: mocks.insert }) }) }));
 vi.mock("./kanab-quest-energy-backend", () => ({ getKqEnergySummary: mocks.energy }));

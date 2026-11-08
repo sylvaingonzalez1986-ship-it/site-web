@@ -4,7 +4,7 @@ vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: m
 vi.mock("@/lib/kanab-quest-player-request-access", () => ({ isKqPlayerIdentityEnabled: mocks.enabled }));
 vi.mock("@/lib/supabase/arena-player-summary", () => ({ getArenaPlayerSummary: mocks.summary }));
 import { GET } from "./route";
-const summary = { activeRun: true, readyLotCount: 1, availableFlowerCount: 0, supportPackCount: 2, buddiePackCount: 3 };
+const summary = { activeRun: true, readyLotCount: 1, availableFlowerCount: 0, trimFlowerCount: 2, supportPackCount: 2, buddiePackCount: 3 };
 beforeEach(() => {
   vi.resetAllMocks();
   mocks.enabled.mockResolvedValue(true);

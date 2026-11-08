@@ -1,0 +1,38 @@
+.status { min-width: 0; margin: 0; padding: 8px clamp(12px, 2vw, 24px) 4px; color: var(--game-ink, #172923); border-bottom: 1px solid #17292326; background: #fff1d6; box-shadow: none; }
+.top { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 20px; }
+.top > div { flex: 1 1 150px; min-width: 0; }
+.status p { margin: 8px 0; font-size: .8rem; line-height: 1.5; }
+.status button { min-height: 44px; padding: 9px 16px; cursor: pointer; font: inherit; font-size: .8rem; font-weight: 750; color: inherit; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.status button:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.status summary { cursor: pointer; width: fit-content; min-height: 44px; padding: 11px 0; font-size: .75rem; }
+.status :is(button, summary):focus-visible { outline: 3px solid #006f66; outline-offset: 3px; }
+.daySummary { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.paper { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 18px; border: 2px solid transparent; background: transparent; border-image: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.paper:first-child { border-image-source: var(--game-panel-apricot, url('/placard/ui/panel-apricot-v1.webp')); }
+.paper > svg { color: #006f66; }
+.paper .dayArt { width: 112px; height: 112px; align-self: center; }
+.dayArt > img { height: 100%; object-fit: contain; }
+.paper h3, .costHeading h3 { margin: 0; font: 750 .88rem/1.4 var(--font-body), sans-serif; }
+.renewal { font: 800 1.2rem/1.35 var(--font-body), sans-serif; font-variant-numeric: tabular-nums; }
+.caption { display: block; margin-top: auto; font-size: .75rem; line-height: 1.5; color: #40594e; }
+.costSection { min-width: 0; }
+.costHeading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 6px 16px; padding: 4px 0 12px; }
+.costHeading h3 { display: flex; align-items: center; gap: 7px; }
+.costHeading > span { font-size: .73rem; color: #40594e; }
+.categories { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.categories button { display: flex; flex-direction: column; flex: 1 1 125px; align-items: center; justify-content: center; gap: 7px; }
+.categories .categoryArt { width: 88px; height: 88px; }
+.categoryArt > img { height: 100%; object-fit: contain; }
+.categories button[aria-pressed='true'] { --game-control-art: var(--game-control-teal, url('/placard/ui/control-teal-v2.webp')); color: #fff8e6; }
+.costGrid { min-width: 0; max-width: 720px; }
+.costCard { display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 12px 0; border-top: 1px solid #17292340; }
+.costCard[hidden] { display: none; }
+.costCard h4 { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 0; font: 750 .85rem/1.4 var(--font-body), sans-serif; }
+.costCard h4 svg { color: #006f66; }
+.costCard h4 > span { margin-left: auto; font-size: .72rem; color: #40594e; }
+.costCard figcaption { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.ranges { display: grid; gap: 10px; margin: 0; }
+.ranges > div { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px 10px; font-size: .76rem; }
+.ranges dd { margin: 0; font-weight: 750; }
+@media (max-width: 800px) { .daySummary { grid-template-columns: repeat(2, minmax(0, 1fr)); } .daySummary > :last-child { grid-column: 1 / -1; } }
+@media (max-width: 420px) { .top { flex-wrap: nowrap; gap: 10px; } .status button { padding: 9px 12px; white-space: nowrap; } .daySummary { grid-template-columns: minmax(0, 1fr); } .paper { padding: 15px; } .categories { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); } .categories button { min-width: 0; font-size: .71rem; padding-inline: 8px; white-space: normal; } }

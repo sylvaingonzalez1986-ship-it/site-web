@@ -9,6 +9,7 @@ import puppeteer from "puppeteer-core";
 const root = process.cwd(), output = resolve(root, "output/placard-customer-demand"), port = 3251;
 const origin = `http://127.0.0.1:${port}`;
 const modules = {
+  "next/navigation": `export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});export const usePathname=()=>location.pathname;export const useSearchParams=()=>new URLSearchParams(location.search);`,
   "next/link": `import React from 'react';export default function Link({prefetch,...props}){return <a {...props}/>;}`,
   "next/image": `import React from 'react';export default function Image({fill,priority,unoptimized,...props}){return <img {...props} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
   "customer-demand-ui-entry": `
@@ -28,6 +29,11 @@ const modules = {
     const commerce={customerDemand,cashCents:100000,electricityOutstandingCents:0,reputation:0,clients:0,computerOwned:false,internetRenew:false,revision:1,campaign:{id:'campaign',revision:1,reputation:0,clientsStart:0,event:'normal',internetPaid:false,directUsed:0,shopUsed:0,goodUnits:0,disappointmentUnits:0},rawLots:[],stocks:params.has('empty')?[]:customerDemand.requests.map(stock),receipts:[],marketVolumes:{},ownVolumes:{},routeSales:{}};
     commerce.online=createKqOnlinePreview(now);
     commerce.business=createKqBusinessPreview(now);
+    if(params.has('low-quality'))commerce.stocks.forEach((item,index)=>item.juryScore=customerDemand.requests[index].minimumQuality-0.1);
+    if(params.has('extract')){
+      commerce.computerOwned=true;
+      commerce.stocks=commerce.stocks.map(item=>({...item,route:'dry-sift',batchRoute:'dry-sift',baseUnitCents:1200}));
+    }
     if(params.has('partial')||params.has('unmatched')){
       const request=customerDemand.requests.find(item=>item.channel==='cbd-shop');
       const variety=KQ_BUDDIES.find(item=>getKqCustomerDemandFlavorMatch(request,item.code).matchedFlavorCount===(params.has('partial')?1:0));
@@ -35,7 +41,7 @@ const modules = {
     }
     if(params.has('packaged')){
       const source=commerce.stocks[0];commerce.stocks=[];
-      commerce.online.listings=[{id:'packaged',stockId:source.id,varietyCode:source.varietyCode,name:source.name,route:'raw',formatGrams:5,packagingCode:'kraft-5',packetPriceCents:5000,initialPackets:4,remainingPackets:4,soldPackets:0,status:'paused',qualityScore:9.5,baseUnitCents:1000,createdAt:iso(now)}];
+      commerce.online.listings=[{id:'packaged',stockId:source.id,varietyCode:source.varietyCode,name:source.name,route:source.route,formatGrams:5,packagingCode:'kraft-5',packetPriceCents:5000,initialPackets:4,remainingPackets:4,soldPackets:0,status:'paused',qualityScore:9.5,baseUnitCents:source.baseUnitCents,createdAt:iso(now)}];
     }
     if(params.has('legacy'))delete commerce.customerDemand;
     window.__demand={commerce,cultureOpened:0,reads:0,restoreRequests:()=>{commerce.customerDemand=customerDemand;}};
@@ -63,18 +69,23 @@ try {
   page = await browser.newPage(); page.setDefaultTimeout(30000); page.on("pageerror", error => errors.push(error.message));
   await page.setRequestInterception(true); page.on("request", request => void (request.url().startsWith(origin) || request.url().startsWith("data:") ? request.continue() : request.abort()));
   const visit = async (query = "") => { const params = new URLSearchParams(query); if (!params.has("section") && !params.has("dashboard") && !params.has("culture")) params.set("section", "demands"); await page.goto(origin + "/?" + params, { waitUntil: "networkidle0" }); await page.waitForFunction(() => (document.querySelector('[data-screen]') || document.querySelector('[aria-label="Tes cartes Buddies"]')) && !document.body.textContent.includes("Ouverture du comptoir")); };
-  const openNavigation = async () => { const toggle = await page.$('button[aria-controls$="-navigation"]'); if (toggle && await toggle.evaluate(node => !node.hidden && node.getAttribute("aria-expanded") === "false")) await toggle.click(); };
-  const selectSection = async section => { await openNavigation(); await page.click(`[role="tab"][id$="-${section}-tab"]`); };
+  const selectSection = async section => {
+    await page.click(`[data-market-section="${section === "demands" ? "sales" : section}"]`);
+    if (section === "demands") {
+      const action = await page.waitForFunction(() => [...document.querySelectorAll("button")].find(node => node.textContent.includes("Demandes clients · voir les primes")));
+      await action.asElement().click(); await action.dispose();
+    }
+  };
   const loadedFlavorImages = async selector => page.waitForFunction(selector => { const images = [...document.querySelectorAll(selector)]; return images.length > 0 && images.every(image => image.complete && image.naturalWidth > 0); }, {}, selector);
   await page.goto(origin, { waitUntil: "networkidle0" }); await page.waitForSelector('[data-screen="overview"]');
-  assert.equal(await page.$eval('[role="tab"][aria-selected="true"]', node => node.textContent), "Vue d’ensemble");
+  assert.equal(await page.$eval('nav[aria-label="Commerce"] [aria-current="page"]', node => node.textContent), "Synthèse");
   checks.push("The market opens on the shop overview without an explicit section");
   for (const width of [320, 390, 768, 1440]) {
     await page.setViewport({ width, height: 1000 }); await visit();
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, `No overflow at ${width}px`);
     assert.equal(await page.$$eval("article[data-channel]", nodes => nodes.length), 3);
-    assert.deepEqual(await page.$$eval('[role="tab"]', nodes => nodes.map(node => node.textContent)), ["Vue d’ensemble", "Demandes clients", "Vendre ma production", "Mes ventes", "Développer ma boutique"]);
-    assert.equal(await page.$eval('[role="tab"][aria-selected="true"]', node => node.textContent), "Demandes clients");
+    assert.deepEqual(await page.$$eval('[data-market-section]', nodes => nodes.map(node => node.textContent)), ["Vendre", "Mon stock en vente", "Développer"]);
+    assert.equal(await page.$eval('[data-market-section][aria-current="page"]', node => node.textContent), "Vendre");
     assert.ok(await page.$$eval('article[data-channel] ul[aria-label]', nodes => nodes.length === 3 && nodes.every(node => node.querySelectorAll("li").length === 2)));
     await loadedFlavorImages('article[data-channel] ul[aria-label] img');
     const cards = await page.$$eval("article[data-channel]", nodes => nodes.map(node => ({ top: node.getBoundingClientRect().top, left: node.getBoundingClientRect().left })));
@@ -85,7 +96,7 @@ try {
   }
   await page.click('article[data-channel="cbd-shop"] button');
   await page.waitForSelector('[data-screen="offer"]');
-  assert.ok(await page.evaluate(() => document.body.textContent.includes("Demande du moment") && document.body.textContent.includes("Le reste de cette vente est repris au tarif habituel")), "Partial bonus explains weighted price");
+  assert.ok(await page.evaluate(() => document.body.textContent.includes("Demande du moment") && document.body.textContent.includes("Le reste est repris au tarif habituel")), "Partial bonus explains weighted price");
   checks.push("Shop demand opens its matching lot and explains partial premium");
   await visit("dashboard"); assert.equal(await page.$("article[data-channel]"), null, "Requests are not duplicated in the sales register");
   await selectSection("demands"); await page.waitForSelector('[data-screen="demands"]'); await page.click('article[data-channel="wholesale"] button'); await page.waitForSelector('[data-screen="offer"]');
@@ -94,16 +105,15 @@ try {
   await selectSection("demands"); await page.waitForSelector('[data-screen="demands"]');
   await selectSection("sales"); await page.waitForSelector('[data-screen="offer"]');
   assert.ok(await page.evaluate(() => document.body.textContent.includes("Grossistes")), "Returning to production preserves the chosen circuit");
-  await openNavigation(); await page.focus('[role="tab"][id$="-demands-tab"]'); await page.keyboard.press("End");
-  assert.equal(await page.$eval('[role="tab"][aria-selected="true"]', node => node.textContent), "Développer ma boutique");
-  await page.keyboard.press("Home"); await page.waitForSelector('[data-screen="overview"]');
-  assert.equal(await page.evaluate(() => document.activeElement?.getAttribute("role")), "tab");
-  await page.keyboard.press("ArrowRight"); await page.waitForSelector('[data-screen="demands"]');
-  checks.push("Keyboard Home/End and arrows connect the five shop sections and preserve tab focus");
+  await page.focus('[data-market-section="dashboard"]'); await page.keyboard.press("Enter");
+  await page.waitForSelector('[data-screen="dashboard"]');
+  assert.equal(await page.$eval('[data-market-section][aria-current="page"]', node => node.textContent), "Mon stock en vente");
+  assert.ok(await page.evaluate(() => document.activeElement?.hasAttribute("data-commerce-view-heading") || document.activeElement?.hasAttribute("data-online-listings-heading")));
+  checks.push("Keyboard activation opens the sales register and focuses its heading");
   await visit("section=sales&flower=flower-1"); await page.waitForSelector('[data-screen="distribution"]');
   assert.equal(await page.$("article[data-channel]"), null);
-  assert.equal(await page.$eval('[role="tab"][aria-selected="true"]', node => node.textContent), "Vendre ma production");
-  const returnToOverview = await page.waitForFunction(() => [...document.querySelectorAll("button")].find(node => node.getAttribute("role") !== "tab" && node.textContent === "Vue d’ensemble"));
+  assert.equal(await page.$eval('[data-market-section][aria-current="page"]', node => node.textContent), "Vendre");
+  const returnToOverview = await page.waitForFunction(() => [...document.querySelectorAll("button")].find(node => node.textContent === "Synthèse"));
   await returnToOverview.asElement().click(); await returnToOverview.dispose(); await page.waitForSelector('[data-screen="overview"]');
   await selectSection("demands"); await page.waitForSelector('[data-screen="demands"]');
   checks.push("A harvest deep link opens its lot and returns through the shop overview to requests");
@@ -112,6 +122,26 @@ try {
   await page.click('article[data-channel="cbd-shop"] button'); await page.waitForSelector('[data-screen="offer"]');
   assert.ok(await page.evaluate(() => document.body.textContent.includes("Demande du moment")));
   checks.push("A different cultivar sharing one aroma can earn the partial bonus");
+  await visit("low-quality");
+  await page.click('article[data-channel="cbd-shop"] button'); await page.waitForSelector('[data-screen="offer"]');
+  assert.ok(await page.evaluate(() => document.body.textContent.includes("Les goûts correspondent") && document.body.textContent.includes("qualité d’au moins")));
+  checks.push("Matching flower tastes explain the minimum quality when the normal price still applies");
+  for (const width of [320, 390, 1440]) {
+    await page.setViewport({ width, height: 1000 }); await visit("extract");
+    assert.ok(await page.$eval('article[data-channel="cbd-shop"]', node => node.textContent.includes("en vrac compatibles")));
+    await page.click('article[data-channel="cbd-shop"] button'); await page.waitForSelector('[data-screen="offer"]');
+    assert.ok(await page.evaluate(() => document.body.textContent.includes("Demande du moment")));
+    await loadedFlavorImages('[data-lot-summary] ul[aria-label] img');
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false);
+    await page.screenshot({ path: resolve(output, `extract-demand-${width}.png`), fullPage: true });
+    checks.push(`Source flower aromas and demand premium on resin at ${width}px`);
+  }
+  await visit("extract&packaged");
+  assert.ok(await page.$eval('article[data-channel="online"]', node => node.textContent.includes("Des paquets correspondent")));
+  await page.click('article[data-channel="online"] button'); await page.waitForSelector('[data-online-listing="packaged"]');
+  await loadedFlavorImages('[data-online-listing="packaged"] ul[aria-label] img');
+  assert.ok(await page.$eval('[data-online-listing="packaged"]', node => node.textContent.includes("repère +") && node.textContent.includes("Ton prix choisi reste inchangé")));
+  checks.push("Packaged resin keeps source tastes and uses the online demand premium without silently changing its asking price");
   await visit("unmatched&section=sales"); await page.click('[aria-label="Tes lots"] button'); await page.waitForSelector('[data-screen="distribution"]');
   await page.click('[aria-label="Voir l’offre CBD shops"]'); await page.waitForSelector('[data-screen="offer"]');
   assert.ok(await page.evaluate(() => !document.body.textContent.includes("Demande du moment") && [...document.querySelectorAll("button")].some(button => button.textContent.includes("Voir le montant net") && !button.disabled)));

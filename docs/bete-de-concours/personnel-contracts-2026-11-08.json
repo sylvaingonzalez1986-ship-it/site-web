@@ -1,0 +1,28 @@
+{
+  "verifiedAt": "2026-11-08",
+  "scope": "Prolongation, passage en CDI et réembauche dans Kanab Quest. Règles françaises de référence adaptées au calendrier et aux postes du jeu ; aucun document de travail réel n’est produit.",
+  "rules": {
+    "renewal": "Un CDD à terme précis se prolonge avant son échéance. Le jeu retient le régime général : deux renouvellements maximum et dix-huit mois de jeu au total pour le CDD ordinaire. L’avenant conserve le contrat, sa date d’embauche, ses droits, sa paie et son planning. Le motif temporaire reste nécessaire.",
+    "seasonal": "Le contrat saisonnier reste lié à une récolte saisonnière. Son plafond de six mois au total est une limite de simulation déjà présente dans le jeu, pas un plafond légal universel. Deux prolongations au maximum dans cette campagne ; une nouvelle saison exige un nouveau contrat. Les cycles de production choisis toute l’année ne prouvent pas une saisonnalité. Aucune reconduction automatique après deux saisons n’est présentée comme générale en agriculture.",
+    "cdi": "Un CDI n’a pas de date à prolonger. Un CDD encore actif peut continuer en CDI : ancienneté, congés, compétences et planning conservés, sans liquidation de fin de CDD à cette transition.",
+    "rehire": "Après la fin du contrat, réembaucher crée un nouveau contrat et un nouvel identifiant de contrat. L’identité permanente, le portrait, le caractère et les cinq valeurs d’XP viennent du dernier dossier enregistré. Aucun gain ni perte d’expérience pendant l’absence. Les anciens contrats, tâches et paies restent conservés.",
+    "cooldown": "Après un CDD ordinaire, la carence du poste correspond au tiers de sa durée totale en jours calendaires, ou à la moitié si elle est inférieure à quatorze jours, arrondie au jour supérieur. Elle se compte en jours d’ouverture de la ferme, du lundi au vendredi. Le jeu représente prudemment un poste par un métier : le délai vaut aussi pour un autre candidat de ce métier, et ne disparaît pas en renommant le nouveau contrat saisonnier. Le CDI en est exempt. Un ancien contrat saisonnier ne crée pas cette carence ordinaire.",
+    "clock": "Un mois du jeu compte trente jours de jeu. La fin de contrat est exclusive. À une frontière exacte de journée, la carence peut compter la nouvelle journée ; sinon elle commence le prochain jour entier. La reprise est possible après le dernier jour d’ouverture décompté. Toutes les horloges et dates de validation viennent du serveur.",
+    "history": "À la réembauche, les droits et comptes du nouveau contrat repartent de son début ; l’ancien solde reste dû et doit être réglé. Le planning automatique n’est pas relancé. L’historique récent d’heures est conservé pour ne pas remettre à zéro la capacité quotidienne ni les limites hebdomadaires et glissantes.",
+    "settlement": "Renouveler ne déclenche pas de solde de fin de contrat. La vraie fin du CDD ordinaire garde la prime de précarité de référence de 10 % du brut total ; pas de prime de précarité pour le saisonnier dans le jeu. Les congés restants sont indemnisés ; la comparaison simplifiée du dixième et du maintien inclut la prime de précarité dans l’assiette du dixième lorsqu’elle est due. Les paies déjà émises ne sont jamais recalculées rétroactivement.",
+    "limits": "Le moteur utilise le régime national par défaut, sans simuler tous les accords territoriaux ou sectoriels, ni l’identité d’un salarié remplacé. Aucune dérogation nationale CDD à ces règles n’a été trouvée dans le chapitre 7 de la convention production agricole/CUMA consultée. Le jeu applique donc la carence conservatrice aux CDD ordinaires sans inventer d’exception de remplacement. Un besoin permanent doit être couvert par un CDI."
+  },
+  "sources": [
+    { "title": "Service Public — Renouvellement d’un CDD et délai de carence", "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F38" },
+    { "title": "Code du travail — L1243-13-1, renouvellements", "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000035639380" },
+    { "title": "Code du travail — L1242-8-1, durée totale", "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000035643961" },
+    { "title": "Production agricole/CUMA — Chapitre 7", "url": "https://www.legifrance.gouv.fr/conv_coll/id/KALISCTA000042949848?idConteneur=KALICONT000043036630" },
+    { "title": "Ministère du Travail — Travail saisonnier", "url": "https://travail-emploi.gouv.fr/le-travail-saisonnier" },
+    { "title": "Code du travail — L1244-4-1, exceptions à la carence", "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000035639433" },
+    { "title": "Cour de cassation — 10 octobre 2018, pourvoi 17-18.294", "url": "https://www.legifrance.gouv.fr/juri/id/JURITEXT000037495600" },
+    { "title": "Code du travail — L1243-11, continuation en CDI", "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006901222" },
+    { "title": "Code du travail — L1243-8, indemnité de fin de contrat", "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006901219" },
+    { "title": "Code du travail — L1242-16, congés payés", "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006901210" }
+  ],
+  "database": "Migration 20261108000700_kq_staff_contract_lifecycle.sql préparée localement. Non appliquée par cette tâche."
+}

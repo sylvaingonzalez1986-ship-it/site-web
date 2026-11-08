@@ -31,12 +31,20 @@ const modules = {
       const energy={cashCents:commerce.cashCents,outstandingCents:3500,invoiceCount:2,bestGramsPerKwh:null,invoices:[{runId:'energy-unpaid',createdAt:iso(-KQ_GAME_DAY_MS),totalCents:3000,remainingCents:2500,harvestGrams:100,quote:quoteKqEnergy([])}],storageClimate:climate,quotes:{}};
       const receipts=new Map();
       const audit={mode,commerce,energy,posts:[],reads:[],paidCents:0,hold:false,release:null,events:[]};window.__invoiceAudit=audit;
+      const purchases=Array.from({length:27},(_,i)=>({id:(i%3===0?'basic:':'purchase:')+'10000000-0000-4000-8000-'+String(i+1).padStart(12,'0'),kind:i%3===0?'basic':i%3===1?'pbi':'input',productCode:i%3===0?null:i%3===1?'CARE-SWIRSKII':'CARE-COMPOST-TEA',quantity:1,amountCents:i===26?900:12500,createdAt:iso(-i*60000),runId:i===26?null:'20000000-0000-4000-8000-000000000001',areaM2:i===26?null:25,stageIndex:i===26?null:2}));
+      audit.purchaseTotal=purchases.reduce((sum,item)=>sum+item.amountCents,0);
       const clearInvoices=()=>{business.lab.outstandingCents=0;business.lab.overdueCents=0;for(const i of business.lab.invoices)i.remainingCents=0;if(business.suppliers){business.suppliers.outstandingCents=0;business.suppliers.overdueCents=0;for(const i of business.suppliers.invoices)i.remainingCents=0;}energy.outstandingCents=0;commerce.electricityOutstandingCents=0;for(const i of energy.invoices)i.remainingCents=0;climate.outstandingCents=0;for(const i of climate.invoices)i.remainingCents=0;};
       if(mode==='none')clearInvoices();
       if(mode==='poor')commerce.cashCents=energy.cashCents=5000;
       if(mode==='suppliers-unavailable')delete business.suppliers;
       const request=async(input,init={})=>{
         const path=new URL(String(input),location.origin).pathname,method=init.method??'GET';
+        if(path==='/api/arena/placard/care/purchases'&&method==='GET'){
+          audit.reads.push(path);
+          if(mode==='purchases-unavailable')return Response.json({error:'Registre indisponible.'},{status:503});
+          const cursor=new URL(String(input),location.origin).searchParams.get('before');
+          return Response.json({items:cursor?purchases.slice(25):purchases.slice(0,25),nextCursor:cursor?null:'older-page',totalPaidCents:audit.purchaseTotal,totalCount:purchases.length,serverNow:iso(0)});
+        }
         if(!['/api/arena/placard/commerce','/api/arena/placard/energy'].includes(path))throw new Error('Unexpected fixture path '+path);
         if(method==='GET'){audit.reads.push(path);if(path.endsWith('/energy')&&mode==='energy-unavailable')return Response.json({error:'Lecture énergie indisponible.'},{status:503});return Response.json(path.endsWith('/commerce')?commerce:energy);}
         if(method!=='POST'||!path.endsWith('/commerce'))throw new Error('Unexpected write '+method+' '+path);
@@ -118,15 +126,37 @@ try {
         breakdownClosed: !details.open, breakdownTop: details.getBoundingClientRect().top };
     });
     assert(layout.paymentBottom <= (width < 700 ? 568 : 900), 'Payment is visible before scrolling within the invoice panel');
-    assert(layout.paymentBottom < layout.breakdownTop && layout.breakdownClosed, 'Payment precedes collapsed secondary charts');
+    assert(layout.paymentBottom < layout.breakdownTop && layout.breakdownClosed, 'Payment precedes collapsed billing rules');
     assert(layout.labelSizes.every(size => size >= 14), 'Summary labels remain legible at every width');
     layouts.push(layout);
     await page.screenshot({ path: resolve(output, `normal-${width}.png`), fullPage: true });
     const breakdown = '[data-invoice-analysis]';
     await page.focus(breakdown + ' > summary'); await page.keyboard.press('Enter');
-    assert(await page.$eval(breakdown, element => element.open), 'Charts can be expanded with the keyboard');
+    assert(await page.$eval(breakdown, element => element.open), 'Billing rules can be expanded with the keyboard');
     await fit('Expanded charts at ' + width);
     await page.keyboard.press('Enter');
+    const purchasesToggle = '[data-culture-purchases] > summary';
+    assert.equal(await page.$eval('[data-culture-purchases]',element=>element.open),false,'Purchase register is collapsed by default');
+    await page.focus(purchasesToggle);await page.keyboard.press('Tab');
+    assert.equal(await page.evaluate(()=>!!document.activeElement?.closest('[data-culture-purchases]')),false,'Collapsed purchase controls are outside the keyboard tab order');
+    await page.focus(purchasesToggle);await page.keyboard.press('Enter');
+    await page.waitForSelector('[data-culture-purchase]',{visible:true});
+    assert.equal(await page.$$eval('[data-culture-purchase]',items=>items.length),25,'First page contains 25 paid purchase receipts');
+    assert.match(await page.$eval('[data-culture-purchases]',element=>element.textContent),/3\s?259/,'Purchase total includes older receipts outside the first page');
+    await page.focus('[data-more-purchases]');await page.keyboard.press('Enter');
+    await page.waitForFunction(()=>document.querySelectorAll('[data-culture-purchase]').length===27);
+    assert.match(await page.$eval('[data-culture-purchases]',element=>element.textContent),/Surface non enregistrée/,'Historical receipts do not invent a surface');
+    assert.equal(await page.$('[data-more-purchases]'),null,'All older receipts remain reachable');
+    assert.match(await page.$eval(batch,element=>element.textContent),/220/,'Already paid inputs are excluded from outstanding invoices');
+    assert.equal(await page.evaluate(()=>window.__invoiceAudit.posts.length),0,'Browsing the purchase register never writes');
+    await fit('Purchase history at '+width);
+    await page.screenshot({path:resolve(output,`purchases-${width}.png`),fullPage:true});
+    await page.focus(purchasesToggle);await page.keyboard.press('Enter');
+    assert.equal(await page.$eval('[data-culture-purchases]',element=>element.open),false,'Purchase register closes with the keyboard');
+    await page.keyboard.press('Enter');
+    await page.waitForSelector('[data-culture-purchase]',{visible:true});
+    assert.equal(await page.$$eval('[data-culture-purchase]',items=>items.length),27,'Closing and reopening preserves the loaded history');
+    checks.push({scenario:'purchase-register-pagination-no-double-billing',width});
     for (const filter of ['Fournisseurs', 'Laboratoire', 'Électricité & soins', 'Toutes']) {
       await click(filter, '[aria-label="Type de factures"]');
       assert.match(await page.$eval(batch, element => element.textContent), /220/,'Total is independent of '+filter);
@@ -159,6 +189,10 @@ try {
       await page.screenshot({ path: resolve(output, `${mode}-${width}.png`), fullPage: true });
       checks.push({ scenario: mode, width });
     }
+    await scenario('purchases-unavailable');await page.focus(purchasesToggle);await page.keyboard.press('Enter');await page.waitForSelector('[data-culture-purchases] [role="alert"]',{visible:true});
+    assert.equal(await page.$('[data-culture-purchases] table'),null,'Unavailable purchase history is not shown as zero purchases');
+    assert.equal(await page.$eval(batch,button=>button.disabled),false,'A paid-history outage does not block validated invoice payments');
+    checks.push({scenario:'purchase-history-error-independent-of-payment',width});
     await scenario('stale'); await open(); await confirm(); await page.waitForSelector('dialog[open] [role="alert"]');
     assert.match(await page.$eval('dialog[open] [role="alert"]', element => element.textContent), /montant a changé/);
     assert.equal(await page.evaluate(() => window.__invoiceAudit.paidCents), 0, 'Server rejects stale amount without debiting');

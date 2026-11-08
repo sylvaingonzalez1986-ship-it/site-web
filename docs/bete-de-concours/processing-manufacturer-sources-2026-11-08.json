@@ -1,0 +1,199 @@
+{
+  "checkedAt": "2026-11-08",
+  "scope": "Capacités commerciales des six familles actives et des cinq références historiques remplacées ; aucune recette opératoire.",
+  "catalogFiles": ["src/lib/kanab-quest-equipment.ts", "src/lib/kanab-quest-workshop-machines.ts"],
+  "interpretation": [
+    "Les trois gammes et dix niveaux du jeu sont fictifs ; aucune équivalence fabricant par niveau n'est établie.",
+    "Ne pas comparer grammes de fleurs sèches, matière fraîche congelée, hash humide et produit fini sur une même échelle.",
+    "Une charge maximale par lot n'est pas une cadence horaire. Les conversions de masse utilisent 1 lb = 453,59237 g.",
+    "Les temps de séchage et les temps de travail actif doivent rester distincts. Une capacité de glace ne mesure pas une quantité de fleurs ou de hash.",
+    "null signifie non publié ou non vérifié dans les sources consultées, jamais zéro.",
+    "Les capacités commerciales citées sont des annonces fabricant, pas des résultats garantis ni des réglages de transformation."
+  ],
+  "machines": [
+    {
+      "code": "SIFT-TRAY",
+      "catalogStatus": "active-family",
+      "anchorModel": "The Original Resinator OG Base Model",
+      "manufacturer": "The Original Resinator",
+      "verifiedManufacturerSource": true,
+      "sourceUrl": "https://theoriginalresinator.com/product/resinator-og-extraction-machine/",
+      "sourceQuote": "sifting up to 3 lb of trim per run",
+      "capacity": {"kind": "maximum-input-per-batch", "material": "dry trim", "value": 3, "unit": "lb", "gramsApprox": 1361},
+      "durationMinutes": null,
+      "hourlyRateGrams": null,
+      "secondarySource": {
+        "url": "https://www.theoriginalresinator.com/wp-content/uploads/2024/11/XL-_-OG-Spec-Sheet-S.pdf",
+        "page": 2,
+        "quote": "Cryo-Sieve® 240 dry lbs",
+        "claim": "La colonne Throughput Per Day annonce 240 lb secs/jour pour OG Cryo-Sieve."
+      },
+      "limitations": "La fiche produit Classic Bundle porte sur le même modèle OG avec accessoires supplémentaires. Le débit quotidien du PDF concerne Cryo-Sieve et ne définit pas la durée d'une journée ; pas de conversion en g/h ni de transfert au simple tamis manuel."
+    },
+    {
+      "code": "WASHER-25L",
+      "catalogStatus": "active-family",
+      "anchorModel": "Lowtemp Mini Osprey 2.0",
+      "manufacturer": "Lowtemp Industries",
+      "verifiedManufacturerSource": true,
+      "sourceUrl": "https://www.lowtemp-plates.com/products/mini-osprey-30-gallon-washing-machine",
+      "sourceQuote": "9,000 grams of fresh frozen or 2,100 grams of dry material per wash",
+      "capacities": [
+        {"kind": "maximum-input-per-batch", "material": "dry material", "value": 2100, "unit": "g"},
+        {"kind": "maximum-input-per-batch", "material": "fresh frozen material", "value": 9000, "unit": "g"}
+      ],
+      "durationMinutes": 120,
+      "durationKind": "manufacturer-estimated-total-batch-duration",
+      "hourlyRateGrams": null,
+      "manufacturerShiftClaim": {"material": "fresh frozen material", "grams": 36000, "hours": 8},
+      "derivedTheoreticalInputRates": [{"material": "dry material", "gramsPerHour": 1050}, {"material": "fresh frozen material", "gramsPerHour": 4500}],
+      "limitations": "La FAQ estime environ deux heures pour un lot complet, pas deux heures de travail manuel ni de seul brassage. Les cadences calculées sont capacité maximale divisée par cette estimation, sans garantie d'exploitation. Le nom interne 25L ne décrit pas la cuve fabricant de 30 gallons."
+    },
+    {
+      "code": "AUTO-SIEVE",
+      "catalogStatus": "active-family",
+      "anchorModel": "Lowtemp AutoSieve Collection System",
+      "manufacturer": "Lowtemp Industries",
+      "verifiedManufacturerSource": true,
+      "sourceUrl": "https://www.lowtemp-plates.com/products/the-autosieve",
+      "sourceQuote": "cannot be used as a standalone sieve",
+      "capacityGrams": null,
+      "durationMinutes": null,
+      "hourlyRateGrams": null,
+      "limitations": "La fiche annonce cinq tamis et une intégration Nest/Osprey, sans charge massique ni débit horaire chiffré. Les moins de vingt minutes mentionnées concernent l'installation, pas le traitement d'un lot. Aucune conversion de surface ou nombre de tamis en g/h."
+    },
+    {
+      "code": "STATIC-PLASMA",
+      "catalogStatus": "active-family",
+      "anchorModel": "Plasmastatic V1.8 / V1",
+      "manufacturer": "SC Filtration / Sambocreeck",
+      "verifiedManufacturerSource": true,
+      "sourceUrl": "https://sambocreeck.com/products/separatore-tribostatico",
+      "sourceQuote": "Processing Capacity: 500g finished product per hour",
+      "capacityGrams": null,
+      "durationMinutes": null,
+      "hourlyRate": {"material": "finished separated product", "value": 500, "unit": "g/h", "kind": "manufacturer-announced-output-rate"},
+      "secondarySource": {
+        "url": "https://sambocreeck.com/pages/separatore-plasmastatic-faq",
+        "quote": "The V1 processes 500–1,000 grams of finished product per hour",
+        "claim": "La FAQ générale donne une fourchette V1 de 500 à 1000 g de produit fini/h, plus large que les 500 g/h de la fiche V1.8."
+      },
+      "limitations": "Débit de produit fini issu d'une matière déjà tamisée, pas débit de fleurs en entrée. Retenir la fiche spécifique V1.8 pour cette référence ; ne pas convertir en équivalent fleurs sans mesure distincte de rendement."
+    },
+    {
+      "code": "PRESS-0600",
+      "catalogStatus": "active-family",
+      "anchorModel": "Lowtemp V2 Rosin Press",
+      "manufacturer": "Lowtemp Industries",
+      "verifiedManufacturerSource": true,
+      "sourceUrl": "https://www.lowtemp-plates.com/products/lowtemp-v2-rosin-press",
+      "sourceQuote": "The 4x7 is our larger configuration, pressing up to 60g per cycle",
+      "capacities": [
+        {"configuration": "3x5", "kind": "maximum-input-per-batch", "material": "bubble hash", "value": 30, "unit": "g"},
+        {"configuration": "4x7", "kind": "maximum-input-per-batch", "material": "bubble hash or sift", "value": 60, "unit": "g"},
+        {"configuration": "3x5", "kind": "announced-input-range-per-batch", "material": "flower", "min": 5, "max": 10, "unit": "g"},
+        {"configuration": "4x7", "kind": "announced-input-range-per-batch", "material": "flower", "min": 15, "max": 25, "unit": "g"}
+      ],
+      "durationMinutes": null,
+      "hourlyRateGrams": null,
+      "limitations": "La taille des plaques détermine les quantités annoncées ; l'ancre du jeu ne choisit pas une variante. La page distingue aussi une charge fleurs avec accessoire supplémentaire, non retenue ici. Un article marketing V2/V4 cite d'autres charges dépendant de techniques ; elles ne remplacent pas la FAQ de la fiche produit. Aucune cadence g/h établie."
+    },
+    {
+      "code": "FREEZE-DRYER",
+      "catalogStatus": "active-family",
+      "anchorModel": "HiLyph Hash Dryer XL",
+      "manufacturer": "TCI Scientific Innovations",
+      "verifiedManufacturerSource": true,
+      "sourceUrl": "https://www.tciscientific.com/hilyph_hash_dryer_xl",
+      "sourceQuote": "Max Ice Capacity: 40 lbs",
+      "capacity": {"kind": "maximum-ice-capacity", "material": "ice", "value": 40, "unit": "lb", "gramsApprox": 18144},
+      "trayCount": 10,
+      "durationMinutes": null,
+      "hourlyRateGrams": null,
+      "secondarySource": {
+        "url": "https://www.tciscientific.com/category/HiLyph-Hash-Dryers",
+        "quote": "10 oversized trays and a 12 lb wet load capacity",
+        "capacity": {"kind": "maximum-wet-load-per-batch", "material": "wet hash", "value": 12, "unit": "lb", "gramsApprox": 5443}
+      },
+      "limitations": "40 lb concerne la glace, 12 lb une charge humide annoncée séparément ; aucun des deux ne représente des grammes de fleurs sèches. Pas de durée de cycle chiffrée vérifiée pour ce modèle. Le séchage est une occupation passive de machine à distinguer du travail opérateur. L'ancre actuelle du dépôt est HiLyph, pas Harvest Right."
+    },
+    {
+      "code": "WASHER-75G",
+      "catalogStatus": "legacy-replaced-by-WASHER-25L-level-5",
+      "anchorModel": "Lowtemp Osprey 75 Gallon",
+      "manufacturer": "Lowtemp Industries",
+      "verifiedManufacturerSource": true,
+      "sourceUrl": "https://www.lowtemp-plates.com/products/theosprey",
+      "sourceQuote": "up to 21,000 fresh frozen grams or 4,200 dry grams per wash",
+      "capacities": [
+        {"kind": "maximum-input-per-batch", "material": "dry material", "value": 4200, "unit": "g"},
+        {"kind": "maximum-input-per-batch", "material": "fresh frozen material", "value": 21000, "unit": "g"}
+      ],
+      "durationMinutes": 120,
+      "durationKind": "manufacturer-throughput-planning-assumption",
+      "manufacturerShiftClaims": [{"material": "dry material", "grams": 16800, "hours": 8}, {"material": "fresh frozen material", "grams": 84000, "hours": 8}],
+      "derivedTheoreticalInputRates": [{"material": "dry material", "gramsPerHour": 2100}, {"material": "fresh frozen material", "gramsPerHour": 10500}],
+      "limitations": "La FAQ alloue deux heures pour un lot complet et calcule une journée de huit heures. Ces chiffres ne constituent ni une durée du seul brassage ni une garantie en exploitation."
+    },
+    {
+      "code": "TSS-225",
+      "catalogStatus": "legacy-replaced-by-WASHER-25L-level-10",
+      "anchorModel": "Forza TSS-225",
+      "manufacturer": "Forza Solventless",
+      "verifiedManufacturerSource": true,
+      "sourceUrl": "https://www.forzasolventless.com/products/tss-225",
+      "sourceQuote": "17,000g of fresh frozen or 3,900g of dry material per batch",
+      "capacities": [
+        {"kind": "maximum-input-per-batch", "material": "dry material", "value": 3900, "unit": "g"},
+        {"kind": "maximum-input-per-batch", "material": "fresh frozen material", "value": 17000, "unit": "g"}
+      ],
+      "durationMinutes": null,
+      "hourlyRateGrams": null,
+      "limitations": "Charge commerciale par lot seulement ; aucune durée vérifiée dans la fiche produit. Le modèle le plus cher n'a pas nécessairement la plus grande charge nominale."
+    },
+    {
+      "code": "PRESS-2T",
+      "catalogStatus": "legacy-replaced-by-PRESS-0600-level-5",
+      "anchorModel": "PurePressure Pikes Peak V2",
+      "manufacturer": "PurePressure",
+      "verifiedManufacturerSource": false,
+      "sourceUrl": "https://www.greenbroz.com/pikes-peak-rosin-press/",
+      "sourceKind": "commercial-partner-page-not-confirmed-manufacturer-hosting",
+      "sourceQuote": "Press up to 20 grams of flower or 35 grams of kief or hash at a time",
+      "partnerReportedCapacities": [
+        {"kind": "maximum-input-per-batch", "material": "flower", "value": 20, "unit": "g"},
+        {"kind": "maximum-input-per-batch", "material": "kief or hash", "value": 35, "unit": "g"}
+      ],
+      "durationMinutes": null,
+      "hourlyRateGrams": null,
+      "limitations": "La source accessible porte la mention Powered by PurePressure sur GreenBroz. Les domaines purepressure.com et gopurepressure.com redirigent vers Solventless Select ; la page MNR de l'ancre du dépôt n'a pas pu être chargée. Ne pas présenter ces quantités comme une vérification directe fabricant achevée."
+    },
+    {
+      "code": "PRESS-10T",
+      "catalogStatus": "legacy-replaced-by-PRESS-0600-level-8",
+      "anchorModel": "PurePressure Longs Peak",
+      "manufacturer": "PurePressure",
+      "verifiedManufacturerSource": false,
+      "sourceUrl": "https://gopurepressure.com/products/longs-peak-rosin-press",
+      "sourceStatus": "404-on-check",
+      "sourceQuote": null,
+      "capacityGrams": null,
+      "durationMinutes": null,
+      "hourlyRateGrams": null,
+      "limitations": "Aucune fiche de capacité directement vérifiée chez le fabricant. Un document PurePressure hébergé chez Hydrobuilder a été repéré mais n'a pas pu être ouvert ; les chiffres revendeurs ne sont pas repris comme preuve fabricant."
+    },
+    {
+      "code": "PRESS-20T",
+      "catalogStatus": "legacy-replaced-by-PRESS-0600-level-10",
+      "anchorModel": "NugSmasher IQ Pro",
+      "manufacturer": "NugSmasher",
+      "verifiedManufacturerSource": true,
+      "sourceUrl": "https://nugsmasher.com/product/nugsmasher-iq-pro/",
+      "sourceQuote": "huge 10” x 7” heat plates",
+      "capacityGrams": null,
+      "durationMinutes": null,
+      "hourlyRateGrams": null,
+      "limitations": "La fiche fabricant confirme le modèle et les dimensions de plaques, mais n'établit aucune capacité massique ni cadence dans le contenu accessible. Les tailles des sachets vendus en bundle ne prouvent pas la charge maximale de la machine."
+    }
+  ]
+}

@@ -11,6 +11,9 @@ import { readArenaQuickTrialResume } from "@/lib/arena-quick-trial";
 import { ARENA_RELEVE_VISITS_KEY, type ArenaLearningStorage } from "@/lib/arena-introduction";
 import { useArenaLearningStorage } from "./ArenaLearningStorage";
 import { KQ_WAREHOUSE_ROOM_ARTWORK } from "@/lib/kanab-quest-warehouse-artwork";
+import { KQ_FARM_GUIDE_OPEN_EVENT } from "@/lib/kanab-quest-farm-guide";
+import { navigateAfterOverlays } from "@/lib/overlay-history";
+import { useRouter } from "@/components/navigation/NavigationFeedback";
 import styles from "./ArenaLearningHub.module.css";
 
 const Story = dynamic(() => import("./ArenaReleve").then(module => module.ArenaReleve), {
@@ -34,7 +37,7 @@ const MEETING_PLACES: Record<ArenaReleveMeetingId, { label: string; image: strin
   merch: { label: "Produits dérivés", image: "/placard/market-brand-studio-sylvain-v3.webp" },
   bank: { label: "Banque", image: "/placard/bureau-bank-sylvain-v2.webp" },
   community: { label: "Missions & personnage", image: "/placard/market-social-missions-sylvain-v3.webp" },
-  notebook: { label: "Collection", image: "/app/lottery/album-booster-mascot-v3.webp" },
+  notebook: { label: "Collection", image: "/app/lottery/sylvain-booster-presentation-v3.webp" },
 };
 type CompletedVisits = { story: boolean; meetings: ArenaReleveMeetingId[] };
 function readCompleted(storage?: ArenaLearningStorage): { visits: CompletedVisits; warning: boolean } {
@@ -49,10 +52,12 @@ function readCompleted(storage?: ArenaLearningStorage): { visits: CompletedVisit
   } catch { return { visits: { story: false, meetings: [] }, warning: true }; }
 }
 
-export function ArenaLearningHub({ onClose, onOpenQuarter }: { onClose: () => void; onOpenQuarter?: () => void }) {
+export function ArenaLearningHub({ onClose, onOpenQuarter, onStartGuide }: { onClose: () => void; onOpenQuarter?: () => void; onStartGuide?: () => void }) {
+  const router = useRouter();
   const storage = useArenaLearningStorage();
   const [initial] = useState(() => ({ ...readCompleted(storage), story: readArenaReleveResume(storage), quick: readArenaQuickTrialResume(storage) }));
   const [active, setActive] = useState<"quick" | "story" | ArenaReleveMeetingId | null>(null);
+  const [practiceOpen, setPracticeOpen] = useState(false);
   const [group, setGroup] = useState<"quick" | "story" | "meetings">(() => initial.story && !initial.story.completed && (!initial.quick || initial.quick.completed) ? 'story' : 'quick');
   const [completed, setCompleted] = useState(initial.visits);
   const [resume, setResume] = useState(initial.story);
@@ -60,7 +65,7 @@ export function ArenaLearningHub({ onClose, onOpenQuarter }: { onClose: () => vo
   const [warning, setWarning] = useState(initial.warning);
   const titleId = useId();
   const dialog = useRef<HTMLDialogElement>(null);
-  const trigger = useRef('[data-learning-group]');
+  const trigger = useRef('[data-learning-live-start]');
   const storyComplete = resume?.completed ?? completed.story;
   const resumeChapter = resume ? ARENA_RELEVE_CHAPTERS[resume.chapter] : null;
   const tourComplete = storyComplete && ARENA_RELEVE_MEETINGS.every(item => completed.meetings.includes(item.id));
@@ -88,6 +93,14 @@ export function ArenaLearningHub({ onClose, onOpenQuarter }: { onClose: () => vo
     setQuickResume(readArenaQuickTrialResume(storage));
     setActive(null);
   };
+  const startGuide = () => {
+    if (onStartGuide) { onStartGuide(); return; }
+    onClose();
+    navigateAfterOverlays(() => {
+      if (window.location.pathname === '/arene/placard') window.dispatchEvent(new Event(KQ_FARM_GUIDE_OPEN_EVENT));
+      else router.push('/arene/placard?guide=1');
+    });
+  };
 
   return <>
     {active === null ? <dialog ref={dialog} className={styles.dialog} data-arena-learning aria-labelledby={titleId}
@@ -99,8 +112,19 @@ export function ArenaLearningHub({ onClose, onOpenQuarter }: { onClose: () => vo
       <div className={styles.content}>
         <div className={styles.heading}>
           <h2 id={titleId}>Apprendre à jouer</h2>
-          <span className={styles.sandbox}>Partie d’essai · cartes et budget fictifs</span>
         </div>
+        <section className={styles.story} aria-labelledby="learning-farm-title">
+          <div className={styles.heroImage}><div className={styles.imageWindow}><Image src={ARENA_RELEVE_SCENES.arrival} alt="La ferme de Grand-père t’attend." fill sizes="(max-width: 700px) 100vw, 700px" priority /></div></div>
+          <div className={styles.storyBody}>
+            <h3 id="learning-farm-title">Les clés de la ferme</h3>
+            <p>« Ton grand-père t’a laissé les clés. Viens, on a une ferme à faire revivre ! » — Sylvain</p>
+            <p>De la première culture à ton équipe : découvre aussi les recrutements, les missions, les formations, les congés et la paie avec Sylvain.</p>
+            <button type="button" className={styles.primary} data-learning-live-start onClick={startGuide}><KeyRound size={19} aria-hidden="true" />Reprendre la ferme avec Sylvain<ArrowRight size={19} aria-hidden="true" /></button>
+          </div>
+        </section>
+        <details className={styles.storyDetails} data-learning-practice open={practiceOpen} onToggle={event => setPracticeOpen(event.currentTarget.open)}>
+          <summary>Essais à part · budget fictif</summary>
+          <p className={styles.meetingsIntro}>Ces exercices séparés conservent tes anciennes sauvegardes. Leurs cartes, dépenses et recettes restent dans l’essai.</p>
         <nav className={styles.shortcuts} aria-label="Choisir son aventure">
           <button type="button" data-learning-group="quick" aria-pressed={group === "quick"} onClick={() => setGroup("quick")}><Sprout size={17} aria-hidden="true" />Essai court</button>
           <button type="button" data-learning-group="story" aria-pressed={group === "story"} onClick={() => setGroup("story")}><KeyRound size={17} aria-hidden="true" />La Relève{resume && !resume.completed ? <span className={styles.count}>En cours</span> : null}</button>
@@ -150,6 +174,7 @@ export function ArenaLearningHub({ onClose, onOpenQuarter }: { onClose: () => vo
         </>}
         {tourComplete ? <p className={styles.completion}><Check size={19} aria-hidden="true" />{ARENA_RELEVE_LABELS.tourComplete}</p> : null}
         {warning ? <p role="status" className={styles.warning}>La progression enregistrée dans ce navigateur n’est pas entièrement disponible. Tu peux continuer à jouer ; garde l’essai ouvert pour conserver ta progression.</p> : null}
+        </details>
       </div>
     </dialog> : null}
     {active === 'quick' ? <QuickTrial onClose={returnToHub} onOpenQuarter={onOpenQuarter ?? onClose} onContinueLearning={() => { returnToHub(); setGroup('story'); trigger.current = '[data-learning-group="story"]'; }} />

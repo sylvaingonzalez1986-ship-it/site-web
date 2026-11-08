@@ -1,0 +1,42 @@
+{
+  "date": "2026-11-07",
+  "tool": "Built-in image_gen",
+  "userRequest": "Utiliser la génération d’image pour les animations ; les dessins SVG initiaux étaient trop basiques.",
+  "type": "illustration-story",
+  "reference": "public/placard/market-workshop-sylvain-v2.webp",
+  "originalSources": [
+    "output/imagegen/atelier-motion/trim-bench-v1.png",
+    "output/imagegen/atelier-motion/trim-parts-v1.png",
+    "output/imagegen/atelier-motion/trim-flower-v1.png"
+  ],
+  "assets": [
+    "/placard/atelier-motion/trim-bench-v1.webp",
+    "/placard/atelier-motion/trimmer-body-v1.webp",
+    "/placard/atelier-motion/trimmer-rotor-v1.webp",
+    "/placard/atelier-motion/scissors-upper-v1.webp",
+    "/placard/atelier-motion/scissors-lower-v1.webp",
+    "/placard/atelier-motion/trim-flower-v1.webp"
+  ],
+  "prompts": {
+    "bench": "Use case: illustration-story. Asset type: production background layer for a living 2D management game workstation, Kanab Quest. The supplied image is a STYLE REFERENCE ONLY, do not edit it. Generate a NEW richly illustrated hemp trimming workbench scene in exactly its friendly hand-inked cartoon style: confident black irregular contours, warm honey wood grain, petrol teal, cream, ochre brass, soft warm light, delicate printed halftone texture, charming crafted props. Strong professional game-art finish, not simple icon art, not vector primitives, not 3D.\nComposition: LANDSCAPE 3:2 canvas, a complete small CUTAWAY WORKSTATION isolated on a genuinely TRANSPARENT background, with generous clean outer padding. At the back a low wooden wall/pegboard and one small teal task lamp from upper left, compact shelf with two glass jars of clearly identifiable green/purple hemp flower buds. No text or labels. A sturdy honey-wood workbench seen nearly from the front with slightly visible tabletop, thick front edge and two stout legs. Its wide empty tabletop is at 64% canvas height. A shallow cream tray of a few hemp buds sits far LEFT on the tabletop. Leave the central and RIGHT tabletop completely empty, and leave the space above the right two-thirds empty TRANSPARENT: this is reserved for a separately animated machine and tools. Keep pegboard/shelf/lamp mainly along the left/back edge and outer top edge; no objects in the main equipment slot. A small teal collection crate under the left side, subtle small cut leaves on the tabletop at far left. Include recognizable narrow serrated palmate hemp leaves, NOT wheat, daisies or vegetables. All objects form one compact attractive connected workstation silhouette.\nNo people, no face, no hands, no existing machines, no scissors, no fan, no UI, no buttons, no words, no numbers, no logos, no floor plane or room rectangle. Actual alpha background, no beige/white rectangular background, checkerboard or black fill. Camera/perspective and desk must be coherent for compositing a tabletop machine at x68%, y48%. Richer crafted illustration with beautiful grain and strong clean silhouette readable at 400px wide.",
+    "parts": "Use case: illustration-story. Asset type: a single production CUTOUT SPRITE PARTS ATLAS for the same Kanab Quest 2D game. Supplied image is STYLE REFERENCE ONLY. Generate NEW assets matching the established friendly detailed hand-inked cartoon: bold dark ink contours, rich subtle printed grain/hatching, teal painted metal, cream highlights, warm gold accents; professional illustrated game props, not flat pictograms, not 3D.\nOutput SQUARE canvas, exactly TWO COLUMNS and TWO ROWS of equal square cells, generous TRUE TRANSPARENT gutters, NO grid lines. Each separate component completely within its cell with 12% empty padding. No labels or writing anywhere.\nTOP LEFT cell: a complete small realistic tabletop bowl-style hemp flower trimming machine, closed transparent domed lid over a shallow brushed stainless bowl, deep teal base and short feet, little gold ON button with no text. Nearly front view, slightly looking down so the circular bowl opening forms a wide ellipse at about 45% of the machine's height. It is a real bowl trimmer silhouette, NOT a washing machine or a box with a fan. Keep the dome transparent, with empty dark teal interior and a clear wide elliptical viewing region where a separate rotor will be composited. No rotating blade drawn inside; chassis and dome only. Machine isolated without table or floor, strong handsome constructed details, steel highlights, light wear, confident ink. No people.\nTOP RIGHT cell: the removable overhead rotor/decal for this bowl trimmer, viewed straight down as a CIRCULAR three-armed softly curved brass/steel mechanism with a round central axle and three small green hemp flower clusters in its outer sectors. Actual transparent cutout between arms. Perfectly circular composition centered exactly within its cell; it will be rotated by software then squashed into an ellipse to sit under the glass lid. No bowl, body, background, shadow or text.\nBOTTOM LEFT cell: exactly ONE half of a pair of precision spring pruning scissors, with one mustard yellow rounded finger loop below-left of the central circular pivot and one long elegant silver precision blade extending upper-right from that pivot. Pivot at EXACT CENTER of this cell. Upper blade points toward 1 o'clock. Handle, hinge and blade one continuous illustrated piece, tiny rivet, believable satin steel. No second blade, no hands. Full single scissor half fits cell with 12% margin.\nBOTTOM RIGHT cell: complementary second half of the EXACT SAME illustrated scissors, same size, perspective and style. Pivot at EXACT CENTER of this cell. Blade extends toward 2 o'clock, finger loop extends down toward 7 o'clock on the other side of the pivot. This second half will be overlaid on the previous half with their pivots aligned to form working scissors. One blade and one finger loop only.\nAll four cells equal scale conventions, clean fully transparent gutters. True alpha, no paper backdrop, no opaque boxes, no ground shadows. No frame, no text, no numbers, no characters, no wheat. These are functional separated illustrated parts for rigging, not an explanatory diagram."
+  },
+  "processing": "Sharp : établi 1536×1024 → 1152×768, WebP qualité 90 ; atlas 1254×1254 découpé en quatre cellules 627×627 puis exportées 640×640 WebP qualité 92. Alpha conservé, alphaQuality 100. Pas de redessin ni de suppression de fond par code. Sources PNG archivées.",
+  "flowerPrompt": "Use case: illustration-story. Asset type: one small transparent cutout workpiece sprite for a Kanab Quest game trimming bench. Image reference is STYLE ONLY. Draw a compact freshly harvested hemp/CBD flower cluster lying horizontally, with one prominent chunky olive and sage green bud, a few purple-green bracts, fine warm orange pistils, tiny pale resin specks and TWO long narrow serrated sugar leaves still sticking out from its right edge. This will be under illustrated pruning scissors in an existing game workstation. Faithful friendly hand-inked cartoon style from the reference: bold near-black irregular contours, beautiful subtle stippled printed texture, warm cream highlights, muted leafy green, rich crafted detail, not photorealistic and not 3D. Slight three-quarter elevated view appropriate for a tabletop. Exactly one isolated small botanical object, entire silhouette uncut, centered with generous 18% transparent margin. Genuine transparent alpha. NO background, floor, table, plate, vessel, scissors, hands, text, branding, frame, shadow backdrop, white rectangle, wheat, daisies or consumption accessories. Must read as a dense hemp flower, not a generic green leaf or vegetable. Landscape object on square canvas.",
+  "flowerProcessing": "Source PNG alpha → WebP 512×512, qualité 90, alphaQuality 100. Fleur séparée pour placer le travail manuel sous les lames, sans redessin par code.",
+  "pivots": {
+    "scissorsUpper": [
+      53.09,
+      47.82
+    ],
+    "scissorsLower": [
+      41.62,
+      47.28
+    ],
+    "rotor": [
+      49.3,
+      49.1
+    ]
+  },
+  "constraints": "Établi et corps de machine fixes ; seules les pièces découpées s’animent durant une tâche confirmée. Portraits existants préservés. Aucun texte, montant, progression ou contrôle dans les images. Machines historiques des fiches inchangées."
+}

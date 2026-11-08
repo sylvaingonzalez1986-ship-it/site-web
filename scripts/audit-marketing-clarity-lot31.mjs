@@ -15,6 +15,7 @@ const entry=`
 import React,{useState} from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
 import {KqMarketingCampaigns} from '${before?'audit-before':'/src/components/placard/KqMarketingCampaigns'}';
 import {KqTreasuryManagement} from '/src/components/placard/KqTreasuryManagement';
+import {KqPlayerWorkAvailabilityContext} from '/src/components/placard/KqPlayerActionTime';
 import {KqTutorialApiProvider,createKqTutorialApi} from '/src/components/placard/KqTutorialApiContext';
 import {createKqOperationsLesson,getKqOperationsCommerce,applyKqOperationsRequest} from '/src/lib/kanab-quest-operations-lesson';
 import {KQ_ONLINE_SITE_TIERS} from '/src/lib/kanab-quest-online';
@@ -63,9 +64,9 @@ if(scenario==='unknown-results'){data.online.marketing.active.results.orders=nul
 let now=scenario==='awaiting'?Date.parse(data.online.marketing.active.endsAt)+1:Date.parse(data.online.serverNow);
 window.__asks=[];window.__navigation=[];window.__requests=[];window.__data=data;window.__catalog=KQ_MARKETING_CAMPAIGNS;window.__budgets=KQ_MARKETING_BUDGETS;window.__hold=false;window.__release=false;
 const api=createKqTutorialApi(async(input,init={})=>{const path=new URL(String(input),location.origin).pathname,method=init.method??'GET',body=init.body?JSON.parse(init.body):null;window.__requests.push({path,method,body});if(shell!=='management'||path!=='/api/arena/placard/commerce')throw new Error('Unexpected API '+path);if(method==='GET')return Response.json(data);while(window.__hold&&!window.__release)await new Promise(resolve=>setTimeout(resolve,20));if(scenario==='refused')return Response.json({error:'Le solde disponible a changé. Aucune campagne engagée.'},{status:409});try{const payload=execute(body);data=getKqOperationsCommerce(state);data.business.nextEventAt=null;window.__data=data;return Response.json(payload);}catch(error){return Response.json({error:error.message},{status:409});}});
-function App(){const[,rerender]=useState(0);window.__refresh=patch=>{Object.assign(data,patch);rerender(v=>v+1)};window.__localCommand=(name,payload)=>{command(name,payload);data=getKqOperationsCommerce(state);data.business.nextEventAt=null;now=Date.parse(data.online.serverNow);window.__data=data;rerender(v=>v+1)};
+function App(){const[workAvailability,setWorkAvailability]=useState(null);window.__setWorkAvailability=setWorkAvailability;const[,rerender]=useState(0);window.__refresh=patch=>{Object.assign(data,patch);rerender(v=>v+1)};window.__localCommand=(name,payload)=>{command(name,payload);data=getKqOperationsCommerce(state);data.business.nextEventAt=null;now=Date.parse(data.online.serverNow);window.__data=data;rerender(v=>v+1)};
 const ask=(title,description,body,cost)=>window.__asks.push({title,description,body,cost});
-return <div className={retro.surface}><KqTutorialApiProvider api={api}><div data-audit-marketing>{shell==='management'?<KqTreasuryManagement initialView="marketing" onOpenShop={()=>window.__navigation.push('equipment')} onViewSales={id=>window.__navigation.push('sales:'+id)} onPrepareStock={()=>window.__navigation.push('prepare')}/>:<KqMarketingCampaigns data={data} now={now} busy={scenario==='busy'} onAsk={ask} onOpenPricing={id=>window.__navigation.push('pricing:'+id)} onPrepareStock={()=>window.__navigation.push('prepare')} advertising={<p>Publicité générale témoin.</p>}/>}</div></KqTutorialApiProvider></div>;}
+return <div className={retro.surface}><KqTutorialApiProvider api={api}><KqPlayerWorkAvailabilityContext.Provider value={workAvailability}><div data-audit-marketing>{shell==='management'?<KqTreasuryManagement initialView="marketing" onOpenShop={()=>window.__navigation.push('equipment')} onViewSales={id=>window.__navigation.push('sales:'+id)} onPrepareStock={()=>window.__navigation.push('prepare')}/>:<KqMarketingCampaigns data={data} now={now} busy={scenario==='busy'} onAsk={ask} onOpenPricing={id=>window.__navigation.push('pricing:'+id)} onPrepareStock={()=>window.__navigation.push('prepare')} advertising={<p>Publicité générale témoin.</p>}/>}</div></KqPlayerWorkAvailabilityContext.Provider></KqTutorialApiProvider></div>;}
 createRoot(document.getElementById('root')).render(<App/>);
 `;
 const modules={entry,...(before?{'audit-before':baseline}:{}),
@@ -98,6 +99,18 @@ try{
  }
  if(!before&&!layoutOnly){
   await page.setViewport({width:320,height:844,isMobile:true,hasTouch:true});
+  await open();
+  for(const [level,xp,hours,display] of [[1,0,1,'1 h'],[5,1600,0.6,'0,6 h (36 min)'],[10,8100,0.1,'0,1 h (6 min)']]){
+   await page.evaluate(xp=>window.__setWorkAvailability({status:'ready',skills:{culture:0,processing:0,communication:xp,sales:0,administration:0},serverNow:'2026-11-08T12:00:00Z',workday:{day:1,dailyHours:12,usedHours:0,remainingHours:12,nextDayAt:'2026-11-08T16:00:00Z'}}),xp);await frames();
+   const label=await content('[data-player-action-time="start-marketing"]');assert.ok(label.includes(display));assert.ok(label.includes('Communication niveau '+level));assert.equal(await page.$eval('[data-player-action-time="start-marketing"]',el=>Number(el.dataset.playerActionHours)),hours);
+   await enter('[data-marketing-launch]');assert.ok((await page.evaluate(()=>window.__asks.at(-1).description)).includes(label));await noOverflow();assert.equal((await posts()).length,0);
+   results.push({scenario:'player time and confirmation follow Communication level',level,hours});
+   if(level===10)await shot('communication-level-10-320',true);
+  }
+  for(const availability of [null,{status:'loading'},{status:'unavailable'},{status:'ready',skills:{}}]){
+   await page.evaluate(value=>window.__setWorkAvailability(value),availability);await frames();const label=await content('[data-player-action-time="start-marketing"]');assert.match(label,/Temps joueur à confirmer/);assert.match(label,/1 h au niveau 1 → 0,1 h \(6 min\) au niveau 10/);assert.equal(await page.$eval('[data-player-action-time="start-marketing"]',el=>el.hasAttribute('data-player-action-hours')),false);await noOverflow();
+  }
+  results.push({scenario:'unknown skill has an explanatory range and no invented debit'});
   const choose=async(selector,value)=>{await reveal(selector);await page.select(selector,value);await frames();};
   for(const scenario of ['ready','paid','results']){await open(scenario);for(const selector of ['[data-marketing-forecast-details]','[data-marketing-rules-details]','[data-marketing-history]'])if(await page.$(selector))assert.equal(await page.$eval(selector,el=>el.open),false);results.push({scenario:scenario+' folds full calculations, rules and past reports initially',noMutation:true});}
   await open();for(const selector of ['[data-marketing-forecast-details]','[data-marketing-rules-details]']){await reveal(selector);await page.focus(selector+' > summary');await page.keyboard.press('Enter');await frames();assert.equal(await page.$eval(selector,el=>el.open),true);await noOverflow();await shot(selector.includes('forecast')?'forecast-expanded-320':'rules-expanded-320',true);await page.keyboard.press('Enter');assert.equal(await page.$eval(selector,el=>el.open),false);}results.push({scenario:'native details open and close by keyboard without mutation',noMutation:true});

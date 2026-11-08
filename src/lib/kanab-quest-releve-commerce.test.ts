@@ -37,6 +37,15 @@ const online = (state: KqReleveCommerceState, command: string, payload: Record<s
 afterEach(() => vi.unstubAllGlobals());
 
 describe('exact placement in the shared commerce simulation', () => {
+  it.each([21, 101, 1000])('adds wholesale capacity for all %i partners and retains recent consumption', (partners) => {
+    let state = fixture(1);
+    state.operations.trial.commerce.shopPartners = partners;
+    expect(getReleveCommerceSnapshot(state).wholesale).toMatchObject({ capacityEquivalentUnits: 10000 + partners * 2500, remainingEquivalentUnits: 10000 + partners * 2500 });
+    state = sell(prepare(state), 100);
+    expect(getReleveCommerceSnapshot(state).wholesale).toMatchObject({ capacityEquivalentUnits: 10000 + partners * 2500, remainingEquivalentUnits: 9900 + partners * 2500 });
+    expect(state.operations.trial.commerce.shopPartners).toBe(partners);
+  });
+
   it('keeps a fully packaged 735 g harvest out of bulk containers without losing it from physical stock', () => {
     let state = prepare(run(fixture(1, 735), { action: 'mature' }, true).state);
     state = run(state, { action: 'borrow-computer' }, true).state;

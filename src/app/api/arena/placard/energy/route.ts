@@ -1,3 +1,4 @@
+import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -7,7 +8,7 @@ import { readKqRunSelection } from "@/lib/supabase/kanab-quest-backend";
 export const runtime = "nodejs";
 const headers = { "Cache-Control": "private, no-store, max-age=0" };
 function failure(error: unknown) {
-  const message = error instanceof Error ? error.message : "Électricité indisponible.";
+  const message = getKqPlayerWorkErrorMessage(error) ?? (error instanceof Error ? error.message : "Électricité indisponible.");
   return NextResponse.json({ error: message.startsWith("[supabase:") ? "Service électrique momentanément indisponible." : message }, { status: message.startsWith("[supabase:") ? 503 : 400, headers });
 }
 export async function GET(request?: Request) {

@@ -67,7 +67,7 @@ describe("season board business development", () => {
     }));
     expect(html).toContain("Dont +426,5 pour ton entreprise");
     expect(html).toContain("Entreprise 426,5 pts");
-    expect(html).toContain("réputation commerciale");
+    expect(html).toMatch(/réputation commerciale/i);
     expect(html).toContain("hors taxes et annulations");
     expect(html).not.toContain("/ 200");
     expect(html).not.toContain("Valeur nette");

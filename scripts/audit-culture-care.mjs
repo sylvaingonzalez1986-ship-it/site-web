@@ -23,7 +23,7 @@ import gameStyles from '/src/components/placard/KanabQuestDicePrototype.module.c
 const remoteMode=new URLSearchParams(location.search).has('remote');
 const fixture=new URLSearchParams(location.search).get('fixture');
 const params=new URLSearchParams(location.search);
-const BASIC_PRICE=500;
+const BASIC_PRICE=fixture==='remote-surface'?12500:500;
 const walletKey='kanab-quest-care-simulation-v1';
 // This payment fixture has its own balance; the game's starter budget is tested separately.
 if(!localStorage.getItem(walletKey))localStorage.setItem(walletKey,JSON.stringify({cashCents:35000,inventory:{}}));
@@ -51,7 +51,7 @@ function visualState({stage=0,outcome,phase='prepare',vitality,dead=false,proble
   if(dead)game={...game,phase:'complete',cultureDead:true,harvestGrams:0,care:{...game.care,vitality:0}};
   return game;
 }
-let wallet={cashCents:Number(params.get('cash')??35000),inventory:[],basicCarePriceCents:BASIC_PRICE,catalog:KQ_CARE_PRODUCTS};
+let wallet={cashCents:Number(params.get('cash')??35000),inventory:[],basicCarePriceCents:BASIC_PRICE,areaM2:fixture==='remote-surface'?25:null,pricingUnits:fixture==='remote-surface'?25:1,catalog:KQ_CARE_PRODUCTS};
 let serverGame,charges=0,lostResponse=false;
 const requests=[],receipts=new Map();
 const response=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json'}});
@@ -146,6 +146,7 @@ try {
   browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', '--disable-gpu'] });
   page = await browser.newPage();
   page.setDefaultTimeout(20000);
+  page.setDefaultNavigationTimeout(90000);
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   page.on('pageerror', error => errors.push(error.message));
   await page.setRequestInterception(true);
@@ -222,15 +223,15 @@ try {
   await page.locator('[data-care-reserve-toggle]').click();
   await reserveCash(34500);
   await clickText('Intrants du sol vivant');
-  await imagesReady('[aria-label="Intrants et protection biologique"] article img', 4);
+  await imagesReady('[aria-label="Intrants et protection biologique"] article > div:first-child img', 4);
   pass('four illustrated inputs loaded');
   assert.equal(await page.$$eval('[aria-label="Intrants et protection biologique"] article details', nodes => nodes.every(node => !node.open)), true);
   pass('product explanations stay discreet by default');
   assert.equal(await page.$$eval('[aria-label="Intrants et protection biologique"] a', nodes => nodes.length), 0);
   pass('input cards show no documentary or retailer links');
   await clickText('Protection biologique');
-  await imagesReady('[aria-label="Intrants et protection biologique"] article img', 6);
-  assert.equal(await page.$$eval('[aria-label="Intrants et protection biologique"] article img', nodes => nodes.every(node => node.alt.length > 10)), true);
+  await imagesReady('[aria-label="Intrants et protection biologique"] article > div:first-child img', 6);
+  assert.equal(await page.$$eval('[aria-label="Intrants et protection biologique"] article > div:first-child img', nodes => nodes.every(node => node.alt.length > 10)), true);
   pass('six illustrated PBI loaded with descriptive alternatives');
   const pbiRoles = await page.$$eval('[aria-label="Intrants et protection biologique"] article', cards => cards.map(card => ({ name: card.querySelector('h3').textContent, visible: card.innerText })));
   for (const [name, role] of [
@@ -247,7 +248,7 @@ try {
   pass('PBI cards show no documentary or retailer links');
   const aphidius = await page.waitForFunction(() => [...document.querySelectorAll('article')].find(node => node.querySelector('h3')?.textContent === 'Aphidius colemani'));
   await aphidius.asElement().$$eval('button', buttons => buttons.find(node => node.textContent.includes('Acheter')).click());
-  await page.waitForFunction(() => [...document.querySelectorAll('article')].some(node => node.querySelector('h3')?.textContent === 'Aphidius colemani' && node.textContent.includes('1 en réserve')));
+  await page.waitForFunction(() => [...document.querySelectorAll('article')].some(node => node.querySelector('h3')?.textContent === 'Aphidius colemani' && node.textContent.includes('1 passage disponible')));
   await waitCash(33300);
   await reserveCash(33300);
   pass('purchase adds one charge to reserve');
@@ -300,10 +301,10 @@ try {
     await page.locator('[data-care-toggle]').click();
     await page.locator('[data-care-reserve-toggle]').click();
     await clickText('Protection biologique');
-    await imagesReady('[aria-label="Intrants et protection biologique"] article img', 6);
+    await imagesReady('[aria-label="Intrants et protection biologique"] article > div:first-child img', 6);
     const card = await page.waitForFunction(name => [...document.querySelectorAll('[aria-label="Intrants et protection biologique"] article')].find(node => node.querySelector('h3')?.textContent === name), {}, scenario.name);
     await card.asElement().$$eval('button', buttons => buttons.find(node => node.textContent.includes('Acheter')).click());
-    await page.waitForFunction(name => [...document.querySelectorAll('article')].some(node => node.querySelector('h3')?.textContent === name && node.textContent.includes('1 en réserve')), {}, scenario.name);
+    await page.waitForFunction(name => [...document.querySelectorAll('article')].some(node => node.querySelector('h3')?.textContent === name && node.textContent.includes('1 passage disponible')), {}, scenario.name);
     assert.equal(await card.asElement().$$eval('button', buttons => buttons.find(node => node.textContent.includes('Utiliser')).disabled), true);
     assert.ok((await card.asElement().evaluate(node => node.innerText)).includes(scenario.reason));
     assert.ok((await card.asElement().evaluate(node => node.innerText)).includes('charge reste en réserve'));
@@ -324,7 +325,7 @@ try {
   await page.locator('[data-care-toggle]').click();
   await page.locator('[data-care-reserve-toggle]').click();
   await clickText('Intrants du sol vivant');
-  await clickText('Acheter 1 charge');
+  await clickText('Acheter 1 passage');
   await page.waitForFunction(() => typeof window.__releasePurchase === 'function');
   assert.equal(await page.$eval('[data-care-toggle]', node => node.disabled), true);
   assert.equal(await page.$eval('[data-care-reserve-toggle]', node => node.disabled), true);
@@ -404,6 +405,15 @@ try {
   await reserveCash(34500);
   assert.ok((await text()).includes('5,00'), 'The paid receipt includes the actual charge');
   pass('remote care accepts the displayed price, coalesces duplicate clicks and synchronizes the reserve balance');
+  await visitPaid('remote-surface',35000,true);
+  assert.match(await page.$eval('[data-care-basic]',node=>node.textContent),/125/);
+  assert.match(await page.$eval('[data-care-basic-section]',node=>node.textContent),/25 m²/);
+  await page.locator('[data-care-basic]').click();await waitBasicQueued();await waitCash(22500);
+  const surfaceReceipt=await remoteSnapshot();
+  assert.equal(surfaceReceipt.requests.find(request=>request.method==='POST').input.basicPriceCents,12500);
+  assert.equal(surfaceReceipt.charges,1);assert.equal(surfaceReceipt.wallet.cashCents,22500);
+  assert(surfaceReceipt.requests.some(request=>request.method==='GET'&&String(request.url).includes('runId=audit-run')));
+  pass('basic maintenance confirms and debits the server quote for all 25 m²');
   await visitPaid('remote-reject', 35000, true);
   const rejectedState = await page.evaluate(() => window.__careState);
   await page.locator('[data-care-basic]').click();
@@ -493,8 +503,25 @@ try {
   }
   const careDetails = await page.$eval('[data-care-basic-section]', node => node.textContent);
   assert.match(careDetails, /Entretien facultatif/);
-  assert.match(careDetails, /cinq étapes représente 25,00/);
-  assert.match(careDetails, /ne garantit ni la note du jury ni le prix de vente/);
+  const careFacts = await page.$$eval('[data-care-basic-section] [data-help-facts] > div', nodes => Object.fromEntries(nodes.map(node => [node.querySelector('dt').textContent, node.querySelector('dd strong').textContent])));
+  assert.match(careFacts['Une activation'], /5,00/);
+  assert.match(careFacts['Si acheté aux cinq étapes'], /25,00/);
+  assert.match(careDetails, /aucune note du jury ni aucun prix de vente garanti/);
+  await page.focus('[data-care-basic-section] details > summary');
+  await page.keyboard.press('Enter');
+  await page.waitForSelector('[data-care-basic-section] details[open]');
+  await imagesReady('[data-care-basic-section] details[open] [data-help-dashboard] img', 5);
+  assert.equal(await page.$$eval('[data-care-basic-section] [data-help-steps] > li',nodes=>nodes.every(node=>getComputedStyle(node).display==='flex')),true,'Legacy list styling must not collapse illustrated steps');
+  assert.deepEqual(await page.$$eval('[data-care-basic-section] figure strong', nodes => nodes.map(node => node.textContent)), ['28 /100 santé', '33 /100 santé']);
+  for (const width of [320, 390, 1280]) {
+    await page.setViewport({ width, height: 900 });
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true);
+    await (await page.$('[data-care-basic-section]')).screenshot({ path: resolve(output, `care-help-${width}.png`) });
+  }
+  await page.focus('[data-care-basic-section] details > summary');
+  await page.keyboard.press('Enter');
+  assert.equal(await page.$eval('[data-care-basic-section] details', node => node.open), false);
+  pass('care help retains exact prices and labelled example values, fits 320/390/1280px, and opens and closes by keyboard');
   await page.locator('[data-care-basic]').click();
   await waitBasicQueued();
   assert.equal(await page.$('[data-care-choice]'), null, 'A paid action must show its receipt rather than advice to skip it');

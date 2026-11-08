@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: vi.fn().mockResolvedValue(undefined) }));
 const mocks = vi.hoisted(() => ({ rpc: vi.fn(), insert: vi.fn(), energy: vi.fn() }));
 vi.mock("./admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc, from: () => ({ insert: mocks.insert }) }) }));
 vi.mock("./kanab-quest-market-backend", () => ({ getKqMarketSnapshot: vi.fn() }));
@@ -8,6 +9,8 @@ import { createKqStorageLot, KQ_CURING_DURATION_MS } from "@/lib/kanab-quest-sto
 import { createKqBusinessPreview } from "@/lib/kanab-quest-business";
 import { createKqOnlinePreview } from "@/lib/kanab-quest-online";
 import { createKqCustomerDemandSnapshot, KQ_CUSTOMER_DEMAND_PERIOD_MS } from "@/lib/kanab-quest-customer-demand";
+import { createKqProcessingPlan } from "@/lib/kanab-quest-processing-profiles";
+import type { KqProcessingJob } from "@/lib/kanab-quest-processing-work";
 const user = "00000000-0000-4000-8000-000000000001", stockId = "00000000-0000-4000-8000-000000000002", flowerId = "00000000-0000-4000-8000-000000000003";
 const now = Date.parse("2026-10-10T12:00:00Z");
 function current() {
@@ -24,6 +27,29 @@ describe("storage-aware server commerce quotes", () => {
     vi.clearAllMocks(); mocks.rpc.mockResolvedValue({ data: current(), error: null });
     mocks.insert.mockResolvedValue({ error: null }); mocks.energy.mockResolvedValue({ outstandingCents: 0 });
   });
+  it("attaches the processing job for the exact flower and route while retaining the authoritative storage projection", async () => {
+    const plan = createKqProcessingPlan({ inputGrams: 120, productGrams: 12, equipmentCodes: ["SIFT-TRAY"] })!;
+    const job: KqProcessingJob = { version: 1, flowerId, route: "dry-sift", inputGrams: 120, completedGrams: 0,
+      fundedGrams: 120, remainingGrams: 120, nominalHours: plan.nominalHours, remainingNominalHours: plan.nominalHours,
+      status: "running", startedAt: new Date(now).toISOString(), readyAt: new Date(now + 120000).toISOString(), finalReadyAt: null,
+      delegated: false, actor: null, bookedHours: .5, activeHours: .16, remainingHours: 0, plan };
+    const value = current();
+    value.stocks[0].route = "dry-sift";
+    mocks.rpc.mockResolvedValue({ data: { ...value, processingWorkVersion: 1, processingJobs: [{ ...job, route: "rosin-trial" }, job] }, error: null });
+    const snapshot = await getKqCommerceSnapshot(user, true);
+    expect(snapshot.stocks[0].processingWork).toEqual(job);
+    expect(snapshot.stocks[0].storageRevision).toBe(7);
+    expect(snapshot.stocks[0].storage).toBeDefined();
+    expect(snapshot.stocks[0]).not.toHaveProperty("storageState");
+  });
+
+  it.each([
+    { processingWorkVersion: 1 }, { processingWorkVersion: 1, processingJobs: null }, { processingJobs: [null] },
+  ])("fails closed on malformed processing job snapshots %s", async changes => {
+    mocks.rpc.mockResolvedValue({ data: { ...current(), ...changes }, error: null });
+    await expect(getKqCommerceSnapshot(user, true)).rejects.toThrow(/invalid processing jobs snapshot/);
+  });
+
   it("persists the server storage revision and expires before the next storage change", async () => {
     const result = await handleKqCommerceAction(user, { action: "quote", stockId, channel: "wholesale", policy: "advised", units: 100,
       storageRevision: 999, readyAt: "past" });

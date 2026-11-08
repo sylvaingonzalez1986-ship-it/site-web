@@ -1,0 +1,72 @@
+.prospecting { display: grid; gap: 8px; min-width: 0; color: #172923; container: prospecting / inline-size; }
+.prospecting *, .prospecting *::before, .prospecting *::after { box-sizing: border-box; }
+.heading { display: grid; gap: 6px; }
+.heading h4 { margin: 0; font-size: 1.1rem; }
+.heading p, .prospecting p { margin: 0; line-height: 1.5; }
+.heading p { font-size: .84rem; color: #3f584c; }
+.content { display: grid; gap: 8px; min-width: 0; }
+.selection { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 20px; padding-top: 7px; }
+.geography { display: grid; align-content: start; gap: 4px; min-width: 0; }
+.mapSheet { min-width: 0; margin: 0; padding: 0; }
+.mapViewport { min-width: 0; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: thin; scrollbar-color: #557b76 #f5edce; }
+.mapBoard { position: relative; min-width: 480px; max-width: 620px; margin-inline: auto; }
+.map { display: block; width: 100%; height: auto; overflow: visible; }
+.department { fill: #e9dcae; stroke: #5d6c50; stroke-width: 1.4px; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+.department[data-prospecting-department="29"] { fill: #ccdfce; }
+.department[data-prospecting-department="35"] { fill: #e2dfb5; }
+.department[data-prospecting-department="56"] { fill: #c6ddd4; }
+.department[data-selected="true"] { fill: var(--game-surface-warm, #f2ab50); stroke: #24594e; stroke-width: 2.5px; }
+.departmentCode { fill: #334d3c; font: 750 25px var(--font-body, sans-serif); opacity: .8; pointer-events: none; }
+.sea { fill: #557b76; font: 500 19px var(--font-body, sans-serif); pointer-events: none; }
+.cityDot { fill: #172923; stroke: #fff1d6; stroke-width: 3px; }
+.map g[data-selected="true"] .cityDot { fill: #006f66; stroke-width: 5px; }
+.cityLabel { fill: #172923; stroke: #fff5dc; stroke-width: 4px; paint-order: stroke; font: 750 18px var(--font-body, sans-serif); pointer-events: none; }
+.map g[data-selected="true"] .cityLabel { fill: #00584e; }
+.north { fill: #24594e; font: 750 18px var(--font-body, sans-serif); }
+.north path { fill: none; stroke: #24594e; stroke-width: 2px; }
+.mapSheet figcaption { margin-top: 4px; color: #506155; font-size: .72rem; line-height: 1.4; }
+.prospecting .mapPin, .prospecting .cities button { font: inherit; color: #172923; cursor: pointer; min-height: 44px; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.prospecting .mapPin { position: absolute; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; min-width: 44px; padding: 0; transform: translate(-50%, -50%); font-size: .82rem; font-weight: 850; }
+.prospecting button[aria-pressed="true"] { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff1d6; }
+.cities { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; min-width: 0; }
+.prospecting .cities button { display: grid; align-content: center; justify-content: start; gap: 5px; min-width: 0; padding: 11px 12px; text-align: left; font-size: .84rem; }
+.cityName { display: flex; align-items: center; flex-wrap: wrap; gap: 5px; font-weight: 750; }
+.cityNumber { font-size: .7rem; font-weight: 500; }
+.cities small { font-size: .73rem; line-height: 1.3; }
+.prospecting button:disabled { color: #667064; opacity: 1; cursor: not-allowed; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
+.prospecting :is(button, summary, a, .mapViewport):focus-visible { outline: 3px solid #006f66; outline-offset: 4px; }
+.cityHeading { display: flex; gap: 9px; align-items: center; }
+.cityHeading > svg { flex: 0 0 auto; color: #205d51; }
+.cityHeading h5 { margin: 0 0 4px; font-size: 1.2rem; line-height: 1.2; }
+.cityHeading p { font-size: .79rem; color: #506155; }
+.numbers { display: grid; margin: 0; gap: 0; }
+.numbers > div { display: grid; gap: 3px; }
+.numbers dt { font-size: .75rem; color: #506155; }
+.numbers dd { margin: 0; font-size: 1.1rem; font-weight: 850; }
+.network { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; gap: 12px; padding-bottom: 8px; border-bottom: 1px solid #17292330; }
+.network > div { display: grid; gap: 3px; }
+.network dt { font-size: .72rem; color: #506155; }
+.network dd { margin: 0; font-size: .84rem; font-weight: 750; }
+.profileContent { display: grid; gap: 12px; padding-block: 6px 12px; }
+.description { font-size: .84rem; }
+.flavors { display: flex; flex-wrap: wrap; gap: 10px 15px; list-style: none; margin: 0; padding: 0; }
+.flavors li { display: flex; align-items: center; gap: 7px; font-size: .8rem; font-weight: 750; }
+.flavors img { display: block; width: 36px; height: 36px; object-fit: contain; }
+.products { display: grid; list-style: none; margin: 0; padding: 0; }
+.products li { display: grid; gap: 5px; padding: 11px 0; border-bottom: 1px solid #17292325; }
+.products li > div { display: flex; justify-content: space-between; align-items: baseline; gap: 9px; }
+.products strong { font-size: .85rem; }
+.products span { font-size: .75rem; font-weight: 750; text-align: right; }
+.products [data-product-interest="high"] span { color: #006f66; }
+.products small { font-size: .75rem; color: #506155; line-height: 1.4; }
+.departmentDetails { padding-top: 4px; }
+.departmentDetails summary, .about summary, .cityList summary, .marketProfile summary { cursor: pointer; min-height: 44px; padding: 12px 0; font-size: .82rem; font-weight: 750; }
+.cityList, .marketProfile, .about { border-top: 1px solid #17292325; }
+.cityList[open] { padding-bottom: 8px; }
+.departmentDetails > p { font-size: .8rem; padding: 8px 0 12px; }
+.about p { font-size: .78rem; color: #506155; padding: 7px 0; }
+.about a { color: #205d51; text-underline-offset: 3px; }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+@container prospecting (max-width: 600px) { .mapBoard { width: 480px; } }
+@container prospecting (max-width: 350px) { .prospecting .cities button { padding: 10px; font-size: .79rem; } .cityNumber { display: none; } .selection { gap: 8px 12px; } .cityHeading h5 { font-size: 1.1rem; } .cityHeading p { font-size: .73rem; } }
+@media (hover: hover) { .prospecting button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); color: #172923; } }

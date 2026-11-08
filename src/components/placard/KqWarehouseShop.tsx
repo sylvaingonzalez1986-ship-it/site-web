@@ -1,5 +1,6 @@
-﻿"use client";
+"use client";
 
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import Image from "next/image";
 import { useEffect, useId, useMemo, useRef, useState, type KeyboardEvent, type MouseEvent } from "react";
 import { ArrowRight, Check, ChevronRight, Droplets, Fan, FlaskConical, Flower2, LampDesk, Package, PackageCheck, Shield, ShoppingBag, SlidersHorizontal, Sparkles, Thermometer, Warehouse, Wind, Wrench, X, type LucideIcon } from "lucide-react";
@@ -45,7 +46,7 @@ function ReuseDetails({ reuse, product }: { reuse: KqWarehouseReusePreview; prod
       <span>{originLabels[group.origin]} · {quantityLabel(group.quantity, !!product.option)}</span>
       <strong>{group.wearPercent === null ? "Usure inconnue" : `Usure ${number(group.wearPercent)} %`}</strong>
     </li>)}</ul>
-    <p>Le matériel conservé ou réutilisé garde son usure. Il peut venir de la réserve ou d’une autre zone modifiée dans le devis.</p>
+    <KqHelpNote art="help-workshop">Matériel conservé ou réutilisé : même usure. Il provient de la réserve ou d’une autre zone modifiée dans ce devis.</KqHelpNote>
     {reuse.planPurchaseQuantity !== reuse.newQuantity && <p>Achats de ce modèle dans le plan entier : {quantityLabel(reuse.planPurchaseQuantity, !!product.option)} · {formatKqCash(reuse.planPurchaseCents)}, hors pose.</p>}
   </details>;
 }
@@ -228,7 +229,7 @@ export function KqWarehouseShop({ open, onClose, zone, state, installedState, co
                     </dl>
                   </>}
                   {quote.reuse ? <details className={styles.referencePrice}><summary>Prix neuf de référence</summary>
-                    <span className={styles.priceLabel}>Si tout était acheté neuf · hors pose</span>
+                    <KqHelpNote art="help-accounts">Si tout était acheté neuf · hors pose</KqHelpNote>
                     <strong data-warehouse-shop-price={quote.equipmentPerM2}>{formatKqCash(quote.equipmentPerM2)}<small> / m²</small></strong>
                     <p className={styles.zonePrice}><b data-warehouse-shop-zone-price={quote.equipmentCents}>{formatKqCash(quote.equipmentCents)}</b> pour {quote.zoneArea} m²</p>
                     {product.device && <p className={styles.unitPrice}>{quote.quantity} appareil{quote.quantity > 1 ? "s" : ""} × {formatKqCash(product.device.priceCents)} / unité</p>}
@@ -250,7 +251,20 @@ export function KqWarehouseShop({ open, onClose, zone, state, installedState, co
                 <div className={styles.productActions}><button type="button" data-warehouse-shop-choose={product.code} disabled={locked || chosen || (!services && (!validZone || zoneLocked))} onClick={() => choose(product)}>{chosen ? <><Check size={16} />Choisi</> : services ? <>Placer <ArrowRight size={16} /></> : <>Ajouter au devis <ArrowRight size={16} /></>}</button></div>
               </article>;
             })}</div>
-            <details className={styles.method} data-warehouse-quote-details><summary>Détails du devis</summary><p>{services ? "Le prix neuf de référence est affiché pour 1 m², hors pose et aménagement. Ta réserve sera réutilisée selon la surface tracée." : "Les achats affichés pour cette zone concernent ce modèle, hors pose et aménagement."} Le devis final regroupe les achats de toutes les zones et les frais de pose, puis déduit les crédits éventuels.{!services && " La répartition du matériel tient compte de toutes tes modifications. Les charges incluent tous les équipements de la zone pour un cycle. Les appareils s’achètent entiers : un grand modèle peut consommer davantage dans une petite zone."}</p><p>Prix, capacités et récoltes sont des valeurs de simulation.{!services ? ` Bonus des modules : maximum +${KQ_WAREHOUSE_OPTION_LIMITS.yieldBonusPercent} % de récolte et +${KQ_WAREHOUSE_OPTION_LIMITS.qualityBonus} points de qualité, auxquels s’ajoute la qualité de l’éclairage et de l’extraction. Les chiffres affichés tiennent compte des plafonds. La qualité au départ améliore les conditions de la culture ; la récolte finale dépend aussi de tes soins.` : ""}</p></details>
+            <details className={styles.method} data-warehouse-quote-details><summary>Détails du devis</summary><KqHelpDashboard>
+              <KqHelpSteps art="warehouse" steps={[
+                { label: services ? "Surface tracée" : "Modèle choisi", detail: services ? "Référence neuve pour 1 m² ; réserve réutilisée selon la surface." : "Ce modèle, dans cette zone, hors pose et aménagement.", art: services ? "help-plan" : "help-workshop" },
+                { label: "Tout le plan", detail: "Toutes les zones + pose et aménagement.", art: "warehouse" },
+                { label: "Total final", detail: "Crédits déduits ; matériel réparti selon toutes les modifications.", art: "help-accounts" },
+              ]} />
+              {!services ? <KqHelpGrid art="warehouse" items={[
+                { label: "Charges", value: "Par zone et par cycle", detail: "Tous ses équipements inclus.", art: "help-accounts" },
+                { label: "Appareils", value: "Achetés entiers", detail: "Un grand modèle peut consommer plus dans une petite zone.", art: "help-workshop" },
+                { label: "Modules · récolte", value: `+${KQ_WAREHOUSE_OPTION_LIMITS.yieldBonusPercent} % max`, art: "harvest" },
+                { label: "Modules · qualité", value: `+${KQ_WAREHOUSE_OPTION_LIMITS.qualityBonus} points max`, detail: "Éclairage et extraction s’ajoutent. Plafonds déjà appliqués.", art: "help-quality" },
+              ]} /> : null}
+              <KqHelpNote>Prix, capacités et récoltes : valeurs de simulation.{!services ? " La qualité de départ aide la culture ; la récolte finale dépend aussi de tes soins." : ""}</KqHelpNote>
+            </KqHelpDashboard></details>
           </>}
         </section>
       </div>

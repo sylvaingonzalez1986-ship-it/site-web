@@ -63,8 +63,8 @@ export async function updateOrderPaymentStateByBackend(
 
 export async function updateOrderPaymentByVivaOrderCodeByBackend(input: {
   orderCode: string | number;
-  paymentState: "paid" | "failed";
-  transactionId?: string;
+  paymentState: "failed";
+  transactionId: string;
 }): Promise<CmsOrder | null> {
   return updateOrderPaymentByVivaOrderCodeInSupabase(input);
 }

@@ -99,7 +99,13 @@ export function getKqLotSummary(source: KqLotSummarySource): KqLotSummary {
   result.juryScore = score(stock.juryScore) ?? undefined;
   const processingAt = date(stock.processingReadyAt);
   const serverNow = date(stock.storage?.serverNow);
-  if (stock.processingReadyAt && (!processingAt || !serverNow || Date.parse(processingAt) > Date.parse(serverNow))) {
+  if (stock.processingWork && stock.processingWork.status !== "completed") {
+    const job = stock.processingWork;
+    result.state = job.status === "blocked" ? "Transformation en attente" : job.status === "passive" ? "Séchage en cours" : "Transformation en cours";
+    result.next = job.status === "blocked" ? "Reprends le travail dans l’Atelier avec des heures disponibles." : "Le lot reste réservé jusqu’à la fin de la transformation.";
+    result.readyAt = job.finalReadyAt ? date(job.finalReadyAt) : null;
+    result.progress = job.inputGrams > 0 ? Math.min(99, Math.max(0, job.completedGrams / job.inputGrams * 100)) : null;
+  } else if (!stock.processingWork && stock.processingReadyAt && (!processingAt || !serverNow || Date.parse(processingAt) > Date.parse(serverNow))) {
     result.state = processingAt && serverNow ? "Transformation en cours" : "Préparation à vérifier";
     result.next = processingAt && serverNow ? "Le produit pourra être proposé à la vente après la fin de sa préparation." : "Actualise le lot pour confirmer la fin de sa préparation.";
     result.readyAt = processingAt; result.progress = null;

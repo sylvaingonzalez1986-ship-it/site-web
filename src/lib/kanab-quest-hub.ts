@@ -1,6 +1,8 @@
 import type { KqHubAttentionNotice, KqHubAttentionResult } from "./kanab-quest-hub-attention";
+import type { KqPlayerWorkAvailability } from "./kanab-quest-player-work";
 
-export type KqPlacardHubDestination = "game" | "storage" | "arena" | "market" | "shop";
+export type KqPlacardHubDestination = "game" | "storage" | "arena" | "market" | "shop" | "workshop";
+export const KQ_WORKSHOP_TRIM_HREF = "/arene/placard?view=workshop&section=processing&workshop=trim";
 
 export type KqPlacardNextAction = {
   destination: KqPlacardHubDestination;
@@ -8,10 +10,11 @@ export type KqPlacardNextAction = {
   title: string;
   description: string;
   buttonLabel: string;
+  href?: string;
 };
 
 type KqPlacardResumeAction = Omit<KqPlacardNextAction, "destination"> & {
-  destination: KqPlacardHubDestination | "treasury";
+  destination: KqPlacardHubDestination | "treasury" | "staff";
   options?: KqHubAttentionNotice["options"];
 };
 
@@ -20,6 +23,7 @@ export type KqPlacardHubSnapshot = {
   readyLotCount: number;
   availableFlowerCount: number;
   curingFlowerCount?: number;
+  trimFlowerCount?: number;
 };
 
 export function getKqPlacardNextAction(input: KqPlacardHubSnapshot & { equipmentGoalAffordable?: boolean }): KqPlacardNextAction {
@@ -40,6 +44,12 @@ export function getKqPlacardNextAction(input: KqPlacardHubSnapshot & { equipment
       description: "Le jury a rendu son verdict. Choisis maintenant entre vente brute, transformation ou biomasse.",
       buttonLabel: "Vendre mes lots",
     };
+  }
+  if ((input.trimFlowerCount ?? 0) > 0) {
+    return { destination: "workshop", href: KQ_WORKSHOP_TRIM_HREF, eyebrow: "Avant le jury",
+      title: `${input.trimFlowerCount} lot${input.trimFlowerCount! > 1 ? "s" : ""} à trimmer`,
+      description: "Le trim retire les petites feuilles de la récolte. Cette préparation est obligatoire avant le jury : fais-la toi-même ou confie-la à un salarié.",
+      buttonLabel: "Faire le trim" };
   }
   if (input.availableFlowerCount > 0) {
     return {
@@ -82,12 +92,13 @@ export type KqPlacardResumeStorage = {
 };
 export type KqPlacardResume = {
   primary: KqPlacardResumeAction | null;
-  kind: "storage" | "culture" | "market" | "jury" | "curing" | "new-culture" | "finance" | "sales" | "unknown";
+  kind: "storage" | "culture" | "market" | "trim" | "jury" | "curing" | "new-culture" | "finance" | "sales" | "workday" | "unknown";
   tone: "attention" | "ready" | "waiting" | "unknown";
   facts: string[];
   factActions: KqHubAttentionNotice[];
   attentionStatus: string | null;
   canRefreshAttention: boolean;
+  workNotice: string | null;
 };
 
 export type KqPlacardResumeAttention = {
@@ -100,7 +111,7 @@ const realDate = (date: string) => new Intl.DateTimeFormat("fr-FR", {
   day: "numeric", month: "long", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Paris",
 }).format(new Date(date));
 
-export function getKqPlacardResume(snapshot: KqPlacardHubSnapshot | null, storage: KqPlacardResumeStorage | null, attention?: KqPlacardResumeAttention): KqPlacardResume {
+export function getKqPlacardResume(snapshot: KqPlacardHubSnapshot | null, storage: KqPlacardResumeStorage | null, attention?: KqPlacardResumeAttention, work?: KqPlayerWorkAvailability): KqPlacardResume {
   const exposed = storage?.lots.filter(lot => typeof lot.projection.capacity?.overflowUnits === "number" && lot.projection.capacity.overflowUnits > 0) ?? [];
   const overflowUnits = exposed.reduce((total, lot) => total + lot.projection.capacity!.overflowUnits, 0);
   const serverNow = storage ? Date.parse(storage.serverNow) : NaN;
@@ -133,7 +144,7 @@ export function getKqPlacardResume(snapshot: KqPlacardHubSnapshot | null, storag
     };
   } else if (snapshot) {
     primary = getKqPlacardNextAction({ ...snapshot, curingFlowerCount: curingCount });
-    kind = snapshot.activeRun ? "culture" : snapshot.readyLotCount > 0 ? "market" : snapshot.availableFlowerCount > 0 ? "jury" : curingCount > 0 ? "curing" : "new-culture";
+    kind = snapshot.activeRun ? "culture" : snapshot.readyLotCount > 0 ? "market" : (snapshot.trimFlowerCount ?? 0) > 0 ? "trim" : snapshot.availableFlowerCount > 0 ? "jury" : curingCount > 0 ? "curing" : "new-culture";
     tone = "ready";
     if (kind === "curing") {
       tone = protectedCuring ? "waiting" : "unknown";
@@ -161,7 +172,41 @@ export function getKqPlacardResume(snapshot: KqPlacardHubSnapshot | null, storag
       title: selectedNotice.title, description: selectedNotice.description, buttonLabel: selectedNotice.buttonLabel };
   }
 
-  const factActions = [finance, sales].filter((notice): notice is KqHubAttentionNotice => Boolean(notice && notice !== selectedNotice))
+  // Hours contextualize ordinary activity only, after storage and financial priorities.
+  // Preparing, inspecting, delegating and entering the jury remain available for free.
+  const workday = work?.status === "ready" && Number.isFinite(work.workday.remainingHours)
+    && work.workday.remainingHours >= 0 && work.workday.remainingHours <= 12
+    && Number.isFinite(Date.parse(work.serverNow)) && Date.parse(work.workday.nextDayAt) > Date.parse(work.serverNow)
+    ? work.workday : null;
+  const minimumHours = kind === "new-culture" ? 1 : ["culture", "market", "trim"].includes(kind) ? 0.5 : null;
+  let workNotice: string | null = null;
+  if (workday && workday.remainingHours < 1) {
+    workNotice = `${workday.remainingHours.toLocaleString("fr-FR")} h disponible${workday.remainingHours > 1 ? "s" : ""} aujourd’hui ; les heures réservées sont déjà comptées. Renouvellement le ${realDate(workday.nextDayAt)} (heure de Paris).`;
+    if (primary && minimumHours !== null && workday.remainingHours < minimumHours) {
+      if (workday.remainingHours === 0) {
+        kind = "workday"; tone = "waiting";
+        primary = { destination: "staff", eyebrow: "Journée réservée", title: "Tes heures du jour sont engagées",
+          description: "Retrouve tes missions et prépare la suite. Consulter la ferme et déléguer au personnel restent possibles sans utiliser tes heures.", buttonLabel: "Voir mon planning" };
+      } else {
+        tone = "waiting";
+        primary = { ...primary, title: "Prépare ta prochaine culture", description: "Choisis tes Buddies et tes cartes gratuitement. Le lancement demande 1 h : tu pourras le confirmer à la prochaine journée." };
+      }
+    }
+  } else if (work && !workday) {
+    workNotice = work.status === "loading" ? "Vérification de tes heures disponibles. Consulter les activités reste possible."
+      : "Tes heures restent à vérifier. Actualise la jauge avant de prévoir un travail ; aucune réserve n’est supposée disponible.";
+    if (primary && minimumHours !== null) {
+      tone = "unknown";
+      primary = { ...primary, title: kind === "new-culture" ? "Prépare ta prochaine culture" : primary.title,
+        description: `${primary.description} Vérifie tes heures avant de confirmer un travail.` };
+    }
+  }
+
+  const trim: KqHubAttentionNotice | null = snapshot && (snapshot.trimFlowerCount ?? 0) > 0 && kind !== "trim"
+    ? { id: "trim-required", severity: "attention", destination: "workshop", href: KQ_WORKSHOP_TRIM_HREF, options: {},
+      title: "Préparer la récolte", description: "Le trim est obligatoire avant le jury, avec ou sans salarié.", buttonLabel: "Faire le trim",
+      summary: `${snapshot.trimFlowerCount} lot${snapshot.trimFlowerCount! > 1 ? "s" : ""} à trimmer avant le jury.` } : null;
+  const factActions = [trim, finance, sales].filter((notice): notice is KqHubAttentionNotice => Boolean(notice && notice !== selectedNotice))
     .sort((left, right) => Number(left.severity === "upcoming") - Number(right.severity === "upcoming"));
   const facts: string[] = factActions.map(notice => notice.summary);
   if (!snapshot) facts.push("Le suivi des activités est indisponible ; aucune activité n’est supposée terminée.");
@@ -182,5 +227,5 @@ export function getKqPlacardResume(snapshot: KqPlacardHubSnapshot | null, storag
   const visibleFacts = canRefreshAttention && attentionStatus ? [...facts.slice(0, 1), attentionStatus] : facts.slice(0, 2);
   return { primary, kind, tone, facts: visibleFacts,
     factActions: factActions.filter(notice => visibleFacts.includes(notice.summary)), attentionStatus,
-    canRefreshAttention };
+    canRefreshAttention, workNotice };
 }

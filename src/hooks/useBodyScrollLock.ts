@@ -3,9 +3,6 @@
 import { useLayoutEffect } from "react";
 
 let lockCount = 0;
-let prevHtmlOverflow = "";
-let prevBodyOverflow = "";
-let prevBodyPaddingRight = "";
 
 function lockBodyScroll() {
   if (typeof window === "undefined") {
@@ -15,19 +12,14 @@ function lockBodyScroll() {
   if (lockCount === 0) {
     const html = document.documentElement;
     const body = document.body;
-    const scrollbarWidth = window.innerWidth - html.clientWidth;
+    const scrollbarWidth = Math.max(0, window.innerWidth - html.clientWidth);
+    const paddingRight = Number.parseFloat(window.getComputedStyle(body).paddingRight) || 0;
 
-    prevHtmlOverflow = html.style.overflow;
-    prevBodyOverflow = body.style.overflow;
-    prevBodyPaddingRight = body.style.paddingRight;
-
-    // Use overflow:hidden on both html & body — no position:fixed.
-    // position:fixed on <body> kills touch-scrolling inside modals on iOS Safari.
-    html.style.overflow = "hidden";
-    body.style.overflow = "hidden";
-    if (scrollbarWidth > 0) {
-      body.style.paddingRight = `${scrollbarWidth}px`;
-    }
+    // Own a CSS lock instead of snapshotting inline overflow/padding. Other
+    // overlays (including Next's error panel) must not save our lock as their
+    // restore value, or crossing close order can leave every page unscrollable.
+    html.style.setProperty("--site-scroll-lock-padding-right", `${paddingRight + scrollbarWidth}px`);
+    html.setAttribute("data-site-scroll-locked", "");
   }
 
   lockCount += 1;
@@ -44,10 +36,8 @@ function unlockBodyScroll() {
   }
 
   const html = document.documentElement;
-  const body = document.body;
-  html.style.overflow = prevHtmlOverflow;
-  body.style.overflow = prevBodyOverflow;
-  body.style.paddingRight = prevBodyPaddingRight;
+  html.removeAttribute("data-site-scroll-locked");
+  html.style.removeProperty("--site-scroll-lock-padding-right");
   // Overflow locking keeps the current position. Restoring an opening-time
   // snapshot here would override navigation that happened inside the modal.
 }

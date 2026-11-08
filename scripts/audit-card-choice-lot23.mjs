@@ -95,7 +95,7 @@ try{
  async function open(scenario='reaction'){
   await page.goto(`${origin}/?scenario=${scenario}`,{waitUntil:'networkidle0'});await page.waitForSelector('[data-culture-play][data-player-mode="true"]');await page.evaluate(()=>document.fonts.ready);
   assert.equal(await page.$('[data-playable-lesson]'),null,'The actual player branch is mounted');
-  await enter('[data-culture-hand] > summary');await enter('[data-hand-filter="all"]');
+  if(await page.$('[data-culture-tab="cards"]'))await enter('[data-culture-tab="cards"]');else await enter('[data-culture-hand] > summary');await enter('[data-hand-filter="all"]');
   const code=await page.evaluate(()=>window.__targetCard);await enter(`[data-action-card="${code}"]`);await page.waitForSelector('[data-culture-card-cost]',{visible:true});await frames();return code;
  }
  async function noMutation(){assert.deepEqual(await page.evaluate(()=>window.__calls.filter(call=>call.method!=='GET')),[]);assert.equal(await page.evaluate(()=>JSON.stringify(window.__game)===window.__initialGame),true);}
@@ -136,6 +136,8 @@ try{
    assert.equal(await page.$eval('[data-card-choice-rules]',e=>e.open),true);
    const expanded=await layout();assert.ok(expanded.confirm.visible&&expanded.confirm.uncovered,'Expanded rules never move the footer off screen');
    await shot(`expanded-${width}x${height}`);await noMutation();
+   await page.$eval('[data-card-choice-rules] [data-help-facts]',element=>element.scrollIntoView({block:'start'}));
+   await shot(`illustrated-rules-${width}x${height}`);await noMutation();
    results.push({scenario:'fixed costs, truthful comparison, details and modal keyboard',width,height,expandedBodyHeight:expanded.bodyScrollHeight,confirmationVisible:true});
   }
   await close(code);
@@ -176,7 +178,8 @@ try{
    assert.equal(await page.evaluate(()=>window.__calls.filter(call=>call.method==='POST').length),1,'A second click during confirmation cannot send another play');
    assert.deepEqual(await page.evaluate(()=>window.__game),expected,'Confirmed effect equals real domain execution');
    assert.equal(await page.evaluate(code=>window.__inventory[code],code),2,'Exactly one of three copies is consumed');
-   assert.equal(await page.evaluate(()=>document.activeElement===document.body),false,'Filtered-card removal retains useful keyboard focus');
+   await page.waitForFunction(()=>document.activeElement?.matches('[data-action-card], [data-culture-hand], [data-culture-hand] > summary'),{timeout:2000});
+   assert.equal(await page.evaluate(()=>document.activeElement?.matches('[data-action-card], [data-culture-hand], [data-culture-hand] > summary')),true,'Filtered-card removal retains useful keyboard focus in the hand');
    results.push({scenario:'single confirmed play',width,height,oneRequest:true,oneCopyConsumed:true,exactEngineResult:true});
   }
   for(const [width,height,scenario] of [[320,422,'server-error'],[390,844,'server-error'],[320,422,'server-error-long-title']]){

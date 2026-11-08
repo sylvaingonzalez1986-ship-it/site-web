@@ -1,0 +1,41 @@
+.dashboard { display: grid; gap: 14px; min-width: 0; color: var(--game-ink, #172923); }
+.metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin: 0; }
+.metric { display: flex; flex-direction: column; gap: 10px; min-width: 0; padding: 20px 18px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-panel-art: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.metric:first-child, .metric[data-attention='true'] { --game-panel-art: var(--game-panel-apricot, url('/placard/ui/panel-apricot-v1.webp')); }
+.metric dt { display: flex; align-items: center; gap: 7px; font-size: .8rem; line-height: 1.35; font-weight: 650; }
+.metric dt svg { flex-shrink: 0; color: #226756; }
+.metricBody { display: flex; flex-direction: column; gap: 10px; flex: 1; margin: 0; min-width: 0; }
+.value { font: 800 clamp(1.25rem, 2.1vw, 1.8rem)/1.3 var(--font-body), sans-serif; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.value > span { font-size: .78rem; font-weight: 600; white-space: nowrap; color: #40594e; }
+.metricBody > small { margin-top: auto; color: #40594e; font-size: .75rem; line-height: 1.45; }
+.meter { min-width: 0; }
+.meter > div > div:first-child { font-size: .72rem; }
+.meter > div > div:first-child > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.meter > div > div:first-child > strong { font-weight: 500; }
+.nextAction { display: flex; align-items: center; justify-content: space-between; gap: 14px 24px; padding: 14px 18px; border-block: 1px solid #17292330; }
+.nextAction > div { display: grid; gap: 5px; min-width: 0; }
+.nextAction h2 { font: 750 1rem/1.3 var(--font-body), sans-serif; }
+.nextAction p { max-width: 75ch; font-size: .8rem; color: #40594e; }
+.nextAction button { flex: 0 0 auto; max-width: 100%; }
+.footer { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px 24px; padding-inline: 4px; font-size: .76rem; color: #40594e; }
+.footer > span { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.footer strong { color: #172923; font-variant-numeric: tabular-nums; }
+.stale { padding: 8px 0; font-size: .8rem; color: #75402d; }
+.benefits { display: grid; gap: 12px; min-width: 0; padding: 16px 18px; background: transparent; border: 2px solid transparent; border-image: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.benefitHeading { display: flex; align-items: center; gap: 12px; }
+.benefitHeading > span { width: 64px; height: 64px; flex: 0 0 64px; }
+.benefitHeading h2 { font-size: 1rem; }
+.benefitNumbers, .benefitResults { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px 24px; margin: 0; }
+.benefitNumbers > div, .benefitResults > div { min-width: 0; border-top: 1px solid #17292325; padding-top: 10px; }
+.benefitNumbers dt, .benefitResults dt { font-size: .78rem; color: #40594e; }
+.benefitNumbers dd { margin: 4px 0; font-size: 1.5rem; font-weight: 750; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.benefitNumbers small, .benefitScope { font-size: .75rem; line-height: 1.5; color: #40594e; }
+.benefitHistory { min-width: 0; }
+.benefitHistory > summary { min-height: 44px; padding: 10px 14px !important; background: transparent; border: 2px solid transparent; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.benefitHistory[open] > summary { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); }
+@media (hover: hover) { .benefitHistory > summary:hover { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); } }
+.benefitHistory[open] { display: grid; gap: 12px; }
+.benefitResults dd { margin: 4px 0 0; font-size: .9rem; font-weight: 650; overflow-wrap: anywhere; }
+@media (max-width: 420px) { .benefits { padding: 12px; } .benefitNumbers, .benefitResults { gap: 12px; } .benefitNumbers dd { font-size: 1.2rem; } }
+@media (max-width: 1000px) { .metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .metrics { gap: 8px; } .metric { padding: 15px 12px; gap: 8px; } .metric dt { font-size: .74rem; gap: 5px; } .metric dt svg { width: 15px; height: 15px; } .value { font-size: 1.25rem; } .value > span { display: block; font-size: .7rem; } .metricBody > small { font-size: .7rem; } .nextAction { align-items: flex-start; flex-direction: column; padding: 12px 4px; gap: 10px; } .footer { font-size: .72rem; } }

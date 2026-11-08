@@ -183,7 +183,7 @@ export function AdminOrderDetailModal({ order, onClose }: AdminOrderDetailModalP
             <div className="mt-4 border-2 border-red-700 bg-red-50 p-4 text-sm text-red-900" role="alert">
               <p className="font-bold">Paiement confirme - revue manuelle obligatoire</p>
               <p className="mt-1">
-                Le paiement Viva est enregistre, mais l&apos;application du stock a rencontre une anomalie.
+                Le paiement Viva est enregistre, mais le stock ou une recompense necessite une verification.
                 Ne pas expedier avant reconciliation.
               </p>
               {order.paymentReviewReason && (

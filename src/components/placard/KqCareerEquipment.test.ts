@@ -22,7 +22,7 @@ describe("career requirements in the warehouse", () => {
     expect(html).toContain("0 XP permanents");
     expect(html).toContain("encore 200 XP");
     expect(html).toContain("Prochain palier matériel");
-    expect(html).toContain("ne servent pas à payer les cartes");
+    expect(html).toContain("ils ne paient pas les cartes");
     expect(html).toMatch(/role="meter"[^>]*aria-label="Vers le niveau 2"[^>]*aria-valuemin="0"[^>]*aria-valuemax="200"[^>]*aria-valuenow="0"[^>]*aria-valuetext="0 \/ 200 XP"/);
   });
 

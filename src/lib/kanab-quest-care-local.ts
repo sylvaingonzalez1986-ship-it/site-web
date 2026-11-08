@@ -1,10 +1,10 @@
-import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCareProduct, KQ_BASIC_CARE_PRICE_CENTS, performKqBasicCare } from "./kanab-quest-care";
+import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCarePricing, getKqCareProduct, KQ_CARE_PRODUCTS, performKqBasicCare } from "./kanab-quest-care";
 import type { KqGameState } from "./kanab-quest-game";
 import { KQ_STARTING_CASH_CENTS } from "./kanab-quest-equipment";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
 
 export type KqCareStorage = Pick<Storage, "getItem" | "setItem" | "removeItem">;
-export type KqLocalCareWallet = { cashCents: number; inventory: Record<string, number> };
+export type KqLocalCareWallet = { cashCents: number; inventory: Record<string, number>; areaInventory?: Record<string, number> };
 const walletKey = "kanab-quest-care-simulation-v1";
 const journalKey = "kanab-quest-care-journal-v1";
 const gameKey = "kanab-quest-dice-prototype-v7";
@@ -13,7 +13,9 @@ function validWallet(value: unknown): value is KqLocalCareWallet {
   if (!value || typeof value !== "object") return false;
   const wallet = value as KqLocalCareWallet;
   return Number.isSafeInteger(wallet.cashCents) && wallet.cashCents >= 0 && !!wallet.inventory && typeof wallet.inventory === "object"
-    && Object.entries(wallet.inventory).every(([code, count]) => !!getKqCareProduct(code) && Number.isSafeInteger(count) && count >= 0);
+    && Object.entries(wallet.inventory).every(([code, count]) => !!getKqCareProduct(code) && Number.isSafeInteger(count) && count >= 0)
+    && (wallet.areaInventory === undefined || !!wallet.areaInventory && typeof wallet.areaInventory === "object"
+      && Object.entries(wallet.areaInventory).every(([code, count]) => !!getKqCareProduct(code) && Number.isSafeInteger(count) && count >= 0));
 }
 
 export function recoverKqLocalCare(storage: KqCareStorage) {
@@ -36,12 +38,25 @@ export function loadKqLocalCare(storage: KqCareStorage): KqLocalCareWallet {
   return value;
 }
 
-export function buyKqLocalCare(storage: KqCareStorage, productCode: string) {
+export function getKqLocalCareSnapshot(storage: KqCareStorage, state?: KqGameState) {
+  const wallet = loadKqLocalCare(storage);
+  const pricing = getKqCarePricing(state);
+  return { ...pricing, cashCents: wallet.cashCents,
+    inventory: KQ_CARE_PRODUCTS.map(product => ({ productCode: product.code,
+      legacyQuantity: wallet.inventory[product.code] ?? 0, areaQuantity: wallet.areaInventory?.[product.code] ?? 0,
+      quantity: (wallet.inventory[product.code] ?? 0) + Math.floor((wallet.areaInventory?.[product.code] ?? 0) / pricing.pricingUnits) })),
+    catalog: KQ_CARE_PRODUCTS.map(product => ({ ...product, priceCents: product.priceCents * pricing.pricingUnits })) };
+}
+
+export function buyKqLocalCare(storage: KqCareStorage, productCode: string, state?: KqGameState) {
   const wallet = loadKqLocalCare(storage);
   const product = getKqCareProduct(productCode);
   if (!product) throw new Error("Produit inconnu.");
-  if (wallet.cashCents < product.priceCents) throw new Error("Trésorerie de simulation insuffisante.");
-  const next = { cashCents: wallet.cashCents - product.priceCents, inventory: { ...wallet.inventory, [productCode]: (wallet.inventory[productCode] ?? 0) + 1 } };
+  const { pricingUnits } = getKqCarePricing(state);
+  const priceCents = product.priceCents * pricingUnits;
+  if (wallet.cashCents < priceCents) throw new Error("Trésorerie de simulation insuffisante.");
+  const next = { ...wallet, cashCents: wallet.cashCents - priceCents,
+    areaInventory: { ...wallet.areaInventory, [productCode]: (wallet.areaInventory?.[productCode] ?? 0) + pricingUnits } };
   storage.setItem(walletKey, JSON.stringify(next));
   return next;
 }
@@ -66,12 +81,15 @@ export function applyKqLocalCare(storage: KqCareStorage, state: KqGameState, pro
       throw new Error("Le suivi local a changé. Recharge la culture avant de payer une autre intervention.");
     }
   }
-  if (productCode && !(wallet.inventory[productCode] > 0)) throw new Error("Aucune charge en réserve.");
-  if (!productCode && wallet.cashCents < KQ_BASIC_CARE_PRICE_CENTS) throw new Error("Trésorerie de simulation insuffisante pour cet entretien.");
+  const pricing = getKqCarePricing(state);
+  const legacyCharge = productCode ? (wallet.inventory[productCode] ?? 0) > 0 : false;
+  if (productCode && !legacyCharge && (wallet.areaInventory?.[productCode] ?? 0) < pricing.pricingUnits) throw new Error("Réserve insuffisante pour la surface cultivée.");
+  if (!productCode && wallet.cashCents < pricing.basicCarePriceCents) throw new Error("Trésorerie de simulation insuffisante pour cet entretien.");
   const next = productCode ? applyKqCareProduct(state, productCode) : performKqBasicCare(state);
   const nextWallet = productCode
-    ? { ...wallet, inventory: { ...wallet.inventory, [productCode]: wallet.inventory[productCode] - 1 } }
-    : { ...wallet, cashCents: wallet.cashCents - KQ_BASIC_CARE_PRICE_CENTS };
+    ? legacyCharge ? { ...wallet, inventory: { ...wallet.inventory, [productCode]: wallet.inventory[productCode] - 1 } }
+      : { ...wallet, areaInventory: { ...wallet.areaInventory, [productCode]: (wallet.areaInventory?.[productCode] ?? 0) - pricing.pricingUnits } }
+    : { ...wallet, cashCents: wallet.cashCents - pricing.basicCarePriceCents };
   // Recovery completes both writes before the next session can be loaded.
   storage.setItem(journalKey, JSON.stringify({ game: JSON.parse(encodeKqSave(next)), wallet: nextWallet }));
   recoverKqLocalCare(storage);

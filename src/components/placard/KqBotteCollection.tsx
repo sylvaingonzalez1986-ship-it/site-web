@@ -92,6 +92,7 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
     <dialog ref={dialog} className={styles.collectionDialog} data-placard-collections aria-labelledby="botte-collection-title" onCancel={(event) => { event.preventDefault(); onClose(); }} onKeyDown={(event) => { if (event.key === "Escape") event.stopPropagation(); }} onClick={(event) => { if (clickedBackdrop(event)) onClose(); }}>
       <div className={styles.albumLayout}>
         <KqChapterHeading art="collection" title="Collections" titleId="botte-collection-title" compact actions={<button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button>}><p>Tes cartes, tes Buddies et tes prochaines découvertes.</p></KqChapterHeading>
+        <div data-farm-guide-host />
         <div className={styles.albumTabs} role="tablist" aria-label="Choisir une collection">
           {(["botte", "buddies"] as const).map(kind => <button key={kind} type="button" role="tab" id={`collection-tab-${kind}`} data-collection-tab={kind} aria-selected={album === kind} aria-controls={`collection-panel-${kind}`} tabIndex={album === kind ? 0 : -1} onClick={() => setAlbum(kind)} onKeyDown={event => {
             if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;

@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight, Gift, Swords, Trophy } from "lucide-react";
 import { calculateKqPlacardScore } from "@/lib/kanab-quest-reputation";
-import { KqProgressMeter } from "./KqVisuals";
+import { KqBarChart, KqProgressMeter } from "./KqVisuals";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import styles from "./KqSeasonBoard.module.css";
 
 type Standing = { id: string; rank: number; name: string; placardScore: number; businessScore?: number | null; isPlayer: boolean };
@@ -52,21 +53,37 @@ export function KqSeasonBoard({ seasonCode, rank, score, rating, seasonPoints, r
     <details className={styles.details}>
       <summary>Comprendre mon score et mes gains</summary>
       <div className={styles.detailsBody}>
-        <p>Ton <strong>Score Kanab Quest</strong> additionne les résultats de tes duels, ta progression de saison, ta réputation et le développement de ton entreprise.</p>
-        <dl className={styles.breakdown}>
-          <div><dt>Cote de duel</dt><dd>{breakdown.rating}</dd><small>Elle monte avec les victoires et baisse avec les défaites. Battre un adversaire mieux coté rapporte davantage.</small></div>
-          <div><dt>Bonus de saison</dt><dd>+{breakdown.seasonBonus}</dd><small>{seasonPoints} points de saison · Bonus plafonné à 150.</small></div>
-          <div><dt>Bonus de réputation</dt><dd>+{breakdown.reputationBonus}</dd><small>{reputation} de réputation · Bonus progressif, plafonné à 100.</small></div>
-          <div><dt>Développement de l’entreprise</dt><dd>+{formatScore(breakdown.businessBonus)}</dd><small>Surface cultivée, chiffre d’affaires de la saison et réputation commerciale. Progression dégressive, sans plafond.</small></div>
-        </dl>
-        <p>La surface réellement cultivée est moyennée sur 30 jours. Les espaces vides, les cultures en pause, le séchage et le stockage sont exclus. Le chiffre d’affaires correspond aux ventes du jeu encaissées pendant la saison, hors taxes et annulations. La réputation commerciale actuelle constitue le troisième critère.</p>
-        <p>Entreprise = 27 × log₂(1 + surface / 50) + 36 × log₂(1 + chiffre d’affaires / 10 000) + 27 × log₂(1 + réputation / 600). À titre de repère, 50 m² cultivés en moyenne, 10 000 € de ventes et 600 de réputation apportent 90 points. Chaque critère peut continuer à progresser.</p>
-        <p>À Score Kanab Quest égal : meilleure réputation, puis meilleure cote, plus de victoires, moins de défaites et enfin plus de points de saison.</p>
+        <KqHelpDashboard>
+        <KqBarChart title="Les points qui composent ton score" items={[
+          { label: "Cote de duel", value: breakdown.rating, displayValue: `${formatScore(breakdown.rating)} pts` },
+          { label: "Bonus de saison", value: breakdown.seasonBonus, displayValue: `+${formatScore(breakdown.seasonBonus)} pts`, tone: "gold" },
+          { label: "Bonus de réputation", value: breakdown.reputationBonus, displayValue: `+${formatScore(breakdown.reputationBonus)} pts`, tone: "ink" },
+          { label: "Entreprise", value: breakdown.businessBonus, displayValue: `+${formatScore(breakdown.businessBonus)} pts` },
+        ]} />
+        <KqHelpGrid art="help-training" items={[
+          { label: "Cote de duel", value: "Victoire ↑ · défaite ↓", detail: "Battre mieux coté rapporte davantage." },
+          { label: `${formatScore(seasonPoints)} points de saison`, value: "+150 pts max.", art: "achievements" },
+          { label: `${formatScore(reputation)} de réputation`, value: "+100 pts max.", detail: "Bonus progressif.", art: "help-social" },
+        ]} />
+        <KqHelpGrid art="help-culture" items={[
+          { label: "Surface cultivée", value: "Moyenne sur 30 jours", detail: "Hors espaces vides, pauses, séchage et stockage." },
+          { label: "Chiffre d’affaires", value: "Saison en cours", detail: "Ventes encaissées, hors taxes et annulations.", art: "help-accounts" },
+          { label: "Réputation commerciale", value: "Valeur actuelle", art: "help-social" },
+        ]} />
+        <details><summary>Formule du score d’entreprise et égalités</summary>
+          <KqHelpGrid art="help-accounts" items={[{ label: "Exemple de calcul", value: "90 points", detail: "50 m² de moyenne + 10 000 € de ventes + 600 de réputation. Progression dégressive, sans plafond." }]} />
+          <KqHelpNote>Entreprise = 27 × log₂(1 + surface / 50) + 36 × log₂(1 + chiffre d’affaires / 10 000) + 27 × log₂(1 + réputation / 600).</KqHelpNote>
+          <KqHelpNote>À score égal, dans l’ordre : meilleure réputation → meilleure cote → plus de victoires → moins de défaites → plus de points de saison.</KqHelpNote>
+        </details>
         {score !== breakdown.score ? <p>Score calculé actuellement : <strong>{formatScore(breakdown.score)}</strong>. Le classement affiché repose sur sa dernière mise à jour.</p> : null}
-        <p><strong>{arenaExperience.toLocaleString("fr-FR")} EXP d’Arène</strong> gagnée. L’EXP suit ton parcours ; elle n’est pas ajoutée directement au Score Kanab Quest.</p>
-        <p>Un pack bonus récompense chaque palier de trois victoires consécutives : 3, 6, 9… Les entraînements contre les bots ne modifient ni ta cote ni ta série.</p>
-        {!local ? <p>Les joueurs partagent la même file. Le tirage privilégie les fleurs qui attendent depuis le plus longtemps, sans condition de division, de cote ou de qualité.</p> : null}
+        <KqHelpGrid art="help-training" items={[
+          { label: "Parcours d’Arène", value: `${arenaExperience.toLocaleString("fr-FR")} EXP`, detail: "Non ajoutée directement au score." },
+          { label: "Victoires consécutives", value: "3, 6, 9… → 1 pack", art: "collection" },
+          { label: "Entraînements", value: "Cote et série inchangées" },
+        ]} />
+        {!local ? <KqHelpNote>File commune : priorité aux Fleurs qui attendent le plus longtemps, sans condition de division, cote ou qualité.</KqHelpNote> : null}
         {updatedAt ? <small>Classement mis à jour le {new Date(updatedAt).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" })}.</small> : null}
+        </KqHelpDashboard>
       </div>
     </details>
   </section>;

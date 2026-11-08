@@ -8,6 +8,7 @@ import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { estimateKqOnlineOffer, getKqOnlineSaleableHours, type KqOnlineListing } from "@/lib/kanab-quest-online";
 import { getKqShopStrategyPlans } from "@/lib/kanab-quest-shop-strategy";
 import { KqAllocationBar } from "./KqVisuals";
+import { KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import styles from "./KqListingPricing.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -57,9 +58,14 @@ export function KqListingPricing({ listing, data, busy, onAsk, onCancel }: {
           { label: "Vendus", value: plan.projectedPackets, displayValue: `≈ ${number(plan.projectedPackets)}`, tone: "teal" },
           { label: "Restants, encore vendables", value: Math.max(0, plan.remainingPackets - plan.atRiskPackets), displayValue: `≈ ${number(Math.max(0, plan.remainingPackets - plan.atRiskPackets))}`, tone: "gold" },
           { label: "Restants, qualité trop basse", value: plan.atRiskPackets, displayValue: `≈ ${number(plan.atRiskPackets)}`, tone: "red" },
-        ]} /><p>Contribution estimée sur cette période : <strong>{formatKqCash(Math.round(plan.projectedContributionCents))}</strong>, avant culture et charges fixes.</p></> : null}
+        ]} /><KqHelpGrid items={[{ art: "help-accounts" as const, label: "Contribution estimée sur 7 jours réels", value: formatKqCash(Math.round(plan.projectedContributionCents)), detail: "Avant culture et charges fixes." }]} /></> : null}
         <dl className={styles.breakdown}><div><dt>TVA de jeu estimée / paquet</dt><dd>−{formatKqCash(Math.round(cents / 6))}</dd></div><div><dt>Frais du site / paquet</dt><dd>−{formatKqCash(forecast.feeCents)}</dd></div><div><dt>Emballage déjà acheté / paquet</dt><dd>−{formatKqCash(forecast.packagingCostCents)}</dd></div></dl>
-        <p>La contribution déduit TVA, frais et emballage ; elle ne déduit ni la culture ni les charges fixes. Ce n’est ni un bénéfice ni le versement en trésorerie. Les projections conservent l’audience et la confiance actuelles, tiennent compte du stock, du vieillissement et de la fin des campagnes, sans nouvelle campagne ni renouvellement d’hébergement.</p>
+        <KqHelpGrid items={[
+          { art: "accounts" as const, label: "Déjà déduits", value: "TVA · frais · emballage" },
+          { art: "help-culture" as const, label: "Restent à déduire", value: "Culture · charges fixes" },
+          { art: "help-social" as const, label: "Projection à audience constante", value: "Confiance actuelle", detail: "Stock, vieillissement et fin des campagnes pris en compte." },
+          { art: "help-plan" as const, label: "Sans nouvel investissement", value: "Campagnes et hébergement", detail: "Aucune nouvelle campagne ni reconduction du site supposée." },
+        ]} /><KqHelpNote>La contribution n’est ni un bénéfice ni le versement en trésorerie.</KqHelpNote>
       </details>
     </div> : null}
     <p id={`${id}-effect`} className={styles.effect}>La progression vers la prochaine commande repart de zéro. Les ventes déjà passées gardent leur prix.</p>

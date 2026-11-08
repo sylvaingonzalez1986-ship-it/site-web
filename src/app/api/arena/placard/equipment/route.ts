@@ -1,3 +1,4 @@
+import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -19,7 +20,7 @@ import { getKqStorageSnapshot } from "@/lib/supabase/kanab-quest-storage-backend
 export const runtime = "nodejs";
 
 function publicEquipmentError(error: unknown, fallback: string) {
-  const message = error instanceof Error ? error.message : fallback;
+  const message = getKqPlayerWorkErrorMessage(error) ?? (error instanceof Error ? error.message : fallback);
   return message.startsWith("[supabase:")
     ? { message: "Service momentanément indisponible.", status: 500 }
     : { message, status: 400 };

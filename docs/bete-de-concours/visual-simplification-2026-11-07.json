@@ -1,0 +1,56 @@
+{
+  "updated": "2026-11-07",
+  "request": "Simplifier visuellement tout le jeu, en commençant par le Quartier ; conserver le village cartoon, Sylvain et les personnages du profil.",
+  "status": "Première refonte implémentée localement : navigation commune, jauge du joueur, Quartier, Personnel et préparation des tournées. Pas de publication ni de modification SQL.",
+  "review": {
+    "method": "Investigations distinctes UI/direction artistique et UX/parcours, puis intégration et vérification dans le navigateur. Analyse du code et des captures ; aucun résultat inventé d’essai avec de vrais joueurs.",
+    "findings": [
+      "Les bandeaux, résumés et explications prenaient la place de la scène et de la prochaine action.",
+      "Dans Personnel, le formulaire du joueur et la carte de prospection apparaissaient avant le choix de l’activité ; plusieurs modes d’affectation se concurrençaient.",
+      "Le plan ressemblait à une succession de formulaires encadrés ; le résultat d’une affectation n’était pas assez visible sur le poste.",
+      "La carte commerciale, la liste des villes et les profils complets répétaient les choix et éloignaient les frais de l’action.",
+      "La banque, le bureau et les menus ne reflétaient pas clairement la séparation Personnel / Finances / Atelier."
+    ]
+  },
+  "implemented": {
+    "common": "Navigation regroupée en Produire, Vendre et communiquer, Organiser, Cartes et défis. Jauge personnelle plus compacte, heures réelles visibles et bouton Ma journée ; explications dans les détails existants. Matières papier et enseignes conservées.",
+    "quarter": "Carte prioritaire, résumé adjacent sur ordinateur, scène agrandie et déplaçable sur téléphone avec Tout le quartier. Hauteur adaptée à l’écran pour laisser l’action principale visible à 320 × 900. Urgences et informations secondaires conservées en HTML. La banque ouvre Finances ; le bureau ouvre Personnel ; La ferme propose l’Atelier ; Commerce donne accès aux réseaux.",
+    "staff": "Un seul plan pour le joueur et les employés : choisir un portrait puis un poste, ou glisser le portrait. Grandes illustrations et jauges disponibles. Les portraits des personnes affectées figurent sur les postes, avec état en cours ou à venir. Un seul formulaire contextuel ouvert après le choix, fermeture avec retour du focus. Recrutement, paie, contrats, congés et formation conservent leurs commandes et confirmations.",
+    "prospecting": "Choix ville / campagnes explicite. Ville et frais affichés en premier ; liste alternative et goûts détaillés repliables. Carte mobile moins haute, défilement et sélection clavier conservés. Profils et compteurs existants restent accessibles.",
+    "illustration": "Nouvelle vignette transparente de serre de chanvre, réutilisée pour Culture dans les menus, titres et postes. Village existant, Sylvain, avatars personnalisables et illustrations réalistes des machines conservés."
+  },
+  "artwork": {
+    "tool": "Built-in image_gen",
+    "mode": "Nouvelle image, fond transparent",
+    "source": "output/imagegen/kq-hemp-culture-v2.png",
+    "asset": "public/placard/ui/culture-v2.webp",
+    "promptAndProcessing": "docs/bete-de-concours/ui-navigation-provenance.json",
+    "verified": "WebP 512 × 512, canal alpha conservé ; aucun texte ou contrôle dessiné dans l’image."
+  },
+  "validation": {
+    "automated": "124 tests ciblés navigation, résumé du Quartier, attention, guide, progression et Atelier réussis. TypeScript global et ESLint ciblé réussis.",
+    "staffBrowser": "26 groupes : clarté 3, affectations 7, prospection 3, journée du joueur 8, gestion et renouvellement des candidats 5. Largeurs 320/390/1440, clavier, glisser-déposer souris et tactile, petit écran, confirmations, reprise, coûts, indisponibilités et congés. Recette visuelle relancée après la nouvelle illustration et la largeur finale des portraits.",
+    "realShell": "Guide Personnel : 4 groupes. Personnel → Atelier : 1 groupe avec employé, récolte, verrouillage des parents, annulation et retour conservés. Quartier et navigation commune : 12 groupes, carte et action principale visibles ensemble, aucun débordement et liens vers Personnel / Finances / Atelier corrects. Urgences et reprise du Quartier : 36 groupes ciblés, dont stockage, trim, facture, ventes et suivi indisponible.",
+    "navigation": "Recette complète : 23 groupes, plus 3 groupes ciblés de clarté. Géométrie des bâtiments, cibles de 44 px dans la vue complète mobile, focus visible, glissement réel, zoom mémorisé, tiroir des activités, historique du navigateur et retours au bon lot. Contrôles physiques de la carte après stabilisation du défilement restauré. Aucune erreur navigateur.",
+    "limits": "Recettes locales avec données de démonstration et destinations doublées lorsque précisé dans les rapports. Aucun accès métier externe ni publication. Ces contrôles ne remplacent pas une observation de nouveaux joueurs.",
+    "reports": [
+      "output/placard-staff-ui/visual-clarity-report.json",
+      "output/placard-staff-ui/work-plan-report.json",
+      "output/placard-staff-ui/prospecting-report.json",
+      "output/placard-staff-ui/player-work-report.json",
+      "output/placard-staff-ui/report.json",
+      "output/placard-journey-continuity/staff-guide-report.json",
+      "output/placard-journey-continuity/work-plan-report.json",
+      "output/clarity-lot6/quartier/visual-hierarchy-report.json",
+      "output/clarity-lot6/quartier/report-targeted.json",
+      "output/placard-navigation/report.json",
+      "output/placard-navigation/clarity-report.json"
+    ]
+  },
+  "continuation": {
+    "coveredAcrossGame": "Navigation, jauge personnelle et vignette de culture partagées par les écrans du jeu.",
+    "nextBoundedTask": "Poursuivre la même hiérarchie dans le contenu Atelier et Commerce : activité choisie, lot ou machine visible, coût et prochaine action au même endroit. Partir des composants et des recettes existants, sans relancer un audit général.",
+    "preserve": "Trim dans l’Atelier, Personnel dans son onglet, frais comptabilisés en Finances, illustrations historiques des machines, montants serveur, erreurs et confirmations.",
+    "userResearch": "Conserver l’essai prévu avec 5 à 8 nouveaux joueurs ; aucune observation réelle n’a été effectuée ici."
+  }
+}

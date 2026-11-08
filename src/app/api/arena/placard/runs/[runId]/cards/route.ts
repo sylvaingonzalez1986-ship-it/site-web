@@ -1,3 +1,4 @@
+import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { KQ_STAGES } from "@/lib/kanab-quest-game";
@@ -59,7 +60,7 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Utilisation de carte impossible.";
+    const message = getKqPlayerWorkErrorMessage(error) ?? (error instanceof Error ? error.message : "Utilisation de carte impossible.");
     if (message.startsWith("[supabase:")) {
       return NextResponse.json({ error: "Action momentanément indisponible." }, { status: 503 });
     }

@@ -15,10 +15,14 @@ const user = "11111111-1111-4111-8111-111111111111";
 let rows: Record<string, Row[]>;
 let bytes: number;
 let lotColumns: string[];
+let processingCapability: boolean;
+let processingSource: "player" | "blocked";
+let processingFailure: string | null;
 function response(data: unknown) { bytes += Buffer.byteLength(JSON.stringify(data)); return { data, error: null }; }
 
 beforeEach(() => {
   vi.clearAllMocks(); bytes = 0; lotColumns = [];
+  processingCapability = false; processingSource = "player"; processingFailure = null;
   mocks.warehouse.mockResolvedValue(null);
   const flowers = Array.from({ length: 4 }, (_, index) => ({
     id: `flower-${index}`, run_id: `run-${index}`, owner_id: user, status: "burned", variety_code: "BUDDIE-001",
@@ -28,6 +32,19 @@ beforeEach(() => {
   mocks.shop.mockResolvedValue({ cashCents: 100000, reputation: 20, routeMasteries: [], ownedCodes: [...KQ_STARTING_EQUIPMENT_CODES], equippedCodes: [...KQ_STARTING_EQUIPMENT_CODES], levels: {}, routePlan: null });
   mocks.energy.mockResolvedValue({ outstandingCents: 0 });
   mocks.rpc.mockImplementation(async (name: string, input: Row) => {
+    if (name === "rpc_kq_processing_work_jobs") return response(processingCapability ? { version: 1, jobs: [] } : null);
+    if (name === "rpc_kq_processing_work_quote") {
+      if (processingFailure) return { data: null, error: { message: processingFailure } };
+      const work = input.p_work as { inputGrams: number; nominalHours: number; passiveHours: number };
+      const activeHours = processingSource === "blocked" ? 0 : work.nominalHours;
+      return response({ version: 1, flowerId: input.p_flower_id, token: "a".repeat(32), inputGrams: work.inputGrams,
+        source: processingSource, employee: null, efficiency: 1, playerRemainingHours: processingSource === "blocked" ? 0 : 12,
+        bookedHours: Math.ceil(activeHours * 2) / 2, activeHours, nominalHours: activeHours, remainingNominalHours: work.nominalHours,
+        fundedGrams: processingSource === "blocked" ? 0 : work.inputGrams, passiveHours: work.passiveHours,
+        startedAt: activeHours ? "2026-09-13T12:00:00Z" : null,
+        readyAt: activeHours ? new Date(Date.parse("2026-09-13T12:00:00Z") + activeHours * 600_000).toISOString() : null,
+        blockedReason: processingSource === "blocked" ? "Journée épuisée." : null });
+    }
     if (name === "rpc_kq_market_pulse") return response({ recentSales: {}, marketVolumes: {} });
     if (name === "rpc_kq_storage_state") return response({ serverNow: "2026-09-13T12:00:00Z", cashCents: 100000,
       ownedMethodCodes: ["STORAGE-GLASS"], defaultMethodCode: "STORAGE-GLASS",
@@ -66,6 +83,58 @@ beforeEach(() => {
 });
 
 describe("market browsing egress and transactional boundaries", () => {
+  const processingFlower = "22222222-2222-4222-8222-222222222222";
+  function enableProcessingWorkshop() {
+    processingCapability = true;
+    rows.kq_flowers = [rows.kq_flowers[0]];
+    rows.kq_flowers[0].id = processingFlower;
+    rows.kq_flowers[0].burned_at = "2026-09-13T06:00:00Z";
+    rows.kq_flowers[0].battle_stats = { aroma: 85, resin: 85 };
+    rows.kq_flowers[0].storageCapacity = { totalUnits: 1200, allocations: [{ containerCode: "GLASS-1L", quantity: 3, storedUnits: 1200 }], overflowDeadlineAt: null };
+    const workshopSnapshot = { equippedCodes: ["PRESS-0600", "TENT-080-STARTER"], levels: { "PRESS-0600": 10 } };
+    mocks.warehouse.mockResolvedValue({ ...workshopSnapshot, workshopSnapshot, operationalCodes: workshopSnapshot.equippedCodes,
+      processingBatchGrams: { "PRESS-0600": 80 }, processingDurationSeconds: { "PRESS-0600": 3600 }, revision: 7, sourceState: createKqWarehouseStarter() });
+  }
+
+  it("uses authoritative installed levels, full dry mass and the funded server duration when work is supported", async () => {
+    enableProcessingWorkshop();
+    const lot = (await getKqMarketSnapshot(user, [processingFlower], { previewOnly: true })).lots[0];
+    const quote = lot.options.find(option => option.route === "rosin-trial")!;
+    expect(quote).toMatchObject({ available: true, processedInputGrams: 120, remainderGrams: 0, processingDurationSeconds: 288 });
+    expect(quote.processingWork).toMatchObject({ inputGrams: 120, nominalHours: .48, estimated: true,
+      quote: { token: "a".repeat(32), source: "player", bookedHours: .5, activeHours: .48 } });
+    expect(quote.processingWork?.machines[0]).toMatchObject({ code: "PRESS-0600", quantityGrams: 120, gramsPerHour: 250, material: "fleurs sèches" });
+    expect(mocks.rpc).toHaveBeenCalledWith("rpc_kq_processing_work_jobs", { p_user_id: user });
+    expect(mocks.rpc.mock.calls.filter(([name]) => name === "rpc_kq_processing_work_quote").every(([, payload]) => payload.p_user_id === user && payload.p_flower_id === processingFlower)).toBe(true);
+    expect(mocks.rpc.mock.calls.some(([name]) => name === "rpc_kq_prepare_market_lot")).toBe(false);
+    expect(lot.options.find(option => option.route === "raw")?.processingWork).toBeUndefined();
+  });
+
+  it("persists the validated work token with a fresh server market quote before preparation", async () => {
+    enableProcessingWorkshop();
+    await getKqMarketSnapshot(user, [processingFlower]);
+    const prepared = mocks.rpc.mock.calls.find(([name]) => name === "rpc_kq_prepare_market_lot")![1];
+    expect(prepared.p_user_id).toBe(user);
+    expect(prepared.p_options.find((option: { route: string }) => option.route === "rosin-trial")).toMatchObject({
+      processingWork: { inputGrams: 120, profileVersion: 1, quote: { token: "a".repeat(32), bookedHours: .5 } },
+    });
+  });
+
+  it("keeps blocked work explicit while preserving the raw sale option", async () => {
+    enableProcessingWorkshop();
+    processingSource = "blocked";
+    const lot = (await getKqMarketSnapshot(user, [processingFlower], { previewOnly: true })).lots[0];
+    expect(lot.options.find(option => option.route === "rosin-trial")).toMatchObject({ available: false, blockedReason: "Journée épuisée.", processingWork: { quote: { source: "blocked", bookedHours: 0 } } });
+    expect(lot.options.find(option => option.route === "raw")?.available).toBe(true);
+  });
+
+  it("does not persist a fresh offer when authoritative work quoting fails", async () => {
+    enableProcessingWorkshop();
+    processingFailure = "processing_work_unavailable";
+    await expect(getKqMarketSnapshot(user, [processingFlower])).rejects.toThrow(/processing_work_unavailable/);
+    expect(mocks.rpc.mock.calls.some(([name]) => name === "rpc_kq_prepare_market_lot")).toBe(false);
+  });
+
   it.each([false, true])("requires the existing storage maturity deadline for physical processing (mature=%s)", async (mature) => {
     const now = Date.parse("2026-09-13T12:00:00Z");
     rows.kq_flowers = [rows.kq_flowers[0]];

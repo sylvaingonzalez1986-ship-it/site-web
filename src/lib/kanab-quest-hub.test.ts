@@ -1,7 +1,15 @@
 import { describe, expect, it } from "vitest";
 import { getKqPlacardNextAction, getKqPlacardResume, type KqPlacardResumeStorage } from "@/lib/kanab-quest-hub";
+import type { KqPlayerWorkAvailability } from "./kanab-quest-player-work";
 
 describe("Kanab Quest hub next action", () => {
+  it("explains required trim before jury access without requiring employees", () => {
+    const pending = { activeRun: false, readyLotCount: 0, availableFlowerCount: 2, curingFlowerCount: 1, trimFlowerCount: 1, equipmentGoalAffordable: false };
+    expect(getKqPlacardNextAction(pending)).toMatchObject({ destination: "workshop", title: "1 lot à trimmer", buttonLabel: "Faire le trim", href: "/arene/placard?view=workshop&section=processing&workshop=trim" });
+    expect(getKqPlacardNextAction(pending).description).toContain("toi-même");
+    expect(getKqPlacardNextAction({ ...pending, trimFlowerCount: 0 }).destination).toBe("arena");
+    expect(getKqPlacardNextAction({ ...pending, activeRun: true }).destination).toBe("game");
+  });
   it("sends unready flowers to storage while preserving completed-lot and jury priorities", () => {
     const pending = { activeRun: false, readyLotCount: 0, availableFlowerCount: 0, curingFlowerCount: 2, equipmentGoalAffordable: true };
     expect(getKqPlacardNextAction(pending)).toMatchObject({ destination: "storage", buttonLabel: "Ouvrir le stockage" });
@@ -33,7 +41,56 @@ const stored = (overflowUnits = 0, readyAt = "2026-10-29T16:30:00.000Z"): KqPlac
 });
 const storage = (...lots: KqPlacardResumeStorage["lots"][number][]): KqPlacardResumeStorage => ({ serverNow: "2026-10-29T12:00:00.000Z", lots });
 
+const allowance = (remainingHours: number): KqPlayerWorkAvailability => ({ status: "ready", serverNow: "2026-11-07T12:00:00Z",
+  workday: { day: 1, usedHours: 12 - remainingHours, remainingHours, dailyHours: 12, nextDayAt: "2026-11-07T16:00:00Z" } });
+
+describe("Quartier shared working hours", () => {
+  it("keeps a new culture available at 12 h", () => {
+    expect(getKqPlacardResume(idle, storage(), undefined, allowance(12))).toMatchObject({ kind: "new-culture", tone: "ready", workNotice: null });
+  });
+  it.each([idle, { ...idle, activeRun: true }, { ...idle, trimFlowerCount: 1 }, { ...idle, readyLotCount: 1 }])("offers free planning when all hours are used or reserved: %o", snapshot => {
+    const result = getKqPlacardResume(snapshot, storage(), undefined, allowance(0));
+    expect(result).toMatchObject({ kind: "workday", tone: "waiting", primary: { destination: "staff", buttonLabel: "Voir mon planning" } });
+    expect(result.workNotice).toContain("0 h disponible");
+    expect(result.workNotice).toContain("17:00");
+    expect(result.workNotice).toContain("réservées");
+  });
+  it("allows free preparation at half an hour while explaining the launch cost", () => {
+    const result = getKqPlacardResume(idle, storage(), undefined, allowance(0.5));
+    expect(result).toMatchObject({ kind: "new-culture", tone: "waiting", primary: { destination: "game", buttonLabel: "Préparer la culture" } });
+    expect(result.primary!.description).toContain("1 h");
+    expect(result.workNotice).toContain("0,5 h");
+  });
+  it.each([{ ...idle, activeRun: true }, { ...idle, readyLotCount: 1 }, { ...idle, trimFlowerCount: 1 }])("retains half-hour activities: %o", snapshot => {
+    expect(getKqPlacardResume(snapshot, storage(), undefined, allowance(0.5)).tone).toBe("ready");
+  });
+  it("keeps the jury accessible and overflow urgent at zero hours", () => {
+    expect(getKqPlacardResume({ ...idle, availableFlowerCount: 1 }, storage(), undefined, allowance(0)).kind).toBe("jury");
+    expect(getKqPlacardResume(idle, storage(stored(500)), undefined, allowance(0))).toMatchObject({ kind: "storage", tone: "attention", workNotice: expect.stringContaining("0 h disponible") });
+  });
+  it.each(["loading", "unavailable"] as const)("does not turn %s hours into zero or promise a launch", status => {
+    const result = getKqPlacardResume(idle, storage(), undefined, { status });
+    expect(result).toMatchObject({ kind: "new-culture", tone: "unknown", primary: { title: "Prépare ta prochaine culture" } });
+    expect(result.workNotice).not.toContain("0 h");
+  });
+  it("waits for renewed server evidence rather than resetting from a local date", () => {
+    const previous = allowance(0);
+    if (previous.status !== "ready") throw new Error("fixture");
+    previous.serverNow = previous.workday.nextDayAt;
+    expect(getKqPlacardResume(idle, storage(), undefined, previous).tone).toBe("unknown");
+    expect(getKqPlacardResume(idle, storage(), undefined, allowance(12)).tone).toBe("ready");
+  });
+});
+
 describe("Quartier resume priorities", () => {
+  it("offers trim as the next action and keeps it accessible alongside an active culture", () => {
+    const pending = { ...idle, trimFlowerCount: 2, availableFlowerCount: 1, curingFlowerCount: 1 };
+    expect(getKqPlacardResume(pending, storage(stored()))).toMatchObject({ kind: "trim", tone: "ready", primary: { destination: "workshop", href: "/arene/placard?view=workshop&section=processing&workshop=trim" } });
+    const active = getKqPlacardResume({ ...pending, activeRun: true }, storage(stored()));
+    expect(active.kind).toBe("culture");
+    expect(active.factActions[0]).toMatchObject({ id: "trim-required", href: "/arene/placard?view=workshop&section=processing&workshop=trim", destination: "workshop" });
+    expect(active.facts[0]).toBe("2 lots à trimmer avant le jury.");
+  });
   it("puts confirmed exposed stock before a playable culture or ready activities, with at most two secondary facts", () => {
     const summary = getKqPlacardResume({ ...idle, activeRun: true, readyLotCount: 3, availableFlowerCount: 2 }, storage(stored(1250), stored(500)));
     expect(summary).toMatchObject({ kind: "storage", tone: "attention", primary: { destination: "storage", title: "175 g sans contenant" } });

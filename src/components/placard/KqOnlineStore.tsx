@@ -14,6 +14,7 @@ import { KqMerchActivity } from "./KqMerchActivity";
 import { KqOnlineSalesJournal } from "./KqOnlineSalesJournal";
 import { KqChapterHeading } from "./KqChapterHeading";
 import { KqListingPricing } from "./KqListingPricing";
+import { KqBuddieFlavors } from "./KqBuddieFlavors";
 import styles from "./KqOnlineStore.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -50,6 +51,7 @@ function ListingCard({ listing, data, busy, onAsk, initialEditing = false }: { l
   return <li ref={card} className={styles.listing} data-online-listing={listing.id}>
     <div className={styles.listingHeader}>{pack ? <Image src={pack.image} width={64} height={74} sizes="64px" alt="" /> : <PackageOpen size={32} aria-hidden="true" />}<div><strong>{listing.name}</strong><small>{listing.formatGrams} g · {pack?.name ?? "Emballage"} · qualité {number(listing.qualityScore, 2)}/10</small></div><span className={styles.status} data-state={viewState === "active" ? "active" : viewState === "blocked" ? "attention" : "paused"}>{viewState === "active" ? <Globe2 size={13} aria-hidden="true" /> : viewState === "discarded" ? <Trash2 size={13} aria-hidden="true" /> : finished ? <Check size={13} aria-hidden="true" /> : <Pause size={13} aria-hidden="true" />}{statusLabels[viewState]}</span></div>
     <dl className={styles.listingNumbers}><div><dt>Prix TTC / paquet</dt><dd>{formatKqCash(listing.packetPriceCents)} <small>· {formatKqCash(Math.round(listing.packetPriceCents / listing.formatGrams))}/g</small></dd></div><div><dt>Paquets restants</dt><dd>{number(listing.remainingPackets, 0)} / {number(listing.initialPackets, 0)} <small>· {number(listing.remainingPackets * listing.formatGrams)} g</small></dd></div><div><dt>Ventes réalisées</dt><dd>{number(listing.soldPackets, 0)} paquet{listing.soldPackets > 1 ? "s" : ""}</dd></div></dl>
+    {listing.varietyCode ? <KqBuddieFlavors varietyCode={listing.varietyCode} compact /> : null}
     {!finished ? <>
       {forecast.customerDemand ? <p><strong>{forecast.customerDemand.matchedFlavorCount} arôme{forecast.customerDemand.matchedFlavorCount > 1 ? "s" : ""} en commun · repère +{number(forecast.customerDemand.bonusPercent)} %.</strong> Ton prix choisi reste inchangé ; le bonus de demande est temporaire et limité en quantité.</p> : null}
       {viewState === "active" ? <p>{number(ordersPerDay)} commande{ordersPerDay > 1 ? "s" : ""} / jour réel estimée{ordersPerDay > 1 ? "s" : ""}. {forecast.priceLabel} La demande est partagée entre tes annonces.</p> : <p>{viewState === "blocked" ? "La qualité actuelle ne permet plus la vente en ligne. Les paquets restent conservés, aucune nouvelle commande n’est acceptée." : viewState === "suspended" ? "Les commandes attendent la réactivation du site. Les paquets restent préparés et continuent de vieillir." : "Ces paquets restent préparés et continuent de vieillir. La vente est en pause."}</p>}

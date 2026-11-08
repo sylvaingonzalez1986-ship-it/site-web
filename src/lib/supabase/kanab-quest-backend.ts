@@ -1,5 +1,7 @@
 import "server-only";
 import { createHash } from "node:crypto";
+import { settleKqStaffIfAvailable } from "./kanab-quest-staff-backend";
+import { isKqCultureWorkQuote } from "@/lib/kanab-quest-culture-work";
 import { KQ_BUDDIE_ROTATION_REQUIRED, getKqBuddieRotationRemaining, getKqBuddieRotationMessage, recordKqBuddieUse, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { getArenaRankingAvatars } from "./arena-ranking-avatars";
 import { getChanvrierStartingXp } from "@/lib/arena-chanvrier";
@@ -1014,6 +1016,7 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (cards.some((card) => !card || card.category === "pbi")) {
     throw new Error("Le deck contient une carte interdite.");
   }
+  await settleKqStaffIfAvailable(ownerId);
   const supabase = createSupabaseServiceClient();
   const [collection, equipmentShop, businessResult, recentSituationCodes, buddieRotation, storedWarehouse] = await Promise.all([
     getKqPlayerCollectionSnapshot(ownerId),
@@ -1226,11 +1229,17 @@ export async function getKqPlayerActiveRun(ownerId: string, selection: KqRunSele
   return selected;
 }
 
-export async function getKqPlayerRunsSnapshot(ownerId: string, selection: KqRunSelection = {}) {
+async function readKqPlayerRunsSnapshot(ownerId: string, selection: KqRunSelection = {}) {
   const activeRuns = await getKqPlayerActiveRuns(ownerId);
   const activeRun = selectKqActiveRun(activeRuns, selection)
     ?? (selection.runId ? await getKqPlayerActiveRun(ownerId, selection) : null);
   return { activeRun, activeRuns };
+}
+
+export async function getKqPlayerRunsSnapshot(ownerId: string, selection: KqRunSelection = {}) {
+  if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
+  await settleKqStaffIfAvailable(ownerId);
+  return readKqPlayerRunsSnapshot(ownerId, selection);
 }
 
 export async function getKqAdminActiveRuns(adminEmail: string) {
@@ -1508,13 +1517,15 @@ export function mapKqChallengeClaimKeys(rows: unknown) {
 
 export async function getKqPlayerCoreSnapshot(ownerId: string, selection: KqRunSelection = {}) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
+  // Complete staff work before parallel readers observe culture and balances.
+  await settleKqStaffIfAvailable(ownerId);
   const supabase = createSupabaseServiceClient();
   const [result, queueResult, claimsResult, runs, storage] = await Promise.all([
     supabase.rpc("rpc_kq_player_core_snapshot", { p_user_id: ownerId }),
     supabase.from("kq_random_battle_queue").select("flower_id,queued_at").eq("owner_id", ownerId),
     supabase.from("kq_daily_challenge_claims").select("challenge_day,challenge_code")
       .eq("user_id", ownerId).order("challenge_day", { ascending: false }).limit(64),
-    getKqPlayerRunsSnapshot(ownerId, selection),
+    readKqPlayerRunsSnapshot(ownerId, selection),
     getKqStorageRecords(ownerId),
   ]);
   if (queueResult.error) throw new Error(`[supabase:kq_random_battle_queue] ${queueResult.error.message}`);
@@ -1690,6 +1701,7 @@ export async function getKqPlayerFlowerRivals(ownerId: string, flowerId: string)
 }
 
 function explainKqJuryReadinessError(message: string) {
+  if (message.includes("staff_trim_required")) throw new Error("Termine le trim de cette récolte dans l’Atelier avant de la présenter au jury.");
   if (message.includes("kq_curing_required")) throw new Error("L’affinage de cette récolte est encore en cours. Attends sa fin dans Stockage avant de passer le jury.");
   if (message.includes("kq_storage_required")) throw new Error("Le stockage de cette récolte doit être vérifié avant le jury. Ouvre Stockage pour retrouver le lot.");
   if (message.includes("kq_flower_unavailable")) throw new Error("Cette Fleur n’est plus disponible pour le jury.");
@@ -1697,6 +1709,7 @@ function explainKqJuryReadinessError(message: string) {
 
 export async function finalizeKqPlayerBotBattle(ownerId: string, flowerId: string) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId) || !/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Duel d’entraînement invalide.");
+  await settleKqStaffIfAvailable(ownerId);
   const dayKey = getKqChallengeDayKey();
   const botCode = getKqRandomTrainingBotCode(ownerId, flowerId, dayKey);
   const definition = KQ_TRAINING_BOTS.find((bot) => bot.code === botCode)!;
@@ -1814,6 +1827,7 @@ export async function enqueueKqPlayerRandomBattle(
 ): Promise<KqRandomBattleQueueResult> {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(flowerId)) throw new Error("Fleur invalide.");
+  await settleKqStaffIfAvailable(ownerId);
   const result = await createSupabaseServiceClient().rpc("rpc_kq_enqueue_random_battle", {
     p_player_id: ownerId,
     p_flower_id: flowerId,
@@ -2616,6 +2630,7 @@ export async function playKqPlayerCard(
   if (!/^[0-9a-f-]{36}$/i.test(runId)) throw new Error("Culture invalide.");
   validateKqCardStage(options.expectedStageIndex);
 
+  await settleKqStaffIfAvailable(ownerId);
   const supabase = createSupabaseServiceClient();
   const runResult = await supabase
     .from("kq_runs")
@@ -2687,10 +2702,11 @@ export async function applyKqPlayerRunAction(
   ownerId: string,
   runId: string,
   action: KqRunAction,
-  options?: { handIndex?: number; reserveIndex?: number },
+  options?: { handIndex?: number; reserveIndex?: number; expectedStageIndex?: number },
 ) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(runId)) throw new Error("Culture invalide.");
+  await settleKqStaffIfAvailable(ownerId);
   const supabase = createSupabaseServiceClient();
   const runResult = await supabase.from("kq_runs").select("state,status,updated_at")
     .eq("id", runId).eq("user_id", ownerId).maybeSingle();
@@ -2699,6 +2715,7 @@ export async function applyKqPlayerRunAction(
   const state = parseKqGameSave(encodeKqSave(runResult.data.state));
   if (!state) throw new Error("État de culture invalide.");
   if (state.campaign && state.campaign.leaderRunId !== runId) throw new Error("Ouvre la campagne commune pour poursuivre ces cultures.");
+  if (action === "roll" && options?.expectedStageIndex !== undefined && options.expectedStageIndex !== state.stageIndex) throw new Error("L’étape de culture a changé. Actualise avant de confirmer le lancer.");
   // A lost final response must return the stored harvests, never create them again.
   if (state.campaign && state.phase === "complete" && runResult.data.status !== "active" && (action === "advance" || action === "resolve")) {
     const stored = await supabase.from("kq_flowers").select("id,run_id,status,created_at")
@@ -2713,6 +2730,8 @@ export async function applyKqPlayerRunAction(
       ? { id: leaderFlower.id, status: leaderFlower.status, createdAt: leaderFlower.createdAt } : null, replayed: true };
   }
   if (runResult.data.status !== "active") throw new Error("Culture active introuvable.");
+  // A retry of a confirmed stage must not roll or spend another half-hour.
+  if (action === "roll" && state.phase !== "prepare") return { state, persistedFlower: null, replayed: true };
   const nextState = applyKqRunAction(state, action, options);
   const flower = nextState.phase === "complete" && !isKqCultureDead(nextState) ? createKqFlower(nextState) : null;
   const flowerPayload = (memberState: KqGameState, memberFlower: KqFlowerCard | null) => memberFlower ? {
@@ -2721,7 +2740,16 @@ export async function applyKqPlayerRunAction(
     cannabinoidReport: memberFlower.cannabinoidReport ?? null, integrityCode: memberFlower.integrityCode,
     cultivationProfile: memberFlower.cultivationProfile ?? null, terpeneReport: memberFlower.terpeneReport ?? null,
   } : null;
-  const result = action === "heritage-swap"
+  const result = action === "roll"
+    ? await supabase.rpc("rpc_kq_roll_culture_step", {
+        p_user_id: ownerId, p_run_id: runId, p_expected_updated_at: runResult.data.updated_at,
+        p_next_state: nextState, p_work_choice: "auto",
+        p_members: nextState.campaign ? nextState.campaign.members.map(member => {
+          const memberState = getKqCampaignMemberState(nextState, member);
+          return { runId: member.runId, state: memberState, flower: null };
+        }) : null,
+      })
+    : action === "heritage-swap"
     ? await supabase.rpc("rpc_kq_swap_heritage_hand", {
         p_user_id: ownerId,
         p_run_id: runId,
@@ -2762,6 +2790,8 @@ export async function applyKqPlayerRunAction(
     ? payload.flower as Record<string, unknown> : null;
   return {
     state: payload.state as KqGameState,
+    ...(isKqCultureWorkQuote(payload.cultureWork) ? { cultureWork: payload.cultureWork } : {}),
+    ...(payload.replayed === true ? { replayed: true } : {}),
     ...(Array.isArray(payload.flowers) ? { persistedFlowers: payload.flowers.map((entry: Record<string, unknown>) => ({
       id: String(entry.id), runId: String(entry.run_id),
       zoneId: nextState.campaign?.members.find(member => member.runId === entry.run_id)?.zoneId ?? null,

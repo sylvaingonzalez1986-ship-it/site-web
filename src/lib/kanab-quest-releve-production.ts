@@ -2,7 +2,7 @@ import { activateKqHeritage, advanceKqStage, canActivateKqHeritage, canPlayKqCar
 import { createKqFlower, createKqOpponent, lockKqBattle, resolveKqBattle, type KqBattle } from "./kanab-quest-battle";
 import { getKqCampaignMemberState, getKqCampaignParticipants } from "./kanab-quest-campaign";
 import { getKqBuddieRotationRemaining, recordKqBuddieUse } from "./kanab-quest-buddie-rotation";
-import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCareProduct, KQ_BASIC_CARE_PRICE_CENTS, performKqBasicCare } from "./kanab-quest-care";
+import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCarePricing, getKqCareProduct, KQ_BASIC_CARE_PRICE_CENTS, performKqBasicCare } from "./kanab-quest-care";
 import { KQ_HERITAGE_CARDS } from "./kanab-quest-heritage";
 import { KQ_LAB_ANALYSIS_CENTS, KQ_SUPPLIER_PAYMENT_TERM_MS } from "./kanab-quest-business";
 import { getKqWarehouseEquipmentDemand, getKqWarehouseQuote, getKqWarehouseSummary, validateKqWarehouseState, type KqWarehouseState } from "./kanab-quest-warehouse";
@@ -14,12 +14,14 @@ export type KqReleveProductionChapter = "plan" | "buddies" | "launch" | "culture
 export type KqReleveProductionLedgerEntry = {
   id: string; kind: "equipment" | "care" | "supplier" | "energy" | "lab";
   label: string; amountCents: number; status: "paid" | "due"; issuedAt: string; dueAt?: string;
+  careProductCode?: string | null; careAreaM2?: number | null; careStageIndex?: number;
 };
-type Checkpoint = { game: KqGameState; cashCents: number; supportInventory: Record<string, number>; careInventory: Record<string, number>; ledger: KqReleveProductionLedgerEntry[] };
+type Checkpoint = { game: KqGameState; cashCents: number; supportInventory: Record<string, number>; careInventory: Record<string, number>; careAreaInventory?: Record<string, number>; ledger: KqReleveProductionLedgerEntry[] };
 export type KqReleveProductionState = {
   version: 1; warehouse: KqWarehouseState; draftWarehouse: KqWarehouseState; revision: number;
   cashCents: number; clock: number; ownedBuddies: string[]; recentBuddieCodes: string[];
   supportInventory: Record<string, number>; careInventory: Record<string, number>;
+  careAreaInventory?: Record<string, number>;
   deckCodes: string[]; heritageCode: string | null; game: KqGameState | null;
   battles: Record<string, KqBattle>; revealedRounds: Record<string, number>;
   storageLots?: Record<string, KqStorageLot>;
@@ -73,7 +75,7 @@ export function getKqRelevePlanReview(state: KqReleveProductionState) {
     const quote = getKqWarehouseQuote(state.draftWarehouse, state.warehouse);
     const summary = getKqWarehouseSummary(quote.nextState);
     const activeCount = quote.nextState.zones.filter(zone => zone.active).length;
-    const commitmentsCents = summary.operatingCostCents + activeCount * KQ_LAB_ANALYSIS_CENTS + KQ_BASIC_CARE_PRICE_CENTS;
+    const commitmentsCents = summary.operatingCostCents + activeCount * KQ_LAB_ANALYSIS_CENTS + KQ_BASIC_CARE_PRICE_CENTS * summary.activeAreaM2;
     return { errors, quote, summary, commitmentsCents, availableCents: state.cashCents - quote.totalCostCents - commitmentsCents - getKqReleveProductionOutstanding(state).totalCents };
   } catch (error) {
     return { errors: [error instanceof Error ? error.message : "Devis indisponible."], quote: null, summary: null, commitmentsCents: 0, availableCents: state.cashCents };
@@ -155,7 +157,7 @@ function record(state: KqReleveProductionState, row: Omit<KqReleveProductionLedg
   state.ledger.push({ ...row, issuedAt: new Date(state.clock).toISOString() });
 }
 function checkpoint(state: KqReleveProductionState) {
-  state.checkpoint = structuredClone({ game: state.game!, cashCents: state.cashCents, supportInventory: state.supportInventory, careInventory: state.careInventory, ledger: state.ledger });
+  state.checkpoint = structuredClone({ game: state.game!, cashCents: state.cashCents, supportInventory: state.supportInventory, careInventory: state.careInventory, careAreaInventory: state.careAreaInventory, ledger: state.ledger });
 }
 function harvestInvoices(state: KqReleveProductionState) {
   if (state.game?.phase !== "complete" || !state.game.campaign) return;
@@ -226,7 +228,7 @@ export function applyKqReleveProductionAction(current: KqReleveProductionState, 
     }
     case "restore-stage":
       requireAction(state.checkpoint, "Aucun point de contrôle de culture disponible.");
-      Object.assign(state, structuredClone(state.checkpoint)); state.battles = {}; state.revealedRounds = {}; state.storageLots = {}; mark(state, "stage-restored"); return state;
+      Object.assign(state, structuredClone(state.checkpoint)); state.careAreaInventory = { ...state.checkpoint.careAreaInventory }; state.battles = {}; state.revealedRounds = {}; state.storageLots = {}; mark(state, "stage-restored"); return state;
     case "assist":
       requireAction(game?.care && game.phase !== "complete", "Reprends d’abord le point de contrôle de cette étape.");
       state.game = { ...game, care: { ...game.care, vitality: 100 }, effectNotices: [...(game.effectNotices ?? []), "Aide de l’essai demandée : vitalité rétablie à 100. Les dés, problèmes et pertes précédentes sont conservés."].slice(-12) };
@@ -294,18 +296,24 @@ export function applyKqReleveProductionAction(current: KqReleveProductionState, 
     case "redraw": state.game = redrawKqHand(game); break;
     case "basic-care": {
       const access = canPerformKqBasicCare(game); requireAction(access.allowed, access.reason);
-      record(state, { id: `care:${state.ledger.length}`, kind: "care", label: "Entretien commun de la campagne", amountCents: KQ_BASIC_CARE_PRICE_CENTS, status: "paid" });
+      record(state, { id: `care:${state.ledger.length}`, kind: "care", label: "Entretien commun de la campagne", amountCents: getKqCarePricing(game).basicCarePriceCents, status: "paid", careProductCode: null, careAreaM2: getKqCarePricing(game).areaM2, careStageIndex: game.stageIndex + Number(game.phase === "resolved") });
       state.game = performKqBasicCare(game); mark(state, "care-used"); break;
     }
     case "buy-care": {
       const product = getKqCareProduct(action.code); requireAction(product, "Produit de soin inconnu.");
-      record(state, { id: `care:${state.ledger.length}`, kind: "care", label: product.name, amountCents: product.priceCents, status: "paid" });
-      state.careInventory[product.code] = (state.careInventory[product.code] ?? 0) + 1; break;
+      const pricing = getKqCarePricing(game);
+      record(state, { id: `care:${state.ledger.length}`, kind: "care", label: product.name, amountCents: product.priceCents * pricing.pricingUnits, status: "paid", careProductCode: product.code, careAreaM2: pricing.areaM2 });
+      state.careAreaInventory = { ...state.careAreaInventory, [product.code]: (state.careAreaInventory?.[product.code] ?? 0) + pricing.pricingUnits }; break;
     }
     case "apply-care": {
       const access = canApplyKqCareProduct(game, action.code); requireAction(access.allowed, access.reason);
-      requireAction(state.careInventory[action.code] > 0, "Achète une charge dans la réserve de soins.");
-      state.game = applyKqCareProduct(game, action.code); state.careInventory[action.code]--; mark(state, "care-used"); break;
+      const units = getKqCarePricing(game).pricingUnits;
+      const legacy = (state.careInventory[action.code] ?? 0) > 0;
+      requireAction(legacy || (state.careAreaInventory?.[action.code] ?? 0) >= units, "Achète un passage pour cette surface dans la réserve de soins.");
+      state.game = applyKqCareProduct(game, action.code);
+      if (legacy) state.careInventory[action.code]--;
+      else state.careAreaInventory = { ...state.careAreaInventory, [action.code]: (state.careAreaInventory?.[action.code] ?? 0) - units };
+      mark(state, "care-used"); break;
     }
   }
   harvestInvoices(state);

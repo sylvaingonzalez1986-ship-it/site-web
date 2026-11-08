@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: vi.fn().mockResolvedValue(undefined) }));
 const mocks = vi.hoisted(() => ({ client: vi.fn(), warehouse: vi.fn(), equipment: vi.fn() }));
 vi.mock("./admin", () => ({ createSupabaseServiceClient: mocks.client }));
 vi.mock("./kanab-quest-warehouse-backend", () => ({ getKqWarehouseRunSnapshot: mocks.warehouse }));
@@ -201,7 +202,10 @@ describe("shared campaign backend", () => {
     const rpc = database({ runs: [row(0), row(1)] });
     const result = await applyKqPlayerRunAction(owner, ids[0], "roll");
     const args = rpc.mock.calls[0][1];
-    expect(rpc.mock.calls[0][0]).toBe("rpc_kq_update_campaign_state");
+    expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_roll_culture_step", expect.objectContaining({
+      p_user_id: owner, p_run_id: ids[0], p_work_choice: "auto",
+      p_expected_updated_at: "2026-10-13T12:00:00Z",
+    }));
     expect(args.p_members).toHaveLength(2);
     for (const member of args.p_members) {
       expect(member.state.dice).toEqual(result.state.dice);

@@ -574,6 +574,8 @@ function mapOrderRow(
     paymentState: validPaymentState.has(paymentStateCandidate)
       ? paymentStateCandidate
       : "pending",
+    paymentReviewRequired: row.payment_review_required === true,
+    paymentReviewReason: toOptionalString(row.payment_review_reason),
     archivedAt: toOptionalString(row.archived_at),
     archivedReason: toOptionalString(row.archived_reason),
     vivaOrderCode:

@@ -1,3 +1,4 @@
+import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -37,7 +38,7 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
       ...(typeof body.expectedUpdatedAt === "string" ? { expectedUpdatedAt: body.expectedUpdatedAt } : {}),
     }), { headers: { "Cache-Control": "private, no-store, max-age=0" } });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Intervention impossible.";
+    const message = getKqPlayerWorkErrorMessage(error) ?? (error instanceof Error ? error.message : "Intervention impossible.");
     return NextResponse.json({ error: message.startsWith("[supabase:") ? "Service momentanément indisponible." : message }, { status: message.startsWith("[supabase:") ? 503 : 409 });
   }
 }

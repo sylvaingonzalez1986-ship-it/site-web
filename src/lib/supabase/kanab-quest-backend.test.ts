@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: vi.fn().mockResolvedValue(undefined) }));
 import { applyKqPlayerRunAction, applyKqRunAction, buildKqLaunchReadiness, buildKqNotebookRewardPreview, countKqInventoryCopies, getKqRandomTrainingBotCode, isKqFinalArtworkUrl, mapKqCardBurnResult, mapKqChallengeClaimKeys, mapKqPlayerCoreSnapshot, mapKqSeasonRolloverPreview, mapKqStartRunResult, prepareKqCardPlay, startKqPlayerRun } from "@/lib/supabase/kanab-quest-backend";
 import { KQ_ACTIVE_CARDS, startKqGame, type KqGameState } from "@/lib/kanab-quest-game";
 import { KQ_EQUIPMENT_CATALOG } from "@/lib/kanab-quest-equipment";

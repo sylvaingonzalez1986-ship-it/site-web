@@ -1,14 +1,17 @@
+import { KQ_WORKSHOP_TRIM_HREF } from "./kanab-quest-hub";
+
 export type ArenaPlayerSummary = {
   activeRun: boolean;
   readyLotCount: number;
   availableFlowerCount: number;
   curingFlowerCount?: number;
+  trimFlowerCount?: number;
   supportPackCount: number;
   buddiePackCount: number;
 };
 
 export type ArenaResumeAction = {
-  id: "culture" | "market" | "jury" | "storage" | "buddies" | "support";
+  id: "culture" | "market" | "trim" | "jury" | "storage" | "buddies" | "support";
   title: string;
   description: string;
   label: string;
@@ -22,7 +25,9 @@ export function parseArenaPlayerSummary(value: unknown): ArenaPlayerSummary | nu
   for (const key of ["readyLotCount", "availableFlowerCount", "supportPackCount", "buddiePackCount"] as const) {
     if (typeof row[key] !== "number" || !Number.isSafeInteger(row[key]) || row[key] < 0) return null;
   }
-  if (row.curingFlowerCount !== undefined && (typeof row.curingFlowerCount !== "number" || !Number.isSafeInteger(row.curingFlowerCount) || row.curingFlowerCount < 0)) return null;
+  for (const key of ["curingFlowerCount", "trimFlowerCount"] as const) {
+    if (row[key] !== undefined && (typeof row[key] !== "number" || !Number.isSafeInteger(row[key]) || row[key] < 0)) return null;
+  }
   return row as ArenaPlayerSummary;
 }
 
@@ -30,6 +35,7 @@ export function getArenaResumeActions(summary: ArenaPlayerSummary): ArenaResumeA
   const actions: ArenaResumeAction[] = [];
   if (summary.activeRun) actions.push({ id: "culture", title: "Ta culture t’attend", description: "Ta progression est sauvegardée. Reprends ta partie là où tu l’as laissée.", label: "Reprendre ma culture", href: "/arene/placard?view=game" });
   if (summary.readyLotCount > 0) actions.push({ id: "market", title: `${summary.readyLotCount} lot${summary.readyLotCount > 1 ? "s" : ""} à vendre`, description: "Le jury a rendu son verdict. Tu peux transformer ou vendre ta récolte.", label: "Retrouver ma récolte", href: "/arene/placard?view=market&section=sales" });
+  if ((summary.trimFlowerCount ?? 0) > 0) actions.push({ id: "trim", title: `${summary.trimFlowerCount} lot${summary.trimFlowerCount! > 1 ? "s" : ""} à trimmer`, description: "Le trim est obligatoire avant le jury. Fais-le toi-même ou confie-le à un salarié.", label: "Faire le trim", href: KQ_WORKSHOP_TRIM_HREF });
   if (summary.availableFlowerCount > 0) actions.push({ id: "jury", title: `${summary.availableFlowerCount} Fleur${summary.availableFlowerCount > 1 ? "s" : ""} à présenter`, description: "Le curing est terminé. Ta récolte est prête à être évaluée par le jury.", label: "Présenter ma Fleur", href: "/arene/placard?view=arena" });
   if (summary.curingFlowerCount !== undefined && summary.curingFlowerCount > 0) actions.push({ id: "storage", title: `${summary.curingFlowerCount} lot${summary.curingFlowerCount > 1 ? "s" : ""} en affinage`, description: "Range chaque variété dans ses contenants et suis le curing avant le jury.", label: "Ouvrir le stockage", href: "/arene/placard?view=workshop&section=storage" });
   if (summary.buddiePackCount > 0) actions.push({ id: "buddies", title: `${summary.buddiePackCount} pack${summary.buddiePackCount > 1 ? "s" : ""} Buddies à ouvrir`, description: "Tes packs t’attendent dans ta collection.", label: "Ouvrir mes packs Buddies", href: "/profil/collection" });

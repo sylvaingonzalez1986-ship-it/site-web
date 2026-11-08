@@ -1,6 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import type { KqMarketQuote } from "@/lib/kanab-quest-market";
+import { KqProcessingWorkSummary } from "./KqProcessingWorkSummary";
 import styles from "./KqPreparationSummary.module.css";
 
 export type KqPreparationReview = { quote: KqMarketQuote; costCents: number };
@@ -18,8 +19,9 @@ export function KqPreparationSummary({ quote, costCents }: KqPreparationReview) 
     {quote.remainderGrams > 0 ? <p className={styles.remainder}>{grams(quote.remainderGrams)} {quote.remainderDestination === "biomass" ? "de biomasse" : quote.remainderDestination === "raw" ? "de fleurs" : "de reste à affecter"} conservés séparément.</p> : null}
     <dl className={styles.terms}>
       <div><dt>Coût prévu</dt><dd>{formatKqCash(costCents)}<small>{costCents > 0 ? "Débité à la confirmation" : "Sans frais de préparation"}</small></dd></div>
-      <div><dt>Temps de travail</dt><dd>{!transformed ? "Sans passage en atelier" : duration === undefined || !Number.isFinite(duration) || duration < 0 ? "Durée à confirmer" : duration > 0 ? `${Math.ceil(duration / 60).toLocaleString("fr-FR")} min réelles` : "Sans attente annoncée"}
-        {transformed && duration !== undefined && duration > 0 ? <small>Hors attente des lots déjà en atelier</small> : null}</dd></div>
+      {!quote.processingWork ? <div><dt>Temps de travail</dt><dd>{!transformed ? "Sans passage en atelier" : duration === undefined || !Number.isFinite(duration) || duration < 0 ? "Durée à confirmer" : duration > 0 ? `${Math.ceil(duration / 60).toLocaleString("fr-FR")} min réelles` : "Sans attente annoncée"}
+        {transformed && duration !== undefined && duration > 0 ? <small>Hors attente des lots déjà en atelier</small> : null}</dd></div> : null}
     </dl>
+    {quote.processingWork ? <KqProcessingWorkSummary plan={quote.processingWork} /> : null}
   </div>;
 }

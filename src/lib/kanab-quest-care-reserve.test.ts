@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { canApplyKqCareProduct, createKqCareState, KQ_CARE_PRODUCTS, type KqCareProblem } from "./kanab-quest-care";
 import { startKqGame, type KqGameState } from "./kanab-quest-game";
-import { getKqCareReserveProducts, parseKqCareReserveSnapshot } from "./kanab-quest-care-reserve";
+import { getKqCareActionAvailability, getKqCareAvailabilityScope, getKqCareReserveProducts, parseKqCareReserveSnapshot } from "./kanab-quest-care-reserve";
+import { getKqLocalCareSnapshot, type KqCareStorage } from "./kanab-quest-care-local";
 
 function withProblems(...codes: string[]): KqGameState {
   const problems: KqCareProblem[] = codes.map(code => ({ code, severity: 2, status: "confirmed", trend: "stable", appearedAt: 0, variant: 0 }));
@@ -104,5 +105,87 @@ describe("verified care reserve snapshots", () => {
 
   it.each([-1, 0.5, NaN, Infinity, Number.MAX_SAFE_INTEGER + 1, "1200", null])("rejects malformed offered prices (%j)", priceCents => {
     expect(parseKqCareReserveSnapshot({ ...snapshot(), catalog: [{ code: "CARE-SEAWEED", priceCents }] })).toBeNull();
+  });
+
+  it.each([-1, 0.5, NaN, Infinity, "500", null])("rejects malformed maintenance quotes (%j)", basicCarePriceCents => {
+    expect(parseKqCareReserveSnapshot({ ...snapshot(), basicCarePriceCents })).toBeNull();
+  });
+});
+
+describe("verified available care actions", () => {
+  const reserve = () => parseKqCareReserveSnapshot({ ...snapshot(), basicCarePriceCents: 500,
+    inventory: [
+      { productCode: "CARE-COMPOST-TEA", quantity: 9 }, { productCode: "CARE-SEAWEED", quantity: 4 },
+      { productCode: "CARE-APHIDIUS", quantity: 3 }, { productCode: "CARE-SWIRSKII", quantity: 8 },
+      { productCode: "CARE-ORGANIC-FEED", quantity: 5 }, { productCode: "CARE-PHYTOSEIULUS", quantity: 2 },
+    ] })!;
+  const culture = () => withProblems("APHIDS", "SALTS", "HEAT", "MITES");
+
+  it("counts usable product types and one quoted maintenance, excluding incompatible stock", () => {
+    const wallet = reserve(), state = culture(), before = structuredClone([wallet, state]);
+    expect(getKqCareActionAvailability(wallet, state)).toMatchObject({
+      total: 4, products: 3, basic: 1, usable: { input: 2, pbi: 1, context: 2 },
+    });
+    expect([wallet, state]).toEqual(before);
+  });
+
+  it("does not turn unknown inventory into zero or missing maintenance prices into a quote", () => {
+    expect(getKqCareActionAvailability(null, culture())).toBeNull();
+    const wallet = reserve();
+    delete wallet.basicCarePriceCents;
+    expect(getKqCareActionAvailability(wallet, culture())).toMatchObject({ total: 3, basic: 0 });
+  });
+
+  it("uses offered prices, exact cash and per-product affordability without inflating care totals", () => {
+    const wallet = { ...reserve(), cashCents: 499, inventory: {}, prices: { "CARE-SEAWEED": 499, "CARE-APHIDIUS": 500 } };
+    expect(getKqCareActionAvailability(wallet, culture())).toMatchObject({ total: 0, basic: 0, affordable: { input: 1, pbi: 0 } });
+    expect(getKqCareActionAvailability({ ...wallet, cashCents: 500 }, culture())).toMatchObject({ total: 1, affordable: { input: 1, pbi: 1 } });
+    expect(getKqCareActionAvailability(wallet)).toMatchObject({ total: 0, products: 0, affordable: { input: 1, pbi: 0 } });
+  });
+
+  it("recounts application and maintenance restrictions immediately", () => {
+    const state = culture();
+    state.care!.lastBasicCareStage = 0;
+    state.care!.applications.push({ productCode: "CARE-VERMICOMPOST", stageIndex: 0 });
+    expect(getKqCareActionAvailability(reserve(), state)).toMatchObject({ total: 1, products: 1, basic: 0 });
+    state.care!.interventions.push({ productCode: "CARE-COCCINELLA", stageIndex: 0, remainingSteps: 1, status: "active" });
+    expect(getKqCareActionAvailability(reserve(), state)).toMatchObject({ total: 0, products: 0, basic: 0 });
+  });
+
+  it("respects the next intervention window and closed cultures", () => {
+    expect(getKqCareActionAvailability(reserve(), { ...culture(), stageIndex: 3, phase: "resolved" })).toMatchObject({ total: 3, products: 2 });
+    expect(getKqCareActionAvailability(reserve(), { ...culture(), stageIndex: 4, phase: "resolved" })).toMatchObject({ total: 0 });
+    expect(getKqCareActionAvailability(reserve(), { ...culture(), phase: "complete" })).toMatchObject({ total: 0 });
+    expect(getKqCareActionAvailability(reserve(), { ...culture(), rulesVersion: 2 })).toMatchObject({ total: 0 });
+  });
+
+  it("counts only full-area passages, preserving historical full charges", () => {
+    const state = culture();
+    if (!state.equipment) throw new Error("The surface fixture requires a frozen equipment profile.");
+    state.equipment.productionUnits = 10;
+    const storage: KqCareStorage = { getItem: key => key === "kanab-quest-care-simulation-v1"
+      ? JSON.stringify({ cashCents: 0, inventory: { "CARE-COMPOST-TEA": 1 }, areaInventory: { "CARE-SEAWEED": 9, "CARE-APHIDIUS": 20 } }) : null,
+      setItem: () => undefined, removeItem: () => undefined };
+    const wallet = parseKqCareReserveSnapshot(getKqLocalCareSnapshot(storage, state));
+    expect(wallet?.inventory).toMatchObject({ "CARE-COMPOST-TEA": 1, "CARE-SEAWEED": 0, "CARE-APHIDIUS": 2 });
+    expect(getKqCareActionAvailability(wallet, state)).toMatchObject({ total: 2, products: 2 });
+  });
+
+  it("ties an availability result to its run, phase, care state and surface", () => {
+    const state = culture(), scope = getKqCareAvailabilityScope(state, "run-1");
+    if (!state.equipment) throw new Error("The surface fixture requires a frozen equipment profile.");
+    expect(getKqCareAvailabilityScope(structuredClone(state), "run-1")).toBe(scope);
+    expect(getKqCareAvailabilityScope(state, "run-2")).not.toBe(scope);
+    expect(getKqCareAvailabilityScope({ ...state, phase: "resolved" }, "run-1")).not.toBe(scope);
+    expect(getKqCareAvailabilityScope({ ...state, equipment: { ...state.equipment, productionUnits: 10 } }, "run-1")).not.toBe(scope);
+    state.care!.applications.push({ productCode: "CARE-SEAWEED", stageIndex: 0 });
+    expect(getKqCareAvailabilityScope(state, "run-1")).not.toBe(scope);
+  });
+
+  it("supports a historical culture with no equipment profile", () => {
+    const state: KqGameState = { ...culture(), equipment: undefined };
+    const scope = getKqCareAvailabilityScope(state, "historical-run");
+    expect(scope).toEqual(getKqCareAvailabilityScope(structuredClone(state), "historical-run"));
+    expect(getKqCareActionAvailability(reserve(), state)).toMatchObject({ total: 4, products: 3, basic: 1 });
   });
 });

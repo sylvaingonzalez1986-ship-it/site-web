@@ -1,0 +1,410 @@
+{
+  "schemaVersion": 1,
+  "date": "2026-11-07",
+  "request": "Reprendre plus largement : analyser les manques du jeu avec les agents adéquats.",
+  "status": "Audit terminé ; constats ci-dessous conservés comme état initial. Suivis UX-01/UX-02 puis QA-01 réalisés ensuite sur accord utilisateur.",
+  "followUp": {
+    "completedFindings": ["UX-01", "UX-02", "QA-01"],
+    "entry": "docs/bete-de-concours/guide-trim-workday-2026-11-07.json",
+    "archiveEntry": "docs/bete-de-concours/staff-archive-2026-11-07.json",
+    "status": "Implémenté et validé, sans publication de code. Migration 006 d'archivage appliquée le 8 novembre 2026 sur demande explicite ; 78 contrôles distants réussis.",
+    "nextFinding": "QA-05"
+  },
+  "scope": {
+    "application": "Lecture seule du code, des captures et des rapports existants. Seuls ce rapport et le checkpoint sont écrits.",
+    "team": [
+      {
+        "agent": "audit_global_ux",
+        "role": "Parcours, apprentissage et continuité des actions"
+      },
+      {
+        "agent": "audit_global_art",
+        "role": "Direction artistique, animation, retours visuels et sonores"
+      },
+      {
+        "agent": "audit_global_quality",
+        "role": "Robustesse, limites de données et preuves de livraison"
+      }
+    ],
+    "screens": [
+      "Quartier",
+      "Culture",
+      "Récoltes",
+      "Atelier",
+      "Commerce",
+      "Personnel",
+      "Finances",
+      "Réseaux",
+      "Collections et packs",
+      "Guide et navigation commune"
+    ],
+    "method": "Checkpoint consulté avant les investigations. Captures récentes Quartier/Personnel/Commerce et captures plus anciennes des autres modules confrontées au code actuel ; résultats croisés par l'agent principal. Aucun test relancé, serveur lancé, appel métier distant ou contrôle de production.",
+    "limits": [
+      "Audit des parcours et de la finition ; pas une certification exhaustive de sécurité, conformité juridique ou équilibrage économique.",
+      "Aucun essai avec de nouveaux joueurs, mesure de performance actuelle, écoute sonore ou essai physique iOS/Android.",
+      "La version actuellement publiée n'a pas été identifiée ; les reçus disponibles attestent les migrations appliquées, pas la publication du code associé.",
+      "Les bénéfices perceptifs proposés restent des hypothèses à vérifier ; aucune note UX ou mesure de plaisir inventée."
+    ]
+  },
+  "diagnosis": "La base visuelle et les mécaniques sont substantielles. Les manques prioritaires concernent la continuité du parcours, la prise en compte des heures et les limites des parties longues. La finition studio demande des gestes propres aux métiers et des conséquences confirmées plus cohérentes entre les écrans.",
+  "priorityScale": {
+    "P1": "Correction fonctionnelle prioritaire ou preuve indispensable avant qualification d'une livraison.",
+    "P2": "Amélioration ciblée de la compréhension, de la finition ou de la robustesse ; sévérité et confiance précisées séparément."
+  },
+  "preserve": [
+    "Univers cartoon du Quartier, Sylvain et vrais avatars personnalisés ; contrôles illustrés en neuf tranches, panneaux papier, palette crème/teal/or/abricot/encre.",
+    "Illustrations historiques réalistes des machines, demandées par le joueur ; personnages cartoon autour de ces équipements.",
+    "Personnel autonome ; dépenses dans Finances ; trim dans l'Atelier.",
+    "Coûts, prérequis, confirmations, vrais reçus, identité du lot suivi et données serveur.",
+    "Scènes déjà branchées aux tâches, petits accessoires laissant les employés visibles, pause, mouvement réduit et arrêt hors écran.",
+    "Navigation regroupée, carte du Quartier, plan glissable, sons facultatifs existants, dés, cartes et graphiques utiles."
+  ],
+  "findings": [
+    {
+      "id": "UX-01",
+      "priority": "P1",
+      "kind": "Parcours incomplet",
+      "confidence": "confirmé dans le code",
+      "title": "Le guide ne suit pas le trim obligatoire",
+      "present": "Le trim fonctionne ; Quartier et Récoltes proposent son accès.",
+      "gap": "Le guide enchaîne rangement, affinage puis jury sans étape ni preuve de trim. Trois explications de récolte omettent aussi ce prérequis.",
+      "evidence": [
+        "src/lib/kanab-quest-farm-progress.ts:15",
+        "src/components/placard/KqFarmGuide.tsx:65",
+        "src/components/placard/KqHarvestMoment.tsx:46",
+        "src/components/placard/KqHarvests.tsx:139",
+        "src/components/placard/KqHarvestStorage.tsx:141"
+      ],
+      "recommendation": "Intégrer les états requis/en cours/terminé du trim pour le lot réellement suivi, puis harmoniser les explications.",
+      "acceptance": "Nouvelle récolte → rangement → affinage/trim selon disponibilité → jury → vente du même lot, sans invitation prématurée au jury. Lots historiques préservés."
+    },
+    {
+      "id": "UX-02",
+      "priority": "P1",
+      "kind": "Recommandation insuffisamment contextualisée",
+      "confidence": "modèle confirmé ; impact perceptif à tester",
+      "title": "La prochaine action du Quartier ignore les heures personnelles",
+      "present": "Jauge commune de 12 h, coûts, Ma journée et renouvellement serveur existent.",
+      "gap": "Le modèle de recommandation ne reçoit pas la réserve horaire. Son titre par défaut invite à lancer une culture même à 0 h.",
+      "caveat": "Le bouton Préparer la culture ouvre une préparation gratuite ; son ouverture n'est pas elle-même une action bloquée. C'est la recommandation vers un lancement qui manque de contexte.",
+      "evidence": [
+        "src/lib/kanab-quest-hub.ts:20",
+        "src/lib/kanab-quest-hub.ts:71",
+        "src/lib/kanab-quest-hub.ts:102",
+        "src/components/placard/KqPlayerWorkStatus.tsx:73"
+      ],
+      "recommendation": "Prendre en compte les heures confirmées, afficher la prochaine disponibilité en cas d'épuisement et proposer une action gratuite utile, tout en préservant les urgences.",
+      "acceptance": "0 h, 0,5 h et 12 h ; mission réservée, renouvellement de jour et lecture indisponible. Ne pas convertir une donnée inconnue en zéro ni masquer coûts et urgences."
+    },
+    {
+      "id": "QA-01",
+      "priority": "P1",
+      "kind": "Blocage de partie longue",
+      "confidence": "confirmé dans SQL et moteur ; non reproduit sur une partie distante",
+      "title": "Le 41e contrat cumulé ne peut pas être enregistré",
+      "present": "Rotation des candidats et limite distincte de huit salariés actifs.",
+      "gap": "SQL refuse plus de 40 entrées employees ; les contrats terminés restent dans ce tableau. L'erreur propose une actualisation qui ne résout pas le plafond.",
+      "evidence": [
+        "supabase/migrations/20261107000100_kq_staff.sql:100",
+        "src/lib/kanab-quest-staff.ts:262",
+        "src/lib/kanab-quest-staff.ts:355",
+        "src/lib/kanab-quest-staff.ts:362",
+        "src/lib/supabase/kanab-quest-staff-backend.ts:17"
+      ],
+      "recommendation": "Définir un archivage des anciens contrats conservant les références de paie, tâches et reçus ; aligner limites SQL, métier et interface.",
+      "acceptance": "Après 40 contrats terminés, recruter si une place active est disponible ; historique consultable et plafond de huit actifs préservés. Toute migration future doit déclarer les permissions et passer check:supabase-grants."
+    },
+    {
+      "id": "ART-01",
+      "priority": "P2",
+      "kind": "Finition visuelle prioritaire",
+      "confidence": "observé dans le code et les captures",
+      "title": "Les corps n'ont pas encore de geste propre au métier",
+      "present": "Vrais profils, accessoires distincts, gestes d'outils, tâches réelles et suspension des animations.",
+      "gap": "Le personnage reste une image frontale entière ; tous les métiers utilisent le même workNod. L'outil bouge davantage que le corps n'accomplit l'action.",
+      "evidence": [
+        "src/components/placard/KqStaffStationScene.module.css:52",
+        "src/components/placard/KqStaffStationScene.module.css:58",
+        "src/components/contest/ChanvrierAvatar.tsx:23",
+        "output/placard-staff-ui/work-scene-working-390.png",
+        "output/placard-staff-ui/work-scene-working-1440.png"
+      ],
+      "recommendation": "Prototyper d'abord Culture avec deux poses, repos et arrosage : regard, main et accessoire coordonnés. Préserver l'identité du profil ; générer seulement les couches raster utiles. Aucun nouveau moteur requis.",
+      "acceptance": "Métier reconnaissable sans lire son titre, avatar identifiable à 320/390/1440 px, outil discret, version statique complète et pauses intactes ; comparer la lisibilité avec des joueurs."
+    },
+    {
+      "id": "ART-02",
+      "priority": "P2",
+      "kind": "Retours d'action",
+      "confidence": "écarts établis ; ressenti à tester",
+      "title": "Les conséquences confirmées ont des présentations hétérogènes",
+      "present": "Scènes de récolte et RH, reçu de vente immédiat, résultats sociaux et confirmations bancaires.",
+      "gap": "Le langage varie fortement entre Sylvain, scène de personnage, pictogramme de pièces et simple phrase.",
+      "evidence": [
+        "src/components/placard/KqCommerceDesk.tsx:396",
+        "src/components/placard/KqHarvestMoment.tsx:50",
+        "src/components/placard/KqStaffMoment.tsx:108",
+        "src/components/placard/KqTreasuryManagement.tsx:186",
+        "src/components/placard/KqBankLoans.tsx:100",
+        "src/components/placard/KqSocialNetworks.tsx:192"
+      ],
+      "recommendation": "Commencer par vente et règlement : action accomplie, variation confirmée, état final, action suivante ; illustration brève facultative adaptée au sens de l'action.",
+      "acceptance": "Montants immédiatement accessibles, aucune fausse attente ni célébration d'une dette comme un gain, reçus conservés et aucune répétition au remontage."
+    },
+    {
+      "id": "UX-03",
+      "priority": "P2",
+      "kind": "Retour après absence",
+      "confidence": "dispersion confirmée ; difficulté de découverte inférée",
+      "title": "Les résultats des tâches Personnel ne sont pas rassemblés au retour",
+      "present": "Historique, résultats exacts et scènes en cours/à venir/à vérifier.",
+      "gap": "Les tâches terminées quittent les postes actifs ; le Quartier ne rassemble pas les effets récents d'une formation ou tournée.",
+      "evidence": [
+        "src/lib/kanab-quest-hub.ts:157",
+        "src/components/placard/KqStaffWorkPlan.tsx:108",
+        "src/components/placard/KqStaffWorkPlan.tsx:268",
+        "src/components/placard/KqStaffOperations.tsx:144"
+      ],
+      "recommendation": "Ajouter au résumé existant un signal de résultats récents relié aux vrais reçus et historiques.",
+      "acceptance": "Depuis le Quartier, retrouver l'issue confirmée d'une tâche terminée pendant l'absence ; aucun gain inventé, résultat anticipé ou rejeu de récompense."
+    },
+    {
+      "id": "ART-03",
+      "priority": "P2",
+      "kind": "Lisibilité mobile",
+      "confidence": "tailles CSS confirmées ; confort physique à vérifier",
+      "title": "Certains états utiles deviennent trop petits par rapport aux illustrations",
+      "present": "Actions principales lisibles et cibles tactiles de 44 px.",
+      "gap": "Noms/heures/états du plan autour de 0,68–0,73 rem ; certains délais et compteurs sociaux à 0,55–0,60 rem.",
+      "evidence": [
+        "src/components/placard/KqStaffWorkPlan.module.css:55",
+        "src/components/placard/KqStaffWorkPlan.module.css:57",
+        "src/components/placard/KqSocialNetworks.module.css:22",
+        "output/placard-staff-ui/work-scene-working-390.png"
+      ],
+      "recommendation": "Rehausser d'abord heures et états essentiels, gagner l'espace dans les espacements et détails secondaires.",
+      "acceptance": "Lecture à 320/390 px et sur téléphone physique, sans débordement, réduction des personnages ni masquage des coûts."
+    },
+    {
+      "id": "ART-04",
+      "priority": "P2",
+      "kind": "Identité sonore",
+      "confidence": "couverture du code confirmée ; timbres non évalués à l'écoute",
+      "title": "Les sons existants couvrent inégalement les événements",
+      "present": "Activation volontaire, navigation, dés, récolte, récompenses, victoire/défaite et protection contre les répétitions.",
+      "gap": "Vente, recrutement/formation et révélation de cartes ne sont pas branchés à ce système ; synthèse actuelle sinus/triangle.",
+      "evidence": [
+        "src/lib/kanab-quest-sound.ts:1",
+        "src/lib/kanab-quest-sound.ts:48",
+        "src/lib/kanab-quest-sound.ts:167",
+        "src/components/placard/KqPlacardMap.tsx:122"
+      ],
+      "recommendation": "Écouter l'existant, puis composer et raccorder trois signatures discrètes : manipulation papier, engagement confirmé, résultat confirmé.",
+      "acceptance": "Activation volontaire conservée, sons seulement aux événements concernés et confirmés, pas de répétition au rafraîchissement ni de dépendance sonore pour comprendre."
+    },
+    {
+      "id": "ART-05",
+      "priority": "P2",
+      "kind": "Cohérence d'illustration",
+      "confidence": "observé",
+      "title": "La vignette Formation tranche avec les postes détourés",
+      "present": "Illustrations et acteurs contenus dans le plan.",
+      "gap": "Une peinture rectangulaire opaque et sombre se détache des objets détourés sur papier.",
+      "evidence": [
+        "src/components/placard/KqPrintedArt.tsx:9",
+        "src/components/placard/KqStaffStationScene.module.css:22",
+        "output/placard-staff-ui/work-scene-station-training-390.png",
+        "docs/bete-de-concours/ui-print-provenance.json"
+      ],
+      "recommendation": "Créer une variante détourée de la vignette de formation pour le plan ; conserver le tableau complet pour les scènes.",
+      "acceptance": "Intégration au papier et échelle cohérentes avec Administration, provenance renseignée, sans nouvel encadrement géométrique."
+    },
+    {
+      "id": "ART-06",
+      "priority": "P2",
+      "kind": "Reconnaissance des récoltes",
+      "confidence": "structure actuelle confirmée ; bénéfice perceptif à tester",
+      "title": "L'identité visuelle du lot s'atténue après la culture",
+      "present": "Variété, référence, quantités, qualité, sélection réelle et continuité des données.",
+      "gap": "Les récoltes deviennent surtout des feuilles textuelles partageant un pictogramme générique.",
+      "evidence": [
+        "src/components/placard/KqHarvests.tsx:133",
+        "src/components/placard/KqLotSummary.tsx:21",
+        "src/components/placard/KqCommerceDesk.tsx:403"
+      ],
+      "recommendation": "Réutiliser une petite identité illustrée de variété/produit dans la fiche de lot et la sélection Commerce, reliée au lot réel.",
+      "acceptance": "Reconnaître le même lot entre écrans ; ne pas inventer son état ou ajouter une grande image par ligne."
+    },
+    {
+      "id": "UX-04",
+      "priority": "P2",
+      "kind": "Progression et autonomie",
+      "confidence": "structure confirmée ; effet sur motivation non mesuré",
+      "title": "Le guide propose encore une longue visite avant le choix d'une direction",
+      "present": "Guide réductible/fermable, exploration libre, missions et objectif épinglé.",
+      "gap": "28 objectifs dont 18 visites ; le choix d'une prochaine direction est placé à la fin.",
+      "evidence": [
+        "src/lib/kanab-quest-farm-progress.ts:4",
+        "src/lib/kanab-quest-farm-progress.ts:32",
+        "src/lib/kanab-quest-farm-progress.ts:36"
+      ],
+      "recommendation": "Tester une fin du socle après la première vente, suivie du choix d'un objectif et de découvertes contextualisées.",
+      "acceptance": "Le joueur retrouve l'objectif choisi et l'aide, comprend qu'il peut ignorer les autres branches ; préserver les sauvegardes et ne pas imposer d'achat."
+    },
+    {
+      "id": "UX-05",
+      "priority": "P1",
+      "kind": "Preuve de compréhension",
+      "confidence": "absence de preuve confirmée ; aucun échec joueur établi",
+      "title": "Le parcours complet n'a pas encore été observé chez de nouveaux joueurs",
+      "present": "Protocole existant et nombreuses recettes automatisées.",
+      "gap": "Les rapports ne prouvent pas la compréhension des horloges, du trim, du jury et des circuits de vente ni le plaisir de jouer.",
+      "evidence": [
+        "docs/bete-de-concours/AUDIT-CLARTE-ET-PARCOURS-2026-10-29.md:223",
+        "docs/bete-de-concours/ux-progress.json"
+      ],
+      "recommendation": "Faire passer le protocole existant à 5–8 nouveaux joueurs, ajouter trim et journée personnelle ; utiliser une sauvegarde préparée pour le retour après attente.",
+      "acceptance": "Observations réelles consignées ; mesurer les cibles proposées, prochaine action comprise en dix secondes et quatre personnes sur cinq accomplissant les tâches fréquentes sans aide. Ce sont des objectifs, pas des résultats actuels."
+    },
+    {
+      "id": "QA-02",
+      "priority": "P1",
+      "kind": "Condition de livraison",
+      "confidence": "écart de preuves confirmé ; état public inconnu",
+      "title": "La compatibilité de la version publiée avec les migrations reste à établir",
+      "present": "Reçus des migrations appliquées et vérifiées ; code correspondant documenté localement.",
+      "gap": "Les opérations de migration indiquent websitePublished:false. La version actuellement servie n'a pas été inspectée.",
+      "evidence": [
+        "output/personnel-migrations/completion.json:24",
+        "output/player-work-migration/completion.json:4",
+        "supabase/migrations/20261107000200_kq_staff_trim.sql:29",
+        "supabase/migrations/20261107000200_kq_staff_trim.sql:36"
+      ],
+      "recommendation": "Lors du chantier de livraison, identifier la version servie et rattacher une recette des parcours dépendant des migrations au reçu de publication.",
+      "acceptance": "Ferme de test : nouvelle récolte → trim → jury/vente, action manuelle consommant les heures communes et règlement visible dans Finances.",
+      "caveat": "Aucune panne publique établie. Cette passe ne publie pas et n'applique aucune migration."
+    },
+    {
+      "id": "QA-03",
+      "priority": "P1",
+      "kind": "Preuves de livraison",
+      "confidence": "dossier local inspecté",
+      "title": "La qualification globale de la version candidate reste ouverte",
+      "present": "Rapports récents réussis : neuf groupes de scènes, huit groupes journée personnelle et vingt-et-un scénarios de continuité.",
+      "gap": "Seul rapport consolidé retrouvé daté du 8 septembre, freshReportCount:0 et passed:false ; six dossiers attendus absents. Les recettes récentes utilisent des API locales simulées.",
+      "evidence": [
+        "output/placard-launch-evidence/placard-launch-evidence-2026-09-08T05-10-22-278Z.json",
+        "scripts/verify-placard-launch-evidence.mjs:23",
+        "scripts/audit-placard-staff-ui.mjs:68",
+        "docs/bete-de-concours/studio-workplan-2026-11-07.json"
+      ],
+      "missingEvidenceFolders": [
+        "output/placard-artwork-reviews",
+        "output/placard-mobile-audits",
+        "output/placard-mobile-manual-reviews",
+        "output/placard-load-tests",
+        "output/placard-smoke-tests",
+        "output/placard-retro-evidence"
+      ],
+      "recommendation": "Compléter les preuves existantes sur la version candidate : appareils physiques, transactions ciblées et charge dans l'environnement approprié ; vérifier la pertinence des exigences historiques.",
+      "acceptance": "Rapports datés liés à la version candidate ; vérificateur existant exécuté ensuite, toute exigence hors périmètre explicitement expliquée.",
+      "caveat": "Le vieux rapport ne prouve pas un échec de la version actuelle ; il ne constitue simplement pas une validation actuelle."
+    },
+    {
+      "id": "QA-04",
+      "priority": "P2",
+      "kind": "Couverture de charge",
+      "confidence": "omission confirmée ; performance non mesurée",
+      "title": "Le scénario de charge ignore la route Personnel désormais commune",
+      "present": "Scénario de charge pour sept routes historiques ; validations locales de révision et coûts.",
+      "gap": "Le Shell lit /staff pour les heures. Cette lecture peut régler des échéances via commit(settle), ce que le scénario historique ne couvre pas.",
+      "evidence": [
+        "scripts/load-test-placard.mjs:59",
+        "scripts/lib/placard-launch-evidence.mjs:2",
+        "src/components/placard/KqPlayerWorkStatus.tsx:38",
+        "src/lib/supabase/kanab-quest-staff-backend.ts:68",
+        "src/lib/supabase/kanab-quest-staff-backend.ts:81"
+      ],
+      "recommendation": "Recette sur copie isolée : plusieurs sessions du même compte, échéance et action concurrentes. Ne pas traiter GET /staff comme une opération forcément sans mutation.",
+      "acceptance": "Délais et erreurs mesurés ; effets réglés une seule fois et aucune double consommation d'heures sous concurrence réelle."
+    },
+    {
+      "id": "QA-05",
+      "priority": "P2",
+      "kind": "Reprise après interruption",
+      "confidence": "stockage en mémoire confirmé ; scénario de rechargement non reproduit",
+      "title": "Une confirmation Personnel incertaine perd son dossier lors du rechargement",
+      "present": "Reprise avec la même clé dans la modale, y compris après enregistrement suivi d'une réponse 503.",
+      "gap": "La commande pending et sa requestKey vivent uniquement dans useState. Après destruction de la page, le GET retrouve l'état, sans relier explicitement l'ancienne commande incertaine à son reçu.",
+      "evidence": [
+        "src/components/placard/KqStaffOperations.tsx:35",
+        "src/components/placard/KqStaffOperations.tsx:81",
+        "src/components/placard/KqTutorialApiContext.tsx:17",
+        "output/placard-staff-ui/staff-moments-report.json:21",
+        "scripts/audit-placard-staff-ui.mjs:244"
+      ],
+      "recommendation": "Persister les seules commandes soumises et non acquittées, avec leur clé et propriétaire ; permettre leur vérification ou reprise avant une soumission équivalente.",
+      "acceptance": "Commande enregistrée ou non, réponse perdue, page détruite puis retour : issue identifiable, même clé utilisable, une seule tâche et un seul débit.",
+      "caveat": "Aucun double débit automatique démontré dans cet audit."
+    }
+  ],
+  "roadmap": [
+    {
+      "order": 1,
+      "title": "Parcours cohérent",
+      "findings": [
+        "UX-01",
+        "UX-02"
+      ],
+      "deliverable": "Un lot suivi jusqu'à la vente, avec trim et prochaine action cohérente avec les heures.",
+      "finish": "Cas de lots nouveaux/historiques et réserves horaires validés dans les suites existantes."
+    },
+    {
+      "order": 2,
+      "title": "Parties longues et reprises",
+      "findings": [
+        "QA-01",
+        "QA-05"
+      ],
+      "deliverable": "Recrutement durable et confirmations retrouvables après fermeture.",
+      "finish": "Historique préservé, 41e contrat possible avec place active, commande incertaine résolue sans doublon."
+    },
+    {
+      "order": 3,
+      "title": "Finition studio sur un périmètre réduit",
+      "findings": [
+        "ART-01",
+        "ART-02",
+        "UX-03",
+        "ART-03"
+      ],
+      "deliverable": "Un métier réellement animé, retours de vente/règlement cohérents, résultats retrouvables et états mobiles lisibles.",
+      "finish": "Comparer le prototype sur téléphone puis étendre les gestes validés aux autres métiers."
+    },
+    {
+      "order": 4,
+      "title": "Découverte progressive et cohérence artistique",
+      "findings": [
+        "UX-04",
+        "ART-04",
+        "ART-05",
+        "ART-06"
+      ],
+      "deliverable": "Aide orientée par le choix du joueur, sons raccordés et reconnaissance visuelle des lots.",
+      "finish": "Choix et compréhension observés ; réutilisation des ressources existantes avant génération ciblée."
+    }
+  ],
+  "deliveryGates": [
+    "UX-05",
+    "QA-02",
+    "QA-03",
+    "QA-04"
+  ],
+  "nextBoundedTask": "QA-05 : retrouver une confirmation Personnel incertaine après fermeture ou rechargement, avec son propriétaire et sa même clé. Guide/trim/heures et archivage des contrats validés ; migration d'archives activée, publication applicative séparée.",
+  "exclusions": [
+    "Ne pas refaire les ciseaux, les avatars ou les tranches récemment validées.",
+    "Ne pas réintroduire comme défauts les anciens contrôles Collection déjà corrigés.",
+    "Ne pas ajouter un moteur d'animation ou plugin sans besoin démontré.",
+    "Ne pas inventer de nouveaux systèmes économiques, de routines automatiques ou de chiffres de performance pour résoudre des problèmes de présentation."
+  ]
+}

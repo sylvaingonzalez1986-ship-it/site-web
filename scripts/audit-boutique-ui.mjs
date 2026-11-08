@@ -1,14 +1,20 @@
-import { launch } from "chrome-launcher";
+import { Launcher } from "chrome-launcher";
 import puppeteer from "puppeteer-core";
 import { mkdir, writeFile } from "node:fs/promises";
 
 const base = "http://localhost:3000";
 const out = "output/boutique-ui";
 await mkdir(out, { recursive: true });
-const chrome = await launch({ chromeFlags: ["--headless", "--disable-gpu"] });
+const browser = await puppeteer.launch({
+  executablePath: Launcher.getInstallations()[0],
+  userDataDir: `${out}/chrome-profile`,
+  headless: true,
+  args: ["--no-sandbox", "--disable-gpu"],
+});
 try {
-  const browser = await puppeteer.connect({ browserURL: `http://127.0.0.1:${chrome.port}` });
   const page = await browser.newPage();
+  const errors = [];
+  page.on("pageerror", error => errors.push(error.message));
   await page.goto(base);
   await page.evaluate(async () => {
     await fetch("/api/age-gate/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ confirmed: true }) });
@@ -20,6 +26,16 @@ try {
     await page.evaluate(() => {
       [...document.querySelectorAll("button")].find(button => button.textContent?.trim() === "Tout refuser")?.click();
     });
+    if (width === 320) {
+      const popupClose = await page.waitForSelector('[data-new-products-popup] button[aria-label="Fermer"]', { visible: true, timeout: 6000 }).catch(error => {
+        if (error.name !== "TimeoutError") throw error;
+        return null;
+      });
+      if (popupClose) {
+        await popupClose.click();
+        await page.waitForSelector("[data-new-products-popup]", { hidden: true });
+      }
+    }
     await new Promise(resolve => setTimeout(resolve, 400));
     for (const mode of ["mes-produits", "mes-voisins", "les-copains"]) {
       const button = await page.$(`[data-tutorial="tab-${mode}"]`);
@@ -52,9 +68,10 @@ try {
     }
   }
   await writeFile(out + "/results.json", JSON.stringify(results, null, 2));
+  await writeFile(out + "/errors.json", JSON.stringify(errors, null, 2));
   console.log(JSON.stringify(results, null, 2));
+  if (errors.length) throw new Error(`Erreurs navigateur : ${errors.join("; ")}`);
   if (results.some(result => result.overflow || result.cardOverflow || result.nextWorks === false || result.keyboardWorks === false || (result.width < 640 && result.products > 1 && result.columns !== 2))) {
     throw new Error("Une vérification de la boutique a échoué.");
   }
-  await browser.disconnect();
-} finally { await chrome.kill(); }
+} finally { await browser.close(); }

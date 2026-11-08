@@ -31,4 +31,17 @@ describe("Arena next activity", () => {
     expect(actions[0]).toMatchObject({ title: "2 lots en affinage", href: "/arene/placard?view=workshop&section=storage" });
     expect(getArenaResumeActions({ ...empty, availableFlowerCount: 1, curingFlowerCount: 2 }).map(action => action.id)).toEqual(["jury", "storage"]);
   });
+  it("keeps a verified trim prerequisite distinct from ready flowers and curing", () => {
+    const summary = { ...empty, trimFlowerCount: 2, availableFlowerCount: 1, curingFlowerCount: 3 };
+    expect(parseArenaPlayerSummary(summary)).toEqual(summary);
+    const actions = getArenaResumeActions(summary);
+    expect(actions.map(action => action.id)).toEqual(["trim", "jury", "storage"]);
+    expect(actions[0]).toMatchObject({ title: "2 lots à trimmer", href: "/arene/placard?view=workshop&section=processing&workshop=trim", label: "Faire le trim" });
+    expect(actions[0].description).toContain("toi-même");
+    expect(getArenaResumeActions({ ...empty, trimFlowerCount: 0 }).map(action => action.id)).not.toContain("trim");
+    expect(parseArenaPlayerSummary(empty)).not.toHaveProperty("trimFlowerCount");
+  });
+  it.each([-1, 1.5, "3", Infinity, NaN, null, Number.MAX_SAFE_INTEGER + 1])("rejects an invalid optional trim count: %s", trimFlowerCount => {
+    expect(parseArenaPlayerSummary({ ...empty, trimFlowerCount })).toBeNull();
+  });
 });

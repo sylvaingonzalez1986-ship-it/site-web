@@ -2,8 +2,9 @@ import { describe, expect, it, vi } from "vitest";
 import { createReleveCultureTransport, getReleveNativeFlowers } from "./kanab-quest-releve-culture";
 import { applyKqReleveProductionAction as act, createKqReleveProduction, suggestKqRelevePlan, type KqReleveProductionState } from "./kanab-quest-releve-production";
 import { isKqCultureDead } from "./kanab-quest-game";
-import { KQ_BASIC_CARE_PRICE_CENTS, KQ_CARE_PRODUCTS } from "./kanab-quest-care";
+import { getKqCarePricing, KQ_CARE_PRODUCTS } from "./kanab-quest-care";
 import { getKqHarvestRows } from "./kanab-quest-harvests";
+import { getKqRemoteCareShop } from "./kanab-quest-api";
 
 function fixture(count: 1 | 2 = 1) {
   let state = createKqReleveProduction();
@@ -35,6 +36,21 @@ function harvestFixture(count: 1 | 2 = 1) {
 }
 
 describe("native culture transport for La relève", () => {
+  it("reads hidden action availability without completing the health visit", async () => {
+    const sandbox = port(act(fixture(), { type: "launch" }));
+    const before = structuredClone(sandbox.get());
+    const quote = await getKqRemoteCareShop(sandbox.request, undefined, "availability");
+    expect(quote.cashCents).toBe(before.cashCents);
+    expect(quote.inventory).toEqual(expect.any(Array));
+    expect(sandbox.get()).toEqual(before);
+    await getKqRemoteCareShop(sandbox.request);
+    expect(sandbox.get().milestones).toContain("health-read");
+    expect(sandbox.get().cashCents).toBe(before.cashCents);
+    expect(sandbox.get().game).toEqual(before.game);
+    await getKqRemoteCareShop(sandbox.request);
+    expect(sandbox.get().milestones.filter(milestone => milestone === "health-read")).toHaveLength(1);
+  });
+
   it("provides the player bootstrap contract without any network fallback", async () => {
     const sandbox = port();
     const network = vi.spyOn(globalThis, "fetch").mockRejectedValue(new Error("Network forbidden"));
@@ -66,23 +82,26 @@ describe("native culture transport for La relève", () => {
     const sandbox = port(act(fixture(), { type: "launch" }));
     const before = structuredClone(sandbox.get());
     const runId = before.game!.campaign!.leaderRunId;
-    const result = await sandbox.post(`/runs/${runId}/care`, { action: "basic", basicPriceCents: KQ_BASIC_CARE_PRICE_CENTS, requestKey: "care-1" });
-    expect(result.chargedCents).toBe(KQ_BASIC_CARE_PRICE_CENTS);
-    expect(result.cashCents).toBe(before.cashCents - KQ_BASIC_CARE_PRICE_CENTS);
+    const price = getKqCarePricing(before.game!).basicCarePriceCents;
+    const result = await sandbox.post(`/runs/${runId}/care`, { action: "basic", basicPriceCents: price, requestKey: "care-1" });
+    expect(result.chargedCents).toBe(price);
+    expect(result.cashCents).toBe(before.cashCents - price);
     expect(result.state.care.vitality).toBe(before.game!.care!.vitality);
     expect(sandbox.get().ledger.at(-1)?.kind).toBe("care");
-    const replay = await sandbox.post(`/runs/${runId}/care`, { action: "basic", basicPriceCents: KQ_BASIC_CARE_PRICE_CENTS, requestKey: "care-1" });
+    const replay = await sandbox.post(`/runs/${runId}/care`, { action: "basic", basicPriceCents: price, requestKey: "care-1" });
     expect(replay.replayed).toBe(true); expect(sandbox.get().cashCents).toBe(result.cashCents);
   });
 
   it("serves native product inventory and purchases atomically", async () => {
     const sandbox = port(act(fixture(), { type: "launch" }));
     const product = KQ_CARE_PRODUCTS[0], before = sandbox.get().cashCents;
-    const result = await sandbox.post("/care", { productCode: product.code, quantity: 2, requestKey: "product-1" });
-    expect(result.inventory).toContainEqual({ productCode: product.code, quantity: 2 });
-    expect(result.cashCents).toBe(before - product.priceCents * 2);
-    await sandbox.post("/care", { productCode: product.code, quantity: 2, requestKey: "product-1" });
-    expect(sandbox.get().careInventory[product.code]).toBe(2);
+    const units = getKqCarePricing(sandbox.get().game!).pricingUnits;
+    const command = { productCode: product.code, quantity: 2, requestKey: "product-1", expectedPriceCents: product.priceCents * units * 2 };
+    const result = await sandbox.post("/care", command);
+    expect(result.inventory).toContainEqual({ productCode: product.code, quantity: 2, areaQuantity: units * 2, legacyQuantity: 0 });
+    expect(result.cashCents).toBe(before - command.expectedPriceCents);
+    await sandbox.post("/care", command);
+    expect(sandbox.get().careAreaInventory?.[product.code]).toBe(units * 2);
   });
 
   it("keeps harvest invoices and the native reserve, jury receipt and reward after six turns", async () => {

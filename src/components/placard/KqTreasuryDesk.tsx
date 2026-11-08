@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 
@@ -13,6 +13,7 @@ import { KqTreasuryManagement } from "./KqTreasuryManagement";
 import { KqTreasuryBank } from "./KqTreasuryBank";
 import { KqChapterHeading } from "./KqChapterHeading";
 import { KqAllocationBar, KqBarChart } from "./KqVisuals";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import styles from "./KqTreasuryDesk.module.css";
 
 const TABS = [
@@ -106,7 +107,24 @@ function Accounts({ report, data }: { report: Report; data: KqTreasurySnapshot }
     </div>
     <section className={styles.card} aria-label="Compte de résultat"><header className={styles.cardHeader}><div><small className={styles.eyebrow}>Du {shortDate(data.period.from)} au {shortDate(data.period.to)}</small><h2>Compte de résultat</h2></div><strong className={styles.resultBadge} data-negative={report.income.resultCents < 0}>{signed(report.income.resultCents)}</strong></header><p className={styles.explanation}>Le résultat compare les produits et les charges de cette période, même quand une facture sera réglée plus tard. La TVA est suivie séparément.</p><div className={styles.accountColumns}><section><h3>Produits</h3><AccountLines rows={report.income.revenues} total={report.income.revenueCents} totalLabel="Total des produits" /></section><section><h3>Charges</h3><AccountLines rows={report.income.expenses} total={report.income.expenseCents} totalLabel="Total des charges" /></section></div><div className={styles.bottomResult}><span>{report.income.resultCents < 0 ? "Perte de la période" : "Bénéfice de la période"}</span><strong>{signed(report.income.resultCents)}</strong></div></section>
     <section className={styles.card} aria-label="Bilan de gestion"><header className={styles.cardHeader}><div><small className={styles.eyebrow}>Situation au {fullDate(data.period.to)}</small><h2>Bilan de gestion</h2></div><span className={styles.balanceStatus} data-warning={report.balanceSheet.differenceCents !== 0}>{report.balanceSheet.differenceCents === 0 ? <><Check size={16} aria-hidden="true" /> Bilan équilibré</> : `Écart à vérifier : ${money(report.balanceSheet.differenceCents)}`}</span></header><div className={styles.accountColumns}><section><h3>Actif <small>Ce que possède ton entreprise</small></h3><AccountLines rows={report.balanceSheet.assets} total={report.balanceSheet.assetsCents} totalLabel="Total de l’actif" /></section><section><h3>Passif <small>Comment ton entreprise est financée</small></h3><h4>Dettes</h4><AccountLines rows={report.balanceSheet.debts} total={report.balanceSheet.debtCents} totalLabel="Total des dettes" /><h4>Capitaux propres</h4><AccountLines rows={report.balanceSheet.equity} total={report.balanceSheet.equityCents} totalLabel="Total des capitaux propres" /><div className={styles.bottomResult}><span>Total du passif</span><strong>{money(report.balanceSheet.liabilitiesCents)}</strong></div></section></div></section>
-    <details className={styles.methods}><summary>Comment lire ces comptes</summary><p>La comptabilité commence le {fullDate(data.startedAt)}. La situation existante entre dans le bilan d’ouverture ; les résultats antérieurs ne sont pas reconstitués.</p><p>Le matériel est amorti sur 36 mois de jeu et le site sur 12 mois. Les abonnements et publicités payés d’avance sont répartis sur leur période d’utilisation. Les stocks sont valorisés à leurs coûts de production connus, avec une variation de stock au résultat. Le jeu ne récupère pas de TVA sur les achats : les coûts affichés restent les débits totaux.</p><p>Régler un fournisseur, une analyse ou une facture d’électricité réduit la trésorerie et la dette : cela ne crée pas une deuxième charge. Acheter un équipement transforme de la trésorerie en matériel ; l’amortissement répartit ensuite son coût.</p><p>Un emprunt augmente la trésorerie et la dette, sans créer de chiffre d’affaires. Ses intérêts contractuels sont une charge financière. Les cryptoactifs et titres boursiers restent au coût d’acquisition dans ce bilan de jeu ; seuls les gains et pertes réalisés à la vente entrent au résultat. Leur valeur au cours actuel est visible dans la Banque.</p>{data.unclassified && data.unclassified.transactions > 0 ? <p>{data.unclassified.transactions.toLocaleString("fr-FR")} opérations restent à classer (total des écarts : {money(data.unclassified.absoluteCents)}). Elles ne sont pas assimilées à un bénéfice.</p> : report.suspenseCents !== 0 ? <p>Des mouvements restent à classer : {money(Math.abs(report.suspenseCents))}. Ils figurent séparément au bilan et ne sont pas présentés comme un bénéfice.</p> : null}</details>
+    <details className={styles.methods}><summary>Comment lire ces comptes</summary><KqHelpDashboard>
+      <KqHelpNote>Comptabilité ouverte le {fullDate(data.startedAt)} : la situation existante forme le bilan d’ouverture. Aucun résultat antérieur reconstitué.</KqHelpNote>
+      <KqBarChart title="Durées d’amortissement après l’achat" items={[
+        { label: "Matériel", value: 36, displayValue: "36 mois de jeu", tone: "teal" },
+        { label: "Site", value: 12, displayValue: "12 mois de jeu", tone: "gold" },
+      ]} /><KqHelpGrid items={[
+        { art: "help-time" as const, label: "Abonnements et publicités", value: "Période d’utilisation", detail: "Paiements d’avance répartis sur cette période." },
+        { art: "warehouse" as const, label: "Valeur des stocks", value: "Coûts connus", detail: "Coûts de production ; variation du stock au résultat." },
+        { art: "help-accounts" as const, label: "TVA sur les achats", value: "Non récupérée", detail: "Coûts affichés = débits totaux." },
+        { art: "accounts" as const, label: "Crypto et titres au bilan", value: "Coût d’acquisition", detail: "Gains/pertes au résultat à la vente seulement. Cours actuel dans Banque." },
+      ]} />
+      <div className={styles.tableScroll}><table><caption>Effet des opérations sur les comptes</caption><thead><tr><th scope="col">Opération</th><th scope="col">Au bilan</th><th scope="col">Au résultat</th></tr></thead><tbody>
+        <tr><th scope="row">Régler une facture<small>Fournisseur, analyse, électricité</small></th><td>Trésorerie et dette diminuent</td><td>Aucune deuxième charge</td></tr>
+        <tr><th scope="row">Acheter un équipement</th><td>Trésorerie convertie en matériel</td><td>Coût réparti par amortissement</td></tr>
+        <tr><th scope="row">Recevoir un emprunt</th><td>Trésorerie et dette augmentent</td><td>Aucun chiffre d’affaires ; intérêts contractuels en charge financière</td></tr>
+      </tbody></table></div>
+      {data.unclassified && data.unclassified.transactions > 0 ? <KqHelpNote>{data.unclassified.transactions.toLocaleString("fr-FR")} opérations à classer · {money(data.unclassified.absoluteCents)} d’écarts. Ces montants ne sont pas un bénéfice.</KqHelpNote> : report.suspenseCents !== 0 ? <KqHelpNote>{money(Math.abs(report.suspenseCents))} à classer, séparés au bilan et exclus du bénéfice.</KqHelpNote> : null}
+    </KqHelpDashboard></details>
   </>;
 }
 
@@ -117,7 +135,7 @@ function JournalEntry({ entry }: { entry: KqTreasuryEntry }) {
 
 const ACCOUNT_GROUPS: { title: string; description: string; accounts: KqTreasuryAccount[] }[] = [
   { title: "Actif", description: "Ce que possède ton entreprise", accounts: ["cash", "vat_reserve", "savings", "crypto_assets", "securities_assets", "equipment", "website", "stock", "prepaid"] },
-  { title: "Dettes", description: "Ce qui reste à régler ou à reverser", accounts: ["supplier_payable", "lab_payable", "energy_payable", "vat_payable", "loan_payable"] },
+  { title: "Dettes", description: "Ce qui reste à régler ou à reverser", accounts: ["supplier_payable", "lab_payable", "staff_payable", "energy_payable", "vat_payable", "loan_payable"] },
   { title: "Capitaux propres", description: "Les ressources apportées à ton entreprise", accounts: ["opening_equity", "capital"] },
   { title: "Produits", description: "Ventes, primes et revenus financiers", accounts: KQ_TREASURY_REVENUE_ACCOUNTS },
   { title: "Charges", description: "Les coûts de ton activité", accounts: KQ_TREASURY_EXPENSE_ACCOUNTS },
@@ -178,7 +196,8 @@ export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initial
     return () => { unsubscribe_kq_treasury_updated(); document.removeEventListener("visibilitychange", resume); };
   }, [api, pole]);
   function selectTab(next: Tab) { setTab(next); }
-  return <main className={styles.page}>
+  return <main className={styles.page}
+    >
     {pole === "accounting" ? <KqChapterHeading art="accounts" title="Mes finances" /> : <header className={styles.header}>
       <figure className={styles.officeArt}>
         <div className={styles.welcome}>
@@ -192,7 +211,7 @@ export function KqTreasuryDesk({ onOpenShop, initialPole = "accounting", initial
       </figure>
     </header>}
     <nav className={styles.financeNav} aria-label="Mes finances">
-      {pole === "accounting" ? <button type="button" aria-pressed={tab === "invoices"} onClick={() => selectTab("invoices")}>Factures & disponible</button> : <Link href="/arene/placard?view=treasury&pole=accounting" prefetch={false} onClick={event => { if (onPoleChange) { event.preventDefault(); onPoleChange("accounting"); } }}>Factures & disponible</Link>}
+      {pole === "accounting" ? <button type="button" data-guide-invoices-tab aria-pressed={tab === "invoices"} onClick={() => selectTab("invoices")}>Factures & disponible</button> : <Link href="/arene/placard?view=treasury&pole=accounting" prefetch={false} onClick={event => { if (onPoleChange) { event.preventDefault(); onPoleChange("accounting"); } }}>Factures & disponible</Link>}
       <Link href="/arene/placard?view=treasury&pole=bank" prefetch={false} aria-current={pole === "bank" ? "page" : undefined} onClick={event => { if (onPoleChange) { event.preventDefault(); onPoleChange("bank"); } }}>Banque & placements</Link>
       {pole === "accounting" ? <button type="button" aria-pressed={tab !== "invoices"} onClick={() => selectTab("overview")}>Comptabilité détaillée</button> : null}
     </nav>

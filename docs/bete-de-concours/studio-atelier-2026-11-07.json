@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-07",
+  "request": "Poursuivre les interactions du jeu dans l’Atelier et le Commerce ; remplacer les dessins trop basiques par de véritables illustrations générées pour l’animation.",
+  "scope": "Interface et art locaux. Aucun prix, contrat, règle de temps, résultat, migration ou déploiement modifié.",
+  "team": [
+    "Scène de trim et articulation des pièces",
+    "Commerce, reçus et disponibilité",
+    "Recette navigateur et revue visuelle",
+    "Intégration, génération d’images et accessibilité"
+  ],
+  "implementation": {
+    "trim": "Établi fixe généré, portrait issu du système existant, trimeuse et ciseaux articulés à partir de couches raster transparentes. Phases préparation, attente, travail, résultat à confirmer et fin. Le formulaire de préparation laisse place au suivi pendant une tâche enregistrée.",
+    "truth": "Avancement du lot reçu du serveur uniquement. Horloge explicitement estimée, ancrée sur la réception du snapshot et conservée au repli du lot. Heures réservées de la tâche affichées. Une échéance écoulée ne simule pas un résultat.",
+    "commerce": "Illustration historique de la filière et horloge décorative pilotée par la date de disponibilité. Quantités exprimées en grammes après conversion des unités internes. Pas de machine déclarée active par son simple équipement.",
+    "receipts": "Ancien marché : suppression de l’attente artificielle de transformation après la vente et de la dépendance au chargement d’image. Reçu immédiat, montant lisible, retour décoratif bref ; confirmation et clé de reprise conservées. Commerce actuel : retour bref sur nouveau reçu uniquement.",
+    "lifecycle": "Hook commun de pause, préférence système en direct, visibilité de l’onglet et du poste. Pause du trim conservée au passage préparation/tâche et entre lots ; seules les décorations s’arrêtent, les tâches du jeu continuent.",
+    "art": "Génération intégrée image_gen : trois sources PNG, six couches WebP alpha, prompt et géométrie dans atelier-motion-art-provenance.json. Les cartes des anciennes machines et les avatars existants sont préservés.",
+    "characterCorrection": "Après retour utilisateur : ciseaux réduits de 37 % à 24 % de la scène et placés à droite ; personnage manuel agrandi et dégagé. Le vrai profil du joueur est maintenant lu par le hook existant de présentation, en plus des salariés. Si ce profil manque, aucune autre identité n’est inventée et le travail reste accessible.",
+    "identityRead": "Réutilisation de useKqSocialPlayer et du GET privé existant /api/arena/placard/social/player, déjà pris en charge par le tutoriel. Aucun endpoint, modèle de données ni migration ajouté ; cette lecture ne règle pas les tâches et n’entre pas dans les commandes."
+  },
+  "validation": {
+    "status": "Validé après intégration des illustrations générées : recettes fonctionnelles, transparence, montage visuel et mouvement.",
+    "unit": "94 tests Atelier/trim/commerce/API réussis, plus 76 tests commerce/sélection/parcours par l’agent Commerce (périmètres recoupés).",
+    "static": "TypeScript global et ESLint ciblé réussis après la correction des ciseaux et l’intégration du profil joueur ; contrôle du diff réussi.",
+    "identity": "14 tests supplémentaires de présentation du profil et de l’Atelier réussis. Recette complète : joueur et Anna visibles à 320/390/1440 px, profil absent ou en erreur 503 sans identité inventée ni modification des tâches. Passage ciblé portraits réussi après correction finale.",
+    "trim": "4 groupes locaux : 320/390/1440 px et méthode manuelle. Tâches réelles du moteur d’essai, pauses, réduction dynamique, hors écran, véritable onglet masqué, erreur de lecture, confirmation, reprise même clé, heures exactes et fin serveur.",
+    "commerce": "3 groupes locaux : 320/390/1440 px, quantité 27 g, image fixe, mouvement/pause/clavier/réduit/hors écran/visibilité, échéance, lecture inconnue, reçu immédiat malgré une image retenue et reprise de confirmation.",
+    "reports": [
+      "output/placard-staff-ui/trim-motion-report.json",
+      "output/placard-staff-ui/trim-portraits-report.json",
+      "output/commerce-simplification/motion-results.json"
+    ],
+    "preview": "output/placard-staff-ui/trim-manual-motion-demo.webm",
+    "machinePreview": "output/placard-staff-ui/trim-motion-demo.webm",
+    "limits": "Fixtures locales, aucun appel métier de production. Le test de visibilité Commerce simule document.hidden ; celui du trim masque réellement l’onglet. Les délais observés de reçu ne sont pas une mesure de performance en production.",
+    "art": "Six couches alpha vérifiées. Captures manuelles et machine inspectées à 320/390/1440 px : établi et corps fixes, rotor et lames mobiles, contact ciseaux/fleur, avatars existants et lisibilité conservés.",
+    "previewDetails": "Captures réelles du navigateur avec les nouvelles illustrations, 390×844 à 24 images/s ; décodage vidéo complet réussi. Vidéo manuelle finale de 4,5 secondes avec petits ciseaux et vrai profil joueur."
+  },
+  "next": "Après cette tranche, préparer des réactions illustrées des personnages aux recrutements et formations confirmés, en préservant leurs identités et les confirmations existantes.",
+  "deployment": "Local, non publié."
+}

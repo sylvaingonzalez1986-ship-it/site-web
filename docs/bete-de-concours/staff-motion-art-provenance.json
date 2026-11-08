@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-07",
+  "tool": "Built-in image_gen.imagegen",
+  "mode": "generate; transparent_background true",
+  "scope": "Accessories for finite post-confirmation Personnel scenes. Existing avatar identities are rendered live; no generated employee identity.",
+  "styleReferenceInspected": "public/placard/market-workshop-sylvain-v2.webp",
+  "prompts": [
+    {
+      "key": "staff-desk",
+      "prompt": "Use case: illustration-story. Production transparent raster game asset for Kanab Quest, a French hemp farm cartoon management game. Match the established Sylvain art direction: confident dark ink outlines, cheerful hand-painted textured cream, teal, warm apricot orange and golden paper, rounded mildly irregular perspective. No photorealism, no text, no letters, no UI, no wheat, no characters or hands. Real alpha transparency, no background rectangle, no checkerboard rendered into the image. Asset type: a 3:2 wide scenery cutout, 1536x1024 composition. A charming SMALL personnel office/study table, viewed straight on slightly from above, front legs and rounded tabletop. The tabletop runs from x12% to x91%, at y65%, thin teal front apron below. Lower legs end at y94%. Entire top55% of image must remain TRANSPARENT and EMPTY so a separate live avatar can stand behind table at x39%, head around y20%. No chair or high furniture behind avatar. On far right tabletop x85% a small apricot ceramic pot with one small hemp seedling, only rising to y45%; far left edge x17% a small short teal pencil cup. Most tabletop empty for separate contract or open book prop. No folder, no book, no tools. Illustrated silhouette with generous transparent padding, restrained contact shadow only beneath feet. This is welcoming staffing/study furniture, not industrial equipment."
+    },
+    {
+      "key": "welcome-folder",
+      "prompt": "Use case: illustration-story. Production transparent raster game asset for Kanab Quest, a French hemp farm cartoon management game. Match the established Sylvain art direction: confident dark ink outlines, cheerful hand-painted textured cream, teal, warm apricot orange and golden paper, rounded mildly irregular perspective. No photorealism, no text, no letters, no UI, no wheat, no characters or hands. Real alpha transparency, no background rectangle, no checkerboard rendered into the image. Asset type: single isolated square sprite, 1024x1024, for a small foreground object on office desk. A beautiful closed teal employment dossier with a cream sheet slipped partly out, small gold paperclip and a dark teal fountain pen lying diagonally on it. Gentle top-down three-quarter view, readable thick inked silhouette. Paper is blank with only a few faint ruled lines, NO letters, NO signature, NO ticks, NO stamps. Object fills central75% canvas with fully transparent margin. A single cohesive cutout prop, no surrounding scene. No big medal, no ribbons."
+    },
+    {
+      "key": "training-book",
+      "prompt": "Use case: illustration-story. Production transparent raster game asset for Kanab Quest, a French hemp farm cartoon management game. Match the established Sylvain art direction: confident dark ink outlines, cheerful hand-painted textured cream, teal, warm apricot orange and golden paper, rounded mildly irregular perspective. No photorealism, no text, no letters, no UI, no wheat, no characters or hands. Real alpha transparency, no background rectangle, no checkerboard rendered into the image. Asset type: single isolated square sprite, 1024x1024, for a small foreground object on study desk. A charming open cream field-study book with a teal cover, warm gold bookmark hanging from bottom, red-orange pencil resting on right page. On left page a simple delicate drawing of a hemp leaf, right page only faint sketch lines, NO text NO numbers. Gentle top-down three-quarter perspective. Pages slightly curved and thick, inked edges and subtle paper texture, bright and legible. Object fills central80% canvas with transparent margin. One cohesive cutout prop, no desk no surroundings. No floating symbols or confetti."
+    }
+  ],
+  "assets": [
+    {
+      "file": "public/placard/staff-motion/staff-desk-v1.webp",
+      "source": "output/imagegen/staff-motion/staff-desk-v1.png",
+      "processing": "Sharp resize only, WebP quality 90, alphaQuality 100. Original alpha preserved.",
+      "dimensions": "1152x768"
+    },
+    {
+      "file": "public/placard/staff-motion/welcome-folder-v1.webp",
+      "source": "output/imagegen/staff-motion/welcome-folder-v1.png",
+      "processing": "Sharp resize only, WebP quality 90, alphaQuality 100. Original alpha preserved.",
+      "dimensions": "512x512"
+    },
+    {
+      "file": "public/placard/staff-motion/training-book-v1.webp",
+      "source": "output/imagegen/staff-motion/training-book-v1.png",
+      "processing": "Sharp resize only, WebP quality 90, alphaQuality 100. Original alpha preserved.",
+      "dimensions": "512x512"
+    }
+  ]
+}

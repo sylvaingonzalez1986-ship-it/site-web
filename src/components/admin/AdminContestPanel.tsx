@@ -4,6 +4,7 @@ import { Check, Plus, RefreshCcw, Save, Trash2, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ProductImageUpload } from "@/components/admin/ProductImageUpload";
 import { AdminPlacardOperationsPanel } from "@/components/admin/AdminPlacardOperationsPanel";
+import { AdminArenaFeedbackPanel } from "@/components/admin/AdminArenaFeedbackPanel";
 import type { Product } from "@/data/products";
 import {
   CANNABIS_CANNABINOID_CODES,
@@ -372,7 +373,53 @@ const EMPTY_ADMIN_CONTEST_PAGINATION: AdminContestPagination = {
   hasMore: false,
 };
 
-export function AdminContestPanel({ products, producers }: AdminContestPanelProps) {
+type ArenaAdminSection = "feedback" | "operations" | "contest";
+
+const ARENA_ADMIN_SECTIONS: Array<{ id: ArenaAdminSection; label: string }> = [
+  { id: "feedback", label: "Boîte aux lettres" },
+  { id: "operations", label: "Pilotage du jeu" },
+  { id: "contest", label: "Concours & avis" },
+];
+
+export function AdminContestPanel(props: AdminContestPanelProps) {
+  const [section, setSection] = useState<ArenaAdminSection>("feedback");
+  const [visited, setVisited] = useState<ArenaAdminSection[]>(["feedback"]);
+
+  return (
+    <section className="grid gap-6">
+      <header className="cartoon-border bg-cream p-6 md:p-8">
+        <h2 className="font-display text-3xl text-ink">L’Arène et le Quartier</h2>
+        <p className="mt-2 text-sm text-charcoal">Messages des joueurs, suivi du jeu et gestion des concours.</p>
+        <nav className="mt-5 flex flex-wrap gap-2" aria-label="Gestion de l’Arène">
+          {ARENA_ADMIN_SECTIONS.map(({ id, label }) => (
+            <button
+              key={id}
+              type="button"
+              className={`btn-cartoon ${section === id ? "btn-primary" : "btn-secondary"}`}
+              aria-pressed={section === id}
+              aria-controls={`admin-arena-${id}`}
+              onClick={() => {
+                setSection(id);
+                setVisited((current) => current.includes(id) ? current : [...current, id]);
+              }}
+            >{label}</button>
+          ))}
+        </nav>
+      </header>
+      <div id="admin-arena-feedback" hidden={section !== "feedback"}>
+        <AdminArenaFeedbackPanel />
+      </div>
+      <div id="admin-arena-operations" hidden={section !== "operations"}>
+        {visited.includes("operations") ? <AdminPlacardOperationsPanel /> : null}
+      </div>
+      <div id="admin-arena-contest" hidden={section !== "contest"}>
+        {visited.includes("contest") ? <AdminLegacyContestPanel {...props} /> : null}
+      </div>
+    </section>
+  );
+}
+
+function AdminLegacyContestPanel({ products, producers }: AdminContestPanelProps) {
   const availableProducts = products.slice().sort((a, b) =>
     a.name.localeCompare(b.name, "fr", { sensitivity: "base" }),
   );
@@ -400,7 +447,6 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
   const [loadingMoreReviews, setLoadingMoreReviews] = useState(false);
   const [notesByReviewId, setNotesByReviewId] = useState<Record<string, string>>({});
   const [qualityByReviewId, setQualityByReviewId] = useState<Record<string, ContestReviewQualityMark>>({});
-  const [placardOpen, setPlacardOpen] = useState(false);
   const entryFormRef = useRef<HTMLDivElement | null>(null);
 
   const loadData = async (
@@ -872,9 +918,9 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
       <div className="cartoon-border bg-cream p-6 md:p-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <h2 className="font-display text-3xl text-ink">L&apos;Arène</h2>
+            <h3 className="font-display text-3xl text-ink">Concours & avis</h3>
             <p className="mt-2 text-sm text-charcoal">
-              Cree les saisons, rattache des produits existants aux lots premium et modere les avis.
+              Crée les saisons du concours, rattache les produits aux lots premium et modère les avis.
             </p>
           </div>
           <button
@@ -904,28 +950,6 @@ export function AdminContestPanel({ products, producers }: AdminContestPanelProp
           <p className="mt-3 text-sm text-charcoal">Chargement du tableau de bord concours...</p>
         )}
       </div>
-
-      <section className="cartoon-border bg-[#e8f4e7] p-5 md:p-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-green">Kanab Quest</p>
-            <h3 className="mt-1 font-display text-2xl text-ink">Gestion de Kanab Quest</h3>
-            <p className="mt-1 text-sm text-charcoal">
-              Collections, récompenses, saisons et préparation du lancement.
-            </p>
-          </div>
-          <button
-            className={placardOpen ? "btn-cartoon btn-secondary" : "btn-cartoon btn-primary"}
-            type="button"
-            aria-expanded={placardOpen}
-            onClick={() => setPlacardOpen((current) => !current)}
-          >
-            {placardOpen ? "Fermer la gestion" : "Gérer Kanab Quest"}
-          </button>
-        </div>
-      </section>
-
-      {placardOpen ? <AdminPlacardOperationsPanel /> : null}
 
       <div className="grid gap-6 xl:grid-cols-[360px_minmax(0,1fr)]">
         <section className="cartoon-border bg-cream p-6">

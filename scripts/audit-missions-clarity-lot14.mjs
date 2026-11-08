@@ -37,6 +37,8 @@ try{
   const layout=await page.$eval('[data-mission-track] button',n=>{const r=n.getBoundingClientRect();return {top:r.top,bottom:r.bottom,height:r.height}});
   await page.screenshot({path:resolve(output,'progress-'+width+'.png'),fullPage:true});await page.screenshot({path:resolve(output,'viewport-'+width+'.png')});await clean();checks.push({case:'progress',width,...layout});
   if(baseline)continue;
+  await page.evaluate(()=>[...document.querySelectorAll('summary')].find(node=>node.textContent.includes('Comment progressent mes missions')).focus());await page.keyboard.press('Enter');
+  const help=await page.$('footer details:has([data-help-steps])');assert(help);await help.screenshot({path:resolve(output,'help-'+width+'.png')});await clean();await page.keyboard.press('Enter');checks.push({case:'visual-mission-help',width,keyboard:true,noMutation:true});
   assert(layout.bottom<844,'First mission action in the initial isolated viewport');assert(layout.height>=44);
   assert.equal(await page.$eval('[data-mission-overview]',n=>n.open),false);
   await page.select('select[aria-label="Filtrer les parcours"]','preparation');assert.equal(await page.$$eval('[data-mission-track]',n=>n.length),1);

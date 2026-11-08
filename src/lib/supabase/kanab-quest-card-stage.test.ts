@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: vi.fn().mockResolvedValue(undefined) }));
 import { advanceKqStage, KQ_STAGES, resolveKqStage, startKqGame } from "@/lib/kanab-quest-game";
 
 const database = vi.hoisted(() => ({ from: vi.fn(), rpc: vi.fn(), maybeSingle: vi.fn(), listUsers: vi.fn() }));

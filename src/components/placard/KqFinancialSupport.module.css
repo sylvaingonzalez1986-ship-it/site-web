@@ -1,0 +1,72 @@
+.support {
+  display: grid;
+  grid-template-columns: minmax(160px, 240px) minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 18px 24px;
+  margin-top: 24px;
+  padding: clamp(20px, 2.5vw, 32px);
+  color: var(--arcade-ink, #172923);
+  --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp"));
+  background: transparent;
+  border: 2px solid transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+}
+.support .art { width: 100%; max-width: 240px; height: auto; justify-self: center; }
+.copy { min-width: 0; }
+.support .copy h2 { margin: 0 0 14px; max-width: 26ch; color: var(--arcade-ink, #172923); font: 900 clamp(28px, 2.6vw, 38px)/1.08 var(--font-display), Impact, sans-serif; text-transform: uppercase; letter-spacing: .015em; text-wrap: balance; }
+.copy p { margin: 8px 0 0; font-size: 14px; line-height: 1.55; }
+.details { margin-top: 10px; }
+.details summary, .link {
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  min-height: 44px;
+  padding: 10px 14px;
+  color: var(--arcade-ink, #172923);
+  background: transparent;
+  border: var(--game-control-border-width, 2px) solid transparent;
+  border-radius: 0;
+  box-shadow: none;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+  font: 750 14px/1.45 var(--font-body), Arial, sans-serif;
+  cursor: pointer;
+}
+.details summary { width: fit-content; max-width: 100%; box-sizing: border-box; }
+.details[open] summary { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.action { display: grid; justify-items: stretch; gap: 8px; }
+.link {
+  --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
+  color: var(--arcade-paper, #fff1d6);
+  min-height: 54px;
+  padding: 14px 22px;
+  font-size: 18px;
+  font-weight: 900;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+.link svg { flex-shrink: 0; }
+.support :is(a, summary):focus-visible { outline: 3px solid var(--arcade-green, #087b70); outline-offset: 4px; }
+@media (hover: hover) {
+  .support summary:hover {
+    --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp"));
+    color: var(--arcade-paper, #fff1d6);
+  }
+  .support .link:hover { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); color: var(--arcade-ink, #172923); }
+}
+@media (max-width: 1000px) {
+  .support { grid-template-columns: 160px minmax(0, 1fr); gap: 16px 20px; padding: 22px; }
+  .support .art { align-self: start; }
+  .action { grid-column: 2; }
+  .link { width: 100%; }
+}
+@media (max-width: 600px) {
+  .support { grid-template-columns: minmax(0, 1fr); gap: 16px; padding: 20px 18px; }
+  .support .art { width: 200px; max-width: 100%; }
+  .support .copy h2 { text-align: center; margin-inline: auto; }
+  .action { grid-column: 1; }
+}

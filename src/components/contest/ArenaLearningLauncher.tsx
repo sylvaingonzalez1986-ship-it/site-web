@@ -1,41 +1,26 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { usePathname } from "next/navigation";
 import { Compass } from "lucide-react";
-import { useRef, useState } from "react";
-import { createPortal } from "react-dom";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
 import { ARENA_LEARNING_ENTRY_KEY } from "@/lib/arena-introduction";
+import { KQ_FARM_GUIDE_OPEN_EVENT } from "@/lib/kanab-quest-farm-guide";
+import { navigateAfterOverlays } from "@/lib/overlay-history";
 import { useArenaLearningStorage } from "./ArenaLearningStorage";
 
-const LearningHub = dynamic(() => import("./ArenaLearningHub").then(module => module.ArenaLearningHub), {
-  ssr: false,
-  loading: () => <p role="status">Ouverture de l’aide…</p>,
-});
-
-export function ArenaLearningLauncher({ className, disabled = false, onOpenQuarter }: { className?: string; disabled?: boolean; onOpenQuarter?: () => void }) {
+export function ArenaLearningLauncher({ className, disabled = false }: { className?: string; disabled?: boolean }) {
   const router = useRouter();
   const pathname = usePathname();
   const storage = useArenaLearningStorage();
-  const [open, setOpen] = useState(false);
-  const trigger = useRef<HTMLButtonElement>(null);
-  const close = () => {
-    setOpen(false);
-    requestAnimationFrame(() => trigger.current?.focus({ preventScroll: true }));
-  };
-  const openQuarter = () => {
-    close();
+  const startGuide = () => {
     try { storage?.setItem(ARENA_LEARNING_ENTRY_KEY, 'quarter'); }
-    catch { /* The destination remains available if this browser cannot remember the choice. */ }
-    if (onOpenQuarter) onOpenQuarter();
-    else if (pathname !== '/arene/placard') router.push('/arene/placard');
+    catch { /* Opening the guide still works when this browser cannot remember it. */ }
+    navigateAfterOverlays(() => {
+      if (pathname === '/arene/placard') window.dispatchEvent(new Event(KQ_FARM_GUIDE_OPEN_EVENT));
+      else router.push('/arene/placard?guide=1');
+    });
   };
-  return <>
-    <button ref={trigger} type="button" className={className} data-arena-learning-trigger
-      aria-haspopup="dialog" disabled={disabled} onClick={() => setOpen(true)}>
+  return <button type="button" className={className} data-arena-learning-trigger disabled={disabled} onClick={startGuide}>
       <Compass size={17} aria-hidden="true" />Apprendre à jouer
-    </button>
-    {open ? createPortal(<LearningHub onClose={close} onOpenQuarter={openQuarter} />, document.body) : null}
-  </>;
+    </button>;
 }

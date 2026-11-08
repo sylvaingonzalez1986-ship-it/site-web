@@ -4,6 +4,7 @@ import { useEffect, useId, useRef, useState } from "react";
 import { ArrowDown, ArrowLeft, ArrowRightLeft, ChevronDown, RotateCcw } from "lucide-react";
 import { getKqCardGuide } from "@/lib/kanab-quest-card-guide";
 import { canRedrawKqHand, canSwapKqHeritageHandCard, getKqHandCodes, KQ_CARDS, type KqGameState, type KqSupportCard } from "@/lib/kanab-quest-game";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import styles from "./KqHandAdjustment.module.css";
 
 type Props = {
@@ -27,12 +28,14 @@ function CardRules({ card }: { card: KqSupportCard }) {
   const guide = getKqCardGuide(card);
   return <details className={styles.cardRules}>
     <summary>Détails de la carte<ChevronDown size={14} aria-hidden="true" /></summary>
-    <div>
-      <p><strong>À jouer :</strong> {guide.timing.toLocaleLowerCase("fr-FR")} · {card.xpCost} XP de culture et 1 copie brûlée.</p>
-      <p><strong>Situations :</strong> {guide.scope}{guide.examples.length ? ` — ${guide.examples.join(", ")}` : ""}.</p>
-      <p><strong>Limite :</strong> {guide.risk}</p>
-      <p>Consulter ou échanger cette carte ne la joue pas.</p>
-    </div>
+    <KqHelpDashboard>
+      <KqHelpGrid art="collection" items={[
+        { label: "À jouer", value: guide.timing, detail: `${card.xpCost} XP de culture et 1 copie brûlée.`, art: "help-time" },
+        { label: "Situations", value: guide.scope, detail: guide.examples.length ? guide.examples.join(", ") : undefined, art: "help-culture" },
+        { label: "Limite", value: guide.risk, art: "help-plan" },
+      ]} />
+      <KqHelpNote>Consulter ou échanger cette carte ne la joue pas.</KqHelpNote>
+    </KqHelpDashboard>
   </details>;
 }
 

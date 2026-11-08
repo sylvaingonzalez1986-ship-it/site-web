@@ -29,6 +29,8 @@ import { getKqCultureSystemSummary } from "@/lib/kanab-quest-game";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { getKqEquipmentShopSnapshot, type KqEquipmentShopSnapshot } from "@/lib/supabase/kanab-quest-equipment-backend";
 import { getKqWarehouseProcessingEquipment } from "./kanab-quest-warehouse-backend";
+import { createKqProcessingPlan } from "@/lib/kanab-quest-processing-profiles";
+import { getKqProcessingJobs, getKqProcessingWorkQuote } from "./kanab-quest-processing-work-backend";
 
 const UUID_PATTERN = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -222,6 +224,7 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
   const humanTwo = new Map((humanTwoResult.data ?? []).map((battle) => [String(battle.flower_two_id), toRounds(battle.rounds)]));
   const bots = new Map((botResult.data ?? []).map((battle) => [String(battle.flower_id), toRounds(battle.rounds)]));
   const physicalWorkshop = await getKqWarehouseProcessingEquipment(userId, equipmentShop);
+  const processingWorkEnabled = physicalWorkshop ? (await getKqProcessingJobs(userId))?.version === 1 : false;
   const physicalCodes = physicalWorkshop ? [...new Set(["TENT-080-STARTER", ...physicalWorkshop.equippedCodes])].sort() : null;
   const workshop = physicalWorkshop && physicalCodes ? {
     equippedCodes: physicalCodes, operationalCodes: physicalWorkshop.operationalCodes, ownedCodes: physicalCodes,
@@ -258,7 +261,10 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
           .filter(code => code !== "TENT-080-STARTER").sort() : [];
         const batchSeconds = processingEquipmentCodes.reduce((sum, code) => sum + (physicalWorkshop?.processingDurationSeconds[code] ?? 0), 0);
         const seconds = batchSeconds * Math.ceil(quote.processedInputGrams / Math.max(0.1, quote.processingBatchGrams ?? quote.processedInputGrams));
+        const processingWork = processingWorkEnabled && (quote.family === "hash" || quote.family === "rosin")
+          ? createKqProcessingPlan({ inputGrams: quote.processedInputGrams, productGrams: quote.productGrams, equipmentCodes: processingEquipmentCodes, levels: workshop.levels }) : null;
         return { ...quote, storageRevision: storageLot.revision, storageChangeAt: condition.nextChangeAt,
+          ...(processingWork ? { processingWork } : {}),
           ...(physicalWorkshop ? { warehouseRevision: physicalWorkshop.revision, warehouseState: physicalWorkshop.sourceState,
             processingDurationSeconds: seconds, processingEquipmentCodes, workshopSnapshot: physicalWorkshop.workshopSnapshot } : {}) };
       });
@@ -284,6 +290,19 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
         quote.blockedReason = "Une machine de cette filière doit être réparée. Ouvre ton entrepôt.";
       }
     }
+    for (const quote of quotes) {
+      if (!processingWorkEnabled || quote.family !== "hash" && quote.family !== "rosin" || !quote.available) continue;
+      if (!quote.processingWork) {
+        quote.available = false; quote.blockedReason = "La cadence de cette filière est indisponible. Actualise l’Atelier.";
+      } else {
+        const workQuote = await getKqProcessingWorkQuote(userId, flowerId, quote.processingWork);
+        quote.processingWork.quote = workQuote;
+        quote.processingDurationSeconds = Math.ceil((workQuote.activeHours + workQuote.passiveHours) * 600);
+        if (workQuote.source === "blocked") {
+          quote.available = false; quote.blockedReason = workQuote.blockedReason ?? "Les heures disponibles ne couvrent pas cette transformation.";
+        }
+      }
+    }
     previews.set(flowerId, { harvest_grams: harvestGrams, jury_score: juryScore, quality_band: getKqMarketQualityBand(juryScore), options: quotes });
     // Browsing computes offers without rewriting and downloading each full SQL lot.
     // The prepare/sell commands still persist a fresh server quote before settlement.
@@ -297,6 +316,7 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
       p_equipment_codes: equippedCodes,
       p_options: quotes,
     });
+    if (prepared.error?.message.includes("staff_trim_required")) throw new Error("Termine le trim de cette récolte dans l’Atelier avant de la mettre au marché.");
     if (prepared.error) throw new Error(`[supabase:rpc_kq_prepare_market_lot] ${prepared.error.message}`);
   }));
 
@@ -402,6 +422,7 @@ export async function sellKqMarketLot(input: {
   });
   if (result.error) {
     const message = result.error.message || "Vente impossible.";
+    if (message.includes("staff_trim_required")) throw new Error("Termine le trim de cette récolte dans l’Atelier avant de la vendre.");
     if (message.includes("market_offer_changed")) throw new Error("Les conditions ont changé. Actualise le comptoir pour examiner le nouveau prix.");
     if (message.includes("market_no_buyer")) throw new Error("Aucun acheteur à ce tarif. Choisis un prix inférieur ou conserve le lot.");
     if (message.includes("market_lot_unavailable")) throw new Error("Ce lot a déjà été vendu.");

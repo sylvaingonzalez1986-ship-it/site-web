@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { buyKqLocalCare, loadKqLocalCare, recoverKqLocalCare, applyKqLocalCare } from "./kanab-quest-care-local";
+import { buyKqLocalCare, loadKqLocalCare, getKqLocalCareSnapshot, recoverKqLocalCare, applyKqLocalCare } from "./kanab-quest-care-local";
 import { advanceKqStage, resolveKqStage, startKqGame } from "./kanab-quest-game";
 import { createKqCareState, KQ_BASIC_CARE_PRICE_CENTS, KQ_CARE_PRODUCTS, type KqCareProblem } from "./kanab-quest-care";
 import { encodeKqSave, parseKqGameSave } from "./kanab-quest-persistence";
@@ -11,13 +11,37 @@ function memory() {
 }
 const problem = (code: string): KqCareProblem => ({ code, severity: 2, status: "confirmed", trend: "stable", appearedAt: 0, variant: 0 });
 describe("local care transactions", () => {
+  it("rejects using a small new reserve over a larger culture, while preserving old complete charges", () => {
+    const storage = memory();
+    const large = startKqGame(101, { productionUnits: 3, equipmentCodes: ["TENT-080-STARTER"] });
+    large.care!.problems = [problem("HEAT")];
+    buyKqLocalCare(storage, "CARE-SEAWEED");
+    expect(getKqLocalCareSnapshot(storage, large).inventory.find(item => item.productCode === "CARE-SEAWEED")?.quantity).toBe(0);
+    expect(() => applyKqLocalCare(storage, large, "CARE-SEAWEED")).toThrow("surface cultivée");
+    expect(loadKqLocalCare(storage).areaInventory?.["CARE-SEAWEED"]).toBe(1);
+    const legacy = memory();
+    legacy.setItem("kanab-quest-care-simulation-v1", JSON.stringify({ cashCents: 5000, inventory: { "CARE-SEAWEED": 1 } }));
+    applyKqLocalCare(legacy, large, "CARE-SEAWEED");
+    expect(loadKqLocalCare(legacy)).toEqual({ cashCents: 5000, inventory: { "CARE-SEAWEED": 0 } });
+  });
+  it("buys enough coverage for one full passage and scales basic care with the frozen culture", () => {
+    const storage = memory();
+    const large = startKqGame(101, { productionUnits: 3, equipmentCodes: ["TENT-080-STARTER"] });
+    buyKqLocalCare(storage, "CARE-SEAWEED", large);
+    const quote = getKqLocalCareSnapshot(storage, large);
+    expect(quote.catalog.find(item => item.code === "CARE-SEAWEED")?.priceCents).toBe(3600);
+    expect(quote.inventory.find(item => item.productCode === "CARE-SEAWEED")?.quantity).toBe(1);
+    expect(quote.areaM2).toBeNull();
+    applyKqLocalCare(storage, large);
+    expect(loadKqLocalCare(storage).cashCents).toBe(100000 - 3600 - 1500);
+  });
   it("starts with empty stock, charges purchases, consumes once and persists the same state", async () => {
     const storage = memory();
     expect(loadKqLocalCare(storage)).toEqual({ cashCents: 100000, inventory: {} });
     buyKqLocalCare(storage, "CARE-SEAWEED");
     expect(loadKqLocalCare(storage).cashCents).toBe(98800);
     const game = applyKqLocalCare(storage, startKqGame(101), "CARE-SEAWEED");
-    expect(loadKqLocalCare(storage).inventory["CARE-SEAWEED"]).toBe(0);
+    expect(loadKqLocalCare(storage).areaInventory?.["CARE-SEAWEED"]).toBe(0);
     expect((await createLocalKqRepository(storage).loadSession()).game).toEqual(game);
     expect(() => applyKqLocalCare(storage, game, "CARE-SEAWEED")).toThrow();
   });
@@ -29,7 +53,7 @@ describe("local care transactions", () => {
     expect(() => applyKqLocalCare(interrupted, startKqGame(101), "CARE-SEAWEED")).toThrow("disk full");
     recoverKqLocalCare(storage);
     recoverKqLocalCare(storage);
-    expect(loadKqLocalCare(storage).inventory["CARE-SEAWEED"]).toBe(0);
+    expect(loadKqLocalCare(storage).areaInventory?.["CARE-SEAWEED"]).toBe(0);
     expect(parseKqGameSave(storage.getItem("kanab-quest-dice-prototype-v7"))?.care?.applications).toHaveLength(1);
   });
   it("rejects the wrong auxiliary before consuming its stock and charges basic care separately", () => {
@@ -38,7 +62,7 @@ describe("local care transactions", () => {
     const game = startKqGame(101);
     game.care!.problems = [{ code: "APHIDS", severity: 1, status: "confirmed", trend: "stable", appearedAt: 0, variant: 0 }];
     expect(() => applyKqLocalCare(storage, game, "CARE-PHYTOSEIULUS")).toThrow();
-    expect(loadKqLocalCare(storage).inventory["CARE-PHYTOSEIULUS"]).toBe(1);
+    expect(loadKqLocalCare(storage).areaInventory?.["CARE-PHYTOSEIULUS"]).toBe(1);
     expect(applyKqLocalCare(storage, game).care?.lastBasicCareStage).toBe(0);
     expect(loadKqLocalCare(storage).cashCents).toBe(98600 - KQ_BASIC_CARE_PRICE_CENTS);
   });
@@ -140,10 +164,10 @@ describe("local care transactions", () => {
     const game = startKqGame(31);
     game.care!.problems = [problem(product.targets[0].toUpperCase())];
     const applied = applyKqLocalCare(storage, game, product.code);
-    expect(loadKqLocalCare(storage)).toEqual({ cashCents: 100000 - 2 * product.priceCents, inventory: { [product.code]: 1 } });
+    expect(loadKqLocalCare(storage)).toEqual({ cashCents: 100000 - 2 * product.priceCents, inventory: {}, areaInventory: { [product.code]: 1 } });
     expect((await createLocalKqRepository(storage).loadSession()).game).toEqual(applied);
     expect(() => applyKqLocalCare(storage, applied, product.code)).toThrow();
-    expect(loadKqLocalCare(storage).inventory[product.code]).toBe(1);
+    expect(loadKqLocalCare(storage).areaInventory?.[product.code]).toBe(1);
     expect(applied.care!.applications).toHaveLength(1);
   });
   it.each(["late", "heat"])("preserves stock, wallet and saved game when the auxiliary is refused for %s", reason => {

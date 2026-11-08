@@ -96,7 +96,7 @@ export function BoutiquePageClient({
   copainsProducts,
   globalAccessoriesProducts,
   boutiqueSections,
-  tastingSummariesByProductId,
+  tastingSummariesByProductId = {},
 }: BoutiquePageClientProps) {
   const loading = false;
   const search = useSyncExternalStore(subscribeToCatalogUrl, readCatalogUrl, serverCatalogUrl);

@@ -42,7 +42,7 @@ const LESSON_ARTWORK: Partial<Record<ArenaPlayableLessonId, string>> = {
   investments: '/placard/bureau-accounting-sylvain-v2.webp',
   specialties: '/app-character-cropped.png',
   missions: '/contest/mascot/arena-lobby-sylvain-v1.png',
-  collection: '/app/lottery/album-booster-mascot-v3.webp',
+  collection: '/app/lottery/sylvain-booster-presentation-v3.webp',
 };
 const CHAPTER_PLACES: Record<ArenaReleveStage, string> = {
   arrival: 'La ferme', plan: 'L’Entrepôt', buddies: 'L’Entrepôt', launch: 'Ma culture', culture: 'Ma culture',
@@ -51,7 +51,7 @@ const CHAPTER_PLACES: Record<ArenaReleveStage, string> = {
 const CHAPTER_NAV: Record<ArenaReleveStage, PlacardNavKey> = { arrival: 'hub', plan: 'workshop', buddies: 'workshop', launch: 'game', culture: 'game', jury: 'harvests', delivery: 'market', shop: 'market', ledger: 'treasury' };
 const NEXT_ACTIONS: Record<ArenaReleveStage, string> = { arrival: 'Aménager l’entrepôt', plan: 'Choisir mes Buddies', buddies: 'Préparer ma campagne', launch: 'Commencer la culture', culture: 'Rejoindre le jury', jury: 'Ouvrir Commerce', delivery: 'Ouvrir ma boutique', shop: 'Passer au bureau', ledger: 'Terminer l’aventure' };
 const NEXT_REPLIES: Record<ArenaReleveStage, string> = { arrival: 'La chambre est prête. Passons au plan !', plan: 'Matériel installé ! Choisissons les Buddies de tes zones.', buddies: 'Tes Buddies sont en place. Préparons leur campagne.', launch: 'Tout est prêt. À toi de cultiver !', culture: 'La récolte est là ! Le jury attend tes Fleurs.', jury: 'Verdict reçu ! Retrouvons ton lot au marché.', delivery: 'Première vente ! Donnons maintenant une enseigne à la ferme.', shop: 'La boutique est ouverte. Regardons ce qui reste en caisse.', ledger: 'Le registre se remplit. Tu peux faire vivre ta ferme.' };
-const NAV_KEYS: PlacardNavKey[] = ['hub', 'workshop', 'game', 'harvests', 'market', 'social', 'treasury', 'collection', 'missions', 'shop'];
+const NAV_KEYS: PlacardNavKey[] = ['hub', 'workshop', 'game', 'harvests', 'market', 'social', 'treasury', 'staff', 'collection', 'missions', 'shop'];
 const COMMERCE_NAV: Record<KqReleveDestination, PlacardNavKey> = { market: 'market', social: 'social', accounts: 'treasury', bank: 'treasury', missions: 'missions', storage: 'harvests', equipment: 'workshop' };
 const COMMERCE_PLACES: Record<KqReleveDestination, string> = { market: 'Mon commerce', social: 'Mes réseaux', accounts: 'Mes finances', bank: 'Mes finances · Banque', missions: 'Mes missions', storage: 'Mes récoltes · Stockage', equipment: 'L’Entrepôt' };
 const NAV_DESTINATIONS: Partial<Record<PlacardNavKey, KqReleveDestination>> = { market: 'market', social: 'social', treasury: 'accounts', missions: 'missions', harvests: 'storage', workshop: 'equipment' };

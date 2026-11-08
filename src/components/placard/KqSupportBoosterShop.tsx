@@ -14,6 +14,8 @@ import { readSupportPackPurchaseKey, saveSupportPackPurchaseKey } from "./KqSupp
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqSupportPackOpening, requestKqSupportPackOpening, type KqOpenedSupportCard } from "./KqSupportPackOpening";
 import styles from "./KqSupportBoosterShop.module.css";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
+import { KqAllocationBar } from "./KqVisuals";
 
 type ShopSection = "botte" | "buddies";
 type ShopPayload = {
@@ -250,7 +252,11 @@ function KqSupportBoosterCounter({
                 {shop && !shop.collectionActive ? <p className={styles.hint}>La vente de packs est momentanément fermée.</p> : null}
               </div>
               <footer className={styles.footer}>
-                <details className={styles.packOdds}><summary>Raretés des packs</summary><div><strong>Une première carte commune garantie.</strong><p>Pour chaque emplacement suivant :</p><ul>{Object.entries(KQ_SUPPORT_RARITY_WEIGHTS).map(([rarity, weight]) => <li key={rarity}>{getKqCardRarityLabel(rarity)} <b>{weight} %</b></li>)}</ul><p>Doublons possibles. Une seule épique jouée par culture.</p></div></details>
+                <details className={styles.packOdds}><summary>Raretés des packs</summary><KqHelpDashboard>
+                  <KqHelpGrid art="collection" items={[{ label: "Première carte", value: "Commune garantie" }]} />
+                  <KqAllocationBar label="Probabilités de chaque emplacement suivant" items={Object.entries(KQ_SUPPORT_RARITY_WEIGHTS).map(([rarity, weight]) => ({ label: getKqCardRarityLabel(rarity), value: weight, displayValue: `${weight} %` }))} />
+                  <KqHelpNote>Doublons possibles. Une seule épique jouée par culture.</KqHelpNote>
+                </KqHelpDashboard></details>
                 {onOpenCollection ? <button type="button" disabled={busy} onClick={() => onOpenCollection("botte")}><BookOpen size={17} aria-hidden="true" />Mon album</button> : null}
               </footer>
             </div>

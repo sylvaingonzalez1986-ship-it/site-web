@@ -1,6 +1,9 @@
 import "server-only";
+import { getKqProcessingWorkQuote } from "./kanab-quest-processing-work-backend";
+import { isKqProcessingJob } from "@/lib/kanab-quest-processing-work";
 import { randomUUID } from "node:crypto";
 import { createSupabaseServiceClient } from "./admin";
+import { settleKqStaffIfAvailable } from "./kanab-quest-staff-backend";
 import { getKqMarketSnapshot } from "./kanab-quest-market-backend";
 import { getKqEnergySummary } from "./kanab-quest-energy-backend";
 import { getKqCommerceStockQuality, KQ_SALES_CHANNELS, quoteKqCommerce, type KqCommerceState, type KqSalesChannel, type KqOnlinePrice } from "../kanab-quest-commerce";
@@ -69,6 +72,11 @@ function onlinePayload(command: unknown, value: unknown): { command: string; pay
 }
 function databaseError(message: string, operation?: string): never {
   const errors: Record<string, string> = {
+    processing_work_exhausted: "Les heures Transformation sont épuisées. Ajoute des heures dans Personnel ou attends le prochain jour travaillé. Le lot reste en attente.",
+    processing_work_changed: "Le volume, les heures ou la prise en charge ont changé. Actualise le devis avant de confirmer.",
+    processing_work_pending: "La tranche de transformation en cours doit se terminer avant la suivante.",
+    processing_work_unavailable: "Ce lot de transformation n’est plus disponible. Actualise l’Atelier.",
+    staff_trim_required: "Termine le trim de cette récolte dans l’Atelier avant de la transformer ou de la vendre.",
     online_invalid_request: "Cette opération de boutique est invalide. Actualise ton commerce.",
     online_packaging_unknown: "Cet emballage n’existe pas dans le catalogue.",
     online_packaging_shortage: "Achète suffisamment d’emballages avant de conditionner ce lot.",
@@ -143,17 +151,22 @@ async function state(userId: string): Promise<KqCommerceState> {
   const result = await createSupabaseServiceClient().rpc("rpc_kq_commerce_state", { p_user_id: uuid(userId) });
   if (result.error) databaseError(result.error.message);
   const current = result.data as KqCommerceState;
+  if ((current.processingWorkVersion === 1 || current.processingJobs !== undefined)
+    && (!Array.isArray(current.processingJobs) || !current.processingJobs.every(isKqProcessingJob))) throw new Error("[supabase:commerce] invalid processing jobs snapshot");
   if (current.business?.version !== 1) throw new Error("[supabase:commerce] business_calendar_migration_required");
   if (current.online && current.online.version !== 1) throw new Error("[supabase:commerce] online_migration_required");
   const nowMs = Date.parse(current.business.serverNow);
   current.stocks = current.stocks.map(stock => {
     const { storageState, ...publicStock } = stock as typeof stock & { storageState?: unknown };
     if (!isKqStorageLot(storageState) || !Number.isSafeInteger(stock.storageRevision)) throw new Error("[supabase:commerce] storage_migration_required");
-    return { ...publicStock, storage: projectKqStorageLot(storageState, nowMs, stock.juryScore) };
+    const processingWork = current.processingJobs?.find(job => job.flowerId === stock.flowerId && job.route === stock.route);
+    return { ...publicStock, ...(processingWork ? { processingWork } : {}), storage: projectKqStorageLot(storageState, nowMs, stock.juryScore) };
   });
   return current;
 }
 export async function getKqCommerceSnapshot(userId: string, shopOnly = false) {
+  uuid(userId);
+  await settleKqStaffIfAvailable(userId);
   // Settle elapsed billing periods before reading the spendable wallet.
   const initial = await state(userId);
   const ids = initial.rawFlowerIds ?? [];
@@ -170,10 +183,17 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
   uuid(userId);
   const action = String(body.action ?? "");
   const db = createSupabaseServiceClient();
+  if (action === "processing-quote") {
+    const flowerId = uuid(body.flowerId);
+    await settleKqStaffIfAvailable(userId);
+    try { return { quote: await getKqProcessingWorkQuote(userId, flowerId) }; }
+    catch (error) { databaseError(error instanceof Error ? error.message : "processing_work_unavailable"); }
+  }
   if (action === "quote") {
     const stockId = uuid(body.stockId);
     if (!KQ_SALES_CHANNELS.includes(body.channel as KqSalesChannel) || !["discovery", "advised", "premium"].includes(String(body.policy))) throw new Error("Circuit ou prix invalide.");
     const units = body.units === undefined ? undefined : integer(body.units);
+    await settleKqStaffIfAvailable(userId);
     const current = await state(userId);
     // A newer app must not store new indoor prices against an older SQL tariff.
     if (current.online?.version === 1 && current.customerDemand?.version !== 1) throw new Error("[supabase:commerce] customer_demand_migration_required");
@@ -205,6 +225,7 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
   const requestKey = uuid(body.requestKey);
   if (action === "online") {
     const operation = onlinePayload(body.command, body.payload);
+    await settleKqStaffIfAvailable(userId);
     const result = await db.rpc("rpc_kq_online_command", { p_user_id: userId, p_action: operation.command,
       p_payload: operation.payload, p_request_key: requestKey });
     if (result.error) databaseError(result.error.message, operation.command);
@@ -213,7 +234,13 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
   let payload: Record<string, unknown>;
   if (action === "prepare") {
     payload = { flowerId: uuid(body.flowerId), route: String(body.route ?? ""), expectedCostCents: integer(body.expectedCostCents) };
-    await getKqMarketSnapshot(userId, [String(payload.flowerId)]);
+    if (body.expectedWork !== undefined) {
+      if (typeof body.expectedWork !== "string" || !/^[0-9a-f]{32}$/.test(body.expectedWork)) throw new Error("Devis de travail invalide. Actualise l’Atelier.");
+      payload.expectedWork = body.expectedWork;
+    }
+  } else if (action === "processing-work") {
+    if (typeof body.expectedWork !== "string" || !/^[0-9a-f]{32}$/.test(body.expectedWork)) throw new Error("Devis de travail invalide. Actualise l’Atelier.");
+    payload = { flowerId: uuid(body.flowerId), expectedWork: body.expectedWork };
   } else if (action === "sell") {
     payload = { quoteId: uuid(body.quoteId), expectedPayoutCents: integer(body.expectedPayoutCents) };
   } else if (action === "create-shop" || action === "rename-shop") {
@@ -234,6 +261,8 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
     throw new Error("L’accès en ligne passe désormais par la création de ton shop.");
   } else if (action === "buy-computer" || action === "renew-shop") payload = {};
   else throw new Error("Opération commerciale inconnue.");
+  await settleKqStaffIfAvailable(userId);
+  if (action === "prepare") await getKqMarketSnapshot(userId, [String(payload.flowerId)]);
   const result = await db.rpc("rpc_kq_commerce_command", { p_user_id: userId, p_action: action, p_payload: payload, p_request_key: requestKey });
   if (result.error) databaseError(result.error.message);
   return result.data;

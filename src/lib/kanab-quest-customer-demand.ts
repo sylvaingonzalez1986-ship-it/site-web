@@ -1,6 +1,7 @@
 import { getKqBuddieFlavors, type KqFlavorCode } from "./kanab-quest-buddie-flavors";
+import type { KqMarketRouteCode } from "./kanab-quest-market";
 
-/** Virtual indoor-flower prices and periodic requests. Mirrored by kq_customer_demand_* SQL. */
+/** Virtual product prices and periodic requests. Mirrored by kq_customer_demand_* SQL. */
 export const KQ_CUSTOMER_DEMAND_PERIOD_MS = 72 * 60 * 60 * 1000;
 export const KQ_CUSTOMER_DEMAND_PREVIEW_MS = 24 * 60 * 60 * 1000;
 export const KQ_CUSTOMER_DEMAND_CHANNELS = ["online", "cbd-shop", "wholesale"] as const;
@@ -39,6 +40,11 @@ export type KqMatchedCustomerDemand = KqCustomerDemandRequest & { matchedFlavorC
 
 const positiveMod = (value: number, divisor: number) => ((value % divisor) + divisor) % divisor;
 const bounded = (value: number, low: number, high: number) => Math.min(high, Math.max(low, Number.isFinite(value) ? value : low));
+
+/** Extracts retain their source flower's aromas; industrial biomass has no premium. */
+export function isKqCustomerDemandProduct(route: KqMarketRouteCode | undefined) {
+  return route !== undefined && route !== "biomass";
+}
 
 export function getKqCustomerDemandPeriod(nowMs: number) {
   if (!Number.isFinite(nowMs)) throw new Error("Date du marché invalide.");

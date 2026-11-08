@@ -5,10 +5,11 @@ import { useEffect, useRef, useState } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useOverlayHistory } from "@/hooks/useOverlayHistory";
 import { KqPrintedArt } from "./KqPrintedArt";
+import { KqHelpDashboard, KqHelpGrid, KqHelpSteps } from "./KqHelpDashboard";
 import { ArenaLearningLauncher } from "../contest/ArenaLearningLauncher";
 import styles from "./PlacardPlayerShell.module.css";
 
-export type PlacardNavKey = "hub" | "game" | "harvests" | "workshop" | "market" | "social" | "treasury" | "collection" | "missions" | "shop";
+export type PlacardNavKey = "hub" | "game" | "harvests" | "workshop" | "market" | "social" | "treasury" | "staff" | "collection" | "missions" | "shop";
 const primary = [
   { key: "hub", label: "Mon quartier", art: "quarter", building: null },
   { key: "game", label: "Culture", art: "culture", building: "warehouse" },
@@ -18,19 +19,27 @@ const primary = [
 ] as const;
 const mobilePrimary = primary.filter(({ key }) => key !== "workshop");
 const secondary = [
-  { key: "treasury", label: "Finances", art: "accounts", building: "office" },
-  { key: "social", label: "Réseaux", art: "social", building: null },
+  { key: "treasury", label: "Finances", art: "accounts", building: "bank" },
+  { key: "staff", label: "Personnel", art: "staff", building: "office" },
+  { key: "social", label: "Réseaux", art: "social", building: "market" },
   { key: "collection", label: "Collections", art: "collection", building: "collection" },
   { key: "missions", label: "Missions", art: "missions", building: "missions" },
   { key: "shop", label: "Packs de cartes", art: "card-shop", building: "shop" },
 ] as const;
+const activityGroups = [
+  { label: "Produire", items: primary.filter(item => item.key === "game" || item.key === "harvests" || item.key === "workshop") },
+  { label: "Vendre et communiquer", items: [...primary.filter(item => item.key === "market"), ...secondary.filter(item => item.key === "social")] },
+  { label: "Organiser", items: secondary.filter(item => item.key === "staff" || item.key === "treasury").toReversed() },
+  { label: "Cartes et défis", items: secondary.filter(item => item.key === "collection" || item.key === "missions" || item.key === "shop") },
+];
 
-export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailable, localNavigation = false }: {
+export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailable, localNavigation = false, showLearning = true }: {
   active: PlacardNavKey;
   onNavigate: (key: PlacardNavKey) => void;
   onHighlight: (building: string | null) => void;
   unavailable?: Partial<Record<PlacardNavKey, string>>;
   localNavigation?: boolean;
+  showLearning?: boolean;
 }) {
   const drawer = useRef<HTMLDialogElement>(null);
   const trigger = useRef<HTMLButtonElement>(null);
@@ -72,22 +81,36 @@ export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailab
     </div>
     <nav aria-label={mobile ? "Toutes les activités de Kanab Quest" : "Navigation de Kanab Quest"}>
       <div className={styles.navGroup}>
-        {primary.map(item => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}>
+        {primary.filter(item => item.key === "hub").map(item => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}>
           <span className={styles.navMark} aria-hidden="true"><KqPrintedArt kind={item.art} className={styles.navArt} /></span>
           <span className={styles.navLabel}>{item.label}</span>
           <span className={styles.navArrow} aria-hidden="true">›</span>
         </button>)}
       </div>
-      <div className={styles.navGroup}>
-        {secondary.map(item => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}>
+      {activityGroups.map(group => <div className={styles.navGroup} role="group" aria-label={group.label} key={group.label}>
+        <p className={styles.navGroupLabel}>{group.label}</p>
+        {group.items.map(item => <button key={item.key} type="button" data-placard-nav={item.key} aria-current={active === item.key ? "page" : undefined} {...availability(item.key, item.label)} onClick={() => navigate(item.key)} onMouseEnter={() => onHighlight(item.building)} onMouseLeave={() => onHighlight(null)} onFocus={() => onHighlight(item.building)} onBlur={() => onHighlight(null)}>
           <span className={styles.navMark} aria-hidden="true"><KqPrintedArt kind={item.art} className={styles.navArt} /></span>
           <span className={styles.navLabel}>{item.label}</span>
           <span className={styles.navArrow} aria-hidden="true">›</span>
         </button>)}
-      </div>
+      </div>)}
     </nav>
     <div className={styles.navFooter}>
-      <details><summary><CircleHelp size={17} aria-hidden="true" /> Comment jouer</summary><p>Cultive, retrouve ta récolte, puis prépare sa vente dans Commerce. « Mes récoltes » indique à chaque fois ce que tu peux faire.</p><p>L’Entrepôt regroupe les achats et la gestion du matériel. Packs de cartes permet d’acquérir et d’ouvrir tes packs ; Collections réunit tes albums.</p><p>Réseaux réunit tes publications, les aventures et les partenariats.</p>{!localNavigation ? <ArenaLearningLauncher className={styles.learningButton} onOpenQuarter={() => navigate("hub")} /> : null}</details>
+      {!localNavigation && showLearning ? <div className={styles.learningEntry} data-placard-learning-entry><ArenaLearningLauncher className={styles.learningButton} /></div> : null}
+      <details><summary><CircleHelp size={17} aria-hidden="true" /> Comment jouer</summary><KqHelpDashboard>
+        <KqHelpSteps art="culture" steps={[
+          { label: "Cultive", art: "culture" },
+          { label: "Mes récoltes", detail: "Retrouve ta récolte et l’action disponible.", art: "harvest" },
+          { label: "Commerce", detail: "Prépare la vente.", art: "commerce" },
+        ]} />
+        <KqHelpGrid art="quarter" items={[
+          { label: "Entrepôt", value: "Matériel", detail: "Achats et gestion.", art: "warehouse" },
+          { label: "Packs de cartes", value: "Acquérir et ouvrir", art: "card-shop" },
+          { label: "Collections", value: "Tes albums", art: "collection" },
+          { label: "Réseaux", value: "Publications, aventures, partenariats", art: "social" },
+        ]} />
+      </KqHelpDashboard></details>
     </div>
   </>;
   return <>

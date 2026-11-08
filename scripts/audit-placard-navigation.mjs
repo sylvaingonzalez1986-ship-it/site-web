@@ -1,6 +1,6 @@
 /** Local UI audit. Real lobby, shell, collection and progression; destination stubs isolate navigation. */
 import assert from 'node:assert/strict';
-import {mkdir, writeFile} from 'node:fs/promises';
+import {mkdir, stat, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {createServer, transformWithOxc} from 'vite';
 import tailwindcss from '@tailwindcss/postcss';
@@ -9,6 +9,7 @@ import puppeteer from 'puppeteer-core';
 
 const root=process.cwd(), output=resolve(root,'output/placard-navigation'), port=Number(process.env.NAVIGATION_AUDIT_PORT??3248), origin=`http://127.0.0.1:${port}`, preview=process.argv.includes('--preview');
 const clarityOnly=process.argv.includes('--clarity-only');
+const motionOnly=process.argv.includes('--motion-only');
 const MAP_ASSET='/placard/map/placard-world-sylvain-v6.webp';
 const BUILDING_IDS=['warehouse','bank','office','market','shop','arena','missions','collection'];
 // Independently inspected landmarks in the 1536 x 1024 v6 painting. These do
@@ -16,8 +17,9 @@ const BUILDING_IDS=['warehouse','bank','office','market','shop','arena','mission
 const MAP_LANDMARKS={warehouse:[365,255],bank:[800,221],office:[1180,320],market:[275,551],shop:[809,796],arena:[1235,619],missions:[753,453],collection:[284,831]};
 const MAP_GROUND_POINTS=[[950,320],[530,410]];
 function fixturePayload(path,scenario){
- if(path==='/api/arena/placard/equipment')return {tentNumber:1,tents:[{tentNumber:1,equippedCodes:[],levels:{}}],productionUnits:scenario==='active'?4:1,ownedCodes:[],purchasedCodes:[],equippedCodes:[],cashCents:scenario==='investment'?500000:0,levels:{},reputation:0,activeRun:scenario==='active'||scenario.startsWith('overflow')||scenario==='storage-error',readyLotCount:scenario==='lots'?2:0,availableFlowerCount:scenario==='jury'?1:0,routeMasteries:[],routePlan:null};
- if(path==='/api/arena/placard/storage')return scenario==='storage-error'?null:{serverNow:'2026-10-11T12:00:00.000Z',lots:scenario.startsWith('overflow')?[{flowerId:'first',projection:{nextChangeAt:'2026-10-11T12:30:00.000Z',capacity:{overflowUnits:1250,overflowDeadlineAt:'2026-10-11T12:30:00.000Z'}}},{flowerId:'second',projection:{nextChangeAt:'2026-10-11T14:00:00.000Z',capacity:{overflowUnits:2500,overflowDeadlineAt:'2026-10-11T14:00:00.000Z'}}}]:[]};
+ if(path==='/api/arena/placard/staff')return {state:{playerWorkDays:{'1':{usedHours:0}},employees:[],tasks:[],payroll:[]},calendar:{day:1,nextDayAt:'2026-10-11T14:00:00.000Z'},serverNow:'2026-10-11T12:00:00.000Z'};
+ if(path==='/api/arena/placard/equipment')return {tentNumber:1,tents:[{tentNumber:1,equippedCodes:[],levels:{}}],productionUnits:scenario==='active'?4:1,ownedCodes:[],purchasedCodes:[],equippedCodes:[],cashCents:scenario==='investment'?500000:0,levels:{},reputation:0,activeRun:scenario==='active'||scenario==='motion'||scenario.startsWith('overflow')||scenario==='storage-error',readyLotCount:scenario==='lots'||scenario==='motion'?2:0,availableFlowerCount:scenario==='jury'||scenario==='motion'?1:0,routeMasteries:[],routePlan:null};
+ if(path==='/api/arena/placard/storage')return scenario==='storage-error'?null:{serverNow:'2026-10-11T12:00:00.000Z',lots:scenario.startsWith('overflow')?[{flowerId:'first',flowerStatus:'available',projection:{stage:'curing',readyAt:'2026-10-11T16:00:00.000Z',nextChangeAt:'2026-10-11T12:30:00.000Z',capacity:{overflowUnits:1250,overflowDeadlineAt:'2026-10-11T12:30:00.000Z'}}},{flowerId:'second',flowerStatus:'available',projection:{stage:'curing',readyAt:'2026-10-11T16:00:00.000Z',nextChangeAt:'2026-10-11T14:00:00.000Z',capacity:{overflowUnits:2500,overflowDeadlineAt:'2026-10-11T14:00:00.000Z'}}}]:[]};
  if(path==='/api/arena/placard/collection')return {collection:{cards:[]}};
  if(path==='/api/account/collection')return {pages:[],summary:{totalCards:0,ownedUnique:0,totalOwnedCopies:0,duplicateCopies:0},availableClaims:[]};
  return null;
@@ -27,9 +29,11 @@ const stub=(name,body)=>`import React from 'react';export function ${name}(props
 const destinations={
  './KqHarvests':stub('KqHarvests','<h1>Mes récoltes</h1><p data-harvest-section>{props.section}</p><p data-harvest-flower>{props.initialFlowerId}</p><button onClick={()=>props.onSectionChange("storage","fixture-flower")}>Stockage et affinage</button><button onClick={()=>props.onOpenWarehouse("fixture-flower")}>Augmenter la capacité</button><button onClick={()=>props.onOpenArena("fixture-flower")}>Présenter au jury</button><button onClick={()=>props.onOpenMarket("fixture-flower")}>Vendre cette récolte</button>'),
  './KanabQuestDicePrototype':stub('KanabQuestDicePrototype','<h1>{props.viewMode === "arena" ? "Jury & duels" : "La culture"}</h1>'),
- './KqWarehouseEntry':stub('KqWarehouseEntry','<h1>Entrepôt</h1><p data-equipment>{props.initialEquipmentCode}</p><p data-warehouse-flower>{props.initialFlowerId}</p><p data-storage-configuration>{String(Boolean(props.initialStorageEquipmentOpen))}</p><p data-catalog>{props.initialShopOpen ? "Matériel" : "Plan"}</p><button onClick={()=>props.onOpenShop("LED-500")}>Acheter une lampe</button><button onClick={()=>props.onOpenMarket("fixture-flower")}>Préparer la vente</button>'),
+ './KqWarehouseEntry':stub('KqWarehouseEntry','<h1>Entrepôt</h1><p data-equipment>{props.initialEquipmentCode}</p><p data-warehouse-section>{props.initialSection}</p><p data-warehouse-flower>{props.initialFlowerId}</p><p data-storage-configuration>{String(Boolean(props.initialStorageEquipmentOpen))}</p><p data-catalog>{props.initialShopOpen ? "Matériel" : "Plan"}</p><button onClick={()=>props.onOpenShop("LED-500")}>Acheter une lampe</button><button onClick={()=>props.onOpenMarket("fixture-flower")}>Préparer la vente</button>'),
  './KqMarketDesk':stub('KqMarketDesk','<h1>Ma boutique</h1><p data-market-section>{props.section}</p><p data-market-flower>{props.initialFlowerId}</p><p data-market-listing>{props.initialListingId}</p><button onClick={()=>props.onSectionChange("overview")}>Vue d’ensemble</button><button onClick={()=>props.onSectionChange("demands")}>Demandes clients</button><button onClick={()=>props.onSectionChange("sales")}>Vendre ma production</button><button onClick={()=>props.onSectionChange("dashboard")}>Mes ventes</button><button onClick={()=>props.onSectionChange("dashboard","fixture-listing")}>Voir l’annonce ciblée</button><button onClick={()=>props.onSectionChange("management")}>Développer ma boutique</button><button onClick={()=>props.onOpenShop("COMPUTER",props.initialFlowerId)}>Acheter un ordinateur</button>'),
  './KqTreasuryDesk':stub('KqTreasuryDesk','<h1>{props.initialPole === "bank" ? "La Banque" : "Le Bureau"}</h1><p data-treasury-pole>{props.initialPole}</p>'),
+ './KqStaffDesk':stub('KqStaffDesk','<h1>Personnel</h1><button onClick={()=>props.onOpenTrim("fixture-employee")}>Trim dans l’Atelier</button>'),
+ './KqSocialNetworks':stub('KqSocialNetworks','<h1>Réseaux sociaux</h1>'),
  './KqSupportBoosterShop':stub('KqSupportBoosterShop','<h1>Boutique</h1><p data-catalog>Packs</p><p data-shop-section>{props.initialSection}</p><button onClick={()=>props.onSectionChange("buddies")}>Packs Buddies</button><button onClick={props.onExit}>Quitter la boutique</button><button data-open-shop-collection onClick={()=>props.onOpenCollection(props.initialSection)}>Collections</button>'),
  './KqMissionCenter':stub('KqMissionCenter','<h1>Missions</h1><button onClick={()=>props.onOpen("shop")}>Mes packs</button>'),
 };
@@ -60,6 +64,7 @@ else try {
   if(url.origin!==origin)return void request.abort();
   if(!url.pathname.startsWith('/api/'))return void request.continue();
   requests.push({path:url.pathname,method:request.method()});
+  if(request.method()!=='GET')return void request.respond({status:405,contentType:'application/json',body:'{"error":"Local audit is read-only"}'});
   const payload=fixturePayload(url.pathname,scenario);
   if(scenario==='error'&&!failed&&url.pathname==='/api/arena/placard/equipment') { failed=true; return void request.respond({status:503,contentType:'application/json',body:'{"error":"Essai local"}'}); }
   if(scenario==='overflow-equipment-error'&&url.pathname==='/api/arena/placard/equipment')return void request.respond({status:503,contentType:'application/json',body:'{"error":"Résumé indisponible"}'});
@@ -68,17 +73,31 @@ else try {
  const visit=async(state='starter',query='')=>{scenario=state;failed=false;await page.goto(`${origin}/arene/placard?scenario=${state}${query?'&'+query:''}`,{waitUntil:'networkidle0'});await page.evaluate(()=>document.fonts.ready);};
  const view=async destination=>{await page.waitForSelector(`[data-placard-view="${destination}"]`);if(destination!=='hub')await page.waitForSelector('[data-destination]');};
  const visible=async selector=>page.waitForFunction(selector=>[...document.querySelectorAll(selector)].find(element=>element.checkVisibility()),{},selector);
- const mapPoint=async(id,kind='hit')=>page.evaluate(({id,kind})=>{
-  const viewport=document.querySelector('#placard-map-viewport');viewport.scrollIntoView({block:'center',behavior:'instant'});
+ const mapPoint=async(id,kind='hit')=>page.evaluate(async({id,kind})=>{
+  const viewport=document.querySelector('#placard-map-viewport');
+  // Browser Back restores the map and its contextual panel on animation frames.
+  // Let that layout settle before sending a real touch to image coordinates.
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
   const button=document.querySelector(`[data-map-building="${id}"]`),image=viewport.querySelector('img');
   const values=button.getAttribute(`data-map-${kind}-point`)?.split(',').map(Number);
   if(!values||values.length!==2||values.some(value=>!Number.isFinite(value)))throw new Error(`Missing map ${kind} point for ${id}`);
-  const rect=image.getBoundingClientRect();return {x:rect.left+rect.width*values[0]/100,y:rect.top+rect.height*values[1]/100};
+  if(viewport.scrollWidth>viewport.clientWidth+1)viewport.scrollTo({left:image.offsetWidth*values[0]/100-viewport.clientWidth/2,top:image.offsetHeight*values[1]/100-viewport.clientHeight/2,behavior:'instant'});
+  await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));
+  // Centre the settled map in the usable page space, between the sticky header
+  // and the mobile navigation. The native scroll restoration may have moved it.
+  const header=document.querySelector('#placard-content > header')?.getBoundingClientRect();
+  const mobileNav=document.querySelector('nav[aria-label="Accès rapides de Kanab Quest"]')?.getBoundingClientRect();
+  const top=header?.height??0,bottom=mobileNav?.height?mobileNav.top:innerHeight,frame=viewport.getBoundingClientRect();
+  window.scrollBy({top:frame.top+frame.height/2-(top+bottom)/2,behavior:'instant'});
+  const rect=image.getBoundingClientRect(),point={x:rect.left+rect.width*values[0]/100,y:rect.top+rect.height*values[1]/100};
+  const hit=document.elementFromPoint(point.x,point.y);
+  if(kind==='hit'&&hit?.closest('[data-map-building]')?.getAttribute('data-map-building')!==id)throw new Error(`Map facade ${id} is covered at ${JSON.stringify(point)} by ${hit?.tagName}: ${hit?.textContent?.slice(0,100)}`);
+  return point;
  },{id,kind});
  const click=async selector=>{
   const building=selector.match(/^\[data-map-building="([a-z]+)"\]$/)?.[1];
   if(building){const point=await mapPoint(building);if((await page.viewport()).hasTouch)await page.touchscreen.tap(point.x,point.y);else await page.mouse.click(point.x,point.y);return;}
-  const handle=await visible(selector);await handle.asElement().click();await handle.dispose();
+  const handle=await visible(selector);await handle.asElement().evaluate(element=>element.scrollIntoView({block:'center',inline:'center',behavior:'instant'}));await handle.asElement().click();await handle.dispose();
  };
  const clickMapZoom=async()=>{
   const handle=await visible('[data-map-zoom-toggle]');
@@ -187,7 +206,85 @@ else try {
   assert.equal(await page.$eval('[data-map-building="warehouse"]',element=>element===document.activeElement),true,'Keyboard activation restores the original building after Escape');
   return {geometry,landmarks};
  };
- if(clarityOnly){
+ if(motionOnly){
+  const atmosphere='[data-map-atmosphere]', motionToggle='[data-map-motion-toggle]';
+  const motionTargets='[data-water-glint], [data-gull-flight], [data-activity-glow], [data-doorway-intent]';
+  const pause=ms=>new Promise(resolve=>setTimeout(resolve,ms));
+  const motionScreenshot=async(name,fromTop=true)=>{
+   if(fromTop)await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
+   await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));
+   return page.screenshot({path:resolve(output,`${name}.png`),fullPage:false});
+  };
+  const waitForMotion=state=>page.waitForFunction(state=>document.querySelector('[data-map-atmosphere]')?.getAttribute('data-motion-state')===state,{timeout:15000,polling:100},state);
+  const showScene=async()=>{await page.$eval('#placard-map-viewport',element=>element.scrollIntoView({block:'center',behavior:'instant'}));await waitForMotion('running');};
+  const sampleMotion=()=>page.$$eval(motionTargets,elements=>elements.map(element=>{
+   const style=getComputedStyle(element),rect=element.getBoundingClientRect(),frame=document.querySelector('#placard-map-viewport').getBoundingClientRect();
+   return {target:element.hasAttribute('data-water-glint')?'water':element.hasAttribute('data-gull-flight')?'gull':element.getAttribute('data-activity-glow')??'doorway',transform:style.transform,opacity:style.opacity,visibility:style.visibility,display:style.display,visible:rect.width>0&&rect.height>0&&rect.bottom>Math.max(0,frame.top)&&rect.top<Math.min(innerHeight,frame.bottom)&&rect.right>Math.max(0,frame.left)&&rect.left<Math.min(innerWidth,frame.right)};
+  }));
+  const checkFrozen=async label=>{await pause(300);const before=await sampleMotion();await pause(300);const after=await sampleMotion();assert.deepEqual(after,before,label+' freezes the actual painted effects');return after;};
+  const armNavigation=async()=>page.evaluate(()=>{
+   window.__motionNavigation=null;
+   document.addEventListener('click',()=>{const started=performance.now();requestAnimationFrame(()=>requestAnimationFrame(()=>{window.__motionNavigation={elapsedMs:Math.round(performance.now()-started),view:document.querySelector('[data-placard-view]')?.getAttribute('data-placard-view'),panel:!!document.querySelector('#placard-building-details')};}));},{capture:true,once:true});
+  });
+  for(width of [320,390,1440]){
+   await page.setViewport({width,height:width<=390?844:1000,isMobile:width<=390,hasTouch:width<=390,deviceScaleFactor:1});
+   await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'no-preference'}]);
+   await visit('motion');await view('hub');await page.waitForSelector(atmosphere);await page.waitForSelector('[data-map-activity="jury"]');
+   await showScene();await assertNoOverflow(`Motion ${width}`);
+   const initial=await sampleMotion();await pause(700);const moving=await sampleMotion();
+   assert(initial.length>0,'Motion exposes real scene elements');
+   assert(moving.some((item,index)=>item.visible&&item.display!=='none'&&item.visibility==='visible'&&(item.transform!==initial[index].transform||item.opacity!==initial[index].opacity)),`${width}: visible artwork changes in normal motion`);
+   const hitBehavior=await page.$eval(atmosphere,element=>({pointerEvents:getComputedStyle(element).pointerEvents,hidden:element.getAttribute('aria-hidden'),focusable:element.getAttribute('focusable')}));
+   assert.equal(hitBehavior.pointerEvents,'none','Decorative motion cannot cover building interactions');assert.equal(hitBehavior.hidden,'true','Decorative motion does not repeat game state to assistive technology');
+   await motionScreenshot(`motion-running-${width}`);
+   const record={width,scenario:'motion',normal:{initial,moving},hitBehavior};results.push(record);
+   let recorder;
+   if(width===1440){
+    try {const {default:ffmpegPath}=await import('ffmpeg-static');const path=resolve(output,'quartier-motion-demo.webm');recorder=await page.screencast({path,format:'webm',fps:24,ffmpegPath});record.video={path};}
+    catch(error){record.video={unavailable:error.message};}
+   }
+   try {
+    if(width===1440){const point=await mapPoint('warehouse');await page.mouse.move(point.x,point.y);await pause(650);}
+    await armNavigation();await click('[data-map-building="warehouse"]');await page.waitForSelector('#placard-building-details');
+    await page.waitForFunction(()=>window.__motionNavigation!==null);record.pointer=await page.evaluate(()=>window.__motionNavigation);
+    assert.equal(record.pointer.panel,true,'The activity panel is available within two animation frames of the real pointer activation');
+    await assertNoOverflow(`Motion panel ${width}`);await motionScreenshot(`motion-panel-${width}`,false);
+    if(width===1440)await pause(650);
+    await page.keyboard.press('Escape');await page.waitForSelector('#placard-building-details',{hidden:true});
+    assert.equal(await page.$eval('[data-map-building="warehouse"]',element=>element===document.activeElement),true,'Escape returns focus to the selected building');
+    await showScene();await click('summary[aria-label="Aide du quartier"]');await click(motionToggle);await page.keyboard.press('Escape');await waitForMotion('paused');record.paused=await checkFrozen('User pause');
+    assert(await page.$eval(motionToggle,element=>element.getAttribute('aria-label')||element.textContent.trim()),'The motion control has a readable name');
+    await motionScreenshot(`motion-paused-${width}`);
+    await click('summary[aria-label="Aide du quartier"]');await click(motionToggle);await page.keyboard.press('Escape');await showScene();const beforeResume=await sampleMotion();await pause(500);const resumed=await sampleMotion();
+    assert.notDeepEqual(resumed,beforeResume,'User resume restarts scene changes');record.resumed=true;
+   }finally{
+    if(recorder){try {await recorder.stop();record.video.bytes=(await stat(record.video.path)).size;assert(record.video.bytes>1024,'The interaction recording contains video frames');}catch(error){record.video={unavailable:error.message};}}
+   }
+   await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await waitForMotion('reduced');record.reduced=await checkFrozen('Live reduced-motion preference');
+   await motionScreenshot(`motion-reduced-${width}`);
+   await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'no-preference'}]);await showScene();record.livePreference=true;
+   // A temporary, inert spacer allows an actual scroll outside the viewport even
+   // when the desktop page is shorter than the browser. No observer is mocked.
+   await page.evaluate(()=>{const spacer=document.createElement('div');spacer.dataset.motionAuditSpacer='';spacer.setAttribute('aria-hidden','true');spacer.style.height='200vh';document.body.append(spacer);window.scrollTo({top:document.documentElement.scrollHeight,behavior:'instant'});});
+   await waitForMotion('offscreen');record.offscreen=await checkFrozen('Offscreen scene');
+   await page.evaluate(()=>document.querySelector('[data-motion-audit-spacer]')?.remove());await showScene();
+   if(width===1440){
+    const other=await browser.newPage();
+    try {await other.bringToFront();const hidden=await page.evaluate(()=>document.hidden);if(hidden){await waitForMotion('hidden');record.hidden=await checkFrozen('Hidden document');}else record.hidden={unavailable:'This headless browser does not hide background tabs'};}
+    finally{await other.close();await page.bringToFront();}
+    await showScene();
+   }
+   await page.focus('[data-map-building="market"]');await page.keyboard.press('Enter');await page.waitForSelector('#placard-building-details');
+   await page.focus('[data-placard-activity="market"]');await armNavigation();await page.keyboard.press('Enter');await view('market');
+   await page.waitForFunction(()=>window.__motionNavigation!==null);record.keyboard=await page.evaluate(()=>window.__motionNavigation);
+   assert.equal(record.keyboard.view,'market','Keyboard navigation is available within two animation frames');
+   assert.equal(await page.$eval('[data-market-section]',element=>element.textContent),'sales','The animated map preserves the sale destination');
+   await assertNoOverflow(`Motion destination ${width}`);
+   await page.goBack();await view('hub');await showScene();
+   await click('[data-map-building="office"]');await view('staff');await assertNoOverflow(`Personnel destination ${width}`);
+   record.destinations=['market:sales','staff'];
+  }
+ }else if(clarityOnly){
   for(width of [320,390,1440]){
    await page.setViewport({width,height:844,isMobile:width<=390,hasTouch:width<=390,deviceScaleFactor:1});
    await visit('starter');await view('hub');
@@ -224,10 +321,18 @@ else try {
  for(width of (process.env.NAVIGATION_AUDIT_WIDTHS?.split(',').map(Number)??[320,390,768,1440])) {
   await page.setViewport({width,height:width<=390?844:1000,isMobile:width<=390,hasTouch:width<=390,deviceScaleFactor:1});
   await visit('active');await view('hub');
-  await page.waitForSelector('[aria-label="À faire maintenant"]');
-  const measurement=await measureMap();
-  results.push({width,measurement});
+  await page.waitForSelector('[data-placard-next-action]');
+  const initialMeasurement=await measureMap();
   await screenshot(`quartier-${width}`);
+  assert.equal(await page.$eval('[data-placard-map]',element=>element.hasAttribute('data-map-zoomed')),width<=700,'Mobile starts with readable buildings; larger screens show the whole village');
+  if(width<=700){
+   assert(initialMeasurement.viewport.height>=240&&initialMeasurement.viewport.height<=360,'Mobile exploration leaves room for the next action below the scene');
+   assert(await page.$eval('[data-map-zoom-toggle] span',element=>getComputedStyle(element).display!=='none'&&element.textContent==='Tout le quartier'),'The complete map toggle stays readable on mobile');
+   await clickMapZoom();await page.waitForSelector('[data-placard-map]:not([data-map-zoomed])');
+  }
+  const measurement=await measureMap();
+  results.push({width,initialMeasurement,measurement});
+  await screenshot(`quartier-overview-${width}`);
   assert.equal(measurement.overflow,false);assert.equal(measurement.imageLoaded,true);assert.equal(measurement.source,MAP_ASSET);assert.deepEqual(measurement.brokenImages,[]);
   assert.deepEqual(measurement.buildings.map(building=>building.id).sort(),[...BUILDING_IDS].sort(),'Every illustrated destination has one real hit target');
   assert(measurement.viewport.scrollWidth<=measurement.viewport.clientWidth+1,'The overview shows the complete image');
@@ -236,7 +341,7 @@ else try {
    assert(building.labelBounds.left>=measurement.viewport.left-1&&building.labelBounds.right<=measurement.viewport.right+1&&building.labelBounds.top>=measurement.viewport.top-1&&building.labelBounds.bottom<=measurement.viewport.bottom+1,`${width}: ${building.id} label is fully visible in the overview`);
    assert(building.clipPath?.startsWith('polygon('),`${width}: ${building.id} uses a real polygon hit mask`);
    assert(building.tabIndex>=0,`${width}: ${building.id} has keyboard access`);
-   assert(/[a-zÀ-ÿ]/i.test(building.label),`${building.id} has a visible name, not a number`);
+   assert(/[a-zÀ-ÿ]/i.test(building.label),`${building.id} keeps its complete accessible name in overview`);
    for(const other of measurement.buildings.slice(index+1)){
     const a=building.labelBounds,b=other.labelBounds;if(!a||!b)continue;
     assert(Math.min(a.right,b.right)-Math.max(a.left,b.left)<=1||Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)<=1,`${width}: ${building.id} and ${other.id} labels do not overlap`);
@@ -277,8 +382,11 @@ else try {
   await page.waitForFunction(start=>document.querySelector('#placard-map-viewport')?.scrollLeft>start+10,{},panStart);await view('hub');
   results.at(-1).afterPanLayout=await page.evaluate(()=>({windowScroll:scrollY,scrollContainers:[...document.querySelectorAll('*')].filter(element=>element.scrollTop>0).map(element=>({tag:element.tagName,className:String(element.className),top:element.scrollTop,clientHeight:element.clientHeight,scrollHeight:element.scrollHeight})),panelChildren:[...document.querySelector('#placard-building-details').children].map(element=>({tag:element.tagName,text:element.textContent.slice(0,40),rect:element.getBoundingClientRect().toJSON(),overflow:getComputedStyle(element).overflow}))}));
   await screenshot(`quartier-zoom-${width}`);await clickMapZoom();await page.waitForSelector('[data-map-zoomed]',{hidden:true});
-  await click('[data-map-building="bank"]');await view('treasury');assert.equal(new URL(page.url()).searchParams.get('pole'),'bank');
-  await page.goBack();await view('hub');await click('[data-map-building="office"]');await view('treasury');assert.equal(new URL(page.url()).searchParams.get('pole'),'accounting');
+  await click('[data-map-building="bank"]');await view('treasury');assert.equal(new URL(page.url()).searchParams.get('pole'),'accounting');
+  await page.goBack();await view('hub');await click('[data-map-building="office"]');await view('staff');
+  await clickText('Trim dans l’Atelier');await view('workshop');assert.equal(await page.$eval('[data-warehouse-section]',element=>element.textContent),'processing');assert.equal(new URL(page.url()).searchParams.get('employee'),'fixture-employee');
+  await navTo('hub');await click('[data-map-building="warehouse"]');await click('[data-placard-activity="workshop"]');await view('workshop');assert.equal(await page.$eval('[data-warehouse-section]',element=>element.textContent),'processing','The farm opens the real Atelier');
+  await page.goBack();await view('hub');await click('[data-map-building="market"]');await click('[data-placard-activity="social"]');await view('social');
   await page.goBack();await view('hub');await click('[data-map-building="collection"]');await page.waitForSelector(album+'[open]');await page.keyboard.press('Escape');await page.waitForSelector(album+'[open]',{hidden:true});
   await page.waitForFunction(()=>document.activeElement?.matches('[data-map-building="collection"]'));
   for(const destination of ['shop','arena','missions']){
@@ -329,23 +437,23 @@ else try {
  }
  width=390;await page.setViewport({width,height:844,isMobile:true,hasTouch:true,deviceScaleFactor:1});
  for(const state of ['starter','lots','jury','investment']){
-  await visit(state);await view('hub');await page.waitForSelector('[aria-label="À faire maintenant"]');await screenshot(`${state}-390`);
-  const expected={starter:'game',lots:'market',jury:'arena',investment:'workshop'}[state];
-  await click('[aria-label="À faire maintenant"] button');await view(expected);
+  await visit(state);await view('hub');await page.waitForSelector('[data-placard-next-action]');await screenshot(`${state}-390`);
+  const expected={starter:'game',lots:'market',jury:'arena',investment:'game'}[state];
+  await click('[data-placard-next-action] button');await view(expected);
   if(state==='lots')assert.equal(new URL(page.url()).searchParams.get('section'),'sales','Ready lots open the sale directly');
-  if(state==='investment'){assert.equal(new URL(page.url()).searchParams.get('catalog'),'equipment');assert(new URL(page.url()).searchParams.get('equipment'));}
+  if(state==='investment')assert.equal(new URL(page.url()).searchParams.has('catalog'),false,'Available cash alone does not send a new player to buy equipment');
   results.push({scenario:state,destination:expected});
  }
  for(const state of ['overflow','overflow-equipment-error']){
   await visit(state);await view('hub');await page.waitForSelector('[data-priority="storage"]');
   const notice=await page.$eval('[data-priority="storage"]',element=>element.textContent);
   assert(notice.includes('375 g sans contenant'),'The priority uses the sum of the server surplus');assert(notice.includes('14:30'),'The earliest server deadline is shown in Paris time');
-  assert(notice.includes('Protéger ma récolte'));assert.equal(await page.$$eval('[aria-label="À faire maintenant"]',elements=>elements.length),1,'Urgency replaces the ordinary recommendation');
+  assert(notice.includes('Ranger mes récoltes'));assert.equal(await page.$$eval('[data-placard-next-action]',elements=>elements.length),1,'Urgency replaces the ordinary recommendation');
   await assertNoOverflow('Storage urgency');await screenshot(`${state}-390`);await click('[data-priority="storage"] button');await view('harvests');
   assert.equal(new URL(page.url()).searchParams.get('section'),'storage');assert.equal(await page.$eval('[data-harvest-section]',element=>element.textContent),'storage');results.push({scenario:state,destination:'harvests',section:'storage'});
  }
- await visit('storage-error');await view('hub');await page.waitForSelector('[aria-label="À faire maintenant"]');assert.equal(await page.$('[data-priority="storage"]'),null);await screenshot('storage-error-390');await click('[aria-label="À faire maintenant"] button');await view('game');results.push({scenario:'storage-error',destination:'game'});
- await visit('error');await page.waitForFunction(()=>document.body.textContent.includes('Ton résumé est indisponible'));await assertNoOverflow('Error');await clickText('Réessayer');await page.waitForSelector('[aria-label="À faire maintenant"]');
+ await visit('storage-error');await view('hub');await page.waitForSelector('[data-placard-next-action]');assert.equal(await page.$('[data-priority="storage"]'),null);await screenshot('storage-error-390');await click('[data-placard-next-action] button');await view('game');results.push({scenario:'storage-error',destination:'game'});
+ await visit('error');await page.waitForFunction(()=>document.body.textContent.includes('Ton résumé est indisponible'));await assertNoOverflow('Error');await clickText('Réessayer');await page.waitForSelector('[data-placard-next-action]');
  await visit('starter','view=treasury&pole=management');await view('market');assert.equal(new URL(page.url()).searchParams.get('section'),'management');
  await visit('starter','view=market&section=dashboard');await view('market');await clickText('Acheter un ordinateur');await view('workshop');assert.equal(await page.$eval('[data-equipment]',element=>element.textContent),'COMPUTER');await page.goBack();await view('market');assert.equal(new URL(page.url()).searchParams.get('section'),'dashboard');
  width=1440;await page.setViewport({width,height:1000,isMobile:false,hasTouch:false,deviceScaleFactor:1});
@@ -385,9 +493,9 @@ else try {
  results.push({scenario:'buddies-shop-album',initialSection:'buddies'});
  }
  assert.deepEqual(errors,[]);assert(requests.every(request=>request.method==='GET'),'Audit never mutates real state');
- await writeFile(resolve(output,clarityOnly?'clarity-report.json':'report.json'),JSON.stringify({results,errors,requests},null,2));
+ await writeFile(resolve(output,motionOnly?'motion-report.json':clarityOnly?'clarity-report.json':'report.json'),JSON.stringify({results,errors,requests},null,2));
  console.log(JSON.stringify({success:true,output,widths:results.filter(result=>result.width).map(result=>result.width),scenarios:results.filter(result=>result.scenario).length,errors:errors.length},null,2));
 }catch(error){
- if(browser){const pages=await browser.pages();await pages.at(-1)?.screenshot({path:resolve(output,'failure.png'),fullPage:true}).catch(()=>{});}
- await writeFile(resolve(output,'report.json'),JSON.stringify({results,errors,requests,failure:error.stack},null,2));throw error;
+ if(browser){const pages=await browser.pages();await pages.at(-1)?.screenshot({path:resolve(output,motionOnly?'motion-failure.png':'failure.png'),fullPage:true}).catch(()=>{});}
+ await writeFile(resolve(output,motionOnly?'motion-report.json':'report.json'),JSON.stringify({results,errors,requests,failure:error.stack},null,2));throw error;
 }finally{if(!preview){await browser?.close();await server.close();}}

@@ -3,7 +3,6 @@ import { issueInvoiceForOrder } from "@/lib/invoice-store";
 import {
   consumeLotteryRewardClaimsForOrderByBackend,
   mintLotteryTicketsForOrderByBackend,
-  releaseLotteryRewardClaimsForOrderByBackend,
 } from "@/lib/lottery-backend";
 import {
   applyOrderLoyaltyBonusByBackend,
@@ -275,7 +274,7 @@ export async function POST(request: Request) {
           await applyReferralRewardForPaidOrderByBackend({ orderId: updated.id });
         }
       } else {
-        console.error(`[viva-webhook] Paid order ${updated.id} requires inventory review.`);
+        console.error(`[viva-webhook] Paid order ${updated.id} requires manual payment review.`);
       }
     } else {
       const failedOrder = await updateOrderPaymentByVivaOrderCodeByBackend({
@@ -287,7 +286,9 @@ export async function POST(request: Request) {
         throw new Error("Commande introuvable pendant le refus Viva.");
       }
       updated = failedOrder;
-      await releaseLotteryRewardClaimsForOrderByBackend(updated.id);
+      reviewRequired = failedOrder.paymentReviewRequired === true;
+      // Failed reservations are released atomically by the payment RPC.
+      // A paid order returned for a delayed failure is an acknowledged no-op.
     }
 
     await completeWebhookEvent(eventKey);

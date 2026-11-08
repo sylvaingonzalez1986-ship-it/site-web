@@ -65,6 +65,10 @@ describe("read-only personal Arena summary", () => {
     rpc.mockResolvedValue({ data: null, error: { message: "unavailable" } });
     await expect(getArenaPlayerSummary(userId)).rejects.toThrow("affinage");
   });
+  it("passes verified trim counts through to the personal summary", async () => {
+    rpc.mockResolvedValue({ data: { availableFlowerCount: 1, curingFlowerCount: 2, trimFlowerCount: 4 }, error: null });
+    expect(await getArenaPlayerSummary(userId)).toMatchObject({ availableFlowerCount: 1, curingFlowerCount: 2, trimFlowerCount: 4 });
+  });
   it("excludes fully sold harvests and prepared lots with no remaining units", async () => {
     rows.kq_flowers = [flower("sold"), flower("exhausted"), flower("to-judge", "available")];
     rows.kq_commerce_stock = rows.kq_commerce_stock.filter(row => row.flower_id !== "processed");

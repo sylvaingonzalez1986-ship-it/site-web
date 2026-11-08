@@ -52,8 +52,10 @@ describe("Kanab Quest admin-only test access", () => {
 
   it("centralizes Placard operations in the Arena admin and keeps the game clean", () => {
     expect(adminArenaPanel).toContain("<AdminPlacardOperationsPanel");
-    expect(adminArenaPanel).toContain("placardOpen ? <AdminPlacardOperationsPanel");
-    expect(adminArenaPanel).toContain('aria-expanded={placardOpen}');
+    expect(adminArenaPanel).toContain('visited.includes("operations") ? <AdminPlacardOperationsPanel');
+    expect(adminArenaPanel).toContain('id="admin-arena-operations" hidden={section !== "operations"}');
+    expect(adminArenaPanel).toContain('aria-pressed={section === id}');
+    expect(adminArenaPanel).toContain('aria-controls={`admin-arena-${id}`}');
     expect(adminPage).toContain("showAdminOperations={false}");
     expect(placardOperations).toContain('"/api/admin/placard/bootstrap"');
     expect(placardOperations).toContain('"/api/admin/placard/notebook-rewards"');

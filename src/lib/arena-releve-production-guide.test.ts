@@ -103,6 +103,7 @@ describe("La relève — guidance follows the player's production state", () => 
     const state = launched();
     const snapshot = structuredClone(state);
     expect(ids("culture", state)).toContain("culture:health");
+    expect(getReleveProductionGuide("culture", state).find(step => step.id === "culture:health-tab")?.selector).toBe('[data-culture-tab="care"][aria-selected="false"]');
     expect(ids("culture", state)).toContain("culture:roll-0");
     getReleveProductionGuide("culture", state);
     expect(state).toEqual(snapshot);
@@ -176,7 +177,7 @@ describe("La relève — guidance follows the player's production state", () => 
   it.each([1, 2] as const)("can finish all six stages for %s zone(s) by following the suggested controls", count => {
     let state = launched(count);
     for (let actionCount = 0; actionCount < 100 && state.game!.phase !== "complete"; actionCount++) {
-      const next = getReleveProductionGuide("culture", state).find(step => !step.id.includes(":confirm-card") && !step.id.includes(":care-open-") && !step.id.includes(":hand-open-"));
+      const next = getReleveProductionGuide("culture", state).find(step => !step.selector?.includes("data-culture-tab") && !step.selector?.includes("data-care-section") && !step.id.includes(":confirm-card") && !step.id.includes(":care-open-") && !step.id.includes(":hand-open-"));
       expect(next).toBeDefined();
       const id = next!.id;
       if (id === "culture:health") state = act(state, { type: "mark", milestone: "health-read" });

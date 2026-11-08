@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-07",
+  "request": "Rétablir les anciennes illustrations détaillées des machines de l’Atelier.",
+  "method": "Réutilisation des WebP locaux existants, sans génération ni modification d’image. Comparaison visuelle des anciens héros, des sprites cartoon du catalogue et des sprites de la scène vue du dessus.",
+  "sourceDirectory": "public/app/kanab-quest/equipment",
+  "sourcePattern": "equipment-<model>-hero-v2.webp",
+  "history": {
+    "originalAssets": "1d4827ed, 10 septembre 2026",
+    "oldModelProgression": "da6b5d27, 11 septembre 2026 : laveuses WASHER-25L/WASHER-75G/TSS-225, presses PRESS-0600/PRESS-10T/PRESS-20T",
+    "cartoonReplacement": "ae75378f, 14 octobre 2026",
+    "topDownScene": "f8f27bae, 18 octobre 2026"
+  },
+  "modelsByCurrentTier": {
+    "SIFT-TRAY": ["SIFT-TRAY", "SIFT-TRAY", "SIFT-TRAY"],
+    "PRESS-0600": ["PRESS-0600", "PRESS-10T", "PRESS-20T"],
+    "WASHER-25L": ["WASHER-25L", "WASHER-75G", "TSS-225"],
+    "AUTO-SIEVE": ["AUTO-SIEVE", "AUTO-SIEVE", "AUTO-SIEVE"],
+    "FREEZE-DRYER": ["FREEZE-DRYER", "FREEZE-DRYER", "FREEZE-DRYER"],
+    "STATIC-PLASMA": ["STATIC-PLASMA", "STATIC-PLASMA", "STATIC-PLASMA"]
+  },
+  "tierLevels": [1, 4, 7],
+  "limits": "Dix fichiers distincts pour six familles. Quatre familles n’ont qu’une ancienne illustration : la même image accompagne leurs trois gammes. Les noms, descriptions métier, prix, capacités et niveaux actuels restent inchangés. Les héros ont un fond papier opaque et conviennent aux cartes et fiches, pas aux sprites transparents posés au sol.",
+  "scope": "getKqWorkshopProductArtwork et ses consommateurs existants ; aucune modification des illustrations de culture ou de stockage.",
+  "comparisonArtifacts": ["output/workshop-art-research/machines-comparison.png", "output/workshop-art-research/legacy-machine-upgrades.png"]
+}

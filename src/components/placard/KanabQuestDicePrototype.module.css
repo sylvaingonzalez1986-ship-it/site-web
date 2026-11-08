@@ -1151,3 +1151,71 @@ dialog.verdictDialog { width: min(480px, calc(100vw - 24px)); background: #fffaf
 .harvestDetailsBody .cultureReceipt small { font-size: 14px; line-height: 1.4; text-transform: none; letter-spacing: normal; }
 .harvestDetailsBody .cultureReceipt b, .harvestDetailsBody .cultureReceipt em { font-size: 13px; line-height: 1.4; }
 .harvestDetailsBody .cultureReceipt article > span { min-width: 0; }
+
+/* Jury reserve: the actual collectible card stays beside its own decisions. */
+.officialFlowerReserve .juryFlowerCarousel { margin: 0; min-width: 0; container-type: inline-size; }
+.juryFlowerCarousel > header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 8px; }
+.juryFlowerCarousel > header h2 { margin: 0; font: 900 clamp(22px, 2.5vw, 28px)/1.1 var(--font-display), sans-serif; }
+.juryFlowerCarousel > header nav { margin-left: auto; }
+.juryCarouselIntro { margin: 0 0 12px; color: #40574d; font-size: 13px; line-height: 1.5; }
+.juryFlowerCarousel > [role="list"] { grid-auto-columns: 100%; gap: 24px; align-items: start; padding: 10px 8px 18px; scroll-padding-inline: 8px; scroll-snap-type: x mandatory; }
+.juryFlowerCarousel > [role="list"][data-dragging] { scroll-snap-type: none; }
+.juryFlowerCarousel .officialFlowerSlot { display: grid; grid-template-columns: minmax(0, 325px) minmax(0, 1fr); align-items: start; gap: clamp(16px, 3vw, 32px); width: 100%; min-width: 0; margin: 0; padding: 8px 0; border: 0; scroll-snap-align: start; scroll-snap-stop: always; }
+.juryFlowerArt { display: grid; justify-items: center; min-width: 0; padding: 5px 10px 12px 5px; }
+.juryFlowerArt > .flowerTcgCard { width: 100%; max-width: 310px; margin: 0; }
+.juryFlowerInfo { min-width: 0; padding: 4px 2px; }
+.juryFlowerInfo .juryFlowerIdentity h3 { font-size: clamp(24px, 2.5vw, 32px); }
+.juryFlowerInfo > button { display: flex; align-items: center; justify-content: center; gap: 7px; width: 100%; max-width: 370px; min-height: 44px; margin: 12px 0 0; padding: 10px 12px; border: 2px solid transparent; border-radius: 0; box-shadow: none; color: var(--kq-cream, #fff1d6); font: 750 14px/1.4 var(--font-body), sans-serif; cursor: pointer; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.juryFlowerInfo > button:not(:disabled):hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); color: #172923; }
+.juryFlowerInfo > button:disabled { opacity: .55; cursor: wait; }
+.juryFlowerInfo > button svg { width: 18px; height: 18px; flex: 0 0 auto; }
+.juryFlowerInfo > button:focus-visible { outline: 3px solid #087e70; outline-offset: 3px; }
+.juryFlowerInfo .juryFlowerDetails { margin-top: 16px; border-top: 1px solid #17292340; }
+.juryFlowerInfo .juryFlowerDetailContent { display: block; padding: 8px 0; }
+@container (max-width: 900px) {
+  .juryFlowerCarousel .juryFlowerChoices { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+}
+@container (max-width: 650px) {
+  .juryFlowerCarousel .officialFlowerSlot { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .juryFlowerCarousel .juryFlowerArt { width: min(100%, 275px); justify-self: center; }
+  .juryFlowerCarousel .juryFlowerInfo { padding-inline: 0; }
+}
+
+/* The culture desk keeps one useful sheet in view. */
+.page[data-culture-play] .resources > span { min-width: 0; }
+@media (max-width:760px) {
+ .page[data-culture-play] .topbar { display:grid; grid-template-columns:minmax(0,1fr); gap:.35rem; padding:.5rem .65rem; }
+ .page[data-culture-play] .gameBrandMark,.page[data-culture-play] .gameBrand > div > span { display:none !important; }
+ .page[data-culture-play] .topbar h1 { font-size:1.1rem; margin:0; }
+ .page[data-culture-play] .resources { display:grid; grid-template-columns:minmax(0,.7fr) minmax(0,1.8fr) minmax(0,1fr); width:100%; gap:.25rem; }
+ .page[data-culture-play] .resources > span { min-height:36px; padding:.3rem; font-size:.66rem; line-height:1.3; letter-spacing:0; }
+ .page[data-culture-play] .resources svg { width:13px; flex:0 0 13px; }
+}
+.cultureSheet { min-width: 0; padding: .8rem; color: #172923; --game-panel-art:var(--game-panel-paper,url('/placard/ui/panel-paper-v1.webp')); background:transparent; border:2px solid transparent; border-radius:0; box-shadow:none; border-image:var(--game-panel-art) var(--game-panel-slice,48) fill / var(--game-panel-edge,15px) / 0 stretch; }
+.cultureSheet > .cultureSheet { padding:0; border:0; border-image:none; }
+.cultureSheet > .runProjection,.cultureSheet > section > .runProjection { margin:0; border:0; border-image:none; padding:.5rem; }
+.cultureSheet .cultureDisclosure { margin-top:.75rem; border:0; border-top:1px solid #17292330; border-image:none; background:transparent; }
+.cultureCards { display:grid; gap:.75rem; min-width:0; }
+.cultureCards .handDetails { margin:0; }
+.cultureCards .deckPanel { min-width:0; }
+.cultureCards .heritageInPlay { width:100%; max-width:100%; margin:0; grid-template-columns:64px minmax(0,1fr); }
+.cultureCards .heritageInPlay > footer { grid-column:1/-1; }
+.cultureCards .heritageInPlay > div > p { display:block; overflow:visible; }
+.cultureWorkOverview { min-width:0; margin:.5rem 0; }
+.cultureWorkOverview:empty { display:none; }
+.page[data-culture-play] .turnActions > .turnOptionsLink { display:block; min-height:44px; font-size:.8rem; }
+@media (max-width:760px) {
+ .cultureSheet { padding:.45rem; }
+ .cultureSheet .cultureHistory { padding:.6rem .3rem; }
+ .cultureCards .handDetails > .deckPanel { padding:.55rem; }
+}
+@media (max-width:760px) {
+ .page[data-culture-play] { --culture-actionbar-space:calc(7rem + var(--placard-bottom-nav-height,0px) + env(safe-area-inset-bottom)); }
+ .page[data-culture-play]:has(.turnActionContext[data-warning]) { --culture-actionbar-space:calc(9rem + var(--placard-bottom-nav-height,0px) + env(safe-area-inset-bottom)); }
+ .page[data-culture-play] .turnActions { grid-template-columns:minmax(0,.75fr) minmax(0,1.6fr); align-items:center; gap:.2rem .4rem; }
+ .page[data-culture-play] .turnActions .turnActionContext { grid-column:1/-1; grid-row:1; }
+ .page[data-culture-play] .turnActions > .turnOptionsLink { grid-column:1; grid-row:2; min-height:50px; padding:.4rem; }
+ .page[data-culture-play] .turnActions > [data-culture-primary-action] { grid-column:2; grid-row:2; min-width:0; }
+ .page[data-culture-play] .turnActions:not(:has(.turnOptionsLink)) > [data-culture-primary-action] { grid-column:1/-1; }
+ .page[data-playable-lesson][data-culture-play] { --culture-actionbar-space:calc(var(--arena-lesson-coach-height,0px) + 7rem + env(safe-area-inset-bottom)); }
+}

@@ -23,7 +23,7 @@ import {
   getKqEquipmentInvestmentProgress,
   getKqEquipmentPaybackScenarios,
 } from "@/lib/kanab-quest-economy-balance";
-import { getKqPlacardNextAction, type KqPlacardHubDestination } from "@/lib/kanab-quest-hub";
+import { getKqPlacardNextAction, KQ_WORKSHOP_TRIM_HREF, type KqPlacardHubDestination } from "@/lib/kanab-quest-hub";
 import {
   getKqRouteExpertiseProgress,
   getKqRouteExpertiseMission,
@@ -59,6 +59,7 @@ type EquipmentHudSnapshot = {
   readyLotCount: number;
   availableFlowerCount: number;
   curingFlowerCount?: number;
+  trimFlowerCount?: number;
   routePlan: { route: KqMarketRouteCode; equipmentCode: string } | null;
   routeMasteries: Array<{
     route: KqMarketRouteCode;
@@ -119,6 +120,7 @@ export function KqPlacardHud({
     }).then(async (response) => {
       const payload = await response.json() as EquipmentHudSnapshot & { error?: string };
       if (!response.ok) throw new Error(payload.error || "Ton atelier est momentanément indisponible.");
+      if (payload.trimFlowerCount !== undefined && (!Number.isSafeInteger(payload.trimFlowerCount) || payload.trimFlowerCount < 0)) throw new Error("Le suivi du trim est momentanément indisponible.");
       if (controller.signal.aborted) return;
       setSnapshot(payload);
       if (payload.tentNumber !== tentNumber) selectKqTent(payload.tentNumber);
@@ -178,8 +180,9 @@ export function KqPlacardHud({
     readyLotCount: snapshot?.readyLotCount ?? 0,
     availableFlowerCount: snapshot?.availableFlowerCount ?? 0,
     curingFlowerCount: snapshot?.curingFlowerCount,
+    trimFlowerCount: snapshot?.trimFlowerCount,
     equipmentGoalAffordable: routeGoalProgress?.affordable ?? nextGoal?.affordable ?? false,
-  }), [nextGoal?.affordable, routeGoalProgress?.affordable, snapshot?.activeRun, snapshot?.availableFlowerCount, snapshot?.curingFlowerCount, snapshot?.readyLotCount]);
+  }), [nextGoal?.affordable, routeGoalProgress?.affordable, snapshot?.activeRun, snapshot?.availableFlowerCount, snapshot?.curingFlowerCount, snapshot?.trimFlowerCount, snapshot?.readyLotCount]);
   const reputationProgress = useMemo(
     () => getKqReputationProgress(snapshot?.reputation ?? 0),
     [snapshot?.reputation],
@@ -190,6 +193,7 @@ export function KqPlacardHud({
     storage: onOpenStorage,
     market: onOpenMarket,
     shop: () => onOpenShop(snapshot?.routePlan?.equipmentCode ?? nextGoal?.equipment.code),
+    workshop: () => { window.location.href = KQ_WORKSHOP_TRIM_HREF; },
   };
   const NextActionIcon = nextAction.destination === "market"
     ? Banknote
@@ -229,12 +233,13 @@ export function KqPlacardHud({
     }
   };
 
-  const actionArtwork = {
+  const actionArtwork: Record<KqPlacardHubDestination, string> = {
     game: "/contest/mascot/arena-scene-placard-v1.png",
     storage: "/contest/mascot/arena-scene-placard-v1.png",
     market: "/placard/market-workshop-sylvain-v2.webp",
     arena: "/contest/mascot/arena-scene-classement-v2.png",
     shop: "/placard/card-shop-sylvain-v1.webp",
+    workshop: "/placard/market-workshop-sylvain-v2.webp",
   };
   const tabs = [{ id: "overview", label: "En bref" }, { id: "equipment", label: "Matériel" }, { id: "goals", label: "Objectifs" }, { id: "energy", label: "Charges" }] as const;
   const progressBar = (label: string, value: number) => <div className={styles.progressBar} role="progressbar" aria-label={label} aria-valuemin={0} aria-valuemax={100} aria-valuenow={value}><span style={{ width: `${value}%` }} /></div>;
@@ -256,11 +261,12 @@ export function KqPlacardHud({
           {activeTab === "overview" ? <>
             <article className={styles.nextAction}>
               <Image src={actionArtwork[nextAction.destination]} alt="" fill sizes="(max-width: 700px) 100vw, 850px" />
-              <div className={styles.actionCopy}><p><NextActionIcon size={15} aria-hidden="true" /> {nextAction.eyebrow}</p><h3>{nextAction.title}</h3><span>{nextAction.description}</span><button type="button" className={styles.primary} onClick={openDestination[nextAction.destination]}>{nextAction.buttonLabel}<ArrowRight size={18} aria-hidden="true" /></button></div>
+              <div className={styles.actionCopy}><p><NextActionIcon size={15} aria-hidden="true" /> {nextAction.eyebrow}</p><h3>{nextAction.title}</h3><span>{nextAction.description}</span>{nextAction.href ? <a className={styles.primary} href={nextAction.href}>{nextAction.buttonLabel}<ArrowRight size={18} aria-hidden="true" /></a> : <button type="button" className={styles.primary} onClick={openDestination[nextAction.destination]}>{nextAction.buttonLabel}<ArrowRight size={18} aria-hidden="true" /></button>}</div>
             </article>
-            <nav className={styles.cycle} aria-label="Cycle de production">
+            <nav className={`${styles.cycle} ${(snapshot.trimFlowerCount ?? 0) > 0 ? styles.cycleWithTrim : ""}`} aria-label="Cycle de production">
               <button type="button" onClick={onOpenGame}><small>Étape 1 · Culture</small><strong>{snapshot?.activeRun ? "En cours" : "À démarrer"}</strong></button>
               <button type="button" onClick={onOpenStorage}><small>Étape 2 · Stockage</small><strong>{snapshot.curingFlowerCount === undefined ? "Ranger et affiner" : `${snapshot.curingFlowerCount} lot${snapshot.curingFlowerCount > 1 ? "s" : ""} en affinage`}</strong></button>
+              {(snapshot.trimFlowerCount ?? 0) > 0 ? <a className={styles.primary} href={KQ_WORKSHOP_TRIM_HREF} data-hud-trim><small>Atelier · Trim avant le jury</small><strong>{snapshot.trimFlowerCount} lot{snapshot.trimFlowerCount! > 1 ? "s" : ""} à préparer</strong></a> : null}
               <button type="button" onClick={onOpenArena}><small>Étape 3 · Jury</small><strong>{snapshot?.availableFlowerCount ?? 0} fleur{snapshot.availableFlowerCount > 1 ? "s" : ""}</strong></button>
               <button type="button" onClick={onOpenMarket}><small>Étape 4 · Vente</small><strong>{snapshot?.readyLotCount ?? 0} lot{snapshot.readyLotCount > 1 ? "s" : ""}</strong></button>
             </nav>

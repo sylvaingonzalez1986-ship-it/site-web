@@ -34,6 +34,7 @@ describe("POST /api/arena/placard/runs/[runId]/actions", () => {
       customer: { email: "player@example.test" },
     });
     hitRateLimit.mockResolvedValue({ allowed: true, retryAfterSeconds: 0 });
+    applyKqPlayerRunAction.mockResolvedValue({ state: { rolled: true }, persistedFlower: null });
   });
 
   afterAll(() => {
@@ -51,7 +52,62 @@ describe("POST /api/arena/placard/runs/[runId]/actions", () => {
     applyKqPlayerRunAction.mockResolvedValue({ state: { rolled: true }, persistedFlower: null });
     const response = await POST(request({ action: "roll" }), context);
     expect(response.status).toBe(200);
-    expect(applyKqPlayerRunAction).toHaveBeenCalledWith(customerId, runId, "roll", undefined);
+    expect(applyKqPlayerRunAction).toHaveBeenCalledWith(customerId, runId, "roll", {});
+  });
+
+  it("requires a session before reading or charging a stage", async () => {
+    getCurrentCustomerSessionByBackend.mockResolvedValue(null);
+    expect((await POST(request({ action: "roll", workChoice: "player" }), context)).status).toBe(401);
+    expect(hitRateLimit).not.toHaveBeenCalled();
+    expect(applyKqPlayerRunAction).not.toHaveBeenCalled();
+  });
+
+  it.each([0, 1, 2, 3, 4, 5])("forwards numeric stage %s using the session owner without client-authored work allocation", async expectedStageIndex => {
+    const response = await POST(request({ action: "roll", expectedStageIndex, userId: "forged-owner", runId: "forged-run", p_next_state: { phase: "complete" } }), context);
+    expect(response.status).toBe(200);
+    expect(applyKqPlayerRunAction).toHaveBeenCalledExactlyOnceWith(customerId, runId, "roll", { expectedStageIndex });
+    expect(getCurrentCustomerSessionByBackend).toHaveBeenCalledWith("identity");
+    expect(response.headers.get("cache-control")).toContain("private, no-store");
+  });
+
+  it.each(["0", "5", null, true, [], {}, -1, 6, 0.5])("rejects invalid stage value %j before mutation", async expectedStageIndex => {
+    const response = await POST(request({ action: "roll", expectedStageIndex }), context);
+    expect(response.status).toBe(400);
+    expect(applyKqPlayerRunAction).not.toHaveBeenCalled();
+  });
+
+  it.each(["player", "auto", "employee", "PLAYER", "", null, 1, {}])("rejects every client work choice %j before mutation", async workChoice => {
+    expect((await POST(request({ action: "roll", workChoice }), context)).status).toBe(400);
+    expect(applyKqPlayerRunAction).not.toHaveBeenCalled();
+  });
+
+  it.each(["resolve", "advance", "redraw", "heritage", "heritage-swap"])("does not allow roll-only options on %s", async action => {
+    expect((await POST(request({ action, workChoice: "player", handIndex: 0, reserveIndex: 0 }), context)).status).toBe(400);
+    expect((await POST(request({ action, expectedStageIndex: 0, handIndex: 0, reserveIndex: 0 }), context)).status).toBe(400);
+    expect(applyKqPlayerRunAction).not.toHaveBeenCalled();
+  });
+
+  it.each([
+    ["culture_work_exhausted", "réserve Culture"], ["culture_work_changed", "prise en charge"],
+    ["player_work_exhausted", "12 h"], ["player_work_changed", "temps disponible"],
+  ])("returns readable business errors for %s", async (code, expectedMessage) => {
+    applyKqPlayerRunAction.mockRejectedValue(new Error(`[supabase:rpc_kq_roll_culture_step] ${code}`));
+    const response = await POST(request({ action: "roll", expectedStageIndex: 0 }), context);
+    expect(response.status).toBe(409);
+    const body = await response.json();
+    expect(body.error).toContain(expectedMessage);
+    expect(body.error).not.toContain("[supabase:");
+  });
+
+  it("hides internal database errors while preserving a stale-stage explanation", async () => {
+    applyKqPlayerRunAction.mockRejectedValueOnce(new Error("[supabase:rpc_kq_roll_culture_step] secret database detail"));
+    const unavailable = await POST(request({ action: "roll" }), context);
+    expect(unavailable.status).toBe(503);
+    expect(JSON.stringify(await unavailable.json())).not.toContain("secret database detail");
+    applyKqPlayerRunAction.mockRejectedValueOnce(new Error("L’étape de culture a changé. Actualise avant de confirmer le lancer."));
+    const stale = await POST(request({ action: "roll", expectedStageIndex: 0 }), context);
+    expect(stale.status).toBe(409);
+    expect((await stale.json()).error).toContain("étape de culture a changé");
   });
 
   it("validates Heritage exchange indexes before mutation", async () => {

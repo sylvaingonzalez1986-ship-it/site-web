@@ -10,6 +10,7 @@ import { KqWarehouseEntry } from "./KqWarehouseEntry";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
 import { KqMachineMaintenance } from "./KqMachineMaintenance";
 import { KqWorkshopMachineSummary } from "./KqWorkshopMachineSummary";
+import { KqWorkshopScene } from "./KqWorkshopScene";
 
 const expert = createChanvrierCareerSnapshot({ xp: 4500, completedCultures: 45 });
 const machineCodes = ["PRESS-0600", "WASHER-25L"];
@@ -32,19 +33,61 @@ const inventory: ComponentProps<typeof KqEquipmentInventoryModal> = {
 };
 
 describe("processing workshop embedded in the warehouse", () => {
-  it("shows the six processing machines without opening a popup for an old cultivation deep link", () => {
+  it("shows the lab and its six register entries without opening a popup for an old cultivation deep link", () => {
     const html = renderToStaticMarkup(createElement(KqEquipmentInventoryModal, { ...inventory, initialSlot: "lighting" }));
     expect([...html.matchAll(/data-warehouse-slot="([^"]+)"/g)].map(match => match[1])).toEqual([
       "sifting", "washing", "filtration", "static-separation", "press", "drying",
     ]);
-    expect(html).toContain('aria-label="Atelier de transformation, vue de dessus"');
+    expect(html).toContain('aria-label="Machines de l’atelier"');
     expect(html).toContain('data-inventory-balance="known"');
+    expect(html).toContain("data-workshop-lab");
+    expect(html).toContain("data-lab-viewport");
+    expect(html).toContain("data-lab-stage");
+    for (const code of ["SIFT-TRAY", "WASHER-25L", "AUTO-SIEVE", "STATIC-PLASMA", "PRESS-0600", "FREEZE-DRYER"]) {
+      expect(html).toContain(`data-workshop-machine="${code}"`);
+      expect(html).toContain(`data-lab-station="${code}"`);
+      if (machineCodes.includes(code)) {
+        expect(html).toContain(`data-workshop-artwork="${code}"`);
+        expect(html).toContain(`data-lab-sprite="${code}"`);
+        expect(html).not.toContain(`data-lab-empty="${code}"`);
+      } else {
+        expect(html).not.toContain(`data-workshop-artwork="${code}"`);
+        expect(html).not.toContain(`data-lab-sprite="${code}"`);
+        expect(html).toContain(`data-lab-empty="${code}"`);
+      }
+    }
     expect(html).not.toContain('data-workshop-machine-dialog');
-    expect(html).toContain("Mes machines");
+    expect(html).toContain("Le laboratoire");
     expect(html).not.toContain("Voir le décor");
     expect(html).not.toContain("Bilan de la tente");
     expect(html).not.toContain("Charges et énergie");
     expect(html).not.toContain("XP permanents");
+  });
+
+  it("keeps an empty lab empty despite stale levels or installed codes", () => {
+    const html = renderToStaticMarkup(createElement(KqWorkshopScene, {
+      purchasedCodes: [], equippedCodes: ["PRESS-0600"], levels: { "PRESS-0600": 10 }, onSelect: vi.fn(),
+    }));
+    expect([...html.matchAll(/data-lab-empty="([^"]+)"/g)]).toHaveLength(6);
+    expect([...html.matchAll(/data-warehouse-slot="([^"]+)"/g)]).toHaveLength(6);
+    expect(html).not.toContain("data-lab-sprite=");
+    expect(html).not.toContain("data-workshop-artwork=");
+    expect(html).not.toContain('data-owned="true"');
+    expect(html).not.toContain('data-installed="true"');
+  });
+
+  it("shows acquired reserve machines and installed machines without inventing maintenance data", () => {
+    const codes = ["SIFT-TRAY", "WASHER-25L", "AUTO-SIEVE", "STATIC-PLASMA", "PRESS-0600", "FREEZE-DRYER"];
+    const html = renderToStaticMarkup(createElement(KqWorkshopScene, {
+      purchasedCodes: codes, equippedCodes: ["PRESS-0600"], levels: { "PRESS-0600": 3 }, onSelect: vi.fn(),
+    }));
+    expect([...html.matchAll(/data-lab-sprite="([^"]+)"/g)].map(match => match[1]).sort()).toEqual([...codes].sort());
+    expect([...html.matchAll(/data-warehouse-slot="([^"]+)"/g)]).toHaveLength(6);
+    expect(html).not.toContain("data-lab-empty=");
+    expect(html).toContain("En réserve");
+    expect(html).toContain("Installée");
+    expect(html).toContain("à vérifier");
+    expect(html).not.toContain("100 %");
   });
 
   it("keeps the owned machine level, career eligibility and preventive service usable", () => {
@@ -84,7 +127,9 @@ describe("processing workshop embedded in the warehouse", () => {
     expect(buttons.find(button => button.includes("data-machine-upgrade"))).toContain("Améliorer · niv. 10");
     expect(buttons.find(button => button.includes("data-machine-maintenance"))).toContain("Entretenir");
     expect(buttons.every(button => !button.includes("disabled="))).toBe(true);
-    expect(html).not.toContain("<details");
+    const details = html.match(/<details\b[^>]*>[\s\S]*?<\/details>/g) ?? [];
+    expect(details.every(content => !content.includes("data-machine-upgrade") && !content.includes("data-machine-maintenance"))).toBe(true);
+    expect(html).toContain("Référence fabricant et hypothèses du jeu");
     expect(html).not.toContain("Trois gammes");
   });
 
@@ -149,7 +194,7 @@ describe("processing workshop embedded in the warehouse", () => {
     expect(html).toContain('data-inventory-balance="unknown"');
     expect(html).toContain('aria-label="Trésorerie indisponible">—</strong>');
     expect(html).not.toContain("data-warehouse-slot=");
-    expect(html).toContain("Mes machines");
+    expect(html).toContain("Le laboratoire");
     expect(html).not.toContain("Chambre de culture");
   });
 

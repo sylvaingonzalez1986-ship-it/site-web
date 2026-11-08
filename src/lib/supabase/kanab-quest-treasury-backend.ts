@@ -1,5 +1,6 @@
 import "server-only";
 import { createSupabaseServiceClient } from "./admin";
+import { settleKqStaffIfAvailable } from "./kanab-quest-staff-backend";
 import { isKqTreasurySnapshot, KQ_TREASURY_PERIODS, type KqTreasuryPeriod, type KqTreasurySnapshot } from "../kanab-quest-treasury";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
@@ -19,6 +20,7 @@ export async function getKqTreasurySnapshot(userId: string, query: KqTreasuryQue
   if (!UUID.test(userId)) throw new Error("Compte trésorerie invalide.");
   if (!Object.hasOwn(KQ_TREASURY_PERIODS, query.period) || !Number.isSafeInteger(query.offset) || query.offset < 0 || query.offset > 9_999_999
     || !Number.isSafeInteger(query.limit) || query.limit < 1 || query.limit > 100) throw new Error("Période ou page comptable invalide.");
+  await settleKqStaffIfAvailable(userId);
   const result = await createSupabaseServiceClient().rpc("rpc_kq_treasury_snapshot", {
     p_user_id: userId, p_period: query.period, p_offset: query.offset, p_limit: query.limit,
   });

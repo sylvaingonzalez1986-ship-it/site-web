@@ -4,6 +4,7 @@ import {
   INVOICE_CBD_DRIVING_NOTICE,
   INVOICE_COMPANY,
   INVOICE_CUSTOMER_THANK_YOU,
+  INVOICE_REVIEW_DRAW,
   INVOICE_SETTINGS,
   getInvoiceLegalFooter,
 } from "@/lib/invoice-config";
@@ -425,11 +426,32 @@ export async function generateInvoicePdf(
       .text(personalMessage, 48, doc.y + 5, textOptions);
   }
 
-  // --- Customer thank-you and CBD driving notice ---
+  // --- Monthly review draw, customer thank-you and CBD driving notice ---
   const messageX = 48;
   const messageWidth = 499;
   const messagePadding = 8;
   const messageTextWidth = messageWidth - messagePadding * 2;
+  const reviewPadding = 10;
+  const reviewTextWidth = messageWidth - reviewPadding * 2;
+  const reviewTitleHeight = doc.font(displayFont).fontSize(17).heightOfString(
+    INVOICE_REVIEW_DRAW.title,
+    { width: reviewTextWidth },
+  );
+  const reviewBodyHeight = doc.font(bodyFont).fontSize(9.5).heightOfString(
+    INVOICE_REVIEW_DRAW.body,
+    { width: reviewTextWidth, lineGap: 1 },
+  );
+  const reviewFrequencyHeight = doc.font(bodyBoldFont).fontSize(9.5).heightOfString(
+    INVOICE_REVIEW_DRAW.frequency,
+    { width: reviewTextWidth },
+  );
+  const reviewPrizeHeight = doc.font(bodyFont).fontSize(8.5).heightOfString(
+    INVOICE_REVIEW_DRAW.prize,
+    { width: reviewTextWidth },
+  );
+  const reviewHeight =
+    reviewPadding * 2 + reviewTitleHeight + 4 + reviewBodyHeight +
+    5 + reviewFrequencyHeight + 2 + reviewPrizeHeight;
   const thankYouImageSize = thankYouImageDataUri ? 54 : 0;
   const thankYouImageGap = thankYouImageDataUri ? 10 : 0;
   const thankYouTextWidth = messageTextWidth - thankYouImageSize - thankYouImageGap;
@@ -477,14 +499,54 @@ export async function generateInvoicePdf(
     noticeSourceHeight +
     messagePadding;
   const messageGap = 6;
-  let thankYouY = doc.y + 8;
+  let reviewY = doc.y + 8;
 
-  if (thankYouY + thankYouHeight + messageGap + noticeHeight > pageBottom) {
+  if (reviewY + reviewHeight + messageGap + thankYouHeight + messageGap + noticeHeight > pageBottom) {
     doc.addPage();
     doc.fillColor(INK_COLOR);
-    thankYouY = 48;
+    reviewY = 48;
   }
 
+  // A dedicated, prominent frame keeps the invitation separate from the thanks.
+  doc.save();
+  doc
+    .lineWidth(1.8)
+    .roundedRect(messageX, reviewY, messageWidth, reviewHeight, 8)
+    .fillAndStroke("#EDF7F5", "#006F70");
+  let reviewTextY = reviewY + reviewPadding;
+  doc
+    .fillColor("#006F70")
+    .font(displayFont)
+    .fontSize(17)
+    .text(INVOICE_REVIEW_DRAW.title, messageX + reviewPadding, reviewTextY, {
+      width: reviewTextWidth,
+    });
+  reviewTextY += reviewTitleHeight + 4;
+  doc
+    .fillColor(INK_COLOR)
+    .font(bodyFont)
+    .fontSize(9.5)
+    .text(INVOICE_REVIEW_DRAW.body, messageX + reviewPadding, reviewTextY, {
+      width: reviewTextWidth,
+      lineGap: 1,
+    });
+  reviewTextY += reviewBodyHeight + 5;
+  doc
+    .font(bodyBoldFont)
+    .fontSize(9.5)
+    .text(INVOICE_REVIEW_DRAW.frequency, messageX + reviewPadding, reviewTextY, {
+      width: reviewTextWidth,
+    });
+  reviewTextY += reviewFrequencyHeight + 2;
+  doc
+    .font(bodyFont)
+    .fontSize(8.5)
+    .text(INVOICE_REVIEW_DRAW.prize, messageX + reviewPadding, reviewTextY, {
+      width: reviewTextWidth,
+    });
+  doc.restore();
+
+  const thankYouY = reviewY + reviewHeight + messageGap;
   doc.save();
   doc
     .roundedRect(messageX, thankYouY, messageWidth, thankYouHeight, 8)

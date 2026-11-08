@@ -25,6 +25,7 @@ const modules = {
   entry: `import React,{useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {KqSocialNetworks} from '/src/components/placard/KqSocialNetworks';
+import {KqPlayerWorkAvailabilityContext} from '/src/components/placard/KqPlayerActionTime';
 import {KqTutorialApiProvider,createKqTutorialApi} from '/src/components/placard/KqTutorialApiContext';
 import {createKqOperationsLesson,applyKqOperationsRequest,getKqOperationsCommerce} from '/src/lib/kanab-quest-operations-lesson';
 import {applyKqOperationsSocial,getKqOperationsSocial} from '/src/lib/kanab-quest-operations-social';
@@ -150,10 +151,10 @@ window.attemptCurrentPost=async platform=>{
  const response=await api.request('/api/arena/placard/social',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({modelVersion:2,requestKey:crypto.randomUUID(),expectedRevision:snapshot.revision,action:'choose',platform,scenarioId:adventure.scene.id,choiceId:choice.id,narrativeVersion:3,subjectId:adventure.subject.id,contextKey:adventure.contextKey})});
  return {status:response.status,body:await response.json()};
 };
-function App(){const[revision,setRevision]=useState(0),[scenario,setScenario]=useState('ready');refresh=()=>setRevision(value=>value+1);
+function App(){const[workAvailability,setWorkAvailability]=useState(null);window.setWorkAvailability=setWorkAvailability;const[revision,setRevision]=useState(0),[scenario,setScenario]=useState('ready');refresh=()=>setRevision(value=>value+1);
  window.reset=name=>{state=createAuditState();cultureOverride=null;mode=name;window.requests=[];window.notifications=[];if(['tired','pressure','sponsors'].includes(name)){state.social=createKqSocialSnapshot(state.trial.clock,state.trial.commerce.online.followers,true);if(name==='tired')state.social.energy=2;else{const ig=state.social.platforms.instagram,x=state.social.platforms.x;ig.followers=name==='sponsors'?1200:600;x.followers=name==='sponsors'?1200:200;ig.moderation=name==='pressure'?3:0;x.haters=name==='pressure'?50:0;if(name==='sponsors'){ig.trust=90;x.trust=90}state.social.socialFollowers=ig.followers+x.followers;state.trial.commerce.online.followers+=state.social.socialFollowers;state.social.audienceFollowers=state.trial.commerce.online.followers}}setScenario(name+'-'+(revision+1));setRevision(value=>value+1)};
  const readPublication=async id=>{const entry=socialSnapshot().history.find(item=>item.id===id);if((entry?.action??'publish')!=='publish')throw Error('Comment incorrectly consumed a tutorial publication');window.readPublications.push(id)};
- return <KqTutorialApiProvider api={api}><aside className="fixture-tools"><strong>Démo locale · aventure sociale</strong><p>Données fictives en mémoire. Aucun compte externe ni partie réelle n’est modifié.</p></aside><main className="audit-surface"><KqSocialNetworks key={scenario} onTutorialResultRead={${debatesOnly}?readPublication:undefined}/></main></KqTutorialApiProvider>
+ return <KqTutorialApiProvider api={api}><KqPlayerWorkAvailabilityContext.Provider value={workAvailability}><aside className="fixture-tools"><strong>Démo locale · aventure sociale</strong><p>Données fictives en mémoire. Aucun compte externe ni partie réelle n’est modifié.</p></aside><main className="audit-surface"><KqSocialNetworks key={scenario} onTutorialResultRead={${debatesOnly}?readPublication:undefined}/></main></KqPlayerWorkAvailabilityContext.Provider></KqTutorialApiProvider>
 }
 createRoot(document.getElementById('root')).render(<App/>);`,
   'next/image': `import React from 'react';export default function Image({src,fill,priority,preload,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>;}`,
@@ -175,7 +176,7 @@ let browser, page;
 await mkdir(output, { recursive: true });
 await server.listen();
 try {
-  browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', '--disable-gpu'] });
+  browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], userDataDir: resolve(output, 'chrome-profile-'+process.pid), headless: true, args: ['--no-sandbox', '--disable-gpu'] });
   page = await browser.newPage(); page.setDefaultTimeout(20000);
   page.on('pageerror', error => errors.push(error.message));
   page.on('response', response => { if (response.status() >= 400) failures.push({ url: response.url(), status: response.status() }); });
@@ -286,6 +287,7 @@ try {
   if (sponsorsOnly) {
     await ready();await page.evaluate(()=>document.fonts.ready);
     const sponsorEvidence=[];
+    const revealSponsorDetails=async selector=>page.$eval(selector,node=>{for(let parent=node.parentElement;parent;parent=parent.parentElement)if(parent instanceof HTMLDetailsElement)parent.open=true;});
     const showProfile=async profile=>{
       const before=(await snapshot()).revision;await page.evaluate(profile=>window.showSponsorProfile(profile),profile);
       await page.waitForFunction(revision=>window.fixture().revision>revision,{},before);
@@ -298,6 +300,9 @@ try {
     assert.equal(firstCatalog.length,8);
     for(const profile of [{followers:25,haters:0},{followers:1200,haters:0},{followers:50000,haters:0},{followers:50000,haters:80}]){
       const offers=await showProfile(profile);
+      const locked=await page.$('[data-social-locked-offers]');
+      if(locked){assert.equal(await locked.evaluate(node=>node.open),false);await page.focus('[data-social-locked-offers] > summary');await page.keyboard.press('Enter');assert.equal(await locked.evaluate(node=>node.open),true);}
+      assert.equal(await page.$eval('[data-social-past-offers]',node=>node.open),false);
       for(const offer of offers){
         const selector='[data-social-offer="'+offer.sponsor.id+'"]';
         await page.waitForFunction(({selector,reward})=>Number(document.querySelector(selector+' [data-social-offer-amount]')?.dataset.socialOfferAmount)===reward,{}, {selector,reward:offer.rewardCents});
@@ -308,6 +313,7 @@ try {
         if(offer.status==='locked')assert.match(await page.$eval(selector,node=>node.innerText),/Proposition sous conditions/);
       }
       sponsorEvidence.push({profile,offers:offers.map(offer=>({id:offer.sponsor.id,rewardCents:offer.rewardCents,status:offer.status}))});
+      if(locked){await page.focus('[data-social-locked-offers] > summary');await page.keyboard.press('Enter');assert.equal(await locked.evaluate(node=>node.open),false);}
     }
     for(const [index,offer] of sponsorEvidence[2].offers.entries()){
       assert.ok(offer.rewardCents>=sponsorEvidence[1].offers[index].rewardCents,'More followers cannot reduce the quoted fee, including when the brand cap is reached');
@@ -348,6 +354,11 @@ try {
     assert.equal((await snapshot()).sponsors.active.rewardCents,signedFee);
     assert.deepEqual((await snapshot()).sponsors.active.pricing,signedContract.pricing,'The calculation used at signing remains frozen');
     await page.waitForFunction(fee=>Number(document.querySelector('[data-social-partnership] [data-social-signed-amount]')?.dataset.socialSignedAmount)===fee,{},signedFee);
+    assert.equal(await page.$eval('[data-social-contract-details]',node=>node.open),false);
+    assert.equal(await page.$eval('[data-social-locked-offers]',node=>node.open),false);
+    await page.setViewport({width:320,height:844});await overflow('Compact active partnership 320');
+    await (await page.$('[data-social-partnership]')).screenshot({path:resolve(output,'sponsors-compact-contract-320.png')});
+    await page.focus('[data-social-contract-details] > summary');await page.keyboard.press('Enter');
     await page.click('[data-social-partnership] [data-social-pricing] summary');
     for(const width of [320,390,1440]){
       await page.setViewport({width,height:1000});await overflow('Signed sponsor contract '+width);
@@ -355,6 +366,22 @@ try {
     }
     for(const tag of first.requiredTags){assert.ok(first.deliverables[tag]);assert.ok(await page.$eval('[data-social-partnership]',(node,text)=>node.innerText.includes(text),first.deliverables[tag].description));}
     checks.push('Keyboard review is cancellable; stale fee is rejected; the signed amount and its pricing inputs remain fixed when account stats change');
+    await page.setViewport({width:320,height:844});
+    const postsBeforeTimeChecks=(await posts()).length;
+    for(const [level,xp,hours,display] of [[1,0,1,'1 h'],[5,1600,0.6,'0,6 h (36 min)'],[10,8100,0.1,'0,1 h (6 min)']]){
+      await page.evaluate(xp=>window.setWorkAvailability({status:'ready',skills:{culture:0,processing:0,communication:xp,sales:0,administration:0},serverNow:'2026-11-08T12:00:00Z',workday:{day:1,dailyHours:12,usedHours:0,remainingHours:12,nextDayAt:'2026-11-08T16:00:00Z'}}),xp);
+      await page.waitForFunction(level=>document.querySelector('[data-player-action-time="sponsor-post"]')?.textContent.includes('Communication niveau '+level),{},level);
+      const labels=await page.$$eval('[data-player-action-time="sponsor-post"]',nodes=>nodes.map(node=>({text:node.textContent,hours:Number(node.dataset.playerActionHours),visible:node.getClientRects().length>0})));
+      assert.equal(labels.length,first.requiredTags.length);assert.ok(labels.every(label=>label.visible&&label.text.includes(display)&&label.hours===hours));await overflow('Communication level '+level);
+      sponsorEvidence.push({scenario:'player time visible before each sponsored publication',level,hours});
+      if(level===10)await (await page.$('[data-social-partnership]')).screenshot({path:resolve(output,'sponsors-communication-level-10-320.png')});
+    }
+    for(const availability of [null,{status:'loading'},{status:'unavailable'},{status:'ready',skills:{}}]){
+      await page.evaluate(value=>window.setWorkAvailability(value),availability);
+      await page.waitForFunction(()=>document.querySelector('[data-player-action-time="sponsor-post"]')?.textContent.includes('Temps joueur à confirmer'));
+      assert.equal(await page.$$eval('[data-player-action-time="sponsor-post"]',nodes=>nodes.every(node=>!node.hasAttribute('data-player-action-hours')&&node.textContent.includes('1 h au niveau 1 → 0,1 h (6 min) au niveau 10'))),true);
+    }
+    assert.equal((await posts()).length,postsBeforeTimeChecks);checks.push('Sponsored publication time follows Communication levels 1, 5 and 10; unavailable skills show a range with no invented debit');
     const cashBefore=(await page.evaluate(()=>window.commerce())).cashCents;
     await act('[data-social-sponsored-post="'+first.requiredTags[0]+'"]');await continueStory();
     assert.equal((await snapshot()).sponsors.active.publicationsLeft,3);
@@ -367,6 +394,9 @@ try {
     await act('[data-social-sponsored-post="'+first.requiredTags[1]+'"]');await continueStory();
     assert.equal((await snapshot()).sponsors.earnedCents,0);assert.equal((await page.evaluate(()=>window.commerce())).cashCents,cashBefore);
     const beforeClaim=await snapshot();
+    await page.$eval('[data-social-contract-details]',node=>node.open=false);
+    await page.setViewport({width:320,height:844});await overflow('Ready to claim partnership 320');
+    await (await page.$('[data-social-partnership]')).screenshot({path:resolve(output,'sponsors-ready-to-claim-320.png')});
     await page.evaluate(()=>window.setFailure('lost-result'));await page.click('[data-social-sponsor-claim]');await page.waitForSelector('[data-social-retry]');
     assert.equal((await snapshot()).sponsors.earnedCents,signedFee);
     await page.click('[data-social-retry]');await page.waitForFunction(()=>!document.querySelector('[data-social-retry]'));
@@ -378,6 +408,7 @@ try {
     checks.push('Two disclosed contents occupy two real calendar days; fictional time cannot skip the quota; claim pays the agreed amount exactly once after a lost response');
     await continueStory();await page.evaluate(id=>window.showUnknownPaidSponsor(id),first.id);
     await page.waitForFunction(id=>!document.querySelector('[data-social-offer="'+id+'"] [data-social-offer-amount]'),{},first.id);
+    await revealSponsorDetails(offerSelector);
     assert.match(await page.$eval(offerSelector,node=>node.innerText),/terminé et payé/);
     assert.equal((await page.evaluate(()=>window.offers())).find(offer=>offer.sponsor.id===first.id).rewardCents,null);
     await showProfile({followers:1200,haters:0});

@@ -13,6 +13,7 @@ import { getKqShopActivity } from "@/lib/kanab-quest-shop-activity";
 import { getKqStudioLevels } from "@/lib/kanab-quest-studio";
 import { KqMerchActivity } from "./KqMerchActivity";
 import { KqProgressMeter } from "./KqVisuals";
+import { KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import styles from "./KqShopTycoon.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -94,7 +95,11 @@ export function KqShopTycoon({ data, now, view, onSelectListing, onOpenPricing, 
           <li><Package size={21} aria-hidden="true" /><div><strong>{number(dashboard.ordersPerDay)}</strong><span>paquets / jour</span></div></li>
           <li><ShoppingBag size={21} aria-hidden="true" /><div><strong>{activity.merch.estimatedUnitsPerDay === null ? "—" : number(activity.merch.estimatedUnitsPerDay)}</strong><span>articles merch / jour</span></div></li>
         </ol>
-        <details className={styles.explanation}><summary>Lire les estimations</summary><p>Les deux rayons utilisent ton audience avec leurs propres règles de conversion. Les campagnes ciblées concernent les récoltes et leurs extraits. Les commandes ne sont pas garanties.</p><p>Contribution des paquets estimée : {formatKqCash(Math.round(dashboard.contributionPerDayCents))} / jour après TVA, frais et emballage, avant culture et charges fixes.</p></details>
+        <details className={styles.explanation}><summary>Lire les estimations</summary><KqHelpGrid items={[
+          { art: "help-accounts" as const, label: "Contribution des paquets estimée / jour", value: formatKqCash(Math.round(dashboard.contributionPerDayCents)), detail: "Après TVA, frais et emballage ; avant culture et charges fixes." },
+          { art: "help-social" as const, label: "Audience commune", value: "2 rayons", detail: "Chacun a ses règles de conversion." },
+          { art: "harvest" as const, label: "Campagnes ciblées", value: "Récoltes et extraits" },
+        ]} /><KqHelpNote>Les commandes ne sont pas garanties.</KqHelpNote></details>
         <div className={styles.vitals}>
           <span><Users size={15} aria-hidden="true" /><strong>{number(online.followers)}</strong> abonnés</span>
           <span><Sparkles size={15} aria-hidden="true" /><strong>{number(online.confidence)}/100</strong> confiance</span>
@@ -125,7 +130,7 @@ export function KqShopTycoon({ data, now, view, onSelectListing, onOpenPricing, 
       </div>
 
       <aside className={styles.manager} aria-label="Priorités de la boutique">
-        <div className={styles.priority}><h3>{priority.title}</h3>{merchPriority ? <button type="button" data-open-merch className={styles.textButton} onClick={() => onDevelop("merch")}>Ouvrir l’atelier merch <ArrowRight size={15} aria-hidden="true" /></button> : <span className={styles.coverage}><Package size={15} aria-hidden="true" />Stock de paquets au rythme actuel <strong>{days(dashboard.stockDays)}</strong></span>}<details className={styles.explanation}><summary>Pourquoi cette priorité ?</summary><p>{priority.description}</p></details></div>
+        <div className={styles.priority}><h3>{priority.title}</h3>{merchPriority ? <button type="button" data-open-merch className={styles.textButton} onClick={() => onDevelop("merch")}>Ouvrir l’atelier merch <ArrowRight size={15} aria-hidden="true" /></button> : <span className={styles.coverage}><Package size={15} aria-hidden="true" />Stock de paquets au rythme actuel <strong>{days(dashboard.stockDays)}</strong></span>}<details className={styles.explanation}><summary>Pourquoi cette priorité ?</summary><KqHelpNote art={merchPriority ? "help-workshop" : "help-plan"}>{priority.description}</KqHelpNote></details></div>
         <div className={styles.campaign}><button type="button" className={styles.campaignAction} onClick={() => onDevelop("marketing")}>
           <span className={styles.kicker}><Megaphone size={16} aria-hidden="true" />{preparing ? "Campagne récolte en préparation" : activeMission ? "Campagne récolte en cours" : "Communication des récoltes"}</span>
           <strong>{mission?.name ?? "Ta prochaine campagne"}</strong>

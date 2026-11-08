@@ -1,0 +1,114 @@
+{
+  "checkedOn": "2026-11-07",
+  "scope": "France — soutien volontaire à l’entreprise de petits producteurs et au développement de Kanab Quest, sans contrepartie",
+  "copyUpdatedOn": "2026-11-08",
+  "copyDirection": "Texte demandé par l’utilisateur : humour autour de la trésorerie qui ne pousse pas sous les lampes, difficultés bancaires des petits producteurs de chanvre racontées à la première personne, invitation à donner un ou deux euros de temps en temps même sans acheter de CBD. Le soutien reste facultatif ; aucune contrepartie ni récompense. Le bénéficiaire et la destination des fonds sont explicités dans les détails.",
+  "recipient": {
+    "name": "SASU Les Champs Bretons",
+    "siren": "942368994",
+    "confirmedByUser": true,
+    "context": "Même société et même site que la boutique CBD ; ne pas dissimuler cette activité au prestataire."
+  },
+  "selectedProvider": "Viva Quick Pay — choisi explicitement par l’utilisateur le 7 novembre 2026.",
+  "publicPaymentUrl": "https://pay.vivawallet.com/les-champs-bretons",
+  "recommendation": "Utiliser le lien public Quick Pay du compte Viva de la SASU, pour un soutien ponctuel à montant libre. Le compte dispose d’un seul lien permanent : copier celui qui existe déjà, ou le créer depuis l’accueil administrateur. L’éligibilité de cette collecte et les frais du compte ne sont pas établis par la documentation publique.",
+  "legal": [
+    {
+      "finding": "Une société peut financer son projet par des contributions sans contrepartie. Les fonds collectés restent imposables et entrent dans son résultat ; les frais et dépenses du projet suivent les règles de déduction applicables.",
+      "source": "https://entreprendre.service-public.gouv.fr/vosdroits/F33957"
+    },
+    {
+      "finding": "Hors TVA si le versement ne rémunère aucune opération individualisable et ne complète pas le prix d’une opération. L’appellation don ou pourboire ne suffit pas à déterminer ce traitement. Faire confirmer le montage effectif et son enregistrement par le comptable ou le SIE.",
+      "source": "https://bofip.impots.gouv.fr/bofip/13552-PGP.html/identifiant=BOI-TVA-BASE-10-10-50-20241211"
+    },
+    {
+      "finding": "Le soutien à cette société commerciale ne relève pas des dons aux organismes d’intérêt général : aucune réduction d’impôt ni reçu fiscal à annoncer aux joueurs. Un justificatif de versement n’est pas un reçu fiscal.",
+      "source": "https://www.service-public.gouv.fr/particuliers/vosdroits/F426"
+    }
+  ],
+  "designDecisions": [
+    "Soutien facultatif en argent réel ; le jeu reste gratuit.",
+    "Aucune monnaie virtuelle, carte, objet, accès réservé, bonus, chance de gain ou avantage dans les concours en échange.",
+    "Encart après la carte du Quartier et l’accès à l’apprentissage ; aucun écran bloquant ni sollicitation dans les leçons de démonstration.",
+    "Lien externe seulement : aucune commande boutique, transaction de jeu ou collecte de données bancaires par cet encart.",
+    "Aucune jauge, somme collectée, liste de donateurs ou promesse de livraison inventée.",
+    "Commencer de préférence par du ponctuel. Toute récurrence doit être explicite dans le parcours du prestataire."
+  ],
+  "systems": [
+    {
+      "name": "Viva Quick Pay",
+      "fit": "Solution choisie par l’utilisateur ; lien public du compte SASU fourni et raccordé localement.",
+      "capabilities": "Lien permanent réutilisable ; montant saisi par le payeur ; description facultative ; passage par Smart Checkout. Aucun abonnement implémenté ici.",
+      "fees": "Tarif du compte marchand à demander : aucun tarif supposé à partir du dépôt.",
+      "qualification": "La documentation décrit une capacité technique, sans valider le soutien à ce jeu commercial. Faire confirmer le cas exact : société, boutique CBD, jeu, absence de contrepartie et de vente.",
+      "sources": ["https://developer.viva.com/payment-tools/quick-pay/", "https://developer.viva.com/payment-tools/", "https://euhelp.viva.com/fr/articles/5221014-demarrer-avec-quick-pay", "https://developer.viva.com/smart-checkout/smart-checkout-faqs/"],
+      "paymentMethodLimit": "Viva exclut les marchands cannabis/CBD d’Alipay. Cela ne démontre ni une exclusion générale de Viva, ni l’acceptation du compte pour cette nouvelle activité.",
+      "paymentMethodSource": "https://euhelp.viva.com/fr/articles/10166179-alipay"
+    },
+    {
+      "name": "Ko-fi",
+      "fit": "Alternative simple pour une page de soutien, sous réserve d’acceptation par Ko-fi et son prestataire Stripe/PayPal.",
+      "fees": "Mode Free : 0 % plateforme sur le ponctuel ; 5 % sur le mensuel. Mode Standard : 5 % également sur le ponctuel, activé par défaut pour les nouveaux créateurs et désactivable. Frais Stripe/PayPal en plus.",
+      "sources": ["https://help.ko-fi.com/hc/en-us/articles/360002506494-Does-Ko-fi-take-a-fee", "https://help.ko-fi.com/hc/en-us/articles/360007937553-Ko-fi-Content-Guidelines"]
+    },
+    {
+      "name": "Liberapay",
+      "fit": "Conçu pour un soutien régulier sans contrat ni récompense. Le ponctuel exige actuellement d’arrêter le soutien après le premier paiement.",
+      "fees": "0 % plateforme ; frais de traitement Stripe/PayPal. Les moyennes publiées ne sont pas des tarifs garantis.",
+      "sources": ["https://liberapay.com/about/faq"]
+    },
+    {
+      "name": "Stripe Payment Links",
+      "fit": "Lien hébergé ; montant libre uniquement en ponctuel ; récurrent à montant fixe. Ne pas ouvrir en supposant que la boutique CBD et le jeu seront acceptés.",
+      "fees": "Tarif standard annoncé : 1,5 % + 0,25 EUR pour une carte standard de l’EEE. Autres cartes et services : autres tarifs. Billing à l’usage ajoute 0,7 % pour les abonnements.",
+      "qualification": "Stripe réserve la catégorie donations à une finalité caritative précise et les tips au contenu/service déjà fourni. Une éventuelle qualification du soutien au jeu doit être confirmée ; elle ne détermine pas à elle seule le traitement fiscal français.",
+      "sources": ["https://stripe.com/fr/pricing", "https://docs.stripe.com/payment-links/create", "https://support.stripe.com/questions/requirements-for-accepting-tips-or-donations?locale=en-GB", "https://stripe.com/fr/legal/restricted-businesses"]
+    },
+    {
+      "name": "PayPal",
+      "fit": "Outils de contribution hébergés et récurrence possibles ; vérifier l’offre utilisable pour ce compte professionnel français et cette activité.",
+      "fees": "Tarif national standard des autres transactions commerciales, dons inclus : 2,9 % + 0,35 EUR. Frais variables selon moyen, pays et contrat. Ne pas appliquer le tarif caritatif sans validation.",
+      "sources": ["https://www.paypal.com/fr/business/paypal-business-fees?locale.x=fr_FR", "https://www.paypal.com/donate/buttons?locale.x=en_US", "https://www.paypal.com/fr/legalhub/paypal/acceptableuse-full"]
+    },
+    {
+      "name": "HelloAsso",
+      "fit": "Écarté pour la SASU : destiné aux structures associatives admissibles. Créer une association n’est pas un simple moyen de percevoir les revenus de la société.",
+      "fees": "Pas de commission ni frais bancaires pour les associations ; financement par contributions volontaires à HelloAsso.",
+      "sources": ["https://centredaide.helloasso.com/association?question=comment-inscrire-mon-association-sur-helloasso", "https://www.helloasso.com/blog/la-federation-francaise-de-roller-et-skateboard-et-helloasso-la-prise-dadhesion-facilitee/"]
+    }
+  ],
+  "implementation": {
+    "component": "src/components/placard/KqFinancialSupport.tsx",
+    "entry": "src/components/placard/KqPlacardLobby.tsx",
+    "publicEnvironmentVariable": "NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL",
+    "default": "Vide : encart masqué. Le lien doit utiliser HTTPS et le domaine exact pay.vivawallet.com, avec un chemin de compte. Les domaines ressemblants, liens de commande boutique, identifiants et ports non standard sont refusés.",
+    "trust": "Configuration réservée à l’exploitant, jamais issue d’un paramètre joueur. Le domaine Viva ne certifie pas le bénéficiaire : copier le lien exact du compte SASU et vérifier le nom affiché.",
+    "build": "Variable publique figée par Next au build ; reconstruire et publier explicitement après configuration.",
+    "activation": "Lien public fourni par l’utilisateur : https://pay.vivawallet.com/les-champs-bretons. Raccordé dans .env.local et .env.development.local ; .env.example contient aussi cette valeur publique. Bouton actif avec cette configuration locale. Aucun compte créé, paiement soumis ou code publié.",
+    "deployment": "Reporter NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL=https://pay.vivawallet.com/les-champs-bretons dans l’environnement de l’hébergement avant le prochain build publié. Les fichiers .env.local et .env.development.local sont locaux ; .env.example ne configure pas l’hébergement. Aucun environnement distant modifié.",
+    "bookkeeping": "Prévoir un libellé de référence dédié à Kanab Quest et rapprocher les versements bruts, frais, nets et éventuels remboursements avec les exports du prestataire. Faire fixer l’écriture et les justificatifs par le comptable."
+  },
+  "quickPaySetup": {
+    "source": "https://euhelp.viva.com/fr/articles/5221014-demarrer-avec-quick-pay",
+    "account": "Compte professionnel de la SASU Les Champs Bretons, accès administrateur.",
+    "existingLink": "Accueil Viva, Quick Pay, Copier dans le presse-papiers. Réutiliser le lien existant : un seul lien par compte et adresse non modifiable.",
+    "firstLink": "Si aucun lien n’existe : Créer votre lien, choisir son intitulé, Continuer, Créer, Terminé, puis Copier dans le presse-papiers. Choisir un intitulé durable de société, le lien étant unique pour le compte.",
+    "publicLink": "Lien reçu : https://pay.vivawallet.com/les-champs-bretons. Aucun mot de passe ni secret API nécessaire à l’encart.",
+    "reference": "Kanab Quest — soutien volontaire sans contrepartie. Le joueur peut l’indiquer dans la description facultative ; cette référence n’est pas injectée par un paramètre non documenté.",
+    "fees": "Le centre d’aide Viva indique Interchange++ et renvoie à la rubrique OVER THE PHONE pour Quick Pay. Vérifier le tarif applicable au compte, sans déduire celui du paiement boutique existant."
+  },
+  "validation": {
+    "configuration": "Chargement réel par @next/env vérifié en modes développement et build de production local : lien exact de la SASU présent.",
+    "unitTests": "14 tests de configuration du lien Viva passent.",
+    "static": "TypeScript global et ESLint ciblé passent.",
+    "browser": "6 groupes : encart à 320/390/1440 px, détails et lien au clavier, focus et taille tactile, aucune mutation de jeu ; absence avec configuration vide/invalide et dans les leçons. Captures mobile et bureau inspectées.",
+    "report": "output/placard-journey-continuity/financial-support-report.json",
+    "limit": "La recette locale utilise le lien public reçu mais intercepte son activation : aucun paiement réel. GET distant réussi (HTTP 200 après redirection vers www.vivapayments.com). Affichage du bénéficiaire non vérifié automatiquement : erreur HTTP/2 puis délai dépassé dans le navigateur de contrôle. Aucun formulaire soumis."
+  },
+  "next": [
+    "Obtenir de Viva l’acceptation de ce soutien sans contrepartie pour la SASU et son site CBD, ainsi que l’outil et le tarif applicables.",
+    "Confirmer avec le comptable le traitement effectif : résultat, absence de contrepartie et TVA, justificatif non fiscal.",
+    "Lors de la publication demandée, reporter le lien public déjà fourni dans l’environnement de l’hébergement puis reconstruire. Vérifier le parcours hébergé, montant et bénéficiaire, sans paiement automatique."
+  ],
+  "draftForVivaNotSent": "Bonjour, notre société SASU Les Champs Bretons (SIREN 942368994) utilise Viva sur son site de vente de CBD. Nous souhaitons aussi proposer sur ce même site un soutien financier facultatif à Kanab Quest, notre jeu gratuit, sans achat de bien ou service, sans objet ni avantage en jeu, et sans avantage dans les concours. Les fonds seraient reçus par la SASU pour soutenir notre activité de petits producteurs et le développement du jeu. Autorisez-vous ce cas précis avec Quick Pay, en versement ponctuel à montant choisi par le joueur ? Faut-il une source ou un dossier marchand distinct, quelles informations doivent figurer sur la page et quels frais et moyens de paiement s’appliqueraient ? Nous fournirons l’URL du site et du jeu pour examen. Merci."
+}

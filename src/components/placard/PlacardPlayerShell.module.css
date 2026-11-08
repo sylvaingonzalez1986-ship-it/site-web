@@ -9,6 +9,9 @@
 }
 
 .content { min-width: 0; padding-bottom: 28px; }
+.viewStage { min-width: 0; animation: roomArrival 220ms ease-out; }
+@keyframes roomArrival { from { opacity: .65; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .viewStage { animation: none; } }
 .loadingView { display: grid; place-items: center; min-height: 55vh; max-width: 1152px; margin-inline: auto; padding: 48px 16px; }
 .statusSign { display: inline-flex; align-items: center; gap: 10px; max-width: 100%; padding: 12px 16px; color: #172923; font: 700 14px/1.5 var(--font-body), sans-serif; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .statusSign svg { flex-shrink: 0; }
@@ -25,15 +28,15 @@
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  padding: 20px 13px 18px;
+  padding: 12px 13px 18px;
   border-right: 2px solid #172923;
   background: #fff1d6;
   color: #172923;
 }
 
 .navBrand {
-  margin-bottom: 20px;
-  padding: 0 3px 13px;
+  margin-bottom: 10px;
+  padding: 0 3px 6px;
   border-bottom: 2px solid #172923;
 }
 
@@ -42,14 +45,15 @@
   display: block;
   flex: 1;
   color: #005c4b;
-  font: 900 42px/.9 var(--font-display), Impact, sans-serif;
+  font: 900 32px/.9 var(--font-display), Impact, sans-serif;
   letter-spacing: -.025em;
   text-shadow: 1px 1px 0 #efc451;
 }
-.navMasthead .brandArt { flex: 0 0 76px; width: 76px; transform: rotate(4deg); }
+.navMasthead .brandArt { flex: 0 0 58px; width: 58px; }
 
-.navGroup { display: grid; gap: 8px; }
-.navGroup + .navGroup { margin-top: 22px; }
+.navGroup { display: grid; gap: 4px; }
+.navGroup + .navGroup { margin-top: 12px; }
+.navGroupLabel { margin: 0; padding: 2px 8px 4px; color: #40554b; font-size: 11px; font-weight: 650; }
 
 .navGroup button {
   position: relative;
@@ -57,8 +61,8 @@
   display: flex;
   align-items: center;
   gap: 7px;
-  min-height: 52px;
-  padding: 6px 11px 7px 10px;
+  min-height: 44px;
+  padding: 4px 11px 4px 10px;
   border: 2px solid transparent;
   color: #172923;
   text-align: left;
@@ -71,9 +75,9 @@
   box-shadow: none;
   border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
 }
-.navMark { position: relative; flex: 0 0 38px; height: 38px; }
-.navMark .navArt { display: block; width: 38px; }
-.navLabel { min-width: 0; font: 800 20px/1.05 var(--font-display), Impact, sans-serif; }
+.navMark { position: relative; flex: 0 0 32px; height: 32px; }
+.navMark .navArt { display: block; width: 32px; }
+.navLabel { min-width: 0; font: 800 18px/1.05 var(--font-display), Impact, sans-serif; }
 .navArrow { flex-shrink: 0; margin-left: auto; opacity: .35; font: 800 27px/.8 var(--font-display), Impact, sans-serif; }
 .navGroup button[aria-current=page] { color: #fff1d6; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; box-shadow: none; }
 .navGroup button[aria-current=page] .navArrow { opacity: 1; }
@@ -87,6 +91,7 @@
 .navFooter summary::after { content: "+"; margin-left: auto; font-size: 18px; }
 .navFooter details[open] summary::after { content: "−"; }
 .navFooter p { line-height: 1.65; margin: 8px 0 12px; }
+.learningEntry { margin-bottom: 12px; }
 .learningButton { display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; min-height: 46px; padding: 10px 12px; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; color: #172923; font: 800 12px/1.4 var(--font-body), Arial, sans-serif; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .learningButton svg { flex-shrink: 0; }
 .learningButton:focus-visible { outline: 3px solid #087b70; outline-offset: 3px; }
@@ -134,11 +139,6 @@
   outline: none;
   overflow-wrap: anywhere;
 }
-.sectionHeader .soundButton { margin-left: auto; }
-.sectionHeader .soundButton[aria-pressed=true] {
-  --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp"));
-  background: transparent; }
-.soundButton svg { flex-shrink: 0; }
 .exitHeader a { white-space: nowrap; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
 .exitHeader > span { min-width: 0; font-size: 12px; font-weight: 750; }
 
@@ -309,8 +309,6 @@
 
 @media (max-width: 480px) {
   .sectionHeader h1 { font-size: 20px; }
-  .sectionHeader .soundButton { justify-content: center; width: 44px; min-width: 44px; padding: 8px; }
-  .soundButton span { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
 
 @media (max-height: 500px) {

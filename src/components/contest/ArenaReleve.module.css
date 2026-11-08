@@ -145,7 +145,7 @@
 .meetingLessons button { display: block; min-width: 0; overflow: hidden; padding: 8px; text-align: left; border-radius: 0; box-shadow: none; border: var(--game-control-border-width, 2px) solid #172923; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; color: #172923; }
 .lessonArtwork { position: relative; display: block; height: clamp(200px, 33dvh, 330px); overflow: hidden; background: var(--game-surface-warm, #ffad5c); border-bottom: 2px solid #172923; }
 .lessonArtwork > img { object-fit: cover; }
-.meetingLessons button[data-releve-open-lesson="specialties"] .lessonArtwork > img, .meetingLessons button[data-releve-open-lesson="missions"] .lessonArtwork > img { object-fit: contain; padding: 10px; }
+.meetingLessons button[data-releve-open-lesson="specialties"] .lessonArtwork > img, .meetingLessons button[data-releve-open-lesson="missions"] .lessonArtwork > img, .meetingLessons button[data-releve-open-lesson="collection"] .lessonArtwork > img { object-fit: contain; padding: 10px; }
 .lessonCaption { display: flex; align-items: center; gap: 12px; min-height: 72px; padding: 14px; }
 .lessonCaption strong { flex: 1; min-width: 0; font-size: .88rem; }
 .lessonCaption > svg { flex-shrink: 0; }

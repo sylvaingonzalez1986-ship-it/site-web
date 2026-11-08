@@ -1,3 +1,4 @@
+import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -8,7 +9,7 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 function failure(error: unknown) {
   if (error instanceof KqCommerceOfferChangedError) return NextResponse.json({ error: error.message, code: error.code }, { status: 409 });
-  const message = error instanceof Error ? error.message : "Marché indisponible.";
+  const message = getKqPlayerWorkErrorMessage(error) ?? (error instanceof Error ? error.message : "Marché indisponible.");
   return NextResponse.json({ error: message.startsWith("[supabase:") ? "Le comptoir est momentanément indisponible. Réessaie dans un instant." : message }, { status: message.startsWith("[supabase:") ? 503 : 400 });
 }
 export async function GET(request: Request) {

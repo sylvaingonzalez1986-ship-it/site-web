@@ -1,0 +1,107 @@
+.page { composes: gameSurface from "../contest/ArenaRetro.module.css"; min-height: 100svh; padding: 30px clamp(16px,4vw,56px) 48px; color: #172923; background: #fff1d6; }
+.page > * { max-width: 1180px; margin-inline: auto; }
+.desk { display: grid; gap: 22px; min-width: 0; color: #172923; }
+.overview { min-width: 0; padding: 4px 4px 0; }
+.cash { display: grid; gap: 4px; margin: 0; }
+.cash dt { font-size: .8rem; color: #506155; }
+.cash dd { margin: 0; font-size: clamp(1.2rem, 2.5vw, 1.65rem); font-weight: 850; overflow-wrap: anywhere; }
+.overviewStatus { display: grid; gap: 12px; min-width: 0; }
+.overviewStatus .barHeader { gap: 10px 16px; }
+.overviewStatus .barHeader > div { flex: 1 1 220px; }
+.overviewStatus .barHeader strong { font-size: .9rem; }
+.overviewStatus .barHeader button { padding: 8px 12px; }
+.desk *, .dialog * { box-sizing: border-box; }
+.desk h2, .desk h3, .desk h4, .dialog h2 { margin: 0; color: #172923; line-height: 1.25; }
+.desk p, .dialog p { margin: 0; line-height: 1.55; }
+.desk small { font-size: .78rem; line-height: 1.5; }
+.desk button, .dialog button, .desk select, .desk input { font: inherit; }
+.desk button, .dialog button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 16px; cursor: pointer; font-size: .875rem; line-height: 1.35; font-weight: 750; color: #172923; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.desk button[aria-pressed="true"], .desk .primary, .dialog .primary { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff1d6; }
+.desk button:disabled, .dialog button:disabled { cursor: not-allowed; color: #667064; opacity: 1; background: transparent; border-color: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
+.desk :is(button, input, select, summary):focus-visible, .dialog :is(button, h2):focus-visible { outline: 3px solid #006f66; outline-offset: 4px; }
+.desk select, .desk input { min-width: 0; max-width: 100%; width: 100%; min-height: 44px; padding: 10px 12px; color: #172923; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.desk label { display: grid; gap: 7px; min-width: 0; font-size: .85rem; font-weight: 750; }
+.desk fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+.desk fieldset:disabled { opacity: 1; }
+.panel, .metric, .dossier, .dialog { min-width: 0; padding: 22px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.panel, .dossier { display: grid; align-content: start; gap: 18px; }
+.metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.metric { display: grid; gap: 8px; padding: 18px; }
+.metric:first-child { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); }
+.metric strong { font-size: clamp(1.25rem, 3vw, 1.9rem); line-height: 1.2; overflow-wrap: anywhere; }
+.metric span { font-size: .8rem; }
+.metrics:where(dl) { margin: 0; }
+.metric dt { font-size: .8rem; }
+.metric dd { margin: 0; font-size: clamp(1.25rem, 3vw, 1.9rem); font-weight: 750; }
+.barHeader, .sectionHeader { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 14px; }
+.sectionHeader > div { display: grid; gap: 5px; }
+.sectionHeader h2 { font-size: 1.35rem; }
+.barHeader > div { display: grid; gap: 5px; }
+.muted { color: #506155; font-size: .84rem; }
+.tabs, .actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.tabs { padding-bottom: 4px; }
+.grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 18px; }
+.dossier[data-selected="true"] { --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); }
+.grid > .dossier[data-planning-mode="week"] { grid-column: 1 / -1; }
+.personHeader { display: flex; gap: 13px; align-items: center; min-width: 0; }
+.personHeader > div:last-child { display: grid; gap: 4px; min-width: 0; }
+.personHeader h3 { font-size: 1.1rem; overflow-wrap: anywhere; }
+.portrait { display: grid; place-items: center; flex: 0 0 76px; width: 76px; height: 82px; }
+.portrait canvas { display: block; width: 76px; height: 76px; }
+.trait { font-size: .84rem; color: #24594e; }
+.biography { font-size: .88rem; }
+.numbers, .review { margin: 0; display: grid; gap: 0; }
+.numbers > div, .review > div { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding: 9px 0; border-bottom: 1px solid #17292330; }
+.numbers dt, .review dt { font-size: .8rem; }
+.numbers dd, .review dd { margin: 0; text-align: right; font-weight: 750; font-size: .9rem; }
+.workQuote { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 20px; }
+.workQuote > div { display: grid; align-content: start; gap: 5px; }
+.workQuote dd { text-align: left; font-size: 1rem; }
+.skills { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.skillLine { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 10px; align-items: center; font-size: .78rem; }
+.skillLine strong { text-align: right; font-size: .76rem; }
+.skillTrack { height: 5px; grid-column: 1 / -1; background: #17292317; }
+.skillTrack > span { display: block; height: 100%; background: #277267; }
+.schedule { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; padding: 0; list-style: none; margin: 0; }
+.schedule li { display: grid; gap: 5px; justify-items: center; padding: 6px 1px; border-bottom: 3px solid #17292330; font-size: .65rem; }
+.schedule li[data-working="true"] { border-color: #277267; }
+.schedule li[data-today="true"] { font-weight: 850; outline: 1px dashed #172923; outline-offset: 1px; }
+.schedule strong { font-size: .73rem; }
+.form { display: grid; gap: 15px; }
+.fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.form h4 { font-size: 1rem; }
+.formSection { padding-top: 18px; border-top: 1px solid #17292340; display: grid; gap: 14px; }
+.callout { padding: 14px; color: #172923; --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); border: 2px solid transparent; background: transparent; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; font-size: .85rem; line-height: 1.5; }
+.desk details { font-size: .85rem; }
+.desk summary { cursor: pointer; padding: 8px 0; font-weight: 750; }
+.desk details > p { margin: 8px 0; }
+.reference, .history { min-width: 0; padding-block: 7px; border-top: 1px solid #17292330; }
+.reference[open] { padding-bottom: 10px; }
+.history > section { padding: 12px 0 0; border: 0; border-image: none; }
+.history > section > header { display: none; }
+.taskList { list-style: none; padding: 0; margin: 0; }
+.taskList > li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 16px; padding: 16px 0; border-bottom: 1px solid #17292330; }
+.taskList > li:last-child { border: 0; padding-bottom: 0; }
+.taskList > li > div { display: grid; gap: 5px; }
+.taskList p { grid-column: 1 / -1; font-size: .85rem; }
+.taskList strong { font-size: .9rem; }
+.taskList small { color: #506155; }
+.status { font-size: .78rem; font-weight: 750; text-align: right; }
+.error { color: #863a25; padding: 14px; border-left: 3px solid currentColor; background: #fff7df; overflow-wrap: anywhere; }
+.notice { color: #205d51; padding: 12px 0; }
+.empty { padding: 18px 0; color: #506155; }
+.textLink { display: inline-flex; align-items: center; min-height: 44px; color: #205d51; text-underline-offset: 3px; }
+.textLink:focus-visible { outline: 3px solid #006f66; outline-offset: 4px; }
+.dialog { position: fixed; inset: 0; color: #172923; width: min(540px, calc(100vw - 24px)); max-height: calc(100dvh - 32px); margin: auto; padding: 26px; overflow-y: auto; }
+.dialog::backdrop { background: #172923a6; }
+.dialogContent { display: grid; gap: 18px; }
+.dialog h2 { font-size: 1.3rem; }
+.dialog .actions { justify-content: flex-end; }
+.spin { animation: rotate 1s linear infinite; }
+@keyframes rotate { to { transform: rotate(360deg); } }
+@media (hover: hover) { .desk button:hover:not(:disabled), .dialog button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); color: #172923; } }
+@media (max-width: 680px) { .grid { grid-template-columns: minmax(0, 1fr); } .metrics { gap: 8px; } .metric { padding: 14px 10px; } .metric span { font-size: .7rem; } .panel, .dossier { padding: 18px; } }
+@media (max-width: 420px) { .metrics { grid-template-columns: minmax(0, 1fr); } .metric { grid-template-columns: minmax(0, 1fr) auto; align-items: center; padding: 15px; } .metric strong { font-size: 1.25rem; } .metric small { grid-column: 1 / -1; } .fields { grid-template-columns: minmax(0, 1fr); } .panel, .dossier { padding: 15px; } .tabs button { flex: 1 1 auto; padding: 10px; } .actions > button { flex: 1 1 auto; } .dialog { padding: 22px 18px; } .taskList > li { grid-template-columns: minmax(0, 1fr); } .status { text-align: left; } }
+@media (max-width: 580px) { .overview { grid-template-columns: minmax(0, 1fr); gap: 10px; } .cash { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; } .overviewStatus .barHeader > div { flex-basis: 140px; } .overviewStatus .barHeader small { font-size: .72rem; } }
+@media (max-width: 420px) { .workQuote { grid-template-columns: minmax(0, 1fr); gap: 0; } .workQuote > div { display: flex; } .workQuote dd { text-align: right; } }
+@media (prefers-reduced-motion: reduce) { .spin { animation: none; } }

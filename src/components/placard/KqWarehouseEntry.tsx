@@ -16,7 +16,7 @@ import type { ChanvrierProfile } from "@/lib/arena-chanvrier";
 
 type Snapshot={chanvrierProfile?:ChanvrierProfile|null;equipmentScopeVersion?:2|3;career?:ChanvrierCareerSnapshot;storageCapacity?:{freeUnits:number;totalUnits:number}|null;expansionEnergyCents?:number;tentNumber?:number;tents?:KqTentOverview[];buildings?:KqBuildingEquipmentOverview[];sharedEquipment?:KqSharedEquipmentOverview;ownedCodes:string[];purchasedCodes:string[];equippedCodes:string[];levels:Record<string,number>;cashCents:number;productionUnits?:number;production?:KqProductionSnapshot;maintenance?:Record<string,KqMachineCondition>;cultureWear?:Record<string,KqCultureEquipmentCondition>;activeRun?:boolean};
 const EMPTY:Snapshot={ownedCodes:[],purchasedCodes:[],equippedCodes:[],levels:{},cashCents:0};
-type WarehouseEntryProps = {draftOwnerId?:string;embedded?:boolean;workshopOnly?:boolean;initialZoneId?:string|null;initialFlowerId?:string;initialShopOpen?:boolean;initialStorageEquipmentOpen?:boolean;initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage";onClose:()=>void;onOpenShop?:(code?:string)=>void;onOpenCulture?:(href:string)=>void;onOpenMarket?: (flowerId?: string, section?: KqHarvestMarketSection) => void;onOpenHarvests?:(flowerId?:string)=>void;onBusyChange?:(busy:boolean)=>void};
+type WarehouseEntryProps = {draftOwnerId?:string;embedded?:boolean;workshopOnly?:boolean;initialZoneId?:string|null;initialFlowerId?:string;initialEmployeeId?:string;initialShopOpen?:boolean;initialStorageEquipmentOpen?:boolean;initialEquipmentCode?:string|null;initialSection?:"equipment"|"storage"|"processing";initialWorkshopTab?:"trim"|"machines";onClose:()=>void;onOpenShop?:(code?:string)=>void;onOpenCulture?:(href:string)=>void;onOpenMarket?: (flowerId?: string, section?: KqHarvestMarketSection) => void;onOpenHarvests?:(flowerId?:string)=>void;onBusyChange?:(busy:boolean)=>void};
 
 /** Existing teaching sessions keep their isolated equipment fixture and never migrate an account. */
 export function KqWarehouseEntry(props: WarehouseEntryProps) {
@@ -71,5 +71,5 @@ function LegacyKqWarehouseEntry({embedded=false,workshopOnly=false,initialEquipm
     maintenance={{...selected?.maintenance,...building?.maintenance,...shared?.maintenance}} cultureWear={{...selected?.cultureWear,...building?.cultureWear}}
     tentNumber={tentNumber} tents={snapshot.tents??[]} onSelectTent={selectTent}
     loading={loading} loadError={error||(snapshotKnown&&!selected?"L’inventaire de cet emplacement n’est pas disponible.":"")} onRetry={refresh} onClose={onClose} onOpenShop={onOpenShop}
-    initialSection={workshopOnly?"equipment":initialSection} initialSlot={getKqEquipmentDefinition(initialEquipmentCode??"")?.slot}/>;
+    initialSection={workshopOnly||initialSection==="processing"?"equipment":initialSection} initialSlot={getKqEquipmentDefinition(initialEquipmentCode??"")?.slot}/>;
 }

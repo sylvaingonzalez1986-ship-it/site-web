@@ -18,7 +18,6 @@ const entry = `
 import React,{useState}from"react";import{createRoot}from"react-dom/client";
 import"/src/app/globals.css";
 import{KqRenewableContracts}from"/src/components/placard/KqRenewableContracts";
-import{KqGameSoundProvider,useKqGameSound}from"/src/components/placard/KqGameSound";
 import{createKqTutorialApi,KqTutorialApiProvider}from"/src/components/placard/KqTutorialApiContext";
 import retro from"/src/components/contest/ArenaRetro.module.css";
 const query=new URLSearchParams(location.search),scenario=query.get("scenario")||"available",mode=query.get("mode")||"missions";
@@ -77,8 +76,8 @@ const request=async(input,init={})=>{
 const api=createKqTutorialApi(request);api.isTutorial=false;
 window.__refreshBoard=()=>api.notify("kq:contracts-updated");
 const notify=api.notify;api.notify=(name,detail)=>{window.__fixture.notifications.push(name);notify(name,detail);};
-function Content(){const sound=useKqGameSound();return <><div data-audit-controls><button data-audit-sound aria-pressed={sound.enabled} onClick={sound.toggle}>Son {sound.enabled?"actif":"coupé"}</button></div><KqRenewableContracts mode={mode} runId={mode==="run"?(query.get("mismatch")?"90000000-0000-4000-8000-000000000001":runId):undefined} disabled={query.get("disabled")==="1"} onBusyChange={busy=>window.__fixture.busy.push(busy)} onOpenGame={()=>window.__fixture.opened++}/></>}
-function Audit(){const[mounted,setMounted]=useState(true);window.__unmount=()=>setMounted(false);return <div className={retro.surface+" "+retro.shell} data-audit-ready>{mounted?<KqGameSoundProvider><KqTutorialApiProvider api={api}><Content/></KqTutorialApiProvider></KqGameSoundProvider>:<p data-audit-unmounted>Unmounted</p>}</div>}
+function Content(){return <KqRenewableContracts mode={mode} runId={mode==="run"?(query.get("mismatch")?"90000000-0000-4000-8000-000000000001":runId):undefined} disabled={query.get("disabled")==="1"} onBusyChange={busy=>window.__fixture.busy.push(busy)} onOpenGame={()=>window.__fixture.opened++}/>}
+function Audit(){const[mounted,setMounted]=useState(true);window.__unmount=()=>setMounted(false);return <div className={retro.surface+" "+retro.shell} data-audit-ready>{mounted?<KqTutorialApiProvider api={api}><Content/></KqTutorialApiProvider>:<p data-audit-unmounted>Unmounted</p>}</div>}
 createRoot(document.getElementById("root")).render(<Audit/>);
 `;
 const modules = {
@@ -87,7 +86,7 @@ const modules = {
   "next/link": `import React from"react";export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>}`,
   "next/navigation": `export const usePathname=()=>location.pathname;export const useSearchParams=()=>new URLSearchParams(location.search);export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});`,
 };
-const fonts = `@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#fff1d6}[data-audit-ready]{max-width:1200px;margin:auto;padding:16px}[data-audit-controls]{margin-bottom:16px}[data-audit-controls]button{min-height:44px;padding:8px 14px;border:2px solid #172923;border-radius:12px;color:#172923;background:#fff1d6;font:700 13px Body}button:focus-visible{outline:3px solid #169b8b;outline-offset:3px}`;
+const fonts = `@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#fff1d6}[data-audit-ready]{max-width:1200px;margin:auto;padding:16px}button:focus-visible{outline:3px solid #169b8b;outline-offset:3px}`;
 const server = await createServer({
   root, configFile: false, envDir: false, cacheDir: resolve(output, "vite-cache"), publicDir: resolve(root, "public"),
   optimizeDeps: { include: ["react", "react-dom", "react-dom/client", "lucide-react"] },
@@ -124,11 +123,10 @@ try {
     void request.continue();
   });
   await page.evaluateOnNewDocument(() => {
-    window.__audioAudit = { contexts: 0, notes: 0 };
+    window.__audioAudit = { contexts: 0 };
     const NativeAudioContext = window.AudioContext;
     window.AudioContext = class extends NativeAudioContext {
       constructor(...args) { super(...args); window.__audioAudit.contexts++; }
-      createOscillator() { window.__audioAudit.notes++; return super.createOscillator(); }
     };
   });
   await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
@@ -138,10 +136,12 @@ try {
     await page.waitForSelector("[data-audit-ready]");
     await page.evaluate(() => document.fonts.ready);
   }
-  async function quiet() { assert.equal(await page.evaluate(() => window.__audioAudit.notes), 0, "No autoplay or replayed reward sound"); }
+  async function quiet() {
+    assert.equal(await page.evaluate(() => window.__audioAudit.contexts), 0, "Contracts create no audio context");
+    assert.equal(await page.$('[data-audit-sound], button[aria-label^="Son"]'), null, "Contracts offer no sound control");
+  }
   async function layout(name) { assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${name}: no horizontal overflow`); }
   async function shot(name) { await page.evaluate(() => Promise.allSettled([...document.images].map(image => image.decode()))); await page.screenshot({ path: resolve(output, name + ".png"), fullPage: true }); }
-  async function optIn() { await page.focus("[data-audit-sound]"); await page.keyboard.press("Enter"); await page.waitForFunction(() => document.querySelector("[data-audit-sound]").getAttribute("aria-pressed") === "true"); }
   const posts = () => page.evaluate(() => window.__fixture.requests.filter(request => request.method === "POST"));
   const accept = '[data-renewable-action="accept"]';
 
@@ -173,11 +173,11 @@ try {
     assert.equal((await posts())[1].command.attemptId, commands[0].command.attemptId, "Cancellation names the accepted attempt");
     results.push({ scenario: "offers, keyboard acceptance and cancellation", width, exactServerRules: true, ...(width === 320 ? { withoutNativeRandomUuid: true } : {}) });
 
-    await load("succeeded"); await page.waitForSelector('[data-renewable-action="claim"]'); await quiet(); await optIn();
+    await load("succeeded"); await page.waitForSelector('[data-renewable-action="claim"]'); await quiet();
     if (width === 390) await page.$eval('[data-renewable-action="claim"]', button => { button.click(); button.click(); });
     else { await page.focus('[data-renewable-action="claim"]'); await page.keyboard.press("Enter"); }
     await page.waitForSelector("[data-renewable-receipt]");
-    await page.waitForFunction(() => window.__audioAudit.notes > 0);
+    await quiet();
     assert.equal(await page.$eval("[data-renewable-receipt]", element => element.dataset.receiptFresh), "true", "New claim has a fresh receipt");
     assert.equal(await page.evaluate(() => window.__fixture.claimed), 1);
     assert.equal((await posts()).length, 1);
@@ -223,7 +223,7 @@ try {
   results.push({ scenario: "failed attempt followed by a different choice", passed: true });
 
   for (const scenario of ["replayed", "claimed"]) {
-    await load(scenario); await optIn();
+    await load(scenario);
     if (scenario === "replayed") { await page.waitForSelector('[data-renewable-action="claim"]'); await page.click('[data-renewable-action="claim"]'); }
     await page.waitForSelector("[data-renewable-receipt]");
     assert.notEqual(await page.$eval("[data-renewable-receipt]", element => element.dataset.receiptFresh), "true");
@@ -233,7 +233,7 @@ try {
   }
 
   for (const scenario of ["ambiguous-accept", "ambiguous-claim"]) {
-    await load(scenario); await optIn();
+    await load(scenario);
     const action = scenario === "ambiguous-accept" ? accept : '[data-renewable-action="claim"]';
     await page.waitForSelector(action); await page.click(action);
     await page.waitForSelector('[data-renewable-action="retry"]');
@@ -264,7 +264,7 @@ try {
   assert(await page.$$eval('[data-renewable-action="accept"]', buttons => buttons.length === 3 && buttons.every(button => button.disabled)), "Busy preparation disables all accept actions");
   results.push({ scenario: "disabled parent blocks acceptance", passed: true });
 
-  await load("late"); await page.waitForSelector('[data-renewable-action="claim"]'); await optIn();
+  await load("late"); await page.waitForSelector('[data-renewable-action="claim"]');
   await page.click('[data-renewable-action="claim"]'); await page.waitForFunction(() => typeof window.__releaseAction === "function");
   await page.evaluate(() => window.__unmount()); await page.waitForSelector("[data-audit-unmounted]");
   await page.evaluate(() => window.__releaseAction()); await frames(); await quiet();

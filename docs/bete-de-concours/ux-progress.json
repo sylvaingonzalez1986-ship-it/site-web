@@ -1,0 +1,587 @@
+{
+  "updated": "2026-11-08",
+  "releaseValidation20261108": {
+    "updated": "2026-11-08",
+    "status": "Ensemble des changements du jeu et du site validé pour la livraison demandée sur origin/master. Ce point de contrôle accompagne le commit regroupant le travail.",
+    "scope": "Personnel, contrats, formation, planning, temps de travail, Culture/carrousel/badges, Atelier/trim/transformation, prospection et partenaires, administration et factures, courrier/tutoriel/illustrations, ajustements du site et paiements Viva. Les fichiers temporaires de validation restent ignorés via /.tmp/ et /output/.",
+    "database": "Projet eyowwwpdmfrulhkpvlnf : 366 migrations locales/distantes synchronisées, zéro migration en attente et zéro divergence. Les 17 nouveaux fichiers SQL correspondent aux empreintes des migrations déjà appliquées. Contrôle des grants sur 366 migrations et vérification distante en lecture seule de 138 points réussis. Aucune nouvelle application nécessaire.",
+    "validation": "Suite complète finale : 558 fichiers et 6810 tests réussis ; 348 contrôles PostgreSQL demande client supplémentaires. Les tests incluent paiements Viva, idempotence, rôles SQL et réservations. Sept fichiers de tests actualisés pour les interfaces et illustrations déjà modifiées. Build Next de production terminé avec code 0 et génération des pages avec accès réseau. ESLint de 278 sources modifiées : zéro erreur et zéro avertissement ; diff-check réussi. Revue des fichiers à publier sans clé privée ou jeton détecté.",
+    "versions": "Build Next 16.4.1. Tests locaux sous Vitest 4.1.11 installé ; lock du dépôt à 4.1.12 conservé. Dépendances non réinstallées pour cette livraison.",
+    "reports": [
+      "output/release-migration-verification/completion.json",
+      "output/release-migration-verification/applied-hash-verification.json",
+      ".tmp/release-tests-final.log",
+      ".tmp/release-customer-demand.log",
+      ".tmp/release-build-final.log",
+      ".tmp/release-changed-source-lint.log",
+      "output/release/completion.json"
+    ],
+    "next": "Conserver les migrations appliquées ; ne pas les rejouer. Identifiant du commit et confirmation de push dans le reçu local de livraison et l'historique Git."
+  },
+  "cultureAvailableActionBadges": {
+    "updated": "2026-11-08",
+    "status": "Badges verts chiffrés ajoutés aux actions de Culture et grande illustration au-dessus du carrousel retirée. Petites illustrations de navigation conservées. Modifications locales, sans migration ni publication.",
+    "behavior": "Badges sur Cartes, Soins, Intervenir, Produits de soin, rayons Intrants/PBI et raccourci d'action. Compte de choix distincts : cartes autorisées selon phase/XP/stock ; produits possédés applicables plus entretien au tarif serveur si abordable. Quantités de stock et produits du catalogue non confondus avec actions. Dans la boutique indépendante, achats abordables explicitement distingués. Aucun badge pour zéro, donnée inconnue/invalide, chargement, action en cours ou reprise incertaine.",
+    "integrity": "Snapshot de réserve partagé entre suivi et boutique, stock en passages complets et prix officiels de la partie. Rafraîchissement après achat/usage/étape, réponses anciennes écartées par portée et génération ; anciennes cultures sans équipement prises en charge. Reçus conservés après repli pour reprise idempotente. Lecture cachée purpose=availability ne valide pas health-read du tutoriel ; vraie visite inchangée. Grande illustration conservée comme asset historique mais non montée par le carrousel.",
+    "validation": "78 tests unitaires (56 réserve/transport Relève, 22 choix de cartes), TypeScript global, ESLint ciblé et diff-check réussis. 20 groupes navigateur ciblés à 320/390/1440 px : nombres exacts, clavier, illustrations, restrictions, erreurs, achats/utilisations, reprise sans double débit, rejet du devis d'une ancienne étape, aucun progrès de tutoriel automatique. Suite existante de soins : 76 contrôles réussis sans adaptation. Aucune erreur JavaScript ni requête réelle/externe ; captures inspectées.",
+    "reports": [
+      "output/placard-journey-continuity/culture-badges-report.json",
+      "output/culture-care/result.json",
+      ".tmp/culture-badges-cards-unit.log",
+      ".tmp/culture-badges-types.log",
+      ".tmp/culture-badges-lint.log"
+    ],
+    "preview": "output/placard-journey-continuity/culture-badges-care-1440.png",
+    "next": "Demande terminée ; pas de migration ni d'audit global supplémentaire. Publication uniquement à la demande."
+  },
+  "cultureQualityShortcut": {
+    "updated": "2026-11-08",
+    "status": "Onglet Qualité vide des soins de campagne remplacé par le bouton Qualité des variétés, qui ouvre et focalise directement les analyses du panneau Récolte/Récoltes. Modification locale sans migration.",
+    "behavior": "Suivi et Intervenir restent de vrais onglets ; état des soins et réserve conservés au retour. Une culture seule garde son onglet Qualité avec ses indicateurs. Aucun raccourci ni onglet Qualité vide après perte de la culture. Navigation sans action de jeu ni consommation d'heures.",
+    "validation": "TypeScript global, ESLint ciblé et diff-check réussis. Mode --culture-quality-only du script de parcours : 12 groupes navigateur à 320/390/1440 px pour campagne active, terminée, perdue et solo ; clavier, focus, contenu, conservation des choix, absence de débordement et de mutation vérifiés. Aucune erreur JavaScript ou requête externe. Captures inspectées.",
+    "report": "output/placard-journey-continuity/culture-quality-report.json",
+    "next": "Demande terminée ; pas d'audit supplémentaire ni de migration."
+  },
+  "cultureAnalysisAttributionRemoval": {
+    "updated": "2026-11-08",
+    "status": "Mention LABEXAN et paragraphe associé retirés du composant partagé KqCannabinoidReport à la demande du joueur. Les analyses de Culture, campagne, stockage et bilan réutilisent ce composant. Données et mentions de simulation conservées. Modification locale sans migration.",
+    "next": "Demande terminée ; aucune refonte ni vérification de gameplay nécessaire pour ce retrait de texte."
+  },
+  "cultureHelpPanelReadability": {
+    "updated": "2026-11-08",
+    "status": "Encadrés cannabinoïdes et tableaux d'aide corrigés pour que le texte reste lisible dans les fiches de Culture étroites. Modification CSS locale uniquement.",
+    "cause": "KqCampaignSummary .member dl imposait trois colonnes aux KqHelpGrid imbriqués ; la place fixe des illustrations laissait environ 11–12 px aux valeurs et descriptions. Les styles dt/dd du parent réduisaient aussi les libellés à 10 px.",
+    "fix": "Styles des métriques de campagne limités aux listes concernées, sans toucher les rapports imbriqués. KqHelpGrid/Steps utilisent des conteneurs nommés : images de 72px sous 340px et 48px dans l'en-tête sous 240px, chiffres et texte sur une largeur utile. Libellés et explications à 14px, titre d'analyse à 14px avec police du corps via token local, tableaux de taux toujours défilants dans leur propre région.",
+    "validation": "Audit navigateur ciblé réutilisant scripts/audit-harvest-summary-lot25.mjs --help-layout : 15 configurations, vraies campagnes de 3cultures à 1440 et mobile 320/390, rapports et aides partagés dans des conteneurs 220/320/480/1100px. Régression initiale reproduite et mesurée ; texte passé d'environ 12px à 203px dans la fiche desktop de 345px, mots normaux non fragmentés. Valeurs, mention de simulation, ouverture clavier et défilement du tableau conservés ; aucun débordement, erreur JavaScript ou requête externe. Captures inspectées ; diff-check réussi.",
+    "reports": [
+      "output/help-panels/before/report.json",
+      "output/help-panels/after/report.json",
+      "output/help-panels/keyboard/report.json"
+    ],
+    "keyboardValidation": "Deux cas supplémentaires dans gameSurface réel : Enter/Espace ouvre et ferme les rapports, six tableaux défilent avec Flèche droite en gardant le focus visible. Titre contrôlé à 14 px en police de corps. Aucune erreur ni requête externe.",
+    "preview": "output/help-panels/keyboard/campaign-1440-container-1100.png",
+    "next": "Correction terminée. Aucune migration, aucune modification des valeurs ni publication. Pas d'audit global supplémentaire."
+  },
+  "cultureIllustratedCarousel": {
+    "updated": "2026-11-08",
+    "status": "Culture regroupée dans un carrousel illustré, implémentée et validée localement. Aucune migration ni publication.",
+    "changes": "Six panneaux directs Jouer, Soins, Cartes, Récolte, Journal et Repères. Un seul panneau visible, autres panneaux montés mais masqués et inertes. Flèches, clavier, glissement tactile et rangée mobile défilante ; aucune rotation automatique. Suivi, Intervenir et Qualité regroupent les soins. Les fins de culture et campagnes ont leur carrousel Fleur/Récoltes, Journal, Santé et Charges ; échec sans fausse récolte.",
+    "integrity": "Devis d'heures et erreurs communs, bouton d'action accessible, retour aux dés explicite depuis un autre panneau. Soldes fractionnaires préservés, aucune heure consommée par la navigation. Choix de cartes, confirmations, reprise idempotente, erreurs de soins, réserve et focus conservés. Tutoriel pointe les vrais onglets, lecture de santé seulement à la visite, Journal de fin marque la lecture du bilan. Anciennes données de santé absentes explicitement indiquées.",
+    "artwork": "Illustration produite avec l'outil intégré image_gen puis corrigée selon la demande du joueur à partir du Sylvain canonique et de l'équipe existante : Sylvain et Anna reconnaissables, aucun nouveau personnage. public/placard/ui/culture-desk-v2.webp, alpha 1536 × 512, 254854 octets ; source artwork/ui-culture-desk-v2.png ; prompt et références docs/bete-de-concours/ui-culture-carousel-provenance.json. KqPrintedArt réutilisé.",
+    "validation": "126 tests unitaires (112 soins/heures, 14 guide), TypeScript global, ESLint ciblé et diff-check réussis. Navigateur : 23 groupes carrousel à 320/390/768/1440, 76 contrôles soins, 23 groupes choix de cartes, 15 reprise, 21 ajustement de main ; parcours guidé Culture à 320 px terminé en 35 contrôles/actions jusqu'au Journal et accès au jury. Dernier compactage mobile contrôlé séparément à 320/390 (2 groupes). Captures inspectées, aucun débordement, erreur JavaScript ou appel de jeu réel.",
+    "reports": [
+      "output/placard-journey-continuity/culture-carousel-report.json",
+      "output/placard-journey-continuity/culture-carousel-visual-report.json",
+      "output/arena-releve-culture-carousel/report.json",
+      ".tmp/culture-carousel-unit.log",
+      ".tmp/culture-carousel-types.log",
+      ".tmp/culture-carousel-integration-lint.log"
+    ],
+    "preview": "output/placard-journey-continuity/culture-carousel-play-1440x1000.png",
+    "next": "Demande terminée localement. Publier uniquement sur demande explicite. Pas de nouvelle migration ni audit global nécessaire."
+  },
+  "cultureFractionalHoursFix": {
+    "updated": "2026-11-08",
+    "status": "Blocage erroné du lancer Culture corrigé dans le code et testé. Aucune migration nécessaire, aucune publication ni modification de partie distante.",
+    "cause": "Le validateur partagé isKqCultureWorkQuote exigeait encore un solde personnel multiple de 0,5 h, alors que les gestes accélérés par compétence permettent des centièmes depuis la migration 006. Une lecture seule de la base a confirmé une culture active autorisée avec source employee et un solde personnel de 4,2 h ; le backend puis le hook rejetaient ce devis valide, d’où Heures à vérifier.",
+    "fix": "Le solde personnel accepte maintenant les centièmes entre 0 et 12 h, sans arrondi ni changement du montant. Prix Culture de 0,5 h et réserves salariées par demi-heure préservés. UI conserve les explications métier connues et indique une session expirée ; erreurs internes et réseau masquées, contrôle de culture/étape/phase inchangé.",
+    "validation": "80 tests unitaires/backend/API, 275 contrôles PostgreSQL PGlite et neuf groupes navigateur à 320/390/1440 px réussis. Régression SQL reproduisant le salarié avec 4,2 h personnelles, débit salarié seul, reprise sans double débit, joueur 11,55 vers 11,05 h, et solde insuffisant correctement bloqué. Vrai bouton de lancer testé dans le Shell. TypeScript global, ESLint ciblé et diff-check réussis. Aucun débit ni lancer distant.",
+    "reports": ["output/culture-hours-fix/probe.json", "output/placard-staff-ui/culture-work-report.json", "output/placard-journey-continuity/culture-work-report.json", ".tmp/culture-hours-fix-sql.log", ".tmp/culture-hours-fix-types.log"],
+    "next": "Recharger l’écran Culture avec le code corrigé. Aucun ajout d’heures ni changement de planning nécessaire pour ce faux blocage. Déployer le code seulement lors d’une demande de publication ; pas de nouvelle migration."
+  },
+  "juryFlowerCarousel": {
+    "updated": "2026-11-08",
+    "status": "Mes Fleurs d’Arène transformé en carrousel visuel à la demande du joueur. Validé localement ; aucune migration ni publication.",
+    "changes": "Vraies cartes KqFlowerTcgCard toujours visibles, une Fleur par volet, avec sa qualité, son état et ses actions. Carte à gauche sur ordinateur, au-dessus des actions sur mobile. Flèches, compteur de position, glissement tactile/souris et navigation clavier via KqCardCarousel. Défilement manuel, arrêt sur un volet et respect du mouvement réduit.",
+    "integrity": "Actions toujours liées à l’identifiant de la Fleur affichée ; confirmations, conséquences, file d’attente, suivi du duel, affinage et accès au stockage préservés. Analyses repliables séparées de la carte ; absence d’analyse explicitée. Position conservée lors de l’actualisation de la réserve, ciblage initial d’un lot maintenu. Options du carrousel réservées à cet écran ; comportement initial des autres carrousels conservé.",
+    "validation": "13 tests existants Buddies/ciblage jury, TypeScript global, ESLint ciblé et diff-check réussis. Navigateur : 39 groupes carrousel à 320/390/1440 px et petit écran 320×568 ; 23 groupes du parcours jury, confirmations, verdicts et reprise après réponse interrompue. Cartes visibles, volets entiers après défilement, noms longs, états absents/erreur, focus et compteur contrôlés ; captures mobiles et bureau inspectées. Aucune erreur JavaScript ni requête externe ; API de jeu simulées uniquement.",
+    "reports": ["output/clarity-lot13/jury/report.json", "output/ux-implementation/jury/results.json"],
+    "preview": "output/clarity-lot13/jury/multiple-1440.png",
+    "next": "Demande terminée localement. Publier le code lors d’une demande explicite ; aucun nouvel audit global nécessaire."
+  },
+  "mailboxAndArenaAdmin": {
+    "updated": "2026-11-08",
+    "status": "Boîte aux lettres du Quartier et remise à jour de l’administration de l’Arène implémentées et validées localement. Migration 20261108001000 appliquée et vérifiée sur Supabase le 8 novembre 2026 à la demande du joueur. Code applicatif non publié par cette opération.",
+    "player": "Boîte illustrée cliquable dans la carte, formulaire bug/idée, historique privé paginé, statuts, réponses et packs offerts avec accès à la boutique. Brouillon conservé à la fermeture ; après réponse perdue, corps et clé de demande conservés, y compris après une limitation temporaire. Absente des essais isolés et du tutoriel.",
+    "admin": "Trois sections : Boîte aux lettres par défaut, Pilotage du jeu, Concours & avis. Filtres, réponse, suivi, version de modification et confirmation explicite des récompenses. Duels, entraînements et saison visibles avant les catalogues et contrôles de lancement repliés. Écrans conservés après première visite ; données indisponibles distinctes de zéro.",
+    "rewards": "Attribution administrative de 1 à 5 packs Botte du Chanvrier de 10 cartes, une seule fois par contribution examinée. Entitlements existants, clés uniques, verrou de ligne et transaction commune avec le suivi. Aucun pack automatique au dépôt. Limites persistantes de 5 courriers sur 24 h et une minute entre deux nouveaux courriers ; reprise idempotente avant ces limites.",
+    "security": "Lecture joueur filtrée par session, API admin authentifiée, origine vérifiée à l’écriture, corps JSON borné. Table sous RLS : aucun accès anon/authenticated, lecture seule service_role ; écritures exclusivement par RPC SECURITY DEFINER réservés au serveur. Attribution et métadonnées administratives privées.",
+    "artwork": "public/placard/ui/mailbox-v1.webp, transparent 512 × 512, 41008 octets ; source artwork/ui-mailbox-v1.png ; prompt image_gen et provenance dans docs/bete-de-concours/ui-mailbox-provenance.json. KqPrintedArt partagé par la carte et le titre du courrier.",
+    "validation": "44 tests unitaires/API, intégration PostgreSQL PGlite avec ouverture réelle de pack, quotas, reprises, versions, rollback et permissions réussis. Grants des 365 migrations, TypeScript global final, ESLint ciblé et diff-check réussis. Navigateur : 27 groupes Quartier/courrier à 320/390/1440 px et 21 groupes admin à 320/390/768/1440 px. Clavier, focus, Retour, erreurs, réponse perdue puis 429, récompense unique et absence de débordement vérifiés ; captures inspectées. Zéro erreur JavaScript ou requête externe.",
+    "reports": ["output/placard-village-ambience/report.json", "output/admin-arena/arena-report.json", "output/arena-feedback-migration/completion.json"],
+    "remoteValidation": "Projet eyowwwpdmfrulhkpvlnf : 18 contrôles avant et 58 après application réussis en transactions de lecture seule. Empreinte identique des 175 packs existants et de la fonction d’ouverture. Historique synchronisé sur 365 migrations ; nouvelle simulation sans migration en attente. Aucune récompense réelle ni action de jeu effectuée pour la vérification.",
+    "sqlCheck": "node scripts/test-arena-feedback.mjs",
+    "migration": "supabase/migrations/20261108001000_arena_feedback.sql",
+    "limits": "Tests SQL isolés ; contention PostgreSQL multiconnexion non mesurée. Aucune écriture de jeu distante ni attribution à un joueur réel.",
+    "next": "Migration distante terminée. Publier le code applicatif lors d’une demande de mise en ligne. Ne pas relancer d’audit global."
+  },
+  "staffBenefitsImplementation": {
+    "updated": "2026-11-08",
+    "status": "Bénéfices du personnel, prospection proportionnelle à la durée et paiements administratifs délégués implémentés et validés. Migration 20261108001100 appliquée et vérifiée sur Supabase le 8 novembre 2026 à la demande du joueur. Code applicatif non publié par cette opération.",
+    "ui": "Prévisions illustrées par secteur avant affectation et dans la confirmation, salarié/joueur/semaine type. Administration à 0,5 h par défaut, remise active et expiration visibles. Tableau de résultats réels depuis une date explicite : économies et fournitures nettes, heures déléguées Culture/Transformation, grammes trim, abonnés, partenaires et documents payés. Données manquantes affichées indisponibles ; aucun historique reconstitué ni conversion de followers en euros.",
+    "mechanics": "Nouvelles tournées de prospection : une tentative par tranche complète de 2 h, maximum trois salarié/six joueur, coût de trajet unique et résultats aléatoires versionnés. Anciennes missions gardent leur tentative unique. Traits Minutieux/Vif précisés. Résultats structurés seulement avec capability staffBenefitsVersion 1 ; anciens serveurs restent compatibles.",
+    "administration": "Règles désactivées par défaut dans Personnel : responsable, factures fournisseurs et/ou salaires échus, plafond quotidien, trésorerie minimale et horizon fournisseur de 0 à 7 jours de jeu. Confirmation explicite sans débit immédiat. Les missions Administration terminées du responsable traitent au plus un document par 0,5 h, dans les limites autorisées, par échéance et sans paiement partiel. Pas de rétroautorisation des anciennes missions. Les paiements ordinaires du jeu restent indépendants de ces plafonds. Dernier traitement et motif de report visibles. Seul le responsable autorisé à payer les salaires peut lancer Administration pendant un impayé, y compris via semaine type.",
+    "sql": "Registre privé prospectif sous RLS, tous accès directs révoqués, fonctions internes inaccessibles aux rôles API. Montants et deltas réels enregistrés dans la transaction métier ; remise seulement sur fournitures de lancement déjà éligibles. Verrou propriétaire, révision attendue, reçus uniques par tâche et reprise idempotente. Comptabilité et archivage conservés, y compris paie finale et plus de 200 tâches rattrapées. Trois gardes de tâches adaptés aux résultats à la clôture sans permettre de modifier les termes réservés ou les résultats déjà clos.",
+    "validation": "313 tests TypeScript moteur/serveur réussis (241 + 72), 73 vérifications PostgreSQL PGlite du nouveau lot et 32 contrôles comptables existants réussis. Permissions des 366 migrations, TypeScript global et ESLint final ciblé réussis. Sept groupes navigateur à 320/390/1440 px : prévisions/confirmations, semaine, clavier, absence de débordement, règles désactivées, validation budgets, annulation sans écriture, activation sans débit et exception paie strictement limitée. Captures inspectées. Revue indépendante moteur/SQL a détecté puis fait corriger les gardes historiques et la compatibilité avant migration.",
+    "reports": ["output/placard-staff-ui/benefits-report.json", ".tmp/staff-benefits-types.log", ".tmp/staff-benefits-lint.log", "output/staff-benefits-migration/completion.json"],
+    "migration": "supabase/migrations/20261108001100_kq_staff_benefits.sql",
+    "remoteValidation": "Projet eyowwwpdmfrulhkpvlnf : 76 contrôles avant et 138 après réussis en transactions de lecture seule. Empreintes identiques des trois comptes du personnel, 18 archives, 231 reçus, 183 factures, 38 portefeuilles, 548 soldes comptables et 171 372 écritures du journal ; 15 fonctions protégées inchangées. Historique synchronisé sur 366 migrations et nouvelle simulation sans migration restante. Aucun paiement ni action de partie effectué pour vérifier le déploiement. Reçu output/staff-benefits-migration/completion.json.",
+    "sqlCheck": "npm run test:staff-benefits:sql",
+    "limits": "Contention PostgreSQL multiconnexion non mesurée. Les anciens résultats ne sont pas reconstruits ; les règles de paiements délégués restent désactivées tant que le joueur ne les autorise pas. Aucune publication du code applicatif ni mutation de partie pour les vérifications.",
+    "next": "Migration distante terminée. Publier le code applicatif lors d’une demande de mise en ligne. Ne pas relancer d’audit global ni modifier les barèmes de remise sans nouvelle demande."
+  },
+  "staffSectorBenefitsAudit": {
+    "updated": "2026-11-08",
+    "status": "Analyse ciblée des bénéfices du personnel, avec deux revues distinctes : Administration et autres secteurs. Aucun changement de gameplay, aucune migration ni publication.",
+    "administration": "Remise déterministe : arrondi de 0,7 × niveau effectif, +2 points pour Organisé ; maximum atteignable 7 % sans ce trait et 9 % avec. Active sept jours du jeu après mission. Uniquement les nouvelles factures de consommables au lancement des cultures Entrepôt ; anciens soldes, soins/PBI séparés, machines, énergie et salaires exclus. Paiement délégué d’une facture à confirmer : 0,5 h salarié, +6 XP, aucune heure joueur.",
+    "weaknesses": "Une mission de 0,5 h donne la même remise et la même durée qu’une mission de 7 h au même niveau ; seule l’XP augmente. Bonus non cumulables : la meilleure remise active est conservée puis prolongée. Pas de prise en charge automatique banque/paie/comptabilité par le salarié. La semaine type répète les négociations, pas les paiements. Aucun affichage direct du taux actif et de son échéance dans l’UI ; résultat seulement dans l’historique.",
+    "otherSectors": "Culture : six étapes coûtent 3 h salarié au lieu de 3 h joueur, avec bonus selon niveau/trait et coefficients supplémentaires du chef ; les étapes restent jouées. Transformation : efficacité nominale 55/75/100 % aux niveaux 1/5/10 avant trait ; machines et temps passifs restent contraignants. Trim manuel 60/100/150 g/h, machine ×4 avec pénalité de qualité. Communication 2 h sans trait : 20/52/92 abonnés et 1/3/5 réputation aux niveaux 1/5/10, audience réellement reliée à la boutique. Prospection : une tentative dès 2 h, +1 partenaire/+5 réputation en cas de succès, réseau illimité ; réserver 7 h n’ajoute pas de tentative. Budget commercial +250 unités par partenaire, pas 250 €.",
+    "clarityGaps": "Les affectations n’affichent pas systématiquement leur bénéfice calculable. Minutieux : le +20 % Culture ne concerne que les terpènes. Vif n’abaisse pas les 0,5 h par étape Culture. Afficher les résultats réels séparément des prévisions et probabilités ; ne pas convertir automatiquement abonnés ou unités commerciales en recettes garanties.",
+    "economics": "Exemple de recrutement initial : Léa, Administration niveau 5, Organisé, 14,79 €/h. Remise 6 % ; culture de 10 m² sans option, fournitures 220 €, économie 13,20 €. Coût employeur du jeu 3 028,25 €/mois à 35 h/semaine ; il faut environ 50 471 € de nouvelles factures éligibles par mois sous remise pour couvrir ce salaire par la seule négociation. À 7 h/semaine : 605,65 €/mois, seuil environ 10 094 €. Les autres missions et le temps joueur épargné restent des bénéfices distincts ; un salarié déjà sous contrat est payé même sans affectation.",
+    "evidence": ["src/lib/kanab-quest-staff.ts", "src/lib/kanab-quest-staff-recruitment.ts", "src/components/placard/KqStaffDesk.tsx", "supabase/migrations/20261107000100_kq_staff.sql", "supabase/migrations/20261012000700_kq_warehouse_supplier_invoices.sql", "supabase/migrations/20261108000900_kq_care_surface_and_purchase_register.sql"],
+    "validation": "Lecture croisée moteur TypeScript, backend et dernières migrations SQL ; calcul indépendant des exemples de coût. Aucun appel distant ou mutation de partie. Tests applicatifs non relancés pour cette analyse documentaire.",
+    "next": "Proposition à discuter : rendre visibles taux/périmètre/expiration et bénéfice prévu par affectation, puis décider d’un vrai rôle administratif récurrent. Ne pas étendre les remises ou automatiser des paiements sans nouvelle demande."
+  },
+  "invoiceDashboardAndInputs": {
+    "updated": "2026-11-08",
+    "status": "Tableau de bord Factures & échéances, registre des achats et tarification des soins à la surface implémentés avec un second agent spécialisé. Migration 009 appliquée et vérifiée sur Supabase le 8 novembre 2026 à la demande du joueur. Code applicatif non publié par cette opération.",
+    "ui": "Chiffres clés, factures échues, paiement global, répartition et couverture visibles ; registres des factures et des intrants séparés. Achats déjà payés paginés sans limite historique de consultation, montants serveur, culture et surface quand connues. Anciennes surfaces inconnues explicitement indiquées, erreurs indépendantes du paiement, règles détaillées repliables.",
+    "purchaseDisclosure": "8 novembre 2026 : Achats d’intrants placé dans un volet déroulant natif fermé par défaut, avec panneau et commande illustrés. Historique, actualisation, montants et erreurs accessibles à l’ouverture ; pages chargées conservées après fermeture. ESLint et diff-check réussis ; 27 scénarios navigateur à 320/390/1440 px passent, dont ouverture/fermeture au clavier et exclusion des contrôles masqués du parcours Tab. Modification locale, non publiée ; aucune migration supplémentaire.",
+    "pricing": "Nouveaux achats intrants/PBI et entretien proportionnels à la surface figée ; tarif antérieur utilisé par m². Campagnes : somme des surfaces et commande sur le leader. Prix affiché et confirmé depuis le serveur. Réserve neuve en couverture m² ; anciennes charges conservées comme passages complets, sans rétro-débit ni revalorisation des achats passés.",
+    "safety": "Achats payés exclus du solde dû. Reçus originaux réutilisés après réponse perdue ; clé abandonnée uniquement sur rejet explicite du devis avant mutation. Transaction unique pour argent, stock, comptabilité et heures ; propriétaire et surface contrôlés côté serveur.",
+    "validation": "145 tests unitaires/API, 150 contrôles PostgreSQL PGlite, TypeScript global, ESLint ciblé et grants des 364 migrations réussis. Navigateur : 27 scénarios factures/paiements/registre, 30 contrôles réserve/achats à 320/390/1440 px et 76 contrôles du suivi Culture réussis ; captures inspectées. Aucun appel de jeu externe ni erreur JavaScript. Revue croisée des contrats UI/serveur sans blocage.",
+    "reports": ["output/pay-all-invoices/report.json", "output/clarity-lot22/after/report.json", "output/culture-care/result.json", ".tmp/care-surface-sql.log"],
+    "migration": "20261108000900_kq_care_surface_and_purchase_register.sql appliquée au projet eyowwwpdmfrulhkpvlnf : colonnes de couverture et de reçus, RPC de devis/achat et registre privé paginé. Ancien achat sans devis révoqué ; publier le code applicatif correspondant pour que les anciens clients utilisent le nouveau devis.",
+    "remoteValidation": "48 contrôles avant et 104 contrôles après application réussis, transactions de lecture seule. Empreintes identiques des anciennes données : 22 lignes de stocks, 149 achats, 428 interventions et 37 portefeuilles ; sept fonctions protégées inchangées. Historique synchronisé sur 364 migrations, nouvelle simulation sans migration restante. Reçu output/care-surface-migration/completion.json.",
+    "limits": "Pas de contention PostgreSQL multiconnexion mesurée. Aucune écriture de jeu distante ni publication.",
+    "next": "Migration distante terminée. Publier le code applicatif lors d’une demande explicite ; aucun nouvel achat de jeu n’a été effectué pour la vérification. Ne pas relancer d’audit global."
+  },
+  "learningCompletion": {
+    "updated": "2026-11-08",
+    "status": "Apprendre à jouer masqué après accomplissement du tutoriel, validé localement. Aucune publication ni migration.",
+    "changes": "La navigation reçoit l’état complet du guide déjà chargé par compte : le bouton et son conteneur disparaissent dès que getFarmStep ne trouve plus d’objectif restant. Aucun bouton affiché avant la lecture initiale, pour éviter sa réapparition fugace sur une sauvegarde terminée. Pause ou fermeture seules ne comptent pas comme une fin. Textes de fin et note du profil adaptés pour ne plus promettre cet accès après le tutoriel.",
+    "persistence": "Réutilisation de la progression existante kq:farm-guide:v1 par compte dans ce navigateur ; aucune seconde sauvegarde de complétion, aucun nouveau calcul métier. Les aides des écrans restent accessibles et le bilan final du guide peut être fermé normalement.",
+    "validation": "95 tests introduction/progression/guide, TypeScript global, ESLint ciblé et diff-check réussis. Recette navigateur dédiée : 10 groupes à 320/390/1440 px ; dernier objectif réellement observé, disparition immédiate des deux accès, fermeture/rechargement, reprise après pause, états absent/ancien/malformé et changement de compte. Zéro mutation métier, erreur navigateur ou requête externe.",
+    "report": "output/placard-journey-continuity/guide-completion-report.json",
+    "next": "Demande traitée localement. Reprendre la prochaine demande explicite sans nouvel audit global."
+  },
+  "quarterFooterRemoval": {
+    "updated": "2026-11-08",
+    "status": "Bandeau sous la carte retiré localement à la demande du joueur.",
+    "changes": "Suppression des indications Choisis un lieu pour continuer, Ta prochaine action et Fais glisser pour explorer, avec le conteneur et ses styles. Commande de pause des animations déplacée en tête de l’aide du quartier.",
+    "validation": "ESLint ciblé et diff-check réussis. Recette navigateur des animations : trois scénarios à 320/390/1440 px, aucune erreur ; pause/reprise via Aide, mouvement réduit, clavier et destinations contrôlés.",
+    "report": "output/placard-navigation/motion-report.json",
+    "next": "Demande traitée localement. Reprendre la prochaine demande explicite sans nouvel audit global."
+  },
+  "learningNavigation": {
+    "updated": "2026-11-08",
+    "status": "Accès au guide déplacé et boutons Essais à part retirés localement. Aucune publication ni migration.",
+    "changes": "Suppression de la rangée Apprendre à jouer / Essais à part sous le Quartier. Apprendre à jouer est directement visible au pied de la navigation, au-dessus de Comment jouer : barre latérale sur ordinateur, menu Plus sur mobile. Suppression également de l’entrée Essais à part sur l’accueil initial ; choix guidé ou libre conservé. Lanceur simplifié vers le guide dans la partie en cours.",
+    "integrity": "Fermeture du tiroir et retrait de son entrée historique avant ouverture du guide. Vue courante, progression et préférences conservées. Pas de suppression des sauvegardes anciennes ni d’action métier. Les sessions de tutoriel avec navigation locale ne relancent pas le guide principal.",
+    "validation": "38 tests introduction/guide, TypeScript global, ESLint ciblé et diff-check réussis. Navigateur : 6 groupes navigation à 320/390/1440 px et 8 groupes introduction. Clavier, fermeture/Retour, déverrouillage du défilement, contexte, progression et absence de mutation vérifiés. Aucune exception ou requête externe. Captures du menu mobile, de la barre latérale et du Quartier inspectées. Exclusion localNavigation revue dans le code ; pas de nouveau parcours intégral du tutoriel.",
+    "reports": ["output/placard-journey-continuity/guide-navigation-report.json", "output/arena-introduction/report.json"],
+    "next": "Demande traitée localement ; reprendre la prochaine demande explicite sans nouvel audit global."
+  },
+  "producerSupportVisual": {
+    "updated": "2026-11-08",
+    "status": "Encadré Soutenir les petits producteurs remanié et validé localement. Aucune publication ni migration.",
+    "changes": "Illustration dédiée de Sylvain et de deux producteurs autour d’un plant de chanvre, cœur doré et ferme bretonne. Panneau papier doré, titre en capitales de graisse 900, bouton turquoise renforcé. Illustration de 240 px sur ordinateur et 200 px sur mobile, désormais toujours visible. Texte, caractère facultatif et lien de soutien conservés.",
+    "asset": "public/placard/ui/producer-support-v1.webp ; source artwork/ui-producer-support-v1.png ; prompt et provenance docs/bete-de-concours/ui-producer-support-provenance.json. Image générée avec image_gen, WebP transparent 512×512, 90526 octets.",
+    "validation": "TypeScript global, ESLint ciblé, 14 tests de validation du lien et 6 groupes navigateur réussis à 320/390/1440 px. Titre uppercase/900, illustration chargée et dimensionnée, absence de débordement, clavier/focus, informations du soutien, configurations absentes/invalides et tutoriel contrôlés. Zéro mutation, erreur navigateur ou requête externe ; navigation Viva interceptée. Captures mobile et bureau inspectées.",
+    "report": "output/placard-journey-continuity/financial-support-report.json",
+    "preview": "output/placard-journey-continuity/financial-support-intro-1440.png",
+    "next": "Demande traitée localement. Reprendre la prochaine demande explicite sans nouvel audit global."
+  },
+  "desktopScrollLock": {
+    "updated": "2026-11-08",
+    "status": "Conflit de verrouillage du défilement corrigé localement ; aucune publication.",
+    "cause": "Le hook du site et la fenêtre d’erreur Next.js sauvegardaient chacun overflow et padding inline. Une fermeture croisée pouvait restaurer overflow:hidden alors que toutes les fenêtres étaient fermées. Reproduit dans Chrome avec le vrai panier et une simulation de l’algorithme Next installé ; le contexte exact de l’onglet du joueur n’a pas été inspecté.",
+    "changes": "Verrou CSS propre au site sur html et body, conservé jusqu’à la fermeture de la dernière fenêtre. Aucun écrasement des styles inline des autres fenêtres ; compensation de barre de défilement ajoutée au padding existant, sans position fixe du body.",
+    "validation": "21 tests unitaires ciblés, TypeScript global, ESLint et diff-check réussis. Navigateur : blocage initial à 0 px puis défilement à 650 px après correction dans les deux ordres de fermeture ; accueil, boutique, journal, arène et politique cookies ; clavier, panier/cookies imbriqués et redimensionnement menu mobile vers PC. Aucune exception JavaScript dans la recette finale.",
+    "reports": [".tmp/scroll-debug/overlay-before.json", ".tmp/scroll-debug/overlay-after.json", ".tmp/scroll-debug/after.json"],
+    "next": "Recharger une fois l’onglet avec Ctrl+F5 pour effacer un ancien style inline déjà bloqué. Ne pas relancer un audit général."
+  },
+  "browserHydration": {
+    "updated": "2026-11-08",
+    "status": "Tolérance locale ajoutée sur html pour l’attribut externe __gcrremoteframetoken ; aucune publication.",
+    "changes": "suppressHydrationWarning limité à la balise html du layout racine, avec commentaire. Les descendants conservent leurs diagnostics d’hydratation.",
+    "validation": "ESLint ciblé et diff-check réussis. Chrome sans interface sur /arene : attribut injecté avant React, hydratation confirmée, aucun avertissement d’hydratation ni exception JavaScript ; deux réponses 401 de session anonyme. Réponse serveur sans attribut externe, avec le correctif dans le payload React.",
+    "limits": "TypeScript global bloqué par deux erreurs TS7053 dans KqCardEffectGuide.tsx (lignes 27 et 30), hors modification. Erreur native measure non reproduite ; aucun appel applicatif trouvé, instrumentation de développement React plausible mais cause non confirmée.",
+    "next": "Si measure persiste, relever le navigateur/appareil et le premier appelant JavaScript avec les arguments de performance.measure. Aucun contournement global ajouté."
+  },
+  "pendingMigrationsApplied": {
+    "updated": "2026-11-08",
+    "status": "Les trois migrations en attente 20261108000600, 20261108000700 et 20261108000800 ont été appliquées au projet eyowwwpdmfrulhkpvlnf sur demande explicite du joueur.",
+    "validation": "Historique local/distant synchronisé sur 363 migrations ; nouvelle simulation sans migration restante. 141 contrôles SQL distants en transaction de lecture seule réussis : définitions, remplacements, capacité contrats, permissions privées/serveur et index paiement valide.",
+    "limits": "Aucun déploiement applicatif, paiement ou action de jeu de test. Pas de comparaison des données avant/après : aucune empreinte préalable capturée. Les migrations définissent les fonctions/index sans réécriture métier directe.",
+    "report": "output/pending-migrations-2026-11-08/completion.json",
+    "next": "Publier le code correspondant lors de la demande de déploiement. L’ancien webhook peut renvoyer 503 sur les notifications d’échec tant qu’il utilise le RPC désormais révoqué."
+  },
+  "paymentMonotonicityFix": {
+    "updated": "2026-11-08",
+    "status": "PAY-05 corrigé et validé localement ; migration 20261108000800 appliquée et contrôlée sur Supabase après demande explicite ultérieure du joueur. Application non déployée.",
+    "scope": "Un échec Viva tardif ne peut plus déclasser une commande payée : verrou de commande, préservation du paiement/transaction/statut et libération des réservations dans la même transaction. Nouveau RPC privé au serveur, ancien accès retiré ; aucun appel séparé de libération ni de stock dans la branche échec.",
+    "reverseOrder": "Un succès après libération de récompenses reste payé, avec revue manuelle et suspension des bonus automatiques. Aucun avantage réattribué depuis une autre commande ; preuves de libération et raisons existantes conservées. Indicateurs de revue transmis aux deux lecteurs de commandes et visibles dans l’administration.",
+    "validation": "84 tests ciblés, dont 26 sur les vrais SQL dans PGlite ; 76 contrôles des récompenses du jeu liées aux commandes ; TypeScript global, ESLint, diff-check et grants des 363 migrations réussis. Revue indépendante sans constat bloquant. Aucun paiement réel ni écriture métier distante.",
+    "rollout": "Migration 008 appliquée avec 006 et 007 ; fonctions et permissions vérifiées en lecture seule. Publier la version applicative correspondante lors de la demande de déploiement. L’ancien RPC d’échec est révoqué : l’ancien webhook peut renvoyer une erreur 503 réessayable jusqu’à cette publication.",
+    "limits": "Pas de test PostgreSQL multiconnexion ni de mesure des verrous/index en production. Pas de rapprochement rétroactif de commandes ou récompenses déjà affectées.",
+    "report": "output/payment-monotonicity-fix/completion.json",
+    "review": "output/payment-monotonicity-fix/review.json",
+    "next": "Migration distante terminée. Déploiement du code applicatif restant ; ne pas annoncer une validation de bout en bout des paiements de production."
+  },
+  "postRestorationSafetyAudit": {
+    "updated": "2026-11-08",
+    "status": "Audit approfondi terminé ; quatre régressions serveur restaurées localement et panne UUID des preuves de mission corrigée. Aucun déploiement ni écriture métier distante.",
+    "restoration": "Comparaison historique de 185 fichiers : quatre correspondances exactes anciennes, restaurées depuis e1aa1a18 (.env.example, route boutique admin, webhook Viva, idempotence webhook). Les quatre suppressions audio sont intentionnelles ; développements récents du jeu conservés.",
+    "evidence": "14 nouveaux tests serveur échouent avant restauration et passent après ; suite affectée 61 tests. Runtime jeu : 452 tests sur 23 suites. Missions/UUID : 41 tests et navigateur 320/390/768/1440 px. SQL isolé : 1261 contrôles, permissions vérifiées sur 362 migrations. TypeScript global et ESLint réussis.",
+    "gameRemaining": "Migrations 006 et 007 désormais appliquées et vérifiées : coûts proportionnels installés et capacité contrats déclarée. Publication du code récent toujours à effectuer selon demande.",
+    "paymentRemaining": "PAY-05 corrigé localement après accord explicite, puis migration 008 appliquée à la demande suivante ; voir paymentMonotonicityFix et pendingMigrationsApplied. Publication applicative restante.",
+    "limits": "Tests locaux isolés, sans concurrence PostgreSQL multiconnexion ni constat de commande réelle affectée. Vitest et coverage installés en 4.1.11 alors que manifest/lock demandent 4.1.12 ; outillage à synchroniser séparément.",
+    "report": "output/post-restoration-audit/completion.json",
+    "next": "Audit et migrations demandées terminés. Reprendre la prochaine demande ; déploiement applicatif restant, sans nouvel audit global par défaut."
+  },
+  "siteVisualRestoration": {
+    "updated": "2026-11-08",
+    "status": "Présentation récente restaurée localement depuis e1aa1a18 après identification des fichiers remplacés par des versions de mars. Aucun déploiement.",
+    "scope": "30 fichiers de présentation et dépendances : styles, accueil, navigation, pied de page, boutique, zoom/avis, panier, compte et fenêtres administratives. Origine locale 192.168.1.124 conservée.",
+    "preserved": "Développements récents du jeu, retrait du son hors packs, correction UUID HTTP du trim, protection contre les résumés absents et factures personnalisées conservés. Aucun fichier du jeu modifié par cette restauration.",
+    "validation": "TypeScript global, ESLint et 200 tests sur 18 suites réussis. Accueil/navigation à 320/390/768/1440 px, 12 parcours boutique, 44 contrôles panier et 22 contrôles facture. Photos publiques et zoom clavier vérifiés à 390/1440 px sans erreur navigateur. Captures inspectées ; recettes navigateur adaptées pour Chrome, la popup de nouveautés et la découverte Vite.",
+    "backup": "output/visual-restoration-2026-11-08/before",
+    "report": "output/visual-restoration-2026-11-08/completion.json",
+    "next": "Restauration visuelle traitée. Reprendre la prochaine demande explicite ; éviter toute réinitialisation globale du dépôt."
+  },
+  "illustratedHelp": {
+    "updated": "2026-11-08",
+    "status": "Refonte illustrée des aides terminée et validée localement. Aucun déploiement ni migration.",
+    "scope": "Personnel, journée du joueur, culture, soins, Atelier, entrepôt, commerce, réseaux, finances, missions, Quartier, progression, tutoriel et aides des cartes. 59 composants contenant 109 grilles et 30 parcours illustrés, plus les notes annexes. Historiques, formulaires, géométrie des cartes, graphiques utiles, montants, conditions et sources conservés.",
+    "interaction": "Répartir le travail : trois étapes illustrées puis cinq postes sélectionnables au clavier/toucher ; un seul panneau explicatif visible. Journée personnelle : personnages dans les indicateurs et les sélecteurs d’activité. Les illustrations restent décoratives, les textes/chiffres/actions en HTML.",
+    "art": "12 scènes transparentes générées avec image_gen depuis les personnages existants et Sylvain, thème chanvre. Sources dans artwork/ui-help-sheet-v1.png ; sprites WebP 512 px dans public/placard/ui/help-*-v1.webp. Total 951644 octets ; transparence vérifiée. Export reproductible scripts/prepare-kq-help-art.mjs.",
+    "provenance": "docs/bete-de-concours/ui-help-illustration-provenance.json ; référence ajoutée à ui-print-provenance.json.",
+    "layout": "Images de 84 à 128 px, faits courts et chiffres repères, séquences numérotées avec adaptation à la largeur réelle du panneau. Styles hérités corrigés pour les soins et le récapitulatif ; aide du récapitulatif sur toute la largeur disponible de la carte. Navigation et matériaux papier du jeu conservés.",
+    "accessibility": "Retour du focus corrigé après utilisation d’une carte : le bouton pouvait être déplacé par la mise à jour de la main après fermeture native. Reprise conditionnelle après retrait de l’entrée historique, avec gardes de montage/génération. Assertion navigateur renforcée vers une vraie cible de la main.",
+    "validation": "TypeScript global final, ESLint ciblés et diff-check réussis. Navigateur : Personnel/aides 4 formats 320/390/768/1440 ; Atelier 3 ; Publicité 47 ; soins 75 ; récapitulatif 44 et une nouvelle capture ciblée 320 ; Quartier 17 ; missions 29 ; cartes 23. Images chargées, taille réelle, séparation image/texte, clavier, focus, confirmations, absence de mutation à la lecture et absence de débordement vérifiés. Captures mobiles, tablette et bureau inspectées.",
+    "reports": ["output/illustrated-help/coverage.json", "output/illustrated-help/assets.json", "output/placard-staff-ui/help-dashboard-report.json", "output/help-dashboard-workshop/report.json", "output/clarity-lot32/after/functional-report.json", "output/culture-care/result.json", "output/arena-recap/report.json", "output/arena-recap/report-culture-help.json", "output/placard-village-ambience/report.json", "output/clarity-lot14/after/report.json", "output/clarity-lot23/after/report.json"],
+    "next": "Demande traitée localement. Publication non effectuée ; reprendre la prochaine demande explicite sans nouveau tour d’audit global."
+  },
+  "helpDashboards": {
+    "updated": "2026-11-08",
+    "status": "Aides explicatives du jeu remaniées et validées localement. Aucun déploiement ni migration pour cette refonte visuelle.",
+    "scope": "Journée personnelle : répartition réelle des 12 h, prochaine recharge, comparaison de vitesse et cinq activités sélectionnables au clavier avec échelle commune 0–60 minutes. Personnel, Atelier, entrepôt, culture, soins, récapitulatifs, commerce, réseaux, finances, missions, métier et Quartier : faits courts, parcours en étapes et graphiques comparables. Composants KqHelpDashboard/Grid/Steps/Note partagés, illustrations et matériaux existants conservés. Formulaires, historiques, références fabricant et tableaux déjà utiles préservés.",
+    "validation": "TypeScript global et ESLint ciblés réussis avant le chantier Contrats suivant. Navigateur : 3 aides Personnel, 11 journée/gestes, 3 Atelier, 47 Publicité, 75 soins, 44 récapitulatifs, 17 Quartier et 29 missions. Vérifications mobiles et bureau, clavier, absence de débordement, coûts/paies, confirmations/reprises et absence de mutation à la lecture. Corrections de styles hérités dans les offres Atelier, Culture, packs, finances et graphiques du récapitulatif ; barres réellement visibles contrôlées. Captures inspectées.",
+    "reports": ["output/placard-staff-ui/help-dashboard-report.json", "output/placard-staff-ui/player-work-report.json", "output/help-dashboard-workshop/report.json", "output/clarity-lot32/after/functional-report.json", "output/culture-care/result.json", "output/arena-recap/report.json", "output/placard-village-ambience/report.json", "output/clarity-lot14/after/report.json"],
+    "next": "Version illustrée et interactive traitée dans illustratedHelp. Prolongation et réembauche suivies séparément dans staffContractLifecycle. Ne pas rouvrir un audit global."
+  },
+  "staffContractLifecycle": {
+    "updated": "2026-11-08",
+    "status": "Implémenté et validé localement : moteur, API privée, fiches, archives et contrôles SQL. Migration 007 appliquée et vérifiée ; code non publié.",
+    "rules": "docs/bete-de-concours/personnel-contracts-2026-11-08.json",
+    "scope": "Prolonger un CDD actif, continuer en CDI, réembaucher une ancienne personne avec son XP exact et un nouvel identifiant de contrat. Ancienneté/congés conservés lors de prolongation ou CDI ; nouveau compte de contrat à la réembauche, historique récent d’heures conservé. Carence liée au métier/poste, deux renouvellements, dix-huit mois CDD, plafond saisonnier de jeu six mois clairement distingué de la loi.",
+    "migration": "20261108000700_kq_staff_contract_lifecycle.sql appliquée et vérifiée sur eyowwwpdmfrulhkpvlnf le 8 novembre 2026.",
+    "entry": "Personnel : Prolonger / CDI dans la fiche ou Paie & contrats ; Réembaucher dans le dossier des anciens contrats. Confirmation avec coût mensuel et absence de débit immédiat. Actions masquées tant que la base ne déclare pas la capacité de gestion des contrats.",
+    "integrity": "Lecture du dernier contrat de la personne limitée au propriétaire ; identité permanente et nouvel identifiant de contrat à la réembauche. Archives inchangées, même XP et historique récent d’heures, nouveaux droits et planning automatique à reprogrammer. Pré-règlement puis mutation figée : aucun double avancement du trim continu. Révision serveur, contrôle exact de l’état, horloge serveur et reprise avec la même clé protègent les confirmations et les courses réseau.",
+    "validation": "TypeScript global et ESLint ciblés réussis. Moteur : 212 tests initiaux puis 53 tests concernés après correction du trim, dont 40 contrats et 13 trim partagé. API/routes : 45 tests réussis. SQL : 78 contrôles réussis ; permissions Supabase : 362 fichiers vérifiés. Navigateur : 7 groupes à 320/390/1440 px, clavier, annulation et retour du focus, reprise après réponse perdue, carence, exactitude des cinq XP, historique intact, absence de doublon/débit/débordement et compatibilité avant migration. Captures de prolongation mobile et réembauche bureau inspectées.",
+    "regression": "Les 4 groupes navigateur des fiches employés existantes passent également après intégration du contrôleur et des nouvelles actions.",
+    "reports": ["output/placard-staff-ui/contract-lifecycle-report.json", "output/placard-staff-ui/employee-sheet-report.json"],
+    "next": "Migration 007 appliquée. Publication du code restante selon demande ; aucun nouvel audit nécessaire."
+  },
+  "staffRequestKeyHttp": {
+    "updated": "2026-11-08",
+    "status": "Corrigé et validé localement ; code non publié.",
+    "changes": "Les confirmations partagées Personnel/Atelier utilisent createClientRequestKey au lieu de crypto.randomUUID directement. Le trim reste utilisable en HTTP sur le réseau local ; une nouvelle opération reçoit sa propre clé et une reprise conserve la même.",
+    "validation": "4 tests client-request-key et ESLint ciblé réussis. 6 groupes navigateur shared-trim réussis à 320/390/1440 px, dont randomUUID absent à 320 px : confirmation, UUID v4 valides, opérations distinctes et reprise avec la même clé. Transport simulé, aucune erreur navigateur ni requête distante.",
+    "report": "output/placard-staff-ui/shared-trim-report.json",
+    "next": "Correction traitée. Reprendre la prochaine demande explicite sans nouvel audit global."
+  },
+  "audioRemoval": {
+    "updated": "2026-11-08",
+    "status": "Son retiré du jeu hors ouvertures de packs, conformément à la précision du joueur. Code local, non publié.",
+    "changes": "Suppression des boutons Son du quartier et des activités, du fournisseur audio commun, de la synthèse des dés/récoltes/jurys/récompenses et de l’ancien hook de navigation. Styles et tests audio obsolètes retirés ; aperçus et audits adaptés.",
+    "packs": "Sons des ouvertures et révélations de packs conservés, avec leur bouton Son et leur synthèse locale sans Supabase. Fichiers du parcours packs rétablis à leur version antérieure à cette demande.",
+    "validation": "85 tests ciblés, TypeScript global, ESLint ciblé et diff-check réussis. Navigateur : 17 groupes village, 26 récoltes/missions et 20 contrats réussis, sans contexte audio ni boutons de son. Les 8 groupes packs confirment le bouton Son, l’activation volontaire, la réutilisation du contexte audio et son arrêt à la fermeture. Captures mobiles du quartier et des packs inspectées.",
+    "reports": ["output/placard-village-ambience/report.json", "output/placard-game-moments/report.json", "output/placard-renewable-contracts/report.json", "output/pack-opening-studio/report.json"],
+    "next": "Demande traitée et validée localement. Reprendre uniquement la prochaine demande explicite ; aucune migration nécessaire."
+  },
+  "staffDashboard": {
+    "updated": "2026-11-08",
+    "status": "Refonte Personnel intégrée et validée localement. Aucun changement de données, migration ou publication.",
+    "entry": "/arene/placard?view=staff",
+    "scope": "Quatre indicateurs : temps du joueur, heures disponibles des salariés, coût mensuel estimé et paie réellement due. Prochaine action adaptée à la paie, au recrutement ou au repos ; trésorerie et semaines types visibles. Cartes illustrées regroupant portrait, contrat, heures, fiche et semaine type. Repos sans jauge 0/0 ; postes de travail réunis dans un panneau distinct. Matériaux papier et personnages existants conservés.",
+    "preserved": "Calculs métier, montants serveur, affectations, glisser-déposer souris et tactile, animations, confirmations, annulations, fiches, planning quotidien et hebdomadaire. Données périmées signalées et actions verrouillées après une erreur de lecture.",
+    "validation": "TypeScript global, ESLint ciblé et contrôle du diff réussis. 25 groupes navigateur : 13 dashboard, 4 fiches, 8 plan de travail. Largeurs 320/390/1440 px ; valeurs exactes, repos, paie partielle, équipe vide, erreur/reprise, clavier, focus, drag souris/tactile et défilement. Captures finales inspectées. Transport simulé, aucune requête métier distante ni erreur navigateur.",
+    "reports": ["output/placard-staff-ui/dashboard-report.json", "output/placard-staff-ui/employee-sheet-report.json", "output/placard-staff-ui/work-plan-report.json"],
+    "next": "Demande de clarification visuelle de Personnel traitée. Migration de vitesse des actions appliquée depuis. Reprendre la prochaine demande explicite sans nouvel audit global."
+  },
+  "actionWorkSpeed": {
+    "updated": "2026-11-08",
+    "status": "Implémenté et validé localement. Migration 20261108000600 appliquée et contrôlée sur Supabase ; code non publié.",
+    "rule": "Publicité, campagne marketing et publication sponsorisée : base 1 h au lieu de 2 h. Selon la clarification du joueur, commerce, rangement et gestion suivent aussi la réduction proportionnelle : durée de base × (11 − niveau de la compétence) / 10. Au niveau 10, 1 h devient 0,1 h et 0,5 h devient 0,05 h ; aucun plancher global à 0,1 h.",
+    "skills": "Communication pour publications/publicité/marketing ; Prospection pour ventes et annonces ; Transformation pour conditionnement des fleurs, rangement, entretien et installation ; Administration pour achats, factures et organisation. Mapping exhaustif partagé avec les tests SQL dans kanab-quest-player-action-costs.ts. Culture et jobs de transformation conservent leurs règles dédiées ; réservations de missions et trim inchangées.",
+    "authority": "Coût calculé en SQL depuis les XP persistées du joueur, jamais depuis un niveau client ou un employé. Héritage playerProcessingXp conservé. Ledger en centièmes d’heure, limite 12 h, CAS, verrouillage, échecs atomiques, actions sans effet et reçus rejoués préservés. Aucune modification de la progression XP.",
+    "ui": "Temps courant et niveau dans le récapitulatif de journée ; durée avant publicité, marketing et post sponsorisé, puis dans les confirmations des campagnes. Compétence transmise depuis le snapshot Personnel. Données indisponibles : plage explicative sans durée courante inventée. Temps de diffusion et travail personnel distincts.",
+    "validation": "165 tests TypeScript ciblés et 206 contrôles PostgreSQL réussis ; permissions des 361 migrations, TypeScript global, ESLint ciblé et diff-check réussis. Navigateur : publicité 45 observations, marketing 72 observations, partenariats 5 groupes et réserve personnelle 11 groupes. Niveaux 1/5/10, demi-heures proportionnelles, compétences distinctes, état inconnu, 320/390/1440 px, clavier, reprises et montants contrôlés ; captures inspectées. Transport simulé, aucune mutation distante.",
+    "reports": ["output/placard-staff-ui/player-work-report.json", "output/clarity-lot32/after/functional-report.json", "output/clarity-lot31/after/functional-report.json", "output/social/sponsors-report.json"],
+    "migration": "supabase/migrations/20261108000600_kq_communication_work_speed.sql",
+    "next": "Migration 006 appliquée et vérifiée ; publication du code restante selon demande. Ne pas refaire l’audit global."
+  },
+  "productFlavorDemand": {
+    "updated": "2026-11-08",
+    "status": "Corrigé et validé ; migration 20261108000500 appliquée et vérifiée sur Supabase le 8 novembre 2026 à la demande du joueur. Application non publiée.",
+    "changes": "Résines, hash et rosins héritent des goûts de la fleur via flower_id et variété source ; bonus sur leurs tarifs shops/grossistes et leur référence en ligne. Un goût commun donne une demi-prime, deux la prime complète. Biomasse exclue ; qualité, maturité, transformation terminée et quota partagé en grammes de produit restent contrôlés côté serveur.",
+    "flowers": "Aucun défaut de calcul reproduit pour une fleur admissible : le prix professionnel était déjà bonifié. L’écran explique désormais les goûts compatibles sans prime si qualité insuffisante, curing inachevé ou quota épuisé. En ligne, le prix choisi reste libre et seul le repère est bonifié.",
+    "ui": "Goûts visibles sur fiches de lots et annonces ; demandes compatibles ouvertes aux produits transformés. Prime explicite dès le choix du circuit et repères fleurs distingués des tarifs des extraits.",
+    "validation": "226 tests unitaires et backend, 348 contrôles PostgreSQL dont préparation réelle résine/reliquat, provenance, tarifs fractionnaires et arrondis des primes, quota partagé, rejouabilité et paiement. Permissions des 360 migrations vérifiées. TypeScript global, ESLint ciblé et diff-check réussis. 23 groupes navigateur dont résine à 320/390/1440 px, clavier, annonces et explication qualité ; aucune erreur ni débordement, captures inspectées.",
+    "report": "output/placard-customer-demand/report.json",
+    "activation": "Projet eyowwwpdmfrulhkpvlnf : seule 20261108000500 appliquée depuis un dossier isolé, trois fonctions et permissions vérifiées. Empreintes des 14 tables contrôlées et quatre fonctions protégées conservées ; 16 révisions commerce incrémentées comme prévu pour invalider les anciens devis. 360 migrations distantes synchronisées avec ce déploiement. Migration locale 20261108000600 exclue. Reçu : output/product-flavor-demand-migration/completion.json.",
+    "next": "Publier le code correspondant par le workflow habituel sur demande ; migration des goûts déjà appliquée. Reprendre seulement la prochaine demande explicite, sans audit global."
+  },
+  "atelierLaboratory": {
+    "updated": "2026-11-08",
+    "status": "Laboratoire illustré intégré localement, puis perspective et implantation corrigées selon le retour du joueur. Aucune migration ni publication.",
+    "changes": "Décor et onze sprites redessinés en vue isométrique cohérente ; projection commune pour les six postes, supports séparés et emprises réservées aux futures machines. Porte et allée centrale dégagées, aucune intersection des boîtes projetées en gamme maximale. Machines achetées seules affichées, états installé/réserve/entretien distincts, six repères cliquables et registre accessible, zoom tactile et clavier.",
+    "scale": "Gabarits fondés sur les dimensions publiées lorsque disponibles ; estimations explicites pour presses illustrées, plateaux, supports et annexes. Gammes de presse et laveuse visuellement distinctes ; taille indépendante du viewport et des cibles tactiles. Sources accessibles dans Proportions et références.",
+    "assets": "public/placard/lab-v2",
+    "provenance": "docs/bete-de-concours/lab-art-provenance-v2-2026-11-08.json",
+    "dimensions": "docs/bete-de-concours/lab-machine-dimensions-2026-11-08.json",
+    "validation": "TypeScript global, ESLint ciblé, diff-check et 12 tests unitaires réussis. Recette navigateur à 320/390/1440 px : vide/partiel/premium, transparence, trois gammes presse/laveuse, échelle commune, six repères visibles et réellement cliquables, clavier/focus, zoom tactile/flèches, achats/installation/amélioration/entretien, prérequis, erreurs et reprise avec même clé, prix exact et débit unique. Aucune erreur navigateur ni requête externe ; captures inspectées. Données et transport simulés, aucune commande métier de production.",
+    "report": "output/visual-workshop/report.json",
+    "next": "Demande traitée localement, code non publié. Reprendre uniquement la prochaine demande explicite du joueur, sans nouvel audit global."
+  },
+  "processingWork": {
+    "updated": "2026-11-08",
+    "status": "Transformation par volume implémentée et validée. Migration 20261108000400 appliquée et vérifiée sur Supabase. Code applicatif non publié.",
+    "rule": "Cadence propre aux machines et à la compétence Transformation, plafonnée au profil de référence. Réservation par demi-heure, durée active exacte et attente passive distinctes. Une heure de jeu vaut dix minutes réelles. Le devis serveur montre le volume couvert, la personne, les heures réservées et les sources avant confirmation.",
+    "delegation": "Réserves quotidiennes ou semaine type, possibles avant la création du lot. Les heures sont déjà imputées au planning puis consommées par le travail sans second débit. Une délégation ne prélève aucune heure joueur ; à épuisement le lot attend des heures supplémentaires ou un prochain jour travaillé. Paie, congés, contrat et disponibilité restent contrôlés. Le joueur utilise sa propre réserve de 12 h sans salarié.",
+    "jobs": "Nouveaux lots financés en tranches, progression temporelle, XP proportionnelle aux créneaux consommés, reprise confirmée avec jeton et même clé en cas de réponse perdue. Personne et machines sérialisées ; attente autonome sans heures humaines. Stock invendable jusqu’à achèvement total. Anciens lots et missions conservés, ancienne accélération sans effet sur les nouveaux jobs.",
+    "sources": "docs/bete-de-concours/processing-manufacturer-sources-2026-11-08.json : six familles actives et cinq références historiques. Sources officielles distinguant matière sèche, humide et produit fini. Débits non publiés estimés avec accord explicite du joueur ; niveaux et part humaine sont des paramètres de jeu. Profils et hypothèses dans src/lib/kanab-quest-processing-profiles.ts, visibles dans les détails du devis et les fiches machines.",
+    "entry": "Personnel pour les réserves ; Commerce pour choisir le lot à transformer et reprendre une tranche ; Atelier pour les machines et le trim. Le lien joueur ouvre directement l’action existante dans Commerce.",
+    "validation": "227 tests Personnel et 318 tests profils/validation/commerce/backend distincts réussis ; 58 contrôles SQL Transformation et 623 historiques Entrepôt, composition comptabilité/planning/Culture réelle. Permissions des 359 migrations vérifiées ; TypeScript global, ESLint ciblé et diff-check réussis. Six groupes navigateur à 320/390/1440 px : devis, reprise, zéro heure joueur, semaine type, sources, erreurs et même clé, aucune date sentinelle ni débordement. Captures inspectées. Contention simultanée multiconnexion non mesurée par PGlite.",
+    "reports": ["output/placard-staff-ui/processing-work-report.json", "output/processing-work-migration/completion.json"],
+    "activation": "Projet eyowwwpdmfrulhkpvlnf : 54 contrôles préalables et 91 après application réussis. 359 migrations synchronisées, aucune en attente. Empreintes inchangées : 366 lots préparés, 449 stocks commerciaux, 1443 commandes commerce, 452 cultures, 26 reçus Personnel, 13 archives, 3 comptes Personnel, 37 portefeuilles, 434 fleurs, 432 lots stockés, 8 suivis trim et dix fonctions protégées. Nouvelle table privée vide, aucune commande métier distante exécutée. Reçu : output/processing-work-migration/completion.json.",
+    "next": "Demande traitée. Publication applicative non effectuée ; reprendre uniquement la prochaine demande du joueur sans nouvel audit global."
+  },
+  "cultureWork": {
+    "updated": "2026-11-08",
+    "status": "Culture par étapes implémentée ; migration 20261108000300 appliquée et vérifiée. Code applicatif non publié.",
+    "rule": "Une étape consomme 0,5 h une seule fois au lancer. Six étapes = 3 h. Avec une réservation Culture salariée, la jauge du joueur reste intacte ; cartes, soins, résolution et passage ne refacturent pas l’étape. Sans délégation, les étapes utilisent la journée du joueur. L’achat de soins reste une action séparée.",
+    "delegation": "Réserve du jour issue d’une affectation quotidienne ou de la semaine type, ciblée ou Toutes les cultures. À épuisement, blocage jusqu’à ajout d’heures ou prochain jour avec réserve disponible : aucun relais joueur, y compris après archivage, changement de jour ou week-end. Anciennes missions conservées sans rétrofacturation.",
+    "bonuses": "Bonus et XP attribués au travail réellement réalisé ; différences cumulées du barème existant selon niveau Culture, métier et trait. État enrichi enregistré avant résolution et projeté aux membres d’une campagne, pour une seule demi-heure totale. Reçus par culture canonique et étape, reprise sans double débit.",
+    "ui": "Portrait, salarié responsable, heures restantes et bonus serveur dans Culture ; disponibilité, réserve consommée et Toutes les cultures dans Personnel/planning. Chargement ou devis indisponible bloque le lancer ; bouton Actualiser les heures pour reprendre après modification.",
+    "validation": "198 tests moteur/planning initiaux, suite Culture 37 tests revue après alignement XP ; 144 tests API/backend/validation finaux et 23 tests campagnes, soit 365 tests distincts. 264 contrôles SQL Culture avec vrais moteurs TS et sauvegardes SQL, 94 journée joueur, grants des 358 migrations, TypeScript global et ESLint ciblé réussis. Navigateur : 6 groupes Personnel/statut à 320/390/1440 px et 13 contrôles du vrai guide, données simulées, zéro erreur. Cas 2 h → 4 étapes → blocage → +1 h → 2 étapes réussi. Contention multiconnexion non mesurée par PGlite.",
+    "reports": ["output/placard-staff-ui/culture-work-report.json", "output/placard-journey-continuity/guide-report.json", "output/culture-work-migration/completion.json"],
+    "activation": "14 contrôles préalables et 35 contrôles distants réussis. 358 migrations synchronisées, aucune en attente. Empreintes inchangées : 452 cultures, 26 reçus, 13 archives, 3 comptes Personnel, 37 portefeuilles, 434 fleurs, 432 stocks, 8 suivis trim et dix fonctions protégées.",
+    "next": "Publication applicative non effectuée. Ne pas refaire l’audit global ; reprendre uniquement la prochaine demande du joueur."
+  },
+  "staffMenuArt": {
+    "updated": "2026-11-08",
+    "status": "Illustration Personnel remplacée localement ; aucune migration ou publication.",
+    "changes": "Trois têtes détourées côte à côte : Anna, Sylvain sans barbe et Maël. Image générée à partir des personnages existants ; fond réellement transparent, aucun rectangle. Même vignette dans le menu et les titres de Personnel via KqPrintedArt. Portraits individuels inchangés.",
+    "asset": "public/placard/ui/staff-v1.webp",
+    "source": "output/imagegen/kq-staff-team-v1.png",
+    "provenance": "docs/bete-de-concours/ui-navigation-provenance.json",
+    "validation": "Alpha vérifié : 512×512, bord transparent de 20 px, 197074 pixels entièrement transparents. Navigation vérifiée à 320/390/1440 px, ouverture clavier de Personnel, aucun débordement ni erreur navigateur. Captures mobile et bureau inspectées ; ESLint et diff-check réussis.",
+    "report": "output/staff-menu-art/report.json",
+    "next": "Demande traitée. Reprendre le prochain besoin explicite sans audit supplémentaire."
+  },
+  "weeklyPlan": {
+    "updated": "2026-11-08",
+    "status": "Implémenté et validé localement. Migration 20261108000200 appliquée et vérifiée sur Supabase. Code applicatif non publié.",
+    "entry": "docs/bete-de-concours/staff-weekly-plan-2026-11-08.json",
+    "changes": "Personnel : choix Journée / Semaine type par employé ; cinq jours, trois activités par jour, répétition dès demain, frais hebdomadaires hors salaire, pause et historique. Rattrapage serveur sans visite toutes les quatre heures ; contrat, week-end, congés, budget et paie respectés. Trim dans la file commune de l’Atelier.",
+    "authority": "Occurrence identifiée et facturée une seule fois, versions et tarifs côté serveur, rattrapage séparé des confirmations et de la paie. Migration privée sans nouvelle table ni modification des parties.",
+    "validation": "163 tests ciblés distincts, dont 35 planning ; 153 contrôles SQL, TypeScript global, ESLint et grants de 357 migrations réussis. 13 groupes navigateur à 320/390/1440 px ; captures inspectées. Supabase : 75 contrôles avant et 95 après migration, 357 migrations synchronisées, données et fonctions protégées préservées.",
+    "reports": [
+      "output/placard-staff-ui/weekly-plan-report.json",
+      "output/placard-staff-ui/employee-sheet-report.json",
+      "output/placard-staff-ui/report.json",
+      "output/weekly-plan-migration/completion.json"
+    ],
+    "limits": "Calcul au prochain passage serveur, sans service permanent. Économie existante conservée : la paie mensuelle arrive tous les 30 jours du jeu et doit être réglée explicitement. Essais locaux avec transport simulé et PostgreSQL isolé ; pas d’essai joueur ni de commande métier en production.",
+    "next": "Besoin traité. Publier le code via le workflow habituel sur demande ; la migration est déjà appliquée. Reprendre le prochain besoin explicite sans nouvel audit général."
+  },
+  "employeeSheet": {
+    "updated": "2026-11-08",
+    "status": "Fiche employé en popup implémentée dans Personnel ; aucune migration nécessaire, code non publié.",
+    "changes": "Bouton Voir la fiche sur le plan et dans les dossiers, accès depuis les reçus. Vrai portrait, cinq compétences avec niveaux et XP, trait et parcours, coût mensuel estimé détaillant brut et charges, contrat, dates, heures, congés et paie. Planning détaillé accessible sans déclencher de travail. Sélection, glisser-déposer et affectations préparées conservés.",
+    "accessibility": "Dialog natif, verrouillage du défilement, confinement du focus, fermeture par Échap ou bouton et retour au déclencheur. Avertissement si lecture indisponible, données connues conservées et préparation du travail désactivée. Animations du plan suspendues pendant la consultation.",
+    "validation": "TypeScript global et ESLint ciblé réussis. 13 groupes navigateur : quatre pour la fiche à 320/390/1440 px, cinq de Personnel et quatre des reçus recrutement/formation. Coûts et compétences exacts, CDI35h et CDD14h, erreurs et reprise, zéro mutation lors de la consultation, zéro erreur navigateur ou requête distante. Captures mobile et bureau inspectées.",
+    "reports": ["output/placard-staff-ui/employee-sheet-report.json", "output/placard-staff-ui/report.json", "output/placard-staff-ui/staff-moments-report.json"],
+    "files": ["src/components/placard/KqStaffEmployeeSheet.tsx", "src/components/placard/KqStaffEmployeeSheet.module.css", "src/components/placard/KqStaffDesk.tsx", "src/components/placard/KqStaffWorkPlan.tsx", "src/components/placard/KqStaffWorkPlan.module.css", "scripts/audit-placard-staff-ui.mjs"],
+    "limits": "Validation locale avec le moteur de jeu et un transport simulé ; aucun appel métier de production ni essai utilisateur réel.",
+    "next": "Demande traitée. Reprendre le prochain besoin explicite sans refaire l’audit général ni les migrations déjà appliquées."
+  },
+  "sharedTrim": {
+    "updated": "2026-11-08",
+    "entry": "docs/bete-de-concours/shared-trim-2026-11-08.json",
+    "status": "Atelier commun implémenté : aucun lot à choisir, joueur et employés simultanés. Manuel 60–150 g/h selon Transformation, machine ×4. Migration 20261108000100 appliquée au projet du site le 8 novembre 2026 sur demande explicite ; code non publié par cette opération.",
+    "changes": "Masse réelle de récolte, allocation chronologique partagée, progression partielle confirmée et XP productive. Qualité pondérée unique, horaires et anciennes réservations préservés. Scène avec plusieurs avatars, attente sans animation au stock épuisé, guide lié au lot suivi.",
+    "validation": "227 tests ciblés, 84 contrôles SQL partagés et 39 historiques, permissions de 356 migrations, TypeScript global et ESLint ciblé réussis. 48 groupes navigateur à 320/390/1440 px, dont dix pour le trim partagé et son guide ; anciennes recettes adaptées, captures inspectées, zéro erreur ou requête distante. Six migrations Personnel déjà appliquées inchangées.",
+    "activation": "16 contrôles préalables et 110 contrôles distants réussis. 356 migrations synchronisées, aucune en attente. Empreintes inchangées : 26 reçus, 13 archives, 3 comptes Personnel, 37 portefeuilles, 431 fleurs, 429 stocks et 5 anciens suivis trim ; dix fonctions protégées inchangées. Reçu : output/shared-trim-migration/completion.json.",
+    "next": "Migration activée et vérifiée ; reprise QA-05 seulement si demandée. Aucune publication applicative effectuée. Ne pas refaire l’audit global."
+  },
+  "staffArchive": {
+    "updated": "2026-11-08",
+    "entry": "docs/bete-de-concours/staff-archive-2026-11-07.json",
+    "status": "QA-01 implémenté : migration 20261107000600 appliquée au projet du site le 8 novembre 2026 sur demande explicite. Registre dans Personnel prêt ; aucune publication de code effectuée.",
+    "changes": "Plus de plafond à quarante contrats cumulés ; huit actifs maximum. Contrats soldés archivés avec paies et tâches, récupération depuis les anciens reçus, comptabilité et reprises préservées. Dossiers paginés et chargés à la demande, conditions et congés consultables.",
+    "validation": "164 tests ciblés, 59 contrôles SQL PGlite, grants de 355 migrations, TypeScript global et ESLint ciblé réussis. Quatre groupes navigateur à 320/390/1440 px ; six captures inspectées, zéro erreur ou appel distant. Revue indépendante de la migration ; contention et durée du backfill distant non mesurées.",
+    "activation": "Projet eyowwwpdmfrulhkpvlnf confirmé identique à la configuration du site. 16 contrôles préalables et 78 contrôles distants réussis ; 355 migrations synchronisées, aucune en attente. Les 25 reçus préexistants et les fonctions comptables/heures/trim sont préservés ; un nouveau reçu issu de l'activité normale est distingué. Reçu : output/staff-archive-migration/completion.json. Code applicatif non publié par cette opération."
+  },
+  "guideTrimWorkday": {
+    "updated": "2026-11-07",
+    "entry": "docs/bete-de-concours/guide-trim-workday-2026-11-07.json",
+    "status": "Premier lot de l'audit implémenté : UX-01 et UX-02. Guide à 29 objectifs avec trim du lot suivi ; Quartier contextualisé par la lecture serveur de la jauge. Aucune migration ni publication.",
+    "changes": "Trim requis/réservé/en cours/terminé vérifié dans le vrai Atelier, même après sélection manuelle sans lien profond ; lots anciens et guide fermé préservés. Heures 0/0,5/12 distinguées, renouvellement visible, urgences intactes, relecture après geste de culture et navigation.",
+    "validation": "123 tests ciblés, TypeScript global, ESLint ciblé et diff réussis. 20 groupes navigateur : 13 guide, 4 tutoriel Personnel, 3 Atelier à 320/390/1440 px ; zéro erreur navigateur ou requête externe. Données simulées en mémoire, captures inspectées et revue indépendante ciblée. Détails et limites dans le document."
+  },
+  "globalAudit": {
+    "updated": "2026-11-07",
+    "entry": "docs/bete-de-concours/audit-studio-global-2026-11-07.json",
+    "status": "Audit élargi explicitement demandé, terminé avec trois agents : UX/parcours, art/animation et qualité technique. Application inspectée en lecture seule ; seules la synthèse et ce checkpoint sont écrits.",
+    "findings": "16 constats étayés et qualifiés. Priorités fonctionnelles : trim absent du guide, recommandation du Quartier sans contexte horaire, plafond de 40 contrats historiques. Finition : gestes propres aux métiers, conséquences confirmées cohérentes, résultats au retour et petits états mobiles. Essais joueurs, charge et compatibilité de la version publiée restent à établir.",
+    "evidence": "Code actuel, captures existantes confrontées au code, rapports de recettes et reçus de migrations. Aucun test relancé, appel métier distant, mesure de performance ou essai utilisateur effectué. Aucune panne publique ni double débit après rechargement démontrés.",
+    "next": "UX-01/UX-02 puis QA-01 traités localement dans leurs documents de suivi. Prochain lot : reprise d'une confirmation Personnel incertaine après rechargement (QA-05), sans refaire l'audit général. Les observations de nouveaux joueurs restent nécessaires."
+  },
+  "objective": "Simplifier visuellement le jeu en commençant par le Quartier, sans changer ses règles économiques ni publier automatiquement.",
+  "audit": "docs/bete-de-concours/AUDIT-CLARTE-ET-PARCOURS-2026-10-29.md",
+  "completed": "36 lots documentés. Guide dans la vraie ferme en section 50, histoire illustrée en section 51, progression par actions et mode compact/fermé en section 52.",
+  "studioInteraction": {
+    "updated": "2026-11-07",
+    "status": "Quatre tranches locales réalisées : Quartier/Personnel, Atelier/Commerce, réactions aux recrutements/formations, puis personnages en activité sur le plan de travail. Illustrations générées et vrais avatars conservés. Code non publié.",
+    "entry": "docs/bete-de-concours/studio-interaction-2026-11-07.json",
+    "changes": "Quartier vivant et plan Personnel interactif ; Atelier illustré avec six couches raster générées, personnages existants, ciseaux et trimeuse animés selon la tâche réelle. Suivi compact, pause persistante, mouvement réduit, arrêt hors écran. Commerce : échéance réelle illustrée et reçu immédiat, sans fausse attente.",
+    "validation": "Première tranche : 39 tests et recettes Quartier/Personnel conservées. Atelier/Commerce : 94 tests ciblés et 76 tests agent (périmètres recoupés), TypeScript et ESLint passent. Navigateur : 4 groupes trim, 3 commerce à 320/390/1440 px ; six captures des nouvelles illustrations inspectées. Rapports dans le document Atelier. Vidéo : output/placard-staff-ui/trim-motion-demo.webm.",
+    "next": "Observer la compréhension des réactions et des prochaines actions pendant l’essai avec de nouveaux joueurs. Ne pas refaire les tranches déjà validées.",
+    "atelierEntry": "docs/bete-de-concours/studio-atelier-2026-11-07.json",
+    "personnelEntry": "docs/bete-de-concours/studio-personnel-2026-11-07.json",
+    "workplanEntry": "docs/bete-de-concours/studio-workplan-2026-11-07.json",
+    "workplanScenes": "Personnages en pied aux vrais postes, profil joueur réutilisé, accessoires discrets générés, compteurs en cours/à venir/à vérifier. Pause entre onglets, mouvement réduit et suspension hors écran/lecture indisponible. 65 tests, TypeScript global et ESLint passent ; 9 groupes scènes et 8 groupes plan validés, détails dans le document. Captures 320/390/1440 inspectées et vidéo de 4 s décodée : output/placard-staff-ui/work-scene-motion-demo.webm.",
+    "personnelReactions": "Accueil après signature et reçu de formation avec vrai avatar, bureau/dossier/carnet générés, mouvement bref et coûts/heures confirmés. 78 tests, TypeScript global et ESLint passent ; 4 groupes navigateur ciblés et 5 existants à 320/390/1440 px, réponse perdue/reprise, candidatures renouvelées, clavier et mouvement réduit. Vidéo : output/placard-staff-ui/staff-moment-training-preview.webm.",
+    "latestCorrection": "Trim manuel : ciseaux réduits de 37 % à 24 %, personnage dégagé et vrai profil joueur affiché. Joueur et Anna vérifiés à 320/390/1440 px, y compris profil absent ou en erreur ; 14 tests ciblés, TypeScript et ESLint réussis après correction. Vidéo finale : output/placard-staff-ui/trim-manual-motion-demo.webm."
+  },
+  "visualSimplification": {
+    "updated": "2026-11-07",
+    "status": "Première refonte locale du Quartier, de la navigation commune, de la jauge du joueur et de Personnel. Analyse croisée UI/UX, corrections implémentées et captures inspectées. Code non publié ; aucune migration nécessaire.",
+    "entry": "docs/bete-de-concours/visual-simplification-2026-11-07.json",
+    "changes": "Carte au premier plan et action principale visible sur téléphone ; lieux Personnel/Finances/Atelier explicites. Menu regroupé, jauge compacte. Plan illustré unique joueur/employés, portraits visibles après affectation, un formulaire selon le poste choisi. Prospection avec frais immédiatement lisibles et détails repliables. Nouvelle serre de chanvre pour la vignette Culture.",
+    "validation": "124 tests ciblés, TypeScript global et ESLint ciblé réussis. Personnel : 26 groupes navigateur ; vrai Shell/guide et Atelier : 5 ; hiérarchie du Quartier et destinations : 12 ; urgences et reprises : 36 ; navigation complète : 23, plus 3 ciblés. Clavier, tactile, coûts, confirmations, reprises et erreurs préservés à 320/390/1440 px. Rapports détaillés dans le document d’entrée.",
+    "next": "Continuer par les contenus Atelier et Commerce en réutilisant les composants et recettes existants ; ne pas refaire l’audit général. L’essai avec de nouveaux joueurs reste à réaliser."
+  },
+  "latest": {
+    "lot": 36,
+    "auditSection": 52,
+    "status": "Accompagnement progressif : 24 objectifs en quatre parties, validation par l’état confirmé du jeu, barre compacte et fermeture complète mémorisées.",
+    "files": ["src/lib/kanab-quest-farm-progress.ts", "src/lib/kanab-quest-farm-progress.test.ts", "src/components/placard/KqFarmGuide.tsx", "src/components/placard/KqFarmGuide.module.css", "src/components/placard/PlacardPlayerShell.tsx", "scripts/audit-placard-journey-continuity.mjs"],
+    "validation": "67 tests ciblés, TypeScript global, ESLint ciblé et contrôle du diff passent. Guide navigateur : 6 groupes à 320/390/1440 px, lancement/lancer/résolution réels dans l’API d’essai, exactement trois écritures explicitement autorisées, aucun achat/pack automatique, suivi du bon lot, réduction et fermeture persistantes, barre visible sous l’en-tête. Captures inspectées. Recette existante de continuité : 21 scénarios passent après intégration.",
+    "browserReports": ["output/placard-journey-continuity/guide-report.json", "output/placard-journey-continuity/report.json"],
+    "changes": "Suppression de Scène suivante : les visites ne valident plus les actions métier. Fermé, le guide ne laisse aucun bandeau et se retrouve dans Apprendre à jouer. Migration locale v1→v2 sans convertir la lecture en accomplissements. Même récolte suivie jusqu’à la vente, autre lot sélectionnable dans le carnet. Aucun changement économique, migration SQL ou publication."
+  },
+  "latestCorrection": {
+    "task": "Illustration des packs : emballage Buddies actuel et Sylvain sans barbe.",
+    "changes": "Réutilisation de sylvain-booster-presentation-v3.webp dans le guide, Apprendre à jouer et la rencontre Collection. Plus aucune référence à album-booster-mascot-v3.webp dans src ; portrait affiché sans recadrage. Provenance complétée, aucune génération nécessaire.",
+    "validation": "ESLint ciblé et contrôle du diff passent. Recette navigateur du guide : 6 groupes à 320/390/1440 px ; captures mobile et bureau inspectées. Aucun changement de progression, migration ou publication."
+  },
+  "next": {
+    "task": "Retrouver une confirmation Personnel incertaine après fermeture ou rechargement.",
+    "entry": "docs/bete-de-concours/audit-studio-global-2026-11-07.json",
+    "scope": "QA-05 : persister seulement la commande soumise non acquittée, sa clé et son propriétaire ; la vérifier ou reprendre avec la même clé. QA-01 est validé et sa migration 006 appliquée ; l'interface n'a pas été publiée par cette opération.",
+    "preserve": "Un seul débit et une seule tâche ; isolation entre propriétaires et tutoriel ; confirmations, montants et reçus serveur. Ne pas relancer l'audit ni modifier le registre d'archives déjà validé.",
+    "doneWhen": "Après réponse perdue puis destruction de la page, une commande enregistrée ou non retrouve une issue claire et se reprend sans doublon. Recette navigateur et tests de reprise ciblés réussis."
+  },
+  "playerResearch": {
+    "task": "Faire essayer le guide progressif dans la vraie ferme à 5 à 8 nouveaux joueurs.",
+    "entry": "docs/bete-de-concours/AUDIT-CLARTE-ET-PARCOURS-2026-10-29.md, section 14",
+    "scope": "Observer un objectif à la fois : démarrage, aménagement, culture, rangement, attente d’affinage, jury, vente puis découverte des activités. Vérifier que réduire, fermer et retrouver le guide sont compris et qu’aucun objectif ne bloque une partie existante. Réutiliser le protocole existant ; pas de nouvel audit général.",
+    "preserve": "Choix du joueur, bonne récolte lors des retours, montants serveur, confirmations et reprises sans double débit.",
+    "doneWhen": "Observations réelles recueillies, incompréhensions prioritaires identifiées et corrigées. Nécessite des participants ; ne pas inventer leurs résultats."
+  },
+  "personnelFeature": {
+    "updated": "2026-11-07",
+    "status": "Implémenté ; trois migrations appliquées au projet Supabase lié le 7 novembre 2026, sur demande explicite. Code de l’application non publié par cette opération.",
+    "entry": "/arene/placard?view=staff",
+    "scope": "Onglet Personnel autonome : 11 dossiers avec les avatars du profil, métiers polyvalents, traits, CDI/CDD/saisonniers, temps partiel agricole, paie et heures majorées, capacité quotidienne commune, week-ends, congés acquis et indemnités, XP et formations, culture, transformation, communication, prospection de huit villes dans les quatre départements bretons, factures et négociation fournisseurs. Finances reçoit uniquement les écritures, charges et dettes, sans gestion RH.",
+    "trim": "Dans Entrepôt → Atelier → Trim, obligatoire sur les nouvelles récoltes, joueur ou employé ; manuel plus qualitatif, machine plus rapide avec perte de présentation. Missions persistantes, coût confirmé, garde serveur avant jury/commerce et accès direct depuis récoltes, Quartier et HUD. Personnel conserve les heures communes et l’historique ; les lots historiques sont préservés.",
+    "rules": "docs/bete-de-concours/personnel-rules.json : références françaises vérifiées, paramètres de jeu, simplifications et ordre des trois migrations.",
+    "validation": "165 tests Personnel/API/intégration/guide ; 98 tests résumé/readiness/équipement ; 85 tests finance/backend/intégration (périmètres pouvant se recouper). SQL isolé : 65 contrôles Personnel, 39 trim, 32 comptabilité. Permissions explicites : 352 migrations contrôlées. Recettes navigateur Personnel et accès trim à 320/390/1440 px : confirmations, reprise sans double débit, avatars, clavier, congés, paie et trim ; aucun appel externe. TypeScript global, ESLint ciblé et contrôle du diff réussis après intégration finale.",
+    "browserReports": ["output/placard-staff-ui/report.json", "output/clarity-lot6/quartier/report-targeted.json"],
+    "databaseActivation": "Projet eyowwwpdmfrulhkpvlnf, identique à la configuration du site. Versions 20261107000100, 20261107000200 et 20261107000300 appliquées depuis un lot isolé. 46 prérequis et 81 contrôles distants de catalogue/permissions validés ; 352 migrations synchronisées, aucune en attente. Vérifications en lecture seule, aucun appel métier de joueur. Reçu : output/personnel-migrations/completion.json.",
+    "next": "Publier le code applicatif Personnel et Atelier via le workflow habituel, puis recette avec une ferme de test : nouvelle récolte → trim joueur dans l’Atelier → recrutement → mission → échéance de salaire → règlement → vérification Finances. La migration active déjà le trim obligatoire sur les nouvelles récoltes ; le code correspondant fournit l’interface pour le réaliser."
+  },
+  "atelierRevision": {
+    "updated": "2026-11-07",
+    "status": "Implémenté localement ; aucune publication ni nouvelle migration.",
+    "entry": "/arene/placard?view=workshop&section=processing&workshop=trim",
+    "scope": "Trim sorti de Personnel et intégré à l’Atelier, avec deux activités Trim et Machines. Contrôleur partagé pour conserver confirmations, heures, historique et reprise sans double débit. Liens des récoltes, du Quartier et du HUD corrigés ; anciens liens Personnel/trim redirigés en conservant le lot. Les confirmations verrouillent aussi les pièces et activités du parent.",
+    "machines": "Six fiches lisibles avec machines acquises/installées, niveau, capacité du jeu, usure et prochaine action. Restauration des dix illustrations historiques pour six familles ; modèles de presse et laveuse adaptés aux gammes, images entières sans recadrage ni sprites au sol. Achats, installation, amélioration et entretien conservent leurs confirmations et règles. Dans l’Atelier, les métriques de culture cèdent la place aux compteurs de trim et de machines ; la trésorerie reste visible.",
+    "artwork": "docs/bete-de-concours/atelier-artwork-restoration.json",
+    "validation": "224 tests navigation/métier/intégration, 10 tests Atelier et 12 tests illustrations/machines passent. TypeScript global, ESLint ciblé et contrôle du diff réussis. Recettes navigateur à 320/390/1440 px : Personnel/trim, 30 contrôles inventaire, achat/installation/amélioration/entretien, reprise avec même clé, clavier et mouvements réduits. Trois parcours dans le vrai Shell et le vrai Atelier confirment Trim → Machines → Trim, verrouillage du parent, annulation sans écriture et retour à la bonne récolte. Captures inspectées, aucun appel métier externe. Les trois migrations appliquées gardent les empreintes de leur manifeste.",
+    "browserReports": ["output/placard-staff-ui/report.json", "output/clarity-lot6/quartier/report-targeted.json", "output/clarity-lot9/workshop/results.json", "output/visual-workshop/report.json", "output/placard-journey-continuity/workshop-report.json"],
+    "next": "Après publication explicite du code, vérifier sur une ferme de test le parcours nouvelle récolte → Atelier/trim → jury, puis une affectation salariée utilisant la même réserve d’heures que Personnel."
+  },
+  "personnelTutorial": {
+    "updated": "2026-11-07",
+    "status": "Personnel intégré au tutoriel progressif avec Sylvain ; 28 objectifs au total, dont quatre dans le groupe L’équipe.",
+    "scope": "Après la découverte de la banque : ouvrir le contrat d’un candidat, découvrir la répartition des tâches, lire les formations et congés, puis consulter Paie & contrats. Deux notices repliables dans Personnel expliquent polyvalence, compétences, heures communes, métiers, prospection bretonne, XP, week-ends, heures additionnelles et congés. Le trim reste dans l’Atelier ; Finances reçoit la comptabilité. Apprendre à jouer annonce aussi ce parcours.",
+    "progress": "Les étapes exigent un contrat effectivement ouvert, une notice dépliée ou le registre de paie visible, sur des données chargées sans erreur. Mettre un contrôle au focus ne valide rien. Aucune embauche, mission, formation ou dépense obligatoire. Les sauvegardes v2 conservent leurs anciens objectifs, leur lot suivi et leur choix fermé/réduit ; les quatre nouvelles découvertes restent à accomplir.",
+    "validation": "73 tests du guide réussis, TypeScript global et ESLint ciblé passent. Recette du vrai Shell et du vrai Personnel à 320/390/1440 px : parcours complet sans salarié, navigation clavier, persistance, absence de validation pendant chargement ou erreur, réessai GET. Quatre groupes passent ; aucune mutation ni requête distante. Captures inspectées, contrôle du diff réussi.",
+    "browserReport": "output/placard-journey-continuity/staff-guide-report.json",
+    "next": "Lors du prochain essai avec de nouveaux joueurs, vérifier la compréhension de la réserve d’heures commune, du coût du contrat et du lieu de réalisation du trim. Aucun changement économique, migration ou publication."
+  },
+  "personnelRecruitmentRotation": {
+    "updated": "2026-11-07",
+    "status": "Renouvellement des candidatures tous les 15 jours de jeu, implémenté sans modification SQL ni publication.",
+    "scope": "Offres déterministes selon l’origine du calendrier de la ferme et l’heure serveur : jours 1–15, 16–30, 31–45. Onze profils couvrent les cinq métiers ; nouveaux noms, traits, XP et tarifs par période, codes distincts et portraitCode conservé chez les personnes recrutées. Le tableau affiche la prochaine relève et se recharge à l’échéance ou au retour d’un onglet masqué. Le tutoriel explique le rythme.",
+    "authority": "Lecture et embauche utilisent le même générateur serveur. Une offre expirée ou future est refusée ; une confirmation ouverte garde son nom, son montant et sa clé de reprise jusqu’à annulation. Les salariés existants sont inchangés. Relecture du reçu sur erreur d’éligibilité pour résoudre la course entre précontrôle et embauche concurrente avec la même clé ; les mismatches restent rejetés.",
+    "validation": "112 tests modèle/rotation/trim/API/intégration/backend passent ; TypeScript global, ESLint ciblé et diff réussis. Cinq groupes navigateur : parcours Personnel/Atelier à 320/390/1440 px, plus rotation à 320/1440 px avec horloge client décalée, renouvellement, portraits, confirmation périmée refusée sans embauche ni débit, reprise avec la même clé et retour de veille. Captures inspectées, aucun appel externe.",
+    "browserReport": "output/placard-staff-ui/report.json",
+    "knownLimit": "Limite SQL préexistante inchangée : 40 contrats enregistrés, historique terminé inclus, dans 20261107000100_kq_staff.sql ; huit salariés actifs maximum. La rotation ne modifie ni ne purge cet historique.",
+    "next": "Après publication explicitement demandée, vérifier une relève sur une ferme de test. Pour prolonger les recrutements au-delà de la limite historique existante, prévoir un chantier distinct de conservation des anciens contrats."
+  },
+  "personnelWorkPlan": {
+    "updated": "2026-11-07",
+    "status": "Plan d’affectation intégré à Personnel → Équipe ; code local, aucune publication ni nouvelle migration.",
+    "scope": "Sept postes illustrés reliés par une allée : culture, transformation, communication, prospection, administration, formation et accès au trim. Portraits cartoon existants, jauge individuelle d’heures, missions confirmées dans leur poste avec cible et état En cours ou À venir. Les fiches et contrats restent sous le plan. Le tutoriel explique le geste.",
+    "interaction": "Glisser souris/tactile ou sélectionner salarié puis poste au clavier/tap. Le dépôt ouvre le formulaire de la bonne personne et de la bonne activité : cible exacte, durée, coût et confirmation existante. Aucun travail ni débit au déplacement. Annulation, retour du focus, congé, repos, heures épuisées et erreur de lecture pris en compte. Le trim ouvre le vrai Atelier avec le salarié présélectionné, puis exige le choix du lot et de la méthode ; les confirmations verrouillent la navigation du parent.",
+    "validation": "83 tests guide/progression/Atelier, TypeScript global, ESLint ciblé et contrôle du diff passent. Douze groupes navigateur à 320/390/1440 px : plan Personnel (7), vrai parcours Personnel→Atelier (1), tutoriel Personnel (4). Glisser souris et tactile réel, dont Administration initialement hors écran atteinte par défilement automatique au bord, clavier/tap, confirmation du salarié et de la deuxième culture explicitement choisie, une mutation autorisée par largeur, heures et mission relues après actualisation et remontage. Annulations sans écriture, retour du focus, indisponibilités, revue formation/prospection et trim du bon lot vérifiés. Captures inspectées ; aucun appel métier externe.",
+    "browserReports": ["output/placard-staff-ui/work-plan-report.json", "output/placard-journey-continuity/work-plan-report.json", "output/placard-journey-continuity/staff-guide-report.json"],
+    "next": "Après publication explicitement demandée, essayer sur une ferme de test une répartition entre deux postes, puis un trim salarié dans l’Atelier ; observer la compréhension des heures réservées et de la confirmation. Aucun changement du moteur économique ou des migrations déjà appliquées."
+  },
+  "partnerProspecting": {
+    "updated": "2026-11-07",
+    "status": "Réseau sans plafond de jeu de 20 et carte de prospection Bretagne implémentés. Migration 20261107000400 appliquée au projet Supabase lié le 7 novembre 2026 sur demande explicite ; code applicatif non publié par cette opération.",
+    "scope": "Personnel → Équipe → Prospection : huit villes cliquables dans les quatre départements, boutons tactiles de 44 px, carte défilante dans les petits conteneurs, sélection clavier et fiche de ville. Frais, partenariats historiques locaux et réseau actif sont distingués. Catalogue de profils fictifs par ville et département : arômes existants, fleurs, hash tamisé/Static Sift/eau-glace/signature, gammes de rosin. Ces informations orientent la tournée ; elles ne créent pas de tarif local ni de prime automatique. Carte issue des contours IGN/data.gouv 2026 et de l’API Communes, provenance ODbL dans src/data/kq-brittany-map.ts et dans l’interface.",
+    "rules": "Le serveur autorise les retours dans une même ville sans épuisement ni pénalité cumulative. Expérience, trait, réputation, abonnés et activité locale influencent la chance ; chaque succès ajoute un partenaire. Commerce et SQL conservent les réseaux dépassant 20, les volumes croissent avec tous les partenaires. Bonus de prix réseau toujours limité à quatre points et recrutement par vente toujours cadencé. Aucun changement de contrat, paie ou capacité horaire.",
+    "migration": "20261107000400_kq_unbounded_shop_partners.sql appliquée au projet eyowwwpdmfrulhkpvlnf : retrait des contraintes et écrêtements des comptes, campagnes, ventes, capacités et récompenses Personnel. Remplacements exacts contrôlés, transaction atomique, mêmes permissions. Invalidation des anciennes offres par révision ; reçus, réseau, fractions de progression, dette et trésorerie conservés. Empreintes des migrations Personnel 001–003 inchangées. 70 contrôles préalables et 70 contrôles après application réussis, cinq empreintes de fonctions conformes aux remplacements attendus ; 353 migrations synchronisées, aucune en attente. Reçu : output/shop-partners-migration/completion.json. Le code correspondant reste à publier pour retirer aussi le plafond des devis applicatifs.",
+    "validation": "71 tests Personnel/backend, 76 tests commerce/relevé et 84 tests guide/progression/intégration passent. TypeScript global et ESLint ciblé passent. SQL isolé : 66 contrôles, devis marchand 19→21, prospection au-delà de 20 et 100, capacités jusqu’à dix millions de partenaires, reçus antérieurs, rejeu, report de campagne, conservation des données et permissions. Contrôle des grants : 353 migrations. Recette navigateur à 320/390/1440 px : clic/tap direct sur carte, défilement horizontal au clavier, profils changeants, confirmation exacte Inès/Brest/2 h/60 €, annulation sans écriture, deux tournées dans une ville déjà prospectée trente fois, réseau 125→127, deux trajets facturés et aucun gain répété à l’actualisation. Captures inspectées ; aucun appel métier externe.",
+    "reports": ["output/shop-partners/sql-report.json", "output/placard-staff-ui/prospecting-report.json", "output/shop-partners-migration/completion.json"],
+    "next": "Publier le code applicatif via le workflow habituel, puis vérifier une tournée commerciale avec une ferme de test. La migration est déjà appliquée. Garder les profils locaux comme informations de jeu tant qu’aucun mécanisme de vente par ville n’est ajouté explicitement."
+  },
+  "playerWorkday": {
+    "updated": "2026-11-07",
+    "status": "Prospection personnelle, tournée des campagnes et réserve commune de 12 h implémentées. Migration 20261107000500 appliquée et vérifiée le 7 novembre 2026 sur le projet Supabase lié, sur demande explicite. Code applicatif non publié par cette opération.",
+    "entry": "Personnel → Équipe → Plan de travail : portrait Toi puis poste choisi ; jauge commune visible dans le Shell du jeu, trim toujours dans l’Atelier.",
+    "scope": "Le joueur peut travailler sans salarié : carte des huit villes, culture, aide à la transformation, communication et négociation fournisseurs. Sillonner les campagnes réserve exactement 12 h dans un des quatre départements, coûte 40 € de déplacement et dure 2 h réelles ; deux tentatives de partenariat, de zéro à deux succès. XP par compétence à l’achèvement, historique rural séparé des villes, aucun salaire personnel. Les tâches personnelles et le trim se suivent et doivent finir avant le prochain jour.",
+    "sharedHours": "12 h par jour du jeu, week-end compris pour le joueur, sans report. Les gestes existants de culture, cartes, soins, transformation, commerce, réseaux, stockage, équipement et règlement des factures consomment aussi cette réserve. Catalogue commun : 30 min pour les gestes courants, 1 h pour lancement de culture/préparation/conditionnement, 2 h pour publicité/marketing/publication sponsorisée ; missions et trim selon durée choisie. Consultations, délégation, pauses, annulations, récompenses acquises et banque restent gratuites en temps. Coûts visibles par écran et en détails ; inconnue ou indisponible, la jauge ne devient pas artificiellement zéro.",
+    "authority": "Migration 005 : un seul registre playerWorkDays, horloge serveur, validation du delta personnel et révision partagée avec Personnel. 23 points d’entrée SQL couvrent les actions manuelles ; effets des salariés et règlements automatiques exclus. Heures, argent et reçu atomiques ; action refusée ou rejeu sans second débit, appels imbriqués sans double coût. Anciennes heures et XP trim conservées, migrations 001–004 inchangées. Erreurs de temps lisibles, réessai de concurrence et de changement de jour avec même clé.",
+    "validation": "134 tests moteur/Personnel/intégration puis 162 tests API/backend ciblés réussis (périmètres recoupés). TypeScript global et ESLint ciblé passent. SQL : 94 contrôles, dont rollback au plafond, reçus, changement de jour, concurrence par révision, permissions et parité des coûts SQL/TypeScript ; 354 migrations contrôlées pour les grants. Navigateur : huit groupes personnels/jauge globale, trois de prospection salariée et quatre du vrai Shell/tutoriel à 320/390/1440 px. Carte sans recrutement, coûts exacts, confirmations/reprises/annulations, retour du focus, trim partagé, XP, renouvellement, erreur de lecture et absence de débordement. Captures mobile inspectées.",
+    "reports": ["output/placard-staff-ui/player-work-report.json", "output/placard-staff-ui/prospecting-report.json", "output/placard-journey-continuity/staff-guide-report.json", "output/player-work-migration/completion.json"],
+    "databaseActivation": "Migration 20261107000500 appliquée au projet eyowwwpdmfrulhkpvlnf : 344 contrôles préalables et 637 après application réussis. Empreintes conformes des 23 fonctions métier capturées, des 23 enveloppes, des trois fonctions ajustées et des quatre fonctions auxiliaires ; signatures, valeurs par défaut et permissions vérifiées. 354 migrations synchronisées, aucune en attente. Contrôles de catalogue uniquement, sans lecture de parties ni appel de commande métier. Reçu : output/player-work-migration/completion.json.",
+    "limits": "Les fonctions Personnel et réseaux sont exécutées réellement dans PostgreSQL isolé ; les autres frontières métier utilisent des doublures explicites et leurs suites existantes. PGlite n’a qu’une connexion : contention simultanée non simulée, ordre des verrous revu.",
+    "next": "Publier le code correspondant via le workflow habituel sur demande explicite, puis essayer une tournée et un geste manuel sur une ferme de test. Les migrations 001–005 sont déjà appliquées et vérifiées."
+  },
+  "financialSupport": {
+    "updated": "2026-11-08",
+    "status": "Lien Viva fourni par l’utilisateur et raccordé localement : https://pay.vivawallet.com/les-champs-bretons. Bouton libellé Soutenir, à la demande de l’utilisateur ; actif avec la configuration locale, aucun déploiement effectué.",
+    "entry": "/arene/placard?view=hub",
+    "scope": "Soutenir les petits producteurs sous la carte et l’apprentissage, papier et enseigne existants ; texte humoristique demandé par l’utilisateur sur la tréso, les banques et les moyens des petits producteurs. Invitation à donner un ou deux euros même sans acheter de CBD, pour soutenir l’entreprise et améliorer le jeu. Contribution facultative en argent réel, sans contrepartie ni avantage dans les concours. Bénéficiaire et précisions fiscales dans les détails ; lien Viva et fonctionnement inchangés.",
+    "copyRevision": "8 novembre : trois paragraphes en tutoiement, humour autour de la trésorerie qui ne pousse pas sous les lampes, remerciement chaleureux et absence de pression. ESLint ciblé et six groupes navigateur validés pour cette révision. Corrections de texte suivantes demandées par l’utilisateur : bouton Soutenir ; destination des fonds formulée Ils aideront le projet à se développer ; suppression de la phrase en gras Soutien facultatif en argent réel, sans contrepartie. Le jeu reste gratuit. Précisions des détails conservées et assertion de recette ajustée. Contrôle du diff effectué, sans nouvelle recette pour ces seules formulations. Aucun changement de paiement, migration ou publication.",
+    "research": "docs/bete-de-concours/financement-soutien.json : sources officielles françaises, résultat imposable, TVA selon absence effective de contrepartie, comparaison des prestataires et choix de Viva enregistré. Guide pour copier le lien Quick Pay existant ou créer le lien unique depuis le compte administrateur. Adresse non modifiable ; tarif Quick Pay à vérifier séparément du paiement boutique. Acceptation et tarif de cette collecte non établis.",
+    "validation": "14 tests Viva et six groupes navigateur repassent avec le lien fourni : 320/390/1440 px, clavier, focus visible, absence de débordement et de mutation de jeu ; encart absent sans lien, avec URL invalide ou dans les leçons. Chargement réel @next/env vérifié pour développement et build de production local. GET distant HTTP 200 après redirection vers www.vivapayments.com ; affichage du bénéficiaire non vérifié (erreur HTTP/2 puis délai navigateur dépassé). Aucun formulaire ni paiement soumis. TypeScript global validé lors de l’intégration initiale.",
+    "latestCopyCorrection": "Texte proposant d’abord de nous aider en achetant notre CBD, puis de glisser un ou deux euros si le CBD n’est pas son truc, seulement si l’envie lui prend et s’il peut. Remerciement commun et développement du projet. Suppressions précédentes conservées : qui édite le jeu, phrase en gras sur le soutien facultatif, mention sous le bouton. Bouton Soutenir. Contrôle du diff, aucune modification de paiement.",
+    "browserReport": "output/placard-journey-continuity/financial-support-report.json",
+    "next": "Lors de la prochaine publication demandée, configurer NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL=https://pay.vivawallet.com/les-champs-bretons dans l’environnement distant AVANT le build. La valeur est déjà présente dans .env.local, .env.development.local et .env.example ; aucun de ces fichiers ne configure automatiquement l’hébergement. Vérifier visuellement le bénéficiaire sur Viva. Acceptation du soutien et frais restent à confirmer avec Viva, traitement comptable à fixer. Aucun environnement distant modifié, migration ou publication."
+  },
+  "closure": [
+    "Essais de compréhension avec 5 à 8 nouveaux joueurs ; leurs résultats peuvent révéler les dernières corrections. Les notes UX ne sont pas rehaussées par les seuls tests automatisés."
+  ],
+  "constraints": "Pas de publication ou migration implicite. Vérifier git status ; les modifications de facturation peuvent appartenir à un autre chantier. Ne pas supposer que les commits locaux sont déployés."
+}

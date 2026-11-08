@@ -11,6 +11,7 @@ import { getKqCannabinoidReport } from "@/lib/kanab-quest-care";
 import { getKqCareProductArtwork } from "@/lib/kanab-quest-care-artwork";
 import { KqCannabinoidReport } from "./KqCannabinoidReport";
 import { KqBarChart } from "./KqVisuals";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import Link from "@/components/navigation/NavigationLink";
 import styles from "./KqPersonalRecap.module.css";
 
@@ -36,20 +37,21 @@ function CultureAdvice({ advice }: { advice: KqCultureCardAdvice }) {
               : `Solde d’XP : ${signedContribution(comparison.xpBalanceDelta)} par rapport à ta partie.`}</p>
         <p className={styles.note}>Avec une copie en stock ; calcul sur tes dés.</p>
       </> : <p className={styles.cardEffect}>{advice.effect}</p>}
-      <details className={styles.disclosure} data-recap-card-details>
-        <summary>Conditions et calcul</summary>
-        <p>{advice.condition}</p>
-        {comparison ? <>
-        <p>Qualité : {signedContribution(comparison.before.qualityDelta)} → {signedContribution(comparison.after.qualityDelta)}.<br />
-          XP après coût et gain : {comparison.xpBalanceDelta === 0 ? "solde identique" : `${signedContribution(comparison.xpBalanceDelta)} par rapport à ta partie`}.
-          {comparison.before.pressureAfter !== comparison.after.pressureAfter ? <><br />Pression finale : {comparison.before.pressureAfter} → {comparison.after.pressureAfter}.</> : null}
-          {comparison.before.harvestLossPercent !== comparison.after.harvestLossPercent ? <><br />Perte de récolte : {comparison.before.harvestLossPercent} % → {comparison.after.harvestLossPercent} %.</> : null}
-        </p>
-        <p>{advice.effect}</p>
-        </> : null}
-        <p className={styles.note}>{advice.availability}</p>
-      </details>
     </div>
+    <details className={styles.disclosure} data-recap-card-details>
+        <summary>Conditions et calcul</summary>
+        <KqHelpDashboard><KqHelpSteps art="help-plan" steps={[{ label: "À vérifier", detail: advice.condition }]} />
+        {comparison ? <>
+        <KqHelpGrid art="help-quality" items={[
+          { label: "Qualité", value: `${signedContribution(comparison.before.qualityDelta)} → ${signedContribution(comparison.after.qualityDelta)} pts` },
+          { label: "XP après coût et gain", value: comparison.xpBalanceDelta === 0 ? "Solde identique" : `${signedContribution(comparison.xpBalanceDelta)} XP`, detail: "Par rapport à ta partie.", art: "help-training" },
+          ...(comparison.before.pressureAfter !== comparison.after.pressureAfter ? [{ label: "Pression finale", value: `${comparison.before.pressureAfter} → ${comparison.after.pressureAfter}`, art: "help-care" as const }] : []),
+          ...(comparison.before.harvestLossPercent !== comparison.after.harvestLossPercent ? [{ label: "Perte de récolte", value: `${comparison.before.harvestLossPercent} % → ${comparison.after.harvestLossPercent} %`, art: "help-culture" as const }] : []),
+        ]} />
+        <KqHelpNote>{advice.effect}</KqHelpNote>
+        </> : null}
+        <KqHelpNote>{advice.availability}</KqHelpNote></KqHelpDashboard>
+    </details>
   </article>;
 }
 
@@ -95,14 +97,20 @@ export function KqCultureRecap({ state }: { state: KqGameState }) {
         </div>
         <details className={styles.disclosure} data-recap-cannabinoids>
           <summary>Comprendre ce score et voir mes taux simulés</summary>
-          <p>La variété fixe un potentiel fictif. Dans cette partie, la floraison et la récolte développent son expression ; le séchage la conserve ou la dégrade. <strong>99/99 correspond au potentiel pleinement exprimé dans le jeu.</strong></p>
-          {care.history.some(event => event.kind === "resolution" && event.stageIndex >= 3 && event.cannabinoidDelta !== undefined) ? <ul className={styles.explanationList} aria-label="Évolution du potentiel dans cette partie">{care.history.filter(event => event.kind === "resolution" && event.stageIndex >= 3 && event.cannabinoidDelta !== undefined).map(event => {
+          <KqHelpDashboard>
+          <KqHelpSteps art="help-quality" steps={[
+            { label: "Floraison et récolte", detail: "Développent le potentiel fictif de la variété.", art: "help-culture" },
+            { label: "Séchage", detail: "Potentiel conservé ou réduit.", art: "help-workshop" },
+          ]} />
+          <KqHelpNote>99/99 = potentiel pleinement exprimé dans le jeu.</KqHelpNote>
+          {care.history.some(event => event.kind === "resolution" && event.stageIndex >= 3 && event.cannabinoidDelta !== undefined) ? <KqBarChart title="Évolution du potentiel dans cette partie" items={care.history.filter(event => event.kind === "resolution" && event.stageIndex >= 3 && event.cannabinoidDelta !== undefined).map(event => {
             const outcome = state.history[event.stageIndex]?.outcome;
             const delta = event.cannabinoidDelta!;
-            return <li key={event.stageIndex}><strong>{getKqStageDisplayName(KQ_STAGES[event.stageIndex])}</strong>{outcome ? ` · ${KQ_OUTCOME_LABELS[outcome].toLowerCase()}` : ""} : {delta > 0 ? `le potentiel a progressé de ${delta} points.` : delta < 0 ? `${Math.abs(delta)} points de potentiel perdus.` : event.stageIndex >= 5 ? "le potentiel a été conservé au séchage." : "le score n’a pas progressé à cette étape."}</li>;
-          })}</ul> : null}
+            return { label: `${getKqStageDisplayName(KQ_STAGES[event.stageIndex])}${outcome ? ` · ${KQ_OUTCOME_LABELS[outcome].toLowerCase()}` : ""}`, value: delta, displayValue: `${delta > 0 ? "+" : ""}${delta} pts${delta === 0 && event.stageIndex >= 5 ? " · conservé" : ""}` };
+          })} /> : null}
           <dl className={styles.cannabinoidRates}>{(["cbd", "cbg", "thc"] as const).map(family => <div key={family}><dt>{family.toUpperCase()} total simulé</dt><dd>{percent(report.totals[family])}</dd></div>)}</dl>
-          <p className={styles.note}>Ces teneurs sont fictives. Chaque total réunit les formes acide et neutre avec leur correction de masse ; il ne s’ajoute pas à ces formes.</p>
+          <KqHelpNote>Teneurs fictives. Total = formes acide et neutre corrigées en masse ; ne pas l’ajouter aux deux formes.</KqHelpNote>
+          </KqHelpDashboard>
           <KqCannabinoidReport report={report} />
         </details>
       </section> : null}
@@ -175,9 +183,11 @@ export function KqJuryRecap({ rounds, playerStats, opponentStats, onPrepare, pre
     </div>
     <details className={styles.disclosure} data-jury-analysis-details>
       <summary>Comprendre les critères du jury</summary>
-      <p>{analysis.focus.reason}</p>
-      {strongestWin ? <p><strong>Ton point d’appui : {strongestWin.label}.</strong> {score(strongestWin.playerScore - strongestWin.opponentScore)} point{strongestWin.playerScore - strongestWin.opponentScore > 1 ? "s" : ""} d’avance sur cette manche.</p> : null}
-      {mainAdvice ? <p><strong>{mainAdvice.title}</strong> {mainAdvice.explanation}</p> : null}
+      <KqHelpGrid art="help-quality" items={[
+        { label: "Manche à comprendre", value: analysis.focus.label, detail: analysis.focus.reason },
+        ...(strongestWin ? [{ label: `Ton point d’appui : ${strongestWin.label}`, value: `+${score(strongestWin.playerScore - strongestWin.opponentScore)} pts`, detail: "D’avance sur cette manche." }] : []),
+        ...(mainAdvice ? [{ label: "Pour la prochaine culture", value: mainAdvice.title, detail: mainAdvice.explanation }] : []),
+      ]} />
       {analysis.focus.criteria.length ? <dl className={styles.criteria}>
         {analysis.focus.criteria.map(criterion => <div key={criterion.stat}>
           <dt>{criterion.label} · {criterion.weightPercent} % de la note de base</dt>

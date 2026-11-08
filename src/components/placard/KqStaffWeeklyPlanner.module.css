@@ -1,0 +1,31 @@
+.planner { display: grid; min-width: 0; gap: 15px; padding-top: 16px; border-top: 1px solid #17292330; }
+.header, .slotFooter { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px; }
+.header h4 { margin: 0; font-size: 1rem; }
+.note { font-size: .78rem; line-height: 1.5; color: #506155; }
+.days { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+.planner .days button { display: grid; gap: 5px; padding: 9px 3px; min-width: 0; font-size: .72rem; }
+.days strong { overflow-wrap: anywhere; font-size: .72rem; }
+.day { display: grid; min-width: 0; gap: 13px; }
+.planner .slot { display: grid; min-width: 0; gap: 12px; padding: 14px 0 0; border: 0; border-top: 1px solid #17292330; }
+.slot legend { padding: 0 9px 0 0; font-size: .82rem; font-weight: 750; }
+.fields { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(75px, 1fr); gap: 12px; }
+.slotFooter { font-size: .78rem; }
+.planner .slotFooter button { padding: 8px 11px; font-size: .76rem; }
+.cost { display: grid; margin: 0; }
+.cost > div { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 5px 14px; padding: 10px 0; border-bottom: 1px solid #17292330; }
+.cost dt { font-size: .8rem; }
+.cost dd { margin: 0; font-size: 1rem; font-weight: 800; overflow-wrap: anywhere; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.actions button { flex: 1 1 auto; }
+.rules, .history { min-width: 0; border-top: 1px solid #17292330; font-size: .8rem; }
+.history > ul { margin: 0; padding: 0; list-style: none; }
+.history > ul > li { display: grid; gap: 6px; padding: 11px 0; border-bottom: 1px solid #17292325; }
+.history li > ul { margin: 0; padding-left: 18px; color: #506155; }
+.history li > ul > li { margin-block: 4px; }
+@media (min-width: 900px) {
+  .day { grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: start; gap: 16px 24px; }
+  .day > * { grid-column: 1 / -1; }
+  .day > .slot { grid-column: auto; align-content: start; }
+  .day > button { justify-self: start; }
+}
+@media (max-width: 420px) { .fields { grid-template-columns: minmax(0, 1fr); } }

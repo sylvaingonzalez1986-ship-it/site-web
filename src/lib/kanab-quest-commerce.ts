@@ -4,7 +4,8 @@ import { getChanvrierSalesMultiplier, type ChanvrierStrength } from "./arena-cha
 import { getKqAdvertisingMultiplier, isKqShopActive, type KqBusinessState } from "./kanab-quest-business";
 import type { KqStorageProjection } from "./kanab-quest-storage";
 import type { KqOnlineSnapshot } from "./kanab-quest-online";
-import { getKqActiveCustomerDemand, getKqCustomerDemandPrice, KQ_INDOOR_SHOP_CENTS_PER_GRAM, KQ_INDOOR_WHOLESALE_CENTS_PER_GRAM,
+import type { KqProcessingJob } from "./kanab-quest-processing-work";
+import { getKqActiveCustomerDemand, getKqCustomerDemandPrice, isKqCustomerDemandProduct, KQ_INDOOR_SHOP_CENTS_PER_GRAM, KQ_INDOOR_WHOLESALE_CENTS_PER_GRAM,
   type KqAppliedCustomerDemand, type KqCustomerDemandSnapshot } from "./kanab-quest-customer-demand";
 
 export const KQ_COMPUTER_PRICE_CENTS = 45000;
@@ -33,8 +34,10 @@ export type KqCommerceCampaign = {
   directUsed: number; shopUsed: number; goodUnits: number; disappointmentUnits: number;
 };
 export type KqCommerceStock = {
+  /** The original flower's variety, preserved across every processing route. */
   varietyCode?: string;
   processingReadyAt?: string | null;
+  processingWork?: KqProcessingJob;
   id: string; flowerId: string; name: string; route: KqMarketRouteCode; batchRoute: KqMarketRouteCode;
   juryScore: number; initialUnits: number; remainingUnits: number; equivalentUnits: number; originalUnits: number;
   baseUnitCents: number; payoutExact?: number; payoutRounded?: number; repExact: number; repRounded: number; professionalUnits: number; counted: boolean;
@@ -46,6 +49,8 @@ export type KqCommerceDemand = {
   onlineCapacityMultiplier?: number;
 };
 export type KqCommerceState = {
+  processingWorkVersion?: 1;
+  processingJobs?: KqProcessingJob[];
   customerDemand?: KqCustomerDemandSnapshot;
   /** A shared rolling allowance; splitting lots never creates extra buyers. */
   wholesale?: { remainingEquivalentUnits: number; capacityEquivalentUnits: number; resetsAt: string | null };
@@ -83,6 +88,13 @@ export type KqCommerceOffer = {
 };
 const clamp = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
 const round6 = (n: number) => Math.round(n * 1e6) / 1e6;
+function professionalUnitCents(base: number, percent: number, salesMultiplier: number) {
+  // Prices are stored with six decimals; NUMERIC rounds exact halves up.
+  // The merchant multiplier is exactly 1.5 (otherwise 1).
+  const micros = BigInt(Math.round(base * 1e6));
+  const numerator = micros * BigInt(percent) * BigInt(salesMultiplier * 2);
+  return Number((numerator + BigInt(100)) / BigInt(200)) / 1e6;
+}
 function accumulatePayoutExact(previous: number, units: number, unitCents: number) {
   const previousMicros = BigInt(Math.round(previous * 1e6));
   const priceMicros = BigInt(Math.round(unitCents * 1e6));
@@ -102,7 +114,6 @@ export function getKqCommerceMinimumQuality(route: KqMarketRouteCode, channel: K
   if (channel === "wholesale") return null;
   return channel === "online" ? 5.8 : route === "raw" ? 6.5 : 7.5;
 }
-export const KQ_SHOP_MAX_PARTNERS = 20;
 export const KQ_SHOP_PROGRESS_UNITS = 6000;
 export const KQ_SHOP_QUALITY_BANDS = [
   { label: "Qualité limite", flowerMinimum: 6.5, extractMinimum: 7.5, pricePercent: 40, recruitmentWeight: 0, churnWeight: 6, satisfaction: "disappointed" },
@@ -117,7 +128,7 @@ export function getKqShopNetworkBonus(partners: number) {
   return partners >= 12 ? 4 : partners >= 8 ? 3 : partners >= 4 ? 2 : partners >= 1 ? 1 : 0;
 }
 export function getKqShopBudget(partners: number, event: string = "normal") {
-  return (4000 + clamp(partners, 0, KQ_SHOP_MAX_PARTNERS) * 250) * (event === "restock" ? 1.25 : event === "promotion" ? .75 : 1);
+  return (4000 + Math.max(0, partners) * 250) * (event === "restock" ? 1.25 : event === "promotion" ? .75 : 1);
 }
 /** Commercial raw flowers cover a modest starter cycle; retail still pays more.
  * Emergency storage overflow has its own unchanged fixed clearance tariff.
@@ -164,7 +175,10 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   if (channel === "online" && (salvage || commercialQuality < getKqCommerceMinimumQuality(stock.route, "online")!)) reason = "Qualité insuffisante pour la vente directe. Le grossiste reprend ce lot.";
   if (channel === "cbd-shop" && (salvage || commercialQuality < getKqCommerceMinimumQuality(stock.route, "cbd-shop")!)) reason = "La boutique refuse cette qualité. Le grossiste reste disponible.";
   const storageNow = nowMs ?? (state.business ? Date.parse(state.business.serverNow) : state.demand ? Date.parse(state.demand.serverNow) : undefined);
-  if (stock.processingReadyAt && (storageNow === undefined || Date.parse(stock.processingReadyAt) > storageNow)) reason = "Transformation en cours : ce stock sera disponible à la fin du travail de l’atelier.";
+  if (!stock.processingWork && stock.processingReadyAt && (storageNow === undefined || Date.parse(stock.processingReadyAt) > storageNow)) reason = "Transformation en cours : ce stock sera disponible à la fin du travail de l’atelier.";
+  if (stock.processingWork && stock.processingWork.status !== "completed") reason = stock.processingWork.status === "blocked"
+    ? "Transformation en attente d’heures : reprends le lot dans l’Atelier."
+    : "Transformation en cours : ce stock sera disponible après le travail et l’attente des machines.";
   if (channel !== "wholesale" && !isKqCommerceStockMature(stock, storageNow)) reason = "Curing en cours : seul le grossiste reprend ce lot avant sa maturité commerciale.";
   if (channel !== "wholesale" && (stock.storage?.capacity?.overflowUnits ?? 0) > 0) reason = "Une partie de ce lot manque de contenants : stocke-la ou vends le surplus au grossiste depuis l’entrepôt.";
   if (channel === "online" && state.online?.version === 1) reason = "Prépare des paquets et fixe leur prix dans ta boutique : les commandes arrivent automatiquement.";
@@ -182,15 +196,16 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const protectedPrice = tier.guaranteedPolicy === "premium";
   const onlinePrice = Math.max(.6, (policy === "premium" ? 1.22 : policy === "discovery" ? .9 : 1) * (1 + tier.priceBonusPercent / 100)
     * (.7 + commercialQuality / 20) * (protectedPrice ? Math.max(1, eventFactor) : eventFactor * (1 - saturation)));
-  const professionalPrice = channel === "cbd-shop" ? shopPricePercent / 100
-    : getKqWholesalePricePercent(stock.route, commercialQuality, campaign?.event) / 100;
+  const professionalPercent = channel === "cbd-shop" ? shopPricePercent
+    : getKqWholesalePricePercent(stock.route, commercialQuality, campaign?.event);
   const boundedRawTariff = stock.route === "raw" && state.online?.version === 1 && channel !== "online";
-  const oldUnitCents = salesMultiplier * (salvage ? stock.baseUnitCents : stock.baseUnitCents * (channel === "online" ? onlinePrice : professionalPrice));
+  const oldUnitCents = salvage ? salesMultiplier * stock.baseUnitCents : channel === "online" ? salesMultiplier * stock.baseUnitCents * onlinePrice
+    : professionalUnitCents(stock.baseUnitCents, professionalPercent, salesMultiplier);
   const baseUnitCents = round6(boundedRawTariff
     ? channel === "cbd-shop" ? getKqRawShopUnitCents()
       : commercialQuality >= 6.5 ? KQ_INDOOR_WHOLESALE_CENTS_PER_GRAM : Math.min(oldUnitCents, 30)
     : oldUnitCents);
-  const customerRequest = boundedRawTariff && isKqCommerceStockMature(stock, storageNow)
+  const customerRequest = state.online?.version === 1 && channel !== "online" && isKqCustomerDemandProduct(stock.route) && isKqCommerceStockMature(stock, storageNow)
     ? getKqActiveCustomerDemand(state.customerDemand, channel, stock.varietyCode, commercialQuality, storageNow) : null;
   const { unitCents, customerDemand } = getKqCustomerDemandPrice(baseUnitCents, units, customerRequest);
   // One cumulative ledger across all prices and channels prevents rounding arbitrage.
@@ -212,7 +227,7 @@ export function quoteKqCommerce(state: KqCommerceState, stock: KqCommerceStock, 
   const churn = round6((campaign?.shopChurnStart ?? 0) + Math.min(Math.max(1, Math.ceil(shopPartnersStart / 4)) * KQ_SHOP_PROGRESS_UNITS, shopBadUnitsAfter));
   const partnersGained = Math.floor(recruitment / KQ_SHOP_PROGRESS_UNITS);
   const partnersLost = Math.floor(churn / KQ_SHOP_PROGRESS_UNITS);
-  const shopPartnersAfter = channel === "cbd-shop" ? clamp(shopPartnersStart + partnersGained - partnersLost, 0, KQ_SHOP_MAX_PARTNERS) : state.shopPartners ?? 0;
+  const shopPartnersAfter = channel === "cbd-shop" ? Math.max(0, shopPartnersStart + partnersGained - partnersLost) : state.shopPartners ?? 0;
   const shopRecruitmentAfter = channel === "cbd-shop" ? round6(recruitment % KQ_SHOP_PROGRESS_UNITS) : state.shopRecruitment ?? 0;
   const shopChurnAfter = channel === "cbd-shop" ? round6(churn % KQ_SHOP_PROGRESS_UNITS) : state.shopChurn ?? 0;
   const satisfaction: KqCustomerSatisfaction = channel === "wholesale" ? "not-applicable"

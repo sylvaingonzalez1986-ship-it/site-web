@@ -151,8 +151,8 @@
 .panel .basicCareDetails > summary { display: list-item; min-height: 44px; padding: 12px 0; color: #172923; font-weight: 750; cursor: pointer; }
 .basicCareDetails > summary:focus-visible { outline: 3px solid #a87522; outline-offset: 3px; }
 .basicCareDetails p { margin: 0 0 10px; line-height: 1.7; }
-.panel .basicCareDetails ul { display: block; margin: 8px 0 12px; padding-left: 18px; list-style: disc; }
-.panel .basicCareDetails li { display: list-item; margin: 6px 0; padding: 0; border: 0; border-radius: var(--game-panel-radius, 2px); background: none; box-shadow: none; text-align: left; line-height: 1.7; }
+.panel .basicCareDetails > ul { display: block; margin: 8px 0 12px; padding-left: 18px; list-style: disc; }
+.panel .basicCareDetails > ul > li { display: list-item; margin: 6px 0; padding: 0; border: 0; border-radius: var(--game-panel-radius, 2px); background: none; box-shadow: none; text-align: left; line-height: 1.7; }
 .panel .reserveToggle { display: flex; align-items: center; justify-content: space-between; gap: 14px; width: 100%; min-height: 56px; padding: 12px 14px; text-align: left; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; cursor: pointer; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .reserveToggle > svg:first-child { flex: 0 0 auto; color: #617b4c; }
 .reserveToggle > span { flex: 1; }
@@ -182,7 +182,7 @@
 .journal li { margin: 10px 0; }
 
 .analysis { margin: 12px 0 0; padding: 11px 12px; color: #172923; font-size: 12px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.analysis.analysis summary { display: list-item; cursor: pointer; font-size: 11px; font-weight: 750; min-height: 44px; }
+.analysis.analysis > summary { --game-control-font-family: var(--font-body), sans-serif; display: list-item; cursor: pointer; font: 750 .875rem/1.45 var(--font-body), sans-serif; letter-spacing: normal; min-height: 44px; }
 .panel .analysis summary { min-height: 44px; padding: 9px 0; }
 .analysis p { margin: 10px 0; }
 .analysis a { color: #172923; text-decoration: underline; }
@@ -233,3 +233,28 @@
 @media (prefers-reduced-motion: reduce) {
   .meter > span, .toggle svg, .reserveToggle > svg:last-child { transition: none; }
 }
+
+/* The desk presents the same care state in three short, persistent views. */
+.sectionNav { display:flex; gap:.3rem; margin-bottom:.9rem; }
+.sectionTabs { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.3rem; min-width:0; flex:2; }
+.sectionTabs[data-sections='2'] { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.sectionTabs > button,.qualityLink { min-width:0; min-height:44px; padding:.5rem .3rem; font:700 .8rem/1.3 var(--font-body),sans-serif; color:var(--care-ink); cursor:pointer; --game-control-art:var(--game-control-paper,url('/placard/ui/control-paper-v2.webp')); border:2px solid transparent; border-radius:0; background:transparent; box-shadow:none; border-image:var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; }
+.qualityLink { display:flex; flex:1; align-items:center; justify-content:center; gap:.3rem; --game-control-art:var(--game-control-gold,url('/placard/ui/control-gold-v2.webp')); }
+.qualityLink svg { flex-shrink:0; }
+.sectionTabs > button[aria-selected='true'] { --game-control-art:var(--game-control-gold,url('/placard/ui/control-gold-v2.webp')); }
+.sectionTabs > button:hover:not(:disabled),.qualityLink:hover:not(:disabled) { --game-control-art:var(--game-control-apricot,url('/placard/ui/control-apricot-v2.webp')); }
+.sectionTabs > button:focus-visible,.qualityLink:focus-visible { outline:3px solid #087e70; outline-offset:3px; }
+.sectionTabs > button:disabled,.qualityLink:disabled { cursor:wait; opacity:.65; }
+@media (max-width:600px) {
+ .sectionNav { flex-wrap:wrap; }
+ .qualityLink { flex-basis:100%; }
+}
+.panel[data-presentation='carousel'] { border:0; border-image:none; margin:0; }
+.panel[data-presentation='carousel'] .summary { padding:.5rem; background:transparent; }
+.panel[data-presentation='carousel'] .content { padding:.5rem; border-top:1px solid #17292330; }
+.panel[data-presentation='carousel'] .stageContext { margin:0 0 .7rem; padding:.5rem; background:transparent; border:0; }
+.panel[data-presentation='carousel'] .quality { margin-top:0; padding-top:0; border:0; }
+.panel[data-presentation='carousel'] [hidden] { display:none !important; }
+
+.sectionTabs > button { display: flex; align-items: center; justify-content: center; gap: .3rem; flex-wrap: wrap; }
+.reserveToggle b { display: flex; align-items: center; gap: .4rem; }

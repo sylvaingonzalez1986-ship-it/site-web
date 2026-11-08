@@ -1,11 +1,13 @@
 "use client";
 
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import Image from "next/image";
 import { Check, Package, RefreshCw, Wrench } from "lucide-react";
 import { useEffect, useState } from "react";
 import type { ChanvrierCareerSnapshot } from "@/lib/chanvrier-career";
 import type { KqMachineCondition } from "@/lib/kanab-quest-maintenance";
 import { getKqWorkshopMachineSpecification } from "@/lib/kanab-quest-workshop-machines";
+import { getKqProcessingMachineReference } from "@/lib/kanab-quest-processing-profiles";
 import { getKqWorkshopProductArtwork } from "@/lib/kanab-quest-warehouse-product-artwork";
 import { KqEquipmentUpgrade } from "./KqEquipmentUpgrade";
 import { KqMachineMaintenance } from "./KqMachineMaintenance";
@@ -34,6 +36,7 @@ export function KqWorkshopMachineSummary({ code, level, condition, cashCents, ca
   useEffect(() => { onBusyChange?.(busy); }, [busy, onBusyChange]);
   useEffect(() => () => onBusyChange?.(false), [onBusyChange]);
   const machine = getKqWorkshopMachineSpecification(code, level);
+  const reference = getKqProcessingMachineReference(code, level);
   const artwork = getKqWorkshopProductArtwork(code, level);
   if (!machine || !artwork) return null;
   return <section className={styles.summary} aria-label="Résumé du niveau et de l’entretien" data-workshop-machine-summary={code}>
@@ -43,6 +46,21 @@ export function KqWorkshopMachineSummary({ code, level, condition, cashCents, ca
         <span className={styles.status} data-due={condition?.due || undefined}>{condition?.due ? <><Wrench size={14} aria-hidden="true" />À entretenir · à l’arrêt</> : installed ? <><Check size={14} aria-hidden="true" />Installée dans l’atelier</> : <><Package size={14} aria-hidden="true" />Acquise · en réserve</>}</span>
       </div>
     </header>
+    {reference ? <div className={styles.cadence} data-machine-processing-reference>
+      <strong>{reference.gramsPerHour === null ? "Séchage autonome · attente estimée" : `${reference.gramsPerHour.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g/h de jeu · cadence estimée`}</strong>
+      <p>{reference.material} · avant l’effet de la compétence de la personne au poste.</p>
+      <details><summary>Référence fabricant et hypothèses du jeu</summary><KqHelpDashboard>
+        <KqHelpGrid art="help-workshop" items={[
+          { label: "Modèle de référence", value: reference.model, art: "help-workshop" },
+          { label: "Donnée fabricant", value: reference.specification, art: "help-plan" },
+          { label: "1 h de jeu", value: "10 min réelles", art: "help-time" },
+          { label: "Manutention", value: "Travail actif", art: "help-team" },
+          { label: "Attente autonome", value: "0 h de travail consommée", art: "help-rest" },
+        ]} />
+        <KqHelpNote>{reference.note}</KqHelpNote>
+        <a href={reference.sourceUrl} target="_blank" rel="noreferrer">Consulter la fiche fabricant</a>
+      </KqHelpDashboard></details>
+    </div> : null}
     <div className={styles.grid}>
       <KqEquipmentUpgrade compact workshopOnly code={code} level={level} cashCents={cashCents} career={career}
         tentNumber={tentNumber} productionUnits={productionUnits} equipmentScopeVersion={equipmentScopeVersion}

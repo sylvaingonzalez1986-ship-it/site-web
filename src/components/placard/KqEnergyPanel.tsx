@@ -9,6 +9,7 @@ import { KQ_ENERGY_MODES, quoteKqEnergy, quoteKqTentEnergy, type KqEnergyMode, t
 import { getKqEffectiveTentProfiles, getKqProductionUnits } from "@/lib/kanab-quest-production";
 import type { KqTentEquipmentProfile } from "@/lib/kanab-quest-production-scale";
 import { getKqCultureWearPreview } from "@/lib/kanab-quest-culture-wear";
+import { KqHelpGrid } from "./KqHelpDashboard";
 import styles from "./KqEnergyPanel.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import type { KqWarehouseRunSnapshot } from "@/lib/kanab-quest-warehouse";
@@ -165,7 +166,10 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
         <details><summary>Répartition des charges</summary><KqAllocationBar label="Répartition des charges" items={[
           { label: "Électricité", value: visibleBudget.energy, displayValue: formatKqCash(visibleBudget.energy), tone: "gold" },
           { label: "Consommables", value: visibleBudget.consumables, displayValue: formatKqCash(visibleBudget.consumables), tone: "teal" },
-        ]} /><p>Les cartes jouées et les soins sont consommés une seule fois pour toutes les cultures réunies. Les soins choisis pendant la culture ne sont pas compris dans ces charges.</p></details>
+        ]} /><KqHelpGrid art="help-care" items={[
+          { label: "Cartes et soins", value: "1 consommation", detail: "Pour toutes les cultures réunies.", art: "collection" },
+          { label: "Soins choisis en culture", value: "Hors charges", detail: "Payés séparément." },
+        ]} /></details>
       </> : loading ? <p role="status">{snapshot ? "Actualisation des charges…" : "Calcul des charges…"}</p>
         : !error ? <p className={styles.error} role="alert">Les charges sont incomplètes. Actualise pour vérifier les montants et la surface avant de commencer.</p> : null}
       {campaignMembers && <details><summary>Détail par zone</summary><ul>{campaignMembers.map(member => <li key={member.runId}><span>{member.warehouse.zones[0]?.name}</span><b>{formatKqCash(member.warehouse.operatingCostCents)}</b></li>)}</ul>{invoices.map(item => <p key={item.runId}>{campaignMembers.find(member => member.runId === item.runId)?.warehouse.zones[0]?.name} : {formatKqCash(item.remainingCents)} restant.</p>)}</details>}
@@ -178,7 +182,10 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
     {warehouse ? <><div className={styles.budgetHeader}><span>{warehouse.activeAreaM2} m² engagés</span><strong>{formatKqCash(warehouse.operatingCostCents)}<small>Budget {lockedQuote ? "de cette culture" : "prévu"}</small></strong></div><KqAllocationBar label="Répartition des charges" items={[
       { label: "Électricité", value: warehouse.energyCostCents, displayValue: formatKqCash(warehouse.energyCostCents), tone: "gold" },
       { label: "Consommables", value: warehouse.consumablesCostCents, displayValue: formatKqCash(warehouse.consumablesCostCents), tone: "teal" },
-    ]} />{lockedQuote ? <>{supplierInvoice ? <p>{supplierInvoice.remainingCents === 0 ? "Facture fournisseur réglée." : <>Facture fournisseur : <strong>{formatKqCash(supplierInvoice.remainingCents)}</strong> à régler avant le <time dateTime={supplierInvoice.dueAt}>{new Date(supplierInvoice.dueAt).toLocaleString("fr-FR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" })}</time>.</>}</p> : null}<p><Link href="/arene/placard?view=treasury&pole=accounting">Consulter les factures fournisseur</Link></p></> : <details><summary>Quand les consommables sont-ils facturés ?</summary><p>À 30 jours de jeu, soit <strong>5 jours réels</strong> après le lancement. Aucun débit immédiat pour les consommables.</p></details>}</> : !physicalQuote && (quote || snapshot) ? <p><strong>{units} tente{units>1?"s":""} {lockedQuote ? "pour cette culture" : "dans ton installation"}</strong></p> : null}
+    ]} />{lockedQuote ? <>{supplierInvoice ? <p>{supplierInvoice.remainingCents === 0 ? "Facture fournisseur réglée." : <>Facture fournisseur : <strong>{formatKqCash(supplierInvoice.remainingCents)}</strong> à régler avant le <time dateTime={supplierInvoice.dueAt}>{new Date(supplierInvoice.dueAt).toLocaleString("fr-FR", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" })}</time>.</>}</p> : null}<p><Link href="/arene/placard?view=treasury&pole=accounting">Consulter les factures fournisseur</Link></p></> : <details><summary>Quand les consommables sont-ils facturés ?</summary><KqHelpGrid art="help-accounts" items={[
+  { label: "Après le lancement", value: "5 jours réels", detail: "30 jours de jeu.", art: "help-time" },
+  { label: "Au lancement", value: "Aucun débit", detail: "Consommables réglés à l’échéance." },
+]} /></details>}</> : !physicalQuote && (quote || snapshot) ? <p><strong>{units} tente{units>1?"s":""} {lockedQuote ? "pour cette culture" : "dans ton installation"}</strong></p> : null}
     {selectedMode && snapshot?.chanvrierStrength === "green-thumb" ? <p><Leaf size={16} /> Main Verte · +2 XP au départ, en plus du bonus de ton Buddie.</p> : null}
     {selectedMode && !!snapshot?.maintenanceDueNext?.length ? <p><strong>Entretien à prévoir :</strong> {snapshot.maintenanceDueNext.join(", ")}. Consulte ton entrepôt avant la prochaine transformation.</p> : null}
     {selectedMode && onModeChange && !physicalQuote ? <div className={styles.modes} role="group" aria-label="Mode énergétique">
@@ -214,7 +221,12 @@ export function KqEnergyPanel({ selectedMode, onModeChange, onQuoteChange, locke
         {item.conditionAfter === 0 ? <small className={styles.error}>Termine cette culture, puis devra être remplacé pour apporter ses bonus.</small> : null}
       </li>)}</ul>
       <p><strong>Usure estimée : {formatKqCash(wearCostCents)}</strong> · non prélevée.</p>
-      <details><summary>Comprendre l’usure</summary><p>Cette estimation aide à prévoir les futurs rachats ; seul le remplacement débite ta trésorerie. L’éco prolonge la durée de vie. L’état du matériel ne remonte jamais entre deux cultures. Le kit de départ reste disponible pour le dépannage.</p></details>
+      <details><summary>Comprendre l’usure</summary><KqHelpGrid art="help-workshop" items={[
+        { label: "Estimation", value: "Prévoir les rachats", detail: "Seul le remplacement débite ta trésorerie.", art: "help-accounts" },
+        { label: "Mode éco", value: "Durée de vie prolongée", art: "help-rest" },
+        { label: "Entre deux cultures", value: "Usure conservée", detail: "L’état du matériel ne remonte jamais." },
+        { label: "Dépannage", value: "Kit de départ disponible", art: "warehouse" },
+      ]} /></details>
     </section> : null}
     {invoice?.dogCare ? <div className={styles.dogCare}>
       <Image src="/app/kanab-quest/equipment/equipment-SECURITY-DOG-hero-v1.webp" alt="" width={88} height={88} />

@@ -7,13 +7,13 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 const headers = { "Cache-Control": "private, no-store, max-age=0" };
 
-export async function GET() {
+export async function GET(request?: Request) {
   const admin = await getValidatedAdminContext();
   if (!admin) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
     const userId = await findKqUserIdByEmail(admin.email);
     if (!userId) throw new Error("Compte collection admin introuvable.");
-    return NextResponse.json(await getKqCareShopSnapshot(userId), { headers });
+    return NextResponse.json(await getKqCareShopSnapshot(userId, request ? new URL(request.url).searchParams.get("runId") ?? undefined : undefined), { headers });
   } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Suivi indisponible." }, { status: 400 }); }
 }
 
@@ -23,12 +23,13 @@ export async function POST(request: Request) {
   let raw: unknown;
   try { raw = await request.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 }); }
   const body = raw && typeof raw === "object" && !Array.isArray(raw) ? raw as Record<string, unknown> : {};
-  if (typeof body.productCode !== "string" || typeof body.requestKey !== "string" || typeof body.quantity !== "number") {
+  if (typeof body.productCode !== "string" || typeof body.requestKey !== "string" || typeof body.quantity !== "number"
+    || body.runId !== undefined && typeof body.runId !== "string" || body.expectedPriceCents !== undefined && typeof body.expectedPriceCents !== "number") {
     return NextResponse.json({ error: "Achat invalide." }, { status: 400 });
   }
   try {
     const userId = await findKqUserIdByEmail(admin.email);
     if (!userId) throw new Error("Compte collection admin introuvable.");
-    return NextResponse.json(await purchaseKqCareProduct({ userId, productCode: body.productCode, quantity: body.quantity, requestKey: body.requestKey }), { headers });
+    return NextResponse.json(await purchaseKqCareProduct({ userId, productCode: body.productCode, quantity: body.quantity, requestKey: body.requestKey, runId: body.runId as string | undefined, expectedPriceCents: body.expectedPriceCents as number | undefined }), { headers });
   } catch (error) { return NextResponse.json({ error: error instanceof Error ? error.message : "Achat impossible." }, { status: 400 }); }
 }

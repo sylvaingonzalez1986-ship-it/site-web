@@ -1,8 +1,10 @@
 "use client";
 
+import { KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
+import { KqPrintedArt } from "./KqPrintedArt";
 import Image from "next/image";
 import { useId, useState, type ReactNode } from "react";
-import { ArrowDown, ArrowRight, ArrowUp, Check, Factory, Grid2X2, Leaf, Package, Plus, ShieldCheck, Snowflake, Sparkles, Sun, Swords, Wind, Zap } from "lucide-react";
+import { ArrowDown, ArrowRight, ArrowUp, Check, Grid2X2, Package, Plus, ShieldCheck, Snowflake, Sparkles, Sun, Wind, Zap } from "lucide-react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import type { KqStorageClimateBilling } from "@/lib/kanab-quest-business";
 import { getKqPostHarvestDeviceBenefits, getKqPostHarvestTierBenefits, getKqWarehousePostHarvestProfile } from "@/lib/kanab-quest-post-harvest";
@@ -159,11 +161,11 @@ export function KqWarehousePostHarvest({ kind, state, installedState = state, bi
       <summary>Comprendre les gammes et les gains de qualité</summary>
       <div className={styles.qualityGuideBody}>
         <ol className={styles.journey} aria-label="Parcours après la récolte">
-          <li><span><Leaf size={18} aria-hidden="true" /></span><div><strong>Récolte</strong><small>La qualité de départ</small></div><ArrowRight className={styles.journeyArrow} size={17} aria-hidden="true" /></li>
-          <li aria-current={drying ? "step" : undefined} data-current={drying}><span><Sun size={18} aria-hidden="true" /></span><div><strong>Séchage</strong><small>Préparer la qualité</small></div><ArrowRight className={styles.journeyArrow} size={17} aria-hidden="true" /></li>
-          <li aria-current={!drying ? "step" : undefined} data-current={!drying}><span><Package size={18} aria-hidden="true" /></span><div><strong>Stockage · affinage</strong><small>Affiner et conserver</small></div><ArrowRight className={styles.journeyArrow} size={17} aria-hidden="true" /></li>
-          <li><span><Swords size={18} aria-hidden="true" /></span><div><strong>Jury</strong><small>Évaluer le lot affiné</small></div><ArrowRight className={styles.journeyArrow} size={17} aria-hidden="true" /></li>
-          <li><span><Factory size={18} aria-hidden="true" /></span><div><strong>Atelier</strong><small>Transformer le lot</small></div></li>
+          <li><KqPrintedArt kind="harvest" className={styles.journeyArt} sizes="120px" /><div><strong>Récolte</strong><small>La qualité de départ</small></div><ArrowRight className={styles.journeyArrow} size={17} aria-hidden="true" /></li>
+          <li aria-current={drying ? "step" : undefined} data-current={drying}><KqPrintedArt kind="help-culture" className={styles.journeyArt} sizes="120px" /><div><strong>Séchage</strong><small>Préparer la qualité</small></div><ArrowRight className={styles.journeyArrow} size={17} aria-hidden="true" /></li>
+          <li aria-current={!drying ? "step" : undefined} data-current={!drying}><KqPrintedArt kind="warehouse" className={styles.journeyArt} sizes="120px" /><div><strong>Stockage · affinage</strong><small>Affiner et conserver</small></div><ArrowRight className={styles.journeyArrow} size={17} aria-hidden="true" /></li>
+          <li><KqPrintedArt kind="help-quality" className={styles.journeyArt} sizes="120px" /><div><strong>Jury</strong><small>Évaluer le lot affiné</small></div><ArrowRight className={styles.journeyArrow} size={17} aria-hidden="true" /></li>
+          <li><KqPrintedArt kind="help-workshop" className={styles.journeyArt} sizes="120px" /><div><strong>Atelier</strong><small>Transformer le lot</small></div></li>
         </ol>
 
         <div className={styles.hero}>
@@ -189,11 +191,15 @@ export function KqWarehousePostHarvest({ kind, state, installedState = state, bi
           <div><span><Sparkles size={15} aria-hidden="true" />{drying ? "Bonus de séchage" : "Bonus d’affinage"}</span><strong>+{number(qualityBonus)} <small>/ 10</small></strong><QualityBar value={qualityBonus} max={maxBonus} label={drying ? "Bonus de qualité du séchage" : "Bonus de qualité des contenants"} /></div>
         </div>
 
-        <div className={styles.qualityNote}><Sparkles size={18} aria-hidden="true" /><p>{drying ? "La gamme de séchage améliore la qualité des récoltes issues des cultures lancées après son installation. Le bonus dépend du matériel et de sa capacité dans la salle." : "Les gains d’affinage s’acquièrent progressivement. Une gamme supérieure apporte un meilleur bonus et ralentit les pertes à partir de son installation."}<span>{drying ? "Qualité finale plafonnée à 10. Les cultures déjà lancées conservent leur bonus de séchage." : "Qualité finale plafonnée à 10. Les améliorations profitent aussi au temps d’affinage restant des lots en cours."}</span></p></div>
+        <KqHelpGrid art="help-quality" items={[
+          { label: "Qualité finale", value: "10 / 10 maximum", art: "help-quality" },
+          { label: drying ? "Bonus de séchage" : "Gains d’affinage", value: drying ? "Cultures lancées après installation" : "Progressifs", detail: drying ? "Selon matériel et capacité de la salle." : "Gamme supérieure : meilleur bonus, pertes ralenties.", art: drying ? "help-culture" : "warehouse" },
+          { label: "Lots déjà en cours", value: drying ? "Bonus conservé" : "Temps restant amélioré", detail: drying ? "Les cultures lancées gardent leur bonus de séchage." : "Effet dès l’installation.", art: "help-time" },
+        ]} />
         <QualityComparison kind={kind} />
         {!drying && <>
           <div className={styles.qualityEquation} aria-label="Bonus de qualité de la configuration"><span><Sun size={17} aria-hidden="true" />Séchage <b>+{number(profile.dryingQualityBonus)}</b></span><i>+</i><span><Package size={17} aria-hidden="true" />Stockage <b>+{number(profile.storageQualityBonus)}</b></span><i>+</i><span><Snowflake size={17} aria-hidden="true" />Climat <b>+{number(profile.climateQualityBonus)}</b></span><i>=</i><span className={styles.qualityTotal}>Bonus potentiel<strong>+{number(totalBonus)} / 10</strong></span></div>
-          <p className={styles.climateFootnote}>Hors bonus des contenants individuels des lots. Les gains d’affinage s’acquièrent progressivement, avec une qualité finale limitée à 10. Les améliorations agissent à partir de leur installation. Les protections du stockage et du climat se combinent sans additionner leurs pourcentages.</p>
+          <KqHelpNote>Hors bonus des contenants individuels. Les protections du stockage et du climat se combinent sans additionner leurs pourcentages.</KqHelpNote>
         </>}
       </div>
     </details>

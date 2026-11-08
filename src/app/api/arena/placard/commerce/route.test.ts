@@ -85,6 +85,16 @@ describe("commerce endpoint boundaries", () => {
     expect(JSON.stringify(await response.json())).not.toContain("private database detail");
   });
 
+  it.each(["player_work_exhausted", "player_work_changed"])("explains %s as a game limit without leaking SQL", async code => {
+    mocks.action.mockRejectedValueOnce(new Error(`[supabase:commerce] ${code}`));
+    const response = await POST(request(command));
+    expect(response.status).toBe(400);
+    const message = (await response.json()).error;
+    expect(message).toMatch(/journée|12 h/);
+    expect(message).not.toMatch(/supabase|player_work/);
+    expect(mocks.action).toHaveBeenCalledTimes(1);
+  });
+
   it.each(["commerce_offer_changed", "commerce_storage_changed"] as const)("returns a recoverable conflict only for a rejected %s transaction", async code => {
     const message = "Recalcule l’offre avant de confirmer.";
     mocks.action.mockRejectedValueOnce(new KqCommerceOfferChangedError(message, code));

@@ -90,7 +90,7 @@ function updateCalendar(state: KqReleveCommerceState) {
   business.nextEventAt = [...[...business.lab.invoices, ...business.suppliers!.invoices].filter(row => row.remainingCents > 0 && Date.parse(row.dueAt) > state.operations.trial.clock).map(row => row.dueAt),
     ...(business.storageClimate?.nextBillingAt ? [business.storageClimate.nextBillingAt] : [])].sort()[0] ?? null;
   const recent = state.wholesaleSales.filter(row => row.at + 24 * HOUR > state.operations.trial.clock);
-  const capacity = 10_000 + Math.min(20, state.operations.trial.commerce.shopPartners ?? 0) * 2500;
+  const capacity = 10_000 + Math.max(0, state.operations.trial.commerce.shopPartners ?? 0) * 2500;
   state.operations.trial.commerce.wholesale = { capacityEquivalentUnits: capacity, remainingEquivalentUnits: Math.max(0, capacity - recent.reduce((sum, row) => sum + row.equivalentUnits, 0)), resetsAt: recent.length ? new Date(Math.min(...recent.map(row => row.at)) + 24 * HOUR).toISOString() : null };
 }
 function balances(state: KqReleveCommerceState): KqTreasuryBalances {

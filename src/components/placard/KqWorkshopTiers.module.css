@@ -9,10 +9,10 @@
 .tiers .grid article > small { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: .05em; color: #172923; }
 .grid article > strong { margin-top: 7px; font-size: 14px; line-height: 1.35; }
 .artwork { width: 100%; height: 140px; margin: 8px auto 0; object-fit: contain; filter: drop-shadow(2px 3px 0 #17292335); }
-.grid dl { margin: 12px 0; font-size: 11px; }
-.grid dl div { margin: 8px 0; }
-.grid dt { color: #536058; }
-.grid dd { margin: 3px 0 0; font-size: 13px; font-weight: 700; color: #172923; }
+.grid article > dl { margin: 12px 0; font-size: 11px; }
+.grid article > dl > div { margin: 8px 0; }
+.grid article > dl dt { color: #536058; }
+.grid article > dl dd { margin: 3px 0 0; font-size: 13px; font-weight: 700; color: #172923; }
 .grid article > b { margin-top: auto; padding-top: 8px; font-size: 19px; color: #172923; font-weight: 900; }
 .grid article > span { margin: 5px 0 10px; line-height: 1.4; color: #536058; font-size: 11px; }
 .tiers button { display: inline-flex; align-items: center; justify-content: center; gap: 5px; padding: 8px; font-size: 11px; font-weight: 800; cursor: pointer; min-height: 44px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
@@ -28,12 +28,12 @@
 .confirm button:first-child { color: #172923; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .tiers .notice { padding: 10px; font-size: 12px; color: #174d3e; background: #dcefe4; border: 1px solid #174d3e; border-radius: var(--game-panel-radius, 2px); }
 .tiers .error { padding: 10px; font-size: 12px; color: #873321; background: #ffe4d8; border: 1px solid #873321; border-radius: var(--game-panel-radius, 2px); }
-@container(max-width:560px) { .grid { grid-template-columns: 1fr; } .grid article { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; } .grid article > small,.grid article > strong,.grid article > span,.grid .reason,.grid .owned,.grid .artwork { grid-column: 1 / -1; } .grid dl { display: flex; gap: 20px; grid-column: 1 / -1; } .grid article > b { grid-column: 1; } .grid article > button { grid-column: 2; grid-row: 5; align-self: end; } }
+@container(max-width:560px) { .grid { grid-template-columns: 1fr; } .grid article { display: grid; grid-template-columns: 1fr auto; column-gap: 12px; } .grid article > small,.grid article > strong,.grid article > span,.grid .reason,.grid .owned,.grid .artwork { grid-column: 1 / -1; } .grid article > dl { display: flex; gap: 20px; grid-column: 1 / -1; } .grid article > b { grid-column: 1; } .grid article > button { grid-column: 2; grid-row: 5; align-self: end; } }
 @container(max-width:340px) {
   .grid article { display: flex; flex-direction: column; gap: 0; }
-  .grid dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin: 12px 0; }
-  .grid dl div { min-width: 0; margin: 0; }
-  .grid dt { overflow-wrap: anywhere; }
+  .grid article > dl { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; margin: 12px 0; }
+  .grid article > dl > div { min-width: 0; margin: 0; }
+  .grid article > dl dt { overflow-wrap: anywhere; }
   .grid article > b { margin-top: 0; }
   .grid article > button { align-self: stretch; width: 100%; margin-top: 10px; }
 }

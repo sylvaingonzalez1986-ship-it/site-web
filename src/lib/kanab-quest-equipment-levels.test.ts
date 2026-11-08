@@ -81,10 +81,17 @@ describe("unique equipment and ten-level progression", () => {
   });
 
   it("shows the workshop's acquired configuration at levels 1, 4 and 7", () => {
-    for (const code of ["SIFT-TRAY", "PRESS-0600", "WASHER-25L", "AUTO-SIEVE", "FREEZE-DRYER", "STATIC-PLASMA"]) {
-      expect(new Set([1, 4, 7].map(level => getKqEquipmentArtwork(code, level)?.src)).size).toBe(3);
+    const models: Record<string, readonly string[]> = {
+      "SIFT-TRAY": ["SIFT-TRAY", "SIFT-TRAY", "SIFT-TRAY"],
+      "PRESS-0600": ["PRESS-0600", "PRESS-10T", "PRESS-20T"],
+      "WASHER-25L": ["WASHER-25L", "WASHER-75G", "TSS-225"],
+      "AUTO-SIEVE": ["AUTO-SIEVE", "AUTO-SIEVE", "AUTO-SIEVE"],
+      "FREEZE-DRYER": ["FREEZE-DRYER", "FREEZE-DRYER", "FREEZE-DRYER"],
+      "STATIC-PLASMA": ["STATIC-PLASMA", "STATIC-PLASMA", "STATIC-PLASMA"],
+    };
+    for (const [code, configurations] of Object.entries(models)) {
       for (const [level, configuration] of [[1, 1], [3, 1], [4, 2], [6, 2], [7, 3], [10, 3]]) {
-        expect(getKqEquipmentArtwork(code, level)?.src).toMatch(new RegExp(`-${configuration}\\.webp$`));
+        expect(getKqEquipmentArtwork(code, level)?.src).toBe(`/app/kanab-quest/equipment/equipment-${configurations[configuration - 1]}-hero-v2.webp`);
       }
     }
   });

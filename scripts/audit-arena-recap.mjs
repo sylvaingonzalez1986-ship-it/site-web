@@ -9,6 +9,7 @@ import puppeteer from 'puppeteer-core';
 
 const root=process.cwd(),output=resolve(root,'output/arena-recap'),origin='http://127.0.0.1:3266';
 const juryOnly=process.argv.includes('--jury-only');
+const cultureHelpOnly=process.argv.includes('--culture-help-only');
 const modules={
   fixture:`import React from 'react';import{createRoot}from'react-dom/client';import'/src/app/globals.css';
     import{KqCultureRecap,KqJuryRecap}from'/src/components/placard/KqPersonalRecap';
@@ -88,8 +89,8 @@ async function loadedImages(selector){
 try{
   await mkdir(output,{recursive:true});await server.listen();browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,args:['--no-sandbox','--disable-gpu']});page=await browser.newPage();page.setDefaultTimeout(20000);page.setDefaultNavigationTimeout(60000);page.on('pageerror',error=>report.errors.push({scenario,message:error.message}));await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await page.setRequestInterception(true);
   page.on('request',request=>{const url=new URL(request.url());if(url.protocol==='data:'||url.protocol==='blob:')return void request.continue();if(url.origin!==origin){report.remote.push(url.href);return void request.abort();}if(url.pathname.startsWith('/api/')){report.apiRequests.push({scenario,method:request.method(),path:url.pathname});return void request.respond({status:503,contentType:'application/json',body:'{}'});}void request.continue();});
-  for(const width of [320,390,768,1440]){
-    for(const [name,coverage] of juryOnly?[]:[['culture','detailed'],['culture-care','detailed'],['culture-partial','partial'],['culture-legacy','legacy'],['culture-v2','detailed'],['culture-dead','detailed']]){
+  for(const width of cultureHelpOnly?[320]:[320,390,768,1440]){
+    for(const [name,coverage] of juryOnly?[]:cultureHelpOnly?[['culture','detailed']]:[['culture','detailed'],['culture-care','detailed'],['culture-partial','partial'],['culture-legacy','legacy'],['culture-v2','detailed'],['culture-dead','detailed']]){
       await visit(name,width);const receipt=await page.evaluate(()=>window.__recapFixture.game);const dead=name==='culture-dead';
       if(dead){assert.equal(receipt.cultureDead,true);assert.equal(receipt.harvestGrams,0);}
       else assert.equal(receipt.history.length,6);
@@ -105,6 +106,14 @@ try{
         const profile=await page.$eval('[data-recap-cannabinoids]',el=>el.innerText);
         for(const cannabinoid of ['CBD','CBG','THC'])assert(profile.includes(cannabinoid),'Profile names '+cannabinoid);
         assert(/simul/i.test(profile),'The profile clearly describes simulated results');
+        const potentialChanges=receipt.care.history.filter(event=>event.kind==='resolution'&&event.stageIndex>=3&&event.cannabinoidDelta!==undefined);
+        if(potentialChanges.length){
+          assert.deepEqual(await page.$$eval('[data-recap-cannabinoids] figure li strong',nodes=>nodes.map(node=>node.textContent)),potentialChanges.map(event=>`${event.cannabinoidDelta>0?'+':''}${event.cannabinoidDelta} pts${event.cannabinoidDelta===0&&event.stageIndex>=5?' · conservé':''}`),'Potential chart uses the recorded deltas, including measured zero');
+          const potentialBars=await page.$$eval('[data-recap-cannabinoids] figure [aria-hidden="true"]',nodes=>nodes.map(track=>{const fill=track.querySelector('span'),box=track.getBoundingClientRect(),paint=fill.getBoundingClientRect();return{width:box.width,height:box.height,fillWidth:paint.width,fillHeight:paint.height,color:getComputedStyle(fill).backgroundColor};}));
+          assert.equal(potentialBars.length,potentialChanges.length);
+          assert(potentialBars.every((bar,index)=>bar.width>50&&bar.height>=8&&bar.fillHeight>=8&&(potentialChanges[index].cannabinoidDelta===0||bar.fillWidth>0)),'Potential bars remain visible at every viewport');
+          assert(potentialBars.every(bar=>bar.color!=='transparent'&&bar.color!=='rgba(0, 0, 0, 0)'),'Potential bars retain their ink under game styles');
+        }
         await details('[data-recap-cannabinoids] [data-cannabinoid-report]');
         assert((await page.$$('[data-recap-cannabinoids] table')).length>0,'The cannabinoid report is a readable table');
         assert.equal(await page.$$eval('[data-recap-cannabinoids] tbody tr',rows=>rows.length),7,'All seven cannabinoid families remain available');
@@ -128,7 +137,11 @@ try{
       }
       const primaryCards=await page.$$eval('[data-recap-card]',nodes=>nodes.filter(node=>node.checkVisibility()).length);
       assert.equal(primaryCards,1,'The summary presents one primary card');
-      await details('[data-recap-card-details]');assert((await page.$eval('[data-recap-card-details]',el=>el.textContent)).includes('stock'),'Card conditions preserve the inventory caveat');if(width===390)await shot(name+'-'+width+'-card-conditions');await page.focus('[data-recap-card-details]>summary');await page.keyboard.press('Enter');
+      await details('[data-recap-card-details]');assert((await page.$eval('[data-recap-card-details]',el=>el.textContent)).includes('stock'),'Card conditions preserve the inventory caveat');
+      const helpImages=await loadedImages('[data-recap-card-details] img');assert(helpImages.every(image=>image.alt===''&&image.loaded),'Card explanations use loaded decorative illustrations with HTML labels');
+      assert(await page.$eval('[data-recap-card-details]',node=>node.getBoundingClientRect().width>=node.closest('[data-recap-card]').getBoundingClientRect().width-32),'Illustrated conditions use the full card width');
+      if(cultureHelpOnly)assert((await page.$eval('[data-recap-card-details] [data-help-steps]',node=>node.innerText)).includes('À vérifier'),'Fresh help render uses the short current heading');
+      if(width===320||width===390)await (await page.$('[data-recap-card-details]')).screenshot({path:resolve(output,name+'-'+width+'-card-conditions'+(cultureHelpOnly?'-current':'')+'.png')});await page.focus('[data-recap-card-details]>summary');await page.keyboard.press('Enter');
       await details('[data-culture-analysis-details]');assert.equal(await page.$$eval('[data-analysis-stage]',nodes=>nodes.length),receipt.history.length);
       await openStageDetails();
       const lines=await page.$$eval('[data-analysis-stage]',nodes=>nodes.map(node=>node.textContent));const labels=await page.evaluate(()=>window.__recapFixture.stageLabels);receipt.history.forEach((entry,index)=>{assert(lines[index].includes(labels[index]));assert(lines[index].includes(entry.situation));assert(lines[index].includes(entry.dice.join(' · ')));});
@@ -137,11 +150,11 @@ try{
       if(coverage!=='detailed')assert(await page.$('[data-analysis-legacy]'),'Older decisions are explicitly unavailable');
       if(coverage==='detailed'&&!dead)assert(await page.$('[data-recap-card][data-advice-basis="verified-position"]'),'Detailed receipts explain an actual alternative card');
       if(coverage==='legacy')assert.equal(await page.$$eval('[data-recap-card][data-advice-basis="verified-position"]',nodes=>nodes.length),0,'No alleged playable historical card without a recorded decision');
-      const cardImages=await loadedImages('[data-recap-card] img');assert(cardImages.every(image=>image.alt.startsWith('Carte ')&&image.loaded),'Recommended cards have a loaded visual and accessible label');await shot(name+'-'+width+'-details');
+      const cardImages=await loadedImages('[data-recap-card] > img');assert(cardImages.every(image=>image.alt.startsWith('Carte ')&&image.loaded),'Recommended cards have a loaded visual and accessible label');await shot(name+'-'+width+'-details');
       const text=await page.$eval('[data-culture-personal-recap]',el=>el.textContent);assert(!/NaN|undefined|Infinity/.test(text));assert(!/fidélité cannabinoïde/i.test(text),'The obsolete label is absent even from detailed explanations');
       await page.reload({waitUntil:'networkidle0'});await page.waitForSelector('[data-culture-personal-recap]');assert.equal(await page.$eval('[data-culture-personal-recap]',el=>el.textContent),text,'Reload retains the recorded analysis');assert.equal(await page.evaluate(()=>window.__recapFixture.restored),true,'The saved receipt was restored through the persistence validator');assert.deepEqual(await page.evaluate(()=>window.__recapFixture.game),receipt,'Reading the recap never rewrites the culture');report.results.push({name,width,coverage,rulesVersion:receipt.rulesVersion,dead,stages:receipt.history.length,reload:true,illustrations:true,keyboardDetails:true});
     }
-    for(const name of ['jury','jury-tie','jury-victory','jury-legacy','jury-no-stats']){
+    for(const name of cultureHelpOnly?[]:['jury','jury-tie','jury-victory','jury-legacy','jury-no-stats']){
       await visit(name,width);await page.waitForSelector('[data-jury-analysis]');assert((await page.$eval('[data-jury-analysis]>h4',el=>el.textContent)).includes('Impact visuel'),'Focus is the closest loss or victory, not the lowest absolute score');await shot(name+'-'+width+'-summary');await details('[data-jury-analysis-details]');const text=await page.$eval('[data-jury-personal-recap]',el=>el.textContent);assert(!/NaN|undefined|Infinity/.test(text));
       if(name==='jury-legacy'){assert(text.includes('ancienne manche'));assert(!/65\s*%|35\s*%/.test(text),'Unknown historical criteria are not invented');}
       else {assert(/65\s*%/.test(text)&&/35\s*%/.test(text),'Real criterion weights are explained');}
@@ -166,4 +179,4 @@ try{
   }
   assert.deepEqual(report.errors,[]);assert.deepEqual(report.apiRequests,[]);assert.deepEqual(report.remote,[]);report.passed=true;
 }catch(error){report.failure=error.stack;await shot('failure').catch(()=>undefined);process.exitCode=1;}
-finally{await writeFile(resolve(output,juryOnly?'report-jury.json':'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));await browser?.close();await server.close();}
+finally{await writeFile(resolve(output,juryOnly?'report-jury.json':cultureHelpOnly?'report-culture-help.json':'report.json'),JSON.stringify(report,null,2));console.log(JSON.stringify(report));await browser?.close();await server.close();}

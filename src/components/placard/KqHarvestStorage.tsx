@@ -1,5 +1,6 @@
 "use client";
 
+import { KqHelpDashboard, KqHelpGrid, KqHelpSteps } from "./KqHelpDashboard";
 import type { KqHarvestMarketSection } from "@/lib/kanab-quest-harvests";
 
 import Link from "next/link";
@@ -138,6 +139,16 @@ export function KqHarvestStorage({ initialFlowerId, onOpenMarket, onOpenArena, o
       onOpenWorkshop={onOpenMarket} onOpenArena={onOpenArena} juryReturnView={juryReturnView} onSellOverflow={flowerId => void act({ action: "sell-overflow", flowerId })}
       onPlace={(flowerId, containerCode) => act({ action: "place", flowerId, containerCode })}
       onProtectOverflow={onOpenWarehouse} warehouseHref={warehouseHref} />
-    <details className={styles.help} data-storage-curing-help><summary>Comment fonctionne l’affinage ?</summary><p>L’affinage dure 6 heures réelles dès la récolte et continue hors connexion. Choisis les contenants de chaque variété, puis présente sa Fleur d’Arène au jury une fois le lot affiné. Le jury consomme la Fleur d’Arène ; le stock récolté est conservé pour la vente.</p></details>
+    <details className={styles.help} data-storage-curing-help><summary>Comment fonctionne l’affinage ?</summary><KqHelpDashboard>
+      <KqHelpGrid art="harvest" items={[
+        { label: "Affinage", value: "6 h réelles", detail: "Dès la récolte, même hors connexion.", art: "help-time" },
+        { label: "Stock récolté", value: "Conservé pour la vente", detail: "Le jury consomme seulement la Fleur d’Arène.", art: "harvest" },
+      ]} />
+      <KqHelpSteps art="harvest" steps={[
+        { label: "Ranger", detail: "Un contenant pour chaque variété.", art: "warehouse" },
+        { label: "Préparer le trim", detail: "À l’Atelier pendant l’affinage.", art: "help-workshop" },
+        { label: "Présenter au jury", detail: "Une fois affinage et trim terminés.", art: "help-quality" },
+      ]} />
+    </KqHelpDashboard></details>
   </div>;
 }

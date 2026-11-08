@@ -30,7 +30,7 @@ describe("Kanab Quest equipment artwork", () => {
 
     expect(expectedCodes).toHaveLength(17);
     expect(Object.keys(KQ_EQUIPMENT_ARTWORK)).toEqual(expect.arrayContaining(expectedCodes));
-    for (const code of expectedCodes.filter(code => !code.startsWith("TENT-"))) expect(getKqEquipmentArtwork(code)?.src).toMatch(/^\/placard\/equipment-sylvain-v1\//);
+    for (const code of expectedCodes.filter(code => !code.startsWith("TENT-") && !getKqWorkshopProductArtwork(code))) expect(getKqEquipmentArtwork(code)?.src).toMatch(/^\/placard\/equipment-sylvain-v1\//);
     ["WASHER-75G", "TSS-225"].forEach((code) => {
       expect(getKqEquipmentArtwork(code)?.src).toContain(`equipment-${code}-hero-v2.webp`);
     });
@@ -59,15 +59,37 @@ describe("Kanab Quest equipment artwork", () => {
     expect(getKqWarehouseProductArtwork("UNKNOWN")).toBeNull();
   });
 
-  it("shares all eighteen workshop illustrations between tier offers and equipment details", () => {
-    const codes = ["SIFT-TRAY", "PRESS-0600", "WASHER-25L", "AUTO-SIEVE", "FREEZE-DRYER", "STATIC-PLASMA"];
-    const sources = codes.flatMap(code => [1, 4, 7].map(level => {
+  it("shares ten restored illustrations between workshop offers and details without inventing tier models", () => {
+    const models = {
+      "SIFT-TRAY": ["SIFT-TRAY", "SIFT-TRAY", "SIFT-TRAY"],
+      "PRESS-0600": ["PRESS-0600", "PRESS-10T", "PRESS-20T"],
+      "WASHER-25L": ["WASHER-25L", "WASHER-75G", "TSS-225"],
+      "AUTO-SIEVE": ["AUTO-SIEVE", "AUTO-SIEVE", "AUTO-SIEVE"],
+      "FREEZE-DRYER": ["FREEZE-DRYER", "FREEZE-DRYER", "FREEZE-DRYER"],
+      "STATIC-PLASMA": ["STATIC-PLASMA", "STATIC-PLASMA", "STATIC-PLASMA"],
+    };
+    const sources = Object.entries(models).flatMap(([code, expectedModels]) => [1, 4, 7].map((level, index) => {
       const artwork = getKqWorkshopProductArtwork(code, level)!;
+      expect(artwork.src).toBe(`/app/kanab-quest/equipment/equipment-${expectedModels[index]}-hero-v2.webp`);
+      expect(artwork.tier).toBe(["economy", "standard", "premium"][index]);
+      expect(artwork.alt.length).toBeGreaterThan(30);
       expect(getKqEquipmentArtwork(code, level)?.src).toBe(artwork.src);
       expect(existsSync(join(process.cwd(), "public", artwork.src.slice(1))), artwork.src).toBe(true);
       return artwork.src;
     }));
-    expect(new Set(sources).size).toBe(18);
+    expect(new Set(sources).size).toBe(10);
+    for (const offer of KQ_WAREHOUSE_CATALOG.filter(item => item.kind === "processing")) {
+      expect(getKqWarehouseProductArtwork(offer.code)?.src).toBe(getKqWorkshopProductArtwork(offer.legacyCode!, offer.tier === "premium" ? 7 : offer.tier === "standard" ? 4 : 1)?.src);
+    }
+  });
+
+  it("keeps the existing 1/4/7 tier boundaries and normalizes invalid levels", () => {
+    for (const [level, model] of [[1, "PRESS-0600"], [3, "PRESS-0600"], [4, "PRESS-10T"], [6, "PRESS-10T"], [7, "PRESS-20T"], [10, "PRESS-20T"]] as const) {
+      expect(getKqWorkshopProductArtwork("PRESS-0600", level)?.src).toContain(`equipment-${model}-hero-v2.webp`);
+    }
+    for (const level of [0, 11, 1.5, NaN]) expect(getKqWorkshopProductArtwork("PRESS-0600", level)?.src).toContain("equipment-PRESS-0600-hero-v2.webp");
+    expect(getKqWorkshopProductArtwork("toString")).toBeNull();
+    expect(getKqWorkshopProductArtwork("__proto__")).toBeNull();
   });
 
   it("returns a safe fallback for an unknown equipment code", () => {

@@ -1,0 +1,72 @@
+{
+  "date": "2026-11-07",
+  "request": "Rendre Kanab Quest plus vivant et interactif avec une qualité de présentation de jeu, en conservant tout le contenu, les règles et la direction cartoon existante.",
+  "team": {
+    "artDirection": "Lecture des captures et du décor ; définition des réactions et identification des couches picturales disponibles.",
+    "motionEngineering": "Audit des moteurs, des ressources et du cycle de vie ; réalisation de l’ambiance GSAP du Quartier.",
+    "interactionDesign": "Gestes du plan de travail, anticipation du dépôt et retour après affectation réellement enregistrée.",
+    "integration": "Assemblage dans le Quartier et le Shell, accessibilité, contrôles partagés, vérification des parcours et documentation."
+  },
+  "diagnosis": [
+    "La clarification précédente améliorait la lecture, mais le village restait essentiellement une image avec des boutons : peu de réactions à l’intention, aux changements d’état et à l’ouverture d’un lieu.",
+    "Les enseignes étaient interactives, mais le geste de choisir ou de déposer un personnage ne formait pas une séquence visuelle claire.",
+    "Le projet possède déjà GSAP, un système sonore activé explicitement, des animations de packs et de récolte, des silhouettes précises et des illustrations conditionnelles. Ajouter plusieurs moteurs ne résoudrait pas l’absence de mise en scène.",
+    "Les trois peintures d’activité de la carte comprennent du décor opaque. Les déplacer comme des personnages ferait bouger les murs et le sol ; une animation corporelle ou mécanique exige des éléments séparés."
+  ],
+  "direction": "Un village qui répond à ce que le joueur regarde, prépare et confirme. Les mouvements d’ambiance restent secondaires ; la réaction au geste et le résultat réel sont prioritaires.",
+  "tools": {
+    "chosen": "CSS/SVG et GSAP déjà installé (package ^3.14.2), chargé à la demande dans la scène. Aucun paquet ajouté.",
+    "pluginDiscovery": "Recherche Plugin Management : Runway installé, Figma et Higgsfield proposés par le catalogue. Aucun plugin ajouté ni permission modifiée. Aucun besoin de génération externe pour cette première réalisation.",
+    "runway": "Capacité de production de clips/éléments animés, distincte du moteur interactif du jeu. Aucune génération lancée ni crédit utilisé dans ce lot.",
+    "rive": "Candidat pour un personnage ultérieur avec poses et machine à états ; nécessite une ressource .riv réellement dessinée et un runtime. Pas intégré dans ce lot.",
+    "deferred": "Motion ferait doublon avec le moteur présent pour les besoins actuels. Lottie convient à des clips préparés. PixiJS deviendrait pertinent pour une scène comprenant beaucoup de sprites ; il n’est pas nécessaire pour les commandes HTML et les quelques accents actuels.",
+    "sources": [
+      "https://gsap.com/docs/v3/GSAP/gsap.context()/",
+      "https://gsap.com/docs/v3/GSAP/gsap.matchMedia()/",
+      "https://gsap.com/docs/v3/Plugins/MotionPathPlugin/",
+      "https://rive.app/docs/runtimes/react/react",
+      "https://motion.dev/docs/react-reduce-bundle-size",
+      "https://docs.lottiefiles.com/en",
+      "https://pixijs.com/8.x/guides/components/renderers"
+    ]
+  },
+  "implemented": {
+    "quarter": "Reflets localisés sur l’eau, passage lent d’une mouette, lumière sur les activités effectivement présentes, réaction courte au seuil du bâtiment visé. Silhouette et pictogramme répondent au focus/survol ; les peintures d’activité apparaissent sans déplacement de leur fond. Feuille d’activités ouverte avec une transition courte.",
+    "navigation": "Entrée visuelle de 220 ms sur les activités du Shell, sans délai ajouté, déplacement de caméra ni verrouillage des commandes. Aucun conteneur transformé autour des dialogues fixes.",
+    "staff": "Prise du portrait, réaction du poste, aperçu À préparer et retour d’arrivée après réception d’une nouvelle tâche dans le snapshot. Attente et travail en cours utilisent les dates serveur. Le glisser-déposer ne vaut pas confirmation ; les heures et coûts suivent leur parcours existant.",
+    "controls": "Pause explicite des animations du Quartier, conservée entre les visites durant la session du jeu. Le son garde son activation existante. Les contrôles et textes restent en HTML, à leur place.",
+    "lifecycle": "Ambiance suspendue hors écran et lorsque l’onglet est masqué. Préférence système de réduction des mouvements prise en compte en direct. Nettoyage des animations, observateurs et événements au démontage ; décor statique si le chargement du moteur échoue.",
+    "scope": "Interface uniquement : pas de migration, écriture de production, modification des prix, contrats, tâches, probabilités ou heures. Aucun nouvel élément pictural généré."
+  },
+  "productionRules": {
+    "timing": "Réactions de sélection et de panneau courtes ; aucune navigation n’attend la fin d’un effet. Les données et montants confirmés sont affichés immédiatement.",
+    "truth": "Aucun gain simulé, résultat anticipé ou tâche inventée. L’aperçu du poste est distinct de l’affectation enregistrée.",
+    "visuals": "Palette crème, teal, or et encre ; matières papier et enseignes existantes. Pas de mouvement des fonds de peinture, de texte incliné ou de cibles mobiles.",
+    "accessibility": "Même information et mêmes actions au clavier, au toucher et en mouvement réduit. Couches décoratives sans interception du pointeur ni annonces répétitives."
+  },
+  "validation": {
+    "static": "TypeScript global et ESLint ciblé réussis ; 39 tests navigation, résumé et Atelier réussis.",
+    "quarter": "3 groupes dédiés au mouvement à 320/390/1440 px : déplacement réellement constaté, pause/reprise, préférence système modifiée en direct, arrêt hors écran et onglet masqué, pointeur/tactile/clavier. Aucun débordement ni erreur JavaScript ; 26 GET seulement sur des données locales.",
+    "hierarchy": "12 groupes du vrai Shell et Quartier réussis : carte et action principale restent visibles ensemble sur mobile, liens vers Personnel/Finances/Atelier conservés.",
+    "journey": "Parcours réel Personnel → Atelier réussi : même employé, même lot, confirmation, verrouillage parent, annulation et retour conservés.",
+    "staff": "8 groupes du plan de travail réussis : souris, tactile, clavier et auto-défilement à 320/390/1440 px, puis mouvement normal et préférence réduite modifiée pendant le geste. Aperçu sans écriture ; deux affectations explicites dans l’API locale valident arrivée, travail puis attente et heures 7 → 5 → 4. Aucun retour d’arrivée rejoué après actualisation ou remontage.",
+    "limits": "Les recettes utilisent des données locales et, selon le test, des destinations doublées. Le délai observé de navigation n’est pas une mesure de performance en production. Aucun test avec de nouveaux joueurs n’a été réalisé.",
+    "reports": [
+      "output/placard-navigation/motion-report.json",
+      "output/clarity-lot6/quartier/visual-hierarchy-report.json",
+      "output/placard-journey-continuity/work-plan-report.json",
+      "output/placard-staff-ui/work-plan-report.json"
+    ],
+    "preview": "output/placard-navigation/quartier-motion-demo.webm",
+    "previewDetails": "Capture réelle du navigateur, 5 secondes, 1440 × 1000, 24 images/s ; décodage complet vérifié."
+  },
+  "nextProductionSlice": {
+    "task": "Donner une présence aux activités de l’Atelier et du Commerce, en gardant les formulaires et confirmations accessibles.",
+    "first": "Reprendre les illustrations historiques des machines et identifier les parties réellement séparables. Piloter leurs mouvements par les tâches en cours, avec repos, travail et résultat confirmés.",
+    "second": "Préparer un petit jeu de poses ou un rig de Sylvain/avatars cohérent avec les profils, puis relier ses réactions aux recrutements, formations et résultats reçus. Tester Rive seulement si cette ressource existe.",
+    "third": "Harmoniser les retours déjà présents pour récolte, vente et ouverture de packs, en conservant les reçus et leur déduplication ; l’animation ne rejoue pas un gain à l’actualisation.",
+    "acceptance": "Une activité montrée par son état réel, un geste compréhensible, un retour immédiat et une version statique complète. Vérifier sur mobile et auprès de nouveaux joueurs avant de qualifier le résultat de finition studio complète."
+  },
+  "continuation": "docs/bete-de-concours/studio-atelier-2026-11-07.json : Atelier et Commerce réalisés, puis illustrations générées et articulées à la demande de l’utilisateur.",
+  "deployment": "Modifications locales uniquement, non publiées."
+}

@@ -1,0 +1,17 @@
+{
+  "updated": "2026-11-07",
+  "purpose": "Histoire illustrée du guide intégré à la vraie ferme, avec dialogue HTML et carnet dépliable.",
+  "method": "Réutilisation de 14 illustrations existantes ; aucune nouvelle génération ni modification des images.",
+  "sceneMap": "src/lib/kanab-quest-farm-story.ts",
+  "provenance": [
+    "docs/bete-de-concours/assets/releve-runtime-illustrations-v1.json",
+    "public/placard/da-interiors-sylvain-v2.json",
+    "public/placard/card-shop-sylvain-v1.json",
+    "public/contest/map/arena-desk-sylvain-v6.json",
+    "docs/bete-de-concours/social-producer-art-provenance.json",
+    "docs/lottery/album-sylvain-v3-prompt.json"
+  ],
+  "presentation": "Accueil avec remise des clés, portrait mobile existant ; scène par destination, réplique adaptée au jeu et miniatures dans le carnet. Le banquier conserve son identité. Les illustrations ne représentent pas les stocks réels du joueur.",
+  "controls": "Textes, progression de lecture et actions restent en HTML. Le guide se replie pour montrer la cible réelle, sans l’activer.",
+  "collectionCorrection": "Le guide et les deux écrans d’apprentissage réutilisent sylvain-booster-presentation-v3.webp : emballage Buddies actuel, champ au coucher du soleil, Sylvain sans barbe. L’ancien album-booster-mascot-v3.webp reste archivé sans référence dans src. Le visuel portrait est affiché en entier, sans recadrage."
+}

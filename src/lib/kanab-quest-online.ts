@@ -1,7 +1,7 @@
 import type { KqMarketRouteCode } from "./kanab-quest-market";
 import type { KqMerchSnapshot } from "./kanab-quest-merch";
 import { getKqStudioFlowerMultiplier, type KqStudioSnapshot } from "./kanab-quest-studio";
-import { getKqActiveCustomerDemand, getKqOnlineFlowerReferenceCents, type KqAppliedCustomerDemand, type KqCustomerDemandSnapshot } from "./kanab-quest-customer-demand";
+import { getKqActiveCustomerDemand, getKqOnlineFlowerReferenceCents, isKqCustomerDemandProduct, type KqAppliedCustomerDemand, type KqCustomerDemandSnapshot } from "./kanab-quest-customer-demand";
 import { getKqMarketingFit, type KqMarketingCampaignActive } from "./kanab-quest-marketing";
 
 /** Game economy. Prices are final virtual cents; rates mirror kq_online_* SQL. */
@@ -187,13 +187,16 @@ export function estimateKqOnlineOffer(input: {
   if (!packaging || packaging.formatGrams !== input.formatGrams) throw new Error("Choisis un emballage adapté au format.");
   const quality = clamp(input.quality, 0, 10);
   const brandPremium = clamp(input.reputation / 15000, 0, .2) * clamp((quality - 7) / 2, 0, 1);
-  const request = input.route === "raw" ? getKqActiveCustomerDemand(input.customerDemand, "online", input.varietyCode, quality, Date.parse(input.online.serverNow)) : null;
+  const request = isKqCustomerDemandProduct(input.route) ? getKqActiveCustomerDemand(input.customerDemand, "online", input.varietyCode, quality, Date.parse(input.online.serverNow)) : null;
   const customerDemand = request && request.remainingUnits >= input.formatGrams * 10
     ? { id: request.id, period: request.period, bonusPercent: request.bonusPercent, units: input.formatGrams * 10, matchedFlavorCount: request.matchedFlavorCount } satisfies KqAppliedCustomerDemand : undefined;
-  const referencePacketPriceCents = input.route === "raw"
-    ? Math.round(getKqOnlineFlowerReferenceCents(quality) * input.formatGrams * (1 + (customerDemand?.bonusPercent ?? 0) / 100))
+  const baseReferencePacketPriceCents = input.route === "raw"
+    ? getKqOnlineFlowerReferenceCents(quality) * input.formatGrams
     : Math.max(1, Math.round(Math.max(0, input.baseUnitCents) * input.formatGrams
       * (.7 + quality / 20) * (1 + brandPremium) + packaging.unitCostCents));
+  // Integer basis points preserve half-cent rounding, matching PostgreSQL NUMERIC.
+  const demandBasisPoints = 10000 + Math.round((customerDemand?.bonusPercent ?? 0) * 100);
+  const referencePacketPriceCents = Math.floor((baseReferencePacketPriceCents * demandBasisPoints + 5000) / 10000);
   const validPrice = Number.isSafeInteger(input.packetPriceCents) && input.packetPriceCents >= 1 && input.packetPriceCents <= 1_000_000;
   const priceRatio = validPrice ? input.packetPriceCents / referencePacketPriceCents : Infinity;
   const satisfaction = getKqOnlineSatisfaction(quality, priceRatio, packaging.satisfactionBonus);

@@ -12,6 +12,8 @@ import { KqMarketingHistory, KqMarketingStatus, marketingAudiences, marketingObj
 import { getKqMarketingView } from "./kq-marketing-view";
 import { KqBarChart, KqProgressMeter } from "./KqVisuals";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { useKqPlayerActionTime } from "./KqPlayerActionTime";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import styles from "./KqMarketingCampaigns.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -21,6 +23,7 @@ const cashKnown = (value: unknown): value is number => typeof value === "number"
 
 function CampaignPlanner({ data, busy, onAsk, onOpenPricing, onPrepareStock }: Omit<Props, "now" | "advertising">) {
   const id = useId(), api = useKqTutorialApi();
+  const actionTime = useKqPlayerActionTime("online", "start-marketing");
   const completed = Array.isArray(data.online?.marketing?.completedCodes) ? data.online.marketing.completedCodes : [];
   const [code, setCode] = useState<KqMarketingCampaignCode>(() => completed.includes("introduction") ? "harvest" : "introduction");
   const [listingId, setListingId] = useState("");
@@ -38,7 +41,7 @@ function CampaignPlanner({ data, busy, onAsk, onOpenPricing, onPrepareStock }: O
   const cash = cashKnown(data.cashCents) ? data.cashCents : null;
   function launch() {
     if (busy || !view.canLaunch || !preview || !listing) return;
-    onAsk(`Lancer « ${marketingObjectives[selectedCode].name} »`, `${costCents ? `${formatKqCash(costCents)} débités maintenant, sans remboursement.` : "Essai offert, utilisable une seule fois."} ${definition.preparationHours ? `${definition.preparationHours} h de préparation, puis ` : ""}${definition.durationHours} h de diffusion pour « ${listing.name} », public ${audience.name}. Le créneau reste occupé jusqu’à la fin. Chaque commande satisfaisante de ce produit pendant la diffusion rapporte ${definition.followersPerOrder} abonnés, dans la limite de ${definition.followersCap}, attribués au bilan.${preview.netAfterCampaignCents < 0 ? ` Contribution supplémentaire estimée après budget : ${formatKqCash(preview.netAfterCampaignCents)}, avant production et charges fixes.` : ""} Les ventes ne sont pas garanties ; une rupture ou une pause de l’annonce ne suspend pas la campagne.`, { action: "online", command: "start-marketing", payload: { version: 2, code: selectedCode, angle, listingId: listing.id, budgetCode: selectedBudget } }, costCents);
+    onAsk(`Lancer « ${marketingObjectives[selectedCode].name} »`, `${costCents ? `${formatKqCash(costCents)} débités maintenant, sans remboursement.` : "Essai offert, utilisable une seule fois."} ${actionTime.label} ${definition.preparationHours ? `${definition.preparationHours} h de préparation, puis ` : ""}${definition.durationHours} h de diffusion pour « ${listing.name} », public ${audience.name}. Le créneau reste occupé jusqu’à la fin. Chaque commande satisfaisante de ce produit pendant la diffusion rapporte ${definition.followersPerOrder} abonnés, dans la limite de ${definition.followersCap}, attribués au bilan.${preview.netAfterCampaignCents < 0 ? ` Contribution supplémentaire estimée après budget : ${formatKqCash(preview.netAfterCampaignCents)}, avant production et charges fixes.` : ""} Les ventes ne sont pas garanties ; une rupture ou une pause de l’annonce ne suspend pas la campagne.`, { action: "online", command: "start-marketing", payload: { version: 2, code: selectedCode, angle, listingId: listing.id, budgetCode: selectedBudget } }, costCents);
   }
   return <form className={styles.planner} aria-label="Préparer une campagne" onSubmit={event => { event.preventDefault(); launch(); }}>
     <div className={styles.brief}>
@@ -58,14 +61,27 @@ function CampaignPlanner({ data, busy, onAsk, onOpenPricing, onPrepareStock }: O
       {view.warnings.length ? <ul className={styles.warnings} data-marketing-warnings>{view.warnings.map(message => <li key={message}>{message}</li>)}</ul> : null}
       {view.blockingReasons.length ? <div className={styles.blockers} data-marketing-blockers><strong>Avant de lancer</strong><ul>{view.blockingReasons.map(message => <li key={message}>{message}</li>)}</ul></div> : null}
       <p className={styles.risk}>Le créneau reste occupé jusqu’à la fin, même en cas de rupture ou de pause du produit. {definition.preparationHours ? "Le stock peut aussi se vendre pendant la préparation." : ""}</p>
+      <p className={styles.hint} data-player-action-time="start-marketing" data-player-action-hours={actionTime.hours ?? undefined}>{actionTime.label}</p>
       <button type="submit" className={styles.launch} data-marketing-launch disabled={busy || !view.canLaunch}>{busy ? "Validation en cours…" : costCents ? `Examiner la campagne · ${formatKqCash(costCents)}` : "Examiner mon essai offert"}<ArrowRight size={17} aria-hidden="true" /></button>
     </section>
     <details className={styles.details} data-marketing-forecast-details><summary>Prévisions détaillées</summary>{preview ? <div className={styles.forecast}>
       <div><KqProgressMeter label="Satisfaction estimée" value={preview.satisfactionScore} max={100} valueLabel={`${number(preview.satisfactionScore)} / 100`} hint="75/100 minimum pour gagner des abonnés" tone={preview.satisfactionScore >= 75 ? "teal" : "gold"} /><dl className={styles.estimates}><div><dt>Visites ciblées après adéquation</dt><dd>≈ {number(preview.visitorsPerDay * preview.fit)} / jour {api.isTutorial ? "fictif" : "réel"}</dd></div><div><dt>Ventes supplémentaires sur la diffusion</dt><dd>≈ {number(preview.projectedExtraOrders)} paquets</dd></div><div><dt>Pour couvrir le budget</dt><dd>{preview.breakEvenOrders === null ? "Non calculable avec cette offre" : `${number(preview.breakEvenOrders)} ventes supplémentaires`}</dd></div><div><dt>Prix de référence estimé à la diffusion</dt><dd>{formatKqCash(preview.referencePacketCents)} / paquet</dd></div></dl></div>
       <div><KqBarChart title="Contribution supplémentaire estimée" items={[{ label: "Avant budget de campagne", value: preview.projectedExtraContributionCents, displayValue: formatKqCash(preview.projectedExtraContributionCents), tone: "teal" }, { label: "Budget de campagne", value: -costCents, displayValue: formatKqCash(-costCents), tone: "gold" }, { label: "Après budget", value: preview.netAfterCampaignCents, displayValue: formatKqCash(preview.netAfterCampaignCents), tone: preview.netAfterCampaignCents < 0 ? "red" : "teal" }]} /><p className={styles.hint}>Après TVA, frais, emballage et budget de campagne ; avant coût de production et charges fixes.</p></div>
-      <p className={styles.calculation}>Comparaison avec les ventes estimées sans campagne, limitée par le stock, la qualité et l’hébergement payé. Les commandes peuvent aussi venir naturellement. Le prix de référence et la satisfaction peuvent évoluer avant la diffusion.</p>
+      <KqHelpGrid items={[
+        { art: "help-social" as const, label: "Comparaison", value: "Avec / sans campagne", detail: "Les commandes naturelles restent possibles." },
+        { art: "warehouse" as const, label: "Limites", value: "Stock · qualité · site", detail: "Projection limitée à l’hébergement payé." },
+        { art: "help-plan" as const, label: "Avant diffusion", value: "Estimation variable", detail: "Prix de référence et satisfaction peuvent évoluer." },
+      ]} />
     </div> : <p className={styles.hint}>Les données nécessaires aux prévisions doivent être disponibles. Aucun résultat n’est supposé.</p>}</details>
-    <details className={styles.details} data-marketing-rules-details><summary>Objectif et règles de cette campagne</summary><dl className={styles.rules}><div><dt>Objectif pendant la diffusion</dt><dd>{definition.goalOrders} commandes satisfaisantes</dd></div><div><dt>Par commande satisfaisante</dt><dd>+{definition.followersPerOrder} abonnés · {definition.followersCap} maximum</dd></div></dl><p className={styles.hint}>Les abonnés sont crédités au bilan. Toutes les commandes de ce produit pendant la diffusion comptent, y compris celles venues naturellement, à partir de 75/100 de satisfaction.</p>{definition.cooldownHours ? <p className={styles.hint}>Délai entre deux campagnes de ce type : {definition.cooldownHours} h {timeUnit} depuis le début de la précédente.</p> : null}{selectedCode === "harvest" ? <p className={styles.hint}>Une seule présentation par récolte, même si elle est répartie entre plusieurs annonces. Son historique complet est vérifié au lancement.</p> : null}</details>
+    <details className={styles.details} data-marketing-rules-details><summary>Objectif et règles de cette campagne</summary><KqHelpDashboard><KqHelpGrid items={[
+      { art: "commerce" as const, label: "Objectif", value: `${definition.goalOrders} commandes`, detail: "Satisfaisantes, pendant la diffusion." },
+      { art: "help-social" as const, label: "Par commande satisfaisante", value: `+${definition.followersPerOrder} abonnés`, detail: `${definition.followersCap} abonnés maximum.` },
+      ...(definition.cooldownHours ? [{ art: "help-time" as const, label: "Entre deux campagnes de ce type", value: `${definition.cooldownHours} h ${timeUnit}`, detail: "Depuis le début de la précédente." }] : []),
+    ]} /><KqHelpSteps steps={[
+      { art: "commerce" as const, label: "Vendre pendant la diffusion", detail: "Commandes du produit, trafic naturel inclus." },
+      { art: "help-quality" as const, label: "Satisfaction ≥ 75/100", detail: "La commande compte pour l’objectif." },
+      { art: "help-social" as const, label: "Recevoir les abonnés au bilan" },
+    ]} />{selectedCode === "harvest" ? <KqHelpNote>Une présentation par récolte, même répartie entre plusieurs annonces. Son historique complet est vérifié au lancement.</KqHelpNote> : null}</KqHelpDashboard></details>
   </form>;
 }
 

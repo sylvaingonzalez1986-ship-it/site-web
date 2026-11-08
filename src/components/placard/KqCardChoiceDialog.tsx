@@ -54,6 +54,6 @@ export function KqCardChoiceDialog({ card, copies, xp, preview, blockedReason, t
     {teachingAssistance ? <p className={styles.assistance} data-card-teaching-assistance>Dans cet essai, un secours accompagne les situations critiques.</p>
       : preview?.kind === "preparation" ? <p className={styles.timing} data-card-play-preview="preparation">À jouer avant le lancer. Le résultat du lancer reste inconnu.</p>
       : preview ? <KqCardPlayPreview preview={preview} /> : null}
-    <details className={styles.rules} data-card-choice-rules><summary>Règles et situations adaptées<ChevronDown size={16} aria-hidden="true" /></summary><KqCardEffectGuide card={card} /></details>
+    <details className={styles.rules} data-card-choice-rules><summary>Règles et situations adaptées<ChevronDown size={16} aria-hidden="true" /></summary><KqCardEffectGuide card={card} illustrated /></details>
   </AppDialog>;
 }

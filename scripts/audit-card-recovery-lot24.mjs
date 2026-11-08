@@ -127,7 +127,7 @@ try{
  async function open(scenario='lost-response'){
   await page.goto(`${origin}/?scenario=${scenario}`,{waitUntil:'networkidle0'});await page.waitForSelector('[data-culture-play][data-player-mode="true"]');await page.evaluate(()=>document.fonts.ready);
   assert.equal(await page.$('[data-playable-lesson]'),null,'Actual player branch mounted');
-  await enter('[data-culture-hand] > summary');await enter('[data-hand-filter="all"]');
+  if(await page.$('[data-culture-tab="cards"]'))await enter('[data-culture-tab="cards"]');else await enter('[data-culture-hand] > summary');await enter('[data-hand-filter="all"]');
   const code=await page.evaluate(()=>window.__targetCard);await enter(`[data-action-card="${code}"]`);await page.waitForSelector('[data-culture-card-cost]',{visible:true});await frames();return code;
  }
  async function shot(name){await page.evaluate(()=>Promise.allSettled([...document.images].map(image=>image.decode())));await page.screenshot({path:resolve(output,`${name}.png`)});}

@@ -345,3 +345,15 @@
   .zoneActions > button { padding: 12px; }
   .zoneCondition dd { font-size: 18px; }
 }
+
+.workshopIntro { margin: 0 0 14px; font-size: 14px; line-height: 1.6; }
+.workshopTabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 20px; }
+.workshopTabs > button { display: flex; align-items: center; gap: 12px; min-width: 0; min-height: 68px; padding: 14px 18px; text-align: left; color: #172923; font: inherit; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; cursor: pointer; }
+.workshopTabs > button > span { display: grid; gap: 4px; }
+.workshopTabs strong { font-size: 16px; }
+.workshopTabs small { font-size: 12px; line-height: 1.4; }
+.workshopTabs svg { flex-shrink: 0; }
+.workshopTabs > button[aria-pressed='true'], .workshopTabs > button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); }
+.workshopTabs > button:focus-visible { outline: 3px solid #087b70; outline-offset: 4px; }
+.workshopTabs > button:disabled { opacity: .65; cursor: wait; }
+@media (max-width: 420px) { .workshopTabs { gap: 8px; } .workshopTabs > button { gap: 7px; padding: 12px; } .workshopTabs svg { width: 16px; } }

@@ -43,7 +43,7 @@ export function KqHarvestMoment({ state, flowers, runId, artwork, fresh, onConti
   const description = lost
     ? "Prends le temps de lire le bilan avant la prochaine culture."
     : reserveConfirmed
-      ? `${result.confirmedFlowers === 1 ? "Ta Fleur d’Arène est enregistrée" : `${result.confirmedFlowers} Fleurs d’Arène sont enregistrées`}. Choisis les contenants de chaque variété. L’affinage dure 6 heures réelles dès la récolte, avant le jury.`
+      ? `${result.confirmedFlowers === 1 ? "Ta Fleur d’Arène est enregistrée" : `${result.confirmedFlowers} Fleurs d’Arène sont enregistrées`}. Choisis les contenants de chaque variété et prépare le trim à l’Atelier. L’affinage dure 6 heures réelles dès la récolte ; affinage et trim doivent être terminés avant le jury.`
       : alive
         ? "Le fruit de tes choix. Retrouve le détail de chaque récolte ci-dessous."
         : "Les valeurs de cette récolte ne sont pas encore disponibles.";
@@ -51,6 +51,8 @@ export function KqHarvestMoment({ state, flowers, runId, artwork, fresh, onConti
     className={styles.moment}
     data-harvest-moment
     data-outcome={result.outcome}
+    data-guide-harvest-confirmed={reserveConfirmed || undefined}
+    data-guide-flower-id={alive ? result.rows.find(row => row.flowerId)?.flowerId ?? undefined : undefined}
     data-fresh={fresh && alive || undefined}
     aria-labelledby={titleId}
   >

@@ -1,3 +1,4 @@
+import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { isKqEnergyMode } from "@/lib/kanab-quest-energy";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -87,7 +88,7 @@ export async function POST(request: Request) {
       headers: { "Cache-Control": "private, no-store, max-age=0" },
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Culture impossible.";
+    const message = getKqPlayerWorkErrorMessage(error) ?? (error instanceof Error ? error.message : "Culture impossible.");
     if (message.startsWith("[supabase:")) {
       return NextResponse.json({ error: "Culture momentanément indisponible." }, { status: 503 });
     }

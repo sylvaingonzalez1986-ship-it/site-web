@@ -1,4 +1,5 @@
 import { getKqProductionUnits } from "./kanab-quest-production-scale";
+import type { KqProcessingPlan } from "./kanab-quest-processing-work";
 import { applyKqMarketDemand, type KqMarketContext, type KqMarketDemand, type KqPricePolicy } from "./kanab-quest-market-demand";
 import {
   getKqEquipmentPriceMultiplier,
@@ -44,6 +45,7 @@ export type KqMarketQuote = {
   warehouseRevision?: number;
   warehouseState?: import("./kanab-quest-warehouse").KqWarehouseState;
   processingDurationSeconds?: number;
+  processingWork?: KqProcessingPlan;
   processingEquipmentCodes?: string[];
   workshopSnapshot?: { equippedCodes: string[]; levels: Record<string, number> };
   productBaseUnitCents?: number;

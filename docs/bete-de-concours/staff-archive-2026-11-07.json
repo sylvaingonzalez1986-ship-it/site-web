@@ -1,0 +1,69 @@
+{
+  "date": "2026-11-07",
+  "status": "QA-01 implémenté et validé. Migration appliquée au projet du site le 8 novembre 2026 (Europe/Paris), sur demande explicite ; code non publié par cette opération.",
+  "scope": "Supprimer le plafond de quarante contrats cumulés sans supprimer l'historique ni changer la limite de huit salariés actifs.",
+  "audit": "docs/bete-de-concours/audit-studio-global-2026-11-07.json",
+  "changes": [
+    "Table privée d'archives pour les contrats, paies réglées et tâches terminées. Un contrat sort du planning seulement après sa fin, le calcul de son solde, le règlement intégral des paies et l'achèvement de ses tâches.",
+    "Le backfill récupère aussi les objets présents uniquement dans les anciens reçus, avec priorité à leur dernière révision puis à l'état courant. Les reçus restent inchangés. La compaction invalide la révision courante sans avancer l'horloge du jeu.",
+    "Le trigger d'archivage intervient après la comptabilisation de la paie. Les données OLD et NEW sont conservées avant réduction du snapshot ; aucun débit ni mouvement comptable supplémentaire n'est créé par l'archivage.",
+    "SQL garde au plus huit contrats actifs, les contrats non résolus, toutes les tâches en cours et paies dues, puis les deux cents tâches terminées et cent vingt paies réglées récentes des personnes encore présentes. Tous les résultats terminés sont préservés dans la table d'archives.",
+    "Le moteur transmet les résultats complets à SQL lorsque la capacité archiveCount est disponible. Une ancienne base conserve son comportement et n'affiche pas le nouveau registre.",
+    "Personnel → Paie & contrats → Anciens contrats : chargement à l'ouverture, pages de vingt dossiers, conditions et congés enregistrés, paies et résultats des tâches. Les montants et références restent dans le HTML ; le papier et les contrôles illustrés existants sont réutilisés.",
+    "L'API de consultation est en lecture seule, propriétaire issu de la session, curseurs précis, accès service_role uniquement. Les objets finalisés ne peuvent être modifiés ni réintroduits dans le planning."
+  ],
+  "migration": {
+    "file": "supabase/migrations/20261107000600_kq_staff_archive.sql",
+    "dependsOn": "Les migrations Personnel 001–005 et leurs prérequis restent intactes.",
+    "permissions": "RLS activée ; REVOKE ALL sur la table et les helpers pour PUBLIC, anon, authenticated et service_role ; seul le RPC de lecture nommé reçoit EXECUTE pour service_role.",
+    "activation": "Appliquée le 8 novembre 2026 (Europe/Paris) à eyowwwpdmfrulhkpvlnf, même projet que la configuration du site, depuis un lot isolé sans secrets ni seeds. Commande d'application terminée en environ 2,8 secondes, connexion comprise ; durée exacte des verrous non mesurée.",
+    "receipt": "output/staff-archive-migration/completion.json",
+    "remoteValidation": "16 contrôles préalables et 78 contrôles après installation réussis. Les 355 migrations sont synchronisées, aucune en attente. Les empreintes des 25 reçus préexistants sont identiques ; un reçu ajouté par l'activité normale pendant l'opération est distingué. Fonctions de comptabilité, charge horaire et snapshot trim préservées. Vérifications en lecture seule, aucun RPC métier de joueur appelé."
+  },
+  "validation": {
+    "unitAndApiTests": {
+      "passed": 164,
+      "files": [
+        "src/lib/kanab-quest-staff.test.ts",
+        "src/lib/kanab-quest-staff-recruitment.test.ts",
+        "src/lib/kanab-quest-staff-trim.test.ts",
+        "src/lib/kanab-quest-staff-activity.test.ts",
+        "src/lib/supabase/kanab-quest-staff-integration.test.ts",
+        "src/lib/supabase/kanab-quest-staff-backend.test.ts",
+        "src/lib/supabase/kanab-quest-staff-archive-backend.test.ts",
+        "src/app/api/arena/placard/staff/archive/route.test.ts"
+      ]
+    },
+    "sql": {
+      "command": "npm.cmd run test:staff-archive:sql",
+      "passed": 59,
+      "coverage": "Backfill depuis les reçus, 40→41, refus du neuvième actif, solde et tâche non résolus, paiement atomique et reprises, CAS, immutabilité des objets archivés, anciennes fenêtres tronquées, conservation de 210 tâches et 130 paies, compatibilité trim et heures communes, pagination à dates égales, isolation des propriétaires et permissions."
+    },
+    "grants": "npm.cmd run check:supabase-grants : 355 migrations validées.",
+    "typescript": "npx.cmd tsc --noEmit --incremental false : réussi après intégration.",
+    "lint": "ESLint ciblé des fichiers TS/TSX et scripts concernés : réussi.",
+    "browser": {
+      "command": "node scripts/audit-placard-staff-ui.mjs --archive-only",
+      "report": "output/placard-staff-ui/archive-report.json",
+      "groups": 4,
+      "widths": [320, 390, 1440],
+      "coverage": "45 contrats, 23 paies et 23 tâches consultables sans omission ni doublon ; valeurs, curseurs, chargement différé, clavier, retour du focus, ancien schéma, listes vides, erreurs et reprise, réponses tardives après fermeture ou changement de salarié.",
+      "browserErrors": 0,
+      "mutations": 0,
+      "externalRequests": 0,
+      "screenshots": "Six captures archive-contracts/ archive-dossier à 320/390/1440 px dans output/placard-staff-ui, inspectées sans débordement."
+    },
+    "review": "Revue indépendante de conservation, ordre des verrous, trigger comptable, reprise et compatibilité ; un alias SQL OLD ambigu corrigé avant validation finale."
+  },
+  "limits": [
+    "PGlite fonctionne sur une connexion : atomicité et CAS validés ; contention multiconnexions non testée. L'application distante et ses contrôles ont réussi, sans mesure séparée de la durée des verrous.",
+    "La recette navigateur simule le transport et les données en mémoire ; aucun compte de joueur distant n'a été modifié.",
+    "La récupération dépend des états et reçus encore présents ; aucune donnée déjà absente de ces deux sources n'est inventée. Les heures de travail anciennes déjà réduites par le moteur ne sont pas reconstruites.",
+    "Les historiques de tâches du joueur et de salariés encore actifs sont conservés en base ; ce registre présente les dossiers des contrats archivés."
+  ],
+  "next": {
+    "finding": "QA-05",
+    "task": "Retrouver une confirmation Personnel incertaine après fermeture ou rechargement de la page.",
+    "scope": "Conserver seulement la commande soumise non acquittée, sa clé et son propriétaire ; vérifier ou reprendre avec la même clé sans doublon, en préservant l'isolation du tutoriel."
+  }
+}

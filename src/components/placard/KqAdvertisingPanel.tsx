@@ -7,6 +7,8 @@ import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqAdvertisingView } from "./kq-advertising-view";
 import { KqBarChart, KqProgressMeter } from "./KqVisuals";
+import { useKqPlayerActionTime } from "./KqPlayerActionTime";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import styles from "./KqAdvertisingPanel.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -32,6 +34,7 @@ function Comparison({ showDurations }: { showDurations: boolean }) {
 
 export function KqAdvertisingPanel({ data, now, busy, onAsk, onOpenSite, onOpenSales }: Props) {
   const id = useId();
+  const actionTime = useKqPlayerActionTime("commerce", "advertise");
   const [kind, setKind] = useState<KqAdvertisingKind>("flyers");
   const view = getKqAdvertisingView({ data, kind, now });
   const { advertising, advertisingState, definition, siteState } = view;
@@ -73,7 +76,7 @@ export function KqAdvertisingPanel({ data, now, busy, onAsk, onOpenSite, onOpenS
             })}
           </fieldset>
           <div className={styles.decision}>
-            <dl className={styles.commitment}><div><dt>À payer une fois</dt><dd>{formatKqCash(definition.costCents)}</dd></div><div><dt>Durée réelle</dt><dd>{definition.durationDays * 4} h</dd></div></dl>
+            <dl className={styles.commitment}><div><dt>À payer une fois</dt><dd>{formatKqCash(definition.costCents)}</dd></div><div><dt>Durée de diffusion</dt><dd>{definition.durationDays * 4} h réelles</dd></div></dl>
             <p className={styles.hint}>Sans reconduction. Fin prévue {view.endsAt ? <>le <time dateTime={view.endsAt}>{date(view.endsAt)}</time>.</> : "à confirmer."}</p>
             <p className={styles.balance}>Trésorerie disponible : <strong>{view.cashCents === null ? "à confirmer" : formatKqCash(view.cashCents)}</strong></p>
             {view.missingCents !== null && view.missingCents > 0 ? <p className={styles.warning}>Il manque {formatKqCash(view.missingCents)} pour cette offre.</p> : null}
@@ -82,9 +85,10 @@ export function KqAdvertisingPanel({ data, now, busy, onAsk, onOpenSite, onOpenS
             {stockWarning}
             {view.dataIssues.length ? <ul className={styles.warnings}>{view.dataIssues.map(issue => <li key={issue}>{issue}</li>)}</ul> : null}
             <p className={styles.hint}>Plus de fréquentation ne garantit pas de ventes : le stock, le prix et la qualité comptent.</p>
+            <p className={styles.hint} data-player-action-time="advertise" data-player-action-hours={actionTime.hours ?? undefined}>{actionTime.label}</p>
             <button type="button" className={styles.launch} data-advertising-launch disabled={busy || !view.canLaunch} onClick={() => {
               if (busy || !view.canLaunch || !view.kind) return;
-              onAsk(`Lancer ${definition.name}`, `+${definition.boostPercent} % de fréquentation pendant ${definition.durationDays * 4} heures réelles (${definition.durationDays} jours de jeu). Paiement unique de ${formatKqCash(definition.costCents)}, sans reconduction. ${effect} Les ventes ne sont pas garanties.${hostingWarning ? ` ${hostingWarning}` : ""}${noFlowers ? " Aucune fleur n’est actuellement vendable en ligne." : ""}`, { action: "advertise", kind: view.kind }, definition.costCents);
+              onAsk(`Lancer ${definition.name}`, `+${definition.boostPercent} % de fréquentation pendant ${definition.durationDays * 4} heures réelles (${definition.durationDays} jours de jeu). ${actionTime.label} Paiement unique de ${formatKqCash(definition.costCents)}, sans reconduction. ${effect} Les ventes ne sont pas garanties.${hostingWarning ? ` ${hostingWarning}` : ""}${noFlowers ? " Aucune fleur n’est actuellement vendable en ligne." : ""}`, { action: "advertise", kind: view.kind }, definition.costCents);
             }}>Lancer · {formatKqCash(definition.costCents)}<ArrowRight size={17} aria-hidden="true" /></button>
           </div>
         </div>
@@ -102,7 +106,12 @@ export function KqAdvertisingPanel({ data, now, busy, onAsk, onOpenSite, onOpenS
         <p className={styles.context}>{effect}</p>
       </>}
       <Comparison showDurations={advertisingState !== "none"} />
-      <details className={styles.details} data-advertising-rules-details><summary>Comment fonctionne la publicité</summary><p>Le bonus dure jusqu’à la date affichée, même hors connexion. Il cesse d’agir si le site devient inactif, mais la durée continue de s’écouler. Une publicité à la fois, sans reconduction automatique.</p><p>Un jour de jeu dure 4 heures réelles. Le pourcentage décrit une hausse de fréquentation, pas un nombre de commandes ni une recette garantie.</p></details>
+      <details className={styles.details} data-advertising-rules-details><summary>Comment fonctionne la publicité</summary><KqHelpDashboard><KqHelpGrid items={[
+        { art: "help-social" as const, label: "Créneau", value: "1 publicité", detail: "Sans reconduction automatique." },
+        { art: "help-time" as const, label: "Durée", value: "Jusqu’à l’échéance", detail: "Le temps s’écoule aussi hors connexion." },
+        { art: "commerce" as const, label: "Site inactif", value: "Bonus suspendu", detail: "La durée continue de s’écouler." },
+        { art: "help-time" as const, label: "1 jour de jeu", value: "4 h réelles" },
+      ]} /><KqHelpNote>Le pourcentage augmente la fréquentation. Il ne garantit ni commandes ni recettes.</KqHelpNote></KqHelpDashboard></details>
     </div>
   </details>;
 }

@@ -91,6 +91,7 @@ export type KqEquipmentShopSnapshot = {
   readyLotCount: number;
   availableFlowerCount: number;
   curingFlowerCount?: number;
+  trimFlowerCount?: number;
   routePlan: KqEquipmentRoutePlan | null;
   routeMasteries: KqRouteMasterySummary[];
   catalog: typeof KQ_EQUIPMENT_CATALOG;
@@ -228,6 +229,7 @@ export async function getKqEquipmentShopSnapshot(userId: string, requestedTentNu
     readyLotCount: Number(readyLots.count ?? 0),
     availableFlowerCount: availableFlowers.availableFlowerCount,
     curingFlowerCount: availableFlowers.curingFlowerCount,
+    ...(availableFlowers.trimFlowerCount !== undefined ? { trimFlowerCount: availableFlowers.trimFlowerCount } : {}),
     routePlan,
     routeMasteries: (routeMasteries.data ?? []).flatMap((row) => {
       const route = String(row.route ?? "");

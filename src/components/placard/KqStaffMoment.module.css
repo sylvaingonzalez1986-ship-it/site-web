@@ -1,0 +1,67 @@
+.moment {
+  display: grid;
+  grid-template-columns: minmax(180px, .8fr) minmax(0, 1.2fr);
+  align-items: center;
+  gap: 12px 24px;
+  min-width: 0;
+  padding: 18px;
+  color: #172923;
+  --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"));
+  border: 2px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
+}
+.stage { position: relative; isolation: isolate; width: 100%; max-width: 300px; aspect-ratio: 3 / 2; margin-inline: auto; overflow: clip; pointer-events: none; }
+.desk, .deskFront { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.desk { z-index: 0; }
+.deskFront { z-index: 2; clip-path: inset(65% 0 0); }
+.character { position: absolute; z-index: 1; top: -2%; left: 15%; width: 52%; height: 69%; overflow: hidden; transform-origin: 50% 90%; }
+.character canvas { display: block; width: 100%; height: auto; }
+.prop { position: absolute; z-index: 3; top: 44%; left: 56%; width: 25%; aspect-ratio: 1; transform-origin: 50% 80%; }
+.prop img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.content { display: grid; gap: 9px; min-width: 0; }
+.moment .title { margin: 0; color: #172923; font-size: clamp(1rem, 2vw, 1.2rem); line-height: 1.3; overflow-wrap: anywhere; }
+.moment .employee { margin: 0; font-size: .86rem; font-weight: 750; overflow-wrap: anywhere; }
+.facts { display: grid; margin: 0; }
+.facts > div { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 3px 14px; padding-block: 6px; border-bottom: 1px solid #17292326; }
+.facts dt { font-size: .76rem; color: #506155; }
+.facts dd { margin: 0; font-size: .85rem; font-weight: 800; overflow-wrap: anywhere; }
+.moment .note { margin: 0; font-size: .77rem; line-height: 1.5; color: #506155; }
+.actions { display: flex; flex-wrap: wrap; gap: 7px; padding-top: 3px; }
+.moment .actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  min-width: 0;
+  max-width: 100%;
+  padding: 9px 12px;
+  font: inherit;
+  font-size: .79rem;
+  font-weight: 750;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+  color: #172923;
+  --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"));
+  border: var(--game-control-border-width, 2px) solid transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch;
+}
+.moment .actions .open { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff1d6; }
+.moment .actions button:focus-visible, .moment .title:focus-visible { outline: 3px solid #006f66; outline-offset: 4px; }
+.moment .actions button:disabled { cursor: not-allowed; color: #667064; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
+@media (hover: hover) {
+  .moment .actions button:hover:not(:disabled) { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); color: #172923; }
+}
+@media (max-width: 600px) {
+  .moment { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 14px; }
+  .stage { max-width: 250px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .character, .prop { transform: none !important; }
+}

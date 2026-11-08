@@ -9,6 +9,7 @@ import { KQ_ONLINE_SITE_TIERS } from "@/lib/kanab-quest-online";
 import { getKqShopActivity } from "@/lib/kanab-quest-shop-activity";
 import { KqProgressMeter } from "./KqVisuals";
 import { KqMerchProductEditor } from "./KqMerchProductEditor";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import styles from "./KqMerchWorkshop.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -100,16 +101,21 @@ export function KqMerchWorkshop(props: Props) {
         <div><dt>Chiffre d’affaires</dt><dd>{activity.revenueCents === null ? "À confirmer" : formatKqCash(activity.revenueCents)}</dd></div>
         <div><dt>Valeur du stock au coût de fabrication</dt><dd>{stockValue === null ? "À confirmer" : formatKqCash(stockValue)}</dd></div>
       </dl>
-      <p>La fabrication a déjà été payée. La valeur du stock n’est pas un montant récupérable : les invendus ne sont pas rachetés.</p>
+      <KqHelpNote>Fabrication déjà payée. Valeur du stock non récupérable : les invendus ne sont pas rachetés.</KqHelpNote>
       {incompleteHistory ? <p className={styles.notice}>Certaines ventes récentes sont indisponibles. Seuls les reçus lisibles sont affichés.</p> : null}
       {receipts.length > 0 ? <ul className={styles.sales}>{receipts.slice(0, 6).map(sale => <li key={sale.id}><ProductArt code={sale.code} /><div><strong>{sale.quantity} × {sale.name}</strong><small>{new Date(sale.soldAt).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</small></div><div><strong>{sale.netPayoutCents === null ? "À confirmer" : formatKqCash(sale.netPayoutCents)}</strong><small>versés après prélèvements</small></div></li>)}</ul> : <p>{supported && !incompleteHistory ? "Aucune vente récente de produits dérivés." : "Historique des ventes à confirmer."}</p>}
-      <p>Le chiffre d’affaires et les versements ne sont pas le bénéfice. Les collections et la fabrication sont payées séparément.</p>
+      <KqHelpNote>Chiffre d’affaires et versements ≠ bénéfice. Collections et fabrication payées séparément.</KqHelpNote>
     </details>
     <details className={styles.details}><summary>Comment le rayon fonctionne</summary>
-      <p>Débloque une collection, fabrique une série, puis choisis son prix et sa mise en vitrine. La fabrication est payée d’avance. Les ventes continuent hors connexion tant que ta boutique est ouverte, avec du stock en vitrine.</p>
-      <p>Chaque référence occupe une place et partage l’audience existante. Un rayon plus grand n’ajoute pas de visiteurs. Les articles ne consomment pas la place réservée aux fleurs.</p>
-      <p>Le prix et la confiance font varier la demande. Les campagnes de récoltes n’ajoutent pas de visites aux produits dérivés ; leurs ventes ne comptent pas dans les commandes de récoltes nécessaires aux déblocages.</p>
-      <p>Mettre en réserve conserve le stock. Changer le prix ou la mise en vitrine remet à zéro la progression vers la prochaine vente. Réapprovisionner conserve cette progression. À épuisement, la référence sort de la vitrine.</p>
+      <KqHelpDashboard><KqHelpSteps steps={[
+        { art: "help-workshop" as const, label: "Débloquer puis fabriquer", detail: "Collection débloquée ; fabrication payée d’avance." },
+        { art: "commerce" as const, label: "Fixer le prix et exposer", detail: "Ventes hors connexion si boutique ouverte et vitrine en stock." },
+      ]} /><KqHelpGrid items={[
+        { art: "warehouse" as const, label: "Par référence", value: "1 place", detail: "Audience partagée, aucun visiteur ajouté ; places séparées des fleurs." },
+        { art: "help-social" as const, label: "Demande", value: "Prix et confiance", detail: "Campagnes de récoltes sans effet ; ces ventes ne valident pas leurs objectifs." },
+        { art: "help-time" as const, label: "Prochaine vente", value: "Progression remise à zéro", detail: "Si prix ou vitrine changent. Réapprovisionner conserve la progression." },
+        { art: "warehouse" as const, label: "Stock", value: "Conservé en réserve", detail: "À épuisement, la référence sort de la vitrine." },
+      ]} /></KqHelpDashboard>
     </details>
     {busy ? <span className={styles.srOnly} role="status">Opération en cours.</span> : null}
   </section>;

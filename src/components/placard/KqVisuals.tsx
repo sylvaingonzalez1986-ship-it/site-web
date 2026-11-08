@@ -24,10 +24,10 @@ export function KqProgressMeter({ label, value, max, valueLabel, hint, tone = "t
 }
 
 /** Comparable values share one scale. Signed series keep zero at the centre. */
-export function KqBarChart({ title, items, emptyLabel = "Aucune donnée pour le moment." }: {
-  title: string; items: KqVisualItem[]; emptyLabel?: string;
+export function KqBarChart({ title, items, emptyLabel = "Aucune donnée pour le moment.", scaleMax }: {
+  title: string; items: KqVisualItem[]; emptyLabel?: string; scaleMax?: number;
 }) {
-  const max = Math.max(0, ...items.map(item => Math.abs(finite(item.value))));
+  const max = Math.max(0, finite(scaleMax ?? 0), ...items.map(item => Math.abs(finite(item.value))));
   const signed = items.some(item => item.value < 0);
   return <figure className={styles.chart}>
     <figcaption>{title}</figcaption>

@@ -1,0 +1,20 @@
+.preview { display: grid; gap: 10px; min-width: 0; padding: 14px 16px; color: var(--game-ink, #172923); background: transparent; border: 2px solid transparent; border-image: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.heading { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.heading > span { flex: 0 0 54px; width: 54px; height: 54px; }
+.heading > div { display: grid; gap: 3px; }
+.heading strong { font-size: .95rem; }
+.heading div > span { color: #40594e; font-size: .74rem; }
+.metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 130px), 1fr)); gap: 10px 18px; margin: 0; }
+.metrics > div { min-width: 0; padding-top: 8px; border-top: 1px solid #17292325; }
+.metrics dt { font-size: .76rem; line-height: 1.4; color: #40594e; }
+.metrics dd { margin: 3px 0 0; font-size: 1.35rem; line-height: 1.25; font-weight: 750; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.metrics dd span { font-size: .8rem; font-weight: 600; }
+.preview details { min-width: 0; font-size: .76rem; line-height: 1.5; }
+.scope { margin: 0; font-size: .75rem; line-height: 1.5; color: #40594e; }
+.preview summary { max-width: 100%; min-height: 44px; padding: 10px 14px !important; background: transparent; border: 2px solid transparent; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.preview details[open] > summary { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); }
+@media (hover: hover) { .preview summary:hover { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); } }
+.preview ul { display: grid; gap: 6px; padding-left: 18px; margin: 10px 0 0; }
+.preview[data-compact='true'] { padding: 10px 12px; }
+.preview[data-compact='true'] .heading > span { flex-basis: 42px; width: 42px; height: 42px; }
+@media (max-width: 420px) { .preview { padding: 12px; } .metrics { gap: 8px 12px; } .metrics dd { font-size: 1.2rem; } }

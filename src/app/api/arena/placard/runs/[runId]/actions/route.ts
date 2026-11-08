@@ -1,3 +1,4 @@
+import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -49,9 +50,11 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
   if (!action || !ACTIONS.has(action)) {
     return NextResponse.json({ error: "Action invalide." }, { status: 400 });
   }
-  const options = action === "heritage-swap"
+  const options: { handIndex?: number; reserveIndex?: number; expectedStageIndex?: number } | undefined = action === "heritage-swap"
     ? { handIndex: Number(body.handIndex), reserveIndex: Number(body.reserveIndex) }
-    : undefined;
+    : action === "roll" ? { ...(body.expectedStageIndex !== undefined ? { expectedStageIndex: Number(body.expectedStageIndex) } : {}) } : undefined;
+  if (body.workChoice !== undefined) return NextResponse.json({ error: "La prise en charge suit les heures Culture prévues dans Personnel." }, { status: 400 });
+  if (body.expectedStageIndex !== undefined && (action !== "roll" || typeof body.expectedStageIndex !== "number" || !Number.isInteger(body.expectedStageIndex) || body.expectedStageIndex < 0 || body.expectedStageIndex > 5)) return NextResponse.json({ error: "Étape de culture invalide." }, { status: 400 });
   if (action === "heritage-swap"
     && (!Number.isInteger(options?.handIndex) || !Number.isInteger(options?.reserveIndex))) {
     return NextResponse.json({ error: "Emplacements de cartes invalides." }, { status: 400 });
@@ -66,7 +69,7 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
       },
     });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Action impossible.";
+    const message = getKqPlayerWorkErrorMessage(error) ?? (error instanceof Error ? error.message : "Action impossible.");
     if (message.startsWith("[supabase:")) {
       return NextResponse.json({ error: "Action momentanément indisponible." }, { status: 503 });
     }

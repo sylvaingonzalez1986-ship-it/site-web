@@ -1,0 +1,46 @@
+.mailbox { position: absolute; z-index: 3; left: 59%; top: 35%; width: 12%; min-width: 54px; padding: 0; border: 0; background: transparent; box-shadow: none; color: #172923; cursor: pointer; }
+.mailbox .mapArt { display: block; width: 100%; max-width: none; }
+.sign { position: absolute; top: 90%; left: 50%; transform: translateX(-50%); display: flex; align-items: center; justify-content: center; gap: 5px; min-height: 44px; width: max-content; padding: 8px 10px; border: 2px solid transparent; background: transparent; box-shadow: none; font: 850 12px/1.2 var(--font-body), sans-serif; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.mailbox:hover .sign, .mailbox:focus-visible .sign { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.mailbox:focus-visible { outline: none !important; box-shadow: none !important; }
+.mailbox:focus-visible .sign { outline: 3px solid #076c61; outline-offset: 3px; box-shadow: 0 0 0 6px #fffaf1; }
+.dialog { width: min(700px, calc(100vw - 24px)); text-align: left; }
+.body { padding: 6px 18px 20px; font-size: 14px; line-height: 1.5; }
+.body p { margin: 8px 0; }
+.reward { display: flex; gap: 10px; align-items: center; padding: 12px 14px; border: 2px solid transparent; background: transparent; --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.reward > svg { flex: 0 0 auto; }
+.form { margin-block: 20px; }
+.fields { display: grid; gap: 12px; min-width: 0; margin: 0; padding: 0; border: 0; }
+.fields legend { padding: 0; margin-bottom: 8px; font-weight: 800; font-size: 17px; }
+.kinds { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.kind, .button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 10px 12px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; color: #172923; font: 750 13px/1.3 var(--font-body), Arial, sans-serif; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.kind svg { flex: 0 0 auto; }
+.kind input { width: 16px; height: 16px; margin: 0; accent-color: #076c61; flex: 0 0 auto; }
+.kind[data-selected], .send { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.button:hover:not(:disabled), .kind:hover { --game-control-art: var(--game-control-apricot, url("/placard/ui/control-apricot-v2.webp")); }
+.button:disabled, .fields:disabled { opacity: .65; cursor: wait; }
+.label { display: grid; gap: 5px; min-width: 0; font-weight: 750; }
+.label input, .label textarea { width: 100%; box-sizing: border-box; min-width: 0; padding: 11px 12px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; color: #172923; font: 400 16px/1.5 var(--font-body), Arial, sans-serif; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.label textarea { resize: vertical; min-height: 130px; }
+.body .hint, .body .counter { margin: 0; font-size: 12px; color: #40574d; }
+.counter { text-align: right; }
+.body :is(input, textarea, button, summary):focus-visible { outline: 3px solid #076c61; outline-offset: 3px; }
+.kind:has(input:focus-visible) { outline: 3px solid #076c61; outline-offset: 3px; }
+.sendRow { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+.sendRow small { color: #40574d; font-size: 12px; }
+.error { padding: 10px 12px; border-left: 4px solid #9a3030; color: #742323; background: var(--game-surface-warm, #f6b76e); overflow-wrap: anywhere; }
+.success { padding: 10px 12px; border-left: 4px solid #076c61; font-weight: 700; }
+.history { border-top: 2px solid #17292355; padding-top: 14px; }
+.historyHeading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.history h2 { margin: 0; font: 900 25px/1.2 var(--font-display), sans-serif; }
+.letter { border-top: 1px solid #17292340; padding: 16px 0; margin-top: 12px; overflow-wrap: anywhere; }
+.meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 6px; font-size: 12px; color: #40574d; }
+.meta strong { color: #076c61; }
+.letter h3 { margin: 7px 0; font-size: 16px; }
+.details summary { padding-block: 9px; cursor: pointer; font-size: 13px; }
+.details p, .reply p { white-space: pre-wrap; }
+.reply { border-left: 3px solid #076c61; padding-left: 12px; margin-block: 12px; }
+.granted > p { display: flex; align-items: center; gap: 6px; }
+.granted svg { flex: 0 0 auto; }
+@media (max-width: 700px) { :global([data-placard-map]:not([data-map-zoomed])) .sign > span { display: none; } :global([data-placard-map]:not([data-map-zoomed])) .mailbox:focus-visible .sign > span { display: inline; } }
+@media (max-width: 480px) { .body { padding: 4px 10px 16px; } .kinds { grid-template-columns: 1fr; } .kind { justify-content: flex-start; } .sendRow { align-items: stretch; flex-direction: column; } }

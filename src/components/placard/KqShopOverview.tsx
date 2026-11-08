@@ -12,6 +12,7 @@ import { getKqShopActivity } from "@/lib/kanab-quest-shop-activity";
 import { hasKqCommerceProfessionalLot } from "@/lib/kanab-quest-commerce-guidance";
 import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
+import { KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import styles from "./KqShopOverview.module.css";
 
 type Props = {
@@ -95,7 +96,7 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
           <h2>{priority.title}</h2>
           {professionalFirst ? <p>Sans site ni ordinateur pour les circuits professionnels.</p> : null}
           <Destination href={priority.href} onNavigate={priority.navigate} className={styles.primary}>{priority.action}<ArrowRight size={18} aria-hidden="true" /></Destination>
-          <details className={styles.heroDetails}><summary>Pourquoi cette étape ?</summary><p>{priority.description}</p></details>
+          <details className={styles.heroDetails}><summary>Pourquoi cette étape ?</summary><KqHelpNote art="help-plan">{priority.description}</KqHelpNote></details>
         </div>
         <div className={styles.heroArt}><Image src="/placard/channel-online-sylvain-v2.webp" alt="" fill sizes="(max-width: 600px) 100vw, 400px" priority /></div>
       </section>
@@ -124,7 +125,12 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
           { label: "Lots préparés", value: preparedGrams, displayValue: `${number(preparedGrams)} g`, tone: "teal" },
           ...(packagedGrams !== undefined ? [{ label: "Conditionné", value: packagedGrams, displayValue: `${number(packagedGrams)} g`, tone: "ink" as const }] : []),
         ]} />{!online ? <p>Stock conditionné indisponible.</p> : null}<button type="button" className={styles.textButton} onClick={onPrepareStock}>Préparer ou vendre un lot<ArrowRight size={15} aria-hidden="true" /></button></div>
-      </details> : <details className={styles.analysis}><summary>Comment faire ma première vente ?</summary><ol className={styles.firstSteps}><li>Terminer une culture.</li><li>Ranger la récolte dans <strong>Mes récoltes → Stockage & affinage</strong>, puis {api.isTutorial ? "terminer ses 6 heures d’affinage avec l’horloge fictive de l’essai" : "attendre 6 heures réelles d’affinage, même hors connexion"}.</li><li>Présenter la Fleur d’Arène au jury. Le verdict ouvre la vente ; le stock récolté est conservé.</li><li>Dans <strong>Commerce → Vendre</strong>, choisir le lot et le produit à préparer, puis comparer les circuits : paiement immédiat ou mise en vente en ligne.</li></ol></details>}
+      </details> : <details className={styles.analysis}><summary>Comment faire ma première vente ?</summary><KqHelpSteps steps={[
+  { art: "help-culture" as const, label: "Terminer une culture" },
+  { art: "help-time" as const, label: "Affiner pendant 6 heures", detail: <>Mes récoltes → Stockage &amp; affinage. {api.isTutorial ? "Utilise l’horloge fictive de l’essai." : "Heures réelles, même hors connexion."}</> },
+  { art: "collection" as const, label: "Présenter la Fleur au jury", detail: "Le verdict ouvre la vente ; le stock récolté est conservé." },
+  { art: "commerce" as const, label: "Commerce → Vendre", detail: "Lot et produit, puis paiement immédiat ou vente en ligne." },
+]} /></details>}
 
       {hasActivity ? <details className={styles.analysis} data-shop-analysis>
         <summary>Rythme et dernières ventes</summary>

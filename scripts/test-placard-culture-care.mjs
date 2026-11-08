@@ -300,6 +300,91 @@ try {
     check(`${role} cannot call internal care validator`,await scalar("SELECT has_function_privilege($1,'kq_care_state_valid(jsonb)','EXECUTE')",[role]),false);
     check(`${role} cannot call internal basic-care price`,await scalar("SELECT has_function_privilege($1,'kq_basic_care_price()','EXECUTE')",[role]),false);
   }
+  // Surface billing preserves every pre-migration receipt and full application.
+  const surfaceOwner=await player(), stranger=await player();
+  await query("UPDATE kq_equipment_wallets SET cash_cents=1000000 WHERE user_id=$1",[surfaceOwner]);
+  await buy(surfaceOwner,"CARE-SEAWEED",2);
+  const historical=await scalar("SELECT jsonb_agg(to_jsonb(p)) FROM kq_care_purchases p WHERE user_id=$1",[surfaceOwner]);
+  await db.exec(`
+    CREATE TABLE fixture_work(user_id UUID PRIMARY KEY,hours NUMERIC NOT NULL DEFAULT 0);
+    CREATE FUNCTION kq_player_work_cost(TEXT,TEXT) RETURNS NUMERIC LANGUAGE sql AS $$ SELECT 0.5::NUMERIC $$;
+    CREATE FUNCTION kq_player_work_charge(p_user UUID,p_hours NUMERIC) RETURNS VOID LANGUAGE plpgsql AS $$ BEGIN
+      INSERT INTO fixture_work VALUES(p_user,p_hours) ON CONFLICT(user_id) DO UPDATE SET hours=fixture_work.hours+p_hours;
+      IF (SELECT hours FROM fixture_work WHERE user_id=p_user)>12 THEN RAISE EXCEPTION 'player_work_exhausted'; END IF;
+    END $$;
+    CREATE FUNCTION kq_campaign_assert_leader(p_user UUID,p_run UUID,p_state JSONB) RETURNS VOID LANGUAGE plpgsql AS $$ BEGIN
+      IF p_state->'campaign' IS NOT NULL AND p_state->'campaign'->>'leaderRunId' IS DISTINCT FROM p_run::TEXT THEN RAISE EXCEPTION 'kq_campaign_action_required'; END IF;
+    END $$;
+    DO $$ DECLARE body TEXT; BEGIN
+      body:=pg_get_functiondef('rpc_kq_apply_care(uuid,uuid,text,uuid,timestamptz,jsonb,integer)'::regprocedure);
+      EXECUTE replace(body,E'\\nBEGIN\\n',E'\\nBEGIN\\n PERFORM public.kq_campaign_assert_leader(p_user_id,p_run_id,p_next_state);\\n');
+    END $$;
+  `);
+  const workMigration=await migration("20261107000500_kq_player_workday.sql");
+  await db.exec(workMigration.slice(workMigration.indexOf("CREATE FUNCTION pg_temp.kq_player_work_wrap"),workMigration.indexOf("-- Registration list")));
+  await db.exec("SELECT pg_temp.kq_player_work_wrap('public.rpc_kq_apply_care(uuid,uuid,text,uuid,timestamptz,jsonb,integer)','culture','''care''')");
+  await db.exec(await migration("20261108000900_kq_care_surface_and_purchase_register.sql"));
+  check("old receipts retain their recorded amount",await scalar("SELECT total_price_cents FROM kq_care_purchases WHERE user_id=$1",[surfaceOwner]),historical[0].total_price_cents);
+  check("old full-treatment reserve is not diluted",await scalar("SELECT quantity FROM kq_care_inventory WHERE user_id=$1",[surfaceOwner]),2);
+  const surfaceState={...startKqGame(551),warehouse:{activeAreaM2:25}};
+  surfaceState.care.problems=[{code:"THRIPS",severity:2,status:"confirmed",trend:"stable",appearedAt:0,variant:0}];
+  const surfaceRun=await createRun(surfaceOwner,surfaceState);
+  const shop=await scalar("SELECT rpc_kq_care_shop_v2($1,$2)",[surfaceOwner,surfaceRun.id]);
+  check("server quotes every product on frozen cultivated area",[shop.areaM2,shop.pricingUnits,shop.prices["CARE-ORIUS"],shop.basicCarePriceCents],[25,25,45000,12500]);
+  check("legacy reserve still covers complete 25m2 applications",shop.inventory.find(item=>item.productCode==="CARE-SEAWEED").quantity,2);
+  const purchaseV2=(code,quantity,key=randomUUID(),price=45000,runId=surfaceRun.id)=>scalar("SELECT rpc_kq_purchase_care_v2($1,$2,$3,$4,$5,$6)",[surfaceOwner,code,quantity,key,runId,price]);
+  const firstKey=randomUUID(),beforePurchase=await snapshot(surfaceOwner);
+  await reject("stale flat-price quote cannot debit or create reserve",()=>purchaseV2("CARE-ORIUS",1,firstKey,1800),"kq_care_price_changed");
+  check("rejected quote leaves receipt and money unchanged",await snapshot(surfaceOwner),beforePurchase);
+  const purchased=await purchaseV2("CARE-ORIUS",1,firstKey);
+  check("purchase adds exact area and no legacy charge",purchased.inventory.find(item=>item.productCode==="CARE-ORIUS"),{productCode:"CARE-ORIUS",quantity:1,legacyQuantity:0,areaQuantity:25});
+  const once=await snapshot(surfaceOwner),workOnce=await scalar("SELECT hours FROM fixture_work WHERE user_id=$1",[surfaceOwner]);
+  check("retry keeps recorded price even with old quote",(await purchaseV2("CARE-ORIUS",1,firstKey,1800)).replayed,true);
+  check("retry never charges twice",await snapshot(surfaceOwner),once);
+  check("retry never spends work twice",await scalar("SELECT hours FROM fixture_work WHERE user_id=$1",[surfaceOwner]),workOnce);
+  await reject("same receipt cannot change quantity",()=>purchaseV2("CARE-ORIUS",2,firstKey,90000),"kq_care_request_mismatch");
+  const larger=await createRun(surfaceOwner,{...surfaceState,warehouse:{activeAreaM2:30}});
+  await reject("small reserve cannot cover larger surface",()=>apply(surfaceOwner,larger,applyKqCareProduct(larger.state,"CARE-ORIUS"),"CARE-ORIUS"),"kq_care_stock_unavailable");
+  const used=await apply(surfaceOwner,surfaceRun,applyKqCareProduct(surfaceRun.state,"CARE-ORIUS"),"CARE-ORIUS");
+  check("applying consumes square metres without a new money charge",[used.chargedCents,used.inventory.find(item=>item.productCode==="CARE-ORIUS").areaQuantity],[0,0]);
+  const current=await runRow(surfaceRun.id),basicKey=randomUUID();
+  await reject("stale base-care quote refuses flat debit",()=>apply(surfaceOwner,current,performKqBasicCare(current.state),null,basicKey,current.updated_at,500),"kq_care_price_changed");
+  const paid=await apply(surfaceOwner,current,performKqBasicCare(current.state),null,basicKey,current.updated_at,12500);
+  check("basic care bills exact cultivated area",paid.chargedCents,12500);
+  check("basic-care replay remains recorded at actual cost",(await apply(surfaceOwner,current,performKqBasicCare(current.state),null,basicKey,current.updated_at,500)).chargedCents,12500);
+  const legacyUse={...startKqGame(552),warehouse:{activeAreaM2:40}};legacyUse.care.problems=[{code:"HEAT",severity:1,status:"confirmed",trend:"stable",appearedAt:0,variant:0}];
+  const legacyRun=await createRun(surfaceOwner,legacyUse);
+  await apply(surfaceOwner,legacyRun,applyKqCareProduct(legacyUse,"CARE-SEAWEED"),"CARE-SEAWEED");
+  check("old full charge remains usable without supplementary debit",await scalar("SELECT quantity FROM kq_care_inventory WHERE user_id=$1 AND product_code='CARE-SEAWEED'",[surfaceOwner]),1);
+  const campaignRun=await createRun(surfaceOwner,startKqGame(553));
+  const campaign={...campaignRun.state,warehouse:{activeAreaM2:10},campaign:{leaderRunId:campaignRun.id,members:[{warehouse:{activeAreaM2:10}},{warehouse:{activeAreaM2:15}}]}};
+  await query("UPDATE kq_runs SET state=$2 WHERE id=$1",[campaignRun.id,JSON.stringify(campaign)]);
+  check("campaign sums member surfaces once",(await scalar("SELECT rpc_kq_care_shop_v2($1,$2)",[surfaceOwner,campaignRun.id])).areaM2,25);
+  await reject("incomplete campaign cannot silently underprice its surface",()=>scalar("SELECT kq_care_pricing($1)",[JSON.stringify({campaign:{members:[{warehouse:{activeAreaM2:10}},{}]}})]),"kq_care_invalid_request");
+  const follower=await createRun(surfaceOwner,campaign);
+  await reject("campaign follower cannot purchase a separate treatment",()=>purchaseV2("CARE-ORIUS",1,randomUUID(),45000,follower.id),"kq_campaign_action_required");
+  await reject("another owner cannot quote a culture",()=>scalar("SELECT rpc_kq_care_shop_v2($1,$2)",[stranger,surfaceRun.id]),"kq_run_unavailable");
+  const initialRegister=await scalar("SELECT rpc_kq_care_purchase_register($1)",[surfaceOwner]);
+  check("paid register includes old purchases and basic-care receipts",initialRegister.items.length,3);
+  check("paid register totals use actual old and new prices",initialRegister.totalPaidCents,2400+45000+12500);
+  check("old purchase area is unknown, never reconstructed",initialRegister.items.find(item=>item.amountCents===2400).areaM2,null);
+  check("owner isolation returns no other player's history",(await scalar("SELECT rpc_kq_care_purchase_register($1)",[stranger])).totalCount,0);
+  check("new purchases and care do not leave a suspense accounting balance",await scalar("SELECT COALESCE(sum(balance_cents),0)::INTEGER FROM kq_treasury_balances WHERE user_id=$1 AND account='suspense'",[surfaceOwner]),0);
+  await query("UPDATE fixture_work SET hours=12 WHERE user_id=$1",[surfaceOwner]);
+  const exhaustedBefore=await snapshot(surfaceOwner),exhaustedJournal=await scalar("SELECT count(*)::INTEGER FROM kq_treasury_journal WHERE user_id=$1",[surfaceOwner]);
+  await reject("workday failure rolls back purchase and accounting together",()=>purchaseV2("CARE-ORIUS",1,randomUUID()),"player_work_exhausted");
+  check("failed workday leaves money, reserve and receipts untouched",await snapshot(surfaceOwner),exhaustedBefore);
+  check("failed workday leaves accounting untouched",await scalar("SELECT count(*)::INTEGER FROM kq_treasury_journal WHERE user_id=$1",[surfaceOwner]),exhaustedJournal);
+  await query("INSERT INTO kq_care_purchases(user_id,request_key,product_code,quantity,total_price_cents,created_at) SELECT $1,gen_random_uuid(),'CARE-SEAWEED',1,1200,'2026-11-08T00:00:00Z' FROM generate_series(1,30)",[surfaceOwner]);
+  const page1=await scalar("SELECT rpc_kq_care_purchase_register($1)",[surfaceOwner]);
+  const cursor=page1.nextCursor.split('|'),page2=await scalar("SELECT rpc_kq_care_purchase_register($1,$2,$3)",[surfaceOwner,...cursor]);
+  check("equal-timestamp keyset pagination loses no receipt",[page1.items.length,page2.items.length,new Set([...page1.items,...page2.items].map(item=>item.id)).size],[25,8,33]);
+  check("paginated aggregate always covers all history",[page1.totalCount,page2.totalPaidCents,page2.nextCursor],[33,page1.totalPaidCents,null]);
+  for(const role of ["anon","authenticated","service_role"]){
+    check(`${role} new register execute privilege`,await scalar("SELECT has_function_privilege($1,'rpc_kq_care_purchase_register(uuid,timestamptz,text)','EXECUTE')",[role]),role==="service_role");
+    check(`${role} cannot bypass quoted purchase`,await scalar("SELECT has_function_privilege($1,'rpc_kq_purchase_care(uuid,text,integer,uuid)','EXECUTE')",[role]),false);
+    check(`${role} cannot mutate or read raw receipts`,await scalar("SELECT has_table_privilege($1,'kq_care_purchases','SELECT,INSERT,UPDATE,DELETE')",[role]),false);
+  }
   console.log(JSON.stringify({result:"passed",checks:checks.length,details:checks,engine:"PGlite isolated PostgreSQL",concurrency:"Retry calls submitted together; PGlite serializes on one connection. CAS and row/advisory locks are explicitly verified."},null,2));
 } catch(error) {
   console.error(error.message, error.where ?? "", error.detail ?? "");

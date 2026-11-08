@@ -40,7 +40,7 @@
 .details[open] > summary > svg { transform: rotate(180deg); }
 .bank.bank.bank .details > summary { font-family: var(--font-body), Arial, sans-serif !important; text-transform: none !important; }
 .details p, .details li { font-size: 13px; line-height: 1.6; }
-.details ul { padding-left: 20px; }
+.details > ul { padding-left: 20px; }
 .amountLabel { display: block; margin-bottom: 7px; font-size: 14px; font-weight: 750; }
 .amount {
   display: flex; align-items: center; padding-right: 14px;

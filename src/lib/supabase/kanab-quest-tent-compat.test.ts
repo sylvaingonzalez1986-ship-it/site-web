@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: vi.fn().mockResolvedValue(undefined) }));
 import productionFixture from "@/test/fixtures/kq-asymmetric-tents.json";
 
 const mocks = vi.hoisted(() => ({ client: vi.fn() }));

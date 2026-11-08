@@ -1,22 +1,24 @@
 ﻿"use client";
 
 import Image from "next/image";
-import { ArrowRight, BookOpen, BriefcaseBusiness, ChevronDown, CircleHelp, Landmark, MapPin, Move, PackageCheck, Scan, ShoppingBag, Sprout, Store, Swords, Target, Volume2, VolumeX, Wallet, Warehouse, X, ZoomIn } from "lucide-react";
+import { KqHelpDashboard, KqHelpGrid, KqHelpSteps } from "./KqHelpDashboard";
+import { ArrowRight, BookOpen, ChevronDown, CircleHelp, Landmark, Megaphone, PackageCheck, Pause, Play, Scan, ShoppingBag, Sprout, Store, Swords, Target, UsersRound, Wallet, Warehouse, X, ZoomIn } from "lucide-react";
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type CSSProperties, type PointerEvent } from "react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
-import { KqGameSoundProvider, useKqGameSound } from "./KqGameSound";
 import { getPlacardMapBuildingGeometry, KQ_PLACARD_MAP_SCENE } from "./KqPlacardMap.geometry";
 import { KqPlacardMapActivity } from "./KqPlacardMapActivity";
+import { KqPlacardMapAtmosphere } from "./KqPlacardMapAtmosphere";
+import { KqMailbox } from "./KqMailbox";
 import styles from "./KqPlacardMap.module.css";
 
-export type PlacardMapView = "game" | "harvests" | "market" | "treasury" | "shop" | "arena" | "missions" | "workshop";
-export type PlacardMapOpen = (view: PlacardMapView, options?: { treasuryPole?: "accounting" | "bank"; marketSection?: "sales" | "dashboard" | "management"; warehouseSection?: "storage"; harvestSection?: "storage"; catalog?: boolean; equipmentCode?: string; listingId?: string }) => void;
+export type PlacardMapView = "game" | "harvests" | "market" | "treasury" | "shop" | "arena" | "missions" | "workshop" | "staff" | "social";
+export type PlacardMapOpen = (view: PlacardMapView, options?: { treasuryPole?: "accounting" | "bank"; marketSection?: "sales" | "dashboard" | "management"; warehouseSection?: "storage" | "processing"; harvestSection?: "storage"; catalog?: boolean; equipmentCode?: string; listingId?: string }) => void;
 
 const BUILDINGS = [
-  { id: "warehouse", name: "Entrepôt", action: "Cultiver, aménager et suivre mes récoltes", Icon: Warehouse },
-  { id: "bank", name: "Banque", action: "Prêts, épargne et placements", Icon: Landmark },
-  { id: "office", name: "Bureau", action: "Factures et comptabilité", Icon: BriefcaseBusiness },
-  { id: "market", name: "Commerce", action: "Transformer, vendre et gérer mes annonces", Icon: Store },
+  { id: "warehouse", name: "La ferme", action: "Culture, récoltes et atelier", Icon: Warehouse },
+  { id: "bank", name: "Finances", action: "Factures, banque et comptabilité", Icon: Landmark },
+  { id: "office", name: "Personnel", action: "Ma journée, mon équipe et les recrutements", Icon: UsersRound },
+  { id: "market", name: "Commerce", action: "Vendre, développer ma boutique et communiquer", Icon: Store },
   { id: "shop", name: "Packs de cartes", action: "Acheter et ouvrir des packs Buddies et Botte du Chanvrier", Icon: ShoppingBag },
   { id: "arena", name: "Jury & duels", action: "Présenter mes Fleurs et participer aux duels", Icon: Swords },
   { id: "missions", name: "Missions", action: "Voir mes défis et récompenses", Icon: Target },
@@ -24,28 +26,31 @@ const BUILDINGS = [
 ] as const;
 type BuildingId = typeof BUILDINGS[number]["id"];
 
-type MapSnapshot = { selected: BuildingId | null; zoomed: boolean };
-const INITIAL_MAP: MapSnapshot = { selected: null, zoomed: false };
+type MapSnapshot = { selected: BuildingId | null; zoomed: boolean | null; motionPaused: boolean };
+const INITIAL_MAP: MapSnapshot = { selected: null, zoomed: null, motionPaused: false };
 let savedMap = INITIAL_MAP;
-const savedViewport = { left: 0, top: 0 };
+const savedViewport = { left: 0, top: 0, initialized: false };
 const mapListeners = new Set<() => void>();
 function subscribeMap(listener: () => void) { mapListeners.add(listener); return () => { mapListeners.delete(listener); }; }
 const getMapSnapshot = () => savedMap;
 const getServerMapSnapshot = () => INITIAL_MAP;
 const subscribeIsolatedMap = () => () => {};
+function subscribeCompactMap(listener: () => void) {
+  const query = window.matchMedia("(max-width: 700px)");
+  query.addEventListener("change", listener);
+  return () => query.removeEventListener("change", listener);
+}
+const getCompactMap = () => window.matchMedia("(max-width: 700px)").matches;
+const getServerCompactMap = () => false;
 function rememberMap(patch: Partial<MapSnapshot>) {
   savedMap = { ...savedMap, ...patch };
   mapListeners.forEach(listener => listener());
 }
 function resolveBuilding(value?: string | null) {
-  return value === "game" || value === "workshop" || value === "harvests" ? "warehouse" : value === "treasury" ? "office" : value;
+  return value === "game" || value === "workshop" || value === "harvests" ? "warehouse" : value === "treasury" ? "bank" : value === "staff" ? "office" : value === "social" ? "market" : value;
 }
 
-export function KqPlacardMap(props: Parameters<typeof KqPlacardMapContent>[0]) {
-  return <KqGameSoundProvider><KqPlacardMapContent {...props} /></KqGameSoundProvider>;
-}
-
-function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, readyLotCount, availableFlowerCount, curingFlowerCount, recommended, highlightedBuilding, isolated = false }: {
+export function KqPlacardMap({ onOpen, onOpenCollection, activeRun, cashCents, readyLotCount, availableFlowerCount, curingFlowerCount, recommended, highlightedBuilding, isolated = false }: {
   onOpen: PlacardMapOpen;
   onOpenCollection: () => void;
   activeRun?: boolean;
@@ -60,12 +65,13 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
 }) {
   const sharedMap = useSyncExternalStore(isolated ? subscribeIsolatedMap : subscribeMap, isolated ? getServerMapSnapshot : getMapSnapshot, getServerMapSnapshot);
   const [localMap, setLocalMap] = useState(INITIAL_MAP);
-  const localViewport = useRef({ left: 0, top: 0 });
-  const { selected, zoomed } = isolated ? localMap : sharedMap;
+  const localViewport = useRef({ left: 0, top: 0, initialized: false });
+  const { selected, zoomed: rememberedZoom, motionPaused } = isolated ? localMap : sharedMap;
+  const compact = useSyncExternalStore(subscribeCompactMap, getCompactMap, getServerCompactMap);
+  const zoomed = rememberedZoom ?? compact;
   const [dragging, setDragging] = useState(false);
   const [hoveredBuilding, setHoveredBuilding] = useState<BuildingId | null>(null);
   const [focusedBuilding, setFocusedBuilding] = useState<BuildingId | null>(null);
-  const sound = useKqGameSound();
   const maskId = useId().replace(/:/g, "");
   const viewportId = isolated ? `placard-map-viewport-${maskId}` : "placard-map-viewport";
   const panelId = isolated ? `placard-building-details-${maskId}` : "placard-building-details";
@@ -75,6 +81,7 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
   const drag = useRef<{ id: number; x: number; y: number; left: number; top: number; moved: boolean } | null>(null);
   const suppressClick = useRef(false);
   const recommendedBuilding = resolveBuilding(recommended);
+  const initialFocus = useRef(selected ?? resolveBuilding(highlightedBuilding) ?? recommendedBuilding);
   const highlighted = resolveBuilding(highlightedBuilding);
   const contextualBuilding = selected === "warehouse" || selected === "market" ? selected : null;
   const hasCulture = activeRun === true;
@@ -85,8 +92,15 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
   useEffect(() => {
     const node = viewport.current;
     const position = isolated ? localViewport.current : savedViewport;
-    if (node) node.scrollTo({ left: position.left, top: position.top, behavior: "instant" });
-  }, [isolated]);
+    if (!node || (rememberedZoom === null && compact !== getCompactMap())) return;
+    if (zoomed && rememberedZoom === null && !position.initialized) {
+      const destination = BUILDINGS.find(item => item.id === initialFocus.current) ?? BUILDINGS[0];
+      const [x, y] = getPlacardMapBuildingGeometry(destination.id).focusPoint;
+      const terrain = node.firstElementChild as HTMLElement | null;
+      if (terrain) node.scrollTo({ left: terrain.offsetWidth * x / KQ_PLACARD_MAP_SCENE.width - node.clientWidth / 2, top: terrain.offsetHeight * y / KQ_PLACARD_MAP_SCENE.height - node.clientHeight / 2, behavior: "instant" });
+    } else node.scrollTo({ left: position.left, top: position.top, behavior: "instant" });
+    position.left = node.scrollLeft; position.top = node.scrollTop; position.initialized = true;
+  }, [compact, isolated, rememberedZoom, zoomed]);
 
   function updateMap(patch: Partial<MapSnapshot>) {
     if (isolated) setLocalMap(current => ({ ...current, ...patch }));
@@ -101,7 +115,6 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
     if (node && terrain) node.scrollTo({ left: terrain.offsetWidth * x / KQ_PLACARD_MAP_SCENE.width - node.clientWidth / 2, top: terrain.offsetHeight * y / KQ_PLACARD_MAP_SCENE.height - node.clientHeight / 2, behavior: "instant" });
   }
   function toggleZoom() {
-    sound.playNavigation(392);
     updateMap({ zoomed: !zoomed });
     requestAnimationFrame(() => centerBuilding(selected ?? recommendedBuilding));
   }
@@ -120,15 +133,16 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
     node.scrollBy({ left, top, behavior: "instant" });
   }
   function visit(id: BuildingId, origin: HTMLButtonElement) {
-    sound.playNavigation(id === "warehouse" ? 293.66 : id === "market" ? 440 : 329.63);
     updateMap({ selected: id });
     if (id === "warehouse" || id === "market") {
-      requestAnimationFrame(() => panel.current?.focus({ preventScroll: false }));
+      requestAnimationFrame(() => { panel.current?.focus({ preventScroll: true }); panel.current?.scrollIntoView({ block: "nearest", behavior: "instant" }); });
     } else if (id === "collection") {
       origin.focus({ preventScroll: true });
       onOpenCollection();
-    } else if (id === "bank" || id === "office") {
-      onOpen("treasury", { treasuryPole: id === "bank" ? "bank" : "accounting" });
+    } else if (id === "bank") {
+      onOpen("treasury", { treasuryPole: "accounting" });
+    } else if (id === "office") {
+      onOpen("staff");
     } else onOpen(id);
   }
   function closePanel() {
@@ -178,14 +192,13 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
     return undefined;
   }
 
-  return <section className={styles.world} aria-label="Carte de Kanab Quest" data-placard-map data-map-zoomed={zoomed || undefined}>
+  return <section className={styles.world} aria-label="Carte de Kanab Quest" data-placard-map data-map-zoomed={zoomed || undefined} data-map-motion-paused={motionPaused || undefined}>
     <header className={styles.mapHeading}>
-      <div className={styles.mapIdentity}><h1>Mon quartier<span>.</span></h1></div>
+      <div className={styles.mapIdentity}><h1>Mon quartier</h1></div>
       <div className={styles.wallet} aria-label="Résumé de ta partie Kanab Quest">
         <span><Wallet size={17} aria-hidden="true" /><span><small>Argent du jeu</small><strong>{cashCents !== null ? formatKqCash(cashCents) : "—"}</strong></span></span>
       </div>
       <div className={styles.mapTools}>
-        <button type="button" className={`${styles.zoomButton} ${styles.soundButton}`} data-map-sound aria-label="Son du jeu" title={sound.enabled ? "Couper le son du jeu" : "Activer le son du jeu"} aria-pressed={sound.enabled} onClick={sound.toggle}>{sound.enabled ? <Volume2 size={18} aria-hidden="true" /> : <VolumeX size={18} aria-hidden="true" />}<span>Son {sound.enabled ? "activé" : "coupé"}</span></button>
         <button type="button" className={styles.zoomButton} data-map-zoom-toggle aria-label={zoomed ? "Voir tout le quartier" : "Agrandir la carte"} aria-pressed={zoomed} aria-controls={viewportId} onClick={toggleZoom}>{zoomed ? <Scan size={18} aria-hidden="true" /> : <ZoomIn size={18} aria-hidden="true" />}<span>{zoomed ? "Tout le quartier" : "Agrandir"}</span></button>
         <details className={styles.help} onKeyDown={event => {
           if (event.key !== "Escape" || !event.currentTarget.open) return;
@@ -194,7 +207,19 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
           event.currentTarget.querySelector("summary")?.focus({ preventScroll: true });
         }}>
           <summary aria-label="Aide du quartier"><CircleHelp size={18} aria-hidden="true" /><span>Aide</span><ChevronDown size={13} aria-hidden="true" /></summary>
-          <div className={styles.helpContent}><strong>Entre dans ton quartier.</strong><p>Touche un bâtiment pour l’ouvrir. L’Entrepôt et Commerce proposent plusieurs activités juste sous la carte.</p><p>Agrandis pour explorer le décor en le faisant glisser. Les noms restent visibles ; le menu de Kanab Quest donne aussi accès à tous les lieux.</p><p>Packs de cartes permet d’acquérir et d’ouvrir tes packs. Collections réunit tes albums. Pour le matériel, ouvre l’Entrepôt. Commerce sert à vendre ; le Bureau et la Banque s’occupent des finances.</p></div>
+          <div className={styles.helpContent}><KqHelpDashboard>
+            <button type="button" className={styles.motionButton} data-map-motion-toggle aria-label="Mettre les animations du quartier en pause" aria-pressed={motionPaused} title={motionPaused ? "Reprendre les animations du quartier" : "Mettre les animations du quartier en pause"} onClick={() => updateMap({ motionPaused: !motionPaused })}>{motionPaused ? <Play size={14} aria-hidden="true" /> : <Pause size={14} aria-hidden="true" />}<span>{motionPaused ? "Reprendre les animations" : "Mettre les animations en pause"}</span></button>
+            <KqHelpGrid items={[
+              { label: "Ferme", value: "Culture et atelier", detail: "Récoltes et transformation.", art: "help-culture" },
+              { label: "Personnel", value: "Ton équipe", detail: "Journées et plannings.", art: "help-team" },
+              { label: "Commerce", value: "Ventes et communication", art: "help-social" },
+              { label: "Finances", value: "Factures et banque", art: "help-accounts" },
+            ]} />
+            <KqHelpSteps steps={[
+              { label: "Ouvrir un lieu", detail: "Touche le bâtiment ou utilise le menu au clavier.", art: "quarter" },
+              { label: "Explorer", detail: "Agrandis la carte ; packs, collections et défis ont leur lieu.", art: "help-travel" },
+            ]} />
+          </KqHelpDashboard></div>
         </details>
       </div>
     </header>
@@ -202,8 +227,8 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
       onPointerDown={startPan} onPointerMove={movePan} onPointerUp={stopPan} onPointerCancel={stopPan}
       onScroll={event => {
         const left = event.currentTarget.scrollLeft, top = event.currentTarget.scrollTop;
-        if (isolated) localViewport.current = { left, top };
-        else { savedViewport.left = left; savedViewport.top = top; }
+        if (isolated) localViewport.current = { left, top, initialized: true };
+        else { savedViewport.left = left; savedViewport.top = top; savedViewport.initialized = true; }
       }}
       onClickCapture={event => { if (suppressClick.current) { event.preventDefault(); event.stopPropagation(); suppressClick.current = false; } }}>
       <div className={styles.terrain}>
@@ -220,7 +245,9 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
           })}
         </svg>
         <KqPlacardMapActivity idPrefix={maskId} culture={hasCulture} market={hasReadyLots} jury={hasAvailableFlowers} />
+        <KqPlacardMapAtmosphere paused={motionPaused || dragging} culture={hasCulture} market={hasReadyLots} jury={hasAvailableFlowers} focusBuilding={dragging ? null : focusedBuilding ?? hoveredBuilding ?? BUILDINGS.find(building => building.id === highlighted)?.id ?? selected} />
         <nav aria-label="Les bâtiments de Kanab Quest">
+          {!isolated ? <KqMailbox onOpenPacks={() => onOpen("shop")} onReveal={button => { if (zoomed) requestAnimationFrame(() => revealFocusedLabel(button)); }} /> : null}
           {BUILDINGS.map(({ id, name, action, Icon }) => {
             const contextual = id === "warehouse" || id === "market";
             const status = buildingStatus(id);
@@ -235,24 +262,24 @@ function KqPlacardMapContent({ onOpen, onOpenCollection, activeRun, cashCents, r
               }} onBlur={() => setFocusedBuilding(current => current === id ? null : current)}
               aria-label={`${name} · ${action}${status ? ` · ${status}` : ""}`} aria-expanded={contextual ? selected === id : undefined} aria-controls={contextual ? panelId : undefined} aria-haspopup={id === "collection" ? "dialog" : undefined} onClick={event => visit(id, event.currentTarget)}>
               <span className={styles.buildingHitArea} data-map-hit-area={id} aria-hidden="true" />
-              <span className={styles.buildingLabel} data-map-label={id}><span className={styles.buildingName}><Icon size={15} aria-hidden="true" />{name}{recommendedBuilding === id ? <i className={styles.recommendation} aria-label="Activité conseillée" /> : null}</span>{status ? <span className={styles.buildingStatus} data-map-status={id}>{status}</span> : null}</span>
+              <span className={styles.buildingLabel} data-map-label={id}><span className={styles.buildingName}><Icon size={15} aria-hidden="true" /><span className={styles.buildingNameText}>{name}</span>{recommendedBuilding === id ? <i className={styles.recommendation} aria-label="Activité conseillée" /> : null}</span>{status ? <span className={styles.buildingStatus} data-map-status={id}>{status}</span> : null}</span>
             </button>;
           })}
         </nav>
       </div>
     </div>
-    <div className={styles.mapFoot}><span><MapPin size={15} aria-hidden="true" /> Choisis un lieu pour continuer.</span>{zoomed ? <span><Move size={15} aria-hidden="true" /> Fais glisser pour explorer</span> : <span className={styles.legend}><i /> Ta prochaine action</span>}</div>
-    {contextualBuilding ? <aside ref={panel} tabIndex={-1} className={styles.details} id={panelId} aria-labelledby={panelTitleId} onKeyDown={event => { if (event.key === "Escape") { if (isolated) { event.preventDefault(); event.stopPropagation(); } closePanel(); } }}>
-      <div className={styles.detailHeading}><div><h2 id={panelTitleId}>{contextualBuilding === "warehouse" ? "L’Entrepôt" : "Commerce"}</h2></div><button type="button" className={styles.closePanel} aria-label="Fermer les activités du bâtiment" onClick={closePanel}><X size={18} aria-hidden="true" /></button></div>
-      <nav className={styles.actions} aria-label={`Activités · ${contextualBuilding === "warehouse" ? "L’Entrepôt" : "Commerce"}`}>
+    {contextualBuilding ? <aside key={contextualBuilding} ref={panel} tabIndex={-1} className={styles.details} id={panelId} aria-labelledby={panelTitleId} onKeyDown={event => { if (event.key === "Escape") { if (isolated) { event.preventDefault(); event.stopPropagation(); } closePanel(); } }}>
+      <div className={styles.detailHeading}><div><h2 id={panelTitleId}>{contextualBuilding === "warehouse" ? "La ferme" : "Commerce"}</h2></div><button type="button" className={styles.closePanel} aria-label="Fermer les activités du bâtiment" onClick={closePanel}><X size={18} aria-hidden="true" /></button></div>
+      <nav className={styles.actions} aria-label={`Activités · ${contextualBuilding === "warehouse" ? "La ferme" : "Commerce"}`}>
         {contextualBuilding === "warehouse" ? <>
           <button type="button" data-placard-activity="game" onClick={() => onOpen("game")}><Sprout size={20} aria-hidden="true" /><span>{activeRun ? "Reprendre ma culture" : "Commencer une culture"}<small>Cultiver et récolter</small></span><ArrowRight size={17} aria-hidden="true" /></button>
-          <button type="button" data-placard-activity="workshop" onClick={() => onOpen("workshop")}><Warehouse size={20} aria-hidden="true" /><span>Aménager l’entrepôt<small>Zones, matériel et entretien</small></span><ArrowRight size={17} aria-hidden="true" /></button>
+          <button type="button" data-placard-activity="workshop" onClick={() => onOpen("workshop", { warehouseSection: "processing" })}><Warehouse size={20} aria-hidden="true" /><span>Ouvrir l’Atelier<small>Trim et machines</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           <button type="button" data-placard-activity="storage" onClick={() => onOpen("harvests")}><PackageCheck size={20} aria-hidden="true" /><span>Mes récoltes<small>Stockage, affinage et jury</small></span><ArrowRight size={17} aria-hidden="true" /></button>
         </> : <>
-          <button type="button" data-placard-activity="market" onClick={() => onOpen("market", { marketSection: "sales" })}><Store size={20} aria-hidden="true" /><span>Transformer et vendre<small>{readyLotCount ? `${readyLotCount} lot${readyLotCount > 1 ? "s" : ""} à valoriser` : "Préparer mes ventes"}</small></span><ArrowRight size={17} aria-hidden="true" /></button>
+          <button type="button" data-placard-activity="market" onClick={() => onOpen("market", { marketSection: "sales" })}><Store size={20} aria-hidden="true" /><span>Préparer mes ventes<small>{readyLotCount ? `${readyLotCount} lot${readyLotCount > 1 ? "s" : ""} à valoriser` : "Formats, prix et débouchés"}</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           <button type="button" data-placard-activity="dashboard" onClick={() => onOpen("market", { marketSection: "dashboard" })}><PackageCheck size={20} aria-hidden="true" /><span>Mon stock en vente<small>Paquets, annonces et commandes</small></span><ArrowRight size={17} aria-hidden="true" /></button>
           <button type="button" data-placard-activity="management" onClick={() => onOpen("market", { marketSection: "management" })}><Target size={20} aria-hidden="true" /><span>Développer mon commerce<small>Boutique en ligne, marque et audience</small></span><ArrowRight size={17} aria-hidden="true" /></button>
+          <button type="button" data-placard-activity="social" onClick={() => onOpen("social")}><Megaphone size={20} aria-hidden="true" /><span>Communiquer<small>Réseaux sociaux et partenariats</small></span><ArrowRight size={17} aria-hidden="true" /></button>
         </>}
       </nav>
     </aside> : null}

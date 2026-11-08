@@ -1,5 +1,5 @@
 /**
- * Real harvest, contract, mission and sound components. All game/API values are
+ * Real harvest, contract and mission components. All game/API values are
  * local fixtures; requests outside this Vite origin are rejected. No env or DB.
  */
 import assert from "node:assert/strict";
@@ -20,7 +20,6 @@ import"/src/app/globals.css";
 import{KqHarvestMoment}from"/src/components/placard/KqHarvestMoment";
 import{KqCultureContract}from"/src/components/placard/KqCultureContract";
 import{KqMissionCenter}from"/src/components/placard/KqMissionCenter";
-import{KqGameSoundProvider,useKqGameSound}from"/src/components/placard/KqGameSound";
 import{createKqTutorialApi,KqTutorialApiProvider}from"/src/components/placard/KqTutorialApiContext";
 import{startKqGame,advanceKqStage,resolveKqStage}from"/src/lib/kanab-quest-game";
 import{createKqWarehouseStarter,getKqWarehouseQuote}from"/src/lib/kanab-quest-warehouse";
@@ -63,9 +62,8 @@ const request=async(input,init={})=>{
 };
 const api=createKqTutorialApi(request);api.isTutorial=false;
 const notify=api.notify;api.notify=(name,detail)=>{window.__fixture.notifications.push(name);notify(name,detail)};
-function AudioControls(){const sound=useKqGameSound();window.__sound=sound;return <div data-audit-sound><button data-sound-toggle aria-pressed={sound.enabled} onClick={sound.toggle}>Son {sound.enabled?"actif":"coupé"}</button><button data-sound-cue onClick={()=>sound.playOnce("reward","audit-reward")}>Prime</button><button data-sound-new-cue onClick={()=>sound.playOnce("harvest","audit-harvest")}>Récolte</button><button data-sound-navigation onClick={()=>sound.playNavigation(294)}>Entrepôt</button></div>}
-function Content(){return <><AudioControls/>{kind==="harvest"?<KqHarvestMoment state={fixtureState} runId={runId} flowers={flowers} fresh={query.get("fresh")!=="0"} onContinue={()=>window.__fixture.continues++}/>:kind==="contract"?<KqCultureContract mode="missions"/>:kind==="mission"?<KqMissionCenter onOpen={view=>{window.__fixture.destination=view}}/>:<p data-audit-audio-ready>Sound fixture ready</p>}</>}
-function Audit(){const[mounted,setMounted]=useState(true);window.__unmount=()=>setMounted(false);return <div className={retro.surface+" "+retro.shell}>{mounted?<KqGameSoundProvider><KqTutorialApiProvider api={api}><Content/></KqTutorialApiProvider></KqGameSoundProvider>:<p data-audit-unmounted>Unmounted</p>}</div>}
+function Content(){return kind==="harvest"?<KqHarvestMoment state={fixtureState} runId={runId} flowers={flowers} fresh={query.get("fresh")!=="0"} onContinue={()=>window.__fixture.continues++}/>:kind==="contract"?<KqCultureContract mode="missions"/>:<KqMissionCenter onOpen={view=>{window.__fixture.destination=view}}/>}
+function Audit(){const[mounted,setMounted]=useState(true);window.__unmount=()=>setMounted(false);return <div className={retro.surface+" "+retro.shell} data-audit-ready>{mounted?<KqTutorialApiProvider api={api}><Content/></KqTutorialApiProvider>:<p data-audit-unmounted>Unmounted</p>}</div>}
 createRoot(document.getElementById("root")).render(<Audit/>);
 `;
 const modules = {
@@ -75,7 +73,7 @@ const modules = {
   "next/navigation": `export const usePathname=()=>location.pathname;export const useSearchParams=()=>new URLSearchParams(location.search);export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});`,
   "next/dynamic": `import React from"react";export default function dynamic(loader,options={}){const Component=React.lazy(()=>loader().then(m=>({default:m.default||m})));return props=><React.Suspense fallback={options.loading?<options.loading/>:null}><Component {...props}/></React.Suspense>}`,
 };
-const fonts = `@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#fff1d6}[data-audit-sound]{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 20px}[data-audit-sound] button{min-height:44px;background:#fff1d6;color:#172923;border:2px solid #172923;border-radius:12px;padding:8px;font:700 12px Body}[data-audit-sound] button:focus-visible{outline:3px solid #169b8b;outline-offset:3px}`;
+const fonts = `@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#fff1d6}`;
 const server = await createServer({
   root, configFile: false, envDir: false, cacheDir: resolve(output, "vite-cache"),
   publicDir: resolve(root, "public"),
@@ -116,24 +114,23 @@ try {
     void request.continue();
   });
   await page.evaluateOnNewDocument(() => {
-    window.__audioAudit = { contexts: 0, notes: 0, closes: 0, suspends: 0 };
+    window.__audioAudit = { contexts: 0 };
     const NativeAudioContext = window.AudioContext;
     window.AudioContext = class extends NativeAudioContext {
       constructor(...args) { super(...args); window.__audioAudit.contexts++; }
-      createOscillator() { window.__audioAudit.notes++; return super.createOscillator(); }
-      close() { window.__audioAudit.closes++; return super.close(); }
-      suspend() { window.__audioAudit.suspends++; return super.suspend(); }
-      resume() { return window.__delayResume ? new Promise((resolve, reject) => { window.__releaseResume = () => super.resume().then(resolve, reject); }) : super.resume(); }
     };
   });
   await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
   async function frames() { await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))); }
   async function load(kind, scenario = "solo", extra = "") {
     await page.goto(`${origin}/?kind=${kind}&scenario=${scenario}${extra}`, { waitUntil: "networkidle0" });
-    await page.waitForSelector("[data-sound-toggle]");
+    await page.waitForSelector("[data-audit-ready]");
     await page.evaluate(() => document.fonts.ready);
   }
-  async function quiet() { assert.equal(await page.evaluate(() => window.__audioAudit.notes), 0, "No notes before explicit opt-in and game action"); }
+  async function quiet() {
+    assert.equal(await page.evaluate(() => window.__audioAudit.contexts), 0, "Game moments create no audio context");
+    assert.equal(await page.$('[data-sound-toggle], [data-audit-sound], button[aria-label^="Son"]'), null, "Game moments offer no sound control");
+  }
   async function noOverflow(label) { assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), `${label}: no horizontal overflow`); }
   async function shot(name) {
     await page.evaluate(() => Promise.allSettled([...document.images].map(image => image.decode())));
@@ -141,7 +138,6 @@ try {
     assert.deepEqual(missing, [], "Moment illustrations load from local assets");
     await page.screenshot({ path: resolve(output, name + ".png"), fullPage: true });
   }
-  async function optIn() { await page.focus("[data-sound-toggle]"); await page.keyboard.press("Enter"); await page.waitForFunction(() => document.querySelector("[data-sound-toggle]").getAttribute("aria-pressed") === "true"); }
 
   for (const width of [320, 390, 1440]) {
     await page.setViewport({ width, height: 1000 });
@@ -190,7 +186,6 @@ try {
     await load("contract", scenario);
     await page.waitForSelector(`[data-contract-status="${scenario === "claimed" ? "claimed" : "succeeded"}"]`);
     await quiet();
-    await optIn();
     if (scenario !== "claimed") {
       await page.focus('[data-contract-action="claim"]'); await page.keyboard.press("Enter");
       await page.waitForSelector('[data-contract-status="claimed"]');
@@ -199,11 +194,10 @@ try {
     await frames();
     const fresh = await page.$eval("[data-contract-receipt]", element => element.dataset.receiptFresh);
     assert.equal(fresh === "true", scenario === "succeeded", "Only a newly attributed reward is celebrated");
-    if (scenario === "succeeded") await page.waitForFunction(() => window.__audioAudit.notes > 0);
-    else await quiet();
+    await quiet();
     await noOverflow(`contract-${scenario}`);
     await shot(`contract-${scenario}-${width}`);
-    results.push({ scenario: `contract ${scenario}`, width, fresh: fresh === "true", soundOnlyOnNewReward: true });
+    results.push({ scenario: `contract ${scenario}`, width, fresh: fresh === "true", silent: true });
   }
 
   await page.setViewport({ width: 390, height: 1000 });
@@ -213,14 +207,14 @@ try {
       await load(kind, scenario);
       const action = kind === "contract" ? '[data-contract-action="claim"]' : 'section[aria-label="Culture & Buddies"] button';
       await page.waitForSelector(action);
-      await quiet(); await optIn();
+      await quiet();
       await page.click(action);
       if (scenario === "late") {
         await page.waitForFunction(() => typeof window.__releaseAction === "function");
         await page.evaluate(() => window.__unmount()); await page.waitForSelector("[data-audit-unmounted]");
         await page.evaluate(() => window.__releaseAction()); await frames(); await quiet();
         // A confirmed mission reward refreshes the parent inventory even when
-        // its dialog was closed; presentation and sound remain unmounted.
+        // its dialog was closed; the receipt presentation remains unmounted.
         const expectedNotifications = kind === "mission"
           ? ["kq:missions-updated", "kq:equipment-updated", "kq:treasury-updated"]
           : [];
@@ -229,47 +223,12 @@ try {
         assert.equal(await page.$eval("#root", element => element.getAnimations({ subtree: true }).length), 0, "No reward animation after closing");
       } else {
         await page.waitForSelector("[data-mission-receipt]");
-        if (scenario === "succeeded") await page.waitForFunction(() => window.__audioAudit.notes > 0);
-        else await quiet();
+        await quiet();
         await noOverflow(`mission-${scenario}`);
         await shot(`mission-${scenario}-390`);
       }
       results.push({ scenario: `${kind} ${scenario} reward`, guardedSideEffects: true });
     }
-  }
-
-  await load("sound");
-  assert.equal(await page.evaluate(() => window.__audioAudit.contexts), 0, "No AudioContext created on load");
-  await page.click("[data-sound-cue]"); await quiet();
-  await optIn(); await page.click("[data-sound-new-cue]");
-  await page.waitForFunction(() => window.__audioAudit.notes > 0);
-  const notes = await page.evaluate(() => window.__audioAudit.notes);
-  await page.click("[data-sound-new-cue]"); await frames();
-  assert.equal(await page.evaluate(() => window.__audioAudit.notes), notes, "Replaying an id does not duplicate feedback");
-  await page.click("[data-sound-toggle]");
-  await page.click("[data-sound-navigation]"); await frames();
-  assert.equal(await page.evaluate(() => window.__audioAudit.notes), notes, "Muted actions are silent");
-  await page.reload({ waitUntil: "networkidle0" }); await quiet();
-  assert.equal(await page.evaluate(() => window.__audioAudit.contexts), 0, "Reload never resumes audio automatically");
-  results.push({ scenario: "audio opt-in, once-per-id, mute and reload", passed: true });
-
-  await load("sound"); await optIn();
-  await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, get: () => true }); Object.defineProperty(document, "visibilityState", { configurable: true, get: () => "hidden" }); document.dispatchEvent(new Event("visibilitychange")); window.__sound.playOnce("reward", "hidden"); });
-  await frames(); await quiet();
-  await page.evaluate(() => { Object.defineProperty(document, "hidden", { configurable: true, get: () => false }); Object.defineProperty(document, "visibilityState", { configurable: true, get: () => "visible" }); document.dispatchEvent(new Event("visibilitychange")); });
-  await frames(); await quiet();
-  results.push({ scenario: "hidden tabs do not emit or replay sounds", passed: true });
-
-  for (const stop of ["mute", "unmount"]) {
-    await load("sound");
-    await page.evaluate(() => { window.__delayResume = true; });
-    await page.click("[data-sound-toggle]"); await page.click("[data-sound-new-cue]");
-    await page.waitForFunction(() => typeof window.__releaseResume === "function");
-    if (stop === "mute") await page.click("[data-sound-toggle]");
-    else { await page.evaluate(() => window.__unmount()); await page.waitForSelector("[data-audit-unmounted]"); }
-    await page.evaluate(() => { window.__delayResume = false; window.__releaseResume(); });
-    await frames(); await quiet();
-    results.push({ scenario: `pending audio resume cancelled by ${stop}`, passed: true });
   }
 
   assert.deepEqual(errors, [], "No browser exceptions");

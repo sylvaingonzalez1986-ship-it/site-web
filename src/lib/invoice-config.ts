@@ -20,7 +20,14 @@ export const INVOICE_SETTINGS = {
 
 export const INVOICE_CUSTOMER_THANK_YOU = {
   title: "MERCI DE SOUTENIR NOS PRODUCTEURS",
-  body: "En commandant chez Les Chanvriers Bretons, vous faites vivre de petits producteurs passionnés qui cultivent cette magnifique plante avec patience, savoir-faire et beaucoup d'amour. Merci de faire partie de cette belle aventure humaine.\n\nN'oubliez pas de noter les fleurs que vous goûtez dans votre Carnet pour tenter de gagner un bon pour 10 g de fleurs CBD, à utiliser avec une commande. Un tirage au sort chaque mois !",
+  body: "En commandant chez Les Chanvriers Bretons, vous faites vivre de petits producteurs passionnés qui cultivent cette magnifique plante avec patience, savoir-faire et beaucoup d'amour. Merci de faire partie de cette belle aventure humaine.",
+} as const;
+
+export const INVOICE_REVIEW_DRAW = {
+  title: "10 g de fleurs CBD à gagner !",
+  body: "N'oubliez pas de noter les fleurs que vous goûtez dans votre Carnet pour tenter votre chance.",
+  frequency: "Un tirage au sort chaque mois !",
+  prize: "Lot : un bon pour 10 g de fleurs CBD, à utiliser avec une commande.",
 } as const;
 
 export const INVOICE_CBD_DRIVING_NOTICE = {

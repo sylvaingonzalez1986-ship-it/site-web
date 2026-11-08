@@ -13,6 +13,8 @@ const SELECT_ORDERS_COLUMNS = [
   "created_at",
   "status",
   "payment_state",
+  "payment_review_required",
+  "payment_review_reason",
   "archived_at",
   "archived_reason",
   "viva_order_code",
@@ -134,6 +136,8 @@ function mapOrderRowForLoyalty(row: Record<string, unknown>): CmsOrder {
     status: toOrderStatus(row.status),
     paymentProvider: "viva",
     paymentState: toPaymentState(row.payment_state),
+    paymentReviewRequired: row.payment_review_required === true,
+    paymentReviewReason: toOptionalText(row.payment_review_reason),
     archivedAt: toOptionalText(row.archived_at),
     archivedReason: toOptionalText(row.archived_reason),
     vivaOrderCode: normalizeVivaOrderCode(toOptionalText(row.viva_order_code)) ?? undefined,
@@ -604,31 +608,29 @@ export async function updateOrderPaymentStateInSupabase(
 
 export async function updateOrderPaymentByVivaOrderCodeInSupabase(input: {
   orderCode: string | number;
-  paymentState: "paid" | "failed";
-  transactionId?: string;
+  paymentState: "failed";
+  transactionId: string;
 }): Promise<CmsOrder | null> {
   const safeOrderCode = normalizeVivaOrderCode(input.orderCode);
   if (!safeOrderCode) {
     return null;
   }
   const supabase = createSupabaseServiceClient();
-  const { data: wasUpdated, error } = await supabase.rpc("rpc_update_payment", {
+  // No fallback: an absent migration must fail before any order mutation.
+  const { data: orderFound, error } = await supabase.rpc("rpc_update_viva_payment", {
     p_viva_order_code: safeOrderCode,
     p_payment_state: input.paymentState,
-    p_viva_transaction_id: input.transactionId?.trim() || null,
+    p_viva_transaction_id: input.transactionId.trim(),
   });
 
-  failIfError(error, "rpc_update_payment");
+  failIfError(error, "rpc_update_viva_payment");
 
-  if (wasUpdated !== true) {
+  if (orderFound !== true) {
     return null;
   }
-  const updatedOrder = await findOrderByVivaOrderCode(safeOrderCode);
-  if (updatedOrder?.paymentState === "paid") {
-    await applyOrderInventoryInSupabase(updatedOrder.id);
-  }
-
-  return updatedOrder;
+  // The RPC can return a paid order for a stale failed attempt. It has already
+  // preserved inventory and claims atomically; do not reapply paid side effects.
+  return findOrderByVivaOrderCode(safeOrderCode);
 }
 
 export async function finalizeVivaPaymentInSupabase(input: {

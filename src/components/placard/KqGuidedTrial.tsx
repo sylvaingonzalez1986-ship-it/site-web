@@ -22,6 +22,7 @@ import { createKqWorkshop, isKqWorkshopComplete, kqWorkshopStorageKey, KQ_WORKSH
 import styles from './KqGuidedTrial.module.css';
 import { KQ_TUTORIAL_STORAGE_NOTICE } from '@/lib/kanab-quest-trial';
 import { KqStorageStatus } from './KqStorageStatus';
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from './KqHelpDashboard';
 
 const euro=(cents:number)=>new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR'}).format(cents/100);
 const number=(value:number)=>new Intl.NumberFormat('fr-FR',{maximumFractionDigits:1}).format(value);
@@ -109,7 +110,7 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error,workshop}:{u
     <p className={styles.instruction}>{workshopComplete?'Tu peux rejouer, essayer une autre mécanique ou revenir plus tard.':s.chapter===4?trialInstruction(s):INTRO[s.chapter]}</p>
     <progress aria-label="Avancement de l’essai" value={lesson?Math.min(s.chapter-lesson.startChapter,lesson.endChapter-lesson.startChapter+1):s.chapter} max={lesson?lesson.endChapter-lesson.startChapter+1:9}/>
     <p className={styles.sandbox}>Matériel, cartes et euros fictifs. Aucun classement, badge ni récompense réelle.</p>
-    {lesson?<details><summary>Ce qui t’est prêté</summary><p>{lesson.prerequisites}</p></details>:<details><summary>Retrouver les étapes</summary><ol>{KQ_TRIAL_CHAPTERS.map((label,index)=><li key={label} aria-current={index===s.chapter?'step':undefined}>{index<s.chapter?'✓ ':''}{label}</li>)}</ol></details>}
+    {lesson?<details><summary>Ce qui t’est prêté</summary><KqHelpGrid art="help-training" items={[{label:'Pour cet atelier',value:'Prêt fictif',detail:lesson.prerequisites}]}/></details>:<details><summary>Retrouver les étapes</summary><ol>{KQ_TRIAL_CHAPTERS.map((label,index)=><li key={label} aria-current={index===s.chapter?'step':undefined}>{index<s.chapter?'✓ ':''}{label}</li>)}</ol></details>}
     {!workshopComplete&&s.chapter>0&&s.chapter<9?<button type="button" className={styles.subtle} onClick={()=>setRestartPrompt(true)}><RotateCcw size={16}/> {lesson?'Recommencer cet atelier':'Recommencer l’essai'}</button>:null}
     {restartPrompt?<div role="alert"><p>Repartir du début efface uniquement la progression de {lesson?'cet atelier':'cet essai'}.</p><button type="button" onClick={()=>{dispatch({type:'restart'});setRestartPrompt(false);}}>Recommencer</button><button type="button" onClick={()=>setRestartPrompt(false)}>Continuer</button></div>:null}
    </aside>
@@ -139,14 +140,41 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error,workshop}:{u
     {s.chapter===2?<>
      <Image className={`${styles.scene} ${styles.panorama}`} src="/placard/card-shop-sylvain-v1.webp" alt="Sylvain présente les packs de cartes au comptoir de la Boutique" width={1536} height={512} sizes="(max-width: 760px) 100vw, 1020px"/>
      <section className={styles.panel}><h3>{getKqEquipmentDefinition('LED-300')!.name}</h3><p>{getKqEquipmentDefinition('LED-300')!.benefit}</p><p>{getKqEquipmentDefinition('LED-300')!.tradeoff} La qualité maximale n’est pas garantie : tes réussites en culture comptent aussi.</p><button type="button" disabled={s.bought} onClick={()=>dispatch({type:'buy'})}>{s.bought?'✓ LED achetée':`Acheter pour ${euro(getKqEquipmentDefinition('LED-300')!.priceCents)} fictifs`}</button></section>
-     <details><summary>Packs, collection, niveaux et prérequis</summary><p>Les packs Botte du Chanvrier enrichissent ta collection. Les filtres aident à choisir les cartes adaptées. Les doublons fournissent des copies consommables ; les Héritages sont permanents.</p><p>Le catalogue matériel affiche les bonus, les charges, les prérequis et les améliorations. Les niveaux supérieurs coûtent davantage ; une machine achetée doit être installée pour servir.</p></details>
+     <details><summary>Packs, collection, niveaux et prérequis</summary><KqHelpDashboard>
+      <KqHelpGrid art="collection" items={[
+       {label:'Packs Botte',value:'Plus de cartes',detail:'Filtres pour choisir ; doublons = copies consommables.',art:'card-shop'},
+       {label:'Héritages',value:'Permanents'},
+       {label:'Matériel',value:'Acheter → installer',detail:'Utilisable après installation.',art:'help-workshop'},
+       {label:'Niveaux supérieurs',value:'Plus coûteux',detail:'Bonus, charges et prérequis dans le catalogue.',art:'help-training'},
+      ]}/>
+     </KqHelpDashboard></details>
     </>:null}
     {s.chapter===3?<>
      <Image className={styles.scene} src="/placard/warehouse-v2/room.webp" alt="L’entrepôt et ses espaces de culture, de transformation et de séchage" width={1774} height={887} sizes="(max-width: 760px) 100vw, 800px"/>
      <div className={styles.grid}>{['LED-300','DRYING-ROOM','SIFT-TRAY'].map(code=>{const item=getKqEquipmentDefinition(code)!;return <article className={styles.panel} key={code}><h3>{item.name}</h3><p>{item.benefit}</p><small>{code==='LED-300'?'Remplace la lampe de départ.':'Prêté gratuitement pour cet essai.'}</small><button type="button" data-trial-install={code} disabled={s.installed.includes(code)} onClick={()=>dispatch({type:'install',code})}>{s.installed.includes(code)?'✓ Installé':'Installer'}</button></article>;})}</div>
      <fieldset><legend>Choisis ton régime d’énergie</legend>{Object.entries(KQ_ENERGY_MODES).map(([mode,value])=><label key={mode}><input type="radio" name="trial-energy" checked={s.mode===mode} onChange={()=>dispatch({type:'mode',mode:mode as typeof s.mode})}/>{value.name} · {value.label}</label>)}</fieldset>
      <p>Facture estimée de cette culture : <strong>{euro(quoteKqEnergy(KQ_TRIAL_EQUIPMENT,{},s.mode).totalCents)}</strong>. Les installations s’appliquent à la prochaine culture.</p>
-     <details><summary>Charges, entretien et sécurité</summary><p>L’électricité dépend de ton installation et du mode choisi. Les factures peuvent être prélevées progressivement sur les ventes. Le site coûte 1 000 € à créer, puis 100 € tous les 30 jours de jeu (5 jours réels), premier mois inclus. Une journée de jeu dure 4 heures réelles et le temps continue hors connexion. L’analyse du lot coûte 45 € une seule fois par session de culture terminée, quel que soit le nombre de tentes, à payer sous 5 jours réels. Dans ton entrepôt, tu peux passer à 2, 3 ou 4 tentes, puis ouvrir un second entrepôt pour atteindre 8 tentes. Chaque tente possède son éclairage, son extraction, son climat, son séchoir, son énergie et sa sécurité, avec leurs propres niveaux et usure. Seules les machines de transformation sont communes. Une nouvelle tente reçoit le kit de départ ; le récapitulatif de l’entrepôt indique ce qui est installé ou à compléter. La récolte et les charges d’énergie suivent le matériel de chaque tente ; les soins des chiens acquis sont facturés par tente. La qualité reste liée à ta culture. La TVA de jeu à 20 % est incluse dans les prix et mise de côté sur les ventes.</p><p>Le matériel de culture s’use définitivement : l’éco le préserve, l’intensif l’use davantage, surtout sous 30 % d’état. À 0 %, il termine sa culture puis perd ses bonus. Rachète-le dans l’entrepôt pour le remettre à neuf en conservant ses niveaux. Ce remplacement reste payant pour le Bricoleur. Le kit de départ permet de continuer à cultiver.</p><p>Les machines de transformation demandent un entretien périodique distinct : leurs réparations sont gratuites pour le Bricoleur. Les protections limitent les pertes ; le chien a des frais de nourriture et un vétérinaire tous les 10 cycles.</p><p>Le séchoir améliore la régularité et, à certains niveaux, le potentiel de qualité. Il consomme aussi de l’électricité.</p></details>
+     <details><summary>Charges, entretien et sécurité</summary><KqHelpDashboard>
+      <KqHelpGrid art="help-accounts" items={[
+       {label:'Électricité',value:'Selon matériel et mode',detail:'Factures prélevables progressivement sur les ventes.',art:'help-workshop'},
+       {label:'Site',value:'1 000 € à créer',detail:'Puis 100 € / 30 jours de jeu (5 jours réels), premier mois inclus.',art:'help-social'},
+       {label:'Analyse',value:'45 € / session terminée',detail:'Même prix pour plusieurs tentes. À payer sous 5 jours réels.',art:'help-quality'},
+       {label:'Temps',value:'1 jour de jeu = 4 h réelles',detail:'Continue hors connexion.',art:'help-time'},
+       {label:'TVA de jeu',value:'20 % incluse',detail:'Mise de côté sur les ventes.'},
+       {label:'Entrepôt',value:'2 → 3 → 4 tentes',detail:'Second entrepôt : jusqu’à 8 tentes.',art:'warehouse'},
+      ]}/>
+      <details><summary>Installation et protections</summary><KqHelpGrid art="help-workshop" items={[
+       {label:'Par tente',value:'Matériel propre',detail:'Éclairage, extraction, climat, séchoir, énergie et sécurité : niveaux et usure propres. Récolte et électricité suivent ce matériel ; qualité liée à la culture.',art:'help-culture'},
+       {label:'Nouvelle tente',value:'Kit de départ',detail:'Vérifie l’installation dans le récapitulatif. Machines de transformation communes.',art:'warehouse'},
+       {label:'Protections',value:'Pertes limitées',detail:'Chiens acquis : soins par tente, nourriture payante, vétérinaire tous les 10 cycles.',art:'help-care'},
+       {label:'Séchoir',value:'Plus de régularité',detail:'Potentiel de qualité à certains niveaux ; consommation électrique.',art:'help-quality'},
+      ]}/></details>
+      <details><summary>Usure, entretien et dépannage</summary><KqHelpGrid art="help-workshop" items={[
+       {label:'Usure définitive',value:'Éco ↓ · intensif ↑',detail:'Accélère sous 30 %. À 0 % : culture achevée, puis bonus perdus.'},
+       {label:'Rachat en entrepôt',value:'État neuf',detail:'Niveaux conservés. Payant même pour le Bricoleur ; kit de départ pour continuer.',art:'help-accounts'},
+       {label:'Transformation',value:'Entretien périodique',detail:'Réparations gratuites pour le Bricoleur.',art:'help-care'},
+      ]}/></details>
+     </KqHelpDashboard></details>
     </>:null}
     {s.chapter===4&&g&&situation?<>
      <div className={styles.stages}>{KQ_STAGES.map((name,i)=><span key={name} data-active={i===g.stageIndex}>{i<g.stageIndex?'✓ ':''}{getKqStageDisplayName(name)}</span>)}</div>
@@ -195,7 +223,17 @@ export function KqGuidedTrial({userId,onPause,onComplete,busy,error,workshop}:{u
      </>:<p className={styles.highlight}><Check aria-hidden="true"/> Tout le stock d’essai est vendu.</p>}
      {last?<section className={styles.receipt} role="status"><h3>{SATISFACTION[last.satisfaction]}</h3><p>Vente TTC : {euro(last.payoutCents)} · TVA réservée : {euro(last.vatCents??0)} · Analyses réglées : {euro(last.labPaidCents??0)} · Électricité réglée : {euro(last.electricity)} · Net : <strong>{euro(last.net)}</strong></p><p>Clients : {last.clientsBefore} → {last.clientsAfter} · Shops : {last.shopPartnersBefore} → {last.shopPartnersAfter} · Réputation : {last.reputationDelta>=0?'+':''}{last.reputationDelta}</p><p>Un acheteur satisfait ne crée pas forcément un client ou un shop à chaque petite vente : les volumes et les plafonds de progression comptent.</p></section>:null}
      {stock&&comparison?<details><summary>Essaie aussi un autre contexte de vente</summary><p>Comparaison pédagogique, sans modifier ton lot ni tes ventes. L’ordinateur et le shop sont supposés actifs dans cet aperçu.</p><label>Scénario<select value={scenario} onChange={event=>setScenario(event.target.value)}><option value="normal">Conditions actuelles</option><option value="quality">Qualité faible : 4/10</option><option value="promotion">Concurrents en promotion</option><option value="reputation">Réputation à 1 500</option></select></label><p role="status">{comparison.reason??`${number(comparison.units/10)} g commandés à ${euro(comparison.unitCents)}/g. ${SATISFACTION[comparison.satisfaction]}. Clients : ${comparison.clientsBefore} → ${comparison.clientsAfter}.`}</p><p>Compare le prix et le volume : monter sa réputation n’efface pas une mauvaise qualité, et baisser son prix ne garantit pas de tout vendre.</p></details>:null}
-     <details><summary>Réputation, saturation et fidélisation</summary><p>Une qualité insuffisante peut entraîner un refus, une baisse de prix ou des départs. Les shops prennent davantage mais paient moins ; leur barème évolue avec la qualité et le réseau. Les grossistes reprennent tout à prix réduit.</p><p>La réputation progresse par paliers, pas à chaque clic. Elle améliore les prix en ligne ; aux hauts paliers le prix est mieux protégé, mais tout vendre n’est jamais garanti. Les événements et la saturation changent aussi la demande.</p><ul>{KQ_REPUTATION_TIERS.map(tier=><li key={tier.minimum}>{tier.minimum} · {tier.name}</li>)}</ul><p>Les gains de clientèle et de partenaires sont limités sur 24 h. Recommencer une culture ne recharge pas immédiatement le marché.</p></details>
+     <details><summary>Réputation, saturation et fidélisation</summary><KqHelpDashboard>
+      <KqHelpGrid art="commerce" items={[
+       {label:'Qualité insuffisante',value:'Refus, prix ↓ ou départs',art:'help-quality'},
+       {label:'Shops',value:'Plus de volume, prix réduit',detail:'Barème selon qualité et réseau.',art:'help-social'},
+       {label:'Grossistes',value:'Tout repris à prix réduit'},
+       {label:'Réputation en ligne',value:'Progression par paliers',detail:'Prix amélioré, mieux protégé aux hauts paliers.',art:'help-training'},
+       {label:'Clients et partenaires',value:'Gains limités sur 24 h',art:'help-time'},
+      ]}/>
+      <ul>{KQ_REPUTATION_TIERS.map(tier=><li key={tier.minimum}>{tier.minimum} · {tier.name}</li>)}</ul>
+      <KqHelpNote>Tout vendre reste incertain : événements et saturation modifient la demande. La réputation ne progresse pas à chaque clic. Recommencer une culture ne recharge pas immédiatement le marché.</KqHelpNote>
+     </KqHelpDashboard></details>
     </>:null}
     {s.chapter===9?<section className={styles.panel}><Check size={48} aria-hidden="true"/><h3>Première boucle accomplie</h3><p>Préparer → installer → cultiver → ranger et affiner en entrepôt → passer le jury et le duel → valoriser → vendre → investir.</p><p>{number(g?.harvestGrams??0)} g récoltés · {number(trialQuality(s))}/10 au jury · {s.receipts.length} ventes fictives.</p><p>Ton budget de démonstration finit à {euro(c.cashCents)}. Facture d’énergie encore due : {euro(s.electricity)}. Un chiffre d’affaires élevé n’est pas un bénéfice : pense aux achats et aux charges.</p><h3>Choisis ton prochain objectif</h3><p>Dans les Missions, retrouve les objectifs et les packs à gagner. Ta carte de chanvrier dans l’arène rassemble ton parcours, tes succès et tes badges. Un triple 6, une belle culture ou un bon duel peuvent faire progresser différents succès.</p><p>Ton avantage personnel s’applique dans ta vraie partie : Main Verte +2 XP par culture, Trésorier +650 € à la création du personnage et un livret à 5 % toutes les 24 h, Commercial pour une capacité de vente et des recettes ×1,5, Bricoleur pour les réparations gratuites.</p><button type="button" disabled={busy} onClick={onComplete}>{busy?'Enregistrement…':'Terminer le tutoriel'}</button><button type="button" className={styles.subtle} onClick={()=>dispatch({type:'restart'})}>Rejouer l’essai</button></section>:null}
     {canTrialContinue(s)?<footer className={styles.next}><button type="button" data-trial-action="next" onClick={()=>dispatch({type:'next'})}>{lesson&&s.chapter===lesson.endChapter?'Terminer cet atelier':s.chapter===3?'Lancer ma culture d’essai':s.chapter===8?'Découvrir mon bilan':'Continuer'}<ArrowRight size={18}/></button></footer>:null}

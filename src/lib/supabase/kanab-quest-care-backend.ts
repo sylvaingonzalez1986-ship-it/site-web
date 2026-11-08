@@ -1,24 +1,26 @@
 import "server-only";
 
-import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCareProduct, KQ_BASIC_CARE_PRICE_CENTS, KQ_CARE_PRODUCTS, performKqBasicCare } from "@/lib/kanab-quest-care";
+import { applyKqCareProduct, canApplyKqCareProduct, canPerformKqBasicCare, getKqCarePricing, getKqCareProduct, KQ_CARE_PRODUCTS, performKqBasicCare } from "@/lib/kanab-quest-care";
+import { isKqCarePurchasesPage, type KqCarePurchasesPage } from "@/lib/kanab-quest-care-purchases";
 import type { KqGameState } from "@/lib/kanab-quest-game";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
+import { settleKqStaffIfAvailable } from "./kanab-quest-staff-backend";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 function assertId(value: string) {
   if (!UUID.test(value)) throw new Error("Demande de suivi invalide.");
 }
 
-export type KqCareInventoryItem = { productCode: string; quantity: number };
-export type KqCareShopSnapshot = { cashCents: number; basicCarePriceCents?: number; inventory: KqCareInventoryItem[]; catalog: typeof KQ_CARE_PRODUCTS };
+export type KqCareInventoryItem = { productCode: string; quantity: number; legacyQuantity?: number; areaQuantity?: number };
+export type KqCareShopSnapshot = { cashCents: number; basicCarePriceCents?: number; areaM2?: number | null; pricingUnits?: number; runId?: string | null; inventory: KqCareInventoryItem[]; catalog: typeof KQ_CARE_PRODUCTS };
 export type KqCareInterventionResult = { state: KqGameState; updatedAt: string; inventory: KqCareInventoryItem[]; cashCents: number; chargedCents: number; replayed: boolean };
 
 function careError(operation: string, error: { message: string }): never {
   const messages: Record<string, string> = {
     kq_care_insufficient_cash: "Trésorerie insuffisante pour cet achat.",
     kq_care_basic_insufficient_cash: "Trésorerie insuffisante pour cet entretien.",
-    kq_care_price_changed: "Le prix de l’entretien a changé. Actualise le suivi avant de confirmer.",
+    kq_care_price_changed: "Le prix ou la surface a changé. Actualise le suivi avant de confirmer.",
     kq_care_stock_unavailable: "Ce produit n’est plus disponible dans ton stock.",
     kq_stale_run: "La culture a évolué. Recharge son suivi avant d’intervenir.",
     kq_run_unavailable: "Culture active introuvable.",
@@ -31,24 +33,28 @@ function careError(operation: string, error: { message: string }): never {
   throw new Error(`[supabase:${operation}] ${error.message}`);
 }
 
-export async function getKqCareShopSnapshot(userId: string): Promise<KqCareShopSnapshot> {
+export async function getKqCareShopSnapshot(userId: string, runId?: string): Promise<KqCareShopSnapshot> {
   assertId(userId);
-  const result = await createSupabaseServiceClient().rpc("rpc_kq_care_shop", { p_user_id: userId });
-  if (result.error) careError("rpc_kq_care_shop", result.error);
-  const snapshot = result.data as Omit<KqCareShopSnapshot, "catalog">;
-  return { ...snapshot, catalog: KQ_CARE_PRODUCTS };
+  if (runId) assertId(runId);
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_care_shop_v2", { p_user_id: userId, p_run_id: runId ?? null });
+  if (result.error) careError("rpc_kq_care_shop_v2", result.error);
+  const snapshot = result.data as Omit<KqCareShopSnapshot, "catalog"> & { prices: Record<string, number> };
+  if (!snapshot?.prices || KQ_CARE_PRODUCTS.some(product => !Number.isSafeInteger(snapshot.prices[product.code]) || snapshot.prices[product.code] <= 0)) throw new Error("Tarifs des intrants indisponibles.");
+  return { ...snapshot, catalog: KQ_CARE_PRODUCTS.map(product => ({ ...product, priceCents: snapshot.prices[product.code] })) };
 }
 
-export async function purchaseKqCareProduct(input: { userId: string; productCode: string; quantity: number; requestKey: string }) {
+export async function purchaseKqCareProduct(input: { userId: string; productCode: string; quantity: number; requestKey: string; runId?: string; expectedPriceCents?: number }) {
   assertId(input.userId);
   assertId(input.requestKey);
+  if (input.runId) assertId(input.runId);
   if (!getKqCareProduct(input.productCode) || !Number.isInteger(input.quantity) || input.quantity < 1 || input.quantity > 20) {
     throw new Error("Produit ou quantité invalide.");
   }
-  const result = await createSupabaseServiceClient().rpc("rpc_kq_purchase_care", {
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_purchase_care_v2", {
     p_user_id: input.userId, p_product_code: input.productCode, p_quantity: input.quantity, p_request_key: input.requestKey,
+    p_run_id: input.runId ?? null, p_expected_price_cents: input.expectedPriceCents ?? null,
   });
-  if (result.error) careError("rpc_kq_purchase_care", result.error);
+  if (result.error) careError("rpc_kq_purchase_care_v2", result.error);
   return result.data as { cashCents: number; inventory: KqCareInventoryItem[]; totalPriceCents: number; replayed: boolean };
 }
 
@@ -70,8 +76,9 @@ export async function applyKqPlayerCare(input: {
   if (replay.data) return replay.data as KqCareInterventionResult;
   // A former "free" button or a stale quote cannot authorize a new debit.
   // Receipt replays above keep their recorded amount, including historical 0.
-  if (productCode === null && input.basicPriceCents !== KQ_BASIC_CARE_PRICE_CENTS) careError("rpc_kq_apply_care", { message: "kq_care_price_changed" });
+  if (productCode === null && (!Number.isSafeInteger(input.basicPriceCents) || (input.basicPriceCents ?? 0) <= 0)) careError("rpc_kq_apply_care", { message: "kq_care_price_changed" });
 
+  await settleKqStaffIfAvailable(input.userId);
   const run = await supabase.from("kq_runs").select("state,status,updated_at")
     .eq("id", input.runId).eq("user_id", input.userId).maybeSingle();
   if (run.error) careError("kq_runs:care", run.error);
@@ -79,6 +86,7 @@ export async function applyKqPlayerCare(input: {
   if (input.expectedUpdatedAt && input.expectedUpdatedAt !== run.data.updated_at) throw new Error("La culture a évolué. Recharge son suivi avant d’intervenir.");
   const state = parseKqGameSave(encodeKqSave(run.data.state));
   if (!state) throw new Error("État du suivi invalide. Actualise la culture.");
+  if (productCode === null && input.basicPriceCents !== getKqCarePricing(state).basicCarePriceCents) careError("rpc_kq_apply_care", { message: "kq_care_price_changed" });
   if (state.campaign && state.campaign.leaderRunId !== input.runId) throw new Error("Ouvre la campagne commune pour intervenir sur ces cultures.");
   if (state.rulesVersion !== 3) throw new Error("Cette culture conserve ses anciennes règles jusqu’à sa fin.");
   const permission = productCode === null ? canPerformKqBasicCare(state) : canApplyKqCareProduct(state, productCode);
@@ -93,4 +101,16 @@ export async function applyKqPlayerCare(input: {
   });
   if (result.error) careError("rpc_kq_apply_care", result.error);
   return result.data as KqCareInterventionResult;
+}
+
+export async function getKqCarePurchaseRegister(userId: string, before?: string): Promise<KqCarePurchasesPage> {
+  assertId(userId);
+  const split = before?.split("|");
+  if (split && (split.length !== 2 || !Number.isFinite(Date.parse(split[0])) || !/^(purchase|basic):[0-9a-f-]{36}$/i.test(split[1]))) throw new Error("Page du registre invalide.");
+  const result = await createSupabaseServiceClient().rpc("rpc_kq_care_purchase_register", {
+    p_user_id: userId, p_before_at: split?.[0] ?? null, p_before_id: split?.[1] ?? null,
+  });
+  if (result.error) careError("rpc_kq_care_purchase_register", result.error);
+  if (!isKqCarePurchasesPage(result.data)) throw new Error("Registre des achats incomplet. Actualise pour réessayer.");
+  return result.data;
 }

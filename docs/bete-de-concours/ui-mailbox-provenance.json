@@ -1,0 +1,25 @@
+{
+  "generator": "Built-in image_gen",
+  "date": "2026-11-08",
+  "useCase": "stylized-concept",
+  "prompt": "Use case: stylized-concept.\nAsset type: one production transparent raster prop for a French Breton village cartoon game map and a matching dialog vignette.\nPrimary request: an isolated rustic French letterbox on a short stout wooden post, with an unmistakable cream envelope emblem on the front. No letters, numbers or written words.\nSubject: a charming compact teal metal letterbox, squat softly rounded roof, broad front face with a narrow dark mail slot and a cream envelope emblem, small warm gold knob, apricot wooden post and simple solid foot. The mailbox should be clearly readable at about 64 pixels. Keep its silhouette stout and compact, not tall and thin.\nStyle/medium: hand-drawn storybook village cartoon, bold thick near-black ink contours with slight handmade irregularity, warm flat painted colors, a restrained paper grain and a few ink stipples, playful crafted shapes. Match a cheerful Breton village illustrated with cream stone houses, slate roofs, teal shutters, golden ornaments and warm apricot wood. Clean simple form; much less intricate than an engraving.\nComposition/framing: single entire object centered in a square canvas, slight top-down three-quarter view matching an illustrated village map; front and one side both visible. Generous but modest transparent padding around every edge, whole post and foot visible, object occupies about 84 percent of canvas height. No crop. The sturdy foot may have a tiny softly painted contact shadow directly beneath it, no scenery.\nLighting/mood: gentle daylight from upper left, friendly village charm, restrained cel shading.\nColor palette: saturated deep teal, warm cream, sunny golden yellow, warm apricot orange wood, nearly black ink.\nConstraints: true transparent alpha background everywhere outside the object. No background card, paper sheet, sky, floor plane, room, scenery, person, border, badge, watermark, text, pseudo text, logos or extra objects. Avoid photorealism, glossy 3D rendering, thin line work, excessive weathering and flat modern UI icon style.",
+  "referencesInspected": [
+    "public/placard/map/placard-world-sylvain-v6.webp",
+    "public/placard/ui/commerce-v1.webp"
+  ],
+  "generationInputs": "New image generation; local references inspected for style and described in prompt, no edit target.",
+  "source": "artwork/ui-mailbox-v1.png",
+  "asset": "/placard/ui/mailbox-v1.webp",
+  "processing": "Sharp proportional resize with contain to 512x512, transparent background and generated alpha preserved, WebP quality 88 and alphaQuality 100. No drawing, compositing or replacement artwork.",
+  "purpose": "Mailbox prop on the Quartier map and matching dialog vignette. Labels, counts, messages and interactions remain HTML.",
+  "validation": {
+    "width": 512,
+    "height": 512,
+    "format": "webp",
+    "channels": 4,
+    "hasAlpha": true,
+    "alphaMin": 0,
+    "alphaMax": 255,
+    "visualInspection": "Entire mailbox, short wooden post and foot visible; teal, cream, gold and warm apricot palette; bold ink contours and envelope emblem; no lettering or opaque backdrop."
+  }
+}

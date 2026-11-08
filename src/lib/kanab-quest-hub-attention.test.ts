@@ -10,6 +10,26 @@ const upcoming: KqHubAttentionNotice = { ...invoice, id: "invoice-upcoming", sev
 const attention = (finance: KqHubAttentionNotice | null = null, sales: KqHubAttentionNotice | null = null): KqPlacardResumeAttention => ({ finance: { notice: finance, complete: true }, sales: { notice: sales, complete: true }, loading: false });
 
 describe("Quartier attention preserves priorities and exact destinations", () => {
+  it("keeps debt and blocked sales ahead of exhausted personal hours", () => {
+    const work = { status: "ready" as const, serverNow: "2026-11-07T12:00:00Z", workday: { day: 1, usedHours: 12, remainingHours: 0, dailyHours: 12, nextDayAt: "2026-11-07T16:00:00Z" } };
+    const debt = getKqPlacardResume({ ...idle, activeRun: true }, emptyStorage, attention(invoice, sale), work);
+    expect(debt).toMatchObject({ kind: "finance", tone: "attention", workNotice: expect.stringContaining("0 h disponible") });
+    expect(getKqPlacardResume(idle, emptyStorage, attention(null, sale), work).kind).toBe("sales");
+  });
+  it("keeps trim reachable while urgent invoices retain priority", () => {
+    const result = getKqPlacardResume({ ...idle, trimFlowerCount: 2 }, emptyStorage, attention(invoice, sale));
+    expect(result.kind).toBe("finance");
+    expect(result.facts).toHaveLength(2);
+    expect(result.factActions[0]).toMatchObject({ id: "trim-required", destination: "workshop", href: "/arene/placard?view=workshop&section=processing&workshop=trim" });
+    expect(result.factActions[1]).toEqual(sale);
+  });
+  it("keeps trim and failed-read recovery visible together", () => {
+    const result = getKqPlacardResume({ ...idle, trimFlowerCount: 1, activeRun: true, availableFlowerCount: 2 }, emptyStorage, { finance: null, sales: null, loading: false });
+    expect(result.kind).toBe("culture");
+    expect(result.facts).toEqual(["1 lot à trimmer avant le jury.", "Le suivi des factures et des ventes reste à vérifier."]);
+    expect(result.factActions[0].href).toBe("/arene/placard?view=workshop&section=processing&workshop=trim");
+    expect(result.canRefreshAttention).toBe(true);
+  });
   it("keeps exposed stock first, with two actionable notices and no extra feed", () => {
     const storage: KqPlacardResumeStorage = { ...emptyStorage, lots: [{ flowerStatus: "available", projection: { stage: "curing", readyAt: "2026-10-29T18:00:00Z", capacity: { overflowUnits: 100, overflowDeadlineAt: null } } }] };
     const result = getKqPlacardResume({ ...idle, activeRun: true }, storage, attention(invoice, sale));

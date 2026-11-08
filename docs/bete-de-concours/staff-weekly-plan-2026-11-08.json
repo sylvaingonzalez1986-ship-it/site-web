@@ -1,0 +1,54 @@
+{
+  "updated": "2026-11-08",
+  "request": "Organiser chaque employé à la journée ou avec une semaine type répétée, sans devoir revenir chaque jour du jeu.",
+  "status": "Implémenté et validé localement. Migration 20261108000200 appliquée et vérifiée sur Supabase. Code applicatif non publié.",
+  "entry": "Personnel → fiche employé → Organiser sa semaine ; ou dossier → Journée / Semaine type.",
+  "behaviour": [
+    "Cinq jours du lundi au vendredi, jusqu’à trois activités par jour ; repos contractuel, samedi, dimanche et congés respectés.",
+    "Activités de culture, transformation, communication, prospection, administration, formation et trim de l’Atelier ; durée en demi-heures et paramètres propres au métier.",
+    "Semaine répétée dès le prochain jour du jeu après activation ou modification. Choix automatique du premier travail admissible pour culture/transformation, ou cible précise. Trim dans la file commune sans sélection de lot.",
+    "Enregistrement en pause ou activation avec confirmation des jours, heures et frais maximum hebdomadaires hors salaires. Aucun débit à l’enregistrement ; frais de formation et déplacement facturés au départ de chaque occurrence.",
+    "Le serveur rattrape les jours autorisés à la prochaine lecture ou action. Aucun cron ajouté. Effets, XP, progression et frais calculés dans l’ordre ; absence de budget, cible, équipement ou disponibilité expliquée et sans débit.",
+    "La paie échue bloque les nouveaux départs ; les jours ainsi manqués ne sont jamais relancés rétroactivement. La paie reste explicite. Les travaux déjà lancés se terminent normalement.",
+    "Pause explicite pour repasser à l’affectation manuelle. Ouvrir l’onglet Journée ne désactive pas la semaine ; tâches en cours, XP et frais déjà engagés conservés. Heures supplémentaires toujours décidées à la journée.",
+    "Historique des sept derniers jours évalués ; clavier, reprise d’une réponse perdue avec même clé et confirmations existantes conservés."
+  ],
+  "authority": [
+    "Prix, dates, curseur, identité de chaque occurrence et capacité du planning restent calculés côté serveur ; les prix fournis par le client sont ignorés.",
+    "Rattrapage dans une transaction distincte avant une commande explicite, afin de conserver le montant exact de la paie et des autres confirmations. Rejeu sans double frais ni double XP.",
+    "Migration additive sans nouvelle table ni modification des parties : garde privée SECURITY DEFINER après contrôle de révision, métadonnées immuables, correspondance exacte entre programme autorisé et tâche, débit limité aux nouvelles occurrences.",
+    "Capacité weeklyPlanVersion annoncée par le snapshot et startedAt des cultures pour empêcher une affectation rétroactive à une culture future ; interface quotidienne conservée si migration indisponible."
+  ],
+  "validation": {
+    "unit": "163 tests ciblés distincts validés : suite de six fichiers (160 tests), puis ajout et validation de trois cas backend de règlement séparé, concurrence et rejeu ; 35 tests spécifiques au planning.",
+    "sql": "153 contrôles SQL isolés, avec transition du vrai moteur TypeScript vers PGlite : recrutement, activation, rattrapage de trois jours, frais réels, rejeu, pause, achèvement et archives.",
+    "static": "TypeScript global, ESLint ciblé et contrôle des grants sur 357 migrations réussis.",
+    "browser": "13 groupes : quatre semaine type, quatre fiches et cinq Personnel, à 320/390/1440 px. Clavier, coûts, annulation, conservation du brouillon et du focus, reprise 503, pause, temps partiel, indisponibilité et absence de débordement. Captures finales inspectées. Aucun appel métier distant depuis les recettes.",
+    "deployment": "75 contrôles préalables et 95 après migration réussis ; 357 migrations synchronisées, aucune en attente. Préservation exacte de 26 reçus, 13 archives, trois comptes Personnel, 37 portefeuilles, 434 fleurs, 432 stockages et huit lignes trim, totaux trim, dix fonctions protégées et ancien corps de snapshot. Aucun ajout de table ni publication de site."
+  },
+  "files": [
+    "src/lib/kanab-quest-staff-weekly.ts",
+    "src/lib/kanab-quest-staff-types.ts",
+    "src/lib/kanab-quest-staff.ts",
+    "src/lib/supabase/kanab-quest-staff-backend.ts",
+    "src/components/placard/KqStaffWeeklyPlanner.tsx",
+    "src/components/placard/KqStaffWeeklyPlanner.module.css",
+    "src/components/placard/KqStaffDesk.tsx",
+    "src/components/placard/KqStaffDesk.module.css",
+    "src/components/placard/KqStaffEmployeeSheet.tsx",
+    "src/components/placard/KqStaffOperations.tsx",
+    "src/lib/kanab-quest-staff-weekly.test.ts",
+    "src/lib/supabase/kanab-quest-staff-backend.test.ts",
+    "scripts/audit-placard-staff-ui.mjs",
+    "scripts/test-placard-shared-trim.mjs",
+    "supabase/migrations/20261108000200_kq_staff_weekly_plan.sql"
+  ],
+  "reports": [
+    "output/placard-staff-ui/weekly-plan-report.json",
+    "output/placard-staff-ui/employee-sheet-report.json",
+    "output/placard-staff-ui/report.json",
+    "output/weekly-plan-migration/completion.json"
+  ],
+  "limits": "Calcul au prochain passage serveur, sans service permanent. Économie existante conservée : la paie mensuelle arrive tous les 30 jours du jeu et doit être réglée explicitement. Essais locaux avec transport simulé et PostgreSQL isolé ; pas d’essai joueur ni de commande métier en production.",
+  "next": "Besoin traité. Publier le code via le workflow habituel sur demande ; la migration est déjà appliquée. Reprendre le prochain besoin explicite sans nouvel audit général."
+}

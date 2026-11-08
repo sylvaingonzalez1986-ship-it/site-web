@@ -7,9 +7,10 @@ import { BadgeCheck, ChevronDown, Landmark, RefreshCw, TrendingDown, TrendingUp 
 import { createClientRequestKey } from "@/lib/client-request-key";
 import { getKqBankerDialogue, getKqBankTerms, isKqBankSnapshot, parseKqBankEuros, KQ_BANK_INSTALLMENT_COUNT, KQ_BANK_SCENARIOS, KQ_BANK_TIERS, type KqBankCommand, type KqBankSnapshot } from "@/lib/kanab-quest-bank";
 import { getKqBankLoanSummary } from "@/lib/kanab-quest-bank-summary";
-import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
+import { KqAllocationBar, KqBarChart, KqProgressMeter } from "./KqVisuals";
 import { KqBankCreditChart, KqBankRepaymentChart } from "./KqBankVisuals";
 import { KqBankConfirmation, type KqBankDraft } from "./KqBankConfirmation";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import styles from "./KqBankLoans.module.css";
 
 const euros = (cents: number) => (cents / 100).toLocaleString("fr-FR", { style: "currency", currency: "EUR" });
@@ -149,7 +150,11 @@ export function KqBankLoans() {
         <details className={styles.details} data-bank-schedule-details>
           <summary>Échéancier et contrat <ChevronDown size={16} aria-hidden="true" /></summary>
           <KqBankRepaymentChart installments={loan.schedule} serverNow={data.serverNow} />
-          <p>Capital reçu : {euros(loan.principalCents)} · intérêts fixes : {euros(loan.interestCents)}. Dernière échéance le {date(loan.dueAt)}.</p>
+          <KqHelpGrid items={[
+            { art: "help-accounts" as const, label: "Capital reçu", value: euros(loan.principalCents) },
+            { art: "accounts" as const, label: "Intérêts fixes", value: euros(loan.interestCents) },
+            { art: "help-time" as const, label: "Dernière échéance", value: date(loan.dueAt) },
+          ]} />
           <ol className={styles.schedule}>{loan.schedule.map((item, i) => <li key={item.at}><span><strong>Échéance {i + 1}</strong><time dateTime={item.at}>{date(item.at)}</time></span><span><strong>{euros(item.amountCents)}</strong><small>{euros(item.paidCents)} réglés · {euros(item.amountCents - item.paidCents)} restant</small></span></li>)}</ol>
         </details>
       </div> : offer ? <div className={styles.offer} data-bank-offer>
@@ -180,7 +185,7 @@ export function KqBankLoans() {
         {terms ? <details className={styles.details} data-bank-schedule-details><summary>Répartition et échéancier <ChevronDown size={16} aria-hidden="true" /></summary>
           <KqAllocationBar label="Ce que tu rembourseras" items={[{ label: "Capital reçu", value: amountCents, displayValue: euros(amountCents), tone: "teal" }, { label: "Intérêts fixes", value: terms.interestCents, displayValue: euros(terms.interestCents), tone: "gold" }]} />
           <KqBankRepaymentChart installments={terms.installments.map(cents => ({ amountCents: cents }))} />
-          <p>Les repères « J + » du graphique sont en jours de jeu : 30 jours de jeu correspondent à 5 jours réels.</p>
+          <KqHelpNote>Repères « J + » en jours de jeu : 30 jours de jeu = 5 jours réels.</KqHelpNote>
         </details> : null}
       </div> : <div className={styles.eligibility} data-bank-blocked-reason>
         <h4>{data.blockedReason === "reputation" ? "Réputation à développer" : data.blockedReason === "experience" ? "Encore un peu d’expérience" : "Dossier à actualiser"}</h4>
@@ -192,17 +197,26 @@ export function KqBankLoans() {
       <details className={styles.details} data-bank-market>
         <summary>Marché et capacité d’emprunt <ChevronDown size={16} aria-hidden="true" /></summary>
         <div className={styles.market}><span>{data.market.changeBps < 0 ? <TrendingDown size={20} aria-hidden="true" /> : <TrendingUp size={20} aria-hidden="true" />}<strong>{scenario.title}</strong><b>{data.market.changeBps > 0 ? "+" : ""}{(data.market.changeBps / 100).toLocaleString("fr-FR")} pt</b></span>
-          <p>{scenario.description}</p><p>Taux du marché pour les nouvelles offres : <strong>{percent(data.market.rateBps)}</strong>. Prochain taux le {date(data.market.expiresAt)}.</p>
-          {loan ? <p>Ton prêt reste au taux signé de <strong>{percent(loan.rateBps)}</strong>.</p> : offer ? <p>Ton offre personnelle : <strong>{percent(offer.rateBps)}</strong> pour les 35 jours réels du prêt. Valable jusqu’au {date(offer.expiresAt)}.</p> : null}
+          <KqHelpNote>{scenario.description}</KqHelpNote><KqHelpGrid items={[
+            { art: "accounts" as const, label: "Nouvelles offres · taux du marché", value: percent(data.market.rateBps), detail: `Prochain taux le ${date(data.market.expiresAt)}.` },
+            ...(loan ? [{ art: "help-plan" as const, label: "Ton taux signé", value: percent(loan.rateBps), detail: "Fixe pour ton prêt en cours." }] : offer ? [{ art: "help-plan" as const, label: "Ton offre personnelle", value: percent(offer.rateBps), detail: `Pour 35 jours réels ; valable jusqu’au ${date(offer.expiresAt)}.` }] : []),
+          ]} />
         </div>
         {offer ? <div data-bank-credit-details><KqBankCreditChart reputation={data.reputation} maxCents={offer.maxCents} /></div> : <p>Ta réputation : {data.reputation.toLocaleString("fr-FR")} points.</p>}
         <p className={styles.banker}>{getKqBankerDialogue(data)}</p>
       </details>
       <details className={styles.details}><summary>Règles des prêts <ChevronDown size={16} aria-hidden="true" /></summary>
-        <p>Un seul prêt à la fois, dès 200 points de réputation et 24 heures après ta première culture terminée. Les sept prélèvements sont espacés de 5 jours réels (30 jours de jeu), soit 35 jours réels (210 jours de jeu) au total. Les échéances dues sont rattrapées automatiquement pendant le jeu, dans la limite de ta trésorerie.</p>
-        <p>Les intérêts sont un coût fixe pour toute la durée du prêt, pas un taux annuel. Ils restent dus en cas de remboursement anticipé, sans frais supplémentaires. Les retards n’ajoutent aucun intérêt. Tout se passe en monnaie de jeu.</p>
-        <p>Le plafond progresse à chaque point de réputation entre les repères ci-dessous, avec un arrondi à l’euro inférieur. Il atteint son maximum à {maximumTier.reputation.toLocaleString("fr-FR")} points. Les réductions du taux changent aux paliers indiqués ; le taux du marché évolue chaque jour pour les nouvelles offres.</p>
-        <ul>{KQ_BANK_TIERS.map(tier => <li key={tier.reputation}>{tier.reputation.toLocaleString("fr-FR")} points : plafond de {euros(tier.maxCents)}{tier.discountBps ? " · réduction de " + (tier.discountBps / 100).toLocaleString("fr-FR") + " point sur le taux dès ce palier" : ""}.</li>)}</ul>
+        <KqHelpDashboard><KqHelpGrid items={[
+          { art: "help-accounts" as const, label: "Prêt en cours", value: "1 maximum", detail: "Monnaie de jeu uniquement." },
+          { art: "help-quality" as const, label: "Accès", value: "200 points", detail: "Et 24 h après la première culture terminée." },
+          { art: "help-accounts" as const, label: "Remboursement", value: "7 prélèvements", detail: "Tous les 5 jours réels (30 jours de jeu)." },
+          { art: "help-time" as const, label: "Durée totale", value: "35 jours réels", detail: "210 jours de jeu." },
+          { art: "accounts" as const, label: "Intérêts", value: "Coût fixe total", detail: "Pas un taux annuel. Dus même en remboursement anticipé, sans frais supplémentaires." },
+          { art: "help-time" as const, label: "Retards", value: "Aucun intérêt ajouté", detail: "Échéances rattrapées automatiquement pendant le jeu, dans la limite de ta trésorerie." },
+        ]} /><KqBarChart title="Plafonds repères selon la réputation" items={KQ_BANK_TIERS.map(tier => ({
+          label: `${tier.reputation.toLocaleString("fr-FR")} points${tier.discountBps ? ` · taux réduit de ${(tier.discountBps / 100).toLocaleString("fr-FR")} point` : ""}`, value: tier.maxCents,
+          displayValue: euros(tier.maxCents),
+        }))} /><KqHelpNote>Le plafond augmente à chaque point entre ces repères, arrondi à l’euro inférieur ; maximum à {maximumTier.reputation.toLocaleString("fr-FR")} points. Les réductions de taux changent par palier. Le taux du marché change chaque jour pour les nouvelles offres.</KqHelpNote></KqHelpDashboard>
       </details>
       {data.history.length ? <details className={styles.details}><summary>Prêts remboursés <ChevronDown size={16} aria-hidden="true" /></summary><ul>{data.history.map(item => <li key={item.id}>{euros(item.principalCents)} empruntés · {euros(item.totalCents)} remboursés · {item.paidAt ? "soldé le " + date(item.paidAt) : "date de clôture indisponible"}.</li>)}</ul></details> : null}
     </> : null}

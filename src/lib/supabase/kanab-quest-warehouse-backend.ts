@@ -11,6 +11,7 @@ import {
   type KqWarehouseState,
 } from "@/lib/kanab-quest-warehouse";
 import { createSupabaseServiceClient } from "./admin";
+import { getKqPlayerWorkErrorMessage } from "../kanab-quest-player-work-errors";
 import { getKqWarehouseSalesForecast, type KqWarehouseSalesForecast } from "./kanab-quest-warehouse-flow-backend";
 import { getKqEquipmentShopSnapshot, type KqEquipmentShopSnapshot } from "./kanab-quest-equipment-backend";
 import { getKqWorkshopMachineSpecification } from "../kanab-quest-workshop-machines";
@@ -76,6 +77,8 @@ function assertUuid(value: unknown): asserts value is string {
 }
 
 function databaseError(message: string): never {
+  const workError = getKqPlayerWorkErrorMessage(message);
+  if (workError) throw new KqWarehouseError(workError, 409);
   const failures: [string, string, number][] = [
     ["warehouse_condition_required", "Actualise l’entrepôt pour retrouver l’état de ton matériel.", 409],
     ["warehouse_condition_changed", "L’usure ou l’affectation du matériel a changé. Actualise le devis.", 409],

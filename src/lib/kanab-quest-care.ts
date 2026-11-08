@@ -152,6 +152,16 @@ export const KQ_CARE_SEVERITY_LABELS = { 1: "Léger", 2: "Marqué", 3: "Critique
 export const KQ_CARE_TREND_LABELS = { worsening: "S’aggrave", stable: "Stabilisé", recovering: "En récupération" } as const;
 /** Per-operation game cost. The transaction layer charges before saving care. */
 export const KQ_BASIC_CARE_PRICE_CENTS = 500;
+/** New purchases cover one square metre per pricing unit. Historical tent
+ * saves have no reliable area; their frozen production units remain explicit. */
+export function getKqCarePricing(state?: Pick<KqGameState, "warehouse" | "campaign" | "equipment">) {
+  const areaM2 = state?.campaign
+    ? state.campaign.members.reduce((sum, member) => sum + member.warehouse.activeAreaM2, 0)
+    : state?.warehouse?.activeAreaM2 ?? (state ? null : 1);
+  const pricingUnits = areaM2 ?? state?.equipment?.productionUnits ?? 1;
+  if (!Number.isSafeInteger(pricingUnits) || pricingUnits < 1 || pricingUnits > 100_000) throw new Error("Surface de culture invalide.");
+  return { areaM2, pricingUnits, basicCarePriceCents: KQ_BASIC_CARE_PRICE_CENTS * pricingUnits };
+}
 /** Ambient surprises stop at two ongoing problems. Explicit situations remain
  * visible, up to one new problem per living-plant stage (five in total).
  * Keep the persistence ceiling aligned with kq_care_state_valid in SQL. */

@@ -58,30 +58,10 @@ import {
   getKqReputationProgress,
 } from "@/lib/kanab-quest-reputation";
 import { createClientRequestKey } from "@/lib/client-request-key";
+import { KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import styles from "./KqMarketDesk.module.css";
 
 const COOKING_ART_URL = "/placard/sylvain-cooking-sprites-v1.webp";
-
-// The API can finish before the sprite arrives on a cold cache or slow connection.
-// Bound this wait so a broken image can never prevent a confirmed sale's receipt.
-function waitForCookingArtwork(): Promise<{ loaded: boolean; visibleAt: number }> {
-  return new Promise((resolve) => {
-    const artwork = new window.Image();
-    let settled = false;
-    const finish = (loaded: boolean) => {
-      if (settled) return;
-      settled = true;
-      window.clearTimeout(timeout);
-      artwork.onload = null;
-      artwork.onerror = null;
-      resolve({ loaded, visibleAt: performance.now() });
-    };
-    const timeout = window.setTimeout(() => finish(false), 10000);
-    artwork.onload = () => { void artwork.decode().then(() => finish(true), () => finish(false)); };
-    artwork.onerror = () => finish(false);
-    artwork.src = COOKING_ART_URL;
-  });
-}
 
 type MarketLot = {
   flowerId: string;
@@ -226,29 +206,26 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
   const [selling, setSelling] = useState(false);
   const [pricePolicy, setPricePolicy] = useState<KqPricePolicy>("fair");
   const [selectedRoute, setSelectedRoute] = useState<KqMarketRouteCode | null>(null);
-  const [transformation, setTransformation] = useState<"idle" | "working" | "complete">("idle");
-  const [cookingArtFailed, setCookingArtFailed] = useState(false);
-  const transformationTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const saleInFlight = useRef(false);
   const [savingRouteGoal, setSavingRouteGoal] = useState(false);
   const [routeGoalError, setRouteGoalError] = useState("");
   const [error, setError] = useState("");
   const saleRequestKeyRef = useRef<string | null>(null);
   const pageRef = useRef<HTMLElement>(null);
-  const modalOpen = Boolean(pendingQuote || saleReceipt || transformation !== "idle");
+  const modalOpen = Boolean(pendingQuote || saleReceipt);
 
   useBodyScrollLock(modalOpen);
 
   useEffect(() => {
     if (!modalOpen) return;
     const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    const modal = pageRef.current?.querySelector<HTMLElement>(transformation !== "idle" ? '[data-transformation]' : '[role="dialog"]');
+    const modal = pageRef.current?.querySelector<HTMLElement>('[role="dialog"]');
     const controls = () => Array.from(modal?.querySelectorAll<HTMLElement>('button:not(:disabled), a[href], input:not(:disabled)') ?? []).filter((el) => el.getClientRects().length > 0);
     (controls()[0] ?? modal)?.focus({ preventScroll: true });
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
-        if (selling || transformation !== "idle") return;
+        if (selling) return;
         saleRequestKeyRef.current = null;
         setPendingQuote(null);
         setSaleReceipt(null);
@@ -262,7 +239,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
     };
     document.addEventListener("keydown", handleKey);
     return () => { document.removeEventListener("keydown", handleKey); if (previousFocus?.isConnected) previousFocus.focus({ preventScroll: true }); };
-  }, [modalOpen, selling, transformation]);
+  }, [modalOpen, selling, saleReceipt?.receiptId]);
 
   const loadMarket = useCallback(async () => {
     setLoading(true);
@@ -287,8 +264,6 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
   useEffect(() => {
     void loadMarket();
   }, [loadMarket]);
-
-  useEffect(() => () => { if (transformationTimer.current) clearTimeout(transformationTimer.current); }, []);
 
   const selectedLot = useMemo(
     () => snapshot?.lots.find((lot) => lot.flowerId === selectedFlowerId) ?? null,
@@ -408,9 +383,6 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
     const requestKey = saleRequestKeyRef.current ?? createClientRequestKey();
     saleRequestKeyRef.current = requestKey;
     setSelling(true);
-    setCookingArtFailed(false);
-    const cookingArtworkReady = waitForCookingArtwork();
-    setTransformation("working");
     setError("");
     setRouteGoalError("");
     try {
@@ -428,15 +400,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
       });
       const payload = await response.json() as SaleReceipt & { error?: string };
       if (!response.ok) throw new Error(payload.error || "La vente n’a pas été enregistrée.");
-      const artwork = await cookingArtworkReady;
-      setCookingArtFailed(!artwork.loaded);
       setSaleReceipt(payload);
-      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-      // Let a short stirring loop finish even when the API answers immediately.
-      transformationTimer.current = setTimeout(() => {
-        setTransformation("complete");
-        transformationTimer.current = setTimeout(() => setTransformation("idle"), reducedMotion ? 500 : 1400);
-      }, reducedMotion || !artwork.loaded ? 0 : Math.max(0, 2000 - (performance.now() - artwork.visibleAt)));
       setSnapshot((current) => current ? {
         ...current,
         cashCents: payload.cashAfterCents,
@@ -461,7 +425,6 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
       window.dispatchEvent(new Event("kq:market-updated"));
       window.dispatchEvent(new Event("kq:equipment-updated"));
     } catch (saleError) {
-      setTransformation("idle");
       setError(saleError instanceof Error ? saleError.message : "Vente impossible.");
     } finally {
       saleInFlight.current = false;
@@ -517,11 +480,11 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
 
       <details className={styles.marketHelp}>
         <summary>Comment vendre un lot ?</summary>
-        <div className={styles.explainer}>
-        <span><Flame /><b>1</b> La Fleur passe au jury puis brûle dans son duel.</span>
-        <span><Scale /><b>2</b> Qualité, expérience et matériel ouvrent les gammes. Réputation et demande fixent les offres.</span>
-        <span><Banknote /><b>3</b> Choisis ton prix en euros. Si les acheteurs refusent, baisse le tarif ou garde le lot. La qualité construit ta réputation.</span>
-        </div>
+        <KqHelpSteps steps={[
+          { art: "collection" as const, label: "Passer au jury", detail: "La Fleur brûle ensuite dans son duel.", icon: <Flame size={20} aria-hidden="true" /> },
+          { art: "commerce" as const, label: "Comparer les offres", detail: "Gammes selon qualité, XP et matériel ; offres selon réputation et demande.", icon: <Scale size={20} aria-hidden="true" /> },
+          { art: "help-accounts" as const, label: "Choisir ton prix", detail: "Si refus : baisse le prix ou garde le lot. La qualité bâtit ta réputation.", icon: <Banknote size={20} aria-hidden="true" /> },
+        ]} />
       </details>
 
       {error ? <div className={styles.errorBanner} role="alert">{error}<button type="button" onClick={() => void loadMarket()}>Réessayer</button></div> : null}
@@ -557,7 +520,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
               <div className={styles.juryScore}><Trophy /><strong>{selectedLot.juryScore.toFixed(1)}</strong><small>note jury / 10</small></div>
               <div className={styles.harvestWeight}><Scale /><strong>{selectedLot.harvestGrams.toLocaleString("fr-FR")} g</strong><small>lot disponible</small></div>
             </header>
-            <details className={styles.cultureDetails}><summary>Origine du lot · {selectedLot.cultureSystemName ?? "Mode non archivé"}</summary><p>{selectedLot.cultureSystemTechnique ?? "Cette ancienne récolte ne contient pas encore le détail technique."}</p><p>Aucun bonus caché : le mode de culture décrit l’origine du lot.</p></details>
+            <details className={styles.cultureDetails}><summary>Origine du lot · {selectedLot.cultureSystemName ?? "Mode non archivé"}</summary><KqHelpGrid items={[{ art: "help-culture" as const, label: "Technique de culture", value: selectedLot.cultureSystemName ?? "Non archivée", detail: selectedLot.cultureSystemTechnique ?? "Détail technique absent de cette ancienne récolte." }]} /><KqHelpNote>Le mode décrit l’origine du lot, sans bonus caché.</KqHelpNote></details>
 
             {selectedLot.status === "sold" ? (
               <div className={styles.soldSummary}><PackageCheck /><div><small>Lot valorisé le {formatDate(selectedLot.settledAt)}</small><h3>{selectedLot.options.find((option) => option.route === selectedLot.selectedRoute)?.name ?? selectedLot.selectedRoute}</h3><p><strong>+{formatKqCash(selectedLot.netPayoutCents ?? selectedLot.payoutCents ?? 0)}</strong><span>{formatKqReputationDelta(selectedLot.reputationGain ?? 0)} réputation</span></p></div></div>
@@ -610,7 +573,10 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
                         <strong>{tier.minimum}+ · {tier.name} · +{tier.priceBonusPercent} %</strong>
                         <span>{tier.guaranteedPolicy === "premium" ? "Prix ambitieux garanti, prix protégé" : tier.guaranteedPolicy === "fair" ? "Acheteur garanti au prix du marché" : `Saturation atténuée de ${tier.saturationProtectionPercent} %`}</span>
                       </li>)}</ul>
-                      <p>Les garanties concernent les filières accessibles : qualité minimale, machines et expérience requises. Les bonus s’appliquent au tarif du lot avant frais ; la biomasse est exclue.</p>
+                      <KqHelpGrid items={[
+  { art: "help-quality" as const, label: "Garanties", value: "Filières accessibles", detail: "Qualité minimale, machines et expérience requises." },
+  { art: "help-accounts" as const, label: "Bonus", value: "Tarif avant frais", detail: "Biomasse exclue." },
+]} />
                     </details>
                   </div>
                   <div className={styles.priceChoices}>
@@ -677,7 +643,7 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
       ) : null}
 
       {pendingQuote && selectedLot ? <div className={styles.modalBackdrop} role="presentation" onClick={() => { if (!selling) { saleRequestKeyRef.current = null; setPendingQuote(null); } }}>
-        <section className={styles.confirmModal} role="dialog" aria-modal="true" aria-labelledby="market-confirm-title" onClick={(event) => event.stopPropagation()}>
+        <section className={styles.confirmModal} role="dialog" aria-modal="true" aria-labelledby="market-confirm-title" tabIndex={-1} aria-busy={selling} onClick={(event) => event.stopPropagation()}>
           <button type="button" disabled={selling} onClick={() => { saleRequestKeyRef.current = null; setPendingQuote(null); }} aria-label="Fermer"><X /></button>
           <span><RouteIcon family={pendingQuote.family} /></span>
           <small>Offre de vente · {pendingQuote.market?.offers.find((offer) => offer.policy === pendingQuote.pricePolicy)?.label ?? "Prix du marché"}</small>
@@ -725,9 +691,12 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
         </section>
       </div> : null}
 
-      {saleReceipt && transformation === "idle" ? <div className={styles.modalBackdrop} role="presentation" onClick={() => setSaleReceipt(null)}>
-        <section className={styles.receiptModal} role="dialog" aria-modal="true" aria-labelledby="market-receipt-title" onClick={(event) => event.stopPropagation()}>
-          <PackageCheck />
+      {saleReceipt ? <div className={styles.modalBackdrop} role="presentation" onClick={() => setSaleReceipt(null)}>
+        <section className={styles.receiptModal} role="dialog" aria-modal="true" aria-labelledby="market-receipt-title" tabIndex={-1} data-market-receipt data-replayed={saleReceipt.replayed || undefined} onClick={(event) => event.stopPropagation()}>
+          <div className={styles.receiptIllustration} aria-hidden="true">
+            <div className={styles.receiptPortrait}><Image src={COOKING_ART_URL} alt="" width={1254} height={1254} unoptimized /></div>
+            <span className={styles.receiptSeal}><PackageCheck /></span>
+          </div>
           <small>Reçu #{saleReceipt.receiptId.slice(0, 8)}</small>
           <h2 id="market-receipt-title">Lot vendu</h2>
           <strong>+{formatKqCash(saleReceipt.netPayoutCents ?? saleReceipt.payoutCents)}</strong>
@@ -803,17 +772,6 @@ export function LegacyKqMarketDesk({ onOpenShop }: { onOpenShop: (equipmentCode?
           )}
           <button type="button" onClick={() => setSaleReceipt(null)}>Continuer</button>
         </section>
-      </div> : null}
-      <link rel="preload" as="image" href={COOKING_ART_URL} />
-      {transformation !== "idle" ? <div className={styles.transformation} role="status" tabIndex={-1} aria-live="polite" aria-atomic="true" data-transformation data-phase={transformation}>
-        <div className={styles.cookingScene} aria-hidden="true">
-          {cookingArtFailed ? <div className={styles.cookingFallback}><PackageCheck /></div> : <div className={styles.cookingFrame}><Image className={styles.cookingSprite} src={COOKING_ART_URL} alt="" width={1254} height={1254} unoptimized loading="eager" /></div>}
-          <div className={styles.cookingSteam}><i /><i /><i /></div>
-          <span className={styles.cookingSeal}>{transformation === "complete" ? <Check /> : <Flame />}</span>
-        </div>
-        <span className={styles.cookingRoute}>{activeQuote?.name}</span>
-        <strong>{transformation === "complete" ? "Lot valorisé !" : pendingQuote?.family === "flower" || pendingQuote?.family === "salvage" ? "Préparation du lot…" : "Sylvain aux fourneaux…"}</strong>
-        <p>{transformation === "complete" ? `+${formatKqCash(saleReceipt?.netPayoutCents ?? saleReceipt?.payoutCents ?? 0)} · Vente confirmée` : "Il remue, il peaufine… ton lot se prépare."}</p>
       </div> : null}
     </main>
   );

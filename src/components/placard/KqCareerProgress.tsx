@@ -14,6 +14,7 @@ import { ChanvrierAvatar } from "../contest/ChanvrierAvatar";
 import styles from "./KqCareerProgress.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqBarChart, KqProgressMeter } from "./KqVisuals";
+import { KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 
 const equipment = KQ_EQUIPMENT_CATALOG.filter(item => item.purchasable);
 const milestones = CHANVRIER_CAREER_LEVEL_XP.map((xp, index) => {
@@ -78,14 +79,17 @@ export function KqCareerProgress({ career, profile, compact = false }: {
         <div className={styles.learning}>
           <section>
             <h3>Comment gagner de l’expérience ?</h3>
-            <p><strong>+{CHANVRIER_CULTURE_XP} XP métier par culture terminée.</strong> Le nombre de tentes ne multiplie pas ce gain.</p>
-            <p>Si la culture meurt : +{CHANVRIER_FAILED_STAGE_XP} XP par étape validée. Un abandon volontaire ne donne aucun XP.</p>
-            <p>Ces XP restent acquis et ne servent pas à payer les cartes.</p>
+            <KqHelpGrid art="help-training" items={[
+              { label: "Culture terminée", value: `+${CHANVRIER_CULTURE_XP} XP`, detail: "Même gain pour une ou plusieurs tentes.", art: "help-culture" },
+              { label: "Culture morte", value: `+${CHANVRIER_FAILED_STAGE_XP} XP / étape`, detail: "Étapes validées uniquement.", art: "help-care" },
+              { label: "Abandon volontaire", value: "0 XP" },
+            ]} />
+            <KqHelpNote>XP métier permanents ; ils ne paient pas les cartes.</KqHelpNote>
             <span className={styles.cultureCount}>{format(career.completedCultures)} culture{career.completedCultures > 1 ? "s" : ""} terminée{career.completedCultures > 1 ? "s" : ""}</span>
           </section>
           <section>
             <h3>Ta pratique d’atelier</h3>
-            <p>Les transformations ne donnent pas d’XP métier. Elles valident la pratique requise pour certaines machines.</p>
+            <KqHelpNote>Transformation → pratique d’atelier, sans XP métier.</KqHelpNote>
             <KqBarChart title="Lots transformés par filière" emptyLabel="Aucune transformation enregistrée." items={CHANVRIER_PROCESSING_FAMILIES.map(family => ({ label: CHANVRIER_PRACTICE_LABELS[family], value: career.processingPractice[family], displayValue: `${format(career.processingPractice[family])} lots`, tone: "teal" }))} />
             <ul className={styles.practiceRequirements}>{equipment.filter(item => getChanvrierEquipmentPracticeRequirement(item.code)).map(item => {
               const requirement = getChanvrierEquipmentPracticeRequirement(item.code)!;
@@ -99,7 +103,11 @@ export function KqCareerProgress({ career, profile, compact = false }: {
         </div>
         <section className={styles.roadmap}>
           <h3>Prochain palier matériel et parcours complet</h3>
-          <p>Le niveau autorise l’achat : le budget et, pour certaines machines, la pratique restent nécessaires. Les améliorations demandent aussi le niveau métier d’achat de la machine.</p>
+          <KqHelpSteps art="help-training" steps={[
+            { label: "Niveau requis", detail: "Pour acheter ou améliorer." },
+            { label: "Pratique requise", detail: "Selon la machine.", art: "help-workshop" },
+            { label: "Budget suffisant", detail: "Achat toujours payant.", art: "help-accounts" },
+          ]} />
           <ol>{milestones.map(milestone => <li key={milestone.level} data-current={milestone.level === career.level || undefined} data-reached={milestone.level < career.level || undefined}>
             <div className={styles.milestoneHeading}><strong>Niveau {milestone.level}</strong><span>{format(milestone.xp)} XP cumulés{milestone.level === career.level ? " · Ton niveau" : milestone.level < career.level ? " · Atteint" : ""}</span></div>
             <p>{milestone.unlocks.length ? milestone.unlocks.join(" · ") : "Une étape de maîtrise avant le prochain équipement."}</p>

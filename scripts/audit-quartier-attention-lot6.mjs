@@ -10,7 +10,10 @@ import puppeteer from 'puppeteer-core';
 const root=process.cwd(),output=resolve(root,'output/clarity-lot6/quartier');
 const port=Number(process.env.KQ_QUARTIER_ATTENTION_PORT??3566),origin=`http://127.0.0.1:${port}`,preview=process.argv.includes('--preview');
 const selectedCases=process.argv.find(arg=>arg.startsWith('--cases='))?.slice(8).split(',');
+const visualOnly=process.argv.includes('--visual-hierarchy-only');
 const destinations={
+ './KqStaffDesk':`import React from 'react';export function KqStaffDesk(){return <section data-destination="staff"><h2>Personnel — gestion simulée, aucune embauche</h2></section>}`,
+ './KqWarehouseEntry':`import React from 'react';export function KqWarehouseEntry(props){return <section data-destination="workshop" data-section={props.initialSection} data-workshop={props.initialWorkshopTab} data-flower={props.initialFlowerId??''}><h2>Atelier — trim simulé, aucun travail lancé</h2></section>}`,
  './KqTreasuryDesk':`import React from 'react';export function KqTreasuryDesk(props){return <section data-destination="treasury" data-pole={props.initialPole}><h2>Factures — destination simulée, aucun règlement</h2></section>}`,
  './KqMarketDesk':`import React from 'react';export function KqMarketDesk(props){return <section data-destination="market" data-section={props.section} data-listing={props.initialListingId??''}><h2>Commerce — destination simulée, aucune commande</h2></section>}`,
  './KqHarvests':`import React from 'react';export function KqHarvests(props){return <section data-destination="harvests" data-section={props.section}><h2>Stockage — destination simulée</h2></section>}`,
@@ -21,6 +24,7 @@ import{PlacardPlayerShell}from'/src/components/placard/PlacardPlayerShell';
 import{KqMissionFocusProvider,KqPinnedMission}from'/src/components/placard/KqPinnedMission';
 import{KqTutorialApiProvider,createKqTutorialApi}from'/src/components/placard/KqTutorialApiContext';
 import{createKqOperationsLesson,getKqOperationsCommerce}from'/src/lib/kanab-quest-operations-lesson';
+import{createKqStaffState,projectKqStaffSnapshot}from'/src/lib/kanab-quest-staff';
 import retro from'/src/components/contest/ArenaRetro.module.css';
 const now=Date.parse('2026-10-29T12:00:00.000Z'),iso=hours=>new Date(now+hours*3600000).toISOString();
 const seed=getKqOperationsCommerce(createKqOperationsLesson('market'));
@@ -34,9 +38,10 @@ function configure(name){
  commerce.business.nextEventAt=null;commerce.online.serverNow=iso(0);commerce.online.settledUntil=iso(0);commerce.online.site={...commerce.online.site,createdAt:iso(-120),active:true,renew:true,paidUntil:iso(48)};commerce.online.listings=[];
  equipment={activeRun:['culture','overdue','suspended','quality','upcoming-active','far-future','paused','closed','sold-out','discarded','uncreated','healthy','mixed','unknown','partial','slow','hanging'].includes(name),readyLotCount:0,availableFlowerCount:0,curingFlowerCount:['waiting','upcoming-waiting'].includes(name)?1:0,productionUnits:1,ownedCodes:[],cashCents:50000};
  storage={serverNow:iso(0),lots:[]};
+ if(name.startsWith('trim'))equipment={...equipment,trimFlowerCount:name==='trim'?1:2,activeRun:name==='trim-active'};
  if(name==='busy-unknown')equipment={...equipment,activeRun:true,readyLotCount:2,availableFlowerCount:1};
  if(['waiting','upcoming-waiting','mixed'].includes(name))storage.lots=[{flowerId:'flower-fixture',varietyName:'Orange sanguine',harvestGrams:125,flowerStatus:'available',projection:{stage:'curing',readyAt:iso(6),nextChangeAt:iso(1),capacity:{overflowUnits:name==='mixed'?1250:0,overflowDeadlineAt:iso(1),automaticOverflowSale:true}}}];
- if(['overdue','mixed','low-cash'].includes(name)){commerce.business.lab={outstandingCents:4500,overdueCents:4500,invoices:[invoice('lab-fixture',4500,-2)]};commerce.business.suppliers={outstandingCents:6500,overdueCents:6500,invoices:[invoice('supplier-fixture',6500,-1)]};}
+ if(['overdue','mixed','low-cash','trim-overdue'].includes(name)){commerce.business.lab={outstandingCents:4500,overdueCents:4500,invoices:[invoice('lab-fixture',4500,-2)]};commerce.business.suppliers={outstandingCents:6500,overdueCents:6500,invoices:[invoice('supplier-fixture',6500,-1)]};}
  if(['upcoming-active','upcoming-waiting','upcoming-new','far-future'].includes(name))commerce.business.suppliers={outstandingCents:6500,overdueCents:0,invoices:[invoice('supplier-fixture',6500,name==='far-future'?30:8)]};
  if(name==='low-cash'){commerce.cashCents=100;equipment.cashCents=100;}
  if(['suspended','mixed'].includes(name)){commerce.online.site.active=false;commerce.online.site.paidUntil=iso(-1);commerce.online.listings=[listing('suspended-listing')];}
@@ -52,6 +57,7 @@ const api={...createKqTutorialApi(async(input,init={})=>{
  const url=new URL(String(input),location.origin),method=init.method??'GET';window.__requests.push({path:url.pathname,search:url.search,method});if(method!=='GET')throw new Error('No game mutations allowed in this audit');
  if(url.pathname.endsWith('/equipment'))return Response.json(equipment);
  if(url.pathname.endsWith('/storage'))return Response.json(storage);
+ if(url.pathname.endsWith('/staff'))return Response.json(projectKqStaffSnapshot({state:createKqStaffState(iso(0)),revision:0,serverNow:iso(0),cashCents:equipment.cashCents,context:{businessStartedAt:iso(0),reputation:0,instagramFollowers:0,shopPartners:0,activeRuns:[],processingBatches:[],supplierInvoices:[],trimLots:[]}}));
  if(url.pathname.endsWith('/commerce')){
   if(mode==='slow')await new Promise((resolve,reject)=>{window.__releaseAttention=resolve;init.signal?.addEventListener('abort',()=>reject(new DOMException('Fixture aborted','AbortError')),{once:true});});
   if(mode==='hanging')await new Promise((resolve,reject)=>init.signal?.addEventListener('abort',()=>reject(new DOMException('Fixture timed out','AbortError')),{once:true}));
@@ -62,7 +68,7 @@ const api={...createKqTutorialApi(async(input,init={})=>{
 window.__recover=()=>{mode='culture';api.notify('kq:commerce-updated')};window.__recoverQuiet=()=>{mode='culture'};window.__notify=name=>api.notify(name);
 window.__amounts=()=>({cashCents:commerce.cashCents,lab:commerce.business.lab.outstandingCents,suppliers:commerce.business.suppliers?.outstandingCents??null,packets:commerce.online.listings.reduce((sum,row)=>sum+row.remainingPackets,0)});
 window.__clearBills=()=>{commerce.business.lab={outstandingCents:0,overdueCents:0,invoices:[]};commerce.business.suppliers={outstandingCents:0,overdueCents:0,invoices:[]};api.notify('kq:treasury-updated')};
-function App(){const[epoch,setEpoch]=React.useState(0),[scope,setScope]=React.useState('lobby');window.mount=(name,nextScope='lobby')=>{configure(name);history.replaceState(null,'','/arene/placard');window.dispatchEvent(new PopStateEvent('popstate'));setScope(nextScope);setEpoch(v=>v+1)};
+function App(){const[epoch,setEpoch]=React.useState(0),[scope,setScope]=React.useState(['staff','workshop'].includes(new URLSearchParams(location.search).get('view'))?'shell':'lobby');window.mount=(name,nextScope='lobby')=>{configure(name);history.replaceState(null,'','/arene/placard');window.dispatchEvent(new PopStateEvent('popstate'));setScope(nextScope);setEpoch(v=>v+1)};
  return <KqTutorialApiProvider api={api}><div key={epoch} data-fixture={mode} data-scope={scope}>{scope==='shell'?<PlacardPlayerShell draftOwnerId="attention-fixture"/>:<div className={retro.surface}><KqMissionFocusProvider ownerId="attention-fixture"><KqPlacardLobby onOpen={(view,options)=>window.__navigation.push({view,options})} onOpenCollection={()=>window.__navigation.push({view:'collection'})}><KqPinnedMission onChoose={()=>window.__navigation.push({view:'missions'})} onContinue={()=>{}}/></KqPlacardLobby></KqMissionFocusProvider></div>}</div></KqTutorialApiProvider>;
 }createRoot(document.getElementById('root')).render(<App/>);`,
  'next/image':`import React from'react';export default function Image({src,fill,priority,preload,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return<img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>}`,
@@ -82,21 +88,52 @@ else try{
  await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
  const mount=async(name,scope='lobby')=>{await page.evaluate(({name,scope})=>window.mount(name,scope),{name,scope});await page.waitForSelector(`[data-fixture="${name}"] [data-placard-next-action]`);};
  const settled=async()=>{await page.waitForFunction(()=>window.__attentionCompleted>0);await page.evaluate(()=>new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve))));};
- const primary='[data-placard-next-action] > button';
- const enter=async(selector)=>{const handle=await page.waitForSelector(selector,{visible:true});await handle.focus();assert.notEqual(await handle.evaluate(e=>getComputedStyle(e).outlineStyle),'none');await page.keyboard.press('Enter');};
+ const primary='[data-placard-next-action] > :is(button,a)';
+ const enter=async(selector)=>{const handle=await page.waitForSelector(selector,{visible:true});await handle.focus();assert(await handle.evaluate(e=>[e,...e.querySelectorAll('*')].some(part=>{const style=getComputedStyle(part);return style.outlineStyle!=='none'&&Number.parseFloat(style.outlineWidth)>0;})),'The focused control or its illustrated sign has a visible focus ring');await page.keyboard.press('Enter');};
  const measure=async(name,width)=>{
   await page.evaluate(()=>document.fonts.ready);await page.evaluate(()=>scrollTo(0,0));
-  const metrics=await page.$eval('[data-placard-next-action]',node=>({kind:node.dataset.priority,tone:node.dataset.tone,text:node.textContent,title:node.querySelector('h2')?.textContent,primaryButtons:node.querySelectorAll(':scope > button').length,facts:node.querySelectorAll('li').length,height:Math.round(node.getBoundingClientRect().height),buttonHeight:node.querySelector(':scope > button')?.getBoundingClientRect().height,overflow:document.documentElement.scrollWidth>innerWidth+1}));
+  const metrics=await page.$eval('[data-placard-next-action]',node=>({kind:node.dataset.priority,tone:node.dataset.tone,text:node.textContent,title:node.querySelector('h2')?.textContent,primaryButtons:node.querySelectorAll(':scope > :is(button,a)').length,facts:node.querySelectorAll('li').length,height:Math.round(node.getBoundingClientRect().height),buttonHeight:node.querySelector(':scope > :is(button,a)')?.getBoundingClientRect().height,overflow:document.documentElement.scrollWidth>innerWidth+1}));
   assert.equal(metrics.primaryButtons,1);assert(metrics.facts<=2);assert(metrics.buttonHeight>=48);assert.equal(metrics.overflow,false);
   assert.doesNotMatch(metrics.text,/pendant ton absence|toutes tes factures sont réglées|aucune vente bloquée/i);
-  const requests=await page.evaluate(()=>window.__requests);assert(requests.every(r=>r.method==='GET'));assert(requests.every(r=>['/api/arena/placard/equipment','/api/arena/placard/storage','/api/arena/placard/commerce'].includes(r.path)));assert(requests.filter(r=>r.path.endsWith('/commerce')).every(r=>r.search==='?shop=1'));
+  const requests=await page.evaluate(()=>window.__requests);assert(requests.every(r=>r.method==='GET'));assert(requests.every(r=>['/api/arena/placard/equipment','/api/arena/placard/storage','/api/arena/placard/commerce','/api/arena/placard/staff'].includes(r.path)));assert(requests.filter(r=>r.path.endsWith('/commerce')).every(r=>r.search==='?shop=1'));
   await page.screenshot({path:resolve(output,`${name}-${width}-viewport.png`)});if(['mixed','overdue','quality','unknown','busy-unknown','partial'].includes(name))await page.screenshot({path:resolve(output,`${name}-${width}-full.png`),fullPage:true});
   results.push({name,width,...metrics,readRequests:requests.length});return metrics;
  };
- for(const width of [320,390,1440]){
+ if(visualOnly){
+  for(const width of [320,390,1440]){
+   await page.setViewport({width,height:900,isMobile:width<700,hasTouch:width<700});await page.goto(origin+'/arene/placard',{waitUntil:'networkidle0',timeout:90000});await page.waitForFunction(()=>typeof window.mount==='function');
+   for(const name of ['healthy','mixed','unknown']){
+    await mount(name,'shell');await settled();await page.waitForSelector('[data-player-work-status] [role="meter"]');await page.evaluate(()=>document.fonts.ready);await page.evaluate(()=>scrollTo(0,0));
+    const geometry=await page.evaluate(()=>{
+     const map=document.querySelector('[data-placard-map]'),scene=document.querySelector('[id^="placard-map-viewport"]'),action=document.querySelector('[data-placard-next-action]'),dock=document.querySelector('nav[aria-label="Accès rapides de Kanab Quest"]');
+     return {mapTop:Math.round(map.getBoundingClientRect().top),sceneHeight:Math.round(scene.getBoundingClientRect().height),sceneBottom:Math.round(scene.getBoundingClientRect().bottom),actionTop:Math.round(action.getBoundingClientRect().top),primaryBottom:Math.round(action.querySelector(':scope > :is(button,a)').getBoundingClientRect().bottom),usableBottom:dock&&getComputedStyle(dock).display!=='none'?Math.round(dock.getBoundingClientRect().top):innerHeight,mapBeforeAction:!!(map.compareDocumentPosition(action)&Node.DOCUMENT_POSITION_FOLLOWING),overflow:document.documentElement.scrollWidth>innerWidth+1,hours:Number(document.querySelector('[data-player-work-status] [role="meter"]').getAttribute('aria-valuenow')),primaryCount:action.querySelectorAll(':scope > :is(button,a)').length};
+    });
+    assert(geometry.mapBeforeAction);assert(geometry.mapTop<240,'Map visible before the accumulated status panels');assert(geometry.sceneHeight>=200);assert(geometry.sceneBottom<900,'Interactive scene fits first viewport');assert(geometry.primaryBottom<=geometry.usableBottom,'Primary action stays visible above the mobile navigation');assert.equal(geometry.overflow,false);assert.equal(geometry.hours,12);assert.equal(geometry.primaryCount,1);
+    if(name==='mixed')assert.deepEqual(await page.$$eval('[data-resume-notice]',nodes=>nodes.map(node=>node.dataset.resumeNotice)),['invoice-overdue','sales-suspended']);
+    if(name==='unknown')assert(await page.$('[data-resume-refresh]'));
+    await page.screenshot({path:resolve(output,`visual-${name}-${width}.png`)});results.push({name,width,...geometry});
+   }
+   await mount('healthy','shell');await settled();await enter('[data-map-building="office"]');await page.waitForSelector('[data-destination="staff"]');assert.equal(new URL(page.url()).searchParams.get('view'),'staff');
+   await enter('[data-placard-back="hub"]');await page.waitForSelector('[data-placard-map]');await enter('[data-map-building="bank"]');await page.waitForSelector('[data-destination="treasury"][data-pole="accounting"]');
+   await enter('[data-placard-back="hub"]');await page.waitForSelector('[data-placard-map]');await enter('[data-map-building="warehouse"]');await enter('[data-placard-activity="workshop"]');await page.waitForSelector('[data-destination="workshop"][data-section="processing"]');
+   assert((await page.evaluate(()=>window.__requests)).every(request=>request.method==='GET'));assert.deepEqual(await page.evaluate(()=>window.__amounts()),await page.evaluate(()=>window.__fixtureAmounts));results.push({name:'visual-destinations',width,staff:true,finance:true,atelier:true,readOnly:true});
+  }
+ } else for(const width of [320,390,1440]){
   await page.setViewport({width,height:844,isMobile:width<700,hasTouch:width<700});await page.goto(origin+'/arene/placard',{waitUntil:'networkidle0',timeout:90000});await page.waitForFunction(()=>typeof window.mount==='function');
-  for(const name of selectedCases??['mixed','overdue','low-cash','suspended','quality','culture','waiting','upcoming-active','upcoming-waiting','upcoming-new','far-future','paused','closed','sold-out','discarded','uncreated','healthy','unknown','busy-unknown','partial']){
+  for(const name of selectedCases??['trim','trim-active','trim-overdue','mixed','overdue','low-cash','suspended','quality','culture','waiting','upcoming-active','upcoming-waiting','upcoming-new','far-future','paused','closed','sold-out','discarded','uncreated','healthy','unknown','busy-unknown','partial']){
    await mount(name);await settled();const metrics=await measure(name,width);
+   if(name.startsWith('trim')){
+    assert.equal(metrics.kind,name==='trim'?'trim':name==='trim-active'?'culture':'finance');
+    const selector=name==='trim'?'[data-resume-trim]':'[data-resume-notice="trim-required"]';
+    assert.equal(await page.$eval(selector,e=>e.getAttribute('href')),'/arene/placard?view=workshop&section=processing&workshop=trim');
+    assert.match(metrics.text,/trimmer/);
+    await Promise.all([page.waitForNavigation({waitUntil:'networkidle0'}),enter(selector)]);
+    await page.waitForSelector('[data-destination="workshop"][data-section="processing"][data-workshop="trim"]');
+    assert.equal(new URL(page.url()).searchParams.get('view'),'workshop');
+    assert.equal(new URL(page.url()).searchParams.get('section'),'processing');
+    assert.equal(new URL(page.url()).searchParams.get('workshop'),'trim');
+    results.push({name:`${name}-keyboard-destination`,width,destination:'workshop',section:'processing',workshop:'trim'});
+   }
    if(name==='mixed'){
     assert.match(metrics.text,/125 g sans contenant/);assert.equal(metrics.kind,'storage');
     const notices=await page.$$eval('[data-resume-notice]',nodes=>nodes.map(e=>e.dataset.resumeNotice));assert.deepEqual(notices,['invoice-overdue','sales-suspended']);
@@ -118,6 +155,16 @@ else try{
    }
    assert.deepEqual(await page.evaluate(()=>window.__amounts()),await page.evaluate(()=>window.__fixtureAmounts),'Navigation never changes cash, invoice balances or packets');
   }
+  const legacyFlower='66666666-6666-4666-8666-666666666666';
+  await page.goto(origin+'/arene/placard?view=staff&staff=trim&flower='+legacyFlower,{waitUntil:'networkidle0'});
+  await page.waitForSelector('[data-destination="workshop"][data-section="processing"][data-workshop="trim"]');
+  await page.waitForFunction(()=>new URLSearchParams(location.search).get('view')==='workshop');
+  const restored=new URL(page.url()).searchParams;
+  assert.equal(restored.get('section'),'processing');assert.equal(restored.get('workshop'),'trim');assert.equal(restored.get('staff'),null);
+  assert.equal(restored.get('flower'),legacyFlower);
+  assert.equal(await page.$eval('[data-destination="workshop"]',element=>element.dataset.flower),legacyFlower);
+  assert((await page.evaluate(()=>window.__requests)).every(request=>request.method==='GET'));
+  results.push({name:'legacy-staff-trim',width,destination:'workshop',section:'processing',workshop:'trim',preservedFlower:true});
   if(selectedCases)continue;
   await mount('slow');assert.equal(await page.evaluate(()=>window.__attentionCompleted),0,'Slow optional attention request must not delay the core resume card');await page.evaluate(()=>window.__releaseAttention());await settled();await measure('slow-released',width);
   await mount('unknown');await settled();await page.evaluate(()=>window.__recover());await page.waitForFunction(()=>window.__attentionCompleted>1);await page.waitForFunction(()=>document.querySelector('[data-placard-next-action]')?.dataset.priority==='culture');await measure('recovered',width);
@@ -130,10 +177,10 @@ else try{
    await enter('[data-placard-back="hub"]');await page.waitForSelector('[data-placard-next-action]');assert.equal(new URL(page.url()).searchParams.get('view'),null);results.push({name:`shell-${name}`,width,destination,backToQuarter:true});
   }
  }
- if(!selectedCases){await page.setViewport({width:390,height:844});await mount('hanging');
+ if(!selectedCases&&!visualOnly){await page.setViewport({width:390,height:844});await mount('hanging');
  assert.equal(await page.$eval('[data-placard-next-action]',e=>e.dataset.priority),'culture');
  assert.equal(await page.evaluate(()=>window.__requests.filter(r=>r.path.endsWith('/commerce')).length),1);
  await page.waitForSelector('[data-resume-refresh]',{timeout:15000});await page.evaluate(()=>window.__recoverQuiet());await enter('[data-resume-refresh]');await page.waitForFunction(()=>window.__attentionCompleted>0);await page.waitForFunction(()=>!document.querySelector('[data-resume-refresh]'));results.push({name:'timeout-retry',width:390,coreNeverBlocked:true});}
- assert.deepEqual(errors,[]);assert.deepEqual(external,[]);await writeFile(resolve(output,selectedCases?'report-targeted.json':'report.json'),JSON.stringify({createdAt:new Date().toISOString(),scope:'Real Lobby/map and Shell; local data; destination stubs; no remote traffic or POST',viewportHeight:844,results,errors,external},null,2));console.log(JSON.stringify({passed:results.length,errors,external,output}));
+ assert.deepEqual(errors,[]);assert.deepEqual(external,[]);await writeFile(resolve(output,visualOnly?'visual-hierarchy-report.json':selectedCases?'report-targeted.json':'report.json'),JSON.stringify({createdAt:new Date().toISOString(),scope:'Real Lobby/map and Shell; local data; destination stubs; no remote traffic or POST',viewportHeight:visualOnly?900:844,results,errors,external},null,2));console.log(JSON.stringify({passed:results.length,errors,external,output}));
 }catch(error){await page?.screenshot({path:resolve(output,'failure.png'),fullPage:true}).catch(()=>{});throw error;}
 finally{if(!preview){await browser?.close();await server.close();}}

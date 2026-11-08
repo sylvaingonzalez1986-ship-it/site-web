@@ -1,0 +1,41 @@
+{
+  "date": "2026-11-08",
+  "request": "Supprimer le choix du lot pour le trim et faire travailler joueur et employés ensemble. Correction explicite : 60 à 150 g/h manuellement selon Transformation, pas 1 150 g/h.",
+  "status": "Implémentation locale ; migration appliquée au projet du site le 8 novembre 2026 sur demande explicite. Aucune publication de code par cette opération.",
+  "rules": {
+    "manual": "60 + 10 × (niveau effectif Transformation − 1) g par heure de jeu, du niveau 1 au niveau 10.",
+    "machine": "Cadence manuelle × 4, de 240 à 600 g/h, après achat de la trimeuse commune. Présentation réduite par rapport au manuel.",
+    "clock": "Une heure de travail du jeu correspond à dix minutes réelles. Pas de second multiplicateur de vitesse sur le trim ; les traits de qualité et d’apprentissage restent actifs.",
+    "allocation": "Les travailleurs réservent du temps, jamais un lot exclusif. Contributions simultanées proportionnelles à leur cadence ; récoltes compatibles de la plus ancienne à la plus récente. La première contribution fixe la méthode d’un lot.",
+    "mass": "Masse initiale de récolte issue de storage.original_units / 10. Création : même helper canonique que le stockage, avant son déclencheur, pour conserver la protection contre la vente de débordement.",
+    "progress": "Grammes confirmés par transaction et révision serveur, précision interne au microgramme. Départs, fins, création des récoltes et épuisement des stocks délimitent le calcul. Aucune préparation antérieure à la récolte ou postérieure au créneau.",
+    "hours": "Le créneau entier reste réservé, même si le stock compatible est épuisé. Un nouvel arrivage compatible permet de reprendre pendant le créneau. Les tâches d’une personne se suivent ; celles de plusieurs personnes se chevauchent.",
+    "experience": "XP Transformation proportionnelle aux heures productives (grammes réellement préparés / cadence), attribuée une seule fois à la fin du créneau.",
+    "quality": "Qualité pondérée par les grammes apportés par chaque personne ; ajustement final unique. Mode manuel +1 à +3, machine −3 à −1. Les coûts, week-ends, congés, salaires et plafond personnel de 12 h sont préservés.",
+    "compatibility": "Les réservations antérieures gardent leur identifiant, délai et devis en six unités. Leur lot rejoint l’atelier commun après leur échéance. Les reçus et tâches archivées ne sont pas réécrits. Un ancien flowerId reçu demeure dans l’identité de confirmation mais ne commande pas l’allocation nouvelle."
+  },
+  "ui": "Formulaire unique toujours disponible, plusieurs avatars réels dans la scène existante, cadence cumulée, suivi non sélectionnable des récoltes et grammes confirmés. Prévisions et résultats distingués. Attente sans animation si aucune fleur compatible ; tâches futures et résultats à confirmer distingués. Guide attaché à la récolte suivie, pas au premier marqueur visible.",
+  "migration": "supabase/migrations/20261108000100_kq_shared_trim.sql",
+  "validation": {
+    "typescript": "227 tests ciblés dans neuf fichiers : moteur, devis ancien et nouveau, intégration serveur, reprise/CAS, guide, séparation Atelier/Personnel et route API. Test du dernier microgramme à neuf travailleurs experts inclus.",
+    "database": "84 contrôles PGlite de la migration partagée, avec heures 005 et archives 006 ; 39 contrôles historiques du trim. Permissions vérifiées sur 356 migrations.",
+    "static": "TypeScript global et ESLint ciblé réussis. Migration ajoutée à npm run test:staff:sql. Empreintes des six migrations Personnel déjà appliquées identiques à la copie du précédent déploiement.",
+    "browser": "48 groupes réussis à 320, 390 et 1440 px, dont dix dédiés au trim partagé et au guide. Staff : défaut 5, planning 8, journée joueur 8, trim partagé/mouvement 5, attente de stock 1. Journey : planning 1, Atelier 3, guide historique 13, guide partagé 4. Anciennes recettes adaptées aux grammes et au formulaire commun ; options trim-motion-only/trim-portraits-only explicitement redirigées vers la recette partagée, avec pause, mouvement réel/réduit, art fixe, hors écran, onglet caché et profils absents/en erreur/récupérés. Aucune erreur navigateur ni requête de jeu distante. Captures de l’équipe et de l’attente inspectées.",
+    "reports": ["output/placard-staff-ui/shared-trim-report.json", "output/placard-staff-ui/shared-trim-edge-report.json", "output/placard-journey-continuity/shared-trim-report.json", "output/placard-staff-ui/report.json", "output/placard-staff-ui/work-plan-report.json", "output/placard-staff-ui/player-work-report.json", "output/placard-journey-continuity/work-plan-report.json", "output/placard-journey-continuity/workshop-report.json", "output/placard-journey-continuity/guide-report.json"],
+    "limits": "Fixtures locales et PostgreSQL embarqué pour les parcours et la concurrence. Migration ensuite appliquée avec contrôles distants en lecture seule ; pas de mesure de charge distante ni de publication applicative. Les essais joueurs restent à faire."
+  },
+  "activation": {
+    "dateParis": "2026-11-08",
+    "project": "eyowwwpdmfrulhkpvlnf",
+    "applicationProjectMatches": true,
+    "migration": "20261108000100",
+    "preflightChecks": 16,
+    "postflightChecks": 110,
+    "preservation": "Empreintes inchangées de 26 reçus, 13 archives, 3 comptes Personnel, 37 portefeuilles, 431 fleurs, 429 stocks et 5 anciens suivis de trim ; dix fonctions de validation, comptabilité, heures et archives conservées.",
+    "synchronizedMigrations": 356,
+    "pendingMigrations": 0,
+    "receipt": "output/shared-trim-migration/completion.json",
+    "websitePublished": false
+  },
+  "next": "Migration activée et vérifiée. Les anciennes recettes de navigation sont adaptées au nouvel atelier ; ne pas réintroduire le sélecteur de lots. Aucune publication applicative effectuée."
+}

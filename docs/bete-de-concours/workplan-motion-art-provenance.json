@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-07",
+  "tool": "Built-in image_gen.imagegen",
+  "mode": "generate; transparent_background true",
+  "scope": "Two small station accessories for Personnel. Existing KqPrintedArt destinations and real profile avatars are preserved.",
+  "prompts": [
+    {
+      "key": "watering-can",
+      "prompt": "Use case: illustration-story. Single isolated transparent cartoon game sprite for Kanab Quest French hemp farm, matching established Sylvain art: confident dark ink outlines, hand-painted cream, teal and warm apricot/gold, subtle print grain, cheerful readable rounded shapes. Genuine alpha transparency, no background rectangle or rendered checkerboard. No text, no numbers, no logos, no characters, no hands, no wheat, no UI border. Square canvas, object inside central80%, generous transparentmargin. Designed to remain legible at30px in a game work scene, avoidtiny details. A small teal metal watering can with a warm golden handle, three-quarter side view. Spout points down to the left, short wide cylindrical body at right, single large curved carry handle above. Only the watering can; no water, no droplets, no ground, no plants. A light cream glint and gold rivets, clean clear silhouette. This is a movable layer whose spout tip will pivot; all parts belong to one object."
+    },
+    {
+      "key": "studio-phone",
+      "prompt": "Use case: illustration-story. Single isolated transparent cartoon game sprite for Kanab Quest French hemp farm, matching established Sylvain art: confident dark ink outlines, hand-painted cream, teal and warm apricot/gold, subtle print grain, cheerful readable rounded shapes. Genuine alpha transparency, no background rectangle or rendered checkerboard. No text, no numbers, no logos, no characters, no hands, no wheat, no UI border. Square canvas, object inside central80%, generous transparentmargin. Designed to remain legible at30px in a game work scene, avoidtiny details. A small teal smartphone mounted on a short warm apricot desktop tripod for a farm employee preparing social media. Three-quarter frontal view, phone tall with softly rounded corners, empty cream screen carrying only a simple darkgreen hemp leaf illustration. Tiny camera dot, no textnumbersstatsbuttons or recognisable brand. Compact wide-set threeleg stand underphone. Only one self-contained device with no surroundings, no light rays or floating symbols."
+    }
+  ],
+  "assets": [
+    {
+      "file": "public/placard/staff-motion/watering-can-v1.webp",
+      "source": "output/imagegen/staff-motion/watering-can-v1.png",
+      "dimensions": "384x384",
+      "processing": "Sharp resize only; WebP quality90 alphaQuality100, original transparency preserved."
+    },
+    {
+      "file": "public/placard/staff-motion/studio-phone-v1.webp",
+      "source": "output/imagegen/staff-motion/studio-phone-v1.png",
+      "dimensions": "384x384",
+      "processing": "Sharp resize only; WebP quality90 alphaQuality100, original transparency preserved."
+    }
+  ],
+  "reused": [
+    "public/placard/staff-motion/welcome-folder-v1.webp",
+    "public/placard/staff-motion/training-book-v1.webp"
+  ],
+  "restrictions": [
+    "No invented people or production results",
+    "No tool drawn for processing or unspecified trim mode",
+    "Scenery remains fixed; only confirmed active actors and small tools animate"
+  ]
+}

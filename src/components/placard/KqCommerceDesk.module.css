@@ -94,7 +94,8 @@
 .error button { text-decoration: underline; margin-inline-start: 10px; min-height: 44px; }
 .loading { display: flex; gap: 12px; align-items: center; padding-block: 30px; }
 .saleDone { max-width: 620px; margin-inline: auto; padding: 32px 24px 38px; text-align: center; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
-.successEmblem { display: inline-grid; place-items: center; position: relative; width: 88px; height: 88px; margin: 0 auto 24px; color: #172923; border: 2px solid #172923; border-radius: 50%; box-shadow: var(--game-panel-shadow, none); animation: reward-arrive 400ms ease-out both; }
+.successEmblem { display: inline-grid; place-items: center; position: relative; width: 88px; height: 88px; margin: 0 auto 24px; color: #172923; border: 2px solid #172923; border-radius: 50%; box-shadow: var(--game-panel-shadow, none); }
+.saleDone[data-new-receipt] .successEmblem { animation: reward-arrive 400ms ease-out both; }
 .successEmblem > svg:last-child { position: absolute; top: -10px; right: -10px; background: #fff1d6; }
 .saleDone > small { display: block; color: #172923; font: 800 .72rem var(--font-body),Arial,sans-serif; letter-spacing: .1em; text-transform: uppercase; }
 .saleDone > strong { display: block; margin-top: 12px; font: 900 clamp(2rem,6vw,3.5rem)/1.1 var(--font-display),Impact,sans-serif; text-transform: uppercase; color: #172923; }

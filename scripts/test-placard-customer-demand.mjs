@@ -73,6 +73,17 @@ try {
   assert.ok(definition,`production definition for ${name}`);
   await db.exec(definition[0]);
  }
+ // Include the production readiness columns, dispatch evidence and latest
+ // commerce snapshot wrapper without bootstrapping unrelated staff systems.
+ const warehouseSql=await sql('20261012000200_kq_warehouse_run_integration.sql');
+ await db.exec(warehouseSql.match(/ALTER TABLE public\.kq_commerce_batches ADD COLUMN processing_started_at[\s\S]*?;/)[0]);
+ const evidenceSql=await sql('20261015000200_kq_mission_aroma_evidence.sql');
+ await db.exec(evidenceSql.slice(evidenceSql.indexOf('ALTER TABLE public.kq_online_sales'),evidenceSql.indexOf('-- Collection, stock')));
+ const processingSql=await sql('20261108000400_kq_processing_work.sql');
+ await db.exec(processingSql.slice(processingSql.indexOf('CREATE TABLE public.kq_processing_jobs'),processingSql.indexOf('CREATE INDEX kq_staff_archive_processing_day')));
+ await db.exec(processingSql.match(/CREATE FUNCTION public\.kq_processing_jobs_snapshot\([\s\S]*?\$\$;/)[0]);
+ await db.exec(processingSql.slice(processingSql.indexOf('ALTER FUNCTION public.rpc_kq_commerce_state(UUID)'),processingSql.indexOf('ALTER FUNCTION public.kq_staff_snapshot(UUID)')));
+ await db.exec(await sql('20261108000500_kq_product_customer_demand.sql'));
  // All relative timestamps are identical across repeated and batched settlement.
  await db.exec('BEGIN');
  const now = await scalar('SELECT now()');
@@ -97,6 +108,8 @@ try {
  const {previewKqBusinessPayment}=await vite.ssrLoadModule('/src/lib/kanab-quest-business.ts');
  const {createKqCustomerDemandSnapshot,getKqCustomerDemandRequest,getKqCustomerDemandPrice}=await vite.ssrLoadModule('/src/lib/kanab-quest-customer-demand.ts');
  const {KQ_BUDDIE_FLAVOR_PROFILES}=await vite.ssrLoadModule('/src/lib/kanab-quest-buddie-flavors.ts');
+ const {KQ_MARKET_ROUTES}=await vite.ssrLoadModule('/src/lib/kanab-quest-market.ts');
+ const {createKqOnlinePreview,estimateKqOnlineOffer}=await vite.ssrLoadModule('/src/lib/kanab-quest-online.ts');
  for(const [code,profile] of Object.entries(KQ_BUDDIE_FLAVOR_PROFILES)) {
   equal(await scalar('SELECT kq_customer_demand_flavors($1)',[code]),profile.flavors,'SQL/TS profile parity '+code);
  }
@@ -237,6 +250,119 @@ try {
  equal(ordinary.offer.customerDemand,undefined,'zero aromas has no demand consumption');
  await sell(tasting,ordinary);
  equal((await request(tasting,'wholesale')).remainingUnits,5000,'ordinary sale leaves premium demand intact');
+ const transformedRoutes=KQ_MARKET_ROUTES.filter(route=>route.family==='hash'||route.family==='rosin');
+ async function transformedPlayer(route='dry-sift') {
+  const account=await player();
+  const definition=KQ_MARKET_ROUTES.find(item=>item.code===route);
+  await db.query('UPDATE kq_market_lots SET selected_route=$2 WHERE flower_id=$1',[account.flower,route]);
+  await db.query('UPDATE kq_commerce_batches SET route=$2 WHERE flower_id=$1',[account.flower,route]);
+  await db.query('UPDATE kq_commerce_stock SET route=$2,base_unit_cents=$3 WHERE id=$1',[account.stock,route,definition.basePriceCentsPerProductGram]);
+  return account;
+ }
+ const prepared=await player(),preparedDemand=await match(prepared,'wholesale');
+ await scalar('SELECT rpc_kq_commerce_state($1)',[prepared.user]);
+ const storageRevision=await scalar('SELECT revision FROM kq_storage_lots WHERE flower_id=$1',[prepared.flower]);
+ const preparation={route:'dry-sift',available:true,productBaseUnitCents:600,processedInputGrams:80,productGrams:15,
+  storageRevision,storageChangeAt:new Date(Date.parse(now)+60000).toISOString(),market:{reputation:0,salesCount:0,processingCostCents:0}};
+ await db.query('DELETE FROM kq_commerce_stock WHERE flower_id=$1',[prepared.flower]);
+ await db.query('DELETE FROM kq_commerce_batches WHERE flower_id=$1',[prepared.flower]);
+ await db.query("UPDATE kq_market_lots SET status='ready',selected_route=NULL,options=$2::jsonb WHERE flower_id=$1",[prepared.flower,JSON.stringify([preparation])]);
+ const created=await scalar("SELECT rpc_kq_commerce_command($1,'prepare',$2::jsonb,$3)",[prepared.user,JSON.stringify({flowerId:prepared.flower,route:'dry-sift',expectedCostCents:0}),randomUUID()]);
+ const preparedState=await scalar('SELECT rpc_kq_commerce_state($1)',[prepared.user]);
+ equal(preparedState.stocks.map(item=>[item.route,item.flowerId,item.varietyCode]).sort(),
+  [['dry-sift',prepared.flower,preparedDemand.varietyCode],['raw',prepared.flower,preparedDemand.varietyCode]],'actual preparation preserves source identity on resin and remaining flowers');
+ equal((await storedQuote({...prepared,stock:created.stockId},'wholesale',50)).offer.customerDemand.matchedFlavorCount,2,'resin made by production prepare matches its original flower aromas');
+ for(const {code} of transformedRoutes) {
+  for(const channel of ['cbd-shop','wholesale']) {
+   const account=await transformedPlayer(code),demand=await match(account,channel);
+   const snapshot=await scalar('SELECT rpc_kq_commerce_state($1)',[account.user]);
+   equal(snapshot.processingWorkVersion,1,'latest processing wrapper is exercised');
+   equal(snapshot.stocks[0].varietyCode,demand.varietyCode,`${code} preserves the source flower variety in the current snapshot`);
+   const quote=await storedQuote(account,channel,100),key=randomUUID();
+   equal(quote.offer.customerDemand,{id:demand.id,period:demand.period,bonusPercent:demand.bonusPercent,matchedFlavorCount:2,units:100},`${code}/${channel} receives both source aromas`);
+   const expectedBase=snapshot.stocks[0].baseUnitCents*(channel==='cbd-shop'?.5:snapshot.campaign.event==='promotion'?.25:snapshot.campaign.event==='restock'?.33:.3);
+   equal(quote.offer.unitCents,Math.round(expectedBase*(1+demand.bonusPercent/100)*1e6)/1e6,`${code}/${channel} retains its own product tariff`);
+   await sell(account,quote,key);
+   equal((await request(account,channel)).remainingUnits,demand.capacityUnits-100,`${code}/${channel} consumes product units once`);
+   equal((await sell(account,quote,key)).replayed,true,`${code}/${channel} retry replays its receipt`);
+   equal((await request(account,channel)).remainingUnits,demand.capacityUnits-100,`${code}/${channel} retry leaves demand unchanged`);
+  }
+  // Matching depends on source aromas, including a partial overlap with a
+  // different variety, rather than the product's name or its extraction route.
+  const account=await transformedPlayer(code);
+  for(const [variety,count] of [['HH2026-030',2],['HH2026-005',1],['HH2026-006',0]]) {
+   await db.query('UPDATE kq_flowers SET variety_code=$2,variety_name=$3 WHERE id=$1',[account.flower,variety,'Misleading lemon resin']);
+   equal(await scalar("SELECT kq_customer_demand_match($1,$2,'online',9,50,$3,true)",[account.user,account.stock,tasteAt]),
+    count?{id:tasteDemand.id,period:tastePeriod,bonusPercent:tasteDemand.bonusPercent*count/2,matchedFlavorCount:count,units:50}:null,
+    `${code} uses ${count} aromas from the original variety`);
+  }
+ }
+ const product=await transformedPlayer(),productDemand=await match(product,'wholesale');
+ await db.query('INSERT INTO kq_customer_demand_usage VALUES($1,$2,$3,$4)',[product.user,productDemand.period,'wholesale',productDemand.capacityUnits-30]);
+ const weightedProduct=await storedQuote(product,'wholesale',100);
+ equal(weightedProduct.offer.customerDemand.units,30,'product premium is weighted by the remaining quota');
+ await sell(product,weightedProduct);
+ equal((await storedQuote(product,'wholesale',100)).offer.customerDemand,undefined,'product returns to its ordinary tariff when quota is exhausted');
+ const sharedRaw=randomUUID();
+ await db.query("INSERT INTO kq_commerce_stock(id,flower_id,user_id,route,initial_units,remaining_units,equivalent_units,base_unit_cents) VALUES($1,$2,$3,'raw',100,100,100,180)",[sharedRaw,product.flower,product.user]);
+ equal((await storedQuote({...product,stock:sharedRaw},'wholesale',50)).offer.customerDemand,undefined,'raw remainder shares the source product account quota');
+ const pending=await transformedPlayer();await match(pending,'wholesale');
+ await db.query("UPDATE kq_commerce_batches SET processing_ready_at='9999-01-01' WHERE flower_id=$1",[pending.flower]);
+ equal(await scalar("SELECT kq_customer_demand_match($1,$2,'wholesale',9,100,now())",[pending.user,pending.stock]),null,'unfunded or unfinished processing cannot earn aroma premium');
+ await db.query('UPDATE kq_commerce_batches SET processing_ready_at=now() WHERE flower_id=$1',[pending.flower]);
+ equal((await scalar("SELECT kq_customer_demand_match($1,$2,'wholesale',9,100,now())",[pending.user,pending.stock])).matchedFlavorCount,2,'completed processing becomes eligible at its exact deadline');
+ await db.query("UPDATE kq_storage_lots SET state=jsonb_set(state,'{readyAt}',to_jsonb(now()+interval '1 hour')) WHERE flower_id=$1",[pending.flower]);
+ equal(await scalar("SELECT kq_customer_demand_match($1,$2,'wholesale',9,100,now())",[pending.user,pending.stock]),null,'transformed products still require mature source flowers');
+ await db.query("UPDATE kq_storage_lots SET state=jsonb_set(state,'{readyAt}',to_jsonb(now())) WHERE flower_id=$1",[pending.flower]);
+ equal(await scalar("SELECT kq_customer_demand_match($1,$2,'wholesale',6.9,100,now())",[pending.user,pending.stock]),null,'transformed products still require minimum demand quality');
+ await db.query("UPDATE kq_commerce_stock SET route='biomass' WHERE id=$1",[pending.stock]);
+ equal(await scalar("SELECT kq_customer_demand_match($1,$2,'wholesale',9,100,now())",[pending.user,pending.stock]),null,'biomass never receives a source aroma premium');
+ const wrongOwner=await player();
+ equal(await scalar("SELECT kq_customer_demand_match($1,$2,'wholesale',9,100,now())",[wrongOwner.user,product.stock]),null,'another account cannot borrow a product source');
+ const manipulated=await transformedPlayer();await match(manipulated,'wholesale');
+ const manipulatedQuote=await storedQuote(manipulated,'wholesale',100);
+ await db.query("UPDATE kq_commerce_quotes SET offer=jsonb_set(offer,'{unitCents}','99999') WHERE id=$1",[manipulatedQuote.quoteId]);
+ await reject(()=>sell(manipulated,manipulatedQuote),'commerce_offer_changed');
+ equal((await request(manipulated,'wholesale')).remainingUnits,5000,'tampered transformed tariff leaves demand untouched');
+ equal(await scalar('SELECT remaining_units FROM kq_commerce_stock WHERE id=$1',[manipulated.stock]),1000,'tampered transformed tariff leaves stock untouched');
+ const staleProduct=await transformedPlayer(),staleProductDemand=await match(staleProduct,'wholesale');
+ const staleProductQuote=await storedQuote(staleProduct,'wholesale',100);
+ await db.query('INSERT INTO kq_customer_demand_usage VALUES($1,$2,$3,$4)',[staleProduct.user,staleProductDemand.period,'wholesale',staleProductDemand.capacityUnits]);
+ await reject(()=>sell(staleProduct,staleProductQuote),'commerce_offer_changed');
+ equal(await scalar('SELECT remaining_units FROM kq_commerce_stock WHERE id=$1',[staleProduct.stock]),1000,'product quota changed after quote cannot remove stock or pay');
+ for(const [channel,event,quality,partners,multiplier] of [
+  ['cbd-shop','normal',7.5,1,1],['cbd-shop','normal',8,4,1],['cbd-shop','normal',9,8,1.5],['cbd-shop','normal',9.5,12,1.5],
+  ['wholesale','promotion',9,0,1.5],['wholesale','restock',9,0,1.5],
+ ]) {
+  const account=await transformedPlayer();await match(account,channel);
+  await scalar('SELECT rpc_kq_commerce_state($1)',[account.user]);
+  await db.query('UPDATE kq_market_lots SET jury_score=$2 WHERE flower_id=$1',[account.flower,quality]);
+  await db.query('UPDATE kq_commerce_accounts SET shop_partners=$2 WHERE user_id=$1',[account.user,partners]);
+  await db.query('UPDATE kq_commerce_campaigns SET shop_partners_start=$2,event=$3 WHERE user_id=$1',[account.user,partners,event]);
+  if(multiplier===1.5) await db.query("INSERT INTO arena_chanvrier_profiles VALUES($1,'merchant')",[account.user]);
+  const quote=await storedQuote(account,channel,73);
+  await sell(account,quote);
+  equal(await scalar('SELECT remaining_units FROM kq_commerce_stock WHERE id=$1',[account.stock]),927,`product SQL tariff agrees with quote: ${channel}/${event}/${quality}/${partners}/${multiplier}`);
+ }
+ // Processing precision produces fractional stock prices. Exact half-micro
+ // base tariffs must round like NUMERIC before applying the aroma premium.
+ for(const [base,multiplier,event,expected] of [[1486.545455,1,'normal',445.963637],[1354.356364,1.5,'promotion',507.883637]]) {
+  const account=await transformedPlayer();
+  await scalar('SELECT rpc_kq_commerce_state($1)',[account.user]);
+  await db.query('UPDATE kq_commerce_stock SET base_unit_cents=$2 WHERE id=$1',[account.stock,base]);
+  await db.query('UPDATE kq_commerce_campaigns SET event=$2 WHERE user_id=$1',[account.user,event]);
+  if(multiplier===1.5) await db.query("INSERT INTO arena_chanvrier_profiles VALUES($1,'merchant')",[account.user]);
+  const ordinaryQuote=await storedQuote(account,'wholesale',73);
+  equal(ordinaryQuote.offer.unitCents,expected,`fractional product base rounds exact half up: ${base}/${multiplier}/${event}`);
+  await sell(account,ordinaryQuote);
+  equal(await scalar('SELECT remaining_units FROM kq_commerce_stock WHERE id=$1',[account.stock]),927,'fractional product price is accepted by SQL payment');
+  const demand=await match(account,'wholesale');
+  const premiumQuote=await storedQuote(account,'wholesale',73);
+  equal(premiumQuote.offer.unitCents,Number(await scalar('SELECT round($1::numeric*(1+$2::numeric/100),6)',[expected,demand.bonusPercent])),
+   'fractional product premium starts from the exact rounded base tariff');
+  await sell(account,premiumQuote);
+  equal((await request(account,'wholesale')).remainingUnits,5000-73,'fractional product payment consumes the quoted premium once');
+ }
  const listing=async(account,packets=10,price=4000)=>{
   await command(account.user,'buy-packaging',{code:'kraft-5',quantity:packets});
   return (await command(account.user,'create-listing',{stockId:account.stock,formatGrams:5,packagingCode:'kraft-5',packets,packetPriceCents:price})).listingId;
@@ -262,6 +388,42 @@ try {
   equal((await offer(first)).referencePacketCents,reference,'online raw price quality threshold '+quality);
  }
  equal((await scalar('SELECT rpc_kq_commerce_state($1)',[online.user])).online.listings[0].varietyCode,onlineDemand.varietyCode,'listings carry authoritative variety identity');
+ for(const route of ['dry-sift','rosin-trial']) {
+  const account=await transformedPlayer(route),demand=await match(account,'online');
+  const id=await listing(account,10,4000);
+  const productOffer=()=>scalar('SELECT kq_online_offer($1,l,now()) FROM kq_online_listings l WHERE id=$2',[account.user,id]);
+  const boosted=await productOffer();
+  equal(boosted.customerDemand.matchedFlavorCount,2,`${route} online inherits both flower aromas`);
+  await db.query('INSERT INTO kq_customer_demand_usage VALUES($1,$2,$3,275)',[account.user,demand.period,'online']);
+  const ordinaryProduct=await productOffer();
+  equal(ordinaryProduct.customerDemand,null,`${route} online cannot premium a partly covered packet`);
+  equal(boosted.referencePacketCents,Math.round(ordinaryProduct.referencePacketCents*(1+demand.bonusPercent/100)),`${route} online premium uses the product reference including packaging`);
+  await db.query('DELETE FROM kq_customer_demand_usage WHERE user_id=$1',[account.user]);
+  await db.query('UPDATE kq_online_listings SET order_progress=1 WHERE id=$1',[id]);
+  await scalar('SELECT kq_online_dispatch($1,$2,now())',[account.user,id]);
+  equal((await request(account,'online')).remainingUnits,250,`${route} actual packet dispatch consumes one shared quota`);
+  equal(Number(await scalar('SELECT sum(payout_cents) FROM kq_online_sales WHERE user_id=$1',[account.user])),4000,`${route} online pays only the chosen packet price`);
+  const evidence=await scalar('SELECT customer_demand FROM kq_online_sales WHERE user_id=$1',[account.user]);
+  equal(evidence,{...boosted.customerDemand,flavorCodes:demand.flavorCodes},`${route} receipt stores actual source-aroma demand evidence`);
+  await scalar('SELECT kq_online_dispatch($1,$2,now())',[account.user,id]);
+  equal((await request(account,'online')).remainingUnits,250,`${route} dispatch retry does not consume another packet`);
+  equal((await scalar('SELECT rpc_kq_commerce_state($1)',[account.user])).online.listings[0].varietyCode,demand.varietyCode,`${route} online snapshot preserves the original flower variety`);
+ }
+ // A product reference need not be a multiple of 500 cents like flowers.
+ // 12,230 * 1.15 lands below .5 in binary floats but is 14,065 in SQL NUMERIC.
+ let roundingPeriod=Math.floor(Date.parse(now)/259200000)+1;
+ while(getKqCustomerDemandRequest(roundingPeriod,'online').bonusPercent!==15) roundingPeriod++;
+ const roundingAt=new Date(roundingPeriod*259200000+86400000).toISOString();
+ const roundingProduct=await transformedPlayer('ice-water-hash');
+ const roundingDemand=await match(roundingProduct,'online',roundingAt);
+ const roundingListing=await listing(roundingProduct,10,14065);
+ await db.query('UPDATE kq_online_listings SET packed_quality=8.19,created_at=$2 WHERE id=$1',[roundingListing,roundingAt]);
+ const sqlReference=await scalar('SELECT kq_online_offer($1,l,$3) FROM kq_online_listings l WHERE id=$2',[roundingProduct.user,roundingListing,roundingAt]);
+ const tsReference=estimateKqOnlineOffer({route:'ice-water-hash',varietyCode:roundingDemand.varietyCode,quality:8.19,baseUnitCents:2200,
+  formatGrams:5,packagingCode:'kraft-5',packetPriceCents:14065,reputation:0,clients:0,
+  online:createKqOnlinePreview(Date.parse(roundingAt)),customerDemand:createKqCustomerDemandSnapshot(Date.parse(roundingAt))});
+ equal(sqlReference.referencePacketCents,14065,'SQL product reference rounds exact half-cent up after aroma premium');
+ equal(tsReference.referencePacketPriceCents,sqlReference.referencePacketCents,'online product reference rounding agrees between TypeScript and PostgreSQL');
  // Cross a complete 72-hour window offline. Frequent reads must produce the
  // same sales, timestamps, quality, willingness to pay and quota consumption.
  const periodStart=(Math.floor(Date.parse(now)/259200000)-1)*259200000;

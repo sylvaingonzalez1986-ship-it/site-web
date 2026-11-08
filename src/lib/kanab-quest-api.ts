@@ -1,6 +1,7 @@
 import type { KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import type { KqEnergyMode } from "@/lib/kanab-quest-energy";
 import type { KqGameState } from "@/lib/kanab-quest-game";
+import type { KqCultureWorkQuote } from "@/lib/kanab-quest-culture-work";
 import type { KqCareProduct, getKqCannabinoidReport, KqTerpeneReport } from "@/lib/kanab-quest-care";
 import type { KqBuddieCultivationProfile } from "@/lib/kanab-quest-buddie-cultivation";
 import type { KqStorageContainer, KqStorageMethod, KqStorageMethodCode, KqStorageProjection } from "@/lib/kanab-quest-storage";
@@ -124,7 +125,7 @@ export async function readKqResponse<T>(response: Response): Promise<T> {
   return payload;
 }
 
-export type KqCareInventory = Array<{ productCode: string; quantity: number }>;
+export type KqCareInventory = Array<{ productCode: string; quantity: number; legacyQuantity?: number; areaQuantity?: number }>;
 export type KqStorageSnapshot = {
   /** Optional on older servers. Do not infer packet status from capacity.usedUnits. */
   stockBreakdown?: KqStorageStockBreakdown;
@@ -150,13 +151,16 @@ export async function changeKqRemoteStorage(input: {
     method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(input),
   }));
 }
-export type KqCareShop = { cashCents: number; basicCarePriceCents?: number; inventory: KqCareInventory; catalog: readonly KqCareProduct[] };
+export type KqCareShop = { cashCents: number; basicCarePriceCents?: number; areaM2?: number | null; pricingUnits?: number; inventory: KqCareInventory; catalog: readonly KqCareProduct[] };
 
-export async function getKqRemoteCareShop(request: typeof fetch = fetch) {
-  return readKqResponse<KqCareShop>(await request("/api/admin/placard/care", { cache: "no-store" }));
+export async function getKqRemoteCareShop(request: typeof fetch = fetch, runId?: string | null, purpose?: "availability") {
+  const query = new URLSearchParams();
+  if (runId) query.set("runId", runId);
+  if (purpose) query.set("purpose", purpose);
+  return readKqResponse<KqCareShop>(await request(`/api/admin/placard/care${query.size ? `?${query}` : ""}`, { cache: "no-store" }));
 }
 
-export async function purchaseKqRemoteCareProduct(input: { productCode: string; quantity: number; requestKey: string }, request: typeof fetch = fetch) {
+export async function purchaseKqRemoteCareProduct(input: { productCode: string; quantity: number; requestKey: string; runId?: string | null; expectedPriceCents?: number }, request: typeof fetch = fetch) {
   return readKqResponse<{ cashCents: number; inventory: KqCareInventory; totalPriceCents: number; replayed: boolean }>(await request("/api/admin/placard/care", {
     method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify(input),
   }));
@@ -313,12 +317,15 @@ export async function applyKqRemoteAction(
   runId: string,
   action: "roll" | "resolve" | "advance" | "redraw" | "heritage",
   request: typeof fetch = fetch,
+  options: { expectedStageIndex?: number } = {},
 ) {
   const response = await request(`/api/admin/placard/runs/${encodeURIComponent(runId)}/actions`, {
-    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action }),
+    method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, ...(action === "roll" ? options : {}) }),
   });
   return readKqResponse<{
     state: KqGameState;
+    cultureWork?: KqCultureWorkQuote;
+    replayed?: boolean;
     persistedFlower: null | { id: string; status: string; createdAt: string };
     persistedFlowers?: Array<{ id: string; runId?: string; zoneId?: string; status: string; createdAt: string }>;
   }>(response);

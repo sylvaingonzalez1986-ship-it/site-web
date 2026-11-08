@@ -1,0 +1,14 @@
+{
+  "generator": "Built-in image_gen",
+  "date": "2026-11-08",
+  "useCase": "illustration-story",
+  "prompt": "Use case: illustration-story.\nAsset type: one transparent decorative cutout for the Kanab Quest panel “Soutenir les petits producteurs”. No words or UI in the image.\nInput reference 1: existing game team faces and illustration style; reference 2: existing Sylvain character and warm artisanal hemp workshop world.\nPrimary request: an inviting, emotionally warm illustration of small local hemp growers supporting a shared project. Sylvain, the friendly male character with teal-and-tan cap, stands beside the existing red-haired female farmer and curly-haired warmer-skinned colleague. All three are fully visible from waist up behind one modest wooden market crate. Together their hands cradle a young healthy hemp plant in a terracotta pot. A single simple mustard-gold heart hovers above the plant, communicating solidarity. The crate contains two small unlabeled glass jars of hemp flowers and a gardening glove. One small Breton slate-roof farm silhouette can anchor the group at the rear, but keep the scene compact and uncluttered.\nStyle: match the reference faces closely: round friendly cartoon faces, small black oval eyes, no beards, confident dark ink #172923 contours, flat screenprint teal #087b70, cream #fff1d6, mustard gold #efc451, warm apricot #ffad5c, restrained halftone shading. Charming handmade French comic game illustration, not generic app vector symbols, not photoreal, not 3D plastic.\nComposition: square 1024x1024, strong triangular silhouette, expressive faces large and readable at 200px, heads at top and crate below, heart near central plant; balanced full group centered with at least 50px transparent margins around every edge. Real transparent background and no enclosing rectangle, backdrop, frame, banner or UI. Keep hands anatomically clear and all heads unobstructed. No letters, numbers, logos, currency, payment card, coin donation, wheat, sale or implied gameplay reward. Hemp leaves with clear palmate shape.",
+  "references": [
+    "public/placard/ui/staff-v1.webp",
+    "public/placard/market-workshop-sylvain-v2.webp"
+  ],
+  "source": "artwork/ui-producer-support-v1.png",
+  "asset": "/placard/ui/producer-support-v1.webp",
+  "processing": "Sharp proportional resize to 512×512, transparent background and alpha preserved, WebP quality 88. No drawing or replacement art.",
+  "purpose": "Decorative illustration for the optional financial-support panel. Amounts, destination, optionality and absence of gameplay benefit remain HTML."
+}

@@ -33,6 +33,8 @@ function BattleReceipt({ battle, onOpenLot }: { battle: KqOfficialBattle; onOpen
     data-result={cancelled ? "cancelled" : won ? "won" : "lost"}
     data-archived-jury-recap={cancelled ? undefined : true}
     data-battle-id={battle.id}
+    data-guide-jury-verdict={battle.status === "verdict" || undefined}
+    data-guide-flower-id={battle.status === "verdict" ? battle.playerFlower.id : undefined}
     tabIndex={-1}
   >
     <summary className={styles.receiptSummary}>

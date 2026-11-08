@@ -4,7 +4,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, ChevronDown, Coins, Hand, RefreshCw } from "lucide-react";
 import { KQ_LIGHT_HAND_CONTRACT, parseKqContractSnapshot, type KqContractAction, type KqContractSnapshot } from "@/lib/kanab-quest-contracts";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
-import { useKqGameSound } from "./KqGameSound";
 import { KqRenewableContracts } from "./KqRenewableContracts";
 import styles from "./KqCultureContract.module.css";
 
@@ -18,7 +17,6 @@ export function KqCultureContract({ mode = "preparation", runId, refreshKey, dis
   onOpenGame?: () => void;
 }) {
   const api = useKqTutorialApi();
-  const sound = useKqGameSound();
   const [snapshot, setSnapshot] = useState<KqContractSnapshot | null>(null);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState<KqContractAction | null>(null);
@@ -80,7 +78,6 @@ export function KqCultureContract({ mode = "preparation", runId, refreshKey, dis
       setSnapshot(next);
       if (action === "claim" && next.status === "claimed") {
         setClaimReceipt(next.replayed === false ? "fresh" : "replayed");
-        if (next.replayed === false) sound.playOnce("reward", `contract:${next.code}:${next.runId}`);
       } else setClaimReceipt(null);
       api.notify("kq:contracts-updated");
       if (action === "claim") { api.notify("kq:equipment-updated"); api.notify("arena:progress-updated"); }

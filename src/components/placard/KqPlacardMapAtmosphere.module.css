@@ -1,0 +1,27 @@
+.atmosphere {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+
+.water > path { opacity: .18; }
+.gull, .intent { opacity: 0; }
+.activityGlow { opacity: .12; }
+
+/* Keep a quiet, complete painting when animation is reduced or unavailable. */
+.atmosphere[data-motion-state="reduced"] .gull,
+.atmosphere[data-motion-state="unavailable"] .gull,
+.atmosphere[data-motion-state="reduced"] .intent { opacity: 0 !important; }
+.atmosphere[data-motion-state="reduced"] .water > path { opacity: .18 !important; transform: none !important; }
+.atmosphere[data-motion-state="reduced"] .activityGlow { opacity: .12 !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .gull, .intent { opacity: 0 !important; }
+  .water > path { opacity: .18 !important; transform: none !important; }
+  .activityGlow { opacity: .12 !important; }
+}

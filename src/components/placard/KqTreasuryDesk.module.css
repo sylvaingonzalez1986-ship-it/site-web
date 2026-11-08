@@ -184,3 +184,5 @@
 .managementIntro .eyebrow { color: #536058; }
 .accountPlan .eyebrow { color: #536058; }
 .accountPlan > .explanation, .accountPlan > .empty { color: #536058; }
+
+.methods .tableScroll th, .methods .tableScroll td { white-space: normal; text-align: left; vertical-align: top; }

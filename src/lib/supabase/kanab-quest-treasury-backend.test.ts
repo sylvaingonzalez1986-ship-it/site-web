@@ -1,7 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import type { KqTreasurySnapshot } from "../kanab-quest-treasury";
-const { rpc } = vi.hoisted(() => ({ rpc: vi.fn() }));
+const { rpc, settleStaff } = vi.hoisted(() => ({ rpc: vi.fn(), settleStaff: vi.fn() }));
 vi.mock("./admin", () => ({ createSupabaseServiceClient: () => ({ rpc }) }));
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: settleStaff }));
 import { getKqTreasurySnapshot, parseKqTreasuryQuery } from "./kanab-quest-treasury-backend";
 const owner = "11111111-1111-4111-8111-111111111111";
 const query = { period: "current" as const, offset: 0, limit: 25 };
@@ -13,7 +14,7 @@ function snapshot(): KqTreasurySnapshot {
     series: [], journal: { items: [], total: 0, offset: 0, limit: 25 },
     checks: { walletCashCents: 35000, vatReserveCents: 0, savingsCents: 0, labDebtCents: 0, energyDebtCents: 0, vatDebtCents: 0 } };
 }
-beforeEach(() => { vi.clearAllMocks(); rpc.mockResolvedValue({ data: snapshot(), error: null }); });
+beforeEach(() => { vi.clearAllMocks(); settleStaff.mockResolvedValue(undefined); rpc.mockResolvedValue({ data: snapshot(), error: null }); });
 
 describe("treasury query boundary", () => {
   it("defaults to the current game month and a bounded journal page", () => {
@@ -32,10 +33,18 @@ describe("treasury snapshot backend", () => {
   it("requests the authoritative owner's complete aggregate and bounded journal", async () => {
     expect(await getKqTreasurySnapshot(owner, query)).toEqual(snapshot());
     expect(rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_treasury_snapshot", { p_user_id: owner, p_period: "current", p_offset: 0, p_limit: 25 });
+    expect(settleStaff).toHaveBeenCalledExactlyOnceWith(owner);
+    expect(settleStaff.mock.invocationCallOrder[0]).toBeLessThan(rpc.mock.invocationCallOrder[0]);
   });
   it("does not query invalid ownership or pagination", async () => {
     await expect(getKqTreasurySnapshot("invalid", query)).rejects.toThrow("Compte");
     await expect(getKqTreasurySnapshot(owner, { ...query, offset: -1 })).rejects.toThrow("page");
+    expect(rpc).not.toHaveBeenCalled();
+    expect(settleStaff).not.toHaveBeenCalled();
+  });
+  it("waits for payroll settlement and cannot show stale accounts after its failure", async () => {
+    settleStaff.mockRejectedValueOnce(new Error("Règlement du personnel indisponible"));
+    await expect(getKqTreasurySnapshot(owner, query)).rejects.toThrow("personnel");
     expect(rpc).not.toHaveBeenCalled();
   });
   it.each([null, {}, { version: 0 }, { ...snapshot(), closingBalances: { cash: "35000" } }, { ...snapshot(), period: { key: "all", from: date, to: date } }, { ...snapshot(), journal: { items: [], total: 0, offset: 25, limit: 25 } }])("fails closed on old, malformed or mismatched schemas", async data => {

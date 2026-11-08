@@ -6,6 +6,7 @@ import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { KQ_ONLINE_MARKETING_MISSIONS, type KqOnlineMarketingAngle } from "@/lib/kanab-quest-online";
 import type { KqMarketingCampaignCode } from "@/lib/kanab-quest-marketing";
 import { KqProgressMeter } from "./KqVisuals";
+import { KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import styles from "./KqMarketingStatus.module.css";
 
 export const marketingObjectives = {
@@ -95,8 +96,12 @@ export function KqMarketingStatus({ data, now, onOpenPricing }: {
           <li aria-current={scheduleKnown && !preparing && !awaitingReport ? "step" : undefined}><span><Megaphone size={16} aria-hidden="true" />Diffuser</span><time>{date(campaign.launchesAt)}</time></li>
           <li aria-current={awaitingReport ? "step" : undefined}><span><ReceiptText size={16} aria-hidden="true" />Bilan</span><time>{date(campaign.endsAt)}</time></li>
         </ol>
-        <p>Public : {marketingAudiences.find(item => item.code === campaign.angle)?.name ?? "indisponible"}. {typeof campaign.visitorsPerDay === "number" && Number.isFinite(campaign.visitorsPerDay) && campaign.visitorsPerDay >= 0 ? `${number(campaign.visitorsPerDay)} visites ciblées par jour, avant adéquation avec ton offre.` : "Visites ciblées indisponibles."}</p>
-        <p>La préparation ne génère pas de trafic ciblé. Le créneau reste occupé jusqu’au bilan. Le budget couvre toute la campagne, y compris pendant une rupture de stock ou une pause des ventes.</p>
+        <KqHelpGrid items={[
+          { art: "help-social" as const, label: "Public", value: marketingAudiences.find(item => item.code === campaign.angle)?.name ?? "Indisponible" },
+          { art: "commerce" as const, label: "Visites ciblées / jour", value: typeof campaign.visitorsPerDay === "number" && Number.isFinite(campaign.visitorsPerDay) && campaign.visitorsPerDay >= 0 ? number(campaign.visitorsPerDay) : "Indisponibles", detail: "Avant adéquation avec l’offre ; aucune en préparation." },
+          { art: "help-time" as const, label: "Créneau occupé", value: "Jusqu’au bilan", detail: "Même pendant une rupture ou une pause des ventes." },
+        ]} />
+        <KqHelpNote>Le budget couvre toute la campagne, y compris les périodes sans vente.</KqHelpNote>
       </details>
     </> : <div className={styles.legacy}>
       {scheduleKnown ? <KqProgressMeter label="Avancement de la campagne" value={Math.max(0, now - started)} max={ends - started} valueLabel={`Fin le ${date(active.endsAt)}`} /> : isLegacy ? <p>Avancement indisponible tant que le calendrier n’est pas connu.</p> : null}

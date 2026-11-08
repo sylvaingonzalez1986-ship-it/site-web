@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { KQ_BUDDIE_FLAVOR_PROFILES } from "./kanab-quest-buddie-flavors";
 import { quoteKqCommerce, type KqCommerceState, type KqCommerceStock } from "./kanab-quest-commerce";
 import { createKqOnlinePreview, estimateKqOnlineOffer } from "./kanab-quest-online";
+import { KQ_MARKET_ROUTE_CODES } from "./kanab-quest-market";
 import { createKqCustomerDemandSnapshot, getKqActiveCustomerDemand, getKqCustomerDemandFlavorMatch, getKqCustomerDemandPrice,
   KQ_CUSTOMER_DEMAND_PERIOD_MS as PERIOD, KQ_CUSTOMER_DEMAND_PREVIEW_MS as PREVIEW } from "./kanab-quest-customer-demand";
 
@@ -74,6 +75,67 @@ describe("periodic aroma demand", () => {
     expect(mixed).toMatchObject({ units: 100, unitCents: 306, payoutCents: 3060, customerDemand: { units: 10, matchedFlavorCount: 2 } });
     state.customerDemand!.requests[1].remainingUnits = 0;
     expect(quoteKqCommerce(state, stock, "cbd-shop", "advised", 100, now)).toMatchObject({ units: 100, unitCents: 300, payoutCents: 3000, reason: null });
+  });
+
+  it.each(KQ_MARKET_ROUTE_CODES.filter(route => route !== "raw" && route !== "biomass"))("inherits source aromas and premiums for %s in both professional channels", route => {
+    for (const channel of ["cbd-shop", "wholesale"] as const) {
+      const product = { ...stock, route, batchRoute: route, baseUnitCents: 1200 };
+      const ordinary = quoteKqCommerce(commerce(), { ...product, varietyCode: "HH2026-007" }, channel, "advised", 100, now);
+      for (const [varietyCode, bonusPercent, matchedFlavorCount] of [["HH2026-013", 10, 1], ["HH2026-025", 20, 2]] as const) {
+        const offer = quoteKqCommerce(commerce(), { ...product, varietyCode }, channel, "advised", 100, now);
+        expect(offer.reason).toBeNull();
+        expect(offer.unitCents).toBe(ordinary.unitCents * (100 + bonusPercent) / 100);
+        expect(offer.payoutCents).toBe(ordinary.payoutCents * (100 + bonusPercent) / 100);
+        expect(offer.customerDemand).toMatchObject({ units: 100, bonusPercent, matchedFlavorCount });
+      }
+      const state = commerce();
+      state.customerDemand!.requests.find(request => request.channel === channel)!.remainingUnits = 10;
+      const partial = quoteKqCommerce(state, product, channel, "advised", 100, now);
+      expect(partial.unitCents).toBe(ordinary.unitCents * 102 / 100);
+      expect(partial.customerDemand?.units).toBe(10);
+    }
+  });
+
+  it("matches PostgreSQL at transformed professional tariff rounding boundaries", () => {
+    const state = commerce();
+    const product = { ...stock, route: "dry-sift" as const, varietyCode: "HH2026-007", baseUnitCents: 1486.545455 };
+    expect(quoteKqCommerce(state, product, "wholesale", "advised", 100, now).unitCents).toBe(445.963637);
+    state.strength = "merchant";
+    state.campaign!.event = "promotion";
+    expect(quoteKqCommerce(state, { ...product, baseUnitCents: 1354.356364 }, "wholesale", "advised", 100, now).unitCents).toBe(507.883637);
+  });
+
+  it("rounds a transformed online premium up at an exact half cent", () => {
+    const demand = snapshot(); demand.requests[0].bonusPercent = 15;
+    const offer = estimateKqOnlineOffer({ route: "ice-water-hash", varietyCode: stock.varietyCode, customerDemand: demand,
+      quality: 8.19, baseUnitCents: 2200, formatGrams: 5, packagingCode: "kraft-5", packetPriceCents: 14065,
+      reputation: 0, clients: 0, online: createKqOnlinePreview(now) });
+    expect(offer.referencePacketPriceCents).toBe(14065);
+    expect(offer.customerDemand?.bonusPercent).toBe(15);
+  });
+
+  it("does not invent source aromas or reward biomass and pending transformations", () => {
+    for (const product of [{ ...stock, varietyCode: undefined }, { ...stock, varietyCode: "unknown" },
+      { ...stock, route: "biomass" as const }, { ...stock, route: "dry-sift" as const, processingReadyAt: new Date(now + 60000).toISOString() }]) {
+      expect(quoteKqCommerce(commerce(), product, "wholesale", "advised", 100, now).customerDemand).toBeUndefined();
+    }
+  });
+
+  it.each(KQ_MARKET_ROUTE_CODES.filter(route => route !== "raw" && route !== "biomass"))("raises the online reference for %s using the source flower's aromas", route => {
+    const input = { route, customerDemand: snapshot(), quality: 9, baseUnitCents: 1200, formatGrams: 5 as const,
+      packagingCode: "kraft-5", packetPriceCents: 7000, reputation: 0, clients: 0, online: createKqOnlinePreview(now) };
+    const ordinary = estimateKqOnlineOffer({ ...input, varietyCode: "HH2026-007" });
+    for (const [varietyCode, bonusPercent] of [["HH2026-013", 10], ["HH2026-025", 20]] as const) {
+      const offer = estimateKqOnlineOffer({ ...input, varietyCode });
+      expect(offer.referencePacketPriceCents).toBe(Math.round(ordinary.referencePacketPriceCents * (100 + bonusPercent) / 100));
+      expect(offer.ordersPerDay).toBeGreaterThan(ordinary.ordersPerDay);
+      expect(offer.netBeforeProductionCents).toBe(ordinary.netBeforeProductionCents);
+      expect(offer.customerDemand).toMatchObject({ bonusPercent, units: 50 });
+    }
+    input.customerDemand.requests[0].remainingUnits = 49;
+    const exhausted = estimateKqOnlineOffer({ ...input, varietyCode: stock.varietyCode });
+    expect(exhausted.referencePacketPriceCents).toBe(ordinary.referencePacketPriceCents);
+    expect(exhausted.customerDemand).toBeUndefined();
   });
 
   it("keeps an otherwise saleable lot available below the bonus quality threshold", () => {

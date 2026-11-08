@@ -138,7 +138,7 @@ export function ChanvrierProfileEditor({ profile, onSaved, onClose }: { profile:
           <div className={styles.letter} aria-label="La lettre de Grand-père">
             {ARENA_RELEVE_LETTER.map((paragraph, index) => <p key={paragraph} className={index === ARENA_RELEVE_LETTER.length - 1 ? styles.signature : undefined}>{paragraph}</p>)}
           </div>
-          <p className={styles.note}>Tu pourras retrouver Sylvain dans « La relève · Apprendre à jouer » pour découvrir la ferme et le Quartier.</p>
+          <p className={styles.note}>Au début de l’aventure, Sylvain te guide pas à pas dans les écrans de ta ferme et du quartier.</p>
         </> : step === "look" ? <>
           <label className={styles.nickname}>Ton surnom
             <input autoComplete="nickname" autoCapitalize="none" spellCheck={false} value={draft.nickname} maxLength={24} placeholder="Ex. Sylvain29" aria-invalid={nicknameError || undefined} aria-describedby={`${nicknameHintId}${nicknameError ? ` ${nicknameErrorId}` : ""}`} onBlur={() => setNicknameTouched(true)} onChange={event => setDraft({ ...draft, nickname: event.target.value })} />

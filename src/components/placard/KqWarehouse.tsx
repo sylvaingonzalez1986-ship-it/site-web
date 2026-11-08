@@ -1,11 +1,13 @@
 "use client";
 
+import { KqBarChart } from "./KqVisuals";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import type { KqHarvestMarketSection } from "@/lib/kanab-quest-harvests";
 
 import { useCallback, useEffect, useId, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent, type ReactNode } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowRight, Check, CircleAlert, Factory, Fan, LoaderCircle, Package, RefreshCw, Ruler, Save, ShoppingBag, Sprout, Trash2, X, Zap } from "lucide-react";
+import { ArrowRight, Check, CircleAlert, Factory, Fan, LoaderCircle, Package, RefreshCw, Ruler, Save, Scissors, ShoppingBag, Sprout, Trash2, Wrench, X, Zap } from "lucide-react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { AppDialog, useDialogNavigation } from "@/components/ui/AppDialog";
 import { navigateWithDraftGuard, registerNavigationGuard } from "@/lib/navigation-guard";
@@ -24,6 +26,7 @@ import { KqCommerceComputer } from "./KqCommerceDesk";
 import { KqWarehouseEntry } from "./KqWarehouseEntry";
 import { KqWarehousePlan } from "./KqWarehousePlan";
 import { KqPrintedArt } from "./KqPrintedArt";
+import { KqWorkshopTrimDesk } from "./KqWorkshopTrimDesk";
 import { KqWarehousePostHarvest } from "./KqWarehousePostHarvest";
 import { KqHarvestStorage } from "./KqHarvestStorage";
 import { KqEquipmentCatalogModal } from "./KqEquipmentCatalogModal";
@@ -79,8 +82,8 @@ function ZoneDialogAction({ onClick, children, disabled, action, className, leav
   return <button type="button" className={className} disabled={disabled} data-warehouse-zone-action={action} onClick={() => leave ? navigate(onClick) : onClick()}>{children}</button>;
 }
 
-export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "equipment", initialFlowerId, initialEquipmentCode, initialZoneId, initialShopOpen = false, initialStorageEquipmentOpen = false, draftStore, onOpenCulture, onOpenMarket, onOpenHarvests, onClose }: {
-  embedded?: boolean; draftOwnerId?: string; initialSection?: "equipment" | "storage"; initialFlowerId?: string; initialEquipmentCode?: string | null; initialZoneId?: string | null; initialShopOpen?: boolean; initialStorageEquipmentOpen?: boolean; onClose: () => void;
+export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "equipment", initialWorkshopTab = "trim", initialFlowerId, initialEmployeeId, initialEquipmentCode, initialZoneId, initialShopOpen = false, initialStorageEquipmentOpen = false, draftStore, onOpenCulture, onOpenMarket, onOpenHarvests, onClose }: {
+  embedded?: boolean; draftOwnerId?: string; initialSection?: "equipment" | "storage" | "processing"; initialWorkshopTab?: "trim" | "machines"; initialFlowerId?: string; initialEmployeeId?: string; initialEquipmentCode?: string | null; initialZoneId?: string | null; initialShopOpen?: boolean; initialStorageEquipmentOpen?: boolean; onClose: () => void;
   draftStore?: { read: (revision: number) => KqWarehouseState | null; write: (state: KqWarehouseState) => void };
   onOpenCulture?: (href: string) => void;
   onOpenMarket?: (flowerId?: string, section?: KqHarvestMarketSection) => void;
@@ -93,7 +96,8 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
   const initialWorkshopCode = initialTarget?.kind === "workshop" ? initialTarget.code : undefined;
   const initialWorkshopShop = !!initialWorkshopCode;
   const initialDevice = getKqWarehouseDevice(initialEquipmentCode ?? "") ?? KQ_WAREHOUSE_CATALOG.find(item => item.legacyCode === initialEquipmentCode);
-  const [room, setRoom] = useState<Room>(initialSection === "storage" ? "storage" : initialWorkshopShop ? "processing" : initialDevice?.kind === "drying" ? "drying" : initialDevice?.room ?? "culture");
+  const [room, setRoom] = useState<Room>(initialSection === "storage" ? "storage" : initialSection === "processing" || initialWorkshopShop ? "processing" : initialDevice?.kind === "drying" ? "drying" : initialDevice?.room ?? "culture");
+  const [workshopTab, setWorkshopTab] = useState<"trim" | "machines">(initialWorkshopShop ? "machines" : initialWorkshopTab);
   const page = useRef<HTMLElement>(null);
   const focusedInitialEquipment = useRef(false);
   const focusedInitialZone = useRef(false);
@@ -590,7 +594,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
     if (next !== null) { event.preventDefault(); changeRoom(ROOMS[next].code); tabs.current[next]?.focus(); }
   }
 
-  const openWorkshopShop = (code?: string) => { setWorkshopEquipmentCode(code); setWorkshopShop(true); };
+  const openWorkshopShop = (code?: string) => { setWorkshopTab("machines"); setWorkshopEquipmentCode(code); setWorkshopShop(true); };
   const openShop = () => {
     if (room === "processing") { openWorkshopShop(); return; }
     setShopVisit(current => ({ id: current.id + 1, department: getKqWarehouseDepartment(room), equipmentCode: undefined }));
@@ -674,7 +678,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
                         {"operatingCostCents" in zoneQuote && <><div className={styles.quoteLine}><span>Charges / culture</span><strong>{formatKqCash(zoneQuote.operatingCostCents)}</strong></div><div className={styles.quoteLine}><span>Dont fournitures / m²</span><strong>{formatKqCash(Math.round(zoneQuote.consumablesCostCents / zoneQuote.areaM2))}</strong></div></>}
                         <ul>{zoneQuote.devices.map(line => <li key={line.code}>{line.quantity} × {line.device.name} · {formatKqCash(line.device.priceCents)}/unité</li>)}{"options" in zoneQuote && zoneQuote.options.map(line => <li key={line.code}>{line.option.name} · {line.quantity} m² × {formatKqCash(line.option.equipmentCentsPerM2)}/m² · {formatKqCash(line.option.consumablesCentsPerM2)}/m²/cycle</li>)}</ul>
                       </>}
-                      <p>Ces références décrivent cette zone. Le devis du plan tient compte du matériel possédé et de toutes les modifications.</p>
+                      <KqHelpNote art="help-plan">Références de cette zone. Le devis du plan inclut le matériel possédé et toutes les modifications.</KqHelpNote>
                     </details>
                   </div>
                   <ZoneDialogAction className={styles.danger} action="remove" disabled={selectedLocked} onClick={() => { setZoneDialogId(null); setZoneMenuId(selected.id); setZoneMenuPage("remove"); }}><Trash2 size={13} />Supprimer cette zone</ZoneDialogAction>
@@ -713,7 +717,10 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
               </div> : null;
 
   return <div className={embedded ? undefined : styles.overlay}>
-    <section ref={page} className={styles.page} aria-labelledby={`${id}-title`} role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : true} data-warehouse-v4 data-arena-tour-surface="warehouse" onKeyDown={event => {
+    <section ref={page} className={styles.page} aria-labelledby={`${id}-title`} role={embedded ? "region" : "dialog"} aria-modal={embedded ? undefined : true} data-warehouse-v4 data-arena-tour-surface="warehouse"
+      data-guide-saved-zone-count={snapshot?.state.zones.length}
+      data-guide-assigned-zone-count={snapshot?.state.zones.filter(zone => zone.active && zone.buddieCode).length}
+      onKeyDown={event => {
       if (event.key === "Escape" && pickedBuddieRef.current) { event.preventDefault(); event.stopPropagation(); pickBuddie(null); return; }
       if (embedded || shopOpen || event.target instanceof Element && event.target.closest("[data-app-dialog]")) return;
       if (event.key === "Escape" && !event.defaultPrevented) { event.preventDefault(); navigateWithDraftGuard(onClose); }
@@ -743,7 +750,7 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
         {adoptingServicePlan && <p className={styles.warning} data-warehouse-adoption>Seul le matériel affecté aux zones comptera dans la capacité. Le reste sera conservé en réserve.{adoptionBlocked && " Agrandis le stockage pour accueillir tes lots."}</p>}
         {adoptionBlocked && !adoptingServicePlan && <p className={styles.warning} data-warehouse-capacity-blocked>Stockage insuffisant pour tes lots. Agrandis la zone ou change de gamme.</p>}
         {!snapshot || !draft || !summary ? <div className={styles.loading} role="status">{loading ? <><LoaderCircle size={25} />Chargement de ton installation…</> : "L’entrepôt n’est pas disponible. Tu peux réessayer avec le bouton Actualiser."}</div> : <>
-          {room !== "storage" && <div className={styles.stats} aria-label="Repères de ton installation">
+          {room !== "storage" && room !== "processing" && <div className={styles.stats} aria-label="Repères de ton installation">
             <div className={styles.stat}><small><Ruler size={13} />Surface</small><strong>{summary.allocatedAreaM2} <span>m²</span><span className={styles.statTotal}> / {decimal(summary.totalAreaM2)}</span></strong><em>{dimensions.columns} × {dimensions.rows} m</em></div>
             <div className={styles.stat}><small><Package size={13} />En stock</small><strong>{typeof stock === "number" ? mass(stock) : "—"}</strong><em>{typeof storageReserved === "number" ? `${mass(Math.max(0, storageCapacity - storageReserved - reservedHarvest))} de place libre` : "Occupation en cours de lecture"}</em></div>
             <div className={styles.stat}><small><Zap size={13} />Charges / cycle</small><strong>{formatKqCash(summary.operatingCostCents)}</strong><em>{formatKqCash(summary.activeAreaM2 ? Math.round(summary.operatingCostCents / summary.activeAreaM2) : 0)}/m² actif</em></div>
@@ -786,14 +793,18 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
               {dirty && <div data-postharvest-basket>{mainPlanReview}</div>}
               {room === "drying" && (issues.length ? <div role="alert"><p>{issues[0]}</p><button type="button" className={styles.secondary} onClick={() => setRoom("culture")}>Corriger les dimensions sur le plan</button></div> : <KqWarehousePostHarvest kind={room} state={draft} installedState={snapshot.state} billing={snapshot.storageClimateBilling} disabled={locked} onPlaceDevice={placeDevice} onEditZone={editServiceZone} onUpgradeZone={upgradeServiceZone} onSetStorageClimate={setStorageClimate} />)}
               {room === "processing" && <>
-                <div className={styles.roomIntro}><div><h3>Mes machines</h3><p>Achète, améliore et entretiens tes machines. La transformation et la vente de tes lots se préparent dans Commerce.</p></div></div>
-                {dirty ? <p className={styles.warning}>Enregistre ou annule ton aménagement avant de modifier les machines de l’atelier.</p> : <div className={styles.workshop} data-warehouse-workshop>
-                  {workshopShop ? <>
+                <p className={styles.workshopIntro}>Prépare tes fleurs avant le jury, puis équipe tes filières de transformation.</p>
+                <nav className={styles.workshopTabs} aria-label="Activités de l’atelier" data-workshop-tabs>
+                  <button type="button" aria-pressed={workshopTab === "trim"} disabled={workshopBusy} onClick={() => setWorkshopTab("trim")}><Scissors size={18} aria-hidden="true" /><span><strong>Trim</strong><small>Préparer les fleurs</small></span></button>
+                  <button type="button" aria-pressed={workshopTab === "machines"} disabled={workshopBusy} onClick={() => setWorkshopTab("machines")}><Wrench size={18} aria-hidden="true" /><span><strong>Machines</strong><small>Équiper et entretenir</small></span></button>
+                </nav>
+                {dirty ? <p className={styles.warning}>Enregistre ou annule ton aménagement avant de travailler dans l’atelier.</p> : <div className={styles.workshop} data-warehouse-workshop data-workshop-section={workshopTab}>
+                  {workshopTab === "trim" ? <KqWorkshopTrimDesk initialFlowerId={initialFlowerId} initialEmployeeId={initialEmployeeId} onBusyChange={setWorkshopBusy} disabled={pending || loading} onOpenHarvests={onOpenHarvests} /> : workshopShop ? <>
                     <button className={styles.secondary} type="button" disabled={workshopBusy} onClick={() => setWorkshopShop(false)}>Retour à mes machines</button>
                     {workshopEquipmentCode === "COMPUTER" ? <KqCommerceComputer onBusyChange={setWorkshopBusy} /> : <KqEquipmentCatalogModal embedded workshopOnly initialEquipmentCode={workshopEquipmentCode} onBusyChange={setWorkshopBusy} onClose={() => setWorkshopShop(false)} />}
                   </> : <KqWarehouseEntry embedded workshopOnly initialEquipmentCode={workshopEquipmentCode} onBusyChange={setWorkshopBusy} onClose={() => setRoom("storage")} onOpenShop={openWorkshopShop} />}
                 </div>}
-                <div className={styles.destination} data-warehouse-commerce-access><p>{initialFlowerId ? "Retrouve le lot sélectionné pour préparer sa vente." : "Tes machines sont disponibles pour préparer tes ventes."}</p>{onOpenMarket ? <button className={styles.primary} type="button" disabled={workshopBusy || pending || dirty} onClick={() => onOpenMarket(initialFlowerId)}>Préparer la vente dans Commerce<ArrowRight size={16} aria-hidden="true" /></button> : <Link className={styles.primary} href={destinationHref("market", initialFlowerId)}>Préparer la vente dans Commerce<ArrowRight size={16} aria-hidden="true" /></Link>}</div>
+                {workshopTab === "machines" ? <div className={styles.destination} data-warehouse-commerce-access><p>Après le jury, choisis la filière de ton lot dans Commerce. Les machines installées ici seront utilisées pour sa transformation.</p>{onOpenMarket ? <button className={styles.primary} type="button" disabled={workshopBusy || pending || dirty} onClick={() => onOpenMarket(initialFlowerId)}>Choisir un lot à transformer<ArrowRight size={16} aria-hidden="true" /></button> : <Link className={styles.primary} href={destinationHref("market", initialFlowerId)}>Choisir un lot à transformer<ArrowRight size={16} aria-hidden="true" /></Link>}</div> : null}
               </>}
               {room === "storage" && <div>
                 {dirty && <p className={styles.warning}>Enregistre ou annule ton aménagement avant de déplacer les récoltes.</p>}
@@ -834,7 +845,17 @@ export function KqWarehouse({ embedded = false, draftOwnerId, initialSection = "
               {!("kind" in menuZone) && <button type="button" className={styles.secondary} data-warehouse-zone-action="buddies" disabled={selectedLocked || !zoneCultures} onClick={showZoneBuddies}><Sprout size={20} aria-hidden="true" /><span><strong>Buddies</strong><small>Choisir la variété de cette zone</small></span></button>}
               <button type="button" className={styles.danger} data-warehouse-zone-action="remove" disabled={selectedLocked && removalAttempt.current?.zoneId !== menuZone.id} onClick={() => setZoneMenuPage("remove")}><Trash2 size={20} aria-hidden="true" /><span><strong>Supprimer</strong><small>{api.isTutorial || "kind" in menuZone ? "Remettre le matériel en réserve" : "Garder le matériel ou le revendre"}</small></span></button>
             </div>
-            {menuCondition && menuCondition.wearPercent !== null && <details><summary>Usure et rendement</summary><p>Chaque culture terminée ajoute 5 points d’usure. Le matériel en réserve ne s’use pas.</p><p>À 50 % d’usure, le matériel conserve 75 % de son rendement potentiel. À 100 % d’usure, il en conserve 50 %.</p></details>}
+            {menuCondition && menuCondition.wearPercent !== null && <details><summary>Usure et rendement</summary><KqHelpDashboard>
+              <KqHelpGrid art="warehouse" items={[
+                { label: "Chaque culture terminée", value: "+5 points d’usure", art: "help-culture" },
+                { label: "Matériel en réserve", value: "Aucune usure", art: "help-workshop" },
+              ]} />
+              <KqBarChart title="Rendement potentiel conservé" items={[
+                { label: "Usure à 0 %", value: 100, displayValue: "100 % du potentiel" },
+                { label: "Usure à 50 %", value: 75, displayValue: "75 % du potentiel", tone: "gold" },
+                { label: "Usure à 100 %", value: 50, displayValue: "50 % du potentiel", tone: "red" },
+              ]} />
+            </KqHelpDashboard></details>}
             <details><summary>Dimensions et réglages de la zone</summary><ZoneDialogAction className={styles.secondary} action="dimensions" disabled={selectedLocked} onClick={() => { setZoneMenuId(null); setManaging(true); configureZone(menuZone.id); }}>Modifier les dimensions</ZoneDialogAction></details>
           </> : zoneMenuPage === "buddies" && !("kind" in menuZone) ? <div data-warehouse-zone-buddies>
             <p>Le Buddie choisi sera affecté à cette zone. Enregistre le plan pour valider.</p>

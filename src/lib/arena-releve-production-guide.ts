@@ -1,6 +1,6 @@
 import { getReleveWarehouseGuide } from './arena-releve-warehouse-guide';
 import type { ReleveGuideStep } from "@/lib/arena-releve-guide";
-import { canPerformKqBasicCare, KQ_BASIC_CARE_PRICE_CENTS } from "./kanab-quest-care";
+import { canPerformKqBasicCare, getKqCarePricing } from "./kanab-quest-care";
 import { canActivateKqHeritage, canPlayKqCard, getKqHandCodes, getKqStageDisplayName, isKqCultureDead, KQ_ACTIVE_CARDS, KQ_STAGES } from "./kanab-quest-game";
 import { getKqReleveHarvests, type KqReleveProductionChapter, type KqReleveProductionState } from "./kanab-quest-releve-production";
 import { projectKqStorageLot } from "./kanab-quest-storage";
@@ -44,10 +44,14 @@ export function getReleveProductionGuide(chapter: KqReleveProductionChapter, sta
     }
     add("confirm-card", "Vérifie le coût de ce soutien", "Vérifie l’effet et le coût en XP. Brûler et jouer consomme une copie de l’album d’essai.", "[data-culture-confirm-card]");
     if (!marked("health-read")) {
+      add("health-tab", "Commence par observer", "Choisis Santé pour consulter le suivi de tes cultures.", '[data-culture-tab="care"][aria-selected="false"]');
       add("health", "Commence par observer", "Ouvre Soins et suivi : santé, problèmes et interventions sont gratuits à consulter.", '[data-care-toggle][aria-expanded="false"]');
     }
     if (game.phase === "complete") {
-      if (!marked("recap-read")) add("recap", "Ta récolte a une histoire", "Ouvre le journal et les cartes de ta campagne pour retrouver les résultats.", "[data-culture-campaign-recap] > summary", "summary");
+      if (!marked("recap-read")) {
+        add("recap-tab", "Ta récolte a une histoire", "Choisis Journal pour retrouver les résultats et les cartes de ta campagne.", '[data-culture-tab="journal"][aria-selected="false"]');
+        add("recap", "Ta récolte a une histoire", "Ouvre le journal et les cartes de ta campagne pour retrouver les résultats.", "[data-culture-campaign-recap] > summary", "summary");
+      }
       return steps;
     }
     const stageName = getKqStageDisplayName(KQ_STAGES[game.stageIndex]);
@@ -55,9 +59,11 @@ export function getReleveProductionGuide(chapter: KqReleveProductionChapter, sta
       add(`advance-${game.stageIndex}`, game.stageIndex === 5 ? "Découvre ce que tu as produit" : `${stageName} : bilan enregistré`, game.stageIndex === 5 ? "Découvre la récolte de tes Buddies et la quantité obtenue !" : "Regarde les effets de ce bilan, puis passe à l’étape suivante.", '[data-culture-primary-action][data-action="advance"]');
       return steps;
     }
-    if (game.care && game.care.vitality < 65 && canPerformKqBasicCare(game).allowed && state.cashCents >= KQ_BASIC_CARE_PRICE_CENTS) {
-      add(`care-open-${game.stageIndex}`, "La vitalité baisse", "Ouvre le suivi : un entretien commun à 5 € peut aider au prochain bilan.", '[data-care-toggle][aria-expanded="false"]');
-      add(`care-${game.stageIndex}`, "Un entretien pour accompagner la reprise", "Prévois l’entretien à 5 € pour le prochain bilan. Il ne répare pas les pertes déjà subies.", "[data-care-basic]");
+    if (game.care && game.care.vitality < 65 && canPerformKqBasicCare(game).allowed && state.cashCents >= getKqCarePricing(game).basicCarePriceCents) {
+      add(`care-tab-${game.stageIndex}`, "La vitalité baisse", "Choisis Santé pour vérifier les soins disponibles et leur prix.", '[data-culture-tab="care"][aria-selected="false"]');
+      add(`care-section-${game.stageIndex}`, "Les soins disponibles", "Choisis Intervenir pour vérifier le prix de l’entretien et ta réserve de produits.", '[data-care-section="intervention"][aria-selected="false"]');
+      add(`care-open-${game.stageIndex}`, "La vitalité baisse", "Ouvre le suivi : le tarif de l’entretien commun dépend de la surface cultivée.", '[data-care-toggle][aria-expanded="false"]');
+      add(`care-${game.stageIndex}`, "Un entretien pour accompagner la reprise", "Vérifie le prix du passage sur toutes tes cultures. L’entretien ne répare pas les pertes déjà subies.", "[data-care-basic]");
     }
     const timing = game.phase === "prepare" ? "before-roll" : "after-roll";
     const alreadyTriedTiming = game.usedCards.some(code => KQ_ACTIVE_CARDS.find(card => card.code === code)?.timing === timing);
@@ -65,13 +71,17 @@ export function getReleveProductionGuide(chapter: KqReleveProductionChapter, sta
       .filter(card => card && card.timing === timing && canPlayKqCard(game, card).allowed && state.supportInventory[card.code] > 0)
       .sort((left, right) => left!.xpCost - right!.xpCost)[0];
     if (!alreadyTriedTiming && playable) {
+      add(`hand-tab-${game.stageIndex}`, "Tes cartes sont là", game.phase === "prepare" ? "Choisis Cartes pour préparer ta main avant les dés." : "Choisis Cartes pour regarder tes réactions avant de valider.", '[data-culture-tab="cards"][aria-selected="false"]');
       add(`hand-open-${game.stageIndex}`, "Tes cartes sont là", game.phase === "prepare" ? "Ouvre Préparer une carte pour regarder ta main." : "Ouvre Jouer une réaction avant de valider.", "[data-culture-hand]:not([open]) > summary", "summary");
       add(`card-${game.stageIndex}-${timing}`, game.phase === "prepare" ? "Essaie une préparation" : "Tu peux encore réagir", `Ouvre « ${playable.name} » : effet et coût de ${playable.xpCost} XP à vérifier avant de jouer.`, `${attribute("action-card", playable.code)} > [data-game-card-artwork]`, 'element');
     }
     if (game.phase === "prepare") {
       add(`roll-${game.stageIndex}`, `${stageName} : à toi de lancer`, "Lance les dés : 1 = danger, 4 ou 5 = réussite, 6 = étincelle. Tes soutiens sont prêts ?", '[data-culture-primary-action][data-action="roll"]');
     } else {
-      if (canActivateKqHeritage(game).allowed) add(`heritage-${game.stageIndex}`, "Ton Héritage peut intervenir", "Tu peux activer ton Héritage maintenant, ou le garder et valider le résultat.", '[aria-label^="Héritage équipé"] button');
+      if (canActivateKqHeritage(game).allowed) {
+        add(`heritage-tab-${game.stageIndex}`, "Ton Héritage peut intervenir", "Choisis Cartes pour retrouver le pouvoir de ton Héritage.", '[data-culture-tab="cards"][aria-selected="false"]');
+        add(`heritage-${game.stageIndex}`, "Ton Héritage peut intervenir", "Tu peux activer ton Héritage maintenant, ou le garder et valider le résultat.", '[aria-label^="Héritage équipé"] button');
+      }
       add(`resolve-${game.stageIndex}`, "Valide ton choix", "Tes réactions sont terminées ? Vérifie la prévision, puis valide ce bilan.", '[data-culture-primary-action][data-action="resolve"]');
     }
     return steps;

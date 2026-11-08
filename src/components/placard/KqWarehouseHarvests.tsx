@@ -9,9 +9,11 @@ import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqHarvestStep, getKqStorageHarvestOverview, isKqHarvestBeforeJury, type KqHarvestMarketSection } from "@/lib/kanab-quest-harvests";
 import { KQ_STORAGE_CONTAINER_ARTWORK } from "@/lib/kanab-quest-storage-artwork";
 import { getKqStoragePlacementAvailability } from "@/lib/kanab-quest-storage-placement";
+import { KQ_WORKSHOP_TRIM_HREF } from "@/lib/kanab-quest-hub";
 import { KqProgressMeter } from "./KqVisuals";
 import { KqStoragePlacement, openKqStoragePlacement } from "./KqStoragePlacement";
 import { KqLotSummary } from "./KqLotSummary";
+import { useKqTutorialApi } from "./KqTutorialApiContext";
 import styles from "./KqWarehouseHarvests.module.css";
 
 const known = (value: unknown): value is number => typeof value === "number" && Number.isFinite(value);
@@ -44,6 +46,7 @@ type Props = {
 };
 
 export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams, storageCapacityGrams, initialFlowerId, disabled = false, error, onRetry, onOpenWorkshop, onOpenArena, juryReturnView = "harvests", onSellOverflow, onPlace, onProtectOverflow, onOpenHarvests, warehouseHref, showOverviewLink = true }: Props) {
+  const api = useKqTutorialApi();
   const section = useRef<HTMLElement>(null);
   const selectionNotice = useRef<HTMLDivElement>(null);
   const requestedFlower = useRef(initialFlowerId);
@@ -102,6 +105,8 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
       {showOverviewLink && (onOpenHarvests ? <button type="button" onClick={() => onOpenHarvests(initialFlowerId)}>Toutes mes récoltes <ArrowRight size={16} aria-hidden="true" /></button> : <Link href={`/arene/placard?view=harvests${initialFlowerId ? `&flower=${encodeURIComponent(initialFlowerId)}` : ""}`}>Toutes mes récoltes <ArrowRight size={16} aria-hidden="true" /></Link>)}
     </header>
 
+    {!api.isTutorial && lots.length > 0 ? <p className={styles.trimLink}><Link href={KQ_WORKSHOP_TRIM_HREF}>Faire le trim à l’Atelier <ArrowRight size={16} aria-hidden="true" /></Link><span>Les nouvelles récoltes passent par le trim avant le jury et la vente. Tu peux le faire toi-même ou le confier au personnel.</span></p> : null}
+
     {error && !initialFlowerId && <div className={styles.error} role="alert"><CircleAlert size={18} aria-hidden="true" /><span>{error}</span>{onRetry && <button type="button" disabled={disabled} onClick={onRetry}><RefreshCw size={15} aria-hidden="true" /> Réessayer</button>}</div>}
     {initialFlowerId && selection !== "selected" ? <div ref={selectionNotice} className={styles.selectionNotice} data-storage-selection={selection} tabIndex={-1} role={selection === "unavailable" ? "alert" : "status"}>
       <div><strong>Lot {initialFlowerId.slice(0, 8)}</strong><p>{selection === "loading" ? "Recherche dans le stockage…" : selection === "missing" ? "Ce lot n’apparaît plus dans le stockage. Il a pu être vendu ou transformé." : "Impossible de vérifier ce lot pour le moment."}</p>{selection === "unavailable" && error ? <small>{error}</small> : null}</div>
@@ -129,7 +134,11 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
         const placement = getKqStoragePlacementAvailability(storage, lot.flowerId);
 
         const selected = selection === "selected" && lot.flowerId === initialFlowerId;
-        return <article key={lot.flowerId} className={styles.lot} data-conservation-lot={lot.flowerId} data-ready={ready && lotCapacity?.overflowUnits === 0} data-selected={selected || undefined} data-storage-selection={selected ? "selected" : undefined} aria-label={`Lot ${lot.varietyName} · ${lot.flowerId.slice(0, 8)}`} tabIndex={-1}>
+        return <article key={lot.flowerId} className={styles.lot} data-conservation-lot={lot.flowerId} data-ready={ready && lotCapacity?.overflowUnits === 0}
+          data-guide-flower-id={lot.flowerId}
+          data-guide-curing-ready={ready || undefined}
+          data-guide-lot-protected={known(total) && total > 0 && known(protectedGrams) && protectedGrams >= total && lotCapacity?.overflowUnits === 0 || undefined}
+          data-selected={selected || undefined} data-storage-selection={selected ? "selected" : undefined} aria-label={`Lot ${lot.varietyName} · ${lot.flowerId.slice(0, 8)}`} tabIndex={-1}>
           <div className={styles.lotSheet}>
             <KqLotSummary source={{ kind: "storage", lot }} level={4} selected={selected} artwork={artwork ? <Image src={artwork.src} alt="" width={64} height={64} sizes="48px" /> : <Package size={30} />}>
             <div className={styles.lotAction}>

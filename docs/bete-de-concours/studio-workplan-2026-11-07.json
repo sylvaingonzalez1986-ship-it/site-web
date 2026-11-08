@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-07",
+  "request": "Continuer à rendre l’interface vivante, en gardant les règles et les vrais personnages de Kanab Quest.",
+  "scope": "Plan de travail Personnel : scènes d’activité par poste, lecture des tâches, pause des décorations. Aucune migration ni publication.",
+  "implementation": {
+    "scene": "Chaque poste conserve sa vignette KqPrintedArt. Une tâche confirmée place son vrai acteur au premier plan ; en cas de plusieurs tâches, le travail en cours est prioritaire sur la file d’attente. Les autres personnes et leurs heures restent dans les lignes et détails.",
+    "identity": "Les salariés utilisent KqStaffPortrait en pied. Le joueur utilise son vrai profil via useKqSocialPlayer ; si le profil manque ou échoue, le pictogramme neutre existant reste disponible. Aucune identité inventée.",
+    "clock": "Horaires explicitement estimés à partir de serverNow et snapshotReceivedAt, avec une horloge monotone locale. À l’échéance, l’acteur devient immobile et la tâche passe visuellement À vérifier ; seule une réponse du jeu confirme le résultat. Aucun règlement, gain ou changement métier déclenché par l’horloge.",
+    "states": "Poste libre, travail en cours, tâche à venir, résultat à vérifier. Compteurs calculés avec les vraies tâches. L’aperçu du dépôt reste marqué À préparer et ne remplace jamais l’acteur confirmé.",
+    "motion": "Petits mouvements du personnage et d’un accessoire adapté au poste. Les bâtiments restent fixes. Pause conservée entre onglets Personnel, réduction des mouvements en direct, suspension hors écran, onglet masqué et lecture indisponible. La pause ne change pas les tâches ni le temps du jeu.",
+    "art": "Deux nouvelles images alpha produites avec image_gen intégré : arrosoir et téléphone de communication. Dossier et carnet existants réutilisés ; aucun accessoire ajouté à la transformation ou au trim dont le mode n’est pas connu. Prompts et chemins dans workplan-motion-art-provenance.json.",
+    "geometry": "Colonnes explicites dans les boutons de poste pour garder une largeur identique indépendamment du libellé. Canvas en pied contraints à la hauteur de la scène pour dégager les enseignes."
+  },
+  "validation": {
+    "unit": "65 tests réussis : activité visuelle, règles Personnel et profil joueur ; dont 5 tests de frontières horaires et priorité des tâches.",
+    "static": "TypeScript global, ESLint ciblé et contrôle du diff réussis. Les derniers ajustements concernent uniquement la géométrie CSS.",
+    "browser": "9 groupes des scènes passent après les deux corrections CSS : 320/390/1440 px, sept postes, identités et profils absents/503, pause, mouvement réduit, hors écran, onglet masqué, erreur de lecture, échéance estimée puis confirmation réelle, clavier et tactile. Les 8 groupes existants du plan passent avant la dernière contrainte de hauteur du canvas ; le parcours clavier/tactile et les nouvelles assertions géométriques repassent après. Aucun POST ajouté, appel externe ou erreur navigateur.",
+    "visual": "Captures finales mobile et bureau inspectées. Scènes de largeur identique et corps contenus dans leur scène, enseignes et valeurs dégagées. Vidéo finale de 4 secondes, 1440×1050, 24 images/s, décodée et inspectée.",
+    "reports": [
+      "output/placard-staff-ui/work-scene-report.json",
+      "output/placard-staff-ui/work-plan-report.json"
+    ],
+    "preview": "output/placard-staff-ui/work-scene-motion-demo.webm",
+    "limits": "Moteur et données d’essai locaux ; aucun appel métier de production. Ce travail ne remplace pas un essai avec de nouveaux joueurs."
+  },
+  "files": [
+    "src/components/placard/KqStaffStationScene.tsx",
+    "src/components/placard/KqStaffStationScene.module.css",
+    "src/components/placard/KqStaffWorkPlan.tsx",
+    "src/components/placard/KqStaffWorkPlan.module.css",
+    "src/components/placard/KqStaffDesk.tsx",
+    "src/lib/kanab-quest-staff-activity.ts",
+    "src/lib/kanab-quest-staff-activity.test.ts",
+    "scripts/audit-placard-staff-ui.mjs"
+  ],
+  "next": "Observer la compréhension des tâches en cours, de la file d’attente et de la confirmation pendant l’essai avec de nouveaux joueurs. Conserver les tranches déjà validées.",
+  "deployment": "Local, non publié."
+}

@@ -1,0 +1,96 @@
+{
+  "date": "2026-11-07",
+  "status": "Implémenté localement ; aucune migration ni publication.",
+  "scope": "Premier lot du plan d'audit global : UX-01 (guide/trim) et UX-02 (recommandation selon les heures).",
+  "audit": "docs/bete-de-concours/audit-studio-global-2026-11-07.json",
+  "changes": [
+    "Le guide comporte 29 objectifs. Le trim suit le rangement et précède l'attente d'affinage : il peut être réalisé pendant l'affinage.",
+    "L'Atelier s'ouvre sur la récolte suivie. Les preuves viennent du snapshot chargé dans le vrai Atelier, y compris après sélection manuelle du lot sans identifiant dans l'URL.",
+    "Le guide distingue trim requis, réservé et en cours. Une tâche partielle ne valide pas le trim ; seule la confirmation du lot entier ou l'absence confirmée de trim bloquant valide le prérequis.",
+    "Les lots historiques et les trims terminés sortis des trente résultats récents restent admissibles sans inventer leur date ou méthode. Un ancien verdict/une vente déjà acquis préserve les sauvegardes, leur lot et leur choix de fermer le guide.",
+    "Le changement de récolte remet également le trim à vérifier. Les explications de récolte, stockage, jury et carnet incluent le trim.",
+    "La jauge transmet sa lecture serveur au Quartier sans deuxième requête propre au résumé. À 0 h, le résumé propose le planning gratuit ; à 0,5 h, les gestes courants restent accessibles et le lancement à 1 h est distingué de la préparation gratuite.",
+    "Le renouvellement s'affiche directement avec l'heure de Paris. Les urgences de stockage, dettes et ventes bloquées restent prioritaires ; le jury reste gratuit. Une lecture indisponible ne devient jamais zéro ni une réserve supposée disponible.",
+    "Les commandes de culture déclenchent une relecture des heures, ainsi que le changement de vue, le retour de visibilité et le focus. Les interrogations automatiques de file du jury sont exclues de cette nouvelle notification."
+  ],
+  "implementation": {
+    "progression": [
+      "src/lib/kanab-quest-farm-progress.ts",
+      "src/lib/kanab-quest-farm-guide.ts",
+      "src/components/placard/KqFarmGuide.tsx",
+      "src/components/placard/KqTrimWorkbench.tsx"
+    ],
+    "workday": [
+      "src/lib/kanab-quest-player-work.ts",
+      "src/lib/kanab-quest-hub.ts",
+      "src/components/placard/KqPlayerWorkStatus.tsx",
+      "src/components/placard/KqPlacardLobby.tsx",
+      "src/components/placard/PlacardPlayerShell.tsx",
+      "src/components/placard/KanabQuestDicePrototype.tsx"
+    ],
+    "explanations": [
+      "src/components/placard/KqHarvestMoment.tsx",
+      "src/components/placard/KqHarvests.tsx",
+      "src/components/placard/KqHarvestStorage.tsx"
+    ]
+  },
+  "validation": {
+    "unitTests": {
+      "passed": 123,
+      "files": [
+        "src/lib/kanab-quest-farm-progress.test.ts",
+        "src/lib/kanab-quest-farm-guide.test.ts",
+        "src/lib/kanab-quest-hub.test.ts",
+        "src/lib/kanab-quest-hub-attention.test.ts"
+      ]
+    },
+    "typescript": "npx.cmd tsc --noEmit : réussi après intégration.",
+    "lint": "ESLint ciblé des fichiers concernés : réussi ; dernières retouches contrôlées séparément.",
+    "diff": "Contrôle ciblé du diff réussi.",
+    "browser": [
+      {
+        "command": "node scripts/audit-placard-journey-continuity.mjs --guide-only",
+        "groups": 13,
+        "report": "output/placard-journey-continuity/guide-report.json",
+        "checks": "Identité des lots, ouverture Atelier, trim requis/réservé/en cours/partiel/terminé, absence historique confirmée, échec de lecture, sélection manuelle sans URL, heures 12/0,5/0, renouvellement serveur, heures relues après vrais contrôles de lancement/lancer/résolution, clavier et sauvegardes."
+      },
+      {
+        "command": "node scripts/audit-placard-journey-continuity.mjs --staff-guide-only",
+        "groups": 4,
+        "report": "output/placard-journey-continuity/staff-guide-report.json",
+        "checks": "Ancien guide déjà passé au jury, conservation du lot et du mode fermé, quatre découvertes Personnel sans embauche ni dépense, chargement/erreur/reprise."
+      },
+      {
+        "command": "node scripts/audit-placard-journey-continuity.mjs --workshop-only",
+        "groups": 3,
+        "report": "output/placard-journey-continuity/workshop-report.json",
+        "checks": "Vrai Atelier Trim/Machines/Trim, bon lot, confirmation verrouillant la navigation, annulation sans mutation."
+      }
+    ],
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "browserErrors": 0,
+    "externalRequests": 0,
+    "screenshotsInspected": [
+      "output/placard-journey-continuity/guide-trim-guidance-320.png",
+      "output/placard-journey-continuity/guide-trim-required-320.png",
+      "output/placard-journey-continuity/guide-workday-exhausted-390.png"
+    ],
+    "review": "Revue indépendante ciblée : deux défauts de reprise corrigés (heures après gestes de culture et trim sélectionné sans lien profond), absence de cycle de notifications vérifiée. Notification limitée aux commandes de culture.",
+    "harnessCorrection": "La recette Atelier/Personnel utilisait encore un transport sans GET social/player. Ajout d'un profil de test explicitement absent, avec identité de repli, puis recettes relancées avec succès ; aucune modification du service réel."
+  },
+  "limits": [
+    "API et données en mémoire : les changements de trim et de journée sont des snapshots simulés, pas des transactions Supabase exécutées.",
+    "Seuls les trois contrôles de culture explicitement exercés écrivent dans le moteur local de test ; aucune commande de joueur distante.",
+    "Les essais avec participants et appareils physiques restent à réaliser. Ce lot ne traite pas encore le plafond des quarante contrats ni les nouvelles poses d'animation.",
+    "La dernière retouche raccourcit le texte du trim et ajoute le trim dans l'explication du changement de lot ; les captures de guide montrent encore le texte plus long, sans changement de structure."
+  ],
+  "next": {
+    "task": "Supprimer le blocage du recrutement après quarante contrats cumulés.",
+    "auditFinding": "QA-01",
+    "preserve": "Historique de paie, tâches et reçus ; plafond de huit salariés actifs. Concevoir et valider un archivage durable avant toute activation distante."
+  }
+}

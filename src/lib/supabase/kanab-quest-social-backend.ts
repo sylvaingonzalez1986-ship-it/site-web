@@ -1,6 +1,8 @@
 import "server-only";
 import { randomInt } from "node:crypto";
 import { createSupabaseServiceClient } from "./admin";
+import { getKqPlayerWorkErrorMessage } from "../kanab-quest-player-work-errors";
+import { settleKqStaffIfAvailable } from "./kanab-quest-staff-backend";
 import { applyKqSocialCommand, isKqSocialSnapshot, normalizeKqSocialSnapshot, parseKqSocialCommand, refreshKqSocialSnapshot, type KqSocialCommand, type KqSocialSnapshot } from "../kanab-quest-social";
 import { isKqSocialSnapshot as isLegacySnapshot } from "../kanab-quest-social-v1";
 import { createKqSocialCultureContext, projectKqSocialCultureContext, type KqSocialCultureContext } from "../kanab-quest-social-culture";
@@ -23,6 +25,8 @@ const errors: Record<string, [string, number]> = {
 };
 
 function failure(error: { message: string }) {
+  const workError = getKqPlayerWorkErrorMessage(error.message);
+  if (workError) return new KqSocialError(workError, 409);
   for (const [code, [message, status]] of Object.entries(errors)) {
     if (new RegExp(`\\b${code}\\b`).test(error.message)) return new KqSocialError(message, status);
   }
@@ -55,6 +59,7 @@ export async function getKqSocial(userId: string, command?: KqSocialCommand): Pr
   const parsed = command === undefined ? null : parseKqSocialCommand(command);
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(userId)
     || (command !== undefined && !parsed)) throw new KqSocialError(errors.social_invalid[0], 400);
+  await settleKqStaffIfAvailable(userId);
   const client = createSupabaseServiceClient();
   const read = await client.rpc("rpc_kq_social_v2_read", { p_user_id: userId, p_command: parsed });
   if (read.error) throw failure(read.error);

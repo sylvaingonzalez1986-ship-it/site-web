@@ -30,8 +30,8 @@ if(scenario==='healthy')game.care.problems=[];
 if(scenario==='heat')game.care.problems=['MITES','HEAT'].map(code=>({code,severity:2,status:'confirmed',trend:'stable',appearedAt:0,variant:0}));
 if(scenario==='late')game.stageIndex=4;
 if(scenario==='active')game=applyKqCareProduct(game,'CARE-APHIDIUS');
-const catalog=KQ_CARE_PRODUCTS.map(product=>({...product,priceCents:product.code==='CARE-APHIDIUS'&&scenario==='server-price'?2300:product.priceCents})).filter(product=>scenario!=='missing-price'||product.code!=='CARE-APHIDIUS');
-let wallet={cashCents:scenario==='poor'?500:scenario==='replay-poor'?1200:35000,inventory:['empty','purchase','replay','replay-poor'].includes(scenario)?[]:[{productCode:scenario==='heat'?'CARE-PHYTOSEIULUS':'CARE-APHIDIUS',quantity:scenario==='apply-replay'?1:2}],basicCarePriceCents:500,catalog};
+const catalog=KQ_CARE_PRODUCTS.map(product=>({...product,priceCents:scenario==='surface'?product.priceCents*25:product.code==='CARE-APHIDIUS'&&scenario==='server-price'?2300:product.priceCents})).filter(product=>scenario!=='missing-price'||product.code!=='CARE-APHIDIUS');
+let wallet={cashCents:scenario==='poor'?500:scenario==='replay-poor'?1200:35000,inventory:['empty','purchase','replay','replay-poor','surface'].includes(scenario)?[]:[{productCode:scenario==='heat'?'CARE-PHYTOSEIULUS':'CARE-APHIDIUS',quantity:scenario==='apply-replay'?1:2}],basicCarePriceCents:scenario==='surface'?12500:500,areaM2:scenario==='surface'?25:null,pricingUnits:scenario==='surface'?25:1,catalog};
 const requests=[],receipts=new Map();let charges=0,applications=0,failed=false,readFailure=scenario==='error',holdRead=scenario==='loading';
 const response=(body,status=200)=>new Response(JSON.stringify(body),{status,headers:{'content-type':'application/json'}});
 window.__careSnapshot=()=>({wallet,requests,charges,applications,receipts:[...receipts.keys()],game});
@@ -60,6 +60,8 @@ const request=async(url,init)=>{
  }
  const product=wallet.catalog.find(product=>product.code===input.productCode);
  if(!product||input.quantity!==1||!input.requestKey)throw Error('Purchase contract mismatch');
+ if(scenario==='changed-price'&&!failed){failed=true;product.priceCents=2500;return response({error:'Le prix ou la surface a changé. Actualise le suivi avant de confirmer.'},409);}
+ if(input.expectedPriceCents!==product.priceCents)throw Error('The purchase must confirm the displayed server price');
  if(wallet.cashCents<product.priceCents)return response({error:'Trésorerie insuffisante.'},409);
  wallet.cashCents-=product.priceCents;charges++;
  const owned=wallet.inventory.find(item=>item.productCode===product.code);if(owned)owned.quantity++;else wallet.inventory.push({productCode:product.code,quantity:1});
@@ -154,6 +156,15 @@ try{
   assert.equal((await state()).wallet.cashCents,32700);assert.equal((await state()).applications,0);
   pass('purchase uses the server catalogue price and never applies the charge automatically');
 
+  await visit('?scenario=changed-price');await settled();
+  await page.click(action('CARE-APHIDIUS','buy'));await page.waitForFunction(()=>document.querySelector('[data-care-product="CARE-APHIDIUS"]').textContent.includes('25,00'));await settled();
+  assert.equal((await state()).charges,0);
+  assert.match(await page.$eval(action('CARE-APHIDIUS','buy'),node=>node.textContent),/Acheter/);
+  await page.click(action('CARE-APHIDIUS','buy'));await page.waitForFunction(()=>window.__careSnapshot().charges===1);await settled();
+  const changed=await state(),commands=changed.requests.filter(item=>item.method==='POST');
+  assert.equal(changed.wallet.cashCents,32500);assert.equal(commands[1].input.expectedPriceCents,2500);assert.notEqual(commands[0].input.requestKey,commands[1].input.requestKey);
+  pass('explicit stale-price rejection releases the old quote and requires a fresh confirmed purchase');
+
   await visit('?scenario=missing-price');await settled();
   assert.equal(await disabled(action('CARE-APHIDIUS','buy')),true);
   assert.doesNotMatch(await page.$eval(product('CARE-APHIDIUS'),node=>node.innerText),/12,00/);
@@ -217,7 +228,7 @@ try{
   pass('receipt retry remains available after refresh shows the original purchase exhausted the budget');
 
   await openIntegrated('stocked');
-  assert.match(await page.$eval('[data-care-reserve-toggle]',node=>node.innerText),/Produits de soin/);
+  assert.match(await page.$eval('[data-care-reserve-toggle]',node=>node.innerText),/Produits de soin/i);
   assert.equal(await page.evaluate(()=>Boolean(document.querySelector('[data-care-reserve-toggle]').compareDocumentPosition(document.querySelector('[data-care-basic-section]'))&Node.DOCUMENT_POSITION_FOLLOWING)),true);
   pass('contextual products are named clearly and placed before optional basic maintenance');
   await page.click(action('CARE-APHIDIUS','use'));
@@ -245,7 +256,7 @@ try{
   await page.waitForFunction(()=>window.__careSnapshot().applications===1);await settled();
   assert.equal((await state()).wallet.inventory[0].quantity,0);
   assert.equal(await disabled(action('CARE-APHIDIUS','use')),false);
-  assert.match(await page.$eval(action('CARE-APHIDIUS','use'),node=>node.innerText),/Vérifier/);
+  assert.match(await page.$eval(action('CARE-APHIDIUS','use'),node=>node.innerText),/Vérifier/i);
   await page.click(action('CARE-APHIDIUS','use'));
   await page.waitForFunction(()=>window.__careSnapshot().requests.filter(item=>item.url.includes('/runs/')&&item.method==='POST').length===2);await settled();
   const applyReplay=await state(),applyPosts=applyReplay.requests.filter(item=>item.url.includes('/runs/')&&item.method==='POST');
@@ -270,5 +281,27 @@ try{
   pass('standalone shop keeps its two catalogue sections without culture-only actions');
  }
  assert.deepEqual(errors,[]);assert.deepEqual(blockedRequests,[]);pass('no browser errors or external requests');
+ if(!baseline){
+  for(const width of [320,390,1440]){
+   await page.setViewport({width,height:844});await page.goto(origin+'/?integrated&scenario=surface',{waitUntil:'networkidle0'});
+   await page.waitForSelector('[data-care-toggle]');await page.click('[data-care-toggle]');
+   await page.waitForFunction(()=>document.querySelector('[data-care-basic]')?.textContent.includes('125')||[...document.querySelectorAll('button')].some(button=>button.textContent.includes('Payer l’entretien')&&button.textContent.includes('125')));
+   await page.click('[data-care-reserve-toggle]');await ready();
+   await page.waitForFunction(()=>document.querySelector('[data-care-reserve-status]')?.dataset.careReserveStatus==='ready');
+   assert.match(await page.$eval(shop,node=>node.innerText),/25 m²/);
+   assert.match(await page.$eval('[data-care-product="CARE-APHIDIUS"]',node=>node.innerText),/300/);
+   await page.focus('[data-care-product="CARE-APHIDIUS"] [data-care-product-buy]');await page.keyboard.press('Enter');
+   await page.waitForFunction(()=>window.__careSnapshot().charges===1&&!document.querySelector('[data-care-product="CARE-APHIDIUS"] [data-care-product-use]').disabled);
+   const result=await page.evaluate(()=>window.__careSnapshot());
+   assert.equal(result.wallet.cashCents,5000);assert.equal(result.applications,0);
+   const command=result.requests.find(item=>item.method==='POST').input;
+   assert.equal(command.expectedPriceCents,30000);assert.equal(command.runId,'audit-run');
+   assert(result.requests.some(item=>item.method==='GET'&&item.url.includes('runId=audit-run')));
+   assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth));
+   await page.screenshot({path:resolve(output,`surface-${width}.png`),fullPage:true});
+   pass(`25 m² quote, exact purchase confirmation and no automatic use at ${width}px`);
+  }
+ }
+ assert.deepEqual(errors,[]);assert.deepEqual(blockedRequests,[]);
  await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,phase,checks,metrics,errors,blockedRequests},null,2));console.log(`Care reserve ${phase}: ${checks.length} checks passed.`);
 }catch(error){await page?.screenshot({path:resolve(output,'failure.png'),fullPage:true}).catch(()=>undefined);await writeFile(resolve(output,'report.json'),JSON.stringify({passed:false,phase,checks,metrics,errors,blockedRequests,failure:error.stack},null,2));throw error}finally{await browser?.close();await server.close()}

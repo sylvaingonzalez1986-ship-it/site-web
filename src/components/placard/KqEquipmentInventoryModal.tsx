@@ -236,7 +236,7 @@ export function KqEquipmentInventoryModal({ownedCodes,purchasedCodes,equippedCod
       else if(!event.shiftKey&&document.activeElement===controls.at(-1)){event.preventDefault();controls[0]?.focus();}
     }}>
       <header className={styles.header}>
-        <div><h2 id="equipment-inventory-title" data-arena-tour="warehouse">{workshopOnly?"Mes machines":"L’Entrepôt"}</h2></div>
+        <div><h2 id="equipment-inventory-title" data-arena-tour="warehouse">{workshopOnly?"Le laboratoire":"L’Entrepôt"}</h2></div>
         <div className={styles.balance} data-inventory-balance={inventoryKnown?"known":"unknown"}><small>Trésorerie</small><strong aria-label={inventoryKnown?undefined:"Trésorerie indisponible"}>{inventoryKnown?formatKqCash(cashCents):"—"}</strong></div>{!embedded?<button ref={closeButton} type="button" onClick={onClose} disabled={storageBusy||busy} aria-label="Fermer l’inventaire"><X/></button>:null}
       </header>
       {!inventoryKnown?<div ref={inventoryFeedback} className={styles.inventoryState} data-inventory-state={loading?"loading":"unavailable"} role={loading?"status":"alert"}>

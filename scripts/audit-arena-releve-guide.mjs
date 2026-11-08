@@ -8,11 +8,15 @@ import puppeteer from 'puppeteer-core';
 
 // Follow only the target that Sylvain actually highlights. This deliberately
 // does not repair scrolling or search for the next control on the player's behalf.
-const root = process.cwd(), output = resolve(root, process.argv.includes('--production-only') ? 'output/arena-releve-native-game' : process.argv.includes('--meetings-only') ? 'output/arena-releve-guide-meetings' : process.argv.includes('--smoke') ? 'output/arena-releve-guide-smoke' : 'output/arena-releve-guide');
+const cultureOnly = process.argv.includes('--culture-only');
+const root = process.cwd(), output = resolve(root, cultureOnly ? 'output/arena-releve-culture-carousel' : process.argv.includes('--production-only') ? 'output/arena-releve-native-game' : process.argv.includes('--meetings-only') ? 'output/arena-releve-guide-meetings' : process.argv.includes('--smoke') ? 'output/arena-releve-guide-smoke' : 'output/arena-releve-guide');
 const port = Number(process.argv.find(argument => argument.startsWith('--port='))?.slice(7) ?? 3268), origin = `http://127.0.0.1:${port}`;
 const modules = {
   'warehouse-manifest': `export default ${await readFile(resolve(root, 'public/placard/warehouse-v2/manifest.json'), 'utf8')}`,
-  fixture: `import React from 'react';import{createRoot}from'react-dom/client';import'/src/app/globals.css';import{ArenaLearningHub}from'/src/components/contest/ArenaLearningHub';function App(){const[open,setOpen]=React.useState(false);return React.createElement(React.Fragment,null,React.createElement('button',{'data-open':true,onClick:()=>setOpen(true)},'Apprendre à jouer'),open?React.createElement(ArenaLearningHub,{onClose:()=>setOpen(false)}):null)}createRoot(document.getElementById('root')).render(React.createElement(App));`,
+  fixture: `import React from 'react';import{createRoot}from'react-dom/client';import'/src/app/globals.css';import{ArenaLearningHub}from'/src/components/contest/ArenaLearningHub';
+import{createArenaReleveState}from'/src/lib/arena-releve-session';import{createKqReleveProduction,suggestKqRelevePlan,applyKqReleveProductionAction}from'/src/lib/kanab-quest-releve-production';
+window.__seedCulture=()=>{let production=createKqReleveProduction();const act=action=>production=applyKqReleveProductionAction(production,action);act({type:'draft',warehouse:suggestKqRelevePlan(production)});act({type:'save-plan'});for(let index=0;index<3;index++)act({type:'reveal-buddie'});act({type:'assign',zoneId:production.warehouse.zones[0].id,buddieCode:production.ownedBuddies[0]});act({type:'save-plan'});act({type:'launch'});const initial=createArenaReleveState();Object.assign(initial,{chapter:4,renovation:'renovated',production,commerce:null,completed:false});initial.checkpoint=structuredClone({chapter:4,renovation:'renovated',production,commerce:null,completed:false});localStorage.setItem('arena-releve-session-v1',JSON.stringify(initial));};
+function App(){const[open,setOpen]=React.useState(false);return React.createElement(React.Fragment,null,React.createElement('button',{'data-open':true,onClick:()=>setOpen(true)},'Apprendre à jouer'),open?React.createElement(ArenaLearningHub,{onClose:()=>setOpen(false)}):null)}createRoot(document.getElementById('root')).render(React.createElement(App));`,
   'next/dynamic': `import React from'react';export default function dynamic(load,options={}){const C=React.lazy(async()=>{const m=await load();return{default:m.default||m}});return function Dynamic(props){return React.createElement(React.Suspense,{fallback:options.loading?React.createElement(options.loading):null},React.createElement(C,props))}}`,
   'next/image': `import React from'react';export default function Image({src,fill,priority,preload,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src:typeof src==='string'?src:src.src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}})}`,
   'next/link': `import React from'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props)}`,
@@ -195,6 +199,12 @@ async function story(width, limit = 160) {
   await openHub(width, true);
   const resume = process.argv.includes('--resume') ? JSON.parse(await readFile(resolve(output, 'failure-story.json'), 'utf8')) : null;
   if (resume) await page.evaluate(state => localStorage.setItem('arena-releve-session-v1', JSON.stringify(state)), resume);
+  if (cultureOnly) await page.evaluate(() => window.__seedCulture());
+  if (await page.$('[data-learning-practice]')) {
+    await page.click('[data-learning-practice] > summary');
+    await page.click('[data-learning-group="story"]');
+  }
+  await page.waitForSelector('[data-releve-start]', { visible: true });
   await page.click('[data-releve-start]');
   const chapters = new Set();
   let freeAcrossModal = false;
@@ -213,6 +223,7 @@ async function story(width, limit = 160) {
     console.log(`${width}px · ${guide.id} · ${guide.label}`);
     if (guide.id === 'commerce-prepare' && !freeAcrossModal) { await freeExplorationAcrossConfirmation(); freeAcrossModal = true; }
     else await follow(guide);
+    if (cultureOnly && guide.chapter === 4 && guide.id === 'chapter-complete') { results.push({ width, culture: true, chapters: [...chapters], actions: index + 1 }); return; }
     if (process.argv.includes('--production-only') && guide.chapter === 5 && guide.id === 'chapter-complete') { results.push({ width, production: true, chapters: [...chapters], actions: index + 1 }); return; }
     if (process.argv.includes('--smoke') && guide.chapter >= 2) { results.push({ width, smoke: true, chapters: [...chapters] }); return; }
   }
@@ -266,7 +277,7 @@ try {
   for (const width of requestedWidth ? [requestedWidth] : process.argv.includes('--production-only') ? [320, 1440] : [1440, 390, ...(process.argv.includes('--smoke') ? [320] : [])]) {
     if (!process.argv.includes('--meetings-only')) await story(width);
     else await openHub(width, true);
-    if (!process.argv.includes('--smoke') && !process.argv.includes('--production-only')) await meetings(width);
+    if (!cultureOnly && !process.argv.includes('--smoke') && !process.argv.includes('--production-only')) await meetings(width);
     assert.equal(await page.evaluate(() => localStorage.getItem('releve-real-player-sentinel')), 'unchanged');
     assert.equal(await page.evaluate(() => window.__globalUpdates), 0);
   }

@@ -189,7 +189,9 @@ try{
     await visit('warehouse&stock=missing');
     verify(await stockMetrics(),{total:'—',protected:'—',packed:'—'},`${width}: absent server breakdown is shown as unknown rather than inferred from aggregate usage`);
     verify(await page.$eval('[data-storage-breakdown-unavailable]',node=>node.checkVisibility()),true,`${width}: missing breakdown has a visible explanation and refresh guidance`);
-    verify(await page.$$eval('[data-storage-inventory] figure,[data-storage-stock="overflow"]',nodes=>nodes.length),0,`${width}: unknown stock categories produce no invented proportions or surplus`);
+    verify(await page.$$eval('[data-storage-inventory] figure',nodes=>nodes.length),0,`${width}: unknown stock categories produce no invented proportions`);
+    verify(await page.$eval('[data-storage-stock="overflow"] strong',node=>node.textContent),'Des lots sont sans contenant · total à confirmer',`${width}: individually known exposed lots remain actionable without inventing their aggregate mass`);
+    verify(await page.$eval('[data-storage-jump]',node=>node.dataset.storageJump),thirdId,`${width}: the warning targets the actual exposed harvest`);
     verify(await page.$$eval('[data-storage-packed]',nodes=>nodes.length),0,`${width}: missing metadata does not imply packages or active sales`);
     verify(await inventory('GLASS-1L'),[7,5,2],`${width}: known container counts remain available without a stock breakdown`);
     await layout(`${width} unknown stock breakdown`);await shot(`stock-unknown-${width}`);

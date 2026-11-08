@@ -132,6 +132,12 @@ type RetroBatchPreview = {
 };
 type AdminAction = "" | "notebook" | "heritage" | "season" | "reward-preview" | "reward-freeze" | "reward-settle";
 
+function metric(value: number | null | undefined): string {
+  return typeof value === "number" && Number.isFinite(value)
+    ? value.toLocaleString("fr-FR", { maximumFractionDigits: 1 })
+    : "—";
+}
+
 async function readJson(response: Response) {
   return await response.json() as Bootstrap & {
     error?: string;
@@ -155,6 +161,8 @@ async function readJson(response: Response) {
 
 export function AdminPlacardOperationsPanel() {
   const [data, setData] = useState<Bootstrap | null>(null);
+  const [catalogVisited, setCatalogVisited] = useState(false);
+  const [launchVisited, setLaunchVisited] = useState(false);
   const [botDashboard, setBotDashboard] = useState<BotDashboard | null>(null);
   const [customerRewards, setCustomerRewards] = useState<CustomerRewardPool | null>(null);
   const [customerRewardPreview, setCustomerRewardPreview] = useState<CustomerRewardPreview | null>(null);
@@ -178,7 +186,7 @@ export function AdminPlacardOperationsPanel() {
         fetch("/api/admin/arena/customer-rewards", { cache: "no-store" }),
       ]);
       const payload = await readJson(response);
-      if (!response.ok) throw new Error(payload.error || "Pilotage Kanab Quest indisponible.");
+      if (!response.ok) throw new Error(payload.error || "Pilotage du Quartier indisponible.");
       setData(payload);
       if (botResponse.ok) setBotDashboard(await botResponse.json() as BotDashboard);
       else setBotDashboard(null);
@@ -192,7 +200,10 @@ export function AdminPlacardOperationsPanel() {
       }
       if (warnings.length > 0) setStatus(warnings.join(" · "));
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Pilotage Kanab Quest indisponible.");
+      setData(null);
+      setBotDashboard(null);
+      setCustomerRewards(null);
+      setStatus(error instanceof Error ? error.message : "Pilotage du Quartier indisponible.");
     } finally {
       setLoading(false);
     }
@@ -322,10 +333,9 @@ export function AdminPlacardOperationsPanel() {
       <div className="cartoon-border bg-[#e8f4e7] p-6 md:p-8">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <p className="text-xs font-bold uppercase tracking-[0.12em] text-green">Kanab Quest</p>
-            <h3 className="mt-1 font-display text-3xl text-ink">Pilotage de Kanab Quest</h3>
+            <h3 className="font-display text-3xl text-ink">Pilotage du jeu</h3>
             <p className="mt-2 max-w-2xl text-sm text-charcoal">
-              Collections, récompenses, saisons et contrôles de lancement sont centralisés ici.
+              Duels, entraînements, récompenses et saison du Quartier. « — » indique une donnée indisponible.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -338,11 +348,129 @@ export function AdminPlacardOperationsPanel() {
         {status ? <p className="mt-4 border-2 border-ink bg-white p-3 text-sm font-semibold" role="status">{status}</p> : null}
       </div>
 
+      <article className={`cartoon-border p-6 ${randomBattleQueue?.status === "critical" ? "bg-[#f8d8cc]" : randomBattleQueue?.status === "watch" ? "bg-[#fff0c9]" : "bg-[#d9f3ef]"}`}>
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <h4 className="font-display text-2xl">Duels en attente</h4>
+          </div>
+          <b className="border-2 border-ink bg-white px-3 py-2 text-xs uppercase">
+            {!randomBattleQueue ? "Indisponible" : randomBattleQueue.status === "critical" ? "Alerte" : randomBattleQueue.status === "watch" ? "À surveiller" : "Fluide"}
+          </b>
+        </div>
+        {randomBattleQueue ? <>
+          <div className="mt-4 grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
+            <b className="border-2 border-ink bg-white p-3">{randomBattleQueue.waitingCount}<small className="block font-normal">Fleur(s) en attente</small></b>
+            <b className="border-2 border-ink bg-white p-3">{randomBattleQueue.oldestWaitMinutes} min<small className="block font-normal">attente la plus longue</small></b>
+            <b className="border-2 border-ink bg-white p-3">{randomBattleQueue.waitingOver15Minutes}<small className="block font-normal">au-delà de 15 min</small></b>
+            <b className="border-2 border-ink bg-white p-3">{randomBattleQueue.waitingOver60Minutes}<small className="block font-normal">au-delà de 60 min</small></b>
+          </div>
+          <div className="mt-3 grid grid-cols-2 gap-2 text-xs md:grid-cols-4">
+            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.artisanale}</b> Récolte artisanale</span>
+            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.bellePousse}</b> Belle pousse</span>
+            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.concours}</b> Qualité concours</span>
+            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.exceptionnelle}</b> Fleur exceptionnelle</span>
+            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.legendaire}</b> Fleur légendaire</span>
+          </div>
+          <p className="mt-3 text-xs">Vue strictement anonyme · aucun compte ni identifiant de Fleur n’est exposé.{randomBattleQueue.qualityBands.unknown > 0 ? ` ${randomBattleQueue.qualityBands.unknown} entrée(s) sans qualité exploitable.` : ""}{randomBattleQueue.truncated ? " Affichage limité aux 1 000 plus anciennes entrées." : ""}</p>
+        </> : <p className="mt-4 border-2 border-ink bg-white p-3 text-sm">Les métriques des duels n’ont pas pu être chargées. Actualise le pilotage pour réessayer.</p>}
+      </article>
+
+      <article className="cartoon-border bg-[#e8f4e7] p-6">
+        <h4 className="font-display text-2xl">Entraînements du jour</h4>
+        <p className="mt-1 text-sm text-charcoal">{botDashboard?.dayKey ?? "Date indisponible"}</p>
+        <div className="mt-4 grid grid-cols-2 gap-3 text-sm md:grid-cols-5">
+          <b className="border-2 border-ink bg-white p-3">{metric(botDashboard?.battlesToday)}<small className="block font-normal">duels aujourd’hui</small></b>
+          <b className="border-2 border-ink bg-white p-3">{metric(botDashboard?.activePlayersToday)}<small className="block font-normal">joueurs actifs</small></b>
+          <b className="border-2 border-ink bg-white p-3">{metric(botDashboard?.playersAtLimit)}<small className="block font-normal">à la limite de {metric(botDashboard?.dailyLimit)} duels</small></b>
+          <b className="border-2 border-ink bg-white p-3">{metric(botDashboard?.experienceAwardedToday)}<small className="block font-normal">EXP bots aujourd’hui</small></b>
+          <b className="border-2 border-ink bg-white p-3">{metric(botDashboard?.totalArenaExperience)}<small className="block font-normal">EXP Arène totale</small></b>
+        </div>
+        {(botDashboard?.players.length ?? 0) > 0 ? <details className="mt-4 border-2 border-ink bg-white p-3">
+          <summary className="cursor-pointer font-bold">Consommation quotidienne par joueur</summary>
+          <div className="mt-3 grid gap-2">{botDashboard?.players.map((player) => <div className="flex items-center justify-between gap-3 border border-ink px-3 py-2 text-sm" key={player.userId}><span>Joueur {player.userId.slice(0, 8)}</span><b className={player.atLimit ? "text-red-700" : ""}>{player.count}/{botDashboard.dailyLimit} · {player.remaining} restant(s)</b></div>)}</div>
+        </details> : <p className="mt-4 border-2 border-ink bg-white p-3 text-sm">{botDashboard ? "Aucun entraînement joué aujourd’hui." : "Suivi des entraînements indisponible."}</p>}
+        {(botDashboard?.recent.length ?? 0) > 0 ? <details className="mt-3 border-2 border-ink bg-white p-3">
+          <summary className="cursor-pointer font-bold">20 derniers verdicts bots</summary>
+          <div className="mt-3 grid gap-2">{botDashboard?.recent.map((battle) => <div className="grid gap-1 border border-ink px-3 py-2 text-sm md:grid-cols-[1fr_auto_auto]" key={battle.id}><span>Joueur {battle.userId.slice(0, 8)} · {battle.botCode.replace("bot-", "")}</span><b>{battle.winner === "player" ? "Victoire" : "Défaite"}</b><small>+{battle.experienceAwarded.toLocaleString("fr-FR")} EXP · {new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", dateStyle: "short", timeStyle: "short" }).format(new Date(battle.verdictAt))}</small></div>)}</div>
+        </details> : null}
+      </article>
+      <div className="grid gap-5 xl:grid-cols-2">
+        <article className="cartoon-border bg-[#e8f4e7] p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <h4 className="font-display text-2xl">Pot de la Canopée</h4>
+            </div>
+            <b className="border-2 border-ink bg-white px-3 py-1 text-xs uppercase tracking-wider">
+              {customerRewards?.status === "active" ? "En cours" : customerRewards?.status === "frozen" ? "Gelé" : customerRewards?.status === "settled" ? "Attribué" : "Indisponible"}
+            </b>
+          </div>
+          <p className="mt-3 font-display text-4xl text-green">
+            {metric(customerRewards?.poolGrams)} g
+          </p>
+          <p className="mt-1 text-sm">
+            Le dé collectif fixe chaque semaine la part des grammes réellement payés · hors cadeaux, annulations et commandes archivées.
+          </p>
+          <div className="mt-4 grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
+            <b className="border-2 border-ink bg-white p-3">{metric(customerRewards?.currentWeekGrams)} g<small className="block font-normal">cette semaine</small></b>
+            <b className="border-2 border-ink bg-[#fff0ae] p-3">{metric(customerRewards ? customerRewards.weeklyDice.rateBps / 100 : null)} %<small className="block font-normal">palier du dé · {metric(customerRewards?.weeklyDice?.rollCount)} lancer(s)</small></b>
+            <b className="border-2 border-ink bg-white p-3">{metric(customerRewards?.eligiblePlayers)}<small className="block font-normal">joueurs éligibles</small></b>
+            <b className="border-2 border-ink bg-white p-3">{metric(customerRewards ? Math.max(0, customerRewards.wholePoolGrams - customerRewards.surpriseReward.estimatedGrams) : null)} g<small className="block font-normal">Top 10 estimé</small></b>
+            <b className="border-2 border-ink bg-white p-3">{metric(customerRewards?.surpriseReward.estimatedGrams)} g<small className="block font-normal">Fleur Surprise estimée</small></b>
+          </div>
+          {customerRewardPreview ? (
+            <p className="mt-3 border-2 border-ink bg-[#fff0c9] p-3 text-sm">
+              Simulation : {Number(customerRewardPreview.rankingWinners ?? 0)} gagnant(s) classés pour {Number(customerRewardPreview.rankingGrams ?? 0)} g · {Number(customerRewardPreview.surpriseCandidates ?? 0)} candidat(s) hors Top 10 pour {Number(customerRewardPreview.surpriseGrams ?? 0)} g.
+            </p>
+          ) : null}
+          <p className="mt-3 text-xs text-charcoal">
+            Éligibilité : {metric(customerRewards?.minimumHumanBattles)} duels officiels minimum. Une seule chance par client pour la Fleur Surprise.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <button className="btn-cartoon btn-secondary" type="button" disabled={!customerRewards || customerRewards.status === "settled" || Boolean(action)} onClick={() => void runCustomerRewardAction("preview")}>
+              {action === "reward-preview" ? "Calcul…" : "Simuler l’attribution"}
+            </button>
+            <button className="btn-cartoon btn-secondary" type="button" disabled={customerRewards?.status !== "active" || Boolean(action)} onClick={() => void runCustomerRewardAction("freeze")}>
+              {action === "reward-freeze" ? "Gel…" : "Geler le pot"}
+            </button>
+            <button className="btn-cartoon btn-primary" type="button" disabled={customerRewards?.status !== "frozen" || Boolean(action)} onClick={() => void runCustomerRewardAction("settle")}>
+              {action === "reward-settle" ? "Attribution…" : "Attribuer les récompenses"}
+            </button>
+          </div>
+        </article>
+        <article className="cartoon-border bg-[#fff0c9] p-6">
+          <h4 className="font-display text-2xl">Récompenses de saison</h4>
+          <p className="mt-2 text-lg font-bold">{metric(season?.eligiblePlayers)} joueur(s) éligible(s)</p>
+          <p className="mt-2 text-sm">{metric(season?.pendingGrants)} attribution(s) en attente · {metric(season?.totalSupportBoosters)} booster(s) · {metric(season?.totalHeritageFragments)} fragment(s)</p>
+          <button className="btn-cartoon btn-secondary mt-4" type="button" disabled={!season?.rewardsLive || Number(season?.pendingGrants ?? 0) <= 0 || Boolean(action)} onClick={() => void runAction("season", "/api/admin/placard/season-rewards")}>
+            {action === "season" ? "Distribution…" : "Distribuer les récompenses"}
+          </button>
+        </article>
+
+        <article className="cartoon-border bg-cream p-6">
+          <h4 className="font-display text-2xl">Passage de saison</h4>
+          <p className="mt-2 text-lg font-bold">{rollover?.fromSeason ?? "—"} → {rollover ? rollover.toSeason ?? "à planifier" : "—"}</p>
+          <p className="mt-2 text-sm">{metric(rollover?.players)} joueur(s) · {metric(rollover?.missingRewardGrants)} récompense(s) manquante(s) · {metric(rollover?.lockedBattles)} duel(s) verrouillé(s)</p>
+          <p className="mt-3 border-2 border-ink bg-white p-3 text-sm">{!rollover ? "Passage de saison indisponible." : rollover.ready ? "Clôture techniquement prête." : (rollover.blockers ?? []).join(" · ") || "Clôture non prête."}</p>
+        </article>
+      </div>
+
+      <details className="cartoon-border bg-cream p-5" onToggle={(event) => { if (event.currentTarget.open) setCatalogVisited(true); }}>
+        <summary className="font-display text-2xl">Catalogues et campagnes producteurs</summary>
+        {catalogVisited ? <div className="mt-5 grid gap-5 xl:grid-cols-2">
+          <AdminBotteCatalogEditor />
+          <AdminHeritageCatalogEditor />
+          <AdminProducerRewardCampaigns />
+        </div> : null}
+      </details>
+
+      <details className="cartoon-border bg-cream p-5">
+        <summary className="font-display text-2xl">Collections et rattrapage des récompenses</summary>
+        <div className="mt-5 grid gap-5">
       <div className="grid gap-5 xl:grid-cols-2">
         <article className="cartoon-border bg-cream p-6">
-          <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Préflight de lancement</p>
-          <h4 className="mt-1 font-display text-2xl">{readiness ? `${readiness.blockers.length} blocage(s)` : "Indisponible"}</h4>
-          <p className="mt-2 text-sm">{readiness?.contentReady ? "Contenu complet" : "Contenu incomplet"} · {readiness?.safelyDormant ? "Tous les verrous sont fermés" : "Un verrou est déjà ouvert"}</p>
+          <h4 className="font-display text-2xl">État du lancement</h4>
+          <p className="mt-2 font-bold">{readiness ? `${readiness.blockers.length} blocage(s)` : "Indisponible"}</p>
+          <p className="mt-2 text-sm">{!readiness ? "Contrôles indisponibles." : `${readiness.contentReady ? "Contenu complet" : "Contenu incomplet"} · ${readiness.safelyDormant ? "Tous les verrous sont fermés" : "Un verrou est déjà ouvert"}`}</p>
           <div className="mt-4 border-2 border-ink bg-[#fff0c9] p-3">
             <div className="flex items-center justify-between gap-3">
               <h5 className="font-display text-lg">Dossier commercial</h5>
@@ -384,15 +512,14 @@ export function AdminPlacardOperationsPanel() {
 
         <div className="grid gap-5">
           <article className="cartoon-border bg-[#fff0c9] p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Collections</p>
-            <h4 className="mt-1 font-display text-2xl">Botte du Chanvrier & Héritages</h4>
+            <h4 className="font-display text-2xl">Botte du Chanvrier & Héritages</h4>
             <div className="mt-4 grid grid-cols-2 gap-3 text-sm">
-              <b className="border-2 border-ink bg-white p-3">{supportCards.length}<small className="block font-normal">cartes Botte du Chanvrier</small></b>
-              <b className="border-2 border-ink bg-white p-3">{supportCards.reduce((sum, card) => sum + Number(card.ownedCopies ?? 0), 0)}<small className="block font-normal">copies admin</small></b>
-              <b className="border-2 border-ink bg-white p-3">{heritageCards.length}<small className="block font-normal">Héritages</small></b>
-              <b className="border-2 border-ink bg-white p-3">{Number(heritage?.pendingPurchaseUnits ?? 0)}<small className="block font-normal">tirages admin en attente</small></b>
+              <b className="border-2 border-ink bg-white p-3">{metric(collection?.cards?.length)}<small className="block font-normal">cartes Botte du Chanvrier</small></b>
+              <b className="border-2 border-ink bg-white p-3">{metric(collection?.cards && supportCards.every((card) => typeof card.ownedCopies === "number") ? supportCards.reduce((sum, card) => sum + Number(card.ownedCopies), 0) : null)}<small className="block font-normal">copies admin</small></b>
+              <b className="border-2 border-ink bg-white p-3">{metric(heritage?.cards ? heritageCards.length : null)}<small className="block font-normal">Héritages</small></b>
+              <b className="border-2 border-ink bg-white p-3">{metric(heritage?.pendingPurchaseUnits)}<small className="block font-normal">tirages admin en attente</small></b>
             </div>
-            <p className="mt-3 text-sm">Botte du Chanvrier : {collection?.collectionActive ? "active" : "dormante"} · Héritages : {heritage?.collectionActive ? "actifs" : "dormants"}</p>
+            <p className="mt-3 text-sm">Botte du Chanvrier : {collection?.collectionActive == null ? "indisponible" : collection.collectionActive ? "active" : "dormante"} · Héritages : {heritage?.collectionActive == null ? "indisponibles" : heritage.collectionActive ? "actifs" : "dormants"}</p>
             {heritageRetroPreview ? (
               <p className="mt-4 border-2 border-ink bg-white p-3 text-sm">
                 Lot simulé : {Number(heritageRetroPreview.processedItems ?? 0)} ligne(s) · {Number(heritageRetroPreview.pendingUnits ?? 0)} tirage(s) à créer · {Number(heritageRetroPreview.alreadyAwarded ?? 0)} déjà traité(s).
@@ -437,9 +564,9 @@ export function AdminPlacardOperationsPanel() {
           </article>
 
           <article className="cartoon-border bg-[#eaf4df] p-6">
-            <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Carnet → Kanab Quest</p>
-            <h4 className="mt-1 font-display text-2xl">Compte admin · {Number(notebook?.pendingBadges ?? 0)} badge(s) en attente</h4>
-            <p className="mt-2 text-sm">{Number(notebook?.pendingSupportBoosters ?? 0)} booster(s) · {Number(notebook?.pendingCultureTokens ?? 0)} jeton(s) · {Number(notebook?.alreadyGranted ?? 0)} déjà traité(s)</p>
+            <h4 className="font-display text-2xl">Récompenses du Carnet</h4>
+            <p className="mt-2 font-bold">Compte admin · {metric(notebook?.pendingBadges)} badge(s) en attente</p>
+            <p className="mt-2 text-sm">{metric(notebook?.pendingSupportBoosters)} booster(s) · {metric(notebook?.pendingCultureTokens)} jeton(s) · {metric(notebook?.alreadyGranted)} déjà traité(s)</p>
             {notebookRetroPreview ? (
               <p className="mt-4 border-2 border-ink bg-white p-3 text-sm">
                 Lot simulé : {Number(notebookRetroPreview.processed ?? 0)} badge(s) · {Number(notebookRetroPreview.pending ?? 0)} attribution(s) à créer · {Number(notebookRetroPreview.alreadyGranted ?? 0)} déjà traitée(s).
@@ -485,70 +612,12 @@ export function AdminPlacardOperationsPanel() {
         </div>
       </div>
 
-      <div className="grid gap-5 xl:grid-cols-2">
-        <AdminBotteCatalogEditor />
-        <AdminHeritageCatalogEditor />
-        <AdminProducerRewardCampaigns />
-        <article className="cartoon-border bg-[#e8f4e7] p-6">
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div>
-              <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Récompenses clients · Arène</p>
-              <h4 className="mt-1 font-display text-2xl">Pot de la Canopée</h4>
-            </div>
-            <b className="border-2 border-ink bg-white px-3 py-1 text-xs uppercase tracking-wider">
-              {customerRewards?.status === "active" ? "En cours" : customerRewards?.status === "frozen" ? "Gelé" : customerRewards?.status === "settled" ? "Attribué" : "Indisponible"}
-            </b>
-          </div>
-          <p className="mt-3 font-display text-4xl text-green">
-            {Number(customerRewards?.poolGrams ?? 0).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g
-          </p>
-          <p className="mt-1 text-sm">
-            Le dé collectif fixe chaque semaine la part des grammes réellement payés · hors cadeaux, annulations et commandes archivées.
-          </p>
-          <div className="mt-4 grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
-            <b className="border-2 border-ink bg-white p-3">{Number(customerRewards?.currentWeekGrams ?? 0).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g<small className="block font-normal">cette semaine</small></b>
-            <b className="border-2 border-ink bg-[#fff0ae] p-3">{Math.round(Number(customerRewards?.weeklyDice?.rateBps ?? 100) / 100)} %<small className="block font-normal">palier du dé · {customerRewards?.weeklyDice?.rollCount ?? 0} lancer(s)</small></b>
-            <b className="border-2 border-ink bg-white p-3">{customerRewards?.eligiblePlayers ?? 0}<small className="block font-normal">joueurs éligibles</small></b>
-            <b className="border-2 border-ink bg-white p-3">{Math.max(0, Number(customerRewards?.wholePoolGrams ?? 0) - Number(customerRewards?.surpriseReward.estimatedGrams ?? 0))} g<small className="block font-normal">Top 10</small></b>
-            <b className="border-2 border-ink bg-white p-3">{customerRewards?.surpriseReward.estimatedGrams ?? 0} g<small className="block font-normal">Fleur Surprise</small></b>
-          </div>
-          {customerRewardPreview ? (
-            <p className="mt-3 border-2 border-ink bg-[#fff0c9] p-3 text-sm">
-              Simulation : {Number(customerRewardPreview.rankingWinners ?? 0)} gagnant(s) classés pour {Number(customerRewardPreview.rankingGrams ?? 0)} g · {Number(customerRewardPreview.surpriseCandidates ?? 0)} candidat(s) hors Top 10 pour {Number(customerRewardPreview.surpriseGrams ?? 0)} g.
-            </p>
-          ) : null}
-          <p className="mt-3 text-xs text-charcoal">
-            Éligibilité : {customerRewards?.minimumHumanBattles ?? 3} duels officiels minimum. Une seule chance par client pour la Fleur Surprise.
-          </p>
-          <div className="mt-4 flex flex-wrap gap-2">
-            <button className="btn-cartoon btn-secondary" type="button" disabled={!customerRewards || customerRewards.status === "settled" || Boolean(action)} onClick={() => void runCustomerRewardAction("preview")}>
-              {action === "reward-preview" ? "Calcul…" : "Simuler l’attribution"}
-            </button>
-            <button className="btn-cartoon btn-secondary" type="button" disabled={customerRewards?.status !== "active" || Boolean(action)} onClick={() => void runCustomerRewardAction("freeze")}>
-              {action === "reward-freeze" ? "Gel…" : "Geler le pot"}
-            </button>
-            <button className="btn-cartoon btn-primary" type="button" disabled={customerRewards?.status !== "frozen" || Boolean(action)} onClick={() => void runCustomerRewardAction("settle")}>
-              {action === "reward-settle" ? "Attribution…" : "Attribuer les récompenses"}
-            </button>
-          </div>
-        </article>
-        <article className="cartoon-border bg-[#fff0c9] p-6">
-          <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Fin de saison</p>
-          <h4 className="mt-1 font-display text-2xl">{Number(season?.eligiblePlayers ?? 0)} joueur(s) éligible(s)</h4>
-          <p className="mt-2 text-sm">{Number(season?.pendingGrants ?? 0)} attribution(s) en attente · {Number(season?.totalSupportBoosters ?? 0)} booster(s) · {Number(season?.totalHeritageFragments ?? 0)} fragment(s)</p>
-          <button className="btn-cartoon btn-secondary mt-4" type="button" disabled={!season?.rewardsLive || Number(season?.pendingGrants ?? 0) <= 0 || Boolean(action)} onClick={() => void runAction("season", "/api/admin/placard/season-rewards")}>
-            {action === "season" ? "Distribution…" : "Distribuer les récompenses"}
-          </button>
-        </article>
+        </div>
+      </details>
 
-        <article className="cartoon-border bg-cream p-6">
-          <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Passage de saison</p>
-          <h4 className="mt-1 font-display text-2xl">{rollover?.fromSeason ?? "—"} → {rollover?.toSeason ?? "à planifier"}</h4>
-          <p className="mt-2 text-sm">{Number(rollover?.players ?? 0)} joueur(s) · {Number(rollover?.missingRewardGrants ?? 0)} récompense(s) manquante(s) · {Number(rollover?.lockedBattles ?? 0)} duel(s) verrouillé(s)</p>
-          <p className="mt-3 border-2 border-ink bg-white p-3 text-sm">{rollover?.ready ? "Clôture techniquement prête." : (rollover?.blockers ?? []).join(" · ") || "Clôture non prête."}</p>
-        </article>
-      </div>
-
+      <details className="cartoon-border bg-cream p-5" onToggle={(event) => { if (event.currentTarget.open) setLaunchVisited(true); }}>
+        <summary className="font-display text-2xl">Préparation et contrôles de lancement</summary>
+        {launchVisited ? <div className="mt-5 grid gap-5">
       <AdminPlacardLaunchDossierBuilder
         key={readiness ? "launch-dossier-loaded" : "launch-dossier-loading"}
         initialDossier={readiness?.launchDossier}
@@ -566,53 +635,8 @@ export function AdminPlacardOperationsPanel() {
         serverBlockers={readiness?.blockers ?? []}
       />
 
-      <article className={`cartoon-border p-6 ${randomBattleQueue?.status === "critical" ? "bg-[#f8d8cc]" : randomBattleQueue?.status === "watch" ? "bg-[#fff0c9]" : "bg-[#d9f3ef]"}`}>
-        <div className="flex flex-wrap items-start justify-between gap-3">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">File de duels aléatoires</p>
-            <h4 className="mt-1 font-display text-2xl">Santé du matchmaking</h4>
-          </div>
-          <b className="border-2 border-ink bg-white px-3 py-2 text-xs uppercase">
-            {!randomBattleQueue ? "Indisponible" : randomBattleQueue.status === "critical" ? "Alerte" : randomBattleQueue.status === "watch" ? "À surveiller" : "Fluide"}
-          </b>
-        </div>
-        {randomBattleQueue ? <>
-          <div className="mt-4 grid grid-cols-2 gap-3 text-sm md:grid-cols-4">
-            <b className="border-2 border-ink bg-white p-3">{randomBattleQueue.waitingCount}<small className="block font-normal">Fleur(s) en attente</small></b>
-            <b className="border-2 border-ink bg-white p-3">{randomBattleQueue.oldestWaitMinutes} min<small className="block font-normal">attente la plus longue</small></b>
-            <b className="border-2 border-ink bg-white p-3">{randomBattleQueue.waitingOver15Minutes}<small className="block font-normal">au-delà de 15 min</small></b>
-            <b className="border-2 border-ink bg-white p-3">{randomBattleQueue.waitingOver60Minutes}<small className="block font-normal">au-delà de 60 min</small></b>
-          </div>
-          <div className="mt-3 grid grid-cols-2 gap-2 text-xs md:grid-cols-4">
-            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.artisanale}</b> Récolte artisanale</span>
-            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.bellePousse}</b> Belle pousse</span>
-            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.concours}</b> Qualité concours</span>
-            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.exceptionnelle}</b> Fleur exceptionnelle</span>
-            <span className="border border-ink bg-white px-3 py-2"><b>{randomBattleQueue.qualityBands.legendaire}</b> Fleur légendaire</span>
-          </div>
-          <p className="mt-3 text-xs">Vue strictement anonyme · aucun compte ni identifiant de Fleur n’est exposé.{randomBattleQueue.qualityBands.unknown > 0 ? ` ${randomBattleQueue.qualityBands.unknown} entrée(s) sans qualité exploitable.` : ""}{randomBattleQueue.truncated ? " Affichage limité aux 1 000 plus anciennes entrées." : ""}</p>
-        </> : <p className="mt-4 border-2 border-ink bg-white p-3 text-sm">Les métriques de la file n’ont pas pu être chargées. Consulte l’avertissement de préflight avant l’ouverture.</p>}
-      </article>
-
-      <article className="cartoon-border bg-[#e8f4e7] p-6">
-        <p className="text-xs font-bold uppercase tracking-[0.1em] text-green">Entraînements bots · {botDashboard?.dayKey ?? "aujourd’hui"}</p>
-        <h4 className="mt-1 font-display text-2xl">Suivi des duels automatiques</h4>
-        <div className="mt-4 grid grid-cols-2 gap-3 text-sm md:grid-cols-5">
-          <b className="border-2 border-ink bg-white p-3">{botDashboard?.battlesToday ?? 0}<small className="block font-normal">duels aujourd’hui</small></b>
-          <b className="border-2 border-ink bg-white p-3">{botDashboard?.activePlayersToday ?? 0}<small className="block font-normal">joueurs actifs</small></b>
-          <b className="border-2 border-ink bg-white p-3">{botDashboard?.playersAtLimit ?? 0}<small className="block font-normal">à la limite 10/10</small></b>
-          <b className="border-2 border-ink bg-white p-3">{Number(botDashboard?.experienceAwardedToday ?? 0).toLocaleString("fr-FR")}<small className="block font-normal">EXP bots aujourd’hui</small></b>
-          <b className="border-2 border-ink bg-white p-3">{Number(botDashboard?.totalArenaExperience ?? 0).toLocaleString("fr-FR")}<small className="block font-normal">EXP Arène totale</small></b>
-        </div>
-        {(botDashboard?.players.length ?? 0) > 0 ? <details className="mt-4 border-2 border-ink bg-white p-3">
-          <summary className="cursor-pointer font-bold">Consommation quotidienne par joueur</summary>
-          <div className="mt-3 grid gap-2">{botDashboard?.players.map((player) => <div className="flex items-center justify-between gap-3 border border-ink px-3 py-2 text-sm" key={player.userId}><span>Joueur {player.userId.slice(0, 8)}</span><b className={player.atLimit ? "text-red-700" : ""}>{player.count}/{botDashboard.dailyLimit} · {player.remaining} restant(s)</b></div>)}</div>
-        </details> : <p className="mt-4 border-2 border-ink bg-white p-3 text-sm">Aucun entraînement joué aujourd’hui.</p>}
-        {(botDashboard?.recent.length ?? 0) > 0 ? <details className="mt-3 border-2 border-ink bg-white p-3">
-          <summary className="cursor-pointer font-bold">20 derniers verdicts bots</summary>
-          <div className="mt-3 grid gap-2">{botDashboard?.recent.map((battle) => <div className="grid gap-1 border border-ink px-3 py-2 text-sm md:grid-cols-[1fr_auto_auto]" key={battle.id}><span>Joueur {battle.userId.slice(0, 8)} · {battle.botCode.replace("bot-", "")}</span><b>{battle.winner === "player" ? "Victoire" : "Défaite"}</b><small>+{battle.experienceAwarded.toLocaleString("fr-FR")} EXP · {new Intl.DateTimeFormat("fr-FR", { timeZone: "Europe/Paris", dateStyle: "short", timeStyle: "short" }).format(new Date(battle.verdictAt))}</small></div>)}</div>
-        </details> : null}
-      </article>
+        </div> : null}
+      </details>
     </section>
   );
 }

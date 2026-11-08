@@ -250,13 +250,15 @@ describe("individual tent inventory and shared transformation workshop", () => {
         { tent_number: 1, equipment_code: "LED-300" },
       ],
     };
-    createSupabaseServiceClient.mockReturnValue({ rpc: vi.fn().mockResolvedValue({ data: { xp: 700, availableFlowerCount: 0, curingFlowerCount: 0 }, error: null }), from: (table: string) => {
+    createSupabaseServiceClient.mockReturnValue({ rpc: vi.fn().mockResolvedValue({ data: { xp: 700, availableFlowerCount: 0, curingFlowerCount: 0, trimFlowerCount: 2 }, error: null }), from: (table: string) => {
       const query = { select: () => query, eq: () => query, order: () => query, single: () => query,
         then: (resolve: (value: unknown) => unknown) => Promise.resolve({ data: rows[table] ?? [], error: null, count: 0 }).then(resolve) };
       return query;
     } });
     const second = await getKqEquipmentShopSnapshot(USER_ID, 2);
     const first = await getKqEquipmentShopSnapshot(USER_ID, 1);
+    expect(first.trimFlowerCount).toBe(2);
+    expect(second.trimFlowerCount).toBe(2);
     expect(second.chanvrierProfile).toEqual(first.chanvrierProfile);
     expect(second.chanvrierProfile).toMatchObject({nickname: "Lou.Chanvre", gender: "female", appearance: {hair: "braids"}});
     expect(second.chanvrierProfile).not.toHaveProperty("privateField");

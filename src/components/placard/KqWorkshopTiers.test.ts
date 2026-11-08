@@ -14,7 +14,10 @@ describe("workshop tier offers", () => {
     expect(html).toContain("Choisir économique"); expect(html).toContain("Choisir standard"); expect(html).toContain("Choisir haut de gamme");
     expect(html).toMatch(/850\s€/); expect(html).toMatch(/1\s360\s€/); expect(html).toMatch(/2\s635\s€/);
     expect(html).not.toMatch(/<button[^>]*disabled/);
-    expect(html).not.toMatch(/Lowtemp|HiLyph|Resinator|Plasmastatic/);
+    expect(html).toContain("Cadence et source fabricant");
+    expect(html).toContain("Modèle de référence");
+    expect(html).toContain("Lowtemp");
+    expect(html).toContain("Capacités et précision fictives");
   });
   it("credits existing levels and keeps acquired higher levels", () => {
     const intermediate = render({ level: 2 });

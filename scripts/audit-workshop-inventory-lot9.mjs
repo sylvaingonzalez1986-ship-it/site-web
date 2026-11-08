@@ -45,6 +45,12 @@ try{
  const shot=async name=>{await page.evaluate(()=>Promise.allSettled([...document.images].map(img=>img.decode())));await page.screenshot({path:resolve(output,name+'.png'),fullPage:true});};
  const load=async scenario=>{await page.goto(origin+'/?scenario='+scenario,{waitUntil:'networkidle0'});await page.waitForSelector('[data-workshop-only]');await page.evaluate(()=>document.fonts.ready);};
  const state=async(code,label)=>assert.equal(await page.$eval(`[data-workshop-machine="${code}"] [data-workshop-machine-state]`,e=>e.textContent),label);
+ const machineArtwork=async()=>{
+  const images=await page.$$eval('[data-workshop-artwork] img',async nodes=>{await Promise.all(nodes.map(image=>image.decode()));return nodes.map(image=>({code:image.parentElement.dataset.workshopArtwork,path:new URL(image.currentSrc||image.src).pathname,loaded:image.complete&&image.naturalWidth>0}));});
+  assert.equal(images.length,6,'Six machine illustrations are present');
+  for(const image of images){assert.equal(image.loaded,true,`${image.code} illustration loaded`);assert.equal(image.path,`/app/kanab-quest/equipment/equipment-${image.code}-hero-v2.webp`);}
+  return images.map(image=>image.code);
+ };
  const unchanged=async()=>{assert.deepEqual(await page.evaluate(()=>window.__calls.filter(call=>call.method!=='GET')),[]);assert.deepEqual(await page.evaluate(()=>window.__openedShop),[]);};
  const layout=async()=>assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,'No horizontal document overflow');
  const unknown=async()=>{assert.equal(await page.$('[data-workshop-scene]'),null,'Unknown data never becomes an empty workshop');assert.equal(await page.$eval('[data-inventory-balance] strong',e=>e.textContent),'—');assert.equal(await page.evaluate(()=>/0 \/ 6|À acquérir|0,00/.test(document.body.textContent)),false,'No fabricated zero or unowned state');};
@@ -58,35 +64,41 @@ try{
     await shot(scenario+'-'+width);await layout();await unchanged();results.push({width,scenario,unknown:true});
     if(scenario==='loading')await page.evaluate(()=>window.__resolve('owned'));
     else{await page.evaluate(()=>window.__mode('owned'));await enter('[data-inventory-state] button');}
-    await page.waitForSelector('[data-workshop-scene]');await state('PRESS-0600','À installer');assert.match(await page.$eval('[data-inventory-balance]',e=>e.textContent),/123,45/);
+    await page.waitForSelector('[data-workshop-scene]');await state('PRESS-0600','En réserve');assert.match(await page.$eval('[data-inventory-balance]',e=>e.textContent),/123,45/);
     if(scenario!=='loading')assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('data-workshop-machine')),'SIFT-TRAY','Retry recovery returns focus to the first actionable machine');
     await unchanged();results.push({width,scenario:scenario+'-recovery',keyboard:true});
     continue;
    }
    await page.waitForSelector('[data-workshop-scene]');
+   assert.equal(await page.$eval('[data-workshop-scene]',e=>e.getAttribute('aria-label')),'Machines de l’atelier');
+   const verifiedArtwork=await machineArtwork();
    if(scenario==='empty'){
-    assert.match(await page.$eval('[data-workshop-scene]',e=>e.textContent),/0 \/ 6 machines acquises/);
+    assert.equal(await page.$eval('[data-workshop-scene] dl > div:first-child dd',e=>e.textContent),'0 / 6');
     assert.equal(await page.$$eval('[data-workshop-machine-state]',els=>els.filter(e=>e.textContent==='À acquérir').length),6,'A confirmed empty inventory can truthfully say not acquired');
     assert.match(await page.$eval('[data-inventory-balance]',e=>e.textContent),/0\s*€/);
    }else{
-    await state('SIFT-TRAY','Installée');await state('PRESS-0600','À installer');if(scenario==='maintenance')await state('WASHER-25L','À entretenir');
+    await state('SIFT-TRAY','Installée');await state('PRESS-0600','En réserve');if(scenario==='maintenance')await state('WASHER-25L','À entretenir');
     const labels=await page.$$eval('[data-workshop-machine-state]',els=>els.map(e=>{const label=e.parentElement,r=label.getBoundingClientRect();return{text:label.textContent,left:r.left,right:r.right,top:r.top,bottom:r.bottom,visible:e.checkVisibility(),fontSize:parseFloat(getComputedStyle(e).fontSize),clipped:e.scrollWidth>e.clientWidth+1||label.scrollWidth>label.clientWidth+1};}));
     assert.ok(labels.every(label=>label.fontSize>=12),'Every essential machine status is at least 12px');
     assert.ok(labels.every(label=>label.visible&&!label.clipped&&label.left>=0&&label.right<=width),'Statuses are visible text, with no clipping');
     for(let i=0;i<labels.length;i++)for(let j=i+1;j<labels.length;j++)assert.ok(labels[i].right<=labels[j].left||labels[j].right<=labels[i].left||labels[i].bottom<=labels[j].top||labels[j].bottom<=labels[i].top,'Machine statuses never overlap');
-    await enter('[data-workshop-machine="PRESS-0600"]');await page.waitForSelector('[data-workshop-machine-summary="PRESS-0600"]');
-    assert.ok(await page.$$eval('button',els=>els.some(e=>e.checkVisibility()&&!e.disabled&&e.textContent.includes('Installer dans l’atelier commun'))),'A reserve machine opens its installation option');
-    await page.keyboard.press('Escape');await page.waitForSelector('[data-workshop-machine-summary="PRESS-0600"]',{hidden:true});
-    assert.equal(await page.$eval('[data-workshop-machine="PRESS-0600"]',e=>document.activeElement===e),true,'Machine dialog returns focus to the source');
+    for(const code of scenario==='owned'?verifiedArtwork:['PRESS-0600']){
+     const source=`[data-workshop-machine="${code}"]`;
+     await page.$eval(source,e=>e.scrollIntoView({block:'center',behavior:'instant'}));await page.focus(source);assert.notEqual(await page.$eval(source,e=>getComputedStyle(e).outlineStyle),'none','Keyboard focus is visible');
+     await page.keyboard.press('Enter');await page.waitForSelector(`[data-workshop-machine-dialog] :is([data-workshop-machine-summary="${code}"],[data-workshop-tiers="${code}"])`);
+     if(code==='PRESS-0600')assert.ok(await page.$$eval('button',els=>els.some(e=>e.checkVisibility()&&!e.disabled&&e.textContent.includes('Installer dans l’atelier commun'))),'A reserve machine opens its installation option');
+     await page.keyboard.press('Escape');await page.waitForSelector('[data-workshop-machine-dialog]',{hidden:true});
+     assert.equal(await page.$eval(source,e=>document.activeElement===e),true,'Machine dialog returns focus to the source');
+    }
    }
-   await layout();await unchanged();await shot(scenario+'-'+width);results.push({width,scenario,visibleStates:true,keyboard:true});
+   await layout();await unchanged();await page.evaluate(()=>scrollTo(0,0));await shot(scenario+'-'+width);if(scenario==='owned')await page.screenshot({path:resolve(output,scenario+'-'+width+'-viewport.png')});results.push({width,scenario,visibleStates:true,keyboard:true,verifiedArtwork,openedMachineCards:scenario==='owned'?verifiedArtwork:scenario==='maintenance'?['PRESS-0600']:[]});
    if(scenario==='owned'){
     await page.evaluate(()=>window.__refresh('loading'));await page.waitForSelector('[data-inventory-state="refreshing"]');await state('SIFT-TRAY','Installée');
     assert.match(await page.$eval('[data-inventory-balance]',e=>e.textContent),/123,45/);assert.equal(await page.$$eval('[data-workshop-machine]',els=>els.every(e=>e.disabled)),true);
-    await page.evaluate(()=>window.__resolve('error'));await page.waitForSelector('[data-inventory-state="stale"]');await state('PRESS-0600','À installer');await shot('refresh-failed-'+width);
+    await page.evaluate(()=>window.__resolve('error'));await page.waitForSelector('[data-inventory-state="stale"]');await state('PRESS-0600','En réserve');await shot('refresh-failed-'+width);
     assert.match(await page.$eval('[data-inventory-state]',e=>e.textContent),/Dernières données connues.*non actualisé/s);assert.equal(await page.$$eval('[data-workshop-machine]',els=>els.every(e=>e.disabled)),true);
     await page.evaluate(()=>window.__mode('empty'));await enter('[data-inventory-state] button');await page.waitForFunction(()=>!document.querySelector('[data-inventory-state]'));
-    assert.match(await page.$eval('[data-workshop-scene]',e=>e.textContent),/0 \/ 6 machines acquises/);assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('data-workshop-machine')),'SIFT-TRAY','Fresh inventory remains reachable after keyboard retry');await unchanged();results.push({width,scenario:'refresh-failed-and-recovered',previousDataPreserved:true,keyboard:true});
+    assert.equal(await page.$eval('[data-workshop-scene] dl > div:first-child dd',e=>e.textContent),'0 / 6');assert.equal(await page.evaluate(()=>document.activeElement?.getAttribute('data-workshop-machine')),'SIFT-TRAY','Fresh inventory remains reachable after keyboard retry');await unchanged();results.push({width,scenario:'refresh-failed-and-recovered',previousDataPreserved:true,keyboard:true});
    }
   }
  }

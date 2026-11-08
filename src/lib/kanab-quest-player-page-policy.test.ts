@@ -293,7 +293,7 @@ describe("Kanab Quest player page access", () => {
     expect(gameClient).not.toContain("selectedSubstrate");
     expect(gameBackend).not.toContain("ownsAnyCultureSystem");
     expect(marketDesk).toContain("Origine du lot");
-    expect(marketDesk).toContain("Aucun bonus caché");
+    expect(marketDesk).toContain("sans bonus caché");
     expect(gameClient).toContain("flower.traits.map");
     expect(gameClient).toContain("getKqCultureSystemSituationStatus(state)");
     expect(gameClient).toContain("cultureSystemStatus.label");
@@ -349,7 +349,9 @@ describe("Kanab Quest player page access", () => {
 
   it("routes an official harvest to storage before the jury without consuming its stock", () => {
     const completed = findAstNode(gameClientAst, (node): node is ts.IfStatement =>
-      ts.isIfStatement(node) && node.expression.getText(gameClientAst) === 'state.phase === "complete"');
+      ts.isIfStatement(node) && node.expression.getText(gameClientAst) === 'state.phase === "complete"'
+        && ts.isBlock(node.thenStatement) && node.thenStatement.statements.some(statement => ts.isIfStatement(statement)
+          && statement.expression.getText(gameClientAst) === "isPlayerMode"));
     const playerHarvest = findAstNode(completed.thenStatement, (node): node is ts.IfStatement =>
       ts.isIfStatement(node) && node.expression.getText(gameClientAst) === "isPlayerMode");
     expect(playerHarvest.getText(gameClientAst)).toContain("Au jury, seule la Fleur d’Arène est consommée. Ta récolte reste disponible pour la vente après le verdict.");

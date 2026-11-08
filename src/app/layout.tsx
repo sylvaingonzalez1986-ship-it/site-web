@@ -176,8 +176,10 @@ export default async function RootLayout({
   const uiPreviewEnabled = isSiteUiPreviewEnabled();
   const initialUiVariant = siteUiVariant(cookieStore.get(SITE_UI_COOKIE)?.value);
   const ui = getSiteUiVariants(requestHeaders.get(SITE_UI_PATHNAME_HEADER) ?? "/", initialUiVariant);
+  // Browsers can inject __gcrremoteframetoken on <html> before hydration.
+  // Limit suppression to this element; descendants still report mismatches.
   return (
-    <html lang="fr" nonce={nonce} data-site-ui={ui.content} data-site-navigation-ui={ui.navigation}>
+    <html lang="fr" nonce={nonce} data-site-ui={ui.content} data-site-navigation-ui={ui.navigation} suppressHydrationWarning>
       <head>
         <link
           rel="alternate"

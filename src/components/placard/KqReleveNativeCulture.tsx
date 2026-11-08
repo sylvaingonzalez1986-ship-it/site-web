@@ -73,6 +73,7 @@ export function KqReleveNativeCulture({ chapter, state, onChange, onOpenWarehous
     if (target.closest('[data-setup-choice="cards"] [data-culture-keep-choice]')) mark("deck-chosen");
     if (target.closest('[data-setup-choice="heritage"] [data-culture-keep-choice]')) mark("heritage-chosen");
     if (target.closest('[data-culture-campaign-recap] > summary')) mark("recap-read");
+    if (target.closest('[data-culture-tab="journal"]') && getState().game?.phase === "complete") mark("recap-read");
     const current = getState();
     const battleId = target.closest("[data-battle-id]")?.getAttribute("data-battle-id");
     const unread = battleId ? getKqReleveHarvests(current).find(harvest => harvest.battle?.id === battleId && harvest.battle?.status === "verdict" && !current.milestones.includes(`jury-read:${harvest.zoneId}`)) : undefined;

@@ -11,6 +11,7 @@ function uuid(value: unknown): string {
 }
 function databaseError(message: string): never {
   const messages: Record<string, string> = {
+    staff_trim_required: "Termine le trim de cette récolte dans l’Atelier avant de vendre le surplus.",
     storage_invalid_request: "Demande de stockage invalide.", storage_invalid_method: "Installation inconnue.",
     storage_request_mismatch: "Cette demande a déjà servi pour une autre opération.",
     storage_already_owned: "Tu possèdes déjà cette installation.", storage_not_owned: "Achète cette installation avant de l’utiliser.",

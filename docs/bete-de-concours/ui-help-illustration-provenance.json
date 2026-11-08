@@ -1,0 +1,174 @@
+{
+  "generator": "Built-in image_gen",
+  "date": "2026-11-08",
+  "useCase": "illustration-story",
+  "references": [
+    "public/placard/ui/staff-v1.webp",
+    "public/placard/market-workshop-sylvain-v2.webp"
+  ],
+  "prompt": "Use case: illustration-story.\nAsset type: a single production sprite atlas for illustrated help dashboards in the existing Kanab Quest game. Create one transparent PNG atlas with exactly TWELVE separate full-color narrative cartoon vignettes arranged in an exact 3 columns by 4 rows grid, preferably 1536x2048. Each vignette is centered in its equal square cell, with at least 48px transparent padding on every side. No object crossing cell boundaries. Actual transparent background, no grid lines, no frames, no letters, no numbers, no captions, no watermark. This is NOT a screenshot of a UI.\nInput reference 1: identity and style reference, the existing trio of cartoon characters. Reference 2: existing Sylvain character and workshop art direction. Match their faces closely: central male Sylvain with teal and tan cap, round friendly cream face and small black oval eyes, red-haired female colleague, brown curly-haired colleague with warmer skin. Same strong hand-inked dark #172923 contours, flat teal #087b70, warm cream #fff1d6, mustard gold #efc451, apricot #ffad5c, gentle halftone, charming French game cartoon. Botanical theme is hemp, NEVER wheat. Do not create photoreal humans, plastic 3D or generic app icons.\nEach cell must be a recognizable little scene with readable silhouettes at 110px display, simple prominent objects and at most one or two people. Disconnected die-cut silhouettes, NO rectangular backdrop. Include a little ground/object anchor only.\nExact order left to right, top to bottom:\nRow1 col1 TEAM: the three referenced characters together waist-up with friendly working poses, distinct faces, Sylvain center holding a hemp seedling.\nRow1 col2 PLAN: red-haired colleague placing a little portrait card on an angled wooden work-planning board with three blank paper columns and colored blank tokens; no text.\nRow1 col3 TIME: Sylvain with a large friendly teal mechanical clock, one hand on clock, clock ticks but no numerals.\nRow2 col1 CULTURE: curly-haired colleague watering a well-shaped hemp plant in a pot, small watering can in proportion, face clearly visible.\nRow2 col2 WORKSHOP: Sylvain at a waist-high workbench manually trimming hemp flowers over a shallow tray; SMALL scissors, face unobstructed, compact teal press beside bench.\nRow2 col3 TRAVEL: red-haired colleague with small teal delivery van and folded road map, a tiny Breton slate-roof shop behind, no text.\nRow3 col1 SOCIAL: curly-haired colleague making a product photo of a jar of hemp flowers with a smartphone on a compact tripod, two small simple blank speech bubbles.\nRow3 col2 ACCOUNTS: red-haired colleague at a desk with blank paper invoices, teal stamp and three gold coins, hand counting.\nRow3 col3 TRAINING: Sylvain studying a large open illustrated botanical book, pencil and small training trophy beside.\nRow4 col1 REST: curly-haired colleague relaxing in a hammock between two short wooden posts, straw hat beside, visible face.\nRow4 col2 CARE: red-haired colleague gently inspecting a hemp leaf with a magnifier next to a small teal gardening kit, no red cross symbol.\nRow4 col3 QUALITY: Sylvain carefully comparing a flower jar with a small brass balance and a gold rosette, a few sparkles, no text.\nConsistent scale, visual density and coherent printed style throughout. No panels behind the scenes. Do not crop any character or tool.",
+  "source": "artwork/ui-help-sheet-v1.png",
+  "sourceDimensions": {
+    "width": 887,
+    "height": 1774
+  },
+  "processing": "Sharp: alpha bounding boxes within 3 × 4 grid, proportional fit and transparent padding; no drawn replacement art.",
+  "assets": [
+    {
+      "kind": "help-team",
+      "path": "/placard/ui/help-team-v1.webp",
+      "crop": {
+        "left": 7,
+        "top": 162,
+        "width": 283,
+        "height": 239
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-plan",
+      "path": "/placard/ui/help-plan-v1.webp",
+      "crop": {
+        "left": 302,
+        "top": 126,
+        "width": 283,
+        "height": 302
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-time",
+      "path": "/placard/ui/help-time-v1.webp",
+      "crop": {
+        "left": 599,
+        "top": 137,
+        "width": 282,
+        "height": 298
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-culture",
+      "path": "/placard/ui/help-culture-v1.webp",
+      "crop": {
+        "left": 4,
+        "top": 560,
+        "width": 286,
+        "height": 277
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-workshop",
+      "path": "/placard/ui/help-workshop-v1.webp",
+      "crop": {
+        "left": 302,
+        "top": 557,
+        "width": 282,
+        "height": 281
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-travel",
+      "path": "/placard/ui/help-travel-v1.webp",
+      "crop": {
+        "left": 593,
+        "top": 525,
+        "width": 294,
+        "height": 313
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-social",
+      "path": "/placard/ui/help-social-v1.webp",
+      "crop": {
+        "left": 0,
+        "top": 966,
+        "width": 292,
+        "height": 287
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-accounts",
+      "path": "/placard/ui/help-accounts-v1.webp",
+      "crop": {
+        "left": 303,
+        "top": 970,
+        "width": 281,
+        "height": 281
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-training",
+      "path": "/placard/ui/help-training-v1.webp",
+      "crop": {
+        "left": 593,
+        "top": 968,
+        "width": 289,
+        "height": 283
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-rest",
+      "path": "/placard/ui/help-rest-v1.webp",
+      "crop": {
+        "left": 6,
+        "top": 1407,
+        "width": 284,
+        "height": 317
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-care",
+      "path": "/placard/ui/help-care-v1.webp",
+      "crop": {
+        "left": 300,
+        "top": 1419,
+        "width": 285,
+        "height": 300
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    },
+    {
+      "kind": "help-quality",
+      "path": "/placard/ui/help-quality-v1.webp",
+      "crop": {
+        "left": 596,
+        "top": 1419,
+        "width": 288,
+        "height": 303
+      },
+      "width": 512,
+      "height": 512,
+      "transparent": true
+    }
+  ]
+}

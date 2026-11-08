@@ -288,7 +288,7 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
     } else throw new Error("Cette action n’est pas disponible dans cet atelier.");
     return commerceSnapshot();
   }
-  const paths = new Set(["/api/arena/chanvrier", "/api/arena/chanvrier/savings", ...["bank", "commerce", "energy", "treasury", "stocks", "crypto"].map(name => `/api/arena/placard/${name}`)]);
+  const paths = new Set(["/api/arena/chanvrier", "/api/arena/chanvrier/savings", "/api/arena/placard/care/purchases", ...["bank", "commerce", "energy", "treasury", "stocks", "crypto"].map(name => `/api/arena/placard/${name}`)]);
   const request: typeof fetch = async (input, init) => {
     const signal = init?.signal ?? (input instanceof Request ? input.signal : undefined);
     signal?.throwIfAborted();
@@ -317,6 +317,7 @@ export function createKqTreasuryTutorial(options: { now?: () => number; initialC
         return new Response(encoded, { headers: { "content-type": "application/json" } });
       }
       if (method !== "GET") throw new Error("Méthode indisponible dans cet atelier.");
+      if (url.pathname.endsWith("/care/purchases")) return Response.json({ items: [], nextCursor: null, totalPaidCents: 0, totalCount: 0, serverNow: new Date().toISOString() });
       if (url.pathname === "/api/arena/chanvrier") return Response.json({ profile: { nickname: "SylvainEssai", gender: "male", clothing: "ochre", skin: "ivory", strength: "treasurer" } });
       const result = url.pathname.endsWith("/bank") ? bankSnapshot() : url.pathname.endsWith("/savings") ? savingsSnapshot()
         : url.pathname.endsWith("/commerce") ? commerceSnapshot() : url.pathname.endsWith("/energy") ? energySnapshot()

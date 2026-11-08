@@ -1,8 +1,41 @@
 {
+  "mailbox": { "kind": "mailbox", "path": "/placard/ui/mailbox-v1.webp", "provenance": "docs/bete-de-concours/ui-mailbox-provenance.json", "usage": "Interactive letterbox in the Quartier; accessible HTML sign and matching dialog vignette." },
   "generator": "Built-in image_gen",
   "date": "2026-10-24",
   "purpose": "Each navigation destination has its own illustration. Section headers reuse the matching destination illustration.",
   "assets": [
+    {
+      "kind": "culture",
+      "date": "2026-11-07",
+      "generator": "Built-in image_gen",
+      "prompt": "Use case: stylized-concept. Create ONE isolated decorative game workstation vignette on a genuinely transparent background for the French Kanab Quest farming game. Subject: a small open Breton stone greenhouse/work shed, shown in charming three-quarter front view, with two open teal wooden doors, a small dark slate roof, and a low growing bench holding THREE clearly recognizable hemp plants in dark plant pots. Leaves must be pointed, serrated and palmate with seven narrow leaflets; a few compact flower buds. One modest watering can beside the bench. The illustration must be readable at 120px wide and feel like a place the player can enter. Match a friendly French cartoon village: bold irregular near-black ink outlines, flat cel colours, cream stone, deep teal doors, muted leafy greens, golden sunlight, tiny printed halftone texture. Not photorealistic, not 3D, not pixel art. Full object visible, generous transparent margins; no surrounding landscape or background rectangle. No wheat, vegetables, generic rounded leaves, people, characters, text, letters, labels, borders, UI panels or interface. This is artwork only; all interactive signs are supplied by the application. Square composition.",
+      "source": "output/imagegen/kq-hemp-culture-v2.png",
+      "path": "/placard/ui/culture-v2.webp",
+      "processing": "Sharp contain resize to 512 by 512; WebP quality 88, alphaQuality 100. Alpha retained. Original illustration kept alongside the previous culture-v1 asset; no existing source overwritten.",
+      "usage": "KqPrintedArt culture: same illustrated hemp growing shed across navigation, matching section headings and the interactive work plan. Existing Sylvain and profile character art preserved."
+    },
+    {
+      "kind": "staff",
+      "date": "2026-11-08",
+      "source": "output/imagegen/kq-staff-team-v1.png",
+      "path": "/placard/ui/staff-v1.webp",
+      "portraits": {
+        "renderer": "src/components/contest/ChanvrierAvatar.tsx",
+        "configuration": "STAFF_AVATARS in src/components/placard/KqStaffPortrait.tsx",
+        "source": "Existing customizable profile character system, using chanvrier-head-renderer and chanvrier-body-renderer with the v6 avatar assets.",
+        "direction": "Keep Sylvain's established cartoon style. Candidate dossiers reuse the exact profile avatar renderer with fixed fictional appearances; no alternative character art or generated employee portraits."
+      },
+      "generator": "Built-in image_gen",
+      "prompt": "Use case: compositing / identity-preserve.\nAsset type: ONE finished transparent navigation vignette for the Personnel section of the existing French game Kanab Quest.\nInput images: image 1 is the canonical Sylvain character and main identity/style reference. Image 2 is a game screenshot: use ONLY the red-haired Anna portrait next to the name Anna Le Gall as the second character reference. Image 3 is a game screenshot: use ONLY the curly chestnut-haired Maël portrait next to the name Maël Riou as the third character reference. Never reproduce the screenshots, interface, panels, background, writing, or numbers.\nPrimary request: an instantly readable team made of exactly THREE cartoon HEADS side by side, on genuine alpha transparency. Anna on the left, Sylvain in the middle, Maël on the right. Keep all three recognizably the SAME existing characters, same friendly rounded facial proportions, clean bold black ink outlines and simple expressive eyes.\nSylvain: clean shaven, short black hair, signature tan and teal cap with black brim from image 1; smiling. Anna: ivory skin, ginger hair tied into the characteristic ponytail, friendly rounded face from image 2. Maël: peach skin, full chestnut curls, squarer smiling face from image 3. No hats for Anna or Maël, no beard or glasses added.\nComposition: large heads only, complete hair and cap visible, no bodies, no hands, no props. Tiny necks allowed if needed, but no rectangular shoulder crop. Three faces side by side in one cohesive compact group; Sylvain just slightly raised at the center to create a lively scalloped silhouette, without obscuring any face. The group fills 90% of the canvas width, and is centered vertically; square image. All eyes and faces remain separate and readable as a tiny 48px navigation illustration. Subtle overlap only at hair or ear silhouettes, no intersecting eyes or noses.\nStyle: preserve the established Sylvain/profile-avatar cartoon, broad warm flat cel colours, confident black outlines and a few restrained printed stipple shadows. Cheerful cooperative team expression. No realism, no 3D, no emoji or corporate clip-art style.\nCRITICAL: actually transparent background, not an opaque white or cream rectangle. No board, frame, border, badge, circle, panel, scenery, ground shadow, checkerboard or glow. No text, lettering, logo or watermark. Exactly three distinct characters, only their heads.",
+      "references": [
+        "public/sylvain.png",
+        "output/placard-staff-ui/employee-sheet-anna-1440.png",
+        "output/placard-staff-ui/employee-sheet-mael-1440.png"
+      ],
+      "processing": "Sharp trims transparent margins, contain-resizes to 464×464 with genuine alpha and adds 24px transparent padding to 512×512. WebP quality 88, alphaQuality 100. No colour-keying, backdrop or frame.",
+      "usage": "Three existing character heads side by side: Anna, Sylvain without beard, Maël. Decorative team vignette in Personnel navigation and its matching chapter heading; employee profile renderers unchanged.",
+      "replaces": "public/placard/bureau-management-v1.webp (rectangular room scene, preserved for its other uses)"
+    },
     {
       "kind": "social",
       "prompt": "Use case: illustration-story.\nAsset type: one transparent square navigation vignette for Kanab Quest, a French Breton village cultivation board game. Match the established warmly detailed hand-inked botanical/village illustrations: bold irregular dark ink #172923 contours, fine interior hatching, sparse screenprint stipple, cream #fff1d6, petrol teal #087b70, mustard gold #efc451 and warm apricot #ffad5c. Handmade printed cartoon quality, absolutely not a glossy 3D render.\nSubject: a single friendly chunky smartphone standing upright at a slight three-quarter angle. Teal casing with worn hand-inked edges, cream screen, six large rounded app tiles in two columns of three. The app tiles carry simple clearly recognizable pictograms: camera, speech bubble, heart, botanical leaf, little photo landscape, envelope. Use teal, gold and apricot tiles, no actual brand logos. Two small overlapping cream and mustard chat bubbles sit beside the top right of the phone, integrated into the compact silhouette. This is the player's social networks destination.\nComposition: exactly one compact centered object group, complete and uncut, with 8% transparent margin. Strong recognizable phone silhouette readable at 38px, pleasant detail at 160px. No external tile, badge, frame or surrounding rectangular panel. Genuine transparent background, no backdrop, no floor, no ground shadow, no checkerboard. NO written text, words, letters, numbers, logos or watermark. No people, no hands, no coins, no wooden stand, no buildings. Keep screen pictograms large and sparse.",

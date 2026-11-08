@@ -5,6 +5,11 @@
 .heading a, .heading button { display: inline-flex; align-items: center; gap: 8px; color: var(--green); font-size: 12px; text-decoration: none; min-height: 44px; }
 .heading button { padding: 8px 12px; font-family: inherit; font-weight: 700; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; background: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .heading a:hover { text-decoration: underline; }
+.trimLink { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; margin: 0 0 16px; font-size: 12px; line-height: 1.5; }
+.trimLink > a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 15px; color: var(--ink); font-weight: 750; text-decoration: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; background: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.trimLink > a:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.trimLink > a:focus-visible { outline: 3px solid var(--green); outline-offset: 4px; }
+.trimLink > span { flex: 1 1 240px; color: var(--muted); }
 .counts { display: flex; flex-wrap: wrap; gap: 5px 16px; margin-top: 7px; }
 .counts > span { display: inline-flex; gap: 5px; align-items: center; font-size: 11px; color: var(--muted); }
 .counts > span[data-warning] { color: #963c21; }

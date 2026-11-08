@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { ArrowLeft, Hourglass, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeft, Hourglass } from "lucide-react";
 import Link from "@/components/navigation/NavigationLink";
 import { navigateWithDraftGuard } from "@/lib/navigation-guard";
 import { navigateAfterOverlays } from "@/lib/overlay-history";
@@ -15,11 +15,14 @@ import retro from "../contest/ArenaRetro.module.css";
 import styles from "./PlacardPlayerShell.module.css";
 import type { KqMarketSection } from "./KqMarketHub";
 import type { KqOnlineBusinessTab } from "./KqOnlineBusiness";
-import { KqGameSoundProvider, useKqGameSound } from "./KqGameSound";
 import { kqPreparationStorage, readKqPreparationDraft, writeKqPreparationDraft } from "@/lib/kanab-quest-preparation-draft";
 import type { KqPreparationSelection } from "@/lib/kanab-quest-preparation-selection";
 import { getKqMissionTarget } from "@/lib/kanab-quest-pinned-mission";
 import { KqMissionFocusProvider, KqPinnedMission } from "./KqPinnedMission";
+import type { FarmGuideDestination } from "@/lib/kanab-quest-farm-guide";
+import { KqPlayerWorkStatus } from "./KqPlayerWorkStatus";
+import { KqPlayerWorkAvailabilityContext } from "./KqPlayerActionTime";
+import type { KqPlayerWorkAvailability } from "@/lib/kanab-quest-player-work";
 
 const NAVIGATION_FEEDBACK_MS = 420;
 
@@ -54,6 +57,7 @@ const KqTreasuryDesk = dynamic(
   () => import("./KqTreasuryDesk").then((module) => module.KqTreasuryDesk),
   { loading: PlacardViewLoading },
 );
+const KqStaffDesk = dynamic(() => import("./KqStaffDesk").then(module => module.KqStaffDesk), { loading: PlacardViewLoading });
 const KqMissionCenter = dynamic(
   () => import("./KqMissionCenter").then((module) => module.KqMissionCenter),
   { loading: PlacardViewLoading },
@@ -63,19 +67,20 @@ const KqWarehouseEntry = dynamic(() => import("./KqWarehouseEntry").then((module
 const KqPlacardHud = dynamic(() => import("./KqPlacardHud").then((module) => module.KqPlacardHud), { loading: PlacardViewLoading });
 
 const KqHarvests = dynamic(() => import("./KqHarvests").then(module => module.KqHarvests), { loading: PlacardViewLoading });
+const KqFarmGuide = dynamic(() => import("./KqFarmGuide").then(module => module.KqFarmGuide), { ssr: false });
 
-type PlacardView = "harvests" | "hub" | "shop" | "game" | "arena" | "market" | "social" | "treasury" | "missions" | "workshop";
+type PlacardView = "harvests" | "hub" | "shop" | "game" | "arena" | "market" | "social" | "treasury" | "staff" | "missions" | "workshop";
 const VIEW_ART: Record<PlacardView, KqPrintedArtKind> = {
   hub: "quarter", game: "culture", harvests: "harvest", workshop: "warehouse",
-  market: "commerce", social: "social", treasury: "accounts", missions: "missions", arena: "achievements", shop: "card-shop",
+  market: "commerce", social: "social", treasury: "accounts", staff: "staff", missions: "missions", arena: "achievements", shop: "card-shop",
 };
 type TreasuryPole = "accounting" | "bank";
 type CardSection = "botte" | "buddies";
-type PlacardNavigationOptions = { equipmentCode?: string; catalog?: boolean; shopSection?: CardSection; from?: PlacardView; fromMarketSection?: KqMarketSection; fromSection?: KqMarketSection | "storage"; fromFlowerId?: string; fromLotId?: string; fromListingId?: string; fromBusinessView?: KqOnlineBusinessTab; fromGame?: "missions"; treasuryPole?: TreasuryPole; marketSection?: KqMarketSection; businessView?: KqOnlineBusinessTab; warehouseSection?: "storage"; configureStorage?: boolean; harvestSection?: "storage"; flowerId?: string; lotId?: string; listingId?: string; zoneId?: string; runId?: string; campaign?: boolean };
+type PlacardNavigationOptions = { employeeId?: string; equipmentCode?: string; catalog?: boolean; shopSection?: CardSection; from?: PlacardView; fromMarketSection?: KqMarketSection; fromSection?: KqMarketSection | "storage" | "processing"; fromFlowerId?: string; fromLotId?: string; fromListingId?: string; fromBusinessView?: KqOnlineBusinessTab; fromGame?: "missions"; treasuryPole?: TreasuryPole; marketSection?: KqMarketSection; businessView?: KqOnlineBusinessTab; warehouseSection?: "storage" | "processing"; configureStorage?: boolean; harvestSection?: "storage"; flowerId?: string; lotId?: string; listingId?: string; zoneId?: string; runId?: string; campaign?: boolean };
 const LOCATION_EVENT = "kq:placard-location";
 
 function isPlacardView(value: string | null): value is PlacardView {
-  return value === "harvests" || value === "hub" || value === "shop" || value === "game" || value === "arena" || value === "market" || value === "social" || value === "treasury" || value === "missions" || value === "workshop";
+  return value === "harvests" || value === "hub" || value === "shop" || value === "game" || value === "arena" || value === "market" || value === "social" || value === "treasury" || value === "staff" || value === "missions" || value === "workshop";
 }
 
 function isTreasuryPole(value: string | null): value is TreasuryPole {
@@ -86,8 +91,8 @@ function businessTab(value: string | null): KqOnlineBusinessTab {
   return value === "brand" || value === "merch" || value === "marketing" ? value : "site";
 }
 
-function sourceSection(value: string | null): KqMarketSection | "storage" | undefined {
-  return value === "overview" || value === "demands" || value === "sales" || value === "dashboard" || value === "management" || value === "storage" ? value : undefined;
+function sourceSection(value: string | null): KqMarketSection | "storage" | "processing" | undefined {
+  return value === "overview" || value === "demands" || value === "sales" || value === "dashboard" || value === "management" || value === "storage" || value === "processing" ? value : undefined;
 }
 
 const getPlacardLocation = () => window.location.search;
@@ -111,6 +116,7 @@ const PLACARD_VIEW_LABELS: Record<PlacardView, string> = {
   market: "du Commerce",
   social: "de tes réseaux",
   treasury: "des Finances",
+  staff: "du Personnel",
   missions: "des Missions",
 };
 
@@ -123,25 +129,42 @@ const PLACARD_RETURN_LABELS: Record<PlacardView, { label: string; accessibleLabe
   market: { label: "Commerce", accessibleLabel: "Retour à mon commerce" },
   social: { label: "Réseaux", accessibleLabel: "Retour à mes réseaux" },
   treasury: { label: "Finances", accessibleLabel: "Retour à mes finances" },
+  staff: { label: "Personnel", accessibleLabel: "Retour au personnel" },
   missions: { label: "Missions", accessibleLabel: "Retour aux missions" },
   shop: { label: "Packs", accessibleLabel: "Retour aux packs de cartes" },
 };
 
-export function PlacardPlayerShell({ draftOwnerId }: { draftOwnerId?: string } = {}) {
-  return <KqGameSoundProvider><KqMissionFocusProvider key={draftOwnerId ?? "guest"} ownerId={draftOwnerId}><PlacardPlayerShellContent draftOwnerId={draftOwnerId} /></KqMissionFocusProvider></KqGameSoundProvider>;
+export function PlacardPlayerShell({ draftOwnerId, initialGuideOpen = false }: { draftOwnerId?: string; initialGuideOpen?: boolean } = {}) {
+  return <KqMissionFocusProvider key={draftOwnerId ?? "guest"} ownerId={draftOwnerId}><PlacardPlayerShellContent draftOwnerId={draftOwnerId} initialGuideOpen={initialGuideOpen} /></KqMissionFocusProvider>;
 }
 
-function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) {
-  const sound = useKqGameSound();
+function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOwnerId?: string; initialGuideOpen: boolean }) {
   const location = useSyncExternalStore(subscribePlacardLocation, getPlacardLocation, () => "");
   const params = new URLSearchParams(location);
+  const guideSection = params.get("section") ?? undefined;
   const guidedVisit = params.get("guide") === "1";
+  const [hasGuided, setHasGuided] = useState(initialGuideOpen || guidedVisit);
+  const [guideReady, setGuideReady] = useState(false);
+  const [guideCompleted, setGuideCompleted] = useState(false);
+  const updateGuideActive = useCallback((active: boolean, started: boolean, completed: boolean) => {
+    setGuideReady(true);
+    setGuideCompleted(completed);
+    if (active || started) setHasGuided(true);
+    if (!active && new URLSearchParams(window.location.search).has("guide")) {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("guide");
+      window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+      window.dispatchEvent(new Event(LOCATION_EVENT));
+    }
+  }, []);
   const requestedView = params.get("view");
   const requestedTreasuryPole = params.get("pole");
+  const legacyStaffTrim = requestedView === "staff" && params.get("staff") === "trim";
+  const requestedWorkshopTab = legacyStaffTrim || params.get("workshop") !== "machines" ? "trim" : "machines";
   const legacyManagement = requestedView === "treasury" && requestedTreasuryPole === "management";
   const legacyEquipmentShop = requestedView === "shop" && params.get("catalog") === "equipment";
   const legacySocial = requestedView === "market" && params.get("section") === "social";
-  const view: PlacardView = legacySocial ? "social" : legacyEquipmentShop ? "workshop" : legacyManagement ? "market" : isPlacardView(requestedView) ? requestedView : "hub";
+  const view: PlacardView = legacyStaffTrim || legacyEquipmentShop ? "workshop" : legacySocial ? "social" : legacyManagement ? "market" : isPlacardView(requestedView) ? requestedView : "hub";
   const treasuryPole: TreasuryPole = view === "treasury" && isTreasuryPole(requestedTreasuryPole) ? requestedTreasuryPole : "accounting";
   const marketSection: KqMarketSection = legacyManagement || params.get("section") === "management" ? "management"
     : params.get("section") === "dashboard" || (!params.get("section") && params.get("listing")) ? "dashboard" : params.get("section") === "demands" ? "demands"
@@ -154,8 +177,10 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
   const [pendingView, setPendingView] = useState<PlacardView | null>(null);
   const navigationTimerRef = useRef<number | null>(null);
   const [highlightedBuilding, setHighlightedBuilding] = useState<string | null>(null);
+  const [workAvailability, setWorkAvailability] = useState<KqPlayerWorkAvailability>({ status: "loading" });
   const headingRef = useRef<HTMLHeadingElement>(null);
   const requestedFlowerId = params.get("flower") ?? undefined;
+  const requestedEmployeeId = params.get("employee") ?? undefined;
   const requestedLotId = params.get("lot") ?? undefined;
   const requestedListingId = params.get("listing") ?? undefined;
   const requestedZoneId = params.get("zone") ?? undefined;
@@ -163,7 +188,7 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
   const requestedCampaign = params.get("campaign") === "1";
   const harvestSection = params.get("section") === "storage" ? "storage" : "overview";
   const requestedEquipmentCode = params.get("equipment");
-  const warehouseSection = !legacyEquipmentShop && params.get("section") === "storage" ? "storage" : "equipment";
+  const warehouseSection = legacyStaffTrim || params.get("section") === "processing" ? "processing" : !legacyEquipmentShop && params.get("section") === "storage" ? "storage" : "equipment";
   const autoOpenEquipmentCatalog = view === "workshop" && params.get("catalog") === "equipment";
   const autoOpenStorageEquipment = view === "workshop" && warehouseSection === "storage" && params.get("configure") === "storage";
   const shopSection: CardSection = params.get("section") === "buddies" ? "buddies" : "botte";
@@ -185,12 +210,13 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
     navigateWithDraftGuard(() => navigateAfterOverlays(() => {
     if (nextView === "shop" && options.catalog) nextView = "workshop";
     const url = new URL(window.location.href);
-    for (const key of ["view", "catalog", "configure", "equipment", "from", "fromSection", "fromFlower", "fromLot", "fromListing", "fromBusiness", "fromGame", "pole", "section", "business", "flower", "lot", "listing", "zone", "run", "campaign"]) url.searchParams.delete(key);
+    for (const key of ["view", "catalog", "configure", "equipment", "from", "fromSection", "fromFlower", "fromLot", "fromListing", "fromBusiness", "fromGame", "pole", "staff", "workshop", "employee", "section", "business", "flower", "lot", "listing", "zone", "run", "campaign"]) url.searchParams.delete(key);
     if (nextView !== "hub") url.searchParams.set("view", nextView);
     if (nextView === "treasury" && options.treasuryPole) url.searchParams.set("pole", options.treasuryPole);
     if (nextView === "market" && options.marketSection) url.searchParams.set("section", options.marketSection);
     if (nextView === "market" && options.businessView) url.searchParams.set("business", options.businessView);
     if (nextView === "workshop" && options.warehouseSection) url.searchParams.set("section", options.warehouseSection);
+    if (nextView === "workshop" && options.employeeId) { url.searchParams.set("employee", options.employeeId); url.searchParams.set("workshop", "trim"); }
     if (nextView === "workshop" && options.warehouseSection === "storage" && options.configureStorage) url.searchParams.set("configure", "storage");
     if (nextView === "shop" && options.shopSection === "buddies") url.searchParams.set("section", "buddies");
     if (nextView === "harvests" && options.harvestSection) url.searchParams.set("section", options.harvestSection);
@@ -212,7 +238,7 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
       if (options.fromBusinessView) url.searchParams.set("fromBusiness", options.fromBusinessView);
       if ((nextView === "workshop" || nextView === "shop") && options.from === "game" && options.fromGame === "missions") url.searchParams.set("fromGame", "missions");
     }
-    if (url.search === window.location.search) return;
+    if (url.search === window.location.search) { setCollectionOpen(false); return; }
     if (navigationTimerRef.current !== null) window.clearTimeout(navigationTimerRef.current);
     setCollectionOpen(false);
     setProgressOpen(false);
@@ -276,6 +302,17 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
   }, []);
 
   useEffect(() => {
+    if (!legacyStaffTrim) return;
+    const url = new URL(window.location.href);
+    url.searchParams.set("view", "workshop");
+    url.searchParams.set("section", "processing");
+    url.searchParams.set("workshop", "trim");
+    url.searchParams.delete("staff");
+    window.history.replaceState(window.history.state, "", url.pathname + url.search + url.hash);
+    window.dispatchEvent(new Event(LOCATION_EVENT));
+  }, [legacyStaffTrim]);
+
+  useEffect(() => {
     if (!legacyManagement) return;
     const url = new URL(window.location.href);
     url.searchParams.set("view", "market");
@@ -335,7 +372,7 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
 
   const activeNav: PlacardNavKey = collectionOpen ? "collection" : view === "arena" ? "harvests" : view;
   const currentTitle =
-    view === "hub" ? "Mon quartier" : view === "harvests" ? "Mes récoltes" : view === "workshop" ? (warehouseSection === "storage" ? "Entrepôt · Stockage" : "L’Entrepôt") : view === "shop" ? "Packs de cartes" : view === "game" ? "Ma culture" : view === "market" ? "Mon commerce" : view === "social" ? "Mes réseaux" : view === "treasury" ? "Mes finances" : view === "missions" ? "Mes missions" : "Jury & duels";
+    view === "hub" ? "Mon quartier" : view === "harvests" ? "Mes récoltes" : view === "workshop" ? (warehouseSection === "processing" ? "L’Atelier" : warehouseSection === "storage" ? "Entrepôt · Stockage" : "L’Entrepôt") : view === "shop" ? "Packs de cartes" : view === "game" ? "Ma culture" : view === "market" ? "Mon commerce" : view === "social" ? "Mes réseaux" : view === "staff" ? "Personnel" : view === "treasury" ? "Mes finances" : view === "missions" ? "Mes missions" : "Jury & duels";
 
   const returnToCulture = (view === "workshop" || view === "shop") && from === "game";
   const returnToPreparation = returnToCulture && !requestedRunId && !!preparation;
@@ -348,7 +385,7 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
     else openView(returnView, returnToCulture ? { zoneId: requestedZoneId, runId: requestedRunId, campaign: requestedCampaign, from: fromGame }
       : returnView === "market" ? { marketSection: shopReturnMarketSection, businessView: fromBusinessView, flowerId: fromFlowerId, lotId: fromLotId, listingId: fromListingId }
         : returnView === "harvests" ? { flowerId: fromFlowerId ?? requestedFlowerId, harvestSection: fromSection === "storage" ? "storage" : undefined }
-          : returnView === "workshop" ? { flowerId: fromFlowerId, warehouseSection: fromSection === "storage" ? "storage" : undefined }
+          : returnView === "workshop" ? { flowerId: fromFlowerId, warehouseSection: fromSection === "storage" ? "storage" : fromSection === "processing" ? "processing" : undefined }
             : returnView === "arena" ? { flowerId: fromFlowerId ?? requestedFlowerId } : {});
   };
 
@@ -356,6 +393,17 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
     if (key === "collection") openCollection();
     else if (key === "shop") openPacks();
     else openView(key);
+  };
+
+  const guideNavigate = (destination: FarmGuideDestination & { flowerId?: string }) => {
+    if (destination.view === "collection") { openCollection("buddies"); return; }
+    openView(destination.view, {
+      ...(destination.flowerId ? { flowerId: destination.flowerId } : {}),
+      ...(destination.view === "market" ? { marketSection: sourceSection(destination.section ?? null) as KqMarketSection | undefined } : {}),
+      ...(destination.view === "harvests" ? { harvestSection: "storage" as const } : {}),
+      ...(destination.view === "workshop" && destination.section === "processing" ? { warehouseSection: "processing" as const } : {}),
+      ...(destination.view === "treasury" ? { treasuryPole: destination.pole } : {}),
+    });
   };
 
   const marketContext: PlacardNavigationOptions = {
@@ -369,9 +417,10 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
   }, [view, treasuryPole, harvestSection, requestedFlowerId, warehouseSection]);
 
   return (
+    <KqPlayerWorkAvailabilityContext.Provider value={workAvailability}>
     <div ref={surfaceRef} className={`${retro.gameSurface} ${styles.shell}`} data-placard-view={view}>
       <a className={styles.skipLink} href="#placard-content">Aller à l’activité</a>
-      <KqPlacardNavigation active={activeNav} onNavigate={navigate} onHighlight={setHighlightedBuilding} />
+      <KqPlacardNavigation active={activeNav} onNavigate={navigate} onHighlight={setHighlightedBuilding} showLearning={guideReady && !guideCompleted} />
       {collectionOpen ? <KqBotteCollection initialSection={collectionSection} onClose={() => setCollectionOpen(false)} onOpenShop={openPacks} /> : null}
       {navigationFeedback}
       <div className={styles.content} id="placard-content">
@@ -379,12 +428,14 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
           <button type="button" data-placard-back={returnView} aria-label={returnLabel.accessibleLabel} onClick={returnToParent}><ArrowLeft size={18} aria-hidden="true" />{returnLabel.label}</button>
           <KqPrintedArt kind={VIEW_ART[view]} className={printedArt.sectionMark} />
           <h1 ref={headingRef} tabIndex={-1}>{currentTitle}</h1>
-          <button type="button" className={styles.soundButton} data-game-sound aria-label="Son du jeu" title={sound.enabled ? "Couper le son du jeu" : "Activer le son du jeu"} aria-pressed={sound.enabled} onClick={sound.toggle}>
-            {sound.enabled ? <Volume2 size={18} aria-hidden="true" /> : <VolumeX size={18} aria-hidden="true" />}<span>Son {sound.enabled ? "activé" : "coupé"}</span>
-          </button>
         </header>}
+        <KqPlayerWorkStatus view={view} onOpenPersonal={() => openView("staff")} onAvailabilityChange={setWorkAvailability} />
+        <KqFarmGuide ownerId={draftOwnerId} initialOpen={initialGuideOpen || guidedVisit}
+          destination={{ view: collectionOpen ? "collection" : view, section: view === "market" ? marketSection : guideSection, pole: treasuryPole }}
+          onNavigate={guideNavigate} onActiveChange={updateGuideActive} />
+        <div className={styles.viewStage} key={view} data-placard-stage={view}>
         {view === "hub" ? (
-          <KqPlacardLobby onOpen={openView} onOpenCollection={() => openCollection()} highlightedBuilding={highlightedBuilding}>
+          <KqPlacardLobby onOpen={openView} onOpenCollection={() => openCollection()} highlightedBuilding={highlightedBuilding} workAvailability={workAvailability}>
             <KqPinnedMission onChoose={() => openView("missions")} onContinue={code => { const target = getKqMissionTarget(code); openView(target.view, target.options); }} />
           </KqPlacardLobby>
         ) : view === "harvests" ? (
@@ -395,13 +446,13 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
             onOpenWarehouse={flowerId => openView("workshop", { warehouseSection: "storage", configureStorage: true, flowerId, from: "harvests", fromSection: "storage", fromFlowerId: flowerId })} onOpenGame={() => openView("game")} />
         ) : view === "shop" ? (
           <KqSupportBoosterShop
-            autoOpen embedded autoClaimWelcome={!guidedVisit}
+            autoOpen embedded autoClaimWelcome={guideReady && !guidedVisit && !hasGuided}
             initialSection={shopSection} onSectionChange={section => openPacks(section)} onOpenCollection={openCollection}
             onExit={returnToParent}
           />
         ) : view === "workshop" ? (
-          <KqWarehouseEntry key={`${warehouseSection}:${requestedZoneId ?? ""}:${requestedFlowerId ?? ""}:${autoOpenEquipmentCatalog}:${autoOpenStorageEquipment}:${requestedEquipmentCode ?? ""}`} embedded draftOwnerId={draftOwnerId} initialZoneId={requestedZoneId} initialFlowerId={requestedFlowerId} initialShopOpen={autoOpenEquipmentCatalog} initialStorageEquipmentOpen={autoOpenStorageEquipment} initialEquipmentCode={requestedEquipmentCode} initialSection={warehouseSection} onClose={returnToParent} onOpenShop={openEquipmentCatalog} onOpenCulture={openWarehouseCulture}
-            onOpenMarket={(flowerId, marketSection = "sales") => openView("market", { marketSection, flowerId, from: "workshop", fromFlowerId: flowerId, fromSection: warehouseSection === "storage" ? "storage" : undefined })}
+          <KqWarehouseEntry key={`${warehouseSection}:${requestedWorkshopTab}:${requestedEmployeeId ?? ""}:${requestedZoneId ?? ""}:${requestedFlowerId ?? ""}:${autoOpenEquipmentCatalog}:${autoOpenStorageEquipment}:${requestedEquipmentCode ?? ""}`} embedded draftOwnerId={draftOwnerId} initialZoneId={requestedZoneId} initialFlowerId={requestedFlowerId} initialShopOpen={autoOpenEquipmentCatalog} initialStorageEquipmentOpen={autoOpenStorageEquipment} initialEquipmentCode={requestedEquipmentCode} initialSection={warehouseSection} initialWorkshopTab={requestedWorkshopTab} initialEmployeeId={requestedEmployeeId} onClose={returnToParent} onOpenShop={openEquipmentCatalog} onOpenCulture={openWarehouseCulture}
+            onOpenMarket={(flowerId, marketSection = "sales") => openView("market", { marketSection, flowerId, from: "workshop", fromFlowerId: flowerId, fromSection: warehouseSection === "storage" ? "storage" : warehouseSection === "processing" ? "processing" : undefined })}
             onOpenHarvests={flowerId => openView("harvests", { harvestSection: "storage", flowerId })} />
         ) : view === "missions" ? (
           <>
@@ -413,6 +464,8 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
           </>
         ) : view === "treasury" ? (
           <KqTreasuryDesk key={treasuryPole} initialPole={treasuryPole} onOpenShop={openEquipmentCatalog} onPoleChange={pole => openView("treasury", { treasuryPole: pole })} />
+        ) : view === "staff" ? (
+          <KqStaffDesk embedded onOpenTrim={employeeId => openView("workshop", { warehouseSection: "processing", employeeId, from: "staff" })} />
         ) : view === "market" ? (
           <KqMarketDesk section={marketSection} managementView={managementView} initialFlowerId={requestedFlowerId} initialLotId={requestedLotId} initialListingId={requestedListingId}
             onSectionChange={(next, listingId, businessView) => openView("market", { ...marketContext, marketSection: next,
@@ -437,7 +490,9 @@ function PlacardPlayerShellContent({ draftOwnerId }: { draftOwnerId?: string }) 
             onOpenStorage={flowerId => openView("workshop", { warehouseSection: "storage", flowerId, from: view, fromFlowerId: flowerId })}
             onOpenArena={() => openView("arena")} onOpenMarket={flowerId => openView("market", { flowerId, marketSection: flowerId ? "sales" : undefined, from: view === "arena" ? "arena" : "harvests", fromFlowerId: flowerId })} onOpenGame={() => openView("game", { zoneId: requestedZoneId, runId: requestedRunId, from: view === "game" ? contextualReturn ?? undefined : undefined })} />
         )}
+        </div>
       </div>
     </div>
+    </KqPlayerWorkAvailabilityContext.Provider>
   );
 }

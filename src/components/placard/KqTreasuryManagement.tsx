@@ -192,7 +192,8 @@ export function KqTreasuryManagement({ onOpenShop, onUpdated, onPrepareStock, on
     } catch (failure) { setError(failure instanceof Error ? failure.message : "Opération indisponible."); }
     finally { committing.current = false; setBusy(false); }
   }
-  return <section className={styles.management} aria-label={section === "invoices" ? "Factures et échéances" : "Gestion de mon entreprise"}>
+  return <section className={styles.management} aria-label={section === "invoices" ? "Factures et échéances" : "Gestion de mon entreprise"}
+    data-guide-finances-ready={section === "invoices" && !loading && !!data && !!energy && !error && !energyError || undefined}>
     {loading ? <p className={styles.loading} role="status"><LoaderCircle size={19} className={styles.spin} aria-hidden="true" /> {section === "invoices" ? "Ouverture des factures…" : "Ouverture de la gestion…"}</p> : null}
     {error && !confirmation ? <p className={styles.error} role="alert">{error}<button type="button" className={styles.secondary} onClick={() => void load()}><RefreshCw size={16} aria-hidden="true" /> Actualiser</button></p> : null}
     {notice ? <p className={styles.notice} role="status"><Check size={18} aria-hidden="true" /> {notice}</p> : null}

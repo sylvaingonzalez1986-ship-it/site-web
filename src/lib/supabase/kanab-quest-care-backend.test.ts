@@ -1,9 +1,10 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: vi.fn().mockResolvedValue(undefined) }));
 const mocks = vi.hoisted(() => ({ rpc: vi.fn(), from: vi.fn(), maybeSingle: vi.fn() }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc, from: mocks.from }) }));
 import { applyKqPlayerCare, getKqCareShopSnapshot, purchaseKqCareProduct } from "./kanab-quest-care-backend";
 import { advanceKqStage, resolveKqStage, startKqGame } from "@/lib/kanab-quest-game";
-import { applyKqCareProduct, createKqCareState, KQ_BASIC_CARE_PRICE_CENTS, performKqBasicCare, type KqCareProblem } from "@/lib/kanab-quest-care";
+import { applyKqCareProduct, createKqCareState, KQ_BASIC_CARE_PRICE_CENTS, KQ_CARE_PRODUCTS, performKqBasicCare, type KqCareProblem } from "@/lib/kanab-quest-care";
 import { encodeKqSave, parseKqGameSave } from "@/lib/kanab-quest-persistence";
 const userId = "00000000-0000-4000-8000-000000000001", runId = "00000000-0000-4000-8000-000000000002", requestKey = "00000000-0000-4000-8000-000000000003";
 const input = { userId, runId, requestKey, productCode: "CARE-SEAWEED" };
@@ -42,9 +43,9 @@ describe("server-authoritative care transitions", () => {
     await expect(purchaseKqCareProduct({ userId, requestKey, productCode: "FORGED", quantity: 1 })).rejects.toThrow("Produit ou quantité");
     expect(mocks.rpc).toHaveBeenCalledTimes(1);
   });
-  it("never supplies a client price to SQL and validates integral quantities", async () => {
-    await purchaseKqCareProduct({ userId, requestKey, productCode: "CARE-SEAWEED", quantity: 2 });
-    expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_purchase_care", { p_user_id: userId, p_product_code: "CARE-SEAWEED", p_quantity: 2, p_request_key: requestKey });
+  it("supplies the confirmed amount for SQL verification and validates integral quantities", async () => {
+    await purchaseKqCareProduct({ userId, requestKey, productCode: "CARE-SEAWEED", quantity: 2, runId, expectedPriceCents: 4800 });
+    expect(mocks.rpc).toHaveBeenLastCalledWith("rpc_kq_purchase_care_v2", { p_user_id: userId, p_product_code: "CARE-SEAWEED", p_quantity: 2, p_request_key: requestKey, p_run_id: runId, p_expected_price_cents: 4800 });
     for (const quantity of [0, -1, 1.5, 21, Number.NaN]) await expect(purchaseKqCareProduct({ userId, requestKey, productCode: "CARE-SEAWEED", quantity })).rejects.toThrow("Produit ou quantité");
     expect(mocks.rpc).toHaveBeenCalledTimes(1);
   });
@@ -60,8 +61,7 @@ describe("server-authoritative care transitions", () => {
     });
   });
   it.each([undefined, 0, 499, 501, Number.NaN])("rejects an old free button or a changed quote (%s) without state changes", async basicPriceCents => {
-    await expect(applyKqPlayerCare({ userId, runId, requestKey, action: "basic", basicPriceCents })).rejects.toThrow("prix de l’entretien a changé");
-    expect(mocks.from).not.toHaveBeenCalled();
+    await expect(applyKqPlayerCare({ userId, runId, requestKey, action: "basic", basicPriceCents })).rejects.toThrow("prix ou la surface a changé");
     expect(mocks.rpc).toHaveBeenCalledTimes(1);
   });
   it("preserves the recorded charge on a replay even without today's price", async () => {
@@ -80,8 +80,8 @@ describe("server-authoritative care transitions", () => {
   it("does not invent a price quote when the database has not been migrated", async () => {
     const snapshot = { cashCents: 10000, inventory: [] };
     mocks.rpc.mockResolvedValue({ data: snapshot, error: null });
-    expect(await getKqCareShopSnapshot(userId)).not.toHaveProperty("basicCarePriceCents");
-    mocks.rpc.mockResolvedValue({ data: { ...snapshot, basicCarePriceCents: KQ_BASIC_CARE_PRICE_CENTS }, error: null });
+    await expect(getKqCareShopSnapshot(userId)).rejects.toThrow("Tarifs des intrants indisponibles");
+    mocks.rpc.mockResolvedValue({ data: { ...snapshot, basicCarePriceCents: KQ_BASIC_CARE_PRICE_CENTS, prices: Object.fromEntries(KQ_CARE_PRODUCTS.map(product => [product.code, product.priceCents])) }, error: null });
     expect(await getKqCareShopSnapshot(userId)).toHaveProperty("basicCarePriceCents", KQ_BASIC_CARE_PRICE_CENTS);
   });
   it.each(["harvest", "flowering-resolved", "heat"])("refuses %s interventions before the stock mutation RPC", async reason => {

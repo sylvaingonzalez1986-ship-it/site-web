@@ -57,6 +57,7 @@ const request=async(input,init)=>{
  }
  if(path.endsWith('/bootstrap'))return Response.json({collection:{ownerFound:true,collectionActive:true,inventory,availableInventory:inventory,cards:[]},ownedBuddieCodes:[game.varietyCode],heritage:{cards:[]},playerSession:session(),warnings:[]});
  if(path.endsWith('/runs')||path.endsWith('/session'))return Response.json(session());
+ if(path.endsWith('/work'))return Response.json({version:1,runId,stageIndex:game.stageIndex,day:1,phase:game.phase,source:'player',paid:game.phase!=='prepare',stepHours:.5,playerRemainingHours:12,employee:null,bonus:{vitality:0,terpenes:0,yieldPercent:0,cannabinoids:0},reason:null});
  if(path.endsWith('/collection')||path.endsWith('/cards'))return Response.json({collection:{ownerFound:true,collectionActive:true,inventory,availableInventory:inventory,cards:[]}});
  if(path.endsWith('/rankings'))return Response.json({entries:[]});if(path.endsWith('/flowers'))return Response.json({flowers:[]});if(path.endsWith('/me'))return Response.json({progress:null});
  if(path.endsWith('/equipment'))return Response.json({strength:null,routePlan:null});if(path.endsWith('/care'))return Response.json({cashCents:12000,basicCarePriceCents:KQ_BASIC_CARE_PRICE_CENTS,inventory:[],catalog:[]});return Response.json({error:'Outside local fixture'},{status:404});
@@ -94,7 +95,7 @@ try{
  async function enter(selector){await page.$eval(selector,e=>e.scrollIntoView({block:'center',inline:'center',behavior:'instant'}));await page.focus(selector);await page.keyboard.press('Enter');await frames()}
 
  async function open(scenario='opening'){
-  await page.goto(origin+'/?scenario='+scenario,{waitUntil:'networkidle0'});await page.waitForSelector('[data-culture-play][data-player-mode="true"]');await page.evaluate(()=>document.fonts.ready);await enter('[data-culture-hand] > summary');await frames();
+  await page.goto(origin+'/?scenario='+scenario,{waitUntil:'networkidle0'});await page.waitForSelector('[data-culture-play][data-player-mode="true"]');await page.evaluate(()=>document.fonts.ready);if(await page.$('[data-culture-tab="cards"]'))await enter('[data-culture-tab="cards"]');else await enter('[data-culture-hand] > summary');await frames();
  }
  async function shot(name){await page.evaluate(()=>Promise.allSettled([...document.images].map(image=>image.decode())));await page.screenshot({path:resolve(output,name+'.png')});}
  async function scrollHandActions(){await page.$eval('[data-hand-redraw]',element=>element.scrollIntoView({block:'start',behavior:'instant'}));await frames();}
@@ -230,7 +231,7 @@ try{
   await page.evaluate(()=>window.__allowAction=true);await page.waitForFunction(()=>window.__game.handCodes[0]===window.__initialGame.heritageReserveCodes[0]);await settled();await unchangedBalances();
   results.push({scenario:'pending exchange and synchronous double click',writes:1,otherHandActionsLocked:true});
 
-  await adjustment();await page.evaluate(()=>window.__holdAction=true);await enter('[data-culture-primary-action]');await page.waitForFunction(()=>window.__calls.some(call=>call.method==='POST'));
+  await adjustment();if(await page.$('[data-culture-tab="play"]'))await enter('[data-culture-tab="play"]');await page.evaluate(()=>window.__holdAction=true);await enter('[data-culture-primary-action]');await page.waitForFunction(()=>window.__calls.some(call=>call.method==='POST'));
   assert.equal(await page.$$eval('[data-heritage-out-index]',elements=>elements.some(element=>!element.disabled)),false);
   assert.equal(await page.$eval('[data-hand-redraw]',element=>element.disabled),true);
   await page.$$eval('[data-hand-redraw],[data-heritage-out-index],[data-heritage-in-index]',elements=>elements.forEach(element=>element.click()));assert.equal((await posts()).length,1);

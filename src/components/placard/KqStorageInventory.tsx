@@ -1,5 +1,6 @@
 "use client";
 
+import { KqHelpGrid } from "./KqHelpDashboard";
 import { useId } from "react";
 import { ArrowRight, Package, PackageCheck, ShieldCheck, TriangleAlert } from "lucide-react";
 import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
@@ -58,7 +59,7 @@ export function KqStorageInventory({ snapshot, selectedFlowerId, onOpenLot }: { 
     && Object.values(snapshot.ownedContainers).every(count)
     ? Object.entries(snapshot.ownedContainers).reduce((total, [code, quantity]) => total + Math.max(0, quantity - (installed[code] ?? 0)), 0) : null;
 
-  return <section className={styles.inventory} aria-labelledby={`${id}-title`} data-storage-inventory>
+  return <section className={styles.inventory} aria-labelledby={`${id}-title`} data-storage-inventory data-storage-lot-count={snapshot?.lots.length}>
     <h3 id={`${id}-title`}>Mon stock et mes contenants</h3>
     <dl className={styles.metrics}>
       <div data-storage-stock="total"><dt><Package size={17} aria-hidden="true" />Stock total</dt><dd>{totalUnits === null ? "—" : grams(totalUnits)}</dd><small>Vrac et paquets encore invendus</small></div>
@@ -95,8 +96,12 @@ export function KqStorageInventory({ snapshot, selectedFlowerId, onOpenLot }: { 
           {breakdown.packedOtherUnits > 0 ? <li data-storage-packed="other"><strong>{grams(breakdown.packedOtherUnits)}</strong> dans des annonces fermées ou bloquées</li> : null}
         </ul> : null}
         {stockParts.length > 1 ? <KqAllocationBar label="Répartition du stock invendu" items={stockParts} /> : null}
-        <p className={styles.help}>Le stock total inclut le vrac en contenants, le vrac sans contenant et les paquets encore invendus. Tous les volumes sont en équivalent fleurs, y compris les produits transformés.</p>
-        <p className={styles.help}>Les paquets occupent de la place dans l’entrepôt, mais aucun bocal, sachet ou fût du tableau. La place restante dans un contenant occupé reste réservée à son lot.</p>
+        <KqHelpGrid art="warehouse" items={[
+          { label: "Stock total", value: "Vrac + paquets invendus", detail: "Vrac avec ou sans contenant.", art: "warehouse" },
+          { label: "Unité commune", value: "Équivalent fleurs", detail: "Produits transformés inclus.", art: "harvest" },
+          { label: "Paquets", value: "Place dans l’entrepôt", detail: "Sans utiliser les bocaux, sachets ou fûts du tableau.", art: "commerce" },
+          { label: "Un contenant", value: "Un seul lot", detail: "Place restante réservée à ce lot.", art: "warehouse" },
+        ]} />
       </div>
     </details> : null}
   </section>;

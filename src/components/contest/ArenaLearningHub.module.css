@@ -83,6 +83,7 @@
 }
 .imageWindow { position: absolute; inset: 8px; overflow: hidden; }
 .imageWindow img { object-fit: cover; width: 100%; height: 100%; }
+.meeting[data-releve-meeting="notebook"] .imageWindow img { object-fit: contain; }
 .heroImage img { object-position: center 42%; }
 .storyBody { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); position: relative; min-width: 0; padding: clamp(18px, 2.5vw, 28px); }
 .storyBody h3 { margin: 7px 0 10px; font: 900 clamp(1.8rem, 3vw, 2.5rem)/1.1 var(--font-display, Impact), sans-serif; }

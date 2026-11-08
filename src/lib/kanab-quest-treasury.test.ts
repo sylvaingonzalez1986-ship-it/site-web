@@ -27,7 +27,7 @@ function snapshot(entries: KqTreasuryEntry[] = [], initial = opening): KqTreasur
     journal: { items: entries, total: entries.length, offset: 0, limit: 25 },
     checks: { walletCashCents: closing.cash ?? 0, vatReserveCents: closing.vat_reserve ?? 0, savingsCents: closing.savings ?? 0,
       labDebtCents: -(closing.lab_payable ?? 0), energyDebtCents: -(closing.energy_payable ?? 0), vatDebtCents: -(closing.vat_payable ?? 0),
-      supplierDebtCents: -(closing.supplier_payable ?? 0), loanDebtCents: -(closing.loan_payable ?? 0), cryptoCostCents: closing.crypto_assets ?? 0, securitiesCostCents: closing.securities_assets ?? 0 },
+      supplierDebtCents: -(closing.supplier_payable ?? 0), staffDebtCents: -(closing.staff_payable ?? 0), loanDebtCents: -(closing.loan_payable ?? 0), cryptoCostCents: closing.crypto_assets ?? 0, securitiesCostCents: closing.securities_assets ?? 0 },
   };
 }
 function report(entries: KqTreasuryEntry[], initial = opening) {
@@ -40,6 +40,30 @@ function report(entries: KqTreasuryEntry[], initial = opening) {
 }
 
 describe("treasury accrual accounting", () => {
+  it("includes unpaid salary, employer charges and indemnities before payment without expensing payment twice", () => {
+    const salary = entry("staff-issued", { expense_other: 25000, staff_payable: -25000 });
+    const accrued = report([salary]);
+    expect(accrued.income).toMatchObject({ expenseCents: 25000, resultCents: -25000 });
+    expect(accrued.cash).toMatchObject({ availableCents: 35000, staffDebtCents: 25000, unpaidCents: 25000, afterDebtCents: 10000 });
+    expect(accrued.balanceSheet.debts).toContainEqual({ account: "staff_payable", label: "Salaires et charges à payer", cents: 25000 });
+    const paid = report([salary, entry("staff-paid", { cash: -25000, staff_payable: 25000 })]);
+    expect(paid.income.expenseCents).toBe(25000);
+    expect(paid.cash).toMatchObject({ availableCents: 10000, staffDebtCents: 0, unpaidCents: 0, outflowsCents: 25000 });
+    expect(getKqTreasuryEntryLabel("staff-issued")).toBe("Salaires, charges et indemnités dus");
+    expect(getKqTreasuryEntryLabel("staff-paid")).toBe("Règlement de la paie");
+    expect(getKqTreasuryEntryLabel("staff-cost")).toBe("Dépense de personnel");
+  });
+
+  it("reconciles payroll against its independent source and rejects malformed debt amounts", () => {
+    const data = snapshot([entry("staff-issued", { expense_other: 25000, staff_payable: -25000 })]);
+    data.checks.staffDebtCents = 24900;
+    expect(getKqTreasuryReport(data)).toMatchObject({ reconciled: false, sourceDifferences: { staff: 100 } });
+    data.checks.staffDebtCents = -1;
+    expect(isKqTreasurySnapshot(data)).toBe(false);
+    data.checks.staffDebtCents = 1.5;
+    expect(isKqTreasurySnapshot(data)).toBe(false);
+  });
+
   it.each(["revenue_online", "revenue_shop", "revenue_wholesale"] as const)("separates a 120 EUR TTC sale from its VAT liability in %s", account => {
     const sale = entry("sale", { cash: 10000, vat_reserve: 2000, vat_payable: -2000, [account]: -10000 });
     const result = report([sale]);

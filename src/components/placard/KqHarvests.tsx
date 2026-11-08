@@ -11,6 +11,7 @@ import { KqHarvestStorage } from "./KqHarvestStorage";
 import { KqLotSummary } from "./KqLotSummary";
 import { KqAllocationBar } from "./KqVisuals";
 import { KqChapterHeading } from "./KqChapterHeading";
+import { KqHelpDashboard, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import styles from "./KqHarvests.module.css";
 
 export function KqHarvests({ section, initialFlowerId, onSectionChange, onOpenArena, onOpenMarket, onOpenGame, onOpenWarehouse }: {
@@ -136,7 +137,15 @@ export function KqHarvests({ section, initialFlowerId, onSectionChange, onOpenAr
         </button>)}</div></KqLotSummary>
       </li>)}</ul> : !errors.length ? <div className={styles.empty}><Sprout size={32} aria-hidden="true" /><h3>{filter === "all" ? "Ta prochaine récolte commence ici" : "Aucune récolte dans cette catégorie"}</h3><p>{filter === "all" ? "Lance une culture. Tu retrouveras sa récolte ici, jusqu’à sa vente." : "Les autres récoltes restent accessibles dans la liste complète."}</p><button type="button" className={styles.primary} onClick={filter === "all" ? onOpenGame : () => setFilter("all")}>{filter === "all" ? "Commencer une culture" : "Voir toutes mes récoltes"}<ArrowRight size={16} /></button></div> : null}
       {loaded && rows.length > 0 ? <details className={styles.distribution} data-harvest-distribution><summary>Répartition par étape</summary><KqAllocationBar label={errors.length ? "Récoltes disponibles · données partielles" : `${rows.length} récolte${rows.length > 1 ? "s" : ""} par étape`} items={harvestCounts.map(item => ({ ...item, displayValue: String(item.value) }))} />{rows.some(row => row.state === "overflow" && isKqHarvestAtJury(row)) ? <p>Chaque récolte est comptée une seule fois. Un lot avec surplus figure dans « Surplus à protéger », même pendant son passage au jury.</p> : null}</details> : null}
-      <details className={styles.note}><summary>De la récolte à la vente</summary><p>Range tes fleurs par variété. L’affinage dure 6 heures réelles dès la récolte, même hors connexion. Présente ensuite la Fleur d’Arène au jury : sa conservation compte dans l’évaluation. La Fleur d’Arène est consommée, mais le stock récolté reste disponible pour la vente, sans recommencer l’affinage.</p></details>
+      <details className={styles.note}><summary>De la récolte à la vente</summary><KqHelpDashboard>
+        <KqHelpSteps art="help-culture" steps={[
+          { label: "Ranger par variété", detail: "Affinage : 6 h réelles dès récolte, même hors connexion.", art: "help-time" },
+          { label: "Trimer dans l’Atelier", detail: "Toi ou un employé, pendant l’affinage.", art: "help-workshop" },
+          { label: "Passer le jury", detail: "Après trim et affinage. Conservation prise en compte.", art: "help-quality" },
+          { label: "Vendre le stock", detail: "Stock conservé, sans nouvel affinage.", art: "commerce" },
+        ]} />
+        <KqHelpNote>Le jury consomme définitivement la Fleur d’Arène.</KqHelpNote>
+      </KqHelpDashboard></details>
     </>}
   </main>;
 }

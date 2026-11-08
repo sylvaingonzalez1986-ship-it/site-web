@@ -28,3 +28,12 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Use `--game-surface-warm` for warm game panels and accents: warm apricot orange, alongside cream surfaces. Do not reintroduce the former brown panel backgrounds or pale peach.
 - Show actual data with units and readable values. Never invent history, mix different units on a common scale, present an estimate as a result, or treat missing data as zero. The server's offered amounts remain authoritative.
 - Preserve visible costs, prerequisites, errors and confirmation details. Graphs must work at 320 px, by keyboard where interactive, and without relying on colour alone.
+
+## Quota-conscious workflow
+
+- Prefer one agent for a bounded task. Delegate only a distinct, substantial investigation or review when the benefit justifies the extra context; send a focused brief instead of the full conversation where possible.
+- For continued game UX work, read `docs/bete-de-concours/ux-progress.json` first. Read only the relevant audit section and source files; do not reload the entire audit or repeat a completed audit by default.
+- Group related small changes into one screen-level task with a clear finish condition. Separate required fixes from optional polish; do not turn each completion into an unbounded new audit.
+- Keep search output bounded and tool logs concise. Read targeted ranges rather than whole large files. Use existing scripts before creating another harness.
+- Run relevant tests once after changes; rerun after a failure or material change. Preserve payment, data-loss, accessibility and migration checks when affected. Broad checks belong at shared-code changes or integration milestones.
+- Keep progress and final reports short. Update the compact checkpoint with completed work, evidence and the next bounded task. Use it to resume in a fresh conversation when the existing thread is long.

@@ -1,0 +1,41 @@
+.anchor { min-width: 0; margin: 8px 0 14px; }
+.anchor[data-expanded=false] { position: sticky; top: var(--farm-guide-top, 72px); z-index: 15; }
+.guide { max-width: 760px; min-width: 0; color: #172923; padding: 10px; background: transparent; border: 2px solid transparent; border-image: var(--game-panel-art, url("/placard/ui/panel-paper-v1.webp")) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 18px) / 0 stretch; box-shadow: none; }
+.guide[data-expanded=false] { max-width: 540px; padding: 3px 6px; }
+.heading { display: flex; align-items: center; gap: 6px; }
+.guide button { min-height: 44px; max-width: 100%; color: #172923; font: 700 .875rem/1.4 var(--font-body), sans-serif; cursor: pointer; padding: 8px 12px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.guide button:hover, .guide button[aria-current] { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.guide button:focus-visible, .guide summary:focus-visible { outline: 3px solid #087e70; outline-offset: 3px; }
+.guide .toggle { display: flex; align-items: center; justify-content: space-between; text-align: left; gap: 8px; flex: 1; min-width: 0; padding: 4px 8px; }
+.toggle img { flex: 0 0 32px; width: 32px; height: 32px; object-fit: contain; }
+.toggle span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.toggle svg, .close svg { flex-shrink: 0; }
+.toggle[aria-expanded=true] > svg { transform: rotate(180deg); }
+.guide .close { flex: 0 0 44px; padding: 8px; display: grid; place-items: center; }
+.body { padding: 8px 2px 2px; }
+.body[hidden] { display: none; }
+.scene { display: grid; grid-template-columns: minmax(0,220px) minmax(0,1fr); align-items: center; gap: 12px; margin: 0 0 10px; }
+.scene > img { display: block; width: 100%; height: auto; aspect-ratio: 3/2; object-fit: contain; }
+.dialogue { min-width: 0; }
+.dialogue > span { color: #087e70; font: 700 .8125rem/1.4 var(--font-body), sans-serif; }
+.dialogue p { margin: 4px 0 0; font: 600 .875rem/1.5 var(--font-body), sans-serif; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.actions button { flex: 1 1 150px; }
+.guide .play { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.status { margin: 6px 0; font-size: .75rem; line-height: 1.4; }
+.notebook { border-top: 1px solid #17292340; margin-top: 8px; padding-top: 2px; }
+.notebook summary { min-height: 44px; cursor: pointer; font-size: .8125rem; line-height: 1.5; padding: 10px 0; }
+.notebook summary svg { display: inline; vertical-align: middle; margin-right: 6px; }
+.notebook p { margin: 10px 0; font-size: .875rem; line-height: 1.5; }
+.notebook ol { display: grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap: 6px; list-style: none; padding: 0; margin: 10px 0; }
+.notebook li { min-width: 0; }
+.notebook button { display: flex; align-items: center; gap: 6px; width: 100%; text-align: left; }
+.checklist { list-style: none; padding: 0; font-size: .8125rem; }
+.checklist li { display: flex; gap: 8px; align-items: baseline; padding: 5px 0; }
+.checklist svg, .checklist li > span:first-child { flex: 0 0 15px; }
+.harvestChoice { display: grid; gap: 6px; min-width: 0; font-size: .875rem; }
+.harvestChoice select { min-width: 0; max-width: 100%; width: 100%; min-height: 44px; color: inherit; padding: 8px 12px; background: transparent; border: 2px solid transparent; border-image: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.harvestChoice select:focus-visible { outline: 3px solid #087e70; outline-offset: 3px; }
+:global([data-farm-guide-target]) { outline: 3px dashed #087e70; outline-offset: 4px; scroll-margin-block: 130px; }
+@media(max-width: 600px) { .guide { padding: 6px; } .heading { gap: 4px; } .scene { grid-template-columns: 104px minmax(0,1fr); align-items: start; gap: 8px; } .scene > img { margin-top: 4px; } .dialogue p { font-size: .8125rem; } .toggle img { display: none; } .notebook ol { grid-template-columns: minmax(0,1fr); } }
+@media(prefers-reduced-motion: reduce) { .guide * { scroll-behavior: auto; } }

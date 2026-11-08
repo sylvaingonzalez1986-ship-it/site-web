@@ -11,8 +11,8 @@ import styles from "./KqMissionCenter.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqSupportPackOpening, requestKqSupportPackOpening, type KqOpenedSupportCard } from "./KqSupportPackOpening";
 import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import { KqCultureContract } from "./KqCultureContract";
-import { useKqGameSound } from "./KqGameSound";
 import { KqChapterHeading } from "./KqChapterHeading";
 import { KqMissionFocusNotice, KqMissionPinButton } from "./KqPinnedMission";
 import { getKqMissionOverview, isKqMissionRewardUnavailable as isRewardUnavailable } from "@/lib/kanab-quest-mission-overview";
@@ -41,7 +41,6 @@ function RewardArtwork({ reward, large = false }: { reward: KqMissionReward; lar
 
 export function KqMissionCenter({ onOpen, initialTrack = "all", focusInitialTrack = false }: { onOpen: (view: KqMissionDestination, missionCode?: KqMissionCode) => void; initialTrack?: KqMissionTrack | "all"; focusInitialTrack?: boolean }) {
   const api = useKqTutorialApi();
-  const sound = useKqGameSound();
   const [section, setSection] = useState<"community" | "challenges" | "contracts">("challenges");
   const [selectedTrack, setSelectedTrack] = useState<KqMissionTrack | "all" | "ready">(initialTrack);
   const [data, setData] = useState<KqMissionSnapshot | null>(null);
@@ -124,7 +123,6 @@ export function KqMissionCenter({ onOpen, initialTrack = "all", focusInitialTrac
       // was closed while the server confirmed the reward.
       if (!mounted.current) return;
       setReward({ ...payload, reward: receivedReward, code: mission.code });
-      if (payload.replayed === false) sound.playOnce("reward", `mission:${mission.code}`);
       await refresh();
     } catch (failure) {
       setError(failure instanceof Error ? failure.message : "Connexion interrompue. Tu peux réessayer sans perdre ta récompense.");
@@ -280,7 +278,21 @@ export function KqMissionCenter({ onOpen, initialTrack = "all", focusInitialTrac
           </section>
           <ul className={styles.rewardLegend} aria-label="Types de récompenses"><li><Coins size={16} aria-hidden="true" />Argent du jeu</li><li><Sparkles size={16} aria-hidden="true" />Cartes rares garanties</li><li><Gift size={16} aria-hidden="true" />Packs Botte du Chanvrier</li></ul>
         </details>
-        <details><summary>Comment progressent mes missions ?<ChevronDown size={18} aria-hidden="true" /></summary><p>Une mission active par parcours, sans limite de temps. Récupère sa récompense pour débloquer la suivante. Chaque récompense se gagne une seule fois par compte.</p><p>Tes cultures terminées et tes actions enregistrées comptent aussi avant le déblocage d’une étape. Les Buddies différents correspondent aux variétés récoltées. Les objectifs de clientèle et de boutiques demandent de conserver le nombre indiqué jusqu’à la récupération de la récompense.</p><p>Les objectifs d’arômes comptent les nouvelles ventes depuis cette mise à jour. Les deux arômes demandés doivent être réunis sur la même fleur vendue en ligne, selon les tendances au moment de la vente. Le dernier défi demande de réussir sur trois périodes de tendances différentes.</p><p>L’argent est ajouté à ta trésorerie du jeu et les cartes garanties à ta collection Botte du Chanvrier. Ouvre les packs ici ou à la boutique. Les packs déjà remportés avant la mise à jour restent disponibles.</p></details>
+        <details><summary>Comment progressent mes missions ?<ChevronDown size={18} aria-hidden="true" /></summary><KqHelpDashboard>
+          <KqHelpSteps steps={[
+            { label: "Accomplir", detail: "Une mission active par parcours, sans délai.", art: "help-plan" },
+            { label: "Récupérer", detail: "Une récompense par compte, puis mission suivante.", art: "help-quality" },
+            { label: "Utiliser les gains", detail: "Argent → trésorerie ; cartes → collection ; packs → ici ou boutique.", art: "collection" },
+          ]} />
+          <KqHelpGrid items={[
+            { label: "Cultures et actions", value: "Historique conservé", detail: "Les activités avant le déblocage comptent aussi.", art: "help-culture" },
+            { label: "Buddies différents", value: "Variétés récoltées", art: "harvest" },
+            { label: "Clients et boutiques", value: "Nombre à maintenir", detail: "Jusqu’à la récupération du gain.", art: "help-travel" },
+            { label: "Défis d’arômes", value: "2 arômes sur la même fleur", detail: "Nouvelle vente en ligne, conforme aux tendances du moment.", art: "help-quality" },
+            { label: "Dernier défi d’arômes", value: "3 périodes distinctes", art: "help-time" },
+          ]} />
+          <KqHelpNote>Les défis d’arômes comptent les ventes depuis leur ajout au jeu. Tes packs déjà gagnés restent disponibles.</KqHelpNote>
+        </KqHelpDashboard></details>
       </footer>
     </> : null}
     </>}

@@ -42,7 +42,7 @@ describe("La relève — plans and campaign budget", () => {
     expect(getKqReleveProductionProgress("plan", state).complete).toBe(false);
   });
 
-  it.each([[1, 1, 89_659, 11_670], [1, 2, 118_794, 17_620], [2, 1, 124_429, 22_840]] as const)("quotes %s zone(s) of %s m² with current costs and future bills", (cultures, width, cost, commitments) => {
+  it.each([[1, 1, 89_659, 11_670], [1, 2, 118_794, 18_120], [2, 1, 124_429, 23_340]] as const)("quotes %s zone(s) of %s m² with current costs and future bills", (cultures, width, cost, commitments) => {
     const state = createKqReleveProduction();
     const review = getKqRelevePlanReview(act(state, { type: "draft", warehouse: suggestKqRelevePlan(state, cultures, width) }));
     expect(review.errors).toEqual([]);
@@ -138,7 +138,7 @@ describe("La relève — real production rules and persistence", () => {
     state = act(state, { type: "play", code: card!.code });
     expect(state.supportInventory[card!.code]).toBe(original.supportInventory[card!.code] - 1);
     state = act(state, { type: "basic-care" });
-    expect(state.cashCents).toBe(original.cashCents - 500);
+    expect(state.cashCents).toBe(original.cashCents - 1000);
     expect(() => act(state, { type: "basic-care" })).toThrow();
     state = act(state, { type: "restore-stage" });
     expect(state.game).toEqual(original.game);

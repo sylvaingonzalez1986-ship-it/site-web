@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: vi.fn().mockResolvedValue(undefined) }));
 import { applyKqStorageToJury, createKqStorageLot } from "../kanab-quest-storage";
 
 const mocks = vi.hoisted(() => ({ rpc: vi.fn(), from: vi.fn(), storage: vi.fn() }));
@@ -40,6 +41,14 @@ describe("pre-jury server flow", () => {
     mocks.rpc.mockResolvedValue({ data: { availableFlowerCount: 2, curingFlowerCount: 3 }, error: null });
     expect(await getKqJuryReadiness(userId)).toEqual({ availableFlowerCount: 2, curingFlowerCount: 3 });
     mocks.rpc.mockResolvedValue({ data: { availableFlowerCount: 2 }, error: null });
+    await expect(getKqJuryReadiness(userId)).rejects.toThrow("indisponible");
+  });
+  it("preserves the optional trim prerequisite count independently from curing", async () => {
+    mocks.rpc.mockResolvedValue({ data: { availableFlowerCount: 2, curingFlowerCount: 3, trimFlowerCount: 4 }, error: null });
+    expect(await getKqJuryReadiness(userId)).toEqual({ availableFlowerCount: 2, curingFlowerCount: 3, trimFlowerCount: 4 });
+  });
+  it.each([-1, 1.5, "3", Infinity, NaN, null, Number.MAX_SAFE_INTEGER + 1])("rejects a malformed database trim count: %s", async trimFlowerCount => {
+    mocks.rpc.mockResolvedValue({ data: { availableFlowerCount: 2, curingFlowerCount: 3, trimFlowerCount }, error: null });
     await expect(getKqJuryReadiness(userId)).rejects.toThrow("indisponible");
   });
   it.each(["flowers", "core"] as const)("previews acquired curing stats in the %s response without writing or awarding them twice", async endpoint => {

@@ -1,0 +1,37 @@
+{
+  "date": "2026-11-07",
+  "request": "Poursuivre les interactions illustrées de Kanab Quest, en conservant les personnages existants et leur visibilité.",
+  "scope": "Tranche Personnel : accueil après recrutement et reçu de formation. Interface locale, sans changement économique, migration ni publication.",
+  "implementation": {
+    "receipt": "Le contrôleur transmet la réponse confirmée avec son état précédent. Une réaction est créée uniquement pour le nouvel employé ou la nouvelle tâche correspondant à la commande. Les GET et les remontages ne reconstruisent aucune réaction.",
+    "scene": "Vrai avatar du salarié derrière un bureau illustré. Dossier à la signature, carnet à la formation. Arrivée et mouvement brefs, arrêt après 1,8 seconde ; visage dégagé et accessoires plus petits que le personnage.",
+    "truth": "Contrat, temps hebdomadaire et tarif issus de l’employé confirmé. Formation : compétence, heures, coût payé et état issus de la tâche. Aucun gain d’XP ou de niveau affiché au simple départ.",
+    "identity": "portraitCode conserve l’identité des candidats renouvelés. Aucun nouveau visage n’est généré ; le renderer partagé du profil fournit le personnage.",
+    "accessibility": "Titre focalisé après confirmation, prochaine action vers le bon dossier, fermeture avec retour du focus, matériaux neuf tranches, écran 320 px. Réduction du mouvement en direct et suspension hors écran/onglet masqué. Les illustrations ne bloquent ni la lecture ni les boutons.",
+    "lifecycle": "Une seule réaction par nouvelle entité confirmée. Les illustrations et le portrait sont attendus avant l’animation, mais le reçu est immédiatement disponible. Actualisation de l’état sans rejouer l’entrée.",
+    "art": "Trois images produites avec image_gen intégré, transparence conservée et conversion WebP. Sources, prompts et fichiers publics dans staff-motion-art-provenance.json."
+  },
+  "files": [
+    "src/components/placard/KqStaffMoment.tsx",
+    "src/components/placard/KqStaffMoment.module.css",
+    "src/components/placard/KqStaffDesk.tsx",
+    "src/components/placard/KqStaffOperations.tsx",
+    "scripts/audit-placard-staff-ui.mjs"
+  ],
+  "validation": {
+    "unit": "78 tests Personnel, candidatures, API et Atelier réussis.",
+    "lint": "ESLint ciblé réussi.",
+    "typecheck": "TypeScript global réussi (tsc --noEmit --incremental false).",
+    "browser": "4 groupes réussis : recrutement et formation à 320/390/1440 px, plus identité d’un candidat renouvelé. Annulation, erreur, réponse perdue, reprise même clé sans double débit, coûts/heures exacts, absence de gain prématuré, focus clavier, mouvement réduit en direct et absence de rejeu après actualisation ou remontage. Aucun débordement ni erreur navigateur.",
+    "visual": "Captures mobile et bureau inspectées : visage dégagé, accessoires proportionnés, vrais personnages, contours illustrés et valeurs lisibles. Vidéo de 4 secondes à 390×844, 24 images/s, entièrement décodée avec succès.",
+    "regression": "Les 5 groupes de la recette Personnel existante passent après modification du contrôleur partagé. Les deux rapports ne contiennent aucune erreur navigateur ni requête externe.",
+    "reports": [
+      "output/placard-staff-ui/staff-moments-report.json",
+      "output/placard-staff-ui/report.json"
+    ],
+    "preview": "output/placard-staff-ui/staff-moment-training-preview.webm",
+    "limits": "Recettes avec moteur de jeu et transport simulés en local. Aucun appel métier de production ni essai utilisateur réel."
+  },
+  "next": "Observer la lisibilité de ces réactions pendant la recette avec de nouveaux joueurs ; ne pas refaire l’audit général ni les tranches déjà validées.",
+  "deployment": "Local, non publié."
+}

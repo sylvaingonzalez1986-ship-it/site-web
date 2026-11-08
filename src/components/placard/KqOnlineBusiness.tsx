@@ -12,6 +12,7 @@ import { KqAdvertisingPanel } from "./KqAdvertisingPanel";
 import { KqOnlineSiteProgression } from "./KqOnlineSiteProgression";
 import { KqMerchWorkshop } from "./KqMerchWorkshop";
 import { KqBrandStudio } from "./KqBrandStudio";
+import { KqHelpDashboard, KqHelpGrid, KqHelpSteps } from "./KqHelpDashboard";
 import styles from "./KqOnlineBusiness.module.css";
 
 type Ask = (title: string, description: string, body: Record<string, unknown>, cost?: number) => void;
@@ -98,7 +99,17 @@ export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepare
     <header className={styles.heading}><div><h2>{shop.name ?? "Ta première boutique"}</h2>{open ? <button type="button" className={styles.siteLink} onClick={() => develop("site")}>Site : {tier?.name ?? "niveau à confirmer"}<ArrowRight size={14} aria-hidden="true" /></button> : null}</div><div className={styles.capital}><span className={styles.badge} data-active={site.active}>{open ? site.active ? "Ouverte" : "Suspendue" : "À créer"}</span><span>Trésorerie disponible <strong>{cashKnown ? formatKqCash(data.cashCents) : "À confirmer"}</strong></span></div></header>
     {!open ? <>
       <dl className={styles.metrics}><div><dt>Ouverture</dt><dd>Gratuite</dd></div><div><dt>Abonnement</dt><dd>0 €</dd></div><div><dt>Frais par vente</dt><dd>{number(KQ_ONLINE_FEE_PERCENT)} %</dd></div></dl>
-      <details className={styles.explanation}><summary>Comment démarrer</summary><p>Les ventes continuent hors connexion. Prépare tes paquets après l’ouverture ; les premières commandes se gagnent progressivement. Les frais de vente s’ajoutent à la TVA du jeu. Tes ventes aux shops peuvent financer la culture.</p></details>
+      <details className={styles.explanation}><summary>Comment démarrer</summary><KqHelpDashboard>
+        <KqHelpSteps art="commerce" steps={[
+          { label: "Ouvrir la boutique", art: "commerce" },
+          { label: "Préparer les paquets", art: "warehouse" },
+          { label: "Gagner des commandes", detail: "Progressivement, même hors connexion.", art: "help-time" },
+        ]} />
+        <KqHelpGrid art="help-accounts" items={[
+          { label: "Frais de vente", value: "+ TVA du jeu", art: "help-accounts" },
+          { label: "Financer la culture", value: "Ventes aux shops", art: "help-culture" },
+        ]} />
+      </KqHelpDashboard></details>
       {!data.computerOwned ? <div className={styles.notice}><p><Monitor size={17} aria-hidden="true" /> Un ordinateur est nécessaire pour gérer ta boutique.</p><button className={styles.secondary} disabled={busy} onClick={onOpenShop}>Voir l’ordinateur · 450 €</button></div> : null}
       <ShopIdentity name={null} canCreate={data.computerOwned} busy={busy} onAsk={onAsk} />
       {businessDetails ? <details className={styles.rename}><summary>Calendrier et suivi du commerce</summary>{businessDetails}</details> : null}

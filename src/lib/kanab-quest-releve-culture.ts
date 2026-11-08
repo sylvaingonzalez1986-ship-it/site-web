@@ -1,7 +1,7 @@
 import { createKqFlower } from "./kanab-quest-battle";
 import { KQ_BUDDIE_ROTATION_REQUIRED } from "./kanab-quest-buddie-rotation";
 import { getKqCampaignParticipants, getKqCampaignWarehouse } from "./kanab-quest-campaign";
-import { getKqCannabinoidReport, getKqTerpeneReport, KQ_BASIC_CARE_PRICE_CENTS, KQ_CARE_PRODUCTS } from "./kanab-quest-care";
+import { getKqCannabinoidReport, getKqTerpeneReport, getKqCarePricing, KQ_CARE_PRODUCTS } from "./kanab-quest-care";
 import { KQ_HERITAGE_CARDS } from "./kanab-quest-heritage";
 import { getKqCardArtwork } from "./kanab-quest-artwork";
 import { KQ_ACTIVE_CARDS } from "./kanab-quest-game";
@@ -19,7 +19,9 @@ type Port = { getState: () => KqReleveProductionState; setState: (next: KqReleve
 const now = (state: KqReleveProductionState) => new Date(state.clock).toISOString();
 const flowerId = (zoneId: string) => `releve-flower-${zoneId}`;
 const rotation = (state: KqReleveProductionState) => ({ requiredDistinctBuddies: KQ_BUDDIE_ROTATION_REQUIRED, recentBuddieCodes: state.recentBuddieCodes });
-const careInventory = (state: KqReleveProductionState) => Object.entries(state.careInventory).map(([productCode, quantity]) => ({ productCode, quantity }));
+const careInventory = (state: KqReleveProductionState) => KQ_CARE_PRODUCTS.map(({ code: productCode }) => ({ productCode,
+  quantity: (state.careInventory[productCode] ?? 0) + Math.floor((state.careAreaInventory?.[productCode] ?? 0) / getKqCarePricing(state.game ?? undefined).pricingUnits),
+  legacyQuantity: state.careInventory[productCode] ?? 0, areaQuantity: state.careAreaInventory?.[productCode] ?? 0 }));
 const rank = (state: KqReleveProductionState) => Object.entries(state.battles).reduce((profile, [zoneId, battle]) => state.milestones.includes(`jury-ranked:${zoneId}`)
   ? applyKqBattleToRanking(profile, battle, battle.opponentRating) : profile, createKqRankProfile());
 
@@ -121,6 +123,21 @@ export function createReleveCultureTransport(port: Port): typeof fetch {
       }
       if (method === "GET" && path === "/battles") return respond({ battles: getReleveNativeBattles(state) });
       if (method === "GET" && path === "/energy") return respond(energySnapshot(state));
+      if (method === "GET" && path === "/care/purchases") {
+        const events = state.ledger.flatMap((row, index) => {
+          if (row.kind !== "care" || row.status !== "paid") return [];
+          const product = KQ_CARE_PRODUCTS.find(item => item.code === row.careProductCode || item.name === row.label);
+          const kind = product?.kind ?? "basic";
+          return [{ id: `${kind === "basic" ? "basic" : "purchase"}:00000000-0000-4000-8000-${String(index).padStart(12, "0")}`,
+            kind, productCode: product?.code ?? null, quantity: 1, amountCents: row.amountCents, createdAt: row.issuedAt,
+            runId: null, areaM2: row.careAreaM2 ?? null, stageIndex: row.careStageIndex ?? null }];
+        }).sort((left, right) => right.createdAt.localeCompare(left.createdAt) || right.id.localeCompare(left.id));
+        const before = url.searchParams.get("before")?.split("|");
+        const remaining = before ? events.filter(item => item.createdAt < before[0] || item.createdAt === before[0] && item.id < before[1]) : events;
+        const items = remaining.slice(0, 25), last = items.at(-1);
+        return respond({ items, nextCursor: remaining.length > 25 && last ? `${last.createdAt}|${last.id}` : null,
+          totalPaidCents: events.reduce((sum, item) => sum + item.amountCents, 0), totalCount: events.length, serverNow: now(state) });
+      }
       if (method === "POST" && path === "/energy") {
         const due = energySnapshot(state).outstandingCents;
         if (Number(body.expectedCents) !== due || due > state.cashCents) throw new Error("Vérifie les factures et le solde avant de payer.");
@@ -131,12 +148,15 @@ export function createReleveCultureTransport(port: Port): typeof fetch {
       // preparation can distinguish it from an unavailable official profile.
       if (method === "GET" && path === "/equipment") return respond({ routePlan: null, strength: null });
       if (path === "/care" && method === "GET") {
-        if (!state.milestones.includes("health-read")) act({ type: "mark", milestone: "health-read" });
-        return respond({ cashCents: state.cashCents, basicCarePriceCents: KQ_BASIC_CARE_PRICE_CENTS, inventory: careInventory(state), catalog: KQ_CARE_PRODUCTS });
+        if (url.searchParams.get("purpose") !== "availability" && !state.milestones.includes("health-read")) act({ type: "mark", milestone: "health-read" });
+        const pricing = getKqCarePricing(state.game ?? undefined);
+        return respond({ ...pricing, cashCents: state.cashCents, inventory: careInventory(state), catalog: KQ_CARE_PRODUCTS.map(product => ({ ...product, priceCents: product.priceCents * pricing.pricingUnits })) });
       }
       if (path === "/care" && method === "POST") {
         const quantity = Number(body.quantity ?? 1);
         if (!Number.isSafeInteger(quantity) || quantity < 1 || quantity > 99) throw new Error("Quantité invalide.");
+        const product = KQ_CARE_PRODUCTS.find(item => item.code === body.productCode);
+        if (!product || body.expectedPriceCents !== product.priceCents * getKqCarePricing(state.game ?? undefined).pricingUnits * quantity) throw new Error("Actualise le tarif des intrants.");
         let next = state;
         for (let index = 0; index < quantity; index++) next = applyKqReleveProductionAction(next, { type: "buy-care", code: String(body.productCode) });
         port.setState(next);
@@ -164,7 +184,7 @@ export function createReleveCultureTransport(port: Port): typeof fetch {
           return respond({ state: next.game, persistedFlower: flowers[0] ?? null, persistedFlowers: flowers });
         }
         if (run[2] === "cards") { const next = act({ type: "play", code: String(body.cardCode) }); return respond({ state: next.game, burnReceipt: receipts(next).at(-1)! }); }
-        if (typeof body.productCode !== "string" && body.basicPriceCents !== KQ_BASIC_CARE_PRICE_CENTS) throw new Error("Actualise le tarif de l’entretien.");
+        if (typeof body.productCode !== "string" && body.basicPriceCents !== getKqCarePricing(state.game ?? undefined).basicCarePriceCents) throw new Error("Actualise le tarif de l’entretien.");
         const next = typeof body.productCode === "string" ? act({ type: "apply-care", code: body.productCode }) : act({ type: "basic-care" });
         return respond({ state: next.game, updatedAt: now(next), cashCents: next.cashCents, chargedCents: state.cashCents - next.cashCents, inventory: careInventory(next), replayed: false });
       }

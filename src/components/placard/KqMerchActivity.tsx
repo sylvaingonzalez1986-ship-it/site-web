@@ -5,6 +5,7 @@ import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqShopActivity } from "@/lib/kanab-quest-shop-activity";
 import { KqAllocationBar } from "./KqVisuals";
+import { KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import styles from "./KqMerchActivity.module.css";
 
 const number = (value: number | null) => value === null ? "—" : value.toLocaleString("fr-FR", { maximumFractionDigits: 1 });
@@ -33,8 +34,10 @@ export function KqMerchActivity({ data, onOpenMerch, compact = false }: {
           { label: "En rayon", value: merch.activeUnits, displayValue: `${number(merch.activeUnits)} articles`, tone: "teal" },
           { label: "Hors vitrine", value: merch.remainingUnits - merch.activeUnits, displayValue: `${number(merch.remainingUnits - merch.activeUnits)} articles`, tone: "gold" },
         ]} emptyLabel="Stock épuisé" /> : <p>Répartition du stock indisponible.</p>}
-        <p>{merch.estimatedUnitsPerDay === null ? "Rythme estimé indisponible." : `${number(merch.estimatedUnitsPerDay)} articles / jour estimés au rythme actuel.`} Les ventes dépendent de tes prix, de ton audience et des références exposées. Elles ne sont pas garanties.</p>
-        <p>Les versements sont ceux réellement crédités après les retenues de jeu. La fabrication et les collections ont déjà été payées séparément : ce montant n’est pas un bénéfice.</p>
+        <KqHelpGrid items={[
+          { art: "commerce" as const, label: "Rythme estimé", value: merch.estimatedUnitsPerDay === null ? "Indisponible" : `${number(merch.estimatedUnitsPerDay)} articles / jour`, detail: "Prix, audience et vitrine. Ventes non garanties." },
+          { art: "help-accounts" as const, label: "Versements", value: "Réellement crédités", detail: "Après les retenues de jeu." },
+        ]} /><KqHelpNote>Fabrication et collections payées séparément : les versements ne sont pas un bénéfice.</KqHelpNote>
       </details> : null}
     </>}
   </section>;

@@ -11,7 +11,7 @@ const supabaseUrl = new URL(getSupabasePublicOrigin());
 
 const nextConfig: NextConfig = {
   reactCompiler: true,
-  allowedDevOrigins: ["127.0.0.1", "192.168.*.*", "10.*.*.*", "172.*.*.*"],
+  allowedDevOrigins: ["192.168.1.124"],
   experimental: {
     // Avoid the Turbopack task-restoration panic when restarting local dev.
     turbopackFileSystemCacheForDev: false,

@@ -22,7 +22,7 @@ const server = await createServer({ configFile:false,envDir:false,root,cacheDir:
 let browser,page;
 const errors=[],api=[],results=[];
 async function button(text,scope='body'){
-  const handle = await page.evaluateHandle(({text,scope})=>[...document.querySelectorAll(scope+' button')].find(el=>el.getClientRects().length&&!el.disabled&&el.textContent.replace(/\s+/g,' ').includes(text)),{text,scope});
+  const handle = await page.waitForFunction(({text,scope})=>[...document.querySelectorAll(scope+' button')].find(el=>el.checkVisibility()&&!el.disabled&&el.textContent.replace(/\s+/g,' ').includes(text)),{},{text,scope});
   const el=handle.asElement();assert(el,`Missing button ${text}`);await el.scrollIntoView();await el.click();await handle.dispose();
 }
 async function textReady(text){await page.waitForFunction(text=>document.body.textContent.includes(text),{},text);}
@@ -49,9 +49,9 @@ try{
       await snap('theme-guided-culture-'+width);
       assert(await page.$eval('dialog[open]',element=>element.scrollWidth<=element.clientWidth+1));
       await page.keyboard.press('Escape');await page.waitForSelector('[data-theme-closed]');
-      await visit('market',width);await button('Vendre ma production');await page.waitForSelector('[data-screen="lots"]');
+      await visit('market',width);await page.waitForSelector('[data-screen="lots"]');
       await snap('theme-operations-market-'+width);
-      await button('Gérer mon activité','nav[aria-label="Espaces de cet essai"]');
+      await button('Commerce · Développer','nav[aria-label="Espaces de cet essai"]');
       await page.waitForSelector('[aria-label="Développer ma boutique en ligne"]');
       await snap('theme-operations-business-'+width);
       results.push({width,firstCultureRoll:true,escapeCloses:true,guidanceVisible:true,operationsNavigation:true});
@@ -82,16 +82,16 @@ try{
     await button('Niveau 2 ·');await page.waitForFunction(()=>window.__progress?.complete===true);await page.waitForSelector('[data-warehouse-slot="lighting"][aria-label*="niveau 2"]');await snap(`warehouse-upgraded-${width}`);
     results.push({lesson:'warehouse',width,upgrade:true});
     if(width===390){
-      await page.click('[data-warehouse-slot="washing"]');await button('Réparer ·');await textReady('Entretien dans 10 cycles');
+      await page.click('[data-warehouse-slot="sifting"]');await button('Réparer ·');await textReady('Entretien dans 10 lots transformés');
       await page.click('[aria-label="Ajouter la tente 2 · voir le devis"]');await button('Ajouter cette tente');await page.waitForSelector('[data-warehouse-slot="tent"][data-tent-number="2"]');
       results.push({lesson:'warehouse',width,repairAndExpansion:true});
     }
 
     await visit('market',width);await page.waitForSelector('[data-screen="lots"]');await snap(`market-${width}`);
-    await button('Transformer');await page.waitForSelector('[data-screen="preparation"]');
+    await button('Préparer ou vendre');await page.waitForSelector('[data-screen="preparation"]');
     if(width===390)await page.select('[data-screen="preparation"] select','dry-sift');
     await button(width===390?'Transformer et continuer':'Préparer');await page.waitForSelector('dialog[open]');await button('Confirmer','dialog[open]');await page.waitForSelector('[data-screen="distribution"]');
-    await button('Grossiste');await page.waitForSelector('[data-screen="offer"]');await button('Vendre');await page.waitForSelector('dialog[open]');await button('Confirmer','dialog[open]');await page.waitForSelector('[data-screen="receipt"]');await page.waitForFunction(()=>window.__progress?.complete===true);await snap(`market-sold-${width}`);
+    await button('Voir l’offre','[data-sales-channel="wholesale"]');await page.waitForSelector('[data-screen="offer"]');await button('Voir le montant net');await page.waitForSelector('dialog[open]');await button('Confirmer','dialog[open]');await page.waitForSelector('[data-screen="receipt"]');await page.waitForFunction(()=>window.__progress?.complete===true);await snap(`market-sold-${width}`);
     results.push({lesson:'market',width,sale:true});
     assert.equal(await page.evaluate(()=>sessionStorage.getItem('kq:selected-tent')),'8');assert.equal(await page.evaluate(()=>sessionStorage.getItem('operations-audit-sentinel')),'unchanged');assert.equal(await page.evaluate(()=>window.__globalUpdates),0);
   }

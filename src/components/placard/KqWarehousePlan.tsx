@@ -1,5 +1,6 @@
 "use client";
 
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import { getBuddieArtwork } from "@/lib/buddie-artwork";
 import { KQ_WAREHOUSE_ROOM_ARTWORK } from "@/lib/kanab-quest-warehouse-artwork";
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent, type MouseEvent, type PointerEvent } from "react";
@@ -652,10 +653,18 @@ export function KqWarehousePlan({ zones, serviceZones, dimensions, roomArtwork, 
     {managing && (tool !== "inspect" || drawing) && <button className={styles.finishManipulation} type="button" data-warehouse-action="finish-manipulation" onClick={() => { cancelGesture(); setTool("inspect"); if (drawing) onToggleDrawing(); setNotice("Tu peux à nouveau faire défiler la page."); }}>Terminer la manipulation</button>}
     {managing && <div className={styles.tools} role="group" aria-label="Outils de la zone sélectionnée"><div className={styles.selectedName}><strong className={styles.selectedLabel} style={selectedIdentity ? { borderColor: selectedIdentity.color } : undefined}>{selectedIdentity?.label ?? "Aucune zone"}</strong>{selectedValid && <span>{selectedValid.width * selectedValid.height} m²</span>}</div><div className={styles.toolActions}>{([{ code: "inspect", label: "Voir", icon: MousePointer2 }, { code: "move", label: "Déplacer", icon: Move }, { code: "resize", label: "Taille", icon: Scaling }] as const).map(item => <button key={item.code} type="button" data-warehouse-tool={item.code} aria-label={item.code === "resize" ? "Redimensionner la zone" : item.code === "move" ? "Déplacer la zone" : "Observer la zone"} aria-pressed={tool === item.code && !drawing} disabled={item.code !== "inspect" && (selectedLocked || !selectedValid)} onClick={() => setPlanTool(item.code)}><item.icon size={16} />{item.label}</button>)}</div></div>}
     <div className={styles.support}><p className={styles.help} id={`${id}-help`} role="status">{contextMessage}</p><details className={styles.helpDetails} data-warehouse-plan-help><summary><CircleHelp size={16} />Aide</summary><div className={styles.helpBody}>
-      {legacy && <p>Glisse le sol pour déplacer la vue. La molette ajuste le zoom.</p>}
-      <p><strong>Nouvelle zone :</strong> appuie, glisse sans lever le doigt, puis relâche pour valider. <strong>Déplacer :</strong> glisse la zone. <strong>Taille :</strong> glisse son coin doré.</p>
-      <p>{onOpenZoneMenu ? <><strong>Menu de la zone :</strong> un clic ou un appui ouvre Aménager, Buddies et Supprimer.</> : <><strong>Sélection :</strong> un clic ou un appui choisit la zone.</>} Au clavier, utilise les boutons numérotés ou les flèches puis Entrée sur le plan.</p>
-      <p><strong>Clavier :</strong> flèches pour avancer, Entrée pour ouvrir la zone. Pendant le dessin, Entrée choisit les deux coins. Échap annule. Les changements attendent ton enregistrement.</p>
+      <KqHelpDashboard>
+        <KqHelpGrid art="help-plan" items={[
+          { label: "Nouvelle zone", value: "Appuyer → glisser → relâcher", detail: "Garder le doigt posé jusqu’au second coin.", art: "help-plan" },
+          { label: "Déplacer", value: "Glisser la zone", art: "warehouse" },
+          { label: "Redimensionner", value: "Glisser le coin doré", art: "help-plan" },
+          { label: onOpenZoneMenu ? "Menu de la zone" : "Sélection", value: "Clic ou appui", detail: onOpenZoneMenu ? "Aménager, Buddies et Supprimer." : "Choisir la zone.", art: "warehouse" },
+          { label: "Clavier", value: "Flèches puis Entrée", detail: "Ou choisir une zone par son bouton numéroté.", art: "help-plan" },
+          { label: "Dessin au clavier", value: "Entrée aux deux coins", detail: "Échap annule.", art: "help-plan" },
+          ...(legacy ? [{ label: "Déplacer la vue", value: "Glisser le sol", detail: "Molette pour le zoom.", art: "warehouse" as const }] : []),
+        ]} />
+        <KqHelpNote>Les changements s’appliquent après enregistrement du plan.</KqHelpNote>
+      </KqHelpDashboard>
       <div className={styles.footer}><div className={styles.legend}>{ZONE_TYPES.map(type => <span key={type.code}><type.icon size={14} aria-hidden="true" />{type.label}</span>)}</div><small>{GRID.columns} × {GRID.rows} m · 1 case = 1 m²</small></div>
       {legacy && <label className={styles.zoomRange}>Zoom<input type="range" min={MIN_ZOOM} max={MAX_ZOOM} step={ZOOM_STEP} value={zoom} onChange={event => changeZoom(Number(event.target.value))} aria-label="Zoom du plan" /><output>{zoom}%</output></label>}
     </div></details></div>

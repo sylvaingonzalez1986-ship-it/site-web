@@ -1,6 +1,7 @@
 import { KQ_OUTCOME_LABELS } from "@/lib/kanab-quest-outcome-artwork";
 import type { KqTurnPreview as TurnPreview } from "@/lib/kanab-quest-turn-preview";
 import styles from "./KqTurnPreview.module.css";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 
 const signed = (value: number) => `${value > 0 ? "+" : ""}${value}`;
 
@@ -16,13 +17,13 @@ export function KqTurnPreview({ preview }: { preview: TurnPreview }) {
       : preview.dangerBlocksSuccess ? <p className={styles.explanation}>Le nombre de réussites suffit, mais {preview.dangers === 1 ? "le Danger non protégé rend" : "les Dangers non protégés rendent"} le résultat fragile.</p> : null}
     <details className={styles.details}>
       <summary>Qualité, XP et pression</summary>
-      <dl>
-        <div><dt>Qualité</dt><dd>{signed(preview.qualityDelta)} point{Math.abs(preview.qualityDelta) !== 1 ? "s" : ""}</dd></div>
-        <div><dt>XP gagnés</dt><dd>{signed(preview.xpGain)} XP · total {preview.xpAfter}</dd></div>
-        <div><dt>Pression</dt><dd>{preview.pressure.before} → {preview.pressure.after} /4</dd></div>
-      </dl>
+      <KqHelpDashboard><KqHelpGrid art="help-quality" items={[
+        { label: "Qualité", value: `${signed(preview.qualityDelta)} point${Math.abs(preview.qualityDelta) !== 1 ? "s" : ""}` },
+        { label: "XP gagnés", value: `${signed(preview.xpGain)} XP`, detail: `Total : ${preview.xpAfter} XP`, art: "help-training" },
+        { label: "Pression", value: `${preview.pressure.before} → ${preview.pressure.after} /4`, art: "help-care" },
+      ]} />
       {preview.heritage && !preview.heritage.changesOutcome ? <p>{preview.heritage.name} se déclenchera à ce bilan.</p> : null}
-      <p>Avec tes dés, tes cartes et les soins déjà activés. Une nouvelle action peut changer cet aperçu.</p>
+      <KqHelpNote>Aperçu avec tes dés, cartes et soins actuels. Une nouvelle action peut le changer.</KqHelpNote></KqHelpDashboard>
     </details>
   </section>;
 }

@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { getKqLotSummary, type KqLotSummarySource } from "@/lib/kanab-quest-lot-summary";
 import { KqProgressMeter } from "./KqVisuals";
+import { KqBuddieFlavors } from "./KqBuddieFlavors";
 import styles from "./KqLotSummary.module.css";
 
 const number = (value: number) => value.toLocaleString("fr-FR", { maximumFractionDigits: 2 });
@@ -11,6 +12,7 @@ export function KqLotSummary({ source, level = 3, artwork, selected = false, com
   source: KqLotSummarySource; level?: 3 | 4; artwork?: ReactNode; selected?: boolean; compact?: boolean; children?: ReactNode;
 }) {
   const lot = getKqLotSummary(source);
+  const varietyCode = source.kind === "product" ? source.stock.varietyCode : source.kind === "raw" ? source.lot.varietyCode : undefined;
   const Heading = level === 4 ? "h4" : "h3";
   const details = <>
     {compact ? <p className={styles.reference}>Lot {lot.flowerId.slice(0, 8)}{lot.productId ? ` · produit ${lot.productId.slice(0, 8)}` : ""}{lot.harvestedAt ? <> · récolté le <time dateTime={lot.harvestedAt}>{dateLabel(lot.harvestedAt)}</time></> : " · date de récolte à confirmer"}</p> : null}
@@ -26,6 +28,7 @@ export function KqLotSummary({ source, level = 3, artwork, selected = false, com
         {selected ? <span className={styles.selected}>Lot sélectionné</span> : null}
       </div>
     </header>
+    {varietyCode ? <KqBuddieFlavors varietyCode={varietyCode} compact /> : null}
     <div className={styles.state} data-lot-state data-curing-status>{lot.state}</div>
     <dl className={styles.facts} data-harvest-facts>
       <div><dt>{lot.quantity.label}</dt><dd>{lot.quantity.grams === null ? "À confirmer" : <>{number(lot.quantity.grams)} g{lot.quantity.equivalent ? <small>équivalent fleurs</small> : null}</>}</dd></div>

@@ -2,6 +2,7 @@
 .header { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
 .header h2 { min-width: 0; overflow-wrap: anywhere; scroll-margin-top: 100px; margin: 0; font-family: var(--font-display), sans-serif; font-size: clamp(2rem, 4vw, 3rem); line-height: 1; text-transform: uppercase; }
 .header nav { flex: 0 0 auto; display: flex; gap: 8px; }
+.position { display: grid; place-items: center; min-width: 44px; font: 750 14px/1.2 var(--font-body), sans-serif; font-variant-numeric: tabular-nums; }
 .header button { display: grid; width: 44px; height: 44px; place-items: center; padding: 0; border-radius: 0; cursor: pointer; color: #172923; border: var(--game-control-border-width, 2px) solid #172923; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .header button:hover:not(:disabled) { color: #172923; border-color: transparent; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
 .header button:disabled { opacity: .3; cursor: default; }

@@ -8,8 +8,8 @@ import {
   type KqContractBoard, type KqRenewableAttempt, type KqRenewableCode, type KqRenewableCommand, type KqRenewableOffer,
 } from "@/lib/kanab-quest-renewable-contracts";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
-import { useKqGameSound } from "./KqGameSound";
 import { KqProgressMeter } from "./KqVisuals";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
 import styles from "./KqRenewableContracts.module.css";
 
 const money = (cents: number) => `${(cents / 100).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} €`;
@@ -26,7 +26,7 @@ export function KqRenewableContracts({ mode = "preparation", runId, refreshKey, 
   onBusyChange?: (busy: boolean) => void;
   onOpenGame?: () => void;
 }) {
-  const api = useKqTutorialApi(), sound = useKqGameSound();
+  const api = useKqTutorialApi();
   const [board, setBoard] = useState<KqContractBoard | null>(null);
   const [unavailable, setUnavailable] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -97,7 +97,6 @@ export function KqRenewableContracts({ mode = "preparation", runId, refreshKey, 
       acceptance.current = null;
       setBoard(result.board); lastRunId.current = result.board.current?.runId ?? null;
       setReceipt(result.receipt ? { attempt: result.receipt, fresh: !result.replayed } : null);
-      if (result.receipt && !result.replayed) sound.playOnce("reward", `renewable-contract:${result.receipt.id}`);
       api.notify("kq:contracts-updated");
       if (result.receipt) { api.notify("kq:equipment-updated"); api.notify("arena:progress-updated"); }
     } catch (failure) {
@@ -157,8 +156,14 @@ export function KqRenewableContracts({ mode = "preparation", runId, refreshKey, 
     {board?.reason ? <p className={styles.hint}>{board.reason}</p> : null}
     {error ? <div className={styles.error} role="alert"><p>{error}</p><button type="button" className={styles.secondary} data-renewable-action="retry" disabled={actionDisabled} onClick={() => void refresh()}><RefreshCw size={16} aria-hidden="true" />Actualiser les contrats</button></div> : null}
     {board ? <details className={styles.rules}><summary>Comment ça marche<ChevronDown size={15} aria-hidden="true" /></summary>
-      <p>Choisis avant de lancer ta culture. Une récolte vivante qui atteint l’objectif suffit ; les cartes Botte jouées sont comptées sur toute la campagne, tous Buddies confondus. Le sol vivant et l’Héritage ne comptent pas comme des cartes Botte.</p>
-      <p>Un seul contrat par culture, sans frais ni date limite. Tu gardes ta récolte. Après une réussite, récupère ta prime pour choisir de nouveau. Après un échec, tu peux changer de contrat. Tu peux toujours jouer sans contrat.</p>
+      <KqHelpDashboard><KqHelpGrid items={[
+        { art: "help-plan" as const, label: "Par culture", value: "1 contrat", detail: "Facultatif, sans frais ni date limite." },
+        { art: "help-culture" as const, label: "Objectif", value: "1 récolte vivante suffit", detail: "Qualité et conditions à atteindre ; récolte conservée." },
+      ]} /><KqHelpSteps steps={[
+        { art: "help-plan" as const, label: "Choisir avant la culture" },
+        { art: "help-quality" as const, label: "Atteindre l’objectif", detail: "Cartes Botte : toute la campagne, tous Buddies confondus." },
+        { art: "help-accounts" as const, label: "Récupérer la prime", detail: "Puis choisir à nouveau. Changer reste possible après un échec." },
+      ]} /><KqHelpNote>Le sol vivant et l’Héritage ne comptent pas comme des cartes Botte.</KqHelpNote></KqHelpDashboard>
     </details> : null}
   </section>;
 }

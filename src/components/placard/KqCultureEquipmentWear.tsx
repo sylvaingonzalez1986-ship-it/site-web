@@ -8,6 +8,7 @@ import { createClientRequestKey } from "@/lib/client-request-key";
 import styles from "./KqWarehouseInventory.module.css";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqProgressMeter } from "./KqVisuals";
+import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 
 export function KqCultureEquipmentWear({ code, name, condition, cashCents, activeRun, tentNumber = 1, productionUnits = 1, equipmentScopeVersion = 2, disabled, onUpdated }: {
   code: string;
@@ -87,6 +88,13 @@ export function KqCultureEquipmentWear({ code, name, condition, cashCents, activ
     </> : null}
     {replacedVersion === condition.version ? <p role="status">Matériel remplacé. Actualisation de son état…</p> : null}
     {error ? <p role="alert" className={styles.error}>{error}<button type="button" onClick={onUpdated}>Actualiser</button></p> : null}
-    <details className={styles.wearRules}><summary>Usure et dépannage</summary><p>L’usure est définitive. Le mode éco la ralentit ; l’intensif l’accélère, encore davantage sous 30 % d’état. En réserve, ce matériel ne s’use pas. Le matériel de départ assure le dépannage aux emplacements qui en disposent.</p></details>
+    <details className={styles.wearRules}><summary>Usure et dépannage</summary><KqHelpDashboard>
+      <KqHelpGrid art="help-workshop" items={[
+        { label: "Mode éco", value: "Usure ralentie", art: "help-rest" },
+        { label: "Mode intensif", value: "Usure accélérée", detail: "Encore plus sous 30 % d’état." },
+        { label: "En réserve", value: "Aucune usure", art: "warehouse" },
+      ]} />
+      <KqHelpNote>Usure définitive. Le matériel de départ dépanne les emplacements qui en disposent.</KqHelpNote>
+    </KqHelpDashboard></details>
   </section>;
 }

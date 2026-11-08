@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: vi.fn().mockResolvedValue(undefined) }));
 const { rpc, random } = vi.hoisted(() => ({ rpc: vi.fn(), random: vi.fn(() => 50) }));
 vi.mock("./admin", () => ({ createSupabaseServiceClient: () => ({ rpc }) }));
 vi.mock("node:crypto", () => ({ randomInt: random }));

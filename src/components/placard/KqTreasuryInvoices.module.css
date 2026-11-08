@@ -1,26 +1,32 @@
-.desk { min-width: 0; color: #172923; }
-.summary { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px 24px; margin: 24px 0 0; }
-.summary > div { display: grid; align-content: start; gap: 8px; min-width: 0; }
+.desk { min-width: 0; color: #172923; display: grid; gap: 20px; }
+.summary { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 14px; margin: 0; }
+.summary > div { display: grid; align-content: start; gap: 10px; min-width: 0; padding: 20px; border: 2px solid transparent; background: transparent; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.summary > div[data-priority] { --game-panel-art: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")); }
+.summary > div[data-warning] { --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); color: #672b20; }
 .summary dt { font-size: .875rem; font-weight: 700; line-height: 1.5; }
 .summary dd { display: grid; gap: 8px; margin: 0; }
 .summary strong { font: 900 clamp(1.8rem,3.4vw,2.8rem)/1.05 var(--font-display),Impact,sans-serif; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
 .summary span { color: #536058; font-size: .875rem; line-height: 1.5; }
-.inbox { padding: 24px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) 48 fill / 15px / 0 stretch; }
+.inbox { min-width: 0; display: flex; flex-direction: column; gap: 14px; }
+.inbox .summary { order: 0; }
+.inbox .bulkPayment { order: 1; }
+.inbox .financialOverview,.inbox > .incomplete { order: 2; }
+.register { min-width: 0; padding: 24px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; border-radius: 0; box-shadow: none; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .heading { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px; }
-.heading h2 { font: 900 1.9rem/1.1 var(--font-display),Impact,sans-serif; margin: 6px 0 0; text-transform: uppercase; }
-.bulkPayment { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; margin-top: 20px; }
+.heading h2 { font: 900 1.7rem/1.1 var(--font-display),Impact,sans-serif; margin: 0; }
+.bulkPayment { display: flex; align-items: center; flex-wrap: wrap; gap: 10px 16px; padding: 18px; border: 2px solid transparent; background: transparent; --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .bulkPayment > button { max-width: 100%; }
 .bulkPayment > button > svg { flex-shrink: 0; }
 .bulkPayment > small { color: #536058; font-size: .875rem; line-height: 1.6; }
 .primary,.secondary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 13px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; font-size: .875rem !important; font-weight: 750 !important; line-height: 1.5; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
-.primary { border-color: transparent; color: #172923; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
+.primary { border-color: transparent; color: #fff8e7; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; }
 .filters { display: flex; flex-wrap: wrap; gap: 6px; margin-block: 24px; }
 .filters button { min-height: 44px; padding: 9px 13px; border: var(--game-control-border-width, 2px) solid #172923; color: #172923; font-size: .875rem; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .filters button[aria-pressed="true"] { color: #fff1d6; border-color: transparent; box-shadow: none; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; }
-.folder { border-top: 1px solid #17292340; padding-block: 22px 6px; }
+.folder { border-top: 1px solid #17292340; padding-block: 18px 10px; }
 .folder > header,.calendar > header { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 .folder header > svg,.calendar header > svg { color: #172923; flex-shrink: 0; }
-.folder h3,.calendar h3 { margin: 0; font: 900 1.4rem/1.2 var(--font-display),Impact,sans-serif; text-transform: uppercase; }
+.folder h3,.calendar h3 { margin: 0; font: 900 1.4rem/1.2 var(--font-display),Impact,sans-serif; }
 .folder header > strong { color: #172923; margin-left: auto; font-size: 1rem; }
 .folder p,.calendar p { color: #536058; font-size: .875rem; line-height: 1.7; margin-block: 12px 18px; }
 .invoices { list-style: none; padding: 0; margin: 0; }
@@ -41,13 +47,41 @@
 .history ul { list-style: none; padding: 0; }
 .history li { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px; padding: 12px 0; border-top: 1px solid #17292340; font-size: .875rem; }
 .history li > span { color: #172923; }
-.calendarPanel { margin-top: 22px; padding: 24px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.calendarPanel { min-width: 0; padding: 24px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; background: transparent; border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .calendarPanel > h2 { margin: 0; font: 900 1.6rem/1.2 var(--font-display),Impact,sans-serif; }
 .calendarGrid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; margin-top: 20px; }
-.breakdown { margin-top: 16px; border-block: 1px solid #17292340; padding: 4px 16px; }
+.breakdown { border-block: 1px solid #17292340; padding: 4px 16px; }
 .breakdown h3 { margin: 16px 0 6px; font-size: .875rem; line-height: 1.5; }
 .breakdown > p { font-size: .875rem; line-height: 1.6; }
-.financialOverview { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; padding-block: 16px; }
+.financialOverview { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); align-items: stretch; gap: 14px; }
+.financialOverview > * { min-width: 0; margin: 0; padding: 20px; border: 2px solid transparent; background: transparent; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.incomplete { font-size: .875rem; line-height: 1.6; color: #536058; }
+.purchaseSummary { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px 24px; padding-block: 14px 20px; }
+.purchaseSummary > div { display: grid; gap: 6px; font-size: .875rem; }
+.purchaseSummary strong { font: 900 2rem/1.1 var(--font-display),Impact,sans-serif; }
+.purchaseSummary p { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: 0; font-size: .875rem; }
+.purchaseSummary small { width: 100%; color: #536058; font-size: .875rem; }
+.purchaseTableWrap { min-width: 0; }
+.purchaseTable { width: 100%; border-collapse: collapse; table-layout: fixed; font-size: .875rem; line-height: 1.5; }
+.purchaseTable caption { text-align: left; padding-bottom: 12px; color: #536058; }
+.purchaseTable th,.purchaseTable td { padding: 14px 10px; text-align: left; vertical-align: top; border-block: 1px solid #17292340; overflow-wrap: anywhere; }
+.purchaseTable th:first-child { width: 40%; padding-left: 0; }
+.purchaseTable thead th:last-child { width: 22%; text-align: right; padding-right: 0; }
+.purchaseTable tbody th { font-weight: 500; }
+.purchaseTable strong,.purchaseTable time,.purchaseTable small { display: block; }
+.purchaseTable small,.purchaseTable time { color: #536058; font-size: .875rem; margin-top: 3px; }
+.purchaseTable td.purchaseAmount { text-align: right; padding-right: 0; font-variant-numeric: tabular-nums; }
+.purchaseTableWrap + button { margin-block: 16px; }
+.purchaseError { color: #672b20; line-height: 1.6; }
+.purchaseToggle { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 44px; padding: 10px 14px; list-style: none; cursor: pointer; border: var(--game-control-border-width, 2px) solid transparent; background: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.purchaseToggle::-webkit-details-marker { display: none; }
+.purchaseToggle h2 { min-width: 0; margin: 0; font: 900 1.5rem/1.2 var(--font-display),Impact,sans-serif; }
+.purchaseToggle > svg { flex-shrink: 0; }
+.register[open] > .purchaseToggle { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.register[open] > .purchaseToggle > svg { transform: rotate(180deg); }
+.purchaseToggle:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
+.purchaseContent { padding-top: 16px; }
+@media(hover:hover) { .purchaseToggle:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); } }
 .calendar { min-width: 0; padding: 16px 0 0; color: #172923; border: 0; border-top: 1px solid #17292340; background: transparent; box-shadow: none; }
 .calendar h3 { font: 750 1rem/1.5 var(--font-body),sans-serif; text-transform: none; }
 .calendar header > svg { color: #536058; }
@@ -64,6 +98,6 @@
 .desk .history summary:focus-visible,.desk .breakdown summary:focus-visible { outline: 3px solid #172923; outline-offset: 3px; }
 .desk button:disabled { opacity: 1; background-color: #e2dccb; color: #667064; border-color: #899285; box-shadow: none; cursor: not-allowed; }
 .desk button:disabled:is(.primary, .secondary, .filters button) { opacity: 1; color: #667064; cursor: not-allowed; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; box-shadow: none; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
-@media(hover:hover) { .filters button:not([aria-pressed="true"]):hover,.secondary:hover:not(:disabled) { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; color: #172923; } .primary:hover:not(:disabled) { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); background: transparent; border-color: transparent; color: #172923; } }
-@media(max-width: 760px) { .calendarGrid,.financialOverview { grid-template-columns: 1fr; } }
-@media(max-width: 500px) { .summary { gap: 12px; margin-top: 20px; } .summary strong { font-size: 1.8rem; } .inbox,.calendarPanel { padding: 20px 16px; } .bulkPayment > button { width: 100%; } .invoices > li { padding: 18px 0; grid-template-columns: 1fr 1fr; gap: 16px 10px; } .invoiceTitle { grid-column: 1/-1; } .invoiceAction { justify-content: stretch; } .invoiceAction > button,.payment > button { width: 100%; } .filters { gap: 5px; } .filters button { padding: 9px; } .folder h3 { font-size: 1.25rem; } .folder header > strong { font-size: 1rem; } }
+@media(hover:hover) { .filters button:not([aria-pressed="true"]):hover,.secondary:hover:not(:disabled),.primary:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; color: #172923; } }
+@media(max-width: 760px) { .calendarGrid,.financialOverview { grid-template-columns: 1fr; } .summary { grid-template-columns: repeat(2,minmax(0,1fr)); } .summary > div:last-child { grid-column: 1/-1; grid-template-columns: 1fr 1fr; align-items: center; } .summary > div:last-child strong { font-size: 1.4rem; } }
+@media(max-width: 500px) { .desk { gap: 16px; } .summary { gap: 10px; } .summary > div { padding: 16px 12px; } .summary strong { font-size: 1.8rem; } .summary dt,.summary span { font-size: .875rem; } .register,.calendarPanel { padding: 20px 14px; } .financialOverview > *,.bulkPayment { padding: 16px 12px; } .bulkPayment > button { width: 100%; } .invoices > li { padding: 18px 0; grid-template-columns: 1fr 1fr; gap: 16px 10px; } .invoiceTitle { grid-column: 1/-1; } .invoiceAction { justify-content: stretch; } .invoiceAction > button,.payment > button { width: 100%; } .filters { gap: 5px; margin-block: 16px; } .filters button { padding: 9px; } .folder h3 { font-size: 1.25rem; } .folder header > strong { font-size: 1rem; } .purchaseTable th,.purchaseTable td { padding: 12px 5px; } .purchaseTable thead th:last-child { width: 24%; } }

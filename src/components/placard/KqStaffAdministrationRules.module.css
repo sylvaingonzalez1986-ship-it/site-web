@@ -1,0 +1,18 @@
+.panel { min-width: 0; padding: 12px 18px; color: var(--game-ink, #172923); background: transparent; border: 2px solid transparent; border-image: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.panel > summary { display: flex; align-items: center; gap: 12px; min-height: 56px; cursor: pointer; }
+.panel > summary::after { content: '+'; margin-left: auto; font-size: 1.4rem; }
+.panel[open] > summary::after { content: '−'; }
+.panel > summary > span:last-child { display: grid; gap: 4px; min-width: 0; }
+.panel > summary strong { font-size: 1rem; }
+.panel > summary small { color: #40594e; overflow-wrap: anywhere; }
+.art { width: 62px; height: 62px; flex-shrink: 0; }
+.art > * { width: 100%; height: 100%; }
+.form { display: grid; gap: 16px; padding-block: 18px 6px !important; }
+.fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+.choices { display: flex; flex-wrap: wrap; gap: 8px; }
+.notes { display: grid; gap: 8px; padding-top: 12px; border-top: 1px solid #17292330; color: #40594e; font-size: .79rem; }
+.error { color: #873826; font-size: .82rem; }
+.lastResult { display: grid; gap: 6px; padding: 14px 0; border-block: 1px solid #17292330; font-size: .84rem; }
+.lastResult small, .lastResult p { color: #40594e; }
+.form > button { justify-self: start; }
+@media (max-width: 650px) { .fields { grid-template-columns: 1fr; } .panel { padding: 10px 12px; } .art { width: 48px; height: 48px; } }
