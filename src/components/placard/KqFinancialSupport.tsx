@@ -6,8 +6,10 @@ import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import styles from "./KqFinancialSupport.module.css";
 
 export function KqFinancialSupport() {
-  const href = getKqFinancialSupportUrl(typeof process === "undefined" ? undefined : process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL);
-  // No placeholder or payment request before the operator supplies a verified public link.
+  // Public Quick Pay link supplied by the operator; ship it with the interface so
+  // a missing hosting variable cannot silently hide support after deployment.
+  // An explicit empty or invalid override still disables the panel.
+  const href = getKqFinancialSupportUrl(process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL ?? "https://pay.vivawallet.com/les-champs-bretons");
   if (!href) return null;
 
   return <aside className={styles.support} aria-labelledby="kq-financial-support-title" data-financial-support>

@@ -81,11 +81,11 @@
     "component": "src/components/placard/KqFinancialSupport.tsx",
     "entry": "src/components/placard/KqPlacardLobby.tsx",
     "publicEnvironmentVariable": "NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL",
-    "default": "Vide : encart masqué. Le lien doit utiliser HTTPS et le domaine exact pay.vivawallet.com, avec un chemin de compte. Les domaines ressemblants, liens de commande boutique, identifiants et ports non standard sont refusés.",
+    "default": "Sans variable : lien public fourni par l'exploitant https://pay.vivawallet.com/les-champs-bretons. Une surcharge explicitement vide ou invalide masque l'encart. Le lien doit utiliser HTTPS et le domaine exact pay.vivawallet.com, avec un chemin de compte. Les domaines ressemblants, liens de commande boutique, identifiants et ports non standard sont refusés.",
     "trust": "Configuration réservée à l’exploitant, jamais issue d’un paramètre joueur. Le domaine Viva ne certifie pas le bénéficiaire : copier le lien exact du compte SASU et vérifier le nom affiché.",
     "build": "Variable publique figée par Next au build ; reconstruire et publier explicitement après configuration.",
     "activation": "Lien public fourni par l’utilisateur : https://pay.vivawallet.com/les-champs-bretons. Raccordé dans .env.local et .env.development.local ; .env.example contient aussi cette valeur publique. Bouton actif avec cette configuration locale. Aucun compte créé, paiement soumis ou code publié.",
-    "deployment": "Reporter NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL=https://pay.vivawallet.com/les-champs-bretons dans l’environnement de l’hébergement avant le prochain build publié. Les fichiers .env.local et .env.development.local sont locaux ; .env.example ne configure pas l’hébergement. Aucun environnement distant modifié.",
+    "deployment": "Le lien public fourni est inclus dans le composant pour rendre l'encart disponible même sans variable d'hébergement. NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL reste une surcharge facultative au build ; une valeur explicitement vide le désactive. Les fichiers .env.local et .env.development.local restent locaux ; .env.example documente cette surcharge.",
     "bookkeeping": "Prévoir un libellé de référence dédié à Kanab Quest et rapprocher les versements bruts, frais, nets et éventuels remboursements avec les exports du prestataire. Faire fixer l’écriture et les justificatifs par le comptable."
   },
   "quickPaySetup": {
@@ -108,7 +108,7 @@
   "next": [
     "Obtenir de Viva l’acceptation de ce soutien sans contrepartie pour la SASU et son site CBD, ainsi que l’outil et le tarif applicables.",
     "Confirmer avec le comptable le traitement effectif : résultat, absence de contrepartie et TVA, justificatif non fiscal.",
-    "Lors de la publication demandée, reporter le lien public déjà fourni dans l’environnement de l’hébergement puis reconstruire. Vérifier le parcours hébergé, montant et bénéficiaire, sans paiement automatique."
+    "Publier le composant incluant le lien public déjà fourni. Vérifier le parcours hébergé, montant et bénéficiaire, sans paiement automatique."
   ],
   "draftForVivaNotSent": "Bonjour, notre société SASU Les Champs Bretons (SIREN 942368994) utilise Viva sur son site de vente de CBD. Nous souhaitons aussi proposer sur ce même site un soutien financier facultatif à Kanab Quest, notre jeu gratuit, sans achat de bien ou service, sans objet ni avantage en jeu, et sans avantage dans les concours. Les fonds seraient reçus par la SASU pour soutenir notre activité de petits producteurs et le développement du jeu. Autorisez-vous ce cas précis avec Quick Pay, en versement ponctuel à montant choisi par le joueur ? Faut-il une source ou un dossier marchand distinct, quelles informations doivent figurer sur la page et quels frais et moyens de paiement s’appliqueraient ? Nous fournirons l’URL du site et du jeu pour examen. Merci."
 }

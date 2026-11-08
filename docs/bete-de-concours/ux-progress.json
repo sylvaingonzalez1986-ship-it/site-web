@@ -1,5 +1,14 @@
 {
   "updated": "2026-11-08",
+  "producerSupportProductionVisibility": {
+    "updated": "2026-11-08",
+    "status": "Correction préparée pour que l'encart Soutenir les petits producteurs reste visible sans variable d'hébergement, sur smartphone comme sur ordinateur.",
+    "diagnosis": "Aucun masquage CSS mobile. Le commit 4ac4bee9 est bien déployé en production et l'illustration répond HTTP 200. L'ancien composant retournait null sans NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL ; le lien était uniquement configuré dans les environnements locaux. La valeur distante n'est pas directement vérifiable sans accès à l'hébergement.",
+    "fix": "Le lien public Viva déjà fourni par l'exploitant, https://pay.vivawallet.com/les-champs-bretons, est utilisé par défaut dans le composant. Une surcharge explicitement vide ou invalide masque toujours l'encart ; validation du domaine HTTPS et absence dans les leçons préservées.",
+    "validation": "14 tests du lien Viva et ESLint ciblé réussis. Sept groupes navigateur : absence de variable à 320/390/1440 px, illustration chargée, titre gras en capitales, clavier et lien, surcharge valide, vide, invalide et tutoriel. Aucune mutation ni paiement ; capture mobile inspectée.",
+    "report": "output/placard-journey-continuity/financial-support-report.json",
+    "next": "Publier la correction et vérifier le déploiement ; aucune migration nécessaire."
+  },
   "releaseValidation20261108": {
     "updated": "2026-11-08",
     "status": "Ensemble des changements du jeu et du site validé pour la livraison demandée sur origin/master. Ce point de contrôle accompagne le commit regroupant le travail.",

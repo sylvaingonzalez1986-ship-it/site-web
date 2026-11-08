@@ -39,7 +39,10 @@ import{encodeKqSave,parseKqGameSave}from'/src/lib/kanab-quest-persistence';
 window.__guideIds={steps:FARM_GUIDE_STEPS.map(step=>step.id),chapters:FARM_GUIDE_CHAPTERS.map(chapter=>chapter.id)};
 const scenario=new URLSearchParams(location.search).get('scenario')||'preparation';
 window.__financialSupportUrl=scenario==='financial-support-hidden'?'':scenario==='financial-support-invalid'?'javascript:alert(1)':'https://pay.vivawallet.com/les-champs-bretons';
-if(${financialSupportOnly})window.process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL=window.__financialSupportUrl;
+if(${financialSupportOnly}){
+ if(scenario==='financial-support-default')delete window.process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL;
+ else window.process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL=window.__financialSupportUrl;
+}
 const workdayScenario=scenario==='workday';
 const workshopScenario=scenario==='workshop',staffGuideScenario=scenario==='staff-guide',staffPlanScenario=scenario==='staff-plan',storageScenario=scenario.startsWith('storage')||workshopScenario||staffPlanScenario;
 if(!new URLSearchParams(location.search).has('view'))history.replaceState(null,'','?scenario='+scenario+'&view='+(storageScenario?'harvests':'game&campaign=1'));
@@ -745,7 +748,8 @@ if (preview) {
   }
   if (financialSupportOnly) {
     for (const width of [320, 390, 1440]) {
-      await load('financial-support', width, 'view=hub');
+      await load('financial-support-default', width, 'view=hub');
+      assert.equal(await page.evaluate(() => window.process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL), undefined, 'Production without a hosting variable still displays the operator-provided link');
       await page.waitForSelector('[data-financial-support]', { visible: true });
       const support = '[data-financial-support]';
       const link = support + ' a';
@@ -785,6 +789,10 @@ if (preview) {
       await screenshot(`financial-support-${width}`);
       results.push({ width, heading, artwork, keyboard: true, disclosures: true, noGameMutation: true, externalNavigationPrevented: true });
     }
+    await load('financial-support', 390, 'view=hub');
+    await page.waitForSelector('[data-financial-support]', { visible: true });
+    assert.equal(await page.$eval('[data-financial-support] a', node => node.href), 'https://pay.vivawallet.com/les-champs-bretons');
+    results.push({ scenario: 'financial-support', configuredLink: true });
     for (const scenario of ['financial-support-hidden', 'financial-support-invalid', 'financial-support-tutorial']) {
       await load(scenario, 390, 'view=hub');
       await page.waitForSelector('[data-placard-lobby]');
