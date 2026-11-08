@@ -1,5 +1,17 @@
 {
-  "updated": "2026-11-08",
+  "updated": "2026-11-09",
+  "workActorRelay": {
+    "updated": "2026-11-09",
+    "status": "Relais joueur/salariés implémenté et validé en Culture, Trim et Transformation. Les deux migrations nécessaires sont appliquées en production ; ce checkpoint accompagne la publication du code demandée dans la session.",
+    "interface": "Sélecteur commun KqWorkActorSelector avec portraits du profil et de l'équipe, choix radio au clavier, niveau et heures disponibles. Culture : joueur ou salariés dont le serveur confirme une affectation Culture compatible ; les indisponibles gardent leur motif. Même contrôle au trim et pour préparer/reprendre une transformation. Guide Personnel et attribution de la scène Atelier mis à jour.",
+    "culture": "Choix explicite avant le lancer suivant ; 0,5 h une seule fois à la personne choisie, avec ses bonus. Le joueur peut reprendre une culture déléguée épuisée. Sans choix explicite, comportement automatique antérieur conservé. Étapes engagées/payées immuables ; réessais sans double débit. Changement de portrait sans coût, devis périmés ignorés, lancer bloqué pendant vérification.",
+    "processing": "Choix porté par le devis et la transaction de préparation/reprise. Cadence, heures et volume du prochain segment recalculés côté serveur. Segments déjà financés préservés, acteur courant affiché même après une ancienne délégation. Solde fractionnaire conservé : 4,2 h permet de réserver 4 h et garde 0,2 h ; 0,55 h réserve 0,5 h, 0,49 h bloque.",
+    "scope": "Ce sélecteur couvre Culture, Trim et Transformation. Les missions Communication, Prospection et Administration restent sélectionnables par portrait dans Personnel ; les gestes manuels de commerce/rangement n'ont pas été convertis en réservations salariées dans cette livraison.",
+    "validation": "Suite globale : 558 fichiers et 6848 tests réussis. Culture : 346 contrôles SQL et 89 tests backend/API ; Transformation : 101 contrôles SQL et 623 historiques. Navigateur : 9 groupes relais Culture, 3 groupes heures fractionnaires, 6 groupes trim, 4 groupes transformation ; 320/390/1440 px, clavier, coûts, reprise, réponses obsolètes et absence de débordement contrôlés. Build Next de production avec TypeScript réussi, ESLint ciblé et diff-check réussis. Derniers libellés et scène contrôlés par navigateur/lint après build.",
+    "database": "012 culture_work_choice et 013 processing_work_choice appliquées au projet eyowwwpdmfrulhkpvlnf ; 368 migrations synchronisées, aucune en attente. Préflight 83 contrôles, postflight 109 contrôles. Empreintes des 7 tables et 14 fonctions protégées inchangées ; aucune action métier de test distante.",
+    "reports": ["output/actor-choice-migrations/completion.json", "output/placard-journey-continuity/culture-relay-report.json", "output/placard-journey-continuity/culture-work-report.json", "output/placard-staff-ui/shared-trim-report.json", "output/placard-processing-choice/report.json", ".tmp/actor-choice-all-tests.log", ".tmp/actor-choice-build.log"],
+    "next": "Confirmer le commit et le déploiement dans output/actor-choice-release/completion.json. Ne pas rejouer les migrations appliquées ; étendre les autres gestes seulement avec une comptabilisation serveur dédiée."
+  },
   "producerSupportProductionVisibility": {
     "updated": "2026-11-08",
     "status": "Correction préparée pour que l'encart Soutenir les petits producteurs reste visible sans variable d'hébergement, sur smartphone comme sur ordinateur.",

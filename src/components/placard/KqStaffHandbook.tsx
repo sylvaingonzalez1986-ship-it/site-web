@@ -19,7 +19,7 @@ export function KqStaffHandbook() {
           ]} /> },
           { id: "culture", label: "Culture", value: "0,5 h / étape", art: "help-culture", content: <KqHelpGrid items={[
             { label: "Culture déléguée", value: "0 h pour toi", detail: "0,5 h par étape sur sa réserve, même avec Vif. Minutieux améliore seulement le bonus de terpènes. Les étapes restent à jouer.", art: "help-culture" },
-            { label: "Réserve épuisée", value: "La culture attend", detail: "Ajoute des heures ou attends un jour travaillé avec réserve. Réservation possible avant la culture.", art: "help-time" },
+            { label: "Réserve épuisée", value: "Passe le relais", detail: "Choisis ton portrait en Culture, ou un autre salarié disponible. Tu peux aussi ajouter des heures.", art: "help-time" },
           ]} /> },
           { id: "workshop", label: "Atelier", value: "Cadence selon le niveau", art: "help-workshop", content: <KqHelpGrid items={[
             { label: "Trim et transformation", value: "Entrepôt → Atelier", detail: "File commune : récoltes compatibles les plus anciennes d’abord. La compétence détermine la cadence.", art: "help-workshop" },
@@ -32,7 +32,7 @@ export function KqStaffHandbook() {
             { label: "Administration", value: "Remise pendant 7 jours", detail: "0,5 h suffit : le niveau et Organisé déterminent le taux sur les nouvelles fournitures Entrepôt. Plus d’heures donne plus d’XP et du temps pour les paiements autorisés.", art: "help-accounts" },
           ]} /> },
         ]} />
-        <KqHelpNote>Une culture jamais déléguée prend tes heures. Les missions doivent finir avant le lendemain. Dans les fiches, « Organiser sa journée » permet d’ajouter des heures avec leurs limites et majorations.</KqHelpNote>
+        <KqHelpNote>La personne choisie utilise ses heures. Change de portrait avant la prochaine étape pour passer le relais. Les missions doivent finir avant le lendemain. Dans les fiches, « Organiser sa journée » permet d’ajouter des heures avec leurs limites et majorations.</KqHelpNote>
       </KqHelpDashboard>
     </details>
     <details className={styles.reference} data-staff-guide="development">

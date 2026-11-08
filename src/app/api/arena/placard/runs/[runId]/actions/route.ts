@@ -4,6 +4,7 @@ import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { applyKqPlayerRunAction, type KqRunAction } from "@/lib/supabase/kanab-quest-backend";
+import { isKqCultureWorkChoice, type KqCultureWorkChoice } from "@/lib/kanab-quest-culture-work";
 
 const ACTIONS = new Set<KqRunAction>(["roll", "resolve", "advance", "redraw", "heritage", "heritage-swap"]);
 export const runtime = "nodejs";
@@ -50,10 +51,15 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
   if (!action || !ACTIONS.has(action)) {
     return NextResponse.json({ error: "Action invalide." }, { status: 400 });
   }
-  const options: { handIndex?: number; reserveIndex?: number; expectedStageIndex?: number } | undefined = action === "heritage-swap"
+  if (body.workChoice !== undefined && (action !== "roll" || !isKqCultureWorkChoice(body.workChoice))) {
+    return NextResponse.json({ error: "Prise en charge invalide." }, { status: 400 });
+  }
+  const options: { handIndex?: number; reserveIndex?: number; expectedStageIndex?: number; workChoice?: KqCultureWorkChoice } | undefined = action === "heritage-swap"
     ? { handIndex: Number(body.handIndex), reserveIndex: Number(body.reserveIndex) }
-    : action === "roll" ? { ...(body.expectedStageIndex !== undefined ? { expectedStageIndex: Number(body.expectedStageIndex) } : {}) } : undefined;
-  if (body.workChoice !== undefined) return NextResponse.json({ error: "La prise en charge suit les heures Culture prévues dans Personnel." }, { status: 400 });
+    : action === "roll" ? {
+      ...(body.expectedStageIndex !== undefined ? { expectedStageIndex: Number(body.expectedStageIndex) } : {}),
+      ...(body.workChoice !== undefined ? { workChoice: body.workChoice as KqCultureWorkChoice } : {}),
+    } : undefined;
   if (body.expectedStageIndex !== undefined && (action !== "roll" || typeof body.expectedStageIndex !== "number" || !Number.isInteger(body.expectedStageIndex) || body.expectedStageIndex < 0 || body.expectedStageIndex > 5)) return NextResponse.json({ error: "Étape de culture invalide." }, { status: 400 });
   if (action === "heritage-swap"
     && (!Number.isInteger(options?.handIndex) || !Number.isInteger(options?.reserveIndex))) {

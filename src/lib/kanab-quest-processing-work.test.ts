@@ -16,6 +16,18 @@ const employee: NonNullable<KqProcessingWorkQuote["employee"]> = {
 };
 
 describe("processing work quotes at the server boundary", () => {
+  it("validates the optional actor choices without accepting another person's quote", () => {
+    const choices = { actorChoiceVersion: 1, actorId: "player", actors: [
+      { id: "player", name: "Toi", employee: null, remainingHours: 12, available: true, reason: null },
+      { id: employee.id, name: employee.name, employee, remainingHours: 6, available: true, reason: null },
+    ] };
+    expect(isKqProcessingWorkQuote({ ...fixture(), ...choices })).toBe(true);
+    expect(isKqProcessingWorkQuote({ ...fixture(), ...choices, actorId: employee.id })).toBe(false);
+    expect(isKqProcessingWorkQuote({ ...fixture(), ...choices, actors: [...choices.actors, choices.actors[0]] })).toBe(false);
+    expect(isKqProcessingWorkQuote({ ...fixture(), ...choices, actors: [{ ...choices.actors[0], remainingHours: 13 }] })).toBe(false);
+    expect(isKqProcessingWorkQuote({ ...fixture(), actorId: "player" })).toBe(false);
+    expect(isKqProcessingWorkQuote({ ...fixture(), ...choices, actors: [{ ...choices.actors[1], employee: null }] })).toBe(false);
+  });
   it("accepts a funded tranche whose remaining total work exceeds this tranche", () => {
     const quote = fixture();
     expect(quote.remainingNominalHours).toBeGreaterThan(quote.nominalHours);

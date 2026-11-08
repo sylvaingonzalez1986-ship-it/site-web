@@ -7,8 +7,9 @@ import tailwindcss from '@tailwindcss/postcss';
 import {Launcher} from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 const quoteRecovery=process.argv.includes('--quote-recovery');
-const root=process.cwd(), output=resolve(root,quoteRecovery?'output/placard-commerce-quote-recovery':'output/placard-commerce');
-const port=Number(process.env.KQ_COMMERCE_AUDIT_PORT??(quoteRecovery?3430:3201)), origin=`http://127.0.0.1:${port}`;
+const processingChoiceOnly=process.argv.includes('--processing-choice-only');
+const root=process.cwd(), output=resolve(root,processingChoiceOnly?'output/placard-processing-choice':quoteRecovery?'output/placard-commerce-quote-recovery':'output/placard-commerce');
+const port=Number(process.env.KQ_COMMERCE_AUDIT_PORT??(processingChoiceOnly?3445:quoteRecovery?3430:3201)), origin=`http://127.0.0.1:${port}`;
 const modules={
   'warehouse-assets': `export default ${await readFile(resolve(root,'public/placard/warehouse-v2/manifest.json'),'utf8')};`,
   'workshop-entry': `import React from 'react'; import {createRoot} from 'react-dom/client'; import '/src/app/globals.css';
@@ -16,6 +17,18 @@ const modules={
     import {KqEquipmentCatalogModal} from '/src/components/placard/KqEquipmentCatalogModal';
     import {quoteKqMarketRoutes} from '/src/lib/kanab-quest-market'; import {KQ_EQUIPMENT_CATALOG} from '/src/lib/kanab-quest-equipment';
     import {quoteKqCommerce} from '/src/lib/kanab-quest-commerce';
+    import {createKqProcessingPlan} from '/src/lib/kanab-quest-processing-profiles';
+    import arena from '/src/components/contest/ArenaRetro.module.css';
+    const processingChoice=new URLSearchParams(location.search).has('processing');
+    const processingFlower='33333333-3333-4333-8333-333333333333';
+    const processingEmployee={id:'staff-anna',name:'Anna',code:'anna',portraitCode:'anna',role:'processor',taskId:'processing-shift',level:5,allocatedHours:3,usedHours:1,remainingHours:2};
+    const processingControl={delay:200,fail:false,lose:false,exhausted:false};window.__processingControl=processingControl;window.__workQuotes=[];window.__workCommands=[];
+    const workPlan=createKqProcessingPlan({inputGrams:120,productGrams:12,equipmentCodes:['SIFT-TRAY']});
+    const workQuote=(actorId='auto')=>{const personal=actorId==='player',blocked=!personal&&processingControl.exhausted;
+      return {version:1,flowerId:processingFlower,token:(personal?'a':'b').repeat(32),inputGrams:120,source:blocked?'blocked':personal?'player':'employee',employee:personal?null:processingEmployee,
+      efficiency:personal?.55:.8,playerRemainingHours:4.2,bookedHours:blocked?0:personal?2.5:2,activeHours:blocked?0:personal?2.5:2,nominalHours:blocked?0:1.2,remainingNominalHours:3,fundedGrams:blocked?0:48,passiveHours:0,
+      startedAt:blocked?null:'2026-11-08T12:00:00Z',readyAt:blocked?null:'2026-11-08T12:25:00Z',blockedReason:blocked?'La réserve Transformation est épuisée.':null,
+      actorChoiceVersion:1,actorId,actors:[{id:'player',name:'Toi',employee:null,remainingHours:4.2,available:true,reason:null},{id:processingEmployee.id,name:'Anna',employee:processingEmployee,remainingHours:2,available:!processingControl.exhausted,reason:processingControl.exhausted?'Réserve épuisée.':null}]};};
     const shopScenario=new URLSearchParams(location.search).get('shops');const shopPartners=shopScenario==='loss'?4:0;const shopRecruitment=shopScenario==='gain'?4800:0;const juryScore=Number(new URLSearchParams(location.search).get('quality')??9);const loyal=new URLSearchParams(location.search).has('loyal');const reputation=Number(new URLSearchParams(location.search).get('reputation')??(loyal?1500:0));const hash=new URLSearchParams(location.search).has('hash');
     const options=quoteKqMarketRoutes({juryScore,harvestGrams:120,equipmentCodes:hash?['TENT-080-STARTER','SIFT-TRAY']:['TENT-080-STARTER'],marketContext:{reputation:hash?1500:0,routeSales:hash?{raw:20}:{},window:0,recentSales:{},marketVolumes:{}}});
     const snapshot={shopPartners,shopRecruitment,shopChurn:0,revision:0,cashCents:100000,reputation,clients:loyal?100:0,computerOwned:loyal,internetRenew:loyal,campaign:{id:'cycle',shopPartnersStart:shopPartners,shopRecruitmentStart:shopRecruitment,shopChurnStart:0,shopGoodUnits:0,shopBadUnits:0,revision:0,reputation,clientsStart:loyal?100:0,event:'normal',internetPaid:loyal,directUsed:0,shopUsed:0,goodUnits:0,disappointmentUnits:0},stocks:[],receipts:[],routeSales:{},marketVolumes:{},ownVolumes:{},electricityOutstandingCents:0,rawLots:[{flowerId:'flower-test',varietyName:'Récolte des embruns',juryScore,harvestGrams:120,options}]};
@@ -28,6 +41,7 @@ const modules={
       ];
     }
     const recovery=new URLSearchParams(location.search).get('recovery');
+    if(processingChoice){snapshot.rawLots[0].flowerId=processingFlower;const product=options.find(option=>option.route==='dry-sift');Object.assign(product,{available:true,blockedReason:undefined,processingWork:{...workPlan,quote:workQuote()}});}
     if(recovery){snapshot.demand={serverNow:new Date().toISOString(),updatedAt:new Date().toISOString(),onlineDebt:0,shopDebt:0,growthResetsAt:new Date(Date.now()+86400000).toISOString()};snapshot.rawLots=[];snapshot.stocks=[{id:'stock',flowerId:'flower-test',name:'Récolte des embruns',route:'raw',batchRoute:'raw',juryScore,initialUnits:1200,remainingUnits:1200,equivalentUnits:1200,originalUnits:1200,baseUnitCents:180,repExact:0,repRounded:0,professionalUnits:0,counted:false}];}
     const originalFetch=window.fetch.bind(window), quotes=new Map(), receipts=new Map();window.__sales=[];window.__quotes=[];window.__mutations=0;
     const control={conflict:recovery==='storage'?'commerce_storage_changed':recovery==='offer'?'commerce_offer_changed':null,failQuotes:0,loseSaleResponse:recovery==='network'};
@@ -37,6 +51,20 @@ const modules={
       if(String(url).startsWith('/api/arena/placard/commerce')) {
         if(init.method!=='POST') return new Response(JSON.stringify(snapshot));
         const body=JSON.parse(init.body);let result={action:body.action,cashAfterCents:snapshot.cashCents};
+        if(processingChoice&&body.action==='processing-quote'){
+          window.__workQuotes.push(body);const quote=workQuote(body.actorId),delay=processingControl.delay,fail=processingControl.fail;processingControl.fail=false;
+          await new Promise(resolve=>setTimeout(resolve,delay));
+          if(fail)return Response.json({error:'Devis momentanément indisponible.'},{status:503});
+          const product=options.find(option=>option.route==='dry-sift');return Response.json({quote,...(body.route?{preparation:{...product,available:quote.source!=='blocked',processingWork:{...workPlan,quote}}}:{})});
+        }
+        if(processingChoice&&(body.action==='prepare'||body.action==='processing-work')){
+          window.__workCommands.push(body);if(receipts.has(body.requestKey))return Response.json({...receipts.get(body.requestKey),replayed:true});
+          const quote=workQuote(body.actorId);if(quote.token!==body.expectedWork)return Response.json({error:'Les heures ont changé.'},{status:400});
+          window.__mutations++;snapshot.rawLots=[];snapshot.stocks=[{id:'processing-stock',flowerId:processingFlower,name:'Récolte des embruns',route:'dry-sift',batchRoute:'dry-sift',juryScore,initialUnits:120,remainingUnits:120,equivalentUnits:1200,originalUnits:1200,baseUnitCents:180,repExact:0,repRounded:0,professionalUnits:0,counted:false,
+            processingWork:{version:1,flowerId:processingFlower,route:'dry-sift',inputGrams:120,completedGrams:48,fundedGrams:48,remainingGrams:72,nominalHours:3,remainingNominalHours:1.8,status:body.action==='prepare'?'blocked':'running',startedAt:'2026-11-08T12:00:00Z',readyAt:'2099-11-08T12:25:00Z',finalReadyAt:null,delegated:body.action==='processing-work'||quote.source==='employee',actor:quote.employee,bookedHours:quote.bookedHours,activeHours:quote.activeHours,remainingHours:0,plan:workPlan}}];
+          result={...result,flowerId:processingFlower,stockId:'processing-stock',paidCents:0};receipts.set(body.requestKey,structuredClone(result));
+          if(processingControl.lose){processingControl.lose=false;throw new TypeError('Réponse perdue après validation.');}return Response.json(result);
+        }
         if(body.action==='quote'){
           window.__quotes.push(body);
           if(control.failQuotes>0){control.failQuotes--;return Response.json({error:'Le calcul est momentanément indisponible.'},{status:503});}
@@ -72,7 +100,7 @@ const modules={
       if(String(url).startsWith('/api/'))return new Response('{}');
       return originalFetch(url,init);
     };
-    function App(){const [shop,setShop]=React.useState(false);return React.createElement(React.Fragment,null,React.createElement(KqMarketDesk,{mode:'sales',onOpenShop:()=>setShop(true)}),shop?React.createElement('div',{style:{position:'fixed',inset:0,zIndex:100}},React.createElement(KqEquipmentCatalogModal,{onClose:()=>setShop(false)})):null);}
+    function App(){const [shop,setShop]=React.useState(false);return React.createElement('div',{className:processingChoice?arena.gameSurface:undefined},React.createElement(KqMarketDesk,{mode:'sales',onOpenShop:()=>setShop(true)}),shop?React.createElement('div',{style:{position:'fixed',inset:0,zIndex:100}},React.createElement(KqEquipmentCatalogModal,{onClose:()=>setShop(false)})):null);}
     createRoot(document.getElementById('root')).render(React.createElement(App));`,
   'next/dynamic': `import React from 'react';export default function dynamic(loader,{loading:Loading}){const Component=React.lazy(async()=>({default:await loader()}));return props=>React.createElement(React.Suspense,{fallback:React.createElement(Loading)},React.createElement(Component,props));}`,
   'next/image': `import React from 'react'; export default function Image({src,fill,priority,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}`,
@@ -107,7 +135,49 @@ try {
    assert((await visibleText()).includes('min. 6,5/10'));
    assert((await visibleText()).includes('Toute qualité acceptée'));
  };
- if(quoteRecovery){
+ if(processingChoiceOnly){
+  const openProcessing=async width=>{
+    await page.setViewport({width,height:width<700?844:1000});await page.goto(origin+'/?hash&processing',{waitUntil:'networkidle0'});
+    await page.waitForSelector('[aria-label="Tes lots"] button');await page.$eval('[aria-label="Tes lots"] button',element=>element.click());
+    await page.waitForSelector('[data-commerce-preparation] select');await page.select('[data-commerce-preparation] select','dry-sift');
+    await page.waitForSelector('[data-work-actor-choice="player"]');
+  };
+  for(const width of [320,390,1440]){
+    await openProcessing(width);await noOverflow();
+    assert.equal(await page.$eval('[data-work-actor-choice="staff-anna"]',element=>element.checked),true);
+    await page.focus('[data-work-actor-choice="player"]');await page.keyboard.press('Space');
+    await page.waitForFunction(()=>document.querySelector('[data-prepare-lot]')?.disabled===true);
+    assert.equal(await page.evaluate(()=>window.__mutations),0);
+    await page.waitForSelector('[data-processing-work-summary][data-work-source="player"]');
+    assert.equal(await page.$eval('[data-prepare-lot]',element=>element.disabled),false);await noOverflow();
+    await shot('preparation-player-'+width);
+    await click('Transformer et continuer');await page.waitForSelector('dialog[open]');
+    assert((await page.$eval('dialog[open]',element=>element.textContent)).includes('2,5 h'));
+    if(width===390)await page.evaluate(()=>window.__processingControl.lose=true);
+    await click('Confirmer');
+    if(width===390){await page.waitForFunction(()=>document.querySelector('dialog[open]')?.textContent.includes('Le reçu reste à vérifier'));await click('Confirmer');}
+    await page.waitForSelector('[data-resume-processing]');
+    const commands=await page.evaluate(()=>window.__workCommands);assert.equal(commands[0].actorId,'player');assert.equal(commands[0].expectedWork,'a'.repeat(32));
+    if(width===390){assert.equal(commands[0].requestKey,commands[1].requestKey);assert.equal(await page.evaluate(()=>window.__mutations),1);}
+    await page.click('[data-resume-processing]');await page.waitForSelector('dialog[open] [data-work-actor-choice="player"]');
+    await page.$eval('dialog[open] [data-work-actor-choice="player"]',element=>element.click());
+    await page.waitForSelector('dialog[open] [data-processing-work-summary][data-work-source="player"]');
+    await shot('resume-player-'+width);await click('Confirmer');await page.waitForFunction(()=>!document.querySelector('dialog[open]'));
+    assert.equal(await page.evaluate(()=>window.__workCommands.at(-1).actorId),'player');assert.equal(await page.evaluate(()=>window.__mutations),2);
+    assert((await visibleText()).includes('Travail du joueur'));assert.equal((await visibleText()).includes('R?serve salari?e ? 0 h joueur'),false);
+    results.push({width,preparationActor:true,resumeActor:true,noOverflow:true,keyboard:true,replay:width===390});
+  }
+  await openProcessing(390);await page.evaluate(()=>window.__processingControl.delay=500);
+  await page.$eval('[data-work-actor-choice="player"]',element=>element.click());await page.waitForFunction(()=>window.__workQuotes.length===1);
+  await page.evaluate(()=>window.__processingControl.delay=20);await page.$eval('[data-work-actor-choice="staff-anna"]',element=>element.click());
+  await page.waitForFunction(()=>window.__workQuotes.length===2);await new Promise(resolve=>setTimeout(resolve,650));
+  assert.equal(await page.$eval('[data-work-actor-choice="staff-anna"]',element=>element.checked),true);
+  assert.equal(await page.$eval('[data-processing-work-summary]',element=>element.dataset.workSource),'employee');
+  await page.evaluate(()=>window.__processingControl.fail=true);await page.$eval('[data-work-actor-choice="player"]',element=>element.click());
+  await page.waitForFunction(()=>document.body.innerText.includes('Devis momentanément indisponible.'));
+  assert.equal(await page.$eval('[data-prepare-lot]',element=>element.disabled),true);assert.equal(await page.evaluate(()=>window.__mutations),0);
+  results.push({staleResponseDiscarded:true,failedQuoteBlocksPreparation:true});
+ }else if(quoteRecovery){
   const dialogButton=async(label)=>{
     const handle=await page.evaluateHandle(text=>[...document.querySelectorAll('dialog[open] button')].find(button=>button.textContent.trim()===text),label);
     const button=handle.asElement();assert(button,`Dialog control missing: ${label}`);await button.click();await handle.dispose();
@@ -299,7 +369,7 @@ try {
  assert((await visibleText()).includes('Dernier palier atteint'));
  }
  assert.deepEqual(errors,[]);
- const report={passed:true,results,...(quoteRecovery?{quoteRecovery:true}:{computerPurchase:true,internetActivation:true,preparedStockResumed:true,hashTransformation:true,reducedMotion:true,customerFeedback:true,shopPartners:true,commerceOverview:true}),errors};
+ const report={passed:true,results,...(processingChoiceOnly?{processingActorChoice:true}:quoteRecovery?{quoteRecovery:true}:{computerPurchase:true,internetActivation:true,preparedStockResumed:true,hashTransformation:true,reducedMotion:true,customerFeedback:true,shopPartners:true,commerceOverview:true}),errors};
  await writeFile(resolve(output,'report.json'),JSON.stringify(report,null,2));
  console.log(JSON.stringify({...report,output}));
 }catch(error){

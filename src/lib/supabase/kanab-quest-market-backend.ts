@@ -181,7 +181,7 @@ export function getKqSharedWorkshop(shop: KqEquipmentShopSnapshot) {
   return { equippedCodes, operationalCodes, levels, installedLevels, ownedCodes: [...new Set(tents.flatMap(tent => tent.ownedCodes))] };
 }
 
-export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string[], options: { previewOnly?: boolean } = {}) {
+export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string[], options: { previewOnly?: boolean; processingActorId?: string } = {}) {
   assertUuid(userId, "Compte marché invalide.");
   const supabase = createSupabaseServiceClient();
   const storage = await getKqStorageRecords(userId);
@@ -295,7 +295,7 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
       if (!quote.processingWork) {
         quote.available = false; quote.blockedReason = "La cadence de cette filière est indisponible. Actualise l’Atelier.";
       } else {
-        const workQuote = await getKqProcessingWorkQuote(userId, flowerId, quote.processingWork);
+        const workQuote = await getKqProcessingWorkQuote(userId, flowerId, quote.processingWork, options.processingActorId);
         quote.processingWork.quote = workQuote;
         quote.processingDurationSeconds = Math.ceil((workQuote.activeHours + workQuote.passiveHours) * 600);
         if (workQuote.source === "blocked") {

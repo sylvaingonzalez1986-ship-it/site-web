@@ -1,0 +1,16 @@
+.selector { min-width:0; margin:0 0 10px; padding:0; border:0; color:var(--game-ink,#172923); }
+.selector legend { padding:0; margin-bottom:4px; font:750 13px/1.4 var(--font-body),Arial,sans-serif; }
+.options { display:flex; gap:8px; min-width:0; max-width:100%; overflow-x:auto; padding:5px; scroll-padding:5px; }
+.option { position:relative; display:grid; grid-template-columns:40px minmax(0,1fr); align-items:center; gap:8px; flex:0 0 166px; min-height:72px; padding:8px 16px 8px 8px; box-sizing:border-box; cursor:pointer; --game-control-art:var(--game-control-paper,url("/placard/ui/control-paper-v2.webp")); border:2px solid transparent; background:transparent; box-shadow:none; border-radius:0; border-image:var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; }
+.option[data-selected] { --game-control-art:var(--game-control-gold,url("/placard/ui/control-gold-v2.webp")); }
+.option input { position:absolute; width:1px; height:1px; margin:0; opacity:0; }
+.option:has(input:focus-visible) { outline:3px solid var(--arcade-green,#087b70); outline-offset:2px; }
+.portrait { display:grid; place-items:center; width:40px; height:48px; }
+.portrait > * { max-width:100%; max-height:100%; }
+.copy { display:grid; gap:3px; min-width:0; overflow-wrap:anywhere; font:500 12px/1.35 var(--font-body),Arial,sans-serif; }
+.copy strong { font-size:14px; line-height:1.25; }
+.copy small { font-size:12px; color:#77402b; }
+.check { position:absolute; top:6px; right:5px; }
+.option[data-unavailable],.selector:disabled .option { cursor:default; }
+@media (hover:hover) { .selector:not(:disabled) .option:not([data-unavailable]):hover { --game-control-art:var(--game-control-gold,url("/placard/ui/control-gold-v2.webp")); } }
+@media (max-width:600px) { .option { flex-basis:142px; grid-template-columns:32px minmax(0,1fr); gap:6px; } .portrait { width:32px; height:42px; } }

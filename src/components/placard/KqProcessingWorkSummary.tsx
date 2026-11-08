@@ -25,7 +25,7 @@ export function KqProcessingWorkSummary({ plan, quote: suppliedQuote }: { plan: 
     </dl>
     {quote && quote.fundedGrams > 0 ? <KqProgressMeter label="Volume couvert par cette réservation" value={quote.fundedGrams} max={quote.inputGrams} valueLabel={`${number(quote.fundedGrams)} g / ${number(quote.inputGrams)} g`} hint="Vente après la fin complète du lot." /> : null}
     {quote?.blockedReason ? <p role="status" className={styles.remainder}>{quote.blockedReason}</p> : null}
-    {quote?.employee ? <p className={styles.remainder}>Si la réserve salariée est épuisée, le lot attend des heures Transformation, sans prendre tes heures.</p> : null}
+    {quote?.employee ? <p className={styles.remainder}>À la fin du travail réservé, tu peux choisir qui prend la suite. Tes heures restent intactes tant que tu ne choisis pas ton personnage.</p> : null}
     <details className={styles.sources} data-processing-sources><summary>Cadences, estimations et sources</summary><KqHelpDashboard>
       <KqHelpGrid art="help-workshop" items={[
         { label: "1 h de jeu", value: "10 min réelles", art: "help-time" },

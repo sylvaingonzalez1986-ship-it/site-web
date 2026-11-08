@@ -1,6 +1,6 @@
 import "server-only";
 import { getKqProcessingWorkQuote } from "./kanab-quest-processing-work-backend";
-import { isKqProcessingJob } from "@/lib/kanab-quest-processing-work";
+import { isKqProcessingActorId, isKqProcessingJob } from "@/lib/kanab-quest-processing-work";
 import { randomUUID } from "node:crypto";
 import { createSupabaseServiceClient } from "./admin";
 import { settleKqStaffIfAvailable } from "./kanab-quest-staff-backend";
@@ -182,11 +182,23 @@ export async function getKqCommerceSnapshot(userId: string, shopOnly = false) {
 export async function handleKqCommerceAction(userId: string, body: Record<string, unknown>) {
   uuid(userId);
   const action = String(body.action ?? "");
+  const actorId = body.actorId;
+  if (["processing-quote", "processing-work", "prepare"].includes(action)
+    && actorId !== undefined && !isKqProcessingActorId(actorId)) throw new Error("Choix de personne invalide. Actualise l’Atelier.");
   const db = createSupabaseServiceClient();
   if (action === "processing-quote") {
     const flowerId = uuid(body.flowerId);
     await settleKqStaffIfAvailable(userId);
-    try { return { quote: await getKqProcessingWorkQuote(userId, flowerId) }; }
+    try {
+      if (body.route !== undefined) {
+        if (typeof body.route !== "string" || !body.route) throw new Error("Filière invalide.");
+        const market = await getKqMarketSnapshot(userId, [flowerId], { previewOnly: true, ...(actorId === undefined ? {} : { processingActorId: actorId as string }) });
+        const preparation = market.lots.find(lot => lot.flowerId === flowerId && lot.status === "ready")?.options.find(option => option.route === body.route);
+        if (!preparation?.processingWork?.quote) throw new Error("processing_work_unavailable");
+        return { quote: preparation.processingWork.quote, preparation };
+      }
+      return { quote: await getKqProcessingWorkQuote(userId, flowerId, null, actorId as string | undefined) };
+    }
     catch (error) { databaseError(error instanceof Error ? error.message : "processing_work_unavailable"); }
   }
   if (action === "quote") {
@@ -238,9 +250,14 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
       if (typeof body.expectedWork !== "string" || !/^[0-9a-f]{32}$/.test(body.expectedWork)) throw new Error("Devis de travail invalide. Actualise l’Atelier.");
       payload.expectedWork = body.expectedWork;
     }
+    if (actorId !== undefined) {
+      if (actorId !== "auto" && !payload.expectedWork) throw new Error("Devis de travail invalide. Actualise l’Atelier.");
+      payload.actorId = actorId;
+    }
   } else if (action === "processing-work") {
     if (typeof body.expectedWork !== "string" || !/^[0-9a-f]{32}$/.test(body.expectedWork)) throw new Error("Devis de travail invalide. Actualise l’Atelier.");
     payload = { flowerId: uuid(body.flowerId), expectedWork: body.expectedWork };
+    if (actorId !== undefined) payload.actorId = actorId;
   } else if (action === "sell") {
     payload = { quoteId: uuid(body.quoteId), expectedPayoutCents: integer(body.expectedPayoutCents) };
   } else if (action === "create-shop" || action === "rename-shop") {
@@ -262,7 +279,10 @@ export async function handleKqCommerceAction(userId: string, body: Record<string
   } else if (action === "buy-computer" || action === "renew-shop") payload = {};
   else throw new Error("Opération commerciale inconnue.");
   await settleKqStaffIfAvailable(userId);
-  if (action === "prepare") await getKqMarketSnapshot(userId, [String(payload.flowerId)]);
+  if (action === "prepare") {
+    if (actorId === undefined) await getKqMarketSnapshot(userId, [String(payload.flowerId)]);
+    else await getKqMarketSnapshot(userId, [String(payload.flowerId)], { processingActorId: actorId as string });
+  }
   const result = await db.rpc("rpc_kq_commerce_command", { p_user_id: userId, p_action: action, p_payload: payload, p_request_key: requestKey });
   if (result.error) databaseError(result.error.message);
   return result.data;

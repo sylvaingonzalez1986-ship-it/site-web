@@ -1,7 +1,7 @@
 import "server-only";
 import { createHash } from "node:crypto";
 import { settleKqStaffIfAvailable } from "./kanab-quest-staff-backend";
-import { isKqCultureWorkQuote } from "@/lib/kanab-quest-culture-work";
+import { isKqCultureWorkChoice, isKqCultureWorkQuote, type KqCultureWorkChoice } from "@/lib/kanab-quest-culture-work";
 import { KQ_BUDDIE_ROTATION_REQUIRED, getKqBuddieRotationRemaining, getKqBuddieRotationMessage, recordKqBuddieUse, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { getArenaRankingAvatars } from "./arena-ranking-avatars";
 import { getChanvrierStartingXp } from "@/lib/arena-chanvrier";
@@ -2702,10 +2702,11 @@ export async function applyKqPlayerRunAction(
   ownerId: string,
   runId: string,
   action: KqRunAction,
-  options?: { handIndex?: number; reserveIndex?: number; expectedStageIndex?: number },
+  options?: { handIndex?: number; reserveIndex?: number; expectedStageIndex?: number; workChoice?: KqCultureWorkChoice },
 ) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   if (!/^[0-9a-f-]{36}$/i.test(runId)) throw new Error("Culture invalide.");
+  if (options?.workChoice !== undefined && (action !== "roll" || !isKqCultureWorkChoice(options.workChoice))) throw new Error("culture_work_changed");
   await settleKqStaffIfAvailable(ownerId);
   const supabase = createSupabaseServiceClient();
   const runResult = await supabase.from("kq_runs").select("state,status,updated_at")
@@ -2743,7 +2744,7 @@ export async function applyKqPlayerRunAction(
   const result = action === "roll"
     ? await supabase.rpc("rpc_kq_roll_culture_step", {
         p_user_id: ownerId, p_run_id: runId, p_expected_updated_at: runResult.data.updated_at,
-        p_next_state: nextState, p_work_choice: "auto",
+        p_next_state: nextState, p_work_choice: options?.workChoice ?? "auto",
         p_members: nextState.campaign ? nextState.campaign.members.map(member => {
           const memberState = getKqCampaignMemberState(nextState, member);
           return { runId: member.runId, state: memberState, flower: null };

@@ -4,7 +4,7 @@ import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
 import Link from "next/link";
 import { useState } from "react";
 import type { ChanvrierAvatarProfile } from "@/lib/arena-chanvrier";
-import { Scissors, Settings2 } from "lucide-react";
+import { Scissors, Settings2, UserRound } from "lucide-react";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqStaffCapacity, getKqStaffLevel } from "@/lib/kanab-quest-staff";
 import { KQ_STAFF_TRIMMER_COST_CENTS, getKqStaffSharedTrimQuote } from "@/lib/kanab-quest-staff-trim";
@@ -13,6 +13,9 @@ import type { KqStaffSnapshot, KqStaffTrimLot, KqStaffTrimMode } from "@/lib/kan
 import type { KqStaffConfirmationDraft } from "./KqStaffOperations";
 import { KqBarChart, KqProgressMeter } from "./KqVisuals";
 import { KqTrimScene } from "./KqTrimScene";
+import { ChanvrierAvatar } from "../contest/ChanvrierAvatar";
+import { KqStaffPortrait } from "./KqStaffPortrait";
+import { KqWorkActorSelector } from "./KqWorkActorSelector";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import styles from "./KqStaffDesk.module.css";
 
@@ -58,7 +61,18 @@ function SharedTrimForm({ snapshot, prepare, disabled, stale, snapshotReceivedAt
     <KqTrimScene snapshot={snapshot} workerId={worker} mode={mode} stale={stale} snapshotReceivedAt={snapshotReceivedAt} playerProfile={playerProfile} paused={motionPaused} onPausedChange={setMotionPaused} />
     <form className={styles.panel} data-trim-shared-form onSubmit={event => { event.preventDefault(); start(); }}>
       <h3>Rejoindre l’atelier</h3>
-      <div className={styles.fields}><label>Qui fait le trim ?<select data-trim-worker value={worker} disabled={disabled} onChange={event => setWorker(event.target.value)}><option value="player">Toi · transformation niv. {getKqStaffLevel(getKqPlayerSkills(snapshot.state).processing)}</option>{!player && !employee ? <option value={worker} disabled>Salarié indisponible</option> : null}{employees.map(person => <option value={person.id} key={person.id}>{person.name} · transformation niv. {getKqStaffLevel(person.skills.processing)}</option>)}</select></label><label>Heures de trim<input type="number" min={.5} max={Math.min(player ? KQ_PLAYER_DAILY_HOURS : 10, remainingHours)} step={.5} value={hourInput} disabled={disabled} required onChange={event => setHourInput(event.target.value)} /></label></div>
+      <div className={styles.actorSelection} data-trim-worker={worker}><KqWorkActorSelector label="Qui fait le trim ?" value={worker} onChange={setWorker} disabled={disabled} options={[
+        { id: "player", name: "Toi", portrait: playerProfile ? <ChanvrierAvatar profile={playerProfile} view="portrait" /> : <UserRound size={30} aria-hidden="true" />,
+          detail: `Niv. ${getKqStaffLevel(getKqPlayerSkills(snapshot.state).processing)} · ${hoursLabel(workday.remainingHours)}`,
+          disabledReason: workday.remainingHours < .5 ? "Heures épuisées" : undefined },
+        ...employees.map(person => {
+          const capacity = getKqStaffCapacity(person, snapshot.calendar);
+          return { id: person.id, name: person.name, portrait: <KqStaffPortrait person={person} />,
+            detail: `Niv. ${getKqStaffLevel(person.skills.processing)} · ${hoursLabel(capacity.remainingHours)}`,
+            disabledReason: snapshot.outstandingCents > 0 ? "Paie à régulariser" : capacity.remainingHours < .5 ? "Aucune heure disponible" : undefined };
+        }),
+      ]} /></div>
+      <div className={styles.fields}><label>Heures de trim<input type="number" min={.5} max={Math.min(player ? KQ_PLAYER_DAILY_HOURS : 10, remainingHours)} step={.5} value={hourInput} disabled={disabled} required onChange={event => setHourInput(event.target.value)} /></label></div>
       <p className={styles.muted}>{player ? `${hoursLabel(remainingHours)} disponibles aujourd’hui, week-end compris. Tes activités partagent les mêmes ${KQ_PLAYER_DAILY_HOURS} h quotidiennes.` : employee ? `${hoursLabel(remainingHours)} disponibles aujourd’hui sur le planning commun de ${employee.name}.` : "Choisis une personne disponible."}</p>
       <div className={styles.actions} role="group" aria-label="Méthode de trim"><button type="button" aria-pressed={mode === "manual"} disabled={disabled} onClick={() => setMode("manual")}><Scissors size={18} aria-hidden="true" /> Manuel</button><button type="button" aria-pressed={mode === "machine"} disabled={disabled} onClick={() => setMode("machine")}><Settings2 size={18} aria-hidden="true" /> Machine</button></div>
       {quote ? <dl className={styles.numbers}><div><dt>Cadence de {player ? "ton travail" : employee?.name ?? "cette personne"}</dt><dd>{grams(quote.gramsPerHour)} / h de jeu</dd></div><div><dt>Quantité maximale prévue</dt><dd>{grams(quote.grams)}</dd></div><div><dt>Durée de cette tâche</dt><dd>{duration}</dd></div></dl> : <p className={styles.muted}>{quoteError}</p>}

@@ -68,6 +68,7 @@
 .schedule li[data-today="true"] { font-weight: 850; outline: 1px dashed #172923; outline-offset: 1px; }
 .schedule strong { font-size: .73rem; }
 .form { display: grid; gap: 15px; }
+.actorSelection { min-width: 0; }
 .fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
 .form h4 { font-size: 1rem; }
 .formSection { padding-top: 18px; border-top: 1px solid #17292340; display: grid; gap: 14px; }

@@ -55,6 +55,19 @@ describe("processing jobs feature negotiation", () => {
 });
 
 describe("authoritative processing work quote adapter", () => {
+  it("forwards an explicit actor and rejects a response that silently changes it", async () => {
+    const selected = { ...quote(), actorChoiceVersion: 1, actorId: "player", actors: [{ id: "player", name: "Toi", employee: null, remainingHours: 12, available: true, reason: null }] };
+    mocks.rpc.mockResolvedValue({ data: selected, error: null });
+    expect(await getKqProcessingWorkQuote(user, flower, null, "player")).toEqual(selected);
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_processing_work_quote", { p_user_id: user, p_flower_id: flower, p_work: null, p_actor_id: "player" });
+    mocks.rpc.mockResolvedValue({ data: { ...selected, actorId: "auto" }, error: null });
+    await expect(getKqProcessingWorkQuote(user, flower, null, "player")).rejects.toThrow(/invalid work quote/);
+  });
+
+  it.each(["", " ", "a".repeat(129), "worker/other"])("rejects an invalid actor %s before any RPC", async actorId => {
+    await expect(getKqProcessingWorkQuote(user, flower, null, actorId)).rejects.toThrow(/Choix de personne invalide/);
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
   it("quotes an existing job for the authenticated owner without accepting a replacement plan", async () => {
     mocks.rpc.mockResolvedValue({ data: quote(), error: null });
     expect(await getKqProcessingWorkQuote(user, flower)).toEqual(quote());

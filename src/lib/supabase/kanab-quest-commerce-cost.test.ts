@@ -44,6 +44,34 @@ describe("processing command ownership and client whitelist", () => {
     efficiency: 1, playerRemainingHours: 12, bookedHours: .5, activeHours: .5, nominalHours: .5, remainingNominalHours: 1,
     fundedGrams: 50, passiveHours: 0, startedAt: "2026-11-08T12:00:00Z", readyAt: "2026-11-08T12:05:00Z", blockedReason: null };
 
+  it("rebuilds preparation with the selected actor and keeps that actor in the atomic request", async () => {
+    await handleKqCommerceAction(user, { action: "prepare", flowerId: flower, route: "rosin-trial", expectedCostCents: 0, expectedWork: token, actorId: "player", requestKey });
+    expect(mocks.market).toHaveBeenCalledExactlyOnceWith(user, [flower], { processingActorId: "player" });
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_commerce_command", { p_user_id: user, p_action: "prepare", p_request_key: requestKey,
+      p_payload: { flowerId: flower, route: "rosin-trial", expectedCostCents: 0, expectedWork: token, actorId: "player" } });
+  });
+
+  it("quotes an unprepared lot from its server plan and preserves the actor-specific availability", async () => {
+    const selected = { ...workQuote, actorChoiceVersion: 1, actorId: "player", actors: [{ id: "player", name: "Toi", employee: null, remainingHours: 12, available: true, reason: null }] };
+    const preparation = { route: "rosin-trial", available: true, processingWork: { quote: selected } };
+    mocks.market.mockResolvedValue({ lots: [{ flowerId: flower, status: "ready", options: [preparation] }] });
+    expect(await handleKqCommerceAction(user, { action: "processing-quote", flowerId: flower, route: "rosin-trial", actorId: "player", ...injected })).toEqual({ quote: selected, preparation });
+    expect(mocks.market).toHaveBeenCalledExactlyOnceWith(user, [flower], { previewOnly: true, processingActorId: "player" });
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
+  it.each([null, "", " ", "a".repeat(129), 123])("rejects malformed actor %s without settlement or mutation", async actorId => {
+    await expect(handleKqCommerceAction(user, { action: "processing-work", flowerId: flower, expectedWork: token, actorId, requestKey })).rejects.toThrow(/Choix de personne invalide/);
+    expect(mocks.rpc).not.toHaveBeenCalled();
+    expect(settleKqStaffIfAvailable).not.toHaveBeenCalled();
+  });
+
+  it("requires an authoritative token before explicit preparation", async () => {
+    await expect(handleKqCommerceAction(user, { action: "prepare", flowerId: flower, route: "raw", expectedCostCents: 0, actorId: "player", requestKey })).rejects.toThrow(/Devis de travail invalide/);
+    expect(mocks.market).not.toHaveBeenCalled();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
   it("forwards only approved prepare fields and preserves the optional legacy no-token path", async () => {
     await handleKqCommerceAction(user, { action: "prepare", flowerId: flower, route: "rosin-trial", expectedCostCents: 1234, expectedWork: token, requestKey, ...injected });
     expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_commerce_command", {

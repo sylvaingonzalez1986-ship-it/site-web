@@ -18,11 +18,12 @@ const workPlanOnly = process.argv.includes('--work-plan-only');
 const financialSupportOnly = process.argv.includes('--financial-support-only');
 const sharedTrimOnly = process.argv.includes('--shared-trim-only');
 const cultureWorkOnly = process.argv.includes('--culture-work-only');
+const cultureRelayOnly = process.argv.includes('--culture-relay-only');
 const cultureCarouselVisualOnly = process.argv.includes('--culture-carousel-visual-only');
 const cultureQualityOnly = process.argv.includes('--culture-quality-only');
 const cultureBadgesOnly = process.argv.includes('--culture-badges-only');
 const cultureCarouselOnly = cultureBadgesOnly || cultureQualityOnly || cultureCarouselVisualOnly || process.argv.includes('--culture-carousel-only');
-const reportName = cultureBadgesOnly ? 'culture-badges-report.json' : cultureQualityOnly ? 'culture-quality-report.json' : cultureCarouselVisualOnly ? 'culture-carousel-visual-report.json' : cultureCarouselOnly ? 'culture-carousel-report.json' : cultureWorkOnly ? 'culture-work-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : financialSupportOnly ? 'financial-support-report.json' : workPlanOnly ? 'work-plan-report.json' : staffGuideOnly ? 'staff-guide-report.json' : workshopOnly ? 'workshop-report.json' : guideCompletionOnly ? 'guide-completion-report.json' : guideNavigationOnly ? 'guide-navigation-report.json' : guideOnly ? 'guide-report.json' : preparationOnly ? 'preparation-report.json' : storageOnly ? 'storage-report.json' : 'report.json';
+const reportName = cultureRelayOnly ? 'culture-relay-report.json' : cultureBadgesOnly ? 'culture-badges-report.json' : cultureQualityOnly ? 'culture-quality-report.json' : cultureCarouselVisualOnly ? 'culture-carousel-visual-report.json' : cultureCarouselOnly ? 'culture-carousel-report.json' : cultureWorkOnly ? 'culture-work-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : financialSupportOnly ? 'financial-support-report.json' : workPlanOnly ? 'work-plan-report.json' : staffGuideOnly ? 'staff-guide-report.json' : workshopOnly ? 'workshop-report.json' : guideCompletionOnly ? 'guide-completion-report.json' : guideNavigationOnly ? 'guide-navigation-report.json' : guideOnly ? 'guide-report.json' : preparationOnly ? 'preparation-report.json' : storageOnly ? 'storage-report.json' : 'report.json';
 const targetId = 'c0a00002-0000-4000-8000-000000000002', decoyId = 'c0a00001-0000-4000-8000-000000000001';
 const planEmployeeId = 'c0a00003-0000-4000-8000-000000000003';
 const entry = `
@@ -84,18 +85,47 @@ const staffNow='2026-11-07T12:00:00.000Z';
 const staffRaw={state:createKqStaffState(staffNow),revision:0,serverNow:staffNow,cashCents:production.cashCents,context:{businessStartedAt:staffNow,reputation:0,instagramFollowers:0,shopPartners:0,activeRuns:[],processingBatches:[],supplierInvoices:[],trimLots:[{flowerId:targetId,name:'Cherry Abacus à trimmer',requiredWork:6,completedWork:0,mode:null,completedAt:null}]}};
 if(${sharedTrimOnly}){staffRaw.context.trimQueueVersion=2;staffRaw.context.trimLots.unshift({...staffRaw.context.trimLots[0],flowerId:decoyId});staffRaw.context.trimLots.forEach((lot,index)=>Object.assign(lot,{totalGrams:360,completedGrams:0,createdAt:new Date(Date.parse(staffNow)-(2-index)*60000).toISOString()}))}
 if(staffPlanScenario){const candidate=projectKqStaffSnapshot(staffRaw).candidates[0];staffRaw.state=applyKqStaffCommand(staffRaw,{action:'hire',candidateCode:candidate.code,contract:'cdi',weeklyHours:35,durationMonths:0,reason:'permanent',expectedMonthlyCostCents:getKqStaffMonthlyCost(candidate,35).totalCents},'${planEmployeeId}').state;staffRaw.context.trimLots.push({flowerId:decoyId,name:'Autre récolte à trimmer',requiredWork:6,completedWork:0,mode:null,completedAt:null})}
+if(${cultureRelayOnly}){
+ const candidate=projectKqStaffSnapshot(staffRaw).candidates[0];
+ staffRaw.state=applyKqStaffCommand(staffRaw,{action:'hire',candidateCode:candidate.code,contract:'cdi',weeklyHours:35,durationMonths:0,reason:'permanent',expectedMonthlyCostCents:getKqStaffMonthlyCost(candidate,35).totalCents},'${planEmployeeId}').state;
+ staffRaw.context.cultureWorkVersion=1;
+ staffRaw.context.activeRuns=[{id:production.game.campaign.leaderRunId,name:'Culture locale',startedAt:staffNow}];
+ staffRaw.state=applyKqStaffCommand(staffRaw,{action:'assign',employeeId:'${planEmployeeId}',kind:'culture',hours:1,targetId:production.game.campaign.leaderRunId},'relay-culture-task').state;
+ const relayCase=new URLSearchParams(location.search).get('relayCase');
+ if(relayCase==='employee-exhausted'||relayCase==='both-exhausted')staffRaw.state.tasks.find(task=>task.id==='relay-culture-task').cultureUsedHours=1;
+ if(relayCase==='player-exhausted'||relayCase==='both-exhausted')staffRaw.state.playerWorkDays['1']={usedHours:11.75};
+}
 staffRaw.context.trimQueueVersion=2;staffRaw.context.trimLots=staffRaw.context.trimLots.map((lot,index)=>({...lot,totalGrams:360,completedGrams:0,createdAt:new Date(Date.parse(staffNow)-(2-index)*60000).toISOString()}));
 const lots=[{...baseStorage.lots[0],flowerId:decoyId,varietyName:'Cherry Abacus'},{...baseStorage.lots[0],flowerId:targetId,varietyName:'Cherry Abacus'}];
 const storageSnapshot=()=>({...baseStorage,lots:storageScenario?lots:[]});
 let storageMode='known',collectionMode='known',heritageMode='known',staffMode='known',storageDelay=0,allowPlay=false,actionMode='known',careMode=new URLSearchParams(location.search).get('careMode')??'known',careMutationMode='known';
 const deferred=[];window.__calls=[];window.__unexpected=[];
 const cultureWorkSteps=new Set();
+const cultureWorkReceipts=new Map();
+const pendingWorkQuotes=[];let nextWorkQuoteMode='known';
+const zeroWorkBonus={vitality:0,terpenes:0,yieldPercent:0,cannabinoids:0};
+const workQuote=(workChoice='auto')=>{
+ const game=production.game,day=projectKqStaffSnapshot(staffRaw).calendar.day;
+ const used=staffRaw.state.playerWorkDays[String(day)]?.usedHours??0,playerRemainingHours=Number((12-used).toFixed(2));
+ const runId=game.campaign.leaderRunId,paid=cultureWorkSteps.has(runId+':'+game.stageIndex);
+ const receipt=cultureWorkReceipts.get(runId+':'+game.stageIndex);
+ const choices=[{choice:'player',source:'player',employee:null,available:playerRemainingHours>=.5,bonus:zeroWorkBonus,reason:playerRemainingHours>=.5?null:'Temps personnel épuisé.'}];
+ if(${cultureRelayOnly}){
+  const worker=staffRaw.state.employees[0],task=staffRaw.state.tasks.find(task=>task.id==='relay-culture-task');
+  const remainingHours=task.hours-(task.cultureUsedHours??0);
+  const employee={id:worker.id,name:worker.name,code:worker.code,portraitCode:worker.portraitCode,level:4,role:worker.role,taskId:task.id,allocatedHours:task.hours,usedHours:task.cultureUsedHours??0,remainingHours};
+  choices.push({choice:'employee:'+worker.id,source:'employee',employee,available:remainingHours>=.5,bonus:{vitality:3,terpenes:2,yieldPercent:4,cannabinoids:1},reason:remainingHours>=.5?null:'Budget Culture épuisé.'});
+ }
+ const selected=receipt?{...receipt,employee:choices.find(choice=>choice.choice===receipt.choice)?.employee??null}:(workChoice==='auto'?choices.find(choice=>choice.source==='employee'&&choice.available)??choices.find(choice=>choice.source==='employee')??choices[0]:choices.find(choice=>choice.choice===workChoice));
+ const choice=selected??{source:'blocked',employee:null,bonus:zeroWorkBonus,available:false,reason:'Intervenant indisponible.'};
+ return {version:1,runId,stageIndex:game.stageIndex,day,phase:game.phase,source:paid||choice.available?choice.source:'blocked',paid,stepHours:.5,playerRemainingHours,employee:choice.employee,bonus:choice.bonus,reason:choice.reason??null,...(${cultureRelayOnly}?{workChoice,choices:paid||game.phase!=='prepare'?[]:choices}:{})};
+};
 const transport=createReleveCultureTransport({getState:()=>production,setState:next=>production=next});
 const response=(body,status=200)=>Response.json(body,{status});
 const projectSoloSession=payload=>{if(scenario==='culture-carousel-solo')for(const run of [payload.activeRun,...payload.activeRuns??[]])if(run)delete run.state.campaign;return payload};
 const request=async(input,init={})=>{
  const url=new URL(typeof input==='string'?input:input.url,location.origin),path=url.pathname,method=init.method??'GET',body=init.body?JSON.parse(init.body):null;
- window.__calls.push({path,method,body,...(${cultureBadgesOnly}?{query:url.search}:{})});
+ window.__calls.push({path,method,body,...(${cultureBadgesOnly || cultureRelayOnly}?{query:url.search}:{})});
  if(path.endsWith('/social/player')&&method==='GET')return response({firstName:'Joueur',profile:null});
  const permittedPlay=allowPlay&&method==='POST'&&(path.endsWith('/runs')||/\\/runs\\/[^/]+\\/actions$/.test(path)||(${cultureBadgesOnly}&&(path.endsWith('/care')||/\\/runs\\/[^/]+\\/cards$/.test(path))));
  if(method!=='GET'&&(staffGuideScenario||staffPlanScenario||(!(method==='PATCH'&&path.endsWith('/warehouse'))&&!permittedPlay))){window.__unexpected.push({path,method,body});return response({error:'Mutation interdite dans cette recette.'},403)}
@@ -112,9 +142,10 @@ const request=async(input,init={})=>{
  }
  if(path.endsWith('/work')&&method==='GET'){
   const game=production.game;if(!game)return response({error:'Culture absente'},404);
-  const day=projectKqStaffSnapshot(staffRaw).calendar.day,used=staffRaw.state.playerWorkDays[String(day)]?.usedHours??0;
-  const runId=game.campaign.leaderRunId,paid=cultureWorkSteps.has(runId+':'+game.stageIndex);
-  return response({version:1,runId,stageIndex:game.stageIndex,day,phase:game.phase,source:!paid&&used>11.5?'blocked':'player',paid,stepHours:.5,playerRemainingHours:12-used,employee:null,bonus:{vitality:0,terpenes:0,yieldPercent:0,cannabinoids:0},reason:null});
+  const quote=workQuote(url.searchParams.get('workChoice')??'auto'),mode=nextWorkQuoteMode;nextWorkQuoteMode='known';
+  if(mode==='pending')await new Promise(done=>pendingWorkQuotes.push(done));
+  if(mode==='error')return response({error:'Devis Culture temporairement indisponible.'},503);
+  return response(quote);
  }
  if(path.endsWith('/staff')){
   if(staffMode==='pending')await new Promise(done=>deferred.push(done));
@@ -148,17 +179,27 @@ const request=async(input,init={})=>{
  if(path.endsWith('/boosters'))return response({collectionActive:true,costPerPack:100,spendablePoints:0,availableEntitlements:[],welcomeClaimed:false});
  if(path.endsWith('/missions'))return ${guideCompletionOnly}?response({collectionActive:true,missions:[]}):response({error:'Aucune mission utilisée par cette recette.'},503);
  const workKey=production.game?production.game.campaign.leaderRunId+':'+production.game.stageIndex:null;
+ const rollWork=permittedPlay&&body?.action==='roll'&&${cultureRelayOnly}?workQuote(body.workChoice??'auto'):null;
+ if(rollWork&&(rollWork.source==='blocked'||body.expectedStageIndex!==production.game.stageIndex))return response({error:'Intervenant indisponible ou étape modifiée.'},409);
  const received=await transport(input,init);
  if(${cultureBadgesOnly}&&permittedPlay&&path.endsWith('/care')&&careMutationMode==='lost'&&received.ok){careMutationMode='known';throw Error('Réponse de soin interrompue après validation locale.');}
  if(scenario==='culture-carousel-solo'&&method==='GET'&&(/\\/(session|runs)$/.test(path)))return response(projectSoloSession(await received.json()),received.status);
- if(permittedPlay&&received.ok&&body?.action==='roll'&&workKey&&!cultureWorkSteps.has(workKey)){cultureWorkSteps.add(workKey);const day=projectKqStaffSnapshot(staffRaw).calendar.day;const used=staffRaw.state.playerWorkDays[String(day)]?.usedHours??0;staffRaw.state.playerWorkDays[String(day)]={usedHours:used+.5}}
+ if(permittedPlay&&received.ok&&body?.action==='roll'&&workKey&&!cultureWorkSteps.has(workKey)){
+  cultureWorkSteps.add(workKey);
+  if(rollWork?.source==='employee')staffRaw.state.tasks.find(task=>task.id===rollWork.employee.taskId).cultureUsedHours+=.5;
+  else{const day=projectKqStaffSnapshot(staffRaw).calendar.day;const used=staffRaw.state.playerWorkDays[String(day)]?.usedHours??0;staffRaw.state.playerWorkDays[String(day)]={usedHours:used+.5}}
+  if(rollWork)cultureWorkReceipts.set(workKey,{choice:rollWork.source==='player'?'player':'employee:'+rollWork.employee.id,source:rollWork.source,employee:rollWork.employee,bonus:rollWork.bonus,available:true});
+ }
  if(!received.ok)window.__unexpected.push({path,method,status:received.status});return received;
 };
 const originalFetch=window.fetch.bind(window);window.fetch=(input,init)=>new URL(typeof input==='string'?input:input.url,location.origin).pathname.startsWith('/api/')?request(input,init):originalFetch(input,init);
 const api=createKqTutorialApi(request,{nativeWarehouse:true});api.isTutorial=false;
-window.__fixture=()=>structuredClone({scenario,initial,production,lots,storageMode,collectionMode,heritageMode,staffRaw});
+window.__fixture=()=>structuredClone({scenario,initial,production,lots,storageMode,collectionMode,heritageMode,staffRaw,...(${cultureRelayOnly}?{workReceipts:[...cultureWorkReceipts.values()],pendingWorkQuotes:pendingWorkQuotes.length}:{})});
 window.__control={allowPlay:value=>allowPlay=value,storageLot:(id,patch)=>Object.assign(lots.find(lot=>lot.flowerId===id).projection,patch),storage:mode=>storageMode=mode,storageDelay:value=>storageDelay=value,collection:mode=>collectionMode=mode,heritage:mode=>heritageMode=mode,staff:mode=>staffMode=mode,removeCopies:code=>{production.supportInventory[code]=0},launch:()=>act({type:'launch'}),resolve:()=>{storageDelay=0;collectionMode='known';if(staffMode==='pending')staffMode='known';deferred.splice(0).forEach(done=>done())},notify:name=>api.notify(name)};
 window.__control.workHours=remaining=>{const day=projectKqStaffSnapshot(staffRaw).calendar.day;staffRaw.state.playerWorkDays[String(day)]={usedHours:12-remaining};api.notify('kq:staff-updated')};
+window.__control.employeeWorkHours=remaining=>{const task=staffRaw.state.tasks.find(task=>task.id==='relay-culture-task');task.cultureUsedHours=task.hours-remaining;api.notify('kq:staff-updated')};
+window.__control.workQuoteMode=mode=>nextWorkQuoteMode=mode;
+window.__control.releaseWorkQuotes=()=>pendingWorkQuotes.splice(0).forEach(done=>done());
 window.__control.actionMode=value=>actionMode=value;window.__control.careMode=value=>careMode=value;
 window.__control.careMutationMode=value=>careMutationMode=value;
 window.__control.nextWorkday=()=>{staffRaw.serverNow=projectKqStaffSnapshot(staffRaw).calendar.nextDayAt;api.notify('kq:staff-updated')};
@@ -668,6 +709,171 @@ if (preview) {
     results.push({ width: 320, deadCampaignNoHarvestOrDiceAction: true, healthRecordAccessible: true, noMutations: true });
     }
   }
+  if (cultureRelayOnly) {
+    const selector = '[data-work-actor-selector]';
+    const playerActor = '[data-work-actor-choice="player"]';
+    const employeeChoice = 'employee:' + planEmployeeId;
+    const employeeActor = `[data-work-actor-choice="${employeeChoice}"]`;
+    const roll = '[data-culture-primary-action][data-action="roll"]';
+    const workStatus = '[data-culture-work-status]';
+    const runQuery = 'view=game&run=61000000-0000-4000-8000-000000000001';
+    const ledger = async () => {
+      const value = await fixture();
+      return {
+        cashCents: value.production.cashCents,
+        playerHours: value.staffRaw.state.playerWorkDays['1']?.usedHours ?? 0,
+        employeeHours: value.staffRaw.state.tasks.find(task => task.id === 'relay-culture-task').cultureUsedHours,
+        receipts: value.workReceipts,
+      };
+    };
+    async function readyActor(source, choice) {
+      await page.waitForFunction((source, choice) => {
+        const status = document.querySelector('[data-culture-work-status]');
+        const radio = document.querySelector(`[data-work-actor-choice="${choice}"]`);
+        return status?.dataset.workSource === source && radio?.checked && !document.querySelector('[data-culture-primary-action][data-action="roll"]')?.disabled;
+      }, {}, source, choice);
+    }
+    async function chooseActor(choice) {
+      const radio = `[data-work-actor-choice="${choice}"]`;
+      await page.waitForSelector(radio, { visible: true });
+      assert.equal(await page.$eval(radio, node => node.type), 'radio', 'Portrait choices use native radios');
+      await page.focus(radio); await page.keyboard.press('Space');
+      await page.waitForFunction(choice => document.querySelector(`[data-work-actor-choice="${choice}"]`)?.checked, {}, choice);
+    }
+    async function loadRelay(width = 390, relayCase = 'available') {
+      await load('culture-carousel-relay', width, `${runQuery}&relayCase=${relayCase}`);
+      await page.waitForSelector(selector, { visible: true });
+      await page.waitForSelector(workStatus);
+      await page.evaluate(() => window.__control.allowPlay(true));
+    }
+    async function finishStage() {
+      await keyClick('[data-culture-primary-action][data-action="resolve"]');
+      await page.waitForSelector('[data-culture-play][data-culture-phase="resolved"]');
+      await keyClick('[data-culture-primary-action][data-action="advance"]');
+      await page.waitForSelector('[data-culture-play][data-culture-phase="prepare"]');
+    }
+    for (const width of [320, 390, 1440]) {
+      await loadRelay(width);
+      await readyActor('employee', employeeChoice);
+      const before = await ledger();
+      await chooseActor('player'); await readyActor('player', 'player');
+      await chooseActor(employeeChoice); await readyActor('employee', employeeChoice);
+      await chooseActor('player'); await readyActor('player', 'player');
+      assert.deepEqual(await ledger(), before, 'Changing the actor only reads quotes and preserves both work budgets and cash');
+      assert.equal((await mutations()).length, 0, 'Portrait choices never write a game action');
+      const queries = await page.evaluate(() => window.__calls.filter(call => call.path.endsWith('/work')).map(call => new URLSearchParams(call.query).get('workChoice')));
+      assert(queries.includes('player') && queries.includes(employeeChoice), 'Each explicit portrait refreshes the corresponding authoritative quote');
+      const radioLabels = await page.$$eval(`${selector} input[type="radio"]`, nodes => nodes.map(node => ({ label: [...node.labels ?? []].map(label => label.textContent.trim()).join(' '), hasPortrait: [...node.labels ?? []].some(label => label.querySelector('[aria-hidden="true"] img, [aria-hidden="true"] svg, [aria-hidden="true"] canvas')), disabled: node.matches(':disabled') })));
+      assert.equal(radioLabels.length, 2);
+      assert(radioLabels.every(radio => radio.label.length > 0 && radio.hasPortrait && !radio.disabled), 'Every available portrait has a readable native label and illustration');
+      assert(await page.$eval(playerActor, node => document.activeElement === node && [...node.labels ?? []].some(label => getComputedStyle(label).outlineStyle !== 'none')), 'Keyboard selection retains a visible focus ring');
+      await page.$eval(selector, node => node.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await layout(); await screenshot('culture-relay-player-' + width);
+      await keyClick(roll);
+      await page.waitForSelector('[data-culture-play][data-culture-phase="rolled"]');
+      await page.waitForFunction(() => window.__fixture().workReceipts.length === 1);
+      const paid = await ledger();
+      assert.equal(paid.playerHours - before.playerHours, .5, 'The chosen player pays exactly half an hour');
+      assert.equal(paid.employeeHours, before.employeeHours, 'The available employee is not charged when the player rolls');
+      assert.deepEqual(paid.receipts[0].bonus, { vitality: 0, terpenes: 0, yieldPercent: 0, cannabinoids: 0 }, 'Player work never carries the employee bonus');
+      assert.equal(paid.receipts[0].source, 'player');
+      assert.equal(paid.cashCents, before.cashCents);
+      await page.waitForSelector(`${workStatus}[data-work-source="player"]`);
+      assert(await page.$$eval(`${selector} input`, nodes => nodes.every(node => node.matches(':disabled'))), 'A paid stage removes or locks every actor choice');
+      const writes = await mutations();
+      assert.equal(writes.length, 1); assert.equal(writes[0].body.workChoice, 'player');
+      assert.equal(writes[0].body.expectedStageIndex, 0);
+      await finishStage();
+      assert.deepEqual(await ledger(), paid, 'Resolving and advancing never charge work or money again');
+      await page.waitForFunction(selector => [...document.querySelectorAll(`${selector} input`)].every(node => !node.matches(':disabled')), {}, selector);
+      if (width === 390) {
+        await chooseActor('player'); await readyActor('player', 'player');
+        await chooseActor(employeeChoice); await readyActor('employee', employeeChoice);
+        await keyClick(roll); await page.waitForSelector('[data-culture-play][data-culture-phase="rolled"]');
+        await page.waitForFunction(() => window.__fixture().workReceipts.length === 2);
+        const employeePaid = await ledger();
+        assert.equal(employeePaid.employeeHours - paid.employeeHours, .5);
+        assert.equal(employeePaid.playerHours, paid.playerHours);
+        assert.equal(employeePaid.receipts[1].source, 'employee');
+        assert.deepEqual(employeePaid.receipts[1].bonus, { vitality: 3, terpenes: 2, yieldPercent: 4, cannabinoids: 1 });
+        assert.equal((await mutations())[3].body.workChoice, employeeChoice);
+        assert.equal((await mutations())[3].body.expectedStageIndex, 1);
+        await finishStage(); assert.deepEqual(await ledger(), employeePaid);
+      }
+      assert.deepEqual(await page.evaluate(() => window.__unexpected), []);
+      results.push({ width, keyboardPortraitChoices: true, refreshedExplicitQuotes: true, switchingCost: 0, playerCostHours: .5, employeeCostHours: width === 390 ? .5 : null, bonusesMatchActor: true, paidActorLocked: true, resolveAndAdvanceCost: 0, noOverflow: true });
+    }
+    await loadRelay(390, 'employee-exhausted');
+    await page.waitForSelector(`${workStatus}[data-work-source="blocked"]`);
+    assert(await page.$eval(roll, node => node.disabled), 'The automatic assignment remains blocked until the player explicitly takes over');
+    const exhaustedBefore = await ledger();
+    await chooseActor('player');
+    await readyActor('player', 'player');
+    assert.deepEqual(await ledger(), exhaustedBefore, 'Taking over an exhausted worker does not itself consume any hours');
+    assert(await page.$eval(employeeActor, node => node.matches(':disabled')), 'An exhausted employee remains visibly unavailable');
+    assert(await page.$eval(roll, node => !node.disabled), 'The player can take over an exhausted culture budget');
+    await page.$eval(selector, node => node.scrollIntoView({ block: 'center', behavior: 'instant' }));
+    await screenshot('culture-relay-exhausted-employee-390');
+    await keyClick(roll); await page.waitForSelector('[data-culture-play][data-culture-phase="rolled"]');
+    assert.equal((await ledger()).playerHours, .5); assert.equal((await ledger()).employeeHours, 1);
+    results.push({ employeeExhausted: true, playerTakesOver: true, disabledExhaustedEmployee: true, playerCostHours: .5 });
+
+    await loadRelay(320, 'player-exhausted');
+    await readyActor('employee', employeeChoice);
+    assert(await page.$eval(playerActor, node => node.matches(':disabled')), 'An exhausted player cannot request an unavailable personal budget');
+    const employeeBefore = await ledger();
+    await keyClick(roll); await page.waitForSelector('[data-culture-play][data-culture-phase="rolled"]');
+    const employeeAfter = await ledger();
+    assert.equal(employeeAfter.playerHours, employeeBefore.playerHours);
+    assert.equal(employeeAfter.employeeHours - employeeBefore.employeeHours, .5);
+    results.push({ playerExhausted: true, employeeTakesOver: true, disabledExhaustedPlayer: true, employeeCostHours: .5 });
+
+    await loadRelay(320, 'both-exhausted');
+    await page.waitForSelector(`${workStatus}[data-work-source="blocked"]`);
+    assert(await page.$eval(roll, node => node.disabled));
+    assert(await page.$$eval(`${selector} input`, nodes => nodes.every(node => node.matches(':disabled'))));
+    await layout(); assert.equal((await mutations()).length, 0);
+    results.push({ bothExhausted: true, blockedRoll: true, noWrites: true, noOverflow: true });
+
+    await loadRelay(); await readyActor('employee', employeeChoice);
+    const raceBefore = await ledger();
+    await page.evaluate(() => window.__control.workQuoteMode('pending'));
+    await chooseActor('player');
+    await page.waitForFunction(() => window.__fixture().pendingWorkQuotes === 1);
+    assert(await page.$eval(roll, node => node.disabled), 'The previous worker quote cannot authorize the newly chosen player');
+    await chooseActor(employeeChoice); await readyActor('employee', employeeChoice);
+    await page.evaluate(() => window.__control.releaseWorkQuotes());
+    await page.evaluate(() => new Promise(done => requestAnimationFrame(() => requestAnimationFrame(done))));
+    await readyActor('employee', employeeChoice);
+    assert.deepEqual(await ledger(), raceBefore); assert.equal((await mutations()).length, 0);
+    await keyClick(roll); await page.waitForSelector('[data-culture-play][data-culture-phase="rolled"]');
+    const racePaid = await ledger();
+    assert.equal(racePaid.receipts[0].source, 'employee');
+    assert.equal((await mutations())[0].body.workChoice, employeeChoice, 'A stale player quote cannot change the submitted actor');
+    assert.equal(racePaid.playerHours, raceBefore.playerHours);
+    assert.equal(racePaid.employeeHours - raceBefore.employeeHours, .5);
+    results.push({ staleQuoteIgnored: true, pendingQuoteBlocksRoll: true, lastKeyboardChoiceWins: true, employeeCostHours: .5 });
+
+    await loadRelay(); await readyActor('employee', employeeChoice);
+    await chooseActor('player'); await readyActor('player', 'player');
+    await chooseActor(employeeChoice); await readyActor('employee', employeeChoice);
+    await page.evaluate(() => window.__control.employeeWorkHours(0));
+    await page.waitForSelector(`${workStatus}[data-work-source="blocked"]`);
+    assert(await page.$eval(employeeActor, node => node.checked && node.matches(':disabled')));
+    assert(await page.$eval(roll, node => node.disabled), 'Refreshing an exhausted explicit employee choice cannot silently debit the available player');
+    await chooseActor('player'); await readyActor('player', 'player');
+    assert.equal((await mutations()).length, 0);
+    results.push({ externalBudgetRefresh: true, explicitEmployeeNeverFallsBack: true, playerCanResume: true, noWrites: true });
+
+    await loadRelay(); await readyActor('employee', employeeChoice);
+    await page.evaluate(() => window.__control.workQuoteMode('error'));
+    await chooseActor('player');
+    await page.waitForFunction(() => document.querySelector('[data-culture-work-status]')?.textContent.includes('Actualiser les heures'));
+    assert(await page.$eval(roll, node => node.disabled), 'A failed quote refresh cannot authorize a debit');
+    await button('Actualiser les heures', workStatus); await readyActor('player', 'player');
+    assert.equal((await mutations()).length, 0);
+    results.push({ failedQuoteBlocksRoll: true, retryPreservesPlayerChoice: true, noWrites: true });
+  }
   if (cultureWorkOnly) {
     const roll = '[data-culture-primary-action][data-action="roll"]';
     for (const width of [320, 390, 1440]) {
@@ -813,7 +1019,7 @@ if (preview) {
     await page.waitForSelector('[data-trim-worker]', { visible: true });
     assert.equal((await mutations()).length, 0);
     await page.waitForSelector('[data-trim-worker]', { visible: true });
-    assert.equal(await page.$eval('[data-trim-worker]', node => node.value), planEmployeeId);
+    assert.equal(await page.$eval('[data-trim-worker]', node => node.dataset.trimWorker), planEmployeeId);
     await button('Vérifier le trim', '[data-workshop-trim-desk]'); await page.waitForSelector('dialog[open] #staff-confirm-title');
     const confirmation = await page.$eval('dialog dl', node => node.textContent);
     assert(confirmation.includes('Anna Le Gall') && confirmation.includes('Cadence'), 'The real workshop reviews the selected employee and shared-stock rate');
@@ -1358,7 +1564,7 @@ if (preview) {
     assert.equal((await mutations()).length, 0);
     results.push({ unreadableSavePreserved: true });
   }
-  if (!cultureCarouselOnly && !cultureWorkOnly && !sharedTrimOnly && !storageOnly && !guideOnly && !workshopOnly && !staffGuideOnly && !workPlanOnly && !financialSupportOnly) {
+  if (!cultureCarouselOnly && !cultureWorkOnly && !cultureRelayOnly && !sharedTrimOnly && !storageOnly && !guideOnly && !workshopOnly && !staffGuideOnly && !workPlanOnly && !financialSupportOnly) {
   for (const width of [1440, 390, 320]) {
     await load('preparation', width); const expected = await prepare(); await openPlan(); await layout();
     await screenshot('plan-return-' + width); await keyClick('[data-placard-back="game"]');
@@ -1411,7 +1617,7 @@ if (preview) {
   assert.deepEqual((await fixture()).production.game, launched); assert.equal((await mutations()).length, 0);
   results.push({ scenario: 'a culture already started elsewhere is resumed without applying the remembered preparation' });
   }
-  if (!cultureCarouselOnly && !cultureWorkOnly && !sharedTrimOnly && !preparationOnly && !guideOnly && !workshopOnly && !staffGuideOnly && !workPlanOnly && !financialSupportOnly) {
+  if (!cultureCarouselOnly && !cultureWorkOnly && !cultureRelayOnly && !sharedTrimOnly && !preparationOnly && !guideOnly && !workshopOnly && !staffGuideOnly && !workPlanOnly && !financialSupportOnly) {
   for (const width of [1440, 390, 320]) {
     await load('storage', width); await page.waitForSelector(`[data-harvest-open-storage="${targetId}"]`);
     const before = await fixture(); await page.evaluate(() => window.__control.storageDelay(220));

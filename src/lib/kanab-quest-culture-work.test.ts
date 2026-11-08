@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isKqCultureWorkQuote, type KqCultureWorkQuote } from "./kanab-quest-culture-work";
+import { isKqCultureWorkChoice, isKqCultureWorkQuote, type KqCultureWorkQuote } from "./kanab-quest-culture-work";
 
 const quote = (): KqCultureWorkQuote => ({
   version: 1, runId: "22222222-2222-4222-8222-222222222222", stageIndex: 0, day: 1,
@@ -9,6 +9,24 @@ const quote = (): KqCultureWorkQuote => ({
 });
 
 describe("authoritative culture work quote validation", () => {
+  it("accepts selectable actors without confusing their identity or reservations", () => {
+    const offered = quote();
+    const choices = [
+      { choice: "player", source: "player", employee: null, available: true, bonus: offered.bonus },
+      { choice: "employee:employee", source: "employee", employee: offered.employee, available: true, bonus: offered.bonus },
+    ];
+    expect(isKqCultureWorkQuote({ ...offered, workChoice: "auto", choices })).toBe(true);
+    expect(isKqCultureWorkQuote({ ...offered, choices })).toBe(false);
+    expect(isKqCultureWorkQuote({ ...offered, workChoice: "auto", choices: [...choices, choices[0]] })).toBe(false);
+    expect(isKqCultureWorkQuote({ ...offered, workChoice: "auto", choices: [{ ...choices[1], choice: "employee:someone-else" }] })).toBe(false);
+    expect(isKqCultureWorkQuote({ ...offered, workChoice: "player", choices: [{ ...choices[0], employee: offered.employee }] })).toBe(false);
+    expect(isKqCultureWorkQuote({ ...offered, workChoice: "auto", choices: [{ ...choices[1], available: "yes" }] })).toBe(false);
+  });
+
+  it.each([null, {}, "", "employee:", "employee:../other", "employee:foreign:id", "player:other", "employee:" + "x".repeat(129)])("rejects invalid actor selection %s", value => {
+    expect(isKqCultureWorkChoice(value)).toBe(false);
+  });
+
   it("accepts a half-hour employee quote and a paid receipt without changing either", () => {
     const offered = quote();
     const before = structuredClone(offered);

@@ -76,9 +76,15 @@ describe("POST /api/arena/placard/runs/[runId]/actions", () => {
     expect(applyKqPlayerRunAction).not.toHaveBeenCalled();
   });
 
-  it.each(["player", "auto", "employee", "PLAYER", "", null, 1, {}])("rejects every client work choice %j before mutation", async workChoice => {
+  it.each(["employee", "employee:", "employee:foreign id", "PLAYER", "", null, 1, {}])("rejects malformed work choice %j before mutation", async workChoice => {
     expect((await POST(request({ action: "roll", workChoice }), context)).status).toBe(400);
     expect(applyKqPlayerRunAction).not.toHaveBeenCalled();
+  });
+
+  it.each(["auto", "player", "employee:worker-123"])("forwards explicit %s while binding owner and stage on the server", async workChoice => {
+    const response = await POST(request({ action: "roll", workChoice, expectedStageIndex: 2, userId: "forged" }), context);
+    expect(response.status).toBe(200);
+    expect(applyKqPlayerRunAction).toHaveBeenCalledExactlyOnceWith(customerId, runId, "roll", { workChoice, expectedStageIndex: 2 });
   });
 
   it.each(["resolve", "advance", "redraw", "heritage", "heritage-swap"])("does not allow roll-only options on %s", async action => {

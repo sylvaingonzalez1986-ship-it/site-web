@@ -1,7 +1,7 @@
 import type { KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import type { KqEnergyMode } from "@/lib/kanab-quest-energy";
 import type { KqGameState } from "@/lib/kanab-quest-game";
-import type { KqCultureWorkQuote } from "@/lib/kanab-quest-culture-work";
+import type { KqCultureWorkChoice, KqCultureWorkQuote } from "@/lib/kanab-quest-culture-work";
 import type { KqCareProduct, getKqCannabinoidReport, KqTerpeneReport } from "@/lib/kanab-quest-care";
 import type { KqBuddieCultivationProfile } from "@/lib/kanab-quest-buddie-cultivation";
 import type { KqStorageContainer, KqStorageMethod, KqStorageMethodCode, KqStorageProjection } from "@/lib/kanab-quest-storage";
@@ -317,7 +317,7 @@ export async function applyKqRemoteAction(
   runId: string,
   action: "roll" | "resolve" | "advance" | "redraw" | "heritage",
   request: typeof fetch = fetch,
-  options: { expectedStageIndex?: number } = {},
+  options: { expectedStageIndex?: number; workChoice?: KqCultureWorkChoice } = {},
 ) {
   const response = await request(`/api/admin/placard/runs/${encodeURIComponent(runId)}/actions`, {
     method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ action, ...(action === "roll" ? options : {}) }),

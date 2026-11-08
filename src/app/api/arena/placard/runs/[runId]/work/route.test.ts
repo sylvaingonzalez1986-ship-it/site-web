@@ -24,6 +24,18 @@ beforeEach(() => {
 });
 
 describe("GET culture stage work quote", () => {
+  it.each(["auto", "player", "employee:worker-123"])("quotes explicit %s using the authenticated owner", async workChoice => {
+    const url = new URL(request().url); url.searchParams.set("workChoice", workChoice);
+    expect((await GET(new Request(url), context)).status).toBe(200);
+    expect(mocks.quote).toHaveBeenCalledExactlyOnceWith(owner, runId, workChoice);
+  });
+
+  it.each(["", "employee:", "employee:wrong id", "PLAYER"])("rejects malformed selector %j before querying", async workChoice => {
+    const url = new URL(request().url); url.searchParams.set("workChoice", workChoice);
+    expect((await GET(new Request(url), context)).status).toBe(400);
+    expect(mocks.quote).not.toHaveBeenCalled();
+  });
+
   it("checks feature access and authentication before resolving a quote", async () => {
     mocks.enabled.mockResolvedValue(false);
     expect((await GET(request(), context)).status).toBe(404);

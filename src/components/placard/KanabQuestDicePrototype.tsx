@@ -1337,7 +1337,7 @@ function KqGameSession({
     }
     setRemoteAction("game");
     try {
-      const result = await applyKqRemoteAction(remoteRunId, action, remoteRequest, action === "roll" && cultureWorkEnabled ? { expectedStageIndex: state.stageIndex } : undefined);
+      const result = await applyKqRemoteAction(remoteRunId, action, remoteRequest, action === "roll" && cultureWorkEnabled ? { expectedStageIndex: state.stageIndex, workChoice: cultureWork.choice } : undefined);
       if (!lifecycle.current.mounted) return null;
       if (!deferState) setState(result.state);
       presentConfirmedAction(result.state);
@@ -2920,7 +2920,9 @@ function KqGameSession({
       </aside> : !state.care && zeroSuccessStages > 0 ? <aside className={styles.cultureFailureRule} data-warning role="status"><strong>1 étape à 0 réussite.</strong> {tutorial ? "Dans cet essai, un dé sera assisté si nécessaire pour te laisser découvrir la récolte." : "Une deuxième étape validée à 0, même plus tard, entraînera la mort de la culture sans récolte."}</aside> : null}
 
       <div className={styles.cultureWorkOverview}>
-          {cultureWorkEnabled ? <KqCultureWorkStatus compact quote={cultureWork.quote} error={cultureWork.error} onRefresh={cultureWork.refresh} /> : null}
+          {cultureWorkEnabled ? <KqCultureWorkStatus compact quote={cultureWork.quote} error={cultureWork.error} onRefresh={cultureWork.refresh}
+            choices={cultureWork.choices} selectedChoice={cultureWork.selectedChoice} onSelectChoice={cultureWork.selectChoice} playerRemainingHours={cultureWork.playerRemainingHours}
+            selectionDisabled={state.phase !== "prepare" || remoteAction !== null || careBusy || !!pendingBurnCode || rolling || handAdjustmentBusy} /> : null}
       </div>
       <KqCultureCarousel activeId={culturePanel} onChange={setCulturePanel}
         disabled={Boolean(pendingBurnCode) || remoteAction !== null || careBusy || rolling || diceVisualSyncing}

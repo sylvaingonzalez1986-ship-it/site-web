@@ -337,6 +337,129 @@ async function cultureChecks({ db, vite, scalar, query, migration, section, chec
   check("An insufficient fractional balance is a valid blocked quote, not an unavailable quote", [quoteModule.isKqCultureWorkQuote(fractionalEmptyQuote), fractionalEmptyQuote.source, fractionalEmptyQuote.playerRemainingHours], [true, "blocked", .45]);
   await unchanged("Insufficient fractional hours still block the authoritative roll", fractionalEmpty.user,
     () => roll(rollParams(fractionalEmpty.user, fractionalEmptyRun)), /culture_work_exhausted|player_work_exhausted/);
+
+  // Explicit next-stage actor choice composes with the original immutable
+  // receipts and fractional personal hours; no historical allocation is moved.
+  {
+  const beforeChoice = await whole(fractionalEmployee.user);
+  await db.exec(await migration("20261108001200_kq_culture_work_choice.sql"));
+  check("Actor migration changes no existing game, reservation or receipt", await whole(fractionalEmployee.user), beforeChoice);
+  const selectedQuote = (user, id, choice) => scalar("SELECT rpc_kq_culture_work_quote($1,$2,$3)", [user, id, choice]);
+  const relay = await player({ allocation: .5 }), relayRun = await start(relay.user);
+  const relayFirst = await roll(rollParams(relay.user, relayRun));
+  let next = await row(relayRun.id);
+  await persist(relay.user, next, "resolve", game.resolveKqStage({ ...next.state, dice: [6, 6, 6] }));
+  next = await row(relayRun.id); await persist(relay.user, next, "advance", game.advanceKqStage(next.state));
+  next = await row(relayRun.id);
+  const relayBefore = await whole(relay.user), playerQuote = await selectedQuote(relay.user, next.id, "player");
+  check("Exhausted auto remains blocked until explicit player takeover", [(await quote(relay.user, next.id)).source,
+    playerQuote.source, playerQuote.workChoice, playerQuote.employee, playerQuote.bonus],
+    ["blocked", "player", "player", null, { vitality: 0, terpenes: 0, yieldPercent: 0, cannabinoids: 0 }]);
+  check("Actor choices are validated and disclose exhausted reservation separately", [quoteModule.isKqCultureWorkQuote(playerQuote),
+    playerQuote.choices.map(option => [option.choice, option.available])], [true, [["player", true], [`employee:${relay.worker}`, false]]]);
+  check("Selecting and quoting a new actor performs no write", await whole(relay.user), relayBefore);
+  const relayParams = rollParams(relay.user, next, "player"), playerResult = await roll(relayParams);
+  check("Player takes over the next stage and pays exactly 0.5 personal hour", [playerResult.cultureWork.source,
+    await hours(relay.user), (await read(relay.user)).state.tasks[0].cultureUsedHours, playerResult.state.care],
+    ["player", .5, .5, next.state.care]);
+  check("Past employee stage keeps its actual receipt after takeover", await scalar(
+    "SELECT work FROM kq_culture_work_steps WHERE run_id=$1 AND stage_index=0", [relayRun.id]), relayFirst.cultureWork);
+  const relayPaid = await whole(relay.user); await roll(relayParams);
+  check("Player takeover replay cannot consume another half hour", await whole(relay.user), relayPaid);
+  await unchanged("Changing actor on a paid stage is rejected atomically", relay.user,
+    () => roll([...relayParams.slice(0, 5), `employee:${relay.worker}`]), /culture_work_changed/);
+  const paidSelection = await selectedQuote(relay.user, relayRun.id, `employee:${relay.worker}`);
+  check("Paid preview preserves actor and removes switch choices", [paidSelection.source, paidSelection.paid, paidSelection.employee, paidSelection.choices],
+    ["player", true, null, []]);
+
+  const team = await player({ allocation: 2 }), teamRun = await start(team.user), second = randomUUID(), unassigned = randomUUID();
+  const staffState = (await read(team.user)).state;
+  const novice = { ...staffState.employees[0], id: second, name: "Novice", code: "novice", role: "worker", trait: "learner",
+    skills: { ...staffState.employees[0].skills, culture: 0 }, workDays: {}, completedTasks: 0 };
+  await query("UPDATE kq_staff_accounts SET state=jsonb_set(state,'{employees}',$2) WHERE user_id=$1", [team.user,
+    JSON.stringify([...staffState.employees, novice, { ...novice, id: unassigned, name: "Non affecté" }])]);
+  await commit(team.user, { action: "assign", employeeId: second, kind: "culture", hours: 1, expectedCostCents: 0 });
+  const noviceQuote = await selectedQuote(team.user, teamRun.id, `employee:${second}`);
+  check("Choice list contains only Culture-assigned employees and the player", noviceQuote.choices.map(option => option.choice).sort(),
+    ["player", `employee:${team.worker}`, `employee:${second}`].sort());
+  check("Explicit employee uses the selected reservation and skill instead of auto", [noviceQuote.source, noviceQuote.employee.id,
+    noviceQuote.employee.level, noviceQuote.employee.remainingHours, noviceQuote.bonus.terpenes], ["employee", second, 1, 1, 0]);
+  const secondParams = rollParams(team.user, teamRun, `employee:${second}`), secondResult = await roll(secondParams);
+  const afterSecond = (await read(team.user)).state;
+  check("Only the selected employee receives reservation debit and XP", [afterSecond.tasks.map(task => task.cultureUsedHours),
+    afterSecond.employees.map(employee => employee.skills.culture), await hours(team.user), secondResult.cultureWork.employee.id],
+    [[0, .5], [8100, 8, 0], 0, second]);
+
+  const invalidRun = await start(team.user);
+  for (const [name, choice] of [["foreign employee", `employee:${relay.worker}`], ["unassigned employee", `employee:${unassigned}`]]) {
+    check(`${name}: no substitute offered for invalid assignment`, (await selectedQuote(team.user, invalidRun.id, choice)).source, "blocked");
+    await unchanged(`${name}: cannot consume another employee or personal hours`, team.user,
+      () => roll(rollParams(team.user, invalidRun, choice)), /culture_work_exhausted/);
+  }
+  const originalTeam = (await read(team.user)).state;
+  for (const [name, mutate] of [
+    ["ended contract", state => { state.employees[1].endsAt = "2000-01-01T00:00:00Z"; }],
+    ["leave day", state => { state.employees[1].leave = [{ startDay: 1, endDay: 1 }]; }],
+    ["exhausted reserve", state => { state.tasks[1].cultureUsedHours = 1; }],
+    ["expired shift", state => { state.tasks[1].completesAt = "2000-01-01T00:00:00Z"; }],
+    ["future shift", state => { state.tasks[1].startedAt = "2999-01-01T00:00:00Z"; }],
+    ["other culture", state => { state.tasks[1].targetId = relayRun.id; }],
+    ["overdue payroll", state => { state.employees[1].nextPayrollAt = "2000-01-01T00:00:00Z"; }],
+  ]) {
+    const changed = structuredClone(originalTeam); mutate(changed);
+    await query("UPDATE kq_staff_accounts SET state=$2 WHERE user_id=$1", [team.user, JSON.stringify(changed)]);
+    check(`${name}: explicit employee quote is blocked`, (await selectedQuote(team.user, invalidRun.id, `employee:${second}`)).source, "blocked");
+    await unchanged(`${name}: selected employee revalidated at debit`, team.user,
+      () => roll(rollParams(team.user, invalidRun, `employee:${second}`)), /culture_work_exhausted/);
+  }
+  await query("UPDATE kq_staff_accounts SET state=$2 WHERE user_id=$1", [team.user, JSON.stringify(originalTeam)]);
+  const pinnedTeam = structuredClone(originalTeam); pinnedTeam.tasks[1].targetId = invalidRun.id;
+  await query("UPDATE kq_staff_accounts SET state=$2 WHERE user_id=$1", [team.user, JSON.stringify(pinnedTeam)]);
+  check("Reservation explicitly targeting this culture remains selectable", (await selectedQuote(team.user, invalidRun.id, `employee:${second}`)).source, "employee");
+  await query("UPDATE kq_staff_accounts SET state=$2 WHERE user_id=$1", [team.user, JSON.stringify(originalTeam)]);
+  await unchanged("Actor quote cannot reveal a foreign culture", team.user,
+    () => selectedQuote(team.user, relayRun.id, "player"), /kq_run_unavailable/);
+  for (const malformed of [null, "", "employee:", "employee:with space", "EMPLOYEE:abc"]) {
+    await unchanged(`Malformed actor ${malformed} rejected`, team.user,
+      () => roll(rollParams(team.user, invalidRun, malformed)), /culture_work_changed/);
+  }
+  check("Personal selection still refuses an insufficient fractional balance", (await selectedQuote(fractionalEmpty.user, fractionalEmptyRun.id, "player")).source, "blocked");
+  await unchanged("Personal selection cannot bypass the 12 h limit", fractionalEmpty.user,
+    () => roll(rollParams(fractionalEmpty.user, fractionalEmptyRun, "player")), /culture_work_exhausted|player_work_exhausted/);
+  const legacyChoice = await selectedQuote(other.user, legacy.id, `employee:${other.worker}`);
+  check("Actor selection cannot reassign a pre-ledger engaged stage", [legacyChoice.paid, legacyChoice.source, legacyChoice.employee, legacyChoice.choices],
+    [false, "player", null, []]);
+  const closed = await start(team.user);
+  await query("UPDATE kq_runs SET status='abandoned' WHERE id=$1", [closed.id]);
+  check("Closed culture never offers actors even with a prepare state", (await selectedQuote(team.user, closed.id, "player")).choices, []);
+
+  const choiceCampaignId = randomUUID(), choiceMemberIds = [randomUUID(), randomUUID()];
+  const choiceManifest = { ...manifest, id: choiceCampaignId, leaderRunId: choiceMemberIds[0], members: choiceMemberIds.map(runId => ({ runId })) };
+  await db.exec("BEGIN");
+  await query("INSERT INTO kq_culture_campaigns(id,user_id,leader_run_id,request_key,request,manifest) VALUES($1,$2,$3,$4,'{}',$5)",
+    [choiceCampaignId, team.user, choiceMemberIds[0], randomUUID(), JSON.stringify(choiceManifest)]);
+  for (let i = 0; i < 2; i++) await query("INSERT INTO kq_runs(id,user_id,campaign_id,state) VALUES($1,$2,$3,$4)",
+    [choiceMemberIds[i], team.user, choiceCampaignId, JSON.stringify({ ...memberStates[i], campaign: choiceManifest })]);
+  await db.exec("COMMIT");
+  const choiceLeader = await row(choiceMemberIds[0]), choiceNext = game.rollKqDice(choiceLeader.state);
+  const choiceMembers = await Promise.all(choiceMemberIds.map(async runId => ({ runId, flower: null,
+    state: await scalar("SELECT kq_campaign_project_state($1,$2)", [JSON.stringify(choiceNext), JSON.stringify((await row(runId)).state)]) })));
+  const memberQuote = await selectedQuote(team.user, choiceMemberIds[1], "player");
+  check("Explicit actor preview on campaign member resolves canonical leader", [memberQuote.runId, memberQuote.source], [choiceMemberIds[0], "player"]);
+  await unchanged("Explicit player cannot bypass campaign projection validation", team.user,
+    () => roll(rollParams(team.user, choiceLeader, "player", choiceNext, [choiceMembers[0]])), /kq_campaign_members_changed/);
+  const choiceCampaignParams = rollParams(team.user, choiceLeader, "player", choiceNext, choiceMembers);
+  const choiceCampaign = await roll(choiceCampaignParams);
+  check("Explicit personal campaign actor consumes one shared half-hour and no employee reserve", [await hours(team.user),
+    (await read(team.user)).state.tasks.map(task => task.cultureUsedHours), choiceCampaign.cultureWork.source,
+    (await row(choiceMemberIds[1])).state.care], [.5, [0, .5], "player", choiceCampaign.state.care]);
+  const afterChoiceCampaign = await whole(team.user); await roll(choiceCampaignParams);
+  check("Explicit actor campaign replay remains idempotent", await whole(team.user), afterChoiceCampaign);
+  for (const role of ["anon", "authenticated", "service_role"]) {
+    check(`${role}: new actor quote stays service-only`, await scalar("SELECT has_function_privilege($1,'public.rpc_kq_culture_work_quote(uuid,uuid,text)','EXECUTE')", [role]), role === "service_role");
+    check(`${role}: historical preview stays private`, await scalar("SELECT has_function_privilege($1,'public.kq_culture_work_preview_before_actor_choice(uuid,uuid,text)','EXECUTE')", [role]), false);
+  }
+  }
 }
 
 let source = (await readFile(new URL("./test-placard-shared-trim.mjs", import.meta.url), "utf8")).replaceAll("\r\n", "\n");

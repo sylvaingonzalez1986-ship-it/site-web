@@ -824,10 +824,16 @@ try {
       if (innerWidth === 320) Object.defineProperty(crypto, 'randomUUID', { value: undefined, configurable: true });
     });
     const scene = '[data-trim-scene]', worker = '[data-trim-worker]';
+    const selectWorker = async id => {
+      const selector = worker + ' input[data-work-actor-choice="' + id + '"]';
+      await page.$eval(selector, node => node.closest('label').scrollIntoView({ block: 'nearest', inline: 'nearest' }));
+      await page.focus(selector); await page.keyboard.press('Space');
+      await page.waitForFunction(id => document.querySelector('[data-trim-worker]')?.dataset.trimWorker === id, {}, id);
+    };
     const wait = milliseconds => new Promise(done => setTimeout(done, milliseconds));
     const taskCount = count => page.waitForFunction(count => window.__staff.raw().state.tasks.filter(task => task.kind === 'trim').length === count, {}, count);
     const start = async (employeeId, hours, mode = 'manual') => {
-      await page.select(worker, employeeId); await input('Heures de trim', hours); await button(mode === 'manual' ? 'Manuel' : 'Machine');
+      await selectWorker(employeeId); await input('Heures de trim', hours); await button(mode === 'manual' ? 'Manuel' : 'Machine');
       await button('Vérifier le trim'); await button('Confirmer le trim', 'dialog');
     };
     const painted = () => page.$$eval('[data-trim-moving-part]', nodes => nodes.map(node => { const style = getComputedStyle(node); return { part: node.dataset.trimMovingPart, transform: style.transform, animation: style.animationName, playState: style.animationPlayState }; }));
@@ -858,7 +864,7 @@ try {
       await taskCount(1); await page.waitForSelector(worker);
       assert.equal((await raw()).state.playerWorkDays['1'].usedHours, 1);
       await start('work-plan-anna', '1'); await taskCount(2);
-      await page.select(worker, 'work-plan-mael'); await input('Heures de trim', '0.5'); await button('Manuel'); await button('Vérifier le trim');
+      await selectWorker('work-plan-mael'); await input('Heures de trim', '0.5'); await button('Manuel'); await button('Vérifier le trim');
       assert((await page.$eval('dialog', node => node.textContent)).includes('150'), 'A level-ten worker is quoted at 150 grams per game hour by hand'); await page.keyboard.press('Escape');
       await button('Machine'); await button('Vérifier le trim');
       assert((await page.$eval('dialog', node => node.textContent)).includes('600'), 'The machine offers four times the same worker rate'); await page.keyboard.press('Escape');
@@ -902,8 +908,8 @@ try {
         await page.evaluate(() => window.__sharedTrim.profile('ready')); await page.waitForSelector(playerCanvas + '[data-avatar-state="ready"]'); assert.equal(await page.$eval(playerCanvas, node => node.toDataURL()), playerPortrait, 'Profile recovery restores the same customized player');
         assert.deepEqual(await raw(), scheduled, 'Animation never changes credited grams, money or planning');
       }
-      await page.select(worker, 'player'); await input('Heures de trim', '12'); assert(await page.$eval('[data-workshop-trim-desk] button[type="submit"]', node => node.disabled), 'Player cannot exceed eleven remaining hours');
-      await page.select(worker, 'work-plan-anna'); await input('Heures de trim', '7'); assert(await page.$eval('[data-workshop-trim-desk] button[type="submit"]', node => node.disabled), 'Employee cannot exceed six remaining hours');
+      await selectWorker('player'); await input('Heures de trim', '12'); assert(await page.$eval('[data-workshop-trim-desk] button[type="submit"]', node => node.disabled), 'Player cannot exceed eleven remaining hours');
+      await selectWorker('work-plan-anna'); await input('Heures de trim', '7'); assert(await page.$eval('[data-workshop-trim-desk] button[type="submit"]', node => node.disabled), 'Employee cannot exceed six remaining hours');
       await input('Heures de trim', '0.5');
       await page.evaluate(() => window.__sharedTrim.advance(5)); await button('Actualiser');
       await page.waitForFunction(() => window.__staff.raw().context.trimLots[0].completedGrams === 90);
@@ -1341,7 +1347,7 @@ try {
       await personalActivity('communication'); await review(); await button('Commencer mon travail', 'dialog');
       await page.waitForFunction(() => window.__staff.raw().state.tasks.length === 2); await ready();
       await personalActivity('trim'); await page.waitForSelector('[data-trim-worker]');
-      assert.equal(await page.$eval('[data-trim-worker]', node => node.value), 'player');
+      assert.equal(await page.$eval('[data-trim-worker]', node => node.dataset.trimWorker), 'player');
       assert.equal(await page.$('[data-trim-assigned-employee="player"]'), null, 'Personal trim is not described as an unavailable employee');
       assert.equal(await page.$eval('[data-trim-shared-form] input[type="number"]', node => Number(node.max)), 8, 'Workshop allows only the same eight remaining hours after four reserved hours');
       await globalHours(8);
@@ -1708,7 +1714,7 @@ try {
       await assign('work-plan-anna', 'trim', width < 500 ? 'touch' : 'keyboard');
       await page.waitForSelector('[data-workshop-trim-desk]', { visible: true });
       await page.waitForSelector('[data-trim-worker]', { visible: true });
-      assert.equal(await page.$eval('[data-trim-worker]', node => node.value), 'work-plan-anna', 'Trim forwards the selected employee to the workshop form');
+      assert.equal(await page.$eval('[data-trim-worker]', node => node.dataset.trimWorker), 'work-plan-anna', 'Trim forwards the selected employee to the workshop form');
       assert.equal((await calls()).length, 1);
       assert.deepEqual((await raw()).state.tasks, committed.state.tasks);
       await shot(`work-plan-trim-${width}`);

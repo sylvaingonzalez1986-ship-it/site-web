@@ -33,6 +33,17 @@ beforeEach(() => {
 });
 
 describe("authoritative culture work quote backend", () => {
+  it.each(["player", "employee:worker-123"] as const)("requests the selected %s quote from SQL", async workChoice => {
+    await getKqCultureWorkQuote(owner, runId, workChoice);
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_culture_work_quote", { p_user_id: owner, p_run_id: runId, p_work_choice: workChoice });
+  });
+
+  it("rejects malformed runtime selectors before settlement", async () => {
+    await expect(getKqCultureWorkQuote(owner, runId, "employee:" as never)).rejects.toThrow("culture_work_changed");
+    expect(mocks.settle).not.toHaveBeenCalled();
+    expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+
   it("settles authorized weekly work before quoting and returns the validated SQL values", async () => {
     const expected = quote();
     expect(await getKqCultureWorkQuote(owner, runId)).toEqual(expected);
@@ -76,7 +87,7 @@ describe("authoritative culture work quote backend", () => {
 });
 
 describe("atomic culture rolls through the server backend", () => {
-  it("uses only automatic allocation through the dedicated RPC and stored run revision", async () => {
+  it("preserves automatic allocation when no actor is requested", async () => {
     const query = stored();
     const result = await applyKqPlayerRunAction(owner, runId, "roll", { expectedStageIndex: 0 });
     expect(mocks.settle).toHaveBeenCalledExactlyOnceWith(owner);
@@ -89,10 +100,15 @@ describe("atomic culture rolls through the server backend", () => {
     expect(result.state.phase).toBe("rolled");
   });
 
-  it("cannot force a player fallback through an unexpected option", async () => {
-    const forgedOptions = { expectedStageIndex: 0, workChoice: "player" };
-    await applyKqPlayerRunAction(owner, runId, "roll", forgedOptions);
-    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_roll_culture_step", expect.objectContaining({ p_work_choice: "auto" }));
+  it.each(["player", "employee:worker-123"] as const)("forwards explicit %s to authoritative SQL without deciding eligibility", async workChoice => {
+    await applyKqPlayerRunAction(owner, runId, "roll", { expectedStageIndex: 0, workChoice });
+    expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_roll_culture_step", expect.objectContaining({ p_work_choice: workChoice }));
+  });
+
+  it("rejects malformed runtime work choices before settlement", async () => {
+    await expect(applyKqPlayerRunAction(owner, runId, "roll", { workChoice: "employee:" as never })).rejects.toThrow("culture_work_changed");
+    expect(mocks.settle).not.toHaveBeenCalled();
+    expect(mocks.rpc).not.toHaveBeenCalled();
   });
 
   it.each(["rolled", "resolved"] as const)("replays an already %s stage without invoking a second debit", async phase => {

@@ -44,8 +44,8 @@ export function KqCommerceWorkshopScene({ quote, stock, now }: Props) {
       <span>{definition.name}{stock ? ` · ${(stock.remainingUnits / 10).toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g dans ce lot` : ""}</span>
       {job ? <>
         <KqProgressMeter label="Fleurs transformées" value={job.completedGrams} max={job.inputGrams} valueLabel={`${job.completedGrams.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g / ${job.inputGrams.toLocaleString("fr-FR", { maximumFractionDigits: 1 })} g`} />
-        <small>{job.actor ? `${job.actor.name} · 0 h joueur` : job.delegated ? "Réserve salariée · 0 h joueur" : "Travail du joueur"}{job.status === "running" ? ` · ${job.bookedHours.toLocaleString("fr-FR")} h de jeu réservées` : ""}</small>
-        {job.status === "blocked" ? <small>{job.delegated ? "Ajoute des heures Transformation dans Personnel ou attends le prochain jour travaillé. Aucun relais joueur." : "Reprends avec tes heures disponibles ou au prochain jour."}</small> : null}
+        <small>{job.actor ? `${job.actor.name} · 0 h joueur` : "Travail du joueur"}{job.status === "running" ? ` · ${job.bookedHours.toLocaleString("fr-FR")} h de jeu réservées` : ""}</small>
+        {job.status === "blocked" ? <small>Choisis qui reprend avec ses heures disponibles, ou attends une nouvelle réserve Transformation.</small> : null}
         {job.status !== "completed" ? <small>Vente disponible après tout le travail et l’attente autonome.</small> : null}
       </> : null}
       {validDeadline ? <small><Clock3 size={14} aria-hidden="true" /><span>{job?.status === "running" ? "Fin de cette tranche : " : phase === "ready" ? "Échéance : " : "Disponibilité prévue : "}<time dateTime={deadline!}>{new Date(readyAt).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}</time>{minutes !== null ? ` · encore ${minutes.toLocaleString("fr-FR")} min` : ""}</span></small> : null}

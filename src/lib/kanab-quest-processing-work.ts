@@ -12,12 +12,16 @@ export type KqProcessingPlan = {
   estimated: boolean; quote?: KqProcessingWorkQuote;
 };
 export type KqProcessingActor = KqCultureWorkQuote["employee"];
+export type KqProcessingActorOption = {
+  id: string; name: string; employee: KqProcessingActor; remainingHours: number; available: boolean; reason: string | null;
+};
 export type KqProcessingWorkQuote = {
   version: 1; flowerId: string; token: string; inputGrams: number;
   source: "employee" | "player" | "blocked"; employee: KqProcessingActor;
   efficiency: number; playerRemainingHours: number; bookedHours: number; activeHours: number;
   nominalHours: number; remainingNominalHours: number; fundedGrams: number; passiveHours: number;
   startedAt: string | null; readyAt: string | null; blockedReason: string | null;
+  actorChoiceVersion?: 1; actorId?: string; actors?: KqProcessingActorOption[];
 };
 export type KqProcessingJob = {
   version: 1; flowerId: string; route: string; inputGrams: number; completedGrams: number;
@@ -32,6 +36,7 @@ const object = (value: unknown): value is Record<string, unknown> => !!value && 
 const finite = (value: unknown, max = 1_000_000) => typeof value === "number" && Number.isFinite(value) && value >= 0 && value <= max;
 const dateOrNull = (value: unknown) => value === null || typeof value === "string" && Number.isFinite(Date.parse(value));
 const identifier = (value: unknown) => typeof value === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(value);
+export const isKqProcessingActorId = (value: unknown): value is string => typeof value === "string" && /^[A-Za-z0-9_-]{1,128}$/.test(value);
 function actor(value: unknown): boolean {
   return value === null || object(value) && ["id", "name", "code", "taskId"].every(key => typeof value[key] === "string" && !!value[key])
     && (value.portraitCode === undefined || typeof value.portraitCode === "string")
@@ -81,5 +86,15 @@ export function isKqProcessingWorkQuote(value: unknown): value is KqProcessingWo
     || Number(value.fundedGrams) > Number(value.inputGrams) + 0.000001
     || !dateOrNull(value.startedAt) || !dateOrNull(value.readyAt)
     || value.blockedReason !== null && typeof value.blockedReason !== "string") return false;
-  return actor(value.employee) && (value.employee !== null || value.source !== "employee") && (value.employee === null || value.source !== "player");
+  if (!actor(value.employee) || (value.employee === null && value.source === "employee") || (value.employee !== null && value.source === "player")) return false;
+  if (value.actorChoiceVersion === undefined && value.actorId === undefined && value.actors === undefined) return true;
+  return value.actorChoiceVersion === 1 && isKqProcessingActorId(value.actorId) && Array.isArray(value.actors)
+    && value.actors.length > 0 && new Set(value.actors.map(item => object(item) ? item.id : null)).size === value.actors.length
+    && value.actors.some(item => object(item) && item.id === "player")
+    && value.actors.every(item => object(item) && isKqProcessingActorId(item.id) && item.id !== "auto"
+      && typeof item.name === "string" && !!item.name && actor(item.employee)
+      && (item.id === "player" ? item.employee === null : object(item.employee) && item.employee.id === item.id)
+      && finite(item.remainingHours, item.id === "player" ? 12 : 10)
+      && typeof item.available === "boolean" && (item.reason === null || typeof item.reason === "string"))
+    && (value.actorId === "auto" || value.source === "blocked" || (value.actorId === "player" ? value.source === "player" : object(value.employee) && value.employee.id === value.actorId));
 }
