@@ -6,14 +6,14 @@ import { getKqPlayerWorkday } from "@/lib/kanab-quest-player-work";
 import { canKqStaffAssignWithOutstandingPayroll, getKqStaffCapacity } from "@/lib/kanab-quest-staff";
 import type { KqStaffSnapshot } from "@/lib/kanab-quest-staff-types";
 import { KqAllocationBar, KqProgressMeter } from "./KqVisuals";
-import { KqPrintedArt } from "./KqPrintedArt";
+import { KqStaffImpactDashboard } from "./KqStaffImpactDashboard";
 import styles from "./KqStaffDashboard.module.css";
 
 const hours = (value: number) => `${value.toLocaleString("fr-FR", { maximumFractionDigits: 2 })} h`;
 
-export function KqStaffDashboard({ snapshot, disabled, stale, onOpenTeam, onRecruit, onPayroll, onOpenWeekly }: {
+export function KqStaffDashboard({ snapshot, disabled, stale, onOpenTeam, onRecruit, onPayroll, onOpenWeekly, onOpenDay }: {
   snapshot: KqStaffSnapshot; disabled: boolean; stale: boolean;
-  onOpenTeam: () => void; onRecruit: () => void; onPayroll: () => void; onOpenWeekly: (id: string) => void;
+  onOpenTeam: () => void; onRecruit: () => void; onPayroll: () => void; onOpenWeekly: (id: string) => void; onOpenDay: (id: string) => void;
 }) {
   const player = getKqPlayerWorkday(snapshot);
   const team = snapshot.state.employees.filter(employee => employee.status === "active");
@@ -73,14 +73,14 @@ export function KqStaffDashboard({ snapshot, disabled, stale, onOpenTeam, onRecr
       <span><CalendarDays size={16} aria-hidden="true" />{!team.length ? "Semaine type après recrutement" : weeklySupported ? `${weekly} / ${team.length} semaines types actives` : "Semaines types à vérifier"}</span>
       <span>Trésorerie disponible <strong>{formatKqCash(snapshot.cashCents)}</strong></span>
     </div>
-    <section className={styles.benefits} aria-label="Bénéfices du travail" data-staff-benefits-dashboard>
-      <div className={styles.benefitHeading}><KqPrintedArt kind="help-accounts" sizes="72px" /><h2>Ce que le travail apporte</h2></div>
+    <KqStaffImpactDashboard snapshot={snapshot} disabled={disabled} stale={stale} onOpenTeam={onOpenTeam} onOpenDay={onOpenDay} onOpenWeekly={onOpenWeekly} onRecruit={onRecruit}>
+      <details className={styles.benefitHistory} data-staff-benefits-history><summary>Bilan global enregistré</summary>
+      <p className={styles.benefitScope}>Toute l’entreprise, joueur et salariés, depuis le début du suivi. Ce bilan n’est pas filtré par personne ou par planning.</p>
       <dl className={styles.benefitNumbers}>
         <div data-staff-supplier-discount><dt>Remise fournisseur active</dt><dd>{discountActive ? `${snapshot.state.supplierDiscountPercent.toLocaleString("fr-FR")} %` : "Aucune"}</dd><small>{discountActive && discountUntil ? <>Jusqu’au <time dateTime={discountUntil}>{date(discountUntil)}</time> · heure réelle</> : "À négocier en Administration"}</small></div>
         <div data-staff-supplier-savings><dt>Économies enregistrées</dt><dd>{benefits ? formatKqCash(benefits.supplierSavingsCents) : "Indisponible"}</dd><small>{benefits ? `${benefits.discountedInvoices.toLocaleString("fr-FR")} facture${benefits.discountedInvoices === 1 ? "" : "s"} avec remise depuis le début du suivi` : "Le serveur ne fournit pas encore ce suivi."}</small></div>
       </dl>
       <p className={styles.benefitScope}>Remise sur les nouvelles fournitures au lancement d’une culture dans l’Entrepôt. Les anciennes factures, soins, machines, énergie et salaires sont exclus.</p>
-      <details className={styles.benefitHistory} data-staff-benefits-history><summary>Résultats des missions</summary>
         {benefits ? <>
           <p className={styles.benefitScope}>Suivi depuis le <time dateTime={benefits.trackedSince}>{date(benefits.trackedSince)}</time> (heure réelle). Résultats reçus du serveur, joueur et salariés ; les opérations antérieures ne sont pas reconstituées.</p>
           {benefits.supplierBaseCents > 0 ? <KqAllocationBar label="Fournitures enregistrées sous remise" items={[{ label: "Facturé après remise", value: benefits.supplierNetCents, displayValue: formatKqCash(benefits.supplierNetCents), tone: "teal" }, { label: "Économisé", value: benefits.supplierSavingsCents, displayValue: formatKqCash(benefits.supplierSavingsCents), tone: "gold" }]} /> : null}
@@ -97,6 +97,6 @@ export function KqStaffDashboard({ snapshot, disabled, stale, onOpenTeam, onRecr
           <p className={styles.benefitScope}>Les abonnés et partenaires ne sont pas des recettes garanties. Les paiements sont des dépenses prises en charge, pas des économies.</p>
         </> : <p className={styles.benefitScope}>Données chiffrées indisponibles. Les résultats déjà reçus restent consultables dans « Travaux & résultats ».</p>}
       </details>
-    </section>
+    </KqStaffImpactDashboard>
   </section>;
 }

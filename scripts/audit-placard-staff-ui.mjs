@@ -9,6 +9,7 @@ import puppeteer from 'puppeteer-core';
 const root = process.cwd(), output = resolve(root, 'output/placard-staff-ui');
 const origin = 'http://127.0.0.1:3438';
 const benefitsOnly = process.argv.includes('--benefits-only');
+const impactDashboardOnly = process.argv.includes('--impact-dashboard-only');
 const workPlanOnly = process.argv.includes('--work-plan-only');
 const workSceneOnly = process.argv.includes('--work-scene-only');
 const workScenePreview = workSceneOnly && process.argv.includes('--preview');
@@ -29,7 +30,7 @@ const cultureWorkOnly = process.argv.includes('--culture-work-only');
 const processingWorkOnly = process.argv.includes('--processing-work-only');
 const sharedTrimEdgeOnly = process.argv.includes('--shared-trim-edge-only');
 const sharedTrimOnly = process.argv.includes('--shared-trim-only') || sharedTrimEdgeOnly || trimMotionAlias;
-const reportName = benefitsOnly ? 'benefits-report.json' : contractLifecycleOnly ? 'contract-lifecycle-report.json' : helpOnly ? 'help-dashboard-report.json' : dashboardOnly ? 'dashboard-report.json' : processingWorkOnly ? 'processing-work-report.json' : cultureWorkOnly ? 'culture-work-report.json' : weeklyPlanOnly ? 'weekly-plan-report.json' : employeeSheetOnly ? 'employee-sheet-report.json' : sharedTrimEdgeOnly ? 'shared-trim-edge-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : archiveOnly ? 'archive-report.json' : workScenePreview ? 'work-scene-preview-report.json' : workSceneOnly ? 'work-scene-report.json' : staffMomentsOnly ? 'staff-moments-report.json' : visualClarityOnly ? 'visual-clarity-report.json' : playerWorkOnly ? 'player-work-report.json' : prospectingOnly ? 'prospecting-report.json' : workPlanOnly ? 'work-plan-report.json' : 'report.json';
+const reportName = impactDashboardOnly ? 'impact-dashboard-report.json' : benefitsOnly ? 'benefits-report.json' : contractLifecycleOnly ? 'contract-lifecycle-report.json' : helpOnly ? 'help-dashboard-report.json' : dashboardOnly ? 'dashboard-report.json' : processingWorkOnly ? 'processing-work-report.json' : cultureWorkOnly ? 'culture-work-report.json' : weeklyPlanOnly ? 'weekly-plan-report.json' : employeeSheetOnly ? 'employee-sheet-report.json' : sharedTrimEdgeOnly ? 'shared-trim-edge-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : archiveOnly ? 'archive-report.json' : workScenePreview ? 'work-scene-preview-report.json' : workSceneOnly ? 'work-scene-report.json' : staffMomentsOnly ? 'staff-moments-report.json' : visualClarityOnly ? 'visual-clarity-report.json' : playerWorkOnly ? 'player-work-report.json' : prospectingOnly ? 'prospecting-report.json' : workPlanOnly ? 'work-plan-report.json' : 'report.json';
 const entry = `
 import React,{useState} from 'react';import {createRoot} from 'react-dom/client';
 import {KqStaffDesk} from '/src/components/placard/KqStaffDesk';
@@ -42,6 +43,7 @@ import {createKqProcessingPlan} from '/src/lib/kanab-quest-processing-profiles';
 import {createKqOperationsLesson,getKqOperationsCommerce} from '/src/lib/kanab-quest-operations-lesson';
 import {KqTutorialApiProvider,createKqTutorialApi} from '/src/components/placard/KqTutorialApiContext';
 import {createKqStaffState,projectKqStaffSnapshot,applyKqStaffCommand,advanceKqStaff,getKqStaffMonthlyCost,getKqStaffTrainingCost,getKqStaffLevel,getKqStaffCapacity,KQ_STAFF_CITIES} from '/src/lib/kanab-quest-staff';
+import {getKqStaffPlannedTaskCost,getKqStaffWeeklyCost} from '/src/lib/kanab-quest-staff-weekly';
 import {KQ_GAME_DAY_MS} from '/src/lib/kanab-quest-business';
 import {parseChanvrierProfile,DEFAULT_CHANVRIER_APPEARANCE} from '/src/lib/arena-chanvrier';
 const now='2026-11-07T12:00:00.000Z';
@@ -50,7 +52,7 @@ if(!playerProfile)throw Error('Invalid audit player profile');
 let profileState=new URLSearchParams(location.search).get('profile')??'ready',profileReads=0;
 let raw={state:createKqStaffState(now),revision:0,serverNow:now,cashCents:2500000,context:{businessStartedAt:now,reputation:800,instagramFollowers:3500,shopPartners:2,activeRuns:[{id:'test-run',name:'Culture de démonstration'}],processingBatches:[{id:'test-batch',flowerId:'test-flower',name:'Lot de démonstration',startedAt:now,readyAt:'2026-11-09T12:00:00.000Z'}],supplierInvoices:[],trimLots:[{flowerId:'trim-manual',name:'Récolte pour trim manuel',requiredWork:6,completedWork:0,mode:null,completedAt:null},{flowerId:'trim-machine',name:'Récolte pour trim machine',requiredWork:6,completedWork:0,mode:null,completedAt:null}]}};
 raw.context.trimQueueVersion=2;raw.context.trimLots=raw.context.trimLots.map((lot,index)=>({...lot,totalGrams:360,completedGrams:0,createdAt:new Date(Date.parse(now)-(2-index)*60000).toISOString()}));
-if(${benefitsOnly}||(${dashboardOnly}&&new URLSearchParams(location.search).get('dashboard')!=='empty')||${processingWorkOnly}||${cultureWorkOnly}||${weeklyPlanOnly}||${employeeSheetOnly}||${sharedTrimOnly}||${workPlanOnly}||${workSceneOnly}||(${visualClarityOnly}&&new URLSearchParams(location.search).has('team'))){
+if(${benefitsOnly}||(${impactDashboardOnly}&&!new URLSearchParams(location.search).has('empty'))||(${dashboardOnly}&&new URLSearchParams(location.search).get('dashboard')!=='empty')||${processingWorkOnly}||${cultureWorkOnly}||${weeklyPlanOnly}||${employeeSheetOnly}||${sharedTrimOnly}||${workPlanOnly}||${workSceneOnly}||(${visualClarityOnly}&&new URLSearchParams(location.search).has('team'))){
  for(const code of ['anna','mael']){const candidate=projectKqStaffSnapshot(raw).candidates.find(candidate=>candidate.code===code),temporary=(${employeeSheetOnly}||${weeklyPlanOnly})&&code==='mael',weeklyHours=temporary?14:35;raw.state=applyKqStaffCommand(raw,{action:'hire',candidateCode:code,contract:temporary?'cdd':'cdi',weeklyHours,durationMonths:temporary?3:0,reason:temporary?'temporary-increase':'permanent',expectedMonthlyCostCents:getKqStaffMonthlyCost(candidate,weeklyHours).totalCents},'work-plan-'+code).state}
  raw.context.activeRuns.push({id:'test-run-selected',name:'Culture choisie pour Maël'});
  raw.context.processingBatches.push({id:'test-batch-selected',flowerId:'test-flower-selected',name:'Lot choisi pour Anna',startedAt:now,readyAt:'2026-11-09T12:00:00.000Z'});
@@ -59,12 +61,20 @@ if(${employeeSheetOnly})raw.state.employees[0].skills={culture:100,processing:90
 if(${contractLifecycleOnly}){raw.context.contractLifecycleVersion=1;raw.context.contractCooldowns={worker:new Date(Date.parse(now)+4*KQ_GAME_DAY_MS).toISOString()};raw.context.weeklyPlanVersion=1;raw.archiveCount=2;}
 if(${cultureWorkOnly}){raw.context.cultureWorkVersion=1;raw.context.weeklyPlanVersion=1;raw.context.activeRuns=[];}
 if(${processingWorkOnly}){raw.context.processingWorkVersion=1;raw.context.weeklyPlanVersion=1;raw.context.processingBatches=[];}
-if(${benefitsOnly}){
+if(${benefitsOnly}||${impactDashboardOnly}){
  const params=new URLSearchParams(location.search);raw.context.cultureWorkVersion=1;raw.context.processingWorkVersion=1;raw.context.weeklyPlanVersion=1;
- raw.state.employees[0].skills={culture:1600,processing:1600,communication:1600,sales:1600,administration:1600};raw.state.employees[0].trait='organized';
+ if(raw.state.employees[0]){raw.state.employees[0].skills={culture:1600,processing:1600,communication:1600,sales:1600,administration:1600};raw.state.employees[0].trait='organized';}
  if(!params.has('legacy'))raw.context.staffBenefitsVersion=1;
  raw.state.supplierDiscountPercent=6;raw.state.supplierDiscountUntil=new Date(Date.parse(now)+7*KQ_GAME_DAY_MS).toISOString();
  if(!params.has('unknown'))raw.benefits={trackedSince:now,supplierSavingsCents:1320,supplierBaseCents:22000,supplierNetCents:20680,discountedInvoices:1,followersGained:52,partnersGained:2,invoicesPaidCount:1,invoicesPaidCents:20680,payrollPaidCount:0,payrollPaidCents:0,cultureHoursDelegated:3,processingHoursDelegated:2,processingSecondsSaved:0,trimGrams:100,lastBenefitAt:now,lastAdministration:null};
+}
+if(${impactDashboardOnly}&&raw.state.employees.length){
+ const anna='work-plan-anna',mael='work-plan-mael',task=(id,employeeId,kind,hours,extra={})=>({id,employeeId,kind,skill:kind==='training'?'processing':kind==='trim'?'processing':kind,hours,day:1,startedAt:now,completesAt:new Date(Date.parse(now)+2*60*60*1000).toISOString(),status:'running',trainingCostCents:0,skillLevel:2,...extra});
+ raw.state.tasks=[task('impact-culture',anna,'culture',3,{cultureShift:true,cultureUsedHours:1}),task('impact-processing',anna,'processing',2,{processingShift:true,processingUsedHours:.5}),task('impact-training',anna,'training',2,{status:'completed',trainingCostCents:7000,completesAt:now,result:{version:1,xpGained:12}}),task('impact-communication',mael,'communication',2),task('impact-trim',mael,'trim',1,{trimQueue:true,trimMode:'manual',trimGrams:25,trimRateGramsPerHour:90,trimProgressAt:now,trimContributions:[{flowerId:'trim-manual',grams:25}]}),task('impact-administration',mael,'administration',.5),task('impact-sales',mael,'sales',2,{cityId:'brest',salesAttempts:1,successChance:30}),task('impact-player','player','communication',4,{status:'completed',completesAt:now,result:{version:1,followersOffered:999}}),task('impact-previous-day',anna,'culture',6,{day:0,status:'completed',completesAt:now})];
+ raw.state.employees[0].workDays['1']={usedHours:7,extraHours:0};raw.state.employees[1].workDays['1']={usedHours:5.5,extraHours:0};
+ raw.state.tasks.find(row=>row.id==='impact-trim').trimQualityDelta=2;raw.context.trimLots[0].completedGrams=25;raw.context.trimLots[0].completedWork=25/60;raw.context.trimLots[0].mode='manual';
+ const plans=[[[{kind:'culture',hours:3},{kind:'processing',hours:2}],[{kind:'trim',hours:1,trimMode:'manual'},{kind:'communication',hours:2}],[{kind:'administration',hours:.5},{kind:'training',skill:'processing',hours:2}],[{kind:'sales',cityId:'brest',hours:2}],[]],[[{kind:'culture',hours:1},{kind:'communication',hours:3}],[{kind:'sales',cityId:'brest',hours:2},{kind:'administration',hours:1}],[{kind:'training',skill:'culture',hours:2}],[{kind:'trim',hours:2,trimMode:'manual'}],[{kind:'processing',hours:3}]]];
+ raw.state.employees.forEach((employee,index)=>{const days=plans[index].map(day=>day.map(slot=>({...slot,costCents:getKqStaffPlannedTaskCost(slot)})));employee.weeklyPlan={enabled:true,days,nextDay:2,updatedAt:now,weeklyCostCents:getKqStaffWeeklyCost(days),history:[]}});
 }
 if(${dashboardOnly}){
  const scenario=new URLSearchParams(location.search).get('dashboard');raw.context.weeklyPlanVersion=1;
@@ -90,7 +100,7 @@ if(${sharedTrimOnly}){
  if(${sharedTrimEdgeOnly}){raw.context.trimLots[0].totalGrams=120;raw.context.trimLots[0].mode='machine';raw.context.trimLots[1].mode='manual';raw.state=applyKqStaffCommand(raw,{action:'assign',employeeId:'work-plan-mael',kind:'culture',hours:1,targetId:'test-run'},'fixture-queued-mael').state}
 }
 const applyEffects=effects=>{for(const effect of effects){if(effect.kind==='trim-work'){const lot=raw.context.trimLots.find(lot=>lot.flowerId===effect.flowerId);lot.mode=effect.mode;if(effect.unit==='g'){lot.completedGrams=Math.min(lot.totalGrams,(lot.completedGrams??0)+effect.work);lot.completedWork=lot.requiredWork*lot.completedGrams/lot.totalGrams}else{lot.completedWork=Math.min(lot.requiredWork,lot.completedWork+effect.work);if(lot.totalGrams)lot.completedGrams=lot.totalGrams*lot.completedWork/lot.requiredWork}if(lot.completedWork>=lot.requiredWork)lot.completedAt=raw.serverNow}else if(effect.kind==='sales'){raw.context.shopPartners+=effect.shopPartners;raw.context.reputation+=effect.reputation}}};
-let failNext=false,loseNextResponse=false,unavailable=(${dashboardOnly}||${employeeSheetOnly}||${weeklyPlanOnly})&&new URLSearchParams(location.search).has('read-error'),reads=0,holdSettlement=false;const calls=[],seen=new Map(),openedHarvests=[];
+let failNext=false,loseNextResponse=false,unavailable=(${impactDashboardOnly}||${dashboardOnly}||${employeeSheetOnly}||${weeklyPlanOnly})&&new URLSearchParams(location.search).has('read-error'),reads=0,holdSettlement=${impactDashboardOnly};const calls=[],seen=new Map(),openedHarvests=[];
 const settle=()=>{const settled=advanceKqStaff(raw);raw={...raw,state:settled.state,cashCents:raw.cashCents-settled.debitCents};applyEffects(settled.effects)};
 if(${workSceneOnly}){
  const scenario=new URLSearchParams(location.search).get('scene');
@@ -179,6 +189,7 @@ if(${processingWorkOnly})window.__processingStaff={consume:hours=>{raw.state.tas
 if(${weeklyPlanOnly})window.__weeklyPlan={advance:(day,hour=0)=>{raw.serverNow=new Date(Date.parse(now)+(day-1+hour/24)*KQ_GAME_DAY_MS).toISOString()},availability:value=>{unavailable=!value;api.notify('kq:staff-updated')},budget:cents=>raw.cashCents=cents};
 if(${employeeSheetOnly})window.__employeeSheet={expected:id=>{const employee=raw.state.employees.find(person=>person.id===id);return structuredClone({employee,cost:getKqStaffMonthlyCost(employee,employee.weeklyHours),levels:Object.fromEntries(Object.entries(employee.skills).map(([skill,xp])=>[skill,getKqStaffLevel(xp)]))})},availability:value=>{unavailable=!value;api.notify('kq:staff-updated')}};
 if(${dashboardOnly})window.__dashboard={availability:value=>{unavailable=!value;api.notify('kq:staff-updated')},expected:()=>{const snapshot=projectKqStaffSnapshot(raw);return structuredClone({snapshot,capacities:snapshot.state.employees.filter(employee=>employee.status==='active').map(employee=>({id:employee.id,...getKqStaffCapacity(employee,snapshot.calendar)}))})}};
+if(${impactDashboardOnly})window.__impactControl={availability:value=>{unavailable=!value;api.notify('kq:staff-updated')},pause:id=>{raw.state.employees.find(employee=>employee.id===id).weeklyPlan.enabled=false;api.notify('kq:staff-updated')},leave:id=>{raw.state.employees.find(employee=>employee.id===id).leave=[{id:'impact-leave',startDay:1,endDay:5,days:5}];api.notify('kq:staff-updated')},benefitsMissing:()=>{delete raw.benefits;api.notify('kq:staff-updated')},retire:id=>{raw.state.employees.find(employee=>employee.id===id).status='ended';api.notify('kq:staff-updated')}};
 if(${sharedTrimOnly})window.__sharedTrim={advance:minutes=>{raw.serverNow=new Date(Date.parse(now)+minutes*60000).toISOString()},availability:value=>{unavailable=!value},profile:value=>{profileState=value;api.notify('arena:profile-updated')},empty:()=>{raw.context.trimLots=[];raw.state.tasks=[]},omit:()=>{delete raw.context.trimLots}};
 if(${workSceneOnly})Object.assign(window,{__workScene:{profile:value=>{profileState=value;api.notify('arena:profile-updated')},profileReads:()=>profileReads,availability:value=>{unavailable=!value},armDeadline:milliseconds=>{raw.serverNow=new Date(Date.parse(raw.state.tasks[0].completesAt)-milliseconds).toISOString()},settle:()=>{holdSettlement=false;raw.serverNow=new Date(Math.max(...raw.state.tasks.map(task=>Date.parse(task.completesAt)))+1000).toISOString()}}});
 window.__staff={calls,openedHarvests,raw:()=>structuredClone(raw),failNext:()=>failNext=true,loseNextResponse:()=>loseNextResponse=true,unavailable:()=>unavailable=true,leaveRights:()=>{raw.state.employees[0].hiredAt='2026-10-20T12:00:00.000Z'},finish:()=>{raw.serverNow=new Date(Math.max(...raw.state.tasks.map(task=>Date.parse(task.completesAt)))+1000).toISOString()},payroll:()=>{raw.state.payroll.push({id:'pay-test',employeeId:raw.state.employees[0].id,dueAt:now,grossCents:10000,employerCents:3500,indemnityCents:0,totalCents:13500,paidCents:0})}};
@@ -258,6 +269,104 @@ try {
     await keyActivate(`[data-staff-station="${kind === 'countryside' ? 'sales' : kind}"]`);
     if (kind !== 'trim') await page.waitForSelector('[data-player-work-form]', { visible: true });
     if (kind === 'countryside') await keyActivate('[data-player-prospecting-mode="countryside"]');
+  }
+  if (impactDashboardOnly) {
+    const impact = '[data-staff-benefits-dashboard]', panel = '[data-staff-impact-panel]';
+    const sectors = ['culture', 'processing', 'trim', 'communication', 'sales', 'administration', 'training'];
+    const dayHours = [3, 2, 1, 2, 2, .5, 2], weekHours = [4, 5, 3, 5, 4, 1.5, 4];
+    const ready = () => page.waitForSelector('[data-guide-staff-ready="true"]');
+    const control = (kind, value) => `${impact} button[data-staff-impact-${kind}="${value}"]`;
+    const readHours = () => page.$eval(impact + ' [data-staff-impact-hours]', node => Number(node.getAttribute('data-hours')));
+    const selectImpact = async (kind, value) => { await keyActivate(control(kind, value)); await page.waitForFunction(selector => { const node = document.querySelector(selector); return node?.getAttribute('aria-selected') === 'true' || node?.getAttribute('aria-pressed') === 'true'; }, {}, control(kind, value)); };
+    const verifyPanel = async sector => {
+      assert.equal(await page.$$eval(panel, nodes => nodes.filter(node => node.getClientRects().length).length), 1, 'Only the selected sector panel is visible');
+      const tab = await page.$eval(control('sector', sector), node => ({ selected: node.getAttribute('aria-selected'), controls: node.getAttribute('aria-controls'), role: node.getAttribute('role') }));
+      assert.equal(tab.role, 'tab'); assert.equal(tab.selected, 'true');
+      assert(await page.$eval(panel, (node, id) => node.id === id && node.getAttribute('role') === 'tabpanel', tab.controls), 'The active tab names its real panel');
+      await layout();
+      assert(await page.$eval(impact, node => node.scrollWidth <= node.clientWidth + 1), 'The impact dashboard fits its content width');
+    };
+    const checkSectors = async expected => {
+      assert.equal(await page.$$(impact + ' button[data-staff-impact-sector]').then(nodes => nodes.length), 7, 'All seven sectors remain available');
+      for (const [index, sector] of sectors.entries()) {
+        await selectImpact('sector', sector); await verifyPanel(sector);
+        const measured = await page.$eval(panel, node => node.getAttribute('data-hours'));
+        assert.notEqual(measured, null, 'The active sector exposes its measured hours');
+        assert.equal(Number(measured), expected[index], 'The sector uses only the selected source of hours: ' + sector);
+      }
+    };
+    const load = async query => { await page.goto(origin + (query ?? ''), { waitUntil: 'networkidle0' }); await ready(); await page.waitForSelector(impact); await page.evaluate(() => document.fonts.ready); };
+    const updateFixture = async (name, ...args) => { const before = await page.evaluate(() => window.__staff.reads()); await page.evaluate(({ name, args }) => window.__impactControl[name](...args), { name, args }); await page.waitForFunction(before => window.__staff.reads() > before, {}, before); await ready(); };
+    for (const width of [320, 390, 1440]) {
+      await page.setViewport({ width, height: width < 500 ? 844 : 1100, hasTouch: width < 500 });
+      await load(); const before = await raw();
+      await selectImpact('mode', 'day'); await selectImpact('person', 'all'); assert.equal(await readHours(), 12.5);
+      await checkSectors(dayHours);
+      assert.match(await page.$eval(panel + ' [data-staff-impact-metrics="actual"] [data-impact-metric="xp-processing"] dd', node => node.textContent), /^12 XP$/);
+      assert.equal(await page.$(panel + ' [data-staff-impact-metrics="forecast"] [data-impact-metric="xp-processing"]'), null, 'Completed training is not forecast a second time');
+      for (const [sector, id, value] of [['culture', 'culture-hours', '1 h'], ['processing', 'processing-hours', '0,5 h'], ['trim', 'trim-grams', '25 g']]) {
+        await selectImpact('sector', sector); assert.equal(await page.$eval(`${panel} [data-staff-impact-metrics="actual"] [data-impact-metric="${id}"] dd`, node => node.textContent), value, 'Only recorded, correctly labelled units are shown as actual gains');
+      }
+      await selectImpact('sector', 'communication'); assert.equal(await page.$(panel + ' [data-staff-impact-metrics="actual"]'), null, 'Global followers and player receipts are not attributed to a running employee mission');
+      await selectImpact('sector', 'culture'); await page.focus(control('sector', 'culture')); await page.keyboard.press('ArrowRight');
+      await page.waitForFunction(() => document.activeElement?.getAttribute('data-staff-impact-sector') === 'processing'); await verifyPanel('processing');
+      await page.keyboard.press('End'); await page.waitForFunction(() => document.activeElement?.getAttribute('data-staff-impact-sector') === 'training'); await verifyPanel('training');
+      await page.keyboard.press('Home'); await page.waitForFunction(() => document.activeElement?.getAttribute('data-staff-impact-sector') === 'culture'); await verifyPanel('culture');
+      await (await page.$(impact)).screenshot({ path: resolve(output, `impact-dashboard-day-${width}.png`) });
+      await selectImpact('person', 'work-plan-anna'); assert.equal(await readHours(), 7);
+      await checkSectors([3, 2, 0, 0, 0, 0, 2]);
+      await selectImpact('person', 'work-plan-mael'); assert.equal(await readHours(), 5.5);
+      await checkSectors([0, 0, 1, 2, 2, .5, 0]);
+      await selectImpact('mode', 'week'); assert.equal(await readHours(), 14);
+      await selectImpact('person', 'work-plan-anna'); assert.equal(await readHours(), 12.5);
+      await selectImpact('person', 'all'); assert.equal(await readHours(), 26.5);
+      await checkSectors(weekHours);
+      assert.match(await page.$eval(impact, node => node.textContent), /prévision|prévu|prévue|prévisionnel|planifié|programm/i, 'A weekly template is explicitly conditional');
+      await selectImpact('sector', 'communication'); await (await page.$(impact)).screenshot({ path: resolve(output, `impact-dashboard-week-${width}.png`) });
+      assert.equal((await calls()).length, 0, 'Changing mode, person, sector and keyboard tabs sends no action'); assert.deepEqual(await raw(), before, 'Reading the dashboard leaves tasks, money and plans unchanged');
+      results.push({ width, scope: 'impact overview navigation', checks: ['seven sector tabs and exactly one panel', 'keyboard arrows, Home and End', 'day 12.5 h from employee tasks only', 'weekly 26.5 h from enabled plans only', 'all and individual filters', 'recorded 1 h culture, 0.5 h processing, 25 g trim and 12 XP training', 'no repeated forecast for completed training', 'no global, player or old-day receipts attributed to current employee missions', 'explicitly conditional weekly impact', 'no overflow', 'zero commands or state mutations'], mutations: 0 });
+    }
+    await page.setViewport({ width: 320, height: 844, hasTouch: true }); await load();
+    await selectImpact('mode', 'week'); await selectImpact('person', 'work-plan-anna');
+    await keyActivate(impact + ' [data-staff-impact-plan]');
+    const planner = '[data-staff-weekly-planner="work-plan-anna"]'; await page.waitForSelector(planner);
+    await keyActivate(planner + ' [data-weekly-day="0"]');
+    await page.focus(planner + ' [data-weekly-slot="0"] [data-weekly-hours]'); await page.keyboard.down('Control'); await page.keyboard.press('A'); await page.keyboard.up('Control'); await page.keyboard.type('2'); await page.keyboard.press('Tab');
+    await keyActivate(planner + ' [data-weekly-activate]'); await page.waitForSelector('dialog[open]'); assert.equal((await calls()).length, 0, 'Review remains read only');
+    await page.keyboard.press('Escape'); await page.waitForFunction(() => !document.querySelector('dialog[open]')); assert.equal(await readHours(), 12.5, 'An unsaved draft does not change the overview');
+    await keyActivate(planner + ' [data-weekly-activate]'); await button('Confirmer les changements', 'dialog'); await ready();
+    await page.waitForFunction(() => document.querySelector('[data-staff-impact-hours]')?.getAttribute('data-hours') === '11.5');
+    const saved = await raw(); assert.equal(saved.state.employees[0].weeklyPlan.days[0][0].hours, 2); assert.equal(saved.cashCents, 2500000); assert.equal((await calls()).length, 1); assert.equal((await calls())[0].action, 'set-weekly-plan');
+    await button('Actualiser'); await ready(); assert.equal(await readHours(), 11.5, 'Refreshing retains the saved plan in the overview');
+    await selectImpact('mode', 'day'); assert.equal(await readHours(), 7, 'Saving the next weekly template does not change current reservations');
+    await selectImpact('mode', 'week'); await layout();
+    results.push({ width: 320, scope: 'saved weekly plan refresh', checks: ['draft and cancellation do not alter overview', 'one explicit set-weekly-plan confirmation', 'saved plan updates overview immediately and after refresh', 'day reservations retained', 'cash unchanged', 'no overflow'], mutations: 1 });
+    await load(); await selectImpact('mode', 'week'); await updateFixture('pause', 'work-plan-mael');
+    await page.waitForFunction(() => document.querySelector('[data-staff-impact-hours]')?.getAttribute('data-hours') === '12.5');
+    await selectImpact('person', 'work-plan-mael'); assert.equal(await readHours(), 0); assert.match(await page.$eval(impact, node => node.textContent), /pause/i);
+    await selectImpact('mode', 'day'); assert.equal(await readHours(), 5.5, 'Pausing a weekly plan preserves reservations made today');
+    await selectImpact('person', 'work-plan-anna'); await updateFixture('leave', 'work-plan-anna');
+    assert.equal(await readHours(), 7, 'A recorded leave does not invent cancelled task receipts');
+    await selectImpact('mode', 'week'); assert.match(await page.$eval(impact, node => node.textContent), /congé/i);
+    await (await page.$(impact)).screenshot({ path: resolve(output, 'impact-dashboard-leave-320.png') });
+    await updateFixture('benefitsMissing'); await disclosure('[data-staff-benefits-history]', true);
+    assert.match(await page.$eval('[data-staff-benefits-history]', node => node.textContent), /indisponible|ne fournit pas/i); assert.equal((await calls()).length, 0);
+    results.push({ width: 320, scope: 'paused plans, leave and missing receipts', checks: ['paused templates excluded from week total', 'paused status explained', 'current reservations retained', 'leave shown as a planning condition', 'missing global receipts unavailable rather than zero', 'zero commands'], mutations: 0 });
+    await load(); await selectImpact('mode', 'week'); const known = await raw();
+    await page.evaluate(() => window.__impactControl.availability(false)); await page.waitForSelector('[data-staff-desk] [role="alert"]'); await page.waitForSelector('[data-staff-dashboard][data-stale="true"]');
+    assert.match(await page.$eval('[data-staff-dashboard]', node => node.textContent), /Dernières données reçues/); assert.equal(await readHours(), 26.5);
+    assert(await page.$eval(impact + ' [data-staff-impact-plan]', node => node.disabled), 'Stale data disables the scheduling action');
+    await selectImpact('person', 'work-plan-anna'); assert.equal(await readHours(), 12.5); await selectImpact('sector', 'administration'); await verifyPanel('administration');
+    assert.equal((await calls()).length, 0); assert.deepEqual(await raw(), known); await (await page.$(impact)).screenshot({ path: resolve(output, 'impact-dashboard-stale-320.png') });
+    await updateFixture('availability', true); assert.equal(await readHours(), 12.5);
+    await page.goto(origin + '?read-error', { waitUntil: 'networkidle0' }); await page.waitForSelector('[data-staff-desk] [role="alert"]'); assert.equal(await page.$(impact), null, 'A first failed read must not show invented zero impact');
+    await updateFixture('availability', true); await page.waitForSelector(impact);
+    await selectImpact('mode', 'week'); await selectImpact('person', 'work-plan-mael'); await updateFixture('retire', 'work-plan-mael');
+    await page.waitForFunction(() => { const node = document.querySelector('[data-staff-impact-person="all"]'); return node?.getAttribute('aria-pressed') === 'true' || node?.getAttribute('aria-selected') === 'true'; }); assert.equal(await page.$(control('person', 'work-plan-mael')), null);
+    assert.equal((await calls()).length, 0); await layout();
+    results.push({ width: 320, scope: 'read failure and selection recovery', checks: ['last known totals retained and labelled stale', 'read-only filters usable on stale data', 'failed first read has no fictional dashboard', 'successful retry', 'departed employee returns selection to all', 'no overflow or commands'], mutations: 0 });
+    await load('?empty&unknown'); assert.match(await page.$eval(impact, node => node.textContent), /aucun salarié|recrut/i); await checkSectors([0, 0, 0, 0, 0, 0, 0]); assert.equal((await calls()).length, 0); await (await page.$(impact)).screenshot({ path: resolve(output, 'impact-dashboard-empty-320.png') });
+    results.push({ width: 320, scope: 'confirmed empty team', checks: ['empty team explained', 'all sectors accessible', 'missing benefits not fabricated', 'no overflow or commands'], mutations: 0 });
   }
   if (benefitsOnly) {
     const ready = () => page.waitForSelector('[data-guide-staff-ready="true"]');
@@ -1881,7 +1990,7 @@ try {
       results.push({ width, scope: 'Brittany prospecting map', checks: ['four departments and eight usable city buttons', 'keyboard and touch navigation', 'changing flavor and product profiles', 'informational exploration without writes', 'exact destination hours and travel cost', 'cancellation without mutation', 'network 125→126→127', 'Brest revisited beyond former local pool', 'two travel payments only', 'completed rewards do not replay', 'no horizontal overflow'], mutations: commands.length });
     }
   }
-  for (const width of benefitsOnly || process.argv.includes('--recruitment-only') || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 390, 1440]) {
+  for (const width of impactDashboardOnly || benefitsOnly || process.argv.includes('--recruitment-only') || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 390, 1440]) {
     await page.setViewport({ width, height: width < 500 ? 844 : 1000 });
     await page.goto(origin, { waitUntil: 'networkidle0' }); await page.evaluate(() => document.fonts.ready);
     await page.waitForSelector('[data-staff-desk] [role="meter"]'); await shot(`empty-${width}`);
@@ -1955,7 +2064,7 @@ try {
     await page.evaluate(() => window.__staff.unavailable()); await button('Actualiser'); await page.waitForSelector('[role="alert"]'); await shot(`unavailable-${width}`);
     results.push({ width, checks: ['layout', 'profile avatar renderer ready', 'keyboard dialogs', 'review without mutation', 'hire', 'invalid training', 'shared capacity', 'travel confirmation', 'part-time leave and cancellation', 'payroll', 'independent workshop', 'initial lot', 'parent locking', 'workshop retry', 'actual lot counts', 'player manual trim', 'machine purchase', 'employee machine trim', 'quality penalty review', 'trim completion', 'harvest callback', 'shared hours on return to Personnel', 'unavailable isolation'], mutations: (await calls()).length });
   }
-  for (const width of benefitsOnly || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 1440]) {
+  for (const width of impactDashboardOnly || benefitsOnly || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 1440]) {
     await page.setViewport({ width, height: width < 500 ? 844 : 1000 });
     await page.goto(origin, { waitUntil: 'networkidle0' }); await button('Recruter');
     await page.waitForSelector('[data-recruitment-cycle="0"]');

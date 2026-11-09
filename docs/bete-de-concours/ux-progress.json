@@ -1,5 +1,15 @@
 {
   "updated": "2026-11-09",
+  "staffGlobalImpactDashboard": {
+    "updated": "2026-11-09",
+    "status": "Encart Ce que le travail apporte remplacé par un tableau de bord global des sept secteurs, validé et prêt à publier. Aucune migration nécessaire.",
+    "interface": "Vues Aujourd'hui et Semaine type, filtre par portrait de salarié ou équipe entière, répartition des heures avec KqAllocationBar, navigation illustrée Culture/Transformation/Trim/Communication/Prospection/Administration/Formation. Chaque secteur montre son potentiel, les résultats confirmés et ses contributeurs. Liens directs vers la journée ou la semaine du salarié. Mise à jour après enregistrement du planning ; plans en pause exclus de la projection hebdomadaire.",
+    "model": "Nouveau modèle pur kanab-quest-staff-impact. Journée : tâches salariées du jour uniquement, heures consommées/terminées, missions en cours, réserves utilisables, expirées et données inconnues distinguées. Semaine type : cinq jours des modèles actifs, projection conditionnelle aux compétences actuelles. Bonus Culture restants par différence de totaux cumulés, plafonds conservés ; cadences et bonus non additifs en plages, remise maximale, audience et XP plafonnés. Qualité trim une fois par lot. Documents administratifs seulement pour le responsable autorisé, sous plafond/réserve ; aucune autorisation rétroactive.",
+    "integrity": "Les prévisions ne sont pas des gains acquis. Données absentes affichées Non mesuré ; pas d'attribution des statistiques globales à un salarié ou à une journée. Bilan historique serveur conservé dans un volet explicitement global. Aucune commande lors du filtrage, aucune modification des salaires, coûts ou mécaniques métier. Conditions bloquantes visibles ; formules détaillées repliées.",
+    "validation": "91 tests ciblés réussis, dont 21 nouveaux tests sémantiques du modèle. TypeScript global, ESLint ciblé, diff-check et build Next de production réussis. 7 groupes navigateur du nouveau tableau plus 7 groupes de régression des bénéfices existants : 320/390/1440 px, clavier, totaux exacts, sept secteurs, filtres individuels, enregistrement de planning, pause, congés, données absentes/périmées, fin de contrat et équipe vide. Aucun débordement, erreur navigateur ou appel distant ; captures inspectées.",
+    "reports": ["output/placard-staff-ui/impact-dashboard-report.json", "output/placard-staff-ui/benefits-report.json", ".tmp/staff-impact-tests.log", ".tmp/staff-impact-final-lint.log", ".tmp/staff-impact-build.log"],
+    "next": "Confirmer commit et déploiement dans output/staff-impact-release/completion.json. Aucun changement de base à appliquer."
+  },
   "workActorRelay": {
     "updated": "2026-11-09",
     "status": "Relais joueur/salariés implémenté et validé en Culture, Trim et Transformation. Les deux migrations nécessaires sont appliquées en production ; ce checkpoint accompagne la publication du code demandée dans la session.",

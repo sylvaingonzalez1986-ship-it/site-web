@@ -306,7 +306,7 @@ export function KqStaffDesk({ embedded = false, onOpenTrim }: { embedded?: boole
 
   return <main className={styles.page}>{!embedded ? <KqChapterHeading art="staff" title="Personnel" level={1} /> : null}<div className={styles.desk} data-staff-desk data-guide-staff-ready={!!snapshot && !locked}>
     <div className={styles.overview} data-staff-overview><div className={styles.overviewStatus}><KqStaffOperationsStatus controller={controller} label="Personnel" disabled={!!controller.pending} suppressNotice={!!currentMoment} /></div></div>
-    {snapshot ? <KqStaffDashboard snapshot={snapshot} disabled={locked} stale={!!error} onOpenTeam={openTeamOverview} onRecruit={() => { setTab("candidates"); setAssignment(null); setContractTarget(null); }} onPayroll={openPayroll} onOpenWeekly={id => openEmployeePlanning("week", id)} /> : null}
+    {snapshot ? <KqStaffDashboard snapshot={snapshot} disabled={locked} stale={!!error} onOpenTeam={openTeamOverview} onRecruit={() => { setTab("candidates"); setAssignment(null); setContractTarget(null); }} onPayroll={openPayroll} onOpenWeekly={id => openEmployeePlanning("week", id)} onOpenDay={id => openEmployeePlanning("day", id)} /> : null}
     {currentMoment ? <KqStaffMoment key={currentMoment.id} moment={currentMoment} disabled={locked} onDismiss={() => dismissMoment()} onOpenEmployee={() => dismissMoment(true)} /> : null}
     {active.length >= 8 && tab === "candidates" ? <p className={styles.callout}>Les huit postes de ton équipe sont occupés. Tu peux consulter les dossiers ; aucune nouvelle embauche n’est disponible.</p> : null}
 
