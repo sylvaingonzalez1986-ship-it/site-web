@@ -1,6 +1,6 @@
 import { KQ_MISSION_TRACKS, type KqMission, type KqMissionSnapshot } from "./kanab-quest-missions";
 
-export function isKqMissionRewardUnavailable(mission: KqMission, collectionActive: boolean) {
+export function isKqMissionRewardUnavailable(mission: Pick<KqMission, "reward" | "rewardAvailable">, collectionActive: boolean) {
   const kind = mission.reward?.kind ?? "pack";
   return mission.rewardAvailable === false || (mission.rewardAvailable === undefined && kind !== "cash" && !collectionActive);
 }

@@ -71,7 +71,7 @@ try {
     await page.setViewport({width,height:900,isMobile:width<700,hasTouch:width<700});
     if(interiorsOnly) {
       await page.goto(origin,{waitUntil:'networkidle0'});
-      await click('Vendre ma production');await page.waitForSelector('[aria-label="Tes lots"]');
+      await page.click('[data-market-section="sales"]');await page.waitForSelector('[aria-label="Tes lots"]');
       await page.waitForFunction(()=>[...document.querySelectorAll('img[src$="market-workshop-sylvain-v2.webp"]')].some(image=>image.complete&&image.naturalWidth===1536));
       assert.equal(await page.evaluate(()=>window.__actions.length),0,'Browsing the harvest selection does not spend or prepare anything');
       await noOverflow();await shot('lots-'+width);
@@ -96,12 +96,12 @@ try {
     await click('Confirmer');await page.waitForFunction(()=>document.querySelector('#commerce-step-title')?.textContent==='Vente terminée');
     assert.deepEqual(await page.evaluate(()=>window.__actions.map(action=>action.action)),['prepare','quote','sell']);
     await noOverflow();
-    await click('Ma boutique');await page.waitForSelector('[aria-label="Développer ma boutique en ligne"]');
+    await page.click('[data-market-section="management"]');await page.waitForSelector('[aria-label="Développer ma boutique en ligne"]');
     assert.equal(await page.$$eval('[aria-label="Développer ma boutique en ligne"] > details[open]',items=>items.length),0,'Optional business sections start collapsed');
     await noOverflow();await shot('boutique-'+width);
-    await click('Améliorer et gérer mon site');
+    await page.click('[data-shop-view="site"]');await page.waitForSelector('[data-online-progression]');
     assert(await page.evaluate(()=>document.body.innerText.includes('2,5 %')),'Fees remain visible before paid upgrades');
-    await click('Mes ventes');await page.waitForSelector('[aria-label="Mes ventes en ligne"]');
+    await page.click('[data-market-section="dashboard"]');await page.waitForSelector('[data-online-listings-heading]');
     await noOverflow();
     await page.goto(origin+'/?finance',{waitUntil:'networkidle0'});
     await page.waitForSelector('[aria-label="Factures à régler"]');
@@ -122,9 +122,12 @@ try {
   await page.waitForFunction(()=>Boolean(document.querySelector('[aria-label="Tes lots"]')));
   assert.equal(await page.$('[aria-label="Circuits de vente"]'),null,'Refresh preserves manual navigation');
   await page.goto(origin+'/?flower=missing',{waitUntil:'networkidle0'});
-  await page.waitForSelector('[aria-label="Tes lots"]');
-  assert(await page.evaluate(()=>document.body.innerText.includes('Cette récolte n’est plus disponible')));
+  await page.waitForSelector('[data-commerce-missing-flower="missing"]');
+  assert(await page.evaluate(()=>document.body.innerText.includes('Ce lot n’est pas disponible dans le stock confirmé')));
+  assert.equal(await page.$('[aria-label="Tes lots"]'),null,'Missing harvest links never silently select another product');
   assert.equal(await page.evaluate(()=>window.__actions.length),0);
+  await page.click('[data-commerce-other-lots]');await page.waitForSelector('[aria-label="Tes lots"]');
+  assert.equal(await page.evaluate(()=>window.__actions.length),0,'Returning to available lots does not spend or prepare anything');
   }
   assert.deepEqual(errors,[]);
   await writeFile(resolve(output,interiorsOnly?'interiors-report.json':'report.json'),JSON.stringify({passed:true,results,...(!interiorsOnly?{preparedLink:true,missingLink:true,refreshPreservesSelection:true}:{}),errors},null,2));

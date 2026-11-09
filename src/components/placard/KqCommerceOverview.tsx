@@ -40,7 +40,7 @@ export function KqCommerceOverview({ data, onOpenShop }: {
   return <details className={styles.overview} aria-label="Mon commerce">
     <summary className={styles.summary}>
       <Image src={officeArt} width={88} height={68} sizes="88px" alt="" />
-      <span><strong>Mon commerce</strong><small>Ta réputation, tes clients, tes résultats.</small></span>
+      <span><strong>Mon commerce</strong></span>
       <span className={styles.summaryRank}><Trophy size={16} aria-hidden="true" /> {progress.tier.name}</span>
       <ChevronDown className={styles.chevron} size={22} aria-hidden="true" />
     </summary>

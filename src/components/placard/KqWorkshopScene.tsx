@@ -49,7 +49,6 @@ export function KqWorkshopScene({ purchasedCodes, equippedCodes, levels, mainten
     </dl>
     <div className={styles.lab} data-workshop-lab>
       <div className={styles.sceneToolbar}>
-        <p>{owned.length ? "Ouvre une machine ou une place libre." : "Ton labo est prêt à accueillir ses premières machines."}</p>
         <button type="button" onClick={() => setZoomed(value => !value)} aria-pressed={zoomed} disabled={disabled} data-lab-zoom>
           {zoomed ? <ZoomOut size={17} aria-hidden="true" /> : <ZoomIn size={17} aria-hidden="true" />}{zoomed ? "Vue d’ensemble" : "Agrandir"}
         </button>
@@ -114,6 +113,5 @@ export function KqWorkshopScene({ purchasedCodes, equippedCodes, levels, mainten
       <KqHelpNote>Les dimensions publiées servent de repère ; le dessin ne constitue pas un plan d’installation.</KqHelpNote>
       <KqHelpGrid art="help-workshop" items={machines.map(({ placement, model }) => ({ label: placement.label, value: model.basis, detail: model.sourceUrl ? <a href={model.sourceUrl} target="_blank" rel="noreferrer">Fiche fabricant</a> : undefined }))} />
     </KqHelpDashboard></details>
-    <p className={styles.note}>Ouvre une fiche pour voir le coût et les prérequis avant de confirmer.</p>
   </section>;
 }

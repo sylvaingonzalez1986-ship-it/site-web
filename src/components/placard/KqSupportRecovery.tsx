@@ -7,7 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { AppDialog } from "@/components/ui/AppDialog";
 import { KQ_HAND_SIZE } from "@/lib/kanab-quest-game";
 import { getKqSupportContinuity, getKqSupportContinuityInventory, parseKqSupportContinuityBoosters, parseKqSupportWelcomeReceipt } from "@/lib/kanab-quest-support-continuity";
-import { KQ_MISSION_COPY, getKqMissionRewardLabel, type KqMissionDestination, type KqMissionTrack } from "@/lib/kanab-quest-missions";
+import { KQ_MISSION_COPY, getKqMissionRewardLabel, type KqMissionCode, type KqMissionDestination, type KqMissionTrack } from "@/lib/kanab-quest-missions";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { KqProgressMeter } from "./KqVisuals";
 import { KqHelpDashboard, KqHelpGrid, KqHelpNote } from "./KqHelpDashboard";
@@ -22,7 +22,7 @@ const KqMissionCenter = dynamic(() => import("./KqMissionCenter").then(module =>
 export function KqSupportRecovery({ inventory, onReturnToCards, onOpenDestination }: {
   inventory: Record<string, number> | null;
   onReturnToCards: () => void;
-  onOpenDestination?: (destination: KqMissionDestination) => void;
+  onOpenDestination?: (destination: KqMissionDestination, code?: KqMissionCode) => void;
 }) {
   const api = useKqTutorialApi();
   const stock = getKqSupportContinuityInventory(inventory);
@@ -119,10 +119,10 @@ export function KqSupportRecovery({ inventory, onReturnToCards, onOpenDestinatio
     setPack(null); setCards([]); setMissionTrack(null); refresh();
     requestAnimationFrame(onReturnToCards);
   }
-  function followMission(destination: KqMissionDestination) {
+  function followMission(destination: KqMissionDestination, code?: KqMissionCode) {
     setMissionTrack(null); refresh();
     if (destination === "game" || !onOpenDestination) requestAnimationFrame(onReturnToCards);
-    else onOpenDestination(destination);
+    else onOpenDestination(destination, code);
   }
 
   // A refresh that fills the album must not dismiss an open pack or its receipt.

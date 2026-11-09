@@ -958,8 +958,17 @@ if (preview) {
       assert.equal(await page.evaluate(() => window.process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL), undefined, 'Production without a hosting variable still displays the operator-provided link');
       await page.waitForSelector('[data-financial-support]', { visible: true });
       const support = '[data-financial-support]';
+      const disclosure = support + ' > details';
+      const toggle = disclosure + ' > summary';
       const link = support + ' a';
       const before = (await fixture()).production.cashCents;
+      assert.equal(await page.$eval(disclosure, node => node.open), false, 'Support starts collapsed');
+      assert.equal(await page.$eval(toggle, node => node.textContent.trim()), 'Soutenir les producteurs');
+      await page.$eval(support, node => node.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await layout();
+      await screenshot(`financial-support-collapsed-${width}`);
+      await keyClick(toggle);
+      assert(await page.$eval(disclosure, node => node.open));
       const heading = await page.$eval(support + ' h2', node => ({ text: node.textContent.trim(), transform: getComputedStyle(node).textTransform, weight: Number(getComputedStyle(node).fontWeight) }));
       assert(heading.transform === 'uppercase' || heading.text === heading.text.toLocaleUpperCase('fr'), 'Support heading is displayed in uppercase');
       assert(heading.weight >= 700, 'Support heading is bold');
@@ -977,8 +986,8 @@ if (preview) {
       assert(await page.$eval(link, node => node.rel.includes('noopener') && node.rel.includes('noreferrer')));
       await page.$eval(support, node => { node.style.scrollMarginTop = '80px'; node.scrollIntoView({ block: 'start', behavior: 'instant' }); });
       await screenshot(`financial-support-intro-${width}`);
-      await keyClick(support + ' summary');
-      assert(await page.$eval(support + ' details', node => node.open));
+      await keyClick(support + ' details details > summary');
+      assert(await page.$eval(support + ' details details', node => node.open));
       assert.match(await page.$eval(support, node => node.textContent), /SASU Les Champs Bretons/);
       assert.match(await page.$eval(support + ' details', node => node.textContent), /Avantage en échangeAucunNi objet, bonus, accès privilégié ou avantage dans les concours/);
       assert.match(await page.$eval(support, node => node.textContent), /réduction d’impôt/);
@@ -993,6 +1002,10 @@ if (preview) {
       await layout();
       await page.$eval(support, node => node.scrollIntoView({ block: 'center' }));
       await screenshot(`financial-support-${width}`);
+      await page.focus(toggle); await page.keyboard.press('Space');
+      assert.equal(await page.$eval(disclosure, node => node.open), false, 'Support can be collapsed with the keyboard');
+      await page.click(toggle);
+      assert(await page.$eval(disclosure, node => node.open), 'Support can be opened by pointer');
       results.push({ width, heading, artwork, keyboard: true, disclosures: true, noGameMutation: true, externalNavigationPrevented: true });
     }
     await load('financial-support', 390, 'view=hub');

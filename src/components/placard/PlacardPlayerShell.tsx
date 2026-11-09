@@ -436,7 +436,7 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
         <div className={styles.viewStage} key={view} data-placard-stage={view}>
         {view === "hub" ? (
           <KqPlacardLobby onOpen={openView} onOpenCollection={() => openCollection()} highlightedBuilding={highlightedBuilding} workAvailability={workAvailability}>
-            <KqPinnedMission onChoose={() => openView("missions")} onContinue={code => { const target = getKqMissionTarget(code); openView(target.view, target.options); }} />
+            <KqPinnedMission onChoose={() => openView("missions")} onContinue={code => { const target = getKqMissionTarget(code); if (target.view === "collection") { openCollection("buddies"); return; } openView(target.view, target.options); }} />
           </KqPlacardLobby>
         ) : view === "harvests" ? (
           <KqHarvests section={harvestSection} draftOwnerId={draftOwnerId} initialFlowerId={requestedFlowerId} onOpenCulture={openWarehouseCulture} onSectionChange={(section, flowerId) => openView("harvests", { harvestSection: section === "storage" ? "storage" : undefined, flowerId,
@@ -456,7 +456,7 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
             onOpenHarvests={flowerId => openView("harvests", { harvestSection: "storage", flowerId })} />
         ) : view === "missions" ? (
           <>
-            <KqMissionCenter onOpen={(next, code) => { const target = code ? getKqMissionTarget(code) : { view: next }; openView(target.view, { ...target.options, from: "missions" }); }} />
+            <KqMissionCenter onOpen={(next, code) => { const target = code ? getKqMissionTarget(code) : { view: next }; if (target.view === "collection") { openCollection("buddies"); return; } openView(target.view, { ...target.options, from: "missions" }); }} />
             <details className={styles.progress} open={progressOpen} onToggle={event => setProgressOpen(event.currentTarget.open)}>
               <summary>Mes objectifs d’atelier <span>Investissements, filières et réputation</span></summary>
               {progressOpen ? <KqPlacardHud mode="progression" onOpenShop={openEquipmentCatalog} onOpenGame={() => openView("game")} onOpenStorage={() => openView("workshop", { warehouseSection: "storage" })} onOpenArena={() => openView("arena")} onOpenMarket={() => openView("market")} /> : null}
@@ -481,6 +481,7 @@ function PlacardPlayerShellContent({ draftOwnerId, initialGuideOpen }: { draftOw
           <div className={styles.socialPage}><KqSocialNetworks /></div>
         ) : (
           <KanabQuestDicePrototype key={view} apiScope="player" viewMode={view === "arena" ? "arena" : "game"} showWarehouseNavigation={false} initialFlowerId={requestedFlowerId}
+            onOpenMissionDestination={(destination, code) => { const target = code ? getKqMissionTarget(code) : { view: destination }; if (target.view === "collection") { openCollection("buddies"); return; } openView(target.view, { ...target.options, from: view }); }}
             initialZoneId={requestedZoneId} initialRunId={requestedRunId} initialCampaign={requestedCampaign}
             initialPreparation={view === "game" && !requestedRunId ? preparation ?? undefined : undefined}
             onPreparationChange={view === "game" && !requestedRunId ? rememberPreparation : undefined}

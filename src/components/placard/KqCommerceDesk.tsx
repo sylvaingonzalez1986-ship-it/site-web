@@ -514,7 +514,7 @@ export function KqCommerceDesk({ onOpenShop, onOpenTreasury, onOpenBusiness, onO
               <header className={channelStyles.heading}><Image src={KQ_CHANNELS.online.image} alt="" width={42} height={48} sizes="42px" /><div><h3>Ta boutique en ligne</h3><small>Ventes progressives, même hors connexion</small></div></header>
               <div className={channelStyles.amount}><strong>Prix libres</strong><small>Paquets de 5 ou 10 g · emballages en supplément</small></div>
               <div className={channelStyles.notes}>
-                <p>{Number.isFinite(data.online.site.feePercent) ? `${data.online.site.feePercent.toLocaleString("fr-FR")} % de frais sur les ventes.` : "Frais de vente à confirmer."} Une audience à développer.</p>
+                <p>{Number.isFinite(data.online.site.feePercent) ? `${data.online.site.feePercent.toLocaleString("fr-FR")} % de frais sur les ventes.` : "Frais de vente à confirmer."}</p>
                 {setup ? <p className={channelStyles.warning}>{setup}</p> : null}
                 {stock.remainingUnits < 50 ? <p className={channelStyles.warning}>5 g minimum pour préparer un paquet.</p> : null}
                 {(stock.storage?.capacity?.overflowUnits ?? 0) > 0 ? <p className={channelStyles.warning}>Range le surplus sans contenant avant de préparer des paquets.</p> : null}

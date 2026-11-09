@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   try {
     if (!await isKqPlayerRequestEnabled()) return NextResponse.json({ error: "Introuvable." }, { status: 404, headers });
     const session = await getCurrentCustomerSessionByBackend("identity");
-    if (!session) return NextResponse.json({ error: "Connecte-toi pour récupérer ton pack." }, { status: 401, headers });
+    if (!session) return NextResponse.json({ error: "Connecte-toi pour récupérer ta récompense." }, { status: 401, headers });
     const rate = await hitRateLimit({ key: `kq_missions:${session.customerId}`, windowSeconds: 60, maxHits: 20 });
     if (!rate.allowed) {
       logRateLimitRejection({ endpoint: "POST /api/arena/placard/missions", key: `kq_missions:${session.customerId}`, ip: getRequestIp(request), actorEmail: session.customer.email, retryAfterSeconds: rate.retryAfterSeconds, maxHits: 20, windowSeconds: 60 });

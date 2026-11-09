@@ -1,0 +1,501 @@
+{
+  "auditDate": "2026-11-09",
+  "notice": "Supabase Pro Micro et Vercel Pro declares par utilisateur (3pro interprete comme Pro, pas comme trois sieges). Scenarios de trafic synthetiques, pas mesures. USD hors taxes. Fluid Paris, un projet, un siege et CDN forfaitaire actif restent des hypotheses; baseline site fictivement nulle pour illustration seulement.",
+  "observed": {
+    "supabasePlan": "Pro (declare utilisateur)",
+    "supabaseCompute": "Micro (declare utilisateur)",
+    "vercelPlan": "Pro (declaration 3pro interpretee comme Pro)",
+    "vercelSeats": null,
+    "regions": null,
+    "budgetEur": null,
+    "baselineUsage": null
+  },
+  "baseline": {
+    "fixedUsd": 45,
+    "cdnUsd": 0,
+    "supabaseOverageUsd": 0,
+    "vercelOverageUsd": 0,
+    "totalUsd": 45
+  },
+  "capacity": [
+    {
+      "active": 10,
+      "connectedWith20PercentHidden": 13,
+      "status": "non teste; trafic estime, capacite inconnue",
+      "profiles": {
+        "calme": {
+          "apiRps": 0.167,
+          "authRpsAtLeast": 0.167,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 0.083,
+          "cultivationSqlWriteFloorPerSecond": 0.167
+        },
+        "normal": {
+          "apiRps": 0.833,
+          "authRpsAtLeast": 0.833,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 0.333,
+          "cultivationSqlWriteFloorPerSecond": 0.667
+        },
+        "intense": {
+          "apiRps": 3.333,
+          "authRpsAtLeast": 3.333,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 1,
+          "cultivationSqlWriteFloorPerSecond": 2
+        }
+      }
+    },
+    {
+      "active": 50,
+      "connectedWith20PercentHidden": 63,
+      "status": "non teste; trafic estime, capacite inconnue",
+      "profiles": {
+        "calme": {
+          "apiRps": 0.833,
+          "authRpsAtLeast": 0.833,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 0.417,
+          "cultivationSqlWriteFloorPerSecond": 0.833
+        },
+        "normal": {
+          "apiRps": 4.167,
+          "authRpsAtLeast": 4.167,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 1.667,
+          "cultivationSqlWriteFloorPerSecond": 3.333
+        },
+        "intense": {
+          "apiRps": 16.667,
+          "authRpsAtLeast": 16.667,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 5,
+          "cultivationSqlWriteFloorPerSecond": 10
+        }
+      }
+    },
+    {
+      "active": 100,
+      "connectedWith20PercentHidden": 125,
+      "status": "non teste; trafic estime, capacite inconnue",
+      "profiles": {
+        "calme": {
+          "apiRps": 1.667,
+          "authRpsAtLeast": 1.667,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 0.833,
+          "cultivationSqlWriteFloorPerSecond": 1.667
+        },
+        "normal": {
+          "apiRps": 8.333,
+          "authRpsAtLeast": 8.333,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 3.333,
+          "cultivationSqlWriteFloorPerSecond": 6.667
+        },
+        "intense": {
+          "apiRps": 33.333,
+          "authRpsAtLeast": 33.333,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 10,
+          "cultivationSqlWriteFloorPerSecond": 20
+        }
+      }
+    },
+    {
+      "active": 250,
+      "connectedWith20PercentHidden": 313,
+      "status": "non teste; trafic estime, capacite inconnue",
+      "profiles": {
+        "calme": {
+          "apiRps": 4.167,
+          "authRpsAtLeast": 4.167,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 2.083,
+          "cultivationSqlWriteFloorPerSecond": 4.167
+        },
+        "normal": {
+          "apiRps": 20.833,
+          "authRpsAtLeast": 20.833,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 8.333,
+          "cultivationSqlWriteFloorPerSecond": 16.667
+        },
+        "intense": {
+          "apiRps": 83.333,
+          "authRpsAtLeast": 83.333,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 25,
+          "cultivationSqlWriteFloorPerSecond": 50
+        }
+      }
+    },
+    {
+      "active": 500,
+      "connectedWith20PercentHidden": 625,
+      "status": "non teste; trafic estime, capacite inconnue",
+      "profiles": {
+        "calme": {
+          "apiRps": 8.333,
+          "authRpsAtLeast": 8.333,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 4.167,
+          "cultivationSqlWriteFloorPerSecond": 8.333
+        },
+        "normal": {
+          "apiRps": 41.667,
+          "authRpsAtLeast": 41.667,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 16.667,
+          "cultivationSqlWriteFloorPerSecond": 33.333
+        },
+        "intense": {
+          "apiRps": 166.667,
+          "authRpsAtLeast": 166.667,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 50,
+          "cultivationSqlWriteFloorPerSecond": 100
+        }
+      }
+    },
+    {
+      "active": 1000,
+      "connectedWith20PercentHidden": 1250,
+      "status": "non teste; trafic estime, capacite inconnue",
+      "profiles": {
+        "calme": {
+          "apiRps": 16.667,
+          "authRpsAtLeast": 16.667,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 8.333,
+          "cultivationSqlWriteFloorPerSecond": 16.667
+        },
+        "normal": {
+          "apiRps": 83.333,
+          "authRpsAtLeast": 83.333,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 33.333,
+          "cultivationSqlWriteFloorPerSecond": 66.667
+        },
+        "intense": {
+          "apiRps": 333.333,
+          "authRpsAtLeast": 333.333,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 100,
+          "cultivationSqlWriteFloorPerSecond": 200
+        }
+      }
+    },
+    {
+      "active": 5000,
+      "connectedWith20PercentHidden": 6250,
+      "status": "non teste; trafic estime, capacite inconnue",
+      "profiles": {
+        "calme": {
+          "apiRps": 83.333,
+          "authRpsAtLeast": 83.333,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 41.667,
+          "cultivationSqlWriteFloorPerSecond": 83.333
+        },
+        "normal": {
+          "apiRps": 416.667,
+          "authRpsAtLeast": 416.667,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 166.667,
+          "cultivationSqlWriteFloorPerSecond": 333.333
+        },
+        "intense": {
+          "apiRps": 1666.667,
+          "authRpsAtLeast": 1666.667,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 500,
+          "cultivationSqlWriteFloorPerSecond": 1000
+        }
+      }
+    },
+    {
+      "active": 10000,
+      "connectedWith20PercentHidden": 12500,
+      "status": "non teste; trafic estime, capacite inconnue",
+      "profiles": {
+        "calme": {
+          "apiRps": 166.667,
+          "authRpsAtLeast": 166.667,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 83.333,
+          "cultivationSqlWriteFloorPerSecond": 166.667
+        },
+        "normal": {
+          "apiRps": 833.333,
+          "authRpsAtLeast": 833.333,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 333.333,
+          "cultivationSqlWriteFloorPerSecond": 666.667
+        },
+        "intense": {
+          "apiRps": 3333.333,
+          "authRpsAtLeast": 3333.333,
+          "realtimeConnections": 0,
+          "realtimeMessagesPerSecond": 0,
+          "sqlReadStatementsPerSecond": null,
+          "sqlWriteStatementsPerSecond": null,
+          "cultivationSqlReadFloorPerSecond": 1000,
+          "cultivationSqlWriteFloorPerSecond": 2000
+        }
+      }
+    }
+  ],
+  "monthly": [
+    {
+      "dau": 100,
+      "mau": 500,
+      "sessions": 6000,
+      "activeMinutes": 120000,
+      "avgActive": 2.778,
+      "assumedPeakActive": 11.111,
+      "invocations": 624000,
+      "cdnRequests": 804000,
+      "apiGb": 12.48,
+      "assetGb": 18,
+      "supabaseEgressGb": 31.2,
+      "appendedGb": 0.24,
+      "estimates": [
+        {
+          "cpuHours": 3.467,
+          "memoryGbHours": 17.333,
+          "meteredVercelBeforeCreditUsd": 1.99,
+          "fixedUsd": 45,
+          "cdnUsd": 0,
+          "supabaseOverageUsd": 0.015,
+          "vercelOverageUsd": 0,
+          "totalUsd": 45.015,
+          "incrementalVersusIllustrativeBaselineUsd": 0.015
+        },
+        {
+          "cpuHours": 13.867,
+          "memoryGbHours": 277.333,
+          "meteredVercelBeforeCreditUsd": 7.627,
+          "fixedUsd": 45,
+          "cdnUsd": 0,
+          "supabaseOverageUsd": 0.015,
+          "vercelOverageUsd": 0,
+          "totalUsd": 45.015,
+          "incrementalVersusIllustrativeBaselineUsd": 0.015
+        }
+      ]
+    },
+    {
+      "dau": 1000,
+      "mau": 5000,
+      "sessions": 60000,
+      "activeMinutes": 1200000,
+      "avgActive": 27.778,
+      "assumedPeakActive": 111.111,
+      "invocations": 6240000,
+      "cdnRequests": 8040000,
+      "apiGb": 124.8,
+      "assetGb": 180,
+      "supabaseEgressGb": 312,
+      "appendedGb": 2.4,
+      "estimates": [
+        {
+          "cpuHours": 34.667,
+          "memoryGbHours": 173.333,
+          "meteredVercelBeforeCreditUsd": 19.899,
+          "fixedUsd": 45,
+          "cdnUsd": 20,
+          "supabaseOverageUsd": 5.73,
+          "vercelOverageUsd": 0,
+          "totalUsd": 70.73,
+          "incrementalVersusIllustrativeBaselineUsd": 25.73
+        },
+        {
+          "cpuHours": 138.667,
+          "memoryGbHours": 2773.333,
+          "meteredVercelBeforeCreditUsd": 76.267,
+          "fixedUsd": 45,
+          "cdnUsd": 20,
+          "supabaseOverageUsd": 5.73,
+          "vercelOverageUsd": 56.267,
+          "totalUsd": 126.997,
+          "incrementalVersusIllustrativeBaselineUsd": 81.997
+        }
+      ]
+    },
+    {
+      "dau": 5000,
+      "mau": 25000,
+      "sessions": 300000,
+      "activeMinutes": 6000000,
+      "avgActive": 138.889,
+      "assumedPeakActive": 555.556,
+      "invocations": 31200000,
+      "cdnRequests": 40200000,
+      "apiGb": 624,
+      "assetGb": 900,
+      "supabaseEgressGb": 1560,
+      "appendedGb": 12,
+      "estimates": [
+        {
+          "cpuHours": 173.333,
+          "memoryGbHours": 866.667,
+          "meteredVercelBeforeCreditUsd": 99.493,
+          "fixedUsd": 45,
+          "cdnUsd": 100,
+          "supabaseOverageUsd": 118.65,
+          "vercelOverageUsd": 79.493,
+          "totalUsd": 343.143,
+          "incrementalVersusIllustrativeBaselineUsd": 298.143
+        },
+        {
+          "cpuHours": 693.333,
+          "memoryGbHours": 13866.667,
+          "meteredVercelBeforeCreditUsd": 381.333,
+          "fixedUsd": 45,
+          "cdnUsd": 100,
+          "supabaseOverageUsd": 118.65,
+          "vercelOverageUsd": 361.333,
+          "totalUsd": 624.983,
+          "incrementalVersusIllustrativeBaselineUsd": 579.983
+        }
+      ]
+    },
+    {
+      "dau": 10000,
+      "mau": 50000,
+      "sessions": 600000,
+      "activeMinutes": 12000000,
+      "avgActive": 277.778,
+      "assumedPeakActive": 1111.111,
+      "invocations": 62400000,
+      "cdnRequests": 80400000,
+      "apiGb": 1248,
+      "assetGb": 1800,
+      "supabaseEgressGb": 3120,
+      "appendedGb": 24,
+      "estimates": [
+        {
+          "cpuHours": 346.667,
+          "memoryGbHours": 1733.333,
+          "meteredVercelBeforeCreditUsd": 198.987,
+          "fixedUsd": 45,
+          "cdnUsd": 300,
+          "supabaseOverageUsd": 259.8,
+          "vercelOverageUsd": 178.987,
+          "totalUsd": 783.787,
+          "incrementalVersusIllustrativeBaselineUsd": 738.787
+        },
+        {
+          "cpuHours": 1386.667,
+          "memoryGbHours": 27733.333,
+          "meteredVercelBeforeCreditUsd": 762.667,
+          "fixedUsd": 45,
+          "cdnUsd": 300,
+          "supabaseOverageUsd": 259.8,
+          "vercelOverageUsd": 742.667,
+          "totalUsd": 1347.467,
+          "incrementalVersusIllustrativeBaselineUsd": 1302.467
+        }
+      ]
+    }
+  ],
+  "budgets": [
+    {
+      "budgetEur": 50,
+      "fixedEurAtIllustrativeFx": 45,
+      "fixedWithIllustrativeTaxEur": 54,
+      "beforeUsageAndOtherSiteCostsEur": 5
+    },
+    {
+      "budgetEur": 100,
+      "fixedEurAtIllustrativeFx": 45,
+      "fixedWithIllustrativeTaxEur": 54,
+      "beforeUsageAndOtherSiteCostsEur": 55
+    },
+    {
+      "budgetEur": 200,
+      "fixedEurAtIllustrativeFx": 45,
+      "fixedWithIllustrativeTaxEur": 54,
+      "beforeUsageAndOtherSiteCostsEur": 155
+    }
+  ],
+  "exclusions": [
+    "production capacity not measured",
+    "actual existing site usage unknown",
+    "actual compute upgrade need unknown",
+    "images/cache/builds/observability/storage deployment/mail options unmeasured",
+    "physical prizes and payment fees excluded",
+    "MAU sum assumes disjoint cohorts; use union when known",
+    "CDN tier is steady-state next-cycle estimate, not automatic immediate overage"
+  ]
+}

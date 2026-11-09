@@ -30,10 +30,11 @@ export function readKqPinnedMissionProgress(value: unknown, code: KqMissionCode)
     && typeof row.claimable === "boolean" && typeof row.claimed === "boolean" && typeof row.unlocked === "boolean" ? row : null;
 }
 
-export type KqMissionTarget = { view: KqMissionDestination; options?: { harvestSection?: "storage"; marketSection?: "sales" | "dashboard" | "demands" } };
+export type KqMissionTarget = { view: KqMissionDestination; options?: { harvestSection?: "storage"; warehouseSection?: "processing"; marketSection?: "sales" | "dashboard" | "demands" } };
 /** A mission opens the place where the decision is made, not merely the equipment room. */
 export function getKqMissionTarget(code: KqMissionCode): KqMissionTarget {
   const definition = KQ_MISSION_DEFINITIONS.find(item => item.code === code)!;
+  if (definition.track === "trim") return { view: "workshop", options: { warehouseSection: "processing" } };
   if (["cured_lots", "quality_cured_lots"].includes(definition.metric)) return { view: "harvests", options: { harvestSection: "storage" } };
   if (["transformed_batches", "transformed_routes", "prepared_batches"].includes(definition.metric)) return { view: "market", options: { marketSection: "sales" } };
   if (["online_dual_aroma_sales", "online_satisfied_dual_aroma_periods"].includes(definition.metric)) return { view: "market", options: { marketSection: "demands" } };

@@ -1,0 +1,156 @@
+{
+  "ok": true,
+  "checks": 19,
+  "results": [
+    {
+      "width": 320,
+      "view": "hub",
+      "directNavigationEntry": true,
+      "noPracticeButton": true,
+      "keyboard": true,
+      "drawerAndHistorySafe": true,
+      "contextAndProgressPreserved": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 320,
+      "view": "harvests",
+      "directNavigationEntry": true,
+      "noPracticeButton": true,
+      "keyboard": true,
+      "drawerAndHistorySafe": true,
+      "contextAndProgressPreserved": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 390,
+      "view": "hub",
+      "directNavigationEntry": true,
+      "noPracticeButton": true,
+      "keyboard": true,
+      "drawerAndHistorySafe": true,
+      "contextAndProgressPreserved": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 390,
+      "view": "harvests",
+      "directNavigationEntry": true,
+      "noPracticeButton": true,
+      "keyboard": true,
+      "drawerAndHistorySafe": true,
+      "contextAndProgressPreserved": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 1440,
+      "view": "hub",
+      "directNavigationEntry": true,
+      "noPracticeButton": true,
+      "keyboard": true,
+      "drawerAndHistorySafe": true,
+      "contextAndProgressPreserved": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 1440,
+      "view": "harvests",
+      "directNavigationEntry": true,
+      "noPracticeButton": true,
+      "keyboard": true,
+      "drawerAndHistorySafe": true,
+      "contextAndProgressPreserved": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 320,
+      "savedSnapshotEvidence": true,
+      "explicitCollectionTabs": true,
+      "compactIllustration": true,
+      "compactAcrossTabsAndReload": true,
+      "closedWithoutBanner": true,
+      "reopenedProgress": true,
+      "launchReviewNotCompletion": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 390,
+      "savedSnapshotEvidence": true,
+      "explicitCollectionTabs": true,
+      "compactIllustration": true,
+      "compactAcrossTabsAndReload": true,
+      "closedWithoutBanner": true,
+      "reopenedProgress": true,
+      "launchReviewNotCompletion": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 1440,
+      "savedSnapshotEvidence": true,
+      "explicitCollectionTabs": true,
+      "compactIllustration": true,
+      "compactAcrossTabsAndReload": true,
+      "closedWithoutBanner": true,
+      "reopenedProgress": true,
+      "launchReviewNotCompletion": true,
+      "noGameWrites": true
+    },
+    {
+      "explicitLaunchRollResolve": true,
+      "onlyThreeAuthorizedInMemoryWrites": true,
+      "noPrematureHarvest": true,
+      "allowanceRefreshedAfterEachCultureAction": true
+    },
+    {
+      "homonymousStorageIdentity": true,
+      "wrongLotCannotCompleteStorageOrCuring": true,
+      "storageNoWrites": true
+    },
+    {
+      "width": 320,
+      "trim": "tracked lot required, queued, running, partial and confirmed complete",
+      "noPrematureJury": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 390,
+      "trim": "tracked lot required, queued, running, partial and confirmed complete",
+      "noPrematureJury": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 1440,
+      "trim": "tracked lot required, queued, running, partial and confirmed complete",
+      "noPrematureJury": true,
+      "noGameWrites": true
+    },
+    {
+      "legacyTrimExemption": true,
+      "failedReadNeverCompletesTrim": true,
+      "manualSelectionWithoutFlowerUrl": true
+    },
+    {
+      "width": 320,
+      "hours": "12, 0.5, 0, failed read then next server day",
+      "sameAllowanceAsGauge": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 390,
+      "hours": "12, 0.5, 0, failed read then next server day",
+      "sameAllowanceAsGauge": true,
+      "noGameWrites": true
+    },
+    {
+      "width": 1440,
+      "hours": "12, 0.5, 0, failed read then next server day",
+      "sameAllowanceAsGauge": true,
+      "noGameWrites": true
+    },
+    {
+      "unreadableSavePreserved": true
+    }
+  ],
+  "errors": [],
+  "forbiddenRequests": []
+}

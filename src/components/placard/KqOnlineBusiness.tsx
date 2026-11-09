@@ -114,7 +114,7 @@ export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepare
       <ShopIdentity name={null} canCreate={data.computerOwned} busy={busy} onAsk={onAsk} />
       {businessDetails ? <details className={styles.rename}><summary>Calendrier et suivi du commerce</summary>{businessDetails}</details> : null}
     </> : <>
-      <div className={styles.destination}><p>Améliore ton site, tes produits et ta communication. Les prix et les commandes se gèrent dans Mon stock en vente.</p><Link className={styles.secondary} href="/arene/placard?view=market&section=dashboard" prefetch={false} onClick={event => { if (onViewSales) { event.preventDefault(); onViewSales(); } }}>Mon stock en vente<ArrowRight size={16} aria-hidden="true" /></Link></div>
+      <div className={styles.destination}><Link className={styles.secondary} href="/arene/placard?view=market&section=dashboard" prefetch={false} onClick={event => { if (onViewSales) { event.preventDefault(); onViewSales(); } }}>Mon stock en vente<ArrowRight size={16} aria-hidden="true" /></Link></div>
       <div className={styles.tabs} role="tablist" aria-label="Gérer ma boutique">{availableViews.map((item, index) => {
         const Icon = item.icon;
         return <button type="button" key={item.code} data-shop-view={item.code} ref={node => { tabs.current[index] = node; }} id={`${id}-${item.code}-tab`} role="tab" aria-label={item.label} aria-describedby={`${id}-${item.code}-hint`} aria-selected={view === item.code} aria-controls={`${id}-panel`} tabIndex={view === item.code ? 0 : -1} onClick={() => selectView(item.code)} onKeyDown={event => navigate(event, index)}><Icon size={18} aria-hidden="true" /><span><strong>{item.label}</strong><small id={`${id}-${item.code}-hint`}>{item.hint}</small></span></button>;
@@ -122,7 +122,7 @@ export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepare
       <div id={`${id}-panel`} role="tabpanel" aria-labelledby={`${id}-${view}-tab`} className={styles.viewPanel} tabIndex={0}>
       <section hidden={view !== "merch"} aria-label="Nom et collections de produits dérivés">
         <details className={styles.identity} data-shop-identity>
-          <summary><PencilLine size={20} aria-hidden="true" /><span><small>Ton entreprise</small><strong>{shop.name}</strong></span><b>Modifier le nom</b><ChevronDown size={17} aria-hidden="true" /></summary>
+          <summary><PencilLine size={20} aria-hidden="true" /><span><strong>{shop.name}</strong></span><b>Modifier le nom</b><ChevronDown size={17} aria-hidden="true" /></summary>
           <div><p>Un nom commun à tes produits dérivés, ta boutique et tes fiches produits. Modification gratuite.</p><ShopIdentity key={shop.name} name={shop.name} canCreate={false} busy={busy} onAsk={onAsk} /></div>
         </details>
         <KqMerchWorkshop data={data} busy={busy} onAsk={onAsk} onOpenBrand={() => develop("brand")} onOpenSite={() => develop("site")} />
@@ -136,7 +136,7 @@ export function KqOnlineBusiness({ data, busy, now, onAsk, onOpenShop, onPrepare
           <button type="button" className={styles.secondary} disabled={busy || (hostingCents === null && !site.renew)} data-online-renewal onClick={() => onAsk(site.renew ? "Arrêter la reconduction" : "Activer la reconduction", site.renew ? "La période déjà payée est conservée. Aucun renouvellement ne sera facturé à son terme ; les ventes en ligne seront alors suspendues." : `${hostingPrice} seront prélevés tous les 5 jours réels à partir de la prochaine échéance si les fonds suffisent. Aucun débit immédiat.`, { action: "shop-renewal", enabled: !site.renew }, 0)}>{site.renew ? "Arrêter la reconduction" : "Activer la reconduction"}</button>
         </div>
       </details> : <section className={styles.hostingSuspended} data-online-hosting="suspended" aria-label="Hébergement suspendu">
-        <div><h3>Hébergement suspendu</h3><p>Les ventes en ligne sont en pause. Réactive la boutique pour 5 jours réels.</p></div>
+        <div><h3>Hébergement suspendu</h3><p>Les ventes en ligne sont en pause.</p></div>
         <strong>{hostingPrice}<small>pour 5 jours réels</small></strong>
         <button type="button" className={styles.primary} disabled={busy || !canReactivate} data-online-reactivate onClick={() => {
           if (busy || !canReactivate || hostingCents === null) return;

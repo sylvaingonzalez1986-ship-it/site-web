@@ -81,6 +81,8 @@
 .receipt { display: grid; gap: 16px; min-width: 0; padding: 20px; margin-bottom: 22px; color: #172923; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .receiptHeader { display: flex; align-items: center; gap: 14px; min-width: 0; }
 .receiptHeader > div { min-width: 0; }
+.receiptScene { width: 120px; }
+@media (max-width: 600px) { .receiptScene { width: 80px; } }
 .receiptHeader > img { flex-shrink: 0; object-fit: contain; }
 .receiptEyebrow { display: block; margin-bottom: 5px; color: #076c61; font-size: 10px; font-weight: 800; letter-spacing: .07em; text-transform: uppercase; }
 .receipt[data-receipt-fresh] { --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
@@ -178,6 +180,8 @@
 .center .packs button:disabled { border-color: transparent; background: transparent; opacity: .6; }
 .center :is(.sections button,.toolbar button,.claim,.action,.packs button,.empty button):hover:not(:disabled),.trackFilter select:hover:not(:disabled) { color: #172923; --game-control-art:var(--game-control-gold,url("/placard/ui/control-gold-v2.webp")); }
 .empty { margin: 16px 0; font-size: 14px; line-height: 1.6; }
+.trackHeading > span:first-child { width: 72px; height: 60px; flex: 0 0 72px; }
+.track { overflow: visible; }
 @media (max-width: 600px) { .center > [data-kq-chapter] { grid-template-columns: minmax(0, 1fr) 64px; } }
 @media (max-width: 760px) {
   .sections { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px; }

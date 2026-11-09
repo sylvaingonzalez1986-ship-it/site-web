@@ -1,0 +1,18 @@
+{
+  "auditDate": "2026-11-09",
+  "notice": "Supabase Pro Micro et Vercel Pro declares par utilisateur (3pro interprete comme Pro, pas comme trois sieges). Scenarios de trafic synthetiques, pas mesures. USD hors taxes. Fluid Paris, un projet, un siege et CDN forfaitaire actif restent des hypotheses; baseline site fictivement nulle pour illustration seulement.",
+  "observed": { "supabasePlan": "Pro (declare utilisateur)", "supabaseCompute": "Micro (declare utilisateur)", "vercelPlan": "Pro (declaration 3pro interpretee comme Pro)", "vercelSeats": null, "regions": null, "budgetEur": null, "baselineUsage": null },
+  "tiers": [10, 50, 100, 250, 500, 1000, 5000, 10000],
+  "profiles": {
+    "calme": { "actionsPerMinute": 0.5, "httpPerAction": 1.5, "automaticPerMinute": 0.25 },
+    "normal": { "actionsPerMinute": 2, "httpPerAction": 2, "automaticPerMinute": 1 },
+    "intense": { "actionsPerMinute": 6, "httpPerAction": 3, "automaticPerMinute": 2 }
+  },
+  "sessions": { "days": 30, "perDay": 2, "activeMinutes": 20, "hiddenMinutes": 5, "entryHttp": 4, "peakFactor": 4, "dau": [100, 1000, 5000, 10000], "dauMauRatio": 0.2 },
+  "payloads": { "apiBytes": 20000, "supabaseBytesPerApi": 50000, "assetBytesPerSession": 3000000, "assetRequestsPerSession": 30, "appendBytesPerAction": 1000 },
+  "resources": { "cpuMsPerApi": [20, 80], "effectiveGbSecondsPerApi": [0.1, 1.6], "sqlReadsPerApi": null, "sqlWritesPerApi": null },
+  "pricing": { "supabasePlanUsd": 25, "computeUsdPerHour": 0.01344, "computeHours": 744, "computeCreditUsd": 10, "egressIncludedGb": 250, "egressUsdPerGb": 0.09, "cachedEgressIncludedGb": 250, "cachedEgressUsdPerGb": 0.03, "diskIncludedGb": 8, "diskUsdPerGb": 0.125, "storageIncludedGb": 100, "storageUsdPerGb": 0.0213, "mauIncluded": 100000, "mauUsd": 0.00325, "vercelPlanUsd": 20, "vercelCreditUsd": 20, "cpuUsdPerHour": 0.177, "memoryUsdPerGbHour": 0.0146, "invocationUsdPerMillion": 0.6, "originUsdPerGb": 0.06, "cdnOnDemandUsdPerMillion": 2.4, "cdnTransferUsdPerGb": 0.15, "cdnFlatEnabled": true, "cdnTiers": [{"requests":1000000,"gb":1000,"usd":0},{"requests":10000000,"gb":50000,"usd":20},{"requests":50000000,"gb":50000,"usd":100},{"requests":150000000,"gb":50000,"usd":300}] },
+  "illustrativeBaseline": { "vercelMeteredUsd": 0, "cdnRequests": 0, "cdnGb": 0, "supabaseEgressGb": 0, "supabaseCachedEgressGb": 0, "databaseGb": 8, "storageGb": 0, "mau": 0, "otherFixedUsd": 0 },
+  "currency": { "eurPerUsd": 1, "notice": "Parite purement pedagogique; PAS un cours de change verifie.", "taxRate": 0, "taxSensitivity": 0.2 },
+  "budgetExamplesEur": [50, 100, 200]
+}

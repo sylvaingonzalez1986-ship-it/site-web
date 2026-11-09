@@ -49,6 +49,7 @@ const sources = [
   "supabase/migrations/20261010000500_botte_situations_epic.sql",
   "supabase/migrations/20261015000300_kq_mission_journey.sql",
   "supabase/migrations/20261018000900_kq_harvest_tiers_v2.sql",
+  "supabase/migrations/20261109000200_kq_mission_progression.sql",
 ];
 await mkdir(output, { recursive: true });
 const sourceTexts = Object.fromEntries(await Promise.all(sources.map(async path => [path, await readFile(resolve(root, path), "utf8")])));
@@ -63,6 +64,10 @@ try {
   const definitionsSql = sourceTexts["supabase/migrations/20261015000300_kq_mission_journey.sql"].match(/CREATE(?: OR REPLACE)? FUNCTION public\.kq_mission_definitions\(\)[\s\S]*?\$\$;/)?.[0];
   assert(definitionsSql, "Authoritative mission catalog must remain identifiable");
   await db.exec(definitionsSql);
+  const progressionDefinitions = sourceTexts["supabase/migrations/20261109000200_kq_mission_progression.sql"].match(/CREATE FUNCTION public\.kq_mission_definitions\(\)[\s\S]*?\$\$;/)?.[0];
+  assert(progressionDefinitions, "The extended mission catalogue remains identifiable");
+  await db.exec("ALTER FUNCTION public.kq_mission_definitions() RENAME TO kq_mission_definitions_before_progression");
+  await db.exec(progressionDefinitions);
   const definitions = (await db.query("SELECT * FROM public.kq_mission_definitions() ORDER BY code")).rows;
   assert.deepEqual(definitions, missions.KQ_MISSION_DEFINITIONS.map(({ code, track, step, metric, target, reward }) => ({ code, track, step, metric, target, reward })).sort((a, b) => a.code.localeCompare(b.code)), "No outdated mission targets or rewards");
   assert.match(sourceTexts["supabase/migrations/20260727000300_kq_pvp_three_card_booster.sql"], /card_count INTEGER NOT NULL DEFAULT 10/);

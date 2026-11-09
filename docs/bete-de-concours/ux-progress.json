@@ -1,11 +1,60 @@
 {
   "updated": "2026-11-09",
+  "interfaceCopyCleanup": {
+    "updated": "2026-11-09",
+    "status": "Textes allégés dans 23 composants du jeu : sous-titres redondants, slogans et consignes évidentes retirés ; titres et explications raccourcis. Modifications locales, non publiées.",
+    "scope": "Culture et soins, Atelier, Personnel, Défis, Collections, Commerce, boutique en ligne, réseaux et Finances. Coûts, prérequis, estimations, erreurs, confirmations et aides utiles conservés. Aucun changement de règles, de styles ou de base de données.",
+    "validation": "TypeScript global et ESLint des 23 composants réussis. Culture : 13 scénarios à 320/390/1440 px. Collections : filtres, agrandissement, clavier/retour du focus, erreurs et actualisation à 320/390/1440 px. Commerce/Finances : préparation, devis, vente et navigation à 320/390/900/1440 px. Aucun débordement ni erreur JavaScript dans ces parcours ; captures mobiles inspectées. Relecture indépendante des suppressions et contrôle du diff réussis.",
+    "testMaintenance": "Recettes existantes adaptées : variable publique simulée pour Collections, parcours boutique réservé au mode complet et résultats limités aux vérifications exécutées ; sélecteurs Commerce et cas du lot manquant alignés sur l’interface actuelle. Le parcours boutique complet du script Collections conserve un ancien contrôle de verrouillage du défilement qui échoue ; il reste hors de cette recette ciblée sur les albums.",
+    "reports": ["output/placard-journey-continuity/preparation-report.json", "output/placard-collection/collection-map-report.json", "output/placard-commerce-clarity/report.json"],
+    "next": "Demande traitée localement. Publier lors d’une demande explicite ; aucun nouvel audit général nécessaire."
+  },
   "shopProducerCarousel": {
     "updated": "2026-11-09",
     "status": "Fiches producteurs toujours sur une rangée horizontale, y compris avec deux producteurs. Suppression du traitement spécial qui empilait les petites sélections sur mobile ; défilement, flèches et clavier existants conservés.",
     "validation": "Recette boutique existante ciblée sur Mes voisins → Indoor : deux producteurs à 320/390/768/1440 px, même rangée et aucun débordement de page. Carrousel, flèche suivante et retour clavier vérifiés à 320/390 px ; aucun défilement superflu lorsque les deux fiches tiennent sur ordinateur. Aucune erreur JavaScript ; capture mobile inspectée et diff-check réussi.",
     "report": "output/producer-carousel-two/results.json",
     "next": "Commit et push sur origin/master demandés le 9 novembre 2026. Aucun audit supplémentaire nécessaire."
+  },
+  "seasonPrizeRulesAnalysis": {
+    "updated": "2026-11-09",
+    "status": "Règlement QRT-REG-1 complété à la demande go complete : modalités, barème détaillé, calendrier corrigé, lots et remise rédigés. Mention factuelle du médiateur conventionné encore inconnue ; texte non publié. Documentation uniquement, aucune modification applicative, migration ou attribution.",
+    "confirmed": "100 g au total à partager par saison + ventes Concours ; dé conservé ; classement doté incluant dégustation. Achat → avis validé → points → classement → gains expressément voulu. Calendrier corrigé par l'utilisateur : bêta dimanche prochain, 15/11/2026, jusqu'au 01/01/2027, puis trimestres dès le 01/01/2027. Bornes 00 h Europe/Paris, début inclus et fin exclue. Ne pas réutiliser l'hypothèse abandonnée d'une bêta janvier–mars 2027.",
+    "findings": "Le code calcule actuellement une dotation sur toutes les fleurs sans socle 100 g. Dé hebdomadaire gratuit, mais achats/avis et bonus d'achat influencent le classement ; remise des grammes via une nouvelle commande. Règlement public Booster Pack décalé des gains saisonniers ; certaines parts restent non attribuées.",
+    "proposal": "Modalités complétées : taux 1/4/7/10 %, Top 10 à 90 % + Surprise à 10 %, parts vacantes réaffectées, reports ajoutés au socle suivant, majeurs France métropolitaine/Corse, avis sincères positifs ou négatifs, données arrêtées à clôture, provisoire J+7, recours interne 7 jours, définitif J+21, remise autonome sans achat/port. Choix de rédaction non encore implémentés. Avantages d'achat cible limités à dégustation ; autres bonus et droits historiques à traiter sans neutraliser les points d'avis.",
+    "report": "docs/bete-de-concours/analyse-reglement-gains-2026-11-09.md",
+    "draft": "docs/bete-de-concours/projet-reglement-saisonnier.md",
+    "implementationNote": "docs/bete-de-concours/reglement-saisonnier-mise-en-oeuvre.md",
+    "latestPrizeClaimRequest": "L'utilisateur demande une commande obligatoire sans minimum pour réclamer le lot, en invoquant la gratuité du jeu. Ne pas présenter la remise autonome gratuite comme son choix approuvé. Vérification L121-7 7° et CJUE C-428/11 : coût imposé pour obtenir un prix annoncé gagné interdit même faible ; demande enregistrée mais non intégrée comme clause validée. Alternative proposée : commande logistique lot seul à 0 €, port compris, sans achat imposé. Article 10 reste une proposition, statut explicite en tête. Aucun code modifié.",
+    "validation": "Barème vérifié dans TS/SQL ; relecture indépendante, délais et arrondis corrigés. Calculs : parts 100 %, exemple 100 g, duels 20/5 et Gestion 90 ; six bornes UTC/minuit Paris et dimanche 15/11 validés. Trois documents, liens locaux, JSON et espaces contrôlés. Sources officielles jeux, avis, CBD, données et médiation consultées. Recherche ciblée dépôt/site/messagerie sans médiateur conventionné établi ; aucune pièce jointe ouverte, message envoyé ou donnée privée de production inspectée.",
+    "next": "Résoudre la nouvelle demande de commande pour réclamer les lots : proposer une commande à 0 € sans coût imposé, sans certifier conforme un achat obligatoire. Renseigner le médiateur réellement conventionné, examiner le montage promotionnel/CBD puis implémenter le lot cohérent avant publication. Conserver les engagements antérieurs au 15 novembre ; ne pas confondre texte rédigé et règles actives. Aucun nouvel audit global nécessaire."
+  },
+  "producerSupportDisclosure": {
+    "updated": "2026-11-09",
+    "status": "Encart replié par défaut : seul le titre Soutenir les producteurs et une flèche restent visibles. Ouverture/fermeture native au clic ou au clavier ; flèche orientée selon l’état.",
+    "preserved": "Couleurs et matières dorées, illustration, texte, informations du bénéficiaire et lien Viva conservés dans le volet. Aucun changement de paiement ni de base de données.",
+    "validation": "Recette navigateur existante adaptée et réussie : sept groupes à 320/390/1440 px, ouverture Entrée/clic et fermeture Espace, lien externe intercepté, informations du soutien, surcharge du lien et tutoriel. Aucun débordement, erreur JS, appel externe ou mutation. Captures mobile/ordinateur inspectées ; diff-check réussi.",
+    "report": "output/placard-journey-continuity/financial-support-report.json",
+    "next": "Modification locale prête à publier lors de la demande correspondante. Aucun audit supplémentaire nécessaire."
+  },
+  "missionProgression": {
+    "updated": "2026-11-09",
+    "status": "Refonte des Défis validée : 72 objectifs dans 12 secteurs, 20 niveaux permanents et 19 récompenses de palier. Migration appliquée et vérifiée le 9 novembre 2026 à la demande du joueur ; code applicatif non publié.",
+    "scope": "Culture, qualité, stockage/transformation, vente en ligne, boutiques, trim, personnel, réseaux, collection, jury, finances et prospection. Six étapes par secteur ; liens vers les actions existantes, filtre, épinglage et parcours historiques conservés.",
+    "progression": "50 à 300 XP par défi récupéré selon son étape. XP inscrite dans les reçus immuables ; anciens défis et packs comptent une seule fois, sans remboursement/recréation. Niveau 20 à 10 450 XP ; 12 600 XP possibles. Récompenses de niveau indépendantes : argent du jeu, cartes Botte rares, packs de 3/10 cartes et Buddies Commun/Argent/Or/Épique/Légendaire aux niveaux 2/5/10/15/20.",
+    "authority": "Sources serveur durables : lots réellement trimés, tâches salariées/prospection terminées, choix réseaux dédupliqués, Buddies jouables possédés, Fleurs ayant un verdict et factures intégralement soldées. Niveau inconnu distinct de zéro ; budgets, disponibilité des collections, paiements et relecture après réponse perdue respectés. Tables privées et RPC service_role, reçus atomiques, verrouillage financier historique.",
+    "artwork": "Deux illustrations imagegen avec références Sylvain/Anna/Maël et packs canoniques. Feuilles de cannabis palmées/dentelées sur les cartes, correction explicitement demandée. WebP transparents via KqPrintedArt ; texte et montants HTML. Sources/prompts : docs/bete-de-concours/ui-mission-progression-provenance.json.",
+    "migration": "supabase/migrations/20261109000200_kq_mission_progression.sql appliquée au projet eyowwwpdmfrulhkpvlnf. 43 contrôles préalables et 83 contrôles après application réussis : fonctions conformes, 72 défis, 19 récompenses de niveaux, cinq raretés disponibles, XP historiques et permissions vérifiées. Empreintes des reçus existants (hors nouvelle colonne XP), portefeuilles, cartes et packs inchangées ; fonctions historiques conservées. 370 migrations synchronisées, aucune en attente. Vérification en lecture seule, aucune récupération de récompense de test.",
+    "validation": "101 tests ciblés initiaux puis 57 tests de régression (dont 6 communs), TypeScript global et ESLint ciblé réussis. PostgreSQL isolé : 287 contrôles de progression et 122 historiques ; grants de 370 migrations validés. Navigateur final : 30 groupes à 320/390/1440 px, 7 destinations exactes, clavier/focus, indisponibilité, réponses perdues/obsolètes et ouverture des packs ; zéro débordement, erreur JS ou appel externe. Captures et illustrations v2 inspectées. Build Next de production final réussi (code de sortie 0), après relance avec accès réseau de lecture pour les contenus publics Supabase ; diff-check réussi.",
+    "reports": [
+      "output/mission-progression/report.json",
+      "output/mission-progression-migration/completion.json",
+      "scripts/test-placard-mission-progression.mjs",
+      "scripts/test-placard-mission-journey.mjs",
+      ".tmp/mission-progression-build-final.log",
+      ".tmp/mission-progression-build-result.json"
+    ],
+    "next": "Migration appliquée et vérifiée. Publier le code applicatif lors de la demande correspondante ; ne pas rejouer cette migration. Aucun nouvel audit global nécessaire."
   },
   "shopFlowerRankings": {
     "updated": "2026-11-09",

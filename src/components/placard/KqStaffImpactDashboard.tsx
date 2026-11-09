@@ -77,7 +77,7 @@ export function KqStaffImpactDashboard({ snapshot, disabled, stale, onOpenTeam, 
   }
 
   return <section className={styles.dashboard} aria-labelledby={`${rootId}-title`} data-staff-benefits-dashboard data-staff-impact-dashboard data-stale={stale || undefined}>
-    <header className={styles.heading}><KqPrintedArt kind="staff" sizes="72px" /><div><h2 id={`${rootId}-title`}>Ce que le travail apporte</h2><p>{stale ? "Dernier planning reçu · données à actualiser" : "Ton équipe, ses missions et leurs bénéfices"}</p></div></header>
+    <header className={styles.heading}><KqPrintedArt kind="staff" sizes="72px" /><div><h2 id={`${rootId}-title`}>Bilan du travail</h2>{stale ? <p>Dernier planning reçu · données à actualiser</p> : null}</div></header>
     <div className={styles.toolbar}>
       <div className={styles.modes} role="group" aria-label="Période des bénéfices">
         <button type="button" data-staff-impact-mode="day" aria-pressed={mode === "day"} onClick={() => setMode("day")}><Clock3 size={16} aria-hidden="true" />Aujourd’hui</button>

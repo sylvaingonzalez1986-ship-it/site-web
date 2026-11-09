@@ -36,9 +36,16 @@ describe("Placard mission API", () => {
     expect(mocks.rpc).not.toHaveBeenCalled();
   });
   it("rejects unknown codes and malformed bodies", async () => {
-    for (const body of [null, [], {}, { code: "__proto__" }, { code: "invented" }]) expect((await POST(request(body))).status).toBe(400);
+    for (const body of [null, [], {}, { code: "__proto__" }, { code: "invented" }, { code: "level-1" }, { code: "level-21" }, { code: "level-02" }]) expect((await POST(request(body))).status).toBe(400);
     expect((await POST(new Request("http://localhost", { method: "POST", body: "{" }))).status).toBe(400);
     expect(mocks.rpc).not.toHaveBeenCalled();
+  });
+  it("claims sector and level rewards only for the session owner, ignoring forged XP and Buddies", async () => {
+    for (const code of ["trim-one", "staff-first-task", "social-three-choices", "collection-five", "jury-one", "finance-one", "prospecting-one", "level-20"]) {
+      mocks.rpc.mockClear();
+      expect((await POST(request({ code, userId: "victim", totalXp: 999999, reward: { kind: "buddie", code: "HH2026-001" } }))).status).toBe(200);
+      expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_claim_mission", { p_user_id: "signed-in-user", p_code: code });
+    }
   });
   it("returns a conflict when current progress does not qualify", async () => {
     mocks.rpc.mockResolvedValue({ error: { message: "mission_not_ready" } });

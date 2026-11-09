@@ -37,7 +37,7 @@ function ShopNameForm({ name, busy, canCreate, onAsk, now }: { name: string | nu
     { action: name ? "rename-shop" : "create-shop", name: normalized }, name ? 0 : KQ_SHOP_CREATION_CENTS);
   }}>
     <label>Nom de ton shop<input type="text" value={value} onChange={event => setValue(event.target.value)} maxLength={80} placeholder="Le nom de ta boutique" autoComplete="off" disabled={busy} aria-describedby="kq-shop-name-help" /></label>
-    <small id="kq-shop-name-help">3 à 40 caractères. {value && !valid ? "Choisis un nom de cette longueur pour continuer." : "Ce nom apparaîtra dans ton commerce."}</small>
+    <small id="kq-shop-name-help">3 à 40 caractères.{value && !valid ? " Choisis un nom de cette longueur pour continuer." : ""}</small>
     <button className={styles.primary} disabled={busy || !valid || (name ? normalized === name : !canCreate)}>{name ? "Enregistrer le nom" : `Créer mon site · ${formatKqCash(KQ_SHOP_CREATION_CENTS)}`}</button>
   </form>;
 }
@@ -108,7 +108,7 @@ export function KqBusinessPanel({ data, now: liveNow, busy, onAsk, onOpenShop, o
               <ShopNameForm key="create" name={null} busy={busy} canCreate={data.computerOwned && !missing} onAsk={onAsk} now={now} />
             </> : <>
               <strong className={styles.shopName}>{shop.name}</strong>
-              <p>{active ? "Tes clients peuvent commander au prix de détail." : "Les ventes en ligne sont suspendues. Tes stocks et le nom de ton shop sont conservés."}</p>
+              {!active ? <p>Les ventes en ligne sont suspendues. Tes stocks et le nom de ton shop sont conservés.</p> : null}
               {shop.paidUntil && active ? <div className={styles.dueRow}><span>{shop.renew ? "Prochain renouvellement · 100 €" : "Accès payé jusqu’au"}</span><Deadline at={shop.paidUntil} now={now} /></div> : null}
               <details className={styles.explanation}><summary>Abonnement · 100 € / 5 jours réels</summary><KqHelpGrid items={[
                 { art: "help-accounts" as const, label: "Tous les 30 jours de jeu", value: "100 €", detail: "Soit 5 jours réels." },

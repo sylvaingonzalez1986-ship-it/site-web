@@ -1,4 +1,5 @@
 {
+  "missionProgression": { "kinds": ["mission-levels", "mission-rewards"], "provenance": "docs/bete-de-concours/ui-mission-progression-provenance.json", "usage": "Niveau et XP des Défis, puis reçu de récompense. Deux illustrations imagegen avec les personnages et packs canoniques." },
   "cultureDesk": { "kind": "culture-desk", "path": "/placard/ui/culture-desk-v2.webp", "provenance": "docs/bete-de-concours/ui-culture-carousel-provenance.json", "usage": "Shallow Culture carousel illustration with canonical Sylvain and Anna via KqPrintedArt; controls and live data remain HTML." },
   "mailbox": { "kind": "mailbox", "path": "/placard/ui/mailbox-v1.webp", "provenance": "docs/bete-de-concours/ui-mailbox-provenance.json", "usage": "Quartier map prop and matching mailbox chapter heading via KqPrintedArt." },
   "generator": "Built-in image_gen",

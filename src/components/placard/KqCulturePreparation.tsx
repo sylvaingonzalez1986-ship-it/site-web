@@ -12,19 +12,19 @@ export function KqCulturePreparation({ cardCount, note, disabled, disabledReason
   return <section className={styles.preparation} aria-labelledby="culture-preparation-title" data-culture-preparation>
     <div className={styles.intro}>
       <div className={styles.deckStamp} aria-hidden="true"><Layers3 /><b>{cardCount}</b><span>CARTE{cardCount > 1 ? "S" : ""}</span></div>
-      <div className={styles.heading}><h2 id="culture-preparation-title">À toi de jouer.</h2>{cardCount === 0 ? <p>Sans carte Botte du Chanvrier · départ possible avec les dés.</p> : null}</div>
+      <div className={styles.heading}><h2 id="culture-preparation-title">Lancer la culture</h2>{cardCount === 0 ? <p>Départ possible sans carte.</p> : null}</div>
       <button type="button" className={styles.edit} disabled={busy} onClick={onEditDeck}><SlidersHorizontal size={16} />Ajuster mon deck</button>
     </div>
     <ol className={styles.steps} aria-label="Le déroulement d’un tour">
       <li><span className={styles.stepNumber}>01</span><Leaf aria-hidden="true" /><div><small>AVANT LES DÉS</small><strong>Carte de préparation</strong><p>Facultative</p></div></li>
-      <li><span className={styles.stepNumber}>02</span><Dices aria-hidden="true" /><div><small>LE LANCER</small><strong>Lance les dés</strong><p>Résous l’incident</p></div></li>
+      <li><span className={styles.stepNumber}>02</span><Dices aria-hidden="true" /><div><strong>Lance les dés</strong><p>Résous l’incident</p></div></li>
       <li><span className={styles.stepNumber}>03</span><Undo2 aria-hidden="true" /><div><small>APRÈS LES DÉS</small><strong>Carte de réaction</strong><p>Facultative</p></div></li>
     </ol>
     <details className={styles.reference}>
-      <summary><Dices size={17} /><span>Les dés et les cartes : les repères utiles</span><ChevronDown size={17} /></summary>
+      <summary><Dices size={17} /><span>Dés et cartes</span><ChevronDown size={17} /></summary>
       <div className={styles.referenceContent}>
         <div className={styles.diceKey}><span data-outcome="danger"><b>1</b>Danger</span><span><b>2–3</b>Neutre</span><span data-outcome="success"><b>4–6</b>Réussite</span><small><Sparkles size={15} />Chaque 6 rapporte +1 XP au verdict.</small></div>
-        <p>Chaque couleur indique l’utilité d’une carte.</p><KqCardRoleLegend />
+        <KqCardRoleLegend />
       </div>
     </details>
     <footer className={styles.launch}>

@@ -99,7 +99,8 @@ try {
   await db.exec(await sql("20261015000300_kq_mission_journey.sql"));
   await db.exec(functionSql(await sql("20261011000300_collection_budget.sql"), "rpc_kq_card_copy_counts"));
   const catalog = (await db.query("SELECT * FROM kq_mission_definitions() ORDER BY code")).rows;
-  equal(catalog, KQ_MISSION_DEFINITIONS.map(({ code, track, step, metric, target, reward }) => ({ code, track, step, metric, target, reward }))
+  equal(catalog, KQ_MISSION_DEFINITIONS.filter(({ track }) => ["culture", "quality", "preparation", "online", "shops"].includes(track))
+    .map(({ code, track, step, metric, target, reward }) => ({ code, track, step, metric, target, reward }))
     .sort((a, b) => a.code.localeCompare(b.code)), "Every display objective and reward matches the authoritative SQL catalog");
   equal((await state(legacy)).missions.length, 30, "Thirty missions are available");
   equal((await db.query("SELECT * FROM kq_support_booster_entitlements ORDER BY id")).rows, legacyBefore, "Legacy packs are untouched by migration");

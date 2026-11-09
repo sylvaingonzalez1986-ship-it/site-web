@@ -1,4 +1,6 @@
-export const KQ_MISSION_TRACKS = ["culture", "quality", "preparation", "online", "shops"] as const;
+import type { KqMissionProgression } from "./kanab-quest-mission-progression";
+
+export const KQ_MISSION_TRACKS = ["culture", "quality", "preparation", "online", "shops", "trim", "staff", "social", "collection", "jury", "finance", "prospecting"] as const;
 export type KqMissionTrack = (typeof KQ_MISSION_TRACKS)[number];
 export const KQ_MISSION_DIFFICULTIES = {
   1: "Découverte", 2: "Apprenti", 3: "Confirmé", 4: "Expert", 5: "Maître", 6: "Légende",
@@ -6,8 +8,9 @@ export const KQ_MISSION_DIFFICULTIES = {
 export type KqMissionReward =
   | { kind: "cash"; amountCents: number }
   | { kind: "card"; code: string; name: string; rarity: "gold" }
+  | { kind: "buddie"; code?: string; name?: string; rarity: "common" | "silver" | "gold" | "epic" | "legendary" }
   | { kind: "pack"; cardCount: number };
-export type KqMissionDestination = "game" | "market" | "shop" | "workshop" | "harvests";
+export type KqMissionDestination = "game" | "market" | "shop" | "workshop" | "harvests" | "staff" | "social" | "collection" | "arena" | "treasury";
 type MissionCopy = {
   title: string; description: string; action: string; destination: KqMissionDestination;
   progressLabel: string; difficulty: keyof typeof KQ_MISSION_DIFFICULTIES;
@@ -16,7 +19,7 @@ const cash = (amountCents: number): KqMissionReward => ({ kind: "cash", amountCe
 const card = (code: string, name: string): KqMissionReward => ({ kind: "card", code, name, rarity: "gold" });
 const pack = (cardCount: number): KqMissionReward => ({ kind: "pack", cardCount });
 function mission<const Code extends string>(code: Code, track: KqMissionTrack, step: MissionCopy["difficulty"], metric: string, target: number, reward: KqMissionReward, title: string, description: string, action: string, destination: KqMissionDestination, progressLabel: string) {
-  return { code, track, step, metric, target, reward, title,
+  return { code, track, step, metric, target, reward, title, xp: step * 50,
     description: track === "quality" ? `${description} Les fleurs déjà qualifiées continuent de compter.` : description,
     action, destination, progressLabel, difficulty: step };
 }
@@ -83,6 +86,90 @@ export const KQ_MISSION_DEFINITIONS = [
     "Fournis régulièrement les boutiques pour atteindre 6 partenaires actifs.", "Retrouver mes boutiques", "market", "Boutiques partenaires actuelles"),
   mission("shop-quality-500", "shops", 6, "shop_quality_grams", 500, pack(10), "La référence des boutiques",
     "Livre au total 500 g de fleurs aux CBD shops, avec une qualité d’au moins 8/10 au moment de chaque vente.", "Poursuivre mes livraisons", "market", "Grammes de fleurs de qualité livrés"),
+  mission("trim-one", "trim", 1, "trimmed_lots", 1, cash(5000), "La première manucure",
+    "Termine le trim de 1 lot de récolte. Les lots sans matière ne comptent pas.", "Ouvrir l’atelier de trim", "workshop", "Lots entièrement trimés"),
+  mission("trim-three", "trim", 2, "trimmed_lots", 3, cash(10000), "Le geste précis",
+    "Termine le trim de 3 lots de récolte. Les lots sans matière ne comptent pas.", "Ouvrir l’atelier de trim", "workshop", "Lots entièrement trimés"),
+  mission("trim-ten", "trim", 3, "trimmed_lots", 10, card("BOTTE-006", "Deuxième chance"), "L’atelier prend vie",
+    "Termine le trim de 10 lots de récolte. Les lots sans matière ne comptent pas.", "Ouvrir l’atelier de trim", "workshop", "Lots entièrement trimés"),
+  mission("trim-twenty-five", "trim", 4, "trimmed_lots", 25, card("BOTTE-032", "Loupe à trichomes"), "Une main experte",
+    "Termine le trim de 25 lots de récolte. Les lots sans matière ne comptent pas.", "Ouvrir l’atelier de trim", "workshop", "Lots entièrement trimés"),
+  mission("trim-fifty", "trim", 5, "trimmed_lots", 50, pack(3), "Le soin du détail",
+    "Termine le trim de 50 lots de récolte. Les lots sans matière ne comptent pas.", "Ouvrir l’atelier de trim", "workshop", "Lots entièrement trimés"),
+  mission("trim-hundred", "trim", 6, "trimmed_lots", 100, pack(10), "La signature de l’atelier",
+    "Termine le trim de 100 lots de récolte. Les lots sans matière ne comptent pas.", "Ouvrir l’atelier de trim", "workshop", "Lots entièrement trimés"),
+  mission("staff-first-task", "staff", 1, "employee_tasks", 1, cash(5000), "La première délégation",
+    "Fais terminer 1 mission à tes salariés, tous postes confondus. Une affectation prévue ou annulée ne suffit pas.", "Organiser mon équipe", "staff", "Missions salariées terminées"),
+  mission("staff-five-tasks", "staff", 2, "employee_tasks", 5, cash(10000), "Chacun son rôle",
+    "Fais terminer 5 missions à tes salariés, tous postes confondus. Une affectation prévue ou annulée ne suffit pas.", "Organiser mon équipe", "staff", "Missions salariées terminées"),
+  mission("staff-fifteen-tasks", "staff", 3, "employee_tasks", 15, card("BOTTE-006", "Deuxième chance"), "Une équipe en mouvement",
+    "Fais terminer 15 missions à tes salariés, tous postes confondus. Une affectation prévue ou annulée ne suffit pas.", "Organiser mon équipe", "staff", "Missions salariées terminées"),
+  mission("staff-thirty-tasks", "staff", 4, "employee_tasks", 30, card("BOTTE-032", "Loupe à trichomes"), "Le travail porte ses fruits",
+    "Fais terminer 30 missions à tes salariés, tous postes confondus. Une affectation prévue ou annulée ne suffit pas.", "Organiser mon équipe", "staff", "Missions salariées terminées"),
+  mission("staff-sixty-tasks", "staff", 5, "employee_tasks", 60, pack(3), "Un collectif expérimenté",
+    "Fais terminer 60 missions à tes salariés, tous postes confondus. Une affectation prévue ou annulée ne suffit pas.", "Organiser mon équipe", "staff", "Missions salariées terminées"),
+  mission("staff-hundred-twenty-tasks", "staff", 6, "employee_tasks", 120, pack(10), "Une équipe de référence",
+    "Fais terminer 120 missions à tes salariés, tous postes confondus. Une affectation prévue ou annulée ne suffit pas.", "Organiser mon équipe", "staff", "Missions salariées terminées"),
+  mission("social-three-choices", "social", 1, "social_choices", 3, cash(5000), "Prendre la parole",
+    "Valide 3 choix dans les épisodes de tes réseaux. Relire un épisode ne donne pas de progression supplémentaire.", "Animer mes réseaux", "social", "Choix validés sur les réseaux"),
+  mission("social-ten-choices", "social", 2, "social_choices", 10, cash(10000), "Trouver son ton",
+    "Valide 10 choix dans les épisodes de tes réseaux. Relire un épisode ne donne pas de progression supplémentaire.", "Animer mes réseaux", "social", "Choix validés sur les réseaux"),
+  mission("social-twenty-five-choices", "social", 3, "social_choices", 25, card("BOTTE-006", "Deuxième chance"), "Au rendez-vous",
+    "Valide 25 choix dans les épisodes de tes réseaux. Relire un épisode ne donne pas de progression supplémentaire.", "Animer mes réseaux", "social", "Choix validés sur les réseaux"),
+  mission("social-fifty-choices", "social", 4, "social_choices", 50, card("BOTTE-032", "Loupe à trichomes"), "Une présence régulière",
+    "Valide 50 choix dans les épisodes de tes réseaux. Relire un épisode ne donne pas de progression supplémentaire.", "Animer mes réseaux", "social", "Choix validés sur les réseaux"),
+  mission("social-hundred-choices", "social", 5, "social_choices", 100, pack(3), "Une voix reconnue",
+    "Valide 100 choix dans les épisodes de tes réseaux. Relire un épisode ne donne pas de progression supplémentaire.", "Animer mes réseaux", "social", "Choix validés sur les réseaux"),
+  mission("social-two-hundred-choices", "social", 6, "social_choices", 200, pack(10), "L’histoire continue",
+    "Valide 200 choix dans les épisodes de tes réseaux. Relire un épisode ne donne pas de progression supplémentaire.", "Animer mes réseaux", "social", "Choix validés sur les réseaux"),
+  mission("collection-five", "collection", 1, "collection_buddies", 5, cash(5000), "Les premiers compagnons",
+    "Possède 5 Buddies jouables différents au moment de récupérer la récompense. Les doublons ne comptent qu’une fois.", "Voir mes Buddies", "collection", "Buddies jouables différents possédés"),
+  mission("collection-ten", "collection", 2, "collection_buddies", 10, cash(10000), "Dix personnalités",
+    "Possède 10 Buddies jouables différents au moment de récupérer la récompense. Les doublons ne comptent qu’une fois.", "Voir mes Buddies", "collection", "Buddies jouables différents possédés"),
+  mission("collection-fifteen", "collection", 3, "collection_buddies", 15, card("BOTTE-006", "Deuxième chance"), "Une belle diversité",
+    "Possède 15 Buddies jouables différents au moment de récupérer la récompense. Les doublons ne comptent qu’une fois.", "Voir mes Buddies", "collection", "Buddies jouables différents possédés"),
+  mission("collection-twenty-five", "collection", 4, "collection_buddies", 25, card("BOTTE-032", "Loupe à trichomes"), "La moitié du village",
+    "Possède 25 Buddies jouables différents au moment de récupérer la récompense. Les doublons ne comptent qu’une fois.", "Voir mes Buddies", "collection", "Buddies jouables différents possédés"),
+  mission("collection-thirty-five", "collection", 5, "collection_buddies", 35, pack(3), "Un album qui s’étoffe",
+    "Possède 35 Buddies jouables différents au moment de récupérer la récompense. Les doublons ne comptent qu’une fois.", "Voir mes Buddies", "collection", "Buddies jouables différents possédés"),
+  mission("collection-fifty", "collection", 6, "collection_buddies", 50, pack(10), "La grande collection",
+    "Possède 50 Buddies jouables différents au moment de récupérer la récompense. Les doublons ne comptent qu’une fois.", "Voir mes Buddies", "collection", "Buddies jouables différents possédés"),
+  mission("jury-one", "jury", 1, "jury_flowers", 1, cash(5000), "Le premier verdict",
+    "Reçois un verdict pour 1 Fleur au jury ou en duel. Chaque Fleur compte une seule fois, victoire ou défaite.", "Présenter une Fleur au jury", "arena", "Fleurs évaluées"),
+  mission("jury-five", "jury", 2, "jury_flowers", 5, cash(10000), "L’épreuve du jury",
+    "Reçois un verdict pour 5 Fleurs au jury ou en duel. Chaque Fleur compte une seule fois, victoire ou défaite.", "Présenter une Fleur au jury", "arena", "Fleurs évaluées"),
+  mission("jury-fifteen", "jury", 3, "jury_flowers", 15, card("BOTTE-006", "Deuxième chance"), "Des récoltes à comparer",
+    "Reçois un verdict pour 15 Fleurs au jury ou en duel. Chaque Fleur compte une seule fois, victoire ou défaite.", "Présenter une Fleur au jury", "arena", "Fleurs évaluées"),
+  mission("jury-thirty", "jury", 4, "jury_flowers", 30, card("BOTTE-032", "Loupe à trichomes"), "Une expérience reconnue",
+    "Reçois un verdict pour 30 Fleurs au jury ou en duel. Chaque Fleur compte une seule fois, victoire ou défaite.", "Présenter une Fleur au jury", "arena", "Fleurs évaluées"),
+  mission("jury-sixty", "jury", 5, "jury_flowers", 60, pack(3), "Habitué des concours",
+    "Reçois un verdict pour 60 Fleurs au jury ou en duel. Chaque Fleur compte une seule fois, victoire ou défaite.", "Présenter une Fleur au jury", "arena", "Fleurs évaluées"),
+  mission("jury-hundred", "jury", 6, "jury_flowers", 100, pack(10), "Cent fleurs sous les regards",
+    "Reçois un verdict pour 100 Fleurs au jury ou en duel. Chaque Fleur compte une seule fois, victoire ou défaite.", "Présenter une Fleur au jury", "arena", "Fleurs évaluées"),
+  mission("finance-one", "finance", 1, "supplier_invoices_paid", 1, cash(5000), "La première facture réglée",
+    "Solde 1 facture fournisseur de montant positif. Les paiements partiels ne comptent pas encore.", "Voir mes finances", "treasury", "Factures fournisseurs intégralement réglées"),
+  mission("finance-three", "finance", 2, "supplier_invoices_paid", 3, cash(10000), "Des comptes suivis",
+    "Solde 3 factures fournisseurs de montant positif. Les paiements partiels ne comptent pas encore.", "Voir mes finances", "treasury", "Factures fournisseurs intégralement réglées"),
+  mission("finance-ten", "finance", 3, "supplier_invoices_paid", 10, card("BOTTE-006", "Deuxième chance"), "Tenir ses engagements",
+    "Solde 10 factures fournisseurs de montant positif. Les paiements partiels ne comptent pas encore.", "Voir mes finances", "treasury", "Factures fournisseurs intégralement réglées"),
+  mission("finance-twenty-five", "finance", 4, "supplier_invoices_paid", 25, card("BOTTE-032", "Loupe à trichomes"), "Une gestion régulière",
+    "Solde 25 factures fournisseurs de montant positif. Les paiements partiels ne comptent pas encore.", "Voir mes finances", "treasury", "Factures fournisseurs intégralement réglées"),
+  mission("finance-fifty", "finance", 5, "supplier_invoices_paid", 50, pack(3), "La confiance des fournisseurs",
+    "Solde 50 factures fournisseurs de montant positif. Les paiements partiels ne comptent pas encore.", "Voir mes finances", "treasury", "Factures fournisseurs intégralement réglées"),
+  mission("finance-hundred", "finance", 6, "supplier_invoices_paid", 100, pack(10), "Une gestion éprouvée",
+    "Solde 100 factures fournisseurs de montant positif. Les paiements partiels ne comptent pas encore.", "Voir mes finances", "treasury", "Factures fournisseurs intégralement réglées"),
+  mission("prospecting-one", "prospecting", 1, "prospecting_tasks", 1, cash(5000), "La première tournée",
+    "Termine 1 mission de prospection, toi-même ou avec ton équipe. Le succès du partenariat n’est pas exigé.", "Préparer une tournée", "staff", "Missions de prospection terminées"),
+  mission("prospecting-five", "prospecting", 2, "prospecting_tasks", 5, cash(10000), "Sur les routes",
+    "Termine 5 missions de prospection, toi-même ou avec ton équipe. Le succès du partenariat n’est pas exigé.", "Préparer une tournée", "staff", "Missions de prospection terminées"),
+  mission("prospecting-fifteen", "prospecting", 3, "prospecting_tasks", 15, card("BOTTE-006", "Deuxième chance"), "De ville en ville",
+    "Termine 15 missions de prospection, toi-même ou avec ton équipe. Le succès du partenariat n’est pas exigé.", "Préparer une tournée", "staff", "Missions de prospection terminées"),
+  mission("prospecting-thirty", "prospecting", 4, "prospecting_tasks", 30, card("BOTTE-032", "Loupe à trichomes"), "Un territoire familier",
+    "Termine 30 missions de prospection, toi-même ou avec ton équipe. Le succès du partenariat n’est pas exigé.", "Préparer une tournée", "staff", "Missions de prospection terminées"),
+  mission("prospecting-sixty", "prospecting", 5, "prospecting_tasks", 60, pack(3), "La Bretagne au quotidien",
+    "Termine 60 missions de prospection, toi-même ou avec ton équipe. Le succès du partenariat n’est pas exigé.", "Préparer une tournée", "staff", "Missions de prospection terminées"),
+  mission("prospecting-hundred", "prospecting", 6, "prospecting_tasks", 100, pack(10), "Toujours en chemin",
+    "Termine 100 missions de prospection, toi-même ou avec ton équipe. Le succès du partenariat n’est pas exigé.", "Préparer une tournée", "staff", "Missions de prospection terminées"),
 ] as const;
 export type KqMissionDefinition = (typeof KQ_MISSION_DEFINITIONS)[number];
 export type KqMissionCode = KqMissionDefinition["code"];
@@ -90,11 +177,12 @@ export const KQ_MISSION_COPY = Object.fromEntries<MissionCopy>(KQ_MISSION_DEFINI
 
 export type KqMission = {
   code: KqMissionCode; track: KqMissionTrack; step: number; target: number; progress: number;
+  xp?: number;
   reward: KqMissionReward; rewardAvailable: boolean;
   cardCount: number; claimed: boolean; unlocked: boolean; claimable: boolean;
   entitlementId: string | null; packAvailable: boolean | null;
 };
-export type KqMissionSnapshot = { collectionActive: boolean; missions: KqMission[] };
+export type KqMissionSnapshot = { collectionActive: boolean; missions: KqMission[]; progression?: KqMissionProgression };
 export type KqMissionContinuation =
   | { status: "pending" }
   | { status: "next"; mission: KqMission }
@@ -119,6 +207,7 @@ export function getKqMissionContinuation(snapshot: KqMissionSnapshot | null, rec
 export type KqMissionClaim = {
   entitlementId: string | null; cardCount: number; replayed: boolean; reward: KqMissionReward;
   cardInstanceId?: string | null; cashAfterCents?: number | null;
+  xpAwarded?: number;
 };
 export function isKqMissionCode(value: unknown): value is KqMissionCode {
   return typeof value === "string" && Object.hasOwn(KQ_MISSION_COPY, value);
@@ -126,5 +215,9 @@ export function isKqMissionCode(value: unknown): value is KqMissionCode {
 export function getKqMissionRewardLabel(reward: KqMissionReward): string {
   if (reward.kind === "cash") return `${(reward.amountCents / 100).toLocaleString("fr-FR")} € de jeu`;
   if (reward.kind === "card") return `${reward.name} · carte rare`;
+  if (reward.kind === "buddie") {
+    const rarity = { common: "Commun", silver: "Argent", gold: "Or", epic: "Épique", legendary: "Légendaire" }[reward.rarity];
+    return `${reward.name ? `${reward.name} · ` : ""}Buddie ${rarity}`;
+  }
   return `Pack de ${reward.cardCount} cartes`;
 }

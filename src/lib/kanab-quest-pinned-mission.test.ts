@@ -47,5 +47,9 @@ describe("pinned mission facts and destinations", () => {
     expect(getKqMissionTarget("online-aroma-duo")).toEqual({ view: "market", options: { marketSection: "demands" } });
     expect(getKqMissionTarget("first-online-sale")).toEqual({ view: "market", options: { marketSection: "dashboard" } });
     expect(getKqMissionTarget("beautiful-flower")).toEqual({ view: "game" });
+    expect(getKqMissionTarget("trim-one")).toEqual({ view: "workshop", options: { warehouseSection: "processing" } });
+    expect(getKqMissionTarget("collection-five")).toEqual({ view: "collection" });
+    expect(getKqMissionTarget("staff-first-task")).toEqual({ view: "staff" });
+    expect(getKqMissionTarget("jury-one")).toEqual({ view: "arena" });
   });
 });

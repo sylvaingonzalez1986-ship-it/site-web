@@ -121,7 +121,7 @@ export function KqTrimWorkbench({ snapshot, prepare, disabled, stale, snapshotRe
   };
   const requestedEmployee = snapshot.state.employees.find(employee => employee.id === initialEmployeeId && employee.status === "active");
   return <section className={styles.form} aria-label="Atelier de trim" data-guide-trim-ready={!stale && !disabled}>
-    <header className={styles.sectionHeader}><div><h2>Le trim des récoltes</h2><p className={styles.muted}>Toi et ton équipe préparez les fleurs ensemble. L’atelier traite automatiquement les récoltes compatibles, des plus anciennes aux plus récentes.</p></div></header>
+    <header className={styles.sectionHeader}><div><h2>Trim des récoltes</h2><p className={styles.muted}>Les récoltes compatibles sont traitées des plus anciennes aux plus récentes.</p></div></header>
     <dl className={styles.numbers} aria-label="Récoltes en attente de trim"><div><dt>Reste à préparer</dt><dd>{remaining === null ? "Quantité à vérifier" : grams(remaining)}</dd></div><div><dt>Récoltes à préparer</dt><dd>{unfinished.length}</dd></div></dl>
     {initialEmployeeId && initialEmployeeId !== "player" ? <p className={styles.callout} data-trim-assigned-employee={initialEmployeeId}>{requestedEmployee ? <><strong>{requestedEmployee.name}</strong> est présélectionné. Choisis sa méthode et ses heures avant de confirmer.</> : "Le salarié choisi n’est plus disponible. Choisis une autre personne avant de confirmer."}</p> : null}
     <SharedTrimForm snapshot={snapshot} prepare={prepare} disabled={disabled} stale={stale} snapshotReceivedAt={snapshotReceivedAt} playerProfile={playerProfile} initialEmployeeId={initialEmployeeId} />

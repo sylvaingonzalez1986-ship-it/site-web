@@ -1,0 +1,13 @@
+{
+  "isolated": true,
+  "remoteRequests": 0,
+  "method": "Existing mission-progression PGlite fixture setup; actual metrics and state RPC; synthetic completed archive payload matching completeTask's zero-work culture reservation",
+  "archiveStatus": "completed",
+  "reservedHours": 0.5,
+  "usedHours": 0,
+  "progressBefore": 0,
+  "progressAfter": 1,
+  "claimable": true,
+  "claimedRewards": 0,
+  "limitation": "Direct synthetic archive insert: does not execute completeTask, archive transition trigger, or HTTP integration; those paths were inspected statically. No reward claim executed."
+}

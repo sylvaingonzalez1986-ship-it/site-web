@@ -33,8 +33,8 @@ export function KqBotteCardDetail({ card, copies, onClose }: { card: KqSupportCa
         {guide.examples.length ? <section className={styles.examples}><h3>Elle répond à ces problèmes</h3><ul>{guide.examples.map(name => <li key={name}>{name}</li>)}</ul></section> : null}
         <section className={styles.effect}><h3>Ce qu’elle t’apporte</h3><p>{guide.benefit}</p></section>
         <section className={styles.limit}><h3>Sa limite</h3><p>{guide.risk}</p></section>
-        {card.rarity === "epic" ? <p className={styles.epicLimit}>Une seule carte épique peut être jouée par culture. Choisis le moment où son secours compte le plus.</p> : null}
-        <p className={styles.consumable}>Une carte jouée consomme un exemplaire. Les cartes conservées restent dans ta collection.</p>
+        {card.rarity === "epic" ? <p className={styles.epicLimit}>Une seule carte épique peut être jouée par culture.</p> : null}
+        <p className={styles.consumable}>Une carte jouée consomme un exemplaire.</p>
         <button type="button" className={styles.return} onClick={onClose}>Revenir aux cartes</button>
       </section>
     </div>
@@ -91,7 +91,7 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
   return createPortal(<>
     <dialog ref={dialog} className={styles.collectionDialog} data-placard-collections aria-labelledby="botte-collection-title" onCancel={(event) => { event.preventDefault(); onClose(); }} onKeyDown={(event) => { if (event.key === "Escape") event.stopPropagation(); }} onClick={(event) => { if (clickedBackdrop(event)) onClose(); }}>
       <div className={styles.albumLayout}>
-        <KqChapterHeading art="collection" title="Collections" titleId="botte-collection-title" compact actions={<button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button>}><p>Tes cartes, tes Buddies et tes prochaines découvertes.</p></KqChapterHeading>
+        <KqChapterHeading art="collection" title="Collections" titleId="botte-collection-title" compact actions={<button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button>} />
         <div data-farm-guide-host />
         <div className={styles.albumTabs} role="tablist" aria-label="Choisir une collection">
           {(["botte", "buddies"] as const).map(kind => <button key={kind} type="button" role="tab" id={`collection-tab-${kind}`} data-collection-tab={kind} aria-selected={album === kind} aria-controls={`collection-panel-${kind}`} tabIndex={album === kind ? 0 : -1} onClick={() => setAlbum(kind)} onKeyDown={event => {
@@ -111,7 +111,7 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
         <div className={styles.cardsArea} aria-busy={loading}>
           {loading ? <p role="status" className={styles.notice}>{inventory ? "Actualisation de tes cartes…" : "Ouverture de ton album…"}</p> : null}
           {error ? <div role="alert" className={styles.error}><p>{error}</p><button type="button" onClick={() => void refresh()}>Réessayer</button></div> : null}
-          {inventory ? <><p className={styles.hint}><ZoomIn size={16} aria-hidden="true" /> Clique sur une carte pour l’agrandir, même si elle te manque.</p><div className={styles.grid}>{visible.map((card) => {
+          {inventory ? <><div className={styles.grid}>{visible.map((card) => {
             const count = inventory[card.code] ?? 0, role = getKqCardRole(card), artwork = getKqCardArtwork(card.code);
             return <button type="button" key={card.code} className={styles.card} data-owned={count > 0} data-rarity={card.rarity} data-card-code={card.code} style={{ "--card-role": role.color } as CSSProperties} onClick={() => setSelected(card)} aria-label={`Voir ${card.name}, ${RARITIES[card.rarity]} : ${count > 0 ? `${count} exemplaire(s)` : "manquante"}`} aria-haspopup="dialog">
               <span className={styles.thumbnail}>{artwork ? <Image src={artwork} alt="" width={1024} height={1536} sizes="(max-width: 480px) 42vw, (max-width: 800px) 28vw, 210px" /> : null}</span>

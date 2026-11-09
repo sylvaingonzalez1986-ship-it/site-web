@@ -78,8 +78,7 @@ export function KqPlayerWorkDesk({ snapshot, disabled, prepare, fixedKind }: Pro
 
   if (fixedKind === "processing" && snapshot.context.processingWorkVersion === 1) return <div className={styles.form} data-player-processing-entry>
     <KqProgressMeter label="Tes heures réservées aujourd’hui" value={workday.usedHours} max={workday.dailyHours} valueLabel={`${hoursLabel(workday.usedHours)} / ${hoursLabel(workday.dailyHours)}`} hint={`${hoursLabel(workday.remainingHours)} disponibles.`} />
-    <p>Choisis un lot dans Commerce pour lancer ou reprendre sa transformation à l’Atelier. Le devis indique les heures nécessaires selon son volume et la cadence des machines.</p>
-    <p>Si le lot est confié à un salarié, il utilise sa réserve Transformation et garde tes heures intactes.</p>
+    <p>Le devis dans Commerce indique les heures nécessaires. Un salarié utilise ses propres heures de transformation.</p>
     <Link href="/arene/placard?view=market&section=sales" prefetch={false} className={styles.primary}>Choisir un lot à transformer</Link>
   </div>;
 

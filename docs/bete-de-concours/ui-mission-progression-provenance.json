@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-09",
+  "generator": "Built-in image_gen",
+  "purpose": "Illustrations du parcours permanent des Défis. Sylvain, Anna et Maël conservent leurs identités et la direction cartoon encrée du jeu. Chiffres, texte et interactions en HTML.",
+  "assets": [
+    {
+      "kind": "mission-levels",
+      "path": "/placard/ui/mission-levels-v1.webp",
+      "source": "output/imagegen/kq-mission-levels-v1.png",
+      "prompt": "Use case: style-transfer / identity-preserve. Asset type: one transparent illustrated hero vignette for the permanent levels and XP section of the existing French farming card game Kanab Quest. Input image 1 is the canonical Sylvain identity and ink/halftone style; image 2 gives the canonical Anna and Maël heads; image 3 is the existing teal-and-gold booster pack design reference. Create a cohesive new scene of the SAME three adults celebrating earned experience: Sylvain in the middle climbing one low cream stone step with a small gold star medallion held proudly in his open gloved hand, Anna with her ginger ponytail on the left holding a grower's notebook, Maël with his chestnut curls on the right presenting one teal-and-gold sealed card pack. Keep all three recognizable rounded faces, dot/pill eyes, confident irregular black outlines, playful French vintage cartoon proportions. Sylvain is clean shaven, black hair, tan and teal cap with black brim, tan shirt and teal trousers, white gloves. No beard, no moustache. The two teammates have modest teal/cream work clothes. Friendly accomplished expressions. Compact waist-up group plus one low step, all hands and heads visible, simple uncluttered silhouette readable at 240px. Palette cream #fff1d6, deep teal #087b70, gold #efc451, apricot #ffad5c, black ink. Flat screenprint colours and restrained dotted halftone shadows, no gradients or glossy 3D. Landscape 3:2 composition, generous transparent margins. CRITICAL actual alpha transparency around the complete group. No opaque rectangle, no landscape backdrop, no UI, no bar, no letters, no numbers, no words, no watermark. All live XP, level and rewards are added separately in HTML. Do not draw extra characters, do not invent new mascots.",
+      "references": [
+        "public/sylvain.png",
+        "public/placard/ui/staff-v1.webp",
+        "public/placard/shop-item-packs-v2.webp"
+      ],
+      "processing": "Sharp contain resize 768×512, WebP quality88 alphaQuality100, alpha préservé. Aucune retouche de visage ou détourage algorithmique.",
+      "usage": "KqPrintedArt, scène du panneau niveau et XP"
+    },
+    {
+      "kind": "mission-rewards",
+      "path": "/placard/ui/mission-rewards-v2.webp",
+      "source": "output/imagegen/kq-mission-rewards-v2.png",
+      "editReference": "output/imagegen/kq-mission-rewards-v1.png",
+      "revision": "Les trois cartes portent des feuilles de cannabis palmées, étroites et dentelées, à la demande explicite du joueur. Identité, accessoires et alpha conservés.",
+      "editPrompt": "Use case: precise-object-edit. Edit ONLY the three botanical symbols drawn on the three collectible cards in this exact image. Replace the generic oval tree leaves with clearly recognizable HEMP / CANNABIS LEAVES: each card face has ONE palmate cannabis leaf with exactly seven long narrow pointed serrated leaflets radiating from one central point, a long central leaflet, shorter paired side leaflets, small stalk. Deep teal leaf fill and strong black ink outline, matching the original cartoon. The three cannabis leaf silhouettes must remain readable at small size. CRITICAL invariants: preserve Sylvain's identical clean-shaven face, cap, body, pose, hands, all three card shapes and frames, the chest, the two foil packs, coins, sparkles, composition, colours, shadows and halftone texture unchanged. Preserve actual alpha transparency outside the illustration. No generic oval leaves, no tree leaves, no text, no numbers, no new objects or characters. Only change the symbols on the three cards; everything else identical.",
+      "prompt": "Use case: style-transfer / identity-preserve. Asset type: one transparent reward receipt illustration for the existing French Kanab Quest cartoon farming/card game. Input image 1 is canonical Sylvain, preserve his identity exactly. Input image 2 is the existing teal-and-gold foil card-pack/chest design. Create a NEW scene with the same cheerful clean-shaven Sylvain, short black hair, tan/teal cap and black brim, tan shirt, teal trousers and white gloves, kneeling beside a small open reward chest and holding out a fan of THREE collectible cards, card faces with simple leaf motifs only. Two teal-and-gold unopened foil packs and a few modest gold game coins rest inside the chest. No real currency symbols. Preserve his rounded face, black pill-shaped eyes, smile, ink outlines and restrained halftone printing texture. Warm flat colours: cream #fff1d6, teal #087b70, gold #efc451 and apricot #ffad5c. A few small hand-drawn gold sparkle marks are allowed. A single compact cohesive object group with complete silhouette, square composition, all head and hands visible, generous transparent margin, readable at 160px wide. Genuinely transparent alpha background. No beard or moustache. No background panel, no landscape, no words or letters, no numbers, no banners, no logo, no watermark, no UI, no gradients, no glossy or 3D rendering. This is decorative artwork; actual card identities and quantities will be separate accessible HTML.",
+      "references": [
+        "public/sylvain.png",
+        "public/placard/shop-item-packs-v2.webp"
+      ],
+      "processing": "Sharp contain resize 512×512, WebP quality88 alphaQuality100, alpha préservé.",
+      "usage": "KqPrintedArt, reçu de récompense; dessin décoratif sans valeur contractuelle, le reçu HTML fait foi"
+    }
+  ]
+}

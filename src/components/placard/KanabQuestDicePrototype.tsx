@@ -93,6 +93,7 @@ import { KqCultureCarePanel } from "./KqCultureCarePanel";
 import { KqCannabinoidReport } from "./KqCannabinoidReport";
 import { addKqBoosterToInventory, applyKqArenaStreakReward, openKqSupportBooster } from "@/lib/kanab-quest-booster";
 import { claimKqChallenges, evaluateKqChallenges, getKqChallengeProgress, getKqDailyChallenges, getKqGameChallengeDate } from "@/lib/kanab-quest-challenges";
+import type { KqMissionCode, KqMissionDestination } from "@/lib/kanab-quest-missions";
 import { buildKqCollectionDeck, buildKqRecommendedDeck, getKqCardChallengeFit, getKqDeckCoverage, getKqOpeningHandChance, sanitizeKqDeckSelection, summarizeKqCardEconomy } from "@/lib/kanab-quest-economy";
 import { applyKqBattleToRanking, createKqRankProfile, getKqLocalLeaderboard, getKqMatchmaking, type KqRankProfile } from "@/lib/kanab-quest-ranking";
 import { createLocalKqRepository, type KqBurnReceipt, type KqFavoriteDeck, type KqRepository } from "@/lib/kanab-quest-repository";
@@ -378,6 +379,7 @@ type KqDiceProps = {
   onOpenArena?: () => void;
   onOpenGame?: () => void;
   onOpenMarket?: (flowerId?: string) => void;
+  onOpenMissionDestination?: (destination: KqMissionDestination, code?: KqMissionCode) => void;
   onOpenStorage?: (flowerId?: string) => void;
   onOpenRun?: (selection: KqClientRunSelection) => void;
   onOpenWarehouse?: (zoneId?: string) => void;
@@ -407,6 +409,7 @@ function KqGameSession({
   onOpenArena,
   onOpenGame,
   onOpenMarket,
+  onOpenMissionDestination,
   onOpenStorage,
   initialFlowerId,
   initialZoneId,
@@ -2318,7 +2321,7 @@ function KqGameSession({
           data-preparation-deck={setupOpen && viewMode !== "arena" ? selectedCards.join(",") : undefined}
           data-preparation-heritage={setupOpen && viewMode !== "arena" ? selectedHeritage : undefined}>
           <header className={`${styles.cultureIntro} ${isPlayerMode && viewMode !== "arena" ? styles.preparationIntro : ""}`} data-culture-intro>
-            {isPlayerMode && viewMode !== "arena" ? <div><h1 className={styles.cultureIntroTitle}>Préparer mes cultures</h1><p>Choisis tes Buddies, puis tes cartes. Tout se prépare ici.</p></div> : <h1 className={styles.cultureIntroTitle}>{contextZoneLabel ?? "Cultures"}</h1>}
+            {isPlayerMode && viewMode !== "arena" ? <div><h1 className={styles.cultureIntroTitle}>Préparer mes cultures</h1></div> : <h1 className={styles.cultureIntroTitle}>{contextZoneLabel ?? "Cultures"}</h1>}
             <Image src="/placard/map/culture-barn-sylvain-v1.webp" alt="" width={1536} height={512} loading="eager" sizes="(max-width: 760px) 100vw, 720px" />
           </header>
           <details className={styles.setupRules} data-culture-setup-help>
@@ -2393,7 +2396,7 @@ function KqGameSession({
                   startingXp={preparationStartingXp} loading={remoteBurnsEnabled && remoteCollection.loading} error={remoteBurnsEnabled ? remoteCollection.error : ""} />
                 {isPlayerMode ? <KqSupportRecovery inventory={remoteCollection.loading || remoteCollection.error ? null : activeInventory}
                   onReturnToCards={() => document.querySelector<HTMLElement>("[data-deck-preparation]")?.focus({ preventScroll: true })}
-                  onOpenDestination={destination => { if (destination === "market") onOpenMarket?.(); else if (destination === "workshop" || destination === "harvests") onOpenWarehouse?.(initialZoneId); }} /> : null}
+                  onOpenDestination={(destination, code) => { if (onOpenMissionDestination) onOpenMissionDestination(destination, code); else if (destination === "market" && onOpenMarket) onOpenMarket(); else if ((destination === "workshop" || destination === "harvests") && onOpenWarehouse) onOpenWarehouse(initialZoneId); else router.push(`/arene/placard?view=${destination === "collection" ? "missions" : destination}`); }} /> : null}
                 <div className={styles.setupDeckActions}><button type="button" data-recommended-deck disabled={remoteBurnsEnabled && (remoteCollection.loading || Boolean(remoteCollection.error))} onClick={applyRecommendedDeck}>Deck conseillé</button><button type="button" disabled={selectedCards.length === 0} onClick={saveFavoriteDeck}>{favoriteDeck ? "Enregistrer ce favori" : "Garder comme favori"}</button><button type="button" disabled={!favoriteDeck || remoteBurnsEnabled && (remoteCollection.loading || Boolean(remoteCollection.error))} onClick={restoreFavoriteDeck}>Reprendre mon favori</button><button type="button" disabled={selectedCards.length === 0} onClick={() => setSelectedCards([])}>Retirer les cartes</button></div>
                 {deckNotice ? <p role="status">{deckNotice}</p> : null}
                 <KqInventoryCarousel inventory={activeInventory} selectedCodes={selectedCards} onAdd={addCardCopy} onRemove={removeCardCopy}
@@ -2415,15 +2418,15 @@ function KqGameSession({
           </div> : <KqBuddieCarousel buddies={KQ_BUDDIES} artwork={ownedBuddieArtwork} selectedCode={selectedBuddie} rotation={remoteBurnsEnabled ? buddieRotation : undefined} onSelect={setSelectedBuddie} />}
           <h2 id="placard-deck" tabIndex={-1} className={styles.deckSectionTitle}>{isPlayerMode ? "3" : "2"}. Botte du Chanvrier <small>{selectedCards.length} carte{selectedCards.length > 1 ? "s" : ""}</small></h2>
           <p className={`${styles.deckNotice} ${styles.deckSelectionNotice}`} role="status" aria-live="polite">{deckNotice || "Ajoute autant de copies que tu en possèdes. Chaque copie jouée sera brûlée."}</p>
-          <div className={styles.deckOdds}><div><span>Taille du deck</span><strong>{selectedCards.length}</strong></div><div><span>Références différentes</span><strong>{selectedReferenceCount}</strong></div><p><b>À retenir :</b> plus le deck est grand, plus il offre de solutions, mais plus une carte précise devient difficile à piocher dans une main de {KQ_HAND_SIZE} cartes.</p></div>
-          <div className={styles.deckCoverage}><span>Couverture des situations</span><div>{Object.entries(COVERAGE_LABELS).map(([tag, label]) => { const count = deckCoverage[tag as keyof typeof COVERAGE_LABELS]; return <b key={tag} data-empty={count === 0 || undefined}>{label}<small>{count}</small></b>; })}<b data-versatile><Sparkles /> Polyvalentes<small>{deckCoverage.versatile}</small></b></div><p>Un zéro signale un angle mort, pas une interdiction : les dés et les cartes polyvalentes permettent toujours de jouer.</p></div>
+          <div className={styles.deckOdds}><div><span>Taille du deck</span><strong>{selectedCards.length}</strong></div><div><span>Références différentes</span><strong>{selectedReferenceCount}</strong></div><p>Plus le deck est grand, moins une carte précise a de chances d’apparaître dans ta main de {KQ_HAND_SIZE} cartes.</p></div>
+          <div className={styles.deckCoverage}><span>Couverture des situations</span><div>{Object.entries(COVERAGE_LABELS).map(([tag, label]) => { const count = deckCoverage[tag as keyof typeof COVERAGE_LABELS]; return <b key={tag} data-empty={count === 0 || undefined}>{label}<small>{count}</small></b>; })}<b data-versatile><Sparkles /> Polyvalentes<small>{deckCoverage.versatile}</small></b></div><p>Même à zéro, les dés et les cartes polyvalentes restent utilisables.</p></div>
           <div className={styles.deckQuickActions}><span>Composition rapide</span><div><button type="button" data-recommended-deck onClick={applyRecommendedDeck}>Deck conseillé</button><button type="button" onClick={() => applyCollectionDeck("one-each")}>1 de chaque</button><button type="button" onClick={() => applyCollectionDeck("all-copies")}>Toutes mes copies</button><button type="button" disabled={selectedCards.length === 0} onClick={() => { setSelectedCards([]); setDeckNotice("Deck vidé. Tu peux commencer sans carte Botte du Chanvrier."); }}>Vider</button></div></div>
           <div className={styles.favoriteDeckActions}><span>Deck favori · local</span><div><button type="button" disabled={selectedCards.length === 0} onClick={saveFavoriteDeck}>{favoriteDeck ? "Remplacer le favori" : "Enregistrer"}</button><button type="button" disabled={!favoriteDeck} onClick={restoreFavoriteDeck}>Restaurer</button><button type="button" disabled={!favoriteDeck} onClick={deleteFavoriteDeck}>Supprimer</button></div></div>
           <div className={styles.deckFilters} aria-label="Filtrer les cartes Botte du Chanvrier">{([['all', 'Toutes'], ['equipment', 'Équipement'], ['know-how', 'Savoir-faire'], ['luck', 'Chance']] as const).map(([value, label]) => <button key={value} type="button" data-selected={deckFilter === value || undefined} aria-pressed={deckFilter === value} onClick={() => setDeckFilter(value)}>{label}</button>)}</div>
           <label className={styles.deckRarityFilter}>Rareté<select aria-label="Filtrer le deck par rareté" value={deckRarity} onChange={event => setDeckRarity(event.target.value)}><option value="all">Toutes les raretés</option>{Object.entries(KQ_CARD_RARITY_LABELS).map(([code, label]) => <option key={code} value={code}>{label}</option>)}</select></label>
-          <p className={styles.deckNotice}>Les épiques offrent un secours puissant et ciblé. Une seule carte épique peut être jouée par culture.</p>
+          <p className={styles.deckNotice}>Une seule carte épique peut être jouée par culture.</p>
           <div className={styles.deckChoices}>{supportCards.map((card) => { const challengeFit = getKqCardChallengeFit(card, rewardableDailyChallenges.map((challenge) => challenge.code)); const selectedCopies = selectedCards.filter((code) => code === card.code).length; const ownedCopies = activeInventory[card.code] ?? 0; const drawChance = getKqOpeningHandChance(selectedCards.length, selectedCopies); return <article key={card.code} className={styles.deckChoiceCard} data-selected={selectedCopies > 0 || undefined} data-empty={ownedCopies <= 0 || undefined} data-challenge-fit={challengeFit || undefined}><CardArtwork code={card.code} name={card.name} /><span>{CATEGORY_LABELS[card.category]}</span>{challengeFit ? <i className={styles.challengeFit}><Star /> Aide défi</i> : null}<strong>{card.name}</strong><CardEffectGuide card={card} /><em>{ownedCopies} copie(s) · {card.xpCost} XP</em>{selectedCopies > 0 ? <small className={styles.drawChance}>{drawChance}% dans la première main</small> : null}<div><button type="button" aria-label={`Retirer une copie de ${card.name}`} disabled={selectedCopies <= 0} onClick={() => removeCardCopy(card.code)}>−</button><b>{selectedCopies} / {ownedCopies}</b><button type="button" aria-label={`Ajouter une copie de ${card.name}`} disabled={selectedCopies >= ownedCopies} onClick={() => addCardCopy(card.code)}>+</button></div></article>; })}</div>
-          <div className={styles.pbiReserve}><span>Suivi vivant · intrants et protection biologique</span><p>Observe gratuitement les problèmes pendant la culture. Retrouve les intrants et les auxiliaires dans la boutique et la réserve du panneau de santé. Ils ne prennent aucune place dans le deck.</p></div>
+          <div className={styles.pbiReserve}><span>Suivi vivant · intrants et protection biologique</span><p>Observation gratuite dans Santé. Les intrants et auxiliaires s’y achètent et restent hors du deck.</p></div>
           {isPlayerMode && !api.isTutorial ? <KqCultureContract disabled={remoteAction !== null || careBusy || pendingStart} onBusyChange={setContractBusy} /> : null}
           {playerPresentation ? <section className={styles.setupLaunch} data-culture-preparation aria-labelledby="culture-preparation-title">
             <div><h2 id="culture-preparation-title">Prêt à cultiver ?</h2><p>{isPlayerMode ? "6 étapes communes. Dés, cartes et soins font avancer tous tes Buddies." : "6 étapes à jouer. Le sol vivant est inclus ; le coût d’énergie sera présenté avant de commencer."}</p>{buddieStartBlockReason ? <p className={styles.setupLaunchWarning} role="status">{buddieStartBlockReason}</p> : null}</div>
@@ -3025,7 +3028,6 @@ function KqGameSession({
                 <button type="button" data-hand-filter="playable" aria-pressed={handFilter === "playable"} disabled={cardChoices.playableCount === 0} onClick={() => setHandFilterChoice({ scope: handFilterScope, value: "playable" })}>Jouables <b>{cardChoices.playableCount}</b></button>
                 <button type="button" data-hand-filter="all" aria-pressed={handFilter === "all"} onClick={() => setHandFilterChoice({ scope: handFilterScope, value: "all" })}>Toutes <b>{availableCards.length}</b></button>
               </nav>
-              <p className={styles.handFilterHint}>Chaque carte apparaît une fois ; « Main ×2 » indique deux copies.</p>
               {displayedCards.length > 1 ? <p className={styles.handScrollHint}>Fais défiler les cartes · au clavier : ← →.</p> : null}
               <div key={`${handFilterScope}:${handFilter}`} className={styles.cardRow} data-culture-hand-cards role="region" aria-label="Cartes de ta main" aria-keyshortcuts="ArrowLeft ArrowRight" tabIndex={0}
                 onKeyDown={event => {

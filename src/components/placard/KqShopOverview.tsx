@@ -85,7 +85,7 @@ export function KqShopOverview({ data, loading, refreshing, error, now, headingR
 
   return <main className={styles.overview} data-screen="overview" data-shop-overview>
     <header className={styles.heading}>
-      <h1 ref={headingRef} data-commerce-view-heading tabIndex={-1}>Ma boutique en bref</h1>
+      <h1 ref={headingRef} data-commerce-view-heading tabIndex={-1}>Ma boutique</h1>
       <button type="button" className={styles.refresh} onClick={onRefresh} disabled={loading || refreshing} aria-label="Actualiser la synthèse"><RefreshCw size={17} aria-hidden="true" /><span>{refreshing ? "Actualisation…" : "Actualiser"}</span></button>
     </header>
     {error ? <p className={styles.error} role="alert">{error} <button type="button" onClick={onRefresh} disabled={refreshing}>Réessayer</button></p> : null}

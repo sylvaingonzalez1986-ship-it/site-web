@@ -1,0 +1,65 @@
+{
+  "ok": true,
+  "checks": 5,
+  "results": [
+    {
+      "scenario": "Keyboard section back to hub",
+      "viewport": 320,
+      "focus": {
+        "tag": "BODY",
+        "text": "Démo locale · retrouver sa préparation et sa récolteChoix, plan et lots fictifs en mémoire. Aucun co",
+        "html": "<body><div id=\"root\"><aside class=\"fixture-tools\"><strong>Démo locale · retrouver sa préparation et sa récolte</strong><p>Choix, plan et lots fictifs en mémoire. Aucun compte réel.</p><label>Parcours <select><option>preparation</option><opt"
+      }
+    },
+    {
+      "scenario": "Lost staff response then Cancel and retry",
+      "firstCommand": {
+        "action": "trim",
+        "employeeId": null,
+        "mode": "manual",
+        "hours": 0.5,
+        "expectedCostCents": 0,
+        "requestKey": "195506ba-7a25-49e7-9e3b-095af6d9a3da"
+      },
+      "secondCommand": {
+        "action": "trim",
+        "employeeId": null,
+        "mode": "manual",
+        "hours": 0.5,
+        "expectedCostCents": 0,
+        "requestKey": "0793586d-1a5d-4bab-811e-0920b35c347c"
+      },
+      "changedKey": true
+    },
+    {
+      "scenario": "Reload after unacknowledged staff command",
+      "hasRecoveryDialog": false,
+      "storedKeys": {
+        "local": [],
+        "session": []
+      }
+    },
+    {
+      "scenario": "Staff response 401",
+      "dialog": "Rejoindre le trim manuel\n\nL’atelier traite automatiquement les récoltes compatibles, des plus anciennes aux plus récentes. Les autres travailleurs continuent en parallèle. Les heures choisies sont entièrement réservées, même si les fleurs disponibles sont épuisées avant la fin.\n\nQui travaille\nToi\nMéthode\nManuel\nCadence\n60 g / h de jeu\nHeures réservées\n0,5 h\nQuantité maximale prévue\n30 g\nDurée de cette tâche\n5 min réelles\nDébut prévu · heure réelle\n7 nov., 13:00\nFin prévue · heure réelle\n7 nov., 13:05\nContribution à la présentation · estimation\n+1 point / 100\nPaiement immédiat\n0 €\n\nNon autorisé.\n\nANNULER\nRÉESSAYER LA CONFIRMATION",
+      "loginLinks": 0
+    },
+    {
+      "scenario": "Staff response held pending, Escape",
+      "dialogOpen": true,
+      "buttons": [
+        {
+          "text": "ANNULER",
+          "disabled": true
+        },
+        {
+          "text": "ENREGISTREMENT…",
+          "disabled": true
+        }
+      ],
+      "requestHasAbortSignal": false
+    }
+  ],
+  "errors": [],
+  "forbiddenRequests": []
+}

@@ -1,0 +1,97 @@
+{
+  "date": "2026-11-09",
+  "status": "Rapport livre; capacite de production non determinable et validation critique restante explicite",
+  "report": "rapport.md",
+  "gitBase": "70ce99c5",
+  "scope": "Architecture, integrite des chemins critiques, charge/couts, game design, UI/UX; arbre utilisateur en cours preserve",
+  "agents": [
+    "game_design",
+    "game_ui_ux"
+  ],
+  "changed": "Uniquement ce dossier de rapport/diagnostic; aucune correction metier, migration appliquee, gain reel, achat ou publication",
+  "environment": {
+    "node": "25.3.0",
+    "os": "Windows",
+    "localSupabase": "distant, non utilise pour essais",
+    "browser": "Vite envDir:false, API memoire et blocage reseau",
+    "sql": "PGlite une connexion, fixtures explicites"
+  },
+  "evidence": {
+    "unitTests": {
+      "passed": 240,
+      "files": 16,
+      "path": "tests.json",
+      "command": "node node_modules/vitest/vitest.mjs run src/app/api/arena/placard/bootstrap/route.test.ts src/app/api/arena/placard/runs/route.test.ts src/app/api/arena/placard/runs/[runId]/actions/route.test.ts src/app/api/arena/placard/commerce/route.test.ts src/app/api/arena/placard/staff/route.test.ts src/app/api/arena/placard/missions/route.test.ts src/app/api/cron/placard-online/route.test.ts src/lib/supabase/kanab-quest-bootstrap-rewards.test.ts src/lib/supabase/kanab-quest-commerce-cost.test.ts src/lib/supabase/kanab-quest-market-cost.test.ts src/lib/supabase/kanab-quest-ranking-budget.test.ts src/lib/supabase/kanab-quest-collection-budget.test.ts src/lib/supabase/kanab-quest-staff-backend.test.ts src/lib/supabase/kanab-quest-order-cash-backend.test.ts src/lib/supabase/kanab-quest-season-rewards-backend.test.ts src/lib/kanab-quest-load-test-policy.test.ts --reporter=json --outputFile=docs/bete-de-concours/audit-technique-2026-11-09/tests.json"
+    },
+    "sql": {
+      "checks": 206,
+      "path": "workday.log",
+      "command": "node scripts/test-placard-player-workday.mjs"
+    },
+    "grants": {
+      "migrations": 370,
+      "path": "grants.log",
+      "command": "node scripts/check-supabase-grants.mjs"
+    },
+    "browser": {
+      "guideGroups": 19,
+      "edgeObservations": 5,
+      "remoteRequests": 0,
+      "paths": [
+        "browser-journey/guide-report.json",
+        "browser-journey/report.json"
+      ]
+    },
+    "mission": {
+      "path": "mission-zero-work-result.json",
+      "claimable": true,
+      "claimsExecuted": 0,
+      "limitation": "Archive synthetique; vraie metrique et RPC etat, transition archive non executee"
+    },
+    "costs": {
+      "parameters": "parametres.json",
+      "script": "modele.mjs",
+      "output": "calculs.json",
+      "validation": "8 paliers/4 scenarios; sommes reconciliees, liens rapport verifies"
+    }
+  },
+  "findings": {
+    "P1": [
+      "GD-1 progression sur reservation 0 h",
+      "UX-01 cle perdue apres reponse incertaine",
+      "UX-02 POST pendant enferme confirmation",
+      "T01 charge dit read-only non isolee",
+      "T02 rattrapage/worker 100 comptes/h",
+      "T03 devis par lot x filiere"
+    ],
+    "P2": [
+      "T04 classement global",
+      "T05 consultations redondantes",
+      "T06 retention/volumes",
+      "GD-2 equite achats",
+      "GD-3 absence/dette",
+      "GD-4 fenetre temps reel",
+      "GD-5 cout hub perime",
+      "UX-03 reconnexion",
+      "UX-04 focus hub"
+    ]
+  },
+  "unknowns": [
+    "config/region/sieges/CDN/Fluid Vercel (Pro declare)",
+    "region/usage/options/nombre de projets Supabase (Micro declare)",
+    "facture et baseline site",
+    "budget utilisateur",
+    "version deploy/migrations actuelles",
+    "CPU/IO/locks/p95/p99 production",
+    "comprehension/plaisir reels"
+  ],
+  "nextBoundedTask": "Identifier regions, configuration et baseline des offres Micro/Pro declarees avec acces lecture; corriger GD-1 et reprise UX-01/02 dans un chantier explicitement demande; puis protocole isole 1 a 50 comptes du rapport. Ne pas relancer audit general.",
+  "tokenBudget": "Compteur fiable non accessible; aucun total de tokens revendique",
+  "userClarification": {
+    "source": "Reponse utilisateur apres livraison audit",
+    "supabaseCompute": "Micro",
+    "vercelPlan": "Pro",
+    "vercelInterpretation": "3pro interprete comme Pro; nombre de sieges non deduit",
+    "effect": "Socle de scenario inchange a environ 45 USD HT sous hypothese un projet/un siege et credits; aucune capacite validee"
+  }
+}

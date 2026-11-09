@@ -30,7 +30,7 @@ describe("isolated visual discovery lessons", () => {
     const progress = vi.fn();
     const api = createDiscoveryTransport("missions", progress);
     const snapshot = await (await api.request("/api/arena/placard/missions")).json();
-    expect(snapshot.missions).toHaveLength(30);
+    expect(snapshot.missions).toHaveLength(72);
     expect(snapshot.missions.every((mission: { target: number; reward: unknown }) => Number.isFinite(mission.target) && mission.target > 0 && mission.reward)).toBe(true);
     expect(snapshot.missions.filter((mission: { claimable: boolean }) => mission.claimable)).toEqual([expect.objectContaining({ code: "fifteen-varieties", reward: { kind: "pack", cardCount: 3 } })]);
     const open = () => api.request("/api/arena/placard/boosters", { method: "PATCH", body: JSON.stringify({ entitlementId: "tutorial-mission-pack" }) });

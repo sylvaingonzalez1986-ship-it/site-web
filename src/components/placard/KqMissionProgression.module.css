@@ -1,0 +1,37 @@
+.progression { margin-block: 20px 24px; color: #172923; }
+.progression .hero { grid-template-columns: auto minmax(0, 1fr) 220px; }
+.scene { width: 220px; align-self: center; }
+.hero { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 22px; align-items: center; padding: 22px; border: 2px solid transparent; background: transparent; border-image: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.level { display: grid; text-align: center; align-content: center; min-width: 88px; padding: 14px; border: 2px solid transparent; background: transparent; border-image: var(--game-panel-gold, url("/placard/ui/panel-gold-v1.webp")) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.level strong { font: 900 64px/1 var(--font-display), sans-serif; }
+.level span { font-weight: 800; }
+.level small, .experience small { font-size: 12px; }
+.experience { min-width: 0; }
+.experience h2, .next h2 { margin: 0 0 12px; font: 900 clamp(23px, 3vw, 32px)/1.1 var(--font-display), sans-serif; }
+.experience p { margin: 12px 0 6px; font-size: 13px; }
+.experience > small { display: block; color: #536058; line-height: 1.5; }
+.maximum { font-weight: 800; color: #076c61; }
+.next { margin: 18px 0 10px; }
+.reward { display: grid; grid-template-columns: 74px minmax(0, 1fr) auto; align-items: center; gap: 14px; padding: 15px 2px; border-bottom: 1px solid #17292330; min-width: 0; }
+.reward > img { max-height: 90px; max-width: 74px; object-fit: contain; }
+.reward > span { max-width: 74px; }
+.reward h3 { margin: 0 0 4px; font-size: 14px; }
+.reward strong { font-size: 15px; line-height: 1.4; overflow-wrap: anywhere; }
+.reward small { display: block; margin-top: 5px; color: #536058; font-size: 12px; }
+.status { display: flex; align-items: center; gap: 5px; margin-top: 7px; font-size: 12px; line-height: 1.4; }
+.reward[data-ready] h3 { color: #076c61; }
+.reward button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 12px 16px; color: #fff1d6; font-weight: 800; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.reward button:hover:not(:disabled) { --game-control-art: var(--game-control-ink, url("/placard/ui/control-ink-v2.webp")); }
+.reward button:disabled { opacity: .55; cursor: not-allowed; }
+.reward button:focus-visible, .ladder summary:focus-visible { outline: 3px solid #076c61; outline-offset: 4px; }
+.ladder { margin-top: 12px; }
+.ladder summary { min-height: 44px; padding-block: 13px; font-size: 13px; font-weight: 800; cursor: pointer; }
+.ladder > p { max-width: 65ch; font-size: 13px; line-height: 1.6; }
+.rewards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 24px; }
+.rewards .reward { grid-template-columns: 64px minmax(0, 1fr); }
+.rewards .reward button { grid-column: 2; justify-self: start; }
+@media (max-width: 650px) { .rewards { grid-template-columns: minmax(0, 1fr); } .hero { gap: 12px; padding: 16px; } .level { min-width: 62px; padding: 10px; } .level strong { font-size: 48px; } .reward { grid-template-columns: 60px minmax(0, 1fr); gap: 10px; } .reward button { grid-column: 2; justify-self: start; } .reward > img { max-width: 60px; } }
+@media (max-width: 370px) { .hero { grid-template-columns: minmax(0, 1fr); } .level { display: flex; gap: 9px; align-items: baseline; justify-content: center; } .level strong { font-size: 42px; } }
+@media (prefers-reduced-motion: reduce) { .progression * { transition: none; } }
+@media (max-width: 850px) { .progression .hero { grid-template-columns: auto minmax(0, 1fr); } .scene { grid-column: 1 / -1; width: 210px; justify-self: center; } }
+@media (max-width: 370px) { .progression .hero { grid-template-columns: minmax(0, 1fr); } .scene { width: 180px; } }
