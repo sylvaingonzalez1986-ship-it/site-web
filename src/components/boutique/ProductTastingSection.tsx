@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "@/components/navigation/NavigationLink";
+import { ContestReviewSkillRadar } from "@/components/contest/ContestReviewSkillRadar";
 import { useContestReviewPages } from "@/components/contest/useContestReviewPages";
-import { ArrowDown, ArrowUpRight, BookOpen, ChevronDown, MessageCircle, Star } from "lucide-react";
-import type { ContestScoreCriterion } from "@/types/contest";
+import { ArrowDown, ArrowUpRight, BookOpen, MessageCircle, Star } from "lucide-react";
+import type { ContestReviewScore } from "@/types/contest";
 import {
   CONTEST_AROMA_TAG_LABELS,
   CONTEST_CONSUMPTION_METHOD_LABELS,
   CONTEST_SCORE_CRITERIA,
-  CONTEST_SCORE_CRITERION_LABELS,
 } from "@/types/contest";
 import type { PublicContestProductTastingSummary } from "@/lib/contest-public-api";
 import { formatContestAverage, formatContestDate, getContestReviewAverage } from "@/lib/contest-ui";
@@ -44,18 +44,22 @@ export function ProductTastingBadge({ summary }: Pick<ProductTastingProps, "summ
   );
 }
 
-function CriterionRow({ criterion, score }: { criterion: ContestScoreCriterion; score: number }) {
-  const percentage = Math.max(0, Math.min(100, (score / CONTEST_SCORE_MAX) * 100));
+function TastingRadar({ scores }: { scores: ContestReviewScore[] }) {
+  if (!scores.some(({ score }) => Number.isFinite(score))) return null;
+  const verdict = scores.find(({ criterion }) => criterion === "overall_impression")?.score;
+  const hasMissingScores = CONTEST_SCORE_CRITERIA.some((criterion) =>
+    !scores.some((item) => item.criterion === criterion && Number.isFinite(item.score)),
+  );
+
   return (
-    <div className={styles.criterion}>
-      <div className={styles.criterionLabel}>
-        <span>{CONTEST_SCORE_CRITERION_LABELS[criterion]}</span>
-        <strong>{formatContestAverage(score)}</strong>
-      </div>
-      <div className={styles.bar} aria-hidden="true">
-        <span style={{ width: `${percentage}%` }} />
-      </div>
-    </div>
+    <figure className={styles.radar}>
+      <ContestReviewSkillRadar review={{ scores }} showValues={false} showAxisValues showTotals={false} />
+      <figcaption className={styles.radarCaption}>
+        <span>Notes sur {CONTEST_SCORE_MAX}</span>
+        <span>Verdict <strong>{formatContestAverage(verdict)} / {CONTEST_SCORE_MAX}</strong></span>
+      </figcaption>
+      {hasMissingScores ? <p className={styles.criteriaHint}>— : note non renseignée.</p> : null}
+    </figure>
   );
 }
 
@@ -68,7 +72,7 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
   const reviewCount = entry.stats.approvedReviewCount;
   const criterionAverages = CONTEST_SCORE_CRITERIA.flatMap((criterion) => {
     const score = entry.stats.criterionAverages[criterion];
-    return reviewCount > 0 && typeof score === "number" ? [{ criterion, score }] : [];
+    return reviewCount > 0 && typeof score === "number" && Number.isFinite(score) ? [{ criterion, score }] : [];
   });
 
   return (
@@ -100,13 +104,11 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
           </div>
 
           {criterionAverages.length > 0 ? (
-            <details className={styles.criteria}>
-              <summary>Le profil du lot <ChevronDown size={18} aria-hidden="true" /></summary>
+            <div className={styles.criteria}>
+              <h3 className={styles.subheading}>Le profil du lot</h3>
               <p className={styles.criteriaHint}>Les moyennes, critère par critère, sur {CONTEST_SCORE_MAX}.</p>
-              <div className={styles.criteriaRows}>
-                {criterionAverages.map(({ criterion, score }) => <CriterionRow key={criterion} criterion={criterion} score={score} />)}
-              </div>
-            </details>
+              <TastingRadar scores={criterionAverages} />
+            </div>
           ) : null}
 
           <p className={styles.sourceNote}><BookOpen size={18} aria-hidden="true" /><span>Ces notes et critiques concernent le lot indiqué. La moyenne prend en compte tous les avis publiés après modération.</span></p>
@@ -146,12 +148,11 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
                       <span>/ {CONTEST_SCORE_MAX}</span>
                     </span>
                   </header>
-                  <p className={`${styles.comment} ${review.comment.trim() ? "" : styles.noComment}`}>
-                    {review.comment.trim() || "Ce dégustateur a partagé ses notes sans ajouter de critique."}
-                  </p>
-                  <details className={styles.reviewDetails}>
-                    <summary>Détail de sa dégustation <ChevronDown size={17} aria-hidden="true" /></summary>
-                    <div className={styles.detailsContent}>
+                  <div className={styles.reviewBody}>
+                    <div className={styles.reviewCopy}>
+                      <p className={`${styles.comment} ${review.comment.trim() ? "" : styles.noComment}`}>
+                        {review.comment.trim() || "Ce dégustateur a partagé ses notes sans ajouter de critique."}
+                      </p>
                       <div className={styles.tags}>
                         <span className={styles.method}>{CONTEST_CONSUMPTION_METHOD_LABELS[review.consumptionMethod]}</span>
                         {review.aromaTags.map((aroma) => (
@@ -160,21 +161,9 @@ export function ProductTastingSection({ summary, showArenaLink }: ProductTasting
                           </span>
                         ))}
                       </div>
-                      {review.scores.length > 0 ? (
-                        <dl className={styles.reviewCriteria}>
-                          {CONTEST_SCORE_CRITERIA.flatMap((criterion) => {
-                            const score = review.scores.find((item) => item.criterion === criterion)?.score;
-                            return typeof score === "number" ? [
-                              <div key={criterion}>
-                                <dt>{CONTEST_SCORE_CRITERION_LABELS[criterion]}</dt>
-                                <dd>{formatContestAverage(score)} <span>/ {CONTEST_SCORE_MAX}</span></dd>
-                              </div>,
-                            ] : [];
-                          })}
-                        </dl>
-                      ) : null}
                     </div>
-                  </details>
+                    <TastingRadar scores={review.scores} />
+                  </div>
                 </article>
               ))}
             </div>

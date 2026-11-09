@@ -1,18 +1,19 @@
 "use client";
 
+import { useId } from "react";
 import type { ViewerContestReview } from "@/lib/contest-public-api";
 import { formatContestAverage, getContestReviewAverage } from "@/lib/contest-ui";
-import { CONTEST_SCORE_DEFAULT, CONTEST_SCORE_MAX } from "@/lib/contest-score";
+import { CONTEST_SCORE_MAX } from "@/lib/contest-score";
 import {
-  CONTEST_SCORE_CRITERIA,
+  CONTEST_SCORE_CRITERION_LABELS,
   type ContestCriterionAverages,
   type ContestScoreCriterion,
 } from "@/types/contest";
 
-type ReviewScoreMap = Record<ContestScoreCriterion, number>;
+type ReviewScoreMap = Partial<Record<ContestScoreCriterion, number>>;
 type RadarScore = {
   criterion: ContestScoreCriterion;
-  score: number;
+  score: number | null;
 };
 
 type ContestReviewSkillRadarProps = {
@@ -21,6 +22,7 @@ type ContestReviewSkillRadarProps = {
   compact?: boolean;
   showLegend?: boolean;
   showValues?: boolean;
+  showAxisValues?: boolean;
   showTotals?: boolean;
   className?: string;
 };
@@ -42,25 +44,19 @@ const NOTES_SUMMARY_SCORE_LABELS: Record<ContestScoreCriterion, string> = {
   manicure: "Manucure",
   drying_curing: "Curing",
   cold_aroma: "Nez",
-  aroma_intensity: "Intensite",
-  aroma_complexity: "Complexite",
-  flavor: "Gout",
+  aroma_intensity: "Intensité",
+  aroma_complexity: "Complexité",
+  flavor: "Goût",
   smoothness_burn: "Douceur",
   persistence: "Tenue",
   overall_impression: "Verdict",
 };
 
-function buildInitialScores(): ReviewScoreMap {
-  return Object.fromEntries(
-    CONTEST_SCORE_CRITERIA.map((criterion) => [criterion, CONTEST_SCORE_DEFAULT]),
-  ) as ReviewScoreMap;
-}
-
 function buildScoresFromReview(review: Pick<ViewerContestReview, "scores">): ReviewScoreMap {
-  const scores = buildInitialScores();
+  const scores: ReviewScoreMap = {};
 
   for (const score of review.scores) {
-    scores[score.criterion] = score.score;
+    if (Number.isFinite(score.score)) scores[score.criterion] = score.score;
   }
 
   return scores;
@@ -88,7 +84,7 @@ function buildOrderedScoresFromReview(review: Pick<ViewerContestReview, "scores"
 
   return NOTES_SUMMARY_SCORE_ORDER.map((criterion) => ({
     criterion,
-    score: clampRadarScore(scoreMap[criterion]),
+    score: typeof scoreMap[criterion] === "number" ? clampRadarScore(scoreMap[criterion]) : null,
   }));
 }
 
@@ -114,11 +110,12 @@ function buildOrderedScoresFromAverages(averages?: ContestCriterionAverages): Ra
 }
 
 function getRadarPolygonPoints(scores: RadarScore[], maxRadius: number, center: number): string {
+  if (scores.some(({ score }) => score === null)) return "";
   const total = scores.length;
 
   return scores
     .map((item, index) => {
-      const radius = (item.score / CONTEST_SCORE_MAX) * maxRadius;
+      const radius = ((item.score ?? 0) / CONTEST_SCORE_MAX) * maxRadius;
       return formatRadarPoint(getRadarPoint(index, total, radius, center));
     })
     .join(" ");
@@ -130,9 +127,12 @@ export function ContestReviewSkillRadar({
   compact = false,
   showLegend = true,
   showValues = true,
+  showAxisValues = false,
   showTotals = true,
   className = "",
 }: ContestReviewSkillRadarProps) {
+  const titleId = useId();
+  const descriptionId = useId();
   const scoreMap = buildScoresFromReview(review);
   const averageScore = formatContestAverage(getContestReviewAverage(review.scores));
   const verdictScore = scoreMap.overall_impression;
@@ -141,7 +141,7 @@ export function ContestReviewSkillRadar({
   const hasComparisonScores = comparisonOrderedScores !== null;
   const center = 150;
   const maxRadius = 84;
-  const labelRadius = 124;
+  const labelRadius = showAxisValues ? 116 : 124;
   const total = orderedScores.length;
   const dataPoints = getRadarPolygonPoints(orderedScores, maxRadius, center);
   const comparisonDataPoints = comparisonOrderedScores
@@ -157,9 +157,13 @@ export function ContestReviewSkillRadar({
     .join(" ");
 
   return (
-    <div className={rootClassName} aria-label="Graphique des notes par critere">
-      <svg className="contest-review-skill-radar" viewBox="0 0 300 300" role="img">
-        <title>Graphique etoile des notes de degustation</title>
+    <div className={rootClassName} aria-label="Graphique des notes par critère">
+      <svg className="contest-review-skill-radar" viewBox="0 0 300 300" role="img" aria-labelledby={titleId} aria-describedby={descriptionId}>
+        <title id={titleId}>Graphique étoile des notes de dégustation sur {CONTEST_SCORE_MAX}</title>
+        <desc id={descriptionId}>
+          {orderedScores.map(({ criterion, score }) => `${CONTEST_SCORE_CRITERION_LABELS[criterion]} : ${score === null ? "non renseigné" : `${formatContestAverage(score)} sur ${CONTEST_SCORE_MAX}`}`).join(". ")}
+          {hasComparisonScores ? ` Moyenne du lot : ${comparisonOrderedScores.map(({ criterion, score }) => `${CONTEST_SCORE_CRITERION_LABELS[criterion]} : ${formatContestAverage(score)} sur ${CONTEST_SCORE_MAX}`).join(". ")}` : ""}
+        </desc>
         {[0.25, 0.5, 0.75, 1].map((ratio) => (
           <polygon
             key={ratio}
@@ -172,7 +176,7 @@ export function ContestReviewSkillRadar({
         {orderedScores.map((item, index) => {
           const edgePoint = getRadarPoint(index, total, maxRadius, center);
           const labelPoint = getRadarPoint(index, total, labelRadius, center);
-          const textAnchor = labelPoint.x < center - 18 ? "end" : labelPoint.x > center + 18 ? "start" : "middle";
+          const textAnchor = showAxisValues ? "middle" : labelPoint.x < center - 18 ? "end" : labelPoint.x > center + 18 ? "start" : "middle";
 
           return (
             <g key={item.criterion}>
@@ -190,7 +194,8 @@ export function ContestReviewSkillRadar({
                 dominantBaseline="middle"
                 className="contest-review-skill-label"
               >
-                {NOTES_SUMMARY_SCORE_LABELS[item.criterion]}
+                <tspan x={labelPoint.x}>{NOTES_SUMMARY_SCORE_LABELS[item.criterion]}</tspan>
+                {showAxisValues ? <tspan x={labelPoint.x} dy="13">{formatContestAverage(item.score)}</tspan> : null}
               </text>
             </g>
           );
@@ -198,11 +203,12 @@ export function ContestReviewSkillRadar({
         {hasComparisonScores ? (
           <polygon points={comparisonDataPoints} className="contest-review-skill-area contest-review-skill-area-average" />
         ) : null}
-        <polygon
+        {dataPoints ? <polygon
           points={dataPoints}
           className={`contest-review-skill-area ${hasComparisonScores ? "contest-review-skill-area-self" : ""}`}
-        />
+        /> : null}
         {comparisonOrderedScores?.map((item, index) => {
+          if (item.score === null) return null;
           const radius = (item.score / CONTEST_SCORE_MAX) * maxRadius;
           const point = getRadarPoint(index, total, radius, center);
 
@@ -217,6 +223,7 @@ export function ContestReviewSkillRadar({
           );
         })}
         {orderedScores.map((item, index) => {
+          if (item.score === null) return null;
           const radius = (item.score / CONTEST_SCORE_MAX) * maxRadius;
           const point = getRadarPoint(index, total, radius, center);
 
@@ -242,7 +249,7 @@ export function ContestReviewSkillRadar({
           {orderedScores.map((item) => (
             <span key={item.criterion}>
               <strong>{NOTES_SUMMARY_SCORE_LABELS[item.criterion]}</strong>
-              {item.score}
+              {item.score ?? "—"}
             </span>
           ))}
         </div>
@@ -255,7 +262,7 @@ export function ContestReviewSkillRadar({
           </span>
           <span>
             <strong>Verdict</strong>
-            {verdictScore}/{CONTEST_SCORE_MAX}
+            {verdictScore ?? "—"}/{CONTEST_SCORE_MAX}
           </span>
         </div>
       ) : null}

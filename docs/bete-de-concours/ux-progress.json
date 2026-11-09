@@ -1,5 +1,14 @@
 {
   "updated": "2026-11-09",
+  "flowerReviewRadars": {
+    "updated": "2026-11-09",
+    "scope": "Fiches fleurs : radar du Carnet visible dans la synthèse du lot et avec chaque commentaire, à la place des listes de notes. Valeurs sur les neuf axes, verdict séparé, arômes et mode de dégustation visibles. Moyenne globale serveur conservée.",
+    "integrity": "Les notes absentes restent inconnues : aucun 70/100 par défaut, seuls les points connus sont tracés et aucun polygone incomplet n'est fermé. Aucun radar pour un avis sans notes ou une synthèse sans avis publié. Description accessible des valeurs et styles limités à la boutique.",
+    "database": "Aucun changement de données, API ou schéma ; aucune migration Supabase nécessaire.",
+    "validation": "22 tests ciblés, TypeScript global, build Next de production et diff-check réussis. Fiche : 320/390/768/1440 px, polices réelles, valeurs décimales, verdict, profils partiels, absence d'avis, descriptions accessibles, libellés sans débordement ni chevauchement, pagination et reprise réseau. Carnet : recette notes à 320/390/1440 px réussie, comparaisons et éditions conservées. Captures mobile/ordinateur inspectées. Scripts existants adaptés aux dépendances Vite et à la fermeture du clavier mobile.",
+    "reports": ["output/storefront-reviews/report.json", "output/tasting-book/notes-report.json"],
+    "next": "Lot terminé ; commit et push sur master demandés dans cette session. Aucun autre changement UX ni migration à engager pour ce lot."
+  },
   "staffGlobalImpactDashboard": {
     "updated": "2026-11-09",
     "status": "Encart Ce que le travail apporte remplacé par un tableau de bord global des sept secteurs, validé et prêt à publier. Aucune migration nécessaire.",

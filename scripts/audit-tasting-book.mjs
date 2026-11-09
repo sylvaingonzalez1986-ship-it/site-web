@@ -91,7 +91,7 @@ const producerCampaign = () => buildKqProducerRewardProgress({
 const server = await createServer({
   configFile: false, envDir: false, root, publicDir: resolve(root, "public"), cacheDir: resolve(reportDir, 'vite-cache'),
   esbuild: { jsx: "automatic" }, resolve: { alias: { "@": resolve(root, "src") }, dedupe: ['react', 'react-dom'] },
-  optimizeDeps: { include: ['react', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'lucide-react'] },
+  optimizeDeps: { noDiscovery: true, include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'lucide-react'] },
   css: { postcss: { plugins: [tailwindcss({ base: root })] } },
   plugins: [{ name: "tasting-book-preview", enforce: "pre",
     resolveId(id) { if (id in modules) return `\0${id}`; },
@@ -165,6 +165,7 @@ try {
   await mkdir(reportDir,{recursive:true}); await server.listen();
   browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, userDataDir: resolve(reportDir,'chrome-profile'), args:['--no-sandbox','--disable-gpu'] });
   const page = await browser.newPage();
+  page.setDefaultNavigationTimeout(90_000);
   page.on('pageerror',error=>{errors.push(error.message);console.error(error.message);});
   await page.setRequestInterception(true);
   page.on('request',request=> { const url = new URL(request.url()); if(url.protocol==='data:' || (url.hostname==='127.0.0.1' && url.port==='3197')) void request.continue(); else void request.abort(); });
@@ -471,6 +472,7 @@ try {
     if(status!=='approved') {
       assert.equal(await page.$eval('[data-book-scroll] > div:not([hidden]) textarea',e=>e.value),'Mes notes enregistrées sur cette fleur.');
       await page.type('[data-book-scroll] > div:not([hidden]) textarea',' Modification conservée.');
+      if (width < 700) await page.locator('[data-book-finish-input]').click();
     }
     await shot(`notes-detail-${status}-${width}`);
     await page.locator('[data-book-scroll] > div:not([hidden]) [data-tasting-scroll] + footer button:last-child').click();
