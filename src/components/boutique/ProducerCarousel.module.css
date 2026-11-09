@@ -11,10 +11,8 @@
 .buttons button { display: grid; place-items: center; width: 44px; height: 44px; border: 2px solid var(--market-green); background: var(--market-yellow); color: var(--market-dark); box-shadow: 0 3px 0 var(--market-green); cursor: pointer; }
 .buttons button:hover:not(:disabled) { background: #003f30; color: var(--market-paper); }
 .buttons button:disabled { opacity: .3; cursor: default; }
-.few { flex-wrap: wrap; justify-content: center; }
 @media (max-width: 640px) {
   .header { align-items: flex-start; flex-direction: column; gap: 6px; }
   .carousel .track > * { flex-basis: 82%; max-width: 280px; }
-  .carousel .few > * { flex-basis: 100%; }
   .controls > span { max-width: 180px; }
 }

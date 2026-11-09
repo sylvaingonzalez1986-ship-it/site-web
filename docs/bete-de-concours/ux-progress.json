@@ -1,5 +1,12 @@
 {
   "updated": "2026-11-09",
+  "shopProducerCarousel": {
+    "updated": "2026-11-09",
+    "status": "Fiches producteurs toujours sur une rangée horizontale, y compris avec deux producteurs. Suppression du traitement spécial qui empilait les petites sélections sur mobile ; défilement, flèches et clavier existants conservés.",
+    "validation": "Recette boutique existante ciblée sur Mes voisins → Indoor : deux producteurs à 320/390/768/1440 px, même rangée et aucun débordement de page. Carrousel, flèche suivante et retour clavier vérifiés à 320/390 px ; aucun défilement superflu lorsque les deux fiches tiennent sur ordinateur. Aucune erreur JavaScript ; capture mobile inspectée et diff-check réussi.",
+    "report": "output/producer-carousel-two/results.json",
+    "next": "Commit et push sur origin/master demandés le 9 novembre 2026. Aucun audit supplémentaire nécessaire."
+  },
   "shopFlowerRankings": {
     "updated": "2026-11-09",
     "diagnosis": "Lecture Supabase : Black Berserker Indoor Concours possède deux avis approuvés ; Lemon Flambé Indoor Concours n'en a aucun. Le classement ouvrait Regular par défaut, exigeait cinq avis et remplaçait le catalogue par un top 12 dès qu'un lot devenait éligible.",

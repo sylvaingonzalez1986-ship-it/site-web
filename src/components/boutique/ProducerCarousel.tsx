@@ -46,7 +46,7 @@ export function ProducerCarousel({ itemCount, children }: { itemCount: number; c
           <p className={styles.heading}>Rencontrez les producteurs</p></div>
         <span className={styles.count}>{itemCount} producteur{itemCount > 1 ? "s" : ""}</span>
       </div>
-      <div id={id} ref={trackRef} className={`${styles.track} ${itemCount < 3 ? styles.few : ""}`}
+      <div id={id} ref={trackRef} className={styles.track}
         tabIndex={position.overflowing ? 0 : undefined} aria-label="Fiches des producteurs"
         onKeyDown={(event) => {
           if (event.target !== event.currentTarget) return;
