@@ -88,6 +88,7 @@ import {
   getContestProductHref,
 } from "@/lib/contest-ui";
 import { getContestEntryAnalysisUrl } from "@/lib/contest-analysis";
+import { getContestFlowerCategoryRank, sortContestFlowerRankingEntries } from "@/lib/contest-flower-ranking";
 import { CONTEST_SCORE_MAX } from "@/lib/contest-score";
 import { rarityLabels } from "@/lib/lottery-card-ui";
 
@@ -95,10 +96,10 @@ type ContestHubClientProps = {
   seasons: ContestSeason[];
   selectedSeasonCode?: string;
   selectedTrack: ContestEntryTrack;
+  rankingTrack?: ContestEntryTrack;
   activeCategory: ContestEntryCategory;
   categoryCounts: Record<ContestEntryCategory, number>;
   entries: ContestEntrySummary[];
-  rankings: ContestEntrySummary[];
   feed: ContestFeedItem[];
   notebookUnlocks: PublicContestNotebookUnlock[];
   draftOwnerId?: string | null;
@@ -1322,23 +1323,6 @@ function toCartProduct(entry: ContestEntrySummary): Product | null {
   };
 }
 
-function getStationRankingEntries(rankings: ContestEntrySummary[], entries: ContestEntrySummary[]) {
-  const source = rankings.length > 0 ? rankings : entries;
-
-  if (rankings.length > 0) {
-    return source;
-  }
-
-  return [...source].sort((a, b) => {
-    const scoreDelta = b.stats.averageScore - a.stats.averageScore;
-    if (scoreDelta !== 0) {
-      return scoreDelta;
-    }
-
-    return b.stats.approvedReviewCount - a.stats.approvedReviewCount;
-  });
-}
-
 function getNotebookEligibility({
   entry,
   unlock,
@@ -1435,10 +1419,7 @@ function ContestStationRankingBoard({
             {entries.map((entry) => {
               const hasReviews = entry.stats.approvedReviewCount > 0;
               const hasScore = hasReviews && Number.isFinite(entry.stats.averageScore);
-              const categoryRank = entry.ranking?.seasonCategoryRank;
-              const rank = hasReviews && entry.ranking?.isRankEligible !== false && categoryRank && categoryRank > 0
-                ? categoryRank
-                : null;
+              const rank = getContestFlowerCategoryRank(entry);
               const selected = entry.id === selectedEntryId;
               const imageUrl = entry.imageUrl || entry.product?.image;
 
@@ -1509,8 +1490,7 @@ function ContestRankingReviewsModal({
   }, []);
   const hasReviews = entry.stats.approvedReviewCount > 0;
   const hasScore = hasReviews && Number.isFinite(entry.stats.averageScore);
-  const categoryRank = entry.ranking?.seasonCategoryRank;
-  const rank = hasReviews && entry.ranking?.isRankEligible !== false && categoryRank && categoryRank > 0 ? categoryRank : null;
+  const rank = getContestFlowerCategoryRank(entry);
 
   return <dialog ref={dialogRef} className={rankingReviewStyles.dialog} aria-modal="true" aria-labelledby={titleId}
     onCancel={(event) => { event.preventDefault(); onClose(); }}
@@ -2185,10 +2165,10 @@ export function ContestHubClient({
   seasons,
   selectedSeasonCode,
   selectedTrack,
+  rankingTrack,
   activeCategory,
   categoryCounts,
   entries,
-  rankings,
   feed,
   notebookUnlocks,
   draftOwnerId,
@@ -2285,8 +2265,8 @@ export function ContestHubClient({
   const selectedCartProduct = selectedEntry ? toCartProduct(selectedEntry) : null;
   const selectedAnalysisUrl = selectedEntry ? getContestEntryAnalysisUrl(selectedEntry) : null;
   const stationRankingEntries = useMemo(
-    () => getStationRankingEntries(rankings, entries),
-    [entries, rankings],
+    () => sortContestFlowerRankingEntries(entries),
+    [entries],
   );
   const selectedFeedReview = selectedFeedReviewId
     ? feedItems.find((item) => item.reviewId === selectedFeedReviewId) ?? null
@@ -2531,9 +2511,9 @@ export function ContestHubClient({
     setSelectedFeedReviewId(item.reviewId);
   };
 
-  const changeTrack = (nextTrack: ContestEntryTrack) => {
+  const changeTrack = (nextTrack?: ContestEntryTrack) => {
     const params = new URLSearchParams(searchParams.toString());
-    if (nextTrack === "regular") {
+    if (!nextTrack || (!isFlowerRankingSurface && nextTrack === "regular")) {
       params.delete("track");
     } else {
       params.set("track", nextTrack);
@@ -2554,7 +2534,8 @@ export function ContestHubClient({
   const getNotebookRankingHref = () => {
     const params = new URLSearchParams(searchParams.toString());
     params.delete("vue");
-    params.set("track", selectedTrack);
+    params.delete("track");
+    if (isFlowerRankingSurface && rankingTrack) params.set("track", rankingTrack);
     const query = params.toString();
     return `/arene/carnet/classement${query ? `?${query}` : ""}`;
   };
@@ -2784,11 +2765,19 @@ export function ContestHubClient({
               <div className={flowerRankingStyles.controlGroup}>
                 <span className={flowerRankingStyles.controlLabel}>Carnet</span>
                 <div className={flowerRankingStyles.switch} role="group" aria-label="Type de carnet">
+                  <button
+                    type="button"
+                    aria-pressed={!rankingTrack}
+                    onClick={() => changeTrack()}
+                    className={flowerRankingStyles.filterButton}
+                  >
+                    <span>Tous</span>
+                  </button>
                   {CONTEST_ENTRY_TRACKS.map((track) => (
                     <button
                       key={track}
                       type="button"
-                      aria-pressed={selectedTrack === track}
+                      aria-pressed={rankingTrack === track}
                       onClick={() => changeTrack(track)}
                       className={flowerRankingStyles.filterButton}
                     >
@@ -2796,6 +2785,7 @@ export function ContestHubClient({
                     </button>
                   ))}
                 </div>
+                <small>Rangs par culture, tous carnets confondus.</small>
               </div>
             ) : null}
             <div className={flowerRankingStyles.controlGroup}>

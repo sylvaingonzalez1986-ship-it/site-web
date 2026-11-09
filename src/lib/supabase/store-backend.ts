@@ -16,7 +16,7 @@ import { normalizeExternalUrl } from "@/lib/external-url";
 import { PRODUCT_IMAGE_MAX_COUNT } from "@/lib/product-image-policy";
 import { sanitizePublicProductCopy } from "@/lib/regulated-product-copy";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
-import { deleteContestEntry } from "@/lib/supabase/contest-backend";
+import { deleteContestEntry, resolveContestSeason, syncContestEntriesForShopFlowers } from "@/lib/supabase/contest-backend";
 import { readSupabaseQuery } from "@/lib/supabase/read-query";
 import { sanitizeOrderVatRate } from "@/lib/tax";
 import { sanitizeDisplayText, sanitizeNestedText } from "@/lib/text-encoding-repair";
@@ -1185,6 +1185,8 @@ export async function writeStoreToSupabase(nextStore: CmsStore): Promise<CmsStor
   };
   const upsertSections = await supabase.from("page_sections").upsert(sectionsRow, { onConflict: "id" });
   failIfError(upsertSections.error, "upsert page_sections");
+
+  await syncContestEntriesForShopFlowers(await resolveContestSeason());
 
   return readStoreFromSupabase();
 }

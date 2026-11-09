@@ -4,7 +4,7 @@ import type { ContestEntryInput, ContestSeason } from "@/types/contest";
 const mocks = vi.hoisted(() => ({ client: vi.fn() }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: mocks.client }));
 
-import { createContestEntry, syncContestEntriesForShopFlowers, updateContestEntry } from "@/lib/supabase/contest-backend";
+import { createContestEntry, getPublicContestEntries, syncContestEntriesForShopFlowers, updateContestEntry } from "@/lib/supabase/contest-backend";
 
 type Row = Record<string, unknown>;
 type Result = { data: Row[] | Row | null; error: { message: string } | null };
@@ -93,10 +93,10 @@ describe("notebook catalogue synchronization", () => {
     expect(state.reads.some(read => read.table === "contest_entries" && read.offset === 22)).toBe(true);
   });
 
-  it("creates each missing eligible flower in its own track and skips cheap, unknown and out-of-stock flowers", async () => {
+  it("creates each missing eligible flower even out of stock, but skips cheap and unknown prices", async () => {
     const state = fixture([product("regular"), product("premium", 4), product("cheap", 1), product("unknown", 4, { variant_options: [{ label: "10 g", price: 20 }] }), product("sold-out", 4, { track_stock: true, stock_quantity: 0 })], []);
     await syncContestEntriesForShopFlowers(season);
-    expect(state.rows.contest_entries.map(row => [row.product_id, row.track, row.is_published])).toEqual([["regular", "regular", true], ["premium", "concours", true]]);
+    expect(state.rows.contest_entries.map(row => [row.product_id, row.track, row.is_published])).toEqual([["regular", "regular", true], ["premium", "concours", true], ["sold-out", "concours", true]]);
     expect(state.writes).toHaveLength(1);
     await syncContestEntriesForShopFlowers(season);
     expect(state.writes).toHaveLength(1);
@@ -107,6 +107,19 @@ describe("notebook catalogue synchronization", () => {
     await syncContestEntriesForShopFlowers(season);
     expect(state.rows.contest_entries[0]).toMatchObject({ id: "manual-draft", track: "concours", is_published: false });
     expect(state.writes[0].value).not.toHaveProperty("is_published");
+  });
+
+  it("keeps a reviewed flower's identity when its shop cultivation category changes", async () => {
+    const state = fixture([product("premium", 7, { culture_type: "indoor" })], [
+      entry("reviewed", "premium", "concours"), entry("draft", "premium", "concours", false),
+    ]);
+    state.rows.contest_reviews = [{ id: "review", entry_id: "reviewed", status: "approved" }];
+    await syncContestEntriesForShopFlowers(season);
+    expect(state.rows.contest_entries[0]).toMatchObject({ id: "reviewed", slug: "reviewed", category: "indoor", is_published: true });
+    expect(state.rows.contest_entries[1]).toMatchObject({ id: "draft", category: "outdoor", is_published: false });
+    expect(state.rows.contest_reviews).toEqual([{ id: "review", entry_id: "reviewed", status: "approved" }]);
+    await syncContestEntriesForShopFlowers(season);
+    expect(state.writes).toHaveLength(1);
   });
 
   it("reclassifies the single published entry when its correct-track counterpart is only a draft", async () => {
@@ -152,6 +165,33 @@ describe("notebook catalogue synchronization", () => {
     const state = fixture([product("a"), product("b"), product("c")], [], { table: "products", offset: 2 });
     await expect(syncContestEntriesForShopFlowers(season)).rejects.toThrow("read failed");
     expect(state.writes).toEqual([]);
+  });
+});
+
+describe("complete public flower catalogue", () => {
+  it("includes both tracks, rated and unrated flowers beyond 200 despite short Data API pages", async () => {
+    const entries = Array.from({ length: 205 }, (_, index) => entry(`entry-${index}`, `product-${index}`, index % 2 ? "concours" : "regular"));
+    const state = fixture([], [...entries, entry("draft", "hidden", "concours", false)]);
+    state.rows.contest_entry_stats = [{ entry_id: "entry-204", approved_review_count: 2, average_score: 85 }];
+    state.rows.contest_rankings_current = [{ entry_id: "entry-204", is_rank_eligible: true, season_category_rank: 1 }];
+    const result = await getPublicContestEntries();
+    expect(result.entries).toHaveLength(205);
+    expect(result.entries.at(-1)).toMatchObject({ id: "entry-204", stats: { approvedReviewCount: 2 }, ranking: { seasonCategoryRank: 1 } });
+    expect(result.entries[0].ranking).toBeUndefined();
+    expect(result.entries.map(row => row.id)).toEqual(entries.map(row => row.id));
+    expect(state.writes).toEqual([]);
+  });
+
+  it("applies season, category and explicit track filters on every page", async () => {
+    fixture([], [entry("outdoor", "a"), entry("indoor", "b", "concours", true, { category: "indoor" }),
+      entry("indoor-regular", "c", "regular", true, { category: "indoor" }),
+      entry("old", "d", "concours", true, { category: "indoor", season_id: "archived" })]);
+    expect((await getPublicContestEntries({ category: "indoor", track: "concours" })).entries.map(row => row.id)).toEqual(["indoor"]);
+  });
+
+  it("fails a partial catalogue instead of silently hiding later flowers", async () => {
+    fixture([], [entry("one", "a"), entry("two", "b"), entry("three", "c")], { table: "contest_entries", offset: 2 });
+    await expect(getPublicContestEntries()).rejects.toThrow("read failed");
   });
 });
 

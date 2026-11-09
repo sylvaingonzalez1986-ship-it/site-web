@@ -1,5 +1,16 @@
 {
   "updated": "2026-11-09",
+  "shopFlowerRankings": {
+    "updated": "2026-11-09",
+    "diagnosis": "Lecture Supabase : Black Berserker Indoor Concours possède deux avis approuvés ; Lemon Flambé Indoor Concours n'en a aucun. Le classement ouvrait Regular par défaut, exigeait cinq avis et remplaçait le catalogue par un top 12 dès qu'un lot devenait éligible.",
+    "changes": "Classement ouvert sur tous les carnets, filtres Tous/Regular/Concours explicites. Toutes les fleurs publiées de la catégorie restent visibles, sans plafond de 12 ou 200 ; sans avis, aucun score ni rang inventé. Synchronisation des nouvelles fleurs et de leur culture après sauvegarde boutique, y compris rupture de stock ; identifiants, avis et brouillons conservés.",
+    "rules": "L'utilisateur confirme l'exclusion sous 2,50 €/g. Classification tarifaire et avis approuvés uniquement conservés. Migration : classement dès le premier avis noté, rang unique par saison/culture tous carnets confondus ; formule de lissage existante conservée, fiches masquées exclues du calcul.",
+    "migration": "supabase/migrations/20261109000100_contest_flower_rankings.sql — appliquée le 9 novembre 2026 au projet Supabase eyowwwpdmfrulhkpvlnf à la demande de l'utilisateur. Historique synchronisé, aucune migration en attente.",
+    "validation": "102 tests ciblés réussis : 69 serveur/catalogue/avis/prix, 26 page/tri, 7 PostgreSQL PGlite avec permissions réelles. TypeScript global, ESLint ciblé, grants des 369 migrations, diff-check et build Next de production final réussis. Navigateur : cinq groupes, 320/390/1440 px sans débordement, 17 fleurs dont non notée, filtres, rang conservé, modale clavier/Escape/retour focus et navigation Joueurs vers Fleurs sur Tous. Captures inspectées ; aucune erreur JS, requête distante ou mutation.",
+    "remoteValidation": "Douze contrôles distants réussis ; empreintes des avis, notes, produits et contenus/identités des fiches inchangées. Neuf fleurs notées désormais éligibles, aucune fiche masquée ou sans note classée, rangs saison/culture et permissions vérifiés. Black Berserker : rang 1 Indoor, deux avis ; Lemon Flambé : rang 2 Indoor, un avis validé depuis le diagnostic initial.",
+    "reports": ["output/ranking-flowers/report.json", "output/flower-ranking-release/migration.json"],
+    "next": "Correction validée et migration appliquée. Suivre le commit/push demandé et le déploiement dans output/flower-ranking-release/completion.json. Aucun audit supplémentaire nécessaire."
+  },
   "flowerReviewRadars": {
     "updated": "2026-11-09",
     "scope": "Fiches fleurs : radar du Carnet visible dans la synthèse du lot et avec chaque commentaire, à la place des listes de notes. Valeurs sur les neuf axes, verdict séparé, arômes et mode de dégustation visibles. Moyenne globale serveur conservée.",

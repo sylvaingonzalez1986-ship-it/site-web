@@ -17,7 +17,6 @@ import {
   getContestNotebookUnlocks,
   getContestProfile,
   getContestProfileBadges,
-  getContestRankings,
   getContestSeasons,
   getContestTesterProgress,
   getPublicContestEntries,
@@ -126,6 +125,10 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
     const notebookOpen = isContestNotebookEnabledServer();
     const requestedCategory = parseCategory(params.category);
     const selectedTrack = parseTrack(params.track);
+    const rankingTrack = CONTEST_ENTRY_TRACKS.includes(params.track as ContestEntryTrack)
+      ? selectedTrack : undefined;
+    const entryTrack = surface === "notebook" ? undefined
+      : surface === "notebook-ranking" ? rankingTrack : selectedTrack;
     const [session, adminAuthorized] = await Promise.all([
       getOptionalContestSession(),
       isCurrentRequestAdminAuthorized(),
@@ -176,7 +179,7 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
     }
 
     const entryPayload = arenaView === "carnet"
-      ? await getPublicContestEntries({ seasonCode: params.season, track: surface === "notebook" ? undefined : selectedTrack })
+      ? await getPublicContestEntries({ seasonCode: params.season, track: entryTrack })
       : { entries: [], selectedSeason: null };
     const selectedSeasonCode = entryPayload.selectedSeason?.code ?? params.season;
     const categoryCounts = getContestCategoryCounts(surface === "notebook"
@@ -188,7 +191,6 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
 
     const [
       seasons,
-      rankingPayload,
       feedPayload,
       notebookUnlocks,
       viewerProfile,
@@ -199,13 +201,10 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
       contestBundleOffer,
     ] = await Promise.all([
       includeCommunityPanels ? getContestSeasons() : Promise.resolve([]),
-      includeCommunityPanels
-        ? getContestRankings({ seasonCode: selectedSeasonCode, category: activeCategory, track: selectedTrack, limit: 12 })
-        : Promise.resolve({ entries: [] }),
       includeCommunityPanels ? getContestFeed({
         seasonCode: selectedSeasonCode,
         category: activeCategory,
-        track: selectedTrack,
+        track: entryTrack,
         limit: 18,
         viewerCustomerId: session?.customerId,
       }) : Promise.resolve({ items: [] }),
@@ -255,10 +254,10 @@ export async function ContestArenaPage({ searchParams, surface = "arena" }: Cont
         seasons={seasons}
         selectedSeasonCode={entryPayload.selectedSeason?.code}
         selectedTrack={selectedTrack}
+        rankingTrack={rankingTrack}
         activeCategory={activeCategory}
         categoryCounts={categoryCounts}
         entries={visibleEntries}
-        rankings={rankingPayload.entries}
         feed={feedPayload.items}
         notebookUnlocks={notebookUnlocks.map(sanitizePublicContestNotebookUnlock)}
         viewerProfile={viewerProfile ? sanitizePublicContestProfile(viewerProfile) : null}

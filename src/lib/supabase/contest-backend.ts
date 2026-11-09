@@ -591,42 +591,6 @@ function uniqueStrings(values: Array<string | undefined | null>): string[] {
   return Array.from(new Set(cleaned));
 }
 
-function isPurchasableVariantOption(value: unknown): boolean {
-  const option = toObject(value);
-  const price = Number(option.price);
-  if (option.enabled === false) {
-    return false;
-  }
-  if (Number.isFinite(price) && price < 0) {
-    return false;
-  }
-
-  const stockQuantity = Number(option.stockQuantity ?? option.stock_quantity);
-  if (Number.isFinite(stockQuantity)) {
-    return stockQuantity > 0;
-  }
-
-  return option.inStock !== false && option.in_stock !== false;
-}
-
-function isShopFlowerForSale(product: ContestShopFlowerRow): boolean {
-  if (toText(product.category) !== "fleurs") {
-    return false;
-  }
-
-  const variantOptions = Array.isArray(product.variant_options) ? product.variant_options : [];
-  if (variantOptions.length > 0) {
-    return variantOptions.some((option) => isPurchasableVariantOption(option));
-  }
-
-  if (product.track_stock !== true) {
-    return true;
-  }
-
-  const stockQuantity = Number(product.stock_quantity);
-  return Number.isFinite(stockQuantity) && stockQuantity > 0;
-}
-
 function slugifyContestText(value: string): string {
   return value
     .toLowerCase()
@@ -2251,7 +2215,7 @@ export async function syncContestEntriesForShopFlowers(season: ContestSeason | n
   };
   const [products, existingRows] = await Promise.all([
     loadRows("products", "id,name,category,culture_type,price,original_price,weight_grams,is_pack,image,images,producer_id,description,track_stock,stock_quantity,variant_options,position"),
-    loadRows("contest_entries", "id,product_id,track,is_published"),
+    loadRows("contest_entries", "id,product_id,category,track,is_published"),
   ]);
 
   const rowsToInsert: ContestEntryRow[] = [];
@@ -2267,8 +2231,16 @@ export async function syncContestEntriesForShopFlowers(season: ContestSeason | n
       continue;
     }
     const track = classification.track;
+    const category = normalizeCategory(toOptionalText(product.culture_type));
     if (existing.length > 0) {
       const published = existing.filter((row) => row.is_published === true);
+      // Keep reviews attached to the same lot when its shop category is corrected.
+      const categoryIds = published.filter((row) => category && row.category !== category).map((row) => toText(row.id));
+      if (categoryIds.length > 0) {
+        const result = await supabase.from("contest_entries")
+          .update({ category, updated_at: new Date().toISOString() }).in("id", categoryIds);
+        failIfError(result.error, "sync notebook cultivation category");
+      }
       const hasCorrectPublished = published.some((row) => row.track === track);
       const uniqueEntry = published.length === 1 ? published[0] : existing.length === 1 ? existing[0] : undefined;
       if (!hasCorrectPublished && uniqueEntry && uniqueEntry.track !== track) {
@@ -2282,8 +2254,6 @@ export async function syncContestEntriesForShopFlowers(season: ContestSeason | n
       }
       continue;
     }
-    if (!isShopFlowerForSale(product)) continue;
-
     const title = (toOptionalText(product.name) ?? productId).slice(0, 160);
     const imageUrl = getShopFlowerImage(product);
     const galleryUrls = uniqueStrings([imageUrl, ...toStringArray(product.images)]);
@@ -2299,7 +2269,7 @@ export async function syncContestEntriesForShopFlowers(season: ContestSeason | n
       product_id: productId,
       producer_id: toOptionalText(product.producer_id) ?? null,
       season_id: season.id,
-      category: normalizeCategory(toOptionalText(product.culture_type)) ?? "outdoor",
+      category: category ?? "outdoor",
       track,
       story: sanitizeStory(toOptionalText(product.description)),
       technical_sheet: buildShopFlowerTechnicalSheet(product),
@@ -2365,29 +2335,34 @@ export async function getPublicContestEntries(input: {
   const track = normalizeTrack(input.track);
 
   const supabase = createSupabaseServiceClient();
-  let query = supabase
-    .from("contest_entries")
-    .select(SELECT_ENTRY_COLUMNS)
-    .eq("is_published", true)
-    .order("position", { ascending: true })
-    .order("created_at", { ascending: false })
-    .limit(200);
+  const entries: ContestEntrySummary[] = [];
+  let offset = 0;
+  while (true) {
+    let query = supabase
+      .from("contest_entries")
+      .select(SELECT_ENTRY_COLUMNS)
+      .eq("is_published", true)
+      .order("position", { ascending: true })
+      .order("created_at", { ascending: false })
+      .order("id", { ascending: true })
+      .range(offset, offset + 99);
 
-  if (selectedSeason) {
-    query = query.eq("season_id", selectedSeason.id);
-  }
-  if (category) {
-    query = query.eq("category", category);
-  }
-  if (track) {
-    query = query.eq("track", track);
-  }
+    if (selectedSeason) query = query.eq("season_id", selectedSeason.id);
+    if (category) query = query.eq("category", category);
+    if (track) query = query.eq("track", track);
 
-  const result = await query;
-  failIfError(result.error, "read public contest entries");
+    const result = await query;
+    failIfError(result.error, "read public contest entries");
+    if (!Array.isArray(result.data)) throw new Error("Invalid public contest entries response.");
+    const rows = toRowArray(result.data);
+    if (rows.length === 0) break;
+    // Hydrate bounded pages so the Data API cap cannot truncate linked stats.
+    entries.push(...await hydrateEntries(rows));
+    offset += rows.length;
+  }
 
   return {
-    entries: await hydrateEntries(toRowArray(result.data)),
+    entries,
     selectedSeason,
   };
 }

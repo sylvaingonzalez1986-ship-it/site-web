@@ -10,6 +10,8 @@ const mocks = vi.hoisted(() => ({
   activityRead: vi.fn(),
   entries: vi.fn(),
   unlocks: vi.fn(),
+  feed: vi.fn(),
+  rankings: vi.fn(),
 }));
 
 vi.mock("next/headers", () => ({
@@ -18,11 +20,11 @@ vi.mock("next/headers", () => ({
 vi.mock("@/lib/customer-backend", () => ({ getCurrentCustomerSessionByBackend: mocks.session }));
 vi.mock("@/lib/admin-guard", () => ({ isCurrentRequestAdminAuthorized: mocks.admin }));
 vi.mock("@/lib/contest-backend", () => ({
-  getContestFeed: async () => ({ items: [] }),
+  getContestFeed: mocks.feed,
   getContestNotebookUnlocks: mocks.unlocks,
   getContestProfile: async () => null,
   getContestProfileBadges: async () => [],
-  getContestRankings: async () => ({ entries: [] }),
+  getContestRankings: mocks.rankings,
   getContestSeasons: async () => [],
   getContestTesterProgress: async () => null,
   getPublicContestEntries: mocks.entries,
@@ -65,6 +67,8 @@ beforeEach(() => {
   mocks.admin.mockResolvedValue(false);
   mocks.entries.mockResolvedValue({ entries: [], selectedSeason: null });
   mocks.unlocks.mockResolvedValue([]);
+  mocks.feed.mockResolvedValue({ items: [] });
+  mocks.rankings.mockResolvedValue({ entries: [] });
   mocks.activityRead.mockImplementation(() => { throw new Error("Unexpected activity data access"); });
 });
 
@@ -181,5 +185,41 @@ describe("Public tasting notebook", () => {
     vi.stubEnv("CONTEST_NOTEBOOK_ENABLED", "false");
     await expect(visit({}, "notebook")).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
     expect(mocks.entries).not.toHaveBeenCalled();
+  });
+
+  it("shows both notebooks by default, including reviewed and unrated Indoor flowers", async () => {
+    const entries = [
+      { id: "black-berserker", category: "indoor", track: "concours", stats: { approvedReviewCount: 2 } },
+      { id: "lemon-flambe", category: "indoor", track: "concours", stats: { approvedReviewCount: 0 } },
+      { id: "regular", category: "outdoor", track: "regular", stats: { approvedReviewCount: 8 } },
+    ];
+    mocks.entries.mockResolvedValue({ entries, selectedSeason: { code: "2026" } });
+    const result = await visit({ category: "indoor" }, "notebook-ranking");
+    expect(mocks.entries).toHaveBeenCalledWith({ seasonCode: undefined, track: undefined });
+    expect(result.props).toMatchObject({
+      activeCategory: "indoor", rankingTrack: undefined,
+      categoryCounts: { indoor: 2, outdoor: 1, greenhouse: 0 },
+      entries: entries.slice(0, 2),
+    });
+    expect(mocks.feed).toHaveBeenCalledWith(expect.objectContaining({ category: "indoor", track: undefined, seasonCode: "2026" }));
+    expect(mocks.rankings).not.toHaveBeenCalled();
+  });
+
+  it.each(["regular", "concours"])("honors an explicit %s notebook filter", async track => {
+    const result = await visit({ track, season: "2025" }, "notebook-ranking");
+    expect(result.props.rankingTrack).toBe(track);
+    expect(mocks.entries).toHaveBeenCalledWith({ seasonCode: "2025", track });
+    expect(mocks.feed).toHaveBeenCalledWith(expect.objectContaining({ seasonCode: "2025", track }));
+  });
+
+  it("keeps every published flower beyond twelve instead of replacing entries with a top list", async () => {
+    const entries = Array.from({ length: 18 }, (_, index) => ({ id: `flower-${index}`, category: "indoor", track: index % 2 ? "concours" : "regular" }));
+    mocks.entries.mockResolvedValue({ entries, selectedSeason: null });
+    mocks.rankings.mockResolvedValue({ entries: entries.slice(0, 12) });
+    const result = await visit({ category: "indoor", track: "unknown" }, "notebook-ranking");
+    expect(result.props.entries).toEqual(entries);
+    expect(result.props.categoryCounts.indoor).toBe(18);
+    expect(result.props.rankingTrack).toBeUndefined();
+    expect(mocks.rankings).not.toHaveBeenCalled();
   });
 });
