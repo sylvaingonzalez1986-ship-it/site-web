@@ -3,7 +3,7 @@ import { getKqStaffBenefitPreview } from "./kanab-quest-staff-benefits";
 import type { KqStaffEmployee, KqStaffPlannedTask, KqStaffSkill, KqStaffSnapshot, KqStaffTask } from "./kanab-quest-staff-types";
 
 export type KqStaffImpactMode = "day" | "week";
-export type KqStaffImpactSectorId = KqStaffSkill | "trim" | "training";
+export type KqStaffImpactSectorId = KqStaffSkill | "trim" | "training" | "production";
 export type KqStaffImpactHours = {
   total: number; completed: number; running: number;
   /** Assigned and still usable, or conditional hours in the weekly template. Never free employee time. */
@@ -47,6 +47,11 @@ function sumHours(rows: KqStaffImpactHours[]): KqStaffImpactHours {
 
 function taskHours(task: KqStaffTask, serverNow: string): KqStaffImpactHours {
   const result = { ...emptyHours(), total: task.hours };
+  if (task.kind === "production") {
+    result.completed = Math.min(task.hours, task.productionWorkedHours ?? 0);
+    result[task.status === "completed" ? "unused" : "remaining"] = Math.max(0, task.hours - result.completed);
+    return result;
+  }
   if (task.cultureShift || task.processingShift) {
     const used = task.cultureShift ? task.result?.cultureUsedHours ?? task.cultureUsedHours : task.result?.processingUsedHours ?? task.processingUsedHours;
     if (!finite(used) || used < 0 || used > task.hours) result.unknown = task.hours;
@@ -61,6 +66,7 @@ function taskHours(task: KqStaffTask, serverNow: string): KqStaffImpactHours {
 
 /** Never turn account-wide receipts into receipts for a selected employee or day. */
 function taskActual(task: KqStaffTask): KqStaffImpactMetric[] {
+  if (task.kind === "production") return [metric("production-hours", "Travail effectué", task.productionWorkedHours, "h", task.productionReason)];
   if (task.cultureShift) return [metric("culture-hours", "Heures de culture utilisées", task.result?.cultureUsedHours ?? task.cultureUsedHours, "h")];
   if (task.processingShift) return [metric("processing-hours", "Heures de transformation utilisées", task.result?.processingUsedHours ?? task.processingUsedHours, "h")];
   if (task.kind === "trim" && task.trimQueue) return [metric("trim-grams", "Trim effectué", task.result?.trimGrams ?? task.trimGrams, "g")];
@@ -87,7 +93,7 @@ function skillName(skill: KqStaffSkill) {
 
 // Only homogeneous additive counts are added. Levels, efficiency, quality and
 // mission-limited culture bonuses retain a range. Discounts retain their maximum.
-const sumIds = new Set(["culture-hours", "processing-hours", "trim-grams", "followers-gained", "followers-offered", "attempts", "partners", "steps", "spared-hours", "reserved-hours", "trim-capacity", "followers-capacity"]);
+const sumIds = new Set(["production-hours", "production-reserved", "culture-hours", "processing-hours", "trim-grams", "followers-gained", "followers-offered", "attempts", "partners", "steps", "spared-hours", "reserved-hours", "trim-capacity", "followers-capacity"]);
 function aggregate(rows: KqStaffImpactMetric[], snapshot: KqStaffSnapshot): KqStaffImpactMetric[] {
   const groups = new Map<string, KqStaffImpactMetric[]>();
   for (const row of rows) groups.set(row.id, [...groups.get(row.id) ?? [], row]);
@@ -109,6 +115,7 @@ type Source = { employee: KqStaffEmployee; row: KqStaffPlannedTask | KqStaffTask
 
 function forecast(source: Source, snapshot: KqStaffSnapshot, xpRemaining: Map<string, number>): KqStaffImpactMetric[] {
   const { employee, row, task, contribution } = source;
+  if (row.kind === "production") return task?.status === "completed" ? [] : [metric("production-reserved", "Temps disponible dans le circuit", task ? contribution.hours.remaining : row.hours, "h", "Travail selon les lots, les délais et les capacités ; aucune recette garantie.")];
   if (task?.status === "completed") return [];
   const reservation = task?.cultureShift || task?.processingShift;
   const hours = reservation ? contribution.hours.remaining : row.hours;
@@ -207,7 +214,8 @@ function weeklyNotes(employee: KqStaffEmployee, row: KqStaffPlannedTask, snapsho
 export function getKqStaffImpact(snapshot: KqStaffSnapshot, options: { mode: KqStaffImpactMode; employeeId?: string | null }): KqStaffImpact {
   const employees = snapshot.state.employees.filter(employee => !options.employeeId || employee.id === options.employeeId);
   const activeEmployees = employees.filter(employee => employee.status === "active");
-  const sectors: KqStaffImpactSector[] = KQ_STAFF_IMPACT_SECTORS.map(id => ({ id, hours: emptyHours(), actual: [], forecast: [], notes: [], warnings: [], contributions: [] }));
+  const sectorIds: KqStaffImpactSectorId[] = [...KQ_STAFF_IMPACT_SECTORS, ...(snapshot.context.productionVersion === 1 ? ["production" as const] : [])];
+  const sectors: KqStaffImpactSector[] = sectorIds.map(id => ({ id, hours: emptyHours(), actual: [], forecast: [], notes: [], warnings: [], contributions: [] }));
   const sources: Source[] = [];
   const add = (employee: KqStaffEmployee, row: KqStaffPlannedTask | KqStaffTask, id: string, task?: KqStaffTask) => {
     const warnings = task || "id" in row ? [] : weeklyNotes(employee, row, snapshot);

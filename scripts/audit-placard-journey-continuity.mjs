@@ -1131,6 +1131,9 @@ if (preview) {
       assert(await page.$eval('[data-staff-hire-form]', node => /brut/i.test(node.textContent) && /coût employeur/i.test(node.textContent)), 'The actual contract displays gross salary and estimated employer cost');
       await layout(); await screenshot('staff-guide-contract-' + width);
       await guideTarget();
+      assert(await page.$('[data-staff-tab="overview"][data-farm-guide-target]'));
+      await keyClick('[data-staff-tab="overview"]');
+      await settleGuide(); await guideTarget();
       assert(await page.$('[data-staff-guide="planning"] > summary[data-farm-guide-target]'));
       assert.deepEqual(await staffProgress(), ['staff-candidate'], 'Focusing a closed planning explanation is not reading it');
       await keyClick('[data-staff-guide="planning"] > summary');
@@ -1153,6 +1156,13 @@ if (preview) {
       assert.equal((await storedGuide()).flowerId, targetId);
       for (const id of previousSteps) assert((await storedGuide()).completed.includes(id));
       await page.$eval('[data-staff-panel="payroll"]', node => node.scrollIntoView({ block: 'center' }));
+      await settleGuide();
+      assert(await page.$eval('[data-staff-carousel-controls]', node => {
+        const guide = document.querySelector('[data-farm-guide-anchor]');
+        const header = document.querySelector('[data-placard-stage]')?.parentElement?.querySelector(':scope > header');
+        const top = node.getBoundingClientRect().top;
+        return (!header || top >= header.getBoundingClientRect().bottom) && (!guide || getComputedStyle(guide).position !== 'sticky' || top >= guide.getBoundingClientRect().bottom);
+      }), 'Pinned carousel clears both the page header and the collapsed guide');
       await layout(); await screenshot('staff-guide-payroll-' + width);
       const completed = (await storedGuide()).completed;
       await keyClick('[data-farm-guide-close]');
@@ -1171,10 +1181,9 @@ if (preview) {
     await page.evaluate(() => { window.__control.staff('pending'); window.__control.notify('kq:staff-updated'); });
     await page.waitForFunction(() => !document.querySelector('[data-guide-staff-ready="true"]') && [...document.querySelectorAll('[data-staff-desk] button')].some(node => node.disabled && node.textContent.includes('Actualisation')));
     assert(await page.$$eval('[data-staff-profile]', nodes => nodes.length > 0 && nodes.every(node => node.disabled)), 'Retained candidate profiles stay disabled during loading');
-    assert(await page.$$eval('[data-staff-tab]', nodes => nodes.length === 3 && nodes.every(node => node.disabled)), 'Personnel navigation stays disabled during loading');
+    assert(await page.$$eval('[data-staff-tab]', nodes => nodes.length === 5 && nodes.every(node => node.disabled)), 'Personnel navigation stays disabled during loading');
     assert.equal(await page.$('[data-staff-hire-form]'), null, 'Loading cannot open a contract from retained offers');
-    await keyClick('[data-staff-guide="planning"] > summary');
-    await keyClick('[data-staff-guide="development"] > summary');
+    assert(await page.$eval('[data-staff-panel="overview"]', node => node.hidden && node.inert), 'Hidden explanations cannot be opened during loading');
     await settleGuide();
     assert.deepEqual(await staffProgress(), [], 'Visible stale data cannot validate objectives while the snapshot is loading');
     await page.evaluate(() => { window.__control.staff('error'); window.__control.resolve(); });
@@ -1190,10 +1199,13 @@ if (preview) {
     await page.waitForSelector('[data-guide-staff-ready="true"]');
     await settleGuide();
     await waitStep('staff-candidate');
-    assert.deepEqual(await staffProgress(), staffSteps.slice(1, 3), 'A successful GET validates the retained open explanations, while the unopened contract stays incomplete');
+    assert.deepEqual(await staffProgress(), [], 'A successful GET does not validate hidden explanations or the unopened contract');
     assert(await page.$$eval('[data-staff-profile], [data-staff-tab]', nodes => nodes.every(node => !node.disabled)), 'Successful recovery unlocks the real controls');
     await keyClick('[data-staff-profile]');
     await page.waitForSelector('[data-staff-hire-form]', { visible: true });
+    await waitStep('staff-planning'); await keyClick('[data-staff-tab="overview"]');
+    await keyClick('[data-staff-guide="planning"] > summary'); await waitStep('staff-development');
+    await keyClick('[data-staff-guide="development"] > summary');
     await waitStep('staff-payroll');
     assert.deepEqual(await staffProgress(), staffSteps.slice(0, 3), 'Opening the recovered contract supplies the missing candidate evidence');
     await keyClick('[data-staff-tab="payroll"]'); await waitStep('complete');

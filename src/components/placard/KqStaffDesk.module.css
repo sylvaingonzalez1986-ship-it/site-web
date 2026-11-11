@@ -1,6 +1,7 @@
 .page { composes: gameSurface from "../contest/ArenaRetro.module.css"; min-height: 100svh; padding: 30px clamp(16px,4vw,56px) 48px; color: #172923; background: #fff1d6; }
 .page > * { max-width: 1180px; margin-inline: auto; }
 .desk { display: grid; gap: 22px; min-width: 0; color: #172923; }
+.desk [hidden] { display: none !important; }
 .overview { min-width: 0; padding: 4px 4px 0; }
 .cash { display: grid; gap: 4px; margin: 0; }
 .cash dt { font-size: .8rem; color: #506155; }
@@ -48,6 +49,8 @@
 .personHeader h3 { font-size: 1.1rem; overflow-wrap: anywhere; }
 .portrait { display: grid; place-items: center; flex: 0 0 76px; width: 76px; height: 82px; }
 .portrait canvas { display: block; width: 76px; height: 76px; }
+.compactProfile .portrait { flex-basis: 48px; width: 48px; height: 50px; }
+.compactProfile .portrait canvas { width: 48px; height: 48px; }
 .trait { font-size: .84rem; color: #24594e; }
 .biography { font-size: .88rem; }
 .numbers, .review { margin: 0; display: grid; gap: 0; }

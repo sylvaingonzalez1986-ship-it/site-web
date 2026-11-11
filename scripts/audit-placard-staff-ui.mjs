@@ -8,6 +8,8 @@ import puppeteer from 'puppeteer-core';
 
 const root = process.cwd(), output = resolve(root, 'output/placard-staff-ui');
 const origin = 'http://127.0.0.1:3438';
+const carouselOnly = process.argv.includes('--carousel-only');
+const productionOnly = process.argv.includes('--production-only');
 const benefitsOnly = process.argv.includes('--benefits-only');
 const impactDashboardOnly = process.argv.includes('--impact-dashboard-only');
 const workPlanOnly = process.argv.includes('--work-plan-only');
@@ -30,7 +32,7 @@ const cultureWorkOnly = process.argv.includes('--culture-work-only');
 const processingWorkOnly = process.argv.includes('--processing-work-only');
 const sharedTrimEdgeOnly = process.argv.includes('--shared-trim-edge-only');
 const sharedTrimOnly = process.argv.includes('--shared-trim-only') || sharedTrimEdgeOnly || trimMotionAlias;
-const reportName = impactDashboardOnly ? 'impact-dashboard-report.json' : benefitsOnly ? 'benefits-report.json' : contractLifecycleOnly ? 'contract-lifecycle-report.json' : helpOnly ? 'help-dashboard-report.json' : dashboardOnly ? 'dashboard-report.json' : processingWorkOnly ? 'processing-work-report.json' : cultureWorkOnly ? 'culture-work-report.json' : weeklyPlanOnly ? 'weekly-plan-report.json' : employeeSheetOnly ? 'employee-sheet-report.json' : sharedTrimEdgeOnly ? 'shared-trim-edge-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : archiveOnly ? 'archive-report.json' : workScenePreview ? 'work-scene-preview-report.json' : workSceneOnly ? 'work-scene-report.json' : staffMomentsOnly ? 'staff-moments-report.json' : visualClarityOnly ? 'visual-clarity-report.json' : playerWorkOnly ? 'player-work-report.json' : prospectingOnly ? 'prospecting-report.json' : workPlanOnly ? 'work-plan-report.json' : 'report.json';
+const reportName = carouselOnly ? 'carousel-report.json' : productionOnly ? 'production-report.json' : impactDashboardOnly ? 'impact-dashboard-report.json' : benefitsOnly ? 'benefits-report.json' : contractLifecycleOnly ? 'contract-lifecycle-report.json' : helpOnly ? 'help-dashboard-report.json' : dashboardOnly ? 'dashboard-report.json' : processingWorkOnly ? 'processing-work-report.json' : cultureWorkOnly ? 'culture-work-report.json' : weeklyPlanOnly ? 'weekly-plan-report.json' : employeeSheetOnly ? 'employee-sheet-report.json' : sharedTrimEdgeOnly ? 'shared-trim-edge-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : archiveOnly ? 'archive-report.json' : workScenePreview ? 'work-scene-preview-report.json' : workSceneOnly ? 'work-scene-report.json' : staffMomentsOnly ? 'staff-moments-report.json' : visualClarityOnly ? 'visual-clarity-report.json' : playerWorkOnly ? 'player-work-report.json' : prospectingOnly ? 'prospecting-report.json' : workPlanOnly ? 'work-plan-report.json' : 'report.json';
 const entry = `
 import React,{useState} from 'react';import {createRoot} from 'react-dom/client';
 import {KqStaffDesk} from '/src/components/placard/KqStaffDesk';
@@ -44,6 +46,8 @@ import {createKqOperationsLesson,getKqOperationsCommerce} from '/src/lib/kanab-q
 import {KqTutorialApiProvider,createKqTutorialApi} from '/src/components/placard/KqTutorialApiContext';
 import {createKqStaffState,projectKqStaffSnapshot,applyKqStaffCommand,advanceKqStaff,getKqStaffMonthlyCost,getKqStaffTrainingCost,getKqStaffLevel,getKqStaffCapacity,KQ_STAFF_CITIES} from '/src/lib/kanab-quest-staff';
 import {getKqStaffPlannedTaskCost,getKqStaffWeeklyCost} from '/src/lib/kanab-quest-staff-weekly';
+import {createKqWarehouseStarter} from '/src/lib/kanab-quest-warehouse';
+import {getKqProductionCashDelta} from '/src/lib/kanab-quest-staff-production';
 import {KQ_GAME_DAY_MS} from '/src/lib/kanab-quest-business';
 import {parseChanvrierProfile,DEFAULT_CHANVRIER_APPEARANCE} from '/src/lib/arena-chanvrier';
 const now='2026-11-07T12:00:00.000Z';
@@ -52,11 +56,12 @@ if(!playerProfile)throw Error('Invalid audit player profile');
 let profileState=new URLSearchParams(location.search).get('profile')??'ready',profileReads=0;
 let raw={state:createKqStaffState(now),revision:0,serverNow:now,cashCents:2500000,context:{businessStartedAt:now,reputation:800,instagramFollowers:3500,shopPartners:2,activeRuns:[{id:'test-run',name:'Culture de démonstration'}],processingBatches:[{id:'test-batch',flowerId:'test-flower',name:'Lot de démonstration',startedAt:now,readyAt:'2026-11-09T12:00:00.000Z'}],supplierInvoices:[],trimLots:[{flowerId:'trim-manual',name:'Récolte pour trim manuel',requiredWork:6,completedWork:0,mode:null,completedAt:null},{flowerId:'trim-machine',name:'Récolte pour trim machine',requiredWork:6,completedWork:0,mode:null,completedAt:null}]}};
 raw.context.trimQueueVersion=2;raw.context.trimLots=raw.context.trimLots.map((lot,index)=>({...lot,totalGrams:360,completedGrams:0,createdAt:new Date(Date.parse(now)-(2-index)*60000).toISOString()}));
-if(${benefitsOnly}||(${impactDashboardOnly}&&!new URLSearchParams(location.search).has('empty'))||(${dashboardOnly}&&new URLSearchParams(location.search).get('dashboard')!=='empty')||${processingWorkOnly}||${cultureWorkOnly}||${weeklyPlanOnly}||${employeeSheetOnly}||${sharedTrimOnly}||${workPlanOnly}||${workSceneOnly}||(${visualClarityOnly}&&new URLSearchParams(location.search).has('team'))){
+if(${carouselOnly}||${productionOnly}||${benefitsOnly}||(${impactDashboardOnly}&&!new URLSearchParams(location.search).has('empty'))||(${dashboardOnly}&&new URLSearchParams(location.search).get('dashboard')!=='empty')||${processingWorkOnly}||${cultureWorkOnly}||${weeklyPlanOnly}||${employeeSheetOnly}||${sharedTrimOnly}||${workPlanOnly}||${workSceneOnly}||(${visualClarityOnly}&&new URLSearchParams(location.search).has('team'))){
  for(const code of ['anna','mael']){const candidate=projectKqStaffSnapshot(raw).candidates.find(candidate=>candidate.code===code),temporary=(${employeeSheetOnly}||${weeklyPlanOnly})&&code==='mael',weeklyHours=temporary?14:35;raw.state=applyKqStaffCommand(raw,{action:'hire',candidateCode:code,contract:temporary?'cdd':'cdi',weeklyHours,durationMonths:temporary?3:0,reason:temporary?'temporary-increase':'permanent',expectedMonthlyCostCents:getKqStaffMonthlyCost(candidate,weeklyHours).totalCents},'work-plan-'+code).state}
  raw.context.activeRuns.push({id:'test-run-selected',name:'Culture choisie pour Maël'});
  raw.context.processingBatches.push({id:'test-batch-selected',flowerId:'test-flower-selected',name:'Lot choisi pour Anna',startedAt:now,readyAt:'2026-11-09T12:00:00.000Z'});
 }
+if(${productionOnly}||${carouselOnly}){raw.context.productionVersion=new URLSearchParams(location.search).has("no-production")?undefined:1;raw.context.weeklyPlanVersion=1;raw.context.activeRuns=[];raw.context.processingBatches=[];raw.context.productionFacility={warehouseState:createKqWarehouseStarter(),warehouseRevision:1,busyZoneIds:[],usedStorageGrams:0,reservedDryingGrams:0,equipment:[{code:'SIFT-TRAY',level:1}]};}
 if(${employeeSheetOnly})raw.state.employees[0].skills={culture:100,processing:900,communication:2500,sales:4900,administration:8100};
 if(${contractLifecycleOnly}){raw.context.contractLifecycleVersion=1;raw.context.contractCooldowns={worker:new Date(Date.parse(now)+4*KQ_GAME_DAY_MS).toISOString()};raw.context.weeklyPlanVersion=1;raw.archiveCount=2;}
 if(${cultureWorkOnly}){raw.context.cultureWorkVersion=1;raw.context.weeklyPlanVersion=1;raw.context.activeRuns=[];}
@@ -101,7 +106,7 @@ if(${sharedTrimOnly}){
 }
 const applyEffects=effects=>{for(const effect of effects){if(effect.kind==='trim-work'){const lot=raw.context.trimLots.find(lot=>lot.flowerId===effect.flowerId);lot.mode=effect.mode;if(effect.unit==='g'){lot.completedGrams=Math.min(lot.totalGrams,(lot.completedGrams??0)+effect.work);lot.completedWork=lot.requiredWork*lot.completedGrams/lot.totalGrams}else{lot.completedWork=Math.min(lot.requiredWork,lot.completedWork+effect.work);if(lot.totalGrams)lot.completedGrams=lot.totalGrams*lot.completedWork/lot.requiredWork}if(lot.completedWork>=lot.requiredWork)lot.completedAt=raw.serverNow}else if(effect.kind==='sales'){raw.context.shopPartners+=effect.shopPartners;raw.context.reputation+=effect.reputation}}};
 let failNext=false,loseNextResponse=false,unavailable=(${impactDashboardOnly}||${dashboardOnly}||${employeeSheetOnly}||${weeklyPlanOnly})&&new URLSearchParams(location.search).has('read-error'),reads=0,holdSettlement=${impactDashboardOnly};const calls=[],seen=new Map(),openedHarvests=[];
-const settle=()=>{const settled=advanceKqStaff(raw);raw={...raw,state:settled.state,cashCents:raw.cashCents-settled.debitCents};applyEffects(settled.effects)};
+const settle=()=>{const settled=advanceKqStaff(raw);raw={...raw,state:settled.state,cashCents:raw.cashCents-settled.debitCents+getKqProductionCashDelta(settled.effects)};applyEffects(settled.effects)};
 if(${workSceneOnly}){
  const scenario=new URLSearchParams(location.search).get('scene');
  const seed=(command,id)=>{const result=applyKqStaffCommand(raw,command,id);raw={...raw,state:result.state,cashCents:raw.cashCents-result.debitCents,revision:raw.revision+1};applyEffects(result.effects)};
@@ -176,9 +181,9 @@ const request=async(input,init={})=>{
  if(method==='POST'){
   if(failNext){failNext=false;return Response.json({error:'Connexion interrompue. Réessaie ce même dossier.'},{status:503})}
   if(seen.has(body.requestKey))return Response.json(seen.get(body.requestKey));
-  if(${weeklyPlanOnly}||${contractLifecycleOnly})settle();
+  if(${productionOnly}||${weeklyPlanOnly}||${contractLifecycleOnly})settle();
   if(${contractLifecycleOnly}&&body.action==='rehire')raw.context.rehireSource=structuredClone(archiveContracts.find(person=>person.id===body.sourceContractId));
-  try{const applied=applyKqStaffCommand(raw,body,body.requestKey);raw={...raw,state:applied.state,cashCents:raw.cashCents-applied.debitCents,revision:raw.revision+1};applyEffects(applied.effects);const result=projectKqStaffSnapshot(raw);seen.set(body.requestKey,result);if(loseNextResponse){loseNextResponse=false;return Response.json({error:'Réponse perdue après enregistrement. Réessaie ce même dossier.'},{status:503})}return Response.json(result)}catch(error){return Response.json({error:error.message},{status:400})}
+  try{const applied=applyKqStaffCommand(raw,body,body.requestKey);raw={...raw,state:applied.state,cashCents:raw.cashCents-applied.debitCents+getKqProductionCashDelta(applied.effects),revision:raw.revision+1};applyEffects(applied.effects);const result=projectKqStaffSnapshot(raw);seen.set(body.requestKey,result);if(loseNextResponse){loseNextResponse=false;return Response.json({error:'Réponse perdue après enregistrement. Réessaie ce même dossier.'},{status:503})}return Response.json(result)}catch(error){return Response.json({error:error.message},{status:400})}
  }
  reads++;if(!holdSettlement)settle();return Response.json(projectKqStaffSnapshot(raw));
 };
@@ -186,7 +191,7 @@ const api=createKqTutorialApi(request);
 if(${contractLifecycleOnly})window.__contracts={reads:contractReads,source:()=>structuredClone(archiveContracts[0]),failRead:()=>contractReadFailure=true,disable:()=>{delete raw.context.contractLifecycleVersion;api.notify('kq:staff-updated')},expire:()=>{raw.serverNow=raw.state.employees.find(person=>person.id==='work-plan-mael').endsAt;api.notify('kq:staff-updated')}};
 if(${cultureWorkOnly})window.__cultureWork={mode:value=>{cultureMode=value;api.notify('kq:staff-updated')},reads:()=>cultureReads,consume:hours=>{raw.state.tasks.find(task=>task.cultureShift).cultureUsedHours=hours;api.notify('kq:staff-updated')}};
 if(${processingWorkOnly})window.__processingStaff={consume:hours=>{raw.state.tasks.find(task=>task.processingShift).processingUsedHours=hours;api.notify('kq:staff-updated')}};
-if(${weeklyPlanOnly})window.__weeklyPlan={advance:(day,hour=0)=>{raw.serverNow=new Date(Date.parse(now)+(day-1+hour/24)*KQ_GAME_DAY_MS).toISOString()},availability:value=>{unavailable=!value;api.notify('kq:staff-updated')},budget:cents=>raw.cashCents=cents};
+if(${productionOnly}||${weeklyPlanOnly})window.__weeklyPlan={advance:(day,hour=0)=>{raw.serverNow=new Date(Date.parse(now)+(day-1+hour/24)*KQ_GAME_DAY_MS).toISOString()},availability:value=>{unavailable=!value;api.notify('kq:staff-updated')},budget:cents=>raw.cashCents=cents};
 if(${employeeSheetOnly})window.__employeeSheet={expected:id=>{const employee=raw.state.employees.find(person=>person.id===id);return structuredClone({employee,cost:getKqStaffMonthlyCost(employee,employee.weeklyHours),levels:Object.fromEntries(Object.entries(employee.skills).map(([skill,xp])=>[skill,getKqStaffLevel(xp)]))})},availability:value=>{unavailable=!value;api.notify('kq:staff-updated')}};
 if(${dashboardOnly})window.__dashboard={availability:value=>{unavailable=!value;api.notify('kq:staff-updated')},expected:()=>{const snapshot=projectKqStaffSnapshot(raw);return structuredClone({snapshot,capacities:snapshot.state.employees.filter(employee=>employee.status==='active').map(employee=>({id:employee.id,...getKqStaffCapacity(employee,snapshot.calendar)}))})}};
 if(${impactDashboardOnly})window.__impactControl={availability:value=>{unavailable=!value;api.notify('kq:staff-updated')},pause:id=>{raw.state.employees.find(employee=>employee.id===id).weeklyPlan.enabled=false;api.notify('kq:staff-updated')},leave:id=>{raw.state.employees.find(employee=>employee.id===id).leave=[{id:'impact-leave',startDay:1,endDay:5,days:5}];api.notify('kq:staff-updated')},benefitsMissing:()=>{delete raw.benefits;api.notify('kq:staff-updated')},retire:id=>{raw.state.employees.find(employee=>employee.id===id).status='ended';api.notify('kq:staff-updated')}};
@@ -242,14 +247,14 @@ try {
   await page.setRequestInterception(true); page.on('request', request => { const url = new URL(request.url()); if (['data:', 'blob:'].includes(url.protocol)) return void request.continue(); if (url.origin !== origin || url.pathname.startsWith('/api/')) { forbiddenRequests.push(request.url()); return void request.abort(); } void request.continue(); });
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
   async function button(label, scope = 'body') { const handle = await page.waitForFunction((label, scope) => [...document.querySelectorAll(scope + ' button')].find(node => node.textContent.trim() === label && !node.disabled && node.getClientRects().length), {}, label, scope); await handle.asElement().focus(); await page.keyboard.press('Enter'); await handle.dispose(); }
-  async function select(label, value) { if (label === 'Ville à prospecter') { const activeScope = await page.$('[data-staff-work-form]') ? '[data-staff-work-form]' : '[data-player-work-desk]'; await disclosure(activeScope + ' [data-prospecting-city-list]', true); const selector = `${activeScope} [data-prospecting-city="${value}"]`; await page.waitForSelector(selector, { visible: true }); await page.focus(selector); await page.keyboard.press('Enter'); return; } const handle = await page.waitForFunction(label => [...document.querySelectorAll('label')].find(node => node.childNodes[0]?.textContent.trim() === label)?.querySelector('select'), {}, label); await handle.asElement().select(value); await handle.dispose(); }
-  async function input(label, value) { const handle = await page.waitForFunction(label => [...document.querySelectorAll('label')].find(node => node.childNodes[0]?.textContent.trim() === label)?.querySelector('input'), {}, label); await handle.asElement().focus(); await page.keyboard.down('Control'); await page.keyboard.press('A'); await page.keyboard.up('Control'); await page.keyboard.type(String(value)); await handle.dispose(); }
-  async function summary(prefix) { const handle = await page.waitForFunction(prefix => [...document.querySelectorAll('summary')].find(node => node.textContent.trim().startsWith(prefix)), {}, prefix); await handle.asElement().focus(); await page.keyboard.press('Enter'); await handle.dispose(); }
+  async function select(label, value) { if (label === 'Ville à prospecter') { const activeScope = await page.$('[data-staff-work-form]') ? '[data-staff-work-form]' : '[data-player-work-desk]'; await disclosure(activeScope + ' [data-prospecting-city-list]', true); const selector = `${activeScope} [data-prospecting-city="${value}"]`; await page.waitForSelector(selector, { visible: true }); await page.focus(selector); await page.keyboard.press('Enter'); return; } const handle = await page.waitForFunction(label => [...document.querySelectorAll('label')].find(node => node.childNodes[0]?.textContent.trim() === label && node.checkVisibility())?.querySelector('select'), {}, label); await handle.asElement().select(value); await handle.dispose(); }
+  async function input(label, value) { const handle = await page.waitForFunction(label => [...document.querySelectorAll('label')].find(node => node.childNodes[0]?.textContent.trim() === label && node.checkVisibility())?.querySelector('input'), {}, label); await handle.asElement().focus(); await page.keyboard.down('Control'); await page.keyboard.press('A'); await page.keyboard.up('Control'); await page.keyboard.type(String(value)); await handle.dispose(); }
+  async function summary(prefix) { const handle = await page.waitForFunction(prefix => [...document.querySelectorAll('summary')].find(node => node.textContent.trim().startsWith(prefix) && node.checkVisibility()), {}, prefix); await handle.asElement().focus(); await page.keyboard.press('Enter'); await handle.dispose(); }
   const raw = () => page.evaluate(() => window.__staff.raw());
   const calls = () => page.evaluate(() => window.__staff.calls);
   const layout = async () => assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No horizontal page overflow');
   const shot = async name => { await layout(); await page.screenshot({ path: resolve(output, name + '.png'), fullPage: false }); };
-  async function keyActivate(selector) { const control = await page.waitForSelector(selector, { visible: true }); await control.focus(); await page.keyboard.press('Enter'); await control.dispose(); }
+  async function keyActivate(selector) { const control = await page.waitForFunction(selector => [...document.querySelectorAll(selector)].find(node => node.checkVisibility() && !node.closest('[hidden],[inert]')), {}, selector); await control.asElement().focus(); await page.keyboard.press('Enter'); await control.dispose(); }
   async function disclosure(selector, open) {
     if (!await page.$(selector)) return;
     if (await page.$eval(selector, (node, open) => node.open !== open, open)) await keyActivate(selector + ' > summary');
@@ -269,6 +274,204 @@ try {
     await keyActivate(`[data-staff-station="${kind === 'countryside' ? 'sales' : kind}"]`);
     if (kind !== 'trim') await page.waitForSelector('[data-player-work-form]', { visible: true });
     if (kind === 'countryside') await keyActivate('[data-player-prospecting-mode="countryside"]');
+  }
+  if (carouselOnly) {
+    const current = () => page.$eval('[data-staff-carousel] [data-staff-tab][aria-selected=true]', node => node.dataset.staffTab);
+    const go = async id => { await keyActivate(`[data-staff-tab="${id}"]`); assert.equal(await current(), id); };
+    const swipe = async (selector, dx, dy = 0) => page.$eval(selector, (node, { dx, dy }) => {
+      const start = new Touch({ identifier: 1, target: node, clientX: 220, clientY: 400 });
+      const end = new Touch({ identifier: 1, target: node, clientX: 220 + dx, clientY: 400 + dy });
+      node.dispatchEvent(new TouchEvent('touchstart', { bubbles: true, touches: [start], changedTouches: [start] }));
+      node.dispatchEvent(new TouchEvent('touchend', { bubbles: true, touches: [], changedTouches: [end] }));
+    }, { dx, dy });
+    const planner = '[data-staff-weekly-planner="work-plan-anna"]';
+    for (const width of [320, 390, 1440]) {
+      await page.setViewport({ width, height: width < 500 ? 844 : 1100, hasTouch: width < 500 });
+      await page.goto(origin, { waitUntil: 'networkidle0' }); await page.waitForSelector('[data-guide-staff-ready=true]');
+      assert.equal(await current(), 'overview');
+      assert.equal(await page.$$eval('[data-staff-tab]', nodes => nodes.length), 6);
+      for (const id of ['overview', 'team', 'planning', 'production', 'candidates', 'payroll']) {
+        await go(id); await layout();
+        assert.equal(await page.$$eval('[data-staff-panel]', nodes => nodes.filter(node => node.checkVisibility()).length), 1);
+        assert(await page.$$eval('[data-staff-panel][hidden]', nodes => nodes.every(node => node.inert && !node.checkVisibility())));
+        assert(await page.$eval(`[data-staff-tab="${id}"]`, node => {
+          const style = getComputedStyle(node);
+          return style.borderImageSource.includes('control-gold') && style.backgroundColor === 'rgba(0, 0, 0, 0)' && document.getElementById(node.getAttribute('aria-controls'))?.getAttribute('aria-labelledby') === node.id;
+        }), 'Active illustrated sign controls its own panel');
+      }
+      await page.keyboard.press('Home'); assert.equal(await current(), 'overview');
+      await page.keyboard.press('ArrowRight'); assert.equal(await current(), 'team');
+      await page.keyboard.press('End'); assert.equal(await current(), 'payroll');
+      await page.keyboard.press('ArrowRight'); assert.equal(await current(), 'overview');
+      await keyActivate('[data-staff-carousel-next]'); assert.equal(await current(), 'team');
+      await keyActivate('[data-staff-carousel-prev]'); assert.equal(await current(), 'overview');
+      await swipe('[data-staff-panel=overview]', -100); assert.equal(await current(), 'team');
+      await swipe('[data-staff-panel=team]', 0, 180); assert.equal(await current(), 'team', 'Vertical gestures keep the current sheet');
+      await swipe('[data-staff-work-plan]', -100); assert.equal(await current(), 'team', 'Work plan gestures do not turn the page');
+      await keyActivate('[data-staff-work-employee="work-plan-anna"]'); await keyActivate('[data-staff-station=communication]');
+      await page.waitForFunction(() => document.activeElement?.id === 'staff-assignment-heading');
+      await go('overview'); await page.keyboard.press('ArrowRight');
+      assert.equal(await current(), 'team');
+      assert(await page.evaluate(() => document.activeElement?.matches('[data-staff-tab=team]')), 'Returning to an assignment preserves carousel keyboard focus');
+      await go('production'); await swipe('[data-staff-production] select', -100); assert.equal(await current(), 'production');
+      await input('Plafond de dépenses / jour (€ du jeu)', '123');
+      await go('planning');
+      await keyActivate(planner + ' [data-weekly-add]');
+      await page.select(planner + ' [data-weekly-kind]', 'communication');
+      await page.focus(planner + ' [data-weekly-hours]'); await page.keyboard.down('Control'); await page.keyboard.press('A'); await page.keyboard.up('Control'); await page.keyboard.type('2'); await page.keyboard.press('Tab');
+      await page.select('[data-staff-planning-employee]', 'work-plan-mael');
+      assert.equal(await page.$$eval('[data-staff-employee-id]', nodes => nodes.filter(node => node.checkVisibility()).length), 1);
+      await page.select('[data-staff-planning-employee]', 'work-plan-anna');
+      await keyActivate('[data-staff-employee-id="work-plan-anna"] [data-staff-planning-mode=day]');
+      await keyActivate('[data-staff-employee-id="work-plan-anna"] [data-staff-planning-mode=week]');
+      await go('candidates');
+      const candidate = await page.$eval('[data-candidate-code]', node => node.dataset.candidateCode);
+      await keyActivate(`[data-candidate-code="${candidate}"] [data-staff-profile]`);
+      await go('production');
+      assert.equal(await page.$eval('[data-staff-production] input[type=number]', node => node.value), '123', 'Production draft survives panel changes');
+      await go('planning');
+      assert.equal(await page.$eval(planner + ' [data-weekly-hours]', node => node.value), '2', 'Weekly draft survives employee, mode and panel changes');
+      assert.equal(await page.$eval(planner + ' [data-weekly-kind]', node => node.value), 'communication');
+      await go('candidates');
+      assert(await page.$eval(`[data-candidate-code="${candidate}"] [data-staff-hire-form]`, node => node.checkVisibility()), 'Open recruitment draft survives navigation');
+      await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+      assert(await page.$eval('[data-staff-carousel-controls]', node => { const r = node.getBoundingClientRect(); return r.top >= 0 && r.bottom < innerHeight; }), 'Navigation remains available at the end of a long sheet');
+      // Click the pinned control at its actual on-screen position.
+      await page.click('[data-staff-carousel-next]'); assert.equal(await current(), 'payroll');
+      assert(await page.$eval('[data-staff-panel=payroll]', node => node.getBoundingClientRect().top > 0), 'A new short page opens at its start');
+      assert.equal((await calls()).length, 0, 'Navigation and drafts never mutate the server');
+      await go('production');
+      await button('Vérifier et activer', '[data-staff-production]'); await page.waitForSelector('dialog[open]');
+      assert(await page.$$eval('[data-staff-tab]', nodes => nodes.every(node => node.disabled)), 'Confirmation locks carousel navigation');
+      await page.keyboard.press('Escape'); await page.waitForFunction(() => !document.querySelector('dialog[open]'));
+      await page.waitForFunction(() => document.activeElement?.checkVisibility() && !!document.activeElement.closest('[data-staff-panel=production]'));
+      await button('Vérifier et activer', '[data-staff-production]'); await button('Confirmer les règles', 'dialog');
+      await page.waitForFunction(() => !document.querySelector('dialog[open]') && !!window.__staff.raw().state.production);
+      await summary('Organiser le travail');
+      await button('Organiser la semaine', '[data-staff-production]');
+      assert.equal(await current(), 'planning');
+      assert(await page.evaluate(() => document.activeElement?.matches('[data-staff-employee-id="work-plan-anna"] [data-staff-planning-mode=week]')), 'Production shortcut opens and focuses the selected employee');
+      await go('team'); await keyActivate('[data-staff-work-plan] [data-staff-open-employee="work-plan-mael"]');
+      await keyActivate('dialog[data-staff-employee-sheet] [data-staff-open-weekly]');
+      assert.equal(await current(), 'planning');
+      assert.equal(await page.$eval('[data-staff-planning-employee]', node => node.value), 'work-plan-mael');
+      await page.$eval('[data-staff-carousel]', node => node.scrollIntoView({ block: 'start' })); await shot(`staff-carousel-planning-${width}`);
+      await go('team'); await page.$eval('[data-staff-carousel]', node => node.scrollIntoView({ block: 'start' })); await shot(`staff-carousel-day-${width}`);
+      results.push({ width, passed: 'Six paper panels, one visible, keyboard/wrapping/arrows/swipe, no gesture conflict, sticky navigation, drafts per employee and mode, confirmation lock/focus, production and employee shortcuts, no server mutation or overflow' });
+    }
+    await page.goto(origin + '?no-production', { waitUntil: 'networkidle0' }); await page.waitForSelector('[data-guide-staff-ready=true]');
+    assert.equal(await page.$('[data-staff-tab=production]'), null);
+    assert.equal(await page.$$eval('[data-staff-tab]', nodes => nodes.length), 5);
+    results.push({ passed: 'Legacy server exposes only five supported panels' });
+  }
+  if (productionOnly) {
+    const panel='[data-staff-production]', planner='[data-staff-weekly-planner="work-plan-anna"]';
+    for (const width of [320,390,1440]) {
+      await page.setViewport({width,height:width<500?844:1100});
+      await page.goto(origin,{waitUntil:'networkidle0'});
+      await page.waitForSelector('[data-guide-staff-ready="true"]'); await keyActivate('[data-staff-tab=production]');
+      await page.waitForSelector(panel);
+      assert.equal((await calls()).length,0,'Reading production never creates a circuit');
+      await page.$eval(panel,node=>node.scrollIntoView({block:'start'}));
+      await shot(`production-setup-${width}`);
+      await button('Vérifier et activer',panel); await page.waitForSelector('dialog[open]');
+      assert((await page.$eval('dialog',node=>node.textContent)).includes('Trésorerie minimale'));
+      assert.equal((await calls()).length,0,'Reviewing rules makes no mutation');
+      const cash=(await raw()).cashCents;
+      await button('Confirmer les règles','dialog'); await page.waitForFunction(()=>!!window.__staff.raw().state.production);
+      await page.waitForFunction(()=>!document.querySelector('dialog[open]'));
+      assert.equal((await raw()).cashCents,cash,'Configuration alone spends nothing');
+      const flow='[data-production-flow]';
+      assert.equal(await page.$$eval(flow+' [data-production-stage]',nodes=>nodes.length),5,'Five native station controls');
+      await page.$eval(flow,node=>node.scrollIntoView({block:'start'}));
+      await page.waitForFunction(()=>[...document.querySelectorAll('[data-production-flow] img')].every(img=>img.complete&&img.naturalWidth>0));
+      const beforeSelection=(await calls()).length;
+      for(const stage of ['culture','drying','trim','processing','ready']){
+        await keyActivate(flow+` [data-production-stage="${stage}"]`);
+        await page.waitForSelector(`[data-production-stage-panel="${stage}"]`);
+        assert.equal(await page.$$eval(flow+' [data-production-stage][aria-pressed="true"]',nodes=>nodes.length),1);
+        assert(await page.$eval(`[data-production-stage="${stage}"]`,node=>node.getAttribute('aria-controls')===document.querySelector('[data-production-stage-panel]')?.id));
+      }
+      await keyActivate('[data-production-stage="processing"]');
+      assert((await page.$eval('[data-production-stage-panel]',node=>node.textContent)).includes('Non utilisé pour les fleurs'));
+      assert.equal(await page.$$eval('[data-production-stage-panel] button',nodes=>nodes.length),0,'Flower route offers no needless sieve assignment');
+      await keyActivate('[data-production-stage="drying"]');
+      await keyActivate('[data-production-employee="work-plan-mael"]');
+      await button('Organiser le trim',flow);
+      await page.waitForFunction(()=>document.activeElement?.matches('[data-production-assignment-employee]'));
+      assert.equal(await page.$eval('[data-production-assignment-employee]',node=>node.value),'work-plan-mael');
+      assert.equal(await page.$eval('[data-production-assignment] select:not([data-production-assignment-employee])',node=>node.value),'trim');
+      assert.equal((await calls()).length,beforeSelection,'Post and worker selection is read only until confirmation');
+      await keyActivate('[data-production-stage="culture"]');
+      await keyActivate('[data-production-employee="work-plan-anna"]');
+      await page.$eval(flow,node=>node.scrollIntoView({block:'start'})); await shot(`production-visual-flow-${width}`);
+      await page.$eval(flow,node=>node.scrollIntoView({block:'start'}));
+      await (await page.$(flow)).screenshot({path:resolve(output,`production-visual-flow-full-${width}.png`)});
+      await select('Activité','auto');
+      await button('Vérifier le créneau',panel); await button('Réserver le créneau','dialog');
+      await page.waitForFunction(()=>window.__staff.raw().state.tasks.some(task=>task.kind==='production'));
+      assert.equal((await raw()).state.production.stats.harvestedGrams,0,'No instant harvest when reserving hours');
+      await page.evaluate(()=>{window.__weeklyPlan.advance(1,.5);document.dispatchEvent(new Event('visibilitychange'));});
+      await page.waitForSelector('[data-production-job]');
+      assert.equal((await raw()).state.production.stats.workedHours,0,'Pending gesture is not counted as completed');
+      const activeText=await page.$eval('[data-production-stage-panel="culture"]',node=>node.textContent);
+      assert(activeText.includes('Anna Le Gall')&&activeText.includes('Récolte et qualité encore inconnues.'));
+      assert(!activeText.includes('Qualité commerciale : 0'),'Unknown quality is never displayed as zero');
+      await page.$eval('[data-production-stage-panel]',node=>node.scrollIntoView({block:'start'})); await shot(`production-active-gesture-${width}`);
+      await page.evaluate(()=>{window.__weeklyPlan.advance(1,2);document.dispatchEvent(new Event('visibilitychange'));});
+      await page.waitForFunction(()=>window.__staff.raw().state.production.stats.workedHours>0);
+      const shift=(await raw()).state.tasks.find(task=>task.kind==='production');
+      assert.equal(Date.parse(shift.completesAt)-Date.parse(shift.startedAt),20*60000,'Two reserved game hours last twenty real minutes');
+      assert.equal((await raw()).state.production.stats.workedHours,1,'One-hour culture gesture completes; waiting creates no fictitious work');
+      await button('Organiser la semaine',panel); await page.waitForSelector(planner);
+      await keyActivate(planner+' [data-weekly-production-preset]');
+      assert.equal(await page.$eval(planner+' [data-weekly-production-step]',node=>node.value),'auto');
+      await keyActivate(planner+' [data-weekly-activate]');
+      assert((await page.$eval('dialog[open]',node=>node.textContent)).includes('plafond commun par jour'));
+      await button('Activer la semaine','dialog');
+      await page.waitForFunction(()=>window.__staff.raw().state.employees[0].weeklyPlan?.enabled);
+      await page.waitForFunction(()=>!document.querySelector('dialog[open]'));
+      await page.evaluate(()=>{window.__weeklyPlan.advance(6);document.dispatchEvent(new Event('visibilitychange'));});
+      await page.waitForFunction(()=>window.__staff.raw().state.production.lots.some(lot=>lot.stage==='drying'));
+      await page.waitForSelector('[data-guide-staff-ready="true"]'); await keyActivate('[data-staff-tab=production]');
+      await keyActivate('[data-production-stage="drying"]');
+      const maturation=await page.$eval('[data-production-stage-panel]',node=>node.textContent);
+      assert(maturation.includes('Six heures réelles')&&maturation.includes('Prête le'),'Passive maturation shows its actual deadline');
+      assert.equal(await page.$$eval('[data-production-stage-panel] [data-production-job]',nodes=>nodes.length),0,'Passive waiting has no invented worker');
+      await page.evaluate(()=>{window.__weeklyPlan.advance(15);document.dispatchEvent(new Event('visibilitychange'));});
+      await page.waitForFunction(()=>window.__staff.raw().state.production.stats.salesCents>0);
+      const produced=(await raw()).state.production;
+      assert(produced.stats.soldGrams>0&&produced.stats.workedHours>0,'Actual chain completes, sells and tracks work');
+      for(const stage of ['culture','drying','trim','processing','ready']){
+        await keyActivate(`[data-production-stage="${stage}"]`);
+        assert.equal(await page.$$eval('[data-production-stage-panel] [data-production-lot]',nodes=>nodes.length),produced.lots.filter(lot=>lot.stage===stage).length,'Only actual lots at the selected stage appear');
+      }
+      await keyActivate(`[data-production-stage="${produced.lots[0]?.stage??'culture'}"]`);
+      await page.$eval('[data-production-stage-panel]',node=>node.scrollIntoView({block:'start'})); await shot(`production-visual-lots-${width}`);
+      await page.$eval(panel,node=>node.scrollIntoView({block:'start'})); await shot(`production-running-${width}`);
+      await summary('Configurer le circuit');
+      await select('Produit vendu','dry-sift'); await input('Plafond de dépenses / jour (€ du jeu)','');
+      await button('Suspendre les nouveaux cycles',panel);
+      assert((await page.$eval('dialog[open]',node=>node.textContent)).includes('Fleurs préparées'),'Pause uses saved rules, not the edited draft');
+      await button('Confirmer les règles','dialog');
+      await page.waitForFunction(()=>!window.__staff.raw().state.production.settings.enabled);
+      assert.equal((await raw()).state.production.settings.route,'flower');
+      await layout();
+      assert(await page.$eval(panel,node=>node.scrollWidth<=node.clientWidth+1),'Production panel fits at every width');
+      results.push({width,passed:'generated panorama, five keyboard station controls, live lot filtering, actual worker portrait, confirmed progress, no fabricated quality, worker-to-assignment focus, configure, real hours, weekly chain, sales, saved-rule pause and no overflow'});
+    }
+    await page.setViewport({width:320,height:844});
+    await page.goto(origin,{waitUntil:'networkidle0'});await page.waitForSelector('[data-guide-staff-ready="true"]'); await keyActivate('[data-staff-tab=production]');
+    await select('Produit vendu','dry-sift');await button('Vérifier et activer',panel);await button('Confirmer les règles','dialog');
+    await page.waitForFunction(()=>window.__staff.raw().state.production?.settings.route==='dry-sift');
+    await page.waitForFunction(()=>!document.querySelector('dialog[open]'));
+    await keyActivate('[data-production-stage="processing"]');
+    assert((await page.$eval('[data-production-route]',node=>node.textContent)).includes('hash'));
+    assert.equal(await page.$eval('[data-production-stage="processing"]',node=>node.hasAttribute('data-unused')),false);
+    await button('Préparer un créneau Tamisage','[data-production-flow]');
+    assert.equal(await page.$eval('[data-production-assignment] select:not([data-production-assignment-employee])',node=>node.value),'processing');
+    assert.equal((await calls()).length,1,'Hash station selection and preparation do not start work');
+    await layout();results.push({width:320,passed:'Hash route enables sieve station and prefills transformation without starting work'});
   }
   if (impactDashboardOnly) {
     const impact = '[data-staff-benefits-dashboard]', panel = '[data-staff-impact-panel]';
@@ -795,7 +998,7 @@ try {
     const planner = '[data-staff-weekly-planner="work-plan-anna"]';
     const ready = () => page.waitForSelector('[data-guide-staff-ready="true"]');
     const refresh = async () => { const before = await page.evaluate(() => window.__staff.reads()); await button('Actualiser'); await page.waitForFunction(before => window.__staff.reads() > before, {}, before); await ready(); };
-    const open = async (id = employeeId) => { await keyActivate(`[data-staff-work-plan] [data-staff-open-employee="${id}"]`); await keyActivate('dialog[data-staff-employee-sheet] [data-staff-open-weekly]'); await page.waitForSelector(`[data-staff-weekly-planner="${id}"]`); await page.waitForFunction(id => document.activeElement?.matches(`[data-staff-employee-id="${id}"] [data-staff-planning-mode="week"]`), {}, id); };
+    const open = async (id = employeeId) => { await keyActivate('[data-staff-tab=team]'); await keyActivate(`[data-staff-work-plan] [data-staff-open-employee="${id}"]`); await keyActivate('dialog[data-staff-employee-sheet] [data-staff-open-weekly]'); await page.waitForSelector(`[data-staff-weekly-planner="${id}"]`); await page.waitForFunction(id => document.activeElement?.matches(`[data-staff-employee-id="${id}"] [data-staff-planning-mode="week"]`), {}, id); };
     const hours = async (slot, value) => { await page.focus(`${planner} [data-weekly-slot="${slot}"] [data-weekly-hours]`); await page.keyboard.down('Control'); await page.keyboard.press('A'); await page.keyboard.up('Control'); await page.keyboard.type(String(value)); await page.keyboard.press('Tab'); };
     const add = async (kind, index) => { await keyActivate(planner + ' [data-weekly-add]'); await page.select(`${planner} [data-weekly-slot="${index}"] [data-weekly-kind]`, kind); };
     const cost = () => page.$eval(planner + ' [data-weekly-cost]', node => Math.round(Number(node.textContent.replace(/[^\d,.-]/g, '').replace(',', '.')) * 100));
@@ -1990,7 +2193,7 @@ try {
       results.push({ width, scope: 'Brittany prospecting map', checks: ['four departments and eight usable city buttons', 'keyboard and touch navigation', 'changing flavor and product profiles', 'informational exploration without writes', 'exact destination hours and travel cost', 'cancellation without mutation', 'network 125→126→127', 'Brest revisited beyond former local pool', 'two travel payments only', 'completed rewards do not replay', 'no horizontal overflow'], mutations: commands.length });
     }
   }
-  for (const width of impactDashboardOnly || benefitsOnly || process.argv.includes('--recruitment-only') || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 390, 1440]) {
+  for (const width of carouselOnly || productionOnly || impactDashboardOnly || benefitsOnly || process.argv.includes('--recruitment-only') || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 390, 1440]) {
     await page.setViewport({ width, height: width < 500 ? 844 : 1000 });
     await page.goto(origin, { waitUntil: 'networkidle0' }); await page.evaluate(() => document.fonts.ready);
     await page.waitForSelector('[data-staff-desk] [role="meter"]'); await shot(`empty-${width}`);
@@ -2064,7 +2267,7 @@ try {
     await page.evaluate(() => window.__staff.unavailable()); await button('Actualiser'); await page.waitForSelector('[role="alert"]'); await shot(`unavailable-${width}`);
     results.push({ width, checks: ['layout', 'profile avatar renderer ready', 'keyboard dialogs', 'review without mutation', 'hire', 'invalid training', 'shared capacity', 'travel confirmation', 'part-time leave and cancellation', 'payroll', 'independent workshop', 'initial lot', 'parent locking', 'workshop retry', 'actual lot counts', 'player manual trim', 'machine purchase', 'employee machine trim', 'quality penalty review', 'trim completion', 'harvest callback', 'shared hours on return to Personnel', 'unavailable isolation'], mutations: (await calls()).length });
   }
-  for (const width of impactDashboardOnly || benefitsOnly || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 1440]) {
+  for (const width of carouselOnly || productionOnly || impactDashboardOnly || benefitsOnly || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 1440]) {
     await page.setViewport({ width, height: width < 500 ? 844 : 1000 });
     await page.goto(origin, { waitUntil: 'networkidle0' }); await button('Recruter');
     await page.waitForSelector('[data-recruitment-cycle="0"]');

@@ -17,6 +17,7 @@
     "test:social:sql": "node scripts/test-placard-social.mjs && node scripts/test-placard-social-v2.mjs",
     "test:staff:sql": "node scripts/test-placard-staff.mjs && node scripts/test-placard-staff-trim.mjs && node scripts/test-placard-staff-accounting.mjs && node scripts/test-placard-shared-trim.mjs",
     "test:staff-benefits:sql": "node scripts/test-placard-staff-benefits.mjs",
+    "test:staff-production:sql": "node scripts/test-placard-staff-production.mjs",
     "test:player-work:sql": "node scripts/test-placard-player-workday.mjs",
     "test:culture-work:sql": "node scripts/test-placard-culture-work-steps.mjs",
     "test:processing-work:sql": "node scripts/test-placard-processing-work.mjs",

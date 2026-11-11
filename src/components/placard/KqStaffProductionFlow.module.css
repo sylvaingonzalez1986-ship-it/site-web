@@ -1,0 +1,46 @@
+.flow { min-width: 0; display: grid; gap: 16px; }
+.route { display: flex; align-items: center; flex-wrap: wrap; gap: 7px 12px; margin: 0; font-size: .85rem; font-weight: 750; }
+.route > span { font-size: .75rem; font-weight: 500; color: #455748; margin-left: auto; }
+.flow .panorama { width: 100%; }
+.stations { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; min-width: 0; }
+.flow .stations button { display: flex; flex-direction: column; gap: 5px; padding: 12px 7px; justify-content: start; min-width: 0; text-align: center; color: #172923; --game-control-art: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')); }
+.flow .stations button[aria-pressed=true] { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); color: #172923; }
+.stationName { display: flex; align-items: center; justify-content: center; gap: 3px; font-size: .85rem; font-weight: 800; min-height: 2.8em; }
+.stationName svg { flex-shrink: 0; }
+.stations strong { font: 750 .9rem/1.4 var(--font-body), Arial, sans-serif; text-transform: none; }
+.stations small { font: 500 .75rem/1.4 var(--font-body), Arial, sans-serif; text-transform: none; }
+.detail { display: grid; gap: 16px; padding: 18px; min-width: 0; border: 2px solid transparent; background: transparent; --game-panel-art: var(--game-panel-apricot, url('/placard/ui/panel-apricot-v1.webp')); border-image: var(--game-panel-art) var(--game-panel-slice,48) fill / var(--game-panel-edge,15px) / 0 stretch; }
+.detailHeading, .lotHeading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+.detailHeading h3 { font: 800 26px/1.1 var(--font-display), Impact, sans-serif; margin: 0; }
+.detailHeading > span { font-size: .8rem; }
+.detail > p, .lot p { margin: 0; font-size: .85rem; line-height: 1.55; }
+.lots { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 20px; }
+.lot { display: grid; align-content: start; gap: 14px; min-width: 0; padding-top: 14px; border-top: 1px solid #233e3b55; }
+.lotHeading h4 { margin: 0; font-size: .95rem; }
+.lotHeading > strong { font-size: .9rem; }
+.worker { display: flex; align-items: center; gap: 10px; font-size: .82rem; min-width: 0; }
+.worker > span:last-child { display: grid; gap: 4px; min-width: 0; }
+.worker small { line-height: 1.5; }
+.portrait { display: grid; place-items: center; width: 42px; height: 50px; flex: 0 0 42px; }
+.portrait > * { max-width: 100%; max-height: 100%; }
+.waiting { display: flex; align-items: start; gap: 6px; }
+.waiting svg { flex-shrink: 0; margin-top: 3px; }
+.quality, .empty, .note { color: #344e43; }
+.assignment { display: grid; gap: 14px; border-top: 1px solid #233e3b55; padding-top: 16px; }
+.people { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%,230px), 1fr)); gap: 10px; }
+.flow .people button { display: flex; justify-content: start; text-align: left; padding: 10px; min-width: 0; }
+.people button > span:last-child { display: grid; gap: 4px; min-width: 0; }
+.people strong { font: 750 .85rem/1.4 var(--font-body), Arial, sans-serif; text-transform: none; }
+.people small { font: 500 .78rem/1.4 var(--font-body), Arial, sans-serif; text-transform: none; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.actions button { flex: 1 1 180px; }
+.assignment .note { margin: 0; font-size: .75rem; line-height: 1.5; }
+.flow button:focus-visible { outline: 3px solid #006f66; outline-offset: 4px; }
+@media (hover: hover) { .flow .stations button:hover { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); } }
+@media (max-width: 680px) {
+  .stations { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .stationName { min-height: 0; }
+  .stations button:last-child { grid-column: 1 / -1; }
+  .detail { padding: 14px; }
+  .route > span { margin-left: 0; }
+}

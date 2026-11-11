@@ -19,7 +19,7 @@ function fixture(): KqStaffSnapshot {
       processingWorkVersion: 1, trimQueueVersion: 2, weeklyPlanVersion: 1, staffBenefitsVersion: 1 } });
 }
 function task(kind: KqStaffTask["kind"], extra: Partial<KqStaffTask> = {}): KqStaffTask {
-  return { id: `${kind}-task`, employeeId: "anna", kind, skill: kind === "trim" ? "processing" : kind === "training" ? "culture" : kind === "countryside" ? "sales" : kind,
+  return { id: `${kind}-task`, employeeId: "anna", kind, skill: kind === "trim" ? "processing" : kind === "training" || kind === "production" ? "culture" : kind === "countryside" ? "sales" : kind,
     hours: 2, startedAt: NOW, completesAt: "2026-11-09T13:00:00Z", day: 1, status: "running", trainingCostCents: 0, skillLevel: 5, ...extra };
 }
 function plan(days: KqStaffPlannedTask[][], enabled = true): KqStaffEmployee["weeklyPlan"] {

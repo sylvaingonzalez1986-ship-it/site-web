@@ -86,7 +86,7 @@ async function commit(userId: string, requestKey: string, command: KqStaffComman
   for (let attempt = 0; attempt < 3; attempt++) {
     let raw = await read(userId);
     const contractAction = command.action === "renew-contract" || command.action === "convert-cdi" || command.action === "rehire";
-    if (!settleOnly && (hasDueKqStaffWeeklyWork(raw) || contractAction)) {
+    if (!settleOnly && (hasDueKqStaffWeeklyWork(raw) || contractAction || !!raw.state?.production)) {
       // Freeze past scheduled departures before editing the plan, its leave,
       // or a payment. Their expense must never enter the payroll paid delta.
       await commit(userId, randomUUID(), { action: "settle" }, randomUUID(), true);
@@ -210,7 +210,7 @@ function isArchiveItem(value: unknown, kind: KqStaffArchiveKind, employeeId: str
   if (kind === "payroll") return archiveDate(item.dueAt) && ["grossCents", "employerCents", "indemnityCents", "totalCents", "paidCents"].every(amount)
     && item.paidCents === item.totalCents && item.totalCents === (item.grossCents as number) + (item.employerCents as number) + (item.indemnityCents as number);
   return item.status === "completed" && archiveDate(item.startedAt) && archiveDate(item.completesAt)
-    && ["culture", "processing", "communication", "sales", "administration", "training", "trim", "countryside"].includes(item.kind as string)
+    && ["culture", "processing", "communication", "sales", "administration", "training", "trim", "countryside", "production"].includes(item.kind as string)
     && ["culture", "processing", "communication", "sales", "administration"].includes(item.skill as string)
     && typeof item.hours === "number" && Number.isFinite(item.hours) && item.hours > 0 && amount("trainingCostCents")
     && (item.outcome === undefined || typeof item.outcome === "string");

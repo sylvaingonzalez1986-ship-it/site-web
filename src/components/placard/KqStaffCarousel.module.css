@@ -1,0 +1,29 @@
+.carousel { min-width: 0; scroll-margin-top: var(--staff-carousel-top, 8px); }
+.controls { position: sticky; top: var(--staff-carousel-top, 8px); z-index: 8; min-width: 0; padding: 4px; margin-bottom: 16px; background: transparent; border: 2px solid transparent; --game-panel-art: var(--game-panel-paper,url('/placard/ui/panel-paper-v1.webp')); border-image: var(--game-panel-art) var(--game-panel-slice,48) fill / var(--game-panel-edge,15px) / 0 stretch; }
+.tabs { position: relative; display: flex; gap: 8px; overflow-x: auto; overscroll-behavior-inline: contain; scroll-snap-type: x proximity; scrollbar-width: thin; padding: 8px; }
+.carousel .tabs > button { position: relative; flex: 1 0 90px; min-width: 0; flex-direction: column; gap: 2px; padding: 6px; scroll-snap-align: start; }
+.carousel .tabs > button[aria-selected=true] { --game-control-art: var(--game-control-gold,url('/placard/ui/control-gold-v2.webp')); color: #172923; }
+.carousel .tabs > button:hover:not(:disabled), .carousel .navigation > button:hover:not(:disabled) { --game-control-art: var(--game-control-apricot,url('/placard/ui/control-apricot-v2.webp')); }
+.tabs strong { font-size: .85rem; line-height: 1.25; }
+.tabs > button > [data-action-count] { position: absolute; top: 2px; right: 2px; }
+.art { width: 48px; height: 40px; }
+.art > img { height: 100%; object-fit: contain; }
+.navigation { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 6px; padding: 0 5px 4px; }
+.carousel .navigation > button { width: fit-content; padding: 6px 8px; gap: 2px; font-size: .75rem; }
+.navigation > button:last-child { justify-self: end; }
+.navigation svg { width: 18px; height: 18px; }
+.navigation > span { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; font-size: .82rem; }
+.carousel .navigation small { font-size: .7rem; }
+.panel { display: grid; align-content: start; gap: 18px; min-width: 0; }
+.panel[hidden] { display: none !important; }
+.panel > * { min-width: 0; }
+.panel:focus-visible { outline: 3px solid #006f66; outline-offset: 4px; }
+@media (max-width: 760px) {
+  .carousel .tabs > button { flex: 0 0 76px; padding: 4px; }
+  .tabs strong { font-size: .76rem; }
+  .art { width: 34px; height: 30px; }
+  .controls { margin-bottom: 12px; }
+}
+@media (max-width: 360px) {
+  .navigation > button > span { display: none; }
+}

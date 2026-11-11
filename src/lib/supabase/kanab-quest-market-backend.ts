@@ -295,11 +295,20 @@ export async function getKqMarketSnapshot(userId: string, onlyFlowerIds?: string
       if (!quote.processingWork) {
         quote.available = false; quote.blockedReason = "La cadence de cette filière est indisponible. Actualise l’Atelier.";
       } else {
-        const workQuote = await getKqProcessingWorkQuote(userId, flowerId, quote.processingWork, options.processingActorId);
-        quote.processingWork.quote = workQuote;
-        quote.processingDurationSeconds = Math.ceil((workQuote.activeHours + workQuote.passiveHours) * 600);
-        if (workQuote.source === "blocked") {
-          quote.available = false; quote.blockedReason = workQuote.blockedReason ?? "Les heures disponibles ne couvrent pas cette transformation.";
+        try {
+          const workQuote = await getKqProcessingWorkQuote(userId, flowerId, quote.processingWork, options.processingActorId);
+          quote.processingWork.quote = workQuote;
+          quote.processingDurationSeconds = Math.ceil((workQuote.activeHours + workQuote.passiveHours) * 600);
+          if (workQuote.source === "blocked") {
+            quote.available = false; quote.blockedReason = workQuote.blockedReason ?? "Les heures disponibles ne couvrent pas cette transformation.";
+          }
+        } catch (error) {
+          // A dedicated machine blocks its own route; other market offers still
+          // need fresh authoritative quotes. Every other database error remains fatal.
+          if (!(error instanceof Error) || !/(?:^|\s)staff_production_machine_reserved(?:$|\s)/.test(error.message)) throw error;
+          quote.available = false;
+          quote.blockedReason = "Le tamis est réservé à la production autonome. Suspends les nouveaux cycles et termine les lots commerciaux pour le libérer.";
+          delete quote.processingWork.quote;
         }
       }
     }

@@ -18,10 +18,15 @@ export function getKqStaffBenefitPreview(input: KqStaffBenefitPreviewInput): KqS
   const { actor, kind, hours, context } = input;
   if (!Number.isFinite(hours) || hours < 0.5 || hours > 12 || !Number.isInteger(hours * 2)) throw new Error("Durée de prévision invalide.");
   const trait = "trait" in actor ? actor.trait : undefined;
-  const skill: KqStaffSkill = kind === "trim" ? "processing" : kind === "countryside" ? "sales" : kind === "training" ? input.skill ?? "culture" : kind;
+  const skill: KqStaffSkill = kind === "trim" ? "processing" : kind === "countryside" ? "sales" : kind === "production" ? "culture" : kind === "training" ? input.skill ?? "culture" : kind;
   const level = Math.min(10, getKqStaffLevel(actor.skills[skill]) + (trait === "versatile" ? 1 : 0));
   const result: KqStaffBenefitPreview = { kind, skillLevel: level, title: "Bénéfice prévu", metrics: [], notes: [] };
   const metric = (label: string, value: number, unit: string) => { result.metrics.push({ label, value, unit }); };
+  if (kind === "production") {
+    metric("Heures réservées", hours, "h");
+    result.notes.push("Le salarié travaille sur les lots commerciaux selon son poste, les matières disponibles et les délais. Les résultats sont enregistrés après le travail effectué ; aucun point ni XP joueur.");
+    return result;
+  }
   if (kind === "culture") {
     const grower = "role" in actor && actor.role === "grower";
     if (trait !== undefined && context.cultureWorkVersion === 1) {

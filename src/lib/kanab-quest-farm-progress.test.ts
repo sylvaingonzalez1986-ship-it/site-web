@@ -84,6 +84,14 @@ describe("discovering the team", () => {
     expect(observeFarmProgress(progress, { error: true, visits: [...staffSteps] })).toBe(progress);
   });
 
+  it("returns to the visible handbook after navigating the staff carousel", () => {
+    for (const id of ["staff-planning", "staff-development"]) {
+      const step = FARM_GUIDE_STEPS.find(item => item.id === id)!;
+      expect(farmStepAdvice(step, { staffTab: "candidates" }, "staff").target).toBe("[data-staff-tab=overview]");
+      expect(farmStepAdvice(step, { staffTab: "overview" }, "staff").target).toBe(step.target);
+    }
+  });
+
   it("points from Recruter to a real candidate before the planning lesson", () => {
     const step = FARM_GUIDE_STEPS.find(item => item.id === "staff-candidate")!;
     expect(farmStepChapter(step).view).toBe("staff");

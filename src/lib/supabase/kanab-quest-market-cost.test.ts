@@ -18,11 +18,13 @@ let lotColumns: string[];
 let processingCapability: boolean;
 let processingSource: "player" | "blocked";
 let processingFailure: string | null;
+let reservedProcessingCode: string | null;
 function response(data: unknown) { bytes += Buffer.byteLength(JSON.stringify(data)); return { data, error: null }; }
 
 beforeEach(() => {
   vi.clearAllMocks(); bytes = 0; lotColumns = [];
   processingCapability = false; processingSource = "player"; processingFailure = null;
+  reservedProcessingCode = null;
   mocks.warehouse.mockResolvedValue(null);
   const flowers = Array.from({ length: 4 }, (_, index) => ({
     id: `flower-${index}`, run_id: `run-${index}`, owner_id: user, status: "burned", variety_code: "BUDDIE-001",
@@ -35,7 +37,10 @@ beforeEach(() => {
     if (name === "rpc_kq_processing_work_jobs") return response(processingCapability ? { version: 1, jobs: [] } : null);
     if (name === "rpc_kq_processing_work_quote") {
       if (processingFailure) return { data: null, error: { message: processingFailure } };
-      const work = input.p_work as { inputGrams: number; nominalHours: number; passiveHours: number };
+      const work = input.p_work as { inputGrams: number; nominalHours: number; passiveHours: number; machines: Array<{ code: string }> };
+      if (reservedProcessingCode && work.machines.some(machine => machine.code === reservedProcessingCode)) {
+        return { data: null, error: { message: "staff_production_machine_reserved" } };
+      }
       const activeHours = processingSource === "blocked" ? 0 : work.nominalHours;
       return response({ version: 1, flowerId: input.p_flower_id, token: "a".repeat(32), inputGrams: work.inputGrams,
         source: processingSource, employee: null, efficiency: 1, playerRemainingHours: processingSource === "blocked" ? 0 : 12,
@@ -132,6 +137,31 @@ describe("market browsing egress and transactional boundaries", () => {
     enableProcessingWorkshop();
     processingFailure = "processing_work_unavailable";
     await expect(getKqMarketSnapshot(user, [processingFlower])).rejects.toThrow(/processing_work_unavailable/);
+    expect(mocks.rpc.mock.calls.some(([name]) => name === "rpc_kq_prepare_market_lot")).toBe(false);
+  });
+
+  it.each([true, false])("blocks only the reserved sift route while raw and rosin remain available (preview=%s)", async (previewOnly) => {
+    enableProcessingWorkshop();
+    const existing = await mocks.warehouse();
+    const codes = [...existing.equippedCodes, "SIFT-TRAY"], levels = { ...existing.levels, "SIFT-TRAY": 1 };
+    mocks.warehouse.mockResolvedValue({ ...existing, equippedCodes: codes, operationalCodes: codes, levels,
+      workshopSnapshot: { equippedCodes: codes, levels },
+      processingBatchGrams: { ...existing.processingBatchGrams, "SIFT-TRAY": 120 },
+      processingDurationSeconds: { ...existing.processingDurationSeconds, "SIFT-TRAY": 3600 } });
+    reservedProcessingCode = "SIFT-TRAY";
+    const lot = (await getKqMarketSnapshot(user, [processingFlower], { previewOnly })).lots[0];
+    expect(lot.options.find(option => option.route === "dry-sift")).toMatchObject({ available: false,
+      blockedReason: "Le tamis est réservé à la production autonome. Suspends les nouveaux cycles et termine les lots commerciaux pour le libérer." });
+    expect(lot.options.find(option => option.route === "dry-sift")?.processingWork?.quote).toBeUndefined();
+    expect(lot.options.find(option => option.route === "raw")?.available).toBe(true);
+    expect(lot.options.find(option => option.route === "rosin-trial")).toMatchObject({ available: true,
+      processingWork: { quote: { source: "player", token: "a".repeat(32) } } });
+    expect(mocks.rpc.mock.calls.some(([name]) => name === "rpc_kq_prepare_market_lot")).toBe(!previewOnly);
+  });
+
+  it("does not swallow a different error that merely starts with the reservation code", async () => {
+    enableProcessingWorkshop(); processingFailure = "staff_production_machine_reserved_unexpected";
+    await expect(getKqMarketSnapshot(user, [processingFlower])).rejects.toThrow("staff_production_machine_reserved_unexpected");
     expect(mocks.rpc.mock.calls.some(([name]) => name === "rpc_kq_prepare_market_lot")).toBe(false);
   });
 

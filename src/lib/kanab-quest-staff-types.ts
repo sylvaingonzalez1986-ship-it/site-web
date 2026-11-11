@@ -1,10 +1,13 @@
+import type { KqStaffProductionState, KqProductionEffect, KqProductionFacilityInput, KqProductionRulesCommand, KqProductionStep } from "./kanab-quest-staff-production-types";
+
 export type KqStaffSkill = "culture" | "processing" | "communication" | "sales" | "administration";
 export type KqStaffRole = "worker" | "grower" | "processor" | "commercial" | "administrator";
 export type KqStaffContractKind = "cdi" | "cdd" | "seasonal";
 export type KqStaffTrait = "meticulous" | "quick" | "learner" | "outgoing" | "versatile" | "organized";
 export type KqStaffSkills = Record<KqStaffSkill, number>;
 export type KqStaffPlannedTask = {
-  kind: KqStaffSkill | "training" | "trim"; hours: number;
+  kind: KqStaffSkill | "training" | "trim" | "production"; hours: number;
+  productionStep?: KqProductionStep;
   /** An omitted target covers every culture/processing job with its work capability, or selects the first eligible legacy target. */
   targetId?: string; cityId?: string; skill?: KqStaffSkill; trimMode?: "manual" | "machine";
   /** Server-recorded price per occurrence; client values are discarded. */
@@ -37,7 +40,7 @@ export type KqStaffEmployee = KqStaffCandidate & {
 };
 export type KqStaffTrimMode = "manual" | "machine";
 export type KqStaffTrimLot = { flowerId: string; name: string; requiredWork: number; completedWork: number; mode: KqStaffTrimMode | null; completedAt: string | null; qualityDelta?: number; totalGrams?: number; completedGrams?: number; createdAt?: string };
-export type KqStaffTaskKind = KqStaffSkill | "training" | "trim" | "countryside";
+export type KqStaffTaskKind = KqStaffSkill | "training" | "trim" | "countryside" | "production";
 export type KqStaffTaskResult = {
   version: 1; xpGained?: number; cultureUsedHours?: number; processingUsedHours?: number;
   trimGrams?: number; salesAttempts?: number; partnersGained?: number; reputationGained?: number;
@@ -63,6 +66,12 @@ export type KqStaffTask = {
   startedAt: string; completesAt: string; day: number; status: "running" | "completed";
   targetId?: string; cityId?: string; department?: string; trainingCostCents: number; skillLevel: number;
   successChance?: number; outcome?: string;
+  productionStep?: KqProductionStep;
+  productionSkills?: Pick<KqStaffSkills, "culture" | "processing" | "sales">;
+  productionTrait?: KqStaffTrait;
+  productionWorkedHours?: number;
+  productionSalaryCents?: number;
+  productionReason?: string;
   /** Versioned per-mission count; legacy tasks retain exactly one attempt. */
   salesAttempts?: number;
   result?: KqStaffTaskResult;
@@ -87,6 +96,7 @@ export type KqStaffState = {
   playerSkills?: KqStaffSkills;
   /** Missing means disabled, including on farms created before the capability. */
   administrationRules?: KqStaffAdministrationRules;
+  production?: KqStaffProductionState;
 };
 export type KqStaffContext = {
   businessStartedAt: string; reputation: number; instagramFollowers: number; shopPartners: number;
@@ -101,6 +111,8 @@ export type KqStaffContext = {
   processingWorkVersion?: 1;
   contractLifecycleVersion?: 1;
   staffBenefitsVersion?: 1;
+  productionVersion?: 1;
+  productionFacility?: KqProductionFacilityInput;
   /** Conservative game post abstraction: one role shares the ordinary CDD waiting period. */
   contractCooldowns?: Partial<Record<KqStaffRole, string>>;
   /** Persisted owner-scoped source, hydrated on the server; never accepted from a command. */
@@ -121,6 +133,8 @@ export type KqStaffSnapshot = KqStaffRawSnapshot & {
   monthlyGrossCents: number; monthlyEmployerCostCents: number; outstandingCents: number;
 };
 export type KqStaffCommand =
+  | KqProductionRulesCommand
+  | { action: "assign-production"; employeeId: string; hours: number; productionStep: KqProductionStep }
   | ({ action: "set-administration-rules" } & Omit<KqStaffAdministrationRules, "updatedAt">)
   | { action: "set-weekly-plan"; employeeId: string; enabled: boolean; days: KqStaffPlannedTask[][]; expectedWeeklyCostCents: number }
   | { action: "hire"; candidateCode: string; contract: KqStaffContractKind; weeklyHours: number; durationMonths: number; reason: KqStaffEmployee["reason"]; expectedMonthlyCostCents: number }
@@ -139,6 +153,7 @@ export type KqStaffCommand =
   | { action: "buy-trimmer"; expectedCostCents: number }
   | { action: "settle" };
 export type KqStaffEffect =
+  | KqProductionEffect
   | { kind: "culture"; runId: string; vitalityDelta: number; terpenesDelta: number; yieldBonusDelta: number; cannabinoidDelta: number }
   | { kind: "processing"; flowerId: string; secondsSaved: number }
   | { kind: "communication"; instagramFollowers: number; reputation: number }

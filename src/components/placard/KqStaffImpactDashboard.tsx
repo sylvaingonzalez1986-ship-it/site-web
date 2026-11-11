@@ -10,6 +10,7 @@ import { KqStaffPortrait } from "./KqStaffPortrait";
 import styles from "./KqStaffImpactDashboard.module.css";
 
 const sectors: Record<KqStaffImpactSectorId, { title: string; art: KqPrintedArtKind; purpose: string }> = {
+  production: { title: "Production autonome", art: "staff", purpose: "Lots commerciaux et travail réellement effectué" },
   culture: { title: "Culture", art: "culture", purpose: "Étapes prises en charge, qualité et rendement" },
   processing: { title: "Transformation", art: "warehouse", purpose: "Cadence et heures disponibles dans l’Atelier" },
   trim: { title: "Trim", art: "help-workshop", purpose: "Fleurs préparées pour la vente" },
@@ -29,7 +30,7 @@ function metricValue(metric: KqStaffImpactMetric) {
   return "Non mesuré";
 }
 function sectorBenefit(sector: KqStaffImpactSector) {
-  const key = { culture: "steps", processing: "efficiency", trim: "trim-capacity", communication: "followers-capacity", sales: "attempts", administration: "discount", training: "xp-" }[sector.id];
+  const key = { culture: "steps", processing: "efficiency", trim: "trim-capacity", communication: "followers-capacity", sales: "attempts", administration: "discount", training: "xp-", production: "production-reserved" }[sector.id];
   const metric = sector.forecast.find(row => row.id.startsWith(key));
   return metric ? { text: metricValue(metric), label: `Prévision : ${metric.label}` } : null;
 }

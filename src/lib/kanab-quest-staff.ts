@@ -1,6 +1,8 @@
 import { KQ_GAME_DAY_MS, KQ_GAME_MONTH_MS } from "./kanab-quest-business";
 import { getKqStaffSharedTrimQuote, getKqStaffTrimQuote, KQ_STAFF_TRIMMER_COST_CENTS } from "./kanab-quest-staff-trim";
 import { advanceKqSharedTrim, getKqSharedTrimLots } from "./kanab-quest-staff-trim-queue";
+import { advanceKqStaffProduction, configureKqStaffProduction, getKqProductionCashDelta, isKqStaffProductionState } from "./kanab-quest-staff-production";
+import type { KqProductionStep } from "./kanab-quest-staff-production-types";
 import type { KqStaffCandidate, KqStaffCommand, KqStaffContractKind, KqStaffEffect, KqStaffEmployee, KqStaffPlanDayResult, KqStaffPlannedTask, KqStaffRawSnapshot, KqStaffRole, KqStaffSkill, KqStaffSnapshot, KqStaffState, KqStaffTask, KqStaffTaskResult, KqStaffTrait } from "./kanab-quest-staff-types";
 import { getKqStaffPlannedTaskCost, getKqStaffWeeklyCost, isKqStaffWeeklyPlan, KQ_STAFF_TRAINING_HOURLY_CENTS, parseKqStaffWeeklyDays, validateKqStaffWeeklyDays } from "./kanab-quest-staff-weekly";
 export type * from "./kanab-quest-staff-types";
@@ -30,6 +32,12 @@ const SKILLS = Object.keys(KQ_STAFF_SKILLS) as KqStaffSkill[];
 const HOUR_MS = KQ_GAME_DAY_MS / 24;
 const round = (value: number) => Math.round(value * 100) / 100;
 const at = (value: string) => Date.parse(value);
+// PostgreSQL retains microseconds. Never schedule a new slot before its exact
+// database timestamp when converting it to JavaScript's millisecond precision.
+function slotStartAt(value: string): number {
+  const fraction = value.match(/\.(\d+)(?:Z|[+-]\d{2}(?::?\d{2})?)$/i)?.[1] ?? "";
+  return at(value) + (/[1-9]/.test(fraction.slice(3)) ? 1 : 0);
+}
 function assert(condition: unknown, message: string): asserts condition { if (!condition) throw new Error(message); }
 function number(value: unknown, min: number, max: number, step = 1): asserts value is number {
   assert(typeof value === "number" && Number.isFinite(value) && value >= min && value <= max && Number.isInteger(value / step), "Quantité ou durée invalide.");
@@ -122,6 +130,7 @@ export function isKqStaffState(value: unknown): value is KqStaffState {
   return state.version === 1 && Array.isArray(state.employees) && Array.isArray(state.tasks) && Array.isArray(state.payroll)
     && typeof state.lastSettledAt === "string" && Number.isFinite(at(state.lastSettledAt))
     && typeof state.supplierDiscountPercent === "number"
+    && (state.production === undefined || isKqStaffProductionState(state.production))
     && (state.administrationRules === undefined || validAdministrationRules(state.administrationRules))
     && state.tasks.every(task => task && typeof task === "object"
       && (task.salesAttempts === undefined || task.kind === "sales" && Number.isInteger(task.salesAttempts)
@@ -169,6 +178,17 @@ export function parseKqStaffCommand(raw: unknown): KqStaffCommand {
     return value;
   }
   switch (body.action) {
+    case "set-production-rules": {
+      assert(typeof body.enabled === "boolean" && (body.zoneId === null || typeof body.zoneId === "string" && body.zoneId.length > 0 && body.zoneId.length <= 100), "Choisis une zone de production.");
+      assert(body.route === "flower" || body.route === "dry-sift", "Choisis la vente de fleurs ou le hash tamisé.");
+      for (const field of ["maxDailyCostCents", "cashReserveCents", "expectedRevision"]) number(body[field], 0, 100_000_000);
+      return { action: "set-production-rules", enabled: body.enabled, zoneId: body.zoneId as string | null, route: body.route,
+        maxDailyCostCents: num("maxDailyCostCents"), cashReserveCents: num("cashReserveCents"), expectedRevision: num("expectedRevision") };
+    }
+    case "assign-production": {
+      assert(typeof body.productionStep === "string" && ["auto", "culture", "trim", "processing", "sell"].includes(body.productionStep), "Choisis une étape de production autonome.");
+      return { action: "assign-production", employeeId: employeeId(), hours: num("hours"), productionStep: body.productionStep as KqProductionStep };
+    }
     case "set-administration-rules": {
       const rules = { enabled: body.enabled, employeeId: body.employeeId, paySuppliers: body.paySuppliers, payPayroll: body.payPayroll,
         maxDailyCents: body.maxDailyCents, cashReserveCents: body.cashReserveCents, supplierDueDays: body.supplierDueDays, updatedAt: "2000-01-01T00:00:00.000Z" };
@@ -220,6 +240,11 @@ function hasProcessingReservationTarget(raw: KqStaffRawSnapshot, targetId: strin
     || raw.context.processingBatches.some(batch => batch.flowerId === targetId && isLegacyProcessingTarget(raw, batch.flowerId) && at(batch.startedAt) <= now && at(batch.readyAt) > now);
 }
 function completeTask(state: KqStaffState, task: KqStaffTask, raw: KqStaffRawSnapshot, effects: KqStaffEffect[]) {
+  if (task.kind === "production") {
+    task.status = "completed";
+    task.outcome = `Production autonome : ${(task.productionWorkedHours ?? 0).toLocaleString("fr-FR", { maximumFractionDigits: 2 })} h effectuées sur ${task.hours} h réservées.${task.productionReason ? ` ${task.productionReason}` : ""}`;
+    return;
+  }
   function recordResult(result: Omit<KqStaffTaskResult, "version">) {
     // Older SQL guards allow only status/outcome to change at completion.
     if (raw.context.staffBenefitsVersion === 1) task.result = { ...task.result, ...result, version: 1 };
@@ -348,6 +373,7 @@ function advanceKqStaffBase(raw: KqStaffRawSnapshot) {
   state.trimmerOwned ??= false; state.playerWorkDays ??= {}; state.playerProcessingXp ??= 0;
   const now = at(raw.serverNow), effects: KqStaffEffect[] = [];
   assert(Number.isFinite(now) && now >= at(state.lastSettledAt), "Horloge du personnel invalide.");
+  advanceKqStaffProduction(state, raw, effects);
   const finishing = state.tasks.filter(item => item.status === "running" && at(item.completesAt) <= now).sort((a, b) => at(a.completesAt) - at(b.completesAt));
   for (const task of finishing.filter(item => !item.trimQueue)) completeTask(state, task, raw, effects);
   advanceKqSharedTrim(state, raw, effects);
@@ -445,7 +471,24 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     assert(today.usedHours + hours <= KQ_PLAYER_DAILY_HOURS, "Tes 12 h de travail personnel sont partagées entre toutes les activités. Reprends au prochain jour du jeu.");
     state.playerWorkDays[String(calendar.day)] = { ...today, usedHours: today.usedHours + hours };
   }
-  if (command.action === "set-administration-rules") {
+  if (command.action === "set-production-rules") {
+    assert(raw.context.productionVersion === 1, "La production autonome nécessite la mise à jour de Personnel.");
+    configureKqStaffProduction(state, raw, command);
+  } else if (command.action === "assign-production") {
+    assert(employee && raw.context.productionVersion === 1 && state.production?.facility, "Configure d’abord la production autonome.");
+    number(command.hours, 0.5, 7, 0.5);
+    assert(!state.tasks.some(task => task.employeeId === employee.id && task.day === calendar.day && (task.cultureShift || task.processingShift)), "Ce salarié accompagne déjà les cultures jouées aujourd’hui. Prévois la production autonome un autre jour.");
+    consume(command.hours);
+    const queuedUntil = Math.max(slotStartAt(raw.serverNow), ...state.tasks.filter(task => task.employeeId === employee.id && task.status === "running").map(task => slotStartAt(task.completesAt)));
+    const completesAt = new Date(queuedUntil + command.hours * HOUR_MS).toISOString();
+    assert(at(completesAt) <= at(calendar.nextDayAt) && (!employee.endsAt || at(completesAt) <= at(employee.endsAt)), "Le créneau dépasserait la journée ou la fin du contrat.");
+    const productionSalaryCents = Math.round(getKqStaffMonthlyCost(employee, employee.weeklyHours).totalCents * 7 / (30 * employee.weeklyHours) * command.hours);
+    state.production.stats.salaryCostCents += productionSalaryCents;
+    state.tasks.push({ id, employeeId: employee.id, kind: "production", skill: "culture", skillLevel: effectiveLevel(employee, "culture"),
+      hours: command.hours, startedAt: new Date(queuedUntil).toISOString(), completesAt, day: calendar.day, status: "running", trainingCostCents: 0,
+      productionStep: command.productionStep, productionSkills: { culture: effectiveLevel(employee, "culture"), processing: effectiveLevel(employee, "processing"), sales: effectiveLevel(employee, "sales") },
+      productionTrait: employee.trait, productionWorkedHours: 0, productionSalaryCents });
+  } else if (command.action === "set-administration-rules") {
     assert(raw.context.staffBenefitsVersion === 1, "La gestion administrative nécessite la mise à jour de Personnel.");
     const validated = parseKqStaffCommand(command) as Extract<KqStaffCommand, { action: "set-administration-rules" }>;
     const { action: ignoredAction, ...rules } = validated;
@@ -459,6 +502,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     assert(raw.context.weeklyPlanVersion === 1, "Le planning hebdomadaire nécessite la mise à jour de Personnel.");
     const days = parseKqStaffWeeklyDays(command.days);
     validateKqStaffWeeklyDays(days, employee);
+    assert(!days.flat().some(task => task.kind === "production") || raw.context.productionVersion === 1 && !!state.production?.facility, "Configure d’abord le circuit de production autonome.");
     const cost = getKqStaffWeeklyCost(days);
     assert(Number.isSafeInteger(command.expectedWeeklyCostCents) && command.expectedWeeklyCostCents === cost, "Le budget de la semaine a changé. Relis le planning.");
     assert(!command.enabled || days.some(day => day.length), "Ajoute au moins une activité avant d’activer la semaine type.");
@@ -594,6 +638,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     assert(employee, "Salarié introuvable.");
     number(command.hours, command.action === "train" ? 2 : 0.5, 7, 0.5);
     const kind = command.action === "train" ? "training" : command.kind;
+    assert((kind !== "culture" && kind !== "processing") || !state.tasks.some(task => task.employeeId === employee.id && task.day === calendar.day && task.kind === "production"), "Ce salarié est réservé à la production autonome aujourd’hui. Prévois l’accompagnement un autre jour.");
     const skill = command.action === "train" ? command.skill : command.kind;
     assert(Object.hasOwn(KQ_STAFF_SKILLS, skill), "Compétence inconnue.");
     consume(command.hours);
@@ -663,7 +708,7 @@ function applyKqStaffManualCommand(raw: KqStaffRawSnapshot, command: KqStaffComm
     employee.completedTasks++;
     effects.push({ kind: "supplier-payment", invoiceId: invoice.id, amountCents: invoice.remainingCents });
   }
-  assert(Number.isSafeInteger(debitCents) && debitCents <= raw.cashCents, "Trésorerie insuffisante pour cette opération.");
+  assert(Number.isSafeInteger(debitCents) && debitCents <= raw.cashCents + getKqProductionCashDelta(effects), "Trésorerie insuffisante pour cette opération.");
   return { state, effects, debitCents };
 }
 
@@ -694,6 +739,7 @@ function weeklyContext(raw: KqStaffRawSnapshot, effects: KqStaffEffect[], throug
 function weeklyCommand(task: KqStaffPlannedTask, employeeId: string, raw: KqStaffRawSnapshot): KqStaffCommand {
   const cost = getKqStaffPlannedTaskCost(task);
   assert(task.costCents === cost, "Le tarif a changé : vérifie et enregistre à nouveau la semaine type.");
+  if (task.kind === "production") return { action: "assign-production", employeeId, hours: task.hours, productionStep: task.productionStep! };
   if (task.kind === "training") return { action: "train", employeeId, hours: task.hours, skill: task.skill!, expectedCostCents: cost };
   if (task.kind === "trim") return { action: "trim", employeeId, hours: task.hours, mode: task.trimMode!, expectedCostCents: cost };
   if (task.kind === "culture") {
@@ -734,8 +780,8 @@ export function advanceKqStaff(raw: KqStaffRawSnapshot): { state: KqStaffState; 
   let debitCents = 0;
   const currentDay = getKqStaffCalendar(raw.context.businessStartedAt, raw.serverNow).day;
   const firstDay = Math.min(...state.employees.filter(employee => employee.status === "active" && employee.weeklyPlan?.enabled).map(employee => employee.weeklyPlan!.nextDay));
-  const dayStart = (day: number) => new Date(at(raw.context.businessStartedAt) + (day - 1) * KQ_GAME_DAY_MS).toISOString();
-  const contextAt = (through: string): KqStaffRawSnapshot => ({ ...raw, state, serverNow: through, cashCents: raw.cashCents - debitCents, context: weeklyContext(raw, effects, through) });
+  const dayStart = (day: number) => new Date(slotStartAt(raw.context.businessStartedAt) + (day - 1) * KQ_GAME_DAY_MS).toISOString();
+  const contextAt = (through: string): KqStaffRawSnapshot => ({ ...raw, state, serverNow: through, cashCents: raw.cashCents - debitCents + getKqProductionCashDelta(effects), context: weeklyContext(raw, effects, through) });
   const advanceTo = (through: string) => {
     const next = advanceKqStaffBase(contextAt(through));
     state = next.state; effects.push(...next.effects);
@@ -747,6 +793,9 @@ export function advanceKqStaff(raw: KqStaffRawSnapshot): { state: KqStaffState; 
   };
   for (let day = firstDay; day <= currentDay; day++) {
     const start = dayStart(day);
+    // Wait for the representable start instead of advancing then rewinding time
+    // during the sub-millisecond interval at the beginning of a database day.
+    if (at(start) > at(raw.serverNow)) break;
     const elapsed = at(start) < at(state.lastSettledAt);
     if (!elapsed) advanceTo(start);
     const unpaid = state.payroll.some(row => row.paidCents < row.totalCents);

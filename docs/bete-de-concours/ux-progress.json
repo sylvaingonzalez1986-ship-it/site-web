@@ -1,5 +1,47 @@
 {
-  "updated": "2026-11-09",
+  "updated": "2026-11-11",
+  "gameCommitValidation": {
+    "updated": "2026-11-11",
+    "scope": "Commit et push demandés uniquement pour le jeu : production autonome, carrousel Personnel, correctif des horaires à précision PostgreSQL, marché, illustration, migration de production et recettes. Changements sécurité/admin/paiements/newsletter exclus.",
+    "validation": "Copie isolée de HEAD avec seulement les 39 fichiers jeu sélectionnés : TypeScript global, 274 tests ciblés, 45 contrôles PostgreSQL de production et vérification des permissions sur les 371 migrations du lot réussis. Lecture SQL de la recette normalisée pour LF/CRLF et cache Vite dédié. Les autres modifications locales sont conservées.",
+    "next": "Vérifier le commit exact sur origin/master après le push ; la publication applicative reste suivie par l’hébergement. Aucun changement de configuration administrateur dans ce lot."
+  },
+  "staffProductionClockFix": {
+    "updated": "2026-11-11",
+    "diagnosis": "Refus staff_production_hours reproduit localement avec une origine de ferme PostgreSQL conservant les microsecondes. Les horaires générés par Date.parse/toISOString pouvaient précéder l’autorisation ou appartenir au jour SQL précédent. Le règlement du personnel appelé par plusieurs écrans pouvait alors bloquer leurs chargements/actions. Ce défaut concerne le planning autonome, pas la connexion administrateur.",
+    "change": "Les nouveaux créneaux de production et départs de semaine type sont arrondis vers la première milliseconde qui ne précède pas leur origine exacte. Le moteur attend ce départ représentable lorsqu’une requête arrive dans la fraction de milliseconde initiale. Tâches existantes, soldes et contrôles SQL conservés ; aucune migration requise.",
+    "validation": "151 tests ciblés Personnel/moteur/hebdomadaire/backend et 45 contrôles SQL isolés réussis. Régression avec origine à six décimales, concordance des jours SQL, embauche/configuration/affectation au même instant, frontière de journée sans doublon, comptabilité, TVA, rejouabilité et permissions vérifiés. TypeScript global, ESLint ciblé et contrôle des espaces du diff réussis.",
+    "reports": ["output/staff-production/sql-report.json", "scripts/test-placard-staff-production.mjs", "src/lib/kanab-quest-staff-production.test.ts"],
+    "next": "L’utilisateur confirme la reprise locale et demande la mise en production le 11 novembre. Correctif inclus dans le lot sécurité/Personnel ; aucune migration supplémentaire pour les horaires. Build complet isolé réussi, 141 pages, TypeScript et middleware inclus ; suivi de livraison sous output/release-20261111/."
+  },
+  "staffCarousel": {
+    "updated": "2026-11-10",
+    "status": "Personnel réparti en six panneaux illustrés : Bilan, Journée, Planning, Production, Recruter et Paie. Un seul panneau visible ; Production absente si la capacité serveur manque. Implémentation locale, non publiée, avec revue ciblée de l’agent game design.",
+    "interaction": "Enseignes papier existantes, rangée défilante sur mobile, flèches précédent/suivant, clavier et glissement sans lecture automatique. Navigation fixe pendant le défilement, sous l’en-tête et le guide réduit. Gestes du plan, de l’atelier, des formulaires et des listes horizontales préservés. Panneaux masqués avec hidden/inert ; brouillons conservés par employé et mode. Planning avec sélecteur d’employé, portrait compact et contrat détaillé replié. Liens directs, confirmations, retour du focus et objectifs du tutoriel adaptés.",
+    "validation": "16 groupes navigateur réussis : carrousel, production autonome, semaine type et tutoriel Personnel à 320/390/1440 px, plus cas de capacités serveur et de reprise après erreur. Conservation des brouillons, verrouillage des confirmations, gestes, clavier, heures, frais, focus, absence de chevauchement avec le guide et absence de débordement vérifiés. Captures mobiles inspectées ; aucune erreur JavaScript ni requête externe dans les recettes. 82 tests unitaires du guide, TypeScript global et ESLint ciblé réussis.",
+    "reports": ["output/placard-staff-ui/carousel-report.json", "output/placard-staff-ui/production-report.json", "output/placard-staff-ui/weekly-plan-report.json", "output/placard-journey-continuity/staff-guide-report.json"],
+    "next": "Demande traitée localement. Aucun changement des règles de jeu ni migration supplémentaire. Publier le code lors de la demande correspondante."
+  },
+  "staffAutonomousProduction": {
+    "updated": "2026-11-10",
+    "status": "Production autonome du personnel implémentée localement après plan validé, avec un agent expert game design. Configuration dans Personnel et postes autonomes dans la semaine type : chaîne complète, culture, trim, tamisage, vente.",
+    "rules": "Zone existante dédiée, quotas de séchage/stockage et tamis réservés. Fournitures, énergie, transformation, plafond quotidien et trésorerie minimale. Compétences réelles de chaque intervenant pour qualité, cadence, rendement et prix. Demande partagée de 500 g équivalent fleur par jour. Stocks et recettes distincts du concours : aucun jury, score Gestion, réputation, XP joueur ou mission.",
+    "time": "Horloge commune : 1 h du jeu = 10 min réelles. Durées de gestes, maturation passive, jours du contrat, congés, salaires échus et créneaux communs respectés. Travail incomplet repris au prochain créneau ; rattrapage déterministe et rejouable sans duplication. Réserves historiques Culture/Transformation incompatibles le même jour pour le même salarié, avec motif explicite.",
+    "economy": "Salaires contractuels inchangés ; imputation affichée sans double débit, TVA réservée et comptabilité équilibrée. Le modèle hebdomadaire réserve explicitement toutes les heures du contrat et affiche son salaire imputé ; une petite zone ne garantit pas la rentabilité à plein temps.",
+    "migration": "supabase/migrations/20261110000100_kq_staff_production.sql appliquée le 10 novembre 2026 au projet eyowwwpdmfrulhkpvlnf à la demande explicite de l’utilisateur. 37 contrôles préalables et 109 contrôles après application réussis ; 371 migrations synchronisées, aucune en attente. Signature réelle de réservation du stockage (UUID, UUID DEFAULT NULL) préservée et couverte par la recette corrigée. Table privée sans accès Data API direct, RPC existante service_role, protections des zones, capacités et machines. Empreintes des comptes personnel, archives, portefeuilles, comptes commerciaux, fleurs et reçus de vente inchangées. Aucune action de jeu de test exécutée sur le projet.",
+    "validation": "359 tests ciblés et régressions Personnel/Marché réussis, dont 25 tests du moteur autonome. PostgreSQL isolé : 42 contrôles (ventes effectives, TVA, journal, heures communes, absence de récompenses, anti-duplication, capacité, machine, permissions et argument d’exclusion du stockage). Grants de 371 migrations, TypeScript global et ESLint ciblé réussis. Build Next de production réussi. Navigateur : parcours configuration, confirmation, heures réelles, semaine complète, vente et suspension à 320/390/1440 px, clavier, aucune erreur JS ni requête externe ; titre mobile ajusté après inspection.",
+    "visualUpdate": "10 novembre 2026 : panorama de l’atelier créé avec imagegen intégré via KqPrintedArt, cinq postes sélectionnables au clavier, lots filtrés par étape, portraits canoniques des intervenants et choix du salarié avec niveau et heures disponibles. Jauges du travail confirmé, échéance réelle de maturation, qualité inconnue avant récolte, demande réservée distincte des ventes. Accès au créneau prérempli et au planning hebdomadaire ; confirmation financière conservée. Aucun changement de moteur ni nouvelle migration.",
+    "visualValidation": "Quatre groupes navigateur réussis : parcours complet à 320/390/1440 px, puis filière hash à 320 px. Cinq postes, filtres sur les lots réels, geste actif non crédité prématurément, maturation passive, absence de fausse qualité, choix du salarié et transfert du focus vers l’affectation, commandes uniquement après confirmation. Aucun débordement, erreur JavaScript ou appel externe. Captures inspectées, TypeScript global et ESLint ciblé réussis. Illustration WebP transparente de 1536×512, 227984 octets ; prompt et provenance consignés.",
+    "reports": [
+      "output/staff-production/sql-report.json",
+      "docs/bete-de-concours/ui-staff-production-provenance.json",
+      "output/placard-staff-ui/production-report.json",
+      "scripts/test-placard-staff-production.mjs",
+      "src/lib/kanab-quest-staff-production.test.ts",
+      "output/staff-production-migration/completion.json"
+    ],
+    "next": "Migration appliquée et vérifiée ; ne pas la rejouer. Publier le code applicatif lors de la demande correspondante. Aucun audit général supplémentaire nécessaire."
+  },
   "interfaceCopyCleanup": {
     "updated": "2026-11-09",
     "status": "Textes allégés dans 23 composants du jeu : sous-titres redondants, slogans et consignes évidentes retirés ; titres et explications raccourcis. Modifications locales, non publiées.",

@@ -31,7 +31,7 @@ function readFacts(scope: ParentNode, flowerId?: string): FarmGuideFacts {
     album: attr("[data-collection-tab][aria-selected=true]", "data-collection-tab"), commerce: attr("[data-screen]", "data-screen"),
     social: attr("[data-social-view][aria-pressed=true]", "data-social-view"), business: attr("[data-shop-view][aria-selected=true]", "data-shop-view"),
     bank: attr("[id^=bank-desk-][aria-selected=true]", "id")?.replace("bank-desk-", ""),
-    staffTab: attr("[data-staff-tab][aria-pressed=true]", "data-staff-tab"),
+    staffTab: attr("[data-staff-tab][aria-selected=true]", "data-staff-tab"),
     trimState: flowerId ? attr(`[data-guide-trim-flower-id="${flowerId}"]`, "data-guide-trim-state") ?? (visible('[data-guide-trim-ready="true"]', scope) && !scope.querySelector(`[data-guide-trim-flower-id="${flowerId}"]`) ? "not-required" : undefined) : undefined,
     storageEmpty: attr("[data-storage-lot-count]", "data-storage-lot-count") === "0",
     curing: !!visible("[data-culture-curing]", scope) && !visible("[data-culture-ranked-flower]:not(:disabled), [data-culture-training-flower]:not(:disabled)", scope),
@@ -205,7 +205,7 @@ export function KqFarmGuide({ ownerId, initialOpen = false, destination, onNavig
     const goal = step ? farmStepChapter(step) : chapter;
     onNavigate({ ...goal, ...(state.flowerId && (step?.id === "trim" || ["storage", "jury", "sale"].includes(goal.id)) ? { flowerId: state.flowerId } : {}) });
   };
-  if (!state.active) return <div ref={anchor} />;
+  if (!state.active) return <div ref={anchor} data-farm-guide-anchor />;
   const groupSteps = FARM_GUIDE_STEPS.filter(item => item.group === step?.group);
   const completedInGroup = groupSteps.filter(item => state.completed.includes(item.id)).length;
   const currentAdvice = getFarmGuideAdvice(currentChapter, facts);
@@ -240,5 +240,5 @@ export function KqFarmGuide({ ownerId, initialOpen = false, destination, onNavig
       {warning ? <p role="status">La progression du guide ne peut pas être enregistrée correctement. Tes actions de jeu restent enregistrées par le jeu.</p> : null}
     </div>
   </aside>;
-  return <div ref={anchor} className={styles.anchor} data-expanded={!state.collapsed} style={{ "--farm-guide-top": `${headerOffset}px` } as CSSProperties}>{host ? createPortal(content, host) : content}</div>;
+  return <div ref={anchor} className={styles.anchor} data-farm-guide-anchor data-expanded={!state.collapsed} style={{ "--farm-guide-top": `${headerOffset}px` } as CSSProperties}>{host ? createPortal(content, host) : content}</div>;
 }

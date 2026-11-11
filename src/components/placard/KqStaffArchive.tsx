@@ -68,6 +68,7 @@ function ArchivedPayroll({ employeeId }: { employeeId: string }) {
 }
 
 function taskLabel(task: KqStaffTask) {
+  if (task.kind === "production") return "Production autonome";
   if (task.kind === "training") return `Formation · ${KQ_STAFF_SKILLS[task.skill]}`;
   if (task.kind === "trim") return task.trimMode === "machine" ? "Trim mécanique" : task.trimMode === "manual" ? "Trim manuel" : "Trim";
   if (task.kind === "countryside") return "Tournée des campagnes";

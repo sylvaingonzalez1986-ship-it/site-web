@@ -162,7 +162,7 @@ export function KqStaffTaskList({ snapshot, tasks, title = "Travaux & résultats
   const sorted = tasks.slice().sort((a, b) => Number(a.status === "completed") - Number(b.status === "completed") || Date.parse(b.startedAt) - Date.parse(a.startedAt));
   const row = (task: KqStaffTask) => {
     const queued = task.status === "running" && Date.parse(task.startedAt) > Date.parse(snapshot.serverNow);
-    const label = task.kind === "training" ? `Formation ${KQ_STAFF_SKILLS[task.skill].toLocaleLowerCase("fr")}` : task.kind === "trim" ? "Trim" : task.kind === "countryside" ? "Sillonner les campagnes" : KQ_STAFF_SKILLS[task.kind];
+    const label = task.kind === "production" ? "Production autonome" : task.kind === "training" ? `Formation ${KQ_STAFF_SKILLS[task.skill].toLocaleLowerCase("fr")}` : task.kind === "trim" ? "Trim" : task.kind === "countryside" ? "Sillonner les campagnes" : KQ_STAFF_SKILLS[task.kind];
     if (task.cultureShift || task.processingShift) {
       const used = task.processingShift ? task.processingUsedHours : task.cultureUsedHours;
       const remaining = used === undefined ? null : Math.max(0, task.hours - used);

@@ -110,6 +110,9 @@ export function farmStepAdvice(step: FarmStep, facts: FarmGuideFacts, currentCha
   if (step.id === "staff-candidate" && currentChapter === "staff" && facts.staffTab === "candidates") {
     return { line: step.line, target: "[data-staff-profile], [data-staff-candidates-empty=true]" };
   }
+  if ((step.id === "staff-planning" || step.id === "staff-development") && currentChapter === "staff" && facts.staffTab !== "overview") {
+    return { line: "Ouvre Bilan pour retrouver les aides de l’équipe. " + step.line, target: "[data-staff-tab=overview]" };
+  }
   if (step.chapter === "culture" && currentChapter === "culture") {
     if (facts.cultureDead) return { line: "Cette culture n’a pas donné de récolte. Lis le bilan et les possibilités de reprise avant de relancer.", target: "[data-culture-recovery], [data-culture-rescue]" };
     if (step.id === "harvest" && facts.phase === "prepare") return { line: "Une nouvelle situation attend ta décision. Lis ses effets, puis lance les dés quand tu es prêt.", target: "[data-culture-primary-action], [data-culture-situation]" };
