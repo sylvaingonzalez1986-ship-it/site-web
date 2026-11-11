@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
 import { getCustomerByIdByBackend, getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -58,7 +59,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const payload = (await request.json()) as { code?: string };
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as { code?: string };
     const code = typeof payload.code === "string" ? payload.code.trim() : "";
     if (!code) {
       return NextResponse.json({ error: "Code parrain manquant." }, { status: 400 });

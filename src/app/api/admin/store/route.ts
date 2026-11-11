@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { after, NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { logAuditEvent } from "@/lib/audit-log";
@@ -51,7 +52,9 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const payload = (await request.json()) as CmsStore;
+    const boundedBody = await readRequestBody(request, 4 * 1024 * 1024);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as CmsStore;
     const replacementCharacterCount = countReplacementCharacters({
       blog: payload.blog,
       content: payload.content,

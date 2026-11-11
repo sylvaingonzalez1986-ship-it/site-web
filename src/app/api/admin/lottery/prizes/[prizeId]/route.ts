@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import {
@@ -20,7 +21,9 @@ export async function PUT(
   const { prizeId } = await params;
 
   try {
-    const payload = (await request.json()) as {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as {
       code: string;
       level: LotteryRewardLevel;
       kind: LotteryRewardKind;
@@ -75,7 +78,9 @@ export async function DELETE(
   const { prizeId } = await params;
 
   try {
-    const payload = (await request.json().catch(() => null)) as
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json().catch(() => null)) as
       | { replacementRewardDefinitionId?: string | null }
       | null;
     const archived = await archiveLotteryRewardDefinitionByBackend({

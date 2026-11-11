@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
 import {
@@ -21,7 +22,9 @@ export async function POST(request: Request) {
   let confirmation = "";
   let previewFingerprint = "";
   try {
-    const payload = await request.json() as {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = await boundedBody.body.json() as {
       cursor?: unknown;
       execute?: unknown;
       confirmation?: unknown;

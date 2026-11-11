@@ -3,6 +3,7 @@
 import { FormEvent, useId, useState } from "react";
 import Link from "@/components/navigation/NavigationLink";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
+import { CUSTOMER_PASSWORD_MIN_LENGTH, CUSTOMER_PASSWORD_REQUIREMENT, hasMinimumCustomerPasswordLength } from "@/lib/customer-password-policy";
 
 type AccountRegisterFormProps = {
   nextUrl: string;
@@ -52,6 +53,11 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError(null);
+
+    if (!hasMinimumCustomerPasswordLength(password)) {
+      setError(CUSTOMER_PASSWORD_REQUIREMENT);
+      return;
+    }
 
     if (!isAtLeast18Client(dateOfBirth)) {
       setError("Ce site est reserve aux personnes majeures (18 ans et plus).");
@@ -165,7 +171,7 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
       />
       </label>
       <label htmlFor={`${formId}-password`} className="text-sm font-bold">Mot de passe</label>
-      <p id={`${formId}-password-help`} className="text-sm text-charcoal">Au moins 8 caractères.</p>
+      <p id={`${formId}-password-help`} className="text-sm text-charcoal">Au moins {CUSTOMER_PASSWORD_MIN_LENGTH} caractères.</p>
       <div className="account-password-field">
       <input
         id={`${formId}-password`}
@@ -173,7 +179,7 @@ export function AccountRegisterForm({ nextUrl, initialReferralCode = "" }: Accou
         autoComplete="new-password"
         type={showPassword ? "text" : "password"}
         aria-describedby={`${formId}-password-help`}
-        minLength={8}
+        minLength={CUSTOMER_PASSWORD_MIN_LENGTH}
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={password}
         onChange={(event) => setPassword(event.target.value)}

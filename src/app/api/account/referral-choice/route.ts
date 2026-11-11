@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { chooseReferralRewardByBackend } from "@/lib/missions-backend";
@@ -9,7 +10,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const payload = (await request.json()) as {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as {
       pendingRewardId?: string;
       choice?: string;
     };

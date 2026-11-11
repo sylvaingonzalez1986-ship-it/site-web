@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { requestNewsletterConfirmation, newsletterTokenHash } from "@/lib/newsletter-confirmation";
 import { sendNewsletterConfirmationEmail } from "@/lib/newsletter-email";
 import { isValidMailingEmail } from "@/lib/mailing-policy";
@@ -11,7 +11,9 @@ export async function POST(request: Request) {
   try {
     const rejected = rejectOversizedBody(request);
     if (rejected) return rejected;
-    const payload = await request.json().catch(() => null);
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = await boundedBody.body.json().catch(() => null);
     const email = typeof payload?.email === "string" ? payload.email.trim().toLowerCase() : "";
     if (!isValidMailingEmail(email)) return NextResponse.json({ error: "Adresse e-mail invalide." }, { status: 400 });
     const budgets = [

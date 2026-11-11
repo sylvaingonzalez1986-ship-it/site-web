@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { issueInvoiceForOrder } from "@/lib/invoice-store";
 import {
@@ -160,7 +161,9 @@ export async function POST(request: Request) {
   let rawBody = "";
   let payload: unknown;
   try {
-    rawBody = await request.text();
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    rawBody = await boundedBody.body.text();
     if (rawBody.length > 65_536) {
       return NextResponse.json({ error: "Payload webhook trop volumineux." }, { status: 413 });
     }

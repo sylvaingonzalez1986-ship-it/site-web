@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import {
   CONTEST_SCHEMA_MISSING_MESSAGE,
   isContestSchemaMissingError,
@@ -63,7 +63,9 @@ export async function POST(request: Request, context: RouteContext) {
   }
 
   const { reviewId } = await context.params;
-  const payload = (await request.json().catch(() => null)) as { value?: unknown } | null;
+  const boundedBody = await readRequestBody(request, 2 * 1024);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as { value?: unknown } | null;
   const value = toVoteValue(payload?.value);
   if (value === null) {
     return NextResponse.json({ error: "Vote invalide." }, { status: 400 });

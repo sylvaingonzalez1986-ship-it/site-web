@@ -6,7 +6,7 @@ import {
 import { createStoredAdminSession } from "@/lib/admin-session-store";
 import { isAllowedAdminEmail, normalizeEmail } from "@/lib/admin-allowlist";
 import { logAuditEvent } from "@/lib/audit-log";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { isAdminTotpEnabled, verifyAdminTotp } from "@/lib/admin-totp";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { verifyAdminPassword } from "@/lib/admin-password";
@@ -44,7 +44,9 @@ export async function POST(request: Request) {
       );
     }
 
-    const payload = (await request.json()) as { password?: string; totp?: string };
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as { password?: string; totp?: string };
     const customerSession = await getCurrentCustomerSessionByBackend("identity");
     const sessionEmail = normalizeEmail(customerSession?.customer.email);
 

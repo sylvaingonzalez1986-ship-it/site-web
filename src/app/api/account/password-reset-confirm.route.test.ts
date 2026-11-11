@@ -25,7 +25,8 @@ vi.mock("@/lib/customer-backend", () => ({
   clearLegacyCustomerCookie: mockClearLegacyCustomerCookie,
 }));
 
-vi.mock("@/lib/body-size-guard", () => ({
+vi.mock("@/lib/body-size-guard", async importOriginal => ({
+  ...await importOriginal<typeof import("@/lib/body-size-guard")>(),
   rejectOversizedBody: mockRejectOversizedBody,
 }));
 
@@ -46,18 +47,18 @@ describe("POST /api/account/password-reset/confirm", () => {
     mockCookies.mockResolvedValue({ getAll: () => [] });
   });
 
-  it("returns 400 when the password is too short", async () => {
+  it.each(["short", "12345678", "12345678901"])("returns 400 when the new password is too short (%s)", async password => {
     const response = await POST(
       new Request("https://example.test/api/account/password-reset/confirm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: "short" }),
+        body: JSON.stringify({ password, tokenHash: "fixture-recovery" }),
       }),
     );
 
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toEqual({
-      error: "Le mot de passe doit contenir au moins 8 caracteres.",
+      error: "Le mot de passe doit contenir au moins 12 caractères.",
     });
     expect(mockResetCustomerPasswordByBackend).not.toHaveBeenCalled();
   });

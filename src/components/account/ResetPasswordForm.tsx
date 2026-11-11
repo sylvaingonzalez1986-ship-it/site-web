@@ -3,6 +3,7 @@
 import Link from "@/components/navigation/NavigationLink";
 import { FormEvent, useEffect, useId, useState } from "react";
 import { useRouter } from "@/components/navigation/NavigationFeedback";
+import { CUSTOMER_PASSWORD_MIN_LENGTH, CUSTOMER_PASSWORD_REQUIREMENT, hasMinimumCustomerPasswordLength } from "@/lib/customer-password-policy";
 
 type ResetPasswordFormProps = {
   nextUrl: string;
@@ -99,8 +100,8 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
     event.preventDefault();
     setError(null);
 
-    if (password.length < 8) {
-      setError("Le mot de passe doit contenir au moins 8 caracteres.");
+    if (!hasMinimumCustomerPasswordLength(password)) {
+      setError(CUSTOMER_PASSWORD_REQUIREMENT);
       return;
     }
 
@@ -179,14 +180,14 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
   return (
     <form onSubmit={onSubmit} className="account-form mt-6 grid gap-3" aria-busy={loading}>
       <label htmlFor={`${formId}-password`} className="text-sm font-bold">Nouveau mot de passe</label>
-      <p id={`${formId}-help`} className="text-sm text-charcoal">Au moins 8 caractères.</p>
+      <p id={`${formId}-help`} className="text-sm text-charcoal">Au moins {CUSTOMER_PASSWORD_MIN_LENGTH} caractères.</p>
       <div className="account-password-field">
       <input
         id={`${formId}-password`}
         name="password"
         type={showPassword ? "text" : "password"}
         aria-describedby={`${formId}-help`}
-        minLength={8}
+        minLength={CUSTOMER_PASSWORD_MIN_LENGTH}
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={password}
         onChange={(event) => setPassword(event.target.value)}
@@ -200,7 +201,7 @@ export function ResetPasswordForm({ nextUrl }: ResetPasswordFormProps) {
         id={`${formId}-confirmation`}
         name="password-confirmation"
         type={showPassword ? "text" : "password"}
-        minLength={8}
+        minLength={CUSTOMER_PASSWORD_MIN_LENGTH}
         className="h-12 border-2 border-[#1a1a1a] bg-white px-3 text-base"
         value={confirmPassword}
         onChange={(event) => setConfirmPassword(event.target.value)}

@@ -1,3 +1,5 @@
+import { PRODUCT_VIDEO_UPLOAD_MAX_BYTES } from "@/lib/product-video-policy";
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { ProductVideoUploadError, saveProductVideoUpload } from "@/lib/product-video-storage";
@@ -10,7 +12,9 @@ export async function POST(request: Request) {
     return denied;
   }
 
-  const formData = await request.formData();
+  const boundedBody = await readRequestBody(request, PRODUCT_VIDEO_UPLOAD_MAX_BYTES + 64 * 1024);
+  if (!boundedBody.ok) return boundedBody.response;
+  const formData = await boundedBody.body.formData();
   const file = formData.get("file");
 
   if (!(file instanceof File)) {

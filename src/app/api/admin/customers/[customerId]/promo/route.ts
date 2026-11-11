@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { logAuditEvent } from "@/lib/audit-log";
@@ -15,7 +16,9 @@ export async function POST(
   const { customerId } = await params;
 
   try {
-    const payload = (await request.json()) as {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as {
       code?: string;
       discountPercent?: number;
     };

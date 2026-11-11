@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { findKqProducerRewardForEntry } from "@/lib/kanab-quest-producer-rewards";
@@ -28,7 +29,9 @@ export async function POST(request: Request) {
   if (!session) return NextResponse.json({ error: "Non autorisé." }, { status: 401, headers: NO_STORE_HEADERS });
   let value: Record<string, unknown>;
   try {
-    const body: unknown = await request.json();
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const body: unknown = await boundedBody.body.json();
     if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("invalid_body");
     value = body as Record<string, unknown>;
   } catch {

@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
 import { getKqBotteCatalogAdmin, updateKqBotteCollection } from "@/lib/supabase/kanab-quest-catalog-admin-backend";
@@ -14,7 +15,9 @@ export async function GET() {
 export async function PUT(request: Request) {
   if (!await getValidatedAdminContext()) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
-    const value = await request.json() as Record<string, unknown>;
+    const boundedBody = await readRequestBody(request, 1024 * 1024);
+    if (!boundedBody.ok) return boundedBody.response;
+    const value = await boundedBody.body.json() as Record<string, unknown>;
     if (typeof value.title !== "string" || typeof value.description !== "string" || typeof value.imageUrl !== "string" || typeof value.isActive !== "boolean") {
       return NextResponse.json({ error: "Collection invalide." }, { status: 400 });
     }

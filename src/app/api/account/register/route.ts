@@ -6,7 +6,7 @@ import {
   registerCustomerByBackend,
 } from "@/lib/customer-backend";
 import { logAuditEvent } from "@/lib/audit-log";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
 import { getSiteUrl } from "@/lib/site-url";
@@ -16,7 +16,9 @@ export async function POST(request: Request) {
     const rejected = rejectOversizedBody(request);
     if (rejected) return rejected;
 
-    const payload = (await request.json()) as {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as {
       email?: string;
       firstName?: string;
       lastName?: string;

@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
 import {
@@ -26,7 +27,9 @@ export async function GET() {
 export async function POST(request: Request) {
   const admin = await getValidatedAdminContext();
   if (!admin) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
-  const payload = await request.json().catch(() => ({})) as {
+  const boundedBody = await readRequestBody(request);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = await boundedBody.body.json().catch(() => ({})) as {
     action?: "preview" | "freeze" | "settle";
     execute?: boolean;
   };

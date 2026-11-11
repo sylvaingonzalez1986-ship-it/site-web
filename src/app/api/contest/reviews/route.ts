@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import {
   CONTEST_SCHEMA_MISSING_MESSAGE,
   getContestReviewForCustomer,
@@ -86,7 +86,9 @@ export async function POST(request: Request) {
     );
   }
 
-  const payload = (await request.json().catch(() => null)) as ContestReviewSubmissionInput | null;
+  const boundedBody = await readRequestBody(request, 24 * 1024);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as ContestReviewSubmissionInput | null;
   if (!payload) {
     return NextResponse.json({ error: "Payload invalide." }, { status: 400 });
   }
@@ -163,7 +165,9 @@ export async function PUT(request: Request) {
     );
   }
 
-  const payload = (await request.json().catch(() => null)) as ContestReviewSubmissionInput | null;
+  const boundedBody = await readRequestBody(request, 24 * 1024);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as ContestReviewSubmissionInput | null;
   if (!payload) {
     return NextResponse.json({ error: "Payload invalide." }, { status: 400 });
   }

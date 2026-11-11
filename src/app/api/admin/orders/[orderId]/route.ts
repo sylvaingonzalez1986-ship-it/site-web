@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { issueInvoiceForOrder } from "@/lib/invoice-store";
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
@@ -27,7 +28,9 @@ export async function PATCH(
   const { orderId } = await params;
 
   try {
-    const payload = (await request.json()) as {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as {
       status?: OrderStatus;
       paymentState?: CmsOrder["paymentState"];
       trackingNumber?: string | null;

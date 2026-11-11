@@ -97,6 +97,45 @@ afterEach(() => {
 });
 
 describe("Viva webhook payment verification and recovery", () => {
+  it.each([undefined, "1"])("bounds streamed bytes with Content-Length=%s before payment work", async (length) => {
+    let pulled = 0;
+    const cancel = vi.fn();
+    const body = new ReadableStream<Uint8Array>({
+      pull(controller) { pulled++; controller.enqueue(new Uint8Array(32 * 1024 + 1)); },
+      cancel,
+    }, { highWaterMark: 0 });
+    const response = await POST(new Request("http://localhost/api/checkout/viva/webhook", {
+      method: "POST", body, duplex: "half",
+      headers: { "content-type": "application/json", ...(length ? { "content-length": length } : {}) },
+    } as RequestInit & { duplex: "half" }));
+    expect(response.status).toBe(413);
+    expect(pulled).toBe(2);
+    expect(cancel).toHaveBeenCalledOnce();
+    expect(mocks.getOrder).not.toHaveBeenCalled();
+    expect(mocks.retrieveTransaction).not.toHaveBeenCalled();
+    expect(mocks.finalizePayment).not.toHaveBeenCalled();
+    expect(mocks.invoice).not.toHaveBeenCalled();
+  });
+
+  it("preserves an unquoted provider order code when the raw JSON arrives in small chunks", async () => {
+    const bytes = new TextEncoder().encode(await callback().text());
+    let offset = 0;
+    const body = new ReadableStream<Uint8Array>({
+      pull(controller) {
+        if (offset === bytes.length) { controller.close(); return; }
+        const next = Math.min(offset + 3, bytes.length);
+        controller.enqueue(bytes.subarray(offset, next));
+        offset = next;
+      },
+    }, { highWaterMark: 0 });
+    const response = await POST(new Request("http://localhost/api/checkout/viva/webhook", {
+      method: "POST", body, duplex: "half", headers: { "content-type": "application/json" },
+    } as RequestInit & { duplex: "half" }));
+    expect(response.status).toBe(200);
+    expect(mocks.getOrder).toHaveBeenCalledWith(orderCode);
+    expect(mocks.finalizePayment).toHaveBeenCalledOnce();
+  });
+
   it("does not let the publicly returned verification key authorize an unverified payment", async () => {
     const verification = await GET(new Request("http://localhost/api/checkout/viva/webhook"));
     const { Key } = await verification.json();

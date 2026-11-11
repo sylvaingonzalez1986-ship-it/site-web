@@ -5,6 +5,7 @@ import { randomUUID } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { assertPasswordNotLeaked } from "@/lib/password-leak-check";
+import { CUSTOMER_PASSWORD_REQUIREMENT, hasMinimumCustomerPasswordLength } from "@/lib/customer-password-policy";
 import { bindSupabaseReferralCode } from "@/lib/supabase/referral-backend";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
 import { getSupabaseEnv } from "@/lib/supabase/env";
@@ -603,8 +604,11 @@ export async function registerSupabaseCustomerWithEmailVerification(input: {
   const referralCode =
     typeof input.referralCode === "string" ? input.referralCode.trim() : "";
 
-  if (!email || !firstName || !lastName || input.password.length < 8 || !dateOfBirth) {
+  if (!email || !firstName || !lastName || !dateOfBirth) {
     throw new Error("Informations invalides.");
+  }
+  if (!hasMinimumCustomerPasswordLength(input.password)) {
+    throw new Error(CUSTOMER_PASSWORD_REQUIREMENT);
   }
   if (!isAtLeast18(dateOfBirth)) {
     throw new Error("Inscription reservee aux personnes majeures (18+).");
@@ -751,8 +755,8 @@ export async function resetSupabaseCustomerPassword(input: {
   refreshToken?: string;
 }): Promise<{ email: string }> {
   const password = input.password;
-  if (typeof password !== "string" || password.length < 8) {
-    throw new Error("Le mot de passe doit contenir au moins 8 caracteres.");
+  if (!hasMinimumCustomerPasswordLength(password)) {
+    throw new Error(CUSTOMER_PASSWORD_REQUIREMENT);
   }
 
   await assertPasswordNotLeaked(password);

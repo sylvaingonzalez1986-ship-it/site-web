@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { after, NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import {
@@ -28,7 +29,9 @@ export async function PATCH(
 
   try {
     const previous = (await readAdminCmsPagesByBackend()).find((page) => page.id === pageId);
-    const payload = (await request.json()) as CmsPageUpdateInput;
+    const boundedBody = await readRequestBody(request, 512 * 1024);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as CmsPageUpdateInput;
     const updated = await updateCmsPageByBackend(pageId, payload);
     if (!updated) {
       return NextResponse.json({ error: "Page introuvable." }, { status: 404 });

@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { after, NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import {
@@ -34,7 +35,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const payload = (await request.json()) as CmsPageCreateInput;
+    const boundedBody = await readRequestBody(request, 512 * 1024);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as CmsPageCreateInput;
     const page = await createCmsPageByBackend(payload);
     invalidateCmsPagesCache();
     if (page.status === "published") {

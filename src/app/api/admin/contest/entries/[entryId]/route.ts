@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import {
   CONTEST_SCHEMA_MISSING_MESSAGE,
   deleteContestEntry,
@@ -33,7 +33,9 @@ export async function PATCH(request: Request, context: RouteContext) {
   }
 
   const { entryId } = await context.params;
-  const payload = (await request.json().catch(() => null)) as Partial<ContestEntryInput> | null;
+  const boundedBody = await readRequestBody(request, ADMIN_CONTEST_ENTRY_BODY_MAX_BYTES);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as Partial<ContestEntryInput> | null;
   if (!payload) {
     return NextResponse.json({ error: "Payload lot invalide." }, { status: 400 });
   }

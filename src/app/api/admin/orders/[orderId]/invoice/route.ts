@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { validateInvoicePersonalMessage } from "@/lib/invoice-message";
 import { buildInvoiceResponse } from "@/lib/invoice-pdf";
 import {
@@ -93,7 +93,9 @@ export async function POST(request: Request, { params }: InvoiceRouteContext) {
 
   let payload: unknown;
   try {
-    payload = await request.json();
+    const boundedBody = await readRequestBody(request, 16 * 1024);
+    if (!boundedBody.ok) return boundedBody.response;
+    payload = await boundedBody.body.json();
   } catch {
     return NextResponse.json({ error: "Message invalide." }, { status: 400 });
   }

@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -31,7 +32,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Patiente un instant avant de réessayer." }, { status: 429, headers: { "Retry-After": String(rate.retryAfterSeconds) } });
   }
   try {
-    const body: unknown = await request.json();
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const body: unknown = await boundedBody.body.json();
     if (!body || typeof body !== "object" || Array.isArray(body)) throw new Error("Demande invalide.");
     return NextResponse.json(await handleKqCommerceAction(session.customerId, body as Record<string, unknown>));
   } catch (error) { return failure(error); }

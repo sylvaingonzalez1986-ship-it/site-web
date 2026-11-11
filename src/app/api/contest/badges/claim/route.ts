@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import {
   claimContestBadgeReward,
   CONTEST_SCHEMA_MISSING_MESSAGE,
@@ -55,7 +55,9 @@ export async function POST(request: Request) {
     );
   }
 
-  const payload = (await request.json().catch(() => null)) as { badgeId?: string } | null;
+  const boundedBody = await readRequestBody(request, 4 * 1024);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as { badgeId?: string } | null;
   const badgeId = typeof payload?.badgeId === "string" ? payload.badgeId : "";
 
   try {

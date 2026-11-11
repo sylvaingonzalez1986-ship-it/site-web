@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 ﻿import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import {
@@ -108,7 +109,9 @@ export async function PUT(request: Request) {
   }
 
   try {
-    const payload = (await request.json()) as {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as {
       eurosPerTicket: number;
       maxTicketsPerOrder: number;
       collectionTitle: string;

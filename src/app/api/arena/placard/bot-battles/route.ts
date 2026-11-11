@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -31,7 +32,9 @@ export async function POST(request: Request) {
       headers: { "Retry-After": String(rateLimit.retryAfterSeconds) },
     });
   }
-  const body = await request.json().catch(() => null) as null | Record<string, unknown>;
+  const boundedBody = await readRequestBody(request);
+  if (!boundedBody.ok) return boundedBody.response;
+  const body = await boundedBody.body.json().catch(() => null) as null | Record<string, unknown>;
   const flowerId = typeof body?.flowerId === "string" ? body.flowerId : "";
   if (!flowerId) return NextResponse.json({ error: "Fleur manquante." }, { status: 400 });
   try {

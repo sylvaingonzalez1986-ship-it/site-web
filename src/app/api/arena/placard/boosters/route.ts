@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { readStoreByBackend } from "@/lib/data-backend";
@@ -66,7 +67,9 @@ export async function POST(request: Request) {
     );
   }
   try {
-    const payload = await request.json() as { packCount?: number; requestKey?: string };
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = await boundedBody.body.json() as { packCount?: number; requestKey?: string };
     const purchase = await purchaseKqSupportBoostersWithPoints({
       userId: context.session.customerId,
       requestKey: String(payload.requestKey ?? ""),
@@ -119,7 +122,9 @@ export async function PATCH(request: Request) {
     );
   }
   try {
-    const payload = await request.json() as { entitlementId?: string };
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = await boundedBody.body.json() as { entitlementId?: string };
     const opening = await openKqSupportBoosterEntitlement(
       context.session.customerId,
       String(payload.entitlementId ?? ""),

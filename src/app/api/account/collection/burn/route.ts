@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextRequest, NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
 import { getCurrentCustomerSessionByBackend, isAtLeast18 } from "@/lib/customer-backend";
@@ -33,7 +34,9 @@ export async function POST(request: NextRequest) {
 
   let body: { rarity?: string; instanceIds?: string[]; rewardChoice?: LotteryDuplicateBurnChoice };
   try {
-    body = await request.json();
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    body = await boundedBody.body.json();
   } catch {
     return NextResponse.json({ error: "Corps de requete invalide." }, { status: 400 });
   }

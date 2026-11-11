@@ -1,3 +1,5 @@
+import { BLOG_IMAGE_UPLOAD_MAX_BYTES } from "@/lib/blog-image-policy";
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { logAuditEvent } from "@/lib/audit-log";
@@ -27,7 +29,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const formData = await request.formData();
+    const boundedBody = await readRequestBody(request, BLOG_IMAGE_UPLOAD_MAX_BYTES + 64 * 1024);
+    if (!boundedBody.ok) return boundedBody.response;
+    const formData = await boundedBody.body.formData();
     const file = formData.get("file");
 
     if (!(file instanceof File)) {

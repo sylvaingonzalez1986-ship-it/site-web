@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { createBlogComment, getApprovedBlogCommentsByPostId } from "@/lib/blog-interactions-backend";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
@@ -40,7 +40,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Connexion requise." }, { status: 401 });
   }
 
-  const payload = (await request.json().catch(() => null)) as
+  const boundedBody = await readRequestBody(request);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as
     | { postId?: string; content?: string }
     | null;
   const postId = sanitizePostId(payload?.postId ?? null);

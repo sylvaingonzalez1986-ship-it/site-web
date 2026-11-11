@@ -1,6 +1,6 @@
 ﻿import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { requestCustomerPasswordResetByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
@@ -18,7 +18,9 @@ export async function POST(request: Request) {
     const rejected = rejectOversizedBody(request);
     if (rejected) return rejected;
 
-    const payload = (await request.json()) as {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as {
       email?: string;
       next?: string;
     };

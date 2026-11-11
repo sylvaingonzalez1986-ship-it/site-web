@@ -1,6 +1,9 @@
 import "server-only";
 
+import { after } from "next/server";
+import * as Sentry from "@sentry/nextjs";
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
+import { sanitizeAuditLogFailureEvent } from "@/lib/sentry-privacy";
 
 export type AuditEventType =
   | "admin_login"
@@ -57,30 +60,55 @@ type AuditLogEntry = {
   metadata?: Record<string, unknown>;
 };
 
+async function reportWriteFailure(): Promise<void> {
+  console.error("[audit-log] audit_log_write_failed");
+  try {
+    const client = Sentry.getClient();
+    if (!client || client.getOptions().enabled === false) {
+      console.error("[audit-log] audit_log_alert_unavailable");
+      return;
+    }
+    Sentry.withIsolationScope(() => Sentry.withScope(scope => {
+      // Clean inherited data now; the configured beforeSend repeats this after
+      // Sentry adds its propagation metadata, immediately before delivery.
+      scope.addEventProcessor(sanitizeAuditLogFailureEvent);
+      Sentry.captureMessage("Audit log persistence failed", "error");
+    }));
+    if (!await Sentry.flush(2_000)) console.error("[audit-log] audit_log_alert_failed");
+  } catch {
+    console.error("[audit-log] audit_log_alert_failed");
+  }
+}
+
 /**
- * Fire-and-forget audit log insertion.
- * Never throws — failures are silently logged to stderr so they never
- * block or break the calling API route.
+ * Register the complete insertion with Next's request lifetime (waitUntil).
+ * Call from a Route Handler or Server Function, while its context is active.
+ * Failures do not break the response; stable signals contain no request data
+ * or raw provider errors, which may include credentials or submitted values.
  */
 export function logAuditEvent(entry: AuditLogEntry): void {
-  const supabase = createSupabaseServiceClient();
-
-  Promise.resolve(
-    supabase
-      .from("audit_logs")
-      .insert({
-        event_type: entry.eventType,
-        actor_email: entry.actorEmail ?? "",
-        ip: entry.ip ?? "",
-        metadata: entry.metadata ?? {},
-      }),
-  )
-    .then(({ error }) => {
-      if (error) {
-        console.error("[audit-log] insert failed:", error.message);
+  try {
+    // Capture now: callers may change objects before the response completes.
+    const row = {
+      event_type: entry.eventType,
+      actor_email: entry.actorEmail ?? "",
+      ip: entry.ip ?? "",
+      metadata: structuredClone(entry.metadata ?? {}),
+    };
+    after(async () => {
+      try {
+        const { error } = await createSupabaseServiceClient()
+          .from("audit_logs")
+          .insert(row)
+          .abortSignal(AbortSignal.timeout(5_000));
+        if (error) await reportWriteFailure();
+      } catch {
+        await reportWriteFailure();
       }
-    })
-    .catch((err: unknown) => {
-      console.error("[audit-log] unexpected error:", err);
     });
+  } catch {
+    // An unavailable lifecycle hook must be observable; do not silently start
+    // another detached write that the platform could terminate prematurely.
+    console.error("[audit-log] audit_log_schedule_failed");
+  }
 }

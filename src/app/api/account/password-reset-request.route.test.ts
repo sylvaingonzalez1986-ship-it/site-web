@@ -22,7 +22,8 @@ vi.mock("@/lib/customer-backend", () => ({
   requestCustomerPasswordResetByBackend: mockRequestCustomerPasswordResetByBackend,
 }));
 
-vi.mock("@/lib/body-size-guard", () => ({
+vi.mock("@/lib/body-size-guard", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@/lib/body-size-guard")>(),
   rejectOversizedBody: mockRejectOversizedBody,
 }));
 

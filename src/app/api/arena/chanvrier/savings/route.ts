@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { hitRateLimit } from "@/lib/security-rate-limit";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { parseSavingsCommand } from "@/lib/chanvrier-savings";
 import { ChanvrierSavingsError, getChanvrierSavings } from "@/lib/supabase/chanvrier-savings-backend";
 export const runtime = "nodejs";
@@ -18,7 +18,10 @@ async function handle(request?: Request) {
     if (!request) return NextResponse.json(await getChanvrierSavings(session.customerId), { headers });
     const oversized = rejectOversizedBody(request, 1024); if (oversized) return oversized;
     let value: unknown;
-    try { value = await request.json(); } catch { return NextResponse.json({ error: "Opération invalide." }, { status: 400, headers }); }
+    try {
+      const boundedBody = await readRequestBody(request, 1024);
+      if (!boundedBody.ok) return boundedBody.response;
+      value = await boundedBody.body.json(); } catch { return NextResponse.json({ error: "Opération invalide." }, { status: 400, headers }); }
     const command = parseSavingsCommand(value);
     if (!command) return NextResponse.json({ error: "Choisis un montant positif avec deux décimales maximum." }, { status: 400, headers });
     return NextResponse.json(await getChanvrierSavings(session.customerId, command), { headers });

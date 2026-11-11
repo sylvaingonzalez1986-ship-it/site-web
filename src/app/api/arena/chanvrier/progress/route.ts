@@ -2,7 +2,7 @@
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
 import { hitRateLimit } from "@/lib/security-rate-limit";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { parseChanvrierShowcase } from "@/lib/chanvrier-progress";
 import { getChanvrierProgress, saveChanvrierShowcase } from "@/lib/supabase/chanvrier-progress-backend";
 export const runtime = "nodejs";
@@ -27,7 +27,10 @@ export async function PATCH(request: Request) {
     const rate = await hitRateLimit({ key: `chanvrier_showcase:${session.customerId}`, windowSeconds: 60, maxHits: 30 });
     if (!rate.allowed) return NextResponse.json({ error: "Un peu de patience avant de réessayer." }, { status: 429, headers: { ...headers, "Retry-After": String(rate.retryAfterSeconds) } });
     let value: unknown;
-    try { value = await request.json(); } catch { return NextResponse.json({ error: "Choix invalide." }, { status: 400, headers }); }
+    try {
+      const boundedBody = await readRequestBody(request, 2048);
+      if (!boundedBody.ok) return boundedBody.response;
+      value = await boundedBody.body.json(); } catch { return NextResponse.json({ error: "Choix invalide." }, { status: 400, headers }); }
     const input = value && typeof value === "object" ? value as Record<string, unknown> : {};
     const showcase = input.showcase === undefined ? null : parseChanvrierShowcase(input.showcase);
     const seen = input.seenBadgeCount;

@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -60,7 +61,9 @@ export async function POST(request: Request) {
     });
   }
   try {
-    const payload = await request.json() as { requestKey?: string; equipmentCodes?: string[]; expectedUnits?: number; tentNumber?: number };
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = await boundedBody.body.json() as { requestKey?: string; equipmentCodes?: string[]; expectedUnits?: number; tentNumber?: number };
     return NextResponse.json(await purchaseKqDurableEquipment({
       userId: session.customerId,
       requestKey: String(payload.requestKey ?? ""),
@@ -88,7 +91,9 @@ export async function PATCH(request: Request) {
     });
   }
   try {
-    const payload = await request.json() as {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = await boundedBody.body.json() as {
       action?: "route-plan" | "upgrade" | "workshop-tier" | "repair" | "replace" | "expand-production";
       expectedUnits?: number;
       tentNumber?: number;

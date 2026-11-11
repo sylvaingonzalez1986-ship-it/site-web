@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { readRequestBody } from "@/lib/body-size-guard";
 import { isMissionUuid, isSameOriginMissionRequest, MissionRequestError } from "@/lib/mission-proof-policy";
 import { hitRateLimit } from "@/lib/security-rate-limit";
 import { logAuditEvent } from "@/lib/audit-log";
@@ -290,9 +291,11 @@ export async function PATCH(request: Request) {
 }
 
 async function readAdminPayload(request: Request): Promise<unknown> {
-  if (Number(request.headers.get("content-length") ?? 0) > 32768) throw new MissionRequestError("Demande trop volumineuse.", 413);
-  const body = await request.text();
-  if (body.length > 32768) throw new MissionRequestError("Demande trop volumineuse.", 413);
+  const boundedBody = await readRequestBody(request, 32768);
+  if (!boundedBody.ok) {
+    throw new MissionRequestError(boundedBody.response.status === 413 ? "Demande trop volumineuse." : "Formulaire invalide.", boundedBody.response.status);
+  }
+  const body = await boundedBody.body.text();
   try { return JSON.parse(body); } catch { throw new MissionRequestError("Formulaire invalide."); }
 }
 

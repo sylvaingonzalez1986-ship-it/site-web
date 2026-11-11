@@ -40,7 +40,8 @@ vi.mock("@/lib/customer-account-deletion", () => ({
   normalizeDeletionConfirmationEmail: mockNormalizeDeletionConfirmationEmail,
 }));
 
-vi.mock("@/lib/body-size-guard", () => ({
+vi.mock("@/lib/body-size-guard", async (importOriginal) => ({
+  ...await importOriginal<typeof import("@/lib/body-size-guard")>(),
   rejectOversizedBody: mockRejectOversizedBody,
 }));
 

@@ -7,7 +7,7 @@ import {
   deleteCustomerAccount,
   normalizeDeletionConfirmationEmail,
 } from "@/lib/customer-account-deletion";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
 
 export const runtime = "nodejs";
@@ -43,7 +43,9 @@ export async function DELETE(request: Request) {
     );
   }
 
-  const payload = (await request.json().catch(() => null)) as { confirmEmail?: string } | null;
+  const boundedBody = await readRequestBody(request, 4 * 1024);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as { confirmEmail?: string } | null;
   const confirmEmail = normalizeDeletionConfirmationEmail(payload?.confirmEmail);
   const sessionEmail = normalizeDeletionConfirmationEmail(session.customer.email);
 

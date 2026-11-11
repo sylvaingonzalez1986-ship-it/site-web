@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { applyCustomerProfilePatch } from "@/lib/account-profile";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -27,7 +28,9 @@ export async function PATCH(request: Request) {
   }
 
   try {
-    const payload = (await request.json()) as unknown;
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as unknown;
     const updated = await applyCustomerProfilePatch(session.customerId, payload);
 
     if (!updated) {

@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -28,7 +29,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Patiente un instant avant de réessayer." }, { status: 429, headers: { ...headers, "Retry-After": String(rate.retryAfterSeconds) } });
     }
     let body: unknown;
-    try { body = await request.json(); } catch { throw new KqMissionError("Demande invalide.", 400); }
+    try {
+      const boundedBody = await readRequestBody(request);
+      if (!boundedBody.ok) return boundedBody.response;
+      body = await boundedBody.body.json(); } catch { throw new KqMissionError("Demande invalide.", 400); }
     if (!body || typeof body !== "object" || Array.isArray(body)) throw new KqMissionError("Demande invalide.", 400);
     return NextResponse.json(await claimKqMission(session.customerId, (body as Record<string, unknown>).code), { headers });
   } catch (error) { return failure(error); }

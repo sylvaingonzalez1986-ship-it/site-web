@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -34,7 +35,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Trop de tentatives." }, { status: 429, headers: { "Retry-After": String(rate.retryAfterSeconds) } });
   }
   let raw: unknown;
-  try { raw = await request.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 }); }
+  try {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    raw = await boundedBody.body.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 }); }
   const body = raw && typeof raw === "object" && !Array.isArray(raw) ? raw as Record<string, unknown> : {};
   if (typeof body.productCode !== "string" || typeof body.requestKey !== "string" || typeof body.quantity !== "number"
     || body.runId !== undefined && typeof body.runId !== "string" || body.expectedPriceCents !== undefined && typeof body.expectedPriceCents !== "number") {

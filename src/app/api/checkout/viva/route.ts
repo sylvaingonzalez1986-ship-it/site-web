@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import {
   beginCheckoutAttempt,
@@ -319,7 +320,9 @@ export async function POST(request: Request) {
 
   let payload: CheckoutPayload;
   try {
-    const rawBody = await request.text();
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const rawBody = await boundedBody.body.text();
     if (rawBody.length > 65_536) {
       return NextResponse.json({ error: "Requete trop volumineuse." }, { status: 413 });
     }

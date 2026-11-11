@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import {
   CONTEST_SCHEMA_MISSING_MESSAGE,
   createContestSeason,
@@ -49,7 +49,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Non autorise." }, { status: 401 });
   }
 
-  const payload = (await request.json().catch(() => null)) as ContestSeasonInput | null;
+  const boundedBody = await readRequestBody(request, ADMIN_CONTEST_SEASON_BODY_MAX_BYTES);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as ContestSeasonInput | null;
   if (!payload) {
     return NextResponse.json({ error: "Payload saison invalide." }, { status: 400 });
   }

@@ -1,6 +1,6 @@
 # Audit de sécurité — 10 novembre 2026
 
-> État initial, conservé pour traçabilité. Après autorisation « OK GO », des correctifs locaux et tests de non-régression ont été ajoutés : voir [SECURITY_FIXES.md](SECURITY_FIXES.md). Les constats ci-dessous décrivent le code audité avant correction ; les tests associés ont depuis été adaptés. La production reste non vérifiée.
+> État initial, conservé pour traçabilité. Les constats ci-dessous décrivent le code avant correction. S01–S14 ont été corrigés et déployés le 11 novembre ; les permissions de production ont été vérifiées et l'utilisateur a confirmé la reconnexion administrateur. Voir [SECURITY_FIXES.md](SECURITY_FIXES.md) et le [complément D01–D03 et exploitation](docs/security-closure-2026-11-11.md) pour les preuves et les limites actuelles. Les mentions « non vérifié » du corps historique ne remplacent pas ces contrôles datés.
 
 ## Périmètre et conclusion
 

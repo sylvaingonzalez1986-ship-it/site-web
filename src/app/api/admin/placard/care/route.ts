@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
 import { findKqUserIdByEmail } from "@/lib/supabase/kanab-quest-backend";
@@ -21,7 +22,10 @@ export async function POST(request: Request) {
   const admin = await getValidatedAdminContext();
   if (!admin) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   let raw: unknown;
-  try { raw = await request.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 }); }
+  try {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    raw = await boundedBody.body.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 }); }
   const body = raw && typeof raw === "object" && !Array.isArray(raw) ? raw as Record<string, unknown> : {};
   if (typeof body.productCode !== "string" || typeof body.requestKey !== "string" || typeof body.quantity !== "number"
     || body.runId !== undefined && typeof body.runId !== "string" || body.expectedPriceCents !== undefined && typeof body.expectedPriceCents !== "number") {

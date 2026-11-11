@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -106,7 +107,9 @@ export async function POST(request: Request) {
   }
 
   try {
-    const payload = (await request.json()) as { packCount?: number };
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as { packCount?: number };
     const packCount = Number(payload.packCount);
 
     if (

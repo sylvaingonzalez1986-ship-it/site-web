@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
 import { updateKqBotteCard } from "@/lib/supabase/kanab-quest-catalog-admin-backend";
@@ -8,7 +9,9 @@ export async function PUT(request: Request, { params }: { params: Promise<{ card
   if (!await getValidatedAdminContext()) return NextResponse.json({ error: "Non autorisé." }, { status: 401 });
   try {
     const { cardId } = await params;
-    const value = await request.json() as Record<string, unknown>;
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const value = await boundedBody.body.json() as Record<string, unknown>;
     if (["name", "rarity", "description", "imageUrl", "advantage", "drawback"].some((key) => typeof value[key] !== "string") || typeof value.isActive !== "boolean") {
       return NextResponse.json({ error: "Carte invalide." }, { status: 400 });
     }

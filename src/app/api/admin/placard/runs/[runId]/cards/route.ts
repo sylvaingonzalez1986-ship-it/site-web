@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getValidatedAdminContext } from "@/lib/admin-guard";
 import { KQ_STAGES } from "@/lib/kanab-quest-game";
@@ -12,7 +13,9 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
 
   let payload: unknown;
   try {
-    payload = await request.json();
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    payload = await boundedBody.body.json();
   } catch {
     return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 });
   }

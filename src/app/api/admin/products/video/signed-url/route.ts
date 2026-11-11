@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { randomUUID } from "node:crypto";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
@@ -18,7 +19,9 @@ export async function POST(request: Request) {
 
   let body: { contentType?: string; fileSize?: number } | null = null;
   try {
-    body = (await request.json()) as { contentType?: string; fileSize?: number };
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    body = (await boundedBody.body.json()) as { contentType?: string; fileSize?: number };
   } catch {
     return NextResponse.json({ error: "Corps de requete invalide." }, { status: 400 });
   }

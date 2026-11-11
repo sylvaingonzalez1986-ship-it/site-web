@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { adminUpdateCustomerByBackend, getCustomerByIdFullByBackend } from "@/lib/customer-backend";
@@ -80,7 +81,9 @@ export async function PATCH(
   const { customerId } = await params;
 
   try {
-    const payload = (await request.json()) as CustomerPatchPayload;
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as CustomerPatchPayload;
     const updated = await adminUpdateCustomerByBackend(customerId, payload);
     if (!updated) {
       return NextResponse.json({ error: "Client introuvable." }, { status: 404 });

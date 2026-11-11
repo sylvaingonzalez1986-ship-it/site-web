@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { readStoreByBackend } from "@/lib/data-backend";
@@ -20,7 +21,9 @@ export async function POST(request: Request) {
     return denied;
   }
 
-  const payload = (await request.json().catch(() => null)) as ExportPayload | null;
+  const boundedBody = await readRequestBody(request);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as ExportPayload | null;
   const orderIds = Array.isArray(payload?.orderIds)
     ? payload?.orderIds.filter((id): id is string => typeof id === "string" && id.trim().length > 0)
     : [];

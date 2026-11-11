@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import {
   getAdminBlogComments,
@@ -33,7 +34,9 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "Non autorise." }, { status: 401 });
   }
 
-  const payload = (await request.json().catch(() => null)) as
+  const boundedBody = await readRequestBody(request);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as
     | { commentId?: string; status?: string; adminNote?: string }
     | null;
 

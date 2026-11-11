@@ -43,14 +43,14 @@
   "dependencies": {
     "@3d-dice/dice-box-threejs": "^0.0.12",
     "@napi-rs/canvas": "^0.1.95",
-    "@sentry/nextjs": "^10.76.2",
+    "@sentry/nextjs": "11.12.0",
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.95.3",
     "@vercel/analytics": "^2.0.1",
     "ffmpeg-static": "^5.2.0",
     "gsap": "^3.14.2",
     "lucide-react": "^0.564.0",
-    "next": "16.4.1",
+    "next": "16.4.6",
     "nodemailer": "^10.2.1",
     "pdf-lib": "^1.17.1",
     "pdfjs-dist": "^5.5.207",
@@ -63,7 +63,7 @@
   },
   "devDependencies": {
     "@electric-sql/pglite": "0.5.8",
-    "@next/bundle-analyzer": "16.4.1",
+    "@next/bundle-analyzer": "16.4.6",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/pdfkit": "^0.17.5",
@@ -73,7 +73,7 @@
     "babel-plugin-react-compiler": "1.0.0",
     "chrome-launcher": "^1.2.1",
     "eslint": "9.39.2",
-    "eslint-config-next": "16.4.1",
+    "eslint-config-next": "16.4.6",
     "lighthouse": "^13.0.3",
     "tailwindcss": "^4",
     "typescript": "^5",
@@ -82,11 +82,11 @@
   "overrides": {
     "@humanfs/node": "0.16.8",
     "brace-expansion": "5.0.12",
-    "@next/eslint-plugin-next@16.4.1": {
+    "@next/eslint-plugin-next@16.4.6": {
       "fast-glob": "npm:tinyglobby@0.2.17"
     },
     "eslint-plugin-react-hooks": "7.0.1",
-    "minimatch": "10.2.6",
+    "minimatch": "11.0.1",
     "postcss": "8.5.23",
     "sharp": "0.35.5",
     "typescript-eslint": "8.48.0",

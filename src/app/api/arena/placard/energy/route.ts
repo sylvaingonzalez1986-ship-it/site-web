@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -34,7 +35,9 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Trop de tentatives." }, { status: 429, headers: { "Retry-After": String(rate.retryAfterSeconds) } });
   }
   try {
-    const payload = await request.json() as { requestKey?: string; expectedCents?: number };
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = await boundedBody.body.json() as { requestKey?: string; expectedCents?: number };
     return NextResponse.json(await payKqEnergy({ userId: session.customerId, requestKey: String(payload.requestKey ?? ""), expectedCents: payload.expectedCents ?? 0 }), { headers });
   } catch (error) { return failure(error); }
 }

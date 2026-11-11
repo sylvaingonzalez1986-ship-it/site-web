@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -30,7 +31,10 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const session = await identity(); if (session instanceof Response) return session;
-    let body: unknown; try { body = await request.json(); } catch { return NextResponse.json({error:"Étape invalide."},{status:400,headers}); }
+    let body: unknown; try {
+      const boundedBody = await readRequestBody(request);
+      if (!boundedBody.ok) return boundedBody.response;
+      body = await boundedBody.body.json(); } catch { return NextResponse.json({error:"Étape invalide."},{status:400,headers}); }
     const progress = parseArenaJourneyProgress(body);
     if (!progress) return NextResponse.json({error:"Étape invalide."},{status:400,headers});
     const intent = (body as Record<string, unknown>).intent;

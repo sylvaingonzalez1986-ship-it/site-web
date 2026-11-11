@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { getKqPlayerWorkErrorMessage } from "@/lib/kanab-quest-player-work-errors";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
@@ -20,7 +21,10 @@ export async function POST(request: Request, context: { params: Promise<{ runId:
     return NextResponse.json({ error: "Trop d’interventions rapprochées." }, { status: 429, headers: { "Retry-After": String(rate.retryAfterSeconds) } });
   }
   let raw: unknown;
-  try { raw = await request.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 }); }
+  try {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    raw = await boundedBody.body.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400 }); }
   const body = raw && typeof raw === "object" && !Array.isArray(raw) ? raw as Record<string, unknown> : {};
   if (typeof body.requestKey !== "string" || (body.action !== "basic" && typeof body.productCode !== "string")
     || (body.action !== undefined && body.action !== "basic") || (body.action === "basic" && body.productCode !== undefined)

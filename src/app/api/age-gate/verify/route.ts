@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { createHmac } from "node:crypto";
 import { NextResponse } from "next/server";
 
@@ -14,7 +15,9 @@ function signAgeGateValue(): string {
 }
 
 export async function POST(request: Request) {
-  const payload = (await request.json().catch(() => null)) as { confirmed?: boolean } | null;
+  const boundedBody = await readRequestBody(request);
+  if (!boundedBody.ok) return boundedBody.response;
+  const payload = (await boundedBody.body.json().catch(() => null)) as { confirmed?: boolean } | null;
   if (!payload?.confirmed) {
     return NextResponse.json({ error: "Confirmation requise." }, { status: 400 });
   }

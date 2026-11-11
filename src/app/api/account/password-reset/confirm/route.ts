@@ -1,17 +1,20 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { clearLegacyCustomerCookie, resetCustomerPasswordByBackend } from "@/lib/customer-backend";
 import { getRequestIp } from "@/lib/security-rate-limit";
 import { clearSupabaseAuthCookies } from "@/lib/supabase-auth-cookies";
+import { CUSTOMER_PASSWORD_REQUIREMENT, hasMinimumCustomerPasswordLength } from "@/lib/customer-password-policy";
 
 export async function POST(request: Request) {
   try {
     const rejected = rejectOversizedBody(request);
     if (rejected) return rejected;
 
-    const payload = (await request.json()) as {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as {
       password?: string;
       tokenHash?: string;
       accessToken?: string;
@@ -22,9 +25,9 @@ export async function POST(request: Request) {
     const accessToken = typeof payload.accessToken === "string" ? payload.accessToken.trim() : "";
     const refreshToken = typeof payload.refreshToken === "string" ? payload.refreshToken.trim() : "";
 
-    if (typeof payload.password !== "string" || payload.password.length < 8) {
+    if (!hasMinimumCustomerPasswordLength(payload.password)) {
       return NextResponse.json(
-        { error: "Le mot de passe doit contenir au moins 8 caracteres." },
+        { error: CUSTOMER_PASSWORD_REQUIREMENT },
         { status: 400 },
       );
     }

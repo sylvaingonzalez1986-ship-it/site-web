@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isKqPlayerRequestEnabled } from "@/lib/kanab-quest-player-request-access";
@@ -30,7 +31,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Trop de tentatives." }, { status: 429, headers: { ...headers, "Retry-After": String(rate.retryAfterSeconds) } });
   }
   let body: unknown;
-  try { body = await request.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400, headers }); }
+  try {
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    body = await boundedBody.body.json(); } catch { return NextResponse.json({ error: "Corps JSON invalide." }, { status: 400, headers }); }
   try { return NextResponse.json(await handleKqStaffAction(session.customerId, body), { headers }); }
   catch (error) { return failure(error); }
 }

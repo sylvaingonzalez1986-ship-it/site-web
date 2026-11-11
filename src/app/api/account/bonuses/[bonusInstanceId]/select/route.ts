@@ -1,3 +1,4 @@
+import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { selectLotteryBonusOptionForCustomerByBackend } from "@/lib/lottery-backend";
@@ -15,7 +16,9 @@ export async function POST(
 
   try {
     const { bonusInstanceId } = await params;
-    const payload = (await request.json()) as { optionId?: string };
+    const boundedBody = await readRequestBody(request);
+    if (!boundedBody.ok) return boundedBody.response;
+    const payload = (await boundedBody.body.json()) as { optionId?: string };
 
     if (!payload.optionId) {
       return NextResponse.json({ error: "Option bonus manquante." }, { status: 400 });

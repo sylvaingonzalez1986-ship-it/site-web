@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { isArenaCharacterRequestEnabled } from "@/lib/arena-character-access";
 import { hitRateLimit } from "@/lib/security-rate-limit";
-import { rejectOversizedBody } from "@/lib/body-size-guard";
+import { rejectOversizedBody, readRequestBody } from "@/lib/body-size-guard";
 import { getChanvrierProfile, saveChanvrierProfile } from "@/lib/supabase/arena-chanvrier-backend";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -26,7 +26,10 @@ export async function POST(request: Request) {
     const rate = await hitRateLimit({ key: `arena_chanvrier:${session.customerId}`, windowSeconds: 60, maxHits: 10 });
     if (!rate.allowed) return NextResponse.json({ error: "Un peu de patience avant de réessayer." }, { status: 429, headers: { ...headers, "Retry-After": String(rate.retryAfterSeconds) } });
     let value: unknown;
-    try { value = await request.json(); } catch { return NextResponse.json({ error: "Profil invalide." }, { status: 400, headers }); }
+    try {
+      const boundedBody = await readRequestBody(request, 2048);
+      if (!boundedBody.ok) return boundedBody.response;
+      value = await boundedBody.body.json(); } catch { return NextResponse.json({ error: "Profil invalide." }, { status: 400, headers }); }
     return NextResponse.json(await saveChanvrierProfile(session.customerId, value), { headers });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Profil indisponible.";
