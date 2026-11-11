@@ -72,6 +72,7 @@ const AdminPanelLoading = () => (
 
 const AdminPagesPanel = dynamic(() => import("@/components/admin/AdminPagesPanel").then((m) => m.AdminPagesPanel), { loading: AdminPanelLoading });
 const AdminSalesDashboardPanel = dynamic(() => import("@/components/admin/AdminSalesDashboardPanel").then((m) => m.AdminSalesDashboardPanel), { loading: AdminPanelLoading });
+const AdminSupportPanel = dynamic(() => import("@/components/admin/AdminSupportPanel").then((m) => m.AdminSupportPanel), { loading: AdminPanelLoading });
 const AdminCustomersPanel = dynamic(() => import("@/components/admin/AdminCustomersPanel").then((m) => m.AdminCustomersPanel), { loading: AdminPanelLoading });
 const AdminReferralsPanel = dynamic(() => import("@/components/admin/AdminReferralsPanel").then((m) => m.AdminReferralsPanel), { loading: AdminPanelLoading });
 const AdminBlogCommentsPanel = dynamic(() => import("@/components/admin/AdminBlogCommentsPanel").then((m) => m.AdminBlogCommentsPanel), { loading: AdminPanelLoading });
@@ -1656,6 +1657,7 @@ export function AdminPanel() {
         )}
 
         {activeTab === "ventes" && <AdminSalesDashboardPanel />}
+        {activeTab === "soutiens" && <AdminSupportPanel />}
 
         {activeTab === "clients" && <AdminCustomersPanel />}
 

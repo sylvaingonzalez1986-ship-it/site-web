@@ -173,6 +173,11 @@ export async function POST(request: Request) {
   }
 
   const parsed = parseWebhookPayload(payload, rawBody);
+  // Account-wide subscriptions also deliver the separate support source here.
+  const supportSource = process.env.VIVA_SUPPORT_SOURCE_CODE?.trim();
+  if (supportSource && supportSource !== process.env.VIVA_SOURCE_CODE?.trim() && parsed.sourceCode === supportSource) {
+    return NextResponse.json({ ok: true, ignored: true, reason: "support_source" });
+  }
   const paymentState = determinePaymentState(parsed);
   if (!paymentState) {
     return NextResponse.json(

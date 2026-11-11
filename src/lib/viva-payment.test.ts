@@ -23,6 +23,24 @@ function configureViva(environment: "demo" | "live" = "demo") {
 }
 
 describe("Viva payment hardening", () => {
+  it("creates exact support payments without sending the public pseudonym as legal identity", async () => {
+    configureViva();
+    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValueOnce(new Response('{"orderCode":6810910170372602}', { status: 200 }));
+    await createVivaCheckoutOrder({ config: { ...getVivaConfig(), sourceCode: "4321" }, accessToken: "token", amount: 2.5,
+      merchantTrns: "SOUTIEN:test", customerTrns: "Soutien", tags: ["SOUTIEN"], exactEuroAmount: true });
+    const body = JSON.parse(String(fetchMock.mock.calls[0][1]?.body));
+    expect(body).toMatchObject({ amount: 250, sourceCode: "4321", currencyCode: 978, disableExactAmount: false, allowRecurring: false, preauth: false, tags: ["SOUTIEN"] });
+    expect(body.customer).toEqual({ requestLang: "fr-FR" });
+  });
+
+  it("allows signed refund retrieval only for callers explicitly requesting it", async () => {
+    configureViva();
+    const tx = "22222222-2222-4222-8222-222222222222", parent = "11111111-1111-4111-8111-111111111111";
+    const reply = { orderCode: "987654321012345678", transactionId: tx, amount: -2.5, statusId: "F", sourceCode: "Default", currencyCode: "978", parentId: parent };
+    vi.spyOn(globalThis, "fetch").mockImplementation(async url => new Response(JSON.stringify(String(url).includes('/connect/token') ? { access_token: "token" } : reply)));
+    await expect(retrieveVivaTransaction({ config: getVivaConfig(), transactionId: tx })).rejects.toThrow("incomplete");
+    expect(await retrieveVivaTransaction({ config: getVivaConfig(), transactionId: tx, includeReversals: true })).toMatchObject({ amountInMinorUnits: -250, parentTransactionId: parent, sourceCode: "Default" });
+  });
   it("preserves a 16-digit order code from unquoted JSON", () => {
     expect(extractVivaOrderCodeFromJson('{"orderCode":6810910170372602}')).toBe(
       "6810910170372602",

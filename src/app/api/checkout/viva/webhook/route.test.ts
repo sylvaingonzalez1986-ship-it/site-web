@@ -97,6 +97,13 @@ afterEach(() => {
 });
 
 describe("Viva webhook payment verification and recovery", () => {
+  it("leaves the configured support source to its own ledger without shop effects", async () => {
+    vi.stubEnv("VIVA_SUPPORT_SOURCE_CODE", "4321");
+    const response = await POST(new Request("http://localhost/api/checkout/viva/webhook", { method: "POST", headers: { "content-type": "application/json" },
+      body: JSON.stringify({ EventTypeId: 1796, EventData: { OrderCode: orderCode, TransactionId: transactionId, SourceCode: "4321" } }) }));
+    expect(await response.json()).toMatchObject({ ignored: true, reason: "support_source" });
+    for (const work of [mocks.getOrder, mocks.finalizePayment, mocks.invoice, mocks.loyalty, mocks.mintTickets, mocks.referral]) expect(work).not.toHaveBeenCalled();
+  });
   it.each([undefined, "1"])("bounds streamed bytes with Content-Length=%s before payment work", async (length) => {
     let pulled = 0;
     const cancel = vi.fn();

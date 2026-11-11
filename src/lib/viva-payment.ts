@@ -25,6 +25,8 @@ export type VivaVerifiedTransaction = {
   statusId: string;
   amountInMinorUnits: number;
   currencyCode: string;
+  parentTransactionId?: string | null;
+  merchantTrns?: string;
 };
 
 const LIVE_ENDPOINT: VivaEndpointConfig = {
@@ -146,12 +148,14 @@ export async function createVivaCheckoutOrder(input: {
   config: VivaConfig;
   accessToken: string;
   amount: number;
-  customerName: string;
-  customerEmail: string;
-  customerPhone: string;
-  customerCountryCode: string;
+  customerName?: string;
+  customerEmail?: string;
+  customerPhone?: string;
+  customerCountryCode?: string;
   merchantTrns: string;
   customerTrns: string;
+  tags?: string[];
+  exactEuroAmount?: boolean;
 }): Promise<string> {
   const amountInMinorUnits = Math.round(input.amount * 100);
   if (!Number.isSafeInteger(amountInMinorUnits) || amountInMinorUnits <= 0) {
@@ -171,6 +175,8 @@ export async function createVivaCheckoutOrder(input: {
       paymentTimeout: 1800,
       customerTrns: input.customerTrns,
       merchantTrns: input.merchantTrns,
+      ...(input.tags ? { tags: input.tags } : {}),
+      ...(input.exactEuroAmount ? { currencyCode: 978, disableExactAmount: false, allowRecurring: false, preauth: false } : {}),
       customer: {
         email: input.customerEmail,
         fullName: input.customerName,
@@ -240,6 +246,7 @@ export async function cancelVivaPaymentOrder(input: {
 export async function retrieveVivaTransaction(input: {
   config: VivaConfig;
   transactionId: string;
+  includeReversals?: boolean;
 }): Promise<VivaVerifiedTransaction> {
   const transactionId = input.transactionId.trim();
   if (!/^[0-9a-f-]{20,64}$/i.test(transactionId)) {
@@ -272,7 +279,7 @@ export async function retrieveVivaTransaction(input: {
   const verifiedTransactionId =
     readString(data.transactionId ?? data.TransactionId, 64) || transactionId;
 
-  if (!orderCode || amount === null || amount < 0) {
+  if (!orderCode || amount === null || (!input.includeReversals && amount < 0) || !Number.isSafeInteger(Math.round(amount * 100))) {
     throw new Error("Transaction Viva incomplete.");
   }
 
@@ -285,5 +292,9 @@ export async function retrieveVivaTransaction(input: {
     // (for example 21.10 EUR), unlike Create Order which accepts minor units.
     amountInMinorUnits: Math.round(amount * 100),
     currencyCode: readString(data.currencyCode ?? data.CurrencyCode, 8),
+    ...(input.includeReversals ? {
+      parentTransactionId: readString(data.parentId ?? data.ParentId, 64) || null,
+      merchantTrns: readString(data.merchantTrns ?? data.MerchantTrns, 2048),
+    } : {}),
   };
 }

@@ -1,5 +1,14 @@
 {
   "checkedOn": "2026-11-07",
+  "campaignRevision": {
+    "date": "2026-11-11",
+    "status": "Le parcours Quick Pay décrit historiquement ci-dessous est remplacé dans le code local par une cagnotte Smart Checkout, après accord de l’utilisateur sur le plan. Migration 20261111000300 appliquée au projet Supabase lié le 11 novembre 2026 ; cagnotte fermée sans objectif. Source 7188 configurée localement ; publication applicative et configuration Viva distante restent à finaliser.",
+    "currentGuide": "docs/bete-de-concours/cagnotte-soutiens.md",
+    "provider": "Viva Smart Checkout, source dédiée sur le même compte ; VIVA_SUPPORT_SOURCE_CODE",
+    "interface": "Encart du Quartier et /soutenir : fiche pseudo/montant, jauge sur objectif réel facultatif, contributions confirmées et préférences de publication.",
+    "accounting": "Registre privé indépendant des commandes boutique, remboursements vérifiés, frais connus et export CSV dans Admin > Soutiens. Aucun historique Quick Pay importé automatiquement.",
+    "precedence": "Pour l’implémentation et l’activation actuelles, suivre currentGuide. Les décisions lien externe seulement, absence de jauge et configuration NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL ci-dessous documentent le parcours antérieur."
+  },
   "scope": "France — soutien volontaire à l’entreprise de petits producteurs et au développement de Kanab Quest, sans contrepartie",
   "copyUpdatedOn": "2026-11-08",
   "copyDirection": "Texte demandé par l’utilisateur : humour autour de la trésorerie qui ne pousse pas sous les lampes, difficultés bancaires des petits producteurs de chanvre racontées à la première personne, invitation à donner un ou deux euros de temps en temps même sans acheter de CBD. Le soutien reste facultatif ; aucune contrepartie ni récompense. Le bénéficiaire et la destination des fonds sont explicités dans les détails.",

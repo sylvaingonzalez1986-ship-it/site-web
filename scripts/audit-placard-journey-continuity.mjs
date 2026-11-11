@@ -29,6 +29,8 @@ const planEmployeeId = 'c0a00003-0000-4000-8000-000000000003';
 const entry = `
 import React from'react';import{createRoot}from'react-dom/client';import'/src/app/globals.css';
 import{PlacardPlayerShell}from'/src/components/placard/PlacardPlayerShell';
+import{SupportPaymentReturn}from'/src/components/placard/SupportPaymentReturn';
+import{AdminSupportPanel}from'/src/components/admin/AdminSupportPanel';
 import{KqTutorialApiProvider,createKqTutorialApi}from'/src/components/placard/KqTutorialApiContext';
 import{createReleveCultureTransport}from'/src/lib/kanab-quest-releve-culture';
 import{createKqReleveProduction,applyKqReleveProductionAction,suggestKqRelevePlan}from'/src/lib/kanab-quest-releve-production';
@@ -39,6 +41,11 @@ import{FARM_GUIDE_CHAPTERS}from'/src/lib/kanab-quest-farm-guide';
 import{encodeKqSave,parseKqGameSave}from'/src/lib/kanab-quest-persistence';
 window.__guideIds={steps:FARM_GUIDE_STEPS.map(step=>step.id),chapters:FARM_GUIDE_CHAPTERS.map(chapter=>chapter.id)};
 const scenario=new URLSearchParams(location.search).get('scenario')||'preparation';
+window.__supportState='ready';window.__supportPending=[];
+const supportCampaign={title:'Soutenir les producteurs',goalCents:50000,minCents:100,maxCents:100000,active:true,createdAt:'2026-11-11T10:00:00Z'};
+const supportSummary={campaign:supportCampaign,collectedCents:15000,contributionCount:3,feesCents:null,needsReconciliation:false,checkoutAvailable:true,updatedAt:'2026-11-11T12:00:00Z',nextOffset:20,contributions:[{id:'one',pseudonym:'Camille',amountCents:10000,paidAt:'2026-11-11T11:00:00Z'},{id:'two',pseudonym:'Anonyme',amountCents:null,paidAt:'2026-11-11T10:00:00Z'}]};
+const supportRow={id:'11111111-1111-4111-8111-111111111111',pseudonym:'Camille',publishName:true,publishAmount:true,amountCents:1000,capturedCents:1000,refundedCents:0,feesCents:null,feeReference:null,feeUpdatedAt:null,feeUpdatedBy:null,createdAt:'2026-11-11T11:00:00Z',paidAt:'2026-11-11T11:01:00Z',orderCode:'987654321012345678',transactionId:'22222222-2222-4222-8222-222222222222',sourceCode:'4321',checkoutState:'ready',reviewRequired:false,hidden:false};
+if(scenario.startsWith('financial-support-return')){sessionStorage.setItem('lcb-support-attempt-v1',JSON.stringify({id:supportRow.id,token:'a'.repeat(64),pseudonym:'Camille',amountCents:1000,publishName:true,publishAmount:true}));window.__supportState=scenario.endsWith('pending')?'creating':'paid';}
 window.__financialSupportUrl=scenario==='financial-support-hidden'?'':scenario==='financial-support-invalid'?'javascript:alert(1)':'https://pay.vivawallet.com/les-champs-bretons';
 if(${financialSupportOnly}){
  if(scenario==='financial-support-default')delete window.process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL;
@@ -126,6 +133,18 @@ const projectSoloSession=payload=>{if(scenario==='culture-carousel-solo')for(con
 const request=async(input,init={})=>{
  const url=new URL(typeof input==='string'?input:input.url,location.origin),path=url.pathname,method=init.method??'GET',body=init.body?JSON.parse(init.body):null;
  window.__calls.push({path,method,body,...(${cultureBadgesOnly || cultureRelayOnly}?{query:url.search}:{})});
+ if(path==='/api/support'){
+  if(scenario==='financial-support-error')return response({error:'Cagnotte indisponible.'},503);
+  if(scenario==='financial-support-malformed')return response({});
+  return response({...supportSummary,...(scenario==='financial-support-review'?{needsReconciliation:true}:{}),...(scenario==='financial-support-no-goal'?{campaign:{...supportCampaign,goalCents:null}}:{}),...(scenario==='financial-support-closed'?{checkoutAvailable:false}:{}),...(url.searchParams.has('offset')?{contributions:[{id:'three',pseudonym:'Breton',amountCents:5000,paidAt:'2026-11-10T10:00:00Z'}],nextOffset:null}:{})});
+ }
+ if(path==='/api/support/profile')return response({pseudonym:'Breton29'});
+ if(path==='/api/support/checkout'){await new Promise(done=>window.__supportPending.push(done));return response({id:body.id,state:'ready',amountCents:body.amountCents,refundedCents:0,checkoutUrl:null,expiresAt:'2026-12-01T00:00:00Z'});}
+ if(path==='/api/support/status'||path==='/api/support/cancel')return response({id:body.id,state:path.endsWith('/cancel')?'cancelled':window.__supportState,amountCents:1000,refundedCents:0,checkoutUrl:null,expiresAt:'2026-12-01T00:00:00Z'});
+ if(path==='/api/admin/support'){
+  if(method==='POST'){if(body.action==='campaign')Object.assign(supportCampaign,{active:body.active,goalCents:body.goalCents});if(body.action==='fees')Object.assign(supportRow,{feesCents:body.feesCents,feeReference:body.reference,feeUpdatedAt:'2026-11-11T12:00:00Z'});if(body.action==='visibility')supportRow.hidden=body.hidden;return response({ok:true});}
+  return response({campaign:supportCampaign,configured:true,configurationError:null,rows:[supportRow],total:1,page:0,totals:{capturedCents:1000,refundedCents:0,feesCents:supportRow.feesCents??0,missingFees:supportRow.feesCents===null?1:0,reviewCount:0}});
+ }
  if(path.endsWith('/social/player')&&method==='GET')return response({firstName:'Joueur',profile:null});
  const permittedPlay=allowPlay&&method==='POST'&&(path.endsWith('/runs')||/\\/runs\\/[^/]+\\/actions$/.test(path)||(${cultureBadgesOnly}&&(path.endsWith('/care')||/\\/runs\\/[^/]+\\/cards$/.test(path))));
  if(method!=='GET'&&(staffGuideScenario||staffPlanScenario||(!(method==='PATCH'&&path.endsWith('/warehouse'))&&!permittedPlay))){window.__unexpected.push({path,method,body});return response({error:'Mutation interdite dans cette recette.'},403)}
@@ -216,7 +235,10 @@ window.__control.trim=(id,stage)=>{
 if(${financialSupportOnly})api.isTutorial=scenario==='financial-support-tutorial';
 const fixtureRoot=createRoot(document.getElementById('root'));
 const renderFixture=ownerId=>fixtureRoot.render(<KqTutorialApiProvider api={api}><aside className="fixture-tools"><strong>Démo locale · retrouver sa préparation et sa récolte</strong><p>Choix, plan et lots fictifs en mémoire. Aucun compte réel.</p><label>Parcours <select value={scenario} onChange={event=>location.href='/?scenario='+event.target.value}>{['preparation','storage','storage-overflow'].map(value=><option key={value}>{value}</option>)}</select></label></aside><PlacardPlayerShell draftOwnerId={ownerId}/></KqTutorialApiProvider>);
-window.__control.owner=renderFixture;renderFixture('journey-local-fixture');
+window.__control.owner=renderFixture;
+if(scenario.startsWith('financial-support-return'))fixtureRoot.render(<main style={{maxWidth:800,margin:'auto',padding:12}}><SupportPaymentReturn transactionId='22222222-2222-4222-8222-222222222222'/></main>);
+else if(scenario==='financial-support-admin')fixtureRoot.render(<main style={{maxWidth:1000,margin:'auto',padding:12}}><AdminSupportPanel/></main>);
+else renderFixture('journey-local-fixture');
 `;
 const modules = {
   entry,
@@ -953,72 +975,8 @@ if (preview) {
     results.push({ scenario: 'closed guide remains closed after shared stock refresh', mutations: 0 });
   }
   if (financialSupportOnly) {
-    for (const width of [320, 390, 1440]) {
-      await load('financial-support-default', width, 'view=hub');
-      assert.equal(await page.evaluate(() => window.process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL), undefined, 'Production without a hosting variable still displays the operator-provided link');
-      await page.waitForSelector('[data-financial-support]', { visible: true });
-      const support = '[data-financial-support]';
-      const disclosure = support + ' > details';
-      const toggle = disclosure + ' > summary';
-      const link = support + ' a';
-      const before = (await fixture()).production.cashCents;
-      assert.equal(await page.$eval(disclosure, node => node.open), false, 'Support starts collapsed');
-      assert.equal(await page.$eval(toggle, node => node.textContent.trim()), 'Soutenir les producteurs');
-      await page.$eval(support, node => node.scrollIntoView({ block: 'center', behavior: 'instant' }));
-      await layout();
-      await screenshot(`financial-support-collapsed-${width}`);
-      await keyClick(toggle);
-      assert(await page.$eval(disclosure, node => node.open));
-      const heading = await page.$eval(support + ' h2', node => ({ text: node.textContent.trim(), transform: getComputedStyle(node).textTransform, weight: Number(getComputedStyle(node).fontWeight) }));
-      assert(heading.transform === 'uppercase' || heading.text === heading.text.toLocaleUpperCase('fr'), 'Support heading is displayed in uppercase');
-      assert(heading.weight >= 700, 'Support heading is bold');
-      const artwork = await page.$eval(support + ' img', node => {
-        const bounds = node.getBoundingClientRect();
-        return { source: node.getAttribute('src'), loaded: node.complete && node.naturalWidth > 0, width: bounds.width, height: bounds.height, decorative: node.alt === '' && !!node.closest('[aria-hidden="true"]') };
-      });
-      assert(artwork.loaded && artwork.width >= 100 && artwork.height >= 100, 'Support illustration is loaded and readable at every viewport');
-      assert(artwork.decorative, 'Support illustration leaves heading and controls in accessible HTML');
-      assert(artwork.source.includes('/producer-support-v1.webp'), 'Support uses its dedicated producer illustration');
-      assert.match(await page.$eval(support, node => node.textContent), /seulement si l’envie te prend et si tu peux/);
-      assert.equal(await page.$eval(link, node => node.href), 'https://pay.vivawallet.com/les-champs-bretons');
-      assert.equal(await page.$eval(link, node => node.textContent.trim()), 'Soutenir');
-      assert.equal(await page.$eval(link, node => node.target), '_blank');
-      assert(await page.$eval(link, node => node.rel.includes('noopener') && node.rel.includes('noreferrer')));
-      await page.$eval(support, node => { node.style.scrollMarginTop = '80px'; node.scrollIntoView({ block: 'start', behavior: 'instant' }); });
-      await screenshot(`financial-support-intro-${width}`);
-      await keyClick(support + ' details details > summary');
-      assert(await page.$eval(support + ' details details', node => node.open));
-      assert.match(await page.$eval(support, node => node.textContent), /SASU Les Champs Bretons/);
-      assert.match(await page.$eval(support + ' details', node => node.textContent), /Avantage en échangeAucunNi objet, bonus, accès privilégié ou avantage dans les concours/);
-      assert.match(await page.$eval(support, node => node.textContent), /réduction d’impôt/);
-      assert.match(await page.$eval(support + ' details', node => node.textContent), /Choisis ton montant sur la page Viva, puis vérifie-le avant de confirmer ce soutien ponctuel/);
-      await page.$eval(link, node => node.addEventListener('click', event => { event.preventDefault(); window.__supportActivated = node.href; }));
-      await keyClick(link);
-      assert.equal(await page.evaluate(() => window.__supportActivated), 'https://pay.vivawallet.com/les-champs-bretons');
-      assert(await page.$eval(link, node => getComputedStyle(node).outlineStyle !== 'none'));
-      assert(await page.$eval(link, node => node.getBoundingClientRect().height >= 44));
-      assert.equal((await fixture()).production.cashCents, before);
-      assert.equal((await mutations()).length, 0);
-      await layout();
-      await page.$eval(support, node => node.scrollIntoView({ block: 'center' }));
-      await screenshot(`financial-support-${width}`);
-      await page.focus(toggle); await page.keyboard.press('Space');
-      assert.equal(await page.$eval(disclosure, node => node.open), false, 'Support can be collapsed with the keyboard');
-      await page.click(toggle);
-      assert(await page.$eval(disclosure, node => node.open), 'Support can be opened by pointer');
-      results.push({ width, heading, artwork, keyboard: true, disclosures: true, noGameMutation: true, externalNavigationPrevented: true });
-    }
-    await load('financial-support', 390, 'view=hub');
-    await page.waitForSelector('[data-financial-support]', { visible: true });
-    assert.equal(await page.$eval('[data-financial-support] a', node => node.href), 'https://pay.vivawallet.com/les-champs-bretons');
-    results.push({ scenario: 'financial-support', configuredLink: true });
-    for (const scenario of ['financial-support-hidden', 'financial-support-invalid', 'financial-support-tutorial']) {
-      await load(scenario, 390, 'view=hub');
-      await page.waitForSelector('[data-placard-lobby]');
-      assert.equal(await page.$('[data-financial-support]'), null);
-      assert.equal((await mutations()).length, 0);
-      results.push({ scenario, hidden: true });
-    }
+    const { auditSupportCampaign } = await import('./fixtures/support-campaign-browser.mjs');
+    await auditSupportCampaign({ page, load, button, keyClick, screenshot, layout, fixture, results });
   } else if (workPlanOnly) {
     await load('staff-plan', 390, 'view=staff');
     await page.waitForSelector('[data-staff-work-plan]', { visible: true });

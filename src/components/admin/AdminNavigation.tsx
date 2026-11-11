@@ -3,7 +3,7 @@
 import { BarChart3, BookOpen, Boxes, FileText, Gift, Mail, MessageSquare, Package, Percent, ShoppingBag, Sprout, Swords, Target, Truck, Users, UsersRound } from "lucide-react";
 import styles from "./AdminWorkspace.module.css";
 
-export type AdminTab = "commandes" | "ventes" | "clients" | "parrainage" | "missions" | "promos" | "loterie" | "newsletter" | "printful" | "concours" | "produits" | "copains" | "blog" | "blog_comments" | "pages" | "textes";
+export type AdminTab = "commandes" | "ventes" | "soutiens" | "clients" | "parrainage" | "missions" | "promos" | "loterie" | "newsletter" | "printful" | "concours" | "produits" | "copains" | "blog" | "blog_comments" | "pages" | "textes";
 
 const groups = [
   { label: "La boutique", items: [
@@ -15,6 +15,7 @@ const groups = [
     { id: "printful", label: "Printful", icon: Truck },
   ] },
   { label: "La communauté", items: [
+    { id: "soutiens", label: "Soutiens", icon: Gift },
     { id: "clients", label: "Clients", icon: Users },
     { id: "parrainage", label: "Parrainage", icon: UsersRound },
     { id: "missions", label: "Missions", icon: Target },
