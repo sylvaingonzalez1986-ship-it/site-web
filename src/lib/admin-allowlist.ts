@@ -17,13 +17,8 @@ function resolveAllowedEmails(): Set<string> {
   return emails.size > 0 ? emails : new Set([normalizeEmail(DEFAULT_ADMIN_EMAIL)]);
 }
 
-let cachedAllowedEmails: Set<string> | null = null;
-
 function getAllowedEmails(): Set<string> {
-  if (!cachedAllowedEmails) {
-    cachedAllowedEmails = resolveAllowedEmails();
-  }
-  return cachedAllowedEmails;
+  return resolveAllowedEmails();
 }
 
 /**

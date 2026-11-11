@@ -29,61 +29,17 @@ async function anonymizeOrders(input: {
   customerEmail: string;
 }): Promise<number> {
   const supabase = createSupabaseServiceClient();
-  const anonymizedEmail = buildDeletedAccountEmail(input.customerId);
-  const anonymizedOrderData = {
-    customer_id: null,
-    legacy_customer_id: null,
-    customer_email: anonymizedEmail,
-    customer_name: "Compte supprime",
-    shipping_address: null,
-    shipping_city: null,
-    shipping_postal_code: null,
-    shipping_country: null,
-    shipping_phone: null,
-    relay_id: null,
-    relay_name: null,
-    relay_address: null,
-    relay_postal_code: null,
-    relay_city: null,
-    relay_country: null,
-  };
-
-  const byCustomerId = await supabase
-    .from("orders")
-    .update(anonymizedOrderData)
-    .eq("customer_id", input.customerId)
-    .select("id");
-  if (byCustomerId.error) {
-    throw new Error(`[supabase:anonymize orders by customer_id] ${byCustomerId.error.message}`);
+  const result = await supabase.rpc("rpc_anonymize_customer_orders", {
+    p_customer_id: input.customerId,
+    p_email: input.customerEmail.trim().toLowerCase(),
+  });
+  if (result.error) {
+    throw new Error(`[supabase:anonymize customer orders] ${result.error.message}`);
   }
-
-  const normalizedEmail = input.customerEmail.trim().toLowerCase();
-  const byEmail = normalizedEmail
-    ? await supabase
-        .from("orders")
-        .update(anonymizedOrderData)
-        .is("customer_id", null)
-        .ilike("customer_email", normalizedEmail)
-        .select("id")
-    : { data: [], error: null };
-
-  if (byEmail.error) {
-    throw new Error(`[supabase:anonymize orders by email] ${byEmail.error.message}`);
+  if (!Number.isSafeInteger(result.data) || result.data < 0) {
+    throw new Error("[supabase:anonymize customer orders] Invalid result");
   }
-
-  const seenIds = new Set<string>();
-  for (const row of byCustomerId.data ?? []) {
-    if (typeof row.id === "string") {
-      seenIds.add(row.id);
-    }
-  }
-  for (const row of byEmail.data ?? []) {
-    if (typeof row.id === "string") {
-      seenIds.add(row.id);
-    }
-  }
-
-  return seenIds.size;
+  return result.data;
 }
 
 async function deleteNewsletterSubscription(email: string): Promise<boolean> {
@@ -93,17 +49,18 @@ async function deleteNewsletterSubscription(email: string): Promise<boolean> {
   }
 
   const supabase = createSupabaseServiceClient();
-  const result = await supabase
-    .from("newsletter_subscribers")
-    .delete()
-    .eq("email_normalized", normalizedEmail)
-    .select("id");
+  const result = await supabase.rpc("rpc_delete_customer_newsletter_data", {
+    p_email: normalizedEmail,
+  });
 
   if (result.error) {
     throw new Error(`[supabase:delete newsletter subscriber] ${result.error.message}`);
   }
 
-  return (result.data?.length ?? 0) > 0;
+  if (typeof result.data !== "boolean") {
+    throw new Error("[supabase:delete newsletter subscriber] Invalid result");
+  }
+  return result.data;
 }
 
 async function deleteAuthUser(userId: string): Promise<void> {

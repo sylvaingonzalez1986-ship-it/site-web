@@ -1,11 +1,5 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import {
-  ADMIN_COOKIE_NAME,
-  createAdminSessionToken,
-  getAdminCookieOptions,
-} from "@/lib/admin-auth";
-import { isAllowedAdminEmail } from "@/lib/admin-allowlist";
 import { applyCustomerProfilePatch } from "@/lib/account-profile";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { getRequestIp, hitRateLimit, logRateLimitRejection } from "@/lib/security-rate-limit";
@@ -45,20 +39,7 @@ export async function GET() {
     return response;
   }
 
-  const response = NextResponse.json({ user: session.customer });
-
-  if (isAllowedAdminEmail(session.customer.email)) {
-    try {
-      const adminSessionToken = await createAdminSessionToken();
-      response.cookies.set({
-        name: ADMIN_COOKIE_NAME,
-        value: adminSessionToken,
-        ...getAdminCookieOptions(),
-      });
-    } catch (error) {
-      console.error("Admin session bootstrap failed on account/me:", error);
-    }
-  }
+  const response = NextResponse.json({ user: session.customer }, { headers: { "Cache-Control": "private, no-store" } });
 
   return response;
 }

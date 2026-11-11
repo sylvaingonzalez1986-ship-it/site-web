@@ -829,7 +829,9 @@ export async function readStoreFromSupabase(): Promise<CmsStore> {
     supabase
       .from("orders")
       .select(SELECT_ORDERS_COLUMNS)
-      .is("archived_at", null)
+      // A verified capture after cancellation must remain visible for refund/
+      // reconciliation without reactivating its released first-order discount.
+      .or("archived_at.is.null,and(payment_state.eq.paid,payment_review_required.eq.true)")
       .order("created_at", { ascending: false }),
   ]);
 

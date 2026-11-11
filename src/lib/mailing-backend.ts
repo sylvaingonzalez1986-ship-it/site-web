@@ -202,9 +202,6 @@ export async function isMailingRecipientEligible(email: string, kind: MailingKin
 export async function unsubscribeMailingEmail(email: string): Promise<void> {
   const normalized = email.trim().toLowerCase();
   if (!isValidMailingEmail(normalized)) throw new MailingValidationError("Adresse e-mail invalide.");
-  const result = await createSupabaseServiceClient().from("newsletter_subscribers").upsert({
-    email: normalized, email_normalized: normalized, status: "unsubscribed", source: "mailing",
-    updated_at: new Date().toISOString(),
-  }, { onConflict: "email_normalized" });
+  const result = await createSupabaseServiceClient().rpc("rpc_unsubscribe_newsletter", { p_email: normalized });
   failIfError(result.error, "unsubscribe");
 }

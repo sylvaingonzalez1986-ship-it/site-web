@@ -1,7 +1,7 @@
 export const ADMIN_COOKIE_NAME = "lcb_admin_session";
 export const ADMIN_SESSION_MAX_AGE_SECONDS = 60 * 60 * 4;
 
-const ADMIN_SESSION_TOKEN_VERSION = 1;
+const ADMIN_SESSION_TOKEN_VERSION = 2;
 const DEFAULT_ADMIN_COOKIE_PATH = "/";
 
 type AdminSessionPayload = {
@@ -11,6 +11,7 @@ type AdminSessionPayload = {
 };
 
 let cachedSigningKeyPromise: Promise<CryptoKey> | null = null;
+let cachedSigningSecret = "";
 
 function requireEnv(name: "ADMIN_SESSION_SECRET"): string {
   const value = process.env[name]?.trim();
@@ -78,11 +79,12 @@ export function decodeAdminSessionPayload(encodedPayload: string): AdminSessionP
 }
 
 async function getSigningKey(): Promise<CryptoKey> {
-  if (cachedSigningKeyPromise) {
+  const secret = requireEnv("ADMIN_SESSION_SECRET");
+  if (cachedSigningKeyPromise && cachedSigningSecret === secret) {
     return cachedSigningKeyPromise;
   }
 
-  const secret = requireEnv("ADMIN_SESSION_SECRET");
+  cachedSigningSecret = secret;
   cachedSigningKeyPromise = crypto.subtle.importKey(
     "raw",
     new TextEncoder().encode(secret),
@@ -119,12 +121,12 @@ export async function createAdminSessionToken(
 }
 
 export async function verifyAdminSessionToken(token: string | undefined): Promise<boolean> {
-  if (!token) {
+  if (!token || token.length > 1024) {
     return false;
   }
 
-  const [encodedPayload, encodedSignature] = token.split(".");
-  if (!encodedPayload || !encodedSignature) {
+  const [encodedPayload, encodedSignature, extra] = token.split(".");
+  if (!encodedPayload || !encodedSignature || encodedSignature.length !== 64 || extra !== undefined) {
     return false;
   }
 

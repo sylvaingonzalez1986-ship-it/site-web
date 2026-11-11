@@ -1,5 +1,9 @@
 export type BlogCommentStatus = "pending" | "approved" | "rejected";
 
+export type PublicBlogComment = Pick<BlogComment,
+  "id" | "postId" | "customerFirstName" | "customerLastName" | "content" | "createdAt" | "updatedAt"
+>;
+
 export type BlogComment = {
   id: string;
   postId: string;

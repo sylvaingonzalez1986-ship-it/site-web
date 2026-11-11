@@ -100,7 +100,8 @@ export async function failCheckoutAttemptForOrder(orderId: string, reason: strin
       last_error: reason.slice(0, 500),
       updated_at: new Date().toISOString(),
     })
-    .eq("order_id", orderId);
+    .eq("order_id", orderId)
+    .neq("state", "completed");
   if (result.error) {
     throw new Error(`[supabase:fail checkout attempt for order] ${result.error.message}`);
   }

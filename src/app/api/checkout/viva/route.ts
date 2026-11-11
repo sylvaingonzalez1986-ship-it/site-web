@@ -159,12 +159,21 @@ async function resolveCheckoutItems(
 
   const resolvedItems: ResolvedCheckoutItem[] = [];
   for (const item of normalizedPayloadItems) {
-    const [baseProductIdRaw, variantIdRaw] = item.id.split("::", 2);
+    const parts = item.id.split("::");
+    const [baseProductIdRaw, variantIdRaw] = parts;
     const baseProductId = sanitizeText(baseProductIdRaw, 120);
     const selectedVariantId = sanitizeText(variantIdRaw, 120);
+    if (parts.length > 2 || (parts.length === 2 && !selectedVariantId)
+      || item.id !== `${baseProductId}${selectedVariantId ? `::${selectedVariantId}` : ""}`) {
+      throw new Error("Reference produit invalide.");
+    }
     const product = productsById.get(baseProductId);
     if (!product) {
       throw new Error(`Produit inconnu: ${item.id}`);
+    }
+
+    if (Array.isArray(product.variantOptions) && product.variantOptions.length > 0 && !selectedVariantId) {
+      throw new Error(`Selectionne une variante pour le produit: ${product.name}`);
     }
 
     const selectedVariant =
@@ -185,7 +194,7 @@ async function resolveCheckoutItems(
       : Number.isFinite(product.price)
         ? Number(product.price)
         : 0;
-    if (unitPrice <= 0) {
+    if (!Number.isFinite(unitPrice) || unitPrice <= 0) {
       throw new Error(`Prix invalide pour le produit: ${product.name}`);
     }
 
@@ -205,6 +214,11 @@ async function resolveCheckoutItems(
 
         for (let componentIndex = 0; componentIndex < components.length; componentIndex += 1) {
           const component = components[componentIndex];
+          // Packs currently store component product IDs, without a variant choice.
+          // Never silently sell/decrement a different SKU at the base price.
+          if (component.variantOptions?.length) {
+            throw new Error(`Ce pack contient un produit necessitant une variante: ${component.name}`);
+          }
           const distributed = distributedComponents[componentIndex];
           if (!distributed || distributed.priceTtc <= 0) {
             continue;

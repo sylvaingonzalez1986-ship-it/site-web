@@ -2,7 +2,8 @@ import { verifyArenaBetaRequest, type ArenaSessionCookie } from "@/lib/arena-bet
 import { NextResponse, type NextRequest } from "next/server";
 import { isArenaPrelaunch, isArenaActivityApi, getArenaClosedPageMode, ARENA_OPENING_AT, ARENA_OPENING_MESSAGE } from "@/lib/arena-opening";
 import { isPioneerPackPrelaunch, PIONEER_PACK_OPENING_AT, PIONEER_PACK_OPENING_MESSAGE } from "@/lib/pioneer-pack";
-import { ADMIN_COOKIE_NAME, verifyAdminSessionToken } from "@/lib/admin-auth";
+import { ADMIN_COOKIE_NAME } from "@/lib/admin-auth";
+import { getStoredAdminSession } from "@/lib/admin-session-store";
 import { getSupabasePublicOrigin } from "@/lib/supabase-public-origin";
 import { sanitizeNextPath } from "@/lib/safe-next-path";
 import { SITE_UI_PATHNAME_HEADER } from "@/lib/site-ui-preview";
@@ -39,7 +40,7 @@ function buildCspHeader(nonce: string): string {
 async function isAdminAuthorized(request: NextRequest): Promise<boolean> {
   try {
     const token = request.cookies.get(ADMIN_COOKIE_NAME)?.value;
-    return await verifyAdminSessionToken(token);
+    return Boolean(await getStoredAdminSession(token));
   } catch {
     return false;
   }
@@ -270,10 +271,6 @@ export async function middleware(request: NextRequest) {
 
   if (isAdminLoginApi || isAdminLogoutApi || isCustomerAuthApi || isAuthCallbackApi) {
     return secure(NextResponse.next());
-  }
-
-  if (isAdminLoginPage && adminAuthorized) {
-    return secure(NextResponse.redirect(new URL("/admin", request.url)));
   }
 
   if ((isAdminPage || isAdminApi) && !adminAuthorized && !isAdminLoginPage) {

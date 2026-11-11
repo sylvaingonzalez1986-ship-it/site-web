@@ -1,10 +1,16 @@
 "use client";
 
-import { Analytics } from "@vercel/analytics/next";
+import { Analytics, type BeforeSend } from "@vercel/analytics/next";
 import { track } from "@vercel/analytics/react";
 import { useEffect } from "react";
 import { useCookieConsent } from "@/components/cookies/CookieConsentProvider";
 import { detectAiReferral } from "@/lib/ai-referral";
+
+const protectNewsletterLinks: BeforeSend = (event) => {
+  try {
+    return new URL(event.url).pathname.startsWith("/newsletter/") ? null : event;
+  } catch { return null; }
+};
 
 function AiReferralTracker() {
   useEffect(() => {
@@ -30,7 +36,7 @@ export function VercelAnalytics() {
 
   return (
     <>
-      <Analytics />
+      <Analytics beforeSend={protectNewsletterLinks} />
       <AiReferralTracker />
     </>
   );

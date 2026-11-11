@@ -2,11 +2,7 @@ import { issueInvoiceForOrder } from "@/lib/invoice-store";
 import { NextResponse } from "next/server";
 import { denyIfNotAdminApi } from "@/lib/admin-guard";
 import { logAuditEvent } from "@/lib/audit-log";
-import {
-  consumeLotteryRewardClaimsForOrderByBackend,
-  mintLotteryTicketsForOrderByBackend,
-  releaseLotteryRewardClaimsForOrderByBackend,
-} from "@/lib/lottery-backend";
+import { mintLotteryTicketsForOrderByBackend } from "@/lib/lottery-backend";
 import { sendOrderProcessingEmail, sendOrderShippedEmail } from "@/lib/order-email";
 import { canArchiveIncompleteOrder } from "@/lib/order-lifecycle";
 import {
@@ -14,9 +10,9 @@ import {
   archiveIncompleteOrderByBackend,
   getOrderByIdByBackend,
   updateOrderAdminFieldsByBackend,
-  updateOrderPaymentStateByBackend,
 } from "@/lib/order-backend";
 import { applyReferralRewardForPaidOrderByBackend } from "@/lib/referral-backend";
+import { cancelVivaPaymentOrder, getVivaConfig } from "@/lib/viva-payment";
 import type { CmsOrder, OrderStatus } from "@/types/store";
 
 export async function PATCH(
@@ -37,6 +33,14 @@ export async function PATCH(
       trackingNumber?: string | null;
     };
 
+    if (!payload || typeof payload !== "object" || Array.isArray(payload)
+      || (payload.status !== undefined && !["new", "pending_payment", "paid", "processing", "shipped", "cancelled"].includes(payload.status))
+      || (payload.paymentState !== undefined && !["pending", "paid", "failed"].includes(payload.paymentState))
+      || (payload.trackingNumber !== undefined && payload.trackingNumber !== null
+        && (typeof payload.trackingNumber !== "string" || payload.trackingNumber.length > 200))) {
+      return NextResponse.json({ error: "Payload invalide." }, { status: 400 });
+    }
+
     const hasTrackingUpdate = Object.prototype.hasOwnProperty.call(payload, "trackingNumber");
 
     if (!payload.status && !payload.paymentState && !hasTrackingUpdate) {
@@ -55,31 +59,18 @@ export async function PATCH(
       );
     }
 
-    let updated: CmsOrder | null = null;
-
-    if (payload.status || hasTrackingUpdate) {
-      updated = await updateOrderAdminFieldsByBackend(orderId, {
-        status: payload.status,
-        trackingNumber: hasTrackingUpdate ? payload.trackingNumber ?? null : undefined,
-      });
-      if (!updated) {
-        return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
-      }
+    const updated = await updateOrderAdminFieldsByBackend(orderId, {
+      status: payload.status,
+      paymentState: payload.paymentState,
+      trackingNumber: hasTrackingUpdate ? payload.trackingNumber ?? null : undefined,
+    });
+    if (!updated) {
+      return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
     }
 
-    if (payload.paymentState) {
-      updated = await updateOrderPaymentStateByBackend(orderId, payload.paymentState);
-      if (!updated) {
-        return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
-      }
-
-      if (payload.paymentState === "failed") {
-        await releaseLotteryRewardClaimsForOrderByBackend(updated.id);
-      }
-
-      if (payload.paymentState === "paid") {
-        await consumeLotteryRewardClaimsForOrderByBackend(updated.id);
-        await issueInvoiceForOrder(updated.id);
+    if (payload.paymentState === "paid" && updated.paymentState === "paid") {
+      await issueInvoiceForOrder(updated.id);
+      if (!updated.paymentReviewRequired && updated.status !== "cancelled") {
         await applyOrderLoyaltyBonusByBackend(updated.id);
         if (updated.customerId) {
           await mintLotteryTicketsForOrderByBackend({
@@ -95,10 +86,6 @@ export async function PATCH(
           }
         }
       }
-    }
-
-    if (!updated) {
-      return NextResponse.json({ error: "Commande introuvable." }, { status: 404 });
     }
 
     if (
@@ -126,8 +113,18 @@ export async function PATCH(
     logAuditEvent({ eventType: "update_order", metadata: { orderId, status: payload.status, paymentState: payload.paymentState } });
 
     return NextResponse.json(updated);
-  } catch {
-    return NextResponse.json({ error: "Payload invalide." }, { status: 400 });
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      return NextResponse.json({ error: "Payload invalide." }, { status: 400 });
+    }
+    const message = error instanceof Error ? error.message : "";
+    if (message.includes("order_transition_") || message.includes("inventory_")) {
+      return NextResponse.json({
+        error: "Transition refusee : verifie le paiement, le stock et les alertes de la commande. Une annulation utilise le retrait de commande ; un paiement confirme ne peut pas etre retrograde.",
+      }, { status: 409 });
+    }
+    console.error("Admin order update failed:", error);
+    return NextResponse.json({ error: "Modification indisponible. Verifie le statut puis reessaie." }, { status: 503 });
   }
 }
 
@@ -155,6 +152,11 @@ export async function DELETE(
   }
 
   try {
+    if (order.vivaOrderCode) {
+      // Do not release local reservations while an external payment URL is active.
+      // The archive RPC rechecks the payment under its row lock after this call.
+      await cancelVivaPaymentOrder({ config: getVivaConfig(), orderCode: order.vivaOrderCode });
+    }
     const archivedOrder = await archiveIncompleteOrderByBackend({
       orderId,
       reason: "admin_removed_incomplete",
@@ -171,7 +173,7 @@ export async function DELETE(
 
     return NextResponse.json(archivedOrder);
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Archivage impossible.";
-    return NextResponse.json({ error: message }, { status: 400 });
+    console.error("Admin order cancellation failed:", error);
+    return NextResponse.json({ error: "Annulation non confirmee. Verifie le paiement puis reessaie ; la commande n'a pas ete retiree." }, { status: 409 });
   }
 }

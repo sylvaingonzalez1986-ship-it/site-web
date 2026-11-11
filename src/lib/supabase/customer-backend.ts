@@ -1,4 +1,5 @@
 import "server-only";
+import { revokeAdminSessionsForCustomer } from "@/lib/admin-session-store";
 
 import { randomUUID } from "node:crypto";
 import { createClient } from "@supabase/supabase-js";
@@ -792,6 +793,11 @@ export async function resetSupabaseCustomerPassword(input: {
     throw new Error("password_reset_session_invalid");
   }
 
+  // Revoke elevation first: a reset must never leave an independent admin cookie usable.
+  const identity = await supabase.auth.getUser();
+  failIfError(identity.error, "auth.getUser(password reset)");
+  if (!identity.data.user) throw new Error("password_reset_session_invalid");
+  await revokeAdminSessionsForCustomer(identity.data.user.id);
   const updateResult = await supabase.auth.updateUser({ password });
   if (updateResult.error) {
     if (isPasswordResetSessionError(updateResult.error)) {

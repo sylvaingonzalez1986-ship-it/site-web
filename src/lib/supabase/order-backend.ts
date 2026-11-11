@@ -305,10 +305,8 @@ export async function listCustomerOrdersForLoyaltyInSupabase(input: {
 
   const byEmailPromise = safeCustomerEmail
     ? supabase
-        .from("orders")
-      .select(SELECT_ORDERS_COLUMNS)
-        .is("customer_id", null)
-        .ilike("customer_email", safeCustomerEmail)
+        .rpc("rpc_get_customer_guest_orders", { p_email: safeCustomerEmail })
+        .select(SELECT_ORDERS_COLUMNS)
         .order("created_at", { ascending: false })
     : Promise.resolve({ data: [], error: null } as {
         data: Array<Record<string, unknown>>;
@@ -351,77 +349,11 @@ async function findOrderByVivaOrderCode(orderCode: string | number): Promise<Cms
   return getOrderByFilterFromSupabase({ vivaOrderCode: safeOrderCode });
 }
 
-function computeNextStatusFromPaymentState(
-  currentStatus: OrderStatus,
-  paymentState: CmsOrder["paymentState"],
-): OrderStatus {
-  if (paymentState === "paid") {
-    return currentStatus === "new" || currentStatus === "pending_payment"
-      ? "paid"
-      : currentStatus;
-  }
-
-  if (paymentState === "failed") {
-    return currentStatus === "new" || currentStatus === "pending_payment"
-      ? "pending_payment"
-      : currentStatus;
-  }
-
-  if (paymentState === "not_configured") {
-    return currentStatus === "new" || currentStatus === "pending_payment"
-      ? "paid"
-      : currentStatus;
-  }
-
-  return currentStatus === "paid" ? "pending_payment" : currentStatus;
-}
-
-type ApplyInventoryResult = {
-  applied: boolean;
-  reason?: string;
-  processed_items?: number;
-};
-
 type ApplyLoyaltyBonusResult = {
   applied: boolean;
   reason?: string;
   bonus_points?: number;
 };
-
-async function applyOrderInventoryInSupabase(orderId: string): Promise<void> {
-  const safeOrderId = orderId.trim();
-  if (!safeOrderId) {
-    return;
-  }
-
-  const supabase = createSupabaseServiceClient();
-  const result = await supabase.rpc("rpc_apply_order_inventory", {
-    p_order_id: safeOrderId,
-  });
-
-  if (result.error) {
-    const message = result.error.message || "Echec application inventaire.";
-    if (message.includes("order_not_found")) {
-      throw new Error("Commande introuvable pour inventaire.");
-    }
-    if (message.includes("order_not_paid")) {
-      throw new Error("Commande non payée : inventaire non appliqué.");
-    }
-    if (message.includes("inventory_insufficient_variant")) {
-      throw new Error("Stock variante insuffisant.");
-    }
-    if (message.includes("inventory_insufficient_product")) {
-      throw new Error("Stock produit insuffisant.");
-    }
-
-    throw new Error(`[supabase:rpc_apply_order_inventory] ${message}`);
-  }
-
-  const payload = result.data as ApplyInventoryResult | null;
-  if (!payload) {
-    return;
-  }
-}
 
 export async function appendOrderToSupabase(input: AppendOrderInput): Promise<CmsOrder> {
   const supabase = createSupabaseServiceClient();
@@ -535,16 +467,14 @@ export async function updateOrderStatusInSupabase(
   orderId: string,
   status: OrderStatus,
 ): Promise<CmsOrder | null> {
-  const supabase = createSupabaseServiceClient();
-  const { error } = await supabase.from("orders").update({ status }).eq("id", orderId);
-  failIfError(error, "update order status");
-  return findOrderById(orderId);
+  return updateOrderAdminFieldsInSupabase(orderId, { status });
 }
 
 export async function updateOrderAdminFieldsInSupabase(
   orderId: string,
   input: {
     status?: OrderStatus;
+    paymentState?: CmsOrder["paymentState"];
     trackingNumber?: string | null;
   },
 ): Promise<CmsOrder | null> {
@@ -554,8 +484,11 @@ export async function updateOrderAdminFieldsInSupabase(
   if (input.status) {
     patch.status = input.status;
   }
+  if (input.paymentState) {
+    patch.payment_state = input.paymentState;
+  }
 
-  if (Object.prototype.hasOwnProperty.call(input, "trackingNumber")) {
+  if (input.trackingNumber !== undefined) {
     const trackingNumber = input.trackingNumber?.trim();
     patch.tracking_number = trackingNumber || null;
   }
@@ -564,8 +497,14 @@ export async function updateOrderAdminFieldsInSupabase(
     return findOrderById(orderId);
   }
 
-  const { error } = await supabase.from("orders").update(patch).eq("id", orderId);
-  failIfError(error, "update order admin fields");
+  // One row-locked transaction validates the transition, inventory and claims.
+  // No direct-update fallback when the migration is not yet deployed.
+  const { data, error } = await supabase.rpc("rpc_admin_update_order", {
+    p_order_id: orderId,
+    p_patch: patch,
+  });
+  failIfError(error, "rpc_admin_update_order");
+  if (data !== true) return null;
   return findOrderById(orderId);
 }
 
@@ -573,37 +512,7 @@ export async function updateOrderPaymentStateInSupabase(
   orderId: string,
   paymentState: CmsOrder["paymentState"],
 ): Promise<CmsOrder | null> {
-  const supabase = createSupabaseServiceClient();
-
-  const currentResult = await supabase
-    .from("orders")
-    .select("status")
-    .eq("id", orderId)
-    .maybeSingle();
-  failIfError(currentResult.error, "read current order status");
-
-  if (!currentResult.data) {
-    return null;
-  }
-
-  const currentStatus = (currentResult.data.status ?? "new") as OrderStatus;
-  const nextStatus = computeNextStatusFromPaymentState(currentStatus, paymentState);
-
-  const updateResult = await supabase
-    .from("orders")
-    .update({
-      payment_state: paymentState,
-      status: nextStatus,
-    })
-    .eq("id", orderId);
-
-  failIfError(updateResult.error, "update order payment_state");
-
-  if (paymentState === "paid") {
-    await applyOrderInventoryInSupabase(orderId);
-  }
-
-  return findOrderById(orderId);
+  return updateOrderAdminFieldsInSupabase(orderId, { paymentState });
 }
 
 export async function updateOrderPaymentByVivaOrderCodeInSupabase(input: {

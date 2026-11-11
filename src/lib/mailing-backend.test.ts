@@ -96,10 +96,7 @@ describe("mailing audience", () => {
 
   it("persists unsubscribe for a customer who has no prior newsletter row", async () => {
     await unsubscribeMailingEmail("CLIENT@example.fr");
-    expect(queries.find((query) => query.method === "upsert")?.args).toEqual([
-      expect.objectContaining({ email: "client@example.fr", email_normalized: "client@example.fr", status: "unsubscribed", source: "mailing" }),
-      { onConflict: "email_normalized" },
-    ]);
+    expect(rpc).toHaveBeenCalledWith("rpc_unsubscribe_newsletter", { p_email: "client@example.fr" });
   });
 });
 

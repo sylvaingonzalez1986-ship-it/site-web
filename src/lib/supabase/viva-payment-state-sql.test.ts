@@ -84,6 +84,10 @@ beforeAll(async () => {
     GRANT EXECUTE ON FUNCTION public.rpc_finalize_viva_payment(TEXT,TEXT,BIGINT,TEXT) TO service_role;
   `);
   await db.exec(readFileSync("supabase/migrations/20261108000800_viva_payment_monotonicity.sql", "utf8"));
+  // Run monotonicity/retry checks against the current finalizer too, keeping the
+  // controlled inventory failure stub used by this focused suite.
+  await db.exec(definition("20261110000300_security_payment_boundaries", "rpc_finalize_viva_payment"));
+  await db.exec(definition("20261110000300_security_payment_boundaries", "rpc_update_viva_payment"));
 }, 30_000);
 
 beforeEach(async () => {
@@ -194,7 +198,7 @@ describe("Viva payment monotonicity in isolated PostgreSQL", () => {
     expect(await snapshot()).toEqual(beforeMissing);
     await db.exec("UPDATE public.orders SET archived_at='2026-11-08T13:00:00Z'");
     const beforeArchived = await snapshot();
-    expect(await failed()).toBe(false);
+    expect(await failed()).toBe(true);
     expect(await snapshot()).toEqual(beforeArchived);
   });
 

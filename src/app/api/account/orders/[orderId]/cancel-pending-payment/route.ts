@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
-import { failCheckoutAttemptForOrder } from "@/lib/checkout-attempt";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
 import { archiveIncompleteOrderByBackend, getOrderByIdByBackend } from "@/lib/order-backend";
 import { getRequestIp, hitRateLimit } from "@/lib/security-rate-limit";
@@ -80,11 +79,8 @@ export async function POST(
     if (!archived?.archivedAt) {
       throw new Error("La tentative de commande n'a pas ete archivee.");
     }
-    try {
-      await failCheckoutAttemptForOrder(order.id, "customer_requested_cart_change");
-    } catch (error) {
-      console.error("Unable to close checkout attempt after Viva cancellation:", error);
-    }
+    // Archival closes the attempt under the same order lock. A later capture
+    // may complete it; never overwrite that decision with a separate update.
 
     logAuditEvent({
       eventType: "customer_cancel_pending_payment",

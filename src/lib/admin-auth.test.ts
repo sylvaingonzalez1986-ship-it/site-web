@@ -8,7 +8,7 @@ import {
 describe("admin-auth", () => {
   it("round-trips a valid payload", () => {
     const payload = {
-      v: 1,
+      v: 2,
       exp: Math.floor(Date.now() / 1000) + 60,
       nonce: "1234567890abcdef",
     };
@@ -20,9 +20,9 @@ describe("admin-auth", () => {
     expect(decodeAdminSessionPayload("not-hex")).toBeNull();
   });
 
-  it("rejects payloads with a version mismatch", () => {
+  it("rejects legacy stateless session payloads", () => {
     const encoded = encodeAdminSessionPayload({
-      v: 2,
+      v: 1,
       exp: Math.floor(Date.now() / 1000) + 60,
       nonce: "1234567890abcdef",
     } as never);
@@ -32,7 +32,7 @@ describe("admin-auth", () => {
 
   it("rejects payloads with a short nonce", () => {
     const encoded = encodeAdminSessionPayload({
-      v: 1,
+      v: 2,
       exp: Math.floor(Date.now() / 1000) + 60,
       nonce: "short",
     } as never);

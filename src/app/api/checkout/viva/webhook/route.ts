@@ -237,9 +237,17 @@ export async function POST(request: Request) {
     console.error("Unable to claim Viva webhook:", error);
     return NextResponse.json({ error: "Idempotence webhook indisponible." }, { status: 503 });
   }
-  if (claimState === "duplicate" || claimState === "busy") {
+  if (claimState === "busy") {
+    // A claimed event may belong to an interrupted worker. Only completion
+    // permits acknowledgement; retain provider retries during the lease.
     return NextResponse.json(
-      { ok: true, ignored: true, reason: claimState === "busy" ? "event_processing" : "duplicate_event" },
+      { error: "Traitement webhook en cours. Reessayer.", reason: "event_processing" },
+      { status: 503, headers: { "Retry-After": "30" } },
+    );
+  }
+  if (claimState === "duplicate") {
+    return NextResponse.json(
+      { ok: true, ignored: true, reason: "duplicate_event" },
       { status: 200 },
     );
   }
@@ -260,9 +268,9 @@ export async function POST(request: Request) {
       updated = result.order;
       reviewRequired = result.reviewRequired;
 
-      await consumeLotteryRewardClaimsForOrderByBackend(updated.id);
       await issueInvoiceForOrder(updated.id);
       if (!reviewRequired) {
+        await consumeLotteryRewardClaimsForOrderByBackend(updated.id);
         await applyOrderLoyaltyBonusByBackend(updated.id);
         if (updated.customerId) {
           await mintLotteryTicketsForOrderByBackend({

@@ -48,6 +48,7 @@ export async function updateOrderAdminFieldsByBackend(
   orderId: string,
   input: {
     status?: OrderStatus;
+    paymentState?: CmsOrder["paymentState"];
     trackingNumber?: string | null;
   },
 ): Promise<CmsOrder | null> {

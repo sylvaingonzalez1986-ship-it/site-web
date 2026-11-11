@@ -4,7 +4,7 @@ import Link from "@/components/navigation/NavigationLink";
 import { usePathname } from "next/navigation";
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { useCustomerSession } from "@/hooks/useCustomerSession";
-import type { BlogComment } from "@/types/blog";
+import type { PublicBlogComment } from "@/types/blog";
 import styles from "./Blog.module.css";
 
 type BlogCommentSectionProps = {
@@ -28,7 +28,7 @@ function formatDate(dateValue: string): string {
 export function BlogCommentSection({ postId }: BlogCommentSectionProps) {
   const { user } = useCustomerSession();
   const pathname = usePathname();
-  const [comments, setComments] = useState<BlogComment[]>([]);
+  const [comments, setComments] = useState<PublicBlogComment[]>([]);
   const [content, setContent] = useState("");
   const [status, setStatus] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -45,7 +45,7 @@ export function BlogCommentSection({ postId }: BlogCommentSectionProps) {
           cache: "no-store",
         });
         if (!response.ok) throw new Error("Commentaires indisponibles");
-        const payload = (await response.json()) as { comments?: BlogComment[] };
+        const payload = (await response.json()) as { comments?: PublicBlogComment[] };
         if (active) {
           setComments(payload.comments ?? []);
           setLoadError(false);

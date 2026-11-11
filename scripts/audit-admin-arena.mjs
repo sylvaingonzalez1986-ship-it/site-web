@@ -10,9 +10,53 @@ import puppeteer from "puppeteer-core";
 const root = process.cwd();
 const output = resolve(root, "output/admin-arena");
 const port = 3258;
-const widths = [320, 390, 768, 1440];
+const loginOnly = process.argv.includes("--login");
+const widths = loginOnly ? [320, 390] : [320, 390, 768, 1440];
 const arenaOnly = process.argv.includes("--arena");
+assert(!(loginOnly && arenaOnly), "Choose either --login or --arena.");
 const modules = {
+  "admin-login-entry.tsx": `
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import '/src/app/globals.css';
+import AdminLayout from '/src/app/admin/layout';
+import AdminLoginPage from '/src/app/admin/login/page';
+const params=new URLSearchParams(location.search);
+window.__apiCalls=[];window.__unhandledApi=[];window.__navigation=[];window.__refreshes=0;
+window.__loginScenario=params.get('response')||'success';
+window.fetch=async(input,init={})=>{
+ const url=new URL(typeof input==='string'?input:input.url,location.href);
+ const method=init.method||'GET';
+ if(url.origin!==location.origin||url.pathname!=='/api/admin/login'||method!=='POST'){
+  window.__unhandledApi.push(url.pathname);throw new Error('Unexpected request in isolated login fixture');
+ }
+ const body=JSON.parse(init.body);const scenario=window.__loginScenario;
+ // Retain protocol evidence only, never password/code values in artifacts.
+ const call={path:url.pathname,method,scenario,passwordPresent:Boolean(body.password),totpPresent:Boolean(body.totp),keys:Object.keys(body)};
+ window.__apiCalls.push(call);
+ const json=(data,status=200)=>{call.status=status;return Response.json(data,{status});};
+ if(scenario==='wrong-password')return json({error:'Synthetic password refusal'},401);
+ if(scenario==='session-lost')return json({code:'admin_account_required'},403);
+ if(scenario==='session-expired')return json({code:'account_session_required'},401);
+ if(scenario==='unavailable')return json({error:'Synthetic service unavailable'},503);
+ if(scenario==='html-unavailable'){call.status=503;return new Response('<html>Unavailable</html>',{status:503});}
+ if(scenario==='empty-success')return json({});
+ if(scenario==='invalid-json'){call.status=200;return new Response('invalid JSON',{status:200});}
+ if(scenario==='totp')return !body.totp?json({requireTotp:true}):body.totp==='123456'?json({success:true}):json({error:'Synthetic code refusal'},401);
+ return json({success:true});
+};
+const values=params.getAll('next');const next=values.length>1?values:values[0];
+const content=await AdminLoginPage({searchParams:Promise.resolve({next})});
+createRoot(document.getElementById('root')).render(React.createElement(AdminLayout,null,content));
+`,
+  "customer-identity-stub": `export async function getCurrentCustomerSessionByBackend(mode){
+ if(mode!=='identity')throw new Error('Only identity mode is supported in this fixture');
+ const identity=new URLSearchParams(location.search).get('identity')||'allowed';
+ if(identity==='unavailable')throw new Error('Synthetic identity service unavailable');
+ if(identity==='none')return null;
+ return {customerId:'local-fixture-account',customer:{email:identity==='forbidden'?'other@example.test':'local-admin@example.test'}};
+}`,
+  "admin-allowlist-stub": `export const isAllowedAdminEmail=email=>email==='local-admin@example.test';`,
   "admin-arena-entry.tsx": `
 import React from 'react';
 import {createRoot} from 'react-dom/client';
@@ -65,7 +109,7 @@ window.fetch=async(input,init={})=>{
  if(url.pathname.startsWith('/api/admin/orders/')&&url.pathname.endsWith('/invoice/message'))return Response.json({personalMessage:''});
  if(url.pathname==='/api/admin/login'){
   const body=JSON.parse(init.body);
-  return body.totp?Response.json({error:'Code de démonstration refusé.'},{status:401}):Response.json({requireTotp:true},{status:401});
+  return body.totp?Response.json({error:'Code de démonstration refusé.'},{status:401}):Response.json({requireTotp:true},{status:200});
  }
  window.__unhandledApi.push(url.pathname);return Response.json({error:'API absente de la démonstration.'},{status:503});
 };
@@ -73,7 +117,7 @@ const isLogin=new URLSearchParams(location.search).has('login');
 const content=${arenaOnly ? "React.createElement(AdminContestPanel,{products:[],producers:[]})" : "isLogin?await AdminLoginPage({searchParams:Promise.resolve({next:'/admin'})}):React.createElement(AdminPanel)"};
 createRoot(document.getElementById('root')).render(React.createElement(AdminLayout,null,${arenaOnly ? "React.createElement('div',{className:'mx-auto max-w-7xl p-4 md:p-8'},content)" : "content"}));
 `,
-  "navigation-stub": `export const NavigationPending=()=>null;export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});`,
+  "navigation-stub": `export const NavigationPending=()=>null;export const useRouter=()=>({push:path=>window.__navigation?.push({method:'push',path}),replace:path=>window.__navigation?.push({method:'replace',path}),refresh:()=>{window.__refreshes=(window.__refreshes||0)+1;}});`,
   "next/link": `import React from 'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return React.createElement('a',props);}`,
   "next/image": `import React from 'react';export default function Image({src,fill,priority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return React.createElement('img',{...props,src:typeof src==='string'?src:src.src,style:{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}});}`,
   "next/dynamic": `import React from 'react';export default function dynamic(loader,options={}){const Component=React.lazy(()=>loader().then(m=>({default:m.default||m})));return props=>React.createElement(React.Suspense,{fallback:options.loading?React.createElement(options.loading):null},React.createElement(Component,props));}`,
@@ -83,7 +127,7 @@ const server = await createServer({
   cacheDir: resolve(output, "vite-cache"),
   define: { "process.env.NEXT_PUBLIC_CONTEST_FEATURE_ENABLED": '"true"' },
   esbuild: { jsx: "automatic" },
-  optimizeDeps: { include: ["react", "react-dom", "react-dom/client", "react/jsx-runtime", "react/jsx-dev-runtime", "lucide-react"], ...(arenaOnly ? { noDiscovery: true, entries: [] } : {}) },
+  optimizeDeps: { include: ["react", "react-dom", "react-dom/client", "react/jsx-runtime", "react/jsx-dev-runtime", ...(loginOnly ? [] : ["lucide-react"])], ...((arenaOnly || loginOnly) ? { noDiscovery: true, entries: [] } : {}) },
   resolve: { alias: { "@": resolve(root, "src") }, dedupe: ["react", "react-dom"] },
   css: { postcss: { plugins: [tailwindcss({ base: root })] } },
   plugins: [{
@@ -91,6 +135,8 @@ const server = await createServer({
     resolveId(id) {
       if (id.endsWith("/navigation/NavigationFeedback")) return "\0navigation-stub";
       if (id.endsWith("/navigation/NavigationLink")) return "\0next/link";
+      if (id.endsWith("/lib/customer-backend")) return "\0customer-identity-stub";
+      if (id.endsWith("/lib/admin-allowlist")) return "\0admin-allowlist-stub";
       if (id in modules) return "\0" + id;
     },
     load(id) { if (id.startsWith("\0")) return modules[id.slice(1)]; },
@@ -98,7 +144,7 @@ const server = await createServer({
       vite.middlewares.use((req, res, next) => {
         if (req.url?.split("?")[0] !== "/") return next();
         res.setHeader("Content-Type", "text/html; charset=utf-8");
-        res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Administration · Démonstration locale</title><style>@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__admin-arena-entry.tsx"></script></html>`);
+        res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Administration · Démonstration locale</title><style>@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#003f30}</style><div id="root"></div><script type="module" src="/@id/__x00__${loginOnly ? "admin-login-entry" : "admin-arena-entry"}.tsx"></script></html>`);
       });
     },
   }],
@@ -110,7 +156,7 @@ const errors = [], results = [], blockedRequests = [];
 try {
   await mkdir(output, { recursive: true });
   await server.listen();
-  console.log(`Admin ${arenaOnly ? "arena" : "full"} fixture listening on ${port}`);
+  console.log(`Admin ${loginOnly ? "login" : arenaOnly ? "arena" : "full"} fixture listening on ${port}`);
   if (process.argv.includes("--serve")) {
     console.log(`Admin preview with synthetic data: http://127.0.0.1:${port}`);
     await new Promise(() => {});
@@ -146,11 +192,14 @@ try {
       return { width: innerWidth, scrollWidth: document.documentElement.scrollWidth, navigationVisible: nav ? isVisible(nav) : null, saveVisible: save ? isVisible(save) : null, saveHeight: save?.getBoundingClientRect().height ?? null,
         overflowing: [...document.querySelectorAll("body *")].filter((el) => { const r = el.getBoundingClientRect(); return r.width && (r.right > innerWidth + 1 || r.left < -1) && getComputedStyle(el).position !== "fixed"; }).slice(0, 10).map((el) => ({ tag: el.tagName, class: el.className, text: el.textContent.slice(0, 60) })) };
     }, arenaOnly);
-    const passed = metrics.scrollWidth <= width + 1 && (section === "login" || metrics.navigationVisible) && (!expectSave || (metrics.saveVisible && metrics.saveHeight >= 44));
+    const passed = metrics.scrollWidth <= width + 1 && (section.startsWith("login") || metrics.navigationVisible) && (!expectSave || (metrics.saveVisible && metrics.saveHeight >= 44));
     results.push({ section, width, passed, ...metrics });
-    await page.screenshot({ path: resolve(output, `${section}-${width}.png`), fullPage: false });
+    await page.screenshot({ path: resolve(output, `${section}-${width}.png`), fullPage: loginOnly });
     console.log(`${passed ? "PASS" : "FAIL"} ${section} ${width}: scroll=${metrics.scrollWidth} save=${metrics.saveVisible}`);
   };
+  if (loginOnly) {
+    await auditLogin({ page, widths, go, waitText, clickText, checkPage, results, errors, blockedRequests, output });
+  } else {
   const tabs = [
     ["produits", "Mes Produits", "Mes produits"], ["clients", "Clients (1)", "Clients"], ["blog", "Blog (1)", "Blog"], ["textes", "Accueil", "Textes & visuels"],
   ];
@@ -279,7 +328,7 @@ try {
   await page.click('button[type="submit"]'); await page.waitForSelector("#admin-totp");
   assert.equal(await page.evaluate(() => document.activeElement.id), "admin-totp");
   await page.type("#admin-totp", "123456"); await page.click('button[type="submit"]');
-  await waitText("Code de démonstration refusé.");
+  await waitText("Le code est incorrect ou expiré.");
   assert(await page.$('[role="alert"]'));
   await page.screenshot({ path: resolve(output, "login-totp-390.png"), fullPage: true });
   }
@@ -288,7 +337,195 @@ try {
   assert.deepEqual(errors, []);
   assert(report.passed, "Admin layout checks failed; see output/admin-arena/report.json.");
   console.log("Admin arena audit passed.");
+  }
 } finally {
   await browser?.close();
   await server.close();
+}
+
+async function auditLogin({ page, widths, go, waitText, clickText, checkPage, results, errors, blockedRequests, output }) {
+  const safeNext = "/admin/placard?tab=stock#inventaire";
+  const protocol = [], focusChecks = [];
+  let failure;
+  const open = async (identity = "allowed", response = "success", next = safeNext) => {
+    await go("?" + new URLSearchParams({ login: "1", identity, response, next }));
+    await page.waitForSelector("#admin-login-title");
+  };
+  const evidence = async (scenario, width, expectedCalls) => {
+    const state = await page.evaluate(() => ({ calls: window.__apiCalls, navigation: window.__navigation, refreshes: window.__refreshes, unhandled: window.__unhandledApi }));
+    assert.deepEqual(state.unhandled, [], scenario + ": unexpected API call");
+    assert.equal(state.calls.length, expectedCalls, scenario + ": API call count");
+    assert(state.calls.every((call) => call.path === "/api/admin/login" && call.method === "POST"));
+    protocol.push({ scenario, width, ...state });
+    return state;
+  };
+  const noNavigation = (state) => {
+    assert.deepEqual(state.navigation, []);
+    assert.equal(state.refreshes, 0);
+  };
+  const success = (state) => {
+    assert.deepEqual(state.navigation, [{ method: "replace", path: safeNext }]);
+    assert.equal(state.refreshes, 1);
+    assert.equal(state.calls.at(-1).status, 200);
+  };
+  const accountLink = async (next = safeNext) => {
+    const href = await page.$eval('a[href^="/compte/connexion?"]', (link) => link.getAttribute("href"));
+    const url = new URL(href, `http://127.0.0.1:${port}`);
+    assert.equal(url.origin, `http://127.0.0.1:${port}`);
+    assert.equal(url.pathname, "/compte/connexion");
+    assert.equal(url.searchParams.get("next"), `/admin/login?next=${encodeURIComponent(next)}`);
+  };
+  const focused = async (selector, scenario, width) => {
+    const metrics = await page.$eval(selector, (control) => {
+      control.scrollIntoView({ block: "center" });
+      const rect = control.getBoundingClientRect(), style = getComputedStyle(control);
+      const ring = parseFloat(style.outlineWidth) + Math.max(0, parseFloat(style.outlineOffset));
+      return { active: document.activeElement === control, visibleRing: control.matches(":focus-visible") && style.outlineStyle !== "none" && parseFloat(style.outlineWidth) >= 2, height: rect.height, ringInsideViewport: rect.left >= ring && rect.right + ring <= innerWidth && rect.top >= ring && rect.bottom + ring <= innerHeight };
+    });
+    focusChecks.push({ scenario, width, ...metrics });
+    assert(metrics.active && metrics.visibleRing && metrics.ringInsideViewport && metrics.height >= 44, `${scenario} ${width}: keyboard focus must be visible with a 44px control`);
+  };
+  const submitPassword = async () => {
+    await page.type("#admin-password", "local-demo-password");
+    await page.click('button[type="submit"]');
+  };
+  try {
+    for (const width of widths) {
+      await page.setViewport({ width, height: 844 });
+
+      await open("none");
+      await waitText("Connecte ton compte");
+      assert.equal(await page.$("form"), null);
+      await accountLink();
+      await page.keyboard.press("Tab");
+      await focused('a[href="/"]', "site-return-link", width);
+      await page.keyboard.press("Tab");
+      await focused('a[href^="/compte/connexion?"]', "account-login-link", width);
+      noNavigation(await evidence("no-account", width, 0));
+      await checkPage("login-no-account", width);
+
+      await open("none", "success", "//outside.invalid/admin");
+      await accountLink("/admin");
+      noNavigation(await evidence("unsafe-next-falls-back", width, 0));
+      await checkPage("login-safe-next", width);
+
+      await open("forbidden");
+      await waitText("Ta connexion au site reste active.");
+      assert.equal(await page.$("form"), null);
+      assert(await page.$('a[href="/profil"]'));
+      assert.equal(await page.$('a[href*="logout"],button[formaction*="logout"]'), null);
+      assert.equal(await page.evaluate(() => document.body.textContent.includes("@example.test")), false);
+      await accountLink();
+      noNavigation(await evidence("forbidden-account-session-preserved", width, 0));
+      await checkPage("login-forbidden", width);
+
+      await open("unavailable");
+      await waitText("Connexion indisponible");
+      assert(await page.$('[role="alert"]'));
+      assert.equal(await page.$("form"), null);
+      assert.equal(await page.$eval('a[href^="/admin/login?"]', (link) => link.getAttribute("href")), `/admin/login?next=${encodeURIComponent(safeNext)}`);
+      noNavigation(await evidence("identity-unavailable", width, 0));
+      await checkPage("login-identity-unavailable", width);
+
+      await open();
+      await page.waitForSelector("#admin-password");
+      await waitText("distinct du mot de passe de ton compte");
+      assert.equal(await page.$eval("#admin-password", (input) => input.autocomplete), "current-password");
+      assert.equal(await page.$("#admin-totp"), null);
+      await focused("#admin-password", "password-autofocus", width);
+      await page.keyboard.press("Tab");
+      await focused('button[aria-controls="admin-password"]', "password-toggle", width);
+      await page.keyboard.press("Enter");
+      assert.equal(await page.$eval("#admin-password", (input) => input.type), "text");
+      await page.keyboard.press("Enter");
+      assert.equal(await page.$eval("#admin-password", (input) => input.type), "password");
+      await page.keyboard.press("Tab");
+      await focused('button[type="submit"]', "submit-button", width);
+      await checkPage("login-authorized", width);
+      await submitPassword();
+      await page.waitForFunction(() => window.__navigation.length === 1);
+      const passwordSuccess = await evidence("explicit-password-success", width, 1);
+      success(passwordSuccess);
+      assert.deepEqual(passwordSuccess.calls[0].keys, ["password"]);
+      await checkPage("login-password-success", width);
+
+      const failures = [
+        ["wrong-password", "Mot de passe administrateur incorrect.", 401, false],
+        ["session-lost", "Ton compte n’est plus connecté", 403, true],
+        ["session-expired", "Ta session de compte a expiré.", 401, true],
+        ["unavailable", "Connexion administrateur momentanément indisponible.", 503, false],
+        ["html-unavailable", "Connexion administrateur momentanément indisponible.", 503, false],
+        ["empty-success", "Réponse inattendue du serveur.", 200, false],
+        ["invalid-json", "Réponse inattendue du serveur.", 200, false],
+      ];
+      for (const [scenario, message, status, reconnect] of failures) {
+        await open("allowed", scenario);
+        await submitPassword();
+        await waitText(message);
+        assert(await page.$('[role="alert"]'));
+        const state = await evidence(scenario, width, 1);
+        noNavigation(state);
+        assert.equal(state.calls[0].status, status);
+        assert.equal(await page.evaluate(() => document.body.textContent.includes("serveur local")), false);
+        if (reconnect) await accountLink();
+        await checkPage(`login-${scenario}`, width);
+      }
+
+      await open("allowed", "totp");
+      await submitPassword();
+      await page.waitForSelector("#admin-totp");
+      assert.equal(await page.$("#admin-password"), null);
+      assert.equal(await page.$eval("#admin-totp", (input) => input.autocomplete), "one-time-code");
+      await focused("#admin-totp", "totp-autofocus", width);
+      const challenge = await evidence("totp-challenge", width, 1);
+      noNavigation(challenge);
+      assert.equal(challenge.calls[0].status, 200);
+      await checkPage("login-totp-challenge", width);
+      await page.type("#admin-totp", "000000");
+      await page.click('button[type="submit"]');
+      await waitText("Le code est incorrect ou expiré.");
+      const wrongCode = await evidence("wrong-totp", width, 2);
+      noNavigation(wrongCode);
+      assert.equal(wrongCode.calls[1].status, 401);
+      assert.deepEqual(wrongCode.calls[1].keys, ["password", "totp"]);
+      await checkPage("login-totp-error", width);
+      await clickText("Revenir au mot de passe");
+      await page.waitForSelector("#admin-password");
+      await focused("#admin-password", "password-return-autofocus", width);
+      assert.equal(await page.$eval("#admin-password", (input) => input.value), "");
+      assert.equal(await page.$("#admin-totp"), null);
+      assert.equal(await page.$('[role="alert"]'), null);
+      await checkPage("login-totp-return", width);
+      await page.evaluate(() => { window.__loginScenario = "success"; });
+      await submitPassword();
+      await page.waitForFunction(() => window.__navigation.length === 1);
+      const retry = await evidence("password-after-challenge", width, 3);
+      success(retry);
+      assert.deepEqual(retry.calls.at(-1).keys, ["password"]);
+
+      await open("allowed", "totp");
+      await submitPassword();
+      await page.waitForSelector("#admin-totp");
+      await page.type("#admin-totp", "123456");
+      await page.click('button[type="submit"]');
+      await page.waitForFunction(() => window.__navigation.length === 1);
+      success(await evidence("explicit-totp-success", width, 2));
+      await checkPage("login-totp-success", width);
+    }
+    assert.deepEqual(errors, []);
+    assert.deepEqual(blockedRequests, [], "The targeted fixture should not attempt external or live API requests");
+    assert(results.every((result) => result.passed && result.overflowing.length === 0), "Login layout overflow; see screenshots");
+  } catch (error) {
+    failure = error;
+  }
+  const report = {
+    mode: "login", passed: !failure, widths,
+    scope: "Real admin login UI in Chromium at mobile viewport sizes; identity, allowlist, login API and router are synthetic. Not a Supabase end-to-end test or a physical iPhone/Safari test.",
+    isolation: { envFilesLoaded: false, credentials: "synthetic-only", externalNetworkBlocked: true, liveApiNetworkBlocked: true, otherAdminScreensLoaded: false },
+    results, focusChecks, protocol, errors, blockedRequests,
+    ...(failure ? { failure: failure.message } : {}),
+  };
+  await writeFile(resolve(output, "login-report.json"), JSON.stringify(report, null, 2));
+  if (failure) throw failure;
+  console.log(`Admin login audit passed: ${results.length} captures, ${protocol.length} scenarios, ${focusChecks.length} focus checks.`);
 }

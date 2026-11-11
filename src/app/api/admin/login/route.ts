@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 import {
   ADMIN_COOKIE_NAME,
-  createAdminSessionToken,
   getAdminCookieOptions,
 } from "@/lib/admin-auth";
+import { createStoredAdminSession } from "@/lib/admin-session-store";
 import { isAllowedAdminEmail, normalizeEmail } from "@/lib/admin-allowlist";
 import { logAuditEvent } from "@/lib/audit-log";
 import { rejectOversizedBody } from "@/lib/body-size-guard";
@@ -45,13 +45,20 @@ export async function POST(request: Request) {
     }
 
     const payload = (await request.json()) as { password?: string; totp?: string };
-    const customerSession = await getCurrentCustomerSessionByBackend();
+    const customerSession = await getCurrentCustomerSessionByBackend("identity");
     const sessionEmail = normalizeEmail(customerSession?.customer.email);
 
-    if (!customerSession || !isAllowedAdminEmail(sessionEmail)) {
+    if (!customerSession) {
+      return NextResponse.json(
+        { code: "account_session_required", error: "Connecte-toi à ton compte avant d’ouvrir l’administration." },
+        { status: 401 },
+      );
+    }
+
+    if (!isAllowedAdminEmail(sessionEmail)) {
       logAuditEvent({ eventType: "admin_login_failed", actorEmail: sessionEmail, ip, metadata: { reason: "email_not_allowed" } });
       return NextResponse.json(
-        { error: "Accès admin réservé au compte autorisé." },
+        { code: "admin_account_required", error: "Accès admin réservé au compte autorisé." },
         { status: 403 },
       );
     }
@@ -73,10 +80,9 @@ export async function POST(request: Request) {
       }
     }
 
+    const sessionToken = await createStoredAdminSession(customerSession.customerId);
     logAuditEvent({ eventType: "admin_login", actorEmail: sessionEmail, ip });
-
-    const sessionToken = await createAdminSessionToken();
-    const response = NextResponse.json({ success: true });
+    const response = NextResponse.json({ success: true }, { headers: { "Cache-Control": "private, no-store" } });
     response.cookies.set({
       name: ADMIN_COOKIE_NAME,
       value: sessionToken,
@@ -94,6 +100,10 @@ export async function POST(request: Request) {
 
     if (error instanceof Error && error.message.includes("ADMIN_")) {
       return NextResponse.json({ error: "Configuration admin invalide." }, { status: 503 });
+    }
+
+    if (error instanceof Error && (error.message.startsWith("[supabase:") || error.message.includes("fetch failed"))) {
+      return NextResponse.json({ error: "Connexion momentanément indisponible. Réessaie plus tard." }, { status: 503 });
     }
 
     return NextResponse.json({ error: "Payload invalide." }, { status: 400 });

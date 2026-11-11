@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
-import type { BlogComment, BlogCommentStatus, BlogRatingStats } from "@/types/blog";
+import type { BlogComment, PublicBlogComment, BlogCommentStatus, BlogRatingStats } from "@/types/blog";
 
 type CommentRow = {
   id: string;
@@ -50,11 +50,11 @@ function toComment(row: CommentRow): BlogComment {
   };
 }
 
-export async function getApprovedBlogCommentsByPostId(postId: string): Promise<BlogComment[]> {
+export async function getApprovedBlogCommentsByPostId(postId: string): Promise<PublicBlogComment[]> {
   const supabase = createSupabaseServiceClient();
   const { data, error } = await supabase
     .from("blog_comments")
-    .select("id,post_id,customer_id,content,status,admin_note,reviewed_by,reviewed_at,created_at,updated_at")
+    .select("id,post_id,customer_id,content,created_at,updated_at")
     .eq("post_id", postId)
     .eq("status", "approved")
     .order("created_at", { ascending: false });
@@ -89,10 +89,13 @@ export async function getApprovedBlogCommentsByPostId(postId: string): Promise<B
   );
 
   return rows.map((row) => {
-    const comment = toComment(row);
-    const profile = profileById.get(comment.customerId);
+    const profile = profileById.get(row.customer_id);
     return {
-      ...comment,
+      id: row.id,
+      postId: row.post_id,
+      content: row.content,
+      createdAt: row.created_at,
+      updatedAt: row.updated_at,
       customerFirstName: profile?.firstName ?? "",
       customerLastName: profile?.lastName ?? "",
     };

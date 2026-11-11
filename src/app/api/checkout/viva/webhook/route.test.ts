@@ -197,8 +197,23 @@ describe("Viva webhook payment verification and recovery", () => {
     expect(await response.json()).toMatchObject({ paymentState: "paid", reviewRequired: true });
     expect(mocks.invoice).toHaveBeenCalledWith(paidOrder.id);
     expect(mocks.loyalty).not.toHaveBeenCalled();
+    expect(mocks.consumeClaims).not.toHaveBeenCalled();
     expect(mocks.mintTickets).not.toHaveBeenCalled();
     expect(mocks.referral).not.toHaveBeenCalled();
+  });
+
+  it("records a late capture on an archived order for review without fulfilling its released claims", async () => {
+    mocks.getOrder.mockResolvedValueOnce({ ...paidOrder, paymentState: "failed", status: "cancelled", archivedAt: "2026-11-10T12:00:00Z" });
+    mocks.finalizePayment.mockResolvedValueOnce({ order: { ...paidOrder, status: "cancelled", paymentReviewRequired: true }, reviewRequired: true });
+    const response = await POST(callback());
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({ paymentState: "paid", status: "cancelled", reviewRequired: true });
+    expect(mocks.invoice).toHaveBeenCalledOnce();
+    expect(mocks.consumeClaims).not.toHaveBeenCalled();
+    expect(mocks.loyalty).not.toHaveBeenCalled();
+    expect(mocks.mintTickets).not.toHaveBeenCalled();
+    expect(mocks.referral).not.toHaveBeenCalled();
+    expect(mocks.rpc).toHaveBeenCalledWith("rpc_complete_webhook_event", expect.any(Object));
   });
 
   it("acknowledges a delayed verified failure without releasing a paid order's rewards", async () => {

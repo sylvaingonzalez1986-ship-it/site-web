@@ -5,19 +5,23 @@ import assert from "node:assert/strict";
 import { readFile, readdir } from "node:fs/promises";
 import path from "node:path";
 import ts from "typescript";
-import { PGlite } from "../output/reputation-test-tools/node_modules/@electric-sql/pglite/dist/index.js";
+import { PGlite } from "@electric-sql/pglite";
 
 const migrationName = "20260923000200_explicit_data_api_grants.sql";
 const migrationDirectory = "supabase/migrations";
 const migration = await readFile(path.join(migrationDirectory, migrationName), "utf8");
-const historical = await Promise.all((await readdir(migrationDirectory))
-  .filter(name => name.endsWith(".sql") && name < migrationName).sort()
+const migrations = await Promise.all((await readdir(migrationDirectory))
+  .filter(name => name.endsWith(".sql")).sort()
   .map(async name => ({ name, sql: await readFile(path.join(migrationDirectory, name), "utf8") })));
 const relations = new Map();
-for (const { sql } of historical) {
+const standaloneSequences = new Set();
+for (const { sql } of migrations) {
   for (const match of sql.matchAll(/CREATE TABLE (?:IF NOT EXISTS )?(?:public\.)?(\w+)\s*\([\s\S]*?;/gi)) {
-    relations.set(match[1], { kind: "table", serial: /\bid\s+(?:BIG|SMALL)?SERIAL\b/i.test(match[0]) });
+    const generated = [...match[0].matchAll(/\b(\w+)\s+((?:BIG|SMALL)?SERIAL\b|(?:BIGINT|INTEGER|INT|SMALLINT)\s+GENERATED\s+(?:ALWAYS|BY DEFAULT)\s+AS\s+IDENTITY)/gi)]
+      .map(column => ({ name: column[1], identity: /IDENTITY/i.test(column[2]) }));
+    relations.set(match[1], { kind: "table", generated });
   }
+  for (const match of sql.matchAll(/CREATE SEQUENCE (?:IF NOT EXISTS )?(?:public\.)?(\w+)/gi)) standaloneSequences.add(match[1]);
   for (const match of sql.matchAll(/CREATE(?: OR REPLACE)? VIEW\s+(?:public\.)?(\w+)\b[\s\S]*?;/gi)) {
     relations.set(match[1], { kind: "view", definition: match[0] });
   }
@@ -31,6 +35,7 @@ for (const relation of relations.values()) {
 
 // Derive the required privileges from callers, independently of the GRANT SQL.
 const required = new Map();
+const requiredUpdateColumns = new Map();
 function requirePrivilege(table, ...privileges) {
   assert.ok(relations.has(table), `Unknown public relation: ${table}`);
   const entry = required.get(table) ?? new Set();
@@ -59,7 +64,7 @@ for (const file of callers) {
       const table = node.arguments[0].text;
       // Storage buckets also use .from(), but are outside this table grant change.
       if (!node.expression.expression.getText(source).includes(".storage")) {
-        assert.ok(relations.has(table), `${file}: .from(${table}) has no historical public relation`);
+        assert.ok(relations.has(table), `${file}: .from(${table}) has no public relation in the current migration chain`);
         directCalls += 1;
         let current = node;
         const operations = new Set();
@@ -69,6 +74,15 @@ for (const file of callers) {
           const operation = current.expression.name.text;
           if (["select", "insert", "update", "delete"].includes(operation)) operations.add(operation.toUpperCase());
           if (operation === "upsert") { operations.add("INSERT"); operations.add("UPDATE"); }
+          if (operation === "update" || operation === "upsert") {
+            const value = current.arguments[0];
+            const columns = value && ts.isObjectLiteralExpression(value) && value.properties.every(property =>
+              (ts.isPropertyAssignment(property) || ts.isShorthandPropertyAssignment(property))
+              && (ts.isIdentifier(property.name) || ts.isStringLiteralLike(property.name)))
+              ? value.properties.map(property => property.name.text) : null;
+            const existing = requiredUpdateColumns.get(table);
+            requiredUpdateColumns.set(table, columns === null || existing === null ? null : new Set([...(existing ?? []), ...columns]));
+          }
         }
         // Filters and ON CONFLICT updates read columns even without .select().
         if (operations.has("UPDATE") || operations.has("DELETE")) operations.add("SELECT");
@@ -105,7 +119,14 @@ for (const statement of statements) assert.match(statement,
 
 const db = new PGlite();
 const tables = [...relations].filter(([, relation]) => relation.kind === "table").map(([name]) => name);
-const sequences = tables.filter(name => relations.get(name).serial).map(name => `${name}_id_seq`);
+const columnGrantFields = new Map();
+for (const { sql } of migrations) for (const match of sql.matchAll(/^(?:GRANT|REVOKE)\s+([^;]*?)\s+ON\s+(?:TABLE\s+)?(?:public\.)?(\w+)\s+(?:TO|FROM)\b/gim)) {
+  const columns = [...match[1].matchAll(/(?:SELECT|INSERT|UPDATE|REFERENCES)\s*\(([^)]+)\)/gi)]
+    .flatMap(group => group[1].split(",").map(name => name.trim()));
+  assert.ok(columns.every(name => /^[a-z_][a-z_0-9]*$/i.test(name)), "Unsupported quoted column grant fixture");
+  columnGrantFields.set(match[2], new Set([...(columnGrantFields.get(match[2]) ?? []), ...columns]));
+}
+const sequences = [...standaloneSequences, ...tables.flatMap(name => relations.get(name).generated.map(column => `${name}_${column.name}_seq`))];
 const roles = ["anon", "authenticated", "service_role"];
 const tablePrivileges = ["SELECT", "INSERT", "UPDATE", "DELETE", "TRUNCATE", "REFERENCES", "TRIGGER"];
 const sequencePrivileges = ["SELECT", "UPDATE", "USAGE"];
@@ -155,13 +176,42 @@ async function denied(role, sql) {
   await assert.rejects(() => asRole(role, sql), error => error.code === "42501", `${role} must not execute ${sql}`);
 }
 
+async function replayRelationPermissions() {
+  // Replay only named relation ACLs across the CURRENT chain, including later
+  // tables and later revocations. Business data, functions and triggers are not
+  // replayed in these reduced fixtures; the security regression tests real RPCs.
+  for (const { name, sql } of migrations) {
+    for (const match of sql.matchAll(/(?:^|\n)\s*(?:GRANT|REVOKE)\s+(?:ALL(?: PRIVILEGES)?|SELECT|INSERT|UPDATE|DELETE|TRUNCATE|REFERENCES|TRIGGER|USAGE)(?:\s*\([^)]+\))?(?:\s*,\s*\w+(?:\s*\([^)]+\))?)*\s+ON\s+(?!FUNCTION\b|SCHEMA\b|TYPE\b)[\s\S]*?;/gi)) {
+      await db.exec(match[0]);
+    }
+    if (["20260913000100_kq_sales_channels.sql", "20260921000200_kq_treasury_accounting.sql"].includes(name)) {
+      const loop = sql.match(/DO \$\$ DECLARE (?:t|name) TEXT; BEGIN[\s\S]*?END \$\$;/);
+      assert.ok(loop, `Missing historical permission loop: ${name}`);
+      await db.exec(loop[0]);
+    }
+    if (name === "20261110000200_security_data_api_boundaries.sql") {
+      const loop = sql.match(/DO \$profile_columns\$[\s\S]*?\$profile_columns\$;/);
+      assert.ok(loop, "Missing profile column grant revocation");
+      await db.exec(loop[0]);
+    }
+  }
+}
+
 try {
   await db.exec("CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role BYPASSRLS;");
-  await db.exec(tables.map(name => `CREATE TABLE public.${name} (
-    id ${relations.get(name).serial ? "BIGSERIAL" : "BIGINT DEFAULT 1"} PRIMARY KEY,
+  const generatedType = column => column.identity ? "BIGINT GENERATED ALWAYS AS IDENTITY" : "BIGSERIAL";
+  await db.exec(tables.map(name => {
+    const generated = relations.get(name).generated;
+    const id = generated.find(column => column.name === "id");
+    return `CREATE TABLE public.${name} (
+    id ${id ? generatedType(id) : "BIGINT DEFAULT 1"} PRIMARY KEY,
+    ${generated.filter(column => column.name !== "id").map(column => `${column.name} ${generatedType(column)},`).join("\n")}
+    ${[...(columnGrantFields.get(name) ?? [])].filter(column => !["id", "payload", ...generated.map(item => item.name)].includes(column)).map(column => `${column} TEXT,`).join("\n")}
     payload JSONB NOT NULL DEFAULT '{}');
     ALTER TABLE public.${name} ENABLE ROW LEVEL SECURITY;
-    INSERT INTO public.${name}(id,payload) VALUES(0,'{"fixture":true}');`).join("\n"));
+    INSERT INTO public.${name}(id,payload) OVERRIDING SYSTEM VALUE VALUES(0,'{"fixture":true}');`;
+  }).join("\n"));
+  for (const sequence of standaloneSequences) await db.exec(`CREATE SEQUENCE public.${sequence}`);
   const pendingViews = new Set([...relations].filter(([, relation]) => relation.kind === "view").map(([name]) => name));
   while (pendingViews.size) {
     let created = 0;
@@ -174,20 +224,8 @@ try {
     }
     assert.ok(created, "Unresolved or cyclic view fixture dependencies");
   }
-  // Replay only historical relation ACL statements. The two dynamic relation loops
-  // are executed verbatim; all business DDL/data/RPC bodies stay outside this fixture.
-  for (const { name, sql } of historical) {
-    for (const match of sql.matchAll(/(?:^|\n)\s*(?:GRANT|REVOKE)\s+(?:ALL(?: PRIVILEGES)?|SELECT|INSERT|UPDATE|DELETE|TRUNCATE|REFERENCES|TRIGGER|USAGE)(?:\s*,\s*\w+)*\s+ON\s+(?!FUNCTION)[\s\S]*?;/gi)) {
-      await db.exec(match[0]);
-    }
-    if (["20260913000100_kq_sales_channels.sql", "20260921000200_kq_treasury_accounting.sql"].includes(name)) {
-      const loop = sql.match(/DO \$\$ DECLARE (?:t|name) TEXT; BEGIN[\s\S]*?END \$\$;/);
-      assert.ok(loop, `Missing historical permission loop: ${name}`);
-      await db.exec(loop[0]);
-    }
-  }
-  // Existing client ACLs and policies must survive unchanged, including customized
-  // grants not represented by the fresh-project default-privilege configuration.
+  // Simulate historical client grants before applying the full ACL chain.
+  // Scoped reads survive; obsolete direct profile writes must be revoked.
   await db.exec(`GRANT SELECT ON public.products TO anon;
     GRANT SELECT,UPDATE ON public.profiles TO authenticated;
     CREATE POLICY fixture_catalog_read ON public.products FOR SELECT TO anon USING(true);
@@ -200,22 +238,28 @@ try {
   const dataBefore = await dataSnapshot();
   const sequencesBefore = await sequenceSnapshot();
   const securityBefore = await securitySnapshot();
-  const expected = { ...before };
-  for (const [name, privileges] of required) {
-    for (const privilege of privileges) expected[key("table", name, "service_role", privilege)] = true;
-    if (privileges.has("INSERT") && relations.get(name).serial) {
-      expected[key("sequence", `${name}_id_seq`, "service_role", "USAGE")] = true;
-    }
-  }
   assert.equal(before[key("table", "profiles", "service_role", "SELECT")], false);
   await denied("service_role", "SELECT * FROM public.profiles");
-  await db.exec(migration);
+  await replayRelationPermissions();
   const after = await privilegeSnapshot();
-  assert.deepEqual(after, expected, "Privilege delta must match the caller requirements, without widening other ACLs");
+  for (const [name, privileges] of required) {
+    for (const privilege of privileges) {
+      if (privilege === "UPDATE" && !after[key("table", name, "service_role", privilege)]) {
+        const columns = requiredUpdateColumns.get(name);
+        assert.ok(columns?.size, `Cannot prove column grants for dynamic UPDATE on ${name}`);
+        for (const column of columns) assert.equal((await db.query("SELECT has_column_privilege('service_role',$1,$2,'UPDATE') AS allowed", [`public.${name}`, column])).rows[0].allowed,
+          true, `Current callers require UPDATE on ${name}.${column}`);
+      } else assert.equal(after[key("table", name, "service_role", privilege)], true,
+        `Current callers require ${privilege} on public.${name}`);
+    }
+    if (privileges.has("INSERT")) for (const column of relations.get(name).generated.filter(column => !column.identity)) {
+      assert.equal(after[key("sequence", `${name}_${column.name}_seq`, "service_role", "USAGE")], true, `INSERT into ${name} requires sequence USAGE`);
+    }
+  }
   assert.deepEqual(await dataSnapshot(), dataBefore, "Grant migration must preserve every fixture row");
   assert.deepEqual(await sequenceSnapshot(), sequencesBefore, "Grant migration must not advance sequences");
   assert.deepEqual(await securitySnapshot(), securityBefore, "RLS, policies, functions and default privileges must remain unchanged");
-  await db.exec(migration);
+  await replayRelationPermissions();
   assert.deepEqual(await privilegeSnapshot(), after, "Grant migration must be idempotent");
   assert.deepEqual(await dataSnapshot(), dataBefore);
 
@@ -225,7 +269,9 @@ try {
       const query = {
         SELECT: `SELECT * FROM public.${name}`,
         INSERT: `INSERT INTO public.${name}(payload) VALUES('{"operation":"insert"}')`,
-        UPDATE: `UPDATE public.${name} SET payload='{"operation":"update"}' WHERE id=0`,
+        UPDATE: after[key("table", name, "service_role", "UPDATE")]
+          ? `UPDATE public.${name} SET payload='{"operation":"update"}' WHERE id=0`
+          : `UPDATE public.${name} SET ${[...(requiredUpdateColumns.get(name) ?? [])].map(column => `${column}='fixture'`).join(",")} WHERE id=0`,
         DELETE: `DELETE FROM public.${name} WHERE id=0`,
       }[privilege];
       await asRole("service_role", query);
@@ -235,12 +281,14 @@ try {
   assert.equal((await asRole("anon", "SELECT * FROM public.products")).rows.length, 1);
   assert.equal((await asRole("authenticated", "SELECT * FROM public.profiles")).rows.length, 1);
   await denied("anon", "SELECT * FROM public.profiles");
+  await denied("authenticated", "UPDATE public.profiles SET payload='{}' WHERE id=0");
   await denied("authenticated", "INSERT INTO public.audit_logs(payload) VALUES('{}')");
   await denied("service_role", "UPDATE public.kq_buddie_rotation SET payload='{}' WHERE id=0");
   await denied("service_role", "INSERT INTO public.kq_treasury_journal(payload) VALUES('{}')");
   await denied("service_role", "INSERT INTO public.kq_culture_token_ledger(payload) VALUES('{}')");
+  await denied("service_role", "UPDATE public.producer_settlement_payments SET payload='{}' WHERE id=0");
   await asRole("service_role", "SELECT public.fixture_rpc_only()");
-  console.log(`Data API grants: ${directCalls} caller chains, ${required.size} relations, ${checkedOperations} real role operations passed; client ACLs, RPC-only restrictions, rows and idempotence preserved.`);
+  console.log(`Data API grants: ${migrations.length} migration ACLs, ${directCalls} caller chains, ${required.size} required relations, ${checkedOperations} real role operations passed; scoped client reads, denied profile writes, RPC-only restrictions, rows and idempotence checked.`);
 } finally {
   await db.close();
 }

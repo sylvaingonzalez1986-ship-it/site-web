@@ -14,7 +14,7 @@ describe("admin store payment review visibility", () => {
       const query = {
         data: (table === "orders" ? [{ id: "ORD-TEST", payment_state: "paid", status: "paid" }] : []) as Array<Record<string, unknown>>,
         error: null,
-        select: vi.fn(), order: vi.fn().mockReturnThis(), is: vi.fn().mockReturnThis(),
+        select: vi.fn(), order: vi.fn().mockReturnThis(), is: vi.fn().mockReturnThis(), or: vi.fn().mockReturnThis(),
         eq: vi.fn().mockReturnThis(), in: vi.fn().mockReturnThis(),
         maybeSingle: vi.fn().mockResolvedValue({ data: null, error: null }),
       };
@@ -34,5 +34,7 @@ describe("admin store payment review visibility", () => {
       id: "ORD-TEST", paymentState: "paid", paymentReviewRequired: required,
       paymentReviewReason: reviewReason ?? undefined,
     });
+    const orderQueries = mocks.from.mock.results.filter((result, index) => mocks.from.mock.calls[index][0] === "orders");
+    expect(orderQueries[0].value.or).toHaveBeenCalledWith("archived_at.is.null,and(payment_state.eq.paid,payment_review_required.eq.true)");
   });
 });
