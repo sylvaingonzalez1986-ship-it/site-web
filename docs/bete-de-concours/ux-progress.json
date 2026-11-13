@@ -11,6 +11,7 @@
     "report": "output/placard-journey-continuity/financial-support-report.json",
     "guide": "docs/bete-de-concours/cagnotte-soutiens.md",
     "goalDecision": "Choix explicite de l’utilisateur : pas d’objectif. Conserver goal_cents à NULL ; afficher le montant collecté et la liste des soutiens, sans jauge ni pourcentage. Ce fonctionnement est déjà implémenté et couvert par la recette objectif absent.",
+    "explanationRestored": "12 novembre 2026 : les trois paragraphes explicatifs d’origine sont rétablis au-dessus de la cagnotte, dans le Quartier et sur /soutenir. Texte comparé automatiquement à la version 21eaf6e7, syntaxe TSX et diff-check validés. Modification éditoriale validée ; commit et push demandés le 13 novembre 2026.",
     "vivaSource": "Code 7188 fourni par l’utilisateur et configuré dans .env.local sous VIVA_SUPPORT_SOURCE_CODE ; distinct de la source boutique. Configuration locale uniquement ; état, retours et webhooks de la source dans Viva non vérifiés.",
     "next": "Reporter VIVA_SUPPORT_SOURCE_CODE=7188 dans l’environnement d’hébergement, vérifier les retours /soutenir/retour et configurer le webhook /api/support/viva/webhook après publication de cette route ; valider en démo avec une source de démonstration, puis ouvrir dans Admin > Soutiens en conservant le champ objectif vide, conformément au choix de l’utilisateur. Migration distante terminée. Pas d’import automatique de l’historique Quick Pay ni de synchronisation périodique des litiges."
   },

@@ -104,7 +104,13 @@ export function KqSupportCampaign({ standalone = false }: { standalone?: boolean
       <KqPrintedArt kind="producer-support" className={styles.art} sizes="(max-width: 600px) 150px, 220px" />
       <div className={styles.summary}>
         <Heading id={`${id}-title`}>Soutenir les producteurs</Heading>
-        <p>Un petit coup de pouce pour faire grandir le projet, seulement si tu en as envie et si tu peux. Merci !</p>
+        <p>Bon, on n’est pas là pour faire la manche… mais la tréso, ça ne pousse pas sous les lampes.</p>
+        <p>Chez nous, dès qu’on parle de chanvre à actifs, les banques rangent le chéquier.
+          Quand t’as les poches pleines, c’est plus facile de grandir.
+          Nous, petits producteurs, on fait avec les moyens du bord.</p>
+        <p>Tu peux nous aider en achetant notre CBD. Mais si c’est pas ton truc et que tu kiffes le game,
+          tu peux aussi nous glisser un ou deux euros de temps en temps, seulement si l’envie te prend et si tu peux.
+          Ça nous aide à faire grandir le projet. Dans tous les cas, un grand merci !</p>
         {!summary ? <p role="status">{error ? "Le montant collecté est momentanément indisponible." : "Chargement de la cagnotte…"}</p> : <>
           {summary.needsReconciliation ? <p className={styles.amount} role="status">Total en cours de vérification</p> : <>
             <p className={styles.amount}>{supportEuros(summary.collectedCents)} <span>collectés</span></p>
