@@ -1,0 +1,1676 @@
+{
+  "domain": "products",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "products-tool-seed-oil",
+      "title": "Evaluation of Hemp Seed Oils Stability under Accelerated Storage Test",
+      "author": "M. Tura, D. Ansorena, I. Astiasarán, M. Mandrioli et T. Gallina Toschi",
+      "organization": "M. Tura, D. Ansorena, I. Astiasarán, M. Mandrioli et T. Gallina Toschi",
+      "published": "2022-02-28",
+      "url": "https://www.mdpi.com/2076-3921/11/3/490",
+      "passage": "Résumé, résultats et conclusion : neuf huiles, évolution de marqueurs d’oxydation et limites d’un indicateur unique. DOI 10.3390/antiox11030490.",
+      "limitation": "Vieillissement accéléré expérimental ; ne prédit pas la durée de conservation d’un flacon, ne prescrit pas de cuisson et ne démontre pas un bénéfice thérapeutique.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2076-3921/11/3/490",
+          "sections": "MDPI Antioxidants 11(3):490 : résumé, introduction et résultats §3 ; neuf huiles, linoléique, α-linolénique, stéaridonique, pigments, tocophérols et marqueurs d’oxydation.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé, résultats et conclusion : neuf huiles, évolution de marqueurs d’oxydation et limites d’un indicateur unique. DOI 10.3390/antiox11030490."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-seed-protein",
+      "title": "Effect of solvent composition on the extraction of proteins from hemp oil processing stream",
+      "author": "E. M. Cabral, M. M. Poojary, M. N. Lund, J. Curtin, M. Fenelon et B. K. Tiwari",
+      "organization": "E. M. Cabral, M. M. Poojary, M. N. Lund, J. Curtin, M. Fenelon et B. K. Tiwari",
+      "published": "2022-05-05",
+      "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+      "passage": "Résumé, Protein recovery, Amino acid composition et SDS-PAGE du texte intégral Wiley effectivement ouverts : récupération des fractions, composition et changements structuraux distincts.",
+      "limitation": "Sections scientifiques du texte intégral consultées ; pas de méthode opératoire, de rendement universel ou d’équivalence nutritionnelle garantie. L’accès PMC bloqué ne décrit pas l’accès au texte Wiley.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+          "sections": "Wiley texte intégral : résumé, introduction, §Protein recovery, Amino acid composition et SDS-PAGE ; solubilité, protéines de réserve, point isoélectrique et ponts/réticulations.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé original : récupération de fractions protéiques à partir du tourteau, composition et récupération dépendantes de la transformation. DOI 10.1002/jsfa.11979."
+        },
+        {
+          "sourceId": "products-tool-seed-protein",
+          "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+          "sectionsOpened": [
+            "Résumé",
+            "Protein recovery",
+            "Amino acid composition",
+            "SDS-PAGE"
+          ],
+          "result": "Récupération, composition en acides aminés et altérations structurales distinctes ; texte produit ne fournit pas de protocole opératoire.",
+          "status": "read",
+          "openedAt": "2026-11-14",
+          "assertionsSupported": [
+            "Récupération, composition et structure des fractions protéiques distinctes."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-parts",
+      "title": "Le processus de transformation et valorisation du chanvre",
+      "author": "InterChanvre",
+      "organization": "Interprofession du chanvre",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.interchanvre.org/transformation-chanvre",
+      "passage": "Passages originaux indexés sur la séparation fibres/chènevotte et les débouchés du chènevis : graines, huile, farine et tourteau.",
+      "access": "official-page",
+      "limitation": "Le contenu français substantiel a été consulté dans l’index ; l’ouverture directe restituait surtout la navigation. Les parts commerciales et rendements de transformation ne deviennent pas des constantes botaniques.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.interchanvre.org/transformation-chanvre",
+          "sections": "InterChanvre : défibrage et matières (chènevis, fibre, chènevotte, fines) et transformations ; slogans de santé/environnement non repris.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Passages originaux indexés sur la séparation fibres/chènevotte et les débouchés du chènevis : graines, huile, farine et tourteau."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-contaminants",
+      "title": "Règlement (UE) 2023/915 — contaminants alimentaires, consolidation du 19 août 2026",
+      "author": "Commission européenne",
+      "organization": "Commission européenne",
+      "published": "2023-04-25 ; consolidation 2026-08-19",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/915/",
+      "passage": "Règlement 2023/915, consolidation 2026-08-19, annexe I §2.6 et notes : graines 3 mg/kg, huile 7,5 mg/kg, somme et convention <LOQ.",
+      "limitation": "Catégories exclusivement issues des graines pour les valeurs citées ; ne pas transférer ces seuils à des fleurs ou à un médicament.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://eur-lex.europa.eu/eli/reg/2023/915/",
+          "openedAt": "2026-11-14",
+          "sections": "Règlement 2023/915, consolidation 2026-08-19, annexe I §2.6 et notes : graines 3 mg/kg, huile 7,5 mg/kg, somme et convention <LOQ.",
+          "supports": "Règlement 2023/915, consolidation 2026-08-19, annexe I §2.6 et notes : graines 3 mg/kg, huile 7,5 mg/kg, somme et convention <LOQ.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "harvest-lesson-moisture",
+      "title": "Adjusting Crop Yield to a Standard Moisture Content — SS-AGR-443",
+      "author": "Michael J. Mulvaney, Pratap Devkota et Hardeep Singh",
+      "organization": "University of Florida, IFAS Extension",
+      "published": "Publication initiale mai 2020 ; révision avril 2025 ; DOI 10.32473/edis-ag442-2020",
+      "url": "https://ask.ifas.ufl.edu/publication/AG442/pdf",
+      "passage": "Pages 1–2 : eau rapportée à la masse humide, matière sèche, erreur de calcul courante et normalisation des rendements.",
+      "access": "excerpt",
+      "limitation": "PDF original consulté ; la page HTML bouclait en redirection. Les exemples et humidités commerciales d’autres cultures ne sont pas transférés au chanvre. Les pourcentages A/B/C sont entièrement fictifs, pas des cibles de conservation.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source méthodologique, scientifique ou de filière originale ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://ask.ifas.ufl.edu/publication/AG442/pdf",
+          "sections": "UF/IFAS : introduction et définitions, eau rapportée à masse humide et normalisation ; pas itinéraire de production repris.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages 1–2 : eau rapportée à la masse humide, matière sèche, erreur de calcul courante et normalisation des rendements."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-food-fr",
+      "title": "Denrées alimentaires contenant du cannabidiol (CBD) : des produits illégaux qui doivent être retirés du marché",
+      "author": "Direction générale de l’alimentation",
+      "organization": "Ministère français de l’Agriculture",
+      "published": "20 mai 2026 ; vérifié le 12 novembre 2026",
+      "url": "https://agriculture.gouv.fr/node/110883",
+      "passage": "Absence d’autorisation des denrées avec ajout de CBD ; distinction graines et dérivés non enrichis, feuilles exclusivement en infusion aqueuse et conditions applicables.",
+      "access": "official-page",
+      "limitation": "État France/Union européenne daté, pas règle mondiale. Le statut de non-nouvel aliment de certaines parties ne supprime ni les limites de contaminants ni les autres obligations ; pas d’assimilation à un médicament autorisé.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://agriculture.gouv.fr/node/110883",
+          "sections": "DGAL 20 mai 2026 : graines/dérivés et feuilles exclusivement destinées à infusion aqueuse ; absence d’autorisation des ingrédients CBD rappelée.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Absence d’autorisation des denrées avec ajout de CBD ; distinction graines et dérivés non enrichis, feuilles exclusivement en infusion aqueuse et conditions applicables."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-novel-food",
+      "title": "Règlement (UE) 2015/2283 — nouveaux aliments, consolidation du 27 mars 2021",
+      "author": "Parlement européen et Conseil",
+      "organization": "Parlement européen et Conseil",
+      "published": "2015-11-25 ; consolidation courante 2021-03-27",
+      "url": "https://eur-lex.europa.eu/eli/reg/2015/2283/",
+      "passage": "Texte consolidé 2021-03-27, articles 3–4 et 6 : historique avant le 15 mai 1997, catégories, vérification et liste de l’Union.",
+      "limitation": "Articles effectivement ouverts. Statut d’un produit dépend aussi de sa nature, de son usage et des conditions de l’autorisation.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://eur-lex.europa.eu/eli/reg/2015/2283/",
+          "openedAt": "2026-11-14",
+          "sections": "Texte consolidé 2021-03-27, articles 3–4 et 6 : historique avant le 15 mai 1997, catégories, vérification et liste de l’Union.",
+          "supports": "Texte consolidé 2021-03-27, articles 3–4 et 6 : historique avant le 15 mai 1997, catégories, vérification et liste de l’Union.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-food-law",
+      "title": "Règlement (CE) nº 178/2002 — texte original, articles 18 et 19",
+      "author": "Parlement européen et Conseil",
+      "organization": "Parlement européen et Conseil",
+      "published": "2002-01-28 ; articles originaux consultés le 2026-11-14",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32002R0178",
+      "passage": "Règlement 178/2002, articles 18–19 : fournisseurs/destinataires, traçabilité et devoirs de retrait/information.",
+      "limitation": "Texte original consulté ; la consolidation 2026 bloque par CAPTCHA. La validation du statut consolidé reste explicitement en attente.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32002R0178",
+          "openedAt": "2026-11-14",
+          "sections": "Règlement 178/2002, articles 18–19 : fournisseurs/destinataires, traçabilité et devoirs de retrait/information.",
+          "supports": "Règlement 178/2002, articles 18–19 : fournisseurs/destinataires, traçabilité et devoirs de retrait/information.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-lesson-seed-oil",
+      "title": "Cannabidiol (CBD)",
+      "author": "Santé Canada",
+      "organization": "Gouvernement du Canada",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+      "passage": "Section The difference between cannabis oil and hemp-seed oil : huile issue de graines et extrait cannabinoïde éventuellement mélangé à une huile porteuse.",
+      "access": "official-page",
+      "limitation": "Seule cette distinction de matières est utilisée. Les règles canadiennes et autres assertions de la page ne sont pas transposées à la France ; huile de graines ne signifie pas absence analytique garantie de tout cannabinoïde.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+          "sections": "Santé Canada : The difference between cannabis oil and hemp-seed oil ; graines pressées versus extrait ajouté. Les passages juridiques canadiens datés ne servent pas au droit français.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Section The difference between cannabis oil and hemp-seed oil : huile issue de graines et extrait cannabinoïde éventuellement mélangé à une huile porteuse."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-oil-stability",
+      "title": "Monitoring the Shelf Life of Hemp Seed Oil Stored at Two Temperatures in Different Materials via Near-Infrared (NIR) Spectroscopy",
+      "author": "Francesca Bonazza, Lucia Monti, Milena Povolo, Andrea Gasparini, Valeria Pelizzola et Giovanni Cabassi",
+      "organization": "Molecules 29(23):5577",
+      "published": "26 novembre 2024 ; DOI 10.3390/molecules29235577",
+      "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+      "passage": "Résumé, introduction et conclusion : suivi de l’oxydation, influence des conditions et du conditionnement, comparaison d’indicateurs analytiques.",
+      "access": "excerpt",
+      "limitation": "Une huile de graines Futura 75 et des conditions expérimentales particulières ; pas de durée de conservation universelle, ni de consigne de stockage chiffrée reprise. Financement CANAPRO, programme de développement rural lombard.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+          "sections": "MDPI Molecules 29(23):5577 : résumé et introduction ; étude sur une huile Futura 75, lumière, température et suivi NIR. Aucun délai de conservation universel déduit de cette expérience.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé, introduction et conclusion : suivi de l’oxydation, influence des conditions et du conditionnement, comparaison d’indicateurs analytiques."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-inhalation",
+      "title": "Cannabis accessories for inhalation: health risks",
+      "author": "Santé Canada",
+      "organization": "Santé Canada",
+      "published": "Page institutionnelle consultée le 14 novembre 2026",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "passage": "Sections Smoking et Vaping : fumée de combustion distincte de l’aérosol ; substances nocives et transfert possible depuis le matériel.",
+      "limitation": "Informations sur l’exposition, pas mode d’emploi ni validation d’un produit. Absence de combustion ne signifie pas innocuité.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+          "sections": "Santé Canada : Smoking et Vaping ; combustion, aérosols et limites des dispositifs ; recommandations générales sans garantie d’innocuité.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Sections Smoking et Vaping : fumée de combustion distincte de l’aérosol ; substances nocives et transfert possible depuis le matériel."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-metrology",
+      "title": "The Fitness for Purpose of Analytical Methods — Third Edition",
+      "author": "Helen Cantwell (dir.) et groupe Method Validation",
+      "organization": "H. Cantwell (direction), Eurachem",
+      "published": "2025",
+      "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+      "passage": "Guide 3e édition 2025 : §5.1 sélectivité et définition du mesurande ; §5.3.1 et §5.3.4 limites de détection et quantification.",
+      "limitation": "Lecture des sections citées, non de l’ensemble des 86 pages. Performances acceptables définies pour un usage donné.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Guide 3e édition 2025 : §5.1 sélectivité et définition du mesurande ; §5.3.1 et §5.3.4 limites de détection et quantification.",
+          "supports": "Guide 3e édition 2025 : §5.1 sélectivité et définition du mesurande ; §5.3.1 et §5.3.4 limites de détection et quantification.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-official-claims-dgccrf-2025",
+      "title": "Allégations nutritionnelles et de santé : ne vous faites pas avoir !",
+      "author": "DGCCRF",
+      "organization": "Ministère de l’Économie",
+      "published": "2025-11-10",
+      "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/allegations-nutritionnelles-et-de-sante-ne-vous-faites-pas-avoir",
+      "verifiedAt": "2026-11-14",
+      "passage": "Cadre réglementaire ; Q2 allégations nutritionnelles et conditions ; section allégations en attente et interdiction thérapeutique.",
+      "access": "official-page",
+      "documentKind": "Explication originale par l’autorité française chargée du contrôle",
+      "limitation": "Page institutionnelle explicative, pas nouvelle lecture du règlement1924/2006 consolidé. N’attribue aucune allégation autorisée au CBD ; distingue aussi le régime particulier des allégations botaniques en attente.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/allegations-nutritionnelles-et-de-sante-ne-vous-faites-pas-avoir",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Cadre réglementaire",
+            "Allégations en attente et outil DGCCRF",
+            "Questions/réponses : Q1–Q2"
+          ],
+          "result": "Passages effectivement ouverts et lus.",
+          "assertionsSupported": [
+            "Allégations nutritionnelles limitées à celles de l’annexe et à leurs conditions d’utilisation.",
+            "Évaluation scientifique et autorisation sont deux étapes distinctes.",
+            "Une denrée ne peut prétendre prévenir, guérir ou traiter une maladie humaine."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "products-tool-fibres",
+      "title": "Création du laboratoire partenarial 4FM : fibres lignocellulosiques et rouissage",
+      "author": "INRAE, université de Reims Champagne-Ardenne et FRD",
+      "organization": "INRAE, université de Reims Champagne-Ardenne et FRD",
+      "published": "2023-04-06",
+      "url": "https://www.inrae.fr/actualites/inrae-luniversite-reims-champagne-ardenne-centre-ressources-technologiques-fibres-recherche-developpement-affirment-leur-collaboration-creant-laboratoire-partenarial-associe",
+      "passage": "Transformations biologiques de rouissage, qualité variable des pailles, fibres et chènevotte ; projets de fractionnement.",
+      "limitation": "Présentation du programme par ses porteurs, pas démonstration que toute filière ou matière atteint la même qualité.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.inrae.fr/actualites/inrae-luniversite-reims-champagne-ardenne-centre-ressources-technologiques-fibres-recherche-developpement-affirment-leur-collaboration-creant-laboratoire-partenarial-associe",
+          "sections": "INRAE : communiqué du 6 avril 2023, variabilité des fractions et comportements en transformation ; ne fournit pas à lui seul tout le mécanisme microbien du rouissage.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Transformations biologiques de rouissage, qualité variable des pailles, fibres et chènevotte ; projets de fractionnement."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-textile",
+      "title": "Les savoir-faire du chanvre textile — fiche d’inventaire du patrimoine culturel immatériel",
+      "author": "Marie-Laurence Sapin et Catherine Virassamy, pour l’Association Tashkent",
+      "organization": "Marie-Laurence Sapin et Catherine Virassamy, pour l’Association Tashkent",
+      "published": "Fiche remise le 2020-10-01 ; inclusion à l’inventaire en 2020",
+      "url": "https://www.interchanvre.org/documents/5.actu_presse/newsletters/10/Les_savoir-faire_du_chanvre_textile.pdf",
+      "passage": "Pages 3 et 11–12 : fibres périphériques, chènevotte interne, teillage, peignage et voies de filature ; métadonnées p.27–28, identifiant 2020_67717_INV_PCI_FRANCE_00481.",
+      "limitation": "Enquête primaire auprès de praticiens en 2019–2020, intégral consulté. Seules les distinctions matérielles et les savoir-faire sont repris : ni les généralisations botaniques et agronomiques du document, ni son ancien droit, ni ses promesses environnementales, ni un état du marché en 2026.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.interchanvre.org/documents/5.actu_presse/newsletters/10/Les_savoir-faire_du_chanvre_textile.pdf",
+          "sections": "PDF patrimoine immatériel Les savoir-faire du chanvre textile : pp. 4–8, rouissage, pectines, peignage, étoupes, filature et ourdissage/tissage. Les états économiques historiques ne sont pas actualisés par supposition.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages 3 et 11–12 : fibres périphériques, chènevotte interne, teillage, peignage et voies de filature ; métadonnées p.27–28, identifiant 2020_67717_INV_PCI_FRANCE_00481."
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-composite-review",
+      "title": "Hemp Fibre Treatments in Bio-Composites: A Review for Sustainable and Resilient Structures",
+      "organization": "Buildings (MDPI)",
+      "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+      "verifiedAt": "2026-11-14",
+      "author": "Mariana Costa Laktim, Antonio Formisano",
+      "published": "2025",
+      "passage": "Introduction, paras. sur adhérence et traitements des fibres.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Revue ciblée sur composites à matrice inorganique; les résultats dépendent des protocoles et formulations.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "sections": "Buildings 2025 : §2, figure 3 et passages microfibrilles, lumen, lamelle moyenne, hydroxyles et adhésion ; revue secondaire explicitement identifiée.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Introduction, paras. sur adhérence et traitements des fibres."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-hemp-order",
+      "title": "Arrêté du 30 décembre 2021 portant application de l’article R.5132-86",
+      "author": "Ministères chargés de la Santé et de l’Agriculture",
+      "organization": "Ministères chargés de la Santé et de l’Agriculture",
+      "published": "2021-12-30 ; texte courant consulté",
+      "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213",
+      "passage": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+      "limitation": "Le critère 0,30 % n’est ni une autorisation alimentaire ni une garantie de sécurité. Les conditions de culture et les autres textes demeurent applicables.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213",
+          "openedAt": "2026-11-14",
+          "sections": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+          "supports": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-hemp-judgment",
+      "title": "Conseil d’État, décision 444887 et affaires jointes",
+      "author": "Conseil d’État",
+      "organization": "Conseil d’État",
+      "published": "2022-12-29",
+      "url": "https://conseil-etat.fr/fr/arianeweb/CE/decision/2022-12-29/444887",
+      "passage": "Dispositif, article 3 : annulation du II de l’article 1 de l’arrêté du 30 décembre 2021 ; motifs relatifs notamment à l’interdiction générale des fleurs et feuilles.",
+      "limitation": "Annulation de ce II, pas suppression de l’ensemble des règles alimentaires, sanitaires ou relatives aux stupéfiants. À distinguer de la suspension provisoire de janvier 2022.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://conseil-etat.fr/fr/arianeweb/CE/decision/2022-12-29/444887",
+          "sections": "Conseil d’État décision 444887 : §1–5, §17–22 et dispositif lus ; annulation du II, distinction du seuil variétal et de l’innocuité. Les considérations scientifiques de 2022 ne valent pas bilan pharmacologique actualisé.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Dispositif, article 3 : annulation du II de l’article 1 de l’arrêté du 30 décembre 2021 ; motifs relatifs notamment à l’interdiction générale des fleurs et feuilles."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-materials",
+      "title": "Perspectives de développement de la filière chanvre en Nouvelle-Aquitaine — rapport final",
+      "author": "Stéphanie Sauvée, Virginie Gautier, Yves Hustache et Florian Rollin, pour la Région Nouvelle-Aquitaine",
+      "organization": "Stéphanie Sauvée, Virginie Gautier, Yves Hustache et Florian Rollin, pour la Région Nouvelle-Aquitaine",
+      "published": "2019-02",
+      "url": "https://entreprises.nouvelle-aquitaine.fr/sites/default/files/2020-07/Rapport_filiere-chanvre-Nouvelle-Aquitaine.pdf",
+      "passage": "Pages 13–14 et sections 2.2–2.4 : graine, fibres, chènevotte, fines, débouchés observés et projets régionaux.",
+      "limitation": "Enquête de filière datée : pas parts de marché 2026. Les généralités environnementales, sanitaires et l’ancien cadre juridique du rapport ne sont pas repris.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://entreprises.nouvelle-aquitaine.fr/sites/default/files/2020-07/Rapport_filiere-chanvre-Nouvelle-Aquitaine.pdf",
+          "sections": "Rapport filière Nouvelle-Aquitaine 2019 : pp. 24–29, fractions fibreuses, chènevotte, construction non porteuse, isolants et autres usages. Les volumes historiques ne sont pas présentés comme un marché actuel.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages 13–14 et sections 2.2–2.4 : graine, fibres, chènevotte, fines, débouchés observés et projets régionaux."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-hempcrete",
+      "title": "Performance énergétique des bâtiments : étude du béton de chanvre",
+      "author": "Cerema",
+      "organization": "Cerema",
+      "published": "2021-05-18",
+      "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf",
+      "passage": "Définition du mélange chènevotte/liant ; remplissage d’une structure porteuse ; transferts couplés chaleur-humidité.",
+      "limitation": "Résultats liés au bâtiment et à la modélisation étudiés. Aucun pourcentage d’économie, bilan carbone ou caractère porteur universel transféré à l’atlas.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf",
+          "sections": "Cerema : communiqué de deux pages lu entièrement ; chènevotte, liant, eau, remplissage, simulations et limites de transfert des économies.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Définition du mélange chènevotte/liant ; remplissage d’une structure porteuse ; transferts couplés chaleur-humidité."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-building",
+      "title": "Bonnes pratiques de la construction en chanvre",
+      "author": "Construire en Chanvre",
+      "organization": "Construire en Chanvre",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.construire-en-chanvre.fr/bonnes-pratiques",
+      "passage": "Couples liant/granulat validés et champ des règles professionnelles ; matériaux et systèmes constructifs.",
+      "access": "official-page",
+      "limitation": "Seuls les périmètres de validation technique sont retenus. Les affirmations promotionnelles générales sur l’environnement ou les performances ne servent pas de preuve ; un granulat ne certifie pas seul un ouvrage.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://www.construire-en-chanvre.fr/bonnes-pratiques",
+          "sections": "Construire en Chanvre : page bonnes pratiques, règles et couples liant–granulat ; une page d’orientation ne vaut pas lecture de toutes les règles professionnelles.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Couples liant/granulat validés et champ des règles professionnelles ; matériaux et systèmes constructifs."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-resin",
+      "title": "Recommended Methods for the Identification and Analysis of Cannabis and Cannabis Products, révision",
+      "author": "UNODC, Laboratory and Scientific Service",
+      "organization": "UNODC, Laboratory and Scientific Service",
+      "published": "2022",
+      "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/forensics_html/Recommended_methods_for_the_identification_and_analysis_of_cannabis_and_cannabis_products_ST-NAR-40.pdf",
+      "passage": "§3.7 : produits végétaux, résine séparée et préparations ; portée de l’identification analytique.",
+      "limitation": "Manuel original ST/NAR/40/REV.1 ; seules définitions et limites d’identification utilisées, aucun protocole de préparation ou d’analyse reproduit.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/forensics_html/Recommended_methods_for_the_identification_and_analysis_of_cannabis_and_cannabis_products_ST-NAR-40.pdf",
+          "sections": "UNODC ST/NAR/40 : introduction §1.2 et §3.7.2 Cannabis resin (hashish), sécrétion glandulaire, fraction fine/poudre pressée ; aucune procédure reproduite.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "§3.7 : produits végétaux, résine séparée et préparations ; portée de l’identification analytique."
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-product-products-chenevis",
+      "questions": [
+        "Que retire-t-on pour obtenir du chènevis décortiqué ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Le chènevis est le petit fruit sec du chanvre vendu couramment comme graine. Entier ou décortiqué, il apporte notamment des matières grasses et des protéines, avec des compositions différentes selon la préparation.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "Le fruit entier contient une graine et sa paroi extérieure, le péricarpe. Décortiquer retire cette enveloppe, sans enlever toute l’huile ni toutes les protéines de l’intérieur. La photo montre la présentation décortiquée ; elle ne permet pas de mesurer les quantités de chaque constituant."
+            ],
+            "sourceIds": [
+              "products-tool-seed-oil",
+              "products-tool-seed-protein",
+              "products-lesson-parts"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "Les lipides sont les matières grasses de la graine ; les protéines sont des chaînes de petites unités appelées acides aminés. La part d’enveloppes change aussi la proportion de fibres. Une farine, une graine décortiquée et un fruit entier ne sont donc pas trois présentations d’une composition identique. La graine peut aussi être transformée pour séparer de l’huile et un solide, le tourteau."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-tool-seed-oil",
+              "products-tool-seed-protein"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Pour comparer deux lots, il faut savoir s’ils sont destinés à être mangés, semés ou transformés, et sur quelle quantité d’eau les résultats sont calculés. Une graine alimentaire ne garantit pas une capacité de germination ou une certification de semence. État sanitaire, corps étrangers et contamination de surface restent des questions propres au lot, même si l’on ne recherche pas sa résine."
+            ],
+            "sourceIds": [
+              "products-tool-contaminants",
+              "harvest-lesson-moisture"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Pour les graines alimentaires sans ajout de cannabinoïdes, le plafond est de 3,0 mg/kg : trois milligrammes par kilogramme pour Δ9-THC + 0,877 × Δ9-THCA. Le THC est un cannabinoïde associé à l’intoxication ; le THCA est sa forme acide, qui peut se transformer en THC. Le coefficient 0,877 ramène la masse du THCA à la masse correspondante de THC : on ne les additionne pas gramme pour gramme.",
+              "Une recette transformée ou composée peut demander des facteurs documentés. Le plafond ne vaut ni autorisation d’ajouter du cannabidiol, ou CBD, ni contrôle de tous les autres dangers alimentaires ; l’origine et le suivi des lots restent importants."
+            ],
+            "sourceIds": [
+              "products-lesson-food-fr",
+              "products-tool-novel-food",
+              "products-tool-contaminants",
+              "products-tool-food-law"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Pour le calcul réglementaire, une quantité inférieure à la limite de quantification, trop petite pour être chiffrée assez précisément, est comptée comme zéro. C’est la convention dite de borne basse. Elle ne prouve pas une absence physique de la substance et ne s’étend pas automatiquement à tous les usages d’une mesure."
+              ],
+              "sourceIds": [
+                "products-lesson-food-fr",
+                "products-tool-novel-food",
+                "products-tool-contaminants",
+                "products-tool-food-law"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "products-tool-seed-oil",
+          "products-tool-seed-protein",
+          "products-lesson-parts",
+          "products-tool-contaminants",
+          "harvest-lesson-moisture",
+          "products-lesson-food-fr",
+          "products-tool-novel-food",
+          "products-tool-food-law"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Enveloppe conservée ou retirée",
+          "nodes": [
+            {
+              "label": "Chènevis entier",
+              "detail": "La paroi du fruit entoure la graine."
+            },
+            {
+              "label": "Décortiqué",
+              "detail": "La paroi extérieure a été retirée ; les réserves intérieures restent."
+            }
+          ],
+          "caption": "Décortiquer change la part des tissus du fruit ; cela ne produit pas une graine sans huile ou sans protéines.",
+          "afterSectionId": "origin",
+          "sourceIds": [
+            "products-tool-seed-oil",
+            "products-tool-seed-protein"
+          ]
+        },
+        "image": {
+          "src": "/placard/reference/products/graines-decortiquees.jpg",
+          "alt": "Photographie de chènevis décortiqué, montrant les parties intérieures claires sans enveloppe entière.",
+          "caption": "Ces graines ont été décortiquées : leur enveloppe extérieure a été retirée. La photo ne montre pas les fruits entiers.",
+          "author": "MPart4",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hemp_seeds_protein.jpg",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "kind": "photograph"
+        },
+        "relatedArticleIds": [
+          "record-product-products-seed-oil",
+          "record-product-products-press-cake",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-materials",
+        "products-tool-seed-oil",
+        "products-tool-seed-protein",
+        "products-lesson-parts",
+        "products-tool-dgal-2026"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-contaminants",
+        "products-tool-novel-food",
+        "products-tool-food-law",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photographie Commons téléchargée et effectivement examinée ; auteur/licence contrôlés via page et API. Chènevis décortiqué : cette présentation diffère des fruits entiers et ne renseigne pas leur composition analytique."
+      },
+      "quizIdsReviewed": [
+        "hemp-seeds-decorticage"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "péricarpe",
+          "lipides",
+          "acides aminés",
+          "tourteau"
+        ],
+        "example": "La paroi extérieure a été retirée ; les réserves intérieures restent.",
+        "detailsMoved": [
+          "regulations"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": [
+          "hemp-seeds-decorticage"
+        ]
+      }
+    },
+    {
+      "id": "record-product-products-seed-oil",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "L’huile de graines provient des matières grasses du chènevis. Elle est différente d’une huile à laquelle on ajoute un extrait cannabinoïde, même lorsque les deux sont vendues comme huile de chanvre.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "La séparation d’une partie des lipides, les matières grasses des graines, donne l’huile. Si l’on y ajoute du cannabidiol, ou CBD, ou un extrait de fleurs, on prépare ensuite un mélange. Le nom du support huileux ne suffit plus à décrire ce mélange."
+            ],
+            "sourceIds": [
+              "products-tool-seed-oil",
+              "products-lesson-seed-oil"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "Les acides gras de cette huile sont souvent polyinsaturés : leurs chaînes de carbone portent plusieurs doubles liaisons. Cela favorise des réactions avec l’oxygène, qui forment d’abord certains produits puis d’autres au fil du temps. Des pigments peuvent donner une couleur verte et des tocophérols sont présents, mais ni couleur ni présence de ces molécules ne garantissent une huile inchangée."
+            ],
+            "sourceIds": [
+              "products-tool-seed-oil",
+              "products-lesson-oil-stability"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Les essais accélérés sur neuf huiles commerciales comparent des conditions définies ; ils ne donnent pas la durée réelle de chaque flacon. Identité de l’huile, ajouts, emballage et marqueurs de transformation doivent être reliés au produit réel. La qualité alimentaire ne valide pas une inhalation : une substance adaptée au tube digestif n’est pas pour autant adaptée aux poumons."
+            ],
+            "sourceIds": [
+              "products-tool-seed-oil",
+              "products-lesson-seed-oil",
+              "products-tool-inhalation"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Pour l’huile alimentaire de graines sans enrichissement, le plafond est de 7,5 mg/kg : 7,5 milligrammes par kilogramme pour Δ9-THC + 0,877 × Δ9-THCA. Le THC est un cannabinoïde associé à l’intoxication ; le THCA est sa forme acide, qui peut se transformer en THC. Le coefficient 0,877 ramène la masse du THCA à la masse correspondante de THC : on ne les additionne pas gramme pour gramme.",
+              "Ajouter du cannabidiol, abrégé CBD, crée une autre question de statut : l’usage alimentaire de l’huile seule ne vaut pas autorisation de l’ingrédient ajouté. Pour une recette composée, la catégorie et les facteurs de transformation doivent être documentés."
+            ],
+            "sourceIds": [
+              "products-lesson-food-fr",
+              "products-tool-novel-food",
+              "products-tool-contaminants",
+              "products-tool-food-law"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Pour le calcul réglementaire, une quantité inférieure à la limite de quantification, trop petite pour être chiffrée assez précisément, est comptée comme zéro. C’est la convention dite de borne basse. Elle ne prouve pas une absence physique de la substance et ne s’étend pas automatiquement à tous les usages d’une mesure."
+              ],
+              "sourceIds": [
+                "products-lesson-food-fr",
+                "products-tool-novel-food",
+                "products-tool-contaminants",
+                "products-tool-food-law"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "products-tool-seed-oil",
+          "products-lesson-seed-oil",
+          "products-lesson-oil-stability",
+          "products-tool-inhalation",
+          "products-lesson-food-fr",
+          "products-tool-novel-food",
+          "products-tool-contaminants",
+          "products-tool-food-law"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Huile seule ou mélange",
+          "nodes": [
+            {
+              "label": "Huile de graines",
+              "detail": "Matières grasses provenant du chènevis."
+            },
+            {
+              "label": "Huile support + extrait",
+              "detail": "La composition finale comprend aussi les substances ajoutées."
+            }
+          ],
+          "caption": "Le même support huileux peut entrer dans des produits différents : l’étiquette doit permettre de distinguer l’huile seule du mélange.",
+          "afterSectionId": "origin",
+          "sourceIds": [
+            "products-tool-seed-oil",
+            "products-lesson-seed-oil"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-chenevis",
+          "record-product-products-formulated",
+          "record-product-products-aerosol",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-seed-oil",
+        "products-tool-oral",
+        "products-tool-dgal-2026",
+        "products-lesson-seed-oil"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-novel-food",
+        "products-tool-food-law",
+        "products-tool-contaminants",
+        "products-tool-metrology",
+        "products-tool-analysis"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "lipides"
+        ],
+        "example": "La composition finale comprend aussi les substances ajoutées.",
+        "detailsMoved": [
+          "regulations"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-press-cake",
+      "questions": [
+        "Comment appelle-t-on la matière solide restante après le pressage du chènevis ?",
+        "En plus des protéines, que contient encore un tourteau de chanvre ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Le tourteau est le solide restant après séparation d’une partie de l’huile des graines. Il garde des protéines, des fibres et de l’huile résiduelle : ce n’est pas une protéine pure.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "La graine contient plusieurs réserves. Lorsqu’on retire une partie de la matière grasse, le reste forme le tourteau. La proportion de protéines dans ce solide peut augmenter simplement parce qu’une partie de l’huile est partie : le pressage ne crée pas de nouvelles protéines."
+            ],
+            "sourceIds": [
+              "products-tool-seed-protein",
+              "products-lesson-parts"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "Broyer le tourteau peut donner une farine ; une séparation supplémentaire peut ensuite concentrer une partie des constituants. La quantité de protéines récupérée, leur pourcentage dans le produit et leur qualité nutritionnelle ne disent pas la même chose. La composition et la texture dépendent aussi des enveloppes restées dans la matière."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-tool-seed-protein"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Un lot prévu pour l’alimentation animale n’est pas automatiquement adapté à l’alimentation humaine. Humidité, stabilité, contaminants et historique doivent correspondre à la destination prévue. Coproduit signifie qu’il est obtenu à côté de l’huile dans la même transformation : cela ne veut dire ni déchet sans valeur ni produit forcément sûr."
+            ],
+            "sourceIds": [
+              "products-tool-seed-protein",
+              "products-tool-food-law",
+              "products-tool-contaminants"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Pour le tourteau exclusivement issu des graines et destiné à l’alimentation humaine, la catégorie prévoit 3,0 mg/kg pour Δ9-THC + 0,877 × Δ9-THCA. Cela signifie trois milligrammes par kilogramme. Le THC est un cannabinoïde associé à l’intoxication ; le THCA est sa forme acide, qui peut se transformer en THC. Le coefficient 0,877 ramène la masse du THCA à la masse correspondante de THC : on ne les additionne pas gramme pour gramme.",
+              "Le produit exact et les facteurs de transformation applicables doivent être précisés : ce n’est pas le plafond de toute préparation animale ou de tout mélange. Ajouter un ingrédient cannabinoïde pose une autre question d’autorisation que l’emploi du tourteau de graines seul."
+            ],
+            "sourceIds": [
+              "products-lesson-food-fr",
+              "products-tool-novel-food",
+              "products-tool-contaminants",
+              "products-tool-food-law"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Pour le calcul réglementaire, une quantité inférieure à la limite de quantification, trop petite pour être chiffrée assez précisément, est comptée comme zéro. C’est la convention dite de borne basse. Elle ne prouve pas une absence physique de la substance et ne s’étend pas automatiquement à tous les usages d’une mesure."
+              ],
+              "sourceIds": [
+                "products-lesson-food-fr",
+                "products-tool-novel-food",
+                "products-tool-contaminants",
+                "products-tool-food-law"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "products-tool-seed-protein",
+          "products-lesson-parts",
+          "products-tool-food-law",
+          "products-tool-contaminants",
+          "products-lesson-food-fr",
+          "products-tool-novel-food"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Ce qui reste après l’huile",
+          "nodes": [
+            {
+              "label": "Graine de départ",
+              "detail": "Huile, protéines, fibres et autres constituants."
+            },
+            {
+              "label": "Séparation d’une partie de l’huile",
+              "detail": "Le solide restant est le tourteau, qui conserve encore de l’huile."
+            }
+          ],
+          "caption": "Le pourcentage de protéines peut augmenter sans qu’une protéine nouvelle ait été fabriquée.",
+          "afterSectionId": "origin",
+          "sourceIds": [
+            "products-tool-seed-protein",
+            "products-lesson-parts"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-seed-oil",
+          "record-product-products-protein",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-seed-protein",
+        "products-tool-materials",
+        "products-lesson-parts",
+        "products-tool-dgal-2026"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-food-law",
+        "products-tool-novel-food",
+        "products-tool-contaminants",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [
+        "hemp-seeds-tourteau",
+        "hemp-seeds-tourteau-fractions"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "tourteau"
+        ],
+        "example": "Le solide restant est le tourteau, qui conserve encore de l’huile.",
+        "detailsMoved": [
+          "regulations"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": [
+          "hemp-seeds-tourteau",
+          "hemp-seeds-tourteau-fractions"
+        ]
+      }
+    },
+    {
+      "id": "record-product-products-protein",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Une poudre protéique de chanvre vient des graines, mais le mot protéique ne fixe pas sa composition. Broyage et séparation peuvent donner des farines, des concentrés ou des isolats différents.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "Une farine décrit une matière réduite en petites particules. Un concentré ou un isolat revendique aussi une séparation qui augmente la part de certains constituants. Deux poudres d’aspect proche peuvent ainsi contenir des quantités différentes de protéines, de matières grasses et de fibres."
+            ],
+            "sourceIds": [
+              "products-tool-seed-protein"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "Les protéines sont des chaînes d’acides aminés. Leur comportement dans un liquide dépend notamment de leur charge et du pH, la mesure de l’acidité. Les procédés étudiés par Cabral récupèrent des fractions différentes. Une récupération plus forte n’établit pas une meilleure digestion ni une proportion plus favorable de tous les acides aminés."
+            ],
+            "sourceIds": [
+              "products-tool-seed-protein"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Le pourcentage doit être relié à la méthode de dosage et à la base du résultat, par exemple produit sec ou tel que vendu. Il ne résume ni les autres constituants ni les contaminants. Le mot isolat ne signifie pas exactement 100 %, et une réussite expérimentale ne prouve pas que l’ingrédient est autorisé pour tout aliment."
+            ],
+            "sourceIds": [
+              "products-tool-seed-protein",
+              "products-tool-metrology",
+              "products-tool-novel-food"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Une fraction obtenue par un procédé nouveau peut relever des nouveaux aliments : un ingrédient sans historique alimentaire suffisant dans le cadre européen peut demander une autorisation. L’origine graine ne couvre donc pas automatiquement tout isolat. Les promesses nutritionnelles et de santé ont aussi leurs propres conditions.",
+              "Pour la catégorie alimentaire exclusivement issue des graines, hors huile, le plafond est de 3,0 mg/kg, soit trois milligrammes par kilogramme, pour Δ9-THC + 0,877 × Δ9-THCA. Le THC est un cannabinoïde associé à l’intoxication ; le THCA est sa forme acide, qui peut se transformer en THC. Le coefficient 0,877 ramène la masse du THCA à la masse correspondante de THC : on ne les additionne pas gramme pour gramme. Les facteurs de transformation restent à examiner pour le produit exact."
+            ],
+            "sourceIds": [
+              "products-tool-novel-food",
+              "products-lesson-food-fr",
+              "products-tool-contaminants",
+              "products-official-claims-dgccrf-2025"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Pour le calcul réglementaire, une quantité inférieure à la limite de quantification, trop petite pour être chiffrée assez précisément, est comptée comme zéro. C’est la convention dite de borne basse. Elle ne prouve pas une absence physique de la substance et ne s’étend pas automatiquement à tous les usages d’une mesure."
+              ],
+              "sourceIds": [
+                "products-tool-novel-food",
+                "products-lesson-food-fr",
+                "products-tool-contaminants",
+                "products-official-claims-dgccrf-2025"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "products-tool-seed-protein",
+          "products-tool-metrology",
+          "products-tool-novel-food",
+          "products-lesson-food-fr",
+          "products-tool-contaminants",
+          "products-official-claims-dgccrf-2025"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Poudre fine et poudre enrichie",
+          "nodes": [
+            {
+              "label": "Broyage",
+              "detail": "On réduit la taille des particules."
+            },
+            {
+              "label": "Séparation",
+              "detail": "On peut aussi changer les proportions de protéines, de fibres et d’huile."
+            }
+          ],
+          "caption": "Une poudre plus fine et une poudre plus riche en protéines ne sont pas la même transformation.",
+          "afterSectionId": "properties",
+          "sourceIds": [
+            "products-tool-seed-protein"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-press-cake",
+          "record-product-products-seed-food",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-seed-protein",
+        "products-tool-dgal-2026",
+        "products-tool-efsa-2026"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-novel-food",
+        "products-tool-food-law"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "acides aminés",
+          "pH"
+        ],
+        "example": "On peut aussi changer les proportions de protéines, de fibres et d’huile.",
+        "detailsMoved": [
+          "regulations"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-bast-fibre",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Les fibres du liber viennent de la partie extérieure de la tige. Elles peuvent servir au fil ou renforcer un matériau, selon leur longueur, leur état et leur préparation.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "Le liber est la zone entourant le cœur ligneux. Une cellule fibreuse possède une paroi riche en cellulose, faite de longues chaînes de sucres ; un faisceau réunit plusieurs cellules. Mesurer la longueur d’une cellule ou celle d’un faisceau ne revient donc pas à mesurer le même objet."
+            ],
+            "sourceIds": [
+              "products-tool-fibres",
+              "products-tool-textile"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "Le rouissage utilise des transformations biologiques pour faciliter la séparation de tissus. Le défibrage sépare ensuite mécaniquement les fractions. Peaufiner trop fortement la préparation peut aussi abîmer les fibres. Une chaîne de fibres longues pour le fil et une chaîne de fibres courtes pour un renfort ne cherchent pas nécessairement les mêmes caractéristiques."
+            ],
+            "sourceIds": [
+              "products-tool-textile",
+              "products-tool-fibres"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Longueur, finesse, propreté et défauts doivent correspondre à l’usage. Dans un composite, la fibre est incorporée à une matrice, la matière qui l’entoure : la qualité du renfort ne décrit pas toute la pièce. Une fibre végétale peut ainsi entrer dans un produit qui contient aussi du plastique ou d’autres fibres."
+            ],
+            "sourceIds": [
+              "products-tool-textile",
+              "products-tool-fibres",
+              "qh-nature-composite-review"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Pour la fibre, la question concrète reste l’usage annoncé : former un fil ou renforcer une pièce demande des caractéristiques et des essais adaptés. Un document agricole ne remplace pas ces preuves sur la matière préparée."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Le cadre agricole du chanvre comporte notamment un seuil variétal de 0,30 % de Δ9-THC. Ce contrôle de la plante ne constitue pas une certification du matériau fini ; les autres conditions de culture sont présentées dans la fiche réglementaire."
+              ],
+              "sourceIds": [
+                "products-tool-hemp-order",
+                "products-tool-hemp-judgment"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "products-tool-fibres",
+          "products-tool-textile",
+          "qh-nature-composite-review",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Deux échelles de longueur",
+          "nodes": [
+            {
+              "label": "Cellule fibreuse",
+              "detail": "Un élément végétal avec sa propre paroi."
+            },
+            {
+              "label": "Faisceau",
+              "detail": "Plusieurs cellules réunies, avec une autre longueur mesurable."
+            }
+          ],
+          "caption": "Le mot fibre peut désigner plusieurs échelles : il faut préciser laquelle avant de comparer des longueurs.",
+          "afterSectionId": "origin",
+          "sourceIds": [
+            "products-tool-fibres",
+            "products-tool-textile"
+          ]
+        },
+        "image": {
+          "src": "/placard/reference/products/fibre.jpg",
+          "alt": "Photographie de faisceaux fibreux se détachant de deux tiges de chanvre après macération.",
+          "caption": "Les faisceaux de fibres se détachent de la partie extérieure des tiges après macération. Ils sont différents du cœur ligneux.",
+          "author": "SpessiG",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hemp_fiber.jpg",
+          "license": "CC0 1.0",
+          "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "kind": "photograph"
+        },
+        "relatedArticleIds": [
+          "record-product-products-textile",
+          "record-product-products-paper",
+          "record-product-products-composite",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-fibres",
+        "products-tool-textile",
+        "qh-nature-hemp-stubble-paper",
+        "products-tool-hemp-judgment"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photographie Commons téléchargée et effectivement examinée ; auteur/licence contrôlés via page et API. Fibres périphériques après macération : observation documentaire, sans échelle de longueur ni diagnostic de qualité textile."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "liber",
+          "cellulose",
+          "rouissage",
+          "défibrage",
+          "matrice"
+        ],
+        "example": "Plusieurs cellules réunies, avec une autre longueur mesurable.",
+        "detailsMoved": [
+          "regulations"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-hemp-hurd",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "La chènevotte est le cœur de la tige séparé et fragmenté. Ses morceaux poreux ont des usages différents, notamment comme litière ou comme granulat de construction.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "Le défibrage sépare les faisceaux extérieurs et fragmente le cœur ligneux. Les morceaux de ce cœur forment la chènevotte. Leurs espaces internes peuvent recevoir de l’eau ; cette structure est différente de la résine des petites glandes de la plante."
+            ],
+            "sourceIds": [
+              "products-tool-materials",
+              "products-tool-hempcrete",
+              "products-lesson-parts"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "Le tri adapte la taille des fragments, appelée granulométrie, et retire une partie des petites particules. Propreté, poussières et humidité sont donc des caractéristiques du lot. Le même nom de plante ne signifie pas que toute chènevotte soit préparée pour le même emploi."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-tool-materials"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Une litière et un granulat de bâtiment n’ont pas automatiquement les mêmes exigences. Pour un mélange constructif, le liant, qui maintient les fragments ensemble, doit être compatible avec le granulat choisi. L’aspect du sac photographié ne suffit pas à établir cette compatibilité ou sa certification."
+            ],
+            "sourceIds": [
+              "products-tool-hempcrete",
+              "products-lesson-building",
+              "products-tool-materials"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Dans ce dernier usage, il faut relier les caractéristiques du granulat au couple liant–granulat et au système constructif documentés. Un produit prévu comme litière ne remplace pas automatiquement ce granulat : sa destination initiale ne prouve pas les performances d’un mur."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment",
+              "products-lesson-building"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Le cadre agricole du chanvre comporte notamment un seuil variétal de 0,30 % de Δ9-THC. Ce contrôle de la plante ne constitue pas une certification du matériau fini ; les autres conditions de culture sont présentées dans la fiche réglementaire."
+              ],
+              "sourceIds": [
+                "products-tool-hemp-order",
+                "products-tool-hemp-judgment",
+                "products-lesson-building"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "products-tool-materials",
+          "products-tool-hempcrete",
+          "products-lesson-parts",
+          "products-lesson-building",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Même cœur de tige, préparations distinctes",
+          "nodes": [
+            {
+              "label": "Litière",
+              "detail": "Fragments préparés pour une fonction notamment absorbante."
+            },
+            {
+              "label": "Construction",
+              "detail": "Granulat spécifié pour être associé à un liant dans un système défini."
+            }
+          ],
+          "caption": "Une matière de litière et un granulat de bâtiment peuvent avoir la même origine sans être interchangeables.",
+          "afterSectionId": "quality",
+          "sourceIds": [
+            "products-tool-hempcrete",
+            "products-lesson-building"
+          ]
+        },
+        "image": {
+          "src": "/placard/reference/products/chenevotte.jpg",
+          "alt": "Photographie de fragments de chènevotte présentés dans un panier avec étiquette Hanfschäben.",
+          "caption": "Ces fragments viennent du cœur ligneux de la tige. Leur aspect ne certifie pas un emploi en construction.",
+          "author": "Florian Gerlach (Nawaro)",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hemp_shives.jpg",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "kind": "photograph"
+        },
+        "relatedArticleIds": [
+          "record-product-products-bedding",
+          "record-product-products-hempcrete",
+          "record-product-products-fines",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-materials",
+        "products-tool-hempcrete",
+        "products-lesson-parts",
+        "products-tool-hemp-judgment"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photographie Commons téléchargée et effectivement examinée ; auteur/licence contrôlés via page et API. Chènevotte : fragments de cœur ligneux. L’exemple photographié n’est pas un granulat de construction certifié."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "défibrage",
+          "liant",
+          "granulométrie"
+        ],
+        "example": "Granulat spécifié pour être associé à un liant dans un système défini.",
+        "detailsMoved": [
+          "regulations"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-fines",
+      "questions": [
+        "Que sont les « fines » recueillies lors du défibrage des tiges de chanvre ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Les fines sont les petites particules et poussières recueillies pendant le défibrage des tiges. Elles viennent de la tige et ne doivent pas être confondues avec le kief résineux.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "La séparation mécanique produit des fragments de différentes tailles. Les plus petits peuvent mêler fibres, cœur ligneux et matières minérales. Leur petite taille ne signifie donc pas qu’ils sont chimiquement plus purs, ni qu’ils proviennent des glandes résineuses."
+            ],
+            "sourceIds": [
+              "products-tool-materials",
+              "products-tool-resin",
+              "products-lesson-parts"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "La composition dépend de l’installation et du lot. Certaines filières utilisent ces fractions comme supports ou pour produire de l’énergie, selon des conditions d’acceptation définies. Un tel débouché n’est pas disponible partout ; produire de l’énergie ne veut pas dire produire sans émissions."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-tool-materials"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Le destinataire doit connaître l’origine, la composition et les corps étrangers de la fraction qu’il reçoit. Le kief, lui, rassemble des structures résineuses détachées : la ressemblance poudreuse n’en fait pas la même matière. Une utilisation industrielle possible ne prouve pas une aptitude à entrer dans un aliment."
+            ],
+            "sourceIds": [
+              "products-tool-resin",
+              "products-tool-materials"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "La valorisation des fines dépend de la destination et des conditions d’acceptation du produit réel. Un document sur la culture ne remplace pas la vérification d’un lot industriel et n’autorise pas, par extension, son incorporation alimentaire."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Le cadre agricole du chanvre comporte notamment un seuil variétal de 0,30 % de Δ9-THC. Ce contrôle de la plante ne constitue pas une certification du matériau fini ; les autres conditions de culture sont présentées dans la fiche réglementaire."
+              ],
+              "sourceIds": [
+                "products-tool-hemp-order",
+                "products-tool-hemp-judgment"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "products-tool-materials",
+          "products-tool-resin",
+          "products-lesson-parts",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Deux poudres, deux origines",
+          "nodes": [
+            {
+              "label": "Fines",
+              "detail": "Petits fragments issus du défibrage de la tige."
+            },
+            {
+              "label": "Kief",
+              "detail": "Structures résineuses détachées des tissus glandulaires."
+            }
+          ],
+          "caption": "L’aspect poudreux ne suffit pas à identifier une fraction : l’organe et la transformation d’origine comptent.",
+          "afterSectionId": "quality",
+          "sourceIds": [
+            "products-tool-resin",
+            "products-tool-materials"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-hemp-hurd",
+          "record-product-products-kief",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-materials",
+        "products-tool-resin",
+        "products-lesson-parts",
+        "products-tool-hemp-judgment"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [
+        "hemp-profiles-fines"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [],
+        "example": "Structures résineuses détachées des tissus glandulaires.",
+        "detailsMoved": [
+          "regulations"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": [
+          "hemp-profiles-fines"
+        ]
+      }
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [
+    {
+      "id": "hemp-seeds-decorticage",
+      "prompt": "Que retire-t-on pour obtenir du chènevis décortiqué ?",
+      "options": [
+        "L’enveloppe extérieure",
+        "Toute la matière grasse",
+        "Toutes les protéines",
+        "L’eau de la graine"
+      ],
+      "answer": 0,
+      "explanation": "Décortiquer retire l’enveloppe extérieure du petit fruit et garde sa partie intérieure. La photo de chènevis décortiqué ne représente donc pas des fruits entiers.",
+      "articleId": "record-product-products-chenevis",
+      "sourceIds": [
+        "products-lesson-parts"
+      ]
+    },
+    {
+      "id": "hemp-seeds-tourteau",
+      "prompt": "Comment appelle-t-on la matière solide restante après le pressage du chènevis ?",
+      "options": [
+        "Le tourteau",
+        "La chènevotte",
+        "La filasse",
+        "Le pollen"
+      ],
+      "answer": 0,
+      "explanation": "Le tourteau est la matière solide restant après séparation d’une partie de l’huile. Il garde d’autres constituants de la graine.",
+      "articleId": "record-product-products-press-cake",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ]
+    },
+    {
+      "id": "hemp-seeds-tourteau-fractions",
+      "prompt": "En plus des protéines, que contient encore un tourteau de chanvre ?",
+      "options": [
+        "Des fibres et de l’huile résiduelle",
+        "Seulement de l’eau et des sels",
+        "Uniquement des grains de pollen",
+        "Seulement de l’amidon pur"
+      ],
+      "answer": 0,
+      "explanation": "Le tourteau garde des fibres et une quantité variable d’huile en plus des protéines. Ce n’est donc pas un isolat pur de protéines.",
+      "articleId": "record-product-products-press-cake",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ]
+    },
+    {
+      "id": "hemp-profiles-fines",
+      "prompt": "Que sont les « fines » recueillies lors du défibrage des tiges de chanvre ?",
+      "options": [
+        "Des fibres longues peignées",
+        "Des graines décortiquées",
+        "Des feuilles encore intactes",
+        "De petites particules de tige"
+      ],
+      "answer": 3,
+      "explanation": "Les fines sont les petits fragments et poussières issus du défibrage de la tige. Leur origine est différente de celle du kief, constitué de structures résineuses.",
+      "articleId": "record-product-products-fines",
+      "sourceIds": [
+        "products-tool-materials"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Le droit cité est celui du contexte France/UE annoncé ; les descriptions de marché canadien ne constituent pas des autorisations françaises.",
+    "Références juridiques réutilisées : voir attribution au coordinateur et preuves dans regulation-01.json. La consolidation 2026 de 178/2002 reste à résoudre par le coordinateur ; ne pas présenter sa lecture consolidée comme acquise.",
+    "Ne pas transformer les listes de contrôles en garantie : matrice, produit fini, échantillon et destination restent distincts.",
+    "Une photo de chènevis décortiqué n’illustre pas un fruit entier en coupe ; une graine alimentaire n’est pas une semence certifiée.",
+    "Fines de tige ≠ kief ; ce contraste est anatomique, pas seulement visuel."
+  ],
+  "pedagogicalRevision": {
+    "date": "2026-11-14",
+    "status": "ready-for-coordinator-review",
+    "articleIdsRewritten": [
+      "record-product-products-chenevis",
+      "record-product-products-seed-oil",
+      "record-product-products-press-cake",
+      "record-product-products-protein",
+      "record-product-products-bast-fibre",
+      "record-product-products-hemp-hurd",
+      "record-product-products-fines"
+    ],
+    "pilotPreserved": false
+  }
+}

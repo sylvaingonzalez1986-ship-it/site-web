@@ -1,0 +1,129 @@
+{
+  "version": "2026-11-12.terpenes1",
+  "verifiedAt": "2026-11-12",
+  "status": "Livré et validé localement",
+  "counts": {
+    "chapters": 10,
+    "lessons": 20,
+    "activities": 20,
+    "checkpoints": 10,
+    "authoredQuestions": 40,
+    "privateOptionExplanations": 160,
+    "synthesisQuestions": 10,
+    "sourceRecords": 52,
+    "distinctSourceUrls": 49,
+    "terms": 46,
+    "commonGlossaryEntries": 120,
+    "detailedCompounds": 31,
+    "complementaryEntries": 55,
+    "totalEntries": 86,
+    "buddyLinks": 3
+  },
+  "scope": "Troisième parcours développé ; les six autres futurs parcours non précisés ne sont pas inventés. Corpus raisonné et daté, non inventaire exhaustif de toutes les molécules du cannabis.",
+  "sourceAccess": {
+    "official-page": 13,
+    "full-text": 15,
+    "abstract": 17,
+    "excerpt": 7
+  },
+  "identificationLevels": {
+    "reference-standard": 21,
+    "ri-ms-supported": 29,
+    "tentative": 36
+  },
+  "sourceScope": "Un étalon renforce une attribution mais ne démontre pas automatiquement la stéréochimie. Les entrées provisoires et les groupes non complètement résolus restent visibles ; 86 dossiers ne signifie pas 86 identités confirmées. Les 31 fiches détaillées sont appuyées par étalon ou RI/MS.",
+  "corpus": "docs/bete-de-concours/school-terpenes-corpus.json",
+  "files": {
+    "curriculum": "src/lib/kanab-quest-school-terpenes-lessons.ts",
+    "privateAnswers": "src/lib/kanab-quest-school-terpenes-answers.ts",
+    "compounds": "src/lib/kanab-quest-school-terpenes-compounds.ts",
+    "buddyMapping": "src/lib/kanab-quest-school-terpenes-buddy-links.ts",
+    "entry": "src/components/placard/KqSchoolTerpenes.tsx",
+    "encyclopedia": "src/components/placard/KqTerpeneEncyclopedia.tsx",
+    "visuals": "src/components/placard/KqTerpeneVisuals.tsx",
+    "crossword": "src/lib/kanab-quest-school-terpenes-crossword.ts"
+  },
+  "requiredExercises": [
+    {
+      "lesson": "terpenes-vocabulary-1",
+      "activity": "Roue olfactive interactive, neuf catégories nommées ; choix et justification structurés."
+    },
+    {
+      "lesson": "terpenes-classes-1",
+      "activity": "Classer molécule et famille chimique en justifiant le critère."
+    },
+    {
+      "lesson": "terpenes-non-terpenes-1",
+      "activity": "Distinguer terpène, ester et composé soufré sans déduire les effets de leur odeur."
+    },
+    {
+      "lesson": "terpenes-profiles-1",
+      "activity": "Comparer deux profils fictifs : A limonène6/myrcène4 mg/g, B3/2 mg/g ; même proportion60/40 dans un sous-ensemble de deux analytes, sommes10/5 mg/g de matière sèche."
+    },
+    {
+      "lesson": "terpenes-claims-2",
+      "activity": "Corriger une promesse commerciale en confrontant la population, le résultat et les limites des essais humains."
+    },
+    {
+      "lesson": "terpenes-vocabulary-2",
+      "activity": "Grille connectée de six mots : saisie par case ou mot entier, accents, clavier, indices, correction, brouillon local et validation non monétaire."
+    }
+  ],
+  "evidenceReview": {
+    "human": "Spindle2024 : 20 adultes en bonne santé, condition additionnelle chez12 ; anxiété aiguë induite par THC, formulation contrôlée inhalée de d-limonène, pas traitement d’un trouble anxieux. Kumar2025 : 19 adultes/six sessions, absence d’atténuation des déficits mnésiques étudiés avec α-pinène. Résultats, critères et composés non interchangeables.",
+    "preclinical": "Santiago2019/Finlay2020 : résultats négatifs aux signaux/cibles CB1/CB2 étudiés ; pas exclusion universelle de toute interaction. LaVigne2021 : cellules et souris avec WIN55,212, résultats sélectivement additifs, pas preuve clinique de synergie.",
+    "sensory": "Rice2015 et Oswald2021/2023 : odorants, importance de la méthode et de la matrice. Oswald2023 porte sur31 extraits et un panel sensoriel, pas sur toutes les fleurs. Les terpènes restent des contributeurs possibles ; les autres familles n’annulent pas leur rôle.",
+    "independent": "Relectures croisées des identités, tableaux de présence, étalon/RI-MS, α/β-pinènes, E/Z-ocimènes, nérolidol, fenchol, farnésènes, bergamotènes, guaiol/eudesmols, autres plantes ; relecture du vocabulaire, profils fictifs, OAV, transformations, non-terpéniques et corrigés. Références secondaires mentionnées dans les fiches ajoutées à leurs liens locaux après revue.",
+    "limits": "Relecture documentaire interne ; aucune validation universitaire externe ni étude d’apprentissage auprès de joueurs. Les sources indiquent exactement texte intégral, résumé ou extrait consulté."
+  },
+  "visuals": {
+    "mode": "Visuels HTML/SVG et illustrations existantes du jeu ; aucune nouvelle image générée dans ce lot.",
+    "assets": [
+      "public/placard/school/course-molecules-v1.webp",
+      "public/placard/flavors-v1/"
+    ],
+    "reuse": "Moteur Crossword, KqBarChart, matériaux de contrôle/papier, fiches Buddies et intérieur v4 conservés.",
+    "interpretation": "Roue de vocabulaire à secteurs égaux sans proportions mesurées ; blocs C5 schématiques ; chiffres de profils explicitement fictifs. Aucune valeur physique convertie en recommandation de vaporisation."
+  },
+  "economy": {
+    "quizId": "molecules",
+    "rewardId": "school:molecules",
+    "budgetCents": 1000,
+    "schoolBudgetCents": 10000,
+    "selection": "t1 signé, dix chapitres en dix questions ; versions et comptes séparés.",
+    "migration": "supabase/migrations/20261112000300_kq_school_terpenes_progress.sql",
+    "preservation": "Anciens gains et reçus conservés ; progression20/10/20 indépendante, CAS et union monotone, file par cours et propriétaire."
+  },
+  "validation": {
+    "status": "Réussi",
+    "unitTests": "138 tests ciblés : 126 backend/protocole/outbox et 12 contenu. Les 12 contrôles contenu ont été relancés après correction des liens bibliographiques.",
+    "database": "52 contrôles PGlite, 12 tests de concurrence PostgreSQL 17 et permissions explicites sur 382 migrations ; bases temporaires locales uniquement.",
+    "fixture": "32 contrôles en mémoire ; trois parcours, anciens gains, reçus et progression concurrente.",
+    "browser": "Parcours Terpènes à 320 et 1440 px : six exercices, justification erronée et reprise de brouillon, mots croisés, roue au clavier, profils et unités, 31 fiches détaillées et 55 entrées complémentaires, recherche grecque et synonyme alpha-caryophyllène, filtres, liens Buddy dans les deux sens, synthèse de dix chapitres et corrections des quatre options. Zéro erreur JavaScript et débordement horizontal.",
+    "regression": "Recette Botanique 320/1440 px réussie après partage du rendu et du glossaire ; aperçu final des index Histoire/Botanique et navigation du glossaire vers une leçon Histoire revérifiés.",
+    "preview": "Aperçu final à 320/1440 px, glossaire de 120 entrées, alias alpha-caryophyllène, trois fichiers de réponses interdits 403, garde propriétaire 409 et quatre assets chargés.",
+    "build": "npm run build réussi, avec vérification TypeScript et génération des routes. ESLint ciblé final et diff --check réussis. Le premier tsc autonome a démarré avant création du fichier de corrigés ; le build final valide les fichiers complets.",
+    "privateAnswers": "116 explications privées des trois parcours, en texte brut et échappé JSON, absentes des 185 chunks JavaScript client ; protections server-only compilées.",
+    "limitations": "Tests techniques et relectures documentaires internes. Navigateur avec API simulées ; signatures et droits réels testés séparément côté serveur/SQL. Aucun compte distant, paiement réel ou résultat pédagogique auprès de joueurs validé.",
+    "reports": [
+      "output/placard-navigation/school-terpenes-report.json",
+      "output/placard-navigation/school-botany-report.json",
+      "output/placard-navigation/school-terpenes-preview-smoke.json",
+      "output/school/terpenes-content-tests.log",
+      "output/school/terpenes-build.log",
+      "output/school/terpenes-client-answer-check.json",
+      "output/school/terpenes-final-lint.log"
+    ]
+  },
+  "delivery": {
+    "mode": "Local uniquement ; aucune publication ni migration distante.",
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=molecules&passage=terpenes-index",
+    "reports": [
+      "output/placard-navigation/school-terpenes-report.json",
+      "output/school/terpenes-content-tests.log",
+      "output/school/terpenes-build.log",
+      "output/school/terpenes-client-answer-check.json",
+      "output/placard-navigation/school-terpenes-preview-smoke.json"
+    ]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "date": "2026-11-14",
+  "tool": "image_gen.imagegen",
+  "prompt": "Generate ONE reusable transparent PNG game sprite of a contestant's wooden quiz lectern, no person. Match exactly the attached village-school quiz stage art: thick hand-inked black contours, crafted golden wood, teal green paint, cream paper, subtle grain, cartoon boardgame aesthetic. Front elevation, nearly orthographic, centered, full object visible, compact upright proportions about width 75% of height. Solid short lectern/podium with a broad angled top where a player's hands would rest, stout wood base, teal front inset and a small embossed hemp leaf near the foot. Leave the upper front inset as a plain quiet cream panel so HTML can display the score on top later. No text, no numbers, no letters, no logos, no plants around it, no chair, no microphone, no stage, no walls, no room. Isolate only the single lectern cutout on truly transparent background, no floor shadow outside its silhouette. Full sprite within comfortable transparent margin, edges crisp, illustrated shape pleasing and slightly irregular. Character sprites will stand behind this desk; it should cover legs and lower torso.",
+  "styleReference": "public/placard/school/quiz-stage-v1.webp",
+  "original": "output/school/quiz-lectern-v1-original.png",
+  "asset": "public/placard/school/quiz-lectern-v1.webp",
+  "width": 512,
+  "height": 620,
+  "transparent": true,
+  "bytes": 53296,
+  "sha256": "578cd8cea51dd865905a8555849b9a56f8431e50b0f811d780a72b2ad56c670c",
+  "processing": "Transparent margin trimmed, width512 WebP quality88. Original preserved.",
+  "purpose": "Reusable decorative lectern in front of the player’s real ChanvrierAvatar. Scores and labels remain accessible HTML."
+}

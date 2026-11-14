@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-14",
+  "lot": "cannabinoids-01",
+  "entries": {
+    "ref-phytocannabinoides": {
+      "contentHash": "330e629b1e35899fc2b6cd30dcda64d445ac37071ba623fbf9e9df44771fba73",
+      "note": "Six articles, 18 definitions and 11 explanations read. Side chain and intracellular communication explained; secondary chemical structures made explicit in expandable details.",
+      "status": "read-and-reviewed"
+    },
+    "ref-biosynthese-cannabinoides": {
+      "contentHash": "0b0ad88e7910dfff1f75d4b1c16045e62e7da47e3aab53fe798d6fd55734272b",
+      "note": "Six articles, 18 definitions and 11 explanations read. Side chain and intracellular communication explained; secondary chemical structures made explicit in expandable details.",
+      "status": "read-and-reviewed"
+    },
+    "ref-formes-acides-neutres": {
+      "contentHash": "ad19671c2f089717305c7495b7ca9ef7011c5e229e593ee1d6f007de614b75ab",
+      "note": "Six articles, 18 definitions and 11 explanations read. Side chain and intracellular communication explained; secondary chemical structures made explicit in expandable details.",
+      "status": "read-and-reviewed"
+    },
+    "ref-thc": {
+      "contentHash": "0d3cf2ff6f990bc78fbe5882a4718b56a0f055e3ca56869abe6598105575c357",
+      "note": "Six articles, 18 definitions and 11 explanations read. Side chain and intracellular communication explained; secondary chemical structures made explicit in expandable details.",
+      "status": "read-and-reviewed"
+    },
+    "ref-cbd": {
+      "contentHash": "17d14698490a4b823c17c57642bab9837c5da66cccff542f124f804ecd213a69",
+      "note": "Six articles, 18 definitions and 11 explanations read. Side chain and intracellular communication explained; secondary chemical structures made explicit in expandable details.",
+      "status": "read-and-reviewed"
+    },
+    "ref-systeme-endocannabinoide": {
+      "contentHash": "43be874ecf10729de778298a1cdf4b730b3d67e40aabf62873570e0082f2cc34",
+      "note": "Six articles, 18 definitions and 11 explanations read. Side chain and intracellular communication explained; secondary chemical structures made explicit in expandable details.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 18,
+    "hash": "dd6ec7a75fba5673bac66c6f3f90c468c160df8c2941c101ecc73f24064701b6"
+  },
+  "quiz": {
+    "count": 11,
+    "hash": "2c1de544fafeda75a3650cc62a74d9bf62c23c9f36ff5d36d054cecb9f1add29"
+  }
+}

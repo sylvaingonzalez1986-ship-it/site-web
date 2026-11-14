@@ -155,6 +155,8 @@ export type KqWarehouseSummary = {
 };
 
 export type KqWarehouseRunSnapshot = {
+  /** Frozen commercial occupancy; never part of the paid sourceState. Absent on historical runs. */
+  productionReservedZoneId?: string | null;
   wearVersion?: 1;
   cultureEquipment?: KqWarehouseCondition;
   yieldFactor?: number;
@@ -608,6 +610,9 @@ export function getKqWarehouseRunSnapshot(state: KqWarehouseState, revision = 0,
 
 export function isKqWarehouseRunSnapshot(value: unknown): value is KqWarehouseRunSnapshot {
   if (!record(value) || ![1, 2].includes(Number(value.version)) || !natural(value.revision) || !isKqWarehouseState(value.sourceState)) return false;
+  if (value.productionReservedZoneId != null && (typeof value.productionReservedZoneId !== "string"
+    || !value.sourceState.zones.some(zone => zone.id === value.productionReservedZoneId)
+    || value.version === 2 && value.zoneId === value.productionReservedZoneId)) return false;
   if (value.balanceVersion !== undefined && value.balanceVersion !== 2) return false;
   if (value.climateBillingVersion !== undefined && value.climateBillingVersion !== 2) return false;
   if (value.postHarvestBalanceVersion !== undefined && value.postHarvestBalanceVersion !== 2) return false;

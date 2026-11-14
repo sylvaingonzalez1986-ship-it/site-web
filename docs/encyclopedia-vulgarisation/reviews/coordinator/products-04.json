@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "products-04",
+  "entries": {
+    "record-product-products-hash": {
+      "contentHash": "377ecc95c4103270af74cbfde5d0a462717cbdbce2280c58f393081dfb260584",
+      "note": "Read all seven entries, diagrams, formula explanations and legal qualifications; finished-product reasoning and uncertainty remain explicit.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-rosin": {
+      "contentHash": "6c00c5972615821ac199810e33f5d4288f3754dbe3afa29a9ed2f0c4496a5bb4",
+      "note": "Read all seven entries, diagrams, formula explanations and legal qualifications; finished-product reasoning and uncertainty remain explicit.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-extract": {
+      "contentHash": "03b0b2ea0d62aabfed1e2dcf3cd50458ff37cd46747056ee12b42abf0f820c71",
+      "note": "Read all seven entries, diagrams, formula explanations and legal qualifications; finished-product reasoning and uncertainty remain explicit.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-distillate": {
+      "contentHash": "46ef215a2ac199d875c465387d10468c6f306fa7c6c60c99371eb064d06221b7",
+      "note": "Read all seven entries, diagrams, formula explanations and legal qualifications; finished-product reasoning and uncertainty remain explicit.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-isolate": {
+      "contentHash": "6ed8fa99ae4e5799628ab35688de35915d48e62c6c03360d65c912454bbfcfe1",
+      "note": "Read all seven entries, diagrams, formula explanations and legal qualifications; finished-product reasoning and uncertainty remain explicit.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-formulated": {
+      "contentHash": "7e7ac03ceddb3685df2800b9ccf3cf0d10fbe2e7d32adcc6a9b739e66d53df9c",
+      "note": "Read all seven entries, diagrams, formula explanations and legal qualifications; finished-product reasoning and uncertainty remain explicit.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-seed-food": {
+      "contentHash": "470a20002ac02fa829feb3470100e684ccef188bbaa2b3715f9e65a0ab170c2f",
+      "note": "Read all seven entries, diagrams, formula explanations and legal qualifications; finished-product reasoning and uncertainty remain explicit.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+}

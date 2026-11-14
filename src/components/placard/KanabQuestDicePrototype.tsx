@@ -27,6 +27,7 @@ import { KqSeasonBoard } from "./KqSeasonBoard";
 import { KqBattleHistory } from "./KqBattleHistory";
 import { KqChapterHeading } from "./KqChapterHeading";
 import { getKqJuryTarget } from "@/lib/kanab-quest-jury-target";
+import { getKqJuryReadiness, getKqTrimHref, getKqTrimPresentation } from "@/lib/kanab-quest-jury-readiness";
 import { KqBattleVerdictDialog } from "./KqBattleVerdictDialog";
 import { KqCulturePreparation } from "./KqCulturePreparation";
 import { KqCultureCarousel, type KqCulturePanelId } from "./KqCultureCarousel";
@@ -129,6 +130,7 @@ import { getKqCampaignMemberState, getKqCampaignParticipants, getKqCampaignTotal
 import { KqCampaignSummary } from "./KqCampaignSummary";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import { isKqWarehouseState, type KqWarehouseZone } from "@/lib/kanab-quest-warehouse";
+import { isKqProductionReservation } from "@/lib/kanab-quest-production-reservation";
 import styles from "./KanabQuestDicePrototype.module.css";
 
 const LOCAL_COLLECTION_CODES = KQ_ACTIVE_CARDS.map((card) => card.code);
@@ -381,6 +383,7 @@ type KqDiceProps = {
   onOpenMarket?: (flowerId?: string) => void;
   onOpenMissionDestination?: (destination: KqMissionDestination, code?: KqMissionCode) => void;
   onOpenStorage?: (flowerId?: string) => void;
+  onOpenTrim?: (flowerId: string) => void;
   onOpenRun?: (selection: KqClientRunSelection) => void;
   onOpenWarehouse?: (zoneId?: string) => void;
   onOpenBuddiePacks?: () => void;
@@ -411,6 +414,7 @@ function KqGameSession({
   onOpenMarket,
   onOpenMissionDestination,
   onOpenStorage,
+  onOpenTrim,
   initialFlowerId,
   initialZoneId,
   initialRunId,
@@ -620,7 +624,7 @@ function KqGameSession({
     .map((flower) => flower.id)
     .sort()
     .join(","), [officialFlowers]);
-  const curingFlowersNeedRefresh = officialFlowers.some(flower => flower.status === "available" && flower.storage?.stage !== "ready");
+  const curingFlowersNeedRefresh = officialFlowers.some(flower => flower.status === "available" && !getKqJuryReadiness(flower).ready);
   const [botBattleResult, setBotBattleResult] = useState<BotBattleResult | null>(null);
   const [matchmakingLoading, setMatchmakingLoading] = useState(false);
   const [juryCheckNeeded, setJuryCheckNeeded] = useState(false);
@@ -711,7 +715,9 @@ function KqGameSession({
       : isPlayerMode && !remoteCollection.loading && !remoteCollection.error && ownedBuddieCodes.length === 0
         ? "Il te faut au moins un Buddie dans ta collection. Les Packs Buddies sont accessibles ci-dessus."
       : isPlayerMode && !campaignParticipants.length
-        ? "Choisis un Buddie ci-dessus pour au moins une zone active."
+        ? preparationWarehouse?.productionReservation && !preparationWarehouse.state.zones.some(zone => zone.active && zone.id !== preparationWarehouse.productionReservation?.zoneId)
+          ? "Ta zone active est réservée au personnel. Ajoute une autre zone pour lancer une campagne."
+          : "Choisis un Buddie ci-dessus pour au moins une zone active."
       : isPlayerMode && new Set(campaignParticipants.map(member => member.buddieCode)).size !== campaignParticipants.length
         ? "Choisis un Buddie différent pour chaque zone."
     : remoteBurnsEnabled && (remoteCollection.loading || remoteCollection.error || !buddieRotation)
@@ -776,11 +782,12 @@ function KqGameSession({
       const response = await remoteRequest("/api/admin/placard/warehouse", { cache: "no-store", signal });
       const warehouse = await response.json() as KqBuddieAssignmentSnapshot & { error?: string };
       if (!response.ok || !isKqWarehouseState(warehouse.state)) throw new Error(warehouse.error || "La zone est indisponible.");
+      if (warehouse.productionReservation !== undefined && !isKqProductionReservation(warehouse.productionReservation)) throw new Error("La réservation de la zone autonome doit être actualisée.");
       if (!Number.isSafeInteger(warehouse.revision) || warehouse.revision < 1) throw new Error("Le plan doit être actualisé avant de choisir tes Buddies.");
       confirmedWarehouse = warehouse;
       zone = warehouse.state.zones.find(item => item.id === initialZoneId) ?? null;
       if (initialZoneId && !zone) throw new Error("Cette zone n’existe plus. Choisis une zone dans l’entrepôt.");
-      participants = getKqCampaignParticipants(warehouse.state, warehouse.revision ?? 0);
+      participants = getKqCampaignParticipants(warehouse.state, warehouse.revision ?? 0, undefined, warehouse.productionReservation?.zoneId ?? null);
     }
     if (signal.aborted || !lifecycle.current.mounted || generation !== cardSyncGeneration.current || cardOperation.current || cardRecoveryRef.current) throw new DOMException("Culture fermée", "AbortError");
     const recoveredZoneId = selected ? getKqClientRunZoneId(selected) : undefined;
@@ -797,7 +804,7 @@ function KqGameSession({
 
   const applyBuddieAssignment = useCallback((snapshot: KqBuddieAssignmentSnapshot) => {
     setPreparationWarehouse(snapshot);
-    setCampaignParticipants(getKqCampaignParticipants(snapshot.state, snapshot.revision));
+    setCampaignParticipants(getKqCampaignParticipants(snapshot.state, snapshot.revision, undefined, snapshot.productionReservation?.zoneId ?? null));
     setZoneContext(snapshot.state.zones.find(zone => zone.id === initialZoneId) ?? null);
     setEnergyEstimate(null);
   }, [initialZoneId]);
@@ -1585,8 +1592,9 @@ function KqGameSession({
 
   const joinRandomBattleQueue = async (flowerId: string) => {
     if (juryMutationLock.current || juryUncertain.current) return;
-    if (officialFlowers.find(flower => flower.id === flowerId)?.storage?.stage !== "ready") {
-      setRemoteNotice("L’affinage doit être terminé avant de présenter cette Fleur d’Arène au jury. Vérifie son état dans le stockage.");
+    const readiness = getKqJuryReadiness(officialFlowers.find(flower => flower.id === flowerId));
+    if (!readiness.ready) {
+      setRemoteNotice(readiness.description);
       return;
     }
     juryMutationLock.current = true;
@@ -1683,8 +1691,9 @@ function KqGameSession({
     if (!pendingTrainingFlowerId) return;
     const trainingFlowerId = pendingTrainingFlowerId;
     if (juryMutationLock.current || juryUncertain.current) return;
-    if (officialFlowers.find(flower => flower.id === trainingFlowerId)?.storage?.stage !== "ready") {
-      setRemoteNotice("L’affinage doit être terminé avant de présenter cette Fleur d’Arène au jury. Vérifie son état dans le stockage.");
+    const readiness = getKqJuryReadiness(officialFlowers.find(flower => flower.id === trainingFlowerId));
+    if (!readiness.ready) {
+      setRemoteNotice(readiness.description);
       return;
     }
     juryMutationLock.current = true;
@@ -1896,6 +1905,7 @@ function KqGameSession({
           energyMode,
           expectedEnergyCents: isPlayerMode ? energyEstimate?.totalCents : undefined,
           expectedWarehouseRevision: isPlayerMode ? campaignParticipants[0]?.warehouse.revision : undefined,
+          expectedProductionReservedZoneId: isPlayerMode ? preparationWarehouse?.productionReservation?.zoneId ?? null : undefined,
           heritageCode: selectedHeritage || undefined,
           ...(isPlayerMode ? { campaign: true } : {}),
         };
@@ -2351,7 +2361,7 @@ function KqGameSession({
             <article><span>Collection auxiliaire</span><strong>{KQ_COLLECTIONS.support.title}</strong><p><b>{ownedBotteCount}</b> références disponibles · {totalBotteCopies} copies · objectif {KQ_COLLECTIONS.support.totalCards}</p><div><i style={{ width: `${ownedBotteCount / KQ_COLLECTIONS.support.totalCards * 100}%` }} /></div></article>
           </div> : null}
           {viewMode === "arena" ? (
-            <div className={styles.arenaModeHero}><KqChapterHeading art="harvest" title="Jury & duels" level={1} compact><p>Après l’affinage, fais juger ta Fleur d’Arène. Le stock récolté reste disponible pour la vente.</p></KqChapterHeading></div>
+            <div className={styles.arenaModeHero}><KqChapterHeading art="harvest" title="Jury & duels" level={1} compact><p>Après l’affinage et le trim, fais juger ta Fleur d’Arène. Le stock récolté reste disponible pour la vente.</p></KqChapterHeading></div>
           ) : null}
           {viewMode !== "arena" ? seasonBoard : null}
           <details className={styles.packFormat}>
@@ -2451,7 +2461,10 @@ function KqGameSession({
               {juryDataReady && reserveFlowers.length > 0 ? (
                 <KqCardCarousel id="jury-flowers-title" title="Mes Fleurs d’Arène" label="Fleurs d’Arène en réserve" count={reserveFlowers.length} className={styles.juryFlowerCarousel} preservePosition showPosition
                   intro={<p className={styles.juryCarouselIntro}>{reserveFlowers.length} Fleur{reserveFlowers.length > 1 ? "s" : ""} en réserve. Les Fleurs déjà jugées se retrouvent dans Mes duels.</p>}>
-                  {reserveFlowers.map((flower) => (
+                  {reserveFlowers.map((flower) => {
+                    const readiness = getKqJuryReadiness(flower);
+                    const trim = getKqTrimPresentation(flower.trim);
+                    return (
                     <div className={styles.officialFlowerSlot} key={flower.id} id={`placard-flower-${flower.id}`} role="listitem" aria-labelledby={`jury-flower-name-${flower.id}`} tabIndex={-1} data-requested={initialFlowerId === flower.id || undefined}>
                       <div className={styles.juryFlowerArt} data-jury-flower-card={flower.id}>
                         <FlowerTcgCard
@@ -2463,7 +2476,7 @@ function KqGameSession({
                           imageUrl={ownedBuddieArtwork[flower.varietyCode]?.imageUrl}
                           reference={`Fleur ${flower.id.slice(0, 8)}`}
                           status={flower.status}
-                          statusLabel={flower.status === "available" ? flower.storage?.stage === "ready" ? "Prête pour le jury" : flower.storage?.stage === "curing" ? "En affinage" : "Affinage à vérifier" : undefined}
+                          statusLabel={flower.status === "available" ? readiness.label : undefined}
                           selected={pendingTrainingFlowerId === flower.id || pendingRandomQueueFlowerId === flower.id}
                         />
                       </div>
@@ -2474,8 +2487,8 @@ function KqGameSession({
                       </div>
                       {flower.status === "locked" ? <p className={styles.curingStatus}>Duel engagé</p> : null}
                       {flower.status === "available" ? (
-                        flower.storage?.stage === "ready" ? <>
-                          <p className={styles.curingStatus}>Affinage terminé · prête pour le jury</p>
+                        readiness.ready ? <>
+                          <p className={styles.curingStatus}>{readiness.description} · prête pour le jury</p>
                           <p className={styles.juryFlowerConsequence} id={`jury-flower-use-${flower.id}`}>Dans les deux modes, la Fleur d’Arène est consommée au verdict. Ton stock récolté est conservé.</p>
                           <div className={styles.juryFlowerChoices}>
                             <div>
@@ -2496,9 +2509,12 @@ function KqGameSession({
                             {flower.storage?.stage === "curing" ? <KqProgressMeter label="Affinage avant jury" value={flower.storage.progressPercent} max={100}
                               valueLabel={`${flower.storage.progressPercent.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} %`}
                               hint={`Fin prévue : ${formatKqDate(flower.storage.readyAt)}`} />
-                              : <p>État de l’affinage à vérifier. Le jury sera accessible une fois l’affinage terminé.</p>}
+                              : <p>{flower.storage?.stage === "ready" ? "Affinage terminé." : "État de l’affinage à vérifier."}</p>}
+                            <p data-jury-trim-status={trim.status}><strong>{trim.label}.</strong> {trim.description}</p>
                             {flower.storage?.capacity && flower.storage.capacity.overflowUnits > 0 ? <p>Une partie de cette récolte attend un contenant.</p> : null}
                           </div>
+                          {trim.status !== "ready" ? <button type="button" data-culture-open-trim={flower.id} onClick={() => onOpenTrim ? onOpenTrim(flower.id) : router.push(getKqTrimHref(flower.id, "arena"))}>{trim.buttonLabel}<ArrowRight aria-hidden="true" /></button> : null}
+                          {trim.status === "unknown" ? <button type="button" data-jury-refresh-trim onClick={() => setCollectionRefreshNonce(value => value + 1)}>Actualiser le suivi</button> : null}
                           <button type="button" data-culture-open-storage={flower.id} onClick={() => openStorage(flower.id)}>Voir le stockage <ArrowRight aria-hidden="true" /></button>
                         </>
                       ) : flower.status === "queued" ? (
@@ -2525,7 +2541,7 @@ function KqGameSession({
                       </details>
                       </div>
                     </div>
-                  ))}
+                  ); })}
                 </KqCardCarousel>
               ) : juryDataReady ? <p className={styles.emptyFlowerReserve}>Aucune Fleur en attente de jury. Retrouve les verdicts dans Mes duels ou poursuis tes cultures.</p> : null}
               <details className={styles.duelHelp}>

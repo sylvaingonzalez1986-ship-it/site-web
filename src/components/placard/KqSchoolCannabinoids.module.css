@@ -1,0 +1,61 @@
+.register,.network,.studies,.compound { min-width:0; }
+.register :is(button,input,select) { color:inherit; font:inherit; border:2px solid transparent; border-radius:0; background:transparent; box-shadow:none; --game-control-art:var(--game-control-paper,url('/placard/ui/control-paper-v2.webp')); border-image:var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; }
+.register :is(button,select):hover { --game-control-art:var(--game-control-gold,url('/placard/ui/control-gold-v2.webp')); }
+.register :is(button,input,select,summary):focus-visible { outline:3px solid #00695f; outline-offset:3px; }
+.register .controls input { border-color:transparent; background:transparent; }
+.compound { max-width:84ch; }
+.header h2,.inventoryTitle { margin:0 0 12px; font:700 clamp(30px,4vw,46px)/1.12 var(--font-display),Impact,sans-serif; overflow-wrap:anywhere; }
+.compound h3 { font:700 clamp(21px,2.5vw,26px)/1.25 var(--font-display),Impact,sans-serif; }
+.entryIntro { font-size:clamp(18px,2vw,21px); line-height:1.65; }
+.entrySection { margin:24px 0; padding-top:12px; border-top:1px solid #17292335; }
+.entrySection>h3 { margin-top:0; }
+.entrySection ul { padding-left:22px; }
+.entrySection li { margin:8px 0; }
+.entryDetails { margin:14px 0; border-bottom:1px solid #17292330; }
+.entryDetails>summary { min-height:44px; padding:12px 0; font-weight:700; cursor:pointer; }
+.compound,.network { scroll-margin-top:90px; }
+.controls { display:flex; flex-wrap:wrap; gap:14px; margin:18px 0; }
+.controls label { display:grid; gap:6px; flex:1 1 160px; min-width:0; font-weight:700; }
+.controls :is(input,select) { min-width:0; width:100%; }
+.controls input { min-height:46px; padding:10px; color:inherit; background:#fffaf0; border:1px solid #557869; }
+.counts { display:flex; flex-wrap:wrap; gap:12px 24px; padding:14px 0; margin:14px 0; border-block:1px solid #17292330; }
+.counts strong { color:#075c50; font-size:25px; }
+.choices { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0; }
+.choices button { flex:1 1 120px; }
+.results { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; padding:0; list-style:none; }
+.results button { width:100%; height:100%; display:grid; text-align:left; gap:6px; }
+.results small { display:block; }
+.badge { font-size:12px; font-weight:650; display:inline-block; padding:4px 0; color:#075c50; }
+.header { display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; align-items:center; border-bottom:1px solid #17292340; padding:14px 0; }
+.header h4 { margin:0; }
+.facts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:18px 0; }
+.facts>div { border-bottom:1px solid #17292330; padding-bottom:12px; }
+.facts dt { font-weight:750; color:#075c50; }.facts dd { margin:8px 0 0; }
+.limits { border-left:3px solid #b17c21; padding:4px 0 4px 14px; }
+.evidence { border-bottom:1px solid #17292330; padding:12px 0; }
+.matrix { border-collapse:collapse; width:100%; font-size:14px; table-layout:fixed; }
+.matrix th,.matrix td { text-align:left; vertical-align:top; border-bottom:1px solid #17292330; padding:12px 8px; overflow-wrap:anywhere; }
+.matrix thead th { color:#075c50; }.matrix th:first-child { width:14%; }
+.matrix button { min-height:42px; max-width:100%; text-align:left; }
+.matrix td strong { display:block; }.matrix td p { margin:8px 0; }
+.network { margin:22px 0; border-block:1px solid #17292340; padding:18px 0; }
+.branchList { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; padding:0; list-style:none; }
+.branch { min-width:0; display:grid; align-content:start; justify-items:center; text-align:center; padding-block:14px; border-block:1px solid #17292330; }
+.branch h5 { margin:0 0 14px; font-size:17px; color:#075c50; }
+.arrows { width:100%; display:grid; gap:8px; }
+.arrow { display:grid; grid-template-columns:minmax(44px,.55fr) 20px minmax(0,1.6fr); align-items:center; gap:6px; padding-block:6px; }
+.arrowSource { font-size:13px; font-weight:750; color:#075c50; overflow-wrap:anywhere; }
+.arrowLine { position:relative; width:100%; border-top:2px solid #087b70; }
+.arrowLine::after { content:""; position:absolute; right:-1px; top:-6px; border-top:5px solid transparent; border-bottom:5px solid transparent; border-left:7px solid #087b70; }
+.arrow[data-status=proposed] .arrowLine { border-top-style:dashed; border-top-color:#9b7324; }.arrow[data-status=proposed] .arrowLine::after { border-left-color:#9b7324; }
+.arrow button { width:100%; text-align:center; display:grid; gap:4px; }
+.arrow small { font-size:11px; font-weight:500; }
+.edgeDetail { border-left:3px solid #087b70; padding:4px 0 4px 16px; }
+.equation { display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:12px; margin:18px 0; font-size:20px; font-weight:750; }
+.equation strong { color:#075c50; }.equation span { color:#926615; }
+.models { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:18px; padding:0; list-style:none; }
+.models li { padding:16px 0; border-bottom:3px solid #087b7050; }.models strong { display:block; }.models svg { display:block; height:55px; width:90px; color:#087b70; margin:0 auto 10px; }
+.compareSummary { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; }.compareSummary article { border-block:1px solid #17292330; padding:16px 0; }
+.compareSummary h4 { margin:0 0 10px; }.compareSummary strong { color:#075c50; }
+@media(max-width:760px) { .results { grid-template-columns:repeat(2,minmax(0,1fr)); }.branchList,.compareSummary { grid-template-columns:minmax(0,1fr); }.matrix,.matrix tbody,.matrix tr,.matrix td,.matrix th { display:block; width:auto; }.matrix thead { display:none; }.matrix tbody tr { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); border-bottom:2px solid #17292360; padding-bottom:14px; }.matrix th:first-child { width:auto; grid-column:1/-1; }.matrix td::before { content:attr(data-label); display:block; font-weight:750; color:#075c50; margin-bottom:8px; } }
+@media(max-width:480px) { .facts,.results,.models { grid-template-columns:minmax(0,1fr); }.matrix tbody tr { grid-template-columns:minmax(0,1fr); } }

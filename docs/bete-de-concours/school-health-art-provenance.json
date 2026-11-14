@@ -1,0 +1,64 @@
+{
+  "verifiedAt": "2026-11-12",
+  "assets": [
+    {
+      "path": "/placard/school/health/punja-2019-fig4.webp",
+      "originalUrl": "https://www.frontiersin.org/files/Articles/439316/xml-images/fpls-10-01120-g004.webp",
+      "bytes": 2141232,
+      "sha256": "4ed61bf021a048297bbb06cc9125f331fa2158d8e30159f20c8ef52091a9dda6",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "credit": "© 2019 Punja, Collyer, Scott, Lung, Holmes et Sutton — Frontiers in Plant Science. DOI 10.3389/fpls.2019.01120.",
+      "modifications": "Aucune modification du fichier téléchargé. Affichage adaptatif ou zoom CSS ; la figure entière reste consultable."
+    },
+    {
+      "path": "/placard/school/health/punja-2019-fig5.webp",
+      "originalUrl": "https://www.frontiersin.org/files/Articles/439316/xml-images/fpls-10-01120-g005.webp",
+      "bytes": 1165032,
+      "sha256": "2710b7b8afc9f585951f87722b1d60e296f42927a0d26d814e382f69c6c04318",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "credit": "© 2019 Punja, Collyer, Scott, Lung, Holmes et Sutton — Frontiers in Plant Science. DOI 10.3389/fpls.2019.01120.",
+      "modifications": "Aucune modification du fichier téléchargé. Affichage adaptatif ou zoom CSS ; la figure entière reste consultable."
+    },
+    {
+      "path": "/placard/school/health/punja-2019-fig7.webp",
+      "originalUrl": "https://www.frontiersin.org/files/Articles/439316/xml-images/fpls-10-01120-g007.webp",
+      "bytes": 2706514,
+      "sha256": "b87f39f0d7b7b3230ab8c4cb25054f0d9aee3de92aa7bc796cd0add98d718c9a",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "credit": "© 2019 Punja, Collyer, Scott, Lung, Holmes et Sutton — Frontiers in Plant Science. DOI 10.3389/fpls.2019.01120.",
+      "modifications": "Aucune modification du fichier téléchargé. Affichage adaptatif ou zoom CSS ; la figure entière reste consultable."
+    },
+    {
+      "path": "/placard/school/health/cranshaw-2017-aphids.jpeg",
+      "originalUrl": "https://content.ces.ncsu.edu/media/images/5565654-WEB.jpeg",
+      "bytes": 23332,
+      "sha256": "c7e491448a4b151bb019c0ab372c28e48fc6530b85b7715d2321a1e17ed9f216",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "credit": "Whitney Cranshaw, Colorado State University, Bugwood.org ; photographie du 11 septembre 2017 ; NC State Extension, Cannabis Aphid in Industrial Hemp, publié le 3 juillet 2020.",
+      "modifications": "Aucune modification du fichier téléchargé. Affichage adaptatif ou zoom CSS ; la figure entière reste consultable."
+    }
+  ],
+  "diagnosticUse": "Photographies réelles de référence. Aucune image générée présentée comme preuve sanitaire. Les cas pédagogiques fictifs sont distincts des documents.",
+  "permissions": "Licence CC BY explicitement portée par le texte intégral Frontiers et la page NC State. Les figures 1,2,3 contenant des reprises avec permissions tierces sont exclues.",
+  "captionReview": "Fichiers ouverts et inspectés, panneaux et échelles conservés. Fig7 possède A–H dans le fichier ; son ancien nom provisoire est attribué à 2019. Aucune attribution à Podosphaera ni à une espèce moderne par simple ressemblance. Fig5 ne nomme pas un témoin à partir de sa couleur.",
+  "decorativeArt": {
+    "src": "/placard/school/course-evidence-v1.webp",
+    "thumbnail": "/placard/school/course-evidence-thumb-v1.webp",
+    "status": "Illustration de chanvre existante réutilisée pour l’observation ; non diagnostique.",
+    "originalProvenance": "docs/bete-de-concours/school-learning-art-provenance.json"
+  },
+  "regulatorySnapshot": {
+    "source": "https://ephy.anses.fr/ppp/sluxx-hp",
+    "consultedAt": "2026-11-12",
+    "pageUpdatedAt": "2026-07-06",
+    "version": "11.0",
+    "usage": "11012903",
+    "useAuthorizationDate": "2018-09-24",
+    "cropScope": "Catalogue DGAL/SDSPV/2025-236, pages PDF548 et558, portée toutes cultures incluant chanvre ; conditions du produit et de son étiquette restent à vérifier.",
+    "limits": "Extrait pédagogique, pas conseil de traitement. Aucun dosage ou programme. Aucun logo ANSES/E-Phy reproduit."
+  }
+}

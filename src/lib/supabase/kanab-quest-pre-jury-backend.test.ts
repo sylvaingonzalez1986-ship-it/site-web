@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: vi.fn().mockResolvedValue(undefined) }));
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: mocks.staff }));
 import { applyKqStorageToJury, createKqStorageLot } from "../kanab-quest-storage";
 
-const mocks = vi.hoisted(() => ({ rpc: vi.fn(), from: vi.fn(), storage: vi.fn() }));
+const mocks = vi.hoisted(() => ({ rpc: vi.fn(), from: vi.fn(), storage: vi.fn(), staff: vi.fn() }));
 vi.mock("./admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc, from: mocks.from }) }));
 vi.mock("./kanab-quest-storage-backend", async importOriginal => ({
   ...await importOriginal<typeof import("./kanab-quest-storage-backend")>(), getKqStorageRecords: mocks.storage,
@@ -13,6 +13,34 @@ import { getKqJuryReadiness } from "./kanab-quest-jury-readiness";
 const userId = "11111111-1111-4111-8111-111111111111", flowerId = "22222222-2222-4222-8222-222222222222";
 beforeEach(() => vi.resetAllMocks());
 describe("pre-jury server flow", () => {
+  it.each(["flowers", "core"] as const)("adds confirmed individual trim to %s using one settled staff snapshot", async endpoint => {
+    const createdAt = "2026-11-10T10:00:00Z", serverNow = "2026-11-11T10:00:00Z";
+    const rows = ["pending", "partial", "completed", "historical"].map(id => ({ id, status: "available", quality: 12,
+      created_at: createdAt, createdAt }));
+    const trimLots = [
+      { flowerId: "pending", requiredWork: 6, completedWork: 0, totalGrams: 120, completedGrams: 0, completedAt: null },
+      { flowerId: "partial", requiredWork: 6, completedWork: 2, totalGrams: 120, completedGrams: 40, completedAt: null },
+      { flowerId: "completed", requiredWork: 6, completedWork: 6, totalGrams: 120, completedGrams: 120, completedAt: serverNow },
+    ];
+    mocks.staff.mockResolvedValue({ serverNow, context: { trimLots } });
+    mocks.storage.mockResolvedValue({ serverNow, lots: [] });
+    mocks.rpc.mockResolvedValue({ data: { flowers: rows }, error: null });
+    mocks.from.mockImplementation((table: string) => {
+      const result = { data: table === "kq_flowers" ? rows : [], error: null };
+      const query = { select: () => query, eq: () => query, in: () => query, order: () => query, limit: () => query,
+        then: (resolve: (value: unknown) => unknown) => Promise.resolve(result).then(resolve) };
+      return query;
+    });
+    const read = () => endpoint === "flowers" ? getKqPlayerFlowers(userId) : getKqPlayerCoreSnapshot(userId).then(result => result.flowers);
+    expect((await read()).map(row => row.trim.status)).toEqual(["required", "in-progress", "ready", "ready"]);
+    expect(mocks.staff).toHaveBeenCalledExactlyOnceWith(userId);
+    expect(mocks.staff.mock.invocationCallOrder[0]).toBeLessThan(mocks.from.mock.invocationCallOrder[0]);
+    mocks.staff.mockResolvedValue(null);
+    expect((await read()).map(row => row.trim.status)).toEqual(["unknown", "unknown", "unknown", "unknown"]);
+    mocks.staff.mockRejectedValueOnce(new Error("Temporary staff transport failure"));
+    if (endpoint === "flowers") expect((await read()).map(row => row.trim.status)).toEqual(["unknown", "unknown", "unknown", "unknown"]);
+    else await expect(read()).rejects.toThrow("Temporary staff transport failure");
+  });
   it("rejects an early bot evaluation before reading or calculating battle rounds", async () => {
     mocks.rpc.mockResolvedValue({ error: { message: "kq_curing_required" } });
     await expect(finalizeKqPlayerBotBattle(userId, flowerId)).rejects.toThrow("Attends sa fin");

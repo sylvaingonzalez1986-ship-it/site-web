@@ -114,13 +114,9 @@ try {
     assert.equal(await page.$eval('[data-placard-view]', element => element.dataset.placardView), 'hub', 'Real shell entry');
     await noOverflow(width + 'px');
     await page.screenshot({ path: resolve(output, `quartier-${width}.png`), fullPage: true });
-    await page.focus('summary[aria-label="Aide du quartier"]'); await page.keyboard.press('Enter');
-    await page.waitForSelector('[data-placard-map] details[open] [data-help-facts]');
-    await noOverflow('Aide du quartier ' + width + 'px');
-    await page.screenshot({ path: resolve(output, `quartier-help-${width}.png`) });
-    await page.keyboard.press('Escape');
-    assert.equal(await page.$eval('summary[aria-label="Aide du quartier"]', node => node.parentElement.open), false);
-    assert.equal(await page.$eval('summary[aria-label="Aide du quartier"]', node => node === document.activeElement), true);
+    assert.equal(await page.$('[data-placard-map] [aria-label="Aide du quartier"], [data-placard-map] [data-help-facts]'), null, 'The map help control and panel are absent');
+    assert.equal(await page.$('[data-map-motion-toggle]'), null, 'The manual animation control is absent');
+    assert.equal(await page.$eval('[data-map-zoom-toggle]', node => document.getElementById(node.getAttribute('aria-controls')).nextElementSibling === null), true, 'No empty footer remains below the map');
     await page.focus('[data-placard-next-action] > button'); await page.keyboard.press('Enter');
     await page.waitForSelector('[data-audit-destination]');
     assert(['game', 'workshop'].includes(await page.$eval('[data-placard-view]', element => element.dataset.placardView)), 'Next-action keyboard navigation reaches culture or equipment');
@@ -138,7 +134,7 @@ try {
     await page.waitForSelector('[data-placard-view="market"]'); await page.waitForSelector('[data-audit-destination]');
     await page.goBack(); await page.waitForSelector('[data-placard-lobby]');
     await quiet();
-    results.push({ width, entry: 'PlacardPlayerShell → KqPlacardLobby → KqPlacardMap', keyboard: true, overflow: false, silent: true, noSoundControls: true, layout, nextActionNavigation: true });
+    results.push({ width, entry: 'PlacardPlayerShell → KqPlacardLobby → KqPlacardMap', keyboard: true, helpAbsent: true, motionControlAbsent: true, footerAbsent: true, overflow: false, silent: true, noSoundControls: true, layout, nextActionNavigation: true });
   }
   await page.setViewport({ width: 320, height: 900 });
   for (const state of ['starter', 'active', 'lots', 'jury', 'first-sale', 'mastered', 'overflow', 'error']) {

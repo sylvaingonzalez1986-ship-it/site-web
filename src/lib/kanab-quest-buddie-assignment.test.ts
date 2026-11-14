@@ -17,6 +17,18 @@ function snapshot(): KqBuddieAssignmentSnapshot {
 const choose = (current = snapshot(), code: string | null = second) => getKqBuddieAssignmentRequest(current, { zoneId: "starter", buddieCode: code }, collection(), key);
 
 describe("Buddie assignment from culture preparation", () => {
+  it.each([true, false])("blocks a zone reserved for autonomous production, enabled=%s", enabled => {
+    const current = { ...snapshot(), productionReservation: { zoneId: "starter", enabled } };
+    expect(() => choose(current)).toThrow("réservée à la production autonome");
+    expect(() => choose(current, null)).toThrow("réservée à la production autonome");
+    expect(getKqBuddieAssignmentRequest(current, { zoneId: "other", buddieCode: second }, collection(), key).state.zones[0]).toEqual(current.state.zones[0]);
+    expect(choose({ ...current, productionReservation: null }).state.zones[0].buddieCode).toBe(second);
+  });
+
+  it("refuses malformed production occupancy instead of treating it as available", () => {
+    expect(() => choose({ ...snapshot(), productionReservation: { zoneId: 42 } as never })).toThrow("pas encore vérifiées");
+  });
+
   it("builds a free revision-bound PATCH with the supplied retry key", () => {
     const current = snapshot(), request = choose(current);
     expect(request).toMatchObject({ expectedRevision: 8, expectedCostCents: 0, requestKey: key });

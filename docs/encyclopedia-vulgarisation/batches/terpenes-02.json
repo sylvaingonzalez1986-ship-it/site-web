@@ -1,0 +1,1531 @@
+{
+  "domain": "terpenes",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "tp-booth2020",
+      "title": "Terpene Synthases and Terpene Variation in Cannabis sativa",
+      "author": "Judith K. Booth, Macaire M. S. Yuen, Sharon Jancsik, Lufiani L. Madilao, Jonathan E. Page et Jörg Bohlmann",
+      "organization": "Plant Physiology",
+      "published": "2020-06-26",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479917/",
+      "passage": "Tableau 1, légende des astérisques ; « Functions of CsTPSs » ; figures 9–10 ; « Terpene Extraction and Analysis ».",
+      "access": "excerpt",
+      "documentKind": "Profils végétaux et caractérisation fonctionnelle",
+      "limitation": "Les pics sans astérisque reposent sur MS et indice de rétention. Les échantillons Purple Kush ne sont pas directement comparables aux autres conditions ; aucun pourcentage universel n’est repris.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479917/",
+          "sections": "PMC via requête réseau : Variation of Foliar Terpene Profiles, tableau 1 entier et Functions of CsTPSs ; astérisques des étalons distingués.",
+          "result": "read",
+          "supports": "Tableau 1, légende des astérisques ; « Functions of CsTPSs » ; figures 9–10 ; « Terpene Extraction and Analysis »."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-alphapinene",
+      "title": "PubChem CID 6654 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/6654",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/6654/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-flavornet",
+      "title": "Flavornet and human odor space — index des descripteurs",
+      "author": "Terry Acree et Heinrich Arn",
+      "organization": "Cornell / DATU",
+      "published": "2004-06-25 (version annoncée)",
+      "url": "https://flavornet.org/d_odors.html",
+      "passage": "Index odeurs et fiches liées ; méthode et bibliographies sur https://www.flavornet.org/.",
+      "access": "official-page",
+      "documentKind": "Base originale de descripteurs issus de GC-olfactométrie",
+      "limitation": "Base documentaire, pas nouveau panel réalisé pour l’école. Certains indices sont interpolés : aucun n’est repris ici. Les mots décrivent des contextes perceptifs ; ils ne prouvent ni intensité, ni qualité, ni effet d’un cannabis.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://flavornet.org/d_odors.html",
+          "sections": "Index des descripteurs consulté ; les mots d’odeur sont qualitatifs et ne décrivent pas des effets humains.",
+          "result": "read",
+          "supports": "Index odeurs et fiches liées ; méthode et bibliographies sur https://www.flavornet.org/."
+        }
+      ]
+    },
+    {
+      "id": "tp-herbs2021",
+      "title": "Headspace/GC–MS Analysis and Investigation of Antibacterial, Antioxidant and Cytotoxic Activity of Essential Oils and Hydrolates from Rosmarinus officinalis L. and Lavandula angustifolia Miller",
+      "author": "Stefania Garzoli, Valentina Laghezza Masci, Sara Franceschi, Antonio Tiezzi, Pierluigi Giacomello et Elisa Ovidi",
+      "organization": "Foods",
+      "published": "2021-07-30",
+      "url": "https://www.mdpi.com/2304-8158/10/8/1768",
+      "passage": "Tableaux 1–2 (romarin et lavande) ; §2.2–2.3, identification MS et indices.",
+      "access": "excerpt",
+      "documentKind": "Profils d’huiles et de phases vapeur",
+      "limitation": "Seuls les résultats de composition sont utilisés. Les essais sur mélanges et cellules ne prouvent pas les effets des molécules séparées ou d’un usage humain.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2304-8158/10/8/1768",
+          "sections": "MDPI : §3.1–3.2 et tableaux 1–2, huiles et phases vapeur de romarin et lavande.",
+          "result": "read",
+          "supports": "Tableaux 1–2 (romarin et lavande) ; §2.2–2.3, identification MS et indices."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-booth2017",
+      "title": "Terpene synthases from Cannabis sativa",
+      "author": "Judith K. Booth, Jonathan E. Page et Jörg Bohlmann",
+      "organization": "PLOS ONE",
+      "published": "29 mars 2017 ; 12(3):e0173911",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+      "passage": "Résumé, introduction, tableau 1 et caractérisation des synthases : trichomes de Finola, précurseurs, enzymes à un ou plusieurs produits et variation entre plantes.",
+      "access": "excerpt",
+      "limitation": "Étude sur des matériels identifiés, pas inventaire de toute l’espèce. Les voies biochimiques sont expliquées sans protocole ni optimisation de production.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document primaire ou ressource institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "sections": "PLOS : introduction, figures 1–2, méthodes analytiques et résultats des synthases ; IPP/DMAPP, GPP/FPP et CsTPS9.",
+          "result": "read",
+          "supports": "Résumé, introduction, tableau 1 et caractérisation des synthases : trichomes de Finola, précurseurs, enzymes à un ou plusieurs produits et variation entre plantes."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-kumar2025",
+      "title": "The Individual and Interactive Effects of Alpha-Pinene and Delta-9-Tetrahydrocannabinol in Healthy Adults",
+      "author": "Lakshmi Kumar, Tory R. Spindle, C. Austin Zamarripa et collaborateurs",
+      "organization": "Medical Cannabis and Cannabinoids / PMC",
+      "published": "25 juin 2025 ; 8:144–157 ; DOI 10.1159/000547014",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12306963/",
+      "passage": "Résumé et sections Participants, Results et Discussion indexés : 19 adultes, six sessions, absence d’atténuation des altérations mnésiques dues au THC dans les conditions étudiées. Contrelecture pharmacologique : Abstract ; Participants ; Cognitive Performance ; Adverse Effects ; Discussion et limites.",
+      "access": "excerpt",
+      "limitation": "Passages originaux indexés consultés ; pas annexes. Petit essai aigu sur formulations contrôlées inhalées, pas conclusion sur toutes les voies ou associations ; liens d’intérêts déclarés. Les doses et procédures ne sont pas reproduites.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages du document original consultés par indexation",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12306963/",
+          "sections": "PMC : résumé, résultats Participants et conclusions ; 19 sujets complets, absence de mitigation des déficits cognitifs.",
+          "result": "read",
+          "supports": "Résumé et sections Participants, Results et Discussion indexés : 19 adultes, six sessions, absence d’atténuation des altérations mnésiques dues au THC dans les conditions étudiées."
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12306963/",
+          "openedAt": "2026-11-14",
+          "sections": "Abstract ; Participants ; Cognitive Performance ; Adverse Effects ; Discussion et limites.",
+          "result": "Passages réellement ouverts et lus.",
+          "supports": "Abstract ; Participants ; Cognitive Performance ; Adverse Effects ; Discussion et limites.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-betapinene",
+      "title": "PubChem CID 14896 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/14896",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/14896/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-hops2021",
+      "title": "Characterization of Wild Corsican Hops and Assessment of the Performances of German Hops in Corsican Environmental Conditions through a Multidisciplinary Approach",
+      "author": "Axel Dabbous-Wach, Margherita Rodolfi, Julien Paolini, Jean Costa et Tommaso Ganino",
+      "organization": "Applied Sciences",
+      "published": "2021-04-21",
+      "url": "https://www.mdpi.com/2076-3417/11/9/3756",
+      "passage": "Tableau 6, annexe A1 et §3.3 ; composés identifiés dans les huiles de houblon.",
+      "access": "excerpt",
+      "documentKind": "Analyse GC-MS de houblons",
+      "limitation": "Présence dans les échantillons étudiés, non dans chaque houblon. Les commentaires sensoriels ne sont pas un essai d’effet humain.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2076-3417/11/9/3756",
+          "sections": "MDPI : §3.3 et tableau 6, distributions dans les huiles des houblons corses.",
+          "result": "read",
+          "supports": "Tableau 6, annexe A1 et §3.3 ; composés identifiés dans les huiles de houblon."
+        }
+      ]
+    },
+    {
+      "id": "tp-sage1998",
+      "title": "Monoterpene synthases from common sage (Salvia officinalis): cDNA isolation, characterization, and functional expression",
+      "author": "Mitchell L. Wise, Thomas J. Savage, Eva Katahira et Rodney Croteau",
+      "organization": "Journal of Biological Chemistry",
+      "published": "1998-06-12",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9614092/",
+      "passage": "Résumé original : synthases sabinène, cinéole et diphosphate de bornyle, produits secondaires.",
+      "access": "abstract",
+      "documentKind": "Fonction de synthases recombinantes de sauge",
+      "limitation": "Résumé consulté ; aucune procédure de production n’est reprise. Une activité enzymatique n’est pas une preuve de fonction écologique en milieu naturel.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9614092/",
+          "sections": "Résumé original lu par E-utilities PubMed 9614092 : trois synthases multiproduits, β-pinènes, γ-terpinène et voie du diphosphate de bornyle.",
+          "result": "read",
+          "supports": "Résumé original : synthases sabinène, cinéole et diphosphate de bornyle, produits secondaires."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-myrcene",
+      "title": "PubChem CID 31253 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/31253",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/31253/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-fischedick2017",
+      "title": "Identification of Terpenoid Chemotypes Among High (−)-trans-Δ9-Tetrahydrocannabinol-Producing Cannabis sativa L. Cultivars",
+      "author": "Justin T. Fischedick",
+      "organization": "Cannabis and Cannabinoid Research",
+      "published": "2017-03-01",
+      "url": "https://doi.org/10.1089/can.2016.0040",
+      "passage": "PDF intégral, pages 36–39 : méthodes, tableau 1 et tableau 2 ; rectification cis/trans-ocimène page 37.",
+      "access": "excerpt",
+      "documentKind": "Analyse originale de 233 échantillons",
+      "limitation": "PDF original consulté via copie hébergée par Accurate Clinic (URL conservée dans le corpus). Un dispensaire californien, 16 analytes ; les noms commerciaux ne prouvent ni identité génétique ni composition d’une carte Buddy.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://doi.org/10.1089/can.2016.0040",
+          "sections": "PDF original Accurate Clinic : introduction, méthodes pp. 36–37, tableaux 1–2 ; 233 échantillons et 16 analytes.",
+          "result": "read",
+          "supports": "PDF intégral, pages 36–39 : méthodes, tableau 1 et tableau 2 ; rectification cis/trans-ocimène page 37."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-limonene",
+      "title": "PubChem CID 22311 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/22311",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/22311/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-zager2019",
+      "title": "Gene Networks Underlying Cannabinoid and Terpenoid Accumulation in Cannabis",
+      "author": "Jordan J. Zager, Iris Lange, Narayanan Srividya, Anthony Smith et B. Markus Lange",
+      "organization": "Plant Physiology",
+      "published": "2019-05-28",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+      "passage": "Tableaux 1 et 3 ; figures 7–8 ; paragraphes de caractérisation des synthases linalol/nérolidol.",
+      "access": "excerpt",
+      "documentKind": "Profils de fleurs et enzymes recombinantes",
+      "limitation": "Une enzyme active hors de la plante ne démontre pas à elle seule son produit dans chaque variété ; la séparation chirale concerne les analyses spécifiées.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+          "sections": "PMC, variante report=xml&x=2 : Target Gene Identification and Characterization, tableaux 1 et 3, figures 7–8 et séparation chirale ; CsTPS18VF (+) et CsTPS19BL mélange (+)/(−), nérolidol quantifiable seulement Black Lime.",
+          "result": "read",
+          "supports": "Tableaux 1 et 3 ; figures 7–8 ; paragraphes de caractérisation des synthases linalol/nérolidol."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-spindle2024",
+      "title": "Vaporized D-limonene selectively mitigates the acute anxiogenic effects of Δ9-tetrahydrocannabinol in healthy adults who intermittently use cannabis",
+      "author": "Tory R. Spindle, C. Austin Zamarripa, Ethan Russo et collaborateurs",
+      "organization": "Drug and Alcohol Dependence / PubMed et manuscrit PMC",
+      "published": "13 mars 2024 en ligne ; 257:111267",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/pmid/38498958",
+      "passage": "Résumé et sections 3.1–3.3 indexées : 20 adultes ayant terminé l’étude, 12 dans la session additionnelle ; anxiété subjective aiguë et autres critères. Contrelecture pharmacologique : Abstract ; Results 3.1–3.3 ; discussion des limites ; Funding et Conflicts of Interest.",
+      "access": "excerpt",
+      "limitation": "Passages du manuscrit original lus par indexation ; accès direct PMC bloqué. Petit essai aigu croisé en double aveugle, formulations contrôlées inhalées, pas traitement d’un trouble anxieux ni preuve concernant une odeur citronnée. Liens d’intérêts déclarés dans l’article.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages du document original consultés par indexation",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/pmid/38498958",
+          "sections": "PDF original du coauteur ethanrusso.org : résultats et discussion pp. 6–8 ; condition ajoutée non randomisée chez 12 participants.",
+          "result": "read",
+          "supports": "Résumé et sections 3.1–3.3 indexées : 20 adultes ayant terminé l’étude, 12 dans la session additionnelle ; anxiété subjective aiguë et autres critères."
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11031290/",
+          "openedAt": "2026-11-14",
+          "sections": "Abstract ; Results 3.1–3.3 ; discussion des limites ; Funding et Conflicts of Interest.",
+          "result": "Passages réellement ouverts et lus.",
+          "supports": "Abstract ; Results 3.1–3.3 ; discussion des limites ; Funding et Conflicts of Interest.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-camphene",
+      "title": "PubChem CID 6616 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/6616",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/6616/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-alpha-phellandrene",
+      "title": "PubChem CID 7460 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/7460",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/7460/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-delta3-carene",
+      "title": "PubChem CID 26049 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/26049",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/26049/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-spruce2011",
+      "title": "An integrated genomic, proteomic and biochemical analysis of (+)-3-carene biosynthesis in Sitka spruce (Picea sitchensis) genotypes that are resistant or susceptible to white pine weevil",
+      "author": "Dawn E. Hall et neuf coauteurs",
+      "organization": "The Plant Journal",
+      "published": "2011-02-16",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21323772/",
+      "passage": "Résumé original : (+)-3-carène, famille PsTPS-3car et association avec des génotypes d’épicéa.",
+      "access": "abstract",
+      "documentKind": "Étude de biosynthèse chez un conifère",
+      "limitation": "Résumé consulté ; notice signalant un erratum. Seule l’association générale et l’étude des synthases sont retenues, sans chiffre ni transfert au cannabis.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/21323772/",
+          "sections": "PubMed : résumé et mention de l’erratum ; association du (+)-3-carène avec génotypes résistants, pas transfert au cannabis.",
+          "result": "read",
+          "supports": "Résumé original : (+)-3-carène, famille PsTPS-3car et association avec des génotypes d’épicéa."
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-terpene-alphapinene",
+      "questions": [
+        "Quel terpène du chanvre porte des notes caractéristiques de pin et de térébenthine ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel.",
+        "Ajout de l’essai humain pertinent et de ses limites, absent de la notice initiale."
+      ],
+      "patch": {
+        "lead": "L’α-pinène est une molécule à laquelle on associe des notes de pin et de térébenthine. Elle est mesurée dans certains cannabis, mais une odeur de pin ne démontre pas une protection de la mémoire.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "L’α-pinène est un monoterpène : son squelette compte dix atomes de carbone. Sa formule C10H16 signifie dix carbones et seize hydrogènes. Les atomes forment deux anneaux ; une double liaison, un lien chimique particulier entre deux carbones, se trouve dans l’un d’eux. Sa position distingue l’α-pinène du β-pinène."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-alphapinene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Pin et térébenthine sont des comparaisons d’odeur, pas une mesure de force. Dans une fleur, d’autres substances peuvent modifier ou masquer cette note."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "L’étude Booth de 2020 distingue deux formes miroir de l’α-pinène : leurs atomes sont reliés de la même façon, mais leur disposition dans l’espace diffère, comme deux mains. Les quantités de ces formes varient entre les plantes étudiées. Elles sont rapportées à la masse sèche, et non à l’intensité perçue par le nez."
+            ],
+            "sourceIds": [
+              "tp-booth2020"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "L’α-pinène a aussi été mesuré dans des produits de romarin, y compris dans l’huile et l’air situé au-dessus. Sa présence ne suffit donc pas à reconnaître une plante comme du cannabis."
+            ],
+            "sourceIds": [
+              "tp-herbs2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Une enzyme du chanvre Finola, appelée CsTPS2, peut fabriquer principalement de l’α-pinène. Cette connaissance explique son origine dans la plante, pas un bénéfice humain. Chez dix-neuf adultes étudiés en 2025, l’association d’α-pinène au THC n’a pas réduit les troubles de mémoire mesurés. Deux participants ont été retirés après des effets indésirables avec la combinaison contenant le plus d’α-pinène ; l’essai n’établit pas une sécurité à long terme."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-booth2017",
+              "terpenes-lesson-kumar2025"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Les six séances de l’essai comparent notamment 30 mg de THC associé à 0,5, 5 ou 15 mg d’α-pinène, les composés seuls et un placebo, préparation servant de comparaison. Ces quantités décrivent la recherche, sans recommandation d’usage. Un résultat négatif dans ce protocole ne prouve pas l’absence de toute interaction possible."
+              ],
+              "sourceIds": [
+                "terpenes-lesson-booth2017",
+                "terpenes-lesson-kumar2025"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "tp-booth2020",
+          "rev-terpene-pubchem-alphapinene",
+          "tp-flavornet",
+          "tp-herbs2021",
+          "terpenes-lesson-booth2017",
+          "terpenes-lesson-kumar2025"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/alphapinene-structure.png",
+          "alt": "Dessin de la structure moléculaire. Deux anneaux caractérisent le squelette de l’α-pinène. Ce dessin ne choisit pas entre ses deux formes miroir.",
+          "caption": "Deux anneaux caractérisent le squelette de l’α-pinène. Ce dessin ne choisit pas entre ses deux formes miroir.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6654",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "alpha-pinene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-alphapinene",
+        "tp-booth2020",
+        "tp-flavornet",
+        "tp-herbs2021",
+        "tp-booth2017",
+        "terpenes-lesson-kumar2025"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 6654,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [
+        "hemp-molecules-pinene-arome"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "formule",
+          "anneau",
+          "double liaison",
+          "enzyme"
+        ],
+        "example": "L’α-pinène a aussi été mesuré dans des produits de romarin, y compris dans l’huile et l’air situé au-dessus. Sa présence ne suffit donc pas à reconnaître une plante comme du cannabis.",
+        "detailsMoved": [
+          "biology"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": [
+          "hemp-molecules-pinene-arome"
+        ]
+      }
+    },
+    {
+      "id": "record-terpene-betapinene",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Le β-pinène est un terpène associé à des notes de pin ou de résine. Son nom ressemble à celui de l’α-pinène, mais les deux désignent des assemblages chimiques différents.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Comme l’α-pinène, le β-pinène contient dix carbones et seize hydrogènes, notés C10H16. Il possède aussi deux anneaux. Ce qui change notamment est la double liaison : dans le β-pinène, elle relie un carbone du squelette à un carbone situé hors des anneaux. Même formule ne signifie donc pas même molécule."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-betapinene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Les mots pin et résine donnent un repère sensoriel. Une fleur peut contenir du β-pinène sans que cette note soit reconnaissable séparément parmi toutes ses odeurs."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Booth distingue deux formes miroir du β-pinène grâce à une méthode capable de les séparer et à des références connues. Un résultat donnant seulement β-pinène total additionne ces formes et ne permet pas de retrouver leurs proportions. Les lettres α et β décrivent une différence d’assemblage ; elles ne désignent pas ces formes miroir."
+            ],
+            "sourceIds": [
+              "tp-booth2020"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Des huiles de houblons corses analysées contiennent du β-pinène. Le cannabis et le houblon partagent donc ce composé sans avoir des mélanges odorants identiques."
+            ],
+            "sourceIds": [
+              "tp-hops2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Une enzyme de sauge connue surtout pour fabriquer du 1,8-cinéole produit aussi les deux formes du β-pinène. Une enzyme, protéine qui facilite une réaction, peut ainsi donner plusieurs produits. Ce résultat explique une possibilité de fabrication ; il ne démontre pas un bénéfice respiratoire du β-pinène d’une fleur."
+            ],
+            "sourceIds": [
+              "tp-sage1998"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-booth2020",
+          "rev-terpene-pubchem-betapinene",
+          "tp-flavornet",
+          "tp-hops2021",
+          "tp-sage1998"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/betapinene-structure.png",
+          "alt": "Dessin de la structure moléculaire. La double liaison s’étend hors des deux anneaux : c’est un repère pour distinguer β-pinène et α-pinène. Les formes miroir ne sont pas précisées.",
+          "caption": "La double liaison s’étend hors des deux anneaux : c’est un repère pour distinguer β-pinène et α-pinène. Les formes miroir ne sont pas précisées.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/14896",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "beta-pinene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-betapinene",
+        "tp-booth2020",
+        "tp-flavornet",
+        "tp-hops2021",
+        "tp-sage1998"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 14896,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "formule",
+          "anneau",
+          "double liaison",
+          "enzyme"
+        ],
+        "example": "Des huiles de houblons corses analysées contiennent du β-pinène. Le cannabis et le houblon partagent donc ce composé sans avoir des mélanges odorants identiques.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-terpene-myrcene",
+      "questions": [
+        "Quel nom désigne le composé couramment appelé myrcène dans les profils du chanvre ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Le myrcène est un terpène souvent mesuré dans le cannabis et également présent dans le houblon. Sa quantité et son odeur ne suffisent pas à démontrer un effet sédatif chez une personne.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Le nom désigne ici le β-myrcène, de formule C10H16 : dix carbones et seize hydrogènes. Contrairement aux pinènes, sa chaîne ne forme aucun anneau ; on la dit acyclique. Elle porte trois doubles liaisons. Cette structure ne possède pas le centre donnant les deux formes miroir décrites pour certains autres terpènes."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-myrcene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Son odeur est décrite comme épicée, résineuse ou herbacée. Ces mots décrivent une perception possible ; ils ne signifient pas que toute fleur contenant du myrcène sera reconnue de la même façon."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Dans l’étude Booth de 2020, le myrcène est le terpène le plus abondant de plusieurs matériels, mais pas de tous. Un nom commercial de fleur ne fixe donc pas son pourcentage : il faut mesurer l’échantillon pour connaître sa quantité."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-fischedick2017"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Les huiles de houblon étudiées contiennent aussi du myrcène. Il s’agit d’une molécule partagée par plusieurs plantes, et non d’un marqueur exclusif du cannabis."
+            ],
+            "sourceIds": [
+              "tp-hops2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Chez Finola, l’enzyme CsTPS3 transforme une matière de départ à dix carbones en myrcène. Une étude chez la souris a aussi observé une baisse d’activité et un sommeil provoqué par un barbiturique plus long après injection de myrcène. L’animal, l’injection, les quantités élevées et l’association à ce médicament limitent la comparaison avec une fleur : ce n’est pas une preuve de traitement de l’insomnie humaine."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-booth2017"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-booth2020",
+          "rev-terpene-pubchem-myrcene",
+          "tp-flavornet",
+          "tp-fischedick2017",
+          "tp-hops2021",
+          "terpenes-lesson-booth2017"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/myrcene-structure.png",
+          "alt": "Dessin de la structure moléculaire. La chaîne du myrcène reste ouverte : acyclique signifie sans anneau.",
+          "caption": "La chaîne du myrcène reste ouverte : acyclique signifie sans anneau.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/31253",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "β-myrcène · beta-myrcene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-myrcene",
+        "tp-booth2020",
+        "tp-flavornet",
+        "tp-fischedick2017",
+        "tp-hops2021",
+        "tp-booth2017"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 31253,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [
+        "hemp-molecules-myrcene"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "formule",
+          "anneau",
+          "enzyme"
+        ],
+        "example": "Les huiles de houblon étudiées contiennent aussi du myrcène. Il s’agit d’une molécule partagée par plusieurs plantes, et non d’un marqueur exclusif du cannabis.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": [
+          "hemp-molecules-myrcene"
+        ]
+      }
+    },
+    {
+      "id": "record-terpene-limonene",
+      "questions": [
+        "Quelle note est couramment associée au limonène, un terpène présent dans le chanvre ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel.",
+        "Ajout de l’essai humain pertinent et de ses limites, absent de la notice initiale."
+      ],
+      "patch": {
+        "lead": "Le limonène est associé aux notes d’agrumes de certains mélanges odorants. Un essai humain a étudié une de ses formes avec le THC ; ses résultats ne permettent pas de choisir un effet de santé à partir d’une odeur citronnée.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Le limonène contient dix carbones et seize hydrogènes, notés C10H16, avec un anneau de six carbones. Il existe sous deux formes miroir : les mêmes liaisons, mais un arrangement spatial différent, comme deux mains. Dire seulement limonène ne précise pas laquelle est présente."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-limonene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Citron et agrumes sont les descriptions courantes retenues ici. La forme de la molécule et les autres substances du mélange peuvent changer la perception : une note citronnée ne révèle pas à elle seule la composition."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Booth identifie du (−)-limonène dans les plantes étudiées en le comparant à une référence et en séparant les formes miroir. Un appareil qui ne fait pas cette séparation peut donner une quantité totale sans prouver qu’il s’agit de la même forme. Le d-limonène de l’essai humain est une autre précision d’identité à conserver."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-fischedick2017"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Du limonène a aussi été mesuré dans l’huile de romarin et dans l’air au-dessus de cette huile. Le profil de l’air n’est pas nécessairement celui du liquide."
+            ],
+            "sourceIds": [
+              "tp-herbs2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Dans l’essai de 2024, vingt adultes ont terminé les conditions principales. Certaines sensations anxieuses ont diminué avec d-limonène et THC, sans protection générale de la mémoire ou des autres performances. La comparaison la plus favorable a été ajoutée chez douze personnes et toujours réalisée en dernier, sans tirage au sort de sa place. Elle ne démontre donc ni un traitement de l’anxiété ni l’effet de toute fleur citronnée."
+            ],
+            "sourceIds": [
+              "tp-zager2019",
+              "terpenes-lesson-spindle2024"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Dans la condition supplémentaire, les évaluations anxieux/nerveux et paranoïaque sur des échelles visuelles diminuent significativement. Le score global d’anxiété STAI-S ne franchit pas le seuil statistique annoncé : p = 0,08. Différents outils peuvent donc donner des résultats différents ; ils ne doivent pas être résumés en une protection générale contre l’anxiété."
+              ],
+              "sourceIds": [
+                "tp-zager2019",
+                "terpenes-lesson-spindle2024"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "tp-booth2020",
+          "rev-terpene-pubchem-limonene",
+          "tp-flavornet",
+          "tp-fischedick2017",
+          "tp-herbs2021",
+          "tp-zager2019",
+          "terpenes-lesson-spindle2024"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/limonene-structure.png",
+          "alt": "Dessin de la structure moléculaire. Le dessin montre l’anneau du limonène sans choisir entre ses deux formes miroir.",
+          "caption": "Le dessin montre l’anneau du limonène sans choisir entre ses deux formes miroir.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/22311",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "limonene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-limonene",
+        "tp-booth2020",
+        "tp-flavornet",
+        "tp-fischedick2017",
+        "tp-herbs2021",
+        "tp-zager2019",
+        "terpenes-lesson-spindle2024"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 22311,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [
+        "hemp-molecules-limonene"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "anneau"
+        ],
+        "example": "Du limonène a aussi été mesuré dans l’huile de romarin et dans l’air au-dessus de cette huile. Le profil de l’air n’est pas nécessairement celui du liquide.",
+        "detailsMoved": [
+          "biology"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": [
+          "hemp-molecules-limonene"
+        ]
+      }
+    },
+    {
+      "id": "record-terpene-camphene",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Le camphène est une molécule odorante décrite comme camphrée. Ce mot rappelle une odeur ; il ne signifie pas que le camphène et le camphre sont la même substance.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Le camphène est un monoterpène, donc à dix carbones. Sa formule C10H16 indique aussi seize hydrogènes et aucun oxygène. Il forme deux anneaux et porte une double liaison qui s’étend hors des anneaux. Le camphre, lui, contient de l’oxygène dans une fonction appelée cétone, où un carbone est lié par une double liaison à un oxygène : leur ressemblance de nom n’efface pas cette différence."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-camphene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Camphré signifie que l’odeur rappelle celle du camphre. Plusieurs structures différentes peuvent partager cette description."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Booth sépare deux formes miroir du camphène et les compare à des références connues. Leur présence et leur quantité diffèrent entre les échantillons. Le nom collectif et le dessin ne fixent donc pas une proportion unique de ces formes pour toutes les fleurs."
+            ],
+            "sourceIds": [
+              "tp-booth2020"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Le camphène est aussi identifié dans les produits de romarin et de lavande étudiés. Retrouver la même molécule ne rend pas leurs bouquets identiques."
+            ],
+            "sourceIds": [
+              "tp-herbs2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Une enzyme de cannabis appelée CsTPS32 produit du camphène parmi plusieurs terpènes lorsqu’on lui fournit sa matière de départ en laboratoire. Des résultats sur la sauge montrent également plusieurs produits pour une enzyme. Cela établit ce que ces protéines peuvent fabriquer ; cela ne mesure pas directement la quantité fabriquée à chaque instant dans une fleur."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-sage1998"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-booth2020",
+          "rev-terpene-pubchem-camphene",
+          "tp-flavornet",
+          "tp-herbs2021",
+          "tp-sage1998"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/camphene-structure.png",
+          "alt": "Dessin de la structure moléculaire. Les deux anneaux et la liaison extérieure appartiennent au camphène ; ce dessin sans oxygène ne représente pas du camphre. Les formes miroir ne sont pas précisées.",
+          "caption": "Les deux anneaux et la liaison extérieure appartiennent au camphène ; ce dessin sans oxygène ne représente pas du camphre. Les formes miroir ne sont pas précisées.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6616",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "camphene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-camphene",
+        "tp-booth2020",
+        "tp-flavornet",
+        "tp-herbs2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 6616,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "formule",
+          "anneau",
+          "double liaison",
+          "enzyme"
+        ],
+        "example": "Le camphène est aussi identifié dans les produits de romarin et de lavande étudiés. Retrouver la même molécule ne rend pas leurs bouquets identiques.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-terpene-alpha-phellandrene",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "L’α-phellandrène est un terpène à dix carbones identifié dans des analyses de cannabis. Il illustre pourquoi il faut distinguer un composé réellement mesuré d’une fréquence supposée pour toutes les fleurs.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Sa formule C10H16 correspond à dix carbones et seize hydrogènes. Sa chaîne forme un anneau portant deux doubles liaisons. Leur disposition le distingue du β-phellandrène : les lettres α et β ne sont pas deux orthographes d’une même molécule."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "rev-terpene-pubchem-alpha-phellandrene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Les descriptions retenues sont mentholé et épicé. Ce sont des repères d’odeur ; ils ne prouvent pas la présence de menthol et ne prédisent pas un effet sur la personne."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Fischedick compare l’α-phellandrène à une référence connue dans une étude de 233 échantillons associés à trente noms. Ces échantillons proviennent d’un seul dispensaire : ils montrent ce qui a été mesuré dans ce groupe, pas une fréquence valable pour tout le cannabis."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Les huiles de romarin et de lavande étudiées contiennent aussi de l’α-phellandrène. Le composé n’est donc pas propre au cannabis."
+            ],
+            "sourceIds": [
+              "tp-herbs2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Ces analyses servent surtout à identifier et comparer les mélanges. Elles ne testent pas le rôle de l’α-phellandrène isolé dans la défense d’une plante ou dans la santé humaine. Une liste de constituants indique ce qui est présent ; il faut une autre expérience pour savoir quel effet cela produit."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "tp-herbs2021"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-fischedick2017",
+          "rev-terpene-pubchem-alpha-phellandrene",
+          "tp-flavornet",
+          "tp-herbs2021"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/alpha-phellandrene-structure.png",
+          "alt": "Dessin de la structure moléculaire. Les deux doubles liaisons se trouvent dans l’anneau de l’α-phellandrène. Leur position permet de le distinguer du β-phellandrène.",
+          "caption": "Les deux doubles liaisons se trouvent dans l’anneau de l’α-phellandrène. Leur position permet de le distinguer du β-phellandrène.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7460",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "alpha-phellandrene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-alpha-phellandrene",
+        "tp-fischedick2017",
+        "tp-flavornet",
+        "tp-herbs2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 7460,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "formule",
+          "anneau"
+        ],
+        "example": "Les huiles de romarin et de lavande étudiées contiennent aussi de l’α-phellandrène. Le composé n’est donc pas propre au cannabis.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-terpene-delta3-carene",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel.",
+        "Ajout du cas GC-MS positif/GC-FID sous limite pour montrer présence ≠ quantification."
+      ],
+      "patch": {
+        "lead": "Le 3-carène est un terpène associé à des notes de résine et de citron. Sa détection dans un échantillon de cannabis ne signifie pas toujours que sa quantité peut y être mesurée avec précision.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Le 3-carène, aussi écrit Δ3-carène, contient dix carbones et seize hydrogènes, soit C10H16. Ses deux anneaux comprennent un petit triangle de trois carbones. Le chiffre 3 indique la position d’une double liaison ; il ne donne ni sa quantité ni le nombre de carbones de toute la molécule. Les noms 2-carène et 4-carène désignent d’autres positions."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "rev-terpene-pubchem-delta3-carene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Les notes résine et citron décrivent un registre olfactif. Elles ne constituent pas un test permettant de retrouver ce composé au nez dans n’importe quelle fleur."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Dans un échantillon nommé Jack Herer, une méthode a confirmé la présence du 3-carène alors qu’une autre ne pouvait pas donner une quantité au-dessus de sa limite de mesure. Être présent, être mesurable avec précision et être abondant sont donc trois affirmations différentes."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Le (+)-3-carène est étudié chez l’épicéa de Sitka. Le signe (+) apporte une information sur une forme spatiale ; il est indépendant du chiffre 3, qui indique la position de la liaison."
+            ],
+            "sourceIds": [
+              "tp-spruce2011"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Chez cet épicéa, des travaux étudient les enzymes qui fabriquent le (+)-3-carène et son association avec des plantes résistantes au charançon. Une association observée chez un conifère ne démontre pas le même rôle de défense dans le cannabis. La référence comporte aussi un erratum, correction publiée à prendre en compte."
+            ],
+            "sourceIds": [
+              "tp-spruce2011"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-fischedick2017",
+          "rev-terpene-pubchem-delta3-carene",
+          "tp-flavornet",
+          "tp-spruce2011"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/delta3-carene-structure.png",
+          "alt": "Dessin de la structure moléculaire. Le petit anneau triangulaire compte trois carbones, mais le squelette entier en compte dix. La forme miroir n’est pas précisée.",
+          "caption": "Le petit anneau triangulaire compte trois carbones, mais le squelette entier en compte dix. La forme miroir n’est pas précisée.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/26049",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "3-carène · delta-3-carene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-delta3-carene",
+        "tp-fischedick2017",
+        "tp-flavornet",
+        "tp-spruce2011"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 26049,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "anneau",
+          "double liaison",
+          "enzyme"
+        ],
+        "example": "Le (+)-3-carène est étudié chez l’épicéa de Sitka. Le signe (+) apporte une information sur une forme spatiale ; il est indépendant du chiffre 3, qui indique la position de la liaison.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": []
+      }
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [
+    {
+      "id": "hemp-molecules-pinene-arome",
+      "prompt": "Quel terpène du chanvre porte des notes caractéristiques de pin et de térébenthine ?",
+      "options": [
+        "L’α-pinène",
+        "Le linalol",
+        "Le limonène",
+        "L’α-bisabolol"
+      ],
+      "answer": 0,
+      "explanation": "Les descriptions de l’α-pinène comprennent pin et térébenthine. Dans une fleur, cette note peut être modifiée ou masquée par les autres odorants.",
+      "articleId": "record-terpene-alphapinene",
+      "sourceIds": [
+        "tp-flavornet"
+      ]
+    },
+    {
+      "id": "hemp-molecules-myrcene",
+      "prompt": "Quel nom désigne le composé couramment appelé myrcène dans les profils du chanvre ?",
+      "options": [
+        "β-Pinène",
+        "β-Myrcène",
+        "β-Ocimène",
+        "β-Caryophyllène"
+      ],
+      "answer": 1,
+      "explanation": "Le nom courant myrcène désigne ici le β-myrcène. Sa chaîne à dix carbones ne forme pas d’anneau ; la lettre β fait partie de son identité.",
+      "articleId": "record-terpene-myrcene",
+      "sourceIds": [
+        "terpenes-lesson-booth2017",
+        "tp-flavornet"
+      ]
+    },
+    {
+      "id": "hemp-molecules-limonene",
+      "prompt": "Quelle note est couramment associée au limonène, un terpène présent dans le chanvre ?",
+      "options": [
+        "Pin et résine",
+        "Agrumes et citron",
+        "Lavande et fleurs",
+        "Camphre et menthe"
+      ],
+      "answer": 1,
+      "explanation": "Le limonène est couramment associé aux agrumes et au citron. Ce repère d’odeur ne prouve ni sa quantité dans la fleur ni un effet sur l’anxiété.",
+      "articleId": "record-terpene-limonene",
+      "sourceIds": [
+        "tp-flavornet"
+      ]
+    }
+  ],
+  "cardPatches": [
+    {
+      "id": "alphapinene",
+      "reason": "Aligner les détails du dialogue de carte sur la notice révisée ; conserver les illustrations aromatiques et le fonctionnement.",
+      "fields": {
+        "isomerNotes": "L’α-pinène est un monoterpène : son squelette compte dix atomes de carbone. Sa formule C10H16 signifie dix carbones et seize hydrogènes. Les atomes forment deux anneaux ; une double liaison, un lien chimique particulier entre deux carbones, se trouve dans l’un d’eux. Sa position distingue l’α-pinène du β-pinène.",
+        "cannabisEvidence": [
+          {
+            "statement": "L’étude Booth de 2020 distingue deux formes miroir de l’α-pinène : leurs atomes sont reliés de la même façon, mais leur disposition dans l’espace diffère, comme deux mains. Les quantités de ces formes varient entre les plantes étudiées. Elles sont rapportées à la masse sèche, et non à l’intensité perçue par le nez.",
+            "sourceIds": [
+              "tp-booth2020"
+            ]
+          }
+        ],
+        "biologicalNotes": "Une enzyme du chanvre Finola, appelée CsTPS2, peut fabriquer principalement de l’α-pinène. Cette connaissance explique son origine dans la plante, pas un bénéfice humain. Chez dix-neuf adultes étudiés en 2025, l’association d’α-pinène au THC n’a pas réduit les troubles de mémoire mesurés. Deux participants ont été retirés après des effets indésirables avec la combinaison contenant le plus d’α-pinène ; l’essai n’établit pas une sécurité à long terme."
+      },
+      "sourceIds": [
+        "tp-booth2020",
+        "rev-terpene-pubchem-alphapinene",
+        "tp-flavornet",
+        "tp-herbs2021",
+        "terpenes-lesson-booth2017",
+        "terpenes-lesson-kumar2025"
+      ]
+    },
+    {
+      "id": "limonene",
+      "reason": "Aligner les détails du dialogue de carte sur la notice révisée ; conserver les illustrations aromatiques et le fonctionnement.",
+      "fields": {
+        "isomerNotes": "Le limonène contient dix carbones et seize hydrogènes, notés C10H16, avec un anneau de six carbones. Il existe sous deux formes miroir : les mêmes liaisons, mais un arrangement spatial différent, comme deux mains. Dire seulement limonène ne précise pas laquelle est présente.",
+        "cannabisEvidence": [
+          {
+            "statement": "Booth identifie du (−)-limonène dans les plantes étudiées en le comparant à une référence et en séparant les formes miroir. Un appareil qui ne fait pas cette séparation peut donner une quantité totale sans prouver qu’il s’agit de la même forme. Le d-limonène de l’essai humain est une autre précision d’identité à conserver.",
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-fischedick2017"
+            ]
+          }
+        ],
+        "biologicalNotes": "Dans l’essai de 2024, vingt adultes ont terminé les conditions principales. Certaines sensations anxieuses ont diminué avec d-limonène et THC, sans protection générale de la mémoire ou des autres performances. La comparaison la plus favorable a été ajoutée chez douze personnes et toujours réalisée en dernier, sans tirage au sort de sa place. Elle ne démontre donc ni un traitement de l’anxiété ni l’effet de toute fleur citronnée."
+      },
+      "sourceIds": [
+        "tp-booth2020",
+        "rev-terpene-pubchem-limonene",
+        "tp-flavornet",
+        "tp-fischedick2017",
+        "tp-herbs2021",
+        "tp-zager2019",
+        "terpenes-lesson-spindle2024"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Contre-vérifier les configurations explicites des PNG PubChem : leur représentation n’attribue pas une stéréochimie à une analyse non chirale.",
+    "La politique NCBI autorise les créations gouvernementales et ne pose pas de restriction NCBI aux données moléculaires ; elle réserve les droits tiers éventuels. Le contrôle distingue les PNG 2D produits par NCBI des contenus de déposants.",
+    "Les identifications MS/indice sans étalon restent des attributions ; les matrices fleur, huile et phase gazeuse d’hydrolat ne sont pas fusionnées.",
+    "Essais humains : α-pinène 2025 négatif pour la protection cognitive ; d-limonène 2024 petit essai aigu avec condition supplémentaire non randomisée. Ne pas étendre au (−)-limonène ni à une fleur citronnée.",
+    "3-carène : association chez l’épicéa et erratum signalé, aucune fonction équivalente postulée chez le cannabis."
+  ],
+  "pedagogicalRevision": {
+    "date": "2026-11-14",
+    "status": "ready-for-coordinator-review",
+    "articleIdsRewritten": [
+      "record-terpene-alphapinene",
+      "record-terpene-betapinene",
+      "record-terpene-myrcene",
+      "record-terpene-limonene",
+      "record-terpene-camphene",
+      "record-terpene-alpha-phellandrene",
+      "record-terpene-delta3-carene"
+    ],
+    "pilotPreserved": false
+  }
+}

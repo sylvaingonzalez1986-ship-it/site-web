@@ -1,0 +1,188 @@
+{
+  "asset": "/placard/map/living-v2/scenery-c7dc3829d4b9.webp",
+  "width": 512,
+  "height": 388,
+  "bytes": 120736,
+  "items": [
+    {
+      "id": "library-sign",
+      "kind": "art",
+      "x": 196,
+      "y": 735,
+      "width": 204,
+      "height": 76,
+      "atlasX": 0,
+      "atlasY": 0
+    },
+    {
+      "id": "hydrangea",
+      "kind": "art",
+      "x": 10,
+      "y": 283,
+      "width": 123,
+      "height": 75,
+      "atlasX": 204,
+      "atlasY": 0
+    },
+    {
+      "id": "daisies",
+      "kind": "art",
+      "x": 532,
+      "y": 274,
+      "width": 48,
+      "height": 58,
+      "atlasX": 327,
+      "atlasY": 0
+    },
+    {
+      "id": "bank-sign",
+      "kind": "art",
+      "x": 883,
+      "y": 77,
+      "width": 79,
+      "height": 96,
+      "atlasX": 375,
+      "atlasY": 0
+    },
+    {
+      "id": "shop-sign",
+      "kind": "art",
+      "x": 920,
+      "y": 692,
+      "width": 71,
+      "height": 89,
+      "atlasX": 0,
+      "atlasY": 96
+    },
+    {
+      "id": "flag",
+      "kind": "art",
+      "x": 1331,
+      "y": 152,
+      "width": 90,
+      "height": 83,
+      "atlasX": 71,
+      "atlasY": 96
+    },
+    {
+      "id": "notices",
+      "kind": "art",
+      "x": 718,
+      "y": 391,
+      "width": 65,
+      "height": 85,
+      "atlasX": 161,
+      "atlasY": 96
+    },
+    {
+      "id": "note-left",
+      "kind": "art",
+      "x": 679,
+      "y": 389,
+      "width": 44,
+      "height": 56,
+      "atlasX": 226,
+      "atlasY": 96
+    },
+    {
+      "id": "note-low",
+      "kind": "art",
+      "x": 685,
+      "y": 441,
+      "width": 35,
+      "height": 55,
+      "atlasX": 270,
+      "atlasY": 96
+    },
+    {
+      "id": "note-right",
+      "kind": "art",
+      "x": 776,
+      "y": 386,
+      "width": 46,
+      "height": 54,
+      "atlasX": 305,
+      "atlasY": 96
+    },
+    {
+      "id": "note-corner",
+      "kind": "art",
+      "x": 777,
+      "y": 435,
+      "width": 46,
+      "height": 51,
+      "atlasX": 351,
+      "atlasY": 96
+    },
+    {
+      "id": "bank-sign",
+      "kind": "back",
+      "x": 878,
+      "y": 79,
+      "width": 89,
+      "height": 99,
+      "atlasX": 397,
+      "atlasY": 96
+    },
+    {
+      "id": "shop-sign",
+      "kind": "back",
+      "x": 917,
+      "y": 693,
+      "width": 79,
+      "height": 92,
+      "atlasX": 0,
+      "atlasY": 195
+    },
+    {
+      "id": "flag",
+      "kind": "back",
+      "x": 1331,
+      "y": 149,
+      "width": 94,
+      "height": 91,
+      "atlasX": 79,
+      "atlasY": 195
+    },
+    {
+      "id": "notices",
+      "kind": "back",
+      "x": 678,
+      "y": 385,
+      "width": 145,
+      "height": 113,
+      "atlasX": 173,
+      "atlasY": 195
+    },
+    {
+      "id": "hydrangea",
+      "kind": "back",
+      "x": 7,
+      "y": 283,
+      "width": 132,
+      "height": 82,
+      "atlasX": 318,
+      "atlasY": 195
+    },
+    {
+      "id": "daisies",
+      "kind": "back",
+      "x": 532,
+      "y": 271,
+      "width": 52,
+      "height": 64,
+      "atlasX": 450,
+      "atlasY": 195
+    },
+    {
+      "id": "library-sign",
+      "kind": "back",
+      "x": 195,
+      "y": 732,
+      "width": 207,
+      "height": 80,
+      "atlasX": 0,
+      "atlasY": 308
+    }
+  ]
+}

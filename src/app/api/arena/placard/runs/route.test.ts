@@ -97,6 +97,18 @@ describe("POST /api/arena/placard/runs", () => {
     expect(startKqPlayerRun).toHaveBeenCalledWith(customerId, expect.objectContaining(payload));
   });
 
+  it.each(["starter", null])("forwards the reviewed autonomous reservation: %j", async expectedProductionReservedZoneId => {
+    startKqPlayerRun.mockResolvedValue({ runId: "run-1" });
+    const payload = { campaign: true, buddieCode: "HH2026-003", deckCodes: [], expectedProductionReservedZoneId };
+    expect((await POST(request(payload))).status).toBe(201);
+    expect(startKqPlayerRun).toHaveBeenCalledWith(customerId, expect.objectContaining(payload));
+  });
+
+  it.each(["", "  ", 42, false, {}, []])("rejects an invalid reviewed reservation: %j", async expectedProductionReservedZoneId => {
+    expect((await POST(request({ campaign: true, buddieCode: "HH2026-003", deckCodes: [], expectedProductionReservedZoneId }))).status).toBe(400);
+    expect(startKqPlayerRun).not.toHaveBeenCalled();
+  });
+
   it.each([null, "4", 0, -1, 1.5, Number.MAX_SAFE_INTEGER + 1])("rejects an invalid reviewed revision instead of dropping its precondition: %j", async expectedWarehouseRevision => {
     const response = await POST(request({ campaign: true, buddieCode: "HH2026-003", deckCodes: [], expectedWarehouseRevision }));
     expect(response.status).toBe(400);

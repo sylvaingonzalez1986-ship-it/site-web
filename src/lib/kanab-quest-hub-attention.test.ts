@@ -35,7 +35,8 @@ describe("Quartier attention preserves priorities and exact destinations", () =>
     const result = getKqPlacardResume({ ...idle, activeRun: true }, storage, attention(invoice, sale));
     expect(result.kind).toBe("storage");
     expect(result.facts).toEqual([invoice.summary, sale.summary]);
-    expect(result.factActions.map(notice => notice.options)).toEqual([{ treasuryPole: "accounting" }, { marketSection: "dashboard", listingId: "listing-exact" }]);
+    expect(result.factActions.slice(0, 2).map(notice => notice.options)).toEqual([{ treasuryPole: "accounting" }, { marketSection: "dashboard", listingId: "listing-exact" }]);
+    expect(result.additionalFacts).toContain("Ta culture est sauvegardée et prête à reprendre.");
   });
 
   it("shows a due invoice before blocked sales and keeps the saved culture discoverable", () => {
@@ -48,7 +49,7 @@ describe("Quartier attention preserves priorities and exact destinations", () =>
     const result = getKqPlacardResume(snapshot, emptyStorage, attention(upcoming));
     expect(["culture", "market", "jury"]).toContain(result.kind);
     expect(result.facts).toContain(upcoming.summary);
-    expect(result.factActions).toEqual([upcoming]);
+    expect(result.factActions).toContainEqual(upcoming);
   });
 
   it("offers a future invoice during safe waiting without describing it as overdue", () => {

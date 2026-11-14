@@ -1,0 +1,21 @@
+.glossary { min-width:0; color:var(--game-ink,#172923); line-height:1.65; }
+.glossary h2 { margin:0 0 18px; font:700 clamp(30px,4vw,46px)/1.12 var(--font-display),Impact,sans-serif; overflow-wrap:anywhere; }
+.glossary h3 { font:700 23px/1.25 var(--font-display),Impact,sans-serif; }
+.glossary button { min-height:44px; max-width:100%; padding:10px 15px; color:inherit; font:inherit; text-align:left; border:2px solid transparent; background:transparent; box-shadow:none; border-radius:0; --game-control-art:var(--game-control-paper,url('/placard/ui/control-paper-v2.webp')); border-image:var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; cursor:pointer; }
+.glossary button:hover { --game-control-art:var(--game-control-gold,url('/placard/ui/control-gold-v2.webp')); }
+.glossary :is(button,input,summary):focus-visible { outline:3px solid #00695f; outline-offset:3px; }
+.glossary summary { min-height:44px; padding:10px 0; font-weight:700; cursor:pointer; }
+.entry { max-width:76ch; }
+.definition { font-size:clamp(18px,2vw,22px); line-height:1.65; margin:0 0 18px; }
+.context { color:#4c6257; font-size:14px; }
+.related { border-top:1px solid #17292335; margin-top:24px; padding-top:10px; }
+.related>div { display:flex; flex-wrap:wrap; gap:10px; }
+.search { display:grid; grid-template-columns:auto 1fr; align-items:center; gap:8px; margin:20px 0; font-weight:700; }
+.search input { grid-column:1/-1; width:100%; min-width:0; min-height:48px; padding:10px 14px; color:inherit; font:inherit; background:transparent; border:2px solid transparent; border-image:var(--game-control-paper,url('/placard/ui/control-paper-v2.webp')) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; border-radius:0; box-shadow:none; }
+.entries { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:14px 20px; margin:20px 0; }
+.entries>div { min-width:0; padding-bottom:14px; border-bottom:1px solid #17292330; }
+.entries dt { font-weight:700; }
+.entries dt button { width:100%; }
+.entries dd { margin:6px 0 0; font-size:13px; color:#4c6257; }
+@media(max-width:700px) { .entries { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+@media(max-width:420px) { .entries { grid-template-columns:minmax(0,1fr); } .related>div { display:grid; } }

@@ -1,0 +1,12 @@
+{
+  "domain": "botany",
+  "reviewedAt": "2026-11-14",
+  "batches": ["botany-01.json", "botany-02.json", "botany-03.json", "botany-04.json"],
+  "coverage": {"articles":23,"terms":40,"quizReviewed":60,"quizPatches":4,"readyForIntegration":19,"blocked":4},
+  "evidence": "JSON relus et analyse structurelle exécutée : 23 identifiants uniques, toutes les sections et les 60 liens de questions conservés. Toutes les sources incluses ont reviewEvidence ; six références non relues restent signalées comme telles.",
+  "media": ["florogenesis-figure2.webp", "florogenesis-figure4.webp", "trichomes-figure12.jpg"],
+  "mediaReview": "Trois figures originales CC BY 4.0 : pages, légendes, licence et images effectivement examinées. Figure 2 comprend un panneau schématique ; figure 12 comprend deux graphiques expérimentaux. Ces montages sont explicitement décrits dans les légendes, sans les présenter comme des photographies uniques ni des calendriers universels.",
+  "blockers": ["Northern Lights : relire la rétrospective Sensi pour le repère 1985.", "Kush : entretien Josh D / LA Weekly trop volumineux pour l’outil web ; confirmer transmission et 1996.", "Cookies : accès Cannabis Now 403 ; vérifier les fondateurs et le sens du nom F1.", "Gelato : parenté actuelle confirmée par Sherbinskis ; entretien Cannabis Now inaccessible pour chronologie et sélections historiques."],
+  "crossReview": "cross-reviews/agronomy-botany.json : six fiches, aucune erreur bloquante ; précision PPFD/PAR et source de turgescence proposées.",
+  "nextTask": "Révision des 31 fiches health selon l’affectation du coordinateur."
+}

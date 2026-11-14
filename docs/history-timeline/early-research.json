@@ -1,0 +1,766 @@
+{
+  "date": "2026-11-14",
+  "scope": "16 jalons des origines à 1785 ; données de la frise Histoire active de QuizzShow.",
+  "implementation": "src/lib/kanab-quest-history-timeline-early.ts",
+  "language": "fr",
+  "noDeployment": true,
+  "readingRule": "Guide TypeScript local de Next lu avant écriture ; fichier de données sans API Next.",
+  "editorialRules": [
+    "Chronologie des faits distincte de celle des études.",
+    "Récits concrets ; incertitude courte et spécifique.",
+    "Pas de recette, de dose, de faux premier, de résultat clinique ou de droit actuel extrapolé.",
+    "Liens articleId limités aux articles actifs existants."
+  ],
+  "baselineFiles": [
+    "src/lib/kanab-quest-cannabis-revision.ts",
+    "src/lib/kanab-quest-hemp-quiz-expansion-sources.ts",
+    "src/lib/kanab-quest-school-history-early.ts",
+    "src/lib/kanab-quest-school-history-modern.ts",
+    "src/lib/kanab-quest-school-history.ts"
+  ],
+  "newDocuments": {
+    "count": 10,
+    "sourceIds": [
+      "ht-src-early-jiayi",
+      "ht-src-early-pliny",
+      "ht-src-early-hildegard",
+      "ht-src-early-rabelais",
+      "ht-src-early-anthony",
+      "ht-src-early-noyal-trail",
+      "ht-src-early-locronan",
+      "ht-src-early-linnaeus",
+      "ht-src-early-lamarck",
+      "ht-src-early-botanical-texts"
+    ],
+    "note": "Documents nouveaux repérés par titres et URL dans les anciens registres historiques et l’expansion active ; le compte des URL seul ne prouve pas la nouveauté d’un document."
+  },
+  "sources": [
+    {
+      "id": "ht-src-early-ren",
+      "title": "Large-scale whole-genome resequencing unravels the domestication history of Cannabis sativa",
+      "author": "Guangpeng Ren et collaborateurs",
+      "organization": "Science Advances ; copie du PDF publié sur ResearchHub",
+      "published": "16 juillet 2021",
+      "url": "https://storage.prod.researchhub.com/uploads/papers/2021/07/27/eabg2286.pdf",
+      "passage": "Résumé ; p. 3, origine géographique, plantes retournées à l’état sauvage et estimation démographique ; figure 2.",
+      "access": "full-text",
+      "documentKind": "Recherche génomique originale, DOI 10.1126/sciadv.abg2286",
+      "limitation": "Scénario inféré de 110 accessions actuelles ; intervalle chronologique large. Aucun premier champ ni cultivateur identifié.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "PDF intégral ouvert ; p. 1 et 3 lues.",
+        "110 accessions, origine est-asiatique proposée, divergence estimée vers 12 000 BP et intervalle 6 458–15 728 BP.",
+        "Interprétation des plantes férales ; aucun record de première domestication affirmé."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-domestication"
+      ]
+    },
+    {
+      "id": "ht-src-early-haimenkou",
+      "title": "Morphometric approaches to Cannabis evolution and differentiation from archaeological sites",
+      "author": "Rita Dal Martello, Rui Min, Chris J. Stevens, Ling Qin et Dorian Q. Fuller",
+      "organization": "Vegetation History and Archaeobotany",
+      "published": "30 novembre 2023 ; volume 33, 2024",
+      "url": "https://link.springer.com/article/10.1007/s00334-023-00966-6",
+      "passage": "Présentation de Haimenkou ; Results, Haimenkou cannabis grain metrics ; Discussion.",
+      "access": "full-text",
+      "documentKind": "Recherche archéobotanique originale",
+      "limitation": "L’usage alimentaire est proposé à partir du dépôt ; tailles des graines partiellement communes à plusieurs types de cannabis.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Texte intégral éditeur ouvert ; site, Results et Discussion lus.",
+        "Plus de 800 graines ; environ 700 dans un contexte 1400–1100 BCE ; stockage alimentaire proposé.",
+        "Morphométrie seule insuffisante pour une attribution psychoactive ; pas de dose ancienne inventée."
+      ],
+      "exactUrlAbsentFromBaseline": false,
+      "eventIds": [
+        "ht-haimenkou"
+      ]
+    },
+    {
+      "id": "ht-src-early-jiayi",
+      "title": "Ancient Cannabis Burial Shroud in a Central Eurasian Cemetery",
+      "author": "Hongen Jiang et collaborateurs",
+      "organization": "Economic Botany",
+      "published": "20 septembre 2016",
+      "url": "https://link.springer.com/article/10.1007/s12231-016-9351-1",
+      "passage": "Résumés anglais et chinois : tombe M231, treize plantes presque entières, disposition sur le corps et datation.",
+      "access": "abstract",
+      "documentKind": "Recherche archéobotanique originale",
+      "limitation": "Texte intégral payant ; les plantes sont identifiées, mais l’intention du dépôt et leur provenance locale restent interprétées.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Page éditeur ouverte ; résumés anglais et chinois effectivement lus.",
+        "M231, 13 plantes presque entières sur un corps masculin, 2800–2400 ans environ.",
+        "Linceul désigne ici un arrangement de plantes ; pas un tissu. Origine locale proposée."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-jiayi"
+      ]
+    },
+    {
+      "id": "ht-src-early-yanghai",
+      "title": "Phytochemical and genetic analyses of ancient cannabis from Central Asia",
+      "author": "Ethan B. Russo, Hong-En Jiang et collaborateurs",
+      "organization": "Journal of Experimental Botany",
+      "published": "Novembre 2008",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2639026/",
+      "passage": "Introduction : panier, bol, 789 g et datation révisée ; Discussion : conservation et usage indéterminé.",
+      "access": "full-text",
+      "documentKind": "Analyse botanique, chimique et génétique de restes archéologiques",
+      "limitation": "Le statut de « chamane » est une interprétation funéraire. Les auteurs ne déterminent pas le mode d’administration.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Article PMC intégral ouvert ; introduction et discussion lues.",
+        "789 g ; panier en cuir et bol en bois ; identification initiale à la coriandre corrigée ; environ 2700 BP calibrés.",
+        "Statut de chamane et usage médicinal/divinatoire restent des interprétations ; administration indéterminée."
+      ],
+      "exactUrlAbsentFromBaseline": false,
+      "eventIds": [
+        "ht-yanghai"
+      ]
+    },
+    {
+      "id": "ht-src-early-jirzankal",
+      "title": "The origins of cannabis smoking: Chemical residue evidence from the first millennium BCE in the Pamirs",
+      "author": "Meng Ren, Zihua Tang, Xinhua Wu et collaborateurs",
+      "organization": "Science Advances",
+      "published": "12 juin 2019",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6561734/",
+      "passage": "Results : dix braseros et quatre pierres ; Discussion : instruments, échanges et contexte funéraire ; Site and samples.",
+      "access": "full-text",
+      "documentKind": "Recherche archéologique et chimique originale",
+      "limitation": "Les résidus étayent une combustion de cannabis ; ils ne livrent ni dose ressentie, ni déroulement complet du rite, ni « première » mondiale.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Article PMC intégral ouvert ; Results et Discussion lus.",
+        "10 fragments de braseros, 4 pierres ; marqueurs internes de cannabis ; contexte vers 500 BCE.",
+        "Harpe, perles de verre et soie décrites ; aucun morceau musical ou vécu subjectif reconstruit."
+      ],
+      "exactUrlAbsentFromBaseline": false,
+      "eventIds": [
+        "ht-jirzankal"
+      ]
+    },
+    {
+      "id": "ht-src-early-herodotus-74",
+      "title": "Histoires, IV, 74",
+      "author": "Hérodote ; traduction G. C. Macaulay",
+      "organization": "Lexundria",
+      "published": "Ve siècle avant notre ère ; traduction de 1890",
+      "url": "https://lexundria.com/hdt/4.74/mcly",
+      "passage": "Chanvre cultivé ou spontané et vêtements thraces comparés au lin.",
+      "access": "full-text",
+      "documentKind": "Texte antique en traduction",
+      "limitation": "Description littéraire grecque, sans analyse des tissus ni représentativité de toutes les populations.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Page du texte ancien ouverte et lue.",
+        "Chanvre spontané/cultivé ; vêtements thraces ; comparaison visuelle avec le lin.",
+        "Pas une analyse de fibres ni un jugement sur toute la Thrace."
+      ],
+      "exactUrlAbsentFromBaseline": false,
+      "eventIds": [
+        "ht-herodotus"
+      ]
+    },
+    {
+      "id": "ht-src-early-herodotus-75",
+      "title": "Histoires, IV, 75",
+      "author": "Hérodote ; traduction G. C. Macaulay",
+      "organization": "Lexundria",
+      "published": "Ve siècle avant notre ère ; traduction de 1890",
+      "url": "https://lexundria.com/hdt/4.75/mcly",
+      "passage": "Récit des fumigations scythes dans la séquence funéraire et comparaison avec les bains grecs.",
+      "access": "full-text",
+      "documentKind": "Texte antique en traduction",
+      "limitation": "Le récit attribue une pratique à des Scythes ; il ne mesure pas les composés et ne décrit pas une coutume universelle.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Page du texte ancien ouverte et lue.",
+        "Fumigations et bain de vapeur dans la séquence des coutumes funéraires scythes.",
+        "Pratique attribuée par le narrateur ; aucun protocole ou dosage reproduit."
+      ],
+      "exactUrlAbsentFromBaseline": false,
+      "eventIds": [
+        "ht-herodotus"
+      ]
+    },
+    {
+      "id": "ht-src-early-pliny",
+      "title": "Histoire naturelle, livre XIX, chapitre 56",
+      "author": "Pline l’Ancien ; traduction John Bostock et H. T. Riley",
+      "organization": "Project Gutenberg, édition de Henry G. Bohn",
+      "published": "Vers 77 de notre ère ; traduction de 1856",
+      "url": "https://www.gutenberg.org/files/61113/61113-h/61113-h.htm",
+      "passage": "Livre XIX, chapitre 56 : cordes, travail nocturne, Alabanda, Mylasa et Rosea.",
+      "access": "full-text",
+      "documentKind": "Texte antique en traduction",
+      "limitation": "Préférences et comparaisons de Pline ; pas une mesure moderne des rendements ou des dimensions.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Volume Gutenberg ouvert ; livre XIX, chapitre 56 lu.",
+        "Cordages ; préparation nocturne ; Alabanda, Mylasa, territoire sabin.",
+        "Réputation des matières attribuée à Pline ; aucune hauteur extraordinaire présentée comme mesurée."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-pliny"
+      ]
+    },
+    {
+      "id": "ht-src-early-nordic",
+      "title": "Viking and early Middle Ages northern Scandinavian textiles proven to be made with hemp",
+      "author": "Git Skoglund, Margareta Nockert et Bodil Holst",
+      "organization": "Scientific Reports ; résumé et figures sur PubMed",
+      "published": "18 octobre 2013",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/24135914/",
+      "passage": "Résumé : dix tissus, quatre avec du chanvre, dont deux fragments d’Överhogdal ; trois mélanges avec du lin.",
+      "access": "abstract",
+      "documentKind": "Identification originale de fibres de textiles anciens",
+      "limitation": "Résumé et figures consultés ; accès au corps PMC/éditeur indisponible. Le repère chronologique couvre des pièces de dates différentes.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Page PubMed ouverte ; résumé lu, pas seulement un extrait de moteur.",
+        "10 pièces étudiées, 4 contenant du chanvre, 3 mélanges lin/chanvre ; deux fragments d’Överhogdal.",
+        "Accès intégral Nature/PMC indisponible ; borne de navigation large, sans fausse date commune aux textiles."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-nordic-textiles"
+      ]
+    },
+    {
+      "id": "ht-src-early-hildegard",
+      "title": "Physica, livre I, chapitre XI : De Hanff",
+      "author": "Hildegarde de Bingen ; édition Daremberg, Reuss et Migne",
+      "organization": "Bibliotheca Clerus",
+      "published": "XIIe siècle ; édition latine de 1855",
+      "url": "https://www.clerus.org/bibliaclerusonline/DE/gyf.htm",
+      "passage": "Chapitre XI, colonnes 1133–1134 : graines et humeurs ; ajout éditorial sur le tissu pour les plaies.",
+      "access": "full-text",
+      "documentKind": "Texte médical médiéval dans une édition annotée",
+      "limitation": "L’édition distingue des ajouts ; la phrase sur les pansements en fait partie. Les effets médicaux rapportés ne sont pas des résultats cliniques.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Chapitre latin De Hanff effectivement ouvert et lu.",
+        "Graines, digestion, humeurs ; tissu pour plaies dans un passage entre crochets.",
+        "La mention textile est explicitement marquée Add. ed. ; aucune efficacité contemporaine affirmée."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-hildegard"
+      ]
+    },
+    {
+      "id": "ht-src-early-rabelais",
+      "title": "Le Tiers Livre, chapitres XLIX à LII",
+      "author": "François Rabelais ; transcription François Bon",
+      "organization": "ATHENA, Université de Genève",
+      "published": "1546 ; édition Fezandat de 1552 transcrite",
+      "url": "https://athena.unige.ch/athena/rabelais/rabelais-le-tiers-livre.html",
+      "passage": "XLIX : embarquement près de Saint-Malo ; LI : usages textiles, navigation et crainte imaginaire des dieux.",
+      "access": "full-text",
+      "documentKind": "Œuvre littéraire ancienne, transcription universitaire",
+      "limitation": "Le Pantagruélion est une invention littéraire mêlant propriétés et merveilleux ; ce n’est pas une espèce botanique.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Texte universitaire ouvert ; chapitres XLIX et LI lus.",
+        "Chargement au départ près de Saint-Malo ; fibres, navigation ; dieux craignant un voyage humain vers la Lune.",
+        "Première publication 1546 ; texte lu dans la transcription de l’édition 1552 ; création littéraire."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-rabelais"
+      ]
+    },
+    {
+      "id": "ht-src-early-anthony",
+      "title": "The Anthony Roll: recording a Tudor navy",
+      "author": "Mary Rose Trust",
+      "organization": "Mary Rose Museum",
+      "published": "Notice non datée ; document présenté en 1546",
+      "url": "https://maryrose.org/discover/history/anthony-roll/",
+      "passage": "Présentation des trois rouleaux et transcription de l’inventaire : Habillimentes for warre, dix coils de cordage de chanvre.",
+      "access": "official-page",
+      "documentKind": "Notice de musée et transcription d’un inventaire original",
+      "limitation": "Le musée discute la fidélité du registre ; ses quantités ne constituent pas le décompte des objets retrouvés dans l’épave.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Notice du musée ouverte ; présentation et inventaire lus.",
+        "Document remis en 1546 ; 3 rouleaux, 58 navires ; 10 coils de chanvre, 1050 clous et 8 sacs de cuir.",
+        "Les quantités sont celles du registre ; éviter le passage erroné de la notice sur un cadeau royal exactement un siècle plus tard."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-anthony-roll"
+      ]
+    },
+    {
+      "id": "ht-src-early-noyal-trail",
+      "title": "Noyal-sur-Vilaine : sentier Brocéliande",
+      "author": "Pays de Châteaugiron Communauté",
+      "organization": "Pays de Châteaugiron Communauté",
+      "published": "2023",
+      "url": "https://www.communaute.paysdechateaugiron.bzh/medias/2023/12/6-Noyal-sur-Vilaine-Broceliande.pdf",
+      "passage": "Page 1 : origine des noyales, production dès le XVIIe siècle, courtils, fermes et demande maritime.",
+      "access": "official-page",
+      "documentKind": "Notice patrimoniale intercommunale",
+      "limitation": "Synthèse locale sans séries chiffrées de production ; le XVIIe siècle marque un essor, pas l’invention de la toile.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "PDF intercommunal ouvert, page 1 lue.",
+        "Essor XVIIe siècle, noyales en chanvre pour voiles, courtils et transformation à la ferme.",
+        "Pas de volume ou chiffre d’exportation ajouté."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-noyal"
+      ]
+    },
+    {
+      "id": "ht-src-early-noyal-inventory",
+      "title": "Présentation de la commune de Noyal-sur-Vilaine",
+      "author": "Véronique Orain",
+      "organization": "Région Bretagne, Inventaire général du patrimoine culturel",
+      "published": "Enquête de 2004",
+      "url": "https://patrimoine.bzh/gertrude-diffusion/dossier/IA35031862",
+      "passage": "Une économie essentiellement rurale : toiles, travail à la ferme, Touche en 1772 et Vivier en 1785.",
+      "access": "official-page",
+      "documentKind": "Inventaire patrimonial fondé sur observations et dépouillements d’archives",
+      "limitation": "Les exemples localisés ne permettent pas de reconstituer chaque ferme ou tous les métiers de la région.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Notice IA35031862 ouverte ; section économie rurale lue.",
+        "Métier à l’étable à la Touche en 1772 ; maison d’enbas au Vivier en 1785.",
+        "Exemples d’archives, pas reconstitution généralisée des ateliers bretons."
+      ],
+      "exactUrlAbsentFromBaseline": false,
+      "eventIds": [
+        "ht-noyal"
+      ]
+    },
+    {
+      "id": "ht-src-early-corderie",
+      "title": "Voyages des imaginaires : dossier de presse",
+      "author": "Centre international de la mer",
+      "organization": "Corderie Royale de Rochefort",
+      "published": "28 juillet 2020 ; exposition prolongée en 2021",
+      "url": "https://www.corderie-royale.com/wp-content/uploads/2024/06/presentation-compresse.pdf",
+      "passage": "Page PDF 8 : Corderie, année 1666, bâtiment de 374 m, fibres de près de 300 m et cordage de 195 m.",
+      "access": "official-page",
+      "documentKind": "Documentation de l’établissement patrimonial",
+      "limitation": "Dimensions explicatives arrondies ; 1666 est le repère de création, pas une date unique d’achèvement de tout l’édifice.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Dossier PDF du musée ouvert ; page PDF 8 lue.",
+        "1666 ; bâtiment 374 m ; éléments près de 300 m, cordage près de 195 m.",
+        "Publication du dossier 2020–2021, malgré chemin serveur 2024 ; ne pas prendre la date de téléversement pour la date du document."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-corderie"
+      ]
+    },
+    {
+      "id": "ht-src-early-corderie-craft",
+      "title": "Visitez la Corderie Royale",
+      "author": "Centre international de la mer",
+      "organization": "Corderie Royale de Rochefort",
+      "published": "Page non datée",
+      "url": "https://www.corderie-royale.com/",
+      "passage": "Visite permanente : ancienne manufacture de Louis XIV et transformation du chanvre en cordage.",
+      "access": "official-page",
+      "documentKind": "Présentation du musée sur son site officiel",
+      "limitation": "Présentation générale des gestes ; ne chiffre ni les volumes anciens ni la part de chaque fournisseur.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Page officielle de la visite ouverte.",
+        "Manufacture de Louis XIV ; exposition sur la transformation du chanvre et gestes cordiers.",
+        "Utilisée pour le matériau et les gestes ; pas pour des volumes de production."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-corderie"
+      ]
+    },
+    {
+      "id": "ht-src-early-locronan",
+      "title": "Arrêt du Conseil d’État du roi portant règlement pour les toiles à voiles de Lokornan et des environs",
+      "author": "Conseil d’État du roi ; transcription Lin & chanvre en Bretagne",
+      "organization": "Atlas des rivières de Bretagne, document patrimonial",
+      "published": "13 mars 1742 ; transcription contemporaine",
+      "url": "https://lapic.atlas-rivieres.bzh/wp-content/uploads/2024/04/reglement_toiles_Locronan_asso_lin_chanvre.pdf",
+      "passage": "Articles I–V : fils et matières ; XXV–XXVI : marques ; XXXI : conservation des poinçons ; XXXIII : stock ancien.",
+      "access": "full-text",
+      "documentKind": "Transcription d’un règlement royal original",
+      "limitation": "Le texte dit ce qui doit être fait, pas la fréquence réelle des contrôles ni le taux d’infraction.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Transcription PDF ouverte ; articles I–V, XXV–XXVI, XXXI et XXXIII lus.",
+        "13 mars 1742 ; 1000 fils pour Poulan/Lokornan ; chanvre sans lin pour catégories prescrites ; marques nominatives.",
+        "Deux clés pour les poinçons ; norme prescrite distincte de son application réelle."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-locronan"
+      ]
+    },
+    {
+      "id": "ht-src-early-linnaeus",
+      "title": "Cannabis sativa L.",
+      "author": "International Plant Names Index",
+      "organization": "Royal Botanic Gardens, Kew ; Harvard University Herbaria ; Australian National Herbarium",
+      "published": "Notice bibliographique : 1er mai 1753",
+      "url": "https://www.ipni.org/n/306087-2",
+      "passage": "Species Plantarum, volume 2, page 1027 ; date de publication et indication géographique du texte.",
+      "access": "catalogue",
+      "documentKind": "Index botanique institutionnel",
+      "limitation": "Le catalogue vérifie la publication du nom ; l’indication ancienne « India » ne prouve pas le foyer de domestication.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Notice IPNI ouverte ; citation et date lues.",
+        "Species Plantarum 2:1027 ; 1 mai 1753 ; Habitat in India.",
+        "Indication géographique historique, pas origine génétique ; BHL n’a pas été présenté comme consulté."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-linnaeus"
+      ]
+    },
+    {
+      "id": "ht-src-early-botanical-texts",
+      "title": "Cannabis and Culture : études des textes et spécimens de Linné et Lamarck",
+      "author": "William T. Stearn ; Richard E. Schultes, William M. Klein, Timothy Plowman et Tom E. Lockwood",
+      "organization": "Mouton / De Gruyter ; volume dirigé par Vera Rubin",
+      "published": "1975",
+      "url": "https://api.pageplace.de/preview/DT0400.9783110812060_A20011969/preview-9783110812060_A20011969.pdf",
+      "passage": "p. 16 : transcription du texte de Linné ; p. 29–30 : description et spécimen de Lamarck, Sonnerat et caractères des feuilles.",
+      "access": "excerpt",
+      "documentKind": "Études botaniques originales sur les textes et collections historiques",
+      "limitation": "Aperçu éditeur de 64 pages. La date 1783 donnée pour Lamarck dans ce volume est corrigée ici par l’IPNI : publication du fascicule en 1785.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Aperçu éditeur ouvert ; pages imprimées 16 et 29–30 lues.",
+        "Texte de Linné transcrit ; étude de la description de Lamarck et de son spécimen ; Sonnerat ; folioles étroites.",
+        "Date 1783 dans ce livre écartée au profit de la notice IPNI 1785 ; limite éditoriale visible."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-linnaeus",
+        "ht-lamarck"
+      ]
+    },
+    {
+      "id": "ht-src-early-lamarck",
+      "title": "Cannabis indica Lam.",
+      "author": "International Plant Names Index",
+      "organization": "Royal Botanic Gardens, Kew ; Harvard University Herbaria ; Australian National Herbarium",
+      "published": "Notice bibliographique : 1er août 1785",
+      "url": "https://www.ipni.org/n/850879-1",
+      "passage": "Encyclopédie méthodique, Botanique, volume 1(2), page 695 ; date du fascicule.",
+      "access": "catalogue",
+      "documentKind": "Index botanique institutionnel",
+      "limitation": "La publication d’un nom ne tranche pas à elle seule la délimitation des espèces ou la signification des étiquettes commerciales.",
+      "verifiedAt": "2026-11-14",
+      "opened": true,
+      "verification": [
+        "Notice IPNI ouverte ; citation et date lues.",
+        "Encyclopédie méthodique Botanique 1(2):695 ; publication 1 août 1785.",
+        "Nomenclature historique ; pas de classification commerciale ou d’effet clinique inféré."
+      ],
+      "exactUrlAbsentFromBaseline": true,
+      "eventIds": [
+        "ht-lamarck"
+      ]
+    }
+  ],
+  "events": [
+    {
+      "id": "ht-domestication",
+      "year": -10000,
+      "dateLabel": "Vers 10 000 av. n. è.",
+      "dateNote": "Ordre de grandeur proposé par un modèle génétique publié en 2021, pas date d’une découverte archéologique.",
+      "checkedClaims": [
+        "La diversité du chanvre garde la trace de milliers d’années de sélection humaine.",
+        "Sauvage… ou échappé des cultures ?"
+      ],
+      "sourceIds": [
+        "ht-src-early-ren"
+      ],
+      "caution": "La datation génétique reste très large et dépend du modèle utilisé."
+    },
+    {
+      "id": "ht-haimenkou",
+      "year": -1400,
+      "endYear": -1100,
+      "dateLabel": "1400–1100 av. n. è.",
+      "dateNote": "Datation du principal dépôt ; étude publiée en 2023, dans un volume de 2024.",
+      "checkedClaims": [
+        "Un village de l’âge du Bronze livre un dépôt concentré de graines de cannabis.",
+        "Un seul dépôt, plus de 700 graines"
+      ],
+      "sourceIds": [
+        "ht-src-early-haimenkou"
+      ],
+      "caution": "Le stockage alimentaire est une interprétation du contexte, pas un repas conservé."
+    },
+    {
+      "id": "ht-jiayi",
+      "year": -800,
+      "endYear": -400,
+      "dateLabel": "Vers 800–400 av. n. è.",
+      "dateNote": "Fourchette du contexte funéraire ; publication de la découverte en 2016.",
+      "checkedClaims": [
+        "Une tombe conserve des plants de cannabis disposés directement sur un corps.",
+        "Un « linceul » qui n’est pas tissé"
+      ],
+      "sourceIds": [
+        "ht-src-early-jiayi"
+      ],
+      "caution": "Une fonction funéraire est manifeste ; son sens religieux précis demeure inconnu."
+    },
+    {
+      "id": "ht-yanghai",
+      "year": -750,
+      "dateLabel": "Vers le VIIIe siècle av. n. è.",
+      "dateNote": "Âge calibré d’environ 2 700 ans BP dans l’étude de 2008 ; repère ancien arrondi.",
+      "checkedClaims": [
+        "Une sépulture a conservé près de 800 grammes de matière végétale identifiable.",
+        "Pris d’abord pour de la coriandre"
+      ],
+      "sourceIds": [
+        "ht-src-early-yanghai"
+      ],
+      "caution": "Le rôle du défunt et le mode d’usage du dépôt ne sont pas établis."
+    },
+    {
+      "id": "ht-jirzankal",
+      "year": -500,
+      "dateLabel": "Vers 500 av. n. è.",
+      "dateNote": "Époque des sépultures ; résultats chimiques publiés le 12 juin 2019.",
+      "checkedClaims": [
+        "Des résidus de cannabis brûlé subsistent dans des récipients funéraires en bois.",
+        "Une harpe parmi les objets funéraires"
+      ],
+      "sourceIds": [
+        "ht-src-early-jirzankal"
+      ],
+      "caution": "Ni la dose, ni l’intention précise du rite ne peuvent être reconstituées."
+    },
+    {
+      "id": "ht-herodotus",
+      "year": -440,
+      "dateLabel": "Ve siècle av. n. è.",
+      "dateNote": "Repère de rédaction des Histoires, pas début des pratiques racontées.",
+      "checkedClaims": [
+        "Deux passages voisins décrivent des usages très différents de la même plante.",
+        "Une étoffe qui trompe l’œil"
+      ],
+      "sourceIds": [
+        "ht-src-early-herodotus-74",
+        "ht-src-early-herodotus-75"
+      ],
+      "caution": "Les descriptions d’Hérodote sont des témoignages littéraires, avec son propre regard culturel."
+    },
+    {
+      "id": "ht-pliny",
+      "year": 77,
+      "dateLabel": "Vers 77",
+      "checkedClaims": [
+        "Le chanvre entre dans une encyclopédie romaine par ses cordes et ses fibres.",
+        "Le travail continue après la tombée du jour"
+      ],
+      "sourceIds": [
+        "ht-src-early-pliny"
+      ],
+      "caution": "Les qualités et comparaisons rapportées sont celles de Pline, sans mesure moderne."
+    },
+    {
+      "id": "ht-nordic-textiles",
+      "year": 1000,
+      "endYear": 1200,
+      "dateLabel": "Époque viking et début du Moyen Âge",
+      "dateNote": "Repère large pour un ensemble de tissus de dates différentes ; identification des fibres publiée en 2013.",
+      "checkedClaims": [
+        "Des tissus longtemps attribués au lin contiennent aussi du chanvre.",
+        "Quatre tissus changent d’identité"
+      ],
+      "sourceIds": [
+        "ht-src-early-nordic"
+      ],
+      "caution": "Ces dix pièces ne représentent pas toute la production textile scandinave."
+    },
+    {
+      "id": "ht-hildegard",
+      "year": 1150,
+      "endYear": 1160,
+      "dateLabel": "Milieu du XIIe siècle",
+      "dateNote": "Période de composition de la Physica ; le texte consulté est l’édition latine de 1855.",
+      "checkedClaims": [
+        "La tradition d’Hildegarde de Bingen décrit les graines dans sa vision de la santé.",
+        "Le petit détail du pansement"
+      ],
+      "sourceIds": [
+        "ht-src-early-hildegard"
+      ],
+      "caution": "Le texte est transmis par plusieurs états ; ses indications ne sont pas des conseils médicaux."
+    },
+    {
+      "id": "ht-rabelais",
+      "year": 1546,
+      "dateLabel": "1546",
+      "dateNote": "Première publication du Tiers Livre ; passages consultés dans l’édition de 1552.",
+      "checkedClaims": [
+        "Une plante littéraire célèbre les usages du chanvre et la puissance de la navigation.",
+        "Même les dieux s’inquiètent"
+      ],
+      "sourceIds": [
+        "ht-src-early-rabelais"
+      ],
+      "caution": "Le Pantagruélion est une création littéraire, pas le nom d’une variété réelle."
+    },
+    {
+      "id": "ht-anthony-roll",
+      "year": 1546,
+      "dateLabel": "1546",
+      "dateNote": "Année de présentation du registre à Henri VIII.",
+      "checkedClaims": [
+        "L’Anthony Roll inscrit le chanvre parmi les équipements du Mary Rose.",
+        "Le chanvre au milieu de la quincaillerie"
+      ],
+      "sourceIds": [
+        "ht-src-early-anthony"
+      ],
+      "caution": "Les dix couronnes sont une quantité inscrite au registre, pas un total archéologique retrouvé."
+    },
+    {
+      "id": "ht-noyal",
+      "year": 1600,
+      "endYear": 1799,
+      "dateLabel": "XVIIe–XVIIIe siècles",
+      "dateNote": "Période d’essor des noyales ; exemples d’archives datés de 1772 et 1785.",
+      "checkedClaims": [
+        "Les noyales relient les champs de chanvre aux voilures maritimes.",
+        "Un métier à tisser dans l’étable"
+      ],
+      "sourceIds": [
+        "ht-src-early-noyal-trail",
+        "ht-src-early-noyal-inventory"
+      ],
+      "caution": "Ces archives décrivent des lieux précis ; toutes les fermes n’avaient pas la même organisation."
+    },
+    {
+      "id": "ht-corderie",
+      "year": 1666,
+      "dateLabel": "1666",
+      "dateNote": "Création de la manufacture dans le nouvel arsenal ; construction poursuivie ensuite.",
+      "checkedClaims": [
+        "La Corderie Royale donne une dimension monumentale au travail du chanvre.",
+        "Près de 300 mètres avant la torsion"
+      ],
+      "sourceIds": [
+        "ht-src-early-corderie",
+        "ht-src-early-corderie-craft"
+      ],
+      "caution": "Ces longueurs sont des repères explicatifs ; tous les cordages n’avaient pas cette dimension."
+    },
+    {
+      "id": "ht-locronan",
+      "year": 1742,
+      "dateLabel": "13 mars 1742",
+      "checkedClaims": [
+        "Un règlement royal précise la composition et le contrôle des toiles à voiles.",
+        "Des poinçons sous deux clés"
+      ],
+      "sourceIds": [
+        "ht-src-early-locronan"
+      ],
+      "caution": "Le règlement prescrit des contrôles ; il ne prouve pas qu’ils étaient toujours respectés."
+    },
+    {
+      "id": "ht-linnaeus",
+      "year": 1753,
+      "dateLabel": "1er mai 1753",
+      "checkedClaims": [
+        "Linné publie le nom botanique qui devient un repère pour décrire la plante.",
+        "Une provenance qui peut surprendre"
+      ],
+      "sourceIds": [
+        "ht-src-early-linnaeus",
+        "ht-src-early-botanical-texts"
+      ],
+      "caution": "Une indication géographique du XVIIIe siècle ne démontre pas un foyer de domestication."
+    },
+    {
+      "id": "ht-lamarck",
+      "year": 1785,
+      "dateLabel": "1er août 1785",
+      "dateNote": "Date de publication du fascicule indiquée par l’IPNI ; certaines bibliographies anciennes donnent 1783.",
+      "checkedClaims": [
+        "Le nom Cannabis indica naît d’une comparaison botanique dans l’Encyclopédie méthodique.",
+        "Indica avec des feuilles étroites"
+      ],
+      "sourceIds": [
+        "ht-src-early-lamarck",
+        "ht-src-early-botanical-texts"
+      ],
+      "caution": "Ces catégories historiques ne prédisent pas les effets d’un produit actuel."
+    }
+  ],
+  "unavailableAndExcluded": [
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8284894/",
+      "status": "Protection navigateur ; remplacé par le PDF publié consultable sur ResearchHub."
+    },
+    {
+      "url": "https://www.science.org/doi/10.1126/sciadv.abg2286",
+      "status": "403 ; pas déclaré consulté."
+    },
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6505677/",
+      "status": "Protection navigateur ; usage limité au résumé PubMed réellement ouvert."
+    },
+    {
+      "url": "https://www.nature.com/articles/srep02686",
+      "status": "Redirection d’authentification ; corps intégral non consulté."
+    },
+    {
+      "url": "https://www.jamtli.com/utstallningar/overhogdalsbonaderna/",
+      "status": "Délai dépassé ; ni date précise 1040–1170 ni histoire de découverte reprises de cette page."
+    },
+    {
+      "url": "https://www.biodiversitylibrary.org/",
+      "status": "Liens IPNI vers les éditions historiques bloqués 403 ; dates vérifiées dans IPNI, textes via étude botanique accessible."
+    }
+  ],
+  "validation": {
+    "transpileDiagnostics": 0,
+    "sourceReferencesValid": true,
+    "chronologicalOrder": true,
+    "paragraphs": "Deux paragraphes et une anecdote sourcée par événement.",
+    "targetedEslint": "npx.cmd eslint src/lib/kanab-quest-history-timeline-early.ts : exit 0"
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "date": "2026-11-12",
+  "scope": "Nouveau grand quiz de vingt questions seulement. Revue du composant, des styles et de quatre états réels à 320 et 1440 px. Aucun changement du moteur, des commandes, du calcul des points, de la sécurité ou de la banque scientifique.",
+  "fixedRules": { "questions": 20, "themes": 9, "levels": 4, "questionsPerLevel": 5, "correctAnswerPoints": 100, "speedBonusRange": [0, 50], "speedWindowSeconds": 20, "elimination": false, "answerAfterBonus": true, "correctionBeforeNext": true },
+  "method": "Les captures utilisent les vrais composants avec une fixture Node locale indépendante. Les réponses nécessaires aux états de correction et de résultat sont simulées et ne transitent pas vers le navigateur avant leur correction. Aucune requête POST n’a modifié l’aperçu partagé ; aucune base distante utilisée. Les captures de résultat sont des exemples fictifs, pas une mesure de performance humaine.",
+  "evidence": {
+    "directory": "output/school/quiz-ux-research",
+    "measurements": "output/school/quiz-ux-research/observations.json",
+    "captures": ["lobby-320.png", "question-320.png", "correction-320.png", "reasoning-question-320.png", "result-320.png", "lobby-1440.png", "question-1440.png", "correction-1440.png", "result-1440.png"],
+    "before": [
+      "À 320 px, après le défilement automatique vers la première question, le libellé Question 1/20 est à y=-69 : le contexte quitte le viewport.",
+      "Le bonus apparaît sous les quatre choix : y=538 pour une question courte, y=678 pour une question de raisonnement observée.",
+      "La correction montre la bonne réponse mais ne rappelle pas le texte du choix incorrect. Les quatre anciennes options sont au-dessus du viewport.",
+      "La même explication est présente dans le panneau de correction et à nouveau dans References après ouverture des détails.",
+      "Le lobby répète La salle de quiz puis Le grand quiz du chanvre. Son action commence à y=644 sur mobile ; l’illustration est presque entièrement sous le pied fixe.",
+      "Aucun débordement horizontal ni exception JavaScript observés dans cette passe. Les défauts prioritaires sont la hiérarchie, le contexte et la compréhension du retour."
+    ]
+  },
+  "decisions": [
+    {
+      "priority": 1,
+      "title": "Une scène de jeu, un titre, un départ",
+      "change": "Un seul h2 dans le lobby, une illustration de la salle, le format 20 questions / 9 thèmes / 4 niveaux, deux règles courtes et Commencer. Bibliothèque et barème restent secondaires.",
+      "artDirection": "Salle de l’École des Chanvriers, crème, teal, doré et encre ; plaques découpées neuf tranches. Reprendre la composition centrée sur une scène de Millionaire, sans copier le plateau télévisé ni ajouter élimination, argent, paliers monétaires ou jokers.",
+      "sources": ["microids-2020", "kahoot-self-study"],
+      "acceptance": "Un seul titre de jeu ; démarrer reste une action explicite ; une erreur n’élimine pas et le temps illimité pour répondre sont annoncés avant le départ."
+    },
+    {
+      "priority": 2,
+      "title": "Garder la question et son contexte ensemble",
+      "change": "Le panneau focalisé commence par Question x/20, score, thème et niveau courant. Quatre jalons composés de cinq repères représentent exactement les vingt questions. Le bonus se situe avant les quatre réponses ; il reste distinct de la progression. Quatre radios A–D puis Valider ma réponse.",
+      "sources": ["microids-2020", "kahoot-accessibility", "w3c-radio"],
+      "acceptance": "Le focus initial ne cache plus Question x/20 derrière le header. Les textes des options restent complets. Aucune sélection ne soumet automatiquement la réponse ; le choix est signalé par le texte Mon choix et par l’état radio, en plus de la couleur."
+    },
+    {
+      "priority": 3,
+      "title": "Une correction qui explique la décision",
+      "change": "Remplacer l’état question par une correction contextualisée : verdict, points obtenus, rappel de la question, ton choix, bonne réponse si nécessaire, puis une seule explication Pourquoi. Question suivante reste explicite. Les autres propositions, les sources et la fiche liée se déplient séparément.",
+      "sources": ["kahoot-self-study", "w3c-status"],
+      "acceptance": "Le joueur peut comprendre son erreur sans remonter chercher son choix. La réponse, l’explication et le lien original restent accessibles. Aucun passage automatique ; le moteur n’ouvre la question suivante qu’après Continuer."
+    },
+    {
+      "priority": 4,
+      "title": "Un résultat qui mène à une révision utile",
+      "change": "Afficher les réponses justes sur vingt et le score, distinguer les points de réponse du bonus rapidité, puis proposer une nouvelle série ou la bibliothèque. La revue filtre les erreurs par défaut et permet toujours de retrouver les vingt corrections. Le graphique détaillé des points est secondaire.",
+      "sources": ["kahoot-self-study", "kahoot-points"],
+      "acceptance": "Aucun point présenté comme de la monnaie ni comme une mesure pure des connaissances. Aucune erreur cachée par un score global ; toutes les corrections et sources sont conservées."
+    },
+    {
+      "priority": 5,
+      "title": "Un rythme lisible au clavier et sans animation imposée",
+      "change": "Conserver les radios natives, les flèches et Space ; montrer le focus ; garantir des cibles d’au moins 44 px dans cette interface. Focaliser le nouvel état et son intitulé plutôt que placer tout le panneau interactif dans une zone live. Le bonus n’est pas annoncé à chaque tick ; mouvement réduit masque sa barre animée sans changer les règles de score.",
+      "sources": ["w3c-radio", "w3c-focus", "w3c-status", "w3c-timing", "kahoot-accessibility"],
+      "acceptance": "Le footer et le header ne cachent pas la cible focalisée. Verdicts et choix ne reposent pas sur la couleur. Les corrections restent lisibles sans délai. Le bonus chronométré reste une contrainte d’équité pour certains utilisateurs : ce travail ne constitue pas une certification WCAG et ne prétend pas que masquer une animation supprime le chronométrage."
+    }
+  ],
+  "wireframes": {
+    "lobby320": ["École / retour", "Le grand quiz du chanvre", "20 questions · 9 thèmes · 4 niveaux", "[Illustration de la salle, hauteur contenue]", "100 pts si juste · bonus 0–50 pts en 20 s", "[Commencer les 20 questions]", "Aucune élimination ; réponse possible après le bonus", "[Bibliothèque]  > Barème"],
+    "question320": ["Question 7/20                         640 pts", "Sol et racines · Niveau 2 Compréhension", "[1•••••] [2••○○○] [3○○○○○] [4○○○○○]", "Bonus rapidité : jusqu’à 37 pts [barre]", "Question complète", "[A Texte complet]", "[B Texte complet · Mon choix]", "[C Texte complet]", "[D Texte complet]", "[Valider ma réponse]"],
+    "correction320": ["Question 7/20 · score cumulé", "À revoir                                      +0 pts", "Rappel de la question", "Ton choix : B / texte", "La bonne réponse : C / texte", "Pourquoi ? Explication originale, une seule fois", "[Question suivante]", "> Autres choix, sources et fiche"],
+    "result320": ["Partie terminée", "Score en points", "Bonnes réponses : 13/20 [progression réelle]", "Points réponse | Bonus rapidité", "[Une nouvelle série] [Bibliothèque]", "> Revoir mes réponses · 7 à revoir", "  [Mes erreurs] [Les 20 réponses]", "> Répartition détaillée des points"],
+    "desktop": "Même ordre de lecture. Lobby illustration et action côte à côte ; question limitée à 1000 px avec les quatre réponses en grille 2×2. Correction à une colonne de lecture avec comparaison des deux réponses côte à côte. Le décor ne devient jamais un deuxième panneau d’informations concurrent."
+  },
+  "sources": [
+    { "id": "microids-2020", "title": "Microids shares more details on its videogame adaptation of Who Wants to Be a Millionaire?", "url": "https://www.microids.com/microids-shares-more-details-on-its-videogame-adaptation-of-the-famous-game-show-who-wants-to-be-a-millionaire/", "published": "2020-10-23", "consulted": "2026-11-12", "access": "Page officielle intégrale", "used": "Scène de jeu reconnaissable, confirmation d’une réponse, progression et niveaux de difficulté.", "limit": "Communication du producteur ; ni étude d’efficacité pédagogique ni audit d’accessibilité. Aucun gameplay vidéo prétendument observé ; aucune règle d’élimination ou de gain monétaire transposée." },
+    { "id": "kahoot-self-study", "title": "How to learn and practice with Kahoot! self-study modes", "url": "https://support.kahoot.com/hc/en-us/articles/31566898896029-How-to-learn-and-practice-with-Kahoot-self-study-modes", "published": "Mise à jour 2026-10-22", "consulted": "2026-11-12", "access": "Aide officielle intégrale", "used": "Progression après réponse, travail au rythme individuel, retour sur les réponses manquées et reprise.", "limit": "Description de produit et affirmations de l’éditeur ; pas une preuve causale d’apprentissage. La perte de progression annoncée lors d’un changement de mode n’est pas reprise." },
+    { "id": "kahoot-points", "title": "How points work", "url": "https://support.kahoot.com/hc/en-us/articles/115002303908-How-points-work", "published": "Mise à jour 2026-09-30", "consulted": "2026-11-12", "access": "Aide officielle intégrale", "used": "Distinguer justesse, vitesse et total dans la lecture d’un score.", "limit": "Le barème Kahoot n’est pas repris. Le quiz conserve exactement 100 points plus 0–50 points sur vingt secondes." },
+    { "id": "kahoot-accessibility", "title": "Accessible options for playing Kahoot!", "url": "https://trust.kahoot.com/accessibility-settings/", "published": "Modifié 2025-11-13 ; tests cités 2024-06-11", "consulted": "2026-11-12", "access": "Trust Center officiel intégral", "used": "Question et réponses disponibles ensemble ; contraste et accès clavier ; distinction des modes chronométrés et sans temps limité.", "limit": "État de tests du produit Kahoot daté, non validation du Quartier. Leur mode Accuracy retire le facteur temps : le présent lot ne modifie pas les règles fixées par l’utilisateur." },
+    { "id": "w3c-radio", "title": "ARIA Authoring Practices — Radio Group Pattern", "url": "https://www.w3.org/WAI/ARIA/apg/patterns/radio/", "published": "Documentation courante", "consulted": "2026-11-12", "access": "Page W3C intégrale", "used": "Tab entre groupes, flèches entre options et Space pour sélectionner ; préserver le comportement des radios natives.", "limit": "Guide de conception de composants, non certification d’une implémentation. La compatibilité réelle lecteur d’écran reste à éprouver." },
+    { "id": "w3c-status", "title": "Understanding SC 4.1.3 — Status Messages", "url": "https://www.w3.org/WAI/WCAG22/Understanding/status-messages.html", "published": "Documentation WCAG 2.2 courante", "consulted": "2026-11-12", "access": "Page W3C intégrale", "used": "Une zone status sert aux changements sans déplacement de focus ; un changement de contexte focalisé ne demande pas de doubler tout le panneau dans une annonce live.", "limit": "Document explicatif. Le comportement des synthèses vocales n’a pas été testé dans cette revue visuelle." },
+    { "id": "w3c-focus", "title": "Understanding SC 2.4.11 — Focus Not Obscured (Minimum)", "url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum.html", "published": "Documentation WCAG 2.2 courante", "consulted": "2026-11-12", "access": "Page W3C intégrale", "used": "Un élément recevant le focus doit rester visible malgré les en-têtes et pieds fixes.", "limit": "Le niveau AA exige au moins une visibilité partielle ; ce projet vise la cible entièrement visible sans prétendre à une certification globale." },
+    { "id": "w3c-timing", "title": "Understanding SC 2.2.1 — Timing Adjustable", "url": "https://www.w3.org/WAI/WCAG22/Understanding/timing-adjustable.html", "published": "Documentation WCAG 2.2 courante", "consulted": "2026-11-12", "access": "Page W3C intégrale", "used": "Le temps nécessaire à la lecture et à l’interaction varie ; éviter expiration de réponse et changement automatique de contexte.", "limit": "La possibilité de répondre après vingt secondes est conservée. Elle ne suffit pas à déclarer sans étude que le bonus de vitesse respecte toutes les exigences d’accessibilité ; aucun changement de barème n’est décidé ici." }
+  ],
+  "implementation": {
+    "status": "Présentation terminée et figée après inspection des captures mobile et bureau ; aucun défaut matériel restant dans le périmètre vérifié.",
+    "files": ["src/components/placard/KqSchoolChallenge.tsx", "src/components/placard/KqSchoolChallenge.module.css"],
+    "invariants": "Fonctions load, accept, submit, start, horloge serveur, clés de reprise, états autoritaires, commandes et sélecteurs data-challenge conservés. Seul l’état local du filtre de revue est ajouté.",
+    "isolatedBrowserCheck": {
+      "command": "node output/school/ux-curriculum-review/inspect-challenge-ux.mjs --after",
+      "report": "output/school/quiz-ux-research/after/observations.json",
+      "viewports": ["320×900", "1440×900"],
+      "result": "PASS : radios au clavier, Mon choix visible, réduction des mouvements, revue des sept erreurs puis des vingt réponses, aucun débordement horizontal ni erreur de page. Score, points de réponse et bonus lisibles dans le résultat.",
+      "isolation": "API challenge interceptée par une fixture dans Node ; autres POST bloqués. Les résultats de cette revue de présentation sont fictifs, sans mutation de la fixture partagée ni du serveur distant.",
+      "captures": ["output/school/quiz-ux-research/after/question-320.png", "output/school/quiz-ux-research/after/question-1440.png", "output/school/quiz-ux-research/after/correction-320.png", "output/school/quiz-ux-research/after/result-320.png"],
+      "mobileObservation": "Titre, thème, niveau, bonus, quatre choix et validation restent visibles dans le viewport de 900 px de la question capturée. La correction conserve un défilement naturel pour les détails ; Question suivante précède ces détails. Ce constat ne garantit pas que toute question plus longue tienne sans défilement."
+    },
+    "integrationCheck": {
+      "owner": "root",
+      "report": "output/school/challenge-ui/report.json",
+      "result": "PASS après refonte à 320 et 1440 px : vingt questions uniques, neuf thèmes, cinq questions par niveau, score, correction et retour fiche, reprise après rechargement, portefeuille et connaissances préservés, plan privé refusé. Le cas d’expiration du bonus sans exclusion a été exercé à 320 px."
+    },
+    "staticChecks": "ESLint ciblé puis lint TSX d’intégration réussis ; JSON valide et git diff --check ciblé réussi.",
+    "limits": "Revue bornée Chromium et clavier ; aucune certification d’accessibilité ni vérification par synthèse vocale. Aucun changement de contenu scientifique, d’économie ou de moteur sécurisé."
+  }
+}

@@ -95,7 +95,14 @@ export type KqPlacardResume = {
   kind: "storage" | "culture" | "market" | "trim" | "jury" | "curing" | "new-culture" | "finance" | "sales" | "workday" | "unknown";
   tone: "attention" | "ready" | "waiting" | "unknown";
   facts: string[];
-  factActions: KqHubAttentionNotice[];
+  additionalFacts: string[];
+  factActions: {
+    id: string;
+    summary: string;
+    destination: "game" | "arena" | "market" | "workshop" | "treasury";
+    href?: string;
+    options?: { marketSection?: "sales" | "dashboard" | "management"; treasuryPole?: "accounting"; listingId?: string; warehouseSection?: "storage" };
+  }[];
   attentionStatus: string | null;
   canRefreshAttention: boolean;
   workNotice: string | null;
@@ -206,15 +213,16 @@ export function getKqPlacardResume(snapshot: KqPlacardHubSnapshot | null, storag
     ? { id: "trim-required", severity: "attention", destination: "workshop", href: KQ_WORKSHOP_TRIM_HREF, options: {},
       title: "Préparer la récolte", description: "Le trim est obligatoire avant le jury, avec ou sans salarié.", buttonLabel: "Faire le trim",
       summary: `${snapshot.trimFlowerCount} lot${snapshot.trimFlowerCount! > 1 ? "s" : ""} à trimmer avant le jury.` } : null;
-  const factActions = [trim, finance, sales].filter((notice): notice is KqHubAttentionNotice => Boolean(notice && notice !== selectedNotice))
+  const factActions: KqPlacardResume["factActions"] = [trim, finance, sales].filter((notice): notice is KqHubAttentionNotice => Boolean(notice && notice !== selectedNotice))
     .sort((left, right) => Number(left.severity === "upcoming") - Number(right.severity === "upcoming"));
   const facts: string[] = factActions.map(notice => notice.summary);
+  const addActivity = (action: KqPlacardResume["factActions"][number]) => { facts.push(action.summary); factActions.push(action); };
   if (!snapshot) facts.push("Le suivi des activités est indisponible ; aucune activité n’est supposée terminée.");
   if (!storage && kind !== "curing") facts.push("Le rangement des récoltes n’a pas pu être vérifié.");
-  if (snapshot?.activeRun && kind !== "culture") facts.push("Ta culture est sauvegardée et prête à reprendre.");
-  if (snapshot && snapshot.readyLotCount > 0 && kind !== "market") facts.push(`${snapshot.readyLotCount} lot${snapshot.readyLotCount > 1 ? "s prêts" : " prêt"} à vendre dans Commerce.`);
-  if (snapshot && snapshot.availableFlowerCount > 0 && kind !== "jury") facts.push(`${snapshot.availableFlowerCount} Fleur${snapshot.availableFlowerCount > 1 ? "s d’Arène prêtes" : " d’Arène prête"} pour le jury.`);
-  if (curingCount > 0 && kind !== "curing") facts.push(protectedCuring && readyAt ? `Affinage automatique : ${curingCount} lot${curingCount > 1 ? "s rangés" : " rangé"}, ${curingCount > 1 ? "première fin" : "fin"} le ${realDate(readyAt)} (Paris).` : readyAt ? `Affinage : fin prévue le ${realDate(readyAt)} (Paris), rangement à vérifier.` : `${curingCount} lot${curingCount > 1 ? "s" : ""} en affinage ; rangement et échéance à vérifier.`);
+  if (snapshot?.activeRun && kind !== "culture") addActivity({ id: "culture", destination: "game", summary: "Ta culture est sauvegardée et prête à reprendre." });
+  if (snapshot && snapshot.readyLotCount > 0 && kind !== "market") addActivity({ id: "ready-lots", destination: "market", options: { marketSection: "sales" }, summary: `${snapshot.readyLotCount} lot${snapshot.readyLotCount > 1 ? "s prêts" : " prêt"} à vendre dans Commerce.` });
+  if (snapshot && snapshot.availableFlowerCount > 0 && kind !== "jury") addActivity({ id: "jury", destination: "arena", summary: `${snapshot.availableFlowerCount} Fleur${snapshot.availableFlowerCount > 1 ? "s d’Arène prêtes" : " d’Arène prête"} pour le jury.` });
+  if (curingCount > 0 && kind !== "curing") addActivity({ id: "curing", destination: "workshop", options: { warehouseSection: "storage" }, summary: protectedCuring && readyAt ? `Affinage automatique : ${curingCount} lot${curingCount > 1 ? "s rangés" : " rangé"}, ${curingCount > 1 ? "première fin" : "fin"} le ${realDate(readyAt)} (Paris).` : readyAt ? `Affinage : fin prévue le ${realDate(readyAt)} (Paris), rangement à vérifier.` : `${curingCount} lot${curingCount > 1 ? "s" : ""} en affinage ; rangement et échéance à vérifier.` });
   const missingFinance = attention && attention.finance?.complete !== true;
   const missingSales = attention && attention.sales?.complete !== true;
   const attentionStatus = !attention ? null : attention.loading ? "Factures et ventes en cours de vérification."
@@ -225,7 +233,7 @@ export function getKqPlacardResume(snapshot: KqPlacardHubSnapshot | null, storag
   if (attentionStatus && !canRefreshAttention) facts.push(attentionStatus);
   // Failed or partial reads must retain their recovery command even on busy accounts.
   const visibleFacts = canRefreshAttention && attentionStatus ? [...facts.slice(0, 1), attentionStatus] : facts.slice(0, 2);
-  return { primary, kind, tone, facts: visibleFacts,
-    factActions: factActions.filter(notice => visibleFacts.includes(notice.summary)), attentionStatus,
+  return { primary, kind, tone, facts: visibleFacts, additionalFacts: facts.filter(fact => !visibleFacts.includes(fact)),
+    factActions, attentionStatus,
     canRefreshAttention, workNotice };
 }

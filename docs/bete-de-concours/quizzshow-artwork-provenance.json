@@ -1,0 +1,46 @@
+{
+  "updated": "2026-11-14",
+  "tool": "Built-in image_gen (imagegen skill)",
+  "kind": "precise-object-edit",
+  "original": "public/placard/map/placard-world-library-v8.webp",
+  "map": "public/placard/map/placard-world-quizzshow-v9.webp",
+  "vignette": "public/placard/ui/school-v3.webp",
+  "generatedSources": [
+    "output/quizzshow/map-source.png",
+    "output/quizzshow/quizzshow-transparent.png",
+    "output/quizzshow/sign-backing-source.png"
+  ],
+  "prompts": {
+    "map": "Use case: precise-object-edit.\nAsset type: production village game map, same 1536 x 1024 landscape canvas.\nEdit target: the supplied complete illustrated Breton village map.\nPrimary request: rename and transform ONLY the lower-left library building into \"QuizzShow\", a friendly village quiz-show venue. Keep its exact position and silhouette: slate roof with small turret, cream stone walls, right-hand arched wooden door, hydrangeas and doorstep. Match the original bold irregular black ink outlines, simple flat printed cream/teal/gold/apricot palette and whimsical cartoon architecture.\nReplace the big golden wooden question-mark hanging sign on this building with a matching irregular golden wooden hanging sign bearing the exact single word \"QuizzShow\", capital Q and S, two z letters: Q-u-i-z-z-S-h-o-w. One readable line of dark teal hand-lettering. Keep the sign in approximately the same bounds x218..378, y748..801 and attached with two short dark loops; keep the outer edge simple and closed so the sign can be animated independently.\nTurn the large front bookshelf window into a little quiz-show stage with four small clearly separated buzzer lecterns behind the glass, framed by warm apricot curtains and tiny warm bulb lights. No people. Replace the open-book roof emblem with a simple gold question-mark badge and a couple of small star accents, and the books in the little roof turret with a charming standing microphone. The small pavement bookstand becomes a matching quiz-show placard with a question mark, no extra words.\nPreserve the village's existing welcoming hand-painted character, not a modern city television studio. Preserve camera, scale, footprint and all paths. The other seven buildings, shore, trees, bridge, river, market, card shop and every surrounding object stay unchanged. No other text added, no UI, no watermark. Return the entire map at the original 3:2 composition.",
+    "vignette": "Use case: background-extraction.\nAsset type: transparent navigation and chapter-heading vignette for an illustrated village game.\nEdit target: supplied map. Extract ONLY its lower-left QuizzShow building, preserving that exact design and camera: cream stone cottage, slate roof and small turret with microphone, golden question-mark badge with two stars, golden hanging sign reading exactly \"QuizzShow\", warm orange curtains framing FOUR small buzzer lecterns in the front window, right-hand rounded wooden door, little pavement question-mark stand and blue hydrangeas.\nMatch the identical black ink lines and cream/teal/gold/apricot flat cartoon painting. No redesign. Complete roof-to-doorstep silhouette centered on a square 1024x1024 canvas with modest transparent padding. Keep only a tiny tuft of grass at the base. True transparent background: no sky, other buildings, fence, wall, path, square backdrop or watermark. Do not change the name, spell Q-u-i-z-z-S-h-o-w.",
+    "signBacking": "Use case: precise-object-edit.\nAsset type: clean backing plate for an animated wooden sign.\nEdit target: supplied 1024x1024 close-up of the QuizzShow facade.\nRemove ONLY the large golden wooden sign bearing \"QuizzShow\" and its two dark hanging loops. Restore the continuous cream stone/plaster facade that was hidden by the plaque and loops. Preserve the exact roof, round question-mark badge, two stars, doorway, front-window contour, curtains, lights, four buzzer lecterns, hydrangeas and all other pixels/geometry. The window starts immediately beneath the sign; keep its upper contour aligned and unchanged. Match the existing thick black hand-inked outlines and flat cream cartoon wall. No replacement text, sign or new objects. Same composition and exact square registration; this will sit behind the moving sign."
+  },
+  "integration": "scripts/export-quizzshow-artwork.mjs: same building-only mask; lossless map; unchanged decoded pixels outside mask. Generated alpha preserved, vignette at 512×512. Existing sprite exporter packs updated sign contour and generated backing.",
+  "animation": {
+    "id": "library-sign",
+    "building": "collection",
+    "backing": "public/placard/map/living-v2/clean-patches-quizzshow-v1.webp",
+    "engine": "Existing GSAP village animation; existing pause and reduced-motion handling",
+    "anchor": [
+      298,
+      742
+    ],
+    "amplitudeDegrees": 2.2,
+    "halfCycleSeconds": 2.65
+  },
+  "checks": {
+    "artwork": "output/quizzshow/artwork-verification.json",
+    "browser": "output/quizzshow/motion-report.json",
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "scenarios": 3,
+    "errors": 0,
+    "unitTests": 5,
+    "lint": "PASS targeted components, geometry, scene and export scripts",
+    "limits": "Local Vite harness, real map/navigation and simulated destination; no production deployment."
+  },
+  "deployment": "Local assets and code only."
+}

@@ -10,6 +10,10 @@ vi.mock("@/lib/supabase/arena-introduction-backend", () => ({ getArenaIntroducti
 
 import PlacardPlayerPage from "./page";
 
+function renderPage(query: Record<string, string | string[] | undefined> = {}) {
+  return PlacardPlayerPage({ searchParams: Promise.resolve(query) });
+}
+
 beforeEach(() => {
   vi.resetAllMocks();
   vi.spyOn(Date, "now").mockReturnValue(openingAt + 1);
@@ -25,15 +29,59 @@ afterEach(() => { vi.unstubAllEnvs(); vi.restoreAllMocks(); });
 
 describe("Placard page entry", () => {
   it("sends a visitor without a customer session to login with a return to the Placard", async () => {
-    await expect(PlacardPlayerPage()).rejects.toMatchObject({
+    await expect(renderPage()).rejects.toMatchObject({
       digest: "NEXT_REDIRECT;replace;/compte/connexion?next=%2Farene%2Fplacard;307;",
     });
     expect(mocks.introduction).not.toHaveBeenCalled();
   });
 
+  it.each([
+    { view: "staff", employee: "employee-a" },
+    { view: "workshop", section: "processing", workshop: "trim", flower: "flower-b", employee: "employee-a", from: "harvests", fromSection: "storage", fromFlower: "flower-b" },
+  ])("returns a logged-out player to the same Staff or Trim context: %j", async query => {
+    const error = await renderPage(query).catch(error => error);
+    const login = new URL(error.digest.split(";")[2], "https://example.test");
+    const destination = new URL(login.searchParams.get("next")!, login.origin);
+    expect(login.pathname).toBe("/compte/connexion");
+    expect(destination.origin).toBe(login.origin);
+    expect(destination.pathname).toBe("/arene/placard");
+    expect(Object.fromEntries(destination.searchParams)).toEqual(query);
+    expect(mocks.introduction).not.toHaveBeenCalled();
+  });
+
+  it("preserves repeated and encoded query values without treating a nested next as the destination", async () => {
+    const query = {
+      view: ["workshop", "staff"],
+      flower: "lot & reprise + été 20% #1",
+      employee: ["employee/a", "employee?b=1"],
+      from: "",
+      next: "https://elsewhere.invalid/compte?view=staff",
+      absent: undefined,
+    };
+    const error = await renderPage(query).catch(error => error);
+    const login = new URL(error.digest.split(";")[2], "https://example.test");
+    const destination = new URL(login.searchParams.get("next")!, login.origin);
+    expect([...login.searchParams.keys()]).toEqual(["next"]);
+    expect(destination.origin).toBe(login.origin);
+    expect(destination.pathname).toBe("/arene/placard");
+    expect(destination.searchParams.getAll("view")).toEqual(query.view);
+    expect(destination.searchParams.get("flower")).toBe(query.flower);
+    expect(destination.searchParams.getAll("employee")).toEqual(query.employee);
+    expect(destination.searchParams.get("from")).toBe("");
+    expect(destination.searchParams.get("next")).toBe(query.next);
+    expect(destination.searchParams.has("absent")).toBe(false);
+    expect(destination.hash).toBe("");
+  });
+
+  it.each(["employee\\other", "employee\nother", "%255celsewhere.invalid"])("falls back safely when a query makes the return path unsafe: %j", async employee => {
+    await expect(renderPage({ view: "staff", employee })).rejects.toMatchObject({
+      digest: "NEXT_REDIRECT;replace;/compte/connexion?next=%2Farene%2Fplacard;307;",
+    });
+  });
+
   it("keeps the page unavailable when the module is disabled", async () => {
     vi.stubEnv("CONTEST_FEATURE_ENABLED", "false");
-    await expect(PlacardPlayerPage()).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
+    await expect(renderPage()).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
     expect(mocks.session).not.toHaveBeenCalled();
     expect(mocks.introduction).not.toHaveBeenCalled();
   });
@@ -43,14 +91,14 @@ describe("Placard page entry", () => {
       customerId: "ordinary-customer",
       customer: { email: "ordinary@example.test", contestBetaEnabled: false },
     });
-    await expect(PlacardPlayerPage()).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
+    await expect(renderPage()).rejects.toMatchObject({ digest: "NEXT_HTTP_ERROR_FALLBACK;404" });
     expect(mocks.introduction).not.toHaveBeenCalled();
   });
 
   it.each(["new", "seen", "unavailable"])("passes the authenticated introduction state (%s) before mounting the live game", async introductionState => {
     mocks.session.mockResolvedValue({ customerId: "verified-id", customer: { email: "player@example.test", contestBetaEnabled: true } });
     mocks.introduction.mockResolvedValue(introductionState);
-    const entry = await PlacardPlayerPage();
+    const entry = await renderPage();
     expect(mocks.introduction).toHaveBeenCalledExactlyOnceWith("verified-id");
     expect(entry.props).toEqual({ userId: "verified-id", introductionState });
     expect(entry.key).toBe("verified-id");
@@ -60,6 +108,6 @@ describe("Placard page entry", () => {
 it.each([true, false])("allows only beta players into the Placard before opening: %s", async beta => {
   vi.spyOn(Date, "now").mockReturnValue(openingAt - 1);
   mocks.session.mockResolvedValue({ customerId: "verified-id", customer: { email: "player@example.test", contestBetaEnabled: beta } });
-  if (beta) expect(await PlacardPlayerPage()).toBeTruthy();
-  else await expect(PlacardPlayerPage()).rejects.toMatchObject({ digest: "NEXT_REDIRECT;replace;/arene?mode=jouer&ouverture=1;307;" });
+  if (beta) expect(await renderPage()).toBeTruthy();
+  else await expect(renderPage()).rejects.toMatchObject({ digest: "NEXT_REDIRECT;replace;/arene?mode=jouer&ouverture=1;307;" });
 });

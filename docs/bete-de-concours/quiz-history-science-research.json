@@ -1,0 +1,843 @@
+{
+  "sources": [
+    {
+      "id": "qh-hist-statutes",
+      "title": "Marihuana Tax Act of 1937, 50 Stat. 551",
+      "organization": "U.S. Government Publishing Office",
+      "url": "https://www.govinfo.gov/content/pkg/STATUTE-50/pdf/STATUTE-50-Pg551-2.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "75th United States Congress",
+      "published": "1937-08-02",
+      "passage": "Statutes at Large, ch. 553; sections 1–2 and act title",
+      "limitation": "Texte primaire établissant les dispositions, taxes et définitions; ne suffit pas à établir une explication monocausale de son adoption.",
+      "supportedFacts": [
+        "Titre officiel Marihuana Tax Act of 1937 et date du 2 août 1937.",
+        "Taxe spéciale et règles de transfert.",
+        "La définition excluait notamment les tiges mûres, les fibres correspondantes et certains produits de graines."
+      ]
+    },
+    {
+      "id": "qh-hist-csa",
+      "title": "Schedules of Controlled Substances: Rescheduling of Marijuana",
+      "organization": "U.S. Drug Enforcement Administration",
+      "url": "https://www.dea.gov/sites/default/files/2024-05/Scheduling%20NPRM%20508.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "author": "Drug Enforcement Administration",
+      "published": "2024",
+      "passage": "Federal History of Marijuana Control; discussion of CSA enactment",
+      "limitation": "Notice rétrospective institutionnelle consultée pour le fait de classement initial; les questions évitent d’extrapoler les motivations historiques.",
+      "supportedFacts": [
+        "Le CSA a été adopté en 1970.",
+        "Le Congrès a initialement placé la marijuana en Schedule I.",
+        "Le CSA comporte cinq schedules."
+      ]
+    },
+    {
+      "id": "qh-hist-hemp-victory",
+      "title": "Hemp For Victory, circa 1942",
+      "organization": "USDA National Agricultural Library Special Collections",
+      "url": "https://archivesspace.nal.usda.gov/repositories/4/archival_objects/16966",
+      "consultedAt": "2026-11-14",
+      "access": "archive notice",
+      "author": "United States Department of Agriculture",
+      "published": "vers 1942",
+      "passage": "Notice de la pièce d’archive USDA Motion Picture Film Collection, MS0522",
+      "limitation": "Notice de catalogue, datation approximative; elle n’établit pas à elle seule les détails de toute la campagne de guerre.",
+      "supportedFacts": [
+        "Existence et titre du film Hemp for Victory.",
+        "Production attribuée à l’USDA et datation approximative de 1942."
+      ]
+    },
+    {
+      "id": "qh-hist-uruguay",
+      "title": "Ley N° 19.172: Regulación y control del cannabis",
+      "organization": "Presidencia de la República Oriental del Uruguay",
+      "url": "https://www.gub.uy/presidencia/institucional/normativa/ley-n-19172-fecha-20122013-regulacion-control-del-cannabis",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "author": "Poder Legislativo / Presidencia de Uruguay",
+      "published": "2013-12-20 (promulgation); 2014-01-07 (publication) ",
+      "passage": "Notice de la loi, date, résumé et lien vers le texte",
+      "limitation": "Page officielle en espagnol; les dates de promulgation et publication sont distinguées. Ne décrit pas à elle seule les modalités réglementaires actuelles.",
+      "supportedFacts": [
+        "La loi 19.172 est datée du 20 décembre 2013.",
+        "Elle confie à l’État le contrôle/régulation de plusieurs activités liées au cannabis.",
+        "Ses principes citent santé publique et réduction des risques."
+      ]
+    },
+    {
+      "id": "qh-hist-canada",
+      "title": "Taking stock of progress: Cannabis legalization and regulation in Canada",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/programs/engaging-cannabis-legalization-regulation-canada-taking-stock-progress/document.html",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "author": "Health Canada",
+      "published": "2022",
+      "passage": "Cannabis Act coming into force; first year and October 2019 product classes",
+      "limitation": "Bilan officiel de mise en œuvre; ne résume pas toutes les lois provinciales et territoriales.",
+      "supportedFacts": [
+        "La Cannabis Act a reçu la sanction royale le 21 juin 2018.",
+        "La loi est entrée en vigueur le 17 octobre 2018.",
+        "Comestibles, extraits et produits topiques ont été autorisés sous règles modifiées le 17 octobre 2019."
+      ]
+    },
+    {
+      "id": "qh-hist-un-treaties",
+      "title": "The International Drug Control Conventions",
+      "organization": "United Nations Office on Drugs and Crime / United Nations",
+      "url": "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "United Nations",
+      "published": "non indiquée (compilation consultée)",
+      "passage": "Introduction; conference dates and convention titles; entry into force for 1961 Convention",
+      "limitation": "Compilation des textes conventionnels et repères de conférences; ne constitue pas une interprétation juridique de chaque droit national.",
+      "supportedFacts": [
+        "Convention unique adoptée et ouverte à la signature à New York du 24 janvier au 25 mars 1961; entrée en vigueur en 1964.",
+        "Convention sur les substances psychotropes adoptée à Vienne en 1971.",
+        "Convention contre le trafic illicite adoptée à Vienne du 25 novembre au 20 décembre 1988.",
+        "Convention de 1961 amendée par le protocole de 1972."
+      ]
+    },
+    {
+      "id": "qh-hist-un-2020",
+      "title": "E/2020/28/Add.1: Report of the Commission on Narcotic Drugs, reconvened 63rd session",
+      "organization": "United Nations Economic and Social Council",
+      "url": "https://documents.un.org/api/symbol/access?l=en&s=e%2F2020%2F28%2Fadd.1&t=pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "Commission on Narcotic Drugs",
+      "published": "2020-12-02 (vote)",
+      "passage": "Decision 63/17; first meeting, paragraph on roll-call vote",
+      "limitation": "Décision limitée aux annexes de la Convention de 1961. Ne constitue pas une légalisation nationale ou mondiale; cannabis reste dans l’annexe I.",
+      "supportedFacts": [
+        "Vote de 27 pour, 25 contre et une abstention.",
+        "Retrait du cannabis et de la résine de l’annexe IV de la Convention unique de 1961."
+      ]
+    },
+    {
+      "id": "qh-sci-oshaughnessy",
+      "title": "On the Preparations of the Indian Hemp, or Gunjah",
+      "organization": "Provincial Medical Journal and Retrospect of the Medical Sciences; PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2490264/",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "W. B. O’Shaughnessy",
+      "published": "1843-02-04",
+      "passage": "Article pages 363–369; title, case observations, discussion",
+      "limitation": "Source primaire du XIXe siècle, observations historiques non conformes aux normes contemporaines d’essai clinique contrôlé; distincte du Club des Hachichins.",
+      "supportedFacts": [
+        "Article sur les préparations de chanvre indien et leurs effets médicaux rapportés.",
+        "Évoque le tétanos et d’autres maladies convulsives.",
+        "Publication de 1843 consultable en texte intégral."
+      ]
+    },
+    {
+      "id": "qh-sci-cbd-history",
+      "title": "Cannabidiol: an overview of some chemical and pharmacological aspects. Part I: chemical aspects",
+      "organization": "Chemistry and Physics of Lipids / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12505688/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "Raphael Mechoulam et Lumír Hanuš",
+      "published": "2002",
+      "passage": "Notice et résumé ; Chemistry and Physics of Lipids 121(1–2), 35–43",
+      "limitation": "Review abstract/page, not the original 1940 experimental papers; used only for historical attribution and broad chronology.",
+      "supportedFacts": [
+        "Rétrospective historique de la chimie du cannabidiol."
+      ]
+    },
+    {
+      "id": "qh-sci-cbd-structure",
+      "title": "Hashish. I. The structure of cannabidiol",
+      "organization": "Tetrahedron ; copie de l’article original",
+      "url": "https://cbdcrew.org/assets/cbd-Mechoulam-1963.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "Raphael Mechoulam and Yehiel Shvo",
+      "published": "1963-12",
+      "passage": "Tetrahedron 19, 2073–2078 ; page 2073, affiliations et introduction",
+      "limitation": "Copy of the primary article hosted by a third party; supports the structural research milestone, not clinical efficacy.",
+      "supportedFacts": [
+        "1963 publication describes CBD structural elucidation and relative stereochemistry."
+      ]
+    },
+    {
+      "id": "qh-sci-thc",
+      "title": "Isolation, Structure, and Partial Synthesis of an Active Constituent of Hashish",
+      "organization": "Journal of the American Chemical Society / American Chemical Society",
+      "url": "https://pubs.acs.org/doi/10.1021/ja01062a046",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "author": "Yehiel Gaoni and Raphael Mechoulam",
+      "published": "1964-04-01",
+      "passage": "JACS 86(8), pp. 1646–1647 ; titre et métadonnées éditoriales",
+      "limitation": "Institutional article landing page; full article is paywalled. Supports article identity and reported isolation/structure/partial synthesis, not clinical claims.",
+      "supportedFacts": [
+        "Article reports isolation, structural work and partial synthesis of an active hashish constituent, Δ9-THC.",
+        "Authors affiliated with Weizmann Institute of Science in Rehovot, Israel."
+      ]
+    },
+    {
+      "id": "qh-sci-cb1-history",
+      "title": "Cannabinoid Receptors: Nomenclature and Pharmacological Principles",
+      "organization": "Progress in Neuro-Psychopharmacology & Biological Psychiatry / PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3378782/",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "Linda Console-Bram, Jahan Marcu et Mary E. Abood",
+      "published": "2012-07-02 (en ligne le 2012-02-28)",
+      "passage": "Historical overview and receptor nomenclature",
+      "limitation": "Review of the receptor field, rather than the original 1988 binding paper.",
+      "supportedFacts": [
+        "A cannabinoid binding site/receptor was reported in 1988.",
+        "CB1 was cloned in 1990."
+      ]
+    },
+    {
+      "id": "qh-sci-cb1",
+      "title": "Structure of a cannabinoid receptor and functional expression of the cloned cDNA",
+      "organization": "Nature / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/2165569/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "L. A. Matsuda et al.",
+      "published": "1990-08-09",
+      "passage": "Abstract",
+      "limitation": "PubMed abstract consulted; details beyond abstract and full experimental data are not claimed.",
+      "supportedFacts": [
+        "Matsuda and colleagues reported cloning and expression of CB1.",
+        "Abstract reports receptor mRNA in brain regions and cell lines."
+      ]
+    },
+    {
+      "id": "qh-sci-cb2",
+      "title": "Molecular characterization of a peripheral receptor for cannabinoids",
+      "organization": "Nature / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7689702/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "S. Munro, K. L. Thomas, M. Abu-Shaar",
+      "published": "1993-09-02",
+      "passage": "Abstract",
+      "limitation": "PubMed abstract consulted. Initial splenic localization does not establish exclusive tissue distribution.",
+      "supportedFacts": [
+        "Paper reports cloning of a cannabinoid receptor outside brain, in splenic marginal-zone macrophages.",
+        "The receptor became known as CB2."
+      ]
+    },
+    {
+      "id": "qh-sci-anandamide",
+      "title": "Isolation and structure of a brain constituent that binds to the cannabinoid receptor",
+      "organization": "Science / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "W. A. Devane et al.",
+      "published": "1992-12-18",
+      "passage": "Abstract",
+      "limitation": "PubMed abstract consulted; statements restricted to isolation, receptor binding and proposed endogenous-ligand role.",
+      "supportedFacts": [
+        "Anandamide (N-arachidonoylethanolamine) isolated from porcine brain.",
+        "Authors proposed it may function as a natural ligand for cannabinoid receptor.",
+        "Name derives from Sanskrit term for bliss."
+      ]
+    },
+    {
+      "id": "qh-sci-2ag",
+      "title": "2-Arachidonoylglycerol: a possible endogenous cannabinoid receptor ligand in brain",
+      "organization": "Biochemical and Biophysical Research Communications / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7575630/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "T. Sugiura et al.",
+      "published": "1995-10-04",
+      "passage": "Abstract",
+      "limitation": "PubMed abstract only; first paper frames 2-AG as a possible ligand based on binding assays, not a complete account of physiological roles.",
+      "supportedFacts": [
+        "2-AG binding assessed by competition with radiolabeled ligand at synaptosomal membranes.",
+        "Authors concluded 2-AG may be an endogenous cannabinoid receptor ligand.",
+        "2-AG is 2-arachidonoylglycerol, a monoacylglycerol."
+      ]
+    },
+    {
+      "id": "qh-sci-receptors",
+      "title": "International Union of Pharmacology. XXVII. Classification of cannabinoid receptors",
+      "organization": "Pharmacological Reviews / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "A. C. Howlett et al.",
+      "published": "2002",
+      "passage": "Abstract",
+      "limitation": "Review abstract; broad receptor descriptions, not a primary experiment. Tissue distributions are described as predominant rather than exclusive.",
+      "supportedFacts": [
+        "CB1 cloned 1990 and CB2 cloned 1993.",
+        "CB1 and CB2 are GPCRs with about 48 percent amino-acid sequence identity.",
+        "Receptor signaling can modulate adenylyl cyclase and neurotransmitter release."
+      ]
+    },
+    {
+      "id": "qh-hist-prop215",
+      "title": "Proposition 215: Text of Proposed Law",
+      "organization": "California Secretary of State",
+      "url": "https://vigarchive.sos.ca.gov/1996/general/pamphlet/215text.htm",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "California voters / Secretary of State archive",
+      "published": "1996-11-05",
+      "passage": "Proposition 215; Section 11362.5, Compassionate Use Act of 1996",
+      "limitation": "Historical text of this California state initiative; does not establish federal law or present-day law in other jurisdictions.",
+      "supportedFacts": [
+        "California Proposition 215 is also titled the Compassionate Use Act of 1996.",
+        "It was placed in the 5 November 1996 election."
+      ]
+    },
+    {
+      "id": "qh-hist-shafer",
+      "title": "Congressional Record: National Commission on Marihuana and Drug Abuse report",
+      "organization": "U.S. Government Publishing Office",
+      "url": "https://www.govinfo.gov/content/pkg/GPO-CRECB-1972-pt8/pdf/GPO-CRECB-1972-pt8-1-2.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "U.S. House of Representatives; report by National Commission on Marihuana and Drug Abuse",
+      "published": "1972-03-22",
+      "passage": "Congressional Record, House, report summary; report title and commission presentation",
+      "limitation": "Contemporary Congressional Record summary of the commission report; used for its title, date, chair and described recommendations.",
+      "supportedFacts": [
+        "The report was titled Marihuana: A Signal of Misunderstanding.",
+        "It was presented on 22 March 1972 by the National Commission on Marihuana and Drug Abuse, chaired by Raymond P. Shafer."
+      ]
+    },
+    {
+      "id": "qh-hist-laguardia",
+      "title": "The Marihuana Problem in the City of New York",
+      "organization": "Mayor?s Committee on Marihuana / New York Academy of Medicine (digitized report)",
+      "url": "https://rodneybarnett.net/PDF/Laguardia%20Report%201944.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "Mayor?s Committee on Marihuana; New York Academy of Medicine",
+      "published": "1944",
+      "passage": "Foreword and report introduction; clinical and sociological study credits",
+      "limitation": "Digitized primary report hosted outside an institutional archive; attribution and text were cross-checked against the report contents.",
+      "supportedFacts": [
+        "The report is titled The Marihuana Problem in the City of New York and dates to 1944.",
+        "The New York Academy of Medicine supervised the sociological study; the Research Council of the Department of Hospitals supervised the clinical study."
+      ]
+    },
+    {
+      "id": "qh-hist-anslinger",
+      "title": "Narcotics Enforcement in the 1930s",
+      "organization": "U.S. Drug Enforcement Administration Museum",
+      "url": "https://museum.dea.gov/exhibits/online-exhibits/anslinger/narcotics-enforcement-1930s",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "author": "Drug Enforcement Administration Museum",
+      "published": "non indiqu?e",
+      "passage": "Section ?The New Federal Bureau of Narcotics?",
+      "limitation": "Institutional historical exhibit; used for appointment and tenure facts, not as evidence of a sole cause of policy.",
+      "supportedFacts": [
+        "The Federal Bureau of Narcotics was founded in 1930.",
+        "Harry Anslinger was appointed its first commissioner and led it until 1962."
+      ]
+    },
+    {
+      "id": "qh-hist-hemp-commission",
+      "title": "Resolution concerning the Report of the Indian Hemp Drugs Commission",
+      "organization": "National Library of Scotland, India Office Records digital collection",
+      "url": "https://deriv.nls.uk/dcn9/7496/74964631.9.htm",
+      "consultedAt": "2026-11-14",
+      "access": "archive notice",
+      "author": "Government of India, Finance and Commerce Department",
+      "published": "1895-03-21 (report received 1894; commission appointed 1893)",
+      "passage": "Resolution paragraphs 1?2 on appointment, remit and inquiry area",
+      "limitation": "Contemporary colonial government record; reflects the inquiry?s official remit, not a neutral modern evaluation of its conclusions.",
+      "supportedFacts": [
+        "The commission was appointed in 1893 and its report was received in 1894.",
+        "Its remit covered cultivation, preparations, trade and effects of hemp drugs across India, not Bengal alone."
+      ]
+    },
+    {
+      "id": "qh-hist-opium-1925",
+      "title": "International Opium Convention, Geneva, 19 February 1925",
+      "organization": "United Nations Treaty Collection",
+      "url": "https://treaties.un.org/doc/Publication/MTDSG/Volume%20I/Chapter%20VI/VI-5.en.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "League of Nations; depositary record by United Nations",
+      "published": "1925-02-19 (consolidated record includes 1946 amendments)",
+      "passage": "Treaty title and header, lines 0?8",
+      "limitation": "The cited deposited text consolidates later amendments; question tests only treaty identity and original Geneva date.",
+      "supportedFacts": [
+        "The International Opium Convention was concluded at Geneva on 19 February 1925."
+      ]
+    },
+    {
+      "id": "qh-sci-cbn-wood",
+      "title": "III.?Cannabinol. Part I",
+      "organization": "Journal of the Chemical Society, Transactions / Royal Society of Chemistry",
+      "url": "https://pubs.rsc.org/en/content/articlelanding/1899/ct/ct8997500020",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "T. B. Wood, W. T. N. Spivey and T. H. Easterfield",
+      "published": "1899",
+      "passage": "Article title, authors and introductory reference to their earlier cannabinol work",
+      "limitation": "The article page exposes bibliographic details and abstract; full PDF could not be opened during this review. It is the original article on continuing cannabinol research, not a modern structure determination.",
+      "supportedFacts": [
+        "Wood, Spivey and Easterfield authored the early cannabinol research.",
+        "Their paper ?Cannabinol. Part I? appeared in 1899 and refers to earlier work."
+      ]
+    },
+    {
+      "id": "qh-sci-faah",
+      "title": "Molecular characterization of an enzyme that degrades neuromodulatory fatty-acid amides",
+      "organization": "Nature / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8900284/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "B. F. Cravatt et al.",
+      "published": "1996-11-07",
+      "passage": "Abstract",
+      "limitation": "PubMed abstract consulted; statements are limited to the enzyme and substrate relationships described there.",
+      "supportedFacts": [
+        "Cravatt and colleagues isolated, cloned and expressed the enzyme activity named fatty-acid amide hydrolase (FAAH).",
+        "The paper reports FAAH conversion of anandamide to arachidonic acid."
+      ]
+    },
+    {
+      "id": "qh-sci-faah-products",
+      "title": "Molecular characterization of an enzyme that degrades neuromodulatory fatty-acid amides",
+      "organization": "Nature / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8900284/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "B. F. Cravatt et al.",
+      "published": "1996-11-07",
+      "passage": "Abstract; anandamide hydrolysis products",
+      "limitation": "PubMed abstract consulted; it reports products of hydrolysis, not all pathways for anandamide metabolism.",
+      "supportedFacts": [
+        "FAAH hydrolyses anandamide to arachidonic acid and ethanolamine."
+      ]
+    },
+    {
+      "id": "qh-sci-magl",
+      "title": "A role for monoglyceride lipase in 2-arachidonoylglycerol inactivation",
+      "organization": "Chemistry and Physics of Lipids / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12505697/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "Thien P. Dinh, T?mas F. Freund and Daniele Piomelli",
+      "published": "2002-12-31",
+      "passage": "Abstract; neuronal cell experiments and conclusion",
+      "limitation": "PubMed abstract consulted; authors state MGL hydrolysis may be a primary route in intact neurons, not the sole route in every tissue.",
+      "supportedFacts": [
+        "MGL/MAGL overexpression increased degradation of endogenously produced 2-AG in rat cortical neurons.",
+        "The reported effect was not observed for anandamide degradation."
+      ]
+    },
+    {
+      "id": "qh-sci-dagl",
+      "title": "Cloning of the first sn1-DAG lipases points to the spatial and temporal regulation of endocannabinoid signaling in the brain",
+      "organization": "Journal of Cell Biology / PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2173631/",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "author": "Tiziana Bisogno et al.",
+      "published": "2003-11-10",
+      "passage": "Abstract and Introduction, DAG lipase conversion of DAG to 2-AG",
+      "limitation": "Experimental study of enzymes and brain signaling; the question uses the biochemical conversion without generalizing every physiological context.",
+      "supportedFacts": [
+        "DAG lipase activity synthesizes 2-AG from diacylglycerol.",
+        "The article reports cloning and enzymatic characterization of specific sn-1 DAG lipases."
+      ]
+    },
+    {
+      "id": "qh-sci-cbga",
+      "title": "Prenylation of olivetolate by a hemp transferase yields cannabigerolic acid, the precursor of tetrahydrocannabinol",
+      "organization": "FEBS Letters / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9607329/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "author": "M. Fellermeier and M. H. Zenk",
+      "published": "1998-05-08",
+      "passage": "Abstract",
+      "limitation": "PubMed abstract consulted; reports enzymatic activity and precursor formation, not a practical protocol.",
+      "supportedFacts": [
+        "A hemp transferase uses geranylpyrophosphate and olivetolic acid in cannabinoid biosynthesis.",
+        "The reaction yields cannabigerolic acid (CBGA), a precursor in the cannabinoid pathway."
+      ]
+    }
+  ],
+  "questionSources": [
+    {
+      "id": "hemp-hs-hist-1937-law",
+      "sourceIds": [
+        "qh-hist-statutes"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-csa-name",
+      "sourceIds": [
+        "qh-hist-csa"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-hempfilm",
+      "sourceIds": [
+        "qh-hist-hemp-victory"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-law",
+      "sourceIds": [
+        "qh-hist-uruguay"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-canada-date",
+      "sourceIds": [
+        "qh-hist-canada"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-single",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-psychotropic",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-vote",
+      "sourceIds": [
+        "qh-hist-un-2020"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1988-name",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-un-venue",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-act-schedule",
+      "sourceIds": [
+        "qh-hist-csa"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1937-exemptions",
+      "sourceIds": [
+        "qh-hist-statutes"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-hemp-archival-date",
+      "sourceIds": [
+        "qh-hist-prop215"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-un1961-into-force",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-un2020-schedule",
+      "sourceIds": [
+        "qh-hist-un-2020",
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-vote-numbers",
+      "sourceIds": [
+        "qh-hist-un-2020"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-single-1972",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-canada-scope",
+      "sourceIds": [
+        "qh-hist-canada"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-un-psychotropics-city",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-control",
+      "sourceIds": [
+        "qh-hist-uruguay"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1971-subject",
+      "sourceIds": [
+        "qh-hist-shafer"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1937-date",
+      "sourceIds": [
+        "qh-hist-statutes"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-two-treaties",
+      "sourceIds": [
+        "qh-hist-un-2020",
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-csa-5schedules",
+      "sourceIds": [
+        "qh-hist-laguardia"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-film-use",
+      "sourceIds": [
+        "qh-hist-anslinger"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-canada-federal",
+      "sourceIds": [
+        "qh-hist-hemp-commission"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-policy",
+      "sourceIds": [
+        "qh-hist-uruguay"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1988-adoption",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-promulgation-publication",
+      "sourceIds": [
+        "qh-hist-uruguay"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-csa-vs-tax",
+      "sourceIds": [
+        "qh-hist-opium-1925"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-osaughnessy",
+      "sourceIds": [
+        "qh-sci-oshaughnessy"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-1940",
+      "sourceIds": [
+        "qh-sci-cbn-wood"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-thc-1964",
+      "sourceIds": [
+        "qh-sci-thc"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1",
+      "sourceIds": [
+        "qh-sci-cb1"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb2",
+      "sourceIds": [
+        "qh-sci-cb2"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide",
+      "sourceIds": [
+        "qh-sci-anandamide"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag",
+      "sourceIds": [
+        "qh-sci-2ag"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-receptors-type",
+      "sourceIds": [
+        "qh-sci-faah-products"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-name",
+      "sourceIds": [
+        "qh-sci-anandamide"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1-brain",
+      "sourceIds": [
+        "qh-sci-cb1"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-mechoulam-country",
+      "sourceIds": [
+        "qh-sci-thc"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-1995",
+      "sourceIds": [
+        "qh-sci-2ag"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-not-thc",
+      "sourceIds": [
+        "qh-sci-dagl"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1-clone",
+      "sourceIds": [
+        "qh-sci-cb1"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb2-tissue",
+      "sourceIds": [
+        "qh-sci-cb2"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-molecule",
+      "sourceIds": [
+        "qh-sci-anandamide"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1-cb2-sequence",
+      "sourceIds": [
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-tissue",
+      "sourceIds": [
+        "qh-sci-anandamide"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-lipid",
+      "sourceIds": [
+        "qh-sci-2ag"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-structure-date",
+      "sourceIds": [
+        "qh-sci-cbd-structure"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-thc-stereochemistry",
+      "sourceIds": [
+        "qh-sci-thc"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb-receptor-gprotein",
+      "sourceIds": [
+        "qh-sci-cbga"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-workers",
+      "sourceIds": [
+        "qh-sci-magl"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1-discovery-v-clone",
+      "sourceIds": [
+        "qh-sci-cb1-history",
+        "qh-sci-cb1"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-early-study-limit",
+      "sourceIds": [
+        "qh-sci-faah"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-precursor",
+      "sourceIds": [
+        "qh-sci-anandamide",
+        "qh-sci-2ag"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb-receptors-contrast",
+      "sourceIds": [
+        "qh-sci-receptors",
+        "qh-sci-cb2"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-study-assay",
+      "sourceIds": [
+        "qh-sci-cbga"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-cb1cb2",
+      "sourceIds": [
+        "qh-sci-2ag",
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-mn-vs-indian",
+      "sourceIds": [
+        "qh-sci-cbd-structure"
+      ]
+    }
+  ],
+  "editorialReview": "Vérification bibliographique complémentaire : auteurs, titres, dates et identifiants des publications scientifiques. Pas de protocoles ; distinction entre mécanismes, chronologie et effets humains."
+}

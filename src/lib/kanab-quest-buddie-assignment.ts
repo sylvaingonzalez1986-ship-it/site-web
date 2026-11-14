@@ -1,5 +1,6 @@
 import { getKqBuddieRotationRemaining, KQ_BUDDIE_ROTATION_REQUIRED, type KqBuddieRotation } from "./kanab-quest-buddie-rotation";
 import { getKqWarehouseQuote, isKqWarehouseState, type KqWarehouseState } from "./kanab-quest-warehouse";
+import { isKqProductionReservation, type KqProductionReservation } from "./kanab-quest-production-reservation";
 
 export type KqBuddieAssignmentSnapshot = {
   state: KqWarehouseState;
@@ -7,6 +8,7 @@ export type KqBuddieAssignmentSnapshot = {
   activeRun?: boolean;
   legacyActiveRun?: boolean;
   activeRuns?: Array<{ zoneId: string | null }>;
+  productionReservation?: KqProductionReservation | null;
 };
 
 export type KqBuddieAssignmentRequest = {
@@ -23,6 +25,7 @@ const buddieCode = (value: unknown): value is string => typeof value === "string
 const revision = (value: unknown): value is number => Number.isSafeInteger(value) && Number(value) >= 1 && Number(value) < 2_147_483_647;
 
 function knownRuns(snapshot: KqBuddieAssignmentSnapshot) {
+  if (snapshot.productionReservation !== undefined && !isKqProductionReservation(snapshot.productionReservation)) return false;
   if (snapshot.activeRun !== undefined && typeof snapshot.activeRun !== "boolean"
     || snapshot.legacyActiveRun !== undefined && typeof snapshot.legacyActiveRun !== "boolean"
     || snapshot.activeRuns !== undefined && (!Array.isArray(snapshot.activeRuns)
@@ -50,6 +53,7 @@ export function getKqBuddieAssignmentRequest(
   }
   const zone = snapshot.state.zones.find(item => item.id === choice?.zoneId);
   if (!zone) throw new Error("Cette zone de culture n’existe plus. Actualise le plan.");
+  if (snapshot.productionReservation?.zoneId === zone.id) throw new Error("Cette zone est réservée à la production autonome. Gère son utilisation dans Personnel.");
   if (!zone.active) throw new Error("Cette zone est inactive. Active-la dans le plan avant de choisir un Buddie.");
   if (snapshot.activeRuns?.some(run => run.zoneId === zone.id)) throw new Error("Cette zone accueille déjà une culture. Son Buddie reste en place.");
   if (!Array.isArray(collection?.ownedCodes) || !collection.ownedCodes.every(buddieCode)) {

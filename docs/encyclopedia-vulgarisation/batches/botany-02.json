@@ -1,0 +1,2765 @@
+{
+  "domain": "botany",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "bf-kew-1975",
+      "title": "Cannabis sativa L. — description botanique",
+      "author": "Bernard Verdcourt ; Royal Botanic Gardens, Kew",
+      "organization": "Plants of the World Online / Flora of Tropical East Africa",
+      "published": "Flora of Tropical East Africa, Cannabaceae, 1975 ; portail consulté en 2026",
+      "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2/general-information",
+      "passage": "Description de Verdcourt : feuilles, fleurs mâles, bractéole enveloppante, ovaire, stigmates et akène ; distinguer ces rubriques de la carte de répartition.",
+      "access": "official-page",
+      "documentKind": "Description floristique originale reproduite par Kew",
+      "limitation": "Description régionale historique, pas catalogue exhaustif des formes cultivées. Les indications anciennes d’usage ou de droit ne sont pas reprises comme état juridique actuel.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2/general-information",
+          "sectionsOpened": [
+            "Accepted name; Classification; Flora of Tropical East Africa (1975), Morphology"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Cannabis sativa accepté ; Rosales, Cannabaceae ; folioles, fleurs, bractéole enveloppante et fruit"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-cfia-2021",
+      "title": "The Biology of Cannabis sativa L. (Cannabis, hemp, marijuana)",
+      "author": "Agence canadienne d’inspection des aliments",
+      "organization": "ACIA / CFIA",
+      "published": "BIO2020-02 ; page modifiée le 3 mars 2021",
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "passage": "Sections 2.6 et 4.1 : description générale, reproduction, dioécie/monoécie, pollinisation par le vent et diversité de réponse à la photopériode.",
+      "access": "official-page",
+      "documentKind": "Synthèse biologique institutionnelle avec bibliographie",
+      "limitation": "Seules les notions botaniques sont utilisées. Les seuils réglementaires de cette ancienne synthèse ne décrivent pas le droit de 2026 ; aucun réglage de culture ni moyen de modifier l’expression sexuelle n’est reproduit.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "sectionsOpened": [
+            "2.5 Taxonomy and genetics",
+            "2.6 General description",
+            "4.1 Reproductive biology",
+            "4.7 Means of movement and dispersal",
+            "6 Potential interaction"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "2n=20 ; pivot ; disposition foliaire ; anthocyanes ; dioécie/monoécie ; pollinisation éolienne ; trichomes et cystolithes ; populations férales"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-reproduction-2018",
+      "title": "Biology 2e, 32.2 — Pollination and Fertilization",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "organization": "OpenStax / Rice University",
+      "published": "28 mars 2018",
+      "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+      "passage": "Pollination, Double Fertilization, Development of the Seed et Fruit and Seed Dispersal : transfert du pollen, fécondation, embryon, graine et fruit.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire de biologie",
+      "limitation": "Cycle sexué général des angiospermes ; une fleur pollinisée n’est pas à elle seule la preuve d’une fécondation réussie. Le schéma pédagogique n’est pas un protocole reproductif.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "sectionsOpened": [
+            "32.2 Pollination and Fertilization"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Pollinisation puis tube pollinique ; double fécondation ; ovule/graine et ovaire/fruit"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-morphology-2023",
+      "title": "Morphological Characterization of Cannabis sativa L. Throughout Its Complete Life Cycle",
+      "author": "Mohsen Hesami, Marco Pepe et Andrew Maxwell Phineas Jones",
+      "organization": "Plants / Université de Guelph",
+      "published": "22 octobre 2023 ; 12(20):3646",
+      "url": "https://www.mdpi.com/2223-7747/12/20/3646",
+      "passage": "Résultats 2.1–2.3 ; figures 1, 4 et 5 : variation des feuilles, stipules, bractées et fleurs solitaires au cours du développement.",
+      "access": "full-text",
+      "documentKind": "Étude morphologique originale",
+      "limitation": "Un cultivar, White Widow, dans les conditions de l’étude. Les numéros de nœuds et les durées ne constituent pas une règle universelle ; les interprétations adaptatives et les conseils d’optimisation ne sont pas repris.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2223-7747/12/20/3646",
+          "sectionsOpened": [
+            "2.1 Leaf Development",
+            "2.2 Plant Architecture",
+            "2.3 Flower Development",
+            "2.4 Trichome Development",
+            "4.1 Plant Material",
+            "figure 12",
+            "Copyright CC BY 4.0"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Observations sur White Widow Dutch Passion ; succession des feuilles ; fleurs isolées ; trichomes et échelles photographiques"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-florogenesis-2019",
+      "title": "Architecture and Florogenesis in Female Cannabis sativa Plants",
+      "author": "Ben Spitzer-Rimon, Shai Duchin, Nirit Bernstein et Rina Kamenetsky",
+      "organization": "Frontiers in Plant Science",
+      "published": "2 avril 2019 ; 10:350",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+      "passage": "Introduction, figure 1 ; Results et Discussion : fleur solitaire, ramification et développement de l’inflorescence comme phénomènes distincts.",
+      "access": "full-text",
+      "documentKind": "Étude morphologique expérimentale originale",
+      "limitation": "Génotypes et conditions de recherche définis. La notion de réponse photopériodique est enseignée sans reproduire les paramètres expérimentaux ni en faire un programme de culture.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+          "sectionsOpened": [
+            "Abstract",
+            "Results; figures 2 and 4",
+            "Discussion: Floral Development under Long and Short Photoperiod",
+            "Copyright CC BY"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Trois cultivars ; fleurs solitaires sous jours longs et courts ; forte ramification en jours courts ; enveloppes florales distinctes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-geves-2021",
+      "title": "Analyse de la faculté germinative de Cannabis sativa L. (Chanvre)",
+      "author": "GEVES — Station nationale d’essais de semences",
+      "organization": "GEVES",
+      "published": "Juillet 2021 ; M-GEVES/SP/GER/MO/012, version 1",
+      "url": "https://www.geves.fr/wp-content/uploads/M-GEVES-SP-GER-MO-012_Chanvre_202107.pdf",
+      "passage": "Page 6, objet ; page 8, section 9.3 et légende de la figure 1 ; page 9, catégories de résultats : plantules normales/anormales, semences fraîches/mortes.",
+      "access": "full-text",
+      "documentKind": "Méthode officielle d’évaluation des semences",
+      "limitation": "Seuls le vocabulaire d’observation et la portée du résultat sont repris. Les paramètres d’incubation et le mode opératoire ne sont pas reproduits ; pas de diagnostic de viabilité à partir d’une image générée.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.geves.fr/wp-content/uploads/M-GEVES-SP-GER-MO-012_Chanvre_202107.pdf",
+          "sectionsOpened": [
+            "pp.1 et 6 : objet ; expression du potentiel en pourcentage de plantules normales"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Le test de faculté germinative évalue un pourcentage de plantules normales ; les détails embryonnaires sont soutenus séparément par la description botanique et l’étude morphologique."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-upov-2025",
+      "title": "Hemp, Cannabis — Guidelines for the Conduct of Tests for Distinctness, Uniformity and Stability",
+      "author": "Union internationale pour la protection des obtentions végétales",
+      "organization": "UPOV",
+      "published": "26 août 2025 ; TG/276/2, original anglais",
+      "url": "https://www.upov.int/documents/d/upov/tg-documents-en-tg276.pdf",
+      "passage": "Pages 20–21 : section 8.1(a–c), Ad. 3 et dessins Ad. 8 ; position et développement des feuilles observées, fleurs, stigmates, bractée et ovule.",
+      "access": "full-text",
+      "documentKind": "Référentiel primaire de description variétale",
+      "limitation": "La version anglaise fait foi ; la traduction française est annoncée automatique. Seuls les descripteurs et schémas morphologiques sont mobilisés, sans instructions de conduite ou d’optimisation des cultures.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.upov.int/documents/d/upov/tg-documents-en-tg276.pdf",
+          "sectionsOpened": [
+            "TG/276/2, page 1 ; sections 4–5 ; caractères morphologiques"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Document du 26 août 2025 ; distinction, homogénéité et stabilité des variétés"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-trichomes-2020",
+      "title": "Cannabis glandular trichomes alter morphology and metabolite content during flower maturation",
+      "author": "Samuel J. Livingston, Teagen D. Quilichini, Judith K. Booth et collaborateurs",
+      "organization": "The Plant Journal / PubMed",
+      "published": "Publication en ligne le 12 octobre 2019 ; janvier 2020, 101(1), p. 37–56",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+      "passage": "PubMed abstract: glandular trichomes and secretory disc cells.",
+      "access": "abstract",
+      "documentKind": "Résumé d’une étude originale de microscopie et biochimie",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: glandular trichomes and secretory disc cells.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-kew",
+      "title": "Cannabis sativa L. — Plants of the World Online",
+      "author": "Royal Botanic Gardens, Kew",
+      "organization": "Kew Science",
+      "published": "Base courante consultée le 12 novembre 2026",
+      "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2",
+      "passage": "Nom accepté, famille Cannabaceae et liste des synonymes scientifiques.",
+      "access": "official-page",
+      "limitation": "Référentiel taxonomique explicite ; un traitement accepté n’efface pas les classifications concurrentes ni les questions évolutives.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2",
+          "sectionsOpened": [
+            "Accepted name; Classification; Flora of Tropical East Africa (1975), Morphology"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Cannabis sativa accepté ; Rosales, Cannabaceae ; folioles, fleurs, bractéole enveloppante et fruit"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-cfia",
+      "title": "The Biology of Cannabis sativa L. (Cannabis, hemp, marijuana)",
+      "author": "Agence canadienne d’inspection des aliments",
+      "organization": "ACIA / CFIA",
+      "published": "2020 ; version en ligne consultée en 2026",
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "passage": "Sections 2.5, 2.6 et reproduction : classification, diversité, formes échappées des cultures, dépendance photopériodique et systèmes reproductifs.",
+      "access": "official-page",
+      "limitation": "Synthèse biologique canadienne ; ni règle universelle de droit ni méthode pour identifier un pedigree commercial.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "sectionsOpened": [
+            "2.5 Taxonomy and genetics",
+            "2.6 General description",
+            "4.1 Reproductive biology",
+            "4.7 Means of movement and dispersal",
+            "6 Potential interaction"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "2n=20 ; pivot ; disposition foliaire ; anthocyanes ; dioécie/monoécie ; pollinisation éolienne ; trichomes et cystolithes ; populations férales"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-cfia-seeds",
+      "title": "Specific work instructions 142.1.2-7 — Hemp",
+      "author": "Agence canadienne d’inspection des aliments",
+      "organization": "ACIA / CFIA",
+      "published": "Version courante consultée le 12 novembre 2026",
+      "url": "https://inspection.canada.ca/en/plant-health/seeds/seed-inspection-procedures/swi-142-1-2-7",
+      "passage": "Section chanvre : distinction du mode de floraison et de la catégorie de semences féminisées ; définition de cette dernière.",
+      "access": "official-page",
+      "limitation": "Utilisée uniquement pour distinguer les catégories biologiques. Aucune méthode de production, manipulation de l’expression sexuelle ou recommandation culturale n’est reproduite.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://inspection.canada.ca/en/plant-health/seeds/seed-inspection-procedures/swi-142-1-2-7",
+          "sectionsOpened": [
+            "Appendix III: Industrial hemp; feminized hemp; day-length insensitive varieties"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Descriptions d’inspection ; distinguer autofloraison et féminisation"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-sawler",
+      "title": "The Genetic Structure of Marijuana and Hemp",
+      "author": "Jonathan Sawler et collaborateurs",
+      "organization": "PLOS ONE",
+      "published": "26 août 2015",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0133292",
+      "passage": "Résumé et résultats : 81 échantillons de type drogue et 43 chanvres, 14 031 SNP ; structure génétique et noms commerciaux.",
+      "access": "full-text",
+      "limitation": "Échantillonnage et marqueurs définis ; les groupes observés ne constituent pas, à eux seuls, une délimitation universelle des espèces.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0133292",
+          "sectionsOpened": [
+            "Abstract; Results and Discussion; figures 1–2"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "81 matériels drug-type et 43 chanvres ; 14 031 SNP ; corrélation modérée des ascendances annoncées et limites des noms"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-schwabe",
+      "title": "Genetic tools weed out misconceptions of strain reliability in Cannabis sativa",
+      "author": "Anna L. Schwabe et Mitchell E. McGlaughlin",
+      "organization": "Journal of Cannabis Research / PubMed",
+      "published": "2019 ; Journal of Cannabis Research 1:3 ; DOI 10.1186/s42238-019-0001-1",
+      "url": "https://grn.issup.net/files/2019-06/Genetic%20tools%20weed%20out%20misconceptions%20of%20strain%20reliability%20in%20Cannabis%20sativa%20implications%20for%20a%20budding%20industry.pdf",
+      "passage": "Résumé original et légendes indexées : comparaison de 122 échantillons correspondant à 30 noms commerciaux ; cohérence variable des noms et absence de séparation simple des étiquettes.",
+      "access": "full-text",
+      "limitation": "Article original lu dans son PDF de 2019. La référence précédente liait ce titre au PMID 33526091, qui correspond à un autre article : URL corrigée. Dix marqueurs microsatellites ne couvrent pas tout le génome ni tous les matériels du marché.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé d’article original",
+      "reviewEvidence": [
+        {
+          "url": "https://grn.issup.net/files/2019-06/Genetic%20tools%20weed%20out%20misconceptions%20of%20strain%20reliability%20in%20Cannabis%20sativa%20implications%20for%20a%20budding%20industry.pdf",
+          "sectionsOpened": [
+            "PDF original 2019 : p.1 résumé ; p.2–3 clones et mutations ; résultats et discussion"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Microsatellites et 30 noms de lignées ; discordances entre échantillons ; plusieurs lignées relativement cohérentes une fois les valeurs atypiques examinées"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-lynch2025",
+      "title": "Domesticated cannabinoid synthases amid a wild mosaic cannabis pangenome",
+      "author": "Ryan C. Lynch, Lillian K. Padgitt-Cobb et collaborateurs",
+      "organization": "Nature / PMC",
+      "published": "28 mai 2025",
+      "url": "https://www.nature.com/articles/s41586-025-09065-0?error=cookies_not_supported&code=1",
+      "passage": "Résumé, tableau des échantillons, résultats et discussion : 193 assemblages issus de 144 échantillons biologiques ; diversité structurale et sous-échantillonnage, notamment asiatique.",
+      "access": "full-text",
+      "limitation": "Assemblages, haplotypes et individus ne sont pas des unités interchangeables. Les inférences de population ne certifient pas les parents de chaque variété du commerce.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.nature.com/articles/s41586-025-09065-0?error=cookies_not_supported&code=1",
+          "sectionsOpened": [
+            "Nature : The cannabis pangenome; The pangenome reveals five populations; Domesticated cannabinoid pathway; Conclusions"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "193 assemblages pour 144 échantillons biologiques ; diversité structurale ; chromosome 7 des synthases ; sous-échantillonnage asiatique"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-pike2026",
+      "title": "Four haplotype-resolved genome assemblies and a reference-free 66-haplotype pangenome graph for Cannabis sativa",
+      "author": "Brett Pike, Anders Gonçalves da Silva et Wilson Terán",
+      "organization": "Scientific Data",
+      "published": "26 août 2026",
+      "url": "https://www.nature.com/articles/s41597-026-07806-y?error=cookies_not_supported&code=1",
+      "passage": "Résumé original indexé : quatre assemblages diploïdes, graphe de 66 haplotypes, limites de qualité et diversité encore incomplètement échantillonnée.",
+      "access": "full-text",
+      "limitation": "Texte intégral bloqué lors de cette consultation ; la comparaison porte sur les unités et limites explicitement annoncées, pas sur une réanalyse des données.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé d’article original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.nature.com/articles/s41597-026-07806-y?error=cookies_not_supported&code=1",
+          "sectionsOpened": [
+            "Abstract; Background and Summary; Germplasm selection; Technical Validation"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Quatre assemblages diploïdes résolus en haplotypes ; graphe de 66 haplotypes ; précision nucléotidique et phasage incomplet signalés"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-geves",
+      "title": "Inscription des variétés : études de Distinction, Homogénéité, Stabilité",
+      "author": "GEVES",
+      "organization": "Groupe d’étude et de contrôle des variétés et des semences",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.geves.fr/expertises-varietes-semences/legumieres/catalogue-especes-legumieres/",
+      "passage": "Les études DHS : caractères observés, protocoles adaptés aux espèces et structures génétiques, description et matériel de référence.",
+      "access": "official-page",
+      "limitation": "Exemple institutionnel relatif aux espèces légumières : principes de description seulement, pas transposition des seuils ou procédures au cannabis.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.geves.fr/expertises-varietes-semences/legumieres/catalogue-especes-legumieres/",
+          "sectionsOpened": [
+            "Page catalogue ; article du 9 mars 2020, paragraphes sur homogénéité relative et stabilité"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Description variétale et homogénéité relative ; aucune identité génétique universelle impliquée"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-geves-diversity",
+      "title": "Une variété végétale peut-elle être hétérogène ?",
+      "author": "GEVES",
+      "organization": "GEVES",
+      "published": "9 mars 2020",
+      "url": "https://www.geves.fr/actualites/une-variete-vegetale-peut-elle-etre-heterogene/",
+      "passage": "Homogénéité relative, description, distinction et maintien des caractères ; diversité des constructions variétales.",
+      "access": "official-page",
+      "limitation": "Présentation écrite consultée, pas vidéo intégrale ; homogénéité phénotypique ne signifie pas identité de toutes les séquences ADN.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.geves.fr/actualites/une-variete-vegetale-peut-elle-etre-heterogene/",
+          "sectionsOpened": [
+            "Page catalogue ; article du 9 mars 2020, paragraphes sur homogénéité relative et stabilité"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Description variétale et homogénéité relative ; aucune identité génétique universelle impliquée"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-genotype",
+      "title": "Genotype",
+      "author": "David Adams / National Human Genome Research Institute",
+      "organization": "NHGRI",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.genome.gov/genetics-glossary/genotype",
+      "passage": "Définition du génotype à un locus et représentation par des symboles ou une séquence.",
+      "access": "official-page",
+      "limitation": "Glossaire général ; les exemples humains ne sont pas des données mesurées sur les Buddies.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.genome.gov/genetics-glossary/genotype",
+          "sectionsOpened": [
+            "NHGRI : Definition and Narration"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Génotype à un locus ; versions alléliques ; homozygotie/hétérozygotie ; phénotype et milieu"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-allele",
+      "title": "Allele",
+      "author": "National Human Genome Research Institute",
+      "organization": "NHGRI",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.genome.gov/genetics-glossary/Allele",
+      "passage": "Définition d’un allèle ; distinction homozygote/hétérozygote.",
+      "access": "official-page",
+      "limitation": "Le modèle à deux copies s’applique ici à un locus diploïde ordinaire ; pas à toutes les particularités chromosomiques possibles.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.genome.gov/genetics-glossary/Allele",
+          "sectionsOpened": [
+            "NHGRI : Definition and Narration"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Génotype à un locus ; versions alléliques ; homozygotie/hétérozygotie ; phénotype et milieu"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-phenotype",
+      "title": "Phenotype",
+      "author": "National Human Genome Research Institute",
+      "organization": "NHGRI",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.genome.gov/genetics-glossary/Phenotype",
+      "passage": "Caractères observables et contribution du génotype et de l’environnement.",
+      "access": "official-page",
+      "limitation": "Définition générale ; elle n’autorise pas à calculer une contribution génétique à partir d’une simple photographie.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.genome.gov/genetics-glossary/Phenotype",
+          "sectionsOpened": [
+            "NHGRI : Definition and Narration"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Génotype à un locus ; versions alléliques ; homozygotie/hétérozygotie ; phénotype et milieu"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-f1f2",
+      "title": "Nomenclature of Hybrid Mice",
+      "author": "The Jackson Laboratory",
+      "organization": "JAX",
+      "published": "Sans date affichée ; consulté le 12 novembre 2026",
+      "url": "https://www.jax.org/jax-mice-and-services/customer-support/technical-support/genetics-and-nomenclature/hybrid-mice",
+      "passage": "Definition and applications : F1 entre lignées définies et ségrégation dans la génération F2.",
+      "access": "official-page",
+      "limitation": "Source institutionnelle sur la souris utilisée uniquement pour la nomenclature mendélienne générale. Les performances de ses hybrides ne sont pas transposées au cannabis.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.jax.org/jax-mice-and-services/customer-support/technical-support/genetics-and-nomenclature/hybrid-mice",
+          "sectionsOpened": [
+            "Definition and applications; Using hybrids as controls"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "F1 puis F2 ; uniformité conditionnée par des parents consanguins dans l’exemple murin, non garantie générique chez Cannabis"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-cannatonic",
+      "title": "New Cannatonic Information!",
+      "author": "Resin Seeds",
+      "organization": "Resin Seeds",
+      "published": "10 novembre 2015, modification le 17 janvier 2016",
+      "url": "https://resinseeds.net/new-cannatonic-information/",
+      "passage": "Rectification publique : Reina Madre × NYCD remplace l’attribution antérieure MK-Ultra × G13.",
+      "access": "full-text",
+      "limitation": "Déclaration de l’obtenteur, qui documente une correction de récit ; aucune vérification indépendante de parentage n’est fournie sur cette page.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://resinseeds.net/new-cannatonic-information/",
+          "sectionsOpened": [
+            "Article complet, publication 10 novembre 2015 et modification 17 janvier 2016"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Rectification explicite Reina Madre × NYCD remplaçant MK-Ultra × G13"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-widow",
+      "title": "White Widow — fiche Trikoma",
+      "author": "Trikoma Seeds",
+      "organization": "Trikoma Seeds",
+      "published": "Fiche courante consultée le 12 novembre 2026",
+      "url": "https://www.trikomaseeds.com/semillas/white-widow/",
+      "passage": "Linaje genético et Parentales : Widow Bilbo × Widow BCN, mères propres à Barcelone.",
+      "access": "full-text",
+      "limitation": "Version nommée d’un catalogue commercial ; ni pedigree universel de toutes les White Widow ni validation de ses allégations d’effets.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.trikomaseeds.com/semillas/white-widow/",
+          "sectionsOpened": [
+            "Linaje genético; Características de un vistazo; Parentales y origen genético"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Version propre Trikoma ; Widow Bilbo × Widow BCN, mères conservées à Barcelone"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-kew",
+      "title": "Cannabis sativa L. | Plants of the World Online",
+      "organization": "Royal Botanic Gardens, Kew",
+      "url": "https://powo.science.kew.org/taxon/306087-2",
+      "verifiedAt": "2026-11-14",
+      "author": "Royal Botanic Gardens, Kew",
+      "published": "non indiquée (page consultée en 2026)",
+      "passage": "Classification: ordre Rosales, famille Cannabaceae, genre Cannabis, espèce Cannabis sativa.",
+      "access": "official-page",
+      "documentKind": "Document de référence",
+      "limitation": "Notice taxonomique institutionnelle, pas une revue de la diversité infraspécifique.",
+      "reviewEvidence": [
+        {
+          "url": "https://powo.science.kew.org/taxon/306087-2",
+          "sectionsOpened": [
+            "Accepted name; Classification; Flora of Tropical East Africa (1975), Morphology"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Cannabis sativa accepté ; Rosales, Cannabaceae ; folioles, fleurs, bractéole enveloppante et fruit"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-canada",
+      "title": "The Biology of Cannabis sativa L. (Cannabis, hemp, marijuana)",
+      "organization": "Canadian Food Inspection Agency",
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "verifiedAt": "2026-11-14",
+      "author": "Canadian Food Inspection Agency",
+      "published": "2021 (page révisée; date exacte non indiquée)",
+      "passage": "Sections 2.5 Taxonomy and genetics; 4.1 Floral and seed morphology.",
+      "access": "official-page",
+      "documentKind": "Document de référence",
+      "limitation": "Le document résume des modèles taxonomiques publiés et signale leur caractère discuté.",
+      "reviewEvidence": [
+        {
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "sectionsOpened": [
+            "2.5 Taxonomy and genetics",
+            "2.6 General description",
+            "4.1 Reproductive biology",
+            "4.7 Means of movement and dispersal",
+            "6 Potential interaction"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "2n=20 ; pivot ; disposition foliaire ; anthocyanes ; dioécie/monoécie ; pollinisation éolienne ; trichomes et cystolithes ; populations férales"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-geves-new-varieties",
+      "title": "Chanvre : nouvelles variétés proposées à l’inscription, janvier 2025",
+      "organization": "GEVES / CTPS",
+      "url": "https://www.geves.fr/wp-content/uploads/PLA_Chanvre_2025_Janvier.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "GEVES",
+      "published": "Février 2025 ; tableau des propositions de janvier 2025",
+      "passage": "Tableau p. 4: variétés, usage fibre/graine, type monoïque, précocité.",
+      "access": "full-text",
+      "documentKind": "Document de référence",
+      "limitation": "Variétés proposées à inscription dans ce document daté, pas une description exhaustive du catalogue actuel.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.geves.fr/wp-content/uploads/PLA_Chanvre_2025_Janvier.pdf",
+          "sectionsOpened": [
+            "PDF Février 2025 : p.2 avertissement ; p.4 tableau des propositions de janvier 2025"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Vega, monoïque, très précoce ; proposition d’inscription distincte de l’arrêté final"
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "ref-photoperiode",
+      "questions": [
+        "Quelle différence existe-t-il entre durée du jour, intensité et cumul lumineux ?",
+        "Quelles étapes florales peuvent répondre différemment à la photopériode ?",
+        "Pourquoi autofloraison, autofécondation et féminisation sont-elles distinctes ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservée : définition de photopériode et distinction autofloraison/autofécondation/féminisation. Précision déterminante : fleur solitaire et constitution d’une inflorescence ne répondent pas nécessairement au même signal ; pas de seuil horaire universel."
+      ],
+      "patch": {
+        "lead": "La durée du jour peut servir de signal au chanvre pour son développement floral. Ce signal, appelé photopériode, n’est pas la même chose que la force de la lumière ou la quantité totale reçue dans une journée.",
+        "sections": [
+          {
+            "id": "ref-photoperiode-rythme",
+            "title": "Lire le signal jour–nuit",
+            "paragraphs": [
+              "La photopériode est la durée quotidienne d’éclairement dans l’alternance du jour et de la nuit. Le photopériodisme désigne la réponse de la plante à cette alternance. Beaucoup de formes de cannabis sont décrites comme des plantes de jours courts : le raccourcissement du jour favorise certaines étapes de leur développement floral.",
+              "Deux journées aussi longues peuvent pourtant apporter des quantités de lumière différentes, par exemple si l’une est plus lumineuse. La durée, l’intensité et la quantité cumulée sont donc trois mesures différentes. La réponse dépend aussi de l’âge de la plante et de ses caractères hérités."
+            ],
+            "sourceIds": [
+              "bf-cfia-2021",
+              "bf-florogenesis-2019",
+              "bf-morphology-2023"
+            ]
+          },
+          {
+            "id": "ref-photoperiode-stades",
+            "title": "Une première fleur et une tête développée ne sont pas le même stade",
+            "paragraphs": [
+              "La plante peut d’abord former une fleur isolée, puis développer des branches florales de plus en plus resserrées. Cette organisation change l’aspect de la future tête, même si la première fleur est déjà présente.",
+              "Dans l’étude de 2019, trois variétés cultivées forment des fleurs solitaires sous jours longs. Les jours courts favorisent surtout une organisation plus ramifiée et compacte ; la maturation varie entre ces variétés. Il faut donc préciser ce que l’on observe : l’apparition d’une fleur et le développement d’une inflorescence complète ne répondent pas forcément de la même façon au jour."
+            ],
+            "sourceIds": [
+              "bf-florogenesis-2019",
+              "bf-morphology-2023"
+            ]
+          },
+          {
+            "id": "ref-photoperiode-variation",
+            "title": "Distinguer les mots commençant par auto-",
+            "paragraphs": [
+              "Une forme autoflorissante fleurit avec une dépendance plus faible à la durée du jour. Ce caractère concerne le déroulement de la floraison.",
+              "L’autofécondation concerne autre chose : les cellules reproductrices mâles et femelles proviennent d’un même individu. La féminisation désigne encore une autre catégorie, celle de semences visant une descendance principalement femelle. Une appellation ne répond donc pas à ces trois questions à la fois."
+            ],
+            "sourceIds": [
+              "botany-diversity-cfia",
+              "botany-diversity-cfia-seeds"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "bf-cfia-2021",
+          "bf-florogenesis-2019",
+          "bf-morphology-2023",
+          "botany-diversity-cfia",
+          "botany-diversity-cfia-seeds"
+        ],
+        "relatedArticleIds": [
+          "ref-cycle-vie",
+          "ref-reproduction",
+          "ref-genetique-heredite"
+        ],
+        "glossaryIds": [
+          "botany-photoperiod",
+          "botany-autoflowering",
+          "botany-selfing"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-life-cycle-2"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Préciser le stade que l’on observe",
+          "nodes": [
+            {
+              "label": "Le signal",
+              "detail": "La durée du jour change dans l’alternance jour–nuit."
+            },
+            {
+              "label": "Une première fleur",
+              "detail": "Une fleur isolée peut déjà apparaître sous jours longs dans les variétés étudiées."
+            },
+            {
+              "label": "Une tête plus compacte",
+              "detail": "Des branches florales se rapprochent et se multiplient en réponse aux jours courts."
+            },
+            {
+              "label": "Des formes moins dépendantes",
+              "detail": "L’autofloraison décrit une réponse plus faible à ce signal."
+            }
+          ],
+          "caption": "Observer une fleur et observer une tête développée ne revient pas à dater le même événement.",
+          "sourceIds": [
+            "bf-florogenesis-2019",
+            "bf-morphology-2023",
+            "botany-diversity-cfia-seeds"
+          ],
+          "afterSectionId": "ref-photoperiode-variation"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "bf-cfia-2021",
+        "bf-florogenesis-2019",
+        "bf-morphology-2023",
+        "botany-diversity-cfia",
+        "botany-diversity-cfia-seeds"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [
+        "hemp-plant-photoperiode",
+        "hemp-plant-autofloraison"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi la durée du jour et la quantité de lumière ne disent-elles pas la même chose ?",
+        "explainedTerms": [
+          "photopériode",
+          "photopériodisme",
+          "jours courts",
+          "inflorescence",
+          "autofloraison",
+          "autofécondation"
+        ],
+        "example": "Deux journées de même durée peuvent apporter des quantités de lumière différentes.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Une plante autoflorissante se féconde-t-elle forcément elle-même ?",
+            "expectedAnswer": "Non : l’autofloraison concerne la réponse de la floraison au jour ; l’autofécondation concerne l’origine des cellules reproductrices."
+          }
+        ],
+        "quizIdsReviewed": [
+          "hemp-plant-photoperiode",
+          "hemp-plant-autofloraison"
+        ],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "ref-taxonomie-cannabis",
+      "questions": [
+        "Quels rangs Kew attribue-t-il à Cannabis sativa ?",
+        "Pourquoi plusieurs traitements taxonomiques du genre existent-ils ?",
+        "Que montrent exactement les études des étiquettes sativa, indica et hybride ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Préservées : taxonomie discutée et distinction des catégories commerciales. Nuance ajoutée sur la corrélation modérée de Sawler, souvent perdue dans le slogan « indica/sativa ne veulent rien dire ». URL/titre erronés de la source Schwabe corrigés."
+      ],
+      "patch": {
+        "lead": "La taxonomie consiste à nommer et à classer les êtres vivants. Elle permet de situer Cannabis sativa parmi ses parents botaniques, mais ne doit pas être confondue avec les étiquettes sativa, indica ou hybride utilisées pour vendre des produits.",
+        "sections": [
+          {
+            "id": "ref-taxonomie-cannabis-noms",
+            "title": "Situer le chanvre dans un classement emboîté",
+            "paragraphs": [
+              "Un nom d’espèce comporte deux parties : Cannabis est le genre, et sativa précise l’espèce. Le L. parfois ajouté renvoie à Linné, le naturaliste associé à ce nom. Le référentiel de Kew accepte Cannabis sativa.",
+              "Le classement se lit comme des ensembles emboîtés : l’espèce appartient au genre Cannabis, ce genre à la famille des Cannabaceae, et cette famille à l’ordre des Rosales. Le houblon, Humulus lupulus, appartient à la même famille mais à un autre genre. Partager une famille ne signifie donc pas être la même espèce."
+            ],
+            "sourceIds": [
+              "botany-diversity-kew",
+              "bf-cfia-2021"
+            ]
+          },
+          {
+            "id": "ref-taxonomie-cannabis-debats",
+            "title": "Pourquoi plusieurs classements ont-ils été proposés ?",
+            "paragraphs": [
+              "Les botanistes cherchent où placer les limites entre groupes. Ils comparent la forme des plantes, leur histoire géographique et leur ADN, le support de l’information génétique. Selon les critères et les échantillons, des auteurs ont retenu une espèce très variable ou plusieurs unités distinctes.",
+              "Les humains ont déplacé et croisé les plantes cultivées : leur histoire peut mélanger les origines. Les noms sativa, indica et ruderalis n’ont donc pas toujours le même sens dans tous les travaux scientifiques. Pour comprendre une affirmation, il faut savoir quel classement son auteur utilise."
+            ],
+            "sourceIds": [
+              "botany-diversity-cfia",
+              "botany-diversity-sawler"
+            ]
+          },
+          {
+            "id": "ref-taxonomie-cannabis-etiquettes",
+            "title": "Une étiquette commerciale n’est pas un arbre génétique",
+            "paragraphs": [
+              "Dans le commerce, indica, sativa et hybride servent aussi à présenter des produits. Les comparaisons d’ADN montrent que ces étiquettes ne correspondent pas de façon constante aux groupes génétiques observés. Cela ne signifie pas que les plantes seraient toutes identiques.",
+              "Par exemple, Sawler et ses collègues trouvent un lien modéré entre les origines annoncées et les résultats génétiques. Schwabe et McGlaughlin n’obtiennent pas de séparation claire entre les trois catégories commerciales avec les marqueurs étudiés, de petites régions d’ADN servant de points de comparaison. L’étiquette reste une information de marché, distincte de la forme d’une feuille et d’une mesure chimique."
+            ],
+            "sourceIds": [
+              "botany-diversity-sawler",
+              "botany-diversity-schwabe"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-diversity-kew",
+          "bf-cfia-2021",
+          "botany-diversity-cfia",
+          "botany-diversity-sawler",
+          "botany-diversity-schwabe"
+        ],
+        "relatedArticleIds": [
+          "ref-cannabis-sativa",
+          "ref-populations-domestication",
+          "ref-noms-lignees"
+        ],
+        "glossaryIds": [
+          "botany-taxonomy",
+          "botany-phenotype",
+          "botany-genotype"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-taxonomy-1"
+          }
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Du plus large au plus précis",
+          "nodes": [
+            {
+              "label": "Rosales",
+              "detail": "L’ordre botanique."
+            },
+            {
+              "label": "Cannabaceae",
+              "detail": "La famille du cannabis et du houblon."
+            },
+            {
+              "label": "Cannabis",
+              "detail": "Le genre du chanvre."
+            },
+            {
+              "label": "Cannabis sativa",
+              "detail": "L’espèce ; le L. parfois ajouté renvoie à Linné."
+            }
+          ],
+          "caption": "Ces ensembles classent les organismes ; ils ne sont pas des catégories commerciales.",
+          "sourceIds": [
+            "botany-diversity-kew"
+          ],
+          "afterSectionId": "ref-taxonomie-cannabis-noms"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-diversity-kew",
+        "botany-diversity-cfia",
+        "botany-diversity-sawler",
+        "botany-diversity-schwabe",
+        "bf-cfia-2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [
+        "hemp-genetics-famille"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi le mot sativa change-t-il de portée entre un livre de botanique et une étiquette ?",
+        "explainedTerms": [
+          "taxonomie",
+          "genre",
+          "espèce",
+          "famille",
+          "ordre",
+          "ADN",
+          "marqueur génétique"
+        ],
+        "example": "Cannabis et Humulus appartiennent à la même famille sans être le même genre.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Si Kew retient une seule espèce de Cannabis, cela veut-il dire que tous les plants sont identiques ?",
+            "expectedAnswer": "Non : une espèce peut comprendre beaucoup de populations et de variétés différentes."
+          }
+        ],
+        "quizIdsReviewed": [
+          "hemp-genetics-famille"
+        ],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "ref-populations-domestication",
+      "questions": [
+        "Qu’est-ce qu’une population locale cultivée ?",
+        "Qu’est-ce qu’une population férale ?",
+        "Que représentent une accession, un assemblage et un pangénome ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés : population locale diverse, férale distincte d’ancestrale, sous-échantillonnage asiatique. Ajout d’un exemple explicitant assemblages/individus/accessions pour éviter le double comptage."
+      ],
+      "patch": {
+        "lead": "La diversité du cannabis vient aussi de son histoire avec les humains : cultures locales, choix de graines, croisements et déplacements. Une population regroupe plusieurs individus ; elle ne se réduit pas forcément à une copie unique répétée.",
+        "sections": [
+          {
+            "id": "ref-populations-domestication-locales",
+            "title": "Une population locale garde une histoire agricole",
+            "paragraphs": [
+              "Une population locale cultivée, souvent appelée landrace, est liée à un territoire et à des pratiques agricoles. Au fil des générations, les personnes qui la cultivent transmettent certains matériels et en sélectionnent des caractères. Les conditions locales participent aussi à ce qui se maintient.",
+              "Un même nom géographique peut ainsi couvrir des plantes différentes. Des échanges de graines ou de pollen peuvent avoir lieu sans faire disparaître ce nom. « Locale » ne veut donc pas dire que chaque plante possède exactement le même ADN ou n’a jamais reçu d’apport extérieur."
+            ],
+            "sourceIds": [
+              "botany-diversity-cfia",
+              "botany-diversity-lynch2025"
+            ]
+          },
+          {
+            "id": "ref-populations-domestication-ferales",
+            "title": "Pousser hors d’un champ ne suffit pas à être un ancêtre sauvage",
+            "paragraphs": [
+              "Une population férale descend de plantes cultivées qui se sont échappées des cultures puis se maintiennent spontanément. Son histoire diffère de celle d’une population ancestrale qui n’aurait pas été domestiquée.",
+              "Par exemple, observer du chanvre sans agriculteur à proximité montre qu’il pousse aujourd’hui hors culture. Cela ne reconstitue pas à soi seul l’histoire de ses ancêtres. Les anciens transports de graines et les rencontres entre populations doivent aussi être étudiés."
+            ],
+            "sourceIds": [
+              "botany-diversity-cfia",
+              "botany-diversity-lynch2025"
+            ]
+          },
+          {
+            "id": "ref-populations-domestication-genomes",
+            "title": "Comparer plusieurs génomes pour voir davantage de diversité",
+            "paragraphs": [
+              "Le génome est l’ensemble de l’information génétique d’un individu. Un seul génome de référence ressemble à un exemplaire choisi pour se repérer : il ne contient pas toutes les variantes de tous les plants. Un pangénome rassemble des séquences communes et différentes à partir de plusieurs individus.",
+              "Dans le travail de Lynch et ses collègues, 193 génomes sont assemblés à partir de 144 échantillons biologiques : certains individus fournissent plusieurs versions reconstituées. Une accession est une entrée identifiée d’une collection. La collection reste incomplète pour certaines origines, notamment asiatiques : ses échantillons ne représentent pas chaque plante du monde."
+            ],
+            "sourceIds": [
+              "botany-diversity-lynch2025"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-diversity-cfia",
+          "botany-diversity-lynch2025",
+          "bf-cfia-2021"
+        ],
+        "relatedArticleIds": [
+          "ref-taxonomie-cannabis",
+          "ref-cultivars-clones",
+          "ref-genetique-heredite"
+        ],
+        "glossaryIds": [
+          "botany-landrace",
+          "botany-feral",
+          "botany-accession",
+          "botany-pangenome"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "plant-3"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois histoires à distinguer",
+          "nodes": [
+            {
+              "label": "Population locale cultivée",
+              "detail": "Des plantes liées à un territoire et à une histoire agricole."
+            },
+            {
+              "label": "Population férale",
+              "detail": "Des descendantes de cultures qui se maintiennent hors des champs."
+            },
+            {
+              "label": "Ancêtre sauvage",
+              "detail": "Une histoire à établir, que la seule présence hors culture ne démontre pas."
+            }
+          ],
+          "caption": "Les échanges de pollen et de graines peuvent relier ces histoires.",
+          "sourceIds": [
+            "bf-cfia-2021",
+            "botany-diversity-lynch2025"
+          ],
+          "afterSectionId": "ref-populations-domestication-ferales"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-diversity-cfia",
+        "botany-diversity-lynch2025"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [
+        "hemp-genetics-feral",
+        "hemp-genetics-landrace"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Une plante qui pousse spontanément est-elle forcément un cannabis jamais cultivé ?",
+        "explainedTerms": [
+          "population",
+          "landrace",
+          "féral",
+          "domestication",
+          "génome",
+          "pangénome",
+          "accession"
+        ],
+        "example": "Un plant hors d’un champ peut descendre d’une ancienne culture.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Pourquoi 193 génomes assemblés peuvent-ils provenir de seulement 144 échantillons ?",
+            "expectedAnswer": "Un même individu peut fournir plusieurs versions reconstituées ; on ne compte pas la même unité."
+          }
+        ],
+        "quizIdsReviewed": [
+          "hemp-genetics-feral",
+          "hemp-genetics-landrace"
+        ],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "ref-cultivars-clones",
+      "questions": [
+        "Qu’est-ce qui définit un cultivar ?",
+        "Comment une descendance clonale peut-elle varier ?",
+        "Pourquoi homogénéité variétale et identité de tout l’ADN ne sont-elles pas synonymes ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservées : définitions et influence du milieu. Renforcement DHS et source de la mutation clonale : la page GEVES seule ne démontrait pas cette dernière assertion ; le PDF Schwabe la traite explicitement."
+      ],
+      "patch": {
+        "lead": "Cultivar, clone et lignée ne décrivent pas la même chose. Un cultivar est une variété cultivée sélectionnée. Un clone regroupe des plantes issues d’un individu, par exemple à partir de fragments de celui-ci, sans passer par une graine. Une lignée suit une continuité de descendance.",
+        "sections": [
+          {
+            "id": "ref-cultivars-clones-cultivar",
+            "title": "Un cultivar se reconnaît par des caractères sélectionnés",
+            "paragraphs": [
+              "Un cultivar est un ensemble de plantes cultivées reconnu par des caractères et une histoire de sélection. Il ne s’agit pas d’un rang botanique comme l’espèce. Un même cultivar peut comprendre plusieurs individus génétiquement différents.",
+              "Les examens officiels dits DHS vérifient trois choses : la distinction, pour différencier la variété des autres ; l’homogénéité, pour que ses caractères soient suffisamment cohérents ; la stabilité, pour qu’ils se maintiennent au fil des reproductions prévues. Cela ne demande pas que toutes les lettres de l’ADN soient identiques chez tous les individus."
+            ],
+            "sourceIds": [
+              "botany-diversity-geves",
+              "botany-diversity-geves-diversity",
+              "bf-upov-2025"
+            ]
+          },
+          {
+            "id": "ref-cultivars-clones-clone",
+            "title": "Un clone part d’un seul individu",
+            "paragraphs": [
+              "La multiplication végétative produit une descendance à partir d’une partie d’une plante, sans réunir les cellules reproductrices de deux parents. Cette descendance forme un clone et conserve en principe l’information génétique de l’individu de départ.",
+              "Deux clones de même constitution génétique peuvent cependant avoir des hauteurs différentes si leur milieu ou leur âge diffère. Une mutation, c’est-à-dire une modification de l’ADN, peut aussi apparaître pendant les divisions des cellules puis se transmettre à une branche de la descendance. Une différence visible n’a donc pas une seule explication possible."
+            ],
+            "sourceIds": [
+              "botany-diversity-geves-diversity",
+              "botany-diversity-phenotype",
+              "botany-diversity-schwabe"
+            ]
+          },
+          {
+            "id": "ref-cultivars-clones-lignee",
+            "title": "Une lignée et une collection suivent la transmission",
+            "paragraphs": [
+              "Une lignée indique une continuité de descendance. Sa diversité dépend des croisements et de la façon dont elle a été maintenue : le mot ne signifie pas automatiquement « copie génétique identique ».",
+              "Dans une collection, une accession est une entrée identifiée que l’on peut suivre. Elle peut représenter un matériel d’un cultivar sans représenter tous ses individus. Pour comparer des résultats, savoir quel échantillon a réellement été étudié compte autant que son nom."
+            ],
+            "sourceIds": [
+              "botany-diversity-geves-diversity",
+              "botany-diversity-lynch2025"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-diversity-geves",
+          "botany-diversity-geves-diversity",
+          "bf-upov-2025",
+          "botany-diversity-phenotype",
+          "botany-diversity-schwabe",
+          "botany-diversity-lynch2025"
+        ],
+        "relatedArticleIds": [
+          "ref-genetique-heredite",
+          "ref-populations-domestication",
+          "ref-noms-lignees"
+        ],
+        "glossaryIds": [
+          "botany-cultivar",
+          "botany-clone",
+          "botany-accession",
+          "botany-phenotype"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-diversity-1"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois mots, trois questions",
+          "nodes": [
+            {
+              "label": "Cultivar",
+              "detail": "Quels caractères ont été sélectionnés et maintenus ?"
+            },
+            {
+              "label": "Clone",
+              "detail": "De quel individu vient cette descendance végétative ?"
+            },
+            {
+              "label": "Accession",
+              "detail": "Quelle entrée identifiée de la collection a été étudiée ?"
+            }
+          ],
+          "caption": "Un même matériel peut être à la fois un clone d’un cultivar et une accession de collection.",
+          "sourceIds": [
+            "bf-upov-2025",
+            "botany-diversity-schwabe",
+            "botany-diversity-lynch2025"
+          ],
+          "afterSectionId": "ref-cultivars-clones-lignee"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-diversity-geves",
+        "botany-diversity-geves-diversity",
+        "botany-diversity-phenotype",
+        "botany-diversity-lynch2025",
+        "bf-upov-2025",
+        "botany-diversity-schwabe"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [
+        "hemp-genetics-clone",
+        "hemp-genetics-cultivar",
+        "hemp-genetics-clones-milieu",
+        "hemp-genetics-mutation-clonale"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Deux plants portant le même nom sont-ils forcément des clones ?",
+        "explainedTerms": [
+          "cultivar",
+          "DHS",
+          "multiplication végétative",
+          "clone",
+          "mutation",
+          "lignée",
+          "accession"
+        ],
+        "example": "Deux clones de même génotype peuvent grandir différemment selon leur milieu.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Pourquoi l’homogénéité officielle ne signifie-t-elle pas ADN identique partout ?",
+            "expectedAnswer": "Les examens portent sur des caractères et des règles définis, pas sur l’identité de chaque position de l’ADN."
+          }
+        ],
+        "quizIdsReviewed": [
+          "hemp-genetics-clone",
+          "hemp-genetics-cultivar",
+          "hemp-genetics-clones-milieu",
+          "hemp-genetics-mutation-clonale"
+        ],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "ref-genetique-heredite",
+      "questions": [
+        "Comment distinguer allèle, génotype, haplotype et phénotype ?",
+        "Que signifient 2n = 20, F1 et F2 ?",
+        "Où sont décrits les gènes THCAS, CBDAS et CBCAS dans le pangénome ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Lacunes quiz corrigées : ajout explicite de 2n=20, chromosome 7 des synthases et définition d’haplotype. F1/F2 expliqués avec conditions d’uniformité. La référence eLife n’a pas été accessible ; l’introgression est également illustrée par les lignées CBD dans Nature 2025 effectivement lu."
+      ],
+      "patch": {
+        "lead": "La génétique explique comment une plante reçoit une information de ses parents et comment cette information peut varier. Pour comprendre les différences entre chanvres, il faut distinguer ce qui est hérité, ce qui est observé et la manière dont on le mesure.",
+        "sections": [
+          {
+            "id": "ref-genetique-heredite-alleles",
+            "title": "Deux copies, parfois deux versions différentes",
+            "paragraphs": [
+              "L’ADN porte de l’information génétique. Il est organisé en chromosomes ; le chanvre diploïde ordinaire en possède vingt dans une cellule du corps, soit dix paires. La notation 2n = 20 signifie que ces vingt chromosomes représentent les deux jeux réunis.",
+              "À un endroit donné de l’ADN, appelé locus, une séquence peut exister en plusieurs versions : les allèles. Avec les lettres A et a, AA ou aa signifie que les deux copies sont identiques à cet endroit : c’est l’homozygotie. Aa signifie qu’elles diffèrent : c’est l’hétérozygotie. Ces lettres ne sont pas des notes de qualité.",
+              "Le génotype décrit la composition génétique étudiée. Le phénotype désigne les caractères observables, comme la hauteur et la forme des feuilles. Il dépend aussi du milieu et du développement : connaître des allèles ne revient pas à observer toutes les propriétés de la plante."
+            ],
+            "sourceIds": [
+              "botany-diversity-allele",
+              "botany-diversity-genotype",
+              "botany-diversity-phenotype",
+              "bf-cfia-2021"
+            ]
+          },
+          {
+            "id": "ref-genetique-heredite-generations",
+            "title": "La reproduction redistribue les associations",
+            "paragraphs": [
+              "Avant la reproduction sexuée, la méiose prépare les cellules reproductrices en séparant les copies des chromosomes. Des échanges de segments entre chromosomes correspondants peuvent former de nouvelles associations : c’est une partie de la recombinaison. La fécondation réunit ensuite deux cellules reproductrices.",
+              "F1 signifie première génération de descendants de parents définis. F2 désigne la génération obtenue à partir de ces F1 selon le dispositif de reproduction. Les variantes peuvent s’y retrouver dans des combinaisons différentes. Une F1 très uniforme suppose des parents suffisamment fixés pour les caractères considérés ; le sigle ne garantit pas cela à lui seul.",
+              "Si, après des croisements et plusieurs transmissions, du matériel génétique d’une population s’installe durablement dans une autre, on parle d’introgression. C’est un processus de transmission dans le temps, pas simplement une ressemblance entre deux feuilles."
+            ],
+            "sourceIds": [
+              "botany-diversity-f1f2",
+              "botany-diversity-lynch2025"
+            ]
+          },
+          {
+            "id": "ref-genetique-heredite-pangenome",
+            "title": "Du génome individuel à une vue collective",
+            "paragraphs": [
+              "Un haplotype est un ensemble de variantes liées sur une même copie d’un chromosome ou d’une région. Un individu possédant deux copies peut donc porter deux haplotypes différents. Les méthodes de reconstitution du génome cherchent parfois à séparer ces deux versions plutôt qu’à les confondre.",
+              "Un pangénome rassemble les séquences partagées et différentes de plusieurs matériels : il montre davantage de diversité qu’un seul génome de référence. Les études sur le cannabis décrivent notamment, sur le chromosome 7, des ensembles de gènes appelés THCAS, CBDAS et CBCAS. Ces noms correspondent à des enzymes participant à la fabrication de formes acides des cannabinoïdes.",
+              "Toutes les copies d’une séquence ne fonctionnent pas de la même manière. Un pseudogène est une copie apparentée à un gène mais qui n’assure plus nécessairement sa fonction habituelle. Repérer ces ensembles génétiques ne donne donc pas directement un pourcentage de THC ou de CBD dans une fleur."
+            ],
+            "sourceIds": [
+              "botany-diversity-lynch2025",
+              "botany-diversity-pike2026"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-diversity-allele",
+          "botany-diversity-genotype",
+          "botany-diversity-phenotype",
+          "bf-cfia-2021",
+          "botany-diversity-f1f2",
+          "botany-diversity-lynch2025",
+          "botany-diversity-pike2026"
+        ],
+        "relatedArticleIds": [
+          "ref-cultivars-clones",
+          "ref-reproduction",
+          "ref-populations-domestication"
+        ],
+        "glossaryIds": [
+          "botany-allele",
+          "botany-genotype",
+          "botany-phenotype",
+          "botany-heterozygosity",
+          "botany-f1",
+          "botany-f2",
+          "botany-introgression",
+          "botany-pangenome",
+          "botany-haplotype"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-genetics-1"
+          },
+          {
+            "courseId": "plant",
+            "passageId": "botany-genetics-2"
+          },
+          {
+            "courseId": "plant",
+            "passageId": "botany-diversity-2"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Ne pas confondre le code, le résultat et la collection",
+          "nodes": [
+            {
+              "label": "Génotype",
+              "detail": "La composition génétique étudiée, par exemple Aa à un endroit."
+            },
+            {
+              "label": "Haplotype",
+              "detail": "Des variantes liées sur une même copie de chromosome."
+            },
+            {
+              "label": "Phénotype",
+              "detail": "La hauteur ou d’autres caractères observés, influencés aussi par le milieu."
+            },
+            {
+              "label": "Pangénome",
+              "detail": "Les séquences communes et différentes réunies à partir de plusieurs matériels."
+            }
+          ],
+          "caption": "Ces mots décrivent des échelles et des objets différents.",
+          "sourceIds": [
+            "botany-diversity-allele",
+            "botany-diversity-phenotype",
+            "botany-diversity-lynch2025",
+            "botany-diversity-pike2026"
+          ],
+          "afterSectionId": "ref-genetique-heredite-pangenome"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-diversity-allele",
+        "botany-diversity-genotype",
+        "botany-diversity-phenotype",
+        "botany-diversity-f1f2",
+        "botany-diversity-lynch2025",
+        "botany-diversity-pike2026",
+        "bf-cfia-2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [
+        "hemp-genetics-phenotype",
+        "hemp-genetics-genotype",
+        "hemp-genetics-allele",
+        "hemp-genetics-f1",
+        "hemp-genetics-homozygote",
+        "hemp-genetics-recombinaison",
+        "hemp-genetics-introgression",
+        "hemp-genetics-pangenome",
+        "hemp-genetics-haplotype",
+        "hemp-genetics-chromosomes-diploides",
+        "hemp-genetics-synthases-chromosome"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que signifient AA, Aa ou F1 quand on parle d’une plante ?",
+        "explainedTerms": [
+          "ADN",
+          "chromosome",
+          "diploïde",
+          "2n",
+          "locus",
+          "allèle",
+          "homozygote",
+          "hétérozygote",
+          "génotype",
+          "phénotype",
+          "méiose",
+          "recombinaison",
+          "F1",
+          "F2",
+          "introgression",
+          "haplotype",
+          "pangénome",
+          "pseudogène"
+        ],
+        "example": "AA et Aa décrivent deux copies à un endroit de l’ADN, pas deux qualités commerciales.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "La hauteur d’un plant est-elle son génotype ou son phénotype ?",
+            "expectedAnswer": "Elle fait partie du phénotype, c’est-à-dire de ce que l’on observe ; les gènes et le milieu y contribuent."
+          }
+        ],
+        "quizIdsReviewed": [
+          "hemp-genetics-phenotype",
+          "hemp-genetics-genotype",
+          "hemp-genetics-allele",
+          "hemp-genetics-f1",
+          "hemp-genetics-homozygote",
+          "hemp-genetics-recombinaison",
+          "hemp-genetics-introgression",
+          "hemp-genetics-pangenome",
+          "hemp-genetics-haplotype",
+          "hemp-genetics-chromosomes-diploides",
+          "hemp-genetics-synthases-chromosome"
+        ],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "ref-noms-lignees",
+      "questions": [
+        "Pourquoi faut-il préciser le détenteur et la version d’un nom de lignée ?",
+        "Que documente la rectification du pedigree de Cannatonic ?",
+        "Pourquoi deux annonces White Widow ne doivent-elles pas être fusionnées ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Sections relues : principe des noms et deux exemples conservés. Les deux pages commerciales primaires sont ouvertes et les exemples restent attribués, sans convertir leurs déclarations en preuve ADN."
+      ],
+      "patch": {
+        "lead": "Un nom comme Haze, Skunk, Kush ou Cookies peut suivre une plante, une sélection ou toute une famille de produits. Pour comprendre une parenté annoncée, il faut savoir quelle version est nommée, qui la détient et sur quel document repose le récit.",
+        "sections": [
+          {
+            "id": "ref-noms-lignees-appellations",
+            "title": "Le nom est un point de départ, pas un échantillon",
+            "paragraphs": [
+              "Deux produits portant le même nom ne correspondent pas forcément au même individu ni à la même population. Les études d’ADN de matériels commerciaux trouvent une correspondance variable entre noms et échantillons.",
+              "Pour suivre un matériel, on peut relever son nom, son obtenteur — la personne ou l’entreprise qui l’a sélectionné —, sa version et l’échantillon étudié. Un document explique alors qui annonce avoir transmis quoi ; une analyse génétique compare des plantes réellement prélevées. Ces deux types d’informations se complètent."
+            ],
+            "sourceIds": [
+              "botany-diversity-sawler",
+              "botany-diversity-schwabe"
+            ]
+          },
+          {
+            "id": "ref-noms-lignees-pedigrees",
+            "title": "Une parenté annoncée peut être corrigée",
+            "paragraphs": [
+              "Le pedigree est une représentation des parents et des descendants. En novembre 2015, Resin Seeds a corrigé celui annoncé pour Cannatonic : Reina Madre × NYCD remplaçait MK-Ultra × G13. Le signe × signifie ici un croisement entre les deux matériels nommés.",
+              "Cet exemple montre pourquoi il faut dater une déclaration. La correction de l’obtenteur documente ce qu’il revendique ; elle n’est pas, à elle seule, un test génétique indépendant de parentage. Les deux annonces successives ne sont pas deux couples de parents simultanés."
+            ],
+            "sourceIds": [
+              "botany-diversity-cannatonic"
+            ]
+          },
+          {
+            "id": "ref-noms-lignees-versions",
+            "title": "Une version porte son propre dossier",
+            "paragraphs": [
+              "Trikoma présente sa White Widow comme Widow Bilbo × Widow BCN. Cette annonce concerne sa version : elle ne remplace pas l’histoire de toutes les plantes vendues sous le nom White Widow.",
+              "De même, une catégorie commerciale indica, sativa ou hybride ne fournit pas le détail des parents. La parenté annoncée aide à comprendre une histoire de sélection, mais le profil chimique d’un lot doit être mesuré sur ce lot."
+            ],
+            "sourceIds": [
+              "botany-diversity-widow",
+              "botany-diversity-schwabe"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-diversity-sawler",
+          "botany-diversity-schwabe",
+          "botany-diversity-cannatonic",
+          "botany-diversity-widow"
+        ],
+        "relatedArticleIds": [
+          "ref-cultivars-clones",
+          "ref-taxonomie-cannabis",
+          "ref-genetique-heredite"
+        ],
+        "glossaryIds": [
+          "botany-pedigree",
+          "botany-cultivar",
+          "botany-genotype"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-taxonomy-2"
+          },
+          {
+            "courseId": "plant",
+            "passageId": "botany-modern-lineages-1"
+          },
+          {
+            "courseId": "plant",
+            "passageId": "botany-modern-lineages-2"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "Un arbre annoncé peut être rectifié",
+          "nodes": [
+            {
+              "label": "Première annonce",
+              "detail": "Cannatonic était présentée comme MK-Ultra × G13."
+            },
+            {
+              "label": "Correction de 2015",
+              "detail": "Resin Seeds annonce ensuite Reina Madre × NYCD."
+            },
+            {
+              "label": "Ce que cela établit",
+              "detail": "La déclaration de l’obtenteur change ; un test indépendant de parentage serait une autre preuve."
+            }
+          ],
+          "caption": "Pour lire une parenté annoncée, garder sa source et sa date.",
+          "sourceIds": [
+            "botany-diversity-cannatonic"
+          ],
+          "afterSectionId": "ref-noms-lignees-pedigrees"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-diversity-sawler",
+        "botany-diversity-schwabe",
+        "botany-diversity-cannatonic",
+        "botany-diversity-widow"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi deux White Widow peuvent-elles avoir des parents annoncés différents ?",
+        "explainedTerms": [
+          "obtenteur",
+          "version",
+          "échantillon",
+          "pedigree",
+          "croisement"
+        ],
+        "example": "Cannatonic a fait l’objet d’une correction de parenté annoncée en 2015.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "La déclaration Widow Bilbo × Widow BCN vaut-elle pour toutes les White Widow ?",
+            "expectedAnswer": "Non : elle concerne la version de Trikoma documentée par cette annonce."
+          }
+        ],
+        "quizIdsReviewed": [],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "ref-diversite-chanvre",
+      "questions": [
+        "Quels organes, surfaces et pigments peut-on observer sur un cannabis ?",
+        "Quelles structures interviennent dans la reproduction, la dispersion et la dormance ?",
+        "Que signifient monotypique, cultivar, clone et le repère de précocité de Vega ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Les 20 questions associées ont été confrontées à chaque phrase : ajouts substantiels pour enseigner pivot, anthocyanes, phyllotaxie, tige creuse, sénescence mâle, pollen, trichomes, cystolithes, abscission et dormance. Correction fruit/graine. PDF GEVES alternatif effectivement ouvert, p.4 : Vega très précoce ; date éditoriale février, propositions janvier. Les anciennes sources générales placées partout sont réparties par assertion."
+      ],
+      "patch": {
+        "lead": "Observer le chanvre, c’est relier une forme à une fonction : racines pour l’eau, feuilles pour les échanges, fleurs pour la reproduction et glandes pour certaines sécrétions. Les différences entre plantes viennent aussi de leurs caractères hérités et de leur histoire de culture.",
+        "sections": [
+          {
+            "id": "ref-diversite-chanvre-1",
+            "title": "De la silhouette au fruit",
+            "paragraphs": [
+              "Le chanvre est une herbe à tige dressée, même si sa partie interne contient des tissus ligneux, de type bois. Il forme généralement une racine principale appelée pivot, qui porte des ramifications ; sa forme dépend aussi du sol. Un entre-nœud, portion de tige entre deux points d’insertion des feuilles, peut être creux.",
+              "Les grandes feuilles se divisent en folioles : les doigts dentés d’une même feuille. En bas de la tige, les feuilles sont généralement opposées, deux au même niveau ; vers le sommet, elles deviennent souvent alternes, décalées l’une par rapport à l’autre. Des pigments, les anthocyanes, peuvent teinter les feuilles et les tiges en violet ou pourpre.",
+              "Dans les populations à sexes séparés, les fleurs mâles libèrent un pollen petit, léger et sec, surtout transporté par le vent. Les plants mâles terminent souvent leur cycle après cette libération ; les plants femelles poursuivent la formation des fruits. Autour d’une fleur femelle, une petite enveloppe verte, la bractée périgonale, finit par entourer le fruit en développement.",
+              "Le chènevis entier est un akène : un petit fruit sec qui garde sa graine enfermée à maturité. Dans le classement de Small et Cronquist présenté par l’ACIA, certaines formes spontanées gardent un périanthe adhérent et pigmenté, une enveloppe florale très fine contribuant à l’aspect marbré du fruit. Une zone d’abscission, où les tissus peuvent se séparer, facilite aussi la chute de fruits mûrs.",
+              "Une graine peut être vivante sans germer immédiatement : c’est la dormance. Elle peut rester en attente malgré certaines conditions extérieures favorables. Ce caractère aide à comprendre le maintien de graines dans le milieu ; il ne signifie pas que leur embryon est mort."
+            ],
+            "sourceIds": [
+              "qh-nature-canada",
+              "bf-kew-1975",
+              "bf-geves-2021"
+            ]
+          },
+          {
+            "id": "ref-diversite-chanvre-2",
+            "title": "Des poils de surface aux glandes",
+            "paragraphs": [
+              "Les trichomes sont de petites structures issues de l’épiderme, la couche de cellules de surface. Parmi les glandes, les trichomes bulbeux sont les plus petits ; les capités sessiles ont une tête proche de la surface et les capités pédonculés une tête portée par un pied allongé. Leurs cellules sécrétrices produisent et accumulent notamment des cannabinoïdes et des terpènes.",
+              "D’autres poils ne sont pas des glandes. Les poils cystolithiques contiennent à leur base des dépôts de carbonate de calcium, une matière minérale, et participent à la rugosité. Les deux longs filaments d’une fleur femelle sont encore autre chose : les branches stigmatiques qui reçoivent le pollen. Un poil, une glande et un stigmate n’ont donc pas la même fonction."
+            ],
+            "sourceIds": [
+              "qh-nature-canada",
+              "bf-trichomes-2020",
+              "bf-florogenesis-2019"
+            ]
+          },
+          {
+            "id": "ref-diversite-chanvre-3",
+            "title": "Classer sans effacer les différences",
+            "paragraphs": [
+              "Le référentiel de Kew place Cannabis sativa dans l’ordre des Rosales et la famille des Cannabaceae, qui comprend aussi le houblon. Un classement « monotypique » retient une seule espèce dans le genre Cannabis : il ne prétend pas que tous les individus sont identiques.",
+              "Une population locale a une histoire agricole et une diversité possible entre ses individus. Une population férale descend de cultures échappées. Un cultivar est une variété cultivée sélectionnée ; un clone est la descendance végétative d’un individu. Les noms du commerce, comme sativa ou indica, ne remplacent pas cette histoire.",
+              "Les examens DHS étudient la distinction d’une variété, son homogénéité et la stabilité de ses caractères. Dans les propositions CTPS/GEVES de janvier 2025, Vega est décrite comme monoïque — portant des fleurs mâles et femelles séparées sur un même plant — et « très précoce ». Cette description datée n’est pas, à elle seule, l’acte final d’inscription."
+            ],
+            "sourceIds": [
+              "qh-nature-kew",
+              "qh-nature-canada",
+              "qh-nature-geves-new-varieties",
+              "botany-diversity-schwabe",
+              "bf-upov-2025"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "qh-nature-canada",
+          "bf-kew-1975",
+          "bf-geves-2021",
+          "bf-trichomes-2020",
+          "bf-florogenesis-2019",
+          "qh-nature-kew",
+          "qh-nature-geves-new-varieties",
+          "botany-diversity-schwabe",
+          "bf-upov-2025"
+        ],
+        "relatedArticleIds": [
+          "ref-aromes-chanvre",
+          "ref-matieres-chanvre"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [],
+        "image": {
+          "src": "/placard/reference/botany/florogenesis-figure2.webp",
+          "alt": "Photographies d’un cannabis NB140, d’un nœud avec fleurs solitaires et de son apex, accompagnées du schéma d’organisation de la figure originale.",
+          "caption": "La plante entière (A), un point de la tige portant des fleurs (B) et les vues du sommet au microscope (D–E) montrent différentes échelles d’une même organisation. Le schéma C aide à les relier. Il s’agit du matériel NB140, figure 2 de Spitzer-Rimon et collègues, 2019.",
+          "author": "Ben Spitzer-Rimon, Shai Duchin, Nirit Bernstein et Rina Kamenetsky (2019)",
+          "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "kind": "photograph"
+        }
+      },
+      "sourceIdsReviewed": [
+        "qh-nature-canada",
+        "qh-nature-kew",
+        "qh-nature-geves-new-varieties",
+        "bf-kew-1975",
+        "bf-geves-2021",
+        "bf-trichomes-2020",
+        "bf-florogenesis-2019",
+        "botany-diversity-schwabe",
+        "bf-upov-2025"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photo effectivement affichée et page d’origine/licence lues ; échelles et portée expérimentale décrites."
+      },
+      "quizIdsReviewed": [
+        "hemp-en-1-01",
+        "hemp-en-1-02",
+        "hemp-en-1-03",
+        "hemp-en-1-04",
+        "hemp-en-1-05",
+        "hemp-en-1-06",
+        "hemp-en-1-07",
+        "hemp-en-1-08",
+        "hemp-en-1-09",
+        "hemp-en-1-10",
+        "hemp-en-1-11",
+        "hemp-en-1-12",
+        "hemp-en-1-13",
+        "hemp-en-1-14",
+        "hemp-en-1-15",
+        "hemp-en-1-16",
+        "hemp-en-1-17",
+        "hemp-en-1-18",
+        "hemp-en-1-19",
+        "hemp-en-1-20"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Comment lire une différence visible sans lui faire dire plus qu’elle ne montre ?",
+        "explainedTerms": [
+          "pivot",
+          "entre-nœud",
+          "foliole",
+          "opposé",
+          "alterne",
+          "anthocyane",
+          "akène",
+          "périanthe",
+          "abscission",
+          "dormance",
+          "épiderme",
+          "cystolithique",
+          "carbonate de calcium",
+          "monotypique",
+          "DHS",
+          "monoïque"
+        ],
+        "example": "Une feuille violette indique une coloration ; elle ne suffit pas à nommer une variété.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Une graine dormante est-elle morte ?",
+            "expectedAnswer": "Non : elle peut rester viable sans germer immédiatement, même si certaines conditions extérieures sont favorables."
+          }
+        ],
+        "quizIdsReviewed": [
+          "hemp-en-1-01",
+          "hemp-en-1-02",
+          "hemp-en-1-03",
+          "hemp-en-1-04",
+          "hemp-en-1-05",
+          "hemp-en-1-06",
+          "hemp-en-1-07",
+          "hemp-en-1-08",
+          "hemp-en-1-09",
+          "hemp-en-1-10",
+          "hemp-en-1-11",
+          "hemp-en-1-12",
+          "hemp-en-1-13",
+          "hemp-en-1-14",
+          "hemp-en-1-15",
+          "hemp-en-1-16",
+          "hemp-en-1-17",
+          "hemp-en-1-18",
+          "hemp-en-1-19",
+          "hemp-en-1-20"
+        ],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    }
+  ],
+  "termReviews": [
+    {
+      "id": "botany-accession",
+      "definition": "Entrée identifiée dans une collection de plantes ou une étude. Une accession permet de retrouver le matériel examiné, mais ne représente pas forcément toutes les plantes de sa région.",
+      "sourceIds": [
+        "botany-diversity-lynch2025"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-allele",
+      "definition": "Version d’une séquence d’ADN à un endroit donné. Dans l’exemple Aa, A et a désignent deux versions différentes, pas une bonne et une mauvaise note.",
+      "sourceIds": [
+        "botany-diversity-allele"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-selfing",
+      "definition": "Fécondation dont les cellules reproductrices mâles et femelles proviennent du même individu. Elle concerne les parents de la future graine, pas la durée du jour qui déclenche la floraison.",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-autoflowering",
+      "definition": "Caractère d’une plante dont la floraison dépend peu de la durée du jour. Une forme autoflorissante n’est pas, pour cette raison, forcément autofécondée ou génétiquement identique aux autres.",
+      "sourceIds": [
+        "botany-diversity-cfia"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-clone",
+      "definition": "Ensemble de plantes obtenues à partir d’un individu, par exemple à partir de fragments de celui-ci, sans passer par une graine. Elles partagent en principe son information génétique ; le milieu peut changer leur apparence et des mutations peuvent apparaître.",
+      "sourceIds": [
+        "botany-diversity-schwabe",
+        "botany-diversity-phenotype"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-cultivar",
+      "definition": "Variété cultivée sélectionnée et maintenue pour des caractères reconnaissables. Un cultivar peut comprendre plusieurs individus différents ; ce n’est pas forcément un clone.",
+      "sourceIds": [
+        "botany-diversity-geves",
+        "botany-diversity-geves-diversity"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-f1",
+      "definition": "Première génération de descendants issue de parents définis. Le sigle F1 indique une place dans la descendance ; il ne garantit pas à lui seul une qualité ou une uniformité.",
+      "sourceIds": [
+        "botany-diversity-f1f2"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-f2",
+      "definition": "Génération obtenue à partir de F1 selon le dispositif de reproduction, par croisement ou autofécondation lorsque c’est possible. Les combinaisons génétiques peuvent s’y redistribuer.",
+      "sourceIds": [
+        "botany-diversity-f1f2"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-genotype",
+      "definition": "Composition génétique étudiée chez une plante. On peut par exemple décrire les deux versions qu’elle possède à un endroit de l’ADN, sans pour autant décrire tout son génome.",
+      "sourceIds": [
+        "botany-diversity-genotype"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-haplotype",
+      "definition": "Ensemble de variantes liées sur une même copie d’un chromosome ou d’une région. Une plante qui possède deux copies peut porter deux ensembles différents à cet endroit.",
+      "sourceIds": [
+        "botany-diversity-pike2026"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-heterozygosity",
+      "definition": "Présence de deux versions différentes à un endroit donné de l’ADN dans un individu à deux copies. L’exemple Aa est hétérozygote, contrairement à AA.",
+      "sourceIds": [
+        "botany-diversity-allele"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-introgression",
+      "definition": "Installation durable de matériel génétique d’une population dans une autre après des croisements et des transmissions. Il faut suivre l’hérédité ; une simple ressemblance de feuilles ne suffit pas.",
+      "sourceIds": [
+        "botany-diversity-lynch2025"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-pangenome",
+      "definition": "Représentation qui rassemble des séquences génétiques communes et différentes de plusieurs matériels. Elle montre plus de diversité qu’un seul génome choisi comme référence.",
+      "sourceIds": [
+        "botany-diversity-lynch2025",
+        "botany-diversity-pike2026"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-pedigree",
+      "definition": "Arbre représentant des parents et des descendants. Pour Cannatonic, par exemple, une correction de la parenté annoncée change cet arbre ; elle doit être reliée à sa source et à sa date.",
+      "sourceIds": [
+        "botany-diversity-schwabe",
+        "botany-diversity-cannatonic"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-phenotype",
+      "definition": "Caractères que l’on peut observer ou mesurer, comme la hauteur et la forme des feuilles. Les gènes, le milieu et le développement participent à ce résultat.",
+      "sourceIds": [
+        "botany-diversity-phenotype"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-photoperiod",
+      "definition": "Durée quotidienne d’éclairement dans l’alternance jour–nuit. Deux journées de même photopériode peuvent apporter des quantités de lumière différentes.",
+      "sourceIds": [
+        "bf-cfia-2021",
+        "bf-florogenesis-2019"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-landrace",
+      "definition": "Population locale cultivée liée à un territoire et à une histoire de sélection. Elle peut garder des différences entre individus et avoir reçu des échanges de graines ou de pollen.",
+      "sourceIds": [
+        "botany-diversity-cfia",
+        "botany-diversity-lynch2025"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    },
+    {
+      "id": "botany-taxonomy",
+      "definition": "Travail qui décrit, nomme et classe les êtres vivants. Par exemple, situer Cannabis et Humulus dans la famille des Cannabaceae relève de la taxonomie.",
+      "sourceIds": [
+        "botany-diversity-kew",
+        "botany-diversity-cfia"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ],
+      "pedagogicalReview": {
+        "definitionAndExampleRead": true
+      }
+    }
+  ],
+  "quizPatches": [
+    {
+      "id": "hemp-plant-photoperiode",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "À quoi correspond la photopériode perçue par le chanvre ?",
+      "options": [
+        "À l’intensité lumineuse maximale",
+        "À la couleur dominante de la lumière",
+        "À la température quotidienne moyenne",
+        "À la durée quotidienne d’éclairement"
+      ],
+      "answer": 3,
+      "explanation": "La photopériode est la durée d’éclairement dans l’alternance jour–nuit. Elle décrit un rythme ; elle ne dit pas, à elle seule, quelle quantité de lumière le plant a reçue.",
+      "articleId": "ref-photoperiode",
+      "sourceIds": [
+        "bf-cfia-2021",
+        "bf-florogenesis-2019"
+      ]
+    },
+    {
+      "id": "hemp-plant-autofloraison",
+      "topicId": "plant",
+      "level": 4,
+      "prompt": "Chez le chanvre, l’autofloraison désigne une floraison…",
+      "options": [
+        "Déclenchée par le pollen du même plant",
+        "Moins dépendante de la photopériode",
+        "Réservée aux plants monoïques",
+        "Qui produit des fleurs sans ovaires"
+      ],
+      "answer": 1,
+      "explanation": "L’autofloraison signifie que la floraison dépend moins de la durée du jour. L’autofécondation concerne une autre question : l’origine des cellules reproductrices qui s’unissent.",
+      "articleId": "ref-photoperiode",
+      "sourceIds": [
+        "botany-diversity-cfia",
+        "botany-diversity-cfia-seeds"
+      ]
+    },
+    {
+      "id": "hemp-genetics-famille",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "À quelle famille botanique appartient le chanvre ?",
+      "options": [
+        "Les Cannaceae",
+        "Les Solanaceae",
+        "Les Rosaceae",
+        "Les Cannabaceae"
+      ],
+      "answer": 3,
+      "explanation": "Cannabis appartient aux Cannabaceae, famille qui comprend aussi le houblon. Deux genres peuvent donc être de la même famille sans être la même plante.",
+      "articleId": "ref-taxonomie-cannabis",
+      "sourceIds": [
+        "botany-diversity-kew"
+      ]
+    },
+    {
+      "id": "hemp-genetics-clone",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Un clone de chanvre descend d’un individu par…",
+      "options": [
+        "Fécondation croisée",
+        "Multiplication végétative",
+        "Pollinisation par le vent",
+        "Recombinaison des gamètes"
+      ],
+      "answer": 1,
+      "explanation": "Un clone provient de la multiplication végétative d’un individu, sans réunion des cellules reproductrices de deux parents. Il conserve en principe la constitution génétique de l’individu de départ.",
+      "articleId": "ref-cultivars-clones",
+      "sourceIds": [
+        "botany-diversity-schwabe"
+      ]
+    },
+    {
+      "id": "hemp-genetics-phenotype",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "La hauteur et la forme des feuilles d’un chanvre font partie de son…",
+      "options": [
+        "Haplotype",
+        "Génotype",
+        "Phénotype",
+        "Pangénome"
+      ],
+      "answer": 2,
+      "explanation": "Le phénotype est ce que l’on peut observer ou mesurer, comme la hauteur. Il résulte de la composition génétique, mais aussi du milieu et du développement.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "botany-diversity-phenotype"
+      ]
+    },
+    {
+      "id": "hemp-genetics-feral",
+      "topicId": "genetics",
+      "level": 1,
+      "prompt": "Un chanvre féral descend de plantes…",
+      "options": [
+        "Jamais cultivées par l’humain",
+        "Cultivées puis échappées des cultures",
+        "Toutes issues d’un même clone",
+        "Issues uniquement d’une génération F1"
+      ],
+      "answer": 1,
+      "explanation": "Une population férale descend de cultures échappées et se maintient hors des champs. Pousser spontanément aujourd’hui ne signifie pas ne jamais avoir eu d’ancêtres cultivés.",
+      "articleId": "ref-populations-domestication",
+      "sourceIds": [
+        "botany-diversity-cfia"
+      ]
+    },
+    {
+      "id": "hemp-genetics-genotype",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que décrit le génotype d’un plant de chanvre ?",
+      "options": [
+        "Sa silhouette",
+        "Son stade floral",
+        "Son milieu de vie",
+        "Sa composition génétique"
+      ],
+      "answer": 3,
+      "explanation": "Le génotype décrit la composition génétique étudiée. Il se distingue du phénotype, qui rassemble les caractères effectivement observés.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "botany-diversity-genotype"
+      ]
+    },
+    {
+      "id": "hemp-genetics-allele",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans le génome du chanvre, un allèle est…",
+      "options": [
+        "Une version d’une séquence à un locus",
+        "Une cellule contenant tout le génome",
+        "Un jeu complet de chromosomes",
+        "Un ensemble de chromosomes sexuels"
+      ],
+      "answer": 0,
+      "explanation": "Un allèle est une version d’une séquence d’ADN. Le locus est l’endroit où cette version se trouve : dans Aa, les deux copies diffèrent à l’endroit considéré.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "botany-diversity-allele"
+      ]
+    },
+    {
+      "id": "hemp-genetics-f1",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Dans une descendance de chanvre, que signifie F1 ?",
+      "options": [
+        "Une première floraison",
+        "Une première feuille",
+        "Une première génération filiale",
+        "Une première fécondation"
+      ],
+      "answer": 2,
+      "explanation": "F1 signifie première génération filiale : les descendants de parents définis. Le sigle ne garantit pas, à lui seul, que tous ces descendants seront uniformes.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "botany-diversity-f1f2"
+      ]
+    },
+    {
+      "id": "hemp-genetics-cultivar",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Que désigne un cultivar de chanvre ?",
+      "options": [
+        "Un rang entre le genre et la famille",
+        "Une variété cultivée sélectionnée",
+        "Une espèce exclusivement sauvage",
+        "Un type unique de chromosome"
+      ],
+      "answer": 1,
+      "explanation": "Un cultivar est une variété cultivée sélectionnée pour des caractères reconnaissables. Il peut comprendre plusieurs individus différents et n’est donc pas forcément un clone.",
+      "articleId": "ref-cultivars-clones",
+      "sourceIds": [
+        "botany-diversity-geves",
+        "botany-diversity-geves-diversity"
+      ]
+    },
+    {
+      "id": "hemp-genetics-landrace",
+      "topicId": "genetics",
+      "level": 2,
+      "prompt": "Une landrace de chanvre est avant tout…",
+      "options": [
+        "Un clone de laboratoire",
+        "Une espèce de chanvre distincte",
+        "Une génération de croisement",
+        "Une population locale cultivée"
+      ],
+      "answer": 3,
+      "explanation": "Une landrace est une population locale cultivée liée à une histoire agricole. Son nom géographique ne signifie pas que tous les individus possèdent un ADN identique.",
+      "articleId": "ref-populations-domestication",
+      "sourceIds": [
+        "botany-diversity-cfia"
+      ]
+    },
+    {
+      "id": "hemp-genetics-homozygote",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Un chanvre diploïde porte deux allèles identiques à un locus : il y est…",
+      "options": [
+        "Hétérozygote",
+        "Haploïde",
+        "Homozygote",
+        "Triploïde"
+      ],
+      "answer": 2,
+      "explanation": "Homozygote signifie que les deux copies sont identiques à l’endroit considéré : AA ou aa dans un modèle simple. Aa serait au contraire hétérozygote.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "botany-diversity-allele"
+      ]
+    },
+    {
+      "id": "hemp-genetics-clones-milieu",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Deux clones de chanvre de même génotype ont des hauteurs différentes : qu’est-ce qui a pu varier ?",
+      "options": [
+        "Leurs conditions de croissance",
+        "Leurs allèles à tous les loci",
+        "Leur nombre de chromosomes",
+        "Leur appartenance à une espèce"
+      ],
+      "answer": 0,
+      "explanation": "Même avec une constitution génétique identique, le milieu et l’âge peuvent changer la hauteur. Le caractère observé dépend donc aussi des conditions de croissance.",
+      "articleId": "ref-cultivars-clones",
+      "sourceIds": [
+        "botany-diversity-phenotype"
+      ]
+    },
+    {
+      "id": "hemp-genetics-recombinaison",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Dans la descendance sexuée du chanvre, la recombinaison produit…",
+      "options": [
+        "Uniquement des copies de la mère",
+        "Uniquement des copies du père",
+        "Des clones issus des deux parents",
+        "De nouvelles associations génétiques"
+      ],
+      "answer": 3,
+      "explanation": "La recombinaison forme de nouvelles associations de variantes génétiques, notamment par échanges entre chromosomes correspondants pendant la préparation des cellules reproductrices.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "botany-diversity-f1f2"
+      ]
+    },
+    {
+      "id": "hemp-genetics-mutation-clonale",
+      "topicId": "genetics",
+      "level": 3,
+      "prompt": "Quel phénomène peut modifier l’ADN au sein d’une descendance clonale de chanvre ?",
+      "options": [
+        "La fécondation croisée",
+        "La recombinaison méiotique",
+        "Une mutation",
+        "La fusion des gamètes"
+      ],
+      "answer": 2,
+      "explanation": "Une mutation est une modification de l’ADN. Elle peut apparaître pendant les divisions de cellules puis être transmise à une branche de la descendance clonale.",
+      "articleId": "ref-cultivars-clones",
+      "sourceIds": [
+        "botany-diversity-schwabe"
+      ]
+    },
+    {
+      "id": "hemp-genetics-introgression",
+      "topicId": "genetics",
+      "level": 4,
+      "prompt": "L’entrée durable de gènes d’une population de chanvre dans une autre après hybridation s’appelle…",
+      "options": [
+        "La dérive génétique",
+        "La ségrégation",
+        "La clonalité",
+        "L’introgression"
+      ],
+      "answer": 3,
+      "explanation": "L’introgression est une incorporation durable de matériel génétique après des croisements et des transmissions entre populations. Ce n’est pas simplement une ressemblance visuelle.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "botany-diversity-lynch2025"
+      ]
+    },
+    {
+      "id": "hemp-genetics-pangenome",
+      "topicId": "genetics",
+      "level": 4,
+      "prompt": "Que rassemble un pangénome du chanvre ?",
+      "options": [
+        "Les séquences partagées et variables",
+        "Les seules séquences d’un clone",
+        "Les seuls chromosomes sexuels",
+        "Les seuls gènes des fleurs"
+      ],
+      "answer": 0,
+      "explanation": "Un pangénome réunit des séquences partagées et différentes de plusieurs matériels. Un seul génome de référence ne contient pas toute cette diversité.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "botany-diversity-lynch2025",
+        "botany-diversity-pike2026"
+      ]
+    },
+    {
+      "id": "hemp-genetics-haplotype",
+      "topicId": "genetics",
+      "level": 4,
+      "prompt": "Dans le génome du chanvre, qu’est-ce qu’un haplotype ?",
+      "options": [
+        "Le nombre total de chromosomes",
+        "Une version liée de positions génétiques",
+        "Le profil de toutes les protéines",
+        "La forme extérieure d’un chromosome"
+      ],
+      "answer": 1,
+      "explanation": "Un haplotype rassemble des variantes liées sur une même copie de chromosome ou une région. Un individu à deux copies peut en porter deux différents.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "botany-diversity-pike2026"
+      ]
+    },
+    {
+      "id": "hemp-genetics-chromosomes-diploides",
+      "topicId": "genetics",
+      "level": 4,
+      "prompt": "Combien de chromosomes possède une cellule somatique diploïde du chanvre ?",
+      "options": [
+        "10",
+        "22",
+        "20",
+        "40"
+      ],
+      "answer": 2,
+      "explanation": "Une cellule diploïde ordinaire du chanvre possède vingt chromosomes, organisés en dix paires. La notation 2n = 20 indique les deux jeux de chromosomes réunis.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "bf-cfia-2021"
+      ]
+    },
+    {
+      "id": "hemp-genetics-synthases-chromosome",
+      "topicId": "genetics",
+      "level": 4,
+      "prompt": "Sur quel chromosome du chanvre se trouvent les gènes THCAS, CBDAS et CBCAS décrits dans le pangénome ?",
+      "options": [
+        "Le chromosome 7",
+        "Le chromosome 1",
+        "Le chromosome X",
+        "Le chromosome Y"
+      ],
+      "answer": 0,
+      "explanation": "Les ensembles de gènes THCAS, CBDAS et CBCAS décrits par le pangénome sont sur le chromosome 7. Ces gènes concernent des enzymes ; leur présence ne donne pas directement une teneur chimique de la fleur.",
+      "articleId": "ref-genetique-heredite",
+      "sourceIds": [
+        "botany-diversity-lynch2025"
+      ]
+    },
+    {
+      "id": "hemp-en-1-01",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quel proche parent du cannabis appartient aussi aux Cannabaceae ?",
+      "options": [
+        "Le houblon",
+        "Le tabac",
+        "Le lin",
+        "Le cotonnier"
+      ],
+      "answer": 0,
+      "explanation": "Le houblon, Humulus lupulus, appartient aux Cannabaceae comme le cannabis. Il est donc de la même famille, mais d’un autre genre.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-02",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Quel type de racine principale le chanvre développe-t-il généralement ?",
+      "options": [
+        "Une racine pivotante",
+        "Un bulbe",
+        "Un rhizome rampant",
+        "Un tubercule"
+      ],
+      "answer": 0,
+      "explanation": "Un pivot est une racine principale qui porte des ramifications. Le chanvre développe généralement cette organisation, avec une forme qui dépend aussi du sol.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-03",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Comment décrit-on le bord habituel des folioles du chanvre ?",
+      "options": [
+        "Denté",
+        "Lisse",
+        "Enroulé en tube",
+        "Profondément frangé"
+      ],
+      "answer": 0,
+      "explanation": "Le bord denté porte de petites dents, comme le bord d’une scie. Les folioles sont les différentes parties d’une même feuille composée.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-04",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quels pigments peuvent donner une teinte violette aux feuilles et tiges du cannabis ?",
+      "options": [
+        "Les anthocyanes",
+        "Les chlorophylles",
+        "Les carotènes",
+        "Les xanthophylles"
+      ],
+      "answer": 0,
+      "explanation": "Les anthocyanes sont des pigments pouvant donner une coloration pourpre ou violette. Cette couleur est un caractère visible ; elle ne nomme pas à elle seule la variété.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-05",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Sur le bas de la tige du chanvre, les feuilles sont habituellement disposées…",
+      "options": [
+        "Par paires opposées",
+        "En rosette au sol seulement",
+        "Par groupes de cinq",
+        "Toutes du même côté"
+      ],
+      "answer": 0,
+      "explanation": "Deux feuilles opposées s’insèrent au même niveau, l’une en face de l’autre. Plus haut, les feuilles peuvent devenir alternes : elles se décalent le long de la tige.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-06",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Le chanvre est une plante herbacée : il appartient à quel type de végétal ?",
+      "options": [
+        "Une herbe à tige dressée",
+        "Un arbre à tronc permanent",
+        "Un arbuste persistant",
+        "Une liane grimpante"
+      ],
+      "answer": 0,
+      "explanation": "Une herbacée est ici une herbe à tige dressée. La présence de tissus ligneux à l’intérieur de la tige ne transforme pas le chanvre en arbre.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-07",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Quelle particularité peut présenter l’intérieur d’un entre-nœud de chanvre ?",
+      "options": [
+        "Il peut être creux",
+        "Il contient une graine",
+        "Il porte des anthères",
+        "Il forme un bulbe"
+      ],
+      "answer": 0,
+      "explanation": "L’entre-nœud est la portion de tige entre deux points d’insertion des feuilles. Chez le chanvre, son intérieur peut être creux.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-08",
+      "topicId": "plant",
+      "level": 1,
+      "prompt": "Le petit fruit sec du chanvre est appelé botaniquement…",
+      "options": [
+        "Un akène",
+        "Une baie",
+        "Une gousse",
+        "Une drupe"
+      ],
+      "answer": 0,
+      "explanation": "Un akène est un petit fruit sec qui ne s’ouvre pas spontanément à maturité. Le chènevis entier contient une graine mais comprend aussi la paroi du fruit.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-09",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Dans une population dioïque, quels pieds meurent souvent avant la maturité des graines ?",
+      "options": [
+        "Les pieds mâles",
+        "Les pieds femelles",
+        "Les deux au même moment",
+        "Les pieds les plus ramifiés uniquement"
+      ],
+      "answer": 0,
+      "explanation": "Les mâles terminent souvent leur cycle après la libération du pollen. Les femelles poursuivent alors le développement des fruits contenant les graines.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-10",
+      "topicId": "plant",
+      "level": 2,
+      "prompt": "Le pollen du chanvre transporté par le vent est généralement…",
+      "options": [
+        "Petit, léger et sec",
+        "Lourd et gorgé d’eau",
+        "En grosses grappes collantes",
+        "Enveloppé dans une coque ligneuse"
+      ],
+      "answer": 0,
+      "explanation": "Un pollen petit, léger et sec se disperse plus facilement dans l’air. Chez le chanvre, le vent est son principal moyen de transport.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-11",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Autour de la fleur femelle, que finit par envelopper la bractée du chanvre ?",
+      "options": [
+        "Le fruit en développement",
+        "Une racine adventive",
+        "La totalité de la tige",
+        "Une nouvelle feuille composée"
+      ],
+      "answer": 0,
+      "explanation": "L’enveloppe verte associée à la fleur femelle reste autour du fruit qui se développe. Ce fruit renferme la graine ; ce n’est pas l’enveloppe elle-même qui devient la graine.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-12",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Quel type de trichome glandulaire du cannabis est le plus petit ?",
+      "options": [
+        "Bulbeux",
+        "Capité pédonculé",
+        "Capité sessile",
+        "Poil cystolithique"
+      ],
+      "answer": 0,
+      "explanation": "Les trichomes bulbeux sont les plus petits des trois types glandulaires décrits. Les types capités portent une tête plus reconnaissable, proche de la surface ou sur un pied.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-13",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Qu’est-ce qui caractérise un trichome « capité pédonculé » du cannabis ?",
+      "options": [
+        "Une tête portée par un pied allongé",
+        "Une tête enfouie dans la racine",
+        "Une absence de cellules sécrétrices",
+        "Une tête située dans la graine"
+      ],
+      "answer": 0,
+      "explanation": "Capité signifie avec une tête et pédonculé signifie porté par un pied allongé. Le nom décrit donc une forme de glande, pas une concentration chimique.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-14",
+      "topicId": "plant",
+      "level": 4,
+      "prompt": "Quel composé minéral se trouve à la base des poils cystolithiques du chanvre ?",
+      "options": [
+        "Du carbonate de calcium",
+        "Du chlorure de sodium",
+        "Du sulfate de magnésium",
+        "Du phosphate de potassium"
+      ],
+      "answer": 0,
+      "explanation": "Les poils cystolithiques sont des poils non glandulaires contenant à leur base du carbonate de calcium. Ils participent à la rugosité ; ce ne sont pas des réservoirs de résine.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-15",
+      "topicId": "plant",
+      "level": 4,
+      "prompt": "Dans le modèle de Small et Cronquist, d’où vient souvent l’aspect marbré des fruits de chanvre sauvage ?",
+      "options": [
+        "Du périanthe persistant et pigmenté",
+        "De chlorophylle dans l’embryon",
+        "Du pollen collé à la graine",
+        "De la couleur de la radicule"
+      ],
+      "answer": 0,
+      "explanation": "Ce classement décrit une fine enveloppe florale, le périanthe, qui reste adhérente et porte des pigments répartis irrégulièrement. Elle contribue à l’aspect marbré du fruit.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-16",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Chez des formes sauvages de chanvre, que facilite une zone d’abscission bien développée ?",
+      "options": [
+        "La chute des fruits mûrs",
+        "L’ouverture des fleurs mâles",
+        "La croissance des racines",
+        "La soudure des folioles"
+      ],
+      "answer": 0,
+      "explanation": "Une zone d’abscission est une région où les tissus peuvent se séparer. Lorsqu’elle est bien développée, le fruit mûr se détache plus facilement.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-17",
+      "topicId": "plant",
+      "level": 3,
+      "prompt": "Une graine viable de chanvre peut attendre avant de germer : cet état s’appelle…",
+      "options": [
+        "La dormance",
+        "La sénescence",
+        "La pollinisation",
+        "La lignification"
+      ],
+      "answer": 0,
+      "explanation": "La dormance est un état d’attente : une graine peut rester vivante sans germer immédiatement, malgré certaines conditions extérieures favorables. Ce n’est pas la mort de son embryon.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-18",
+      "topicId": "plant",
+      "level": 4,
+      "prompt": "À quel ordre botanique appartient Cannabis selon Kew ?",
+      "options": [
+        "Les Rosales",
+        "Les Solanales",
+        "Les Poales",
+        "Les Lamiales"
+      ],
+      "answer": 0,
+      "explanation": "Dans le classement de Kew, la famille des Cannabaceae appartient à l’ordre des Rosales. L’ordre est un ensemble plus large que la famille.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-kew"
+      ]
+    },
+    {
+      "id": "hemp-en-1-19",
+      "topicId": "plant",
+      "level": 4,
+      "prompt": "Dans un traitement botanique, un genre Cannabis « monotypique » comprend…",
+      "options": [
+        "Une seule espèce reconnue",
+        "Une seule variété cultivée",
+        "Un seul sexe floral",
+        "Un seul génotype"
+      ],
+      "answer": 0,
+      "explanation": "Monotypique signifie ici qu’un genre ne comporte qu’une espèce reconnue par le classement choisi. Cela n’empêche pas une grande diversité entre ses plantes.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-20",
+      "topicId": "plant",
+      "level": 4,
+      "prompt": "Quelle variété de chanvre est présentée comme « très précoce » par le GEVES en janvier 2025 ?",
+      "options": [
+        "Vega",
+        "Futura 75",
+        "Santhica 70",
+        "Fedora 17"
+      ],
+      "answer": 0,
+      "explanation": "Vega figure comme très précoce dans la description GEVES des propositions de janvier 2025. Il s’agit d’un caractère et d’un document datés, pas d’un calendrier universel.",
+      "articleId": "ref-diversite-chanvre",
+      "sourceIds": [
+        "qh-nature-geves-new-varieties"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Le coordinateur doit contre-vérifier les taxonomies et pedigrees attribués avant validation finale."
+  ],
+  "pedagogicalReview": {
+    "reviewedAt": "2026-11-14",
+    "articles": 7,
+    "terms": 18,
+    "quizExplanations": 40,
+    "scientificOriginalsModified": false
+  }
+}

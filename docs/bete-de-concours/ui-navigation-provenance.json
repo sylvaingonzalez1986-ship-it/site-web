@@ -5,6 +5,30 @@
   "purpose": "Each navigation destination has its own illustration. Section headers reuse the matching destination illustration.",
   "assets": [
     {
+      "kind": "buddies-pack",
+      "date": "2026-11-11",
+      "source": "public/app/lottery/sealed-booster-pack-sylvain-v3.webp",
+      "path": "/app/lottery/sealed-booster-pack-sylvain-v3.webp",
+      "processing": "Direct reuse of the canonical 1024×1536 transparent pack, contained without cropping or repainting in a square HTML vignette. No generation.",
+      "usage": "Mon Album Boosters destination, navigation and chapter heading; pack opening header. Same exact wrapper as PackSwipeCut and the Buddies shop. Replaces the generic floral card-shop vignette within Mon Album."
+    },
+    {
+      "kind": "buddies-cards",
+      "date": "2026-11-11",
+      "source": "public/app/lottery/tcg-card-back-sylvain-v2.webp",
+      "path": "/app/lottery/tcg-card-back-sylvain-v2.webp",
+      "processing": "Three instances of the exact canonical 1024×1536 card back arranged as a fan in HTML/CSS. Aspect ratio and artwork unchanged. No invented card fronts or generation.",
+      "usage": "Mon Album Cartes destination, navigation and chapter heading; pack opening desk and recap. Replaces the generic flower/oak collector album. Decorative backs do not imply ownership."
+    },
+    {
+      "kind": "album-rewards",
+      "date": "2026-11-11",
+      "source": "public/placard/shop-item-gift-v2.webp",
+      "path": "/placard/shop-item-gift-v2.webp",
+      "processing": "Direct reuse of the existing 1254×1254 transparent teal/gold gift with Sylvain on its tag. No generation or retouching.",
+      "usage": "Mon Album Récompenses destination, navigation and chapter heading. Replaces the trophy with generic flower/fruit cards. Actual reward images and amounts still come from application data."
+    },
+    {
       "kind": "culture",
       "date": "2026-11-07",
       "generator": "Built-in image_gen",
@@ -65,6 +89,13 @@
       "prompt": "Use case: illustration-story.\nAsset type: one transparent square navigation vignette for Kanab Quest, a French Breton village cultivation board game. This must match a suite of warmly detailed hand-inked old French botanical and village illustrations.\nStyle: charming 1930s cartoon ink illustration, bold irregular dark ink #172923 outer contours, finer interior hatching, sparse screenprint stipple, flat cream #fff1d6, petrol teal #087b70, mustard gold #efc451, warm apricot orange #ffad5c with a little muted botanical olive green. Warm handmade printed quality. No glossy gradients, no plastic, no 3D, no modern app icon design.\nComposition: exactly ONE compact centered object group on a genuinely TRANSPARENT background, square image, complete objects uncut with 8% transparent margin. Strong recognizable silhouette and broad readable shapes at 38px while having pleasing crafted detail at 160px. Do not enclose the group in any UI tile, badge or frame. No ground, backdrop, drop shadow, glow or checkerboard pattern. No written words, letters, numerals, logos or watermarks.\nSubject: one oversized SEALED TRADING CARD BOOSTER PACK standing upright at a slight playful angle, crimped gold zigzag edges at top and bottom, teal and warm apricot printed wrapper with a large simple cream botanical leaf medallion but absolutely no lettering. Two oversized cream collectible cards peek diagonally from behind the sealed pack, one showing a mustard flower, the other a teal leaf. This is a shop selling packs of cards, not grocery commerce. No awning, no bell, no bag, no open album, no trophy. Dominant vertical foil pack silhouette, compact group.",
       "source": "artwork/ui-card-shop-v1.png",
       "path": "/placard/ui/card-shop-v1.webp"
+    },
+    {
+      "kind": "school",
+      "path": "/placard/ui/school-v4.webp",
+      "source": "output/quizzshow/menu-source.png",
+      "provenance": "docs/bete-de-concours/quizzshow-menu-provenance.json",
+      "description": "Micro doré, buzzer orange et carte point d’interrogation : illustration QuizzShow compacte, lisible à 32 px. Même vignette dans le menu sur ordinateur, le tiroir mobile et les titres de section."
     }
   ],
   "processing": "Original transparent PNGs retained. Sharp trim of transparent margins (background #00000000, threshold 10), contain-resize to 464×464 with transparent background, 24px transparent padding on each side for a 512×512 final image. WebP quality 88 and alphaQuality 100. Text and interactions stay in HTML."

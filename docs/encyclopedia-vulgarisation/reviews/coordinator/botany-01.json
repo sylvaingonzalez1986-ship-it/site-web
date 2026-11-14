@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-14",
+  "lot": "botany-01",
+  "entries": {
+    "ref-cannabis-sativa": {
+      "contentHash": "f253f36ba0eed747877deb8a61da393911dbd38a8e211ceff9688868afe3d1ac",
+      "note": "Full articles, captions, 22 definitions and 20 quiz explanations read. First leaves, water in photosynthesis and cuttings clarified after review.",
+      "status": "read-and-reviewed"
+    },
+    "ref-organes-vegetatifs": {
+      "contentHash": "aadbe49d4f1d7da10cf8a6857a50da4328d8d9b0f00eff3676f54b4e20a12ed9",
+      "note": "Full articles, captions, 22 definitions and 20 quiz explanations read. First leaves, water in photosynthesis and cuttings clarified after review.",
+      "status": "read-and-reviewed"
+    },
+    "ref-fleurs-fruits-graines": {
+      "contentHash": "d93a74bb99eee5fc4a40355cb385bfc3a39d87f78b57ab85c87169649c26d6f0",
+      "note": "Full articles, captions, 22 definitions and 20 quiz explanations read. First leaves, water in photosynthesis and cuttings clarified after review.",
+      "status": "read-and-reviewed"
+    },
+    "ref-trichomes": {
+      "contentHash": "c4435b90622720c3533043c37f7993b9ea79a0b06d2019e4651daba6b483de33",
+      "note": "Full articles, captions, 22 definitions and 20 quiz explanations read. First leaves, water in photosynthesis and cuttings clarified after review.",
+      "status": "read-and-reviewed"
+    },
+    "ref-cycle-vie": {
+      "contentHash": "30f60e34abd012ca72481cf2cafea0e392f6b3d2ff32ca5154f93c28bd3f7692",
+      "note": "Full articles, captions, 22 definitions and 20 quiz explanations read. First leaves, water in photosynthesis and cuttings clarified after review.",
+      "status": "read-and-reviewed"
+    },
+    "ref-reproduction": {
+      "contentHash": "ae412b03a23ac1d43642427aea7d116c1b6a17802200f9fd54d39c730b19a012",
+      "note": "Full articles, captions, 22 definitions and 20 quiz explanations read. First leaves, water in photosynthesis and cuttings clarified after review.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 22,
+    "hash": "58ea97154edf0c0b6f01b0001987f35962b41665fd6a842b9f07c69dc2044359"
+  },
+  "quiz": {
+    "count": 20,
+    "hash": "e53147210a371646a6af1d4bf0259edfee0f4e81f2202be6b93fa088a2af3c01"
+  }
+}

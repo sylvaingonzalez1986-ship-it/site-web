@@ -1,0 +1,54 @@
+{
+  "date": "2026-11-14",
+  "lot": "products-05",
+  "entries": {
+    "record-product-products-enriched-food": {
+      "contentHash": "6a3d00de6486814c101c3f97d0e187f6b7abf78b4b94c4ce3cb38e77b8b9329f",
+      "note": "Read all eight entries and diagrams; oral delay, inhalation changes, origins and legal status explained without operational procedures.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-oral": {
+      "contentHash": "75d9271c209bc7f8a08a830844375be47ff2d29cf65ee6e960abc2fd15d409a6",
+      "note": "Read all eight entries and diagrams; oral delay, inhalation changes, origins and legal status explained without operational procedures.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-smoke": {
+      "contentHash": "8eab1d1865374b6f019b3d94a5502b63a233efbceade844647351c46153d8fac",
+      "note": "Read all eight entries and diagrams; oral delay, inhalation changes, origins and legal status explained without operational procedures.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-aerosol": {
+      "contentHash": "64faa8ea719ca5c061fafb88a1f104b6801043e1e7c0399beb3ec1b80cad2290",
+      "note": "Read all eight entries and diagrams; oral delay, inhalation changes, origins and legal status explained without operational procedures.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-plant-origin": {
+      "contentHash": "fb29f325fc7f162ed4de29d3d0cbe1695f6742df5e4edba1299d95cf9461b8ea",
+      "note": "Read all eight entries and diagrams; oral delay, inhalation changes, origins and legal status explained without operational procedures.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-semisynthetic-origin": {
+      "contentHash": "471ead10aa9d2f285360eb239e292951ae611406f49f3ece8853e227147774dc",
+      "note": "Read all eight entries and diagrams; oral delay, inhalation changes, origins and legal status explained without operational procedures.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-synthetic-origin": {
+      "contentHash": "c63f2b650bb46f98d42e351429b36e9ce592d64fdfb22896ec2e3b2937054eeb",
+      "note": "Read all eight entries and diagrams; oral delay, inhalation changes, origins and legal status explained without operational procedures.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-live-extract": {
+      "contentHash": "f10e6ca9e2024fd839e1a3857f7f84992237c81a2588d60294ad1229ec3e2796",
+      "note": "Read all eight entries and diagrams; oral delay, inhalation changes, origins and legal status explained without operational procedures.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { buildEmptyLoyaltySummary } from "@/lib/loyalty";
 import type {
@@ -42,6 +42,8 @@ type LotteryExperienceState = {
   config: LotteryConfig | null;
   bonuses: LotteryBonusInstance[];
   loyalty: LoyaltySummary;
+  ticketsLoaded: boolean;
+  ticketsReady: boolean;
   album: LotteryCollectionAlbum | null;
   loading: boolean;
   error: string | null;
@@ -61,12 +63,15 @@ type LotteryExperienceState = {
 };
 
 export function useLotteryExperience(): LotteryExperienceState {
-  const { isAuthenticated, authLoading } = useCart();
+  const { isAuthenticated, authLoading, user } = useCart();
+  const requestId = useRef(0);
   const [tickets, setTickets] = useState<LotteryTicket[]>([]);
   const [inventory, setInventory] = useState<LotteryInventory | null>(null);
   const [config, setConfig] = useState<LotteryConfig | null>(null);
   const [bonuses, setBonuses] = useState<LotteryBonusInstance[]>([]);
   const [loyalty, setLoyalty] = useState<LoyaltySummary>(buildEmptyLoyaltySummary());
+  const [ticketsLoaded, setTicketsLoaded] = useState(false);
+  const [ticketsReady, setTicketsReady] = useState(false);
   const [album, setAlbum] = useState<LotteryCollectionAlbum | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -78,15 +83,16 @@ export function useLotteryExperience(): LotteryExperienceState {
     }
 
     const silent = options?.silent === true;
+    const currentRequest = ++requestId.current;
     if (!silent) {
       setLoading(true);
     }
-    setError(null);
 
     try {
       if (!isAuthenticated) {
         const response = await fetch("/api/public/collection-preview", { cache: "no-store" });
         const payload = (await response.json().catch(() => null)) as PublicCollectionPreviewPayload | null;
+        if (currentRequest !== requestId.current) return;
 
         if (!response.ok || !payload?.album) {
           throw new Error(payload?.error ?? "Impossible de charger l'album.");
@@ -96,49 +102,62 @@ export function useLotteryExperience(): LotteryExperienceState {
         setInventory(null);
         setBonuses([]);
         setLoyalty(buildEmptyLoyaltySummary());
+        setTicketsLoaded(false);
+        setTicketsReady(false);
         setConfig(payload.config ?? null);
         setAlbum(payload.album);
+        setError(null);
         return;
       }
 
-      const [ticketsResponse, collectionResponse] = await Promise.all([
+      const [ticketsResult, collectionResult] = await Promise.allSettled([
         fetch("/api/account/tickets", { cache: "no-store" }),
         fetch("/api/account/collection", { cache: "no-store" }),
       ]);
 
-      const ticketsBody = (await ticketsResponse.json().catch(() => null)) as TicketsPayload | null;
-      const collectionBody = (await collectionResponse.json().catch(() => null)) as CollectionPayload | null;
+      const ticketsResponse = ticketsResult.status === "fulfilled" ? ticketsResult.value : null;
+      const collectionResponse = collectionResult.status === "fulfilled" ? collectionResult.value : null;
+      const ticketsBody = (await ticketsResponse?.json().catch(() => null)) as TicketsPayload | null;
+      const collectionBody = (await collectionResponse?.json().catch(() => null)) as CollectionPayload | null;
+      if (currentRequest !== requestId.current) return;
 
-      if (!ticketsResponse.ok && !collectionResponse.ok) {
-        throw new Error(
-          ticketsBody?.error ?? collectionBody?.error ?? "Impossible de charger l'experience TCG.",
-        );
-      }
+      const validTickets = ticketsResponse?.ok && Array.isArray(ticketsBody?.tickets)
+        && Number.isFinite(ticketsBody?.loyalty?.spendablePoints)
+        && (ticketsBody?.loyalty?.spendablePoints ?? -1) >= 0;
+      const validCollection = collectionResponse?.ok && Array.isArray(collectionBody?.pages) && collectionBody?.summary;
 
-      if (ticketsResponse.ok) {
-        setTickets(ticketsBody?.tickets ?? []);
+      if (validTickets && ticketsBody?.loyalty && ticketsBody.tickets) {
+        setTickets(ticketsBody.tickets);
         setInventory(ticketsBody?.inventory ?? null);
         setConfig(ticketsBody?.config ?? null);
         setBonuses(ticketsBody?.bonuses ?? []);
-        setLoyalty(ticketsBody?.loyalty ?? buildEmptyLoyaltySummary());
+        setLoyalty(ticketsBody.loyalty);
+        setTicketsLoaded(true);
+        setTicketsReady(true);
+      } else {
+        // A failed read is not an empty wallet or an empty pack inventory.
+        setTicketsReady(false);
       }
 
-      if (collectionResponse.ok) {
+      if (validCollection) {
         setAlbum(collectionBody ?? null);
       }
 
-      if (!ticketsResponse.ok) {
-        setError(ticketsBody?.error ?? "Impossible de charger les boosters.");
-        setLoyalty(buildEmptyLoyaltySummary());
-      } else if (!collectionResponse.ok) {
+      if (!validTickets) {
+        setError(ticketsBody?.error ?? "Impossible de charger tes points et tes boosters. Réessaie.");
+      } else if (!validCollection) {
         setError(collectionBody?.error ?? "Impossible de charger l'album.");
+      } else {
+        setError(null);
       }
     } catch (refreshError) {
+      if (currentRequest !== requestId.current) return;
+      setTicketsReady(false);
       const message =
         refreshError instanceof Error ? refreshError.message : "Impossible de charger l'experience TCG.";
       setError(message);
     } finally {
-      if (!silent) {
+      if (currentRequest === requestId.current) {
         setLoading(false);
       }
     }
@@ -149,8 +168,17 @@ export function useLotteryExperience(): LotteryExperienceState {
       return;
     }
 
+    // Reset ownership when the account changes, and ignore late responses from it.
+    setTickets([]);
+    setInventory(null);
+    setBonuses([]);
+    setLoyalty(buildEmptyLoyaltySummary());
+    setTicketsLoaded(false);
+    setTicketsReady(false);
+    setAlbum(null);
     void refreshAll();
-  }, [authLoading, refreshAll]);
+    return () => { requestId.current += 1; };
+  }, [authLoading, refreshAll, user?.id]);
 
   const openPack = useCallback(
     async (ticketId: string): Promise<ScratchResult> => {
@@ -272,6 +300,8 @@ export function useLotteryExperience(): LotteryExperienceState {
     config,
     bonuses,
     loyalty,
+    ticketsLoaded,
+    ticketsReady,
     album,
     loading,
     error,

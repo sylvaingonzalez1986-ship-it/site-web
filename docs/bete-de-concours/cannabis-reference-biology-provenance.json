@@ -1,0 +1,220 @@
+{
+  "version": "2026-11-13.reference-biology1",
+  "scope": "26 articles factuels : botanique, diversité, terpènes et cannabinoïdes.",
+  "authoring": "Synthèse nouvelle en français à partir des descriptions, énoncés factuels et références documentées dans les corpus existants. Aucune banque de questions, réponse, source historique ou donnée de progression modifiée.",
+  "bibliography": "Les identifiants HistorySource existants sont réutilisés, avec leurs dates de vérification, modes d’accès et limites d’origine. Leur présence ne signifie pas que chaque publication a été intégralement relue pour cette rédaction.",
+  "reviewedLocally": [
+    "Schéma CannabisReferenceArticle.",
+    "Textes essentiels de botanique, trichomes, classification, diversité et hérédité.",
+    "Références et dossiers des terpènes, des cannabinoïdes et de leurs transformations.",
+    "Champs factuels, sources et vocabulaire nécessaires aux nouveaux articles."
+  ],
+  "targetedExternalChecks": [
+    {
+      "sourceId": "cb-dronabinol",
+      "url": "https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=adb1801c-0fb5-4e16-b969-1db91230e0b9",
+      "access": "Notice DailyMed ouverte : identité, risques et métabolite 11-OH-THC.",
+      "date": "2026-11-13"
+    },
+    {
+      "sourceId": "cb-epidyolex",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/epidyolex",
+      "access": "Ouverture directe limitée par HTTP 429 ; extraits officiels EMA de la fiche et du résumé des caractéristiques consultés via l’index : indications et risques. Pas de relecture intégrale du PDF.",
+      "date": "2026-11-13"
+    },
+    {
+      "sourceId": "terpenes-lesson-spindle2024",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38498958/",
+      "access": "Résumé original et résultats indexés du manuscrit PMC : effet ciblé sur l’anxiété aiguë liée au THC ; aucune extrapolation à une odeur ou à un traitement.",
+      "date": "2026-11-13"
+    },
+    {
+      "sourceId": "terpenes-lesson-kumar2025",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40734690/",
+      "access": "Résumé et extraits originaux PMC : protection cognitive attendue non retrouvée dans l’échantillon étudié.",
+      "date": "2026-11-13"
+    }
+  ],
+  "editorialChoices": [
+    "Chapeau définissant le sujet, puis trois sections courtes par article.",
+    "Aucune consigne de joueur, question rhétorique, activité, scénario fictif ou programme de culture.",
+    "Les nuances portent sur les molécules, populations, tissus et transformations concernés ; pas de parcours de méthodologie scientifique.",
+    "Les notices médicales restent attribuées à leurs formulations et indications ; aucun dosage, protocole ni conseil de traitement.",
+    "Les formes chimiques et les produits industriels sont décrits au niveau conceptuel, sans méthode de fabrication.",
+    "Les fiches moléculaires détaillées existantes restent gérées par le catalogue de dossiers ; ces articles ne les remplacent pas."
+  ],
+  "counts": {
+    "articles": 26,
+    "topics": {
+      "botany": 7,
+      "diversity": 5,
+      "terpenes": 6,
+      "cannabinoids": 8
+    },
+    "sections": 78,
+    "legacyPassages": 68,
+    "sourceIds": 79
+  },
+  "articles": [
+    {
+      "id": "ref-cannabis-sativa",
+      "title": "Cannabis sativa",
+      "words": 195
+    },
+    {
+      "id": "ref-organes-vegetatifs",
+      "title": "Racines, tige et feuilles",
+      "words": 207
+    },
+    {
+      "id": "ref-fleurs-fruits-graines",
+      "title": "Fleurs, fruits et graines",
+      "words": 198
+    },
+    {
+      "id": "ref-trichomes",
+      "title": "Les trichomes du cannabis",
+      "words": 202
+    },
+    {
+      "id": "ref-cycle-vie",
+      "title": "Le cycle de vie du cannabis",
+      "words": 211
+    },
+    {
+      "id": "ref-reproduction",
+      "title": "La reproduction du cannabis",
+      "words": 204
+    },
+    {
+      "id": "ref-photoperiode",
+      "title": "Photopériode et floraison",
+      "words": 197
+    },
+    {
+      "id": "ref-taxonomie-cannabis",
+      "title": "La classification du genre Cannabis",
+      "words": 205
+    },
+    {
+      "id": "ref-populations-domestication",
+      "title": "Populations cultivées et férales",
+      "words": 197
+    },
+    {
+      "id": "ref-cultivars-clones",
+      "title": "Cultivars, lignées et clones",
+      "words": 201
+    },
+    {
+      "id": "ref-genetique-heredite",
+      "title": "Génétique et hérédité du cannabis",
+      "words": 200
+    },
+    {
+      "id": "ref-noms-lignees",
+      "title": "Les noms et lignées du cannabis cultivé",
+      "words": 209
+    },
+    {
+      "id": "ref-terpenes-terpenoides",
+      "title": "Terpènes et terpénoïdes",
+      "words": 198
+    },
+    {
+      "id": "ref-biosynthese-terpenes",
+      "title": "La biosynthèse des terpènes",
+      "words": 198
+    },
+    {
+      "id": "ref-odeur-cannabis",
+      "title": "L’odeur du cannabis",
+      "words": 208
+    },
+    {
+      "id": "ref-profils-aromatiques",
+      "title": "Les profils de composés volatils",
+      "words": 208
+    },
+    {
+      "id": "ref-volatils-non-terpeniques",
+      "title": "Les composés odorants non terpéniques",
+      "words": 200
+    },
+    {
+      "id": "ref-evolution-aromes",
+      "title": "L’évolution des composés aromatiques",
+      "words": 207
+    },
+    {
+      "id": "ref-phytocannabinoides",
+      "title": "Les phytocannabinoïdes",
+      "words": 198
+    },
+    {
+      "id": "ref-biosynthese-cannabinoides",
+      "title": "La biosynthèse des cannabinoïdes",
+      "words": 195
+    },
+    {
+      "id": "ref-formes-acides-neutres",
+      "title": "Formes acides, formes neutres et transformations",
+      "words": 204
+    },
+    {
+      "id": "ref-thc",
+      "title": "Le Δ9-THC",
+      "words": 196
+    },
+    {
+      "id": "ref-cbd",
+      "title": "Le cannabidiol ou CBD",
+      "words": 198
+    },
+    {
+      "id": "ref-systeme-endocannabinoide",
+      "title": "Le système endocannabinoïde",
+      "words": 191
+    },
+    {
+      "id": "ref-cannabinoides-mineurs",
+      "title": "Les cannabinoïdes minoritaires",
+      "words": 213
+    },
+    {
+      "id": "ref-cannabinoides-transformes",
+      "title": "Les cannabinoïdes issus de transformations",
+      "words": 203
+    }
+  ],
+  "images": {
+    "botany": {
+      "src": "/placard/school/course-plant-v1.webp",
+      "alt": "Planche botanique de chanvre : plante, racines, feuille composée et structures florales.",
+      "caption": "Illustration de synthèse des organes du chanvre."
+    },
+    "terpenes": {
+      "src": "/placard/school/course-molecules-v1.webp",
+      "alt": "Planche illustrée de chanvre, loupe et évocations aromatiques.",
+      "caption": "Illustration de synthèse du chanvre et de notes aromatiques."
+    },
+    "cannabinoids": {
+      "src": "/placard/school/course-evidence-v1.webp",
+      "alt": "Planche de chanvre et documents d’observation scientifique.",
+      "caption": "Illustration de synthèse du chanvre et de documents scientifiques."
+    }
+  },
+  "validation": {
+    "status": "PASS",
+    "checks": [
+      "ESLint du fichier : aucune erreur.",
+      "26 identifiants d’articles uniques ; relations internes toutes résolues.",
+      "79 références existantes ; 87 termes existants ; chaque section possède ses références.",
+      "68 anciennes destinations uniques : les 56 leçons des trois cours et leurs 12 alias sont couverts.",
+      "78 sections ; articles de 191 à 213 mots, titres compris.",
+      "Trois images existantes avec alt conservés et légendes descriptives raccourcies.",
+      "Aucune prose de joueur, activité, objectif, quiz ou scénario fictif dans les articles.",
+      "Intégration au chargeur racine : les 336 couples lessonId/sectionId des neuf banques résolvent un article via findCannabisReferenceArticle ; aucun renvoi manquant."
+    ]
+  }
+}

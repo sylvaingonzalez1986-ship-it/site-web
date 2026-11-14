@@ -3,8 +3,22 @@ import assert from 'node:assert/strict';
 /** Uses the existing journey harness, real components and intercepted in-memory APIs. */
 export async function auditSupportCampaign({ page, load, button, keyClick, screenshot, layout, fixture, results }) {
   const support = '[data-financial-support]';
+  const disclosure = support + ' > details';
+  const toggle = disclosure + ' > summary';
   for (const width of [320, 390, 1440]) {
     await load('financial-support-default', width, 'view=hub');
+    await page.waitForSelector(toggle, { visible: true });
+    assert.equal(await page.$eval(disclosure, node => node.open), false);
+    assert(await page.$eval(support, node => node.getBoundingClientRect().height < 120), 'Closed panel stays compact');
+    assert.equal(await page.$eval(support + ' img', node => node.checkVisibility()), false);
+    await page.$eval(support, node => { node.style.scrollMarginTop = '80px'; node.scrollIntoView({ block: 'start', behavior: 'instant' }); });
+    await layout(); await screenshot('support-collapsed-' + width);
+    await keyClick(toggle);
+    assert.equal(await page.$eval(disclosure, node => node.open), true);
+    await page.keyboard.press('Space');
+    assert.equal(await page.$eval(disclosure, node => node.open), false);
+    await page.click(toggle);
+    assert.equal(await page.$eval(disclosure, node => node.open), true);
     await page.waitForSelector(support + ' [role="meter"]');
     assert.match(await page.$eval(support, node => node.textContent), /150,00/);
     assert.match(await page.$eval(support + ' img', node => node.src), /producer-support/);
@@ -16,6 +30,8 @@ export async function auditSupportCampaign({ page, load, button, keyClick, scree
     await page.waitForFunction(() => document.querySelector('[data-financial-support] input[name="pseudonym"]').value === 'Breton29');
     assert(await page.$eval(support + ' h3', node => node === document.activeElement));
     await page.focus(support + ' input[name="amount"]'); await page.keyboard.down('Control'); await page.keyboard.press('a'); await page.keyboard.up('Control'); await page.keyboard.type('2,50');
+    await keyClick(toggle); await keyClick(toggle);
+    assert.equal(await page.$eval(support + ' input[name="amount"]', node => node.value), '2,50', 'Folding keeps the draft');
     await button('Voir les soutiens précédents', support);
     await page.waitForFunction(() => document.querySelectorAll('[data-financial-support] li').length === 3);
     assert.equal(await page.$$eval(support + ' li', nodes => nodes.length), 3);
@@ -32,7 +48,8 @@ export async function auditSupportCampaign({ page, load, button, keyClick, scree
     await page.waitForFunction(() => ![...document.querySelectorAll('[data-financial-support] button')].some(node => node.textContent.includes('Préparation…')));
     await layout(); await screenshot('support-form-' + width);
     await page.reload({ waitUntil: 'networkidle0' });
-    await page.waitForSelector(support + ' input[name="pseudonym"]');
+    await page.waitForSelector(support + ' input[name="pseudonym"]', { visible: true });
+    assert.equal(await page.$eval(disclosure, node => node.open), true, 'Saved payment reopens the panel');
     assert.equal(await page.$eval(support + ' input[name="amount"]', node => node.value), '2.5');
     assert.equal(await page.evaluate(() => window.__calls.filter(call => call.path === '/api/support/checkout').length), 0);
     assert.equal((await fixture()).production.cashCents, before);
@@ -44,10 +61,11 @@ export async function auditSupportCampaign({ page, load, button, keyClick, scree
     await page.waitForFunction(() => document.activeElement.textContent.trim() === 'Je soutiens');
     assert.equal(await page.evaluate(() => document.activeElement.textContent.trim()), 'Je soutiens');
     await layout();
-    results.push({ width, checks: ['confirmed total', 'real objective', 'donor pagination', 'pseudo prefill', 'anonymous defaults', 'French decimals', 'single attempt for double submit', 'reload preserves form without new payment', 'cancellation', 'keyboard focus', 'no game writes', 'no overflow'] });
+    results.push({ width, checks: ['collapsed by default below 120px', 'Enter, Space and pointer toggle', 'folding preserves draft', 'saved payment reopens panel', 'confirmed total', 'real objective', 'donor pagination', 'pseudo prefill', 'anonymous defaults', 'French decimals', 'single attempt for double submit', 'reload preserves form without new payment', 'cancellation', 'keyboard focus', 'no game writes', 'no overflow'] });
   }
   for (const scenario of ['financial-support-error', 'financial-support-malformed', 'financial-support-review', 'financial-support-no-goal', 'financial-support-closed']) {
     await load(scenario, 320, 'view=hub'); await page.waitForSelector(support);
+    await keyClick(toggle);
     if (scenario.endsWith('error') || scenario.endsWith('malformed')) {
       await page.waitForSelector(support + ' [role="alert"]');
       assert(!/0,00/.test(await page.$eval(support, node => node.textContent)), 'Unavailable total is not zero');
@@ -59,6 +77,12 @@ export async function auditSupportCampaign({ page, load, button, keyClick, scree
   }
   await load('financial-support-tutorial', 390, 'view=hub'); await page.waitForSelector('[data-placard-lobby]'); assert.equal(await page.$(support), null);
   results.push({ scenario: 'tutorial', supportAbsent: true });
+  await load('financial-support-standalone', 320);
+  await page.waitForSelector(support + ' h1', { visible: true });
+  assert.equal(await page.$(toggle + ' h2'), null, 'Dedicated page stays expanded');
+  await button('Je soutiens', support);
+  await page.waitForSelector(support + ' input[name="pseudonym"]', { visible: true });
+  await layout(); results.push({ scenario: 'standalone', expanded: true, formAvailable: true });
   await load('financial-support-return-pending', 320); await page.waitForSelector('[data-support-return]');
   await page.waitForFunction(() => document.querySelector('[data-support-return]').textContent.includes('pas encore confirmé'));
   assert(!/Merci pour ton soutien !/.test(await page.$eval('[data-support-return]', node => node.textContent)));

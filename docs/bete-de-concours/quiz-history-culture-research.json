@@ -1,0 +1,767 @@
+{
+  "sources": [
+    {
+      "id": "qh-culture-gautier",
+      "title": "Le Club des Hachichins",
+      "organization": "Revue des Deux Mondes / Wikisource",
+      "author": "Théophile Gautier",
+      "published": "1846",
+      "url": "https://fr.wikisource.org/wiki/Le_Club_des_Hachichins",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Tome 13, p. 520–535; section I, « L’hôtel Pimodan »",
+      "limitation": "Texte littéraire primaire : il décrit le vécu de Gautier et ne suffit pas à établir tous les mythes ou membres supposés du Club.",
+      "supportedFacts": [
+        "publication en 1846 dans la Revue des Deux Mondes",
+        "récit situe des séances mensuelles à l’hôtel Pimodan",
+        "lieu sur l’île Saint-Louis",
+        "détail textuel sur la maison et les séances"
+      ]
+    },
+    {
+      "id": "qh-culture-bnf",
+      "title": "Notice bibliographique : Le Club des Hachichins",
+      "organization": "Bibliothèque nationale de France",
+      "author": "Théophile Gautier",
+      "published": "2024 (édition répertoriée)",
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb47598038s",
+      "consultedAt": "2026-11-14",
+      "access": "archive notice",
+      "passage": "Note bibliographique sur la publication et les reprises",
+      "limitation": "Notice de catalogue, non le texte de l’œuvre ; son résumé reprend une version synthétique de l’histoire du Club.",
+      "supportedFacts": [
+        "publication le 1er février 1846",
+        "reprise dans Partie carrée en 1861 et Romans et contes en 1863"
+      ]
+    },
+    {
+      "id": "qh-culture-institut",
+      "title": "Poésie, drogues et médecine en 1845 : les haschischins à l’hôtel de Lauzun",
+      "organization": "Institut d’études avancées de Paris",
+      "author": "Paolo Tortonese (conférence présentée par l’IEA)",
+      "published": "2018",
+      "url": "https://www.paris-iea.fr/fr/evenements/poesie-drogues-et-medecine-en-1845-les-haschischins-a-l-hotel-de-lauzun",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "passage": "Présentation de la conférence, paragraphes sur Moreau, le lieu et les participants",
+      "limitation": "Texte de présentation d’une conférence ; pour Delacroix, il dit explicitement « peut-être ».",
+      "supportedFacts": [
+        "réunions organisées par Moreau en 1845 à l’hôtel de Lauzun, alors appelé Pimodan",
+        "appartement du peintre Ferdinand Boissard",
+        "Baudelaire et Gautier parmi les participants ; Delacroix incertain",
+        "objectif psychologique attribué à Moreau"
+      ]
+    },
+    {
+      "id": "qh-culture-research",
+      "title": "Le Club des Hachichins",
+      "organization": "Université Paris 1 Panthéon-Sorbonne, Institut des sciences sociales du politique",
+      "author": "Erwan Pointeau-Lagadec",
+      "published": "2020-12",
+      "url": "https://isor.pantheonsorbonne.fr/sites/default/files/inline-files/2020-12_-_ClubHachichins.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "passage": "Présentation du livre, paragraphes Le livre",
+      "limitation": "Présentation éditoriale, non le texte intégral du livre ; elle distingue des soirées attestées de l’image de société secrète.",
+      "supportedFacts": [
+        "le récit de Gautier est un conte publié en 1846",
+        "réunions expérimentales attestées à l’hôtel Pimodan entre 1845 et 1849",
+        "l’image de société secrète et de prosélytisme est une amplification mythique"
+      ]
+    },
+    {
+      "id": "qh-culture-moreau",
+      "title": "Du hachisch et de l’aliénation mentale : études psychologiques",
+      "organization": "Google Books / Fortin, Masson et Cie",
+      "author": "Jacques-Joseph Moreau de Tours",
+      "published": "1845",
+      "url": "https://books.google.com/books/about/Du_hachisch_et_de_l_ali%C3%A9nation_mentale.html?id=yMyuaQhYjhIC",
+      "consultedAt": "2026-11-14",
+      "access": "archive notice",
+      "passage": "Notice bibliographique, titre et description du volume",
+      "limitation": "Notice et métadonnées de l’ouvrage ; le texte intégral n’a pas été consulté sur cette page.",
+      "supportedFacts": [
+        "Moreau est l’auteur du traité",
+        "titre et sous-titre du volume",
+        "publication à Paris en 1845"
+      ]
+    },
+    {
+      "id": "qh-culture-bretagne",
+      "title": "Présentation de l’opération : les patrimoines liés à l’histoire toilière de la Bretagne",
+      "organization": "Inventaire général du patrimoine culturel, Région Bretagne",
+      "author": "Inventaire général du patrimoine culturel",
+      "published": "2025",
+      "url": "https://relecture.patrimoine.bzh/dossier/pdf/99b76a1a-d7cb-4ce0-ba18-66af3f35f191/presentation-de-l-operation-les-patrimoines-lies-a-l-histoire-toiliere-de-la-bretagne-en-cours.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Présentation, p. 1, lignes sur le réseau des toiles, l’économie et la période étudiée",
+      "limitation": "Présentation d’une enquête patrimoniale en cours ; elle signale des zones d’ombre sur les productions et leurs procédés.",
+      "supportedFacts": [
+        "usages domestiques et maritimes des toiles de lin et de chanvre",
+        "réseau breton de toiles du XVe au XVIIIe siècle et marchés internationaux atlantiques",
+        "la Bretagne est parmi les grandes provinces toilières et en tête à la fin du XVIIe siècle",
+        "la prospérité toilière marque économie, démographie et production intellectuelle et artistique"
+      ]
+    },
+    {
+      "id": "qh-culture-bretagne-process",
+      "title": "Patrimoine lié au séchage et au teillage en Bretagne",
+      "organization": "Inventaire général du patrimoine culturel, Région Bretagne",
+      "author": "Andrée Le Gall-Sanquer et Lénaïg Salaün",
+      "published": "Non indiquée sur la page consultée",
+      "url": "https://patrimoine.bzh/gertrude-diffusion/dossier/IA29010103",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "passage": "Sections sur le séchage, le teillage, la braie, la pesselle, les peignes et les produits obtenus",
+      "limitation": "Décrit le procédé qui semble le plus répandu en Bretagne du XVIe au XVIIIe siècle, pas toutes les variantes régionales ou périodes.",
+      "supportedFacts": [
+        "rouissage puis séchage avant teillage",
+        "définition du teillage",
+        "braie ou broye casse les parties ligneuses",
+        "pesselle assouplit et nettoie les fibres",
+        "filasse longue et étoupe courte, avec leurs usages"
+      ]
+    },
+    {
+      "id": "qh-culture-pci",
+      "title": "Les savoir-faire du chanvre textile",
+      "organization": "Inventaire national du patrimoine culturel immatériel, ministère de la Culture",
+      "author": "Collectif d’inventaire (fiche PCI)",
+      "published": "2020",
+      "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Repères historiques ; paragraphes sur Rochefort, Noyale, costumes de Molière et Canebière",
+      "limitation": "Fiche d’inventaire composée à partir de sources et témoignages ; certains détails historiques sont rapportés par les contributeurs.",
+      "supportedFacts": [
+        "Corderie royale de Rochefort construite en 1666 pour les cordages navals",
+        "cordages de chanvre et dimensions des corderies",
+        "installations de rouissage et transformation textile"
+      ]
+    },
+    {
+      "id": "qh-culture-yanghai",
+      "title": "Phytochemical and genetic analyses of ancient cannabis from Central Asia",
+      "organization": "Journal of Experimental Botany / PubMed Central",
+      "author": "E. B. Russo et al.",
+      "published": "2008",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2639026/",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Yanghai Tombs, tomb M90, map of Turpan and preservation conditions",
+      "limitation": "The article proposes a ritual interpretation of the context, but this does not establish the practices of other tombs.",
+      "supportedFacts": [
+        "la tombe M90 de Yanghai contenait du cannabis conservé dans des contenants",
+        "l’homme de la tombe M90 est estimé âgé d’environ 45 ans",
+        "la tombe M90 incluait une konghou, une harpe chinoise",
+        "tombes profondes, climat aride et sols alcalins ont favorisé la conservation"
+      ]
+    },
+    {
+      "id": "qh-culture-jirzankal",
+      "title": "The origins of cannabis smoking: Chemical residue evidence from the first millennium BCE in the Pamirs",
+      "organization": "Science Advances / PubMed Central",
+      "author": "Meng Ren et al.",
+      "published": "2019-06-12",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6561734/",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Introduction, description of Jirzankal/Quman; discussion of Pazyryk kurgan 2; Materials and methods, zones and elevations",
+      "limitation": "Study of specific excavated samples; interpretations about social and ritual meaning are hypotheses, not universal practices.",
+      "supportedFacts": [
+        "Jirzankal est aussi appelé cimetière de Quman",
+        "site funéraire daté d’environ 2400 à 2600 ans avant le présent",
+        "la zone B du site se situe à 3061 m d’altitude",
+        "des résidus de cannabis ont été identifiés dans des braseros funéraires en bois",
+        "le kourgane 2 de Pazyryk contenait un cadre de tente en bois, des récipients de cuivre et des graines brûlées",
+        "les textiles de Jirzankal étaient principalement de laine et aucun chanvre textile n’y fut trouvé"
+      ]
+    },
+    {
+      "id": "qh-culture-archaeology-review",
+      "title": "Late Holocene hemp (Cannabis sativa) retting in NE Hungary and the Holocene spread of hemp cultivation in eastern-central Europe",
+      "organization": "Vegetation History and Archaeobotany / Springer Nature",
+      "author": "Abigail A. Ofosu-Brakoh et al.",
+      "published": "2025-04-05",
+      "url": "https://link.springer.com/article/10.1007/s00334-025-01046-7",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Introduction, paragraphes sur occurrences archéologiques, diffusion, graines et fibres",
+      "limitation": "Synthèse récente discutant des études antérieures et de scénarios ; la diffusion/domestication reste débattue.",
+      "supportedFacts": [
+        "graines de chanvre à Oki-no-shima associées au Jōmon initial, datées 6 000–5 220 cal BP",
+        "textiles et rôle religieux du chanvre au Japon selon les références citées",
+        "graines dans des sites Yangshao chinois",
+        "plusieurs scénarios de diffusion et domestication possibles"
+      ]
+    },
+    {
+      "id": "qh-culture-etymology",
+      "title": "Marihuana, marijuana",
+      "organization": "Dictionnaire de l’Académie française, 9e édition",
+      "author": "Académie française",
+      "published": "2024",
+      "url": "https://www.dictionnaire-academie.fr/article/A9M1114",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "passage": "Entrée MARIHUANA, rubrique Étymologie",
+      "limitation": "Confirme la voie d’emprunt en français mais ne détaille pas l’origine ultime du mot espagnol mexicain.",
+      "supportedFacts": [
+        "mariguana est une forme espagnole mexicaine de même sens",
+        "le français emprunte par l’intermédiaire de l’anglais des États-Unis",
+        "ne justifie pas l’étymologie Maria + Juana"
+      ]
+    },
+    {
+      "id": "qh-culture-lexis",
+      "title": "Borrowed Borrowings: Nahuatl Loan Words in English",
+      "organization": "Lexis, OpenEdition Journals",
+      "author": "Jason D. Haugen",
+      "published": "2009",
+      "url": "https://journals.openedition.org/lexis/pdf/638",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Discussion de marijuana dans l’analyse des emprunts de l’espagnol mexicain",
+      "limitation": "Étude de lexicologie ; plusieurs hypothèses étymologiques sont évaluées, aucune origine ultime n’est tenue pour démontrée.",
+      "supportedFacts": [
+        "marihuana/mariguana rattaché à l’espagnol mexicain dans le trajet vers l’anglais",
+        "origine ultime présentée comme incertaine",
+        "prudence sur la piste María Juana et les propositions autochtones"
+      ]
+    },
+    {
+      "id": "qh-culture-tours",
+      "title": "Biographie de Jacques Moreau, dit Moreau de Tours (1804–1884)",
+      "organization": "Les Carnets d’histoire de la médecine, Faculté de médecine, Université de Tours",
+      "author": "Michel Caire",
+      "published": "2024-11",
+      "url": "https://med.univ-tours.fr/medias/fichier/carnets-d-histoire-n-5_1731400709502-pdf?ID_FICHE=457440&INLINE=FALSE",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "p. 72–74, section Le Club des hachichins",
+      "limitation": "Article de synthèse historique qui cite des témoignages et travaux antérieurs ; certains détails d’affluence sont formulés avec prudence.",
+      "supportedFacts": [
+        "première expérience mondaine parisienne de 1840 chez le vicomte Ajasson de Grandsagne",
+        "première fantasia du Club le 22 décembre 1845",
+        "Aglaé et Marix citées parmi les femmes présentes",
+        "lettre de Balzac écrite de Passy le lendemain d’une fantasia"
+      ]
+    },
+    {
+      "id": "qh-culture-bretagne-toiles",
+      "title": "Patrimoine lié à la mécanisation de la fabrication des toiles de lin et de chanvre en Bretagne",
+      "organization": "Inventaire général du patrimoine culturel, Région Bretagne",
+      "author": "Lénaïg Salaün et Andrée Le Gall-Sanquer",
+      "published": "2015, mise à jour 2023",
+      "url": "https://www.patrimoine.bzh/gertrude-diffusion/dossier/IA29010090",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "passage": "Présentation, paragraphes sur les toiles régionales et leur exportation",
+      "limitation": "Dossier de l’Inventaire régional ; les noms et zones de production se rapportent aux productions textiles bretonnes documentées.",
+      "supportedFacts": [
+        "Olonnes de Locronan et chanvre",
+        "Noyales de Noyal-sur-Vilaine",
+        "crées de lin du Léon",
+        "Bretagnes de lin en Centre-Bretagne",
+        "ports d’exportation incluant Pouldavid, Landerneau, Morlaix et Saint-Malo"
+      ]
+    },
+    {
+      "id": "qh-culture-baudelaire",
+      "title": "Les paradis artificiels, opium et haschisch",
+      "organization": "Bibliothèque nationale de France",
+      "author": "Charles Baudelaire",
+      "published": "1860",
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb36575102p",
+      "consultedAt": "2026-11-14",
+      "access": "archive notice",
+      "passage": "Notice bibliographique du volume",
+      "limitation": "Notice de catalogue, pas le texte intégral ; utilisée seulement pour l’auteur, le titre et la date d’édition.",
+      "supportedFacts": [
+        "Les Paradis artificiels est de Charles Baudelaire",
+        "publication à Paris en 1860"
+      ]
+    },
+    {
+      "id": "qh-culture-larousse",
+      "title": "Baudelaire (Charles)",
+      "organization": "Larousse, Dictionnaire de la littérature",
+      "author": "Notice biographique Larousse",
+      "published": "non indiquée",
+      "url": "https://www.larousse.fr/archives/litterature/page/107",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "passage": "Notice Baudelaire, description des Paradis artificiels",
+      "limitation": "Synthèse encyclopédique, consultée pour la composition de l’ouvrage et l’identification de la source traduite.",
+      "supportedFacts": [
+        "Les Paradis artificiels comprennent Le Poème du haschisch et Un mangeur d’opium",
+        "Un mangeur d’opium présente et traduit partiellement Thomas de Quincey"
+      ]
+    },
+    {
+      "id": "qh-culture-cnrtl",
+      "title": "Marihuana, marijuana",
+      "organization": "Centre national de ressources textuelles et lexicales",
+      "author": "Trésor de la langue française",
+      "published": "1960–1990",
+      "url": "https://www.cnrtl.fr/definition/MARIJUANAS",
+      "consultedAt": "2026-11-14",
+      "access": "excerpt",
+      "passage": "Historique et étymologie de l’entrée MARIHUANA, MARIJUANA",
+      "limitation": "La page complète n’a pas pu être chargée dans cette session ; informations provenant de l’extrait indexé de la notice CNRTL.",
+      "supportedFacts": [
+        "formes espagnoles mexicaines mariguana et marihuana",
+        "transmission par l’intermédiaire de l’anglais américain",
+        "origine ultime indiquée comme inconnue"
+      ]
+    },
+    {
+      "id": "qh-culture-haimenkou",
+      "title": "Morphometric approaches to Cannabis evolution and differentiation from archaeological sites: interpreting the archaeobotanical evidence from bronze age Haimenkou, Yunnan",
+      "organization": "Vegetation History and Archaeobotany / Springer Nature",
+      "author": "Rita Dal Martello et al.",
+      "published": "2023-11-30 (volume 2024)",
+      "url": "https://link.springer.com/article/10.1007/s00334-023-00966-6",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Sections on Haimenkou and Ban Don Ta Phet; abstract and archaeological finds in Asia",
+      "limitation": "Review and comparative article using archaeological publications; its Ban Don Ta Phet textile report is attributed to prior work, while the Haimenkou seed count comes from the study discussed.",
+      "supportedFacts": [
+        "Ban Don Ta Phet in Thailand has hemp among textile fragments dated around 400 BCE",
+        "over 800 cannabis grains recovered at Haimenkou, Yunnan, from 2008 excavation"
+      ]
+    },
+    {
+      "id": "qh-culture-mount-vernon",
+      "title": "George Washington Grew Hemp",
+      "organization": "George Washington’s Mount Vernon",
+      "author": "Mount Vernon Ladies’ Association",
+      "published": "Non indiquée",
+      "url": "https://www.mountvernon.org/george-washington/farming/washingtons-crops/george-washington-grew-hemp",
+      "access": "institutional page",
+      "passage": "Why Grow Hemp?; Washington’s Use of Hemp; Hemp History",
+      "limitation": "Utilisé pour les cultures et usages historiques. La taxonomie et les généralisations sanitaires de cette page ne sont pas reprises.",
+      "consultedAt": "2026-11-14",
+      "supportedFacts": [
+        "Le chanvre cultivé à Mount Vernon servait notamment aux cordes, aux toiles et aux filets.",
+        "Les archives du domaine associent le chanvre à l’entretien des grands filets utilisés sur le Potomac.",
+        "L’histoire matérielle du chanvre comprend aussi des usages de l’huile dans des peintures, vernis et savons."
+      ]
+    },
+    {
+      "id": "qh-culture-declaration",
+      "title": "How Was it Made? — Declaration of Independence",
+      "organization": "US National Archives",
+      "author": "National Archives",
+      "published": "2020-10-09",
+      "url": "https://www.archives.gov/founding-docs/declaration/how-was-it-made",
+      "access": "institutional page",
+      "passage": "Creating the Parchment Declaration",
+      "limitation": "Concerne l’exemplaire signé, pas tous les brouillons et imprimés.",
+      "consultedAt": "2026-11-14",
+      "supportedFacts": [
+        "Les Archives nationales décrivent l’exemplaire signé sur parchemin ; il ne faut pas le confondre avec les brouillons."
+      ]
+    },
+    {
+      "id": "qh-culture-ludlow",
+      "title": "The hasheesh eater: being passages from the life of a Pythagorean",
+      "organization": "Wellcome Collection / Medical Heritage Library",
+      "author": "Fitz Hugh Ludlow",
+      "published": "1857",
+      "url": "https://content.www.wellcomecollection.org/works/cb7vqzwy",
+      "access": "archive notice",
+      "passage": "Auteur et publication : New York, Harper & Bros., 1857",
+      "limitation": "Notice de catalogue consultée, sans prétendre avoir lu l’ouvrage intégral.",
+      "consultedAt": "2026-11-14",
+      "supportedFacts": [
+        "L’ouvrage de Fitz Hugh Ludlow paraît chez Harper & Bros. à New York en 1857."
+      ]
+    },
+    {
+      "id": "qh-culture-herodotus",
+      "title": "The History of Herodotus, Book IV",
+      "organization": "Internet Classics Archive / MIT",
+      "author": "Hérodote, traduction George Rawlinson",
+      "published": "Ve siècle avant notre ère ; traduction du XIXe siècle",
+      "url": "https://classics.mit.edu/Herodotus/history.4.iv.html",
+      "access": "full text",
+      "passage": "Livre IV, passages 73–75 sur le chanvre et les Scythes",
+      "limitation": "Texte ancien consulté en traduction : le récit est attribué à Hérodote et non présenté comme une observation moderne.",
+      "consultedAt": "2026-11-14",
+      "supportedFacts": [
+        "Hérodote évoque le chanvre et des pratiques scythes au livre IV. Ce récit ancien reste attribué à son auteur."
+      ]
+    }
+  ],
+  "questionSources": [
+    {
+      "id": "hemp-hc-001",
+      "sourceIds": [
+        "qh-culture-gautier"
+      ]
+    },
+    {
+      "id": "hemp-hc-002",
+      "sourceIds": [
+        "qh-culture-gautier"
+      ]
+    },
+    {
+      "id": "hemp-hc-003",
+      "sourceIds": [
+        "qh-culture-institut"
+      ]
+    },
+    {
+      "id": "hemp-hc-004",
+      "sourceIds": [
+        "qh-culture-institut"
+      ]
+    },
+    {
+      "id": "hemp-hc-005",
+      "sourceIds": [
+        "qh-culture-moreau"
+      ]
+    },
+    {
+      "id": "hemp-hc-006",
+      "sourceIds": [
+        "qh-culture-institut",
+        "qh-culture-tours"
+      ]
+    },
+    {
+      "id": "hemp-hc-007",
+      "sourceIds": [
+        "qh-culture-bretagne",
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-008",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-009",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-010",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-011",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-012",
+      "sourceIds": [
+        "qh-culture-etymology",
+        "qh-culture-cnrtl"
+      ]
+    },
+    {
+      "id": "hemp-hc-013",
+      "sourceIds": [
+        "qh-culture-mount-vernon"
+      ]
+    },
+    {
+      "id": "hemp-hc-014",
+      "sourceIds": [
+        "qh-culture-institut"
+      ]
+    },
+    {
+      "id": "hemp-hc-015",
+      "sourceIds": [
+        "qh-culture-gautier",
+        "qh-culture-bnf"
+      ]
+    },
+    {
+      "id": "hemp-hc-016",
+      "sourceIds": [
+        "qh-culture-moreau"
+      ]
+    },
+    {
+      "id": "hemp-hc-017",
+      "sourceIds": [
+        "qh-culture-bnf"
+      ]
+    },
+    {
+      "id": "hemp-hc-018",
+      "sourceIds": [
+        "qh-culture-declaration"
+      ]
+    },
+    {
+      "id": "hemp-hc-019",
+      "sourceIds": [
+        "qh-culture-research"
+      ]
+    },
+    {
+      "id": "hemp-hc-020",
+      "sourceIds": [
+        "qh-culture-institut"
+      ]
+    },
+    {
+      "id": "hemp-hc-021",
+      "sourceIds": [
+        "qh-culture-bretagne-toiles"
+      ]
+    },
+    {
+      "id": "hemp-hc-022",
+      "sourceIds": [
+        "qh-culture-bretagne-toiles"
+      ]
+    },
+    {
+      "id": "hemp-hc-023",
+      "sourceIds": [
+        "qh-culture-etymology",
+        "qh-culture-cnrtl"
+      ]
+    },
+    {
+      "id": "hemp-hc-024",
+      "sourceIds": [
+        "qh-culture-bretagne-process"
+      ]
+    },
+    {
+      "id": "hemp-hc-025",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-026",
+      "sourceIds": [
+        "qh-culture-bretagne-toiles"
+      ]
+    },
+    {
+      "id": "hemp-hc-027",
+      "sourceIds": [
+        "qh-culture-bretagne-toiles"
+      ]
+    },
+    {
+      "id": "hemp-hc-028",
+      "sourceIds": [
+        "qh-culture-bretagne-toiles"
+      ]
+    },
+    {
+      "id": "hemp-hc-029",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-030",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-031",
+      "sourceIds": [
+        "qh-culture-ludlow"
+      ]
+    },
+    {
+      "id": "hemp-hc-032",
+      "sourceIds": [
+        "qh-culture-institut"
+      ]
+    },
+    {
+      "id": "hemp-hc-033",
+      "sourceIds": [
+        "qh-culture-gautier"
+      ]
+    },
+    {
+      "id": "hemp-hc-034",
+      "sourceIds": [
+        "qh-culture-tours"
+      ]
+    },
+    {
+      "id": "hemp-hc-035",
+      "sourceIds": [
+        "qh-culture-tours"
+      ]
+    },
+    {
+      "id": "hemp-hc-036",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-037",
+      "sourceIds": [
+        "qh-culture-mount-vernon"
+      ]
+    },
+    {
+      "id": "hemp-hc-038",
+      "sourceIds": [
+        "qh-culture-bretagne-process"
+      ]
+    },
+    {
+      "id": "hemp-hc-039",
+      "sourceIds": [
+        "qh-culture-bretagne-process"
+      ]
+    },
+    {
+      "id": "hemp-hc-040",
+      "sourceIds": [
+        "qh-culture-bretagne-process"
+      ]
+    },
+    {
+      "id": "hemp-hc-041",
+      "sourceIds": [
+        "qh-culture-haimenkou"
+      ]
+    },
+    {
+      "id": "hemp-hc-042",
+      "sourceIds": [
+        "qh-culture-cnrtl",
+        "qh-culture-lexis"
+      ]
+    },
+    {
+      "id": "hemp-hc-043",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-044",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-045",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-046",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-047",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-048",
+      "sourceIds": [
+        "qh-culture-archaeology-review"
+      ]
+    },
+    {
+      "id": "hemp-hc-049",
+      "sourceIds": [
+        "qh-culture-haimenkou"
+      ]
+    },
+    {
+      "id": "hemp-hc-050",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-051",
+      "sourceIds": [
+        "qh-culture-baudelaire"
+      ]
+    },
+    {
+      "id": "hemp-hc-052",
+      "sourceIds": [
+        "qh-culture-larousse"
+      ]
+    },
+    {
+      "id": "hemp-hc-053",
+      "sourceIds": [
+        "qh-culture-tours"
+      ]
+    },
+    {
+      "id": "hemp-hc-054",
+      "sourceIds": [
+        "qh-culture-herodotus"
+      ]
+    },
+    {
+      "id": "hemp-hc-055",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-056",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-057",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-058",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-059",
+      "sourceIds": [
+        "qh-culture-mount-vernon"
+      ]
+    },
+    {
+      "id": "hemp-hc-060",
+      "sourceIds": [
+        "qh-culture-etymology"
+      ]
+    }
+  ],
+  "editorialReview": "Doublons et questions de méthode retirés ; ajout Washington, Ludlow et Hérodote ; support de la Déclaration précisé ; niveaux relus. Les anciens cours ne sont pas réactivés."
+}

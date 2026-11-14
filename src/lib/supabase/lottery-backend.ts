@@ -1,6 +1,7 @@
 ﻿import "server-only";
 
 import { createSupabaseServiceClient } from "@/lib/supabase/admin";
+import { readSupabaseQuery } from "@/lib/supabase/read-query";
 import type {
   LotteryAlbumCard,
   LotteryAlbumPageSlot,
@@ -1745,15 +1746,24 @@ export async function getLotteryTicketsForCustomerFromSupabase(userId: string): 
   }
 
   const supabase = createSupabaseServiceClient();
-  const result = await supabase
-    .from("lottery_tickets")
-    .select(SELECT_TICKET_COLUMNS)
-    .eq("user_id", safeUserId)
-    .order("created_at", { ascending: false });
-
-  failIfError(result.error, "list lottery_tickets by user");
-  const rows = (result.data ?? []) as Record<string, unknown>[];
-  const scratchedTicketIds = rows
+  const pageSize = 500;
+  const idBatchSize = 100;
+  const rows: Record<string, unknown>[] = [];
+  // PostgREST caps unpaginated responses. Older unopened packs must remain visible.
+  for (let offset = 0; ; offset += pageSize) {
+    const result = await readSupabaseQuery("list lottery_tickets by user", (signal) => supabase
+      .from("lottery_tickets")
+      .select(SELECT_TICKET_COLUMNS)
+      .eq("user_id", safeUserId)
+      .order("created_at", { ascending: false })
+      .order("id", { ascending: false })
+      .range(offset, offset + pageSize - 1)
+      .abortSignal(signal));
+    const page = (result.data ?? []) as Record<string, unknown>[];
+    rows.push(...page);
+    if (page.length < pageSize) break;
+  }
+  const ticketIds = rows
     .map((row) => toText(row.id))
     .filter((value) => Boolean(value));
   const cardIds = new Set<string>();
@@ -1765,39 +1775,50 @@ export async function getLotteryTicketsForCustomerFromSupabase(userId: string): 
   }
 
   const ticketCardMap = new Map<string, Array<{ definitionId: string; packSlot: number }>>();
-  if (scratchedTicketIds.length > 0) {
-    const instanceResult = await supabase
-      .from("lottery_card_instances")
-      .select("ticket_id,pack_slot,card_definition_id")
-      .eq("user_id", safeUserId)
-      .in("ticket_id", scratchedTicketIds);
+  // Bound URL size as well as result size: a long ticket history can exceed both.
+  for (let batchStart = 0; batchStart < ticketIds.length; batchStart += idBatchSize) {
+    const batch = ticketIds.slice(batchStart, batchStart + idBatchSize);
+    for (let offset = 0; ; offset += pageSize) {
+      const instanceResult = await readSupabaseQuery("list lottery_card_instances for tickets", (signal) => supabase
+        .from("lottery_card_instances")
+        .select("ticket_id,pack_slot,card_definition_id")
+        .eq("user_id", safeUserId)
+        .in("ticket_id", batch)
+        .order("ticket_id", { ascending: true })
+        .order("pack_slot", { ascending: true })
+        .range(offset, offset + pageSize - 1)
+        .abortSignal(signal));
 
-    failIfError(instanceResult.error, "list lottery_card_instances for tickets");
-    for (const raw of instanceResult.data ?? []) {
-      const row = raw as Record<string, unknown>;
-      const ticketId = toText(row.ticket_id);
-      const definitionId = toText(row.card_definition_id);
-      if (!ticketId || !definitionId) {
-        continue;
+      const page = instanceResult.data ?? [];
+      for (const raw of page) {
+        const row = raw as Record<string, unknown>;
+        const ticketId = toText(row.ticket_id);
+        const definitionId = toText(row.card_definition_id);
+        if (!ticketId || !definitionId) {
+          continue;
+        }
+        cardIds.add(definitionId);
+        const current = ticketCardMap.get(ticketId) ?? [];
+        current.push({
+          definitionId,
+          packSlot: Math.max(1, toInteger(row.pack_slot, current.length + 1)),
+        });
+        ticketCardMap.set(ticketId, current);
       }
-      cardIds.add(definitionId);
-      const current = ticketCardMap.get(ticketId) ?? [];
-      current.push({
-        definitionId,
-        packSlot: Math.max(1, toInteger(row.pack_slot, current.length + 1)),
-      });
-      ticketCardMap.set(ticketId, current);
+      if (page.length < pageSize) break;
     }
   }
 
   const cardMap = new Map<string, LotteryCardDefinition>();
-  if (cardIds.size > 0) {
-    const cardResult = await supabase
+  const definitionIds = [...cardIds];
+  for (let batchStart = 0; batchStart < definitionIds.length; batchStart += idBatchSize) {
+    const batch = definitionIds.slice(batchStart, batchStart + idBatchSize);
+    const cardResult = await readSupabaseQuery("list lottery_card_definitions for tickets", (signal) => supabase
       .from("lottery_card_definitions")
       .select("*,lottery_card_collections(*)")
-      .in("id", [...cardIds]);
+      .in("id", batch)
+      .abortSignal(signal));
 
-    failIfError(cardResult.error, "list lottery_card_definitions for tickets");
     for (const raw of cardResult.data ?? []) {
       const definition = mapCardDefinitionRow(raw as Record<string, unknown>);
       cardMap.set(definition.id, definition);

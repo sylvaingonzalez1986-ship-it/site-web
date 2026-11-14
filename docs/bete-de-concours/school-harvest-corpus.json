@@ -1,0 +1,241 @@
+{
+  "id": "harvest-tools-2026-11-12",
+  "version": "2026-11-12.harvest1",
+  "checkedAt": "2026-11-12",
+  "status": "Données terminées ; contrôles ciblés, relecture des leçons/atelier et relecture indépendante des outils validés",
+  "scope": "Outils pédagogiques non exhaustifs pour comparer une récolte, sa fraction commercialisable, ses critères de qualité et les moyens suivis. Trois lots entièrement fictifs de graines de chanvre dans un cadre d’usage supposé autorisé ; aucun itinéraire de production, dosage, réglage, seuil idéal ou prédiction de rendement.",
+  "files": [
+    "src/lib/kanab-quest-school-harvest-tools.ts"
+  ],
+  "editorialDecisions": [
+    "Même produit et même cahier des charges dans les trois lots. Aucune comparaison forcée entre graines, fibres ou fleurs sur une échelle commune.",
+    "Les masses humides sont accompagnées de leur teneur en eau sur base humide. Matière sèche et matière commercialisable sont exprimées sur une même base MS, sans objectif physique de dessiccation.",
+    "Les trois zones sont différentes : ces données ne constituent pas un avant/après, un essai randomisé ou trois répétitions d’un même traitement.",
+    "Les sorties physiques non récupérées et les fractions écartées sont disjointes. Un refus contractuel n’est pas une preuve de danger sanitaire ; une réaffectation n’est pas automatiquement autorisée.",
+    "Un bilan fermé est une convention pédagogique explicite. Dans une situation réelle, un écart résiduel reste à mesurer et à expliquer ; il n’est pas attribué d’office à une cause.",
+    "Chaque ressource garde son unité. Les dépenses enregistrées sont partielles, le travail propre n’est pas monétisé, les recettes manquent : aucune marge calculée.",
+    "Une consommation d’énergie n’est pas une émission et un volume d’eau n’est pas un impact complet. Culture, récolte au champ et transport aval sont exclus du périmètre fictif des moyens.",
+    "L’eau du lot B reste null : donnée non relevée, jamais zéro, moyenne imputée ou avantage dans un classement.",
+    "Les dix conseils décrivent une hypothèse, les informations utiles, ce qui la soutiendrait ou la contredirait, ses limites et son coût de contexte. Ils ne prescrivent aucun intrant ou manipulation de production.",
+    "Les essais portent sur la qualité de la comparaison et du suivi. Un meilleur registre ne démontre pas un rendement biologique supérieur ; plusieurs lectures d’un échantillon ne créent pas des unités indépendantes.",
+    "La qualité d’une fleur éventuelle relève uniquement de sa caractérisation et du cadre de preuve. Aucun conseil de production de THC ou autre substance contrôlée n’est fourni.",
+    "Les sources étayent les méthodes et limites ; aucun chiffre inventé de l’exercice ne leur est attribué."
+  ],
+  "fictionalDataAudit": {
+    "commonContext": "Trois zones de la même campagne fictive 2026 ; graines, cahier des charges commun et sept jours de réception à clôture pour les moyens suivis.",
+    "lots": [
+      {
+        "id": "harvest-lot-a",
+        "areaHa": 0.8,
+        "grossWetKg": 1200,
+        "moistureWetBasisPct": 20,
+        "waterInGrossKg": 240,
+        "dryMatterKg": 960,
+        "physicalLossDryKg": 48,
+        "excludedDryKg": 96,
+        "saleableDryKg": 816,
+        "saleableSharePct": 85
+      },
+      {
+        "id": "harvest-lot-b",
+        "areaHa": 1.2,
+        "grossWetKg": 1800,
+        "moistureWetBasisPct": 30,
+        "waterInGrossKg": 540,
+        "dryMatterKg": 1260,
+        "physicalLossDryKg": 63,
+        "excludedDryKg": 189,
+        "saleableDryKg": 1008,
+        "saleableSharePct": 80
+      },
+      {
+        "id": "harvest-lot-c",
+        "areaHa": 1,
+        "grossWetKg": 1500,
+        "moistureWetBasisPct": 20,
+        "waterInGrossKg": 300,
+        "dryMatterKg": 1200,
+        "physicalLossDryKg": 60,
+        "excludedDryKg": 60,
+        "saleableDryKg": 1080,
+        "saleableSharePct": 90
+      }
+    ],
+    "equations": [
+      "Humidité base humide = masse d’eau / masse humide ; MS = masse humide × (1 − humidité/100).",
+      "A : 960 = 48 + 96 + 816 ; B : 1 260 = 63 + 189 + 1 008 ; C : 1 200 = 60 + 60 + 1 080.",
+      "Par hectare, masse humide : 1 500 / 1 500 / 1 500 ; MS : 1 200 / 1 050 / 1 200 ; commercialisable MS : 1 020 / 840 / 1 080.",
+      "Par hectare, sorties hors fraction retenue : 180 / 210 / 120 kg MS. Part retenue : 85 / 80 / 90 %, même dénominateur MS d’entrée.",
+      "Dépenses partielles : 400 / 720 / 620 € pour les lots, soit 500 / 600 / 620 €/ha.",
+      "Travail : 6,4 / 12 / 9 heures-personnes pour les lots, soit 8 / 10 / 9 h/ha.",
+      "Énergie : 80 / 168 / 120 kWh pour les lots, soit 100 / 140 / 120 kWh/ha.",
+      "Eau : 0,4 / non relevée / 0,7 m³ pour les lots, soit 0,5 / non relevée / 0,7 m³/ha."
+    ],
+    "excludedConclusions": [
+      "Les trois masses humides par hectare identiques prouvent trois récoltes identiques.",
+      "C est le meilleur lot sur tous les critères, ou son organisation cause nécessairement son résultat.",
+      "Une masse sèche calculée est une cible de conservation ou la masse physique du produit vendu.",
+      "Une baisse de la fraction écartée démontre une absence de contamination.",
+      "L’eau non relevée de B vaut zéro.",
+      "Les dépenses divisées par la masse utile donnent un coût de production complet ou une marge.",
+      "Une différence descriptive de lots devient une efficacité expérimentale ou une prédiction."
+    ]
+  },
+  "scientificChecks": [
+    "UF/IFAS AG442 : PDF révisé avril 2025 avec trois auteurs dont Hardeep Singh ; formule de conversion relue. Les normes d’humidité des exemples céréaliers ne sont pas transposées au chanvre.",
+    "UMN : facteurs de confusion, randomisation, répétitions et pseudo-répétition. Les conseils d’intrants et nombres de répétitions du guide ne sont pas transformés en règle universelle.",
+    "NIST section 5.3.3.2 : blocs et facteurs de nuisance. Le plan de suivi documentaire est fictif et aucun résultat d’essai n’est inventé.",
+    "SARE 2026 : registre affecté au bon atelier et périmètre, dépenses et recettes concernées par un changement. Les données de sept jours ne sont pas un budget annuel complet.",
+    "Terres Inovia 2026 : débouché, contractualisation, fragilité du chènevis et conservation lus ; aucun calendrier, réglage ou condition cible repris.",
+    "Tura 2022 : neuf huiles en essai accéléré, plusieurs marqueurs ; pas transposition à une durée de conservation des graines, aux fleurs ou à l’effet d’une intervention.",
+    "Cofrac révision 15 et Eurachem 2025 : objet essayé, représentativité, méthode, LQ et incertitude. Une précision d’affichage ne garantit pas l’exactitude et la répétabilité ne suffit pas à la représentativité."
+  ],
+  "accessLimitations": [
+    "UF/IFAS : page HTML en boucle de redirection ; PDF officiel intégral accessible et consulté.",
+    "Eurachem : texte intégral consulté le même jour pendant le lot Produits ; seconde ouverture HTTP429, aucune lecture supplémentaire prétendue.",
+    "Tura 2022 : original intégral déjà consulté le même jour et référence réutilisée uniquement pour les limites pertinentes.",
+    "Penn State Partial Budgeting : accès direct403 et extrait indexé consulté ; non retenu dans les références finales, remplacé par SARE intégral pour la même question.",
+    "SARE The Process : URL tentée inaccessible ; non retenue comme source de nos outils.",
+    "Les annexes externes des modèles SARE ne sont pas déclarées consultées. Seuls le texte et les tableaux visibles de la publication sont utilisés.",
+    "Les pages sans date éditoriale précise restent indiquées comme telles ; date de consultation distincte de la date de publication."
+  ],
+  "crossReview": {
+    "rootWorkshop": "Relecture de harvest-visuals.ts terminée : quatre hypothèses recevables soutenues par leurs documents, sans diagnostic confirmé ; critères et prélèvements différents, manutention et conservation possibles. Condensation ne prouve pas moisissure, odeur ne prouve pas toxine. Deux actions prudentes recevables, suivi et essai distinct de l’évaluation du lot présent. Aucun défaut matériel repéré.",
+    "rootResultsAndPlan": "Dix critères qualitatifs et plan d’essai relus : unités, qualité, contexte, répétitions et sous-mesures distingués ; pas de score global ou de causalité automatique.",
+    "lessons": "Relecture bornée units-1, limits-2, trials-1/2 et tips-2 terminée : aucune erreur matérielle. B = 540 kg d’eau + 1 260 kg MS ; deux observations utiles recevables ; comparaison de systèmes distincte de l’effet d’un composant ; répétitions indépendantes et sous-mesures séparées ; hypothèses concurrentes et deux actions prudentes dans l’atelier final.",
+    "independentTools": "Relecture indépendante school_content terminée : recalcul des trois bilans et huit indicateurs PASS, parts 85/80/90 %, pertes disjointes et eau B null ; conseils handling/quality et essai records cohérents. Une nuance corrigée : la présence de défauts à l’entrée ne réfute pas une aggravation ; la contradiction indique désormais le même niveau initial sans augmentation mesurable à l’étape étudiée. Aucun autre défaut matériel."
+  },
+  "audit": {
+    "mathematics": "PASS : conversion de base, trois bilans fermés, parts retenues et huit indicateurs calculés comparés aux valeurs attendues ; eau B reste null.",
+    "integrity": "PASS: TypeScript syntax, unique IDs, all source references, advice/trial fields, independent expected metrics, closed balances, invalid input handling, null versus zero, UTF8 and whitespace.",
+    "lint": "PASS : npx.cmd eslint src/lib/kanab-quest-school-harvest-tools.ts après stabilisation des données et références.",
+    "limits": "Aucun fichier UI, backend ou partagé édité par ce lot ; aucun déploiement ou test global."
+  },
+  "counts": {
+    "sources": 9,
+    "lots": 3,
+    "indicators": 8,
+    "advice": 10,
+    "trials": 3,
+    "recordFields": 12
+  },
+  "sources": [
+    {
+      "id": "harvest-tool-moisture",
+      "title": "Adjusting Crop Yield to a Standard Moisture Content — SS-AGR-443",
+      "author": "Michael J. Mulvaney, Pratap Devkota et Hardeep Singh",
+      "organization": "University of Florida / IFAS Extension",
+      "published": "2020-05 ; révision 2025-04",
+      "url": "https://ask.ifas.ufl.edu/publication/AG442/pdf",
+      "passage": "Pages 1–2 : humidité sur base humide, conservation de la matière sèche et conversion vers une base commune ; métadonnées p.4. DOI 10.32473/edis-ag442-2020.",
+      "limitation": "PDF révisé intégral consulté après boucle de redirection de la page HTML. Exemples de céréales utilisés pour le principe mathématique, jamais comme cible de conservation du chanvre. Les valeurs de nos lots sont fictives.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source universitaire, technique ou institutionnelle ; nature et périmètre précisés dans la référence"
+    },
+    {
+      "id": "harvest-tool-experiment",
+      "title": "How to do research on your farm",
+      "author": "Paulo Pagliari et Bruce Potter",
+      "organization": "University of Minnesota Extension",
+      "published": "Relecture indiquée : 2022",
+      "url": "https://extension.umn.edu/courses-and-events/for-professionals/on-farm-research/how-to-do-research-on-your-farm",
+      "passage": "Sections sélection des parcelles, facteurs de confusion, répétitions, randomisation et pseudo-répétition.",
+      "limitation": "Guide de méthode, pas résultat d’essai sur le chanvre. Aucune pratique, dose d’intrant ou taille minimale universelle d’essai transposée. Les sous-échantillons d’une même unité ne sont pas des unités indépendantes.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source universitaire, technique ou institutionnelle ; nature et périmètre précisés dans la référence"
+    },
+    {
+      "id": "harvest-tool-blocks",
+      "title": "Randomized block designs — section 5.3.3.2",
+      "author": "NIST / SEMATECH",
+      "organization": "e-Handbook of Statistical Methods",
+      "published": "Page sans date éditoriale propre ; consultée le 2026-11-12",
+      "url": "https://www.itl.nist.gov/div898/handbook/pri/section3/pri332.htm",
+      "passage": "Définition des blocs, facteurs de nuisance et rôle de l’affectation aléatoire ; exemple et modèle conceptuel.",
+      "limitation": "Guide de conception expérimentale intégral consulté. Un bloc tient compte de certaines différences identifiées, pas de toute source de biais ; aucun nombre d’unités ni modèle statistique universel imposé au chanvre.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source universitaire, technique ou institutionnelle ; nature et périmètre précisés dans la référence"
+    },
+    {
+      "id": "harvest-tool-sampling",
+      "title": "The Fitness for Purpose of Analytical Methods — troisième édition",
+      "author": "H. Cantwell (direction)",
+      "organization": "Eurachem",
+      "published": "2025",
+      "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+      "passage": "Parties sur l’échantillonnage, la validation et l’incertitude ; §5.3.1 p.31 pour détection/quantification, §9.3 p.59 pour incertitude élargie.",
+      "limitation": "Intégral consulté lors du lot Produits le même 12 novembre 2026 ; réouverture ensuite limitée par HTTP429. Une bonne répétabilité instrumentale ne garantit pas la représentativité de l’échantillon ; aucun protocole analytique reproduit.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source universitaire, technique ou institutionnelle ; nature et périmètre précisés dans la référence"
+    },
+    {
+      "id": "harvest-tool-analysis",
+      "title": "LAB REF 02, révision 15 — exigences pour l’accréditation des laboratoires",
+      "author": "Cofrac",
+      "organization": "Comité français d’accréditation",
+      "published": "Applicable à compter du 2026-03-01",
+      "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+      "passage": "§7.3, 7.6 et 7.8 : échantillonnage, incertitude et rapport ; p.16, §7.8.2.1 l : résultats relatifs à l’objet essayé.",
+      "limitation": "Guide public intégral, pas lecture prétendue de la norme ISO payante. L’accréditation d’une activité ne certifie pas automatiquement un lot, tous ses contaminants ou ses usages.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source universitaire, technique ou institutionnelle ; nature et périmètre précisés dans la référence"
+    },
+    {
+      "id": "harvest-tool-grain-quality",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Louis-Marie Allard, avec les contributeurs identifiés p.2",
+      "organization": "Terres Inovia, InterChanvre et partenaires",
+      "published": "2026-01, dépôt légal",
+      "url": "https://www.terresinovia.fr/sites/default/files/2026-01/guide_culture_chanvre_2026.pdf",
+      "passage": "Page 8 : relation contractuelle ; pages 22–23 : débouché, hétérogénéité, fragilité du chènevis, conservation et qualité attendue des pailles.",
+      "limitation": "Seules les relations entre matière, qualité, organisation et débouché sont reprises. Aucun calendrier, réglage, dose, humidité cible ou paramètre de production/conservation ; les généralisations historiques et slogans du guide ne sont pas repris.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source universitaire, technique ou institutionnelle ; nature et périmètre précisés dans la référence"
+    },
+    {
+      "id": "harvest-tool-records",
+      "title": "Basic Recordkeeping — Enterprise Budgets for Diversified Farms",
+      "author": "Kate Painter",
+      "organization": "Sustainable Agriculture Research and Education — SARE Outreach",
+      "published": "2026",
+      "url": "https://www.sare.org/publications/enterprise-budgets-for-diversified-farms/basic-recordkeeping/",
+      "passage": "Texte et tableau 1 : activités, dates, temps, dépenses et allocation au bon atelier ; distinction des éléments nécessaires au budget.",
+      "limitation": "Page intégrale consultée, modèles Google annexes non nécessaires. Un registre rend une comparaison contrôlable mais ne transforme pas une saison en preuve causale ou prévision de revenu.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source universitaire, technique ou institutionnelle ; nature et périmètre précisés dans la référence"
+    },
+    {
+      "id": "harvest-tool-budget",
+      "title": "Partial Budget Analysis — Enterprise Budgets for Diversified Farms",
+      "author": "Kate Painter",
+      "organization": "Sustainable Agriculture Research and Education — SARE Outreach",
+      "published": "2026",
+      "url": "https://www.sare.org/publications/enterprise-budgets-for-diversified-farms/partial-budget-analysis/",
+      "passage": "Définition et tableau 3 : recettes et coûts supplémentaires ou réduits ; limites d’une analyse de changement partiel.",
+      "limitation": "Méthode économique générale. Aucun tarif, bénéfice, prix de vente ou seuil de rentabilité réel attribué aux lots fictifs. Une dépense partielle n’est pas un coût complet ni une marge.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source universitaire, technique ou institutionnelle ; nature et périmètre précisés dans la référence"
+    },
+    {
+      "id": "harvest-tool-stability",
+      "title": "Evaluation of Hemp Seed Oils Stability under Accelerated Storage Test",
+      "author": "Matilde Tura, Diana Ansorena, Iciar Astiasarán, Mara Mandrioli et Tullia Gallina Toschi",
+      "organization": "Antioxidants, étude originale",
+      "published": "2022-02-28",
+      "url": "https://mdpi-res.com/d_attachment/antioxidants/antioxidants-11-00490/article_deploy/antioxidants-11-00490.pdf",
+      "passage": "Résumé, résultats et conclusion : neuf huiles de graines, plusieurs marqueurs d’oxydation ; DOI 10.3390/antiox11030490.",
+      "limitation": "Original intégral consulté pendant le parcours Produits. Essai accéléré sur huiles, pas essai de conservation des graines ou des fleurs ; ne prédit aucune durée, aucune cible ni efficacité d’une intervention sur nos lots.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source universitaire, technique ou institutionnelle ; nature et périmètre précisés dans la référence"
+    }
+  ]
+}

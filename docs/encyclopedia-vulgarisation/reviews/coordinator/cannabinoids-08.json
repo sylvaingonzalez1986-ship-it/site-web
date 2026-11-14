@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-14",
+  "lot": "cannabinoids-08",
+  "entries": {
+    "record-study-cbg-laboratory-2026": {
+      "contentHash": "a59c7aeab3e4c48ddbc0633ec51af1f3f1805bff94b5ef92d7a571ff4a660cd5",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-hhc-human-2025": {
+      "contentHash": "a0320067865418fe0876ec1bb35cc6a95dd36ebafe0be24a7ef5925c279e2921",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-hhc-metabolites-2026": {
+      "contentHash": "6a91a26a1ad0586d3e1e4e435529f8bbed71f1974143dc304663bd8b59983566",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-cbn-sleep-2026": {
+      "contentHash": "f6226946b2524c263ae42ebcd2e849fc405a0fd617d783b8a522bcdb9bec7f44",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-cbdv-seizures-2021": {
+      "contentHash": "3e9d5a42a7e5849eb623b821207f9bf53b8f09ab570bba8784b65f0ea8d66567",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-cbda-preclinical-2013": {
+      "contentHash": "86400f519f0a9f2fffecf21ac3a1d9d35907e9102b843cebb84e432fbfff6417",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+}

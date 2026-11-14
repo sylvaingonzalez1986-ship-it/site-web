@@ -1,0 +1,25 @@
+{
+  "baseSrc": "/placard/school/interior-clean-v4.webp",
+  "sprites": [
+    {
+      "id": "pendant",
+      "kind": "sway",
+      "duration": 5.4,
+      "src": "/placard/school/interior-pendant-v4.webp",
+      "x": 710,
+      "y": 120,
+      "width": 122,
+      "height": 116
+    },
+    {
+      "id": "herbarium",
+      "kind": "float",
+      "duration": 7.2,
+      "src": "/placard/school/interior-herbarium-v4.webp",
+      "x": 178,
+      "y": 468,
+      "width": 208,
+      "height": 158
+    }
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-14",
+  "lot": "botany-03",
+  "entries": {
+    "record-variety-haze": {
+      "contentHash": "3b720f874c885ea0dec352752bfd6f019e6b88e36f614ae4e9c116cbf8f2d2c3",
+      "note": "Five genealogy notices and diagrams read. Distinct versions, historical testimony and declared crosses explained with concrete generation examples; Haze diagram moved after its branches.",
+      "status": "read-and-reviewed"
+    },
+    "record-variety-skunk": {
+      "contentHash": "4a430b8ae420ea63111d87bcee8697b1f4f35f58523555398042c3df24881334",
+      "note": "Five genealogy notices and diagrams read. Distinct versions, historical testimony and declared crosses explained with concrete generation examples; Haze diagram moved after its branches.",
+      "status": "read-and-reviewed"
+    },
+    "record-variety-northern-lights": {
+      "contentHash": "e8f5d307e002494903b1ac0a446afcd82d5bbb09be184fb66a6cb7ce53bdf4f3",
+      "note": "Five genealogy notices and diagrams read. Distinct versions, historical testimony and declared crosses explained with concrete generation examples; Haze diagram moved after its branches.",
+      "status": "read-and-reviewed"
+    },
+    "record-variety-kush": {
+      "contentHash": "18875942d8c9fc0b91328e3128f6211962d9f91f1634427cc76339b194f65c1d",
+      "note": "Five genealogy notices and diagrams read. Distinct versions, historical testimony and declared crosses explained with concrete generation examples; Haze diagram moved after its branches.",
+      "status": "read-and-reviewed"
+    },
+    "record-variety-diesel": {
+      "contentHash": "4a1b36522369e1ac373b0ed3602bcdc5b575e153348c904dfcde4b8c7e0ad5c9",
+      "note": "Five genealogy notices and diagrams read. Distinct versions, historical testimony and declared crosses explained with concrete generation examples; Haze diagram moved after its branches.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "date": "2026-11-14",
+  "entriesRead": [
+    "ref-conservation",
+    "ref-contaminants",
+    "ref-analyses",
+    "ref-origines-formulations",
+    "ref-reglementation-produits"
+  ],
+  "glossaryRead": [
+    "products-term-absorption",
+    "products-term-analyte",
+    "products-term-concentration",
+    "products-term-degradation",
+    "products-term-emission",
+    "products-term-formulation",
+    "products-term-semisynthesis",
+    "harvest-term-wet-basis",
+    "harvest-term-integrity",
+    "products-term-loq",
+    "products-term-lot",
+    "products-term-matrix-sample",
+    "health-term-mycotoxin",
+    "products-term-novel-food",
+    "products-term-stereoisomer",
+    "products-term-total-thc"
+  ],
+  "method": "Fiches rédigées et intégralement relues par le coordinateur, puis contre-vérifiées par le spécialiste botanique. Sources primaires ouvertes ; portée des études et conditions réglementaires explicitées.",
+  "finalApprovalRecordedIn": "validation.json",
+  "crossReview": "regulation-botany.json",
+  "contentHashes": {
+    "ref-conservation": "8164e7a57594e191201bcf8b179d8b843306f7d7ebf1623f8785b1820203e524",
+    "ref-contaminants": "9058828093e8bf1267558295ed9279a57383bfe0d30e14bbeba8abe0ca709926",
+    "ref-analyses": "924bed334f6ba84feed5575f74b2faaa9ad1b832c6afc463f317c6e84b8a156c",
+    "ref-origines-formulations": "faf0b56cf53f6b304d253173610fadfacd6a38cd41a8aa50a7accfcc82427d44",
+    "ref-reglementation-produits": "a6ebd7029b919df29d5be9af68cd451909c38627a0290d7d736bf32ec9cc11b5"
+  }
+}

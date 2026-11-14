@@ -1,0 +1,17 @@
+{
+  "updated": "2026-11-11",
+  "tool": "Built-in image_gen (imagegen skill)",
+  "kind": "precise-object-edit",
+  "original": "public/placard/map/placard-world-sylvain-v6.webp",
+  "map": "public/placard/map/placard-world-school-v7.webp",
+  "vignette": "public/placard/ui/school-v1.webp",
+  "mapPrompt": "Use case: precise-object-edit. Edit target: the supplied existing 1536x1024 cartoon Breton village game map. Change ONLY the two buildings at the bottom: the little collection house at left (approximately x145-500 y645-925) and the card shop with teal awning (x585-990 y590-910). Keep their footprint, placement, doors, perspective, scale, black hand-inked outlines, flat watercolor print texture, lighting, surroundings and EVERY OTHER BUILDING and landscape pixel visually unchanged. Transform the bottom-left collection house architecturally into a welcoming village school: replace the card display with a broad classroom window showing bookshelves and a warm interior, add a distinctive little slate school bell turret at its roof ridge, place a small wooden open-book emblem and a modest wooden sign reading exactly 'ÉCOLE' above the classroom window, add a small chalkboard by the doorway with a simple botanical leaf drawing. It must read as a school from afar, not merely a new sign. Preserve the original roof shape, stone cream walls and wooden rounded door anchor. Adapt the bottom-middle teal-awning shop so the large front display contains a handsome open collectible card album and sealed booster packs instead of jars; add three card emblems to the existing hanging wooden sign, KEEP that hanging sign shape and position exactly for the existing animation. No other text. Keep all trees, flowers, fences, river, ground and other buildings exactly arranged as original. Final map same 3:2 ratio, 1536x1024.",
+  "vignettePrompt": "Use case: background-extraction. Input image is the edited Breton cartoon village map. Create a transparent decorative vignette for the school navigation: extract ONLY the lower-left school building, including its slate roof and bell turret, open-book emblem, ÉCOLE sign, cream stone walls, classroom bookshelves, round wooden door and little botanical chalkboard. Preserve exactly this charming hand-inked print style, colors, perspective and silhouette. Isolated single school centered on a true transparent background with generous clear margins; a small base of grass and blue hydrangeas is acceptable, no other buildings, no square background or map scenery. 1024x1024 square output.",
+  "integration": "scripts/export-school-artwork.mjs: generated map edits composited into the original only through three explicit masks (school, display window, sign). Lossless WebP export; zero decoded pixel changes outside masks.",
+  "animation": "Existing shop sign silhouette retained; scripts/export-placard-map-sprites.mjs rebuilt its transparent atlas from v7. Existing reduced-motion behavior retained.",
+  "generatedSources": [
+    "output/school/artwork/map-edited.png",
+    "output/school/artwork/school-transparent.png"
+  ],
+  "checks": "output/school/artwork/verification.json; browser map checks and captures in output/placard-navigation/"
+}

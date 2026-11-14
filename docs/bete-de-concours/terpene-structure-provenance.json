@@ -1,0 +1,1186 @@
+{
+  "verifiedAt": "2026-11-13",
+  "provider": "NCBI PubChem / National Library of Medicine",
+  "apiDocumentation": "https://pubchem.ncbi.nlm.nih.gov/docs/pug-rest",
+  "imagingDocumentation": "https://pubchem.ncbi.nlm.nih.gov/docs/imaging-services",
+  "method": "Names resolved individually through PUG REST; formula, IUPAC name, SMILES and stereo counts inspected. Single returned CID required, except alpha-bisabolol whose unspecified-stereochemistry CID 10586 is explicitly selected among four results. Original PNG bytes downloaded by the selected CID; no chemical drawing created or modified by AI.",
+  "displayRequirements": [
+    "Keep isomerNote beside the detailed depiction, especially when PubChem specifies a stereoisomer.",
+    "Do not infer a sample’s configuration, concentration, effects or detection from the picture.",
+    "Do not substitute a family illustration for an absent molecular structure."
+  ],
+  "imageDimensions": {
+    "width": 600,
+    "height": 450
+  },
+  "coverage": {
+    "corpus": 86,
+    "depicted": 37,
+    "absent": 49
+  },
+  "absent": [
+    {
+      "id": "borneol",
+      "reason": "Le CID général ne distingue pas la configuration relative du bornéol de celle de l’isobornéol ; aucune image retenue."
+    },
+    {
+      "id": "alpha-farnesene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "alpha-bergamotene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "nerolidol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "delta-elemene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "gamma-elemene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "pinan2-ol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "delta-selinene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "selina-3-7-11-diene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "bulnesol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "cis-sabinene-hydrate",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "humulene-epoxide-ii",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "isocaryophyllene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "alpha-gurjunene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "alpha-himachalene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "gamma-gurjunene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "beta-maaliene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "cedr-8-en-15-ol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "ledene-oxide-ii",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "eudesm-7-11-en-4-ol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "p-cymenene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "p-mentha-1-3-8-triene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "cis-p-mentha-2-8-dien-1-ol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "alpha-eudesmol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "beta-eudesmol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "10-epi-gamma-eudesmol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "alpha-cubebene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "ylangene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "copaene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "di-epi-alpha-cedrene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "alpha-longipinene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "longicyclene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "aristolene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "beta-gurjunene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "alpha-bulnesene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "sesquisabinene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "viridiflorene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "gamma-himachalene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "beta-cadinene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "gamma-amorphene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "alpha-muurolene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "eremophila-1-10-11-diene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "alpha-dehydro-ar-himachalene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "trans-alpha-bisabolene",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "di-epi-1-10-cubenol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "cis-linalool-oxide",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "beta-fenchol",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "carene-2",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    },
+    {
+      "id": "carene-4",
+      "reason": "Not verified in this bounded illustration pass; some corpus entries group isomers or leave structural details unresolved."
+    }
+  ],
+  "entries": [
+    {
+      "id": "alphapinene",
+      "name": "α-Pinène",
+      "query": "alpha-pinene",
+      "formula": "C10H16",
+      "pubchemCid": 6654,
+      "iupacName": "2,6,6-trimethylbicyclo[3.1.1]hept-2-ene",
+      "smiles": "CC1=CCC2CC1C2(C)C",
+      "resolvedCids": [
+        6654
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 2,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-pinene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/6654/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/alphapinene-structure.png",
+      "imageSha256": "6cc73a010ae15d79cb82cfe3ba20e8622aa26233db47bd3efdaaf279a561d7b1",
+      "imageBytes": 4597
+    },
+    {
+      "id": "betapinene",
+      "name": "β-Pinène",
+      "query": "beta-pinene",
+      "formula": "C10H16",
+      "pubchemCid": 14896,
+      "iupacName": "6,6-dimethyl-2-methylidenebicyclo[3.1.1]heptane",
+      "smiles": "CC1(C2CCC(=C)C1C2)C",
+      "resolvedCids": [
+        14896
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 2,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/beta-pinene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/14896/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/betapinene-structure.png",
+      "imageSha256": "af93e2ac76c87a3f57c8f2c99372eda19633fd5e06a01c8bfb092e164ada50a2",
+      "imageBytes": 4793
+    },
+    {
+      "id": "myrcene",
+      "name": "Myrcène",
+      "query": "myrcene",
+      "formula": "C10H16",
+      "pubchemCid": 31253,
+      "iupacName": "7-methyl-3-methylideneocta-1,6-diene",
+      "smiles": "CC(=CCCC(=C)C=C)C",
+      "resolvedCids": [
+        31253
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/myrcene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/31253/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/myrcene-structure.png",
+      "imageSha256": "8f290e54f9b8df41aa7093282fb95afd5f938f88af35c6f6008e00d8f75b17cc",
+      "imageBytes": 2494
+    },
+    {
+      "id": "limonene",
+      "name": "Limonène",
+      "query": "limonene",
+      "formula": "C10H16",
+      "pubchemCid": 22311,
+      "iupacName": "1-methyl-4-prop-1-en-2-ylcyclohexene",
+      "smiles": "CC1=CCC(CC1)C(=C)C",
+      "resolvedCids": [
+        22311
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 1,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/limonene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/22311/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/limonene-structure.png",
+      "imageSha256": "13e4b9df51b94f72495e8b633e64a3cf78d01eb80f3c6a91fabb149a9628e13e",
+      "imageBytes": 3325
+    },
+    {
+      "id": "camphene",
+      "name": "Camphène",
+      "query": "camphene",
+      "formula": "C10H16",
+      "pubchemCid": 6616,
+      "iupacName": "2,2-dimethyl-3-methylidenebicyclo[2.2.1]heptane",
+      "smiles": "CC1(C2CCC(C2)C1=C)C",
+      "resolvedCids": [
+        6616
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 2,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/camphene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/6616/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/camphene-structure.png",
+      "imageSha256": "f859b3a2dbf8cc3957462a60f5d071f5dc4fb7056e364c01943a44dce38addcb",
+      "imageBytes": 4352
+    },
+    {
+      "id": "alpha-phellandrene",
+      "name": "α-Phellandrène",
+      "query": "alpha-phellandrene",
+      "formula": "C10H16",
+      "pubchemCid": 7460,
+      "iupacName": "2-methyl-5-propan-2-ylcyclohexa-1,3-diene",
+      "smiles": "CC1=CCC(C=C1)C(C)C",
+      "resolvedCids": [
+        7460
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 1,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-phellandrene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/7460/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/alpha-phellandrene-structure.png",
+      "imageSha256": "d6870692ed8d98eec8071793868767d26d74d4b8b63ffb02f6d8694d2b2a36cf",
+      "imageBytes": 2758
+    },
+    {
+      "id": "delta3-carene",
+      "name": "Δ3-Carène",
+      "query": "3-carene",
+      "formula": "C10H16",
+      "pubchemCid": 26049,
+      "iupacName": "3,7,7-trimethylbicyclo[4.1.0]hept-3-ene",
+      "smiles": "CC1=CCC2C(C1)C2(C)C",
+      "resolvedCids": [
+        26049
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 2,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/3-carene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/26049/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/delta3-carene-structure.png",
+      "imageSha256": "9e9db5d0a499b33ae9922a06159e2ffdaa0eae085f3dc0b3b351daaaa0255193",
+      "imageBytes": 3038
+    },
+    {
+      "id": "alpha-terpinene",
+      "name": "α-Terpinène",
+      "query": "alpha-terpinene",
+      "formula": "C10H16",
+      "pubchemCid": 7462,
+      "iupacName": "1-methyl-4-propan-2-ylcyclohexa-1,3-diene",
+      "smiles": "CC1=CC=C(CC1)C(C)C",
+      "resolvedCids": [
+        7462
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-terpinene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/7462/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/alpha-terpinene-structure.png",
+      "imageSha256": "3cd3c72b2d73479d84d81f684dadbd8f6ed8d2304440a8a76cd6780a06aa9b01",
+      "imageBytes": 2775
+    },
+    {
+      "id": "gamma-terpinene",
+      "name": "γ-Terpinène",
+      "query": "gamma-terpinene",
+      "formula": "C10H16",
+      "pubchemCid": 7461,
+      "iupacName": "1-methyl-4-propan-2-ylcyclohexa-1,4-diene",
+      "smiles": "CC1=CCC(=CC1)C(C)C",
+      "resolvedCids": [
+        7461
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/gamma-terpinene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/7461/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/gamma-terpinene-structure.png",
+      "imageSha256": "7b4d30252b5a1c54fbcd87fadfe30aeceee22c920e61b370d7461f26a4c2467b",
+      "imageBytes": 2752
+    },
+    {
+      "id": "terpinolene",
+      "name": "Terpinolène",
+      "query": "terpinolene",
+      "formula": "C10H16",
+      "pubchemCid": 11463,
+      "iupacName": "1-methyl-4-propan-2-ylidenecyclohexene",
+      "smiles": "CC1=CCC(=C(C)C)CC1",
+      "resolvedCids": [
+        11463
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/terpinolene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/11463/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/terpinolene-structure.png",
+      "imageSha256": "a15dca7f21d09962155b8e9adc584b067cc4b194f440a28917583f362cd1d4f0",
+      "imageBytes": 2616
+    },
+    {
+      "id": "e-beta-ocimene",
+      "name": "(E)-β-Ocimène",
+      "query": "(E)-beta-ocimene",
+      "formula": "C10H16",
+      "pubchemCid": 5281553,
+      "iupacName": "(3E)-3,7-dimethylocta-1,3,6-triene",
+      "smiles": "CC(=CC/C=C(\\C)/C=C)C",
+      "resolvedCids": [
+        5281553
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 1,
+        "definedBondCount": 1
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Géométrie (3E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/(E)-beta-ocimene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5281553/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/e-beta-ocimene-structure.png",
+      "imageSha256": "d18486d59eb4bee75a81bcf303d4c5489c20841dbbb2015f1eb9ed288febe144",
+      "imageBytes": 2854
+    },
+    {
+      "id": "z-beta-ocimene",
+      "name": "(Z)-β-Ocimène",
+      "query": "(Z)-beta-ocimene",
+      "formula": "C10H16",
+      "pubchemCid": 5320250,
+      "iupacName": "(3Z)-3,7-dimethylocta-1,3,6-triene",
+      "smiles": "CC(=CC/C=C(/C)\\C=C)C",
+      "resolvedCids": [
+        5320250
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 1,
+        "definedBondCount": 1
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Géométrie (3Z) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/(Z)-beta-ocimene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5320250/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/z-beta-ocimene-structure.png",
+      "imageSha256": "1ee319430959128954c46d0dbce0ad8fb276c6f5c78bcbfbbad13fc3f5d8e8a6",
+      "imageBytes": 2958
+    },
+    {
+      "id": "linalool",
+      "name": "Linalol",
+      "query": "linalool",
+      "formula": "C10H18O",
+      "pubchemCid": 6549,
+      "iupacName": "3,7-dimethylocta-1,6-dien-3-ol",
+      "smiles": "CC(=CCCC(C)(C=C)O)C",
+      "resolvedCids": [
+        6549
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 1,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/linalool/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/6549/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/linalool-structure.png",
+      "imageSha256": "ec6150677e8f15fc18ac4acf9714af1666d5f4cf4d6e57a6a3519fff65d940ff",
+      "imageBytes": 4096
+    },
+    {
+      "id": "fenchol",
+      "name": "Fenchol",
+      "query": "endo-fenchyl alcohol",
+      "formula": "C10H18O",
+      "pubchemCid": 439711,
+      "iupacName": "(1S,2S,4R)-1,3,3-trimethylbicyclo[2.2.1]heptan-2-ol",
+      "smiles": "C[C@]12CC[C@H](C1)C([C@H]2O)(C)C",
+      "resolvedCids": [
+        439711
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 3,
+        "definedAtomCount": 3,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Stéréoisomère (1S,2S,4R) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/endo-fenchyl%20alcohol/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/439711/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/fenchol-structure.png",
+      "imageSha256": "44d138b35ba8ee5755743877428f26db4248a801a05fb080492037d53acbc8a9",
+      "imageBytes": 5271
+    },
+    {
+      "id": "alpha-terpineol",
+      "name": "α-Terpinéol",
+      "query": "alpha-terpineol",
+      "formula": "C10H18O",
+      "pubchemCid": 17100,
+      "iupacName": "2-(4-methylcyclohex-3-en-1-yl)propan-2-ol",
+      "smiles": "CC1=CCC(CC1)C(C)(C)O",
+      "resolvedCids": [
+        17100
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 1,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-terpineol/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/17100/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/alpha-terpineol-structure.png",
+      "imageSha256": "42e4a38834cedf76d9946596eb92faaa89e0a3f84f7ead5b3adf18d94b9075bc",
+      "imageBytes": 3408
+    },
+    {
+      "id": "terpinen4-ol",
+      "name": "Terpinène-4-ol",
+      "query": "terpinen-4-ol",
+      "formula": "C10H18O",
+      "pubchemCid": 11230,
+      "iupacName": "4-methyl-1-propan-2-ylcyclohex-3-en-1-ol",
+      "smiles": "CC1=CCC(CC1)(C(C)C)O",
+      "resolvedCids": [
+        11230
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 1,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/terpinen-4-ol/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/11230/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/terpinen4-ol-structure.png",
+      "imageSha256": "b84619133d4bf5babe35472b9407406c39a3cf83cb261b893ab46f208164ffe0",
+      "imageBytes": 3558
+    },
+    {
+      "id": "eucalyptol",
+      "name": "1,8-Cinéole",
+      "query": "eucalyptol",
+      "formula": "C10H18O",
+      "pubchemCid": 2758,
+      "iupacName": "1,3,3-trimethyl-2-oxabicyclo[2.2.2]octane",
+      "smiles": "CC1(C2CCC(O1)(CC2)C)C",
+      "resolvedCids": [
+        2758
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/eucalyptol/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/2758/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/eucalyptol-structure.png",
+      "imageSha256": "42f134d53e2948a4cfb7d320de868b795aeeb815c1a8be797b3c1055e21c8a06",
+      "imageBytes": 5010
+    },
+    {
+      "id": "p-cymene",
+      "name": "p-Cymène",
+      "query": "p-cymene",
+      "formula": "C10H14",
+      "pubchemCid": 7463,
+      "iupacName": "1-methyl-4-propan-2-ylbenzene",
+      "smiles": "CC1=CC=C(C=C1)C(C)C",
+      "resolvedCids": [
+        7463
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/p-cymene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/7463/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/p-cymene-structure.png",
+      "imageSha256": "45cd3b1d2d963efd7621abcabfe4f0311a9f996bf088c77a4efa500acb34bc9f",
+      "imageBytes": 2732
+    },
+    {
+      "id": "beta-caryophyllene",
+      "name": "β-Caryophyllène",
+      "query": "beta-caryophyllene",
+      "formula": "C15H24",
+      "pubchemCid": 5281515,
+      "iupacName": "(1R,4E,9S)-4,11,11-trimethyl-8-methylidenebicyclo[7.2.0]undec-4-ene",
+      "smiles": "C/C/1=C\\CCC(=C)[C@H]2CC([C@@H]2CC1)(C)C",
+      "resolvedCids": [
+        5281515
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 2,
+        "definedAtomCount": 2,
+        "bondCount": 1,
+        "definedBondCount": 1
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Stéréoisomère (1R,4E,9S) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/beta-caryophyllene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5281515/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/beta-caryophyllene-structure.png",
+      "imageSha256": "d9ebbe218078b81a11b5b7eb50c0c3072e1c6fd4d41d0f78ad7387e7fad96027",
+      "imageBytes": 6222
+    },
+    {
+      "id": "alpha-humulene",
+      "name": "α-Humulène",
+      "query": "alpha-humulene",
+      "formula": "C15H24",
+      "pubchemCid": 5281520,
+      "iupacName": "(1E,4E,8E)-2,6,6,9-tetramethylcycloundeca-1,4,8-triene",
+      "smiles": "C/C/1=C\\CC(/C=C/C/C(=C/CC1)/C)(C)C",
+      "resolvedCids": [
+        5281520
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 3,
+        "definedBondCount": 3
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Géométrie (1E,4E,8E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-humulene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5281520/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/alpha-humulene-structure.png",
+      "imageSha256": "2f1797ba33cf5f937e361c7a6302b395ffd7027d2cf72ea160aad80e4cebed11",
+      "imageBytes": 5640
+    },
+    {
+      "id": "e-beta-farnesene",
+      "name": "(E)-β-Farnésène",
+      "query": "trans-beta-farnesene",
+      "formula": "C15H24",
+      "pubchemCid": 5281517,
+      "iupacName": "(6E)-7,11-dimethyl-3-methylidenedodeca-1,6,10-triene",
+      "smiles": "CC(=CCC/C(=C/CCC(=C)C=C)/C)C",
+      "resolvedCids": [
+        5281517
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 1,
+        "definedBondCount": 1
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Géométrie (6E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/trans-beta-farnesene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5281517/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/e-beta-farnesene-structure.png",
+      "imageSha256": "c6777372601199d52800019b0cd6fbdc6a54d1e9d468645db8aadc3e43e5ff55",
+      "imageBytes": 2787
+    },
+    {
+      "id": "alpha-selinene",
+      "name": "α-Sélinène",
+      "query": "alpha-selinene",
+      "formula": "C15H24",
+      "pubchemCid": 10856614,
+      "iupacName": "(3R,4aR,8aR)-5,8a-dimethyl-3-prop-1-en-2-yl-2,3,4,4a,7,8-hexahydro-1H-naphthalene",
+      "smiles": "CC1=CCC[C@]2([C@H]1C[C@@H](CC2)C(=C)C)C",
+      "resolvedCids": [
+        10856614
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 3,
+        "definedAtomCount": 3,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Stéréoisomère (3R,4aR,8aR) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-selinene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10856614/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/alpha-selinene-structure.png",
+      "imageSha256": "1e24551c0d99271926b6ed68b8dd001450380f5039600b55d5ce64b9b40bef6f",
+      "imageBytes": 4602
+    },
+    {
+      "id": "guaiol",
+      "name": "Guaiol",
+      "query": "guaiol",
+      "formula": "C15H26O",
+      "pubchemCid": 227829,
+      "iupacName": "2-[(3S,5R,8S)-3,8-dimethyl-1,2,3,4,5,6,7,8-octahydroazulen-5-yl]propan-2-ol",
+      "smiles": "C[C@H]1CC[C@H](CC2=C1CC[C@@H]2C)C(C)(C)O",
+      "resolvedCids": [
+        227829
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 3,
+        "definedAtomCount": 3,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Stéréoisomère (3S,5R,8S) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/guaiol/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/227829/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/guaiol-structure.png",
+      "imageSha256": "42f1b0c9bf7c750bcf577b3ed70bc2f770fb60c1a3b4e651d0bddae94805e248",
+      "imageBytes": 6416
+    },
+    {
+      "id": "alpha-bisabolol",
+      "name": "α-Bisabolol",
+      "query": "alpha-bisabolol",
+      "formula": "C15H26O",
+      "pubchemCid": 10586,
+      "iupacName": "6-methyl-2-(4-methylcyclohex-3-en-1-yl)hept-5-en-2-ol",
+      "smiles": "CC1=CCC(CC1)C(C)(CCC=C(C)C)O",
+      "resolvedCids": [
+        1549992,
+        10586,
+        442343,
+        1201551
+      ],
+      "selectionNote": "CID 10586 selected explicitly: unspecified atom stereochemistry; three stereospecific results rejected.",
+      "stereo": {
+        "atomCount": 2,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/alpha-bisabolol/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10586/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/alpha-bisabolol-structure.png",
+      "imageSha256": "f56f6b1919cc1c548f25d9980e9e094402aa293ea956a4b83c0bb5e922f11f12",
+      "imageBytes": 3213
+    },
+    {
+      "id": "gamma-eudesmol",
+      "name": "γ-Eudesmol",
+      "query": "gamma-eudesmol",
+      "formula": "C15H26O",
+      "pubchemCid": 6432005,
+      "iupacName": "2-[(2R,4aR)-4a,8-dimethyl-2,3,4,5,6,7-hexahydro-1H-naphthalen-2-yl]propan-2-ol",
+      "smiles": "CC1=C2C[C@@H](CC[C@]2(CCC1)C)C(C)(C)O",
+      "resolvedCids": [
+        6432005
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 2,
+        "definedAtomCount": 2,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Stéréoisomère (2R,4aR) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/gamma-eudesmol/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/6432005/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/gamma-eudesmol-structure.png",
+      "imageSha256": "60b5b566e6f24d599faa185d22f6114cec41ba97a219f59599cbe428454e258e",
+      "imageBytes": 5522
+    },
+    {
+      "id": "caryophyllene-oxide",
+      "name": "Oxyde de caryophyllène",
+      "query": "caryophyllene oxide",
+      "formula": "C15H24O",
+      "pubchemCid": 1742210,
+      "iupacName": "(1R,4R,6R,10S)-4,12,12-trimethyl-9-methylidene-5-oxatricyclo[8.2.0.04,6]dodecane",
+      "smiles": "C[C@@]12CC[C@@H]3[C@H](CC3(C)C)C(=C)CC[C@H]1O2",
+      "resolvedCids": [
+        1742210
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 4,
+        "definedAtomCount": 4,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Stéréoisomère (1R,4R,6R,10S) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/caryophyllene%20oxide/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/1742210/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/caryophyllene-oxide-structure.png",
+      "imageSha256": "f191d95d970b46bcb4faeb8f5bee9404d417f81857df436b0181ebc76ac24ee0",
+      "imageBytes": 7095
+    },
+    {
+      "id": "geranyl-acetate",
+      "name": "Acétate de géranyle",
+      "query": "geranyl acetate",
+      "formula": "C12H20O2",
+      "pubchemCid": 1549026,
+      "iupacName": "[(2E)-3,7-dimethylocta-2,6-dienyl] acetate",
+      "smiles": "CC(=CCC/C(=C/COC(=O)C)/C)C",
+      "resolvedCids": [
+        1549026
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 1,
+        "definedBondCount": 1
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Géométrie (2E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/geranyl%20acetate/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/1549026/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/geranyl-acetate-structure.png",
+      "imageSha256": "731275d580e63093819219dfcf00adc0049a2daa2eacdd40172df8adc573beb6",
+      "imageBytes": 3063
+    },
+    {
+      "id": "beta-phellandrene",
+      "name": "β-Phellandrène",
+      "query": "beta-phellandrene",
+      "formula": "C10H16",
+      "pubchemCid": 11142,
+      "iupacName": "3-methylidene-6-propan-2-ylcyclohexene",
+      "smiles": "CC(C)C1CCC(=C)C=C1",
+      "resolvedCids": [
+        11142
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 1,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/beta-phellandrene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/11142/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/beta-phellandrene-structure.png",
+      "imageSha256": "a86cbd037731661441dd9c48ebc24a846374d82483f237fdf98dda89b5db386c",
+      "imageBytes": 2985
+    },
+    {
+      "id": "beta-selinene",
+      "name": "β-Sélinène",
+      "query": "beta-selinene",
+      "formula": "C15H24",
+      "pubchemCid": 442393,
+      "iupacName": "(3R,4aS,8aR)-8a-methyl-5-methylidene-3-prop-1-en-2-yl-1,2,3,4,4a,6,7,8-octahydronaphthalene",
+      "smiles": "CC(=C)[C@@H]1CC[C@]2(CCCC(=C)[C@@H]2C1)C",
+      "resolvedCids": [
+        442393
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 3,
+        "definedAtomCount": 3,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Stéréoisomère (3R,4aS,8aR) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/beta-selinene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/442393/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/beta-selinene-structure.png",
+      "imageSha256": "66275410f6cb071ed75341d94a7eb3d68180bc2cad2326850ab808da46bca2d9",
+      "imageBytes": 4477
+    },
+    {
+      "id": "germacrene-b",
+      "name": "Germacrène B",
+      "query": "germacrene B",
+      "formula": "C15H24",
+      "pubchemCid": 5281519,
+      "iupacName": "(1E,5E)-1,5-dimethyl-8-propan-2-ylidenecyclodeca-1,5-diene",
+      "smiles": "C/C/1=C\\CC/C(=C/CC(=C(C)C)CC1)/C",
+      "resolvedCids": [
+        5281519
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 2,
+        "definedBondCount": 2
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Géométrie (1E,5E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/germacrene%20B/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5281519/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/germacrene-b-structure.png",
+      "imageSha256": "8eaf2aca37c86cad9ce24f4924d0dd6817183dae510540b43e30c799ce66e986",
+      "imageBytes": 4877
+    },
+    {
+      "id": "valencene",
+      "name": "Valencène",
+      "query": "valencene",
+      "formula": "C15H24",
+      "pubchemCid": 9855795,
+      "iupacName": "(3R,4aS,5R)-4a,5-dimethyl-3-prop-1-en-2-yl-2,3,4,5,6,7-hexahydro-1H-naphthalene",
+      "smiles": "C[C@@H]1CCC=C2[C@]1(C[C@@H](CC2)C(=C)C)C",
+      "resolvedCids": [
+        9855795
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 3,
+        "definedAtomCount": 3,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Stéréoisomère (3R,4aS,5R) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/valencene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/9855795/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/valencene-structure.png",
+      "imageSha256": "f0eea80605a8bc0316926e20f570703d2be1edbd2b4309d317525a305da409d8",
+      "imageBytes": 4331
+    },
+    {
+      "id": "isoborneol",
+      "name": "Isobornéol",
+      "query": "isoborneol",
+      "formula": "C10H18O",
+      "pubchemCid": 6321405,
+      "iupacName": "(1R,2R,4R)-1,7,7-trimethylbicyclo[2.2.1]heptan-2-ol",
+      "smiles": "C[C@@]12CC[C@@H](C1(C)C)C[C@H]2O",
+      "resolvedCids": [
+        6321405
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 3,
+        "definedAtomCount": 3,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Stéréoisomère (1R,2R,4R) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/isoborneol/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/6321405/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/isoborneol-structure.png",
+      "imageSha256": "d812a4e5ba51c8a915759e1cab49a55097e1afdbfb3a23cc23acb5264fd35fb8",
+      "imageBytes": 5432
+    },
+    {
+      "id": "o-cymene",
+      "name": "o-Cymène",
+      "query": "o-cymene",
+      "formula": "C10H14",
+      "pubchemCid": 10703,
+      "iupacName": "1-methyl-2-propan-2-ylbenzene",
+      "smiles": "CC1=CC=CC=C1C(C)C",
+      "resolvedCids": [
+        10703
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/o-cymene/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10703/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/o-cymene-structure.png",
+      "imageSha256": "1d6d29b84b7404451ac48e6a5cb91e46187f00aea0a2f1f81770d45c9824005c",
+      "imageBytes": 3058
+    },
+    {
+      "id": "fenchone",
+      "name": "Fenchone",
+      "query": "fenchone",
+      "formula": "C10H16O",
+      "pubchemCid": 14525,
+      "iupacName": "1,3,3-trimethylbicyclo[2.2.1]heptan-2-one",
+      "smiles": "CC1(C2CCC(C2)(C1=O)C)C",
+      "resolvedCids": [
+        14525
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 2,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/fenchone/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/14525/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/fenchone-structure.png",
+      "imageSha256": "32212f9d49a21588c377e591c7c75bbdedc7c8418ba73a97dbe66df40237ac26",
+      "imageBytes": 5157
+    },
+    {
+      "id": "citronellol",
+      "name": "Citronellol",
+      "query": "citronellol",
+      "formula": "C10H20O",
+      "pubchemCid": 8842,
+      "iupacName": "3,7-dimethyloct-6-en-1-ol",
+      "smiles": "CC(CCC=C(C)C)CCO",
+      "resolvedCids": [
+        8842
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 1,
+        "definedAtomCount": 0,
+        "bondCount": 0,
+        "definedBondCount": 0
+      },
+      "depictionScope": "connectivity",
+      "isomerNote": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/citronellol/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/8842/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/citronellol-structure.png",
+      "imageSha256": "ee28974dd9a576f6228641d7c0b4bbcf919e44726a404560bc24967a6c83d35d",
+      "imageBytes": 3239
+    },
+    {
+      "id": "nerol",
+      "name": "Nérol",
+      "query": "nerol",
+      "formula": "C10H18O",
+      "pubchemCid": 643820,
+      "iupacName": "(2Z)-3,7-dimethylocta-2,6-dien-1-ol",
+      "smiles": "CC(=CCC/C(=C\\CO)/C)C",
+      "resolvedCids": [
+        643820
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 1,
+        "definedBondCount": 1
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Géométrie (2Z) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/nerol/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/643820/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/nerol-structure.png",
+      "imageSha256": "c00a7ebf32661c143dbc0d53191134b36554fb29a43184fc1305b48c97e9fa22",
+      "imageBytes": 3360
+    },
+    {
+      "id": "neral",
+      "name": "Néral",
+      "query": "neral",
+      "formula": "C10H16O",
+      "pubchemCid": 643779,
+      "iupacName": "(2Z)-3,7-dimethylocta-2,6-dienal",
+      "smiles": "CC(=CCC/C(=C\\C=O)/C)C",
+      "resolvedCids": [
+        643779
+      ],
+      "selectionNote": "Single returned compound record.",
+      "stereo": {
+        "atomCount": 0,
+        "definedAtomCount": 0,
+        "bondCount": 1,
+        "definedBondCount": 1
+      },
+      "depictionScope": "specified-isomer",
+      "isomerNote": "Géométrie (2Z) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+      "identityUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/name/neral/property/MolecularFormula,IUPACName,IsomericSMILES,AtomStereoCount,DefinedAtomStereoCount,BondStereoCount,DefinedBondStereoCount/JSON",
+      "imageUrl": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/643779/PNG?record_type=2d&image_size=600x450",
+      "imagePath": "public/placard/school/terpenes/neral-structure.png",
+      "imageSha256": "3cbbc648ba6d81f7e151e53f46e7c4e96e4f3c5c0e3c8111c1463e16daeb30c6",
+      "imageBytes": 3666
+    }
+  ]
+}

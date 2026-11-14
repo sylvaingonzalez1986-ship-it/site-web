@@ -1,0 +1,2892 @@
+{
+  "domain": "history",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "qh-culture-gautier",
+      "title": "Le Club des Hachichins",
+      "organization": "Revue des Deux Mondes / Wikisource",
+      "url": "https://fr.wikisource.org/wiki/Le_Club_des_Hachichins",
+      "verifiedAt": "2026-11-14",
+      "author": "Théophile Gautier",
+      "published": "1846",
+      "passage": "En-tête bibliographique, tome 13, p. 520–535 ; début de I, L’hôtel Pimodan : lieu, île et périodicité mensuelle.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Récit littéraire primaire ; le narrateur ne constitue pas un registre de toutes les séances.",
+      "reviewEvidence": [
+        {
+          "url": "https://fr.wikisource.org/wiki/Le_Club_des_Hachichins",
+          "openedAt": "2026-11-14",
+          "sections": "En-tête bibliographique, tome 13, p. 520–535 ; début de I, L’hôtel Pimodan : lieu, île et périodicité mensuelle.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "En-tête bibliographique, tome 13, p. 520–535 ; début de I, L’hôtel Pimodan : lieu, île et périodicité mensuelle.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-bnf",
+      "title": "Notice bibliographique : Le Club des Hachichins",
+      "organization": "Bibliothèque nationale de France",
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb47598038s",
+      "verifiedAt": "2026-11-14",
+      "author": "Théophile Gautier",
+      "published": "2024 (édition répertoriée)",
+      "passage": "Titre, édition contemporaine et note de première publication : Revue des Deux Mondes, 1er février 1846.",
+      "access": "catalogue",
+      "documentKind": "Notice de catalogue",
+      "limitation": "Catalogue d’une réédition, pas fac-similé du fascicule de 1846 ; résumé éditorial non utilisé pour certifier tous les participants.",
+      "reviewEvidence": [
+        {
+          "url": "https://catalogue.bnf.fr/ark:/12148/cb47598038s",
+          "openedAt": "2026-11-14",
+          "sections": "Titre, édition contemporaine et note de première publication : Revue des Deux Mondes, 1er février 1846.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Titre, édition contemporaine et note de première publication : Revue des Deux Mondes, 1er février 1846.",
+          "access": "catalogue"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-institut",
+      "title": "Poésie, drogues et médecine en 1845 : les haschischins à l’hôtel de Lauzun",
+      "organization": "Institut d’études avancées de Paris",
+      "url": "https://www.paris-iea.fr/fr/evenements/poesie-drogues-et-medecine-en-1845-les-haschischins-a-l-hotel-de-lauzun",
+      "verifiedAt": "2026-11-14",
+      "author": "Paolo Tortonese (conférence présentée par l’IEA)",
+      "published": "2018",
+      "passage": "Présentation de la conférence : Moreau en 1845, Boissard hôte et investigation psychique.",
+      "access": "official-page",
+      "documentKind": "Document de référence",
+      "limitation": "Présentation secondaire de conférence, non transcription de celle-ci.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.paris-iea.fr/fr/evenements/poesie-drogues-et-medecine-en-1845-les-haschischins-a-l-hotel-de-lauzun",
+          "openedAt": "2026-11-14",
+          "sections": "Présentation de la conférence : Moreau en 1845, Boissard hôte et investigation psychique.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Présentation de la conférence : Moreau en 1845, Boissard hôte et investigation psychique.",
+          "access": "official-page"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-research",
+      "title": "Le Club des Hachichins",
+      "organization": "Université Paris 1 Panthéon-Sorbonne, Institut des sciences sociales du politique",
+      "url": "https://isor.pantheonsorbonne.fr/sites/default/files/inline-files/2020-12_-_ClubHachichins.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Erwan Pointeau-Lagadec",
+      "published": "2020-12",
+      "passage": "Présentation d’une étude historique, première page : rencontres de 1845 à 1849 et critique du mythe de société secrète.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Annonce de monographie ; monographie intégrale non lue.",
+      "reviewEvidence": [
+        {
+          "url": "https://isor.pantheonsorbonne.fr/sites/default/files/inline-files/2020-12_-_ClubHachichins.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Présentation d’une étude historique, première page : rencontres de 1845 à 1849 et critique du mythe de société secrète.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Présentation d’une étude historique, première page : rencontres de 1845 à 1849 et critique du mythe de société secrète.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-moreau",
+      "title": "Du hachisch et de l’aliénation mentale : études psychologiques",
+      "organization": "Google Books / Fortin, Masson et Cie",
+      "url": "https://books.google.com/books/about/Du_hachisch_et_de_l_ali%C3%A9nation_mentale.html?id=yMyuaQhYjhIC",
+      "verifiedAt": "2026-11-14",
+      "author": "Jacques-Joseph Moreau de Tours",
+      "published": "1845",
+      "passage": "Titre Du hachisch et de l’aliénation mentale : études psychologiques ; auteur Moreau, Fortin, Masson, 1845.",
+      "access": "catalogue",
+      "documentKind": "Notice de catalogue",
+      "limitation": "Notice bibliographique ; traité intégral non lu.",
+      "reviewEvidence": [
+        {
+          "url": "https://books.google.com/books/about/Du_hachisch_et_de_l_ali%C3%A9nation_mentale.html?id=yMyuaQhYjhIC",
+          "openedAt": "2026-11-14",
+          "sections": "Titre Du hachisch et de l’aliénation mentale : études psychologiques ; auteur Moreau, Fortin, Masson, 1845.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Titre Du hachisch et de l’aliénation mentale : études psychologiques ; auteur Moreau, Fortin, Masson, 1845.",
+          "access": "catalogue"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-tours",
+      "title": "Biographie de Jacques Moreau, dit Moreau de Tours (1804–1884)",
+      "organization": "Les Carnets d’histoire de la médecine, Faculté de médecine, Université de Tours",
+      "url": "https://med.univ-tours.fr/medias/fichier/carnets-d-histoire-n-5_1731400709502-pdf?ID_FICHE=457440&INLINE=FALSE",
+      "verifiedAt": "2026-11-14",
+      "author": "Michel Caire",
+      "published": "2024-11",
+      "passage": "Michel Caire, Carnets d’histoire de la médecine no 5, PDF p. 72–74 : soirée de 1840 chez Ajasson de Grandsagne, Moreau absent ; Aglaé, Marix, Boissard ; lettre de Balzac depuis Passy.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Étude historique secondaire ; lettres citées mais originaux non consultés.",
+      "reviewEvidence": [
+        {
+          "url": "https://med.univ-tours.fr/medias/fichier/carnets-d-histoire-n-5_1731400709502-pdf?ID_FICHE=457440&INLINE=FALSE",
+          "openedAt": "2026-11-14",
+          "sections": "Michel Caire, Carnets d’histoire de la médecine no 5, PDF p. 72–74 : soirée de 1840 chez Ajasson de Grandsagne, Moreau absent ; Aglaé, Marix, Boissard ; lettre de Balzac depuis Passy.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Michel Caire, Carnets d’histoire de la médecine no 5, PDF p. 72–74 : soirée de 1840 chez Ajasson de Grandsagne, Moreau absent ; Aglaé, Marix, Boissard ; lettre de Balzac depuis Passy.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-baudelaire",
+      "title": "Les paradis artificiels, opium et haschisch",
+      "organization": "Bibliothèque nationale de France",
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb36575102p",
+      "verifiedAt": "2026-11-14",
+      "author": "Charles Baudelaire",
+      "published": "1860",
+      "passage": "Notice : auteur Charles Baudelaire ; Les paradis artificiels, opium et haschisch ; Paris, Poulet-Malassis et de Broise, 1860.",
+      "access": "catalogue",
+      "documentKind": "Notice de catalogue",
+      "limitation": "",
+      "reviewEvidence": [
+        {
+          "url": "https://catalogue.bnf.fr/ark:/12148/cb36575102p",
+          "openedAt": "2026-11-14",
+          "sections": "Notice : auteur Charles Baudelaire ; Les paradis artificiels, opium et haschisch ; Paris, Poulet-Malassis et de Broise, 1860.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Notice : auteur Charles Baudelaire ; Les paradis artificiels, opium et haschisch ; Paris, Poulet-Malassis et de Broise, 1860.",
+          "access": "catalogue"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-larousse",
+      "title": "Baudelaire (Charles)",
+      "organization": "Larousse, Dictionnaire de la littérature",
+      "url": "https://www.larousse.fr/archives/litterature/page/107",
+      "verifiedAt": "2026-11-14",
+      "author": "Notice biographique Larousse",
+      "published": "non indiquée",
+      "passage": "Rubrique L’œuvre, paragraphes sur Les Paradis artificiels : deux parties, reprise partielle de Thomas de Quincey.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Retenir la description de l’œuvre ; les affirmations sur 1842 et une société secrète ne sont pas reprises, faute de corroboration et en raison de la critique historiographique.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.larousse.fr/archives/litterature/page/107",
+          "openedAt": "2026-11-14",
+          "sections": "Rubrique L’œuvre, paragraphes sur Les Paradis artificiels : deux parties, reprise partielle de Thomas de Quincey.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Rubrique L’œuvre, paragraphes sur Les Paradis artificiels : deux parties, reprise partielle de Thomas de Quincey.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-ludlow",
+      "title": "The hasheesh eater: being passages from the life of a Pythagorean",
+      "organization": "Wellcome Collection / Medical Heritage Library",
+      "url": "https://content.www.wellcomecollection.org/works/cb7vqzwy",
+      "verifiedAt": "2026-11-14",
+      "author": "Fitz Hugh Ludlow",
+      "published": "1857",
+      "passage": "Notice de The Hasheesh Eater : Fitz Hugh Ludlow ; New York, Harper & Bros., 1857.",
+      "access": "catalogue",
+      "documentKind": "Notice de catalogue",
+      "limitation": "Catalogue lu, ouvrage entier non lu.",
+      "reviewEvidence": [
+        {
+          "url": "https://content.www.wellcomecollection.org/works/cb7vqzwy",
+          "openedAt": "2026-11-14",
+          "sections": "Notice de The Hasheesh Eater : Fitz Hugh Ludlow ; New York, Harper & Bros., 1857.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Notice de The Hasheesh Eater : Fitz Hugh Ludlow ; New York, Harper & Bros., 1857.",
+          "access": "catalogue"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-etymology",
+      "title": "Marihuana, marijuana",
+      "organization": "Dictionnaire de l’Académie française, 9e édition",
+      "url": "https://www.dictionnaire-academie.fr/article/A9M1114",
+      "verifiedAt": "2026-11-14",
+      "author": "Académie française",
+      "published": "2024",
+      "passage": "Entrée marijuana : emprunt français au XXe siècle à l’anglais américain, lui-même issu de l’espagnol mexicain mariguana.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Établit le trajet de l’emprunt, pas une origine linguistique ultime certaine.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.dictionnaire-academie.fr/article/A9M1114",
+          "openedAt": "2026-11-14",
+          "sections": "Entrée marijuana : emprunt français au XXe siècle à l’anglais américain, lui-même issu de l’espagnol mexicain mariguana.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Entrée marijuana : emprunt français au XXe siècle à l’anglais américain, lui-même issu de l’espagnol mexicain mariguana.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-merriam",
+      "title": "Marijuana: Word History",
+      "url": "https://www.merriam-webster.com/dictionary/marijuana",
+      "organization": "Merriam-Webster",
+      "author": "Rédaction de Merriam-Webster",
+      "published": "s.d.",
+      "documentKind": "Document de référence",
+      "access": "excerpt",
+      "passage": "Word History, Etymology : mariguana/marihuana mexicains, origine incertaine ; incompatibilité chronologique de la contraction María Juana avec les premières graphies.",
+      "limitation": "Analyse lexicographique ; ouvrages mexicains anciens cités mais non consultés directement. Les définitions pharmacologiques de cette page ne sont pas reprises.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.merriam-webster.com/dictionary/marijuana",
+          "openedAt": "2026-11-14",
+          "sections": "Word History, Etymology : mariguana/marihuana mexicains, origine incertaine ; incompatibilité chronologique de la contraction María Juana avec les premières graphies.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Word History, Etymology : mariguana/marihuana mexicains, origine incertaine ; incompatibilité chronologique de la contraction María Juana avec les premières graphies.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-bretagne",
+      "title": "Présentation de l’opération : les patrimoines liés à l’histoire toilière de la Bretagne",
+      "organization": "Inventaire général du patrimoine culturel, Région Bretagne",
+      "url": "https://relecture.patrimoine.bzh/dossier/pdf/99b76a1a-d7cb-4ce0-ba18-66af3f35f191/presentation-de-l-operation-les-patrimoines-lies-a-l-histoire-toiliere-de-la-bretagne-en-cours.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Inventaire général du patrimoine culturel",
+      "published": "2025",
+      "passage": "Dossier IA29133686, PDF p. 1–2 : économie textile bretonne, réseaux d’exportation et limites de l’inventaire.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Synthèse patrimoniale en cours ; aucune photographie reproduite, droits soumis à autorisation.",
+      "reviewEvidence": [
+        {
+          "url": "https://relecture.patrimoine.bzh/dossier/pdf/99b76a1a-d7cb-4ce0-ba18-66af3f35f191/presentation-de-l-operation-les-patrimoines-lies-a-l-histoire-toiliere-de-la-bretagne-en-cours.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Dossier IA29133686, PDF p. 1–2 : économie textile bretonne, réseaux d’exportation et limites de l’inventaire.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Dossier IA29133686, PDF p. 1–2 : économie textile bretonne, réseaux d’exportation et limites de l’inventaire.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-bretagne-toiles",
+      "title": "Patrimoine lié à la mécanisation de la fabrication des toiles de lin et de chanvre en Bretagne",
+      "organization": "Inventaire général du patrimoine culturel, Région Bretagne",
+      "url": "https://www.patrimoine.bzh/gertrude-diffusion/dossier/IA29010090",
+      "verifiedAt": "2026-11-14",
+      "author": "Lénaïg Salaün et Andrée Le Gall-Sanquer",
+      "published": "2015, mise à jour 2023",
+      "passage": "Historique, paragraphes sur productions et ports : olonnes de Locronan, noyales de Noyal, crées du Léon, bretagnes du Centre-Bretagne, Pouldavid et autres ports.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "",
+      "reviewEvidence": [
+        {
+          "url": "https://www.patrimoine.bzh/gertrude-diffusion/dossier/IA29010090",
+          "openedAt": "2026-11-14",
+          "sections": "Historique, paragraphes sur productions et ports : olonnes de Locronan, noyales de Noyal, crées du Léon, bretagnes du Centre-Bretagne, Pouldavid et autres ports.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Historique, paragraphes sur productions et ports : olonnes de Locronan, noyales de Noyal, crées du Léon, bretagnes du Centre-Bretagne, Pouldavid et autres ports.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-bretagne-fibres",
+      "title": "Patrimoine linier et chanvrier de Bretagne, IA29005674",
+      "url": "https://patrimoine.bzh/gertrude-diffusion/dossier/IA29005674",
+      "organization": "Région Bretagne / Inventaire général",
+      "author": "Andrée Le Gall-Sanquer, Lénaïg Salaün, Juliette Roussel",
+      "published": "2013–2015, mise à jour 2023",
+      "documentKind": "Document de référence",
+      "access": "excerpt",
+      "passage": "Texte historique, notamment carte des productions : Crées et Bretagnes de lin, Olonnes et Noyales de chanvre ; distinction des usages domestiques et commerciaux.",
+      "limitation": "Synthèse patrimoniale ; aucune statistique exhaustive de production ni causalité exclusive pour la richesse régionale.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://patrimoine.bzh/gertrude-diffusion/dossier/IA29005674",
+          "openedAt": "2026-11-14",
+          "sections": "Texte historique, notamment carte des productions : Crées et Bretagnes de lin, Olonnes et Noyales de chanvre ; distinction des usages domestiques et commerciaux.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Texte historique, notamment carte des productions : Crées et Bretagnes de lin, Olonnes et Noyales de chanvre ; distinction des usages domestiques et commerciaux.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-bretagne-process",
+      "title": "Patrimoine lié au séchage et au teillage en Bretagne",
+      "organization": "Inventaire général du patrimoine culturel, Région Bretagne",
+      "url": "https://patrimoine.bzh/gertrude-diffusion/dossier/IA29010103",
+      "verifiedAt": "2026-11-14",
+      "author": "Andrée Le Gall-Sanquer et Lénaïg Salaün",
+      "published": "Non indiquée sur la page consultée",
+      "passage": "Les techniques de séchage et de teillage, paragraphes sur braie/broye, pesselle, peignes métalliques ; filasse longue, étoupe courte destinée notamment aux joints et au calfatage.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Description historique textile, sans extrapolation vers les substances psychoactives.",
+      "reviewEvidence": [
+        {
+          "url": "https://patrimoine.bzh/gertrude-diffusion/dossier/IA29010103",
+          "openedAt": "2026-11-14",
+          "sections": "Les techniques de séchage et de teillage, paragraphes sur braie/broye, pesselle, peignes métalliques ; filasse longue, étoupe courte destinée notamment aux joints et au calfatage.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Les techniques de séchage et de teillage, paragraphes sur braie/broye, pesselle, peignes métalliques ; filasse longue, étoupe courte destinée notamment aux joints et au calfatage.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-pci",
+      "title": "Les savoir-faire du chanvre textile",
+      "organization": "Inventaire national du patrimoine culturel immatériel, ministère de la Culture",
+      "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Collectif d’inventaire (fiche PCI)",
+      "published": "2020",
+      "passage": "PDF p. 9 : Rochefort 1666 et exemple de cordage de 195 m ; p. 14 : Noyale sous Louis XV ; p. 15 : Charlemagne vers 800 et Canebière ; p. 16 : Peillac, foire de Redon dite Teillouse.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Source patrimoniale secondaire. Charlemagne est une attribution de cette fiche, sans document carolingien consulté. Les récits de causalité industrielle de la prohibition et d’origine unique de la plante contenus ailleurs dans le document ne sont pas repris.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.culture.gouv.fr/Media/Thematiques/Patrimoine-culturel-immateriel/Files/Fiches-inventaire-du-PCI/les-savoir-faire-du-chanvre-textile.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "PDF p. 9 : Rochefort 1666 et exemple de cordage de 195 m ; p. 14 : Noyale sous Louis XV ; p. 15 : Charlemagne vers 800 et Canebière ; p. 16 : Peillac, foire de Redon dite Teillouse.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "PDF p. 9 : Rochefort 1666 et exemple de cordage de 195 m ; p. 14 : Noyale sous Louis XV ; p. 15 : Charlemagne vers 800 et Canebière ; p. 16 : Peillac, foire de Redon dite Teillouse.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-mount-vernon",
+      "title": "George Washington Grew Hemp",
+      "organization": "George Washington’s Mount Vernon",
+      "url": "https://www.mountvernon.org/george-washington/farming/washingtons-crops/george-washington-grew-hemp",
+      "verifiedAt": "2026-11-14",
+      "author": "Mount Vernon Ladies’ Association",
+      "published": "Non indiquée",
+      "passage": "Hemp History et Washington’s Use of Hemp : cordes, sacs, toiles, réparation des filets de senne, cinq fermes ; huile pour peintures, vernis et savons.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Médiation patrimoniale adossée aux archives ; ne pas reprendre la dichotomie botanique sativa/indica, les seuils modernes projetés sur les cultures anciennes ou une absence absolue d’effets.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mountvernon.org/george-washington/farming/washingtons-crops/george-washington-grew-hemp",
+          "openedAt": "2026-11-14",
+          "sections": "Hemp History et Washington’s Use of Hemp : cordes, sacs, toiles, réparation des filets de senne, cinq fermes ; huile pour peintures, vernis et savons.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Hemp History et Washington’s Use of Hemp : cordes, sacs, toiles, réparation des filets de senne, cinq fermes ; huile pour peintures, vernis et savons.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-declaration",
+      "title": "How Was it Made? — Declaration of Independence",
+      "organization": "US National Archives",
+      "url": "https://www.archives.gov/founding-docs/declaration/how-was-it-made",
+      "verifiedAt": "2026-11-14",
+      "author": "National Archives",
+      "published": "2020-10-09",
+      "passage": "How was it made? : ordre du Congrès du 19 juillet 1776 pour l’exemplaire au net sur parchemin et journal du 2 août concernant les signatures.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Concerne l’exemplaire signé ; ne certifie pas la composition de chaque brouillon, ni celle d’un autre imprimé ancien.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.archives.gov/founding-docs/declaration/how-was-it-made",
+          "openedAt": "2026-11-14",
+          "sections": "How was it made? : ordre du Congrès du 19 juillet 1776 pour l’exemplaire au net sur parchemin et journal du 2 août concernant les signatures.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "How was it made? : ordre du Congrès du 19 juillet 1776 pour l’exemplaire au net sur parchemin et journal du 2 août concernant les signatures.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-yanghai",
+      "title": "Phytochemical and genetic analyses of ancient cannabis from Central Asia",
+      "organization": "Journal of Experimental Botany / PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2639026/",
+      "verifiedAt": "2026-11-14",
+      "author": "E. B. Russo et al.",
+      "published": "2008",
+      "passage": "Contexte archéologique : Turpan/Xinjiang, tombe M90 d’un homme estimé à 45 ans, panier de cuir et bol de bois, 789 g de matière végétale et harpe kongou ; conservation par aridité, profondeur et alcalinité ; discussion de la datation corrigée vers 2700 ans BP.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "L’identité de guérisseur et la finalité médicinale/divinatoire sont des interprétations ; la présence de cannabis ne documente pas à elle seule la voie d’administration.",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2639026/",
+          "openedAt": "2026-11-14",
+          "sections": "Contexte archéologique : Turpan/Xinjiang, tombe M90 d’un homme estimé à 45 ans, panier de cuir et bol de bois, 789 g de matière végétale et harpe kongou ; conservation par aridité, profondeur et alcalinité ; discussion de la datation corrigée vers 2700 ans BP.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Contexte archéologique : Turpan/Xinjiang, tombe M90 d’un homme estimé à 45 ans, panier de cuir et bol de bois, 789 g de matière végétale et harpe kongou ; conservation par aridité, profondeur et alcalinité ; discussion de la datation corrigée vers 2700 ans BP.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-jirzankal",
+      "title": "The origins of cannabis smoking: Chemical residue evidence from the first millennium BCE in the Pamirs",
+      "organization": "Science Advances / PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6561734/",
+      "verifiedAt": "2026-11-14",
+      "author": "Meng Ren et al.",
+      "published": "2019-06-12",
+      "passage": "Introduction et Results : Quman, environ 2500 ans, dix braseros en bois de huit tombes, analyses des faces internes et externes et de quatre pierres ; Discussion : Pazyryk ; Materials and Methods : zone B à 3061 m.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "CBN conservé et contexte de combustion soutiennent une interprétation d’usage rituel ; teneur initiale en THC, intention de sélection et expérience subjective ne sont pas mesurées. Excavation originale de Pazyryk non lue.",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6561734/",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction et Results : Quman, environ 2500 ans, dix braseros en bois de huit tombes, analyses des faces internes et externes et de quatre pierres ; Discussion : Pazyryk ; Materials and Methods : zone B à 3061 m.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Introduction et Results : Quman, environ 2500 ans, dix braseros en bois de huit tombes, analyses des faces internes et externes et de quatre pierres ; Discussion : Pazyryk ; Materials and Methods : zone B à 3061 m.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-haimenkou",
+      "title": "Morphometric approaches to Cannabis evolution and differentiation from archaeological sites: interpreting the archaeobotanical evidence from bronze age Haimenkou, Yunnan",
+      "organization": "Vegetation History and Archaeobotany / Springer Nature",
+      "url": "https://link.springer.com/article/10.1007/s00334-023-00966-6",
+      "verifiedAt": "2026-11-14",
+      "author": "Rita Dal Martello et al.",
+      "published": "2023-11-30 (volume 2024)",
+      "passage": "Abstract et discussion archéobotanique : plus de 800 grains récupérés en 2008 ; contexte daté de 1650–400 avant notre ère et lot principal de 1400–1100 ; mention secondaire des textiles de Ban Don Ta Phet vers 400 avant notre ère ; légende Fig. 2 et rubrique Rights and permissions.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Taille des grains insuffisante pour conclure à une variété intoxicante. Publication originale des textiles thaïlandais non lue. Image Fig. 2 sous CC BY 4.0 repérée, téléchargement non exploitable et image non reproduite.",
+      "reviewEvidence": [
+        {
+          "url": "https://link.springer.com/article/10.1007/s00334-023-00966-6",
+          "openedAt": "2026-11-14",
+          "sections": "Abstract et discussion archéobotanique : plus de 800 grains récupérés en 2008 ; contexte daté de 1650–400 avant notre ère et lot principal de 1400–1100 ; mention secondaire des textiles de Ban Don Ta Phet vers 400 avant notre ère ; légende Fig. 2 et rubrique Rights and permissions.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Abstract et discussion archéobotanique : plus de 800 grains récupérés en 2008 ; contexte daté de 1650–400 avant notre ère et lot principal de 1400–1100 ; mention secondaire des textiles de Ban Don Ta Phet vers 400 avant notre ère ; légende Fig. 2 et rubrique Rights and permissions.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-archaeology-review",
+      "title": "Late Holocene hemp (Cannabis sativa) retting in NE Hungary and the Holocene spread of hemp cultivation in eastern-central Europe",
+      "organization": "Vegetation History and Archaeobotany / Springer Nature",
+      "url": "https://link.springer.com/article/10.1007/s00334-025-01046-7",
+      "verifiedAt": "2026-11-14",
+      "author": "Abigail A. Ofosu-Brakoh et al.",
+      "published": "2025-04-05",
+      "passage": "Introduction : distinction des pollens Cannabis/Humulus et mention des graines d’Oki-no-shima, Jōmon initial, 6000–5220 cal BP.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Revue de 2025 ; publications de fouilles japonaises originales et correction éditoriale non lues. La plage est attribuée à cette synthèse.",
+      "reviewEvidence": [
+        {
+          "url": "https://link.springer.com/article/10.1007/s00334-025-01046-7",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction : distinction des pollens Cannabis/Humulus et mention des graines d’Oki-no-shima, Jōmon initial, 6000–5220 cal BP.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Introduction : distinction des pollens Cannabis/Humulus et mention des graines d’Oki-no-shima, Jōmon initial, 6000–5220 cal BP.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-culture-herodotus",
+      "title": "The History of Herodotus, Book IV",
+      "organization": "Internet Classics Archive / MIT",
+      "url": "https://classics.mit.edu/Herodotus/history.4.iv.html",
+      "verifiedAt": "2026-11-14",
+      "author": "Hérodote, traduction George Rawlinson",
+      "published": "Ve siècle avant notre ère ; traduction du XIXe siècle",
+      "passage": "Histoires, livre IV, traduction Rawlinson : passage décrivant le chanvre, les étoffes thraces et les pratiques funéraires scythes.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Témoignage littéraire ancien traduit ; ni observation archéologique, ni preuve que toutes les populations anciennes suivaient ces pratiques.",
+      "reviewEvidence": [
+        {
+          "url": "https://classics.mit.edu/Herodotus/history.4.iv.html",
+          "openedAt": "2026-11-14",
+          "sections": "Histoires, livre IV, traduction Rawlinson : passage décrivant le chanvre, les étoffes thraces et les pratiques funéraires scythes.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Histoires, livre IV, traduction Rawlinson : passage décrivant le chanvre, les étoffes thraces et les pratiques funéraires scythes.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-statutes",
+      "title": "Marihuana Tax Act of 1937, 50 Stat. 551",
+      "organization": "U.S. Government Publishing Office",
+      "url": "https://www.govinfo.gov/content/pkg/STATUTE-50/pdf/STATUTE-50-Pg551-2.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "75th United States Congress",
+      "published": "1937-08-02",
+      "passage": "Statutes at Large 50, p. 551–552, chapitre 553 et début du texte du 2 août 1937 : taxation, enregistrement et définition avec exclusions des tiges mûres et fibres.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "La page commence par un autre chapitre ; seul le chapitre 553 est cité. Distinguer dispositif fiscal et interdiction pénale générale.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.govinfo.gov/content/pkg/STATUTE-50/pdf/STATUTE-50-Pg551-2.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Statutes at Large 50, p. 551–552, chapitre 553 et début du texte du 2 août 1937 : taxation, enregistrement et définition avec exclusions des tiges mûres et fibres.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Statutes at Large 50, p. 551–552, chapitre 553 et début du texte du 2 août 1937 : taxation, enregistrement et définition avec exclusions des tiges mûres et fibres.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-csa",
+      "title": "Schedules of Controlled Substances: Rescheduling of Marijuana",
+      "organization": "U.S. Drug Enforcement Administration",
+      "url": "https://www.dea.gov/sites/default/files/2024-05/Scheduling%20NPRM%20508.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Drug Enforcement Administration",
+      "published": "2024",
+      "passage": "Projet DEA de 2024, Background p. 9 : classement initial de la marijuana au Schedule I par le Congrès en 1970.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Projet de reclassement de 2024, pas décision définitive et pas preuve de la situation juridique en novembre 2026.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.dea.gov/sites/default/files/2024-05/Scheduling%20NPRM%20508.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Projet DEA de 2024, Background p. 9 : classement initial de la marijuana au Schedule I par le Congrès en 1970.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Projet DEA de 2024, Background p. 9 : classement initial de la marijuana au Schedule I par le Congrès en 1970.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-csa-policy",
+      "title": "Drug Policy: Controlled Substances Act of 1970",
+      "url": "https://www.dea.gov/drug-information/drug-policy",
+      "organization": "DEA",
+      "author": "Drug Enforcement Administration",
+      "published": "s.d.",
+      "documentKind": "Document de référence",
+      "access": "excerpt",
+      "passage": "Rubrique Controlled Substances Act of 1970 : cinq schedules, critères et mécanisme de reclassement.",
+      "limitation": "Utilisé pour la structure du système, pas pour déduire le classement actuel du cannabis.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.dea.gov/drug-information/drug-policy",
+          "openedAt": "2026-11-14",
+          "sections": "Rubrique Controlled Substances Act of 1970 : cinq schedules, critères et mécanisme de reclassement.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Rubrique Controlled Substances Act of 1970 : cinq schedules, critères et mécanisme de reclassement.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-hemp-victory",
+      "title": "Hemp For Victory, circa 1942",
+      "organization": "USDA National Agricultural Library Special Collections",
+      "url": "https://archivesspace.nal.usda.gov/repositories/4/archival_objects/16966",
+      "verifiedAt": "2026-11-14",
+      "author": "United States Department of Agriculture",
+      "published": "vers 1942",
+      "passage": "Notice USDA film collection : Hemp for Victory, circa 1942 ; film 16 mm noir et blanc, durée 14 min 13 s ; destination agricole et besoins en fibres.",
+      "access": "catalogue",
+      "documentKind": "Notice de catalogue",
+      "limitation": "Notice et description lues ; film non visionné. La date est approximative dans le catalogue.",
+      "reviewEvidence": [
+        {
+          "url": "https://archivesspace.nal.usda.gov/repositories/4/archival_objects/16966",
+          "openedAt": "2026-11-14",
+          "sections": "Notice USDA film collection : Hemp for Victory, circa 1942 ; film 16 mm noir et blanc, durée 14 min 13 s ; destination agricole et besoins en fibres.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Notice USDA film collection : Hemp for Victory, circa 1942 ; film 16 mm noir et blanc, durée 14 min 13 s ; destination agricole et besoins en fibres.",
+          "access": "catalogue"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-uruguay",
+      "title": "Ley N° 19.172: Regulación y control del cannabis",
+      "organization": "Presidencia de la República Oriental del Uruguay",
+      "url": "https://www.gub.uy/presidencia/institucional/normativa/ley-n-19172-fecha-20122013-regulacion-control-del-cannabis",
+      "verifiedAt": "2026-11-14",
+      "author": "Poder Legislativo / Presidencia de Uruguay",
+      "published": "2013-12-20 (promulgation); 2014-01-07 (publication) ",
+      "passage": "Page de la Présidence : loi 19.172 du 20 décembre 2013 et régulation du cannabis.",
+      "access": "official-page",
+      "documentKind": "Document de référence",
+      "limitation": "Page de présentation, complétée par le texte IMPO pour les articles et dates de publication.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.gub.uy/presidencia/institucional/normativa/ley-n-19172-fecha-20122013-regulacion-control-del-cannabis",
+          "openedAt": "2026-11-14",
+          "sections": "Page de la Présidence : loi 19.172 du 20 décembre 2013 et régulation du cannabis.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Page de la Présidence : loi 19.172 du 20 décembre 2013 et régulation du cannabis.",
+          "access": "official-page"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-uruguay-impo",
+      "title": "Ley no 19172",
+      "url": "https://www.impo.com.uy/bases/leyes/19172-2013",
+      "organization": "IMPO, Uruguay",
+      "author": "République orientale de l’Uruguay",
+      "published": "2013",
+      "documentKind": "Document de référence",
+      "access": "excerpt",
+      "passage": "En-tête : promulgation 20/12/2013, publication 07/01/2014 ; articles 1–2 : santé et réduction des risques ; articles 17–19 : création et missions de l’IRCCA.",
+      "limitation": "Texte consolidé comportant des modifications postérieures ; utilisé pour les repères historiques et les dispositions citées, pas comme guide pratique exhaustif du droit actuel.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.impo.com.uy/bases/leyes/19172-2013",
+          "openedAt": "2026-11-14",
+          "sections": "En-tête : promulgation 20/12/2013, publication 07/01/2014 ; articles 1–2 : santé et réduction des risques ; articles 17–19 : création et missions de l’IRCCA.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "En-tête : promulgation 20/12/2013, publication 07/01/2014 ; articles 1–2 : santé et réduction des risques ; articles 17–19 : création et missions de l’IRCCA.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-canada",
+      "title": "Taking stock of progress: Cannabis legalization and regulation in Canada",
+      "organization": "Health Canada",
+      "url": "https://www.canada.ca/en/health-canada/programs/engaging-cannabis-legalization-regulation-canada-taking-stock-progress/document.html",
+      "verifiedAt": "2026-11-14",
+      "author": "Health Canada",
+      "published": "2022",
+      "passage": "Introduction : entrée en vigueur le 17 octobre 2018 ; production, distribution, vente, import/export et possession réglementées pour les adultes admissibles.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Document de bilan ; ne décrit pas toutes les règles provinciales et leurs évolutions.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/health-canada/programs/engaging-cannabis-legalization-regulation-canada-taking-stock-progress/document.html",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction : entrée en vigueur le 17 octobre 2018 ; production, distribution, vente, import/export et possession réglementées pour les adultes admissibles.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Introduction : entrée en vigueur le 17 octobre 2018 ; production, distribution, vente, import/export et possession réglementées pour les adultes admissibles.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-un-treaties",
+      "title": "The International Drug Control Conventions",
+      "organization": "United Nations Office on Drugs and Crime / United Nations",
+      "url": "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "United Nations",
+      "published": "non indiquée (compilation consultée)",
+      "passage": "Compilation 2013, préface p. 6 : conférence de New York du 24 janvier au 25 mars 1961 ; protocole de Genève de 1972 ; conférence de Vienne du 11 janvier au 21 février 1971 ; conférence de Vienne du 25 novembre au 20 décembre 1988.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Compilation historique antérieure au vote de 2020 ; ne suffit pas seule à établir les changements ultérieurs.",
+      "reviewEvidence": [
+        {
+          "url": "https://documents.un.org/api/symbol/access?l=en&s=st%2FCND%2F1&t=pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Compilation 2013, préface p. 6 : conférence de New York du 24 janvier au 25 mars 1961 ; protocole de Genève de 1972 ; conférence de Vienne du 11 janvier au 21 février 1971 ; conférence de Vienne du 25 novembre au 20 décembre 1988.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Compilation 2013, préface p. 6 : conférence de New York du 24 janvier au 25 mars 1961 ; protocole de Genève de 1972 ; conférence de Vienne du 11 janvier au 21 février 1971 ; conférence de Vienne du 25 novembre au 20 décembre 1988.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-un1961-depositary",
+      "title": "Single Convention on Narcotic Drugs, 1961: status",
+      "url": "https://treaties.un.org/Pages/ViewDetails.aspx?src=TREATY&mtdsg_no=VI-15&chapter=6&clang=_en",
+      "organization": "Collection des traités de l’ONU",
+      "author": "Secrétaire général des Nations unies, dépositaire",
+      "published": "s.d.",
+      "documentKind": "Document de référence",
+      "access": "excerpt",
+      "passage": "En-tête : New York, 30 mars 1961 ; Entry into force : 13 décembre 1964.",
+      "limitation": "Dates de l’instrument, distinctes des dates de la conférence et des adhésions nationales.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://treaties.un.org/Pages/ViewDetails.aspx?src=TREATY&mtdsg_no=VI-15&chapter=6&clang=_en",
+          "openedAt": "2026-11-14",
+          "sections": "En-tête : New York, 30 mars 1961 ; Entry into force : 13 décembre 1964.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "En-tête : New York, 30 mars 1961 ; Entry into force : 13 décembre 1964.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-un-2020",
+      "title": "E/2020/28/Add.1: Report of the Commission on Narcotic Drugs, reconvened 63rd session",
+      "organization": "United Nations Economic and Social Council",
+      "url": "https://documents.un.org/api/symbol/access?l=en&s=e%2F2020%2F28%2Fadd.1&t=pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Commission on Narcotic Drugs",
+      "published": "2020-12-02 (vote)",
+      "passage": "Rapport E/2020/28/Add.1, décision 63/17, PDF p. 12 (pagination imprimée p. 5) : 2 décembre 2020, suppression du cannabis et de sa résine du tableau IV, vote nominal 27 pour, 25 contre, 1 abstention.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Retrait du tableau IV uniquement ; ce vote ne supprime ni le tableau I ni les conventions et ne légalise pas mondialement l’usage récréatif.",
+      "reviewEvidence": [
+        {
+          "url": "https://documents.un.org/api/symbol/access?l=en&s=e%2F2020%2F28%2Fadd.1&t=pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Rapport E/2020/28/Add.1, décision 63/17, PDF p. 12 (pagination imprimée p. 5) : 2 décembre 2020, suppression du cannabis et de sa résine du tableau IV, vote nominal 27 pour, 25 contre, 1 abstention.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Rapport E/2020/28/Add.1, décision 63/17, PDF p. 12 (pagination imprimée p. 5) : 2 décembre 2020, suppression du cannabis et de sa résine du tableau IV, vote nominal 27 pour, 25 contre, 1 abstention.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-prop215",
+      "title": "Proposition 215: Text of Proposed Law",
+      "organization": "California Secretary of State",
+      "url": "https://vigarchive.sos.ca.gov/1996/general/pamphlet/215text.htm",
+      "verifiedAt": "2026-11-14",
+      "author": "California voters / Secretary of State archive",
+      "published": "1996-11-05",
+      "passage": "Texte officiel de la Proposition 215, Health and Safety Code 11362.5 : titre Compassionate Use Act of 1996 et objet médical.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Texte soumis au vote lu ; résultat du scrutin et jour exact d’adoption non documentés par cette page, donc ne pas conserver le 5 novembre comme fait vérifié ici.",
+      "reviewEvidence": [
+        {
+          "url": "https://vigarchive.sos.ca.gov/1996/general/pamphlet/215text.htm",
+          "openedAt": "2026-11-14",
+          "sections": "Texte officiel de la Proposition 215, Health and Safety Code 11362.5 : titre Compassionate Use Act of 1996 et objet médical.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Texte officiel de la Proposition 215, Health and Safety Code 11362.5 : titre Compassionate Use Act of 1996 et objet médical.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-shafer-wellcome",
+      "title": "Marihuana: A Signal of Misunderstanding",
+      "url": "https://wellcomecollection.org/works/nd92929z",
+      "organization": "Wellcome Collection",
+      "author": "United States Commission on Marihuana and Drug Abuse",
+      "published": "1972",
+      "documentKind": "Document de référence",
+      "access": "catalogue",
+      "passage": "Catalogue : Commission on Marihuana and Drug Abuse, ouvrage de 1972, Raymond P. Shafer cité comme chairman et auteur de préface.",
+      "limitation": "Édition commerciale Signet, pas lecture du rapport gouvernemental intégral. PDF gouvernemental trop volumineux pour le lecteur web ; date exacte de remise en mars et recommandations détaillées non certifiées par cette notice.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://wellcomecollection.org/works/nd92929z",
+          "openedAt": "2026-11-14",
+          "sections": "Catalogue : Commission on Marihuana and Drug Abuse, ouvrage de 1972, Raymond P. Shafer cité comme chairman et auteur de préface.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Catalogue : Commission on Marihuana and Drug Abuse, ouvrage de 1972, Raymond P. Shafer cité comme chairman et auteur de préface.",
+          "access": "catalogue"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-laguardia",
+      "title": "The Marihuana Problem in the City of New York",
+      "organization": "Mayor’s Committee on Marihuana / New York Academy of Medicine (rapport numérisé)",
+      "url": "https://rodneybarnett.net/PDF/Laguardia%20Report%201944.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Mayor’s Committee on Marihuana ; New York Academy of Medicine",
+      "published": "1944",
+      "passage": "Ouverture du rapport municipal de 1944, pages liminaires et p. 2 : financement/supervision financière de l’étude sociologique par New York Academy of Medicine ; étude clinique par Research Council du Department of Hospitals.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Transcription d’un document primaire historique ; ne pas transformer ses conclusions anciennes en expertise clinique contemporaine.",
+      "reviewEvidence": [
+        {
+          "url": "https://rodneybarnett.net/PDF/Laguardia%20Report%201944.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Ouverture du rapport municipal de 1944, pages liminaires et p. 2 : financement/supervision financière de l’étude sociologique par New York Academy of Medicine ; étude clinique par Research Council du Department of Hospitals.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Ouverture du rapport municipal de 1944, pages liminaires et p. 2 : financement/supervision financière de l’étude sociologique par New York Academy of Medicine ; étude clinique par Research Council du Department of Hospitals.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-anslinger",
+      "title": "Narcotics Enforcement in the 1930s",
+      "organization": "U.S. Drug Enforcement Administration Museum",
+      "url": "https://museum.dea.gov/exhibits/online-exhibits/anslinger/narcotics-enforcement-1930s",
+      "verifiedAt": "2026-11-14",
+      "author": "Drug Enforcement Administration Museum",
+      "published": "non indiquée",
+      "passage": "Narcotics Enforcement in the 1930s : création en 1930 du Federal Bureau of Narcotics au Treasury ; Anslinger premier commissaire.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Récit institutionnel de la DEA ; ne suffit pas à expliquer toutes les causes politiques de la prohibition. Fin de mandat en 1962 non vérifiée dans le passage lu.",
+      "reviewEvidence": [
+        {
+          "url": "https://museum.dea.gov/exhibits/online-exhibits/anslinger/narcotics-enforcement-1930s",
+          "openedAt": "2026-11-14",
+          "sections": "Narcotics Enforcement in the 1930s : création en 1930 du Federal Bureau of Narcotics au Treasury ; Anslinger premier commissaire.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Narcotics Enforcement in the 1930s : création en 1930 du Federal Bureau of Narcotics au Treasury ; Anslinger premier commissaire.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-hemp-commission",
+      "title": "Resolution concerning the Report of the Indian Hemp Drugs Commission",
+      "organization": "National Library of Scotland, India Office Records digital collection",
+      "url": "https://deriv.nls.uk/dcn9/7496/74964631.9.htm",
+      "verifiedAt": "2026-11-14",
+      "author": "Government of India, Finance and Commerce Department",
+      "published": "1895-03-21 (report received 1894; commission appointed 1893)",
+      "passage": "Résolution coloniale datée du 21 mars 1895 : commission, rapport reçu en épreuves le 7 août 1894, extension de l’enquête au-delà du Bengale à l’Inde.",
+      "access": "excerpt",
+      "documentKind": "Notice de catalogue",
+      "limitation": "Archive coloniale : catégories et appréciations situées historiquement. La date de nomination de 1893 n’apparaît pas sur cette page et est retirée du quiz.",
+      "reviewEvidence": [
+        {
+          "url": "https://deriv.nls.uk/dcn9/7496/74964631.9.htm",
+          "openedAt": "2026-11-14",
+          "sections": "Résolution coloniale datée du 21 mars 1895 : commission, rapport reçu en épreuves le 7 août 1894, extension de l’enquête au-delà du Bengale à l’Inde.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "Résolution coloniale datée du 21 mars 1895 : commission, rapport reçu en épreuves le 7 août 1894, extension de l’enquête au-delà du Bengale à l’Inde.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-hist-opium-1925",
+      "title": "International Opium Convention, Geneva, 19 February 1925",
+      "organization": "United Nations Treaty Collection",
+      "url": "https://treaties.un.org/doc/Publication/MTDSG/Volume%20I/Chapter%20VI/VI-5.en.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "League of Nations; depositary record by United Nations",
+      "published": "1925-02-19 (consolidated record includes 1946 amendments)",
+      "passage": "En-tête du document du dépositaire : International Opium Convention, Geneva, 19 February 1925 ; amendement de Lake Success en 1946.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "La date de 1948 sur ce document concerne la version amendée : ne pas la présenter comme entrée en vigueur originale de 1925.",
+      "reviewEvidence": [
+        {
+          "url": "https://treaties.un.org/doc/Publication/MTDSG/Volume%20I/Chapter%20VI/VI-5.en.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "En-tête du document du dépositaire : International Opium Convention, Geneva, 19 February 1925 ; amendement de Lake Success en 1946.",
+          "result": "Passages réellement ouverts et lus dans le navigateur web.",
+          "supports": "En-tête du document du dépositaire : International Opium Convention, Geneva, 19 February 1925 ; amendement de Lake Success en 1946.",
+          "access": "excerpt"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "ref-histoire-culture",
+      "fullyRead": true,
+      "questions": [
+        "Quel écrivain publie « Le Club des Hachichins » en 1846 ?",
+        "Dans quel hôtel parisien Gautier situe-t-il une réunion du Club des Hachichins ?",
+        "Sur quelle île de Paris se trouve l’hôtel Pimodan, associé au Club des Hachichins ?",
+        "Quel médecin est associé aux réunions expérimentales du Club des Hachichins ?",
+        "Complète le titre du traité de Moreau de Tours paru en 1845 : « Du hachisch et de… »",
+        "Quel produit donne son nom au Club des Hachichins ?",
+        "Quelle fibre végétale alimentait traditionnellement la fabrication des cordages à Rochefort ?",
+        "À quelle activité renvoyait la « Teillouse » de Redon, fréquentée notamment par les artisans de Peillac ?",
+        "Selon la fiche patrimoniale « Les savoir-faire du chanvre textile », quel souverain est associé à un essor vers l’an 800 ?",
+        "Dans la tombe M90 de Yanghai contenant du cannabis, quel âge avait approximativement le défunt ?",
+        "Dans quelle région se trouve Jirzankal, où des résidus de cannabis ont été trouvés dans des braseros ?",
+        "« Marihuana » est emprunté à une variété d’espagnol parlée surtout où ?",
+        "Quel futur président américain cultivait du chanvre dans son domaine de Mount Vernon ?",
+        "Quel peintre accueillait les réunions du Club des Hachichins à l’hôtel Pimodan ?",
+        "Quelle revue publie le récit « Le Club des Hachichins » de Gautier en 1846 ?",
+        "Dans quelle ville paraît en 1845 « Du hachisch et de l’aliénation mentale » de Moreau de Tours ?",
+        "À quelle date paraît « Le Club des Hachichins » de Gautier dans la Revue des Deux Mondes ?",
+        "Souvent dite « en chanvre », la Déclaration d’indépendance américaine signée est en réalité sur…",
+        "Quelle période la présentation de la recherche historique retient-elle pour les rencontres de l’hôtel Pimodan ?",
+        "Qui est l’auteur des « Paradis artificiels », consacrés notamment au haschisch ?",
+        "Comment appelait-on les toiles de chanvre fabriquées autour de Locronan ?",
+        "Dans quelle commune bretonne étaient produites les toiles appelées « Noyales » ?",
+        "Quelle variante orthographique de « marijuana » est attestée en espagnol mexicain ?",
+        "Quel usage naval faisait-on traditionnellement de l’étoupe de chanvre ?",
+        "Quelle corderie royale, construite en 1666, fabriquait des cordages navals ?",
+        "Quelle fibre composait les crées fabriquées dans le Léon ?",
+        "Dans quelle région bretonne les toiles appelées « Bretagnes » étaient-elles fabriquées ?",
+        "Quel port breton exportait des toiles de lin et de chanvre ?",
+        "Quels vestiges végétaux étaient présents dans la tombe M90 de Yanghai ?",
+        "Quel instrument de musique accompagnait le cannabis dans la tombe M90 de Yanghai ?",
+        "Qui publie « The Hasheesh Eater » aux États-Unis en 1857 ?",
+        "Pourquoi le médecin Moreau de Tours s’intéressait-il aux effets du haschisch ?",
+        "Dans « Le Club des Hachichins » de Gautier, à quelle fréquence ont lieu les séances ?",
+        "Quel prénom de participante au Club des Hachichins est cité dans la biographie de Moreau publiée par l’Université de Tours ?",
+        "D’après la lettre citée par Michel Caire, de quelle localité Balzac écrit-il à Moreau après une soirée ?",
+        "Sous quel règne les toiles de Noyal-sur-Vilaine fournissaient-elles la Marine royale ?",
+        "À Mount Vernon, quels équipements de pêche étaient réparés avec du chanvre ?",
+        "À quoi servait la pesselle dans le teillage traditionnel du chanvre en Bretagne ?",
+        "Quel outil brisait la partie ligneuse des tiges lors du teillage manuel du chanvre en Bretagne ?",
+        "Dans la préparation du chanvre textile, quel outil retirait les derniers fragments de bois et séparait les fibres ?",
+        "Quel site thaïlandais est cité dans l’étude de Haimenkou pour des textiles identifiés comme chanvre vers 400 avant notre ère ?",
+        "Quel rapport étymologique est établi entre « marijuana » et « María Juana » ?",
+        "Dans quelle partie de la Chine se trouve le site funéraire de Yanghai ?",
+        "Sous quel autre nom le cimetière de Jirzankal, associé à des usages anciens du cannabis, est-il connu ?",
+        "En 2019, quel âge les archéologues attribuent-ils aux sépultures contenant des traces de cannabis à Jirzankal ?",
+        "À quelle altitude se trouvait la zone B du cimetière de Jirzankal ?",
+        "Quelles conditions ont favorisé la conservation du cannabis dans la tombe M90 de Yanghai ?",
+        "Selon la synthèse archéobotanique de 2025, à quelle culture sont associées les graines d’Oki-no-shima ?",
+        "Combien de graines de chanvre ont été récupérées lors des fouilles de 2008 à Haimenkou, au Yunnan ?",
+        "Selon la discussion de l’étude de Jirzankal, quel objet était associé aux récipients de la tombe 2 de Pazyryk ?",
+        "En quelle année Baudelaire publie-t-il Les Paradis artificiels ?",
+        "Quel auteur anglais Baudelaire reprend-il dans « Un mangeur d’opium », une partie des « Paradis artificiels » ?",
+        "Chez quel homme de lettres a lieu une expérience parisienne au haschisch en 1840 ?",
+        "Quel auteur grec décrit des usages du chanvre chez les Scythes dans ses « Histoires » ?",
+        "Quelle longueur de cordage naval illustre la fiche patrimoniale « Les savoir-faire du chanvre textile » ?",
+        "Que désigne le mot provençal à l’origine du nom « Canebière » ?",
+        "À Yanghai, quel effet les sols alcalins ont-ils eu sur la conservation des restes de cannabis ?",
+        "Dans quel matériau étaient fabriqués les braseros contenant des résidus de cannabis à Jirzankal ?",
+        "Outre l’alimentation, quel usage ancien de l’huile de graines de chanvre est documenté ?",
+        "Par quelle langue le français a-t-il emprunté « marihuana » à l’espagnol mexicain ?"
+      ],
+      "findings": [
+        "Tous les champs et toutes les questions associés relus ; les trois paragraphes initiaux ne permettaient pas d’apprendre les réponses.",
+        "Sources primaires, catalogues et synthèses distingués ; dates de conférence, signature, entrée en vigueur, promulgation et publication séparées.",
+        "Attributions et incertitudes explicites : aucune légende du Club, du papier de la Déclaration ou d’une origine unique ne devient un fait établi."
+      ],
+      "patch": {
+        "relatedArticleIds": [
+          "ref-histoire-politiques",
+          "ref-matieres-chanvre"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [],
+        "lead": "Écrivains, vocabulaire, toiles et sépultures racontent des histoires différentes du chanvre : chaque trace doit être rapportée à sa date, à son support et à ses limites.",
+        "sections": [
+          {
+            "id": "ref-histoire-culture-1",
+            "title": "Le Club des Hachichins : textes et rencontres",
+            "paragraphs": [
+              "Le Club des Hachichins est d’abord le titre d’un récit de Théophile Gautier publié dans la Revue des Deux Mondes, tome 13, le 1er février 1846. Le narrateur situe une soirée à l’hôtel Pimodan, aujourd’hui hôtel de Lauzun, sur l’île Saint-Louis à Paris ; il présente les séances comme mensuelles. Cette périodicité appartient au récit : ce n’est pas un calendrier administratif complet des rencontres.",
+              "Le peintre Boissard de Boisdenier accueille des rencontres où le médecin Jacques-Joseph Moreau de Tours s’intéresse aux effets du haschisch sur le fonctionnement psychique. Son traité Du hachisch et de l’aliénation mentale : études psychologiques paraît à Paris en 1845. Il faut replacer cette investigation dans la psychiatrie du XIXe siècle, sans lui attribuer les garanties des essais cliniques actuels.",
+              "La présentation d’une recherche historique situe les rencontres de l’hôtel Pimodan entre 1845 et 1849 et met en garde contre la légende d’une société secrète permanente. La biographie de Michel Caire cite Aglaé et Marix, ainsi qu’une lettre de Balzac écrite depuis Passy après une soirée. Ce sont des témoignages particuliers, pas une liste de membres régulièrement présents. La même étude décrit dès 1840 une expérience chez le vicomte Ajasson de Grandsagne, en l’absence de Moreau : toute réunion parisienne de cette époque ne se confond donc pas avec le Club.",
+              "Charles Baudelaire publie Les Paradis artificiels, opium et haschisch en 1860. Le livre associe Le Poème du haschisch et Un mangeur d’opium, présentation et traduction partielle des Confessions de Thomas de Quincey. Aux États-Unis, Fitz Hugh Ludlow publie The Hasheesh Eater à New York chez Harper & Bros. en 1857. Ces œuvres témoignent de représentations et d’expériences racontées ; leur célébrité ne prouve ni une pratique universelle ni une innocuité du produit."
+            ],
+            "sourceIds": [
+              "qh-culture-gautier",
+              "qh-culture-bnf",
+              "qh-culture-institut",
+              "qh-culture-moreau",
+              "qh-culture-research",
+              "qh-culture-tours",
+              "qh-culture-baudelaire",
+              "qh-culture-larousse",
+              "qh-culture-ludlow"
+            ]
+          },
+          {
+            "id": "ref-histoire-culture-2",
+            "title": "Le mot « marijuana »",
+            "paragraphs": [
+              "Le Dictionnaire de l’Académie française décrit un emprunt français du XXe siècle à l’anglais des États-Unis, lui-même issu de l’espagnol mexicain mariguana. Marihuana est également une graphie mexicaine attestée ; marijuana s’est diffusé par l’anglais. Il faut distinguer ce trajet de transmission documenté de l’origine ultime du mot, qui demeure incertaine.",
+              "L’analyse étymologique de Merriam-Webster souligne que les premières graphies imprimées mexicaines sont mariguana et marihuana. La contraction des prénoms María Juana n’est donc pas une origine démontrée : le rapprochement populaire ne résout pas la chronologie des attestations. Un nom courant ne définit par ailleurs ni un taxon botanique précis, ni la teneur chimique d’une plante."
+            ],
+            "sourceIds": [
+              "qh-culture-etymology",
+              "qh-culture-merriam"
+            ]
+          },
+          {
+            "id": "ref-histoire-culture-3",
+            "title": "Des toiles et des cordages",
+            "paragraphs": [
+              "L’histoire textile exige de distinguer lin et chanvre. Dans l’inventaire breton, les Olonnes de Locronan et les Noyales de Noyal-sur-Vilaine sont des toiles de chanvre ; les crées du Léon et les Bretagnes du Centre-Bretagne sont de lin. Pouldavid, Landerneau, Morlaix et Saint-Malo participent aux réseaux d’exportation. Le succès de ces toiles ne permet pas d’attribuer toute la production bretonne au chanvre.",
+              "Le teillage sépare les fibres de la partie ligneuse de la tige. Dans les pratiques manuelles décrites par l’Inventaire, la braie ou broye casse le bois ; la pesselle assouplit les fibres et enlève des résidus ; des peignes métalliques achèvent la séparation. La filasse rassemble les fibres longues destinées au filage, l’étoupe les fibres courtes, employées notamment pour les joints et le calfatage.",
+              "La fiche Les savoir-faire du chanvre textile situe la Corderie royale de Rochefort en 1666, sous Louis XIV. Elle donne un exemple de cordage naval pouvant atteindre environ 195 mètres, ce qui aide à comprendre les longs ateliers, sans constituer un record universel. Elle associe les Noyales à l’approvisionnement de la Marine royale sous Louis XV. Elle décrit aussi les chanvriers et tisserands de Peillac se retrouvant à la foire de Redon, dite Teillouse, jusqu’en 1940 : la foire ne se tenait pas à Peillac.",
+              "Cette même fiche patrimoniale évoque un essor sous Charlemagne vers l’an 800 et rattache Canebière au provençal désignant une chanvrière. Le premier repère doit rester attribué à cette source secondaire : aucun texte carolingien n’a été consulté ici pour quantifier cet essor. Les histoires du chanvre demandent une vigilance particulière devant les chronologies trop précises et les explications qui attribuent un événement complexe à une seule fibre."
+            ],
+            "sourceIds": [
+              "qh-culture-bretagne",
+              "qh-culture-bretagne-toiles",
+              "qh-culture-bretagne-fibres",
+              "qh-culture-bretagne-process",
+              "qh-culture-pci"
+            ]
+          },
+          {
+            "id": "ref-histoire-culture-washington",
+            "title": "Washington et les supports écrits",
+            "paragraphs": [
+              "George Washington cultive du chanvre à Mount Vernon. La documentation patrimoniale du domaine associe cette culture aux cordes, aux fils pour sacs, aux toiles et à la réparation des filets de senne des pêcheries du Potomac. Elle mentionne aussi, pour l’histoire des usages de l’huile des graines, les peintures, vernis et savons. Ces usages matériels ne permettent pas de déduire une consommation intoxicante de Washington ni la composition chimique exacte de ses récoltes.",
+              "La Déclaration d’indépendance américaine signée est un exemplaire au net sur parchemin, selon les Archives nationales. Le Congrès ordonne ce support le 19 juillet 1776 ; le journal du 2 août mentionne les signatures. Cette précision porte sur l’exemplaire signé, et ne détermine pas la composition de tous les brouillons. De même, le fait qu’on ait fabriqué du papier à partir de fibres végétales ne prouve pas qu’un exemplaire particulier de Gutenberg soit en chanvre : il faudrait une analyse ou un catalogue matériel propre à cet objet."
+            ],
+            "sourceIds": [
+              "qh-culture-mount-vernon",
+              "qh-culture-declaration"
+            ]
+          },
+          {
+            "id": "ref-histoire-culture-archeologie",
+            "title": "Des sépultures aux analyses : ce qui est observé",
+            "paragraphs": [
+              "À Yanghai, dans le bassin de Turpan au Xinjiang, la tombe M90 renferme un homme estimé à environ 45 ans, une harpe appelée kongou ou konghou, ainsi que du cannabis conservé dans un panier de cuir et un bol de bois. L’étude rapporte 789 g de matière végétale et discute une datation corrigée d’environ 2700 ans BP. Le climat très aride, la profondeur des tombes et les sols alcalins favorisent cette conservation remarquable. L’interprétation d’un emploi médicinal ou divinatoire reste distincte de l’observation des plantes ; le statut exact du défunt et une voie d’administration ne sont pas démontrés par ces objets seuls.",
+              "Jirzankal, également appelé cimetière de Quman, se trouve dans le Pamir oriental. L’étude de 2019 porte sur des sépultures vieilles d’environ 2500 ans, vers 500 avant notre ère. La zone B est située à 3061 m d’altitude. Dix braseros en bois provenant de huit tombes contiennent des pierres portant des traces de chauffe. Les chercheurs analysent des résidus internes et des témoins externes : la présence de CBN, produit de transformation du THC, dans neuf braseros et sur deux pierres soutient l’hypothèse d’une combustion de cannabis dans un contexte funéraire. Elle ne mesure pas directement la teneur initiale en THC ni l’expérience des participants.",
+              "Le livre IV des Histoires d’Hérodote décrit le chanvre et des pratiques scythes liées aux funérailles : c’est un témoignage littéraire ancien. La discussion de l’étude de Jirzankal cite aussi le kourgane 2 de Pazyryk, avec un petit cadre de tente en bois, des récipients en cuivre, des pierres chauffées et des graines de chanvre. Cette comparaison est rapportée par l’article ; elle ne signifie pas que la fouille originale de Pazyryk a été réexaminée ici ni que tous ces rites étaient identiques.",
+              "À Haimenkou, au Yunnan, les fouilles de 2008 ont livré plus de 800 grains de chanvre. L’étude archéobotanique examine leur contexte et leurs dimensions, sans permettre de déduire automatiquement un usage intoxicant. Elle rappelle aussi des fragments textiles identifiés comme chanvre à Ban Don Ta Phet, en Thaïlande, vers 400 avant notre ère ; cette information provient de la discussion, pas d’une relecture de la publication originale des textiles.",
+              "Une synthèse archéobotanique de 2025 mentionne des graines d’Oki-no-shima, au Japon, associées au Jōmon initial et datées de 6000 à 5220 ans calibrés BP. Dans cette notation, BP prend 1950 comme référence : ce n’est pas un nombre d’années compté depuis aujourd’hui. Des graines, du pollen, des fibres et des résidus chimiques répondent à des questions différentes ; notamment, certains pollens de Cannabis et Humulus sont difficiles à séparer. Aucun de ces indices ne suffit isolément à désigner un lieu unique de domestication ou la « première consommation » de toute l’humanité."
+            ],
+            "sourceIds": [
+              "qh-culture-yanghai",
+              "qh-culture-jirzankal",
+              "qh-culture-herodotus",
+              "qh-culture-haimenkou",
+              "qh-culture-archaeology-review"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "qh-culture-gautier",
+          "qh-culture-bnf",
+          "qh-culture-institut",
+          "qh-culture-moreau",
+          "qh-culture-research",
+          "qh-culture-tours",
+          "qh-culture-baudelaire",
+          "qh-culture-larousse",
+          "qh-culture-ludlow",
+          "qh-culture-etymology",
+          "qh-culture-merriam",
+          "qh-culture-bretagne",
+          "qh-culture-bretagne-toiles",
+          "qh-culture-bretagne-fibres",
+          "qh-culture-bretagne-process",
+          "qh-culture-pci",
+          "qh-culture-mount-vernon",
+          "qh-culture-declaration",
+          "qh-culture-yanghai",
+          "qh-culture-jirzankal",
+          "qh-culture-herodotus",
+          "qh-culture-haimenkou",
+          "qh-culture-archaeology-review"
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "Quatre traces, quatre questions",
+          "nodes": [
+            {
+              "label": "Yanghai : plante conservée",
+              "detail": "Contenants funéraires, objets et conditions de conservation ; fonction précise interprétée."
+            },
+            {
+              "label": "Jirzankal : résidus analysés",
+              "detail": "CBN dans les braseros et témoins externes ; combustion interprétée, teneur initiale inconnue."
+            },
+            {
+              "label": "Gautier : récit de 1846",
+              "detail": "Lieu et scènes narrées ; pas registre exhaustif d’un club."
+            },
+            {
+              "label": "Déclaration : support identifié",
+              "detail": "Exemplaire signé sur parchemin ; pas conclusion sur tous les brouillons."
+            }
+          ],
+          "caption": "Ces indices ne forment pas une échelle chronologique des premières consommations : ils répondent à des questions distinctes.",
+          "sourceIds": [
+            "qh-culture-yanghai",
+            "qh-culture-jirzankal",
+            "qh-culture-gautier",
+            "qh-culture-declaration"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "qh-culture-gautier",
+        "qh-culture-bnf",
+        "qh-culture-institut",
+        "qh-culture-moreau",
+        "qh-culture-research",
+        "qh-culture-tours",
+        "qh-culture-baudelaire",
+        "qh-culture-larousse",
+        "qh-culture-ludlow",
+        "qh-culture-etymology",
+        "qh-culture-merriam",
+        "qh-culture-bretagne",
+        "qh-culture-bretagne-toiles",
+        "qh-culture-bretagne-fibres",
+        "qh-culture-bretagne-process",
+        "qh-culture-pci",
+        "qh-culture-mount-vernon",
+        "qh-culture-declaration",
+        "qh-culture-yanghai",
+        "qh-culture-jirzankal",
+        "qh-culture-herodotus",
+        "qh-culture-haimenkou",
+        "qh-culture-archaeology-review"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original contrôlable relu contre les passages cités. Aucun visuel photographique reproduit : droits de l’inventaire breton soumis à autorisation ; Fig. 2 de Haimenkou repérée sous CC BY mais téléchargement inexploitable, fichier HTML erroné supprimé. La synthèse existante n’est pas certifiée comme observation."
+      },
+      "quizIdsReviewed": [
+        "hemp-hc-001",
+        "hemp-hc-002",
+        "hemp-hc-003",
+        "hemp-hc-004",
+        "hemp-hc-005",
+        "hemp-hc-006",
+        "hemp-hc-007",
+        "hemp-hc-008",
+        "hemp-hc-009",
+        "hemp-hc-010",
+        "hemp-hc-011",
+        "hemp-hc-012",
+        "hemp-hc-013",
+        "hemp-hc-014",
+        "hemp-hc-015",
+        "hemp-hc-016",
+        "hemp-hc-017",
+        "hemp-hc-018",
+        "hemp-hc-019",
+        "hemp-hc-020",
+        "hemp-hc-021",
+        "hemp-hc-022",
+        "hemp-hc-023",
+        "hemp-hc-024",
+        "hemp-hc-025",
+        "hemp-hc-026",
+        "hemp-hc-027",
+        "hemp-hc-028",
+        "hemp-hc-029",
+        "hemp-hc-030",
+        "hemp-hc-031",
+        "hemp-hc-032",
+        "hemp-hc-033",
+        "hemp-hc-034",
+        "hemp-hc-035",
+        "hemp-hc-036",
+        "hemp-hc-037",
+        "hemp-hc-038",
+        "hemp-hc-039",
+        "hemp-hc-040",
+        "hemp-hc-041",
+        "hemp-hc-042",
+        "hemp-hc-043",
+        "hemp-hc-044",
+        "hemp-hc-045",
+        "hemp-hc-046",
+        "hemp-hc-047",
+        "hemp-hc-048",
+        "hemp-hc-049",
+        "hemp-hc-050",
+        "hemp-hc-051",
+        "hemp-hc-052",
+        "hemp-hc-053",
+        "hemp-hc-054",
+        "hemp-hc-055",
+        "hemp-hc-056",
+        "hemp-hc-057",
+        "hemp-hc-058",
+        "hemp-hc-059",
+        "hemp-hc-060"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-histoire-politiques",
+      "fullyRead": true,
+      "questions": [
+        "Quel texte fédéral américain de 1937 a instauré une forte taxation des opérations liées au cannabis ?",
+        "Quel texte fédéral américain de 1970 a créé un système de cinq catégories de substances contrôlées ?",
+        "Quel film de l’USDA, daté d’environ 1942, encourageait la culture du chanvre pendant la guerre ?",
+        "Quel pays a adopté en décembre 2013 la loi 19.172 de régulation étatique du cannabis ?",
+        "À quelle date la Cannabis Act canadienne est-elle entrée en vigueur ?",
+        "Quelle convention internationale de 1961 a unifié plusieurs traités sur les stupéfiants ?",
+        "Quelle convention de l’ONU adoptée en 1971 porte sur les substances psychotropes ?",
+        "En 2020, quel organe de l’ONU a voté sur le classement conventionnel du cannabis ?",
+        "Quel sujet figure explicitement dans le titre de la convention de l’ONU de 1988 ?",
+        "Dans quelle ville la convention de 1961 sur les stupéfiants a-t-elle été adoptée ?",
+        "Dans quelle catégorie le Controlled Substances Act américain de 1970 a-t-il placé initialement le cannabis ?",
+        "Quelle partie du chanvre était exclue de la définition de « marihuana » dans le Marihuana Tax Act américain de 1937 ?",
+        "Quel nom porte la Proposition 215 californienne, mesure sur le cannabis médical de 1996 ?",
+        "En quelle année la Convention unique de 1961 sur les stupéfiants est-elle entrée en vigueur ?",
+        "Quelle modification la Commission des stupéfiants de l’ONU a-t-elle approuvée en 2020 pour le cannabis et sa résine ?",
+        "Quel fut le résultat du vote de l’ONU en 2020 sur le retrait du cannabis de l’tableau IV de la Convention de 1961 ?",
+        "Quel protocole a amendé la Convention unique sur les stupéfiants ?",
+        "Quelles activités la Loi sur le cannabis canadienne, entrée en vigueur en 2018, encadre-t-elle pour les adultes ?",
+        "Dans quelle ville la Convention sur les substances psychotropes de 1971 a-t-elle été adoptée ?",
+        "Quelle institution la loi uruguayenne 19.172 a-t-elle instituée pour réguler le cannabis ?",
+        "Quel rapport la Commission nationale américaine sur la marijuana et l’abus des drogues a-t-elle publié en 1972 ?",
+        "Quel jour le Marihuana Tax Act a-t-il été promulgué ?",
+        "Après le vote de l’ONU de 2020, comment le cannabis est-il classé dans les tableaux de la Convention de 1961 ?",
+        "Quel organisme assurait la supervision financière de l’étude sociologique du rapport LaGuardia de 1944 ?",
+        "Qui fut le premier commissaire du Federal Bureau of Narcotics lors de sa création en 1930 ?",
+        "Selon la résolution coloniale de 1895, quel était le champ géographique de l’Indian Hemp Drugs Commission ?",
+        "Quel principe la loi uruguayenne 19.172 sur le cannabis met-elle en avant dans son article premier ?",
+        "À quelles dates s’est tenue la conférence d’adoption de la convention de l’ONU de 1988 contre le trafic illicite de stupéfiants ?",
+        "Quelles sont les dates de promulgation et de publication de la loi uruguayenne 19.172 sur le cannabis ?",
+        "Quelle convention internationale fut signée à Genève le 19 février 1925 ?"
+      ],
+      "findings": [
+        "Tous les champs et toutes les questions associés relus ; les trois paragraphes initiaux ne permettaient pas d’apprendre les réponses.",
+        "Sources primaires, catalogues et synthèses distingués ; dates de conférence, signature, entrée en vigueur, promulgation et publication séparées.",
+        "Attributions et incertitudes explicites : aucune légende du Club, du papier de la Déclaration ou d’une origine unique ne devient un fait établi."
+      ],
+      "patch": {
+        "relatedArticleIds": [
+          "ref-histoire-culture",
+          "ref-decouvertes-cannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [],
+        "lead": "Taxes, enquêtes, conventions et réformes nationales jalonnent l’histoire politique du cannabis ; leurs dates et leurs effets doivent être distingués.",
+        "sections": [
+          {
+            "id": "ref-histoire-politiques-1",
+            "title": "Deux étapes américaines, plusieurs enquêtes",
+            "paragraphs": [
+              "Aux États-Unis, le Marihuana Tax Act du 2 août 1937 repose sur la taxation, l’enregistrement et les obligations liées aux transferts. Ce mécanisme exerce de fortes contraintes sans se résumer à une phrase interdisant toute plante. Sa définition de marihuana exclut notamment les tiges mûres et leurs fibres, ainsi que certains produits des graines ; il faut lire ces exceptions avant d’assimiler tous les usages du chanvre.",
+              "Le Controlled Substances Act de 1970 organise cinq catégories appelées schedules. Le Congrès place initialement la marijuana au Schedule I. Ce classement historique est rappelé dans un projet de reclassement publié par la DEA en 2024 : un projet administratif ne démontre pas à lui seul le droit applicable aujourd’hui. Les schedules fédéraux américains ne doivent pas être confondus avec les tableaux des conventions de l’ONU.",
+              "Le Federal Bureau of Narcotics est créé en 1930 ; Harry J. Anslinger en est le premier commissaire. Pendant la Seconde Guerre mondiale, la notice d’archives de l’USDA situe vers 1942 le film Hemp for Victory, consacré à la culture de chanvre pour les besoins en fibres. Cela illustre la coexistence de politiques agricoles et de contrôle des drogues ; la notice a été lue, le film n’a pas été visionné dans cette révision.",
+              "Les enquêtes produisent aussi des catégories historiques. La résolution coloniale indienne de 1895 décrit une commission dont le champ dépasse le Bengale et couvre l’Inde, ainsi qu’un rapport reçu en épreuves en août 1894. À New York, le rapport LaGuardia de 1944 précise que la supervision financière de l’étude sociologique relève de la New York Academy of Medicine, tandis que l’étude clinique relève du Research Council du Department of Hospitals. Cette répartition administrative ne remplace pas une évaluation contemporaine des effets du cannabis.",
+              "En 1972 paraît Marihuana: A Signal of Misunderstanding, rapport de la Commission nationale américaine sur la marijuana et l’abus des drogues, associé à son président Raymond P. Shafer. La notice bibliographique consultée confirme le titre, l’année et l’attribution ; elle ne suffit pas à certifier chaque recommandation ou le jour exact de remise. En Californie, la Proposition 215 porte le nom Compassionate Use Act of 1996 et concerne un cadre médical : le texte officiel de la mesure ne doit pas être confondu avec une légalisation générale fédérale."
+            ],
+            "sourceIds": [
+              "qh-hist-statutes",
+              "qh-hist-csa",
+              "qh-hist-csa-policy",
+              "qh-hist-hemp-victory",
+              "qh-hist-anslinger",
+              "qh-hist-hemp-commission",
+              "qh-hist-laguardia",
+              "qh-hist-shafer-wellcome",
+              "qh-hist-prop215"
+            ]
+          },
+          {
+            "id": "ref-histoire-politiques-2",
+            "title": "Les conventions internationales et le vote de 2020",
+            "paragraphs": [
+              "La Convention internationale de l’opium est signée à Genève le 19 février 1925. Elle précède les trois grands instruments souvent cités ensemble aujourd’hui. La Convention unique sur les stupéfiants de 1961 est élaborée lors de la conférence de New York du 24 janvier au 25 mars ; l’instrument est daté du 30 mars 1961 et entre en vigueur le 13 décembre 1964. Il est ensuite amendé par le Protocole de 1972. Une date de conférence, une signature et une entrée en vigueur désignent donc des événements différents.",
+              "La Convention sur les substances psychotropes de 1971 résulte d’une conférence à Vienne du 11 janvier au 21 février. La Convention de 1988 porte explicitement sur le trafic illicite de stupéfiants et de substances psychotropes ; sa conférence se tient à Vienne du 25 novembre au 20 décembre 1988. Les trois instruments ne sont ni trois versions interchangeables du même texte, ni des lois nationales identiques.",
+              "Le 2 décembre 2020, la Commission des stupéfiants de l’ONU adopte la décision 63/17 : cannabis et résine de cannabis quittent le tableau IV de la Convention de 1961. Le vote compte 27 voix pour, 25 contre et une abstention. Ils restent dans le tableau I : la décision ne les retire pas de tout contrôle international et ne légalise pas mondialement leur usage récréatif. Le terme français est « tableau », et les numéros I et IV se rapportent ici à la convention de 1961."
+            ],
+            "sourceIds": [
+              "qh-hist-opium-1925",
+              "qh-hist-un-treaties",
+              "qh-hist-un1961-depositary",
+              "qh-hist-un-2020"
+            ]
+          },
+          {
+            "id": "ref-histoire-politiques-3",
+            "title": "Des réformes nationales datées",
+            "paragraphs": [
+              "En Uruguay, la loi 19.172 est promulguée le 20 décembre 2013 et publiée le 7 janvier 2014. Son article premier place la protection et la promotion de la santé, avec la réduction des risques et dommages, parmi ses objectifs. Les articles 17 et 18 créent l’Instituto de Regulación y Control del Cannabis, l’IRCCA, et définissent ses missions de régulation et de contrôle. Promulgation, publication et déploiement concret d’un système ne se produisent pas nécessairement le même jour.",
+              "Au Canada, la Loi sur le cannabis entre en vigueur le 17 octobre 2018. Le document gouvernemental consulté décrit un encadrement de la production, de la distribution, de la vente, des importations/exportations et de la possession pour les adultes admissibles, avec des responsabilités réparties. Cette réforme nationale datée ne signifie pas que toutes les quantités, tous les produits et tous les lieux soient libres de règles.",
+              "Comparer ces repères aide à distinguer régulation de marché, accès médical, dépénalisation et classement conventionnel. Cette fiche raconte des étapes historiques documentées ; elle n’est pas un guide des permissions individuelles actuelles, qui dépendent de la juridiction et de textes susceptibles d’évoluer."
+            ],
+            "sourceIds": [
+              "qh-hist-uruguay",
+              "qh-hist-uruguay-impo",
+              "qh-hist-canada"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "qh-hist-statutes",
+          "qh-hist-csa",
+          "qh-hist-csa-policy",
+          "qh-hist-hemp-victory",
+          "qh-hist-anslinger",
+          "qh-hist-hemp-commission",
+          "qh-hist-laguardia",
+          "qh-hist-shafer-wellcome",
+          "qh-hist-prop215",
+          "qh-hist-opium-1925",
+          "qh-hist-un-treaties",
+          "qh-hist-un1961-depositary",
+          "qh-hist-un-2020",
+          "qh-hist-uruguay",
+          "qh-hist-uruguay-impo",
+          "qh-hist-canada"
+        ],
+        "diagram": {
+          "kind": "timeline",
+          "title": "Des mécanismes juridiques différents",
+          "nodes": [
+            {
+              "label": "1937, États-Unis",
+              "detail": "Marihuana Tax Act : fiscalité, enregistrement et exceptions textiles."
+            },
+            {
+              "label": "1961 → 1964, ONU",
+              "detail": "Convention unique puis entrée en vigueur ; amendement en 1972."
+            },
+            {
+              "label": "1970, États-Unis",
+              "detail": "CSA : cinq schedules ; marijuana initialement au I."
+            },
+            {
+              "label": "2013 → 2014, Uruguay",
+              "detail": "Promulgation puis publication de la loi 19.172 ; IRCCA."
+            },
+            {
+              "label": "2018, Canada",
+              "detail": "Entrée en vigueur de la Loi sur le cannabis le 17 octobre."
+            },
+            {
+              "label": "2020, ONU",
+              "detail": "Retrait du tableau IV de 1961 ; maintien au I, sans légalisation mondiale."
+            }
+          ],
+          "caption": "Les deux systèmes numérotés, national américain et conventionnel, ne doivent pas être confondus.",
+          "sourceIds": [
+            "qh-hist-statutes",
+            "qh-hist-csa",
+            "qh-hist-csa-policy",
+            "qh-hist-un1961-depositary",
+            "qh-hist-uruguay-impo",
+            "qh-hist-canada",
+            "qh-hist-un-2020"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "qh-hist-statutes",
+        "qh-hist-csa",
+        "qh-hist-csa-policy",
+        "qh-hist-hemp-victory",
+        "qh-hist-anslinger",
+        "qh-hist-hemp-commission",
+        "qh-hist-laguardia",
+        "qh-hist-shafer-wellcome",
+        "qh-hist-prop215",
+        "qh-hist-opium-1925",
+        "qh-hist-un-treaties",
+        "qh-hist-un1961-depositary",
+        "qh-hist-un-2020",
+        "qh-hist-uruguay",
+        "qh-hist-uruguay-impo",
+        "qh-hist-canada"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original contrôlable relu contre les passages cités. Aucun visuel photographique reproduit : droits de l’inventaire breton soumis à autorisation ; Fig. 2 de Haimenkou repérée sous CC BY mais téléchargement inexploitable, fichier HTML erroné supprimé. La synthèse existante n’est pas certifiée comme observation."
+      },
+      "quizIdsReviewed": [
+        "hemp-hs-hist-1937-law",
+        "hemp-hs-hist-csa-name",
+        "hemp-hs-hist-hempfilm",
+        "hemp-hs-hist-uruguay-law",
+        "hemp-hs-hist-canada-date",
+        "hemp-hs-hist-single",
+        "hemp-hs-hist-psychotropic",
+        "hemp-hs-hist-vote",
+        "hemp-hs-hist-1988-name",
+        "hemp-hs-hist-un-venue",
+        "hemp-hs-hist-act-schedule",
+        "hemp-hs-hist-1937-exemptions",
+        "hemp-hs-hist-hemp-archival-date",
+        "hemp-hs-hist-un1961-into-force",
+        "hemp-hs-hist-un2020-schedule",
+        "hemp-hs-hist-vote-numbers",
+        "hemp-hs-hist-single-1972",
+        "hemp-hs-hist-canada-scope",
+        "hemp-hs-hist-un-psychotropics-city",
+        "hemp-hs-hist-uruguay-control",
+        "hemp-hs-hist-1971-subject",
+        "hemp-hs-hist-1937-date",
+        "hemp-hs-hist-two-treaties",
+        "hemp-hs-hist-csa-5schedules",
+        "hemp-hs-hist-film-use",
+        "hemp-hs-hist-canada-federal",
+        "hemp-hs-hist-uruguay-policy",
+        "hemp-hs-hist-1988-adoption",
+        "hemp-hs-hist-uruguay-promulgation-publication",
+        "hemp-hs-hist-csa-vs-tax"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [
+    {
+      "id": "hemp-hc-001",
+      "prompt": "Quel écrivain publie « Le Club des Hachichins » en 1846 ?",
+      "options": [
+        "Théophile Gautier",
+        "Gérard de Nerval",
+        "Charles Baudelaire",
+        "Honoré de Balzac"
+      ],
+      "answer": 0,
+      "explanation": "Gautier publie ce récit dans la Revue des Deux Mondes en février 1846.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-gautier"
+      ]
+    },
+    {
+      "id": "hemp-hc-002",
+      "prompt": "Dans quel hôtel parisien Gautier situe-t-il une réunion du Club des Hachichins ?",
+      "options": [
+        "Hôtel Pimodan",
+        "Hôtel de Soubise",
+        "Hôtel de Sens",
+        "Hôtel Carnavalet"
+      ],
+      "answer": 0,
+      "explanation": "Le texte de Gautier ouvre sur l’hôtel Pimodan, nom alors associé à l’hôtel de Lauzun.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-gautier"
+      ]
+    },
+    {
+      "id": "hemp-hc-003",
+      "prompt": "Sur quelle île de Paris se trouve l’hôtel Pimodan, associé au Club des Hachichins ?",
+      "options": [
+        "Île Saint-Louis",
+        "Île de la Cité",
+        "Île aux Cygnes",
+        "Île Louviers"
+      ],
+      "answer": 0,
+      "explanation": "L’hôtel de Lauzun se trouve quai d’Anjou, sur l’île Saint-Louis.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-institut"
+      ]
+    },
+    {
+      "id": "hemp-hc-004",
+      "prompt": "Quel médecin est associé aux réunions expérimentales du Club des Hachichins ?",
+      "options": [
+        "Jacques-Joseph Moreau de Tours",
+        "Jean-Martin Charcot",
+        "Philippe Pinel",
+        "Esquirol"
+      ],
+      "answer": 0,
+      "explanation": "Moreau de Tours organisa des réunions où l’on étudiait les effets du haschisch.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-institut"
+      ]
+    },
+    {
+      "id": "hemp-hc-005",
+      "prompt": "Complète le titre du traité de Moreau de Tours paru en 1845 : « Du hachisch et de… »",
+      "options": [
+        "l’aliénation mentale",
+        "l’épilepsie des enfants",
+        "la médecine navale",
+        "la philosophie antique"
+      ],
+      "answer": 0,
+      "explanation": "Son titre complet est Du hachisch et de l’aliénation mentale : études psychologiques.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-moreau"
+      ]
+    },
+    {
+      "id": "hemp-hc-006",
+      "prompt": "Quel produit donne son nom au Club des Hachichins ?",
+      "options": [
+        "Haschisch",
+        "Éther",
+        "Absinthe",
+        "Opium"
+      ],
+      "answer": 0,
+      "explanation": "Le nom vient du haschisch, autour duquel Moreau organisait des expériences psychologiques.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-institut",
+        "qh-culture-tours"
+      ]
+    },
+    {
+      "id": "hemp-hc-007",
+      "prompt": "Quelle fibre végétale alimentait traditionnellement la fabrication des cordages à Rochefort ?",
+      "options": [
+        "Chanvre",
+        "Coton",
+        "Jute",
+        "Sisal"
+      ],
+      "answer": 0,
+      "explanation": "Le chanvre fut largement employé pour les cordages et les voiles des navires.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne",
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-008",
+      "prompt": "À quelle activité renvoyait la « Teillouse » de Redon, fréquentée notamment par les artisans de Peillac ?",
+      "options": [
+        "Une foire de rencontre des chanvriers et tisserands",
+        "Un atelier royal de cordage",
+        "Un port d’exportation de voiles",
+        "Une école de médecine"
+      ],
+      "answer": 0,
+      "explanation": "La fiche patrimoniale situe la foire à Redon ; les chanvriers et tisserands de Peillac s’y retrouvaient jusqu’en 1940.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-009",
+      "prompt": "Selon la fiche patrimoniale « Les savoir-faire du chanvre textile », quel souverain est associé à un essor vers l’an 800 ?",
+      "options": [
+        "Charlemagne",
+        "Louis XIV",
+        "Philippe Auguste",
+        "François Ier"
+      ],
+      "answer": 0,
+      "explanation": "La fiche secondaire cite Charlemagne. Ce repère reste attribué à son récit : aucun document carolingien n’a été examiné ici pour établir ou quantifier cet essor.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-010",
+      "prompt": "Dans la tombe M90 de Yanghai contenant du cannabis, quel âge avait approximativement le défunt ?",
+      "options": [
+        "45 ans",
+        "25 ans",
+        "60 ans",
+        "80 ans"
+      ],
+      "answer": 0,
+      "explanation": "L’étude archéobotanique estime à environ 45 ans l’âge de l’homme de la tombe M90.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-011",
+      "prompt": "Dans quelle région se trouve Jirzankal, où des résidus de cannabis ont été trouvés dans des braseros ?",
+      "options": [
+        "Pamir oriental",
+        "Bretagne occidentale",
+        "Delta du Nil",
+        "Sicile antique"
+      ],
+      "answer": 0,
+      "explanation": "Jirzankal se situe dans les Pamirs orientaux, dans l’actuelle Chine occidentale.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-012",
+      "prompt": "« Marihuana » est emprunté à une variété d’espagnol parlée surtout où ?",
+      "options": [
+        "Au Mexique",
+        "En Andalousie",
+        "Aux Canaries",
+        "En Catalogne"
+      ],
+      "answer": 0,
+      "explanation": "Les dictionnaires étymologiques rattachent le mot à l’espagnol mexicain ; son origine ultime demeure incertaine.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-etymology",
+        "qh-culture-merriam"
+      ]
+    },
+    {
+      "id": "hemp-hc-013",
+      "prompt": "Quel futur président américain cultivait du chanvre dans son domaine de Mount Vernon ?",
+      "options": [
+        "George Washington",
+        "Abraham Lincoln",
+        "Theodore Roosevelt",
+        "Woodrow Wilson"
+      ],
+      "answer": 0,
+      "explanation": "Le chanvre cultivé à Mount Vernon servait notamment aux cordes, aux toiles et aux filets.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-mount-vernon"
+      ]
+    },
+    {
+      "id": "hemp-hc-014",
+      "prompt": "Quel peintre accueillait les réunions du Club des Hachichins à l’hôtel Pimodan ?",
+      "options": [
+        "Boissard de Boisdenier",
+        "Eugène Delacroix",
+        "Gustave Courbet",
+        "Théodore Rousseau"
+      ],
+      "answer": 0,
+      "explanation": "Le peintre Boissard de Boisdenier accueillait ces réunions dans son appartement.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-institut"
+      ]
+    },
+    {
+      "id": "hemp-hc-015",
+      "prompt": "Quelle revue publie le récit « Le Club des Hachichins » de Gautier en 1846 ?",
+      "options": [
+        "Revue des Deux Mondes",
+        "La Revue blanche",
+        "Le Mercure de France",
+        "La Gazette des Beaux-Arts"
+      ],
+      "answer": 0,
+      "explanation": "Le texte paraît dans le tome 13 de la Revue des Deux Mondes.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-gautier",
+        "qh-culture-bnf"
+      ]
+    },
+    {
+      "id": "hemp-hc-016",
+      "prompt": "Dans quelle ville paraît en 1845 « Du hachisch et de l’aliénation mentale » de Moreau de Tours ?",
+      "options": [
+        "Paris",
+        "Tours",
+        "Lyon",
+        "Marseille"
+      ],
+      "answer": 0,
+      "explanation": "La notice bibliographique donne Paris comme lieu d’édition du traité de Moreau.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-moreau"
+      ]
+    },
+    {
+      "id": "hemp-hc-017",
+      "prompt": "À quelle date paraît « Le Club des Hachichins » de Gautier dans la Revue des Deux Mondes ?",
+      "options": [
+        "1er février 1846",
+        "22 décembre 1845",
+        "1er avril 1848",
+        "15 août 1851"
+      ],
+      "answer": 0,
+      "explanation": "La notice BnF indique une publication dans la Revue des Deux Mondes du 1er février 1846.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bnf"
+      ]
+    },
+    {
+      "id": "hemp-hc-018",
+      "prompt": "Souvent dite « en chanvre », la Déclaration d’indépendance américaine signée est en réalité sur…",
+      "options": [
+        "Parchemin",
+        "Papier de chanvre",
+        "Papyrus",
+        "Toile de lin"
+      ],
+      "answer": 0,
+      "explanation": "Les Archives nationales décrivent l’exemplaire signé sur parchemin ; il ne faut pas le confondre avec les brouillons.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-declaration"
+      ]
+    },
+    {
+      "id": "hemp-hc-019",
+      "prompt": "Quelle période la présentation de la recherche historique retient-elle pour les rencontres de l’hôtel Pimodan ?",
+      "options": [
+        "1845–1849",
+        "1789–1791",
+        "1860–1864",
+        "1900–1904"
+      ],
+      "answer": 0,
+      "explanation": "La présentation retient 1845–1849 et critique la représentation d’une société secrète permanente ; le livre complet n’a pas été consulté.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-research"
+      ]
+    },
+    {
+      "id": "hemp-hc-020",
+      "prompt": "Qui est l’auteur des « Paradis artificiels », consacrés notamment au haschisch ?",
+      "options": [
+        "Charles Baudelaire",
+        "Alphonse Karr",
+        "Henri Monnier",
+        "Ernest Meissonier"
+      ],
+      "answer": 0,
+      "explanation": "Baudelaire fréquenta le milieu de l’hôtel Lauzun et écrivit plus tard Les Paradis artificiels.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-institut"
+      ]
+    },
+    {
+      "id": "hemp-hc-021",
+      "prompt": "Comment appelait-on les toiles de chanvre fabriquées autour de Locronan ?",
+      "options": [
+        "Olonnes",
+        "Noyales",
+        "Crées",
+        "Bretagnes"
+      ],
+      "answer": 0,
+      "explanation": "L’Inventaire associe les Olonnes à Locronan et au chanvre.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-fibres"
+      ]
+    },
+    {
+      "id": "hemp-hc-022",
+      "prompt": "Dans quelle commune bretonne étaient produites les toiles appelées « Noyales » ?",
+      "options": [
+        "Noyal-sur-Vilaine",
+        "Locronan",
+        "Morlaix",
+        "Quintin"
+      ],
+      "answer": 0,
+      "explanation": "L’Inventaire situe les Noyales de chanvre à Noyal-sur-Vilaine.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-fibres"
+      ]
+    },
+    {
+      "id": "hemp-hc-023",
+      "prompt": "Quelle variante orthographique de « marijuana » est attestée en espagnol mexicain ?",
+      "options": [
+        "Marihuana",
+        "Maryjuana",
+        "Mariguane",
+        "Marijana"
+      ],
+      "answer": 0,
+      "explanation": "Marihuana et mariguana sont des formes espagnoles mexicaines ; marijuana est l’orthographe popularisée en anglais.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-merriam",
+        "qh-culture-etymology"
+      ]
+    },
+    {
+      "id": "hemp-hc-024",
+      "prompt": "Quel usage naval faisait-on traditionnellement de l’étoupe de chanvre ?",
+      "options": [
+        "Joints et calfatage",
+        "Voiles de grande surface",
+        "Mâts et vergues",
+        "Cordes de cloche"
+      ],
+      "answer": 0,
+      "explanation": "Les fibres courtes d’étoupe servent notamment aux joints et au calfatage.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-process"
+      ]
+    },
+    {
+      "id": "hemp-hc-025",
+      "prompt": "Quelle corderie royale, construite en 1666, fabriquait des cordages navals ?",
+      "options": [
+        "Rochefort",
+        "Brest",
+        "Lorient",
+        "Toulon"
+      ],
+      "answer": 0,
+      "explanation": "La Corderie royale de Rochefort fut bâtie sous Louis XIV pour les cordages de la marine.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-026",
+      "prompt": "Quelle fibre composait les crées fabriquées dans le Léon ?",
+      "options": [
+        "Lin",
+        "Chanvre",
+        "Jute",
+        "Laine"
+      ],
+      "answer": 0,
+      "explanation": "L’Inventaire régional distingue les crées de lin du Léon des Olonnes de chanvre.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-fibres"
+      ]
+    },
+    {
+      "id": "hemp-hc-027",
+      "prompt": "Dans quelle région bretonne les toiles appelées « Bretagnes » étaient-elles fabriquées ?",
+      "options": [
+        "Centre-Bretagne",
+        "Léon",
+        "Pays de Locronan",
+        "Noyal-sur-Vilaine"
+      ],
+      "answer": 0,
+      "explanation": "La carte des productions situe les Bretagnes de lin en Centre-Bretagne.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-toiles"
+      ]
+    },
+    {
+      "id": "hemp-hc-028",
+      "prompt": "Quel port breton exportait des toiles de lin et de chanvre ?",
+      "options": [
+        "Pouldavid",
+        "Bordeaux",
+        "La Rochelle",
+        "Calais"
+      ],
+      "answer": 0,
+      "explanation": "Pouldavid, avec Landerneau, Morlaix et Saint-Malo, figure parmi les ports bretons d’exportation des toiles.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-toiles"
+      ]
+    },
+    {
+      "id": "hemp-hc-029",
+      "prompt": "Quels vestiges végétaux étaient présents dans la tombe M90 de Yanghai ?",
+      "options": [
+        "Cannabis conservé dans des contenants",
+        "Graines de café torréfiées",
+        "Fibres de coton teintes",
+        "Pollen de houblon seul"
+      ],
+      "answer": 0,
+      "explanation": "L’étude de Yanghai a examiné du cannabis retrouvé dans des contenants funéraires.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-030",
+      "prompt": "Quel instrument de musique accompagnait le cannabis dans la tombe M90 de Yanghai ?",
+      "options": [
+        "Konghou, une harpe",
+        "Luth européen",
+        "Flûte traversière",
+        "Cithare grecque"
+      ],
+      "answer": 0,
+      "explanation": "L’étude décrit une konghou parmi les objets associés au défunt de la tombe M90.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-031",
+      "prompt": "Qui publie « The Hasheesh Eater » aux États-Unis en 1857 ?",
+      "options": [
+        "Fitz Hugh Ludlow",
+        "Walt Whitman",
+        "Edgar Allan Poe",
+        "Herman Melville"
+      ],
+      "answer": 0,
+      "explanation": "L’ouvrage de Fitz Hugh Ludlow paraît chez Harper & Bros. à New York en 1857.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-ludlow"
+      ]
+    },
+    {
+      "id": "hemp-hc-032",
+      "prompt": "Pourquoi le médecin Moreau de Tours s’intéressait-il aux effets du haschisch ?",
+      "options": [
+        "Étudier le fonctionnement psychique",
+        "Remplacer les fibres de voile",
+        "Documenter les ports bretons",
+        "Reconstituer les rites romains"
+      ],
+      "answer": 0,
+      "explanation": "Moreau l’emploie comme moyen d’investigation psychologique, selon la conférence de l’IEA.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-institut"
+      ]
+    },
+    {
+      "id": "hemp-hc-033",
+      "prompt": "Dans « Le Club des Hachichins » de Gautier, à quelle fréquence ont lieu les séances ?",
+      "options": [
+        "Mensuellement",
+        "Chaque semaine",
+        "Une fois par an",
+        "Tous les jours"
+      ],
+      "answer": 0,
+      "explanation": "Le narrateur présente les séances du groupe comme mensuelles.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-gautier"
+      ]
+    },
+    {
+      "id": "hemp-hc-034",
+      "prompt": "Quel prénom de participante au Club des Hachichins est cité dans la biographie de Moreau publiée par l’Université de Tours ?",
+      "options": [
+        "Aglaé",
+        "George",
+        "Louise",
+        "Claire"
+      ],
+      "answer": 0,
+      "explanation": "Michel Caire cite Aglaé et Marix. Cette mention dans une étude historique n’établit pas une présence à toutes les réunions.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-tours"
+      ]
+    },
+    {
+      "id": "hemp-hc-035",
+      "prompt": "D’après la lettre citée par Michel Caire, de quelle localité Balzac écrit-il à Moreau après une soirée ?",
+      "options": [
+        "Passy",
+        "Tours",
+        "Versailles",
+        "Fontainebleau"
+      ],
+      "answer": 0,
+      "explanation": "La biographie cite une lettre envoyée depuis Passy ; l’original de cette lettre n’a pas été consulté dans cette révision.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-tours"
+      ]
+    },
+    {
+      "id": "hemp-hc-036",
+      "prompt": "Sous quel règne les toiles de Noyal-sur-Vilaine fournissaient-elles la Marine royale ?",
+      "options": [
+        "Louis XV",
+        "Louis XIII",
+        "Henri IV",
+        "Napoléon III"
+      ],
+      "answer": 0,
+      "explanation": "La fiche d’inventaire associe les toiles de Noyale à l’approvisionnement de la Marine royale sous Louis XV.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-037",
+      "prompt": "À Mount Vernon, quels équipements de pêche étaient réparés avec du chanvre ?",
+      "options": [
+        "Des filets de senne",
+        "Des hameçons métalliques",
+        "Des flotteurs de verre",
+        "Des plombs de ligne"
+      ],
+      "answer": 0,
+      "explanation": "Les archives du domaine associent le chanvre à l’entretien des grands filets utilisés sur le Potomac.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-mount-vernon"
+      ]
+    },
+    {
+      "id": "hemp-hc-038",
+      "prompt": "À quoi servait la pesselle dans le teillage traditionnel du chanvre en Bretagne ?",
+      "options": [
+        "Assouplir les fibres et enlever des résidus",
+        "Faire macérer les tiges",
+        "Tordre un câble fini",
+        "Presser les graines"
+      ],
+      "answer": 0,
+      "explanation": "La pesselle est une lame de bois contre laquelle on frotte les fibres pour les assouplir.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-process"
+      ]
+    },
+    {
+      "id": "hemp-hc-039",
+      "prompt": "Quel outil brisait la partie ligneuse des tiges lors du teillage manuel du chanvre en Bretagne ?",
+      "options": [
+        "Braie ou broye",
+        "Rouet",
+        "Navette",
+        "Moulin à vent"
+      ],
+      "answer": 0,
+      "explanation": "La braie, appelée aussi broye, écrasait les tiges pour casser leur partie ligneuse.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-process"
+      ]
+    },
+    {
+      "id": "hemp-hc-040",
+      "prompt": "Dans la préparation du chanvre textile, quel outil retirait les derniers fragments de bois et séparait les fibres ?",
+      "options": [
+        "Peigne à longues dents",
+        "Navette de tisserand",
+        "Faucille courbe",
+        "Fuseau de filage"
+      ],
+      "answer": 0,
+      "explanation": "Des peignes métalliques, aux dents plus ou moins rapprochées, achevaient le tri des fibres.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-bretagne-process"
+      ]
+    },
+    {
+      "id": "hemp-hc-041",
+      "prompt": "Quel site thaïlandais est cité dans l’étude de Haimenkou pour des textiles identifiés comme chanvre vers 400 avant notre ère ?",
+      "options": [
+        "Ban Don Ta Phet",
+        "Oki-no-shima",
+        "Jirzankal",
+        "Yanghai"
+      ],
+      "answer": 0,
+      "explanation": "La discussion cite Ban Don Ta Phet ; la publication originale des textiles n’a pas été relue ici.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-haimenkou"
+      ]
+    },
+    {
+      "id": "hemp-hc-042",
+      "prompt": "Quel rapport étymologique est établi entre « marijuana » et « María Juana » ?",
+      "options": [
+        "Rapprochement populaire, pas origine démontrée",
+        "Étymologie certifiée par l’espagnol ancien",
+        "Traduction exacte du nahuatl",
+        "Nom botanique officiel du chanvre"
+      ],
+      "answer": 0,
+      "explanation": "Merriam-Webster souligne que les graphies mariguana et marihuana précèdent marijuana dans les textes mexicains ; María Juana n’est donc pas une contraction originelle démontrée.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-merriam"
+      ]
+    },
+    {
+      "id": "hemp-hc-043",
+      "prompt": "Dans quelle partie de la Chine se trouve le site funéraire de Yanghai ?",
+      "options": [
+        "Bassin de Turpan, Xinjiang",
+        "Bassin du Sichuan",
+        "Delta du Yangzi",
+        "Péninsule du Shandong"
+      ],
+      "answer": 0,
+      "explanation": "Yanghai se trouve dans la région de Turpan au Xinjiang, en Asie centrale.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-044",
+      "prompt": "Sous quel autre nom le cimetière de Jirzankal, associé à des usages anciens du cannabis, est-il connu ?",
+      "options": [
+        "Cimetière de Quman",
+        "Cimetière de Yanghai",
+        "Nécropole de Pazyryk",
+        "Cimetière de Varna"
+      ],
+      "answer": 0,
+      "explanation": "L’article scientifique précise que Jirzankal est aussi connu sous le nom de cimetière de Quman.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-045",
+      "prompt": "En 2019, quel âge les archéologues attribuent-ils aux sépultures contenant des traces de cannabis à Jirzankal ?",
+      "options": [
+        "Environ 2 500 ans",
+        "Environ 500 ans",
+        "Environ 10 000 ans",
+        "Environ 50 000 ans"
+      ],
+      "answer": 0,
+      "explanation": "L’étude situe les cérémonies funéraires vers 500 avant notre ère, soit environ 2 500 ans.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-046",
+      "prompt": "À quelle altitude se trouvait la zone B du cimetière de Jirzankal ?",
+      "options": [
+        "3 061 m",
+        "3 077 m",
+        "3 080 m",
+        "2 500 m"
+      ],
+      "answer": 0,
+      "explanation": "La description du site place la zone B sur le second niveau de terrasse, à 3 061 m d’altitude.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-047",
+      "prompt": "Quelles conditions ont favorisé la conservation du cannabis dans la tombe M90 de Yanghai ?",
+      "options": [
+        "Climat très aride et tombes profondes",
+        "Gel permanent et glaces",
+        "Tourbière acide et immergée",
+        "Cendre volcanique récente"
+      ],
+      "answer": 0,
+      "explanation": "L’étude relève des tombes profondes, un climat très aride et des sols alcalins favorisant la conservation.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-048",
+      "prompt": "Selon la synthèse archéobotanique de 2025, à quelle culture sont associées les graines d’Oki-no-shima ?",
+      "options": [
+        "Jōmon initial",
+        "Yayoi tardif",
+        "Kofun moyen",
+        "Asuka ancien"
+      ],
+      "answer": 0,
+      "explanation": "La revue cite le Jōmon initial, 6000–5220 cal BP. BP a pour référence 1950 ; les publications de fouille originales n’ont pas été consultées.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-archaeology-review"
+      ]
+    },
+    {
+      "id": "hemp-hc-049",
+      "prompt": "Combien de graines de chanvre ont été récupérées lors des fouilles de 2008 à Haimenkou, au Yunnan ?",
+      "options": [
+        "Plus de 800",
+        "Environ 80",
+        "Près de 8 000",
+        "Un peu moins de 20"
+      ],
+      "answer": 0,
+      "explanation": "Plus de 800 graines ont été récupérées lors des fouilles de 2008 à Haimenkou.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-haimenkou"
+      ]
+    },
+    {
+      "id": "hemp-hc-050",
+      "prompt": "Selon la discussion de l’étude de Jirzankal, quel objet était associé aux récipients de la tombe 2 de Pazyryk ?",
+      "options": [
+        "Un petit cadre de tente en bois",
+        "Un métier à tisser complet",
+        "Un gouvernail de navire",
+        "Une roue de char"
+      ],
+      "answer": 0,
+      "explanation": "L’article cite un petit cadre de tente en bois avec des récipients en cuivre, des pierres chauffées et du chanvre. La fouille originale n’a pas été réexaminée ici.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-051",
+      "prompt": "En quelle année Baudelaire publie-t-il Les Paradis artificiels ?",
+      "options": [
+        "1860",
+        "1846",
+        "1851",
+        "1863"
+      ],
+      "answer": 0,
+      "explanation": "Le catalogue de la BnF date de 1860 le volume Les Paradis artificiels, opium et haschisch.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-baudelaire"
+      ]
+    },
+    {
+      "id": "hemp-hc-052",
+      "prompt": "Quel auteur anglais Baudelaire reprend-il dans « Un mangeur d’opium », une partie des « Paradis artificiels » ?",
+      "options": [
+        "Thomas de Quincey",
+        "Samuel Taylor Coleridge",
+        "William Blake",
+        "John Keats"
+      ],
+      "answer": 0,
+      "explanation": "Baudelaire présente et traduit partiellement les Confessions d’un mangeur d’opium de Thomas de Quincey.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-larousse"
+      ]
+    },
+    {
+      "id": "hemp-hc-053",
+      "prompt": "Chez quel homme de lettres a lieu une expérience parisienne au haschisch en 1840 ?",
+      "options": [
+        "Vicomte Ajasson de Grandsagne",
+        "Fernand Boissard",
+        "Honoré de Balzac",
+        "Théophile Gautier"
+      ],
+      "answer": 0,
+      "explanation": "L’étude de Michel Caire décrit une réunion chez le vicomte Ajasson de Grandsagne, avant les séances de l’hôtel Pimodan.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-tours"
+      ]
+    },
+    {
+      "id": "hemp-hc-054",
+      "prompt": "Quel auteur grec décrit des usages du chanvre chez les Scythes dans ses « Histoires » ?",
+      "options": [
+        "Hérodote",
+        "Homère",
+        "Aristophane",
+        "Thucydide"
+      ],
+      "answer": 0,
+      "explanation": "Hérodote évoque le chanvre et des pratiques scythes au livre IV. Ce récit ancien reste attribué à son auteur.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-herodotus"
+      ]
+    },
+    {
+      "id": "hemp-hc-055",
+      "prompt": "Quelle longueur de cordage naval illustre la fiche patrimoniale « Les savoir-faire du chanvre textile » ?",
+      "options": [
+        "Environ 195 mètres",
+        "Environ 20 mètres",
+        "Environ 50 mètres",
+        "Environ 500 mètres"
+      ],
+      "answer": 0,
+      "explanation": "La fiche donne environ 195 mètres. Ce repère explique les ateliers allongés ; il n’est pas présenté comme un record mondial certifié.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-056",
+      "prompt": "Que désigne le mot provençal à l’origine du nom « Canebière » ?",
+      "options": [
+        "Une chanvrière",
+        "Un atelier de tissage",
+        "Un grand voilier",
+        "Un marché aux graines"
+      ],
+      "answer": 0,
+      "explanation": "La fiche d’inventaire donne le sens de « chanvrière », lié au chanvre, pour Canebière.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-pci"
+      ]
+    },
+    {
+      "id": "hemp-hc-057",
+      "prompt": "À Yanghai, quel effet les sols alcalins ont-ils eu sur la conservation des restes de cannabis ?",
+      "options": [
+        "Ils favorisaient la conservation des restes",
+        "Ils accéléraient la fonte du métal",
+        "Ils transformaient les fibres en verre",
+        "Ils empêchaient toute conservation"
+      ],
+      "answer": 0,
+      "explanation": "Avec l’aridité et la profondeur des tombes, les conditions alcalines ont favorisé la préservation.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-yanghai"
+      ]
+    },
+    {
+      "id": "hemp-hc-058",
+      "prompt": "Dans quel matériau étaient fabriqués les braseros contenant des résidus de cannabis à Jirzankal ?",
+      "options": [
+        "Bois",
+        "Bronze",
+        "Terre cuite",
+        "Fer"
+      ],
+      "answer": 0,
+      "explanation": "Les chercheurs ont analysé des braseros en bois trouvés dans des sépultures.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-jirzankal"
+      ]
+    },
+    {
+      "id": "hemp-hc-059",
+      "prompt": "Outre l’alimentation, quel usage ancien de l’huile de graines de chanvre est documenté ?",
+      "options": [
+        "Peintures, vernis et savons",
+        "Fabrication de verre",
+        "Tannage au chrome",
+        "Production de fonte"
+      ],
+      "answer": 0,
+      "explanation": "L’histoire matérielle du chanvre comprend aussi des usages de l’huile dans des peintures, vernis et savons.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-mount-vernon"
+      ]
+    },
+    {
+      "id": "hemp-hc-060",
+      "prompt": "Par quelle langue le français a-t-il emprunté « marihuana » à l’espagnol mexicain ?",
+      "options": [
+        "L’anglais des États-Unis",
+        "L’italien",
+        "Le portugais",
+        "L’allemand"
+      ],
+      "answer": 0,
+      "explanation": "L’Académie française décrit l’emprunt au mariguana mexicain par l’intermédiaire de l’anglais américain.",
+      "articleId": "ref-histoire-culture",
+      "sourceIds": [
+        "qh-culture-etymology"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1937-law",
+      "prompt": "Quel texte fédéral américain de 1937 a instauré une forte taxation des opérations liées au cannabis ?",
+      "options": [
+        "Marihuana Tax Act",
+        "Controlled Substances Act",
+        "Harrison Act",
+        "Pure Food Act"
+      ],
+      "answer": 0,
+      "explanation": "Le Marihuana Tax Act, promulgué le 2 août 1937, organisait taxes et obligations de transfert; ce n’était pas une interdiction formulée simplement comme telle.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-statutes"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-csa-name",
+      "prompt": "Quel texte fédéral américain de 1970 a créé un système de cinq catégories de substances contrôlées ?",
+      "options": [
+        "Marihuana Tax Act",
+        "Controlled Substances Act",
+        "Harrison Act",
+        "Cannabis Act"
+      ],
+      "answer": 1,
+      "explanation": "Le Controlled Substances Act (CSA) fait partie de la loi fédérale américaine Comprehensive Drug Abuse Prevention and Control Act de 1970.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-csa-policy"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-hempfilm",
+      "prompt": "Quel film de l’USDA, daté d’environ 1942, encourageait la culture du chanvre pendant la guerre ?",
+      "options": [
+        "The Hemp Question",
+        "Victory Fields",
+        "Hemp for Victory",
+        "Fibre for Freedom"
+      ],
+      "answer": 2,
+      "explanation": "Le catalogue d’archives de la National Agricultural Library conserve Hemp for Victory dans la collection de films de l’USDA, vers 1942.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-hemp-victory"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-law",
+      "prompt": "Quel pays a adopté en décembre 2013 la loi 19.172 de régulation étatique du cannabis ?",
+      "options": [
+        "Canada",
+        "Uruguay",
+        "Chili",
+        "Portugal"
+      ],
+      "answer": 1,
+      "explanation": "La loi uruguayenne 19.172, promulguée le 20 décembre 2013, établit un cadre de contrôle public du cannabis.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-uruguay"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-canada-date",
+      "prompt": "À quelle date la Cannabis Act canadienne est-elle entrée en vigueur ?",
+      "options": [
+        "17 octobre 2016",
+        "17 octobre 2017",
+        "17 octobre 2018",
+        "17 octobre 2019"
+      ],
+      "answer": 2,
+      "explanation": "Le gouvernement canadien indique que la loi fédérale est entrée en vigueur le 17 octobre 2018.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-canada"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-single",
+      "prompt": "Quelle convention internationale de 1961 a unifié plusieurs traités sur les stupéfiants ?",
+      "options": [
+        "Convention unique sur les stupéfiants",
+        "Convention sur les substances psychotropes",
+        "Convention contre le trafic illicite",
+        "Convention sur les médicaments"
+      ],
+      "answer": 0,
+      "explanation": "La Convention unique de 1961 a été adoptée à New York et ouverte à la signature le 30 mars 1961.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-psychotropic",
+      "prompt": "Quelle convention de l’ONU adoptée en 1971 porte sur les substances psychotropes ?",
+      "options": [
+        "Convention unique sur les stupéfiants",
+        "Convention sur les psychotropes",
+        "Convention de Vienne contre le trafic",
+        "Convention de Genève sur le chanvre"
+      ],
+      "answer": 1,
+      "explanation": "La Convention sur les substances psychotropes a été adoptée à Vienne en 1971; elle complète les instruments internationaux de contrôle.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-vote",
+      "prompt": "En 2020, quel organe de l’ONU a voté sur le classement conventionnel du cannabis ?",
+      "options": [
+        "Conseil de sécurité",
+        "Commission des stupéfiants",
+        "Assemblée générale",
+        "Cour internationale de Justice"
+      ],
+      "answer": 1,
+      "explanation": "La Commission des stupéfiants (CND) a voté le 2 décembre 2020 sur plusieurs recommandations concernant le cannabis.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-2020"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1988-name",
+      "prompt": "Quel sujet figure explicitement dans le titre de la convention de l’ONU de 1988 ?",
+      "options": [
+        "Le trafic illicite de stupéfiants et psychotropes",
+        "Le commerce agricole du chanvre",
+        "Les médicaments traditionnels",
+        "La sécurité des navires"
+      ],
+      "answer": 0,
+      "explanation": "La Convention de 1988 porte sur le trafic illicite de stupéfiants et de substances psychotropes.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-un-venue",
+      "prompt": "Dans quelle ville la convention de 1961 sur les stupéfiants a-t-elle été adoptée ?",
+      "options": [
+        "Genève",
+        "New York",
+        "Vienne",
+        "Ottawa"
+      ],
+      "answer": 1,
+      "explanation": "La conférence d’adoption s’est tenue au siège de l’ONU à New York, du 24 janvier au 25 mars 1961.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-act-schedule",
+      "prompt": "Dans quelle catégorie le Controlled Substances Act américain de 1970 a-t-il placé initialement le cannabis ?",
+      "options": [
+        "Schedule I",
+        "Schedule II",
+        "Schedule IV",
+        "Aucune catégorie"
+      ],
+      "answer": 0,
+      "explanation": "La notice de la DEA sur le projet de reclassement précise que le Congrès a placé la marijuana en Schedule I lors de l’adoption du CSA.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-csa"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1937-exemptions",
+      "prompt": "Quelle partie du chanvre était exclue de la définition de « marihuana » dans le Marihuana Tax Act américain de 1937 ?",
+      "options": [
+        "Les sommités fleuries",
+        "La résine extraite",
+        "Les tiges mûres et leurs fibres",
+        "Les feuilles seules"
+      ],
+      "answer": 2,
+      "explanation": "Le texte excluait notamment les tiges mûres, les fibres qui en sont issues et certains produits de graines; l’acte associait taxation et obligations administratives.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-statutes"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-hemp-archival-date",
+      "prompt": "Quel nom porte la Proposition 215 californienne, mesure sur le cannabis médical de 1996 ?",
+      "options": [
+        "Proposition 215, Compassionate Use Act",
+        "Proposition 64, Adult Use Act",
+        "Marihuana Tax Act",
+        "Controlled Substances Act"
+      ],
+      "answer": 0,
+      "explanation": "Le texte officiel porte le nom Compassionate Use Act of 1996. Cette source est le texte de la mesure, pas un procès-verbal du scrutin.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-prop215"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-un1961-into-force",
+      "prompt": "En quelle année la Convention unique de 1961 sur les stupéfiants est-elle entrée en vigueur ?",
+      "options": [
+        "1961",
+        "1964",
+        "1971",
+        "1988"
+      ],
+      "answer": 1,
+      "explanation": "La Collection des traités de l’ONU indique une entrée en vigueur le 13 décembre 1964, après l’adoption en 1961.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un1961-depositary"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-un2020-schedule",
+      "prompt": "Quelle modification la Commission des stupéfiants de l’ONU a-t-elle approuvée en 2020 pour le cannabis et sa résine ?",
+      "options": [
+        "Retrait de l’tableau IV de la Convention de 1961",
+        "Retrait de toutes les tableaux internationales",
+        "Suppression de la Convention de 1961",
+        "Classement dans l’tableau IV de 1971"
+      ],
+      "answer": 0,
+      "explanation": "Le vote a retiré cannabis et résine de l’tableau IV de la Convention de 1961; ils sont restés dans son tableau I.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-2020",
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-vote-numbers",
+      "prompt": "Quel fut le résultat du vote de l’ONU en 2020 sur le retrait du cannabis de l’tableau IV de la Convention de 1961 ?",
+      "options": [
+        "27 pour, 25 contre, 1 abstention",
+        "25 pour, 27 contre, 1 abstention",
+        "27 pour, 24 contre, 2 abstentions",
+        "Unanimité"
+      ],
+      "answer": 0,
+      "explanation": "Le compte rendu officiel de l’ONU consigne 27 voix pour, 25 contre et une abstention.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-2020"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-single-1972",
+      "prompt": "Quel protocole a amendé la Convention unique sur les stupéfiants ?",
+      "options": [
+        "Protocole de 1972",
+        "Protocole de 1988",
+        "Protocole de 1964",
+        "Protocole de 1991"
+      ],
+      "answer": 0,
+      "explanation": "La convention internationale est la Convention de 1961 telle qu’amendée par le Protocole de 1972.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-canada-scope",
+      "prompt": "Quelles activités la Loi sur le cannabis canadienne, entrée en vigueur en 2018, encadre-t-elle pour les adultes ?",
+      "options": [
+        "Production, distribution, vente et possession",
+        "Uniquement les graines de collection",
+        "Seulement les prescriptions hospitalières",
+        "Exclusivement l’exportation de fibres"
+      ],
+      "answer": 0,
+      "explanation": "Le gouvernement canadien décrit un cadre réglementant notamment production, distribution, vente, import/export et possession des adultes admissibles.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-canada"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-un-psychotropics-city",
+      "prompt": "Dans quelle ville la Convention sur les substances psychotropes de 1971 a-t-elle été adoptée ?",
+      "options": [
+        "New York",
+        "Vienne",
+        "Genève",
+        "Montevideo"
+      ],
+      "answer": 1,
+      "explanation": "La conférence d’adoption de la convention de 1971 s’est tenue à Vienne du 11 janvier au 21 février.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-control",
+      "prompt": "Quelle institution la loi uruguayenne 19.172 a-t-elle instituée pour réguler le cannabis ?",
+      "options": [
+        "IRCCA",
+        "CND",
+        "DEA",
+        "INCB"
+      ],
+      "answer": 0,
+      "explanation": "Le cadre uruguayen confie le contrôle et la régulation à l’Institut de régulation et de contrôle du cannabis (IRCCA).",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-uruguay-impo"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1971-subject",
+      "prompt": "Quel rapport la Commission nationale américaine sur la marijuana et l’abus des drogues a-t-elle publié en 1972 ?",
+      "options": [
+        "Marihuana: A Signal of Misunderstanding",
+        "The Marihuana Problem in New York City",
+        "The Shafer Doctrine",
+        "Cannabis and Psychotropic Substances"
+      ],
+      "answer": 0,
+      "explanation": "Le catalogue Wellcome confirme en 1972 ce titre de la Commission et cite Raymond P. Shafer comme chairman. Le rapport gouvernemental intégral n’a pas pu être lu dans le lecteur web.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-shafer-wellcome"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1937-date",
+      "prompt": "Quel jour le Marihuana Tax Act a-t-il été promulgué ?",
+      "options": [
+        "2 août 1937",
+        "30 mars 1961",
+        "27 octobre 1970",
+        "17 octobre 2018"
+      ],
+      "answer": 0,
+      "explanation": "Le fac-similé des Statutes at Large porte la date du 2 août 1937.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-statutes"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-two-treaties",
+      "prompt": "Après le vote de l’ONU de 2020, comment le cannabis est-il classé dans les tableaux de la Convention de 1961 ?",
+      "options": [
+        "Le cannabis reste en tableau I, mais quitte l’tableau IV",
+        "Il quitte les tableaux I et IV",
+        "Il reste seulement en tableau IV",
+        "La convention entière est abrogée"
+      ],
+      "answer": 0,
+      "explanation": "La décision a supprimé cannabis et résine de l’tableau IV, sans les retirer de l’tableau I de la Convention unique.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-2020",
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-csa-5schedules",
+      "prompt": "Quel organisme assurait la supervision financière de l’étude sociologique du rapport LaGuardia de 1944 ?",
+      "options": [
+        "New York Academy of Medicine",
+        "Department of Hospitals",
+        "American Medical Association",
+        "Federal Bureau of Narcotics"
+      ],
+      "answer": 0,
+      "explanation": "Le rapport distingue New York Academy of Medicine pour le financement de l’étude sociologique et Research Council du Department of Hospitals pour l’étude clinique.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-laguardia"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-film-use",
+      "prompt": "Qui fut le premier commissaire du Federal Bureau of Narcotics lors de sa création en 1930 ?",
+      "options": [
+        "Harry J. Anslinger",
+        "Raymond P. Shafer",
+        "Fiorello H. LaGuardia",
+        "John F. Kramer"
+      ],
+      "answer": 0,
+      "explanation": "La page historique de la DEA confirme la création du Federal Bureau of Narcotics en 1930 et Anslinger comme premier commissaire ; la date de fin de mandat n’est pas nécessaire à cette réponse.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-anslinger"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-canada-federal",
+      "prompt": "Selon la résolution coloniale de 1895, quel était le champ géographique de l’Indian Hemp Drugs Commission ?",
+      "options": [
+        "L’Inde, avec une enquête dépassant le seul Bengale",
+        "Le Canada et ses provinces",
+        "Les États-Unis et leurs territoires",
+        "L’ensemble des colonies françaises"
+      ],
+      "answer": 0,
+      "explanation": "La résolution indique une enquête étendue à l’Inde, dépassant le seul Bengale. La page consultée ne donne pas la date de nomination de 1893 : celle-ci est retirée de la question.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-hemp-commission"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-policy",
+      "prompt": "Quel principe la loi uruguayenne 19.172 sur le cannabis met-elle en avant dans son article premier ?",
+      "options": [
+        "Réduire les risques et protéger la santé publique",
+        "Remplacer les trois conventions de l’ONU",
+        "Interdire toute culture de chanvre",
+        "Créer une taxe américaine"
+      ],
+      "answer": 0,
+      "explanation": "Le texte officiel formule comme intérêt public la protection et la promotion de la santé, avec une politique visant la réduction des risques et dommages.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-uruguay-impo"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-1988-adoption",
+      "prompt": "À quelles dates s’est tenue la conférence d’adoption de la convention de l’ONU de 1988 contre le trafic illicite de stupéfiants ?",
+      "options": [
+        "25 novembre–20 décembre 1988",
+        "24 janvier–25 mars 1961",
+        "11 janvier–21 février 1971",
+        "2–4 décembre 2020"
+      ],
+      "answer": 0,
+      "explanation": "La compilation des traités de l’ONU date la conférence de Vienne du 25 novembre au 20 décembre 1988.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-un-treaties"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-uruguay-promulgation-publication",
+      "prompt": "Quelles sont les dates de promulgation et de publication de la loi uruguayenne 19.172 sur le cannabis ?",
+      "options": [
+        "Promulgation le 20 décembre 2013, publication le 7 janvier 2014",
+        "Promulgation et publication le 17 octobre 2018",
+        "Adoption en 2020, publication en 2021",
+        "Aucune date n’est fournie"
+      ],
+      "answer": 0,
+      "explanation": "Le document officiel donne les deux repères: promulgation le 20/12/2013, publication le 07/01/2014.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-uruguay-impo"
+      ]
+    },
+    {
+      "id": "hemp-hs-hist-csa-vs-tax",
+      "prompt": "Quelle convention internationale fut signée à Genève le 19 février 1925 ?",
+      "options": [
+        "Convention internationale de l’opium",
+        "Convention unique sur les stupéfiants",
+        "Convention sur les substances psychotropes",
+        "Convention contre le trafic illicite"
+      ],
+      "answer": 0,
+      "explanation": "Le dépositaire des traités de l’ONU date la Convention internationale de l’opium de Genève, le 19 février 1925; elle précède les conventions de 1961, 1971 et 1988.",
+      "articleId": "ref-histoire-politiques",
+      "sourceIds": [
+        "qh-hist-opium-1925"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Contre-vérifier l’ancrage carolingien de l’essor vers 800 dans une source primaire ; le quiz et la fiche l’attribuent explicitement à la fiche patrimoniale secondaire.",
+    "Les œuvres de Gautier et Baudelaire, les participants cités et les témoignages rapportés ne forment pas une liste complète de membres réguliers du Club. Lettre originale de Balzac et monographie historique entière non consultées.",
+    "Oki-no-shima, Ban Don Ta Phet et Pazyryk : publications originales non lues ; mentions secondaires explicitement attribuées. Les graines ne prouvent pas seules la teneur en THC ou la finalité intoxicante.",
+    "La notice Mount Vernon comporte une dichotomie sativa/indica et une innocuité absolue non reprises. La fiche patrimoniale du chanvre comporte des récits de causalité industrielle de la prohibition non repris. Larousse comporte une chronologie 1842 et un vocabulaire de société secrète non retenus.",
+    "Déclaration : exemplaire signé sur parchemin ; aucune allégation sur la composition de chaque brouillon ou d’un livre de Gutenberg sans analyse matérielle propre.",
+    "Rapport Shafer : catalogue commercial lu, PDF original trop volumineux ; ne pas réintroduire jour de remise ou recommandations détaillées sans ouvrir une source primaire adéquate.",
+    "Date de nomination de la commission indienne et date exacte du scrutin californien retirées des questions faute de preuve sur les pages effectivement ouvertes.",
+    "Distinguer vote CND 2020, maintien au tableau I, classement américain historique et droit national actuel. La proposition DEA de 2024 n’est pas une décision définitive.",
+    "Aucune photographie indispensable à ces deux synthèses. Le téléchargement de Haimenkou avait fourni du HTML ; fichier supprimé, aucune licence ou inspection d’image indûment déclarée."
+  ]
+}

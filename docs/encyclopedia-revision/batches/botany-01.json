@@ -1,0 +1,1414 @@
+{
+  "domain": "botany",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "bf-kew-1975",
+      "title": "Cannabis sativa L. — description botanique",
+      "author": "Bernard Verdcourt ; Royal Botanic Gardens, Kew",
+      "organization": "Plants of the World Online / Flora of Tropical East Africa",
+      "published": "Flora of Tropical East Africa, Cannabaceae, 1975 ; portail consulté en 2026",
+      "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2/general-information",
+      "passage": "Description de Verdcourt : feuilles, fleurs mâles, bractéole enveloppante, ovaire, stigmates et akène ; distinguer ces rubriques de la carte de répartition.",
+      "access": "official-page",
+      "documentKind": "Description floristique originale reproduite par Kew",
+      "limitation": "Description régionale historique, pas catalogue exhaustif des formes cultivées. Les indications anciennes d’usage ou de droit ne sont pas reprises comme état juridique actuel.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2/general-information",
+          "sectionsOpened": [
+            "Accepted name; Classification; Flora of Tropical East Africa (1975), Morphology"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Cannabis sativa accepté ; Rosales, Cannabaceae ; folioles, fleurs, bractéole enveloppante et fruit"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-cfia-2021",
+      "title": "The Biology of Cannabis sativa L. (Cannabis, hemp, marijuana)",
+      "author": "Agence canadienne d’inspection des aliments",
+      "organization": "ACIA / CFIA",
+      "published": "BIO2020-02 ; page modifiée le 3 mars 2021",
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "passage": "Sections 2.6 et 4.1 : description générale, reproduction, dioécie/monoécie, pollinisation par le vent et diversité de réponse à la photopériode.",
+      "access": "official-page",
+      "documentKind": "Synthèse biologique institutionnelle avec bibliographie",
+      "limitation": "Seules les notions botaniques sont utilisées. Les seuils réglementaires de cette ancienne synthèse ne décrivent pas le droit de 2026 ; aucun réglage de culture ni moyen de modifier l’expression sexuelle n’est reproduit.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "sectionsOpened": [
+            "2.5 Taxonomy and genetics",
+            "2.6 General description",
+            "4.1 Reproductive biology",
+            "4.7 Means of movement and dispersal",
+            "6 Potential interaction"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "2n=20 ; pivot ; disposition foliaire ; anthocyanes ; dioécie/monoécie ; pollinisation éolienne ; trichomes et cystolithes ; populations férales"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-body-2018",
+      "title": "Biology 2e, 30.1 — The Plant Body",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "organization": "OpenStax / Rice University",
+      "published": "28 mars 2018",
+      "url": "https://openstax.org/books/biology-2e/pages/30-1-the-plant-body",
+      "passage": "Organes souterrains et aériens ; figure 30.2 et distinction entre organes et tissus.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire de biologie",
+      "limitation": "Cadre général des plantes vasculaires ; les particularités du cannabis sont recoupées avec les flores et les observations originales.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://openstax.org/books/biology-2e/pages/30-1-the-plant-body",
+          "sectionsOpened": [
+            "30.1 Plant Organ Systems; tissue systems"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Racines, axes aériens, épiderme et tissus conducteurs"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-stems-2018",
+      "title": "Biology 2e, 30.2 — Stems",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "organization": "OpenStax / Rice University",
+      "published": "28 mars 2018",
+      "url": "https://openstax.org/books/biology-2e/pages/30-2-stems",
+      "passage": "Début de section et figure 30.4 : nœud, entre-nœud, pétiole et bourgeon axillaire ; Stem Anatomy, tissus conducteurs et fibres.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire de biologie",
+      "limitation": "Les micrographies de lin et de millepertuis ne sont pas présentées comme du cannabis. Une coupe conceptuelle n’est ni une mesure ni une identification histologique d’un échantillon.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://openstax.org/books/biology-2e/pages/30-2-stems",
+          "sectionsOpened": [
+            "30.2 Stems"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Nœuds, entre-nœuds, phloème et xylème"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-leaves-2018",
+      "title": "Biology 2e, 30.4 — Leaves",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "organization": "OpenStax / Rice University",
+      "published": "28 mars 2018",
+      "url": "https://openstax.org/books/biology-2e/pages/30-4-leaves",
+      "passage": "Structure of a Typical Leaf, Leaf Form et Leaf Structure and Function : pétiole, stipules, folioles, épiderme, stomates et photosynthèse.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire de biologie",
+      "limitation": "Définitions générales ; les exemples illustrés appartiennent à plusieurs espèces. Leur forme ne doit pas être copiée comme diagnostic du cannabis.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://openstax.org/books/biology-2e/pages/30-4-leaves",
+          "sectionsOpened": [
+            "30.4 Leaves"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Feuille composée, pétiole, épiderme et photosynthèse"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-reproduction-2018",
+      "title": "Biology 2e, 32.2 — Pollination and Fertilization",
+      "author": "Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "organization": "OpenStax / Rice University",
+      "published": "28 mars 2018",
+      "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+      "passage": "Pollination, Double Fertilization, Development of the Seed et Fruit and Seed Dispersal : transfert du pollen, fécondation, embryon, graine et fruit.",
+      "access": "full-text",
+      "documentKind": "Manuel universitaire de biologie",
+      "limitation": "Cycle sexué général des angiospermes ; une fleur pollinisée n’est pas à elle seule la preuve d’une fécondation réussie. Le schéma pédagogique n’est pas un protocole reproductif.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://openstax.org/books/biology-2e/pages/32-2-pollination-and-fertilization",
+          "sectionsOpened": [
+            "32.2 Pollination and Fertilization"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Pollinisation puis tube pollinique ; double fécondation ; ovule/graine et ovaire/fruit"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-fibres-2016",
+      "title": "Studying Secondary Growth and Bast Fiber Development: The Hemp Hypocotyl Peeks behind the Wall",
+      "author": "Marc Behr, Sylvain Legay, Eva Žižková et collaborateurs",
+      "organization": "Frontiers in Plant Science",
+      "published": "18 novembre 2016 ; 7:1733",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.01733/full",
+      "passage": "Introduction ; Results, Cell Wall Fingerprinting ; figures 1 et 2 : xylème et faisceaux de fibres du phloème dans l’hypocotyle.",
+      "access": "full-text",
+      "documentKind": "Étude expérimentale originale, microscopie et analyse des tissus",
+      "limitation": "Étude de Santhica 27 à des stades précis. L’organisation des tissus n’autorise pas à attribuer une quantité de fibres ou une qualité textile à toute tige représentée.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2016.01733/full",
+          "sectionsOpened": [
+            "Results: Microscopic Characterization of the Growing Hemp Hypocotyl; figure 1"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Fibres libériennes périphériques, xylème et développement des parois"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-morphology-2023",
+      "title": "Morphological Characterization of Cannabis sativa L. Throughout Its Complete Life Cycle",
+      "author": "Mohsen Hesami, Marco Pepe et Andrew Maxwell Phineas Jones",
+      "organization": "Plants / Université de Guelph",
+      "published": "22 octobre 2023 ; 12(20):3646",
+      "url": "https://www.mdpi.com/2223-7747/12/20/3646",
+      "passage": "Résultats 2.1–2.3 ; figures 1, 4 et 5 : variation des feuilles, stipules, bractées et fleurs solitaires au cours du développement.",
+      "access": "full-text",
+      "documentKind": "Étude morphologique originale",
+      "limitation": "Un cultivar, White Widow, dans les conditions de l’étude. Les numéros de nœuds et les durées ne constituent pas une règle universelle ; les interprétations adaptatives et les conseils d’optimisation ne sont pas repris.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2223-7747/12/20/3646",
+          "sectionsOpened": [
+            "2.1 Leaf Development",
+            "2.2 Plant Architecture",
+            "2.3 Flower Development",
+            "2.4 Trichome Development",
+            "4.1 Plant Material",
+            "figure 12",
+            "Copyright CC BY 4.0"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Observations sur White Widow Dutch Passion ; succession des feuilles ; fleurs isolées ; trichomes et échelles photographiques"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-florogenesis-2019",
+      "title": "Architecture and Florogenesis in Female Cannabis sativa Plants",
+      "author": "Ben Spitzer-Rimon, Shai Duchin, Nirit Bernstein et Rina Kamenetsky",
+      "organization": "Frontiers in Plant Science",
+      "published": "2 avril 2019 ; 10:350",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+      "passage": "Introduction, figure 1 ; Results et Discussion : fleur solitaire, ramification et développement de l’inflorescence comme phénomènes distincts.",
+      "access": "full-text",
+      "documentKind": "Étude morphologique expérimentale originale",
+      "limitation": "Génotypes et conditions de recherche définis. La notion de réponse photopériodique est enseignée sans reproduire les paramètres expérimentaux ni en faire un programme de culture.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+          "sectionsOpened": [
+            "Abstract",
+            "Results; figures 2 and 4",
+            "Discussion: Floral Development under Long and Short Photoperiod",
+            "Copyright CC BY"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Trois cultivars ; fleurs solitaires sous jours longs et courts ; forte ramification en jours courts ; enveloppes florales distinctes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-geves-2021",
+      "title": "Analyse de la faculté germinative de Cannabis sativa L. (Chanvre)",
+      "author": "GEVES — Station nationale d’essais de semences",
+      "organization": "GEVES",
+      "published": "Juillet 2021 ; M-GEVES/SP/GER/MO/012, version 1",
+      "url": "https://www.geves.fr/wp-content/uploads/M-GEVES-SP-GER-MO-012_Chanvre_202107.pdf",
+      "passage": "Page 6, objet ; page 8, section 9.3 et légende de la figure 1 ; page 9, catégories de résultats : plantules normales/anormales, semences fraîches/mortes.",
+      "access": "full-text",
+      "documentKind": "Méthode officielle d’évaluation des semences",
+      "limitation": "Seuls le vocabulaire d’observation et la portée du résultat sont repris. Les paramètres d’incubation et le mode opératoire ne sont pas reproduits ; pas de diagnostic de viabilité à partir d’une image générée.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.geves.fr/wp-content/uploads/M-GEVES-SP-GER-MO-012_Chanvre_202107.pdf",
+          "sectionsOpened": [
+            "pp.1 et 6 : objet ; expression du potentiel en pourcentage de plantules normales"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Le test de faculté germinative évalue un pourcentage de plantules normales ; les détails embryonnaires sont soutenus séparément par la description botanique et l’étude morphologique."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-geves-2022",
+      "title": "3 nouvelles variétés de chanvre",
+      "author": "GEVES ; contact scientifique Christelle Godin",
+      "organization": "GEVES / CTPS",
+      "published": "17 février 2022 ; modification le 11 mars 2022",
+      "url": "https://www.geves.fr/actualites/3-nouvelles-varietes-de-chanvre/",
+      "passage": "Présentation des propositions de la section CTPS du 20 janvier 2022 : une variété dioïque et deux monoïques.",
+      "access": "official-page",
+      "documentKind": "Annonce institutionnelle de propositions variétales",
+      "limitation": "Exemple daté montrant la coexistence des deux organisations florales en sélection. Proposition de 2022 ne signifie pas inscription acquise ou autorisation actuelle d’un produit.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.geves.fr/actualites/3-nouvelles-varietes-de-chanvre/",
+          "sectionsOpened": [
+            "Article: 3 nouvelles variétés de chanvre"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Exemples datés de descriptions variétales de chanvre"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-upov-2025",
+      "title": "Hemp, Cannabis — Guidelines for the Conduct of Tests for Distinctness, Uniformity and Stability",
+      "author": "Union internationale pour la protection des obtentions végétales",
+      "organization": "UPOV",
+      "published": "26 août 2025 ; TG/276/2, original anglais",
+      "url": "https://www.upov.int/documents/d/upov/tg-documents-en-tg276.pdf",
+      "passage": "Pages 20–21 : section 8.1(a–c), Ad. 3 et dessins Ad. 8 ; position et développement des feuilles observées, fleurs, stigmates, bractée et ovule.",
+      "access": "full-text",
+      "documentKind": "Référentiel primaire de description variétale",
+      "limitation": "La version anglaise fait foi ; la traduction française est annoncée automatique. Seuls les descripteurs et schémas morphologiques sont mobilisés, sans instructions de conduite ou d’optimisation des cultures.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.upov.int/documents/d/upov/tg-documents-en-tg276.pdf",
+          "sectionsOpened": [
+            "TG/276/2, page 1 ; sections 4–5 ; caractères morphologiques"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Document du 26 août 2025 ; distinction, homogénéité et stabilité des variétés"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-sex-2025",
+      "title": "Identification of genes associated with sex expression and sex determination in hemp (Cannabis sativa L.)",
+      "author": "Jiaqi Shi, Matteo Toscani, Caroline A. Dowling, Susanne Schilling et Rainer Melzer",
+      "organization": "Journal of Experimental Botany",
+      "published": "28 octobre 2024 en ligne ; volume 76(1), 1 janvier 2025, p. 175–190",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11659178/",
+      "passage": "Résumé, introduction, analyses d’expression et discussion des gènes candidats ; distinction association statistique et démonstration fonctionnelle.",
+      "access": "full-text",
+      "documentKind": "Étude originale de transcriptomique",
+      "limitation": "Texte HTML de l’éditeur consulté via sa version Silverchair. Les gènes candidats ne sont pas tous des déterminants causaux validés ; les généralités médicales de l’introduction ne sont pas reprises.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11659178/",
+          "sectionsOpened": [
+            "PMC11659178 : Abstract, Introduction, Results and Discussion"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Constitution XX/XY et expression des gènes ; gènes candidats sans déterminant unique démontré"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-trichomes-2020",
+      "title": "Cannabis glandular trichomes alter morphology and metabolite content during flower maturation",
+      "author": "Samuel J. Livingston, Teagen D. Quilichini, Judith K. Booth et collaborateurs",
+      "organization": "The Plant Journal / PubMed",
+      "published": "Publication en ligne le 12 octobre 2019 ; janvier 2020, 101(1), p. 37–56",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+      "passage": "Résumé : comparaison de trichomes glandulaires, microscopie, nombre de cellules sécrétrices et analyses de métabolites.",
+      "access": "abstract",
+      "documentKind": "Résumé d’une étude originale de microscopie et biochimie",
+      "limitation": "Les auteurs combinent instruments et analyses ; une photo ordinaire n’est pas un dosage. Pas d’extrapolation à une teneur, un effet clinique ou un moment de récolte à partir de la couleur.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+          "sectionsOpened": [
+            "PubMed: Abstract"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Trichomes glandulaires, changement de morphologie, cellules sécrétrices et métabolites"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-kew",
+      "title": "Cannabis sativa L. — Plants of the World Online",
+      "author": "Royal Botanic Gardens, Kew",
+      "organization": "Kew Science",
+      "published": "Base courante consultée le 12 novembre 2026",
+      "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2",
+      "passage": "Nom accepté, famille Cannabaceae et liste des synonymes scientifiques.",
+      "access": "official-page",
+      "limitation": "Référentiel taxonomique explicite ; un traitement accepté n’efface pas les classifications concurrentes ni les questions évolutives.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2",
+          "sectionsOpened": [
+            "Accepted name; Classification; Flora of Tropical East Africa (1975), Morphology"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Cannabis sativa accepté ; Rosales, Cannabaceae ; folioles, fleurs, bractéole enveloppante et fruit"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-diversity-cfia",
+      "title": "The Biology of Cannabis sativa L. (Cannabis, hemp, marijuana)",
+      "author": "Agence canadienne d’inspection des aliments",
+      "organization": "ACIA / CFIA",
+      "published": "2020 ; version en ligne consultée en 2026",
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "passage": "Sections 2.5, 2.6 et reproduction : classification, diversité, formes échappées des cultures, dépendance photopériodique et systèmes reproductifs.",
+      "access": "official-page",
+      "limitation": "Synthèse biologique canadienne ; ni règle universelle de droit ni méthode pour identifier un pedigree commercial.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+          "sectionsOpened": [
+            "2.5 Taxonomy and genetics",
+            "2.6 General description",
+            "4.1 Reproductive biology",
+            "4.7 Means of movement and dispersal",
+            "6 Potential interaction"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "2n=20 ; pivot ; disposition foliaire ; anthocyanes ; dioécie/monoécie ; pollinisation éolienne ; trichomes et cystolithes ; populations férales"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-booth2017",
+      "title": "Terpene synthases from Cannabis sativa",
+      "author": "Judith K. Booth, Jonathan E. Page et Jörg Bohlmann",
+      "organization": "PLOS ONE",
+      "published": "29 mars 2017 ; 12(3):e0173911",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+      "passage": "Résumé, introduction, tableau 1 et caractérisation des synthases : trichomes de Finola, précurseurs, enzymes à un ou plusieurs produits et variation entre plantes.",
+      "access": "full-text",
+      "limitation": "Étude sur des matériels identifiés, pas inventaire de toute l’espèce. Les voies biochimiques sont expliquées sans protocole ni optimisation de production.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document primaire ou ressource institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "sectionsOpened": [
+            "Abstract; Introduction; terpene synthase characterization"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Enzymes des terpènes dans des matériels définis ; synthases multiproduits"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-livingston2020",
+      "title": "Cannabis glandular trichomes alter morphology and metabolite content during flower maturation",
+      "author": "Samuel J. Livingston, Teagen D. Quilichini, Judith K. Booth et collaborateurs",
+      "organization": "The Plant Journal / PubMed",
+      "published": "En ligne le 12 octobre 2019 ; janvier 2020, 101(1):37–56",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+      "passage": "Résumé : types de trichomes, microscopie, cellules sécrétrices et profils métaboliques comparés ; DOI 10.1111/tpj.14516.",
+      "access": "abstract",
+      "limitation": "Résumé consulté, pas article intégral. Les mesures instrumentales ne peuvent être remplacées par la couleur d’une photographie ou une illustration du jeu.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+          "sectionsOpened": [
+            "PubMed: Abstract"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Trichomes glandulaires, changement de morphologie, cellules sécrétrices et métabolites"
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "ref-cannabis-sativa",
+      "questions": [
+        "Qu’est-ce que Cannabis sativa et à quelle famille appartient-il ?",
+        "Comment relier feuilles, fibres, fruits et trichomes à leurs fonctions ?",
+        "Pourquoi une population férale n’est-elle pas nécessairement ancestrale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : famille, annualité, organes, diversité taxonomique et origine cultivée des formes férales. Ajout de repères observables ; la planche de synthèse est remplacée par une observation identifiée."
+      ],
+      "patch": {
+        "lead": "Cannabis sativa L. est une plante à fleurs de la famille des Cannabaceae. Le chanvre cultivé pour ses fibres ou ses graines et les formes sélectionnées pour leurs composés appartiennent à la diversité du genre Cannabis.",
+        "sections": [
+          {
+            "id": "ref-cannabis-sativa-description",
+            "title": "Une plante herbacée",
+            "paragraphs": [
+              "Le cannabis est généralement annuel. Ses racines alimentent une tige dressée et ramifiée qui porte les feuilles puis les structures reproductrices. Les grandes feuilles sont souvent composées de folioles dentées disposées en éventail. Leur nombre et leur forme changent avec la position sur la plante et son développement.",
+              "Une grande feuille palmée est une feuille composée : ses « doigts » sont des folioles réunies à l’extrémité d’un pétiole. Les feuilles inférieures sont généralement opposées, tandis que les feuilles supérieures deviennent souvent alternes. Le dessin d’une seule feuille ne représente donc pas tous les âges de la plante."
+            ],
+            "sourceIds": [
+              "bf-cfia-2021",
+              "bf-kew-1975",
+              "bf-morphology-2023"
+            ]
+          },
+          {
+            "id": "ref-cannabis-sativa-organes",
+            "title": "Des organes aux usages",
+            "paragraphs": [
+              "Les fibres du liber se trouvent dans les tissus périphériques de la tige, autour d’une partie plus ligneuse. Le chènevis est le fruit sec contenant la graine. Des trichomes glandulaires produisent et accumulent des métabolites spécialisés, notamment des cannabinoïdes et des terpènes, particulièrement étudiés sur les organes floraux."
+            ],
+            "sourceIds": [
+              "bf-fibres-2016",
+              "bf-kew-1975",
+              "bf-trichomes-2020"
+            ]
+          },
+          {
+            "id": "ref-cannabis-sativa-diversite",
+            "title": "Une espèce très variable",
+            "paragraphs": [
+              "Plants of the World Online, le référentiel de Kew, accepte le nom Cannabis sativa. D’autres traitements taxonomiques subdivisent différemment le genre. Les caractères d’une population cultivée, son usage et sa composition chimique ne constituent donc pas trois classements équivalents. Les plantes férales proviennent de cultures dont elles se sont échappées."
+            ],
+            "sourceIds": [
+              "botany-diversity-kew",
+              "botany-diversity-cfia"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "bf-cfia-2021",
+          "bf-kew-1975",
+          "bf-morphology-2023",
+          "bf-fibres-2016",
+          "bf-trichomes-2020",
+          "botany-diversity-kew",
+          "botany-diversity-cfia"
+        ],
+        "relatedArticleIds": [
+          "ref-organes-vegetatifs",
+          "ref-cycle-vie",
+          "ref-taxonomie-cannabis"
+        ],
+        "glossaryIds": [
+          "botany-leaflet",
+          "botany-inflorescence",
+          "botany-feral"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-observation-1"
+          },
+          {
+            "courseId": "plant",
+            "passageId": "plant-4"
+          }
+        ],
+        "image": {
+          "src": "/placard/reference/botany/florogenesis-figure2.webp",
+          "alt": "Photographies d’un cannabis NB140, d’un nœud avec fleurs solitaires et de son apex, accompagnées du schéma d’organisation de la figure originale.",
+          "caption": "Cannabis NB140 : plante entière (A), nœud avec fleurs solitaires (B), organisation (C), apex observé en microscopie (D–E). Figure 2 originale conservée ; les légendes anglaises désignent tige principale, axe axillaire, feuille, bractée et fleur solitaire. Ce matériel ne représente pas toutes les variétés.",
+          "author": "Ben Spitzer-Rimon, Shai Duchin, Nirit Bernstein et Rina Kamenetsky (2019)",
+          "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "kind": "photograph"
+        }
+      },
+      "sourceIdsReviewed": [
+        "bf-cfia-2021",
+        "bf-kew-1975",
+        "bf-morphology-2023",
+        "bf-fibres-2016",
+        "bf-trichomes-2020",
+        "botany-diversity-kew",
+        "botany-diversity-cfia"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photo effectivement affichée et page d’origine/licence lues ; échelles et portée expérimentale décrites."
+      },
+      "quizIdsReviewed": [
+        "hemp-genetics-nom-botanique"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-organes-vegetatifs",
+      "questions": [
+        "Comment les racines, le xylème et le phloème participent-ils au fonctionnement de la plante ?",
+        "Comment distinguer nœud, entre-nœud, pétiole, stipule et foliole ?",
+        "Quel processus fabrique des sucres dans les tissus verts ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés : fonctions racinaires, nœuds, entre-nœuds, pétiole, stipules et fibres du liber. Les fonctions du xylème/phloème et la fabrication des sucres rendent le fonctionnement de l’ensemble explicite."
+      ],
+      "patch": {
+        "lead": "Les organes végétatifs du cannabis assurent l’ancrage, les échanges et la croissance de la plante. Ils comprennent le système racinaire, les tiges et les feuilles, chacun composé de plusieurs tissus spécialisés.",
+        "sections": [
+          {
+            "id": "ref-organes-vegetatifs-racines",
+            "title": "Le système racinaire",
+            "paragraphs": [
+              "Les racines ancrent la plante et absorbent de l’eau ainsi que des éléments minéraux. Elles constituent la partie souterraine de l’appareil végétatif et communiquent avec les organes aériens par les tissus conducteurs. Une racine est un organe entier ; elle ne correspond ni à une fibre textile ni à un poil glandulaire.",
+              "Les tissus conducteurs relient ces organes : le xylème transporte principalement l’eau et les ions minéraux ; le phloème distribue notamment des sucres entre organes sources et organes consommateurs. Les racines dépendent ainsi aussi des produits de la photosynthèse des parties aériennes."
+            ],
+            "sourceIds": [
+              "bf-body-2018",
+              "bf-stems-2018"
+            ]
+          },
+          {
+            "id": "ref-organes-vegetatifs-tige",
+            "title": "La tige et ses tissus",
+            "paragraphs": [
+              "La tige porte les feuilles et les ramifications. Les nœuds sont leurs points d’insertion ; les entre-nœuds sont les portions qui les séparent. Les fibres du liber, associées au phloème, occupent une position périphérique par rapport au bois. Cette organisation distingue les fibres utilisées dans les textiles du cœur ligneux de la tige."
+            ],
+            "sourceIds": [
+              "bf-stems-2018",
+              "bf-fibres-2016"
+            ]
+          },
+          {
+            "id": "ref-organes-vegetatifs-feuilles",
+            "title": "Une feuille, plusieurs folioles",
+            "paragraphs": [
+              "Le pétiole relie la feuille à la tige. Chez le cannabis, plusieurs folioles dentées peuvent partager ce même pétiole. Les stipules sont de petites pièces situées près de sa base. La feuille participe à la photosynthèse et aux échanges gazeux ; la variation de ses folioles accompagne notamment le développement et la position sur l’individu.",
+              "Dans les tissus verts, la photosynthèse transforme l’énergie lumineuse en énergie chimique et permet de fabriquer des sucres à partir du carbone du dioxyde de carbone. Les stomates participent aux échanges gazeux ; les poils de surface, les folioles et le pétiole sont des structures différentes."
+            ],
+            "sourceIds": [
+              "bf-leaves-2018",
+              "bf-kew-1975",
+              "bf-morphology-2023",
+              "bf-body-2018"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "bf-body-2018",
+          "bf-stems-2018",
+          "bf-fibres-2016",
+          "bf-leaves-2018",
+          "bf-kew-1975",
+          "bf-morphology-2023"
+        ],
+        "relatedArticleIds": [
+          "ref-cannabis-sativa",
+          "ref-fleurs-fruits-graines",
+          "ref-cycle-vie"
+        ],
+        "glossaryIds": [
+          "botany-root",
+          "botany-node",
+          "botany-leaflet",
+          "botany-stipule",
+          "botany-bast-fibre"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-anatomy-1"
+          },
+          {
+            "courseId": "plant",
+            "passageId": "plant-1"
+          }
+        ],
+        "image": {
+          "src": "/placard/reference/botany/florogenesis-figure2.webp",
+          "alt": "Photographies d’un cannabis NB140, d’un nœud avec fleurs solitaires et de son apex, accompagnées du schéma d’organisation de la figure originale.",
+          "caption": "Cannabis NB140 : plante entière (A), nœud avec fleurs solitaires (B), organisation (C), apex observé en microscopie (D–E). Figure 2 originale conservée ; les légendes anglaises désignent tige principale, axe axillaire, feuille, bractée et fleur solitaire. Ce matériel ne représente pas toutes les variétés.",
+          "author": "Ben Spitzer-Rimon, Shai Duchin, Nirit Bernstein et Rina Kamenetsky (2019)",
+          "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "kind": "photograph"
+        }
+      },
+      "sourceIdsReviewed": [
+        "bf-body-2018",
+        "bf-stems-2018",
+        "bf-fibres-2016",
+        "bf-leaves-2018",
+        "bf-kew-1975",
+        "bf-morphology-2023"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photo effectivement affichée et page d’origine/licence lues ; échelles et portée expérimentale décrites."
+      },
+      "quizIdsReviewed": [
+        "hemp-plant-racines",
+        "hemp-plant-feuille-palmee",
+        "hemp-plant-photosynthese",
+        "hemp-plant-noeud",
+        "hemp-plant-petiole",
+        "hemp-plant-stipules"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-fleurs-fruits-graines",
+      "questions": [
+        "Où sont produits et reçus les grains de pollen ?",
+        "Pourquoi les deux filaments de la fleur ne sont-ils pas deux pistils ?",
+        "Comment distinguer bractée, périanthe, fruit et graine ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservées et vérifiées : anthères/pollen, deux branches stigmatiques, bractée/bractéole distincte du périanthe réduit, akène et deux cotylédons. Ajout du mécanisme ovaire→fruit et ovule→graine."
+      ],
+      "patch": {
+        "lead": "Le cannabis porte de petites fleurs regroupées dans des structures ramifiées. L’inflorescence, la fleur, le fruit et la graine correspondent à des niveaux d’organisation différents, souvent réunis sous des noms courants moins précis.",
+        "sections": [
+          {
+            "id": "ref-fleurs-fruits-graines-fleurs",
+            "title": "Les structures florales",
+            "paragraphs": [
+              "Les fleurs staminales possèdent des étamines dont les anthères produisent le pollen. Les fleurs pistillées comportent un ovaire et deux branches stigmatiques réceptrices du pollen. Ces deux filaments appartiennent à l’appareil pistillé : ils ne représentent pas deux pistils entiers. Une « tête » de cannabis rassemble plusieurs fleurs et leurs axes."
+            ],
+            "sourceIds": [
+              "bf-kew-1975",
+              "bf-florogenesis-2019"
+            ]
+          },
+          {
+            "id": "ref-fleurs-fruits-graines-enveloppes",
+            "title": "Bractées et enveloppes",
+            "paragraphs": [
+              "Des bractées, feuilles modifiées associées aux fleurs, participent à l’organisation de l’inflorescence. L’enveloppe verte entourant la fleur pistillée est décrite comme une bractéole ou une bractée périgonale. Le périanthe propre à cette fleur est très réduit. Ces structures ne sont pas toutes des sépales, malgré certaines appellations courantes."
+            ],
+            "sourceIds": [
+              "bf-kew-1975",
+              "bf-upov-2025"
+            ]
+          },
+          {
+            "id": "ref-fleurs-fruits-graines-chenevis",
+            "title": "Le chènevis",
+            "paragraphs": [
+              "Le chènevis entier est un petit fruit sec, couramment appelé akène. Sa paroi provient de l’ovaire ; il renferme une graine issue de l’ovule après la reproduction sexuée. La graine contient un embryon à deux cotylédons. Dans la filière semencière, le mot semence désigne aussi l’unité entière utilisée, sans effacer ces distinctions botaniques.",
+              "Le fruit et la graine restent emboîtés mais ont des origines différentes. La paroi de l’ovaire devient le péricarpe ; les enveloppes de l’ovule deviennent celles de la graine. Le chènevis commercial entier comprend donc davantage que l’embryon et ses deux cotylédons. Il est dit indéhiscent parce qu’il ne s’ouvre pas spontanément à maturité."
+            ],
+            "sourceIds": [
+              "bf-kew-1975",
+              "bf-reproduction-2018",
+              "bf-geves-2021"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "bf-kew-1975",
+          "bf-florogenesis-2019",
+          "bf-upov-2025",
+          "bf-reproduction-2018",
+          "bf-geves-2021"
+        ],
+        "relatedArticleIds": [
+          "ref-reproduction",
+          "ref-cycle-vie",
+          "ref-trichomes"
+        ],
+        "glossaryIds": [
+          "botany-anther",
+          "botany-stigma",
+          "botany-bract",
+          "botany-achene",
+          "botany-cotyledon"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-anatomy-2"
+          }
+        ],
+        "image": {
+          "src": "/placard/reference/botany/florogenesis-figure4.webp",
+          "alt": "Microphotographies du développement d’une fleur pistillée, de son périanthe réduit, de sa bractée enveloppante et des stigmates.",
+          "caption": "Figure 4 : développement de la fleur pistillée. c = carpelle ; r = bractée périgonale ; p = périanthe ; s = stigmate ; b = bractée sous-jacente. Les barres d’échelle sont conservées ; le stigmate a été retiré sur E pour montrer les enveloppes.",
+          "author": "Ben Spitzer-Rimon, Shai Duchin, Nirit Bernstein et Rina Kamenetsky (2019)",
+          "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "kind": "photograph"
+        }
+      },
+      "sourceIdsReviewed": [
+        "bf-kew-1975",
+        "bf-florogenesis-2019",
+        "bf-upov-2025",
+        "bf-reproduction-2018",
+        "bf-geves-2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photo effectivement affichée et page d’origine/licence lues ; échelles et portée expérimentale décrites."
+      },
+      "quizIdsReviewed": [
+        "hemp-plant-antheres",
+        "hemp-plant-bractee",
+        "hemp-plant-cotyledons",
+        "hemp-plant-filaments-femelles",
+        "hemp-plant-perianthe",
+        "hemp-plant-inflorescence"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-trichomes",
+      "questions": [
+        "Quels types de trichomes la plante porte-t-elle ?",
+        "Comment des cellules sécrétrices et des enzymes participent-elles à la production des métabolites ?",
+        "Pourquoi une couleur photographiée ne donne-t-elle pas une concentration chimique ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Les trois sections sont cohérentes avec le résumé Livingston effectivement lu ; aucun article intégral Livingston n’est revendiqué. Typologie expliquée et vraie microphotographie substituée à la planche générique ; couleur non convertie en dosage."
+      ],
+      "patch": {
+        "lead": "Les trichomes sont des structures issues de l’épiderme des organes végétaux. Le cannabis possède des trichomes non glandulaires et des trichomes glandulaires, ces derniers étant associés à la production de nombreux composés spécialisés.",
+        "sections": [
+          {
+            "id": "ref-trichomes-formes",
+            "title": "Des structures différentes",
+            "paragraphs": [
+              "Les trichomes non glandulaires ont un aspect pileux. Les trichomes glandulaires comprennent des cellules sécrétrices et une tête, portée ou non par un pédoncule nettement visible. Une surface végétale peut donc porter plusieurs types de structures. Les filaments stigmatiques des fleurs appartiennent à l’appareil reproducteur et ne sont pas des trichomes.",
+              "On décrit habituellement trois formes glandulaires : bulbeuse, capitée sessile et capitée pédonculée. La forme bulbeuse est la plus petite ; « capitée » indique une tête et « pédonculée » une tête portée par un pied allongé. Cette classification morphologique aide à décrire une observation, sans donner à elle seule la quantité de résine ou la composition de l’échantillon."
+            ],
+            "sourceIds": [
+              "bf-cfia-2021",
+              "bf-leaves-2018",
+              "bf-kew-1975",
+              "bf-trichomes-2020"
+            ]
+          },
+          {
+            "id": "ref-trichomes-metabolites",
+            "title": "Des sites de production",
+            "paragraphs": [
+              "Des cannabinoïdes et des terpènes sont produits ou accumulés dans les structures glandulaires étudiées. Les cellules sécrétrices et les voies enzymatiques contribuent à cette spécialisation. La présence d’une glande décrit toutefois une organisation anatomique ; elle ne correspond pas à une quantité fixe de chaque composé dans la plante.",
+              "Une enzyme catalyse une transformation chimique : elle facilite une réaction sans être consommée comme un ingrédient de celle-ci. Les terpène synthases étudiées peuvent fabriquer un produit principal ou plusieurs produits. Un trichome associe ainsi une structure cellulaire et plusieurs voies de biosynthèse, plutôt qu’un réservoir d’une seule molécule."
+            ],
+            "sourceIds": [
+              "bf-trichomes-2020",
+              "terpenes-lesson-booth2017"
+            ]
+          },
+          {
+            "id": "ref-trichomes-developpement",
+            "title": "Une organisation qui évolue",
+            "paragraphs": [
+              "Les recherches sur les fleurs montrent des changements de morphologie et de contenu métabolique au cours de leur maturation. La forme d’un trichome et son nombre de cellules sécrétrices sont ainsi liés au développement. Une couleur ou une densité apparente, isolée de ces données, n’indique pas une concentration précise en THC ou en terpènes."
+            ],
+            "sourceIds": [
+              "bf-trichomes-2020",
+              "terpenes-lesson-livingston2020"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "bf-cfia-2021",
+          "bf-leaves-2018",
+          "bf-kew-1975",
+          "bf-trichomes-2020",
+          "terpenes-lesson-booth2017",
+          "terpenes-lesson-livingston2020"
+        ],
+        "relatedArticleIds": [
+          "ref-biosynthese-terpenes",
+          "ref-biosynthese-cannabinoides",
+          "ref-fleurs-fruits-graines"
+        ],
+        "glossaryIds": [
+          "botany-trichome",
+          "botany-epidermis",
+          "terpenes-term-enzyme"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-observation-2"
+          },
+          {
+            "courseId": "molecules",
+            "passageId": "terpenes-trichomes-1"
+          }
+        ],
+        "image": {
+          "src": "/placard/reference/botany/trichomes-figure12.jpg",
+          "alt": "Microphotographies de têtes glandulaires sur leur pédoncule, avec mesures de longueur du pédoncule et diamètre de tête dans l’étude.",
+          "caption": "Figure 12 de l’étude White Widow : photographies A–D et mesures E–F (micromètres). Les semaines indiquent les observations expérimentales de ce cultivar ; ce calendrier et les couleurs ne donnent pas un dosage chimique universel.",
+          "author": "Mohsen Hesami, Marco Pepe et Andrew Maxwell Phineas Jones (2023)",
+          "sourceUrl": "https://www.mdpi.com/2223-7747/12/20/3646",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "kind": "photograph"
+        }
+      },
+      "sourceIdsReviewed": [
+        "bf-cfia-2021",
+        "bf-leaves-2018",
+        "bf-kew-1975",
+        "bf-trichomes-2020",
+        "terpenes-lesson-booth2017",
+        "terpenes-lesson-livingston2020"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photo effectivement affichée et page d’origine/licence lues ; échelles et portée expérimentale décrites."
+      },
+      "quizIdsReviewed": [
+        "hemp-plant-trichome"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-cycle-vie",
+      "questions": [
+        "Comment l’embryon devient-il une plantule ?",
+        "Pourquoi fleurs solitaires et inflorescences sont-elles deux étapes différentes ?",
+        "Pourquoi les pieds mâles et femelles peuvent-ils finir leur cycle à des moments différents ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservées : annualité générale, embryon, deux cotylédons, stades floraux et dispersion distincte de celle du pollen. Précision sur radicule/plantule normale et décalage de sénescence entre types sexuels."
+      ],
+      "patch": {
+        "lead": "Le cannabis est généralement une plante annuelle. Son développement relie la germination, la croissance végétative, la formation des structures reproductrices et la sénescence ; les organes d’un même individu ne progressent pas tous au même rythme.",
+        "sections": [
+          {
+            "id": "ref-cycle-vie-germination",
+            "title": "De l’embryon à la plantule",
+            "paragraphs": [
+              "La graine contient déjà un embryon. La germination correspond à la reprise de son développement, avec l’apparition de la jeune racine et de l’axe aérien. Les deux cotylédons sont des pièces foliaires embryonnaires. Les feuilles produites ensuite se différencient progressivement et n’ont pas toutes d’emblée la forme palmée des feuilles développées.",
+              "Au sens physiologique strict, l’émission de la radicule marque l’achèvement de la germination. Un test de faculté germinative examine ensuite si la plantule possède les structures nécessaires à son développement normal : voir une racine ne suffit pas à décrire cette qualité complète."
+            ],
+            "sourceIds": [
+              "bf-reproduction-2018",
+              "bf-geves-2021",
+              "bf-morphology-2023"
+            ]
+          },
+          {
+            "id": "ref-cycle-vie-croissance",
+            "title": "Croissance et développement floral",
+            "paragraphs": [
+              "Tiges, feuilles et ramifications se développent pendant la croissance végétative. La formation d’une première fleur isolée et celle d’une inflorescence ramifiée sont des étapes distinctes. Leur succession dépend notamment du génotype et des conditions du milieu. Les durées observées sur un cultivar ne constituent pas un calendrier identique pour tous les cannabis."
+            ],
+            "sourceIds": [
+              "bf-cfia-2021",
+              "bf-florogenesis-2019",
+              "bf-morphology-2023"
+            ]
+          },
+          {
+            "id": "ref-cycle-vie-reproduction",
+            "title": "Reproduction et sénescence",
+            "paragraphs": [
+              "Après une reproduction sexuée aboutie, les ovules donnent les graines et les ovaires forment les fruits. La sénescence correspond au vieillissement des organes puis à la fin du cycle de l’individu. La dispersion des fruits contenant les graines prolonge le cycle à l’échelle de la population ; elle est différente du transport du pollen.",
+              "Dans les populations dioïques, les individus staminaux terminent souvent leur cycle après la dispersion du pollen, alors que les individus pistillés poursuivent le développement des fruits. L’expression « cycle annuel » décrit le cycle habituel depuis la graine ; le maintien végétatif d’un clone dans un milieu contrôlé n’impose pas à tous les organes un âge identique."
+            ],
+            "sourceIds": [
+              "bf-reproduction-2018",
+              "bf-cfia-2021",
+              "bf-kew-1975"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "bf-reproduction-2018",
+          "bf-geves-2021",
+          "bf-morphology-2023",
+          "bf-cfia-2021",
+          "bf-florogenesis-2019",
+          "bf-kew-1975"
+        ],
+        "relatedArticleIds": [
+          "ref-photoperiode",
+          "ref-reproduction",
+          "ref-fleurs-fruits-graines"
+        ],
+        "glossaryIds": [
+          "botany-germination",
+          "botany-cotyledon",
+          "botany-senescence"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-life-cycle-1"
+          }
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Du fruit semé à la génération suivante",
+          "nodes": [
+            {
+              "label": "Fruit contenant une graine",
+              "detail": "L’embryon possède deux cotylédons."
+            },
+            {
+              "label": "Germination",
+              "detail": "La radicule émerge ; la plantule se développe ensuite."
+            },
+            {
+              "label": "Croissance et floraison",
+              "detail": "Feuilles, axes puis fleurs ; les stades se chevauchent."
+            },
+            {
+              "label": "Reproduction aboutie",
+              "detail": "Ovules → graines ; ovaires → fruits."
+            },
+            {
+              "label": "Sénescence et dispersion",
+              "detail": "La fin d’un individu et le départ d’une nouvelle génération sont distincts."
+            }
+          ],
+          "caption": "Cycle annuel général ; aucune durée universelle n’est attribuée à ces étapes.",
+          "sourceIds": [
+            "bf-geves-2021",
+            "bf-reproduction-2018",
+            "bf-morphology-2023"
+          ]
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "bf-reproduction-2018",
+        "bf-geves-2021",
+        "bf-morphology-2023",
+        "bf-cfia-2021",
+        "bf-florogenesis-2019",
+        "bf-kew-1975"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [
+        "hemp-plant-annuelle"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-reproduction",
+      "questions": [
+        "Quelle différence existe-t-il entre dioécie, monoécie et fleur bisexuée ?",
+        "Que se passe-t-il entre pollinisation et formation d’une graine ?",
+        "Comment distinguer constitution XX/XY et expression des fleurs ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservées : distinction dioécie/monoécie/fleur bisexuée et pollinisation/fécondation. Lecture du texte JXB via PMC ; licence CC BY-NC-ND excluant la réutilisation commerciale des figures : diagramme original retenu."
+      ],
+      "patch": {
+        "lead": "La reproduction sexuée du cannabis repose sur les fleurs, le transport du pollen et la fécondation des ovules. Le genre présente plusieurs organisations florales, dont la dioécie et la monoécie.",
+        "sections": [
+          {
+            "id": "ref-reproduction-organisation",
+            "title": "Dioécie et monoécie",
+            "paragraphs": [
+              "Dans une population dioïque, les fleurs staminales et pistillées se trouvent sur des individus distincts. Une plante monoïque porte les deux types de fleurs, qui restent séparées. Une fleur bisexuée réunit au contraire les deux ensembles d’organes dans une même fleur. Ces organisations ne se déduisent ni de la taille d’une plante ni de la forme de ses feuilles."
+            ],
+            "sourceIds": [
+              "bf-cfia-2021",
+              "bf-kew-1975",
+              "bf-reproduction-2018"
+            ]
+          },
+          {
+            "id": "ref-reproduction-pollinisation",
+            "title": "Pollinisation et fécondation",
+            "paragraphs": [
+              "Le vent joue un rôle majeur dans le transport du pollen. La pollinisation correspond à son arrivée sur un stigmate. La fécondation intervient ensuite à l’intérieur de l’ovule, par l’union des cellules reproductrices. Elle conduit notamment à la formation de l’embryon. Un grain de pollen est donc distinct d’une graine et d’un fruit.",
+              "Après son arrivée sur le stigmate, un pollen compatible peut germer et former un tube qui conduit les gamètes mâles vers l’ovule. Chez les plantes à fleurs, la double fécondation forme l’embryon d’une part et un tissu nourricier d’autre part. Polliniser une fleur ne démontre donc pas, à soi seul, qu’un fruit contenant une graine viable sera formé."
+            ],
+            "sourceIds": [
+              "bf-cfia-2021",
+              "bf-reproduction-2018"
+            ]
+          },
+          {
+            "id": "ref-reproduction-expression",
+            "title": "L’expression sexuelle",
+            "paragraphs": [
+              "Dans de nombreuses populations dioïques étudiées, la constitution XX est associée aux fleurs pistillées et XY aux fleurs staminales. L’expression florale présente aussi une plasticité liée aux processus de développement. L’activité des gènes, la constitution chromosomique et les organes effectivement formés représentent des aspects reliés, mais distincts, de cette biologie.",
+              "Les chromosomes sexuels décrivent la constitution génétique, tandis que l’expression sexuelle décrit les fleurs effectivement produites. Des fleurs staminales peuvent apparaître sur un individu XX : leur présence ne transforme pas son caryotype en XY. Les associations d’expression de gènes repérées par l’étude de Shi et collègues sont des pistes mécanistiques, pas la preuve qu’un seul gène expliquerait toutes les organisations sexuelles."
+            ],
+            "sourceIds": [
+              "bf-sex-2025",
+              "bf-cfia-2021"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "bf-cfia-2021",
+          "bf-kew-1975",
+          "bf-reproduction-2018",
+          "bf-sex-2025"
+        ],
+        "relatedArticleIds": [
+          "ref-fleurs-fruits-graines",
+          "ref-genetique-heredite",
+          "ref-cycle-vie"
+        ],
+        "glossaryIds": [
+          "botany-dioecy",
+          "botany-monoecy",
+          "botany-bisexual-flower",
+          "botany-pollination",
+          "botany-fertilization"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "botany-sexual-expression-1"
+          },
+          {
+            "courseId": "plant",
+            "passageId": "botany-sexual-expression-2"
+          },
+          {
+            "courseId": "plant",
+            "passageId": "plant-2"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois organisations florales",
+          "nodes": [
+            {
+              "label": "Dioécie",
+              "detail": "Un individu porte les fleurs staminales, un autre les fleurs pistillées."
+            },
+            {
+              "label": "Monoécie",
+              "detail": "Un individu porte des fleurs staminales et pistillées séparées."
+            },
+            {
+              "label": "Fleur bisexuée",
+              "detail": "Une même fleur réunit les deux appareils reproducteurs."
+            }
+          ],
+          "caption": "L’organisation observée des fleurs et le génotype XX/XY sont deux niveaux de description.",
+          "sourceIds": [
+            "bf-cfia-2021",
+            "bf-sex-2025",
+            "bf-reproduction-2018"
+          ]
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "bf-cfia-2021",
+        "bf-kew-1975",
+        "bf-reproduction-2018",
+        "bf-sex-2025"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [
+        "hemp-plant-transport-pollen",
+        "hemp-plant-dioecie",
+        "hemp-plant-monoecie",
+        "hemp-plant-stigmate",
+        "hemp-genetics-xy"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [
+    {
+      "id": "botany-achene",
+      "definition": "Fruit sec qui ne s’ouvre pas spontanément à maturité et contient une graine. Le chènevis entier est couramment décrit comme un akène, même si l’usage le nomme souvent graine.",
+      "sourceIds": [
+        "bf-kew-1975"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-anther",
+      "definition": "Partie de l’étamine où se forme le pollen. Son observation aide à reconnaître une fleur staminale, sans constituer une analyse des chromosomes.",
+      "sourceIds": [
+        "bf-kew-1975",
+        "bf-reproduction-2018"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-bract",
+      "definition": "Feuille modifiée associée à une structure florale. La pièce enveloppante d’une fleur pistillée de cannabis est souvent nommée bractée périgonale ou bractéole ; elle ne se confond pas automatiquement avec un sépale.",
+      "sourceIds": [
+        "bf-kew-1975",
+        "bf-florogenesis-2019"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-cotyledon",
+      "definition": "Pièce foliaire de l’embryon. Le chanvre en possède deux ; ils ne sont ni deux graines ni nécessairement des feuilles palmées à plusieurs folioles.",
+      "sourceIds": [
+        "bf-geves-2021",
+        "bf-morphology-2023"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-dioecy",
+      "definition": "Organisation où fleurs staminales et fleurs pistillées se trouvent sur des individus distincts. Le terme ne décrit pas la forme d’une feuille.",
+      "sourceIds": [
+        "bf-cfia-2021"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "terpenes-term-enzyme",
+      "definition": "Catalyseur biologique intervenant dans une transformation ; certaines terpène synthases produisent plusieurs composés.",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-epidermis",
+      "definition": "Couche superficielle d’un organe végétal. Elle comprend des cellules de revêtement et peut porter des structures spécialisées, dont des trichomes.",
+      "sourceIds": [
+        "bf-leaves-2018",
+        "bf-stems-2018"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-fertilization",
+      "definition": "Union de cellules reproductrices, ou gamètes. Chez les plantes à fleurs, elle se déroule dans l’ovule ; l’union avec l’oosphère donne le début de l’embryon.",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-feral",
+      "definition": "Se dit d’une population issue de cultures qui se maintient en dehors de celles-ci ; spontané ne signifie pas automatiquement ancestral ou jamais domestiqué.",
+      "sourceIds": [
+        "botany-diversity-cfia"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-bast-fibre",
+      "definition": "Cellule allongée de soutien, ou assemblage de telles cellules, associée au phloème dans la partie périphérique de la tige. Le mot fibre demande de préciser l’échelle observée.",
+      "sourceIds": [
+        "bf-fibres-2016"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-bisexual-flower",
+      "definition": "Fleur réunissant organes reproducteurs mâles et femelles dans la même unité florale. À distinguer de deux fleurs unisexuées sur une plante monoïque.",
+      "sourceIds": [
+        "bf-reproduction-2018"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-leaflet",
+      "definition": "Division d’une feuille composée. Plusieurs folioles réunies en éventail appartiennent à une même feuille, et non à autant de feuilles indépendantes.",
+      "sourceIds": [
+        "bf-leaves-2018",
+        "bf-kew-1975"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-germination",
+      "definition": "Reprise du développement de l’embryon, conduisant à l’émission de la radicule. L’observation d’une germination et l’évaluation d’une plantule normale dans un test de faculté germinative sont distinctes.",
+      "sourceIds": [
+        "bf-geves-2021",
+        "bf-reproduction-2018"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-inflorescence",
+      "definition": "Organisation de fleurs portées par un ensemble d’axes. Une masse florale peut comprendre de nombreuses fleurs et des pièces foliaires.",
+      "sourceIds": [
+        "bf-florogenesis-2019"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-monoecy",
+      "definition": "Présence de fleurs staminales et pistillées distinctes sur un même individu. Elle ne signifie pas que chaque fleur est bisexuée.",
+      "sourceIds": [
+        "bf-cfia-2021",
+        "bf-geves-2022"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-node",
+      "definition": "Le nœud est un point d’insertion d’organes sur une tige ; l’entre-nœud est la portion de tige entre deux nœuds.",
+      "sourceIds": [
+        "bf-stems-2018"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-pollination",
+      "definition": "Transfert de pollen vers la partie réceptrice d’une fleur. Chez le cannabis, le vent y joue un rôle majeur. La pollinisation n’est pas la fusion des gamètes.",
+      "sourceIds": [
+        "bf-reproduction-2018",
+        "bf-cfia-2021"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-root",
+      "definition": "Organe assurant notamment ancrage et absorption d’eau et d’éléments minéraux. Une racine n’est pas une fibre textile de la tige.",
+      "sourceIds": [
+        "bf-body-2018"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-senescence",
+      "definition": "Ensemble des processus de vieillissement d’un organe ou d’une plante. Son observation ne fournit pas à elle seule une mesure chimique ou un calendrier applicable à tous les individus.",
+      "sourceIds": [
+        "bf-morphology-2023",
+        "bf-trichomes-2020"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-stigma",
+      "definition": "Partie réceptrice du pollen de l’appareil pistillé. Les deux filaments apparents de la fleur pistillée de cannabis sont des branches stigmatiques, pas deux pistils complets.",
+      "sourceIds": [
+        "bf-kew-1975",
+        "bf-upov-2025"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-stipule",
+      "definition": "Petite pièce foliaire située près de la base du pétiole. Chez le cannabis, elle ne doit pas être confondue avec un stigmate ou prise seule comme preuve du type floral.",
+      "sourceIds": [
+        "bf-morphology-2023",
+        "bf-leaves-2018"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    },
+    {
+      "id": "botany-trichome",
+      "definition": "Structure issue de l’épiderme, glandulaire ou non glandulaire. L’apparence d’un trichome ne remplace pas une analyse chimique du prélèvement.",
+      "sourceIds": [
+        "bf-trichomes-2020",
+        "bf-cfia-2021"
+      ],
+      "findings": [
+        "Définition relue individuellement ; sens conservé, avec les limites de portée propres à la source."
+      ]
+    }
+  ],
+  "quizPatches": [],
+  "sensitivePoints": [
+    "Le coordinateur doit contre-vérifier les taxonomies et pedigrees attribués avant validation finale."
+  ]
+}

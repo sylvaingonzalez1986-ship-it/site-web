@@ -1,0 +1,116 @@
+{
+  "version": "2026-11-12.harvest1",
+  "verifiedAt": "2026-11-12",
+  "status": "Livré et validé localement",
+  "counts": {
+    "chapters": 9,
+    "lessons": 18,
+    "activities": 18,
+    "checkpoints": 9,
+    "questions": 36,
+    "privateOptionExplanations": 144,
+    "terms": 67,
+    "commonGlossaryEntries": 470,
+    "resultCriteria": 10,
+    "lots": 3,
+    "indicators": 8,
+    "advice": 10,
+    "trials": 3,
+    "recordFields": 12,
+    "planFields": 4,
+    "workshopDocuments": 6,
+    "revisionLinks": 8,
+    "requiredExercises": 6,
+    "finalWorkshop": 1,
+    "sourceRecords": 21,
+    "distinctSourceUrls": 17
+  },
+  "scope": "Neuvième parcours développé. Les neuf parcours demandés sont accessibles ; le repère juridique historique reste un complément séparé.",
+  "sourceAccess": {
+    "excerpt": 9,
+    "official-page": 2,
+    "catalogue": 1,
+    "full-text": 9
+  },
+  "files": {
+    "lessons": "src/lib/kanab-quest-school-harvest-lessons.ts",
+    "answers": "src/lib/kanab-quest-school-harvest-answers.ts",
+    "tools": "src/lib/kanab-quest-school-harvest-tools.ts",
+    "visuals": "src/lib/kanab-quest-school-harvest-visuals.ts",
+    "entry": "src/components/placard/KqSchoolHarvest.tsx"
+  },
+  "requiredExercises": [
+    "harvest-outcomes-1",
+    "harvest-units-1",
+    "harvest-outcomes-2",
+    "harvest-limits-2",
+    "harvest-trials-1",
+    "harvest-trials-2"
+  ],
+  "finalWorkshop": "harvest-tips-2",
+  "scientificBoundaries": [
+    "Quantité brute, matière sèche, quantité commercialisable, homogénéité, état sanitaire, aptitude à la transformation, pertes, coût, travail et ressources sont des critères distincts.",
+    "Les trois lots de graines sont fictifs : même durée de réception à clôture et mêmes critères commerciaux. Leurs valeurs ne prédisent aucun rendement agricole ; la matière sèche est une base de comparaison, pas une consigne de conservation.",
+    "Surface, humidité, masse et pertes sont explicites. Les pertes sèches sont disjointes ; leur somme avec la fraction conservée ferme le bilan de matière sèche. Une donnée absente reste absente et ne devient pas zéro.",
+    "Coûts et ressources du comparateur couvrent un périmètre partiel après récolte. Ils ne représentent ni marge, ni coût complet, ni durée de culture. Consommation énergétique, émissions et impacts ne sont pas interchangeables.",
+    "Les essais distinguent unité indépendante, sous-échantillon, témoin, attribution, répétition et variabilité. Un avant/après ou plusieurs changements simultanés ne démontre pas une cause.",
+    "Chaque conseil donne une hypothèse, les informations utiles, ce qui la soutiendrait et ce qui la contredirait, avec coûts et limites. Aucun rendement garanti ni apport universel.",
+    "L’atelier exige plusieurs hypothèses reliées à des documents consultés et une action avec son suivi justifié. Deux démarches prudentes différentes sont recevables ; aucun diagnostic ni contaminant n’est déduit d’une odeur seule.",
+    "Les applications concernent le chanvre autorisé, surtout graines et fibres. Les critères analytiques des fleurs ne deviennent pas un protocole d’augmentation de puissance ; aucun calendrier de dosage, cible sensible ou recette de conversion.",
+    "Les études sur huiles de graines, variétés, systèmes ou méthodes ne sont transférées que dans leurs limites. Une fiche Buddy ne certifie pas les performances d’un lot réel.",
+    "L’illustration générée est un décor pédagogique, sans mesures ni valeur diagnostique. La validation porte sur les documents, calculs et logiciel ; elle ne démontre pas une compétence acquise par les joueurs."
+  ],
+  "review": {
+    "method": "Relecture croisée des leçons, corrigés, sources, bilans de matière, indicateurs, conseils et atelier. La contradiction d’un conseil de manutention exige l’absence d’aggravation mesurable à l’étape étudiée.",
+    "limits": "Validation documentaire et logicielle locale. Pas de diagnostic de lot réel, de prévision de rendement ou de validation agronomique du simulateur."
+  },
+  "economy": "quizId prevention / reward school:prevention conservés ; plafond de 1 000 centimes et total historique de 10 000 inchangés. Sélection r1 : dix questions parmi trente-six, couvrant les neuf chapitres (un chapitre reçoit deux questions distinctes). Activités sans gain ; anciens reçus et gains préservés.",
+  "migration": "20261112000900_kq_school_harvest_progress.sql testée en bases temporaires locales. Aucune des dix migrations de l’école appliquée au projet distant.",
+  "validation": {
+    "contentTests": 12,
+    "backendTests": 333,
+    "totalVitestTests": 345,
+    "sqlPglite": 70,
+    "postgresConcurrency": 18,
+    "fixture": 104,
+    "grantsMigrations": 388,
+    "eslint": "PASS ciblé : cours, données, UI, backend et recette.",
+    "build": "PASS Next.js et TypeScript ; code de sortie 0 enregistré directement.",
+    "buildNotes": "Les avertissements de revalidation de données publiques Supabase éventuels sont conservés dans le journal. Aucune validation distante revendiquée.",
+    "browser": "PASS à 320 et 1440 px : six exercices, deux démarches justifiées dans l’atelier, reprises, comparateur et données absentes, carnet, conseils, essais et plan, Buddy sans possession, budgets, changement de joueur et réponses privées.",
+    "preview": {
+      "results": [
+        {
+          "width": 320,
+          "nineCurricula": true,
+          "legalComplement": true,
+          "commonGlossary": 470,
+          "heroLoaded": true,
+          "missingWaterNotZero": true,
+          "eightRevisionLinks": true,
+          "privateAnswers403": true,
+          "reducedMotionLayout": true
+        },
+        {
+          "width": 1440,
+          "nineCurricula": true,
+          "legalComplement": true,
+          "commonGlossary": 470,
+          "heroLoaded": true,
+          "missingWaterNotZero": true,
+          "eightRevisionLinks": true,
+          "privateAnswers403": true,
+          "reducedMotionLayout": true
+        }
+      ],
+      "errors": []
+    },
+    "privacy": {
+      "checkedAt": "2026-11-12T21:17:44.339Z",
+      "chunks": 199,
+      "privateExplanations": 336,
+      "leaks": []
+    },
+    "transport": "Vrais composants et API de démonstration en mémoire. Aucune base distante ni paiement réel vérifié."
+  }
+}

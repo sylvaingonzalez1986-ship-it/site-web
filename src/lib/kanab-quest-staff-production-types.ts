@@ -1,4 +1,5 @@
 import type { KqStaffTrait } from "./kanab-quest-staff-types";
+import type { KqWarehouseCondition } from "./kanab-quest-warehouse-condition";
 
 export type KqProductionStep = "auto" | "culture" | "trim" | "processing" | "sell";
 export type KqProductionRoute = "flower" | "dry-sift";
@@ -8,6 +9,7 @@ export type KqProductionFacilityInput = {
   warehouseState: unknown; warehouseRevision: number; busyZoneIds: Array<string | null>;
   usedStorageGrams: number; reservedDryingGrams: number;
   equipment: Array<{ code: string; level: number }>;
+  cultureEquipment?: KqWarehouseCondition | null;
 };
 export type KqProductionRulesCommand = {
   action: "set-production-rules"; enabled: boolean; zoneId: string | null;
@@ -19,6 +21,7 @@ export type KqProductionFacility = {
   zoneId: string; name: string; areaM2: number; harvestGrams: number; cycleCostCents: number;
   dryingCapacityGrams: number; storageCapacityGrams: number;
   processingRateGramsPerHour: number; processingAvailable: boolean;
+  qualityBonus?: number; equipmentRevision?: number; equipmentEffectiveAt?: string;
 };
 export type KqProductionFacilityQuote = KqProductionFacility & { available: boolean; reason: string | null; warehouseRevision: number };
 /** Commercial material only: there is deliberately no flowerId or competition reference. */
@@ -26,6 +29,8 @@ export type KqProductionLot = {
   id: string; route: KqProductionRoute; createdAt: string; stage: "culture" | "drying" | "trim" | "processing" | "ready";
   cultureStage: number; readyAt: string; potentialGrams: number; grams: number; equivalentGrams: number;
   quality: number; remainingWork: number; cultureHours: number; cultureLevelHours: number;
+  /** Frozen at launch; absent on historical lots, which retain their old quality. */
+  equipmentQualityBonus?: number;
   trimQualityGrams: number; processingEfficiencyGrams: number; processingQualityGrams: number; processingPaid: boolean;
   saleExactCents: number; saleRoundedCents: number;
 };

@@ -1,0 +1,1470 @@
+{
+  "domain": "cannabinoids",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "cb-kim-2022",
+      "title": "Profiling Cannabinoid Contents and Expression Levels of Corresponding Biosynthetic Genes in Commercial Cannabis (Cannabis sativa L.) Cultivars",
+      "author": "A. L. Kim et al.",
+      "published": "2022-11-14",
+      "organization": "Plants",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9697443/",
+      "access": "excerpt",
+      "passage": "Introduction, Figure 1 and results; numeric inconsistencies in abstract not reused.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9697443/",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction, Figure 1 and results; numeric inconsistencies in abstract not reused.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "bf-trichomes-2020",
+      "title": "Cannabis glandular trichomes alter morphology and metabolite content during flower maturation",
+      "author": "Samuel J. Livingston, Teagen D. Quilichini, Judith K. Booth et collaborateurs",
+      "organization": "The Plant Journal / PubMed",
+      "published": "Publication en ligne le 12 octobre 2019 ; janvier 2020, 101(1), p. 37–56",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+      "passage": "PubMed abstract: glandular trichomes and secretory disc cells.",
+      "access": "abstract",
+      "documentKind": "Résumé d’une étude originale de microscopie et biochimie",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: glandular trichomes and secretory disc cells.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cannabinoids-lesson-decarb2016",
+      "title": "Decarboxylation Study of Acidic Cannabinoids: A Novel Approach Using Ultra-High-Performance Supercritical Fluid Chromatography/Photodiode Array-Mass Spectrometry",
+      "author": "Mei Wang, Yan-Hong Wang, Bharathi Avula, Mohamed M. Radwan et collaborateurs",
+      "organization": "Cannabis and Cannabinoid Research / PubMed",
+      "published": "1er décembre 2016 ; 1(1):262–271",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28861498/",
+      "passage": "PubMed abstract: acidic/neutral forms and losses.",
+      "access": "abstract",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28861498/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: acidic/neutral forms and losses.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cannabinoids-lesson-aging2019",
+      "title": "The role of time and storage conditions on the composition of hashish and marijuana samples: A four-year study",
+      "author": "Luca Zamengo, Chiara Bettin, Denis Badocco, Valerio Di Marco, Giorgia Miolo et Giampietro Frison",
+      "organization": "Forensic Science International / PubMed",
+      "published": "En ligne le 8 mars 2019 ; mai 2019, 298:131–137",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30901710/",
+      "passage": "PubMed abstract: six products, four years, storage dependency.",
+      "access": "abstract",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés par indexation",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30901710/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: six products, four years, storage dependency.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cannabinoids-lesson-thca2017",
+      "title": "Tetrahydrocannabinolic acid is a potent PPARγ agonist with neuroprotective activity",
+      "author": "Xavier Nadal, Carmen del Río, Salvatore Casano, Belén Palomares et collaborateurs",
+      "organization": "British Journal of Pharmacology / PubMed",
+      "published": "En ligne le 2 novembre 2017 ; décembre 2017, 174(23):4263–4276",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5731255/",
+      "passage": "PMC abstract, experimental approach and results: PPARgamma, N2a cells, 3-NPA mouse model.",
+      "access": "excerpt",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5731255/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC abstract, experimental approach and results: PPARgamma, N2a cells, 3-NPA mouse model.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-citti-2019",
+      "title": "A novel phytocannabinoid isolated from Cannabis sativa L. with an in vivo cannabimimetic activity higher than Δ9-tetrahydrocannabinol: Δ9-Tetrahydrocannabiphorol",
+      "author": "C. Citti et al.",
+      "published": "2019-12-30",
+      "organization": "Scientific Reports",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+      "access": "excerpt",
+      "passage": "PMC introduction and identification; Results: binding affinities and mouse tetrad.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC introduction and identification; Results: binding affinities and mouse tetrad.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-dronabinol",
+      "title": "Dronabinol capsules — prescribing information",
+      "author": "DailyMed / Ascend Laboratories",
+      "published": "2026-05-06",
+      "organization": "DailyMed / National Library of Medicine",
+      "url": "https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=adb1801c-0fb5-4e16-b969-1db91230e0b9",
+      "access": "official-page",
+      "passage": "DailyMed sections 5, 12 and 14: risks, metabolism and indications.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=adb1801c-0fb5-4e16-b969-1db91230e0b9",
+          "openedAt": "2026-11-14",
+          "sections": "DailyMed sections 5, 12 and 14: risks, metabolism and indications.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "official-page"
+        }
+      ]
+    },
+    {
+      "id": "cb-epidyolex",
+      "title": "Epidyolex — European public assessment report",
+      "author": "Agence européenne des médicaments",
+      "published": "Page en vigueur consultée le 12 novembre 2026",
+      "organization": "Agence européenne des médicaments",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/epidyolex",
+      "access": "official-page",
+      "passage": "EMA overview, mechanism hypotheses, indications and risks.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/epidyolex",
+          "openedAt": "2026-11-14",
+          "sections": "EMA overview, mechanism hypotheses, indications and risks.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "official-page"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-receptors",
+      "title": "International Union of Pharmacology. XXVII. Classification of cannabinoid receptors",
+      "organization": "Pharmacological Reviews / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+      "verifiedAt": "2026-11-14",
+      "author": "A. C. Howlett et al.",
+      "published": "2002",
+      "passage": "PubMed abstract: G proteins, tissue distribution, 48% sequence identity.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: G proteins, tissue distribution, 48% sequence identity.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-anandamide-1992",
+      "title": "Isolation and structure of a brain constituent that binds to the cannabinoid receptor",
+      "author": "W. A. Devane et al.",
+      "published": "1992-12-18",
+      "organization": "Science",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+      "access": "abstract",
+      "passage": "PubMed abstract: porcine brain, identification and binding.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: porcine brain, identification and binding.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-2ag-1995",
+      "title": "2-Arachidonoylglycerol: a possible endogenous cannabinoid receptor ligand in brain",
+      "author": "T. Sugiura et al.",
+      "published": "1995-10-04",
+      "organization": "Biochemical and Biophysical Research Communications",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7575630/",
+      "access": "abstract",
+      "passage": "PubMed abstract: binding assays and limitations.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/7575630/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: binding assays and limitations.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-2ag-gut-1995",
+      "title": "Identification of an endogenous 2-monoglyceride, present in canine gut, that binds to cannabinoid receptors",
+      "author": "R. Mechoulam et al.",
+      "published": "1995-06-29",
+      "organization": "Biochemical Pharmacology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7605349/",
+      "access": "abstract",
+      "passage": "PubMed abstract: canine gut, CB1/CB2, cells and mice.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/7605349/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: canine gut, CB1/CB2, cells and mice.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cannabinoids-lesson-metabolism2017",
+      "title": "Cannabinoid disposition in oral fluid after controlled smoked, vaporized, and oral cannabis administration",
+      "author": "Madeleine J. Swortwood, Matthew N. Newmeyer, Maria Andersson et collaborateurs",
+      "organization": "Drug Testing and Analysis / NIDA",
+      "published": "En ligne le 13 octobre 2016 ; juin 2017, 9(6):905–915",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5357602/",
+      "passage": "PMC abstract and introduction: oral-fluid contamination and active/inactive metabolites.",
+      "access": "excerpt",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés par indexation",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5357602/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC abstract and introduction: oral-fluid contamination and active/inactive metabolites.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-luo-2019",
+      "title": "Complete biosynthesis of cannabinoids and their unnatural analogues in yeast",
+      "author": "X. Luo et al.",
+      "published": "2019-02-27",
+      "organization": "Nature",
+      "url": "https://backend.orbit.dtu.dk/ws/files/240436196/qt3fn1m6p5_noSplash_be06dd7b6fdfa004bec17ec4fed2cabd.pdf",
+      "access": "excerpt",
+      "passage": "Copie auteur DTU PDF p.2–5 : résumé, prényltransférases, branches THCA/CBDA, détection CBGVA et production THCVA/CBDVA ; figure 3 citée dans le texte.",
+      "limitation": "Manuscrit auteur ; reconstruction hétérologue, pas mesure universelle de flux végétal.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://backend.orbit.dtu.dk/ws/files/240436196/qt3fn1m6p5_noSplash_be06dd7b6fdfa004bec17ec4fed2cabd.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Copie auteur DTU PDF p.2–5 : résumé, prényltransférases, branches THCA/CBDA, détection CBGVA et production THCVA/CBDVA ; figure 3 citée dans le texte.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Copie auteur DTU PDF p.2–5 : résumé, prényltransférases, branches THCA/CBDA, détection CBGVA et production THCVA/CBDVA ; figure 3 citée dans le texte.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-englund",
+      "title": "Does cannabidiol make cannabis safer? A randomised, double-blind, cross-over trial of cannabis with four different CBD:THC ratios",
+      "author": "Englund et al.",
+      "published": "2022-11-16 en ligne ; mai 2023 en volume",
+      "url": "https://www.nature.com/articles/s41386-022-01478-z.pdf",
+      "access": "excerpt",
+      "passage": "PDF éditeur p.1–5 : préparation 10 mg THC avec 0/10/20/30 mg CBD, analyses des 46 sur 64 randomisés, rappel verbal, symptômes ; p.7–8 financement et conflits.",
+      "limitation": "Analyse des sujets ayant terminé ; pas un test de toutes doses, voies ou populations.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://www.nature.com/articles/s41386-022-01478-z.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "PDF éditeur p.1–5 : préparation 10 mg THC avec 0/10/20/30 mg CBD, analyses des 46 sur 64 randomisés, rappel verbal, symptômes ; p.7–8 financement et conflits.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "PDF éditeur p.1–5 : préparation 10 mg THC avec 0/10/20/30 mg CBD, analyses des 46 sur 64 randomisés, rappel verbal, symptômes ; p.7–8 financement et conflits.",
+          "access": "excerpt"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "ref-phytocannabinoides",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent Les phytocannabinoïdes ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Champs, paragraphes et quiz intégralement relus ; mécanismes et limites précisés.",
+        "Les assertions conservées sont étayées par les documents lisibles cités ; les pages refusées ne sont pas déclarées lues."
+      ],
+      "patch": {
+        "lead": "Les phytocannabinoïdes sont des cannabinoïdes associés au règne végétal, particulièrement étudiés chez Cannabis sativa. Ils constituent un ensemble de molécules distinctes comprenant notamment les familles THC, CBD, CBG et CBC.",
+        "sections": [
+          {
+            "id": "ref-phytocannabinoides-plante",
+            "title": "Des métabolites spécialisés",
+            "paragraphs": [
+              "Les tissus glandulaires du cannabis participent à la formation et à l’accumulation de cannabinoïdes. Dans les voies végétales caractérisées, plusieurs composés sont produits sous une forme acide, comme le THCA ou le CBDA. Les proportions diffèrent selon le matériel et les transformations survenues après sa formation ; tous les organes ne présentent pas une composition identique. La formule brute compte les atomes ; la structure précise leur arrangement. CBD et THC partagent la formule C₂₁H₃₀O₂, mais possèdent des structures différentes : ce sont des isomères."
+            ],
+            "sourceIds": [
+              "bf-trichomes-2020",
+              "cb-kim-2022"
+            ]
+          },
+          {
+            "id": "ref-phytocannabinoides-structures",
+            "title": "Des identités chimiques distinctes",
+            "paragraphs": [
+              "THC, THCA et THCP ne sont pas des noms interchangeables. La fonction carboxyle distingue le THCA du THC ; la chaîne latérale pentyle du THC compte cinq carbones, contre sept pour la chaîne heptyle du THCP. Les premiers forment une paire acide/neutre, les seconds sont des homologues. Ces relations structurales peuvent modifier les propriétés biologiques sans fournir, à elles seules, une équivalence d’effet."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "ref-phytocannabinoides-origines",
+            "title": "Molécule et origine",
+            "paragraphs": [
+              "Une identité chimique présente dans une plante peut aussi être obtenue par synthèse : la notice du dronabinol décrit ainsi du Δ9-THC synthétique. Le terme phytocannabinoïde renseigne donc une présence végétale, sans déterminer la provenance de chaque lot. Les endocannabinoïdes, comme l’anandamide, sont quant à eux des messagers produits par l’organisme."
+            ],
+            "sourceIds": [
+              "cb-dronabinol",
+              "cb-anandamide-1992"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "bf-trichomes-2020",
+          "cb-kim-2022",
+          "cb-citti-2019",
+          "cb-dronabinol",
+          "cb-anandamide-1992"
+        ],
+        "relatedArticleIds": [
+          "ref-biosynthese-cannabinoides",
+          "ref-formes-acides-neutres",
+          "ref-systeme-endocannabinoide"
+        ],
+        "glossaryIds": [
+          "cannabinoids-term-phyto",
+          "cannabinoids-term-isomer",
+          "cannabinoids-term-homologue",
+          "cannabinoids-term-endo"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-origins-1"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-identity-1"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-identity-2"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "evidence-1"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Les phytocannabinoïdes",
+          "nodes": [
+            {
+              "label": "CBD et THC",
+              "detail": "Même formule brute, structures différentes : isomères."
+            },
+            {
+              "label": "THCA et THC",
+              "detail": "Paire acide/neutre reliée par perte de CO₂."
+            },
+            {
+              "label": "THC et THCP",
+              "detail": "Chaînes pentyle et heptyle : homologues."
+            }
+          ],
+          "caption": "Schéma de relations : ne représente pas une échelle d’efficacité ou de sécurité.",
+          "sourceIds": [
+            "bf-trichomes-2020",
+            "cb-kim-2022",
+            "cb-citti-2019",
+            "cb-dronabinol",
+            "cb-anandamide-1992"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "bf-trichomes-2020",
+        "cb-kim-2022",
+        "cb-citti-2019",
+        "cb-dronabinol",
+        "cb-anandamide-1992"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable vérifié : relations et limites concordent avec les passages réellement ouverts. Ancienne vignette de synthèse non validée comme preuve scientifique ; aucune photographie indispensable à ces relations moléculaires."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-biosynthese-cannabinoides",
+      "questions": [
+        "Quel précurseur du chanvre alimente les branches THCA, CBDA et CBCA ?",
+        "Comment s’organisent les voies végétales menant au THCA, au CBDA et au CBCA ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Champs, paragraphes et quiz intégralement relus ; mécanismes et limites précisés.",
+        "Les assertions conservées sont étayées par les documents lisibles cités ; les pages refusées ne sont pas déclarées lues."
+      ],
+      "patch": {
+        "lead": "La plante forme ses cannabinoïdes par un réseau de réactions enzymatiques. Le CBGA, acide cannabigérolique, constitue un point de branchement majeur vers plusieurs familles de cannabinoïdes acides.",
+        "sections": [
+          {
+            "id": "ref-biosynthese-cannabinoides-carrefour",
+            "title": "Le rôle du CBGA",
+            "paragraphs": [
+              "Le CBGA sert de substrat commun à plusieurs synthases caractérisées chez Cannabis sativa. Il est distinct du CBG, sa forme neutre obtenue par décarboxylation. Le CBG n’est donc pas un précurseur neutre universel à partir duquel tous les autres cannabinoïdes apparaîtraient directement. Les transformations végétales portent sur des molécules et des fonctions chimiques précises. En amont du CBGA, l’acide olivétolique reçoit un groupe géranyle d’origine isoprénique. Ce rapprochement d’un précurseur polykétidique et d’un précurseur isoprénique explique le caractère terpéno-phénolique de la voie."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cannabinoids-lesson-decarb2016"
+            ]
+          },
+          {
+            "id": "ref-biosynthese-cannabinoides-branches",
+            "title": "Trois branches principales",
+            "paragraphs": [
+              "La THCA synthase conduit du CBGA au THCA, la CBDA synthase au CBDA et la CBCA synthase au CBCA. Ces oxydocyclisations constituent des branches parallèles, plutôt qu’une succession obligatoire THCA, puis CBDA, puis CBCA. La perte ultérieure du carboxyle sous forme de CO₂ est une transformation distincte, qui relie chaque acide à sa forme neutre."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cannabinoids-lesson-decarb2016"
+            ]
+          },
+          {
+            "id": "ref-biosynthese-cannabinoides-diversite",
+            "title": "Biosynthèse et diversité chimique",
+            "paragraphs": [
+              "Les profils de cannabinoïdes varient entre matériels végétaux. Les gènes correspondants, leur expression et l’accumulation des produits participent à cette diversité. D’autres branches concernent les homologues variniques. Des voies reconstruites dans une levure ont notamment produit THCVA et CBDVA, dans un contexte biologique différent de celui d’une plante intacte. Une corrélation entre expression d’un gène et quantité accumulée ne démontre pas seule une causalité. Le CBGVA appartient à la branche propyle, différente de celle du CBGA."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cb-luo-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-kim-2022",
+          "cannabinoids-lesson-decarb2016",
+          "cb-citti-2019",
+          "cb-luo-2019"
+        ],
+        "relatedArticleIds": [
+          "ref-trichomes",
+          "ref-formes-acides-neutres",
+          "ref-cannabinoides-mineurs"
+        ],
+        "glossaryIds": [
+          "cannabinoids-term-biosynthesis",
+          "cannabinoids-term-precursor",
+          "cannabinoids-term-enzyme"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-biosynthesis-1"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "La biosynthèse des cannabinoïdes",
+          "nodes": [
+            {
+              "label": "THCA synthase",
+              "detail": "CBGA → THCA ; puis décarboxylation → THC."
+            },
+            {
+              "label": "CBDA synthase",
+              "detail": "CBGA → CBDA ; puis décarboxylation → CBD."
+            },
+            {
+              "label": "CBCA synthase",
+              "detail": "CBGA → CBCA ; puis décarboxylation → CBC."
+            }
+          ],
+          "caption": "Schéma de relations : ne représente pas une échelle d’efficacité ou de sécurité.",
+          "sourceIds": [
+            "cb-kim-2022",
+            "cannabinoids-lesson-decarb2016",
+            "cb-citti-2019"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-kim-2022",
+        "cannabinoids-lesson-decarb2016",
+        "cb-citti-2019",
+        "cb-luo-2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable vérifié : relations et limites concordent avec les passages réellement ouverts. Ancienne vignette de synthèse non validée comme preuve scientifique ; aucune photographie indispensable à ces relations moléculaires."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-cbga-carrefour",
+        "hemp-evidence-branches"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-formes-acides-neutres",
+      "questions": [
+        "Quelle est la forme acide correspondant au CBD dans le chanvre ?",
+        "Quel cannabinoïde peut résulter de transformations oxydatives du THC ?",
+        "Quelle molécule est libérée lors de la décarboxylation d’un cannabinoïde acide ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Champs, paragraphes et quiz intégralement relus ; mécanismes et limites précisés.",
+        "Les assertions conservées sont étayées par les documents lisibles cités ; les pages refusées ne sont pas déclarées lues."
+      ],
+      "patch": {
+        "lead": "Les formes acides et neutres des cannabinoïdes sont des identités chimiques différentes. La décarboxylation relie plusieurs paires, notamment THCA–THC, CBDA–CBD et CBGA–CBG.",
+        "sections": [
+          {
+            "id": "ref-formes-acides-neutres-decarboxylation",
+            "title": "La décarboxylation",
+            "paragraphs": [
+              "La décarboxylation retire un groupe carboxyle sous forme de dioxyde de carbone, notamment dans les paires THCA–THC, CBDA–CBD et CBGA–CBG. Elle modifie la structure et la masse de la molécule : la perte de CO₂ empêche une équivalence gramme pour gramme. Des réactions concurrentes et d’autres pertes peuvent aussi réduire la récupération de la forme neutre ; la disparition d’un acide ne mesure donc pas à elle seule la quantité de produit obtenue."
+            ],
+            "sourceIds": [
+              "cannabinoids-lesson-decarb2016"
+            ]
+          },
+          {
+            "id": "ref-formes-acides-neutres-activite",
+            "title": "Des propriétés distinctes",
+            "paragraphs": [
+              "Le mot neutre décrit ici l’absence de la fonction acide considérée ; il ne signifie pas inoffensif. Les formes acides ne sont pas non plus toutes biologiquement inertes : le THCA a montré une activité sur PPARγ, un récepteur nucléaire, dans des cellules et dans un modèle murin utilisant une toxine mitochondriale. Ce résultat préclinique ne démontre pas un traitement de la maladie de Huntington chez des patients."
+            ],
+            "sourceIds": [
+              "cannabinoids-lesson-thca2017",
+              "cb-dronabinol"
+            ]
+          },
+          {
+            "id": "ref-formes-acides-neutres-vieillissement",
+            "title": "Le vieillissement chimique",
+            "paragraphs": [
+              "Le vieillissement oxydatif du THC peut conduire au CBN ; il diffère de la décarboxylation du THCA comme du métabolisme humain. Une étude sur six produits suivis pendant quatre ans montre que lumière et température influencent l’évolution THC/CBN. La composition initiale et la conservation conditionnent donc les quantités mesurées : ce rapport ne constitue pas une horloge universelle."
+            ],
+            "sourceIds": [
+              "cannabinoids-lesson-aging2019",
+              "cb-dronabinol"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cannabinoids-lesson-decarb2016",
+          "cannabinoids-lesson-thca2017",
+          "cannabinoids-lesson-aging2019",
+          "cb-dronabinol"
+        ],
+        "relatedArticleIds": [
+          "ref-biosynthese-cannabinoides",
+          "ref-thc",
+          "ref-cbd"
+        ],
+        "glossaryIds": [
+          "cannabinoids-term-carboxyl",
+          "cannabinoids-term-decarboxylation",
+          "cannabinoids-term-neutral",
+          "cannabinoids-term-oxidation"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-acid-forms-1"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-acid-forms-2"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-aging-1"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Formes acides, formes neutres et transformations",
+          "nodes": [
+            {
+              "label": "Décarboxylation",
+              "detail": "THCA → THC + CO₂."
+            },
+            {
+              "label": "Vieillissement oxydatif",
+              "detail": "THC → CBN ; dépend des conditions."
+            },
+            {
+              "label": "Métabolisme humain",
+              "detail": "THC → 11-OH-THC et autres métabolites."
+            }
+          ],
+          "caption": "Schéma de relations : ne représente pas une échelle d’efficacité ou de sécurité.",
+          "sourceIds": [
+            "cannabinoids-lesson-decarb2016",
+            "cannabinoids-lesson-thca2017",
+            "cannabinoids-lesson-aging2019",
+            "cb-dronabinol"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cannabinoids-lesson-decarb2016",
+        "cannabinoids-lesson-thca2017",
+        "cannabinoids-lesson-aging2019",
+        "cb-dronabinol"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable vérifié : relations et limites concordent avec les passages réellement ouverts. Ancienne vignette de synthèse non validée comme preuve scientifique ; aucune photographie indispensable à ces relations moléculaires."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-cbda",
+        "hemp-evidence-cbn-oxydation",
+        "hemp-evidence-decarboxylation"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-thc",
+      "questions": [
+        "Quel nom complet se cache derrière THC ?",
+        "Dans Δ9-THC, que précise le « Δ9 » ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Champs, paragraphes et quiz intégralement relus ; mécanismes et limites précisés.",
+        "Les assertions conservées sont étayées par les documents lisibles cités ; les pages refusées ne sont pas déclarées lues."
+      ],
+      "patch": {
+        "lead": "Le Δ9-tétrahydrocannabinol, généralement abrégé THC, est un cannabinoïde associé aux effets intoxicants du cannabis. Le signe Δ9 précise la position d’une double liaison dans sa structure.",
+        "sections": [
+          {
+            "id": "ref-thc-identite",
+            "title": "Identité et origine",
+            "paragraphs": [
+              "THC signifie tétrahydrocannabinol ; Δ9 précise une position de double liaison, et non une concentration. Cette forme neutre peut provenir de la décarboxylation du THCA et se distingue du Δ8-THC et du THCP. Le dronabinol correspond à une substance pharmaceutique définie, décrite comme synthétique dans la notice : ce nom ne s’applique pas indistinctement à tous les extraits de cannabis."
+            ],
+            "sourceIds": [
+              "cb-dronabinol",
+              "cb-kim-2022"
+            ]
+          },
+          {
+            "id": "ref-thc-effets",
+            "title": "Action et effets",
+            "paragraphs": [
+              "Le THC interagit notamment avec CB1, récepteur couplé aux protéines G qui participe à la régulation de la libération des neurotransmetteurs. Ses effets dépendent de l’exposition et du contexte individuel. Les notices pharmaceutiques décrivent des altérations cognitives et motrices, ainsi que des effets psychiatriques et cardiovasculaires ; le seul nom d’une variété ne permet pas de prévoir ces risques."
+            ],
+            "sourceIds": [
+              "cb-dronabinol",
+              "qh-sci-receptors"
+            ]
+          },
+          {
+            "id": "ref-thc-metabolisme",
+            "title": "Le métabolisme du THC",
+            "paragraphs": [
+              "L’organisme transforme le THC en plusieurs métabolites, dont le 11-hydroxy-THC, qui conserve une activité biologique, et le THC-COOH, distinct du THCA végétal. Le premier passage hépatique contribue aux différences entre voies d’exposition. Les concentrations dépendent aussi de la matrice biologique : dans le liquide oral, la contamination des muqueuses peut contribuer à la mesure. Une concentration isolée ne résume donc ni l’exposition complète ni les capacités fonctionnelles."
+            ],
+            "sourceIds": [
+              "cb-dronabinol",
+              "cannabinoids-lesson-metabolism2017"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-dronabinol",
+          "cb-kim-2022",
+          "qh-sci-receptors",
+          "cannabinoids-lesson-metabolism2017"
+        ],
+        "relatedArticleIds": [
+          "ref-formes-acides-neutres",
+          "ref-systeme-endocannabinoide",
+          "ref-cbd"
+        ],
+        "glossaryIds": [
+          "cannabinoids-term-metabolism",
+          "cannabinoids-term-metabolite",
+          "cannabinoids-term-receptor",
+          "cannabinoids-term-pharmacokinetics"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-metabolism-1"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-metabolism-2"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Le Δ9-THC",
+          "nodes": [
+            {
+              "label": "Δ9-THC",
+              "detail": "Molécule parente."
+            },
+            {
+              "label": "11-hydroxy-THC",
+              "detail": "Métabolite actif."
+            },
+            {
+              "label": "THC-COOH",
+              "detail": "Métabolite distinct du THCA végétal."
+            }
+          ],
+          "caption": "Schéma de relations : ne représente pas une échelle d’efficacité ou de sécurité.",
+          "sourceIds": [
+            "cb-dronabinol",
+            "cb-kim-2022",
+            "qh-sci-receptors",
+            "cannabinoids-lesson-metabolism2017"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-dronabinol",
+        "cb-kim-2022",
+        "qh-sci-receptors",
+        "cannabinoids-lesson-metabolism2017"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable vérifié : relations et limites concordent avec les passages réellement ouverts. Ancienne vignette de synthèse non validée comme preuve scientifique ; aucune photographie indispensable à ces relations moléculaires."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-thc-nom",
+        "hemp-evidence-delta9"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-cbd",
+      "questions": [
+        "CBD est l’abréviation de…"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Champs, paragraphes et quiz intégralement relus ; mécanismes et limites précisés.",
+        "Les assertions conservées sont étayées par les documents lisibles cités ; les pages refusées ne sont pas déclarées lues."
+      ],
+      "patch": {
+        "lead": "Le cannabidiol, ou CBD, est un phytocannabinoïde distinct du THC. Il partage avec lui une formule brute, mais possède une organisation moléculaire et des propriétés pharmacologiques différentes.",
+        "sections": [
+          {
+            "id": "ref-cbd-structure",
+            "title": "Structure et forme acide",
+            "paragraphs": [
+              "Le CBDA est la forme acide apparentée au CBD. La CBDA synthase produit ce précurseur à partir du CBGA dans la voie végétale caractérisée ; sa décarboxylation conduit au CBD. Le CBD, le CBDA et le CBDP ne sont pas des identités interchangeables. Une préparation peut contenir plusieurs de ces composés et d’autres constituants."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "ref-cbd-medicament",
+            "title": "Le CBD pharmaceutique",
+            "paragraphs": [
+              "Dans l’Union européenne, Epidyolex est un médicament à cannabidiol utilisé en complément d’autres traitements pour certaines épilepsies à partir de deux ans. Les indications comprennent les syndromes de Lennox–Gastaut et de Dravet, en association avec le clobazam, ainsi que la sclérose tubéreuse de Bourneville. Ces indications concernent une formulation pharmaceutique précise.",
+              "Le mécanisme reste incomplètement compris. L’EMA envisage notamment une action sur les mouvements cellulaires du calcium et sur l’adénosine : ces propositions ne doivent pas être présentées comme une explication unique démontrée."
+            ],
+            "sourceIds": [
+              "cb-epidyolex"
+            ]
+          },
+          {
+            "id": "ref-cbd-risques",
+            "title": "Effets indésirables",
+            "paragraphs": [
+              "Le terme non intoxicant est plus précis que « sans effet psychotrope » : le CBD ne produit pas l’intoxication caractéristique du THC, mais agit sur le système nerveux et peut notamment provoquer une somnolence. Les données pharmaceutiques décrivent aussi troubles digestifs, interactions médicamenteuses et atteintes hépatiques. Une huile commerciale peut différer du médicament par sa composition, y compris par la présence de THC.",
+              "Dans l’essai croisé d’Englund, augmenter le CBD à quantité expérimentale de THC constante n’apporte pas de protection significative contre les altérations aiguës mesurées. Une interaction bénéfique doit être démontrée pour une composition, une population et un critère précis ; elle ne se déduit pas d’une promesse générale d’« entourage »."
+            ],
+            "sourceIds": [
+              "cb-epidyolex",
+              "can-study-englund"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-kim-2022",
+          "cb-citti-2019",
+          "cb-epidyolex",
+          "can-study-englund"
+        ],
+        "relatedArticleIds": [
+          "ref-biosynthese-cannabinoides",
+          "ref-formes-acides-neutres",
+          "ref-thc"
+        ],
+        "glossaryIds": [
+          "cannabinoids-term-formulation",
+          "cannabinoids-term-neutral",
+          "cannabinoids-term-decarboxylation"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-clinical-evidence-1"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-clinical-evidence-2"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "evidence-2"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "evidence-3"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Le cannabidiol ou CBD",
+          "nodes": [
+            {
+              "label": "Identité",
+              "detail": "CBD diffère de THC, CBDA et CBDP."
+            },
+            {
+              "label": "Preuve clinique",
+              "detail": "Médicament défini, épilepsies précises."
+            },
+            {
+              "label": "Risques",
+              "detail": "Somnolence, interactions et atteintes hépatiques."
+            }
+          ],
+          "caption": "Schéma de relations : ne représente pas une échelle d’efficacité ou de sécurité.",
+          "sourceIds": [
+            "cb-kim-2022",
+            "cb-citti-2019",
+            "cb-epidyolex"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-kim-2022",
+        "cb-citti-2019",
+        "cb-epidyolex",
+        "can-study-englund"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable vérifié : relations et limites concordent avec les passages réellement ouverts. Ancienne vignette de synthèse non validée comme preuve scientifique ; aucune photographie indispensable à ces relations moléculaires."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-cbd-nom"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-systeme-endocannabinoide",
+      "questions": [
+        "L’anandamide est un cannabinoïde produit…",
+        "Dans le système endocannabinoïde, CB1 et CB2 sont…",
+        "PPARγ, une cible étudiée du THCA, appartient à quelle catégorie ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Champs, paragraphes et quiz intégralement relus ; mécanismes et limites précisés.",
+        "Les assertions conservées sont étayées par les documents lisibles cités ; les pages refusées ne sont pas déclarées lues."
+      ],
+      "patch": {
+        "lead": "Le système endocannabinoïde est un ensemble de messagers, de récepteurs et de voies métaboliques présents dans l’organisme. Son existence ne dépend pas de la présence de cannabis.",
+        "sections": [
+          {
+            "id": "ref-systeme-endocannabinoide-messagers",
+            "title": "L’anandamide et le 2-AG",
+            "paragraphs": [
+              "L’anandamide, ou N-arachidonoyléthanolamide (AEA), et le 2-arachidonoylglycérol (2-AG) sont deux messagers produits par l’organisme. L’AEA est une éthanolamide lipidique, identifiée dans le cerveau porcin en 1992 ; le 2-AG est un monoacylglycérol, caractérisé en 1995 notamment dans le cerveau et l’intestin canin. Ces études fondatrices portent sur des tissus animaux, sans constituer des essais thérapeutiques humains."
+            ],
+            "sourceIds": [
+              "cb-anandamide-1992",
+              "cb-2ag-1995",
+              "cb-2ag-gut-1995"
+            ]
+          },
+          {
+            "id": "ref-systeme-endocannabinoide-recepteurs",
+            "title": "Les récepteurs CB1 et CB2",
+            "paragraphs": [
+              "CB1 et CB2 sont des récepteurs cannabinoïdes couplés aux protéines G, qui modulent notamment l’adénylyl cyclase. CB1 est surtout présent dans les neurones centraux et périphériques et participe à la régulation de la libération des neurotransmetteurs ; CB2 est très étudié dans les cellules immunitaires. Ces distributions ne sont pas exclusives. La formation et la dégradation des messagers contribuent également au fonctionnement du système."
+            ],
+            "sourceIds": [
+              "qh-sci-receptors"
+            ]
+          },
+          {
+            "id": "ref-systeme-endocannabinoide-cibles",
+            "title": "Des interactions diverses",
+            "paragraphs": [
+              "Une affinité de liaison et une réponse fonctionnelle décrivent deux propriétés distinctes : une molécule peut se lier sans produire la même activation qu’une autre. Les cannabinoïdes interagissent aussi avec des cibles autres que CB1 et CB2, notamment des canaux et des récepteurs nucléaires. L’activité préclinique du THCA sur PPARγ, dont l’activation peut modifier l’expression de gènes, illustre cette diversité."
+            ],
+            "sourceIds": [
+              "qh-sci-receptors",
+              "cannabinoids-lesson-thca2017"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-anandamide-1992",
+          "cb-2ag-1995",
+          "cb-2ag-gut-1995",
+          "qh-sci-receptors",
+          "cannabinoids-lesson-thca2017"
+        ],
+        "relatedArticleIds": [
+          "ref-thc",
+          "ref-cbd",
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [
+          "cannabinoids-term-endo",
+          "cannabinoids-term-receptor",
+          "cannabinoids-term-affinity",
+          "cannabinoids-term-agonist"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-receptors-1"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-receptors-2"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Le système endocannabinoïde",
+          "nodes": [
+            {
+              "label": "AEA",
+              "detail": "Éthanolamide endogène."
+            },
+            {
+              "label": "2-AG",
+              "detail": "Monoacylglycérol endogène."
+            },
+            {
+              "label": "CB1 et CB2",
+              "detail": "Récepteurs couplés aux protéines G."
+            }
+          ],
+          "caption": "Schéma de relations : ne représente pas une échelle d’efficacité ou de sécurité.",
+          "sourceIds": [
+            "cb-anandamide-1992",
+            "cb-2ag-1995",
+            "cb-2ag-gut-1995",
+            "qh-sci-receptors",
+            "cannabinoids-lesson-thca2017"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-anandamide-1992",
+        "cb-2ag-1995",
+        "cb-2ag-gut-1995",
+        "qh-sci-receptors",
+        "cannabinoids-lesson-thca2017"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable vérifié : relations et limites concordent avec les passages réellement ouverts. Ancienne vignette de synthèse non validée comme preuve scientifique ; aucune photographie indispensable à ces relations moléculaires."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-anandamide",
+        "hemp-evidence-cb1-cb2",
+        "hemp-evidence-pparg"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [
+    {
+      "id": "cannabinoids-term-affinity",
+      "definition": "Propriété de liaison à une cible dans un système défini ; un rapport d’affinité n’est pas un multiplicateur d’effet clinique.",
+      "sourceIds": [
+        "cb-anandamide-1992",
+        "cb-2ag-1995",
+        "cb-2ag-gut-1995",
+        "qh-sci-receptors",
+        "cannabinoids-lesson-thca2017"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-agonist",
+      "definition": "Ligand qui active une réponse via une cible dans le système étudié ; la liaison et l’activation sont des notions distinctes.",
+      "sourceIds": [
+        "cannabinoids-lesson-thca2017"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-biosynthesis",
+      "definition": "Formation de molécules par des processus biologiques ; à distinguer d’une conversion industrielle ou du vieillissement d’un échantillon.",
+      "sourceIds": [
+        "cb-kim-2022",
+        "cannabinoids-lesson-decarb2016",
+        "cb-citti-2019"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-decarboxylation",
+      "definition": "Transformation avec perte de CO₂ ; par exemple THCA vers THC, sans équivalence automatique de masse ou de conversion complète.",
+      "sourceIds": [
+        "cannabinoids-lesson-decarb2016"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-endo",
+      "definition": "Messager produit par l’organisme, par exemple anandamide ou 2-AG ; il ne s’agit pas de THC fabriqué par le corps.",
+      "sourceIds": [
+        "bf-trichomes-2020",
+        "cb-kim-2022",
+        "cb-citti-2019",
+        "cb-dronabinol",
+        "cb-anandamide-1992"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-enzyme",
+      "definition": "Catalyseur biologique dont la relation avec un substrat et un produit peut être caractérisée expérimentalement.",
+      "sourceIds": [
+        "cb-kim-2022",
+        "cannabinoids-lesson-decarb2016",
+        "cb-citti-2019"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-neutral",
+      "definition": "Dans ces paires, forme ne portant plus le groupe carboxyle considéré ; neutre ne veut pas dire sans risque ou sans activité.",
+      "sourceIds": [
+        "cannabinoids-lesson-decarb2016",
+        "cannabinoids-lesson-thca2017"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-formulation",
+      "definition": "Préparation réellement étudiée avec sa composition ; les résultats ne s’étendent pas automatiquement à toute autre présentation contenant le même sigle.",
+      "sourceIds": [
+        "cb-kim-2022",
+        "cb-citti-2019",
+        "cb-epidyolex"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-carboxyl",
+      "definition": "Fonction chimique acide dont la perte sous forme de CO₂ distingue les paires de décarboxylation étudiées.",
+      "sourceIds": [
+        "cannabinoids-lesson-decarb2016"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-homologue",
+      "definition": "Structure apparentée présentant une différence régulière de squelette ; THC et THCP diffèrent notamment par la longueur de leur chaîne latérale.",
+      "sourceIds": [
+        "bf-trichomes-2020",
+        "cb-kim-2022",
+        "cb-citti-2019",
+        "cb-dronabinol",
+        "cb-anandamide-1992"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-isomer",
+      "definition": "Molécule partageant la formule brute d’une autre mais avec un arrangement différent des atomes ou dans l’espace.",
+      "sourceIds": [
+        "bf-trichomes-2020",
+        "cb-kim-2022",
+        "cb-citti-2019",
+        "cb-dronabinol",
+        "cb-anandamide-1992"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-metabolism",
+      "definition": "Transformations biologiques d’une molécule dans l’organisme ; distinctes des conversions décrites dans un procédé commercial.",
+      "sourceIds": [
+        "cannabinoids-lesson-metabolism2017"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-metabolite",
+      "definition": "Produit d’une transformation métabolique ; son activité peut différer de celle de la molécule parente.",
+      "sourceIds": [
+        "cannabinoids-lesson-metabolism2017"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-oxidation",
+      "definition": "Catégorie de transformation chimique, distincte de la perte de CO₂ ; certaines évolutions du THC vers CBN en relèvent.",
+      "sourceIds": [
+        "cannabinoids-lesson-aging2019"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-pharmacokinetics",
+      "definition": "Étude de l’absorption, de la distribution, du métabolisme et de l’élimination d’une substance par l’organisme.",
+      "sourceIds": [
+        "cannabinoids-lesson-metabolism2017"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-phyto",
+      "definition": "Cannabinoïde dont la présence dans un matériel végétal est documentée ; ce terme ne certifie pas le procédé d’un lot commercial.",
+      "sourceIds": [
+        "bf-trichomes-2020",
+        "cb-kim-2022",
+        "cb-citti-2019",
+        "cb-dronabinol",
+        "cb-anandamide-1992"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-precursor",
+      "definition": "Molécule située en amont d’une relation de formation documentée ; cette place ne signifie pas ancêtre universel de toutes les molécules.",
+      "sourceIds": [
+        "cb-kim-2022",
+        "cannabinoids-lesson-decarb2016",
+        "cb-citti-2019"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-receptor",
+      "definition": "Cible biologique capable de lier des ligands et de participer à une réponse ; CB1 et CB2 sont deux récepteurs distincts.",
+      "sourceIds": [
+        "cb-dronabinol",
+        "cb-kim-2022",
+        "qh-sci-receptors",
+        "cannabinoids-lesson-metabolism2017"
+      ],
+      "findings": [
+        "Definition read in full and checked against cited readable sources."
+      ]
+    }
+  ],
+  "quizPatches": [
+    {
+      "id": "hemp-evidence-cbga-carrefour",
+      "prompt": "Quel précurseur du chanvre alimente les branches THCA, CBDA et CBCA ?",
+      "options": [
+        "Le CBN",
+        "Le CBGA",
+        "Le CBD",
+        "Le CBC"
+      ],
+      "answer": 1,
+      "explanation": "Le CBGA est un substrat commun à plusieurs synthases qui forment ces cannabinoïdes acides.",
+      "articleId": "ref-biosynthese-cannabinoides",
+      "sourceIds": [
+        "cb-kim-2022",
+        "cannabinoids-lesson-decarb2016",
+        "cb-citti-2019"
+      ]
+    },
+    {
+      "id": "hemp-evidence-branches",
+      "prompt": "Comment s’organisent les voies végétales menant au THCA, au CBDA et au CBCA ?",
+      "options": [
+        "THCA puis CBDA puis CBCA",
+        "En branches enzymatiques parallèles",
+        "CBCA puis THCA puis CBDA",
+        "CBDA puis CBCA puis THCA"
+      ],
+      "answer": 1,
+      "explanation": "Les synthases du THCA, du CBDA et du CBCA constituent des branches parallèles à partir du CBGA.",
+      "articleId": "ref-biosynthese-cannabinoides",
+      "sourceIds": [
+        "cb-kim-2022",
+        "cannabinoids-lesson-decarb2016",
+        "cb-citti-2019"
+      ]
+    },
+    {
+      "id": "hemp-evidence-cbda",
+      "prompt": "Quelle est la forme acide correspondant au CBD dans le chanvre ?",
+      "options": [
+        "Le CBGA",
+        "Le CBCA",
+        "Le THCA",
+        "Le CBDA"
+      ],
+      "answer": 3,
+      "explanation": "Le CBDA est l’acide cannabidiolique ; sa décarboxylation donne du CBD.",
+      "articleId": "ref-formes-acides-neutres",
+      "sourceIds": [
+        "cannabinoids-lesson-decarb2016"
+      ]
+    },
+    {
+      "id": "hemp-evidence-cbn-oxydation",
+      "prompt": "Quel cannabinoïde peut résulter de transformations oxydatives du THC ?",
+      "options": [
+        "Le CBGA",
+        "Le CBDV",
+        "Le CBN",
+        "Le CBDA"
+      ],
+      "answer": 2,
+      "explanation": "Le THC peut subir des transformations oxydatives conduisant au cannabinol, ou CBN.",
+      "articleId": "ref-formes-acides-neutres",
+      "sourceIds": [
+        "cannabinoids-lesson-aging2019"
+      ]
+    },
+    {
+      "id": "hemp-evidence-decarboxylation",
+      "prompt": "Quelle molécule est libérée lors de la décarboxylation d’un cannabinoïde acide ?",
+      "options": [
+        "Le dioxygène",
+        "Le diazote",
+        "Le dioxyde de carbone",
+        "Le méthane"
+      ],
+      "answer": 2,
+      "explanation": "La décarboxylation retire le groupe carboxyle sous forme de dioxyde de carbone, ou CO₂.",
+      "articleId": "ref-formes-acides-neutres",
+      "sourceIds": [
+        "cannabinoids-lesson-decarb2016"
+      ]
+    },
+    {
+      "id": "hemp-evidence-thc-nom",
+      "prompt": "Quel nom complet se cache derrière THC ?",
+      "options": [
+        "Tétrahydrocannabivarine",
+        "Tétrahydrocannabiphorol",
+        "Tétrahydrocannabinol",
+        "Hexahydrocannabinol"
+      ],
+      "answer": 2,
+      "explanation": "THC abrège tétrahydrocannabinol ; dans l’usage courant, il désigne généralement le Δ9-THC.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "cb-dronabinol"
+      ]
+    },
+    {
+      "id": "hemp-evidence-delta9",
+      "prompt": "Dans Δ9-THC, que précise le « Δ9 » ?",
+      "options": [
+        "La position d’une double liaison",
+        "Le nombre total de carbones",
+        "Le nombre de groupes carboxyles",
+        "La longueur de la chaîne latérale"
+      ],
+      "answer": 0,
+      "explanation": "La notation Δ9 indique la position d’une double liaison dans la structure du THC.",
+      "articleId": "ref-thc",
+      "sourceIds": [
+        "cb-dronabinol",
+        "cb-kim-2022"
+      ]
+    },
+    {
+      "id": "hemp-evidence-cbd-nom",
+      "prompt": "CBD est l’abréviation de…",
+      "options": [
+        "Cannabidiol",
+        "Cannabinol",
+        "Cannabigérol",
+        "Cannabichromène"
+      ],
+      "answer": 0,
+      "explanation": "CBD signifie cannabidiol, une molécule distincte du THC.",
+      "articleId": "ref-cbd",
+      "sourceIds": [
+        "cb-kim-2022"
+      ]
+    },
+    {
+      "id": "hemp-evidence-anandamide",
+      "prompt": "L’anandamide est un cannabinoïde produit…",
+      "options": [
+        "Seulement par le chanvre",
+        "Par l’organisme lui-même",
+        "Seulement par le houblon",
+        "Par le vieillissement du THC"
+      ],
+      "answer": 1,
+      "explanation": "L’anandamide est un endocannabinoïde : un messager lipidique produit par l’organisme.",
+      "articleId": "ref-systeme-endocannabinoide",
+      "sourceIds": [
+        "cb-anandamide-1992"
+      ]
+    },
+    {
+      "id": "hemp-evidence-cb1-cb2",
+      "prompt": "Dans le système endocannabinoïde, CB1 et CB2 sont…",
+      "options": [
+        "Des récepteurs",
+        "Des terpènes",
+        "Des formes acides du CBD",
+        "Des enzymes végétales"
+      ],
+      "answer": 0,
+      "explanation": "CB1 et CB2 sont deux récepteurs cannabinoïdes qui participent à la signalisation de l’organisme.",
+      "articleId": "ref-systeme-endocannabinoide",
+      "sourceIds": [
+        "cb-anandamide-1992",
+        "cb-2ag-1995",
+        "cb-2ag-gut-1995",
+        "qh-sci-receptors",
+        "cannabinoids-lesson-thca2017"
+      ]
+    },
+    {
+      "id": "hemp-evidence-pparg",
+      "prompt": "PPARγ, une cible étudiée du THCA, appartient à quelle catégorie ?",
+      "options": [
+        "Les enzymes synthases",
+        "Les canaux ioniques",
+        "Les récepteurs nucléaires",
+        "Les récepteurs olfactifs"
+      ],
+      "answer": 2,
+      "explanation": "PPARγ est un récepteur nucléaire, une cible distincte des récepteurs cannabinoïdes CB1 et CB2.",
+      "articleId": "ref-systeme-endocannabinoide",
+      "sourceIds": [
+        "cannabinoids-lesson-thca2017"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Countercheck CBD mechanism with current product information.",
+    "THCAS/CBDAS PubMed pages unreadable; not reported as read.",
+    "THCP paper reference 33 carries a retraction marker on PMC: docking not treated as structural validation."
+  ]
+}

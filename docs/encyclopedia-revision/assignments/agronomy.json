@@ -1,0 +1,1669 @@
+{
+  "domain": "agronomy",
+  "articles": [
+    {
+      "id": "ref-environnements-culture",
+      "topicId": "cultivation",
+      "title": "Environnements de culture",
+      "lead": "Le plein champ, la serre et l'intérieur décrivent l'environnement aérien d'une culture. Le sol ou le substrat décrit son milieu racinaire.",
+      "image": {
+        "src": "/placard/school/cultivation/greenhouse-v1.webp",
+        "alt": "Illustration d'une serre contenant du chanvre.",
+        "caption": "Serre à chanvre, illustration de synthèse."
+      },
+      "sections": [
+        {
+          "id": "ref-environnements-culture-1",
+          "title": "Plein champ et abri",
+          "paragraphs": [
+            "En plein champ, les plantes sont directement exposées aux variations météorologiques et saisonnières. Une serre modifie ces échanges grâce à sa couverture. Films plastiques, verre et plaques de polycarbonate présentent des propriétés différentes. Le mot serre englobe des installations non chauffées comme des structures plus équipées ; il ne définit pas un niveau unique de contrôle."
+          ],
+          "sourceIds": [
+            "cultivation-lesson-missouri",
+            "cultivation-lesson-coverings"
+          ]
+        },
+        {
+          "id": "ref-environnements-culture-2",
+          "title": "Le milieu des racines",
+          "paragraphs": [
+            "Une culture sous serre peut être implantée en pleine terre ou dans un substrat. Le hors-sol regroupe plusieurs situations, avec ou sans support solide autour des racines. L'eau, l'oxygène et les éléments nutritifs restent indispensables dans ces différents milieux. L'environnement aérien et le support racinaire sont donc deux caractéristiques indépendantes d'un système."
+          ],
+          "sourceIds": [
+            "cultivation-lesson-missouri",
+            "soil-lesson-rhizosphere"
+          ]
+        },
+        {
+          "id": "ref-environnements-culture-3",
+          "title": "Le chanvre fibre et graine",
+          "paragraphs": [
+            "Dans les filières françaises décrites par le guide Terres Inovia, le chanvre fibre et graine s'inscrit dans une production agricole liée aux débouchés et au territoire. Les installations contrôlées mobilisent des équipements et de la maintenance. Éclairage artificiel, pompes et dispositifs climatiques introduisent des consommations d'énergie et des dépendances techniques propres à l'installation."
+          ],
+          "sourceIds": [
+            "cultivation-lesson-hemp2026",
+            "cultivation-lesson-missouri"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "cultivation-lesson-missouri",
+        "cultivation-lesson-coverings",
+        "soil-lesson-rhizosphere",
+        "cultivation-lesson-hemp2026"
+      ],
+      "relatedArticleIds": [
+        "ref-lumiere-climat",
+        "ref-racines-rhizosphere",
+        "ref-fibres-chanvre"
+      ],
+      "glossaryIds": [
+        "cultivation-term-environment",
+        "cultivation-term-substrate",
+        "cultivation-term-soilless"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-axes-1"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-axes-2"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-axes-checkpoint"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-decisions-1"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-decisions-2"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-decisions-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "ref-lumiere-climat",
+      "topicId": "cultivation",
+      "title": "Lumière, eau et climat",
+      "lead": "La lumière, la température et l'eau participent au fonctionnement du chanvre et aux échanges entre la plante, le sol et l'atmosphère.",
+      "image": {
+        "src": "/placard/school/cultivation/greenhouse-v1.webp",
+        "alt": "Illustration d'une serre contenant du chanvre.",
+        "caption": "Serre à chanvre, illustration de synthèse."
+      },
+      "sections": [
+        {
+          "id": "ref-lumiere-climat-1",
+          "title": "Lumière et saison",
+          "paragraphs": [
+            "La photosynthèse utilise l'énergie lumineuse pour produire de la matière organique. Le rayonnement reçu dépend notamment de la latitude, de la saison, des nuages et de l'ombrage. Sous abri, la couverture intercepte aussi une partie de la lumière. La photopériode désigne la durée du jour ; elle se distingue de l'intensité lumineuse et du cumul de lumière reçu."
+          ],
+          "sourceIds": [
+            "cultivation-lesson-light"
+          ]
+        },
+        {
+          "id": "ref-lumiere-climat-2",
+          "title": "Eau et température",
+          "paragraphs": [
+            "L'eau absorbée par les racines contribue au transport de substances et à la turgescence des tissus. Une partie retourne dans l'air par transpiration. Les besoins et les contraintes hydriques d'un chanvre agricole dépendent du sol, du climat et du développement de la culture. La température intervient dans les processus biologiques et dans les échanges d'eau avec l'atmosphère."
+          ],
+          "sourceIds": [
+            "cultivation-lesson-hemp2026",
+            "soil-lesson-rhizosphere"
+          ]
+        },
+        {
+          "id": "ref-lumiere-climat-3",
+          "title": "Humidité et condensation",
+          "paragraphs": [
+            "L'humidité relative dépend à la fois de la vapeur d'eau présente et de la température. Une surface assez froide peut atteindre le point de rosée et recevoir de la condensation, même si l'air n'est pas uniforme dans la serre. Le brassage déplace l'air ; son renouvellement échange de l'air avec l'extérieur. Ces phénomènes ne sont pas équivalents."
+          ],
+          "sourceIds": [
+            "cultivation-lesson-humidity"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "cultivation-lesson-light",
+        "cultivation-lesson-hemp2026",
+        "soil-lesson-rhizosphere",
+        "cultivation-lesson-humidity"
+      ],
+      "relatedArticleIds": [
+        "ref-environnements-culture",
+        "ref-sol",
+        "ref-conservation"
+      ],
+      "glossaryIds": [
+        "cultivation-term-photosynthesis",
+        "cultivation-term-photoperiod",
+        "cultivation-term-relative-humidity",
+        "cultivation-term-dew-point"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-light-1"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-light-2"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-light-checkpoint"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-climate-1"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-climate-2"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-climate-checkpoint"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-resources-1"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-resources-2"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-resources-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "ref-sol",
+      "topicId": "cultivation",
+      "title": "Le sol du chanvre",
+      "lead": "Le sol est un milieu minéral, organique et vivant dont la structure permet les échanges d'eau et de gaz autour des racines.",
+      "image": {
+        "src": "/placard/school/soil/cutaway-v1.webp",
+        "alt": "Coupe illustrée du sol avec racines de chanvre, pores, débris végétaux et vers de terre.",
+        "caption": "Racines et organismes du sol, coupe schématique sans échelle."
+      },
+      "sections": [
+        {
+          "id": "ref-sol-1",
+          "title": "Texture et structure",
+          "paragraphs": [
+            "La texture décrit les proportions de sable, de limon et d'argile. La structure correspond à l'organisation des particules en agrégats et à la disposition des pores. Un tassement peut modifier cette organisation sans changer la texture. La taille et la continuité des pores influencent l'infiltration, le drainage, l'aération et la pénétration des racines."
+          ],
+          "sourceIds": [
+            "soil-lesson-physical",
+            "soil-lesson-compaction"
+          ]
+        },
+        {
+          "id": "ref-sol-2",
+          "title": "Eau et porosité",
+          "paragraphs": [
+            "Les pores du sol contiennent de l'air ou de l'eau en proportions variables. Toute l'eau retenue n'est pas également accessible aux plantes. Un excès d'eau persistant peut réduire l'oxygène disponible pour les racines, tandis qu'une réserve limitée augmente la sensibilité aux déficits hydriques. Le comportement d'une parcelle dépend aussi de sa profondeur et de son organisation."
+          ],
+          "sourceIds": [
+            "soil-lesson-physical",
+            "soil-lesson-compaction"
+          ]
+        },
+        {
+          "id": "ref-sol-3",
+          "title": "Propriétés chimiques",
+          "paragraphs": [
+            "Le pH décrit une propriété d'acidité dépendante de la méthode de mesure. La capacité d'échange cationique concerne la rétention réversible de certains ions positifs. La conductivité électrique renseigne sur la conduction liée aux ions présents dans l'extrait mesuré. Ces propriétés correspondent à des phénomènes distincts ; aucune ne constitue à elle seule une mesure globale de fertilité."
+          ],
+          "sourceIds": [
+            "soil-lesson-ph",
+            "soil-lesson-ec",
+            "soil-lesson-methods"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "soil-lesson-physical",
+        "soil-lesson-compaction",
+        "soil-lesson-ph",
+        "soil-lesson-ec",
+        "soil-lesson-methods"
+      ],
+      "relatedArticleIds": [
+        "ref-racines-rhizosphere",
+        "ref-nutrition-minerale",
+        "ref-matiere-organique"
+      ],
+      "glossaryIds": [
+        "soil-term-texture",
+        "soil-term-structure",
+        "soil-term-pore",
+        "soil-term-cec",
+        "soil-term-ec"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "uses",
+          "passageId": "soil-physical-1"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-physical-2"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-physical-checkpoint"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-measures-1"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-measures-2"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-measures-checkpoint"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-analysis-1"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-analysis-2"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-analysis-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "ref-racines-rhizosphere",
+      "topicId": "cultivation",
+      "title": "Racines et rhizosphère",
+      "lead": "Les racines assurent l'ancrage et l'absorption du chanvre. La rhizosphère est la zone du sol directement influencée par leur activité.",
+      "image": {
+        "src": "/placard/school/soil/cutaway-v1.webp",
+        "alt": "Coupe illustrée du sol avec racines de chanvre, pores, débris végétaux et vers de terre.",
+        "caption": "Racines et organismes du sol, coupe schématique sans échelle."
+      },
+      "sections": [
+        {
+          "id": "ref-racines-rhizosphere-1",
+          "title": "Absorption et respiration",
+          "paragraphs": [
+            "Les racines absorbent de l'eau et des éléments minéraux présents sous des formes accessibles. Leurs cellules respirent et ont besoin d'oxygène. Un sol engorgé ou fortement tassé peut limiter les échanges gazeux et perturber leur fonctionnement. Une plante peut ainsi présenter des signes de mauvaise nutrition alors que des éléments sont présents dans le milieu."
+          ],
+          "sourceIds": [
+            "soil-lesson-rhizosphere",
+            "soil-lesson-compaction",
+            "soil-lesson-nutrition"
+          ]
+        },
+        {
+          "id": "ref-racines-rhizosphere-2",
+          "title": "La zone d'échanges",
+          "paragraphs": [
+            "Les racines libèrent des substances organiques qui participent aux échanges avec les organismes du sol. Bactéries, champignons, protozoaires et faune interviennent dans un réseau alimentaire complexe. Certains organismes décomposent des matières, d'autres consomment des microorganismes ou interagissent avec la plante. Leur abondance, leurs fonctions et leurs effets ne sont pas des caractéristiques interchangeables."
+          ],
+          "sourceIds": [
+            "soil-lesson-biology",
+            "soil-lesson-living",
+            "soil-lesson-rhizosphere"
+          ]
+        },
+        {
+          "id": "ref-racines-rhizosphere-3",
+          "title": "Les associations mycorhiziennes",
+          "paragraphs": [
+            "Les mycorhizes associent des champignons et des racines. La plante fournit des composés carbonés ; les filaments fongiques explorent le sol et participent à des échanges d'éléments nutritifs avec leur partenaire. Le fonctionnement de l'association dépend des organismes et du milieu. Une colonisation importante ne s'accompagne pas nécessairement d'une augmentation de croissance ou de rendement."
+          ],
+          "sourceIds": [
+            "soil-lesson-inoculation",
+            "soil-lesson-biology"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "soil-lesson-rhizosphere",
+        "soil-lesson-compaction",
+        "soil-lesson-nutrition",
+        "soil-lesson-biology",
+        "soil-lesson-living",
+        "soil-lesson-inoculation"
+      ],
+      "relatedArticleIds": [
+        "ref-sol",
+        "ref-nutrition-minerale",
+        "ref-maladies-chanvre"
+      ],
+      "glossaryIds": [
+        "soil-term-rhizosphere",
+        "soil-term-root-respiration",
+        "soil-term-exudate",
+        "soil-term-mycorrhiza"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "uses",
+          "passageId": "soil-rhizosphere-1"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-rhizosphere-2"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-rhizosphere-checkpoint"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-life-1"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-life-2"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-life-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "ref-nutrition-minerale",
+      "topicId": "cultivation",
+      "title": "Éléments nutritifs du chanvre",
+      "lead": "Le chanvre utilise plusieurs éléments minéraux pour construire ses tissus et assurer ses fonctions. La nutrition ne se limite pas au trio azote, phosphore et potassium.",
+      "image": {
+        "src": "/placard/school/soil/cutaway-v1.webp",
+        "alt": "Coupe illustrée du sol avec racines de chanvre, pores, débris végétaux et vers de terre.",
+        "caption": "Racines et organismes du sol, coupe schématique sans échelle."
+      },
+      "sections": [
+        {
+          "id": "ref-nutrition-minerale-1",
+          "title": "Azote, phosphore et potassium",
+          "paragraphs": [
+            "L'azote entre notamment dans les protéines et la chlorophylle. Le phosphore participe aux acides nucléiques, aux membranes et aux transferts d'énergie. Le potassium intervient dans l'activation d'enzymes et la régulation osmotique, dont le fonctionnement des stomates. Ces rôles biologiques sont différents ; les éléments ne se remplacent pas simplement les uns les autres."
+          ],
+          "sourceIds": [
+            "soil-lesson-nutrition"
+          ]
+        },
+        {
+          "id": "ref-nutrition-minerale-2",
+          "title": "Autres éléments essentiels",
+          "paragraphs": [
+            "Le calcium participe à l'organisation des parois et à la signalisation cellulaire. Le magnésium est au centre de la molécule de chlorophylle et intervient dans des réactions enzymatiques. Le soufre entre dans certains acides aminés. Fer, manganèse, zinc, cuivre, bore, molybdène, chlore et nickel sont également nécessaires, dans des quantités généralement plus faibles."
+          ],
+          "sourceIds": [
+            "soil-lesson-nutrition",
+            "soil-lesson-physical"
+          ]
+        },
+        {
+          "id": "ref-nutrition-minerale-3",
+          "title": "Du sol à la plante",
+          "paragraphs": [
+            "La quantité totale d'un élément dans le sol se distingue de sa fraction disponible et de la quantité effectivement absorbée. Le pH, l'eau, les transformations microbiennes et l'état des racines modifient ces relations. Pour le chanvre agricole, les exportations de matière dépendent également du débouché : récolte de graines, de tiges ou de plusieurs fractions."
+          ],
+          "sourceIds": [
+            "soil-lesson-nutrition",
+            "soil-lesson-hemp"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "soil-lesson-nutrition",
+        "soil-lesson-physical",
+        "soil-lesson-hemp"
+      ],
+      "relatedArticleIds": [
+        "ref-sol",
+        "ref-racines-rhizosphere",
+        "ref-graines-chanvre"
+      ],
+      "glossaryIds": [
+        "soil-term-nitrogen",
+        "soil-term-phosphorus",
+        "soil-term-potassium",
+        "soil-term-calcium",
+        "soil-term-magnesium",
+        "soil-term-sulfur",
+        "soil-term-micronutrient"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "uses",
+          "passageId": "soil-nutrients-1"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-nutrients-2"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-nutrients-checkpoint"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-hemp-1"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-hemp-2"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-hemp-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "ref-matiere-organique",
+      "topicId": "cultivation",
+      "title": "Matière organique et vie du sol",
+      "lead": "La matière organique du sol rassemble des constituants d'origines et de durées de résidence différentes, issus notamment des plantes et des organismes du sol.",
+      "image": {
+        "src": "/placard/school/soil/cutaway-v1.webp",
+        "alt": "Coupe illustrée du sol avec racines de chanvre, pores, débris végétaux et vers de terre.",
+        "caption": "Racines et organismes du sol, coupe schématique sans échelle."
+      },
+      "sections": [
+        {
+          "id": "ref-matiere-organique-1",
+          "title": "Décomposition et cycles",
+          "paragraphs": [
+            "La décomposition transforme les résidus végétaux et animaux. La minéralisation libère des éléments sous des formes minérales ; l'immobilisation les incorpore temporairement dans la biomasse microbienne. Ces processus peuvent se produire simultanément dans des zones différentes. Le carbone et l'azote circulent ainsi entre résidus, organismes, solution du sol et autres compartiments."
+          ],
+          "sourceIds": [
+            "soil-lesson-biology",
+            "soil-lesson-nitrogen"
+          ]
+        },
+        {
+          "id": "ref-matiere-organique-2",
+          "title": "Des fractions diverses",
+          "paragraphs": [
+            "Le terme humus a plusieurs usages historiques et agronomiques. Il ne désigne pas un réservoir unique, homogène et définitivement stable. Des fractions organiques particulaires coexistent avec des constituants associés aux minéraux. Les interactions avec les particules et les conditions du milieu influencent leur décomposition et la durée de maintien du carbone dans le sol."
+          ],
+          "sourceIds": [
+            "soil-lesson-humus",
+            "soil-lesson-fractions"
+          ]
+        },
+        {
+          "id": "ref-matiere-organique-3",
+          "title": "Composts, paillis et couverts",
+          "paragraphs": [
+            "Les composts et les fumiers ont des compositions variables. Leur maturité, leur stabilité, leur teneur en sels et leur éventuelle contamination sont des propriétés distinctes. Les paillis couvrent la surface ; les couverts végétaux introduisent des plantes vivantes et leurs racines. Un engrais apporte des éléments nutritifs, tandis qu'un amendement vise principalement des propriétés du milieu."
+          ],
+          "sourceIds": [
+            "soil-lesson-compost",
+            "soil-lesson-fertilisers",
+            "soil-lesson-physical"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "soil-lesson-biology",
+        "soil-lesson-nitrogen",
+        "soil-lesson-humus",
+        "soil-lesson-fractions",
+        "soil-lesson-compost",
+        "soil-lesson-fertilisers",
+        "soil-lesson-physical"
+      ],
+      "relatedArticleIds": [
+        "ref-sol",
+        "ref-racines-rhizosphere",
+        "ref-nutrition-minerale"
+      ],
+      "glossaryIds": [
+        "soil-term-organic-matter",
+        "soil-term-mineralisation",
+        "soil-term-immobilisation",
+        "soil-term-compost",
+        "soil-term-amendment"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "uses",
+          "passageId": "soil-organic-1"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-organic-2"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-organic-checkpoint"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-inputs-1"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-inputs-2"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-inputs-checkpoint"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-amendments-1"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-amendments-2"
+        },
+        {
+          "courseId": "uses",
+          "passageId": "soil-amendments-checkpoint"
+        }
+      ]
+    }
+  ],
+  "terms": [
+    {
+      "id": "soil-term-amendment",
+      "term": "Amendement",
+      "definition": "Matière visant principalement l’entretien ou la modification de propriétés du sol ; des apports nutritifs sont aussi possibles.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-fertilisers",
+        "soil-lesson-compost"
+      ]
+    },
+    {
+      "id": "soil-term-nitrogen",
+      "term": "Azote · N",
+      "definition": "Élément entrant notamment dans les acides aminés et protéines ; total, formes minérales et absorption diffèrent.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition",
+        "soil-lesson-nitrogen"
+      ]
+    },
+    {
+      "id": "soil-term-calcium",
+      "term": "Calcium · Ca",
+      "definition": "Élément participant notamment aux parois, membranes et signaux cellulaires.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition",
+        "soil-lesson-physical"
+      ]
+    },
+    {
+      "id": "soil-term-cec",
+      "term": "CEC",
+      "definition": "Capacité d’échange cationique définie pour une méthode et un pH ; souvent exprimée en cmol(+)/kg.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "soil-lesson-ph"
+      ]
+    },
+    {
+      "id": "soil-term-compost",
+      "term": "Compost",
+      "definition": "Matière issue d’un processus de transformation biologique contrôlé de matières organiques ; composition et qualité à caractériser.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-compost"
+      ]
+    },
+    {
+      "id": "soil-term-ec",
+      "term": "EC",
+      "definition": "Conductivité électrique, liée notamment aux ions et aux conditions de la mesure ; distincte de la CEC.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "soil-lesson-ec",
+        "soil-lesson-methods"
+      ]
+    },
+    {
+      "id": "cultivation-term-environment",
+      "term": "Environnement de culture",
+      "definition": "Cadre aérien et degré d’abri : plein champ, serre ou intérieur ; distinct du milieu racinaire.",
+      "articleId": "ref-environnements-culture",
+      "sourceIds": [
+        "cultivation-lesson-missouri"
+      ]
+    },
+    {
+      "id": "soil-term-exudate",
+      "term": "Exsudat racinaire",
+      "definition": "Composé libéré par les racines et participant aux interactions avec leur voisinage.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-rhizosphere"
+      ]
+    },
+    {
+      "id": "cultivation-term-soilless",
+      "term": "Hors-sol",
+      "definition": "Culture sans utilisation du sol en place ; elle peut comporter un substrat ou un système sans substrat.",
+      "articleId": "ref-environnements-culture",
+      "sourceIds": [
+        "cultivation-lesson-missouri"
+      ]
+    },
+    {
+      "id": "cultivation-term-relative-humidity",
+      "term": "Humidité relative",
+      "definition": "Rapport à la saturation en vapeur d’eau à la température considérée ; sa variation ne prouve pas à elle seule un retrait d’eau.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-humidity"
+      ]
+    },
+    {
+      "id": "soil-term-immobilisation",
+      "term": "Immobilisation biologique",
+      "definition": "Incorporation de nutriments minéraux dans la biomasse d’organismes ; changement de compartiment, pas destruction.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-nitrogen"
+      ]
+    },
+    {
+      "id": "soil-term-magnesium",
+      "term": "Magnésium · Mg",
+      "definition": "Élément entrant dans la chlorophylle et intervenant dans des fonctions enzymatiques.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition",
+        "soil-lesson-physical"
+      ]
+    },
+    {
+      "id": "soil-term-organic-matter",
+      "term": "Matières organiques du sol",
+      "definition": "Ensemble divers de matières issues du vivant, avec différentes formes, transformations et interactions.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-humus",
+        "soil-lesson-fractions"
+      ]
+    },
+    {
+      "id": "soil-term-mineralisation",
+      "term": "Minéralisation",
+      "definition": "Transformation d’éléments liés à des matières organiques en formes minérales, sans absorption automatique.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-nitrogen"
+      ]
+    },
+    {
+      "id": "soil-term-mycorrhiza",
+      "term": "Mycorhize",
+      "definition": "Association entre un champignon et des racines ; le résultat dépend des partenaires et des conditions.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-living",
+        "soil-lesson-inoculation"
+      ]
+    },
+    {
+      "id": "soil-term-micronutrient",
+      "term": "Oligoélément",
+      "definition": "Élément essentiel requis en petite quantité ; Fe, Mn, Zn, Cu, B, Mo, Cl et Ni en font partie.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition"
+      ]
+    },
+    {
+      "id": "soil-term-phosphorus",
+      "term": "Phosphore · P",
+      "definition": "Élément participant notamment aux acides nucléiques et aux transferts d’énergie.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition"
+      ]
+    },
+    {
+      "id": "cultivation-term-photoperiod",
+      "term": "Photopériode",
+      "definition": "Durée de la phase éclairée dans un cycle journalier ; distincte de la quantité totale de lumière reçue.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-light"
+      ]
+    },
+    {
+      "id": "cultivation-term-photosynthesis",
+      "term": "Photosynthèse",
+      "definition": "Processus biologique utilisant l’énergie lumineuse pour produire de la matière organique ; sa réponse ne croît pas sans limite avec la lumière.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-light"
+      ]
+    },
+    {
+      "id": "cultivation-term-dew-point",
+      "term": "Point de rosée",
+      "definition": "Température à laquelle l’air considéré atteint la saturation ; une surface assez froide peut provoquer une condensation locale.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-humidity"
+      ]
+    },
+    {
+      "id": "soil-term-pore",
+      "term": "Pore",
+      "definition": "Espace du sol occupé par de l’air ou de l’eau, dont taille et connexion influencent les échanges.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ]
+    },
+    {
+      "id": "soil-term-potassium",
+      "term": "Potassium · K",
+      "definition": "Élément intervenant notamment dans les régulations osmotiques et enzymatiques.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition",
+        "soil-lesson-physical"
+      ]
+    },
+    {
+      "id": "soil-term-root-respiration",
+      "term": "Respiration racinaire",
+      "definition": "Processus cellulaire produisant de l’énergie ; l’oxygène participe au fonctionnement aérobie des racines.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-physical",
+        "soil-lesson-rhizosphere"
+      ]
+    },
+    {
+      "id": "soil-term-rhizosphere",
+      "term": "Rhizosphère",
+      "definition": "Zone du sol influencée par l’activité des racines, sans épaisseur universelle fixe.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-rhizosphere"
+      ]
+    },
+    {
+      "id": "soil-term-sulfur",
+      "term": "Soufre · S",
+      "definition": "Élément entrant notamment dans certains acides aminés ; essentiel malgré sa catégorie dite secondaire.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition",
+        "soil-lesson-physical"
+      ]
+    },
+    {
+      "id": "soil-term-structure",
+      "term": "Structure",
+      "definition": "Organisation des particules en assemblages et des espaces qui les séparent.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ]
+    },
+    {
+      "id": "cultivation-term-substrate",
+      "term": "Substrat",
+      "definition": "Milieu servant de support aux racines ; un substrat en contenant n’est pas le sol en place.",
+      "articleId": "ref-environnements-culture",
+      "sourceIds": [
+        "cultivation-lesson-missouri"
+      ]
+    },
+    {
+      "id": "soil-term-texture",
+      "term": "Texture",
+      "definition": "Proportions de sable, limon et argile de la fraction minérale fine ; distinctes de leur organisation.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "hemp-uses-respiration-racines",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "De quel gaz les racines de chanvre ont-elles besoin pour respirer ?",
+      "options": [
+        "De méthane",
+        "De diazote",
+        "De dihydrogène",
+        "De dioxygène"
+      ],
+      "answer": 3,
+      "explanation": "Les cellules des racines utilisent du dioxygène pour leur respiration.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-rhizosphere",
+        "soil-lesson-compaction"
+      ]
+    },
+    {
+      "id": "hemp-uses-pores",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Qu’est-ce qui occupe les pores du sol autour des racines de chanvre ?",
+      "options": [
+        "De l’air et de l’eau",
+        "Uniquement des grains de sable",
+        "Uniquement des cristaux de sel",
+        "Seulement de la roche compacte"
+      ],
+      "answer": 0,
+      "explanation": "Les pores sont les espaces entre les particules et les agrégats, occupés par de l’air ou de l’eau.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ]
+    },
+    {
+      "id": "hemp-uses-matiere-organique",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Quel élément du sol d’une chanvrière appartient à la matière organique ?",
+      "options": [
+        "Un cristal de quartz",
+        "Un fragment de racine morte",
+        "Un grain de sable",
+        "Un morceau de calcaire"
+      ],
+      "answer": 1,
+      "explanation": "Les restes de racines et d’autres organismes font partie de la matière organique du sol.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-biology"
+      ]
+    },
+    {
+      "id": "hemp-uses-vers-terre",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Quelle activité des vers de terre crée des passages dans le sol d’une chanvrière ?",
+      "options": [
+        "La fabrication de pollen",
+        "La production de fleurs",
+        "Le creusement de galeries",
+        "La formation de graines"
+      ],
+      "answer": 2,
+      "explanation": "Les vers de terre creusent des galeries qui contribuent à la porosité du sol.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-biology",
+        "soil-lesson-living"
+      ]
+    },
+    {
+      "id": "hemp-uses-paillis",
+      "topicId": "uses",
+      "level": 1,
+      "prompt": "Où se place un paillis autour de jeunes plants de chanvre ?",
+      "options": [
+        "À l’intérieur des graines",
+        "Dans les vaisseaux de la tige",
+        "Au sommet des fleurs",
+        "À la surface du sol"
+      ],
+      "answer": 3,
+      "explanation": "Un paillis forme une couverture à la surface du sol.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ]
+    },
+    {
+      "id": "hemp-uses-rhizosphere",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Comment nomme-t-on la zone du sol influencée directement par les racines du chanvre ?",
+      "options": [
+        "La rhizosphère",
+        "La cuticule",
+        "Le péricarpe",
+        "La canopée"
+      ],
+      "answer": 0,
+      "explanation": "La rhizosphère est la zone où les racines modifient directement le milieu et ses organismes.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-rhizosphere"
+      ]
+    },
+    {
+      "id": "hemp-uses-exsudats",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Que libèrent les racines de chanvre sous le nom d’exsudats racinaires ?",
+      "options": [
+        "Des grains de pollen",
+        "Des substances organiques",
+        "Des fibres textiles",
+        "Des fragments de roche"
+      ],
+      "answer": 1,
+      "explanation": "Les exsudats sont des substances organiques libérées par les racines dans le milieu voisin.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-rhizosphere"
+      ]
+    },
+    {
+      "id": "hemp-uses-texture",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Quels constituants définissent la texture minérale du sol d’une chanvrière ?",
+      "options": [
+        "Racines, feuilles et fleurs",
+        "Eau, air et pollen",
+        "Sables, limons et argiles",
+        "Azote, phosphore et potassium"
+      ],
+      "answer": 2,
+      "explanation": "La texture correspond aux proportions de particules minérales des classes sable, limon et argile.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ]
+    },
+    {
+      "id": "hemp-uses-mycorhize",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Quels partenaires forment une mycorhize sur le chanvre ?",
+      "options": [
+        "Une fleur et un insecte",
+        "Une feuille et un virus",
+        "Une graine et un acarien",
+        "Une racine et un champignon"
+      ],
+      "answer": 3,
+      "explanation": "Une mycorhize est une association entre un champignon et les racines d’une plante.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-biology"
+      ]
+    },
+    {
+      "id": "hemp-uses-mineralisation",
+      "topicId": "uses",
+      "level": 2,
+      "prompt": "Que libère la minéralisation des résidus de chanvre dans le sol ?",
+      "options": [
+        "Des éléments sous forme minérale",
+        "Des graines déjà germées",
+        "Des fibres textiles neuves",
+        "Des feuilles photosynthétiques"
+      ],
+      "answer": 0,
+      "explanation": "La minéralisation transforme des éléments de la matière organique en formes minérales.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-biology",
+        "soil-lesson-nitrogen"
+      ]
+    },
+    {
+      "id": "hemp-uses-magnesium",
+      "topicId": "uses",
+      "level": 3,
+      "prompt": "Quel élément occupe le centre de la molécule de chlorophylle du chanvre ?",
+      "options": [
+        "Le calcium",
+        "Le magnésium",
+        "Le sodium",
+        "Le zinc"
+      ],
+      "answer": 1,
+      "explanation": "Un atome de magnésium se trouve au centre de la structure de la chlorophylle.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition"
+      ]
+    },
+    {
+      "id": "hemp-uses-phosphore",
+      "topicId": "uses",
+      "level": 3,
+      "prompt": "Quel élément nutritif du chanvre entre dans la structure de l’ATP et de l’ADN ?",
+      "options": [
+        "Le potassium",
+        "Le fer",
+        "Le phosphore",
+        "Le bore"
+      ],
+      "answer": 2,
+      "explanation": "Le phosphore entre dans l’ATP, une molécule impliquée dans les transferts d’énergie cellulaire.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition"
+      ]
+    },
+    {
+      "id": "hemp-uses-potassium",
+      "topicId": "uses",
+      "level": 3,
+      "prompt": "Quel rôle le potassium joue-t-il notamment dans les feuilles du chanvre ?",
+      "options": [
+        "Former le centre de la chlorophylle",
+        "Constituer les chaînes de l’ADN",
+        "Remplacer le carbone des sucres",
+        "Participer aux mouvements des stomates"
+      ],
+      "answer": 3,
+      "explanation": "Le potassium participe aux échanges osmotiques qui contribuent à l’ouverture et à la fermeture des stomates.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition"
+      ]
+    },
+    {
+      "id": "hemp-uses-calcium",
+      "topicId": "uses",
+      "level": 3,
+      "prompt": "Quel élément participe notamment à la cohésion des parois cellulaires du chanvre ?",
+      "options": [
+        "Le calcium",
+        "Le sodium",
+        "Le silicium",
+        "Le sélénium"
+      ],
+      "answer": 0,
+      "explanation": "Le calcium contribue à l’organisation des parois et intervient aussi dans la signalisation cellulaire.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition"
+      ]
+    },
+    {
+      "id": "hemp-uses-azote",
+      "topicId": "uses",
+      "level": 3,
+      "prompt": "Quel élément du sol entre dans les groupes aminés des acides aminés du chanvre ?",
+      "options": [
+        "Le potassium",
+        "L’azote",
+        "Le calcium",
+        "Le fer"
+      ],
+      "answer": 1,
+      "explanation": "L’azote entre dans les acides aminés que la plante assemble en protéines.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition"
+      ]
+    },
+    {
+      "id": "hemp-uses-echange-cations",
+      "topicId": "uses",
+      "level": 4,
+      "prompt": "Quels ions le complexe d’échange du sol retient-il autour des racines du chanvre ?",
+      "options": [
+        "Seulement les ions négatifs",
+        "Seulement les molécules neutres",
+        "Des ions chargés positivement",
+        "Uniquement des molécules d’oxygène"
+      ],
+      "answer": 2,
+      "explanation": "La capacité d’échange cationique concerne la rétention réversible de cations, des ions positifs.",
+      "articleId": "ref-sol",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ]
+    },
+    {
+      "id": "hemp-uses-nitrification",
+      "topicId": "uses",
+      "level": 4,
+      "prompt": "Dans le sol d’une chanvrière, quelle transformation définit la nitrification ?",
+      "options": [
+        "Nitrate vers diazote",
+        "Protéines vers ammonium",
+        "Diazote vers ammonium",
+        "Ammonium vers nitrate"
+      ],
+      "answer": 3,
+      "explanation": "La nitrification oxyde l’ammonium en nitrite puis en nitrate grâce à des microorganismes.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-nitrogen"
+      ]
+    },
+    {
+      "id": "hemp-uses-soufre",
+      "topicId": "uses",
+      "level": 4,
+      "prompt": "Quel élément nutritif se retrouve dans la cystéine et la méthionine du chanvre ?",
+      "options": [
+        "Le soufre",
+        "Le bore",
+        "Le manganèse",
+        "Le potassium"
+      ],
+      "answer": 0,
+      "explanation": "La cystéine et la méthionine sont deux acides aminés qui contiennent du soufre.",
+      "articleId": "ref-nutrition-minerale",
+      "sourceIds": [
+        "soil-lesson-nutrition"
+      ]
+    },
+    {
+      "id": "hemp-uses-immobilisation",
+      "topicId": "uses",
+      "level": 4,
+      "prompt": "Que devient l’azote lors de son immobilisation microbienne dans le sol du chanvre ?",
+      "options": [
+        "Il se transforme en potassium",
+        "Il entre dans la biomasse microbienne",
+        "Il disparaît sous forme de lumière",
+        "Il devient obligatoirement du diazote"
+      ],
+      "answer": 1,
+      "explanation": "L’immobilisation incorpore temporairement l’azote minéral dans les constituants des microorganismes.",
+      "articleId": "ref-matiere-organique",
+      "sourceIds": [
+        "soil-lesson-nitrogen"
+      ]
+    },
+    {
+      "id": "hemp-uses-echange-mycorhize",
+      "topicId": "uses",
+      "level": 4,
+      "prompt": "Que fournit le chanvre à son partenaire fongique dans une association mycorhizienne ?",
+      "options": [
+        "Des grains de sable",
+        "Du diazote fixé dans des nodules",
+        "Des composés carbonés",
+        "Des spores de champignon"
+      ],
+      "answer": 2,
+      "explanation": "La plante fournit des composés carbonés au champignon, qui participe notamment à l’exploration du sol.",
+      "articleId": "ref-racines-rhizosphere",
+      "sourceIds": [
+        "soil-lesson-biology"
+      ]
+    },
+    {
+      "id": "hemp-prevention-plein-champ",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Où le chanvre est-il directement exposé à la pluie et au vent ?",
+      "options": [
+        "Dans une salle close",
+        "Dans une serre fermée",
+        "Dans un tunnel couvert",
+        "En plein champ"
+      ],
+      "answer": 3,
+      "explanation": "Une culture en plein champ est directement soumise aux conditions météorologiques.",
+      "articleId": "ref-environnements-culture",
+      "sourceIds": [
+        "cultivation-lesson-missouri"
+      ]
+    },
+    {
+      "id": "hemp-prevention-serre",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quelle propriété d’une couverture de serre permet au chanvre de recevoir le soleil ?",
+      "options": [
+        "La transmission de lumière",
+        "L’opacité totale",
+        "La conductivité électrique",
+        "La solubilité dans l’eau"
+      ],
+      "answer": 0,
+      "explanation": "Le verre et les films de serre transmettent une partie du rayonnement solaire.",
+      "articleId": "ref-environnements-culture",
+      "sourceIds": [
+        "cultivation-lesson-coverings"
+      ]
+    },
+    {
+      "id": "hemp-prevention-nuages",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Que réduit généralement un épais couvert nuageux au-dessus d’un champ de chanvre ?",
+      "options": [
+        "La durée astronomique du jour",
+        "La teneur du sol en argile",
+        "La masse des graines stockées",
+        "La lumière solaire reçue"
+      ],
+      "answer": 3,
+      "explanation": "Les nuages interceptent une partie du rayonnement avant qu’il atteigne les plantes.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-light"
+      ]
+    },
+    {
+      "id": "hemp-prevention-turgescence",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel phénomène donne de la fermeté aux tissus bien hydratés du chanvre ?",
+      "options": [
+        "La turgescence",
+        "La sénescence",
+        "La germination",
+        "La lignification"
+      ],
+      "answer": 0,
+      "explanation": "La turgescence résulte de la pression du contenu cellulaire hydraté contre la paroi.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "soil-lesson-rhizosphere"
+      ]
+    },
+    {
+      "id": "hemp-prevention-transpiration",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Sous quelle forme l’eau quitte-t-elle surtout les feuilles de chanvre par transpiration ?",
+      "options": [
+        "Sous forme de glace",
+        "Sous forme de vapeur",
+        "Sous forme d’huile",
+        "Sous forme de sève sucrée"
+      ],
+      "answer": 1,
+      "explanation": "La transpiration correspond à une perte d’eau sous forme de vapeur, principalement par les stomates.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "soil-lesson-rhizosphere"
+      ]
+    },
+    {
+      "id": "hemp-prevention-gel-plantule",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "À quel stade le chanvre agricole est-il particulièrement sensible au gel ?",
+      "options": [
+        "Quand la paille est en balles",
+        "Quand les graines sont en silo",
+        "À la sortie de terre",
+        "Après le teillage des fibres"
+      ],
+      "answer": 2,
+      "explanation": "Les très jeunes plants à la levée sont particulièrement vulnérables au gel.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-hemp2026"
+      ]
+    },
+    {
+      "id": "hemp-prevention-condensation",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel changement d’état forme des gouttes sur une paroi froide d’une serre à chanvre ?",
+      "options": [
+        "L’évaporation",
+        "La sublimation",
+        "La solidification",
+        "La condensation"
+      ],
+      "answer": 3,
+      "explanation": "La vapeur d’eau de l’air peut se condenser au contact d’une surface suffisamment froide.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-humidity"
+      ]
+    },
+    {
+      "id": "hemp-prevention-hors-sol",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Dans une culture de chanvre hors-sol, où les racines peuvent-elles se développer ?",
+      "options": [
+        "Dans un substrat ou une solution",
+        "Uniquement dans du verre solide",
+        "Uniquement dans de l’air sans eau",
+        "Dans la partie interne des feuilles"
+      ],
+      "answer": 0,
+      "explanation": "Le hors-sol comprend des systèmes avec un support solide et des systèmes sans support solide.",
+      "articleId": "ref-environnements-culture",
+      "sourceIds": [
+        "cultivation-lesson-missouri"
+      ]
+    },
+    {
+      "id": "hemp-prevention-point-rosee",
+      "topicId": "prevention",
+      "level": 4,
+      "prompt": "Dans l’air d’une serre à chanvre, qu’est-ce que le point de rosée ?",
+      "options": [
+        "La vitesse du vent dans la serre",
+        "L’heure de la première floraison",
+        "La température de saturation en vapeur",
+        "La quantité d’eau dans chaque graine"
+      ],
+      "answer": 2,
+      "explanation": "Le point de rosée est la température à laquelle l’air refroidi atteint la saturation en vapeur d’eau.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-humidity"
+      ]
+    },
+    {
+      "id": "hemp-prevention-humidite-relative",
+      "topicId": "prevention",
+      "level": 4,
+      "prompt": "Si l’air d’une serre à chanvre se réchauffe sans ajout de vapeur, son humidité relative…",
+      "options": [
+        "Augmente",
+        "Reste toujours identique",
+        "Atteint forcément la saturation",
+        "Diminue"
+      ],
+      "answer": 3,
+      "explanation": "À teneur en vapeur inchangée, un réchauffement de l’air fait diminuer son humidité relative.",
+      "articleId": "ref-lumiere-climat",
+      "sourceIds": [
+        "cultivation-lesson-humidity"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "cultivation-lesson-missouri",
+      "title": "Controlled Environment Agriculture: Hydroponic Farming, G6986",
+      "author": "Juan Cabrera-Garcia, Ryan Milhollin et Matt Ernst",
+      "organization": "University of Missouri Extension",
+      "published": "Avril 2024 ; révision juillet 2024",
+      "url": "https://extension.missouri.edu/publications/g6986",
+      "passage": "Introduction, niveaux de contrôle, Advantages and disadvantages, Types of hydroponic systems : milieux racinaires, circuits ouverts/fermés, coûts, compétences et dépendances techniques.",
+      "access": "full-text",
+      "limitation": "Publication horticole concernant notamment des légumes. Les définitions et dépendances techniques sont utilisées ; aucun rendement, réglage ou classement économique n’est transféré au chanvre fibre/graine.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication originale institutionnelle ou scientifique"
+    },
+    {
+      "id": "cultivation-lesson-humidity",
+      "title": "Reducing Humidity in the Greenhouse",
+      "author": "Tina Smith et John W. Bartok Jr.",
+      "organization": "UMass Extension / University of Connecticut",
+      "published": "Version reprise dans le bulletin UMass de janvier–février 2016 ; page consultée le 12 novembre 2026",
+      "url": "https://www.umass.edu/agriculture-food-environment/greenhouse-floriculture/fact-sheets/reducing-humidity-in-greenhouse",
+      "passage": "Introduction, Relationship Between Temperature and Humidity, Air Movement et Measuring humidity : rosée, surfaces froides, humidité relative, hétérogénéité et qualité des mesures.",
+      "access": "excerpt",
+      "limitation": "Accès direct refusé ; passages originaux indexés lus. Aucun seuil cible, cycle de ventilation/chauffage, coût ancien ou programme cultural reproduit. Les exemples floricoles ne constituent pas une prescription pour le chanvre.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages du document original consultés"
+    },
+    {
+      "id": "cultivation-lesson-light",
+      "title": "HO-238: Measuring Daily Light Integral in a Greenhouse",
+      "author": "Ariana P. Torres et Roberto G. Lopez",
+      "organization": "Purdue University, Horticulture and Landscape Architecture",
+      "published": "Publication HO-238 ; page sans date éditoriale explicite consultée le 12 novembre 2026",
+      "url": "https://ag.purdue.edu/department/hla/extension/extension-publications-library/ext-pubs/ho-238-w.html",
+      "passage": "What Is Light and Why Is It Important?, Measuring Light et Daily Light Integral : photons, durée, cumul journalier, saison, latitude, nuages et interception par la structure.",
+      "access": "full-text",
+      "limitation": "Seuls les principes et limites de mesure sont repris. Les valeurs et recommandations pour les cultures horticoles ne sont pas appliquées au chanvre ; aucune durée ou intensité cible n’est proposée.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication originale institutionnelle ou scientifique"
+    },
+    {
+      "id": "cultivation-lesson-hemp2026",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Louis-Marie Allard, avec les contributeurs de la filière ; coordination I. Lartigot",
+      "organization": "Terres Inovia / InterChanvre",
+      "published": "Dépôt légal janvier 2026",
+      "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+      "passage": "Pages imprimées 8–9 : contractualisation, débouché et région ; page 17 : dépendance de l’eau au contexte ; pages 19–20 : maladies et ravageurs ; pages 22–23 : humidité, impuretés, fragilité du chènevis et qualité des fibres ; sommaire et crédits page 2.",
+      "access": "excerpt",
+      "limitation": "Sections ciblées du PDF lues, pas reprise intégrale du guide. Les slogans généraux zéro irrigation ou zéro risque ne sont pas retenus ; le cours ne reproduit aucun itinéraire, apport, calendrier ou réglage de production. Les affirmations historiques de la page 3 ne sont pas utilisées.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages du document original consultés"
+    },
+    {
+      "id": "cultivation-lesson-coverings",
+      "title": "Greenhouse covering materials",
+      "author": "NSW Department of Primary Industries and Regional Development",
+      "organization": "Gouvernement de Nouvelle-Galles du Sud, Australie",
+      "published": "Page sans date éditoriale explicite ; consultée le 12 novembre 2026",
+      "url": "https://www.dpird.nsw.gov.au/agriculture/horticulture/greenhouse/structures-and-technology/covers",
+      "passage": "Introduction ; Glass, Plastic sheeting, Plastic films et Maintenance : familles de couvertures et propriétés à distinguer.",
+      "access": "official-page",
+      "limitation": "Page originale consultée. Seuls les matériaux et catégories de propriétés sont repris ; pas de transfert de rendement, de coût ou de conseil d’équipement au chanvre ni de durée de vie garantie.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication originale institutionnelle ou scientifique"
+    },
+    {
+      "id": "soil-lesson-physical",
+      "title": "1. Soils & Plant Nutrients — Extension Gardener Handbook",
+      "author": "NC State Extension, équipe du manuel Extension Gardener",
+      "organization": "North Carolina State University",
+      "published": "Page courante consultée le 12 novembre 2026 ; date de révision non confirmée",
+      "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/1-soils-and-plant-nutrients",
+      "passage": "Soil Physical Properties : texture, structure, pores, agrégats et eau ; Plant Nutrition, tableau 1–4 : fonctions des éléments.",
+      "access": "excerpt",
+      "limitation": "Sections du manuel effectivement lues. Exemples régionaux et recommandations quantitatives non transposés au chanvre. Le schéma de sol idéal, les pourcentages de constituants et les images de carence ne sont pas des normes universelles.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-compaction",
+      "title": "Soil compaction",
+      "author": "University of Minnesota Extension, équipe de gestion des sols",
+      "organization": "University of Minnesota",
+      "published": "Page courante consultée le 12 novembre 2026 ; date de révision non confirmée",
+      "url": "https://extension.umn.edu/natural-resources/conservation/agricultural-soil-and-water/soil-compaction",
+      "passage": "Sections sur la réduction des pores, le développement racinaire et la circulation de l’air et de l’eau.",
+      "access": "excerpt",
+      "limitation": "Principes physiques généraux ; aucun seuil de tassement ni conseil de travail du sol applicable partout n’est extrait de cette ressource.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-rhizosphere",
+      "title": "Racines et rhizosphère",
+      "author": "Institut fédéral de recherches sur la forêt, la neige et le paysage",
+      "organization": "WSL",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.wsl.ch/fr/foret/sol-et-cycles/racines-et-rhizosphere/",
+      "passage": "Racines et Rhizosphère : absorption, exsudats et influence sur les communautés microbiennes.",
+      "access": "official-page",
+      "limitation": "Exemples de recherche forestière ; les mécanismes généraux ne constituent pas une mesure d’efficacité ni un profil nutritionnel du chanvre. Les photos de racines d’arbres ne sont pas présentées comme du chanvre.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication scientifique ou institutionnelle originale"
+    },
+    {
+      "id": "soil-lesson-biology",
+      "title": "Soil Biology — version 2.3",
+      "author": "USDA Natural Resources Conservation Service, Soil Health Division",
+      "organization": "USDA NRCS",
+      "published": "Version 2.3, document institutionnel diffusé en juin 2023 ; consulté le 12 novembre 2026",
+      "url": "https://www.nrcs.usda.gov/sites/default/files/2023-06/Soil%20Biology%202.3.pdf",
+      "passage": "Diapositives Soil food web, functional groups et biological hotspots : organismes, réseaux et fonctions.",
+      "access": "excerpt",
+      "limitation": "Support pédagogique, pas inventaire d’une parcelle. Les abondances illustratives ne sont pas reprises ; aucun groupe entier n’est déclaré toujours bénéfique.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-living",
+      "title": "The Living Soil",
+      "author": "Adrian Card, Catherine Moravec, David Whiting, Carl Wilson, Jean Reeder et Susan Carter ; relecture Sarah Schweig",
+      "organization": "Colorado State University Extension",
+      "published": "Octobre 2015 ; relecture octobre 2022",
+      "url": "https://extension.colostate.edu/resource/the-living-soil/",
+      "passage": "Types of Soil Organisms ; Directly/Indirectly Beneficial Soil Organisms ; réserves sur les résultats d’inoculation.",
+      "access": "excerpt",
+      "limitation": "Les définitions de groupes et les réserves sont retenues ; pas les multiplicateurs d’absorption, pourcentages universels d’humus, chiffres d’abondance ou généralités sur la spécificité des mycorhizes.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-inoculation",
+      "title": "Soil microbiome indicators can predict crop growth response to large-scale inoculation with arbuscular mycorrhizal fungi",
+      "author": "Stefanie Lutz, Natacha Bodenhausen, Julia Hess, Alain Valzano-Held, Jan Waelchli, Gabriel Deslandes-Hérold, Klaus Schlaeppi et Marcel G. A. van der Heijden",
+      "organization": "Nature Microbiology 8:2277–2289",
+      "published": "29 novembre 2023 ; DOI 10.1038/s41564-023-01520-w",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38030903/",
+      "passage": "Résumé complet et légendes des figures 1 et 3 : 54 champs de maïs suisses, réponses variables ; colonisation et bénéfice distingués.",
+      "access": "excerpt",
+      "limitation": "Résumé et légendes originaux consultés dans PubMed ; ouverture Nature refusée, pas lecture intégrale certifiée. Essai de maïs, pas de chanvre ; les relations prédictives ne deviennent ni un seuil universel ni une garantie commerciale. Notice de correction d’auteur liée dans PubMed, non utilisée pour une affirmation nouvelle.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-nitrogen",
+      "title": "Nitrogen Cycle",
+      "author": "Southwest Research and Outreach Center",
+      "organization": "University of Minnesota",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://swroc.cfans.umn.edu/research/soil-water/nitrogen-cycle",
+      "passage": "Nitrogen cycle stages : ammonification, nitrification, immobilisation, absorption et pertes.",
+      "access": "official-page",
+      "limitation": "Schéma de transformations, sans bilan quantifié d’une parcelle. Les conditions et flux ne sont pas déduits d’un rapport C/N seul ; aucune recette d’apport n’est reprise.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication scientifique ou institutionnelle originale"
+    },
+    {
+      "id": "soil-lesson-humus",
+      "title": "Histoires d’humus, 1. Qu’est-ce que l’humus ?",
+      "author": "Christian Feller, Bernard Jabiol et Denis Baize",
+      "organization": "Les Mots de l’agronomie, plateforme INRAE",
+      "published": "4 mai 2022",
+      "url": "https://mots-agronomie.inrae.fr/index.php?title=Histoires_d%E2%80%99humus,_1._Qu%E2%80%99est-ce_que_l%E2%80%99humus_?",
+      "passage": "Introduction, fractionnements physiques et conclusion : sens différents d’humus et diversité des matières organiques du sol.",
+      "access": "excerpt",
+      "limitation": "Analyse historique des concepts, pas validation d’un stock unique ou d’une durée de persistance fixe. Les fractions dépendent de leur méthode de séparation.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-fractions",
+      "title": "Soil carbon storage informed by particulate and mineral-associated organic matter",
+      "author": "M. Francesca Cotrufo, Maria Giovanna Ranalli, Michelle L. Haddix et collaborateurs",
+      "organization": "Nature Geoscience 12:989–994",
+      "published": "2019 ; DOI 10.1038/s41561-019-0484-6",
+      "url": "https://www.nature.com/articles/s41561-019-0484-6",
+      "passage": "Résumé original indexé : bases européennes et fractionnement des matières organiques particulaires et associées aux minéraux.",
+      "access": "excerpt",
+      "limitation": "Résumé original indexé consulté ; ouverture directe refusée, article intégral non certifié. Sols de surface forestiers et prairiaux européens, pas étalonnage de chanvre ; fractions opérationnelles, sans permanence absolue.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-nutrition",
+      "title": "Soils, Plant Nutrition and Nutrient Management — Chapter 4",
+      "author": "Md. Rasel Parvej, relecteur du manuel Missouri Master Gardener",
+      "organization": "University of Missouri Extension",
+      "published": "Septembre 2017 ; page affichant relecture mars 2026",
+      "url": "https://extension.missouri.edu/publications/mg4",
+      "passage": "Plant nutrition et tableau 3 ; rôles de N, P, K, Ca, Mg, S et des micronutriments ; distinction des réserves et fractions utilisables.",
+      "access": "excerpt",
+      "limitation": "Principes et liste des éléments retenus ; pas les recettes, seuils régionaux ou diagnostics par photographie. Les exemples d’autres cultures ne donnent pas les besoins d’un chanvre particulier.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-ph",
+      "title": "Les Vrai/Faux du chaulage : oui, la mesure du pHeau suffit pour faire un diagnostic d’acidité",
+      "author": "ARVALIS, rédaction technique",
+      "organization": "ARVALIS",
+      "published": "9 décembre 2021",
+      "url": "https://www.arvalis.fr/infos-techniques/oui-la-mesure-du-pheau-suffit-pour-faire-un-diagnostic-dacidite",
+      "passage": "pHeau et pHKCl : quelles différences ? ; CEC à pH donné et méthode Metson ; variation temporelle.",
+      "access": "excerpt",
+      "limitation": "Référence française datée, pas consigne universelle de chaulage. Aucun seuil, dose ou calendrier repris ; les écarts usuels entre méthodes ne sont pas utilisés comme formule de conversion.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-ec",
+      "title": "Soil Quality Indicators — Soil Electrical Conductivity",
+      "author": "USDA Natural Resources Conservation Service",
+      "organization": "USDA NRCS",
+      "published": "Fiche institutionnelle, date éditoriale non confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.nrcs.usda.gov/sites/default/files/2022-10/Soil%20Electrical%20Conductivity.pdf",
+      "passage": "Pages 1–2 : définition, facteurs influençant la mesure, sels dissous et distinctions des méthodes.",
+      "access": "excerpt",
+      "limitation": "Les tableaux de tolérance et seuils régionaux ne sont pas repris. Conductivité d’un extrait et mesure apparente au terrain ne sont pas interchangées ; la mesure ne donne pas l’identité de chaque ion.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-methods",
+      "title": "Our Methods — Soil Testing Laboratory",
+      "author": "Soil Testing Laboratory",
+      "organization": "University of Minnesota",
+      "published": "Page courante consultée le 12 novembre 2026 ; référence méthodologique citée révisée en 2015",
+      "url": "https://soiltest.cfans.umn.edu/about-us/our-methods",
+      "passage": "Routine Soil Tests et Tests Available Upon Request : pH, extraits P, sels solubles, carbone/matière organique ; contrôle de précision et échantillon identifié.",
+      "access": "official-page",
+      "limitation": "Méthodes d’un laboratoire américain, pas protocole à reproduire ni équivalence générale entre extractants. Les données A/B du cours sont inventées et ne proviennent pas de ce laboratoire.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication scientifique ou institutionnelle originale"
+    },
+    {
+      "id": "soil-lesson-fertilisers",
+      "title": "Les matières fertilisantes, adjuvants pour matières fertilisantes et supports de culture",
+      "author": "Agence nationale de sécurité sanitaire de l’alimentation, de l’environnement et du travail",
+      "organization": "Anses — E-Phy",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://ephy.anses.fr/decouvrir-site-e-phy/les-matieres-fertilisantes-adjuvants-pour-matieres-fertilisantes-et-supports-de-culture",
+      "passage": "Définition de matière fertilisante, engrais, amendements, stimulation de processus et support de culture.",
+      "access": "official-page",
+      "limitation": "Classification et rôle du catalogue français, sans exposé exhaustif des voies réglementaires. Une origine naturelle ne remplace pas la vérification du statut et des conditions d’emploi du produit exact.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication scientifique ou institutionnelle originale"
+    },
+    {
+      "id": "soil-lesson-compost",
+      "title": "Interpreting compost analyses — EM 9217",
+      "author": "Oregon State University Extension, rédaction du bulletin EM 9217",
+      "organization": "Oregon State University",
+      "published": "Bulletin EM 9217 ; page courante consultée le 12 novembre 2026, date de révision non confirmée",
+      "url": "https://extension.oregonstate.edu/catalog/em-9217-interpreting-compost-analyses",
+      "passage": "Compost maturity and stability ; soluble salts ; éléments traces ; limites des tests biologiques et contaminants persistants.",
+      "access": "excerpt",
+      "limitation": "Sections ciblées lues. Maturité, stabilité, salinité et contamination sont des critères distincts ; aucune recette, test à reproduire ou norme américaine transférée en France.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "soil-lesson-hemp",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Terres Inovia, coordination I. Lartigot, avec InterChanvre",
+      "organization": "Terres Inovia",
+      "published": "Édition 2026",
+      "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+      "passage": "Pages imprimées 8–9, 12–16 : débouchés, contexte de parcelle, implantation et raisonnement des fournitures nutritives.",
+      "access": "excerpt",
+      "limitation": "Passages du guide français consultés, sans reprendre doses, calendriers ou réglages. Les objectifs fibre, graine et mixtes ne sont pas assimilés ; aucune autorisation de lot n’est déduite du nom d’une variété.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    }
+  ]
+}

@@ -1,0 +1,1161 @@
+{
+  "date": "2026-11-14",
+  "status": "integrated-and-verified",
+  "articles": 189,
+  "terms": 160,
+  "explanations": 360,
+  "entries": [
+    {
+      "id": "ref-environnements-culture",
+      "contentHash": "518475685506f6456a1e0bc86e7387b0aa76eb058787e4cbe40235403d6fb3b0",
+      "lot": "agronomy-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-lumiere-climat",
+      "contentHash": "38ca9419b1310eca74c0ba8ccadba0761bb26b52bfa0e63286eb09c70662d8f4",
+      "lot": "agronomy-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-sol",
+      "contentHash": "88bf52b27be81b766b2988dba9707973ddcb7b4a39bc1d148805d594830be26f",
+      "lot": "agronomy-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-racines-rhizosphere",
+      "contentHash": "e36da19c93b43fe4fb98700cc746918df76759e75ffec0425c271bcf81e021f7",
+      "lot": "agronomy-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-nutrition-minerale",
+      "contentHash": "b9d2013993179c4379048f590b648e60e2f75f86b11da42fd658b8dedf0aee92",
+      "lot": "agronomy-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-matiere-organique",
+      "contentHash": "01fb68e035d4a5050a2dee8d316440b1213cbeaa12ffdc9dd550b6f01cdc5794",
+      "lot": "agronomy-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-cannabis-sativa",
+      "contentHash": "f253f36ba0eed747877deb8a61da393911dbd38a8e211ceff9688868afe3d1ac",
+      "lot": "botany-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-organes-vegetatifs",
+      "contentHash": "aadbe49d4f1d7da10cf8a6857a50da4328d8d9b0f00eff3676f54b4e20a12ed9",
+      "lot": "botany-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-fleurs-fruits-graines",
+      "contentHash": "d93a74bb99eee5fc4a40355cb385bfc3a39d87f78b57ab85c87169649c26d6f0",
+      "lot": "botany-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-trichomes",
+      "contentHash": "c4435b90622720c3533043c37f7993b9ea79a0b06d2019e4651daba6b483de33",
+      "lot": "botany-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-cycle-vie",
+      "contentHash": "30f60e34abd012ca72481cf2cafea0e392f6b3d2ff32ca5154f93c28bd3f7692",
+      "lot": "botany-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-reproduction",
+      "contentHash": "ae412b03a23ac1d43642427aea7d116c1b6a17802200f9fd54d39c730b19a012",
+      "lot": "botany-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-photoperiode",
+      "contentHash": "880739c10ca87f4f50493c317295cdb4ade87b98513519a0c845e898a61bbf4b",
+      "lot": "botany-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-taxonomie-cannabis",
+      "contentHash": "9682e1311f182e423580de8cce69126f677fb8d6cea2de753975ccb04443cf1e",
+      "lot": "botany-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-populations-domestication",
+      "contentHash": "5c647f678c13e7685d9e4b39471c69a7fd2258a563efbff6abd042b0625049d3",
+      "lot": "botany-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-cultivars-clones",
+      "contentHash": "ffefc84897359fe371a534901ef48cab7d45233db387aa38d7909fb11b328ad3",
+      "lot": "botany-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-genetique-heredite",
+      "contentHash": "f28348cf0125a2d69bf28ef6d2823aef3d4bf10af39c07edaeb3da9b27aa41ad",
+      "lot": "botany-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-noms-lignees",
+      "contentHash": "e5f9fa8a9ace5cd77847ae747732f5a41b84aeb080f3f23b339019f5f253da95",
+      "lot": "botany-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-diversite-chanvre",
+      "contentHash": "6edeb7ac6328f0d3c3cbffa6ca5e2402d5df26b3addf3e565368a693eacdd0b7",
+      "lot": "botany-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-variety-haze",
+      "contentHash": "3b720f874c885ea0dec352752bfd6f019e6b88e36f614ae4e9c116cbf8f2d2c3",
+      "lot": "botany-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-variety-skunk",
+      "contentHash": "4a430b8ae420ea63111d87bcee8697b1f4f35f58523555398042c3df24881334",
+      "lot": "botany-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-variety-northern-lights",
+      "contentHash": "e8f5d307e002494903b1ac0a446afcd82d5bbb09be184fb66a6cb7ce53bdf4f3",
+      "lot": "botany-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-variety-kush",
+      "contentHash": "18875942d8c9fc0b91328e3128f6211962d9f91f1634427cc76339b194f65c1d",
+      "lot": "botany-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-variety-diesel",
+      "contentHash": "4a1b36522369e1ac373b0ed3602bcdc5b575e153348c904dfcde4b8c7e0ad5c9",
+      "lot": "botany-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-variety-blueberry",
+      "contentHash": "7389d0d7b6ed92a217b989b82fb3ab3cdbd11361c96c6b00fbbb4246377998d3",
+      "lot": "botany-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-variety-white-widow",
+      "contentHash": "1e51bf7c1c5a4f4a495a341c6e1bf87fbf6b9a5d0e0bdd90351a1813ded7dd97",
+      "lot": "botany-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-variety-cookies",
+      "contentHash": "c544c5e46b359d49603d81a12eaecf778699b37e4befd5685934b907fcfa9c12",
+      "lot": "botany-04.json",
+      "scientificBlockers": [
+        "Relire l’entretien primaire Jigga du 30 mars 2020 pour confirmer F1 Durban × Florida OG et l’étymologie F1 ; accès direct 403."
+      ]
+    },
+    {
+      "id": "record-variety-gelato",
+      "contentHash": "c47a04383d301fe7c8849b7ba77b6e181f1c350661755d9f8cdbde49af87ab4a",
+      "lot": "botany-04.json",
+      "scientificBlockers": [
+        "Récupérer l’entretien Sherbinski 2017 pour la chronologie et la liste historique des sélections ; page primaire 403. La parenté actuelle est confirmée séparément sur Sherbinskis."
+      ]
+    },
+    {
+      "id": "record-variety-cbd-hybrids",
+      "contentHash": "2f852e5a3fb26fe32b166dd68917657acd32df5620f1401664100cf50e34457d",
+      "lot": "botany-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-phytocannabinoides",
+      "contentHash": "330e629b1e35899fc2b6cd30dcda64d445ac37071ba623fbf9e9df44771fba73",
+      "lot": "cannabinoids-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-biosynthese-cannabinoides",
+      "contentHash": "0b0ad88e7910dfff1f75d4b1c16045e62e7da47e3aab53fe798d6fd55734272b",
+      "lot": "cannabinoids-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-formes-acides-neutres",
+      "contentHash": "ad19671c2f089717305c7495b7ca9ef7011c5e229e593ee1d6f007de614b75ab",
+      "lot": "cannabinoids-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-thc",
+      "contentHash": "0d3cf2ff6f990bc78fbe5882a4718b56a0f055e3ca56869abe6598105575c357",
+      "lot": "cannabinoids-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-cbd",
+      "contentHash": "17d14698490a4b823c17c57642bab9837c5da66cccff542f124f804ecd213a69",
+      "lot": "cannabinoids-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-systeme-endocannabinoide",
+      "contentHash": "43be874ecf10729de778298a1cdf4b730b3d67e40aabf62873570e0082f2cc34",
+      "lot": "cannabinoids-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-cannabinoides-mineurs",
+      "contentHash": "3754a384d9eb24e8a39c67de79c351a887bef3ca8a55913f5fe3eabd75bcabcd",
+      "lot": "cannabinoids-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-cannabinoides-transformes",
+      "contentHash": "561effd275965caae4f223af05bc9f01429874fdb91e5fc4f564e472770f28c6",
+      "lot": "cannabinoids-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-decouvertes-cannabinoides",
+      "contentHash": "2266763142bf790d5b5256e8b769e1d2b10231f918fbc8d11bb2303035bddf18",
+      "lot": "cannabinoids-02.json",
+      "scientificBlockers": [
+        "Originaux de Wood, Spivey et Easterfield et jalon de liaison avant le clonage : documents primaires toujours inaccessibles. Le sous-point CB2 est désormais confirmé par le résumé original de Munro (1993). Aucune question du quiz ne dépend des précisions historiques non relues.",
+        "Étymologie historique de l’anandamide non étayée dans les passages originaux accessibles ; question remplacée par la liaison amide documentée."
+      ]
+    },
+    {
+      "id": "record-cannabinoid-delta9-thc",
+      "contentHash": "e3c01b87fbde3e06daa03c4237f7ba6b487361336222736ee62e9681ae235f87",
+      "lot": "cannabinoids-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-delta9-thca-a",
+      "contentHash": "67cffce79357b81de8ab7552a572cad372d6a962e5bee94e96ae0100200246a3",
+      "lot": "cannabinoids-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-delta9-thca-b",
+      "contentHash": "4657a8cba95681e07522c6b9da65c3d08eba1cfb41a255d56bcf50ae66eaacba",
+      "lot": "cannabinoids-02.json",
+      "scientificBlockers": [
+        "La relation exacte de position du carboxyle THCA-A/THCA-B requiert le dessin ou texte intégral primaire ; la diffraction confirme une identité mais pas tous les détails comparatifs de la question."
+      ]
+    },
+    {
+      "id": "record-cannabinoid-cbd",
+      "contentHash": "dbea7dfbdd46f189eefc6d9112bf70a77cfac91c161ab68a3097b6f43d021723",
+      "lot": "cannabinoids-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbda",
+      "contentHash": "1c71d1b975879230410be76cd604efe51baa292414854f59cc05c04f66927108",
+      "lot": "cannabinoids-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbg",
+      "contentHash": "8389806a26cea8c5dc748eeae8b426348bd56047ab2b0d36524b4b26198cdfdf",
+      "lot": "cannabinoids-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbga",
+      "contentHash": "04a7e4a121c7df7099866c7e608648fc2fceb0c0657a13d8f081c34111fdd1d8",
+      "lot": "cannabinoids-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbc",
+      "contentHash": "a157a66760cbc45767aa5c186057b82dd5f227df6137fe0508eb05a41dabdf88",
+      "lot": "cannabinoids-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbca",
+      "contentHash": "05459ccffb0f045424573115d95f4f95e591e48eb0d97676b615e57459f698f1",
+      "lot": "cannabinoids-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbn",
+      "contentHash": "73e3a8d6a3d5b182409564e319e587ae2e3cc223e7a9520c8b251afb3ef122b1",
+      "lot": "cannabinoids-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbna",
+      "contentHash": "1bddfbe450d5af07f77cf143db9f1f2c518c7fe95bd87c7c1fe49b13d11b72e6",
+      "lot": "cannabinoids-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-thcv",
+      "contentHash": "031e0742733e02e04ded18bf760ff5a7a1153fccc0fca04abdce7faf51984e7d",
+      "lot": "cannabinoids-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-thcva",
+      "contentHash": "3b904c1ab0311fa9dcd7a480499189725b442f74dd160c805247990c9c764d70",
+      "lot": "cannabinoids-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbdv",
+      "contentHash": "79264e63e52bf3787f14d890b6c9dcc959981a7d5b5b434a09b677134b7d576d",
+      "lot": "cannabinoids-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbdva",
+      "contentHash": "2c69f5698793205e14ecf0d36ace54833663473a7f2f1d88acb0b2228145cb1c",
+      "lot": "cannabinoids-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbgva",
+      "contentHash": "5254904157d2e80c648ebba3f5ae8118bd207a0cb7ca7ce0605b26d37cd12b71",
+      "lot": "cannabinoids-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbcva",
+      "contentHash": "a0a090d44057295ad1163a61119b05b9d84a37ad1f019da6bd316839751a0d27",
+      "lot": "cannabinoids-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbgv",
+      "contentHash": "0e3672d6787bf364a2803a21178f00da045c2343a24958be3bf2b5f522807ea7",
+      "lot": "cannabinoids-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbcv",
+      "contentHash": "5bff556e084f00dd9a6b7d0769fbc81fb2112f0aa0e19b2264aea7eaeed9e134",
+      "lot": "cannabinoids-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-thcp",
+      "contentHash": "523c2402f9ba1bd3adf63180bb41e6bf489645a56f7d6a97940f5534e2cd2e94",
+      "lot": "cannabinoids-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbdp",
+      "contentHash": "62971ec815192c323c5743e0dd4a8325b06e5844d917458d354dd285e6ef6885",
+      "lot": "cannabinoids-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-hhc",
+      "contentHash": "120894234c162512c5acc746c738197a90cbf22369c77e68474eab06e0184695",
+      "lot": "cannabinoids-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-delta8-thc",
+      "contentHash": "7bfa13e40e80706cc9246d73e58b85efee90fdc2e6e44c1c737efb78bc8a42c7",
+      "lot": "cannabinoids-06.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-thc-o-acetate",
+      "contentHash": "fb12f7b5681e1165e557a649a411f26cfbe852f776abc1c7b1c987bf2a72391d",
+      "lot": "cannabinoids-06.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-hhc-o",
+      "contentHash": "0e1f3508e9c37f253f1eadee50cd88d262dab8ab2d65c3d1622d18b932f57d7d",
+      "lot": "cannabinoids-06.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-hhcp",
+      "contentHash": "5d1263bf8a1a0bd37b1376b61b9e9317170dfd4b71ef9647428ebec45e334d5b",
+      "lot": "cannabinoids-06.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-h4-cbd",
+      "contentHash": "6e002142fa9743f2a0ee53b259a84c3a806da93e94f354ad9d3d46817f941937",
+      "lot": "cannabinoids-06.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-anandamide",
+      "contentHash": "964208580859bf60bb8bc44acb79776319e0e1ff9b4f635910fbf9575d82f8c6",
+      "lot": "cannabinoids-06.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-cannabinoid-2-ag",
+      "contentHash": "2811925dd154abfb1ee484518c95a8b3ea182c0a21bb384b94af33dc26490b10",
+      "lot": "cannabinoids-06.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-cbd-thc-2023",
+      "contentHash": "5777efb95ddc3f9fd218bb1ea9ffa624bba90e807223a489377a9cbf1ab38041",
+      "lot": "cannabinoids-07.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-thcp-discovery-2019",
+      "contentHash": "80f78fe6af84be5d22512a6fccc2ef71a71dc5668d3e38ac8cf052a661ef5b06",
+      "lot": "cannabinoids-07.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-cbd-dravet-2017",
+      "contentHash": "a491c889a7995c2585de0bfd299b7384c5349238658a0f13c960e8c6f1485dae",
+      "lot": "cannabinoids-07.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-cbd-lgs-2018",
+      "contentHash": "a8e745e3c55bea4737de0ee083f0ff24efd59e17b8940816afad07b66b51b87d",
+      "lot": "cannabinoids-07.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-cbd-tsc-2021",
+      "contentHash": "37d9f113bea5f2ae41d4b6387385aad96f346419a1e2d2598f4c3967235dc84b",
+      "lot": "cannabinoids-07.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-cbd-pain-2023",
+      "contentHash": "6d94d5c94950c69b95f2c505e155c4a86146b4b1b6b120ed15d90917b796f529",
+      "lot": "cannabinoids-07.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-cbg-acute-2024",
+      "contentHash": "0c2773178abf81578c415486f076461e4ffa7303c80bc88644dd5715b28cbb44",
+      "lot": "cannabinoids-07.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-cbg-laboratory-2026",
+      "contentHash": "a59c7aeab3e4c48ddbc0633ec51af1f3f1805bff94b5ef92d7a571ff4a660cd5",
+      "lot": "cannabinoids-08.json",
+      "scientificBlockers": [
+        "Éditeur refusé : financement exact et dénominateur 16 éligibles du dossier initial restent à confirmer dans texte intégral."
+      ]
+    },
+    {
+      "id": "record-study-hhc-human-2025",
+      "contentHash": "a0320067865418fe0876ec1bb35cc6a95dd36ebafe0be24a7ef5925c279e2921",
+      "lot": "cannabinoids-08.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-hhc-metabolites-2026",
+      "contentHash": "6a91a26a1ad0586d3e1e4e435529f8bbed71f1974143dc304663bd8b59983566",
+      "lot": "cannabinoids-08.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-cbn-sleep-2026",
+      "contentHash": "f6226946b2524c263ae42ebcd2e849fc405a0fd617d783b8a522bcdb9bec7f44",
+      "lot": "cannabinoids-08.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-cbdv-seizures-2021",
+      "contentHash": "3e9d5a42a7e5849eb623b821207f9bf53b8f09ab570bba8784b65f0ea8d66567",
+      "lot": "cannabinoids-08.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-study-cbda-preclinical-2013",
+      "contentHash": "86400f519f0a9f2fffecf21ac3a1d9d35907e9102b843cebb84e432fbfff6417",
+      "lot": "cannabinoids-08.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-maladies-chanvre",
+      "contentHash": "f38e8003ab64a777c363579d108b92d350cf0f73042a049bca6603cf9f28b4cc",
+      "lot": "health-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-ravageurs-auxiliaires",
+      "contentHash": "61c52194cec4c41722f5b56ece33b667d46a6e9da8f6ef58159fd738f8264263",
+      "lot": "health-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-virus-viroides",
+      "contentHash": "8df7fb91ee1e4c2ab88fbe5efdf68e69e3d2cb07d676557ca33b93b02afdf479",
+      "lot": "health-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-tetranychus-urticae",
+      "contentHash": "43659b3ede7492d29abf3ec58ca5aa6bbb382134ded0d788a3ad8cd34f2644c6",
+      "lot": "health-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-aculops-cannibicola",
+      "contentHash": "ecbcfeb9da09b32b7c8f0c4928fda16f4e1a8813250b28406826a460852e3cb1",
+      "lot": "health-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-polyphagotarsonemus-latus",
+      "contentHash": "7eedcdb8da65087e106ae7a922f9ee85281d4ba3fcff3cb88b0e913f3f460cf3",
+      "lot": "health-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-thrips",
+      "contentHash": "cb415c6f1c787a35a893798f1fe5785a2fb6479fb403444c643aa50f68d7d948",
+      "lot": "health-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-phorodon-cannabis",
+      "contentHash": "389d210ea6c1b4b8829068608abaf6f053ca7d6e7fea2e76edc954935c9be25e",
+      "lot": "health-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-myzus-persicae",
+      "contentHash": "5af7115829e28b73783ffca37942f3144f7f1a59a7e6af176768173494bba136",
+      "lot": "health-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-trialeurodes-vaporariorum",
+      "contentHash": "d22cbf1516a8d02124da098e0663020e99359abc5fdfc714b9548e9ec3f13c77",
+      "lot": "health-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-bemisia-tabaci",
+      "contentHash": "2152a82c2a7dfe739ec5b4bd76127330a7cc7ab1ab14e7a33eba8fc06672aee4",
+      "lot": "health-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-helicoverpa-zea",
+      "contentHash": "cac2e14c44af6160efdfbac8c625815c391ced84c310857a0fcf4a00de6fd716",
+      "lot": "health-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-ostrinia-nubilalis",
+      "contentHash": "4db2fa830e954231266238b4cfe342c0ced72a27fee4905fc4248a7e865dc768",
+      "lot": "health-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-grapholita-delineana",
+      "contentHash": "9b24536fe3208a1a751abbd5a9f255dc2b79d1b96d6a0c4daebbc73c7837c691",
+      "lot": "health-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-psylliodes-attenuata",
+      "contentHash": "5d16b06653f7a757d8a21cab109dd4d174fdfd9840e88a65933747132afd28d8",
+      "lot": "health-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-slugs",
+      "contentHash": "37b9f312f184854f68c008cfb135d5cc88f5a8a679bab66b182ccc8df2d00412",
+      "lot": "health-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-birds",
+      "contentHash": "5d161f12c60f983cc56093e6f9d0f59ad51d71d03ab8d9cfae6f0311c707a942",
+      "lot": "health-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-golovinomyces-ambrosiae",
+      "contentHash": "cabc54a6266258126176169ce5dcdf91799820362a7a6bc48083fdd0c3816da7",
+      "lot": "health-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-podosphaera-macularis",
+      "contentHash": "93e327d7586e38efc4853655863898f004ef65ea8af03249354eea062cfa382b",
+      "lot": "health-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-botrytis-cinerea",
+      "contentHash": "f5c17783409378f19085cd2cf82752887b8d552b705114f27ebf5b3bd03bbaea",
+      "lot": "health-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-sclerotinia-sclerotiorum",
+      "contentHash": "fab2c7f4e98998547d6aaf7a60c1ebd4c8d3b85bbc16846db37b8ad55ee3a1d1",
+      "lot": "health-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-fusarium",
+      "contentHash": "a89ff2c5e9b0689c56fbe8573fcce4f46e50340e4a089d1a07597d78cf7cc9b1",
+      "lot": "health-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-pythium-globisporangium",
+      "contentHash": "77b411cf65380610ec2b9367f6119281ceb3c2c1e0f5b5c9722a32637aca6c74",
+      "lot": "health-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-rhizoctonia",
+      "contentHash": "6e5080d045c469a92d3e92a9d7cff46a86c40332451d0132ca2e3c2298cdfb48",
+      "lot": "health-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-beet-curly-top-virus",
+      "contentHash": "63bd1ca7b436818f299b2b27c1f7cf2e7c3b1db1e00e2979ea363da290acb4be",
+      "lot": "health-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-citrus-yellow-vein-associated-virus",
+      "contentHash": "04a1ff5c80458d732e6c1c13ab18f7b5e17b07af006c0515301dda12c7063d23",
+      "lot": "health-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-hop-latent-viroid",
+      "contentHash": "dfed314c15668cb8d5279a80ae0c21195916ad9db475817f27b40362c5e05bdd",
+      "lot": "health-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-ladybirds",
+      "contentHash": "a021129aa142a9cbc1362d17c0587674f32e24a8399c400bd0f591d0a87f8c1b",
+      "lot": "health-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-lacewings",
+      "contentHash": "c2931d86f50bf0f878e87303a0d09104157a8200777d50e122cc95527cc2eea1",
+      "lot": "health-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-aphid-parasitoids",
+      "contentHash": "b2de03a2b51f2ec8cec23bbfdb1c8e6e7818f7ebefe2f70bd307e53897f21c26",
+      "lot": "health-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-health-predatory-mites",
+      "contentHash": "4989fa0cdc19665ea842410d943f595a07908baaffbcd9c9afd30b49cb54b81b",
+      "lot": "health-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-histoire-culture",
+      "contentHash": "7829377b2b94ac32694958b1511a8992987167c8a6ee0119d9d942c0c79bafda",
+      "lot": "history-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-histoire-politiques",
+      "contentHash": "ebf9720802d492610fe8aaed64d2d80ab9916abdfeb28fa31ed85ec596cbc971",
+      "lot": "history-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-graines-chanvre",
+      "contentHash": "26071105e8462340118d211d57221ed08bb875b39a8e89126f88d655dc5d18c7",
+      "lot": "products-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-huile-graines",
+      "contentHash": "3500d03695153f65eb1142d058c89220652b60944b35426889b77f4903aba4e5",
+      "lot": "products-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-proteines-chanvre",
+      "contentHash": "e0de315f8f384035187be811eec1e32c8e556673c7d89d22190fc6f5c05c9aea",
+      "lot": "products-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-fibres-chanvre",
+      "contentHash": "68a119ffe63b0ace5f168ea37a2c27de543787e94399fc5f0743e0cbc799ca9a",
+      "lot": "products-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-chenevotte-materiaux",
+      "contentHash": "0fc618d1b095c499555a496656f4964b65e2a7bd248d7a8213e2cfa048d8aa4f",
+      "lot": "products-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-resines-extraits",
+      "contentHash": "35c5e964ccfa5fdaf003bf00bc41ede1c48db6d6a2cf1601940581b411e50ef3",
+      "lot": "products-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-matieres-chanvre",
+      "contentHash": "2e5b4c78d67a7260644597bd6631ec6ec86ab7d1a3091bceaf60357c264a8eeb",
+      "lot": "products-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-chenevis",
+      "contentHash": "424df579343ffcc96121c4fe13a1cb9e7c03937e9d9cbd7b312e63144c3df374",
+      "lot": "products-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-seed-oil",
+      "contentHash": "7c0ac1dbee0e3f40430e16b690f50c363a13c96f35086ec01434064df9925171",
+      "lot": "products-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-press-cake",
+      "contentHash": "93c407f4ca44abc934e3f7dad73f97923bfc5133d6ba9ab8917bbe9a98a64faa",
+      "lot": "products-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-protein",
+      "contentHash": "ff2259cbe5d6f9b3134955a9bc89ec2bab36666471fe4983d490a2bd5c76d64f",
+      "lot": "products-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-bast-fibre",
+      "contentHash": "c99d7ff2123f503e32b06f5f5894211bd43696e4ae4e5ba4dfec0467b2747f7c",
+      "lot": "products-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-hemp-hurd",
+      "contentHash": "938a0cc3f4892e3cdd904bb28e3180d5c453533321d9ed697e00f925e66b82aa",
+      "lot": "products-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-fines",
+      "contentHash": "bb43d36f697ec959b2035989220d0a2eb7c1388e6ec8ac6e15b41e940360da04",
+      "lot": "products-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-paper",
+      "contentHash": "8c53ebdf3016a350602e26c9a724d1ed5ab20230e9bf6004f30fe19a59668f81",
+      "lot": "products-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-composite",
+      "contentHash": "b2dae9f6bcb30f85fb645ff2a69da94d026f72ba041b7182edcc72fe5f7160bb",
+      "lot": "products-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-insulation",
+      "contentHash": "07cca41eea9bb0dc99ee24ba1f21fd4d829242cd01f4b115265e781213aa78ad",
+      "lot": "products-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-bedding",
+      "contentHash": "f0e0f0d57d818fd63514eedfc884fef5ceb9bfb19399ac55dba995a53285ad60",
+      "lot": "products-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-hempcrete",
+      "contentHash": "e682ad184e2768d07cea02dcaeb6a049c17e47e8c975ecc1c8fefe58f64c1b67",
+      "lot": "products-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-textile",
+      "contentHash": "fc2342a86be57ae9c49821c63daa3893e8582929f11bedb9da8ac05f303c270c",
+      "lot": "products-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-kief",
+      "contentHash": "5b3ed7ed2f7d4c56b1713dce3555d0017ff7c1924c40b05f04da2a8fe1e40665",
+      "lot": "products-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-hash",
+      "contentHash": "377ecc95c4103270af74cbfde5d0a462717cbdbce2280c58f393081dfb260584",
+      "lot": "products-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-rosin",
+      "contentHash": "6c00c5972615821ac199810e33f5d4288f3754dbe3afa29a9ed2f0c4496a5bb4",
+      "lot": "products-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-extract",
+      "contentHash": "03b0b2ea0d62aabfed1e2dcf3cd50458ff37cd46747056ee12b42abf0f820c71",
+      "lot": "products-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-distillate",
+      "contentHash": "46ef215a2ac199d875c465387d10468c6f306fa7c6c60c99371eb064d06221b7",
+      "lot": "products-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-isolate",
+      "contentHash": "6ed8fa99ae4e5799628ab35688de35915d48e62c6c03360d65c912454bbfcfe1",
+      "lot": "products-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-formulated",
+      "contentHash": "7e7ac03ceddb3685df2800b9ccf3cf0d10fbe2e7d32adcc6a9b739e66d53df9c",
+      "lot": "products-04.json",
+      "scientificBlockers": [
+        "Confirmer les articles 18–19 dans la consolidation courante du règlement 178/2002 : texte original effectivement lu, consolidation 2026 inaccessible. Les affirmations de retrait et rappel ne sont pas validées comme vérification réglementaire actuelle."
+      ]
+    },
+    {
+      "id": "record-product-products-seed-food",
+      "contentHash": "470a20002ac02fa829feb3470100e684ccef188bbaa2b3715f9e65a0ab170c2f",
+      "lot": "products-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-enriched-food",
+      "contentHash": "6a3d00de6486814c101c3f97d0e187f6b7abf78b4b94c4ce3cb38e77b8b9329f",
+      "lot": "products-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-oral",
+      "contentHash": "75d9271c209bc7f8a08a830844375be47ff2d29cf65ee6e960abc2fd15d409a6",
+      "lot": "products-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-smoke",
+      "contentHash": "8eab1d1865374b6f019b3d94a5502b63a233efbceade844647351c46153d8fac",
+      "lot": "products-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-aerosol",
+      "contentHash": "64faa8ea719ca5c061fafb88a1f104b6801043e1e7c0399beb3ec1b80cad2290",
+      "lot": "products-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-plant-origin",
+      "contentHash": "fb29f325fc7f162ed4de29d3d0cbe1695f6742df5e4edba1299d95cf9461b8ea",
+      "lot": "products-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-semisynthetic-origin",
+      "contentHash": "471ead10aa9d2f285360eb239e292951ae611406f49f3ece8853e227147774dc",
+      "lot": "products-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-synthetic-origin",
+      "contentHash": "c63f2b650bb46f98d42e351429b36e9ce592d64fdfb22896ec2e3b2937054eeb",
+      "lot": "products-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-product-products-live-extract",
+      "contentHash": "f10e6ca9e2024fd839e1a3857f7f84992237c81a2588d60294ad1229ec3e2796",
+      "lot": "products-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-conservation",
+      "contentHash": "064a7e07160f85b37f3ebb1eba1405095f5703c9db44f9f397d76d357b987ad6",
+      "lot": "regulation-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-contaminants",
+      "contentHash": "c1f1a0ac276aae561b82b80e48f6000818854edfd6ce05c19ac80becd8b60051",
+      "lot": "regulation-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-analyses",
+      "contentHash": "79b84b3bd8216a015d6e9679ba2cb03ad8e3d7dc3745ba3187e5c4ecdbca2423",
+      "lot": "regulation-01.json",
+      "scientificBlockers": [
+        "Confirmer les articles 18–19 dans la consolidation courante du règlement 178/2002 : plusieurs URL consolidées bloquent par CAPTCHA/redirection ; texte original effectivement lu."
+      ]
+    },
+    {
+      "id": "ref-origines-formulations",
+      "contentHash": "5ed30a67d3a322afe3044e9bc86c1e9f202aeaa7f8d8d20f8c96297b27a879c6",
+      "lot": "regulation-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-reglementation-produits",
+      "contentHash": "e7c522f262b95a45f043fe09f7b5e3e7fdb7e6827a0d388fcc8b3effba95d9c9",
+      "lot": "regulation-01.json",
+      "scientificBlockers": [
+        "Consolidation courante du règlement 178/2002 à confirmer pour les articles 18–19 ; original ouvert, versions consolidées demandées inaccessibles."
+      ]
+    },
+    {
+      "id": "ref-terpenes-terpenoides",
+      "contentHash": "b956746f2628af90674040b004d20323de951d3ee58179378f164b8c8f30c797",
+      "lot": "terpenes-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-biosynthese-terpenes",
+      "contentHash": "bd481c71b0e1feeb74fb50e3b44baad94a83e2cad146999eed6bff68dae41205",
+      "lot": "terpenes-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-odeur-cannabis",
+      "contentHash": "43f3a9ba6bdaa189d37d5c7686c78e03424fa7ea11ab0b89d5b6e94944415960",
+      "lot": "terpenes-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-profils-aromatiques",
+      "contentHash": "6c28e8da950face2f0dd79d476bc9a6fcd3af2bf4b9e6a4ea2e6c07d88461472",
+      "lot": "terpenes-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-volatils-non-terpeniques",
+      "contentHash": "1d640efaea8cf063058417ec9d10ac98c63679282a1bda1f70b4d38cf90a071f",
+      "lot": "terpenes-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-evolution-aromes",
+      "contentHash": "815aa67af6378ade3865a2c1638e5016c928f6b4e32fdc1339f39889dc02a16f",
+      "lot": "terpenes-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "ref-aromes-chanvre",
+      "contentHash": "3c49d747449449d1583284663bab49cc8676158accbc010f72ffdef8f1075f8d",
+      "lot": "terpenes-01.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-alphapinene",
+      "contentHash": "35b96a86e194209c7df084753072fd1348c45c86d383478829419a035989e603",
+      "lot": "terpenes-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-betapinene",
+      "contentHash": "53b18f6e4ea627f85cf11ee39010c2461c4e7f54db44da142f7ef30581b82920",
+      "lot": "terpenes-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-myrcene",
+      "contentHash": "32238a1c1c7026682d9e57e58bb95207bf65783ed7115c704dd0f221155397b4",
+      "lot": "terpenes-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-limonene",
+      "contentHash": "3716cfa56667801e369b6d24d392a5363b2ae59db99fa8055d6d26aafb0416cd",
+      "lot": "terpenes-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-camphene",
+      "contentHash": "62214fe06ee152c3523c05c4c6f2c1ef79a23d56d64ce1eaf761aa295685d405",
+      "lot": "terpenes-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-alpha-phellandrene",
+      "contentHash": "b70b31489a1b66de5cc82a0144d6f64f40a0a31d33a89f2bde809255b85797c0",
+      "lot": "terpenes-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-delta3-carene",
+      "contentHash": "59e84c48dd75c1f6a0ba0198f65c35ee3631f585d0c790dd10c3ffcb2c39c3de",
+      "lot": "terpenes-02.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-alpha-terpinene",
+      "contentHash": "295df7acc10beb58585c4d32aadc576cdf45fd913cf61436d1859c0932787f30",
+      "lot": "terpenes-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-gamma-terpinene",
+      "contentHash": "bc3c0a40560b556a16c0a7bcf6ed7591966099dd4accc1c2b02272f1818fa6f0",
+      "lot": "terpenes-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-terpinolene",
+      "contentHash": "cc516b48900fc006286156d6aa8f834a482d7f3c5c7a3d87645133923a86f159",
+      "lot": "terpenes-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-e-beta-ocimene",
+      "contentHash": "ccfeac7b6603789b3b4647c546e1fbf477197bc0bf52181a9e558ac6ba2689a4",
+      "lot": "terpenes-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-z-beta-ocimene",
+      "contentHash": "ef370c1302daa12ffc783c008a742f3e145bc6d2b66a46fdf1d9e1e067188272",
+      "lot": "terpenes-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-linalool",
+      "contentHash": "205e520801b89ba0b77d2b0488b53994c4ce18622f86eb58392f05fdf89ff989",
+      "lot": "terpenes-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-fenchol",
+      "contentHash": "b4746851f7139909c8906e69ff4c10124618f87d6cf23eefe276d0bd4520b324",
+      "lot": "terpenes-03.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-borneol",
+      "contentHash": "8aed11555bebed4acc1f7a428e7982e4069bf6f202e28bed4f07e6e4b269bbf4",
+      "lot": "terpenes-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-alpha-terpineol",
+      "contentHash": "96206986e343e44518efc7e7e3289250f0c32eb7e98ba9cdb6d3c0c387a04b93",
+      "lot": "terpenes-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-terpinen4-ol",
+      "contentHash": "3bda55120abe866f71f5ea6fd1f1d03c46e9c8936410750e0e906bdaab31bd76",
+      "lot": "terpenes-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-eucalyptol",
+      "contentHash": "1d927d831d55e9dadd329d92dcfcb350962d6821d74949cddb021b92fd885dbd",
+      "lot": "terpenes-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-p-cymene",
+      "contentHash": "38bd5ecf47a04e225f22cce3b1b2c807da029deb8e0b0ed1a0515d7ff9c1b18b",
+      "lot": "terpenes-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-beta-caryophyllene",
+      "contentHash": "4e6f5018456ce85a6d48cb4420adb565e3f946ed1dc34874a9de37c2898c4ee7",
+      "lot": "terpenes-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-alpha-humulene",
+      "contentHash": "d99f536fefce6a87e38c7ec6f0eded017d69d4c800447432b4618e99d1a4faee",
+      "lot": "terpenes-04.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-e-beta-farnesene",
+      "contentHash": "922fbb26a0e2213d0c5dd42c4267229aed3bc6e491ba39b4459e86d53832e2c9",
+      "lot": "terpenes-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-alpha-selinene",
+      "contentHash": "51a95fcdbf31d56bb2740d39420c62ff54cde0c09f890f41ab7023e2aa752886",
+      "lot": "terpenes-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-guaiol",
+      "contentHash": "2ee3fa4c0e8011aefa9e3df70410cf509845d8a5c31d4fb5de5f43b949396191",
+      "lot": "terpenes-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-alpha-bisabolol",
+      "contentHash": "0acd0556a0e62520b42d7018bf7f769a9bfe509650aef802647ba0c53f413489",
+      "lot": "terpenes-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-nerolidol",
+      "contentHash": "c6579e39696c8e2a02e29bfef24cf03fc1cf28f57f9c9970f66eb064643d8e23",
+      "lot": "terpenes-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-caryophyllene-oxide",
+      "contentHash": "b905b17647032ea6a6198ce47a42b0bd7b4e37e147c8804be453964c0d86f8a8",
+      "lot": "terpenes-05.json",
+      "scientificBlockers": []
+    },
+    {
+      "id": "record-terpene-geranyl-acetate",
+      "contentHash": "b9b07802ea603221c508b28b9b593a997758284cfef3d90fa284eee65db05890",
+      "lot": "terpenes-05.json",
+      "scientificBlockers": []
+    }
+  ],
+  "note": "Original scientific batches remain in encyclopedia-revision/batches. The integration script uses the pedagogical copies and injects the separately reviewed pilot."
+}

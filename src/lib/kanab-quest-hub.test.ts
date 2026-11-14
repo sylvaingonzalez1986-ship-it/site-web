@@ -99,12 +99,29 @@ describe("Quartier resume priorities", () => {
     expect(summary.facts).toHaveLength(2);
     expect(summary.facts[0]).toContain("culture est sauvegardée");
     expect(summary.facts[1]).toContain("3 lots prêts à vendre");
+    expect(summary.additionalFacts).toEqual([expect.stringContaining("2 Fleurs d’Arène"), expect.stringContaining("affinage")]);
+    expect(summary.factActions.find(action => action.id === "jury")).toMatchObject({ destination: "arena" });
+    expect(summary.factActions.find(action => action.id === "ready-lots")).toMatchObject({ destination: "market", options: { marketSection: "sales" } });
+    expect(summary.factActions.find(action => action.id === "curing")).toMatchObject({ destination: "workshop", options: { warehouseSection: "storage" } });
   });
 
   it("keeps confirmed exposure visible when equipment data cannot be read", () => {
     const summary = getKqPlacardResume(null, storage(stored(1250)));
     expect(summary.kind).toBe("storage");
     expect(summary.facts[0]).toContain("indisponible");
+  });
+
+  it("retains missing-source information and every known activity in a busy summary", () => {
+    const result = getKqPlacardResume({ ...idle, activeRun: true, readyLotCount: 3, availableFlowerCount: 2, trimFlowerCount: 1 }, null, { finance: null, sales: null, loading: false });
+    const allFacts = [...result.facts, ...result.additionalFacts];
+    expect(result.kind).toBe("culture");
+    expect(result.facts).toHaveLength(2);
+    expect(allFacts).toEqual(expect.arrayContaining([expect.stringContaining("trimmer"), expect.stringContaining("rangement"), expect.stringContaining("3 lots"), expect.stringContaining("2 Fleurs"), expect.stringContaining("factures et des ventes")]));
+    expect(new Set(allFacts).size).toBe(allFacts.length);
+    expect(result.canRefreshAttention).toBe(true);
+    expect(result.factActions.map(action => action.id)).toEqual(["trim-required", "ready-lots", "jury"]);
+    expect(getKqPlacardResume(null, null).factActions).toEqual([]);
+    expect(getKqPlacardResume(idle, storage()).additionalFacts).toEqual([]);
   });
 
   it("does not announce an automatic sale when that lot explicitly disables it", () => {

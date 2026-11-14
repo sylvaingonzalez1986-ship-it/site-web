@@ -1,0 +1,1246 @@
+{
+  "domain": "cannabinoids",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "qh-sci-receptors",
+      "title": "International Union of Pharmacology. XXVII. Classification of cannabinoid receptors",
+      "organization": "Pharmacological Reviews / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+      "verifiedAt": "2026-11-14",
+      "author": "A. C. Howlett et al.",
+      "published": "2002",
+      "passage": "PubMed abstract: G proteins, tissue distribution, 48% sequence identity.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: G proteins, tissue distribution, 48% sequence identity.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-anandamide-1992",
+      "title": "Isolation and structure of a brain constituent that binds to the cannabinoid receptor",
+      "author": "W. A. Devane et al.",
+      "published": "1992-12-18",
+      "organization": "Science",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+      "access": "abstract",
+      "passage": "PubMed abstract: porcine brain, identification and binding.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: porcine brain, identification and binding.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-2ag-1995",
+      "title": "2-Arachidonoylglycerol: a possible endogenous cannabinoid receptor ligand in brain",
+      "author": "T. Sugiura et al.",
+      "published": "1995-10-04",
+      "organization": "Biochemical and Biophysical Research Communications",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7575630/",
+      "access": "abstract",
+      "passage": "PubMed abstract: binding assays and limitations.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/7575630/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: binding assays and limitations.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-2ag-gut-1995",
+      "title": "Identification of an endogenous 2-monoglyceride, present in canine gut, that binds to cannabinoid receptors",
+      "author": "R. Mechoulam et al.",
+      "published": "1995-06-29",
+      "organization": "Biochemical Pharmacology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7605349/",
+      "access": "abstract",
+      "passage": "PubMed abstract: canine gut, CB1/CB2, cells and mice.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/7605349/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: canine gut, CB1/CB2, cells and mice.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-euda-2023",
+      "title": "Hexahydrocannabinol (HHC) and related substances",
+      "author": "I. Ujváry et al. / EMCDDA",
+      "published": "2023-04-17",
+      "organization": "EMCDDA (aujourd’hui EUDA)",
+      "url": "https://www.euda.europa.eu/system/files/documents/2023-05/emcdda-technical-report-hhc-and-related-substances.pdf",
+      "access": "excerpt",
+      "passage": "Rapport technique PDF, p.24–25 : HHC, stéréochimie, épimères, structures apparentées ; introduction sur marché des semi-synthétiques.",
+      "limitation": "Rapport de 2023 : aucune affirmation réglementaire actuelle ; pas de protocole de fabrication repris.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.euda.europa.eu/system/files/documents/2023-05/emcdda-technical-report-hhc-and-related-substances.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Rapport technique PDF, p.24–25 : HHC, stéréochimie, épimères, structures apparentées ; introduction sur marché des semi-synthétiques.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Rapport technique PDF, p.24–25 : HHC, stéréochimie, épimères, structures apparentées ; introduction sur marché des semi-synthétiques.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-h4cbd-2023",
+      "title": "Synthesis and Characterization of the Diastereomers of HHC and H4CBD",
+      "author": "A. Collins, G. Ramirez, T. Tesfatsion, K. P. Ray, S. Caudill et W. Cruces",
+      "published": "2023-03-06",
+      "organization": "Natural Product Communications",
+      "url": "https://journals.sagepub.com/doi/10.1177/1934578X231158910",
+      "access": "excerpt",
+      "passage": "Résumé, introduction et début Results and Discussions : identités hydrogénées et caractérisation RMN/HPLC/GC-MS.",
+      "limitation": "Source comporte des affirmations de sécurité et conversion gastrique CBD/THC insuffisamment étayées : non reprises. Aucun résultat clinique propre H4CBD établi ici.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://journals.sagepub.com/doi/10.1177/1934578X231158910",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé, introduction et début Results and Discussions : identités hydrogénées et caractérisation RMN/HPLC/GC-MS.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé, introduction et début Results and Discussions : identités hydrogénées et caractérisation RMN/HPLC/GC-MS.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-acetates-2022",
+      "title": "Vaping Cannabinoid Acetates Leads to Ketene Formation",
+      "author": "K. R. Munger, R. P. Jensen et R. M. Strongin",
+      "published": "2022-07-18",
+      "organization": "Chemical Research in Toxicology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35801872/",
+      "access": "abstract",
+      "passage": "Résumé PubMed : cétène observé pour acétates de Δ8-THC, CBD et CBN ; produit commercial Δ8-THC testé.",
+      "limitation": "Ne teste pas directement HHC-O ou tous les acétates.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35801872/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : cétène observé pour acétates de Δ8-THC, CBD et CBN ; produit commercial Δ8-THC testé.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : cétène observé pour acétates de Δ8-THC, CBD et CBN ; produit commercial Δ8-THC testé.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-faah",
+      "title": "Molecular characterization of an enzyme that degrades neuromodulatory fatty-acid amides",
+      "organization": "Nature / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8900284/",
+      "verifiedAt": "2026-11-14",
+      "author": "B. F. Cravatt et al.",
+      "published": "1996-11-07",
+      "passage": "Résumé PubMed : isolement/clonage enzyme, hydrolyse anandamide vers acide arachidonique.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication",
+      "limitation": "Résumé ne nomme pas explicitement l’éthanolamine parmi les produits.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/8900284/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : isolement/clonage enzyme, hydrolyse anandamide vers acide arachidonique.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : isolement/clonage enzyme, hydrolyse anandamide vers acide arachidonique.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-magl",
+      "title": "A role for monoglyceride lipase in 2-arachidonoylglycerol inactivation",
+      "organization": "Chemistry and Physics of Lipids / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12505697/",
+      "verifiedAt": "2026-11-14",
+      "author": "Thien P. Dinh, Tamás F. Freund and Daniele Piomelli",
+      "published": "2002-12-31",
+      "passage": "Résumé PubMed : MGL dans neurones corticaux de rat, dégradation 2-AG sans effet parallèle sur anandamide.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication",
+      "limitation": "Pas de voie exclusive dans tous les tissus.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12505697/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : MGL dans neurones corticaux de rat, dégradation 2-AG sans effet parallèle sur anandamide.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : MGL dans neurones corticaux de rat, dégradation 2-AG sans effet parallèle sur anandamide.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-dagl",
+      "title": "Cloning of the first sn1-DAG lipases points to the spatial and temporal regulation of endocannabinoid signaling in the brain",
+      "organization": "Journal of Cell Biology / PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2173631/",
+      "verifiedAt": "2026-11-14",
+      "author": "Tiziana Bisogno et al.",
+      "published": "2003-11-10",
+      "passage": "Résumé et introduction PMC : DAGL hydrolyse les DAG vers 2-AG ; distinction localisation développement/adulte.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Étude mécanistique, aucun bénéfice thérapeutique démontré.",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2173631/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et introduction PMC : DAGL hydrolyse les DAG vers 2-AG ; distinction localisation développement/adulte.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé et introduction PMC : DAGL hydrolyse les DAG vers 2-AG ; distinction localisation développement/adulte.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-hhc-2023",
+      "title": "Studies Pertaining to the Emerging Cannabinoid Hexahydrocannabinol (HHC)",
+      "author": "D. J. Nasrallah et N. K. Garg",
+      "published": "2023-08-14",
+      "organization": "ACS Chemical Biology",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10510108/",
+      "access": "excerpt",
+      "passage": "Résumé et section CB1 and CB2 receptor studies, figures 3–4 et analyse de certificats : épimères 9R/9S, liaison et AMPc.",
+      "limitation": "Deux répétitions ; certificats commerciaux ne remplacent pas une analyse indépendante des lots. Pas d’extrapolation clinique du rapport de puissance.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10510108/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et section CB1 and CB2 receptor studies, figures 3–4 et analyse de certificats : épimères 9R/9S, liaison et AMPc.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé et section CB1 and CB2 receptor studies, figures 3–4 et analyse de certificats : épimères 9R/9S, liaison et AMPc.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-euda-2026",
+      "title": "New psychoactive substances — the current situation in Europe",
+      "author": "EUDA, European Drug Report 2026",
+      "published": "2026",
+      "organization": "EUDA",
+      "url": "https://www.euda.europa.eu/publications/european-drug-report/2026/new-psychoactive-substances_en",
+      "access": "excerpt",
+      "passage": "Section Continued availability of semi-synthetic cannabinoids creates health concerns, lignes 361–373 : variabilité, HHC-P apparemment synthétique et intoxications.",
+      "limitation": "Surveillance de marché, pas essai clinique ; catégories de marché parfois plus larges que classification chimique.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.euda.europa.eu/publications/european-drug-report/2026/new-psychoactive-substances_en",
+          "openedAt": "2026-11-14",
+          "sections": "Section Continued availability of semi-synthetic cannabinoids creates health concerns, lignes 361–373 : variabilité, HHC-P apparemment synthétique et intoxications.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Section Continued availability of semi-synthetic cannabinoids creates health concerns, lignes 361–373 : variabilité, HHC-P apparemment synthétique et intoxications.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-hhc-cells-2025",
+      "title": "In vitro activation of the CB1 receptor by the semi-synthetic cannabinoids hexahydrocannabinol (HHC), hexahydrocannabinol acetate (HHC-O) and hexahydrocannabiphorol (HHC-P)",
+      "author": "M. Persson, R. Kronstrand, M. Evans-Brown et H. Green",
+      "published": "2025-04 ; publication en ligne 2024-06-19",
+      "organization": "Drug Testing and Analysis",
+      "url": "https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/full/10.1002/dta.3750",
+      "access": "excerpt",
+      "passage": "Éditeur Wiley : résumé, sections 2–4 et tableau 1 ; CHO-K1/CB1 humain, luminescence, JWH-018, HHC/HHCP/HHC-O ; corrections éditoriales datées.",
+      "limitation": "Publication en ligne 19 juin 2024, volume 2025. Activation faible des acétates ne démontre pas sécurité humaine ; hypothèse prodrogue distincte.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/full/10.1002/dta.3750",
+          "openedAt": "2026-11-14",
+          "sections": "Éditeur Wiley : résumé, sections 2–4 et tableau 1 ; CHO-K1/CB1 humain, luminescence, JWH-018, HHC/HHCP/HHC-O ; corrections éditoriales datées.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Éditeur Wiley : résumé, sections 2–4 et tableau 1 ; CHO-K1/CB1 humain, luminescence, JWH-018, HHC/HHCP/HHC-O ; corrections éditoriales datées.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-unodc-2023",
+      "title": "The emergence of semi-synthetic cannabinoids",
+      "author": "UNODC Early Warning Advisory",
+      "published": "2023-10",
+      "organization": "Office des Nations unies contre la drogue et le crime",
+      "url": "https://www.unodc.org/LSS/announcement/Details/b11f43d9-3a70-436a-930e-65ece3ff4125",
+      "access": "official-page",
+      "passage": "Annonce octobre 2023, paragraphes 1–3 : HHC, HHC-acétate, HHCP et H4-CBD signalés en Europe.",
+      "limitation": "Surveillance institutionnelle datée, pas analyse de tout lot ni innocuité.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.unodc.org/LSS/announcement/Details/b11f43d9-3a70-436a-930e-65ece3ff4125",
+          "openedAt": "2026-11-14",
+          "sections": "Annonce octobre 2023, paragraphes 1–3 : HHC, HHC-acétate, HHCP et H4-CBD signalés en Europe.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Annonce octobre 2023, paragraphes 1–3 : HHC, HHC-acétate, HHCP et H4-CBD signalés en Europe.",
+          "access": "official-page"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-cannabinoid-delta8-thc",
+      "questions": [
+        "Que change le déplacement d’une double liaison ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Isomérie de position conservée et distinguée de saturation HHC.",
+        "Origine industrielle et risques de produit séparés de la simple identité chimique.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Le delta-8 tétrahydrocannabinol, ou Δ8-THC, est un isomère du THC delta-9. Une liaison se trouve à un autre endroit ; cela ne signifie ni une quantité huit fois plus faible ni une absence d’intoxication.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "Les formes Δ8 et Δ9 possèdent la même formule brute, le même inventaire d’atomes, mais une double liaison est placée différemment. Déplacer cette liaison est une isomérisation ; ajouter de l’hydrogène pour former un analogue tel que le HHC est une autre transformation.",
+              "Certaines détections dans des extraits peuvent résulter d’une transformation pendant le traitement du matériel. Des produits commerciaux sont aussi obtenus par transformation. Une trace de Δ8-THC ne prouve donc pas une voie de fabrication par la plante vivante."
+            ],
+            "sourceIds": [
+              "cb-euda-2023",
+              "cb-hhc-2023"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Comment l’expérience éclaire son action",
+            "paragraphs": [
+              "Une structure apparentée au THC est un point de départ pour poser des questions d’activité, pas un calcul d’équivalence. Les données techniques présentées ne quantifient pas les effets de tous les produits chez l’humain et ne permettent pas de qualifier le Δ8 de non intoxicant."
+            ],
+            "sourceIds": [
+              "cb-euda-2023",
+              "cb-hhc-2023"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "L’origine du produit compte aussi pour ses risques",
+            "paragraphs": [
+              "Les rapports de surveillance cités décrivent des produits et des enjeux sanitaires. Ils ne constituent pas une comparaison clinique complète du Δ8-THC et du Δ9-THC chez des participants suivis dans les mêmes conditions.",
+              "Une intoxication reste possible. Des préparations mal caractérisées peuvent contenir des sous-produits, d’autres substances apparues pendant leur fabrication. L’abréviation Δ8 ne permet pas de connaître leur pureté ni leur histoire."
+            ],
+            "sourceIds": [
+              "cb-euda-2023"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-euda-2023",
+          "cb-hhc-2023"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-delta8-thc"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Que change le déplacement d’une double liaison ?",
+          "nodes": [
+            {
+              "label": "Δ9-THC",
+              "detail": "Une position de double liaison."
+            },
+            {
+              "label": "Δ8-THC",
+              "detail": "Même inventaire d’atomes, position différente."
+            },
+            {
+              "label": "Produit vendu",
+              "detail": "Composition et effets à caractériser séparément."
+            }
+          ],
+          "caption": "Δ8 et Δ9 décrivent une position de liaison, pas une échelle de sécurité.",
+          "sourceIds": [
+            "cb-euda-2023",
+            "cb-hhc-2023"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-euda-2023",
+        "cb-hhc-2023"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que change le déplacement d’une double liaison ?",
+        "explainedTerms": [
+          "isomère",
+          "formule brute",
+          "double liaison",
+          "isomérisation",
+          "sous-produit"
+        ],
+        "example": "Δ8 et Δ9 décrivent une position de liaison, pas une échelle de sécurité.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-thc-o-acetate",
+      "questions": [
+        "Pourquoi faut-il regarder les émissions d’un acétate et pas seulement son étiquette ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Périmètre exact de l’expérience cétène explicité ; aucune transposition quantitative à tous les acétates.",
+        "Réaction chimique expliquée sans mode opératoire.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "THC-O est un nom utilisé pour des dérivés acétylés du THC. Il ne suffit pas à identifier précisément une molécule : la structure de départ et les autres constituants du produit comptent aussi.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "L’acétylation ajoute un groupe acétyle, petit morceau comportant deux carbones et un oxygène, sur une fonction portant de l’oxygène. Il faut encore préciser si le squelette correspond au Δ8-THC ou au Δ9-THC : la position de la double liaison reste une autre information de structure.",
+              "L’expérience publiée étudie notamment un produit commercial au Δ8-THC-O et des substances expérimentales. Elle ne présente pas ces acétates comme des constituants naturels établis du cannabis."
+            ],
+            "sourceIds": [
+              "cb-euda-2023",
+              "cb-acetates-2022"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Ce qui peut se former dans les émissions",
+            "paragraphs": [
+              "Munger étudie les acétates de Δ8-THC, de CBD et de CBN, ainsi qu’un produit commercial au Δ8-THC-acétate. Du cétène, une substance toxique, est détecté dans les condensats, les matières récupérées après refroidissement des émissions. Le résultat concerne ces composés et les conditions étudiées ; il ne couvre pas tous les produits THC-O et ne calcule pas la probabilité de dommage pour une personne."
+            ],
+            "sourceIds": [
+              "cb-acetates-2022"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Un danger formé pendant l’émission",
+            "paragraphs": [
+              "Une analyse chimique des produits et de leurs émissions n’est pas un essai de traitement chez des personnes. Elle peut révéler un danger matériel sans montrer une efficacité thérapeutique.",
+              "La dégradation de certains acétates peut former un composé toxique. Les impuretés, l’identité précise de l’isomère et l’exposition réelle peuvent être inconnues dans les produits vendus ; l’absence d’essai clinique ne prouve pas leur sécurité."
+            ],
+            "sourceIds": [
+              "cb-acetates-2022"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-euda-2023",
+          "cb-acetates-2022"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-thc-o-acetate"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi faut-il regarder les émissions d’un acétate et pas seulement son étiquette ?",
+          "nodes": [
+            {
+              "label": "Identité",
+              "detail": "Préciser le dérivé et la position Δ8 ou Δ9."
+            },
+            {
+              "label": "Transformation",
+              "detail": "Les conditions de l’expérience peuvent dégrader l’acétate."
+            },
+            {
+              "label": "Émissions",
+              "detail": "Du cétène est détecté pour les composés testés."
+            }
+          ],
+          "caption": "Un composé formé pendant le chauffage peut être absent du produit initial.",
+          "sourceIds": [
+            "cb-euda-2023",
+            "cb-acetates-2022"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-euda-2023",
+        "cb-acetates-2022"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi faut-il regarder les émissions d’un acétate et pas seulement son étiquette ?",
+        "explainedTerms": [
+          "acétylation",
+          "isomère",
+          "émission",
+          "condensat",
+          "cétène"
+        ],
+        "example": "Un composé formé pendant le chauffage peut être absent du produit initial.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-hhc-o",
+      "questions": [
+        "Pourquoi une faible activation en cellule ne suffit-elle pas à prévoir l’effet du HHC-O ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Texte Wiley réellement ouvert ; données HHC-O limitées au modèle cellulaire.",
+        "Hypothèse de prodrogue explicitement séparée d’un résultat humain démontré.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Le HHC-O est un dérivé acétylé de l’hexahydrocannabinol. Modifier une molécule peut changer son action directe et sa transformation dans le corps : il ne suffit pas d’ajouter une lettre à un nom connu.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "Une chaîne latérale est une branche d’atomes attachée à la partie centrale de la molécule. Le HHC-O porte un groupe acétyle, petit morceau comportant deux carbones et un oxygène, sur une fonction oxygénée du HHC. Ses formes spatiales, ou épimères, doivent aussi être précisées. Cette modification n’est ni une simple hausse de concentration ni un allongement de la chaîne latérale.",
+              "La surveillance signale le HHC-O parmi les substances émergentes du marché. Elle n’établit pas une présence naturelle dans le cannabis."
+            ],
+            "sourceIds": [
+              "cb-euda-2026",
+              "cb-hhc-cells-2025",
+              "cb-unodc-2023"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Tester le composé avant sa transformation",
+            "paragraphs": [
+              "Des cellules CHO-K1, une lignée utilisée en laboratoire, sont équipées de CB1 humain. Le HHC-O y donne une activation directe faible ou absente selon sa forme spatiale. Les auteurs proposent qu’une conversion en HHC puisse expliquer une activité dans un organisme vivant. C’est une hypothèse de transformation, distincte de l’activation directement mesurée dans la cellule."
+            ],
+            "sourceIds": [
+              "cb-hhc-cells-2025",
+              "cb-acetates-2022"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "La transformation dans le corps reste à établir",
+            "paragraphs": [
+              "Le test cellulaire présenté ne reproduit pas tout le passage dans le corps. Il ne démontre donc pas un bénéfice clinique ni une absence d’effet humain.",
+              "La composition et la toxicologie, l’étude des effets nocifs, restent insuffisamment connues, notamment l’exposition aux formes actives après transformation. Les résultats obtenus sur d’autres acétates ne mesurent pas directement le risque propre au HHC-O."
+            ],
+            "sourceIds": [
+              "cb-hhc-cells-2025",
+              "cb-euda-2026",
+              "cb-acetates-2022"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-euda-2026",
+          "cb-unodc-2023",
+          "cb-hhc-cells-2025",
+          "cb-acetates-2022"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-hhc-o"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi une faible activation en cellule ne suffit-elle pas à prévoir l’effet du HHC-O ?",
+          "nodes": [
+            {
+              "label": "Molécule testée",
+              "detail": "HHC-O, avec sa forme spatiale."
+            },
+            {
+              "label": "Cellule CB1",
+              "detail": "Activation directe faible ou absente dans le test."
+            },
+            {
+              "label": "Hypothèse",
+              "detail": "Une transformation en HHC pourrait changer l’effet dans l’organisme."
+            }
+          ],
+          "caption": "La cellule du test ne reproduit pas toutes les transformations possibles dans un organisme.",
+          "sourceIds": [
+            "cb-hhc-cells-2025",
+            "cb-acetates-2022",
+            "cb-euda-2026"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-euda-2026",
+        "cb-unodc-2023",
+        "cb-hhc-cells-2025",
+        "cb-acetates-2022"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi une faible activation en cellule ne suffit-elle pas à prévoir l’effet du HHC-O ?",
+        "explainedTerms": [
+          "acétyle",
+          "épimère",
+          "toxicologie",
+          "lignée cellulaire",
+          "conversion"
+        ],
+        "example": "La cellule du test ne reproduit pas toutes les transformations possibles dans un organisme.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-hhcp",
+      "questions": [
+        "Comment deux formes peuvent-elles avoir une réponse maximale proche mais une EC50 différente ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Origine HHCP apparemment entièrement synthétique confirmée dans EUDA 2026, sans en déduire tous les lots.",
+        "Puissance/efficacité maximale distinguées ; pas de classement commercial chiffré.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Le HHCP est un proche parent du HHC à chaîne latérale plus longue. Ses formes spatiales ont été testées séparément sur un récepteur ; ces mesures ne donnent pas un multiplicateur d’intoxication humaine.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "Une chaîne latérale est une branche d’atomes attachée à la partie centrale de la molécule. La chaîne heptyle du HHCP compte sept carbones, contre cinq pour la chaîne pentyle du HHC. Les formes 9R et 9S sont aussi à distinguer : elles orientent une partie de la structure différemment dans l’espace.",
+              "L’EUDA rapporte sa présence sur le marché européen et une production apparemment entièrement synthétique. Pour un produit particulier, il faut cependant une traçabilité propre : son nom seul ne certifie pas son origine."
+            ],
+            "sourceIds": [
+              "cb-hhc-cells-2025",
+              "cb-euda-2026",
+              "cb-unodc-2023"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Concentration nécessaire et réponse maximale",
+            "paragraphs": [
+              "Persson teste le récepteur CB1 humain dans des cellules CHO-K1. Les formes du HHCP donnent une réponse partielle par comparaison au composé de référence JWH-018. Leur EC50 diffère : c’est la concentration nécessaire pour atteindre la moitié de leur réponse maximale dans ce test. Leur maximum de réponse est pourtant proche. Il faut donc distinguer la concentration nécessaire pour agir de l’ampleur maximale de la réponse."
+            ],
+            "sourceIds": [
+              "cb-hhc-cells-2025"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Ce qu’une mesure sur CB1 ne prédit pas",
+            "paragraphs": [
+              "Les expériences citées mesurent l’activation d’une protéine dans des cellules, pas l’effet global chez des personnes. Elles n’établissent pas une efficacité médicale du HHCP.",
+              "Une intoxication est possible et le recul est limité. Le devenir de la molécule dans le corps, ses interactions et ses effets nocifs prolongés restent insuffisamment connus."
+            ],
+            "sourceIds": [
+              "cb-hhc-cells-2025",
+              "cb-euda-2026"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-hhc-cells-2025",
+          "cb-euda-2026",
+          "cb-unodc-2023"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-hhcp"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Comment deux formes peuvent-elles avoir une réponse maximale proche mais une EC50 différente ?",
+          "nodes": [
+            {
+              "label": "HHC / HHCP",
+              "detail": "Chaîne de cinq carbones ou de sept."
+            },
+            {
+              "label": "9R / 9S",
+              "detail": "Deux orientations étudiées séparément."
+            },
+            {
+              "label": "Test CB1",
+              "detail": "EC50 différente, réponse maximale proche dans ce système."
+            }
+          ],
+          "caption": "Concentration nécessaire et réponse maximale sont deux mesures différentes.",
+          "sourceIds": [
+            "cb-hhc-cells-2025",
+            "cb-euda-2026"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-hhc-cells-2025",
+        "cb-euda-2026",
+        "cb-unodc-2023"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Comment deux formes peuvent-elles avoir une réponse maximale proche mais une EC50 différente ?",
+        "explainedTerms": [
+          "heptyle",
+          "épimère",
+          "traçabilité",
+          "agoniste partiel",
+          "EC50"
+        ],
+        "example": "Concentration nécessaire et réponse maximale sont deux mesures différentes.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-h4-cbd",
+      "questions": [
+        "Pourquoi l’hydrogénation ne revient-elle pas à augmenter la concentration de CBD ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "H4CBD distinct de CBD concentré confirmé ; signalement de marché UNODC lu.",
+        "Hypothèses de sécurité et cancer de Collins non extrapolées à l’humain.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Le H4-CBD est un analogue hydrogéné du cannabidiol. Sa structure a été modifiée : il ne s’agit pas d’un CBD simplement plus concentré, et les données du médicament au CBD ne lui sont pas automatiquement applicables.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "L’hydrogénation modifie des doubles liaisons en ajoutant de l’hydrogène. Le H4-CBD existe sous plusieurs arrangements spatiaux, appelés diastéréoisomères. Ces arrangements nécessitent des analyses pour être distingués.",
+              "Le H4-CBD est signalé sur le marché et caractérisé par des travaux analytiques. Ces observations n’établissent pas une fabrication naturelle habituelle par le cannabis."
+            ],
+            "sourceIds": [
+              "cb-h4cbd-2023",
+              "cb-unodc-2023"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Comment l’analyse distingue les formes",
+            "paragraphs": [
+              "La résonance magnétique nucléaire, ou RMN, renseigne l’environnement des atomes et aide à distinguer les formes spatiales. La chromatographie sépare les constituants ; la spectrométrie de masse examine leur masse et leurs fragments. Ces outils étayent une identité. Les hypothèses biologiques évoquées au début de l’article ne démontrent ni un traitement du cancer ni une sécurité humaine."
+            ],
+            "sourceIds": [
+              "cb-h4cbd-2023"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Reconnaître une forme ne valide pas un traitement",
+            "paragraphs": [
+              "L’étude décrit surtout comment reconnaître les différentes formes de la molécule. Cette identification ne valide pas un usage thérapeutique chez l’humain.",
+              "Les effets et risques des mélanges commerciaux restent insuffisamment établis. Les indications et la sécurité d’un médicament au CBD concernent une autre structure et une formulation définie."
+            ],
+            "sourceIds": [
+              "cb-h4cbd-2023",
+              "cb-unodc-2023"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-h4cbd-2023",
+          "cb-unodc-2023"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-h4-cbd"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi l’hydrogénation ne revient-elle pas à augmenter la concentration de CBD ?",
+          "nodes": [
+            {
+              "label": "CBD",
+              "detail": "Structure de comparaison."
+            },
+            {
+              "label": "H4-CBD",
+              "detail": "Liaisons et certains arrangements spatiaux modifiés."
+            },
+            {
+              "label": "Analyses",
+              "detail": "Identification de formes différentes, sans validation clinique."
+            }
+          ],
+          "caption": "Une modification de l’assemblage crée une autre molécule ; une concentration décrit seulement combien il y en a.",
+          "sourceIds": [
+            "cb-h4cbd-2023",
+            "cb-unodc-2023"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-h4cbd-2023",
+        "cb-unodc-2023"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi l’hydrogénation ne revient-elle pas à augmenter la concentration de CBD ?",
+        "explainedTerms": [
+          "hydrogénation",
+          "double liaison",
+          "diastéréoisomère",
+          "RMN",
+          "chromatographie"
+        ],
+        "example": "Une modification de l’assemblage crée une autre molécule ; une concentration décrit seulement combien il y en a.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-anandamide",
+      "questions": [
+        "Comment un messager fabriqué par le corps peut-il cesser d’agir ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Identité lipidique et cerveau porcin confirmés.",
+        "Inactivation FAAH ajoutée avec source primaire ; pas de bénéfice commercial extrapolé.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "L’anandamide est un messager fabriqué par l’organisme. Elle participe au système endocannabinoïde, sans être du THC produit ou stocké par le corps.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Un messager fabriqué dans les tissus",
+            "paragraphs": [
+              "L’anandamide, abrégée AEA, relie une partie issue de l’acide arachidonique à une éthanolamine, une petite partie contenant notamment de l’azote et de l’oxygène, par une liaison appelée amide. Le 2-AG, autre messager du même système, utilise au contraire du glycérol et une liaison ester. Deux messagers peuvent donc rencontrer certaines mêmes cibles sans avoir le même assemblage.",
+              "L’étude de 1992 isole l’anandamide du cerveau porcin et en décrit la structure. Ce matériel animal renseigne la découverte du messager, pas une teneur de cannabis."
+            ],
+            "sourceIds": [
+              "cb-anandamide-1992"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Recevoir le message puis l’arrêter",
+            "paragraphs": [
+              "Le travail de 1992 mesure une liaison au récepteur et une diminution d’une contraction provoquée dans une préparation animale. FAAH, une enzyme caractérisée en 1996, participe ensuite à son inactivation par hydrolyse : de l’eau intervient pour couper la liaison amide. Cette voie explique une partie de l’arrêt du signal ; son intérêt physiologique dépend du tissu et de la situation."
+            ],
+            "sourceIds": [
+              "cb-anandamide-1992",
+              "qh-sci-faah"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Un signal local plutôt qu’un niveau à augmenter",
+            "paragraphs": [
+              "Les travaux fondateurs établissent un médiateur endogène, c’est-à-dire produit par l’organisme. Ils ne valident pas une intervention destinée à augmenter ce messager chez une personne.",
+              "Le niveau d’un messager est réglé localement et dépend du contexte. Son rôle biologique ne justifie pas une promesse commerciale pour l’augmenter ; un ressenti ou un aliment ne permet pas de déduire simplement ces variations locales."
+            ],
+            "sourceIds": [
+              "cb-anandamide-1992",
+              "qh-sci-receptors"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-anandamide-1992",
+          "qh-sci-faah",
+          "qh-sci-receptors"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-anandamide"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Comment un messager fabriqué par le corps peut-il cesser d’agir ?",
+          "nodes": [
+            {
+              "label": "AEA",
+              "detail": "Un acide gras relié à une éthanolamine."
+            },
+            {
+              "label": "Découverte",
+              "detail": "Structure et liaison étudiées dans des modèles animaux."
+            },
+            {
+              "label": "FAAH",
+              "detail": "Une enzyme coupe la liaison et contribue à arrêter le signal."
+            }
+          ],
+          "caption": "La coupure d’une liaison contribue à inactiver le messager.",
+          "sourceIds": [
+            "cb-anandamide-1992",
+            "qh-sci-faah",
+            "qh-sci-receptors"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-anandamide-1992",
+        "qh-sci-faah",
+        "qh-sci-receptors"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Comment un messager fabriqué par le corps peut-il cesser d’agir ?",
+        "explainedTerms": [
+          "endogène",
+          "amide",
+          "ester",
+          "enzyme",
+          "hydrolyse",
+          "FAAH"
+        ],
+        "example": "La coupure d’une liaison contribue à inactiver le messager.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-2-ag",
+      "questions": [
+        "Le 2-AG du système endocannabinoïde est chimiquement un…"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Nom complet et quiz monoacylglycérol vérifiés.",
+        "Formation DAGL et inactivation MAGL ajoutées pour expliquer la régulation temporelle du signal."
+      ],
+      "patch": {
+        "lead": "Le 2-arachidonoylglycérol, ou 2-AG, est un messager lipidique produit par l’organisme. Des enzymes contribuent à le former puis à le dégrader, ce qui aide à régler le signal.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Une partie grasse attachée au glycérol",
+            "paragraphs": [
+              "Le 2-AG est un monoacylglycérol : une partie issue d’un acide gras est attachée au glycérol, une petite ossature de trois carbones portant des groupes contenant de l’oxygène. La liaison est appelée ester. L’anandamide utilise une éthanolamine et une liaison amide : les deux messagers ne sont donc pas identiques.",
+              "Deux travaux de 1995 caractérisent le 2-AG dans le cerveau de rat et l’intestin de chien. Ce sont des tissus animaux ; cette découverte ne permet pas d’attribuer une présence de 2-AG au cannabis."
+            ],
+            "sourceIds": [
+              "cb-2ag-1995",
+              "cb-2ag-gut-1995"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Fabriquer puis couper le messager",
+            "paragraphs": [
+              "Des enzymes appelées DAG lipases coupent un diacylglycérol, un lipide portant deux parties d’acides gras, pour former du 2-AG. MGL, aussi appelée MAGL, contribue ensuite à son hydrolyse et à l’arrêt du signal. Les premiers essais montrent aussi que la dégradation pendant une mesure peut modifier l’affinité apparente pour les récepteurs : on ne mesure pas forcément la même chose si le composé disparaît durant le test. Ces voies ne signifient pas qu’un seul outil agit dans tous les tissus."
+            ],
+            "sourceIds": [
+              "cb-2ag-1995",
+              "cb-2ag-gut-1995",
+              "qh-sci-dagl",
+              "qh-sci-magl"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Pourquoi le réglage local compte",
+            "paragraphs": [
+              "Ces travaux biochimiques expliquent comment le messager se forme, se lie et s’inactive. Ils ne démontrent pas un bénéfice thérapeutique à modifier artificiellement son niveau.",
+              "Le rôle biologique du 2-AG dépend du tissu et de la manière dont le signal est réglé. Identifier un messager n’équivaut pas à recommander de l’augmenter ou de le diminuer dans tout l’organisme."
+            ],
+            "sourceIds": [
+              "cb-2ag-1995",
+              "cb-2ag-gut-1995",
+              "qh-sci-dagl",
+              "qh-sci-magl"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-2ag-1995",
+          "cb-2ag-gut-1995",
+          "qh-sci-dagl",
+          "qh-sci-magl"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-2-ag"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi mesurer un messager exige-t-il aussi de connaître sa dégradation ?",
+          "nodes": [
+            {
+              "label": "Formation",
+              "detail": "Une DAG lipase permet de former du 2-AG."
+            },
+            {
+              "label": "Signal",
+              "detail": "Le 2-AG peut se lier aux récepteurs cannabinoïdes."
+            },
+            {
+              "label": "Inactivation",
+              "detail": "MAGL contribue à couper la molécule et à arrêter le signal."
+            }
+          ],
+          "caption": "Une molécule qui se dégrade pendant le test peut donner une mesure de liaison trompeuse.",
+          "sourceIds": [
+            "qh-sci-dagl",
+            "qh-sci-magl"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-2ag-1995",
+        "cb-2ag-gut-1995",
+        "qh-sci-dagl",
+        "qh-sci-magl"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-2ag"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi mesurer un messager exige-t-il aussi de connaître sa dégradation ?",
+        "explainedTerms": [
+          "lipide",
+          "monoacylglycérol",
+          "ester",
+          "DAG lipase",
+          "MAGL",
+          "hydrolyse",
+          "affinité"
+        ],
+        "example": "Une molécule qui se dégrade pendant le test peut donner une mesure de liaison trompeuse.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": [
+          "hemp-evidence-2ag"
+        ]
+      }
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [
+    {
+      "id": "hemp-evidence-2ag",
+      "prompt": "Le 2-AG du système endocannabinoïde est chimiquement un…",
+      "options": [
+        "Monoterpène",
+        "Acide cannabinoïde végétal",
+        "Alcaloïde",
+        "Monoacylglycérol"
+      ],
+      "answer": 3,
+      "explanation": "Mono signifie un : une seule partie issue d’un acide gras est attachée à une petite ossature de glycérol. Cet assemblage est un monoacylglycérol, différent de celui de l’anandamide.",
+      "articleId": "record-cannabinoid-2-ag",
+      "sourceIds": [
+        "cb-2ag-1995",
+        "cb-2ag-gut-1995"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Source Persson : première publication 2024, volume 2025 ; corrections de structures et de statistiques à respecter.",
+    "Ne pas confondre puissance EC50 et réponse maximale, ni faible activation directe HHC-O et innocuité."
+  ]
+}

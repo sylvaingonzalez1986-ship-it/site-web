@@ -1,0 +1,92 @@
+{
+  "domain": "regulation",
+  "reviewer": "botany-physiology-phytopathology",
+  "reviewedAt": "2026-11-14",
+  "input": "batches/regulation-01.json",
+  "coverage": {"articlesFullyRead": 5, "termsRead": 16, "quizIdsInBatch": 0},
+  "scope": "Contre-lecture scientifique des cinq propositions, avec vérification ciblée de la conservation, moisissures/mycotoxines, principes analytiques, cannabinoïdes et points français sensibles. Ne remplace pas une validation juridique générale ni la lecture de chaque référence par le coordinateur.",
+  "articleReviews": [
+    {
+      "id": "ref-conservation",
+      "status": "minor-clarification",
+      "findings": [
+        "Bilan de masse correct : 100kg à20% d’eau contiennent80kg de matière sèche ; exemple explicitement fictif et distinct d’une cible de conservation.",
+        "Huile Futura75 : Bonazza2024 vérifié au résumé, §2.2 et §3.1 ;270jours, flacons20mL,25°C avec lumière diffuse contre10°C dans le noir. Les facteurs température/lumière sont associés ; le texte le dit correctement et n’invente pas une durée de conservation universelle.",
+        "Décomposition des peroxydes et portée limitée d’un indice isolé scientifiquement cohérentes ; aucune extrapolation de limite d’huile d’olive au chanvre.",
+        "Harmoniser la botanique : le chènevis entier battu est un fruit sec contenant une graine. Le vocabulaire agricole graines reste compréhensible mais la fiche de botanique l’explique plus précisément."
+      ],
+      "suggestedChanges": [{"sectionId": "ref-conservation-2", "replace": "Le battage détache les graines.", "with": "Le battage sépare le chènevis des structures qui le portent : ces petits fruits secs contiennent chacun une graine."}],
+      "blockers": []
+    },
+    {
+      "id": "ref-contaminants",
+      "status": "reviewed-no-change-required",
+      "findings": [
+        "Distinction moisissure/produit toxique et persistance après transformation confirmées dans WHO2023, Overview. Ne pas confondre disparition du champignon et destruction de toutes les molécules déjà produites.",
+        "Couleur non diagnostique et différence dénombrement/identification/dosage cohérentes avec la révision phytopathologique.",
+        "Résumé primaire Munger2022 ouvert : acétates deΔ8-THC,CBN,CBD et produit commercial étudiés ; cétène observé. Le texte ne transforme pas cette expérience en résultat clinique ou en propriété de toute cartouche.",
+        "Santé Canada, section Vaping, confirme aérosol et passage possible de métaux vers l’extrait/aérosol. Le certificat de liquide ne valide pas toutes les émissions."
+      ],
+      "suggestedChanges": [],
+      "blockers": []
+    },
+    {
+      "id": "ref-analyses",
+      "status": "reviewed-no-change-required-with-existing-blocker",
+      "findings": [
+        "Conversions correctes :1% massique=10mg/g ;1mg/kg vaut0,001mg/g. Base humide/sèche et effets du dénominateur expliqués correctement.",
+        "Santé Canada, Matrix considerations et Specificity, confirme effets de matrice, besoin de validation et interférences : performance d’une huile non transférable automatiquement à une confiserie.",
+        "NIST RM8210, notice et résumé effectivement ouverts : matière sèche broyée et valeurs non certifiées, correctement restituées.",
+        "LOQ n’est pas absence physique ; convention réglementaire et observation sont bien distinguées. Accréditation/portée relues dans le lot mais référence COFRAC non rouverte par ce contre-lecteur."
+      ],
+      "suggestedChanges": [],
+      "blockers": ["Le blocage coordinateur sur la consolidation courante178/2002 art18–19 n’est pas levé par cette contrelecture : le lien demandé a redirigé vers le sommaire EUR-Lex sans les articles."]
+    },
+    {
+      "id": "ref-origines-formulations",
+      "status": "reviewed-no-change-required",
+      "findings": [
+        "Citti2019 ouvert via Scientific Reports (PMC bloquait) : identification THCP/CBDP dans FM2, distinction formes acides/neutres et tests chez la souris. La fiche évite correctement de convertir l’affinité ou la tétrade murine en efficacité clinique.",
+        "Rapport EMCDDA2023 ouvert, passages sur épimères9R/9S et origine de précurseurs : différence d’origine, identité et formulation correctement séparée. Aucun protocole de synthèse repris.",
+        "Santé Canada, The difference between cannabis oil and hemp-seed oil : huile pressée du grain distincte du mélange contenant un extrait ; principe correctement retenu sans transférer le droit canadien.",
+        "Le passage concernant17adultes et la cinétique orale a été relu dans la proposition mais sa publication n’a pas été rouverte par ce contre-lecteur ; aucune contrevalidation indépendante de cet effectif n’est revendiquée."
+      ],
+      "suggestedChanges": [],
+      "blockers": []
+    },
+    {
+      "id": "ref-reglementation-produits",
+      "status": "minor-clarification-with-existing-blocker",
+      "findings": [
+        "Communiqué DGAL20mai2026 ouvert intégralement : feuilles exclusivement pour infusion aqueuse, sans enrichissement ni ajout d’autres parties ; cette exception précise est correctement décrite.",
+        "Décision ANSM16janvier2026 ouverte : art3 ajoute HHC à l’annexeIII, art4 le retire deIV. Il reste classé stupéfiant ; changement d’annexe≠déclassement confirmé.",
+        "Arrêté30décembre2021 consolidé affiché en vigueur14novembre2026 : art1I seuil0,30% pour les variétés inscrites ; art1III prévoit aussi0,30% pour extraits et produits qui les intègrent, sans préjudice des exigences alimentaires. Le paragraphe actuel ne dit pas le contraire, mais préciser cette seconde occurrence évite une lecture trop exclusivement agricole.",
+        "Principe essentiel conservé :0,3% n’est ni une autorisation alimentaire ni un remplacement de3mg/kg ou7,5mg/kg. Les chiffres, le coefficient0,877 et la convention lower-bound ont été relus dans le lot, mais le règlement915 consolidé n’a pas pu être rouvert par ce contre-lecteur.",
+        "Les liens Novel Food et règlements consolidés renvoient ici à un contrôle JavaScript ou au sommaire EUR-Lex ; les lectures antérieures du coordinateur ne sont pas présentées comme nouvelles lectures du spécialiste."
+      ],
+      "suggestedChanges": [{"sectionId": "ref-reglementation-produits-2", "append": "L’arrêté français prévoit également une limite de0,30% pour certains extraits de chanvre et les produits qui les intègrent, sans préjudice des exigences de sécurité alimentaire. Cette autre occurrence du pourcentage ne remplace donc pas les limites et conditions propres aux denrées."}],
+      "blockers": ["Consolidation178/2002 déjà signalée par le coordinateur : toujours non confirmée dans cet accès."]
+    }
+  ],
+  "sourcesIndependentlyOpened": [
+    {"id": "products-tool-dgal-2026", "url": "https://agriculture.gouv.fr/node/110883", "sections": "Communiqué20mai2026, paragraphes CBD/exception graines-feuilles et conditions", "result": "read"},
+    {"id": "products-tool-hhc-decision-2026", "url": "https://ansm.sante.fr/actualites/decision-du-16-01-2026-portant-modification-de-la-liste-des-substances-classees-comme-stupefiants", "sections": "Articles1–5, notamment3–4", "result": "read"},
+    {"id": "products-tool-hemp-order", "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213", "sections": "Version en vigueur14novembre2026, article1I etIII", "result": "read"},
+    {"id": "harvest-lesson-oil", "url": "https://www.mdpi.com/1420-3049/29/23/5577", "sections": "Résumé, §2.2 et§3.1", "result": "read"},
+    {"id": "health-lesson-mycotoxins", "url": "https://www.who.int/news-room/fact-sheets/detail/mycotoxins", "sections": "Key facts et Overview", "result": "read"},
+    {"id": "products-lesson-nist", "url": "https://www.nist.gov/publications/characterization-reference-material-8210-hemp-plant", "sections": "Notice et résumé, pas rapport intégral", "result": "read"},
+    {"id": "products-lesson-methods", "url": "https://www.canada.ca/en/health-canada/services/cannabis-regulations-licensed-producers/validating-analytical-methods-cannabis-testing.html", "sections": "General, Matrix considerations, Specificity", "result": "read"},
+    {"id": "products-lesson-acetates", "url": "https://pubmed.ncbi.nlm.nih.gov/35801872/", "sections": "Résumé primaire", "result": "read-abstract"},
+    {"id": "products-tool-inhalation", "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html", "sections": "Smoking et Vaping, notamment aérosol et métaux", "result": "read"},
+    {"id": "products-lesson-seed-oil", "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html", "sections": "The difference between cannabis oil and hemp-seed oil", "result": "read"},
+    {"id": "products-lesson-thcp", "url": "https://www.nature.com/articles/s41598-019-56785-1?error=cookies_not_supported&code=1", "sections": "Identification FM2, caractérisation, tétrade murine ; PMC inaccessible", "result": "read"},
+    {"id": "products-lesson-hhc", "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf", "sections": "Passages épimères PDFp31–32 et origine des précurseurs p36 ; pas lecture intégrale107pages", "result": "read-targeted"}
+  ],
+  "accessFailures": [
+    {"id": "products-tool-contaminants", "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02023R0915-20260819", "status": "not-reverified", "result": "Contrôle JavaScript ; autres liens officiels essayés sans texte accessible."},
+    {"id": "products-tool-novel-food", "url": "https://eur-lex.europa.eu/eli/reg/2015/2283/oj/eng", "status": "not-reverified", "result": "Contrôle JavaScript ; lien CELEX original redirigé vers sommaire."},
+    {"id": "products-tool-food-law", "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX:02002R0178-20260101", "status": "not-reverified", "result": "Redirection vers sommaire, aucun article consolidé obtenu."}
+  ],
+  "sharedFilesModified": false,
+  "next": "Coordinateur propriétaire du lot : intégrer ou écarter les deux précisions proposées ; maintenir la réserve de consolidation juridique non résolue."
+}

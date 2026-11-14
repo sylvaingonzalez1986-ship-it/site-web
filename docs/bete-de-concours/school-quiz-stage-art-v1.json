@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-14",
+  "tool": "image_gen.imagegen",
+  "prompt": "Create an original wide 3:2 illustrated game asset: a small hemp knowledge quiz stage inside a Breton cartoon village school. Match the provided reference's precise visual language: thick slightly irregular black ink contours, flat warm cream stone, teal-painted wood, golden ochre, warm apricot, subtle printed paper grain, friendly hand-drawn mobile boardgame illustration. Use the reference ONLY for visual art style. Invent a different scene: symmetrical frontal composition, small raised curved wooden stage, one welcoming teal and gold armchair at the center, wooden lectern with a big botanical hemp leaf emblem, two decorative hemp plants at the left and right edges, warm gold theater lamps above, teal curtains framing the sides, cream stone school arch behind, small blank paper pennants. Hemp leaves accurately palmate with serrated narrow leaflets; no other flowers. Visually bold readable silhouettes, generous clean space, highly crafted appealing game illustration. No people, no text, no numbers, no logos, no UI buttons, no pasted photography, no television show branding or copied TV scenery. Illustrate only the scene; all UI will be HTML. Landscape composition; solid warm cream paper background. Lighting bright, inviting, saturated teal and gold. Keep the full artwork within a comfortable cream border.",
+  "styleReference": "public/placard/school/interior-v4.webp",
+  "original": "output/school/quiz-stage-v1-original.png",
+  "asset": "public/placard/school/quiz-stage-v1.webp",
+  "sha256": "c2b1122b12dcb01f214f1cc841df19867de2c6b4f40e751f0860d7dc19223a04",
+  "bytes": 197932,
+  "processing": "Resize to 1200 × 800; WebP quality 86. Original preserved. No content retouch.",
+  "purpose": "Original decorative hemp quiz stage. Scores, questions and controls remain HTML.",
+  "inspiration": {
+    "source": "https://www.francetvpro.fr/contenu-de-presse/17899675",
+    "publicationDate": "2021-07-20",
+    "consulted": "2026-11-14",
+    "scope": "Official description of the television set: focal chair, progression, lighting. No programme asset, logo, music or footage reused."
+  }
+}

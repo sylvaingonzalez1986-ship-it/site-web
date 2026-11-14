@@ -1,0 +1,1125 @@
+{
+  "domain": "cannabinoids",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "cb-kim-2022",
+      "title": "Profiling Cannabinoid Contents and Expression Levels of Corresponding Biosynthetic Genes in Commercial Cannabis (Cannabis sativa L.) Cultivars",
+      "author": "A. L. Kim et al.",
+      "published": "2022-11-14",
+      "organization": "Plants",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9697443/",
+      "access": "excerpt",
+      "passage": "Introduction, Figure 1 and results; numeric inconsistencies in abstract not reused.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9697443/",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction, Figure 1 and results; numeric inconsistencies in abstract not reused.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cannabinoids-lesson-decarb2016",
+      "title": "Decarboxylation Study of Acidic Cannabinoids: A Novel Approach Using Ultra-High-Performance Supercritical Fluid Chromatography/Photodiode Array-Mass Spectrometry",
+      "author": "Mei Wang, Yan-Hong Wang, Bharathi Avula, Mohamed M. Radwan et collaborateurs",
+      "organization": "Cannabis and Cannabinoid Research / PubMed",
+      "published": "1er décembre 2016 ; 1(1):262–271",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28861498/",
+      "passage": "PubMed abstract: acidic/neutral forms and losses.",
+      "access": "abstract",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28861498/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: acidic/neutral forms and losses.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-citti-2019",
+      "title": "A novel phytocannabinoid isolated from Cannabis sativa L. with an in vivo cannabimimetic activity higher than Δ9-tetrahydrocannabinol: Δ9-Tetrahydrocannabiphorol",
+      "author": "C. Citti et al.",
+      "published": "2019-12-30",
+      "organization": "Scientific Reports",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+      "access": "excerpt",
+      "passage": "PMC introduction and identification; Results: binding affinities and mouse tetrad.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC introduction and identification; Results: binding affinities and mouse tetrad.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-epidyolex",
+      "title": "Epidyolex — European public assessment report",
+      "author": "Agence européenne des médicaments",
+      "published": "Page en vigueur consultée le 12 novembre 2026",
+      "organization": "Agence européenne des médicaments",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/epidyolex",
+      "access": "official-page",
+      "passage": "EMA overview, mechanism hypotheses, indications and risks.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/epidyolex",
+          "openedAt": "2026-11-14",
+          "sections": "EMA overview, mechanism hypotheses, indications and risks.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "official-page"
+        }
+      ]
+    },
+    {
+      "id": "cb-propyl-1977",
+      "title": "Cannabis. X. The Isolation and Structures of Four New Propyl Cannabinoid Acids, Tetrahydrocannabivarinic Acid, Cannabidivarinic Acid, Cannabichromevarinic Acid and Cannabigerovarinic Acid, from Thai Cannabis, ‘Meao Variant’",
+      "author": "Y. Shoyama, H. Hirano, H. Makino, N. Umekita et I. Nishioka",
+      "published": "1977-09-25",
+      "organization": "Chemical and Pharmaceutical Bulletin",
+      "url": "https://www.jstage.jst.go.jp/article/cpb1958/25/9/25_9_2306/_article/-char/en",
+      "access": "abstract",
+      "passage": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+      "limitation": "Pas d’essai pharmacologique humain.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.jstage.jst.go.jp/article/cpb1958/25/9/25_9_2306/_article/-char/en",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-propyl-1975",
+      "title": "Cannabichromevarin and Cannabigerovarin, Two New Propyl Homologues of Cannabichromene and Cannabigerol",
+      "author": "Y. Shoyama, H. Hirano, M. Oda, T. Somehara et I. Nishioka",
+      "published": "1975-08-25",
+      "organization": "Chemical and Pharmaceutical Bulletin",
+      "url": "https://www.jstage.jst.go.jp/article/cpb1958/23/8/23_8_1894/_article",
+      "access": "abstract",
+      "passage": "Résumé J-STAGE : CBCV et CBGV, homologues propyles de CBC et CBG.",
+      "limitation": "Données d’identité, pas d’efficacité.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.jstage.jst.go.jp/article/cpb1958/23/8/23_8_1894/_article",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé J-STAGE : CBCV et CBGV, homologues propyles de CBC et CBG.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé J-STAGE : CBCV et CBGV, homologues propyles de CBC et CBG.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-cbga",
+      "title": "Prenylation of olivetolate by a hemp transferase yields cannabigerolic acid, the precursor of tetrahydrocannabinol",
+      "organization": "FEBS Letters / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9607329/",
+      "verifiedAt": "2026-11-14",
+      "author": "M. Fellermeier and M. H. Zenk",
+      "published": "1998-05-08",
+      "passage": "Résumé PubMed : GOT végétale, géranylpyrophosphate et olivétolate, spécificité du substrat.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication",
+      "limitation": "Titre et résumé biochimiques, aucune application clinique.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9607329/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : GOT végétale, géranylpyrophosphate et olivétolate, spécificité du substrat.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : GOT végétale, géranylpyrophosphate et olivétolate, spécificité du substrat.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-zagzoog-2020",
+      "title": "In vitro and in vivo pharmacological activity of minor cannabinoids isolated from Cannabis sativa",
+      "author": "A. Zagzoog et al.",
+      "published": "2020-11-23",
+      "organization": "Scientific Reports",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7684313/",
+      "access": "excerpt",
+      "passage": "Résumé et résultats PMC, tableau 1, figure 2, tableaux fonctionnels AMPc : huit cannabinoïdes, cellules CHO exprimant CB1/CB2 humains et souris C57BL/6.",
+      "limitation": "Récepteurs humains en cellules de hamster ≠ participants humains ; les estimations de liaison ont parfois de larges intervalles.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7684313/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et résultats PMC, tableau 1, figure 2, tableaux fonctionnels AMPc : huit cannabinoïdes, cellules CHO exprimant CB1/CB2 humains et souris C57BL/6.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé et résultats PMC, tableau 1, figure 2, tableaux fonctionnels AMPc : huit cannabinoïdes, cellules CHO exprimant CB1/CB2 humains et souris C57BL/6.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-cbg-human-2026",
+      "title": "Safety, pharmacodynamics, and pharmacokinetics of oral cannabigerol in healthy adults",
+      "author": "D. Wolinsky et al.",
+      "published": "2026-08",
+      "organization": "Journal of Pharmacology and Experimental Therapeutics",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42575778/",
+      "access": "abstract",
+      "passage": "Résumé PubMed : 12 adultes sains, doses uniques ascendantes, placebo aléatoire dans séquence, pharmacodynamie et pharmacocinétique.",
+      "limitation": "Texte intégral non ouvert, aucun résultat à long terme.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42575778/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : 12 adultes sains, doses uniques ascendantes, placebo aléatoire dans séquence, pharmacodynamie et pharmacocinétique.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : 12 adultes sains, doses uniques ascendantes, placebo aléatoire dans séquence, pharmacodynamie et pharmacocinétique.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "can-study-cbg24",
+      "title": "Acute effects of cannabigerol on anxiety, stress, and mood",
+      "author": "Cuttler et al.",
+      "published": "2024-07-13",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11246434/",
+      "access": "excerpt",
+      "passage": "Résumé PMC : 34 adultes sains, croisé en double aveugle à distance, 20 mg vs placebo, stress ressenti et tests.",
+      "limitation": "Ne démontre pas traitement d’un trouble anxieux diagnostiqué.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11246434/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PMC : 34 adultes sains, croisé en double aveugle à distance, 20 mg vs placebo, stress ressenti et tests.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PMC : 34 adultes sains, croisé en double aveugle à distance, 20 mg vs placebo, stress ressenti et tests.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-cbda",
+      "title": "Cannabidiolic acid prevents vomiting in Suncus murinus and nausea-induced behaviour in rats by enhancing 5-HT1A receptor activation",
+      "author": "Bolognini et al.",
+      "published": "2012-11-02 en ligne ; mars 2013 en volume",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3596650/",
+      "access": "excerpt",
+      "passage": "Résumé PMC : Suncus murinus, rats, vomissements et gaping conditionné ; 5-HT1A et essais GTPγS.",
+      "limitation": "Données précliniques, pas de patient.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3596650/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PMC : Suncus murinus, rats, vomissements et gaping conditionné ; 5-HT1A et essais GTPγS.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PMC : Suncus murinus, rats, vomissements et gaping conditionné ; 5-HT1A et essais GTPγS.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-cbc-human-2022",
+      "title": "Pharmacokinetics of cannabichromene in a medical cannabis product also containing cannabidiol and Δ9-tetrahydrocannabinol: a pilot study",
+      "author": "E. N. Peters et al.",
+      "published": "2022-02",
+      "organization": "European Journal of Clinical Pharmacology",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8748343/",
+      "access": "excerpt",
+      "passage": "Résumé et introduction PMC : réanalyse de 43 participants, cinq groupes, mélange CBD/THC/CBC, concentrations plasmatiques.",
+      "limitation": "Ni CBC isolé ni essai d’efficacité ; absorbabilité préférentielle est une interprétation prudente.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8748343/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et introduction PMC : réanalyse de 43 participants, cinq groupes, mélange CBD/THC/CBC, concentrations plasmatiques.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé et introduction PMC : réanalyse de 43 participants, cinq groupes, mélange CBD/THC/CBC, concentrations plasmatiques.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-cbcas-1998",
+      "title": "Purification and characterization of cannabichromenic acid synthase from Cannabis sativa",
+      "author": "S. Morimoto, K. Komatsu, F. Taura et Y. Shoyama",
+      "published": "1998-11",
+      "organization": "Phytochemistry",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9862135/",
+      "access": "abstract",
+      "passage": "Résumé PubMed : enzyme purifiée, oxydocyclisation du CBGA et de l’acide cannabinérolïque vers le CBCA ; CBGA substrat favorisé.",
+      "limitation": "Attention : cannabinerolic acid n’est pas cannabinolic acid (CBNA).",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9862135/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : enzyme purifiée, oxydocyclisation du CBGA et de l’acide cannabinérolïque vers le CBCA ; CBGA substrat favorisé.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : enzyme purifiée, oxydocyclisation du CBGA et de l’acide cannabinérolïque vers le CBCA ; CBGA substrat favorisé.",
+          "access": "abstract"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-cannabinoid-cbd",
+      "questions": [
+        "Quelle relation chimique existe entre le CBD et le THC ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Identité et données pharmaceutiques conservées ; distinction non intoxicant/sans action centrale renforcée.",
+        "Mécanisme générique remplacé par cibles et nature du système expérimental.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Le cannabidiol, ou CBD, ne provoque pas l’intoxication caractéristique du THC. Pourtant, il agit sur l’organisme : certaines formulations sont des médicaments, avec des indications et des risques précis.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "CBD et THC ont la même formule C₂₁H₃₀O₂ : 21 carbones, 30 hydrogènes et 2 oxygènes. Mais les liaisons entre ces atomes diffèrent. Le CBD porte deux groupes contenant un oxygène lié à un hydrogène et n’a pas le cycle fermé avec oxygène du THC. Ce sont deux assemblages différents, pas deux concentrations. Le CBDA conserve une partie acide ; le CBDP possède une chaîne plus longue.",
+              "Le CBD est identifié dans le cannabis et ses préparations. Il peut aussi se former quand le CBDA perd du CO₂, le dioxyde de carbone. La quantité de CBD déjà présente doit donc être distinguée de celle qui pourrait apparaître depuis cette forme acide."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cb-citti-2019"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Comment l’expérience éclaire son action",
+            "paragraphs": [
+              "Zagzoog utilise des cellules de laboratoire portant les récepteurs humains CB1 ou CB2. Il mesure séparément la fixation des molécules et les messages produits dans les cellules. Le CBD n’y donne pas le même profil que le THC. Le mécanisme anticonvulsivant du médicament reste incomplètement expliqué ; ce test ne démontre pas que le CBD protège globalement des effets du THC."
+            ],
+            "sourceIds": [
+              "cb-zagzoog-2020",
+              "cb-epidyolex"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Ce que montre le médicament au CBD",
+            "paragraphs": [
+              "Une formulation pharmaceutique de CBD possède des indications autorisées dans certaines épilepsies. Une formulation est le produit réel, avec sa composition et sa présentation. Les résultats de ce médicament ne s’appliquent pas automatiquement à toutes les huiles du commerce.",
+              "Non intoxicant ne signifie pas sans effet sur le cerveau : une somnolence est possible. Les données du médicament décrivent aussi troubles digestifs, interactions avec d’autres médicaments et atteintes du foie. Un étiquetage CBD ne garantit ni la quantité réelle ni l’absence de THC ou de contaminants."
+            ],
+            "sourceIds": [
+              "cb-epidyolex"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-kim-2022",
+          "cb-citti-2019",
+          "cb-epidyolex",
+          "cb-zagzoog-2020"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbd"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi une formule identique à celle du THC ne donne-t-elle pas le même produit ?",
+          "nodes": [
+            {
+              "label": "Inventaire",
+              "detail": "CBD et THC : C₂₁H₃₀O₂."
+            },
+            {
+              "label": "Assemblage",
+              "detail": "Les liaisons et les cycles diffèrent."
+            },
+            {
+              "label": "Conséquences",
+              "detail": "Leurs effets et leurs indications ne sont pas interchangeables."
+            }
+          ],
+          "caption": "Les mêmes nombres d’atomes peuvent former deux structures différentes.",
+          "sourceIds": [
+            "cb-kim-2022",
+            "cb-epidyolex"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-kim-2022",
+        "cb-citti-2019",
+        "cb-epidyolex",
+        "cb-zagzoog-2020"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-cbd-thc-isomeres"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi une formule identique à celle du THC ne donne-t-elle pas le même produit ?",
+        "explainedTerms": [
+          "formule brute",
+          "liaison",
+          "forme acide",
+          "formulation",
+          "récepteur"
+        ],
+        "example": "Les mêmes nombres d’atomes peuvent former deux structures différentes.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": [
+          "hemp-evidence-cbd-thc-isomeres"
+        ]
+      }
+    },
+    {
+      "id": "record-cannabinoid-cbda",
+      "questions": [
+        "Quelle transformation la CBDA synthase réalise-t-elle sur le CBGA ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Structure acide/neutre conservée ; réaction enseignée dans le quiz explicitement intégrée.",
+        "Ajout de l’étude CBDA spécifique et des espèces ; pas d’efficacité humaine extrapolée.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "L’acide cannabidiolique, ou CBDA, est la forme acide apparentée au cannabidiol. Comprendre le passage de l’un à l’autre aide à distinguer ce que la plante produit et ce que l’analyse retrouve.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "Le CBDA porte un carboxyle, un petit groupe d’atomes qui lui donne une fonction acide. Le CBD neutre ne conserve plus ce groupe. Une enzyme de la plante forme le CBDA depuis le CBGA ; la transformation ultérieure en CBD est une autre réaction.",
+              "Le CBDA et l’enzyme qui le forme sont documentés notamment dans du cannabis de type fibre. Le mot chanvre ne permet toutefois pas de connaître la teneur d’une plante ou d’un produit particulier."
+            ],
+            "sourceIds": [
+              "cb-kim-2022"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Deux transformations et une expérience sur les vomissements",
+            "paragraphs": [
+              "La CBDA synthase réorganise les liaisons du CBGA pour former un anneau et du CBDA ; cette réaction, avec perte d’hydrogène, est appelée cyclisation oxydative. Une perte ultérieure de CO₂ donne le CBD : ces deux étapes ne sont pas équivalentes. En laboratoire, le CBDA diminue les vomissements chez Suncus murinus et une réaction de haut-le-cœur conditionnée chez le rat. Un antagoniste, substance qui bloque une cible, réduit ces effets lorsqu’il vise le récepteur de la sérotonine 5-HT1A. Cela soutient l’implication de cette cible dans le modèle, sans démontrer un médicament humain."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cannabinoids-lesson-decarb2016",
+              "can-study-cbda"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Du vomissement animal à la question clinique",
+            "paragraphs": [
+              "Les expériences animales testent une réaction et une cible, sans établir un traitement des nausées chez l’humain. Pour comprendre une éventuelle action dans le corps, il faudrait notamment savoir combien de CBDA atteint les sites concernés et ce qu’il devient. Sa transformation dans une préparation complique déjà l’attribution d’un effet au seul composé de départ."
+            ],
+            "sourceIds": [
+              "can-study-cbda",
+              "cannabinoids-lesson-decarb2016"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-kim-2022",
+          "cannabinoids-lesson-decarb2016",
+          "can-study-cbda",
+          "cb-zagzoog-2020"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbda"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Comment passer de la fabrication du CBDA à l’étude de son effet ?",
+          "nodes": [
+            {
+              "label": "Dans la plante",
+              "detail": "Le CBGA est transformé en CBDA."
+            },
+            {
+              "label": "Transformation",
+              "detail": "Le CBDA peut perdre du CO₂ et devenir CBD."
+            },
+            {
+              "label": "Chez l’animal",
+              "detail": "Un effet sur certains modèles de vomissement est étudié."
+            }
+          ],
+          "caption": "Fabriquer un composé et tester une réaction de vomissement sont deux expériences différentes.",
+          "sourceIds": [
+            "cb-kim-2022",
+            "cannabinoids-lesson-decarb2016",
+            "can-study-cbda"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-kim-2022",
+        "cannabinoids-lesson-decarb2016",
+        "can-study-cbda",
+        "cb-zagzoog-2020"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-cbdas-reaction"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Comment passer de la fabrication du CBDA à l’étude de son effet ?",
+        "explainedTerms": [
+          "carboxyle",
+          "enzyme",
+          "antiémétique",
+          "antagoniste",
+          "5-HT1A"
+        ],
+        "example": "Fabriquer un composé et tester une réaction de vomissement sont deux expériences différentes.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": [
+          "hemp-evidence-cbdas-reaction"
+        ]
+      }
+    },
+    {
+      "id": "record-cannabinoid-cbg",
+      "questions": [
+        "Que distinguent les lettres CBG et CBGA ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "L’expression CBG mère de tous corrigée par distinction CBGA conservée.",
+        "Étude humaine 2024 ajoutée à la 2026 ; aucune conclusion clinique universelle.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Le cannabigérol, ou CBG, est une molécule du chanvre dont les premiers essais humains portent surtout sur des expositions courtes. Son lien avec le CBGA explique une confusion fréquente sur son rôle dans la plante.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "Le CBG et le CBGA appartiennent à la même famille, mais le CBGA conserve un groupe carboxyle, une partie acide. C’est le CBGA qui alimente les branches végétales vers plusieurs autres acides. Appeler le CBG « mère de tous les cannabinoïdes » fait disparaître cette distinction importante.",
+              "Les analyses distinguent CBG et CBGA dans le cannabis. La quantité retrouvée dépend de l’échantillon et de ses transformations ; mesurer du CBG ne mesure pas directement le fonctionnement de toutes les branches de fabrication."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cannabinoids-lesson-decarb2016"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Comment l’expérience éclaire son action",
+            "paragraphs": [
+              "Dans des cellules de laboratoire portant CB1 ou CB2 humains, Zagzoog mesure la fixation du CBG et ses effets sur l’AMPc, un messager interne de la cellule. Le profil diffère de celui du THC et dépend du test et du nombre de récepteurs. Une modification de ce signal cellulaire n’est pas la même mesure qu’un ressenti d’anxiété chez un volontaire."
+            ],
+            "sourceIds": [
+              "cb-zagzoog-2020"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Lire les premiers essais humains",
+            "paragraphs": [
+              "En 2024, un essai croisé à distance chez 34 adultes sains compare le CBG au placebo, une préparation de comparaison sans principe actif. Les mêmes personnes passent par les deux conditions ; des différences de stress ou d’anxiété ressentis sont rapportées. En 2026, douze adultes sains participent à une étude de laboratoire sur des doses uniques croissantes : les effets mesurés sont peu robustes, avec une exposition sanguine variable. Ces observations courtes ne démontrent pas un traitement établi du trouble anxieux.",
+              "Les effets à long terme et les interactions restent à préciser. Des résultats chez des volontaires sains ne décrivent pas automatiquement une personne malade, un traitement répété ou une autre composition de produit."
+            ],
+            "sourceIds": [
+              "can-study-cbg24",
+              "cb-cbg-human-2026"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-kim-2022",
+          "cannabinoids-lesson-decarb2016",
+          "cb-cbg-human-2026",
+          "can-study-cbg24",
+          "cb-zagzoog-2020"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbg"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Que distinguent les lettres CBG et CBGA ?",
+          "nodes": [
+            {
+              "label": "CBGA",
+              "detail": "Forme acide utilisée par plusieurs voies végétales."
+            },
+            {
+              "label": "CBG",
+              "detail": "Autre molécule, étudiée notamment chez des volontaires."
+            },
+            {
+              "label": "2024 / 2026",
+              "detail": "34 puis 12 participants, avec deux méthodes différentes."
+            }
+          ],
+          "caption": "Le précurseur des branches acides est le CBGA ; les essais humains courts portent sur le CBG.",
+          "sourceIds": [
+            "cb-kim-2022",
+            "cannabinoids-lesson-decarb2016",
+            "can-study-cbg24",
+            "cb-cbg-human-2026"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-kim-2022",
+        "cannabinoids-lesson-decarb2016",
+        "cb-cbg-human-2026",
+        "can-study-cbg24",
+        "cb-zagzoog-2020"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que distinguent les lettres CBG et CBGA ?",
+        "explainedTerms": [
+          "carboxyle",
+          "précurseur",
+          "essai croisé",
+          "placebo",
+          "AMPc"
+        ],
+        "example": "Le précurseur des branches acides est le CBGA ; les essais humains courts portent sur le CBG.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-cbga",
+      "questions": [
+        "Pourquoi un précurseur important peut-il être peu abondant ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Carrefour acide conservé et amont prényltransférase ajouté.",
+        "Portée enzymatique séparée des quantités dans un échantillon et de toute efficacité clinique."
+      ],
+      "patch": {
+        "lead": "L’acide cannabigérolique, ou CBGA, est un point de départ commun de plusieurs voies de fabrication du chanvre. Son importance vient d’abord de ce rôle dans la plante, pas d’un bénéfice médical démontré.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Le carrefour acide de plusieurs branches",
+            "paragraphs": [
+              "Le A final signale ici une forme acide : le CBGA possède un groupe carboxyle, absent du CBG. La perte de ce groupe sous forme de CO₂, le dioxyde de carbone, peut donner du CBG. Ce n’est pas la réaction qui produit les autres acides.",
+              "Le CBGA est identifié dans le cannabis et comme substrat, c’est-à-dire molécule de départ utilisée par certaines enzymes. Un ingrédient peut être vite transformé : son rôle central ne signifie donc pas qu’il soit toujours abondant dans une fleur."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cannabinoids-lesson-decarb2016",
+              "cb-cbcas-1998"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Comment les enzymes répartissent le CBGA",
+            "paragraphs": [
+              "Une enzyme attache un groupe géranyle à l’olivétolate : cette réaction de prénylation forme le CBGA. D’autres enzymes le réorganisent vers le THCA, le CBDA ou le CBCA ; sa décarboxylation mène au CBG. Montrer qu’une enzyme accepte le CBGA ne permet pas de calculer la proportion de chaque produit dans une fleur entière."
+            ],
+            "sourceIds": [
+              "qh-sci-cbga",
+              "cb-kim-2022",
+              "cb-cbcas-1998",
+              "cannabinoids-lesson-decarb2016"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Un carrefour végétal, sans conclusion médicale",
+            "paragraphs": [
+              "Ces travaux expliquent surtout la fabrication des molécules dans la plante. Ils ne mesurent pas un soulagement chez des patients ni la quantité de CBGA atteignant une cible dans leur corps. Son rôle de précurseur, c’est-à-dire de point de départ, ne permet donc pas de déduire une efficacité ou une sécurité d’utilisation."
+            ],
+            "sourceIds": [
+              "cb-cbcas-1998",
+              "qh-sci-cbga",
+              "cb-kim-2022",
+              "cannabinoids-lesson-decarb2016"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-kim-2022",
+          "cannabinoids-lesson-decarb2016",
+          "cb-cbcas-1998",
+          "qh-sci-cbga"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbga"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi un précurseur important peut-il être peu abondant ?",
+          "nodes": [
+            {
+              "label": "Construction",
+              "detail": "Une partie géranyle est attachée à l’olivétolate."
+            },
+            {
+              "label": "CBGA",
+              "detail": "Molécule commune au départ de plusieurs branches."
+            },
+            {
+              "label": "Destinations",
+              "detail": "Autres acides par enzymes, ou CBG par perte de CO₂."
+            }
+          ],
+          "caption": "Un point de départ commun peut alimenter plusieurs produits sans s’accumuler en grande quantité.",
+          "sourceIds": [
+            "cb-kim-2022",
+            "cannabinoids-lesson-decarb2016",
+            "cb-cbcas-1998"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-kim-2022",
+        "cannabinoids-lesson-decarb2016",
+        "cb-cbcas-1998",
+        "qh-sci-cbga"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi un précurseur important peut-il être peu abondant ?",
+        "explainedTerms": [
+          "carboxyle",
+          "substrat",
+          "enzyme",
+          "prénylation",
+          "décarboxylation"
+        ],
+        "example": "Un point de départ commun peut alimenter plusieurs produits sans s’accumuler en grande quantité.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-cbc",
+      "questions": [
+        "Que prouve la présence de CBC dans le sang après une huile mélangée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Données humaines précisées : n=43, réanalyse et mélange.",
+        "Mécanismes rendus spécifiques aux tests ; pas de promesse anti-inflammatoire thérapeutique.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Le cannabichromène, ou CBC, est un cannabinoïde distinct du THC et du CBD. Une étude peut le détecter dans le sang sans démontrer qu’il est responsable à lui seul des effets d’un mélange.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "Le CBC appartient à sa propre famille structurale. Le CBCA possède en plus un groupe carboxyle, une partie acide ; le CBCV porte une chaîne de trois carbones au lieu des cinq du CBC. Ces noms désignent des molécules différentes, pas des quantités différentes du même composé.",
+              "Le CBC est identifié dans des préparations de cannabis. Si une analyse transforme d’abord les acides par perte de CO₂, une partie du CBC mesuré peut s’être formée pendant la préparation."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cb-propyl-1975"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Comment l’expérience éclaire son action",
+            "paragraphs": [
+              "Dans les cellules portant CB1 ou CB2, les chercheurs distinguent la liaison au récepteur des messages déclenchés ensuite, comme l’AMPc ou le recrutement de la β-arrestine, une protéine participant à la réponse du récepteur. Pour le CBC, certaines mesures de liaison sont imprécises ou incomplètes. Un chiffre de laboratoire ne devient donc pas une puissance clinique."
+            ],
+            "sourceIds": [
+              "cb-zagzoog-2020"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Mesurer le CBC dans le sang après une huile mélangée",
+            "paragraphs": [
+              "Une réanalyse chez 43 participants répartis au hasard entre cinq groupes suit une huile contenant à la fois CBD, THC et CBC. Elle mesure le CBC dans le plasma, la partie liquide du sang. Cela montre son passage dans la circulation ; sans groupe recevant le CBC seul, on ne peut pas lui attribuer isolément les effets ressentis du mélange.",
+              "Cette difficulté d’attribution concerne aussi la sécurité : observer une huile à plusieurs constituants ne définit pas les effets propres du CBC isolé ni ceux d’une autre composition."
+            ],
+            "sourceIds": [
+              "cb-cbc-human-2022"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-kim-2022",
+          "cb-propyl-1975",
+          "cb-cbc-human-2022",
+          "cb-zagzoog-2020"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbc"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Que prouve la présence de CBC dans le sang après une huile mélangée ?",
+          "nodes": [
+            {
+              "label": "Huile étudiée",
+              "detail": "CBD, THC et CBC présents ensemble."
+            },
+            {
+              "label": "43 participants",
+              "detail": "Mesure du CBC dans le plasma."
+            },
+            {
+              "label": "Attribution",
+              "detail": "Les effets du CBC seul ne sont pas isolés."
+            }
+          ],
+          "caption": "Mesurer une substance dans le plasma prouve une exposition, pas sa responsabilité dans tous les effets.",
+          "sourceIds": [
+            "cb-kim-2022",
+            "cb-zagzoog-2020",
+            "cb-cbc-human-2022"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-kim-2022",
+        "cb-propyl-1975",
+        "cb-cbc-human-2022",
+        "cb-zagzoog-2020"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que prouve la présence de CBC dans le sang après une huile mélangée ?",
+        "explainedTerms": [
+          "carboxyle",
+          "plasma",
+          "randomisation",
+          "récepteur",
+          "AMPc",
+          "β-arrestine"
+        ],
+        "example": "Mesurer une substance dans le plasma prouve une exposition, pas sa responsabilité dans tous les effets.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-cbca",
+      "questions": [
+        "Que nous apprend une enzyme isolée sur la fabrication du CBCA ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Identité CBCA confirmée ; substrat enzymatique et produit distingués.",
+        "Alerte de nomenclature acide cannabinérolïque/cannabinolique ajoutée.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "L’acide cannabichroménique, ou CBCA, est fabriqué par une enzyme du chanvre. Étudier cet outil biologique explique une branche de fabrication, sans encore étudier un traitement humain.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "L’acide qui précède le CBC",
+            "paragraphs": [
+              "Une chaîne latérale est une branche d’atomes attachée à la partie centrale de la molécule. Le CBCA porte un groupe carboxyle, une petite partie acide, que le CBC neutre n’a plus. Sa chaîne latérale possède cinq carbones ; celle du CBCVA n’en possède que trois. Ces deux différences permettent de distinguer les noms.",
+              "Le CBCA est documenté dans le matériel végétal et dans des expériences avec son enzyme. Caractériser cette enzyme ne mesure pas la quantité de CBCA d’un produit commercial."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cb-propyl-1977",
+              "cb-cbcas-1998"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "L’enzyme fabrique le CBCA, puis le CBCA peut perdre du CO₂",
+            "paragraphs": [
+              "Des chercheurs isolent la CBCA synthase, l’enzyme qui transforme le CBGA en CBCA en réorganisant sa structure. Ils comparent aussi un autre substrat, l’acide cannabinérolique, qui ne doit pas être confondu avec l’acide cannabinolique appelé CBNA. Le test ne démontre ni la vitesse de cette voie dans toute plante ni son utilisation automatique de chaque molécule à chaîne plus courte."
+            ],
+            "sourceIds": [
+              "cb-cbcas-1998"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Une enzyme végétale, une autre question médicale",
+            "paragraphs": [
+              "L’expérience identifie une réaction de fabrication dans la plante. Elle ne mesure ni une amélioration chez des patients ni les effets nocifs d’une exposition. La quantité de CBCA atteignant les tissus, ses transformations et les conséquences des mélanges restent d’autres questions."
+            ],
+            "sourceIds": [
+              "cb-cbcas-1998"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-cbcas-1998",
+          "cb-propyl-1977",
+          "cb-kim-2022"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbca"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Que nous apprend une enzyme isolée sur la fabrication du CBCA ?",
+          "nodes": [
+            {
+              "label": "CBGA",
+              "detail": "Molécule de départ du test."
+            },
+            {
+              "label": "Enzyme isolée",
+              "detail": "La CBCA synthase réorganise la structure."
+            },
+            {
+              "label": "CBCA",
+              "detail": "Produit acide obtenu et identifié."
+            }
+          ],
+          "caption": "L’outil et la réaction sont caractérisés ; la quantité produite dans chaque fleur reste une autre mesure.",
+          "sourceIds": [
+            "cb-cbcas-1998",
+            "cb-kim-2022"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-cbcas-1998",
+        "cb-propyl-1977",
+        "cb-kim-2022"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que nous apprend une enzyme isolée sur la fabrication du CBCA ?",
+        "explainedTerms": [
+          "carboxyle",
+          "synthase",
+          "substrat",
+          "forme neutre"
+        ],
+        "example": "L’outil et la réaction sont caractérisés ; la quantité produite dans chaque fleur reste une autre mesure.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [
+    {
+      "id": "hemp-evidence-cbd-thc-isomeres",
+      "prompt": "Quelle relation chimique existe entre le CBD et le THC ?",
+      "options": [
+        "Même structure et deux noms",
+        "Même formule brute, structures différentes",
+        "Un acide et sa forme décarboxylée",
+        "Deux longueurs de la même chaîne latérale"
+      ],
+      "answer": 1,
+      "explanation": "Le CBD et le THC contiennent les mêmes sortes et nombres d’atomes, mais ceux-ci sont reliés autrement. C’est pourquoi leur formule brute est identique sans que leur structure ou leurs effets le soient.",
+      "articleId": "record-cannabinoid-cbd",
+      "sourceIds": [
+        "cb-kim-2022",
+        "cb-citti-2019"
+      ]
+    },
+    {
+      "id": "hemp-evidence-cbdas-reaction",
+      "prompt": "Quelle transformation la CBDA synthase réalise-t-elle sur le CBGA ?",
+      "options": [
+        "Une cyclisation oxydative",
+        "Une décarboxylation",
+        "Une hydrogénation",
+        "Une hydrolyse"
+      ],
+      "answer": 0,
+      "explanation": "La CBDA synthase réorganise le CBGA pour former un anneau dans la molécule lors d’une cyclisation oxydative. Cette fabrication du CBDA est différente de la perte ultérieure de CO₂ qui peut donner du CBD.",
+      "articleId": "record-cannabinoid-cbda",
+      "sourceIds": [
+        "cb-kim-2022"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Recontrôler noms français des acides cannabinérolïque et cannabinolique ; aucune abréviation ambiguë du substrat alternatif CBCAS."
+  ]
+}

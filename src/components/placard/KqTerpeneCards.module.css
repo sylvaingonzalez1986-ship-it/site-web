@@ -1,0 +1,118 @@
+.deck, .dialog, .articleCard { color: var(--game-ink, #172923); font-family: var(--font-body), Arial, sans-serif; min-width: 0; }
+.deck *, .dialog *, .articleCard * { box-sizing: border-box; }
+.deck { margin: 8px 0 34px; }
+.deck .deckHeading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 16px; }
+.deck .deckHeading h3 { margin: 0 0 8px; }
+.deck .deckHeading p { font-size: 14px; line-height: 1.5; margin: 0; }
+.total { display: grid; text-align: center; min-width: 62px; font: 800 33px/1 var(--font-display), sans-serif; }
+.total small { font: 12px/1.7 var(--font-body), sans-serif; }
+.deck button, .dialog button, .dialog summary { min-height: 44px; cursor: pointer; }
+.deck :is(button, input), .dialog :is(button, summary) { background: transparent; border: 2px solid transparent; color: inherit; box-shadow: none; border-radius: 0; padding: 10px 14px; font: inherit; --game-control-art: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.deck button, .dialog button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; }
+.deck button[aria-pressed='true'], .dialog button[aria-pressed='true'] { --game-control-art: var(--game-control-teal, url('/placard/ui/control-teal-v2.webp')); color: #fff8e7; }
+.deck :is(button, input):focus-visible, .dialog :is(button, a, summary):focus-visible, .articleCard button:focus-visible { outline: 3px solid #087b70; outline-offset: 4px; }
+.deck button:disabled, .dialog button:disabled { opacity: .4; cursor: default; }
+.deck .filters { display: flex; flex-wrap: wrap; gap: 7px; }
+.deck .filters button { padding: 7px 12px; font-size: 12px; min-height: 50px; }
+.filters img { width: 38px; height: 38px; object-fit: contain; }
+.deck .tools { display: flex; align-items: center; justify-content: space-between; gap: 14px; margin: 17px 0 9px; }
+.tools label { display: flex; align-items: center; flex: 0 1 430px; position: relative; min-width: 0; }
+.tools label > svg { position: absolute; left: 13px; pointer-events: none; }
+.deck .tools input { width: 100%; padding-left: 39px; min-height: 47px; font-size: 14px; }
+.tools > span { font-size: 13px; white-space: nowrap; }
+.deck .track { position: relative; display: grid; grid-auto-flow: column; grid-auto-columns: calc((100% - 44px) / 3); gap: 16px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding: 6px; padding: 10px 6px 18px; margin: 0; list-style: none; scrollbar-width: thin; scrollbar-color: #087b70 #e6dbc4; }
+.track > li { scroll-snap-align: start; min-width: 0; display: flex; }
+.deck .card, .articleCard .card { display: block; padding: 0; width: 100%; text-align: left; border: 0; border-image: none; background: transparent; color: #172923; box-shadow: none; border-radius: 0; cursor: pointer; }
+.card .face, .enlargedCard .face { display: flex; flex-direction: column; height: 100%; min-height: 378px; padding: 18px; border: 3px solid transparent; border-image: var(--game-panel-gold, url('/placard/ui/panel-gold-v1.webp')) var(--game-panel-slice, 48) fill / 20px / 0 stretch; background: transparent; box-shadow: none; color: #172923; }
+.deck .card :is(span, strong), .articleCard .card :is(span, strong), .dialog :is(button, summary, a, span, strong) { text-transform: none !important; letter-spacing: normal !important; }
+.deck .card :is(span, strong), .articleCard .card :is(span, strong) { font-family: var(--font-body), Arial, sans-serif !important; font-weight: 500 !important; }
+.cardTop { display: flex; align-items: start; justify-content: space-between; gap: 10px; font-size: 10px; line-height: 1.35; }
+.cardTop > :last-child { white-space: nowrap; }
+.face .cardName, .deck .card .cardName, .articleCard .card .cardName { display: block; font: 800 clamp(20px, 2.4vw, 27px)/1.18 var(--font-display), Impact, sans-serif !important; margin: 10px 0 15px; min-height: 2.36em; overflow-wrap: anywhere; }
+.artWindow { min-width: 0; display: grid; align-items: center; min-height: 190px; border-block: 1px solid #17292340; background: #fff8e980; }
+.aromaArt { display: flex; align-items: center; justify-content: center; min-width: 0; padding: 10px 0; gap: 3px; }
+.aromaNote { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1 1 0; min-width: 0; font-size: 12px; line-height: 1.3; }
+.aromaNote img { display: block; object-fit: contain; width: 100%; max-width: 170px; height: 145px; }
+.aromaArt:has(.aromaNote:only-child) .aromaNote img { width: min(210px, 92%); max-width: 210px; height: 170px; }
+.face .odor { display: block; font-size: 13px; line-height: 1.55; margin: 13px 0 18px; }
+.face .cardFoot { display: flex; justify-content: space-between; align-items: end; flex-wrap: wrap; gap: 9px; border-top: 1px solid #17292335; padding-top: 11px; margin-top: auto; font-size: 11px; line-height: 1.4; }
+.cardFoot > span { display: flex; gap: 5px; align-items: center; }
+.deck .carouselNav { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 9px 0 0; }
+.carouselNav > span { font-size: 12px; text-align: center; }
+.deck .carouselNav button { min-width: 52px; }
+.empty { text-align: center; padding: 20px 10px; }
+.dialog { position: fixed; inset: 0; margin: auto; width: min(900px, calc(100vw - 32px)); max-width: calc(100vw - 24px); max-height: calc(100dvh - 24px); overflow: hidden; padding: 8px; border: 2px solid transparent; background: transparent; border-image: var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp')) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
+.dialog[open] { display: flex; flex-direction: column; }
+.dialog::backdrop { background: #102d29ba; backdrop-filter: blur(4px); }
+.dialogHeader { display: flex; flex: 0 0 auto; align-items: center; justify-content: space-between; gap: 12px; padding: 7px 10px 10px 15px; border-bottom: 1px solid #17292330; }
+.dialogHeader > span { font-weight: 700; font-size: 14px; }
+.dialogHeader button { flex: 0 0 44px; padding: 8px; }
+.detailBody { overflow-y: auto; overscroll-behavior-y: contain; min-height: 0; padding: 20px; }
+.detailLayout { display: grid; grid-template-columns: minmax(0, .95fr) minmax(0, 1fr); gap: 26px; align-items: start; }
+.detailCardArea { min-width: 0; }
+.enlargedCard { touch-action: pan-y; }
+.enlargedCard .face { min-height: 450px; padding: 22px; }
+.enlargedCard .artWindow { min-height: 205px; }
+.enlargedCard .aromaNote img { height: 170px; }
+.enlargedCard .cardName { font-size: 32px !important; min-height: 0; }
+.moleculeArt { display: grid; justify-items: center; }
+.moleculeArt img { width: 100%; height: 200px; object-fit: contain; mix-blend-mode: multiply; filter: brightness(.6) contrast(7); }
+.moleculeArt > span { font-size: 10px; padding-bottom: 8px; }
+.dialog .viewSwitch { display: flex; justify-content: center; gap: 8px; margin-top: 12px; }
+.viewSwitch button { flex: 1; font-size: 13px; }
+.structureNote { font-size: 11px; line-height: 1.55; margin: 10px 4px 0; }
+.characteristics h3 { margin: 2px 0 16px; font: 800 26px/1.15 var(--font-display), Impact, sans-serif; }
+.facts { margin: 0; }
+.facts > div { padding: 10px 0; border-bottom: 1px solid #17292325; }
+.facts dt { font-size: 12px; color: #436055; margin-bottom: 5px; }
+.facts dd { font-size: 14px; line-height: 1.5; margin: 0; }
+.facts dd.formula { font-size: 24px; font-weight: 700; }
+.plants { display: flex; flex-wrap: wrap; gap: 8px 14px; list-style: none; padding: 0; margin: 0; }
+.plants li { border-left: 3px solid #087b70; padding-left: 8px; }
+.characteristics p { font-size: 13px; line-height: 1.65; }
+.characteristics .sensoryNote { font-size: 12px; line-height: 1.6; margin: 16px 0; }
+.dialog details { margin: 8px 0; }
+.dialog summary { font-size: 13px; align-content: center; padding: 11px 14px; }
+.dialog details > :not(summary) { margin-inline: 8px; }
+.dialog a { color: #006358; font-size: 13px; line-height: 1.5; text-underline-offset: 3px; overflow-wrap: anywhere; }
+.sources { padding-left: 18px; }
+.sources li { margin-bottom: 10px; }
+.sources span { display: block; font-size: 11px; line-height: 1.4; margin-top: 4px; }
+.dialog .readArticle { width: 100%; margin-top: 12px; font-size: 13px; --game-control-art: var(--game-control-teal, url('/placard/ui/control-teal-v2.webp')); color: #fff8e7; }
+.dialogNav { flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 14px 7px; border-top: 1px solid #17292330; }
+.dialogNav > span { display: grid; gap: 3px; text-align: center; font-size: 14px; }
+.dialogNav small { font-size: 11px; }
+.dialogNav button { flex: 0 0 48px; }
+.articleCard { max-width: 310px; margin-inline: auto; }
+.srOnly { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+@media (hover: hover) {
+  .deck button:hover:not(:disabled), .dialog :is(button, summary):hover { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); color: #172923; }
+  .deck .card:hover .face, .articleCard .card:hover .face { border-image-source: var(--game-panel-apricot, url('/placard/ui/panel-apricot-v1.webp')); }
+}
+@media (max-width: 1100px) { .deck .track { grid-auto-columns: calc((100% - 28px) / 2); } }
+@media (max-width: 660px) {
+  .deck .track { grid-auto-columns: min(290px, 86%); gap: 12px; }
+  .deck .filters { flex-wrap: nowrap; overflow-x: auto; padding: 5px; margin-inline: -5px; scrollbar-width: thin; }
+  .deck .filters button { flex-shrink: 0; flex-direction: column; font-size: 11px; padding: 9px 12px; min-width: 66px; }
+  .deck .filters button:first-child { justify-content: center; }
+  .deck .tools { flex-wrap: wrap; gap: 6px; }
+  .tools label { flex-basis: 100%; }
+  .tools > span { font-size: 12px; }
+  .deck .deckHeading p { font-size: 13px; }
+  .deck .total { font-size: 28px; min-width: 44px; }
+  .card .face { padding: 17px; }
+  .dialog { width: calc(100vw - 14px); max-width: calc(100vw - 14px); max-height: calc(100dvh - 14px); padding: 4px; }
+  .dialogHeader { padding: 4px 5px 6px 10px; }
+  .dialogHeader > span { font-size: 13px; }
+  .detailBody { padding: 12px; }
+  .detailLayout { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+  .detailCardArea { max-width: 365px; width: 100%; margin-inline: auto; }
+  .enlargedCard .face { min-height: 400px; padding: 20px; }
+  .enlargedCard .cardName { font-size: 28px !important; min-height: auto; }
+  .enlargedCard .artWindow { min-height: 170px; }
+  .enlargedCard .aromaNote img { height: 150px; }
+  .moleculeArt img { height: 165px; }
+  .characteristics { padding-inline: 4px; }
+  .dialogNav { padding: 8px 7px 5px; gap: 7px; }
+  .dialogNav > span { font-size: 12px; }
+}

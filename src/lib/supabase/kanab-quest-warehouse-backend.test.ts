@@ -1,10 +1,12 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const { createSupabaseServiceClient } = vi.hoisted(() => ({ createSupabaseServiceClient: vi.fn() }));
+const { createSupabaseServiceClient, getKqStaffSnapshot } = vi.hoisted(() => ({ createSupabaseServiceClient: vi.fn(), getKqStaffSnapshot: vi.fn() }));
 vi.mock("./admin", () => ({ createSupabaseServiceClient }));
+vi.mock("./kanab-quest-staff-backend", () => ({ getKqStaffSnapshot }));
 vi.mock("./kanab-quest-warehouse-flow-backend", () => ({ getKqWarehouseSalesForecast: vi.fn().mockResolvedValue(null) }));
 import { compactKqWarehouseToStarterFloor, createKqWarehouseStarter, getKqWarehouseQuote, type KqWarehouseState } from "../kanab-quest-warehouse";
 import { getKqWarehouseProcessingEquipment, getKqWarehouseRunSnapshot, getKqWarehouseSnapshot, saveKqWarehouseLayout } from "./kanab-quest-warehouse-backend";
 import { getKqWarehouseSalesForecast } from "./kanab-quest-warehouse-flow-backend";
+import { initializeKqWarehouseCondition } from "../kanab-quest-warehouse-condition";
 
 const userId = "11111111-1111-4111-8111-111111111111";
 const requestKey = "22222222-2222-4222-8222-222222222222";
@@ -19,6 +21,62 @@ const current = () => ({ state: starter, revision: 1, cashCents: 100_000, active
 
 describe("warehouse service boundary", () => {
   beforeEach(() => vi.clearAllMocks());
+
+  it("settles idle enabled production then uses the atomic equipment RPC with unchanged player settings", async () => {
+    const cultureEquipment = initializeKqWarehouseCondition(starter, true);
+    const productionReservation = { zoneId: "starter", enabled: true, equipmentEditable: true };
+    const settings = { enabled: true, zoneId: "starter", maxDailyCostCents: 100_000 };
+    getKqStaffSnapshot.mockResolvedValue({ revision: 7, state: { production: { settings, facility: { zoneId: "starter" }, lots: [], jobs: [], advancedAt: "2026-11-11T10:00:00.000Z" } }, context: {
+      productionVersion: 1, productionFacility: { warehouseState: starter, warehouseRevision: 1, usedStorageGrams: 0, reservedDryingGrams: 0, busyZoneIds: [], equipment: [] },
+    } });
+    const rpc = vi.fn().mockImplementation(async name => ({ error: null, data: name === "rpc_kq_warehouse_receipt" ? null : { ...current(), cultureEquipment, productionReservation } }));
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    const next = { ...starter, zones: starter.zones.map(zone => ({ ...zone, optionCodes: ["SIM-WATER-01"] })) };
+    const quote = getKqWarehouseQuote(next, starter);
+    await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: next, expectedCostCents: quote.totalCostCents });
+    expect(getKqStaffSnapshot).toHaveBeenCalledWith(userId);
+    expect(rpc.mock.calls.find(([name]) => name === "rpc_kq_warehouse_save_production_equipment")?.[1]).toMatchObject({
+      p_expected_staff_revision: 7, p_settled_at: "2026-11-11T10:00:00.000Z", p_cost_cents: quote.totalCostCents, p_next_state: quote.nextState,
+    });
+    expect(settings).toEqual({ enabled: true, zoneId: "starter", maxDailyCostCents: 100_000 });
+    getKqStaffSnapshot.mockResolvedValueOnce({ revision: 8, state: { production: { facility: {}, lots: [{}], jobs: [] } } });
+    await expect(saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state: next, expectedCostCents: quote.totalCostCents })).rejects.toMatchObject({ status: 409 });
+    expect(rpc.mock.calls.filter(([name]) => name === "rpc_kq_warehouse_save_production_equipment")).toHaveLength(1);
+  });
+
+  it.each([true, false])("publishes the occupied commercial zone, skips compaction and blocks its individual quote (enabled=%s)", async enabled => {
+    const state = legacyFloor(), productionReservation = { zoneId: "starter", enabled };
+    const rpc = vi.fn().mockResolvedValue({ error: null, data: { ...current(), state, productionReservation } });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    expect(await getKqWarehouseSnapshot(userId)).toMatchObject({ productionReservation, state });
+    expect(await getKqWarehouseRunSnapshot(userId)).toMatchObject({ productionReservedZoneId: "starter", sourceState: state });
+    await expect(getKqWarehouseRunSnapshot(userId, "starter")).rejects.toMatchObject({ status: 409 });
+    expect(rpc.mock.calls.some(([name]) => name === "rpc_kq_warehouse_compact")).toBe(false);
+  });
+
+  it("keeps explicit release separate from older snapshots without reservation metadata", async () => {
+    const rpc = vi.fn().mockResolvedValue({ error: null, data: { ...current(), productionReservation: null } });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    expect(await getKqWarehouseRunSnapshot(userId, "starter")).toMatchObject({ productionReservedZoneId: null });
+    rpc.mockResolvedValue({ error: null, data: current() });
+    expect(await getKqWarehouseRunSnapshot(userId, "starter")).not.toHaveProperty("productionReservedZoneId");
+  });
+
+  it.each([{ zoneId: "starter", enabled: "false" }, { zoneId: "unknown", enabled: true }, [], false])("rejects malformed commercial reservation metadata: %j", async productionReservation => {
+    createSupabaseServiceClient.mockReturnValue({ rpc: vi.fn().mockResolvedValue({ error: null, data: { ...current(), productionReservation } }) });
+    await expect(getKqWarehouseSnapshot(userId)).rejects.toThrow("invalid_snapshot");
+  });
+
+  it("refuses a Buddie assignment in the reserved zone before saving but preserves replayed receipts", async () => {
+    const productionReservation = { zoneId: "starter", enabled: false };
+    const rpc = vi.fn().mockImplementation(async name => ({ error: null, data: name === "rpc_kq_warehouse_receipt" ? null : { ...current(), productionReservation } }));
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    const state = { ...starter, zones: starter.zones.map(zone => ({ ...zone, buddieCode: "HH2026-002" })) };
+    await expect(saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state, expectedCostCents: 0 })).rejects.toMatchObject({ status: 409 });
+    expect(rpc.mock.calls.some(([name]) => name === "rpc_kq_warehouse_save")).toBe(false);
+    rpc.mockResolvedValue({ error: null, data: { ...current(), productionReservation, receipt: { requestKey, replayed: true } } });
+    expect(await saveKqWarehouseLayout({ userId, requestKey, expectedRevision: 1, state, expectedCostCents: 0 })).toMatchObject({ productionReservation, receipt: { replayed: true } });
+  });
 
   it("compacts an idle historical plan once and returns the committed revision before a new run", async () => {
     let saved = { ...current(), state: legacyFloor(), revision: 7 };
@@ -48,6 +106,22 @@ describe("warehouse service boundary", () => {
       data: { ...current(), state: name === "rpc_kq_warehouse_compact" ? winner : state, revision: name === "rpc_kq_warehouse_compact" ? 9 : 8 } }));
     createSupabaseServiceClient.mockReturnValue({ rpc });
     expect(await getKqWarehouseRunSnapshot(userId)).toMatchObject({ revision: 9, sourceState: winner });
+  });
+
+  it("reloads occupancy when a commercial reservation wins the compaction race", async () => {
+    const state = legacyFloor(), productionReservation = { zoneId: "starter", enabled: true };
+    let reserved = false;
+    const rpc = vi.fn().mockImplementation(async (name: string) => {
+      if (name === "rpc_kq_warehouse_compact") {
+        reserved = true;
+        return { data: null, error: { message: "staff_production_occupied" } };
+      }
+      return { error: null, data: { ...current(), state, productionReservation: reserved ? productionReservation : null } };
+    });
+    createSupabaseServiceClient.mockReturnValue({ rpc });
+    expect(await getKqWarehouseRunSnapshot(userId)).toMatchObject({ sourceState: state, productionReservedZoneId: "starter" });
+    expect(rpc.mock.calls.filter(([name]) => name === "rpc_kq_warehouse_compact")).toHaveLength(1);
+    expect(rpc.mock.calls.filter(([name]) => name === "rpc_kq_warehouse_snapshot")).toHaveLength(2);
   });
 
   it("keeps a legacy screen available if only the new RPC is not deployed yet", async () => {

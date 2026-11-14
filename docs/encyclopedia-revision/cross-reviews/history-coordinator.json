@@ -1,0 +1,17 @@
+{
+  "date": "2026-11-14",
+  "entriesRead": [
+    "ref-histoire-culture",
+    "ref-histoire-politiques"
+  ],
+  "glossaryRead": [],
+  "method": "Lecture intégrale des textes de chaque fiche par le coordinateur ; les dernières modifications ont été relues individuellement après stabilisation des lots. Les sections, légendes, diagrammes, faits, définitions et références associées ont été examinés. Validation finale distincte après contrôles techniques et visuels.",
+  "findings": [
+    "Deux fiches historiques relues intégralement ; dates, territoire, nature de preuve et frises contrôlés."
+  ],
+  "finalApprovalRecordedIn": "validation.json",
+  "contentHashes": {
+    "ref-histoire-culture": "a1cc8136aae262e16c47891d45b8462670817db4284ec8658c069ec87bbe9e77",
+    "ref-histoire-politiques": "a3b7734a8ef6fe979ec6b95aac2e2aa2f7487633dc598f5f19e8078b08f938b0"
+  }
+}

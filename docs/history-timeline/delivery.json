@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "status": "Intégré et vérifié localement",
+  "entry": "Encyclopédie > Histoire et anecdotes",
+  "directLink": "/arene/placard?view=school&section=learn&passage=library-theme-history",
+  "scope": "Remplacement de la liste limitée à deux synthèses par une frise chronologique interactive, sans réactiver l'ancien parcours pédagogique.",
+  "content": {
+    "events": 34,
+    "references": 51,
+    "periods": 7,
+    "themes": 6,
+    "coverage": "Origines de la plante, découvertes archéologiques, métiers du chanvre et patrimoine breton, littérature, médecine historique, découvertes scientifiques et politiques publiques jusqu'en 2020.",
+    "eventStructure": "Date, lieu, résumé, récit, anecdote documentée, précisions de datation et références consultables.",
+    "researchEvidence": [
+      "docs/history-timeline/early-research.json",
+      "docs/history-timeline/modern-research.json"
+    ],
+    "access": {
+      "fullTextOrSelectedPassages": 23,
+      "abstract": 4,
+      "catalogue": 8,
+      "officialPage": 9,
+      "excerpt": 7
+    },
+    "limits": "Le type d'accès réel et les limites de chaque document sont affichés. Les récits littéraires ne sont pas présentés comme des observations cliniques ; les dates d'objets anciens restent distinctes des publications modernes. Les deux synthèses antérieures et leurs liens directs restent disponibles."
+  },
+  "interaction": {
+    "dateClick": "Fenêtre native AppDialog avec récit, anecdote, sources et navigation précédente/suivante dans la sélection courante.",
+    "filters": "Période, sujet et recherche textuelle insensible aux accents, regroupés dans un panneau ouvrable pour laisser la frise visible sur mobile.",
+    "chronology": "Dates ordonnées ; espacement de lecture explicitement non proportionnel à la durée.",
+    "accessibility": "Boutons et filtres utilisables au clavier, focus visible, fermeture avec Échap ou retour navigateur, restauration du focus à la date d'origine."
+  },
+  "validation": {
+    "typescript": "npx.cmd tsc --noEmit : réussi",
+    "lint": "ESLint ciblé sur les composants, données et tests modifiés : réussi",
+    "unitTests": "7 tests réussis dans kanab-quest-history-timeline.test.ts et kanab-quest-cannabis-reference.test.ts",
+    "browser": "320, 390 et 1627 px : filtres combinés, clic sur la date, clavier, fermeture, focus, historique, rechargement, article antérieur et accès depuis les rubriques. Les 34 fenêtres ont été ouvertes à 320 px. Aucun débordement horizontal, aucune erreur JavaScript, aucun POST.",
+    "browserReport": "output/history-timeline/browser-report.json",
+    "screenshotsInspected": [
+      "output/history-timeline/timeline-320.png",
+      "output/history-timeline/oldest-popup-320.png",
+      "output/history-timeline/timeline-1627.png"
+    ],
+    "independentReview": "Contre-lecture de quatre points sensibles à partir des références primaires : publication de Lamarck en 1785, récit de Gautier en 1846, portée fiscale du texte de 1937, exception industrielle/horticole de l'article 28 de la convention de 1961. Aucune erreur matérielle relevée."
+  },
+  "deployed": false,
+  "databaseMigrationRequired": false,
+  "nextBoundedTask": "Demande terminée ; aucun élargissement implicite."
+}

@@ -1,0 +1,27 @@
+.quiz { width:100%; max-width:880px; margin-inline:auto; display:grid; gap:18px; min-width:0; padding:clamp(14px,3vw,28px); background:transparent; border:2px solid transparent; --game-panel-art:var(--game-panel-paper,url('/placard/ui/panel-paper-v1.webp')); border-image:var(--game-panel-art) var(--game-panel-slice,48) fill / var(--game-panel-edge,15px) / 0 stretch; }
+.top { display:flex; justify-content:space-between; gap:10px; align-items:baseline; }
+.top>strong { font-size:1.15rem; }.top>span,.top strong span { font-size:.85rem; }
+.steps { display:grid; grid-template-columns:repeat(10,minmax(0,1fr)); gap:5px; list-style:none; margin:0;padding:0; }
+.steps li { border-bottom:4px solid #17292335; min-width:0; display:flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:2px; padding:4px 0; font-weight:750; font-size:.8rem; }
+.steps li[data-state=correct] { border-color:#006f66;color:#006258; }.steps li[data-state=incorrect] { border-color:#b15425;color:#843b1b; }.steps li[data-state=current] { border-color:#ba8d23; }
+.question { min-width:0;border:0;padding:0;margin:0; }
+.question legend { width:100%;padding:0;margin-bottom:20px;font-size:clamp(1.2rem,3vw,1.75rem);line-height:1.35;font-weight:800; }
+.options { display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px; }
+.option { min-width:0;position:relative;display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;padding:20px 18px;min-height:112px;font-size:1.04rem;font-weight:650;line-height:1.5;cursor:pointer;background:transparent;border:2px solid transparent;box-shadow:none;--game-control-art:var(--game-control-paper,url('/placard/ui/control-paper-v2.webp'));border-image:var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; }
+.option input { position:absolute;opacity:0;width:1px;height:1px; }
+.option:has(input:focus-visible) { outline:3px solid #006f66;outline-offset:4px; }
+.option[data-state=selected] { --game-control-art:var(--game-control-gold,url('/placard/ui/control-gold-v2.webp')); }
+.option[data-state=correct] { --game-control-art:var(--game-control-teal,url('/placard/ui/control-teal-v2.webp'));color:#fff8e7; }
+.option[data-state=incorrect] { --game-control-art:var(--game-control-apricot,url('/placard/ui/control-apricot-v2.webp')); }
+.option:has(input:disabled) { cursor:default; }
+.letter { font-size:1.35rem;font-weight:900; }.option>svg { flex-shrink:0; }
+.feedback { display:grid;gap:10px;border-top:2px solid #006f66;padding-top:16px;outline-offset:5px; }
+.feedback[data-quiz-feedback=incorrect] { border-color:#b15425; }
+.feedback h4 { display:flex;gap:8px;align-items:center;font-size:1.2rem; }
+.actions { display:flex;flex-wrap:wrap;gap:10px; }.quiz .actions .primary { --game-control-art:var(--game-control-teal,url('/placard/ui/control-teal-v2.webp'));color:#fff8e7;min-height:54px;min-width:180px; }
+.caption { font-size:.84rem;display:flex;gap:6px;align-items:center; }.secondary { font-size:.9rem;border-top:1px solid #17292333;padding-top:8px; }
+.error { color:#842e21;font-weight:700; }.score { display:grid;justify-items:center;gap:8px; }.score>span { color:#006f66; }.score h3 { font-size:4rem;line-height:1; }.score small { font-size:1.6rem; }.score p { font-size:1.2rem;font-weight:750; }
+.metrics { margin:0;display:flex;flex-wrap:wrap;justify-content:center;gap:24px; }.metrics div { text-align:center; }.metrics dt { font-size:.85rem; }.metrics dd { margin:6px 0 0;font-size:1.65rem;font-weight:800; }
+.complete>details { border-top:1px solid #17292333;padding:10px 0; }.complete>details>summary>span { display:flex;gap:8px;align-items:start; }.complete svg { flex-shrink:0; }.complete p,.complete button { margin-top:10px; }
+@media(hover:hover) { .option:not(:has(input:disabled)):hover { --game-control-art:var(--game-control-gold,url('/placard/ui/control-gold-v2.webp')); } }
+@media(max-width:600px) { .options { grid-template-columns:minmax(0,1fr);gap:10px; }.option { min-height:76px;padding:16px 13px;font-size:1rem;gap:9px; }.quiz { gap:14px; }.question legend { margin-bottom:16px; }.actions>* { flex:1; }.steps { gap:3px; }.steps li { font-size:.72rem; } }

@@ -1,0 +1,10 @@
+import {HARVEST_CHAPTERS,HARVEST_LESSON_SOURCES,HARVEST_TERMS,HARVEST_QUESTIONS} from './kanab-quest-school-harvest-lessons';
+import {HARVEST_TOOL_SOURCES} from './kanab-quest-school-harvest-tools';
+export {HARVEST_CHAPTERS,HARVEST_TERMS,HARVEST_QUESTIONS};
+export {HARVEST_LOTS,HARVEST_INDICATORS,HARVEST_ADVICE,HARVEST_TRIALS,HARVEST_RECORD_FIELDS,computeHarvestDryMatter,harvestLotMetrics} from './kanab-quest-school-harvest-tools';
+export {HARVEST_RESULTS,HARVEST_PLAN_FIELDS,HARVEST_CASE_DOCUMENTS,HARVEST_CASE_HYPOTHESES,HARVEST_CASE_ACTIONS,HARVEST_CASE_REASONS,HARVEST_CASE_FOLLOWUPS,HARVEST_CASE_FOLLOWUP_REASONS,HARVEST_REVISION_LINKS,evaluateHarvestCase} from './kanab-quest-school-harvest-visuals';
+export const HARVEST_VERSION='2026-11-12.harvest1';
+export const VERSION=HARVEST_VERSION;
+export const HARVEST_LESSONS=HARVEST_CHAPTERS.flatMap(c=>c.lessons);
+export const HARVEST_SOURCES=[...HARVEST_LESSON_SOURCES,...HARVEST_TOOL_SOURCES];
+export const HARVEST_LESSON_ALIASES:Readonly<Record<string,string>>={'prevention-1':'harvest-tips-1','prevention-2':'harvest-handling-1','prevention-3':'harvest-outcomes-1','prevention-4':'harvest-tips-2'};

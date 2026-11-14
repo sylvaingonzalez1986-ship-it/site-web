@@ -13,6 +13,7 @@ import { KQ_BUDDIES } from "@/lib/kanab-quest-game";
 import { getKqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import { registerNavigationGuard } from "@/lib/navigation-guard";
 import { KqBuddieCarousel } from "./KqBuddieCarousel";
+import { KqPrintedArt } from "./KqPrintedArt";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import styles from "./KqCultureBuddies.module.css";
 
@@ -92,9 +93,10 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
   }, [status, selectedZoneId, disabled, loading, ownedCodes, rotation, snapshot]);
 
   const zones = snapshot?.state.zones ?? [];
-  const assignedZones = zones.filter(zone => zone.active && zone.buddieCode);
+  const reservation = snapshot?.productionReservation;
+  const assignedZones = zones.filter(zone => zone.active && zone.buddieCode && zone.id !== reservation?.zoneId);
   const assignedArea = assignedZones.reduce((area, zone) => area + zone.width * zone.height, 0);
-  const selectedZone = zones.find(zone => zone.id === selectedZoneId);
+  const selectedZone = zones.find(zone => zone.id === selectedZoneId && zone.id !== reservation?.zoneId);
   const selectedIdentity = snapshot && selectedZone ? getKqZoneIdentity(snapshot.state, selectedZone.id) : null;
   const legacyBusy = !!snapshot?.legacyActiveRun || (!!snapshot?.activeRun && !snapshot.activeRuns?.length)
     || !!snapshot?.activeRuns?.some(run => !run.zoneId);
@@ -104,7 +106,9 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
   const unavailableReasons: Record<string, string> = {};
   if (selectedZone) for (const buddie of buddies) {
     const elsewhere = zones.find(zone => zone.id !== selectedZone.id && zone.buddieCode === buddie.code);
-    if (elsewhere && snapshot) unavailableReasons[buddie.code] = `Déjà affecté à la ${(getKqZoneIdentity(snapshot.state, elsewhere.id)?.label ?? "zone").toLowerCase()}. Retire cette affectation pour le changer de zone.`;
+    if (elsewhere && snapshot) unavailableReasons[buddie.code] = elsewhere.id === reservation?.zoneId
+      ? "Affectation conservée dans la zone autonome. Libère cette zone dans Personnel pour déplacer ce Buddie."
+      : `Déjà affecté à la ${(getKqZoneIdentity(snapshot.state, elsewhere.id)?.label ?? "zone").toLowerCase()}. Retire cette affectation pour le changer de zone.`;
   }
   const restoreFocus = (zoneId: string) => { focusZone.current = zoneId; };
 
@@ -177,7 +181,7 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
       <button type="button" className={styles.secondary} data-preparation-edit-plan disabled={disabled || blocked}
         onClick={onOpenWarehouse}><Pencil size={15} aria-hidden="true" /> Aménager</button>
     </header>
-    <p className={styles.intro}>Un Buddie par zone, les mêmes cartes pour toutes. Une zone vide ne participe pas.</p>
+    <p className={styles.intro}>Un Buddie par zone, les mêmes cartes pour toutes. Les zones vides ou réservées au personnel ne participent pas à la campagne.</p>
     {emptyCollection ? <div className={styles.empty} data-empty-buddie-collection>
       <p role="status"><strong>Un Buddie pour commencer</strong><br />Il te faut une carte Buddie dans ta collection pour choisir une variété. Elle est conservée pendant la culture.</p>
       {onOpenBuddiePacks ? <button type="button" disabled={disabled || blocked} onClick={onOpenBuddiePacks}>Découvrir les Packs Buddies</button>
@@ -189,6 +193,19 @@ export function KqCultureBuddies({ snapshot, ownedCodes, artwork, rotation, disa
           {zones.map(zone => {
             const identity = getKqZoneIdentity(snapshot.state, zone.id);
             const label = identity?.label ?? "Zone";
+            if (reservation?.zoneId === zone.id) return <article key={zone.id} className={styles.zone} data-culture-buddie-zone={zone.id} data-culture-production-zone={zone.id}>
+              <KqPrintedArt kind="help-workshop" className={styles.illustration} sizes="72px" />
+              <div className={styles.zoneContent}>
+                <p className={styles.zoneName}><span className={styles.zoneNumber} style={{ backgroundColor: identity?.color }} aria-label={label} data-zone-number={identity?.number}>{identity?.number ?? "Zone"}</span><strong>{zone.width * zone.height} m²</strong></p>
+                <h3>Production autonome</h3>
+                <p className={styles.state}><LockKeyhole size={13} aria-hidden="true" />{reservation.enabled ? "Gérée par le personnel" : "En pause · lots ou tâches à terminer"}</p>
+                <p className={styles.reservation}>Réservée au circuit autonome, hors campagne et concours.</p>
+                <div className={styles.actions}>
+                  <Link href={`/arene/placard?view=workshop&catalog=equipment&zone=${encodeURIComponent(zone.id)}&from=game`} data-culture-production-equipment={zone.id} aria-disabled={disabled || blocked || undefined} onClick={event => { if (disabled || blocked) event.preventDefault(); }}>Choisir le matériel</Link>
+                  <Link href="/arene/placard?view=staff" className={styles.secondary} aria-disabled={disabled || blocked || undefined} onClick={event => { if (disabled || blocked) event.preventDefault(); }}>Voir le personnel</Link>
+                </div>
+              </div>
+            </article>;
             const buddie = KQ_BUDDIES.find(item => item.code === zone.buddieCode);
             const illustration = zone.buddieCode ? artwork[zone.buddieCode] : undefined;
             const remaining = zone.buddieCode && rotation ? getKqBuddieRotationRemaining(zone.buddieCode, rotation.recentBuddieCodes) : 0;

@@ -1,0 +1,1084 @@
+{
+  "domain": "cannabinoids",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "cb-citti-2019",
+      "title": "A novel phytocannabinoid isolated from Cannabis sativa L. with an in vivo cannabimimetic activity higher than Δ9-tetrahydrocannabinol: Δ9-Tetrahydrocannabiphorol",
+      "author": "C. Citti et al.",
+      "published": "2019-12-30",
+      "organization": "Scientific Reports",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+      "access": "excerpt",
+      "passage": "PMC introduction and identification; Results: binding affinities and mouse tetrad.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC introduction and identification; Results: binding affinities and mouse tetrad.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-cbg24",
+      "title": "Acute effects of cannabigerol on anxiety, stress, and mood",
+      "author": "Cuttler et al.",
+      "published": "2024-07-13",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11246434/",
+      "access": "excerpt",
+      "passage": "PMC résumé, méthodes (collecte mars 2022–novembre 2023), limites §Discussion et financement/conflits.",
+      "limitation": "Ne démontre pas traitement d’un trouble anxieux diagnostiqué.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11246434/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC résumé, méthodes (collecte mars 2022–novembre 2023), limites §Discussion et financement/conflits.",
+          "result": "Sections ouvertes et lisibles ; dose, n, limites et intérêts contrôlés.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-englund",
+      "title": "Does cannabidiol make cannabis safer? A randomised, double-blind, cross-over trial of cannabis with four different CBD:THC ratios",
+      "author": "Englund et al.",
+      "published": "2022-11-16 en ligne ; mai 2023 en volume",
+      "url": "https://www.nature.com/articles/s41386-022-01478-z.pdf",
+      "access": "excerpt",
+      "passage": "PDF éditeur p.1–5 : préparation 10 mg THC avec 0/10/20/30 mg CBD, analyses des 46 sur 64 randomisés, rappel verbal, symptômes ; p.7–8 financement et conflits.",
+      "limitation": "Analyse des sujets ayant terminé ; pas un test de toutes doses, voies ou populations.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://www.nature.com/articles/s41386-022-01478-z.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "PDF éditeur p.1–5 : préparation 10 mg THC avec 0/10/20/30 mg CBD, analyses des 46 sur 64 randomisés, rappel verbal, symptômes ; p.7–8 financement et conflits.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "PDF éditeur p.1–5 : préparation 10 mg THC avec 0/10/20/30 mg CBD, analyses des 46 sur 64 randomisés, rappel verbal, symptômes ; p.7–8 financement et conflits.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-dravet",
+      "title": "Trial of Cannabidiol for Drug-Resistant Seizures in the Dravet Syndrome",
+      "author": "Devinsky et al.",
+      "published": "2017-05-25",
+      "url": "https://www.pure.ed.ac.uk/ws/files/37478646/nejmoa1611618.pdf",
+      "access": "excerpt",
+      "passage": "Copie primaire Edinburgh PDF p.2011–2013 : résumé et méthodes ; p.2014–2017 résultats ; p.2019 financement GW.",
+      "limitation": "Annexes et registre non relus ; formulation pharmaceutique spécifique.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://www.pure.ed.ac.uk/ws/files/37478646/nejmoa1611618.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Copie primaire Edinburgh PDF p.2011–2013 : résumé et méthodes ; p.2014–2017 résultats ; p.2019 financement GW.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Copie primaire Edinburgh PDF p.2011–2013 : résumé et méthodes ; p.2014–2017 résultats ; p.2019 financement GW.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-lgs",
+      "title": "Effect of Cannabidiol on Drop Seizures in the Lennox–Gastaut Syndrome",
+      "author": "Devinsky et al.",
+      "published": "2018-05-17",
+      "url": "https://www.pure.ed.ac.uk/ws/files/76189515/nejmoa1714631.pdf",
+      "access": "excerpt",
+      "passage": "Copie primaire Edinburgh PDF p.1888–1889 : résumé et méthodes ; p.1892–1895 résultats et sécurité ; NCT02224560 dans résumé.",
+      "limitation": "Annexes non relues ; 6 patients reclassés pour analyse de sécurité, dénominateurs différents.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://www.pure.ed.ac.uk/ws/files/76189515/nejmoa1714631.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Copie primaire Edinburgh PDF p.1888–1889 : résumé et méthodes ; p.1892–1895 résultats et sécurité ; NCT02224560 dans résumé.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Copie primaire Edinburgh PDF p.1888–1889 : résumé et méthodes ; p.1892–1895 résultats et sécurité ; NCT02224560 dans résumé.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-tsc",
+      "title": "Add-on Cannabidiol Treatment for Drug-Resistant Seizures in Tuberous Sclerosis Complex",
+      "author": "Thiele et al.",
+      "published": "2020-12-21 en ligne ; 2021 en volume",
+      "url": "https://jamanetwork.com/journals/jamaneurology/fullarticle/2774314",
+      "access": "excerpt",
+      "passage": "Article JAMA : résumé, méthodes, résultats primaires, tableau 2, financement et rôle promoteur ; figure 2 pour ajustements et p nominale CBD50.",
+      "limitation": "Annexes non relues ; dose assignée différente de dose réellement atteinte pour certains patients.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://jamanetwork.com/journals/jamaneurology/fullarticle/2774314",
+          "openedAt": "2026-11-14",
+          "sections": "Article JAMA : résumé, méthodes, résultats primaires, tableau 2, financement et rôle promoteur ; figure 2 pour ajustements et p nominale CBD50.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Article JAMA : résumé, méthodes, résultats primaires, tableau 2, financement et rôle promoteur ; figure 2 pour ajustements et p nominale CBD50.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-pain",
+      "title": "Oral cannabidiol (CBD) as add-on to paracetamol for painful chronic osteoarthritis of the knee",
+      "author": "Pramhas et al.",
+      "published": "2023-11 (volume décembre 2023)",
+      "url": "https://www.schmerzzentrum.at/wp-content/uploads/2025/09/Cannabidiol%20und%20Knie.pdf",
+      "access": "excerpt",
+      "passage": "Copie PDF primaire : résumé, méthodes, résultat primaire et événements p.1–5, limitations p.7–8, financement.",
+      "limitation": "Copie hébergée par centre spécialisé ; pas réutilisée comme image ; formulation et paracétamol concomitant spécifiques.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://www.schmerzzentrum.at/wp-content/uploads/2025/09/Cannabidiol%20und%20Knie.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Copie PDF primaire : résumé, méthodes, résultat primaire et événements p.1–5, limitations p.7–8, financement.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Copie PDF primaire : résumé, méthodes, résultat primaire et événements p.1–5, limitations p.7–8, financement.",
+          "access": "excerpt"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-study-cbd-thc-2023",
+      "questions": [
+        "Ajouter du CBD suffit-il à protéger la mémoire après du THC ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Effectifs, doses, critères, dates, abandons et financement confirmés sur PDF éditeur.",
+        "Entourage reformulé en hypothèse testable ; aucun universel protecteur ou absence universelle d’interaction."
+      ],
+      "patch": {
+        "lead": "Ajouter du CBD protège-t-il des effets immédiats du THC ? Dans cet essai, augmenter le CBD n’a pas significativement protégé la mémoire ni atténué les symptômes psychotiques aigus mesurés.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "Englund et ses collègues étudient des adultes en bonne santé consommant peu fréquemment du cannabis. Sur 64 personnes réparties dans le protocole, 46 le terminent et entrent dans l’analyse. Chacune participe à quatre séances : c’est un essai croisé, où une personne sert aussi de comparaison à elle-même. L’ordre est attribué au hasard et les préparations sont masquées aux participants comme aux évaluateurs : c’est le double aveugle.",
+              "Les quatre préparations inhalées contiennent toutes 10 mg de THC, avec respectivement 0, 10, 20 ou 30 mg de CBD. Ces quantités décrivent l’expérience, pas un conseil d’usage. Une visite préalable mesure la situation de départ ; la comparaison entre préparations porte surtout sur l’ajout de CBD au THC."
+            ],
+            "sourceIds": [
+              "can-study-englund"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "La mesure principale est un test de mémoire : après avoir entendu des mots, il faut les rappeler plus tard, au test Hopkins. Le THC sans CBD dégrade ce rappel par rapport à la visite de départ. Ajouter davantage de CBD ne réduit pas significativement cette dégradation. Les symptômes psychotiques aigus mesurés, comme certaines perturbations de la perception ou de la pensée, ne sont pas non plus significativement atténués.",
+              "Ce résultat répond à une version précise de l’« effet d’entourage », l’idée que des constituants agissent ensemble. Il ne prouve pas que toutes les interactions sont absentes. Il montre que la simple coexistence de CBD et de THC ne garantit pas une protection : le mélange, les quantités, la voie d’exposition et l’effet mesuré comptent.",
+              "Ici, une différence « non significative » signifie que les données ne permettent pas de conclure que l’écart dépasse les fluctuations attendues dans ce type de comparaison. Cela ne prouve pas que les deux conditions sont exactement identiques."
+            ],
+            "sourceIds": [
+              "can-study-englund"
+            ]
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Douze participants abandonnent à cause d’effets désagréables. Une analyse limitée aux personnes qui terminent peut surtout retenir celles qui tolèrent mieux les séances. Les résultats de ce groupe ne constituent donc pas une garantie de sécurité pour tous les participants de départ."
+            ],
+            "sourceIds": [
+              "can-study-englund"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "Le recueil s’étend de novembre 2017 à juin 2019. L’article paraît en ligne le 16 novembre 2022, puis dans le volume de mai 2023. Le Medical Research Council britannique finance l’étude ; des honoraires et autres liens individuels sont déclarés. Les quatre séances concernent les mêmes personnes : ce ne sont pas quatre groupes indépendants."
+            ],
+            "sourceIds": [
+              "can-study-englund"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-englund"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-cbd",
+          "record-cannabinoid-delta9-thc"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-cbd-thc-2023"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Ajouter du CBD suffit-il à protéger la mémoire après du THC ?",
+          "nodes": [
+            {
+              "label": "Même THC",
+              "detail": "10 mg dans les quatre conditions expérimentales."
+            },
+            {
+              "label": "CBD variable",
+              "detail": "0, 10, 20 ou 30 mg ajoutés."
+            },
+            {
+              "label": "Mémoire et symptômes",
+              "detail": "Pas de protection significative dans les mesures étudiées."
+            }
+          ],
+          "caption": "Comparer les quatre séances isole l’effet de l’ajout de CBD, puisque la quantité de THC reste la même.",
+          "sourceIds": [
+            "can-study-englund"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-englund"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Ajouter du CBD suffit-il à protéger la mémoire après du THC ?",
+        "explainedTerms": [
+          "essai croisé",
+          "randomisation",
+          "double aveugle",
+          "critère principal",
+          "effet d’entourage"
+        ],
+        "example": "Comparer les quatre séances isole l’effet de l’ajout de CBD, puisque la quantité de THC reste la même.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-thcp-discovery-2019",
+      "questions": [
+        "Que mesure réellement le « 33 fois » associé au THCP ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "n=5, voie, quantités murines et animaux communs confirmés dans Tetrad test.",
+        "Identité CBDP séparée des essais THCP ; rapport d’affinité contextualisé et financement lu."
+      ],
+      "patch": {
+        "lead": "En 2019, des chercheurs identifient le THCP dans un matériel de cannabis, puis étudient sa fixation à des récepteurs et ses effets chez la souris. Le nombre « 33 fois » vient d’un test de liaison ; il ne mesure pas une intoxication humaine.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "L’article du 30 décembre 2019 identifie THCP et CBDP dans un matériel médicinal nommé FM2. Pour vérifier les structures, les chercheurs les comparent à des substances de référence obtenues par synthèse. Ils testent ensuite le THCP sur des récepteurs humains isolés dans un système de laboratoire, puis chez des souris mâles C57BL6/J. Aucun humain ne reçoit le composé.",
+              "Les expériences comportementales comptent cinq souris par groupe. Les quantités expérimentales sont 2,5, 5 ou 10 mg par kilogramme de masse corporelle, injectées dans la cavité abdominale. Le groupe de comparaison reçoit le véhicule, le liquide support sans THCP. Les mêmes souris passent les quatre tests ; on ne doit pas multiplier leur nombre par quatre."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "Le THCP se fixe aux récepteurs CB1 et CB2. Le Ki est une mesure de liaison : dans ce type de comparaison, une valeur plus basse indique une liaison plus forte. Les valeurs rapportées sont 1,2 nM pour CB1 et 6,2 nM pour CB2 ; le nanomolaire décrit une très petite concentration dans le test. Le « 33 fois » compare la liaison à CB1 à une valeur publiée pour le THC. Il ne compare pas ce que ressentent des personnes.",
+              "Chez les souris, les quatre tests, appelés tétrade, examinent le déplacement, la température corporelle, une réponse à un stimulus douloureux et la catalepsie, le maintien anormal d’une posture. Le CBDP ne reçoit pas ces tests pharmacologiques dans cet article : sa découverte chimique ne doit pas être confondue avec les résultats du THCP."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Les effets et les risques humains ne sont pas mesurés. Trouver le THCP dans FM2 ne dit ni qu’il est toujours abondant dans la plante ni qu’un lot commercial provient d’une extraction naturelle."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "Le projet UNIHEMP bénéficie de financements FESR/PON ; l’institut militaire de Florence fournit FM2. Les dates de collecte ne sont pas précisées ici. Le docking, un ajustement informatique de la molécule dans un modèle de récepteur, propose une explication possible de la liaison. L’une des références structurales utilisées porte toutefois un signal de rétractation : ce modèle doit être considéré avec cette limite."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-citti-2019"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-thcp",
+          "record-cannabinoid-cbdp"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-thcp-discovery-2019"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Que mesure réellement le « 33 fois » associé au THCP ?",
+          "nodes": [
+            {
+              "label": "Identité",
+              "detail": "THCP et CBDP caractérisés dans FM2."
+            },
+            {
+              "label": "Récepteurs",
+              "detail": "Liaison du THCP mesurée en laboratoire."
+            },
+            {
+              "label": "Souris",
+              "detail": "Quatre types de réponse ; aucun essai humain."
+            }
+          ],
+          "caption": "Une forte liaison à une protéine n’est pas un multiplicateur de l’intoxication d’une personne.",
+          "sourceIds": [
+            "cb-citti-2019"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-citti-2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que mesure réellement le « 33 fois » associé au THCP ?",
+        "explainedTerms": [
+          "substance de référence",
+          "in vitro",
+          "véhicule",
+          "Ki",
+          "nanomolaire",
+          "tétrade",
+          "docking"
+        ],
+        "example": "Une forte liaison à une protéine n’est pas un multiplicateur de l’intoxication d’une personne.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-cbd-dravet-2017",
+      "questions": [
+        "Que signifie une baisse médiane des crises dans Dravet ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Copie primaire retrouvée ; valeurs et unités confirmées, doses et critère primaire ajoutés.",
+        "Les résultats non significatifs et risques restent visibles."
+      ],
+      "patch": {
+        "lead": "Chez des enfants et de jeunes adultes atteints du syndrome de Dravet, un CBD pharmaceutique a réduit les crises convulsives davantage que le placebo. Le bénéfice porte sur cette épilepsie et cette préparation, avec des effets indésirables.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "Le syndrome de Dravet est une épilepsie sévère ; les 120 participants ont des crises qui résistent aux traitements. Le hasard les répartit entre CBD purifié et placebo, une préparation de comparaison sans CBD, en complément de leurs médicaments habituels. Le double aveugle masque le groupe reçu aux participants et aux évaluateurs.",
+              "Le traitement expérimental dure 14 semaines, avec une cible de 20 mg par kilogramme de masse corporelle et par jour. L’unité mg/kg/jour rapporte la quantité au poids ; elle décrit ce protocole médical et ne constitue pas une prescription. L’article paraît le 25 mai 2017."
+            ],
+            "sourceIds": [
+              "can-study-dravet"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "La mesure principale compte les crises convulsives, celles qui comportent des manifestations motrices, par période de 28 jours. La médiane mensuelle passe de 12,4 à 5,9 sous CBD, contre 14,9 à 14,1 sous placebo. Une médiane partage les valeurs observées en deux moitiés : elle ne décrit pas l’évolution identique de chaque personne.",
+              "La différence ajustée de variation entre groupes est de −22,8 points de pourcentage en faveur du CBD. Le résultat sur les crises non convulsives n’est pas significatif. Réduire un type de crise ne signifie donc ni supprimer toutes les crises ni guérir la maladie.",
+              "Ici, une différence « non significative » signifie que les données ne permettent pas de conclure que l’écart dépasse les fluctuations attendues dans ce type de comparaison. Cela ne prouve pas que les deux conditions sont exactement identiques."
+            ],
+            "sourceIds": [
+              "can-study-dravet"
+            ],
+            "details": {
+              "title": "Lire les chiffres de la comparaison",
+              "paragraphs": [
+                "L’estimation ajustée est −22,8 points de pourcentage, avec un intervalle de confiance à 95 % de −41,1 à −5,4. Cet intervalle donne la plage d’incertitude de l’estimation selon le modèle statistique ; il n’inclut pas zéro. La valeur p=0,01 exprime que des données aussi défavorables à l’hypothèse d’absence de différence seraient peu probables sous cette hypothèse. Elle n’est pas la probabilité qu’un patient bénéficie du traitement."
+              ],
+              "sourceIds": [
+                "can-study-dravet"
+              ]
+            }
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Diarrhée, vomissements, fatigue, fièvre, somnolence et anomalies du foie sont plus fréquents sous CBD. Certains participants abandonnent. Les 14 semaines permettent de comparer cette période, mais ne décrivent pas tous les risques d’un traitement prolongé."
+            ],
+            "sourceIds": [
+              "can-study-dravet"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "GW Pharmaceuticals finance l’essai GWPCARE1. Il porte sur une préparation pharmaceutique définie, et ne démontre pas l’efficacité d’une fleur ou d’une huile commerciale. La prolongation ouverte reprend des participants en leur donnant un traitement connu : elle ne reproduit pas une nouvelle comparaison indépendante contre placebo."
+            ],
+            "sourceIds": [
+              "can-study-dravet"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-dravet"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-cbd"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-cbd-dravet-2017"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Que signifie une baisse médiane des crises dans Dravet ?",
+          "nodes": [
+            {
+              "label": "CBD purifié",
+              "detail": "Médiane : 12,4 puis 5,9 crises par 28 jours."
+            },
+            {
+              "label": "Placebo",
+              "detail": "Médiane : 14,9 puis 14,1."
+            },
+            {
+              "label": "Portée",
+              "detail": "Bénéfice sur les crises convulsives, avec des risques."
+            }
+          ],
+          "caption": "La fréquence des crises et la proportion de personnes guéries sont deux mesures différentes.",
+          "sourceIds": [
+            "can-study-dravet"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-dravet"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que signifie une baisse médiane des crises dans Dravet ?",
+        "explainedTerms": [
+          "placebo",
+          "double aveugle",
+          "mg/kg/jour",
+          "médiane",
+          "point de pourcentage"
+        ],
+        "example": "La fréquence des crises et la proportion de personnes guéries sont deux mesures différentes.",
+        "movedDetails": [
+          "results"
+        ],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-cbd-lgs-2018",
+      "questions": [
+        "Une baisse de 41,9 % des crises signifie-t-elle 41,9 % de guérisons ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Groupes, cibles expérimentales, résultats et risques vérifiés dans copie primaire Edinburgh.",
+        "Ajout de la distinction dénominateurs randomisation/sécurité ; âge d’éligibilité séparé des âges réellement observés."
+      ],
+      "patch": {
+        "lead": "Dans le syndrome de Lennox–Gastaut, un essai compare deux quantités de CBD pharmaceutique au placebo. Les crises avec chute diminuent davantage sous CBD, mais cette baisse ne représente pas un taux de guérison.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "GWPCARE3 porte sur 225 patients répondant aux critères du syndrome de Lennox–Gastaut, une épilepsie sévère. La plage d’âge autorisée est de 2 à 55 ans. Le hasard attribue 73 personnes à la cible expérimentale de 10 mg/kg/jour de CBD, 76 à 20 mg/kg/jour et 76 au placebo. Les traitements habituels continuent.",
+              "L’essai dure 14 semaines en double aveugle : participants et évaluateurs ne connaissent pas le groupe reçu. Les quantités sont exprimées en milligrammes par kilogramme de masse corporelle et par jour ; elles appartiennent au protocole, pas à un conseil d’usage. L’article paraît le 17 mai 2018."
+            ],
+            "sourceIds": [
+              "can-study-lgs"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "La mesure principale est la fréquence des crises pouvant entraîner une chute, par 28 jours. Les réductions médianes sont 37,2 % dans le groupe cible 10, 41,9 % dans le groupe cible 20 et 17,2 % sous placebo. La médiane est la valeur qui partage les observations en deux moitiés. Une baisse de 41,9 % de fréquence ne signifie pas que 41,9 % des patients sont guéris.",
+              "Les différences estimées face au placebo sont de 19,2 et 21,6 points de pourcentage, en faveur des groupes CBD. La comparaison au placebo compte : une partie de la baisse observée peut aussi survenir dans le groupe de comparaison."
+            ],
+            "sourceIds": [
+              "can-study-lgs"
+            ],
+            "details": {
+              "title": "L’incertitude autour des différences",
+              "paragraphs": [
+                "Pour la cible 10, la différence estimée est de 19,2 points, avec un intervalle de confiance à 95 % de 7,7 à 31,2 et p=0,002. Pour la cible 20 : 21,6 points, intervalle 6,7 à 34,8 et p=0,005. Ces intervalles décrivent l’incertitude des estimations ; ils restent du côté d’une différence favorable au CBD. Les valeurs p comparent les données à l’hypothèse d’absence de différence et ne donnent pas une chance individuelle de guérison."
+              ],
+              "sourceIds": [
+                "can-study-lgs"
+              ]
+            }
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Somnolence, diarrhée et baisse d’appétit sont fréquentes. Quatorze patients recevant du CBD ont une élévation des aminotransférases, des enzymes dont la hausse peut signaler une atteinte du foie. Pour l’analyse de sécurité, six personnes temporairement au-dessus de leur cible sont classées selon leur exposition : les nombres utilisés pour calculer les risques diffèrent donc de ceux de la répartition initiale."
+            ],
+            "sourceIds": [
+              "can-study-lgs"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "GW Pharmaceuticals finance GWPCARE3, identifié NCT02224560. Il s’agit d’un essai distinct de GWPCARE4, consacré lui aussi à Lennox–Gastaut. Une prolongation ou une nouvelle analyse des mêmes personnes ne constitue pas un groupe indépendant supplémentaire."
+            ],
+            "sourceIds": [
+              "can-study-lgs"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-lgs"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-cbd"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-cbd-lgs-2018"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Une baisse de 41,9 % des crises signifie-t-elle 41,9 % de guérisons ?",
+          "nodes": [
+            {
+              "label": "Cible 10",
+              "detail": "Réduction médiane de fréquence : 37,2 %."
+            },
+            {
+              "label": "Cible 20",
+              "detail": "Réduction médiane : 41,9 %."
+            },
+            {
+              "label": "Placebo",
+              "detail": "Réduction médiane : 17,2 %."
+            }
+          ],
+          "caption": "On mesure combien de crises surviennent, pas combien de patients sont guéris.",
+          "sourceIds": [
+            "can-study-lgs"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-lgs"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Une baisse de 41,9 % des crises signifie-t-elle 41,9 % de guérisons ?",
+        "explainedTerms": [
+          "double aveugle",
+          "mg/kg/jour",
+          "médiane",
+          "point de pourcentage",
+          "aminotransférases"
+        ],
+        "example": "On mesure combien de crises surviennent, pas combien de patients sont guéris.",
+        "movedDetails": [
+          "results"
+        ],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-cbd-tsc-2021",
+      "questions": [
+        "Pourquoi ne peut-on pas soustraire directement tous les pourcentages ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Résultats modélisés distingués des simples points de pourcentage ; p nominale CBD50 précisée.",
+        "Dose assignée/atteinte et rôle du promoteur explicités à partir du texte JAMA."
+      ],
+      "patch": {
+        "lead": "Un essai dans la sclérose tubéreuse de Bourneville montre une réduction de certains types de crises sous CBD pharmaceutique. La quantité la plus élevée n’apporte pas une réduction clairement plus grande et s’accompagne de davantage d’effets indésirables.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "La sclérose tubéreuse de Bourneville peut provoquer une épilepsie difficile à contrôler. GWPCARE6 répartit au hasard 224 personnes entre CBD purifié à cible 25 mg/kg/jour (75 personnes), cible 50 mg/kg/jour (73) et placebo (76), en complément des traitements habituels. L’unité correspond aux milligrammes par kilogramme de masse corporelle et par jour dans cette expérience.",
+              "La période de traitement dure 16 semaines. Le recrutement s’étend du 6 avril 2016 au 4 octobre 2018 ; l’article paraît en ligne le 21 décembre 2020, dans le volume de 2021. Chez plusieurs participants, la quantité effectivement atteinte diffère de la cible attribuée."
+            ],
+            "sourceIds": [
+              "can-study-tsc"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "La mesure principale porte sur des types de crises définis à l’avance pour cette maladie. Les réductions estimées par rapport au départ sont 48,6 % pour la cible 25, 47,5 % pour la cible 50 et 26,5 % pour le placebo. Les deux groupes CBD montrent donc un bénéfice comparatif, sans progression simple « deux fois plus de produit, deux fois plus de résultat ».",
+              "Le modèle statistique estime la réduction supplémentaire relative au placebo à 30,1 % et 28,5 %. Ces valeurs ne sont pas obtenues en soustrayant simplement les pourcentages précédents : elles comparent les fréquences à l’aide du modèle choisi."
+            ],
+            "sourceIds": [
+              "can-study-tsc"
+            ],
+            "details": {
+              "title": "Les chiffres du modèle",
+              "paragraphs": [
+                "La comparaison modélisée de la cible 25 au placebo est de 30,1 %, intervalle de confiance à 95 % de 13,9 à 43,3, p<0,001. Celle de la cible 50 est de 28,5 %, intervalle de 11,9 à 42,0, p nominale=0,002. Les intervalles expriment l’incertitude de l’estimation. La valeur p nominale est celle de cette comparaison avant certains ajustements liés aux comparaisons multiples ; ces nombres ne sont pas des probabilités individuelles de bénéfice."
+              ],
+              "sourceIds": [
+                "can-study-tsc"
+              ]
+            }
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Diarrhée et somnolence sont plus fréquentes, particulièrement dans le groupe cible haute. Vingt-huit patients sous CBD présentent une hausse des transaminases, des enzymes surveillées notamment pour détecter une atteinte du foie, contre aucun sous placebo. Seize semaines de comparaison ne suffisent pas à décrire toute la tolérance au long cours."
+            ],
+            "sourceIds": [
+              "can-study-tsc"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "GW Research Ltd soutient l’essai et participe à sa conception, sa conduite, son analyse et sa publication. Ce rôle doit être connu avec les résultats. La prolongation ouverte réutilise des participants et ne conserve pas de groupe placebo : elle répond à d’autres questions que l’essai comparatif initial."
+            ],
+            "sourceIds": [
+              "can-study-tsc"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-tsc"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-cbd"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-cbd-tsc-2021"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi ne peut-on pas soustraire directement tous les pourcentages ?",
+          "nodes": [
+            {
+              "label": "Cible 25",
+              "detail": "Réduction depuis le départ : 48,6 %."
+            },
+            {
+              "label": "Cible 50",
+              "detail": "Réduction : 47,5 %."
+            },
+            {
+              "label": "Placebo",
+              "detail": "Réduction : 26,5 %."
+            }
+          ],
+          "caption": "Une comparaison calculée par un modèle peut différer de la soustraction de deux baisses affichées.",
+          "sourceIds": [
+            "can-study-tsc"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-tsc"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi ne peut-on pas soustraire directement tous les pourcentages ?",
+        "explainedTerms": [
+          "cible expérimentale",
+          "mg/kg/jour",
+          "modèle statistique",
+          "transaminases"
+        ],
+        "example": "Une comparaison calculée par un modèle peut différer de la soustraction de deux baisses affichées.",
+        "movedDetails": [
+          "results"
+        ],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-cbd-pain-2023",
+      "questions": [
+        "Pourquoi une baisse de douleur sous CBD ne prouve-t-elle pas à elle seule son efficacité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Échelle WOMAC et différence intergroupes ajoutées ; n randomisés/exposés/terminés distingués.",
+        "Publication originale lue en copie PDF ; primaire négatif conservé et données sécurité nuancées."
+      ],
+      "patch": {
+        "lead": "Pour l’arthrose douloureuse du genou, cet essai n’a pas montré que le CBD ajouté au paracétamol soulageait davantage que le placebo. La douleur diminue dans les deux groupes : il faut comparer ces diminutions.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "Un seul centre répartit au hasard 86 adultes, 43 par groupe, entre CBD purifié oral et placebo. Quatre-vingt-quatre reçoivent l’intervention et 58 terminent. Participants et évaluateurs ne connaissent pas le groupe : c’est le double aveugle. Les deux groupes prennent aussi du paracétamol.",
+              "L’exposition expérimentale est de 600 mg de CBD par jour pendant huit semaines ; c’est une caractéristique de la recherche, pas une prescription. Les recrutements ont lieu d’octobre 2020 à décembre 2021 et le suivi s’achève en mars 2022."
+            ],
+            "sourceIds": [
+              "can-study-pain"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "La douleur est notée avec le questionnaire WOMAC sur une échelle de 0 à 10. Elle baisse en moyenne de 2,5 points sous CBD et de 2,4 points sous placebo : l’écart observé n’est que de 0,1 point. L’étude ne démontre pas une supériorité du CBD. Les autres mesures prévues ne montrent pas non plus de différence significative.",
+              "Cela ne prouve pas une équivalence absolue entre les deux préparations, car l’estimation reste incertaine. Mais la seule baisse de 2,5 points sous CBD ne peut pas être présentée comme la preuve de son efficacité : presque la même baisse existe sous placebo."
+            ],
+            "sourceIds": [
+              "can-study-pain"
+            ],
+            "details": {
+              "title": "Quelle précision pour l’écart de douleur ?",
+              "paragraphs": [
+                "L’écart estimé de 0,1 point a un intervalle de confiance à 95 % de −0,8 à 1,0 ; p=0,80. L’intervalle inclut zéro et des écarts dans les deux sens : les données n’établissent pas une différence. La valeur p n’est ni la probabilité que les produits soient identiques ni un pourcentage de personnes soulagées."
+              ],
+              "sourceIds": [
+                "can-study-pain"
+              ]
+            }
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Les événements indésirables sont nombreux dans les deux groupes. Des enzymes du foie augmentent chez davantage de personnes sous CBD, sans que toutes ces hausses aient la même gravité clinique. Les abandons et ces résultats font partie du bilan ; les bénéfices du CBD dans certaines épilepsies ne répondent pas à la question de cette douleur."
+            ],
+            "sourceIds": [
+              "can-study-pain"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "Trigal Pharma GmbH finance l’essai NCT04607603. Les auteurs déclarent que le financeur n’a pas participé à la conception, au recueil, à l’analyse, à l’interprétation ni à la rédaction. L’étude porte sur cette préparation et cette arthrose, sans tester toutes les douleurs ou tous les produits au CBD."
+            ],
+            "sourceIds": [
+              "can-study-pain"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-pain"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-cbd"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-cbd-pain-2023"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi une baisse de douleur sous CBD ne prouve-t-elle pas à elle seule son efficacité ?",
+          "nodes": [
+            {
+              "label": "CBD",
+              "detail": "Baisse moyenne : 2,5 points sur 10."
+            },
+            {
+              "label": "Placebo",
+              "detail": "Baisse moyenne : 2,4 points."
+            },
+            {
+              "label": "Écart",
+              "detail": "0,1 point ; supériorité non démontrée."
+            }
+          ],
+          "caption": "La différence entre groupes est plus instructive que la baisse dans un seul groupe.",
+          "sourceIds": [
+            "can-study-pain"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-pain"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi une baisse de douleur sous CBD ne prouve-t-elle pas à elle seule son efficacité ?",
+        "explainedTerms": [
+          "placebo",
+          "double aveugle",
+          "WOMAC",
+          "supériorité",
+          "équivalence"
+        ],
+        "example": "La différence entre groupes est plus instructive que la baisse dans un seul groupe.",
+        "movedDetails": [
+          "results"
+        ],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-cbg-acute-2024",
+      "questions": [
+        "Que peut montrer un essai de CBG réalisé à distance ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Quantité, limites temporelles, absence de correction multiple et intérêts ajoutés après lecture des sections originales.",
+        "Résultat exploratoire séparé d’une indication anxiolytique ou sécurité garantie."
+      ],
+      "patch": {
+        "lead": "Un premier essai à distance sur le CBG relève certains signaux favorables d’anxiété et de stress ressentis. Il étudie une exposition ponctuelle chez 34 adultes en bonne santé, sans démontrer un traitement des troubles anxieux.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "Les 34 participants ont déjà consommé du cannabis et sont suivis à distance par Zoom. Chacun compare deux séances, espacées d’une semaine : 20 mg de CBG par voie orale ou placebo. Dans cet essai croisé en double aveugle, la même personne reçoit les deux conditions sans savoir laquelle elle reçoit, et les évaluateurs l’ignorent aussi. La quantité décrit le protocole expérimental.",
+              "Les données sont recueillies de mars 2022 à novembre 2023 ; l’article de Cuttler et ses collègues paraît le 13 juillet 2024. Les participants ne sont pas recrutés comme patients atteints d’un trouble anxieux."
+            ],
+            "sourceIds": [
+              "can-study-cbg24"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "Les mesures principales sont ce que les personnes déclarent ressentir : anxiété, stress et humeur. Certains résultats favorisent le CBG pour l’anxiété et pour le stress à un temps de mesure ; l’humeur n’est pas clairement améliorée.",
+              "Les chercheurs font de nombreuses comparaisons sans correction statistique pour cet ensemble. Plus on cherche des différences, plus on peut en trouver par hasard, comme on augmente les chances de tirer au moins une carte particulière en multipliant les tirages. Ces signaux demandent donc confirmation plutôt qu’une conclusion de traitement établi."
+            ],
+            "sourceIds": [
+              "can-study-cbg24"
+            ]
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Les tests employés ne montrent pas de signal d’intoxication ou d’altération des performances. Mais ils se situent tôt, vers 20 à 60 minutes, sans examen physique ni mesure de constantes comme la fréquence cardiaque. Ils ne couvrent pas tous les effets tardifs ou ceux d’expositions répétées."
+            ],
+            "sourceIds": [
+              "can-study-cbg24"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "CReDO Science, qui travaille sur le CBG, finance l’étude ; son dirigeant est coauteur et les liens sont déclarés. L’article signale un préenregistrement du 25 février 2022 sous NCT05257044. L’essai de laboratoire Wolinsky 2026 porte sur d’autres personnes et un autre protocole : ce n’est pas un suivi de ces 34 participants."
+            ],
+            "sourceIds": [
+              "can-study-cbg24"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-cbg24"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-cbg"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-cbg-acute-2024"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Que peut montrer un essai de CBG réalisé à distance ?",
+          "nodes": [
+            {
+              "label": "34 adultes",
+              "detail": "Deux séances par personne : CBG et placebo."
+            },
+            {
+              "label": "Ressenti",
+              "detail": "Quelques résultats favorables, humeur non clairement améliorée."
+            },
+            {
+              "label": "Limite",
+              "detail": "Mesures précoces, nombreuses comparaisons, pas de patients anxieux."
+            }
+          ],
+          "caption": "Un signal sur un ressenti ponctuel ne répond pas encore à la question d’un trouble anxieux durable.",
+          "sourceIds": [
+            "can-study-cbg24"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-cbg24"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que peut montrer un essai de CBG réalisé à distance ?",
+        "explainedTerms": [
+          "essai croisé",
+          "double aveugle",
+          "autoévaluation",
+          "comparaisons multiples",
+          "constantes vitales"
+        ],
+        "example": "Un signal sur un ressenti ponctuel ne répond pas encore à la question d’un trouble anxieux durable.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [],
+  "sensitivePoints": [
+    "LGS : dénominateurs de sécurité modifiés pour six patients ; ne pas copier aveuglément ceux des bras randomisés.",
+    "TSC : résultat principal fondé sur modèle, différence relative vs placebo distincte de soustraction brute des pourcentages.",
+    "CBG2024 : comparaisons multiples non corrigées et mesures précoces ; signal à répliquer."
+  ]
+}

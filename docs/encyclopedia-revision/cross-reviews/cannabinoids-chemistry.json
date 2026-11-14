@@ -1,0 +1,102 @@
+{
+  "reviewedAt": "2026-11-14",
+  "reviewer": "revision_terpenes — chimie et niveaux de preuve",
+  "scope": "Contrelecture des textes complets proposés dans les 51 patchs des lots cannabinoids-01 à cannabinoids-08 : résumés, sections, liens, légendes et diagrammes. Contrôle indépendant ciblé des sources déterminantes ci-dessous ; ce document ne prétend pas avoir rouvert chaque référence historique ou chaque annexe des essais d’épilepsie.",
+  "finalApproval": false,
+  "batchFilesRead": [
+    "batches/cannabinoids-01.json",
+    "batches/cannabinoids-02.json",
+    "batches/cannabinoids-03.json",
+    "batches/cannabinoids-04.json",
+    "batches/cannabinoids-05.json",
+    "batches/cannabinoids-06.json",
+    "batches/cannabinoids-07.json",
+    "batches/cannabinoids-08.json"
+  ],
+  "articleCountFullyRead": 51,
+  "conclusion": "Les distinctions identité/origine, acide/neutre, affinité/réponse et humain/animal/cellule sont correctement structurées. Aucune promesse clinique universelle ni erreur bloquante de puissance n’a été trouvée. Une référence humaine THCV doit remplacer une référence cellulaire ; une incertitude d’attribution du signal M2 au métabolisme HHC mérite d’être explicite. Les blocages historiques et d’accès déclarés par le propriétaire ne sont pas automatiquement levés.",
+  "correctionsRequested": [
+    {
+      "id": "chem-thcv-primary-reference",
+      "severity": "required-source-correction",
+      "articleId": "record-cannabinoid-thcv",
+      "batch": "batches/cannabinoids-04.json",
+      "fields": ["sections.human.sourceIds", "sections.risks.sourceIds", "sourceIds", "diagram.nodes", "blockers"],
+      "finding": "Les paragraphes humains décrivent Jadoon 2016, mais leur référence cb-zagzoog-2020 est une étude cellulaire/animale. Le résumé original Jadoon est effectivement lisible via EUtils et confirme 62 sujets répartis entre cinq bras, treize semaines, critère principal HDL inchangé et signaux secondaires. L’argument de prudence est juste ; son attribution doit être corrigée.",
+      "proposedAction": "Ajouter la source primaire abstract ci-dessous et la citer pour les paragraphes humains et leurs limites. Remplacer la note du diagramme original non relu par Résumé primaire : HDL, critère principal, inchangé ; signaux secondaires exploratoires. Le blocage de cette assertion peut être levé sur la base du résumé en conservant la limite d’accès abstract. Conserver cb-zagzoog-2020 pour les mécanismes cellulaires.",
+      "sourceId": "cb-jadoon-2016",
+      "sentToOwner": true,
+      "ownerResolution": "Le propriétaire confirme une récupération et lecture indépendante via EUtils, correction des sources humain/risques, du diagramme et du blocage ; reçu le 2026-11-14."
+    },
+    {
+      "id": "chem-hhc-m2-attribution",
+      "severity": "useful-analytical-qualification",
+      "articleId": "record-study-hhc-metabolites-2026",
+      "batch": "batches/cannabinoids-08.json",
+      "fields": ["sections.results.paragraphs"],
+      "finding": "La Discussion de l’original envisage que M2 soit déjà présent dans le produit initial comme impureté ; cette possibilité n’a pas été testée. Sa détection après exposition ne prouve donc pas à elle seule sa formation métabolique. Le résumé Trois signaux étudiés est déjà correctement prudent.",
+      "suggestedParagraph": "Pour M2, une impureté préexistante dans le produit est aussi possible et n’a pas été directement testée : tout signal détecté après exposition n’est pas un métabolite démontré.",
+      "sourceIds": ["cb-hhc-metabolites-2026", "can-study-hhc26"],
+      "sentToOwner": true,
+      "ownerResolution": "Le propriétaire confirme sa lecture directe du PDF, section Limitations, et la correction du passage M2 ; reçu le 2026-11-14."
+    }
+  ],
+  "findingsConserved": [
+    {"articles": ["ref-phytocannabinoides", "ref-biosynthese-cannabinoides", "record-cannabinoid-cbg", "record-cannabinoid-cbga"], "finding": "CBGA acide et CBG neutre correctement distingués ; branches THCA/CBDA/CBCA parallèles et décarboxylation séparée. Identité végétale et provenance d’un lot synthétique correctement séparées. Le mot isomère n’est pas utilisé comme synonyme de concentration."},
+    {"articles": ["ref-formes-acides-neutres", "record-cannabinoid-delta9-thca-a", "record-cannabinoid-cbna", "record-cannabinoid-cbn"], "finding": "Décarboxylation, oxydation de conservation et métabolisme humain distingués ; THC-COOH n’est pas THCA/CBNA. THCA/PPARγ limité aux cellules et à la souris soumise à 3-NPA, sans promesse Huntington humaine."},
+    {"articles": ["ref-thc", "record-cannabinoid-delta9-thc"], "finding": "11-hydroxy-THC actif et premier passage hépatique confirmés par la notice officielle. La quantité d’un analyte n’est pas assimilée à une mesure complète de capacités fonctionnelles. Dronabinol pharmaceutique et préparations diverses distingués."},
+    {"articles": ["ref-cbd", "record-cannabinoid-cbd", "record-study-cbd-thc-2023"], "finding": "Indications EMA circonscrites à un médicament et à certaines épilepsies ; risques hépatiques et somnolence présents. Mécanisme incomplet présenté comme tel. Englund : absence de protection significative dans les conditions testées, sans conclure à l’inexistence de toute interaction. Les 46 participants ayant terminé ne sont pas assimilés aux 64 randomisés."},
+    {"articles": ["record-cannabinoid-cbg", "record-study-cbg-acute-2024", "record-study-cbg-laboratory-2026"], "finding": "Cuttler 2024 : population saine déjà utilisatrice de cannabis, mesures précoces à distance et comparaisons multiples non corrigées. Le signal de stress concerne T1 avant le stress expérimental, pas T2/T3 après celui-ci. Wolinsky 2026 : douze adultes, placebo placé aléatoirement dans une séquence ascendante ; effets peu robustes et aucune sécurité chronique démontrée. Le dossier ne transforme aucun de ces résultats en traitement établi de l’anxiété."},
+    {"articles": ["record-cannabinoid-cbn", "record-study-cbn-sleep-2026"], "finding": "Critère principal WASO non significatif correctement placé avant les secondaires. Les 247 événements sont un nombre d’événements dans toutes les conditions, pas autant de personnes ni d’effets attribués au CBN. Une nuit par condition ne devient pas une preuve de traitement durable."},
+    {"articles": ["record-cannabinoid-thcp", "record-cannabinoid-cbdp", "record-study-thcp-discovery-2019"], "finding": "Ki THCP 1,2 nM à CB1 et 6,2 nM à CB2 confirmés. Le rapport 33 compare une affinité à une valeur THC de référence, pas une intoxication humaine. Tétrade chez la souris et docking distingués de la clinique. Les essais THCP ne sont pas attribués au CBDP. La référence structurale 33 du docking porte effectivement un signal Retracted dans PMC ; ne pas réutiliser le modèle comme preuve indépendante solide."},
+    {"articles": ["record-cannabinoid-cbd", "record-cannabinoid-cbg", "record-cannabinoid-cbc", "record-cannabinoid-thcv"], "finding": "Zagzoog utilise des cellules CHO exprimant des récepteurs humains : ce sont des données in vitro, pas des participants humains. Compétition incomplète et intervalles larges rendent la prudence sur certains Ki pertinente. Liaison, inhibition AMPc et recrutement β-arrestine sont des mesures distinctes ; ne pas résumer THCV à un agonisme ou antagonisme universel."},
+    {"articles": ["ref-cannabinoides-transformes", "record-cannabinoid-hhc", "record-cannabinoid-hhcp", "record-cannabinoid-h4-cbd", "record-cannabinoid-delta8-thc"], "finding": "Hémisynthèse et extraction distinguées. 9R/9S HHC sont des épimères, pas une paire racémique ; 9S n’est pas universellement inactif. EUDA 2026 évoque HHC-P apparemment entièrement synthétique : aucune origine naturelle ou hémisynthétique déduite du seul nom. Une trace dans une préparation ne prouve pas une voie biosynthétique normale."},
+    {"articles": ["record-cannabinoid-hhc-o", "record-cannabinoid-hhcp"], "finding": "Persson : activation CB1 humain mesurée dans des cellules ; puissance EC50 et réponse maximale correctement séparées. Faible activation directe HHC-O et conversion métabolique proposée distinguées ; le milieu ne montrait pas d’hydrolyse détectable. Aucun rapport d’EC50 n’est converti en rapport d’intoxication humaine."},
+    {"articles": ["ref-cannabinoides-transformes", "record-cannabinoid-thc-o-acetate", "record-cannabinoid-hhc-o"], "finding": "Munger teste acétates Δ8-THC, CBD et CBN ainsi qu’un produit commercial Δ8-THC-acétate. Les limites de transfert à HHC-O et à tous les isomères de THC-O sont conservées ; cétène détecté dans des condensats n’est pas présenté comme un taux individuel de maladie."},
+    {"articles": ["record-cannabinoid-hhc", "record-study-hhc-human-2025", "record-study-hhc-metabolites-2026"], "finding": "Les deux publications utilisent les mêmes six volontaires ; l’effectif n’est pas doublé. Étude exploratoire sans placebo et réanalyse analytique distinguées. Conservation 9–16 mois, rapports d’aires et identification partielle limitent l’interprétation des nouveaux signaux."},
+    {"articles": ["record-cannabinoid-cbda", "record-study-cbda-preclinical-2013"], "finding": "Vomissements chez Suncus et gaping conditionné chez le rat ne deviennent pas une efficacité humaine. Le blocage par WAY100635 et l’amplification d’une réponse 5-HT1A soutiennent une implication de voie ; CBDA seul ne stimule pas significativement GTPγS dans le test concerné. L’expression simple agoniste direct est à juste titre évitée."}
+  ],
+  "sources": [
+    {
+      "id": "cb-jadoon-2016",
+      "title": "Efficacy and Safety of Cannabidiol and Tetrahydrocannabivarin on Glycemic and Lipid Parameters in Patients With Type 2 Diabetes: A Randomized, Double-Blind, Placebo-Controlled, Parallel Group Pilot Study",
+      "author": "Khalid A. Jadoon et al.",
+      "organization": "Diabetes Care",
+      "published": "2016 ; 39(10):1777–1786",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27573936/",
+      "verifiedAt": "2026-11-14",
+      "passage": "Résumé original : 62 sujets, cinq bras, treize semaines, HDL primaire inchangé et résultats secondaires ; aucune promesse amaigrissante.",
+      "access": "abstract",
+      "documentKind": "Essai pilote randomisé original ; DOI 10.2337/dc16-0650",
+      "limitation": "Résumé seul lu, via API NCBI. Nombreux critères et petits groupes ; aucune efficacité générale ou recommandation d’usage déduite.",
+      "reviewEvidence": [{"url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=27573936,42575778&retmode=xml", "sections": "ArticleTitle et AbstractText entiers du PMID 27573936", "result": "read", "access": "abstract", "reviewedBy": "revision_terpenes"}]
+    }
+  ],
+  "sourceReviews": [
+    {"sourceIds": ["can-study-englund"], "url": "https://www.nature.com/articles/s41386-022-01478-z.pdf", "access": "excerpt", "sections": "PDF p.1 résumé, p.3–5 résultats : 64 randomisés, 46 ayant terminé, douze abandons pour effets désagréables, rappel différé et symptômes", "result": "read"},
+    {"sourceIds": ["cb-citti-2019"], "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/?report=xml&x=2", "access": "excerpt", "sections": "Identification LC-HRMS, affinité CB1/CB2, figure 3, tétrade murine et référence 33 signalée Retracted ; aucune méthode de synthèse reprise", "result": "read"},
+    {"sourceIds": ["cb-zagzoog-2020"], "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7684313/?report=xml&x=2", "access": "excerpt", "sections": "Résumé, introduction sur les tests et Results CB1 Radioligand binding/table 1 : CHO, compétition incomplète, intervalles et voies de réponse", "result": "read"},
+    {"sourceIds": ["can-study-cbg24"], "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11246434/", "access": "excerpt", "sections": "Méthodes Procedures/Data analysis, Results subjective stress/mood, Discussion limites et Funding/Competing interests", "result": "read"},
+    {"sourceIds": ["cb-cbg-human-2026", "can-study-cbg26"], "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=27573936,42575778&retmode=xml", "access": "abstract", "sections": "AbstractText entier PMID 42575778 : douze adultes, séquence ascendante/placebo, effets ponctuels et limites aiguës", "result": "read"},
+    {"sourceIds": ["cb-cbn-human-2026", "can-study-cbn26"], "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13357646/", "access": "excerpt", "sections": "Résumé, §2.6–2.9, §3.1 Adverse Events et début Discussion : WASO principal, secondaires, 246 légers et un modéré dans placebo", "result": "read"},
+    {"sourceIds": ["cb-epidyolex"], "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/epidyolex", "access": "official-page", "sections": "Overview, How does it work, benefits, risks et indications ; recommandations de dose non reprises", "result": "read"},
+    {"sourceIds": ["cb-dronabinol"], "url": "https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=adb1801c-0fb5-4e16-b969-1db91230e0b9", "access": "excerpt", "sections": "§12.3 absorption et métabolisme : premier passage, 11-hydroxy-THC actif, variabilité ; aucune prescription reproduite", "result": "read"},
+    {"sourceIds": ["cb-hhc-2023"], "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10510108/", "access": "excerpt", "sections": "Essais biologiques et figures 3–4 : liaison, AMPc, récepteurs humains dans cellules, activité partielle 9R/9S ; pas la partie procédés chimiques", "result": "read"},
+    {"sourceIds": ["cb-hhc-cells-2025"], "url": "https://analyticalsciencejournals.onlinelibrary.wiley.com/doi/full/10.1002/dta.3750", "access": "excerpt", "sections": "§2.2, normalisation du signal et §3/table 1 : HHC/HHC-P/HHC-O, EC50, réponses maximales, absence d’hydrolyse détectée dans le milieu", "result": "read"},
+    {"sourceIds": ["cb-acetates-2022"], "url": "https://pubmed.ncbi.nlm.nih.gov/35801872/", "access": "abstract", "sections": "Résumé entier : composés réellement testés et cétène observé dans les condensats", "result": "read"},
+    {"sourceIds": ["cb-euda-2026"], "url": "https://www.euda.europa.eu/publications/european-drug-report/2026/new-psychoactive-substances_en", "access": "excerpt", "sections": "Continued availability of semi-synthetic cannabinoids creates health concerns, HHC-P apparemment entièrement synthétique, variabilité et contrôle international HHC décembre 2025 ; lecture déjà mobilisée pour products", "result": "read"},
+    {"sourceIds": ["cb-hhc-human-2025", "can-study-hhc25"], "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11933371/?report=xml&x=2", "access": "excerpt", "sections": "Conclusion sur absence de contrôle placebo et petit effectif, Funding et Declarations ; cette relecture ne revérifie pas tous les dosages analytiques", "result": "read"},
+    {"sourceIds": ["cb-hhc-metabolites-2026", "can-study-hhc26"], "url": "https://www.nature.com/articles/s41598-026-62767-x.pdf", "access": "excerpt", "sections": "p.1 résumé et introduction, passages conservation p.5 et Discussion p.7 : même cohorte, rapports d’aires, M2 potentiellement impureté non testée", "result": "read"},
+    {"sourceIds": ["cannabinoids-lesson-thca2017"], "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5731255/", "access": "excerpt", "sections": "Résumé Experimental approach/Key results, modèle 3-NPA et résultats Figure 6–7 : cellules, souris et PPARγ ; aucune preuve clinique directe", "result": "read"},
+    {"sourceIds": ["can-study-cbda"], "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3596650/", "access": "excerpt", "sections": "Résultats blocage WAY100635 et stimulation GTPγS, figure 8/table 1 ; CBDA seul non stimulant dans ce test", "result": "read"},
+    {"sourceIds": ["cb-thcab-1975"], "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=1138526&retmode=xml", "access": "abstract", "sections": "Titre et résumé entiers ; cristal, conformation, groupes carboxyle/phénol et chaîne pentyle. Pas de dessin atomique comparatif ouvert : blocage de numérotation non levé", "result": "read"}
+  ],
+  "remainingLimits": [
+    "Pas de nouvelle lecture indépendante des quatre originaux cliniques CBD Dravet/LGS/TSC/douleur ni de toutes leurs annexes : les textes ont été relus, leurs différences primaire/secondaire, changements de dénominateurs et formulations sont conservées ; leurs preuves documentaires restent celles du propriétaire.",
+    "Le résumé THCA-B ne remplace pas le dessin comparatif primaire. Le blocage sur la position atomique précise reste justifié.",
+    "Le résumé CBG 2026 ne confirme pas tout le financement ni le nombre initial de personnes éligibles ; ne pas lever ce blocage du propriétaire sur la base de la présente contrelecture.",
+    "Aucune extension de l’interaction CBD–THC à une synergie globale de tous les constituants, aucune inférence de sécurité à partir de naturel, et aucune transposition d’un rapport de liaison à une dose humaine."
+  ],
+  "ownerNotified": "/root/revision_cannabinoids",
+  "sharedBatchFilesModified": false
+}

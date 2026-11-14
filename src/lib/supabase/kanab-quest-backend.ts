@@ -1,6 +1,8 @@
 import "server-only";
 import { createHash } from "node:crypto";
 import { settleKqStaffIfAvailable } from "./kanab-quest-staff-backend";
+import type { KqStaffSnapshot } from "@/lib/kanab-quest-staff-types";
+import { createKqFlowerTrimReader } from "@/lib/kanab-quest-flower-trim";
 import { isKqCultureWorkChoice, isKqCultureWorkQuote, type KqCultureWorkChoice } from "@/lib/kanab-quest-culture-work";
 import { KQ_BUDDIE_ROTATION_REQUIRED, getKqBuddieRotationRemaining, getKqBuddieRotationMessage, recordKqBuddieUse, type KqBuddieRotation } from "@/lib/kanab-quest-buddie-rotation";
 import { getArenaRankingAvatars } from "./arena-ranking-avatars";
@@ -896,6 +898,7 @@ export type KqStartRunInput = {
   energyMode?: KqEnergyMode;
   expectedEnergyCents?: number;
   expectedWarehouseRevision?: number;
+  expectedProductionReservedZoneId?: string | null;
   buddieCode: string;
   deckCodes: string[];
   cultureTokens?: number;
@@ -952,6 +955,8 @@ export async function getKqRecentSituationCodes(ownerId: string): Promise<string
 
 export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) {
   if (input.expectedWarehouseRevision !== undefined && (!Number.isSafeInteger(input.expectedWarehouseRevision) || input.expectedWarehouseRevision < 1)) throw new Error("Révision de l’aménagement invalide.");
+  if (input.expectedProductionReservedZoneId != null && (typeof input.expectedProductionReservedZoneId !== "string"
+    || !input.expectedProductionReservedZoneId.trim() || input.expectedProductionReservedZoneId.length > 80)) throw new Error("Réservation de production invalide.");
   if (input.campaign !== undefined && typeof input.campaign !== "boolean") throw new Error("Campagne invalide.");
   if (input.campaign && input.zoneId !== undefined) throw new Error("La campagne comprend toutes les zones affectées.");
   if (input.zoneId !== undefined && (typeof input.zoneId !== "string" || !input.zoneId.trim() || input.zoneId.length > 80)) throw new Error("Zone de culture invalide.");
@@ -1032,8 +1037,12 @@ export async function startKqPlayerRun(ownerId: string, input: KqStartRunInput) 
   if (input.expectedWarehouseRevision !== undefined && input.expectedWarehouseRevision !== storedWarehouse?.revision) {
     throw new Error("L’aménagement ou les Buddies ont changé. Actualise la préparation avant de lancer.");
   }
+  if (input.expectedProductionReservedZoneId !== undefined
+    && input.expectedProductionReservedZoneId !== (storedWarehouse?.productionReservedZoneId ?? null)) {
+    throw new Error("La zone réservée à la production autonome a changé. Actualise la préparation avant de lancer.");
+  }
   const participants = input.campaign && storedWarehouse
-    ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision, storedWarehouse.cultureEquipment) : [];
+    ? getKqCampaignParticipants(storedWarehouse.sourceState, storedWarehouse.revision, storedWarehouse.cultureEquipment, storedWarehouse.productionReservedZoneId) : [];
   if (input.campaign && (!participants.length || participants[0].buddieCode !== input.buddieCode)) {
     throw new Error("Affecte tes Buddies aux zones, puis actualise la préparation de la campagne.");
   }
@@ -1281,8 +1290,14 @@ function getKqFlowerStoragePreview(lot: KqStoredStorageLot | undefined, stats: R
     ? applyKqStorageToJury(lot.state, stats, nowMs).stats : stats };
 }
 
-export async function getKqPlayerFlowers(ownerId: string) {
+export async function getKqPlayerFlowers(ownerId: string, settledStaff?: KqStaffSnapshot | null) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
+  let staff = settledStaff;
+  if (staff === undefined) {
+    // A failed optional prerequisite read must not hide the harvest itself.
+    try { staff = await settleKqStaffIfAvailable(ownerId); } catch { staff = null; }
+  }
+  const trim = createKqFlowerTrimReader(staff);
   const supabase = createSupabaseServiceClient();
   const [result, queueResult, storage] = await Promise.all([
     supabase.from("kq_flowers")
@@ -1309,6 +1324,7 @@ export async function getKqPlayerFlowers(ownerId: string) {
     varietyCode: String(flower.variety_code),
     varietyName: String(flower.variety_name),
     quality: Number(flower.quality),
+    trim: trim(String(flower.id), flower.created_at),
     ...mapKqHarvestTierFields(Number(flower.quality), flower),
     traits: Array.isArray(flower.traits) ? flower.traits.map(String) : [],
     combos: Array.isArray(flower.combos) ? flower.combos.map(String) : [],
@@ -1518,7 +1534,8 @@ export function mapKqChallengeClaimKeys(rows: unknown) {
 export async function getKqPlayerCoreSnapshot(ownerId: string, selection: KqRunSelection = {}) {
   if (!/^[0-9a-f-]{36}$/i.test(ownerId)) throw new Error("Compte Kanab Quest invalide.");
   // Complete staff work before parallel readers observe culture and balances.
-  await settleKqStaffIfAvailable(ownerId);
+  const staff = await settleKqStaffIfAvailable(ownerId);
+  const trim = createKqFlowerTrimReader(staff);
   const supabase = createSupabaseServiceClient();
   const [result, queueResult, claimsResult, runs, storage] = await Promise.all([
     supabase.rpc("rpc_kq_player_core_snapshot", { p_user_id: ownerId }),
@@ -1543,13 +1560,14 @@ export async function getKqPlayerCoreSnapshot(ownerId: string, selection: KqRunS
     const storedLots = new Map(storage.lots.map(lot => [lot.flowerId, lot]));
     const storageNowMs = Date.parse(storage.serverNow);
     return { ...snapshot, ...runs, flowers: snapshot.flowers.map(flower => ({ ...flower,
+      trim: trim(flower.id, flower.createdAt),
       ...getKqFlowerStoragePreview(storedLots.get(flower.id), flower.stats as Record<string, number>, storageNowMs) })) };
   }
   if (!isMissingKqPlayerCoreSnapshotRpc(result.error)) {
     throw new Error(`[supabase:rpc_kq_player_core_snapshot] ${result.error.message}`);
   }
   const [flowers, battles, progress] = await Promise.all([
-    getKqPlayerFlowers(ownerId),
+    getKqPlayerFlowers(ownerId, staff ?? null),
     getKqPlayerBattles(ownerId, 12),
     getKqPlayerProgress(ownerId),
   ]);

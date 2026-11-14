@@ -162,9 +162,10 @@ export async function getKqStaffRehireOffer(userId: string, contractId: string) 
   return { employee: await readContractSource(userId, contractId), snapshot: current };
 }
 /** Optional extension for existing game routes; an unapplied staff migration cannot block old farms. */
-export async function settleKqStaffIfAvailable(userId: string): Promise<void> {
-  try { await getKqStaffSnapshot(userId); }
+export async function settleKqStaffIfAvailable(userId: string): Promise<KqStaffSnapshot | null> {
+  try { return await getKqStaffSnapshot(userId); }
   catch (error) { if (!(error instanceof StaffSchemaUnavailable) && !(error instanceof StaffProfileUnavailable)) throw error; }
+  return null;
 }
 
 const ARCHIVE_DATE = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?(?:Z|[+-]\d{2}:\d{2})$/;

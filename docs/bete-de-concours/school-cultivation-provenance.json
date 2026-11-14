@@ -1,0 +1,92 @@
+{
+  "version": "2026-11-12.cultivation1",
+  "verifiedAt": "2026-11-12",
+  "status": "Livré et validé localement",
+  "counts": {
+    "chapters": 8,
+    "lessons": 16,
+    "activities": 16,
+    "checkpoints": 8,
+    "questions": 32,
+    "privateOptionExplanations": 128,
+    "terms": 42,
+    "commonGlossaryEntries": 205,
+    "systems": 8,
+    "comparisonCriteria": 10,
+    "cases": 3,
+    "guideEntries": 8,
+    "sourceRecords": 22,
+    "distinctSourceUrls": 18,
+    "greenhouseHotspots": 6
+  },
+  "scope": "Cinquième parcours développé. Quatre futurs parcours restent à préciser ; les cinq introductions historiques restantes ne les remplacent pas.",
+  "sourceAccess": {
+    "full-text": 9,
+    "excerpt": 6,
+    "official-page": 6,
+    "catalogue": 1
+  },
+  "files": {
+    "curriculum": "src/lib/kanab-quest-school-cultivation-lessons.ts",
+    "answers": "src/lib/kanab-quest-school-cultivation-answers.ts",
+    "systems": "src/lib/kanab-quest-school-cultivation-systems.ts",
+    "visuals": "src/lib/kanab-quest-school-cultivation-visuals.ts",
+    "entry": "src/components/placard/KqSchoolCultivation.tsx"
+  },
+  "requiredExercises": [
+    "cultivation-axes-1",
+    "cultivation-climate-2",
+    "cultivation-performance-2",
+    "cultivation-footprint-2",
+    "cultivation-decisions-2"
+  ],
+  "scientificBoundaries": [
+    "Environnement et milieu racinaire indépendants ; serre tunnel et serre équipée décrites avec leurs fonctions réelles.",
+    "Condensation et source de vapeur distinguées ; brassage et renouvellement d’air séparés.",
+    "Aucun système déclaré supérieur pour toute qualité, tout rendement ou tout objectif.",
+    "Les chiffres A/B/C et les contraintes des trois dossiers sont fictifs. Bilan limité à l’électricité de culture ; séchage, matériaux et autres postes exclus explicitement.",
+    "Énergie totale, facteur d’émission, émissions et intensité par kg sont des grandeurs différentes. Aucun ratio laitue transposé au chanvre.",
+    "Simulation qualitative à cinq choix : hypothèses, inconnues et limites visibles, aucun rendement ni bénéfice prédit.",
+    "Cadre français et européen daté, usage autorisé supposé dans les dossiers ; un nom de carte ni une intention pédagogique ne vaut autorisation."
+  ],
+  "review": {
+    "systems": "Relecture des sources universitaires et des ACV originales avec périmètres explicites ; revue indépendante des leçons sensibles et des justifications.",
+    "limits": "Vérification documentaire et technique locale ; aucune expertise agronomique externe, visite de site ou mesure d’apprentissage revendiquée."
+  },
+  "validation": {
+    "contentTests": 8,
+    "backendTests": 191,
+    "totalVitestTests": 199,
+    "sqlPglite": 58,
+    "postgresConcurrency": 14,
+    "fixture": 56,
+    "grantsMigrations": 384,
+    "eslint": "PASS ciblé — contenu, UI, backend et scénario navigateur",
+    "build": "PASS Next.js et TypeScript ; code de sortie 0 enregistré directement",
+    "buildNotes": "Les revalidations du cache de certaines données publiques Supabase échouent faute d’accès réseau. La compilation aboutit ; ces données distantes ne sont pas validées par cette livraison.",
+    "browser": "PASS 320/1440 : cinq exercices, justifications et deux choix cohérents, brouillons, retry de progression et quiz, axes indépendants, six repères au clavier, dossiers/simulation, quatre grandeurs du bilan, lien Buddy sans possession, owner409 et réponses privées403.",
+    "finalPreview": "PASS 320/1440 : cinq parcours, 205 entrées du glossaire, clavier et préférence de réduction des animations.",
+    "simulation": "243 combinaisons qualitatives et identifiants vérifiés ; aucun résultat agronomique ou économique prédit.",
+    "privacy": {
+      "checkedAt": "2026-11-12T19:17:44.063Z",
+      "chunks": 189,
+      "privateExplanations": 188,
+      "leaks": []
+    },
+    "transport": "Vrais composants, API de démonstration locales. Aucun compte distant ni paiement réel validé."
+  },
+  "economy": "quizId genetics et reward school:genetics conservés, plafond existant de 1000 centimes et total de 10000 ; sélection u1 couvrant huit chapitres. Les gains acquis ne sont pas remis à zéro.",
+  "migration": "20261112000500_kq_school_cultivation_progress.sql testée uniquement dans des bases temporaires. Les six migrations de l’école restent non appliquées au projet distant.",
+  "artwork": "Nouvelle serre de chanvre générée avec image_gen.imagegen, dans la direction du Quartier ; six repères HTML, animation illustrative réduite selon les préférences. Prompt et fichiers dans school-cultivation-art-provenance.json.",
+  "reports": [
+    "output/placard-navigation/school-cultivation-report.json",
+    "output/school/cultivation-build.log",
+    "output/school/cultivation-content-tests.log",
+    "output/school/cultivation-client-answer-check.json",
+    "docs/bete-de-concours/school-cultivation-corpus.json",
+    "docs/bete-de-concours/school-economy-validation.json",
+    "output/placard-navigation/school-cultivation-preview-smoke.json",
+    "output/school/cultivation-build-exit.json",
+    "docs/bete-de-concours/school-cultivation-art-provenance.json"
+  ]
+}

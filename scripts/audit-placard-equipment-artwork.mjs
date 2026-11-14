@@ -9,7 +9,7 @@ const origin = process.env.KQ_EQUIPMENT_ARTWORK_ORIGIN ?? 'http://127.0.0.1:3277
 const targeted = process.argv.includes('--targeted');
 const families = targeted ? ['lighting', 'air'] : ['lighting', 'air', 'water', 'climate', 'control', 'hygiene', 'logistics', 'security', 'substrate', 'nutrition', 'drying', 'storage'];
 assert.ok(['127.0.0.1', 'localhost'].includes(new URL(origin).hostname), 'Only a local fixture may be audited');
-const output = resolve('output/equipment-sylvain');
+const output = resolve('output/equipment-real-v2');
 await mkdir(output, { recursive: true });
 const browser = await puppeteer.launch({ executablePath: Launcher.getInstallations()[0], headless: true, args: ['--no-sandbox', '--disable-gpu'] });
 const page = await browser.newPage();
@@ -28,7 +28,7 @@ const visit = async () => {
 const fits = async () => {
   assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1), false, 'No page overflow');
 };
-const inspectImages = async (selector, containerSelector, expectedCount) => {
+const inspectImages = async (selector, containerSelector, expectedCount, expectedDistinct = expectedCount) => {
   const nodes = await page.$$(selector);
   assert.equal(nodes.length, expectedCount, selector);
   const sources = [];
@@ -48,13 +48,16 @@ const inspectImages = async (selector, containerSelector, expectedCount) => {
     assert.equal(result.contained, true, 'The image stays inside its card: ' + result.src);
     assets.add(result.src); sources.push(result.src);
   }
-  assert.equal(new Set(sources).size, expectedCount, 'Each tier uses a distinct image');
+  assert.equal(new Set(sources).size, expectedDistinct, 'Distinct artwork follows the actual catalog models');
 };
 
 try {
   for (const width of [1440, 390, 320]) {
     await page.setViewport({ width, height: 1000, isMobile: width < 600, hasTouch: width < 600 });
-    await visit(); await page.click('[data-warehouse-action="shop"]');
+    await visit();
+    await page.click('[data-warehouse-action="configure-selected"]');
+    await page.waitForSelector('[data-warehouse-zone-action="furnish"]', { visible: true });
+    await page.click('[data-warehouse-zone-action="furnish"]');
     await page.waitForSelector('[data-warehouse-shop]', { visible: true });
     for (const family of families) {
       await page.click(`[data-warehouse-shop-category="${family}"]`); await settle();
@@ -65,25 +68,34 @@ try {
       await page.screenshot({ path: resolve(output, `shop-${family}-${width}.png`) });
     }
     checks.push(`${families.length} families / ${families.length * 3} distinct decoded images, complete objects, no overflow at ${width}px`);
+    await page.click('[aria-label="Fermer la boutique"]');
+    await page.waitForSelector('[data-warehouse-shop]', { hidden: true });
     await page.keyboard.press('Escape');
     await page.click('[data-warehouse-room="processing"]');
-    await page.waitForSelector('[data-workshop-tiers]');
+    await page.waitForSelector('[data-workshop-tabs]');
+    await page.$$eval('[data-workshop-tabs] button', nodes => nodes.find(node => node.textContent.includes('Machines')).click());
+    await page.waitForSelector('[data-workshop-machine]');
     const machines = await page.evaluate(targeted => window.__machines.filter(machine => !targeted || machine.code === 'SIFT-TRAY'), targeted);
     assert.equal(machines.length, targeted ? 1 : 6);
     for (const machine of machines) {
       await page.click(`[data-warehouse-slot="${machine.slot}"]`);
+      await page.waitForSelector('[data-workshop-machine-dialog]', { visible: true });
+      await inspectImages('[data-workshop-inventory-artwork]', '[data-workshop-machine-summary]', 1);
+      await page.$$eval('[data-workshop-machine-dialog] button', nodes => nodes.find(node => node.textContent.includes('Matériel de l’atelier commun')).click());
       await page.waitForSelector(`[data-workshop-tiers="${machine.code}"]`);
-      await inspectImages('[data-workshop-tier-artwork]', '[data-workshop-tier]', 3);
-      await inspectImages('[data-workshop-inventory-artwork]', 'article', 1);
+      await inspectImages('[data-workshop-tier-artwork]', '[data-workshop-tier]', 3, ['PRESS-0600', 'WASHER-25L'].includes(machine.code) ? 3 : 1);
+      await inspectImages('[data-workshop-inventory-artwork]', '[data-workshop-machine-summary]', 1);
       await fits();
       await page.$eval('[data-workshop-tiers]', node => node.scrollIntoView({ block: 'start' }));
       await settle();
       await page.screenshot({ path: resolve(output, `workshop-${machine.code}-${width}.png`) });
+      await page.$$eval('button', nodes => nodes.find(node => node.textContent.trim() === 'Retour à mes machines').click());
+      await page.waitForSelector('[data-workshop-machine]');
     }
     checks.push(`${machines.length} workshop machines / ${machines.length * 3} tier images and ${machines.length} inventory heroes at ${width}px`);
     assert.deepEqual(await page.evaluate(() => [...window.__requests, ...window.__equipmentRequests]), [], 'Browsing never buys or changes the plan');
   }
-  assert.equal(assets.size, targeted ? 9 : 54);
+  assert.equal(assets.size, targeted ? 7 : 46);
   assert.deepEqual(errors, []);
   const report = { passed: true, checks, uniqueAssets: assets.size, errors };
   await writeFile(resolve(output, targeted ? 'targeted-report.json' : 'report.json'), JSON.stringify(report, null, 2));

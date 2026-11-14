@@ -1,0 +1,1 @@
+participant_id;session_id;date;appareil;largeur_px;experience_jeux;version_jeu;version_protocole;mode_test;scenario;etat_initial;lot_cible;lot_choisi;temps_action_comprise_s;temps_tache_active_s;resultat;comprehension;aide_produit;indice_moderateur;detours;verbatim;observation;gravite;preuve

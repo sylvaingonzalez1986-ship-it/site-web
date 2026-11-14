@@ -1,0 +1,1466 @@
+{
+  "domain": "terpenes",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "tp-fischedick2017",
+      "title": "Identification of Terpenoid Chemotypes Among High (−)-trans-Δ9-Tetrahydrocannabinol-Producing Cannabis sativa L. Cultivars",
+      "author": "Justin T. Fischedick",
+      "organization": "Cannabis and Cannabinoid Research",
+      "published": "2017-03-01",
+      "url": "https://doi.org/10.1089/can.2016.0040",
+      "passage": "PDF intégral, pages 36–39 : méthodes, tableau 1 et tableau 2 ; rectification cis/trans-ocimène page 37.",
+      "access": "excerpt",
+      "documentKind": "Analyse originale de 233 échantillons",
+      "limitation": "PDF original consulté via copie hébergée par Accurate Clinic (URL conservée dans le corpus). Un dispensaire californien, 16 analytes ; les noms commerciaux ne prouvent ni identité génétique ni composition d’une carte Buddy.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://doi.org/10.1089/can.2016.0040",
+          "sections": "PDF original Accurate Clinic : introduction, méthodes pp. 36–37, tableaux 1–2 ; 233 échantillons et 16 analytes.",
+          "result": "read",
+          "supports": "PDF intégral, pages 36–39 : méthodes, tableau 1 et tableau 2 ; rectification cis/trans-ocimène page 37."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-alpha-terpinene",
+      "title": "PubChem CID 7462 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/7462",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/7462/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-flavornet",
+      "title": "Flavornet and human odor space — index des descripteurs",
+      "author": "Terry Acree et Heinrich Arn",
+      "organization": "Cornell / DATU",
+      "published": "2004-06-25 (version annoncée)",
+      "url": "https://flavornet.org/d_odors.html",
+      "passage": "Index odeurs et fiches liées ; méthode et bibliographies sur https://www.flavornet.org/.",
+      "access": "official-page",
+      "documentKind": "Base originale de descripteurs issus de GC-olfactométrie",
+      "limitation": "Base documentaire, pas nouveau panel réalisé pour l’école. Certains indices sont interpolés : aucun n’est repris ici. Les mots décrivent des contextes perceptifs ; ils ne prouvent ni intensité, ni qualité, ni effet d’un cannabis.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://flavornet.org/d_odors.html",
+          "sections": "Index des descripteurs consulté ; les mots d’odeur sont qualitatifs et ne décrivent pas des effets humains.",
+          "result": "read",
+          "supports": "Index odeurs et fiches liées ; méthode et bibliographies sur https://www.flavornet.org/."
+        }
+      ]
+    },
+    {
+      "id": "tp-herbs2021",
+      "title": "Headspace/GC–MS Analysis and Investigation of Antibacterial, Antioxidant and Cytotoxic Activity of Essential Oils and Hydrolates from Rosmarinus officinalis L. and Lavandula angustifolia Miller",
+      "author": "Stefania Garzoli, Valentina Laghezza Masci, Sara Franceschi, Antonio Tiezzi, Pierluigi Giacomello et Elisa Ovidi",
+      "organization": "Foods",
+      "published": "2021-07-30",
+      "url": "https://www.mdpi.com/2304-8158/10/8/1768",
+      "passage": "Tableaux 1–2 (romarin et lavande) ; §2.2–2.3, identification MS et indices.",
+      "access": "excerpt",
+      "documentKind": "Profils d’huiles et de phases vapeur",
+      "limitation": "Seuls les résultats de composition sont utilisés. Les essais sur mélanges et cellules ne prouvent pas les effets des molécules séparées ou d’un usage humain.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2304-8158/10/8/1768",
+          "sections": "MDPI : §3.1–3.2 et tableaux 1–2, huiles et phases vapeur de romarin et lavande.",
+          "result": "read",
+          "supports": "Tableaux 1–2 (romarin et lavande) ; §2.2–2.3, identification MS et indices."
+        }
+      ]
+    },
+    {
+      "id": "tp-ovidi2022",
+      "title": "Hemp (Cannabis sativa L., Kompolti cv.) and Hop (Humulus lupulus L., Chinook cv.) Essential Oil and Hydrolate: HS-GC-MS Chemical Investigation and Apoptotic Activity Evaluation",
+      "author": "Elisa Ovidi et huit coauteurs",
+      "organization": "Pharmaceuticals",
+      "published": "2022-08-08",
+      "url": "https://www.mdpi.com/1424-8247/15/8/976",
+      "passage": "Tableau 1, colonne Hemp EO ; tableau 2, colonne Hemp Hy ; méthodes d’identification GC-MS.",
+      "access": "excerpt",
+      "documentKind": "Analyse d’huile et d’hydrolat ; expériences cellulaires distinctes",
+      "limitation": "Huile et hydrolat transformés, pas profil de fleur fraîche. Les résultats cellulaires portent sur des mélanges : ils ne sont attribués à aucune molécule isolée dans ces fiches. Quelques lignes n’ont pas d’indice de référence.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/1424-8247/15/8/976",
+          "sections": "MDPI : §2.2 et tableaux 1–2, huile essentielle et hydrolat Kompolti séparés.",
+          "result": "read",
+          "supports": "Tableau 1, colonne Hemp EO ; tableau 2, colonne Hemp Hy ; méthodes d’identification GC-MS."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-gamma-terpinene",
+      "title": "PubChem CID 7461 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/7461",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/7461/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-sage1998",
+      "title": "Monoterpene synthases from common sage (Salvia officinalis): cDNA isolation, characterization, and functional expression",
+      "author": "Mitchell L. Wise, Thomas J. Savage, Eva Katahira et Rodney Croteau",
+      "organization": "Journal of Biological Chemistry",
+      "published": "1998-06-12",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9614092/",
+      "passage": "Résumé original : synthases sabinène, cinéole et diphosphate de bornyle, produits secondaires.",
+      "access": "abstract",
+      "documentKind": "Fonction de synthases recombinantes de sauge",
+      "limitation": "Résumé consulté ; aucune procédure de production n’est reprise. Une activité enzymatique n’est pas une preuve de fonction écologique en milieu naturel.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9614092/",
+          "sections": "Résumé original lu par E-utilities PubMed 9614092 : trois synthases multiproduits, β-pinènes, γ-terpinène et voie du diphosphate de bornyle.",
+          "result": "read",
+          "supports": "Résumé original : synthases sabinène, cinéole et diphosphate de bornyle, produits secondaires."
+        }
+      ]
+    },
+    {
+      "id": "tp-booth2020",
+      "title": "Terpene Synthases and Terpene Variation in Cannabis sativa",
+      "author": "Judith K. Booth, Macaire M. S. Yuen, Sharon Jancsik, Lufiani L. Madilao, Jonathan E. Page et Jörg Bohlmann",
+      "organization": "Plant Physiology",
+      "published": "2020-06-26",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479917/",
+      "passage": "Tableau 1, légende des astérisques ; « Functions of CsTPSs » ; figures 9–10 ; « Terpene Extraction and Analysis ».",
+      "access": "excerpt",
+      "documentKind": "Profils végétaux et caractérisation fonctionnelle",
+      "limitation": "Les pics sans astérisque reposent sur MS et indice de rétention. Les échantillons Purple Kush ne sont pas directement comparables aux autres conditions ; aucun pourcentage universel n’est repris.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479917/",
+          "sections": "PMC via requête réseau : Variation of Foliar Terpene Profiles, tableau 1 entier et Functions of CsTPSs ; astérisques des étalons distingués.",
+          "result": "read",
+          "supports": "Tableau 1, légende des astérisques ; « Functions of CsTPSs » ; figures 9–10 ; « Terpene Extraction and Analysis »."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-terpinolene",
+      "title": "PubChem CID 11463 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/11463",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/11463/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-e-beta-ocimene",
+      "title": "PubChem CID 5281553 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/5281553",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5281553/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-snapdragon2008",
+      "title": "Two nearly identical terpene synthases catalyze the formation of nerolidol and linalool in snapdragon flowers",
+      "author": "Dinesh A. Nagegowda, Michael Gutensohn, Curtis G. Wilkerson et Natalia Dudareva",
+      "organization": "The Plant Journal",
+      "published": "2008-03-19 (en ligne)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18363779/",
+      "passage": "Résumé original : émissions florales et caractérisation AmNES/LIS-1 et -2.",
+      "access": "abstract",
+      "documentKind": "Étude enzymatique de fleurs de muflier",
+      "limitation": "Résumé consulté ; détail des expériences et annexes non relus. Ne démontre pas un rôle identique chez le cannabis.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/18363779/",
+          "sections": "Résumé original lu par E-utilities PubMed 18363779 : AmNES/LIS-1 cytosolique, AmNES/LIS-2 plastidiale, linalol/nérolidol selon substrat et compartiment.",
+          "result": "read",
+          "supports": "Résumé original : émissions florales et caractérisation AmNES/LIS-1 et -2."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-booth2017",
+      "title": "Terpene synthases from Cannabis sativa",
+      "author": "Judith K. Booth, Jonathan E. Page et Jörg Bohlmann",
+      "organization": "PLOS ONE",
+      "published": "29 mars 2017 ; 12(3):e0173911",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+      "passage": "Résumé, introduction, tableau 1 et caractérisation des synthases : trichomes de Finola, précurseurs, enzymes à un ou plusieurs produits et variation entre plantes.",
+      "access": "excerpt",
+      "limitation": "Étude sur des matériels identifiés, pas inventaire de toute l’espèce. Les voies biochimiques sont expliquées sans protocole ni optimisation de production.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document primaire ou ressource institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "sections": "PLOS : introduction, figures 1–2, méthodes analytiques et résultats des synthases ; IPP/DMAPP, GPP/FPP et CsTPS9.",
+          "result": "read",
+          "supports": "Résumé, introduction, tableau 1 et caractérisation des synthases : trichomes de Finola, précurseurs, enzymes à un ou plusieurs produits et variation entre plantes."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-z-beta-ocimene",
+      "title": "PubChem CID 5320250 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/5320250",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5320250/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H16 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-lavender2022",
+      "title": "Exploring the Chemical Composition of Bulgarian Lavender Absolute (Lavandula angustifolia Mill.) by GC/MS and GC-FID",
+      "author": "Daniela Nedeltcheva-Antonova, Kamelia Gechovska, Stanislav Bozhanov et Liudmil Antonov",
+      "organization": "Plants",
+      "published": "2022-11-17",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9692913/",
+      "passage": "Tableau 1 et chromatogrammes : cis/trans-β-ocimène, nérolidol, acétate de géranyle et autres constituants d’absolues de lavande.",
+      "access": "excerpt",
+      "documentKind": "Analyse de sept absolues de lavande",
+      "limitation": "Produits extraits de lavande, pas parfum de la fleur intacte. Les contributions olfactives individuelles ne sont pas mesurées par cette analyse.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9692913/",
+          "sections": "PMC : tableau 1, cis/trans-β-ocimène, nérolidol et acétate de géranyle dans des absolues.",
+          "result": "read",
+          "supports": "Tableau 1 et chromatogrammes : cis/trans-β-ocimène, nérolidol, acétate de géranyle et autres constituants d’absolues de lavande."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-linalool",
+      "title": "PubChem CID 6549 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/6549",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/6549/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H18O et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-zager2019",
+      "title": "Gene Networks Underlying Cannabinoid and Terpenoid Accumulation in Cannabis",
+      "author": "Jordan J. Zager, Iris Lange, Narayanan Srividya, Anthony Smith et B. Markus Lange",
+      "organization": "Plant Physiology",
+      "published": "2019-05-28",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+      "passage": "Tableaux 1 et 3 ; figures 7–8 ; paragraphes de caractérisation des synthases linalol/nérolidol.",
+      "access": "excerpt",
+      "documentKind": "Profils de fleurs et enzymes recombinantes",
+      "limitation": "Une enzyme active hors de la plante ne démontre pas à elle seule son produit dans chaque variété ; la séparation chirale concerne les analyses spécifiées.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+          "sections": "PMC, variante report=xml&x=2 : Target Gene Identification and Characterization, tableaux 1 et 3, figures 7–8 et séparation chirale ; CsTPS18VF (+) et CsTPS19BL mélange (+)/(−), nérolidol quantifiable seulement Black Lime.",
+          "result": "read",
+          "supports": "Tableaux 1 et 3 ; figures 7–8 ; paragraphes de caractérisation des synthases linalol/nérolidol."
+        }
+      ]
+    },
+    {
+      "id": "tp-janta2024",
+      "title": "Chemical profiling and clustering of various dried cannabis flowers revealed by volatilomics and chemometric processing",
+      "author": "Pannipa Janta et Sornkanok Vimolmangkang",
+      "organization": "Journal of Cannabis Research",
+      "published": "2024-12-06",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11622677/",
+      "passage": "« Compound identification » et tableau 2 : noms proposés, indices, différences d’indices et scores de correspondance.",
+      "access": "excerpt",
+      "documentKind": "Volatilomique HS-SPME-GC-MS de 19 fleurs séchées",
+      "limitation": "Les auteurs qualifient les identifications de provisoires. Bibliothèque NIST et indice de rétention ne remplacent pas un étalon ; DB-WAX non chirale ne démontre pas les signes (+)/(−) et préfixes R/L du tableau.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11622677/",
+          "sections": "PMC via réseau : Compound identification et tableau 2 ; identifications provisoires et aires normalisées.",
+          "result": "read",
+          "supports": "« Compound identification » et tableau 2 : noms proposés, indices, différences d’indices et scores de correspondance."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-fenchol",
+      "title": "PubChem CID 439711 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/439711",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/439711/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H18O et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tp-fennel2021",
+      "title": "Gas Chromatography–Mass Spectrometry-Based Classification of 12 Fennel (Foeniculum vulgare Miller) Varieties Based on Their Aroma Profiles and Estragole Levels as Analyzed Using Chemometric Tools",
+      "author": "Sherif M. Afifi, Amira El-Mahis, Andreas G. Heiss et Mohamed A. Farag",
+      "organization": "ACS Omega",
+      "published": "2021-02-12",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7931402/",
+      "passage": "Tableau 2, ligne 3 : fenchol dans les fruits de fenouil ; méthodes SPME-GC-MS.",
+      "access": "excerpt",
+      "documentKind": "Profils volatils de fruits de fenouil",
+      "limitation": "Détection analytique, sans confirmation de tous les stéréoisomères ni conclusion sur un effet du fenchol isolé.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7931402/",
+          "sections": "PMC : tableau 2, ligne fenchol ; profils de fruits, pas essais cliniques.",
+          "result": "read",
+          "supports": "Tableau 2, ligne 3 : fenchol dans les fruits de fenouil ; méthodes SPME-GC-MS."
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-terpene-alpha-terpinene",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "L’α-terpinène est une molécule odorante à dix carbones. Il appartient à un groupe de composés proches dont les liaisons sont placées différemment : leurs noms ne sont pas interchangeables.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "L’α-terpinène contient dix carbones et seize hydrogènes, notés C10H16. Il possède un anneau avec deux doubles liaisons séparées par une seule liaison simple : elles sont dites conjuguées. Le γ-terpinène et le terpinolène gardent la même formule, mais changent la place de ces liaisons. Ce sont des différences d’assemblage, pas des formes miroir."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "rev-terpene-pubchem-alpha-terpinene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "La note retenue est citron. Plusieurs molécules peuvent évoquer ce registre ; ce mot seul ne suffit pas à reconnaître de l’α-terpinène."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Fischedick le recherche en le comparant à une référence connue. Selon l’appareil, un composé peut être identifié sans qu’une quantité suffisamment précise puisse être donnée. Une case sans valeur chiffrée n’est donc pas automatiquement la preuve d’une absence."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Des produits de romarin et de lavande analysés contiennent aussi de l’α-terpinène. Sa présence n’est pas réservée au cannabis."
+            ],
+            "sourceIds": [
+              "tp-herbs2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Les travaux présentés permettent surtout de distinguer des molécules proches et de comparer des échantillons. Ils n’établissent pas un effet calmant ou stimulant chez l’humain. La note citronnée décrit une perception ; elle ne remplace pas un essai de santé."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-fischedick2017",
+          "rev-terpene-pubchem-alpha-terpinene",
+          "tp-flavornet",
+          "tp-herbs2021"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/alpha-terpinene-structure.png",
+          "alt": "Dessin de la structure moléculaire. Dans l’α-terpinène, une seule liaison simple sépare les deux doubles liaisons de l’anneau.",
+          "caption": "Dans l’α-terpinène, une seule liaison simple sépare les deux doubles liaisons de l’anneau.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7462",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "alpha-terpinene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-alpha-terpinene",
+        "tp-fischedick2017",
+        "tp-flavornet",
+        "tp-herbs2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 7462,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "formule",
+          "anneau"
+        ],
+        "example": "Des produits de romarin et de lavande analysés contiennent aussi de l’α-terpinène. Sa présence n’est pas réservée au cannabis.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-terpene-gamma-terpinene",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Le γ-terpinène est un terpène identifié notamment dans une huile essentielle de chanvre. Le distinguer de l’α-terpinène demande de regarder les liaisons de la molécule, pas seulement sa formule.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Comme l’α-terpinène, il contient dix carbones et seize hydrogènes, soit C10H16. Il forme un anneau, mais ses deux doubles liaisons sont plus éloignées l’une de l’autre. Les atomes sont donc reliés différemment malgré une formule identique."
+            ],
+            "sourceIds": [
+              "tp-ovidi2022",
+              "rev-terpene-pubchem-gamma-terpinene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "L’index sensoriel retient térébenthine et une note évoquant l’essence. Ce sont des comparaisons d’odeur, sans indication qu’un carburant serait présent dans le produit."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Ovidi rapporte du γ-terpinène dans l’huile essentielle du chanvre Kompolti. Une huile extraite n’est pas la fleur intacte. L’attribution repose ici sur le signal de masse et le comportement dans l’appareil, sans comparaison individuelle à une référence pure revendiquée pour ce résultat."
+            ],
+            "sourceIds": [
+              "tp-ovidi2022"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Le γ-terpinène est aussi identifié dans les produits de romarin et de lavande étudiés, avec la même prudence sur le niveau d’identification."
+            ],
+            "sourceIds": [
+              "tp-herbs2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Une enzyme de sauge surtout connue pour produire du sabinène peut également donner du γ-terpinène et du terpinolène. Une étape de fabrication commune peut ainsi aboutir à plusieurs substances. Cette expérience sur une enzyme ne constitue pas un résultat thérapeutique."
+            ],
+            "sourceIds": [
+              "tp-sage1998"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-ovidi2022",
+          "rev-terpene-pubchem-gamma-terpinene",
+          "tp-flavornet",
+          "tp-herbs2021",
+          "tp-sage1998"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/gamma-terpinene-structure.png",
+          "alt": "Dessin de la structure moléculaire. Les doubles liaisons sont placées différemment de celles de l’α-terpinène, bien que les deux molécules aient la même formule.",
+          "caption": "Les doubles liaisons sont placées différemment de celles de l’α-terpinène, bien que les deux molécules aient la même formule.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/7461",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "gamma-terpinene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Identité proposée à partir des signaux de l’appareil, sans référence pure annoncée pour cette ligne"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-gamma-terpinene",
+        "tp-ovidi2022",
+        "tp-flavornet",
+        "tp-herbs2021",
+        "tp-sage1998"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 7461,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "formule",
+          "anneau",
+          "enzyme"
+        ],
+        "example": "Le γ-terpinène est aussi identifié dans les produits de romarin et de lavande étudiés, avec la même prudence sur le niveau d’identification.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-terpene-terpinolene",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Le terpinolène est un terpène pouvant occuper une place importante dans certains profils de cannabis. Ce classement chimique ne permet pas de prédire un même effet psychique pour toutes les fleurs concernées.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Le terpinolène possède dix carbones et seize hydrogènes, notés C10H16. Une double liaison est dans l’anneau et une autre s’étend à l’extérieur. Leur position le distingue de l’α-terpinène et du γ-terpinène. Le nom δ-terpinène est un synonyme du terpinolène, pas une molécule supplémentaire."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-terpinolene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Les descriptions documentées comprennent pin et une note évoquant le plastique. Un mot de comparaison sensorielle ne signifie pas que la matière nommée, ici du plastique, serait présente."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Booth confirme le terpinolène en le comparant à une référence connue. Fischedick décrit aussi des échantillons dont le profil est dominé par ce composé. Cela caractérise leurs substances mesurées, sans établir un effet psychique commun à tout le groupe."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-fischedick2017"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Du terpinolène est mesuré dans l’huile de romarin ainsi que dans l’air au-dessus du liquide. Cette présence partagée ne rend pas les deux milieux ou les plantes identiques."
+            ],
+            "sourceIds": [
+              "tp-herbs2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Plusieurs enzymes de cannabis peuvent fabriquer du terpinolène. CsTPS31 en produit principalement, tandis que CsTPS23 et CsTPS32 en donnent parmi d’autres produits. Une quantité finale ne révèle donc pas à elle seule quel gène, c’est-à-dire quelle instruction de fabrication d’enzyme, a été utilisé."
+            ],
+            "sourceIds": [
+              "tp-booth2020"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-booth2020",
+          "rev-terpene-pubchem-terpinolene",
+          "tp-flavornet",
+          "tp-fischedick2017",
+          "tp-herbs2021"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/terpinolene-structure.png",
+          "alt": "Dessin de la structure moléculaire. Une double liaison est dans l’anneau, l’autre à l’extérieur : ce placement distingue le terpinolène des deux terpinènes comparés.",
+          "caption": "Une double liaison est dans l’anneau, l’autre à l’extérieur : ce placement distingue le terpinolène des deux terpinènes comparés.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/11463",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "δ-terpinène · terpinolene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-terpinolene",
+        "tp-booth2020",
+        "tp-flavornet",
+        "tp-fischedick2017",
+        "tp-herbs2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Structure 2D du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 11463,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "anneau",
+          "double liaison",
+          "enzyme"
+        ],
+        "example": "Du terpinolène est mesuré dans l’huile de romarin ainsi que dans l’air au-dessus du liquide. Cette présence partagée ne rend pas les deux milieux ou les plantes identiques.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-terpene-e-beta-ocimene",
+      "questions": [
+        "Dans le (E)-β-ocimène du chanvre, la lettre E correspond ici à la forme…"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Le (E)-β-ocimène est une molécule odorante à chaîne ouverte. Sa forme E doit être distinguée de la forme Z : une ressemblance de nom peut cacher une autre disposition dans l’espace.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Sa formule C10H16 signifie dix carbones et seize hydrogènes. La chaîne n’a pas d’anneau. Autour de la double liaison repérée par le chiffre 3, les deux groupes utilisés pour nommer la forme sont de part et d’autre : c’est ici la forme E, aussi appelée trans. La forme Z garde les mêmes liaisons entre atomes mais dispose ces groupes autrement."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-fischedick2017",
+              "rev-terpene-pubchem-e-beta-ocimene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Les descriptions retenues sont herbacé et doux. Elles donnent un repère pour le composé étudié ; le mélange d’une fleur peut empêcher de reconnaître cette note séparément."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Dans l’étude de Fischedick, une comparaison avec une référence connue a permis de réattribuer à la forme trans un signal auparavant nommé cis. Cette correction concerne ce résultat précis : elle ne justifie pas de renommer tous les autres résultats cis-ocimène publiés."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-fischedick2017"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Des fleurs de muflier émettent aussi du (E)-β-ocimène. Émettre signifie que la molécule quitte la fleur et est retrouvée dans l’air."
+            ],
+            "sourceIds": [
+              "tp-snapdragon2008"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Chez le chanvre Finola, l’enzyme CsTPS6 fabrique cet ocimène à partir d’une matière de départ à dix carbones. Le retrouver dans l’air d’une fleur de muflier ne prouve pas, à lui seul, qu’il attire un insecte ou protège la plante : il faut une expérience qui teste précisément cette fonction."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-booth2017",
+              "tp-snapdragon2008"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-booth2020",
+          "tp-fischedick2017",
+          "rev-terpene-pubchem-e-beta-ocimene",
+          "tp-flavornet",
+          "tp-snapdragon2008",
+          "terpenes-lesson-booth2017"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/e-beta-ocimene-structure.png",
+          "alt": "Dessin de la structure moléculaire. E, ou trans ici, indique la disposition de deux groupes autour d’une double liaison ; ce n’est pas une quantité.",
+          "caption": "E, ou trans ici, indique la disposition de deux groupes autour d’une double liaison ; ce n’est pas une quantité.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5281553",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "trans-β-ocimène · trans-ocimene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-e-beta-ocimene",
+        "tp-booth2020",
+        "tp-fischedick2017",
+        "tp-flavornet",
+        "tp-snapdragon2008",
+        "tp-booth2017"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Géométrie (3E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 5281553,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [
+        "hemp-molecules-ocimene-e"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "formule",
+          "anneau",
+          "double liaison",
+          "enzyme"
+        ],
+        "example": "Des fleurs de muflier émettent aussi du (E)-β-ocimène. Émettre signifie que la molécule quitte la fleur et est retrouvée dans l’air.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": [
+          "hemp-molecules-ocimene-e"
+        ]
+      }
+    },
+    {
+      "id": "record-terpene-z-beta-ocimene",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Le (Z)-β-ocimène est une forme d’ocimène observée dans des analyses de chanvre et de lavande. La lettre Z décrit sa géométrie, et ne peut pas être remplacée par E sans changer la molécule désignée.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Ce composé contient dix carbones et seize hydrogènes, soit C10H16, dans une chaîne sans anneau. Z indique que les deux groupes prioritaires de la double liaison repérée en position 3 sont du même côté ; on parle ici aussi de forme cis. E et Z ne sont pas les signes (+) et (−), qui donnent une autre information sur certaines formes moléculaires."
+            ],
+            "sourceIds": [
+              "tp-ovidi2022",
+              "rev-terpene-pubchem-z-beta-ocimene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Les mots floral, agrumes et herbacé sont des descriptions documentées. Ils ne suffisent pas à séparer au nez les formes Z et E dans un mélange complexe."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Ovidi attribue un signal de l’huile de Kompolti au (Z)-β-ocimène à partir de son spectre de masse et de son comportement dans l’appareil. Booth en décrit aussi dans Purple Kush, mais ce matériel a été analysé dans des conditions différentes des autres : ses quantités ne doivent pas être comparées directement sans tenir compte de cette différence."
+            ],
+            "sourceIds": [
+              "tp-ovidi2022",
+              "tp-booth2020"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Des extraits de lavande bulgare appelés absolues contiennent des signaux attribués aux formes cis et trans. Les deux peuvent donc se retrouver dans le même produit."
+            ],
+            "sourceIds": [
+              "tp-lavender2022"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Cette coexistence renseigne la composition du mélange, sans attribuer à la forme Z seule une fonction dans la plante ou un effet humain. Détecter deux formes ne permet pas de partager automatiquement entre elles les effets éventuellement mesurés sur l’extrait entier."
+            ],
+            "sourceIds": [
+              "tp-ovidi2022",
+              "tp-lavender2022"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-ovidi2022",
+          "rev-terpene-pubchem-z-beta-ocimene",
+          "tp-flavornet",
+          "tp-booth2020",
+          "tp-lavender2022"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/z-beta-ocimene-structure.png",
+          "alt": "Dessin de la structure moléculaire. Z, ou cis ici, place les groupes prioritaires du même côté de la double liaison concernée ; la forme E les place de part et d’autre.",
+          "caption": "Z, ou cis ici, place les groupes prioritaires du même côté de la double liaison concernée ; la forme E les place de part et d’autre.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5320250",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "10 carbones ; carbone et hydrogène seulement"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "cis-β-ocimène · cis-ocimene"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Identité proposée à partir des signaux de l’appareil, sans référence pure annoncée pour cette ligne"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-z-beta-ocimene",
+        "tp-ovidi2022",
+        "tp-flavornet",
+        "tp-booth2020",
+        "tp-lavender2022"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Géométrie (3Z) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 5320250,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "anneau",
+          "double liaison"
+        ],
+        "example": "Des extraits de lavande bulgare appelés absolues contiennent des signaux attribués aux formes cis et trans. Les deux peuvent donc se retrouver dans le même produit.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-terpene-linalool",
+      "questions": [
+        "Le linalol présent dans le chanvre est associé à quel registre olfactif ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Le linalol est une molécule associée à des notes florales et de lavande. Il contient un groupe alcool, mais cela ne transforme pas son odeur en preuve d’un effet contre l’anxiété.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Le linalol contient dix carbones, dix-huit hydrogènes et un oxygène : sa formule est C10H18O. Son oxygène appartient à un groupe –OH, appelé fonction alcool. Ici alcool décrit une partie de la structure, pas une boisson. La chaîne reste ouverte et peut présenter deux formes miroir. Le nérolidol est une autre molécule, dont le squelette comporte quinze carbones."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-linalool"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Floral et lavande sont des comparaisons utiles. Une huile de lavande contient pourtant plusieurs substances : ce qui est observé pour toute cette huile ne peut pas être attribué automatiquement au linalol seul."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Booth confirme du (+)-linalol dans ses profils. Zager montre que deux enzymes ne donnent pas les mêmes proportions de formes miroir : CsTPS18VF produit presque uniquement la forme (+), tandis que CsTPS19BL donne les deux. Le nom linalol ne fixe donc pas un mélange spatial unique."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-zager2019"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Le linalol est aussi mesuré dans l’huile de lavande et dans l’air au-dessus de cette huile. La molécule n’est pas réservée au chanvre."
+            ],
+            "sourceIds": [
+              "tp-herbs2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Les enzymes étudiées peuvent former du linalol avec une matière de départ à dix carbones et du (E)-nérolidol avec une matière de départ à quinze carbones. Une même protéine peut ainsi utiliser deux matières différentes. Cela démontre une capacité de fabrication, sans démontrer qu’une fleur riche en linalol traite l’anxiété."
+            ],
+            "sourceIds": [
+              "tp-zager2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-booth2020",
+          "rev-terpene-pubchem-linalool",
+          "tp-flavornet",
+          "tp-zager2019",
+          "tp-herbs2021"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/linalool-structure.png",
+          "alt": "Dessin de la structure moléculaire. Le groupe –OH correspond à la fonction alcool du linalol. Le dessin ne choisit pas entre ses deux formes miroir.",
+          "caption": "Le groupe –OH correspond à la fonction alcool du linalol. Le dessin ne choisit pas entre ses deux formes miroir.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/6549",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "Squelette à 10 carbones et présence d’oxygène"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "linalool"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-linalool",
+        "tp-booth2020",
+        "tp-flavornet",
+        "tp-zager2019",
+        "tp-herbs2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 6549,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [
+        "hemp-molecules-linalol-arome"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "formule",
+          "fonction alcool",
+          "enzyme"
+        ],
+        "example": "Le linalol est aussi mesuré dans l’huile de lavande et dans l’air au-dessus de cette huile. La molécule n’est pas réservée au chanvre.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": [
+          "hemp-molecules-linalol-arome"
+        ]
+      }
+    },
+    {
+      "id": "record-terpene-fenchol",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Le fenchol est une molécule odorante au caractère camphré, mesurée dans certains cannabis et fruits de fenouil. Plusieurs arrangements de ses atomes dans l’espace existent : le nom seul ne permet pas de les confondre.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle molécule ce nom désigne-t-il ?",
+            "paragraphs": [
+              "Le fenchol possède dix carbones, dix-huit hydrogènes et un oxygène, soit C10H18O. Il forme deux anneaux et porte un groupe alcool –OH. La fenchone a une autre organisation de l’oxygène, appelée fonction cétone, avec un carbone lié par une double liaison à l’oxygène : ce n’est pas le même composé. Des noms comme endo-fenchyl alcohol ou β-fenchol demandent aussi de préciser l’arrangement spatial avant de les réunir."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "tp-janta2024",
+              "rev-terpene-pubchem-fenchol"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Quelle odeur lui associe-t-on ?",
+            "paragraphs": [
+              "Le repère retenu est camphré, c’est-à-dire rappelant le camphre. Une ressemblance d’odeur ne suffit pas à reconnaître la molécule."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Que montrent les analyses du cannabis ?",
+            "paragraphs": [
+              "Fischedick compare de l’endo-fenchyl alcohol à une référence connue ; Booth confirme une attribution nommée fenchol. Janta propose β-fenchol à partir du signal de masse et du comportement dans l’appareil. Une analyse qui ne sépare pas toutes les formes spatiales ne confirme pas leur identité complète."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "tp-booth2020",
+              "tp-janta2024"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Dans quelle autre plante la retrouve-t-on ?",
+            "paragraphs": [
+              "Afifi rapporte du fenchol dans plusieurs fruits de fenouil analysés, sans en retrouver universellement dans tous. La présence dépend du matériel étudié."
+            ],
+            "sourceIds": [
+              "tp-fennel2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Que permettent de comprendre les expériences ?",
+            "paragraphs": [
+              "Cette étude de fenouil mesure des constituants : elle ne vérifie pas un mécanisme neurologique du fenchol. Le dessin représente par ailleurs une forme spatiale précise, nommée (1S,2S,4R), sans preuve que chaque fleur analysée contienne précisément cette forme."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "tp-fennel2021"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "tp-fischedick2017",
+          "tp-janta2024",
+          "rev-terpene-pubchem-fenchol",
+          "tp-flavornet",
+          "tp-booth2020",
+          "tp-fennel2021"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/fenchol-structure.png",
+          "alt": "Dessin de la structure moléculaire. Le dessin représente une forme particulière du fenchol, (1S,2S,4R). Il ne fixe pas la forme présente dans toutes les fleurs.",
+          "caption": "Le dessin représente une forme particulière du fenchol, (1S,2S,4R). Il ne fixe pas la forme présente dans toutes les fleurs.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/439711",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        },
+        "facts": [
+          {
+            "label": "Composition en bref",
+            "value": "Squelette à 10 carbones et présence d’oxygène"
+          },
+          {
+            "label": "Autres noms rencontrés",
+            "value": "alcool fenchylique · endo-fenchyl alcohol"
+          },
+          {
+            "label": "Comment l’étude le reconnaît",
+            "value": "Comparaison à un produit de référence connu"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-fenchol",
+        "tp-fischedick2017",
+        "tp-janta2024",
+        "tp-flavornet",
+        "tp-booth2020",
+        "tp-fennel2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Stéréoisomère (1S,2S,4R) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 439711,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Quelle molécule ce nom désigne-t-il ?",
+        "termsExplained": [
+          "carbone",
+          "anneau",
+          "double liaison"
+        ],
+        "example": "Afifi rapporte du fenchol dans plusieurs fruits de fenouil analysés, sans en retrouver universellement dans tous. La présence dépend du matériel étudié.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce qui distingue cette molécule de celle citée en comparaison.",
+          "Distinguer présence mesurée, odeur décrite et effet effectivement testé."
+        ],
+        "quizIdsReviewed": []
+      }
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [
+    {
+      "id": "hemp-molecules-ocimene-e",
+      "prompt": "Dans le (E)-β-ocimène du chanvre, la lettre E correspond ici à la forme…",
+      "options": [
+        "Cis",
+        "Trans",
+        "Acide",
+        "Hydrogénée"
+      ],
+      "answer": 1,
+      "explanation": "Pour la double liaison concernée, E correspond ici à trans : les deux groupes utilisés pour décrire la forme sont de part et d’autre. Dans la forme Z, ou cis ici, ils sont du même côté.",
+      "articleId": "record-terpene-e-beta-ocimene",
+      "sourceIds": [
+        "tp-fischedick2017",
+        "tp-booth2020"
+      ]
+    },
+    {
+      "id": "hemp-molecules-linalol-arome",
+      "prompt": "Le linalol présent dans le chanvre est associé à quel registre olfactif ?",
+      "options": [
+        "Résine et térébenthine",
+        "Soufre et chou",
+        "Muscade et poivre",
+        "Fleurs et lavande"
+      ],
+      "answer": 3,
+      "explanation": "Floral et lavande sont des comparaisons d’odeur du linalol. Une huile de lavande contient toutefois plusieurs molécules : elle ne se confond pas avec du linalol pur.",
+      "articleId": "record-terpene-linalool",
+      "sourceIds": [
+        "tp-flavornet"
+      ]
+    }
+  ],
+  "cardPatches": [
+    {
+      "id": "terpinolene",
+      "reason": "Aligner les détails du dialogue de carte sur la notice révisée ; conserver les illustrations aromatiques et le fonctionnement.",
+      "fields": {
+        "isomerNotes": "Le terpinolène possède dix carbones et seize hydrogènes, notés C10H16. Une double liaison est dans l’anneau et une autre s’étend à l’extérieur. Leur position le distingue de l’α-terpinène et du γ-terpinène. Le nom δ-terpinène est un synonyme du terpinolène, pas une molécule supplémentaire.",
+        "cannabisEvidence": [
+          {
+            "statement": "Booth confirme le terpinolène en le comparant à une référence connue. Fischedick décrit aussi des échantillons dont le profil est dominé par ce composé. Cela caractérise leurs substances mesurées, sans établir un effet psychique commun à tout le groupe.",
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-fischedick2017"
+            ]
+          }
+        ],
+        "biologicalNotes": "Plusieurs enzymes de cannabis peuvent fabriquer du terpinolène. CsTPS31 en produit principalement, tandis que CsTPS23 et CsTPS32 en donnent parmi d’autres produits. Une quantité finale ne révèle donc pas à elle seule quel gène, c’est-à-dire quelle instruction de fabrication d’enzyme, a été utilisé."
+      },
+      "sourceIds": [
+        "tp-booth2020",
+        "rev-terpene-pubchem-terpinolene",
+        "tp-flavornet",
+        "tp-fischedick2017",
+        "tp-herbs2021"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Contre-vérifier les configurations explicites des PNG PubChem : leur représentation n’attribue pas une stéréochimie à une analyse non chirale.",
+    "La politique NCBI autorise les créations gouvernementales et ne pose pas de restriction NCBI aux données moléculaires ; elle réserve les droits tiers éventuels. Le contrôle distingue les PNG 2D produits par NCBI des contenus de déposants.",
+    "Les identifications MS/indice sans étalon restent des attributions ; les matrices fleur, huile et phase gazeuse d’hydrolat ne sont pas fusionnées.",
+    "Fenchol : le PNG illustre (1S,2S,4R), pas une configuration déterminée dans toutes les fleurs.",
+    "Lavande 2022 : cohérence cis/trans à contre-vérifier entre texte et tableau avant reprise de chiffres ; seuls les constats de présence sont retenus."
+  ],
+  "pedagogicalRevision": {
+    "date": "2026-11-14",
+    "status": "ready-for-coordinator-review",
+    "articleIdsRewritten": [
+      "record-terpene-alpha-terpinene",
+      "record-terpene-gamma-terpinene",
+      "record-terpene-terpinolene",
+      "record-terpene-e-beta-ocimene",
+      "record-terpene-z-beta-ocimene",
+      "record-terpene-linalool",
+      "record-terpene-fenchol"
+    ],
+    "pilotPreserved": false
+  }
+}

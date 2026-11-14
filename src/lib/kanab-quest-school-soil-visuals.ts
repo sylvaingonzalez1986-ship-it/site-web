@@ -1,0 +1,28 @@
+import type { HistorySource } from './kanab-quest-school-history-types';
+export const SOIL_VISUAL_SOURCES:readonly HistorySource[]=[
+ {id:'soil-visual-biology',title:'Soil Biology and Land Management',author:'USDA Natural Resources Conservation Service',organization:'USDA NRCS',published:'2004-01 ; Technical Note 4',verifiedAt:'2026-11-12',url:'https://www.nrcs.usda.gov/sites/default/files/2023-04/nrcs142p2_052489.pdf',passage:'Pages 2–8 : fonctions, habitat, rhizosphère, agrégats, pores et perturbations. Passages ciblés du document intégral consultés.',access:'excerpt',documentKind:'Note technique institutionnelle',limitation:'Mécanismes généraux, pas une prescription française pour le chanvre. Aucun optimum chiffré, relation C/N simplifiée ou recette de la note n’est transposé.'},
+ {id:'soil-visual-compaction',title:'Soil compaction',author:'University of Minnesota Extension',organization:'University of Minnesota',published:'Page consultée le 2026-11-12, sans date précise retenue',verifiedAt:'2026-11-12',url:'https://extension.umn.edu/natural-resources/conservation/agricultural-soil-and-water/soil-compaction',passage:'What is compaction? ; effets sur les pores, échanges gazeux, infiltration, pénétration des racines et absorption.',access:'full-text',documentKind:'Ressource universitaire',limitation:'Contexte agricole du Minnesota ; ni seuil de tassement ni préconisation de fertilisation transposé au chanvre.'},
+ {id:'soil-visual-organic',title:'Soil organic matter in cropping systems',author:'Caley Gasch et Jodi DeJong-Hughes',organization:'North Dakota State University / University of Minnesota Extension',published:'Révision 2019',verifiedAt:'2026-11-12',url:'https://extension.umn.edu/natural-resources/conservation/agricultural-soil-and-water/soil-organic-matter-in-cropping-systems',passage:'Matière organique, minéralisation, immobilisation, agrégats et glossaire final ; lecture ciblée de ces sections.',access:'excerpt',documentKind:'Dossier universitaire',limitation:'Les chiffres locaux, facteurs de conversion de carbone et rendements ne sont pas repris. Un stock ne se déduit pas d’une teneur seule.'},
+];
+export const SOIL_HOTSPOTS=[
+ {id:'residues',label:'Résidus en surface',x:19,y:45,role:'Une entrée de matière',text:'Les résidus alimentent des transformations biologiques. Leur composition et le milieu influencent leur décomposition.',question:'De quoi vient cet apport, et dans quel état arrive-t-il ?',sourceIds:['soil-visual-organic']},
+ {id:'aggregates',label:'Agrégats',x:34,y:54,role:'Des particules assemblées',text:'L’organisation en agrégats contribue à la structure. Leur aspect ne donne pas à lui seul les proportions de sable, limon et argile.',question:'Comment distinguer la texture de l’organisation du sol ?',sourceIds:['soil-visual-biology','soil-visual-compaction']},
+ {id:'pores',label:'Pores et passages',x:70,y:53,role:'Un habitat connecté',text:'La taille et la continuité des pores influencent la circulation de l’eau et de l’air. Le tassement peut modifier ces passages.',question:'L’eau s’infiltre-t-elle et l’air peut-il se renouveler ?',sourceIds:['soil-visual-compaction']},
+ {id:'roots',label:'Racines et voisinage',x:50,y:64,role:'Absorption et échanges',text:'Les racines explorent le milieu et respirent. Leur voisinage est influencé par leurs échanges : c’est la rhizosphère.',question:'L’état des racines permet-il d’utiliser ce qui est présent dans le sol ?',sourceIds:['soil-visual-biology','soil-visual-compaction']},
+ {id:'fauna',label:'Faune du sol',x:85,y:64,role:'Des fonctions diverses',text:'Certaines espèces fragmentent les résidus ou creusent des passages. Voir un ver ne mesure ni toute la diversité ni tous les bénéfices.',question:'Quel organisme, quelle fonction et quelle preuve dans ce contexte ?',sourceIds:['soil-visual-biology']},
+ {id:'water',label:'Eau dans les pores',x:82,y:84,role:'Présence et accessibilité',text:'Une partie de l’eau peut rester peu accessible aux racines. Des pores saturés limitent les échanges d’air ; le dessin ne mesure pas cet état.',question:'Que sait-on de l’humidité, du drainage et de l’historique ?',sourceIds:['soil-visual-compaction']},
+] as const;
+export const SOIL_CYCLE_STAGES=[
+ 'Résidus contenant de l’azote organique',
+ 'Transformation par les décomposeurs',
+ 'Libération d’une partie de l’azote sous forme minérale',
+ 'Absorption d’une partie par les racines',
+ 'Nouvelle biomasse et retours de résidus',
+] as const;
+export const SOIL_REASONING_STEPS=[
+ {id:'observe',title:'Observer',question:'Où, depuis quand, sur quels organes ?',example:'Exercice fictif : les plantes d’une zone flétrissent après une période humide. Les feuilles seules ne nomment pas la cause.'},
+ {id:'analyse',title:'Analyser',question:'Quelle observation ou mesure distingue les hypothèses ?',example:'Comparer la répartition, les racines, le drainage et l’historique ; choisir une analyse adaptée à la question, avec sa méthode.'},
+ {id:'limit',title:'Comprendre la limite',question:'Que permet réellement de conclure ce résultat ?',example:'Une teneur totale n’est pas une disponibilité ; une mesure ponctuelle ne représente pas automatiquement la parcelle.'},
+ {id:'act',title:'Choisir une action proportionnée',question:'Quel problème est suffisamment étayé ?',example:'Traiter d’abord la cause étayée. Ne pas ajouter un apport sur la seule base d’un slogan ou d’un jaunissement.'},
+ {id:'follow',title:'Mesurer le résultat',question:'Quoi comparer, quand et avec quelle méthode ?',example:'Garder un état initial et des observations comparables. Une évolution après une action n’en démontre pas à elle seule la cause exclusive.'},
+] as const;

@@ -1,0 +1,30 @@
+{
+  "created": "2026-11-12",
+  "tool": "image_gen.imagegen",
+  "useCase": "scientific-educational",
+  "reference": "public/placard/school/course-uses-thumb-v1.webp",
+  "prompt": "Use case: scientific-educational. Asset type: landscape illustrated hero and interactive teaching plate for an adult French hemp botany school inside a cartoon Breton village game.\nPrimary request: Create a beautiful coherent hemp-products museum teaching plate, exclusively Cannabis sativa hemp, matching the hand-inked cream botanical print reference. No unrelated flowers or plants. Landscape 1536x1024.\nComposition: six clearly separated specimen groups in a roomy 3 columns by 2 rows grid on warm cream paper, no frames, no labels or words. Top left: a small fresh hemp stem with accurately palmate serrated narrow leaflets and a few true small hemp fruits in a dish (not coffee beans). Top middle: an unlabeled plain small bottle of golden hemp seed oil beside a rough seed press-cake piece and seed powder in a shallow dish. Top right: a vertical cut hemp stem exposing outer bast fibre and pale woody core, with long pale bast strands beside it. Bottom left: a neatly coiled hemp yarn and a swatch of plain woven hemp cloth. Bottom middle: a small pile of pale woody hemp shives beside an illustrative pale aggregate-and-binder construction sample; distinguish long fibres from angular shives. Bottom right: two modest closed anonymous sample jars and a simple blank paper laboratory report with no readable marks. These are specimens awaiting identification, not a fabrication setup. Preserve plenty of whitespace around groups for accessible HTML markers.\nStyle: detailed hand drawn botanical educational illustration with dark ink outlines and restrained gouache/pencil texture, legible small thumbnails. Match references cream teal gold ink palette, with natural straw and green. Quiet warm cream background, no brown panels, no neon, no photorealistic merchandising. No cannabis smoke, smoking equipment, extraction machines, apparatus, recipes, doses, temperatures, action sequence, branded products, claims, human consumption, giant buds, labels, text, watermark or invented flower species. The illustration is conceptual and cannot certify chemical composition.",
+  "source": "output/school/artwork/products-plate-v1-source.png",
+  "review": "Six groupes de spécimens cohérents avec graines, huile/tourteau, tige/fibres, fil/tissu, chènevotte/matériau et contrôle documentaire. Le brin de chanvre est décoratif ; ne pas utiliser pour enseigner la disposition précise des fleurs ou fruits.",
+  "limits": [
+    "Illustration de synthèse, sans échelle ni preuve analytique.",
+    "Les bocaux ne certifient ni identité, composition, conformité, ni voie d’usage.",
+    "Légendes, indices et interactions restent en HTML. Aucun procédé sensible représenté."
+  ],
+  "assets": [
+    {
+      "path": "public/placard/school/products/plate-v1.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 332542,
+      "sha256": "6a594ff9b0d9bbc6e6c02f01a362c11866d9996568e14a7cfa00fe057d3a0958"
+    },
+    {
+      "path": "public/placard/school/products/plate-thumb-v1.webp",
+      "width": 480,
+      "height": 320,
+      "bytes": 35446,
+      "sha256": "a658d88b48698f62ced595ee92235539f2d089e26720055a2a1cd26d5d317501"
+    }
+  ]
+}

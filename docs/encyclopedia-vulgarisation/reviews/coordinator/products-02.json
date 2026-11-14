@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "products-02",
+  "entries": {
+    "record-product-products-chenevis": {
+      "contentHash": "424df579343ffcc96121c4fe13a1cb9e7c03937e9d9cbd7b312e63144c3df374",
+      "note": "Seven notices and four explanations read. Food categories, units, THC/THCA and mass factor explained; lower-bound convention clarified in details; irrelevant flower judgment removed from materials.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-seed-oil": {
+      "contentHash": "7c0ac1dbee0e3f40430e16b690f50c363a13c96f35086ec01434064df9925171",
+      "note": "Seven notices and four explanations read. Food categories, units, THC/THCA and mass factor explained; lower-bound convention clarified in details; irrelevant flower judgment removed from materials.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-press-cake": {
+      "contentHash": "93c407f4ca44abc934e3f7dad73f97923bfc5133d6ba9ab8917bbe9a98a64faa",
+      "note": "Seven notices and four explanations read. Food categories, units, THC/THCA and mass factor explained; lower-bound convention clarified in details; irrelevant flower judgment removed from materials.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-protein": {
+      "contentHash": "ff2259cbe5d6f9b3134955a9bc89ec2bab36666471fe4983d490a2bd5c76d64f",
+      "note": "Seven notices and four explanations read. Food categories, units, THC/THCA and mass factor explained; lower-bound convention clarified in details; irrelevant flower judgment removed from materials.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-bast-fibre": {
+      "contentHash": "c99d7ff2123f503e32b06f5f5894211bd43696e4ae4e5ba4dfec0467b2747f7c",
+      "note": "Seven notices and four explanations read. Food categories, units, THC/THCA and mass factor explained; lower-bound convention clarified in details; irrelevant flower judgment removed from materials.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-hemp-hurd": {
+      "contentHash": "938a0cc3f4892e3cdd904bb28e3180d5c453533321d9ed697e00f925e66b82aa",
+      "note": "Seven notices and four explanations read. Food categories, units, THC/THCA and mass factor explained; lower-bound convention clarified in details; irrelevant flower judgment removed from materials.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-fines": {
+      "contentHash": "bb43d36f697ec959b2035989220d0a2eb7c1388e6ec8ac6e15b41e940360da04",
+      "note": "Seven notices and four explanations read. Food categories, units, THC/THCA and mass factor explained; lower-bound convention clarified in details; irrelevant flower judgment removed from materials.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 4,
+    "hash": "7ac2ecfa79ac8ebfbe87d478077b83bf7c338742931da2c18ecb0d1f63860b49"
+  }
+}

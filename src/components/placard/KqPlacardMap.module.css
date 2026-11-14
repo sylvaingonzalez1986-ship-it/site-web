@@ -9,12 +9,8 @@
 .wallet small { display: block; margin-bottom: 3px; color: #35473a; font-size: 10px; }
 .wallet strong { font-size: 14px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .mapTools { display: flex; align-items: center; justify-content: flex-end; gap: 6px; margin-left: auto; }
-.zoomButton, .help summary { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 9px 12px; border: 2px solid transparent; color: #172923; font: 850 13px var(--font-body), sans-serif; cursor: pointer; list-style: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-color: transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
-.zoomButton[aria-pressed=true], .help[open] summary { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
-.help summary::-webkit-details-marker { display: none; }
-.help[open] summary > svg:last-child { transform: rotate(180deg); }
-.helpContent { position: absolute; z-index: 12; right: 8px; top: calc(100% - 4px); width: min(340px, calc(100vw - 32px)); padding: 18px; border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; font-size: 12px; line-height: 1.6; }
-.helpContent p { margin: 9px 0 0; }
+.zoomButton { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 9px 12px; border: 2px solid transparent; color: #172923; font: 850 13px var(--font-body), sans-serif; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-color: transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.zoomButton[aria-pressed=true] { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
 .viewport { width: 100%; aspect-ratio: 3 / 2; overflow: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: #718061 #c8c7ac; background: #819078; }
 .terrain { position: relative; width: 100%; aspect-ratio: 3 / 2; isolation: isolate; }
 .terrain > img { object-fit: cover; user-select: none; pointer-events: none; }
@@ -26,8 +22,7 @@
 .buildingLight { opacity: 0; transition: opacity 160ms ease; }
 .buildingLight[data-active] { opacity: 1; }
 .buildingLight[data-active] .silhouette { animation: buildingWelcome 520ms ease-out; }
-.litImage { filter: brightness(1.12) saturate(1.12); }
-.silhouette { fill: #ffe6a51c; stroke: #fff0b9; stroke-width: 2; stroke-linejoin: round; filter: drop-shadow(0 0 3px #ffe385) drop-shadow(0 0 7px #ffd76c99); }
+.silhouette { fill: none; stroke: #fff0b9; stroke-width: 2; stroke-linejoin: round; filter: drop-shadow(0 0 3px #ffe385) drop-shadow(0 0 7px #ffd76c99); }
 .activityLayer { position: absolute; z-index: 1; inset: 0; width: 100%; height: 100%; overflow: hidden; pointer-events: none; }
 .activityLayer > g { animation: activityArrival 500ms ease-out; }
 .building { position: absolute; z-index: 2; border: 0; padding: 0; overflow: visible; background: transparent; color: #143b2c; pointer-events: none; -webkit-tap-highlight-color: transparent; }
@@ -45,8 +40,6 @@
 .building[data-selected], .building[data-highlighted], .building:focus-visible { z-index: 3; }
 .building[data-selected] .buildingLabel, .building[data-highlighted] .buildingLabel { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; }
 .building:is([data-selected], [data-highlighted]) .buildingLabel, .building:is([data-selected], [data-highlighted]) .buildingStatus { color: #172923; }
-.motionButton { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-width: 44px; min-height: 44px; padding: 6px 10px; border: 2px solid transparent; border-radius: 0; background: transparent; color: #172923; box-shadow: none; font: 800 11px var(--font-body), sans-serif; cursor: pointer; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
-.motionButton[aria-pressed=true], .motionButton:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
 .details { margin-top: 8px; padding: 14px 16px 16px; border: 2px solid transparent; background: transparent; --game-panel-art: var(--game-panel-apricot, url("/placard/ui/panel-apricot-v1.webp")); border-image: var(--game-panel-art) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; scroll-margin-block: 90px; }
 .details { animation: activitySheetArrival 220ms cubic-bezier(.2,.7,.25,1); }
 .detailHeading { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 14px; }
@@ -64,14 +57,11 @@
 .building:focus-visible .buildingLabel { outline: 3px solid #164c36; outline-offset: 3px; box-shadow: 0 0 0 6px #fffaf1; }
 .details:focus { outline: none; }
 .zoomButton:not(:disabled):active,
-.help summary:active,
 .closePanel:not(:disabled):active,
 .actions button:not(:disabled):active { transform: translateY(1px); }
-@media (hover: hover) { .building:hover .buildingLabel { color: #172923; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; } .building:hover .buildingStatus { color: #172923; } .zoomButton:hover, .help summary:hover, .closePanel:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; } .actions button:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; } }
+@media (hover: hover) { .building:hover .buildingLabel { color: #172923; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; } .building:hover .buildingStatus { color: #172923; } .zoomButton:hover, .closePanel:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; } .actions button:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; } }
 @media (max-width: 1000px) {
   .mapHeading { gap: 7px 12px; }
-  .help summary > span, .help summary > svg:last-child { display: none; }
-  .help summary { min-width: 44px; padding-inline: 10px; }
   .mapTools { gap: 5px; }
 }
 @media (max-width: 700px) {
@@ -83,11 +73,8 @@
   .wallet strong { font-size: 12px; }
   .wallet svg { width: 13px; }
   .mapTools { grid-column: 1 / -1; justify-content: flex-end; gap: 5px; margin: 0; }
-  .zoomButton, .help summary { padding: 8px 10px; }
-  .help summary { min-width: 44px; }
-  .help summary > span, .help summary > svg:last-child { display: none; }
+  .zoomButton { padding: 8px 10px; }
   .zoomButton > span { display: inline; font-size: 12px; }
-  .helpContent { right: 0; width: min(340px, calc(100vw - 24px)); }
   .world[data-map-zoomed] .viewport { aspect-ratio: auto; height: clamp(240px, calc(100svh - 600px), 360px); }
   .world[data-map-zoomed] .buildingLabel { padding: 8px 10px; gap: 2px; }
   .world[data-map-zoomed] .buildingName { font-size: 13px; gap: 5px; }
@@ -112,5 +99,4 @@
 @keyframes buildingWelcome { from { stroke-opacity: 0; fill-opacity: 0; } 45% { stroke-opacity: 1; fill-opacity: 1; } }
 @keyframes activityArrival { from { opacity: .35; } to { opacity: 1; } }
 @keyframes activitySheetArrival { from { opacity: .65; transform: translateY(6px); } to { opacity: 1; transform: none; } }
-.world[data-map-motion-paused] * { animation: none; }
 @media (prefers-reduced-motion: reduce) { .world *, .world *::before { animation: none; transition: none; scroll-behavior: auto; } }

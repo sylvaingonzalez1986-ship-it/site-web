@@ -1,0 +1,26 @@
+{
+  "domain": "terpenes",
+  "reviewedAt": "2026-11-14",
+  "status": "ready-for-coordinator-review",
+  "articleIdsRewritten": [
+    "ref-biosynthese-terpenes", "ref-odeur-cannabis", "ref-profils-aromatiques", "ref-volatils-non-terpeniques", "ref-evolution-aromes", "ref-aromes-chanvre",
+    "record-terpene-alphapinene", "record-terpene-betapinene", "record-terpene-myrcene", "record-terpene-limonene", "record-terpene-camphene", "record-terpene-alpha-phellandrene", "record-terpene-delta3-carene",
+    "record-terpene-alpha-terpinene", "record-terpene-gamma-terpinene", "record-terpene-terpinolene", "record-terpene-e-beta-ocimene", "record-terpene-z-beta-ocimene", "record-terpene-linalool", "record-terpene-fenchol",
+    "record-terpene-borneol", "record-terpene-alpha-terpineol", "record-terpene-terpinen4-ol", "record-terpene-eucalyptol", "record-terpene-p-cymene", "record-terpene-beta-caryophyllene", "record-terpene-alpha-humulene",
+    "record-terpene-e-beta-farnesene", "record-terpene-alpha-selinene", "record-terpene-guaiol", "record-terpene-alpha-bisabolol", "record-terpene-nerolidol", "record-terpene-caryophyllene-oxide", "record-terpene-geranyl-acetate"
+  ],
+  "pilotPreserved": "ref-terpenes-terpenoides : entrée copiée strictement intacte depuis le lot scientifique ; le coordinateur intègre sa nouvelle version séparément.",
+  "coverage": {"articlesRewritten": 34, "pilotCopied": 1, "definitionsRewritten": 26, "quizExplanationsRewritten": 35, "cardPatchTextsAligned": 6},
+  "work": [
+    "Chaque fiche a été rédigée individuellement : origine ou question concrète, mécanisme, exemple et portée de l’observation. Les rubriques des 28 notices moléculaires sont toutes réécrites ; leurs anciens repères techniques sont remplacés par des faits compréhensibles, avec synonymes conservés.",
+    "Formules, nombres de carbones, anneaux, groupes oxygénés et formes miroir expliqués au fil des besoins. Cétone définie dans camphène, fenchol et bornéol. Diagrammes et légendes spécifiques ; position du diagramme évaporation/oxydation après l’explication des deux phénomènes.",
+    "Les résultats négatifs humains, les événements indésirables rapportés avec α-pinène, les limites du sous-groupe limonène et les différences cellule/souris/humain restent visibles. Les voies biochimiques et détails statistiques secondaires passent en approfondissement défini.",
+    "Les réponses VSC/thiol sont enseignées dans ref-aromes-chanvre, où leurs questions sont rattachées. Les 35 explications de quiz propres au spécialiste sont reformulées ; les cinq du pilote restent au coordinateur.",
+    "Références publiques non pilote fusionnées par URL identique, références infructueuses retirées lorsqu’un document lu couvre le sujet. Les preuves de lecture des sources et les limites scientifiques des lots sont conservées. Aucun nouvel inventaire ou nouvelle recherche générale.",
+    "Six propositions de textes de carte sont alignées sur la vulgarisation des notices correspondantes ; aucun composant ni donnée partagée modifié."
+  ],
+  "checks": ["34 identifiants traités uniques, plus pilote exactement conservé", "Toutes les sections existantes préservées et tous leurs paragraphes réécrits hors pilote", "Sources des 35 questions accessibles depuis leur fiche", "Options et indices des bonnes réponses inchangés", "26 définitions réécrites", "Références locales résolues et accents UTF-8 contrôlés"],
+  "limitations": ["Validation pédagogique finale réservée au coordinateur ; les journaux scientifiques ne sont pas une validation utilisateur.", "Le pilote conserve temporairement ses anciennes références dans cette copie, puisqu’il ne doit pas être modifié par le spécialiste ; son remplacement appartient au coordinateur.", "Les dessins moléculaires existants conservent leur identité et leurs limites stéréochimiques ; ils ne sont pas présentés comme analyses de chaque fleur."],
+  "scientificBatchesModified": false,
+  "componentsModified": false
+}

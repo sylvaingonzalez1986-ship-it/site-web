@@ -1,0 +1,184 @@
+{
+  "date": "2026-11-14",
+  "scope": "Tournament is the only playable school mode; illustrated encyclopedia retained. All-week play and weekly title validated locally; four tournament migrations and automatic database schedule applied; app not deployed",
+  "features": {
+    "format": "4→3→2→1, three questions per stage, then three expert questions",
+    "champion": "Stored offline benchmark stays fixed during the week. One named database cron settles due editions at end-of-Sunday midnight; idempotent RPC catch-up. No instant title or title lease.",
+    "avatars": "Configured ChanvrierAvatar profiles, one batch of public appearance fields",
+    "replays": "Attributed past performances and response timings, same difficulty with different questions; only existing complete sessions; never phantom players",
+    "preserved": [
+      "Historical solo results and previously received rewards",
+      "Illustrated encyclopedia",
+      "Existing money, XP and cards"
+    ],
+    "bootstrap": "One join click;15-second automatic filling with this week’s genuine recorded performances then explicit training bots; four humans start immediately.",
+    "recording": "Final3-answer performance recorded at the authoritative last answer/deadline, before result-screen polling. Full12-answer human runs also become replay sources; bots/partial runs never invent human performances. Boundary crossing uses actual final completion week.",
+    "weekly": "Always open. Paris civil week Monday00:00 through end-of-Sunday midnight. Only the best real expert final per player counts. Score includes speed bonus; then correct answers, total time, first completion. Best challenger must beat incumbent; otherwise incumbent stays."
+  },
+  "validation": {
+    "typescriptTests": 36,
+    "sqlChecks": 140,
+    "sqlCommand": "node scripts/test-placard-school-tournament.mjs",
+    "postgresConcurrencyChecks": 16,
+    "postgresReport": "output/school/tournament-concurrency-report.json",
+    "browserReport": "output/school/tournament-ui/report.json",
+    "browser": "Two complete tournaments: four humans, then one human plus three recorded profiles defeats the offline champion; retries, real avatars, 320/1440, reduced motion",
+    "lint": "PASS targeted components, API and backend",
+    "dataApiGrants": "PASS:392 migrations, all new private tables explicitly revoked",
+    "productionBuild": "PASS",
+    "privateBank": {
+      "questions": 180,
+      "browserChunks": 194,
+      "leaked": 0
+    }
+  },
+  "migration": "supabase/migrations/20261114000100_kq_school_tournament.sql",
+  "appliedToLiveDatabase": true,
+  "deployed": false,
+  "soloQuizRetirement": {
+    "date": "2026-11-14",
+    "navigation": "Tournament by default; former quiz/workshop URLs display tournament; encyclopedia remains independently accessible",
+    "api": "Authenticated legacy challenge, quiz and quiz/check routes return 410 school_quiz_retired with tournament destination; no new solo attempts or rewards",
+    "migrationRequired": false,
+    "browserReport": "output/school/tournament-only-ui/report.json",
+    "buildReport": "output/school/school-tournament-only-build-exit.json"
+  },
+  "art": "docs/bete-de-concours/school-quiz-lectern-art-v1.json",
+  "preview": "http://127.0.0.1:3248/arene/placard?view=school&section=tournament",
+  "implementation": {
+    "client": [
+      "src/components/placard/KqSchoolTournament.tsx",
+      "src/components/placard/KqSchoolTournament.module.css"
+    ],
+    "api": "src/app/api/arena/placard/school/tournament/route.ts",
+    "backend": "src/lib/supabase/kanab-quest-school-tournament-backend.ts",
+    "transport": "Server-authoritative SQL RPC; polling; 20-second question, 6-second correction, 10-second stage result",
+    "data": "Ten private tables; eighteen restricted functions; only named game RPC for service_role and weekly worker for persistent postgres scheduler. Future answers stay private.",
+    "absence": "Explicit leave detaches current room; stale participants eliminated; represented replay profiles receive no fresh statistics"
+  },
+  "sources": [
+    {
+      "title": "France Télévisions — presentation of the Tout le monde veut prendre sa place set",
+      "url": "https://www.francetvpro.fr/contenu-de-presse/17899675",
+      "publicationDate": "2021-07-20",
+      "scope": "Visual inspiration only: focal chair, stage, progression. Original artwork; no programme assets reused."
+    }
+  ],
+  "migrationAppliedAt": "2026-11-14T09:59:11.434Z",
+  "migrationReport": "output/school/tournament-migration-release-2026-11-14/summary.json",
+  "bootstrapValidation": {
+    "success": true,
+    "date": "2026-11-14T10:16:29.233Z",
+    "scope": "Bootstrap fictional opponents; no application deployment",
+    "typescriptTests": 25,
+    "sql": {
+      "baseline": 140,
+      "bootstrap": 108,
+      "scripts": [
+        "scripts/test-placard-school-tournament.mjs",
+        "scripts/test-placard-school-tournament-bootstrap-bots.mjs"
+      ]
+    },
+    "concurrency": {
+      "checks": 22,
+      "report": "output/school/tournament-concurrency-report.json"
+    },
+    "browser": {
+      "report": "output/school/tournament-bootstrap-ui/report.json",
+      "countdown": "output/school/tournament-bootstrap-ui/countdown-report.json",
+      "viewports": [
+        320,
+        1440
+      ],
+      "errors": []
+    },
+    "lint": "PASS targeted TypeScript and tournament UI",
+    "grants": "PASS393 migrations",
+    "build": "output/school/school-tournament-bootstrap-build-exit.json",
+    "finalSmallFix": "Countdown milliseconds converted to seconds after build; confirmed in actual browser: 3 seconds",
+    "databaseApplied": true,
+    "deployed": false,
+    "migrationAppliedAt": "2026-11-14T10:16:37.978Z",
+    "migrationReport": "output/school/tournament-bootstrap-release-2026-11-14/summary.json"
+  },
+  "bootstrapMigration": "supabase/migrations/20261114000200_kq_school_tournament_bootstrap_bots.sql",
+  "latestMigrationReport": "output/school/tournament-weekly-release-2026-11-14/summary.json",
+  "sundayValidation": {
+    "success": true,
+    "date": "2026-11-14T10:41:27.899Z",
+    "scope": "Sunday-only tournament with automatic matchmaking; champion remains until defeated",
+    "typescriptTests": 27,
+    "sql": {
+      "checks": 128,
+      "script": "scripts/test-placard-school-tournament-sundays.mjs",
+      "coverage": "Paris midnight and DST23/25h, weekly replay eligibility, 12 real finalist answers including human departures, continuation after midnight, champion continuity, retries, secrecy and grants"
+    },
+    "concurrency": {
+      "checks": 22,
+      "report": "output/school/tournament-sunday-concurrency-report.json"
+    },
+    "browser": {
+      "report": "output/school/tournament-sunday-ui/report.json",
+      "viewports": [
+        320,
+        1440
+      ],
+      "errors": [],
+      "checks": [
+        "Saturday closed in UI and actual SQL; next Sunday date visible at 320/1440",
+        "One join only; no ready or manual fill controls; actual fifteen-second matchmaking delay",
+        "Automatic fill with no replay history: one real player and three explicitly labelled, distinct fictional characters",
+        "Bots answer on independent server delays and scores appear only at shared correction",
+        "4→3→2→1, twelve real answers, first human champion and reusable recorded human performance; no bot statistics",
+        "Sunday participation recorded; next edition requires new participation while champion and score persist"
+      ]
+    },
+    "lint": "PASS targeted TypeScript and UI",
+    "grants": "PASS394 migrations",
+    "build": "output/school/school-tournament-sunday-build-exit.json",
+    "databaseApplied": true,
+    "deployed": false,
+    "migrationAppliedAt": "2026-11-14T10:41:35.248Z",
+    "migrationReport": "output/school/tournament-sunday-release-2026-11-14/summary.json"
+  },
+  "sundayMigration": "supabase/migrations/20261114000300_kq_school_tournament_sundays.sql",
+  "weeklyValidation": {
+    "success": true,
+    "date": "2026-11-14T11:03:49.245Z",
+    "scope": "All-week tournament, best real expert final per player, weekly title at end-of-Sunday midnight Europe/Paris",
+    "typescriptTests": 28,
+    "sql": {
+      "checks": 88,
+      "script": "scripts/test-placard-school-tournament-weekly.mjs",
+      "coverage": "Real12-answer Wednesday game, result recorded before polling, no instant title, best score not cumulative, ties and incumbent retention, empty weeks, exclusive midnight boundary, late-poll recovery, missed cron and dethroned owner rejoin, permissions and cascade"
+    },
+    "concurrency": {
+      "checks": 24,
+      "report": "output/school/tournament-weekly-concurrency-report.json"
+    },
+    "browser": {
+      "report": "output/school/tournament-weekly-ui/report.json",
+      "viewports": [
+        320,
+        1440
+      ],
+      "errors": [],
+      "checks": [
+        "Saturday open for everyone; weekly title deadline visible at 320/1440",
+        "One join only; no ready or manual fill controls; actual fifteen-second matchmaking delay",
+        "Automatic fill with no replay history: one real player and three explicitly labelled, distinct fictional characters",
+        "Bots answer on independent server delays and scores appear only at shared correction",
+        "4→3→2→1, twelve real answers, weekly finalist and reusable recorded human performance; no bot statistics",
+        "No instant title; Sunday end midnight Paris worker awards champion once and starts next weekly ranking"
+      ]
+    },
+    "lint": "PASS targeted TypeScript and UI",
+    "grants": "PASS395 migrations",
+    "build": "output/school/school-tournament-weekly-build-exit.json",
+    "databaseApplied": true,
+    "deployed": false,
+    "migrationAppliedAt": "2026-11-14T11:04:14.114Z",
+    "migrationReport": "output/school/tournament-weekly-release-2026-11-14/summary.json"
+  },
+  "weeklyMigration": "supabase/migrations/20261114000400_kq_school_tournament_weekly_champion.sql"
+}

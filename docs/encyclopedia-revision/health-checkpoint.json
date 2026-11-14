@@ -1,0 +1,82 @@
+{
+  "domain": "health",
+  "reviewedAt": "2026-11-14",
+  "status": "specialist-review-complete-awaiting-coordinator",
+  "coverage": {
+    "articles": 31,
+    "termReviews": 11,
+    "quizIdsReviewed": 20,
+    "quizPatches": 0,
+    "readyForIntegration": 31,
+    "blocked": 0
+  },
+  "batches": [
+    "health-01.json",
+    "health-02.json",
+    "health-03.json",
+    "health-04.json",
+    "health-05.json"
+  ],
+  "checks": [
+    "31 identifiants exacts, sans doublon ni omission.",
+    "Identifiants et ordre des sections conservés ; liens, glossaire, signets et faits existants conservés.",
+    "11 termes relus et enrichis individuellement.",
+    "20 réponses du quiz revues et enseignées par les fiches ; aucune réponse incorrecte imposant une modification.",
+    "Toutes les preuves de lecture sont des tableaux ; accès échoués explicitement status not-reverified.",
+    "Photographies proposées examinées localement ; métadonnées de page et licence commerciale vérifiées. Mandariniers, maïs, autres hôtes et photographies hors culture distingués du chanvre.",
+    "Existence locale de toutes les images proposées vérifiée ; diagrammes de mécanisme/diagnostic originaux contrôlables.",
+    "Finition des 28 notices : paragraphes naturels, mécanismes conservés, références distribuées par section ; trois grands articles strictement préservés."
+  ],
+  "blockers": [],
+  "sourceCorrections": [
+    "Copie auteur intégrale Jarugula2023 à WSU ouverte et utilisée à la place du portail APS403.",
+    "Expériences HLVd2019/2023 non déclarées relues : remplacées par Atallah/Yassin/Verchot2024 intégral, publication en ligne23décembre2023.",
+    "Les photos de dépérissement Atallah2024 figure7 portent sur Arabidopsis, pas Cannabis : pas de transfert d’illustration.",
+    "EPPO PYTHUL conserve Pythium ultimum comme nom préféré et cite Globisporangium ultimum comme autre nom.",
+    "FDACS2023 cite Myzus persicae sur chanvre dans d’autres régions, sans le compter parmi les quatre pucerons identifiés en Floride.",
+    "JIPM2019 CC BY-NC : aucune image de cet article employée.",
+    "Punja2019 licence globale CC BY4 ne suffit pas aux panneaux expressément reproduits sous permission ; figure2 entière écartée.",
+    "Figure7 Punja2019 image A–H mais légende éditoriale mentionne I par erreur ; légende publique prudente.",
+    "Guide français2026 : erreurs Pythium/champignons et prétendues absences d’arthropodes en France non reprises.",
+    "PurdueE275 : légende erronée whitefly parasitoids pour Aphidius non reprise ; parasitoïdes de pucerons et d’aleurodes distingués."
+  ],
+  "mediaNotes": [
+    "Manifest dédié : health-media-manifest.json ; sourcePageRead désigne page Commons et/ou données originales imageinfo.extmetadata.",
+    "Les petites images Commons nécessitent une véritable vignette330px : demander960/1280renvoyait un original non redimensionné avec429. Les quatre photos initialement manquantes ont finalement été téléchargées et vues.",
+    "broad-mite-egg.jpg est un nom technique de fichier historique : l’image est une forme mobile, aucun œuf n’est affirmé dans le texte ou la légende.",
+    "broad-mite.jpg et broad-mite-micro.jpg sont des dégâts sur poivron, examinés mais exclus des propositions principales.",
+    "punja-root-fig2.webp est un téléchargement examiné puis exclu pour réserves de droits tiers : ne pas intégrer.",
+    "Pour les virus/viroïdes, les diagrammes expliquent la détection et la causalité ; l’ancienne illustration générique de plante ne constitue aucune validation clinique."
+  ],
+  "next": "Contrelecture finale du coordinateur sur les 28 notices et les deux images comparatives. Lots stables ; ne pas régénérer health-review.py, qui représente une étape antérieure.",
+  "resolvedPhotoBlockers": [
+    {
+      "articleId": "record-health-podosphaera-macularis",
+      "image": {
+        "src": "/placard/reference/health/podosphaera-hop.jpg",
+        "author": "David Gent, USDA Agricultural Research Service, Bugwood.org",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Signs_and_Symptoms_of_Powdery_Mildew_on_Hop_Leaves.jpg",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+        "kind": "photograph",
+        "alt": "Feuilles de houblon couvertes de nombreuses plages blanches poudreuses.",
+        "caption": "Oïdium du houblon attribué à Podosphaera macularis, David Gent/USDA Agricultural Research Service, Bugwood 5393947, CC BY 3.0. Autre hôte : Humulus lupulus, pas Cannabis. L’aspect poudreux est comparable, mais ne sépare pas à lui seul les espèces d’oïdium du chanvre."
+      },
+      "notes": "Page Commons ouverte, auteur et licence CC BY 3.0 lus ; photo locale examinée : feuilles de houblon avec plages poudreuses. Illustration comparative explicitement sur un autre hôte. La détermination publiée n’est pas transposée à toute plage blanche sur chanvre."
+    },
+    {
+      "articleId": "record-health-pythium-globisporangium",
+      "image": {
+        "src": "/placard/reference/health/pythium-basil.jpg",
+        "author": "Roswitha Ulrich, Pflanzenschutzdienst",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Basilikum_Pythium-1--Roswitha_Ulrich.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+        "kind": "photograph",
+        "alt": "Pot de jeunes basilics comportant des plantules vertes et des plantules effondrées ou mortes.",
+        "caption": "Fonte de semis de basilic attribuée à Pythium, Roswitha Ulrich/Pflanzenschutzdienst, CC BY-SA 4.0 ; permission confirmée par Wikimedia VRT. Autre hôte : Ocimum basilicum, pas Cannabis. Le symptôme illustre une fonte et ne suffit pas à identifier l’agent d’une plantule de chanvre."
+      },
+      "notes": "Page Commons et licence CC BY-SA 4.0 ouvertes ; auteur service de protection des plantes et permission VRT 2024091110008277 vérifiés. Photo locale examinée : basilics au stade plantule, plusieurs effondrés. Identification de Pythium attribuée à la documentation ; pas d’espèce ou de test non documenté inventé."
+    }
+  ]
+}

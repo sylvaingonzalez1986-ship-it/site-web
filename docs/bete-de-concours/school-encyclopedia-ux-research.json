@@ -1,0 +1,234 @@
+{
+  "updated": "2026-11-12",
+  "status": "Architecture appliqu?e au hub ; recette clavier et navigation r?ussie ? 320/1440. Pr?sentation finale ? soumettre au retour utilisateur.",
+  "scope": "Architecture d’information et lecture de l’encyclopédie ; quiz traité séparément. Aucune modification des contenus scientifiques ou des récompenses.",
+  "localEvidence": {
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&section=learn",
+    "filesRead": [
+      "AGENTS.md",
+      "docs/bete-de-concours/ux-progress.json",
+      "src/components/placard/KqSchoolEncyclopedia.tsx",
+      "src/lib/kanab-quest-school-encyclopedia.ts",
+      "src/components/placard/KqSchool.tsx",
+      "src/components/placard/KqSchoolCurriculum.tsx",
+      "src/components/placard/KqSchoolLesson.tsx",
+      "src/components/placard/KqSchoolTerpenes.tsx"
+    ],
+    "captures": [
+      "output/placard-navigation/school-encyclopedia-before-320.png",
+      "output/placard-navigation/school-encyclopedia-before-1440.png"
+    ],
+    "measurements": "output/placard-navigation/school-encyclopedia-before-measurements.json",
+    "observations": [
+      "À 320 px : document de 6 224 px, premier thème à y=952. À 1440 px : 2 779 px, premier thème à y=740. Aucun débordement horizontal observé.",
+      "L’encyclopédie contient 67 boutons dans le DOM, y compris les boutons des sections repliées. Ce nombre ne signifie pas 67 actions visibles simultanément.",
+      "Deux titres de bibliothèque successifs et trois chemins vers le quiz occupent l’orientation initiale. Les filtres Rayon et Contenu demandent de comprendre la structure avant d’avoir trouvé une information.",
+      "Neuf grandes cartes illustrées, trois actions visibles par carte et des accès supplémentaires repliés. À 320 px, les images répétées prolongent fortement la page.",
+      "Le clic Lire les articles ouvre un index de parcours ; le lecteur réintroduit Mon parcours, activités, bilans et progression. La recherche mélange outils, fiches, articles et termes dans une même liste, avec un classement par type qui privilégie les outils à pertinence égale.",
+      "L’index existant conserve les identifiants précis des 168 articles, 470 termes, 182 fiches et 38 outils. Il est réutilisable ; le problème constaté est leur présentation et leur navigation. Les comptes complets ont été confirmés par l’agent responsable de cet index."
+    ]
+  },
+  "webResearch": [
+    {
+      "name": "CannaWeed — accueil",
+      "url": "https://cannaweed.com/",
+      "observed": "Le site distingue Forums et Guides dans sa navigation. L’accueil se présente comme un site d’information communautaire pour adultes et indique un sponsor commercial.",
+      "use": "Identifier la communauté et son contexte éditorial ; aucun contenu scientifique repris."
+    },
+    {
+      "name": "CannaWeed — forums",
+      "url": "https://www.cannaweed.com/forums/",
+      "observed": "Des familles thématiques structurent les discussions ; Débutants et Généralités offrent une orientation simple. Diagnostics possède des sous-catégories de problèmes et une catégorie de discussions résolues. Certains espaces sont privés.",
+      "use": "Reprendre la clarté d’une entrée par besoin ou question, sans importer le classement chronologique ni les compteurs de messages. Les discussions sont des témoignages, pas une validation scientifique."
+    },
+    {
+      "name": "CannaWeed — guides",
+      "url": "https://www.cannaweed.com/articles/",
+      "observed": "Arborescence de catégories et sous-catégories ; guides affichés avec auteur, publication, mise à jour lorsqu’elle existe et durée annoncée. Les guides et leurs commentaires sont distincts des forums.",
+      "use": "Sommaire stable et métadonnées de provenance utiles. La page consultée affiche aussi des catégories et recettes opérationnelles, qui ne sont pas reprises dans le projet."
+    },
+    {
+      "name": "Leafly Learn",
+      "url": "https://www.leafly.com/learn",
+      "observed": "Navigation par sujets et accès explicite au glossaire ; fil d’Ariane. Le rendu textuel consulté donne une date de mise à jour.",
+      "use": "Séparer découverte thématique et recherche d’une définition ; aucune validation du fond médical, réglementaire ou botanique."
+    },
+    {
+      "name": "Leafly — glossaire",
+      "url": "https://www.leafly.com/learn/cannabis-glossary",
+      "observed": "Lettres A–Z et #, puis termes de la lettre sélectionnée. Chaque entrée présente une courte définition et un accès au développement.",
+      "use": "Le lexique est un objet lisible et prévisible, sans obligation de choisir un ancien parcours."
+    },
+    {
+      "name": "DSS Genetics — Cannabis Knowledge Hub",
+      "url": "https://dssgenetics.com/cannabis-knowledge-hub",
+      "observed": "Hub avec table des matières et entrées par expérience du lecteur ; chapitres thématiques. Les liens commerciaux, promesses de couverture et nombreux niveaux de navigation rendent l’ensemble chargé.",
+      "use": "L’entrée guidée est utile ; la profusion et les promesses commerciales ne constituent pas un modèle à copier. Les nombres affichés restent des déclarations du site, non vérifiées."
+    },
+    {
+      "name": "Royal Queen Seeds — guide",
+      "url": "https://www.royalqueenseeds.com/us/weed-grow-guide",
+      "observed": "Un index de sujets mène à des sections avec listes d’articles ; un second sommaire regroupe les mêmes destinations. Le cadre est commercial.",
+      "use": "Retenir les liens directs vers les questions et le sommaire ; éviter la duplication de navigation. Aucun protocole de production repris."
+    }
+  ],
+  "accessLimits": [
+    "Recherche documentaire des structures publiques, pas un test utilisateur ni un audit d’accessibilité des sites externes. Leur apparence graphique n’a pas été capturée ; les observations web portent sur les textes et liens effectivement retournés.",
+    "https://cannaweed.com/articles/ a échoué une première fois ; la version https://www.cannaweed.com/articles/ a été consultée avec succès.",
+    "Les sous-pages https://www.cannaweed.com/categories/guides-tutoriels.63/ et https://www.cannaweed.com/forums/diagnostics-resolus.384/ ont échoué au chargement. Leur existence comme destinations est visible dans la liste des forums ; leur contenu détaillé n’a pas été examiné.",
+    "Aucun compte créé, aucun espace privé consulté, aucun message envoyé. La recherche concerne Canaweed, dont l’orthographe publique observée est CannaWeed.",
+    "Les sites commerciaux et communautaires sont des références d’organisation, pas de nouvelles preuves scientifiques. Les références documentaires existantes des articles restent l’autorité de contenu."
+  ],
+  "decisions": [
+    {
+      "id": "one-entry",
+      "decision": "Une seule entrée Encyclopédie du chanvre : recherche, courte orientation, trois questions de départ reliées à de vrais articles.",
+      "reason": "L’accueil doit permettre une première lecture sans maîtriser les neuf anciens parcours. Supprimer le second titre de bibliothèque et les actions de quiz répétées ; conserver le changement d’espace à un endroit.",
+      "acceptance": "À 320×844, au moins une question ou destination thématique utile est visible dans la première fenêtre, après le chrome du jeu. Aucun chiffre de popularité, durée ou progression inventé."
+    },
+    {
+      "id": "stable-themes",
+      "decision": "Neuf thèmes sous forme de sommaire compact, avec une seule destination par thème. Latéral à grande largeur ; bouton Thèmes et liste dépliante sur mobile.",
+      "reason": "Conserver les domaines connus sans reproduire neuf couvertures et leurs menus. Le thème actif et le chemin Encyclopédie > thème > article restent lisibles.",
+      "acceptance": "Navigation clavier, focus visible, libellé actif explicite, aucun défilement horizontal. Le bouton retour restaure le contexte de recherche ou de thème."
+    },
+    {
+      "id": "real-topic-pages",
+      "decision": "Chaque thème a sa propre page de consultation : une illustration, une phrase d’orientation, articles regroupés par sujet, puis fiches et outils dans des sections identifiées.",
+      "reason": "Cliquer un thème doit ouvrir sa matière, sans traverser un écran Commencer le parcours, un tableau de progression ou un bilan.",
+      "acceptance": "Tous les articles et outils existants restent accessibles avec leurs identifiants. Les listes utilisent des lignes sobres et un seul lien par entrée ; les images deviennent des repères de thème."
+    },
+    {
+      "id": "clear-result-types",
+      "decision": "Recherche à résultats regroupés Articles, Définitions, Fiches et Outils ; pertinence avant type, titres et résumés lisibles. Lexique A–Z accessible directement.",
+      "reason": "Une définition et une activité ne répondent pas à la même intention. Retirer les deux filtres obligatoires de fait à l’accueil et ne proposer les restrictions qu’après une recherche.",
+      "acceptance": "Résultats exacts ou synonymes avant correspondances de corps de texte ; total exact et état vide utile. Conserver recherche, thème, pagination et point de retour après lecture ; affichage Chargement et Réessayer en cas d’échec."
+    },
+    {
+      "id": "continuous-reading",
+      "decision": "Page article continue : titre et question, illustration ou visualisation pertinente, essentiel, exemple, approfondissement, références séparées ; exercice facultatif en fin de lecture.",
+      "reason": "Le mode encyclopédique répond à une question et ne force pas la progression d’un cours. Conserver les visualisations, sources, nuances et exercices sans qu’ils encombrent l’orientation.",
+      "acceptance": "Un seul titre d’article, largeur de lecture confortable, sources proches des affirmations et références consultables sans ouvrir les exercices. Ne pas modifier les contenus, données, limites, récompenses, identifiants ou liens profonds."
+    }
+  ],
+  "wireframes": {
+    "homeDesktop": [
+      "École : [Salle de quiz] [Encyclopédie active]",
+      "Encyclopédie du chanvre                               petite illustration botanique",
+      "[Rechercher un sujet, une molécule, un mot…                            ]",
+      "Sommaire gauche 200 px : Accueil / neuf thèmes / Lexique A–Z / Atlas et outils",
+      "Zone principale : Par où commencer ? Trois questions courtes → vrais articles",
+      "Zone principale : Explorer les thèmes, neuf liens compacts si le sommaire n’est pas visible"
+    ],
+    "homeMobile": [
+      "École et deux espaces",
+      "Encyclopédie du chanvre",
+      "[Rechercher…]",
+      "[Thèmes ▾] [Lexique A–Z]",
+      "Par où commencer ? → première question visible sans défilement",
+      "Autres questions, puis liste des thèmes compacte"
+    ],
+    "topic": [
+      "Encyclopédie > Botanique           [Recherche]",
+      "Sommaire desktop / Thèmes mobile   Botanique + illustration unique",
+      "                                  Une phrase d’orientation",
+      "                                  Sujet A : article, article",
+      "                                  Sujet B : article, article",
+      "                                  Fiches et outils : destinations typées"
+    ],
+    "search": [
+      "Encyclopédie [Rechercher : trichomes] [Effacer]",
+      "Résultats pour trichomes ; total réel",
+      "Articles : titre, question, thème",
+      "Définitions : terme, définition courte",
+      "Fiches / outils : type explicite ; accès Voir tous si nécessaire",
+      "Aucun résultat : reformuler, enlever une restriction, explorer les thèmes"
+    ],
+    "article": [
+      "Encyclopédie > Botanique > Titre    [Retour aux résultats si applicable]",
+      "Titre d’article ; question ; durée seulement si déjà documentée",
+      "Illustration légendée ou visualisation interactive existante",
+      "L’essentiel ; exemple",
+      "[Approfondir] [Sources et documents] comme sections distinctes",
+      "[Essayer un exercice] facultatif ; articles liés ; thème suivant si pertinent"
+    ]
+  },
+  "implementationPlan": [
+    "KqSchoolEncyclopedia.tsx et son CSS : remplacer le mur de cartes par les états accueil, thème, lexique et recherche ; sommaire commun et mémoire de retour.",
+    "kanab-quest-school-encyclopedia.ts : conserver l’index et les identifiants ; exposer les regroupements de chapitres et questions éditoriales à partir des objets existants, sans dupliquer le contenu. Corriger le rang outil-avant-article à pertinence égale.",
+    "KqSchool.tsx : supprimer le titre redondant, maintenir le contexte de bibliothèque lorsqu’un article s’ouvre et offrir un retour précis. Les anciens liens profonds restent acceptés.",
+    "KqSchoolCurriculum.tsx et composant de lecture partagé : ajouter le mode consultation continue en réutilisant les données, visualisations spécialisées, sources et gestionnaires de progression. Écarter du premier plan les parcours et bilans.",
+    "Revue bornée : accueil, thème, recherche, retour d’article, terme, fiche et outil à 320/1440 ; focus clavier et liens profonds. Vérifier les comptes et la conservation des fonctions existantes, sans refaire l’audit scientifique complet."
+  ],
+  "requiredBeforeAcceptance": [
+    "Vérifier que l’article n’ouvre plus l’ancienne expérience de parcours.",
+    "Vérifier recherche → article → retour, thème → article → retour et lien profond rechargé.",
+    "Comparer les nouvelles captures à celles de cet audit ; l’absence de débordement seule ne démontre pas que l’interface est compréhensible."
+  ],
+  "implementation": {
+    "scope": "Hub encyclop?dique ; lecteur continu et pr?sentation des fiches trait?s par les autres agents du m?me lot.",
+    "files": [
+      "src/components/placard/KqSchoolEncyclopedia.tsx",
+      "src/components/placard/KqSchoolEncyclopedia.module.css",
+      "src/lib/kanab-quest-school-encyclopedia.ts",
+      "src/lib/kanab-quest-school-encyclopedia.test.ts"
+    ],
+    "delivered": [
+      "Accueil guid? par trois questions issues des vrais articles ; une illustration botanique conserv?e.",
+      "Sommaire des neuf th?mes : lat?ral sur grand ?cran, d?pliant sur mobile.",
+      "Pages de th?me regroup?es selon les chapitres existants ; aucun lien vers les anciens index de parcours.",
+      "R?sultats s?par?s en articles, d?finitions, fiches et outils ; correspondances de titre prioritaires.",
+      "Lexique A-Z et # pagin? ; tous les 470 termes class?s une seule fois.",
+      "?tat de consultation, page, lettre, position et focus de retour m?moris?s dans la session du navigateur.",
+      "Liens HTML directs permettant une ouverture dans un autre onglet ; activation normale conservant la navigation du jeu.",
+      "Boutons et champ de recherche en mat?riaux neuf-tranches ; liens des articles en police de lecture et casse normale."
+    ],
+    "integration": "initialShelfId optionnel pour le retour au th?me depuis un article ; parent remonte le hub avec une cl? li?e au passage.",
+    "limits": [
+      "La m?moire de consultation est locale ? la session ; elle ne se synchronise pas entre appareils.",
+      "La validation technique ne remplace pas la validation de lisibilit? par l?utilisateur."
+    ],
+    "checks": {
+      "indexTests": "10 PASS",
+      "targetedEslint": "PASS",
+      "browserReport": "output/placard-navigation/school-encyclopedia-hub-report.json",
+      "widths": [
+        320,
+        1440
+      ],
+      "paths": [
+        "th?me ? article ? retour au th?me et au lien",
+        "recherche Noyal ? article ? retour ? la recherche et au lien",
+        "lexique lettre B ? terme ? retour ? la lettre et au lien",
+        "38 outils accessibles"
+      ],
+      "javascriptErrors": 0,
+      "horizontalOverflow": 0,
+      "finalVisualReport": "output/placard-navigation/school-encyclopedia-final-visual.json",
+      "finalHome": [
+        {
+          "view": "home",
+          "width": 320,
+          "height": 1737,
+          "firstEntry": 686.984375,
+          "artVisible": true,
+          "artWidth": 72,
+          "textTransform": "none",
+          "fontFamily": "Body, Arial, sans-serif",
+          "overflow": false
+        },
+        {
+          "view": "home",
+          "width": 1440,
+          "height": 1345,
+          "firstEntry": 580.84375,
+          "artVisible": true,
+          "artWidth": 156,
+          "textTransform": "none",
+          "fontFamily": "Body, Arial, sans-serif",
+          "overflow": false
+        }
+      ]
+    }
+  }
+}

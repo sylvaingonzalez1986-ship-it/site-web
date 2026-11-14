@@ -2,14 +2,15 @@
 .lobby > * { max-width: 1400px; margin-inline: auto; }
 .quarterLayout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, 300px); align-items: start; gap: 20px; }
 .quarterLayout > *, .dayBrief { min-width: 0; }
-.dayBrief { display: grid; align-content: start; gap: 16px; }
+.dayBrief { display: grid; grid-column: 2; grid-row: 1; align-content: start; gap: 16px; }
+.quarterLayout > [data-placard-map] { grid-column: 1; grid-row: 1; }
 .nextAction { display: grid; grid-template-columns: 48px minmax(0, 1fr); align-items: start; gap: 12px; min-height: 88px; margin: 0; padding: 18px; --game-panel-art: var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-panel-art, var(--game-panel-paper, url("/placard/ui/panel-paper-v1.webp"))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch; }
 .guidePortrait { position: relative; display: block; flex-shrink: 0; width: 48px; height: 52px; }
 .guidePortrait > img { width: 100%; height: 100%; object-fit: contain; }
 .actionCopy { min-width: 0; }
 .actionCopy > span { display: block; margin-bottom: 4px; font-size: 12px; font-weight: 700; color: #435f50; }
 .actionCopy h2 { margin: 0; font-size: 17px; font-weight: 800; line-height: 1.35; }
-.actionDescription { grid-column: 1 / -1; margin: 0; font-size: 13px; line-height: 1.5; }
+.actionDescription { grid-column: 1 / -1; margin: 0; font-size: 14px; line-height: 1.5; }
 .resumeFacts { grid-column: 1 / -1; display: grid; gap: 7px; margin: 0; padding: 12px 0 0; border-top: 1px solid #17292340; list-style: none; font-size: 13px; line-height: 1.5; }
 .resumeFacts li::before { content: "· "; font-weight: 800; }
 .nextAction[data-tone="waiting"] :is(button, a) { --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
@@ -17,13 +18,19 @@
 .nextAction :is(button, a) { display: inline-flex; align-items: center; justify-content: center; gap: 9px; min-height: 44px; padding: 11px 16px; border: var(--game-control-border-width, 2px) solid #172923; border-radius: 0; color: #172923; box-shadow: none; font: 800 12px var(--font-body), sans-serif; cursor: pointer; transition: background 120ms ease, box-shadow 120ms ease; --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); background: transparent; border-color: transparent; border-image: var(--game-control-art, url("/placard/ui/control-paper-v2.webp")) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .nextAction a { text-decoration: none; }
 .nextAction :is(button, a) > svg { flex-shrink: 0; }
-.nextAction > :is(button, a) { grid-column: 1 / -1; width: 100%; font-size: 13px; min-height: 48px; }
+.nextAction > :is(button, a) { grid-column: 1 / -1; width: 100%; font-size: 14px; min-height: 48px; }
+.nextAction button:disabled { cursor: wait; opacity: .7; }
+.moreActivities, .recovery { grid-column: 1 / -1; min-width: 0; font-size: 14px; line-height: 1.5; }
+.moreActivities > summary { min-height: 44px; padding: 10px 2px; border-top: 1px solid #17292340; font-weight: 750; cursor: pointer; }
+.moreActivities .resumeFacts { padding-top: 0; border-top: 0; }
+.recovery p { margin: 0 0 8px; }
+.recovery button { width: 100%; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
 .resumeFacts li:has(.factAction)::before { content: none; }
 .resumeFacts .factAction { display: flex; justify-content: space-between; width: 100%; min-height: 44px; margin-top: 4px; padding: 8px 12px; font-size: 14px; line-height: 1.45; text-align: left; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
 .loading { display: flex; align-items: center; min-height: 88px; margin-bottom: 20px; padding: 16px 18px; font-size: 13px; color: #40554b; }
 .status { margin-block: 20px 0; padding: 10px 14px; border: 1px solid #172923; border-radius: var(--game-panel-radius, 2px); background: #fff1d6; font-size: 12px; text-align: center; }
 .status button { min-height: 44px; padding: 4px 8px; color: #172923; background: transparent; border: 0; font-weight: 750; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.lobby :where(button, a, summary):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
+.lobby:focus-visible, .lobby :where(button, a, summary, h2):focus-visible { outline: 3px solid #172923; outline-offset: 4px; }
 .nextAction :is(button, a):active:not(:disabled) { box-shadow: none; border-color: transparent; }
 @media (hover: hover) { .nextAction :is(button, a):hover:not(:disabled) { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); background: transparent; border-color: transparent; color: #fff1d6; } }
 @media (max-width: 700px) {
@@ -34,5 +41,8 @@
   .nextAction > :is(button, a), .resumeFacts { grid-column: 1 / -1; width: 100%; }
   .loading { min-height: 126px; }
 }
-@media (max-width: 1150px) { .quarterLayout { grid-template-columns: minmax(0, 1fr); gap: 16px; } }
+@media (max-width: 1150px) {
+  .quarterLayout { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .dayBrief, .quarterLayout > [data-placard-map] { grid-column: 1; grid-row: auto; }
+}
 @media (prefers-reduced-motion: reduce) { .nextAction :is(button, a) { transition: none; } }

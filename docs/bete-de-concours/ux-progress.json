@@ -1,5 +1,1012 @@
 {
+  "historyTimeline": {
+    "date": "2026-11-14",
+    "status": "Rubrique Histoire et anecdotes refaite et vérifiée localement ; aucun déploiement.",
+    "changes": "Frise de 34 événements sur 7 périodes, 51 références, 6 sujets. Chaque date ouvre un récit, une anecdote sourcée et les précisions de contexte ; navigation précédente/suivante, filtres période/sujet et recherche. Textes anciens, patrimoine breton, littérature, archéologie, sciences et politiques publiques. Accès réels aux sources explicités ; synthèses et liens existants conservés.",
+    "validation": "TypeScript, ESLint ciblé et 7 tests réussis. Recette à 320/390/1627 px, 34 fenêtres ouvertes à 320 px, filtres, clavier, Échap, focus, historique et rechargement. Aucun débordement, erreur JS ou POST. Captures inspectées et quatre points historiques sensibles contre-vérifiés.",
+    "delivery": "docs/history-timeline/delivery.json",
+    "research": ["docs/history-timeline/early-research.json", "docs/history-timeline/modern-research.json"],
+    "browserReport": "output/history-timeline/browser-report.json",
+    "deployed": false,
+    "databaseMigrationRequired": false,
+    "nextBoundedTask": "Demande terminée ; pas de nouveau chantier implicite."
+  },
+  "quizzshowIllustratedHome": {
+    "date": "2026-11-14",
+    "status": "Accueil illustré intégré et vérifié localement ; aucun déploiement.",
+    "changes": "Salle en coupe avec trois objets directement cliquables : pupitre Tournoi, tableau Classement et bibliothèque Encyclopédie. Enseignes HTML sur les objets, sans rangée de boutons sous la scène. Nouvelle page Classement alimentée par les résultats serveur (semaine, champion, palmarès), lecture GET seule. Retour, focus, liens directs et contexte Buddy conservés.",
+    "asset": "public/placard/school/quizzshow-home-v3.webp",
+    "provenance": "docs/bete-de-concours/quizzshow-home-v3-artwork-provenance.json",
+    "rankingBoard": "Tableau ajouté avec imagegen ; libellé Tournoi simplifié. TypeScript, ESLint ciblé et 4 tests navigation réussis. Recette 320/390/1627 : trois dessins cliquables hors libellés, clavier, focus, historique et rechargement ; classement vide/rempli, réessai 503, session expirée 401. Aucun débordement, erreur JS ou POST. Captures inspectées. Rapport : output/quizzshow-home/room-v3-report.json.",
+    "artRevision": "Illustration v2 éditée avec imagegen en prenant la carte actuelle pour référence : la fenêtre donne sur la banque du quartier et la mer, les contours et textures de toute la salle sont harmonisés. WebP 1536 × 1024, 329448 octets. Vérification à 320/1627 px : image v2 chargée, meubles cliquables, clavier, retours, aucune barre de temps, aucun débordement ni erreur JS ; captures inspectées. Rapport : output/quizzshow-home/room-v2-report.json.",
+    "validation": "TypeScript et ESLint ciblé réussis ; tests de navigation réussis. Recette sur le vrai Shell avec données simulées à 320/390/1440 px : clics sur les meubles, clavier, focus visible, historique, retour à la salle, rechargement encyclopédie, lien article et contexte Buddy. Aucun débordement, aucune erreur JS ni requête POST. Mouvement réduit respecté ; captures inspectées.",
+    "report": "output/quizzshow-home/browser-report.json",
+    "timeBarRemoval": "À la demande de l’utilisateur, bloc Temps restant / Ma journée / détails retiré de tout QuizzShow (accueil, tournoi et encyclopédie). Salle agrandie sur ordinateur dans l’espace libéré. ESLint ciblé et 6 affichages à 320/1627 px vérifiés : bloc absent, aucun débordement ni erreur JS ; barre toujours présente au quartier. Captures inspectées ; output/quizzshow-home/no-time-bar-report.json.",
+    "deployed": false,
+    "databaseMigrationRequired": false,
+    "nextBoundedTask": "Demande terminée ; pas de nouveau chantier implicite."
+  },
+  "encyclopediaVulgarisation": {
+    "date": "2026-11-14",
+    "status": "Les 189 fiches, 160 définitions et 360 explications de quiz sont réécrites, relues individuellement et intégrées en local.",
+    "changes": "Notions expliquées dans le texte, exemples et unités explicités, sections regroupées avec anciennes ancres conservées, approfondissements ouvrables, schémas placés après leurs explications et références dédoublonnées par document.",
+    "validation": "TypeScript et ESLint ciblé réussis ; 15 tests réussis ; 45 affichages de 15 fiches à 320/390/1440 px, sans débordement, image manquante, erreur JS ou citation cassée. Détails au clavier et ancienne ancre CBD vérifiés. Captures représentatives inspectées.",
+    "tracker": "docs/encyclopedia-vulgarisation/progress.json",
+    "delivery": "docs/encyclopedia-vulgarisation/delivery.json",
+    "verification": "docs/encyclopedia-vulgarisation/verification.json",
+    "browserReport": "output/encyclopedia-vulgarisation/browser-report.json",
+    "sourceLimitations": "181 validations scientifiques conservées ; 8 limites de sources déjà connues restent explicites. La relecture éditoriale ne constitue pas une étude de compréhension auprès de lecteurs.",
+    "preview": "http://127.0.0.1:3256/arene/placard?view=school&section=learn&module=reference&passage=ref-terpenes-terpenoides",
+    "deployed": false,
+    "databaseMigrationRequired": false,
+    "nextBoundedTask": "Demande de vulgarisation livrée. Reprendre seulement une difficulté de lecture signalée ou l’un des huit points scientifiques quand sa source primaire devient accessible."
+  },
+  "encyclopediaScientificRevision": {
+    "date": "2026-11-14",
+    "status": "Couverture exhaustive livrée en local ; validations et blocages individuels enregistrés, aucun déploiement.",
+    "scope": "189 fiches publiées, 160 termes et 360 questions. Trois spécialistes GPT-6.1 Sol, sans sous-délégation.",
+    "coverage": {
+      "inventoried": 189,
+      "reviewed": 189,
+      "corrected": 189,
+      "illustrated": 189,
+      "validated": 181,
+      "blocked": 8,
+      "pending": 0,
+      "glossaryReviewed": 160,
+      "quizReviewed": 360,
+      "quizCorrected": 74,
+      "sourcesRead": 323,
+      "sourceUrlsRead": 296
+    },
+    "tracker": "docs/encyclopedia-revision/inventory.json",
+    "workflow": "docs/encyclopedia-revision/WORKFLOW.md",
+    "evidence": "Lots individuels et preuves de consultation dans docs/encyclopedia-revision/batches ; bibliographie consolidée et contre-lectures séparées.",
+    "delivery": "docs/encyclopedia-revision/delivery.json",
+    "verification": "docs/encyclopedia-revision/verification.json",
+    "nextBoundedTask": "Reprendre uniquement les huit points de source encore bloqués quand les documents primaires sont accessibles ; relire les passages concernés avant de renouveler leur validation.",
+    "deployed": false
+  },
+  "quizzshowMenuIllustration": {
+    "date": "2026-11-14",
+    "status": "Illustration dédiée à l’entrée QuizzShow intégrée localement.",
+    "changes": "Micro doré, buzzer orange et carte point d’interrogation, conçus pour rester lisibles à 32 px. KqPrintedArt utilise school-v4 dans le menu ordinateur, le tiroir mobile et les titres de section.",
+    "asset": "public/placard/ui/school-v4.webp",
+    "provenance": "docs/bete-de-concours/quizzshow-menu-provenance.json",
+    "validation": "Alpha conservé, ESLint ciblé réussi. Recette locale à 320/390/1440 : nouvelle illustration présente, navigation QuizzShow, aucun débordement ni erreur JS. Captures mobile et ordinateur inspectées.",
+    "report": "output/quizzshow/menu-validation.json",
+    "deployed": false,
+    "nextBoundedTask": "Demande terminée ; pas de nouveau chantier implicite."
+  },
+  "quizzshowIdentity": {
+    "date": "2026-11-14",
+    "status": "Bibliothèque Quiz rebaptisée QuizzShow et bâtiment adapté, livraison locale.",
+    "changes": "Nom harmonisé dans carte, navigation, titre, retour et messages. Bâtiment imagegen : enseigne dorée QuizzShow animée, microphone, badge point d’interrogation, rideaux et quatre pupitres à buzzers. Même vignette transparente pour navigation et chapitres ; identifiants techniques conservés.",
+    "assets": [
+      "public/placard/map/placard-world-quizzshow-v9.webp",
+      "public/placard/ui/school-v3.webp",
+      "public/placard/map/living-v2/clean-patches-quizzshow-v1.webp"
+    ],
+    "provenance": "docs/bete-de-concours/quizzshow-artwork-provenance.json",
+    "validation": "Zéro pixel modifié hors masque du bâtiment, alpha conservé. Cinq tests navigation/village et ESLint ciblé passent. Trois scénarios navigateur à 320/390/1440 : enseigne animée, clavier/survol, mouvement réduit, clics et navigation QuizzShow, aucun débordement ni erreur JS. Captures inspectées.",
+    "reports": [
+      "output/quizzshow/artwork-verification.json",
+      "output/quizzshow/motion-report.json"
+    ],
+    "deployed": false,
+    "nextBoundedTask": "Renommage et adaptation terminés ; pas de nouveau chantier implicite. Le carnet de corrections reste la suite distincte du plan d’audit."
+  },
+  "encyclopediaQuizQuickFixes": {
+    "date": "2026-11-14",
+    "status": "Trois premières actions du rapport implémentées localement, sans déploiement.",
+    "changes": "Histoire restaurée depuis les identifiants du catalogue ; tournoi focalisé sur l’énoncé avec participants compacts pendant les questions ; sommaire mobile avant l’image et ancres de section/référence respectées au rechargement avec focus utile.",
+    "validation": "38 tests ciblés et TypeScript passent. Recette à 320/390/1440 : liens directs, retours et restauration Histoire ; sommaire, ancres, rechargement, précédent et fragment invalide ; 12 réponses de tournoi, 4 choix au clavier sans recouvrement, première réponse visible, score, rejeu, réponse réseau perdue et reconnexion. Aucune erreur JS ni débordement constaté.",
+    "reports": [
+      "output/encyclopedia-quick-fixes/reading-report.json",
+      "output/encyclopedia-quick-fixes/tournament-browser.json",
+      "output/encyclopedia-quick-fixes/validation.json"
+    ],
+    "nextBoundedTask": "Carnet de corrections après élimination ou finale, avec projection serveur des seules questions terminées. La synchronisation du contexte avec l’URL et la reprise de lecture sans ancre restent le lot suivant. Scores, délais et économie inchangés."
+  },
+  "encyclopediaQuizAudit": {
+    "date": "2026-11-14",
+    "status": "Audit et propositions terminés ; aucun code produit modifié.",
+    "report": "docs/audit-encyclopedie-quiz.md",
+    "scope": "Encyclopédie active et tournoi uniquement ; trois articles, douze QCM relus ; trois spécialistes GPT-6.1 Sol medium, navigateur piloté par le coordinateur.",
+    "evidence": "Aperçu neuf isolé 3252 : captures 320/1440, lecture 390, tournoi complet et transitions sur fixtures ; 38 tests ciblés, 140 contrôles SQL tournoi et 88 hebdomadaires réussis. output/audit-encyclopedie-quiz/",
+    "findings": "Réponses et correction hors premier écran mobile ; correction éphémère ; Histoire perdue à la restauration ; ancre et position de lecture perdues. Identité visuelle, recherche et protections de score à conserver.",
+    "nextBoundedTask": "Sur demande de mise en œuvre : réparer la restauration Histoire, recentrer le tournoi sur la question, puis remonter le sommaire mobile et respecter les ancres. Carnet de corrections proposé ensuite. Aucun déploiement."
+  },
+  "libraryQuizVillageArtwork": {
+    "date": "2026-11-14",
+    "status": "Terminé localement : l’école devient la Bibliothèque Quiz, avec enseigne point d’interrogation animée dans la DA du village.",
+    "completed": [
+      "Imagegen intégré : carte bibliothèque, vignette transparente et fond propre derrière l’enseigne ; sources et prompts conservés.",
+      "Enseigne découpée dans l’illustration, balancement et réactions via le moteur GSAP existant ; pause hors écran, pendant le déplacement, onglet masqué et mouvement réduit.",
+      "Libellés de carte, navigation, titre et retour harmonisés ; vignette school-v2 commune. Identifiants et route school conservés."
+    ],
+    "validation": {
+      "artwork": "Zéro pixel modifié hors du masque de la bibliothèque ; vignette avec alpha transparent.",
+      "browser": "3 scénarios réussis à 320/390/1440 px, aucune erreur navigateur : mouvement visible de l’enseigne, réactions clavier/survol, réduction des animations, absence de débordement et navigation vers school avec la nouvelle vignette. Données et destination simulées par l’audit existant.",
+      "lint": "ESLint ciblé réussi pour tous les composants, géométrie, scène et scripts modifiés.",
+      "report": "output/school/library-quiz-artwork/motion-report.json",
+      "artworkReport": "output/school/library-quiz-artwork/verification.json",
+      "video": "output/school/library-quiz-artwork/village-animation.webm"
+    },
+    "provenance": "docs/bete-de-concours/library-quiz-artwork-provenance.json",
+    "deployed": false,
+    "nextBoundedTask": "Demande terminée ; recharger le village pour voir la bibliothèque et son enseigne animée."
+  },
+  "schoolTournamentClientRequestKeys": {
+    "date": "2026-11-14",
+    "status": "Terminé localement : le tournoi fonctionne sans crypto.randomUUID côté navigateur.",
+    "changes": "Les cinq appels directs du tournoi utilisent createClientRequestKey : participation, réponse, départ et les deux boutons Rejouer. Les reprises conservent la clé de la commande en attente.",
+    "validation": "8 tests réussis (client-request-key, commandes et tirages du tournoi), dont le cas randomUUID absent ; ESLint du composant réussi. Vérification statique : aucun appel direct restant dans KqSchoolTournament. Pas de vérification navigateur pour ce correctif.",
+    "deployed": false,
+    "nextBoundedTask": "Correctif terminé ; recharger le tournoi dans le navigateur concerné."
+  },
+  "schoolQuizQuestionContext": {
+    "date": "2026-11-14",
+    "status": "Terminé localement : 360 énoncés relus, 46 clarifiés pour être compréhensibles indépendamment du tirage.",
+    "completed": [
+      "29 questions d’histoire culturelle et 17 questions de politiques ou de découvertes précisent désormais le club, le lieu, le texte ou la molécule concernés.",
+      "Relecture distincte des 240 questions de botanique, usages et arômes par un agent gpt-6-luna : aucun défaut de contexte supplémentaire identifié.",
+      "Identifiants, réponses, choix, difficultés et sources conservés ; aucune modification des sessions déjà enregistrées."
+    ],
+    "corrections": "output/school/quiz-context/corrections.json",
+    "validation": {
+      "tests": "9 tests réussis : banque complète, tirages et tournoi",
+      "unitReport": "output/school/quiz-context/unit-report.json",
+      "lint": "PASS pour les deux banques modifiées",
+      "browser": "6 contrôles réussis ; question de l’hôtel testée dans un tournoi local avec trois bots, à 320 et 1440 px, correction et attribution des points vérifiées.",
+      "browserReport": "output/school/quiz-context/ui/report.json",
+      "preview": "Redémarré sur http://127.0.0.1:3248/arene/placard?view=school"
+    },
+    "migrationRequired": false,
+    "deployed": false,
+    "nextBoundedTask": "Demande terminée ; les nouveaux tournois utilisent les énoncés corrigés, les parties enregistrées conservent leur tirage."
+  },
+  "schoolQuizBankExpansion": {
+    "date": "2026-11-14",
+    "status": "Terminé localement : banque doublée de 180 à 360 QCM, dont 90 historiques ; 90 questions par niveau. Tournoi seul mode de jeu.",
+    "research": "Trois agents gpt-6-luna, puis revue et réécriture par l’agent principal.",
+    "completed": [
+      "180 anciennes questions conservées à l’identique",
+      "180 ajouts sourcés : Club des Hachichins, marijuana, prohibition, découvertes, botanique, arômes et matériaux",
+      "Six articles courts illustrés reliés aux corrections ; anciens exercices historiques maintenus hors du catalogue"
+    ],
+    "validation": {
+      "tests": 38,
+      "unitReport": "output/school/quiz-expansion/unit-report.json",
+      "lint": "PASS modified TypeScript and components",
+      "build": "PASS",
+      "buildReport": "output/school/school-quiz-bank-expanded-build-exit.json",
+      "browser": [
+        "Lobby announces actual 360-question bank and ten themes",
+        "Actual SQL tournament draws a new historical question with three bots; answer remains private",
+        "Historical question and four choices fit 320 and 1440px",
+        "Correct historical answer yields points and a matching explanation",
+        "Historical correction opens illustrated article with sources on mobile",
+        "All three new private banks denied over preview HTTP"
+      ],
+      "browserReport": "output/school/quiz-expansion/ui/report.json",
+      "privateBank": {
+        "browserChunksScanned": 194,
+        "leaks": 0
+      }
+    },
+    "report": "docs/bete-de-concours/quiz-bank-expansion-2026-11-14.json",
+    "migrationRequired": false,
+    "deployed": false,
+    "nextBoundedTask": "Demande terminée ; publication uniquement sur demande."
+  },
+  "soloQuizRetirement": {
+    "date": "2026-11-14",
+    "status": "Terminé localement : salle de quiz retirée, tournoi seul mode de jeu, encyclopédie illustrée conservée.",
+    "completed": [
+      "Entrée de l’école et anciennes URL quiz/ateliers ouvrent le tournoi ; navigation à deux accès.",
+      "API challenge, quiz et quiz/check fermées avec HTTP 410 et destination tournoi ; contrôles d’accès conservés.",
+      "Banque partagée du tournoi, résultats historiques, gains et contenus encyclopédiques conservés."
+    ],
+    "validation": {
+      "apiAndSharedBank": "36 tests réussis ; lint des routes réussi",
+      "encyclopediaAndTournament": "15 tests réussis, avec recouvrement des tests tournoi ci-dessus",
+      "unitReport": "output/school/tournament-only-core-tests.json",
+      "browser": "10 contrôles réussis : anciens liens, deux accès, clavier, 320/1440 px, encyclopédie illustrée et remplissage automatique 1 humain + 3 bots",
+      "browserReport": "output/school/tournament-only-ui/report.json",
+      "lint": "PASS composants modifiés",
+      "build": "PASS output/school/school-tournament-only-build-exit.json"
+    },
+    "migrationRequired": false,
+    "deployed": false,
+    "nextBoundedTask": "Demande terminée ; publication du code uniquement sur demande."
+  },
+  "schoolTournament": {
+    "date": "2026-11-14",
+    "status": "Terminé : tournoi ouvert toute la semaine, plateau automatique, meilleure finale par joueur et attribution hebdomadaire à la fin du dimanche. Migration004 et cron appliqués ; code non publié.",
+    "userConfirmed": {
+      "qualification": [
+        4,
+        3,
+        2,
+        1
+      ],
+      "questionsPerStage": 3,
+      "champion": "Meilleur résultat de finale score+rapidité ; titre attribué à minuit à la fin du dimanche, Paris. Si personne ne dépasse le titulaire, il conserve son fauteuil.",
+      "replays": "Les places libres peuvent être prises par les performances enregistrées de joueurs réels ; repère Replay, aucune fausse présence.",
+      "stage": "Quatre pupitres avec les personnages ChanvrierAvatar réellement configurés.",
+      "bootstrap": "Les premiers joueurs peuvent jouer même sans historique : adversaires fictifs explicites, puis sessions réelles enregistrées réutilisables.",
+      "weeklySession": "Ouvert toute la semaine, suppression de la restriction dimanche ; les finales jouées contre le champion déterminent le classement hebdomadaire."
+    },
+    "rules": {
+      "questions": 12,
+      "difficulty": "3 questions par niveau, dernière manche expert",
+      "timeLimitSeconds": 20,
+      "revealSeconds": 6,
+      "stageResultSeconds": 10,
+      "scoring": "100 + bonus de rapidité 0..50 ; score remis à zéro par manche, cumul conservé",
+      "championComparison": "Meilleure finale3expert par joueur (0–450 points, bonus rapidité déjà inclus), puis bonnes réponses, temps cumulé, première réalisation entre challengers. Challenger doit dépasser benchmark du titulaire.",
+      "simultaneousTitleChallenges": "Finales indépendantes sans réservation ; aucun titre immédiat. Clôture unique par édition sous verrou transactionnel.",
+      "admission": "Ouvert tous les jours ; aucune restriction dimanche.",
+      "matchmaking": "Un clic Participer au tournoi, prêt automatique,15s de recherche puis replays réels de la semaine et bots ; quatre humains démarrent immédiatement."
+    },
+    "work": {
+      "root": "Intégration KqSchool/PlacardPlayerShell, transport local PGlite/preview, tests navigateur et concurrence PostgreSQL réelle",
+      "backend": "/root/quiz_multiplayer_architecture : migration 20261114000100_kq_school_tournament.sql et scénarios SQL ; sous-agent types/factory/backend/API",
+      "ui": "/root/encyclopedia_visual_reorg : KqSchoolTournament.tsx/.module.css"
+    },
+    "databaseApplied": true,
+    "deployed": false,
+    "nextBoundedTask": "Demande terminée. Publication du code/assets uniquement sur demande ;395 migrations synchronisées, aucune attente ; job hebdomadaire actif.",
+    "replays": {
+      "source": "Parcours tournoi humains complets de12réponses de cette semaine ; anciennes éditions et solos seuls archivés, pas repris automatiquement dans nouvelle semaine.",
+      "command": "Remplissage automatique côté serveur après15s ; aucune action manuelle de complétion dans l’interface.",
+      "title": "Les replays ne gagnent ni titre ni nouvelles statistiques pour les profils représentés."
+    },
+    "completed": [
+      "Plateau à quatre pupitres avec personnages configurés",
+      "Qualification4→3→2→1 puis champion horsligne",
+      "Complétion explicite avec replays attribués, sans faux profils",
+      "Classement distinct, réponses communes, reprise et horloges serveur",
+      "Amorçage sans historique : 1 humain+3 bots /2 humains+2 bots ; priorité replays, remplissage concurrent sûr, premier finaliste enregistré.",
+      "Tournoi dimanche et remplissage automatique : contrôles minuit/DST, 4humains ou replays/bots, champion conservé, session hebdomadaire réelle.",
+      "Accès toute semaine et titre hebdomadaire : meilleure finale réelle, absence de titre immédiat, cutoffParis et cron idempotent, classement et palmarès distincts."
+    ],
+    "pending": [],
+    "art": "docs/bete-de-concours/school-quiz-lectern-art-v1.json",
+    "validation": {
+      "typescriptTests": 36,
+      "sqlChecks": 140,
+      "sqlCommand": "node scripts/test-placard-school-tournament.mjs",
+      "postgresConcurrencyChecks": 16,
+      "postgresReport": "output/school/tournament-concurrency-report.json",
+      "browserReport": "output/school/tournament-ui/report.json",
+      "browser": "Two complete tournaments: four humans, then one human plus three recorded profiles defeats the offline champion; retries, real avatars, 320/1440, reduced motion",
+      "lint": "PASS targeted components, API and backend",
+      "dataApiGrants": "PASS:392 migrations, all new private tables explicitly revoked",
+      "productionBuild": "PASS",
+      "privateBank": {
+        "questions": 180,
+        "browserChunks": 194,
+        "leaked": 0
+      }
+    },
+    "report": "output/school/tournament-validation.json",
+    "migrationReport": "output/school/tournament-migration-release-2026-11-14/summary.json",
+    "bootstrap": {
+      "command": "Automatique après Participer au tournoi",
+      "botCodes": [
+        "mila",
+        "gabin",
+        "iris"
+      ],
+      "priority": "Places humaines conservées → replays réels disponibles → bots",
+      "simulated": "Réussite et délai prédéterminés avant ouverture ; aucune adaptation aux réponses humaines",
+      "recording": "Douze réponses humaines réelles pour un replay complet ; réponses partielles conservées sans inventer les manquantes",
+      "excluded": "Pas de compte auth, titre, classement ni nouvelle source replay pour les bots",
+      "avatars": "Trois personnages fictifs distincts utilisant ChanvrierAvatar",
+      "validation": "output/school/tournament-bootstrap-validation.json",
+      "migrationReport": "output/school/tournament-bootstrap-release-2026-11-14/summary.json"
+    },
+    "latestMigrationReport": "output/school/tournament-weekly-release-2026-11-14/summary.json",
+    "sunday": {
+      "session": "Tournoi lui-même",
+      "champion": "Global persistant, titulaire dispensé du parcours des challengers",
+      "attemptLimit": null,
+      "participation": "Statut participé/terminé propre à édition ; nouvel enregistrement chaque dimanche",
+      "timezone": "Europe/Paris",
+      "autofillSeconds": 15,
+      "validation": "output/school/tournament-sunday-validation.json",
+      "migrationReport": "output/school/tournament-sunday-release-2026-11-14/summary.json",
+      "supersededBy": "weekly : user removed Sunday-only access on2026-11-14"
+    },
+    "weekly": {
+      "alwaysOpen": true,
+      "timezone": "Europe/Paris",
+      "cutoff": "End of Sunday midnight (Monday00:00)",
+      "candidate": "Best actual final against champion per player; no cumulative session scores",
+      "champion": "Only changes at weekly settlement if best challenger exceeds incumbent",
+      "completionTime": "Last expert answer server timestamp, not browser polling time",
+      "job": "kq-school-tournament-weekly-champion",
+      "schedule": "0 22,23 * * 0",
+      "validation": "output/school/tournament-weekly-validation.json",
+      "migrationReport": "output/school/tournament-weekly-release-2026-11-14/summary.json"
+    }
+  },
+  "schoolVisualStage": {
+    "date": "2026-11-14",
+    "status": "Terminé en local : quiz animé et encyclopédie illustrée réorganisée.",
+    "changes": [
+      "Décor original de plateau assorti au Quartier, optimisé WebP 197932 octets.",
+      "Score et quatre niveaux visibles ; entrée des questions/choix, correction des quatre réponses, points animés, confettis et bilan des vingt réponses.",
+      "Animations désactivables ; préférence système respectée ; chronomètre serveur inchangé.",
+      "Huit rubriques illustrées, articles/fiches distincts, six vignettes botaniques, recherche/pagination/index/lexique et 28 cartes terpènes conservés."
+    ],
+    "validation": {
+      "lint": "PASS : les deux composants modifiés",
+      "nextBuild": "PASS",
+      "fullBrowserRounds": "Deux parties de 20 questions, 320/1440, 9 thèmes et 4 niveaux, bonus écoulé sans exclusion, reprises et scores exacts.",
+      "focusedBrowser": "Réponse réseau perdue puis rejouée sans double score ; correction, mouvement réduit, bascule animations, recherche/focus/pagination ; aucun débordement ni erreur."
+    },
+    "reports": [
+      "output/school/challenge-ui/report.json",
+      "output/school/quiz-stage/report.json",
+      "output/school/encyclopedia-visual-reorg-report.json",
+      "output/school/school-visual-stage-build-exit.json"
+    ],
+    "provenance": "docs/bete-de-concours/school-quiz-stage-art-v1.json",
+    "databaseChanged": false,
+    "deployed": false,
+    "nextBoundedTask": "Nouvelle demande : tournoi entre quatre joueurs et champion ; règles des manches et présence du champion en clarification, investigation backend séparée."
+  },
+  "schoolDatabaseMigration": {
+    "date": "2026-11-14",
+    "status": "Dix-sept migrations de l’école appliquées ; accès toute semaine et attribution automatique du titre installés.",
+    "projectRef": "eyowwwpdmfrulhkpvlnf",
+    "appliedCount": 17,
+    "synchronized": 395,
+    "pending": 0,
+    "tables": 27,
+    "functions": 42,
+    "report": "output/school/tournament-weekly-release-2026-11-14/summary.json",
+    "applicationDeployment": false,
+    "initialReport": "output/school/migration-release-2026-11-13/summary.json",
+    "lastVerifiedAt": "2026-11-14T11:04:28.004Z",
+    "latestCheck": "Migration hebdomadaire appliquée :10 tables privées,18 fonctions contrôlées, calendrierParis toujours ouvert et job unique actif sous postgres ;395 migrations synchronisées.",
+    "previousReport": "output/school/tournament-sunday-release-2026-11-14/summary.json"
+  },
+  "schoolQuizLibrary": {
+    "updated": "2026-11-13",
+    "status": "Nouvelle banque chanvre et interface de quiz livrées localement. Histoire et quiz méthodologiques retirés des écrans. Migration de compatibilité appliquée ; code non publié.",
+    "rules": {
+      "bank": 180,
+      "round": 20,
+      "themes": 9,
+      "levels": 4,
+      "questionsPerLevel": 5,
+      "correctPoints": 100,
+      "speedBonus": "0 à 50 points durant 20 secondes",
+      "elimination": false,
+      "scoring": "Chronomètre serveur ; validation immédiate au clic ; résultat explicite puis question suivante.",
+      "contentVersion": "2026-11-13.hemp2"
+    },
+    "encyclopedia": {
+      "topics": 8,
+      "articles": 46,
+      "records": 195,
+      "terms": 160,
+      "sources": 267,
+      "navigation": "Rubrique Histoire retirée du catalogue, de la recherche et des liens. Anciennes URL de quiz et ateliers redirigées vers le quiz du chanvre.",
+      "reader": "Articles factuels illustrés, sommaires, sources, lexique et recherche par synonymes."
+    },
+    "preservation": "Scores terminés, acquis de lecture, cartes et gains conservés. Anciennes banques archivées, non proposées. Une ancienne série est masquée et remplacée uniquement après clic du joueur.",
+    "research": [
+      "docs/bete-de-concours/school-encyclopedia-ux-research.json",
+      "docs/bete-de-concours/school-quiz-ux-research.json"
+    ],
+    "validation": {
+      "status": "PASS",
+      "tests": 540,
+      "lint": "PASS",
+      "build": "PASS",
+      "sqlChecks": 56,
+      "fixtureChecks": 22,
+      "completeBrowserRounds": 3,
+      "browserWidths": [
+        320,
+        1440
+      ],
+      "recoveryAndOwnerIsolation": true,
+      "encyclopediaAndOldVersion": "PASS",
+      "productionChunks": 191,
+      "privateQuestionIdsChecked": 180,
+      "leakedIds": [],
+      "migration": "20261113000100_kq_school_hemp_quiz.sql",
+      "migrationsSynchronized": 391
+    },
+    "reports": [
+      "output/school/hemp-quiz-validation.json",
+      "output/school/hemp-integration-tests.json",
+      "output/school/hemp-final-build.log",
+      "output/school/challenge-ui/report.json",
+      "output/placard-navigation/school-challenge-report.json",
+      "output/school/hemp-migration-ui.json",
+      "output/school/hemp-migration-release-2026-11-13/postflight.json"
+    ],
+    "sourceHashes": {
+      "src/components/placard/KqSchool.tsx": "9329b6d563b4b306123a1e52f224377cc6ff848b608b03a9817fcc9aca5cfa4b",
+      "src/components/placard/KqSchoolChallenge.tsx": "16b8549de0124caf55a32596b47ae8b52eb20ce61d03d6c789b46070af9514eb",
+      "src/components/placard/KqSchoolChallenge.module.css": "b49e5b0d809af31a09f687cf4a797a2dacd9704b5e0fd584aa81a11131371fc9",
+      "src/components/placard/KqSchoolEncyclopedia.tsx": "a53ee71732204b111aef1f5cc81da16ac07eb8f11c14ca82fff24591853c8ab5",
+      "src/lib/kanab-quest-cannabis-reference.ts": "8e189fa77dc5586b660dea0ee42b76bdfa4a3eded26802992fe10bc79c1352d5",
+      "src/lib/kanab-quest-school-challenge-server.ts": "38988f3d0d120b97d25510f29330829d4b28996fcea95d5b765c7eafc1402a9e",
+      "src/lib/kanab-quest-school-challenge.ts": "114b7299465661f9819e7870c8f951cb76d945784d7943494d2ea78091d5bcf3",
+      "src/lib/kanab-quest-hemp-quiz-types.ts": "0ed2cfb003e5fb8ab72c6635e53bbbc8e86fb36552aa83b7969abea041398a6c",
+      "src/lib/kanab-quest-hemp-quiz-meta.ts": "e9390f33f1028feefe107ed820fa27cb47277ab7e59079f05fda2fa581a5659e",
+      "src/lib/kanab-quest-hemp-quiz-bank.ts": "011f6eaf523219dd32b2a424974f49b85ed0846a88db3024b870e84a30d76b47",
+      "src/lib/kanab-quest-hemp-quiz-biology.ts": "85779e32c26d64fba929dd20aa93c74c67ff8302ff2c7889b3111a9d6a490dfa",
+      "src/lib/kanab-quest-hemp-quiz-uses.ts": "fb676de2929b32c6ccd18132784b418c64ea0d917e988e7d7c0176abc189afed"
+    },
+    "limits": [
+      "L’aperçu local utilise des données simulées. Les migrations sont appliquées à Supabase ; le code et les assets de l’application n’ont pas été publiés.",
+      "Difficulté éditoriale, non étalonnée auprès de joueurs. Validation logicielle et visuelle, sans étude d’efficacité pédagogique ni certification globale d’accessibilité.",
+      "Les limites de lecture des sources et les incertitudes scientifiques restent documentées dans le corpus."
+    ],
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school",
+    "next": "Livraison locale terminée ; publication du code et des assets sur demande.",
+    "referenceReport": "output/school/hemp-quiz-validation.json",
+    "nextBoundedTask": "Livraison locale terminée ; aucune nouvelle reprise éditoriale planifiée."
+  },
+  "schoolHarvest": {
+    "updated": "2026-11-12",
+    "status": "Livré localement : Comprendre ce qui améliore vraiment une récolte ; neuf parcours demandés intégrés.",
+    "counts": {
+      "chapters": 9,
+      "lessons": 18,
+      "activities": 18,
+      "checkpoints": 9,
+      "questions": 36,
+      "privateOptionExplanations": 144,
+      "terms": 67,
+      "commonGlossaryEntries": 470,
+      "resultCriteria": 10,
+      "lots": 3,
+      "indicators": 8,
+      "advice": 10,
+      "trials": 3,
+      "recordFields": 12,
+      "planFields": 4,
+      "workshopDocuments": 6,
+      "revisionLinks": 8,
+      "requiredExercises": 6,
+      "finalWorkshop": 1,
+      "sourceRecords": 21,
+      "distinctSourceUrls": 17
+    },
+    "visual": "Illustration du bureau ; dix résultats ; comparateur de trois lots avec huit indicateurs ; carnet, trois essais, plan guidé, dix conseils et enquête finale à plusieurs démarches justifiées.",
+    "economy": "quizId prevention / reward school:prevention conservés ; plafond de 1 000 centimes et total historique de 10 000 inchangés. Sélection r1 : dix questions parmi trente-six, couvrant les neuf chapitres (un chapitre reçoit deux questions distinctes). Activités sans gain ; anciens reçus et gains préservés.",
+    "migration": "20261112000900_kq_school_harvest_progress.sql testée en bases temporaires locales. Aucune des dix migrations de l’école appliquée au projet distant.",
+    "validation": {
+      "tests": 345,
+      "sqlPglite": 70,
+      "postgresConcurrency": 18,
+      "fixture": 104,
+      "grantsMigrations": 388,
+      "build": "PASS",
+      "browserWidths": [
+        320,
+        1440
+      ],
+      "privateExplanationsChecked": 336,
+      "leaks": 0
+    },
+    "reports": [
+      "docs/bete-de-concours/school-harvest-provenance.json",
+      "docs/bete-de-concours/school-harvest-corpus.json",
+      "docs/bete-de-concours/school-harvest-art-provenance.json",
+      "output/placard-navigation/school-harvest-report.json",
+      "output/placard-navigation/school-harvest-preview-smoke.json",
+      "output/school/harvest-backend-validation.json",
+      "output/school/harvest-content-tests.json",
+      "output/school/harvest-build.log",
+      "output/school/harvest-client-answer-check.json"
+    ],
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=prevention&passage=harvest-index ; données, progression et gains simulés. npm run preview:school.",
+    "next": "Livraison locale terminée. Révisions facultatives vers les huit autres parcours ; attendre les retours concrets de l’utilisateur."
+  },
+  "schoolProducts": {
+    "updated": "2026-11-12",
+    "status": "Livré localement : Produits, transformations et qualité.",
+    "counts": {
+      "groups": 4,
+      "chapters": 10,
+      "lessons": 20,
+      "activities": 20,
+      "checkpoints": 10,
+      "questions": 40,
+      "privateOptionExplanations": 160,
+      "terms": 72,
+      "commonGlossaryEntries": 403,
+      "atlasEntries": 29,
+      "regulatoryReferences": 8,
+      "fibreStages": 5,
+      "plateHotspots": 6,
+      "processCards": 5,
+      "commercialClaims": 6,
+      "certificateResults": 2,
+      "certificateUnmeasured": 4,
+      "traceDocuments": 4,
+      "traceDecisions": 2,
+      "requiredExercises": 6,
+      "additionalInvestigation": 1,
+      "sourceRecords": 52,
+      "distinctSourceUrls": 47
+    },
+    "visual": "Planche générée à six repères HTML ; atlas filtrable ; quatre ensembles reliés ; chaîne textile au clavier ; cartes d’opérations, étiquettes, certificat et enquête de traçabilité.",
+    "science": [
+      "Parties végétales, fractions et produits reliés ; débouchés documentés distincts des possibilités techniques et des promesses environnementales.",
+      "Rouissage, défibrage, filature et tissage ont des fonctions différentes. Une matière biosourcée ne détermine pas à elle seule le bilan environnemental.",
+      "Séparation mécanique, extraction, purification, conversion et formulation expliquées conceptuellement ; aucun protocole sensible, paramètre de réaction, recette de dosage ou formulation reproductible.",
+      "Kief, hash, rosin, extraits, distillats et isolats distingués. Full spectrum, broad spectrum, live et sans solvant ne garantissent ni composition constante ni absence de contaminants.",
+      "Graines, huile de graines et aliments enrichis en cannabinoïdes distincts ; une voie alimentaire ne valide pas une voie inhalée. La composition du liquide ne décrit pas automatiquement ses émissions.",
+      "Identité chimique, présence naturelle, fabrication commerciale, pureté et données d’usage examinées séparément. Isomères, sous-produits et impuretés gardent leurs incertitudes.",
+      "France/UE vérifiées au 12 novembre 2026 ; avis scientifique, autorisation, allégation et résultat analytique ont des portées distinctes. Les teneurs limites alimentaires ne sont pas le seuil variétal de 0,3 %.",
+      "Certificat fictif : deux résultats, quatre critères non mesurés. Sous LQ ne signifie pas zéro ; une incertitude analytique ne prouve pas la représentativité du prélèvement.",
+      "Enquête A+D vers B : le rapport sur A ne certifie pas B. Dossier incomplet ne signifie pas contamination prouvée. Les obligations alimentaires peuvent être déclenchées par des raisons de penser que la sécurité n’est pas respectée, sans attendre une preuve définitive.",
+      "L’illustration est conceptuelle, sans échelle ni mesure. La validation porte sur documents et logiciel, pas sur un lot réel ou des acquisitions pédagogiques mesurées."
+    ],
+    "economy": "quizId profiles / reward school:profiles conservés ; plafond de 1 000 centimes et total de 10 000 inchangés. Quiz v1 de dix questions couvre dix chapitres. Activités sans gain ; anciens reçus et gains préservés.",
+    "validation": {
+      "contentTests": 10,
+      "backendTests": 296,
+      "totalVitestTests": 306,
+      "sqlPglite": 67,
+      "postgresConcurrency": 17,
+      "fixture": 92,
+      "grantsMigrations": 387,
+      "eslint": "PASS ciblé : cours, données, UI, backend et recette.",
+      "build": "PASS Next.js et TypeScript ; code de sortie 0 enregistré directement.",
+      "buildNotes": "Les avertissements éventuels de revalidation de données publiques Supabase sont conservés dans le journal ; aucune validation distante revendiquée.",
+      "browser": "PASS 320/1440 : six exercices et enquête supplémentaire, justifications, reprises, planche/clavier, atlas et filtres, chaîne des fibres au clavier, opérations et étiquettes, certificat et critères non mesurés, traçabilité, Buddy sans possession, budgets, owner409 et réponses privées403.",
+      "preview": {
+        "results": [
+          {
+            "width": 320,
+            "eightCurricula": true,
+            "commonGlossary": 403,
+            "plateLoaded": true,
+            "plateKeyboard": true,
+            "fourGroups": true,
+            "linksCannabinoidsHistory": true,
+            "privateAnswers403": true,
+            "reducedMotionLayout": true
+          },
+          {
+            "width": 1440,
+            "eightCurricula": true,
+            "commonGlossary": 403,
+            "plateLoaded": true,
+            "plateKeyboard": true,
+            "fourGroups": true,
+            "linksCannabinoidsHistory": true,
+            "privateAnswers403": true,
+            "reducedMotionLayout": true
+          }
+        ],
+        "errors": []
+      },
+      "privacy": {
+        "checkedAt": "2026-11-12T20:48:07.449Z",
+        "chunks": 196,
+        "privateExplanations": 300,
+        "leaks": []
+      },
+      "transport": "Vrais composants et API de démonstration en mémoire. Aucune base distante ni paiement réel vérifié."
+    },
+    "reports": [
+      "docs/bete-de-concours/school-products-provenance.json",
+      "docs/bete-de-concours/school-products-corpus.json",
+      "docs/bete-de-concours/school-products-art-provenance.json",
+      "output/placard-navigation/school-products-report.json",
+      "output/placard-navigation/school-products-preview-smoke.json",
+      "output/school/products-backend-validation.json",
+      "output/school/products-content-tests.json",
+      "output/school/products-build.log",
+      "output/school/products-client-answer-check.json"
+    ],
+    "migration": "20261112000800_kq_school_products_progress.sql testée en bases temporaires locales. Aucune des neuf migrations de l’école appliquée au projet distant.",
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=profiles&passage=products-index ; données, progression et gains simulés. npm run preview:school.",
+    "next": "Parcours demandé terminé. Attendre les retours concrets ou le prochain parcours ; livraison locale uniquement."
+  },
+  "schoolSoil": {
+    "updated": "2026-11-12",
+    "status": "Livré localement : Sol, racines et nutrition.",
+    "counts": {
+      "chapters": 10,
+      "lessons": 20,
+      "activities": 20,
+      "checkpoints": 10,
+      "questions": 40,
+      "privateOptionExplanations": 160,
+      "terms": 71,
+      "commonGlossaryEntries": 331,
+      "indicators": 13,
+      "fictitiousAnalyses": 2,
+      "analysisComparisons": 8,
+      "mineralElements": 14,
+      "inputCategories": 8,
+      "networkNodes": 14,
+      "networkRelations": 26,
+      "cutawayHotspots": 6,
+      "reasoningSteps": 5,
+      "requiredExercises": 7,
+      "sourceRecords": 47,
+      "distinctSourceUrls": 42
+    },
+    "visual": "Coupe générée avec six repères HTML ; réseau de 14 nœuds et 26 relations ; indicateurs et méthodes ; deux analyses fictives ; comparaison des apports ; boucle de l’azote au clavier et méthode en cinq étapes.",
+    "science": [
+      "Physique, chimie et biologie interagissent ; aucun label sol vivant, naturel, organique ou minéral ne suffit à établir un bénéfice.",
+      "Texture et structure séparées ; pores, eau et oxygène conditionnent le milieu racinaire. Aucun optimum universel de pH ni calendrier de fertilisation.",
+      "Quantité totale, fraction extractible, accessibilité et absorption distinguées. Les symptômes foliaires ne confirment pas une carence.",
+      "Méthodes, unités, profondeur, représentativité et historique accompagnent les analyses. A/B sont deux zones fictives, pas un avant/après.",
+      "pH eau/CaCl2, EC1:5/ECe, CEC effective/potentielle et P Olsen/Mehlich3 ne sont pas comparés directement ; C/N identiques peuvent masquer des teneurs différentes.",
+      "Présence microbienne, fonction et bénéfice expérimental séparés. Lutz2023 et Rog2025 concernent les mêmes 54 champs de maïs, pas deux cohortes ni une efficacité universelle sur chanvre.",
+      "La matière organique ne constitue pas un réservoir stable unique ; minéralisation et immobilisation peuvent coexister. Le réseau et le cycle sont conceptuels, sans quantification de flux.",
+      "Engrais, amendement et catégories d’apports comparés par fonctions, maturité, variabilité et risques ; aucune recette, marque recommandée ni garantie de conformité.",
+      "La coupe générée montre uniquement une scène conceptuelle ; elle ne mesure ni horizons, ni humidité, ni fertilité. Les microorganismes sont décrits dans une carte séparée."
+    ],
+    "economy": "quizId uses / reward school:uses conservés ; plafond de 1 000 centimes et total de 10 000 inchangés, reçus et gains préservés. Quiz s1 de 10 questions couvre 10 chapitres. Aucune monnaie versée par les activités.",
+    "validation": {
+      "contentTests": 10,
+      "backendTests": 260,
+      "totalVitestTests": 270,
+      "sqlPglite": 64,
+      "postgresConcurrency": 16,
+      "fixture": 80,
+      "grantsMigrations": 386,
+      "eslint": "PASS ciblé : cours, données, UI, backend et recette.",
+      "build": "PASS Next.js et TypeScript ; code de sortie 0 enregistré directement.",
+      "buildNotes": "Les avertissements éventuels de revalidation des données publiques Supabase sont conservés dans le journal ; aucune validation distante revendiquée.",
+      "browser": "PASS 320/1440 : sept exercices, raisons, reprises, six repères au clavier, réseau et relations, filtres, analyses/méthodes/informations manquantes, éléments, apports, cycle, démarche finale, Buddy sans possession, retries, propriétaire, sources privées et budget.",
+      "preview": {
+        "results": [
+          {
+            "width": 320,
+            "sevenCurricula": true,
+            "commonGlossary": 331,
+            "cutawayLoaded": true,
+            "cutawayKeyboard": true,
+            "healthToSoilLink": true,
+            "privateAnswers403": true,
+            "reducedMotionLayout": true
+          },
+          {
+            "width": 1440,
+            "sevenCurricula": true,
+            "commonGlossary": 331,
+            "cutawayLoaded": true,
+            "cutawayKeyboard": true,
+            "healthToSoilLink": true,
+            "privateAnswers403": true,
+            "reducedMotionLayout": true
+          }
+        ],
+        "errors": []
+      },
+      "privacy": {
+        "checkedAt": "2026-11-12T20:16:25.091Z",
+        "chunks": 194,
+        "privateExplanations": 260,
+        "leaks": []
+      },
+      "transport": "Vrais composants et API de démonstration en mémoire. Aucune base distante ni paiement réel vérifié."
+    },
+    "reports": [
+      "docs/bete-de-concours/school-soil-provenance.json",
+      "output/placard-navigation/school-soil-report.json",
+      "output/placard-navigation/school-soil-preview-smoke.json",
+      "output/school/soil-backend-validation.json",
+      "output/school/soil-content-tests.json",
+      "output/school/soil-build.log",
+      "output/school/soil-client-answer-check.json",
+      "docs/bete-de-concours/school-soil-corpus.json",
+      "docs/bete-de-concours/school-soil-art-provenance.json"
+    ],
+    "migration": "20261112000700_kq_school_soil_progress.sql testée en bases temporaires locales. Aucune des huit migrations de l’école appliquée au projet distant.",
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=uses&passage=soil-index ; données, progression et gains simulés. npm run preview:school.",
+    "next": "Parcours demandé terminé. Attendre les retours concrets ou le prochain parcours ; livraison locale uniquement."
+  },
+  "schoolHealth": {
+    "updated": "2026-11-12",
+    "status": "Livré localement : Enquêter sur la santé des plantes.",
+    "counts": {
+      "chapters": 8,
+      "lessons": 16,
+      "activities": 16,
+      "checkpoints": 8,
+      "questions": 32,
+      "privateOptionExplanations": 128,
+      "terms": 55,
+      "commonGlossaryEntries": 260,
+      "atlasEntries": 28,
+      "beneficialGroups": 4,
+      "photographicDocuments": 4,
+      "investigations": 6,
+      "sourceRecords": 45,
+      "distinctSourceUrls": 39
+    },
+    "visual": "Atlas filtrable, quatre documents photographiques crédités, six enquêtes, demandes d’indices persistantes et démarche de protection intégrée au clavier.",
+    "science": [
+      "Symptôme, présence et preuve causale séparés ; jaunissement et flétrissement ne nomment pas une cause.",
+      "Atlas contextualisé : région, système, organe, méthodes et limites ; aucune fréquence française inférée d’une enquête américaine.",
+      "Oomycètes distincts des champignons ; virus distincts des viroïdes. Les détections mixtes et les groupes taxonomiques restent explicites.",
+      "Photographies originales CC BY avec légendes, crédits, dates et limites ; aucune illustration générée utilisée comme preuve sanitaire.",
+      "Protection intégrée proportionnée et auxiliaires contextualisés, sans promesse universelle. Aucun traitement artisanal, calendrier de production ou récupération de matière moisie.",
+      "E-Phy daté et catalogue primaire vérifié, portée toutes cultures incluant chanvre sous conditions propres au produit et à son étiquette. Aucun produit recommandé dans l’atlas.",
+      "Nutrition reliée au chapitre des causes abiotiques en attendant un futur parcours spécialisé ; humidité et racines reliées aux cours existants."
+    ],
+    "economy": "quizId biodiversity / reward school:biodiversity conservés. Plafond existant 1000 centimes, total école10000 ; sélection p1 couvre huit chapitres. Les lectures et exercices ne versent pas de monnaie.",
+    "validation": {
+      "contentTests": 8,
+      "backendTests": 225,
+      "totalVitestTests": 233,
+      "sqlPglite": 61,
+      "postgresConcurrency": 15,
+      "fixture": 68,
+      "grantsMigrations": 385,
+      "eslint": "PASS ciblé : contenus, UI, backend et recette.",
+      "build": "PASS Next.js / TypeScript, code de sortie 0 enregistré ; présence des dernières sources du catalogue vérifiée dans les fichiers de production.",
+      "buildNotes": "Les avertissements de revalidation du cache public Supabase liés à l’accès réseau sont conservés dans le journal. Aucun contenu distant ne devient une preuve de validation locale.",
+      "browser": "PASS 320/1440 : six enquêtes, justifications, demandes d’observation et reprises, filtres atlas, photos/crédits/zoom, ordre au clavier, E-Phy, Buddy sans possession, retry, propriétaire et réponses privées.",
+      "preview": {
+        "results": [
+          {
+            "width": 320,
+            "sixCurricula": true,
+            "commonGlossary": 260,
+            "documentaryImagesLoaded": 4,
+            "privateAnswers403": true,
+            "reducedMotionLayout": true
+          },
+          {
+            "width": 1440,
+            "sixCurricula": true,
+            "commonGlossary": 260,
+            "documentaryImagesLoaded": 4,
+            "privateAnswers403": true,
+            "reducedMotionLayout": true
+          }
+        ],
+        "errors": []
+      },
+      "privacy": {
+        "checkedAt": "2026-11-12T19:46:52.080Z",
+        "chunks": 192,
+        "privateExplanations": 220,
+        "leaks": []
+      },
+      "transport": "Vrais composants avec API de démonstration en mémoire ; aucun compte distant ni paiement réel vérifié."
+    },
+    "reports": [
+      "docs/bete-de-concours/school-health-provenance.json",
+      "output/placard-navigation/school-health-report.json",
+      "output/placard-navigation/school-health-preview-smoke.json",
+      "output/school/health-backend-validation.json",
+      "output/school/health-content-tests.json",
+      "output/school/health-build.log",
+      "output/school/health-client-answer-check.json",
+      "docs/bete-de-concours/school-health-corpus.json",
+      "docs/bete-de-concours/school-health-art-provenance.json"
+    ],
+    "migration": "20261112000600_kq_school_health_progress.sql testée en bases temporaires locales. Aucune des sept migrations de l’école appliquée au projet distant.",
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=biodiversity&passage=health-index ; progression et gains simulés. npm run preview:school.",
+    "next": "Parcours demandé terminé. Attendre les retours concrets ou la demande du prochain parcours. Livraison locale uniquement."
+  },
+  "schoolCultivation": {
+    "updated": "2026-11-12",
+    "status": "Livré localement : Modes de culture et choix de système.",
+    "counts": {
+      "chapters": 8,
+      "lessons": 16,
+      "activities": 16,
+      "checkpoints": 8,
+      "questions": 32,
+      "privateOptionExplanations": 128,
+      "terms": 42,
+      "commonGlossaryEntries": 205,
+      "systems": 8,
+      "comparisonCriteria": 10,
+      "cases": 3,
+      "guideEntries": 8,
+      "sourceRecords": 22,
+      "distinctSourceUrls": 18,
+      "greenhouseHotspots": 6
+    },
+    "visual": "Serre illustrée avec six repères, deux axes indépendants, comparaison de huit configurations, trois dossiers dont Bretagne, bilan fictif à quatre grandeurs et simulation qualitative.",
+    "science": [
+      "Environnement et milieu racinaire indépendants ; serre tunnel et serre équipée décrites avec leurs fonctions réelles.",
+      "Condensation et source de vapeur distinguées ; brassage et renouvellement d’air séparés.",
+      "Aucun système déclaré supérieur pour toute qualité, tout rendement ou tout objectif.",
+      "Les chiffres A/B/C et les contraintes des trois dossiers sont fictifs. Bilan limité à l’électricité de culture ; séchage, matériaux et autres postes exclus explicitement.",
+      "Énergie totale, facteur d’émission, émissions et intensité par kg sont des grandeurs différentes. Aucun ratio laitue transposé au chanvre.",
+      "Simulation qualitative à cinq choix : hypothèses, inconnues et limites visibles, aucun rendement ni bénéfice prédit.",
+      "Cadre français et européen daté, usage autorisé supposé dans les dossiers ; un nom de carte ni une intention pédagogique ne vaut autorisation."
+    ],
+    "economy": "quizId genetics et reward school:genetics conservés, plafond existant de 1000 centimes et total de 10000 ; sélection u1 couvrant huit chapitres. Les gains acquis ne sont pas remis à zéro.",
+    "validation": {
+      "contentTests": 8,
+      "backendTests": 191,
+      "totalVitestTests": 199,
+      "sqlPglite": 58,
+      "postgresConcurrency": 14,
+      "fixture": 56,
+      "grantsMigrations": 384,
+      "eslint": "PASS ciblé — contenu, UI, backend et scénario navigateur",
+      "build": "PASS Next.js et TypeScript ; code de sortie 0 enregistré directement",
+      "buildNotes": "Les revalidations du cache de certaines données publiques Supabase échouent faute d’accès réseau. La compilation aboutit ; ces données distantes ne sont pas validées par cette livraison.",
+      "browser": "PASS 320/1440 : cinq exercices, justifications et deux choix cohérents, brouillons, retry de progression et quiz, axes indépendants, six repères au clavier, dossiers/simulation, quatre grandeurs du bilan, lien Buddy sans possession, owner409 et réponses privées403.",
+      "finalPreview": "PASS 320/1440 : cinq parcours, 205 entrées du glossaire, clavier et préférence de réduction des animations.",
+      "simulation": "243 combinaisons qualitatives et identifiants vérifiés ; aucun résultat agronomique ou économique prédit.",
+      "privacy": {
+        "checkedAt": "2026-11-12T19:17:44.063Z",
+        "chunks": 189,
+        "privateExplanations": 188,
+        "leaks": []
+      },
+      "transport": "Vrais composants, API de démonstration locales. Aucun compte distant ni paiement réel validé."
+    },
+    "reports": [
+      "docs/bete-de-concours/school-cultivation-provenance.json",
+      "output/placard-navigation/school-cultivation-report.json",
+      "output/school/cultivation-build.log",
+      "output/school/cultivation-content-tests.log",
+      "output/school/cultivation-client-answer-check.json",
+      "docs/bete-de-concours/school-cultivation-corpus.json",
+      "docs/bete-de-concours/school-economy-validation.json",
+      "output/placard-navigation/school-cultivation-preview-smoke.json",
+      "output/school/cultivation-build-exit.json",
+      "docs/bete-de-concours/school-cultivation-art-provenance.json"
+    ],
+    "migration": "20261112000500_kq_school_cultivation_progress.sql testée uniquement dans des bases temporaires. Les six migrations de l’école restent non appliquées au projet distant.",
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=genetics&passage=cultivation-index ; progression et gains simulés. npm run preview:school.",
+    "next": "Parcours demandé terminé. Attendre les retours concrets ou le prochain parcours ; livraison locale uniquement."
+  },
+  "schoolCannabinoids": {
+    "updated": "2026-11-12",
+    "status": "Livré localement : Cannabinoïdes, formation et preuves ; dix chapitres, vingt leçons/activités, dix bilans, quarante QCM et 160 corrections privées.",
+    "counts": {
+      "chapters": 10,
+      "lessons": 20,
+      "activities": 20,
+      "checkpoints": 10,
+      "authoredQuestions": 40,
+      "privateOptionExplanations": 160,
+      "terms": 43,
+      "commonGlossaryEntries": 163,
+      "compoundRecords": 29,
+      "studyCards": 13,
+      "sourceRecords": 71,
+      "distinctSourceUrls": 59,
+      "networkNodes": 23,
+      "networkEdges": 23,
+      "proposedEdges": 1
+    },
+    "visual": "Registre recherché par nom/synonyme/famille/forme, réseau de 23 liens avec précurseur et produit sur chaque flèche, preuve consultable et voie proposée en pointillés ; matrice et 13 études filtrables, graphiques Dravet/CBDV, approfondissements repliables.",
+    "science": [
+      "Identité, présence naturelle, procédé et composition réelle du lot séparés.",
+      "CBGA et CBG distincts ; précurseurs cosubstrats explicités, branche CBGVA→CBCVA proposée seulement.",
+      "Biosynthèse, décarboxylation, vieillissement, métabolisme et fabrication séparés ; aucun protocole ni dosage.",
+      "HHC2025 et2026 : même cohorte de six personnes ; CBG2024 et2026 : cohortes distinctes.",
+      "THCP2019 : liaison et souris, sans multiplicateur clinique ; pharmacologie non transférée au CBDP.",
+      "CBD médicaments : formulations et indications précises ; douleur et CBDV négatifs inclus. CBN2026 : critère principal négatif malgré secondaires.",
+      "EMA, EFSA, ANSES/ANSM et EUDA cités selon leur rôle et leur date. Résumé, extrait, texte intégral et notice de registre distingués."
+    ],
+    "economy": "evidence / school:evidence,1000 centimes existants, total10000 ; sélection c1 signée, une question par chapitre. Aucune remise à zéro.",
+    "validation": "168 tests ciblés, 55 PGlite, 13 PostgreSQL 17, 44 fixture, grants sur 383 migrations ; build/TypeScript et ESLint réussis. Recette et aperçu final à 320/1440 px sans erreur JS ni débordement ; 156 explications privées absentes des chunks client. Revalidations des données publiques distantes en échec réseau pendant le build ; limites dans la provenance.",
+    "reports": [
+      "docs/bete-de-concours/school-cannabinoids-provenance.json",
+      "output/placard-navigation/school-cannabinoids-report.json",
+      "output/school/cannabinoids-build.log",
+      "output/school/cannabinoids-client-answer-check.json",
+      "docs/bete-de-concours/school-economy-validation.json",
+      "output/placard-navigation/school-cannabinoids-preview-smoke.json"
+    ],
+    "migration": "20261112000400_kq_school_cannabinoids_progress.sql appliquée uniquement aux bases temporaires de test. Les cinq migrations de l’école restent non appliquées au projet distant.",
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=evidence&passage=cannabinoids-index ; progression et gains simulés. npm run preview:school.",
+    "next": "Parcours demandé terminé. Attendre le retour concret ou le prochain parcours ; aucune publication autorisée."
+  },
+  "schoolTerpenes": {
+    "updated": "2026-11-12",
+    "status": "Livré localement : Terpènes et profils aromatiques, dix chapitres, vingt leçons et activités, dix bilans, quarante questions et cent soixante corrections privées. Trois parcours développés ; les six autres futurs parcours restent à définir.",
+    "encyclopedia": "31 fiches détaillées et 55 entrées complémentaires, soit 86 dossiers de lecture, pas 86 identités toutes confirmées. 21 étalons, 29 attributions RI/MS et 36 provisoires. Isomères, synonymes et matrices explicités ; corpus daté, exclusions visibles, aucune liste complète revendiquée.",
+    "visual": "Roue olfactive de neuf familles, barres de profils fictifs A6/4 et B3/2 mg/g comparables en quantité ou proportions, distinction présence/concentration/seuil/contribution, phénomènes physiques et grille de six mots. Saisie entière sélectionnée au focus, brouillon et validation de grille. Illustrations existantes du jeu, intérieur v4 préservé.",
+    "navigation": "Recherche par nom/synonyme et caractères grecs, filtres chimiques/olfactifs/niveau de preuve, glossaire commun de 120 entrées et renvois vers les études. Trois descriptions Buddies attribuées avec liens vers quatre fiches, accessibles sans possession et retour au passage exact.",
+    "evidence": "52 références (49 URL distinctes) : 15 textes/passages intégraux, 13 pages officielles, 17 résumés, 7 extraits. Relecture croisée des identités, présence et autres plantes ; liens bibliographiques locaux complétés dans 21 fiches. Résultats cellulaires/animaux/humains distingués, Spindle2024 et Kumar2025 confrontés dans leur portée ; pas de promesse aromatique médicale ni réglage de vaporisation.",
+    "economy": "quizId molecules et reward school:molecules conservés, budget existant 1000 centimes sans remise à zéro. Synthèse t1 signée, une question par chapitre. Progression 20/10/20, CAS, union monotone et file séparée par parcours/propriétaire. Réponses monétaires server-only.",
+    "validation": "138 tests ciblés, 52 PGlite, 12 concurrence PostgreSQL 17, 32 fixture, grants382. Build Next avec TypeScript et ESLint ciblé final réussis. Recettes Terpènes et Botanique à 320/1440 : zéro erreur JS/débordement ; clavier, six exercices, retry, synonyme, filtres et retours Buddies. Aperçu final Histoire/Botanique et glossaire vérifiés. 116 explications privées absentes des 185 chunks client. API de navigateur simulées ; aucune étude d’apprentissage ni session distante validée.",
+    "reports": [
+      "docs/bete-de-concours/school-terpenes-provenance.json",
+      "docs/bete-de-concours/school-terpenes-corpus.json",
+      "docs/bete-de-concours/school-economy-validation.json",
+      "output/placard-navigation/school-terpenes-report.json",
+      "output/placard-navigation/school-terpenes-preview-smoke.json",
+      "output/school/terpenes-build.log",
+      "output/school/terpenes-client-answer-check.json"
+    ],
+    "migration": "20261112000300_kq_school_terpenes_progress.sql testée localement. Les quatre migrations de l’école restent non appliquées au projet distant ; aucun déploiement. Actualiser la préparation distante avant toute publication ultérieure.",
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=molecules&passage=terpenes-index ; progression et gains simulés en mémoire. Relance : npm run preview:school. PID/date dans output/placard-navigation/school-preview-process.json, vérifier identité avant arrêt.",
+    "next": "Parcours demandé terminé. Attendre les retours concrets ou le prochain parcours ; ne pas relancer un audit général ni publier sans demande."
+  },
+  "schoolBotany": {
+    "updated": "2026-11-12",
+    "status": "Livré localement : Botanique, diversité et génétique. 8 chapitres, 16 leçons et activités, 8 checkpoints, 32 questions et 128 corrections d’options. Sept exercices demandés, index/recherche et glossaire partagé de 74 entrées. Les sept futurs parcours non précisés restent à définir.",
+    "visual": "Plante à quatre repères interactifs ; nouvelle planche de chanvre générée puis corrigée (fleurs staminée/pistillée, stipules, akène), légendes HTML. Cycle, expression sexuelle, observation insuffisante, trichomes et modèle mendélien fictif. Activités à une étape visible, détails secondaires repliés. Intérieur v4 approuvé conservé.",
+    "dossiers": "Haze, Skunk, Northern Lights, Kush, Diesel, Blueberry, White Widow, Cookies, Gelato et hybrides CBD. Dix arbres consultables au clavier et comparaison de deux fiches. 27 liens attribués aux obtenteurs, dont quatre ascendances indirectes ; aucune parenté prétendue vérifiée génétiquement. Inconnues explicites et vrais Buddies accessibles sans possession.",
+    "evidence": "53 références avec passage et niveau d’accès : 32 textes/passages intégraux, 10 pages officielles, 6 résumés, 4 extraits indexés, 1 notice. Relecture croisée botanique et génétique. Prompts exacts, correction des stipules/paroi du fruit et limites des illustrations enregistrés.",
+    "economy": "quizId plant et reward school:plant conservés ; budget 1000 centimes sans réinitialiser les anciens gains/reçus. Tirage signé b1 de 10 questions couvrant les 8 chapitres. Progression 16/8/16, CAS, union monotone et file séparée par parcours/propriétaire ; réponses monétaires server-only.",
+    "validation": "107 tests ciblés, 49 contrôles PGlite, 11 concurrence PostgreSQL 17 Botanique et 8 Histoire, 20 contrôles de simulation, grants sur 381 migrations. Build Next/TypeScript et ESLint ciblé réussis. Recettes Botanique et Histoire à 320/1440 : zéro erreur JS/débordement, clavier, exercices, brouillon/retry et retour Buddy vérifiés. 76 explications privées absentes des 182 chunks client. Aperçu final revérifié ; API simulées, aucune étude d’apprentissage ni compte distant validé.",
+    "reports": [
+      "docs/bete-de-concours/school-botany-provenance.json",
+      "docs/bete-de-concours/school-botany-art-provenance.json",
+      "docs/bete-de-concours/school-economy-validation.json",
+      "output/placard-navigation/school-botany-report.json",
+      "output/placard-navigation/school-history-report.json",
+      "output/placard-navigation/school-botany-preview-smoke.json",
+      "output/school/botany-build.log",
+      "output/school/botany-client-answer-check.json"
+    ],
+    "migration": "20261112000200_kq_school_botany_progress.sql testée dans des bases temporaires. Les trois migrations de l’école restent locales ; aucune publication ni mutation distante. Actualiser la préparation distante avant tout déploiement ultérieur.",
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=plant&passage=botany-index ; données et gains simulés. Relance : npm run preview:school. Identité du processus dans output/placard-navigation/school-preview-process.json.",
+    "next": "Parcours demandé terminé. Attendre les retours concrets ou le prochain parcours ; ne pas relancer un audit général ni publier sans demande."
+  },
+  "schoolHistory": {
+    "updated": "2026-11-12",
+    "status": "Livré localement : Histoire du chanvre et du cannabis, 11 chapitres, 22 leçons, 22 activités, 11 vérifications de chapitre, 44 questions corrigées. Index, recherche, glossaire de 32 termes, frise de 30 repères et carte de 7 liaisons filtrables intégrés. Les huit autres futurs parcours ne sont pas inventés ; les anciens cours restent accessibles.",
+    "ownership": "Types et agrégateur : src/lib/kanab-quest-school-history*.ts. Interface : KqSchoolHistory, KqHistoryActivity, KqHistoryAtlas, KqHistorySources et hook/outbox. Auteurs early/modern séparés, réponses monétaires server-only. Documentation : ecole-chanvriers.md et school-history-provenance.json.",
+    "economy": "quizId history et reward school:history conservés, plafond 1000 centimes de jeu, total école 100 euros. Synthèse de 10 chapitres distincts, sélection HMAC liée au propriétaire ; anciens reçus et montants payés préservés. Progression détaillée séparée : union monotone des étapes, CAS de position, file d’envoi, reprise manuelle après réponse perdue et brouillons d’activités par propriétaire.",
+    "evidence": "51 références avec auteur/date/passage/accès/limites : 20 textes ou passages intégraux, 9 résumés, 7 notices, 15 pages institutionnelles. Relecture indépendante médecine/sciences/droit ; contre-vérification Bretagne/Gutenberg/USDA. Tunnug Science 5 novembre 2026 documenté par communiqué consulté, pas par lecture intégrale. Hypothèses et dates distinguées. Intérieur v4 et planches de chanvre approuvés conservés ; Natural Earth v5.1.2 domaine public pour la carte.",
+    "validation": "77 tests ciblés (65 backend/protocole/outbox + 12 contenu), 43 contrôles SQL PGlite, 8 tests de concurrence PostgreSQL 17 et grants sur 380 migrations réussis. TypeScript global, build Next et ESLint ciblé passent. Recette 320/1440 : les 5 exercices demandés avec justification et brouillon, recherche, filtres frise/carte, clavier, Buddy sans possession et retour au passage, progression/rechargement, synthèse de 10 chapitres, corrigés de toutes options et liens de révision ; zéro erreur JS et débordement. CSS final des boutons de carte revérifié dans l’aperçu. 44 explications privées absentes des 175 chunks JS client. API navigateur simulées, aucune validation de compte distant ni étude pédagogique auprès de joueurs.",
+    "reports": [
+      "docs/bete-de-concours/school-history-provenance.json",
+      "docs/bete-de-concours/school-economy-validation.json",
+      "output/placard-navigation/school-history-report.json",
+      "output/placard-navigation/school-history-preview-smoke.json",
+      "output/school/history-build.log",
+      "output/school/history-client-answer-check.json"
+    ],
+    "migration": "20261111000400_kq_school.sql et 20261112000100_kq_school_history_progress.sql testées localement uniquement. L’ancien contrôle de disponibilité distante précède la migration Histoire : ne pas le réutiliser comme validation de cette livraison. Aucune publication ni mutation distante.",
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=history&passage=history-index ; vrais composants avec progression/gains simulés en mémoire. Relance : npm run preview:school. PID et date dans output/placard-navigation/school-preview-process.json ; vérifier identité avant arrêt.",
+    "next": "Parcours demandé terminé. Recueillir les retours concrets du joueur ou les intitulés des autres parcours. Ne pas relancer un audit général ni publier sans nouvelle demande."
+  },
   "updated": "2026-11-11",
+  "schoolEvolution": {
+    "updated": "2026-11-12",
+    "status": "Livré et vérifié localement : Maison des cartes, École des Chanvriers, intérieur cartoon animé conforme au Quartier, dix planches botaniques, cours en quatre séquences et détails dépliables, cent questions et six ateliers.",
+    "ownership": "Root : interface école/ateliers/visuel/intégration ; cards_navigation : navigation et recette navigateur ; school_content : cours/questions/sources ; school_rewards : API/SQL/économie.",
+    "economy": "10 euros de jeu par quiz, 100 au total ; seuil 7/10, cible=floor(budget*score/10), complément sur payé cumulé. Identité school:<module> indépendante de la version éditoriale.",
+    "migration": "supabase/migrations/20261111000400_kq_school.sql préparée, jamais appliquée en production.",
+    "releaseReadiness": "12 novembre, lecture seule : projet Supabase lié conforme à l’application, 378 migrations synchronisées, seule 00400 en attente. Dry-run et 10 prérequis passent ; preuve output/school/migration-readiness.json. Inspection Vercel avec connexion CLI existante : HTTP 403 ; état distant actuel non vérifié. Aucune mutation distante.",
+    "preview": "npm run preview:school ouvre http://127.0.0.1:3248/arene/placard?view=school : vrais composants école, progression et gains fictifs en mémoire, API isolées, aucune connexion distante. Serveur lancé caché ; PID et arrêt dans output/placard-navigation/school-preview-process.json. Smoke320 réussi : cours, quiz10/10, gain simulé10euros, rechargement du résultat, ateliers ; aucune erreur JS/requête externe/débordement. Rapport school-preview-smoke-report.json. GET final HTTP200.",
+    "validation": "Build Next final et TypeScript réussis, ESLint ciblé et diff-check réussis. 38 tests école (28 backend+10 contenu), 53 navigation/droits, 50 contrôles PGlite, 15 PostgreSQL17 multiconnexion et grants379 réussis. Recette visuelle dix groupes à320/390/1440 : navigation, 10planches, 4séquences, retour Buddy/passage/corrigé, 6ateliers, reprise réseau/après crédit, brouillons parquiz, reçuancien/meilleurcourant, animation/pause/reduced/onglet/horsécran ; zéro erreur JS ni débordement. API navigateur simulées, pas session distante ou appareil physique validé.",
+    "visual": "Dix planches+vignettes approuvées et conservées (2,58Mo). Intérieur-v4 : salle en coupe du Quartier conservée, contenu botanique corrigé à la demande utilisateur : livre feuille/inflorescence de chanvre, pot et semis de chanvre, graines/fibres/corde/textile, affiche botanique chanvre ; hydrangeas et autres plantes génériques remplacés. Lampe/livre animés recalés, enseignes sous le décor. Assets dans public/placard/school, prompts dans school-interior-v4-provenance.json. Intérieursv1/v2/v3 non utilisés.",
+    "botanicalConstraint": "Instruction explicite du12novembre : école dédiée au chanvre. Les dessins des livres doivent montrer du chanvre reconnaissable, jamais des fleurs ou plantes génériques. Conserver cette exigence dans toute future retouche du décor et préserver les planches de cours approuvées.",
+    "visualDelivery": "Livraison locale finalisée après accord utilisateur sur v4. Anciennes entrées intérieur supprimées de l’exporteur des cours ; l’exporteur dédié est la seule source active. Les4imagesv4 servies par3248 sont identiques aux fichiers du dépôt (769516octets), composant servi référencé v4 ; empreintes et preuve output/school/visual-delivery.json. Syntaxe et ESLint de l’exporteur passent. Aucun nouvel audit complet, aucune publication.",
+    "interiorRevisionValidation": "V4 : livre inspecté en gros plan, chanvre reconnu dans les2pages/pot/semis/fenêtre/pied et montage des calques vérifié. ESLint TSX/exporteur, syntaxe et JSON réussis ; recette320/1440 vérifie4sourcesv4,2sprites, pause/reprise réelle, reduced-motion,3destinations, focusvisible et cibles44px. Zéro erreur JS/débordement/appel externe/POST. Rapport output/placard-navigation/school-interior-v4-report.json et captures school-interior-v4-{320,1440}-viewport.png inspectées. Aperçu3248 v4 relancé vierge. Aucun changement de cours, récompenses ni base.",
+    "buddies": "10 Buddies existants associés à11questions ; fiches lisibles sans possession. Sources31, repères juridiques/sanitaires vérifiés11novembre2026. Banque jointe absente, contenus rédigés.",
+    "reports": [
+      "docs/bete-de-concours/ecole-chanvriers.md",
+      "docs/bete-de-concours/school-economy-validation.json",
+      "docs/bete-de-concours/school-content-provenance.json",
+      "output/placard-navigation/cards-school-report.json",
+      "output/placard-navigation/school-visual-report.json",
+      "output/placard-navigation/school-visual-layout-report.json",
+      "output/school/final-build.log",
+      "output/placard-navigation/school-preview-smoke-report.json",
+      "output/school/migration-readiness.json",
+      "output/school/production-readiness.json"
+    ],
+    "next": "Livraison locale terminée. Choix explicite utilisateur : Terminer la livraison locale. Aucun travail de publication à poursuivre. Aperçu disponible sur127.0.0.1:3248/arene/placard?view=school, relance npm run preview:school ; progression et gains simulés. Migration00400 préparée et testée, non appliquée à distance. Reprendre uniquement une nouvelle demande ou un retour concret de l’utilisateur."
+  },
   "financialSupportCampaign": {
     "updated": "2026-11-11",
     "status": "Cagnotte implémentée et vérifiée localement. Migration 20261111000300 appliquée au projet Supabase lié le 11 novembre 2026 à la demande de l’utilisateur. Collecte fermée, sans objectif ; configuration Viva distante et publication applicative restent à finaliser.",
@@ -15,6 +1022,208 @@
     "vivaSource": "Code 7188 fourni par l’utilisateur et configuré dans .env.local sous VIVA_SUPPORT_SOURCE_CODE ; distinct de la source boutique. Configuration locale uniquement ; état, retours et webhooks de la source dans Viva non vérifiés.",
     "next": "Reporter VIVA_SUPPORT_SOURCE_CODE=7188 dans l’environnement d’hébergement, vérifier les retours /soutenir/retour et configurer le webhook /api/support/viva/webhook après publication de cette route ; valider en démo avec une source de démonstration, puis ouvrir dans Admin > Soutiens en conservant le champ objectif vide, conformément au choix de l’utilisateur. Migration distante terminée. Pas d’import automatique de l’historique Quick Pay ni de synchronisation périodique des litiges."
   },
+  "quarterLivingScenery": {
+    "updated": "2026-11-11",
+    "motionControl": "À la demande de l’utilisateur, commande réduite aux icônes lecture/pause, sans texte visible. Libellé accessible et cible tactile de 44 px conservés ; fonctionnement inchangé.",
+    "request": "Rendre le Quartier sensiblement vivant et jouable, avec animation aussi sur smartphone. Les détails textuels et leurs boutons ont été retirés à la demande de l’utilisateur pendant la réalisation.",
+    "change": "Hortensias et fleurs visibles dès le cadrage initial mobile, enseignes, drapeau, annonces, fumée et mouette. Après le signalement iPhone : découpes et fonds existants exportés dans un atlas transparent de 91,7 Ko, animé sur calques HTML ; reconnaissance du chargement par onload/complete sans dépendre de decode(). Activation volontaire proposée uniquement si la réduction système des mouvements est active, avec arrêt et choix conservé lors des retours. Détails narratifs toujours retirés. Navigation, caméra et états serveur conservés ; aucun polling, appel métier ou son ajouté. Suspension pendant panoramique, hors écran et onglet masqué ; secours statique.",
+    "validation": "TypeScript global, ESLint ciblé et diff-check réussis. Navigateur : animations à320/390/1440, hortensias réellement dans le cadrage smartphone ;24 cibles et24 focus en zoom ; navigation exhaustive20 scénarios à320/390/768/1440. Clavier, tap, retour, mouvement réduit, gel réel en onglet masqué et hors écran contrôlés.34s de boucles observées sans saut détecté ni nouvelle requête API ; panne du fond et du module GSAP conservent image et navigation. Défauts corrigés : attaches, note détourée, caillou parasite et bardage emporté. Vidéos finales bureau/mobile et images séquentielles inspectées. API et destinations simulées, mobile émulé ; aucun appareil physique ni parcours distant authentifié validé.",
+    "iphoneFollowupValidation": "Après correctif : TypeScript global, ESLint ciblé et diff-check passent ; atlas exporté de manière reproductible. Chromium motion-only passe à320/390/1440. WebKit26.0 et27.2 Windows : différences de pixels confirmées dans le massif mobile, réduction système immobile par défaut, activation volontaire puis arrêt effectifs à320/390, choix et caméra conservés après retour, gel hors écran, chargement du décor sans decode et image originale utilisable en panne d’atlas. Captures320/390/bureau inspectées. Aucun appareil iPhone réel testé ; API et destinations simulées.",
+    "reports": [
+      "docs/bete-de-concours/quartier-motion-provenance.json",
+      "output/placard-navigation/motion-report.json",
+      "output/quartier-webkit-tools/after-webkit26/report.json",
+      "output/quartier-webkit-tools/after-webkit27/report.json",
+      "output/quartier-webkit-tools/after-webkit27/reduce-390.webm",
+      "output/placard-navigation/report.json",
+      "output/clarity-lot5/navigation/after/report.json",
+      "output/quartier-living/runtime-report.json",
+      "output/quartier-living/recording-report.json",
+      "output/quartier-living/quartier-smartphone.webm",
+      "output/quartier-living/quartier-desktop.webm"
+    ],
+    "next": "Correctif local après signalement d’immobilité sur iPhone/Chrome via une adresse du PC ; préférence système inconnue. Recharger /arene/placard sur cet appareil et activer Animer le quartier si proposé. Le blocage original n’est pas reproduit dans les deux versions de WebKit Windows ; ne pas annoncer de cause iOS démontrée ni de validation physique. Aucun déploiement ni nouvel audit général."
+  },
+  "buddiesPackSoundRemoval": {
+    "updated": "2026-11-11",
+    "request": "Retirer le bouton Son dans l’ouverture des packs Buddies.",
+    "change": "Bouton Son et styles dédiés supprimés. L’ouverture ne charge plus le hook sonore ni ses appels ; elle reste silencieuse. Animations, révélation des cartes et logique d’ouverture conservées.",
+    "validation": "TypeScript global et ESLint ciblé réussis. Neuf groupes navigateur à 320/390/768/1440 px : cinq raretés, ouverture unique, réessai avec le même ticket, résultat tardif ignoré, focus et mouvements réduits. Bouton absent et zéro contexte audio, y compris après remontage ; aucune erreur JS ni requête externe. Captures inspectées, API simulées.",
+    "report": "output/pack-opening-studio/report.json",
+    "next": "Demande terminée localement, sans publication. Attendre les prochains retours concrets."
+  },
+  "quarterMapHelpRemoval": {
+    "updated": "2026-11-11",
+    "request": "Retirer les boutons Aide et Pause des animations du Quartier.",
+    "change": "Bouton et panneau d’aide retirés, ainsi que le bouton pause/reprise et son conteneur sous la carte. Imports, état de pause manuelle et styles inutilisés supprimés. Animations conservées avec mouvement réduit de l’appareil et suspension automatique hors écran, onglet masqué ou déplacement de carte.",
+    "validation": "TypeScript global et ESLint ciblé réussis. Navigateur local à 320/390/1440 px : aide et pause/reprise absentes, aucun conteneur vide (écart de 0 px sous le viewport), 24 cibles bâtiments, 24 focus en zoom et panoramique tactile. Animation réelle, mouvement réduit et suspension hors écran vérifiés ; aucun débordement ni erreur JS. Capture mobile inspectée ; API simulées.",
+    "reports": [
+      "output/clarity-lot5/navigation/after/report.json",
+      "output/placard-navigation/motion-report.json"
+    ],
+    "next": "Demande terminée localement, sans publication. Attendre les prochains retours concrets."
+  },
+  "quarterEmptyObjectiveRemoval": {
+    "updated": "2026-11-11",
+    "request": "Retirer Choisir un objectif, jugé inutile par l’utilisateur.",
+    "change": "Le Quartier ne rend plus de bouton ni de conteneur vide sans objectif épinglé. Après retrait d’une épingle, le focus revient au Quartier. Les missions et les objectifs déjà épinglés restent accessibles.",
+    "validation": "TypeScript global et ESLint ciblé réussis. Recettes navigateur locales : 39 contrôles épinglage/absence du bouton/rechargement/focus et 42 cas Quartier à 320/390/1440 px ; aucune erreur JS ni mutation métier. Capture mobile inspectée. API simulées.",
+    "reports": [
+      "output/pinned-mission-lot4/report.json",
+      "output/clarity-lot4/quartier/report.json"
+    ],
+    "next": "Demande terminée localement, sans publication. Attendre les prochains retours concrets ; aucun nouvel audit prévu."
+  },
+  "beginnerObservationPreparation": {
+    "updated": "2026-11-11",
+    "status": "Des joueurs ont déjà testé ; aucun bug signalé à l’utilisateur pour l’instant. Protocole d’observation préparé, sans compte rendu structuré reçu.",
+    "report": "docs/bete-de-concours/AUDIT-REPRISE-QUARTIER-2026-11-11.md, annexe Séances avec des débutants",
+    "worksheet": "docs/bete-de-concours/observations-debutants.csv",
+    "protocolVersion": "debutants-2026-11-11-v1",
+    "observationsCollected": 0,
+    "reportedPlayerFeedback": "Selon la précision de l’utilisateur, des joueurs ont testé et ne lui signalent aucun bug à ce stade. Nombre, expérience, version essayée et parcours couverts non précisés. Le compteur observationsCollected désigne seulement les observations structurées consignées dans la grille, pas le nombre de joueurs ayant essayé le jeu.",
+    "scope": "Pilote séparé puis 5 à 8 nouveaux joueurs ; consignes neutres, une tâche à la fois, aide du guide distinguée des indices du modérateur. Ferme native de test et simulation séparées ; reprise réelle après affinage ou changement de lot annoncé. Grille vide, sans résultats inventés.",
+    "next": "S’appuyer sur les joueurs ayant déjà essayé pour recueillir leurs hésitations, leur compréhension de la prochaine action et des coûts. Aucun correctif supplémentaire identifié par ces retours à ce stade. Le protocole débutants reste disponible si une observation structurée est organisée ; ne pas déduire l’absence de toute difficulté du seul silence sur les bugs."
+  },
+  "staffContextualReauthentication": {
+    "updated": "2026-11-11",
+    "report": "docs/bete-de-concours/AUDIT-REPRISE-QUARTIER-2026-11-11.md",
+    "diagnosis": "Personnel/Atelier traitaient401 comme panne ordinaire, l’entrée serveur supprimait le contexte de retour, et l’accès privé pouvait masquer une session expirée en404.",
+    "change": "Lien explicite Se reconnecter pour401 même sansJSON et pour compte modifié. Navigation complète vers la connexion existante, retour canonique avec écran/lot/employé/contexte et fragment côté navigateur ; paramètres conservés aussi par la redirection serveur. Dossier soumis conservé par propriétaire, reprise manuelle de la même commande/clé, aucun POST Personnel au retour. Actions dont paie bloquées et dernières données marquées anciennes ; polling du suivi suspendu pendant l’expiration. API Personnel : module désactivé/nonautorisé toujours404, session absente avec module actif401, contrôle réel d’identité réutilisé. Tutoriel isolé, erreurs503/419 ordinaires inchangées. Aucun changement SQL ou économique.",
+    "validation": "178 tests helper/récupération/destination sûre/page/route réussis, avec vrai contrôle d’accès privé et préouverture. 17 groupes navigateur à320/390/1440 : GET/POST401 malformés, panne initiale et données anciennes, formulaire AccountLoginForm réel, connexion refusée puis réussie, URL exacte et dossier conservés, compte différent, paiement/réservation uniques avant/après enregistrement simulé, paie bloquée,409 propriétaire et tutoriel. Aucune erreur JS ni requête distante. Captures mobile/bureau inspectées. TypeScript global, ESLint ciblé et diff-check réussis. Navigation et API simulées ; serveurNext et authentification distante non validés de bout en bout.",
+    "next": "Lot terminé localement, sans publication. Prochaine validation : observer le parcours auprès de vrais débutants selon le protocole existant. Ne pas présenter les recettes techniques comme une validation de compréhension et ne pas relancer un audit général."
+  },
+  "staffConfirmationRecovery": {
+    "updated": "2026-11-11",
+    "report": "docs/bete-de-concours/AUDIT-REPRISE-QUARTIER-2026-11-11.md",
+    "diagnosis": "Une réponse Personnel perdue laissait la clé seulement en mémoire : fermer ou recharger pouvait créer une autre confirmation pour la même action. POST sans délai applicatif.",
+    "change": "Commande soumise, clé, date, propriétaire et détails conservés avant POST ; brouillon non envoyé temporaire. Reprise explicite depuis Personnel ou Atelier, même après rechargement ; aucune mutation automatique. Délai de 20 s avec lecture du corps, réponses tardives ignorées, même commande/clé jusqu’à résultat confirmé, montants initiaux visibles et reprise possible après un premier débit. Web Lock par compte sur tout l’envoi et le nettoyage, synchronisation des autres onglets, garde serveur expectedOwnerId contre changement de session. Échec de sauvegarde ou absence de Web Locks bloque l’envoi réel. Tutoriel isolé en mémoire par API. Aucun changement SQL, règle économique ou paiement réel.",
+    "validation": "60 tests helper/backend/route réussis. Navigateur : 16 groupes récupération à 320/390/1440 px et cas limites à 390 px ; pertes avant/après enregistrement, débit/réservation uniques, rechargement, coût conservé et solde réduit, deux onglets réels, refus et suppression du dossier, délai mesuré 20 013 ms, compte différent/déconnexion, réponses tardives et tutoriel isolé. Quatre groupes de régression embauche/formation réussis après adaptation de deux anciens sélecteurs du banc. Captures mobile/bureau inspectées ; aucune erreur JS ni requête distante. TypeScript global, ESLint ciblé et diff-check réussis. API et argent simulés.",
+    "next": "Lot terminé localement, sans publication. Reconnexion contextuelle traitée ensuite dans staffContextualReauthentication. Un refus après une réponse déjà incertaine ne prouve pas l’absence d’enregistrement : la demande reste conservée et les nouvelles opérations Personnel bloquées jusqu’à résolution. Observation auprès de débutants toujours à organiser ; ne pas relancer un audit général."
+  },
+  "harvestTrimJuryContinuity": {
+    "updated": "2026-11-11",
+    "report": "docs/bete-de-concours/AUDIT-REPRISE-QUARTIER-2026-11-11.md",
+    "diagnosis": "Récoltes, résumé du lot et jury annonçaient prêt depuis le seul affinage, alors que le serveur impose aussi le trim individuel.",
+    "change": "Projection du registre Personnel par lot : requis, partiel, validé ou inconnu ; grammes confirmés et anciens lots conservés. Accès jury seulement après affinage et trim confirmés. Liens vers le trim exact, même pendant l’affinage, retour au lot et focus. Réessai si état absent/malformé ; panne du relevé Personnel ne masque pas les récoltes des lectures dédiées. Conseil du comptoir aligné. Session principale réutilise son relevé ; lectures dédiées fleurs/stockage récupèrent un relevé par réponse, sans requête par lot ni nouveau polling. Aucun changement SQL, économique ou de confirmation.",
+    "validation": "Tests ciblés trim/backends réussis, dont 47 tests fleurs/stockage après le repli sur panne ; 85 tests modèle/simulations et 24 tests composant stockage réussis. Navigateur : 18 groupes jury et 24 groupes parcours complet à 320/390/1440 px, bon lot homonyme, retour focus, grammes, états inconnus/malformés, récupération, historique, confirmations et conséquence stock. Aucun débordement, erreur JS, mutation ou appel distant ; API en mémoire. Captures inspectées. TypeScript global et diff-check réussis ; ESLint sans erreur, deux avertissements préexistants dans le banc de parcours.",
+    "next": "Lot livré localement, sans publication. Reprise des confirmations Personnel puis reconnexion traitées dans staffConfirmationRecovery et staffContextualReauthentication. Observation auprès de débutants toujours à organiser ; ne pas relancer un audit général."
+  },
+  "quarterResumeClarity": {
+    "updated": "2026-11-11",
+    "report": "docs/bete-de-concours/AUDIT-REPRISE-QUARTIER-2026-11-11.md",
+    "diagnosis": "Recommandation après la carte sur mobile, faits secondaires supprimés au-delà de deux, réessai absent sur résumé partiel et focus perdu au retour Quartier. Audit ciblé avec deux spécialistes, anciens correctifs conservés.",
+    "change": "Résumé avant carte sur mobile, carte et résumé côte à côte sur bureau. Deux faits immédiats et autres activités dépliables avec raccourcis. Récupération via les trois lectures existantes, sans nouveau polling. Retour clavier au début nommé du Quartier puis Tab vers l’action ; focus conservé après réessai. Règles et données serveur inchangées.",
+    "validation": "81 tests unitaires, TypeScript global final, ESLint et diff-check réussis. Navigateur local : 42 cas résumé, 12 récupérations finales, 19 groupes guide, 8 retours focus, 3 retours contextuels et 12 groupes hiérarchie dans le Shell ; 320/390/1440 px selon recette. Captures inspectées, aucun débordement ni erreur JS. API en mémoire ; aucune action distante.",
+    "next": "Lot livré localement, sans publication. Continuité trim traitée ensuite dans harvestTrimJuryContinuity. Reprise persistante des confirmations Personnel, session expirée et essais avec débutants restent consignés ; ne pas relancer un audit général."
+  },
+  "warehouseEquipmentRealIllustrations": {
+    "updated": "2026-11-11",
+    "scope": "Boutique d’aménagement de l’Entrepôt : 36 visuels pour 12 familles à trois gammes, plus les 10 modèles réels des six familles de machines d’atelier.",
+    "change": "46 illustrations individuelles refaites avec imagegen intégré à partir de photos et rendus produit vérifiés sur le web. Proportions, matériaux et construction réels, trait dessiné sobre ; accessoires fictifs supprimés. WebP transparents 512 px, environ 1,57 Mo au total. Résolveur partagé et descriptions corrigés ; mêmes visuels dans offres, gammes et fiches machines. Prix, capacités, codes, paliers et paiements conservés.",
+    "validation": "21 tests ciblés, TypeScript global, ESLint et diff-check réussis. Recette navigateur des 12 rayons et six familles d’atelier à 320/390/1440 px : 46 assets distincts chargés, images entières, aucun débordement ni erreur ni mutation. Alpha et marges de 16 px vérifiés sur les 46 fichiers ; planches et captures inspectées.",
+    "reports": [
+      "docs/bete-de-concours/ui-equipment-real-provenance.json",
+      "output/equipment-real-v2/report.json",
+      "output/equipment-reference/all-assets-validation.json",
+      "output/equipment-reference/typecheck.log"
+    ],
+    "next": "Demande traitée localement ; sources et prompts documentés. Aucun commit, push ou déploiement effectué."
+  },
+  "productionEquipmentFix": {
+    "updated": "2026-11-11",
+    "change": "Choisir le matériel accessible depuis la zone autonome dans Culture, le plan Entrepôt et Personnel. Éclairage, extraction et options comparables et ajoutables au devis pendant la production ; installation seulement circuit vide, même activé, sans réactivation manuelle. Actualisation de disponibilité conserve le brouillon. Géométrie, Buddie et zone dédiée restent protégés.",
+    "simulation": "Achat, suivi des actifs et actualisation de facility atomiques après règlement du Personnel et contrôle des révisions. Rendement (options et usure), énergie, consommables, bonus qualité et quotas recalculés avec le catalogue autoritaire et les mêmes formules SQL/TypeScript. Qualité matériel figée par nouveau lot ; anciens lots sans bonus conservés. Départ des nouveaux cycles borné à l’heure de transaction arrondie à la première milliseconde suivante, sans rétroactivité, changement des gestes ou heures gratuites. Refus de capacité/plafond insuffisant sans débit, reçu rejouable et coût horaire unique.",
+    "validation": "71 tests moteur/backend, 71 assertions PostgreSQL, TypeScript global, ESLint ciblé et permissions des 377 migrations réussis. Quatre parcours navigateur matériel (320/390/1440 px et circuit occupé à 320 px) : choix sans paiement, confirmation à 378,35 € fictifs, maintien du devis pendant l’attente, affectation/surface préservées. Sept régressions réservation Culture/Entrepôt réussies. Captures inspectées ; aucun débordement ni erreur JavaScript.",
+    "migration": "20261111000200_kq_production_equipment.sql appliquée et vérifiée sur eyowwwpdmfrulhkpvlnf le 11 novembre 2026 : 34 contrôles avant, 44 après, 377 migrations synchronisées et aucune en attente. Empreintes personnel, plans, cultures et portefeuilles inchangées ; aucune action de jeu distante pour la recette.",
+    "reports": [
+      "output/production-equipment-migration/completion.json",
+      "output/production-zone-migration/equipment-typescript.log",
+      "output/staff-production/sql-report.json",
+      "output/placard-culture-buddies/production-equipment-report.json",
+      "output/placard-culture-buddies/production-report.json"
+    ],
+    "next": "Correctif applicatif prêt localement ; commit/push et publication non effectués. Modifications concurrentes de l’album et des packs conservées."
+  },
+  "productionZoneReservationFix": {
+    "updated": "2026-11-11",
+    "diagnosis": "La réservation SQL du circuit autonome ne figurait pas dans le snapshot Entrepôt : Culture proposait encore un Buddie. Une zone déjà affectée pouvait aussi être incluse à tort dans les campagnes.",
+    "change": "Réservation canonique transmise aux lectures et reçus. Culture et le plan affichent Production autonome avec accès au personnel ; affectation, déplacement et retrait de la zone réservée bloqués. Campagnes et devis énergie excluent cette zone sans modifier le plan payé ni son affectation conservée. Pause avec lots ou gestes : réservation maintenue ; pause vide : libération. Préparation périmée refusée, reçus rejouables, anciens serveurs et sauvegardes compatibles.",
+    "validation": "147 tests ciblés réussis (83 serveur/campagne, 33 affectation, 31 route), 873 assertions PostgreSQL, contrôle des permissions sur 376 migrations et TypeScript global réussis. Sept groupes navigateur : 320/390/1440 px, clavier, zone préaffectée ou vide, pause occupée, libération, autre zone modifiable et état du plan. Aucun débordement ni erreur JavaScript ; captures inspectées. ESLint ciblé indisponible : eslint-plugin-react absent des dépendances locales en cours de réinstallation concurrente.",
+    "migration": "20261111000100_kq_production_zone_reservations.sql appliquée et vérifiée sur eyowwwpdmfrulhkpvlnf : 22 contrôles avant, 27 après, 376 migrations synchronisées et aucune en attente. Empreintes personnel, plans, cultures et portefeuilles inchangées ; fonctions RPC publiques et charge horaire préservées. Aucune action de jeu de test distante.",
+    "reports": [
+      "output/production-zone-migration/completion.json",
+      "output/production-zone-migration/typescript.log",
+      "output/placard-culture-buddies/production-report.json",
+      "scripts/test-placard-shared-campaigns.mjs"
+    ],
+    "next": "Correctif applicatif local prêt ; commit/push et publication non effectués pour ce nouveau correctif. Relancer ESLint lorsque eslint-plugin-react est de nouveau disponible. Modifications concurrentes de sécurité et dépendances conservées."
+  },
+  "albumDirectNavigation": {
+    "updated": "2026-11-11",
+    "status": "Mon Album harmonisé localement avec le Quartier : crème, feuilles imprimées, enseignes en neuf tranches et illustrations propres aux trois destinations. Mascotte existante conservée.",
+    "navigation": "Boosters, Cartes et Récompenses ouvrent leur contenu dès le premier clic ou l’activation clavier. Suppression de la sélection intermédiaire et de son bouton Entrer. Navigation sans achat ni ouverture automatique ; actions explicites conservées dans leurs rubriques. État URL, collection, page, historique et retour existants réutilisés.",
+    "surfaces": "Accueil avec progression réelle et points disponibles ; en-têtes de rubriques reprenant leurs vignettes. Pages Buddies/Botte, achat, récompenses et encart Pionniers harmonisés ; dessins et géométrie des cartes préservés.",
+    "validation": "TypeScript global, ESLint ciblé et recette navigateur réussis : 320/390/768/1440 px, accès en un clic, clavier, liens directs, rechargement, Retour/Avancer, conservation de l’URL et de l’historique sans écriture. Matériaux, absence de débordement, achat, récompenses, doublons, ouverture, états vides, attente, erreurs et mouvements réduits vérifiés avec les API simulées du banc existant. Captures mobile/bureau inspectées.",
+    "reports": [
+      "scripts/audit-album-arena.mjs",
+      "output/placard-workshop/album/report.json",
+      "output/pack-opening-studio/album-typecheck.log"
+    ],
+    "next": "Demande traitée localement, non publiée. Aucun changement de règles de jeu, API ou base de données."
+  },
+  "albumCanonicalIllustrations": {
+    "updated": "2026-11-11",
+    "request": "Remplacer le pack floral générique par le vrai pack et revoir toutes les illustrations de Mon Album pour respecter l’identité chanvre du site.",
+    "change": "KqPrintedArt réemploie les assets existants : vrai pack Buddies, éventail HTML/CSS des dos de cartes canoniques et cadeau teal/or avec Sylvain. Même visuel pour chaque destination, sa navigation et son en-tête ; ouverture, rangement et récapitulatif corrigés. Mascotte, carte des Pionniers, cartes et lots réels conservés après revue. Aucun nouvel asset généré ni dessin de carte inventé.",
+    "validation": "Sources, transparence et proportions vérifiées. Captures accueil mobile/bureau, récompenses et récapitulatif inspectées. Recette navigateur complète réussie à 320/390/768/1440 px : navigation directe, clavier, historique, achats, récompenses, doublons et ouverture. TypeScript global, ESLint ciblé, JSON et diff-check réussis. API simulées ; aucune action distante.",
+    "reports": [
+      "docs/bete-de-concours/ui-navigation-provenance.json",
+      "scripts/audit-album-arena.mjs",
+      "output/placard-workshop/album/report.json",
+      "output/placard-workshop/album/illustrations-typecheck.log"
+    ],
+    "next": "Demande traitée localement, sans publication. Illustrations canoniques réutilisées ; aucune génération nécessaire."
+  },
+  "albumBalanceAndPacksRecovery": {
+    "updated": "2026-11-11",
+    "diagnosis": "Signalement local : points et packs prêts à ouvrir disparus. Défaut reproduit : échec de /api/account/tickets avec collection réussie = points remis à zéro et erreur masquée. Deux limites serveur confirmées dans le code : fidélité calculée après lecture globale non paginée des commandes ; tickets/instances non paginés et liste d’identifiants non bornée. Le 11 novembre, l’utilisateur confirme le retour des données après le correctif local. Aucune consultation distante du compte n’a été nécessaire.",
+    "change": "Lecture indépendante des deux ressources, validation du payload, erreur visible et bouton Actualiser. Données inconnues distinguées de zéro ; dernier solde/inventaire confirmé conservé et signalé comme ancien si le rafraîchissement échoue. Achat/ouverture bloqués jusqu’à récupération ; réponses tardives ignorées et état réinitialisé au changement de compte. Commandes fidélité filtrées côté serveur et paginées, même calcul pour lecture et achat ; tickets paginés, instances et définitions par lots bornés, reprises limitées aux lectures. Aucun changement de solde, attribution, règle, RPC ou migration.",
+    "validation": "54 tests serveur ciblés et TypeScript global réussis, ESLint ciblé et diff-check propres. Cinq groupes navigateur réussis : erreurs HTTP, transport et réponse incomplète ; aucun faux zéro, récupération des points/packs sans POST, conservation des derniers montants après achat et absence de rejeu de cet achat, véritable compte vide distingué d’une panne. Capture 320 px inspectée. Retour des données confirmé par l’utilisateur sur son compte local.",
+    "reports": [
+      "output/placard-workshop/album/data-report.json",
+      "output/placard-workshop/album/balance-typecheck.log",
+      "src/lib/supabase/loyalty-orders.test.ts",
+      "src/lib/supabase/lottery-ticket-reads.test.ts",
+      "src/app/api/account/tickets/route.test.ts"
+    ],
+    "next": "Incident résolu en local selon la confirmation de l’utilisateur. Aucun solde ni pack modifié, aucune requête distante ni publication effectuée pour ce correctif."
+  },
+  "buddiePackReadRecovery": {
+    "updated": "2026-11-11",
+    "diagnosis": "Erreur signalée : [supabase:list lottery_card_instances for tickets] TypeError: fetch failed. Les trois lectures de l’historique des packs échouaient au premier incident de transport ; la cause réseau historique précise n’est pas déterminable avec ce seul message.",
+    "change": "Réemploi de readSupabaseQuery pour les tickets, leurs instances et leurs définitions : requête et signal neufs à chaque tentative, quatre tentatives maximum, délai progressif et budget de 16 s par lecture. Filtre du propriétaire, ordre des cartes et contenu conservés. Aucune reprise d’achat, d’ouverture ou de RPC ; une panne persistante reste une erreur avec sa cause serveur.",
+    "validation": "45 tests ciblés réussis, dont sept nouveaux tests avec le vrai client Supabase et un transport simulé : reprise à chaque étape, absence de relecture des étapes réussies, identité, ordre/contenu du pack, panne persistante, refus de permission, liste vide et identité invalide. ESLint ciblé et diff-check réussis. TypeScript global terminé avec six erreurs dans sentry-privacy.ts et sentry-privacy.test.ts, fichiers du chantier concurrent de sécurité ; aucune erreur signalée dans le correctif packs.",
+    "reports": [
+      "src/lib/supabase/lottery-ticket-reads.test.ts",
+      "output/pack-opening-studio/ticket-reads-typecheck.log"
+    ],
+    "next": "Correctif local ; aucune migration ni publication. Vérifier le chargement sur la connexion qui a présenté l’incident."
+  },
+  "buddiePackOpening": {
+    "updated": "2026-11-11",
+    "status": "Ouverture des packs Buddies refondue localement dans la DA du Quartier. Pack et cartes canoniques conservés ; comparaison Sorare / Pokémon GO / TCG Pocket et faisabilité consignées.",
+    "interaction": "Feuilles crème et enseignes en neuf tranches, pile face cachée, déchirure et déplacement tactile avec annulation, retournements plus courts et confettis imprimés selon rareté réelle. Compteur numéroté, relecture, passage et Tout révéler. Récapitulatif nouveautés/doublons/bonus, progression serveur ou indisponibilité explicite, focus de phase et son volontaire.",
+    "validation": "Neuf groupes navigateur à 320/390/768/1440 px et 320×480 : gestes/annulation, cinq raretés, clavier/focus, commandes visibles, attente réseau, réessai même ticket, double entrée, fermeture, son, mouvements réduits, bonus et collection indisponible. Aucun débordement, erreur JS ni appel externe. Captures mobile/bureau inspectées. Treize tests ciblés, ESLint ciblé, TypeScript global et diff-check réussis ; TypeScript relancé après restauration des fichiers Next.js lors d’une mise à jour concurrente des dépendances.",
+    "reports": [
+      "docs/bete-de-concours/buddie-pack-opening-design.json",
+      "output/pack-opening-studio/report.json",
+      "output/pack-opening-studio/recording-report.json",
+      "output/pack-opening-studio/opening-demo.webm",
+      "scripts/audit-pack-opening.mjs"
+    ],
+    "next": "Demande traitée localement ; publier lors d’une demande explicite. Aucun changement de prix, tirage, API ou base de données ; aucune image supplémentaire nécessaire."
+  },
   "gameCommitValidation": {
     "updated": "2026-11-11",
     "scope": "Commit et push demandés uniquement pour le jeu : production autonome, carrousel Personnel, correctif des horaires à précision PostgreSQL, marché, illustration, migration de production et recettes. Changements sécurité/admin/paiements/newsletter exclus.",
@@ -26,7 +1235,11 @@
     "diagnosis": "Refus staff_production_hours reproduit localement avec une origine de ferme PostgreSQL conservant les microsecondes. Les horaires générés par Date.parse/toISOString pouvaient précéder l’autorisation ou appartenir au jour SQL précédent. Le règlement du personnel appelé par plusieurs écrans pouvait alors bloquer leurs chargements/actions. Ce défaut concerne le planning autonome, pas la connexion administrateur.",
     "change": "Les nouveaux créneaux de production et départs de semaine type sont arrondis vers la première milliseconde qui ne précède pas leur origine exacte. Le moteur attend ce départ représentable lorsqu’une requête arrive dans la fraction de milliseconde initiale. Tâches existantes, soldes et contrôles SQL conservés ; aucune migration requise.",
     "validation": "151 tests ciblés Personnel/moteur/hebdomadaire/backend et 45 contrôles SQL isolés réussis. Régression avec origine à six décimales, concordance des jours SQL, embauche/configuration/affectation au même instant, frontière de journée sans doublon, comptabilité, TVA, rejouabilité et permissions vérifiés. TypeScript global, ESLint ciblé et contrôle des espaces du diff réussis.",
-    "reports": ["output/staff-production/sql-report.json", "scripts/test-placard-staff-production.mjs", "src/lib/kanab-quest-staff-production.test.ts"],
+    "reports": [
+      "output/staff-production/sql-report.json",
+      "scripts/test-placard-staff-production.mjs",
+      "src/lib/kanab-quest-staff-production.test.ts"
+    ],
     "next": "L’utilisateur confirme la reprise locale et demande la mise en production le 11 novembre. Correctif inclus dans le lot sécurité/Personnel ; aucune migration supplémentaire pour les horaires. Build complet isolé réussi, 141 pages, TypeScript et middleware inclus ; suivi de livraison sous output/release-20261111/."
   },
   "staffCarousel": {
@@ -34,7 +1247,12 @@
     "status": "Personnel réparti en six panneaux illustrés : Bilan, Journée, Planning, Production, Recruter et Paie. Un seul panneau visible ; Production absente si la capacité serveur manque. Implémentation locale, non publiée, avec revue ciblée de l’agent game design.",
     "interaction": "Enseignes papier existantes, rangée défilante sur mobile, flèches précédent/suivant, clavier et glissement sans lecture automatique. Navigation fixe pendant le défilement, sous l’en-tête et le guide réduit. Gestes du plan, de l’atelier, des formulaires et des listes horizontales préservés. Panneaux masqués avec hidden/inert ; brouillons conservés par employé et mode. Planning avec sélecteur d’employé, portrait compact et contrat détaillé replié. Liens directs, confirmations, retour du focus et objectifs du tutoriel adaptés.",
     "validation": "16 groupes navigateur réussis : carrousel, production autonome, semaine type et tutoriel Personnel à 320/390/1440 px, plus cas de capacités serveur et de reprise après erreur. Conservation des brouillons, verrouillage des confirmations, gestes, clavier, heures, frais, focus, absence de chevauchement avec le guide et absence de débordement vérifiés. Captures mobiles inspectées ; aucune erreur JavaScript ni requête externe dans les recettes. 82 tests unitaires du guide, TypeScript global et ESLint ciblé réussis.",
-    "reports": ["output/placard-staff-ui/carousel-report.json", "output/placard-staff-ui/production-report.json", "output/placard-staff-ui/weekly-plan-report.json", "output/placard-journey-continuity/staff-guide-report.json"],
+    "reports": [
+      "output/placard-staff-ui/carousel-report.json",
+      "output/placard-staff-ui/production-report.json",
+      "output/placard-staff-ui/weekly-plan-report.json",
+      "output/placard-journey-continuity/staff-guide-report.json"
+    ],
     "next": "Demande traitée localement. Aucun changement des règles de jeu ni migration supplémentaire. Publier le code lors de la demande correspondante."
   },
   "staffAutonomousProduction": {
@@ -63,7 +1281,11 @@
     "scope": "Culture et soins, Atelier, Personnel, Défis, Collections, Commerce, boutique en ligne, réseaux et Finances. Coûts, prérequis, estimations, erreurs, confirmations et aides utiles conservés. Aucun changement de règles, de styles ou de base de données.",
     "validation": "TypeScript global et ESLint des 23 composants réussis. Culture : 13 scénarios à 320/390/1440 px. Collections : filtres, agrandissement, clavier/retour du focus, erreurs et actualisation à 320/390/1440 px. Commerce/Finances : préparation, devis, vente et navigation à 320/390/900/1440 px. Aucun débordement ni erreur JavaScript dans ces parcours ; captures mobiles inspectées. Relecture indépendante des suppressions et contrôle du diff réussis.",
     "testMaintenance": "Recettes existantes adaptées : variable publique simulée pour Collections, parcours boutique réservé au mode complet et résultats limités aux vérifications exécutées ; sélecteurs Commerce et cas du lot manquant alignés sur l’interface actuelle. Le parcours boutique complet du script Collections conserve un ancien contrôle de verrouillage du défilement qui échoue ; il reste hors de cette recette ciblée sur les albums.",
-    "reports": ["output/placard-journey-continuity/preparation-report.json", "output/placard-collection/collection-map-report.json", "output/placard-commerce-clarity/report.json"],
+    "reports": [
+      "output/placard-journey-continuity/preparation-report.json",
+      "output/placard-collection/collection-map-report.json",
+      "output/placard-commerce-clarity/report.json"
+    ],
     "next": "Demande traitée localement. Publier lors d’une demande explicite ; aucun nouvel audit général nécessaire."
   },
   "shopProducerCarousel": {
@@ -87,12 +1309,12 @@
     "next": "Résoudre la nouvelle demande de commande pour réclamer les lots : proposer une commande à 0 € sans coût imposé, sans certifier conforme un achat obligatoire. Renseigner le médiateur réellement conventionné, examiner le montage promotionnel/CBD puis implémenter le lot cohérent avant publication. Conserver les engagements antérieurs au 15 novembre ; ne pas confondre texte rédigé et règles actives. Aucun nouvel audit global nécessaire."
   },
   "producerSupportDisclosure": {
-    "updated": "2026-11-09",
-    "status": "Encart replié par défaut : seul le titre Soutenir les producteurs et une flèche restent visibles. Ouverture/fermeture native au clic ou au clavier ; flèche orientée selon l’état.",
-    "preserved": "Couleurs et matières dorées, illustration, texte, informations du bénéficiaire et lien Viva conservés dans le volet. Aucun changement de paiement ni de base de données.",
-    "validation": "Recette navigateur existante adaptée et réussie : sept groupes à 320/390/1440 px, ouverture Entrée/clic et fermeture Espace, lien externe intercepté, informations du soutien, surcharge du lien et tutoriel. Aucun débordement, erreur JS, appel externe ou mutation. Captures mobile/ordinateur inspectées ; diff-check réussi.",
+    "updated": "2026-11-14",
+    "status": "Repli par défaut rétabli sur la cagnotte du Quartier : titre et flèche seulement, panneau inférieur à 120 px à 320/390/1440. Ouverture native au clic, Entrée ou Espace. /soutenir reste déplié.",
+    "preserved": "Illustration, texte, montants, liste et formulaire conservés ; les saisies survivent au repli. Une fiche de paiement enregistrée ou une erreur de lecture de cette fiche rouvre le panneau. Aucun changement des opérations de paiement ni de base de données.",
+    "validation": "13 groupes navigateur réussis sur la recette existante : repli initial, clavier/clic, saisies conservées, reprise après rechargement sans nouveau paiement, cagnotte et erreurs, annulation, tutoriel, page dédiée, retour et administration. Captures 320/1440 inspectées ; aucun débordement, erreur JS ou appel distant. 30 tests ciblés de paiement/API réussis, diff-check réussi. API simulées, aucun paiement réel.",
     "report": "output/placard-journey-continuity/financial-support-report.json",
-    "next": "Modification locale prête à publier lors de la demande correspondante. Aucun audit supplémentaire nécessaire."
+    "next": "Demande terminée localement, sans publication. Reprendre uniquement un retour concret ou une nouvelle demande."
   },
   "missionProgression": {
     "updated": "2026-11-09",
@@ -121,7 +1343,10 @@
     "migration": "supabase/migrations/20261109000100_contest_flower_rankings.sql — appliquée le 9 novembre 2026 au projet Supabase eyowwwpdmfrulhkpvlnf à la demande de l'utilisateur. Historique synchronisé, aucune migration en attente.",
     "validation": "102 tests ciblés réussis : 69 serveur/catalogue/avis/prix, 26 page/tri, 7 PostgreSQL PGlite avec permissions réelles. TypeScript global, ESLint ciblé, grants des 369 migrations, diff-check et build Next de production final réussis. Navigateur : cinq groupes, 320/390/1440 px sans débordement, 17 fleurs dont non notée, filtres, rang conservé, modale clavier/Escape/retour focus et navigation Joueurs vers Fleurs sur Tous. Captures inspectées ; aucune erreur JS, requête distante ou mutation.",
     "remoteValidation": "Douze contrôles distants réussis ; empreintes des avis, notes, produits et contenus/identités des fiches inchangées. Neuf fleurs notées désormais éligibles, aucune fiche masquée ou sans note classée, rangs saison/culture et permissions vérifiés. Black Berserker : rang 1 Indoor, deux avis ; Lemon Flambé : rang 2 Indoor, un avis validé depuis le diagnostic initial.",
-    "reports": ["output/ranking-flowers/report.json", "output/flower-ranking-release/migration.json"],
+    "reports": [
+      "output/ranking-flowers/report.json",
+      "output/flower-ranking-release/migration.json"
+    ],
     "next": "Correction validée et migration appliquée. Suivre le commit/push demandé et le déploiement dans output/flower-ranking-release/completion.json. Aucun audit supplémentaire nécessaire."
   },
   "flowerReviewRadars": {
@@ -130,7 +1355,10 @@
     "integrity": "Les notes absentes restent inconnues : aucun 70/100 par défaut, seuls les points connus sont tracés et aucun polygone incomplet n'est fermé. Aucun radar pour un avis sans notes ou une synthèse sans avis publié. Description accessible des valeurs et styles limités à la boutique.",
     "database": "Aucun changement de données, API ou schéma ; aucune migration Supabase nécessaire.",
     "validation": "22 tests ciblés, TypeScript global, build Next de production et diff-check réussis. Fiche : 320/390/768/1440 px, polices réelles, valeurs décimales, verdict, profils partiels, absence d'avis, descriptions accessibles, libellés sans débordement ni chevauchement, pagination et reprise réseau. Carnet : recette notes à 320/390/1440 px réussie, comparaisons et éditions conservées. Captures mobile/ordinateur inspectées. Scripts existants adaptés aux dépendances Vite et à la fermeture du clavier mobile.",
-    "reports": ["output/storefront-reviews/report.json", "output/tasting-book/notes-report.json"],
+    "reports": [
+      "output/storefront-reviews/report.json",
+      "output/tasting-book/notes-report.json"
+    ],
     "next": "Lot terminé ; commit et push sur master demandés dans cette session. Aucun autre changement UX ni migration à engager pour ce lot."
   },
   "staffGlobalImpactDashboard": {
@@ -140,7 +1368,13 @@
     "model": "Nouveau modèle pur kanab-quest-staff-impact. Journée : tâches salariées du jour uniquement, heures consommées/terminées, missions en cours, réserves utilisables, expirées et données inconnues distinguées. Semaine type : cinq jours des modèles actifs, projection conditionnelle aux compétences actuelles. Bonus Culture restants par différence de totaux cumulés, plafonds conservés ; cadences et bonus non additifs en plages, remise maximale, audience et XP plafonnés. Qualité trim une fois par lot. Documents administratifs seulement pour le responsable autorisé, sous plafond/réserve ; aucune autorisation rétroactive.",
     "integrity": "Les prévisions ne sont pas des gains acquis. Données absentes affichées Non mesuré ; pas d'attribution des statistiques globales à un salarié ou à une journée. Bilan historique serveur conservé dans un volet explicitement global. Aucune commande lors du filtrage, aucune modification des salaires, coûts ou mécaniques métier. Conditions bloquantes visibles ; formules détaillées repliées.",
     "validation": "91 tests ciblés réussis, dont 21 nouveaux tests sémantiques du modèle. TypeScript global, ESLint ciblé, diff-check et build Next de production réussis. 7 groupes navigateur du nouveau tableau plus 7 groupes de régression des bénéfices existants : 320/390/1440 px, clavier, totaux exacts, sept secteurs, filtres individuels, enregistrement de planning, pause, congés, données absentes/périmées, fin de contrat et équipe vide. Aucun débordement, erreur navigateur ou appel distant ; captures inspectées.",
-    "reports": ["output/placard-staff-ui/impact-dashboard-report.json", "output/placard-staff-ui/benefits-report.json", ".tmp/staff-impact-tests.log", ".tmp/staff-impact-final-lint.log", ".tmp/staff-impact-build.log"],
+    "reports": [
+      "output/placard-staff-ui/impact-dashboard-report.json",
+      "output/placard-staff-ui/benefits-report.json",
+      ".tmp/staff-impact-tests.log",
+      ".tmp/staff-impact-final-lint.log",
+      ".tmp/staff-impact-build.log"
+    ],
     "next": "Confirmer commit et déploiement dans output/staff-impact-release/completion.json. Aucun changement de base à appliquer."
   },
   "workActorRelay": {
@@ -152,7 +1386,15 @@
     "scope": "Ce sélecteur couvre Culture, Trim et Transformation. Les missions Communication, Prospection et Administration restent sélectionnables par portrait dans Personnel ; les gestes manuels de commerce/rangement n'ont pas été convertis en réservations salariées dans cette livraison.",
     "validation": "Suite globale : 558 fichiers et 6848 tests réussis. Culture : 346 contrôles SQL et 89 tests backend/API ; Transformation : 101 contrôles SQL et 623 historiques. Navigateur : 9 groupes relais Culture, 3 groupes heures fractionnaires, 6 groupes trim, 4 groupes transformation ; 320/390/1440 px, clavier, coûts, reprise, réponses obsolètes et absence de débordement contrôlés. Build Next de production avec TypeScript réussi, ESLint ciblé et diff-check réussis. Derniers libellés et scène contrôlés par navigateur/lint après build.",
     "database": "012 culture_work_choice et 013 processing_work_choice appliquées au projet eyowwwpdmfrulhkpvlnf ; 368 migrations synchronisées, aucune en attente. Préflight 83 contrôles, postflight 109 contrôles. Empreintes des 7 tables et 14 fonctions protégées inchangées ; aucune action métier de test distante.",
-    "reports": ["output/actor-choice-migrations/completion.json", "output/placard-journey-continuity/culture-relay-report.json", "output/placard-journey-continuity/culture-work-report.json", "output/placard-staff-ui/shared-trim-report.json", "output/placard-processing-choice/report.json", ".tmp/actor-choice-all-tests.log", ".tmp/actor-choice-build.log"],
+    "reports": [
+      "output/actor-choice-migrations/completion.json",
+      "output/placard-journey-continuity/culture-relay-report.json",
+      "output/placard-journey-continuity/culture-work-report.json",
+      "output/placard-staff-ui/shared-trim-report.json",
+      "output/placard-processing-choice/report.json",
+      ".tmp/actor-choice-all-tests.log",
+      ".tmp/actor-choice-build.log"
+    ],
     "next": "Confirmer le commit et le déploiement dans output/actor-choice-release/completion.json. Ne pas rejouer les migrations appliquées ; étendre les autres gestes seulement avec une comptabilisation serveur dédiée."
   },
   "producerSupportProductionVisibility": {
@@ -250,7 +1492,13 @@
     "cause": "Le validateur partagé isKqCultureWorkQuote exigeait encore un solde personnel multiple de 0,5 h, alors que les gestes accélérés par compétence permettent des centièmes depuis la migration 006. Une lecture seule de la base a confirmé une culture active autorisée avec source employee et un solde personnel de 4,2 h ; le backend puis le hook rejetaient ce devis valide, d’où Heures à vérifier.",
     "fix": "Le solde personnel accepte maintenant les centièmes entre 0 et 12 h, sans arrondi ni changement du montant. Prix Culture de 0,5 h et réserves salariées par demi-heure préservés. UI conserve les explications métier connues et indique une session expirée ; erreurs internes et réseau masquées, contrôle de culture/étape/phase inchangé.",
     "validation": "80 tests unitaires/backend/API, 275 contrôles PostgreSQL PGlite et neuf groupes navigateur à 320/390/1440 px réussis. Régression SQL reproduisant le salarié avec 4,2 h personnelles, débit salarié seul, reprise sans double débit, joueur 11,55 vers 11,05 h, et solde insuffisant correctement bloqué. Vrai bouton de lancer testé dans le Shell. TypeScript global, ESLint ciblé et diff-check réussis. Aucun débit ni lancer distant.",
-    "reports": ["output/culture-hours-fix/probe.json", "output/placard-staff-ui/culture-work-report.json", "output/placard-journey-continuity/culture-work-report.json", ".tmp/culture-hours-fix-sql.log", ".tmp/culture-hours-fix-types.log"],
+    "reports": [
+      "output/culture-hours-fix/probe.json",
+      "output/placard-staff-ui/culture-work-report.json",
+      "output/placard-journey-continuity/culture-work-report.json",
+      ".tmp/culture-hours-fix-sql.log",
+      ".tmp/culture-hours-fix-types.log"
+    ],
     "next": "Recharger l’écran Culture avec le code corrigé. Aucun ajout d’heures ni changement de planning nécessaire pour ce faux blocage. Déployer le code seulement lors d’une demande de publication ; pas de nouvelle migration."
   },
   "juryFlowerCarousel": {
@@ -259,7 +1507,10 @@
     "changes": "Vraies cartes KqFlowerTcgCard toujours visibles, une Fleur par volet, avec sa qualité, son état et ses actions. Carte à gauche sur ordinateur, au-dessus des actions sur mobile. Flèches, compteur de position, glissement tactile/souris et navigation clavier via KqCardCarousel. Défilement manuel, arrêt sur un volet et respect du mouvement réduit.",
     "integrity": "Actions toujours liées à l’identifiant de la Fleur affichée ; confirmations, conséquences, file d’attente, suivi du duel, affinage et accès au stockage préservés. Analyses repliables séparées de la carte ; absence d’analyse explicitée. Position conservée lors de l’actualisation de la réserve, ciblage initial d’un lot maintenu. Options du carrousel réservées à cet écran ; comportement initial des autres carrousels conservé.",
     "validation": "13 tests existants Buddies/ciblage jury, TypeScript global, ESLint ciblé et diff-check réussis. Navigateur : 39 groupes carrousel à 320/390/1440 px et petit écran 320×568 ; 23 groupes du parcours jury, confirmations, verdicts et reprise après réponse interrompue. Cartes visibles, volets entiers après défilement, noms longs, états absents/erreur, focus et compteur contrôlés ; captures mobiles et bureau inspectées. Aucune erreur JavaScript ni requête externe ; API de jeu simulées uniquement.",
-    "reports": ["output/clarity-lot13/jury/report.json", "output/ux-implementation/jury/results.json"],
+    "reports": [
+      "output/clarity-lot13/jury/report.json",
+      "output/ux-implementation/jury/results.json"
+    ],
     "preview": "output/clarity-lot13/jury/multiple-1440.png",
     "next": "Demande terminée localement. Publier le code lors d’une demande explicite ; aucun nouvel audit global nécessaire."
   },
@@ -272,7 +1523,11 @@
     "security": "Lecture joueur filtrée par session, API admin authentifiée, origine vérifiée à l’écriture, corps JSON borné. Table sous RLS : aucun accès anon/authenticated, lecture seule service_role ; écritures exclusivement par RPC SECURITY DEFINER réservés au serveur. Attribution et métadonnées administratives privées.",
     "artwork": "public/placard/ui/mailbox-v1.webp, transparent 512 × 512, 41008 octets ; source artwork/ui-mailbox-v1.png ; prompt image_gen et provenance dans docs/bete-de-concours/ui-mailbox-provenance.json. KqPrintedArt partagé par la carte et le titre du courrier.",
     "validation": "44 tests unitaires/API, intégration PostgreSQL PGlite avec ouverture réelle de pack, quotas, reprises, versions, rollback et permissions réussis. Grants des 365 migrations, TypeScript global final, ESLint ciblé et diff-check réussis. Navigateur : 27 groupes Quartier/courrier à 320/390/1440 px et 21 groupes admin à 320/390/768/1440 px. Clavier, focus, Retour, erreurs, réponse perdue puis 429, récompense unique et absence de débordement vérifiés ; captures inspectées. Zéro erreur JavaScript ou requête externe.",
-    "reports": ["output/placard-village-ambience/report.json", "output/admin-arena/arena-report.json", "output/arena-feedback-migration/completion.json"],
+    "reports": [
+      "output/placard-village-ambience/report.json",
+      "output/admin-arena/arena-report.json",
+      "output/arena-feedback-migration/completion.json"
+    ],
     "remoteValidation": "Projet eyowwwpdmfrulhkpvlnf : 18 contrôles avant et 58 après application réussis en transactions de lecture seule. Empreinte identique des 175 packs existants et de la fonction d’ouverture. Historique synchronisé sur 365 migrations ; nouvelle simulation sans migration en attente. Aucune récompense réelle ni action de jeu effectuée pour la vérification.",
     "sqlCheck": "node scripts/test-arena-feedback.mjs",
     "migration": "supabase/migrations/20261108001000_arena_feedback.sql",
@@ -287,7 +1542,12 @@
     "administration": "Règles désactivées par défaut dans Personnel : responsable, factures fournisseurs et/ou salaires échus, plafond quotidien, trésorerie minimale et horizon fournisseur de 0 à 7 jours de jeu. Confirmation explicite sans débit immédiat. Les missions Administration terminées du responsable traitent au plus un document par 0,5 h, dans les limites autorisées, par échéance et sans paiement partiel. Pas de rétroautorisation des anciennes missions. Les paiements ordinaires du jeu restent indépendants de ces plafonds. Dernier traitement et motif de report visibles. Seul le responsable autorisé à payer les salaires peut lancer Administration pendant un impayé, y compris via semaine type.",
     "sql": "Registre privé prospectif sous RLS, tous accès directs révoqués, fonctions internes inaccessibles aux rôles API. Montants et deltas réels enregistrés dans la transaction métier ; remise seulement sur fournitures de lancement déjà éligibles. Verrou propriétaire, révision attendue, reçus uniques par tâche et reprise idempotente. Comptabilité et archivage conservés, y compris paie finale et plus de 200 tâches rattrapées. Trois gardes de tâches adaptés aux résultats à la clôture sans permettre de modifier les termes réservés ou les résultats déjà clos.",
     "validation": "313 tests TypeScript moteur/serveur réussis (241 + 72), 73 vérifications PostgreSQL PGlite du nouveau lot et 32 contrôles comptables existants réussis. Permissions des 366 migrations, TypeScript global et ESLint final ciblé réussis. Sept groupes navigateur à 320/390/1440 px : prévisions/confirmations, semaine, clavier, absence de débordement, règles désactivées, validation budgets, annulation sans écriture, activation sans débit et exception paie strictement limitée. Captures inspectées. Revue indépendante moteur/SQL a détecté puis fait corriger les gardes historiques et la compatibilité avant migration.",
-    "reports": ["output/placard-staff-ui/benefits-report.json", ".tmp/staff-benefits-types.log", ".tmp/staff-benefits-lint.log", "output/staff-benefits-migration/completion.json"],
+    "reports": [
+      "output/placard-staff-ui/benefits-report.json",
+      ".tmp/staff-benefits-types.log",
+      ".tmp/staff-benefits-lint.log",
+      "output/staff-benefits-migration/completion.json"
+    ],
     "migration": "supabase/migrations/20261108001100_kq_staff_benefits.sql",
     "remoteValidation": "Projet eyowwwpdmfrulhkpvlnf : 76 contrôles avant et 138 après réussis en transactions de lecture seule. Empreintes identiques des trois comptes du personnel, 18 archives, 231 reçus, 183 factures, 38 portefeuilles, 548 soldes comptables et 171 372 écritures du journal ; 15 fonctions protégées inchangées. Historique synchronisé sur 366 migrations et nouvelle simulation sans migration restante. Aucun paiement ni action de partie effectué pour vérifier le déploiement. Reçu output/staff-benefits-migration/completion.json.",
     "sqlCheck": "npm run test:staff-benefits:sql",
@@ -302,7 +1562,14 @@
     "otherSectors": "Culture : six étapes coûtent 3 h salarié au lieu de 3 h joueur, avec bonus selon niveau/trait et coefficients supplémentaires du chef ; les étapes restent jouées. Transformation : efficacité nominale 55/75/100 % aux niveaux 1/5/10 avant trait ; machines et temps passifs restent contraignants. Trim manuel 60/100/150 g/h, machine ×4 avec pénalité de qualité. Communication 2 h sans trait : 20/52/92 abonnés et 1/3/5 réputation aux niveaux 1/5/10, audience réellement reliée à la boutique. Prospection : une tentative dès 2 h, +1 partenaire/+5 réputation en cas de succès, réseau illimité ; réserver 7 h n’ajoute pas de tentative. Budget commercial +250 unités par partenaire, pas 250 €.",
     "clarityGaps": "Les affectations n’affichent pas systématiquement leur bénéfice calculable. Minutieux : le +20 % Culture ne concerne que les terpènes. Vif n’abaisse pas les 0,5 h par étape Culture. Afficher les résultats réels séparément des prévisions et probabilités ; ne pas convertir automatiquement abonnés ou unités commerciales en recettes garanties.",
     "economics": "Exemple de recrutement initial : Léa, Administration niveau 5, Organisé, 14,79 €/h. Remise 6 % ; culture de 10 m² sans option, fournitures 220 €, économie 13,20 €. Coût employeur du jeu 3 028,25 €/mois à 35 h/semaine ; il faut environ 50 471 € de nouvelles factures éligibles par mois sous remise pour couvrir ce salaire par la seule négociation. À 7 h/semaine : 605,65 €/mois, seuil environ 10 094 €. Les autres missions et le temps joueur épargné restent des bénéfices distincts ; un salarié déjà sous contrat est payé même sans affectation.",
-    "evidence": ["src/lib/kanab-quest-staff.ts", "src/lib/kanab-quest-staff-recruitment.ts", "src/components/placard/KqStaffDesk.tsx", "supabase/migrations/20261107000100_kq_staff.sql", "supabase/migrations/20261012000700_kq_warehouse_supplier_invoices.sql", "supabase/migrations/20261108000900_kq_care_surface_and_purchase_register.sql"],
+    "evidence": [
+      "src/lib/kanab-quest-staff.ts",
+      "src/lib/kanab-quest-staff-recruitment.ts",
+      "src/components/placard/KqStaffDesk.tsx",
+      "supabase/migrations/20261107000100_kq_staff.sql",
+      "supabase/migrations/20261012000700_kq_warehouse_supplier_invoices.sql",
+      "supabase/migrations/20261108000900_kq_care_surface_and_purchase_register.sql"
+    ],
     "validation": "Lecture croisée moteur TypeScript, backend et dernières migrations SQL ; calcul indépendant des exemples de coût. Aucun appel distant ou mutation de partie. Tests applicatifs non relancés pour cette analyse documentaire.",
     "next": "Proposition à discuter : rendre visibles taux/périmètre/expiration et bénéfice prévu par affectation, puis décider d’un vrai rôle administratif récurrent. Ne pas étendre les remises ou automatiser des paiements sans nouvelle demande."
   },
@@ -314,7 +1581,12 @@
     "pricing": "Nouveaux achats intrants/PBI et entretien proportionnels à la surface figée ; tarif antérieur utilisé par m². Campagnes : somme des surfaces et commande sur le leader. Prix affiché et confirmé depuis le serveur. Réserve neuve en couverture m² ; anciennes charges conservées comme passages complets, sans rétro-débit ni revalorisation des achats passés.",
     "safety": "Achats payés exclus du solde dû. Reçus originaux réutilisés après réponse perdue ; clé abandonnée uniquement sur rejet explicite du devis avant mutation. Transaction unique pour argent, stock, comptabilité et heures ; propriétaire et surface contrôlés côté serveur.",
     "validation": "145 tests unitaires/API, 150 contrôles PostgreSQL PGlite, TypeScript global, ESLint ciblé et grants des 364 migrations réussis. Navigateur : 27 scénarios factures/paiements/registre, 30 contrôles réserve/achats à 320/390/1440 px et 76 contrôles du suivi Culture réussis ; captures inspectées. Aucun appel de jeu externe ni erreur JavaScript. Revue croisée des contrats UI/serveur sans blocage.",
-    "reports": ["output/pay-all-invoices/report.json", "output/clarity-lot22/after/report.json", "output/culture-care/result.json", ".tmp/care-surface-sql.log"],
+    "reports": [
+      "output/pay-all-invoices/report.json",
+      "output/clarity-lot22/after/report.json",
+      "output/culture-care/result.json",
+      ".tmp/care-surface-sql.log"
+    ],
     "migration": "20261108000900_kq_care_surface_and_purchase_register.sql appliquée au projet eyowwwpdmfrulhkpvlnf : colonnes de couverture et de reçus, RPC de devis/achat et registre privé paginé. Ancien achat sans devis révoqué ; publier le code applicatif correspondant pour que les anciens clients utilisent le nouveau devis.",
     "remoteValidation": "48 contrôles avant et 104 contrôles après application réussis, transactions de lecture seule. Empreintes identiques des anciennes données : 22 lignes de stocks, 149 achats, 428 interventions et 37 portefeuilles ; sept fonctions protégées inchangées. Historique synchronisé sur 364 migrations, nouvelle simulation sans migration restante. Reçu output/care-surface-migration/completion.json.",
     "limits": "Pas de contention PostgreSQL multiconnexion mesurée. Aucune écriture de jeu distante ni publication.",
@@ -343,7 +1615,10 @@
     "changes": "Suppression de la rangée Apprendre à jouer / Essais à part sous le Quartier. Apprendre à jouer est directement visible au pied de la navigation, au-dessus de Comment jouer : barre latérale sur ordinateur, menu Plus sur mobile. Suppression également de l’entrée Essais à part sur l’accueil initial ; choix guidé ou libre conservé. Lanceur simplifié vers le guide dans la partie en cours.",
     "integrity": "Fermeture du tiroir et retrait de son entrée historique avant ouverture du guide. Vue courante, progression et préférences conservées. Pas de suppression des sauvegardes anciennes ni d’action métier. Les sessions de tutoriel avec navigation locale ne relancent pas le guide principal.",
     "validation": "38 tests introduction/guide, TypeScript global, ESLint ciblé et diff-check réussis. Navigateur : 6 groupes navigation à 320/390/1440 px et 8 groupes introduction. Clavier, fermeture/Retour, déverrouillage du défilement, contexte, progression et absence de mutation vérifiés. Aucune exception ou requête externe. Captures du menu mobile, de la barre latérale et du Quartier inspectées. Exclusion localNavigation revue dans le code ; pas de nouveau parcours intégral du tutoriel.",
-    "reports": ["output/placard-journey-continuity/guide-navigation-report.json", "output/arena-introduction/report.json"],
+    "reports": [
+      "output/placard-journey-continuity/guide-navigation-report.json",
+      "output/arena-introduction/report.json"
+    ],
     "next": "Demande traitée localement ; reprendre la prochaine demande explicite sans nouvel audit global."
   },
   "producerSupportVisual": {
@@ -362,7 +1637,11 @@
     "cause": "Le hook du site et la fenêtre d’erreur Next.js sauvegardaient chacun overflow et padding inline. Une fermeture croisée pouvait restaurer overflow:hidden alors que toutes les fenêtres étaient fermées. Reproduit dans Chrome avec le vrai panier et une simulation de l’algorithme Next installé ; le contexte exact de l’onglet du joueur n’a pas été inspecté.",
     "changes": "Verrou CSS propre au site sur html et body, conservé jusqu’à la fermeture de la dernière fenêtre. Aucun écrasement des styles inline des autres fenêtres ; compensation de barre de défilement ajoutée au padding existant, sans position fixe du body.",
     "validation": "21 tests unitaires ciblés, TypeScript global, ESLint et diff-check réussis. Navigateur : blocage initial à 0 px puis défilement à 650 px après correction dans les deux ordres de fermeture ; accueil, boutique, journal, arène et politique cookies ; clavier, panier/cookies imbriqués et redimensionnement menu mobile vers PC. Aucune exception JavaScript dans la recette finale.",
-    "reports": [".tmp/scroll-debug/overlay-before.json", ".tmp/scroll-debug/overlay-after.json", ".tmp/scroll-debug/after.json"],
+    "reports": [
+      ".tmp/scroll-debug/overlay-before.json",
+      ".tmp/scroll-debug/overlay-after.json",
+      ".tmp/scroll-debug/after.json"
+    ],
     "next": "Recharger une fois l’onglet avec Ctrl+F5 pour effacer un ancien style inline déjà bloqué. Ne pas relancer un audit général."
   },
   "browserHydration": {
@@ -424,7 +1703,19 @@
     "layout": "Images de 84 à 128 px, faits courts et chiffres repères, séquences numérotées avec adaptation à la largeur réelle du panneau. Styles hérités corrigés pour les soins et le récapitulatif ; aide du récapitulatif sur toute la largeur disponible de la carte. Navigation et matériaux papier du jeu conservés.",
     "accessibility": "Retour du focus corrigé après utilisation d’une carte : le bouton pouvait être déplacé par la mise à jour de la main après fermeture native. Reprise conditionnelle après retrait de l’entrée historique, avec gardes de montage/génération. Assertion navigateur renforcée vers une vraie cible de la main.",
     "validation": "TypeScript global final, ESLint ciblés et diff-check réussis. Navigateur : Personnel/aides 4 formats 320/390/768/1440 ; Atelier 3 ; Publicité 47 ; soins 75 ; récapitulatif 44 et une nouvelle capture ciblée 320 ; Quartier 17 ; missions 29 ; cartes 23. Images chargées, taille réelle, séparation image/texte, clavier, focus, confirmations, absence de mutation à la lecture et absence de débordement vérifiés. Captures mobiles, tablette et bureau inspectées.",
-    "reports": ["output/illustrated-help/coverage.json", "output/illustrated-help/assets.json", "output/placard-staff-ui/help-dashboard-report.json", "output/help-dashboard-workshop/report.json", "output/clarity-lot32/after/functional-report.json", "output/culture-care/result.json", "output/arena-recap/report.json", "output/arena-recap/report-culture-help.json", "output/placard-village-ambience/report.json", "output/clarity-lot14/after/report.json", "output/clarity-lot23/after/report.json"],
+    "reports": [
+      "output/illustrated-help/coverage.json",
+      "output/illustrated-help/assets.json",
+      "output/placard-staff-ui/help-dashboard-report.json",
+      "output/help-dashboard-workshop/report.json",
+      "output/clarity-lot32/after/functional-report.json",
+      "output/culture-care/result.json",
+      "output/arena-recap/report.json",
+      "output/arena-recap/report-culture-help.json",
+      "output/placard-village-ambience/report.json",
+      "output/clarity-lot14/after/report.json",
+      "output/clarity-lot23/after/report.json"
+    ],
     "next": "Demande traitée localement. Publication non effectuée ; reprendre la prochaine demande explicite sans nouveau tour d’audit global."
   },
   "helpDashboards": {
@@ -432,7 +1723,16 @@
     "status": "Aides explicatives du jeu remaniées et validées localement. Aucun déploiement ni migration pour cette refonte visuelle.",
     "scope": "Journée personnelle : répartition réelle des 12 h, prochaine recharge, comparaison de vitesse et cinq activités sélectionnables au clavier avec échelle commune 0–60 minutes. Personnel, Atelier, entrepôt, culture, soins, récapitulatifs, commerce, réseaux, finances, missions, métier et Quartier : faits courts, parcours en étapes et graphiques comparables. Composants KqHelpDashboard/Grid/Steps/Note partagés, illustrations et matériaux existants conservés. Formulaires, historiques, références fabricant et tableaux déjà utiles préservés.",
     "validation": "TypeScript global et ESLint ciblés réussis avant le chantier Contrats suivant. Navigateur : 3 aides Personnel, 11 journée/gestes, 3 Atelier, 47 Publicité, 75 soins, 44 récapitulatifs, 17 Quartier et 29 missions. Vérifications mobiles et bureau, clavier, absence de débordement, coûts/paies, confirmations/reprises et absence de mutation à la lecture. Corrections de styles hérités dans les offres Atelier, Culture, packs, finances et graphiques du récapitulatif ; barres réellement visibles contrôlées. Captures inspectées.",
-    "reports": ["output/placard-staff-ui/help-dashboard-report.json", "output/placard-staff-ui/player-work-report.json", "output/help-dashboard-workshop/report.json", "output/clarity-lot32/after/functional-report.json", "output/culture-care/result.json", "output/arena-recap/report.json", "output/placard-village-ambience/report.json", "output/clarity-lot14/after/report.json"],
+    "reports": [
+      "output/placard-staff-ui/help-dashboard-report.json",
+      "output/placard-staff-ui/player-work-report.json",
+      "output/help-dashboard-workshop/report.json",
+      "output/clarity-lot32/after/functional-report.json",
+      "output/culture-care/result.json",
+      "output/arena-recap/report.json",
+      "output/placard-village-ambience/report.json",
+      "output/clarity-lot14/after/report.json"
+    ],
     "next": "Version illustrée et interactive traitée dans illustratedHelp. Prolongation et réembauche suivies séparément dans staffContractLifecycle. Ne pas rouvrir un audit global."
   },
   "staffContractLifecycle": {
@@ -445,7 +1745,10 @@
     "integrity": "Lecture du dernier contrat de la personne limitée au propriétaire ; identité permanente et nouvel identifiant de contrat à la réembauche. Archives inchangées, même XP et historique récent d’heures, nouveaux droits et planning automatique à reprogrammer. Pré-règlement puis mutation figée : aucun double avancement du trim continu. Révision serveur, contrôle exact de l’état, horloge serveur et reprise avec la même clé protègent les confirmations et les courses réseau.",
     "validation": "TypeScript global et ESLint ciblés réussis. Moteur : 212 tests initiaux puis 53 tests concernés après correction du trim, dont 40 contrats et 13 trim partagé. API/routes : 45 tests réussis. SQL : 78 contrôles réussis ; permissions Supabase : 362 fichiers vérifiés. Navigateur : 7 groupes à 320/390/1440 px, clavier, annulation et retour du focus, reprise après réponse perdue, carence, exactitude des cinq XP, historique intact, absence de doublon/débit/débordement et compatibilité avant migration. Captures de prolongation mobile et réembauche bureau inspectées.",
     "regression": "Les 4 groupes navigateur des fiches employés existantes passent également après intégration du contrôleur et des nouvelles actions.",
-    "reports": ["output/placard-staff-ui/contract-lifecycle-report.json", "output/placard-staff-ui/employee-sheet-report.json"],
+    "reports": [
+      "output/placard-staff-ui/contract-lifecycle-report.json",
+      "output/placard-staff-ui/employee-sheet-report.json"
+    ],
     "next": "Migration 007 appliquée. Publication du code restante selon demande ; aucun nouvel audit nécessaire."
   },
   "staffRequestKeyHttp": {
@@ -462,7 +1765,12 @@
     "changes": "Suppression des boutons Son du quartier et des activités, du fournisseur audio commun, de la synthèse des dés/récoltes/jurys/récompenses et de l’ancien hook de navigation. Styles et tests audio obsolètes retirés ; aperçus et audits adaptés.",
     "packs": "Sons des ouvertures et révélations de packs conservés, avec leur bouton Son et leur synthèse locale sans Supabase. Fichiers du parcours packs rétablis à leur version antérieure à cette demande.",
     "validation": "85 tests ciblés, TypeScript global, ESLint ciblé et diff-check réussis. Navigateur : 17 groupes village, 26 récoltes/missions et 20 contrats réussis, sans contexte audio ni boutons de son. Les 8 groupes packs confirment le bouton Son, l’activation volontaire, la réutilisation du contexte audio et son arrêt à la fermeture. Captures mobiles du quartier et des packs inspectées.",
-    "reports": ["output/placard-village-ambience/report.json", "output/placard-game-moments/report.json", "output/placard-renewable-contracts/report.json", "output/pack-opening-studio/report.json"],
+    "reports": [
+      "output/placard-village-ambience/report.json",
+      "output/placard-game-moments/report.json",
+      "output/placard-renewable-contracts/report.json",
+      "output/pack-opening-studio/report.json"
+    ],
     "next": "Demande traitée et validée localement. Reprendre uniquement la prochaine demande explicite ; aucune migration nécessaire."
   },
   "staffDashboard": {
@@ -472,7 +1780,11 @@
     "scope": "Quatre indicateurs : temps du joueur, heures disponibles des salariés, coût mensuel estimé et paie réellement due. Prochaine action adaptée à la paie, au recrutement ou au repos ; trésorerie et semaines types visibles. Cartes illustrées regroupant portrait, contrat, heures, fiche et semaine type. Repos sans jauge 0/0 ; postes de travail réunis dans un panneau distinct. Matériaux papier et personnages existants conservés.",
     "preserved": "Calculs métier, montants serveur, affectations, glisser-déposer souris et tactile, animations, confirmations, annulations, fiches, planning quotidien et hebdomadaire. Données périmées signalées et actions verrouillées après une erreur de lecture.",
     "validation": "TypeScript global, ESLint ciblé et contrôle du diff réussis. 25 groupes navigateur : 13 dashboard, 4 fiches, 8 plan de travail. Largeurs 320/390/1440 px ; valeurs exactes, repos, paie partielle, équipe vide, erreur/reprise, clavier, focus, drag souris/tactile et défilement. Captures finales inspectées. Transport simulé, aucune requête métier distante ni erreur navigateur.",
-    "reports": ["output/placard-staff-ui/dashboard-report.json", "output/placard-staff-ui/employee-sheet-report.json", "output/placard-staff-ui/work-plan-report.json"],
+    "reports": [
+      "output/placard-staff-ui/dashboard-report.json",
+      "output/placard-staff-ui/employee-sheet-report.json",
+      "output/placard-staff-ui/work-plan-report.json"
+    ],
     "next": "Demande de clarification visuelle de Personnel traitée. Migration de vitesse des actions appliquée depuis. Reprendre la prochaine demande explicite sans nouvel audit global."
   },
   "actionWorkSpeed": {
@@ -483,7 +1795,12 @@
     "authority": "Coût calculé en SQL depuis les XP persistées du joueur, jamais depuis un niveau client ou un employé. Héritage playerProcessingXp conservé. Ledger en centièmes d’heure, limite 12 h, CAS, verrouillage, échecs atomiques, actions sans effet et reçus rejoués préservés. Aucune modification de la progression XP.",
     "ui": "Temps courant et niveau dans le récapitulatif de journée ; durée avant publicité, marketing et post sponsorisé, puis dans les confirmations des campagnes. Compétence transmise depuis le snapshot Personnel. Données indisponibles : plage explicative sans durée courante inventée. Temps de diffusion et travail personnel distincts.",
     "validation": "165 tests TypeScript ciblés et 206 contrôles PostgreSQL réussis ; permissions des 361 migrations, TypeScript global, ESLint ciblé et diff-check réussis. Navigateur : publicité 45 observations, marketing 72 observations, partenariats 5 groupes et réserve personnelle 11 groupes. Niveaux 1/5/10, demi-heures proportionnelles, compétences distinctes, état inconnu, 320/390/1440 px, clavier, reprises et montants contrôlés ; captures inspectées. Transport simulé, aucune mutation distante.",
-    "reports": ["output/placard-staff-ui/player-work-report.json", "output/clarity-lot32/after/functional-report.json", "output/clarity-lot31/after/functional-report.json", "output/social/sponsors-report.json"],
+    "reports": [
+      "output/placard-staff-ui/player-work-report.json",
+      "output/clarity-lot32/after/functional-report.json",
+      "output/clarity-lot31/after/functional-report.json",
+      "output/social/sponsors-report.json"
+    ],
     "migration": "supabase/migrations/20261108000600_kq_communication_work_speed.sql",
     "next": "Migration 006 appliquée et vérifiée ; publication du code restante selon demande. Ne pas refaire l’audit global."
   },
@@ -519,7 +1836,10 @@
     "sources": "docs/bete-de-concours/processing-manufacturer-sources-2026-11-08.json : six familles actives et cinq références historiques. Sources officielles distinguant matière sèche, humide et produit fini. Débits non publiés estimés avec accord explicite du joueur ; niveaux et part humaine sont des paramètres de jeu. Profils et hypothèses dans src/lib/kanab-quest-processing-profiles.ts, visibles dans les détails du devis et les fiches machines.",
     "entry": "Personnel pour les réserves ; Commerce pour choisir le lot à transformer et reprendre une tranche ; Atelier pour les machines et le trim. Le lien joueur ouvre directement l’action existante dans Commerce.",
     "validation": "227 tests Personnel et 318 tests profils/validation/commerce/backend distincts réussis ; 58 contrôles SQL Transformation et 623 historiques Entrepôt, composition comptabilité/planning/Culture réelle. Permissions des 359 migrations vérifiées ; TypeScript global, ESLint ciblé et diff-check réussis. Six groupes navigateur à 320/390/1440 px : devis, reprise, zéro heure joueur, semaine type, sources, erreurs et même clé, aucune date sentinelle ni débordement. Captures inspectées. Contention simultanée multiconnexion non mesurée par PGlite.",
-    "reports": ["output/placard-staff-ui/processing-work-report.json", "output/processing-work-migration/completion.json"],
+    "reports": [
+      "output/placard-staff-ui/processing-work-report.json",
+      "output/processing-work-migration/completion.json"
+    ],
     "activation": "Projet eyowwwpdmfrulhkpvlnf : 54 contrôles préalables et 91 après application réussis. 359 migrations synchronisées, aucune en attente. Empreintes inchangées : 366 lots préparés, 449 stocks commerciaux, 1443 commandes commerce, 452 cultures, 26 reçus Personnel, 13 archives, 3 comptes Personnel, 37 portefeuilles, 434 fleurs, 432 lots stockés, 8 suivis trim et dix fonctions protégées. Nouvelle table privée vide, aucune commande métier distante exécutée. Reçu : output/processing-work-migration/completion.json.",
     "next": "Demande traitée. Publication applicative non effectuée ; reprendre uniquement la prochaine demande du joueur sans nouvel audit global."
   },
@@ -531,7 +1851,11 @@
     "bonuses": "Bonus et XP attribués au travail réellement réalisé ; différences cumulées du barème existant selon niveau Culture, métier et trait. État enrichi enregistré avant résolution et projeté aux membres d’une campagne, pour une seule demi-heure totale. Reçus par culture canonique et étape, reprise sans double débit.",
     "ui": "Portrait, salarié responsable, heures restantes et bonus serveur dans Culture ; disponibilité, réserve consommée et Toutes les cultures dans Personnel/planning. Chargement ou devis indisponible bloque le lancer ; bouton Actualiser les heures pour reprendre après modification.",
     "validation": "198 tests moteur/planning initiaux, suite Culture 37 tests revue après alignement XP ; 144 tests API/backend/validation finaux et 23 tests campagnes, soit 365 tests distincts. 264 contrôles SQL Culture avec vrais moteurs TS et sauvegardes SQL, 94 journée joueur, grants des 358 migrations, TypeScript global et ESLint ciblé réussis. Navigateur : 6 groupes Personnel/statut à 320/390/1440 px et 13 contrôles du vrai guide, données simulées, zéro erreur. Cas 2 h → 4 étapes → blocage → +1 h → 2 étapes réussi. Contention multiconnexion non mesurée par PGlite.",
-    "reports": ["output/placard-staff-ui/culture-work-report.json", "output/placard-journey-continuity/guide-report.json", "output/culture-work-migration/completion.json"],
+    "reports": [
+      "output/placard-staff-ui/culture-work-report.json",
+      "output/placard-journey-continuity/guide-report.json",
+      "output/culture-work-migration/completion.json"
+    ],
     "activation": "14 contrôles préalables et 35 contrôles distants réussis. 358 migrations synchronisées, aucune en attente. Empreintes inchangées : 452 cultures, 26 reçus, 13 archives, 3 comptes Personnel, 37 portefeuilles, 434 fleurs, 432 stocks, 8 suivis trim et dix fonctions protégées.",
     "next": "Publication applicative non effectuée. Ne pas refaire l’audit global ; reprendre uniquement la prochaine demande du joueur."
   },
@@ -568,8 +1892,19 @@
     "changes": "Bouton Voir la fiche sur le plan et dans les dossiers, accès depuis les reçus. Vrai portrait, cinq compétences avec niveaux et XP, trait et parcours, coût mensuel estimé détaillant brut et charges, contrat, dates, heures, congés et paie. Planning détaillé accessible sans déclencher de travail. Sélection, glisser-déposer et affectations préparées conservés.",
     "accessibility": "Dialog natif, verrouillage du défilement, confinement du focus, fermeture par Échap ou bouton et retour au déclencheur. Avertissement si lecture indisponible, données connues conservées et préparation du travail désactivée. Animations du plan suspendues pendant la consultation.",
     "validation": "TypeScript global et ESLint ciblé réussis. 13 groupes navigateur : quatre pour la fiche à 320/390/1440 px, cinq de Personnel et quatre des reçus recrutement/formation. Coûts et compétences exacts, CDI35h et CDD14h, erreurs et reprise, zéro mutation lors de la consultation, zéro erreur navigateur ou requête distante. Captures mobile et bureau inspectées.",
-    "reports": ["output/placard-staff-ui/employee-sheet-report.json", "output/placard-staff-ui/report.json", "output/placard-staff-ui/staff-moments-report.json"],
-    "files": ["src/components/placard/KqStaffEmployeeSheet.tsx", "src/components/placard/KqStaffEmployeeSheet.module.css", "src/components/placard/KqStaffDesk.tsx", "src/components/placard/KqStaffWorkPlan.tsx", "src/components/placard/KqStaffWorkPlan.module.css", "scripts/audit-placard-staff-ui.mjs"],
+    "reports": [
+      "output/placard-staff-ui/employee-sheet-report.json",
+      "output/placard-staff-ui/report.json",
+      "output/placard-staff-ui/staff-moments-report.json"
+    ],
+    "files": [
+      "src/components/placard/KqStaffEmployeeSheet.tsx",
+      "src/components/placard/KqStaffEmployeeSheet.module.css",
+      "src/components/placard/KqStaffDesk.tsx",
+      "src/components/placard/KqStaffWorkPlan.tsx",
+      "src/components/placard/KqStaffWorkPlan.module.css",
+      "scripts/audit-placard-staff-ui.mjs"
+    ],
     "limits": "Validation locale avec le moteur de jeu et un transport simulé ; aucun appel métier de production ni essai utilisateur réel.",
     "next": "Demande traitée. Reprendre le prochain besoin explicite sans refaire l’audit général ni les migrations déjà appliquées."
   },
@@ -634,9 +1969,19 @@
     "lot": 36,
     "auditSection": 52,
     "status": "Accompagnement progressif : 24 objectifs en quatre parties, validation par l’état confirmé du jeu, barre compacte et fermeture complète mémorisées.",
-    "files": ["src/lib/kanab-quest-farm-progress.ts", "src/lib/kanab-quest-farm-progress.test.ts", "src/components/placard/KqFarmGuide.tsx", "src/components/placard/KqFarmGuide.module.css", "src/components/placard/PlacardPlayerShell.tsx", "scripts/audit-placard-journey-continuity.mjs"],
+    "files": [
+      "src/lib/kanab-quest-farm-progress.ts",
+      "src/lib/kanab-quest-farm-progress.test.ts",
+      "src/components/placard/KqFarmGuide.tsx",
+      "src/components/placard/KqFarmGuide.module.css",
+      "src/components/placard/PlacardPlayerShell.tsx",
+      "scripts/audit-placard-journey-continuity.mjs"
+    ],
     "validation": "67 tests ciblés, TypeScript global, ESLint ciblé et contrôle du diff passent. Guide navigateur : 6 groupes à 320/390/1440 px, lancement/lancer/résolution réels dans l’API d’essai, exactement trois écritures explicitement autorisées, aucun achat/pack automatique, suivi du bon lot, réduction et fermeture persistantes, barre visible sous l’en-tête. Captures inspectées. Recette existante de continuité : 21 scénarios passent après intégration.",
-    "browserReports": ["output/placard-journey-continuity/guide-report.json", "output/placard-journey-continuity/report.json"],
+    "browserReports": [
+      "output/placard-journey-continuity/guide-report.json",
+      "output/placard-journey-continuity/report.json"
+    ],
     "changes": "Suppression de Scène suivante : les visites ne valident plus les actions métier. Fermé, le guide ne laisse aucun bandeau et se retrouve dans Apprendre à jouer. Migration locale v1→v2 sans convertir la lecture en accomplissements. Même récolte suivie jusqu’à la vente, autre lot sélectionnable dans le carnet. Aucun changement économique, migration SQL ou publication."
   },
   "latestCorrection": {
@@ -652,6 +1997,10 @@
     "doneWhen": "Après réponse perdue puis destruction de la page, une commande enregistrée ou non retrouve une issue claire et se reprend sans doublon. Recette navigateur et tests de reprise ciblés réussis."
   },
   "playerResearch": {
+    "status": "Essais par des joueurs confirmés par l’utilisateur, sans bug signalé pour l’instant. Aucun compte rendu d’observation structurée reçu ; validation de compréhension encore non documentée.",
+    "preparation": "docs/bete-de-concours/AUDIT-REPRISE-QUARTIER-2026-11-11.md, annexe Séances avec des débutants",
+    "worksheet": "docs/bete-de-concours/observations-debutants.csv",
+    "observationsCollected": 0,
     "task": "Faire essayer le guide progressif dans la vraie ferme à 5 à 8 nouveaux joueurs.",
     "entry": "docs/bete-de-concours/AUDIT-CLARTE-ET-PARCOURS-2026-10-29.md, section 14",
     "scope": "Observer un objectif à la fois : démarrage, aménagement, culture, rangement, attente d’affinage, jury, vente puis découverte des activités. Vérifier que réduire, fermer et retrouver le guide sont compris et qu’aucun objectif ne bloque une partie existante. Réutiliser le protocole existant ; pas de nouvel audit général.",
@@ -666,7 +2015,10 @@
     "trim": "Dans Entrepôt → Atelier → Trim, obligatoire sur les nouvelles récoltes, joueur ou employé ; manuel plus qualitatif, machine plus rapide avec perte de présentation. Missions persistantes, coût confirmé, garde serveur avant jury/commerce et accès direct depuis récoltes, Quartier et HUD. Personnel conserve les heures communes et l’historique ; les lots historiques sont préservés.",
     "rules": "docs/bete-de-concours/personnel-rules.json : références françaises vérifiées, paramètres de jeu, simplifications et ordre des trois migrations.",
     "validation": "165 tests Personnel/API/intégration/guide ; 98 tests résumé/readiness/équipement ; 85 tests finance/backend/intégration (périmètres pouvant se recouper). SQL isolé : 65 contrôles Personnel, 39 trim, 32 comptabilité. Permissions explicites : 352 migrations contrôlées. Recettes navigateur Personnel et accès trim à 320/390/1440 px : confirmations, reprise sans double débit, avatars, clavier, congés, paie et trim ; aucun appel externe. TypeScript global, ESLint ciblé et contrôle du diff réussis après intégration finale.",
-    "browserReports": ["output/placard-staff-ui/report.json", "output/clarity-lot6/quartier/report-targeted.json"],
+    "browserReports": [
+      "output/placard-staff-ui/report.json",
+      "output/clarity-lot6/quartier/report-targeted.json"
+    ],
     "databaseActivation": "Projet eyowwwpdmfrulhkpvlnf, identique à la configuration du site. Versions 20261107000100, 20261107000200 et 20261107000300 appliquées depuis un lot isolé. 46 prérequis et 81 contrôles distants de catalogue/permissions validés ; 352 migrations synchronisées, aucune en attente. Vérifications en lecture seule, aucun appel métier de joueur. Reçu : output/personnel-migrations/completion.json.",
     "next": "Publier le code applicatif Personnel et Atelier via le workflow habituel, puis recette avec une ferme de test : nouvelle récolte → trim joueur dans l’Atelier → recrutement → mission → échéance de salaire → règlement → vérification Finances. La migration active déjà le trim obligatoire sur les nouvelles récoltes ; le code correspondant fournit l’interface pour le réaliser."
   },
@@ -678,7 +2030,13 @@
     "machines": "Six fiches lisibles avec machines acquises/installées, niveau, capacité du jeu, usure et prochaine action. Restauration des dix illustrations historiques pour six familles ; modèles de presse et laveuse adaptés aux gammes, images entières sans recadrage ni sprites au sol. Achats, installation, amélioration et entretien conservent leurs confirmations et règles. Dans l’Atelier, les métriques de culture cèdent la place aux compteurs de trim et de machines ; la trésorerie reste visible.",
     "artwork": "docs/bete-de-concours/atelier-artwork-restoration.json",
     "validation": "224 tests navigation/métier/intégration, 10 tests Atelier et 12 tests illustrations/machines passent. TypeScript global, ESLint ciblé et contrôle du diff réussis. Recettes navigateur à 320/390/1440 px : Personnel/trim, 30 contrôles inventaire, achat/installation/amélioration/entretien, reprise avec même clé, clavier et mouvements réduits. Trois parcours dans le vrai Shell et le vrai Atelier confirment Trim → Machines → Trim, verrouillage du parent, annulation sans écriture et retour à la bonne récolte. Captures inspectées, aucun appel métier externe. Les trois migrations appliquées gardent les empreintes de leur manifeste.",
-    "browserReports": ["output/placard-staff-ui/report.json", "output/clarity-lot6/quartier/report-targeted.json", "output/clarity-lot9/workshop/results.json", "output/visual-workshop/report.json", "output/placard-journey-continuity/workshop-report.json"],
+    "browserReports": [
+      "output/placard-staff-ui/report.json",
+      "output/clarity-lot6/quartier/report-targeted.json",
+      "output/clarity-lot9/workshop/results.json",
+      "output/visual-workshop/report.json",
+      "output/placard-journey-continuity/workshop-report.json"
+    ],
     "next": "Après publication explicite du code, vérifier sur une ferme de test le parcours nouvelle récolte → Atelier/trim → jury, puis une affectation salariée utilisant la même réserve d’heures que Personnel."
   },
   "personnelTutorial": {
@@ -706,7 +2064,11 @@
     "scope": "Sept postes illustrés reliés par une allée : culture, transformation, communication, prospection, administration, formation et accès au trim. Portraits cartoon existants, jauge individuelle d’heures, missions confirmées dans leur poste avec cible et état En cours ou À venir. Les fiches et contrats restent sous le plan. Le tutoriel explique le geste.",
     "interaction": "Glisser souris/tactile ou sélectionner salarié puis poste au clavier/tap. Le dépôt ouvre le formulaire de la bonne personne et de la bonne activité : cible exacte, durée, coût et confirmation existante. Aucun travail ni débit au déplacement. Annulation, retour du focus, congé, repos, heures épuisées et erreur de lecture pris en compte. Le trim ouvre le vrai Atelier avec le salarié présélectionné, puis exige le choix du lot et de la méthode ; les confirmations verrouillent la navigation du parent.",
     "validation": "83 tests guide/progression/Atelier, TypeScript global, ESLint ciblé et contrôle du diff passent. Douze groupes navigateur à 320/390/1440 px : plan Personnel (7), vrai parcours Personnel→Atelier (1), tutoriel Personnel (4). Glisser souris et tactile réel, dont Administration initialement hors écran atteinte par défilement automatique au bord, clavier/tap, confirmation du salarié et de la deuxième culture explicitement choisie, une mutation autorisée par largeur, heures et mission relues après actualisation et remontage. Annulations sans écriture, retour du focus, indisponibilités, revue formation/prospection et trim du bon lot vérifiés. Captures inspectées ; aucun appel métier externe.",
-    "browserReports": ["output/placard-staff-ui/work-plan-report.json", "output/placard-journey-continuity/work-plan-report.json", "output/placard-journey-continuity/staff-guide-report.json"],
+    "browserReports": [
+      "output/placard-staff-ui/work-plan-report.json",
+      "output/placard-journey-continuity/work-plan-report.json",
+      "output/placard-journey-continuity/staff-guide-report.json"
+    ],
     "next": "Après publication explicitement demandée, essayer sur une ferme de test une répartition entre deux postes, puis un trim salarié dans l’Atelier ; observer la compréhension des heures réservées et de la confirmation. Aucun changement du moteur économique ou des migrations déjà appliquées."
   },
   "partnerProspecting": {
@@ -716,7 +2078,11 @@
     "rules": "Le serveur autorise les retours dans une même ville sans épuisement ni pénalité cumulative. Expérience, trait, réputation, abonnés et activité locale influencent la chance ; chaque succès ajoute un partenaire. Commerce et SQL conservent les réseaux dépassant 20, les volumes croissent avec tous les partenaires. Bonus de prix réseau toujours limité à quatre points et recrutement par vente toujours cadencé. Aucun changement de contrat, paie ou capacité horaire.",
     "migration": "20261107000400_kq_unbounded_shop_partners.sql appliquée au projet eyowwwpdmfrulhkpvlnf : retrait des contraintes et écrêtements des comptes, campagnes, ventes, capacités et récompenses Personnel. Remplacements exacts contrôlés, transaction atomique, mêmes permissions. Invalidation des anciennes offres par révision ; reçus, réseau, fractions de progression, dette et trésorerie conservés. Empreintes des migrations Personnel 001–003 inchangées. 70 contrôles préalables et 70 contrôles après application réussis, cinq empreintes de fonctions conformes aux remplacements attendus ; 353 migrations synchronisées, aucune en attente. Reçu : output/shop-partners-migration/completion.json. Le code correspondant reste à publier pour retirer aussi le plafond des devis applicatifs.",
     "validation": "71 tests Personnel/backend, 76 tests commerce/relevé et 84 tests guide/progression/intégration passent. TypeScript global et ESLint ciblé passent. SQL isolé : 66 contrôles, devis marchand 19→21, prospection au-delà de 20 et 100, capacités jusqu’à dix millions de partenaires, reçus antérieurs, rejeu, report de campagne, conservation des données et permissions. Contrôle des grants : 353 migrations. Recette navigateur à 320/390/1440 px : clic/tap direct sur carte, défilement horizontal au clavier, profils changeants, confirmation exacte Inès/Brest/2 h/60 €, annulation sans écriture, deux tournées dans une ville déjà prospectée trente fois, réseau 125→127, deux trajets facturés et aucun gain répété à l’actualisation. Captures inspectées ; aucun appel métier externe.",
-    "reports": ["output/shop-partners/sql-report.json", "output/placard-staff-ui/prospecting-report.json", "output/shop-partners-migration/completion.json"],
+    "reports": [
+      "output/shop-partners/sql-report.json",
+      "output/placard-staff-ui/prospecting-report.json",
+      "output/shop-partners-migration/completion.json"
+    ],
     "next": "Publier le code applicatif via le workflow habituel, puis vérifier une tournée commerciale avec une ferme de test. La migration est déjà appliquée. Garder les profils locaux comme informations de jeu tant qu’aucun mécanisme de vente par ville n’est ajouté explicitement."
   },
   "playerWorkday": {
@@ -727,7 +2093,12 @@
     "sharedHours": "12 h par jour du jeu, week-end compris pour le joueur, sans report. Les gestes existants de culture, cartes, soins, transformation, commerce, réseaux, stockage, équipement et règlement des factures consomment aussi cette réserve. Catalogue commun : 30 min pour les gestes courants, 1 h pour lancement de culture/préparation/conditionnement, 2 h pour publicité/marketing/publication sponsorisée ; missions et trim selon durée choisie. Consultations, délégation, pauses, annulations, récompenses acquises et banque restent gratuites en temps. Coûts visibles par écran et en détails ; inconnue ou indisponible, la jauge ne devient pas artificiellement zéro.",
     "authority": "Migration 005 : un seul registre playerWorkDays, horloge serveur, validation du delta personnel et révision partagée avec Personnel. 23 points d’entrée SQL couvrent les actions manuelles ; effets des salariés et règlements automatiques exclus. Heures, argent et reçu atomiques ; action refusée ou rejeu sans second débit, appels imbriqués sans double coût. Anciennes heures et XP trim conservées, migrations 001–004 inchangées. Erreurs de temps lisibles, réessai de concurrence et de changement de jour avec même clé.",
     "validation": "134 tests moteur/Personnel/intégration puis 162 tests API/backend ciblés réussis (périmètres recoupés). TypeScript global et ESLint ciblé passent. SQL : 94 contrôles, dont rollback au plafond, reçus, changement de jour, concurrence par révision, permissions et parité des coûts SQL/TypeScript ; 354 migrations contrôlées pour les grants. Navigateur : huit groupes personnels/jauge globale, trois de prospection salariée et quatre du vrai Shell/tutoriel à 320/390/1440 px. Carte sans recrutement, coûts exacts, confirmations/reprises/annulations, retour du focus, trim partagé, XP, renouvellement, erreur de lecture et absence de débordement. Captures mobile inspectées.",
-    "reports": ["output/placard-staff-ui/player-work-report.json", "output/placard-staff-ui/prospecting-report.json", "output/placard-journey-continuity/staff-guide-report.json", "output/player-work-migration/completion.json"],
+    "reports": [
+      "output/placard-staff-ui/player-work-report.json",
+      "output/placard-staff-ui/prospecting-report.json",
+      "output/placard-journey-continuity/staff-guide-report.json",
+      "output/player-work-migration/completion.json"
+    ],
     "databaseActivation": "Migration 20261107000500 appliquée au projet eyowwwpdmfrulhkpvlnf : 344 contrôles préalables et 637 après application réussis. Empreintes conformes des 23 fonctions métier capturées, des 23 enveloppes, des trois fonctions ajustées et des quatre fonctions auxiliaires ; signatures, valeurs par défaut et permissions vérifiées. 354 migrations synchronisées, aucune en attente. Contrôles de catalogue uniquement, sans lecture de parties ni appel de commande métier. Reçu : output/player-work-migration/completion.json.",
     "limits": "Les fonctions Personnel et réseaux sont exécutées réellement dans PostgreSQL isolé ; les autres frontières métier utilisent des doublures explicites et leurs suites existantes. PGlite n’a qu’une connexion : contention simultanée non simulée, ordre des verrous revu.",
     "next": "Publier le code correspondant via le workflow habituel sur demande explicite, puis essayer une tournée et un geste manuel sur une ferme de test. Les migrations 001–005 sont déjà appliquées et vérifiées."
@@ -747,5 +2118,68 @@
   "closure": [
     "Essais de compréhension avec 5 à 8 nouveaux joueurs ; leurs résultats peuvent révéler les dernières corrections. Les notes UX ne sont pas rehaussées par les seuls tests automatisés."
   ],
-  "constraints": "Pas de publication ou migration implicite. Vérifier git status ; les modifications de facturation peuvent appartenir à un autre chantier. Ne pas supposer que les commits locaux sont déployés."
+  "constraints": "Pas de publication ou migration implicite. Vérifier git status ; les modifications de facturation peuvent appartenir à un autre chantier. Ne pas supposer que les commits locaux sont déployés.",
+  "schoolTerpeneCards": {
+    "updated": "2026-11-14",
+    "status": "Livraison locale : 28 cartes liées au cannabis, toutes illustrées ; 7 nouveaux dessins générés et intégrés. 58 dossiers retirés du catalogue visible. Quiz et base inchangés ; aucun déploiement.",
+    "scope": {
+      "cards": 28,
+      "archivedCorpus": 86,
+      "excludedFromPublicCatalog": 58,
+      "molecularStructures": 26,
+      "structuresAbsent": [
+        "borneol",
+        "nerolidol"
+      ],
+      "newGeneratedImages": 7,
+      "newImageBytes": 552432,
+      "aromaArtwork": "15 repères illustrés : 7 nouveaux dessins image_gen et 8 images Buddies réutilisées ; associations explicites par fiche, sans dessin générique ni odeur inventée."
+    },
+    "selection": {
+      "rule": "Présence mesurée dans une matrice cannabis, identité étalon ou MS/RI, odeur décrite et isomère interprétable.",
+      "limits": "Sélection éditoriale, pas inventaire exhaustif. Exclusion ne signifie pas absence du cannabis. Corpus source conservé."
+    },
+    "encyclopedia": {
+      "topics": 8,
+      "articles": 46,
+      "records": 137,
+      "terms": 160
+    },
+    "interface": [
+      "Carrousel, popup, recherche, index et filtres limités à la même sélection.",
+      "28 cartes parcourues sur chaque largeur ; toutes leurs images chargées sans substitut générique.",
+      "Illustrations de notes olfactives agrandies et légendées ; 26 schémas PubChem accessibles.",
+      "Fiches retirées : anciennes URL redirigées vers l’article général sur les terpènes."
+    ],
+    "validation": {
+      "targetedTests": 14,
+      "lint": "PASS",
+      "build": "PASS",
+      "browser": "PASS",
+      "widths": [
+        320,
+        1440
+      ],
+      "all28CardsIllustrated": true,
+      "all7NewAssetsUsed": true,
+      "focusTrap": true,
+      "focusRestoration": true,
+      "touchSwipe": true,
+      "archivedRecordRoutes": true
+    },
+    "reports": [
+      "output/school/terpene-cards-ui-report.json",
+      "output/school/terpene-curation-build-exit.json",
+      "output/school/terpene-illustrated-linalool-1440.png",
+      "output/school/terpene-illustrated-myrcene-320.png"
+    ],
+    "provenance": [
+      "docs/bete-de-concours/cannabis-terpene-selection-provenance.json",
+      "docs/bete-de-concours/terpene-aroma-art-v1.json",
+      "docs/bete-de-concours/terpene-card-visual-provenance.json",
+      "docs/bete-de-concours/terpene-structure-provenance.json"
+    ],
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&section=learn&passage=library-theme-terpenes",
+    "nextBoundedTask": "Recueillir le retour sur les cartes illustrées avant toute autre rubrique ; ne pas relancer un audit général."
+  }
 }

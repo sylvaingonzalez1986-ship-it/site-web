@@ -323,3 +323,7 @@
   .navGroup button[data-placard-unavailable]:hover { transform: none; }
   .navGroup button[data-placard-unavailable]:hover .navArrow { opacity: 0; }
 }
+.cardsTabs { display: flex; gap: 10px; padding: 14px; flex-wrap: wrap; }
+.cardsTabs button { flex: 1; min-width: 110px; min-height: 48px; padding: 10px 20px; color: var(--game-ink, #172923); font-weight: 800; background: transparent; border: var(--game-control-border-width, 2px) solid transparent; border-image: var(--game-control-art, var(--game-control-paper, url("/placard/ui/control-paper-v2.webp"))) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; border-radius: 0; box-shadow: none; cursor: pointer; }
+.cardsTabs button:hover, .cardsTabs button[aria-current] { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); }
+.cardsTabs button:focus-visible { outline: 3px solid var(--game-ink, #172923); outline-offset: 3px; }

@@ -1,0 +1,14 @@
+{
+  "createdAt": "2026-11-12",
+  "tool": "image_gen.imagegen (outil intégré), compétence imagegen",
+  "reference": "public/placard/school/interior-v4.webp — direction artistique uniquement",
+  "prompt": "Create a NEW illustrated game scene, landscape 1536x1024, for the École des Chanvriers. The attached image is ONLY an art direction reference: reproduce its readable cartoon village style, thick dark ink outlines, cream paper warmth, teal painted details, warm golden timber, lightly textured hand-painted fills, slightly elevated three-quarter cutaway view. New subject: a small educational glass greenhouse for legal industrial hemp seedlings, in a Breton village school garden. Exterior front wall and near roof cut away for readable interior, clear back and right glass panes. Hemp only: accurate palmate serrated narrow leaflets, several modest vegetative hemp seedlings in distinct pots on one timber bench at left, separate ground soil bed on lower right, tall straight slender hemp plants in that bed. Distinct educational objects placed with space around them: a SMALL wet patch on the central foreground floor, a closed rainwater collection barrel outside left side connected to roof gutter, modest droplets of condensation on upper-right glass pane, a roof ventilation window visibly hinged open top centre, a simple small circulating fan fixed to central rear post. Daylight entering transparent glass. Keep each object easy to identify. No bloom crops, no other flowers, no huge dense cannabis buds, no consumer products, no smoke, no characters. No written text, no arrows, no labels, no numbers, no charts, no extra vignettes, no title or frame. Entire scene fully within canvas with comfortable cream margin. This is a visual teaching illustration, not an operational cultivation blueprint: no numeric controls, no wiring diagram, no schedule. Match reference art precisely, not photorealism and not a botanical textbook painting.",
+  "generatedOriginal": "C:/Users/sylva/.codex/generated_images/01a1cc9c-af01-71e0-a0e6-59f0eb060d0f/exec-81a2b626-cb3e-4cd8-b4ef-986f0af934e8.png",
+  "assets": [
+    "public/placard/school/cultivation/greenhouse-v1.webp",
+    "public/placard/school/cultivation/greenhouse-thumb-v1.webp"
+  ],
+  "processing": "Conversion WebP avec sharp ; largeur 1536 et 480, sans modification de contenu.",
+  "inspection": "Chanvre végétatif reconnaissable, aucun autre végétal fleuri dans la serre ; direction cartoon, encre, bois doré et détails turquoise du Quartier. Six repères espacés, texte et interactions en HTML.",
+  "limits": "Illustration synthétique pédagogique, sans mesure ni diagnostic. Le bac n’atteste pas la continuité avec la pleine terre. Les gouttes et mouvements ne simulent pas une vitesse physique."
+}

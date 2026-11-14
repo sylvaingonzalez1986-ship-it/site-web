@@ -1,0 +1,259 @@
+{
+  "id": "cultivation-corpus-2026-11-12",
+  "version": "2026-11-12.cultivation1",
+  "checkedAt": "2026-11-12",
+  "status": "Validé localement ; relecture croisée du cours effectuée",
+  "scope": "Comparaisons pédagogiques d’environnements et de milieux racinaires, trois dossiers fictifs, bilan électrique fictif et simulateur qualitatif. Aucun programme de production ou d’optimisation de substances contrôlées.",
+  "files": [
+    "src/lib/kanab-quest-school-cultivation-systems.ts"
+  ],
+  "classification": {
+    "environment": [
+      "outdoor",
+      "greenhouse",
+      "indoor"
+    ],
+    "medium": [
+      "soil",
+      "substrate",
+      "water"
+    ],
+    "rules": [
+      "Tunnel : variante de greenhouse ; chauffage absent par hypothèse explicite, pas consommation énergétique totale nulle.",
+      "Soil : sol en place dans cette grille ; substrate : matériau en contenant. Le sol est lui-même un substrat au sens botanique.",
+      "Water : sans substrat solide principal, avec support mécanique éventuel. L’hydroponie peut aussi employer un substrat solide.",
+      "Les huit exemples ne sont pas toutes les combinaisons possibles ; la simulation ne transforme pas une combinaison non listée en impossibilité.",
+      "Environnement, milieu, circuit ouvert ou fermé et niveau d’équipement sont des informations distinctes.",
+      "La scène illustrée ne permet pas d’affirmer que le bac est en pleine terre ni que son drainage est récupéré."
+    ]
+  },
+  "evidenceBoundaries": [
+    "Barbosa 2015 : statistiques agricoles et modèle d’installation hydroponique hypothétique à Yuma, pas deux essais de chanvre.",
+    "Banboukian 2025 : laitue américaine ; 1 kg comme unité ; transport vers le marché inclus dans le périmètre appelé cradle-to-gate ; tunnel supposé sans électricité ni combustible.",
+    "Joensuu 2024 : 1 kg de laitue fraîche comestible ; un site vertical finlandais (2018–2020) et référence de serre antérieure ; équipements, intrants, emballage et stockage temporaire inclus ; scénarios d’énergie et récupération de chaleur.",
+    "Les différences entre ces études ne fondent pas une hiérarchie universelle extérieur/serre/intérieur. Aucun ratio réel n’est attribué au chanvre.",
+    "UMass : accès direct bloqué, passages originaux indexés consultés. Point de rosée distingué d’une simple étiquette météo ; brassage distingué du renouvellement d’air. Aucun réglage ou tarif ancien repris.",
+    "Terres Inovia 2026 : passages relatifs aux débouchés et à leur contexte. Les slogans sur une absence absolue d’irrigation, de pesticides ou de risque ne sont pas repris."
+  ],
+  "fiction": {
+    "cases": [
+      "brittany-fibre-seed",
+      "teaching-nursery",
+      "research-station"
+    ],
+    "caseRules": [
+      "Aucune exploitation, commande, autorisation individuelle, quantité de production ou rémunération réelle n’est inventée.",
+      "Bretagne : parcelle existante ; deux orientations cohérentes fibre prioritaire ou graines et paille, dont le choix dépend du débouché et de la logistique.",
+      "Pépinière pédagogique : cadre légal supposé vérifié, semences certifiées ; ni vente de plants ni bouturage.",
+      "Station de recherche : autorisation adaptée supposée ; les équipements doivent répondre à la question expérimentale, sans recherche d’augmentation d’une teneur contrôlée.",
+      "Plusieurs options sont recevables quand leur objectif est explicité ; les options conditionnelles annoncent ce qui change."
+    ],
+    "balance": {
+      "boundary": "Électricité de fonctionnement pendant la culture et émissions associées seulement ; pas ACV complète.",
+      "denominator": "12 kg de biomasse aérienne sèche par lot, valeur fictive commune, non prédite.",
+      "rows": [
+        {
+          "id": "a",
+          "kWh": 120,
+          "factorKgCo2ePerKwh": 0.4,
+          "kgCo2e": 48,
+          "kg": 12,
+          "kWhPerKg": 10
+        },
+        {
+          "id": "b",
+          "kWh": 240,
+          "factorKgCo2ePerKwh": 0.1,
+          "kgCo2e": 24,
+          "kg": 12,
+          "kWhPerKg": 20
+        },
+        {
+          "id": "c",
+          "kWh": 180,
+          "factorKgCo2ePerKwh": 0.4,
+          "kgCo2e": 72,
+          "kg": 12,
+          "kWhPerKg": 15
+        }
+      ],
+      "rules": [
+        "Tous les nombres, y compris les facteurs d’émission, sont inventés pour l’exercice.",
+        "Aucun lot n’est associé à un système réel ni au mix électrique français.",
+        "kWh, kg CO₂e et kWh/kg sont trois unités distinctes ; jamais une échelle commune.",
+        "Séchage après récolte exclu : l’état sec définit le dénominateur, pas l’inclusion de son traitement dans le numérateur.",
+        "Exclusions explicites : infrastructures, matériaux, intrants, émissions du sol, eau, combustibles, transport et après-récolte."
+      ]
+    },
+    "simulation": {
+      "inputs": [
+        "environment",
+        "medium",
+        "weather",
+        "resources",
+        "purpose"
+      ],
+      "outputs": [
+        "title",
+        "observations",
+        "tensions",
+        "assumptions",
+        "limits",
+        "sourceIds"
+      ],
+      "method": "Règles qualitatives déterministes exposant les tensions et informations manquantes. Aucun classement universel, note, rendement, coût, consommation ou émission prédit. Aucun protocole cultural.",
+      "weatherLimits": "Cool-humid, hot-dry et mild sont des contextes fictifs, pas des relevés. Sans température des surfaces ni vapeur réellement présente, le point de rosée n’est ni calculé ni déclaré atteint."
+    }
+  },
+  "legalReview": {
+    "jurisdiction": "France",
+    "date": "2026-11-12",
+    "sources": [
+      "cultivation-system-france-hemp",
+      "cultivation-system-france-research"
+    ],
+    "scope": "Arrêté du 30 décembre 2021 consolidé après l’annulation du II et article R5132-86, VII. Variétés, usages et éventuelles autorisations sont supposés vérifiés ; la formation n’autorise pas une culture réelle.",
+    "limits": "Le seuil de 0,30 % de Δ9-THC ne constitue ni une autorisation générale de produit ni une dispense des règles propres aux usages. Aucun état détaillé des règles alimentaires, de commercialisation, d’importation ou d’autorisation scientifique n’est prétendu."
+  },
+  "audit": {
+    "checks": [
+      "Source references and stable unique IDs: PASS",
+      "Eight systems, ten criteria, three fictional cases, eight guide entries: PASS",
+      "Fictional balance arithmetic and inverse electricity/emissions ranking: PASS",
+      "243 immutable-input scenarios: deterministic, defined outputs and valid references: PASS",
+      "UTF-8 checks: PASS",
+      "Targeted ESLint: PASS; explicit trailing-whitespace and UTF-8 checks: PASS"
+    ],
+    "independentReview": "Relecture bornée du bilan et de la simulation demandée à school_content ; validation d’intégration laissée à root.",
+    "courseReview": "Lecture des deux leçons des chapitres axes, climate, performance, footprint et decisions, avec activités : aucune anomalie factuelle bloquante repérée sur condensation, brassage/extraction, unités, portée du cadre légal et absence de qualité garantie. Précision signalée à l’auteur pour footprint2 : électricité pendant la culture seulement, séchage après récolte exclu, comme dans le tableau. Plusieurs options de decisions2 ont bien une justification commune valable. Aucun fichier du cours modifié."
+  },
+  "counts": {
+    "systems": 8,
+    "axes": 10,
+    "cases": 3,
+    "guideEntries": 8,
+    "sources": 9,
+    "balanceRows": 3,
+    "simulationCombinationsChecked": 243
+  },
+  "sources": [
+    {
+      "id": "cultivation-system-missouri-2024",
+      "title": "Controlled Environment Agriculture: Hydroponic Farming",
+      "organization": "University of Missouri Extension",
+      "author": "Juan Cabrera-Garcia, Ryan Milhollin et Matt Ernst",
+      "published": "2024-07 (révision)",
+      "verifiedAt": "2026-11-12",
+      "url": "https://extension.missouri.edu/publications/g6986",
+      "access": "full-text",
+      "documentKind": "Guide universitaire G6986",
+      "passage": "Définition de l’agriculture en environnement contrôlé ; systèmes avec substrat ou à base d’eau ; circuits ouverts et fermés ; avantages et difficultés.",
+      "limitation": "Guide horticole général. Les catégories décrivent des équipements, pas un classement expérimental du chanvre ni une garantie économique."
+    },
+    {
+      "id": "cultivation-system-media-2025",
+      "title": "Potting Media: Components and Handling",
+      "organization": "Iowa State University Extension and Outreach",
+      "author": "Randall Vos",
+      "published": "2025-03-10",
+      "verifiedAt": "2026-11-12",
+      "url": "https://yardandgarden.extension.iastate.edu/article/2025/03/potting-media-components-and-handling",
+      "access": "full-text",
+      "documentKind": "Article universitaire de vulgarisation",
+      "passage": "Differences Between Soil and Potting Media ; Components ; Containers : eau, pores remplis d’air et géométrie des récipients.",
+      "limitation": "Exemples de plantes en pot, non essai comparatif sur le chanvre. Les proportions et pratiques proposées ne sont pas transposées en recette."
+    },
+    {
+      "id": "cultivation-system-humidity-umass",
+      "title": "Reducing Humidity in the Greenhouse",
+      "organization": "UMass Extension / University of Connecticut",
+      "author": "Tina Smith et John W. Bartok, Jr.",
+      "published": "Date de la fiche non indiquée ; reprise dans Floral Notes, janvier–février 2016",
+      "verifiedAt": "2026-11-12",
+      "url": "https://www.umass.edu/agriculture-food-environment/greenhouse-floriculture/fact-sheets/reducing-humidity-in-greenhouse",
+      "access": "excerpt",
+      "documentKind": "Fiche universitaire, passages indexés consultés",
+      "passage": "Introduction ; Relationship Between Temperature and Humidity ; Ventilation and Heating ; Air Movement. Attribution vérifiée dans la reprise institutionnelle Floral Notes.",
+      "limitation": "Accès direct refusé par le serveur ; texte indexé consulté. Seuls les principes physiques sont retenus, sans réglage, fréquence, coût ancien ni conseil phytosanitaire."
+    },
+    {
+      "id": "cultivation-system-barbosa-2015",
+      "title": "Comparison of Land, Water, and Energy Requirements of Lettuce Grown Using Hydroponic vs. Conventional Agricultural Methods",
+      "organization": "International Journal of Environmental Research and Public Health",
+      "author": "Guilherme Lages Barbosa et al.",
+      "published": "2015-06-16",
+      "verifiedAt": "2026-11-12",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC4483736/",
+      "access": "full-text",
+      "documentKind": "Étude originale de modélisation, DOI 10.3390/ijerph120606879",
+      "passage": "Résumé et méthodes : laitue à Yuma, Arizona ; données agricoles conventionnelles et installation hydroponique théorique calculée.",
+      "limitation": "La comparaison associe statistiques agricoles et modèle d’ingénierie, pas deux essais expérimentaux parallèles. Aucun chiffre n’est transféré au chanvre."
+    },
+    {
+      "id": "cultivation-system-lca-us-2025",
+      "title": "The challenges of controlled environment hydroponic farming: a life cycle assessment of lettuce",
+      "organization": "The International Journal of Life Cycle Assessment",
+      "author": "Aline Banboukian, Yongsheng Chen et Valerie M. Thomas",
+      "published": "2025-05-13",
+      "verifiedAt": "2026-11-12",
+      "url": "https://link.springer.com/article/10.1007/s11367-025-02463-6",
+      "access": "full-text",
+      "documentKind": "Analyse de cycle de vie originale",
+      "passage": "Sections 2.1–2.3 et 3.2.1 : unité de 1 kg de laitue ; champ, tunnel modélisé et hydroponie éclairée ; scénarios énergétiques et de transport.",
+      "limitation": "Étude américaine. Le périmètre comprend le transport vers le marché malgré l’étiquette cradle-to-gate ; le tunnel est supposé sans électricité ni combustible. Ces hypothèses ne valent pas pour toute serre."
+    },
+    {
+      "id": "cultivation-system-lca-finland-2024",
+      "title": "Assessment of climate change impact and resource-use efficiency of lettuce production in vertical farming and greenhouse production in Finland: a case study",
+      "organization": "The International Journal of Life Cycle Assessment",
+      "author": "Katri Joensuu, Titta Kotilainen, Kati Räsänen, Marja Rantanen, Kirsi Usva et Frans Silvenius",
+      "published": "2024-08-01",
+      "verifiedAt": "2026-11-12",
+      "url": "https://link.springer.com/article/10.1007/s11367-024-02343-5",
+      "access": "full-text",
+      "documentKind": "Analyse de cycle de vie originale",
+      "passage": "Sections 2.1–2.2 et résultats : 1 kg de laitue fraîche comestible, production verticale finlandaise et référence de serre ; variantes d’énergie et de récupération de chaleur.",
+      "limitation": "Un site vertical (données 2018–2020) comparé à une référence de serre antérieure. Périmètre comprenant notamment équipements, intrants, emballage et stockage temporaire sur place ; ni essai contrôlé ni résultat universel."
+    },
+    {
+      "id": "cultivation-system-hemp-2026",
+      "title": "Chanvre — Guide de culture 2026",
+      "organization": "Terres Inovia",
+      "author": "Louis-Marie Allard et contributeurs ; coordination I. Lartigot",
+      "published": "2026-01",
+      "verifiedAt": "2026-11-12",
+      "url": "https://www.terresinovia.fr/sites/default/files/2026-01/guide_culture_chanvre_2026.pdf",
+      "access": "full-text",
+      "documentKind": "Guide technique institutionnel",
+      "passage": "Pages 8–9 : contractualisation, débouché, variétés et distinction des objectifs paille et graine ; sommaire des risques et de l’irrigation.",
+      "limitation": "Passages pertinents du PDF consultés. Ni les slogans absolus sur l’absence d’eau ou de risques, ni les rendements, prix et itinéraires techniques ne sont repris dans ces scénarios fictifs."
+    },
+    {
+      "id": "cultivation-system-france-hemp",
+      "title": "Arrêté du 30 décembre 2021 portant application de l’article R. 5132-86 du code de la santé publique",
+      "organization": "Légifrance",
+      "author": "Ministres chargés de la santé, de l’agriculture, des comptes publics et de l’industrie",
+      "published": "JORF du 2021-12-31 ; arrêté du 30 décembre ; version consolidée après le 2022-12-29",
+      "verifiedAt": "2026-11-12",
+      "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213/",
+      "access": "official-page",
+      "documentKind": "Texte réglementaire consolidé",
+      "passage": "Article 1, I (variétés de Cannabis sativa L., seuil et catalogues), II annulé, III (produits et règles alimentaires) ; dispositions sur les fleurs, feuilles, plants et bouturage.",
+      "limitation": "Vérification limitée du cadre français à la date indiquée. Le seuil variétal de 0,30 % de Δ9-THC ne constitue pas une autorisation générale de tout produit, usage ou commercialisation."
+    },
+    {
+      "id": "cultivation-system-france-research",
+      "title": "Code de la santé publique, article R5132-86",
+      "organization": "Légifrance",
+      "author": "Pouvoir réglementaire français",
+      "published": "Version entrée en vigueur le 2022-03-01",
+      "verifiedAt": "2026-11-12",
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000045186766",
+      "access": "official-page",
+      "documentKind": "Article réglementaire consolidé",
+      "passage": "VII : dérogations possibles aux fins de recherche et de contrôle par le directeur général de l’ANSM.",
+      "limitation": "La finalité pédagogique ou scientifique ne vaut pas autorisation automatique. Les dossiers supposent leur cadre vérifié ; ils ne décrivent pas de démarche d’autorisation."
+    }
+  ],
+  "reciprocalReview": "Relecture indépendante des données, du bilan, du simulateur et des textes de repères de la serre terminée : aucun défaut factuel bloquant dans ce périmètre. Les exclusions du bilan, dont le séchage, sont cohérentes avec le cours."
+}

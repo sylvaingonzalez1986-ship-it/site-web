@@ -8,6 +8,7 @@ const now = Date.parse("2026-10-10T10:00:00Z");
 const lesson = createKqOperationsLesson("warehouse");
 function flower(id: string, status: KqOfficialFlower["status"]): KqOfficialFlower {
   return { id, runId: `run-${id}`, varietyCode: lesson.storage.lot.baseline.varietyCode, varietyName: id,
+    trim: { status: "ready", totalGrams: null, completedGrams: null },
     quality: 70, stats: {}, traits: [], combos: [], status, storage: status === "available" ? snapshot().lots[1].projection : undefined, createdAt: new Date(now).toISOString(),
     queuedAt: null, lockedAt: null, burnedAt: null };
 }
@@ -18,7 +19,7 @@ function snapshot(): KqStorageSnapshot {
       baseline: lesson.storage.lot.baseline,
       capacity: planKqStorageAllocation({ totalUnits: units, ownedContainers: { "GLASS-1L": 2 }, nowMs: started }),
     });
-    return { flowerId: id, varietyName: id, harvestGrams: units / 10, flowerStatus: "burned", projection: projectKqStorageLot(raw, now) };
+    return { flowerId: id, varietyName: id, harvestGrams: units / 10, flowerStatus: "burned", projection: projectKqStorageLot(raw, now), trim: { status: "ready" as const, totalGrams: null, completedGrams: null } };
   });
   return { ...getKqOperationsStorage(lesson), serverNow: new Date(now).toISOString(), lots };
 }

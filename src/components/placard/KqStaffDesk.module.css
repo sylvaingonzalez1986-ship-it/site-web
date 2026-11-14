@@ -15,11 +15,12 @@
 .desk h2, .desk h3, .desk h4, .dialog h2 { margin: 0; color: #172923; line-height: 1.25; }
 .desk p, .dialog p { margin: 0; line-height: 1.55; }
 .desk small { font-size: .78rem; line-height: 1.5; }
-.desk button, .dialog button, .desk select, .desk input { font: inherit; }
-.desk button, .dialog button { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 16px; cursor: pointer; font-size: .875rem; line-height: 1.35; font-weight: 750; color: #172923; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.desk button, .dialog button, .desk .reconnect, .dialog .reconnect, .desk select, .desk input { font: inherit; }
+.desk button, .dialog button, .desk .reconnect, .dialog .reconnect { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 44px; padding: 10px 16px; cursor: pointer; font-size: .875rem; line-height: 1.35; font-weight: 750; color: #172923; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.reconnect { max-width: 100%; margin-top: 12px; text-decoration: none; text-align: center; }
 .desk button[aria-pressed="true"], .desk .primary, .dialog .primary { --game-control-art: var(--game-control-teal, url("/placard/ui/control-teal-v2.webp")); color: #fff1d6; }
 .desk button:disabled, .dialog button:disabled { cursor: not-allowed; color: #667064; opacity: 1; background: transparent; border-color: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); }
-.desk :is(button, input, select, summary):focus-visible, .dialog :is(button, h2):focus-visible { outline: 3px solid #006f66; outline-offset: 4px; }
+.desk :is(button, input, select, summary, .reconnect):focus-visible, .dialog :is(button, h2, .reconnect):focus-visible { outline: 3px solid #006f66; outline-offset: 4px; }
 .desk select, .desk input { min-width: 0; max-width: 100%; width: 100%; min-height: 44px; padding: 10px 12px; color: #172923; --game-control-art: var(--game-control-paper, url("/placard/ui/control-paper-v2.webp")); border: 2px solid transparent; border-radius: 0; background: transparent; box-shadow: none; border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
 .desk label { display: grid; gap: 7px; min-width: 0; font-size: .85rem; font-weight: 750; }
 .desk fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
@@ -103,7 +104,7 @@
 .dialog .actions { justify-content: flex-end; }
 .spin { animation: rotate 1s linear infinite; }
 @keyframes rotate { to { transform: rotate(360deg); } }
-@media (hover: hover) { .desk button:hover:not(:disabled), .dialog button:hover:not(:disabled) { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); color: #172923; } }
+@media (hover: hover) { .desk button:hover:not(:disabled), .dialog button:hover:not(:disabled), .desk .reconnect:hover, .dialog .reconnect:hover { --game-control-art: var(--game-control-gold, url("/placard/ui/control-gold-v2.webp")); color: #172923; } }
 @media (max-width: 680px) { .grid { grid-template-columns: minmax(0, 1fr); } .metrics { gap: 8px; } .metric { padding: 14px 10px; } .metric span { font-size: .7rem; } .panel, .dossier { padding: 18px; } }
 @media (max-width: 420px) { .metrics { grid-template-columns: minmax(0, 1fr); } .metric { grid-template-columns: minmax(0, 1fr) auto; align-items: center; padding: 15px; } .metric strong { font-size: 1.25rem; } .metric small { grid-column: 1 / -1; } .fields { grid-template-columns: minmax(0, 1fr); } .panel, .dossier { padding: 15px; } .tabs button { flex: 1 1 auto; padding: 10px; } .actions > button { flex: 1 1 auto; } .dialog { padding: 22px 18px; } .taskList > li { grid-template-columns: minmax(0, 1fr); } .status { text-align: left; } }
 @media (max-width: 580px) { .overview { grid-template-columns: minmax(0, 1fr); gap: 10px; } .cash { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; } .overviewStatus .barHeader > div { flex-basis: 140px; } .overviewStatus .barHeader small { font-size: .72rem; } }

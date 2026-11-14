@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "cannabinoids-06",
+  "entries": {
+    "record-cannabinoid-delta8-thc": {
+      "contentHash": "7bfa13e40e80706cc9246d73e58b85efee90fdc2e6e44c1c737efb78bc8a42c7",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-thc-o-acetate": {
+      "contentHash": "fb12f7b5681e1165e557a649a411f26cfbe852f776abc1c7b1c987bf2a72391d",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-hhc-o": {
+      "contentHash": "0e1f3508e9c37f253f1eadee50cd88d262dab8ab2d65c3d1622d18b932f57d7d",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-hhcp": {
+      "contentHash": "5d1263bf8a1a0bd37b1376b61b9e9317170dfd4b71ef9647428ebec45e334d5b",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-h4-cbd": {
+      "contentHash": "6e002142fa9743f2a0ee53b259a84c3a806da93e94f354ad9d3d46817f941937",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-anandamide": {
+      "contentHash": "964208580859bf60bb8bc44acb79776319e0e1ff9b4f635910fbf9575d82f8c6",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-2-ag": {
+      "contentHash": "2811925dd154abfb1ee484518c95a8b3ea182c0a21bb384b94af33dc26490b10",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 1,
+    "hash": "5365454d629f75831da7f25bcc5951497697e263cc5b07ed9e6e57cedb94413a"
+  }
+}

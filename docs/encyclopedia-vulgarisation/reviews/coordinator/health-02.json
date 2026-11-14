@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-14",
+  "lot": "health-02",
+  "entries": {
+    "record-health-thrips": {
+      "contentHash": "cb415c6f1c787a35a893798f1fe5785a2fb6479fb403444c643aa50f68d7d948",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-phorodon-cannabis": {
+      "contentHash": "389d210ea6c1b4b8829068608abaf6f053ca7d6e7fea2e76edc954935c9be25e",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-myzus-persicae": {
+      "contentHash": "5af7115829e28b73783ffca37942f3144f7f1a59a7e6af176768173494bba136",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-trialeurodes-vaporariorum": {
+      "contentHash": "d22cbf1516a8d02124da098e0663020e99359abc5fdfc714b9548e9ec3f13c77",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-bemisia-tabaci": {
+      "contentHash": "2152a82c2a7dfe739ec5b4bd76127330a7cc7ab1ab14e7a33eba8fc06672aee4",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-helicoverpa-zea": {
+      "contentHash": "cac2e14c44af6160efdfbac8c625815c391ced84c310857a0fcf4a00de6fd716",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 4,
+    "hash": "a6393a0dbbded74fbed50c5e41a7462b2f733f8fff200d29a0273085b322f6b9"
+  }
+}

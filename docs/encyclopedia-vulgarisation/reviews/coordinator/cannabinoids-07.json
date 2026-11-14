@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "cannabinoids-07",
+  "entries": {
+    "record-study-cbd-thc-2023": {
+      "contentHash": "5777efb95ddc3f9fd218bb1ea9ffa624bba90e807223a489377a9cbf1ab38041",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-thcp-discovery-2019": {
+      "contentHash": "80f78fe6af84be5d22512a6fccc2ef71a71dc5668d3e38ac8cf052a661ef5b06",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-cbd-dravet-2017": {
+      "contentHash": "a491c889a7995c2585de0bfd299b7384c5349238658a0f13c960e8c6f1485dae",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-cbd-lgs-2018": {
+      "contentHash": "a8e745e3c55bea4737de0ee083f0ff24efd59e17b8940816afad07b66b51b87d",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-cbd-tsc-2021": {
+      "contentHash": "37d9f113bea5f2ae41d4b6387385aad96f346419a1e2d2598f4c3967235dc84b",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-cbd-pain-2023": {
+      "contentHash": "6d94d5c94950c69b95f2c505e155c4a86146b4b1b6b120ed15d90917b796f529",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-study-cbg-acute-2024": {
+      "contentHash": "0c2773178abf81578c415486f076461e4ffa7303c80bc88644dd5715b28cbb44",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+}

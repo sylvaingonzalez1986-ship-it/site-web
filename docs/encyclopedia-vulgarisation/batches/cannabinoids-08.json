@@ -1,0 +1,949 @@
+{
+  "domain": "cannabinoids",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "can-study-cbg26",
+      "title": "Safety, pharmacodynamics, and pharmacokinetics of oral cannabigerol in healthy adults",
+      "author": "Wolinsky et al.",
+      "published": "2026-07-11 en ligne ; août en volume",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42575778/",
+      "access": "abstract",
+      "passage": "Résumé PubMed PMID42575778 : 12 adultes, 0/25/50/100/200 mg CBG isolé dans huile MCT, placebo aléatoire, mesures 0,5–8 h, événements et foie.",
+      "limitation": "Éditeur refusé : financement, 16 éligibles et décompte de deux événements non liés non revérifiés.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/42575778/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed PMID42575778 : 12 adultes, 0/25/50/100/200 mg CBG isolé dans huile MCT, placebo aléatoire, mesures 0,5–8 h, événements et foie.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed PMID42575778 : 12 adultes, 0/25/50/100/200 mg CBG isolé dans huile MCT, placebo aléatoire, mesures 0,5–8 h, événements et foie.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "can-study-hhc25",
+      "title": "Preliminary pharmacokinetic and psychophysical investigations after controlled oral and inhalative consumption of hexahydrocannabinol (HHC)",
+      "author": "Höfert et al.",
+      "published": "2025-03-24",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11933371/",
+      "access": "excerpt",
+      "passage": "PMC résumé, Study participants, HHC products, résultats sériques et Funding : six volontaires, 25 mg oral/trois bouffées, produit 78/22 et variabilité.",
+      "limitation": "Dose inhalée absolue non connue ; pas de placebo.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11933371/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC résumé, Study participants, HHC products, résultats sériques et Funding : six volontaires, 25 mg oral/trois bouffées, produit 78/22 et variabilité.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "PMC résumé, Study participants, HHC products, résultats sériques et Funding : six volontaires, 25 mg oral/trois bouffées, produit 78/22 et variabilité.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-hhc26",
+      "title": "Preliminary pharmacokinetic investigations of hydroxylated metabolites after controlled inhalative and oral consumption of hexahydrocannabinol (HHC)",
+      "author": "Höfert, Schirmer et al.",
+      "published": "2026-07-20",
+      "url": "https://www.nature.com/articles/s41598-026-62767-x.pdf",
+      "access": "excerpt",
+      "passage": "PDF p.1–5 : cohorte commune, M1/M2/M3, rapports d’aires, limites structurelles et conservation 9–16 mois ; p.10 financement.",
+      "limitation": "Identités M1/M2 partielles ; aires relatives et non concentrations absolues.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://www.nature.com/articles/s41598-026-62767-x.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "PDF p.1–5 : cohorte commune, M1/M2/M3, rapports d’aires, limites structurelles et conservation 9–16 mois ; p.10 financement.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "PDF p.1–5 : cohorte commune, M1/M2/M3, rapports d’aires, limites structurelles et conservation 9–16 mois ; p.10 financement.",
+          "access": "excerpt"
+        },
+        {
+          "url": "https://www.nature.com/articles/s41598-026-62767-x.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Section Limitations, 7e page du PDF (index 6), passage sur M2 et conservation ; Conclusions, page suivante.",
+          "result": "PDF ouvert et passage lu directement : présence initiale possible de M2 dans le produit, non testée.",
+          "supports": "Hypothèse d’impureté pour M2, distincte d’un métabolite démontré ; prudence sur les marqueurs de consommation.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-cbn26",
+      "title": "Cannabinol for Acute Treatment of Insomnia Disorder in a Randomized Placebo-Controlled Crossover Trial",
+      "author": "Lavender et al.",
+      "published": "2026-02-16 en ligne ; août en volume",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13357646/",
+      "access": "excerpt",
+      "passage": "PMC résumé, introduction et Funding : 20 insomniaques, 30/300 mg, trois conditions, WASO négatif, secondaires, 247 événements, promoteur et financeur.",
+      "limitation": "Nuits uniques, majorité féminine et petit effectif.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13357646/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC résumé, introduction et Funding : 20 insomniaques, 30/300 mg, trois conditions, WASO négatif, secondaires, 247 événements, promoteur et financeur.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "PMC résumé, introduction et Funding : 20 insomniaques, 30/300 mg, trois conditions, WASO négatif, secondaires, 247 événements, promoteur et financeur.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-cbdv",
+      "title": "A Phase 2 Randomized Controlled Trial of the Efficacy and Safety of Cannabidivarin as Add-on Therapy in Participants with Inadequately Controlled Focal Seizures",
+      "author": "Brodie et al.",
+      "published": "2021 (publication en volume décembre)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8713263/",
+      "access": "excerpt",
+      "passage": "PMC résumé, méthodes, résultats et sécurité, conclusion, Funding Information : 162 adultes, CBDV vs placebo, critère primaire et événements.",
+      "limitation": "Annexes et correction associée non relues séparément ; ne pas inférer supériorité depuis le changement avant/après.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8713263/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC résumé, méthodes, résultats et sécurité, conclusion, Funding Information : 162 adultes, CBDV vs placebo, critère primaire et événements.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "PMC résumé, méthodes, résultats et sécurité, conclusion, Funding Information : 162 adultes, CBDV vs placebo, critère primaire et événements.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "can-study-cbda",
+      "title": "Cannabidiolic acid prevents vomiting in Suncus murinus and nausea-induced behaviour in rats by enhancing 5-HT1A receptor activation",
+      "author": "Bolognini et al.",
+      "published": "2012-11-02 en ligne ; mars 2013 en volume",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3596650/",
+      "access": "excerpt",
+      "passage": "PMC résumé, méthodes animales (groupes n=6–18 selon expérience), résultats de liaison/GTPγS, antagonistes et Acknowledgments/Conflict of interest.",
+      "limitation": "Plusieurs expériences distinctes, pas un effectif clinique total ; certains n varient selon sous-test.",
+      "organization": "Publication originale",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article de recherche",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3596650/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC résumé, méthodes animales (groupes n=6–18 selon expérience), résultats de liaison/GTPγS, antagonistes et Acknowledgments/Conflict of interest.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "PMC résumé, méthodes animales (groupes n=6–18 selon expérience), résultats de liaison/GTPγS, antagonistes et Acknowledgments/Conflict of interest.",
+          "access": "excerpt"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-study-cbg-laboratory-2026",
+      "questions": [
+        "Pourquoi une même quantité de CBG ne donne-t-elle pas la même exposition chez tous ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Doses, ordre, placebo, fenêtre huit heures et conclusion confirmés au résumé.",
+        "Correction du degré de certitude : « 12 inscrits » selon résumé ; 16 éligibles et financement non déclarés revérifiés."
+      ],
+      "patch": {
+        "lead": "Cette petite étude suit ce que devient le CBG dans le corps après des expositions uniques. Les concentrations varient beaucoup entre les 12 adultes et les effets mesurés ne démontrent pas un traitement de l’anxiété.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "Wolinsky et ses collègues étudient 12 adultes en bonne santé. Le CBG isolé est placé dans une huile MCT, un support huileux fait de triglycérides à chaînes moyennes ; ce nom décrit les matières grasses qui portent la molécule. Les conditions expérimentales sont 0, 25, 50, 100 et 200 mg, avec suivi et prélèvements jusqu’à huit heures.",
+              "Les quantités actives augmentent au fil du protocole ; seule la place du placebo est tirée au hasard. Il ne faut donc pas décrire toutes les séances comme reçues dans un ordre aléatoire. Il s’agit d’expositions uniques étudiées, pas de doses recommandées. L’article paraît en ligne le 11 juillet 2026 puis dans le volume d’août."
+            ],
+            "sourceIds": [
+              "can-study-cbg26"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "La pharmacocinétique décrit le parcours d’une substance : son arrivée dans le sang, sa transformation et son élimination. Ici, l’exposition augmente avec les quantités étudiées, mais varie fortement d’une personne à l’autre. Une même quantité administrée ne produit donc pas forcément la même concentration sanguine.",
+              "La pharmacodynamie décrit ce que la substance fait à l’organisme. Les résultats sont peu robustes : quelques différences ponctuelles sur des qualificatifs ressentis ou l’appétit ne suffisent pas à établir un effet contre l’anxiété. Le protocole et la population diffèrent de l’essai à distance Cuttler 2024."
+            ],
+            "sourceIds": [
+              "can-study-cbg26"
+            ]
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Le résumé ne rapporte aucun événement indésirable attribué au produit ni aucun test du foie dépassant la normale après les deux conditions les plus élevées. Avec 12 personnes et des expositions ponctuelles, cette observation ne permet pas d’estimer tous les risques ni ceux d’un usage prolongé."
+            ],
+            "sourceIds": [
+              "can-study-cbg26"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "Le résumé présente une étude de pharmacologie aiguë, c’est-à-dire après une exposition ponctuelle, et non un traitement établi. Il ne permet pas de préciser le financement expérimental ni le détail complet des événements. Ces informations restent à confirmer."
+            ],
+            "sourceIds": [
+              "can-study-cbg26"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-cbg26"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-cbg"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-cbg-laboratory-2026"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi une même quantité de CBG ne donne-t-elle pas la même exposition chez tous ?",
+          "nodes": [
+            {
+              "label": "12 adultes",
+              "detail": "Quantités uniques croissantes, placebo inséré au hasard."
+            },
+            {
+              "label": "Dans le sang",
+              "detail": "Exposition variable entre personnes."
+            },
+            {
+              "label": "Effets",
+              "detail": "Peu de signaux robustes ; pas de traitement anxiolytique établi."
+            }
+          ],
+          "caption": "La quantité administrée et la concentration atteinte dans le sang sont deux informations différentes.",
+          "sourceIds": [
+            "can-study-cbg26"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-cbg26"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "blocked",
+      "blockers": [
+        "Éditeur refusé : financement exact et dénominateur 16 éligibles du dossier initial restent à confirmer dans texte intégral."
+      ],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi une même quantité de CBG ne donne-t-elle pas la même exposition chez tous ?",
+        "explainedTerms": [
+          "huile support",
+          "pharmacocinétique",
+          "pharmacodynamie",
+          "placebo",
+          "exposition aiguë"
+        ],
+        "example": "La quantité administrée et la concentration atteinte dans le sang sont deux informations différentes.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-hhc-human-2025",
+      "questions": [
+        "Que sait-on réellement comparer entre les deux voies d’exposition au HHC ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Dose inhalée inconnue explicitée : trois bouffées ne sont pas des milligrammes mesurés.",
+        "Ratio d’épimères et matrices vérifiés ; pas d’équivalence clinique au THC extrapolée."
+      ],
+      "patch": {
+        "lead": "Six adultes sont suivis après une exposition expérimentale au HHC. L’étude décrit le passage de la substance dans les prélèvements et des altérations observées, sans comparaison au placebo ni mesure fiable d’un risque dans la population.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "Trois personnes reçoivent un produit oral contenant 25 mg de HHC ; trois autres inhalent trois bouffées d’un produit. La quantité réellement inhalée reste inconnue : un nombre de bouffées ne permet pas, à lui seul, de connaître la quantité absorbée. Les produits contiennent, au sein du HHC, 78 % de forme 9R et 22 % de forme 9S. Ces deux formes orientent différemment une partie de la molécule dans l’espace.",
+              "Les chercheurs suivent le sérum, la partie liquide du sang après coagulation, et la salive jusqu’à 48 heures, ainsi que l’urine jusqu’à cinq jours. L’étude exploratoire paraît le 24 mars 2025. Il n’y a pas de groupe placebo."
+            ],
+            "sourceIds": [
+              "can-study-hhc25"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "Les analyses recherchent le HHC et ses métabolites, les produits de sa transformation dans le corps. Les chercheurs recueillent aussi le ressenti d’intoxication, réalisent des tests psychophysiques, qui relient une tâche à des capacités comme la coordination, et étudient des tests de détection fondés sur des anticorps.",
+              "Les profils changent selon la personne et la voie d’exposition. Certaines observations ressemblent à celles du THC, mais une ressemblance descriptive ne démontre pas des effets identiques : il manque ici une comparaison contrôlée entre HHC et THC."
+            ],
+            "sourceIds": [
+              "can-study-hhc25"
+            ]
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Des altérations psychophysiques sont observées. Six personnes, deux produits et l’absence de placebo ne permettent pas de calculer combien de consommateurs auraient un problème dans la population. Ce petit suivi ne permet pas non plus de garantir la sécurité du HHC."
+            ],
+            "sourceIds": [
+              "can-study-hhc25"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "Projekt DEAL finance l’accès ouvert à l’article : cette mention ne décrit pas tout le financement de l’expérience. Les auteurs déclarent ne pas avoir de conflit d’intérêts. L’article de 2026 réanalyse des prélèvements des mêmes six personnes ; il n’ajoute pas six nouveaux participants."
+            ],
+            "sourceIds": [
+              "can-study-hhc25"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-hhc25"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-hhc"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-hhc-human-2025"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Que sait-on réellement comparer entre les deux voies d’exposition au HHC ?",
+          "nodes": [
+            {
+              "label": "Trois personnes",
+              "detail": "Produit avalé contenant 25 mg de HHC."
+            },
+            {
+              "label": "Trois autres",
+              "detail": "Trois bouffées : quantité administrée imprécise."
+            },
+            {
+              "label": "Suivi",
+              "detail": "Prélèvements et altérations, sans groupe placebo."
+            }
+          ],
+          "caption": "Les 25 mg sont le contenu du produit avalé, pas la quantité absorbée par le corps. La quantité administrée est connue pour l’oral, mais imprécise pour les trois bouffées.",
+          "sourceIds": [
+            "can-study-hhc25"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-hhc25"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que sait-on réellement comparer entre les deux voies d’exposition au HHC ?",
+        "explainedTerms": [
+          "sérum",
+          "épimère",
+          "métabolite",
+          "test psychophysique",
+          "placebo"
+        ],
+        "example": "Les 25 mg sont le contenu du produit avalé, pas la quantité absorbée par le corps. La quantité administrée est connue pour l’oral, mais imprécise pour les trois bouffées.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-hhc-metabolites-2026",
+      "questions": [
+        "Une trace après exposition est-elle toujours un métabolite ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Structure partiellement élucidée et semi-quantification explicitées, absence de détection non convertie en zéro.",
+        "Cohorte commune et conservation prolongée vérifiées sur PDF.",
+        "Contrelecture chimique puis relecture directe du PDF, section Limitations : hypothèse d’une impureté préexistante pour M2 rendue visible ; attribution métabolique non présentée comme certaine."
+      ],
+      "patch": {
+        "lead": "Cette analyse reprend les prélèvements des six personnes étudiées en 2025. Elle cherche à identifier des traces chimiques après le HHC ; trouver une trace après exposition ne prouve pas toujours que le corps l’a fabriquée.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "L’article du 20 juillet 2026 étudie le sérum et l’urine déjà recueillis en 2025, chez trois personnes par voie d’exposition. Aucun participant n’est ajouté. On compare deux matrices, c’est-à-dire deux types de matière analysée : le liquide sanguin et l’urine.",
+              "La chromatographie sépare les constituants du prélèvement. La spectrométrie de masse mesure ensuite des masses et des fragments moléculaires pour aider à les reconnaître. Ces outils servent à examiner des produits possibles de transformation du HHC."
+            ],
+            "sourceIds": [
+              "can-study-hhc26",
+              "can-study-hhc25"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "Trois signaux sont approfondis. M1 est compatible avec l’ajout d’un groupe contenant de l’oxygène et de l’hydrogène sur la chaîne latérale, une branche d’atomes de la molécule. M2 pourrait correspondre à une modification d’un anneau carboné, mais plusieurs structures restent plausibles. M3 correspond au 8-OH-HHC ; ses formes spatiales ne sont pas complètement séparées, ce qui complique l’attribution à un épimère précis.",
+              "Les courbes reposent sur des rapports de signaux : l’aire du pic du composé est comparée à celle d’un étalon interne, une substance repère. Ce ne sont pas des concentrations absolues validées pour tous les composés. Pour M2, les auteurs envisagent aussi une impureté présente dès le départ dans le produit, car son profil suit celui du HHC. Le produit initial n’a pas été testé sur ce point : M2 n’est donc pas automatiquement un métabolite démontré."
+            ],
+            "sourceIds": [
+              "can-study-hhc26",
+              "can-study-hhc25"
+            ]
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "L’étude n’ajoute aucune évaluation indépendante de la tolérance. Certains prélèvements ont été conservés 9 à 16 mois avant analyse. Si une molécule n’est plus détectée, elle peut avoir été trop peu abondante pour la méthode ou s’être dégradée pendant la conservation ; on ne peut pas conclure qu’elle était absente du corps."
+            ],
+            "sourceIds": [
+              "can-study-hhc26",
+              "can-study-hhc25"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "Projekt DEAL finance l’accès ouvert. Les deux publications répondent à des questions différentes à partir du même groupe de six personnes. Un marqueur possible d’exposition est une trace aidant à repérer cette exposition : ce n’est ni une preuve de bénéfice ni la garantie que cette trace ne pourrait venir d’aucune autre source."
+            ],
+            "sourceIds": [
+              "can-study-hhc26",
+              "can-study-hhc25"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-hhc26",
+          "can-study-hhc25"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-hhc"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-hhc-metabolites-2026"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Une trace après exposition est-elle toujours un métabolite ?",
+          "nodes": [
+            {
+              "label": "Même groupe",
+              "detail": "Six personnes de 2025 ; aucun nouvel effectif."
+            },
+            {
+              "label": "Trois signaux",
+              "detail": "Structures et origines pas toutes définitivement attribuées."
+            },
+            {
+              "label": "M2",
+              "detail": "Une impureté initiale reste une explication possible."
+            }
+          ],
+          "caption": "Une impureté déjà présente et un produit formé dans le corps peuvent tous deux apparaître dans un prélèvement.",
+          "sourceIds": [
+            "can-study-hhc26",
+            "can-study-hhc25"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-hhc26",
+        "can-study-hhc25"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Une trace après exposition est-elle toujours un métabolite ?",
+        "explainedTerms": [
+          "matrice",
+          "chromatographie",
+          "spectrométrie de masse",
+          "hydroxylation",
+          "étalon interne",
+          "épimère",
+          "marqueur"
+        ],
+        "example": "Une impureté déjà présente et un produit formé dans le corps peuvent tous deux apparaître dans un prélèvement.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-cbn-sleep-2026",
+      "questions": [
+        "Pourquoi les résultats secondaires ne renversent-ils pas le résultat principal sur le sommeil ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "WASO, doses, IC, majorité féminine et financement vérifiés.",
+        "247 événements distingués de participants et d’imputabilité ; secondaires contextualisés."
+      ],
+      "patch": {
+        "lead": "Dans cet essai sur l’insomnie, le CBN n’améliore pas significativement la mesure principale : le temps passé éveillé après l’endormissement. Certains autres résultats favorables ne remplacent pas ce résultat principal.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "Vingt adultes avec insomnie diagnostiquée, dont 17 femmes, participent à trois nuits expérimentales espacées de deux semaines : CBN oral à 30 mg, CBN à 300 mg et placebo. Chaque personne reçoit les trois conditions ; c’est un essai croisé. L’ordre est attribué au hasard et les conditions sont masquées aux participants et aux évaluateurs, en double aveugle.",
+              "Ces quantités décrivent une recherche et non un conseil de prise. Le recueil a lieu d’août 2022 à septembre 2023. L’article paraît en ligne le 16 février 2026 puis dans le volume d’août. Trois conditions chez 20 personnes ne font pas 60 personnes indépendantes."
+            ],
+            "sourceIds": [
+              "can-study-cbn26"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "La mesure principale est le WASO, le total des minutes éveillées après s’être endormi. Il est mesuré par polysomnographie, un enregistrement combinant plusieurs signaux du sommeil. Face au placebo, l’écart moyen estimé est de −6,3 minutes à 300 mg et −4,0 minutes à 30 mg : ces différences ne sont pas statistiquement significatives.",
+              "Certains critères secondaires favorisent la condition 300 mg. Ils peuvent orienter d’autres recherches, mais ils ne changent pas la réponse à la question principale prévue avant l’essai. Une seule nuit par condition ne démontre pas non plus une efficacité durable contre l’insomnie.",
+              "Ici, une différence « non significative » signifie que les données ne permettent pas de conclure que l’écart dépasse les fluctuations attendues dans ce type de comparaison. Cela ne prouve pas que les deux conditions sont exactement identiques."
+            ],
+            "sourceIds": [
+              "can-study-cbn26"
+            ],
+            "details": {
+              "title": "L’incertitude sur les minutes gagnées ou perdues",
+              "paragraphs": [
+                "Pour 300 mg, l’écart de −6,3 minutes a un intervalle de confiance à 95 % allant de −18,2 à +5,5 ; p=0,29. Pour 30 mg : −4,0 minutes, intervalle −15,9 à +7,9 ; p=0,50. Les intervalles incluent zéro et des valeurs positives : l’estimation est compatible avec une baisse, une absence de différence ou une hausse. Les valeurs p ne donnent pas la probabilité individuelle de mieux dormir."
+              ],
+              "sourceIds": [
+                "can-study-cbn26"
+              ]
+            }
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "L’étude compte 247 événements légers à modérés sur l’ensemble des conditions. Ce sont des événements, pas 247 personnes : une personne peut en signaler plusieurs. Tous ne sont pas attribuables au CBN, puisque le comptage inclut toutes les conditions, dont le placebo."
+            ],
+            "sourceIds": [
+              "can-study-cbn26"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "Le Woolcock Institute of Medical Research est le promoteur, l’organisme responsable de l’étude. Le financement provient de la Lambert Initiative for Cannabinoid Therapeutics de l’Université de Sydney. L’identifiant cité est NCT05344170."
+            ],
+            "sourceIds": [
+              "can-study-cbn26"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-cbn26"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-cbn"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-cbn-sleep-2026"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi les résultats secondaires ne renversent-ils pas le résultat principal sur le sommeil ?",
+          "nodes": [
+            {
+              "label": "20 personnes",
+              "detail": "Une nuit par condition ; trois conditions."
+            },
+            {
+              "label": "Mesure principale",
+              "detail": "Minutes éveillées après l’endormissement."
+            },
+            {
+              "label": "Résultat",
+              "detail": "Pas d’amélioration significative sur cette mesure."
+            }
+          ],
+          "caption": "On peut relever un signal intéressant sans avoir démontré l’amélioration choisie comme objectif principal.",
+          "sourceIds": [
+            "can-study-cbn26"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-cbn26"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi les résultats secondaires ne renversent-ils pas le résultat principal sur le sommeil ?",
+        "explainedTerms": [
+          "essai croisé",
+          "double aveugle",
+          "WASO",
+          "polysomnographie",
+          "critère secondaire",
+          "promoteur"
+        ],
+        "example": "On peut relever un signal intéressant sans avoir démontré l’amélioration choisie comme objectif principal.",
+        "movedDetails": [
+          "results"
+        ],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-cbdv-seizures-2021",
+      "questions": [
+        "Pourquoi la baisse de 40,5 % ne démontre-t-elle pas une efficacité du CBDV ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Quantités, durée et effectifs précisés sur source originale ; p et IC confirmés.",
+        "Conclusion principale négative maintenue malgré formulation spéculative du résumé sur réponse pharmacologique."
+      ],
+      "patch": {
+        "lead": "Le CBDV a été comparé au placebo chez 162 adultes avec une épilepsie focale insuffisamment contrôlée. Les crises diminuent dans les deux groupes, sans supériorité démontrée du CBDV.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "Les crises focales commencent dans une région du cerveau. Cet essai de phase 2, une étape d’évaluation d’un candidat traitement, répartit 162 adultes entre CBDV (81 personnes) et placebo (81), en complément de leurs traitements habituels.",
+              "Après quatre semaines de mesure de référence, le protocole prévoit deux semaines de montée de 400 à 800 mg deux fois par jour, puis six semaines stables. Ces quantités décrivent l’expérience médicale, pas une prescription. La mesure principale porte sur la fréquence des crises focales pendant les huit semaines de traitement."
+            ],
+            "sourceIds": [
+              "can-study-cbdv"
+            ]
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "La fréquence baisse de 40,5 % sous CBDV et de 37,7 % sous placebo. La comparaison statistique ne montre pas de supériorité du CBDV. Montrer seulement la baisse avant/après de 40,5 % ferait oublier qu’une baisse proche apparaît aussi dans le groupe placebo.",
+              "Cette étude porte sur le CBDV, qui est une autre molécule que le CBD, et sur des adultes avec crises focales. Elle ne contredit ni ne reproduit directement les essais du CBD dans Dravet ou Lennox–Gastaut : les molécules, les patients et les questions sont différents."
+            ],
+            "sourceIds": [
+              "can-study-cbdv"
+            ],
+            "details": {
+              "title": "Lire le rapport entre groupes",
+              "paragraphs": [
+                "Le rapport estimé entre groupes est 0,95, avec un intervalle de confiance à 95 % de 0,78 à 1,17 et p=0,648. Dans ce rapport, 1 représente l’absence de différence. L’intervalle contient 1 : les données ne permettent pas de conclure à une supériorité. La valeur p ne mesure pas le pourcentage de personnes qui auraient bénéficié du CBDV."
+              ],
+              "sourceIds": [
+                "can-study-cbdv"
+              ]
+            }
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Au moins un événement apparu pendant le traitement concerne 72,8 % des participants sous CBDV contre 48,1 % sous placebo. Il s’agit surtout de diarrhée, de nausées et de somnolence. Des transaminases, enzymes surveillées pour le foie, augmentent chez certains participants, et certains arrêtent prématurément."
+            ],
+            "sourceIds": [
+              "can-study-cbdv"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "GW Research Ltd est le promoteur, responsable de l’essai, et emploie plusieurs auteurs. L’étude est identifiée GWEP1330 et NCT02365610. Ces liens accompagnent la lecture des résultats, y compris l’absence de supériorité démontrée."
+            ],
+            "sourceIds": [
+              "can-study-cbdv"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-cbdv"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-cbdv"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-cbdv-seizures-2021"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi la baisse de 40,5 % ne démontre-t-elle pas une efficacité du CBDV ?",
+          "nodes": [
+            {
+              "label": "CBDV",
+              "detail": "Réduction de fréquence : 40,5 %."
+            },
+            {
+              "label": "Placebo",
+              "detail": "Réduction : 37,7 %."
+            },
+            {
+              "label": "Comparaison",
+              "detail": "Pas de supériorité démontrée du CBDV."
+            }
+          ],
+          "caption": "La comparaison au placebo est essentielle quand les deux groupes s’améliorent.",
+          "sourceIds": [
+            "can-study-cbdv"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-cbdv"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi la baisse de 40,5 % ne démontre-t-elle pas une efficacité du CBDV ?",
+        "explainedTerms": [
+          "crise focale",
+          "phase 2",
+          "placebo",
+          "transaminases",
+          "promoteur"
+        ],
+        "example": "La comparaison au placebo est essentielle quand les deux groupes s’améliorent.",
+        "movedDetails": [
+          "results"
+        ],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-study-cbda-preclinical-2013",
+      "questions": [
+        "Comment tester une voie de signalisation sans démontrer une activation directe ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Effectifs par expérience et quantités vérifiés, sans créer un n total artificiel.",
+        "Important : CBDA favorise une réponse 5-HT1A mais n’est pas présenté comme agoniste direct dans ce test ; lien animal/humain clarifié."
+      ],
+      "patch": {
+        "lead": "Des expériences animales montrent que le CBDA peut modifier des réponses liées aux vomissements et aux nausées. Elles explorent une voie de signalisation ; elles ne démontrent pas un traitement chez l’humain.",
+        "sections": [
+          {
+            "id": "study",
+            "title": "Comment la comparaison a été organisée",
+            "paragraphs": [
+              "Bolognini et ses collègues combinent plusieurs modèles. Chez Suncus murinus, une musaraigne, ils mesurent des vomissements provoqués notamment par le cisplatine. Chez le rat, qui n’est pas utilisé pour mesurer directement des vomissements, ils observent un haut-le-cœur appris en association avec une situation désagréable, appelé gaping conditionné. Ils étudient aussi des préparations de membranes animales, les enveloppes de cellules portant des protéines.",
+              "Les effectifs dépendent de la question : huit musaraignes par groupe dans l’expérience au cisplatine, douze rats par condition pour un test impliquant le récepteur 5-HT1A. Aucun humain ne participe. Plusieurs expériences ne doivent pas être additionnées comme un unique groupe de patients."
+            ],
+            "sourceIds": [
+              "can-study-cbda"
+            ],
+            "details": {
+              "title": "Quantités propres aux modèles expérimentaux",
+              "paragraphs": [
+                "Les quantités actives rapportées comprennent notamment 0,1 et/ou 0,5 mg/kg chez les musaraignes, par injection dans la cavité abdominale, et 0,01 à 0,1 mg/kg chez les rats. L’unité signifie milligrammes par kilogramme de masse corporelle dans ces expériences. Elle ne fournit pas une quantité utilisable chez l’humain."
+              ],
+              "sourceIds": [
+                "can-study-cbda"
+              ]
+            }
+          },
+          {
+            "id": "results",
+            "title": "Ce que le résultat permet de conclure",
+            "paragraphs": [
+              "Certaines quantités de CBDA réduisent les réponses étudiées. Pour comprendre la voie impliquée, les chercheurs utilisent WAY100635, une substance qui bloque le récepteur 5-HT1A, l’un des récepteurs de la sérotonine. Ce blocage empêche un effet comportemental. Le CBDA renforce aussi une réponse à un agoniste, une substance activant ce récepteur. Ces expériences soutiennent l’implication de cette voie.",
+              "Elles ne montrent pourtant pas simplement que le CBDA active directement le récepteur : seul, il ne stimule pas significativement le test GTPγS aux concentrations étudiées. Ce test suit une étape du relais du signal dans la membrane. La distinction compte : favoriser une réponse dans un système n’équivaut pas à activer soi-même directement sa cible.",
+              "Ici, une différence « non significative » signifie que les données ne permettent pas de conclure que l’écart dépasse les fluctuations attendues dans ce type de comparaison. Cela ne prouve pas que les deux conditions sont exactement identiques."
+            ],
+            "sourceIds": [
+              "can-study-cbda"
+            ]
+          },
+          {
+            "id": "safety",
+            "title": "Quels effets indésirables ont été observés ?",
+            "paragraphs": [
+              "Un haut-le-cœur conditionné chez le rat n’est pas une mesure directe de la nausée ressentie par un patient. Ces résultats montrent que les formes acides ne sont pas toutes biologiquement inertes, mais ils n’établissent ni une efficacité ni une tolérance humaines."
+            ],
+            "sourceIds": [
+              "can-study-cbda"
+            ]
+          },
+          {
+            "id": "publication",
+            "title": "Qui a conduit et financé cette recherche ?",
+            "paragraphs": [
+              "L’article est mis en ligne en 2012 puis publié dans le volume de 2013. Les soutiens déclarés comprennent GW Pharmaceuticals, le NIDA et le NSERC canadien ; deux coauteurs sont employés de GW."
+            ],
+            "sourceIds": [
+              "can-study-cbda"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "can-study-cbda"
+        ],
+        "relatedArticleIds": [
+          "record-cannabinoid-cbda"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "study-cbda-preclinical-2013"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Comment tester une voie de signalisation sans démontrer une activation directe ?",
+          "nodes": [
+            {
+              "label": "Comportements",
+              "detail": "Vomissements et réponse conditionnée dans deux espèces."
+            },
+            {
+              "label": "Voie 5-HT1A",
+              "detail": "Blocage et renforcement de réponses orientent le mécanisme."
+            },
+            {
+              "label": "Limite",
+              "detail": "Pas d’activation directe simple démontrée, ni essai humain."
+            }
+          ],
+          "caption": "Bloquer un récepteur peut indiquer son implication, sans prouver que le CBDA est lui-même son activateur direct.",
+          "sourceIds": [
+            "can-study-cbda"
+          ],
+          "afterSectionId": "results"
+        }
+      },
+      "sourceIdsReviewed": [
+        "can-study-cbda"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Comment tester une voie de signalisation sans démontrer une activation directe ?",
+        "explainedTerms": [
+          "modèle animal",
+          "gaping conditionné",
+          "récepteur",
+          "antagoniste",
+          "agoniste",
+          "GTPγS"
+        ],
+        "example": "Bloquer un récepteur peut indiquer son implication, sans prouver que le CBDA est lui-même son activateur direct.",
+        "movedDetails": [
+          "study"
+        ],
+        "comprehensionChecks": [
+          "Qui est comparé à qui ?",
+          "Quel résultat était prévu comme principal ?",
+          "Quelle limite change réellement la conclusion ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [],
+  "sensitivePoints": [
+    "CBG2026 : financement et dénominateur éligibles du dossier initial bloqués par texte éditeur refusé.",
+    "CBDA : ne pas confondre facilitation de réponse à un agoniste et agonisme direct.",
+    "HHC2026 : structures candidates, rapports d’aires et stockage prolongé ; pas deux cohortes.",
+    "M2 HHC2026 : peut provenir d’une impureté initiale, hypothèse non vérifiée. Ne pas présenter les trois signaux M1–M3 comme trois structures pleinement identifiées et nécessairement biosynthétisées in vivo."
+  ]
+}

@@ -1,0 +1,56 @@
+{
+  "version": "2026-11-12.history1",
+  "verifiedAt": "2026-11-12",
+  "scope": "Parcours Histoire du chanvre et du cannabis. Onze chapitres demandés ; les huit autres futurs parcours ne sont pas inventés.",
+  "counts": { "chapters": 11, "lessons": 22, "lessonActivities": 22, "chapterCheckpoints": 11, "authoredQuizQuestions": 44, "optionCorrections": 176, "synthesisQuestions": 10, "sources": 51, "timelineEvents": 30, "circulationLinks": 7, "glossaryTerms": 32 },
+  "content": {
+    "entry": "src/lib/kanab-quest-school-history.ts",
+    "types": "src/lib/kanab-quest-school-history-types.ts",
+    "sourceRegistries": ["src/lib/kanab-quest-school-history-early.ts", "src/lib/kanab-quest-school-history-modern.ts"],
+    "privateAnswers": ["src/lib/kanab-quest-school-history-early-answers.ts", "src/lib/kanab-quest-school-history-modern-answers.ts"],
+    "accessCounts": { "full-text": 20, "abstract": 9, "catalogue": 7, "official-page": 15 },
+    "accessMeaning": "L’accès décrit le document ou passage effectivement consulté. full-text peut désigner un chapitre, passage ou transcription précisé dans passage ; il ne signifie pas nécessairement lecture de chaque page d’un ouvrage. Notice et résumé ne sont pas assimilés au texte intégral.",
+    "sourceFields": ["id", "title", "author", "organization", "published", "url", "passage", "access", "documentKind", "limitation", "verifiedAt"],
+    "evidenceLabels": ["observation", "interpretation", "experiment", "clinical", "tradition", "fiction", "law"],
+    "runtime": "Textes, sources et questions versionnés, sans génération IA ni recherche Web pendant le jeu. Corrigés monétaires délivrés uniquement après validation serveur. Solutions des activités sans gain accessibles dans leur contenu pédagogique."
+  },
+  "requiredExercises": [
+    { "passage": "history-eurasian-antiquity-checkpoint", "purpose": "Interpréter un dossier Tunnug/Jirzankal : indice, contexte, date, limite et justification." },
+    { "passage": "history-brittany-1", "purpose": "Reconstituer une commande fictive de toile à Noyal à partir des matières et métiers documentés ; ne pas inventer prix ni salaires." },
+    { "passage": "history-brittany-2", "purpose": "Relier matières, métiers et usages en distinguant les filières lin et chanvre." },
+    { "passage": "history-twentieth-century-2", "purpose": "Confronter le film USDA tel que documenté par sa notice et les catégories du texte fiscal de 1937. Deux documents visibles, conclusion et justification croisée." },
+    { "passage": "history-evidence-2", "purpose": "Corriger une chronologie confondant date des vestiges et publication d’une étude." }
+  ],
+  "criticalReadings": [
+    "Présence de plante, domestication, culture attestée et indice d’usage psychoactif sont des propositions distinctes.",
+    "Tunnug : étude Science du 5 novembre 2026, DOI 10.1126/science.aeg3800. Communiqué MPG consulté ; texte intégral et annexes non consultés. Les limites de l’analyse des cheveux sont expliquées sans présenter une étude générale sur le transfert comme une réfutation directe de Tunnug.",
+    "Shennong : tradition et chronologie des textes séparées ; pas de date mythique présentée comme observation archéologique.",
+    "Bretagne : IA29005674 classe olonnes de Locronan et noyales de Noyal en chanvre ; crées et bretagnes en lin. Spécialités documentées, pas monocultures ni composition de tous les objets.",
+    "Gutenberg : notices de Mayence et de la Library of Congress distinguent papier et vélin ; elles ne prouvent pas une composition exclusivement en chanvre des papiers.",
+    "Hemp for Victory : notice USDA/NAL MS0522, vers 1942, consultée ; aucun visionnage intégral ni dialogue transcrit inventé.",
+    "Prohibition : catégories, institutions, pays et périodes distingués, sans attribuer toute l’histoire à une seule cause.",
+    "O’Shaughnessy et Moreau : observations historiques contextualisées, pas équivalence avec une preuve clinique actuelle. Publications scientifiques séparées des dates de mise en ligne des archives.",
+    "Époque contemporaine : réglementation datée et territorialisée ; résultats médicaux rattachés aux formulations, indications et populations documentées. Pas d’extrapolation à tous les produits CBD."
+  ],
+  "independentReview": {
+    "modernMedicineScienceLaw": "Relecture par un autre agent des passages XIXe, découvertes scientifiques et contemporain ; sources Wellcome, Moreau, publications originales, EMA, EUDA, DGAL, Canada, ONU et Service Public.",
+    "heritageAndArchives": "Contre-vérification root des notices IA29005674 et IA35031862, de la Library of Congress et de la notice NAL/USDA ; limites d’accès conservées.",
+    "limits": "Relecture documentaire interne, pas validation universitaire externe ni test pédagogique auprès de joueurs."
+  },
+  "visuals": {
+    "existingIllustration": "public/placard/school/course-history-v1.webp ; illustration de synthèse conservée, explicitement sans valeur de preuve archéologique.",
+    "approvedInterior": "Intérieur v4 dédié au chanvre et planches botaniques approuvées conservés. Aucune génération supplémentaire.",
+    "lessonDiagrams": "Schémas HTML de preuves, chaînes de transformation, comparaisons et dates ; textes accessibles, pas d’artefact historique fabriqué.",
+    "timeline": "Ordre chronologique, espacement non proportionnel indiqué ; quatre natures de date, filtres région/usage et incertitude textuelle par événement.",
+    "map": { "file": "src/components/placard/KqHistoryMap.land.json", "source": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/v5.1.2/geojson/ne_110m_land.geojson", "license": "Domaine public", "licenseUrl": "https://www.naturalearthdata.com/about/terms-of-use/", "projection": "Équirectangulaire, fond terrestre actuel 1:110m, sans frontières politiques.", "processing": "127 contours, coordonnées arrondies à 0,1 unité dans un espace de 900 × 450.", "links": "Coordonnées repères approximatives ; arcs schématiques. Hypothèses en pointillés et mention textuelle, lien documenté ne signifie pas itinéraire intégral démontré. Liste HTML utilisable au clavier et au toucher." }
+  },
+  "delivery": {
+    "environment": "Local uniquement ; API de prévisualisation simulées, aucun changement distant.",
+    "progressMigration": "supabase/migrations/20261112000100_kq_school_history_progress.sql",
+    "prerequisiteMigration": "supabase/migrations/20261111000400_kq_school.sql",
+    "economyEvidence": "docs/bete-de-concours/school-economy-validation.json#historyExtension",
+    "contentTests": "src/lib/kanab-quest-school-history-content.test.ts",
+    "browserReport": "output/placard-navigation/school-history-report.json",
+    "buildLog": "output/school/history-build.log"
+  }
+}

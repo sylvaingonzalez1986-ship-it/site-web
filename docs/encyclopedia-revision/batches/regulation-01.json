@@ -1,0 +1,1162 @@
+{
+  "domain": "regulation",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "harvest-lesson-moisture",
+      "title": "Adjusting Crop Yield to a Standard Moisture Content — SS-AGR-443",
+      "author": "Michael J. Mulvaney, Pratap Devkota et Hardeep Singh",
+      "organization": "University of Florida, IFAS Extension",
+      "published": "Publication initiale mai 2020 ; révision avril 2025 ; DOI 10.32473/edis-ag442-2020",
+      "url": "https://ask.ifas.ufl.edu/publication/AG442/pdf",
+      "passage": "PDF pp. 1–2 : base humide, matière sèche et normalisation du rendement.",
+      "access": "excerpt",
+      "limitation": "Exemples de maïs non transposés au chanvre. Le bilan de masse illustré est un exemple mathématique, pas une recommandation d’humidité.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source méthodologique, scientifique ou de filière originale ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://ask.ifas.ufl.edu/publication/AG442/pdf",
+          "openedAt": "2026-11-14",
+          "sections": "PDF pp. 1–2 : base humide, matière sèche et normalisation du rendement.",
+          "supports": "PDF pp. 1–2 : base humide, matière sèche et normalisation du rendement.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "harvest-lesson-hemp",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Louis-Marie Allard et contributeurs",
+      "organization": "Terres Inovia / InterChanvre",
+      "published": "janvier 2026",
+      "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+      "passage": "Guide 2026, pages imprimées 22–23 : maturité étagée, battage, fanage/andainage, balles, échauffement et bris du chènevis.",
+      "access": "excerpt",
+      "limitation": "Lecture ciblée de la récolte fibre/graine ; ni raccourcis historiques de p.3 ni mention C4 erronée repris. Aucun protocole de production de drogue.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source méthodologique, scientifique ou de filière originale ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Guide 2026, pages imprimées 22–23 : maturité étagée, battage, fanage/andainage, balles, échauffement et bris du chènevis.",
+          "supports": "Guide 2026, pages imprimées 22–23 : maturité étagée, battage, fanage/andainage, balles, échauffement et bris du chènevis.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "harvest-lesson-oil",
+      "title": "Monitoring the Shelf Life of Hemp Seed Oil Stored at Two Temperatures in Different Materials via Near-Infrared (NIR) Spectroscopy",
+      "author": "Francesca Bonazza, Lucia Monti, Milena Povolo, Andrea Gasparini, Valeria Pelizzola et Giovanni Cabassi",
+      "organization": "Molecules 29(23):5577",
+      "published": "26 novembre 2024 ; DOI 10.3390/molecules29235577",
+      "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+      "passage": "Bonazza et al., introduction, §2.2 et §3.1 : huile Futura 75, oxydation et étude emballage/conditions de stockage.",
+      "access": "excerpt",
+      "limitation": "Un lot, petits flacons, températures et éclairages associés ; ni durée de conservation universelle ni causalité indépendante de chaque facteur. Les allégations nutritionnelles générales de l’introduction ne sont pas reprises.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source méthodologique, scientifique ou de filière originale ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+          "openedAt": "2026-11-14",
+          "sections": "Bonazza et al., introduction, §2.2 et §3.1 : huile Futura 75, oxydation et étude emballage/conditions de stockage.",
+          "supports": "Bonazza et al., introduction, §2.2 et §3.1 : huile Futura 75, oxydation et étude emballage/conditions de stockage.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-methods",
+      "title": "Validating analytical methods in cannabis testing",
+      "author": "Santé Canada",
+      "organization": "Gouvernement du Canada",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.canada.ca/en/health-canada/services/cannabis-regulations-licensed-producers/validating-analytical-methods-cannabis-testing.html",
+      "passage": "Sections General, Matrix considerations, Specificity, Limits of detection/quantification et Reporting of results.",
+      "access": "excerpt",
+      "limitation": "Guide technique canadien de validation : principes analytiques, pas seuils juridiques français.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/health-canada/services/cannabis-regulations-licensed-producers/validating-analytical-methods-cannabis-testing.html",
+          "openedAt": "2026-11-14",
+          "sections": "Sections General, Matrix considerations, Specificity, Limits of detection/quantification et Reporting of results.",
+          "supports": "Sections General, Matrix considerations, Specificity, Limits of detection/quantification et Reporting of results.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-labels",
+      "title": "Product labeling accuracy and contamination analysis of commercially available cannabidiol product samples",
+      "author": "Barry E. Gidal, Ryan Vandrey, Chela Wallin, Sean Callan, Alan Sutton, Timothy B. Saurer et Jennifer L. Triemstra",
+      "organization": "Frontiers in Pharmacology 15:1335441",
+      "published": "18 mars 2024 ; DOI 10.3389/fphar.2024.1335441",
+      "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2024.1335441/full",
+      "passage": "Méthodes, résultats et tableaux 1–2, contamination : 202 produits achetés en ligne aux États-Unis, octobre–décembre 2021.",
+      "access": "excerpt",
+      "limitation": "Échantillon commercial de convenance, pas fréquence actuelle de contamination en France. Détection, dépassement de seuil et risque ne sont pas synonymes. Les pourcentages ne sont pas généralisés.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2024.1335441/full",
+          "openedAt": "2026-11-14",
+          "sections": "Méthodes, résultats et tableaux 1–2, contamination : 202 produits achetés en ligne aux États-Unis, octobre–décembre 2021.",
+          "supports": "Méthodes, résultats et tableaux 1–2, contamination : 202 produits achetés en ligne aux États-Unis, octobre–décembre 2021.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "health-lesson-mycotoxins",
+      "title": "Mycotoxins",
+      "author": "Organisation mondiale de la santé",
+      "organization": "OMS",
+      "published": "2023-10-02",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/mycotoxins",
+      "passage": "Key facts, Overview, How can I minimize the risk from mycotoxins : moisissures, toxines, conditions de développement et stabilité chimique.",
+      "access": "official-page",
+      "limitation": "Information OMS générale sur les aliments ; ne permet pas d’identifier un champignon ou de quantifier une toxine à partir d’une photo.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://www.who.int/news-room/fact-sheets/detail/mycotoxins",
+          "openedAt": "2026-11-14",
+          "sections": "Key facts, Overview, How can I minimize the risk from mycotoxins : moisissures, toxines, conditions de développement et stabilité chimique.",
+          "supports": "Key facts, Overview, How can I minimize the risk from mycotoxins : moisissures, toxines, conditions de développement et stabilité chimique.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-acetates",
+      "title": "Vaping Cannabinoid Acetates Leads to Ketene Formation",
+      "author": "K. R. Munger, R. P. Jensen et R. M. Strongin",
+      "organization": "Chemical Research in Toxicology",
+      "published": "18 juillet 2022 ; DOI 10.1021/acs.chemrestox.2c00170",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35801872/",
+      "passage": "Résumé original : acétates de Δ8-THC, de CBN et de CBD, plus un produit commercial ; cétène observé dans les condensats étudiés.",
+      "access": "abstract",
+      "limitation": "Résumé seulement. Résultat de chimie expérimentale, pas essai clinique ni mesure de toute cartouche ou de tous les cannabinoïdes.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35801872/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé original : acétates de Δ8-THC, de CBN et de CBD, plus un produit commercial ; cétène observé dans les condensats étudiés.",
+          "supports": "Résumé original : acétates de Δ8-THC, de CBN et de CBD, plus un produit commercial ; cétène observé dans les condensats étudiés.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-inhalation",
+      "title": "Cannabis accessories for inhalation: health risks",
+      "author": "Santé Canada",
+      "organization": "Santé Canada",
+      "published": "Page institutionnelle consultée le 2026-11-12",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "passage": "Smoking et Vaping : fumée de combustion, aérosol chauffé, substances nocives et métaux provenant du dispositif.",
+      "limitation": "Santé Canada ; données de risque retenues, pas de recommandations d’usage ni transposition du droit canadien.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+          "openedAt": "2026-11-14",
+          "sections": "Smoking et Vaping : fumée de combustion, aérosol chauffé, substances nocives et métaux provenant du dispositif.",
+          "supports": "Smoking et Vaping : fumée de combustion, aérosol chauffé, substances nocives et métaux provenant du dispositif.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-nist",
+      "title": "Characterization of Reference Material 8210: Hemp Plant",
+      "author": "Colleen E. Bryan Sallee, Walter Brent Wilson et collaborateurs",
+      "organization": "NIST, Special Publication 260-248",
+      "published": "2024-06-20",
+      "url": "https://www.nist.gov/publications/characterization-reference-material-8210-hemp-plant",
+      "passage": "Notice et résumé institutionnel RM 8210 : plante broyée séchée, valeurs non certifiées de cannabinoïdes et éléments toxiques.",
+      "access": "abstract",
+      "limitation": "Résumé de la notice, rapport complet non lu ; RM 8210 n’est pas présenté comme matériau à valeurs certifiées.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://www.nist.gov/publications/characterization-reference-material-8210-hemp-plant",
+          "openedAt": "2026-11-14",
+          "sections": "Notice et résumé institutionnel RM 8210 : plante broyée séchée, valeurs non certifiées de cannabinoïdes et éléments toxiques.",
+          "supports": "Notice et résumé institutionnel RM 8210 : plante broyée séchée, valeurs non certifiées de cannabinoïdes et éléments toxiques.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-metrology",
+      "title": "The Fitness for Purpose of Analytical Methods — Third Edition",
+      "author": "Helen Cantwell (dir.) et groupe Method Validation",
+      "organization": "H. Cantwell (direction), Eurachem",
+      "published": "2025",
+      "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+      "passage": "Guide 3e édition 2025 : §5.1 sélectivité et définition du mesurande ; §5.3.1 et §5.3.4 limites de détection et quantification.",
+      "limitation": "Lecture des sections citées, non de l’ensemble des 86 pages. Performances acceptables définies pour un usage donné.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Guide 3e édition 2025 : §5.1 sélectivité et définition du mesurande ; §5.3.1 et §5.3.4 limites de détection et quantification.",
+          "supports": "Guide 3e édition 2025 : §5.1 sélectivité et définition du mesurande ; §5.3.1 et §5.3.4 limites de détection et quantification.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-analysis",
+      "title": "Exigences pour l’accréditation des laboratoires selon NF EN ISO/IEC 17025:2017 — LAB REF 02, révision 15",
+      "author": "Cofrac",
+      "organization": "Cofrac",
+      "published": "Applicable à compter du 2026-03-01",
+      "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+      "passage": "LAB REF 02 révision 15, §7.8.6–7.8.7 : couverture des résultats et distinction déclarations sous/hors accréditation.",
+      "limitation": "Complément COFRAC à ISO/IEC 17025 ; ne remplace pas la norme et ne certifie pas automatiquement chaque produit.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+          "openedAt": "2026-11-14",
+          "sections": "LAB REF 02 révision 15, §7.8.6–7.8.7 : couverture des résultats et distinction déclarations sous/hors accréditation.",
+          "supports": "LAB REF 02 révision 15, §7.8.6–7.8.7 : couverture des résultats et distinction déclarations sous/hors accréditation.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-food-law",
+      "title": "Règlement (CE) nº 178/2002 — texte original, articles 18 et 19",
+      "author": "Parlement européen et Conseil",
+      "organization": "Parlement européen et Conseil",
+      "published": "2002-01-28 ; articles originaux consultés le 2026-11-14",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32002R0178",
+      "passage": "Règlement 178/2002, articles 18–19 : fournisseurs/destinataires, traçabilité et devoirs de retrait/information.",
+      "limitation": "Texte original consulté ; la consolidation 2026 bloque par CAPTCHA. La validation du statut consolidé reste explicitement en attente.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32002R0178",
+          "openedAt": "2026-11-14",
+          "sections": "Règlement 178/2002, articles 18–19 : fournisseurs/destinataires, traçabilité et devoirs de retrait/information.",
+          "supports": "Règlement 178/2002, articles 18–19 : fournisseurs/destinataires, traçabilité et devoirs de retrait/information.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-thcp",
+      "title": "A novel phytocannabinoid isolated from Cannabis sativa L. with an in vivo cannabimimetic activity higher than Δ9-tetrahydrocannabinol: Δ9-Tetrahydrocannabiphorol",
+      "author": "Cinzia Citti et collaborateurs",
+      "organization": "Scientific Reports 9:20335",
+      "published": "30 décembre 2019 ; DOI 10.1038/s41598-019-56785-1",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+      "passage": "Résultats Identification et Semi-quantification, matériel FM2 : THCP/CBDP caractérisés dans un échantillon défini.",
+      "access": "excerpt",
+      "limitation": "Les quantités semi-quantitatives de FM2 ne valent pas composition de toutes les plantes ; liaison aux récepteurs et souris ne prouvent pas un effet clinique chez l’humain.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+          "openedAt": "2026-11-14",
+          "sections": "Résultats Identification et Semi-quantification, matériel FM2 : THCP/CBDP caractérisés dans un échantillon défini.",
+          "supports": "Résultats Identification et Semi-quantification, matériel FM2 : THCP/CBDP caractérisés dans un échantillon défini.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-hhc",
+      "title": "Hexahydrocannabinol (HHC) and related substances",
+      "author": "István Ujváry et équipe EMCDDA",
+      "organization": "Observatoire européen des drogues et des toxicomanies, devenu EUDA",
+      "published": "17 avril 2023 ; DOI 10.2810/852912",
+      "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+      "passage": "Rapport 2023 pp.5, 19, 23–24 : origine semi-synthétique du marché décrit et épimères 9R/9S.",
+      "access": "excerpt",
+      "limitation": "Rapport historique 2023 ; ses anciens états du droit et l’absence alors d’études humaines ne sont pas présentés comme état actuel. Aucune méthode de synthèse reproduite.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Rapport 2023 pp.5, 19, 23–24 : origine semi-synthétique du marché décrit et épimères 9R/9S.",
+          "supports": "Rapport 2023 pp.5, 19, 23–24 : origine semi-synthétique du marché décrit et épimères 9R/9S.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-seed-oil",
+      "title": "Cannabidiol (CBD)",
+      "author": "Santé Canada",
+      "organization": "Gouvernement du Canada",
+      "published": "2020-07-30",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+      "passage": "Section The difference between cannabis oil and hemp-seed oil : huile issue du grain et formulation dans une huile support.",
+      "access": "excerpt",
+      "limitation": "Page 2020 contenant des informations juridiques datées : seule la distinction matérielle est reprise, jamais le statut international du CBD ou le droit actuel français.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+          "openedAt": "2026-11-14",
+          "sections": "Section The difference between cannabis oil and hemp-seed oil : huile issue du grain et formulation dans une huile support.",
+          "supports": "Section The difference between cannabis oil and hemp-seed oil : huile issue du grain et formulation dans une huile support.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-oral",
+      "title": "Pharmacodynamic dose effects of oral cannabis ingestion in healthy adults who infrequently use cannabis",
+      "author": "Nicolas J. Schlienz, Tory R. Spindle, Edward J. Cone et collaborateurs",
+      "organization": "Drug and Alcohol Dependence 211:107969",
+      "published": "1 juin 2020 ; PMID 32298998",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8221366/",
+      "passage": "Résumé Methods/Results/Conclusion : 17 adultes peu consommateurs, quatre sessions, suivi de huit heures, effets retardés après ingestion.",
+      "access": "abstract",
+      "limitation": "Résumé de l’étude humaine ; petit échantillon et formulation spécifique. Aucune dose conseillée, aucune équivalence entre voies.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8221366/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé Methods/Results/Conclusion : 17 adultes peu consommateurs, quatre sessions, suivi de huit heures, effets retardés après ingestion.",
+          "supports": "Résumé Methods/Results/Conclusion : 17 adultes peu consommateurs, quatre sessions, suivi de huit heures, effets retardés après ingestion.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-dgal-2026",
+      "title": "Denrées alimentaires contenant du cannabidiol : rappel des règles et contrôles",
+      "author": "Ministère de l’Agriculture — DGAL",
+      "organization": "Ministère de l’Agriculture — DGAL",
+      "published": "2026-05-20",
+      "url": "https://agriculture.gouv.fr/node/110883",
+      "passage": "Communiqué intégral du 20 mai 2026 : CBD alimentaire, exceptions graines/dérivés et feuilles exclusivement pour infusion aqueuse sans enrichissement.",
+      "limitation": "Position française datée ; ne vaut pas autorisation générale pour toutes les feuilles, toutes les préparations ni toutes les catégories de produits.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://agriculture.gouv.fr/node/110883",
+          "openedAt": "2026-11-14",
+          "sections": "Communiqué intégral du 20 mai 2026 : CBD alimentaire, exceptions graines/dérivés et feuilles exclusivement pour infusion aqueuse sans enrichissement.",
+          "supports": "Communiqué intégral du 20 mai 2026 : CBD alimentaire, exceptions graines/dérivés et feuilles exclusivement pour infusion aqueuse sans enrichissement.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-novel-food",
+      "title": "Règlement (UE) 2015/2283 — nouveaux aliments, consolidation du 27 mars 2021",
+      "author": "Parlement européen et Conseil",
+      "organization": "Parlement européen et Conseil",
+      "published": "2015-11-25 ; consolidation courante 2021-03-27",
+      "url": "https://eur-lex.europa.eu/eli/reg/2015/2283/",
+      "passage": "Texte consolidé 2021-03-27, articles 3–4 et 6 : historique avant le 15 mai 1997, catégories, vérification et liste de l’Union.",
+      "limitation": "Articles effectivement ouverts. Statut d’un produit dépend aussi de sa nature, de son usage et des conditions de l’autorisation.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://eur-lex.europa.eu/eli/reg/2015/2283/",
+          "openedAt": "2026-11-14",
+          "sections": "Texte consolidé 2021-03-27, articles 3–4 et 6 : historique avant le 15 mai 1997, catégories, vérification et liste de l’Union.",
+          "supports": "Texte consolidé 2021-03-27, articles 3–4 et 6 : historique avant le 15 mai 1997, catégories, vérification et liste de l’Union.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-contaminants",
+      "title": "Règlement (UE) 2023/915 — contaminants alimentaires, consolidation du 19 août 2026",
+      "author": "Commission européenne",
+      "organization": "Commission européenne",
+      "published": "2023-04-25 ; consolidation 2026-08-19",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/915/",
+      "passage": "Règlement 2023/915, consolidation 2026-08-19, annexe I §2.6 et notes : graines 3 mg/kg, huile 7,5 mg/kg, somme et convention <LOQ.",
+      "limitation": "Catégories exclusivement issues des graines pour les valeurs citées ; ne pas transférer ces seuils à des fleurs ou à un médicament.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://eur-lex.europa.eu/eli/reg/2023/915/",
+          "openedAt": "2026-11-14",
+          "sections": "Règlement 2023/915, consolidation 2026-08-19, annexe I §2.6 et notes : graines 3 mg/kg, huile 7,5 mg/kg, somme et convention <LOQ.",
+          "supports": "Règlement 2023/915, consolidation 2026-08-19, annexe I §2.6 et notes : graines 3 mg/kg, huile 7,5 mg/kg, somme et convention <LOQ.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-hemp-order",
+      "title": "Arrêté du 30 décembre 2021 portant application de l’article R.5132-86",
+      "author": "Ministères chargés de la Santé et de l’Agriculture",
+      "organization": "Ministères chargés de la Santé et de l’Agriculture",
+      "published": "2021-12-30 ; texte courant consulté",
+      "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213",
+      "passage": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+      "limitation": "Le critère 0,30 % n’est ni une autorisation alimentaire ni une garantie de sécurité. Les conditions de culture et les autres textes demeurent applicables.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213",
+          "openedAt": "2026-11-14",
+          "sections": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+          "supports": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-hhc-decision-2026",
+      "title": "Décision du 16 janvier 2026 modifiant la liste des stupéfiants",
+      "author": "ANSM",
+      "organization": "ANSM",
+      "published": "2026-01-16 ; publication 2026-01-19",
+      "url": "https://ansm.sante.fr/actualites/decision-du-16-01-2026-portant-modification-de-la-liste-des-substances-classees-comme-stupefiants",
+      "passage": "Décision du 16 janvier 2026 publiée le 19 janvier : ajout HHC annexe III et retrait annexe IV.",
+      "limitation": "Transfert entre annexes des stupéfiants, pas déclassement. Pas de généralisation à toutes les molécules commercialisées sous un nom voisin.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://ansm.sante.fr/actualites/decision-du-16-01-2026-portant-modification-de-la-liste-des-substances-classees-comme-stupefiants",
+          "openedAt": "2026-11-14",
+          "sections": "Décision du 16 janvier 2026 publiée le 19 janvier : ajout HHC annexe III et retrait annexe IV.",
+          "supports": "Décision du 16 janvier 2026 publiée le 19 janvier : ajout HHC annexe III et retrait annexe IV.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "ref-conservation",
+      "fullyRead": true,
+      "questions": [
+        "Eau et matière sèche",
+        "Intégrité et vocabulaire de la récolte",
+        "Ce qui change pendant le stockage"
+      ],
+      "findings": [
+        "Fond conservé après vérification. Ajout du vocabulaire nécessaire aux neuf questions, bilan de masse, mécanisme et limites des indicateurs d’oxydation."
+      ],
+      "patch": {
+        "lead": "Une récolte continue d’évoluer après sa coupe. Eau, intégrité des graines, oxydation et conditions de stockage expliquent des pertes de qualité différentes.",
+        "sections": [
+          {
+            "id": "ref-conservation-1",
+            "title": "Eau et matière sèche",
+            "paragraphs": [
+              "La masse récoltée comprend de l’eau et de la matière sèche. Le séchage enlève principalement de l’eau : une baisse de poids ne mesure donc pas à elle seule une perte de fibres, de protéines ou de minéraux. Sur base humide, le pourcentage d’humidité est la masse d’eau divisée par la masse totale humide.",
+              "Exemple de calcul fictif : 100 kg de matière à 20 % d’eau contiennent 80 kg de matière sèche. Si seule l’eau change, le lot reste à 80 kg de matière sèche. Comparer des rendements exige la même base d’humidité ; ces valeurs de calcul ne sont pas des objectifs de conservation. La fraction commercialisable dépend aussi du débouché : un refus contractuel ne prouve pas automatiquement un danger alimentaire."
+            ],
+            "sourceIds": [
+              "harvest-lesson-moisture"
+            ]
+          },
+          {
+            "id": "ref-conservation-2",
+            "title": "Intégrité et vocabulaire de la récolte",
+            "paragraphs": [
+              "Dans l’inflorescence, le chènevis du bas peut être mûr alors que celui du haut reste moins avancé. Le battage sépare le chènevis des structures qui le portent : ces petits fruits secs contiennent chacun une graine. Pour la paille, le fanage étale et aère la matière ; l’andainage la rassemble en lignes, les andains ; le pressage forme des balles. Ce vocabulaire décrit des opérations distinctes, dont la succession dépend du débouché.",
+              "Une graine cassée expose davantage son contenu huileux à l’oxydation. Une impureté est une autre matière présente dans le lot ; un bris est une altération de la matière recherchée. Pour les fibres, longueur et propreté importent aussi. Une fraction écartée d’un débouché peut parfois être valorisée ailleurs : elle n’a pas nécessairement disparu."
+            ],
+            "sourceIds": [
+              "harvest-lesson-hemp"
+            ]
+          },
+          {
+            "id": "ref-conservation-3",
+            "title": "Ce qui change pendant le stockage",
+            "paragraphs": [
+              "Un tas de chènevis humide peut s’échauffer et perdre en qualité. L’humidité globale ne décrit pas tous les micro-environnements du lot ; une condensation localisée ne suffit cependant pas à identifier une moisissure. L’observation oriente le contrôle, elle ne remplace pas l’analyse.",
+              "Dans l’huile, l’oxygène participe à l’oxydation des lipides. Lumière, température, composition et emballage modifient son évolution. Les produits formés peuvent changer odeur et saveur : c’est une contribution au rancissement. L’indice de peroxyde suit des produits précoces d’oxydation ; leur décomposition explique qu’un indice bas, isolément, ne prouve pas toujours la fraîcheur.",
+              "Bonazza et ses collègues ont étudié en 2024 une huile Futura 75, dans de petits flacons, pendant 270 jours. Les résultats diffèrent selon l’emballage et les conditions associant température et lumière. Ils expliquent pourquoi la protection du produit compte ; ils ne fixent pas une durée de conservation valable pour toute huile ni une preuve indépendante de l’effet de chaque facteur."
+            ],
+            "sourceIds": [
+              "harvest-lesson-hemp",
+              "harvest-lesson-oil"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "harvest-lesson-moisture",
+          "harvest-lesson-hemp",
+          "harvest-lesson-oil"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois changements, trois interprétations",
+          "nodes": [
+            {
+              "label": "Eau retirée",
+              "detail": "La masse humide baisse ; la matière sèche peut rester la même."
+            },
+            {
+              "label": "Graines brisées",
+              "detail": "L’intégrité physique se dégrade et le contenu devient plus exposé."
+            },
+            {
+              "label": "Lipides oxydés",
+              "detail": "La composition chimique évolue ; un poids stable ne signifie pas une qualité stable."
+            }
+          ],
+          "caption": "Schéma conceptuel sans échelle : aucun de ces constats ne constitue à lui seul un contrôle complet de sécurité.",
+          "sourceIds": [
+            "harvest-lesson-moisture",
+            "harvest-lesson-hemp",
+            "harvest-lesson-oil"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "harvest-lesson-moisture",
+        "harvest-lesson-hemp",
+        "harvest-lesson-oil"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison originale en HTML, contrôlée contre les références citées ; texte accessible et aucune photographie présentée comme diagnostic."
+      },
+      "quizIdsReviewed": [
+        "hemp-prevention-sechage",
+        "hemp-prevention-paille",
+        "hemp-prevention-echauffement",
+        "hemp-prevention-fanage",
+        "hemp-prevention-andain",
+        "hemp-prevention-battage",
+        "hemp-prevention-huile-rance",
+        "hemp-prevention-bris-graines",
+        "hemp-prevention-maturite"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-contaminants",
+      "fullyRead": true,
+      "questions": [
+        "Quelles substances recherche-t-on ?",
+        "Moisissures et mycotoxines",
+        "Du contenu du flacon aux émissions"
+      ],
+      "findings": [
+        "Passages fiables conservés et développés ; étude américaine contextualisée, toxine distinguée de l’organisme, portée de l’expérience sur les acétates explicitée."
+      ],
+      "patch": {
+        "lead": "La teneur en cannabinoïdes ne résume pas la qualité d’un produit. Les contrôles doivent distinguer résidus chimiques, microorganismes, toxines et substances formées pendant l’usage.",
+        "sections": [
+          {
+            "id": "ref-contaminants-1",
+            "title": "Quelles substances recherche-t-on ?",
+            "paragraphs": [
+              "Les familles contrôlées peuvent comprendre résidus de pesticides, éléments toxiques tels que plomb ou cadmium, solvants résiduels et microorganismes. La liste utile dépend de la matière et de sa fabrication. « Sans solvant » décrit au mieux un aspect du procédé ; cette mention ne démontre pas l’absence de métaux, de pesticides ou de moisissures.",
+              "Une étude publiée en 2024 a analysé 202 produits au CBD achetés en ligne aux États-Unis en 2021. Elle a trouvé des contaminants dans une partie des échantillons et des écarts d’étiquetage. Cet exemple démontre l’intérêt de mesurer plusieurs paramètres. Il ne donne pas le taux de contamination du marché français actuel. Détecter une substance n’est pas la même conclusion que dépasser un seuil ; celui-ci doit correspondre au produit et au cadre retenu."
+            ],
+            "sourceIds": [
+              "products-lesson-methods",
+              "products-lesson-labels"
+            ]
+          },
+          {
+            "id": "ref-contaminants-2",
+            "title": "Moisissures et mycotoxines",
+            "paragraphs": [
+              "Une moisissure est un organisme ; une mycotoxine est une substance toxique que certaines moisissures peuvent produire. Leur formation dépend notamment de l’espèce et des conditions du milieu. Une couleur ne permet ni de nommer la toxine ni d’en mesurer la quantité. L’absence d’un aspect visible ne démontre pas l’absence de contamination.",
+              "Beaucoup de mycotoxines résistent à des transformations alimentaires. Faire disparaître ou tuer le champignon n’équivaut donc pas à détruire les toxines déjà présentes. Retirer la partie visible d’une matière moisie ne constitue pas une validation de sécurité du reste. Il faut distinguer le dénombrement microbien, l’identification d’un agent et le dosage d’une toxine."
+            ],
+            "sourceIds": [
+              "health-lesson-mycotoxins"
+            ]
+          },
+          {
+            "id": "ref-contaminants-3",
+            "title": "Du contenu du flacon aux émissions",
+            "paragraphs": [
+              "Chauffer un produit peut former des substances absentes du mélange initial. Munger et ses collègues ont observé du cétène dans les condensats d’acétates de Δ8-THC, de CBN et de CBD étudiés en laboratoire, ainsi que dans un produit commercial à l’acétate de Δ8-THC. Il s’agit d’une observation chimique sur ces substances et ces conditions, pas d’une mesure de toutes les cartouches.",
+              "Un aérosol n’est pas simplement de la vapeur d’eau. Il peut transporter des constituants du produit et des contaminants issus du dispositif, notamment des métaux. Fumée de combustion et aérosol de chauffage diffèrent, mais l’absence de combustion ne prouve pas l’innocuité. Un certificat portant sur le liquide initial ne décrit pas automatiquement ce qui est inhalé."
+            ],
+            "sourceIds": [
+              "products-lesson-acetates",
+              "products-tool-inhalation"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-methods",
+          "products-lesson-labels",
+          "health-lesson-mycotoxins",
+          "products-lesson-acetates",
+          "products-tool-inhalation"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Le contrôle dépend de l’objet recherché",
+          "nodes": [
+            {
+              "label": "Résidu chimique",
+              "detail": "Identifier puis doser un analyte défini dans la matrice."
+            },
+            {
+              "label": "Microorganisme",
+              "detail": "Rechercher ou dénombrer l’organisme avec une méthode adaptée."
+            },
+            {
+              "label": "Mycotoxine",
+              "detail": "Doser une substance distincte du champignon qui peut l’avoir produite."
+            },
+            {
+              "label": "Émission",
+              "detail": "Étudier ce qui est libéré lors d’un usage donné, en tenant compte du dispositif."
+            }
+          ],
+          "caption": "Comparaison originale des objets d’analyse. Elle ne prédit pas la présence d’un contaminant dans un produit particulier.",
+          "sourceIds": [
+            "products-lesson-methods",
+            "health-lesson-mycotoxins",
+            "products-tool-inhalation"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "products-lesson-methods",
+        "products-lesson-labels",
+        "health-lesson-mycotoxins",
+        "products-lesson-acetates",
+        "products-tool-inhalation"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison originale en HTML, contrôlée contre les références citées ; texte accessible et aucune photographie présentée comme diagnostic."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-analyses",
+      "fullyRead": true,
+      "questions": [
+        "Identifier et quantifier",
+        "Unités, base et limites",
+        "Relier le certificat au bon lot"
+      ],
+      "findings": [
+        "Ajout NIST valeurs non certifiées, exemple exact d’unités et portée d’accréditation. Traçabilité conservée avec preuve primaire originale et réserve sur consolidation."
+      ],
+      "patch": {
+        "lead": "Pour comprendre un résultat de laboratoire, il faut connaître l’échantillon, la substance recherchée, la méthode, l’unité et les limites de mesure.",
+        "sections": [
+          {
+            "id": "ref-analyses-1",
+            "title": "Identifier et quantifier",
+            "paragraphs": [
+              "L’analyte est la substance recherchée ; la matrice est le matériau qui la contient, par exemple une huile ou une poudre végétale. Identifier répond à « de quelle substance s’agit-il ? » ; quantifier répond à « combien y en a-t-il ? ». Une méthode doit distinguer les signaux d’espèces voisines et les interférences de la matrice.",
+              "Une méthode performante dans une huile n’est pas automatiquement validée dans une confiserie. Préparation, séparation, détection et calcul participent tous au résultat. Un matériau de référence aide à contrôler les mesures : le RM 8210 du NIST est une plante de chanvre séchée et broyée caractérisée pour des cannabinoïdes et des éléments toxiques. Ses valeurs sont annoncées comme non certifiées : « référence » et « valeur certifiée » ne sont pas synonymes."
+            ],
+            "sourceIds": [
+              "products-lesson-methods",
+              "products-lesson-nist"
+            ]
+          },
+          {
+            "id": "ref-analyses-2",
+            "title": "Unités, base et limites",
+            "paragraphs": [
+              "Une teneur est rapportée à une quantité de produit : 1 % en masse correspond à 10 mg/g, tandis que 1 mg/kg est mille fois plus petit que 1 mg/g. La base humide inclut l’eau ; la base sèche l’exclut. Un changement de dénominateur peut modifier la valeur sans ajouter la moindre molécule.",
+              "La limite de détection concerne la capacité à distinguer un signal du bruit de fond. La limite de quantification, ou LOQ, est le plus bas niveau auquel les performances sont acceptables pour l’usage prévu. Un résultat « inférieur à la LOQ » n’équivaut pas à zéro : il peut exister une quantité trop petite pour être mesurée convenablement.",
+              "L’incertitude exprime la dispersion raisonnablement associée au résultat. Afficher davantage de décimales ne la réduit pas. Comparer un résultat à une limite demande les mêmes unités et la règle de décision applicable. Une convention réglementaire peut fixer une valeur de calcul pour un résultat sous LOQ ; elle ne transforme pas cette convention en observation d’une absence physique."
+            ],
+            "sourceIds": [
+              "products-tool-metrology",
+              "products-lesson-methods",
+              "harvest-lesson-moisture",
+              "products-tool-contaminants"
+            ]
+          },
+          {
+            "id": "ref-analyses-3",
+            "title": "Relier le certificat au bon lot",
+            "paragraphs": [
+              "Le certificat décrit l’objet effectivement analysé. Son lien avec le lot dépend de l’identification, du prélèvement et des transformations ultérieures. Le rapport d’un ingrédient ne décrit pas automatiquement un mélange fabriqué plus tard. « Non analysé » signifie que le rapport ne fournit pas de résultat pour ce paramètre, et non que le paramètre est conforme.",
+              "L’accréditation porte sur des compétences et une portée définies. Une déclaration de conformité sous accréditation doit reposer sur des résultats couverts par celle-ci ; le COFRAC demande de distinguer clairement les déclarations couvertes des autres. Le logo seul ne transforme pas toutes les affirmations commerciales en conclusions d’analyse.",
+              "La traçabilité relie matières, opérations et destinataires. Dans la législation alimentaire européenne, l’article 18 du règlement 178/2002 prévoit notamment l’identification des fournisseurs et des entreprises destinataires. Cette chaîne permet de retrouver les produits concernés lorsqu’un problème est découvert."
+            ],
+            "sourceIds": [
+              "products-tool-analysis",
+              "products-tool-food-law"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-methods",
+          "products-lesson-nist",
+          "products-tool-metrology",
+          "harvest-lesson-moisture",
+          "products-tool-contaminants",
+          "products-tool-analysis",
+          "products-tool-food-law"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Du lot à la conclusion",
+          "nodes": [
+            {
+              "label": "Prélèvement identifié",
+              "detail": "Définir l’objet et son lien documenté au lot."
+            },
+            {
+              "label": "Méthode adaptée",
+              "detail": "Identifier l’analyte et maîtriser les effets de matrice."
+            },
+            {
+              "label": "Résultat contextualisé",
+              "detail": "Unité, base, LOQ et incertitude accompagnent la teneur."
+            },
+            {
+              "label": "Interprétation",
+              "detail": "Comparer au critère applicable ; les paramètres non mesurés restent inconnus."
+            }
+          ],
+          "caption": "Chaîne originale de lecture d’un résultat. La qualité de chaque étape conditionne la portée de la suivante.",
+          "sourceIds": [
+            "products-lesson-methods",
+            "products-tool-metrology",
+            "products-tool-analysis"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "products-lesson-methods",
+        "products-lesson-nist",
+        "products-tool-metrology",
+        "harvest-lesson-moisture",
+        "products-tool-contaminants",
+        "products-tool-analysis",
+        "products-tool-food-law"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison originale en HTML, contrôlée contre les références citées ; texte accessible et aucune photographie présentée comme diagnostic."
+      },
+      "quizIdsReviewed": [],
+      "status": "blocked",
+      "blockers": [
+        "Confirmer les articles 18–19 dans la consolidation courante du règlement 178/2002 : plusieurs URL consolidées bloquent par CAPTCHA/redirection ; texte original effectivement lu."
+      ]
+    },
+    {
+      "id": "ref-origines-formulations",
+      "fullyRead": true,
+      "questions": [
+        "Une présence naturelle ne décrit pas un marché",
+        "Transformation chimique et stéréoisomères",
+        "Composition et voie d’exposition"
+      ],
+      "findings": [
+        "Présence naturelle et provenance commerciale dissociées ; épimères expliqués sans protocole ; résultat oral humain contextualisé."
+      ],
+      "patch": {
+        "lead": "Présence dans une plante, origine industrielle et composition du produit fini répondent à trois questions différentes. Un nom de molécule sur une étiquette ne suffit à résoudre aucune des trois.",
+        "sections": [
+          {
+            "id": "ref-origines-formulations-1",
+            "title": "Une présence naturelle ne décrit pas un marché",
+            "paragraphs": [
+              "L’identification d’un composé dans un échantillon ne prouve pas qu’il est abondant dans toutes les plantes. En 2019, Citti et ses collègues ont caractérisé le THCP et le CBDP à partir de cannabis FM2. Le matériel et les méthodes d’identification sont précisés ; ce résultat ne démontre pas que tout produit commercial portant ces noms provient d’une séparation directe de fleurs.",
+              "La plante produit principalement de nombreux cannabinoïdes sous forme acide ; le traitement de l’échantillon peut modifier les formes observées. Il faut donc lire le nom chimique et la préparation analysée. Une activité sur un récepteur isolé ou chez la souris ne mesure ni l’efficacité clinique ni la sécurité du produit vendu."
+            ],
+            "sourceIds": [
+              "products-lesson-thcp"
+            ]
+          },
+          {
+            "id": "ref-origines-formulations-2",
+            "title": "Transformation chimique et stéréoisomères",
+            "paragraphs": [
+              "L’hémisynthèse transforme un précurseur d’origine naturelle ; une synthèse construit une molécule par des réactions chimiques. Le mot « dérivé du chanvre » peut décrire le matériau de départ sans décrire les transformations ultérieures. Il ne constitue ni un certificat de pureté ni une preuve de sécurité.",
+              "Le rapport européen de 2023 décrit un marché du HHC produit à partir de précurseurs cannabinoïdes issus du chanvre. Les mélanges comprennent notamment les épimères 9R et 9S : même enchaînement des atomes, mais disposition spatiale différente en un centre. Ces différences peuvent modifier les interactions biologiques. Il faut distinguer identité principale, proportions des isomères et constituants secondaires."
+            ],
+            "sourceIds": [
+              "products-lesson-hhc"
+            ]
+          },
+          {
+            "id": "ref-origines-formulations-3",
+            "title": "Composition et voie d’exposition",
+            "paragraphs": [
+              "Une formulation associe des ingrédients, sans impliquer nécessairement une réaction chimique. L’huile obtenue en pressant des graines et une huile support contenant un extrait enrichi ne sont pas le même produit. Pour comprendre une étiquette, il faut distinguer le support, les constituants ajoutés et leur teneur.",
+              "La voie d’exposition change le devenir du produit. Dans une étude sur 17 adultes peu consommateurs, les effets du cannabis ingéré étaient retardés et pouvaient culminer plusieurs heures après la prise. Cela ne fournit pas une équivalence avec l’inhalation ni une dose à conseiller. De même, une compatibilité alimentaire ne démontre pas une compatibilité pulmonaire : le chauffage et l’aérosol demandent des données propres."
+            ],
+            "sourceIds": [
+              "products-lesson-seed-oil",
+              "products-lesson-oral",
+              "products-tool-inhalation"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-thcp",
+          "products-lesson-hhc",
+          "products-lesson-seed-oil",
+          "products-lesson-oral",
+          "products-tool-inhalation"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois questions à poser séparément",
+          "nodes": [
+            {
+              "label": "Identité",
+              "detail": "Quelle molécule, quelle forme acide ou neutre, quels stéréoisomères ?"
+            },
+            {
+              "label": "Origine",
+              "detail": "Quelle matière de départ et quelles transformations documentées ?"
+            },
+            {
+              "label": "Formulation",
+              "detail": "Quel support, quels autres ingrédients, quelle teneur et quelle voie étudiée ?"
+            }
+          ],
+          "caption": "Grille originale : une réponse dans une colonne ne remplace pas les deux autres.",
+          "sourceIds": [
+            "products-lesson-thcp",
+            "products-lesson-hhc",
+            "products-lesson-seed-oil"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "products-lesson-thcp",
+        "products-lesson-hhc",
+        "products-lesson-seed-oil",
+        "products-lesson-oral",
+        "products-tool-inhalation"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison originale en HTML, contrôlée contre les références citées ; texte accessible et aucune photographie présentée comme diagnostic."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-reglementation-produits",
+      "fullyRead": true,
+      "questions": [
+        "Graines, infusions et nouveaux aliments",
+        "Lire une limite avec sa catégorie et son unité",
+        "Classement et responsabilités"
+      ],
+      "findings": [
+        "Exception feuilles pour infusion aqueuse ajoutée ; LOQ réglementaire distincte de l’absence ; classement HHC relu."
+      ],
+      "patch": {
+        "lead": "France et Union européenne, vérification du 14 novembre 2026 : le statut dépend de la substance, du produit et de son usage. Un seuil de THC ne suffit pas à autoriser sa commercialisation.",
+        "sections": [
+          {
+            "id": "ref-reglementation-produits-1",
+            "title": "Graines, infusions et nouveaux aliments",
+            "paragraphs": [
+              "Le communiqué français du 20 mai 2026 rappelle que le CBD n’a pas d’autorisation alimentaire. Il distingue les graines et leurs dérivés, ainsi que les feuilles exclusivement destinées à une infusion aqueuse, à condition notamment de ne pas enrichir en cannabinoïdes et de ne pas ajouter d’autres parties de la plante. Cette exception ne couvre donc pas n’importe quelle préparation présentée comme une tisane.",
+              "Le règlement sur les nouveaux aliments tient compte d’un usage alimentaire significatif dans l’Union avant le 15 mai 1997 et des catégories qu’il définit. « Nouveau » ne signifie pas simplement qu’une marque vient de lancer son produit. L’article 6 réserve la mise sur le marché aux nouveaux aliments autorisés et inscrits sur la liste de l’Union, dans leurs conditions d’emploi. Une évaluation scientifique favorable éventuelle et un acte d’autorisation sont deux étapes distinctes."
+            ],
+            "sourceIds": [
+              "products-tool-dgal-2026",
+              "products-tool-novel-food"
+            ]
+          },
+          {
+            "id": "ref-reglementation-produits-2",
+            "title": "Lire une limite avec sa catégorie et son unité",
+            "paragraphs": [
+              "L’annexe I, rubrique 2.6, du règlement 2023/915 consolidé au 19 août 2026 fixe 3 mg/kg pour les graines et les produits transformés exclusivement à partir de graines, hors huile ; la valeur est de 7,5 mg/kg pour l’huile de graines. La somme est Δ9-THC + 0,877 × Δ9-THCA. Le facteur ramène la forme acide à un équivalent massique de THC ; cette somme ne mesure pas une dose absorbée par une personne.",
+              "Le texte utilise une convention de somme dite à limite inférieure : un résultat inférieur à la limite de quantification compte pour zéro dans ce calcul réglementaire. Cela ne prouve pas l’absence physique de la substance. La méthode et ses limites doivent rester visibles dans le rapport.",
+              "L’arrêté français du 30 décembre 2021 prévoit 0,30 % de THC pour les variétés autorisées à l’article 1 I, et aussi pour les extraits de chanvre et les produits qui les intègrent à l’article 1 III, sans préjudice des exigences de sécurité alimentaire. Ces dispositions ne remplacent ni les limites alimentaires en mg/kg ni les autres conditions de mise sur le marché. Une huile ou une confiserie ne devient pas autorisée au seul motif que son étiquette affiche moins de 0,3 % de THC."
+            ],
+            "sourceIds": [
+              "products-tool-contaminants",
+              "products-tool-hemp-order"
+            ]
+          },
+          {
+            "id": "ref-reglementation-produits-3",
+            "title": "Classement et responsabilités",
+            "paragraphs": [
+              "En France, la décision du 16 janvier 2026 transfère le HHC de l’annexe IV à l’annexe III de la liste des substances classées comme stupéfiants. Il reste donc classé : changer d’annexe n’est pas un déclassement. Cette décision ne permet pas de déduire le statut de toutes les molécules de nom voisin.",
+              "En matière alimentaire, l’article 19 du règlement 178/2002 impose des démarches lorsqu’un opérateur considère ou a des raisons de penser qu’une denrée ne satisfait pas aux exigences de sécurité. Selon la situation, il prévoit retrait, information des autorités, information des consommateurs et rappel. Ces obligations ne supposent pas d’attendre une certitude définitive ; elles ne se résument pas non plus à un seuil unique de THC."
+            ],
+            "sourceIds": [
+              "products-tool-hhc-decision-2026",
+              "products-tool-food-law"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-dgal-2026",
+          "products-tool-novel-food",
+          "products-tool-contaminants",
+          "products-tool-hemp-order",
+          "products-tool-hhc-decision-2026",
+          "products-tool-food-law"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Un produit, plusieurs vérifications",
+          "nodes": [
+            {
+              "label": "Substance",
+              "detail": "Son classement s’examine dans le pays et à la date concernés."
+            },
+            {
+              "label": "Catégorie de produit",
+              "detail": "Aliment, préparation destinée à une autre voie ou autre usage : les règles diffèrent."
+            },
+            {
+              "label": "Autorisation et conditions",
+              "detail": "Un nouvel aliment doit être autorisé ; une exception a un périmètre précis."
+            },
+            {
+              "label": "Composition et sécurité",
+              "detail": "Le respect d’une teneur maximale ne remplace pas les autres contrôles."
+            }
+          ],
+          "caption": "Grille France/UE datée du 14 novembre 2026. Les quatre vérifications sont complémentaires.",
+          "sourceIds": [
+            "products-tool-hhc-decision-2026",
+            "products-tool-novel-food",
+            "products-tool-contaminants"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "products-tool-dgal-2026",
+        "products-tool-novel-food",
+        "products-tool-contaminants",
+        "products-tool-hemp-order",
+        "products-tool-hhc-decision-2026",
+        "products-tool-food-law"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison originale en HTML, contrôlée contre les références citées ; texte accessible et aucune photographie présentée comme diagnostic."
+      },
+      "quizIdsReviewed": [],
+      "status": "blocked",
+      "blockers": [
+        "Consolidation courante du règlement 178/2002 à confirmer pour les articles 18–19 ; original ouvert, versions consolidées demandées inaccessibles."
+      ]
+    }
+  ],
+  "termReviews": [
+    {
+      "id": "products-term-absorption",
+      "definition": "Passage d’une substance depuis son site d’administration vers la circulation ; à distinguer de la quantité présente dans le produit.",
+      "sourceIds": [
+        "products-lesson-oral"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-analyte",
+      "definition": "Substance recherchée ou mesurée dans un échantillon. Le mesurande est la grandeur définie que l’on veut mesurer, par exemple sa teneur en mg/kg.",
+      "sourceIds": [
+        "products-lesson-methods",
+        "products-tool-metrology"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-concentration",
+      "definition": "Quantité d’un constituant rapportée à une quantité définie de produit ou de solution ; unité et base, humide ou sèche notamment, font partie du résultat.",
+      "sourceIds": [
+        "products-lesson-methods"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-degradation",
+      "definition": "Transformations chimiques susceptibles de modifier les constituants et propriétés d’un produit ; l’évaluation dépend du mécanisme et du contexte.",
+      "sourceIds": [
+        "products-lesson-acetates",
+        "harvest-lesson-oil"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-emission",
+      "definition": "Substances libérées dans une situation d’usage ; elles peuvent comprendre des produits formés par chauffage ou provenant du dispositif.",
+      "sourceIds": [
+        "products-lesson-acetates",
+        "products-tool-inhalation"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-formulation",
+      "definition": "Association d’ingrédients constituant un produit fini, par exemple un extrait dans une huile support ; elle n’implique pas nécessairement une réaction chimique.",
+      "sourceIds": [
+        "products-lesson-seed-oil"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-semisynthesis",
+      "definition": "Obtention d’une molécule par transformation chimique d’un précurseur naturel ; l’origine du précurseur ne décrit pas toute la composition finale.",
+      "sourceIds": [
+        "products-lesson-hhc"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "harvest-term-wet-basis",
+      "definition": "Masse d’eau divisée par la masse totale humide ; multiplier ce rapport par cent donne le pourcentage d’humidité sur base humide.",
+      "sourceIds": [
+        "harvest-lesson-moisture"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "harvest-term-integrity",
+      "definition": "État physique de la matière suivie, par exemple proportion de graines intactes ou cassées ; il ne décrit pas à lui seul la sécurité du lot.",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-loq",
+      "definition": "Plus bas niveau auquel une méthode quantifie avec des performances acceptables pour l’usage prévu ; un résultat inférieur ne prouve pas une absence absolue.",
+      "sourceIds": [
+        "products-tool-metrology"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-lot",
+      "definition": "Ensemble de produit identifié dans une chaîne documentaire ; le lien entre lot et résultat dépend notamment du prélèvement et des transformations ultérieures.",
+      "sourceIds": [
+        "products-tool-food-law",
+        "products-tool-analysis"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-matrix-sample",
+      "definition": "Ensemble du matériau qui contient l’analyte, par exemple huile, poudre végétale ou confiserie ; ses autres constituants peuvent influencer la mesure.",
+      "sourceIds": [
+        "products-lesson-methods"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "health-term-mycotoxin",
+      "definition": "Substance toxique produite par certaines moisissures ; distincte du champignon, elle peut persister après un traitement qui affecte celui-ci.",
+      "sourceIds": [
+        "health-lesson-mycotoxins"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-novel-food",
+      "definition": "Aliment sans consommation humaine significative dans l’Union avant le 15 mai 1997 et relevant d’une catégorie du règlement 2015/2283 ; sa mise sur le marché suit la procédure applicable.",
+      "sourceIds": [
+        "products-tool-novel-food"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-stereoisomer",
+      "definition": "Molécule ayant le même enchaînement d’atomes qu’une autre, mais une disposition spatiale différente ; cette différence peut modifier ses propriétés.",
+      "sourceIds": [
+        "products-lesson-hhc"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    },
+    {
+      "id": "products-term-total-thc",
+      "definition": "Dans la rubrique alimentaire 2.6 du règlement 2023/915 : Δ9-THC + 0,877 × Δ9-THCA, avec la convention réglementaire pour les résultats sous LOQ ; ce n’est pas une dose humaine absorbée.",
+      "sourceIds": [
+        "products-tool-contaminants"
+      ],
+      "findings": [
+        "Définition relue, précisée et sources effectivement consultées."
+      ]
+    }
+  ],
+  "quizPatches": [],
+  "sensitivePoints": [
+    "Cadre France/UE daté ; seuils, exceptions et changement d’annexe HHC contre-vérifiés sur les documents officiels.",
+    "Règlement 178/2002 : consolidation courante à confirmer malgré la lecture des articles originaux.",
+    "Diagrammes conceptuels originaux ; aucun chiffre inventé ni photographie diagnostique nécessaire à ces cinq sujets."
+  ]
+}

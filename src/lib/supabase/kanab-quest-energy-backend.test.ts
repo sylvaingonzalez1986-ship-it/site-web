@@ -99,6 +99,19 @@ describe("energy backend across the physical warehouse transition", () => {
     expect(mocks.warehouse).not.toHaveBeenCalled();
   });
 
+  it("does not charge campaign energy for the preassigned zone reserved to commercial production", async () => {
+    const starter = createKqWarehouseStarter();
+    const paid = getKqWarehouseQuote({ ...starter, zones: [
+      { ...starter.zones[0], id: "a", buddieCode: "HH2026-002" },
+      { ...starter.zones[0], id: "b", x: 3, width: 2, buddieCode: "HH2026-003" },
+    ] }, starter).nextState;
+    const expected = getKqCampaignTotals(getKqCampaignParticipants(paid, 4, undefined, "b"));
+    mocks.warehouse.mockResolvedValue({ ...getKqWarehouseRunSnapshot(paid, 4), productionReservedZoneId: "b" });
+    const result = await getKqEnergySnapshot(userId, { campaign: true });
+    expect(result.warehouse?.activeAreaM2).toBe(1);
+    expect(result.quotes.balanced.totalCents).toBe(expected.energyCostCents);
+  });
+
   it("keeps unpaid historical invoices and their original tariff after conversion", async () => {
     const historicalQuote = quoteKqEnergy(["LED-300"], { "LED-300": 8 }, "intensive");
     const summary: KqEnergySummary = {

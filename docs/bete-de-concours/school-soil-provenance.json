@@ -1,0 +1,123 @@
+{
+  "version": "2026-11-12.soil1",
+  "verifiedAt": "2026-11-12",
+  "status": "Livré et validé localement",
+  "counts": {
+    "chapters": 10,
+    "lessons": 20,
+    "activities": 20,
+    "checkpoints": 10,
+    "questions": 40,
+    "privateOptionExplanations": 160,
+    "terms": 71,
+    "commonGlossaryEntries": 331,
+    "indicators": 13,
+    "fictitiousAnalyses": 2,
+    "analysisComparisons": 8,
+    "mineralElements": 14,
+    "inputCategories": 8,
+    "networkNodes": 14,
+    "networkRelations": 26,
+    "cutawayHotspots": 6,
+    "reasoningSteps": 5,
+    "requiredExercises": 7,
+    "sourceRecords": 47,
+    "distinctSourceUrls": 42
+  },
+  "scope": "Septième parcours développé. Deux futurs parcours restent à préciser ; les trois introductions historiques restantes ne les remplacent pas.",
+  "sourceAccess": {
+    "excerpt": 18,
+    "official-page": 4,
+    "catalogue": 1,
+    "abstract": 1,
+    "full-text": 23
+  },
+  "files": {
+    "lessons": "src/lib/kanab-quest-school-soil-lessons.ts",
+    "answers": "src/lib/kanab-quest-school-soil-answers.ts",
+    "tools": "src/lib/kanab-quest-school-soil-tools.ts",
+    "visuals": "src/lib/kanab-quest-school-soil-visuals.ts",
+    "entry": "src/components/placard/KqSchoolSoil.tsx"
+  },
+  "requiredExercises": [
+    "soil-nutrients-1",
+    "soil-measures-2",
+    "soil-analysis-1",
+    "soil-analysis-2",
+    "soil-organic-1",
+    "soil-rhizosphere-2",
+    "soil-inputs-1"
+  ],
+  "scientificBoundaries": [
+    "Physique, chimie et biologie interagissent ; aucun label sol vivant, naturel, organique ou minéral ne suffit à établir un bénéfice.",
+    "Texture et structure séparées ; pores, eau et oxygène conditionnent le milieu racinaire. Aucun optimum universel de pH ni calendrier de fertilisation.",
+    "Quantité totale, fraction extractible, accessibilité et absorption distinguées. Les symptômes foliaires ne confirment pas une carence.",
+    "Méthodes, unités, profondeur, représentativité et historique accompagnent les analyses. A/B sont deux zones fictives, pas un avant/après.",
+    "pH eau/CaCl2, EC1:5/ECe, CEC effective/potentielle et P Olsen/Mehlich3 ne sont pas comparés directement ; C/N identiques peuvent masquer des teneurs différentes.",
+    "Présence microbienne, fonction et bénéfice expérimental séparés. Lutz2023 et Rog2025 concernent les mêmes 54 champs de maïs, pas deux cohortes ni une efficacité universelle sur chanvre.",
+    "La matière organique ne constitue pas un réservoir stable unique ; minéralisation et immobilisation peuvent coexister. Le réseau et le cycle sont conceptuels, sans quantification de flux.",
+    "Engrais, amendement et catégories d’apports comparés par fonctions, maturité, variabilité et risques ; aucune recette, marque recommandée ni garantie de conformité.",
+    "La coupe générée montre uniquement une scène conceptuelle ; elle ne mesure ni horizons, ni humidité, ni fertilité. Les microorganismes sont décrits dans une carte séparée."
+  ],
+  "review": {
+    "method": "Recherches originales et universitaires ; relecture croisée des indicateurs, analyses, inoculants, relations et leçons sensibles ; contrôles des références et calculs fictifs.",
+    "limits": "Validation documentaire et logicielle locale, sans analyse de parcelle réelle ni mesure des acquisitions pédagogiques."
+  },
+  "economy": "quizId uses / reward school:uses conservés ; plafond de 1 000 centimes et total de 10 000 inchangés, reçus et gains préservés. Quiz s1 de 10 questions couvre 10 chapitres. Aucune monnaie versée par les activités.",
+  "migration": "20261112000700_kq_school_soil_progress.sql testée en bases temporaires locales. Aucune des huit migrations de l’école appliquée au projet distant.",
+  "validation": {
+    "contentTests": 10,
+    "backendTests": 260,
+    "totalVitestTests": 270,
+    "sqlPglite": 64,
+    "postgresConcurrency": 16,
+    "fixture": 80,
+    "grantsMigrations": 386,
+    "eslint": "PASS ciblé : cours, données, UI, backend et recette.",
+    "build": "PASS Next.js et TypeScript ; code de sortie 0 enregistré directement.",
+    "buildNotes": "Les avertissements éventuels de revalidation des données publiques Supabase sont conservés dans le journal ; aucune validation distante revendiquée.",
+    "browser": "PASS 320/1440 : sept exercices, raisons, reprises, six repères au clavier, réseau et relations, filtres, analyses/méthodes/informations manquantes, éléments, apports, cycle, démarche finale, Buddy sans possession, retries, propriétaire, sources privées et budget.",
+    "preview": {
+      "results": [
+        {
+          "width": 320,
+          "sevenCurricula": true,
+          "commonGlossary": 331,
+          "cutawayLoaded": true,
+          "cutawayKeyboard": true,
+          "healthToSoilLink": true,
+          "privateAnswers403": true,
+          "reducedMotionLayout": true
+        },
+        {
+          "width": 1440,
+          "sevenCurricula": true,
+          "commonGlossary": 331,
+          "cutawayLoaded": true,
+          "cutawayKeyboard": true,
+          "healthToSoilLink": true,
+          "privateAnswers403": true,
+          "reducedMotionLayout": true
+        }
+      ],
+      "errors": []
+    },
+    "privacy": {
+      "checkedAt": "2026-11-12T20:16:25.091Z",
+      "chunks": 194,
+      "privateExplanations": 260,
+      "leaks": []
+    },
+    "transport": "Vrais composants et API de démonstration en mémoire. Aucune base distante ni paiement réel vérifié."
+  },
+  "reports": [
+    "output/placard-navigation/school-soil-report.json",
+    "output/placard-navigation/school-soil-preview-smoke.json",
+    "output/school/soil-backend-validation.json",
+    "output/school/soil-content-tests.json",
+    "output/school/soil-build.log",
+    "output/school/soil-client-answer-check.json",
+    "docs/bete-de-concours/school-soil-corpus.json",
+    "docs/bete-de-concours/school-soil-art-provenance.json"
+  ]
+}

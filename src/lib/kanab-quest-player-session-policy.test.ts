@@ -1,5 +1,5 @@
 import { readFileSync, readdirSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 
 const backend = readFileSync(
@@ -16,15 +16,53 @@ function findRouteFiles(directory: string): string[] {
 
 const playerRouteRoot = join(process.cwd(), "src/app/api/arena/placard");
 const playerRouteFiles = findRouteFiles(playerRouteRoot);
+const schoolRouteRoot = join(playerRouteRoot, "school");
+const schoolRequestPath = join(schoolRouteRoot, "_request.ts");
+const schoolRequestSource = readFileSync(schoolRequestPath, "utf8");
+
+function isSchoolRoute(route: string) {
+  return route.startsWith(`${schoolRouteRoot}/`) || route.startsWith(`${schoolRouteRoot}\\`);
+}
+
+function playerPolicySource(route: string) {
+  return isSchoolRoute(route) ? schoolRequestSource : readFileSync(route, "utf8");
+}
 
 describe("Kanab Quest player session ownership policy", () => {
+  it("delegates every school handler to the shared guards and preserves retired-route rejections", () => {
+    const schoolRoutes = playerRouteFiles.filter(isSchoolRoute);
+    expect(schoolRoutes.length).toBeGreaterThan(0);
+    for (const route of schoolRoutes) {
+      const source = readFileSync(route, "utf8");
+      const guard = source.includes("retiredSchoolQuizRequest") ? "retiredSchoolQuizRequest" : "schoolRequest";
+      const guardFile = guard === "schoolRequest" ? "_request.ts" : "_retired-quiz.ts";
+      const guardImport = source.match(new RegExp(`import\\s*\\{[^}]*\\b${guard}\\b[^}]*\\}\\s*from\\s*["']([^"']+)["']`));
+      expect(guardImport, route).not.toBeNull();
+      expect(resolve(dirname(route), `${guardImport![1]}.ts`), route).toBe(join(schoolRouteRoot, guardFile));
+
+      const handlers = [...source.matchAll(/export async function (GET|POST|PUT|PATCH|DELETE|HEAD|OPTIONS)\(/g)];
+      expect(handlers.length, route).toBeGreaterThan(0);
+      for (const handler of handlers) {
+        // Each HTTP method must enter the guard before parsing or running its operation.
+        expect(source.slice(handler.index), `${route} ${handler[1]}`).toMatch(
+          new RegExp(`^export async function ${handler[1]}\\([^)]*\\)\\s*\\{\\s*return ${guard}\\(request\\b`),
+        );
+      }
+    }
+    const retiredSource = readFileSync(join(schoolRouteRoot, "_retired-quiz.ts"), "utf8");
+    expect(retiredSource).toContain('import { schoolRequest } from "./_request"');
+    expect(retiredSource).toMatch(/export async function retiredSchoolQuizRequest\([^)]*\)\s*\{\s*const response = await schoolRequest\(request,/);
+    expect(retiredSource).toContain("if (response.status !== 410) return response;");
+  });
+
   it("checks access for the current request on every player endpoint", () => {
     expect(playerRouteFiles.length).toBeGreaterThanOrEqual(10);
     for (const route of playerRouteFiles) {
-      const source = readFileSync(route, "utf8");
-      // The summary uses the same access policy with the already verified identity,
-      // avoiding profile creation during a read. Its route tests cover rejection.
-      const gate = route === join(playerRouteRoot, "summary", "route.ts")
+      const source = playerPolicySource(route);
+      // Summary and staff use the same policy with the already verified identity,
+      // avoiding profile creation. Their route tests cover rejection.
+      const identityGateRoutes = ["summary", "staff"].map((segment) => join(playerRouteRoot, segment, "route.ts"));
+      const gate = identityGateRoutes.includes(route)
         ? "!await isKqPlayerIdentityEnabled(session)"
         : "!await isKqPlayerRequestEnabled()";
       expect(source, route).toContain(gate);
@@ -35,7 +73,7 @@ describe("Kanab Quest player session ownership policy", () => {
     for (const route of playerRouteFiles) {
       const relative = route.slice(playerRouteRoot.length).replaceAll("\\", "/");
       if (relative === "/rankings/route.ts") continue;
-      expect(readFileSync(route, "utf8"), route).toContain("getCurrentCustomerSessionByBackend");
+      expect(playerPolicySource(route), route).toContain("getCurrentCustomerSessionByBackend");
     }
   });
 
@@ -49,7 +87,7 @@ describe("Kanab Quest player session ownership policy", () => {
     for (const route of playerRouteFiles) {
       const relative = route.slice(playerRouteRoot.length).replaceAll("\\", "/");
       if (relative === "/rankings/route.ts") continue;
-      const source = readFileSync(route, "utf8");
+      const source = playerPolicySource(route);
       const profileFields = profileFieldsByRoute[relative];
       if (profileFields) {
         expect(source, route).toContain("getCurrentCustomerSessionByBackend()");
@@ -66,13 +104,22 @@ describe("Kanab Quest player session ownership policy", () => {
       /export async function (POST|PUT|PATCH|DELETE)\(/.test(readFileSync(route, "utf8")));
     expect(mutationRoutes.length).toBeGreaterThanOrEqual(5);
     for (const route of mutationRoutes) {
-      const source = readFileSync(route, "utf8");
+      const source = playerPolicySource(route);
       const sessionIndex = source.indexOf("getCurrentCustomerSessionByBackend(");
       const rateLimitIndex = source.indexOf("hitRateLimit(");
+      expect(sessionIndex, route).toBeGreaterThanOrEqual(0);
       expect(rateLimitIndex, route).toBeGreaterThan(sessionIndex);
       expect(source, route).toContain("Retry-After");
       expect(source, route).toContain("logRateLimitRejection");
     }
+    const sessionRejectionIndex = schoolRequestSource.indexOf("if (!session) return");
+    const rateLimitIndex = schoolRequestSource.indexOf("hitRateLimit(");
+    const rateRejectionIndex = schoolRequestSource.indexOf("if (!rate.allowed)");
+    const operationIndex = schoolRequestSource.indexOf("await operation(session.customerId)");
+    expect(sessionRejectionIndex).toBeGreaterThan(schoolRequestSource.indexOf("getCurrentCustomerSessionByBackend("));
+    expect(rateLimitIndex).toBeGreaterThan(sessionRejectionIndex);
+    expect(rateRejectionIndex).toBeGreaterThan(rateLimitIndex);
+    expect(operationIndex).toBeGreaterThan(rateRejectionIndex);
   });
 
   it("starts runs with the authenticated owner id and the atomic RPC", () => {

@@ -1,0 +1,1938 @@
+{
+  "schemaVersion": 1,
+  "checkedAt": "2026-11-12",
+  "status": "corpus-original-consulte",
+  "counts": {
+    "entries": 86,
+    "detailed": 31,
+    "inventory": 55,
+    "sources": 28,
+    "buddyLinks": 3
+  },
+  "editorialBoundary": "Encyclopédie de lecture, non inventaire exhaustif de toutes les molécules du cannabis. Certaines entrées regroupent des formes et d’autres restent des attributions provisoires : ne pas annoncer 86 structures toutes confirmées.",
+  "publicData": "src/lib/kanab-quest-school-terpenes-compounds.ts",
+  "publicTypes": "src/lib/kanab-quest-school-terpenes-types.ts",
+  "buddyMapping": "src/lib/kanab-quest-school-terpenes-buddy-links.ts",
+  "corpus": {
+    "id": "terpenes-corpus-2026-11-12",
+    "version": "2026-11-12.terpenes1",
+    "checkedAt": "2026-11-12",
+    "title": "Terpènes documentés dans le cannabis",
+    "scope": "31 fiches développées et 55 entrées complémentaires issues du corpus consulté. Ce sont des dossiers de lecture, pas 86 identités toutes confirmées ni une liste complète du cannabis.",
+    "inclusionRules": [
+      "Une présence cannabis renvoie à un tableau original, à sa matrice et au nom effectivement publié ; les étalons, RI/MS et propositions provisoires restent distingués.",
+      "Le premier niveau développe l’identité, la présence, les odeurs documentées, une autre plante et les résultats biologiques ou les lacunes. L’inventaire garde les composés moins étudiés sans inventer les rubriques manquantes.",
+      "Les synthases expliquent une capacité de biosynthèse ; un produit enzymatique seul n’est pas compté comme une présence mesurée dans une fleur.",
+      "Les familles aromatiques sont des repères qualitatifs. Aucune intensité, concentration, fréquence universelle ou propriété médicale n’est calculée."
+    ],
+    "exclusions": [
+      "Pics non nommés (« sesquiterpene 1 », « guiane », « eudesmane ») : structure insuffisamment définie.",
+      "Hédycaryol et géraniol produits par des enzymes dans Booth : non ajoutés sur cette seule base à l’inventaire de présence florale.",
+      "« Cyclounatriene » du tableau Booth : identité insuffisamment résolue pour créer une fiche nominative.",
+      "Composés soufrés prénylés, esters non terpéniques, skatole, cannabinoïdes et autres volatils : importants pour l’odeur, mais hors du décompte des terpènes et terpénoïdes de cette encyclopédie.",
+      "Composés détectés seulement dans la colonne houblon d’Ovidi : aucune preuve cannabis déduite de cette colonne.",
+      "Valeurs de volatilité ou températures physiques sans pression et conditions ; promesses thérapeutiques et profils chimiques attribués aux Buddies."
+    ],
+    "synonymRules": [
+      "Myrcène/β-myrcène, humulène/α-caryophyllène, eucalyptol/1,8-cinéole et terpinolène/δ-terpinène ne sont pas comptés deux fois.",
+      "β-eudesmène/β-sélinène et eudesma-3,7(11)-diène/sélina-3,7(11)-diène sont regroupés selon les notices institutionnelles.",
+      "cis-géraniol devient nérol ; β-citral devient néral, classé comme composé oxygéné.",
+      "Les énantiomères (+)/(−) d’un même squelette restent dans une fiche avec leurs preuves. Les formes E/Z d’ocimène ont des dossiers distincts parce que des lignes originales les distinguent.",
+      "Les géométries d’α-farnésène et α-bergamotène sont décrites dans une fiche regroupée, sans masquer que certains tableaux ne les précisent pas.",
+      "Les deux attributions 2-carène de Janta sont regroupées ; un signe optique de bibliothèque ne prouve pas une séparation énantiomérique.",
+      "β-fenchol provisoire et fenchol/endo-fenchyl alcohol restent signalés séparément avec leur rapprochement non résolu ; le nombre de dossiers n’est donc pas un décompte de structures définitivement élucidées."
+    ],
+    "limitations": [
+      "Corpus raisonné, non revue systématique de toute la littérature mondiale ; vérification des sources le 12 novembre 2026. Publications analytiques centrales 2017–2024, recherche enzymatique consultée jusqu’en 2025.",
+      "Une identification RI/MS est moins forte qu’une comparaison à un étalon et peut être faussée par coélution, bibliothèque ou réarrangement thermique. Même un étalon non chiral ne prouve pas une configuration absolue.",
+      "Fleur fraîche, fleur séchée, huile, hydrolat et produit d’enzyme sont des matrices distinctes. Aucune teneur observée n’est généralisée.",
+      "Flavornet est une base de descripteurs et de références GC-olfactométriques : sa consultation n’équivaut pas à avoir relu tous les articles historiques qu’elle cite.",
+      "Absence de fonction écologique établie dans ce dossier ne signifie pas absence de fonction dans la nature. Les travaux cellulaires sur huiles entières ne prouvent pas l’effet d’un terpène isolé chez l’humain.",
+      "Les composés soufrés et non terpéniques étudiés par Oswald montrent pourquoi une liste de terpènes ne suffit pas à prédire toute l’odeur d’un produit."
+    ],
+    "sourceIds": [
+      "tp-booth2017",
+      "tp-booth2020",
+      "tp-fischedick2017",
+      "tp-zager2019",
+      "tp-ovidi2022",
+      "tp-janta2024",
+      "tp-flavornet",
+      "tp-hops2021",
+      "tp-herbs2021",
+      "tp-eucalyptus2011",
+      "tp-fennel2021",
+      "tp-snapdragon2008",
+      "tp-chamomile2023",
+      "tp-sage1998",
+      "tp-maize2005",
+      "tp-oswald2021",
+      "tp-oswald2023",
+      "tp-identity-selinene",
+      "tp-identity-selinadiene",
+      "tp-lavender2022",
+      "tp-spruce2011",
+      "tp-identity-humulene",
+      "tp-identity-nerol",
+      "tp-identity-neral",
+      "tp-wiles2025",
+      "tp-buddy-acdc",
+      "tp-buddy-hawaiian",
+      "tp-buddy-remedy"
+    ]
+  },
+  "originalAnalyticalCorpus": [
+    {
+      "sourceId": "tp-fischedick2017",
+      "scope": "16 analytes avec étalons ; tableaux 1–2, 233 échantillons commerciaux.",
+      "accessedCopy": "https://accurateclinic.com/wp-content/uploads/2020/05/Identification-of-Terpenoid-Chemotypes-Among-High-%E2%88%92-trans-%CE%949-Tetrahydrocannabinol-Producing-Cannabis-sativa-L.-Cultivars-0-2017.pdf"
+    },
+    {
+      "sourceId": "tp-booth2017",
+      "scope": "Finola, profils floraux et synthases ; produit enzymatique distingué d’une présence dans la fleur."
+    },
+    {
+      "sourceId": "tp-booth2020",
+      "scope": "Tableau 1 et fonctions de synthases ; astérisques d’étalons respectés ; pics anonymes exclus."
+    },
+    {
+      "sourceId": "tp-zager2019",
+      "scope": "Tableau 1 et figures 7–8 ; présence du nérolidol et fonction de synthases."
+    },
+    {
+      "sourceId": "tp-ovidi2022",
+      "scope": "Colonnes chanvre seulement, huile et hydrolat conservés comme matrices distinctes."
+    },
+    {
+      "sourceId": "tp-janta2024",
+      "scope": "Tableau 2 complet (deux parties d’échantillons), identifications provisoires ; seuils MS/RI relus. Aucun signe optique de bibliothèque présenté comme établi."
+    }
+  ],
+  "identityDecisions": [
+    {
+      "names": [
+        "myrcène",
+        "β-myrcène"
+      ],
+      "decision": "Une fiche myrcene."
+    },
+    {
+      "names": [
+        "α-humulène",
+        "α-caryophyllène"
+      ],
+      "decision": "Une fiche alpha-humulene, source NIST."
+    },
+    {
+      "names": [
+        "δ-terpinène",
+        "terpinolène"
+      ],
+      "decision": "Une fiche terpinolene, identité Flavornet."
+    },
+    {
+      "names": [
+        "β-eudesmène",
+        "β-sélinène"
+      ],
+      "decision": "Une fiche beta-selinene, source PubChem."
+    },
+    {
+      "names": [
+        "eudesma-3,7(11)-diène",
+        "sélina-3,7(11)-diène"
+      ],
+      "decision": "Une fiche selina-3-7-11-diene, source PubChem."
+    },
+    {
+      "names": [
+        "cis-géraniol",
+        "nérol"
+      ],
+      "decision": "Une fiche nerol, source NIST."
+    },
+    {
+      "names": [
+        "β-citral",
+        "néral"
+      ],
+      "decision": "Une fiche neral ; aldéhyde donc monoterpénoïde oxygéné."
+    },
+    {
+      "names": [
+        "2-Carene",
+        "(+)-2-Carene"
+      ],
+      "decision": "Un dossier provisoire carene-2 ; colonne non chirale, ne pas compter les deux pics comme énantiomères démontrés."
+    },
+    {
+      "names": [
+        "fenchol",
+        "endo-fenchyl alcohol",
+        "b-Fenchol"
+      ],
+      "decision": "L’étalon endo et l’attribution b-Fenchol sont conservés séparément avec rapprochement non résolu ; pas de nombre de structures définitives."
+    },
+    {
+      "names": [
+        "cis-α-bergamotène",
+        "(E)-α-bergamotène",
+        "α-bergamotène"
+      ],
+      "decision": "Fiche groupée, géométrie précisée seulement pour la source qui la donne."
+    },
+    {
+      "names": [
+        "α-farnésène",
+        "(Z,E)-α-farnésène",
+        "(E,E)-α-farnésène"
+      ],
+      "decision": "Fiche groupée, aucun isomère unique imposé aux tableaux génériques."
+    }
+  ],
+  "missingnessPolicy": "Les rubriques non vérifiées de l’inventaire sont explicitement non renseignées ; aucune odeur, autre plante ou activité biologique n’est fabriquée. Une fonction non établie dans ce corpus n’est pas déclarée inexistante.",
+  "clinicalPolicy": "Aucune promesse thérapeutique, dose, taux d’usage ou propriété médicale attribuée. Les fiches utilisent biosynthèse végétale, écologie du maïs ou constat analytique ; les cours peuvent consulter séparément des travaux cellulaires, animaux et humains.",
+  "buddyPolicy": "Trois extraits sensoriels commerciaux revérifiés, rattachés à des notes du CSV existant. Les compoundIds sont des destinations d’apprentissage, jamais la liste des molécules mesurées dans le Buddy. Les labels sont exportés dans un petit module indépendant.",
+  "sourceAccess": [
+    {
+      "id": "tp-booth2017",
+      "title": "Terpene synthases from Cannabis sativa",
+      "author": "Judith K. Booth, Jonathan E. Page et Jörg Bohlmann",
+      "published": "2017-03-29",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+      "passage": "Tableaux 1–2 ; résultats « Functional characterization » ; figures 3–5 ; méthodes GC-MS et séparation chirale.",
+      "access": "full-text",
+      "limitation": "Finola et enzymes testées : ni tous les cannabis, ni preuve d’un effet humain. Certains produits thermolabiles se réarrangent pendant l’analyse.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-booth2020",
+      "title": "Terpene Synthases and Terpene Variation in Cannabis sativa",
+      "author": "Judith K. Booth, Macaire M. S. Yuen, Sharon Jancsik, Lufiani L. Madilao, Jonathan E. Page et Jörg Bohlmann",
+      "published": "2020-06-26",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479917/",
+      "passage": "Tableau 1, légende des astérisques ; « Functions of CsTPSs » ; figures 9–10 ; « Terpene Extraction and Analysis ».",
+      "access": "full-text",
+      "limitation": "Les pics sans astérisque reposent sur MS et indice de rétention. Les échantillons Purple Kush ne sont pas directement comparables aux autres conditions ; aucun pourcentage universel n’est repris.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-fischedick2017",
+      "title": "Identification of Terpenoid Chemotypes Among High (−)-trans-Δ9-Tetrahydrocannabinol-Producing Cannabis sativa L. Cultivars",
+      "author": "Justin T. Fischedick",
+      "published": "2017-03-01",
+      "url": "https://doi.org/10.1089/can.2016.0040",
+      "passage": "PDF intégral, pages 36–39 : méthodes, tableau 1 et tableau 2 ; rectification cis/trans-ocimène page 37.",
+      "access": "full-text",
+      "limitation": "PDF original consulté via copie hébergée par Accurate Clinic (URL conservée dans le corpus). Un dispensaire californien, 16 analytes ; les noms commerciaux ne prouvent ni identité génétique ni composition d’une carte Buddy.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-zager2019",
+      "title": "Gene Networks Underlying Cannabinoid and Terpenoid Accumulation in Cannabis",
+      "author": "Jordan J. Zager, Iris Lange, Narayanan Srividya, Anthony Smith et B. Markus Lange",
+      "published": "2019-05-28",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+      "passage": "Tableaux 1 et 3 ; figures 7–8 ; paragraphes de caractérisation des synthases linalol/nérolidol.",
+      "access": "full-text",
+      "limitation": "Une enzyme active hors de la plante ne démontre pas à elle seule son produit dans chaque variété ; la séparation chirale concerne les analyses spécifiées.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-ovidi2022",
+      "title": "Hemp (Cannabis sativa L., Kompolti cv.) and Hop (Humulus lupulus L., Chinook cv.) Essential Oil and Hydrolate: HS-GC-MS Chemical Investigation and Apoptotic Activity Evaluation",
+      "author": "Elisa Ovidi et huit coauteurs",
+      "published": "2022-08-08",
+      "url": "https://www.mdpi.com/1424-8247/15/8/976",
+      "passage": "Tableau 1, colonne Hemp EO ; tableau 2, colonne Hemp Hy ; méthodes d’identification GC-MS.",
+      "access": "full-text",
+      "limitation": "Huile et hydrolat transformés, pas profil de fleur fraîche. Les résultats cellulaires portent sur des mélanges : ils ne sont attribués à aucune molécule isolée dans ces fiches. Quelques lignes n’ont pas d’indice de référence.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-janta2024",
+      "title": "Chemical profiling and clustering of various dried cannabis flowers revealed by volatilomics and chemometric processing",
+      "author": "Pannipa Janta et Sornkanok Vimolmangkang",
+      "published": "2024-12-06",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11622677/",
+      "passage": "« Compound identification » et tableau 2 : noms proposés, indices, différences d’indices et scores de correspondance.",
+      "access": "full-text",
+      "limitation": "Les auteurs qualifient les identifications de provisoires. Bibliothèque NIST et indice de rétention ne remplacent pas un étalon ; DB-WAX non chirale ne démontre pas les signes (+)/(−) et préfixes R/L du tableau.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-flavornet",
+      "title": "Flavornet and human odor space — index des descripteurs",
+      "author": "Terry Acree et Heinrich Arn",
+      "published": "2004-06-25 (version annoncée)",
+      "url": "https://flavornet.org/d_odors.html",
+      "passage": "Index odeurs et fiches liées ; méthode et bibliographies sur https://www.flavornet.org/.",
+      "access": "official-page",
+      "limitation": "Base documentaire, pas nouveau panel réalisé pour l’école. Certains indices sont interpolés : aucun n’est repris ici. Les mots décrivent des contextes perceptifs ; ils ne prouvent ni intensité, ni qualité, ni effet d’un cannabis.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-hops2021",
+      "title": "Characterization of Wild Corsican Hops and Assessment of the Performances of German Hops in Corsican Environmental Conditions through a Multidisciplinary Approach",
+      "author": "Axel Dabbous-Wach, Margherita Rodolfi, Julien Paolini, Jean Costa et Tommaso Ganino",
+      "published": "2021-04-21",
+      "url": "https://www.mdpi.com/2076-3417/11/9/3756",
+      "passage": "Tableau 6, annexe A1 et §3.3 ; composés identifiés dans les huiles de houblon.",
+      "access": "full-text",
+      "limitation": "Présence dans les échantillons étudiés, non dans chaque houblon. Les commentaires sensoriels ne sont pas un essai d’effet humain.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-herbs2021",
+      "title": "Headspace/GC–MS Analysis and Investigation of Antibacterial, Antioxidant and Cytotoxic Activity of Essential Oils and Hydrolates from Rosmarinus officinalis L. and Lavandula angustifolia Miller",
+      "author": "Stefania Garzoli, Valentina Laghezza Masci, Sara Franceschi, Antonio Tiezzi, Pierluigi Giacomello et Elisa Ovidi",
+      "published": "2021-07-30",
+      "url": "https://www.mdpi.com/2304-8158/10/8/1768",
+      "passage": "Tableaux 1–2 (romarin et lavande) ; §2.2–2.3, identification MS et indices.",
+      "access": "full-text",
+      "limitation": "Seuls les résultats de composition sont utilisés. Les essais sur mélanges et cellules ne prouvent pas les effets des molécules séparées ou d’un usage humain.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-eucalyptus2011",
+      "title": "Eucalyptus oleosa Essential Oils: Chemical Composition and Antimicrobial and Antioxidant Activities of the Oils from Different Plant Parts (Stems, Leaves, Flowers and Fruits)",
+      "author": "H. N. Ben Marzoug, M. Romdhane, A. Lebrihi, F. Mathieu, F. Couderc, M. Abderraba, M. L. Khouja et J. Bouajila",
+      "published": "2011-02-17",
+      "url": "https://www.mdpi.com/1420-3049/16/2/1695",
+      "passage": "Tableau de composition, lignes 51 (guaiol), 53 (γ-eudesmol), 55 (β-eudesmol), et §2.1.",
+      "access": "excerpt",
+      "limitation": "Page intégrale inaccessible pendant la consultation ; extrait du tableau original vérifié, pas relecture des données brutes. Les huiles étudiées ne représentent pas tous les eucalyptus.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-fennel2021",
+      "title": "Gas Chromatography–Mass Spectrometry-Based Classification of 12 Fennel (Foeniculum vulgare Miller) Varieties Based on Their Aroma Profiles and Estragole Levels as Analyzed Using Chemometric Tools",
+      "author": "Sherif M. Afifi, Amira El-Mahis, Andreas G. Heiss et Mohamed A. Farag",
+      "published": "2021-02-12",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7931402/",
+      "passage": "Tableau 2, ligne 3 : fenchol dans les fruits de fenouil ; méthodes SPME-GC-MS.",
+      "access": "full-text",
+      "limitation": "Détection analytique, sans confirmation de tous les stéréoisomères ni conclusion sur un effet du fenchol isolé.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-snapdragon2008",
+      "title": "Two nearly identical terpene synthases catalyze the formation of nerolidol and linalool in snapdragon flowers",
+      "author": "Dinesh A. Nagegowda, Michael Gutensohn, Curtis G. Wilkerson et Natalia Dudareva",
+      "published": "2008-03-19 (en ligne)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18363779/",
+      "passage": "Résumé original : émissions florales et caractérisation AmNES/LIS-1 et -2.",
+      "access": "abstract",
+      "limitation": "Résumé consulté ; détail des expériences et annexes non relus. Ne démontre pas un rôle identique chez le cannabis.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-chamomile2023",
+      "title": "Biosynthesis of α-Bisabolol by Farnesyl Diphosphate Synthase and α-Bisabolol Synthase and Their Related Transcription Factors in Matricaria recutita L.",
+      "author": "Yuling Tai et onze coauteurs",
+      "published": "2023-01-15",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36675248/",
+      "passage": "Résumé original et légendes accessibles : MrFPS, MrBBS, modèle de biosynthèse.",
+      "access": "abstract",
+      "limitation": "Résumé et légendes consultés, pas texte intégral. La fonction de biosynthèse n’établit ni efficacité clinique ni identité stéréochimique d’un produit commercial.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-sage1998",
+      "title": "Monoterpene synthases from common sage (Salvia officinalis): cDNA isolation, characterization, and functional expression",
+      "author": "Mitchell L. Wise, Thomas J. Savage, Eva Katahira et Rodney Croteau",
+      "published": "1998-06-12",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9614092/",
+      "passage": "Résumé original : synthases sabinène, cinéole et diphosphate de bornyle, produits secondaires.",
+      "access": "abstract",
+      "limitation": "Résumé consulté ; aucune procédure de production n’est reprise. Une activité enzymatique n’est pas une preuve de fonction écologique en milieu naturel.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-maize2005",
+      "title": "Recruitment of entomopathogenic nematodes by insect-damaged maize roots",
+      "author": "Sergio Rasmann et coauteurs",
+      "published": "2005-04-07",
+      "url": "https://www.nature.com/articles/nature03451",
+      "passage": "Résumé original et figure 3 : signal (E)-β-caryophyllène et attraction de nématodes.",
+      "access": "abstract",
+      "limitation": "Résultat d’un système maïs–insecte–nématode ; ne démontre ni même fonction dans le cannabis, ni effet sur une personne.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-oswald2021",
+      "title": "Identification of a New Family of Prenylated Volatile Sulfur Compounds in Cannabis Revealed by Comprehensive Two-Dimensional Gas Chromatography",
+      "author": "Iain W. H. Oswald, Marcos A. Ojeda, Ryan J. Pobanz, Kevin A. Koby, Anthony J. Buchanan, Josh Del Rosso, Mario A. Guzman et Thomas J. Martin",
+      "published": "2021-11-12",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34869990/",
+      "passage": "Résumé original : composés soufrés prénylés et 3-méthyl-2-butène-1-thiol.",
+      "access": "abstract",
+      "limitation": "Résumé consulté ; auteurs affiliés notamment à Abstrax. Les composés soufrés ne sont pas comptés comme des terpènes dans cet inventaire.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-oswald2023",
+      "title": "Minor, Nonterpenoid Volatile Compounds Drive the Aroma Differences of Exotic Cannabis",
+      "author": "Iain W. H. Oswald et treize coauteurs",
+      "published": "2023-10-12",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37901519/",
+      "passage": "Résumé original et description des 31 extraits : composés non terpéniques et différences aromatiques.",
+      "access": "abstract",
+      "limitation": "Extraits étudiés, pas tous les cannabis ; plusieurs auteurs affiliés à Abstrax. Les associations sensorielles ne sont ni des propriétés thérapeutiques ni une mesure chimique des Buddies.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-identity-selinene",
+      "title": "β-Selinene — identité et synonymes",
+      "author": "NCBI PubChem",
+      "published": "base évolutive, consultée le 2026-11-12",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/Beta-Selinene",
+      "passage": "Rubrique Synonyms : beta-eudesmene ; formule et structure.",
+      "access": "excerpt",
+      "limitation": "Extrait indexé consulté ; le synonyme structurel n’attribue pas automatiquement l’énantiomère de la notice à un pic non chiral.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-identity-selinadiene",
+      "title": "Selina-3,7(11)-diene — identité et synonymes",
+      "author": "NCBI PubChem",
+      "published": "notice modifiée le 2026-09-05",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/Selina-3_7_11_-diene",
+      "passage": "Rubrique Synonyms : Eudesma-3,7(11)-diene ; formule et structure.",
+      "access": "official-page",
+      "limitation": "Regroupement de synonymes ; aucune preuve nouvelle de présence végétale ou de stéréochimie des échantillons.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-lavender2022",
+      "title": "Exploring the Chemical Composition of Bulgarian Lavender Absolute (Lavandula angustifolia Mill.) by GC/MS and GC-FID",
+      "author": "Daniela Nedeltcheva-Antonova, Kamelia Gechovska, Stanislav Bozhanov et Liudmil Antonov",
+      "published": "2022-11-17",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9692913/",
+      "passage": "Tableau 1 et chromatogrammes : cis/trans-β-ocimène, nérolidol, acétate de géranyle et autres constituants d’absolues de lavande.",
+      "access": "full-text",
+      "limitation": "Produits extraits de lavande, pas parfum de la fleur intacte. Les contributions olfactives individuelles ne sont pas mesurées par cette analyse.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-spruce2011",
+      "title": "An integrated genomic, proteomic and biochemical analysis of (+)-3-carene biosynthesis in Sitka spruce (Picea sitchensis) genotypes that are resistant or susceptible to white pine weevil",
+      "author": "Dawn E. Hall et neuf coauteurs",
+      "published": "2011-02-16",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/21323772/",
+      "passage": "Résumé original : (+)-3-carène, famille PsTPS-3car et association avec des génotypes d’épicéa.",
+      "access": "abstract",
+      "limitation": "Résumé consulté ; notice signalant un erratum. Seule l’association générale et l’étude des synthases sont retenues, sans chiffre ni transfert au cannabis.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-identity-humulene",
+      "title": "Humulene — NIST Chemistry WebBook",
+      "author": "NIST Mass Spectrometry Data Center",
+      "published": "base évolutive, consultée le 2026-11-12",
+      "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C6753986",
+      "passage": "Other names : α-Caryophyllene, α-Humulene ; structure.",
+      "access": "official-page",
+      "limitation": "Utilisée pour le nom et le regroupement de synonymes, sans transformer une notice chimique en preuve de présence dans le cannabis. Aucun indice physique sans conditions repris.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-identity-nerol",
+      "title": "Nerol — NIST Chemistry WebBook",
+      "author": "NIST Mass Spectrometry Data Center",
+      "published": "base évolutive, consultée le 2026-11-12",
+      "url": "https://webbook.nist.gov/cgi/cbook.cgi?Name=NEROL",
+      "passage": "Other names : cis-Geraniol, Nerol, (Z)-Geraniol.",
+      "access": "excerpt",
+      "limitation": "Utilisée pour le nom et le regroupement de synonymes, sans transformer une notice chimique en preuve de présence dans le cannabis. Aucun indice physique sans conditions repris.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-identity-neral",
+      "title": "Neral — NIST Chemistry WebBook",
+      "author": "NIST Mass Spectrometry Data Center",
+      "published": "base évolutive, consultée le 2026-11-12",
+      "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C106263",
+      "passage": "Other names : β-Citral, Neral, Citral B ; structure d’aldéhyde.",
+      "access": "excerpt",
+      "limitation": "Utilisée pour le nom et le regroupement de synonymes, sans transformer une notice chimique en preuve de présence dans le cannabis. Aucun indice physique sans conditions repris.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-wiles2025",
+      "title": "Integrated platform for structural and functional analysis of terpene synthases of Cannabis sativa",
+      "author": "Danielle Wiles, James Roest, Bhuvana Shanbhag, Julian Vivian et Travis Beddoe",
+      "published": "2025-07-10",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/40656959/",
+      "passage": "Résumé original : caractérisation fonctionnelle de dix synthases de C. sativa.",
+      "access": "abstract",
+      "limitation": "Résumé consulté, texte intégral bloqué. Aucun protocole ni nouvelle présence dans une fleur n’est déduit des produits enzymatiques ; aucune allégation de l’introduction sur la santé n’est reprise.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-buddy-acdc",
+      "title": "ACDC — Flavor & Aroma",
+      "author": "CBD Seed Labs",
+      "published": "page commerciale non datée, consultée le 2026-11-12",
+      "url": "https://cbdseedlabs.com/acdc/",
+      "passage": "Rubrique sensorielle ; court extrait retenu : pomelo, lemon, sour orange. Raccord aux libellés audités du CSV BUDDIES-PARFUMS-PROPOSITION-2026-10-12.csv.",
+      "access": "official-page",
+      "limitation": "Utilisée comme déclaration de son auteur sur l’arôme, non comme expertise indépendante ou profil chimique universel. Aucun effet ou taux commercial n’est repris.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-buddy-hawaiian",
+      "title": "Hawaiian Haze — Tasting Notes",
+      "author": "East Fork Cultivars",
+      "published": "page commerciale non datée, consultée le 2026-11-12",
+      "url": "https://eastforkcultivars.com/cultivars/p/hawaiian-haze",
+      "passage": "Rubrique sensorielle ; court extrait retenu : subtle earthy floral notes. Raccord aux libellés audités du CSV BUDDIES-PARFUMS-PROPOSITION-2026-10-12.csv.",
+      "access": "official-page",
+      "limitation": "Utilisée comme déclaration de son auteur sur l’arôme, non comme expertise indépendante ou profil chimique universel. Aucun effet ou taux commercial n’est repris.",
+      "verifiedAt": "2026-11-12"
+    },
+    {
+      "id": "tp-buddy-remedy",
+      "title": "Remedy — Aroma",
+      "author": "Cannaflower",
+      "published": "page commerciale non datée, consultée le 2026-11-12",
+      "url": "https://cannaflower.com/product/remedy/",
+      "passage": "Rubrique sensorielle ; court extrait retenu : Citrus | Diesel | Pine. Raccord aux libellés audités du CSV BUDDIES-PARFUMS-PROPOSITION-2026-10-12.csv.",
+      "access": "official-page",
+      "limitation": "Utilisée comme déclaration de son auteur sur l’arôme, non comme expertise indépendante ou profil chimique universel. Aucun effet ou taux commercial n’est repris.",
+      "verifiedAt": "2026-11-12"
+    }
+  ],
+  "entries": [
+    {
+      "id": "alphapinene",
+      "name": "α-Pinène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : (+)-α-pinène et (−)-α-pinène.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "betapinene",
+      "name": "β-Pinène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : (+)-β-pinène et (−)-β-pinène.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "myrcene",
+      "name": "Myrcène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : Myrcene ; également tableau 1 de Fischedick.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-fischedick2017"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "limonene",
+      "name": "Limonène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : (−)-Limonene ; tableau 1 de Fischedick : Limonene.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-fischedick2017"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "camphene",
+      "name": "Camphène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : (+)-Camphene et (−)-Camphene.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-phellandrene",
+      "name": "α-Phellandrène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’analyse de fleurs commercialisées : 233 échantillons, 30 noms de cultivars et 16 analytes ciblés. Cela ne constitue pas le profil d’un Buddy.",
+          "locator": "Tableau 1 et données du tableau 2 : α-Phellandrene.",
+          "sourceIds": [
+            "tp-fischedick2017"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "delta3-carene",
+      "name": "Δ3-Carène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’analyse de fleurs commercialisées : 233 échantillons, 30 noms de cultivars et 16 analytes ciblés. Cela ne constitue pas le profil d’un Buddy.",
+          "locator": "Tableau 1 : 3-Carene ; tableau 2 : certaines détections seulement.",
+          "sourceIds": [
+            "tp-fischedick2017"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-terpinene",
+      "name": "α-Terpinène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’analyse de fleurs commercialisées : 233 échantillons, 30 noms de cultivars et 16 analytes ciblés. Cela ne constitue pas le profil d’un Buddy.",
+          "locator": "Tableau 1 : α-Terpinene ; tableau 2 pour les échantillons positifs.",
+          "sourceIds": [
+            "tp-fischedick2017"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gamma-terpinene",
+      "name": "γ-Terpinène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 15 : γ-terpinene, colonne Hemp EO.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "terpinolene",
+      "name": "Terpinolène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : Terpinolene ; Fischedick, tableau 1.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-fischedick2017"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "e-beta-ocimene",
+      "name": "(E)-β-Ocimène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : (E)-β-ocimene ; Fischedick, rectification cis/trans page 37.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-fischedick2017"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "z-beta-ocimene",
+      "name": "(Z)-β-Ocimène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 14 : cis-β-ocimene ; Booth 2020 signale aussi (Z)-β-ocimène dans Purple Kush.",
+          "sourceIds": [
+            "tp-ovidi2022",
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "linalool",
+      "name": "Linalol",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : (+)-linalool ; Zager, figures 7–8.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fenchol",
+      "name": "Fenchol",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’analyse de fleurs commercialisées : 233 échantillons, 30 noms de cultivars et 16 analytes ciblés. Cela ne constitue pas le profil d’un Buddy.",
+          "locator": "Tableau 1 : Endo-fenchyl-alcohol ; Booth 2020, tableau 1 : Fenchol*.",
+          "sourceIds": [
+            "tp-fischedick2017",
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "borneol",
+      "name": "Bornéol",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : Borneol, sans astérisque d’étalon.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-terpineol",
+      "name": "α-Terpinéol",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : (+)-α-terpineol*.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "terpinen4-ol",
+      "name": "Terpinène-4-ol",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 22, et tableau 2, ligne 22 : terpinen-4-ol.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eucalyptol",
+      "name": "1,8-Cinéole",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 2, ligne 12 : 1,8-cineole dans l’hydrolat de chanvre.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p-cymene",
+      "name": "p-Cymène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 12 et tableau 2, ligne 11 : p-cymene.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beta-caryophyllene",
+      "name": "β-Caryophyllène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : β-caryophyllene* ; Fischedick, tableaux 1–2.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-fischedick2017"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-humulene",
+      "name": "α-Humulène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : α-humulene* ; Fischedick : Humulene.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-fischedick2017"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "e-beta-farnesene",
+      "name": "(E)-β-Farnésène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : (E)-β-farnesene*.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-farnesene",
+      "name": "α-Farnésènes",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : α-farnesene ; fonctions CsTPS25 : (Z,E)-α-farnésène ; Janta, tableau 2, pic 52.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-bergamotene",
+      "name": "α-Bergamotènes",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : α-bergamotene ; Janta, tableau 2, pic 36 : proposition cis-α-bergamotène.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-selinene",
+      "name": "α-Sélinène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : α-selinene, sans astérisque.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "guaiol",
+      "name": "Guaiol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : Guiaol ; Janta, tableau 2, pic 70 : Guaiol.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-bisabolol",
+      "name": "α-Bisabolol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’analyse de fleurs commercialisées : 233 échantillons, 30 noms de cultivars et 16 analytes ciblés. Cela ne constitue pas le profil d’un Buddy.",
+          "locator": "Tableau 1 : α-Bisabolol ; Booth 2020, tableau 1, astérisque.",
+          "sourceIds": [
+            "tp-fischedick2017",
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nerolidol",
+      "name": "Nérolidol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les boutons floraux analysés ; nérolidol quantifiable seulement dans l’échantillon nommé Black Lime de cette étude.",
+          "locator": "Tableau 1 : nérolidol quantifiable dans Black Lime ; figures 7–8 et méthodes de caractérisation.",
+          "sourceIds": [
+            "tp-zager2019"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gamma-eudesmol",
+      "name": "γ-Eudesmol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : γ-eudesmol ; Booth 2017, figure 5.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "caryophyllene-oxide",
+      "name": "Oxyde de caryophyllène",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : Caryophyllene oxide ; Ovidi, tableau 1, ligne 47.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "geranyl-acetate",
+      "name": "Acétate de géranyle",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "detailed",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’analyse de fleurs commercialisées : 233 échantillons, 30 noms de cultivars et 16 analytes ciblés. Cela ne constitue pas le profil d’un Buddy.",
+          "locator": "Tableau 1 : Geranyl-acetate ; tableau 2 : détections variables.",
+          "sourceIds": [
+            "tp-fischedick2017"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beta-phellandrene",
+      "name": "β-Phellandrène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : β-phellandrene*.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "delta-elemene",
+      "name": "δ-Élémène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : δ-elemene.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gamma-elemene",
+      "name": "γ-Élémène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : γ-elemene.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pinan2-ol",
+      "name": "Pinan-2-ol",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : 2-pinanol ; Janta, tableau 2, pic 31 : trans-2-pinanol proposé.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "delta-selinene",
+      "name": "δ-Sélinène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : δ-selinene.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beta-selinene",
+      "name": "β-Sélinène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 38 : β-eudesmene ; Janta, tableau 2, pic 49.",
+          "sourceIds": [
+            "tp-ovidi2022",
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "selina-3-7-11-diene",
+      "name": "Sélina-3,7(11)-diène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : Eudesma-3,7(11)-diene ; Ovidi, tableau 1, ligne 45 ; Janta, pic 58.",
+          "sourceIds": [
+            "tp-booth2020",
+            "tp-janta2024",
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "germacrene-b",
+      "name": "Germacrène B",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "reference-standard",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : Germacrene B*.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "valencene",
+      "name": "Valencène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : Valencene.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bulnesol",
+      "name": "Bulnésol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans les profils de fleurs matures de cannabis du tableau 1 ; la détection varie entre échantillons.",
+          "locator": "Tableau 1 : Bulnesol.",
+          "sourceIds": [
+            "tp-booth2020"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "isoborneol",
+      "name": "Isobornéol",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 21 (traces) ; tableau 2, ligne 20.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cis-sabinene-hydrate",
+      "name": "Hydrate de sabinène cis",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 16 ; Janta, tableau 2, pic 25.",
+          "sourceIds": [
+            "tp-ovidi2022",
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "humulene-epoxide-ii",
+      "name": "Époxyde d’humulène II",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 48 : humulene epoxide II.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "isocaryophyllene",
+      "name": "Isocaryophyllène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 33 : isocaryophyllene ; indice de référence absent.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-gurjunene",
+      "name": "α-Gurjunène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 34.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-himachalene",
+      "name": "α-Himachalène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 36.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gamma-gurjunene",
+      "name": "γ-Gurjunène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 41.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beta-maaliene",
+      "name": "β-Maaliène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 44 ; Ovidi, tableau 1, ligne 42, sans indice bibliographique.",
+          "sourceIds": [
+            "tp-janta2024",
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cedr-8-en-15-ol",
+      "name": "Cédr-8-én-15-ol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 50 : cedr-8-en-15-ol ; indice de référence absent.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ledene-oxide-ii",
+      "name": "Oxyde de lédène II",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 51 : ledene oxide II ; indice de référence absent.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eudesm-7-11-en-4-ol",
+      "name": "Eudesm-7(11)-én-4-ol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 1, ligne 54.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p-cymenene",
+      "name": "p-Cyménène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 2, ligne 15 : p-cymenene dans l’hydrolat.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "p-mentha-1-3-8-triene",
+      "name": "p-Mentha-1,3,8-triène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 2, ligne 19 : 1,3,8-p-menthatriene ; indice de référence absent.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cis-p-mentha-2-8-dien-1-ol",
+      "name": "cis-p-Mentha-2,8-dién-1-ol",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "ri-ms-supported",
+      "evidence": [
+        {
+          "statement": "Rapporté dans l’huile essentielle ou l’hydrolat de chanvre Kompolti, selon la colonne précisée ; produit transformé, pas fleur intacte.",
+          "locator": "Tableau 2, ligne 21.",
+          "sourceIds": [
+            "tp-ovidi2022"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-eudesmol",
+      "name": "α-Eudesmol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 74 : α-Eudesmol.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beta-eudesmol",
+      "name": "β-Eudesmol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 75 : β-Eudesmol.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "10-epi-gamma-eudesmol",
+      "name": "10-épi-γ-Eudesmol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 71 : 10-epi-g-Eudesmol.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-cubebene",
+      "name": "α-Cubébène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 26.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ylangene",
+      "name": "Ylangène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 27 : Ylangene.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "copaene",
+      "name": "Copaène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 28 : Copaene.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "di-epi-alpha-cedrene",
+      "name": "Di-épi-α-cédrène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 29.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-longipinene",
+      "name": "α-Longipinène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 33.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "longicyclene",
+      "name": "Longicyclène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 34.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "aristolene",
+      "name": "Aristolène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 37, libellé source (−)-Aristolene.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beta-gurjunene",
+      "name": "β-Gurjunène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 40.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-bulnesene",
+      "name": "α-Bulnésène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 41.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sesquisabinene",
+      "name": "Sesquisabinène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 42.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "viridiflorene",
+      "name": "Viridiflorène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 47.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gamma-himachalene",
+      "name": "γ-Himachalène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 48.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beta-cadinene",
+      "name": "β-Cadinène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 50, libellé source (−)-β-Cadinene.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gamma-amorphene",
+      "name": "γ-Amorphène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 53.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-muurolene",
+      "name": "α-Muurolène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 54.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "eremophila-1-10-11-diene",
+      "name": "Érémophila-1(10),11-diène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 55, y compris seconde partie des échantillons.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "alpha-dehydro-ar-himachalene",
+      "name": "α-Déhydro-ar-himachalène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 64.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trans-alpha-bisabolene",
+      "name": "trans-α-Bisabolène",
+      "family": "sesquiterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 56.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "di-epi-1-10-cubenol",
+      "name": "Di-épi-1,10-cubénol",
+      "family": "oxygenated-sesquiterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 69, seconde partie des échantillons.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "o-cymene",
+      "name": "o-Cymène",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 13.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fenchone",
+      "name": "Fenchone",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 19 : Fenchone, indice de référence indiqué non disponible.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cis-linalool-oxide",
+      "name": "Oxyde de linalol cis",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 24.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "beta-fenchol",
+      "name": "β-Fenchol (attribution provisoire)",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 35, libellé b-Fenchol.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "citronellol",
+      "name": "Citronellol",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 57, seconde partie des échantillons.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nerol",
+      "name": "Nérol",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 61, libellé cis-Geraniol.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "neral",
+      "name": "Néral",
+      "family": "oxygenated-monoterpene",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 45, libellé β-Citral.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "carene-2",
+      "name": "2-Carène (attributions regroupées)",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pics 4 et 7 : 2-Carene et (+)-2-Carene.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "carene-4",
+      "name": "4-Carène (attribution provisoire)",
+      "family": "monoterpene-hydrocarbon",
+      "detailLevel": "inventory",
+      "identificationLevel": "tentative",
+      "evidence": [
+        {
+          "statement": "Signal attribué provisoirement dans l’espace de tête de fleurs séchées parmi 19 échantillons commerciaux ; pas une identité garantie par étalon.",
+          "locator": "Tableau 2, pic 6 : (+)-4-Carene.",
+          "sourceIds": [
+            "tp-janta2024"
+          ]
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "status": "local-validation-passed",
+    "scope": "Unicité IDs, références de sources, 31 fiches détaillées complètes, synonymes sensibles, UTF-8, exports Buddy/labels, ESLint ciblé. Root réalise les contrôles d’intégration.",
+    "independentReview": {
+      "checkedAt": "2026-11-12",
+      "reviewer": "school_content",
+      "scope": "Recoupement des identifications sensibles : Booth 2020 (tableau 1 et méthodes), Zager 2019 (figures et méthodes), Ovidi 2022 (colonnes huile/hydrolat), attributions provisoires de Janta 2024 et synonymie institutionnelle β-sélinène/β-eudesmène.",
+      "result": "Aucune erreur de présence repérée dans cet échantillon. Traçabilité corrigée : les études déjà citées dans les localisateurs ou notes d’isomères sont désormais reliées dans les sourceIds des blocs concernés et de chaque fiche.",
+      "correctedCompoundIds": [
+        "myrcene",
+        "limonene",
+        "terpinolene",
+        "e-beta-ocimene",
+        "z-beta-ocimene",
+        "fenchol",
+        "beta-caryophyllene",
+        "alpha-humulene",
+        "alpha-farnesene",
+        "alpha-bergamotene",
+        "guaiol",
+        "alpha-bisabolol",
+        "caryophyllene-oxide",
+        "pinan2-ol",
+        "beta-selinene",
+        "selina-3-7-11-diene",
+        "cis-sabinene-hydrate",
+        "beta-maaliene",
+        "alpha-eudesmol",
+        "copaene",
+        "beta-fenchol"
+      ],
+      "unchanged": "Identifiants, comptes, textes, niveaux de preuve et inventaire des sources inchangés.",
+      "validation": "PASS : existence des références, liens bloc/fiche, renvois nominatifs, miroir du corpus et comptes stables ; ESLint ciblé sur le module compounds, sortie 0."
+    }
+  }
+}

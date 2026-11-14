@@ -1,0 +1,32 @@
+{
+  "updated": "2026-11-14",
+  "tool": "Built-in image_gen (imagegen skill)",
+  "kind": "precise-object-edit",
+  "original": "public/placard/map/placard-world-school-v7.webp",
+  "map": "public/placard/map/placard-world-library-v8.webp",
+  "vignette": "public/placard/ui/school-v2.webp",
+  "generatedSources": [
+    "output/school/library-quiz-artwork/map-source.png",
+    "output/school/library-quiz-artwork/library-transparent.png",
+    "output/school/library-quiz-artwork/sign-backing-source.png"
+  ],
+  "prompts": {
+    "map": "Use case: precise-object-edit.\nAsset type: production background artwork for an illustrated French village game map, 1536 x 1024 landscape 3:2.\nImage 1 is the EDIT TARGET: existing complete village map. Image 2 is a style/detail reference of the current lower-left school.\nPrimary request: transform ONLY the lower-left school (approximately x145 to500, y590 to925 in the map) into a welcoming small village LIBRARY AND QUIZ HOUSE with a large question-mark hanging sign.\nPreserve the map camera, size, building footprint, location, rounded wooden door on the right, slate roof silhouette, cream stone walls, blue hydrangeas, path and all other buildings and scenery. Exactly match the bold irregular dark ink outlines, simple flat warm print colors, subtle paper hatching, friendly cartoon Breton village art. No more realism or extra texture.\nLibrary changes: through the broad front window show beautiful full bookshelves and an open book on a reading desk, no classroom rows or globe. Replace the rectangular ÉCOLE board above that window with a generously sized irregular warm golden wooden hanging sign bearing ONE large dark teal '?' centered, highly legible at small map scale. Hang the sign from two short dark loops beneath the small open-book crest already on the gable. The sign should fill approximately x233-373 y747-786 and have clearly outlined closed edges suitable for cutting out and gently swinging in animation. No letters on the sign. Keep the existing roof turret silhouette but replace the school bell inside with a tiny book stack; no school bell. Replace the botanical chalkboard next to the entrance with a little stand displaying a book. Keep the main open-book emblem above the facade.\nConstraints: edit ONLY this one building. Other seven destinations, paths, landscape, sea, shoreline, bridge, shop sign, every surrounding object must keep their precise original geometry and appearance. The library must fit within the current school silhouette. No new background, no text except '?', no UI, no watermark. Deliver the entire map at the same 3:2 aspect ratio.",
+    "vignette": "Use case: background-extraction.\nAsset type: transparent decorative navigation vignette for a cartoon village game.\nEdit target: supplied village map. Extract ONLY the lower-left NEW library building with the large golden wooden '?' sign, slate roof, little turret holding books, cream stone walls, open-book roof emblem, warm bookshelf window with open reading book and lamp, rounded wooden entrance and book stand, blue hydrangeas.\nKeep this EXACT building design, viewpoint, black hand-inked outlines, cream/teal/gold/slate colors and flat printed cartoon illustration. This is the matching navigation/header vignette for that map destination, not a redesign. Complete building silhouette from roof finial to doorstep, centered in a square 1024x1024 canvas with 5% transparent padding. Only a small tuft of grass and hydrangeas at the base. True transparent background, no sky, no surrounding village, no road, no fence, no other buildings, no square backdrop. Keep ONE clear '?' on the wooden sign; no lettering, no watermark.",
+    "signBacking": "Use case: precise-object-edit.\nAsset type: hidden clean background plate behind an animated hanging sign.\nEdit target: supplied 1024x1024 square close-up of a library facade.\nRemove ONLY the large golden wooden sign with the '?' and its two dark metal hanging loops. Restore continuous warm cream plaster/stone wall in the exact area previously hidden by the sign and loops, matching adjacent wall color, simple texture, soft light and black outlined cartoon style. Keep the roof, the open-book crest, the two little leafy ornaments, window outline, all bookshelf details, books, reading desk and lamp EXACTLY in place and unchanged. No new objects, no text, no signs or question marks. Preserve exact composition, dimensions and alignment: this clean plate will be registered behind the original movable sign. Return the same square crop, 1024x1024."
+  },
+  "integration": "scripts/export-library-quiz-artwork.mjs: library-only mask over the v7 map; lossless WebP; zero decoded pixel changes outside the mask. Native transparent vignette exported at 512×512.",
+  "animation": {
+    "id": "library-sign",
+    "building": "collection",
+    "source": "Imagegen wooden question-mark sign cut from the map, with imagegen clean wall backing",
+    "backing": "public/placard/map/living-v2/clean-patches-library-v1.webp",
+    "export": "scripts/export-placard-map-sprites.mjs",
+    "engine": "Existing MAP_SCENERY / GSAP village animation",
+    "amplitudeDegrees": 2.2,
+    "halfCycleSeconds": 2.65,
+    "interaction": "Idle sway and pointer / keyboard / press reactions; paused for reduced motion, hidden document, offscreen and map dragging."
+  },
+  "checks": "output/school/library-quiz-artwork/verification.json; browser motion report and captures copied into the same directory.",
+  "deployment": "Local assets and code only."
+}

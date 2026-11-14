@@ -1,0 +1,18 @@
+{
+  "reviewedAt": "2026-11-14",
+  "counts": {
+    "articles": 60,
+    "terms": 79,
+    "quiz": 110
+  },
+  "checks": [
+    "Identifiants, sections et liens conservés",
+    "Statuts et blocages scientifiques conservés",
+    "Identité des photos, crédits et licences conservés",
+    "Chaque section possède des références effectivement lues",
+    "Questions, choix, bonnes réponses et niveaux conservés",
+    "Chaque explication de quiz renvoie à des sources présentes sur sa fiche",
+    "60 résumés réécrits et métadonnées pédagogiques présents"
+  ],
+  "scientificOriginalsModified": false
+}

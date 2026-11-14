@@ -1,5 +1,9 @@
 .art { display: inline-block; flex-shrink: 0; width: 112px; max-width: 100%; vertical-align: middle; pointer-events: none; }
 .art > img { display: block; width: 100%; height: auto; object-fit: contain; }
+.squareArt { position: relative; aspect-ratio: 1; }
+.cardFan > img { position: absolute; top: 11%; left: 24%; width: 52%; height: 78%; object-fit: contain; }
+.cardFan > img:first-child { transform: translateX(-24%) rotate(-14deg); }
+.cardFan > img:nth-child(2) { transform: translateX(24%) rotate(14deg); }
 .sectionMark { width: 56px; margin-block: -4px; }
 @media (max-width: 600px) { .sectionMark { width: 34px; margin-block: 0; } }
 @media (prefers-reduced-motion: reduce) { .art { animation: none; } }

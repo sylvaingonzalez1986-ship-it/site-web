@@ -140,6 +140,8 @@ export function getKqOperationsStorage(state: KqOperationsLessonState) {
     lots: state.prepared && state.trial.commerce.stocks.every(stock => stock.remainingUnits === 0) ? [] : [{
       flowerId: LOT_ID, varietyName: 'La récolte de Sylvain · essai', harvestGrams: state.trial.game?.harvestGrams ?? 0,
       flowerStatus: state.trial.battle!.playerFlower.status, projection,
+      // This standalone lesson does not simulate staff work.
+      trim: { status: "ready" as const, totalGrams: null, completedGrams: null },
     }],
   };
 }

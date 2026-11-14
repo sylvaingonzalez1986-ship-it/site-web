@@ -26,7 +26,7 @@ export function KqWorkshopTrimDesk({ initialFlowerId, initialEmployeeId, onOpenH
   return <section className={styles.desk} data-workshop-trim-desk>
     <KqStaffOperationsStatus controller={controller} label="Atelier de trim" disabled={disabled || locked} />
     {snapshot ? <>
-      <KqTrimWorkbench key={initialEmployeeId ?? "player"} snapshot={snapshot} snapshotReceivedAt={snapshotReceivedAt} playerProfile={player.profile} prepare={prepare} initialFlowerId={initialFlowerId} initialEmployeeId={initialEmployeeId} onOpenHarvests={onOpenHarvests} disabled={disabled || locked || loading || !!error} stale={!!error} />
+      <KqTrimWorkbench key={initialEmployeeId ?? "player"} snapshot={snapshot} snapshotReceivedAt={snapshotReceivedAt} playerProfile={player.profile} prepare={prepare} initialFlowerId={initialFlowerId} initialEmployeeId={initialEmployeeId} onOpenHarvests={onOpenHarvests} disabled={disabled || locked || loading || !!error || !!controller.recovery || !!controller.recoveryError || !!controller.authProblem} stale={!!error || !!controller.authProblem} />
       <KqStaffTaskList snapshot={snapshot} tasks={snapshot.state.tasks.filter(task => task.kind === "trim" && task.status === "completed")} title="Travaux de trim terminés" />
     </> : null}
     <KqStaffOperationsConfirmation controller={controller} />

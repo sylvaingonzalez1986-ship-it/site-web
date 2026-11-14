@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-14",
+  "lot": "health-04",
+  "entries": {
+    "record-health-podosphaera-macularis": {
+      "contentHash": "93e327d7586e38efc4853655863898f004ef65ea8af03249354eea062cfa382b",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-botrytis-cinerea": {
+      "contentHash": "f5c17783409378f19085cd2cf82752887b8d552b705114f27ebf5b3bd03bbaea",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-sclerotinia-sclerotiorum": {
+      "contentHash": "fab2c7f4e98998547d6aaf7a60c1ebd4c8d3b85bbc16846db37b8ad55ee3a1d1",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-fusarium": {
+      "contentHash": "a89ff2c5e9b0689c56fbe8573fcce4f46e50340e4a089d1a07597d78cf7cc9b1",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-pythium-globisporangium": {
+      "contentHash": "77b411cf65380610ec2b9367f6119281ceb3c2c1e0f5b5c9722a32637aca6c74",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-rhizoctonia": {
+      "contentHash": "6e5080d045c469a92d3e92a9d7cff46a86c40332451d0132ca2e3c2298cdfb48",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 3,
+    "hash": "227b99c091fcb7003252340a4b26f6eaf9447f784da22e74f8b83c3643b94e06"
+  }
+}

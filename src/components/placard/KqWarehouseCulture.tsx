@@ -12,6 +12,8 @@ import { applyKqBuddieYield, getKqBuddieCultivationProfile } from "@/lib/kanab-q
 import type { KqZoneIdentity } from "@/lib/kanab-quest-zone-identity";
 import type { KqWarehouseCondition } from "@/lib/kanab-quest-warehouse-condition";
 import styles from "./KqWarehouse.module.css";
+import { KqPrintedArt } from "./KqPrintedArt";
+import type { KqProductionReservation } from "@/lib/kanab-quest-production-reservation";
 
 export type KqWarehouseCultureSummary = { runId: string; zoneId: string | null; buddieCode: string; stageIndex: number; phase: string; startedAt: string; campaignId?: string; leaderRunId?: string };
 export type KqWarehouseBuddies = { ownedBuddieCodes: string[]; buddieRotation?: KqBuddieRotation };
@@ -19,16 +21,27 @@ export const warehouseCultureHref = (zoneId: string, runId?: string) => `/arene/
 export const warehouseCampaignHref = (runId?: string) => `/arene/placard?view=game&campaign=1${runId ? `&run=${encodeURIComponent(runId)}` : ""}`;
 export const warehouseCultureStage = (run: KqWarehouseCultureSummary) => KQ_STAGES[run.stageIndex]?.replace("Séchage & affinage", "Séchage") ?? "En cours";
 
-export function KqWarehouseCulture({ zone, zoneIdentity, run, runs, buddies, disabled, dirty, legacy, onReviewPlan, onManage, completedRunId, previewBuddieCode, condition }: {
+export function KqWarehouseCulture({ zone, zoneIdentity, run, runs, buddies, disabled, dirty, legacy, onReviewPlan, onManage, onEquipment, completedRunId, previewBuddieCode, condition, productionReservation }: {
   zone: KqWarehouseZone; run?: KqWarehouseCultureSummary; runs: KqWarehouseCultureSummary[];
   zoneIdentity: KqZoneIdentity | null;
   buddies: KqWarehouseBuddies | null; disabled: boolean; dirty: boolean; legacy: boolean;
   onReviewPlan: () => void; onManage: () => void; completedRunId?: string;
+  onEquipment?: () => void;
   previewBuddieCode?: string | null;
   condition?: KqWarehouseCondition;
+  productionReservation?: KqProductionReservation | null;
 }) {
-  const buddie = KQ_BUDDIES.find(item => item.code === (run?.buddieCode ?? previewBuddieCode ?? zone.buddieCode));
   const quote = getKqWarehouseZoneQuote(zone, 2, condition);
+  if (productionReservation?.zoneId === zone.id) return <div className={styles.culturePanel} data-warehouse-production-zone={zone.id}>
+    <KqPrintedArt kind="staff-production" sizes="320px" />
+    <div className={styles.cultureIdentity}><small>{zoneIdentity?.label} · {zone.width * zone.height} m²</small><h3>Production autonome</h3></div>
+    <p className={styles.help}>{productionReservation.enabled ? "Cette zone est gérée par le personnel." : "Circuit en pause : la zone reste réservée aux lots ou tâches à terminer."} Elle ne participe pas aux campagnes ni aux concours.</p>
+    <div className={styles.cultureCosts}><span>Potentiel matériel / cycle<strong>{quote.estimatedHarvestGrams.toLocaleString("fr-FR")} g</strong></span><span>Charges / cycle<strong>{formatKqCash(quote.operatingCostCents)}</strong></span></div>
+    <p className={styles.help}>Bonus qualité du matériel : +{quote.qualityBonus} pts. La récolte dépend aussi de la compétence du salarié.{dirty ? " Aperçu du devis, avant installation." : ""}</p>
+    {onEquipment && <button type="button" className={styles.secondary} disabled={disabled} data-warehouse-production-equipment onClick={onEquipment}>Choisir le matériel</button>}
+    {dirty ? <button type="button" className={styles.primary} onClick={onReviewPlan}>Voir le devis du plan</button> : <Link className={styles.primary} aria-disabled={disabled || undefined} onClick={event => { if (disabled) event.preventDefault(); }} href="/arene/placard?view=staff">Voir le personnel<ArrowRight size={16} aria-hidden="true" /></Link>}
+  </div>;
+  const buddie = KQ_BUDDIES.find(item => item.code === (run?.buddieCode ?? previewBuddieCode ?? zone.buddieCode));
   const profile = buddie && !run ? getKqBuddieCultivationProfile(buddie.code) : null;
   const busy = (code: string) => runs.some(item => item.buddieCode === code && item.zoneId !== zone.id);
   const waiting = (code: string) => getKqBuddieRotationRemaining(code, buddies?.buddieRotation?.recentBuddieCodes ?? []);

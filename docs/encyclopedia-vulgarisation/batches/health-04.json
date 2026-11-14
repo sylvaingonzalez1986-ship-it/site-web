@@ -1,0 +1,1142 @@
+{
+  "domain": "health",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "health-lesson-oomycetes",
+      "title": "Oomycetes — Plant Health Instructor",
+      "author": "American Phytopathological Society, centre pédagogique",
+      "organization": "APS",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.apsnet.org/edcenter/Pages/OomycetesLab.aspx",
+      "passage": "Introduction taxonomique, relation entre oomycètes et champignons, exemples Pythium et Phytophthora.",
+      "access": "excerpt",
+      "limitation": "Sections taxonomiques consultées ; exercices de laboratoire non repris. Les oomycètes ne sont pas de vrais champignons. Les généralisations anciennes sur les parois et tous les cycles ne servent pas de critères d’identification dans le cours.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Extraits de la publication originale consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.apsnet.org/edcenter/Pages/OomycetesLab.aspx",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Introduction, structures végétatives et reproduction"
+          ],
+          "result": "Oomycètes distincts des Fungi ; Pythium lié à fonte et pourriture racinaire. Mobilité des zoospores non généralisable à toutes les espèces.",
+          "assertionsSupported": [
+            "Oomycètes distincts des Fungi ; Pythium lié à fonte et pourriture racinaire. Mobilité des zoospores non généralisable à toutes les espèces."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-punja-2019",
+      "title": "Pathogens and Molds Affecting Production and Quality of Cannabis sativa L.",
+      "author": "Zamir K. Punja et collaborateurs",
+      "organization": "Frontiers in Plant Science",
+      "published": "2019 ; 10:1120",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+      "passage": "DOI 10.3389/fpls.2019.01120 ; Results, figures 2–4, Discussion : isolements, confirmations et essais de pathogénicité.",
+      "access": "full-text",
+      "limitation": "Principalement Canada, plusieurs systèmes. Isolement et pathogénicité ne sont pas équivalents ; celle de Pythium catenulatum reste non confirmée. Ancien nom d’oïdium à interpréter avec les travaux récents.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Frontiers 2019 : résultats Root and Crown Diseases, Flower Bud Rots, Powdery Mildew ; figures 2,4,5,7 et Copyright"
+          ],
+          "result": "Photographies sur Cannabis et caractérisation d’isolats ; Fusarium/Pythium et maladies racinaires, Botrytis et pourritures, oïdium historiquement G. cichoracearum sensu lato. Licence globale CC BY 4.0, MAIS figure2 A,D,E,G reproduits sous permission tierce : figure entière exclue de la proposition. Figures4,5,7 sans cette réserve. Figure7 possède huit panneaux A–H ; la légende éditoriale mentionne I par erreur.",
+          "assertionsSupported": [
+            "Photographies sur Cannabis et caractérisation d’isolats ; Fusarium/Pythium et maladies racinaires, Botrytis et pourritures, oïdium historiquement G. cichoracearum sensu lato. Licence globale CC BY 4.0, MAIS figure2 A,D,E,G reproduits sous permission tierce : figure entière exclue de la proposition. Figures4,5,7 sans cette réserve. Figure7 possède huit panneaux A–H ; la légende éditoriale mentionne I par erreur."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-powdery-2024",
+      "title": "The co-occurrence of two powdery mildew species on Cannabis sativa in the Czech Republic",
+      "author": "Barbora Mieslerová et collaborateurs",
+      "organization": "Journal of Phytopathology",
+      "published": "2024-06-25",
+      "url": "https://doi.org/10.1111/jph.13348",
+      "passage": "Résumé, Methods et Discussion : deux prélèvements de jardin en 2022–2023, microscopie, séquences ITS, G. ambrosiae et P. macularis.",
+      "access": "excerpt",
+      "limitation": "Texte original indexé consulté. Petit nombre d’échantillons ; la co-infection de 2022 est surtout documentée microscopiquement, la lecture moléculaire étant limitée par le mélange.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://doi.org/10.1111/jph.13348",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Wiley : abstract, Materials and Methods, Results et Discussion, échantillons OL49997 et OL49998"
+          ],
+          "result": "Deux genres d’oïdium observés morphologiquement dans le prélèvement 2022 ; corps de fibrosine chez Podosphaera. Résultat ITS 2022 appuyant P. macularis ; séquence 2023 G. ambrosiae ; ni carte de France ni test causal de tous les symptômes. Photos non réutilisées : licence commerciale non établie.",
+          "assertionsSupported": [
+            "Deux genres d’oïdium observés morphologiquement dans le prélèvement 2022 ; corps de fibrosine chez Podosphaera. Résultat ITS 2022 appuyant P. macularis ; séquence 2023 G. ambrosiae ; ni carte de France ni test causal de tous les symptômes. Photos non réutilisées : licence commerciale non établie."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-diagnostic",
+      "title": "Industrial Hemp Sampling",
+      "author": "Mike Munster",
+      "organization": "NC State Plant Disease and Insect Clinic",
+      "published": "Mise à jour le 2024-11-14",
+      "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+      "passage": "Contexte du problème, vues d’ensemble et détails, intérêt des racines et des transitions entre tissus sains et atteints.",
+      "access": "official-page",
+      "limitation": "Les exigences de prélèvement et d’envoi dépendent du laboratoire et du droit local ; aucun protocole de transport n’est reproduit.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "NC State Industrial Hemp Sampling : informations de contexte, parties à prélever et symptômes"
+          ],
+          "result": "L’examen combine progression, tissus et analyses ; identifier un organisme ne démontre pas automatiquement qu’il cause la totalité des symptômes. Règles administratives américaines non transposées.",
+          "assertionsSupported": [
+            "L’examen combine progression, tissus et analyses ; identifier un organisme ne démontre pas automatiquement qu’il cause la totalité des symptômes. Règles administratives américaines non transposées."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-pythium-name",
+      "title": "Pythium ultimum (PYTHUL)",
+      "author": "Organisation européenne et méditerranéenne pour la protection des plantes",
+      "organization": "EPPO Global Database",
+      "published": "Page courante consultée en 2026",
+      "url": "https://gd.eppo.int/taxon/PYTHUL",
+      "passage": "Nomenclature : Globisporangium ultimum indiqué parmi les autres noms scientifiques.",
+      "access": "official-page",
+      "limitation": "Les usages nomenclaturaux varient selon les références ; toutes les espèces historiques de Pythium ne deviennent pas Globisporangium.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://gd.eppo.int/taxon/PYTHUL",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "EPPO PYTHUL preferred name et synonymes"
+          ],
+          "result": "EPPO conserve Pythium ultimum comme nom préféré et cite Globisporangium ultimum parmi les autres noms. Les traitements taxonomiques diffèrent, pas deux diagnostics séparés.",
+          "assertionsSupported": [
+            "EPPO conserve Pythium ultimum comme nom préféré et cite Globisporangium ultimum parmi les autres noms. Les traitements taxonomiques diffèrent, pas deux diagnostics séparés."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-hemp-france",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Louis-Marie Allard et contributeurs ; coordination I. Lartigot",
+      "organization": "Terres Inovia",
+      "published": "2026-01",
+      "url": "https://www.terresinovia.fr/sites/default/files/2026-01/guide_culture_chanvre_2026.pdf",
+      "passage": "Pages 19–20 : maladies, fonte, altises, limaces et oiseaux ; symptômes de Botrytis et Sclerotinia.",
+      "access": "full-text",
+      "limitation": "Contexte français fibre/graine. On ne reprend ni produits conseillés, ni seuils climatiques simplifiés, ni l’assimilation de Pythium à un vrai champignon, ni une immunité générale des variétés.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.terresinovia.fr/sites/default/files/2026-01/guide_culture_chanvre_2026.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Guide Terres Inovia 2026, PDF p.19–20 (pages imprimées 19–20), chapitres maladies et ravageurs"
+          ],
+          "result": "Descriptions de sclérotiniose, rhizoctones, altises, limaces et oiseaux en contexte français. Exclusion des erreurs : Pythium appelé champignon ; tableau prétendant certains arthropodes absents de l’Hexagone ; extrapolations historiques/C4. Pas de photographie reprise sans licence.",
+          "assertionsSupported": [
+            "Descriptions de sclérotiniose, rhizoctones, altises, limaces et oiseaux en contexte français. Exclusion des erreurs : Pythium appelé champignon ; tableau prétendant certains arthropodes absents de l’Hexagone ; extrapolations historiques/C4. Pas de photographie reprise sans licence."
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-health-podosphaera-macularis",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : oïdium à podosphaera ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Podosphaera macularis. Espèce connue aussi sur houblon ; sa présence sur chanvre est documentée séparément.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section.",
+        "Blocage photographique levé : photographie documentaire identifiée et commercialement réutilisable sur un autre hôte, explicitement légendé sans transfert de diagnostic."
+      ],
+      "patch": {
+        "id": "record-health-podosphaera-macularis",
+        "topicId": "health",
+        "title": "Oïdium à Podosphaera",
+        "lead": "Podosphaera macularis est un autre champignon d’oïdium rapporté sur chanvre. Son dépôt blanc ressemble à celui d’autres agents : les différences utiles se trouvent notamment dans des structures visibles au microscope.",
+        "image": {
+          "src": "/placard/reference/health/podosphaera-hop.jpg",
+          "author": "David Gent, USDA Agricultural Research Service, Bugwood.org",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Signs_and_Symptoms_of_Powdery_Mildew_on_Hop_Leaves.jpg",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "kind": "photograph",
+          "alt": "Feuilles de houblon couvertes de nombreuses plages blanches poudreuses.",
+          "caption": "Oïdium attribué à Podosphaera macularis sur houblon, Humulus lupulus. Le dépôt poudreux aide à comprendre l’aspect d’un oïdium, sans représenter un cas sur Cannabis. David Gent/USDA Agricultural Research Service, Bugwood 5393947, CC BY 3.0."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Deux oïdiums dans un prélèvement",
+            "paragraphs": [
+              "L’étude tchèque publiée en 2024 rapporte Podosphaera dans un prélèvement de chanvre de 2022 contenant aussi Golovinomyces. Ce mélange explique pourquoi il faut examiner plusieurs structures au lieu d’attribuer toute la surface blanche à une seule espèce."
+            ],
+            "sourceIds": [
+              "health-atlas-powdery-2024"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Le houblon aide à voir l’aspect poudreux",
+            "paragraphs": [
+              "La photo montre un oïdium attribué à P. macularis sur houblon, et non sur chanvre. Elle rend visible l’aspect des colonies blanches, mais ne démontre pas que chaque tache comparable sur Cannabis vient du même agent."
+            ],
+            "sourceIds": [
+              "health-atlas-powdery-2024"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Un champignon nourri par une plante vivante",
+            "paragraphs": [
+              "Il est biotrophe : il obtient des ressources de tissus vivants. Il forme des hyphes, les filaments du champignon, et des conidies, des spores de multiplication. Des spores et des végétaux infectés participent à la propagation, selon l’hôte et les conditions du milieu."
+            ],
+            "sourceIds": [
+              "health-atlas-powdery-2024"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Ce qui distingue les spores",
+            "paragraphs": [
+              "Dans l’étude, les conidies attribuées à Podosphaera contiennent des corps de fibrosine, des inclusions visibles au microscope, absentes des conidies de Golovinomyces observées. Les auteurs combinent cette forme des structures avec les séquences ; le mélange ne fournit pas deux identifications génétiques indépendantes complètes."
+            ],
+            "sourceIds": [
+              "health-atlas-powdery-2024",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Garder l’hôte et l’agent dans la comparaison",
+            "paragraphs": [
+              "Pour interpréter un résultat, il faut conserver le nom du champignon et de la plante étudiée. Un aspect similaire sur houblon explique une apparence, sans établir une réponse identique du chanvre à une mesure donnée."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-powdery-2024"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-powdery-2024",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-podosphaera-macularis"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Podosphaera macularis"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Comparer les structures au microscope",
+          "nodes": [
+            {
+              "label": "Conidies de Podosphaera",
+              "detail": "Dans l’étude, elles contiennent des inclusions appelées corps de fibrosine."
+            },
+            {
+              "label": "Conidies de Golovinomyces",
+              "detail": "Ces inclusions sont absentes des structures comparées."
+            },
+            {
+              "label": "Prélèvement mélangé",
+              "detail": "Les deux types peuvent se trouver ensemble."
+            }
+          ],
+          "caption": "Les conidies sont des spores de multiplication ; leur structure aide à distinguer des oïdiums semblables.",
+          "sourceIds": [
+            "health-atlas-powdery-2024"
+          ],
+          "afterSectionId": "identification"
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-powdery-2024",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page Commons ouverte, auteur et licence CC BY 3.0 lus ; photo locale examinée : feuilles de houblon avec plages poudreuses. Illustration comparative explicitement sur un autre hôte. La détermination publiée n’est pas transposée à toute plage blanche sur chanvre."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-podosphaera"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Comment distinguer deux oïdiums qui paraissent semblables ?",
+        "explainedTerms": [
+          "biotrophe",
+          "hyphe",
+          "conidie",
+          "corps de fibrosine"
+        ],
+        "example": "Des structures présentes dans certaines spores aident la comparaison au microscope.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "P. macularis est-il rapporté sur chanvre ?",
+            "expectedAnswer": "Oui, notamment dans l’étude tchèque de 2024 ; la photo comparative montre toutefois du houblon."
+          }
+        ],
+        "quizIdsReviewed": [
+          "hemp-biodiversity-podosphaera"
+        ],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "record-health-botrytis-cinerea",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : pourriture grise ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Botrytis cinerea. B. cinerea est un agent documenté ; toute moisissure grise n’est pas automatiquement Botrytis.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-botrytis-cinerea",
+        "topicId": "health",
+        "title": "Pourriture grise",
+        "lead": "Botrytis cinerea est le champignon associé à la pourriture grise. Il peut dégrader des tissus du chanvre, notamment des tiges et des ensembles de fleurs. La lésion peut commencer avant que le feutrage gris soit visible.",
+        "image": {
+          "src": "/placard/school/health/punja-2019-fig4.webp",
+          "kind": "photograph",
+          "alt": "Inflorescences brunies, colonie en culture, structures microscopiques et lésions foliaires de Cannabis.",
+          "caption": "Pourriture grise de Cannabis attribuée à Botrytis cinerea. Les panneaux montrent des tissus atteints, des cultures de laboratoire et des vues microscopiques : ils ne sont pas tous visibles à l’œil nu sur une feuille. Punja et ses collègues, 2019, figure 4 A–I, CC BY 4.0.",
+          "author": "Zamir K. Punja et al.",
+          "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Une maladie décrite dans plusieurs contextes",
+            "paragraphs": [
+              "Le guide français et l’étude canadienne de Punja et de ses collègues décrivent des atteintes sur Cannabis. La planche photographique rassemble des tissus atteints et des observations de laboratoire, qui correspondent à plusieurs niveaux d’examen."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france",
+              "health-atlas-punja-2019"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Le gris peut venir après le brun",
+            "paragraphs": [
+              "Des tissus brunissent, flétrissent puis se dégradent. Le champignon peut ensuite produire des spores donnant un aspect gris. Dans une inflorescence, une partie interne peut donc être atteinte alors que l’extérieur paraît encore relativement intact."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Détruire et coloniser les tissus",
+            "paragraphs": [
+              "Botrytis est nécrotrophe : il exploite des tissus qu’il détruit. Il développe un mycélium, un réseau de filaments, et des conidies, des spores de multiplication. Les tissus colonisés et les spores aériennes entretiennent les possibilités de nouvelles atteintes ; humidité locale, blessures et état des tissus interviennent."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Relier la moisissure à l’agent",
+            "paragraphs": [
+              "D’autres pourritures et des blessures peuvent produire du brunissement. Des chenilles peuvent ouvrir une première lésion avant une pourriture secondaire : identifier la chenille ne nomme pas le champignon. L’examen des tissus et de l’organisme permet de préciser ce lien."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Deux évaluations nécessaires",
+            "paragraphs": [
+              "Suivre les foyers et le microclimat renseigne sur la maladie végétale. La décision concernant une matière suspecte demande aussi une évaluation sanitaire ; reconnaître Botrytis ne démontre pas qu’une matière altérée peut être récupérée."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-punja-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-hemp-france",
+          "health-atlas-punja-2019",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-botrytis-cinerea"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Botrytis cinerea"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-hemp-france",
+        "health-atlas-punja-2019",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Pourriture grise de Cannabis attribuée à Botrytis cinerea, Punja et al.2019, figure4 A–I ; photographies et micrographies CC BY4. Les panneaux de culture et microscope ne sont pas l’aspect à l’œil nu d’une feuille."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-botrytis"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi une fleur peut-elle être altérée avant de devenir grise ?",
+        "explainedTerms": [
+          "pourriture",
+          "inflorescence",
+          "nécrotrophe",
+          "mycélium",
+          "conidie"
+        ],
+        "example": "La destruction interne peut précéder la production de spores visibles.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "À quelle maladie Botrytis est-il associé ?",
+            "expectedAnswer": "À la pourriture grise."
+          }
+        ],
+        "quizIdsReviewed": [
+          "hemp-biodiversity-botrytis"
+        ],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "record-health-sclerotinia-sclerotiorum",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : sclérotiniose ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Sclerotinia sclerotiorum. Les sclérotes sont des structures du champignon, pas des graines de chanvre.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-sclerotinia-sclerotiorum",
+        "topicId": "health",
+        "title": "Sclérotiniose",
+        "lead": "Sclerotinia sclerotiorum peut provoquer des lésions de tige sur chanvre. Ce champignon forme des sclérotes : des masses compactes qui l’aident à survivre entre des périodes favorables à sa croissance.",
+        "image": {
+          "src": "/placard/reference/health/sclerotia.jpg",
+          "author": "Kmcleveland",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sclerotinia_sclerotiorum_sclerortia.jpg",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "kind": "photograph",
+          "alt": "Structures noires compactes visibles dans une tige coupée.",
+          "caption": "Des sclérotes attribués à Sclerotinia sclerotiorum : les structures compactes appartiennent au champignon. Kmcleveland, CC BY 3.0 ; l’hôte n’est pas précisé comme chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Une maladie décrite sur chanvre",
+            "paragraphs": [
+              "Le guide français décrit la sclérotiniose avec des lésions, un mycélium blanc et des sclérotes. Le mycélium est l’ensemble des filaments du champignon ; ces structures apportent des indices différents du simple dépérissement de la plante."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Chercher dans et sur la tige",
+            "paragraphs": [
+              "Des tissus de tige peuvent être lésés et porter une croissance blanche. Des sclérotes apparaissent dans ou sur les tissus. Leur emplacement, leur aspect et les lésions associées sont plus instructifs qu’un feutrage blanc isolé."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Une forme de survie compacte",
+            "paragraphs": [
+              "Un sclérote est du mycélium regroupé et durci. Il permet la persistance du champignon lorsque les conditions ne favorisent plus sa croissance. Ce n’est donc ni une graine de chanvre ni un œuf d’insecte. Le milieu peut conserver des structures capables d’alimenter des infections ultérieures."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Un ensemble d’indices à confirmer",
+            "paragraphs": [
+              "D’autres champignons produisent des structures de survie et d’autres maladies blanchissent des tissus. La photo explique les sclérotes sur un hôte non précisé comme chanvre ; elle ne constitue pas un diagnostic de la parcelle examinée."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Pourquoi l’historique compte",
+            "paragraphs": [
+              "Les cultures et foyers précédents aident à comprendre comment le champignon peut persister. Leur connaissance complète l’observation actuelle, sans attribuer tous les dépérissements d’un sol au même agent."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-hemp-france"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-hemp-france",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-sclerotinia-sclerotiorum"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Sclerotinia sclerotiorum"
+          }
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Persister avant de croître à nouveau",
+          "nodes": [
+            {
+              "label": "Dans les tissus",
+              "detail": "Le champignon forme un réseau de filaments."
+            },
+            {
+              "label": "En masse compacte",
+              "detail": "Un sclérote durci aide sa survie."
+            },
+            {
+              "label": "Entre deux cultures",
+              "detail": "Des structures persistantes peuvent alimenter de nouvelles atteintes."
+            }
+          ],
+          "caption": "Un sclérote est une structure du champignon, pas une graine de la plante.",
+          "sourceIds": [
+            "health-atlas-hemp-france"
+          ],
+          "afterSectionId": "biology"
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-hemp-france",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Sclérotes attribués à Sclerotinia sclerotiorum, Kmcleveland, CC BY3. Hôte non précisé comme chanvre ; la photo explique la structure de survie, pas un diagnostic de parcelle."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-sclerotes"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Comment un champignon peut-il rester entre deux cultures ?",
+        "explainedTerms": [
+          "sclérotiniose",
+          "mycélium",
+          "sclérote"
+        ],
+        "example": "Une masse de filaments durcis sert de structure de survie.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Un sclérote est-il une graine ?",
+            "expectedAnswer": "Non : c’est une masse compacte du champignon."
+          }
+        ],
+        "quizIdsReviewed": [
+          "hemp-biodiversity-sclerotes"
+        ],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "record-health-fusarium",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : fusarioses et isolements de fusarium ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Fusarium spp., dont groupes F. oxysporum et F. solani. Noms rapportés par l’étude ; groupes complexes, pas une espèce unique identifiable par couleur.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-fusarium",
+        "topicId": "health",
+        "title": "Fusarioses et isolements de Fusarium",
+        "lead": "Fusarium est un genre qui regroupe plusieurs champignons. Certains peuvent altérer des racines, des bases de tige ou d’autres tissus du chanvre. Trouver un Fusarium ne donne donc pas encore son identité précise ni son rôle dans la lésion.",
+        "image": {
+          "src": "/placard/school/health/punja-2019-fig5.webp",
+          "kind": "photograph",
+          "alt": "Cultures de trois champignons et inflorescences de Cannabis inoculées en expérience.",
+          "caption": "Essais sur inflorescences de Cannabis : A–B, Botrytis cinerea ; C–D, Fusarium oxysporum ; E–F, Penicillium olsonii. Cette planche montre des fleurs, distinctes des essais sur racines. Punja et ses collègues, 2019, figure 5, CC BY 4.0.",
+          "author": "Zamir K. Punja et al.",
+          "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Un groupe, plusieurs comportements",
+            "paragraphs": [
+              "L’étude canadienne décrit des Fusarium sur plusieurs parties de Cannabis. Le collet est la zone entre racine et tige. Une souche, ou isolat, est le matériel particulier récupéré et étudié au laboratoire : ses propriétés ne représentent pas tous les membres du genre."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Des racines brunes et des feuilles flétries",
+            "paragraphs": [
+              "Des racines, le collet ou des tiges peuvent brunir. Si les racines fonctionnent moins bien, l’approvisionnement en eau diminue et les feuilles peuvent jaunir ou flétrir. Des atteintes de fleurs existent aussi, mais ce ne sont pas les mêmes tissus ni nécessairement les mêmes essais."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Comment tester un rôle dans la maladie",
+            "paragraphs": [
+              "Dans l’étude, certains isolats de F. oxysporum et F. solani ont été introduits sur des plants enracinés. Des symptômes sont apparus puis les champignons ont été retrouvés : cette succession étaye leur rôle dans les conditions testées. Elle apporte plus qu’une simple présence sur un tissu malade."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Comparer les autres causes racinaires",
+            "paragraphs": [
+              "Des oomycètes ou un manque d’oxygène peuvent aussi altérer l’alimentation des feuilles. La couleur d’une colonie de laboratoire ne suffit pas à choisir un Fusarium. La photo présente des essais sur inflorescences, dont seuls les panneaux C–D concernent F. oxysporum."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Conserver le lien avec le prélèvement",
+            "paragraphs": [
+              "L’état des racines, l’origine du milieu et les déplacements de plantes aident à comprendre les transferts. Il faut relier le résultat de laboratoire au tissu prélevé : le même nom de genre ne signifie pas un pouvoir de maladie identique partout."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-punja-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-punja-2019",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-fusarium"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Plusieurs espèces de Fusarium, dont les groupes F. oxysporum et F. solani"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-punja-2019",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Punja et al.2019, figure5 : A–B Botrytis cinerea, C–D Fusarium oxysporum, E–F Penicillium olsonii. Ce sont des essais sur inflorescences ; la preuve racinaire est décrite séparément dans le texte. CC BY4, aucune réserve de réutilisation tierce dans cette légende."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi la présence d’un Fusarium ne prouve-t-elle pas tout ?",
+        "explainedTerms": [
+          "genre",
+          "collet",
+          "isolat",
+          "souche"
+        ],
+        "example": "Reproduire des symptômes et retrouver l’isolat apporte un argument causal.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Les essais sur fleurs prouvent-ils une atteinte racinaire ?",
+            "expectedAnswer": "Non : les tissus et les expériences doivent rester distingués."
+          }
+        ],
+        "quizIdsReviewed": [],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "record-health-pythium-globisporangium",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : oomycètes des racines et des fontes ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Pythium spp. ; Globisporangium spp.. Une partie des anciens Pythium est classée dans Globisporangium, par exemple G. ultimum ; pas toutes les espèces.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section.",
+        "Blocage photographique levé : photographie documentaire identifiée et commercialement réutilisable sur un autre hôte, explicitement légendé sans transfert de diagnostic."
+      ],
+      "patch": {
+        "id": "record-health-pythium-globisporangium",
+        "topicId": "health",
+        "title": "Oomycètes des racines et des fontes",
+        "lead": "Pythium et Globisporangium regroupent des oomycètes associés à certaines atteintes racinaires. Ils peuvent intervenir dans une fonte : une très jeune plante disparaît ou s’effondre. Un tel effondrement peut toutefois avoir plusieurs causes.",
+        "image": {
+          "src": "/placard/reference/health/pythium-basil.jpg",
+          "author": "Roswitha Ulrich, Pflanzenschutzdienst",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Basilikum_Pythium-1--Roswitha_Ulrich.jpg",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "kind": "photograph",
+          "alt": "Pot de jeunes basilics comportant des plantules vertes et des plantules effondrées ou mortes.",
+          "caption": "Fonte attribuée à Pythium sur basilic, Ocimum basilicum : de jeunes plantes s’effondrent. Cet autre hôte illustre le phénomène sans identifier l’agent d’un chanvre malade. Roswitha Ulrich/Pflanzenschutzdienst, CC BY-SA 4.0, permission confirmée par Wikimedia VRT."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Des noms proches à rapprocher",
+            "paragraphs": [
+              "Les oomycètes croissent en filaments mais sont distincts des vrais champignons. Plusieurs espèces autrefois placées dans Pythium portent aussi un nom dans Globisporangium. EPPO retient par exemple Pythium ultimum comme nom préféré et Globisporangium ultimum comme autre nom du même organisme."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019",
+              "health-lesson-oomycetes"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Avant ou après la sortie du sol",
+            "paragraphs": [
+              "Une fonte peut se produire avant la levée, si la graine ou la très jeune plante s’altère, ou après, si sa base devient trop endommagée pour la soutenir. La photo montre une fonte attribuée à Pythium sur basilic, un exemple comparatif et non un cas sur chanvre."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019",
+              "health-lesson-oomycetes"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Quand les racines ne remplissent plus leur rôle",
+            "paragraphs": [
+              "Sur une plante plus développée, l’altération des racines ou du collet, la jonction racine-tige, peut réduire l’approvisionnement en eau. Le flétrissement ne signifie donc pas forcément que le sol manque d’eau. Les milieux, l’eau et les plantes porteuses peuvent participer aux transferts, selon l’espèce."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019",
+              "health-lesson-oomycetes"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Distinguer les agents et les preuves",
+            "paragraphs": [
+              "D’autres organismes et l’asphyxie des racines peuvent donner des symptômes proches. L’étude de 2019 laissait encore à confirmer le rôle de P. catenulatum dans les conditions considérées : une question ouverte à une date donnée ne prouve pas une absence définitive de pouvoir pathogène."
+            ],
+            "sourceIds": [
+              "health-atlas-pythium-name",
+              "health-atlas-punja-2019",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Préciser le mécanisme observé",
+            "paragraphs": [
+              "L’examen rapproche tissus, eau, milieu et historique. Les espèces ne produisent pas toutes les mêmes structures de survie ou les mêmes spores mobiles ; on ne peut donc pas expliquer chaque foyer par une seule règle sur l’eau."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-punja-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-punja-2019",
+          "health-lesson-oomycetes",
+          "health-atlas-pythium-name",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-pythium-globisporangium"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Plusieurs espèces de Pythium et de Globisporangium"
+          }
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Une atteinte change avec l’âge de la plante",
+          "nodes": [
+            {
+              "label": "Avant ou près de la levée",
+              "detail": "Une graine ou une très jeune plante peut s’altérer ; la plantule peut s’effondrer."
+            },
+            {
+              "label": "Plus tard",
+              "detail": "Des racines atteintes absorbent moins bien et la partie aérienne peut flétrir."
+            },
+            {
+              "label": "Pour identifier",
+              "detail": "Il faut rapprocher les tissus, le milieu et les analyses."
+            }
+          ],
+          "caption": "La fonte décrit un phénomène, sans désigner un agent unique.",
+          "sourceIds": [
+            "health-atlas-punja-2019",
+            "health-lesson-oomycetes"
+          ],
+          "afterSectionId": "identification"
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-punja-2019",
+        "health-atlas-pythium-name",
+        "health-atlas-diagnostic",
+        "health-lesson-oomycetes"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page Commons et licence CC BY-SA 4.0 ouvertes ; auteur service de protection des plantes et permission VRT 2024091110008277 vérifiés. Photo locale examinée : basilics au stade plantule, plusieurs effondrés. Identification de Pythium attribuée à la documentation ; pas d’espèce ou de test non documenté inventé."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Comment une fonte peut-elle survenir avant toute feuille visible ?",
+        "explainedTerms": [
+          "oomycète",
+          "fonte",
+          "levée",
+          "collet",
+          "pathogène"
+        ],
+        "example": "Une graine ou une très jeune plante peut s’altérer avant de sortir du sol.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "La photo montre-t-elle du chanvre ?",
+            "expectedAnswer": "Non : elle montre un exemple de fonte sur basilic."
+          }
+        ],
+        "quizIdsReviewed": [],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "record-health-rhizoctonia",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : rhizoctones ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Rhizoctonia spp., notamment le complexe R. solani. Le nom rhizoctone recouvre plusieurs taxons ; R. solani comprend lui-même des groupes distincts.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-rhizoctonia",
+        "topicId": "health",
+        "title": "Rhizoctones",
+        "lead": "Les rhizoctones sont des champignons associés notamment à des lésions de racines et de bases de tige. Le nom Rhizoctonia solani désigne lui-même un ensemble de groupes biologiques : une identification précise dépasse le simple constat d’une plante flétrie.",
+        "image": {
+          "src": "/placard/reference/health/rhizoctonia.png",
+          "author": "Ninjatacoshell",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rhizoctonia_hyphae_160X.png",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "kind": "photograph",
+          "alt": "Hyphes ramifiés observés au microscope, avec barre d’échelle.",
+          "caption": "Filaments de Rhizoctonia grossis 160 fois, à partir d’un échantillon de maïs. L’image montre l’organisme au microscope, pas une lésion sur chanvre. Ninjatacoshell, CC BY-SA 3.0."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Un groupe cité dans le guide français",
+            "paragraphs": [
+              "Les rhizoctones figurent parmi les causes possibles d’atteintes racinaires du chanvre. Le guide décrit un problème agronomique sans identifier tous les groupes et tous les isolats qui pourraient être rencontrés."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Une atteinte à la base peut se voir en haut",
+            "paragraphs": [
+              "Des lésions des racines, du collet, la jonction racine-tige, ou de la base de la tige peuvent s’accompagner d’un dépérissement. Ces tissus assurent l’ancrage et l’alimentation : leur dégradation peut avoir des effets sur toute la partie aérienne."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Des filaments dans le milieu",
+            "paragraphs": [
+              "Le mycélium, l’ensemble des filaments du champignon, se développe au contact des tissus. Selon le groupe, il peut persister avec des structures de survie. Des matières colonisées et des végétaux porteurs relient ainsi un foyer à l’histoire du milieu."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Le microscope ouvre une autre échelle",
+            "paragraphs": [
+              "La photo montre des hyphes, les filaments, à un grossissement de 160 fois et à partir de maïs. Leur ramification aide l’examen, sans donner à elle seule le groupe responsable d’une lésion sur chanvre. Fusarium, oomycètes et troubles non infectieux restent à comparer."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Garder la précision du résultat",
+            "paragraphs": [
+              "Un rapport peut reconnaître un groupe sans déterminer un isolat particulier. Conserver ce niveau de précision, le tissu prélevé et l’historique du sol permet d’interpréter le diagnostic sans étendre le résultat à tous les rhizoctones."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-hemp-france"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-hemp-france",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-rhizoctonia"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Plusieurs rhizoctones, notamment le complexe R. solani"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-hemp-france",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Hyphes de Rhizoctonia à160×, Ninjatacoshell, CC BY-SA3 ; échantillon provenant du maïs selon la page source. Microphotographie comparative, pas diagnostic sur chanvre."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi une photo de filaments ne suffit-elle pas à expliquer une plante flétrie ?",
+        "explainedTerms": [
+          "rhizoctone",
+          "isolat",
+          "collet",
+          "hyphe",
+          "mycélium"
+        ],
+        "example": "Le microscope montre l’organisme à une autre échelle que la lésion.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "La microphotographie provient-elle du chanvre ?",
+            "expectedAnswer": "Non : elle présente un échantillon provenant du maïs."
+          }
+        ],
+        "quizIdsReviewed": [],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [
+    {
+      "id": "hemp-biodiversity-podosphaera",
+      "topicId": "biodiversity",
+      "level": 4,
+      "prompt": "Quelle espèce est un agent d’oïdium identifié sur le chanvre ?",
+      "options": [
+        "Phorodon cannabis",
+        "Ostrinia nubilalis",
+        "Podosphaera macularis",
+        "Tetranychus urticae"
+      ],
+      "answer": 2,
+      "explanation": "Podosphaera macularis est rapporté parmi les agents d’oïdium du chanvre. L’étude tchèque combine l’examen des spores et les données génétiques ; le blanc poudreux seul ne donne pas ce nom.",
+      "articleId": "record-health-podosphaera-macularis",
+      "sourceIds": [
+        "health-atlas-powdery-2024"
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-botrytis",
+      "topicId": "biodiversity",
+      "level": 1,
+      "prompt": "À quelle maladie du chanvre le champignon Botrytis cinerea est-il associé ?",
+      "options": [
+        "L’oïdium blanc",
+        "La rouille orangée",
+        "La mosaïque virale",
+        "La pourriture grise"
+      ],
+      "answer": 3,
+      "explanation": "Botrytis cinerea est associé à la pourriture grise. Les tissus peuvent brunir et se dégrader avant que les spores donnent un feutrage gris visible.",
+      "articleId": "record-health-botrytis-cinerea",
+      "sourceIds": [
+        "health-atlas-punja-2019"
+      ]
+    },
+    {
+      "id": "hemp-biodiversity-sclerotes",
+      "topicId": "biodiversity",
+      "level": 4,
+      "prompt": "Quelles structures permettent à Sclerotinia sclerotiorum de persister entre deux cultures ?",
+      "options": [
+        "Des sclérotes",
+        "Des grains de pollen",
+        "Des œufs à coque",
+        "Des akènes"
+      ],
+      "answer": 0,
+      "explanation": "Les sclérotes sont des masses compactes de filaments du champignon, durcies pour persister. Ce ne sont ni des graines ni des œufs : ils appartiennent au champignon lui-même.",
+      "articleId": "record-health-sclerotinia-sclerotiorum",
+      "sourceIds": [
+        "health-atlas-hemp-france"
+      ]
+    }
+  ],
+  "sensitivePoints": [],
+  "pedagogicalReview": {
+    "reviewedAt": "2026-11-14",
+    "articles": 6,
+    "terms": 0,
+    "quizExplanations": 3,
+    "scientificOriginalsModified": false
+  }
+}

@@ -1,0 +1,162 @@
+{
+  "date": "2026-11-14",
+  "status": "Local revision delivered with explicit unresolved source-access blockers",
+  "coverage": {
+    "inventoried": 189,
+    "reviewed": 189,
+    "corrected": 189,
+    "illustrated": 189,
+    "validated": 181,
+    "blocked": 8,
+    "pending": 0,
+    "glossaryReviewed": 160,
+    "quizReviewed": 360,
+    "quizCorrected": 74,
+    "sourcesRead": 323,
+    "sourceUrlsRead": 296
+  },
+  "byDomain": {
+    "botany": {
+      "inventoried": 23,
+      "reviewed": 23,
+      "illustrated": 23,
+      "validated": 21,
+      "blocked": 2
+    },
+    "terpenes": {
+      "inventoried": 35,
+      "reviewed": 35,
+      "illustrated": 35,
+      "validated": 35,
+      "blocked": 0
+    },
+    "cannabinoids": {
+      "inventoried": 51,
+      "reviewed": 51,
+      "illustrated": 51,
+      "validated": 48,
+      "blocked": 3
+    },
+    "health": {
+      "inventoried": 31,
+      "reviewed": 31,
+      "illustrated": 31,
+      "validated": 31,
+      "blocked": 0
+    },
+    "agronomy": {
+      "inventoried": 6,
+      "reviewed": 6,
+      "illustrated": 6,
+      "validated": 6,
+      "blocked": 0
+    },
+    "products": {
+      "inventoried": 36,
+      "reviewed": 36,
+      "illustrated": 36,
+      "validated": 35,
+      "blocked": 1
+    },
+    "history": {
+      "inventoried": 2,
+      "reviewed": 2,
+      "illustrated": 2,
+      "validated": 2,
+      "blocked": 0
+    },
+    "regulation": {
+      "inventoried": 5,
+      "reviewed": 5,
+      "illustrated": 5,
+      "validated": 3,
+      "blocked": 2
+    }
+  },
+  "quizRetainedAfterReview": 286,
+  "sourceCountMeaning": "sourcesRead compte des identifiants de références effectivement consultées ; sourceUrlsRead compte leurs URL distinctes. Aucun de ces nombres ne représente des études indépendantes : des sources et cohortes communes sont explicitement rapprochées.",
+  "changes": [
+    "189 fiches relues individuellement : mécanismes, terminologie, niveaux de preuve, limites et références rattachées aux sections.",
+    "Botanique : fruit et graine, trichomes, reproduction et diversité séparés ; généalogies commerciales attribuées à leur version et à leur auteur.",
+    "Chimie et pharmacologie : formes acides/neutres et isomères distingués ; résultats cellulaires, animaux et humains séparés ; critères principaux négatifs conservés, pas de promesse thérapeutique tirée d’une affinité ou d’un arôme.",
+    "Santé végétale : signes, symptômes et identification séparés ; hôte, région et portée des expériences conservés. Photographies comparatives de houblon et basilic clairement légendées.",
+    "Produits et réglementation : huile de graines distincte des extraits, teneurs alimentaires en mg/kg distinctes du seuil variétal, avis scientifique distinct d’une autorisation, systèmes constructifs et bilans environnementaux contextualisés.",
+    "Images scientifiques, photographies, schémas HTML, crédits et sources accessibles ; cartes de terpènes raccordées aux notices révisées.",
+    "74 questions effectivement modifiées ; 286 relues et conservées. Identifiants, destinations et fonctionnement du score préservés ; réponses du quiz séparées des données clientes."
+  ],
+  "blockers": [
+    {
+      "id": "record-variety-cookies",
+      "title": "Cookies",
+      "lot": "botany-04.json",
+      "reasons": [
+        "Relire l’entretien primaire Jigga du 30 mars 2020 pour confirmer F1 Durban × Florida OG et l’étymologie F1 ; accès direct 403."
+      ]
+    },
+    {
+      "id": "record-variety-gelato",
+      "title": "Gelato",
+      "lot": "botany-04.json",
+      "reasons": [
+        "Récupérer l’entretien Sherbinski 2017 pour la chronologie et la liste historique des sélections ; page primaire 403. La parenté actuelle est confirmée séparément sur Sherbinskis."
+      ]
+    },
+    {
+      "id": "ref-decouvertes-cannabinoides",
+      "title": "Les découvertes du système cannabinoïde",
+      "lot": "cannabinoids-02.json",
+      "reasons": [
+        "Originaux de Wood, Spivey et Easterfield et jalon de liaison avant le clonage : documents primaires toujours inaccessibles. Le sous-point CB2 est désormais confirmé par le résumé original de Munro (1993). Aucune question du quiz ne dépend des précisions historiques non relues.",
+        "Étymologie historique de l’anandamide non étayée dans les passages originaux accessibles ; question remplacée par la liaison amide documentée."
+      ]
+    },
+    {
+      "id": "record-cannabinoid-delta9-thca-b",
+      "title": "Δ9-THCA-B",
+      "lot": "cannabinoids-02.json",
+      "reasons": [
+        "La relation exacte de position du carboxyle THCA-A/THCA-B requiert le dessin ou texte intégral primaire ; la diffraction confirme une identité mais pas tous les détails comparatifs de la question."
+      ]
+    },
+    {
+      "id": "record-study-cbg-laboratory-2026",
+      "title": "CBG · laboratoire humain",
+      "lot": "cannabinoids-08.json",
+      "reasons": [
+        "Éditeur refusé : financement exact et dénominateur 16 éligibles du dossier initial restent à confirmer dans texte intégral."
+      ]
+    },
+    {
+      "id": "record-product-products-formulated",
+      "title": "Produit formulé",
+      "lot": "products-04.json",
+      "reasons": [
+        "Confirmer les articles 18–19 dans la consolidation courante du règlement 178/2002 : texte original effectivement lu, consolidation 2026 inaccessible. Les affirmations de retrait et rappel ne sont pas validées comme vérification réglementaire actuelle."
+      ]
+    },
+    {
+      "id": "ref-analyses",
+      "title": "Analyses et composition des lots",
+      "lot": "regulation-01.json",
+      "reasons": [
+        "Confirmer les articles 18–19 dans la consolidation courante du règlement 178/2002 : plusieurs URL consolidées bloquent par CAPTCHA/redirection ; texte original effectivement lu."
+      ]
+    },
+    {
+      "id": "ref-reglementation-produits",
+      "title": "Statut des produits en France et dans l'UE",
+      "lot": "regulation-01.json",
+      "reasons": [
+        "Consolidation courante du règlement 178/2002 à confirmer pour les articles 18–19 ; original ouvert, versions consolidées demandées inaccessibles."
+      ]
+    }
+  ],
+  "validation": "verification.json",
+  "inventory": "inventory.json",
+  "bibliography": "bibliography.json",
+  "individualApprovals": "validation.json",
+  "browserEvidence": "output/encyclopedia-revision/browser-report.json",
+  "deploymentPerformed": false,
+  "migrationsApplied": 0,
+  "nextBoundedTask": "Reprendre uniquement les huit points de source bloqués quand les documents primaires deviennent accessibles ; relire les passages concernés avant de renouveler leur empreinte de validation."
+}

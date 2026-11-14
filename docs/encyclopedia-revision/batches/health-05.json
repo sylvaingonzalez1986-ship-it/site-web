@@ -1,0 +1,1203 @@
+{
+  "domain": "health",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "health-atlas-purdue-greenhouse",
+      "title": "Management Strategies for Common Arthropod Pests of Greenhouse Hemp in Indiana",
+      "author": "Zachary Serber et Elizabeth Y. Long",
+      "organization": "Purdue University Extension",
+      "published": "2021-12",
+      "url": "https://www.extension.entm.purdue.edu/publications/E-275/E-275.html",
+      "passage": "Greenhouse Whitefly, figure 2 sur chanvre ; Predatory Mites et réserve sur les preuves disponibles, surtout pour Aculops.",
+      "access": "full-text",
+      "limitation": "Contexte Indiana. Une légende confond les parasitoïdes de pucerons et d’aleurodes : elle n’est pas reprise. Aucune liste de pesticides ni lâcher prescrit.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.extension.entm.purdue.edu/publications/E-275/E-275.html",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Purdue E-275, pucerons, aleurodes, acariens et natural enemies"
+          ],
+          "result": "Identification avant gestion ; Phytoseiulus persimilis spécialisé sur tétranyques tisserands, autres Phytoseiidae généralistes ; résultats non interchangeables entre espèces.",
+          "assertionsSupported": [
+            "Identification avant gestion ; Phytoseiulus persimilis spécialisé sur tétranyques tisserands, autres Phytoseiidae généralistes ; résultats non interchangeables entre espèces."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-viruses-wa-2023",
+      "title": "First Reports of Beet Curly Top Virus, Citrus Yellow Vein-Associated Virus, and Hop Latent Viroid in Industrial Hemp (Cannabis sativa) in Washington State",
+      "author": "Sridhar Jarugula, Camille Wagstaff, Arunabha Mitra, David W. Crowder, David R. Gang et Rayapati A. Naidu",
+      "organization": "Plant Disease",
+      "published": "2023-09-08 ; 107:2897",
+      "url": "https://s3.wp.wsu.edu/uploads/sites/2701/2023/10/Jarugula-et-al-2023.pdf",
+      "passage": "Note originale : plantes symptomatiques de deux champs en 2021–2022 ; PCR/RT-PCR, séquençage et infections multiples.",
+      "access": "excerpt",
+      "limitation": "Note originale indexée consultée ; échantillonnage ciblé, non estimation de prévalence. Ne démontre pas séparément la causalité de chaque agent dans les co-infections.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://s3.wp.wsu.edu/uploads/sites/2701/2023/10/Jarugula-et-al-2023.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "PDF intégral d’une page hébergé par Washington State University ; enquête 2021/2022, HTS et PCR"
+          ],
+          "result": "Sur plantes symptomatiques sélectionnées, BCTV, CYVaV et HLVd détectés ; co-infections. Fréquences non extrapolables à toutes les cultures ; causalité propre de CYVaV non établie. Copie originale auteur ouverte, portail APS 403.",
+          "assertionsSupported": [
+            "Sur plantes symptomatiques sélectionnées, BCTV, CYVaV et HLVd détectés ; co-infections. Fréquences non extrapolables à toutes les cultures ; causalité propre de CYVaV non établie. Copie originale auteur ouverte, portail APS 403."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-hlvd-warren",
+      "title": "Occurrence of Hop Latent Viroid Causing Disease in Cannabis sativa in California",
+      "author": "J. G. Warren, J. Mercado et D. Grace",
+      "organization": "Plant Disease",
+      "published": "2019-08-21 ; 103(10)",
+      "url": "https://apsjournals.apsnet.org/doi/abs/10.1094/PDIS-03-19-0530-PDN",
+      "passage": "Note : détection et comparaison de groupes inoculés avec ARN infectieux et témoins ; symptômes et RT-PCR.",
+      "access": "excerpt",
+      "limitation": "Note originale indexée consultée. Petite expérience contrôlée étayant la causalité ; elle ne mesure pas la gravité ni l’origine de chaque cas individuel. Révision du 14 novembre 2026 : 403 APS, formats abstract/full également ; assertions expérimentales de 2019 remplacées par source primaire accessible de 2024.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://apsjournals.apsnet.org/doi/abs/10.1094/PDIS-03-19-0530-PDN",
+          "openedAt": "2026-11-14",
+          "status": "not-reverified",
+          "sectionsOpened": [],
+          "result": "inaccessible",
+          "details": "403 APS, formats abstract/full également ; assertions expérimentales de 2019 remplacées par source primaire accessible de 2024.",
+          "assertionsSupported": []
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-hlvd-punja",
+      "title": "Symptomology, prevalence, and impact of Hop latent viroid on greenhouse-grown cannabis (Cannabis sativa L.) plants in Canada",
+      "author": "Zamir K. Punja, K. Wang, S. Lung et L. Buirs",
+      "organization": "Canadian Journal of Plant Pathology",
+      "published": "2023 en ligne ; volume 46, 2024",
+      "url": "https://doi.org/10.1080/07060661.2023.2279184",
+      "passage": "Résumé et passages de méthodes indexés : soumissions à un laboratoire canadien en 2020–2022 et plantes parfois asymptomatiques.",
+      "access": "excerpt",
+      "limitation": "Échantillons envoyés au diagnostic, pas échantillon représentatif de tous les producteurs. Le taux de positifs n’est pas une prévalence nationale. Révision du 14 novembre 2026 : 403 Taylor & Francis ; non lu, chiffres non repris.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://doi.org/10.1080/07060661.2023.2279184",
+          "openedAt": "2026-11-14",
+          "status": "not-reverified",
+          "sectionsOpened": [],
+          "result": "inaccessible",
+          "details": "403 Taylor & Francis ; non lu, chiffres non repris.",
+          "assertionsSupported": []
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-viroids-ictv",
+      "title": "Viroids",
+      "author": "International Committee on Taxonomy of Viruses",
+      "organization": "ICTV",
+      "published": "Rapport courant, révision 2026",
+      "url": "https://ictv.global/report/chapter/viroids/viroids",
+      "passage": "Définition : petits ARN circulaires non codants, absence de capside ; distinction des virus.",
+      "access": "official-page",
+      "limitation": "Référence de classification, pas diagnostic de la santé d’une plante.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://ictv.global/report/chapter/viroids/viroids",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "ICTV, Summary et Genome organization"
+          ],
+          "result": "Petits ARN circulaires simple brin non codants, sans capside, réplication dépendant de l’hôte ; viroïdes distincts des virus satellites.",
+          "assertionsSupported": [
+            "Petits ARN circulaires simple brin non codants, sans capside, réplication dépendant de l’hôte ; viroïdes distincts des virus satellites."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-beneficial-purdue",
+      "title": "Beneficial Insects",
+      "author": "Purdue Hemp Project",
+      "organization": "Purdue University",
+      "published": "Page sans date explicite",
+      "url": "https://ag.purdue.edu/hemp-project/insects/beneficial-insects.html",
+      "passage": "Lacewing Larvae, Lady Beetles et Parasitoids ; organismes observés sur chanvre du centre-nord des États-Unis.",
+      "access": "full-text",
+      "limitation": "Présence et fonctions écologiques générales ; pas démonstration que tout lâcher commercial assure un contrôle sur chanvre.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://ag.purdue.edu/hemp-project/insects/beneficial-insects.html",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Beneficial Insects : Lacewing Larvae, Lady Beetles, Predators AND Parasitoids"
+          ],
+          "result": "Observations sur chanvre du centre-nord des États-Unis ; larves de chrysopes et coccinelles prédatrices ; développement du parasitoïde et momies de pucerons.",
+          "assertionsSupported": [
+            "Observations sur chanvre du centre-nord des États-Unis ; larves de chrysopes et coccinelles prédatrices ; développement du parasitoïde et momies de pucerons."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-lacewings-csu",
+      "title": "Natural Enemies of Insects — Green Lacewings",
+      "author": "Whitney Cranshaw, programme Hemp Insects",
+      "organization": "Colorado State University",
+      "published": "Fiche sans date imprimée explicite",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/Green%20Lacewings%20with%20Photos.pdf",
+      "passage": "Larves prédatrices et Chrysopa oculata régulièrement observée dans les champs de chanvre, associée aux pucerons.",
+      "access": "full-text",
+      "limitation": "Observation régionale ; les espèces, stades et régimes alimentaires ne sont pas interchangeables.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/Green%20Lacewings%20with%20Photos.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "CSU Natural Enemies — Green Lacewings, PDF intégral une page"
+          ],
+          "result": "Œufs pédonculés, larves prédatrices, cocon ; Chrysopa oculata a aussi des adultes prédateurs. Ne pas généraliser le régime des adultes à toutes les chrysopes.",
+          "assertionsSupported": [
+            "Œufs pédonculés, larves prédatrices, cocon ; Chrysopa oculata a aussi des adultes prédateurs. Ne pas généraliser le régime des adultes à toutes les chrysopes."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-diagnostic",
+      "title": "Industrial Hemp Sampling",
+      "author": "Mike Munster",
+      "organization": "NC State Plant Disease and Insect Clinic",
+      "published": "Mise à jour le 2024-11-14",
+      "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+      "passage": "Contexte du problème, vues d’ensemble et détails, intérêt des racines et des transitions entre tissus sains et atteints.",
+      "access": "official-page",
+      "limitation": "Les exigences de prélèvement et d’envoi dépendent du laboratoire et du droit local ; aucun protocole de transport n’est reproduit.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "NC State Industrial Hemp Sampling : informations de contexte, parties à prélever et symptômes"
+          ],
+          "result": "L’examen combine progression, tissus et analyses ; identifier un organisme ne démontre pas automatiquement qu’il cause la totalité des symptômes. Règles administratives américaines non transposées.",
+          "assertionsSupported": [
+            "L’examen combine progression, tissus et analyses ; identifier un organisme ne démontre pas automatiquement qu’il cause la totalité des symptômes. Règles administratives américaines non transposées."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-new-hlvd-2024",
+      "title": "New Insights into Hop Latent Viroid Detection, Infectivity, Host Range, and Transmission",
+      "author": "Osama O. Atallah, Sherin M. Yassin et Jeanmarie Verchot",
+      "organization": "Viruses 16(1),30, MDPI",
+      "published": "2024 (publication en ligne 23 décembre 2023)",
+      "url": "https://www.mdpi.com/1999-4915/16/1/30",
+      "verifiedAt": "2026-11-14",
+      "passage": "§3.1–3.5, figures 4–8, licence",
+      "access": "full-text",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "limitation": "Essais contrôlés et matériel particulier ; pas fréquence française ni pourcentage universel de transmission, pas protocole pratique repris.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/1999-4915/16/1/30",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "§3.1–3.5, figures 4–8, licence"
+          ],
+          "result": "Détection chez chanvre asymptomatique ; infection et déplacement après inoculation expérimentale ; transmission à la descendance observée dans les croisements étudiés. Photos de dépérissement figure7 : Arabidopsis, pas chanvre. ©2023, volume2024, CC BY4.",
+          "assertionsSupported": [
+            "Détection chez chanvre asymptomatique ; infection et déplacement après inoculation expérimentale ; transmission à la descendance observée dans les croisements étudiés. Photos de dépérissement figure7 : Arabidopsis, pas chanvre. ©2023, volume2024, CC BY4."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-new-hlvd-pnw",
+      "title": "Hemp (Cannabis sativa) — Viroid Diseases",
+      "author": "K. Frost et C. M. Ocamb",
+      "organization": "Pacific Northwest Plant Disease Management Handbook",
+      "published": "mars 2026",
+      "url": "https://pnwhandbooks.org/plantdisease/host-disease/hemp-cannabis-sativa-viroid-diseases",
+      "verifiedAt": "2026-11-14",
+      "passage": "Cause, Symptoms, Cultural control, édition mars2026",
+      "access": "full-text",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "limitation": "Synthèse institutionnelle nord-américaine ; images sans licence commerciale explicite non reprises.",
+      "reviewEvidence": [
+        {
+          "url": "https://pnwhandbooks.org/plantdisease/host-disease/hemp-cannabis-sativa-viroid-diseases",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Cause, Symptoms, Cultural control, édition mars2026"
+          ],
+          "result": "Infection parfois asymptomatique, expression variable ; matériel végétal et transmission mécanique, nécessité du diagnostic moléculaire. Pas de preuve de transmission par insectes dans cette source.",
+          "assertionsSupported": [
+            "Infection parfois asymptomatique, expression variable ; matériel végétal et transmission mécanique, nécessité du diagnostic moléculaire. Pas de preuve de transmission par insectes dans cette source."
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-health-beet-curly-top-virus",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : virus de l’enroulement de la betterave ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Beet curly top virus (BCTV). BCTV est le nom usuel du virus ; plusieurs souches sont distinguées dans l’étude.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-beet-curly-top-virus",
+        "topicId": "health",
+        "title": "Virus de l’enroulement de la betterave",
+        "lead": "Beet curly top virus, ou BCTV, a été détecté sur chanvre dans l’État de Washington. L’étude distingue plusieurs souches et confronte les symptômes aux résultats moléculaires, sans fournir une fréquence française.",
+        "image": {
+          "src": "/placard/school/course-plant-v1.webp",
+          "alt": "Planche illustrée du chanvre avec feuilles, racines et structures florales.",
+          "caption": "Cannabis sativa. Illustration de synthèse, sans variété identifiée."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Beet curly top virus a été détecté dans des plantes de chanvre de deux champs de l’État de Washington. L’étude confirme des séquences de plusieurs souches et décrit un corpus comportant aussi d’autres agents ; elle n’établit pas sa présence sur un site français."
+            ],
+            "sourceIds": [
+              "health-atlas-viruses-wa-2023"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Des feuilles peuvent s’enrouler ou jaunir et la plante rester de petite taille. Ces manifestations, observées à différents stades, sont partagées avec d’autres infections et des troubles non infectieux ; elles ne constituent pas une signature photographique de BCTV."
+            ],
+            "sourceIds": [
+              "health-atlas-viruses-wa-2023"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le virus utilise les cellules de l’hôte pour se multiplier. Une transmission par vecteur est connue, mais le vecteur présent et sa contribution doivent être vérifiés dans la situation étudiée ; l’épidémiologie régionale et les infections multiples comptent.",
+              "L’enroulement, la chlorose et le retard de croissance sont des réponses végétales compatibles avec plusieurs agents ou stress. Dans l’enquête de Washington, des séquences et tests moléculaires identifient BCTV et plusieurs souches ; ces résultats sont plus discriminants qu’une silhouette de feuille recourbée."
+            ],
+            "sourceIds": [
+              "health-atlas-viruses-wa-2023"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Autres infections, dégâts d’acariens et troubles abiotiques font partie du diagnostic différentiel ; PCR et séquences doivent être interprétées avec le contexte.",
+              "Le corpus rassemble des plantes choisies parce qu’elles présentaient des symptômes, et des co-infections étaient présentes. Un résultat positif indique la détection du virus dans l’échantillon analysé ; il ne fournit ni la fréquence de toutes les parcelles ni la part causale de chaque agent chez une plante co-infectée."
+            ],
+            "sourceIds": [
+              "health-atlas-viruses-wa-2023",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "Les observations et mouvements de végétaux doivent être documentés, sans attribuer à tout insecte le rôle de vecteur. Le diagnostic et l’épidémiologie demandent une expertise adaptée ; une série de plantes sélectionnées parce qu’elles sont malades ne mesure pas la prévalence de toutes les cultures, et un changement de climat ne prouve pas une guérison."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-viruses-wa-2023"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-viruses-wa-2023",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-beet-curly-top-virus"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Beet curly top virus (BCTV)"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "Identifier BCTV, puis interpréter",
+          "nodes": [
+            {
+              "label": "Feuille enroulée",
+              "detail": "Symptôme non exclusif ; recueillir le contexte."
+            },
+            {
+              "label": "PCR et séquence",
+              "detail": "Identifier le virus et, dans l’étude, des souches."
+            },
+            {
+              "label": "Épidémiologie",
+              "detail": "Échantillonnage et vecteurs à étudier avant une estimation locale."
+            }
+          ],
+          "caption": "Schéma de lecture de l’enquête, pas image d’un symptôme spécifique à BCTV.",
+          "sourceIds": [
+            "health-atlas-viruses-wa-2023"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-viruses-wa-2023",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable : mécanisme ou niveau de preuve, sans prétendre photographier une maladie."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-citrus-yellow-vein-associated-virus",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : cyvav, agent associé aux nervures jaunes ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Citrus yellow vein-associated virus (CYVaV). Le mot citrus dans le nom ne réserve pas les détections aux agrumes.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-citrus-yellow-vein-associated-virus",
+        "topicId": "health",
+        "title": "CYVaV, agent associé aux nervures jaunes",
+        "lead": "Citrus yellow vein-associated virus, ou CYVaV, a été détecté dans des tissus de chanvre. Son nom ne limite pas les détections aux agrumes, et sa présence ne démontre pas à elle seule sa contribution aux symptômes d’une plante co-infectée.",
+        "image": {
+          "src": "/placard/school/course-plant-v1.webp",
+          "alt": "Planche illustrée du chanvre avec feuilles, racines et structures florales.",
+          "caption": "Cannabis sativa. Illustration de synthèse, sans variété identifiée."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Citrus yellow vein-associated virus a été retrouvé dans les échantillons de chanvre étudiés dans l’État de Washington, par séquences puis RT-PCR. Des co-infections étaient présentes : la note ne reproduit pas séparément une maladie du chanvre due à CYVaV seul et ne mesure pas sa prévalence en France."
+            ],
+            "sourceIds": [
+              "health-atlas-viruses-wa-2023"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Aucun symptôme exclusif du chanvre n’est attribué ici à cet agent. L’ensemble de la plante et les feuilles doivent être examinés, mais une déformation ou un jaunissement ne permet pas de nommer CYVaV sans recherche spécifique."
+            ],
+            "sourceIds": [
+              "health-atlas-viruses-wa-2023"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Cet agent viral à ARN est détecté dans les tissus de chanvre, mais la note n’établit pas un cycle épidémiologique complet sur cette culture. Les voies de transmission et leur importance relative ne peuvent donc pas être déduites de la seule co-détection dans des plantes malades.",
+              "Le nom Citrus yellow vein-associated virus décrit l’histoire de sa dénomination, pas une restriction absolue aux agrumes. Dans la note de Washington, la recherche moléculaire a retrouvé CYVaV dans du chanvre ; les infections multiples empêchent de lui attribuer séparément tous les symptômes observés."
+            ],
+            "sourceIds": [
+              "health-atlas-viruses-wa-2023"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "La RT-PCR et le séquençage répondent à une recherche spécifique ; il faut aussi étudier les autres explications compatibles avec les symptômes.",
+              "La détection d’un ARN viral et la reproduction expérimentale d’une maladie répondent à deux questions différentes. Cette note établit la présence de CYVaV dans les échantillons, mais pas un symptôme exclusif du chanvre ni un cycle de transmission complet sur cette culture."
+            ],
+            "sourceIds": [
+              "health-atlas-viruses-wa-2023",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "La traçabilité des plantes et la communication des observations au laboratoire permettent d’interpréter les résultats. Une présence moléculaire documentée ne fournit pas à elle seule une mesure ciblée ni l’explication de tous les symptômes ; les voies et leur importance relative sur chanvre restent à préciser."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-viruses-wa-2023"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-viruses-wa-2023",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-citrus-yellow-vein-associated-virus"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Citrus yellow vein-associated virus (CYVaV)"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "Ce que la note établit",
+          "nodes": [
+            {
+              "label": "Présence",
+              "detail": "Séquences et RT-PCR sur des tissus de chanvre."
+            },
+            {
+              "label": "Co-infections",
+              "detail": "Plusieurs agents dans les mêmes plantes ou le même corpus."
+            },
+            {
+              "label": "Question ouverte",
+              "detail": "Contribution propre de CYVaV aux symptômes et voies dominantes sur chanvre."
+            }
+          ],
+          "caption": "Aucune photographie n’est présentée comme diagnostic d’une maladie spécifique à CYVaV sur chanvre.",
+          "sourceIds": [
+            "health-atlas-viruses-wa-2023"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-viruses-wa-2023",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable : mécanisme ou niveau de preuve, sans prétendre photographier une maladie."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-hop-latent-viroid",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : viroïde latent du houblon ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Hop latent viroid (HLVd, aussi HpLVd). Viroïde, pas virus ni champignon ; les deux abréviations désignent le même agent.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Retiré le récit d’inoculation californienne2019 non relu ; remplacé par les résultats effectivement lus de2024. Données canadiennes2023 non réutilisées comme preuve autonome.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-hop-latent-viroid",
+        "topicId": "health",
+        "title": "Viroïde latent du houblon",
+        "lead": "Hop latent viroid, abrégé HLVd ou HpLVd, est un viroïde infectant Cannabis. Ce petit ARN circulaire n’est ni un virus ni un champignon ; sa détection et la gravité des symptômes sont deux informations différentes.",
+        "image": {
+          "src": "/placard/school/course-plant-v1.webp",
+          "alt": "Planche illustrée du chanvre avec feuilles, racines et structures florales.",
+          "caption": "Cannabis sativa. Illustration de synthèse, sans variété identifiée."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Des publications nord-américaines rapportent HLVd sur Cannabis. L’étude expérimentale de 2024 apporte des données d’infection, de déplacement dans la plante et de transmission à la descendance pour le matériel étudié ; elle ne mesure pas une prévalence française. Une série d’échantillons adressés à un laboratoire ne représente pas nécessairement toutes les cultures."
+            ],
+            "sourceIds": [
+              "health-new-hlvd-2024",
+              "health-new-hlvd-pnw"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Un retard de croissance, des déformations ou des tiges fragiles peuvent être rapportés, mais une plante positive peut aussi ne montrer aucun symptôme apparent. Plusieurs tissus sont concernés ; la gravité ne se déduit donc pas d’une seule photographie ou d’un seul résultat positif."
+            ],
+            "sourceIds": [
+              "health-new-hlvd-2024",
+              "health-new-hlvd-pnw"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le matériel végétal infecté et la transmission mécanique peuvent participer aux transferts. L’importance relative des voies doit être appréciée dans le contexte étudié, et l’expression des symptômes dépend de la plante et du milieu.",
+              "Le HLVd est un petit ARN circulaire non codant, sans capside. L’étude expérimentale de 2024 suit son infection et sa détection dans plusieurs tissus de chanvre ; à certains prélèvements, les plantes infectées ne montrent pas de symptôme visible. Un agent peut donc se multiplier sans produire immédiatement une déformation reconnaissable."
+            ],
+            "sourceIds": [
+              "health-atlas-viroids-ictv",
+              "health-new-hlvd-2024",
+              "health-new-hlvd-pnw"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Des stress et d’autres infections peuvent expliquer les mêmes retards ou déformations : une attribution automatique à HLVd n’est pas un diagnostic.",
+              "Les formes HLVd et HpLVd désignent le même viroïde. La recherche par RT-PCR ou RT-qPCR doit être interprétée avec la qualité de l’échantillon et les contrôles du laboratoire. Des transmissions à la descendance ont été observées dans les croisements de chanvre étudiés en 2024 ; aucun taux de transmission de ces essais n’est transposé à toute semence."
+            ],
+            "sourceIds": [
+              "health-new-hlvd-2024",
+              "health-new-hlvd-pnw",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "La traçabilité sanitaire et la limitation des transferts entre végétaux suspects et autres lots permettent de suivre le problème. Un lot doit être confirmé et évalué dans un cadre professionnel ; la fiche ne propose pas de procédé de guérison et un résultat de laboratoire ne vaut ni mesure de gravité universelle ni prévalence nationale."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-new-hlvd-2024"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-hlvd-warren",
+          "health-atlas-hlvd-punja",
+          "health-atlas-viroids-ictv",
+          "health-atlas-diagnostic",
+          "health-new-hlvd-2024",
+          "health-new-hlvd-pnw"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-hop-latent-viroid"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Hop latent viroid (HLVd, aussi HpLVd)"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "Infection et symptôme ne sont pas équivalents",
+          "nodes": [
+            {
+              "label": "Matériel infecté",
+              "detail": "Le viroïde peut être présent dans plusieurs tissus."
+            },
+            {
+              "label": "Expression variable",
+              "detail": "Une plante peut être positive sans symptôme apparent."
+            },
+            {
+              "label": "Diagnostic",
+              "detail": "Test moléculaire et contexte, puis évaluation du lot."
+            }
+          ],
+          "caption": "Les photographies de dépérissement d’Arabidopsis dans l’étude 2024 ne sont pas utilisées comme symptômes sur chanvre.",
+          "sourceIds": [
+            "health-new-hlvd-2024",
+            "health-new-hlvd-pnw"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-viroids-ictv",
+        "health-atlas-diagnostic",
+        "health-new-hlvd-2024",
+        "health-new-hlvd-pnw"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable : mécanisme ou niveau de preuve, sans prétendre photographier une maladie."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-ladybirds",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : coccinelles prédatrices ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Coccinellidae — espèces prédatrices. La famille comprend des régimes alimentaires différents ; la fiche vise les formes prédatrices.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-ladybirds",
+        "topicId": "health",
+        "title": "Coccinelles prédatrices",
+        "lead": "Certaines coccinelles de la famille des Coccinellidae consomment des pucerons présents sur chanvre. La famille possède des régimes variés : cette fiche concerne les espèces prédatrices et leur rôle possible d’auxiliaires.",
+        "image": {
+          "src": "/placard/reference/health/coccinella-larva.jpg",
+          "author": "Gilles San Martin from Namur, Belgium",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Coccinella_septempunctata,_larva_eating_aphids.jpg",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "kind": "photograph",
+          "alt": "Larve de coccinelle allongée et hérissée, se nourrissant parmi des pucerons.",
+          "caption": "Larve de Coccinella septempunctata mangeant des pucerons, Gilles San Martin, CC BY-SA 2. Le cliché documente la relation alimentaire, sans établir l’hôte chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Purdue décrit des coccinelles prédatrices parmi les ennemis naturels observés sur chanvre dans le centre-nord des États-Unis. Il s’agit d’observations d’interactions, pas d’une évaluation garantissant l’efficacité d’un achat ou d’un lâcher d’auxiliaires."
+            ],
+            "sourceIds": [
+              "health-atlas-beneficial-purdue"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Les adultes et les larves allongées peuvent être vus sur le feuillage au voisinage des proies. Une prédation directement observée renseigne sur l’interaction ; la seule silhouette d’une larve ne permet pas de décider qu’elle est un ravageur."
+            ],
+            "sourceIds": [
+              "health-atlas-beneficial-purdue"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le cycle passe par l’œuf, la larve, la nymphe et l’adulte. Les stades immatures se déplacent sur les plantes et les adultes peuvent voler ; la présence de ressources alimentaires et d’un habitat compatibles conditionne leur maintien.",
+              "Chez les coccinelles prédatrices visées ici, larves et adultes peuvent consommer des pucerons. La larve allongée n’a pas encore la silhouette bombée de l’adulte : la métamorphose explique que deux organismes très différents d’aspect appartiennent au même cycle. La famille des Coccinellidae comprend aussi d’autres régimes alimentaires."
+            ],
+            "sourceIds": [
+              "health-atlas-beneficial-purdue"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "La détermination du groupe, et si nécessaire de l’espèce, doit être associée au comportement observé ; toute coccinelle n’a pas le même régime.",
+              "L’observation de pucerons capturés établit une interaction de prédation. Pour juger une régulation, il faut cependant suivre l’évolution des proies et de leurs dégâts : une larve en alimentation sur une tige ne mesure pas à elle seule l’efficacité dans toute une culture."
+            ],
+            "sourceIds": [
+              "health-atlas-beneficial-purdue",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "Le suivi doit associer les proies et les auxiliaires identifiés, en évitant les interventions indifférenciées. La présence de coccinelles ne garantit pas que les dégâts sont suffisamment limités ; la fiche ne recommande ni lâcher ni introduction d’une espèce importée."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-beneficial-purdue"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-beneficial-purdue",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-ladybirds"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Coccinellidae — espèces prédatrices"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-beneficial-purdue",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Larve de Coccinella septempunctata mangeant des pucerons, Gilles San Martin, CC BY-SA2. Le cliché documente la relation alimentaire, sans établir l’hôte chanvre."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-coccinelle"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-lacewings",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : chrysopes prédatrices ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Chrysopidae ; notamment Chrysopa oculata dans l’observation citée. Chrysopa oculata est l’exemple documenté au Colorado, pas le nom de toute chrysope française.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-lacewings",
+        "topicId": "health",
+        "title": "Chrysopes prédatrices",
+        "lead": "Les larves de chrysopes de la famille des Chrysopidae peuvent chasser des pucerons sur chanvre. Chrysopa oculata est l’exemple observé au Colorado ; ce nom ne désigne pas toutes les chrysopes présentes en France.",
+        "image": {
+          "src": "/placard/reference/health/chrysoperla.jpg",
+          "author": "This image is created by user B. Schoenmakers at Waarneming.nl, a source of nature observations in the Netherlands.",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Chrysoperla_carnea_s.l._-_(larva),_Arnhem,_the_Netherlands.jpg",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "kind": "photograph",
+          "alt": "Larve de chrysope au corps allongé et aux mandibules courbes, sur une feuille.",
+          "caption": "Chrysoperla carnea sensu lato, larve photographiée à Arnhem en 2017 par B. Schoenmakers/Waarneming.nl, CC BY 3 ; hôte non établi comme chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "La source du Colorado décrit Chrysopa oculata régulièrement observée près de colonies de pucerons sur chanvre. Cette association documente un auxiliaire possible, sans fournir un taux de contrôle ; elle ne donne pas le nom de toute chrysope présente dans une culture française."
+            ],
+            "sourceIds": [
+              "health-atlas-lacewings-csu",
+              "health-atlas-beneficial-purdue"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Au voisinage des proies, les larves portent des mandibules courbes et les adultes ont des ailes parcourues de nombreuses nervures. Ces stades ne se ressemblent pas ; les œufs pédonculés sont un autre indice, sans permettre à eux seuls une identification d’espèce."
+            ],
+            "sourceIds": [
+              "health-atlas-lacewings-csu",
+              "health-atlas-beneficial-purdue"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Les larves se déplacent sur la végétation et les adultes peuvent voler. La présence de proies et les autres ressources nécessaires aux différents stades participent à leur maintien ; le régime des adultes varie selon l’espèce.",
+              "La larve de chrysope saisit de petites proies avec ses mandibules courbes ; les pucerons font partie de ses proies. Les œufs sont souvent portés par un pédoncule fin, puis la larve prédatrice passe par un cocon avant le stade adulte ailé. L’œuf n’est donc pas lui-même un stade qui chasse les pucerons."
+            ],
+            "sourceIds": [
+              "health-atlas-lacewings-csu",
+              "health-atlas-beneficial-purdue"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "D’autres larves prédatrices peuvent ressembler à une chrysope ; le stade et les caractères observés doivent guider la détermination.",
+              "Le document Colorado mentionne Chrysopa oculata, dont l’adulte est aussi prédateur. Cela ne se généralise pas aux adultes de toutes les chrysopes. La photographie montre une larve attribuée au complexe Chrysoperla carnea sensu lato : ce n’est pas une photographie de C. oculata et elle ne résout pas les espèces du complexe."
+            ],
+            "sourceIds": [
+              "health-atlas-lacewings-csu",
+              "health-atlas-beneficial-purdue",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "Les auxiliaires identifiés doivent être intégrés à l’observation du foyer avec leurs proies. Une présence naturelle ne garantit pas une régulation suffisante et ne prédit pas le succès d’un lâcher commercial ; le stade et les besoins alimentaires de l’espèce comptent."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-lacewings-csu"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-lacewings-csu",
+          "health-atlas-diagnostic",
+          "health-atlas-beneficial-purdue"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-lacewings"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Chrysopidae ; notamment Chrysopa oculata dans l’observation citée"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-lacewings-csu",
+        "health-atlas-diagnostic",
+        "health-atlas-beneficial-purdue"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Chrysoperla carnea sensu lato, larve photographiée à Arnhem en2017 par B. Schoenmakers/Waarneming.nl, CC BY3 ; hôte non établi comme chanvre."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-chrysope"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-aphid-parasitoids",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : parasitoïdes des pucerons ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Hymenoptera parasitoïdes — plusieurs taxons. Les parasitoïdes de pucerons et ceux d’aleurodes ne sont pas interchangeables.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-aphid-parasitoids",
+        "topicId": "health",
+        "title": "Parasitoïdes des pucerons",
+        "lead": "Plusieurs hyménoptères parasitoïdes se développent aux dépens de pucerons présents sur chanvre. Une momie indique une activité possible de parasitisme, sans déterminer à elle seule l’espèce de parasitoïde ni l’efficacité de la régulation.",
+        "image": {
+          "src": "/placard/reference/health/aphid-mummy.jpg",
+          "author": "James Marchment / Insects Unlocked, University of Texas at Austin",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aphid_mummy_-_Aphidae_-_Braconidae_(24484947320).jpg",
+          "license": "CC0",
+          "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "kind": "photograph",
+          "alt": "Puceron gonflé et brun, près d’exuvies sur un organe végétal.",
+          "caption": "Momie de puceron associée à un parasitoïde braconide, James Marchment/Insects Unlocked, University of Texas at Austin, CC0 ; hôte végétal non établi comme chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Les ressources universitaires américaines présentent des momies de pucerons et des orifices d’émergence sur chanvre comme indices d’activité de parasitoïdes. Ces observations ne désignent ni une espèce unique ni une efficacité commune à tous les hyménoptères parasitoïdes."
+            ],
+            "sourceIds": [
+              "health-atlas-beneficial-purdue"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Dans une colonie, certains pucerons peuvent paraître gonflés et momifiés ; un orifice de sortie est parfois visible. La momie est le reste de l’hôte transformé au cours du développement du parasitoïde, et non l’adulte parasitoïde lui-même."
+            ],
+            "sourceIds": [
+              "health-atlas-beneficial-purdue"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Les adultes se déplacent et recherchent un hôte compatible avec leur espèce et leur stade de développement. Les parasitoïdes de pucerons et ceux d’aleurodes ne sont pas interchangeables : une ressemblance de cycle ne suffit pas à définir la cible.",
+              "La larve du parasitoïde se développe dans le puceron aux dépens de son hôte. Le puceron finit généralement par mourir et son enveloppe peut former une momie ; l’adulte parasitoïde en sort par un orifice d’émergence. Cet adulte est distinct du puceron brun visible sur la plante."
+            ],
+            "sourceIds": [
+              "health-atlas-beneficial-purdue"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Des exuvies, des pucerons desséchés et d’autres agents peuvent produire des restes trompeurs ; l’examen de la momie et de l’adulte émergé précise l’interprétation.",
+              "Une momie n’est ni une exuvie abandonnée lors d’une mue du puceron ni une identification certaine d’espèce de guêpe. Le signe renseigne sur une activité passée ; il faut examiner les hôtes, les adultes et l’évolution des colonies pour apprécier le résultat de la régulation."
+            ],
+            "sourceIds": [
+              "health-atlas-beneficial-purdue",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "Il faut distinguer l’activité de parasitisme et la maîtrise effective de la colonie, en suivant aussi les pucerons vivants. Tous les petits insectes ne doivent pas être considérés indistinctement comme ravageurs ; une momie seule ne suffit pas à identifier précisément le parasitoïde ou à quantifier une régulation."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-beneficial-purdue"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-beneficial-purdue",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-aphid-parasitoids"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Hymenoptera parasitoïdes — plusieurs taxons"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-beneficial-purdue",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Momie de puceron associée à un parasitoïde braconide, James Marchment/Insects Unlocked, University of Texas at Austin, CC0 ; hôte végétal non établi comme chanvre."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-parasitoide"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-predatory-mites",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : acariens prédateurs ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Phytoseiidae — notamment Phytoseiulus et Neoseiulus. Un prédateur de tétranyques n’est pas automatiquement adapté à tous les acariens.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-predatory-mites",
+        "topicId": "health",
+        "title": "Acariens prédateurs",
+        "lead": "Les Phytoseiidae comprennent des acariens prédateurs, dont Phytoseiulus et Neoseiulus, susceptibles de consommer des acariens phytophages. Leurs régimes diffèrent : un prédateur de tétranyques n’est pas automatiquement adapté à tous les autres acariens.",
+        "image": {
+          "src": "/placard/reference/health/phytoseiulus.png",
+          "author": "Noctum",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Phytoseiulus_persimilis.png",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+          "kind": "photograph",
+          "alt": "Acariens rouge orangé, dont un prédateur au contact d’une proie, sur une feuille.",
+          "caption": "Phytoseiulus persimilis chassant Tetranychus urticae sur feuille de mandarinier en environnement artificiel, Noctum, CC BY-SA 4 ; document comparatif, pas essai d’efficacité sur chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Le guide de serre de Purdue décrit des acariens prédateurs utilisés contre des acariens phytophages, tout en soulignant le manque de résultats propres au chanvre pour certaines interactions, notamment avec Aculops. Les préférences alimentaires connues ne constituent pas une garantie d’efficacité dans un milieu différent."
+            ],
+            "sourceIds": [
+              "health-atlas-purdue-greenhouse"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "De petits acariens mobiles peuvent être observés sur le feuillage près des proies. Le comportement apporte un indice, mais les caractères nécessitent un grossissement ; une vitesse de déplacement élevée n’est pas une identification suffisante d’un prédateur."
+            ],
+            "sourceIds": [
+              "health-atlas-purdue-greenhouse"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le cycle comprend l’œuf, les stades immatures et l’adulte. Les déplacements entre tissus ou plantes, la disponibilité des proies et les conditions de température et d’humidité influencent le maintien de chaque espèce.",
+              "Les Phytoseiidae comprennent des acariens prédateurs dont les préférences alimentaires diffèrent. Phytoseiulus persimilis est spécialisé sur les tétranyques tisserands de la sous-famille Tetranychinae ; Neoseiulus californicus ou Amblyseius andersoni ont un régime plus large. Une preuve sur Tetranychus ne suffit donc pas pour conclure à la même efficacité sur Aculops."
+            ],
+            "sourceIds": [
+              "health-atlas-purdue-greenhouse"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Les acariens phytophages et prédateurs doivent être déterminés séparément, puis leur interaction observée plutôt que supposée.",
+              "Un petit acarien rapide n’est pas automatiquement un auxiliaire identifié. La photographie relie un prédateur et une proie déterminés, dans un milieu artificiel sur feuille de mandarinier ; elle illustre l’interaction et ne mesure pas une efficacité sur chanvre."
+            ],
+            "sourceIds": [
+              "health-atlas-purdue-greenhouse",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "La reconnaissance de l’auxiliaire et de la proie doit précéder l’interprétation d’une interaction utile. Toute option de biocontrôle dépend de l’adéquation entre espèce, proie, température, humidité et cadre local ; la fiche ne prescrit aucun lâcher et ne généralise pas un résultat obtenu contre des tétranyques à tous les acariens."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-purdue-greenhouse"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-purdue-greenhouse",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-predatory-mites"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Phytoseiidae — notamment Phytoseiulus et Neoseiulus"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "La proie compte autant que le prédateur",
+          "nodes": [
+            {
+              "label": "P. persimilis",
+              "detail": "Spécialisé sur les tétranyques tisserands."
+            },
+            {
+              "label": "Autres Phytoseiidae",
+              "detail": "Régimes plus larges selon l’espèce."
+            },
+            {
+              "label": "Sur chanvre",
+              "detail": "Identifier la proie ; données contre Aculops encore limitées dans le guide."
+            }
+          ],
+          "caption": "Schéma de synthèse : les relations décrites ne constituent pas un diagnostic sur photographie.",
+          "sourceIds": [
+            "health-atlas-purdue-greenhouse"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-purdue-greenhouse",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Phytoseiulus persimilis chassant Tetranychus urticae sur feuille de mandarinier en environnement artificiel, Noctum, CC BY-SA4 ; document comparatif, pas essai d’efficacité sur chanvre."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-predateurs"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [],
+  "sensitivePoints": [
+    {
+      "sourceId": "health-atlas-hlvd-punja",
+      "note": "403 Taylor & Francis ; non lu, chiffres non repris."
+    },
+    {
+      "sourceId": "health-atlas-hlvd-warren",
+      "note": "403 APS, formats abstract/full également ; assertions expérimentales de 2019 remplacées par source primaire accessible de 2024."
+    }
+  ]
+}

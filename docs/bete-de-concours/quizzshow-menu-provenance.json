@@ -1,0 +1,12 @@
+{
+  "date": "2026-11-14",
+  "tool": "Built-in image_gen (imagegen skill)",
+  "kind": "stylized-concept",
+  "source": "output/quizzshow/menu-source.png",
+  "path": "/placard/ui/school-v4.webp",
+  "prompt": "Use case: stylized-concept.\nAsset type: a single transparent illustrated navigation vignette for QuizzShow, a quiz-show venue in a cozy cartoon village game. This will be displayed as a tiny 32px menu illustration and as a larger section-heading vignette.\nPrimary request: create a very readable compact cluster of THREE objects: a chunky vintage golden microphone on a short stand to the left, a large warm apricot-orange quiz buzzer on a deep teal base at lower right, and one cream paper quiz card rising behind the buzzer bearing a single bold dark teal question mark \"?\". One small golden sparkle near the microphone.\nStyle: hand-inked storybook game prop illustration, bold slightly irregular almost-black outlines, flat cream, deep teal, warm golden yellow and apricot orange fills, restrained printed paper texture. Friendly, tactile, matching cream-stone/slate-roof Breton village cartoon artwork. Not photorealistic and not glossy 3D.\nComposition: square, isolated object cluster, very tight balanced silhouette centered and using 90% of canvas, complete unclipped objects with a narrow transparent margin. Strong simple forms readable at 32px. No tiny lines, no busy decorations. The microphone capsule, orange buzzer and large question mark must each remain immediately recognizable.\nBackground: true alpha transparency. No backdrop, no tile, no badge boundary, no ground or cast shadow beyond the objects.\nText: only \"?\" on the paper card. No lettering, no logo, no watermark, no title. Deliver one image only.",
+  "processing": "Sharp format conversion to 512×512 WebP, quality 90 and alphaQuality 100; generated alpha retained, all four corners transparent.",
+  "usage": "QuizzShow menu entry on desktop and in the mobile drawer, matching section headings via KqPrintedArt kind school. Compact microphone, buzzer and question card readable at 32 px; accessible label remains HTML.",
+  "replaces": "school-v3.webp remains archived as the building vignette; village map artwork remains active.",
+  "validation": "Local browser review and targeted ESLint, details in output/quizzshow/menu-validation.json."
+}

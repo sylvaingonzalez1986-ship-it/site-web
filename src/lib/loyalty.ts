@@ -1,6 +1,8 @@
 import type { CmsOrder } from "@/types/store";
 import type { LoyaltyBadge, LoyaltySummary } from "@/types/loyalty";
 
+export type LoyaltyOrder = Pick<CmsOrder, "status" | "paymentState" | "totalAmount">;
+
 const LOYALTY_BADGE_DEFINITIONS: Array<{
   id: LoyaltyBadge["id"];
   label: string;
@@ -39,7 +41,7 @@ const LOYALTY_BADGE_DEFINITIONS: Array<{
   },
 ];
 
-function isOrderEligibleForPoints(order: CmsOrder): boolean {
+function isOrderEligibleForPoints(order: LoyaltyOrder): boolean {
   if (order.status === "cancelled") {
     return false;
   }
@@ -57,7 +59,7 @@ function toBadge(points: number, definition: (typeof LOYALTY_BADGE_DEFINITIONS)[
   };
 }
 
-export function buildLoyaltySummary(orders: CmsOrder[]): LoyaltySummary {
+export function buildLoyaltySummary(orders: LoyaltyOrder[]): LoyaltySummary {
   const eligibleOrders = orders.filter(isOrderEligibleForPoints);
   const totalEligibleSpend = Number(
     eligibleOrders.reduce((acc, order) => acc + order.totalAmount, 0).toFixed(2),
@@ -107,7 +109,7 @@ export function buildLoyaltySummary(orders: CmsOrder[]): LoyaltySummary {
 }
 
 export function buildLoyaltySummaryWithBonus(
-  orders: CmsOrder[],
+  orders: LoyaltyOrder[],
   bonusPoints: number,
   spentPoints = 0,
 ): LoyaltySummary {

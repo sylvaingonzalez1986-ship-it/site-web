@@ -1,0 +1,10 @@
+import {PRODUCTS_CHAPTERS,PRODUCTS_LESSON_SOURCES,PRODUCTS_TERMS,PRODUCTS_QUESTIONS} from './kanab-quest-school-products-lessons';
+import {PRODUCTS_TOOL_SOURCES} from './kanab-quest-school-products-tools';
+export {PRODUCTS_CHAPTERS,PRODUCTS_TERMS,PRODUCTS_QUESTIONS};
+export {PRODUCTS_ATLAS,PRODUCTS_REGULATIONS,PRODUCTS_FIBRE_STAGES} from './kanab-quest-school-products-tools';
+export {PRODUCTS_GROUPS,PRODUCTS_PLATE_POINTS,PRODUCTS_PROCESS_CARDS,PRODUCTS_LABEL_CLAIMS,PRODUCTS_IDENTITY_AXES,PRODUCTS_CERTIFICATE,PRODUCTS_TRACE_DOCUMENTS,PRODUCTS_TRACE_QUESTIONS} from './kanab-quest-school-products-visuals';
+export const PRODUCTS_VERSION='2026-11-12.products1';
+export const VERSION=PRODUCTS_VERSION;
+export const PRODUCTS_LESSONS=PRODUCTS_CHAPTERS.flatMap(chapter=>chapter.lessons);
+export const PRODUCTS_SOURCES=[...PRODUCTS_LESSON_SOURCES,...PRODUCTS_TOOL_SOURCES];
+export const PRODUCTS_LESSON_ALIASES:Readonly<Record<string,string>>={'profiles-1':'products-labels-1','profiles-2':'products-labels-2','profiles-3':'products-quality-2','profiles-4':'products-origins-1'};

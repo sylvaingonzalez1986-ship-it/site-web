@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-14",
+  "lot": "agronomy-01",
+  "entries": {
+    "ref-environnements-culture": {
+      "contentHash": "518475685506f6456a1e0bc86e7387b0aa76eb058787e4cbe40235403d6fb3b0",
+      "note": "All six articles, 28 definitions and 30 explanations read. Root oxygen, light units, soil charges and nitrogen transformations explained with examples; environment diagram moved after the root-zone explanation.",
+      "status": "read-and-reviewed"
+    },
+    "ref-lumiere-climat": {
+      "contentHash": "38ca9419b1310eca74c0ba8ccadba0761bb26b52bfa0e63286eb09c70662d8f4",
+      "note": "All six articles, 28 definitions and 30 explanations read. Root oxygen, light units, soil charges and nitrogen transformations explained with examples; environment diagram moved after the root-zone explanation.",
+      "status": "read-and-reviewed"
+    },
+    "ref-sol": {
+      "contentHash": "88bf52b27be81b766b2988dba9707973ddcb7b4a39bc1d148805d594830be26f",
+      "note": "All six articles, 28 definitions and 30 explanations read. Root oxygen, light units, soil charges and nitrogen transformations explained with examples; environment diagram moved after the root-zone explanation.",
+      "status": "read-and-reviewed"
+    },
+    "ref-racines-rhizosphere": {
+      "contentHash": "e36da19c93b43fe4fb98700cc746918df76759e75ffec0425c271bcf81e021f7",
+      "note": "All six articles, 28 definitions and 30 explanations read. Root oxygen, light units, soil charges and nitrogen transformations explained with examples; environment diagram moved after the root-zone explanation.",
+      "status": "read-and-reviewed"
+    },
+    "ref-nutrition-minerale": {
+      "contentHash": "b9d2013993179c4379048f590b648e60e2f75f86b11da42fd658b8dedf0aee92",
+      "note": "All six articles, 28 definitions and 30 explanations read. Root oxygen, light units, soil charges and nitrogen transformations explained with examples; environment diagram moved after the root-zone explanation.",
+      "status": "read-and-reviewed"
+    },
+    "ref-matiere-organique": {
+      "contentHash": "01fb68e035d4a5050a2dee8d316440b1213cbeaa12ffdc9dd550b6f01cdc5794",
+      "note": "All six articles, 28 definitions and 30 explanations read. Root oxygen, light units, soil charges and nitrogen transformations explained with examples; environment diagram moved after the root-zone explanation.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 28,
+    "hash": "50b314b0939bfd18ff6f000e9751ac4271fbd2a3c0945ce1dc3146d1a5125df5"
+  },
+  "quiz": {
+    "count": 30,
+    "hash": "b418183a44d6cef17f574e99d745da0c45ae7cb61722928a428100142fc811c7"
+  }
+}

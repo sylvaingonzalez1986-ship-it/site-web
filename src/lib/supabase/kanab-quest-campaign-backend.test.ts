@@ -84,6 +84,26 @@ beforeEach(() => {
 });
 
 describe("shared campaign backend", () => {
+  it("starts only available assigned zones and freezes the reservation outside the paid plan", async () => {
+    mocks.warehouse.mockResolvedValue({ ...warehouse, productionReservedZoneId: "b" });
+    const rpc = database();
+    const result = await startKqPlayerRun(owner, { campaign: true, requestKey, buddieCode: members[0].buddieCode,
+      deckCodes: [], expectedProductionReservedZoneId: "b", expectedEnergyCents: members[0].warehouse.energyCostCents });
+    const args = rpc.mock.calls.find(([name]) => name === "rpc_kq_start_campaign")![1];
+    expect(args.p_members).toHaveLength(1);
+    expect(args.p_members[0].state.warehouse).toMatchObject({ zoneId: "a", productionReservedZoneId: "b", sourceState: layout });
+    expect(parseKqGameSave(encodeKqSave(result.state))).toEqual(result.state);
+  });
+
+  it.each([[null, "b"], ["b", null]] as const)("rejects reservation drift from %s to %s even with the same layout revision", async (reviewed, current) => {
+    mocks.warehouse.mockResolvedValue({ ...warehouse, productionReservedZoneId: current });
+    const rpc = database();
+    await expect(startKqPlayerRun(owner, { campaign: true, requestKey, buddieCode: members[0].buddieCode,
+      deckCodes: [], expectedWarehouseRevision: warehouse.revision, expectedProductionReservedZoneId: reviewed }))
+      .rejects.toThrow("zone réservée à la production autonome a changé");
+    expect(rpc.mock.calls.some(([name]) => name === "rpc_kq_start_campaign")).toBe(false);
+  });
+
   it("starts all assigned zones through one atomic RPC and one shared deck", async () => {
     const rpc = database();
     const result = await startKqPlayerRun(owner, { campaign: true, requestKey, buddieCode: members[0].buddieCode,
@@ -100,7 +120,7 @@ describe("shared campaign backend", () => {
   it("replays the campaign before re-reading the changed warehouse or drawing new IDs", async () => {
     const state = game();
     const rpc = database({ replay: { run: { id: ids[0], state }, replayed: true } });
-    expect(await startKqPlayerRun(owner, { campaign: true, requestKey, buddieCode: members[0].buddieCode, deckCodes: [], expectedWarehouseRevision: 3 }))
+    expect(await startKqPlayerRun(owner, { campaign: true, requestKey, buddieCode: members[0].buddieCode, deckCodes: [], expectedWarehouseRevision: 3, expectedProductionReservedZoneId: "b" }))
       .toMatchObject({ runId: ids[0], state, replayed: true });
     expect(mocks.warehouse).not.toHaveBeenCalled();
     expect(rpc.mock.calls[0][1].p_request).not.toHaveProperty("expectedWarehouseRevision");

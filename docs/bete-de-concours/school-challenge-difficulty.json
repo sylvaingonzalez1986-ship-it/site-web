@@ -1,0 +1,322 @@
+{
+  "version": "editorial-v1",
+  "reviewedAt": "2026-11-12",
+  "status": "Difficulté éditoriale estimée ; aucune calibration sur des résultats de joueurs.",
+  "scope": {
+    "questions": 336,
+    "banks": 9,
+    "excluded": [
+      "Banque historique law hors des neuf parcours retenus."
+    ],
+    "changes": "Aucun énoncé, choix, corrigé ou source modifié."
+  },
+  "contract": {
+    "file": "src/lib/kanab-quest-school-challenge-difficulty.ts",
+    "difficultyExport": "KQ_SCHOOL_CHALLENGE_DIFFICULTY",
+    "levelsExport": "KQ_SCHOOL_CHALLENGE_LEVELS",
+    "ids": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  "method": [
+    "Inventaire lu depuis createSchoolFixture de scripts/audit-school-scenarios.mjs : chaque énoncé et ses quatre alternatives, pour les neuf banques actives.",
+    "Attribution question par question selon l’opération cognitive principale nécessaire, le nombre de relations à tenir ensemble et les confusions proposées dans les alternatives.",
+    "Une restitution spécialisée reste possible au niveau 1 ; un mot technique, un long énoncé ou une formule affichée ne suffisent pas à augmenter le niveau.",
+    "Le niveau 2 exige une relation ou une limite simple ; le niveau 3 demande de distinguer plusieurs notions ou bases de comparaison ; le niveau 4 combine des informations, des calculs ou des contraintes pour justifier une conclusion.",
+    "Les niveaux sont inscrits explicitement par ID. Ni le numéro q01–q04, ni le chapitre, ni un tirage aléatoire ne déterminent la difficulté.",
+    "Les effectifs ne sont pas artificiellement égalisés. Les neuf parcours sont présents dans chacun des quatre niveaux ; chaque niveau contient au moins cinq questions."
+  ],
+  "levels": [
+    {
+      "id": 1,
+      "label": "Découverte",
+      "criterion": "Reconnaissance d’une définition, d’un élément, d’une unité ou d’un repère ; une seule association directe."
+    },
+    {
+      "id": 2,
+      "label": "Compréhension",
+      "criterion": "Explication d’un mécanisme simple ou distinction entre ce qu’une observation établit et ce qu’elle n’établit pas."
+    },
+    {
+      "id": 3,
+      "label": "Comparaison",
+      "criterion": "Mise en relation de notions proches, de contextes, de méthodes ou de bases de mesure ; calcul direct éventuel."
+    },
+    {
+      "id": 4,
+      "label": "Raisonnement",
+      "criterion": "Croisement de pièces, calculs articulés, attribution causale, identification d’informations manquantes ou décision sous plusieurs contraintes."
+    }
+  ],
+  "counts": {
+    "total": 336,
+    "byLevel": {
+      "1": 65,
+      "2": 131,
+      "3": 100,
+      "4": 40
+    },
+    "byBank": {
+      "history": {
+        "total": 44,
+        "byLevel": {
+          "1": 10,
+          "2": 16,
+          "3": 13,
+          "4": 5
+        }
+      },
+      "botany": {
+        "total": 32,
+        "byLevel": {
+          "1": 8,
+          "2": 14,
+          "3": 7,
+          "4": 3
+        }
+      },
+      "terpenes": {
+        "total": 40,
+        "byLevel": {
+          "1": 10,
+          "2": 16,
+          "3": 10,
+          "4": 4
+        }
+      },
+      "cannabinoids": {
+        "total": 40,
+        "byLevel": {
+          "1": 8,
+          "2": 17,
+          "3": 12,
+          "4": 3
+        }
+      },
+      "cultivation": {
+        "total": 32,
+        "byLevel": {
+          "1": 4,
+          "2": 13,
+          "3": 12,
+          "4": 3
+        }
+      },
+      "health": {
+        "total": 32,
+        "byLevel": {
+          "1": 7,
+          "2": 13,
+          "3": 9,
+          "4": 3
+        }
+      },
+      "soil": {
+        "total": 40,
+        "byLevel": {
+          "1": 8,
+          "2": 18,
+          "3": 10,
+          "4": 4
+        }
+      },
+      "products": {
+        "total": 40,
+        "byLevel": {
+          "1": 6,
+          "2": 16,
+          "3": 14,
+          "4": 4
+        }
+      },
+      "harvest": {
+        "total": 36,
+        "byLevel": {
+          "1": 4,
+          "2": 8,
+          "3": 13,
+          "4": 11
+        }
+      }
+    }
+  },
+  "limitations": [
+    "Ces catégories ordonnent les demandes intellectuelles estimées. Elles ne démontrent ni des taux de réussite décroissants, ni des temps de réponse croissants.",
+    "La familiarité avec chaque thème, la lecture et les connaissances antérieures peuvent rendre un repère précis plus difficile qu’un raisonnement familier.",
+    "Plusieurs distracteurs sont absolus ou très éloignés du cours. Ils peuvent faciliter une question de niveau 3 ou 4 ; cette grille ne réécrit pas les alternatives existantes.",
+    "Les frontières sont discutables, notamment entre comparaison de méthodes et raisonnement sur une information manquante. Les exemples explicitent les décisions retenues.",
+    "Une sélection aléatoire au sein d’un niveau conserve une variabilité. La progression des quatre blocs ne garantit pas que chaque question soit plus difficile que la précédente.",
+    "Les neuf thèmes sont représentés dans la grille ; un tirage particulier dépend des règles de sélection du moteur.",
+    "Une calibration empirique demanderait des résultats anonymisés suffisants, des taux de réussite et des temps tenant compte de la familiarité et des besoins d’accessibilité ; aucune donnée joueur n’a été utilisée ici.",
+    "Toute modification d’un énoncé ou de ses alternatives nécessite une relecture de son classement. Les empreintes du corpus permettent de détecter une grille devenue obsolète."
+  ],
+  "boundaryExamples": [
+    {
+      "questionId": "history-evidence-q03",
+      "level": 1,
+      "rationale": "Reconnaître que 2019 date une publication : un repère explicite, sans comparer plusieurs pièces. Le suffixe q03 ne signifie pas niveau 3."
+    },
+    {
+      "questionId": "history-eurasian-antiquity-q04",
+      "level": 4,
+      "rationale": "Croiser un dossier archéologique et une expérience sur le transfert externe, sans transformer une possibilité de contamination en réfutation certaine."
+    },
+    {
+      "questionId": "history-medieval-europe-q03",
+      "level": 4,
+      "rationale": "Réunir deux notices sur des supports différents et distinguer ce qu’elles documentent de la composition fibreuse qu’elles ne démontrent pas."
+    },
+    {
+      "questionId": "botany-anatomy-q04",
+      "level": 2,
+      "rationale": "Articuler fruit et graine face à des confusions de niveaux botaniques ; le vocabulaire spécialisé ne suffit pas à en faire un raisonnement complexe."
+    },
+    {
+      "questionId": "botany-taxonomy-q02",
+      "level": 4,
+      "rationale": "Interpréter un regroupement génétique en tenant compte du matériel et de la méthode avant de lui attribuer une portée taxonomique."
+    },
+    {
+      "questionId": "botany-genetics-q04",
+      "level": 3,
+      "rationale": "Comparer trois notions proches : floraison, origine des gamètes et catégorie de descendance."
+    },
+    {
+      "questionId": "terpenes-vocabulary-q04",
+      "level": 1,
+      "rationale": "Reconnaître la définition du seuil olfactif. Une question q04 peut rester une définition directe."
+    },
+    {
+      "questionId": "terpenes-profiles-q01",
+      "level": 4,
+      "rationale": "Calculer les proportions de deux profils et distinguer ces proportions des concentrations absolues."
+    },
+    {
+      "questionId": "terpenes-mixtures-q01",
+      "level": 4,
+      "rationale": "Calculer deux rapports concentration/seuil puis limiter ce que ces rapports permettent de conclure sur le mélange."
+    },
+    {
+      "questionId": "cannabinoids-origins-q02",
+      "level": 1,
+      "rationale": "Restituer la définition d’hémisynthèse : la technicité du terme ne crée pas plusieurs étapes de raisonnement."
+    },
+    {
+      "questionId": "cannabinoids-biosynthesis-q04",
+      "level": 4,
+      "rationale": "Distinguer identité, co-présence et preuve directe d’une conversion, tout en conservant une lacune précise du dossier."
+    },
+    {
+      "questionId": "cannabinoids-reading-studies-q03",
+      "level": 3,
+      "rationale": "Comparer publications et participants pour éviter de compter deux fois une cohorte réutilisée."
+    },
+    {
+      "questionId": "cultivation-light-q04",
+      "level": 1,
+      "rationale": "Associer directement puissance et énergie à leurs unités."
+    },
+    {
+      "questionId": "cultivation-footprint-q03",
+      "level": 3,
+      "rationale": "Effectuer une multiplication unique et conserver le périmètre électrique du résultat ; charge moindre qu’une comparaison de deux bilans."
+    },
+    {
+      "questionId": "cultivation-footprint-q04",
+      "level": 4,
+      "rationale": "Confronter un classement en énergie à un classement inverse en émissions sans les fusionner en un verdict général."
+    },
+    {
+      "questionId": "health-pathogens-q03",
+      "level": 1,
+      "rationale": "Reconnaître la définition technique d’un viroïde parmi des catégories très distinctes."
+    },
+    {
+      "questionId": "health-ipm-q02",
+      "level": 4,
+      "rationale": "Décider si une présence justifie une intervention en intégrant impact, évolution, contexte et preuves. Les distracteurs rendent toutefois la bonne option assez visible."
+    },
+    {
+      "questionId": "health-verification-q03",
+      "level": 4,
+      "rationale": "Distinguer succession temporelle et attribution causale lorsque plusieurs facteurs ont changé."
+    },
+    {
+      "questionId": "soil-nutrients-q03",
+      "level": 1,
+      "rationale": "Identifier une liste d’oligoéléments apprise ; il s’agit surtout de restitution, malgré huit sigles."
+    },
+    {
+      "questionId": "soil-analysis-q01",
+      "level": 4,
+      "rationale": "Calculer deux rapports puis séparer le rapport C/N d’une mesure d’azote disponible."
+    },
+    {
+      "questionId": "soil-analysis-q02",
+      "level": 4,
+      "rationale": "Reconnaître qu’une unité identique ne résout pas la différence de méthodes d’extraction et qu’une référence adaptée manque."
+    },
+    {
+      "questionId": "products-labels-q04",
+      "level": 2,
+      "rationale": "Identifier une définition pondérée du THC total, sans effectuer le calcul. La formule seule ne justifie pas le niveau 4."
+    },
+    {
+      "questionId": "products-labels-q03",
+      "level": 4,
+      "rationale": "Repérer l’incomparabilité immédiate de deux bases de concentration et l’information manquante, sans supposer une densité."
+    },
+    {
+      "questionId": "products-traceability-q01",
+      "level": 4,
+      "rationale": "Suivre l’assemblage de deux lots pour déterminer quelles pièces manquent et quelles vérifications portent réellement sur le produit final."
+    },
+    {
+      "questionId": "harvest-units-q02",
+      "level": 1,
+      "rationale": "Restituer la définition de l’humidité sur base humide."
+    },
+    {
+      "questionId": "harvest-units-q03",
+      "level": 4,
+      "rationale": "Effectuer deux calculs avec des dénominateurs différents et conserver les unités pour une fraction et un rendement."
+    },
+    {
+      "questionId": "harvest-tradeoffs-q04",
+      "level": 2,
+      "rationale": "Reconnaître la définition de dominance ; aucun tableau d’options n’est à départager."
+    },
+    {
+      "questionId": "harvest-tradeoffs-q03",
+      "level": 4,
+      "rationale": "Arbitrer entre ressources totales et production par surface en rendant explicites les priorités, sans additionner des grandeurs incompatibles."
+    }
+  ],
+  "corpusFingerprint": {
+    "algorithm": "SHA-256",
+    "serialization": "JSON.stringify(bankQuestions.map(q => ({ id: q.id, prompt: q.prompt, options: q.options.map(o => ({ id: o.id, text: o.text })) }))) ; ordre natif de chaque banque.",
+    "sha256ByBank": {
+      "history": "09e045aae76508295583aa2742e0eb5cb05a6020eb30365dcc0a2205978be6d1",
+      "botany": "d628837e9b121a55eb646ad0804234da753136afc59f1ebf17a1f4dfa362dfd5",
+      "terpenes": "23f364d09ef94c33977231e6d68ff9a357d3446698db82a88699263c0b0032d8",
+      "cannabinoids": "0173c728b7a2b035a00d98a331e543a25dc0c644d52cbe33ccaea16fcb0dc369",
+      "cultivation": "624cd25513e06dfa669a9a6ebbf16507752d6d260f33d22c3f61eb1ed1af073c",
+      "health": "9e89a72c6259ca01a640f7f1e6f4aa79e34b1c7be02ab461498672096f9e7a74",
+      "soil": "f13175277c18c01920e65167c99f7e8d9483fb315bceb8208c932e57ff6ce014",
+      "products": "a796747292492a6c70b24a7b20d8c50a042a7f304396d7203e03131336eea837",
+      "harvest": "f46e98748bef138f2f3fa0896fd67216ad2d59988215c1794a694039631f1980"
+    }
+  },
+  "validation": {
+    "command": "npx vitest run src/lib/kanab-quest-school-challenge-difficulty.test.ts",
+    "checks": [
+      "336 IDs uniques des neuf banques, couverture exacte et aucun ID inventé.",
+      "Quatre niveaux ordonnés, au moins cinq questions par niveau et les neuf thèmes dans chaque niveau.",
+      "Effectifs documentés cohérents et exemples de frontière rattachés aux niveaux effectifs.",
+      "Empreinte des énoncés et alternatives relus pour détecter les changements du corpus."
+    ]
+  }
+}

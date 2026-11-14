@@ -1,0 +1,54 @@
+.interior { position: relative; isolation: isolate; min-width: 0; width: 100%; color: var(--game-ink, #172923); }
+.picture { position: relative; width: 100%; aspect-ratio: 3 / 2; }
+.illustration { display: block; width: 100%; height: auto; }
+.spriteLayer, .atmosphere { position: absolute; inset: 0; pointer-events: none; }
+.spriteLayer { opacity: 0; }
+.spriteLayer[data-ready=true] { opacity: 1; }
+.cleanImage { object-fit: contain; }
+.sprite { position: absolute; display: block; transform-origin: center top; }
+.sprite img { object-fit: contain; }
+.sway { animation: school-sway var(--sprite-duration, 4s) ease-in-out infinite; }
+.float { transform-origin: center; animation: school-float var(--sprite-duration, 4s) ease-in-out infinite; }
+.atmosphere { overflow: hidden; }
+.lampGlow { position: absolute; left: 44%; top: 13%; width: 12%; height: 22%; border-radius: 50%; background: radial-gradient(ellipse, #ffd46d5c 0%, #ffd46d10 43%, transparent 70%); mix-blend-mode: soft-light; animation: school-glow 4.4s ease-in-out infinite; }
+.mote { position: absolute; left: calc(29% + var(--mote-index) * 13%); top: calc(37% + var(--mote-index) * 7%); width: 3px; height: 3px; border-radius: 50%; background: #fff0ac; opacity: .3; animation: school-mote calc(5s + var(--mote-index) * .7s) ease-in-out infinite; animation-delay: calc(var(--mote-index) * -1.6s); }
+.interior[data-running=false] :is(.sway, .float, .lampGlow, .mote) { animation-play-state: paused; }
+.destinations { position: absolute; inset: 0; }
+.interior .destination { position: absolute; top: 31%; width: 28%; height: 65%; padding: 0; display: flex; align-items: flex-end; justify-content: center; border: 0; border-image: none; border-radius: 0; background: transparent; box-shadow: none; color: inherit; cursor: pointer; text-align: center; }
+.destination[data-school-destination=learn] { left: 6%; }
+.destination[data-school-destination=quiz] { left: 36%; }
+.destination[data-school-destination=workshops] { left: 66%; }
+.sign { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px; width: min(100%, 250px); min-height: 58px; padding: 10px 18px; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; --game-control-art: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; }
+.sign strong { font: 900 clamp(17px, 2.1vw, 27px)/1.1 var(--font-display), Impact, sans-serif; text-transform: uppercase; }
+.sign small { font: 650 clamp(11px, 1.15vw, 15px)/1.4 var(--font-body), Arial, sans-serif; }
+.destination:hover .sign { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); }
+.destination[aria-current=page] .sign { --game-control-art: var(--game-control-teal, url('/placard/ui/control-teal-v2.webp')); color: #fff8e7; }
+.interior .destination:focus-visible { outline: none; }
+.destination:focus-visible .sign { outline: 3px solid #fff8e7; outline-offset: 4px; box-shadow: 0 0 0 7px #00695f; }
+.interior .motionButton { position: absolute; z-index: 2; top: 12px; right: 12px; display: grid; place-items: center; width: 44px; min-width: 44px; height: 44px; min-height: 44px; padding: 10px; border: var(--game-control-border-width, 2px) solid transparent; border-radius: 0; background: transparent; box-shadow: none; color: #172923; --game-control-art: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; cursor: pointer; }
+.interior .motionButton:hover { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); }
+.interior .motionButton:focus-visible { outline: 3px solid #00695f; outline-offset: 3px; }
+@keyframes school-sway { 0%, 100% { transform: rotate(-1.3deg); } 50% { transform: rotate(1.3deg); } }
+@keyframes school-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-2px); } }
+@keyframes school-glow { 0%, 100% { opacity: .5; } 50% { opacity: .85; } }
+@keyframes school-mote { 0%, 100% { transform: translate(0, 0); opacity: .12; } 50% { transform: translate(6px, -11px); opacity: .45; } }
+@media (max-width: 640px) {
+  .destinations { position: static; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 7px; padding: 10px 3px 4px; }
+  .interior .destination { position: static; width: auto; height: auto; min-height: 54px; align-items: stretch; }
+  .sign { width: 100%; min-height: 54px; padding: 9px 5px; }
+  .sign strong { font-size: clamp(14px, 4vw, 20px); }
+  .sign small { font-size: 11px; }
+  .countUnit { display: none; }
+  .interior .motionButton { top: 7px; right: 7px; }
+  .mote { width: 2px; height: 2px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .interior:not([data-motion-override=true]) :is(.sway, .float, .lampGlow, .mote) { animation: none; }
+  /* The game also disables motion globally. Only this explicit local choice
+     restores it; the rest of the application keeps the system preference. */
+  .interior[data-motion-override=true] .sway { animation: school-sway var(--sprite-duration, 4s) ease-in-out infinite !important; }
+  .interior[data-motion-override=true] .float { animation: school-float var(--sprite-duration, 4s) ease-in-out infinite !important; }
+  .interior[data-motion-override=true] .lampGlow { animation: school-glow 4.4s ease-in-out infinite !important; }
+  .interior[data-motion-override=true] .mote { animation: school-mote calc(5s + var(--mote-index) * .7s) ease-in-out infinite !important; }
+  .interior[data-motion-override=true][data-running=false] :is(.sway, .float, .lampGlow, .mote) { animation-play-state: paused !important; }
+}

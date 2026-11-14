@@ -1,0 +1,28 @@
+.dossiers, .plate, .concept { min-width: 0; }
+.filter { display: grid; gap: 8px; margin: 18px 0; font-weight: 700; }
+.filter select { width: 100%; min-width: 0; }
+.dossierFacts { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px 24px; }
+.dossierFacts>div { border-bottom: 1px solid #17292330; padding-bottom: 12px; }
+.dossierFacts dt,.comparison dt { font-weight: 700; color: #075c50; }.dossierFacts dd { margin: 6px 0 0; }.dossierFacts ul { padding-left: 20px; }
+.pedigree { margin-block: 24px; border-block: 2px solid #087b7055; padding: 16px 0; }
+.pedigree svg { width: 100%; max-width: 700px; display: block; margin: 0 auto; background: #f7f3e8; border-radius: 8px; }
+.legend { display: flex; gap: 12px; flex-wrap: wrap; list-style: none; padding: 0; font-size: 13px; }
+.legend li { display: flex; align-items: center; gap: 8px; }.legend span { display: inline-block; width: 32px; border-top: 3px solid #087b70; }
+.legend span[data-line-status=breeder-claim] { border-top-style: dashed; }.legend span[data-line-status=hypothesis] { border-top-style: dotted; }
+.treeNode { cursor: pointer; }.treeNode:focus { outline: none; }.treeNode:focus-visible circle { stroke: #db842d; stroke-width: 8; }
+.nodeList { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px 30px; padding-left: 25px; }
+.nodeList button { width: 100%; text-align: left; }.selectedNode { padding: 15px 0; border-block: 1px solid #17292330; }
+.edgeList,.buddyLinks { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0; }.edgeList button { display: block; flex: 1 1 220px; text-align: left; }.edgeList small { display: block; margin-top: 5px; }
+.edgeProof { padding: 14px 0; }.edgeProof h5 { margin-top: 0; }.buddyLinks h4,.buddyLinks>p { flex-basis: 100%; }
+.comparison { margin-block: 25px; border-block: 1px solid #17292355; }.comparison dl>div { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 12px; padding: 14px 0; border-bottom: 1px solid #17292330; }.comparison dt { grid-column: 1/-1; }.comparison dd { margin: 0; }
+.plate { margin: 22px 0; }.plate>figcaption { font-weight: 700; font-size: 20px; }.plateImage { position: relative; margin-block: 12px; }.plateImage img { display: block; width: 100%; height: auto; }
+.plate>svg { display: block; width: 100%; max-width: 390px; margin: 0 auto 16px; }
+.plateMarkers { position: absolute; inset: 0; pointer-events: none; }.plateMarkers button { position: absolute; translate: -50% -50%; min-width: 44px; min-height: 44px; pointer-events: auto; padding: 4px; }
+.plateLegend { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; padding: 0; list-style: none; }.plateLegend button { width: 100%; text-align: left; }.plateLegend small { display: block; }
+.plateDetail { border-block: 1px solid #087b7055; padding: 12px 0; }.plateCaption { font-size: 13px; }
+.specimenGrid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 16px; }.specimenGrid figure { margin: 0; }.specimenGrid img { width: 100%; height: auto; }.specimenGrid figcaption { font-size: 14px; }
+.specimenGrid svg { display: block; width: 100%; height: auto; }.uncertainImage { margin: 18px 0; max-width: 480px; overflow: hidden; }.uncertainImage img { width: 100%; height: auto; filter: blur(10px); }.uncertainImage figcaption { position: relative; background: #fff2d6; padding-top: 14px; }
+.concept { margin-block: 24px; padding: 18px 0; border-block: 1px solid #087b7055; }.conceptControls { display: flex; gap: 14px; flex-wrap: wrap; }.conceptControls label { flex: 1 1 150px; display: grid; gap: 6px; }
+.punnett { border-collapse: collapse; width: 100%; max-width: 480px; margin: 20px auto; }.punnett :is(th,td) { border: 1px solid #087b7080; padding: 14px; text-align: center; }.punnett td { font-size: 24px; font-weight: 700; }
+.cycle { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 12px; padding: 0; list-style: none; }.cycle li { padding: 12px; border-bottom: 3px solid #087b7055; }.cycle svg { display: block; width: 48px; height: 48px; color: #087b70; margin-bottom: 10px; }.cycle strong { display: block; }.cycle small { display: block; margin-top: 5px; }
+@media(max-width:700px) { .dossierFacts,.plateLegend,.nodeList { grid-template-columns: minmax(0,1fr); }.comparison dl>div { grid-template-columns: minmax(0,1fr); }.comparison dd+dd { border-top: 1px dashed #17292340; padding-top: 10px; }.cycle { grid-template-columns: repeat(2,minmax(0,1fr)); }.specimenGrid { grid-template-columns: minmax(0,1fr); } }

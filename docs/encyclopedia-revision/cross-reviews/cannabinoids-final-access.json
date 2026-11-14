@@ -1,0 +1,158 @@
+{
+  "domain": "cannabinoids",
+  "reviewerDomain": "cannabinoids-final-access",
+  "reviewedAt": "2026-11-14",
+  "scope": "Dernière tentative bornée sur les trois fiches encore bloquées. Aucun lot modifié. Une voie nouvelle ciblée par fiche : archive universitaire de la publication THCA-B, récupération directe du PDF éditeur CBG, EUtils pour les originaux des découvertes. EUtils a également fourni les métadonnées et les résumés THCA-B/CBG déjà connus afin d’identifier les publications.",
+  "overall": "Aucun déblocage intégral. Le résumé primaire Munro 1993 est maintenant directement lu et peut compléter les sources de la fiche historique. Les détails THCA-B A/B et financement/effectifs détaillés CBG 2026 restent non certifiés par les documents effectivement accessibles. Aucun texte intégral n’est déclaré lu.",
+  "batchFilesModified": [],
+  "articles": [
+    {
+      "id": "record-cannabinoid-delta9-thca-b",
+      "status": "blocked-access-attempt-completed",
+      "newRoute": "Archive officielle de la revue Acta Chemica Scandinavica hébergée par l’Université de Copenhague, avec intention de récupérer le PDF primaire et de l’extraire localement.",
+      "attempts": [
+        {
+          "url": "https://actachemscand.ki.ku.dk/doi/10.3891/acta.chem.scand.29b-0379",
+          "method": "Ouverture web puis récupération HTTP directe avec urllib.request, délai configuré de 30 secondes ; aucune répétition après l’échec.",
+          "result": "Lecteur web : Cache miss. HTTP direct : échec de connexion WinError 10060. Aucun document récupéré, aucun PDF extrait."
+        }
+      ],
+      "actuallyRead": "Résumé PubMed original PMID 1138526 dans la réponse EUtils XML : formule C22H30O4, diffraction X, 1106 réflexions, conformations et liaisons hydrogène. Le résumé ne fournit pas une comparaison atomique numérotée A/B.",
+      "remainingBlocker": "Le dessin primaire et la comparaison précise de la position du carboxyle entre THCA-A et THCA-B n’ont toujours pas été lus. La relation générale d’isomérie conservée dans la fiche n’est pas enrichie d’une numérotation non vérifiée.",
+      "proposedPatch": null
+    },
+    {
+      "id": "record-study-cbg-laboratory-2026",
+      "status": "blocked-access-attempt-completed",
+      "newRoute": "Récupération directe du PDF primaire de l’éditeur JPET/ASPET pour lecture locale, plutôt que dépendance au rendu du lecteur web.",
+      "attempts": [
+        {
+          "url": "https://jpet.aspetjournals.org/article/S0022-3565%2826%2901184-5/pdf",
+          "method": "URL PDF repérée par recherche, ouverture web puis récupération HTTP directe unique avec urllib.request ; aucune nouvelle route après le 403.",
+          "result": "403 Forbidden dans le lecteur web et dans la récupération HTTP directe. Aucun fichier PDF valide obtenu, donc aucune extraction pypdf effectuée."
+        }
+      ],
+      "actuallyRead": "Résumé primaire PMID 42575778 via EUtils XML : 12 adultes sains, administrations uniques ascendantes de 0/25/50/100/200 mg avec placebo aléatoire, mesures jusqu’à huit heures, absence d’événement lié au médicament dans le résumé, effets pharmacodynamiques peu robustes et exposition variable.",
+      "remainingBlocker": "Les 16 éligibles, le détail des deux événements non liés et le financement expérimental par Canopy Growth ne figurent pas dans le résumé effectivement lu. Des extraits de recherche de la page ScienceDirect les affichent, mais cette page n’a pas été lue avec succès : ces extraits ne servent pas de preuve nouvelle et ne justifient pas une mise à jour du lot.",
+      "proposedPatch": null
+    },
+    {
+      "id": "ref-decouvertes-cannabinoides",
+      "status": "partially-improved-still-blocked",
+      "newRoute": "Lecture des résumés originaux Munro 1993 et Devane 1992 par EUtils HTTP XML, sans réessayer les pages éditeur bloquées.",
+      "actuallyRead": "Le résumé Munro décrit le clonage du récepteur ensuite appelé CB2 et sa présence dans les macrophages de la zone marginale splénique, plutôt que dans le cerveau dans le système alors étudié. Le résumé Devane décrit l’identification de l’arachidonyléthanolamide dans le cerveau porcin, le nom anandamide, la structure par spectrométrie/RMN, la liaison compétitive et une réponse sur une préparation de canal déférent de souris ; aucune étymologie sanskrite n’y figure.",
+      "remainingBlocker": "Originaux Wood/Spivey/Easterfield, détail du jalon de liaison pré-clonage et étymologie historique du nom anandamide non résolus par cette voie. Aucun rétablissement automatique des anciennes questions.",
+      "proposedSectionAddition": {
+        "sectionId": "ref-decouvertes-cannabinoides-2",
+        "paragraph": "En 1993, Munro, Thomas et Abu-Shaar décrivent un récepteur cannabinoïde exprimé dans des macrophages de la zone marginale de la rate. Cette localisation appartient aux observations initiales du récepteur ensuite nommé CB2 ; elle ne définit pas à elle seule sa distribution complète dans tous les tissus.",
+        "sourceIds": ["qh-sci-cb2"]
+      },
+      "proposedSourceAddition": "qh-sci-cb2 ci-dessous ; ajouter aussi cet identifiant à patch.sourceIds et sourceIdsReviewed si le coordinateur retient le paragraphe. La fiche reste bloquée sur les autres points."
+    }
+  ],
+  "sources": [
+    {
+      "id": "qh-sci-cb2",
+      "title": "Molecular characterization of a peripheral receptor for cannabinoids",
+      "author": "Sean Munro, K. L. Thomas et M. Abu-Shaar",
+      "organization": "Nature / PubMed, NCBI EUtils",
+      "published": "1993-09-02",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7689702/",
+      "verifiedAt": "2026-11-14",
+      "passage": "Résumé original, PMID 7689702 : dernier passage décrivant le clonage et les macrophages de la zone marginale splénique.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication originale",
+      "limitation": "Réponse XML EUtils effectivement lue, pas article intégral ni page PubMed correctement rendue. Les distributions historiques ne sont pas présentées comme une cartographie actuelle exhaustive.",
+      "reviewEvidence": [
+        {
+          "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=1138526,42575778,7689702,1470919&retmode=xml",
+          "openedAt": "2026-11-14",
+          "method": "urllib.request via exec, récupération HTTP réseau public, XML parsé avec ElementTree puis AbstractText affiché intégralement et lu.",
+          "sections": "PubmedArticle PMID 7689702, ArticleTitle, ArticleId et AbstractText complet.",
+          "result": "Clonage et localisation splénique initiale confirmés dans le résumé original.",
+          "supports": "Publication Munro/Thomas/Abu-Shaar en 1993 ; macrophages de la zone marginale de la rate dans les observations initiales.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-thcab-1975",
+      "title": "The crystal and molecular structure of delta-9-tetrahydrocannabinolic acid b",
+      "author": "Einar Rosenqvist et Terje Ottersen",
+      "organization": "Acta Chemica Scandinavica / PubMed, NCBI EUtils",
+      "published": "1975",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1138526/",
+      "verifiedAt": "2026-11-14",
+      "passage": "Résumé original PMID 1138526 : détermination cristallographique, formule C22H30O4, 1106 réflexions et conformations.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication originale",
+      "limitation": "Relecture du résumé déjà connu, sans nouveau dessin primaire ; ne débloque pas la comparaison A/B numérotée.",
+      "reviewEvidence": [
+        {
+          "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=1138526,42575778,7689702,1470919&retmode=xml",
+          "openedAt": "2026-11-14",
+          "sections": "PubmedArticle PMID 1138526, AbstractText complet.",
+          "result": "Détermination par diffraction X confirmée ; comparaison A/B absente du résumé.",
+          "supports": "Identité cristallographique, sans conclusion nouvelle sur la fréquence, la voie biosynthétique ou l’activité clinique.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "can-study-cbg26",
+      "title": "Safety, pharmacodynamics, and pharmacokinetics of oral cannabigerol in healthy adults",
+      "author": "David Wolinsky et al.",
+      "organization": "Journal of Pharmacology and Experimental Therapeutics / PubMed, NCBI EUtils",
+      "published": "2026",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42575778/",
+      "verifiedAt": "2026-11-14",
+      "passage": "Résumé original PMID 42575778 complet, DOI 10.1016/j.jpet.2026.104984.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication originale",
+      "limitation": "Ne documente pas les 16 éligibles, le financement détaillé et les deux événements non liés ; ces trois points restent bloqués malgré des extraits de recherche concordants.",
+      "reviewEvidence": [
+        {
+          "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=1138526,42575778,7689702,1470919&retmode=xml",
+          "openedAt": "2026-11-14",
+          "sections": "PubmedArticle PMID 42575778, AbstractText complet.",
+          "result": "Résumé aigu n = 12 relu ; aucun détail nouveau de financement ou d’éligibilité.",
+          "supports": "Contexte aigu, doses expérimentales, placebo inséré aléatoirement et résultats pharmacodynamiques limités.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-anandamide-1992",
+      "title": "Isolation and structure of a brain constituent that binds to the cannabinoid receptor",
+      "author": "William A. Devane et al.",
+      "organization": "Science / PubMed, NCBI EUtils",
+      "published": "1992-12-18",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+      "verifiedAt": "2026-11-14",
+      "passage": "Résumé original PMID 1470919 complet : cerveau porcin, structure, nom anandamide, liaison et préparation animale.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication originale",
+      "limitation": "Le résumé ne contient pas l’étymologie sanskrite ; relecture sans déblocage sur ce point historique.",
+      "reviewEvidence": [
+        {
+          "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=1138526,42575778,7689702,1470919&retmode=xml",
+          "openedAt": "2026-11-14",
+          "sections": "PubmedArticle PMID 1470919, AbstractText complet.",
+          "result": "Identité et modèles confirmés ; étymologie absente.",
+          "supports": "Identification d’un ligand endogène proposé, sans validation de l’étymologie ni d’une efficacité clinique.",
+          "access": "abstract"
+        }
+      ]
+    }
+  ],
+  "localArtifacts": [
+    "output/encyclopedia-revision/extraction/final-access-fetch.py",
+    "output/encyclopedia-revision/extraction/final-access-fetch-log.json"
+  ],
+  "sensitivePoints": [
+    "Aucun PDF valide n’a été obtenu pour les deux cibles prioritaires : ne pas déclarer de lecture intégrale ou d’extraction pypdf.",
+    "Les extraits du moteur sur CBG 2026 ne remplacent pas une page ou un document réellement ouvert, même s’ils semblent contenir exactement les informations manquantes.",
+    "La nouvelle lecture Munro lève uniquement le sous-point CB2, pas le blocage global de l’histoire des découvertes.",
+    "Les trois lots restent inchangés et disponibles au coordinateur."
+  ]
+}

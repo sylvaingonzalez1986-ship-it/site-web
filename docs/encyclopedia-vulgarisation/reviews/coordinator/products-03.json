@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "products-03",
+  "entries": {
+    "record-product-products-paper": {
+      "contentHash": "8c53ebdf3016a350602e26c9a724d1ed5ab20230e9bf6004f30fe19a59668f81",
+      "note": "Seven notices and six quiz explanations read. Material functions explained through paper tests, matrix adhesion, insulation and structural support. Food-contact and intended-use limitations retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-composite": {
+      "contentHash": "b2dae9f6bcb30f85fb645ff2a69da94d026f72ba041b7182edcc72fe5f7160bb",
+      "note": "Seven notices and six quiz explanations read. Material functions explained through paper tests, matrix adhesion, insulation and structural support. Food-contact and intended-use limitations retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-insulation": {
+      "contentHash": "07cca41eea9bb0dc99ee24ba1f21fd4d829242cd01f4b115265e781213aa78ad",
+      "note": "Seven notices and six quiz explanations read. Material functions explained through paper tests, matrix adhesion, insulation and structural support. Food-contact and intended-use limitations retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-bedding": {
+      "contentHash": "f0e0f0d57d818fd63514eedfc884fef5ceb9bfb19399ac55dba995a53285ad60",
+      "note": "Seven notices and six quiz explanations read. Material functions explained through paper tests, matrix adhesion, insulation and structural support. Food-contact and intended-use limitations retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-hempcrete": {
+      "contentHash": "e682ad184e2768d07cea02dcaeb6a049c17e47e8c975ecc1c8fefe58f64c1b67",
+      "note": "Seven notices and six quiz explanations read. Material functions explained through paper tests, matrix adhesion, insulation and structural support. Food-contact and intended-use limitations retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-textile": {
+      "contentHash": "fc2342a86be57ae9c49821c63daa3893e8582929f11bedb9da8ac05f303c270c",
+      "note": "Seven notices and six quiz explanations read. Material functions explained through paper tests, matrix adhesion, insulation and structural support. Food-contact and intended-use limitations retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-product-products-kief": {
+      "contentHash": "5b3ed7ed2f7d4c56b1713dce3555d0017ff7c1924c40b05f04da2a8fe1e40665",
+      "note": "Seven notices and six quiz explanations read. Material functions explained through paper tests, matrix adhesion, insulation and structural support. Food-contact and intended-use limitations retained.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 6,
+    "hash": "f226313fd3885fb550d4a5d47ec3ba11a14d0d1f0d57a53d0d19d859f895118b"
+  }
+}

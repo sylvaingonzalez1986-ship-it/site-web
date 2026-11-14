@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 import { ArrowRight, ChevronDown, PackageCheck, RefreshCw, Sprout, Swords } from "lucide-react";
 import type { KqOfficialFlower, KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import { getKqHarvestActions, getKqHarvestRows, isKqHarvestAtJury, type KqHarvestMarketSection } from "@/lib/kanab-quest-harvests";
@@ -12,6 +13,7 @@ import { KqLotSummary } from "./KqLotSummary";
 import { KqAllocationBar } from "./KqVisuals";
 import { KqChapterHeading } from "./KqChapterHeading";
 import { KqHelpDashboard, KqHelpNote, KqHelpSteps } from "./KqHelpDashboard";
+import { getKqTrimHref } from "@/lib/kanab-quest-jury-readiness";
 import styles from "./KqHarvests.module.css";
 
 export function KqHarvests({ section, initialFlowerId, onSectionChange, onOpenArena, onOpenMarket, onOpenGame, onOpenWarehouse }: {
@@ -110,6 +112,8 @@ export function KqHarvests({ section, initialFlowerId, onSectionChange, onOpenAr
   const harvestCounts = [
       { label: "Jury et duels", value: rows.filter(row => ["jury", "queued", "duel"].includes(row.state)).length, tone: "ink" as const },
       { label: "Stockage à vérifier", value: rows.filter(row => row.state === "storage").length, tone: "ink" as const },
+      { label: "Trim à terminer", value: rows.filter(row => row.state === "trim").length, tone: "gold" as const },
+      { label: "Trim à vérifier", value: rows.filter(row => row.state === "trim-check").length, tone: "ink" as const },
       { label: "En affinage", value: rows.filter(row => row.state === "curing").length, tone: "gold" as const },
       { label: "Prêtes à vendre", value: rows.filter(row => row.state === "ready").length, tone: "teal" as const },
       { label: "Sans vrac restant", value: rows.filter(row => row.state === "empty").length, tone: "ink" as const },
@@ -123,13 +127,13 @@ export function KqHarvests({ section, initialFlowerId, onSectionChange, onOpenAr
       <button type="button" onClick={() => onOpenArena()}>Jury & duels</button>
     </nav>
     {section === "storage" ? <KqHarvestStorage initialFlowerId={targetFlowerId} onOpenMarket={onOpenMarket} onOpenArena={onOpenArena} onOpenOverview={flowerId => onSectionChange("overview", flowerId)} onOpenWarehouse={onOpenWarehouse} showOverviewLink={false} /> : <>
-      <div className={styles.toolbar}><label className={styles.filterControl}><span className={styles.visuallyHidden}>Filtrer les récoltes</span><select value={filter} onChange={event => setFilter(event.target.value)}><option value="all">{filterLabel("Toutes les récoltes", rows.length)}</option><option value="jury">{filterLabel("Jury et duels", juryCount)}</option><option value="stock">{filterLabel("Stockage et vente", rows.length - juryCount)}</option></select><ChevronDown size={18} className={styles.filterChevron} aria-hidden="true" /></label><button type="button" aria-label="Actualiser les récoltes" onClick={() => void polling.current?.refresh()}><RefreshCw size={18} aria-hidden="true" /></button></div>
+      <div className={styles.toolbar}><label className={styles.filterControl}><span className={styles.visuallyHidden}>Filtrer les récoltes</span><select value={filter} onChange={event => setFilter(event.target.value)}><option value="all">{filterLabel("Toutes les récoltes", rows.length)}</option><option value="jury">{filterLabel("Jury et duels", juryCount)}</option><option value="stock">{filterLabel("Préparation et vente", rows.length - juryCount)}</option></select><ChevronDown size={18} className={styles.filterChevron} aria-hidden="true" /></label><button type="button" aria-label="Actualiser les récoltes" onClick={() => void polling.current?.refresh()}><RefreshCw size={18} aria-hidden="true" /></button></div>
       {loaded && rows.length > 0 && errors.length ? <p className={styles.partialSummary} data-harvest-summary-unavailable>Liste partielle : seules les récoltes retrouvées sont comptées.</p> : null}
       {errors.map(error => <p role="alert" key={error} className={styles.error}>{error} <button type="button" onClick={() => void polling.current?.refresh()}>Réessayer</button></p>)}
       {targetFlowerId && selection !== "selected" ? <div ref={selectionNotice} className={styles.selectionNotice} data-harvest-selection={selection} tabIndex={-1} role={selection === "unavailable" ? "alert" : "status"}><div><strong>Lot {targetFlowerId.slice(0, 8)}</strong><p>{selection === "loading" ? "Recherche dans tes récoltes…" : selection === "unavailable" ? "Impossible de retrouver ce lot tant que les données sont indisponibles." : "Ce lot n’apparaît plus dans tes récoltes. Il a pu être vendu ou transformé."}</p></div>{selection !== "loading" ? <button type="button" data-harvest-selection-retry onClick={retrySelection}><RefreshCw size={15} aria-hidden="true" /> Réessayer</button> : null}</div> : null}
       {!loaded ? <p role="status" className={styles.empty}>Ouverture de tes récoltes…</p> : visible.length ? <ul className={styles.list}>{visible.map(row => <li key={row.id} data-harvest-id={row.id} data-harvest-state={row.state} data-selected={row.id === targetFlowerId || undefined} tabIndex={-1} aria-label={`Lot ${row.name} · ${row.id.slice(0, 8)}`}>
         <KqLotSummary source={{ kind: "harvest", row }} selected={row.id === targetFlowerId} artwork={row.lot ? <PackageCheck size={27} /> : <Sprout size={27} />}>
-        <div className={styles.actions}>{getKqHarvestActions(row).map((action, index) => <button key={action.destination} type="button" className={index === 0 ? styles.primary : undefined}
+        <div className={styles.actions}>{getKqHarvestActions(row).map((action, index) => action.destination === "trim" ? <Link key="trim" href={getKqTrimHref(row.id, "harvests")} className={index === 0 ? styles.primary : undefined} data-harvest-action="trim">{action.label}{index === 0 ? <ArrowRight size={16} aria-hidden="true" /> : null}</Link> : <button key={action.destination} type="button" className={index === 0 ? styles.primary : undefined}
           data-harvest-open-storage={action.destination === "storage" ? row.id : undefined}
           data-harvest-action={action.destination}
           onClick={() => action.destination === "storage" ? openStorage(row.id) : action.destination === "arena" ? onOpenArena(row.id) : onOpenMarket(row.id, action.section)}>

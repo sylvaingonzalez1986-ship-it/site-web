@@ -1,4 +1,4 @@
-/** Staff UI against the real deterministic engine; transport and money stay in memory. */
+/** Staff UI against the deterministic engine; all transport and money belong to isolated fixtures. */
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -8,6 +8,8 @@ import puppeteer from 'puppeteer-core';
 
 const root = process.cwd(), output = resolve(root, 'output/placard-staff-ui');
 const origin = 'http://127.0.0.1:3438';
+const recoveryOnly = process.argv.includes('--recovery-only');
+const reauthOnly = process.argv.includes('--reauth-only');
 const carouselOnly = process.argv.includes('--carousel-only');
 const productionOnly = process.argv.includes('--production-only');
 const benefitsOnly = process.argv.includes('--benefits-only');
@@ -32,10 +34,12 @@ const cultureWorkOnly = process.argv.includes('--culture-work-only');
 const processingWorkOnly = process.argv.includes('--processing-work-only');
 const sharedTrimEdgeOnly = process.argv.includes('--shared-trim-edge-only');
 const sharedTrimOnly = process.argv.includes('--shared-trim-only') || sharedTrimEdgeOnly || trimMotionAlias;
-const reportName = carouselOnly ? 'carousel-report.json' : productionOnly ? 'production-report.json' : impactDashboardOnly ? 'impact-dashboard-report.json' : benefitsOnly ? 'benefits-report.json' : contractLifecycleOnly ? 'contract-lifecycle-report.json' : helpOnly ? 'help-dashboard-report.json' : dashboardOnly ? 'dashboard-report.json' : processingWorkOnly ? 'processing-work-report.json' : cultureWorkOnly ? 'culture-work-report.json' : weeklyPlanOnly ? 'weekly-plan-report.json' : employeeSheetOnly ? 'employee-sheet-report.json' : sharedTrimEdgeOnly ? 'shared-trim-edge-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : archiveOnly ? 'archive-report.json' : workScenePreview ? 'work-scene-preview-report.json' : workSceneOnly ? 'work-scene-report.json' : staffMomentsOnly ? 'staff-moments-report.json' : visualClarityOnly ? 'visual-clarity-report.json' : playerWorkOnly ? 'player-work-report.json' : prospectingOnly ? 'prospecting-report.json' : workPlanOnly ? 'work-plan-report.json' : 'report.json';
+const reportName = reauthOnly ? 'reauth-report.json' : recoveryOnly ? 'recovery-report.json' : carouselOnly ? 'carousel-report.json' : productionOnly ? 'production-report.json' : impactDashboardOnly ? 'impact-dashboard-report.json' : benefitsOnly ? 'benefits-report.json' : contractLifecycleOnly ? 'contract-lifecycle-report.json' : helpOnly ? 'help-dashboard-report.json' : dashboardOnly ? 'dashboard-report.json' : processingWorkOnly ? 'processing-work-report.json' : cultureWorkOnly ? 'culture-work-report.json' : weeklyPlanOnly ? 'weekly-plan-report.json' : employeeSheetOnly ? 'employee-sheet-report.json' : sharedTrimEdgeOnly ? 'shared-trim-edge-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : archiveOnly ? 'archive-report.json' : workScenePreview ? 'work-scene-preview-report.json' : workSceneOnly ? 'work-scene-report.json' : staffMomentsOnly ? 'staff-moments-report.json' : visualClarityOnly ? 'visual-clarity-report.json' : playerWorkOnly ? 'player-work-report.json' : prospectingOnly ? 'prospecting-report.json' : workPlanOnly ? 'work-plan-report.json' : 'report.json';
 const entry = `
 import React,{useState} from 'react';import {createRoot} from 'react-dom/client';
 import {KqStaffDesk} from '/src/components/placard/KqStaffDesk';
+import {KqStaffRecoveryProvider} from '/src/components/placard/KqStaffRecoveryContext';
+${reauthOnly ? "import {AccountLoginForm} from '/src/components/account/AccountLoginForm';" : ''}
 import {KqPlayerWorkStatus} from '/src/components/placard/KqPlayerWorkStatus';
 import {KqCultureWorkStatus,useKqCultureWorkQuote} from '/src/components/placard/KqCultureWorkStatus';
 import {getKqPlayerWorkErrorMessage} from '/src/lib/kanab-quest-player-work-errors';
@@ -56,7 +60,7 @@ if(!playerProfile)throw Error('Invalid audit player profile');
 let profileState=new URLSearchParams(location.search).get('profile')??'ready',profileReads=0;
 let raw={state:createKqStaffState(now),revision:0,serverNow:now,cashCents:2500000,context:{businessStartedAt:now,reputation:800,instagramFollowers:3500,shopPartners:2,activeRuns:[{id:'test-run',name:'Culture de démonstration'}],processingBatches:[{id:'test-batch',flowerId:'test-flower',name:'Lot de démonstration',startedAt:now,readyAt:'2026-11-09T12:00:00.000Z'}],supplierInvoices:[],trimLots:[{flowerId:'trim-manual',name:'Récolte pour trim manuel',requiredWork:6,completedWork:0,mode:null,completedAt:null},{flowerId:'trim-machine',name:'Récolte pour trim machine',requiredWork:6,completedWork:0,mode:null,completedAt:null}]}};
 raw.context.trimQueueVersion=2;raw.context.trimLots=raw.context.trimLots.map((lot,index)=>({...lot,totalGrams:360,completedGrams:0,createdAt:new Date(Date.parse(now)-(2-index)*60000).toISOString()}));
-if(${carouselOnly}||${productionOnly}||${benefitsOnly}||(${impactDashboardOnly}&&!new URLSearchParams(location.search).has('empty'))||(${dashboardOnly}&&new URLSearchParams(location.search).get('dashboard')!=='empty')||${processingWorkOnly}||${cultureWorkOnly}||${weeklyPlanOnly}||${employeeSheetOnly}||${sharedTrimOnly}||${workPlanOnly}||${workSceneOnly}||(${visualClarityOnly}&&new URLSearchParams(location.search).has('team'))){
+if(${recoveryOnly || reauthOnly}||${carouselOnly}||${productionOnly}||${benefitsOnly}||(${impactDashboardOnly}&&!new URLSearchParams(location.search).has('empty'))||(${dashboardOnly}&&new URLSearchParams(location.search).get('dashboard')!=='empty')||${processingWorkOnly}||${cultureWorkOnly}||${weeklyPlanOnly}||${employeeSheetOnly}||${sharedTrimOnly}||${workPlanOnly}||${workSceneOnly}||(${visualClarityOnly}&&new URLSearchParams(location.search).has('team'))){
  for(const code of ['anna','mael']){const candidate=projectKqStaffSnapshot(raw).candidates.find(candidate=>candidate.code===code),temporary=(${employeeSheetOnly}||${weeklyPlanOnly})&&code==='mael',weeklyHours=temporary?14:35;raw.state=applyKqStaffCommand(raw,{action:'hire',candidateCode:code,contract:temporary?'cdd':'cdi',weeklyHours,durationMonths:temporary?3:0,reason:temporary?'temporary-increase':'permanent',expectedMonthlyCostCents:getKqStaffMonthlyCost(candidate,weeklyHours).totalCents},'work-plan-'+code).state}
  raw.context.activeRuns.push({id:'test-run-selected',name:'Culture choisie pour Maël'});
  raw.context.processingBatches.push({id:'test-batch-selected',flowerId:'test-flower-selected',name:'Lot choisi pour Anna',startedAt:now,readyAt:'2026-11-09T12:00:00.000Z'});
@@ -107,6 +111,49 @@ if(${sharedTrimOnly}){
 const applyEffects=effects=>{for(const effect of effects){if(effect.kind==='trim-work'){const lot=raw.context.trimLots.find(lot=>lot.flowerId===effect.flowerId);lot.mode=effect.mode;if(effect.unit==='g'){lot.completedGrams=Math.min(lot.totalGrams,(lot.completedGrams??0)+effect.work);lot.completedWork=lot.requiredWork*lot.completedGrams/lot.totalGrams}else{lot.completedWork=Math.min(lot.requiredWork,lot.completedWork+effect.work);if(lot.totalGrams)lot.completedGrams=lot.totalGrams*lot.completedWork/lot.requiredWork}if(lot.completedWork>=lot.requiredWork)lot.completedAt=raw.serverNow}else if(effect.kind==='sales'){raw.context.shopPartners+=effect.shopPartners;raw.context.reputation+=effect.reputation}}};
 let failNext=false,loseNextResponse=false,unavailable=(${impactDashboardOnly}||${dashboardOnly}||${employeeSheetOnly}||${weeklyPlanOnly})&&new URLSearchParams(location.search).has('read-error'),reads=0,holdSettlement=${impactDashboardOnly};const calls=[],seen=new Map(),openedHarvests=[];
 const settle=()=>{const settled=advanceKqStaff(raw);raw={...raw,state:settled.state,cashCents:raw.cashCents-settled.debitCents+getKqProductionCashDelta(settled.effects)};applyEffects(settled.effects)};
+// Fixture server state is independent from the application's durable localStorage
+// dossier. Session storage models server receipts surviving a browser reload.
+const recoverySeed=structuredClone(raw),recoveryHeld=[],recoveryCommands=new Map();
+const reauthSessionKey='audit:staff-reauth:session';
+const reauthSession=${reauthOnly}?JSON.parse(sessionStorage.getItem(reauthSessionKey)??'null')??{owner:'staff-owner-a',authenticated:true,readFailure:null,loginCalls:[],requests:[]}:null;
+const saveReauthSession=()=>{if(${reauthOnly})sessionStorage.setItem(reauthSessionKey,JSON.stringify(reauthSession))};
+let recoveryOwner=reauthSession?.owner??new URLSearchParams(location.search).get('owner')??'staff-owner-a',recoveryFailure=null;
+const recoveryServerKey=owner=>'audit:staff-recovery:server:'+owner;
+function saveRecoveryServer(){if(${recoveryOnly || reauthOnly})sessionStorage.setItem(recoveryServerKey(recoveryOwner),JSON.stringify({raw,calls,receipts:[...seen],commands:[...recoveryCommands]}))}
+function loadRecoveryServer(owner){
+ recoveryOwner=owner;const saved=JSON.parse(sessionStorage.getItem(recoveryServerKey(owner))??'null');
+ raw=saved?.raw??structuredClone(recoverySeed);calls.splice(0,calls.length,...(saved?.calls??[]));seen.clear();recoveryCommands.clear();
+ for(const [key,value] of saved?.receipts??[])seen.set(key,value);
+ for(const [key,value] of saved?.commands??[])recoveryCommands.set(key,value);
+}
+if(${recoveryOnly || reauthOnly})loadRecoveryServer(recoveryOwner);
+function reauthFailure(mode){
+ const status=mode==='owner-changed'?409:Number(mode.split('-')[0]);
+ if(status===401){reauthSession.authenticated=false;saveReauthSession()}
+ if(mode.endsWith('-invalid-json'))return new Response('<html>Session ended</html>',{status,headers:{'Content-Type':'application/json'}});
+ return Response.json({error:status===401?'Non autorisé.':status===409?'Le compte a changé.':'Le personnel est momentanément indisponible.',...(mode==='owner-changed'?{code:'staff_owner_changed'}:{})},{status});
+}
+async function recoveryPost(body){
+ const fault=recoveryFailure;recoveryFailure=null;calls.push(body);saveRecoveryServer();
+ if(${reauthOnly}&&['401','401-invalid-json','owner-changed','419'].includes(fault))return reauthFailure(fault);
+ if(fault==='throw-before')throw new TypeError('Fixture connection lost before commit');
+ if(fault==='lose-before')return Response.json({error:'Connexion interrompue avant enregistrement.'},{status:503});
+ if(fault==='reject-before')return Response.json({error:'Cette commande est refusée sans modification.'},{status:400});
+ if(fault==='hold-rejection')return new Promise(resolve=>recoveryHeld.push(()=>resolve(Response.json({error:'Cette commande est refusée sans modification.'},{status:400}))));
+ if(seen.has(body.requestKey)){
+  if(JSON.stringify(recoveryCommands.get(body.requestKey))!==JSON.stringify(body))throw Error('A replay changed its command');
+  return Response.json(seen.get(body.requestKey));
+ }
+ let result;
+ try{const applied=applyKqStaffCommand(raw,body,body.requestKey);raw={...raw,state:applied.state,cashCents:raw.cashCents-applied.debitCents+getKqProductionCashDelta(applied.effects),revision:raw.revision+1};applyEffects(applied.effects);result=projectKqStaffSnapshot(raw)}catch(error){return Response.json({error:error.message},{status:400})}
+ seen.set(body.requestKey,result);recoveryCommands.set(body.requestKey,body);saveRecoveryServer();
+ if(${reauthOnly}&&fault==='401-after')return reauthFailure('401-invalid-json');
+ if(fault==='lose-after')return Response.json({error:'Réponse perdue après enregistrement.'},{status:503});
+ if(fault==='malformed-after')return Response.json({accepted:true});
+ if(fault==='invalid-json-after')return new Response('<html>Gateway interrupted</html>',{status:200,headers:{'Content-Type':'application/json'}});
+ if(fault==='hold-after')return new Promise(resolve=>recoveryHeld.push(()=>resolve(Response.json(result))));
+ return Response.json(result);
+}
 if(${workSceneOnly}){
  const scenario=new URLSearchParams(location.search).get('scene');
  const seed=(command,id)=>{const result=applyKqStaffCommand(raw,command,id);raw={...raw,state:result.state,cashCents:raw.cashCents-result.debitCents,revision:raw.revision+1};applyEffects(result.effects)};
@@ -176,7 +223,13 @@ const request=async(input,init={})=>{
  }
  if(path==='/api/arena/placard/social/player'&&method==='GET'){profileReads++;return profileState==='error'?Response.json({error:'Profil temporairement indisponible'},{status:503}):Response.json({firstName:'Sylvain',profile:profileState==='null'?null:playerProfile})}
  if(path!=='/api/arena/placard/staff')throw Error('Unexpected API '+path);
- const body=method==='POST'?JSON.parse(init.body):null;if(body)calls.push(body);
+ const body=method==='POST'?JSON.parse(init.body):null;
+ if(${reauthOnly}){
+  reauthSession.requests.push({method,path});saveReauthSession();
+  if(!body&&(reauthSession.readFailure||!reauthSession.authenticated)){reads++;return reauthFailure(reauthSession.readFailure??'401')}
+ }
+ if(${recoveryOnly || reauthOnly}&&body)return recoveryPost(body);
+ if(body)calls.push(body);
  if(unavailable)return Response.json({error:'Le personnel est indisponible dans cet essai.'},{status:503});
  if(method==='POST'){
   if(failNext){failNext=false;return Response.json({error:'Connexion interrompue. Réessaie ce même dossier.'},{status:503})}
@@ -188,6 +241,20 @@ const request=async(input,init={})=>{
  reads++;if(!holdSettlement)settle();return Response.json(projectKqStaffSnapshot(raw));
 };
 const api=createKqTutorialApi(request);
+if(${recoveryOnly || reauthOnly})api.isTutorial=new URLSearchParams(location.search).has('tutorial');
+if(${recoveryOnly || reauthOnly})window.__recovery={fail:mode=>recoveryFailure=mode,release:()=>recoveryHeld.shift()?.(),held:()=>recoveryHeld.length,owner:()=>recoveryOwner,persist:saveRecoveryServer,budget:value=>{raw.cashCents=value;saveRecoveryServer();api.notify('kq:staff-updated')}};
+if(${reauthOnly}){
+ window.__reauth={session:()=>structuredClone(reauthSession),readFailure:mode=>{reauthSession.readFailure=mode;saveReauthSession();api.notify('kq:staff-updated')},refresh:()=>{api.notify('kq:staff-updated');window.dispatchEvent(new Event('focus'));document.dispatchEvent(new Event('visibilitychange'))}};
+ window.fetch=async(input,init={})=>{
+  const url=new URL(typeof input==='string'?input:input.url,location.origin);
+  if(url.origin!==location.origin||url.pathname!=='/api/account/login'||init.method!=='POST')throw Error('Unexpected native fixture request '+url.href);
+  const body=JSON.parse(init.body);reauthSession.loginCalls.push({email:body.email});saveReauthSession();
+  if(body.password!=='fixture-success')return Response.json({error:'Connexion refusée dans cette recette.'},{status:401});
+  const owner=body.email==='other@example.test'?'staff-owner-b':'staff-owner-a';
+  Object.assign(reauthSession,{owner,authenticated:true,readFailure:null});saveReauthSession();
+  return Response.json({user:{id:owner,email:body.email,firstName:'Recette'}});
+ };
+}
 if(${contractLifecycleOnly})window.__contracts={reads:contractReads,source:()=>structuredClone(archiveContracts[0]),failRead:()=>contractReadFailure=true,disable:()=>{delete raw.context.contractLifecycleVersion;api.notify('kq:staff-updated')},expire:()=>{raw.serverNow=raw.state.employees.find(person=>person.id==='work-plan-mael').endsAt;api.notify('kq:staff-updated')}};
 if(${cultureWorkOnly})window.__cultureWork={mode:value=>{cultureMode=value;api.notify('kq:staff-updated')},reads:()=>cultureReads,consume:hours=>{raw.state.tasks.find(task=>task.cultureShift).cultureUsedHours=hours;api.notify('kq:staff-updated')}};
 if(${processingWorkOnly})window.__processingStaff={consume:hours=>{raw.state.tasks.find(task=>task.processingShift).processingUsedHours=hours;api.notify('kq:staff-updated')}};
@@ -204,6 +271,15 @@ Object.assign(window.__staff,{personalCondition:condition=>{if(condition==='late
 Object.assign(window.__staff,{personalDay:()=>{raw.serverNow=projectKqStaffSnapshot(raw).calendar.nextDayAt;api.notify('kq:staff-updated')},personalSocialHours:hours=>{const day=String(projectKqStaffSnapshot(raw).calendar.day);raw.state.playerWorkDays[day]={usedHours:(raw.state.playerWorkDays[day]?.usedHours??0)+hours};api.notify('kq:social-updated')},personalAvailability:value=>{unavailable=!value;api.notify('kq:staff-updated')}});
 Object.assign(window.__staff,{personalSkills:xp=>{raw.state.playerSkills={culture:xp,processing:xp,communication:xp,sales:xp,administration:xp};raw.state.playerProcessingXp=xp;api.notify('kq:staff-updated')}});
 function Fixture(){const[view,setView]=useState('staff'),[busy,setBusy]=useState(false),[disabled,setDisabled]=useState(false),[trimEmployee,setTrimEmployee]=useState(undefined);return <KqTutorialApiProvider api={api}><nav aria-label="Navigation de recette"><button disabled={busy} onClick={()=>setView('staff')}>Personnel</button><button disabled={busy} onClick={()=>setView('workshop')}>Atelier</button><button disabled={busy} onClick={()=>setDisabled(value=>!value)}>{disabled?'Déverrouiller le parent':'Verrouiller le parent'}</button></nav>{${playerWorkOnly || helpOnly}?<div style={{maxWidth:1180,margin:'auto',padding:16}}><KqPlayerWorkStatus view={view} onOpenPersonal={()=>setView('staff')}/></div>:null}{view==='staff'?<KqStaffDesk onOpenTrim={employeeId=>{setTrimEmployee(employeeId);setView('workshop')}}/>:<main style={{padding:'24px 16px',maxWidth:1180,margin:'auto'}}><KqWorkshopTrimDesk initialFlowerId={${workPlanOnly}&&trimEmployee?undefined:'trim-manual'} initialEmployeeId={trimEmployee} disabled={disabled} onBusyChange={setBusy} onOpenHarvests={flowerId=>openedHarvests.push(flowerId)}/></main>}</KqTutorialApiProvider>}
+function RecoveryFixture(){
+ const params=new URLSearchParams(location.search);
+ const[owner,setOwner]=useState(recoveryOwner),[view,setView]=useState(${reauthOnly}?params.get('view')??'staff':'staff'),[epoch,setEpoch]=useState(0),[mounted,setMounted]=useState(true);
+ Object.assign(window.__recovery,{view:setView,remount:()=>setEpoch(value=>value+1),mount:setMounted,selectOwner:value=>{saveRecoveryServer();loadRecoveryServer(value);setOwner(value)},logout:()=>setOwner(undefined)});
+ return <KqTutorialApiProvider api={api}><KqStaffRecoveryProvider ownerId={owner}>
+  <nav aria-label="Navigation de recette"><button onClick={()=>setView('staff')}>Personnel</button><button onClick={()=>setView('workshop')}>Atelier</button></nav>
+  {mounted?<main key={epoch} style={{maxWidth:1180,margin:'auto',padding:16}}>{view==='staff'?<KqStaffDesk onOpenTrim={()=>setView('workshop')}/>:<KqWorkshopTrimDesk initialFlowerId={params.get('flower')??'trim-manual'} initialEmployeeId={params.get('employee')??undefined}/>}</main>:null}
+ </KqStaffRecoveryProvider></KqTutorialApiProvider>;
+}
 function CultureStatusFixture(){const work=useKqCultureWorkQuote({enabled:true,runId:'test-run',stageIndex:0,phase:cultureMode==='legacy'?'rolled':'prepare',request});return <KqCultureWorkStatus quote={work.quote} error={work.error} onRefresh={work.refresh}/>}
 let processingMode='preview',processingAvailable=true,processingFail=false;
 const processingCalls=[],processingBase=getKqOperationsCommerce(createKqOperationsLesson('market'));
@@ -218,22 +294,24 @@ const processingApi=createKqTutorialApi(async(input,init={})=>{if(new URL(String
 function assertProcessingToken(body){if(body.expectedWork!==processingQuote().token)throw Error('Missing expected work token')}
 window.__processing={calls:processingCalls,mode:value=>{processingMode=value;processingApi.notify('kq:storage-updated')},available:value=>{processingAvailable=value},fail:()=>{processingFail=true}};
 function ProcessingFixture(){return <KqTutorialApiProvider api={processingApi}><main style={{maxWidth:980,margin:'24px auto',padding:16}}><KqCommerceDesk mode='sales' initialFlowerId={processingFlower} onOpenShop={()=>{}}/></main></KqTutorialApiProvider>}
-createRoot(document.getElementById('root')).render(${processingWorkOnly}&&new URLSearchParams(location.search).has('processing')?<ProcessingFixture/>:${cultureWorkOnly}&&new URLSearchParams(location.search).has('culture-status')?<KqTutorialApiProvider api={api}><main style={{maxWidth:680,margin:'24px auto',padding:16}}><CultureStatusFixture/></main></KqTutorialApiProvider>:<Fixture/>);
+createRoot(document.getElementById('root')).render(${reauthOnly}&&location.pathname==='/compte/connexion'?<main style={{maxWidth:480,margin:'24px auto',padding:16}}><h1>Connexion</h1><AccountLoginForm nextUrl={new URLSearchParams(location.search).get('next')??'/profil'}/></main>:${recoveryOnly || reauthOnly}?<RecoveryFixture/>:${processingWorkOnly}&&new URLSearchParams(location.search).has('processing')?<ProcessingFixture/>:${cultureWorkOnly}&&new URLSearchParams(location.search).has('culture-status')?<KqTutorialApiProvider api={api}><main style={{maxWidth:680,margin:'24px auto',padding:16}}><CultureStatusFixture/></main></KqTutorialApiProvider>:<Fixture/>);
 `;
 const modules = {
   entry,
   'next/image': `import React from'react';export default function Image({src,fill,preload,priority,unoptimized,quality,placeholder,blurDataURL,loader,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>}`,
-  'next/link': `import React from'react';export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>}`,
+  'next/link': `import React from'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>}`,
   'next/navigation': `export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});export const usePathname=()=>location.pathname;export const useSearchParams=()=>new URLSearchParams(location.search);`,
   'next/dynamic': `import React from'react';export default function dynamic(loader,options={}){const C=React.lazy(()=>loader().then(m=>({default:m.default||m})));return props=><React.Suspense fallback={null}><C {...props}/></React.Suspense>}`,
+  'reauth-cart': `export const useCart=()=>({setUser:user=>{window.__reauthLoginUser=user}});`,
+  'reauth-navigation': `const navigate=(path,replace)=>{const url=new URL(path,location.origin);if(url.origin!==location.origin)throw Error('Fixture navigation must stay on origin');replace?location.replace(url.href):location.assign(url.href)};export const useRouter=()=>({push:path=>navigate(path,false),replace:path=>navigate(path,true),refresh:()=>location.reload()});`,
 };
 const fonts = `@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;font:16px Body,Arial,sans-serif;background:#fff1d6}*{box-sizing:border-box}`;
 const server = await createServer({ root, configFile: false, envDir: false, cacheDir: resolve(output, 'vite-cache'), publicDir: resolve(root, 'public'),
   optimizeDeps: { include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'lucide-react'] },
-  resolve: { alias: { '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom'] }, css: { postcss: { plugins: [] } },
-  plugins: [{ name: 'staff-audit', enforce: 'pre', resolveId(id) { if (id in modules) return '\0' + id; },
+  resolve: { alias: { ...(reauthOnly ? { '@/context/CartContext': '\0reauth-cart', '@/components/navigation/NavigationFeedback': '\0reauth-navigation' } : {}), '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom'] }, css: { postcss: { plugins: [] } },
+  plugins: [{ name: 'staff-audit', enforce: 'pre', resolveId(id) { if (id in modules) return '\0' + id; if (id.startsWith('\0') && id.slice(1) in modules) return id; },
     async load(id) { if (id.startsWith('\0') && modules[id.slice(1)]) return (await transformWithOxc(modules[id.slice(1)], id + '.tsx', { lang: 'tsx', jsx: { runtime: 'automatic' } })).code; },
-    configureServer(vite) { vite.middlewares.use((req, res, next) => { if (req.url?.startsWith('/api/')) { res.statusCode = 403; res.end('Live API disabled'); return; } if (req.url?.split('?')[0] !== '/') return next(); res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Personnel · recette isolée</title><style>${fonts}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>`); }); },
+    configureServer(vite) { vite.middlewares.use((req, res, next) => { if (req.url?.startsWith('/api/')) { res.statusCode = 403; res.end('Live API disabled'); return; } if (!(reauthOnly ? ['/', '/arene/placard', '/compte/connexion'] : ['/']).includes(req.url?.split('?')[0])) return next(); res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Personnel · recette isolée</title><style>${fonts}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>`); }); },
   }], server: { host: '127.0.0.1', port: 3438, strictPort: true, hmr: false, watch: null },
 });
 await mkdir(output, { recursive: true });
@@ -274,6 +352,411 @@ try {
     await keyActivate(`[data-staff-station="${kind === 'countryside' ? 'sales' : kind}"]`);
     if (kind !== 'trim') await page.waitForSelector('[data-player-work-form]', { visible: true });
     if (kind === 'countryside') await keyActivate('[data-player-prospecting-mode="countryside"]');
+  }
+  if (reauthOnly) {
+    const dialog = '[data-staff-confirmation]', recover = '[data-staff-recover]', reconnect = '[data-staff-reconnect]';
+    const keyActivate = async selector => {
+      const control = await page.waitForFunction(selector => [...document.querySelectorAll(selector)].find(node => node.checkVisibility() && !node.disabled && !node.closest('[hidden],[inert]')), {}, selector);
+      await control.asElement().focus();
+      await page.waitForFunction(node => document.activeElement === node && !node.disabled, {}, control);
+      await page.keyboard.press('Enter'); await control.dispose();
+    };
+    const sessionKey = 'audit:staff-reauth:session';
+    const gamePath = (view, tutorial = false) => `/arene/placard?view=${view}&section=${view === 'workshop' ? 'processing' : 'team'}&workshop=trim&flower=trim-manual&employee=work-plan-anna&from=staff&fromFlower=trim-machine${tutorial ? '&tutorial=1' : ''}#atelier-trim`;
+    const readySelector = view => view === 'staff' ? '[data-staff-desk] [data-staff-tab="team"]' : '[data-workshop-trim-desk] [data-trim-shared-form]';
+    const ready = view => page.waitForSelector(readySelector(view), { visible: true });
+    const stored = () => page.evaluate(() => Object.entries(localStorage));
+    const dossier = async key => (await stored()).find(([, value]) => value.includes(key));
+    const review = () => page.$eval(dialog + ' dl', node => [...node.children].filter(row => row.querySelector('dt')?.textContent !== 'Disponible après paiement').map(row => row.textContent).join(''));
+    const pause = () => page.evaluate(() => new Promise(resolve => setTimeout(resolve, 100)));
+    const load = async (view = 'staff', initialFailure = null, tutorial = false) => {
+      await page.goto(origin, { waitUntil: 'networkidle0' });
+      await page.evaluate(({ sessionKey, initialFailure }) => {
+        localStorage.clear(); sessionStorage.clear();
+        sessionStorage.setItem(sessionKey, JSON.stringify({ owner: 'staff-owner-a', authenticated: true, readFailure: initialFailure, loginCalls: [], requests: [] }));
+      }, { sessionKey, initialFailure });
+      const path = gamePath(view, tutorial);
+      await page.goto(origin + path, { waitUntil: 'networkidle0' });
+      if (!initialFailure) await ready(view);
+      return path;
+    };
+    const prepare = async view => {
+      if (view === 'staff') {
+        await page.bringToFront(); await pause();
+        await keyActivate('[data-staff-tab="team"]:not(:disabled)');
+        await page.waitForSelector('[data-staff-tab="team"][aria-selected="true"]');
+        await keyActivate('[data-staff-work-employee="work-plan-anna"]:not(:disabled)');
+        await keyActivate('[data-staff-station="training"]:not(:disabled)');
+        await page.waitForSelector('[data-staff-work-form]', { visible: true });
+        await input('Temps à réserver', '2');
+        await keyActivate('[data-staff-work-form] button[type="submit"]');
+      } else {
+        await input('Heures de trim', '2');
+        await keyActivate('[data-trim-shared-form] button[type="submit"]');
+      }
+      await page.waitForSelector(dialog, { visible: true });
+      return review();
+    };
+    const assertLatch = async () => {
+      const before = await page.evaluate(() => window.__reauth.session().requests);
+      await page.evaluate(() => window.__reauth.refresh()); await pause();
+      assert.deepEqual(await page.evaluate(() => window.__reauth.session().requests), before, 'Auth latch stops notification, focus and visibility GETs/POSTs');
+      assert.equal(await page.$('[data-staff-confirm-submit]'), null, 'Expired confirmation has no retry submit');
+    };
+    const assertLink = async path => {
+      const links = await page.$$eval(reconnect, nodes => nodes.map(node => ({ tag: node.tagName, href: node.getAttribute('href') })));
+      assert(links.length > 0, 'Reconnect action is present');
+      for (const link of links) {
+        assert.equal(link.tag, 'A', 'Reconnection is a native document-navigation link');
+        const destination = new URL(link.href, origin);
+        assert.equal(destination.origin, origin); assert.equal(destination.pathname, '/compte/connexion');
+        assert.equal(destination.searchParams.get('next'), path, 'Reconnect preserves exact game path, all query parameters and hash');
+      }
+    };
+    const navigateToLogin = async path => {
+      await assertLink(path);
+      const selector = await page.$(dialog) ? dialog + ' ' + reconnect : reconnect;
+      const navigation = page.waitForNavigation({ waitUntil: 'networkidle0' });
+      await keyActivate(selector); await navigation;
+      await page.waitForSelector('form input[name="email"]', { visible: true });
+      const url = new URL(page.url());
+      assert.equal(url.pathname, '/compte/connexion'); assert.equal(url.searchParams.get('next'), path);
+      await layout();
+    };
+    const login = async (path, { fail = false, other = false } = {}) => {
+      for (const [name, value] of Object.entries({ email: other ? 'other@example.test' : 'same@example.test', password: fail ? 'fixture-failure' : 'fixture-success' })) {
+        await page.focus(`input[name="${name}"]`); await page.keyboard.down('Control'); await page.keyboard.press('A'); await page.keyboard.up('Control'); await page.keyboard.type(value);
+      }
+      if (fail) {
+        await keyActivate('form button[type="submit"]'); await page.waitForSelector('form [role="alert"]', { visible: true });
+        assert.equal(new URL(page.url()).pathname, '/compte/connexion', 'Failed login stays on the actual login form');
+        assert.equal(new URL(page.url()).searchParams.get('next'), path);
+      } else {
+        const navigation = page.waitForNavigation({ waitUntil: 'networkidle0' });
+        await keyActivate('form button[type="submit"]'); await navigation;
+        assert.equal(page.url(), origin + path, 'Successful login returns the exact original URL');
+      }
+    };
+    const once = async view => {
+      const state = await raw();
+      assert.equal(state.revision, 1, 'The explicit same-key confirmation commits exactly once');
+      assert.equal(state.state.tasks.length, 1); assert.equal(state.state.employees[0].workDays['1'].usedHours, 2);
+      assert.equal(state.cashCents, view === 'staff' ? 2493000 : 2500000, 'The original server-offered cost is charged once');
+    };
+    for (const width of [320, 390, 1440]) {
+      await page.setViewport({ width, height: width < 500 ? 844 : 1000, hasTouch: width < 500 });
+      for (const view of ['staff', 'workshop']) {
+        let path = await load(view);
+        if (view === 'staff') {
+          await page.evaluate(() => { window.__staff.payroll(); window.__reauth.refresh(); });
+          await page.waitForFunction(() => [...document.querySelectorAll('[data-staff-desk] button')].some(node => node.textContent.trim() === 'Vérifier le règlement'));
+        }
+        const before = await raw();
+        await page.evaluate(() => window.__reauth.readFailure('401-invalid-json'));
+        await page.waitForSelector('[data-staff-reauth]', { visible: true });
+        assert(await page.$(readySelector(view)), 'GET 401 retains the last known screen');
+        assert.deepEqual(await raw(), before, 'GET 401 leaves all authoritative totals intact');
+        assert.equal((await calls()).length, 0); await assertLink(path); await assertLatch();
+        if (view === 'staff') assert(await page.$$eval('[data-staff-desk] button', nodes => nodes.find(node => node.textContent.trim() === 'Vérifier le règlement')?.disabled), 'Payroll action stays disabled while authentication is required');
+        assert(!await page.$$eval('[data-staff-desk] button, [data-workshop-trim-desk] button', nodes => nodes.some(node => node.checkVisibility() && !node.disabled && /actualiser|réessayer le chargement/i.test(node.textContent))), 'No normal refresh action remains after GET 401');
+        await shot(`reauth-get-stale-${view}-${width}`);
+
+        path = await load(view, '401-invalid-json');
+        await page.waitForSelector('[data-staff-reauth]', { visible: true });
+        assert.equal(await page.$(readySelector(view)), null, 'First GET 401 does not invent a snapshot');
+        await assertLink(path); await assertLatch(); await layout();
+        results.push({ width, scope: `${view} GET session expiry`, checks: ['malformed 401 detected before JSON', 'last known snapshot retained', 'initial failure has no invented data', 'normal retry absent', 'refresh events blocked', 'exact return URL', 'keyboard reachable reconnect', 'no overflow'] });
+
+        path = await load(view);
+        const reviewed = await prepare(view);
+        const failure = width === 320 ? '401' : width === 390 ? '401-invalid-json' : '401-after';
+        await page.evaluate(failure => window.__recovery.fail(failure), failure);
+        await keyActivate('[data-staff-confirm-submit]');
+        await page.waitForSelector(dialog + ' [data-staff-reconnect]', { visible: true });
+        const original = (await calls())[0], saved = await dossier(original.requestKey);
+        assert(saved, 'POST 401 keeps the original durable dossier');
+        assert.equal(await review(), reviewed, 'Expired confirmation preserves its person, time and cost');
+        assert.equal(await page.$eval(dialog, node => node.open), true, 'The native modal remains open');
+        await assertLatch(); await assertLink(path);
+        for (let tab = 0; tab < 5; tab++) { await page.keyboard.press('Tab'); assert(await page.evaluate(() => document.querySelector('[data-staff-confirmation]')?.matches(':modal') && (document.activeElement === document.body || !!document.activeElement?.closest('[data-staff-confirmation]'))), 'Native modal prevents keyboard access to background controls'); }
+        await shot(`reauth-post-${view}-${width}`);
+        await page.keyboard.press('Escape'); await page.waitForFunction(() => !document.querySelector('[data-staff-confirmation]'));
+        assert.deepEqual(await dossier(original.requestKey), saved, 'Escape closes the modal without losing its dossier');
+        await assertLatch(); await keyActivate(recover); await page.waitForSelector(dialog + ' ' + reconnect, { visible: true });
+        await navigateToLogin(path);
+        await login(path, { fail: true });
+        assert.deepEqual(await dossier(original.requestKey), saved, 'Failed login preserves the complete submitted dossier');
+        assert.equal(await page.evaluate(() => JSON.parse(sessionStorage.getItem('audit:staff-recovery:server:staff-owner-a')).calls.length), 1, 'Login never posts a game command');
+        await login(path); await ready(view); await pause();
+        assert.equal(await page.$(dialog), null, 'Returning after login waits for explicit recovery');
+        assert.equal((await calls()).length, 1, 'Successful login does not retry automatically');
+        assert.deepEqual(await dossier(original.requestKey), saved);
+        if (view === 'workshop') {
+          assert(await page.$('[data-trim-assigned-employee="work-plan-anna"]'), 'Employee context returns to the real Trim component');
+          assert(await page.$('[data-guide-trim-flower-id="trim-manual"][data-trim-followed]'), 'Flower context returns to the real Trim component');
+        }
+        await keyActivate(recover); await page.waitForSelector(dialog, { visible: true });
+        assert.equal(await review(), reviewed);
+        await keyActivate('[data-staff-confirm-submit]'); await page.waitForFunction(() => !document.querySelector('[data-staff-confirmation]'));
+        assert.deepEqual((await calls())[1], original, 'Explicit recovery sends the exact original command and request key');
+        assert.equal((await calls()).length, 2); assert.equal(await dossier(original.requestKey), undefined); await once(view); await layout();
+        results.push({ width, scope: `${view} POST session expiry and account round trip`, checks: [failure, 'durable original key and command', 'review unchanged', 'native modal and keyboard focus', 'Escape keeps dossier', 'failed login keeps URL and dossier', 'actual login form', 'same-account exact URL return', 'no automatic POST', 'explicit identical replay', 'one debit and reservation', 'no overflow'] });
+      }
+    }
+    await page.setViewport({ width: 390, height: 844, hasTouch: true });
+    let path = await load('staff'); await prepare('staff');
+    await page.evaluate(() => window.__recovery.fail('401')); await keyActivate('[data-staff-confirm-submit]');
+    await page.waitForSelector(dialog + ' ' + reconnect, { visible: true });
+    const ownerACommand = (await calls())[0], ownerADossier = await dossier(ownerACommand.requestKey);
+    await navigateToLogin(path); await login(path, { other: true }); await ready('staff'); await pause();
+    assert.equal(await page.evaluate(() => window.__recovery.owner()), 'staff-owner-b');
+    assert.equal(await page.$(recover), null); assert.equal(await page.$(dialog), null);
+    assert.deepEqual(await dossier(ownerACommand.requestKey), ownerADossier, 'Other account cannot erase the original owner dossier');
+    assert.equal((await calls()).length, 0, 'Other account never posts the old command');
+    await prepare('staff'); await keyActivate('[data-staff-confirm-close]');
+    assert.equal((await calls()).length, 0, 'Other account may prepare its own review without replaying the previous account');
+    results.push({ width: 390, scope: 'different account', checks: ['old dossier preserved under original owner', 'old recovery hidden', 'no automatic replay', 'new account isolated'] });
+
+    path = await load('workshop'); const ownerChangedReview = await prepare('workshop');
+    await page.evaluate(() => window.__recovery.fail('owner-changed')); await keyActivate('[data-staff-confirm-submit]');
+    await page.waitForSelector(dialog + ' ' + reconnect, { visible: true });
+    assert.equal(await review(), ownerChangedReview);
+    assert.match(await page.$eval(dialog, node => node.textContent), /compte.*chang|autre compte/i, 'Owner-change conflict has distinct account wording');
+    assert(await dossier((await calls())[0].requestKey)); await assertLink(path); await assertLatch();
+    results.push({ width: 390, scope: 'owner changed conflict', checks: ['409 staff_owner_changed reconnects', 'distinct wording', 'original dossier retained', 'no normal retry'] });
+
+    for (const failure of ['503', '419']) {
+      await load('staff'); await page.evaluate(failure => window.__reauth.readFailure(failure), failure);
+      await page.waitForSelector('[data-staff-desk] [role="alert"]', { visible: true });
+      assert.equal(await page.$(reconnect), null, `${failure} does not become session expiry`);
+      assert(await page.$$eval('[data-staff-desk] button', nodes => nodes.some(node => node.checkVisibility() && !node.disabled && /actualiser/i.test(node.textContent))), `${failure} retains normal refresh`);
+      await page.evaluate(() => window.__reauth.readFailure(null)); await ready('staff');
+      results.push({ width: 390, scope: `GET ${failure}`, checks: ['ordinary read failure', 'normal retry available', 'no login navigation'] });
+    }
+    await load('staff', null, true);
+    await page.evaluate(() => {
+      window.__localStorageAccesses = [];
+      for (const method of ['getItem', 'setItem', 'removeItem']) {
+        const original = Storage.prototype[method];
+        Storage.prototype[method] = function (...args) { if (this === localStorage) window.__localStorageAccesses.push(method); return original.apply(this, args); };
+      }
+    });
+    await prepare('staff'); await page.evaluate(() => window.__recovery.fail('401-invalid-json')); await keyActivate('[data-staff-confirm-submit]');
+    await page.waitForSelector(dialog + ' [role="alert"]', { visible: true });
+    assert.equal(await page.$(reconnect), null, 'Tutorial POST 401 never offers live login');
+    assert(await page.$('[data-staff-confirm-submit]'), 'Tutorial remains on its memory-only retry path');
+    await keyActivate('[data-staff-confirm-close]');
+    await page.evaluate(() => window.__reauth.readFailure('401')); await page.waitForSelector('[data-staff-desk] [role="alert"]', { visible: true });
+    assert.equal(await page.$(reconnect), null, 'Tutorial GET 401 never offers live login');
+    assert.equal(new URL(page.url()).pathname, '/arene/placard');
+    assert.deepEqual(await page.evaluate(() => window.__localStorageAccesses), [], 'Tutorial never accesses live recovery storage');
+    results.push({ width: 390, scope: 'tutorial isolation', checks: ['GET and malformed POST 401 remain in tutorial', 'no login link or navigation', 'memory-only dossier', 'no localStorage access or live API'] });
+  }
+  if (recoveryOnly) {
+    const dialog = '[data-staff-confirmation]', recover = '[data-staff-recover]';
+    const ready = () => page.waitForSelector('[data-staff-desk] [data-staff-tab="team"]');
+    const stored = () => page.evaluate(() => Object.entries(localStorage));
+    const hasKey = async key => (await stored()).some(([, value]) => value.includes(key));
+    const close = async () => { await keyActivate('[data-staff-confirm-close]'); await page.waitForFunction(() => !document.querySelector('[data-staff-confirmation]')); await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)))); };
+    const submit = async () => { await keyActivate('[data-staff-confirm-submit]'); };
+    const uncertain = () => page.waitForSelector('[data-staff-confirmation] [role="alert"]', { visible: true });
+    const completed = () => page.waitForFunction(() => !document.querySelector('[data-staff-confirmation]'));
+    const load = async (query = '') => {
+      await page.goto(origin, { waitUntil: 'networkidle0' });
+      await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); });
+      await page.goto(origin + query, { waitUntil: 'networkidle0' }); await ready();
+    };
+    const training = async () => {
+      await keyActivate('[data-staff-tab="team"]');
+      await keyActivate('[data-staff-work-employee="work-plan-anna"]');
+      await keyActivate('[data-staff-station="training"]');
+      await page.waitForSelector('[data-staff-work-form]', { visible: true });
+      await input('Temps à réserver', '2');
+      await keyActivate('[data-staff-work-form] button[type="submit"]');
+      await page.waitForSelector(dialog, { visible: true });
+    };
+    const workshop = async () => { await button('Atelier', '[aria-label="Navigation de recette"]'); await page.waitForSelector('[data-workshop-trim-desk] [data-trim-shared-form]'); };
+    const replay = async original => {
+      await keyActivate(recover); await page.waitForSelector(dialog, { visible: true }); await submit(); await completed();
+      assert.deepEqual((await calls()).at(-1), original, 'Recovery sends the original command and request key');
+      assert.equal(await hasKey(original.requestKey), false, 'A confirmed replay removes its durable dossier');
+    };
+    const once = async () => {
+      const state = await raw();
+      assert.equal(state.revision, 1, 'Only one mutation commits');
+      assert.equal(state.cashCents, 2493000, 'Training debits exactly 70 euros');
+      assert.equal(state.state.tasks.length, 1, 'Training reserves exactly one task');
+      assert.equal(state.state.employees[0].workDays['1'].usedHours, 2, 'Only two employee hours are reserved');
+    };
+    // A separate same-origin page exercises browser-wide locks without creating
+    // a second fixture server or silently sending commands from another tab.
+    const lockPeer = await browser.newPage(), lockName = 'kq:staff-confirmation:v1:staff-owner-a';
+    lockPeer.on('pageerror', error => errors.push(error.message));
+    await lockPeer.setRequestInterception(true);
+    lockPeer.on('request', request => {
+      if (request.url() === origin + '/recovery-lock-peer') return void request.respond({ status: 200, contentType: 'text/html', body: '<!doctype html><html><head><link rel="icon" href="data:,"></head><body>Isolated lock peer</body></html>' });
+      if (request.url().startsWith('data:')) return void request.continue();
+      forbiddenRequests.push(request.url()); void request.abort();
+    });
+    await lockPeer.goto(origin + '/recovery-lock-peer'); await page.bringToFront();
+    const lockAvailable = () => lockPeer.evaluate(name => navigator.locks.request(name, { ifAvailable: true }, lock => !!lock), lockName);
+    const holdLock = async () => {
+      await lockPeer.evaluate(name => { window.__staffLockHeld = false; window.__staffLockPromise = navigator.locks.request(name, async () => { window.__staffLockHeld = true; await new Promise(resolve => { window.__staffReleaseLock = resolve; }); window.__staffLockHeld = false; }); }, lockName);
+      await lockPeer.waitForFunction(() => window.__staffLockHeld);
+    };
+    const releaseLock = () => lockPeer.evaluate(async () => { window.__staffReleaseLock(); await window.__staffLockPromise; });
+    for (const width of [320, 390, 1440]) {
+      await page.setViewport({ width, height: width < 500 ? 844 : 1000, hasTouch: width < 500 });
+      await load(); await training();
+      assert.equal((await stored()).length, 0, 'An unsent review is not a recovery dossier');
+      await close(); await page.reload({ waitUntil: 'networkidle0' }); await ready();
+      assert.equal(await page.$(recover), null); assert.equal((await calls()).length, 0, 'Cancelling an unsent review does not post');
+      for (const failure of ['lose-before', 'lose-after']) {
+        await load(); await training();
+        const reviewed = await page.$eval(dialog + ' dl', node => node.textContent);
+        await page.evaluate(failure => window.__recovery.fail(failure), failure); await submit(); await uncertain();
+        const original = (await calls())[0];
+        assert(await hasKey(original.requestKey), 'The submitted dossier is durable before recovery');
+        assert.equal((await raw()).revision, failure === 'lose-before' ? 0 : 1);
+        await shot(`recovery-${failure}-${width}`); await close(); await page.waitForSelector(recover, { visible: true });
+        await page.evaluate(() => window.__recovery.remount()); await page.waitForSelector(recover, { visible: true });
+        assert.equal((await calls()).length, 1, 'Remounting never retries automatically');
+        await workshop(); await page.waitForSelector(recover, { visible: true });
+        assert(await page.$$eval('[data-workshop-trim-desk] button', nodes => nodes.some(node => node.textContent.trim() === 'Vérifier cet achat' && node.disabled)), 'A pending Personnel command locks new workshop commands');
+        await keyActivate(recover); await page.waitForSelector(dialog, { visible: true });
+        assert((await page.$eval(dialog + ' dl', node => node.textContent)).includes('2 h'), 'Workshop recovery retains the reviewed reservation');
+        assert((await page.$eval(dialog, node => node.textContent)).includes('formation'), 'Workshop reopens the original Personnel dossier');
+        assert(reviewed.includes('70'), 'The original 70 euro cost was shown before submitting');
+        await close(); await page.reload({ waitUntil: 'networkidle0' }); await ready(); await page.waitForSelector(recover, { visible: true });
+        assert.equal((await calls()).length, 1, 'Reloading reads the dossier without posting');
+        assert.equal(await page.$(dialog), null, 'Reload recovery waits for an explicit open');
+        await replay(original); await once(); await layout();
+        assert.equal((await calls()).length, 2, 'The explicit replay is the only additional POST');
+      }
+      results.push({ width, scope: 'durable Staff recovery', checks: ['unsent review remains ephemeral', 'failure before commit', 'failure after commit', 'close and reopen', 'screen remount', 'Personnel to Atelier recovery', 'new commands locked', 'reload without automatic POST', 'identical key and command', 'one 70 euro charge and one two-hour reservation', 'keyboard recovery', 'no horizontal overflow'] });
+    }
+    await page.setViewport({ width: 390, height: 844, hasTouch: true });
+    for (const failure of ['throw-before', 'malformed-after', 'invalid-json-after']) {
+      await load(); await training(); await page.evaluate(failure => window.__recovery.fail(failure), failure); await submit(); await uncertain();
+      const original = (await calls())[0]; await close(); await page.reload({ waitUntil: 'networkidle0' }); await ready(); await replay(original); await once();
+    }
+    results.push({ width: 390, scope: 'transport and malformed responses', checks: ['thrown connection failure remains recoverable', 'malformed success remains recoverable', 'invalid JSON remains recoverable', 'same receipt after reload'] });
+
+    await load(); await training();
+    await page.evaluate(() => { window.__restoreStorageSet = Storage.prototype.setItem; Storage.prototype.setItem = function (...args) { if (this === localStorage) throw new DOMException('Fixture storage unavailable', 'QuotaExceededError'); return window.__restoreStorageSet.apply(this, args); }; });
+    await submit(); await uncertain();
+    assert.equal((await calls()).length, 0, 'Unavailable localStorage prevents the first live POST');
+    assert.equal((await raw()).revision, 0);
+    await page.evaluate(() => { Storage.prototype.setItem = window.__restoreStorageSet; });
+    await submit(); await completed(); await once();
+    results.push({ width: 390, scope: 'storage safety', checks: ['storage write failure prevents first POST', 'retry after storage repair commits once'] });
+
+    await load(); await training(); await page.evaluate(() => window.__recovery.fail('hold-rejection')); await submit();
+    await page.waitForFunction(() => window.__recovery.held() === 1);
+    assert.equal(await lockAvailable(), false, 'The first rejection attempt retains its lock until the response arrives');
+    await lockPeer.evaluate(name => { window.__afterRejectionLock = navigator.locks.request(name, () => localStorage.getItem(name)); }, lockName);
+    await page.evaluate(() => window.__recovery.release()); await uncertain();
+    assert.equal(await lockPeer.evaluate(() => window.__afterRejectionLock), null, 'A waiting tab acquires the lock only after definitive rejection cleanup');
+    await close(); assert.equal(await page.$(recover), null, 'A confirmed rejection can be dismissed');
+    assert.equal((await stored()).length, 0, 'A rejected command does not leave an uncertain dossier');
+    assert.equal((await raw()).revision, 0);
+    results.push({ width: 390, scope: 'confirmed rejection', checks: ['server rejection does not commit', 'real other-tab waiter cannot acquire before rejection cleanup', 'dismissal unlocks future work'] });
+
+    await load(); await training(); await holdLock(); await submit(); await completed();
+    await page.waitForSelector('[data-staff-desk] [role="alert"]');
+    assert.equal((await calls()).length, 0, 'A competing tab lock blocks the first POST');
+    assert.equal((await stored()).length, 0, 'A lock conflict cannot persist an unsent review');
+    await releaseLock(); assert.equal((await calls()).length, 0, 'Releasing the other tab lock never retries automatically');
+    await button('Actualiser'); await page.waitForSelector('[data-guide-staff-ready="true"]');
+    await keyActivate('[data-staff-work-form] button[type="submit"]'); await submit(); await completed(); await once();
+    assert(await lockAvailable(), 'A successful confirmation releases its owner lock');
+    results.push({ width: 390, scope: 'cross-tab first send', checks: ['real other-tab lock blocks first POST', 'blocked unsent review stays ephemeral', 'explicit refresh and new review required', 'success releases the lock'] });
+
+    await load(); await training(); await page.evaluate(() => window.__recovery.fail('lose-after')); await submit(); await uncertain();
+    const lockedCommand = (await calls())[0], lockedDossier = await stored(); await close();
+    await holdLock(); await keyActivate(recover); await submit(); await uncertain();
+    assert.equal((await calls()).length, 1, 'A competing tab lock prevents concurrent replay');
+    assert.deepEqual(await stored(), lockedDossier, 'Lock contention preserves the exact saved dossier');
+    await releaseLock(); assert.equal((await calls()).length, 1, 'Unlocking does not queue an automatic replay');
+    await submit(); await completed(); await once(); assert.deepEqual((await calls())[1], lockedCommand);
+    assert.equal(await hasKey(lockedCommand.requestKey), false); assert(await lockAvailable());
+    results.push({ width: 390, scope: 'cross-tab replay', checks: ['real other-tab lock blocks recovery POST', 'original dossier and key remain intact', 'only explicit replay after release commits', 'one debit and reservation'] });
+
+    await load(); await training(); await page.evaluate(() => window.__recovery.fail('lose-before')); await submit(); await uncertain();
+    const removedCommand = (await calls())[0]; await close(); await keyActivate(recover);
+    await holdLock(); await lockPeer.evaluate(name => localStorage.removeItem(name), lockName); await releaseLock();
+    await page.waitForFunction(() => !document.querySelector('[data-staff-recovery]'));
+    if (await page.$(dialog)) await submit(); await completed();
+    assert.equal((await calls()).length, 1, 'A dossier resolved in another tab cannot be sent again from its stale review');
+    assert.equal(await hasKey(removedCommand.requestKey), false, 'A stale review cannot recreate a cleared dossier');
+    results.push({ width: 390, scope: 'other-tab resolution', checks: ['storage notification removes recovery', 'stale resumed review cannot resend or recreate the dossier'] });
+
+    await load(); await training();
+    await page.evaluate(() => { Object.defineProperty(navigator, 'locks', { configurable: true, value: undefined }); });
+    await submit(); await uncertain(); assert.equal((await calls()).length, 0, 'Missing Web Locks prevents a live POST');
+    assert.equal((await stored()).length, 0, 'Missing Web Locks cannot create a submitted dossier');
+    await page.evaluate(() => { delete navigator.locks; }); await submit(); await completed(); await once();
+    assert(await lockAvailable());
+    results.push({ width: 390, scope: 'unavailable browser locks', checks: ['unsupported locking fails closed before POST', 'explicit retry works after locking is restored'] });
+
+    await load(); await training(); await page.evaluate(() => window.__recovery.fail('lose-after')); await submit(); await uncertain();
+    const uncertainCommand = (await calls())[0];
+    await page.evaluate(() => window.__recovery.fail('reject-before')); await submit(); await uncertain(); await close();
+    await page.waitForSelector(recover, { visible: true });
+    assert(await hasKey(uncertainCommand.requestKey), 'A later rejection cannot discard a previously ambiguous commit');
+    await replay(uncertainCommand); await once();
+    results.push({ width: 390, scope: 'ambiguous then rejected', checks: ['a later rejection preserves the original unresolved dossier', 'same-key recovery still retrieves the committed receipt'] });
+
+    await load(); await page.evaluate(() => window.__recovery.budget(10000)); await ready(); await training();
+    await page.evaluate(() => window.__recovery.fail('lose-after')); await submit(); await uncertain(); const limitedBudgetCommand = (await calls())[0];
+    await close(); await page.reload({ waitUntil: 'networkidle0' }); await ready(); await replay(limitedBudgetCommand);
+    assert.equal((await raw()).cashCents, 3000, 'A replay works even when the first debit left less than the original cost');
+    assert.equal((await raw()).state.tasks.length, 1); assert.equal((await raw()).revision, 1);
+    results.push({ width: 390, scope: 'cash after lost receipt', checks: ['replay stays possible after the original debit', 'no second charge when current balance is below the original cost'] });
+
+    await load(); await training(); await page.evaluate(() => window.__recovery.fail('hold-after')); await submit();
+    await page.waitForFunction(() => window.__recovery.held() === 1); const heldCommand = (await calls())[0];
+    const started = Date.now(); assert.equal(await lockAvailable(), false, 'The owner lock covers the actual pending POST');
+    await uncertain(); const timeoutMs = Date.now() - started;
+    assert(timeoutMs >= 18000 && timeoutMs < 28000, 'Unresponsive transport reaches the bounded 20 second deadline');
+    assert(await lockAvailable(), 'The bounded timeout releases the lock while preserving recovery');
+    await close(); await page.evaluate(() => window.__recovery.release());
+    await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 150)));
+    await page.waitForSelector(recover, { visible: true }); assert(await hasKey(heldCommand.requestKey), 'A late success cannot silently clear the unresolved dossier');
+    assert.equal((await calls()).length, 1, 'Deadline and late response never retry automatically');
+    await replay(heldCommand); await once();
+    results.push({ width: 390, scope: 'bounded timeout', timeoutMs, checks: ['20 second deadline', 'real other-tab lock probe cannot acquire during POST', 'timeout releases the lock', 'late response ignored', 'explicit same-key replay after timeout', 'one debit and reservation'] });
+
+    await load(); await training(); await page.evaluate(() => window.__recovery.fail('hold-after')); await submit();
+    await page.waitForFunction(() => window.__recovery.held() === 1); const ownerACommand = (await calls())[0];
+    await page.evaluate(() => window.__recovery.selectOwner('staff-owner-b')); await ready();
+    await page.waitForFunction(() => !document.querySelector('[data-staff-confirmation]'));
+    assert.equal(await page.$(recover), null, 'A different owner cannot open the previous owner dossier');
+    assert.equal((await calls()).length, 0, 'Changing owner never replays the previous command');
+    await workshop(); await button('Vérifier cet achat'); await submit(); await completed();
+    assert.equal((await raw()).cashCents, 2350000, 'The second owner buys only their own machine');
+    await page.evaluate(() => window.__recovery.release()); await page.evaluate(() => new Promise(resolve => setTimeout(resolve, 150)));
+    assert(await hasKey(ownerACommand.requestKey), 'Late response for the first owner cannot clear their saved dossier after an owner change');
+    assert.equal((await calls()).length, 1, 'Late response cannot write for the new owner');
+    await page.evaluate(() => window.__recovery.selectOwner('staff-owner-a')); await page.waitForSelector(recover, { visible: true });
+    await replay(ownerACommand); await once();
+    results.push({ width: 390, scope: 'owner isolation', checks: ['in-flight owner switch drops old UI', 'different owner has independent server state', 'no cross-owner POST', 'late old-owner response ignored', 'original owner can explicitly recover'] });
+
+    await load(); await training(); await page.evaluate(() => window.__recovery.fail('lose-before')); await submit(); await uncertain();
+    const loggedOutCommand = (await calls())[0]; await close(); await page.evaluate(() => window.__recovery.logout());
+    await page.waitForFunction(() => !document.querySelector('[data-staff-recover]'));
+    assert(await hasKey(loggedOutCommand.requestKey), 'Logging out preserves the original owner recovery');
+    await page.evaluate(() => window.__recovery.selectOwner('staff-owner-a')); await page.waitForSelector(recover, { visible: true }); await replay(loggedOutCommand); await once();
+    results.push({ width: 390, scope: 'session change', checks: ['logout hides private recovery', 'same owner can recover after returning'] });
+
+    await load('?tutorial=1');
+    await page.evaluate(() => { window.__localStorageAccesses = []; for (const method of ['getItem', 'setItem', 'removeItem']) { const original = Storage.prototype[method]; Storage.prototype[method] = function (...args) { if (this === localStorage) window.__localStorageAccesses.push([method, args[0]]); return original.apply(this, args); }; } });
+    await page.evaluate(() => window.__recovery.remount()); await ready(); await training();
+    await page.evaluate(() => window.__recovery.fail('lose-after')); await submit(); await uncertain(); const tutorialCommand = (await calls())[0];
+    await close(); await workshop(); await replay(tutorialCommand); await once();
+    assert.deepEqual(await page.evaluate(() => window.__localStorageAccesses), [], 'Tutorial recovery never reads or writes live browser storage');
+    results.push({ width: 390, scope: 'tutorial isolation', checks: ['memory-only recovery across screens', 'no localStorage reads or writes', 'no live API calls'] });
+    await lockPeer.close();
   }
   if (carouselOnly) {
     const current = () => page.$eval('[data-staff-carousel] [data-staff-tab][aria-selected=true]', node => node.dataset.staffTab);
@@ -1481,6 +1964,7 @@ try {
       assert(await page.$eval(scene, node => node.getAnimations({ subtree: true }).every(animation => animation.playState !== 'running')), 'Reduced motion stops actual animation timelines');
       assert.deepEqual(await raw(), hired, 'The visual response cannot mutate the confirmed contract');
       await shot(`staff-moment-reduced-${width}`); await dismiss(); await noReplayAfterRead([{ id: hireId, kind: 'hire' }]);
+      await keyActivate('[data-staff-tab="team"]');
       await keyActivate(`[data-staff-work-employee="${employee.id}"]`); await keyActivate('[data-staff-station="training"]');
       await input('Temps à réserver', '2'); await select('Compétence à apprendre', 'communication');
       const beforeTraining = await raw();
@@ -1550,7 +2034,7 @@ try {
     await keyActivate('[data-moment-open-employee]'); await page.waitForSelector('dialog[data-staff-employee-sheet][open]');
     assert(await page.$('[data-staff-moment]'), 'Reading the employee sheet preserves its confirmed receipt');
     await button('Organiser sa journée', '[data-staff-employee-sheet]'); await page.waitForFunction(() => !document.querySelector('[data-staff-moment]'));
-    assert(await page.$eval(`[data-staff-employee-id="${employee.id}"] [data-staff-open-planning]`, node => node === document.activeElement && node.getAttribute('aria-expanded') === 'true'), 'The next action opens the exact employee file and restores keyboard focus');
+    await page.waitForFunction(id => { const control = document.querySelector(`[data-staff-employee-id="${id}"] [data-staff-planning-mode="day"]`); return control === document.activeElement && control?.getAttribute('aria-pressed') === 'true'; }, {}, employee.id);
     await noMoment('Opening the employee file dismisses its receipt');
     results.push({ width: 390, scope: 'renewed candidate identity', checks: ['new candidate name and code', 'preserved portrait source and canvas identity', 'single acknowledged hire', 'next action opens the exact employee file with keyboard focus', 'decoded nine-slice materials', 'reduced motion', 'no overflow'], mutations: (await calls()).length });
   }
@@ -2193,7 +2677,7 @@ try {
       results.push({ width, scope: 'Brittany prospecting map', checks: ['four departments and eight usable city buttons', 'keyboard and touch navigation', 'changing flavor and product profiles', 'informational exploration without writes', 'exact destination hours and travel cost', 'cancellation without mutation', 'network 125→126→127', 'Brest revisited beyond former local pool', 'two travel payments only', 'completed rewards do not replay', 'no horizontal overflow'], mutations: commands.length });
     }
   }
-  for (const width of carouselOnly || productionOnly || impactDashboardOnly || benefitsOnly || process.argv.includes('--recruitment-only') || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 390, 1440]) {
+  for (const width of reauthOnly || recoveryOnly || carouselOnly || productionOnly || impactDashboardOnly || benefitsOnly || process.argv.includes('--recruitment-only') || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 390, 1440]) {
     await page.setViewport({ width, height: width < 500 ? 844 : 1000 });
     await page.goto(origin, { waitUntil: 'networkidle0' }); await page.evaluate(() => document.fonts.ready);
     await page.waitForSelector('[data-staff-desk] [role="meter"]'); await shot(`empty-${width}`);
@@ -2267,7 +2751,7 @@ try {
     await page.evaluate(() => window.__staff.unavailable()); await button('Actualiser'); await page.waitForSelector('[role="alert"]'); await shot(`unavailable-${width}`);
     results.push({ width, checks: ['layout', 'profile avatar renderer ready', 'keyboard dialogs', 'review without mutation', 'hire', 'invalid training', 'shared capacity', 'travel confirmation', 'part-time leave and cancellation', 'payroll', 'independent workshop', 'initial lot', 'parent locking', 'workshop retry', 'actual lot counts', 'player manual trim', 'machine purchase', 'employee machine trim', 'quality penalty review', 'trim completion', 'harvest callback', 'shared hours on return to Personnel', 'unavailable isolation'], mutations: (await calls()).length });
   }
-  for (const width of carouselOnly || productionOnly || impactDashboardOnly || benefitsOnly || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 1440]) {
+  for (const width of reauthOnly || recoveryOnly || carouselOnly || productionOnly || impactDashboardOnly || benefitsOnly || dashboardOnly || processingWorkOnly || cultureWorkOnly || weeklyPlanOnly || employeeSheetOnly || sharedTrimOnly || archiveOnly || workSceneOnly || workPlanOnly || prospectingOnly || playerWorkOnly || visualClarityOnly || staffMomentsOnly ? [] : [320, 1440]) {
     await page.setViewport({ width, height: width < 500 ? 844 : 1000 });
     await page.goto(origin, { waitUntil: 'networkidle0' }); await button('Recruter');
     await page.waitForSelector('[data-recruitment-cycle="0"]');

@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "terpenes-03",
+  "entries": {
+    "record-terpene-alpha-terpinene": {
+      "contentHash": "295df7acc10beb58585c4d32aadc576cdf45fd913cf61436d1859c0932787f30",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-gamma-terpinene": {
+      "contentHash": "bc3c0a40560b556a16c0a7bcf6ed7591966099dd4accc1c2b02272f1818fa6f0",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-terpinolene": {
+      "contentHash": "cc516b48900fc006286156d6aa8f834a482d7f3c5c7a3d87645133923a86f159",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-e-beta-ocimene": {
+      "contentHash": "ccfeac7b6603789b3b4647c546e1fbf477197bc0bf52181a9e558ac6ba2689a4",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-z-beta-ocimene": {
+      "contentHash": "ef370c1302daa12ffc783c008a742f3e145bc6d2b66a46fdf1d9e1e067188272",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-linalool": {
+      "contentHash": "205e520801b89ba0b77d2b0488b53994c4ce18622f86eb58392f05fdf89ff989",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-fenchol": {
+      "contentHash": "b4746851f7139909c8906e69ff4c10124618f87d6cf23eefe276d0bd4520b324",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 2,
+    "hash": "f9a9e3e6ac491f5c7199fb562db1cc55a106c25137f09a7c045a0de21ec4aa18"
+  }
+}

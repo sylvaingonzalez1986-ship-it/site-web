@@ -1,0 +1,373 @@
+{
+  "checkedAt": "2026-11-11",
+  "scope": "10 unique WORKSHOP_MODELS; six in-game families, repeated source model at tiers when mapping repeats.",
+  "method": "Manufacturer and catalog-anchor pages checked on the web; every source image downloaded and visually inspected before image generation. Morphology only; game economics and processing parameters are not manufacturer claims.",
+  "generation": {
+    "tool": "image_gen__imagegen",
+    "mode": "built-in",
+    "transparentBackground": true,
+    "status": "complete",
+    "transform": "Preserve generated alpha. Sharp trim alpha then fit within 480x480 and extend 16px each edge to 512x512 WebP."
+  },
+  "items": [
+    {
+      "key": "SIFT-TRAY",
+      "productName": "The Original Resinator OG Base Model (Cryo-Sieve)",
+      "productUrl": "https://theoriginalresinator.com/product/original-resinator-affordable-cannabis-trimmer-model/",
+      "photoPageUrl": "https://hydrobuilder.com/products/the-original-resinator-og-base-model-cryo-sieve",
+      "photoUrl": "https://hydrobuilder.com/cdn/shop/files/original-resinator-og-base-model_1-gigapixel-high_fidelity_v2-3x_8107136f-1910-402b-a227-a515fb9a7968.jpg?v=1778263008&width=1800",
+      "observedMorphology": "Wide horizontal drum inside curved transparent enclosure. Black lower basin, two broad black sled feet, black vertical side motor on left, lid handles and front latches. Light mesh inner drum with circumferential support rings.",
+      "limitations": [
+        "Legacy SIFT-TRAY alt describes wooden trays, which contradict the catalog anchor.",
+        "Manufacturer page verified but its photo retrieval was rate limited. Photo is the identified OG sold by Hydrobuilder; filename indicates retailer upscaling.",
+        "No tier hardware differences substantiated."
+      ],
+      "alt": "Tamis motorisé à tambour horizontal sous capot transparent, avec socle noir et moteur latéral.",
+      "localReferencePath": "output/equipment-reference/photos/SIFT-TRAY.jpg",
+      "prompt": "Use case: style-transfer. Asset type: game warehouse equipment catalogue illustration. Input image 1 is the exact real product reference: faithfully redraw only the specified machine in a restrained hand-inked cartoon style with clean linework and simple cel shading. Preserve real proportions, silhouette, component counts, perspective, geometry and the source's stainless steel, grey, black and transparent material colours. Not photorealistic, not a 3D render. Square canvas with full equipment centered, entire silhouette visible, generous clear padding. Genuine transparent alpha background; no floor, scene, cast shadow, reflection or border. No written text, numbers, brand names, logos, labels, watermark or invented markings; simplify existing displays to unlettered shapes without changing their hardware. No decorative teal recolouring, wood, toy proportions, faces, fantasy mechanics, extra fittings or extra accessories. Subject: the single Original Resinator OG machine exactly shown, including its transparent curved lid, internal horizontal mesh drum, black lower basin, two broad black feet and left side motor. Preserve the handles and latches and observed coiled cable. Do not replace it with wooden sieve trays. Show it closed as in the reference.",
+      "generatedOriginal": "output/equipment-reference/generated/SIFT-TRAY.png",
+      "output": "public/placard/equipment-real-v2/SIFT-TRAY.webp",
+      "generationSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cac9-af1d-7fa2-9b09-e01ccde7ea9f\\exec-ab647e5e-18a8-4976-8527-17d4af907f73.png",
+      "generationStatus": "validated",
+      "validation": {
+        "key": "SIFT-TRAY",
+        "width": 512,
+        "height": 512,
+        "hasAlpha": true,
+        "zeroAlphaFraction": 0.489,
+        "bounds": [
+          16,
+          51,
+          495,
+          460
+        ],
+        "bytes": 31976
+      },
+      "sourceSha256": "6ed88ddcc17bd155632bc0b0509c5787943deae175f9a33e29d9887a03ec4968",
+      "outputSha256": "02890a4ebe7ed1eef0b667165e8e5bb4e0be5c3b48689b8974f69037ac68469d"
+    },
+    {
+      "key": "PRESS-0600",
+      "productName": "Lowtemp V2 Rosin Press, 4x7, LT4 controller and hand pump",
+      "productUrl": "https://www.lowtemp-plates.com/products/lowtemp-v2-rosin-press",
+      "photoUrl": "https://www.lowtemp-plates.com/cdn/shop/files/4x7_V2_Hand_Pump_LT4.jpg?v=1779226489&width=1080",
+      "observedMorphology": "Low rectangular black four-column frame; silver columns with dark coil springs above the moving plate; two parallel rectangular platens. Separate low rectangular controller front-left, hand hydraulic pump and long black handle extending right.",
+      "limitations": [
+        "Specific manufacturer 4x7 hand-pump configuration selected. Do not mix electric-pump or two-press Medusa configurations.",
+        "Legacy screw-press and turquoise appearance are inaccurate.",
+        "Manufacturer image appears to be a polished product visualization."
+      ],
+      "alt": "Presse noire à quatre colonnes et ressorts, avec plaques rectangulaires, écran séparé et pompe à levier.",
+      "localReferencePath": "output/equipment-reference/photos/PRESS-0600.jpg",
+      "prompt": "Use case: style-transfer. Asset type: game warehouse equipment catalogue illustration. Input image 1 is the exact real product reference: faithfully redraw only the specified machine in a restrained hand-inked cartoon style with clean linework and simple cel shading. Preserve real proportions, silhouette, component counts, perspective, geometry and the source's stainless steel, grey, black and transparent material colours. Not photorealistic, not a 3D render. Square canvas with full equipment centered, entire silhouette visible, generous clear padding. Genuine transparent alpha background; no floor, scene, cast shadow, reflection or border. No written text, numbers, brand names, logos, labels, watermark or invented markings; simplify existing displays to unlettered shapes without changing their hardware. No decorative teal recolouring, wood, toy proportions, faces, fantasy mechanics, extra fittings or extra accessories. Subject: precisely the single Lowtemp V2 press shown, four silver columns, upper coil springs, parallel black rectangular platens, base, supplied black controller in front-left and the real hand-pump handle on the right. Keep those observed components as one catalogue set. No screw wheel and no pressure gauge invented.",
+      "generatedOriginal": "output/equipment-reference/generated/PRESS-0600.png",
+      "output": "public/placard/equipment-real-v2/PRESS-0600.webp",
+      "generationSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cac9-af1d-7fa2-9b09-e01ccde7ea9f\\exec-04b10311-1e02-4b23-8873-722f339beb27.png",
+      "generationStatus": "validated",
+      "validation": {
+        "key": "PRESS-0600",
+        "width": 512,
+        "height": 512,
+        "hasAlpha": true,
+        "zeroAlphaFraction": 0.602,
+        "bounds": [
+          16,
+          88,
+          495,
+          423
+        ],
+        "bytes": 34090
+      },
+      "sourceSha256": "23d320df91ed2dd2710cee2b8ed329388f17780f1448277a11c473316a928305",
+      "outputSha256": "f9dcf41118ab7e500d856047be51820453a00b019781230c8c6aa4e78d8b13b4"
+    },
+    {
+      "key": "PRESS-10T",
+      "productName": "PurePressure Longs Peak Rosin Press",
+      "productUrl": "https://greenthumbdepot.com/products/purepressure-longs-peak-8-ton-pneumatic-rosin-press",
+      "manufacturerDocumentationUrl": "https://bigger-trees.de/mediafiles/Sonstiges/PurePressure/PurePressure_LongsPeak_Datenblatt.pdf",
+      "photoPageUrl": "https://purevapes.co.uk/en/home/42-pure-pressure-longs-peak-rosin-press-uk-home-longs-peak-rosin-press-8-tons-of-force-the-longs-peak-features-an-8-ton-pneumatic-o.html",
+      "photoUrl": "https://purevapes.co.uk/58-large_default/pure-pressure-longs-peak-rosin-press-uk-home-longs-peak-rosin-press-8-tons-of-force-the-longs-peak-features-an-8-ton-pneumatic-o.jpg",
+      "observedMorphology": "Tall narrow grey sheet-metal body, yellow-framed small display on upper front, red stop button left, pneumatic regulator on right. Low open slot contains horizontal platens. Two silver angled forward feet.",
+      "limitations": [
+        "PRESS-10T is a legacy code; anchor is Longs Peak, not Pikes Peak, and not a 10-ton hydraulic bench press.",
+        "Manufacturer former domain redirects to Solventless Select; manufacturer-authored datasheet corroborates seller photo.",
+        "Photo resolution limits fine details; preserve visible outline, do not invent hidden mechanisms."
+      ],
+      "alt": "Presse verticale grise, petit écran bordé de jaune, plaques basses et deux pieds métalliques inclinés.",
+      "localReferencePath": "output/equipment-reference/photos/PRESS-10T.jpg",
+      "prompt": "Use case: style-transfer. Asset type: game warehouse equipment catalogue illustration. Input image 1 is the exact real product reference: faithfully redraw only the specified machine in a restrained hand-inked cartoon style with clean linework and simple cel shading. Preserve real proportions, silhouette, component counts, perspective, geometry and the source's stainless steel, grey, black and transparent material colours. Not photorealistic, not a 3D render. Square canvas with full equipment centered, entire silhouette visible, generous clear padding. Genuine transparent alpha background; no floor, scene, cast shadow, reflection or border. No written text, numbers, brand names, logos, labels, watermark or invented markings; simplify existing displays to unlettered shapes without changing their hardware. No decorative teal recolouring, wood, toy proportions, faces, fantasy mechanics, extra fittings or extra accessories. Subject: the single tall narrow grey PurePressure Longs Peak press shown. Keep the proportions, flat tall top housing, yellow display bezel, red side stop button, small right-side regulator, lower rectangular platen opening and two angled silver feet. Preserve the front view. It is not a hydraulic four-column press. No exposed springs or hand wheel.",
+      "generatedOriginal": "output/equipment-reference/generated/PRESS-10T.png",
+      "output": "public/placard/equipment-real-v2/PRESS-10T.webp",
+      "generationSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cac9-af1d-7fa2-9b09-e01ccde7ea9f\\exec-31c5a47a-e668-4c6a-a11e-c1616e37cf44.png",
+      "generationStatus": "validated",
+      "validation": {
+        "key": "PRESS-10T",
+        "width": 512,
+        "height": 512,
+        "hasAlpha": true,
+        "zeroAlphaFraction": 0.702,
+        "bounds": [
+          136,
+          16,
+          375,
+          495
+        ],
+        "bytes": 18724
+      },
+      "sourceSha256": "8bc7ec2040891ced32a7911e00ff8d0001472aa7f14a93ab7c66568db375ce73",
+      "outputSha256": "40d5b1b681e97dad08a4a1ba7b942c82225ef533cf550a2ee1a9e10cddb68f01"
+    },
+    {
+      "key": "PRESS-20T",
+      "productName": "NugSmasher IQ Pro",
+      "productUrl": "https://nugsmasher.com/product/nugsmasher-iq-pro/",
+      "photoUrl": "https://nugsmasher.com/wp-content/uploads/2024/01/NugSmasher-Pro-iQ_Camera_Front.png",
+      "observedMorphology": "Broad brushed-stainless cabinet with chamfered top shoulders; wide open press bay on upper half, two silver rectangular platens with black perforated rear panel. Large landscape screen fills lower front. Short dark feet.",
+      "limitations": [
+        "Manufacturer product visualization, not an in-situ photograph.",
+        "Do not substitute NugSmasher IQ, Pro, Pro Touch, or add external compressor/pump.",
+        "Game specifications and legacy tonnage are not used to infer geometry."
+      ],
+      "alt": "Presse en inox à large ouverture, deux plaques et grand écran horizontal sur la façade basse.",
+      "localReferencePath": "output/equipment-reference/photos/PRESS-20T.png",
+      "prompt": "Use case: style-transfer. Asset type: game warehouse equipment catalogue illustration. Input image 1 is the exact real product reference: faithfully redraw only the specified machine in a restrained hand-inked cartoon style with clean linework and simple cel shading. Preserve real proportions, silhouette, component counts, perspective, geometry and the source's stainless steel, grey, black and transparent material colours. Not photorealistic, not a 3D render. Square canvas with full equipment centered, entire silhouette visible, generous clear padding. Genuine transparent alpha background; no floor, scene, cast shadow, reflection or border. No written text, numbers, brand names, logos, labels, watermark or invented markings; simplify existing displays to unlettered shapes without changing their hardware. No decorative teal recolouring, wood, toy proportions, faces, fantasy mechanics, extra fittings or extra accessories. Subject: the exact single NugSmasher IQ Pro shown from the front, wide brushed-stainless cabinet, chamfered top shoulders, large open upper press bay with two wide silver rectangular platens and perforated rear panel, broad landscape display on lower front and short feet. Keep display outline with understated unlettered screen graphic. Do not add a side lever, gauge or external compressor.",
+      "generatedOriginal": "output/equipment-reference/generated/PRESS-20T.png",
+      "output": "public/placard/equipment-real-v2/PRESS-20T.webp",
+      "generationSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cac9-af1d-7fa2-9b09-e01ccde7ea9f\\exec-0fab0c29-460c-4009-8e63-61248a506192.png",
+      "generationStatus": "validated",
+      "validation": {
+        "key": "PRESS-20T",
+        "width": 512,
+        "height": 512,
+        "hasAlpha": true,
+        "zeroAlphaFraction": 0.388,
+        "bounds": [
+          80,
+          16,
+          431,
+          495
+        ],
+        "bytes": 44554
+      },
+      "sourceSha256": "a43d63b270e0e74b9a92eb46568eacb899cb5e59362aea45cd544e83dbb6806b",
+      "outputSha256": "a2fba39d239fe33d49d8dd635bb0e16a7c069f8663db218e0035bcc3bf73196a"
+    },
+    {
+      "key": "WASHER-25L",
+      "productName": "Lowtemp Mini Osprey 2.0 (30 gallon)",
+      "productUrl": "https://www.lowtemp-plates.com/products/mini-osprey-30-gallon-washing-machine",
+      "photoUrl": "https://www.lowtemp-plates.com/cdn/shop/files/Mini_Osprey_30_Gallon_Home_Hash_Washing_Machine__Front_Table_1-1.jpg?v=1762742266&width=1080",
+      "observedMorphology": "Compact upright vessel with rounded corners, flat top lid, broad black insulating sleeve and exposed stainless lower skirt. Small round front dial/controller left; central lower sanitary valve with two handles and bent down outlet. Short rubber feet.",
+      "limitations": [
+        "WASHER-25L is a saved legacy code; actual anchor is 30-gallon Mini Osprey 2.0.",
+        "Photograph includes a stainless table; table is not part of the selected machine.",
+        "Do not add visible basket, filter bags or household plastic washer features."
+      ],
+      "alt": "Laveuse compacte à cuve inox gainée de noir, avec couvercle plat, commande ronde et vanne basse.",
+      "localReferencePath": "output/equipment-reference/photos/WASHER-25L.jpg",
+      "prompt": "Use case: style-transfer. Asset type: game warehouse equipment catalogue illustration. Input image 1 is the exact real product reference: faithfully redraw only the specified machine in a restrained hand-inked cartoon style with clean linework and simple cel shading. Preserve real proportions, silhouette, component counts, perspective, geometry and the source's stainless steel, grey, black and transparent material colours. Not photorealistic, not a 3D render. Square canvas with full equipment centered, entire silhouette visible, generous clear padding. Genuine transparent alpha background; no floor, scene, cast shadow, reflection or border. No written text, numbers, brand names, logos, labels, watermark or invented markings; simplify existing displays to unlettered shapes without changing their hardware. No decorative teal recolouring, wood, toy proportions, faces, fantasy mechanics, extra fittings or extra accessories. Subject: only the compact Mini Osprey 2.0 machine, full vessel with rounded corners, flat lid, broad black sleeve, exposed lower steel section, round dial on lower left, real central drain valve and bent down outlet, short rubber feet. REMOVE the separate stainless table entirely. Keep machine closed as photographed; no basket or bags.",
+      "generatedOriginal": "output/equipment-reference/generated/WASHER-25L.png",
+      "output": "public/placard/equipment-real-v2/WASHER-25L.webp",
+      "generationSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cac9-af1d-7fa2-9b09-e01ccde7ea9f\\exec-f709b100-01ac-4dcf-adb2-2e49625ad0a1.png",
+      "generationStatus": "validated",
+      "validation": {
+        "key": "WASHER-25L",
+        "width": 512,
+        "height": 512,
+        "hasAlpha": true,
+        "zeroAlphaFraction": 0.422,
+        "bounds": [
+          71,
+          16,
+          439,
+          495
+        ],
+        "bytes": 27386
+      },
+      "sourceSha256": "6075a8492cb728a1904299569d0fb78c0d031290065e028b04d7ffd87b5d6679",
+      "outputSha256": "2c95bfca2427a15f40b1849ac06e865b864ca8c611c1735f1fb799fefb7cce95"
+    },
+    {
+      "key": "WASHER-75G",
+      "productName": "Lowtemp Osprey 75 Gallon Commercial Washing Machine",
+      "productUrl": "https://www.lowtemp-plates.com/products/theosprey",
+      "photoUrl": "https://www.lowtemp-plates.com/cdn/shop/files/OspreyStandardShotBlkBGV2.75-new.png?v=1780382853&width=1080",
+      "observedMorphology": "Tall stainless rounded-rectangular vessel with latches and lid handles on square open bolted frame. Angled screen and red emergency button on stalk at front. Low front outlet valve, motor underneath, four castors and adjustable feet.",
+      "limitations": [
+        "Use only single Osprey shown; no Nest tank or optional chiller.",
+        "Manufacturer source is a polished product visualization."
+      ],
+      "alt": "Grande laveuse inox sur châssis à roulettes, avec écran incliné, couvercle et vanne frontale.",
+      "localReferencePath": "output/equipment-reference/photos/WASHER-75G.png",
+      "prompt": "Use case: style-transfer. Asset type: game warehouse equipment catalogue illustration. Input image 1 is the exact real product reference: faithfully redraw only the specified machine in a restrained hand-inked cartoon style with clean linework and simple cel shading. Preserve real proportions, silhouette, component counts, perspective, geometry and the source's stainless steel, grey, black and transparent material colours. Not photorealistic, not a 3D render. Square canvas with full equipment centered, entire silhouette visible, generous clear padding. Genuine transparent alpha background; no floor, scene, cast shadow, reflection or border. No written text, numbers, brand names, logos, labels, watermark or invented markings; simplify existing displays to unlettered shapes without changing their hardware. No decorative teal recolouring, wood, toy proportions, faces, fantasy mechanics, extra fittings or extra accessories. Subject: single Osprey 75-gallon washer exactly pictured in three-quarter view. Retain the tall rounded rectangular stainless vessel, flat closed lid with real handles and latches, low square open bolted support frame, four castors, observed levelling feet, underside motor, forward screen on short stalk and lower valve. No second tank or additions.",
+      "generatedOriginal": "output/equipment-reference/generated/WASHER-75G.png",
+      "output": "public/placard/equipment-real-v2/WASHER-75G.webp",
+      "generationSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cac9-af1d-7fa2-9b09-e01ccde7ea9f\\exec-fda8179c-fb24-4e48-ba34-117c5f8a111a.png",
+      "generationStatus": "validated",
+      "validation": {
+        "key": "WASHER-75G",
+        "width": 512,
+        "height": 512,
+        "hasAlpha": true,
+        "zeroAlphaFraction": 0.567,
+        "bounds": [
+          85,
+          16,
+          426,
+          495
+        ],
+        "bytes": 39068
+      },
+      "sourceSha256": "e52f3037f7c0ec1120c77e517cf1abb851cc323d1185425f8d782d9204297dc6",
+      "outputSha256": "4a1e0ffaeb1bb4fc1042f8b4e609333d79a3e1cf72f95535ba44159dd585d934"
+    },
+    {
+      "key": "TSS-225",
+      "productName": "Forza TSS-225 Automated Trichome Separation System",
+      "productUrl": "https://www.forzasolventless.com/products/tss-225",
+      "photoUrl": "https://www.forzasolventless.com/cdn/shop/files/TSS-225_ISO_3.png?v=1773190885&width=1946",
+      "observedMorphology": "Single integrated steel skid: tall closed cylindrical vessel left, raised rectangular vessel with handled lid center, open round collection vessel below on castors. Right operator platform with two steps and handrails; tilted display above. Visible real pipes/valves and small cabinet left.",
+      "limitations": [
+        "Manufacturer image is an official 3D product rendering; no independently verified photograph found in this bounded pass.",
+        "Copy upright/closed configuration, not tilt action.",
+        "Do not replace the central rectangular vessel with a third cylindrical vat or invent extra pipework."
+      ],
+      "alt": "Installation inox avec deux cuves rondes, une cuve rectangulaire, une plateforme à marches et un pupitre.",
+      "localReferencePath": "output/equipment-reference/photos/TSS-225.png",
+      "prompt": "Use case: style-transfer. Asset type: game warehouse equipment catalogue illustration. Input image 1 is the exact real product reference: faithfully redraw only the specified machine in a restrained hand-inked cartoon style with clean linework and simple cel shading. Preserve real proportions, silhouette, component counts, perspective, geometry and the source's stainless steel, grey, black and transparent material colours. Not photorealistic, not a 3D render. Square canvas with full equipment centered, entire silhouette visible, generous clear padding. Genuine transparent alpha background; no floor, scene, cast shadow, reflection or border. No written text, numbers, brand names, logos, labels, watermark or invented markings; simplify existing displays to unlettered shapes without changing their hardware. No decorative teal recolouring, wood, toy proportions, faces, fantasy mechanics, extra fittings or extra accessories. Subject: the entire integrated Forza TSS-225 installation exactly in the reference. Retain one tall cylindrical vessel at left, one raised rectangular vessel with lid center, one round open collection vessel below, left side cabinet, visible pipes, and right-side platform with two steps/rails and display. Three vessels of exactly the observed distinct shapes. Keep upright closed configuration. Do not make three cylindrical tanks. No added pipework.",
+      "generatedOriginal": "output/equipment-reference/generated/TSS-225.png",
+      "output": "public/placard/equipment-real-v2/TSS-225.webp",
+      "generationSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cac9-af1d-7fa2-9b09-e01ccde7ea9f\\exec-10e8393c-43fd-4131-b23b-bfd3e99abd44.png",
+      "generationStatus": "validated",
+      "validation": {
+        "key": "TSS-225",
+        "width": 512,
+        "height": 512,
+        "hasAlpha": true,
+        "zeroAlphaFraction": 0.421,
+        "bounds": [
+          16,
+          28,
+          495,
+          483
+        ],
+        "bytes": 68236
+      },
+      "sourceSha256": "1dbda308a63fa99952b3b8657c614358085ac009572db3044305bb0018f5a2e2",
+      "outputSha256": "882cd9d1df44c937d082fb1fc5e1e44340fe6ccff2823cb760d2feddc54a1e5b"
+    },
+    {
+      "key": "AUTO-SIEVE",
+      "productName": "Lowtemp AutoSieve Collection System",
+      "productUrl": "https://www.lowtemp-plates.com/products/the-autosieve",
+      "photoUrl": "https://www.lowtemp-plates.com/cdn/shop/files/Autosieve6.jpg?v=1747467649&width=600",
+      "observedMorphology": "Stack of shallow round stainless sieve trays with rolled rims, clear tall collar/lid on top, wider metal bottom housing and compact horizontal vibrator motor low right. Detached small rectangular display controller and orange guarded foot pedal pictured in front.",
+      "limitations": [
+        "Use standalone stack photo, not newer marketing rendering that includes Osprey washer and Nest tank.",
+        "Blue scoop is a separate hand tool and is excluded. Controller and foot pedal are documented controls.",
+        "No three tier-specific machinery exists in WORKSHOP_MODELS."
+      ],
+      "alt": "Collecteur à tamis ronds inox empilés, capot transparent et moteur latéral, avec boîtier de commande et pédale.",
+      "localReferencePath": "output/equipment-reference/photos/AUTO-SIEVE-detail.jpg",
+      "prompt": "Use case: style-transfer. Asset type: game warehouse equipment catalogue illustration. Input image 1 is the exact real product reference: faithfully redraw only the specified machine in a restrained hand-inked cartoon style with clean linework and simple cel shading. Preserve real proportions, silhouette, component counts, perspective, geometry and the source's stainless steel, grey, black and transparent material colours. Not photorealistic, not a 3D render. Square canvas with full equipment centered, entire silhouette visible, generous clear padding. Genuine transparent alpha background; no floor, scene, cast shadow, reflection or border. No written text, numbers, brand names, logos, labels, watermark or invented markings; simplify existing displays to unlettered shapes without changing their hardware. No decorative teal recolouring, wood, toy proportions, faces, fantasy mechanics, extra fittings or extra accessories. Subject: standalone AutoSieve stainless circular sieve stack with exactly the observed tray rings, transparent upper collar, bottom housing and horizontal side vibrator motor. Keep the detached small rectangular display controller and orange guarded foot pedal, both present in the photograph, beside the stack. REMOVE blue scoop entirely. No Osprey washer, Nest tank, hoses, extra lids or extra tiers. No floor reflection.",
+      "generatedOriginal": "output/equipment-reference/generated/AUTO-SIEVE.png",
+      "output": "public/placard/equipment-real-v2/AUTO-SIEVE.webp",
+      "generationSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cac9-af1d-7fa2-9b09-e01ccde7ea9f\\exec-bcdd1c1c-b139-4ff1-ab29-85d31eedacf7.png",
+      "generationStatus": "validated",
+      "validation": {
+        "key": "AUTO-SIEVE",
+        "width": 512,
+        "height": 512,
+        "hasAlpha": true,
+        "zeroAlphaFraction": 0.462,
+        "bounds": [
+          16,
+          55,
+          495,
+          456
+        ],
+        "bytes": 42838
+      },
+      "sourceSha256": "4d0ed20f8a4c4c2da390803210f791690573fc88c16101325d266ddec70c1296",
+      "outputSha256": "a44f1cb43f6b733cde8afdd0b6cbe53e98f4b23f89ddf0a0b81334667592254f"
+    },
+    {
+      "key": "FREEZE-DRYER",
+      "productName": "HiLyph Hash Dryer XL",
+      "productUrl": "https://www.tciscientific.com/hilyph_hash_dryer_xl",
+      "photoUrl": "https://irp.cdn-website.com/88489a2c/dms3rep/multi/opt/5-36a5240f-1920w.png",
+      "observedMorphology": "Black upright box, small display high on front, circular chamber mouth behind a transparent square hinged door; ten horizontal metal trays. Low side ventilation slots, small feet, flexible metal hose to separate compact white/black vacuum pump.",
+      "limitations": [
+        "Promotional composite contains large lettering and background; exclude both.",
+        "The chamber opening is round but transparent door outline is square; retain that distinction.",
+        "Source pump and hose can be drawn as pictured; no unseen plumbing or tray contents."
+      ],
+      "alt": "Lyophilisateur noir à chambre ronde, porte carrée transparente et dix plateaux, relié à une pompe.",
+      "localReferencePath": "output/equipment-reference/photos/FREEZE-DRYER.png",
+      "prompt": "Use case: style-transfer. Asset type: game warehouse equipment catalogue illustration. Input image 1 is the exact real product reference: faithfully redraw only the specified machine in a restrained hand-inked cartoon style with clean linework and simple cel shading. Preserve real proportions, silhouette, component counts, perspective, geometry and the source's stainless steel, grey, black and transparent material colours. Not photorealistic, not a 3D render. Square canvas with full equipment centered, entire silhouette visible, generous clear padding. Genuine transparent alpha background; no floor, scene, cast shadow, reflection or border. No written text, numbers, brand names, logos, labels, watermark or invented markings; simplify existing displays to unlettered shapes without changing their hardware. No decorative teal recolouring, wood, toy proportions, faces, fantasy mechanics, extra fittings or extra accessories. Subject: exact HiLyph Hash Dryer XL black rectangular machine with small upper front screen, circular chamber containing ten horizontal trays, square transparent hinged front door, low side ventilation slots and short feet. Keep only the white/black vacuum pump and flexible metal hose actually shown to the left. Remove all giant promotional lettering and laboratory background. IMPORTANT door perimeter is square, chamber aperture circular. No food or loose trays.",
+      "generatedOriginal": "output/equipment-reference/generated/FREEZE-DRYER.png",
+      "output": "public/placard/equipment-real-v2/FREEZE-DRYER.webp",
+      "generationSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cac9-af1d-7fa2-9b09-e01ccde7ea9f\\exec-c230d218-c101-46bc-8267-4dac126ee5a9.png",
+      "generationStatus": "validated",
+      "validation": {
+        "key": "FREEZE-DRYER",
+        "width": 512,
+        "height": 512,
+        "hasAlpha": true,
+        "zeroAlphaFraction": 0.558,
+        "bounds": [
+          16,
+          69,
+          495,
+          441
+        ],
+        "bytes": 33888
+      },
+      "sourceSha256": "e5652e40ef57d7a019288024f0776a329e28bec4f363e8c16371216e977946c6",
+      "outputSha256": "265dc8024d4718322df973716bd46fbe961d55c541885f7a96bae04155a0dcd7"
+    },
+    {
+      "key": "STATIC-PLASMA",
+      "productName": "SC Filtration Plasmastatic V1.8",
+      "productUrl": "https://www.supplythebrand.com/product-page/plasmastatic-v1-8-electrostatic-sifting-system-sc-filtration",
+      "manufacturerUrl": "https://sambocreeck.com/pages/separatore-plasmastatic",
+      "photoUrl": "https://static.wixstatic.com/media/58b575_ae3f1cb767b14b1ca489a0f3dc4be3e4~mv2.png",
+      "observedMorphology": "Tall stainless rectangular cabinet on open wheeled base; paired transparent front doors with black handles. Two narrow internal vertical assemblies, two small power-control boxes on top. Low front hopper and hose, small control boxes near base.",
+      "limitations": [
+        "Exact V1.8 identified by used-equipment seller; maker's current V1 page corroborates family but is not exact variant.",
+        "Blue air dryer, separate compressor, room, chair and plastic storage box are outside main machine and excluded; seller lists those ancillaries separately.",
+        "No interpretation of internal function beyond visible shapes."
+      ],
+      "alt": "Séparateur inox sur roulettes, à deux portes transparentes, deux modules verticaux et deux commandes supérieures.",
+      "localReferencePath": "output/equipment-reference/photos/STATIC-PLASMA.png",
+      "prompt": "Use case: style-transfer. Asset type: game warehouse equipment catalogue illustration. Input image 1 is the exact real product reference: faithfully redraw only the specified machine in a restrained hand-inked cartoon style with clean linework and simple cel shading. Preserve real proportions, silhouette, component counts, perspective, geometry and the source's stainless steel, grey, black and transparent material colours. Not photorealistic, not a 3D render. Square canvas with full equipment centered, entire silhouette visible, generous clear padding. Genuine transparent alpha background; no floor, scene, cast shadow, reflection or border. No written text, numbers, brand names, logos, labels, watermark or invented markings; simplify existing displays to unlettered shapes without changing their hardware. No decorative teal recolouring, wood, toy proportions, faces, fantasy mechanics, extra fittings or extra accessories. Subject: ONLY the main tall wheeled stainless Plasmastatic cabinet shown. Keep full paired clear doors with black handles, two visible internal vertical assemblies, two black rectangular control boxes atop it, lower open frame, actual small lower hopper and hoses/cables within its footprint. Remove blue air dryer, white compressor, room, chair, plastic bin and all unrelated surroundings. Do not invent connections to excluded ancillaries; preserve main cabinet complete.",
+      "generatedOriginal": "output/equipment-reference/generated/STATIC-PLASMA.png",
+      "output": "public/placard/equipment-real-v2/STATIC-PLASMA.webp",
+      "generationSource": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cac9-af1d-7fa2-9b09-e01ccde7ea9f\\exec-a1e14a73-3f2f-4bc7-a52d-6c1531c16855.png",
+      "generationStatus": "validated",
+      "validation": {
+        "key": "STATIC-PLASMA",
+        "width": 512,
+        "height": 512,
+        "hasAlpha": true,
+        "zeroAlphaFraction": 0.583,
+        "bounds": [
+          112,
+          16,
+          399,
+          495
+        ],
+        "bytes": 49118
+      },
+      "sourceSha256": "1ce360d8de950d7123654c08e7dc5fc6e3bcd439872e8226ff0d7b52aa1af2b9",
+      "outputSha256": "54948c55666f50f505a89eb1c2283b9ed8614b8473271be86cb6d6a61f04a148"
+    }
+  ],
+  "validation": {
+    "report": "output/equipment-reference/workshop-validation.json",
+    "contactSheet": "output/equipment-reference/workshop-contact-sheet.png",
+    "visualReview": "All ten generated images and final contact sheet inspected. Source silhouettes, component layout, materials and colours retained; no visible text or logos, no fantasy parts, no background. Source accessories explicitly excluded or retained in each prompt.",
+    "checks": "10/10 assets: 512x512, RGBA transparency, at least 16px clear outer padding, full object silhouette."
+  }
+}

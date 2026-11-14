@@ -1,0 +1,1169 @@
+{
+  "updated": "2026-11-12",
+  "scope": "Économie, progression et backend de l’École des Chanvriers ; validations locales uniquement.",
+  "migration": "supabase/migrations/20261111000400_kq_school.sql",
+  "economy": {
+    "currency": "Monnaie existante du jeu, affichée en euros ; stockage en centimes dans kq_equipment_wallets.cash_cents.",
+    "quizCount": 10,
+    "questionsPerQuiz": 10,
+    "passScore": 7,
+    "budgetPerQuizCents": 1000,
+    "maximumAllQuizzesCents": 10000,
+    "formula": "cible(s)=0 si s<7, sinon floor(B*s/10) ; gain=max(0,cible(s)-P), où P est le cumul déjà versé pour ce joueur et cette identité de récompense.",
+    "rounding": "Division entière en centimes ; aucune fraction de centime n’est créditée.",
+    "examplesCents": [
+      {
+        "score": 6,
+        "previousPaid": 0,
+        "gain": 0
+      },
+      {
+        "score": 7,
+        "previousPaid": 0,
+        "gain": 700
+      },
+      {
+        "score": 7,
+        "previousPaid": 700,
+        "gain": 0
+      },
+      {
+        "score": 9,
+        "previousPaid": 700,
+        "gain": 200
+      },
+      {
+        "score": 10,
+        "previousPaid": 900,
+        "gain": 100
+      }
+    ],
+    "comparison": [
+      {
+        "reference": "src/lib/kanab-quest-equipment.ts",
+        "fact": "Capital initial 100000 centimes ; tous les quiz représentent au maximum 10 % de ce capital."
+      },
+      {
+        "reference": "src/lib/kanab-quest-missions.ts",
+        "fact": "Premières missions à 5000 centimes ; un quiz rapporte au maximum un cinquième de cette récompense."
+      },
+      {
+        "reference": "src/lib/kanab-quest-contracts.ts",
+        "fact": "Contrat Main légère à 3000 centimes ; un quiz reste sous cette récompense ponctuelle."
+      },
+      {
+        "reference": "src/lib/kanab-quest-equipment.ts",
+        "fact": "Contrôleur climatique CLIMATE-SMART à 13900 centimes ; le plafond total de l’école reste inférieur à cet équipement."
+      }
+    ],
+    "configuration": "La table privée kq_school_catalog est la source des budgets affichés et appliqués. Ajuster ses objets nommés par une migration explicite ; ne pas créer une nouvelle identité pour une simple mise à jour éditoriale.",
+    "stableRewardIdentity": "school:<quizId>, distinct de contentVersion. Corriger un texte, mélanger les options ou redéployer ne réinitialise aucun versement.",
+    "abuseBound": "Même avec toutes les réponses connues et un nombre quelconque de réessais, le cumul par quiz ne dépasse pas le budget configuré. Aucun gain monétaire pour les cours ou ateliers. Les soumissions sont limitées à 12 par minute et par joueur."
+  },
+  "guarantees": [
+    "Le propriétaire provient exclusivement de la session serveur. X-Kq-School-Owner, lorsqu’il est fourni, détecte un changement de compte sans définir le propriétaire.",
+    "Le navigateur soumet une version et exactement dix couples question/option. Champs inconnus, doublons, identifiants hors quiz et options interdites sont refusés ; aucun score ni montant client n’est accepté.",
+    "La banque de référence est importée uniquement côté serveur. GET quiz projette explicitement les champs publics et mélange les options en conservant leurs identifiants.",
+    "Une transaction unique verrouille d’abord le portefeuille, puis la progression du quiz : meilleur score, cumul payé, crédit, comptabilité et reçu sont atomiques, y compris entre quiz différents.",
+    "La clé d’idempotence est propre à la tentative et au joueur. Un renvoi identique restitue le reçu ; réutiliser la clé avec d’autres réponses est refusé.",
+    "Le reçu conserve le corrigé et les montants de l’opération originale. Il peut être retrouvé après changement éditorial ; une ancienne version sans reçu ne peut plus recevoir de gain.",
+    "La progression cours/ateliers est une union monotone sauvegardée en lots. Les autres onglets ne peuvent pas effacer les éléments déjà enregistrés.",
+    "Les quatre tables école sont interdites aux accès Data API directs, y compris service_role. RLS est actif ; seul rpc_kq_school est exécutable par service_role.",
+    "Le mouvement de trésorerie utilise le portefeuille et les écritures comptables existantes ; le revenu est identifié dans revenue_rewards sans laisser de solde en suspense."
+  ],
+  "executedChecks": [
+    {
+      "command": "npx.cmd vitest run src/lib/kanab-quest-school.test.ts src/lib/kanab-quest-school-server.test.ts src/lib/supabase/kanab-quest-school-backend.test.ts src/app/api/arena/placard/school/route.test.ts",
+      "result": "28 tests réussis sur quatre fichiers, avec la banque réelle pour le calcul des scores : protocole, falsification, corrigés publics absents, auth, origine, taille, taux, édition et changement de compte."
+    },
+    {
+      "command": "node scripts/test-placard-school.mjs",
+      "result": "50 contrôles réussis en PGlite sur la migration complète : seuil, répétition, amélioration, plafond, arrondi, cumul, replay, rollback, progression, RLS et permissions, portefeuille et comptabilité."
+    },
+    {
+      "command": "node scripts/test-placard-school-concurrency.mjs",
+      "result": "15 contrôles réussis avec PostgreSQL 17 réel et connexions indépendantes. Six courses : double envoi, amélioration 7 vers 10, ordre inverse 10 puis 7, quiz différents, débit simultané et retry après rollback. L’attente effective sur verrou de la seconde connexion est constatée dans pg_stat_activity.",
+      "environment": "Image locale préexistante public.ecr.aws/supabase/postgres:17.6.1.075 ; Docker local explicite ; conteneur éphémère sans réseau, port exposé ni montage hôte, données en tmpfs ; conteneur supprimé après le test."
+    },
+    {
+      "command": "npm.cmd run check:supabase-grants",
+      "result": "379 migrations contrôlées ; toute nouvelle table publique possède une décision explicite d’accès."
+    },
+    {
+      "command": "npx.cmd eslint src/lib/kanab-quest-school.ts src/lib/kanab-quest-school-server.ts src/lib/kanab-quest-school.test.ts src/lib/kanab-quest-school-server.test.ts src/lib/supabase/kanab-quest-school-backend.ts src/lib/supabase/kanab-quest-school-backend.test.ts src/app/api/arena/placard/school scripts/test-placard-school.mjs scripts/test-placard-school-concurrency.mjs",
+      "result": "Réussi, code de sortie 0."
+    }
+  ],
+  "validationLimits": [
+    "Les tests SQL exécutent les vrais helpers d’écriture comptable et le vrai déclencheur portefeuille. L’initialisation des actifs des autres systèmes et leur rafraîchissement différé sont des frontières de fixture explicites.",
+    "Les tests API isolent authentification, limiteur et transport Supabase ; aucun compte ou solde utilisateur réel n’est modifié.",
+    "Ce document ne revendique pas de recette navigateur ni de compilation globale ; ces vérifications appartiennent à l’intégration UI."
+  ],
+  "deployment": {
+    "remoteDatabaseAccess": false,
+    "productionMigrationApplied": false,
+    "productionDeployment": false,
+    "remaining": "Appliquer la migration et publier l’application dans le cadre d’une opération de déploiement autorisée. Sans la migration, les lectures pédagogiques restent disponibles mais la progression persistante et les récompenses ne fonctionnent pas."
+  },
+  "historyExtension": {
+    "updated": "2026-11-12",
+    "status": "Implémentation et validation locales terminées ; aucune migration Histoire appliquée à distance.",
+    "contentVersion": "2026-11-12.history1",
+    "curriculum": {
+      "chapters": 11,
+      "lessons": 22,
+      "checkpoints": 11,
+      "activities": 22,
+      "authoredQuestions": 44,
+      "synthesisQuestions": 10
+    },
+    "reward": {
+      "quizId": "history",
+      "rewardId": "school:history",
+      "maximumCents": 1000,
+      "allSchoolQuizzesMaximumCents": 10000,
+      "preservation": "Identité, meilleurs scores, cumuls déjà versés, anciens reçus et RPC financière conservés. Un ancien 7/10 payé 700 centimes suivi d’un nouveau 9/10 verse seulement 200 centimes. Les neuf autres quiz restent inchangés.",
+      "learning": "Les nouvelles leçons, activités et vérifications de chapitre ne versent aucune monnaie. Une ancienne lecture history ne valide aucune des 22 nouvelles leçons. Aucun texte libre n’est transmis comme progression ou demande de récompense."
+    },
+    "selection": {
+      "transport": "GET /api/arena/placard/school/quiz?quizId=history fournit dix questions et un selectionId opaque h1.UUID.signature, conservés avec leurs identifiants et réponses dans le brouillon. POST renvoie le même selectionId.",
+      "validation": "Dix chapitres distincts sont tirés sur onze, puis une question par chapitre. Le serveur reconstruit exactement le plan déterministe. Signature HMAC-SHA256 liée au propriétaire, à la version et au seed, avec domaine distinct et SUPABASE_SERVICE_ROLE_KEY existante ; aucune nouvelle configuration secrète.",
+      "corrections": "Les 44 références et les quatre explications d’options par question restent dans des modules server-only. Les explications détaillées sont renvoyées après finalisation.",
+      "compatibility": "Le backend ne transmet pas selectionId à la RPC financière : son format historique version + dix réponses reste intact. Ancienne édition ou signature invalidée ne peut que retrouver un reçu déjà finalisé ; aucune nouvelle tentative n’est récompensée sans plan valide.",
+      "keys": "KQ_SCHOOL_ANSWERS garde les 100 références historiques ; KQ_SCHOOL_HISTORY_ANSWERS ajoute les 44 nouvelles références via getKqSchoolAnswer."
+    },
+    "persistence": {
+      "migration": "supabase/migrations/20261112000100_kq_school_history_progress.sql",
+      "appliedRemotely": false,
+      "api": "GET/POST /api/arena/placard/school/history",
+      "table": "public.kq_school_history_progress",
+      "rpc": "public.rpc_kq_school_history(uuid,jsonb)",
+      "permissions": "RLS actif ; table et helper privés y compris pour service_role. Seule la RPC dédiée est exécutable par service_role, avec search_path fixé.",
+      "invariants": "Whitelist des 22 leçons, 11 checkpoints et 22 activités côté serveur et SQL. Union monotone par joueur. Le point de reprise utilise expectedRevision : un onglet périmé conserve ses étapes terminées sans écraser une position plus récente. Une répétition exacte ne modifie ni révision ni updatedAt.",
+      "isolation": "Aucun verrou portefeuille et aucune écriture de monnaie, ancien cours ou récompense dans cette RPC. Le propriétaire vient de la session ; le header X-Kq-School-Owner protège les changements de compte.",
+      "outbox": "File en mémoire isolée par propriétaire et conservée pendant la vie de l’onglet ; sessionStorage sert de reprise après rechargement. Un échec du stockage ne supprime pas les étapes en mémoire. Un seul POST à la fois ; les actions ajoutées pendant le précédent restent en attente et seul le lot acquitté est retiré. Après succès, le lot suivant est envoyé ; après erreur ou réponse incertaine, reprise explicite sans boucle automatique.",
+      "resume": "Un simple retry garde son CAS initial. Une nouvelle intention de lecture après une réponse incertaine relit la révision courante. Une réponse tardive après démontage ou d’un autre propriétaire est ignorée ; un ancien GET ne fait pas reculer un snapshot plus récent.",
+      "frontend": [
+        "src/components/placard/useKqHistoryProgress.ts",
+        "src/lib/kanab-quest-school-history-outbox.ts"
+      ]
+    },
+    "executedChecks": [
+      {
+        "command": "npx.cmd vitest run src/lib/kanab-quest-school.test.ts src/lib/kanab-quest-school-server.test.ts src/lib/kanab-quest-school-history-progress.test.ts src/lib/kanab-quest-school-history-server.test.ts src/lib/kanab-quest-school-history-outbox.test.ts src/lib/supabase/kanab-quest-school-backend.test.ts src/lib/supabase/kanab-quest-school-history-backend.test.ts src/app/api/arena/placard/school/route.test.ts src/app/api/arena/placard/school/history/route.test.ts",
+        "files": [
+          "src/lib/kanab-quest-school.test.ts",
+          "src/lib/kanab-quest-school-server.test.ts",
+          "src/lib/kanab-quest-school-history-progress.test.ts",
+          "src/lib/kanab-quest-school-history-server.test.ts",
+          "src/lib/kanab-quest-school-history-outbox.test.ts",
+          "src/lib/supabase/kanab-quest-school-backend.test.ts",
+          "src/lib/supabase/kanab-quest-school-history-backend.test.ts",
+          "src/app/api/arena/placard/school/route.test.ts",
+          "src/app/api/arena/placard/school/history/route.test.ts"
+        ],
+        "result": "65 tests réussis sur neuf fichiers. Signatures, propriétaire, falsifications, plans et références réelles, score, anciens reçus, contrats API, CAS et huit scénarios asynchrones de file de sauvegarde."
+      },
+      {
+        "command": "node scripts/test-placard-school-history.mjs",
+        "result": "43 contrôles SQL réussis en PGlite sur les migrations complètes : données et fonction financières inchangées, anciens reçus, complément et plafond, progression sans gain, séparation ancienne lecture/nouvelles leçons, CAS, whitelist, isolation et permissions."
+      },
+      {
+        "command": "node scripts/test-placard-school-concurrency.mjs --history",
+        "result": "8 contrôles de concurrence réussis dans PostgreSQL 17 réel : deux onglets fusionnent leurs étapes, le CAS protège la position, les doublons rendent le même état, et une récompense aboutit pendant le verrou indépendant de progression Histoire.",
+        "environment": "Conteneur local éphémère, image déjà présente, sans réseau, port exposé ni montage hôte ; supprimé après exécution."
+      },
+      {
+        "command": "npm.cmd run check:supabase-grants",
+        "result": "380 migrations contrôlées avec décisions explicites de privilèges."
+      },
+      {
+        "command": "npx.cmd eslint src/components/placard/useKqHistoryProgress.ts src/lib/kanab-quest-school-history-outbox.ts src/lib/kanab-quest-school-history-outbox.test.ts",
+        "result": "Réussi ; le contrôle ciblé des autres fichiers backend, protocoles, routes et scripts Histoire a également terminé avec le code 0."
+      }
+    ],
+    "validationLimits": [
+      "Les tests de signature et de score utilisent les 44 questions et les références réelles ; les tests HTTP isolent les transports externes.",
+      "Les 43 contrôles SQL Histoire utilisent des fixtures explicites pour l’initialisation et le posting comptables sans modifier la RPC financière. La suite de concurrence utilise les vrais helpers de posting et le vrai observateur portefeuille.",
+      "Les huit scénarios outbox simulent l’ordre réel des réponses, les erreurs réseau et les défaillances de stockage. La recette navigateur et la compilation globale relèvent du lot d’intégration root.",
+      "Le dossier migration-readiness.json préparé avant ce lot ne couvrait que 20261111000400 ; actualiser la préparation avant un futur déploiement incluant 20261112000100."
+    ],
+    "production": {
+      "remoteDatabaseMutation": false,
+      "migrationApplied": false,
+      "applicationDeployment": false
+    }
+  },
+  "botanyExtension": {
+    "updated": "2026-11-12",
+    "contentVersion": "2026-11-12.botany1",
+    "status": "Backend, progression et intégration validés localement ; build de production et recettes navigateur Botanique/Histoire à 320/1440 px réussis.",
+    "curriculum": {
+      "chapters": 8,
+      "lessons": 16,
+      "checkpoints": 8,
+      "activities": 16,
+      "authoredQuestions": 32,
+      "synthesisQuestions": 10
+    },
+    "reward": {
+      "quizId": "plant",
+      "rewardId": "school:plant",
+      "maximumCents": 1000,
+      "allSchoolQuizzesMaximumCents": 10000,
+      "preservation": "Le nouveau parcours reprend le budget existant sans réinitialiser meilleur score, cumul payé ni reçus. Ancien 7/10 payé 700 centimes, puis nouveaux 9/10 et 10/10 : compléments de 200 puis 100 centimes. RPC financière inchangée.",
+      "learning": "Aucun versement pour les leçons, activités ou checkpoints. L’ancienne lecture plant ne valide aucune des 16 nouvelles leçons. Aucun texte libre n’est envoyé."
+    },
+    "selection": {
+      "transport": "GET /api/arena/placard/school/quiz?quizId=plant ; même POST quiz avec selectionId b1.UUID.signature conservé dans le brouillon.",
+      "invariants": "Dix questions uniques : une par chapitre, puis deux questions supplémentaires dans deux chapitres tournants. Plan déterministe lié au joueur, à la version et au seed par HMAC-SHA256 ; domaine distinct de Histoire et clé serveur existante. Les tokens h1 et b1 ne sont pas interchangeables.",
+      "answers": "KQ_SCHOOL_BOTANY_ANSWERS contient 32 références privées avec explications des quatre options. Les 100 références legacy et les 44 références Histoire sont conservées séparément.",
+      "compatibility": "Le selector ne modifie pas le format financier SQL. Ancienne édition, signature invalide ou clé tournée : seul un reçu existant exactement correspondant peut être repris, sans nouveau versement."
+    },
+    "persistence": {
+      "migration": "supabase/migrations/20261112000200_kq_school_botany_progress.sql",
+      "api": "GET/POST /api/arena/placard/school/botany",
+      "table": "public.kq_school_botany_progress",
+      "rpc": "public.rpc_kq_school_botany(uuid,jsonb)",
+      "permissions": "Table et helper privés pour PUBLIC, anon, authenticated et service_role ; RLS actif ; seul EXECUTE de la RPC nommée est accordé à service_role.",
+      "invariants": "Whitelist 16/8/16, union monotone, position de reprise par expectedRevision/CAS, retry identique sans changement de revision ni updatedAt. Verrou limité à la ligne de progression ; aucun accès au portefeuille. Histoire reste indépendante.",
+      "outbox": "Contrôleur partagé avec Histoire, mémoire et sessionStorage séparés par cours et propriétaire. Un POST à la fois, retrait du seul lot acquitté, nouvelles étapes conservées durant un POST, reprise visible après rechargement. Une erreur conserve le lot sans boucle automatique.",
+      "frontend": "src/components/placard/useKqBotanyProgress.ts"
+    },
+    "executedChecks": [
+      {
+        "command": "npx.cmd vitest run src/lib/kanab-quest-school.test.ts src/lib/kanab-quest-school-history-progress.test.ts src/lib/kanab-quest-school-botany-progress.test.ts src/lib/kanab-quest-school-history-outbox.test.ts",
+        "result": "42 tests réussis, quatre fichiers : protocole strict, whitelist des deux parcours et dix scénarios de sauvegarde asynchrone."
+      },
+      {
+        "command": "npx.cmd vitest run src/lib/kanab-quest-school-server.test.ts src/lib/kanab-quest-school-history-server.test.ts src/lib/kanab-quest-school-botany-server.test.ts src/lib/supabase/kanab-quest-school-backend.test.ts src/lib/supabase/kanab-quest-school-history-backend.test.ts src/lib/supabase/kanab-quest-school-botany-backend.test.ts src/app/api/arena/placard/school/route.test.ts src/app/api/arena/placard/school/history/route.test.ts src/app/api/arena/placard/school/botany/route.test.ts",
+        "result": "53 tests réussis, neuf fichiers ; total du lot : 95 tests dans 13 fichiers. Banques réelles, signatures, falsification, score, corrigés détaillés, ancien reçu, auth/origine/propriétaire et contrats HTTP/RPC."
+      },
+      {
+        "command": "node scripts/test-placard-school-botany.mjs",
+        "result": "49 contrôles PGlite réussis : migrations complètes, anciens gains/reçus, seuil, améliorations, plafond, CAS, retry, whitelist, permissions et isolation Histoire."
+      },
+      {
+        "command": "node scripts/test-placard-school-concurrency.mjs --botany",
+        "result": "11 contrôles PostgreSQL 17 réussis : onglets concurrents, doublons, CAS, indépendance portefeuille et plafond plant conservé entre deux nouvelles tentatives simultanées."
+      },
+      {
+        "command": "node scripts/test-placard-school-concurrency.mjs --history",
+        "result": "8 contrôles de régression Histoire réussis après partage du harnais de concurrence."
+      },
+      {
+        "command": "node scripts/test-placard-school-fixture.mjs",
+        "result": "20 contrôles de simulation navigateur réussis : sélection, budget, reçu, réponse perdue après commit, reprise, CAS et séparation des parcours. Données en mémoire Node uniquement."
+      },
+      {
+        "command": "npm.cmd run check:supabase-grants",
+        "result": "381 migrations vérifiées ; décisions de privilèges explicites."
+      },
+      {
+        "command": "npx.cmd eslint src/lib/kanab-quest-school.ts src/lib/kanab-quest-school-server.ts src/lib/kanab-quest-school-answers.ts src/lib/kanab-quest-school-botany-selection.ts src/lib/kanab-quest-school-botany-progress.ts src/lib/kanab-quest-school-history-outbox.ts src/lib/supabase/kanab-quest-school-botany-backend.ts src/app/api/arena/placard/school/botany/route.ts src/components/placard/useKqBotanyProgress.ts src/lib/kanab-quest-school-botany-server.test.ts src/lib/kanab-quest-school-botany-progress.test.ts src/lib/kanab-quest-school-history-outbox.test.ts src/lib/supabase/kanab-quest-school-botany-backend.test.ts src/app/api/arena/placard/school/botany/route.test.ts",
+        "result": "Réussi ; aucune compilation globale exécutée par cet agent."
+      },
+      {
+        "command": "npx.cmd eslint scripts/audit-school-scenarios.mjs scripts/test-placard-school-fixture.mjs scripts/test-placard-school-botany.mjs scripts/test-placard-school-concurrency.mjs src/lib/kanab-quest-school.test.ts src/lib/kanab-quest-school-server.test.ts src/lib/supabase/kanab-quest-school-backend.test.ts src/app/api/arena/placard/school/route.test.ts",
+        "result": "Réussi."
+      }
+    ],
+    "validationLimits": [
+      "PGlite utilise des fixtures comptables explicites ; PostgreSQL utilise les vrais helpers de posting et observateur portefeuille dans un conteneur éphémère, sans réseau, ports ni montage hôte, supprimé après test.",
+      "La simulation d’audit utilise des sélecteurs conservés en mémoire, pas le vrai HMAC. Le vrai HMAC et les banques complètes sont vérifiés par les tests serveur.",
+      "La preuve de préparation Supabase antérieure doit être actualisée avant un déploiement incluant les migrations Histoire et Botanique."
+    ],
+    "production": {
+      "remoteDatabaseMutation": false,
+      "migrationApplied": false,
+      "applicationDeployment": false
+    },
+    "integrationEvidence": "docs/bete-de-concours/school-botany-provenance.json#validation"
+  },
+  "terpenesExtension": {
+    "updated": "2026-11-12",
+    "contentVersion": "2026-11-12.terpenes1",
+    "status": "Backend, progression et intégration validés localement ; build avec TypeScript, recettes Terpènes/Botanique et aperçu final réussis.",
+    "curriculum": {
+      "chapters": 10,
+      "lessons": 20,
+      "checkpoints": 10,
+      "activities": 20,
+      "authoredQuestions": 40,
+      "synthesisQuestions": 10
+    },
+    "reward": {
+      "quizId": "molecules",
+      "rewardId": "school:molecules",
+      "maximumCents": 1000,
+      "allSchoolQuizzesMaximumCents": 10000,
+      "preservation": "RPC financière, meilleurs scores, cumuls payés et reçus conservés. Ancien 7/10 payé 700 centimes, puis nouveaux 9/10 et 10/10 : compléments de 200 puis 100 centimes. Aucun nouveau budget.",
+      "learning": "Leçons, activités et checkpoints sans gain. L’ancienne lecture molecules ne valide aucune des vingt nouvelles leçons. Aucun texte libre transmis."
+    },
+    "selection": {
+      "transport": "GET /api/arena/placard/school/quiz?quizId=molecules et POST quiz avec selectionId t1.UUID.HMAC, conservé avec les questions et réponses du brouillon.",
+      "invariants": "Une question par chacun des dix chapitres ; plan et ordre déterministes. HMAC-SHA256 lié au propriétaire, à la version et au seed, domaine Terpènes distinct avec clé serveur existante. Tokens h1, b1 et t1 non interchangeables.",
+      "answers": "Quarante références privées et quatre explications d’options par question via TERPENE_ANSWERS / KQ_SCHOOL_TERPENE_ANSWERS. Les 100 références legacy, 44 Histoire et 32 Botanique sont préservées séparément.",
+      "compatibility": "Format financier SQL inchangé. Ancienne version ou signature invalidée : seulement reprise d’un reçu déjà finalisé exactement correspondant, jamais un nouveau versement."
+    },
+    "persistence": {
+      "migration": "supabase/migrations/20261112000300_kq_school_terpenes_progress.sql",
+      "api": "GET/POST /api/arena/placard/school/terpenes",
+      "table": "public.kq_school_terpenes_progress",
+      "rpc": "public.rpc_kq_school_terpenes(uuid,jsonb)",
+      "permissions": "Table/helper privés pour PUBLIC, anon, authenticated et service_role ; RLS actif. Seul EXECUTE de la RPC nommée est accordé à service_role ; search_path fixé.",
+      "invariants": "Whitelist 20/10/20, union monotone, reprise CAS/expectedRevision, retry exact sans changement de revision/updatedAt. Verrou distinct du portefeuille. Progressions Histoire et Botanique préservées.",
+      "outbox": "Namespace terpenes séparé dans la mémoire et sessionStorage, par propriétaire. Un POST à la fois, retrait du seul lot acquitté, étapes ajoutées pendant l’envoi conservées. Attente visible après rechargement ; erreur sans boucle automatique.",
+      "frontend": "src/components/placard/useKqTerpenesProgress.ts",
+      "fixture": "createSchoolFixture expose terpenes, terpenesSnapshot, terpenesSubmissions et loseNextTerpenes(). Cette dernière simule une réponse perdue après commit pour vérifier la reprise de la même progression."
+    },
+    "executedChecks": [
+      {
+        "command": "npx.cmd vitest run src/lib/kanab-quest-school.test.ts src/lib/kanab-quest-school-history-progress.test.ts src/lib/kanab-quest-school-botany-progress.test.ts src/lib/kanab-quest-school-terpenes-progress.test.ts src/lib/kanab-quest-school-history-outbox.test.ts",
+        "result": "56 tests réussis dans cinq fichiers ; protocole, progression des trois parcours, onze scénarios outbox."
+      },
+      {
+        "command": "npx.cmd vitest run src/lib/kanab-quest-school-server.test.ts src/lib/kanab-quest-school-history-server.test.ts src/lib/kanab-quest-school-botany-server.test.ts src/lib/kanab-quest-school-terpenes-server.test.ts src/lib/supabase/kanab-quest-school-backend.test.ts src/lib/supabase/kanab-quest-school-history-backend.test.ts src/lib/supabase/kanab-quest-school-botany-backend.test.ts src/lib/supabase/kanab-quest-school-terpenes-backend.test.ts src/app/api/arena/placard/school/route.test.ts src/app/api/arena/placard/school/history/route.test.ts src/app/api/arena/placard/school/botany/route.test.ts src/app/api/arena/placard/school/terpenes/route.test.ts",
+        "result": "70 tests réussis dans douze fichiers avec les banques complètes ; total du lot : 126 tests dans 17 fichiers. Signatures, identité, falsifications, sélection, score, 160 explications Terpènes, anciens reçus et contrats API/RPC."
+      },
+      {
+        "command": "node scripts/test-placard-school-fixture.mjs",
+        "result": "32 contrôles réussis en mémoire Node : trois parcours distincts, sélection t1, ancien budget molecules, réponse perdue après commit, reçu rejoué et CAS."
+      },
+      {
+        "command": "node scripts/test-placard-school-terpenes.mjs",
+        "result": "52 contrôles PGlite réussis : anciens gains/reçus, seuil, complément/plafond, CAS, whitelist, droits et préservation Histoire/Botanique."
+      },
+      {
+        "command": "node scripts/test-placard-school-concurrency.mjs --terpenes",
+        "result": "12 contrôles PostgreSQL 17 réussis : union concurrente, CAS, doublons, absence de verrou portefeuille, isolation des parcours et cumul molecules plafonné entre tentatives concurrentes."
+      },
+      {
+        "command": "npm.cmd run check:supabase-grants",
+        "result": "382 migrations vérifiées avec décisions explicites de privilèges."
+      },
+      {
+        "command": "npx.cmd eslint src/lib/kanab-quest-school.ts src/lib/kanab-quest-school-server.ts src/lib/kanab-quest-school-answers.ts src/lib/kanab-quest-school-history-outbox.ts src/lib/kanab-quest-school-history-outbox.test.ts src/lib/kanab-quest-school-terpenes-progress.ts src/lib/kanab-quest-school-terpenes-selection.ts src/lib/supabase/kanab-quest-school-terpenes-backend.ts src/app/api/arena/placard/school/terpenes/route.ts src/components/placard/useKqTerpenesProgress.ts src/lib/kanab-quest-school-terpenes-progress.test.ts src/lib/kanab-quest-school-terpenes-server.test.ts src/lib/supabase/kanab-quest-school-terpenes-backend.test.ts src/app/api/arena/placard/school/terpenes/route.test.ts scripts/audit-school-scenarios.mjs scripts/test-placard-school-fixture.mjs scripts/test-placard-school-terpenes.mjs scripts/test-placard-school-concurrency.mjs",
+        "result": "Réussi."
+      }
+    ],
+    "validationLimits": [
+      "PGlite utilise des fixtures comptables explicites. PostgreSQL utilise les vrais helpers et observateur dans un conteneur éphémère local sans réseau, port ni montage hôte, supprimé après test.",
+      "La fixture navigateur conserve ses plans en mémoire ; le vrai HMAC relève des tests serveur. Recette navigateur et compilation générale dans le lot d’intégration.",
+      "La preuve de préparation distante antérieure doit être actualisée avant un futur déploiement des migrations école."
+    ],
+    "production": {
+      "remoteDatabaseMutation": false,
+      "migrationApplied": false,
+      "applicationDeployment": false
+    },
+    "integrationEvidence": "docs/bete-de-concours/school-terpenes-provenance.json#validation"
+  },
+  "cannabinoidsExtension": {
+    "updated": "2026-11-12",
+    "contentVersion": "2026-11-12.cannabinoids1",
+    "status": "Backend et progression validés localement avec la banque complète ; recette navigateur et compilation générale dans le lot d’intégration.",
+    "curriculum": {
+      "chapters": 10,
+      "lessons": 20,
+      "checkpoints": 10,
+      "activities": 20,
+      "authoredQuestions": 40,
+      "synthesisQuestions": 10
+    },
+    "reward": {
+      "quizId": "evidence",
+      "rewardId": "school:evidence",
+      "maximumCents": 1000,
+      "allSchoolQuizzesMaximumCents": 10000,
+      "preservation": "RPC financière, meilleurs scores, cumuls payés et reçus conservés. Ancien 7/10 payé 700 centimes, puis nouveaux 9/10 et 10/10 : compléments de 200 puis 100 centimes. Aucun nouveau budget.",
+      "learning": "Leçons, activités et checkpoints sans gain. L’ancienne lecture evidence ne valide aucune des vingt nouvelles leçons. Aucun texte libre transmis."
+    },
+    "selection": {
+      "transport": "GET /api/arena/placard/school/quiz?quizId=evidence et POST quiz avec selectionId c1.UUID.HMAC, conservé avec les questions et réponses du brouillon.",
+      "invariants": "Une question par chacun des dix chapitres ; plan et ordre déterministes. HMAC-SHA256 lié au propriétaire, à la version et au seed, domaine Cannabinoïdes distinct et clé serveur existante. Tokens h1, b1, t1 et c1 non interchangeables.",
+      "answers": "Quarante références privées et quatre explications par question via CANNABINOID_ANSWERS / KQ_SCHOOL_CANNABINOID_ANSWERS. Les 100 références legacy, 44 Histoire, 32 Botanique et 40 Terpènes sont préservées.",
+      "compatibility": "Format financier SQL inchangé. Ancienne version ou signature invalidée : seulement reprise d’un reçu déjà finalisé exactement correspondant, jamais un nouveau versement."
+    },
+    "persistence": {
+      "migration": "supabase/migrations/20261112000400_kq_school_cannabinoids_progress.sql",
+      "api": "GET/POST /api/arena/placard/school/cannabinoids",
+      "table": "public.kq_school_cannabinoids_progress",
+      "rpc": "public.rpc_kq_school_cannabinoids(uuid,jsonb)",
+      "permissions": "Table/helper privés pour PUBLIC, anon, authenticated et service_role ; RLS actif. Seul EXECUTE de la RPC nommée est accordé à service_role ; search_path fixé.",
+      "invariants": "Whitelist 20/10/20, union monotone, reprise CAS/expectedRevision, retry exact sans changement de revision/updatedAt. Verrou distinct du portefeuille ; progressions Histoire, Botanique et Terpènes préservées.",
+      "outbox": "Namespace cannabinoids séparé dans la mémoire et sessionStorage, par propriétaire. Un POST à la fois, retrait du seul lot acquitté, étapes ajoutées pendant l’envoi conservées. Attente visible après rechargement ; erreur sans boucle automatique.",
+      "frontend": "src/components/placard/useKqCannabinoidsProgress.ts",
+      "fixture": "createSchoolFixture expose cannabinoids, cannabinoidsSnapshot, cannabinoidsSubmissions et loseNextCannabinoids(). Cette dernière simule une réponse perdue après commit pour vérifier la reprise de la même progression."
+    },
+    "executedChecks": [
+      {
+        "command": "npx.cmd vitest run src/lib/kanab-quest-school.test.ts src/lib/kanab-quest-school-history-progress.test.ts src/lib/kanab-quest-school-botany-progress.test.ts src/lib/kanab-quest-school-terpenes-progress.test.ts src/lib/kanab-quest-school-cannabinoids-progress.test.ts src/lib/kanab-quest-school-history-outbox.test.ts",
+        "result": "71 tests réussis dans six fichiers ; protocole, whitelist des quatre parcours et douze scénarios outbox."
+      },
+      {
+        "command": "npx.cmd vitest run src/lib/kanab-quest-school-server.test.ts src/lib/kanab-quest-school-history-server.test.ts src/lib/kanab-quest-school-botany-server.test.ts src/lib/kanab-quest-school-terpenes-server.test.ts src/lib/kanab-quest-school-cannabinoids-server.test.ts src/lib/supabase/kanab-quest-school-backend.test.ts src/lib/supabase/kanab-quest-school-history-backend.test.ts src/lib/supabase/kanab-quest-school-botany-backend.test.ts src/lib/supabase/kanab-quest-school-terpenes-backend.test.ts src/lib/supabase/kanab-quest-school-cannabinoids-backend.test.ts src/app/api/arena/placard/school/route.test.ts src/app/api/arena/placard/school/history/route.test.ts src/app/api/arena/placard/school/botany/route.test.ts src/app/api/arena/placard/school/terpenes/route.test.ts src/app/api/arena/placard/school/cannabinoids/route.test.ts",
+        "result": "87 tests réussis dans quinze fichiers avec les banques réelles ; total du lot : 158 tests dans 21 fichiers. Signatures, comptes, falsifications, score, 160 explications Cannabinoïdes, anciens reçus et contrats API/RPC."
+      },
+      {
+        "command": "node scripts/test-placard-school-fixture.mjs",
+        "result": "44 contrôles réussis en mémoire Node : quatre parcours, sélection c1, ancien budget evidence, complément 700→900→1000, réponses perdues après commit, retries et CAS."
+      },
+      {
+        "command": "node scripts/test-placard-school-cannabinoids.mjs",
+        "result": "55 contrôles PGlite réussis : anciens gains/reçus evidence, seuil, complément/plafond, CAS, whitelist, privilèges et préservation des trois autres parcours."
+      },
+      {
+        "command": "node scripts/test-placard-school-concurrency.mjs --cannabinoids",
+        "result": "13 contrôles PostgreSQL 17 réussis : union concurrente, CAS, doublons, absence de verrou portefeuille, isolation des quatre parcours et cumul evidence plafonné entre tentatives concurrentes."
+      },
+      {
+        "command": "npm.cmd run check:supabase-grants",
+        "result": "383 migrations vérifiées avec décisions explicites de privilèges."
+      },
+      {
+        "command": "npx.cmd eslint src/lib/kanab-quest-school.ts src/lib/kanab-quest-school-server.ts src/lib/kanab-quest-school-answers.ts src/lib/kanab-quest-school-history-outbox.ts src/lib/kanab-quest-school-history-outbox.test.ts src/lib/kanab-quest-school-cannabinoids-progress.ts src/lib/kanab-quest-school-cannabinoids-selection.ts src/lib/supabase/kanab-quest-school-cannabinoids-backend.ts src/app/api/arena/placard/school/cannabinoids/route.ts src/components/placard/useKqCannabinoidsProgress.ts src/lib/kanab-quest-school-cannabinoids-progress.test.ts src/lib/kanab-quest-school-cannabinoids-server.test.ts src/lib/supabase/kanab-quest-school-cannabinoids-backend.test.ts src/app/api/arena/placard/school/cannabinoids/route.test.ts scripts/audit-school-scenarios.mjs scripts/test-placard-school-fixture.mjs scripts/test-placard-school-cannabinoids.mjs scripts/test-placard-school-concurrency.mjs",
+        "result": "Réussi."
+      },
+      {
+        "command": "node --check scripts/audit-school-cannabinoids-scenarios.mjs",
+        "result": "Syntaxe valide."
+      },
+      {
+        "command": "npx.cmd eslint scripts/audit-school-cannabinoids-scenarios.mjs",
+        "result": "Réussi."
+      }
+    ],
+    "validationLimits": [
+      "PGlite utilise des fixtures comptables explicites. PostgreSQL utilise les vrais helpers et observateur dans un conteneur éphémère local sans réseau, port ni montage hôte, supprimé après test.",
+      "La fixture navigateur conserve ses plans en mémoire ; le vrai HMAC relève des tests serveur. Recette navigateur et compilation générale dans le lot d’intégration.",
+      "La preuve de préparation distante antérieure doit être actualisée avant un futur déploiement des migrations école."
+    ],
+    "production": {
+      "remoteDatabaseMutation": false,
+      "migrationApplied": false,
+      "applicationDeployment": false
+    },
+    "browserScenario": {
+      "script": "scripts/audit-school-cannabinoids-scenarios.mjs",
+      "export": "auditSchoolCannabinoids",
+      "widths": [
+        320,
+        1440
+      ],
+      "executedByBackendAgent": false,
+      "coverage": [
+        "Six exercices ; justification incorrecte et brouillon retrouvé après rechargement.",
+        "Progression perdue après commit puis retry sans incrément supplémentaire.",
+        "Registre : recherche et filtres famille/forme ; réseau au clavier dans cinq contextes.",
+        "Matrice des résultats négatifs et lien de cohorte partagée HHC 2025/2026.",
+        "Buddy HH2026-002 public sans possession ; Escape retrouve le passage clinique exact.",
+        "Quiz de dix chapitres, complément de 300 centimes sur un ancien gain de 700, reprise de la même tentative après réponse perdue.",
+        "Correction des quatre options, retour au passage source, owner guard409 et lecture des réponses privées403."
+      ]
+    }
+  },
+  "cultivationExtension": {
+    "date": "2026-11-12",
+    "scope": "Local Cultivation backend, progression, audit transport and browser scenarios. The global build is owned by the integration agent.",
+    "curriculum": "cultivation",
+    "quizId": "genetics",
+    "rewardId": "school:genetics",
+    "contentVersion": "2026-11-12.cultivation1",
+    "budget": {
+      "courseCents": 1000,
+      "schoolCents": 10000,
+      "unchanged": true,
+      "minimumScore": 7,
+      "formula": "target=score<7?0:floor(budgetCents*score/10); gain=max(0,target-paidCents)",
+      "legacyReceiptAndPaidTotalsPreserved": true
+    },
+    "selection": {
+      "prefix": "u1",
+      "domain": "kq-school-cultivation-selection:v1",
+      "ownerAndVersionBound": true,
+      "signedWithExistingServerSecret": true,
+      "bankQuestions": 32,
+      "selectedQuestions": 10,
+      "chaptersCovered": 8,
+      "secondDistinctQuestionFromChapters": 2,
+      "privateOptionExplanations": 128
+    },
+    "progression": {
+      "endpoint": "/api/arena/placard/school/cultivation",
+      "rpc": "rpc_kq_school_cultivation",
+      "migration": "supabase/migrations/20261112000500_kq_school_cultivation_progress.sql",
+      "lessons": 16,
+      "activities": 16,
+      "checkpoints": 8,
+      "privateTable": true,
+      "namedServiceRoleRpcGrantOnly": true,
+      "monotoneUnion": true,
+      "resumeCompareAndSwap": true,
+      "serialOutbox": true,
+      "outboxNamespace": "kq-cultivation-pending:v1:<ownerId>",
+      "legacyGeneticsReadDoesNotCompleteNewLessons": true,
+      "walletUnaffected": true
+    },
+    "executed": [
+      {
+        "command": "npx.cmd vitest run src/lib/kanab-quest-school.test.ts src/lib/kanab-quest-school-history-progress.test.ts src/lib/kanab-quest-school-botany-progress.test.ts src/lib/kanab-quest-school-terpenes-progress.test.ts src/lib/kanab-quest-school-cannabinoids-progress.test.ts src/lib/kanab-quest-school-cultivation-progress.test.ts src/lib/kanab-quest-school-history-outbox.test.ts",
+        "result": "PASS",
+        "tests": 87,
+        "files": 7
+      },
+      {
+        "command": "$env:VITE_CONFIG_NATIVE_IGNORE_WARNING='true'\nnpx.cmd vitest run src/lib/kanab-quest-school-server.test.ts src/lib/kanab-quest-school-history-server.test.ts src/lib/kanab-quest-school-botany-server.test.ts src/lib/kanab-quest-school-terpenes-server.test.ts src/lib/kanab-quest-school-cannabinoids-server.test.ts src/lib/kanab-quest-school-cultivation-server.test.ts src/lib/supabase/kanab-quest-school-backend.test.ts src/lib/supabase/kanab-quest-school-history-backend.test.ts src/lib/supabase/kanab-quest-school-botany-backend.test.ts src/lib/supabase/kanab-quest-school-terpenes-backend.test.ts src/lib/supabase/kanab-quest-school-cannabinoids-backend.test.ts src/lib/supabase/kanab-quest-school-cultivation-backend.test.ts src/app/api/arena/placard/school/route.test.ts src/app/api/arena/placard/school/history/route.test.ts src/app/api/arena/placard/school/botany/route.test.ts src/app/api/arena/placard/school/terpenes/route.test.ts src/app/api/arena/placard/school/cannabinoids/route.test.ts src/app/api/arena/placard/school/cultivation/route.test.ts",
+        "result": "PASS",
+        "tests": 104,
+        "files": 18
+      },
+      {
+        "command": "node scripts/test-placard-school-cultivation.mjs",
+        "result": "PASS",
+        "checks": 58,
+        "engine": "PGlite; local in-memory SQL"
+      },
+      {
+        "command": "node scripts/test-placard-school-concurrency.mjs --cultivation",
+        "result": "PASS",
+        "checks": 14,
+        "engine": "PostgreSQL 17; existing cached image in temporary local Docker container; no network, published ports or host data mounts"
+      },
+      {
+        "command": "node scripts/test-placard-school-fixture.mjs",
+        "result": "PASS",
+        "checks": 56,
+        "engine": "Node memory only"
+      },
+      {
+        "command": "npm.cmd run check:supabase-grants",
+        "result": "PASS",
+        "migrations": 384
+      },
+      {
+        "command": "npx.cmd eslint src/lib/kanab-quest-school.ts src/lib/kanab-quest-school-server.ts src/lib/kanab-quest-school-answers.ts src/lib/kanab-quest-school-history-outbox.ts src/lib/kanab-quest-school-history-outbox.test.ts src/lib/kanab-quest-school-cultivation-progress.ts src/lib/kanab-quest-school-cultivation-selection.ts src/lib/supabase/kanab-quest-school-cultivation-backend.ts src/app/api/arena/placard/school/cultivation/route.ts src/components/placard/useKqCultivationProgress.ts src/lib/kanab-quest-school-cultivation-progress.test.ts src/lib/kanab-quest-school-cultivation-server.test.ts src/lib/supabase/kanab-quest-school-cultivation-backend.test.ts src/app/api/arena/placard/school/cultivation/route.test.ts scripts/audit-school-scenarios.mjs scripts/test-placard-school-fixture.mjs scripts/test-placard-school-cultivation.mjs scripts/test-placard-school-concurrency.mjs",
+        "result": "PASS"
+      },
+      {
+        "command": "node --check scripts/audit-school-cultivation-scenarios.mjs",
+        "result": "PASS"
+      },
+      {
+        "command": "npx.cmd eslint scripts/audit-school-cultivation-scenarios.mjs",
+        "result": "PASS"
+      },
+      {
+        "command": "$env:NAVIGATION_AUDIT_PORT='3251'\n$env:VITE_CONFIG_NATIVE_IGNORE_WARNING='true'\nnode scripts/audit-placard-navigation.mjs --school-cultivation",
+        "result": "PASS",
+        "scenarios": 2,
+        "widths": [
+          320,
+          1440
+        ],
+        "errors": 0,
+        "report": "output/placard-navigation/school-cultivation-report.json",
+        "existingPreviewPort3248Untouched": true
+      }
+    ],
+    "vitestTotal": {
+      "tests": 191,
+      "files": 25
+    },
+    "browserAudit": {
+      "file": "scripts/audit-school-cultivation-scenarios.mjs",
+      "export": "auditSchoolCultivation",
+      "widths": [
+        320,
+        1440
+      ],
+      "executedByThisAgent": true,
+      "expectedCoverage": [
+        "five required activities and one checkpoint",
+        "incorrect justification draft reload",
+        "multiple justified decision answers",
+        "progress response lost after commit and exact retry",
+        "independent environment and root-medium axes",
+        "ten comparison criteria",
+        "six greenhouse hotspots and keyboard",
+        "three fictional case studies",
+        "qualitative simulation compared to authored data",
+        "four separate chart metrics with exact units",
+        "guide deep link",
+        "unowned HH2026-045 Buddy return to cultivation-decisions-1",
+        "owner mismatch 409",
+        "ten unique quiz questions covering all eight chapters",
+        "legacy 700-cent payment plus only 300-cent improvement",
+        "quiz response lost after commit and identical retry",
+        "four option explanations per correction",
+        "private answer source 403",
+        "four prior curricula progress unchanged"
+      ],
+      "result": "PASS",
+      "report": "output/placard-navigation/school-cultivation-report.json",
+      "errors": []
+    },
+    "remoteDatabaseTouched": false,
+    "productionMigrationApplied": false,
+    "deploymentPerformed": false,
+    "globalBuildRunByThisAgent": false,
+    "contentTests": 8,
+    "localOnly": true
+  },
+  "healthExtension": {
+    "date": "2026-11-12",
+    "scope": "Local Health backend, progression, audit transport and browser scenarios. Global build is owned by the integration agent.",
+    "curriculum": "health",
+    "quizId": "biodiversity",
+    "rewardId": "school:biodiversity",
+    "contentVersion": "2026-11-12.health1",
+    "budget": {
+      "courseCents": 1000,
+      "schoolCents": 10000,
+      "unchanged": true,
+      "minimumScore": 7,
+      "formula": "target=score<7?0:floor(budgetCents*score/10); gain=max(0,target-paidCents)",
+      "legacyReceiptAndPaidTotalsPreserved": true
+    },
+    "selection": {
+      "prefix": "p1",
+      "domain": "kq-school-health-selection:v1",
+      "ownerAndVersionBound": true,
+      "signedWithExistingServerSecret": true,
+      "bankQuestions": 32,
+      "selectedQuestions": 10,
+      "chaptersCovered": 8,
+      "secondDistinctQuestionFromChapters": 2,
+      "privateOptionExplanations": 128
+    },
+    "progression": {
+      "endpoint": "/api/arena/placard/school/health",
+      "rpc": "rpc_kq_school_health",
+      "migration": "supabase/migrations/20261112000600_kq_school_health_progress.sql",
+      "lessons": 16,
+      "activities": 16,
+      "checkpoints": 8,
+      "privateTable": true,
+      "namedServiceRoleRpcGrantOnly": true,
+      "monotoneUnion": true,
+      "resumeCompareAndSwap": true,
+      "serialOutbox": true,
+      "outboxNamespace": "kq-health-pending:v1:<ownerId>",
+      "legacyBiodiversityReadDoesNotCompleteNewLessons": true,
+      "walletUnaffected": true
+    },
+    "executed": [
+      {
+        "command": "$env:VITE_CONFIG_NATIVE_IGNORE_WARNING='true'\nnpx.cmd vitest run src/lib/kanab-quest-school.test.ts src/lib/kanab-quest-school-history-progress.test.ts src/lib/kanab-quest-school-botany-progress.test.ts src/lib/kanab-quest-school-terpenes-progress.test.ts src/lib/kanab-quest-school-cannabinoids-progress.test.ts src/lib/kanab-quest-school-cultivation-progress.test.ts src/lib/kanab-quest-school-health-progress.test.ts src/lib/kanab-quest-school-history-outbox.test.ts",
+        "result": "PASS",
+        "tests": 104,
+        "files": 8
+      },
+      {
+        "command": "node scripts/test-placard-school-health.mjs",
+        "result": "PASS",
+        "checks": 61,
+        "engine": "PGlite; local in-memory SQL"
+      },
+      {
+        "command": "node scripts/test-placard-school-concurrency.mjs --health",
+        "result": "PASS",
+        "checks": 15,
+        "engine": "PostgreSQL 17; existing cached image in temporary local Docker container; no network, published ports or host data mounts"
+      },
+      {
+        "command": "npm.cmd run check:supabase-grants",
+        "result": "PASS",
+        "migrations": 385
+      },
+      {
+        "command": "$env:VITE_CONFIG_NATIVE_IGNORE_WARNING='true'\nnpx.cmd vitest run src/lib/kanab-quest-school-server.test.ts src/lib/kanab-quest-school-history-server.test.ts src/lib/kanab-quest-school-botany-server.test.ts src/lib/kanab-quest-school-terpenes-server.test.ts src/lib/kanab-quest-school-cannabinoids-server.test.ts src/lib/kanab-quest-school-cultivation-server.test.ts src/lib/kanab-quest-school-health-server.test.ts src/lib/supabase/kanab-quest-school-backend.test.ts src/lib/supabase/kanab-quest-school-history-backend.test.ts src/lib/supabase/kanab-quest-school-botany-backend.test.ts src/lib/supabase/kanab-quest-school-terpenes-backend.test.ts src/lib/supabase/kanab-quest-school-cannabinoids-backend.test.ts src/lib/supabase/kanab-quest-school-cultivation-backend.test.ts src/lib/supabase/kanab-quest-school-health-backend.test.ts src/app/api/arena/placard/school/route.test.ts src/app/api/arena/placard/school/history/route.test.ts src/app/api/arena/placard/school/botany/route.test.ts src/app/api/arena/placard/school/terpenes/route.test.ts src/app/api/arena/placard/school/cannabinoids/route.test.ts src/app/api/arena/placard/school/cultivation/route.test.ts src/app/api/arena/placard/school/health/route.test.ts",
+        "result": "PASS",
+        "tests": 121,
+        "files": 21
+      },
+      {
+        "command": "node scripts/test-placard-school-fixture.mjs",
+        "result": "PASS",
+        "checks": 68,
+        "engine": "Node memory only"
+      },
+      {
+        "command": "npx.cmd eslint src/lib/kanab-quest-school.ts src/lib/kanab-quest-school-server.ts src/lib/kanab-quest-school-answers.ts src/lib/kanab-quest-school-history-outbox.ts src/lib/kanab-quest-school-history-outbox.test.ts src/lib/kanab-quest-school-health-progress.ts src/lib/kanab-quest-school-health-selection.ts src/lib/supabase/kanab-quest-school-health-backend.ts src/app/api/arena/placard/school/health/route.ts src/components/placard/useKqHealthProgress.ts src/lib/kanab-quest-school-health-progress.test.ts src/lib/kanab-quest-school-health-server.test.ts src/lib/supabase/kanab-quest-school-health-backend.test.ts src/app/api/arena/placard/school/health/route.test.ts scripts/audit-school-scenarios.mjs scripts/test-placard-school-fixture.mjs scripts/test-placard-school-health.mjs scripts/test-placard-school-concurrency.mjs",
+        "result": "PASS"
+      },
+      {
+        "command": "node --check scripts/audit-school-health-scenarios.mjs",
+        "result": "PASS"
+      },
+      {
+        "command": "npx.cmd eslint scripts/audit-school-health-scenarios.mjs",
+        "result": "PASS"
+      },
+      {
+        "command": "$env:NAVIGATION_AUDIT_PORT='3251'\n$env:VITE_CONFIG_NATIVE_IGNORE_WARNING='true'\nnode scripts/audit-placard-navigation.mjs --school-health",
+        "result": "PASS",
+        "scenarios": 2,
+        "widths": [
+          320,
+          1440
+        ],
+        "errors": 0,
+        "report": "output/placard-navigation/school-health-report.json",
+        "existingPreviewPort3248Untouched": true
+      }
+    ],
+    "pending": [],
+    "remoteDatabaseTouched": false,
+    "productionMigrationApplied": false,
+    "deploymentPerformed": false,
+    "globalBuildRunByThisAgent": false,
+    "vitestTotal": {
+      "tests": 225,
+      "files": 29
+    },
+    "browserAudit": {
+      "file": "scripts/audit-school-health-scenarios.mjs",
+      "export": "auditSchoolHealth",
+      "executedByThisAgent": true,
+      "widths": [
+        320,
+        1440
+      ],
+      "runs": 2,
+      "rerunReason": "The documentary E-Phy scope changed during the first bundled run. The final run rebuilt against the frozen updated source; backend tests were not repeated.",
+      "finalReport": [
+        {
+          "scenario": "health-curriculum",
+          "width": 320,
+          "chapters": 8,
+          "lessons": 16,
+          "exercises": 6,
+          "activityDraft": true,
+          "wrongJustification": true,
+          "lostProgressRetry": true,
+          "twoObservationsGate": true,
+          "observationDraft": true,
+          "strategyKeyboard": true,
+          "atlasEntries": 28,
+          "atlasFiltersKeyboardSearch": true,
+          "contextAndEvidenceLimits": true,
+          "documentedPhotos": 4,
+          "photoCreditLicenseZoom": true,
+          "authorizationRecord": true,
+          "unownedBuddyReturn": true,
+          "ownerGuard409": true,
+          "quizUniqueQuestions": 10,
+          "quizChapters": 8,
+          "optionCorrections": 4,
+          "legacyRewardCents": 700,
+          "simulatedGainCents": 300,
+          "quizRetry": true
+        },
+        {
+          "scenario": "health-curriculum",
+          "width": 1440,
+          "chapters": 8,
+          "lessons": 16,
+          "exercises": 6,
+          "activityDraft": true,
+          "wrongJustification": true,
+          "lostProgressRetry": true,
+          "twoObservationsGate": true,
+          "observationDraft": true,
+          "strategyKeyboard": true,
+          "atlasEntries": 28,
+          "atlasFiltersKeyboardSearch": true,
+          "contextAndEvidenceLimits": true,
+          "documentedPhotos": 4,
+          "photoCreditLicenseZoom": true,
+          "authorizationRecord": true,
+          "unownedBuddyReturn": true,
+          "ownerGuard409": true,
+          "quizUniqueQuestions": 10,
+          "quizChapters": 8,
+          "optionCorrections": 4,
+          "legacyRewardCents": 700,
+          "simulatedGainCents": 300,
+          "quizRetry": false
+        }
+      ],
+      "visuallyReviewed": [
+        "school-health-photos-320-viewport.png",
+        "school-health-observation-320-viewport.png",
+        "school-health-authorization-320-viewport.png"
+      ],
+      "privateAnswerSource403": true,
+      "result": "PASS",
+      "report": "output/placard-navigation/school-health-report.json",
+      "errors": []
+    },
+    "contentTests": 8,
+    "localOnly": true
+  },
+  "soilExtension": {
+    "date": "2026-11-12",
+    "scope": "Local Soil backend, progression, audit transport and browser scenarios. Global build and final visual smoke are owned by the integration agent.",
+    "curriculum": "soil",
+    "quizId": "uses",
+    "rewardId": "school:uses",
+    "contentVersion": "2026-11-12.soil1",
+    "budget": {
+      "courseCents": 1000,
+      "schoolCents": 10000,
+      "unchanged": true,
+      "minimumScore": 7,
+      "formula": "target=score<7?0:floor(budgetCents*score/10); gain=max(0,target-paidCents)",
+      "legacyReceiptAndPaidTotalsPreserved": true
+    },
+    "selection": {
+      "prefix": "s1",
+      "domain": "kq-school-soil-selection:v1",
+      "ownerAndVersionBound": true,
+      "signedWithExistingServerSecret": true,
+      "bankQuestions": 40,
+      "selectedQuestions": 10,
+      "chaptersCovered": 10,
+      "questionsPerChapter": 1,
+      "privateOptionExplanations": 160
+    },
+    "progression": {
+      "endpoint": "/api/arena/placard/school/soil",
+      "rpc": "rpc_kq_school_soil",
+      "migration": "supabase/migrations/20261112000700_kq_school_soil_progress.sql",
+      "lessons": 20,
+      "activities": 20,
+      "checkpoints": 10,
+      "privateTable": true,
+      "namedServiceRoleRpcGrantOnly": true,
+      "monotoneUnion": true,
+      "resumeCompareAndSwap": true,
+      "serialOutbox": true,
+      "outboxNamespace": "kq-soil-pending:v1:<ownerId>",
+      "legacyUsesReadDoesNotCompleteNewLessons": true,
+      "walletUnaffected": true
+    },
+    "executed": [
+      {
+        "command": "$env:VITE_CONFIG_NATIVE_IGNORE_WARNING='true'\nnpx.cmd vitest run src/lib/kanab-quest-school.test.ts src/lib/kanab-quest-school-history-progress.test.ts src/lib/kanab-quest-school-botany-progress.test.ts src/lib/kanab-quest-school-terpenes-progress.test.ts src/lib/kanab-quest-school-cannabinoids-progress.test.ts src/lib/kanab-quest-school-cultivation-progress.test.ts src/lib/kanab-quest-school-health-progress.test.ts src/lib/kanab-quest-school-soil-progress.test.ts src/lib/kanab-quest-school-history-outbox.test.ts",
+        "result": "PASS",
+        "tests": 122,
+        "files": 9
+      },
+      {
+        "command": "node scripts/test-placard-school-soil.mjs",
+        "result": "PASS",
+        "checks": 64,
+        "engine": "PGlite; local in-memory SQL"
+      },
+      {
+        "command": "node scripts/test-placard-school-concurrency.mjs --soil",
+        "result": "PASS",
+        "checks": 16,
+        "engine": "PostgreSQL 17; existing cached image in temporary local Docker container; no network, published ports or host data mounts"
+      },
+      {
+        "command": "npm.cmd run check:supabase-grants",
+        "result": "PASS",
+        "migrations": 386
+      },
+      {
+        "command": "npx.cmd eslint src/lib/kanab-quest-school.ts src/lib/kanab-quest-school-server.ts src/lib/kanab-quest-school-answers.ts src/lib/kanab-quest-school-history-outbox.ts src/lib/kanab-quest-school-history-outbox.test.ts src/lib/kanab-quest-school-soil-progress.ts src/lib/kanab-quest-school-soil-selection.ts src/lib/supabase/kanab-quest-school-soil-backend.ts src/app/api/arena/placard/school/soil/route.ts src/components/placard/useKqSoilProgress.ts src/lib/kanab-quest-school-soil-progress.test.ts src/lib/kanab-quest-school-soil-server.test.ts src/lib/supabase/kanab-quest-school-soil-backend.test.ts src/app/api/arena/placard/school/soil/route.test.ts scripts/audit-school-scenarios.mjs scripts/test-placard-school-fixture.mjs scripts/test-placard-school-soil.mjs scripts/test-placard-school-concurrency.mjs",
+        "result": "PASS"
+      },
+      {
+        "command": "$env:VITE_CONFIG_NATIVE_IGNORE_WARNING='true'\nnpx.cmd vitest run src/lib/kanab-quest-school-server.test.ts src/lib/kanab-quest-school-history-server.test.ts src/lib/kanab-quest-school-botany-server.test.ts src/lib/kanab-quest-school-terpenes-server.test.ts src/lib/kanab-quest-school-cannabinoids-server.test.ts src/lib/kanab-quest-school-cultivation-server.test.ts src/lib/kanab-quest-school-health-server.test.ts src/lib/kanab-quest-school-soil-server.test.ts src/lib/supabase/kanab-quest-school-backend.test.ts src/lib/supabase/kanab-quest-school-history-backend.test.ts src/lib/supabase/kanab-quest-school-botany-backend.test.ts src/lib/supabase/kanab-quest-school-terpenes-backend.test.ts src/lib/supabase/kanab-quest-school-cannabinoids-backend.test.ts src/lib/supabase/kanab-quest-school-cultivation-backend.test.ts src/lib/supabase/kanab-quest-school-health-backend.test.ts src/lib/supabase/kanab-quest-school-soil-backend.test.ts src/app/api/arena/placard/school/route.test.ts src/app/api/arena/placard/school/history/route.test.ts src/app/api/arena/placard/school/botany/route.test.ts src/app/api/arena/placard/school/terpenes/route.test.ts src/app/api/arena/placard/school/cannabinoids/route.test.ts src/app/api/arena/placard/school/cultivation/route.test.ts src/app/api/arena/placard/school/health/route.test.ts src/app/api/arena/placard/school/soil/route.test.ts",
+        "result": "PASS",
+        "tests": 138,
+        "files": 24
+      },
+      {
+        "command": "node scripts/test-placard-school-fixture.mjs",
+        "result": "PASS",
+        "checks": 80,
+        "engine": "Node memory only"
+      },
+      {
+        "command": "node --check scripts/audit-school-soil-scenarios.mjs",
+        "result": "PASS"
+      },
+      {
+        "command": "npx.cmd eslint scripts/audit-school-soil-scenarios.mjs",
+        "result": "PASS"
+      },
+      {
+        "command": "$env:NAVIGATION_AUDIT_PORT='3251'\n$env:VITE_CONFIG_NATIVE_IGNORE_WARNING='true'\nnode scripts/audit-placard-navigation.mjs --school-soil",
+        "result": "320 scenario PASS; subsequent global network-idle wait expired before the 1440 scenario",
+        "scenarios": 1,
+        "widths": [
+          320
+        ],
+        "applicationErrors": 0,
+        "report": "output/placard-navigation/school-soil-mobile-run.json"
+      },
+      {
+        "command": "$env:NAVIGATION_AUDIT_PORT='3251'\n$env:VITE_CONFIG_NATIVE_IGNORE_WARNING='true'\n$env:SOIL_AUDIT_WIDTHS='1440'\nnode scripts/audit-placard-navigation.mjs --school-soil",
+        "result": "PASS",
+        "scenarios": 1,
+        "widths": [
+          1440
+        ],
+        "errors": 0,
+        "report": "output/placard-navigation/school-soil-desktop-run.json"
+      }
+    ],
+    "pending": [],
+    "remoteDatabaseTouched": false,
+    "productionMigrationApplied": false,
+    "deploymentPerformed": false,
+    "globalBuildRunByThisAgent": false,
+    "vitestTotal": {
+      "tests": 260,
+      "files": 33
+    },
+    "browserAudit": {
+      "result": "PASS",
+      "file": "scripts/audit-school-soil-scenarios.mjs",
+      "export": "auditSchoolSoil",
+      "executedByThisAgent": true,
+      "widths": [
+        320,
+        1440
+      ],
+      "scenarios": 2,
+      "applicationErrors": 0,
+      "runs": 3,
+      "consolidatedReport": "output/placard-navigation/school-soil-report.json",
+      "harnessCorrections": [
+        "Re-query details summaries after React navigation instead of keeping stale element handles.",
+        "Wait for the authenticated progress state instead of global network silence; the completed mobile scenario was preserved and only desktop rerun."
+      ],
+      "finalResults": [
+        {
+          "scenario": "soil-curriculum",
+          "width": 320,
+          "chapters": 10,
+          "lessons": 20,
+          "exercises": 7,
+          "activityDraft": true,
+          "wrongJustification": true,
+          "lostProgressRetry": true,
+          "cutawayHotspots": 6,
+          "cutawayKeyboard": true,
+          "networkNodes": 14,
+          "networkRelations": 26,
+          "networkKeyboard": true,
+          "indicatorFilters": true,
+          "analysisMeasures": 8,
+          "methodMismatchNoGraph": true,
+          "missingInformation": true,
+          "nutrients": 14,
+          "inputComparison": true,
+          "cycleKeyboard": true,
+          "reasoningSteps": 5,
+          "unownedBuddyReturn": true,
+          "ownerGuard409": true,
+          "quizUniqueQuestions": 10,
+          "quizChapters": 10,
+          "optionCorrections": 4,
+          "legacyRewardCents": 700,
+          "simulatedGainCents": 300,
+          "quizRetry": true
+        },
+        {
+          "scenario": "soil-curriculum",
+          "width": 1440,
+          "chapters": 10,
+          "lessons": 20,
+          "exercises": 7,
+          "activityDraft": true,
+          "wrongJustification": true,
+          "lostProgressRetry": true,
+          "cutawayHotspots": 6,
+          "cutawayKeyboard": true,
+          "networkNodes": 14,
+          "networkRelations": 26,
+          "networkKeyboard": true,
+          "indicatorFilters": true,
+          "analysisMeasures": 8,
+          "methodMismatchNoGraph": true,
+          "missingInformation": true,
+          "nutrients": 14,
+          "inputComparison": true,
+          "cycleKeyboard": true,
+          "reasoningSteps": 5,
+          "unownedBuddyReturn": true,
+          "ownerGuard409": true,
+          "quizUniqueQuestions": 10,
+          "quizChapters": 10,
+          "optionCorrections": 4,
+          "legacyRewardCents": 700,
+          "simulatedGainCents": 300,
+          "quizRetry": false
+        }
+      ],
+      "visuallyReviewed": [
+        "school-soil-network-320-viewport.png",
+        "school-soil-method-mismatch-320-viewport.png"
+      ],
+      "privateAnswerSource403": true,
+      "existingPreviewPort3248Untouched": true,
+      "report": "output/placard-navigation/school-soil-report.json",
+      "errors": []
+    },
+    "contentTests": 10,
+    "localOnly": true
+  },
+  "productsExtension": {
+    "date": "2026-11-12",
+    "counts": {
+      "groups": 4,
+      "chapters": 10,
+      "lessons": 20,
+      "activities": 20,
+      "checkpoints": 10,
+      "questions": 40,
+      "privateOptionExplanations": 160,
+      "terms": 72,
+      "commonGlossaryEntries": 403,
+      "atlasEntries": 29,
+      "regulatoryReferences": 8,
+      "fibreStages": 5,
+      "plateHotspots": 6,
+      "processCards": 5,
+      "commercialClaims": 6,
+      "certificateResults": 2,
+      "certificateUnmeasured": 4,
+      "traceDocuments": 4,
+      "traceDecisions": 2,
+      "requiredExercises": 6,
+      "additionalInvestigation": 1,
+      "sourceRecords": 52,
+      "distinctSourceUrls": 47
+    },
+    "economy": "quizId profiles / reward school:profiles conservés ; plafond de 1 000 centimes et total de 10 000 inchangés. Quiz v1 de dix questions couvre dix chapitres. Activités sans gain ; anciens reçus et gains préservés.",
+    "migration": "20261112000800_kq_school_products_progress.sql testée en bases temporaires locales. Aucune des neuf migrations de l’école appliquée au projet distant.",
+    "validation": {
+      "contentTests": 10,
+      "backendTests": 296,
+      "totalVitestTests": 306,
+      "sqlPglite": 67,
+      "postgresConcurrency": 17,
+      "fixture": 92,
+      "grantsMigrations": 387,
+      "eslint": "PASS ciblé : cours, données, UI, backend et recette.",
+      "build": "PASS Next.js et TypeScript ; code de sortie 0 enregistré directement.",
+      "buildNotes": "Les avertissements éventuels de revalidation de données publiques Supabase sont conservés dans le journal ; aucune validation distante revendiquée.",
+      "browser": "PASS 320/1440 : six exercices et enquête supplémentaire, justifications, reprises, planche/clavier, atlas et filtres, chaîne des fibres au clavier, opérations et étiquettes, certificat et critères non mesurés, traçabilité, Buddy sans possession, budgets, owner409 et réponses privées403.",
+      "preview": {
+        "results": [
+          {
+            "width": 320,
+            "eightCurricula": true,
+            "commonGlossary": 403,
+            "plateLoaded": true,
+            "plateKeyboard": true,
+            "fourGroups": true,
+            "linksCannabinoidsHistory": true,
+            "privateAnswers403": true,
+            "reducedMotionLayout": true
+          },
+          {
+            "width": 1440,
+            "eightCurricula": true,
+            "commonGlossary": 403,
+            "plateLoaded": true,
+            "plateKeyboard": true,
+            "fourGroups": true,
+            "linksCannabinoidsHistory": true,
+            "privateAnswers403": true,
+            "reducedMotionLayout": true
+          }
+        ],
+        "errors": []
+      },
+      "privacy": {
+        "checkedAt": "2026-11-12T20:48:07.449Z",
+        "chunks": 196,
+        "privateExplanations": 300,
+        "leaks": []
+      },
+      "transport": "Vrais composants et API de démonstration en mémoire. Aucune base distante ni paiement réel vérifié."
+    }
+  },
+  "harvestExtension": {
+    "date": "2026-11-12",
+    "counts": {
+      "chapters": 9,
+      "lessons": 18,
+      "activities": 18,
+      "checkpoints": 9,
+      "questions": 36,
+      "privateOptionExplanations": 144,
+      "terms": 67,
+      "commonGlossaryEntries": 470,
+      "resultCriteria": 10,
+      "lots": 3,
+      "indicators": 8,
+      "advice": 10,
+      "trials": 3,
+      "recordFields": 12,
+      "planFields": 4,
+      "workshopDocuments": 6,
+      "revisionLinks": 8,
+      "requiredExercises": 6,
+      "finalWorkshop": 1,
+      "sourceRecords": 21,
+      "distinctSourceUrls": 17
+    },
+    "economy": "quizId prevention / reward school:prevention conservés ; plafond de 1 000 centimes et total historique de 10 000 inchangés. Sélection r1 : dix questions parmi trente-six, couvrant les neuf chapitres (un chapitre reçoit deux questions distinctes). Activités sans gain ; anciens reçus et gains préservés.",
+    "migration": "20261112000900_kq_school_harvest_progress.sql testée en bases temporaires locales. Aucune des dix migrations de l’école appliquée au projet distant.",
+    "validation": {
+      "contentTests": 12,
+      "backendTests": 333,
+      "totalVitestTests": 345,
+      "sqlPglite": 70,
+      "postgresConcurrency": 18,
+      "fixture": 104,
+      "grantsMigrations": 388,
+      "eslint": "PASS ciblé : cours, données, UI, backend et recette.",
+      "build": "PASS Next.js et TypeScript ; code de sortie 0 enregistré directement.",
+      "buildNotes": "Les avertissements de revalidation de données publiques Supabase éventuels sont conservés dans le journal. Aucune validation distante revendiquée.",
+      "browser": "PASS à 320 et 1440 px : six exercices, deux démarches justifiées dans l’atelier, reprises, comparateur et données absentes, carnet, conseils, essais et plan, Buddy sans possession, budgets, changement de joueur et réponses privées.",
+      "preview": {
+        "results": [
+          {
+            "width": 320,
+            "nineCurricula": true,
+            "legalComplement": true,
+            "commonGlossary": 470,
+            "heroLoaded": true,
+            "missingWaterNotZero": true,
+            "eightRevisionLinks": true,
+            "privateAnswers403": true,
+            "reducedMotionLayout": true
+          },
+          {
+            "width": 1440,
+            "nineCurricula": true,
+            "legalComplement": true,
+            "commonGlossary": 470,
+            "heroLoaded": true,
+            "missingWaterNotZero": true,
+            "eightRevisionLinks": true,
+            "privateAnswers403": true,
+            "reducedMotionLayout": true
+          }
+        ],
+        "errors": []
+      },
+      "privacy": {
+        "checkedAt": "2026-11-12T21:17:44.339Z",
+        "chunks": 199,
+        "privateExplanations": 336,
+        "leaks": []
+      },
+      "transport": "Vrais composants et API de démonstration en mémoire. Aucune base distante ni paiement réel vérifié."
+    }
+  }
+}

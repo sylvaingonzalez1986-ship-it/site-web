@@ -1,0 +1,33 @@
+{
+  "attemptedAt": "2026-11-14",
+  "reviewer": "revision_terpenes",
+  "scope": "Dernière tentative bornée d’accès au PDF officiel de la consolidation courante 178/2002 pour les articles 18 et 19, sans modification des lots.",
+  "result": "blocked-no-pdf-received",
+  "candidateVersion": {
+    "celex": "02002R0178-20260101",
+    "consolidationDate": "2026-01-01",
+    "indexedHeader": "02002R0178 — EN — 01.01.2026 — 012.001",
+    "verificationLimit": "Version identifiée dans l’index de recherche des pages officielles EUR-Lex, qui annonce Current consolidated version: 01/01/2026. Ni ce renseignement indexé ni un extrait de recherche ne sont comptés comme lecture du document consolidé."
+  },
+  "attempts": [
+    {"url": "https://eur-lex.europa.eu/eli/reg/2002/178/2026-01-01/eng/pdf", "method": "Téléchargement local urllib.request et ouverture web du PDF officiel", "result": "Téléchargement : HTTP 202, Content-Type text/html, zéro octet. Outil web : vérification JavaScript/CAPTCHA, pas un PDF."},
+    {"url": "https://eur-lex.europa.eu/eli/reg/2002/178/2026-01-01/fra/pdf", "method": "Téléchargement local urllib.request, Accept application/pdf", "result": "HTTP 202, Content-Type text/html, zéro octet ; aucun fichier PDF enregistré."},
+    {"url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX%3A02002R0178-20260101", "method": "Téléchargement local urllib.request, Accept application/pdf, et outil web", "result": "Téléchargement : HTTP 202, Content-Type text/html, zéro octet. Outil web : redirection vers la page d’accueil du Journal officiel, sans texte consolidé."},
+    {"url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?uri=CELEX:02002R0178-20260101&from=EN", "method": "Téléchargement local urllib.request, variante officielle PDF distincte", "result": "HTTP 202, Content-Type text/html, zéro octet ; aucun fichier PDF enregistré."},
+    {"url": "https://eur-lex.europa.eu/legal-content/FR/TXT/PDF/?uri=CELEX:02002R0178-20260101", "method": "Ouverture web de la variante PDF française", "result": "Redirection vers la page d’accueil du Journal officiel, sans PDF ni texte consolidé."},
+    {"url": "https://eur-lex.europa.eu/legal-content/EN/TXT/PDF/?qid=1787012631249&uri=CELEX%3A02002R0178-20260101", "method": "Ouverture web de l’URL PDF officiellement indexée", "result": "Inaccessible via l’outil ; aucun document lu."},
+    {"url": "https://publications.europa.eu/resource/celex/02002R0178-20260101.ENG", "method": "Dernière tentative sur le dépôt officiel des publications UE, Accept application/pdf", "result": "HTTP 404 ; pas de document reçu."}
+  ],
+  "localExtraction": {
+    "availableParser": "PyPDF2 installé ; pypdf, PyMuPDF et pdftotext absents",
+    "pdfSignatureFound": false,
+    "pdfFileSaved": false,
+    "extractionPerformed": false,
+    "reason": "Les réponses téléchargées sont vides et ne commencent pas par la signature %PDF. Aucune page HTML ou réponse 202 n’a été renommée en PDF puis présentée comme document lu."
+  },
+  "sectionsRead": [],
+  "assertionsNewlyVerified": [],
+  "sourceReplacement": null,
+  "conclusion": "La lecture des articles 18 et 19 dans la version consolidée exacte courante reste non acquise. Conserver la source products-tool-food-law comme texte original effectivement lu par le coordinateur et sa limite explicite ; cette tentative ne permet pas de lever les blocages des trois fiches.",
+  "batchFilesModified": false
+}

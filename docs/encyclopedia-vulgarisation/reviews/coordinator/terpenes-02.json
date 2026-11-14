@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "terpenes-02",
+  "entries": {
+    "record-terpene-alphapinene": {
+      "contentHash": "35b96a86e194209c7df084753072fd1348c45c86d383478829419a035989e603",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-betapinene": {
+      "contentHash": "53b18f6e4ea627f85cf11ee39010c2461c4e7f54db44da142f7ef30581b82920",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-myrcene": {
+      "contentHash": "32238a1c1c7026682d9e57e58bb95207bf65783ed7115c704dd0f221155397b4",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-limonene": {
+      "contentHash": "3716cfa56667801e369b6d24d392a5363b2ae59db99fa8055d6d26aafb0416cd",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-camphene": {
+      "contentHash": "62214fe06ee152c3523c05c4c6f2c1ef79a23d56d64ce1eaf761aa295685d405",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-alpha-phellandrene": {
+      "contentHash": "b70b31489a1b66de5cc82a0144d6f64f40a0a31d33a89f2bde809255b85797c0",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-delta3-carene": {
+      "contentHash": "59e84c48dd75c1f6a0ba0198f65c35ee3631f585d0c790dd10c3ffcb2c39c3de",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 3,
+    "hash": "207fbc07b00d9238fa630930b7910e452679ba82d75efa79e4b04307438a9d40"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "terpenes-04",
+  "entries": {
+    "record-terpene-borneol": {
+      "contentHash": "8aed11555bebed4acc1f7a428e7982e4069bf6f202e28bed4f07e6e4b269bbf4",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-alpha-terpineol": {
+      "contentHash": "96206986e343e44518efc7e7e3289250f0c32eb7e98ba9cdb6d3c0c387a04b93",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-terpinen4-ol": {
+      "contentHash": "3bda55120abe866f71f5ea6fd1f1d03c46e9c8936410750e0e906bdaab31bd76",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-eucalyptol": {
+      "contentHash": "1d927d831d55e9dadd329d92dcfcb350962d6821d74949cddb021b92fd885dbd",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-p-cymene": {
+      "contentHash": "38bd5ecf47a04e225f22cce3b1b2c807da029deb8e0b0ed1a0515d7ff9c1b18b",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-beta-caryophyllene": {
+      "contentHash": "4e6f5018456ce85a6d48cb4420adb565e3f946ed1dc34874a9de37c2898c4ee7",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-alpha-humulene": {
+      "contentHash": "d99f536fefce6a87e38c7ec6f0eded017d69d4c800447432b4618e99d1a4faee",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 5,
+    "hash": "36836e0d648ac20f13a3fad83c7572681ad8a23ed7787b1475ae0cb57387cc69"
+  }
+}

@@ -10,8 +10,18 @@
 }
 
 .water > path { opacity: .18; }
-.gull, .intent { opacity: 0; }
+.gull, .intent, .smoke { opacity: 0; }
 .activityGlow { opacity: .12; }
+
+.scenery, .effects { position: absolute; inset: 0; width: 100%; height: 100%; }
+.sceneryPiece { position: absolute; background-repeat: no-repeat; }
+.sceneryArt { width: 100%; height: 100%; background-repeat: no-repeat; }
+
+.atmosphere [data-map-scenery] { visibility: hidden; }
+.atmosphere[data-scenery-ready="true"] [data-map-scenery] { visibility: visible; }
+.atmosphere[data-motion-state="unavailable"] [data-map-scenery] { visibility: hidden; }
+.atmosphere[data-motion-state="reduced"] :is([data-scenery-motion], [data-scenery-reaction]) { transform: none !important; }
+.atmosphere[data-motion-state="reduced"] .smoke { opacity: 0 !important; }
 
 /* Keep a quiet, complete painting when animation is reduced or unavailable. */
 .atmosphere[data-motion-state="reduced"] .gull,
@@ -21,7 +31,8 @@
 .atmosphere[data-motion-state="reduced"] .activityGlow { opacity: .12 !important; }
 
 @media (prefers-reduced-motion: reduce) {
-  .gull, .intent { opacity: 0 !important; }
-  .water > path { opacity: .18 !important; transform: none !important; }
-  .activityGlow { opacity: .12 !important; }
+  .atmosphere:not([data-motion-override="true"]) :is([data-scenery-motion], [data-scenery-reaction]) { transform: none !important; }
+  .atmosphere:not([data-motion-override="true"]) :is(.smoke, .gull, .intent) { opacity: 0 !important; }
+  .atmosphere:not([data-motion-override="true"]) .water > path { opacity: .18 !important; transform: none !important; }
+  .atmosphere:not([data-motion-override="true"]) .activityGlow { opacity: .12 !important; }
 }

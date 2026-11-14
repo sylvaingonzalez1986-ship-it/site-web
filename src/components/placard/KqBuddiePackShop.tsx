@@ -31,7 +31,7 @@ export function KqBuddiePackShop(props: KqBuddiePackShopProps = {}) {
 function BuddiePackCounter({ embedded = false, onOpenCollection, onBusyChange, userId }: KqBuddiePackShopProps & { userId: string }) {
   const api = useKqTutorialApi();
   const { isAuthenticated, authLoading, refreshSession } = useCart();
-  const { tickets, inventory, config, loyalty, loading, error, acting, refreshAll, openPack } = useLotteryExperience();
+  const { tickets, inventory, config, loyalty, ticketsLoaded, ticketsReady, loading, error, acting, refreshAll, openPack } = useLotteryExperience();
   const [quantity, setQuantity] = useState(1);
   const [selectedTicket, setSelectedTicket] = useState<LotteryTicket | null>(null);
   const [pending, setPending] = useState<"buy" | "verify" | "welcome" | "open" | null>(null);
@@ -47,7 +47,7 @@ function BuddiePackCounter({ embedded = false, onOpenCollection, onBusyChange, u
   const maxPacks = Math.max(0, Math.min(LOTTERY_POINTS_PACK_MAX_PER_PURCHASE, Math.floor(loyalty.spendablePoints / LOTTERY_POINTS_PACK_COST)));
   const count = Math.min(quantity, Math.max(1, maxPacks));
   const totalPoints = count * LOTTERY_POINTS_PACK_COST;
-  const unavailable = authLoading || loading || !isAuthenticated || !config?.isActive;
+  const unavailable = authLoading || loading || !ticketsReady || !isAuthenticated || !config?.isActive;
 
   useEffect(() => {
     mounted.current = true;
@@ -183,7 +183,7 @@ function BuddiePackCounter({ embedded = false, onOpenCollection, onBusyChange, u
       <div className={styles.intro}><h3>Buddies</h3><p>Tes compagnons de culture.</p><span className={styles.price}>{LOTTERY_POINTS_PACK_COST} points<small>le pack de 3 cartes</small></span></div>
     </div>
     <div className={styles.counter}>
-      <div className={styles.summary}><span><small>Ta cagnotte</small><strong data-buddie-pack-points>{authLoading || loading ? "…" : loyalty.spendablePoints.toLocaleString("fr-FR")} <small>points fidélité</small></strong></span><span><small>Dans ton album</small><strong>{loading ? "…" : `${inventory?.uniqueOwned ?? 0} / ${inventory?.totalCards || 52}`}</strong></span></div>
+      <div className={styles.summary}><span><small>Ta cagnotte</small><strong data-buddie-pack-points>{authLoading || loading ? "…" : ticketsLoaded ? loyalty.spendablePoints.toLocaleString("fr-FR") : "Indisponibles"} <small>points fidélité</small></strong></span><span><small>Dans ton album</small><strong>{loading ? "…" : `${inventory?.uniqueOwned ?? 0} / ${inventory?.totalCards || 52}`}</strong></span></div>
       {authLoading || loading ? <p className={styles.notice} role="status">Sylvain retrouve tes packs…</p> : !isAuthenticated ? <Link className={styles.primary} href="/compte/connexion?next=/arene/placard%3Fview%3Dshop">Me connecter</Link> : <>
         {!config?.isActive && <p className={styles.notice} role="status">Les packs Buddies sont momentanément indisponibles.</p>}
         {welcomeEligible && <div className={styles.welcomeOffer}>
@@ -193,10 +193,10 @@ function BuddiePackCounter({ embedded = false, onOpenCollection, onBusyChange, u
         <div className={styles.purchase}><div role="group" aria-label="Nombre de packs Buddies"><QuantitySelector value={count} max={Math.max(1, maxPacks)} onChange={setQuantity} disabled={unavailable || busy || !!purchaseCheck || !!error} /></div><button type="button" className={styles.primary} data-buddie-pack-purchase disabled={unavailable || busy || !!error || !!purchaseCheck || maxPacks < 1} onClick={() => void buy()}>{pending === "buy" ? "Achat…" : `Acheter ${count} pack${count > 1 ? "s" : ""}`}<small>{totalPoints.toLocaleString("fr-FR")} points fidélité</small></button></div>
         {!unavailable && maxPacks < 1 && !purchaseCheck && <p className={styles.hint}>Il te manque {Math.max(0, LOTTERY_POINTS_PACK_COST - loyalty.spendablePoints)} points pour ce pack.</p>}
         {purchaseCheck && pending !== "buy" && <div className={styles.verification}><p>L’achat de {purchaseCheck.packCount} pack{purchaseCheck.packCount > 1 ? "s" : ""} reste à vérifier.</p><button type="button" data-buddie-pack-verify disabled={busy} onClick={() => void verifyPurchase()}><RefreshCw size={16} aria-hidden="true" />{pending === "verify" ? "Vérification…" : "Vérifier mes packs"}</button></div>}
-        <div className={styles.ready}><span><strong data-buddie-pack-available>{available.length}</strong> pack{available.length > 1 ? "s" : ""} à ouvrir</span><button type="button" data-buddie-pack-open className={styles.open} disabled={unavailable || busy || available.length === 0} onClick={() => { if (!actionLock.current && available[0]) setSelectedTicket(available[0]); }}><PackageOpen size={19} aria-hidden="true" /> Ouvrir un pack</button></div>
+        <div className={styles.ready}><span><strong data-buddie-pack-available>{ticketsLoaded ? available.length : "?"}</strong> pack{available.length > 1 ? "s" : ""} à ouvrir</span><button type="button" data-buddie-pack-open className={styles.open} disabled={unavailable || busy || available.length === 0} onClick={() => { if (!actionLock.current && available[0]) setSelectedTicket(available[0]); }}><PackageOpen size={19} aria-hidden="true" /> Ouvrir un pack</button></div>
       </>}
       {actionError && <p className={styles.error} role="alert">{actionError}</p>}
-      {error && <p className={styles.error} role="alert">{error} <button type="button" disabled={busy} onClick={() => void refreshAll()}>Actualiser</button></p>}
+      {error && <p className={styles.error} role="alert">{error}{ticketsLoaded && !ticketsReady ? " Les derniers montants connus sont affich?s." : ""} <button type="button" disabled={busy || loading} onClick={() => void refreshAll()}>Actualiser</button></p>}
       {notice && <p className={styles.notice} role="status">{notice}</p>}
       <footer className={styles.footer}>{collectionLink}<Link href="/reglement-jeu-promo">Règles des packs</Link></footer>
     </div>

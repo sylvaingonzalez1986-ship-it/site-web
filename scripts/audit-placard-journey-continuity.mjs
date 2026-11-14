@@ -17,19 +17,21 @@ const guideOnly = guideNavigationOnly || guideCompletionOnly || process.argv.inc
 const workPlanOnly = process.argv.includes('--work-plan-only');
 const financialSupportOnly = process.argv.includes('--financial-support-only');
 const sharedTrimOnly = process.argv.includes('--shared-trim-only');
+const trimJourneyOnly = process.argv.includes('--trim-journey-only');
 const cultureWorkOnly = process.argv.includes('--culture-work-only');
 const cultureRelayOnly = process.argv.includes('--culture-relay-only');
 const cultureCarouselVisualOnly = process.argv.includes('--culture-carousel-visual-only');
 const cultureQualityOnly = process.argv.includes('--culture-quality-only');
 const cultureBadgesOnly = process.argv.includes('--culture-badges-only');
 const cultureCarouselOnly = cultureBadgesOnly || cultureQualityOnly || cultureCarouselVisualOnly || process.argv.includes('--culture-carousel-only');
-const reportName = cultureRelayOnly ? 'culture-relay-report.json' : cultureBadgesOnly ? 'culture-badges-report.json' : cultureQualityOnly ? 'culture-quality-report.json' : cultureCarouselVisualOnly ? 'culture-carousel-visual-report.json' : cultureCarouselOnly ? 'culture-carousel-report.json' : cultureWorkOnly ? 'culture-work-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : financialSupportOnly ? 'financial-support-report.json' : workPlanOnly ? 'work-plan-report.json' : staffGuideOnly ? 'staff-guide-report.json' : workshopOnly ? 'workshop-report.json' : guideCompletionOnly ? 'guide-completion-report.json' : guideNavigationOnly ? 'guide-navigation-report.json' : guideOnly ? 'guide-report.json' : preparationOnly ? 'preparation-report.json' : storageOnly ? 'storage-report.json' : 'report.json';
+const reportName = trimJourneyOnly ? 'trim-journey-report.json' : cultureRelayOnly ? 'culture-relay-report.json' : cultureBadgesOnly ? 'culture-badges-report.json' : cultureQualityOnly ? 'culture-quality-report.json' : cultureCarouselVisualOnly ? 'culture-carousel-visual-report.json' : cultureCarouselOnly ? 'culture-carousel-report.json' : cultureWorkOnly ? 'culture-work-report.json' : sharedTrimOnly ? 'shared-trim-report.json' : financialSupportOnly ? 'financial-support-report.json' : workPlanOnly ? 'work-plan-report.json' : staffGuideOnly ? 'staff-guide-report.json' : workshopOnly ? 'workshop-report.json' : guideCompletionOnly ? 'guide-completion-report.json' : guideNavigationOnly ? 'guide-navigation-report.json' : guideOnly ? 'guide-report.json' : preparationOnly ? 'preparation-report.json' : storageOnly ? 'storage-report.json' : 'report.json';
 const targetId = 'c0a00002-0000-4000-8000-000000000002', decoyId = 'c0a00001-0000-4000-8000-000000000001';
 const planEmployeeId = 'c0a00003-0000-4000-8000-000000000003';
 const entry = `
 import React from'react';import{createRoot}from'react-dom/client';import'/src/app/globals.css';
 import{PlacardPlayerShell}from'/src/components/placard/PlacardPlayerShell';
 import{SupportPaymentReturn}from'/src/components/placard/SupportPaymentReturn';
+import{KqFinancialSupport}from'/src/components/placard/KqFinancialSupport';
 import{AdminSupportPanel}from'/src/components/admin/AdminSupportPanel';
 import{KqTutorialApiProvider,createKqTutorialApi}from'/src/components/placard/KqTutorialApiContext';
 import{createReleveCultureTransport}from'/src/lib/kanab-quest-releve-culture';
@@ -39,6 +41,7 @@ import{createKqStaffState,projectKqStaffSnapshot,applyKqStaffCommand,getKqStaffM
 import{FARM_GUIDE_STEPS}from'/src/lib/kanab-quest-farm-progress';
 import{FARM_GUIDE_CHAPTERS}from'/src/lib/kanab-quest-farm-guide';
 import{encodeKqSave,parseKqGameSave}from'/src/lib/kanab-quest-persistence';
+import{createKqFlowerTrimReader}from'/src/lib/kanab-quest-flower-trim';
 window.__guideIds={steps:FARM_GUIDE_STEPS.map(step=>step.id),chapters:FARM_GUIDE_CHAPTERS.map(chapter=>chapter.id)};
 const scenario=new URLSearchParams(location.search).get('scenario')||'preparation';
 window.__supportState='ready';window.__supportPending=[];
@@ -52,7 +55,7 @@ if(${financialSupportOnly}){
  else window.process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL=window.__financialSupportUrl;
 }
 const workdayScenario=scenario==='workday';
-const workshopScenario=scenario==='workshop',staffGuideScenario=scenario==='staff-guide',staffPlanScenario=scenario==='staff-plan',storageScenario=scenario.startsWith('storage')||workshopScenario||staffPlanScenario;
+const workshopScenario=scenario==='workshop',staffGuideScenario=scenario==='staff-guide',staffPlanScenario=scenario==='staff-plan',storageScenario=${trimJourneyOnly}||scenario.startsWith('storage')||workshopScenario||staffPlanScenario;
 if(!new URLSearchParams(location.search).has('view'))history.replaceState(null,'','?scenario='+scenario+'&view='+(storageScenario?'harvests':'game&campaign=1'));
 let production=createKqReleveProduction();const act=action=>production=applyKqReleveProductionAction(production,action);
 act({type:'draft',warehouse:suggestKqRelevePlan(production)});act({type:'save-plan'});
@@ -104,7 +107,19 @@ if(${cultureRelayOnly}){
 }
 staffRaw.context.trimQueueVersion=2;staffRaw.context.trimLots=staffRaw.context.trimLots.map((lot,index)=>({...lot,totalGrams:360,completedGrams:0,createdAt:new Date(Date.parse(staffNow)-(2-index)*60000).toISOString()}));
 const lots=[{...baseStorage.lots[0],flowerId:decoyId,varietyName:'Cherry Abacus'},{...baseStorage.lots[0],flowerId:targetId,varietyName:'Cherry Abacus'}];
-const storageSnapshot=()=>({...baseStorage,lots:storageScenario?lots:[]});
+let trimEvidenceMode='known';
+const trimEvidence=(id,createdAt)=>trimEvidenceMode==='unknown'?undefined:trimEvidenceMode==='malformed'?{status:'ready',totalGrams:360,completedGrams:12}:createKqFlowerTrimReader(staffMode==='known'?staffRaw:null)(id,createdAt);
+if(${trimJourneyOnly}){
+ staffRaw.context.trimLots.unshift({...staffRaw.context.trimLots[0],flowerId:decoyId});
+ for(const [index,lot]of lots.entries()){
+  lot.flowerStatus='available';lot.harvestGrams=360;
+  lot.projection=structuredClone(lot.projection);
+  Object.assign(lot.projection,{harvestedAt:new Date(Date.parse(staffNow)-(8+index)*3600000).toISOString(),serverNow:staffNow,stage:'ready',progressPercent:100,readyAt:new Date(Date.parse(staffNow)-2*3600000).toISOString()});
+  lot.projection.capacity={...lot.projection.capacity,totalUnits:3600,protectedUnits:3600,overflowUnits:0};
+ }
+}
+const storageSnapshot=()=>({...baseStorage,...(${trimJourneyOnly}?{serverNow:staffRaw.serverNow}:{}),lots:storageScenario?lots.map(lot=>${trimJourneyOnly}?{...lot,trim:trimEvidence(lot.flowerId,lot.projection.harvestedAt)}:lot):[]});
+const journeyFlowers=()=>lots.map(lot=>({id:lot.flowerId,runId:lot.flowerId,varietyCode:'HH2026-001',varietyName:lot.varietyName,quality:12,traits:[],combos:[],stats:{appearance:65,aroma:70,vigor:62,mastery:66,regularity:68,cannabinoids:71},rulesVersion:2,status:lot.flowerStatus,createdAt:lot.projection.harvestedAt,queuedAt:lot.flowerStatus==='queued'?staffNow:null,lockedAt:lot.flowerStatus==='locked'?staffNow:null,burnedAt:null,storage:lot.projection,trim:trimEvidence(lot.flowerId,lot.projection.harvestedAt)}));
 let storageMode='known',collectionMode='known',heritageMode='known',staffMode='known',storageDelay=0,allowPlay=false,actionMode='known',careMode=new URLSearchParams(location.search).get('careMode')??'known',careMutationMode='known';
 const deferred=[];window.__calls=[];window.__unexpected=[];
 const cultureWorkSteps=new Set();
@@ -147,7 +162,7 @@ const request=async(input,init={})=>{
  }
  if(path.endsWith('/social/player')&&method==='GET')return response({firstName:'Joueur',profile:null});
  const permittedPlay=allowPlay&&method==='POST'&&(path.endsWith('/runs')||/\\/runs\\/[^/]+\\/actions$/.test(path)||(${cultureBadgesOnly}&&(path.endsWith('/care')||/\\/runs\\/[^/]+\\/cards$/.test(path))));
- if(method!=='GET'&&(staffGuideScenario||staffPlanScenario||(!(method==='PATCH'&&path.endsWith('/warehouse'))&&!permittedPlay))){window.__unexpected.push({path,method,body});return response({error:'Mutation interdite dans cette recette.'},403)}
+ if(method!=='GET'&&(${trimJourneyOnly}||staffGuideScenario||staffPlanScenario||(!(method==='PATCH'&&path.endsWith('/warehouse'))&&!permittedPlay))){window.__unexpected.push({path,method,body});return response({error:'Mutation interdite dans cette recette.'},403)}
  if(permittedPlay&&actionMode==='reject')return response({error:'Action refusée dans la recette locale. Aucun changement enregistré.'},409);
  if(permittedPlay&&(actionMode==='pending'||careMutationMode==='pending'&&path.endsWith('/care')))await new Promise(done=>deferred.push(done));
  if(method==='GET'&&path.endsWith('/care')&&careMode==='error')return response({error:'Tarif de soin temporairement indisponible.'},503);
@@ -186,6 +201,7 @@ const request=async(input,init={})=>{
   if(collectionMode==='error')return response({error:'Collection temporairement indisponible.'},503);
   const payload=await(await transport(input,init)).json();
   if(payload.playerSession)projectSoloSession(payload.playerSession);
+  if(${trimJourneyOnly}&&payload.playerSession)payload.playerSession={...payload.playerSession,flowers:journeyFlowers()};
   if(heritageMode==='empty')payload.heritage.cards=[];
   return response(payload);
  }
@@ -193,7 +209,7 @@ const request=async(input,init={})=>{
   const received=await transport(input,init),payload=await received.json();
   return response(storageScenario?{...payload,stockGrams:lots.reduce((sum,lot)=>sum+lot.harvestGrams,0),storageReservedGrams:0}:payload,received.status);
  }
- if(path.endsWith('/flowers')&&storageScenario)return response({flowers:[]});
+ if(path.endsWith('/flowers')&&storageScenario)return response({flowers:${trimJourneyOnly}?journeyFlowers():[]});
  if(path==='/api/account/collection')return response({pages:[{slots:[]}]});
  if(path.endsWith('/boosters'))return response({collectionActive:true,costPerPack:100,spendablePoints:0,availableEntitlements:[],welcomeClaimed:false});
  if(path.endsWith('/missions'))return ${guideCompletionOnly}?response({collectionActive:true,missions:[]}):response({error:'Aucune mission utilisée par cette recette.'},503);
@@ -201,6 +217,7 @@ const request=async(input,init={})=>{
  const rollWork=permittedPlay&&body?.action==='roll'&&${cultureRelayOnly}?workQuote(body.workChoice??'auto'):null;
  if(rollWork&&(rollWork.source==='blocked'||body.expectedStageIndex!==production.game.stageIndex))return response({error:'Intervenant indisponible ou étape modifiée.'},409);
  const received=await transport(input,init);
+ if(${trimJourneyOnly}&&method==='GET'&&path.endsWith('/session'))return response({...await received.json(),flowers:journeyFlowers()},received.status);
  if(${cultureBadgesOnly}&&permittedPlay&&path.endsWith('/care')&&careMutationMode==='lost'&&received.ok){careMutationMode='known';throw Error('Réponse de soin interrompue après validation locale.');}
  if(scenario==='culture-carousel-solo'&&method==='GET'&&(/\\/(session|runs)$/.test(path)))return response(projectSoloSession(await received.json()),received.status);
  if(permittedPlay&&received.ok&&body?.action==='roll'&&workKey&&!cultureWorkSteps.has(workKey)){
@@ -213,7 +230,7 @@ const request=async(input,init={})=>{
 };
 const originalFetch=window.fetch.bind(window);window.fetch=(input,init)=>new URL(typeof input==='string'?input:input.url,location.origin).pathname.startsWith('/api/')?request(input,init):originalFetch(input,init);
 const api=createKqTutorialApi(request,{nativeWarehouse:true});api.isTutorial=false;
-window.__fixture=()=>structuredClone({scenario,initial,production,lots,storageMode,collectionMode,heritageMode,staffRaw,...(${cultureRelayOnly}?{workReceipts:[...cultureWorkReceipts.values()],pendingWorkQuotes:pendingWorkQuotes.length}:{})});
+window.__fixture=()=>structuredClone({scenario,initial,production,lots,storageMode,collectionMode,heritageMode,staffRaw,...(${trimJourneyOnly}?{flowers:journeyFlowers(),storage:storageSnapshot(),trimEvidenceMode}:{}),...(${cultureRelayOnly}?{workReceipts:[...cultureWorkReceipts.values()],pendingWorkQuotes:pendingWorkQuotes.length}:{})});
 window.__control={allowPlay:value=>allowPlay=value,storageLot:(id,patch)=>Object.assign(lots.find(lot=>lot.flowerId===id).projection,patch),storage:mode=>storageMode=mode,storageDelay:value=>storageDelay=value,collection:mode=>collectionMode=mode,heritage:mode=>heritageMode=mode,staff:mode=>staffMode=mode,removeCopies:code=>{production.supportInventory[code]=0},launch:()=>act({type:'launch'}),resolve:()=>{storageDelay=0;collectionMode='known';if(staffMode==='pending')staffMode='known';deferred.splice(0).forEach(done=>done())},notify:name=>api.notify(name)};
 window.__control.workHours=remaining=>{const day=projectKqStaffSnapshot(staffRaw).calendar.day;staffRaw.state.playerWorkDays[String(day)]={usedHours:12-remaining};api.notify('kq:staff-updated')};
 window.__control.employeeWorkHours=remaining=>{const task=staffRaw.state.tasks.find(task=>task.id==='relay-culture-task');task.cultureUsedHours=task.hours-remaining;api.notify('kq:staff-updated')};
@@ -228,23 +245,34 @@ window.__control.trim=(id,stage)=>{
  if(stage==='absent')staffRaw.context.trimLots=staffRaw.context.trimLots.filter(lot=>lot.flowerId!==id);
  else if(lot){lot.completedAt=stage==='complete'?staffRaw.serverNow:null;lot.completedWork=stage==='complete'?lot.requiredWork:stage==='partial'?2:0;
   lot.completedGrams=lot.completedWork/lot.requiredWork*lot.totalGrams;
+  if(${trimJourneyOnly})lot.mode=lot.completedWork>0?'manual':null;
   if(${sharedTrimOnly}){if(stage==='queued'||stage==='running')staffRaw.state.tasks=[{id:'fixture-shared-trim',employeeId:'player',kind:'trim',skill:'processing',hours:1,startedAt:new Date(Date.parse(staffRaw.serverNow)+(stage==='queued'?300000:-300000)).toISOString(),completesAt:new Date(Date.parse(staffRaw.serverNow)+600000).toISOString(),day:1,status:'running',trainingCostCents:0,skillLevel:1,trimMode:'manual',trimQueue:true,trimRateGramsPerHour:60,trimProgressAt:staffRaw.serverNow,trimGrams:stage==='running'?30:0,trimContributions:stage==='running'?[{flowerId:id,grams:30}]:[],trimQualityDelta:1}];api.notify('kq:staff-updated');return}
   if(stage==='queued'||stage==='running')staffRaw.state.tasks=[{id:'fixture-trim-task',employeeId:'player',kind:'trim',skill:'processing',hours:1,startedAt:new Date(Date.parse(staffRaw.serverNow)+(stage==='queued'?1800000:0)).toISOString(),completesAt:new Date(Date.parse(staffRaw.serverNow)+3600000).toISOString(),day:1,status:'running',targetId:id,trainingCostCents:0,skillLevel:1,trimMode:'manual',trimWork:1,trimQualityDelta:1}];
- }api.notify('kq:staff-updated');
+ }api.notify('kq:staff-updated');if(${trimJourneyOnly}){api.notify('kq:storage-updated');api.notify('arena:progress-updated')}
 };
+if(${trimJourneyOnly}){
+ window.__control.trimEvidence=mode=>{trimEvidenceMode=mode;api.notify('kq:storage-updated');api.notify('arena:progress-updated')};
+ const trimCase=new URLSearchParams(location.search).get('trimCase')??'required';
+ if(['partial','ready'].includes(trimCase))window.__control.trim(targetId,trimCase==='ready'?'complete':'partial');
+ if(trimCase==='legacy')window.__control.trim(targetId,'absent');
+ if(['unknown','malformed'].includes(trimCase))trimEvidenceMode=trimCase;
+ if(trimCase.startsWith('curing')){Object.assign(lots.find(lot=>lot.flowerId===targetId).projection,{stage:'curing',progressPercent:50,readyAt:new Date(Date.parse(staffNow)+3600000).toISOString()});if(trimCase==='curing-ready')window.__control.trim(targetId,'complete')}
+ if(['queued','locked'].includes(trimCase))lots.find(lot=>lot.flowerId===targetId).flowerStatus=trimCase;
+}
 if(${financialSupportOnly})api.isTutorial=scenario==='financial-support-tutorial';
 const fixtureRoot=createRoot(document.getElementById('root'));
 const renderFixture=ownerId=>fixtureRoot.render(<KqTutorialApiProvider api={api}><aside className="fixture-tools"><strong>Démo locale · retrouver sa préparation et sa récolte</strong><p>Choix, plan et lots fictifs en mémoire. Aucun compte réel.</p><label>Parcours <select value={scenario} onChange={event=>location.href='/?scenario='+event.target.value}>{['preparation','storage','storage-overflow'].map(value=><option key={value}>{value}</option>)}</select></label></aside><PlacardPlayerShell draftOwnerId={ownerId}/></KqTutorialApiProvider>);
 window.__control.owner=renderFixture;
 if(scenario.startsWith('financial-support-return'))fixtureRoot.render(<main style={{maxWidth:800,margin:'auto',padding:12}}><SupportPaymentReturn transactionId='22222222-2222-4222-8222-222222222222'/></main>);
 else if(scenario==='financial-support-admin')fixtureRoot.render(<main style={{maxWidth:1000,margin:'auto',padding:12}}><AdminSupportPanel/></main>);
+else if(scenario==='financial-support-standalone')fixtureRoot.render(<main style={{maxWidth:800,margin:'auto',padding:12}}><KqFinancialSupport standalone/></main>);
 else renderFixture('journey-local-fixture');
 `;
 const modules = {
   entry,
   'warehouse-assets': `export default ${await readFile(resolve(root, 'public/placard/warehouse-v2/manifest.json'), 'utf8')};`,
   'next/image': `import React from'react';export default function Image({src,fill,priority,preload,fetchPriority,unoptimized,loader,quality,placeholder,blurDataURL,...props}){return <img {...props} src={typeof src==='string'?src:src.src} style={{...(fill?{position:'absolute',inset:0,width:'100%',height:'100%'}:{}),...props.style}}/>}`,
-  'next/link': `import React from'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return <a {...props}/>}`,
+  'next/link': `import React from'react';export const useLinkStatus=()=>({pending:false});export default function Link({prefetch,scroll,replace,...props}){return <a {...props} onClick={event=>{props.onClick?.(event);if(${trimJourneyOnly}&&!event.defaultPrevented&&event.button===0&&!event.metaKey&&!event.ctrlKey&&!event.shiftKey&&!event.altKey){const url=new URL(props.href,location.href);if(url.origin===location.origin){event.preventDefault();history.pushState({},'',url.pathname+url.search+url.hash);window.dispatchEvent(new Event('kq:placard-location'))}}}}/>}`,
   'next/navigation': `export const usePathname=()=>location.pathname;export const useSearchParams=()=>new URLSearchParams(location.search);export const useRouter=()=>({push:()=>{},replace:()=>{},refresh:()=>{}});`,
   'next/dynamic': `import React from'react';export default function dynamic(loader,options={}){const C=React.lazy(()=>loader().then(m=>({default:m.default||m})));return props=><React.Suspense fallback={options.loading?<options.loading/>:null}><C {...props}/></React.Suspense>}`,
   '@/context/CartContext': `export const useCart=()=>({user:{id:'00000000-0000-4000-8000-000000000099'},isAuthenticated:true,authLoading:false,refreshSession:async()=>{}});`,
@@ -316,6 +344,84 @@ if (preview) {
     await openChoice(cards); assert.deepEqual(await deck(), expected.selected);
     assert.equal((await fixture()).production.game, null); assert.equal((await mutations()).length, 0);
     await layout();
+  }
+  if (trimJourneyOnly) {
+    const row = id => `[data-harvest-id="${id}"]`;
+    const marker = id => `[data-guide-trim-flower-id="${id}"]`;
+    const selected = row(targetId);
+    const readOnly = async () => {
+      assert.equal((await mutations()).length, 0, 'Navigation and fixture refresh use only GET requests');
+      assert.deepEqual(await page.evaluate(() => window.__unexpected), []);
+      await layout();
+    };
+    const harvestState = async state => page.waitForSelector(`${selected}[data-harvest-state="${state}"]`, { visible: true });
+    const blocked = async () => {
+      assert.equal(await page.$(`${selected} [data-harvest-action="arena"]`), null, 'Jury entry requires both confirmed prerequisites');
+      assert.equal(await page.$eval(selected, node => /Prêt(?:e)? pour le jury/.test(node.textContent)), false, 'No ready-to-jury claim on an unready harvest');
+    };
+    for (const width of [320, 390, 1440]) {
+      await load('trim-journey', width, `view=harvests&flower=${targetId}`);
+      await harvestState('trim'); await blocked();
+      const initialProduction = (await fixture()).production;
+      assert.equal(await page.$$eval('[data-harvest-id]', nodes => nodes.length), 2, 'Two homonymous harvests remain distinct');
+      await page.$eval(selected, node => node.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await screenshot(`trim-journey-required-${width}`);
+      await keyClick(`${selected} [data-harvest-action="trim"]`);
+      await page.waitForSelector(`${marker(targetId)}[data-trim-followed="true"]`, { visible: true });
+      const url = new URL(page.url());
+      for (const [name, value] of Object.entries({ view: 'workshop', section: 'processing', workshop: 'trim', flower: targetId, from: 'harvests', fromFlower: targetId })) assert.equal(url.searchParams.get(name), value);
+      assert.equal(await page.$(`${marker(decoyId)}[data-trim-followed="true"]`), null, 'The homonym is never selected instead of the requested harvest');
+      await page.evaluate(id => window.__control.trim(id, 'complete'), decoyId);
+      await page.waitForSelector(`${marker(decoyId)}[data-guide-trim-state="complete"]`);
+      assert.equal((await fixture()).flowers.find(flower => flower.id === targetId).trim.status, 'required', 'Completing the homonym never clears the selected harvest');
+      await page.evaluate(id => window.__control.trim(id, 'partial'), targetId);
+      await page.waitForFunction(selector => document.querySelector(selector)?.getAttribute('aria-valuenow') === '120', {}, `${marker(targetId)} [role="meter"]`);
+      assert.equal(await page.$eval(`${marker(targetId)} [role="meter"]`, node => node.getAttribute('aria-valuemax')), '360');
+      assert.match(await page.$eval(`${marker(targetId)} [role="meter"]`, node => node.getAttribute('aria-valuetext')), /120 g\s*\/\s*360 g/, 'Confirmed trim progress displays grams');
+      await page.$eval(marker(targetId), node => node.scrollIntoView({ block: 'center', behavior: 'instant' }));
+      await readOnly(); await screenshot(`trim-journey-partial-workshop-${width}`);
+      await keyClick('[data-placard-back="harvests"]');
+      await harvestState('trim'); await blocked();
+      await page.waitForFunction(id => document.activeElement?.getAttribute('data-harvest-id') === id, {}, targetId);
+      assert.match(await page.$eval(selected, node => node.textContent), /Trim partiel/);
+      assert.match(await page.$eval(selected, node => node.textContent), /120 g sur 360 g/);
+      await page.evaluate(id => window.__control.trim(id, 'complete'), targetId);
+      await harvestState('jury');
+      await keyClick(`${selected} [data-harvest-action="arena"]`);
+      await page.waitForSelector(`[data-culture-training-flower="${targetId}"]`, { visible: true });
+      assert.equal(new URL(page.url()).searchParams.get('flower'), targetId);
+      assert.equal(new URL(page.url()).searchParams.get('from'), 'harvests');
+      assert.equal(await page.$eval(`[data-culture-training-flower="${targetId}"]`, node => node.disabled), false);
+      assert(await page.$(`#placard-flower-${targetId}[data-requested="true"]`), 'Jury retains exact requested flower identity');
+      await page.focus(`[data-culture-training-flower="${targetId}"]`);
+      assert.equal(await page.evaluate(() => document.activeElement?.getAttribute('data-culture-training-flower')), targetId, 'Jury action is keyboard reachable without submitting it');
+      await screenshot(`trim-journey-ready-jury-${width}`); await readOnly();
+      assert.deepEqual((await fixture()).production, initialProduction, 'The entire production remains unchanged across navigation');
+      await keyClick('[data-placard-back="harvests"]'); await harvestState('jury');
+      await page.waitForFunction(id => document.activeElement?.getAttribute('data-harvest-id') === id, {}, targetId);
+      results.push({ width, scenario: 'harvests → exact homonymous trim lot → confirmed partial grams → focused return → ready jury → focused return', keyboard: true, mutations: 0 });
+      for (const trimCase of ['unknown', 'malformed', 'curing-required', 'curing-ready', 'legacy', 'queued', 'locked']) {
+        await load('trim-journey', width, `view=harvests&flower=${targetId}&trimCase=${trimCase}`);
+        const state = trimCase === 'legacy' ? 'jury' : trimCase === 'queued' ? 'queued' : trimCase === 'locked' ? 'duel' : trimCase.startsWith('curing') ? 'curing' : 'trim-check';
+        await harvestState(state);
+        if (['unknown', 'malformed', 'curing-required', 'curing-ready'].includes(trimCase)) await blocked();
+        if (trimCase === 'curing-required') assert(await page.$(`${selected} [data-harvest-action="trim"]`), 'Trim can start during curing');
+        if (trimCase === 'curing-ready') assert.equal(await page.$(`${selected} [data-harvest-action="trim"]`), null, 'Completed trim does not restart while curing');
+        if (trimCase === 'legacy') assert(await page.$(`${selected} [data-harvest-action="arena"]`), 'Known absence in the complete pending ledger remains eligible');
+        if (['queued', 'locked'].includes(trimCase)) assert.match(await page.$eval(`${selected} [data-harvest-action="arena"]`, node => node.textContent), /Suivre le duel/);
+        if (['unknown', 'malformed'].includes(trimCase)) {
+          assert.match(await page.$eval(selected, node => node.textContent), /Trim à vérifier/);
+          await page.$eval(selected, node => node.scrollIntoView({ block: 'center', behavior: 'instant' }));
+          await screenshot(`trim-journey-${trimCase}-${width}`);
+          await page.evaluate(id => { window.__control.trim(id, 'complete'); window.__control.trimEvidence('known'); }, targetId);
+          await keyClick('button[aria-label="Actualiser les récoltes"]');
+          await harvestState('jury');
+          assert(await page.$(`${selected} [data-harvest-action="arena"]`), 'A confirmed GET refresh restores jury eligibility');
+        }
+        await readOnly();
+        results.push({ width, scenario: trimCase, missingEvidenceNeverReady: true, readOnlyRecovery: ['unknown', 'malformed'].includes(trimCase), mutations: 0 });
+      }
+    }
   }
   if (cultureBadgesOnly) {
     const runQuery = 'view=game&run=61000000-0000-4000-8000-000000000001';
@@ -1547,7 +1653,7 @@ if (preview) {
     assert.equal((await mutations()).length, 0);
     results.push({ unreadableSavePreserved: true });
   }
-  if (!cultureCarouselOnly && !cultureWorkOnly && !cultureRelayOnly && !sharedTrimOnly && !storageOnly && !guideOnly && !workshopOnly && !staffGuideOnly && !workPlanOnly && !financialSupportOnly) {
+  if (!trimJourneyOnly && !cultureCarouselOnly && !cultureWorkOnly && !cultureRelayOnly && !sharedTrimOnly && !storageOnly && !guideOnly && !workshopOnly && !staffGuideOnly && !workPlanOnly && !financialSupportOnly) {
   for (const width of [1440, 390, 320]) {
     await load('preparation', width); const expected = await prepare(); await openPlan(); await layout();
     await screenshot('plan-return-' + width); await keyClick('[data-placard-back="game"]');
@@ -1600,7 +1706,7 @@ if (preview) {
   assert.deepEqual((await fixture()).production.game, launched); assert.equal((await mutations()).length, 0);
   results.push({ scenario: 'a culture already started elsewhere is resumed without applying the remembered preparation' });
   }
-  if (!cultureCarouselOnly && !cultureWorkOnly && !cultureRelayOnly && !sharedTrimOnly && !preparationOnly && !guideOnly && !workshopOnly && !staffGuideOnly && !workPlanOnly && !financialSupportOnly) {
+  if (!trimJourneyOnly && !cultureCarouselOnly && !cultureWorkOnly && !cultureRelayOnly && !sharedTrimOnly && !preparationOnly && !guideOnly && !workshopOnly && !staffGuideOnly && !workPlanOnly && !financialSupportOnly) {
   for (const width of [1440, 390, 320]) {
     await load('storage', width); await page.waitForSelector(`[data-harvest-open-storage="${targetId}"]`);
     const before = await fixture(); await page.evaluate(() => window.__control.storageDelay(220));

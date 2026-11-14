@@ -9,7 +9,7 @@ import { KqHelpDashboard, KqHelpGrid, KqHelpSteps } from "./KqHelpDashboard";
 import { ArenaLearningLauncher } from "../contest/ArenaLearningLauncher";
 import styles from "./PlacardPlayerShell.module.css";
 
-export type PlacardNavKey = "hub" | "game" | "harvests" | "workshop" | "market" | "social" | "treasury" | "staff" | "collection" | "missions" | "shop";
+export type PlacardNavKey = "hub" | "game" | "harvests" | "workshop" | "market" | "social" | "treasury" | "staff" | "collection" | "missions" | "shop" | "school";
 const primary = [
   { key: "hub", label: "Mon quartier", art: "quarter", building: null },
   { key: "game", label: "Culture", art: "culture", building: "warehouse" },
@@ -22,15 +22,15 @@ const secondary = [
   { key: "treasury", label: "Finances", art: "accounts", building: "bank" },
   { key: "staff", label: "Personnel", art: "staff", building: "office" },
   { key: "social", label: "Réseaux", art: "social", building: "market" },
-  { key: "collection", label: "Collections", art: "collection", building: "collection" },
+  { key: "school", label: "QuizzShow", art: "school", building: "school" },
   { key: "missions", label: "Missions", art: "missions", building: "missions" },
-  { key: "shop", label: "Packs de cartes", art: "card-shop", building: "shop" },
+  { key: "shop", label: "Maison des cartes", art: "card-shop", building: "shop" },
 ] as const;
 const activityGroups = [
   { label: "Produire", items: primary.filter(item => item.key === "game" || item.key === "harvests" || item.key === "workshop") },
   { label: "Vendre et communiquer", items: [...primary.filter(item => item.key === "market"), ...secondary.filter(item => item.key === "social")] },
   { label: "Organiser", items: secondary.filter(item => item.key === "staff" || item.key === "treasury").toReversed() },
-  { label: "Cartes et défis", items: secondary.filter(item => item.key === "collection" || item.key === "missions" || item.key === "shop") },
+  { label: "Apprendre et jouer", items: secondary.filter(item => item.key === "school" || item.key === "missions" || item.key === "shop") },
 ];
 
 export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailable, localNavigation = false, showLearning = true }: {
@@ -106,8 +106,8 @@ export function KqPlacardNavigation({ active, onNavigate, onHighlight, unavailab
         ]} />
         <KqHelpGrid art="quarter" items={[
           { label: "Entrepôt", value: "Matériel", detail: "Achats et gestion.", art: "warehouse" },
-          { label: "Packs de cartes", value: "Acquérir et ouvrir", art: "card-shop" },
-          { label: "Collections", value: "Tes albums", art: "collection" },
+          { label: "Maison des cartes", value: "Packs et collection", art: "card-shop" },
+          { label: "QuizzShow", value: "Tournoi et encyclopédie", art: "school" },
           { label: "Réseaux", value: "Publications, aventures, partenariats", art: "social" },
         ]} />
       </KqHelpDashboard></details>

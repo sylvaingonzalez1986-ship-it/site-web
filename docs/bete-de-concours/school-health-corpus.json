@@ -1,0 +1,704 @@
+{
+  "id": "health-atlas-2026-11-12",
+  "version": "2026-11-12.health1",
+  "checkedAt": "2026-11-12",
+  "status": "Atlas et contrôles ciblés terminés ; relecture indépendante des cinq fiches sensibles terminée sans erreur matérielle",
+  "scope": "Atlas non exhaustif de ravageurs, pathogènes, agents détectés et auxiliaires. Il ne constitue ni diagnostic depuis une photo ni programme de protection ou de production.",
+  "files": [
+    "src/lib/kanab-quest-school-health-atlas.ts"
+  ],
+  "editorialRules": [
+    "Signes, conditions, cycle, dispersion, confusions, confirmation, prévention et gestion sont distincts.",
+    "Le niveau espèce, complexe ou groupe est indiqué ; aucun taxon précis n’est inventé pour remplir une catégorie.",
+    "Chaque preuve indique le contexte géographique, le niveau de preuve et ses limites.",
+    "Présence régionale, fréquence, gravité, importance économique et causalité ne sont pas interchangeables.",
+    "Aucun produit, dose, recette artisanale, programme de traitement ou méthode pour rendre consommable une matière moisie.",
+    "Les auxiliaires sont présentés comme des interactions biologiques documentées, sans promesse de régulation ni prescription de lâcher."
+  ],
+  "taxonomyDecisions": [
+    "Aculops cannibicola : nom préféré EPPO ; cannabicola conservé comme autre nom rencontré. ID stable aculops-cannibicola.",
+    "Bemisia tabaci est un complexe ; MEAM1 est mentionné dans l’inventaire floridien. Une silhouette blanche ne caractérise pas sa population.",
+    "Golovinomyces ambrosiae distingué de Podosphaera macularis. Les anciens emplois de G. cichoracearum sensu lato ou G. spadiceus sont explicités sans synonymie générale forcée.",
+    "Pythium/Globisporangium sont des oomycètes. Globisporangium ultimum est un nom de Pythium ultimum dans la référence taxonomique ; tous les Pythium ne sont pas renommés de la même façon.",
+    "Fusarium et Rhizoctonia sont traités comme groupes à préciser, pas comme espèces reconnaissables à la couleur.",
+    "Limaces, oiseaux et auxiliaires restent des groupes lorsque les données ne justifient pas une identification spécifique.",
+    "HLVd/HpLVd est un viroïde : ARN circulaire non codant, sans capside ; distinct d’un virus."
+  ],
+  "contextChecks": [
+    "Polyphagotarsonemus latus est identifié dans les prélèvements floridiens ; la fiche Utah annonce explicitement qu’il n’y a pas été détecté.",
+    "Trialeurodes vaporariorum est documenté sur chanvre par Purdue dans l’Indiana ; l’inventaire floridien dit ne pas l’avoir trouvé sur chanvre et identifie Bemisia tabaci.",
+    "Myzus persicae est rapporté dans les synthèses sur chanvre, mais n’est pas transformé en nouvelle collecte floridienne.",
+    "Helicoverpa zea est documenté dans le contexte américain ; pas assimilé à H. armigera ni déclaré présent sur une parcelle française.",
+    "Les fiches de foreurs du Colorado sont datées et leurs incertitudes sur cycle, hôtes et importance sont conservées.",
+    "Le guide français Terres Inovia documente notamment altises, limaces, oiseaux et certaines maladies ; ses produits conseillés et affirmations climatiques simplifiées ne sont pas repris."
+  ],
+  "causalityChecks": [
+    "Punja2019 : réinoculation et réisolement pour certains isolats de Fusarium, pas preuve de pathogénicité pour chaque microorganisme isolé.",
+    "Pythium catenulatum : présence isolée mais pathogénicité sur cannabis non confirmée dans la publication citée.",
+    "Oïdiums tchèques2024 : microscopie et séquences avec limites liées au mélange de2022 ; pas deux identifications moléculaires complètes indépendantes de la co-infection.",
+    "Jarugula2023 Washington : PCR/RT-PCR et séquences établissent des présences ; co-infections et échantillonnage ciblé empêchent une conclusion causale séparée ou une prévalence nationale.",
+    "CYVaV : rôle contextual pour signifier une détection documentée sans maladie particulière du chanvre attribuée à lui seul par la note utilisée.",
+    "Warren2019 : expérience contrôlée HLVd étayant la causalité, sans faire d’une PCR individuelle une mesure de gravité.",
+    "Punja2023/2024 HLVd : soumissions au laboratoire canadien, non enquête représentative de tous les producteurs."
+  ],
+  "accessLimitations": [
+    "Wiley oïdiums2024 et APS notes virales/HLVd : texte original consulté par index ; accès marqué excerpt.",
+    "Punja HLVd2023/2024 : résumé et passages indexés, pas lecture intégrale inventée.",
+    "Source originale JIPM2019 consultée dans le PDF déposé par Colorado State, accès éditeur direct indisponible.",
+    "Dates éditoriales absentes annoncées comme telles ; la date de collecte par moteur n’est pas utilisée comme date de publication."
+  ],
+  "audit": {
+    "checks": [
+      "28 unique entries; every required field present: PASS",
+      "23 sources; metadata and local/global reference integrity: PASS",
+      "Four beneficial groups; explicit oomycete, viroid and contextual molecular detection: PASS",
+      "TypeScript syntax, UTF-8 and trailing whitespace: PASS",
+      "Targeted ESLint: PASS"
+    ],
+    "atlasPeerReview": "Demandée à school_content : cinq fiches sensibles oïdiums, oomycètes, HLVd, CYVaV.",
+    "courseReview": "Causes2, pathogens1/2 et allies1 lus : aucune anomalie matérielle repérée dans le diagnostic différentiel, les niveaux de preuve, la portée des tests ciblés et les interactions auxiliaires.",
+    "rootDocumentsReview": "Figures4,5,7 originales consultées et images locales inspectées. Fig7 comporte A–H dans le fichier malgré une légende web décalée : légende générale A–D plante/E–H microscopie cohérente. Root a retiré le lien à Podosphaera, absent de cette figure, et l’attribution non étayée du spécimen gauche de5B comme témoin. Fiche E-Phy relue en direct : dates, version, usage et sous-abri concordent. Aucune modification des fichiers de root.",
+    "catalogueReview": {
+      "consultedAt": "2026-11-12",
+      "catalogueUrl": "https://info.agriculture.gouv.fr/boagri/instruction-2025-236/telechargement",
+      "instructionDate": "2025-04-07",
+      "publicationDateDisplayed": "2026-01-21",
+      "access": "PDF original intégral accessible ; lecture ciblée des pages3–4,544–548 et558. La page BO indique en vigueur et jamais rectifiée.",
+      "scopeLocator": "Page PDF548, fascicule Traitements généraux p2/12 : portée couvrant toutes les cultures en zone agricole ou non agricole.",
+      "usageLocator": "Page PDF558, fascicule p12/12 : usage11012903, Traitements généraux*Trt Sol*Limaces et escargots ; aucune restriction de cultures dans cette ligne. Tableau inspecté visuellement.",
+      "legalUrl": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000043401456",
+      "legalLocator": "Arrêté du12/04/2021, art2II et annexe1 modifiée par l’arrêté du31/03/2025.",
+      "conclusion": "La portée générique comprend le chanvre. Une situation d’emploi demeure soumise à la décision AMM, ses éventuelles restrictions et aux recommandations particulières de l’étiquette ; le catalogue seul n’autorise pas un produit pour toute situation et ne constitue pas une recommandation.",
+      "localEvidence": "output/school/sources/catalogue-2025-236-page558.png"
+    }
+  },
+  "counts": {
+    "entries": 28,
+    "sources": 23,
+    "beneficialGroups": 4,
+    "kinds": 8
+  },
+  "entries": [
+    {
+      "id": "tetranychus-urticae",
+      "commonName": "Tétranyque à deux points",
+      "scientificName": "Tetranychus urticae",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-tetranychus",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "aculops-cannibicola",
+      "commonName": "Acarien russet du chanvre",
+      "scientificName": "Aculops cannibicola",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-aculops",
+        "health-atlas-cranshaw-2019",
+        "health-atlas-aculops-name",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "polyphagotarsonemus-latus",
+      "commonName": "Tarsonème des serres",
+      "scientificName": "Polyphagotarsonemus latus",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-florida-2023",
+        "health-atlas-broad-mite",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "thrips",
+      "commonName": "Thrips du feuillage",
+      "scientificName": "Frankliniella occidentalis ; Thrips tabaci",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-thrips-unh",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "phorodon-cannabis",
+      "commonName": "Puceron du chanvre",
+      "scientificName": "Phorodon cannabis",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-aphids",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "myzus-persicae",
+      "commonName": "Puceron vert du pêcher",
+      "scientificName": "Myzus persicae",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-aphids",
+        "health-atlas-florida-2023",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "trialeurodes-vaporariorum",
+      "commonName": "Aleurode des serres",
+      "scientificName": "Trialeurodes vaporariorum",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-purdue-greenhouse",
+        "health-atlas-florida-2023",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "bemisia-tabaci",
+      "commonName": "Aleurode du tabac",
+      "scientificName": "Bemisia tabaci, complexe d’espèces",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-florida-2023",
+        "health-atlas-bemisia-name",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "helicoverpa-zea",
+      "commonName": "Noctuelle américaine du maïs",
+      "scientificName": "Helicoverpa zea",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-cranshaw-2019",
+        "health-atlas-thrips-unh",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "ostrinia-nubilalis",
+      "commonName": "Pyrale du maïs",
+      "scientificName": "Ostrinia nubilalis",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-ostrinia",
+        "health-atlas-cranshaw-2019",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "grapholita-delineana",
+      "commonName": "Petite tordeuse du chanvre",
+      "scientificName": "Grapholita delineana",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-grapholita",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "psylliodes-attenuata",
+      "commonName": "Altise du chanvre",
+      "scientificName": "Psylliodes attenuata",
+      "kind": "arthropod",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-hemp-france",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "slugs",
+      "commonName": "Limaces",
+      "scientificName": "Gastropoda — plusieurs espèces terrestres",
+      "kind": "mollusc",
+      "role": "pest",
+      "sourceIds": [
+        "health-atlas-hemp-france",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "birds",
+      "commonName": "Oiseaux consommateurs de graines",
+      "scientificName": "Aves — notamment Columbidae et Corvidae",
+      "kind": "vertebrate",
+      "role": "contextual",
+      "sourceIds": [
+        "health-atlas-hemp-france",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "golovinomyces-ambrosiae",
+      "commonName": "Oïdium à Golovinomyces",
+      "scientificName": "Golovinomyces ambrosiae",
+      "kind": "fungus",
+      "role": "pathogen",
+      "sourceIds": [
+        "health-atlas-powdery-2024",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "podosphaera-macularis",
+      "commonName": "Oïdium à Podosphaera",
+      "scientificName": "Podosphaera macularis",
+      "kind": "fungus",
+      "role": "pathogen",
+      "sourceIds": [
+        "health-atlas-powdery-2024",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "botrytis-cinerea",
+      "commonName": "Pourriture grise",
+      "scientificName": "Botrytis cinerea",
+      "kind": "fungus",
+      "role": "pathogen",
+      "sourceIds": [
+        "health-atlas-hemp-france",
+        "health-atlas-punja-2019",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "sclerotinia-sclerotiorum",
+      "commonName": "Sclérotiniose",
+      "scientificName": "Sclerotinia sclerotiorum",
+      "kind": "fungus",
+      "role": "pathogen",
+      "sourceIds": [
+        "health-atlas-hemp-france",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "fusarium",
+      "commonName": "Fusarioses et isolements de Fusarium",
+      "scientificName": "Fusarium spp., dont groupes F. oxysporum et F. solani",
+      "kind": "fungus",
+      "role": "pathogen",
+      "sourceIds": [
+        "health-atlas-punja-2019",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "pythium-globisporangium",
+      "commonName": "Oomycètes des racines et des fontes",
+      "scientificName": "Pythium spp. ; Globisporangium spp.",
+      "kind": "oomycete",
+      "role": "pathogen",
+      "sourceIds": [
+        "health-atlas-punja-2019",
+        "health-atlas-pythium-name",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "rhizoctonia",
+      "commonName": "Rhizoctones",
+      "scientificName": "Rhizoctonia spp., notamment le complexe R. solani",
+      "kind": "fungus",
+      "role": "pathogen",
+      "sourceIds": [
+        "health-atlas-hemp-france",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "beet-curly-top-virus",
+      "commonName": "Virus de l’enroulement de la betterave",
+      "scientificName": "Beet curly top virus (BCTV)",
+      "kind": "virus",
+      "role": "pathogen",
+      "sourceIds": [
+        "health-atlas-viruses-wa-2023",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "citrus-yellow-vein-associated-virus",
+      "commonName": "CYVaV, agent associé aux nervures jaunes",
+      "scientificName": "Citrus yellow vein-associated virus (CYVaV)",
+      "kind": "virus",
+      "role": "contextual",
+      "sourceIds": [
+        "health-atlas-viruses-wa-2023",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "hop-latent-viroid",
+      "commonName": "Viroïde latent du houblon",
+      "scientificName": "Hop latent viroid (HLVd, aussi HpLVd)",
+      "kind": "viroid",
+      "role": "pathogen",
+      "sourceIds": [
+        "health-atlas-hlvd-warren",
+        "health-atlas-hlvd-punja",
+        "health-atlas-viroids-ictv",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "ladybirds",
+      "commonName": "Coccinelles prédatrices",
+      "scientificName": "Coccinellidae — espèces prédatrices",
+      "kind": "beneficial",
+      "role": "beneficial",
+      "sourceIds": [
+        "health-atlas-beneficial-purdue",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "lacewings",
+      "commonName": "Chrysopes prédatrices",
+      "scientificName": "Chrysopidae ; notamment Chrysopa oculata dans l’observation citée",
+      "kind": "beneficial",
+      "role": "beneficial",
+      "sourceIds": [
+        "health-atlas-lacewings-csu",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "aphid-parasitoids",
+      "commonName": "Parasitoïdes des pucerons",
+      "scientificName": "Hymenoptera parasitoïdes — plusieurs taxons",
+      "kind": "beneficial",
+      "role": "beneficial",
+      "sourceIds": [
+        "health-atlas-beneficial-purdue",
+        "health-atlas-diagnostic"
+      ]
+    },
+    {
+      "id": "predatory-mites",
+      "commonName": "Acariens prédateurs",
+      "scientificName": "Phytoseiidae — notamment Phytoseiulus et Neoseiulus",
+      "kind": "beneficial",
+      "role": "beneficial",
+      "sourceIds": [
+        "health-atlas-purdue-greenhouse",
+        "health-atlas-diagnostic"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "health-atlas-tetranychus",
+      "title": "Twospotted Spider Mite in Industrial Hemp",
+      "author": "Melissa Pulkoski et Hannah Burrack",
+      "organization": "NC State Extension",
+      "published": "2020-08-05",
+      "url": "https://content.ces.ncsu.edu/twospotted-spider-mite-in-industrial-hemp",
+      "passage": "Overview, Sampling and Thresholds, Biology : identité, signes, stades et absence de seuil validé dans ce contexte.",
+      "access": "full-text",
+      "limitation": "Caroline du Nord ; la fiche ne fournit pas de seuil universel transférable à la France. Aucun produit ou calendrier de traitement repris.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-aculops",
+      "title": "Hemp russet mite",
+      "author": "Colorado State University, programme d’entomologie",
+      "organization": "Colorado State University",
+      "published": "Page sans date explicite, consultée en 2026",
+      "url": "https://agsci.colostate.edu/agbio/ipm-pests/29895-2/",
+      "passage": "Description, Quick Facts : acarien ériophyide, petites dimensions et absence de toile.",
+      "access": "full-text",
+      "limitation": "Fiche régionale ; la présence ou la gravité dans une parcelle française ne se déduisent pas de ce document.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-aculops-name",
+      "title": "Aculops cannibicola (ACUPCN)",
+      "author": "Organisation européenne et méditerranéenne pour la protection des plantes",
+      "organization": "EPPO Global Database",
+      "published": "Code créé le 2022-08-24 ; page courante",
+      "url": "https://gd.eppo.int/taxon/ACUPCN",
+      "passage": "Preferred name : Aculops cannibicola ; autre nom : Aculops cannabicola.",
+      "access": "official-page",
+      "limitation": "Référence de nomenclature ; ce seul enregistrement n’est pas un relevé de présence en France.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-broad-mite",
+      "title": "Broad Mite — Polyphagotarsonemus latus",
+      "author": "Équipe Utah Pests",
+      "organization": "Utah State University Extension",
+      "published": "Collection Pests of Hemp in Utah, 2022 ; page courante",
+      "url": "https://extension.usu.edu/planthealth/ipm/notes_ag/hemp-broad-mite",
+      "passage": "Hosts, Description, Life Cycle, Damage Symptoms et Occurrence in Utah : non détecté dans l’enquête locale.",
+      "access": "full-text",
+      "limitation": "Espèce présentée comme risque possible sous abri en Utah, pas comme observation locale confirmée. Les traitements de la page sont exclus de l’atlas.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-florida-2023",
+      "title": "An initial list of arthropods on hemp (Cannabis sativa L.; Cannabaceae) in Florida",
+      "author": "Eileen A. Buss et Paul E. Skelley",
+      "organization": "Florida Department of Agriculture and Consumer Services",
+      "published": "2023-11",
+      "url": "https://ccmedia.fdacs.gov/content/download/114776/file/FDACS-P-02203_2023-11(Arthropods-on-Hemp-Circular).pdf",
+      "passage": "Circular 445, sections mites, aphids, whiteflies et tableau 1 : identifications de prélèvements soumis au service.",
+      "access": "full-text",
+      "limitation": "Inventaire floridien non aléatoire ; distingue ravageurs, prédateurs et présences incidentes. Les introductions historiques et affirmations réglementaires ne sont pas utilisées.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-thrips-unh",
+      "title": "Hemp Pests in New Hampshire",
+      "author": "UNH Extension",
+      "organization": "University of New Hampshire",
+      "published": "Page sans date éditoriale explicite, consultée en 2026",
+      "url": "https://extension.unh.edu/resource/hemp-pests-new-hampshire",
+      "passage": "Sections Thrips et Corn Earworm : espèces rapportées sur chanvre, cicatrices et contexte de culture.",
+      "access": "full-text",
+      "limitation": "Synthèse universitaire nord-américaine ; les seuils économiques et distributions locales ne sont pas extrapolés.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-aphids",
+      "title": "Cannabis Aphid in Industrial Hemp",
+      "author": "Melissa Pulkoski et Hannah Burrack",
+      "organization": "NC State Extension",
+      "published": "2020-07-03",
+      "url": "https://content.ces.ncsu.edu/cannabis-aphid-in-industrial-hemp",
+      "passage": "Biology, identification de Phorodon et liste des autres pucerons rapportés, dont Myzus persicae ; exuvies, miellat et fumagine.",
+      "access": "full-text",
+      "limitation": "Les exemples de transmission virale et d’auxiliaires ne sont pas des diagnostics ni une garantie d’efficacité pour tout puceron ou virus.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-purdue-greenhouse",
+      "title": "Management Strategies for Common Arthropod Pests of Greenhouse Hemp in Indiana",
+      "author": "Zachary Serber et Elizabeth Y. Long",
+      "organization": "Purdue University Extension",
+      "published": "2021-12",
+      "url": "https://www.extension.entm.purdue.edu/publications/E-275/E-275.html",
+      "passage": "Greenhouse Whitefly, figure 2 sur chanvre ; Predatory Mites et réserve sur les preuves disponibles, surtout pour Aculops.",
+      "access": "full-text",
+      "limitation": "Contexte Indiana. Une légende confond les parasitoïdes de pucerons et d’aleurodes : elle n’est pas reprise. Aucune liste de pesticides ni lâcher prescrit.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-cranshaw-2019",
+      "title": "Developing Insect Pest Management Systems for Hemp in the United States: A Work in Progress",
+      "author": "Whitney Cranshaw, Melissa Schreiner, Kadie Britt, Thomas P. Kuhar, John McPartland et Jerome Grant",
+      "organization": "Journal of Integrated Pest Management",
+      "published": "2019 ; 10(1):26",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/JIPM_2019.pdf",
+      "passage": "DOI 10.1093/jipm/pmz023 ; sections mites, stem/stalk borers et flower/seed insects : observations et lacunes de connaissances.",
+      "access": "full-text",
+      "limitation": "Synthèse de recherches et observations américaines, parfois non publiées séparément. Les relations présence/dégât et leur importance économique ne sont pas systématiquement établies.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-ostrinia",
+      "title": "Insects that Feed on Hemp — European Corn Borer",
+      "author": "Whitney Cranshaw, programme Hemp Insects",
+      "organization": "Colorado State University",
+      "published": "Fiche sans date imprimée explicite",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/European%20corn%20borer%20with%20photos.pdf",
+      "passage": "Description, cycle et galeries dans les tiges ; référence aux observations historiques sur chanvre.",
+      "access": "full-text",
+      "limitation": "Phénologie et distribution décrites pour les États-Unis. Les photos de larves sur maïs ne constituent pas des photos d’attaque sur chanvre.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-grapholita",
+      "title": "Insects that Feed on Hemp — Eurasian Hemp Borer",
+      "author": "Whitney Cranshaw, programme Hemp Insects",
+      "organization": "Colorado State University",
+      "published": "2018-09, version révisée",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/Eurasian%20hemp%20borer%20September%202018%20rewrite(1).pdf",
+      "passage": "Pages 1–4 : Grapholita delineana, galeries, flétrissement et comparaison avec Ostrinia ; hôtes alternatifs discutés.",
+      "access": "full-text",
+      "limitation": "État des connaissances du Colorado en 2018 ; nombre de générations et hôtes sauvages demeurent incertains. Pas d’affirmation de monophagie stricte.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-hemp-france",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Louis-Marie Allard et contributeurs ; coordination I. Lartigot",
+      "organization": "Terres Inovia",
+      "published": "2026-01",
+      "url": "https://www.terresinovia.fr/sites/default/files/2026-01/guide_culture_chanvre_2026.pdf",
+      "passage": "Pages 19–20 : maladies, fonte, altises, limaces et oiseaux ; symptômes de Botrytis et Sclerotinia.",
+      "access": "full-text",
+      "limitation": "Contexte français fibre/graine. On ne reprend ni produits conseillés, ni seuils climatiques simplifiés, ni l’assimilation de Pythium à un vrai champignon, ni une immunité générale des variétés.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-punja-2019",
+      "title": "Pathogens and Molds Affecting Production and Quality of Cannabis sativa L.",
+      "author": "Zamir K. Punja et collaborateurs",
+      "organization": "Frontiers in Plant Science",
+      "published": "2019 ; 10:1120",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+      "passage": "DOI 10.3389/fpls.2019.01120 ; Results, figures 2–4, Discussion : isolements, confirmations et essais de pathogénicité.",
+      "access": "full-text",
+      "limitation": "Principalement Canada, plusieurs systèmes. Isolement et pathogénicité ne sont pas équivalents ; celle de Pythium catenulatum reste non confirmée. Ancien nom d’oïdium à interpréter avec les travaux récents.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-powdery-2024",
+      "title": "The co-occurrence of two powdery mildew species on Cannabis sativa in the Czech Republic",
+      "author": "Barbora Mieslerová et Aleš Lebeda",
+      "organization": "Journal of Phytopathology",
+      "published": "2024-06-25",
+      "url": "https://doi.org/10.1111/jph.13348",
+      "passage": "Résumé, Methods et Discussion : deux prélèvements de jardin en 2022–2023, microscopie, séquences ITS, G. ambrosiae et P. macularis.",
+      "access": "excerpt",
+      "limitation": "Texte original indexé consulté. Petit nombre d’échantillons ; la co-infection de 2022 est surtout documentée microscopiquement, la lecture moléculaire étant limitée par le mélange.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-viruses-wa-2023",
+      "title": "First Reports of Beet Curly Top Virus, Citrus Yellow Vein-Associated Virus, and Hop Latent Viroid in Industrial Hemp (Cannabis sativa) in Washington State",
+      "author": "Sridhar Jarugula, Camille Wagstaff, Arunabha Mitra, David W. Crowder, David R. Gang et Rayapati A. Naidu",
+      "organization": "Plant Disease",
+      "published": "2023-09-08 ; 107:2897",
+      "url": "https://apsjournals.apsnet.org/doi/10.1094/PDIS-12-22-2981-PDN",
+      "passage": "Note originale : plantes symptomatiques de deux champs en 2021–2022 ; PCR/RT-PCR, séquençage et infections multiples.",
+      "access": "excerpt",
+      "limitation": "Note originale indexée consultée ; échantillonnage ciblé, non estimation de prévalence. Ne démontre pas séparément la causalité de chaque agent dans les co-infections.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-hlvd-warren",
+      "title": "Occurrence of Hop Latent Viroid Causing Disease in Cannabis sativa in California",
+      "author": "J. G. Warren, J. Mercado et D. Grace",
+      "organization": "Plant Disease",
+      "published": "2019-08-21 ; 103(10)",
+      "url": "https://apsjournals.apsnet.org/doi/abs/10.1094/PDIS-03-19-0530-PDN",
+      "passage": "Note : détection et comparaison de groupes inoculés avec ARN infectieux et témoins ; symptômes et RT-PCR.",
+      "access": "excerpt",
+      "limitation": "Note originale indexée consultée. Petite expérience contrôlée étayant la causalité ; elle ne mesure pas la gravité ni l’origine de chaque cas individuel.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-hlvd-punja",
+      "title": "Symptomology, prevalence, and impact of Hop latent viroid on greenhouse-grown cannabis (Cannabis sativa L.) plants in Canada",
+      "author": "Zamir K. Punja, K. Wang, S. Lung et L. Buirs",
+      "organization": "Canadian Journal of Plant Pathology",
+      "published": "2023 en ligne ; volume 46, 2024",
+      "url": "https://doi.org/10.1080/07060661.2023.2279184",
+      "passage": "Résumé et passages de méthodes indexés : soumissions à un laboratoire canadien en 2020–2022 et plantes parfois asymptomatiques.",
+      "access": "excerpt",
+      "limitation": "Échantillons envoyés au diagnostic, pas échantillon représentatif de tous les producteurs. Le taux de positifs n’est pas une prévalence nationale.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-viroids-ictv",
+      "title": "Viroids",
+      "author": "International Committee on Taxonomy of Viruses",
+      "organization": "ICTV",
+      "published": "Rapport courant, révision 2026",
+      "url": "https://ictv.global/report/chapter/viroids/viroids",
+      "passage": "Définition : petits ARN circulaires non codants, absence de capside ; distinction des virus.",
+      "access": "official-page",
+      "limitation": "Référence de classification, pas diagnostic de la santé d’une plante.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-beneficial-purdue",
+      "title": "Beneficial Insects",
+      "author": "Purdue Hemp Project",
+      "organization": "Purdue University",
+      "published": "Page sans date explicite",
+      "url": "https://ag.purdue.edu/hemp-project/insects/beneficial-insects.html",
+      "passage": "Lacewing Larvae, Lady Beetles et Parasitoids ; organismes observés sur chanvre du centre-nord des États-Unis.",
+      "access": "full-text",
+      "limitation": "Présence et fonctions écologiques générales ; pas démonstration que tout lâcher commercial assure un contrôle sur chanvre.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-lacewings-csu",
+      "title": "Natural Enemies of Insects — Green Lacewings",
+      "author": "Whitney Cranshaw, programme Hemp Insects",
+      "organization": "Colorado State University",
+      "published": "Fiche sans date imprimée explicite",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/Green%20Lacewings%20with%20Photos.pdf",
+      "passage": "Larves prédatrices et Chrysopa oculata régulièrement observée dans les champs de chanvre, associée aux pucerons.",
+      "access": "full-text",
+      "limitation": "Observation régionale ; les espèces, stades et régimes alimentaires ne sont pas interchangeables.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-diagnostic",
+      "title": "Industrial Hemp Sampling",
+      "author": "Mike Munster",
+      "organization": "NC State Plant Disease and Insect Clinic",
+      "published": "Mise à jour le 2024-11-14",
+      "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+      "passage": "Contexte du problème, vues d’ensemble et détails, intérêt des racines et des transitions entre tissus sains et atteints.",
+      "access": "official-page",
+      "limitation": "Les exigences de prélèvement et d’envoi dépendent du laboratoire et du droit local ; aucun protocole de transport n’est reproduit.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-bemisia-name",
+      "title": "Bemisia tabaci — Datasheet",
+      "author": "Organisation européenne et méditerranéenne pour la protection des plantes",
+      "organization": "EPPO Global Database",
+      "published": "Fiche courante consultée en 2026",
+      "url": "https://gd.eppo.int/taxon/BEMITA/datasheet",
+      "passage": "Identity : diversité génétique et complexe d’espèces cryptiques ; limites de l’identification morphologique.",
+      "access": "official-page",
+      "limitation": "La classification ne prouve pas l’identité d’une population sur une photo ni sa présence sur chanvre dans un pays donné.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    },
+    {
+      "id": "health-atlas-pythium-name",
+      "title": "Pythium ultimum (PYTHUL)",
+      "author": "Organisation européenne et méditerranéenne pour la protection des plantes",
+      "organization": "EPPO Global Database",
+      "published": "Page courante consultée en 2026",
+      "url": "https://gd.eppo.int/taxon/PYTHUL",
+      "passage": "Nomenclature : Globisporangium ultimum indiqué parmi les autres noms scientifiques.",
+      "access": "official-page",
+      "limitation": "Les usages nomenclaturaux varient selon les références ; toutes les espèces historiques de Pythium ne deviennent pas Globisporangium.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel"
+    }
+  ]
+}

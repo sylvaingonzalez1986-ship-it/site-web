@@ -91,7 +91,7 @@ describe("unique equipment and ten-level progression", () => {
     };
     for (const [code, configurations] of Object.entries(models)) {
       for (const [level, configuration] of [[1, 1], [3, 1], [4, 2], [6, 2], [7, 3], [10, 3]]) {
-        expect(getKqEquipmentArtwork(code, level)?.src).toBe(`/app/kanab-quest/equipment/equipment-${configurations[configuration - 1]}-hero-v2.webp`);
+        expect(getKqEquipmentArtwork(code, level)?.src).toBe(`/placard/equipment-real-v2/${configurations[configuration - 1]}.webp`);
       }
     }
   });

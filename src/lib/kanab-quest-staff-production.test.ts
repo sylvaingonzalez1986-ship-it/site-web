@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import { KQ_STAFF_CANDIDATES } from "./kanab-quest-staff-recruitment";
 import { advanceKqStaff, applyKqStaffCommand } from "./kanab-quest-staff";
-import { createKqWarehouseStarter, getKqWarehouseQuote } from "./kanab-quest-warehouse";
+import { createKqWarehouseStarter, getKqWarehouseQuote, getKqWarehouseRunSnapshot } from "./kanab-quest-warehouse";
+import { initializeKqWarehouseCondition } from "./kanab-quest-warehouse-condition";
 import { advanceKqStaffProduction, configureKqStaffProduction, getKqProductionCashDelta, getKqProductionFacilities, isKqStaffProductionState, KQ_PRODUCTION_HOUR_MS } from "./kanab-quest-staff-production";
 import type { KqProductionLot, KqProductionStep } from "./kanab-quest-staff-production-types";
 import type { KqStaffEffect, KqStaffRawSnapshot, KqStaffState, KqStaffTask } from "./kanab-quest-staff-types";
@@ -54,6 +55,44 @@ function stock(raw: ReturnType<typeof fixture>, grams = 100, stage: KqProduction
 }
 
 describe("commercial production facility and isolation", () => {
+  it("starts after the paid equipment boundary and preserves online/offline hours", () => {
+    const raw = fixture(); shift(raw, 0, 2, "culture");
+    raw.state.production!.facility!.equipmentEffectiveAt = hour(.5);
+    const online = structuredClone(raw);
+    expect(advance(online, .5)).toEqual([]);
+    expect(online.state.production!.lots).toEqual([]);
+    const effects = advance(raw, 2);
+    advance(online, .75); advance(online, 2);
+    expect(effects[0]).toMatchObject({ event: { type: "cost", at: hour(.5) } });
+    expect(raw.state.production!.lots[0].createdAt).toBe(hour(.5));
+    expect(raw.state.production!.stats.workedHours).toBe(1);
+    expect(online.state.production).toEqual(raw.state.production);
+  });
+  it("uses funded equipment, balance two options and actual wear for the next cycle quote", () => {
+    const raw = fixture(), starter = createKqWarehouseStarter();
+    const paid = getKqWarehouseQuote({ ...starter, zones: starter.zones.map(zone => ({ ...zone,
+      lightingCode: "SIM-LIGHT-03", airCode: "SIM-AIR-03", optionCodes: ["SIM-WATER-03", "SIM-CLIMATE-03"],
+    })) }, starter).nextState;
+    const condition = initializeKqWarehouseCondition(paid, false);
+    condition.assets.forEach(asset => { asset.wearPercent = 40; });
+    raw.context.productionFacility = { ...raw.context.productionFacility!, warehouseState: paid, cultureEquipment: condition };
+    const quote = getKqProductionFacilities(raw.context)[0], expected = getKqWarehouseRunSnapshot(paid, 1, "starter", 2, 2, 2, condition);
+    expect(quote).toMatchObject({ harvestGrams: 212, qualityBonus: 6, cycleCostCents: expected.operatingCostCents });
+    expect(quote.cycleCostCents).toBeGreaterThan(raw.state.production!.facility!.cycleCostCents);
+    expect(raw.state.production!.facility!.harvestGrams).toBe(250);
+  });
+  it.each([false, true])("freezes equipment quality at launch and preserves historical lots (legacy=%s)", legacy => {
+    const raw = fixture(); raw.state.production!.facility!.qualityBonus = 6;
+    shift(raw, 0, 1, "culture"); shift(raw, 48, 1, "culture"); shift(raw, 96, 1, "culture");
+    advance(raw, 1);
+    if (legacy) delete raw.state.production!.lots[0].equipmentQualityBonus;
+    raw.state.production!.facility!.qualityBonus = 100;
+    const online = structuredClone(raw);
+    advance(raw, 97); advance(online, 49); advance(online, 97);
+    expect(raw.state.production!.lots[0].quality).toBe(legacy ? 66 : 72);
+    expect(online.state.production).toEqual(raw.state.production);
+    expect(raw.state.production!.stats.workedHours).toBe(3);
+  });
   it("quotes paid areas, operating costs and explicit shared-capacity quotas", () => {
     const raw = fixture(5), quote = getKqProductionFacilities(raw.context)[0];
     expect(quote).toMatchObject({ areaM2: 5, harvestGrams: 1250, cycleCostCents: 31010,
@@ -284,7 +323,7 @@ describe("production replay and money", () => {
     shift(raw, 48, 1, "culture", "worker", { culture: 1, processing: 1, sales: 1 });
     shift(raw, 96, 1, "culture", "worker", { culture: 10, processing: 1, sales: 1 });
     advance(raw, 97);
-    expect(raw.state.production!.lots[0]).toMatchObject({ grams: 175, quality: 66 });
+    expect(raw.state.production!.lots[0]).toMatchObject({ grams: 175, quality: 66 + (raw.state.production!.facility!.qualityBonus ?? 0) });
   });
   it("handles fractional grams and retires sold lots instead of growing historical state", () => {
     const raw = fixture(); raw.state.production!.settings.enabled = false;

@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-14",
+  "lot": "health-03",
+  "entries": {
+    "record-health-ostrinia-nubilalis": {
+      "contentHash": "4db2fa830e954231266238b4cfe342c0ced72a27fee4905fc4248a7e865dc768",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-grapholita-delineana": {
+      "contentHash": "9b24536fe3208a1a751abbd5a9f255dc2b79d1b96d6a0c4daebbc73c7837c691",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-psylliodes-attenuata": {
+      "contentHash": "5d16b06653f7a757d8a21cab109dd4d174fdfd9840e88a65933747132afd28d8",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-slugs": {
+      "contentHash": "37b9f312f184854f68c008cfb135d5cc88f5a8a679bab66b182ccc8df2d00412",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-birds": {
+      "contentHash": "5d161f12c60f983cc56093e6f9d0f59ad51d71d03ab8d9cfae6f0311c707a942",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-golovinomyces-ambrosiae": {
+      "contentHash": "cabc54a6266258126176169ce5dcdf91799820362a7a6bc48083fdd0c3816da7",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 3,
+    "hash": "ba1497abb481a2ab2ced9b47828a4676f2a70ca4d73bf63aff23891f6a2c3521"
+  }
+}

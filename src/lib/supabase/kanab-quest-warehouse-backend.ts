@@ -15,6 +15,9 @@ import { getKqPlayerWorkErrorMessage } from "../kanab-quest-player-work-errors";
 import { getKqWarehouseSalesForecast, type KqWarehouseSalesForecast } from "./kanab-quest-warehouse-flow-backend";
 import { getKqEquipmentShopSnapshot, type KqEquipmentShopSnapshot } from "./kanab-quest-equipment-backend";
 import { getKqWorkshopMachineSpecification } from "../kanab-quest-workshop-machines";
+import { isKqProductionReservation, withoutKqProductionEquipment, type KqProductionReservation } from "../kanab-quest-production-reservation";
+import { getKqStaffSnapshot } from "./kanab-quest-staff-backend";
+import { getKqProductionFacilities } from "../kanab-quest-staff-production";
 import { initializeKqWarehouseCondition, isKqWarehouseCondition, reconcileKqWarehouseCondition, getKqWarehouseRemovalQuote, removeKqWarehouseZone,
   type KqWarehouseCondition, type KqWarehouseRemovalQuote } from "../kanab-quest-warehouse-condition";
 
@@ -45,6 +48,8 @@ export type KqWarehouseCompletedRun = {
 };
 
 export type KqWarehouseSnapshot = {
+  /** Missing on an older server; null explicitly confirms no commercial reservation. */
+  productionReservation?: KqProductionReservation | null;
   cultureEquipment?: KqWarehouseCondition | null;
   removalReceipt?: { resaleCents: number; soldCount: number; keptCount: number; requestKey?: string; replayed?: boolean };
   state: KqWarehouseState;
@@ -80,6 +85,10 @@ function databaseError(message: string): never {
   const workError = getKqPlayerWorkErrorMessage(message);
   if (workError) throw new KqWarehouseError(workError, 409);
   const failures: [string, string, number][] = [
+    ["staff_production_capacity", "Le séchage ou le stockage disponible ne couvre pas ce nouveau rendement. Aucun équipement n’a été acheté.", 409],
+    ["staff_production_budget", "Le plafond quotidien de production ne couvre pas le coût du nouveau cycle. Ajuste-le dans Personnel avant l’achat.", 409],
+    ["staff_production_equipment_busy", "Termine et vends les lots de production autonome avant d’installer ce matériel.", 409],
+    ["staff_production_changed", "La production autonome a changé. Actualise la disponibilité avant de confirmer.", 409],
     ["warehouse_condition_required", "Actualise l’entrepôt pour retrouver l’état de ton matériel.", 409],
     ["warehouse_condition_changed", "L’usure ou l’affectation du matériel a changé. Actualise le devis.", 409],
     ["warehouse_condition_invalid", "L’état du matériel doit être actualisé avant cette opération.", 409],
@@ -129,7 +138,9 @@ function storedSnapshot(result: RpcResult): StoredSnapshot {
     || (data.storageReservedGrams !== undefined && (!Number.isFinite(data.storageReservedGrams) || data.storageReservedGrams < data.stockGrams))
     || !Number.isFinite(data.storageCapacityGrams) || data.storageCapacityGrams < 0
     || (data.state !== null && !isKqWarehouseState(data.state))
-    || (data.cultureEquipment != null && !isKqWarehouseCondition(data.cultureEquipment))) {
+    || (data.cultureEquipment != null && !isKqWarehouseCondition(data.cultureEquipment))
+    || (data.productionReservation !== undefined && (!isKqProductionReservation(data.productionReservation)
+      || data.productionReservation !== null && !data.state?.zones.some(zone => zone.id === data.productionReservation?.zoneId)))) {
     throw new Error("[supabase:warehouse] invalid_snapshot");
   }
   return data;
@@ -194,7 +205,7 @@ async function ensureCondition(userId: string, current: StoredSnapshot, freeStar
 }
 
 async function compactIdleWarehouse(userId: string, current: StoredSnapshot): Promise<StoredSnapshot> {
-  if (!current.state || current.activeRun || current.legacyActiveRun || current.activeRuns?.length) return current;
+  if (!current.state || current.activeRun || current.legacyActiveRun || current.activeRuns?.length || current.productionReservation) return current;
   const next = compactKqWarehouseToStarterFloor(current.state);
   if (!next) return current;
   // The RPC repeats the active-run check under the same lock as save/start. A
@@ -207,6 +218,9 @@ async function compactIdleWarehouse(userId: string, current: StoredSnapshot): Pr
   // migration/RPC reaches the database. Other database failures must surface.
   if (result.error?.message.includes("rpc_kq_warehouse_compact")
     && /schema cache|does not exist|could not find/i.test(result.error.message)) return current;
+  // A commercial reservation may win after our initial read. Its layout guard
+  // keeps the paid plan intact; return that new occupancy instead of the draft.
+  if (result.error?.message === "staff_production_occupied") return readStoredSnapshot(userId);
   return storedSnapshot(result);
 }
 
@@ -258,7 +272,8 @@ export async function saveKqWarehouseLayout(input: {
   if (candidate.equipment.some(item => KQ_WAREHOUSE_CATALOG.find(device => device.code === item.code)?.kind === "processing")) {
     databaseError("warehouse_workshop_purchase");
   }
-  const current = await ensureCondition(input.userId, await readStoredSnapshot(input.userId));
+  let current = await ensureCondition(input.userId, await readStoredSnapshot(input.userId));
+  let productionStaff: Awaited<ReturnType<typeof getKqStaffSnapshot>> | undefined;
   if (!current.state || current.revision !== input.expectedRevision) {
     const concurrentReceipt = await replay();
     if (concurrentReceipt) return concurrentReceipt;
@@ -266,6 +281,22 @@ export async function saveKqWarehouseLayout(input: {
   }
   if (!!current.state.floor !== !!candidate.floor) databaseError("warehouse_floor_changed");
   if (current.legacyActiveRun || (current.activeRun && !current.activeRuns?.length)) databaseError("warehouse_active_run");
+  if (current.productionReservation) {
+    const zoneId = current.productionReservation.zoneId;
+    const previous = cleanState(current.state);
+    const before = previous.zones.find(zone => zone.id === zoneId);
+    const after = candidate.zones.find(zone => zone.id === zoneId);
+    if (!before || !after || JSON.stringify(withoutKqProductionEquipment(before)) !== JSON.stringify(withoutKqProductionEquipment(after))
+      || JSON.stringify(previous.serviceZones) !== JSON.stringify(candidate.serviceZones)) databaseError("staff_production_occupied");
+    if (JSON.stringify(before) !== JSON.stringify(after)) {
+      if (current.productionReservation.equipmentEditable === undefined) databaseError("staff_production_equipment_busy");
+      productionStaff = await getKqStaffSnapshot(input.userId);
+      current = await readStoredSnapshot(input.userId);
+      if (!current.state || current.revision !== input.expectedRevision) databaseError("warehouse_revision_changed");
+      if (!current.productionReservation?.equipmentEditable || current.productionReservation.zoneId !== zoneId
+        || !productionStaff.state?.production?.facility || productionStaff.state.production.lots.length || productionStaff.state.production.jobs.length) databaseError("staff_production_equipment_busy");
+    }
+  }
   for (const run of current.activeRuns ?? []) {
     const before = current.state.zones.find(zone => zone.id === run.zoneId);
     const after = candidate.zones.find(zone => zone.id === run.zoneId);
@@ -288,11 +319,21 @@ export async function saveKqWarehouseLayout(input: {
     requestKey: input.requestKey, fundedFraction: quote.totalCostCents ? Math.max(0, quote.totalCostCents - current.migrationCreditCents) / quote.totalCostCents : 0,
     fundedCents: Math.max(0, quote.totalCostCents - current.migrationCreditCents), investmentCents: quote.totalCostCents,
   }) : undefined;
-  return withSales(publicSnapshot(storedSnapshot(await supabase.rpc(condition ? "rpc_kq_warehouse_save_condition" : "rpc_kq_warehouse_save", {
+  if (productionStaff) {
+    if (!condition || !productionStaff.context.productionFacility) databaseError("warehouse_condition_required");
+    const next = getKqProductionFacilities({ ...productionStaff.context, productionFacility: {
+      ...productionStaff.context.productionFacility, warehouseState: quote.nextState, warehouseRevision: current.revision + 1, cultureEquipment: condition,
+    } }).find(facility => facility.zoneId === current.productionReservation!.zoneId);
+    if (!next?.available) databaseError("staff_production_capacity");
+    if (next.cycleCostCents > productionStaff.state!.production!.settings.maxDailyCostCents) databaseError("staff_production_budget");
+  }
+  return withSales(publicSnapshot(storedSnapshot(await supabase.rpc(productionStaff ? "rpc_kq_warehouse_save_production_equipment" : condition ? "rpc_kq_warehouse_save_condition" : "rpc_kq_warehouse_save", {
     p_user_id: input.userId, p_request_key: input.requestKey, p_request: request,
     p_expected_revision: input.expectedRevision, p_previous_state: current.state,
     p_next_state: quote.nextState, p_cost_cents: quote.totalCostCents,
     ...(condition ? { p_previous_assets: current.cultureEquipment!.assets, p_next_assets: condition.assets } : {}),
+    ...(productionStaff ? { p_expected_staff_revision: productionStaff.revision,
+      p_settled_at: productionStaff.state!.production!.advancedAt } : {}),
   }))), forecast);
 }
 
@@ -308,7 +349,10 @@ export async function getKqWarehouseRunSnapshot(userId: string, zoneId?: string)
   }
   current = await compactIdleWarehouse(userId, current);
   current = await ensureCondition(userId, current);
-  return current.state ? deriveWarehouseRunSnapshot(current.state, current.revision, zoneId, 2, 2, 2, current.cultureEquipment ?? undefined) : null;
+  if (zoneId !== undefined && current.productionReservation?.zoneId === zoneId) databaseError("staff_production_occupied");
+  return current.state ? { ...deriveWarehouseRunSnapshot(current.state, current.revision, zoneId, 2, 2, 2, current.cultureEquipment ?? undefined),
+    ...(current.productionReservation !== undefined ? { productionReservedZoneId: current.productionReservation?.zoneId ?? null } : {}),
+  } : null;
 }
 
 function assertRemovalInput(input: { userId: string; zoneId: string; expectedRevision: number }) {
@@ -322,6 +366,7 @@ async function removalSnapshot(input: { userId: string; zoneId: string; expected
   if (!current.state || current.revision !== input.expectedRevision) databaseError("warehouse_revision_changed");
   if (!current.cultureEquipment) throw new KqWarehouseError("La mise à jour du suivi du matériel est nécessaire pour supprimer une zone.", 503);
   if (current.legacyActiveRun || (current.activeRun && !current.activeRuns?.length) || current.activeRuns?.some(run => !run.zoneId || run.zoneId === input.zoneId)) databaseError("warehouse_zone_busy");
+  if (current.productionReservation?.zoneId === input.zoneId) databaseError("staff_production_occupied");
   if (!current.state.zones.some(zone => zone.id === input.zoneId)) throw new KqWarehouseError("Cette zone de culture n’existe plus.", 409);
   return { ...current, state: current.state, cultureEquipment: current.cultureEquipment };
 }

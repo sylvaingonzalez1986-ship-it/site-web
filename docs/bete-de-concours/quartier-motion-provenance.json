@@ -1,0 +1,207 @@
+{
+  "updated": "2026-11-11",
+  "scope": "Quartier vivant : ambiance locale et réactions au joueur, sans modification des règles métier.",
+  "userAdjustments": [
+    "Retrait des détails textuels, des boutons yeux et du guide Observer demandés pendant la réalisation.",
+    "Animation visible dès le cadrage initial smartphone : hortensias et fleurs près de la ferme."
+  ],
+  "source": {
+    "image": "public/placard/map/placard-world-sylvain-v6.webp",
+    "width": 1536,
+    "height": 1024,
+    "flattened": true,
+    "separateLayersFound": false,
+    "originalPreserved": true
+  },
+  "runtime": {
+    "technique": "SVG découpé sur l’illustration originale + GSAP déjà installé ; interactions HTML existantes.",
+    "coordinates": "Toutes les ancres et tous les masques utilisent les pixels de la scène 1536×1024.",
+    "layers": "Fonds restaurés immobiles, puis éléments d’origine mobiles ; contrôles HTML au-dessus, jamais bloqués.",
+    "network": "Un atlas statique supplémentaire. Aucun polling, abonnement, enregistrement ni appel métier ajouté par les animations.",
+    "cleanup": "GSAP context.revert, déconnexion IntersectionObserver et suppression des écouteurs ; temporisation de panoramique annulée au démontage.",
+    "suspension": "Hors écran, onglet masqué, panoramique souris ou défilement tactile. Respect de prefers-reduced-motion, y compris changements en cours de session.",
+    "fallback": "Illustration originale complète si le fond ou le module GSAP échoue ; destinations utilisables."
+  },
+  "art": {
+    "asset": "public/placard/map/living-v1/clean-patches.webp",
+    "atlas": {
+      "width": 592,
+      "height": 115,
+      "bytes": 16304
+    },
+    "movingPieces": "Les pièces mobiles réutilisent les pixels exacts de l’illustration originale, via masques SVG. Aucun bâtiment ni visage ne bouge.",
+    "mode": "built-in image_gen",
+    "processing": "Découpes localisées des sorties imagegen, atlas avec sharp, WebP qualité97. Les corrections du reste des sorties générées ne sont pas utilisées.",
+    "sources": [
+      "output/quartier-living/art/clean-source.png",
+      "output/quartier-living/art/clean-repaired-source.png",
+      "output/quartier-living/art/clean-flowers-source.png"
+    ],
+    "prompts": [
+      "Precise object removal edit of the provided 1536x1024 village illustration for a game animation CLEAN BACKGROUND PLATE. Keep exact same canvas, framing, all buildings, palette, black outlines, texture, perspective and light. Remove ONLY these six moving decorations, reconstructing the hidden background naturally and flawlessly: (1) the round golden hanging coin sign at x887..960 y90..169, retaining its overhead black bracket and hook; (2) the small square wooden hanging shop sign at x925..987 y704..775, retaining overhead black bracket and hook; (3) ONLY the black/white Breton flag fabric at x1340..1420 y157..232, keep its pole; (4) ONLY the loose paper notes inside the central wooden notice board at x681..820 y390..490, fill with matching wooden board backing, retain board frame; (5) foreground reed tuft at x574..676 y976..1024, reconstruct water/grass bank behind it; (6) reed tuft by the right stream at x1003..1080 y856..935, reconstruct grass/bank/rock behind it. All other pixels should stay visually identical to the original. No characters or extra objects. No text. The result is the same original illustration with these six decorations erased, NOT an alternate village or a redesign. We will animate original decorations over this clean plate.",
+      "Precise tiny background correction for the attached 1536x1024 clean animation plate. Keep exactly the same full canvas, composition, every building and every detail, do not redesign or shift anything. Remove ONLY: (1) the short black dangling hook below the bank sign bracket at x913..926 y82..101; (2) the short black dangling hook below the card shop sign bracket at x958..973 y694..713; (3) the isolated small outlined pebble on the sand below/right of the Breton flag pole at x1376..1406 y220..234. Fill these tiny removed parts with a seamless continuation of their background colors and texture. Keep the two long fixed overhead black sign brackets completely intact. Keep all other original details unchanged, including the empty wooden notice board and the empty flag pole. No extra objects, no text. This is a precisely registered game asset: exact positions and framing matter.",
+      "Precise object removal for this exact 1536x1024 cartoon village. The supplied original illustration is the edit target. Keep exact canvas, framing, all buildings, all remaining objects and details. Remove ONLY TWO small flower clumps immediately beside the upper-left farmhouse: (1) the blue hydrangea clump at x14..109 y286..358, immediately left of the stacked wooden crates and in front of the barn left corner; (2) the small yellow daisy clump and its foliage at x539..579 y276..328, immediately right of the farmhouse barrel. Reconstruct the hidden ground or wall naturally with the same original outlines, perspective, texture and colours. Preserve crates, barrel, tire and every part of the buildings. No rectangles or visible retouch boundaries. Keep the surrounding paths and grass unchanged. No other plant or object removals. No new objects, no text. These two clean areas are backings for the exact original flower art to sway over; do not reposition any existing landmarks."
+    ]
+  },
+  "definitions": "src/components/placard/KqPlacardMap.scene.ts",
+  "mobileCompatibility": {
+    "reported": "Aucun mouvement visible sur l’iPhone de l’utilisateur avec Chrome et une adresse locale du PC ; réglage Réduire les animations inconnu.",
+    "diagnosis": "Blocage non reproduit dans WebKit 26.0 et 27.2 sur Windows avant correction. Le défaut de rafraîchissement SVG WebKit reste une hypothèse, pas une cause démontrée sur cet appareil.",
+    "renderer": "Les dix découpes originales et six fonds sont exportés sans génération supplémentaire dans un atlas transparent, puis animés sur de petits calques HTML. Les effets vectoriels restent en SVG.",
+    "export": "scripts/export-placard-map-sprites.mjs",
+    "manifest": "src/components/placard/KqPlacardMap.sprites.json",
+    "asset": "public/placard/map/living-v2/scenery-4bef3738dd1b.webp",
+    "bytes": 91726,
+    "loading": "Chargement reconnu par onload ou complete/naturalWidth, sans dépendance à Image.decode(). Nom de ressource versionné par son empreinte ; peinture originale conservée en cas d’échec.",
+    "reducedMotion": "Réduction système respectée par défaut. Bouton Animer le quartier uniquement si cette préférence est active ; activation volontaire, commande d’arrêt et choix conservé en mémoire lors des retours au Quartier. Aucun bouton permanent ni détail narratif réintroduit.",
+    "validation": "TypeScript global, ESLint ciblé, export reproductible et Chromium320/390/1440 réussis. WebKit26.0 et27.2 Windows : pixels mobiles en mode normal, immobiles en réduction système, activation volontaire puis arrêt effectifs à320/390 ; retour conserve caméra/choix et hors écran suspend le mouvement. Rejet forcé de decode sans effet (méthode inutilisée), panne atlas conserve la peinture originale. Captures inspectées.",
+    "reports": ["output/quartier-webkit-tools/after-webkit26/report.json", "output/quartier-webkit-tools/after-webkit27/report.json"],
+    "videos": ["output/quartier-webkit-tools/after-webkit27/no-preference-390.webm", "output/quartier-webkit-tools/after-webkit27/reduce-390.webm"],
+    "physicalDevice": "À revérifier sur l’iPhone de l’utilisateur après rechargement de la version corrigée."
+  },
+  "motions": [
+    {
+      "id": "hydrangea",
+      "intent": "Brise visible dès le cadrage smartphone sur la ferme.",
+      "anchor": [
+        66,
+        350
+      ],
+      "amplitude": "skewX ±4,5° ; racine fixe",
+      "rhythm": "3,9s aller-retour, sine.inOut, départ immédiat",
+      "trigger": "continu ; accent court sur ferme",
+      "plane": "devant bardage, au sol"
+    },
+    {
+      "id": "daisies",
+      "intent": "Réponse décalée des fleurs à droite de la ferme.",
+      "anchor": [
+        553,
+        325
+      ],
+      "amplitude": "skewX ±5,5°",
+      "rhythm": "4,7s aller-retour, décalage0,7s",
+      "trigger": "continu ; accent court sur ferme",
+      "plane": "à droite du tonneau, au sol"
+    },
+    {
+      "id": "bank-sign",
+      "intent": "Poids d’une enseigne suspendue.",
+      "anchor": [
+        917,
+        80
+      ],
+      "amplitude": "rotation ±5°",
+      "rhythm": "4,6s aller-retour, sine.inOut",
+      "trigger": "continu ; survol/focus/pression banque",
+      "plane": "sous potence fixe"
+    },
+    {
+      "id": "shop-sign",
+      "intent": "Enseigne en bois plus souple.",
+      "anchor": [
+        963,
+        695
+      ],
+      "amplitude": "rotation ±6°",
+      "rhythm": "5,6s aller-retour, décalage0,6s",
+      "trigger": "continu ; survol/focus/pression packs",
+      "plane": "sous potence fixe"
+    },
+    {
+      "id": "flag",
+      "intent": "Tissu soulevé par le vent, bord du mât maintenu.",
+      "anchor": [
+        1348,
+        159
+      ],
+      "amplitude": "skewY ±2,8°",
+      "rhythm": "3,4s aller-retour, décalage0,25s",
+      "trigger": "continu ; réaction Personnel",
+      "plane": "devant le rivage, mât immobile"
+    },
+    {
+      "id": "notices",
+      "intent": "Petit coup de vent occasionnel sur les cinq annonces.",
+      "anchor": "punaises individuelles dans scene.ts",
+      "amplitude": "rotation2,5 à4° selon feuille",
+      "rhythm": "levée0,55s, retour0,8s, repos1,1s puis11,7s immobile ; décalages0,9 à1,8s",
+      "trigger": "événement local ; réaction Missions",
+      "plane": "devant fond de bois restauré"
+    },
+    {
+      "id": "chimney-smoke",
+      "intent": "Activité domestique, sans signifier une récompense ou production serveur.",
+      "anchor": [
+        [
+          1156,
+          101
+        ],
+        [
+          690,
+          597
+        ]
+      ],
+      "amplitude": "montée72px, dérive24/17px, échelle0,35→1,65",
+      "rhythm": "5,2/5,85s, bouffées pré-décalées, apparition1,3s puis disparition2,2s",
+      "trigger": "continu",
+      "plane": "au-dessus des sorties de cheminées"
+    },
+    {
+      "id": "gull",
+      "intent": "Passage espacé avec battements puis vol plané.",
+      "anchor": "[995,69]→[1470,39]",
+      "amplitude": "trajet475px ; ailes±12/22°",
+      "rhythm": "vol10s puis pause18,7s, premier passage après3s",
+      "trigger": "événement local",
+      "plane": "ciel, au-dessus des bâtiments"
+    },
+    {
+      "id": "water-and-lights",
+      "intent": "Reflets secondaires et lueurs des états réels conservés.",
+      "anchor": "tracés et centres existants dans Atmosphere.tsx",
+      "amplitude": "reflets7–9px, opacité0,18→0,72 ; lumière0,12→0,33",
+      "rhythm": "2,8–4,9s selon reflet ; 3,2–4,4s selon lumière",
+      "trigger": "reflets continus ; lueurs seulement si culture/lots/Fleurs confirmés",
+      "plane": "eau et intérieurs existants"
+    },
+    {
+      "id": "entrance-response",
+      "intent": "Accueil immédiat sans retarder la navigation.",
+      "anchor": "MAP_ENTRANCES",
+      "amplitude": "trait de seuil de58px, échelleX0,78→1,14",
+      "rhythm": "0,65s ; mêmes timelines réutilisées, sans accumulation",
+      "trigger": "survol, focus et pression",
+      "plane": "seuils ; silhouette et pancartes accessibles conservées"
+    }
+  ],
+  "limits": [
+    "Pas de nouvel avatar ni de son : navigation quotidienne existante conservée.",
+    "Recettes locales avec API et destinations simulées ; pas de smartphone physique ni authentification distante testés."
+  ],
+  "evidence": {
+    "motion": "output/placard-navigation/motion-report.json",
+    "mobile": "output/clarity-lot5/navigation/after/report.json",
+    "navigation": "output/placard-navigation/report.json",
+    "runtime": "output/quartier-living/runtime-report.json",
+    "before": "output/quartier-living/before",
+    "videos": [
+      "output/quartier-living/quartier-smartphone.webm",
+      "output/quartier-living/quartier-desktop.webm"
+    ],
+    "recording": "output/quartier-living/recording-report.json"
+  },
+  "validation": {
+    "typecheck": "pass",
+    "lint": "pass",
+    "navigation": "20 sc?narios, 320/390/768/1440px, API et destinations simul?es",
+    "mobile": "24 cibles et24 focus, panoramique tactile ; hortensias visibles au cadrage initial320/390px",
+    "continuity": "34s observ?es, aucun saut d?tect? entre images rapproch?es, aucune requ?te API nouvelle",
+    "fallbacks": [
+      "?chec atlas : peinture originale et navigation utilisables",
+      "?chec import GSAP : peinture originale et navigation utilisables"
+    ],
+    "artReview": "Attaches, contour note, caillou et raccord de bardage corrig?s ; captures de r?action inspect?es",
+    "latestRequest": "Pas de d?tails textuels ; animation sur smartphone y compris arriv?e ? la ferme"
+  }
+}

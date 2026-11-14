@@ -8,6 +8,7 @@ import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const root=process.cwd(),output=resolve(root,'output/ux-implementation/jury'),port=Number(process.env.KQ_JURY_PORT??3270),origin=`http://127.0.0.1:${port}`;
+const trimOnly=process.argv.includes('--trim-only');
 const modules={
   'jury-entry': `import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
     import {KanabQuestDicePrototype} from '/src/components/placard/KanabQuestDicePrototype';
@@ -23,7 +24,8 @@ const modules={
     const receipt={battleId:battle.id,winner:'player',burnedAt:flower.createdAt,experienceAwarded:100,todayCount:1,dailyLimit:5,opponentFlower:{...battle.opponentFlower,ownerName:'Bot de recette'},rounds,challengePoints:0,completedChallenges:[],rewardCard:null};
     const root=createRoot(document.getElementById('root'));let key=0;const network=fetch.bind(window);
     const state={mode:'success',readsFail:false,finished:false,submitted:false,requests:[]};window.__jury=state;
-    const session=()=>({activeRun:null,activeRuns:[],flowers:[{...flower,status:state.finished?'burned':'available',storage:state.mode==='unknown'?undefined:projectKqStorageLot(storageLot,Date.parse(flower.createdAt)+(state.mode==='curing'?3:7)*3600000)}],battles:state.finished?[battle]:[],progress:null});
+    const trim=()=>state.mode==='trim-unknown'?undefined:state.mode==='trim-malformed'?{status:'ready'}:{status:['trim-required','trim-curing'].includes(state.mode)?'required':state.mode==='trim-partial'?'in-progress':'ready',totalGrams:120,completedGrams:['trim-required','trim-curing'].includes(state.mode)?0:state.mode==='trim-partial'?40:120};
+    const session=()=>({activeRun:null,activeRuns:[],flowers:[{...flower,trim:trim(),status:state.finished?'burned':'available',storage:state.mode==='unknown'?undefined:projectKqStorageLot(storageLot,Date.parse(flower.createdAt)+(['curing','trim-curing'].includes(state.mode)?3:7)*3600000)}],battles:state.finished?[battle]:[],progress:null});
     window.fetch=async(input,init={})=>{
       const url=String(input);if(!url.startsWith('/api/'))return network(input,init);
       const path=new URL(url,location.origin).pathname,method=init.method??'GET';state.requests.push({path,method,time:performance.now()});
@@ -44,7 +46,7 @@ const modules={
       if(path.endsWith('/rankings'))return Response.json({entries:[]});
       return Response.json({progress:null});
     };
-    window.__showJury=(mode)=>{state.mode=mode;state.readsFail=false;state.finished=false;state.submitted=false;state.requests=[];delete document.body.dataset.navigated;sessionStorage.clear();localStorage.clear();root.render(<KanabQuestDicePrototype key={++key} apiScope='player' showAdminOperations={false} viewMode='arena' onOpenGame={()=>{document.body.dataset.navigated='game'}} onOpenStorage={id=>{document.body.dataset.navigated='storage:'+id}} onOpenMarket={()=>{document.body.dataset.navigated='market'}}/>);};
+    window.__showJury=(mode)=>{state.mode=mode;state.readsFail=false;state.finished=false;state.submitted=false;state.requests=[];delete document.body.dataset.navigated;sessionStorage.clear();localStorage.clear();root.render(<KanabQuestDicePrototype key={++key} apiScope='player' showAdminOperations={false} viewMode='arena' onOpenGame={()=>{document.body.dataset.navigated='game'}} onOpenTrim={id=>{document.body.dataset.navigated='trim:'+id}} onOpenStorage={id=>{document.body.dataset.navigated='storage:'+id}} onOpenMarket={()=>{document.body.dataset.navigated='market'}}/>);};
     window.__showVerdict=(variant)=>{
       delete document.body.dataset.navigated;
       const stats={appearance:70,aroma:70,vigor:70,mastery:70,regularity:70};
@@ -71,6 +73,42 @@ try{
   const settle=()=>new Promise(resolve=>setTimeout(resolve,200));
   const clickText=async(text,scope='body')=>{const found=await page.evaluate(({text,scope})=>{const target=[...document.querySelectorAll(scope+' button')].find(b=>b.textContent.includes(text)&&!b.disabled);if(!target)return false;target.click();return true;},{text,scope});assert(found,'Clickable button '+text);};
   const openTraining=async()=>{await page.waitForFunction(()=>document.querySelector('[data-culture-training-flower]:not(:disabled)'));await clickText('Entraînement immédiat');await page.waitForSelector('#remote-battle-title');};
+  if(trimOnly){
+    await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
+    for(const width of [320,390,1440]){
+      await page.setViewport({width,height:844,isMobile:width<700,hasTouch:width<700});await page.goto(origin,{waitUntil:'networkidle0'});
+      for(const mode of ['trim-required','trim-partial','trim-unknown','trim-malformed','trim-curing']){
+        await page.evaluate(mode=>window.__showJury(mode),mode);await page.waitForSelector('[data-culture-open-trim]');
+        assert.equal((await page.$$('[data-culture-training-flower], [data-culture-ranked-flower]')).length,0,'No jury command before confirmed trim');
+        const text=await page.$eval('[data-jury-trim-status]',node=>node.textContent);
+        if(mode==='trim-partial')assert.match(text,/40 g sur 120 g confirmés/);
+        if(mode==='trim-unknown'||mode==='trim-malformed')assert.match(text,/à vérifier/);
+        if(mode==='trim-curing')assert(await page.$('[data-culture-curing] [role="meter"]'),'Curing and trim are independent prerequisites');
+        const action=await page.$('[data-culture-open-trim]');await action.focus();
+        assert((await action.boundingBox()).height>=44);assert.notEqual(await action.evaluate(node=>getComputedStyle(node).outlineStyle),'none');
+        await page.keyboard.press('Enter');assert.equal(await page.evaluate(()=>document.body.dataset.navigated),'trim:flower-demo');
+        assert.equal(await page.evaluate(()=>window.__jury.requests.some(row=>row.method!=='GET')),false,'Trim handoff never submits work or a duel');
+        assert(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+        await page.screenshot({path:resolve(output,mode+'-'+width+'.png'),fullPage:true});
+        if(['trim-unknown','trim-malformed'].includes(mode)){
+          await page.evaluate(()=>{window.__jury.mode='success'});await page.focus('[data-jury-refresh-trim]');await page.keyboard.press('Enter');
+          await page.waitForSelector('[data-culture-training-flower]');
+          assert.equal(await page.evaluate(()=>window.__jury.requests.some(row=>row.method!=='GET')),false,'Recovery only reads');
+        }
+        results.push({width,scenario:mode,noPrematureJury:true,exactLot:true,keyboard:true});
+      }
+      await page.evaluate(()=>window.__showJury('success'));await page.waitForSelector('[data-culture-training-flower]');
+      for(const kind of ['training','ranked']){
+        const selector='[data-culture-'+kind+'-flower]';await page.focus(selector);await page.keyboard.press('Enter');
+        await page.waitForSelector('dialog[open]');
+        assert.match(await page.$eval('dialog[open]',node=>node.textContent),/stock récolté.*conservé/);
+        await page.keyboard.press('Escape');await page.waitForFunction(()=>!document.querySelector('dialog[open]'));
+        assert.equal(await page.$eval(selector,node=>node===document.activeElement),true);
+      }
+      assert.equal(await page.evaluate(()=>window.__jury.requests.some(row=>row.method!=='GET')),false);
+      results.push({width,scenario:'confirmed-trim-and-curing',bothConfirmations:true,stockConsequencePreserved:true});
+    }
+  }else{
   for(const width of [320,390,1440]){
     await page.setViewport({width,height:900,isMobile:width<700,hasTouch:width<700});await page.goto(origin,{waitUntil:'networkidle0'});await page.waitForFunction(()=>typeof window.__showJury==='function');
     for(const mode of ['curing','unknown']){
@@ -136,7 +174,8 @@ try{
   await page.evaluate(()=>window.__showJury('timeout'));await openTraining();const started=Date.now();await clickText('Lancer l’entraînement','dialog[open]');await page.waitForFunction(()=>document.querySelector('[data-jury-recovery] button:not([disabled])'));const elapsed=Date.now()-started;assert(elapsed>=19_000&&elapsed<28_000,'20 second timeout');assert.equal(await page.evaluate(()=>window.__jury.requests.filter(r=>r.method==='POST').length),1,'Only one write while uncertain');assert(await page.$eval('dialog[open]',d=>[...d.querySelectorAll('button')].find(b=>b.textContent.includes('Lancer l’entraînement')).disabled),'Retry mutation blocked');
   await page.screenshot({path:resolve(output,'timeout-recovery.png')});await page.keyboard.press('Escape');await settle();assert.equal(await page.$$eval('dialog[open]',els=>els.length),0);assert(await page.$('[data-jury-recovery]'),'Recovery remains reachable outside dialog');
   await page.evaluate(()=>{window.__jury.readsFail=false;});await clickText('Vérifier le résultat');await page.waitForFunction(()=>!document.querySelector('[data-jury-recovery]'));assert.equal(await page.evaluate(()=>window.__jury.requests.filter(r=>r.method==='POST').length),1,'Checking a result never repeats the mutation');assert(await page.$('[data-archived-jury-recap]'),'Reconciled verdict is available in history');results.push({scenario:'timeout-then-read-recovery',elapsed});
-  assert.deepEqual(errors,[]);await writeFile(resolve(output,'results.json'),JSON.stringify({results,errors},null,2));console.log(JSON.stringify({passed:results.length,results,errors}));
+  }
+  assert.deepEqual(errors,[]);await writeFile(resolve(output,trimOnly?'trim-results.json':'results.json'),JSON.stringify({results,errors},null,2));console.log(JSON.stringify({passed:results.length,results,errors}));
 }catch(error){
   if(page){await page.screenshot({path:resolve(output,'failure.png')}).catch(()=>{});await writeFile(resolve(output,'failure.json'),JSON.stringify({message:error.message,errors,results,state:await page.evaluate(()=>({jury:window.__jury,text:document.body.innerText})).catch(()=>null)},null,2));}
   throw error;

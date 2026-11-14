@@ -1,0 +1,29 @@
+{
+  "date": "2026-11-14",
+  "status": "integrated-and-verified-locally",
+  "scope": {
+    "articlesAndRecords": 189,
+    "definitions": 160,
+    "quizExplanations": 360,
+    "scientificallyValidated": 181,
+    "existingScientificSourceLimitations": 8
+  },
+  "editorialChanges": [
+    "Chaque fiche explique son sujet avec une progression propre et des termes définis dans leur contexte.",
+    "Les nombres, formules, unités, comparaisons expérimentales et limites des résultats sont explicités.",
+    "Les approfondissements secondaires sont ouvrables ; les résultats négatifs et risques pertinents restent dans le texte principal.",
+    "Les schémas sont placés après les notions qu’ils expliquent. Le pilote terpènes représente notamment les dix et quinze carbones.",
+    "La bibliographie n’est plus ajoutée à l’introduction ; les références identiques partagent un numéro.",
+    "Les anciennes ancres restent utilisables après regroupement des sections. Les réponses du quiz restent côté serveur."
+  ],
+  "verification": "docs/encyclopedia-vulgarisation/verification.json",
+  "reviewEvidence": "docs/encyclopedia-vulgarisation/reviews/coordinator",
+  "individualValidation": "docs/encyclopedia-vulgarisation/validation.json",
+  "remainingScientificLimitations": "docs/encyclopedia-vulgarisation/progress.json#scientificBlockers",
+  "scientificResearchArchive": "docs/encyclopedia-revision/batches",
+  "preview": "http://127.0.0.1:3256/arene/placard?view=school&section=learn&module=reference&passage=ref-terpenes-terpenoides",
+  "previewScope": "Données de jeu simulées en mémoire ; le texte des fiches provient des fichiers intégrés. Aucun service distant.",
+  "comprehensionStudyConducted": false,
+  "databaseMigrationRequired": false,
+  "deployed": false
+}

@@ -31,7 +31,7 @@ export function getKqProductionFacilities(context: KqStaffContext): KqProduction
   const machine = input.equipment.find(row => row.code === "SIFT-TRAY");
   const reference = machine ? getKqProcessingMachineReference(machine.code, machine.level) : null;
   return warehouse.zones.filter(zone => zone.active).map(zone => {
-    const run = getKqWarehouseRunSnapshot(warehouse, input.warehouseRevision, zone.id);
+    const run = getKqWarehouseRunSnapshot(warehouse, input.warehouseRevision, zone.id, 2, 2, 2, input.cultureEquipment ?? undefined);
     const drying = Math.max(0, run.dryingCapacityGrams - input.reservedDryingGrams);
     const storage = Math.max(0, run.storageCapacityGrams - input.usedStorageGrams);
     const reason = run.estimatedHarvestGrams <= 0 ? "Cette zone ne dispose pas d'un potentiel de récolte utilisable."
@@ -42,6 +42,7 @@ export function getKqProductionFacilities(context: KqStaffContext): KqProduction
       cycleCostCents: run.operatingCostCents, dryingCapacityGrams: Math.min(drying, run.estimatedHarvestGrams),
       storageCapacityGrams: Math.min(storage, run.estimatedHarvestGrams * 2),
       processingRateGramsPerHour: reference?.gramsPerHour ?? 0, processingAvailable: !!reference,
+      qualityBonus: clamp(run.qualityBonus ?? 0, 0, 100), equipmentRevision: input.warehouseRevision,
       available: !reason, reason, warehouseRevision: input.warehouseRevision };
   });
 }
@@ -68,6 +69,7 @@ export function configureKqStaffProduction(state: KqStaffState, raw: KqStaffRawS
     cycleCostCents: quote.cycleCostCents, dryingCapacityGrams: quote.dryingCapacityGrams,
     storageCapacityGrams: quote.storageCapacityGrams, processingAvailable: quote.processingAvailable,
     processingRateGramsPerHour: quote.processingRateGramsPerHour,
+    qualityBonus: quote.qualityBonus, equipmentRevision: quote.equipmentRevision, equipmentEffectiveAt: raw.serverNow,
   } : null;
   state.production = { version: 1, settings: { enabled: command.enabled, zoneId, route: command.route,
     maxDailyCostCents: command.maxDailyCostCents, cashReserveCents: command.cashReserveCents,
@@ -100,11 +102,15 @@ export function isKqStaffProductionState(value: unknown): value is KqStaffProduc
     || typeof value.facility.processingAvailable !== "boolean"
     || !["areaM2", "harvestGrams", "cycleCostCents", "dryingCapacityGrams", "storageCapacityGrams", "processingRateGramsPerHour"].every(key => finite((value.facility as Record<string, unknown>)[key])))) return false;
   if (value.settings.enabled && value.facility === null || value.lots.length > 0 && value.facility === null) return false;
+  if (object(value.facility) && (value.facility.qualityBonus !== undefined && !finite(value.facility.qualityBonus, 100)
+    || value.facility.equipmentRevision !== undefined && !natural(value.facility.equipmentRevision)
+    || value.facility.equipmentEffectiveAt !== undefined && !date(value.facility.equipmentEffectiveAt))) return false;
   const ids = new Set<string>(), workers = new Set<string>();
   for (const lot of value.lots) {
     if (!object(lot) || typeof lot.id !== "string" || ids.has(lot.id) || !["flower", "dry-sift"].includes(String(lot.route))
       || !["culture", "drying", "trim", "processing", "ready"].includes(String(lot.stage)) || !date(lot.createdAt) || !date(lot.readyAt)
       || !natural(lot.cultureStage, 3) || typeof lot.processingPaid !== "boolean" || !finite(lot.quality, 100)
+      || lot.equipmentQualityBonus !== undefined && !finite(lot.equipmentQualityBonus, 100)
       || !["potentialGrams", "grams", "equivalentGrams", "quality", "remainingWork", "cultureHours", "cultureLevelHours", "trimQualityGrams", "processingEfficiencyGrams", "processingQualityGrams", "saleExactCents", "saleRoundedCents"].every(key => finite(lot[key]))) return false;
     ids.add(lot.id);
   }
@@ -172,7 +178,7 @@ export function advanceKqStaffProduction(state: KqStaffState, raw: KqStaffRawSna
         else {
           const level = lot.cultureLevelHours / lot.cultureHours;
           lot.grams = precise(lot.potentialGrams * (.55 + .05 * (level - 1))); lot.equivalentGrams = lot.grams;
-          lot.quality = precise(50 + 4 * level); lot.stage = "drying"; lot.readyAt = stamp(time + KQ_PRODUCTION_DRYING_MS);
+          lot.quality = precise(clamp(50 + 4 * level + (lot.equipmentQualityBonus ?? 0), 0, 100)); lot.stage = "drying"; lot.readyAt = stamp(time + KQ_PRODUCTION_DRYING_MS);
           lot.remainingWork = lot.grams; production!.stats.harvestedGrams = precise(production!.stats.harvestedGrams + lot.grams);
         }
       }
@@ -217,7 +223,8 @@ export function advanceKqStaffProduction(state: KqStaffState, raw: KqStaffRawSna
       if (selected) { step = candidate as KqProductionJob["step"]; break; }
     }
     const prioritizeLaunch = task.productionStep === "auto" && (step === "trim" || step === "processing");
-    if ((!selected || prioritizeLaunch) && allowed.includes("culture") && production!.settings.enabled) {
+    if ((!selected || prioritizeLaunch) && allowed.includes("culture") && production!.settings.enabled
+      && (!facility.equipmentEffectiveAt || time >= at(facility.equipmentEffectiveAt))) {
       const occupied = production!.lots.reduce((sum, lot) => sum + (lot.stage === "culture" ? lot.potentialGrams : lot.grams), 0);
       const drying = production!.lots.reduce((sum, lot) => sum + (lot.stage === "drying" ? lot.grams : lot.stage === "culture" ? lot.potentialGrams : 0), 0);
       if (!production!.lots.some(lot => lot.stage === "culture") && production!.lots.length < KQ_PRODUCTION_MAX_LOTS
@@ -225,6 +232,7 @@ export function advanceKqStaffProduction(state: KqStaffState, raw: KqStaffRawSna
         && drying + facility.harvestGrams <= facility.dryingCapacityGrams + EPS && canPay(facility.cycleCostCents)) {
         selected = { id: nextId("lot"), route: production!.settings.route, createdAt: stamp(time), stage: "culture", cultureStage: 0,
           readyAt: stamp(time), potentialGrams: facility.harvestGrams, grams: 0, equivalentGrams: 0, quality: 0,
+          equipmentQualityBonus: facility.qualityBonus ?? 0,
           remainingWork: facility.areaM2, cultureHours: 0, cultureLevelHours: 0, trimQualityGrams: 0,
           processingEfficiencyGrams: 0, processingQualityGrams: 0, processingPaid: false, saleExactCents: 0, saleRoundedCents: 0 };
         production!.lots.push(selected); production!.stats.cycles++; emit("cost", selected, task, facility.cycleCostCents, 0); step = "culture";
@@ -279,7 +287,7 @@ export function advanceKqStaffProduction(state: KqStaffState, raw: KqStaffRawSna
       assign(task);
     }
     if (time === now) break;
-    const future = [now, nextDay(time), ...production.jobs.map(job => at(job.completesAt)), ...production.lots.map(lot => at(lot.readyAt)),
+    const future = [now, nextDay(time), ...(facility.equipmentEffectiveAt ? [at(facility.equipmentEffectiveAt)] : []), ...production.jobs.map(job => at(job.completesAt)), ...production.lots.map(lot => at(lot.readyAt)),
       ...shifts.flatMap(task => [at(task.startedAt), at(task.completesAt)])].filter(t => t > time);
     time = Math.min(...future);
   }

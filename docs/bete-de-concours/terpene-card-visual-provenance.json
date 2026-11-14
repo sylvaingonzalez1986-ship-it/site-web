@@ -1,0 +1,10 @@
+{
+  "date": "2026-11-14",
+  "scope": "28 cartes sélectionnées pour leur présence documentée dans le cannabis et leur description olfactive exploitable. Le corpus de 86 dossiers reste archivé ; les 58 autres entrées sont retirées du catalogue public, de l’index et de la recherche.",
+  "selection": "cannabis-terpene-selection-provenance.json : critères, matrices étudiées, sources primaires relues et limites des exclusions.",
+  "aromaArtwork": "Sept nouveaux dessins créés avec image_gen pour herbacé, camphré, lavande, résine, muscade, rose et térébenthine ; prompts, fichiers et empreintes dans terpene-aroma-art-v1.json. Les autres dessins sont réutilisés depuis les Buddies (buddie-flavor-art-v1.json).",
+  "aromaMapping": "TERPENE_CARD_AROMAS dans src/lib/kanab-quest-terpene-cards.ts associe explicitement chaque carte retenue à des dessins légendés correspondant à ses mots d’odeur. Aucune carte générique sans illustration, aucun pictogramme substitué au dessin. Les références sensorielles de chaque composé sont conservées. Les descriptions complètes restent sous les images, y compris les notes secondaires non dessinées (doux, essence, plastique, balsamique).",
+  "interpretation": "Les illustrations représentent des analogies olfactives, pas une preuve que la molécule a été identifiée dans la plante dessinée. La rubrique Également identifié dans reprend uniquement otherPlants du corpus, avec ses sources accessibles.",
+  "molecularStructures": "26 des 28 cartes retenues disposent d’un schéma PubChem parmi les 37 schémas archivés : voir terpene-structure-provenance.json. Bornéol et nérolidol gardent leurs illustrations aromatiques sans dessin moléculaire supposé. Les fichiers originaux sont conservés ; un contraste CSS renforce la lisibilité à petite taille. La configuration figurée est explicitée à côté du schéma.",
+  "interface": "Carrousel manuel, filtre olfactif et recherche par nom/synonyme/odeur ; popup avec flèches, geste tactile horizontal, fermeture Échap ou retour navigateur, focus restauré ; lien vers l’article complet. Aucun score, effet thérapeutique, rareté ou intensité aromatique inventé."
+}

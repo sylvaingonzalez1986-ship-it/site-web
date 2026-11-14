@@ -41,7 +41,7 @@ describe("separate post-harvest room quality", () => {
     expect(validateKqWarehouseState({ ...starter, storageClimateCode: "MH-TS1000" })).not.toEqual([]);
     expect(validateKqWarehouseState({ ...starter, storageClimateCode: "SIM-STORAGE-CLIMATE-01", serviceZones: [] })).not.toEqual([]);
     expect(() => getKqWarehouseRunSnapshot({ ...starter, storageClimateCode: "SIM-STORAGE-CLIMATE-01" })).toThrow("financé");
-    expect(getKqWarehouseProductArtwork("SIM-STORAGE-CLIMATE-03")?.src).toBe("/placard/equipment-sylvain-v1/climate-3.webp");
+    expect(getKqWarehouseProductArtwork("SIM-STORAGE-CLIMATE-03")?.src).toBe("/placard/equipment-real-v2/climate-3.webp");
   });
 
   it("rounds the exact mixed-room half-centipoint like PostgreSQL", () => {

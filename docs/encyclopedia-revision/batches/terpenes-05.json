@@ -1,0 +1,1240 @@
+{
+  "domain": "terpenes",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "tp-booth2020",
+      "title": "Terpene Synthases and Terpene Variation in Cannabis sativa",
+      "author": "Judith K. Booth, Macaire M. S. Yuen, Sharon Jancsik, Lufiani L. Madilao, Jonathan E. Page et Jörg Bohlmann",
+      "organization": "Plant Physiology",
+      "published": "2020-06-26",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479917/",
+      "passage": "Tableau 1, légende des astérisques ; « Functions of CsTPSs » ; figures 9–10 ; « Terpene Extraction and Analysis ».",
+      "access": "excerpt",
+      "documentKind": "Profils végétaux et caractérisation fonctionnelle",
+      "limitation": "Les pics sans astérisque reposent sur MS et indice de rétention. Les échantillons Purple Kush ne sont pas directement comparables aux autres conditions ; aucun pourcentage universel n’est repris.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479917/",
+          "sections": "PMC via requête réseau : Variation of Foliar Terpene Profiles, tableau 1 entier et Functions of CsTPSs ; astérisques des étalons distingués.",
+          "result": "read",
+          "supports": "Tableau 1, légende des astérisques ; « Functions of CsTPSs » ; figures 9–10 ; « Terpene Extraction and Analysis »."
+        }
+      ]
+    },
+    {
+      "id": "tp-fischedick2017",
+      "title": "Identification of Terpenoid Chemotypes Among High (−)-trans-Δ9-Tetrahydrocannabinol-Producing Cannabis sativa L. Cultivars",
+      "author": "Justin T. Fischedick",
+      "organization": "Cannabis and Cannabinoid Research",
+      "published": "2017-03-01",
+      "url": "https://doi.org/10.1089/can.2016.0040",
+      "passage": "PDF intégral, pages 36–39 : méthodes, tableau 1 et tableau 2 ; rectification cis/trans-ocimène page 37.",
+      "access": "excerpt",
+      "documentKind": "Analyse originale de 233 échantillons",
+      "limitation": "PDF original consulté via copie hébergée par Accurate Clinic (URL conservée dans le corpus). Un dispensaire californien, 16 analytes ; les noms commerciaux ne prouvent ni identité génétique ni composition d’une carte Buddy.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://doi.org/10.1089/can.2016.0040",
+          "sections": "PDF original Accurate Clinic : introduction, méthodes pp. 36–37, tableaux 1–2 ; 233 échantillons et 16 analytes.",
+          "result": "read",
+          "supports": "PDF intégral, pages 36–39 : méthodes, tableau 1 et tableau 2 ; rectification cis/trans-ocimène page 37."
+        }
+      ]
+    },
+    {
+      "id": "tp-zager2019",
+      "title": "Gene Networks Underlying Cannabinoid and Terpenoid Accumulation in Cannabis",
+      "author": "Jordan J. Zager, Iris Lange, Narayanan Srividya, Anthony Smith et B. Markus Lange",
+      "organization": "Plant Physiology",
+      "published": "2019-05-28",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+      "passage": "Tableaux 1 et 3 ; figures 7–8 ; paragraphes de caractérisation des synthases linalol/nérolidol.",
+      "access": "excerpt",
+      "documentKind": "Profils de fleurs et enzymes recombinantes",
+      "limitation": "Une enzyme active hors de la plante ne démontre pas à elle seule son produit dans chaque variété ; la séparation chirale concerne les analyses spécifiées.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+          "sections": "PMC, variante report=xml&x=2 : Target Gene Identification and Characterization, tableaux 1 et 3, figures 7–8 et séparation chirale ; CsTPS18VF (+) et CsTPS19BL mélange (+)/(−), nérolidol quantifiable seulement Black Lime.",
+          "result": "read",
+          "supports": "Tableaux 1 et 3 ; figures 7–8 ; paragraphes de caractérisation des synthases linalol/nérolidol."
+        }
+      ]
+    },
+    {
+      "id": "tp-ovidi2022",
+      "title": "Hemp (Cannabis sativa L., Kompolti cv.) and Hop (Humulus lupulus L., Chinook cv.) Essential Oil and Hydrolate: HS-GC-MS Chemical Investigation and Apoptotic Activity Evaluation",
+      "author": "Elisa Ovidi et huit coauteurs",
+      "organization": "Pharmaceuticals",
+      "published": "2022-08-08",
+      "url": "https://www.mdpi.com/1424-8247/15/8/976",
+      "passage": "Tableau 1, colonne Hemp EO ; tableau 2, colonne Hemp Hy ; méthodes d’identification GC-MS.",
+      "access": "excerpt",
+      "documentKind": "Analyse d’huile et d’hydrolat ; expériences cellulaires distinctes",
+      "limitation": "Huile et hydrolat transformés, pas profil de fleur fraîche. Les résultats cellulaires portent sur des mélanges : ils ne sont attribués à aucune molécule isolée dans ces fiches. Quelques lignes n’ont pas d’indice de référence.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/1424-8247/15/8/976",
+          "sections": "MDPI : §2.2 et tableaux 1–2, huile essentielle et hydrolat Kompolti séparés.",
+          "result": "read",
+          "supports": "Tableau 1, colonne Hemp EO ; tableau 2, colonne Hemp Hy ; méthodes d’identification GC-MS."
+        }
+      ]
+    },
+    {
+      "id": "tp-janta2024",
+      "title": "Chemical profiling and clustering of various dried cannabis flowers revealed by volatilomics and chemometric processing",
+      "author": "Pannipa Janta et Sornkanok Vimolmangkang",
+      "organization": "Journal of Cannabis Research",
+      "published": "2024-12-06",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11622677/",
+      "passage": "« Compound identification » et tableau 2 : noms proposés, indices, différences d’indices et scores de correspondance.",
+      "access": "excerpt",
+      "documentKind": "Volatilomique HS-SPME-GC-MS de 19 fleurs séchées",
+      "limitation": "Les auteurs qualifient les identifications de provisoires. Bibliothèque NIST et indice de rétention ne remplacent pas un étalon ; DB-WAX non chirale ne démontre pas les signes (+)/(−) et préfixes R/L du tableau.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11622677/",
+          "sections": "PMC via réseau : Compound identification et tableau 2 ; identifications provisoires et aires normalisées.",
+          "result": "read",
+          "supports": "« Compound identification » et tableau 2 : noms proposés, indices, différences d’indices et scores de correspondance."
+        }
+      ]
+    },
+    {
+      "id": "tp-flavornet",
+      "title": "Flavornet and human odor space — index des descripteurs",
+      "author": "Terry Acree et Heinrich Arn",
+      "organization": "Cornell / DATU",
+      "published": "2004-06-25 (version annoncée)",
+      "url": "https://flavornet.org/d_odors.html",
+      "passage": "Index odeurs et fiches liées ; méthode et bibliographies sur https://www.flavornet.org/.",
+      "access": "official-page",
+      "documentKind": "Base originale de descripteurs issus de GC-olfactométrie",
+      "limitation": "Base documentaire, pas nouveau panel réalisé pour l’école. Certains indices sont interpolés : aucun n’est repris ici. Les mots décrivent des contextes perceptifs ; ils ne prouvent ni intensité, ni qualité, ni effet d’un cannabis.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://flavornet.org/d_odors.html",
+          "sections": "Index des descripteurs consulté ; les mots d’odeur sont qualitatifs et ne décrivent pas des effets humains.",
+          "result": "read",
+          "supports": "Index odeurs et fiches liées ; méthode et bibliographies sur https://www.flavornet.org/."
+        }
+      ]
+    },
+    {
+      "id": "tp-hops2021",
+      "title": "Characterization of Wild Corsican Hops and Assessment of the Performances of German Hops in Corsican Environmental Conditions through a Multidisciplinary Approach",
+      "author": "Axel Dabbous-Wach, Margherita Rodolfi, Julien Paolini, Jean Costa et Tommaso Ganino",
+      "organization": "Applied Sciences",
+      "published": "2021-04-21",
+      "url": "https://www.mdpi.com/2076-3417/11/9/3756",
+      "passage": "Tableau 6, annexe A1 et §3.3 ; composés identifiés dans les huiles de houblon.",
+      "access": "excerpt",
+      "documentKind": "Analyse GC-MS de houblons",
+      "limitation": "Présence dans les échantillons étudiés, non dans chaque houblon. Les commentaires sensoriels ne sont pas un essai d’effet humain.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2076-3417/11/9/3756",
+          "sections": "MDPI : §3.3 et tableau 6, distributions dans les huiles des houblons corses.",
+          "result": "read",
+          "supports": "Tableau 6, annexe A1 et §3.3 ; composés identifiés dans les huiles de houblon."
+        }
+      ]
+    },
+    {
+      "id": "tp-herbs2021",
+      "title": "Headspace/GC–MS Analysis and Investigation of Antibacterial, Antioxidant and Cytotoxic Activity of Essential Oils and Hydrolates from Rosmarinus officinalis L. and Lavandula angustifolia Miller",
+      "author": "Stefania Garzoli, Valentina Laghezza Masci, Sara Franceschi, Antonio Tiezzi, Pierluigi Giacomello et Elisa Ovidi",
+      "organization": "Foods",
+      "published": "2021-07-30",
+      "url": "https://www.mdpi.com/2304-8158/10/8/1768",
+      "passage": "Tableaux 1–2 (romarin et lavande) ; §2.2–2.3, identification MS et indices.",
+      "access": "excerpt",
+      "documentKind": "Profils d’huiles et de phases vapeur",
+      "limitation": "Seuls les résultats de composition sont utilisés. Les essais sur mélanges et cellules ne prouvent pas les effets des molécules séparées ou d’un usage humain.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2304-8158/10/8/1768",
+          "sections": "MDPI : §3.1–3.2 et tableaux 1–2, huiles et phases vapeur de romarin et lavande.",
+          "result": "read",
+          "supports": "Tableaux 1–2 (romarin et lavande) ; §2.2–2.3, identification MS et indices."
+        }
+      ]
+    },
+    {
+      "id": "tp-eucalyptus2011",
+      "title": "Eucalyptus oleosa Essential Oils: Chemical Composition and Antimicrobial and Antioxidant Activities of the Oils from Different Plant Parts (Stems, Leaves, Flowers and Fruits)",
+      "author": "H. N. Ben Marzoug, M. Romdhane, A. Lebrihi, F. Mathieu, F. Couderc, M. Abderraba, M. L. Khouja et J. Bouajila",
+      "organization": "Molecules",
+      "published": "2011-02-17",
+      "url": "https://www.mdpi.com/1420-3049/16/2/1695",
+      "passage": "Tableau de composition, lignes 51 (guaiol), 53 (γ-eudesmol), 55 (β-eudesmol), et §2.1.",
+      "access": "excerpt",
+      "documentKind": "Tableau original consulté dans l’index",
+      "limitation": "Page intégrale inaccessible pendant la consultation ; extrait du tableau original vérifié, pas relecture des données brutes. Les huiles étudiées ne représentent pas tous les eucalyptus.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/1420-3049/16/2/1695",
+          "sections": "PDF original MDPI /pdf?version=1403113012 : pp. 1697–1700, tableau 1, ligne 51 guaiol et colonnes des organes ; pas attribution des tests de mélanges au guaiol seul.",
+          "result": "read",
+          "supports": "Tableau de composition, lignes 51 (guaiol), 53 (γ-eudesmol), 55 (β-eudesmol), et §2.1."
+        }
+      ]
+    },
+    {
+      "id": "tp-snapdragon2008",
+      "title": "Two nearly identical terpene synthases catalyze the formation of nerolidol and linalool in snapdragon flowers",
+      "author": "Dinesh A. Nagegowda, Michael Gutensohn, Curtis G. Wilkerson et Natalia Dudareva",
+      "organization": "The Plant Journal",
+      "published": "2008-03-19 (en ligne)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/18363779/",
+      "passage": "Résumé original : émissions florales et caractérisation AmNES/LIS-1 et -2.",
+      "access": "abstract",
+      "documentKind": "Étude enzymatique de fleurs de muflier",
+      "limitation": "Résumé consulté ; détail des expériences et annexes non relus. Ne démontre pas un rôle identique chez le cannabis.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/18363779/",
+          "sections": "Résumé original lu par E-utilities PubMed 18363779 : AmNES/LIS-1 cytosolique, AmNES/LIS-2 plastidiale, linalol/nérolidol selon substrat et compartiment.",
+          "result": "read",
+          "supports": "Résumé original : émissions florales et caractérisation AmNES/LIS-1 et -2."
+        }
+      ]
+    },
+    {
+      "id": "tp-chamomile2023",
+      "title": "Biosynthesis of α-Bisabolol by Farnesyl Diphosphate Synthase and α-Bisabolol Synthase and Their Related Transcription Factors in Matricaria recutita L.",
+      "author": "Yuling Tai et onze coauteurs",
+      "organization": "International Journal of Molecular Sciences",
+      "published": "2023-01-15",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/36675248/",
+      "passage": "Résumé original et légendes accessibles : MrFPS, MrBBS, modèle de biosynthèse.",
+      "access": "abstract",
+      "documentKind": "Étude de biosynthèse chez la camomille",
+      "limitation": "Résumé et légendes consultés, pas texte intégral. La fonction de biosynthèse n’établit ni efficacité clinique ni identité stéréochimique d’un produit commercial.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/36675248/",
+          "sections": "PubMed : résumé, MrFPS/MrBBS cytosoliques et biosynthèse du bisabolol ; aucun bénéfice humain déduit.",
+          "result": "read",
+          "supports": "Résumé original et légendes accessibles : MrFPS, MrBBS, modèle de biosynthèse."
+        }
+      ]
+    },
+    {
+      "id": "tp-lavender2022",
+      "title": "Exploring the Chemical Composition of Bulgarian Lavender Absolute (Lavandula angustifolia Mill.) by GC/MS and GC-FID",
+      "author": "Daniela Nedeltcheva-Antonova, Kamelia Gechovska, Stanislav Bozhanov et Liudmil Antonov",
+      "organization": "Plants",
+      "published": "2022-11-17",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9692913/",
+      "passage": "Tableau 1 et chromatogrammes : cis/trans-β-ocimène, nérolidol, acétate de géranyle et autres constituants d’absolues de lavande.",
+      "access": "excerpt",
+      "documentKind": "Analyse de sept absolues de lavande",
+      "limitation": "Produits extraits de lavande, pas parfum de la fleur intacte. Les contributions olfactives individuelles ne sont pas mesurées par cette analyse.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9692913/",
+          "sections": "PMC : tableau 1, cis/trans-β-ocimène, nérolidol et acétate de géranyle dans des absolues.",
+          "result": "read",
+          "supports": "Tableau 1 et chromatogrammes : cis/trans-β-ocimène, nérolidol, acétate de géranyle et autres constituants d’absolues de lavande."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-e-beta-farnesene",
+      "title": "PubChem CID 5281517 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/5281517",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5281517/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C15H24 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-alpha-selinene",
+      "title": "PubChem CID 10856614 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/10856614",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10856614/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C15H24 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-guaiol",
+      "title": "PubChem CID 227829 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/227829",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/227829/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C15H26O et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-alpha-bisabolol",
+      "title": "PubChem CID 10586 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/10586",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/10586/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C15H26O et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-nerolidol",
+      "title": "PubChem CID 5284507 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/5284507",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/5284507/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C15H26O et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-caryophyllene-oxide",
+      "title": "PubChem CID 1742210 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/1742210",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/1742210/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C15H24O et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-geranyl-acetate",
+      "title": "PubChem CID 1549026 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/1549026",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/1549026/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C12H20O2 et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-terpene-e-beta-farnesene",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "(E)-β-Farnésène : sesquiterpène de formule C15H24. Agrumes, herbacé.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité et isomères",
+            "paragraphs": [
+              "Le (E)-β-farnésène est un sesquiterpène acyclique C15H24. E qualifie la double liaison en position 6 ; le (Z)-β-farnésène en diffère par la géométrie. Les α-farnésènes ont une connectivité distincte et ne doivent pas être regroupés sans indication.",
+              "La source retenue utilise un étalon authentique pour cette attribution ; cela renforce l’identité dans les échantillons analysés."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-e-beta-farnesene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Odeur",
+            "paragraphs": [
+              "Agrumes, herbacé.",
+              "Repères qualitatifs documentaires, pas une mesure d’intensité. La perception dépend de la forme chimique, de la concentration, du mélange et de la personne ; ces mots ne prédisent aucun effet."
+            ],
+            "sourceIds": [
+              "tp-hops2021"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Présence dans le cannabis",
+            "paragraphs": [
+              "Booth le confirme avec étalon dans les fleurs étudiées, avec des teneurs variables selon matériel. Le tableau de houblons corses renseigne également ce composé, sans signifier que tous les houblons ou cannabis en contiennent les mêmes proportions.",
+              "La présence dans ce corpus ne garantit pas celle d’une autre plante ou d’un produit portant le même nom. Une non-détection dépend de la méthode et de sa limite, et ne vaut pas une mesure de zéro."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-hops2021"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Autres plantes",
+            "paragraphs": [
+              "Houblon (Humulus lupulus) : Tableau 6 : (E)-β-farnésène."
+            ],
+            "sourceIds": [
+              "tp-hops2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Fonctions biologiques étudiées",
+            "paragraphs": [
+              "CsTPS25(LS) le produit majoritairement avec FPP, avec d’autres produits minoritaires. Cette expérience renseigne une biosynthèse. Elle ne teste pas son rôle chez les pucerons ou son éventuel signal écologique dans le cannabis ; ces questions nécessitent des observations propres au système étudié."
+            ],
+            "sourceIds": [
+              "tp-booth2020"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "rev-terpene-pubchem-e-beta-farnesene",
+          "tp-booth2020",
+          "tp-hops2021"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/e-beta-farnesene-structure.png",
+          "alt": "Structure 2D de (E)-β-Farnésène. Géométrie (6E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+          "caption": "Géométrie (6E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/5281517",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        }
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-e-beta-farnesene",
+        "tp-booth2020",
+        "tp-hops2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Géométrie (6E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 5281517,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-terpene-alpha-selinene",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "α-Sélinène : sesquiterpène de formule C15H24. Herbacé.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité et isomères",
+            "paragraphs": [
+              "L’α-sélinène est un sesquiterpène bicyclique C15H24. Les préfixes α, β et δ ne sont pas des variantes d’orthographe. La forme absolue (3R,4aR,8aR) de l’image PubChem ne découle pas d’une simple correspondance de spectre de masse.",
+              "Attribution étayée par le spectre de masse et l’indice de rétention, sans confirmation par étalon revendiquée pour cette ligne."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-alpha-selinene"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Odeur",
+            "paragraphs": [
+              "Herbacé.",
+              "Repères qualitatifs documentaires, pas une mesure d’intensité. La perception dépend de la forme chimique, de la concentration, du mélange et de la personne ; ces mots ne prédisent aucun effet."
+            ],
+            "sourceIds": [
+              "tp-hops2021"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Présence dans le cannabis",
+            "paragraphs": [
+              "Booth annote ce composé par spectre et indice sans astérisque d’étalon dans le tableau 1. Une bonne correspondance soutient une attribution, mais n’établit pas tous les centres stéréogènes. Les huiles de houblons corses signalent aussi l’α-sélinène.",
+              "La présence dans ce corpus ne garantit pas celle d’une autre plante ou d’un produit portant le même nom. Une non-détection dépend de la méthode et de sa limite, et ne vaut pas une mesure de zéro."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-hops2021"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Autres plantes",
+            "paragraphs": [
+              "Houblon (Humulus lupulus) : Tableau 6 et §3.3 : α-sélinène dans les huiles."
+            ],
+            "sourceIds": [
+              "tp-hops2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Fonctions biologiques étudiées",
+            "paragraphs": [
+              "CsTPS28(PK) produit de l’α-sélinène parmi plusieurs sesquiterpènes, avec FPP. D’autres produits peuvent subir des réarrangements lors de l’analyse à chaud dans cette étude ; la prudence analytique concerne l’identité des produits, sans prouver ici une fonction défensive de l’α-sélinène."
+            ],
+            "sourceIds": [
+              "tp-booth2020"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "rev-terpene-pubchem-alpha-selinene",
+          "tp-booth2020",
+          "tp-hops2021"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/alpha-selinene-structure.png",
+          "alt": "Structure 2D de α-Sélinène. Stéréoisomère (3R,4aR,8aR) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+          "caption": "Stéréoisomère (3R,4aR,8aR) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/10856614",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        }
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-alpha-selinene",
+        "tp-booth2020",
+        "tp-hops2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Stéréoisomère (3R,4aR,8aR) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 10856614,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-terpene-guaiol",
+      "questions": [
+        "Le guaiol présent dans le chanvre est un…"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Guaiol : sesquiterpénoïde oxygéné de formule C15H26O. Boisé, balsamique.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité et isomères",
+            "paragraphs": [
+              "Le guaiol est un alcool sesquiterpénique C15H26O à squelette bicyclique. Le libellé « Guiaol » dans Booth correspond à une graphie de tableau, pas à une molécule nouvelle. Le dessin PubChem représente (3S,5R,8S), sans prouver que tous les échantillons portent cette configuration.",
+              "Attribution étayée par le spectre de masse et l’indice de rétention, sans confirmation par étalon revendiquée pour cette ligne."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-guaiol"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Odeur",
+            "paragraphs": [
+              "Boisé, balsamique.",
+              "Repères qualitatifs documentaires, pas une mesure d’intensité. La perception dépend de la forme chimique, de la concentration, du mélange et de la personne ; ces mots ne prédisent aucun effet."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Présence dans le cannabis",
+            "paragraphs": [
+              "Booth le rapporte dans certains profils, sur la base du spectre et de l’indice. Janta propose aussi du guaiol dans des fleurs séchées ; sa méthode traite explicitement les attributions comme provisoires. Ces deux travaux ne constituent pas une mesure de prévalence générale.",
+              "La présence dans ce corpus ne garantit pas celle d’une autre plante ou d’un produit portant le même nom. Une non-détection dépend de la méthode et de sa limite, et ne vaut pas une mesure de zéro."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-janta2024"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Autres plantes",
+            "paragraphs": [
+              "Eucalyptus oleosa : le PDF original, tableau 1 ligne 51, rapporte le guaiol dans des huiles de tiges et de feuilles adultes. Ces préparations et ces organes ne représentent pas tous les eucalyptus."
+            ],
+            "sourceIds": [
+              "tp-eucalyptus2011"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Fonctions biologiques étudiées",
+            "paragraphs": [
+              "Le PDF original sur Eucalyptus oleosa signale le guaiol dans les huiles de tiges et de feuilles adultes étudiées. Les essais antimicrobiens de l’article portent sur des huiles entières : ils ne démontrent pas une action du guaiol isolé, encore moins une efficacité d’un cannabis chez l’humain."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-eucalyptus2011"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "rev-terpene-pubchem-guaiol",
+          "tp-booth2020",
+          "tp-flavornet",
+          "tp-janta2024",
+          "tp-eucalyptus2011"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/guaiol-structure.png",
+          "alt": "Structure 2D de Guaiol. Stéréoisomère (3S,5R,8S) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+          "caption": "Stéréoisomère (3S,5R,8S) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/227829",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        }
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-guaiol",
+        "tp-booth2020",
+        "tp-flavornet",
+        "tp-janta2024",
+        "tp-eucalyptus2011"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Stéréoisomère (3S,5R,8S) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 227829,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [
+        "hemp-molecules-guaiol"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-terpene-alpha-bisabolol",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "α-Bisabolol : sesquiterpénoïde oxygéné de formule C15H26O. Floral, épicé.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité et isomères",
+            "paragraphs": [
+              "L’α-bisabolol est un alcool sesquiterpénique monocyclique C15H26O avec deux centres chiraux. Plusieurs stéréoisomères sont possibles ; le nom lévoménol désigne une forme précise. Le dessin sans configuration ne fixe ni cet isomère ni la composition d’un produit.",
+              "La source retenue utilise un étalon authentique pour cette attribution ; cela renforce l’identité dans les échantillons analysés."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "rev-terpene-pubchem-alpha-bisabolol"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Odeur",
+            "paragraphs": [
+              "Floral, épicé.",
+              "Repères qualitatifs documentaires, pas une mesure d’intensité. La perception dépend de la forme chimique, de la concentration, du mélange et de la personne ; ces mots ne prédisent aucun effet."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Présence dans le cannabis",
+            "paragraphs": [
+              "Fischedick et Booth le confirment avec étalon, mais cela ne résout pas automatiquement chaque centre chiral dans toute analyse ultérieure. Le composé varie entre les matériels de Booth et contribue à leur différenciation chimique.",
+              "La présence dans ce corpus ne garantit pas celle d’une autre plante ou d’un produit portant le même nom. Une non-détection dépend de la méthode et de sa limite, et ne vaut pas une mesure de zéro."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "tp-booth2020"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Autres plantes",
+            "paragraphs": [
+              "Camomille allemande (Matricaria recutita) : Résumé original : α-bisabolol et étude de sa biosynthèse."
+            ],
+            "sourceIds": [
+              "tp-chamomile2023"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Fonctions biologiques étudiées",
+            "paragraphs": [
+              "Tai caractérise MrFPS et MrBBS chez la camomille allemande : production du précurseur puis formation d’α-bisabolol, avec localisation cytosolique observée. Cette démonstration de biosynthèse ne mesure pas une action anti-inflammatoire chez des patients, ni un bénéfice d’une fleur de cannabis."
+            ],
+            "sourceIds": [
+              "tp-chamomile2023"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "rev-terpene-pubchem-alpha-bisabolol",
+          "tp-fischedick2017",
+          "tp-flavornet",
+          "tp-booth2020",
+          "tp-chamomile2023"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/alpha-bisabolol-structure.png",
+          "alt": "Structure 2D de α-Bisabolol. Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+          "caption": "Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/10586",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        }
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-alpha-bisabolol",
+        "tp-fischedick2017",
+        "tp-flavornet",
+        "tp-booth2020",
+        "tp-chamomile2023"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Schéma de connectivité : la configuration des centres chiraux n’est pas précisée. Il ne fixe ni un énantiomère ni leur proportion. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 10586,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-terpene-nerolidol",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Nérolidol : sesquiterpénoïde oxygéné de formule C15H26O. Floral, boisé.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité et isomères",
+            "paragraphs": [
+              "Le nérolidol est un alcool sesquiterpénique acyclique C15H26O. Il combine un centre chiral en position 3 et une double liaison pouvant être E ou Z en position 6 : un nom générique ne définit donc pas un seul stéréoisomère.",
+              "La source retenue utilise un étalon authentique pour cette attribution ; cela renforce l’identité dans les échantillons analysés."
+            ],
+            "sourceIds": [
+              "tp-zager2019",
+              "rev-terpene-pubchem-nerolidol"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Odeur",
+            "paragraphs": [
+              "Floral, boisé.",
+              "Repères qualitatifs documentaires, pas une mesure d’intensité. La perception dépend de la forme chimique, de la concentration, du mélange et de la personne ; ces mots ne prédisent aucun effet."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Présence dans le cannabis",
+            "paragraphs": [
+              "Zager mesure du nérolidol quantifiable seulement dans Black Lime parmi les neuf matériels comparés. Cette phrase décrit cette étude et ses limites de mesure, sans exclure sa détection ailleurs. Les produits enzymatiques sont identifiés comme (E)-nérolidol ; cette géométrie ne suffit pas à fixer le centre chiral.",
+              "La présence dans ce corpus ne garantit pas celle d’une autre plante ou d’un produit portant le même nom. Une non-détection dépend de la méthode et de sa limite, et ne vaut pas une mesure de zéro."
+            ],
+            "sourceIds": [
+              "tp-zager2019"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Autres plantes",
+            "paragraphs": [
+              "Muflier (Antirrhinum majus) : Résumé original : nérolidol émis par les fleurs."
+            ],
+            "sourceIds": [
+              "tp-snapdragon2008"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Fonctions biologiques étudiées",
+            "paragraphs": [
+              "CsTPS18VF et CsTPS19BL utilisent FPP pour former du (E)-nérolidol et GPP pour former du linalol. Chez le muflier, des enzymes proches sont réparties entre cytosol et plastes : la localisation modifie le substrat disponible et donc le produit réellement formé. Une capacité in vitro ne garantit pas le flux dans chaque plante."
+            ],
+            "sourceIds": [
+              "tp-zager2019",
+              "tp-snapdragon2008"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "rev-terpene-pubchem-nerolidol",
+          "tp-zager2019",
+          "tp-flavornet",
+          "tp-snapdragon2008"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Deux différences indépendantes du nérolidol",
+          "nodes": [
+            {
+              "label": "Double liaison C6",
+              "detail": "Géométrie E ou Z : deux possibilités, sans changement de connectivité."
+            },
+            {
+              "label": "Centre chiral C3",
+              "detail": "Deux configurations possibles pour chaque géométrie ; le nom générique ne les distingue pas."
+            },
+            {
+              "label": "Expérience de Zager",
+              "detail": "GPP → linalol ; FPP → (E)-nérolidol avec les enzymes étudiées ; la capacité in vitro ne fixe pas chaque profil floral."
+            }
+          ],
+          "caption": "Schéma pédagogique original ; les relations et limites sont expliquées dans le texte. Les tailles ne représentent pas des quantités.",
+          "sourceIds": [
+            "rev-terpene-pubchem-nerolidol",
+            "tp-zager2019",
+            "tp-snapdragon2008"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-nerolidol",
+        "tp-zager2019",
+        "tp-flavornet",
+        "tp-snapdragon2008"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Aucune image moléculaire existante adaptée. L’absence est documentée dans terpene-structure-provenance.json et contrôlée : ne pas remplacer bornéol par isobornéol ou nérolidol collectif par une géométrie unique. Diagramme original spécifique ci-joint, contrôlé contre identités API et sources enzymatiques ; les dessins aromatiques existants restent de simples analogies."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-terpene-caryophyllene-oxide",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Oxyde de caryophyllène : sesquiterpénoïde oxygéné de formule C15H24O. Herbacé, épicé, doux.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité et isomères",
+            "paragraphs": [
+              "L’oxyde de caryophyllène, C15H24O, contient un cycle époxyde oxygéné ; le β-caryophyllène C15H24 n’a pas cet oxygène. La structure (1R,4R,6R,10S) affichée est un stéréoisomère précis, sans certifier la configuration de chaque pic analytique.",
+              "Composé oxygéné distinct du β-caryophyllène. Le nom seul ne donne pas l’origine exacte de l’oxydation, avant ou après récolte.",
+              "Attribution étayée par le spectre de masse et l’indice de rétention, sans confirmation par étalon revendiquée pour cette ligne."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "rev-terpene-pubchem-caryophyllene-oxide"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Odeur",
+            "paragraphs": [
+              "Herbacé, épicé, doux.",
+              "Repères qualitatifs documentaires, pas une mesure d’intensité. La perception dépend de la forme chimique, de la concentration, du mélange et de la personne ; ces mots ne prédisent aucun effet."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Présence dans le cannabis",
+            "paragraphs": [
+              "Booth annote l’oxyde par MS et indice, sans astérisque d’étalon ; Ovidi le signale également dans l’huile essentielle de Kompolti. Un étalon acheté mais non utilisé pour un pic ne transforme pas l’identification en confirmation stéréochimique.",
+              "La présence dans ce corpus ne garantit pas celle d’une autre plante ou d’un produit portant le même nom. Une non-détection dépend de la méthode et de sa limite, et ne vaut pas une mesure de zéro."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-ovidi2022"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Autres plantes",
+            "paragraphs": [
+              "Romarin : Tableau 1, ligne 26 : oxyde de caryophyllène dans l’huile."
+            ],
+            "sourceIds": [
+              "tp-herbs2021"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Fonctions biologiques étudiées",
+            "paragraphs": [
+              "L’ajout d’oxygène peut résulter de réactions d’oxydation, mais une détection isolée ne permet pas de dater ni de localiser sa formation. Il faudrait comparer des échantillons et conditions documentés pour conclure à une évolution. Ni fraîcheur ni altération ni effet humain ne se lisent dans le seul nom."
+            ],
+            "sourceIds": [
+              "tp-booth2020"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "rev-terpene-pubchem-caryophyllene-oxide",
+          "tp-booth2020",
+          "tp-flavornet",
+          "tp-ovidi2022",
+          "tp-herbs2021"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/caryophyllene-oxide-structure.png",
+          "alt": "Structure 2D de Oxyde de caryophyllène. Stéréoisomère (1R,4R,6R,10S) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+          "caption": "Stéréoisomère (1R,4R,6R,10S) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/1742210",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        }
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-caryophyllene-oxide",
+        "tp-booth2020",
+        "tp-flavornet",
+        "tp-ovidi2022",
+        "tp-herbs2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Stéréoisomère (1R,4R,6R,10S) de la notice PubChem. Cette configuration illustre une forme du composé ; elle n’est pas attribuée aux échantillons du corpus. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 1742210,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-terpene-geranyl-acetate",
+      "questions": [
+        "Comment reconnaître cette identité chimique et la distinguer de ses isomères ?",
+        "Dans quelle matrice sa présence est-elle documentée et que démontre l’étude biologique citée ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes d’identité répétés supprimés ; connectivité, formule et portée du schéma explicités.",
+        "Fonction enzymatique, présence analytique, écologie et preuve clinique distinguées ; aucune promesse commerciale.",
+        "Descriptions olfactives initiales conservées comme repères qualitatifs après comparaison avec l’index ou le tableau sensoriel."
+      ],
+      "patch": {
+        "lead": "Acétate de géranyle : ester à squelette monoterpénique de formule C12H20O2. Rose.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité et isomères",
+            "paragraphs": [
+              "L’acétate de géranyle est un ester C12H20O2 : dix carbones appartiennent au squelette géranyle et deux au groupe acétate. Sa classification comme dérivé monoterpénique reste donc cohérente. La double liaison 2E le distingue de l’acétate de néryle 2Z.",
+              "Ester terpénique dérivé du géraniol, distinct de l’acétate de néryle ; il appartient aux monoterpénoïdes oxygénés malgré les deux carbones de l’acétate.",
+              "La source retenue utilise un étalon authentique pour cette attribution ; cela renforce l’identité dans les échantillons analysés."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "rev-terpene-pubchem-geranyl-acetate"
+            ]
+          },
+          {
+            "id": "aroma",
+            "title": "Odeur",
+            "paragraphs": [
+              "Rose.",
+              "Repères qualitatifs documentaires, pas une mesure d’intensité. La perception dépend de la forme chimique, de la concentration, du mélange et de la personne ; ces mots ne prédisent aucun effet."
+            ],
+            "sourceIds": [
+              "tp-flavornet"
+            ]
+          },
+          {
+            "id": "cannabis",
+            "title": "Présence dans le cannabis",
+            "paragraphs": [
+              "Fischedick le compte parmi ses 16 analytes identifiés avec étalons. Les faibles valeurs, celles inférieures à la limite de quantification et les non-détections ne s’interprètent pas de la même façon ; aucune teneur n’est attribuée ici à un nom commercial extérieur aux échantillons.",
+              "La présence dans ce corpus ne garantit pas celle d’une autre plante ou d’un produit portant le même nom. Une non-détection dépend de la méthode et de sa limite, et ne vaut pas une mesure de zéro."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017"
+            ]
+          },
+          {
+            "id": "plants",
+            "title": "Autres plantes",
+            "paragraphs": [
+              "Lavande (Lavandula angustifolia) : Tableau 1, ligne 29 : geranyl acetate dans les absolues."
+            ],
+            "sourceIds": [
+              "tp-lavender2022"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Fonctions biologiques étudiées",
+            "paragraphs": [
+              "Le tableau d’absolues de lavande rapporte aussi cet ester. Une absolue est une préparation végétale, pas une fleur intacte ; sa proportion relative ne mesure pas sa contribution olfactive individuelle. L’odeur de rose n’est donc ni une preuve de présence de rose ni une promesse d’effet humain."
+            ],
+            "sourceIds": [
+              "tp-fischedick2017",
+              "tp-lavender2022"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "rev-terpene-pubchem-geranyl-acetate",
+          "tp-fischedick2017",
+          "tp-flavornet",
+          "tp-lavender2022"
+        ],
+        "image": {
+          "src": "/placard/school/terpenes/geranyl-acetate-structure.png",
+          "alt": "Structure 2D de Acétate de géranyle. Géométrie (2E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+          "caption": "Géométrie (2E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon.",
+          "author": "NCBI PubChem / National Library of Medicine",
+          "sourceUrl": "https://pubchem.ncbi.nlm.nih.gov/compound/1549026",
+          "license": "Dessin 2D généré par NCBI ; politique NCBI, sans restriction ajoutée par NCBI, sous réserve des droits éventuels des données tierces.",
+          "licenseUrl": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+          "kind": "diagram"
+        }
+      },
+      "sourceIdsReviewed": [
+        "rev-terpene-pubchem-geranyl-acetate",
+        "tp-fischedick2017",
+        "tp-flavornet",
+        "tp-lavender2022"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "PNG existant effectivement examiné (planche structures-review.png), formule et nomenclature relues via PUG REST ; aucun dessin de molécule généré par IA. Géométrie (2E) du composé nommé, selon PubChem. Le dessin n’est pas une preuve de présence dans un échantillon. Les analogies aromatiques ont été examinées : dessins, pas photographies ni preuve botanique. Politique NCBI lue : distinguer création NCBI et données tierces ; ne pas qualifier tout PubChem de domaine public.",
+        "structureCid": 1549026,
+        "licenseEvidence": "https://www.ncbi.nlm.nih.gov/home/about/policies/",
+        "existingCardComponent": "src/components/placard/KqTerpeneCards.tsx"
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [
+    {
+      "id": "hemp-molecules-guaiol",
+      "prompt": "Le guaiol présent dans le chanvre est un…",
+      "options": [
+        "Alcool sesquiterpénique",
+        "Hydrocarbure monoterpénique",
+        "Ester non terpénique",
+        "Thiol prénylé"
+      ],
+      "answer": 0,
+      "explanation": "Le guaiol est un sesquiterpénoïde oxygéné portant une fonction alcool.",
+      "articleId": "record-terpene-guaiol",
+      "sourceIds": [
+        "tp-booth2020",
+        "tp-eucalyptus2011"
+      ]
+    }
+  ],
+  "cardPatches": [
+    {
+      "id": "guaiol",
+      "reason": "Aligner les détails du dialogue de carte sur la notice révisée ; conserver les illustrations aromatiques et le fonctionnement.",
+      "fields": {
+        "isomerNotes": "Le guaiol est un alcool sesquiterpénique C15H26O à squelette bicyclique. Le libellé « Guiaol » dans Booth correspond à une graphie de tableau, pas à une molécule nouvelle. Le dessin PubChem représente (3S,5R,8S), sans prouver que tous les échantillons portent cette configuration.",
+        "cannabisEvidence": [
+          {
+            "statement": "Booth le rapporte dans certains profils, sur la base du spectre et de l’indice. Janta propose aussi du guaiol dans des fleurs séchées ; sa méthode traite explicitement les attributions comme provisoires. Ces deux travaux ne constituent pas une mesure de prévalence générale.",
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-janta2024"
+            ]
+          }
+        ],
+        "biologicalNotes": "Le PDF original sur Eucalyptus oleosa signale le guaiol dans les huiles de tiges et de feuilles adultes étudiées. Les essais antimicrobiens de l’article portent sur des huiles entières : ils ne démontrent pas une action du guaiol isolé, encore moins une efficacité d’un cannabis chez l’humain."
+      },
+      "sourceIds": [
+        "rev-terpene-pubchem-guaiol",
+        "tp-booth2020",
+        "tp-flavornet",
+        "tp-janta2024",
+        "tp-eucalyptus2011"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Contre-vérifier les configurations explicites des PNG PubChem : leur représentation n’attribue pas une stéréochimie à une analyse non chirale.",
+    "La politique NCBI autorise les créations gouvernementales et ne pose pas de restriction NCBI aux données moléculaires ; elle réserve les droits tiers éventuels. Le contrôle distingue les PNG 2D produits par NCBI des contenus de déposants.",
+    "Les identifications MS/indice sans étalon restent des attributions ; les matrices fleur, huile et phase gazeuse d’hydrolat ne sont pas fusionnées.",
+    "Nérolidol collectif : E/Z en C6 et centre chiral C3 ; le CID API 5284507 décrit (6E) seulement, d’où absence d’image substituée.",
+    "Acétate de géranyle : C12 total mais squelette monoterpénique C10 ; pas une erreur de formule."
+  ]
+}

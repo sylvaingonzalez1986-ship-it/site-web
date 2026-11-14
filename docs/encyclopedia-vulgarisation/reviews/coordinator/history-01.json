@@ -1,0 +1,24 @@
+{
+  "date": "2026-11-14",
+  "lot": "history-01",
+  "entries": {
+    "ref-histoire-culture": {
+      "contentHash": "7829377b2b94ac32694958b1511a8992987167c8a6ee0119d9d942c0c79bafda",
+      "note": "Read all entries, diagrams, definitions and quiz explanations; technical and legal vocabulary explained, dated scope and remaining source limitations preserved.",
+      "status": "read-and-reviewed"
+    },
+    "ref-histoire-politiques": {
+      "contentHash": "ebf9720802d492610fe8aaed64d2d80ab9916abdfeb28fa31ed85ec596cbc971",
+      "note": "Read all entries, diagrams, definitions and quiz explanations; technical and legal vocabulary explained, dated scope and remaining source limitations preserved.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 90,
+    "hash": "c644ca9dc057fdc2f7f5da854fa571dbe5b64131de7faaabf4ee04bd3b0fcbf9"
+  }
+}

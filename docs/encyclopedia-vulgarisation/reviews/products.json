@@ -1,0 +1,26 @@
+{
+  "domain": "products",
+  "reviewedAt": "2026-11-14",
+  "status": "ready-for-coordinator-review",
+  "articleIdsRewritten": [
+    "ref-graines-chanvre", "ref-huile-graines", "ref-proteines-chanvre", "ref-fibres-chanvre", "ref-chenevotte-materiaux", "ref-resines-extraits", "ref-matieres-chanvre",
+    "record-product-products-chenevis", "record-product-products-seed-oil", "record-product-products-press-cake", "record-product-products-protein", "record-product-products-bast-fibre", "record-product-products-hemp-hurd", "record-product-products-fines",
+    "record-product-products-paper", "record-product-products-composite", "record-product-products-insulation", "record-product-products-bedding", "record-product-products-hempcrete", "record-product-products-textile", "record-product-products-kief",
+    "record-product-products-hash", "record-product-products-rosin", "record-product-products-extract", "record-product-products-distillate", "record-product-products-isolate", "record-product-products-formulated", "record-product-products-seed-food",
+    "record-product-products-enriched-food", "record-product-products-oral", "record-product-products-smoke", "record-product-products-aerosol", "record-product-products-plant-origin", "record-product-products-semisynthetic-origin", "record-product-products-synthetic-origin", "record-product-products-live-extract"
+  ],
+  "coverage": {"articlesRewritten": 36, "definitionsRewritten": 18, "quizExplanationsRewritten": 61},
+  "work": [
+    "Sept articles et vingt-neuf notices réécrits individuellement depuis les matières réelles : graines, réserves, fractions de tige, préparations et produits finis. Chaque paragraphe fait progresser une explication ; les termes utiles sont définis à leur apparition.",
+    "Solubilité expliquée comme capacité à se dissoudre ; broyage et enrichissement, filature et tissage, structure porteuse et remplissage, absorption et action désinfectante, identité et provenance sont distingués avec exemples.",
+    "Les détails de structure des protéines, de cellulose et de notation des acides gras sont repliables, avec définitions et exemples. Les résultats négatifs, dangers des voies d’exposition et conditions essentielles des règles restent dans le corps principal.",
+    "Les plafonds alimentaires restent chiffrés avec catégorie, mg/kg et calcul THC/THCA. Le coefficient 0,877 est expliqué par l’équivalence de masse ; la borne basse, qui compte les valeurs sous quantification comme zéro dans ce calcul sans preuve d’absence réelle, est expliquée en approfondissement.",
+    "Pour les matériaux, les développements répétitifs sur l’annulation de l’interdiction des fleurs et feuilles en 2022 ont été retirés de ces notices ; le cadre agricole général à 0,30 % passe en approfondissement. L’emploi du produit et ses preuves techniques sont au premier plan. Le contact alimentaire du papier reste visible.",
+    "Les trente-six diagrammes ont chacun une idée et une légende propres, avec une ou deux références utiles au mécanisme. Les quatre photographies documentaires réutilisées gardent auteur, source, licence, identité et portée ; leurs légendes expliquent la matière montrée.",
+    "Les dix-huit termes et les soixante et une explications de quiz sont réécrits. Aucune nouvelle recherche générale ni modification d’un lot scientifique ou d’un composant."
+  ],
+  "checks": ["36 identifiants uniques, tous les IDs de products-01 à products-05 présents", "Toutes les sections existantes conservées, paragraphes intégralement réécrits", "61 questions, options et indices inchangés, références accessibles depuis leurs fiches", "18 définitions réécrites", "Références locales et sources de diagrammes résolues", "Accents et symboles UTF-8 contrôlés"],
+  "limitations": ["Relecture finale et intégration appartiennent au coordinateur.", "Les limites scientifiques ou d’accès des sources initiales sont conservées : cette reprise de compréhension ne transforme pas un accès infructueux en lecture.", "Aucune dose de consommation, recette d’extraction ou de synthèse, ni promesse de santé ajoutée."],
+  "scientificBatchesModified": false,
+  "componentsModified": false
+}

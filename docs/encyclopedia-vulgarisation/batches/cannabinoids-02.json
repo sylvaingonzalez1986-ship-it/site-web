@@ -1,0 +1,2218 @@
+{
+  "domain": "cannabinoids",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "cb-kim-2022",
+      "title": "Profiling Cannabinoid Contents and Expression Levels of Corresponding Biosynthetic Genes in Commercial Cannabis (Cannabis sativa L.) Cultivars",
+      "author": "A. L. Kim et al.",
+      "published": "2022-11-14",
+      "organization": "Plants",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9697443/",
+      "access": "excerpt",
+      "passage": "Introduction, Figure 1 and results; numeric inconsistencies in abstract not reused.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9697443/",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction, Figure 1 and results; numeric inconsistencies in abstract not reused.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "bf-trichomes-2020",
+      "title": "Cannabis glandular trichomes alter morphology and metabolite content during flower maturation",
+      "author": "Samuel J. Livingston, Teagen D. Quilichini, Judith K. Booth et collaborateurs",
+      "organization": "The Plant Journal / PubMed",
+      "published": "Publication en ligne le 12 octobre 2019 ; janvier 2020, 101(1), p. 37–56",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+      "passage": "PubMed abstract: glandular trichomes and secretory disc cells.",
+      "access": "abstract",
+      "documentKind": "Résumé d’une étude originale de microscopie et biochimie",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: glandular trichomes and secretory disc cells.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cannabinoids-lesson-decarb2016",
+      "title": "Decarboxylation Study of Acidic Cannabinoids: A Novel Approach Using Ultra-High-Performance Supercritical Fluid Chromatography/Photodiode Array-Mass Spectrometry",
+      "author": "Mei Wang, Yan-Hong Wang, Bharathi Avula, Mohamed M. Radwan et collaborateurs",
+      "organization": "Cannabis and Cannabinoid Research / PubMed",
+      "published": "1er décembre 2016 ; 1(1):262–271",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28861498/",
+      "passage": "PubMed abstract: acidic/neutral forms and losses.",
+      "access": "abstract",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28861498/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: acidic/neutral forms and losses.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cannabinoids-lesson-aging2019",
+      "title": "The role of time and storage conditions on the composition of hashish and marijuana samples: A four-year study",
+      "author": "Luca Zamengo, Chiara Bettin, Denis Badocco, Valerio Di Marco, Giorgia Miolo et Giampietro Frison",
+      "organization": "Forensic Science International / PubMed",
+      "published": "En ligne le 8 mars 2019 ; mai 2019, 298:131–137",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30901710/",
+      "passage": "PubMed abstract: six products, four years, storage dependency.",
+      "access": "abstract",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés par indexation",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30901710/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: six products, four years, storage dependency.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cannabinoids-lesson-thca2017",
+      "title": "Tetrahydrocannabinolic acid is a potent PPARγ agonist with neuroprotective activity",
+      "author": "Xavier Nadal, Carmen del Río, Salvatore Casano, Belén Palomares et collaborateurs",
+      "organization": "British Journal of Pharmacology / PubMed",
+      "published": "En ligne le 2 novembre 2017 ; décembre 2017, 174(23):4263–4276",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5731255/",
+      "passage": "PMC abstract, experimental approach and results: PPARgamma, N2a cells, 3-NPA mouse model.",
+      "access": "excerpt",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5731255/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC abstract, experimental approach and results: PPARgamma, N2a cells, 3-NPA mouse model.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-citti-2019",
+      "title": "A novel phytocannabinoid isolated from Cannabis sativa L. with an in vivo cannabimimetic activity higher than Δ9-tetrahydrocannabinol: Δ9-Tetrahydrocannabiphorol",
+      "author": "C. Citti et al.",
+      "published": "2019-12-30",
+      "organization": "Scientific Reports",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+      "access": "excerpt",
+      "passage": "PMC introduction and identification; Results: binding affinities and mouse tetrad.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC introduction and identification; Results: binding affinities and mouse tetrad.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-dronabinol",
+      "title": "Dronabinol capsules — prescribing information",
+      "author": "DailyMed / Ascend Laboratories",
+      "published": "2026-05-06",
+      "organization": "DailyMed / National Library of Medicine",
+      "url": "https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=adb1801c-0fb5-4e16-b969-1db91230e0b9",
+      "access": "official-page",
+      "passage": "DailyMed sections 5, 12 and 14: risks, metabolism and indications.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=adb1801c-0fb5-4e16-b969-1db91230e0b9",
+          "openedAt": "2026-11-14",
+          "sections": "DailyMed sections 5, 12 and 14: risks, metabolism and indications.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "official-page"
+        }
+      ]
+    },
+    {
+      "id": "cb-epidyolex",
+      "title": "Epidyolex — European public assessment report",
+      "author": "Agence européenne des médicaments",
+      "published": "Page en vigueur consultée le 12 novembre 2026",
+      "organization": "Agence européenne des médicaments",
+      "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/epidyolex",
+      "access": "official-page",
+      "passage": "EMA overview, mechanism hypotheses, indications and risks.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.ema.europa.eu/en/medicines/human/EPAR/epidyolex",
+          "openedAt": "2026-11-14",
+          "sections": "EMA overview, mechanism hypotheses, indications and risks.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "official-page"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-receptors",
+      "title": "International Union of Pharmacology. XXVII. Classification of cannabinoid receptors",
+      "organization": "Pharmacological Reviews / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+      "verifiedAt": "2026-11-14",
+      "author": "A. C. Howlett et al.",
+      "published": "2002",
+      "passage": "PubMed abstract: G proteins, tissue distribution, 48% sequence identity.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12037135/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: G proteins, tissue distribution, 48% sequence identity.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-anandamide-1992",
+      "title": "Isolation and structure of a brain constituent that binds to the cannabinoid receptor",
+      "author": "W. A. Devane et al.",
+      "published": "1992-12-18",
+      "organization": "Science",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+      "access": "abstract",
+      "passage": "PubMed abstract: porcine brain, identification and binding.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: porcine brain, identification and binding.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-2ag-1995",
+      "title": "2-Arachidonoylglycerol: a possible endogenous cannabinoid receptor ligand in brain",
+      "author": "T. Sugiura et al.",
+      "published": "1995-10-04",
+      "organization": "Biochemical and Biophysical Research Communications",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7575630/",
+      "access": "abstract",
+      "passage": "PubMed abstract: binding assays and limitations.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/7575630/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: binding assays and limitations.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-2ag-gut-1995",
+      "title": "Identification of an endogenous 2-monoglyceride, present in canine gut, that binds to cannabinoid receptors",
+      "author": "R. Mechoulam et al.",
+      "published": "1995-06-29",
+      "organization": "Biochemical Pharmacology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7605349/",
+      "access": "abstract",
+      "passage": "PubMed abstract: canine gut, CB1/CB2, cells and mice.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/7605349/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: canine gut, CB1/CB2, cells and mice.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cannabinoids-lesson-metabolism2017",
+      "title": "Cannabinoid disposition in oral fluid after controlled smoked, vaporized, and oral cannabis administration",
+      "author": "Madeleine J. Swortwood, Matthew N. Newmeyer, Maria Andersson et collaborateurs",
+      "organization": "Drug Testing and Analysis / NIDA",
+      "published": "En ligne le 13 octobre 2016 ; juin 2017, 9(6):905–915",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5357602/",
+      "passage": "PMC abstract and introduction: oral-fluid contamination and active/inactive metabolites.",
+      "access": "excerpt",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés par indexation",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5357602/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC abstract and introduction: oral-fluid contamination and active/inactive metabolites.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-propyl-1977",
+      "title": "Cannabis. X. The Isolation and Structures of Four New Propyl Cannabinoid Acids, Tetrahydrocannabivarinic Acid, Cannabidivarinic Acid, Cannabichromevarinic Acid and Cannabigerovarinic Acid, from Thai Cannabis, ‘Meao Variant’",
+      "author": "Y. Shoyama, H. Hirano, H. Makino, N. Umekita et I. Nishioka",
+      "published": "1977-09-25",
+      "organization": "Chemical and Pharmaceutical Bulletin",
+      "url": "https://www.jstage.jst.go.jp/article/cpb1958/25/9/25_9_2306/_article/-char/en",
+      "access": "abstract",
+      "passage": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+      "limitation": "Pas d’essai pharmacologique humain.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.jstage.jst.go.jp/article/cpb1958/25/9/25_9_2306/_article/-char/en",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-propyl-1975",
+      "title": "Cannabichromevarin and Cannabigerovarin, Two New Propyl Homologues of Cannabichromene and Cannabigerol",
+      "author": "Y. Shoyama, H. Hirano, M. Oda, T. Somehara et I. Nishioka",
+      "published": "1975-08-25",
+      "organization": "Chemical and Pharmaceutical Bulletin",
+      "url": "https://www.jstage.jst.go.jp/article/cpb1958/23/8/23_8_1894/_article",
+      "access": "abstract",
+      "passage": "Résumé J-STAGE : CBCV et CBGV, homologues propyles de CBC et CBG.",
+      "limitation": "Données d’identité, pas d’efficacité.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.jstage.jst.go.jp/article/cpb1958/23/8/23_8_1894/_article",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé J-STAGE : CBCV et CBGV, homologues propyles de CBC et CBG.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé J-STAGE : CBCV et CBGV, homologues propyles de CBC et CBG.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-thcab-1975",
+      "title": "The crystal and molecular structure of delta-9-tetrahydrocannabinolic acid b",
+      "author": "E. Rosenqvist et T. Ottersen",
+      "published": "1975",
+      "organization": "Acta Chemica Scandinavica B",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1138526/",
+      "access": "abstract",
+      "passage": "Résumé PubMed : diffraction X et structure cristalline du THCA-B.",
+      "limitation": "Ne documente pas la pharmacologie ou la fréquence végétale.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/1138526/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : diffraction X et structure cristalline du THCA-B.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : diffraction X et structure cristalline du THCA-B.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-shoyama-1970",
+      "title": "Cannabis. V. Cannabigerolic Acid Monomethyl Ether and Cannabinolic Acid",
+      "author": "Y. Shoyama, T. Yamauchi et I. Nishioka",
+      "published": "1970",
+      "organization": "Chemical and Pharmaceutical Bulletin",
+      "url": "https://www.jstage.jst.go.jp/article/cpb1958/18/7/18_7_1327/_article",
+      "access": "abstract",
+      "passage": "Résumé J-STAGE : cannabinoïdes acides du matériel frais et CBNA observé dans du matériel conservé.",
+      "limitation": "PDF non récupéré ; aucune non-détection du THCA-B vérifiée.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.jstage.jst.go.jp/article/cpb1958/18/7/18_7_1327/_article",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé J-STAGE : cannabinoïdes acides du matériel frais et CBNA observé dans du matériel conservé.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé J-STAGE : cannabinoïdes acides du matériel frais et CBNA observé dans du matériel conservé.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-euda-2023",
+      "title": "Hexahydrocannabinol (HHC) and related substances",
+      "author": "I. Ujváry et al. / EMCDDA",
+      "published": "2023-04-17",
+      "organization": "EMCDDA (aujourd’hui EUDA)",
+      "url": "https://www.euda.europa.eu/system/files/documents/2023-05/emcdda-technical-report-hhc-and-related-substances.pdf",
+      "access": "excerpt",
+      "passage": "Rapport technique PDF, p.24–25 : HHC, stéréochimie, épimères, structures apparentées ; introduction sur marché des semi-synthétiques.",
+      "limitation": "Rapport de 2023 : aucune affirmation réglementaire actuelle ; pas de protocole de fabrication repris.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.euda.europa.eu/system/files/documents/2023-05/emcdda-technical-report-hhc-and-related-substances.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Rapport technique PDF, p.24–25 : HHC, stéréochimie, épimères, structures apparentées ; introduction sur marché des semi-synthétiques.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Rapport technique PDF, p.24–25 : HHC, stéréochimie, épimères, structures apparentées ; introduction sur marché des semi-synthétiques.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-h4cbd-2023",
+      "title": "Synthesis and Characterization of the Diastereomers of HHC and H4CBD",
+      "author": "A. Collins, G. Ramirez, T. Tesfatsion, K. P. Ray, S. Caudill et W. Cruces",
+      "published": "2023-03-06",
+      "organization": "Natural Product Communications",
+      "url": "https://journals.sagepub.com/doi/10.1177/1934578X231158910",
+      "access": "excerpt",
+      "passage": "Résumé, introduction et début Results and Discussions : identités hydrogénées et caractérisation RMN/HPLC/GC-MS.",
+      "limitation": "Source comporte des affirmations de sécurité et conversion gastrique CBD/THC insuffisamment étayées : non reprises. Aucun résultat clinique propre H4CBD établi ici.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://journals.sagepub.com/doi/10.1177/1934578X231158910",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé, introduction et début Results and Discussions : identités hydrogénées et caractérisation RMN/HPLC/GC-MS.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé, introduction et début Results and Discussions : identités hydrogénées et caractérisation RMN/HPLC/GC-MS.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-acetates-2022",
+      "title": "Vaping Cannabinoid Acetates Leads to Ketene Formation",
+      "author": "K. R. Munger, R. P. Jensen et R. M. Strongin",
+      "published": "2022-07-18",
+      "organization": "Chemical Research in Toxicology",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35801872/",
+      "access": "abstract",
+      "passage": "Résumé PubMed : cétène observé pour acétates de Δ8-THC, CBD et CBN ; produit commercial Δ8-THC testé.",
+      "limitation": "Ne teste pas directement HHC-O ou tous les acétates.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/35801872/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : cétène observé pour acétates de Δ8-THC, CBD et CBN ; produit commercial Δ8-THC testé.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : cétène observé pour acétates de Δ8-THC, CBD et CBN ; produit commercial Δ8-THC testé.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-cbd-structure",
+      "title": "Hashish. I. The structure of cannabidiol",
+      "organization": "Tetrahedron ; copie de l’article original",
+      "url": "https://cbdcrew.org/assets/cbd-Mechoulam-1963.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Raphael Mechoulam and Yehiel Shvo",
+      "published": "1963-12",
+      "passage": "PDF p.2073 : titre, auteurs, Institut Weizmann, structure et stéréochimie du CBD.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Copie tierce d’un article primaire ; pas de reproduction des méthodes chimiques.",
+      "reviewEvidence": [
+        {
+          "url": "https://cbdcrew.org/assets/cbd-Mechoulam-1963.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "PDF p.2073 : titre, auteurs, Institut Weizmann, structure et stéréochimie du CBD.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "PDF p.2073 : titre, auteurs, Institut Weizmann, structure et stéréochimie du CBD.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-faah",
+      "title": "Molecular characterization of an enzyme that degrades neuromodulatory fatty-acid amides",
+      "organization": "Nature / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/8900284/",
+      "verifiedAt": "2026-11-14",
+      "author": "B. F. Cravatt et al.",
+      "published": "1996-11-07",
+      "passage": "Résumé PubMed : isolement/clonage enzyme, hydrolyse anandamide vers acide arachidonique.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication",
+      "limitation": "Résumé ne nomme pas explicitement l’éthanolamine parmi les produits.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/8900284/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : isolement/clonage enzyme, hydrolyse anandamide vers acide arachidonique.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : isolement/clonage enzyme, hydrolyse anandamide vers acide arachidonique.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-magl",
+      "title": "A role for monoglyceride lipase in 2-arachidonoylglycerol inactivation",
+      "organization": "Chemistry and Physics of Lipids / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/12505697/",
+      "verifiedAt": "2026-11-14",
+      "author": "Thien P. Dinh, Tamás F. Freund and Daniele Piomelli",
+      "published": "2002-12-31",
+      "passage": "Résumé PubMed : MGL dans neurones corticaux de rat, dégradation 2-AG sans effet parallèle sur anandamide.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication",
+      "limitation": "Pas de voie exclusive dans tous les tissus.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/12505697/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : MGL dans neurones corticaux de rat, dégradation 2-AG sans effet parallèle sur anandamide.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : MGL dans neurones corticaux de rat, dégradation 2-AG sans effet parallèle sur anandamide.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-cbga",
+      "title": "Prenylation of olivetolate by a hemp transferase yields cannabigerolic acid, the precursor of tetrahydrocannabinol",
+      "organization": "FEBS Letters / PubMed",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/9607329/",
+      "verifiedAt": "2026-11-14",
+      "author": "M. Fellermeier and M. H. Zenk",
+      "published": "1998-05-08",
+      "passage": "Résumé PubMed : GOT végétale, géranylpyrophosphate et olivétolate, spécificité du substrat.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication",
+      "limitation": "Titre et résumé biochimiques, aucune application clinique.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/9607329/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PubMed : GOT végétale, géranylpyrophosphate et olivétolate, spécificité du substrat.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PubMed : GOT végétale, géranylpyrophosphate et olivétolate, spécificité du substrat.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-dagl",
+      "title": "Cloning of the first sn1-DAG lipases points to the spatial and temporal regulation of endocannabinoid signaling in the brain",
+      "organization": "Journal of Cell Biology / PubMed Central",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2173631/",
+      "verifiedAt": "2026-11-14",
+      "author": "Tiziana Bisogno et al.",
+      "published": "2003-11-10",
+      "passage": "Résumé et introduction PMC : DAGL hydrolyse les DAG vers 2-AG ; distinction localisation développement/adulte.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Étude mécanistique, aucun bénéfice thérapeutique démontré.",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2173631/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et introduction PMC : DAGL hydrolyse les DAG vers 2-AG ; distinction localisation développement/adulte.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé et introduction PMC : DAGL hydrolyse les DAG vers 2-AG ; distinction localisation développement/adulte.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-oshaughnessy",
+      "title": "On the Preparations of the Indian Hemp, or Gunjah",
+      "organization": "Project Gutenberg, transcription d’un document primaire",
+      "url": "https://www.gutenberg.org/files/67959/67959-h/67959-h.htm",
+      "verifiedAt": "2026-11-14",
+      "author": "W. B. O’Shaughnessy",
+      "published": "1843-02-04",
+      "passage": "Page de titre, attribution W. B. O’Shaughnessy et note de réimpression du Provincial Medical Journal de 1843 ; introduction distinguant expériences animales et observations cliniques.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "PMC protégé par CAPTCHA ; transcription alternative effectivement ouverte. Ne pas déduire une priorité mondiale ni reprendre recettes, posologies, généralisations coloniales et assertions médicales anciennes.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.gutenberg.org/files/67959/67959-h/67959-h.htm",
+          "openedAt": "2026-11-14",
+          "sections": "Page de titre, attribution W. B. O’Shaughnessy et note de réimpression du Provincial Medical Journal de 1843 ; introduction distinguant expériences animales et observations cliniques.",
+          "result": "Passage réellement ouvert et examiné.",
+          "supports": "Page de titre, attribution W. B. O’Shaughnessy et note de réimpression du Provincial Medical Journal de 1843 ; introduction distinguant expériences animales et observations cliniques.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-thc",
+      "title": "Isolation, Structure, and Partial Synthesis of an Active Constituent of Hashish",
+      "organization": "JACS / copie de la première page ACS",
+      "url": "https://greenearthmedicinals.com/content/Documents/Science_of_CBD/3_Gaoni1964.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Yehiel Gaoni and Raphael Mechoulam",
+      "published": "1964-04-01",
+      "passage": "Capture d’une page ouverte en PDF puis image embarquée extraite et examinée : titre, Gaoni/Mechoulam, JACS 86, 1646–1647, avril 1964 ; début de l’article, attribution de la structure et séparation du cannabinol.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Une première page basse résolution, pas l’article entier. L’affiliation du laboratoire ne figure pas lisiblement sur cette page ; aucune recette ni condition de fabrication reprise.",
+      "reviewEvidence": [
+        {
+          "url": "https://greenearthmedicinals.com/content/Documents/Science_of_CBD/3_Gaoni1964.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Capture d’une page ouverte en PDF puis image embarquée extraite et examinée : titre, Gaoni/Mechoulam, JACS 86, 1646–1647, avril 1964 ; début de l’article, attribution de la structure et séparation du cannabinol.",
+          "result": "Passage réellement ouvert et examiné.",
+          "supports": "Capture d’une page ouverte en PDF puis image embarquée extraite et examinée : titre, Gaoni/Mechoulam, JACS 86, 1646–1647, avril 1964 ; début de l’article, attribution de la structure et séparation du cannabinol.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-cb1-catalogue",
+      "title": "Structure of a cannabinoid receptor and functional expression of the cloned cDNA",
+      "organization": "Japan Science and Technology Agency, J-GLOBAL",
+      "author": "Lisa A. Matsuda, Stephen J. Lolait, Michael J. Brownstein, Alice C. Young et Tom I. Bonner",
+      "published": "1990",
+      "documentKind": "Notice bibliographique",
+      "url": "https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=200902017692488948",
+      "passage": "Notice : Matsuda, Lolait, Brownstein, Young, Bonner ; titre, Nature 346, 561–564, 9 août 1990 ; affiliation NIMH.",
+      "access": "catalogue",
+      "verifiedAt": "2026-11-14",
+      "limitation": "Notice bibliographique lue ; résumé expérimental non visible. Pour les dates CB1/CB2 et les distributions générales, recoupement avec le résumé Howlett effectivement lu.",
+      "reviewEvidence": [
+        {
+          "url": "https://jglobal.jst.go.jp/en/detail?JGLOBAL_ID=200902017692488948",
+          "openedAt": "2026-11-14",
+          "sections": "Notice : Matsuda, Lolait, Brownstein, Young, Bonner ; titre, Nature 346, 561–564, 9 août 1990 ; affiliation NIMH.",
+          "result": "Passage réellement ouvert et examiné.",
+          "supports": "Notice : Matsuda, Lolait, Brownstein, Young, Bonner ; titre, Nature 346, 561–564, 9 août 1990 ; affiliation NIMH.",
+          "access": "catalogue"
+        }
+      ]
+    },
+    {
+      "id": "qh-sci-cb2",
+      "title": "Molecular characterization of a peripheral receptor for cannabinoids",
+      "author": "Sean Munro, K. L. Thomas et M. Abu-Shaar",
+      "organization": "Nature / PubMed, NCBI EUtils",
+      "published": "1993-09-02",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7689702/",
+      "verifiedAt": "2026-11-14",
+      "passage": "Résumé original, PMID 7689702 : dernier passage décrivant le clonage et les macrophages de la zone marginale splénique.",
+      "access": "abstract",
+      "documentKind": "Résumé de publication originale",
+      "limitation": "Réponse XML EUtils effectivement lue, pas article intégral ni page PubMed correctement rendue. Les distributions historiques ne sont pas présentées comme une cartographie actuelle exhaustive.",
+      "reviewEvidence": [
+        {
+          "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=1138526,42575778,7689702,1470919&retmode=xml",
+          "openedAt": "2026-11-14",
+          "method": "urllib.request via exec, récupération HTTP réseau public, XML parsé avec ElementTree puis AbstractText affiché intégralement et lu.",
+          "sections": "PubmedArticle PMID 7689702, ArticleTitle, ArticleId et AbstractText complet.",
+          "result": "Clonage et localisation splénique initiale confirmés dans le résumé original.",
+          "supports": "Publication Munro/Thomas/Abu-Shaar en 1993 ; macrophages de la zone marginale de la rate dans les observations initiales.",
+          "access": "abstract"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "ref-cannabinoides-mineurs",
+      "questions": [
+        "Lequel de ces composés du chanvre est un cannabinoïde ?",
+        "La chaîne latérale des cannabinoïdes variniques, comme le THCV, comporte…"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Texte intégral et quiz relus ; terme minoritaire contextuel conservé.",
+        "Familles propyles et heptyles confirmées ; affinité THCP séparée de puissance humaine."
+      ],
+      "patch": {
+        "lead": "Le chanvre ne contient pas seulement du THC et du CBD. D’autres cannabinoïdes sont dits minoritaires parce qu’ils sont souvent moins abondants ou moins étudiés. Ce mot décrit cette place dans les échantillons ou les connaissances ; il ne garantit ni une structure commune ni un même effet.",
+        "sections": [
+          {
+            "id": "ref-cannabinoides-mineurs-cbg-cbc",
+            "title": "Des molécules apparentées, pas interchangeables",
+            "paragraphs": [
+              "Le cannabigérol, ou CBG, et le cannabichromène, ou CBC, sont deux molécules différentes. Leurs formes acides, CBGA et CBCA, conservent une petite partie appelée carboxyle. Dans la plante, le CBGA sert de point de départ à plusieurs enzymes, des outils biologiques qui réalisent des réactions ; le CBCA est notamment produit par la CBCA synthase. Ces relations de fabrication ne rendent pas les effets de chaque forme identiques."
+            ],
+            "sourceIds": [
+              "cb-kim-2022"
+            ]
+          },
+          {
+            "id": "ref-cannabinoides-mineurs-variniques",
+            "title": "Les chaînes plus courtes",
+            "paragraphs": [
+              "Une chaîne latérale est une branche d’atomes attachée à la partie centrale d’une molécule. Les cannabinoïdes variniques possèdent une chaîne propyle, de trois carbones, plutôt que la chaîne pentyle de cinq carbones de leurs parents courants. On rencontre ainsi THCV, CBDV, CBGV et CBCV, ainsi que leurs formes acides. En 1977, Shoyama et ses collègues isolent quatre de ces acides dans le matériel thaïlandais étudié. Ce résultat identifie des molécules ; il ne leur attribue pas un effet clinique commun."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977",
+              "cb-propyl-1975"
+            ]
+          },
+          {
+            "id": "ref-cannabinoides-mineurs-chaines",
+            "title": "Les chaînes plus longues",
+            "paragraphs": [
+              "Le THCP et le CBDP ont au contraire une chaîne heptyle, à sept carbones. Ils sont identifiés dans un matériel végétal étudié en 2019. Des tests sur le THCP mesurent la liaison à des récepteurs humains utilisés en laboratoire, puis certaines réponses chez des souris. Une protéine humaine dans un test ne représente pas une personne : ces résultats ne donnent pas un multiplicateur de puissance clinique et ne décrivent pas les produits vendus sous ces noms."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-kim-2022",
+          "cb-propyl-1977",
+          "cb-propyl-1975",
+          "cb-citti-2019"
+        ],
+        "relatedArticleIds": [
+          "ref-biosynthese-cannabinoides",
+          "ref-phytocannabinoides",
+          "ref-cannabinoides-transformes"
+        ],
+        "glossaryIds": [
+          "cannabinoids-term-varinic",
+          "cannabinoids-term-homologue",
+          "cannabinoids-term-precursor"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-biosynthesis-2"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-reading-studies-1"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-reading-studies-2"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Compter la branche latérale",
+          "nodes": [
+            {
+              "label": "Trois carbones",
+              "detail": "Familles variniques : THCV, CBDV, CBGV, CBCV."
+            },
+            {
+              "label": "Cinq carbones",
+              "detail": "Parents courants : THC, CBD, CBG, CBC."
+            },
+            {
+              "label": "Sept carbones",
+              "detail": "THCP et CBDP."
+            }
+          ],
+          "caption": "La longueur décrit la structure ; elle ne classe pas les effets humains.",
+          "sourceIds": [
+            "cb-propyl-1977",
+            "cb-propyl-1975",
+            "cb-citti-2019"
+          ],
+          "afterSectionId": "ref-cannabinoides-mineurs-chaines"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-kim-2022",
+        "cb-propyl-1977",
+        "cb-propyl-1975",
+        "cb-citti-2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-cannabinoide",
+        "hemp-evidence-variniques"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que signifie le mot minoritaire quand on compare des cannabinoïdes ?",
+        "explainedTerms": [
+          "minoritaire",
+          "carboxyle",
+          "enzyme",
+          "chaîne latérale",
+          "propyle",
+          "pentyle",
+          "heptyle"
+        ],
+        "example": "Trois, cinq ou sept carbones sur une branche distinguent des molécules, pas des doses.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Une faible abondance prouve-t-elle un effet faible ?",
+          "Un test sur récepteur humain est-il un essai chez des humains ?"
+        ],
+        "quizIdsReviewed": [
+          "hemp-evidence-cannabinoide",
+          "hemp-evidence-variniques"
+        ]
+      }
+    },
+    {
+      "id": "ref-cannabinoides-transformes",
+      "questions": [
+        "Pourquoi « issu du chanvre » ne décrit-il pas tout le produit ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Distinction extraction/hémisynthèse/synthèse confirmée.",
+        "Cétène limité aux acétates effectivement testés ; aucun protocole de synthèse repris.",
+        "La source H4CBD ne permet pas de certifier la sécurité clinique."
+      ],
+      "patch": {
+        "lead": "Un produit dit « issu du chanvre » peut avoir subi des réactions chimiques. Pour comprendre son nom, il faut distinguer la molécule présente, son mode de fabrication et le mélange réellement vendu.",
+        "sections": [
+          {
+            "id": "ref-cannabinoides-transformes-origine",
+            "title": "Séparer ou transformer",
+            "paragraphs": [
+              "Une extraction sépare ou transfère des constituants d’un matériau sans avoir pour but de changer leurs molécules. L’hémisynthèse, aussi appelée semi-synthèse, transforme chimiquement une molécule de départ naturelle. Une synthèse peut construire une structure par d’autres réactions. Dire qu’une substance existe aussi dans une plante ne raconte donc pas le parcours de fabrication de chaque produit."
+            ],
+            "sourceIds": [
+              "cb-euda-2023"
+            ]
+          },
+          {
+            "id": "ref-cannabinoides-transformes-hydrogenes",
+            "title": "Ajouter de l’hydrogène",
+            "paragraphs": [
+              "L’hydrogénation ajoute de l’hydrogène et modifie certaines liaisons. Le HHC est ainsi un analogue du THC, et le H4CBD un analogue du CBD. Le HHC peut contenir les formes 9R et 9S, des épimères : les atomes sont reliés dans le même ordre, mais une partie est orientée autrement dans l’espace. Leurs proportions peuvent varier. Les méthodes d’analyse permettent de reconnaître ces structures ; cette identification ne prouve pas leur innocuité."
+            ],
+            "sourceIds": [
+              "cb-euda-2023",
+              "cb-h4cbd-2023"
+            ]
+          },
+          {
+            "id": "ref-cannabinoides-transformes-acetates",
+            "title": "Une autre modification : les acétates",
+            "paragraphs": [
+              "Un groupe acétyle est un petit morceau de molécule contenant deux carbones et un oxygène. L’acétylation consiste ici à l’attacher sur une fonction oxygénée de la molécule de départ. Des dérivés comme HHC-O portent cette modification. Dans des expériences sur des acétates de Δ8-THC, de CBN et de CBD, des chercheurs détectent du cétène, un composé toxique, dans les matières récupérées après refroidissement des émissions. Ce danger chimique concerne les composés et les conditions testés ; il ne mesure pas le risque individuel de tous les produits ou de tous les acétates."
+            ],
+            "sourceIds": [
+              "cb-euda-2023",
+              "cb-acetates-2022"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-euda-2023",
+          "cb-h4cbd-2023",
+          "cb-acetates-2022"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides",
+          "ref-cannabinoides-mineurs",
+          "ref-formes-acides-neutres"
+        ],
+        "glossaryIds": [
+          "cannabinoids-term-hemisynthesis",
+          "cannabinoids-term-synthesis",
+          "cannabinoids-term-isomer"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-origins-2"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-aging-2"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-emerging-products-1"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "cannabinoids-emerging-products-2"
+          },
+          {
+            "courseId": "evidence",
+            "passageId": "evidence-4"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois informations sur un produit",
+          "nodes": [
+            {
+              "label": "Quelle molécule ?",
+              "detail": "La structure et les formes spatiales présentes."
+            },
+            {
+              "label": "Quelle fabrication ?",
+              "detail": "Séparation, transformation d’un départ naturel ou autre synthèse."
+            },
+            {
+              "label": "Quel mélange ?",
+              "detail": "Les quantités et les autres constituants du produit fini."
+            }
+          ],
+          "caption": "Une réponse sur la provenance ne remplace pas l’analyse de la composition.",
+          "sourceIds": [
+            "cb-euda-2023",
+            "cb-h4cbd-2023"
+          ],
+          "afterSectionId": "ref-cannabinoides-transformes-hydrogenes"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-euda-2023",
+        "cb-h4cbd-2023",
+        "cb-acetates-2022"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi « issu du chanvre » ne décrit-il pas tout le produit ?",
+        "explainedTerms": [
+          "extraction",
+          "hémisynthèse",
+          "synthèse",
+          "hydrogénation",
+          "épimère",
+          "acétylation",
+          "cétène"
+        ],
+        "example": "Modifier une liaison et changer la recette d’un mélange sont deux opérations différentes.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Une extraction et une hémisynthèse font-elles la même chose ?",
+          "Reconnaître une structure prouve-t-il sa sécurité ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "ref-decouvertes-cannabinoides",
+      "questions": [
+        "Quel médecin a publié en 1843 un article sur les préparations de chanvre indien et le tétanos ?",
+        "Quel cannabinoïde Gaoni et Mechoulam distinguent-ils du THC dans la première page de leur publication de 1964 ?",
+        "Quel composé actif du haschisch Gaoni et Mechoulam ont-ils isolé et caractérisé en 1964 ?",
+        "Quel récepteur cannabinoïde a été cloné en premier, en 1990 ?",
+        "Quel récepteur cannabinoïde a été cloné en 1993, après CB1 ?",
+        "Quel nom porte le ligand endogène du récepteur cannabinoïde décrit par Devane et al. en 1992 ?",
+        "Que signifie l’abréviation 2-AG en biochimie cannabinoïde ?",
+        "Quelle enzyme dégrade l’anandamide en acide arachidonique et éthanolamine ?",
+        "À quelle petite molécule la partie arachidonoyle est-elle liée dans l’anandamide ?",
+        "Dans quel ensemble de cellules CB1 est-il principalement présent selon la classification Howlett de 2002 ?",
+        "Dans quel pays se situe l’Institut Weizmann cité dans l’article de Mechoulam et Shvo sur le CBD en 1963 ?",
+        "En quelle année Sugiura et ses collègues ont-ils publié l’étude initiale sur le 2-AG comme ligand possible ?",
+        "Quel type de lipide la DAG lipase transforme-t-elle en 2-AG ?",
+        "Quelle équipe a publié le clonage du récepteur CB1 dans Nature en 1990 ?",
+        "Quel type de cellules exprime principalement CB2 selon la classification Howlett de 2002 ?",
+        "Quel est le nom chimique de l’anandamide ?",
+        "Quelle proportion d’identité de séquence protéique les récepteurs cannabinoïdes CB1 et CB2 partagent-ils approximativement ?",
+        "Dans quel tissu Devane et collègues ont-ils isolé l’anandamide en 1992 ?",
+        "À quelle classe chimique appartient le 2-AG ?",
+        "Quelle avancée sur le CBD Mechoulam et Shvo ont-ils publiée en 1963 ?",
+        "Quel aspect Gaoni et Mechoulam ont-ils étudié dans leur article de 1964 sur le THC ?",
+        "Quel cannabinoïde précurseur se forme à partir d’acide olivétolique et de pyrophosphate de géranyle ?",
+        "Quelle enzyme Dinh et ses collègues ont-ils étudiée comme voie d’inactivation du 2-AG ?",
+        "Quelle chronologie de clonage CB1/CB2 est confirmée par la classification Howlett de 2002 ?",
+        "Quelle enzyme hydrolyse le plus directement l’anandamide dans les travaux de Cravatt et al. ?",
+        "Quel groupe fonctionnel caractérise le nom chimique de l’anandamide ?",
+        "Quelle comparaison résume les premières descriptions de CB1 et CB2 ?",
+        "L’enzyme végétale GOT, qui forme le CBGA, appartient à quelle classe fonctionnelle ?",
+        "Quels sont les deux principaux récepteurs cannabinoïdes auxquels le 2-AG se lie ?",
+        "Dans quel institut travaillaient Mechoulam et Shvo lors de leur publication sur la structure du CBD en 1963 ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "L’article initial ne rendait pas apprenables les questions sur FAAH/MAGL/DAGL, CBGA, identité de séquence et institut du CBD : enrichissement substantiel.",
+        "Chronologie récepteurs 1990/1993 confirmée par Howlett ; pages primaires correspondantes non lisibles.",
+        "Les questions historiques dont les documents restent bloqués sont conservées pour contrelecture, pas déclarées vérifiées.",
+        "Tous les quiz remappés aux références effectivement lues ; questions restreintes ou remplacées lorsque la preuve accessible ne soutenait pas le détail demandé. Ajout de trois documents réellement ouverts : transcription O’Shaughnessy, première page Gaoni et notice bibliographique Matsuda."
+      ],
+      "patch": {
+        "lead": "La connaissance du cannabis s’est construite par étapes : décrire des préparations, identifier leurs molécules, puis comprendre comment des cellules reçoivent leurs signaux. Chaque découverte répond à une question différente.",
+        "sections": [
+          {
+            "id": "ref-decouvertes-cannabinoides-1",
+            "title": "Reconnaître les substances du mélange",
+            "paragraphs": [
+              "En 1843, W. B. O’Shaughnessy publie sur les préparations de chanvre indien, notamment dans le contexte du tétanos. Il distingue expériences animales et observations de patients. Ces observations historiques ne sont pas des essais contrôlés modernes et ne prouvent pas une première utilisation mondiale. Les travaux de Wood, Spivey et Easterfield participent aussi à l’histoire du cannabinol ; l’isolement d’une substance et l’attribution exacte de sa structure sont deux étapes à distinguer.",
+              "En 1963, Mechoulam et Shvo publient sur la structure du cannabidiol, ou CBD, et sur sa forme dans l’espace. Leur laboratoire est le Daniel Sieff Research Institute de l’Institut Weizmann, à Rehovot en Israël. En avril 1964, Gaoni et Mechoulam publient dans le JACS sur l’isolement, la structure et la synthèse partielle du constituant aujourd’hui appelé Δ9-THC ; ils distinguent aussi le cannabinol. Isoler signifie séparer une substance du mélange, déterminer sa structure signifie comprendre l’assemblage de ses atomes : ce n’est pas encore mesurer un effet thérapeutique."
+            ],
+            "sourceIds": [
+              "qh-sci-oshaughnessy",
+              "qh-sci-cbd-structure",
+              "qh-sci-thc"
+            ]
+          },
+          {
+            "id": "ref-decouvertes-cannabinoides-2",
+            "title": "Trouver les protéines qui reçoivent le signal",
+            "paragraphs": [
+              "Pour comprendre l’action d’une molécule, il faut aussi trouver ce qui la reçoit dans les cellules. Un récepteur est une protéine qui reconnaît un signal et participe à une réponse. L’équipe de Matsuda, Lolait, Brownstein, Young et Bonner publie le clonage du récepteur CB1 dans Nature le 9 août 1990. Ici, cloner signifie obtenir et étudier l’information génétique permettant de produire la protéine. CB2 est cloné en 1993 ; des travaux de liaison avaient précédé ces clonages.",
+              "La classification de Howlett indique environ 48 % d’identité de séquence entre CB1 et CB2 : près de la moitié des positions de leur chaîne d’acides aminés, les unités constituant les protéines, sont identiques. Cela ne signifie pas qu’ils ont la moitié du même effet. CB1 est surtout présent dans des neurones, CB2 particulièrement étudié dans les cellules immunitaires, sans distribution exclusive. Les deux utilisent des protéines relais, dites protéines G."
+            ],
+            "sourceIds": [
+              "qh-sci-receptors",
+              "qh-sci-cb1-catalogue",
+              "qh-sci-cb2"
+            ]
+          },
+          {
+            "id": "ref-decouvertes-cannabinoides-3",
+            "title": "Trouver les messagers produits par le corps",
+            "paragraphs": [
+              "Les récepteurs ne servent pas seulement à recevoir une substance venue d’une plante. L’organisme fabrique ses propres messagers, les endocannabinoïdes. En 1992, Devane et ses collègues identifient l’anandamide, aussi appelée AEA, dans le cerveau porcin. En 1995, des travaux caractérisent le 2-AG dans des tissus animaux, notamment le cerveau et l’intestin canin. Le 2-AG peut se lier aux deux récepteurs CB1 et CB2.",
+              "Ces découvertes expliquent pourquoi des récepteurs cannabinoïdes existent dans le corps sans consommation de cannabis. Elles ne signifient pas que l’organisme fabrique du THC : les deux messagers ont d’autres assemblages chimiques."
+            ],
+            "sourceIds": [
+              "cb-anandamide-1992",
+              "cb-2ag-1995",
+              "cb-2ag-gut-1995"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "L’anandamide relie une longue partie issue de l’acide gras arachidonique à une petite partie contenant notamment de l’azote, l’éthanolamine. La liaison entre les deux est appelée amide. Le nom complet N-arachidonoyléthanolamide décrit cet assemblage.",
+                "Dans le 2-arachidonoylglycérol, ou 2-AG, la petite partie est le glycérol : une ossature de trois carbones portant des groupes contenant de l’oxygène. Une seule partie issue d’un acide gras y est attachée par une liaison ester. Le mot monoacylglycérol signifie cet assemblage avec une seule partie grasse."
+              ],
+              "sourceIds": [
+                "cb-anandamide-1992",
+                "cb-2ag-1995",
+                "cb-2ag-gut-1995"
+              ]
+            }
+          },
+          {
+            "id": "ref-decouvertes-cannabinoides-arret",
+            "title": "Comment arrêter un message",
+            "paragraphs": [
+              "Un messager ne doit pas rester actif indéfiniment. Une façon d’arrêter son action consiste à couper la molécule avec une enzyme, un outil biologique. En 1996, Cravatt et ses collègues caractérisent FAAH : cette enzyme coupe l’anandamide et libère de l’acide arachidonique et de l’éthanolamine. La coupure fait intervenir de l’eau ; on l’appelle hydrolyse.",
+              "Dinh et ses collègues étudient MGL, aussi appelée MAGL, pour l’inactivation du 2-AG. Les deux enzymes illustrent une même fonction générale, arrêter un message, mais ne coupent pas nécessairement le même messager."
+            ],
+            "sourceIds": [
+              "qh-sci-faah",
+              "qh-sci-magl"
+            ],
+            "details": {
+              "title": "Ce qui a été mesuré dans les neurones",
+              "paragraphs": [
+                "Dans des neurones de rat, augmenter la présence de MGL augmente la dégradation du 2-AG, sans le même effet sur l’anandamide. Cela compare deux molécules dans un système précis ; ce n’est pas une démonstration qu’une seule enzyme règle tous les tissus."
+              ],
+              "sourceIds": [
+                "qh-sci-magl"
+              ]
+            }
+          },
+          {
+            "id": "ref-decouvertes-cannabinoides-fabrication",
+            "title": "Comment fabriquer le messager",
+            "paragraphs": [
+              "En 2003, Bisogno et ses collègues caractérisent des DAG lipases. Leur rôle se comprend en sens inverse de l’arrêt du signal : elles permettent de former du 2-AG à partir d’une molécule plus grande, un diacylglycérol. Celle-ci possède deux parties issues d’acides gras ; l’enzyme en coupe une pour laisser le messager à une seule partie."
+            ],
+            "sourceIds": [
+              "qh-sci-dagl"
+            ]
+          },
+          {
+            "id": "ref-decouvertes-cannabinoides-plante",
+            "title": "Dans la plante, d’autres outils de fabrication",
+            "paragraphs": [
+              "La fabrication des cannabinoïdes végétaux est une autre histoire que celle des messagers animaux. Dans la plante, une enzyme appelée GOT attache une partie géranyle, une chaîne carbonée, à l’olivétolate pour former le CBGA. On classe cet outil parmi les prényltransférases : ce nom désigne ici les enzymes qui transfèrent ce type de morceau. Le CBGA peut ensuite alimenter plusieurs branches végétales."
+            ],
+            "sourceIds": [
+              "qh-sci-cbga"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "qh-sci-cbd-structure",
+          "qh-sci-receptors",
+          "cb-anandamide-1992",
+          "cb-2ag-1995",
+          "cb-2ag-gut-1995",
+          "qh-sci-faah",
+          "qh-sci-magl",
+          "qh-sci-cbga",
+          "qh-sci-dagl",
+          "qh-sci-oshaughnessy",
+          "qh-sci-thc",
+          "qh-sci-cb1-catalogue",
+          "qh-sci-cb2"
+        ],
+        "relatedArticleIds": [
+          "ref-histoire-politiques",
+          "ref-aromes-chanvre"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [],
+        "diagram": {
+          "kind": "timeline",
+          "title": "Des questions qui se complètent",
+          "nodes": [
+            {
+              "label": "1963–1964",
+              "detail": "Comprendre les structures du CBD et du THC."
+            },
+            {
+              "label": "1990–1993",
+              "detail": "Cloner CB1 puis CB2, les protéines recevant des signaux."
+            },
+            {
+              "label": "1992–1995",
+              "detail": "Identifier l’AEA puis le 2-AG, messagers de l’organisme."
+            },
+            {
+              "label": "1996–2003",
+              "detail": "Caractériser des enzymes qui coupent ou forment ces messagers."
+            }
+          ],
+          "caption": "L’ordre des travaux se chevauche : la découverte du système ne tient pas à une date unique.",
+          "sourceIds": [
+            "qh-sci-cbd-structure",
+            "qh-sci-receptors",
+            "cb-anandamide-1992",
+            "cb-2ag-1995",
+            "qh-sci-faah",
+            "qh-sci-dagl"
+          ],
+          "afterSectionId": "ref-decouvertes-cannabinoides-fabrication"
+        }
+      },
+      "sourceIdsReviewed": [
+        "qh-sci-cbd-structure",
+        "qh-sci-receptors",
+        "cb-anandamide-1992",
+        "cb-2ag-1995",
+        "cb-2ag-gut-1995",
+        "qh-sci-faah",
+        "qh-sci-magl",
+        "qh-sci-cbga",
+        "qh-sci-dagl",
+        "qh-sci-oshaughnessy",
+        "qh-sci-thc",
+        "qh-sci-cb1-catalogue",
+        "qh-sci-cb2"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [
+        "hemp-hs-sci-osaughnessy",
+        "hemp-hs-sci-cbd-1940",
+        "hemp-hs-sci-thc-1964",
+        "hemp-hs-sci-cb1",
+        "hemp-hs-sci-cb2",
+        "hemp-hs-sci-anandamide",
+        "hemp-hs-sci-2ag",
+        "hemp-hs-sci-receptors-type",
+        "hemp-hs-sci-anandamide-name",
+        "hemp-hs-sci-cb1-brain",
+        "hemp-hs-sci-mechoulam-country",
+        "hemp-hs-sci-2ag-1995",
+        "hemp-hs-sci-cbd-not-thc",
+        "hemp-hs-sci-cb1-clone",
+        "hemp-hs-sci-cb2-tissue",
+        "hemp-hs-sci-anandamide-molecule",
+        "hemp-hs-sci-cb1-cb2-sequence",
+        "hemp-hs-sci-anandamide-tissue",
+        "hemp-hs-sci-2ag-lipid",
+        "hemp-hs-sci-cbd-structure-date",
+        "hemp-hs-sci-thc-stereochemistry",
+        "hemp-hs-sci-cb-receptor-gprotein",
+        "hemp-hs-sci-cbd-workers",
+        "hemp-hs-sci-cb1-discovery-v-clone",
+        "hemp-hs-sci-2ag-early-study-limit",
+        "hemp-hs-sci-anandamide-precursor",
+        "hemp-hs-sci-cb-receptors-contrast",
+        "hemp-hs-sci-2ag-study-assay",
+        "hemp-hs-sci-2ag-cb1cb2",
+        "hemp-hs-sci-cbd-mn-vs-indian"
+      ],
+      "status": "blocked",
+      "blockers": [
+        "Originaux de Wood, Spivey et Easterfield et jalon de liaison avant le clonage : documents primaires toujours inaccessibles. Le sous-point CB2 est désormais confirmé par le résumé original de Munro (1993). Aucune question du quiz ne dépend des précisions historiques non relues.",
+        "Étymologie historique de l’anandamide non étayée dans les passages originaux accessibles ; question remplacée par la liaison amide documentée."
+      ],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi découvrir une molécule, un récepteur et un messager sont-ils trois progrès différents ?",
+        "explainedTerms": [
+          "isolement",
+          "structure",
+          "synthèse",
+          "récepteur",
+          "clonage",
+          "séquence",
+          "endocannabinoïde",
+          "amide",
+          "ester",
+          "hydrolyse",
+          "DAG lipase",
+          "prényltransférase"
+        ],
+        "example": "Trouver une molécule donne son identité ; trouver un récepteur explique une partie de la réception du signal.",
+        "movedDetails": [
+          "ref-decouvertes-cannabinoides-3",
+          "ref-decouvertes-cannabinoides-arret"
+        ],
+        "comprehensionChecks": [
+          "Le clonage de CB1 signifie-t-il qu’on a cloné une plante ?",
+          "FAAH et MAGL coupent-elles nécessairement le même messager ?"
+        ],
+        "quizIdsReviewed": [
+          "hemp-hs-sci-osaughnessy",
+          "hemp-hs-sci-cbd-1940",
+          "hemp-hs-sci-thc-1964",
+          "hemp-hs-sci-cb1",
+          "hemp-hs-sci-cb2",
+          "hemp-hs-sci-anandamide",
+          "hemp-hs-sci-2ag",
+          "hemp-hs-sci-receptors-type",
+          "hemp-hs-sci-anandamide-name",
+          "hemp-hs-sci-cb1-brain",
+          "hemp-hs-sci-mechoulam-country",
+          "hemp-hs-sci-2ag-1995",
+          "hemp-hs-sci-cbd-not-thc",
+          "hemp-hs-sci-cb1-clone",
+          "hemp-hs-sci-cb2-tissue",
+          "hemp-hs-sci-anandamide-molecule",
+          "hemp-hs-sci-cb1-cb2-sequence",
+          "hemp-hs-sci-anandamide-tissue",
+          "hemp-hs-sci-2ag-lipid",
+          "hemp-hs-sci-cbd-structure-date",
+          "hemp-hs-sci-thc-stereochemistry",
+          "hemp-hs-sci-cb-receptor-gprotein",
+          "hemp-hs-sci-cbd-workers",
+          "hemp-hs-sci-cb1-discovery-v-clone",
+          "hemp-hs-sci-2ag-early-study-limit",
+          "hemp-hs-sci-anandamide-precursor",
+          "hemp-hs-sci-cb-receptors-contrast",
+          "hemp-hs-sci-2ag-study-assay",
+          "hemp-hs-sci-2ag-cb1cb2",
+          "hemp-hs-sci-cbd-mn-vs-indian"
+        ]
+      }
+    },
+    {
+      "id": "record-cannabinoid-delta9-thc",
+      "questions": [
+        "Pourquoi le THC mesuré dans un produit ne raconte-t-il pas toute l’exposition ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous champs relus ; identité, origine et risques conservés après vérification.",
+        "Mécanisme rendu concret ; indications limitées au médicament et populations de la notice.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Le tétrahydrocannabinol, ou THC, peut modifier la perception et la coordination. Sa quantité dans un produit ne suffit pas à expliquer tous ses effets, car le corps le transforme aussi.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "Une chaîne latérale est une branche d’atomes attachée à la partie centrale de la molécule. Dans Δ9-THC, « delta-9 » indique la position d’une double liaison entre atomes, et non un dosage. La molécule porte aussi une chaîne latérale de cinq carbones, dite pentyle. Le dronabinol correspond à une substance pharmaceutique définie : un produit simplement étiqueté THC n’en garantit pas la qualité.",
+              "Le THC est mesuré dans des préparations de cannabis. Il peut aussi apparaître quand l’acide THCA perd un groupe d’atomes sous forme de CO₂, le dioxyde de carbone : c’est la décarboxylation. Une mesure faite après cette transformation ne représente donc pas seulement le THC déjà présent dans la plante."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cb-dronabinol"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Comment l’expérience éclaire son action",
+            "paragraphs": [
+              "Le THC agit sur des récepteurs cannabinoïdes, des protéines qui reçoivent un signal et influencent la réponse de la cellule. Le foie le transforme notamment en 11-hydroxy-THC, qui reste actif. Il faut donc considérer la molécule de départ et ses produits de transformation pour comprendre l’exposition."
+            ],
+            "sourceIds": [
+              "cb-dronabinol",
+              "qh-sci-receptors"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Un médicament défini, des risques connus",
+            "paragraphs": [
+              "La notice américaine du dronabinol décrit deux situations précises : une perte d’appétit avec amaigrissement liée au sida, et certaines nausées ou certains vomissements dus à une chimiothérapie malgré des traitements conventionnels. Ces indications portent sur le médicament étudié, pas sur tous les produits de cannabis.",
+              "La notice signale des troubles cognitifs et moteurs, c’est-à-dire des difficultés touchant notamment la pensée et les mouvements, ainsi que des effets psychiatriques et cardiovasculaires. La voie d’exposition et les autres substances présentes peuvent modifier le risque."
+            ],
+            "sourceIds": [
+              "cb-dronabinol"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-dronabinol",
+          "cb-kim-2022",
+          "qh-sci-receptors"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-delta9-thc"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi le THC mesuré dans un produit ne raconte-t-il pas toute l’exposition ?",
+          "nodes": [
+            {
+              "label": "Dans la préparation",
+              "detail": "THC présent et THC éventuellement formé depuis le THCA."
+            },
+            {
+              "label": "Dans le corps",
+              "detail": "Formation notamment de 11-hydroxy-THC actif."
+            },
+            {
+              "label": "Dans les cellules",
+              "detail": "Des récepteurs contribuent à modifier les signaux."
+            }
+          ],
+          "caption": "Le foie peut former un produit encore actif à partir du THC.",
+          "sourceIds": [
+            "cb-kim-2022",
+            "cb-dronabinol"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-dronabinol",
+        "cb-kim-2022",
+        "qh-sci-receptors"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi le THC mesuré dans un produit ne raconte-t-il pas toute l’exposition ?",
+        "explainedTerms": [
+          "double liaison",
+          "pentyle",
+          "décarboxylation",
+          "récepteur",
+          "métabolite"
+        ],
+        "example": "Le foie peut former un produit encore actif à partir du THC.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-delta9-thca-a",
+      "questions": [
+        "Pourquoi THCA-A et THC ne sont-ils pas simplement deux noms du même composé ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "THCA-A distinct de THCA-B et THC-COOH confirmé.",
+        "Phrase générique sur récepteurs remplacée par résultat PPARγ, cellules et modèle murin explicités.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "L’acide tétrahydrocannabinolique A, ou THCA-A, est une molécule fabriquée par le chanvre. Il peut se transformer en THC en perdant une petite partie de sa structure.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Quelle structure, quelle présence documentée ?",
+            "paragraphs": [
+              "Le THCA-A conserve un groupe carboxyle, une partie acide faite de carbone, d’oxygène et d’hydrogène. Le THC neutre a perdu cette partie. THCA-A et THCA-B diffèrent par l’emplacement du carboxyle ; le THC-COOH, formé dans le corps, est encore une autre molécule. Une chaîne pentyle signifie ici une chaîne de cinq carbones.",
+              "Dans les voies végétales étudiées, une enzyme, outil biologique facilitant une réaction, forme le THCA à partir du CBGA. Sa proportion dans le matériel végétal varie avec l’échantillon et sa conservation."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cb-thcab-1975"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Comment l’expérience éclaire son action",
+            "paragraphs": [
+              "Deux questions se distinguent. Dans la plante, le CBGA devient du THCA ; ensuite, la perte de CO₂ peut donner du THC. En pharmacologie, Nadal étudie PPARγ, une protéine située dans la cellule dont l’activation peut modifier l’activité de gènes. Les expériences concernent notamment des cellules et des souris exposées au 3-NPA, une toxine perturbant la production d’énergie cellulaire. Ce modèle ne démontre pas un traitement humain."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cannabinoids-lesson-decarb2016",
+              "cannabinoids-lesson-thca2017"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Ce que le modèle animal laisse encore ouvert",
+            "paragraphs": [
+              "Les cellules et les souris exposées à une toxine servent ici à étudier une piste biologique ; aucun résultat présenté ne démontre un bénéfice chez des patients. Un produit annoncé THCA peut aussi contenir du THC ou en former. Sa forme acide ne garantit donc pas une absence d’intoxication. Les effets prolongés et ceux des mélanges restent à préciser."
+            ],
+            "sourceIds": [
+              "cannabinoids-lesson-thca2017",
+              "cannabinoids-lesson-decarb2016"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-kim-2022",
+          "cannabinoids-lesson-decarb2016",
+          "cannabinoids-lesson-thca2017",
+          "cb-thcab-1975"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-delta9-thca-a"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Pourquoi THCA-A et THC ne sont-ils pas simplement deux noms du même composé ?",
+          "nodes": [
+            {
+              "label": "CBGA",
+              "detail": "Point de départ acide de la branche végétale."
+            },
+            {
+              "label": "THCA-A",
+              "detail": "Le groupe carboxyle est encore présent."
+            },
+            {
+              "label": "THC",
+              "detail": "Une perte ultérieure de CO₂ donne une autre molécule."
+            }
+          ],
+          "caption": "Perdre du CO₂ change la molécule ; cela ne revient pas à concentrer le même produit.",
+          "sourceIds": [
+            "cb-kim-2022",
+            "cannabinoids-lesson-decarb2016"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-kim-2022",
+        "cannabinoids-lesson-decarb2016",
+        "cannabinoids-lesson-thca2017",
+        "cb-thcab-1975"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi THCA-A et THC ne sont-ils pas simplement deux noms du même composé ?",
+        "explainedTerms": [
+          "carboxyle",
+          "forme neutre",
+          "enzyme",
+          "PPARγ",
+          "modèle animal"
+        ],
+        "example": "Perdre du CO₂ change la molécule ; cela ne revient pas à concentrer le même produit.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-cannabinoid-delta9-thca-b",
+      "questions": [
+        "Qu’est-ce qui distingue le THCA-A du THCA-B ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Structure cristallographique publiée confirmée dans le résumé original.",
+        "Affirmation de non-détection du THCA-B chez Shoyama retirée : absente du résumé réellement ouvert.",
+        "Différence de position du carboxyle à confirmer sur dessin primaire pour le quiz.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "L’acide tétrahydrocannabinolique B, ou THCA-B, ressemble au THCA-A, mais une partie acide n’est pas attachée au même endroit. Cette différence se vérifie sur la structure, pas sur le nom commercial.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Ce qui distingue les deux THCA",
+            "paragraphs": [
+              "Le groupe carboxyle est une petite partie acide d’une molécule. THCA-A et THCA-B sont des isomères de position : ils possèdent une organisation proche, avec ce groupe placé autrement. Une étude de 1975 examine la structure du THCA-B dans un cristal.",
+              "Les rayons X permettent d’étudier l’organisation d’une molécule dans un cristal : c’est la diffraction X. Ce travail caractérise le THCA-B, mais ne compte pas sa fréquence dans les plantes et ne démontre pas comment la plante le formerait. La description d’autres acides du cannabis ne suffit pas non plus à conclure que le B serait partout absent."
+            ],
+            "sourceIds": [
+              "cb-thcab-1975",
+              "cb-shoyama-1970"
+            ],
+            "anchorIds": [
+              "occurrence"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Ce que les rayons X permettent de voir",
+            "paragraphs": [
+              "La diffraction X montre comment les atomes sont arrangés dans un cristal. Elle établit une identité moléculaire ; elle ne teste pas l’activation d’un récepteur. Les travaux présentés ne démontrent pas non plus une enzyme propre à la formation du THCA-B."
+            ],
+            "sourceIds": [
+              "cb-thcab-1975"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Les questions auxquelles le cristal ne répond pas",
+            "paragraphs": [
+              "Le cristal ne renseigne ni un soulagement chez des patients, ni la toxicité. La fréquence du THCA-B, son origine dans la plante et les transformations pendant le traitement du matériel restent insuffisamment expliquées. La position numérotée exacte du carboxyle, comparée à celle du THCA-A, demeure un point scientifique à confirmer."
+            ],
+            "sourceIds": [
+              "cb-thcab-1975"
+            ],
+            "anchorIds": [
+              "risks"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-thcab-1975",
+          "cb-shoyama-1970"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-delta9-thca-b"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Que peut apprendre un cristal sur le THCA-B ?",
+          "nodes": [
+            {
+              "label": "Structure",
+              "detail": "Position différente d’un groupe acide."
+            },
+            {
+              "label": "Cristal",
+              "detail": "Organisation étudiée par rayons X en 1975."
+            },
+            {
+              "label": "Effet biologique",
+              "detail": "Autre question, non mesurée par la cristallographie."
+            }
+          ],
+          "caption": "Connaître le plan d’une molécule ne mesure pas son effet sur une personne.",
+          "sourceIds": [
+            "cb-thcab-1975"
+          ],
+          "afterSectionId": "human"
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-thcab-1975",
+        "cb-shoyama-1970"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-thca-a-b"
+      ],
+      "status": "blocked",
+      "blockers": [
+        "La relation exacte de position du carboxyle THCA-A/THCA-B requiert le dessin ou texte intégral primaire ; la diffraction confirme une identité mais pas tous les détails comparatifs de la question."
+      ],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que peut apprendre un cristal sur le THCA-B ?",
+        "explainedTerms": [
+          "carboxyle",
+          "isomère de position",
+          "diffraction X",
+          "enzyme"
+        ],
+        "example": "Connaître le plan d’une molécule ne mesure pas son effet sur une personne.",
+        "movedDetails": [],
+        "comprehensionChecks": [
+          "Quelle différence de structure ou de modèle explique l’exemple ?",
+          "Que permet de conclure l’observation présentée, et que ne mesure-t-elle pas ?"
+        ],
+        "quizIdsReviewed": [
+          "hemp-evidence-thca-a-b"
+        ]
+      }
+    }
+  ],
+  "termReviews": [
+    {
+      "id": "cannabinoids-term-hemisynthesis",
+      "definition": "Fabrication qui transforme chimiquement une molécule de départ d’origine naturelle. L’origine végétale du départ ne décrit pas toutes les transformations du produit final.",
+      "sourceIds": [
+        "cb-euda-2023",
+        "cb-h4cbd-2023",
+        "cb-acetates-2022"
+      ],
+      "findings": [
+        "Définition intégralement relue ; distinction identité, origine, activité et niveau de preuve conservée après confrontation aux passages cités.",
+        "Définition vulgarisée : sens direct et exemple, sans jargon en cascade."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-synthesis",
+      "definition": "Construction d’une molécule par des réactions chimiques. Elle peut reproduire une molécule connue dans la nature ou former une autre structure.",
+      "sourceIds": [
+        "cb-euda-2023",
+        "cb-h4cbd-2023",
+        "cb-acetates-2022"
+      ],
+      "findings": [
+        "Définition intégralement relue ; distinction identité, origine, activité et niveau de preuve conservée après confrontation aux passages cités.",
+        "Définition vulgarisée : sens direct et exemple, sans jargon en cascade."
+      ]
+    },
+    {
+      "id": "cannabinoids-term-varinic",
+      "definition": "Qualifie ici des cannabinoïdes portant une chaîne latérale de trois carbones, plutôt que cinq chez leurs proches parents courants. Le THCV en est un exemple.",
+      "sourceIds": [
+        "cb-kim-2022",
+        "cb-propyl-1977",
+        "cb-propyl-1975",
+        "cb-citti-2019"
+      ],
+      "findings": [
+        "Définition intégralement relue ; distinction identité, origine, activité et niveau de preuve conservée après confrontation aux passages cités.",
+        "Définition vulgarisée : sens direct et exemple, sans jargon en cascade."
+      ]
+    }
+  ],
+  "quizPatches": [
+    {
+      "id": "hemp-evidence-cannabinoide",
+      "prompt": "Lequel de ces composés du chanvre est un cannabinoïde ?",
+      "options": [
+        "Le limonène",
+        "Le linalol",
+        "L’humulène",
+        "Le CBG"
+      ],
+      "answer": 3,
+      "explanation": "Le cannabigérol, abrégé CBG, appartient aux cannabinoïdes du chanvre. Cette famille chimique ne doit pas être confondue avec les autres familles de composés végétaux proposées.",
+      "articleId": "ref-cannabinoides-mineurs",
+      "sourceIds": [
+        "cb-kim-2022"
+      ]
+    },
+    {
+      "id": "hemp-evidence-variniques",
+      "prompt": "La chaîne latérale des cannabinoïdes variniques, comme le THCV, comporte…",
+      "options": [
+        "Cinq carbones",
+        "Sept carbones",
+        "Neuf carbones",
+        "Trois carbones"
+      ],
+      "answer": 3,
+      "explanation": "Propyle signifie une chaîne de trois carbones. C’est une branche de la molécule plus courte que la chaîne pentyle de cinq carbones de ses proches parents courants.",
+      "articleId": "ref-cannabinoides-mineurs",
+      "sourceIds": [
+        "cb-propyl-1977",
+        "cb-propyl-1975"
+      ]
+    },
+    {
+      "id": "hemp-evidence-thca-a-b",
+      "prompt": "Qu’est-ce qui distingue le THCA-A du THCA-B ?",
+      "options": [
+        "La longueur de la chaîne latérale",
+        "Le nombre d’atomes de carbone",
+        "La position du groupe carboxyle",
+        "La présence ou l’absence d’azote"
+      ],
+      "answer": 2,
+      "explanation": "A et B conservent une partie acide appelée carboxyle, mais elle n’est pas attachée au même endroit. Il s’agit d’une différence d’assemblage, pas de concentration.",
+      "articleId": "record-cannabinoid-delta9-thca-b",
+      "sourceIds": [
+        "cb-thcab-1975"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-osaughnessy",
+      "prompt": "Quel médecin a publié en 1843 un article sur les préparations de chanvre indien et le tétanos ?",
+      "options": [
+        "William B. O’Shaughnessy",
+        "Roger Adams",
+        "Raphael Mechoulam",
+        "Alfred Nobel"
+      ],
+      "answer": 0,
+      "explanation": "O’Shaughnessy décrit en 1843 des préparations de chanvre indien et des observations, notamment sur le tétanos. Un témoignage médical historique n’est pas un essai contrôlé moderne.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-oshaughnessy"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-1940",
+      "prompt": "Quel cannabinoïde Gaoni et Mechoulam distinguent-ils du THC dans la première page de leur publication de 1964 ?",
+      "options": [
+        "Cannabinol (CBN)",
+        "Cannabidiol (CBD)",
+        "Cannabigérol (CBG)",
+        "Cannabichromène (CBC)"
+      ],
+      "answer": 0,
+      "explanation": "Les auteurs distinguent le cannabinol, ou CBN, du constituant actif étudié dans leur article de 1964. Séparer les substances du mélange est une étape de leur identification.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-thc"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-thc-1964",
+      "prompt": "Quel composé actif du haschisch Gaoni et Mechoulam ont-ils isolé et caractérisé en 1964 ?",
+      "options": [
+        "Δ9-THC",
+        "CB2",
+        "Anandamide",
+        "CBDA"
+      ],
+      "answer": 0,
+      "explanation": "Gaoni et Mechoulam étudient le constituant aujourd’hui appelé Δ9-THC. Leur travail porte sur son isolement, sa structure et une synthèse partielle, pas sur la validation de tous ses usages médicaux.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-thc"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1",
+      "prompt": "Quel récepteur cannabinoïde a été cloné en premier, en 1990 ?",
+      "options": [
+        "CB1",
+        "CB2",
+        "TRPV1",
+        "GPR55"
+      ],
+      "answer": 0,
+      "explanation": "CB1 est cloné en 1990, avant CB2 en 1993. Ici, cloner concerne l’information génétique permettant de produire le récepteur, et non la multiplication d’un plant.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb2",
+      "prompt": "Quel récepteur cannabinoïde a été cloné en 1993, après CB1 ?",
+      "options": [
+        "CB1",
+        "CB2",
+        "D2",
+        "5-HT2A"
+      ],
+      "answer": 1,
+      "explanation": "CB2 est cloné en 1993, trois ans après CB1. Ce sont deux protéines distinctes, même si elles participent à un même ensemble de signaux.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide",
+      "prompt": "Quel nom porte le ligand endogène du récepteur cannabinoïde décrit par Devane et al. en 1992 ?",
+      "options": [
+        "Anandamide",
+        "Cannabinol",
+        "Cannabigérol",
+        "Palmitoyléthanolamide"
+      ],
+      "answer": 0,
+      "explanation": "L’anandamide est identifiée en 1992 dans le cerveau porcin. C’est un messager produit par l’organisme, ce qui explique le terme endocannabinoïde.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "cb-anandamide-1992"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag",
+      "prompt": "Que signifie l’abréviation 2-AG en biochimie cannabinoïde ?",
+      "options": [
+        "2-arachidonoylglycérol",
+        "2-amino-glucose",
+        "Acide gamma-aminé",
+        "Deux récepteurs associés"
+      ],
+      "answer": 0,
+      "explanation": "2-AG abrège 2-arachidonoylglycérol : une partie d’acide gras est liée au glycérol. Le nom décrit la structure d’un messager de l’organisme.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "cb-2ag-1995"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-receptors-type",
+      "prompt": "Quelle enzyme dégrade l’anandamide en acide arachidonique et éthanolamine ?",
+      "options": [
+        "FAAH",
+        "MAGL",
+        "DAGL",
+        "GOT"
+      ],
+      "answer": 0,
+      "explanation": "FAAH est une enzyme qui coupe la liaison amide de l’anandamide. Cette hydrolyse libère ses deux parties : l’acide arachidonique et l’éthanolamine.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-faah"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-name",
+      "prompt": "À quelle petite molécule la partie arachidonoyle est-elle liée dans l’anandamide ?",
+      "options": [
+        "Éthanolamine",
+        "Glycérol",
+        "Glucose",
+        "Cholestérol"
+      ],
+      "answer": 0,
+      "explanation": "L’éthanolamine est reliée à la partie arachidonoyle par une liaison amide. C’est l’assemblage qui donne le nom N-arachidonoyléthanolamide.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "cb-anandamide-1992",
+        "qh-sci-faah"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1-brain",
+      "prompt": "Dans quel ensemble de cellules CB1 est-il principalement présent selon la classification Howlett de 2002 ?",
+      "options": [
+        "Neurones centraux et périphériques",
+        "Globules rouges uniquement",
+        "Cellules végétales uniquement",
+        "Levures uniquement"
+      ],
+      "answer": 0,
+      "explanation": "CB1 est surtout présent dans les neurones, les cellules qui transmettent des messages dans le cerveau et les nerfs périphériques. Cette prédominance n’est pas une exclusivité.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-mechoulam-country",
+      "prompt": "Dans quel pays se situe l’Institut Weizmann cité dans l’article de Mechoulam et Shvo sur le CBD en 1963 ?",
+      "options": [
+        "Israël",
+        "Canada",
+        "Japon",
+        "États-Unis"
+      ],
+      "answer": 0,
+      "explanation": "L’Institut Weizmann indiqué dans la publication de 1963 se trouve à Rehovot, en Israël. Ce repère situe le travail sur la structure du CBD.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-cbd-structure"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-1995",
+      "prompt": "En quelle année Sugiura et ses collègues ont-ils publié l’étude initiale sur le 2-AG comme ligand possible ?",
+      "options": [
+        "1988",
+        "1990",
+        "1992",
+        "1995"
+      ],
+      "answer": 3,
+      "explanation": "L’étude de Sugiura et ses collègues paraît en 1995. Elle présente le 2-AG comme un ligand possible : une molécule capable de se lier au récepteur.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "cb-2ag-1995"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-not-thc",
+      "prompt": "Quel type de lipide la DAG lipase transforme-t-elle en 2-AG ?",
+      "options": [
+        "Un diacylglycérol contenant de l’arachidonate",
+        "Un acide gras libre",
+        "Une éthanolamide",
+        "Un stérol végétal"
+      ],
+      "answer": 0,
+      "explanation": "La DAG lipase agit sur un diacylglycérol, un lipide portant deux parties d’acides gras. Une coupure permet de former le 2-AG.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-dagl"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1-clone",
+      "prompt": "Quelle équipe a publié le clonage du récepteur CB1 dans Nature en 1990 ?",
+      "options": [
+        "Matsuda et collègues",
+        "Devane et collègues",
+        "Munro et collègues",
+        "Gaoni et collègues"
+      ],
+      "answer": 0,
+      "explanation": "La publication de 1990 associe Matsuda, Lolait, Brownstein, Young et Bonner. Ce clonage aide à étudier la protéine qui reçoit le signal cannabinoïde.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-cb1-catalogue",
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb2-tissue",
+      "prompt": "Quel type de cellules exprime principalement CB2 selon la classification Howlett de 2002 ?",
+      "options": [
+        "Cellules immunitaires",
+        "Globules rouges uniquement",
+        "Cellules des feuilles",
+        "Cellules de levure"
+      ],
+      "answer": 0,
+      "explanation": "CB2 est particulièrement étudié dans les cellules immunitaires. Cela ne veut pas dire qu’on peut tracer une frontière absolue entre un récepteur du cerveau et un récepteur du reste du corps.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-molecule",
+      "prompt": "Quel est le nom chimique de l’anandamide ?",
+      "options": [
+        "N-arachidonoyléthanolamide",
+        "2-arachidonoylglycérol",
+        "Acide olivétolique",
+        "Cannabinol"
+      ],
+      "answer": 0,
+      "explanation": "L’anandamide est une N-arachidonoyléthanolamide : une partie issue de l’acide arachidonique reliée à une éthanolamine. Ce n’est pas l’assemblage du 2-AG.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "cb-anandamide-1992"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1-cb2-sequence",
+      "prompt": "Quelle proportion d’identité de séquence protéique les récepteurs cannabinoïdes CB1 et CB2 partagent-ils approximativement ?",
+      "options": [
+        "Environ 48 % d’identité",
+        "100 % d’identité",
+        "Aucun acide aminé commun",
+        "Exactement 2 %"
+      ],
+      "answer": 0,
+      "explanation": "Environ 48 % des positions de la chaîne d’acides aminés sont identiques. Ce pourcentage compare la structure de deux protéines ; il ne mesure pas une proportion d’effets communs.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-tissue",
+      "prompt": "Dans quel tissu Devane et collègues ont-ils isolé l’anandamide en 1992 ?",
+      "options": [
+        "Le cerveau de porc",
+        "La tige du chanvre",
+        "Le sang humain",
+        "La graine de lin"
+      ],
+      "answer": 0,
+      "explanation": "Le travail de Devane utilise le cerveau porcin pour identifier l’anandamide. La découverte du messager dans ce tissu n’est pas un essai thérapeutique sur des personnes.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "cb-anandamide-1992"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-lipid",
+      "prompt": "À quelle classe chimique appartient le 2-AG ?",
+      "options": [
+        "Monoacylglycérol",
+        "Acide nucléique",
+        "Polysaccharide",
+        "Protéine membranaire"
+      ],
+      "answer": 0,
+      "explanation": "Le 2-AG est un monoacylglycérol : une seule partie d’acide gras est attachée au glycérol. Il diffère ainsi de l’anandamide, une éthanolamide.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "cb-2ag-1995"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-structure-date",
+      "prompt": "Quelle avancée sur le CBD Mechoulam et Shvo ont-ils publiée en 1963 ?",
+      "options": [
+        "Une proposition de structure chimique",
+        "Le clonage de CB1",
+        "L’isolement de l’anandamide",
+        "Le clonage de CB2"
+      ],
+      "answer": 0,
+      "explanation": "Mechoulam et Shvo publient en 1963 sur l’organisation des atomes du CBD et sa forme dans l’espace. Déterminer la structure est une étape différente d’isoler pour la première fois une substance.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-cbd-structure"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-thc-stereochemistry",
+      "prompt": "Quel aspect Gaoni et Mechoulam ont-ils étudié dans leur article de 1964 sur le THC ?",
+      "options": [
+        "Isolement, structure et synthèse partielle",
+        "Clonage du récepteur CB2",
+        "Essai clinique multicentrique",
+        "Séquençage du génome entier"
+      ],
+      "answer": 0,
+      "explanation": "Le titre de leur article réunit trois tâches : séparer le constituant du mélange, comprendre sa structure et en réaliser une synthèse partielle. Ces tâches sont chimiques, pas des essais cliniques.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-thc"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb-receptor-gprotein",
+      "prompt": "Quel cannabinoïde précurseur se forme à partir d’acide olivétolique et de pyrophosphate de géranyle ?",
+      "options": [
+        "CBGA",
+        "THCA",
+        "CBDA",
+        "CBN"
+      ],
+      "answer": 0,
+      "explanation": "L’olivétolate reçoit une partie géranyle pour former le CBGA. Ce cannabinoïde acide peut ensuite alimenter plusieurs branches de fabrication de la plante.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-cbga"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-workers",
+      "prompt": "Quelle enzyme Dinh et ses collègues ont-ils étudiée comme voie d’inactivation du 2-AG ?",
+      "options": [
+        "Monoacylglycérol lipase (MAGL/MGL)",
+        "FAAH",
+        "DAG lipase",
+        "Géranylpyrophosphate:olivétolate transférase"
+      ],
+      "answer": 0,
+      "explanation": "MAGL, aussi appelée MGL, contribue à couper le 2-AG et à arrêter son signal. Le même système comporte d’autres enzymes, dont FAAH pour l’anandamide.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-magl"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb1-discovery-v-clone",
+      "prompt": "Quelle chronologie de clonage CB1/CB2 est confirmée par la classification Howlett de 2002 ?",
+      "options": [
+        "CB1 en 1990, puis CB2 en 1993",
+        "CB2 en 1990, puis CB1 en 1993",
+        "Les deux en 1964",
+        "Les deux en 2020"
+      ],
+      "answer": 0,
+      "explanation": "CB1 est cloné en 1990 puis CB2 en 1993. Des expériences de liaison avaient déjà aidé à mettre en évidence les sites recevant les molécules avant ces clonages.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-early-study-limit",
+      "prompt": "Quelle enzyme hydrolyse le plus directement l’anandamide dans les travaux de Cravatt et al. ?",
+      "options": [
+        "FAAH",
+        "MAGL",
+        "DAGL",
+        "GOT"
+      ],
+      "answer": 0,
+      "explanation": "FAAH est l’enzyme caractérisée pour hydrolyser l’anandamide : elle aide à couper la molécule et à l’inactiver. Cela ne décrit pas toutes les voies de tous les tissus.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-faah"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-anandamide-precursor",
+      "prompt": "Quel groupe fonctionnel caractérise le nom chimique de l’anandamide ?",
+      "options": [
+        "Une éthanolamide",
+        "Un ester de glycérol",
+        "Un peptide cyclique",
+        "Un nucléotide"
+      ],
+      "answer": 0,
+      "explanation": "Le mot éthanolamide renvoie à la liaison amide avec l’éthanolamine. Il aide à distinguer l’anandamide du 2-AG, où une liaison ester unit l’acide gras au glycérol.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "cb-anandamide-1992",
+        "cb-2ag-1995"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cb-receptors-contrast",
+      "prompt": "Quelle comparaison résume les premières descriptions de CB1 et CB2 ?",
+      "options": [
+        "CB1 surtout neuronal; CB2 d’abord décrit dans des cellules immunitaires",
+        "CB1 surtout immunitaire; CB2 d’abord décrit dans des neurones",
+        "Tous deux décrits d’abord dans des neurones",
+        "Tous deux décrits d’abord dans la rate"
+      ],
+      "answer": 0,
+      "explanation": "La prédominance de CB1 dans les neurones et celle de CB2 dans les cellules immunitaires résument des observations générales. Elles ne signifient pas que chacun serait absent de tous les autres tissus.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-study-assay",
+      "prompt": "L’enzyme végétale GOT, qui forme le CBGA, appartient à quelle classe fonctionnelle ?",
+      "options": [
+        "Prényltransférases",
+        "Lipases",
+        "Protéases",
+        "Amylases"
+      ],
+      "answer": 0,
+      "explanation": "Une prényltransférase est un outil biologique qui transfère une partie de molécule. La GOT attache ici une partie géranyle à l’olivétolate pour former le CBGA.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-cbga"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-2ag-cb1cb2",
+      "prompt": "Quels sont les deux principaux récepteurs cannabinoïdes auxquels le 2-AG se lie ?",
+      "options": [
+        "CB1 et CB2",
+        "Seulement CB1, jamais CB2",
+        "Seulement CB2, jamais CB1",
+        "Aucun récepteur cannabinoïde"
+      ],
+      "answer": 0,
+      "explanation": "Le 2-AG peut se lier à CB1 et CB2, deux récepteurs cannabinoïdes. Un même messager peut rencontrer plusieurs cibles sans que celles-ci soient identiques.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "cb-2ag-1995",
+        "qh-sci-receptors"
+      ]
+    },
+    {
+      "id": "hemp-hs-sci-cbd-mn-vs-indian",
+      "prompt": "Dans quel institut travaillaient Mechoulam et Shvo lors de leur publication sur la structure du CBD en 1963 ?",
+      "options": [
+        "Institut Weizmann",
+        "Institut Pasteur",
+        "Université de Cambridge",
+        "École polytechnique de Zurich"
+      ],
+      "answer": 0,
+      "explanation": "La publication de 1963 indique le Daniel Sieff Research Institute de l’Institut Weizmann. C’est le laboratoire associé au travail décrit sur la structure du CBD.",
+      "articleId": "ref-decouvertes-cannabinoides",
+      "sourceIds": [
+        "qh-sci-cbd-structure"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Contre-vérification historique ciblée : sources bloquées explicitement listées.",
+    "H4CBD : ne pas reprendre les déclarations d’innocuité ni conversion gastrique CBD/THC de Collins 2023 comme faits cliniques.",
+    "Contrôle de cohérence : toutes les références des quiz scientifiques historiques sont citées dans la fiche. Les précisions non documentées ne sont pas réintroduites par simple conservation des anciens identifiants."
+  ]
+}

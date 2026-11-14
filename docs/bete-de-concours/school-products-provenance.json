@@ -1,0 +1,119 @@
+{
+  "version": "2026-11-12.products1",
+  "verifiedAt": "2026-11-12",
+  "status": "Livré et validé localement",
+  "counts": {
+    "groups": 4,
+    "chapters": 10,
+    "lessons": 20,
+    "activities": 20,
+    "checkpoints": 10,
+    "questions": 40,
+    "privateOptionExplanations": 160,
+    "terms": 72,
+    "commonGlossaryEntries": 403,
+    "atlasEntries": 29,
+    "regulatoryReferences": 8,
+    "fibreStages": 5,
+    "plateHotspots": 6,
+    "processCards": 5,
+    "commercialClaims": 6,
+    "certificateResults": 2,
+    "certificateUnmeasured": 4,
+    "traceDocuments": 4,
+    "traceDecisions": 2,
+    "requiredExercises": 6,
+    "additionalInvestigation": 1,
+    "sourceRecords": 52,
+    "distinctSourceUrls": 47
+  },
+  "scope": "Huitième parcours développé. Un futur parcours reste à préciser ; les deux introductions historiques restantes ne le remplacent pas.",
+  "sourceAccess": {
+    "excerpt": 16,
+    "official-page": 9,
+    "catalogue": 2,
+    "abstract": 2,
+    "full-text": 23
+  },
+  "files": {
+    "lessons": "src/lib/kanab-quest-school-products-lessons.ts",
+    "answers": "src/lib/kanab-quest-school-products-answers.ts",
+    "tools": "src/lib/kanab-quest-school-products-tools.ts",
+    "visuals": "src/lib/kanab-quest-school-products-visuals.ts",
+    "entry": "src/components/placard/KqSchoolProducts.tsx"
+  },
+  "requiredExercises": [
+    "products-seeds-1",
+    "products-fibres-2",
+    "products-resins-2",
+    "products-labels-1",
+    "products-quality-2",
+    "products-traceability-1"
+  ],
+  "additionalInvestigation": "products-traceability-2",
+  "scientificBoundaries": [
+    "Parties végétales, fractions et produits reliés ; débouchés documentés distincts des possibilités techniques et des promesses environnementales.",
+    "Rouissage, défibrage, filature et tissage ont des fonctions différentes. Une matière biosourcée ne détermine pas à elle seule le bilan environnemental.",
+    "Séparation mécanique, extraction, purification, conversion et formulation expliquées conceptuellement ; aucun protocole sensible, paramètre de réaction, recette de dosage ou formulation reproductible.",
+    "Kief, hash, rosin, extraits, distillats et isolats distingués. Full spectrum, broad spectrum, live et sans solvant ne garantissent ni composition constante ni absence de contaminants.",
+    "Graines, huile de graines et aliments enrichis en cannabinoïdes distincts ; une voie alimentaire ne valide pas une voie inhalée. La composition du liquide ne décrit pas automatiquement ses émissions.",
+    "Identité chimique, présence naturelle, fabrication commerciale, pureté et données d’usage examinées séparément. Isomères, sous-produits et impuretés gardent leurs incertitudes.",
+    "France/UE vérifiées au 12 novembre 2026 ; avis scientifique, autorisation, allégation et résultat analytique ont des portées distinctes. Les teneurs limites alimentaires ne sont pas le seuil variétal de 0,3 %.",
+    "Certificat fictif : deux résultats, quatre critères non mesurés. Sous LQ ne signifie pas zéro ; une incertitude analytique ne prouve pas la représentativité du prélèvement.",
+    "Enquête A+D vers B : le rapport sur A ne certifie pas B. Dossier incomplet ne signifie pas contamination prouvée. Les obligations alimentaires peuvent être déclenchées par des raisons de penser que la sécurité n’est pas respectée, sans attendre une preuve définitive.",
+    "L’illustration est conceptuelle, sans échelle ni mesure. La validation porte sur documents et logiciel, pas sur un lot réel ou des acquisitions pédagogiques mesurées."
+  ],
+  "review": {
+    "method": "Relecture croisée des sources primaires, règles, méthodes analytiques, voies d’exposition, labels et enquête ; sources documentées avec accès réel et limites.",
+    "limits": "Validation locale documentaire et logicielle ; pas de certification de produit, de conformité universelle ou de bénéfice clinique."
+  },
+  "economy": "quizId profiles / reward school:profiles conservés ; plafond de 1 000 centimes et total de 10 000 inchangés. Quiz v1 de dix questions couvre dix chapitres. Activités sans gain ; anciens reçus et gains préservés.",
+  "migration": "20261112000800_kq_school_products_progress.sql testée en bases temporaires locales. Aucune des neuf migrations de l’école appliquée au projet distant.",
+  "validation": {
+    "contentTests": 10,
+    "backendTests": 296,
+    "totalVitestTests": 306,
+    "sqlPglite": 67,
+    "postgresConcurrency": 17,
+    "fixture": 92,
+    "grantsMigrations": 387,
+    "eslint": "PASS ciblé : cours, données, UI, backend et recette.",
+    "build": "PASS Next.js et TypeScript ; code de sortie 0 enregistré directement.",
+    "buildNotes": "Les avertissements éventuels de revalidation de données publiques Supabase sont conservés dans le journal ; aucune validation distante revendiquée.",
+    "browser": "PASS 320/1440 : six exercices et enquête supplémentaire, justifications, reprises, planche/clavier, atlas et filtres, chaîne des fibres au clavier, opérations et étiquettes, certificat et critères non mesurés, traçabilité, Buddy sans possession, budgets, owner409 et réponses privées403.",
+    "preview": {
+      "results": [
+        {
+          "width": 320,
+          "eightCurricula": true,
+          "commonGlossary": 403,
+          "plateLoaded": true,
+          "plateKeyboard": true,
+          "fourGroups": true,
+          "linksCannabinoidsHistory": true,
+          "privateAnswers403": true,
+          "reducedMotionLayout": true
+        },
+        {
+          "width": 1440,
+          "eightCurricula": true,
+          "commonGlossary": 403,
+          "plateLoaded": true,
+          "plateKeyboard": true,
+          "fourGroups": true,
+          "linksCannabinoidsHistory": true,
+          "privateAnswers403": true,
+          "reducedMotionLayout": true
+        }
+      ],
+      "errors": []
+    },
+    "privacy": {
+      "checkedAt": "2026-11-12T20:48:07.449Z",
+      "chunks": 196,
+      "privateExplanations": 300,
+      "leaks": []
+    },
+    "transport": "Vrais composants et API de démonstration en mémoire. Aucune base distante ni paiement réel vérifié."
+  }
+}

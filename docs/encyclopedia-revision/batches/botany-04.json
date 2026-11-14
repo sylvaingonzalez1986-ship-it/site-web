@@ -1,0 +1,939 @@
+{
+  "domain": "botany",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "botany-variety-identity",
+      "title": "Genetic tools weed out misconceptions of strain reliability in Cannabis sativa",
+      "author": "Anna L. Schwabe et Mitchell E. McGlaughlin — Journal of Cannabis Research",
+      "organization": "Anna L. Schwabe et Mitchell E. McGlaughlin — Journal of Cannabis Research",
+      "published": "2019 ; Journal of Cannabis Research 1:3 ; DOI 10.1186/s42238-019-0001-1",
+      "url": "https://grn.issup.net/files/2019-06/Genetic%20tools%20weed%20out%20misconceptions%20of%20strain%20reliability%20in%20Cannabis%20sativa%20implications%20for%20a%20budding%20industry.pdf",
+      "passage": "Résumé original indexé : cohérence génétique variable d’échantillons portant un même nom commercial.",
+      "limitation": "Article original lu dans son PDF de 2019. La référence précédente liait ce titre au PMID 33526091, qui correspond à un autre article : URL corrigée. Dix marqueurs microsatellites ne couvrent pas tout le génome ni tous les matériels du marché.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé d’étude génétique originale",
+      "reviewEvidence": [
+        {
+          "url": "https://grn.issup.net/files/2019-06/Genetic%20tools%20weed%20out%20misconceptions%20of%20strain%20reliability%20in%20Cannabis%20sativa%20implications%20for%20a%20budding%20industry.pdf",
+          "sectionsOpened": [
+            "PDF original 2019 : p.1 résumé ; p.2–3 clones et mutations ; résultats et discussion"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Microsatellites et 30 noms de lignées ; discordances entre échantillons ; plusieurs lignées relativement cohérentes une fois les valeurs atypiques examinées"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-blueberry",
+      "title": "Blueberry — origine de la Blue Family",
+      "author": "Dutch Passion",
+      "organization": "Dutch Passion",
+      "published": "Introduction au marché néerlandais revendiquée en 1998 ; fiche courante 2026",
+      "url": "https://dutch-passion.com/en/cannabis-seeds/blueberry",
+      "passage": "Passage historique : travail de DJ Short, Blue Family adoptée par Dutch Passion et introduction en 1998.",
+      "limitation": "Histoire déclarée par un partenaire commercial ; ne démontre pas l’identité de toutes les Blueberry actuelles et ne précise pas ici un pedigree fondateur complet.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://dutch-passion.com/en/cannabis-seeds/blueberry",
+          "sectionsOpened": [
+            "Dutch Passion Blueberry: one of the most rewarding cannabis strains; Blueberry strain info"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "DJ Short ; introduction néerlandaise 1998 ; composantes Afghani, Thai et Oaxacan explicitement données dans la page"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-hso2017",
+      "title": "Humboldt Seed Organization — catalogue 2017",
+      "author": "Humboldt Seed Organization",
+      "organization": "Humboldt Seed Organization",
+      "published": "2017",
+      "url": "https://www.humboldtseeds.net/uploads/catalog-HSO-2017-EN-digital.pdf",
+      "passage": "Rubriques Blue Dream CBD et Blue Dream, pages imprimées 9–10 : présence des deux versions ; référence à Blueberry et Super Silver Haze pour Blue Dream.",
+      "limitation": "Catalogue primaire daté pour la version HSO ; ce n’est pas une validation indépendante de toutes les Blue Dream ni des génotypes ancestraux.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://www.humboldtseeds.net/uploads/catalog-HSO-2017-EN-digital.pdf",
+          "sectionsOpened": [
+            "Catalogue 2017 : sommaire ; pages imprimées 9–10 Blue Dream CBD et Blue Dream"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Présence commerciale datée des deux versions ; ascendance Blueberry et Super Silver Haze pour Blue Dream"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-hso-cbd",
+      "title": "Blue Dream CBD — Cross",
+      "author": "Humboldt Seed Organization",
+      "organization": "Humboldt Seed Organization",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.humboldtseeds.net/en/blue-dream-cbd/",
+      "passage": "Champ Cross : Blue Dream × California Orange CBD.",
+      "limitation": "Parenté déclarée par l’obtenteur pour sa version. Teneurs, rendements et allégations d’effets de la page ne sont pas repris.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://www.humboldtseeds.net/en/blue-dream-cbd/",
+          "sectionsOpened": [
+            "Tableau Cross; description de la génétique"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Version HSO : Blueberry × Super Silver Haze ; Blue Dream CBD : Blue Dream × California Orange CBD"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-hso-blue",
+      "title": "Blue Dream — Cross",
+      "author": "Humboldt Seed Organization",
+      "organization": "Humboldt Seed Organization",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.humboldtseeds.net/en/blue-dream/",
+      "passage": "Champ Cross : Blueberry × Super Silver Haze ; paragraphe Great result stemming from a great strain.",
+      "limitation": "Parenté annoncée pour la version HSO actuelle ; le catalogue 2017 établit séparément la présence commerciale. Les commentaires de clients ne sont pas utilisés comme preuve de pedigree.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://www.humboldtseeds.net/en/blue-dream/",
+          "sectionsOpened": [
+            "Tableau Cross; description de la génétique"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Version HSO : Blueberry × Super Silver Haze ; Blue Dream CBD : Blue Dream × California Orange CBD"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-black-widow",
+      "title": "Black Widow",
+      "author": "Shantibaba Seeds",
+      "organization": "Shantibaba Seeds",
+      "published": "Fiche courante ; récit rétrospectif d’une lignée primée en 1995",
+      "url": "https://shantibabaseeds.com/products/black-widow",
+      "passage": "Présentation de White Widow renommée Black Widow ; parenté déclarée Brazilian Sativa × South Indian hybrid.",
+      "limitation": "Revendication de Shantibaba pour son matériel ; la fiche ne tranche pas toutes les controverses historiques d’attribution et ne prouve pas l’identité d’autres versions.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://shantibabaseeds.com/products/black-widow",
+          "sectionsOpened": [
+            "Présentation; Heritage; Family of breed; Breeder"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Shantibaba revendique White Widow renommée Black Widow ; Brazilian Sativa × South Indian hybrid dans le texte, South Indian Indica dans le tableau ; récompense 1995 annoncée"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-trikoma",
+      "title": "White Widow — Linaje genético",
+      "author": "Trikoma Seeds",
+      "organization": "Trikoma Seeds",
+      "published": "Fiche courante consultée le 12 novembre 2026",
+      "url": "https://www.trikomaseeds.com/semillas/white-widow/",
+      "passage": "Genética et Parentales y origen genético : Widow Bilbo × Widow BCN, mères conservées par la marque à Barcelone.",
+      "limitation": "Version Trikoma explicitement distinguée du nom général ; pas test indépendant de parentage.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://www.trikomaseeds.com/semillas/white-widow/",
+          "sectionsOpened": [
+            "Linaje genético; Características de un vistazo; Parentales y origen genético"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Version propre Trikoma ; Widow Bilbo × Widow BCN, mères conservées à Barcelone"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-cookies",
+      "title": "Cookies Crush",
+      "author": "Jimi Devine, entretien avec Jigga — Cannabis Now",
+      "organization": "Jimi Devine, entretien avec Jigga — Cannabis Now",
+      "published": "30 mars 2020",
+      "url": "https://cannabisnow.com/cookies-crush/",
+      "passage": "The First Cookies Cultivar : récit de F1 Durban × Florida OG ; F1 est présenté comme un nom inspiré de la course automobile.",
+      "limitation": "Texte de l’entretien consulté par son indexation, accès direct bloqué ; témoignage primaire mais rétrospectif, sans données de parentage indépendantes. Révision 14/11/2026 : Accès direct Cannabis Now 403 ; essai web puis accès direct Python refusés.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://cannabisnow.com/cookies-crush/",
+          "sectionsOpened": [],
+          "result": "Accès direct Cannabis Now 403 ; essai web puis accès direct Python refusés.",
+          "assertionsSupported": [],
+          "status": "not-reverified"
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-gelato",
+      "title": "The Sherbinski Sitdown: A Comprehensive Guide to Gelato",
+      "author": "Jimi Devine, entretien avec Sherbinski — Cannabis Now",
+      "organization": "Jimi Devine, entretien avec Sherbinski — Cannabis Now",
+      "published": "19 mai 2017",
+      "url": "https://cannabisnow.com/sherbinski-sitdown-gelato/",
+      "passage": "Introduction et Prestigious Lineage : travail avec Jigga environ trois ans auparavant, Sunset Sherbert et Thin Mint Cookies ; plusieurs sélections numérotées.",
+      "limitation": "Entretien primaire rétrospectif ; vers 2014 est déduit du repère donné par le journaliste, pas un jour de création certifié. Pas de pourcentage génétique ou effet garanti. Révision 14/11/2026 : Accès direct Cannabis Now 403 ; autre page primaire Sherbinskis ouverte pour la parenté actuelle.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://cannabisnow.com/sherbinski-sitdown-gelato/",
+          "sectionsOpened": [],
+          "result": "Accès direct Cannabis Now 403 ; autre page primaire Sherbinskis ouverte pour la parenté actuelle.",
+          "assertionsSupported": [],
+          "status": "not-reverified"
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-cannatonic",
+      "title": "New Cannatonic Information!",
+      "author": "Resin Seeds",
+      "organization": "Resin Seeds",
+      "published": "10 novembre 2015, modifié le 17 janvier 2016",
+      "url": "https://resinseeds.net/new-cannatonic-information/",
+      "passage": "Correction explicite de la parenté déclarée : Reina Madre × NYCD remplace MK-Ultra × G13.",
+      "limitation": "Document primaire de rectification, sans analyse indépendante présentée ; les anciennes parentés ne sont pas conservées comme faits biologiques simultanés.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://resinseeds.net/new-cannatonic-information/",
+          "sectionsOpened": [
+            "Article complet, publication 10 novembre 2015 et modification 17 janvier 2016"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Rectification explicite Reina Madre × NYCD remplaçant MK-Ultra × G13"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-therapy",
+      "title": "CBD Therapy",
+      "author": "CBD Crew",
+      "organization": "CBD Crew",
+      "published": "Fiche consultée le 12 novembre 2026 ; historique local de sortie fin 2015",
+      "url": "https://cbdcrew.org/varieties/cbd-therapy/",
+      "passage": "Présentation et paragraphes sur la variation des ratios CBD/THC au sein des semences. Les parents précis ne sont pas nommés.",
+      "limitation": "Page primaire commerciale effectivement lue, sans données de lot indépendantes. Les allégations thérapeutiques présentes sur cette page ne sont pas reprises et ne constituent pas une preuve clinique.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://cbdcrew.org/varieties/cbd-therapy/",
+          "sectionsOpened": [
+            "CBD Therapy : paragraphes de présentation et variations des lots"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Origine déclarée à partir de matériels récréatifs à THC, sans parents nommés ; la marque reconnaît des variations de ratios entre descendants"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-buddies",
+      "title": "Fiches documentaires des Buddies existants",
+      "author": "Kanab Quest",
+      "organization": "Kanab Quest",
+      "published": "Révision locale du 30 octobre 2026",
+      "url": "/arene/placard?view=shop&tab=collection&section=buddies",
+      "passage": "Registre KQ_BUDDIE_NAMES et tables locales 001–026 / 027–052 : existence des noms et rattachements des notices de variétés aux cartes du jeu.",
+      "limitation": "Vérification locale des liens et des versions nommées ; ces fichiers ne constituent ni une archive indépendante de création ni un test génétique des parentés commerciales.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "status": "read",
+          "url": "/arene/placard?view=shop&tab=collection&section=buddies",
+          "sectionsOpened": [
+            "src/lib/kanab-quest-game.ts: KQ_BUDDIE_NAMES",
+            "src/data/buddie-varieties/001-026.json",
+            "src/data/buddie-varieties/027-052.json",
+            "src/lib/kanab-quest-school-botany-varieties.ts: variantes et buddyCodes"
+          ],
+          "result": "Registre des 52 noms lu et correspondances des dix notices de variétés contrôlées dans les fichiers locaux ; aucune nouvelle preuve externe de pedigree revendiquée.",
+          "assertionsSupported": [
+            "Existence et distinction des fiches Buddies référencées"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-gelato-sherbinskis-2026",
+      "title": "The Gelato Family",
+      "author": "Sherbinskis",
+      "organization": "Sherbinskis",
+      "published": "Page sans date éditoriale affichée",
+      "url": "https://sherbinskis.com/",
+      "verifiedAt": "2026-11-14",
+      "passage": "The Gelato Family : Sunset Sherbert × Thin Mint Cookies ; Bacio Gelato / #41.",
+      "access": "official-page",
+      "documentKind": "Déclaration primaire de marque",
+      "limitation": "Confirme la parenté actuellement annoncée par cette marque, sans analyse indépendante de parentage et sans date de création certifiée.",
+      "reviewEvidence": [
+        {
+          "url": "https://sherbinskis.com/",
+          "sectionsOpened": [
+            "The Gelato Family"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Sunset Sherbert × Thin Mint Cookies ; Bacio #41"
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-variety-blueberry",
+      "questions": [
+        "Quelles composantes et quelle diffusion Dutch Passion annonce-t-il pour Blueberry ?",
+        "Comment distinguer Blue Dream et Blue Dream CBD chez HSO ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Correction d’une lacune après lecture : Dutch Passion publie bien Afghani, Thai et Oaxacan dans sa page, absents du dossier initial. Ascendances ajoutées avec attribution, sans ordre de croisements inventé. Catalogue HSO 2017 et tableaux Cross ouverts.",
+        "Contre-lecture du coordinateur : références réparties par section ; détails techniques de collecte retirés de la lecture publique, incertitudes historiques conservées."
+      ],
+      "patch": {
+        "lead": "Dutch Passion attribue la Blue Family à DJ Short et décrit une coopération pour sa diffusion néerlandaise. Une annonce d’ascendance ne suffit pas à identifier chaque plante fondatrice.",
+        "sections": [
+          {
+            "id": "history",
+            "title": "Origine et diffusion",
+            "paragraphs": [
+              "Dutch Passion attribue les sélections de la Blue Family à DJ Short et leur introduction sur le marché néerlandais à une coopération en 1998. Ce repère date une diffusion commerciale annoncée ; il ne constitue pas la date précise de chaque croisement antérieur. Le catalogue HSO de 2017 documente séparément la présence de Blue Dream et de Blue Dream CBD."
+            ],
+            "sourceIds": [
+              "botany-variety-blueberry",
+              "botany-variety-hso2017"
+            ]
+          },
+          {
+            "id": "parents",
+            "title": "Parentés annoncées",
+            "paragraphs": [
+              "Dutch Passion cite une composante Afghani, une composante Thai et un apport Oaxacan pour Blueberry. Cette liste d’ascendances ne donne pas à elle seule les individus fondateurs et l’ordre complet des croisements. Pour sa Blue Dream, HSO annonce Blueberry × Super Silver Haze ; sa Blue Dream CBD est annoncée comme Blue Dream × California Orange CBD."
+            ],
+            "sourceIds": [
+              "botany-variety-blueberry",
+              "botany-variety-hso-blue",
+              "botany-variety-hso-cbd"
+            ]
+          },
+          {
+            "id": "variants",
+            "title": "Versions et récits",
+            "paragraphs": [
+              "La version DJ Short et les sélections Dutch Passion gardent leurs attributions et ne sont pas déclarées génétiquement identiques sans comparaison. De même, Blue Dream et Blue Dream CBD sont deux versions distinctes. Le Buddy CB Dream de Crop King possède une autre parenté annoncée dans sa fiche : la proximité des noms ne la fusionne pas avec Blue Dream."
+            ],
+            "sourceIds": [
+              "botany-variety-buddies",
+              "botany-variety-identity"
+            ]
+          },
+          {
+            "id": "evidence",
+            "title": "Documents et inconnues",
+            "paragraphs": [
+              "La source Dutch Passion est une présentation primaire commerciale ; les fiches et le catalogue HSO décrivent leurs propres matériels. Les composantes Afghani/Thai/Oaxacan peuvent donc être enseignées comme ascendances déclarées, tout en laissant inconnus les génotypes des fondateurs. La couleur ou une odeur fruitée ne permet pas de reconnaître ces parents ni de mesurer une concentration."
+            ],
+            "sourceIds": [
+              "botany-variety-blueberry",
+              "botany-variety-hso2017",
+              "botany-variety-identity"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-variety-blueberry",
+          "botany-variety-hso2017",
+          "botany-variety-hso-blue",
+          "botany-variety-hso-cbd",
+          "botany-variety-buddies",
+          "botany-variety-identity"
+        ],
+        "relatedArticleIds": [
+          "ref-noms-lignees",
+          "ref-cultivars-clones"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "blueberry"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Désignation",
+            "value": "Blue Family et sélections dérivées"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Blueberry et deux versions HSO",
+          "nodes": [
+            {
+              "label": "Blueberry / Dutch Passion",
+              "detail": "Afghani, Thai et Oaxacan : composantes ancestrales annoncées."
+            },
+            {
+              "label": "Blue Dream / HSO",
+              "detail": "Blueberry × Super Silver Haze : croisement annoncé."
+            },
+            {
+              "label": "Blue Dream CBD / HSO",
+              "detail": "Blue Dream × California Orange CBD : croisement annoncé."
+            }
+          ],
+          "caption": "Les composantes ancestrales de Blueberry ne sont pas présentées comme trois parents directs simultanés.",
+          "sourceIds": [
+            "botany-variety-blueberry",
+            "botany-variety-hso-blue",
+            "botany-variety-hso-cbd"
+          ]
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-variety-blueberry",
+        "botany-variety-hso2017",
+        "botany-variety-hso-cbd",
+        "botany-variety-hso-blue",
+        "botany-variety-identity"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-variety-white-widow",
+      "questions": [
+        "Que revendique Shantibaba pour Black Widow ?",
+        "Quelle autre parenté Trikoma publie-t-il pour sa White Widow ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Deux versions réellement vérifiées et maintenues séparées. Ajout de la divergence interne South Indian hybrid/Indica de la page Shantibaba, sans résoudre artificiellement le parentage. Histoire et prix restent attribués.",
+        "Contre-lecture du coordinateur : références réparties par section ; détails techniques de collecte retirés de la lecture publique, incertitudes historiques conservées."
+      ],
+      "patch": {
+        "lead": "Shantibaba revendique sa White Widow devenue Black Widow chez Mr. Nice ; Trikoma décrit une version issue de ses mères conservées à Barcelone.",
+        "sections": [
+          {
+            "id": "history",
+            "title": "Origine et diffusion",
+            "paragraphs": [
+              "Shantibaba revendique sa White Widow devenue Black Widow après le transfert de son matériel chez Mr. Nice, et évoque la Cannabis Cup de 1995. Il s’agit du récit de son détenteur, qui n’épuise pas les controverses sur la création historique. Trikoma décrit aujourd’hui une White Widow issue de ses propres mères conservées à Barcelone."
+            ],
+            "sourceIds": [
+              "botany-variety-black-widow",
+              "botany-variety-trikoma"
+            ]
+          },
+          {
+            "id": "parents",
+            "title": "Parentés annoncées",
+            "paragraphs": [
+              "Dans la présentation Shantibaba, l’ascendance est Brazilian Sativa × South Indian hybrid ; le tableau de la même page abrège la seconde composante en South Indian Indica. Cette différence de formulation ne permet pas de préciser tous les fondateurs. Trikoma annonce Widow Bilbo × Widow BCN pour sa propre version. Ces deux déclarations doivent être représentées séparément."
+            ],
+            "sourceIds": [
+              "botany-variety-black-widow",
+              "botany-variety-trikoma"
+            ]
+          },
+          {
+            "id": "variants",
+            "title": "Versions et récits",
+            "paragraphs": [
+              "White Widow et Black Widow sont reliées dans le récit de Shantibaba. La version Trikoma, White Widow CBD et Sweet and Sour Widow de CBD Crew conservent leurs dossiers et leurs obtenteurs. Une sélection supplémentaire ou l’introduction d’un caractère CBD ne transforme pas tous ces noms en synonymes."
+            ],
+            "sourceIds": [
+              "botany-variety-black-widow",
+              "botany-variety-buddies"
+            ]
+          },
+          {
+            "id": "evidence",
+            "title": "Documents et inconnues",
+            "paragraphs": [
+              "Les pages Shantibaba et Trikoma ont été ouvertes et leurs passages de génétique lus. Elles établissent ce que ces maisons déclarent, sans fournir ici une analyse comparative de tous les matériels. Les enquêtes génétiques sur les noms du commerce montrent l’intérêt de conserver le détenteur et l’échantillon ; elles ne prouvent pas que toute lignée commerciale soit incohérente."
+            ],
+            "sourceIds": [
+              "botany-variety-black-widow",
+              "botany-variety-trikoma",
+              "botany-variety-identity"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-variety-black-widow",
+          "botany-variety-trikoma",
+          "botany-variety-buddies",
+          "botany-variety-identity"
+        ],
+        "relatedArticleIds": [
+          "ref-noms-lignees",
+          "ref-cultivars-clones"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "white-widow"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Désignation",
+            "value": "Deux versions à garder séparées"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Deux annonces White Widow",
+          "nodes": [
+            {
+              "label": "Shantibaba / Black Widow",
+              "detail": "Brazilian Sativa × South Indian hybrid dans le récit ; renommage White Widow → Black Widow annoncé."
+            },
+            {
+              "label": "Trikoma / White Widow",
+              "detail": "Widow Bilbo × Widow BCN ; mères conservées à Barcelone."
+            },
+            {
+              "label": "Comparaison ADN",
+              "detail": "Aucune identité entre les deux versions démontrée ici."
+            }
+          ],
+          "caption": "Les deux branches ne sont pas réunies en un pedigree unique.",
+          "sourceIds": [
+            "botany-variety-black-widow",
+            "botany-variety-trikoma"
+          ]
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-variety-black-widow",
+        "botany-variety-trikoma",
+        "botany-variety-identity"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-variety-cookies",
+      "questions": [
+        "Quelles assertions fondatrices Cookies attendent la relecture du témoignage Jigga ?",
+        "Quelle branche comprenant Thin Mint Cookies est actuellement annoncée par Sherbinskis ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Vrai blocage documentaire : entretien Cannabis Now inaccessible (403), aucune lecture d’extrait de moteur transformée en texte intégral. La déclaration actuelle Sherbinskis confirme la branche Gelato, mais ne suffit pas aux deux affirmations fondatrices Cookies.",
+        "Contre-lecture du coordinateur : références réparties par section ; détails techniques de collecte retirés de la lecture publique, incertitudes historiques conservées."
+      ],
+      "patch": {
+        "lead": "Cookies regroupe des noms de sélections et de descendants. Leurs parentés doivent être attribuées à une version et à un détenteur précis.",
+        "sections": [
+          {
+            "id": "history",
+            "title": "Origine et diffusion",
+            "paragraphs": [
+              "Girl Scout Cookies et ses descendants sont liés à des récits de sélection californiens. Les noms de sélection, leur circulation et l’identité des plantes fondatrices sont trois objets de preuve différents. La chronologie détaillée et les fondateurs de cette famille ne sont pas établis par les documents retenus ici."
+            ],
+            "sourceIds": [
+              "botany-variety-identity"
+            ]
+          },
+          {
+            "id": "parents",
+            "title": "Parentés annoncées",
+            "paragraphs": [
+              "La parenté fondatrice de Girl Scout Cookies reste à confirmer dans le témoignage primaire de Jigga. Le nom F1 Durban demande lui aussi une attribution précise. En génétique, F1 désigne une première génération filiale issue de parents définis ; les caractères F1 dans un nom propre ne constituent pas à eux seuls une certification génétique."
+            ],
+            "sourceIds": [
+              "botany-variety-identity",
+              "botany-diversity-f1f2"
+            ]
+          },
+          {
+            "id": "variants",
+            "title": "Versions et récits",
+            "paragraphs": [
+              "Girl Scout Cookies, Thin Mint Cookies et les descendants portant Cookies doivent être distingués par sélection et détenteur. La page actuelle de Sherbinskis, effectivement ouverte, annonce Thin Mint Cookies et Sunset Sherbert dans la parenté de Gelato. Elle confirme une annonce de branche Gelato, sans vérifier à elle seule les fondateurs de toutes les Cookies.",
+              "Cette annonce commerciale reste distincte d’un génotypage de Thin Mint Cookies ou d’un lot Girl Scout Cookies."
+            ],
+            "sourceIds": [
+              "botany-gelato-sherbinskis-2026",
+              "botany-variety-identity"
+            ]
+          },
+          {
+            "id": "evidence",
+            "title": "Documents et inconnues",
+            "paragraphs": [
+              "Une annonce de Sherbinskis peut documenter les parents revendiqués de sa Gelato sans démontrer les fondateurs de toute la famille Cookies. Un pedigree indépendant demanderait des archives de croisements ou des échantillons identifiés. Les relations non établies restent donc ouvertes."
+            ],
+            "sourceIds": [
+              "botany-gelato-sherbinskis-2026",
+              "botany-variety-identity"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-variety-identity",
+          "botany-diversity-f1f2",
+          "botany-gelato-sherbinskis-2026"
+        ],
+        "relatedArticleIds": [
+          "ref-noms-lignees",
+          "ref-cultivars-clones"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "cookies"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Désignation",
+            "value": "Récit de Jigga et branches ultérieures"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "Cookies : portée des pièces disponibles",
+          "nodes": [
+            {
+              "label": "Entretien Jigga 2020",
+              "detail": "Source primaire identifiée, texte non accessible pendant cette révision."
+            },
+            {
+              "label": "Parenté et nom F1 Durban",
+              "detail": "Assertions historiques à revérifier dans cet entretien."
+            },
+            {
+              "label": "Gelato / Sherbinskis",
+              "detail": "Thin Mint Cookies × Sunset Sherbert, annonce actuelle effectivement ouverte."
+            }
+          ],
+          "caption": "Ce diagramme n’est pas un arbre généalogique certifié et laisse les relations non relues en attente.",
+          "sourceIds": [
+            "botany-gelato-sherbinskis-2026"
+          ]
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-variety-identity",
+        "botany-gelato-sherbinskis-2026"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite. Contrôle du coordinateur : le diagramme final ne reprend pas les dates ou filiations historiques encore bloquées ; son contenu est limité aux distinctions et déclarations effectivement lues."
+      },
+      "quizIdsReviewed": [],
+      "status": "blocked",
+      "blockers": [
+        "Relire l’entretien primaire Jigga du 30 mars 2020 pour confirmer F1 Durban × Florida OG et l’étymologie F1 ; accès direct 403."
+      ]
+    },
+    {
+      "id": "record-variety-gelato",
+      "questions": [
+        "Quelle parenté Sherbinskis publie-t-il pour Gelato ?",
+        "Que désigne Bacio #41 et quels repères historiques restent à confirmer ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Parenté confirmée sur page officielle Sherbinskis ouverte ; Bacio #41 relu. Chronologie 2014, attribution détaillée et sélections historiques attendent l’entretien Cannabis Now inaccessible. Source nouvelle ajoutée, sans fausse lecture de la source ancienne.",
+        "Contre-lecture du coordinateur : références réparties par section ; détails techniques de collecte retirés de la lecture publique, incertitudes historiques conservées."
+      ],
+      "patch": {
+        "lead": "Gelato est une famille de sélections dont Sherbinskis annonce l’ascendance Sunset Sherbert × Thin Mint Cookies. Les sélections numérotées doivent conserver leur identité propre.",
+        "sections": [
+          {
+            "id": "history",
+            "title": "Origine et diffusion",
+            "paragraphs": [
+              "Gelato est une famille de sélections associée à Sherbinskis. La parenté actuellement annoncée par la marque et la date de création initiale sont deux informations distinctes. La chronologie précise des croisements et de leur diffusion reste à confirmer par des archives primaires."
+            ],
+            "sourceIds": [
+              "botany-gelato-sherbinskis-2026"
+            ]
+          },
+          {
+            "id": "parents",
+            "title": "Parentés annoncées",
+            "paragraphs": [
+              "La page officielle actuelle de Sherbinskis, effectivement ouverte, publie Sunset Sherbert × Thin Mint Cookies. Cette annonce peut être conservée comme déclaration de la marque, indépendamment de l’accès manquant à l’entretien de 2017. L’ordre des noms n’est pas utilisé ici pour imposer une orientation maternelle valable pour toutes les sélections."
+            ],
+            "sourceIds": [
+              "botany-gelato-sherbinskis-2026"
+            ]
+          },
+          {
+            "id": "variants",
+            "title": "Versions et récits",
+            "paragraphs": [
+              "La page Sherbinskis identifie notamment Bacio Gelato / #41 et plusieurs membres de sa famille Gelato. Les numéros désignent des sélections : ce ne sont ni des pourcentages ni des générations filiales. Une liste de numéros ne suffit pas à établir les dates de création ni l’identité de chaque clone."
+            ],
+            "sourceIds": [
+              "botany-gelato-sherbinskis-2026"
+            ]
+          },
+          {
+            "id": "evidence",
+            "title": "Documents et inconnues",
+            "paragraphs": [
+              "La parenté annoncée par Sherbinskis est documentée, sans analyse de parentage indépendante fournie. Un lot simplement étiqueté Gelato sans numéro, détenteur et traçabilité ne permet pas de choisir un clone précis. La chronologie historique reste une question distincte de cette annonce actuelle."
+            ],
+            "sourceIds": [
+              "botany-gelato-sherbinskis-2026",
+              "botany-variety-identity"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-gelato-sherbinskis-2026",
+          "botany-variety-identity"
+        ],
+        "relatedArticleIds": [
+          "ref-noms-lignees",
+          "ref-cultivars-clones"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "gelato"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Désignation",
+            "value": "Sélections issues d’une même famille annoncée"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "Gelato : parenté annoncée, sélection précisée",
+          "nodes": [
+            {
+              "label": "Parenté de la marque",
+              "detail": "Sunset Sherbert × Thin Mint Cookies."
+            },
+            {
+              "label": "Exemple nommé",
+              "detail": "Bacio Gelato / #41 sur la page Sherbinskis."
+            },
+            {
+              "label": "Date du croisement",
+              "detail": "Chronologie exacte non établie par la page actuelle de la marque."
+            }
+          ],
+          "caption": "Annonce de marque ouverte en 2026 ; aucune preuve ADN ni date exacte de création n’est déduite.",
+          "sourceIds": [
+            "botany-gelato-sherbinskis-2026"
+          ]
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-variety-identity",
+        "botany-gelato-sherbinskis-2026"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite. Contrôle du coordinateur : le diagramme final ne reprend pas les dates ou filiations historiques encore bloquées ; son contenu est limité aux distinctions et déclarations effectivement lues."
+      },
+      "quizIdsReviewed": [],
+      "status": "blocked",
+      "blockers": [
+        "Récupérer l’entretien Sherbinski 2017 pour la chronologie et la liste historique des sélections ; page primaire 403. La parenté actuelle est confirmée séparément sur Sherbinskis."
+      ]
+    },
+    {
+      "id": "record-variety-cbd-hybrids",
+      "questions": [
+        "Quelle correction Resin Seeds publie-t-il pour Cannatonic ?",
+        "Que sait-on et qu’ignore-t-on des parents et de la variabilité de CBD Therapy ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Amélioration déterminante : la page CBD Crew est effectivement lisible et reconnaît des variations entre descendants ; la vieille limitation « contenu extrait limité » est corrigée. Parentés Cannatonic corrigées et attribuées ; aucun parent CBD Therapy inventé ni promesse médicale reprise.",
+        "Contre-lecture du coordinateur : références réparties par section ; détails techniques de collecte retirés de la lecture publique, incertitudes historiques conservées."
+      ],
+      "patch": {
+        "lead": "Plusieurs programmes distincts, notamment Resin Seeds en Espagne et CBD Crew. Le mot CBD ne définit ni une origine géographique unique ni une espèce.",
+        "sections": [
+          {
+            "id": "history",
+            "title": "Origine et diffusion",
+            "paragraphs": [
+              "Les hybrides CBD regroupent plusieurs programmes de sélection, et non une espèce ou une origine géographique unique. Resin Seeds publie une correction du pedigree de Cannatonic en novembre 2015. CBD Crew décrit séparément son programme CBD Therapy, sans que sa page courante établisse la date exacte de son lancement."
+            ],
+            "sourceIds": [
+              "botany-variety-cannatonic",
+              "botany-variety-therapy"
+            ]
+          },
+          {
+            "id": "parents",
+            "title": "Parentés annoncées",
+            "paragraphs": [
+              "Resin Seeds remplace explicitement l’ancienne annonce MK-Ultra × G13 par Reina Madre × NYCD pour Cannatonic. La page CBD Therapy ne nomme pas ses parents précis ; elle revendique une origine dans des matériels récréatifs à THC plutôt que dans des chanvres industriels. Cette annonce ne permet pas de dessiner des parents inventés."
+            ],
+            "sourceIds": [
+              "botany-variety-cannatonic",
+              "botany-variety-therapy"
+            ]
+          },
+          {
+            "id": "variants",
+            "title": "Versions et récits",
+            "paragraphs": [
+              "Cannatonic, ACDC, Elektra et CBD Therapy gardent leurs histoires et leurs versions propres. La page CBD Crew reconnaît une variation de ratios CBD/THC entre descendants et des efforts pour stabiliser son matériel. Cette variabilité déclarée explique pourquoi le nom d’une semence ou de ses parents n’est pas un résultat d’analyse du lot obtenu."
+            ],
+            "sourceIds": [
+              "botany-variety-therapy",
+              "botany-variety-buddies"
+            ]
+          },
+          {
+            "id": "evidence",
+            "title": "Documents et inconnues",
+            "paragraphs": [
+              "Le correctif Resin Seeds est une pièce primaire datée. La page CBD Crew est également lue, mais ses affirmations thérapeutiques et ses chiffres commerciaux ne sont pas des preuves d’efficacité clinique ni des garanties individuelles. L’absence de parents précis pour CBD Therapy est une lacune de pedigree explicitement représentée ; elle ne prouve pas l’existence d’un ancêtre commun à tous les hybrides CBD."
+            ],
+            "sourceIds": [
+              "botany-variety-cannatonic",
+              "botany-variety-therapy",
+              "botany-variety-identity"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-variety-cannatonic",
+          "botany-variety-therapy",
+          "botany-variety-buddies",
+          "botany-variety-identity"
+        ],
+        "relatedArticleIds": [
+          "ref-noms-lignees",
+          "ref-cultivars-clones"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "cbd-hybrids"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Désignation",
+            "value": "Catégorie de sélection, pas ancêtre unique"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Deux programmes CBD documentés",
+          "nodes": [
+            {
+              "label": "Cannatonic / Resin Seeds",
+              "detail": "Reina Madre × NYCD ; correctif publié en novembre 2015."
+            },
+            {
+              "label": "Ancienne annonce Cannatonic",
+              "detail": "MK-Ultra × G13, explicitement retirée par l’obtenteur."
+            },
+            {
+              "label": "CBD Therapy / CBD Crew",
+              "detail": "Parents précis non publiés sur la page lue ; variations entre descendants reconnues."
+            }
+          ],
+          "caption": "Les deux programmes ne partagent pas un ancêtre unique démontré ; CBD n’est pas une espèce.",
+          "sourceIds": [
+            "botany-variety-cannatonic",
+            "botany-variety-therapy"
+          ]
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-variety-cannatonic",
+        "botany-variety-therapy",
+        "botany-variety-identity"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [],
+  "sensitivePoints": [
+    "Le coordinateur doit contre-vérifier les taxonomies et pedigrees attribués avant validation finale."
+  ]
+}

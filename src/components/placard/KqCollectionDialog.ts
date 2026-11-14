@@ -4,11 +4,12 @@ import { useEffect, useRef, type MouseEvent } from "react";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useOverlayHistory } from "@/hooks/useOverlayHistory";
 
-export function useKqCollectionDialog(onClose: () => void) {
+export function useKqCollectionDialog(onClose: () => void, enabled = true) {
   const ref = useRef<HTMLDialogElement>(null);
-  useOverlayHistory(true, onClose);
-  useBodyScrollLock(true);
+  useOverlayHistory(enabled, onClose);
+  useBodyScrollLock(enabled);
   useEffect(() => {
+    if (!enabled) return;
     const dialog = ref.current;
     const previous = document.activeElement as HTMLElement | null;
     if (dialog && !dialog.open) dialog.showModal();
@@ -16,7 +17,7 @@ export function useKqCollectionDialog(onClose: () => void) {
       dialog?.close();
       if (previous?.isConnected) previous.focus({ preventScroll: true });
     };
-  }, []);
+  }, [enabled]);
   return ref;
 }
 

@@ -1,0 +1,58 @@
+"use client";
+import Image from 'next/image';
+import { useState } from 'react';
+import { Eye, Search, Microscope, ShieldCheck, Leaf, Bug, ArrowDown, ArrowUp } from 'lucide-react';
+import { HEALTH_ATLAS_ENTRIES, HEALTH_ATLAS_CORPUS, type HealthAtlasKind } from '@/lib/kanab-quest-school-health-atlas';
+import { HEALTH_PHOTOS, HEALTH_EPHY_RECORD, HEALTH_OBSERVATION_REQUESTS } from '@/lib/kanab-quest-school-health-documents';
+import { foldCurriculumText } from '@/lib/kanab-quest-school-curriculum';
+import type { HistoryLesson } from '@/lib/kanab-quest-school-history-types';
+import type { KqCurriculumActivityProps } from './KqSchoolCurriculum';
+import { KqHistoryActivity } from './KqHistoryActivity';
+import { KqHistorySources } from './KqHistorySources';
+import styles from './KqSchoolHealth.module.css';
+
+const kinds:Record<HealthAtlasKind,string>={arthropod:'Arthropodes',mollusc:'Mollusques',vertebrate:'Vertébrés',fungus:'Champignons',oomycete:'Oomycètes',virus:'Virus',viroid:'Viroïdes',beneficial:'Auxiliaires'};
+export function KqHealthPhotos({initialId='powdery',ids}:{initialId?:string;ids?:readonly string[]}) {
+  const photos=HEALTH_PHOTOS.filter(photo=>!ids||ids.includes(photo.id));
+  const [selected,setSelected]=useState(initialId); const [zoom,setZoom]=useState(false);
+  const photo=photos.find(item=>item.id===selected)??photos[0];
+  if(!photo)return null;
+  return <section className={styles.photos} data-health-photos aria-label="Photographies documentées">
+    {photos.length>1?<div className={styles.photoChoices}>{photos.map(item=><button type="button" key={item.id} aria-pressed={photo.id===item.id} onClick={()=>{setSelected(item.id);setZoom(false);}}><Image src={item.src} alt="" width={item.width} height={item.height} unoptimized/><span>{item.title}</span></button>)}</div>:null}
+    <figure className={styles.photo}><figcaption><strong>{photo.title}</strong><p>{photo.caption}</p></figcaption><div className={styles.imageViewport} tabIndex={zoom?0:undefined} role={zoom?'region':undefined} aria-label={zoom?'Photographie agrandie, défilement possible':undefined}><Image className={zoom?styles.zoomed:undefined} src={photo.src} alt={photo.alt} width={photo.width} height={photo.height} unoptimized sizes="(max-width: 700px) 95vw, 65vw"/></div><button type="button" aria-pressed={zoom} onClick={()=>setZoom(!zoom)}>{zoom?'Vue entière':'Agrandir la photographie'}</button><p className={styles.caption}>{photo.context}</p><p className={styles.limit}>{photo.limit}</p><details><summary>Crédit, original et licence</summary><p>{photo.credit}</p><p><a href={photo.originalUrl} target="_blank" rel="noreferrer">Image originale</a> · <a href={photo.license} target="_blank" rel="noreferrer">CC BY 4.0</a></p><KqHistorySources ids={photo.sourceIds}/></details></figure>
+  </section>;
+}
+
+export function KqHealthAtlas({passageId,onPassage}:{passageId?:string;onPassage:(id:string)=>void}) {
+  const [query,setQuery]=useState(''),[kind,setKind]=useState(''),[organ,setOrgan]=useState('');
+  const entries=HEALTH_ATLAS_ENTRIES.filter(item=>(!kind||item.kind===kind)&&(!organ||item.organs.includes(organ))&&(!query||foldCurriculumText([item.commonName,item.scientificName,item.regionNote,item.taxonomyNote,...item.signs].join(' ')).includes(foldCurriculumText(query))));
+  const active=HEALTH_ATLAS_ENTRIES.find(item=>`health-atlas-${item.id}`===passageId);
+  return <section data-health-atlas><p>{HEALTH_ATLAS_CORPUS.scope} Vérifié le 12 novembre 2026.</p><div className={styles.filters}><label><Search size={18} aria-hidden/>Nom, signe ou contexte<input type="search" value={query} onChange={event=>setQuery(event.target.value)}/></label><label>Groupe<select value={kind} onChange={event=>setKind(event.target.value)}><option value="">Tous les groupes</option>{Object.entries(kinds).map(([id,label])=><option key={id} value={id}>{label}</option>)}</select></label><label>Organe<select value={organ} onChange={event=>setOrgan(event.target.value)}><option value="">Tous les organes</option>{[...new Set(HEALTH_ATLAS_ENTRIES.flatMap(item=>item.organs))].sort().map(value=><option key={value}>{value}</option>)}</select></label></div>
+    <p role="status">{entries.length} fiches sur {HEALTH_ATLAS_ENTRIES.length}. Un filtre ne pose pas de diagnostic.</p>
+    {active?<article className={styles.entry} data-health-atlas-entry={active.id}><button type="button" onClick={()=>onPassage('health-atlas')}>Revenir aux fiches</button><h4>{active.commonName}</h4><p><i>{active.scientificName}</i> · {kinds[active.kind]}</p><p className={styles.limit}>{active.regionNote}</p><p>{active.taxonomyNote}</p><dl className={styles.facts}><div><dt>Organes</dt><dd>{active.organs.join(' · ')}</dd></div><div><dt>Signes observables</dt><dd>{active.signs.join(' ')}</dd></div><div><dt>Confusions fréquentes</dt><dd>{active.confusions.join(' ')}</dd></div><div><dt>Pour confirmer</dt><dd>{active.confirmation.join(' ')}</dd></div></dl>
+      {HEALTH_PHOTOS.some(photo=>photo.atlasIds.includes(active.id))?<details><summary>Photographies de référence et limites</summary><KqHealthPhotos key={active.id} ids={HEALTH_PHOTOS.filter(photo=>photo.atlasIds.includes(active.id)).map(photo=>photo.id)}/></details>:<p className={styles.caption}>Pas de photographie de référence intégrée pour cette fiche. Ne pas identifier l’organisme par une image voisine.</p>}
+      <details><summary>Conditions, cycle et dispersion</summary><p>{active.conditions.join(' ')}</p><p>{active.lifeCycle}</p><p>{active.spread.join(' ')}</p></details><details><summary>Prévenir et choisir une réponse</summary><h5>Prévention</h5><ul>{active.prevention.map(text=><li key={text}>{text}</li>)}</ul><h5>Options après observation et confirmation</h5><ul>{active.management.map(text=><li key={text}>{text}</li>)}</ul><p className={styles.limit}>{active.limits.join(' ')}</p></details><details><summary>Ce que les preuves établissent</summary>{active.evidence.map((item,index)=><div key={index} className={styles.evidence}><strong>{item.context}</strong><p>{item.finding}</p><p>{item.limitation}</p><KqHistorySources ids={item.sourceIds}/></div>)}</details><KqHistorySources ids={active.sourceIds}/></article>:<div className={styles.atlasGrid}>{entries.map(item=><button type="button" key={item.id} data-health-entry-button={item.id} onClick={()=>onPassage(`health-atlas-${item.id}`)}>{item.role==='beneficial'?<ShieldCheck aria-hidden/>:item.kind==='arthropod'?<Bug aria-hidden/>:<Leaf aria-hidden/>}<strong>{item.commonName}</strong><i>{item.scientificName}</i><small>{kinds[item.kind]} · {item.organs.join(', ')}</small></button>)}</div>}
+    {!entries.length?<p>Essaie un autre terme ou retire un filtre.</p>:null}<details><summary>Périmètre et limites de l’atlas</summary>{[...HEALTH_ATLAS_CORPUS.rules,...HEALTH_ATLAS_CORPUS.limitations].map(text=><p key={text}>{text}</p>)}</details>
+  </section>;
+}
+
+export function KqHealthEphy() { const record=HEALTH_EPHY_RECORD;return <section className={styles.ephy} data-health-ephy><h4>Lire une vraie fiche d’usage</h4><p><strong>{record.name}</strong> · usage {record.usageCode}</p><p>{record.usage}</p><dl className={styles.facts}>{record.fields.map(([title,text])=><div key={title}><dt>{title}</dt><dd>{text}</dd></div>)}</dl><p>Usage autorisé le {record.authorizedAt} · fiche mise à jour le {record.updatedAt} · consultée le {record.checkedAt} (v{record.version}).</p><p className={styles.limit}>Extrait pour apprendre à vérifier. La portée générique inclut le chanvre ; les restrictions de la décision et les recommandations de l’étiquette restent à vérifier pour chaque projet. Aucun traitement n’est prescrit ici.</p><a href={record.url} target="_blank" rel="noreferrer">Consulter toutes les conditions dans E-Phy</a><KqHistorySources ids={record.sourceIds}/></section>; }
+
+export function KqHealthObservation({lesson,...props}:KqCurriculumActivityProps & {lesson:HistoryLesson}) {
+  const key=`${props.storageKey}:observations`;
+  const [requested,setRequested]=useState<string[]>(()=>{try{const stored=JSON.parse(sessionStorage.getItem(key)||'[]');return Array.isArray(stored)?stored.filter(value=>HEALTH_OBSERVATION_REQUESTS.some(item=>item.id===value)):[];}catch{return [];}});
+  const request=(id:string)=>{const next=[...new Set([...requested,id])];setRequested(next);try{sessionStorage.setItem(key,JSON.stringify(next));}catch{/* L’exercice reste accessible sans stockage navigateur. */}};
+  return <section data-health-observation><h4>Le bac qui flétrit</h4><p>Dossier fictif de chanvre autorisé sous abri. Un flétrissement est signalé ; sa cause reste à établir. Demande au moins deux observations avant de comparer les hypothèses.</p><div className={styles.requests}>{HEALTH_OBSERVATION_REQUESTS.map(item=><button type="button" key={item.id} data-health-request={item.id} aria-pressed={requested.includes(item.id)} onClick={()=>request(item.id)}><Eye size={19} aria-hidden/>{item.label}{requested.includes(item.id)?' · consulté':''}</button>)}</div><div aria-live="polite">{HEALTH_OBSERVATION_REQUESTS.filter(item=>requested.includes(item.id)).map(item=><article key={item.id} className={styles.evidence}><h5>{item.label}</h5><p>{item.finding}</p><details><summary>Ce que cela change</summary><p>{item.supports}</p></details></article>)}</div>
+    {requested.length>=2||props.completed?<KqHistoryActivity activity={lesson.activity} {...props}/>:<p role="status">{requested.length} / 2 observations demandées. La conclusion s’ouvrira après la deuxième.</p>}
+  </section>;
+}
+
+const strategy=['Prévenir','Surveiller','Confirmer','Adapter les mesures culturales ou physiques','Évaluer un biocontrôle documenté','Vérifier les interventions autorisées','Vérifier le résultat'];
+export function KqHealthStrategy() {
+  const [order,setOrder]=useState([2,0,4,1,3,6,5]),[checked,setChecked]=useState(false);
+  const correct=order.every((value,index)=>value===index);
+  const move=(index:number,delta:number)=>{const next=[...order];[next[index],next[index+delta]]=[next[index+delta],next[index]];setOrder(next);setChecked(false);};
+  return <section data-health-strategy><h4>Reconstruire la démarche</h4><p>Ordonne les étapes avec les flèches. C’est une démarche de décision : toutes les interventions ne sont pas nécessaires et le suivi peut ramener à l’observation.</p><ol className={styles.strategy}>{order.map((value,index)=><li key={value}><span>{strategy[value]}</span><div><button type="button" disabled={index===0} aria-label={`Monter : ${strategy[value]}`} onClick={()=>move(index,-1)}><ArrowUp size={18} aria-hidden/></button><button type="button" disabled={index===order.length-1} aria-label={`Descendre : ${strategy[value]}`} onClick={()=>move(index,1)}><ArrowDown size={18} aria-hidden/></button></div></li>)}</ol><button type="button" onClick={()=>setChecked(true)}>Vérifier l’ordre</button>{checked?<p role="status">{correct?'Ordre cohérent. Un suivi compare l’évolution des signes et des organismes au point de départ ; une amélioration seule ne prouve pas la cause.':'À revoir : la prévention précède la surveillance ; la confirmation guide les mesures. Les interventions autorisées restent conditionnelles, puis le résultat est vérifié.'}</p>:null}</section>;
+}
+
+export function KqHealthEvidence() {return <div className={styles.evidenceSteps} aria-label="Trois niveaux à distinguer"><div><Eye aria-hidden/><strong>Symptôme</strong><span>Ce qui change sur la plante.</span></div><div><Microscope aria-hidden/><strong>Présence</strong><span>Un organisme observé ou détecté.</span></div><div><ShieldCheck aria-hidden/><strong>Rôle établi</strong><span>Des preuves adaptées relient cet agent aux dommages.</span></div></div>;}

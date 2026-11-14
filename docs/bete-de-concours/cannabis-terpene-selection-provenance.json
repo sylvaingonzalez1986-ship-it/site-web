@@ -1,0 +1,654 @@
+{
+  "version": "2026-11-14.cannabis-terpene-cards1",
+  "verifiedAt": "2026-11-14",
+  "scope": "Sélection éditoriale de cartes illustrées liées à Cannabis sativa, y compris le chanvre. Ce sous-ensemble n’est ni un inventaire exhaustif ni une liste de molécules exclusives au cannabis.",
+  "counts": {
+    "archivedCorpus": 86,
+    "selectedCards": 28,
+    "excludedFromCards": 58,
+    "selectedIdentificationLevels": {
+      "reference-standard": 19,
+      "ri-ms-supported": 9
+    }
+  },
+  "selectionFile": "src/lib/kanab-quest-cannabis-terpene-selection.ts",
+  "preservedCorpus": "src/lib/kanab-quest-school-terpenes-compounds.ts",
+  "inclusionRules": [
+    "Présence mesurée dans une matrice issue du cannabis, relevée dans les résultats d’une étude originale ; une enzyme recombinante seule ne suffit pas.",
+    "Identification par étalon ou soutenue par spectre de masse et indice de rétention ; exclusion des identifications classées tentative dans le corpus.",
+    "Description olfactive documentée et exploitable pour une illustration ; conservation des limites de stéréochimie du corpus.",
+    "Les huiles essentielles et hydrolats restent explicitement désignés comme produits transformés ; leurs profils ne sont pas attribués aux fleurs fraîches.",
+    "Les dessins représentent des analogies olfactives. Ils ne prouvent ni présence dans la plante dessinée, ni intensité, ni effet."
+  ],
+  "interpretation": "Les 58 entrées écartées des cartes ne sont pas déclarées absentes du cannabis. Certaines y sont bien mesurées ; elles restent dans le corpus source avec leurs réserves analytiques ou sans description olfactive exploitable. Les niveaux de preuve ne sont pas rehaussés par cette sélection.",
+  "sources": [
+    {
+      "id": "tp-booth2020",
+      "title": "Terpene Synthases and Terpene Variation in Cannabis sativa",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479917/",
+      "consultedUrl": "https://academic.oup.com/view-large/336073883",
+      "access": "Tableau original de l’éditeur relu directement.",
+      "locator": "Tableau 1 et légende des astérisques",
+      "limitation": "Les lignes étoilées emploient un étalon ; les autres MS/RI. Les conditions Purple Kush diffèrent. Aucune fréquence universelle n’est déduite."
+    },
+    {
+      "id": "tp-fischedick2017",
+      "title": "Identification of Terpenoid Chemotypes Among High (−)-trans-Δ9-Tetrahydrocannabinol-Producing Cannabis sativa L. Cultivars",
+      "url": "https://doi.org/10.1089/can.2016.0040",
+      "consultedUrl": "https://accurateclinic.com/wp-content/uploads/2020/05/Identification-of-Terpenoid-Chemotypes-Among-High-%E2%88%92-trans-%CE%949-Tetrahydrocannabinol-Producing-Cannabis-sativa-L.-Cultivars-0-2017.pdf",
+      "access": "PDF original intégral, copie hébergée par Accurate Clinic ; accès éditeur refusé.",
+      "locator": "Pages 36–39 ; tableaux 1–2 ; correction cis/trans-ocimène page 37",
+      "limitation": "Un dispensaire, 233 échantillons, 16 analytes ciblés. Les résultats ne définissent pas une composition universelle."
+    },
+    {
+      "id": "tp-ovidi2022",
+      "title": "Hemp (Cannabis sativa L., Kompolti cv.) and Hop (Humulus lupulus L., Chinook cv.) Essential Oil and Hydrolate: HS-GC-MS Chemical Investigation and Apoptotic Activity Evaluation",
+      "url": "https://www.mdpi.com/1424-8247/15/8/976",
+      "access": "Texte et tableaux originaux relus directement.",
+      "locator": "Tableaux 1–2, colonnes Hemp EO et Hemp Hy",
+      "limitation": "Huiles/hydrolats transformés. Seule la composition analytique est utilisée."
+    },
+    {
+      "id": "tp-zager2019",
+      "title": "Gene Networks Underlying Cannabinoid and Terpenoid Accumulation in Cannabis",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+      "consultedUrl": "https://pmc.ncbi.nlm.nih.gov/articles/pmid/31138625/",
+      "access": "Passage original indexé revérifié ; accès direct PMC bloqué. Le corpus antérieur contient la lecture du tableau 1.",
+      "locator": "Résultats de profilage, nérolidol quantifiable dans Black Lime, tableau 1",
+      "limitation": "Le nérolidol n’est quantifiable que dans cet échantillon parmi ceux comparés ; la fonction des synthases est une preuve distincte."
+    },
+    {
+      "id": "tp-flavornet",
+      "title": "Flavornet, index original de descripteurs olfactifs",
+      "url": "https://flavornet.org/d_odors.html",
+      "access": "Index et fiches individuelles relus.",
+      "locator": "Entrées par composé et champ Percepts",
+      "limitation": "Base documentaire GC-olfactométrique originale ; les articles historiques cités n’ont pas tous été relus. Descripteurs qualitatifs, pas une mesure de l’odeur d’un échantillon de cannabis."
+    },
+    {
+      "id": "tp-hops2021",
+      "title": "Characterization of Wild Corsican Hops and Assessment of the Performances of German Hops in Corsican Environmental Conditions through a Multidisciplinary Approach",
+      "url": "https://www.mdpi.com/2076-3417/11/9/3756",
+      "access": "Section 3.3 originale relue.",
+      "locator": "Paragraphe suivant le tableau 6 : (E)-β-farnésène et α-sélinène",
+      "limitation": "Descripteurs rapportés dans une étude du houblon ; ils ne constituent pas un test sensoriel de cannabis."
+    }
+  ],
+  "selected": [
+    {
+      "id": "alphapinene",
+      "name": "α-Pinène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : (+)-α-pinène et (−)-α-pinène."
+      },
+      "aroma": {
+        "description": "Pin, térébenthine.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "betapinene",
+      "name": "β-Pinène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : (+)-β-pinène et (−)-β-pinène."
+      },
+      "aroma": {
+        "description": "Pin, résine.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "myrcene",
+      "name": "Myrcène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : Myrcene"
+      },
+      "aroma": {
+        "description": "Épicé, résineux, herbacé.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "limonene",
+      "name": "Limonène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : (−)-Limonene"
+      },
+      "aroma": {
+        "description": "Citron, agrumes.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "camphene",
+      "name": "Camphène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : (+)-Camphene et (−)-Camphene."
+      },
+      "aroma": {
+        "description": "Camphré.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "alpha-phellandrene",
+      "name": "α-Phellandrène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-fischedick2017",
+        "url": "https://accurateclinic.com/wp-content/uploads/2020/05/Identification-of-Terpenoid-Chemotypes-Among-High-%E2%88%92-trans-%CE%949-Tetrahydrocannabinol-Producing-Cannabis-sativa-L.-Cultivars-0-2017.pdf",
+        "matrix": "fleurs commercialisées",
+        "locator": "Tableau 1 et données du tableau 2 : α-Phellandrene."
+      },
+      "aroma": {
+        "description": "Mentholé, épicé.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/info/99-83-2.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "delta3-carene",
+      "name": "Δ3-Carène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-fischedick2017",
+        "url": "https://accurateclinic.com/wp-content/uploads/2020/05/Identification-of-Terpenoid-Chemotypes-Among-High-%E2%88%92-trans-%CE%949-Tetrahydrocannabinol-Producing-Cannabis-sativa-L.-Cultivars-0-2017.pdf",
+        "matrix": "fleurs commercialisées",
+        "locator": "Tableau 1 : 3-Carene ; tableau 2 : certaines détections seulement."
+      },
+      "aroma": {
+        "description": "Résine, citron.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "alpha-terpinene",
+      "name": "α-Terpinène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-fischedick2017",
+        "url": "https://accurateclinic.com/wp-content/uploads/2020/05/Identification-of-Terpenoid-Chemotypes-Among-High-%E2%88%92-trans-%CE%949-Tetrahydrocannabinol-Producing-Cannabis-sativa-L.-Cultivars-0-2017.pdf",
+        "matrix": "fleurs commercialisées",
+        "locator": "Tableau 1 : α-Terpinene ; tableau 2 pour les échantillons positifs."
+      },
+      "aroma": {
+        "description": "Citron.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "gamma-terpinene",
+      "name": "γ-Terpinène",
+      "identificationLevel": "ri-ms-supported",
+      "presence": {
+        "sourceId": "tp-ovidi2022",
+        "url": "https://www.mdpi.com/1424-8247/15/8/976",
+        "matrix": "huile essentielle de chanvre Kompolti",
+        "locator": "Tableau 1, ligne 15, Hemp EO"
+      },
+      "aroma": {
+        "description": "Térébenthine ; note d’essence dans l’index sensoriel.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/info/99-85-4.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "terpinolene",
+      "name": "Terpinolène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : Terpinolene"
+      },
+      "aroma": {
+        "description": "Pin ; note plastique rapportée par Flavornet.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "e-beta-ocimene",
+      "name": "(E)-β-Ocimène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : (E)-β-ocimene"
+      },
+      "aroma": {
+        "description": "Herbacé, doux.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "z-beta-ocimene",
+      "name": "(Z)-β-Ocimène",
+      "identificationLevel": "ri-ms-supported",
+      "presence": {
+        "sourceId": "tp-ovidi2022",
+        "url": "https://www.mdpi.com/1424-8247/15/8/976",
+        "matrix": "huile essentielle de chanvre Kompolti",
+        "locator": "Tableau 1, ligne 14, Hemp EO"
+      },
+      "aroma": {
+        "description": "Floral, agrumes, herbacé.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "linalool",
+      "name": "Linalol",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : (+)-linalool"
+      },
+      "aroma": {
+        "description": "Floral, lavande.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "fenchol",
+      "name": "Fenchol",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : Endo-fenchyl-alcohol"
+      },
+      "aroma": {
+        "description": "Camphré.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/info/1632-73-1.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "borneol",
+      "name": "Bornéol",
+      "identificationLevel": "ri-ms-supported",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : Borneol, sans astérisque d’étalon."
+      },
+      "aroma": {
+        "description": "Camphré.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "alpha-terpineol",
+      "name": "α-Terpinéol",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : (+)-α-terpineol*."
+      },
+      "aroma": {
+        "description": "Mentholé, anisé.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/info/98-55-5.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "terpinen4-ol",
+      "name": "Terpinène-4-ol",
+      "identificationLevel": "ri-ms-supported",
+      "presence": {
+        "sourceId": "tp-ovidi2022",
+        "url": "https://www.mdpi.com/1424-8247/15/8/976",
+        "matrix": "huile essentielle et hydrolat de chanvre Kompolti",
+        "locator": "Tableau 1, ligne 22, Hemp EO ; tableau 2, ligne 22, Hemp Hy"
+      },
+      "aroma": {
+        "description": "Muscade, térébenthine.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/info/562-74-3.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "eucalyptol",
+      "name": "1,8-Cinéole",
+      "identificationLevel": "ri-ms-supported",
+      "presence": {
+        "sourceId": "tp-ovidi2022",
+        "url": "https://www.mdpi.com/1424-8247/15/8/976",
+        "matrix": "hydrolat de chanvre Kompolti",
+        "locator": "Tableau 2, ligne 12, Hemp Hy"
+      },
+      "aroma": {
+        "description": "Mentholé.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "p-cymene",
+      "name": "p-Cymène",
+      "identificationLevel": "ri-ms-supported",
+      "presence": {
+        "sourceId": "tp-ovidi2022",
+        "url": "https://www.mdpi.com/1424-8247/15/8/976",
+        "matrix": "huile essentielle et hydrolat de chanvre Kompolti",
+        "locator": "Tableau 1, ligne 12, Hemp EO ; tableau 2, ligne 11, Hemp Hy"
+      },
+      "aroma": {
+        "description": "Agrumes ; note d’essence également rapportée.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "beta-caryophyllene",
+      "name": "β-Caryophyllène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : β-caryophyllene*"
+      },
+      "aroma": {
+        "description": "Boisé, épicé.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "alpha-humulene",
+      "name": "α-Humulène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : α-humulene*"
+      },
+      "aroma": {
+        "description": "Boisé.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "e-beta-farnesene",
+      "name": "(E)-β-Farnésène",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : (E)-β-farnesene*."
+      },
+      "aroma": {
+        "description": "Agrumes, herbacé.",
+        "sourceId": "tp-hops2021",
+        "url": "https://www.mdpi.com/2076-3417/11/9/3756",
+        "locator": "Section 3.3, paragraphe suivant le tableau 6"
+      }
+    },
+    {
+      "id": "alpha-selinene",
+      "name": "α-Sélinène",
+      "identificationLevel": "ri-ms-supported",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : α-selinene, sans astérisque."
+      },
+      "aroma": {
+        "description": "Herbacé.",
+        "sourceId": "tp-hops2021",
+        "url": "https://www.mdpi.com/2076-3417/11/9/3756",
+        "locator": "Section 3.3, paragraphe suivant le tableau 6"
+      }
+    },
+    {
+      "id": "guaiol",
+      "name": "Guaiol",
+      "identificationLevel": "ri-ms-supported",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : Guiaol"
+      },
+      "aroma": {
+        "description": "Boisé, balsamique.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/info/489-86-1.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "alpha-bisabolol",
+      "name": "α-Bisabolol",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : α-Bisabolol"
+      },
+      "aroma": {
+        "description": "Floral, épicé.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "nerolidol",
+      "name": "Nérolidol",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-zager2019",
+        "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+        "matrix": "boutons floraux",
+        "locator": "Tableau 1 et résultats : nérolidol quantifiable dans Black Lime"
+      },
+      "aroma": {
+        "description": "Floral, boisé.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "caryophyllene-oxide",
+      "name": "Oxyde de caryophyllène",
+      "identificationLevel": "ri-ms-supported",
+      "presence": {
+        "sourceId": "tp-booth2020",
+        "url": "https://academic.oup.com/view-large/336073883",
+        "matrix": "fleurs matures",
+        "locator": "Tableau 1 : Caryophyllene oxide"
+      },
+      "aroma": {
+        "description": "Herbacé, épicé, doux.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    },
+    {
+      "id": "geranyl-acetate",
+      "name": "Acétate de géranyle",
+      "identificationLevel": "reference-standard",
+      "presence": {
+        "sourceId": "tp-fischedick2017",
+        "url": "https://accurateclinic.com/wp-content/uploads/2020/05/Identification-of-Terpenoid-Chemotypes-Among-High-%E2%88%92-trans-%CE%949-Tetrahydrocannabinol-Producing-Cannabis-sativa-L.-Cultivars-0-2017.pdf",
+        "matrix": "fleurs commercialisées",
+        "locator": "Tableau 1 : Geranyl-acetate ; tableau 2 : détections variables."
+      },
+      "aroma": {
+        "description": "Rose.",
+        "sourceId": "tp-flavornet",
+        "url": "https://flavornet.org/d_odors.html",
+        "locator": "Entrée du composé, descripteurs olfactifs"
+      }
+    }
+  ],
+  "excludedGroups": [
+    {
+      "reason": "Odeur propre non établie dans le corpus",
+      "ids": [
+        "gamma-eudesmol"
+      ],
+      "sourceUrl": "https://academic.oup.com/view-large/336073883",
+      "note": "La présence dans le cannabis est bien documentée ; cette exclusion concerne la carte olfactive."
+    },
+    {
+      "reason": "Géométrie de la détection végétale insuffisamment raccordée à celle du descripteur olfactif",
+      "ids": [
+        "alpha-farnesene",
+        "alpha-bergamotene"
+      ],
+      "sourceUrls": [
+        "https://academic.oup.com/view-large/336073883",
+        "https://flavornet.org/d_odors.html"
+      ],
+      "note": "Fiches regroupées de plusieurs géométries ; éviter qu’une seule illustration ne suggère une identité sensorielle résolue."
+    },
+    {
+      "reason": "Entrées d’inventaire sans description olfactive établie dans le corpus ; plusieurs identifications sont provisoires",
+      "ids": [
+        "beta-phellandrene",
+        "delta-elemene",
+        "gamma-elemene",
+        "pinan2-ol",
+        "delta-selinene",
+        "beta-selinene",
+        "selina-3-7-11-diene",
+        "germacrene-b",
+        "valencene",
+        "bulnesol",
+        "isoborneol",
+        "cis-sabinene-hydrate",
+        "humulene-epoxide-ii",
+        "isocaryophyllene",
+        "alpha-gurjunene",
+        "alpha-himachalene",
+        "gamma-gurjunene",
+        "beta-maaliene",
+        "cedr-8-en-15-ol",
+        "ledene-oxide-ii",
+        "eudesm-7-11-en-4-ol",
+        "p-cymenene",
+        "p-mentha-1-3-8-triene",
+        "cis-p-mentha-2-8-dien-1-ol",
+        "alpha-eudesmol",
+        "beta-eudesmol",
+        "10-epi-gamma-eudesmol",
+        "alpha-cubebene",
+        "ylangene",
+        "copaene",
+        "di-epi-alpha-cedrene",
+        "alpha-longipinene",
+        "longicyclene",
+        "aristolene",
+        "beta-gurjunene",
+        "alpha-bulnesene",
+        "sesquisabinene",
+        "viridiflorene",
+        "gamma-himachalene",
+        "beta-cadinene",
+        "gamma-amorphene",
+        "alpha-muurolene",
+        "eremophila-1-10-11-diene",
+        "alpha-dehydro-ar-himachalene",
+        "trans-alpha-bisabolene",
+        "di-epi-1-10-cubenol",
+        "o-cymene",
+        "fenchone",
+        "cis-linalool-oxide",
+        "beta-fenchol",
+        "citronellol",
+        "nerol",
+        "neral",
+        "carene-2",
+        "carene-4"
+      ],
+      "note": "Exclusion du catalogue illustré, sans conclusion d’absence dans le cannabis et sans nouvelle révision analytique des 55 dossiers."
+    }
+  ],
+  "focusedCheck": {
+    "id": "gamma-terpinene",
+    "identity": "γ-terpinène, CAS 99-85-4 ; distinct du γ-terpinéol",
+    "presence": {
+      "url": "https://www.mdpi.com/1424-8247/15/8/976",
+      "locator": "Tableau 1, ligne 15, Hemp EO ; LRI mesuré 1056, référence 1054"
+    },
+    "odor": {
+      "url": "https://flavornet.org/info/99-85-4.html",
+      "locator": "Percepts",
+      "terms": [
+        "gasoline",
+        "turpentine"
+      ]
+    }
+  }
+}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useId, useRef, useState } from "react";
+import Link from "@/components/navigation/NavigationLink";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqProductionFacilities } from "@/lib/kanab-quest-staff-production";
 import { KQ_STAFF_PRODUCTION_STEPS } from "@/lib/kanab-quest-staff-weekly";
@@ -75,6 +76,7 @@ export function KqStaffProduction({ snapshot, disabled, prepare, onWeekly }: {
       <div><dt>Marge après salaires imputés</dt><dd>{formatKqCash(margin)}</dd></div>
     </dl><details className={styles.history}><summary>Détail de la marge</summary><p className={styles.muted}>Depuis le {date(stats.startedAt)}. Salaires imputés estimés : {formatKqCash(stats.salaryCostCents)} ; hors amortissement et autres charges de l’entreprise. Le règlement de la paie reste dans Personnel.</p></details></> : null}
     <KqStaffProductionFlow snapshot={snapshot} disabled={disabled} employeeId={employeeId} onEmployee={setEmployee} onAssign={openAssignment} onWeekly={onWeekly} />
+    {production?.facility && <div className={styles.actions}><Link className={layout.equipmentLink} data-staff-production-equipment href={`/arene/placard?view=workshop&catalog=equipment&zone=${encodeURIComponent(production.facility.zoneId)}&from=staff`} aria-disabled={disabled || undefined} onClick={event => { if (disabled) event.preventDefault(); }}>Choisir le matériel de la zone</Link></div>}
     {snapshot.state.tasks.filter(task => task.kind === "production" && task.day === snapshot.calendar.day).map(task => <div key={task.id} className={layout.shift}>
       <KqProgressMeter label={`${snapshot.state.employees.find(employee => employee.id === task.employeeId)?.name ?? "Employé"} · ${KQ_STAFF_PRODUCTION_STEPS[task.productionStep ?? "auto"]}`} value={task.productionWorkedHours ?? 0} max={task.hours} valueLabel={`${n(task.productionWorkedHours ?? 0)} / ${n(task.hours)} h effectuées`} />
       {task.productionReason ? <p role="status">{task.productionReason}</p> : null}
@@ -84,7 +86,8 @@ export function KqStaffProduction({ snapshot, disabled, prepare, onWeekly }: {
         <div className={styles.fields}><label>Zone dédiée<select value={zoneId} onChange={event => setZone(event.target.value)}><option value="">Choisir une zone</option>{options.map(zone => <option key={zone.zoneId} value={zone.zoneId}>{zone.name} · {n(zone.areaM2)} m²{!zone.available ? " · indisponible" : ""}</option>)}</select></label>
           <label>Produit vendu<select value={route} onChange={event => setRoute(event.target.value as KqProductionRoute)}><option value="flower">Fleurs préparées</option><option value="dry-sift">Hash tamisé · tamis réservé</option></select></label></div>
         <div className={styles.fields}><label>Plafond de dépenses / jour (€ du jeu)<input type="number" min="0" max="1000000" step="0.01" value={budget} onChange={event => setBudget(event.target.value)} /></label><label>Trésorerie minimale (€ du jeu)<input type="number" min="0" max="1000000" step="0.01" value={reserve} onChange={event => setReserve(event.target.value)} /></label></div>
-        {selected ? <p>Cycle : {formatKqCash(selected.cycleCostCents)} de fournitures et énergie, hors salaires et transformation. Capacité réservée : {n(selected.harvestGrams)} g ; la récolte dépend de la compétence.</p> : <p>Aménage une zone disponible dans l’Entrepôt pour commencer.</p>}
+        {selected ? <><p>Cycle : {formatKqCash(selected.cycleCostCents)} de fournitures et énergie, hors salaires et transformation. Potentiel du matériel : {n(selected.harvestGrams)} g ; la récolte dépend aussi de la compétence. Bonus qualité du matériel : +{n(selected.qualityBonus ?? 0)} pts.</p>
+          <div className={styles.actions}><Link className={layout.equipmentLink} href={`/arene/placard?view=workshop&catalog=equipment&zone=${encodeURIComponent(selected.zoneId)}&from=staff`} aria-disabled={disabled || undefined} onClick={event => { if (disabled) event.preventDefault(); }}>Comparer le matériel</Link></div></> : <p>Aménage une zone disponible dans l’Entrepôt pour commencer.</p>}
         {selected?.reason ? <p className={styles.callout}>{selected.reason}</p> : null}
         {route === "dry-sift" && !selected?.processingAvailable ? <p className={styles.callout}>Un tamis disponible est nécessaire pour cette filière.</p> : null}
         <div className={styles.actions}><button type="button" disabled={!valid || !selected?.available || route === "dry-sift" && !selected.processingAvailable} onClick={() => configure(true)}>Vérifier et activer</button>{settings?.enabled ? <button type="button" onClick={() => configure(false)}>Suspendre les nouveaux cycles</button> : null}</div>

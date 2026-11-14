@@ -1,0 +1,50 @@
+.cycle { min-width: 0; color: var(--game-ink, #172923); }
+.cycle *, .cycle *::before, .cycle *::after { box-sizing: border-box; }
+.instruction { margin: 0 0 10px; font-weight: 650; }
+.explorer { display: grid; grid-template-columns: minmax(240px, .9fr) minmax(0, 1.1fr); gap: 28px; align-items: center; }
+.ring { position: relative; width: 100%; max-width: 370px; aspect-ratio: 1; margin-inline: auto; }
+.connections { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.ring ol { list-style: none; padding: 0; margin: 0; }
+.ring li { position: absolute; translate: -50% -50%; }
+.cycle .stageButton { display: inline-flex; align-items: center; justify-content: center; gap: 4px; min-width: 54px; min-height: 50px; padding: 6px; }
+.stageButton span { font-weight: 800; }
+.cycle button { color: var(--game-ink, #172923); background: transparent; border: 2px solid transparent; border-radius: 0; box-shadow: none; --game-control-art: var(--game-control-paper, url('/placard/ui/control-paper-v2.webp')); border-image: var(--game-control-art) var(--game-control-slice, 40) fill / var(--game-control-edge, 14px) / 0 stretch; cursor: pointer; }
+.cycle button[aria-pressed=true] { --game-control-art: var(--game-control-teal, url('/placard/ui/control-teal-v2.webp')); color: #fff8e7; }
+.cycle :is(button, summary):focus-visible { outline: 3px solid #087b70; outline-offset: 4px; }
+.cycle button:disabled { opacity: .5; cursor: default; }
+.ringCenter { position: absolute; top: 50%; left: 50%; translate: -50% -50%; width: 49%; display: grid; gap: 7px; text-align: center; pointer-events: none; }
+.ringCenter span, .ringCenter small { font-size: 12px; line-height: 1.4; }
+.ringCenter strong { font-size: clamp(16px, 2vw, 23px); line-height: 1.2; overflow-wrap: anywhere; }
+.activeStage { min-width: 0; }
+.cycle .stageCopy h4 { margin: 0; font-size: 23px; }
+.cycle .stageCopy p { margin: 5px 0 12px; }
+.observation { margin: 0; display: grid; justify-items: center; gap: 10px; }
+.observation figcaption, .flowerPair figcaption { max-width: 48ch; font-size: 13px; line-height: 1.5; text-align: center; }
+.developmentCrop { position: relative; overflow: hidden; width: 130px; max-width: 100%; aspect-ratio: 1 / 2; }
+.developmentCrop img { position: absolute; top: 0; height: 100%; max-width: none; }
+.vegetativeCrop { width: 260px; aspect-ratio: 1; }
+.flowerPair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: start; }
+.flowerPair figure { margin: 0; }
+.flowerPair img { display: block; width: 100%; height: auto; }
+.flowerPair figcaption { margin-top: 8px; }
+.symbol { display: block; width: 100%; max-width: 360px; height: auto; }
+.symbol text { fill: var(--game-ink, #172923); font: 16px var(--font-sans, sans-serif); }
+.specimen { display: block; width: 100%; max-width: 360px; height: auto; }
+.ageSymbol { display: grid; justify-items: center; align-content: center; gap: 15px; min-height: 210px; color: #447453; }
+.ageSymbol span { font-weight: 700; }
+.controls { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+.cycle .controls button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 10px 14px; }
+.limits { margin-top: 18px; border-top: 1px solid #17292330; }
+.limits summary { cursor: pointer; min-height: 44px; padding-block: 12px; font-weight: 700; }
+.limits p { max-width: 68ch; }
+@media (hover: hover) { .cycle button:hover:not(:disabled):not([aria-pressed=true]) { --game-control-art: var(--game-control-gold, url('/placard/ui/control-gold-v2.webp')); } }
+@media (max-width: 700px) {
+  .explorer { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .ring { max-width: 280px; }
+  .stageCopy { text-align: center; }
+  .cycle .stageCopy h4 { font-size: 21px; }
+  .developmentCrop { width: 105px; }
+  .vegetativeCrop { width: 210px; }
+  .cycle .controls button { flex: 1; padding-inline: 8px; }
+  .flowerPair { gap: 8px; }
+}

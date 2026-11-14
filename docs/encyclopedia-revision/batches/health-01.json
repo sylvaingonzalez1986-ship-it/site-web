@@ -1,0 +1,1814 @@
+{
+  "domain": "health",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "health-lesson-diagnosis",
+      "title": "Diagnosing Plant Disorders — GardenNotes 102",
+      "author": "David Whiting, Carol O’Meara et Mary Small ; relecteurs John Murgel et Matias Reynoso",
+      "organization": "Colorado State University Extension",
+      "published": "Page affichant publication juin 2017 et relecture avril 2013 ; consultée le 12 novembre 2026",
+      "url": "https://extension.colostate.edu/resource/diagnosing-plant-disorders/",
+      "passage": "Asking Questions ; étapes 1, 2a–2c, 3 et 4 : contexte, symptômes/signes, diagnostic différentiel et justification d’une intervention.",
+      "access": "full-text",
+      "limitation": "Guide général de diagnostic, pas essai de chanvre. Les indices de répartition sont des tendances, pas des règles absolues. Aucun seuil, traitement ni conseil juridique américain n’est transféré au parcours.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://extension.colostate.edu/resource/diagnosing-plant-disorders/",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Asking Questions ; étapes 1–4 et diagnostic différentiel"
+          ],
+          "result": "Distinguer symptômes et signes, historique et distribution ; envisager causes biotiques et abiotiques avant décision.",
+          "assertionsSupported": [
+            "Distinguer symptômes et signes, historique et distribution ; envisager causes biotiques et abiotiques avant décision."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-lesson-abiotic",
+      "title": "Abiotic vs. biotic issues in hemp fields",
+      "author": "Jocelyn Schwartz et Christine D. Smart",
+      "organization": "Cornell University, Hemp Research",
+      "published": "Janvier 2024",
+      "url": "https://hemp.cals.cornell.edu/resources/reports-factsheets/2024-factsheets/abiotic-vs-biotic-issues-in-hemp-fields/",
+      "passage": "Definitions, Abiotic disorders, Abiotic Cues et Biotic Cues : eau, nutrition, dommages physiques et indices à rechercher.",
+      "access": "excerpt",
+      "limitation": "Texte original indexé consulté ; ouverture directe en erreur 502. Les généralisations sur vitesse, répartition ou gamme d’hôtes sont traitées comme indices non exclusifs, jamais comme clés certaines de diagnostic. Aucun programme de nutrition ou d’irrigation repris. Révision du 14 novembre 2026 : Erreur 502 au lien Cornell exact ; raisonnement remplacé par CSU GardenNotes 102.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Extraits de la publication originale consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://hemp.cals.cornell.edu/resources/reports-factsheets/2024-factsheets/abiotic-vs-biotic-issues-in-hemp-fields/",
+          "openedAt": "2026-11-14",
+          "status": "not-reverified",
+          "sectionsOpened": [],
+          "result": "inaccessible",
+          "details": "Erreur 502 au lien Cornell exact ; raisonnement remplacé par CSU GardenNotes 102.",
+          "assertionsSupported": []
+        }
+      ]
+    },
+    {
+      "id": "health-lesson-punja2019",
+      "title": "Pathogens and Molds Affecting Production and Quality of Cannabis sativa L.",
+      "author": "Zamir K. Punja, Danielle Collyer, Cameron Scott, Samantha Lung, Janesse Holmes et Darren Sutton",
+      "organization": "Frontiers in Plant Science 10:1120",
+      "published": "17 octobre 2019 ; DOI 10.3389/fpls.2019.01120",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+      "passage": "Méthodes d’identification ; résultats Root-Infecting Pathogens ; figures 4, 5 et 7 et texte sur l’identité provisoire de l’oïdium ; discussion Pythium catenulatum/endophytes ; financement.",
+      "access": "full-text",
+      "limitation": "Étude de sites autorisés canadiens, pas inventaire représentatif de tous les chanvres. Pathogénicité vérifiée pour certains isolats, pas pour toute détection ; G. cichoracearum sensu lato est explicitement provisoire en 2019. Financement Agrima Botanicals, NSERC et programmes publics canadiens. Aucun protocole expérimental ou de production reproduit.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Frontiers 2019 : résultats Root and Crown Diseases, Flower Bud Rots, Powdery Mildew ; figures 2,4,5,7 et Copyright"
+          ],
+          "result": "Photographies sur Cannabis et caractérisation d’isolats ; Fusarium/Pythium et maladies racinaires, Botrytis et pourritures, oïdium historiquement G. cichoracearum sensu lato. Licence globale CC BY 4.0, MAIS figure2 A,D,E,G reproduits sous permission tierce : figure entière exclue de la proposition. Figures4,5,7 sans cette réserve. Figure7 possède huit panneaux A–H ; la légende éditoriale mentionne I par erreur.",
+          "assertionsSupported": [
+            "Photographies sur Cannabis et caractérisation d’isolats ; Fusarium/Pythium et maladies racinaires, Botrytis et pourritures, oïdium historiquement G. cichoracearum sensu lato. Licence globale CC BY 4.0, MAIS figure2 A,D,E,G reproduits sous permission tierce : figure entière exclue de la proposition. Figures4,5,7 sans cette réserve. Figure7 possède huit panneaux A–H ; la légende éditoriale mentionne I par erreur."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-lesson-oomycetes",
+      "title": "Oomycetes — Plant Health Instructor",
+      "author": "American Phytopathological Society, centre pédagogique",
+      "organization": "APS",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.apsnet.org/edcenter/Pages/OomycetesLab.aspx",
+      "passage": "Introduction taxonomique, relation entre oomycètes et champignons, exemples Pythium et Phytophthora.",
+      "access": "excerpt",
+      "limitation": "Sections taxonomiques consultées ; exercices de laboratoire non repris. Les oomycètes ne sont pas de vrais champignons. Les généralisations anciennes sur les parois et tous les cycles ne servent pas de critères d’identification dans le cours.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Extraits de la publication originale consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.apsnet.org/edcenter/Pages/OomycetesLab.aspx",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Introduction, structures végétatives et reproduction"
+          ],
+          "result": "Oomycètes distincts des Fungi ; Pythium lié à fonte et pourriture racinaire. Mobilité des zoospores non généralisable à toutes les espèces.",
+          "assertionsSupported": [
+            "Oomycètes distincts des Fungi ; Pythium lié à fonte et pourriture racinaire. Mobilité des zoospores non généralisable à toutes les espèces."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-lesson-viroids",
+      "title": "Subviral Agent: Viroids",
+      "author": "Francesco Di Serio, Michela Chiumenti, Shi-Fang Li et collaborateurs",
+      "organization": "International Committee on Taxonomy of Viruses",
+      "published": "Novembre 2020 ; révision octobre 2026",
+      "url": "https://ictv.global/report/chapter/viroids/viroids",
+      "passage": "Summary et tableau 1 : ARN circulaire non codant, absence de capside et infections parfois sans symptômes.",
+      "access": "official-page",
+      "limitation": "Référence taxonomique. Définir un viroïde ne permet pas d’identifier l’agent présent dans une plante ; les virus ne sont pas réduits à une définition simpliste sans exceptions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://ictv.global/report/chapter/viroids/viroids",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "ICTV, Summary et Genome organization"
+          ],
+          "result": "Petits ARN circulaires simple brin non codants, sans capside, réplication dépendant de l’hôte ; viroïdes distincts des virus satellites.",
+          "assertionsSupported": [
+            "Petits ARN circulaires simple brin non codants, sans capside, réplication dépendant de l’hôte ; viroïdes distincts des virus satellites."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-lesson-mites",
+      "title": "Twospotted Spider Mite in Industrial Hemp",
+      "author": "Melissa Pulkoski et Hannah Burrack",
+      "organization": "NC State Extension",
+      "published": "5 août 2020",
+      "url": "https://content.ces.ncsu.edu/twospotted-spider-mite-in-industrial-hemp",
+      "passage": "Overview, Sampling and Thresholds, Biology, Damage et réserves de Management Options : Tetranychus urticae, stades et ponctuations foliaires.",
+      "access": "full-text",
+      "limitation": "Fiche régionale datée. Son absence de seuil établi est rapportée pour ce document, pas affirmée pour toute recherche en 2026. Aucun seuil, lâcher, produit ou calendrier de traitement repris.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://content.ces.ncsu.edu/twospotted-spider-mite-in-industrial-hemp",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "NC State : Identification, Life History, Damage, Management et légendes des photos"
+          ],
+          "result": "Tetranychus : larve six pattes, nymphes/adultes huit ; alimentation des cellules foliaires, ponctuations, toiles ; chaleur/sécheresse. Photo 1325020 Whitney Cranshaw CC BY 4.0 ; photo David Cappaert CC BY-NC exclue.",
+          "assertionsSupported": [
+            "Tetranychus : larve six pattes, nymphes/adultes huit ; alimentation des cellules foliaires, ponctuations, toiles ; chaleur/sécheresse. Photo 1325020 Whitney Cranshaw CC BY 4.0 ; photo David Cappaert CC BY-NC exclue."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-lesson-allies",
+      "title": "Integrated Pest Management of Hemp in Virginia — ENTO-349NP",
+      "author": "Kadie Britt, John Fike, Michael Flessner, Chuck Johnson, Thomas Kuhar, Tim McCoy et David Reed",
+      "organization": "Virginia Cooperative Extension",
+      "published": "Mars 2020 ; relecture mars 2025",
+      "url": "https://www.pubs.ext.vt.edu/ENTO/ENTO-349/ENTO-349.html",
+      "passage": "Natural Enemy/Beneficial Insects and Mites et Insect and Mite Classification : coccinelles, chrysopes, parasitoïdes, acariens et limites des observations régionales.",
+      "access": "excerpt",
+      "limitation": "Sections originales ciblées lues. Présence et rôle trophique ne démontrent pas une efficacité chiffrée pour chaque projet. La liste et les autorisations américaines ne sont pas transférées en France ; aucun calendrier ou lâcher conseillé.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Extraits de la publication originale consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.pubs.ext.vt.edu/ENTO/ENTO-349/ENTO-349.html",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Virginia Tech ENTO-349 : chapitre ravageurs, acariens, auxiliaires et conclusion"
+          ],
+          "result": "Prédateurs et protection intégrée dépendent de la cible et du contexte ; connaissances encore régionales. Recommandations chimiques et réglementaires américaines non transférées.",
+          "assertionsSupported": [
+            "Prédateurs et protection intégrée dépendent de la cible et du contexte ; connaissances encore régionales. Recommandations chimiques et réglementaires américaines non transférées."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-lesson-ipm",
+      "title": "Directive 2009/128/CE — annexe III : principes généraux de lutte intégrée",
+      "author": "Parlement européen et Conseil de l’Union européenne",
+      "organization": "Union européenne / EUR-Lex",
+      "published": "21 octobre 2009 ; JO du 24 novembre 2009",
+      "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32009L0128",
+      "passage": "Annexe III : prévention, surveillance, décision fondée sur les observations, priorité aux méthodes non chimiques satisfaisantes et vérification du succès.",
+      "access": "excerpt",
+      "limitation": "Texte officiel indexé consulté, accès direct soumis à vérification automatisée. Utilisé comme cadre de raisonnement, sans prétendre exposer toutes les obligations françaises actuelles ni autoriser un produit ou un projet. Révision du 14 novembre 2026 : Page et PDF EUR-Lex non lisibles dans cet accès (contrôle JavaScript). Aucun détail juridique inféré.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Extraits de la publication originale consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/?uri=CELEX%3A32009L0128",
+          "openedAt": "2026-11-14",
+          "status": "not-reverified",
+          "sectionsOpened": [],
+          "result": "inaccessible",
+          "details": "Page et PDF EUR-Lex non lisibles dans cet accès (contrôle JavaScript). Aucun détail juridique inféré.",
+          "assertionsSupported": []
+        }
+      ]
+    },
+    {
+      "id": "health-lesson-ephy-uses",
+      "title": "E-Phy — Les usages",
+      "author": "Agence nationale de sécurité sanitaire de l’alimentation, de l’environnement et du travail",
+      "organization": "Anses",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://ephy.anses.fr/decouvrir-site-e-phy/les-usages",
+      "passage": "Définition de l’usage, portée des regroupements de cultures/cibles, conditions limitatives et distinction efficacité montrée / portée autorisée.",
+      "access": "official-page",
+      "limitation": "Méthode de lecture du catalogue français, pas validation d’un produit. La fiche et la décision d’autorisation à jour restent nécessaires ; aucune dose ou condition opérationnelle n’est reproduite.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://ephy.anses.fr/decouvrir-site-e-phy/les-usages",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Page ANSES Les usages, culture/mode d’application/cible"
+          ],
+          "result": "Autorisation liée à un usage défini et à son champ explicite, pas à la seule présence du produit dans le catalogue.",
+          "assertionsSupported": [
+            "Autorisation liée à un usage défini et à son champ explicite, pas à la seule présence du produit dans le catalogue."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-lesson-ephy-mentions",
+      "title": "E-Phy — Les mentions et les gammes",
+      "author": "Agence nationale de sécurité sanitaire de l’alimentation, de l’environnement et du travail",
+      "organization": "Anses",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://ephy.anses.fr/decouvrir-site-e-phy/les-mentions-et-les-gammes",
+      "passage": "Mentions Liste biocontrôle et Utilisable en agriculture biologique ; distinction des gammes d’usage.",
+      "access": "official-page",
+      "limitation": "Les mentions sont des informations réglementaires précises, pas des synonymes de naturel, sans risque ou autorisé sur toute culture. Le cours ne recommande aucun produit.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://ephy.anses.fr/decouvrir-site-e-phy/les-mentions-et-les-gammes",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Page ANSES Les mentions et les gammes"
+          ],
+          "result": "Mentions agriculture biologique et biocontrôle ne remplacent pas les autorisations et conditions d’usage.",
+          "assertionsSupported": [
+            "Mentions agriculture biologique et biocontrôle ne remplacent pas les autorisations et conditions d’usage."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-tetranychus",
+      "title": "Twospotted Spider Mite in Industrial Hemp",
+      "author": "Melissa Pulkoski et Hannah Burrack",
+      "organization": "NC State Extension",
+      "published": "2020-08-05",
+      "url": "https://content.ces.ncsu.edu/twospotted-spider-mite-in-industrial-hemp",
+      "passage": "Overview, Sampling and Thresholds, Biology : identité, signes, stades et absence de seuil validé dans ce contexte.",
+      "access": "full-text",
+      "limitation": "Caroline du Nord ; la fiche ne fournit pas de seuil universel transférable à la France. Aucun produit ou calendrier de traitement repris.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://content.ces.ncsu.edu/twospotted-spider-mite-in-industrial-hemp",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "NC State : Identification, Life History, Damage, Management et légendes des photos"
+          ],
+          "result": "Tetranychus : larve six pattes, nymphes/adultes huit ; alimentation des cellules foliaires, ponctuations, toiles ; chaleur/sécheresse. Photo 1325020 Whitney Cranshaw CC BY 4.0 ; photo David Cappaert CC BY-NC exclue.",
+          "assertionsSupported": [
+            "Tetranychus : larve six pattes, nymphes/adultes huit ; alimentation des cellules foliaires, ponctuations, toiles ; chaleur/sécheresse. Photo 1325020 Whitney Cranshaw CC BY 4.0 ; photo David Cappaert CC BY-NC exclue."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-aculops",
+      "title": "Hemp russet mite",
+      "author": "Colorado State University, programme d’entomologie",
+      "organization": "Colorado State University",
+      "published": "Page sans date explicite, consultée en 2026",
+      "url": "https://agsci.colostate.edu/agbio/ipm-pests/29895-2/",
+      "passage": "Description, Quick Facts : acarien ériophyide, petites dimensions et absence de toile.",
+      "access": "full-text",
+      "limitation": "Fiche régionale ; la présence ou la gravité dans une parcelle française ne se déduisent pas de ce document.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://agsci.colostate.edu/agbio/ipm-pests/29895-2/",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "CSU Hemp russet mite, description/dispersion/dégâts"
+          ],
+          "result": "Eriophyide allongé avec deux paires de pattes antérieures, sans toile ; symptômes peu spécifiques et dispersion par le vent. Hivernation traitée prudemment car NC State la juge encore inconnue.",
+          "assertionsSupported": [
+            "Eriophyide allongé avec deux paires de pattes antérieures, sans toile ; symptômes peu spécifiques et dispersion par le vent. Hivernation traitée prudemment car NC State la juge encore inconnue."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-aculops-name",
+      "title": "Aculops cannibicola (ACUPCN)",
+      "author": "Organisation européenne et méditerranéenne pour la protection des plantes",
+      "organization": "EPPO Global Database",
+      "published": "Code créé le 2022-08-24 ; page courante",
+      "url": "https://gd.eppo.int/taxon/ACUPCN",
+      "passage": "Preferred name : Aculops cannibicola ; autre nom : Aculops cannabicola.",
+      "access": "official-page",
+      "limitation": "Référence de nomenclature ; ce seul enregistrement n’est pas un relevé de présence en France.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://gd.eppo.int/taxon/ACUPCN",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "EPPO ACUPCN : preferred name et other scientific names"
+          ],
+          "result": "Nom préféré Aculops cannibicola ; variante Aculops cannabicola également publiée. Identifiant de fiche conservé.",
+          "assertionsSupported": [
+            "Nom préféré Aculops cannibicola ; variante Aculops cannabicola également publiée. Identifiant de fiche conservé."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-broad-mite",
+      "title": "Broad Mite — Polyphagotarsonemus latus",
+      "author": "Équipe Utah Pests",
+      "organization": "Utah State University Extension",
+      "published": "Collection Pests of Hemp in Utah, 2022 ; page courante",
+      "url": "https://extension.usu.edu/planthealth/ipm/notes_ag/hemp-broad-mite",
+      "passage": "Hosts, Description, Life Cycle, Damage Symptoms et Occurrence in Utah : non détecté dans l’enquête locale.",
+      "access": "full-text",
+      "limitation": "Espèce présentée comme risque possible sous abri en Utah, pas comme observation locale confirmée. Les traitements de la page sont exclus de l’atlas.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://extension.usu.edu/planthealth/ipm/notes_ag/hemp-broad-mite",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "USU Broad Mite : identification, symptoms, life cycle, status in Utah"
+          ],
+          "result": "Polyphagotarsonemus latus, acarien polyphage très petit ; déformations des tissus jeunes, bronzage et œufs caractéristiques. Le statut en Utah ne décrit pas la France.",
+          "assertionsSupported": [
+            "Polyphagotarsonemus latus, acarien polyphage très petit ; déformations des tissus jeunes, bronzage et œufs caractéristiques. Le statut en Utah ne décrit pas la France."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-florida-2023",
+      "title": "An initial list of arthropods on hemp (Cannabis sativa L.; Cannabaceae) in Florida",
+      "author": "Eileen A. Buss et Paul E. Skelley",
+      "organization": "Florida Department of Agriculture and Consumer Services",
+      "published": "2023-11",
+      "url": "https://ccmedia.fdacs.gov/content/download/114776/file/FDACS-P-02203_2023-11(Arthropods-on-Hemp-Circular).pdf",
+      "passage": "Circular 445, sections mites, aphids, whiteflies et tableau 1 : identifications de prélèvements soumis au service.",
+      "access": "full-text",
+      "limitation": "Inventaire floridien non aléatoire ; distingue ravageurs, prédateurs et présences incidentes. Les introductions historiques et affirmations réglementaires ne sont pas utilisées.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://ccmedia.fdacs.gov/content/download/114776/file/FDACS-P-02203_2023-11(Arthropods-on-Hemp-Circular).pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "PDF FDACS 2023-11, p.1–4 et tableau d’arthropodes"
+          ],
+          "result": "Inventaire régional de 127 taxons ; P. latus et Bemisia tabaci signalés, MEAM1 identifié. Myzus persicae cité comme signalé dans d’autres régions, pas parmi les quatre pucerons collectés en Floride. Trialeurodes non observé dans cet échantillonnage floridien, pas absent partout.",
+          "assertionsSupported": [
+            "Inventaire régional de 127 taxons ; P. latus et Bemisia tabaci signalés, MEAM1 identifié. Myzus persicae cité comme signalé dans d’autres régions, pas parmi les quatre pucerons collectés en Floride. Trialeurodes non observé dans cet échantillonnage floridien, pas absent partout."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-aphids",
+      "title": "Cannabis Aphid in Industrial Hemp",
+      "author": "Melissa Pulkoski et Hannah Burrack",
+      "organization": "NC State Extension",
+      "published": "2020-07-03",
+      "url": "https://content.ces.ncsu.edu/cannabis-aphid-in-industrial-hemp",
+      "passage": "Biology, identification de Phorodon et liste des autres pucerons rapportés, dont Myzus persicae ; exuvies, miellat et fumagine.",
+      "access": "full-text",
+      "limitation": "Les exemples de transmission virale et d’auxiliaires ne sont pas des diagnostics ni une garantie d’efficacité pour tout puceron ou virus.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://content.ces.ncsu.edu/cannabis-aphid-in-industrial-hemp",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "NC State Cannabis Aphid : identification, life history, damage, légendes"
+          ],
+          "result": "Phorodon cannabis suceur de sève phloémienne ; miellat, formes ailées/aptères, reproduction saisonnière ; autres pucerons possibles. Photo 5565654 CC BY 4.0 vérifiée.",
+          "assertionsSupported": [
+            "Phorodon cannabis suceur de sève phloémienne ; miellat, formes ailées/aptères, reproduction saisonnière ; autres pucerons possibles. Photo 5565654 CC BY 4.0 vérifiée."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-cranshaw-2019",
+      "title": "Developing Insect Pest Management Systems for Hemp in the United States: A Work in Progress",
+      "author": "Whitney Cranshaw, Melissa Schreiner, Kadie Britt, Thomas P. Kuhar, John McPartland et Jerome Grant",
+      "organization": "Journal of Integrated Pest Management",
+      "published": "2019 ; 10(1):26",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/JIPM_2019.pdf",
+      "passage": "DOI 10.1093/jipm/pmz023 ; sections mites, stem/stalk borers et flower/seed insects : observations et lacunes de connaissances.",
+      "access": "full-text",
+      "limitation": "Synthèse de recherches et observations américaines, parfois non publiées séparément. Les relations présence/dégât et leur importance économique ne sont pas systématiquement établies.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/JIPM_2019.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "JIPM 2019, PDF 11 p., résumé et groupes de ravageurs"
+          ],
+          "result": "Synthèse sur les États-Unis, dégâts et insectes associés au chanvre ; pas estimation française. Licence CC BY-NC 4.0 : aucune photographie de cet article réutilisée commercialement.",
+          "assertionsSupported": [
+            "Synthèse sur les États-Unis, dégâts et insectes associés au chanvre ; pas estimation française. Licence CC BY-NC 4.0 : aucune photographie de cet article réutilisée commercialement."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-punja-2019",
+      "title": "Pathogens and Molds Affecting Production and Quality of Cannabis sativa L.",
+      "author": "Zamir K. Punja et collaborateurs",
+      "organization": "Frontiers in Plant Science",
+      "published": "2019 ; 10:1120",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+      "passage": "DOI 10.3389/fpls.2019.01120 ; Results, figures 2–4, Discussion : isolements, confirmations et essais de pathogénicité.",
+      "access": "full-text",
+      "limitation": "Principalement Canada, plusieurs systèmes. Isolement et pathogénicité ne sont pas équivalents ; celle de Pythium catenulatum reste non confirmée. Ancien nom d’oïdium à interpréter avec les travaux récents.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Frontiers 2019 : résultats Root and Crown Diseases, Flower Bud Rots, Powdery Mildew ; figures 2,4,5,7 et Copyright"
+          ],
+          "result": "Photographies sur Cannabis et caractérisation d’isolats ; Fusarium/Pythium et maladies racinaires, Botrytis et pourritures, oïdium historiquement G. cichoracearum sensu lato. Licence globale CC BY 4.0, MAIS figure2 A,D,E,G reproduits sous permission tierce : figure entière exclue de la proposition. Figures4,5,7 sans cette réserve. Figure7 possède huit panneaux A–H ; la légende éditoriale mentionne I par erreur.",
+          "assertionsSupported": [
+            "Photographies sur Cannabis et caractérisation d’isolats ; Fusarium/Pythium et maladies racinaires, Botrytis et pourritures, oïdium historiquement G. cichoracearum sensu lato. Licence globale CC BY 4.0, MAIS figure2 A,D,E,G reproduits sous permission tierce : figure entière exclue de la proposition. Figures4,5,7 sans cette réserve. Figure7 possède huit panneaux A–H ; la légende éditoriale mentionne I par erreur."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-powdery-2024",
+      "title": "The co-occurrence of two powdery mildew species on Cannabis sativa in the Czech Republic",
+      "author": "Barbora Mieslerová et collaborateurs",
+      "organization": "Journal of Phytopathology",
+      "published": "2024-06-25",
+      "url": "https://doi.org/10.1111/jph.13348",
+      "passage": "Résumé, Methods et Discussion : deux prélèvements de jardin en 2022–2023, microscopie, séquences ITS, G. ambrosiae et P. macularis.",
+      "access": "excerpt",
+      "limitation": "Texte original indexé consulté. Petit nombre d’échantillons ; la co-infection de 2022 est surtout documentée microscopiquement, la lecture moléculaire étant limitée par le mélange.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://doi.org/10.1111/jph.13348",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Wiley : abstract, Materials and Methods, Results et Discussion, échantillons OL49997 et OL49998"
+          ],
+          "result": "Deux genres d’oïdium observés morphologiquement dans le prélèvement 2022 ; corps de fibrosine chez Podosphaera. Résultat ITS 2022 appuyant P. macularis ; séquence 2023 G. ambrosiae ; ni carte de France ni test causal de tous les symptômes. Photos non réutilisées : licence commerciale non établie.",
+          "assertionsSupported": [
+            "Deux genres d’oïdium observés morphologiquement dans le prélèvement 2022 ; corps de fibrosine chez Podosphaera. Résultat ITS 2022 appuyant P. macularis ; séquence 2023 G. ambrosiae ; ni carte de France ni test causal de tous les symptômes. Photos non réutilisées : licence commerciale non établie."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-viruses-wa-2023",
+      "title": "First Reports of Beet Curly Top Virus, Citrus Yellow Vein-Associated Virus, and Hop Latent Viroid in Industrial Hemp (Cannabis sativa) in Washington State",
+      "author": "Sridhar Jarugula, Camille Wagstaff, Arunabha Mitra, David W. Crowder, David R. Gang et Rayapati A. Naidu",
+      "organization": "Plant Disease",
+      "published": "2023-09-08 ; 107:2897",
+      "url": "https://s3.wp.wsu.edu/uploads/sites/2701/2023/10/Jarugula-et-al-2023.pdf",
+      "passage": "Note originale : plantes symptomatiques de deux champs en 2021–2022 ; PCR/RT-PCR, séquençage et infections multiples.",
+      "access": "excerpt",
+      "limitation": "Note originale indexée consultée ; échantillonnage ciblé, non estimation de prévalence. Ne démontre pas séparément la causalité de chaque agent dans les co-infections.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://s3.wp.wsu.edu/uploads/sites/2701/2023/10/Jarugula-et-al-2023.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "PDF intégral d’une page hébergé par Washington State University ; enquête 2021/2022, HTS et PCR"
+          ],
+          "result": "Sur plantes symptomatiques sélectionnées, BCTV, CYVaV et HLVd détectés ; co-infections. Fréquences non extrapolables à toutes les cultures ; causalité propre de CYVaV non établie. Copie originale auteur ouverte, portail APS 403.",
+          "assertionsSupported": [
+            "Sur plantes symptomatiques sélectionnées, BCTV, CYVaV et HLVd détectés ; co-infections. Fréquences non extrapolables à toutes les cultures ; causalité propre de CYVaV non établie. Copie originale auteur ouverte, portail APS 403."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-hlvd-warren",
+      "title": "Occurrence of Hop Latent Viroid Causing Disease in Cannabis sativa in California",
+      "author": "J. G. Warren, J. Mercado et D. Grace",
+      "organization": "Plant Disease",
+      "published": "2019-08-21 ; 103(10)",
+      "url": "https://apsjournals.apsnet.org/doi/abs/10.1094/PDIS-03-19-0530-PDN",
+      "passage": "Note : détection et comparaison de groupes inoculés avec ARN infectieux et témoins ; symptômes et RT-PCR.",
+      "access": "excerpt",
+      "limitation": "Note originale indexée consultée. Petite expérience contrôlée étayant la causalité ; elle ne mesure pas la gravité ni l’origine de chaque cas individuel. Révision du 14 novembre 2026 : 403 APS, formats abstract/full également ; assertions expérimentales de 2019 remplacées par source primaire accessible de 2024.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://apsjournals.apsnet.org/doi/abs/10.1094/PDIS-03-19-0530-PDN",
+          "openedAt": "2026-11-14",
+          "status": "not-reverified",
+          "sectionsOpened": [],
+          "result": "inaccessible",
+          "details": "403 APS, formats abstract/full également ; assertions expérimentales de 2019 remplacées par source primaire accessible de 2024.",
+          "assertionsSupported": []
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-hlvd-punja",
+      "title": "Symptomology, prevalence, and impact of Hop latent viroid on greenhouse-grown cannabis (Cannabis sativa L.) plants in Canada",
+      "author": "Zamir K. Punja, K. Wang, S. Lung et L. Buirs",
+      "organization": "Canadian Journal of Plant Pathology",
+      "published": "2023 en ligne ; volume 46, 2024",
+      "url": "https://doi.org/10.1080/07060661.2023.2279184",
+      "passage": "Résumé et passages de méthodes indexés : soumissions à un laboratoire canadien en 2020–2022 et plantes parfois asymptomatiques.",
+      "access": "excerpt",
+      "limitation": "Échantillons envoyés au diagnostic, pas échantillon représentatif de tous les producteurs. Le taux de positifs n’est pas une prévalence nationale. Révision du 14 novembre 2026 : 403 Taylor & Francis ; non lu, chiffres non repris.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://doi.org/10.1080/07060661.2023.2279184",
+          "openedAt": "2026-11-14",
+          "status": "not-reverified",
+          "sectionsOpened": [],
+          "result": "inaccessible",
+          "details": "403 Taylor & Francis ; non lu, chiffres non repris.",
+          "assertionsSupported": []
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-viroids-ictv",
+      "title": "Viroids",
+      "author": "International Committee on Taxonomy of Viruses",
+      "organization": "ICTV",
+      "published": "Rapport courant, révision 2026",
+      "url": "https://ictv.global/report/chapter/viroids/viroids",
+      "passage": "Définition : petits ARN circulaires non codants, absence de capside ; distinction des virus.",
+      "access": "official-page",
+      "limitation": "Référence de classification, pas diagnostic de la santé d’une plante.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://ictv.global/report/chapter/viroids/viroids",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "ICTV, Summary et Genome organization"
+          ],
+          "result": "Petits ARN circulaires simple brin non codants, sans capside, réplication dépendant de l’hôte ; viroïdes distincts des virus satellites.",
+          "assertionsSupported": [
+            "Petits ARN circulaires simple brin non codants, sans capside, réplication dépendant de l’hôte ; viroïdes distincts des virus satellites."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-beneficial-purdue",
+      "title": "Beneficial Insects",
+      "author": "Purdue Hemp Project",
+      "organization": "Purdue University",
+      "published": "Page sans date explicite",
+      "url": "https://ag.purdue.edu/hemp-project/insects/beneficial-insects.html",
+      "passage": "Lacewing Larvae, Lady Beetles et Parasitoids ; organismes observés sur chanvre du centre-nord des États-Unis.",
+      "access": "full-text",
+      "limitation": "Présence et fonctions écologiques générales ; pas démonstration que tout lâcher commercial assure un contrôle sur chanvre.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://ag.purdue.edu/hemp-project/insects/beneficial-insects.html",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Beneficial Insects : Lacewing Larvae, Lady Beetles, Predators AND Parasitoids"
+          ],
+          "result": "Observations sur chanvre du centre-nord des États-Unis ; larves de chrysopes et coccinelles prédatrices ; développement du parasitoïde et momies de pucerons.",
+          "assertionsSupported": [
+            "Observations sur chanvre du centre-nord des États-Unis ; larves de chrysopes et coccinelles prédatrices ; développement du parasitoïde et momies de pucerons."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-lacewings-csu",
+      "title": "Natural Enemies of Insects — Green Lacewings",
+      "author": "Whitney Cranshaw, programme Hemp Insects",
+      "organization": "Colorado State University",
+      "published": "Fiche sans date imprimée explicite",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/Green%20Lacewings%20with%20Photos.pdf",
+      "passage": "Larves prédatrices et Chrysopa oculata régulièrement observée dans les champs de chanvre, associée aux pucerons.",
+      "access": "full-text",
+      "limitation": "Observation régionale ; les espèces, stades et régimes alimentaires ne sont pas interchangeables.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/Green%20Lacewings%20with%20Photos.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "CSU Natural Enemies — Green Lacewings, PDF intégral une page"
+          ],
+          "result": "Œufs pédonculés, larves prédatrices, cocon ; Chrysopa oculata a aussi des adultes prédateurs. Ne pas généraliser le régime des adultes à toutes les chrysopes.",
+          "assertionsSupported": [
+            "Œufs pédonculés, larves prédatrices, cocon ; Chrysopa oculata a aussi des adultes prédateurs. Ne pas généraliser le régime des adultes à toutes les chrysopes."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-diagnostic",
+      "title": "Industrial Hemp Sampling",
+      "author": "Mike Munster",
+      "organization": "NC State Plant Disease and Insect Clinic",
+      "published": "Mise à jour le 2024-11-14",
+      "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+      "passage": "Contexte du problème, vues d’ensemble et détails, intérêt des racines et des transitions entre tissus sains et atteints.",
+      "access": "official-page",
+      "limitation": "Les exigences de prélèvement et d’envoi dépendent du laboratoire et du droit local ; aucun protocole de transport n’est reproduit.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "NC State Industrial Hemp Sampling : informations de contexte, parties à prélever et symptômes"
+          ],
+          "result": "L’examen combine progression, tissus et analyses ; identifier un organisme ne démontre pas automatiquement qu’il cause la totalité des symptômes. Règles administratives américaines non transposées.",
+          "assertionsSupported": [
+            "L’examen combine progression, tissus et analyses ; identifier un organisme ne démontre pas automatiquement qu’il cause la totalité des symptômes. Règles administratives américaines non transposées."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-pythium-name",
+      "title": "Pythium ultimum (PYTHUL)",
+      "author": "Organisation européenne et méditerranéenne pour la protection des plantes",
+      "organization": "EPPO Global Database",
+      "published": "Page courante consultée en 2026",
+      "url": "https://gd.eppo.int/taxon/PYTHUL",
+      "passage": "Nomenclature : Globisporangium ultimum indiqué parmi les autres noms scientifiques.",
+      "access": "official-page",
+      "limitation": "Les usages nomenclaturaux varient selon les références ; toutes les espèces historiques de Pythium ne deviennent pas Globisporangium.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://gd.eppo.int/taxon/PYTHUL",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "EPPO PYTHUL preferred name et synonymes"
+          ],
+          "result": "EPPO conserve Pythium ultimum comme nom préféré et cite Globisporangium ultimum parmi les autres noms. Les traitements taxonomiques diffèrent, pas deux diagnostics séparés.",
+          "assertionsSupported": [
+            "EPPO conserve Pythium ultimum comme nom préféré et cite Globisporangium ultimum parmi les autres noms. Les traitements taxonomiques diffèrent, pas deux diagnostics séparés."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-new-hlvd-2024",
+      "title": "New Insights into Hop Latent Viroid Detection, Infectivity, Host Range, and Transmission",
+      "author": "Osama O. Atallah, Sherin M. Yassin et Jeanmarie Verchot",
+      "organization": "Viruses 16(1),30, MDPI",
+      "published": "2024 (publication en ligne 23 décembre 2023)",
+      "url": "https://www.mdpi.com/1999-4915/16/1/30",
+      "verifiedAt": "2026-11-14",
+      "passage": "§3.1–3.5, figures 4–8, licence",
+      "access": "full-text",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "limitation": "Essais contrôlés et matériel particulier ; pas fréquence française ni pourcentage universel de transmission, pas protocole pratique repris.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/1999-4915/16/1/30",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "§3.1–3.5, figures 4–8, licence"
+          ],
+          "result": "Détection chez chanvre asymptomatique ; infection et déplacement après inoculation expérimentale ; transmission à la descendance observée dans les croisements étudiés. Photos de dépérissement figure7 : Arabidopsis, pas chanvre. ©2023, volume2024, CC BY4.",
+          "assertionsSupported": [
+            "Détection chez chanvre asymptomatique ; infection et déplacement après inoculation expérimentale ; transmission à la descendance observée dans les croisements étudiés. Photos de dépérissement figure7 : Arabidopsis, pas chanvre. ©2023, volume2024, CC BY4."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-new-hlvd-pnw",
+      "title": "Hemp (Cannabis sativa) — Viroid Diseases",
+      "author": "K. Frost et C. M. Ocamb",
+      "organization": "Pacific Northwest Plant Disease Management Handbook",
+      "published": "mars 2026",
+      "url": "https://pnwhandbooks.org/plantdisease/host-disease/hemp-cannabis-sativa-viroid-diseases",
+      "verifiedAt": "2026-11-14",
+      "passage": "Cause, Symptoms, Cultural control, édition mars2026",
+      "access": "full-text",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "limitation": "Synthèse institutionnelle nord-américaine ; images sans licence commerciale explicite non reprises.",
+      "reviewEvidence": [
+        {
+          "url": "https://pnwhandbooks.org/plantdisease/host-disease/hemp-cannabis-sativa-viroid-diseases",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Cause, Symptoms, Cultural control, édition mars2026"
+          ],
+          "result": "Infection parfois asymptomatique, expression variable ; matériel végétal et transmission mécanique, nécessité du diagnostic moléculaire. Pas de preuve de transmission par insectes dans cette source.",
+          "assertionsSupported": [
+            "Infection parfois asymptomatique, expression variable ; matériel végétal et transmission mécanique, nécessité du diagnostic moléculaire. Pas de preuve de transmission par insectes dans cette source."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-new-aculops-ncsu",
+      "title": "Hemp Russet Mite in Industrial Hemp",
+      "author": "NC State Extension",
+      "organization": "North Carolina State University",
+      "published": "s.d.",
+      "url": "https://content.ces.ncsu.edu/hemp-russet-mite-in-industrial-hemp",
+      "verifiedAt": "2026-11-14",
+      "passage": "Identification, biology, damage, photo5574608",
+      "access": "full-text",
+      "documentKind": "Publication originale scientifique ou institutionnelle",
+      "limitation": "Données et statut nord-américains ; pas estimation de fréquence française.",
+      "reviewEvidence": [
+        {
+          "url": "https://content.ces.ncsu.edu/hemp-russet-mite-in-industrial-hemp",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Identification, biology, damage, photo5574608"
+          ],
+          "result": "Ériophyide à deux paires de pattes, minuscules corps allongés, pas de toile ; cycle/hivernation encore incertains ; photo sur chanvre Whitney Cranshaw CC BY4.",
+          "assertionsSupported": [
+            "Ériophyide à deux paires de pattes, minuscules corps allongés, pas de toile ; cycle/hivernation encore incertains ; photo sur chanvre Whitney Cranshaw CC BY4."
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "ref-maladies-chanvre",
+      "questions": [
+        "Comment distinguer maladie infectieuse et trouble physiologique ?",
+        "Que montrent un oïdium, une pourriture et une atteinte racinaire ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés : Botrytis, oïdiums, Fusarium et oomycètes ; causes non infectieuses possibles.",
+        "Précisés : symptôme/signe, mécanismes et coexistence de causes ; noms Pythium/Globisporangium selon traitement taxonomique. Cornell inaccessible remplacé par CSU."
+      ],
+      "patch": {
+        "id": "ref-maladies-chanvre",
+        "topicId": "health",
+        "title": "Maladies et troubles du chanvre",
+        "lead": "Le chanvre peut présenter des maladies infectieuses et des troubles non infectieux. Jaunissement, flétrissement ou nécrose sont des manifestations partagées par plusieurs causes.",
+        "image": {
+          "src": "/placard/school/health/punja-2019-fig7.webp",
+          "kind": "photograph",
+          "alt": "Feuilles de Cannabis couvertes de plages blanches et vues microscopiques du champignon.",
+          "caption": "Oïdium sur Cannabis, Punja et al. 2019, figure 7 A–H. Identification publiée G. cichoracearum sensu lato ; cette planche ne prouve pas à elle seule G. ambrosiae ou P. macularis.",
+          "author": "Zamir K. Punja et al.",
+          "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "sections": [
+          {
+            "id": "ref-maladies-chanvre-1",
+            "title": "Champignons et oïdiums",
+            "paragraphs": [
+              "Un symptôme est une réponse de la plante, comme le flétrissement ou la nécrose, c’est-à-dire la mort d’un tissu. Un signe est une manifestation de l’agent, comme un mycélium ou une sporulation. Un dépôt blanc poudreux de surface évoque un oïdium ; il ne permet pas à lui seul de choisir entre Golovinomyces ambrosiae et Podosphaera macularis, tous deux décrits sur chanvre dans une étude tchèque de 2024.",
+              "Botrytis cinerea est associé à la pourriture grise : les tissus brunissent et se dégradent, puis une sporulation grise peut apparaître. L’oïdium se développe surtout à la surface de tissus vivants, tandis qu’une pourriture implique une altération des tissus ; ces observations conduisent à des hypothèses différentes, à confirmer par examen."
+            ],
+            "sourceIds": [
+              "health-atlas-punja-2019",
+              "health-atlas-powdery-2024"
+            ]
+          },
+          {
+            "id": "ref-maladies-chanvre-2",
+            "title": "Affections des racines",
+            "paragraphs": [
+              "Les racines et le collet peuvent être atteints par des Fusarium ou des oomycètes tels que Pythium. Leur altération réduit les fonctions d’absorption et peut entraîner un flétrissement de la partie aérienne, même si l’eau est présente dans le milieu. Le mycélium est un ensemble d’hyphes, des filaments dont l’aspect macroscopique n’est pas une identité d’espèce.",
+              "Les oomycètes constituent une lignée distincte des vrais champignons, malgré une croissance filamenteuse comparable. Plusieurs espèces anciennement placées dans Pythium sont aussi nommées Globisporangium ; EPPO conserve par exemple Pythium ultimum comme nom préféré et cite Globisporangium ultimum comme autre nom. Il faut rapprocher les synonymes avant de comparer les rapports."
+            ],
+            "sourceIds": [
+              "health-lesson-oomycetes",
+              "health-atlas-pythium-name",
+              "health-atlas-punja-2019"
+            ]
+          },
+          {
+            "id": "ref-maladies-chanvre-3",
+            "title": "Troubles non infectieux",
+            "paragraphs": [
+              "Un manque d’oxygène autour des racines, un déséquilibre hydrique ou une nutrition perturbée peuvent aussi produire jaunissement et flétrissement. Ces troubles peuvent coexister avec une infection : la présence d’un microorganisme dans un prélèvement ne prouve donc pas qu’il explique toutes les lésions.",
+              "Le diagnostic confronte l’historique, les organes touchés, la répartition des plantes atteintes et l’évolution des symptômes. Un laboratoire peut examiner les tissus et rechercher un agent précis. Une identification et une preuve de causalité répondent à des questions différentes."
+            ],
+            "sourceIds": [
+              "health-lesson-abiotic",
+              "health-lesson-diagnosis",
+              "health-lesson-punja2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-punja-2019",
+          "health-atlas-powdery-2024",
+          "health-lesson-oomycetes",
+          "health-atlas-pythium-name",
+          "health-lesson-abiotic",
+          "health-lesson-diagnosis",
+          "health-lesson-punja2019"
+        ],
+        "relatedArticleIds": [
+          "ref-racines-rhizosphere",
+          "ref-virus-viroides",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [
+          "health-term-necrosis",
+          "health-term-fungus",
+          "health-term-oomycete",
+          "health-term-mycelium"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-observation-1"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-observation-2"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-observation-checkpoint"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-causes-1"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-causes-2"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-causes-checkpoint"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-prevention-1"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-prevention-2"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-prevention-checkpoint"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-verification-1"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-verification-2"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-verification-checkpoint"
+          },
+          {
+            "courseId": "genetics",
+            "passageId": "cultivation-risks-1"
+          },
+          {
+            "courseId": "genetics",
+            "passageId": "cultivation-risks-2"
+          },
+          {
+            "courseId": "genetics",
+            "passageId": "cultivation-risks-checkpoint"
+          }
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Du symptôme à l’hypothèse",
+          "nodes": [
+            {
+              "label": "Observer",
+              "detail": "Organes, signes visibles et évolution."
+            },
+            {
+              "label": "Comparer",
+              "detail": "Causes infectieuses et physiologiques peuvent se cumuler."
+            },
+            {
+              "label": "Confirmer",
+              "detail": "Examen et tests adaptés ; distinguer détection et causalité."
+            }
+          ],
+          "caption": "Schéma de synthèse : les relations décrites ne constituent pas un diagnostic sur photographie.",
+          "sourceIds": [
+            "health-lesson-diagnosis",
+            "health-atlas-diagnostic"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-punja-2019",
+        "health-atlas-powdery-2024",
+        "health-lesson-oomycetes",
+        "health-atlas-pythium-name",
+        "health-lesson-diagnosis",
+        "health-lesson-punja2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Oïdium sur Cannabis, Punja et al. 2019, figure 7 A–H. Identification publiée G. cichoracearum sensu lato ; cette planche ne prouve pas à elle seule G. ambrosiae ou P. macularis."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-oidium",
+        "hemp-biodiversity-oomycetes"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-ravageurs-auxiliaires",
+      "questions": [
+        "Quels arthropodes consomment le chanvre et lesquels consomment leurs proies ?",
+        "Pourquoi la présence d’un auxiliaire ne garantit-elle pas la régulation ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés : différence ravageur/prédateur/parasitoïde et protection intégrée.",
+        "Ajoutés : mécanismes alimentaires, stade de l’auxiliaire et nom Aculops cannibicola/cannabicola ; prescriptions américaines exclues."
+      ],
+      "patch": {
+        "id": "ref-ravageurs-auxiliaires",
+        "topicId": "health",
+        "title": "Ravageurs et auxiliaires",
+        "lead": "Les arthropodes présents sur le chanvre comprennent des herbivores, des prédateurs et des parasitoïdes. Leurs rôles diffèrent selon l'espèce et le stade de développement.",
+        "image": {
+          "src": "/placard/reference/health/coccinella-larva.jpg",
+          "author": "Gilles San Martin from Namur, Belgium",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Coccinella_septempunctata,_larva_eating_aphids.jpg",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "kind": "photograph",
+          "alt": "Larve de coccinelle au contact de pucerons sur une tige.",
+          "caption": "Larve de Coccinella septempunctata se nourrissant de pucerons, Gilles San Martin. Le végétal photographié n’est pas identifié comme chanvre."
+        },
+        "sections": [
+          {
+            "id": "ref-ravageurs-auxiliaires-1",
+            "title": "Pucerons, acariens et insectes",
+            "paragraphs": [
+              "Les arthropodes possèdent des appendices articulés. Ils comprennent notamment les insectes et les acariens. Phorodon cannabis est un puceron qui prélève la sève ; Tetranychus urticae et Aculops cannibicola, aussi écrit A. cannabicola, sont des acariens qui se nourrissent des tissus végétaux. Les thrips laissent des cicatrices en endommageant des cellules, tandis que les chenilles, larves de papillons, consomment directement des tissus avec leurs mandibules.",
+              "Les organes touchés, la saison et les conditions sous abri ou au champ modifient les interactions. Une liste d’espèces publiée en Floride ou en Caroline du Nord ne décrit pas automatiquement les ravageurs dominants d’une parcelle française."
+            ],
+            "sourceIds": [
+              "health-atlas-aphids",
+              "health-atlas-tetranychus",
+              "health-atlas-aculops",
+              "health-atlas-cranshaw-2019"
+            ]
+          },
+          {
+            "id": "ref-ravageurs-auxiliaires-2",
+            "title": "Les ennemis naturels",
+            "paragraphs": [
+              "Des larves de chrysopes et des coccinelles prédatrices consomment des pucerons ; certains acariens Phytoseiidae consomment des tétranyques. Un prédateur peut attaquer plusieurs proies au cours de sa vie. Un parasitoïde accomplit son développement aux dépens d’un hôte et finit généralement par le tuer ; les pucerons momifiés sont un signe possible de cette activité.",
+              "Le terme auxiliaire désigne un rôle dans une interaction. Le stade observé, les proies disponibles et les conditions locales comptent : des œufs de chrysope indiquent une présence, pas encore une consommation par les larves. Une attaque de proies photographiée démontre cette interaction, pas une baisse suffisante des populations à l’échelle du champ."
+            ],
+            "sourceIds": [
+              "health-atlas-beneficial-purdue",
+              "health-atlas-lacewings-csu",
+              "health-lesson-allies"
+            ]
+          },
+          {
+            "id": "ref-ravageurs-auxiliaires-3",
+            "title": "Protection intégrée",
+            "paragraphs": [
+              "La protection intégrée articule prévention, observation, identification et moyens adaptés à la cible. Elle prend en compte les auxiliaires et l’évolution du foyer ; un moyen physique ou biologique possède lui aussi une plage d’efficacité et des contraintes.",
+              "En France, une autorisation phytopharmaceutique se rapporte à des usages et conditions définis. Les mentions naturel, agriculture biologique ou biocontrôle ne valent pas, à elles seules, autorisation sur chanvre. Le catalogue E-Phy et le libellé de l’usage doivent être distingués des recommandations américaines citées pour la biologie."
+            ],
+            "sourceIds": [
+              "health-lesson-ipm",
+              "health-lesson-ephy-uses",
+              "health-lesson-ephy-mentions"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-aphids",
+          "health-atlas-tetranychus",
+          "health-atlas-aculops",
+          "health-atlas-cranshaw-2019",
+          "health-atlas-beneficial-purdue",
+          "health-atlas-lacewings-csu",
+          "health-lesson-allies",
+          "health-lesson-ipm",
+          "health-lesson-ephy-uses",
+          "health-lesson-ephy-mentions"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-lumiere-climat",
+          "ref-racines-rhizosphere"
+        ],
+        "glossaryIds": [
+          "health-term-arthropod",
+          "health-term-mite",
+          "health-term-auxiliary",
+          "health-term-parasitoid"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-pests-1"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-pests-2"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-pests-checkpoint"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-allies-1"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-allies-2"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-allies-checkpoint"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-ipm-1"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-ipm-2"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-ipm-checkpoint"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois relations alimentaires",
+          "nodes": [
+            {
+              "label": "Phytophage",
+              "detail": "Consomme des cellules, de la sève ou des organes de la plante."
+            },
+            {
+              "label": "Prédateur",
+              "detail": "Capture des proies ; efficacité selon proies et stade."
+            },
+            {
+              "label": "Parasitoïde",
+              "detail": "Se développe dans ou sur un hôte qu’il finit généralement par tuer."
+            }
+          ],
+          "caption": "Schéma de synthèse : les relations décrites ne constituent pas un diagnostic sur photographie.",
+          "sourceIds": [
+            "health-atlas-beneficial-purdue",
+            "health-atlas-aphids"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-aphids",
+        "health-atlas-tetranychus",
+        "health-atlas-aculops",
+        "health-atlas-cranshaw-2019",
+        "health-atlas-beneficial-purdue",
+        "health-atlas-lacewings-csu",
+        "health-lesson-allies",
+        "health-lesson-ephy-uses",
+        "health-lesson-ephy-mentions"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Larve de Coccinella septempunctata se nourrissant de pucerons, Gilles San Martin. Le végétal photographié n’est pas identifié comme chanvre."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-virus-viroides",
+      "questions": [
+        "Quelle différence entre un virus et un viroïde ?",
+        "Que prouvent les détections et les essais HLVd sur chanvre ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés : nature non codante du viroïde et prudence devant les co-infections de Washington.",
+        "Référence Warren2019 inaccessible : aucune inoculation de 2019 présentée comme relue. Source primaire Atallah2024 accessible remplace l’assertion et documente aussi le chanvre asymptomatique."
+      ],
+      "patch": {
+        "id": "ref-virus-viroides",
+        "topicId": "health",
+        "title": "Virus et viroïdes du chanvre",
+        "lead": "Virus et viroïdes sont des agents infectieux distincts. Ils peuvent être présents dans une plante sans provoquer des symptômes identiques dans toutes les situations.",
+        "image": {
+          "src": "/placard/school/cultivation/greenhouse-v1.webp",
+          "alt": "Illustration d'une serre contenant du chanvre.",
+          "caption": "Serre à chanvre, illustration de synthèse."
+        },
+        "sections": [
+          {
+            "id": "ref-virus-viroides-1",
+            "title": "Deux organisations biologiques",
+            "paragraphs": [
+              "Les virus possèdent un génome et codent des composants de leur cycle infectieux ; leurs architectures diffèrent. Les viroïdes sont de petits ARN circulaires simple brin non codants et dépourvus de capside, l’enveloppe protéique de nombreux virus. Ils utilisent les fonctions de la cellule végétale pour leur réplication. Ce ne sont ni des champignons ni des insectes."
+            ],
+            "sourceIds": [
+              "health-lesson-viroids",
+              "health-atlas-viroids-ictv",
+              "health-new-hlvd-2024",
+              "health-new-hlvd-pnw"
+            ]
+          },
+          {
+            "id": "ref-virus-viroides-2",
+            "title": "Le viroïde latent du houblon",
+            "paragraphs": [
+              "Le Hop latent viroid, HLVd, infecte Cannabis. Dans une étude expérimentale publiée dans Viruses en 2024, le viroïde a été détecté dans des tissus de chanvre après inoculation ; les plantes étaient asymptomatiques lors de certains prélèvements. Asymptomatique signifie sans symptôme apparent à cet instant, et non exempt d’infection.",
+              "Le même travail observe une transmission à la descendance dans les croisements de chanvre étudiés. Cela établit une possibilité biologique dans ce matériel, pas une probabilité universelle pour toute graine. D’autres travaux décrivent un dépérissement variable selon les plantes ; l’importance des effets ne se déduit pas d’un simple résultat positif."
+            ],
+            "sourceIds": [
+              "health-atlas-hlvd-warren",
+              "health-atlas-hlvd-punja",
+              "health-new-hlvd-2024",
+              "health-new-hlvd-pnw"
+            ]
+          },
+          {
+            "id": "ref-virus-viroides-3",
+            "title": "Virus et co-infections",
+            "paragraphs": [
+              "Une publication de 2023 rapporte Beet curly top virus, Citrus yellow vein-associated virus et HLVd dans des plantes symptomatiques de chanvre de deux sites de l’État de Washington. Des plantes hébergeaient plusieurs agents. Comme l’échantillonnage visait des plantes malades, ses proportions de positifs ne représentent pas la prévalence de toutes les cultures.",
+              "Un test moléculaire recherche une séquence ; un essai contrôlé peut tester la contribution d’un agent aux symptômes. Dans cette enquête, le rôle propre de CYVaV n’est pas séparé de celui des co-infections. Des feuilles déformées ne permettent donc pas de nommer le virus ou le viroïde."
+            ],
+            "sourceIds": [
+              "health-atlas-viruses-wa-2023",
+              "health-new-hlvd-2024",
+              "health-new-hlvd-pnw"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-lesson-viroids",
+          "health-atlas-viroids-ictv",
+          "health-atlas-hlvd-warren",
+          "health-atlas-hlvd-punja",
+          "health-atlas-viruses-wa-2023",
+          "health-new-hlvd-2024",
+          "health-new-hlvd-pnw"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires",
+          "ref-racines-rhizosphere"
+        ],
+        "glossaryIds": [
+          "health-term-virus",
+          "health-term-viroid",
+          "health-term-asymptomatic"
+        ],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-pathogens-1"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-pathogens-2"
+          },
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-pathogens-checkpoint"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "Des preuves de portée différente",
+          "nodes": [
+            {
+              "label": "Observation",
+              "detail": "Déformation ou dépérissement : une réponse de la plante, non spécifique."
+            },
+            {
+              "label": "Détection",
+              "detail": "Séquence recherchée présente dans le tissu analysé ; co-infection possible."
+            },
+            {
+              "label": "Essai contrôlé",
+              "detail": "Comparer plantes infectées et témoins pour tester un effet causal."
+            }
+          ],
+          "caption": "Le viroïde n’est pas visible sur une photographie ordinaire de feuille ; aucune image n’est proposée comme diagnostic de HLVd.",
+          "sourceIds": [
+            "health-atlas-viruses-wa-2023",
+            "health-new-hlvd-2024"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-lesson-viroids",
+        "health-atlas-viroids-ictv",
+        "health-atlas-viruses-wa-2023",
+        "health-new-hlvd-2024",
+        "health-new-hlvd-pnw"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable : mécanisme ou niveau de preuve, sans prétendre photographier une maladie."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-hlvd"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-tetranychus-urticae",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : tétranyque à deux points ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Tetranychus urticae. Un acarien, pas un insecte ; les points et la couleur seuls ne suffisent pas toujours.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-tetranychus-urticae",
+        "topicId": "health",
+        "title": "Tétranyque à deux points",
+        "lead": "Tetranychus urticae est un acarien phytophage qui peut vivre sur le chanvre. Sa couleur et ses deux taches sombres ne suffisent pas toujours à l’identifier : le stade et les autres caractères comptent.",
+        "image": {
+          "src": "/placard/reference/health/tetranychus.jpeg",
+          "kind": "photograph",
+          "alt": "Acariens tachés, œufs ronds et fils de soie au revers d’une feuille.",
+          "caption": "Tetranychus urticae sur chanvre, photo Whitney Cranshaw/Colorado State University, Bugwood 1325020 ; NC State, CC BY 4.",
+          "author": "Whitney Cranshaw, Colorado State University, Bugwood.org",
+          "sourceUrl": "https://content.ces.ncsu.edu/twospotted-spider-mite-in-industrial-hemp",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Tetranychus urticae est décrit sur le chanvre par NC State en Caroline du Nord. Les observations concernent des cultures de plein air ou sous abri ; elles établissent une association avec cette plante, sans mesurer sa fréquence en France ni prédire la gravité de chaque foyer."
+            ],
+            "sourceIds": [
+              "health-atlas-tetranychus"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Sur les feuilles, de nombreuses ponctuations pâles peuvent confluer en un jaunissement. Au revers, la présence d’acariens, d’œufs et parfois de fines toiles fournit des indices plus directs que la couleur de la feuille seule."
+            ],
+            "sourceIds": [
+              "health-atlas-tetranychus"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le développement comprend l’œuf, une larve à six pattes, puis des nymphes et l’adulte à huit pattes. Plusieurs générations peuvent se chevaucher ; la chaleur et l’air sec favorisent souvent la multiplication. Les végétaux porteurs et les déplacements entre plantes participent à la dispersion.",
+              "Les pièces buccales prélèvent le contenu de cellules foliaires. Leur altération produit une multitude de petits points pâles qui peuvent confluer ; les fines toiles sont produites par les acariens et ne sont pas du mycélium."
+            ],
+            "sourceIds": [
+              "health-atlas-tetranychus"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Les thrips, d’autres acariens et des stress physiologiques peuvent aussi produire des ponctuations. Observer plusieurs feuilles à la loupe, puis faire préciser les caractères si nécessaire, évite de conclure à partir d’une seule tache.",
+              "La photo montre adultes, œufs et fils de soie sur un revers de feuille. Les taches sombres et la couleur sont variables ; le comptage des pattes doit porter sur le stade : larve à six pattes, nymphes et adultes à huit."
+            ],
+            "sourceIds": [
+              "health-atlas-tetranychus",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "L’inspection des végétaux entrants et le suivi des feuilles déjà atteintes permettent de repérer une progression. Il faut documenter les acariens, les lésions et leurs prédateurs ensemble avant de décider d’une réponse adaptée ; la fiche chanvre de NC State n’établit pas de seuil d’intervention universel."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-tetranychus"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-tetranychus",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-tetranychus-urticae"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Tetranychus urticae"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-tetranychus",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Tetranychus urticae sur chanvre, photo Whitney Cranshaw/Colorado State University, Bugwood1325020 ; NC State, CC BY4."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-tetranyque",
+        "hemp-biodiversity-larve-tetranyque"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-aculops-cannibicola",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : acarien russet du chanvre ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Aculops cannibicola. EPPO préfère cannibicola ; cannabicola est un autre nom rencontré dans les publications.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-aculops-cannibicola",
+        "topicId": "health",
+        "title": "Acarien russet du chanvre",
+        "lead": "Aculops cannibicola, aussi publié sous le nom A. cannabicola, est un minuscule acarien ériophyide associé au chanvre. Il porte deux paires de pattes aux stades mobiles et ne produit pas de toile.",
+        "image": {
+          "src": "/placard/reference/health/aculops.jpeg",
+          "kind": "photograph",
+          "alt": "Nombreux organismes très petits, blanchâtres et allongés sur une feuille de chanvre.",
+          "caption": "Aculops sur chanvre, Whitney Cranshaw/Colorado State University, Bugwood 5574608, page NC State ; grossissement nécessaire à l’identification.",
+          "author": "Whitney Cranshaw, Colorado State University, Bugwood.org",
+          "sourceUrl": "https://content.ces.ncsu.edu/hemp-russet-mite-in-industrial-hemp",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Cet ériophyide est documenté sur Cannabis dans les ressources universitaires américaines. Les observations décrivent des foyers sous abri et au champ, mais plusieurs aspects du cycle restent mal connus ; ces documents ne constituent pas une enquête sur sa fréquence en France."
+            ],
+            "sourceIds": [
+              "health-new-aculops-ncsu",
+              "health-atlas-aculops"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Les feuilles et les jeunes tissus peuvent présenter un bronzage ou des déformations, parfois discrets ; les inflorescences peuvent aussi être concernées. Aculops ne produit pas de toile : leur absence ne permet cependant pas, à elle seule, de le reconnaître."
+            ],
+            "sourceIds": [
+              "health-new-aculops-ncsu",
+              "health-atlas-aculops"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Les minuscules stades se développent sur l’hôte et peuvent être transportés avec des végétaux porteurs. Le vent peut contribuer à la dispersion entre plantes ; le cycle au champ et l’hivernation restent incomplètement décrits.",
+              "Le corps effilé et les deux paires de pattes situées vers l’avant distinguent cet ériophyide des tétranyques à huit pattes aux stades postlarvaires. Il endommage des cellules végétales sans produire de toile ; les tissus peuvent se bronzer ou se déformer lorsque les populations augmentent."
+            ],
+            "sourceIds": [
+              "health-new-aculops-ncsu",
+              "health-atlas-aculops"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "EPPO privilégie Aculops cannibicola et recense aussi A. cannabicola. Les très petites formes mobiles pâles nécessitent une observation grossie ; une feuille recourbée ne suffit pas. Le cycle et l’hivernation restent incomplètement documentés selon NC State."
+            ],
+            "sourceIds": [
+              "health-atlas-aculops-name",
+              "health-new-aculops-ncsu",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "La traçabilité des végétaux et de leurs déplacements aide à relier les premiers foyers aux introductions possibles. Une confirmation par observation grossie reste nécessaire avant d’attribuer une feuille enroulée à cet acarien ; un symptôme isolé ne justifie pas une réponse ciblée sur Aculops."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-new-aculops-ncsu"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-aculops",
+          "health-atlas-cranshaw-2019",
+          "health-atlas-aculops-name",
+          "health-atlas-diagnostic",
+          "health-new-aculops-ncsu"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-aculops-cannibicola"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Aculops cannibicola"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-aculops",
+        "health-atlas-cranshaw-2019",
+        "health-atlas-aculops-name",
+        "health-atlas-diagnostic",
+        "health-new-aculops-ncsu"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Aculops sur chanvre, Whitney Cranshaw/Colorado State University, Bugwood5574608, page NC State ; grossissement nécessaire à l’identification."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-aculops"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-polyphagotarsonemus-latus",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : tarsonème des serres ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Polyphagotarsonemus latus. Tarsonemidae ; ne pas confondre avec les ériophyides.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-polyphagotarsonemus-latus",
+        "topicId": "health",
+        "title": "Tarsonème des serres",
+        "lead": "Polyphagotarsonemus latus est un acarien tarsonémide polyphage, signalé notamment sur chanvre. Il peut déformer les tissus jeunes, mais ce symptôme ne suffit pas à le reconnaître.",
+        "image": {
+          "src": "/placard/reference/health/broad-mite-egg.jpg",
+          "author": "Chazz Hesselein, Alabama Cooperative Extension System, Bugwood.org",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:5438919-PPT-broad_mite_(Polyphagotarsonemus_latus).jpg",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "kind": "photograph",
+          "alt": "Spécimen microscopique d’un acarien, corps et pattes visibles sur fond clair.",
+          "caption": "Polyphagotarsonemus latus, Chazz Hesselein/Alabama Cooperative Extension System, Bugwood 5438919, CC BY 3. Le fichier illustre une forme mobile, pas des œufs ; l’hôte n’est pas établi comme chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Polyphagotarsonemus latus a été identifié sur le chanvre dans les collectes de Floride. La fiche de l’Utah présente le risque sans y annoncer de détection locale : un inventaire régional et une fiche de vigilance répondent à des questions différentes, et aucun des deux ne mesure la fréquence française."
+            ],
+            "sourceIds": [
+              "health-atlas-florida-2023",
+              "health-atlas-broad-mite"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "L’observation porte surtout sur les bourgeons et les jeunes feuilles, qui peuvent se déformer, durcir ou se bronzer. Ces réponses de croissance ne sont pas spécifiques d’une espèce ; il faut rechercher les organismes sur les tissus concernés plutôt que déduire leur identité de la seule forme du limbe."
+            ],
+            "sourceIds": [
+              "health-atlas-broad-mite"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le cycle comprend l’œuf, la larve, un stade de transition puis l’adulte ; les générations se succèdent selon les conditions du milieu. Des plantes porteuses participent à la dispersion, et la présence d’hôtes variés peut entretenir des foyers, notamment en milieu protégé.",
+              "Polyphagotarsonemus latus est un acarien tarsonémide polyphage, différent de l’ériophyide allongé Aculops. Son alimentation sur les tissus jeunes s’accompagne de déformations, épaississement et bronzage ; le dommage peut rester visible après que les acariens ont disparu de la zone examinée."
+            ],
+            "sourceIds": [
+              "health-atlas-broad-mite"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Des déformations comparables peuvent accompagner d’autres acariens ou des troubles non parasitaires ; la concordance entre organismes, tissus jeunes et progression est donc essentielle.",
+              "Il faut examiner à fort grossissement les formes mobiles et les œufs, à surface caractéristique, sur les tissus jeunes. La photographie montre un spécimen microscopique attribué à cette espèce, et non une déformation de feuille permettant à elle seule un diagnostic."
+            ],
+            "sourceIds": [
+              "health-atlas-broad-mite",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "Inspecter le matériel entrant et localiser les premières zones atteintes permet de suivre l’évolution du foyer. Une identification de l’acarien est nécessaire pour choisir une réponse adaptée à la cible et au milieu ; la mention d’un risque dans une région ne vaut pas observation dans une autre."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-broad-mite"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-florida-2023",
+          "health-atlas-broad-mite",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-polyphagotarsonemus-latus"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Polyphagotarsonemus latus"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-florida-2023",
+        "health-atlas-broad-mite",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Polyphagotarsonemus latus, Chazz Hesselein/Alabama Cooperative Extension System, Bugwood5438919, CC BY3. Le fichier illustre une forme mobile, pas des œufs ; l’hôte n’est pas établi comme chanvre."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [
+    {
+      "id": "health-term-mite",
+      "definition": "Arthropode arachnide : les acariens comprennent des espèces phytophages et prédatrices. Le nombre de pattes dépend du groupe et du stade ; les ériophyides ont deux paires aux stades mobiles.",
+      "sourceIds": [
+        "health-lesson-mites",
+        "health-lesson-allies"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    },
+    {
+      "id": "health-term-arthropod",
+      "definition": "Animal à squelette externe et appendices articulés ; les insectes et les acariens en sont deux groupes distincts, comprenant des rôles alimentaires variés.",
+      "sourceIds": [
+        "health-lesson-allies",
+        "health-lesson-mites"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    },
+    {
+      "id": "health-term-asymptomatic",
+      "definition": "Sans symptôme apparent au moment de l’observation ; une plante asymptomatique peut néanmoins être infectée et donner un test moléculaire positif.",
+      "sourceIds": [
+        "health-lesson-viroids",
+        "health-new-hlvd-2024",
+        "health-atlas-viroids-ictv"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    },
+    {
+      "id": "health-term-auxiliary",
+      "definition": "Organisme qui contribue à limiter un organisme dommageable dans une interaction donnée, par exemple un prédateur de pucerons ; sa présence ne garantit pas une régulation suffisante.",
+      "sourceIds": [
+        "health-lesson-allies"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    },
+    {
+      "id": "health-term-fungus",
+      "definition": "Organisme de la lignée des Fungi. Les champignons ont des rôles divers, pas tous pathogènes ; les oomycètes constituent une autre lignée malgré leur croissance souvent filamenteuse.",
+      "sourceIds": [
+        "health-lesson-punja2019",
+        "health-lesson-oomycetes"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    },
+    {
+      "id": "health-term-mycelium",
+      "definition": "Ensemble d’hyphes, filaments constituant la croissance de nombreux champignons et oomycètes ; son aspect visible ne suffit pas à identifier une espèce.",
+      "sourceIds": [
+        "health-lesson-diagnosis",
+        "health-lesson-oomycetes"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    },
+    {
+      "id": "health-term-necrosis",
+      "definition": "Mort de cellules ou d’une portion de tissu végétal, observée par exemple comme une lésion brune ; elle peut avoir une cause infectieuse ou non infectieuse.",
+      "sourceIds": [
+        "health-lesson-diagnosis"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    },
+    {
+      "id": "health-term-oomycete",
+      "definition": "Organisme de la lignée des Straménopiles, distincte des vrais champignons malgré des ressemblances de croissance ; plusieurs Pythium causent des fontes ou pourritures racinaires.",
+      "sourceIds": [
+        "health-lesson-oomycetes"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    },
+    {
+      "id": "health-term-parasitoid",
+      "definition": "Organisme dont le développement se déroule dans ou sur un hôte, qu’il finit généralement par tuer ; à distinguer d’un prédateur qui peut capturer plusieurs proies.",
+      "sourceIds": [
+        "health-lesson-allies"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    },
+    {
+      "id": "health-term-viroid",
+      "definition": "Petit ARN circulaire simple brin non codant, sans capside, qui utilise des fonctions de son hôte végétal pour se répliquer ; le HLVd en est un exemple.",
+      "sourceIds": [
+        "health-lesson-viroids",
+        "health-new-hlvd-2024",
+        "health-atlas-viroids-ictv"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    },
+    {
+      "id": "health-term-virus",
+      "definition": "Agent infectieux possédant un génome et dépendant de cellules hôtes pour sa multiplication. Les virus diffèrent par leur architecture et leur cycle ; un symptôme foliaire ne suffit pas à les identifier.",
+      "sourceIds": [
+        "health-lesson-viroids",
+        "health-lesson-diagnosis"
+      ],
+      "findings": [
+        "Définition relue individuellement ; distinction entre description et diagnostic conservée."
+      ]
+    }
+  ],
+  "quizPatches": [],
+  "sensitivePoints": [
+    {
+      "sourceId": "health-atlas-hlvd-punja",
+      "note": "403 Taylor & Francis ; non lu, chiffres non repris."
+    },
+    {
+      "sourceId": "health-lesson-abiotic",
+      "note": "Erreur 502 au lien Cornell exact ; raisonnement remplacé par CSU GardenNotes 102."
+    },
+    {
+      "sourceId": "health-atlas-hlvd-warren",
+      "note": "403 APS, formats abstract/full également ; assertions expérimentales de 2019 remplacées par source primaire accessible de 2024."
+    },
+    {
+      "sourceId": "health-lesson-ipm",
+      "note": "Page et PDF EUR-Lex non lisibles dans cet accès (contrôle JavaScript). Aucun détail juridique inféré."
+    }
+  ]
+}

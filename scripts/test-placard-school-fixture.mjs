@@ -1,0 +1,202 @@
+// Exercise the browser audit transport itself; no server or database involved.
+import assert from 'node:assert/strict';
+import {randomUUID} from 'node:crypto';
+import {createSchoolFixture} from './audit-school-scenarios.mjs';
+const fixture=await createSchoolFixture(),checks=[];
+const check=(label,value,expected)=>{assert.deepEqual(value,expected,label);checks.push(label);};
+async function request(path,body,headers={}){
+ let response;
+ await fixture.handle({method:()=>body?'POST':'GET',postData:()=>JSON.stringify(body),headers:()=>headers,
+  respond:async value=>{response={status:value.status,data:JSON.parse(value.body)};},abort:async()=>{response={aborted:true};}},new URL(`http://local.test/api/arena/placard/school/${path}`));
+ return response;
+}
+let quiz=(await request('quiz?quizId=plant')).data;
+check('fixture exposes ten unique botany questions covering all eight chapters',[quiz.questions.length,new Set(quiz.questions.map(q=>q.id)).size,new Set(quiz.questions.map(q=>q.chapterId)).size],[10,10,8]);
+check('public botany quiz carries its own version and selector prefix',[quiz.contentVersion,quiz.selectionId.startsWith('b1.')],['2026-11-12.botany1',true]);
+check('public quiz never carries reference explanations',JSON.stringify(quiz).includes('correctOptionId')||JSON.stringify(quiz).includes('optionExplanations'),false);
+const attempt=score=>({requestKey:randomUUID(),quizId:'plant',contentVersion:quiz.contentVersion,selectionId:quiz.selectionId,
+ answers:quiz.questions.map((question,index)=>({questionId:question.id,optionId:index<score?fixture.answers[question.id].correctOptionId:question.options.find(option=>option.id!==fixture.answers[question.id].correctOptionId).id}))});
+const seven=await request('quiz',attempt(7));check('fixture uses existing plant budget and threshold',[seven.data.result.gainCents,fixture.snapshot.totalPaidCents,fixture.snapshot.totalBudgetCents,fixture.snapshot.quizzes.find(item=>item.quizId==='plant').rewardId],[700,700,10000,'school:plant']);
+quiz=(await request('quiz?quizId=plant')).data;
+const nine=attempt(9);fixture.loseNext();check('quiz lost response occurs after reward commit',(await request('quiz',nine)).aborted,true);
+check('improvement only credits complement',fixture.snapshot.totalPaidCents,900);
+const replay=await request('quiz',nine);check('quiz retry is one immutable result with no extra credit',[replay.data.replayed,replay.data.result.gainCents,fixture.snapshot.totalPaidCents,fixture.credits],[true,200,900,2]);
+check('one key cannot replace its answers',(await request('quiz',{...attempt(10),requestKey:nine.requestKey})).status,409);
+const step={lessonIds:['botany-anatomy-1'],checkpointIds:[],activityIds:['botany-anatomy-activity-1'],resumeLessonId:'botany-anatomy-2',expectedRevision:0};
+fixture.loseNextBotany();check('botany learning response is lost after commit',(await request('botany',step)).aborted,true);
+const committed=structuredClone(fixture.botanySnapshot);
+check('lost learning step committed its own state',[committed.revision,committed.lessonIds,committed.resumeLessonId],[1,['botany-anatomy-1'],'botany-anatomy-2']);
+check('exact learning retry keeps revision and updatedAt',(await request('botany',step)).data,committed);
+const stale=await request('botany',{...step,lessonIds:['botany-anatomy-2'],resumeLessonId:'botany-anatomy-1'});
+check('fixture CAS merges completions without stale resume overwrite',[stale.data.lessonIds.length,stale.data.revision,stale.data.resumeLessonId,stale.data.resumeConflict],[2,2,'botany-anatomy-2',true]);
+check('a repeated stale save changes no revision',(await request('botany',{...step,lessonIds:['botany-anatomy-2'],resumeLessonId:'botany-anatomy-1'})).data.revision,2);
+check('GET does not persist the command conflict flag',(await request('botany')).data.resumeConflict,false);
+check('botany progress has no wallet side effect',fixture.snapshot.totalPaidCents,900);
+check('history progress stays separate',fixture.historySnapshot.lessonIds,[]);
+const historyQuiz=(await request('quiz?quizId=history')).data;
+check('history selection still covers ten distinct chapters',[historyQuiz.questions.length,new Set(historyQuiz.questions.map(q=>q.chapterId)).size,historyQuiz.selectionId.startsWith('h1.')],[10,10,true]);
+check('history IDs cannot enter botany progression',(await request('botany',{...step,lessonIds:['history-evidence-1']})).status,400);
+check('account-change guard precedes learning mutation',(await request('botany',step,{'x-kq-school-owner':randomUUID()})).status,409);
+let terpeneQuiz=(await request('quiz?quizId=molecules')).data;
+check('terpenes selection covers all ten chapters with ten unique questions',[terpeneQuiz.questions.length,new Set(terpeneQuiz.questions.map(q=>q.id)).size,new Set(terpeneQuiz.questions.map(q=>q.chapterId)).size],[10,10,10]);
+check('terpenes carries its own edition and t1 prefix',[terpeneQuiz.contentVersion,terpeneQuiz.selectionId.startsWith('t1.')],['2026-11-12.terpenes1',true]);
+check('public terpene quiz carries no reference answer',JSON.stringify(terpeneQuiz).includes('correctOptionId')||JSON.stringify(terpeneQuiz).includes('optionExplanations'),false);
+// Explicit legacy fixture: this player's old molecules quiz already paid 700c.
+const molecules=fixture.snapshot.quizzes.find(item=>item.quizId==='molecules');
+Object.assign(molecules,{bestScore:7,paidCents:700,remainingCents:300,attempts:1});fixture.snapshot.cashCents+=700;fixture.snapshot.totalPaidCents+=700;
+const terpeneAttempt=score=>({requestKey:randomUUID(),quizId:'molecules',contentVersion:terpeneQuiz.contentVersion,selectionId:terpeneQuiz.selectionId,
+ answers:terpeneQuiz.questions.map((question,index)=>({questionId:question.id,optionId:index<score?fixture.answers[question.id].correctOptionId:question.options.find(option=>option.id!==fixture.answers[question.id].correctOptionId).id}))});
+const terpeneNine=terpeneAttempt(9),terpeneResult=await request('quiz',terpeneNine);
+check('terpenes improvement preserves legacy molecules budget',[terpeneResult.data.result.gainCents,molecules.paidCents,molecules.rewardId,fixture.snapshot.totalPaidCents],[200,900,'school:molecules',1800]);
+const beforeTerpeneReplay=fixture.snapshot.cashCents;
+check('terpenes receipt replays exactly',(await request('quiz',terpeneNine)).data.result,terpeneResult.data.result);
+check('terpenes replay never credits twice',fixture.snapshot.cashCents,beforeTerpeneReplay);
+terpeneQuiz=(await request('quiz?quizId=molecules')).data;
+check('terpenes perfect score cannot reopen the existing cap',(await request('quiz',terpeneAttempt(10))).data.result.gainCents,100);
+const terpeneStep={lessonIds:['terpenes-vocabulary-1'],checkpointIds:[],activityIds:['terpenes-vocabulary-activity-1'],resumeLessonId:'terpenes-vocabulary-2',expectedRevision:0};
+fixture.loseNextTerpenes();check('terpenes lost learning response follows its commit',(await request('terpenes',terpeneStep)).aborted,true);
+const terpeneCommitted=structuredClone(fixture.terpenesSnapshot);
+check('terpenes learning retry preserves timestamp and revision',(await request('terpenes',terpeneStep)).data,terpeneCommitted);
+check('terpenes keeps the other course progress intact',[fixture.botanySnapshot.revision,fixture.historySnapshot.revision],[2,0]);
+check('botany IDs cannot enter terpene progress',(await request('terpenes',{...terpeneStep,lessonIds:['botany-anatomy-1']})).status,400);
+check('terpenes learning cannot change reward totals',[fixture.snapshot.totalPaidCents,molecules.paidCents],[1900,1000]);
+let cannabinoidQuiz=(await request('quiz?quizId=evidence')).data;
+check('cannabinoids selection covers all ten chapters with ten unique questions',[cannabinoidQuiz.questions.length,new Set(cannabinoidQuiz.questions.map(q=>q.id)).size,new Set(cannabinoidQuiz.questions.map(q=>q.chapterId)).size],[10,10,10]);
+check('cannabinoids carries its own edition and c1 prefix',[cannabinoidQuiz.contentVersion,cannabinoidQuiz.selectionId.startsWith('c1.')],['2026-11-12.cannabinoids1',true]);
+check('public cannabinoid quiz carries no reference answer',JSON.stringify(cannabinoidQuiz).includes('correctOptionId')||JSON.stringify(cannabinoidQuiz).includes('optionExplanations'),false);
+// Explicit legacy fixture: this player's old evidence quiz already paid 700c.
+const evidence=fixture.snapshot.quizzes.find(item=>item.quizId==='evidence');
+Object.assign(evidence,{bestScore:7,paidCents:700,remainingCents:300,attempts:1});fixture.snapshot.cashCents+=700;fixture.snapshot.totalPaidCents+=700;
+const cannabinoidAttempt=score=>({requestKey:randomUUID(),quizId:'evidence',contentVersion:cannabinoidQuiz.contentVersion,selectionId:cannabinoidQuiz.selectionId,
+ answers:cannabinoidQuiz.questions.map((question,index)=>({questionId:question.id,optionId:index<score?fixture.answers[question.id].correctOptionId:question.options.find(option=>option.id!==fixture.answers[question.id].correctOptionId).id}))});
+const cannabinoidNine=cannabinoidAttempt(9),cannabinoidResult=await request('quiz',cannabinoidNine);
+check('cannabinoids improvement preserves legacy evidence budget',[cannabinoidResult.data.result.gainCents,evidence.paidCents,evidence.rewardId,fixture.snapshot.totalPaidCents],[200,900,'school:evidence',2800]);
+const beforeCannabinoidReplay=fixture.snapshot.cashCents;
+check('cannabinoids receipt replays exactly',(await request('quiz',cannabinoidNine)).data.result,cannabinoidResult.data.result);
+check('cannabinoids replay never credits twice',fixture.snapshot.cashCents,beforeCannabinoidReplay);
+cannabinoidQuiz=(await request('quiz?quizId=evidence')).data;
+check('cannabinoids perfect score cannot reopen the existing cap',(await request('quiz',cannabinoidAttempt(10))).data.result.gainCents,100);
+const cannabinoidStep={lessonIds:['cannabinoids-origins-1'],checkpointIds:[],activityIds:['cannabinoids-origins-activity-1'],resumeLessonId:'cannabinoids-origins-2',expectedRevision:0};
+fixture.loseNextCannabinoids();check('cannabinoids lost learning response follows its commit',(await request('cannabinoids',cannabinoidStep)).aborted,true);
+const cannabinoidCommitted=structuredClone(fixture.cannabinoidsSnapshot);
+check('cannabinoids learning retry preserves timestamp and revision',(await request('cannabinoids',cannabinoidStep)).data,cannabinoidCommitted);
+check('cannabinoids keeps the other course progress intact',[fixture.botanySnapshot.revision,fixture.historySnapshot.revision,fixture.terpenesSnapshot.revision],[2,0,1]);
+check('botany IDs cannot enter cannabinoid progress',(await request('cannabinoids',{...cannabinoidStep,lessonIds:['botany-anatomy-1']})).status,400);
+check('cannabinoids learning cannot change reward totals',[fixture.snapshot.totalPaidCents,evidence.paidCents],[2900,1000]);
+let cultivationQuiz=(await request('quiz?quizId=genetics')).data;
+check('cultivation selection covers all eight chapters with ten unique questions',[cultivationQuiz.questions.length,new Set(cultivationQuiz.questions.map(q=>q.id)).size,new Set(cultivationQuiz.questions.map(q=>q.chapterId)).size],[10,10,8]);
+check('cultivation carries its own edition and u1 prefix',[cultivationQuiz.contentVersion,cultivationQuiz.selectionId.startsWith('u1.')],['2026-11-12.cultivation1',true]);
+check('public cultivation quiz carries no reference answer',JSON.stringify(cultivationQuiz).includes('correctOptionId')||JSON.stringify(cultivationQuiz).includes('optionExplanations'),false);
+// Explicit legacy fixture: this player's old genetics quiz already paid 700c.
+const genetics=fixture.snapshot.quizzes.find(item=>item.quizId==='genetics');
+Object.assign(genetics,{bestScore:7,paidCents:700,remainingCents:300,attempts:1});fixture.snapshot.cashCents+=700;fixture.snapshot.totalPaidCents+=700;
+const cultivationAttempt=score=>({requestKey:randomUUID(),quizId:'genetics',contentVersion:cultivationQuiz.contentVersion,selectionId:cultivationQuiz.selectionId,
+ answers:cultivationQuiz.questions.map((question,index)=>({questionId:question.id,optionId:index<score?fixture.answers[question.id].correctOptionId:question.options.find(option=>option.id!==fixture.answers[question.id].correctOptionId).id}))});
+const cultivationNine=cultivationAttempt(9),cultivationResult=await request('quiz',cultivationNine);
+check('cultivation improvement preserves legacy genetics budget',[cultivationResult.data.result.gainCents,genetics.paidCents,genetics.rewardId,fixture.snapshot.totalPaidCents],[200,900,'school:genetics',3800]);
+const beforeCultivationReplay=fixture.snapshot.cashCents;
+check('cultivation receipt replays exactly',(await request('quiz',cultivationNine)).data.result,cultivationResult.data.result);
+check('cultivation replay never credits twice',fixture.snapshot.cashCents,beforeCultivationReplay);
+cultivationQuiz=(await request('quiz?quizId=genetics')).data;
+check('cultivation perfect score cannot reopen the existing cap',(await request('quiz',cultivationAttempt(10))).data.result.gainCents,100);
+const cultivationStep={lessonIds:['cultivation-axes-1'],checkpointIds:[],activityIds:['cultivation-axes-activity-1'],resumeLessonId:'cultivation-axes-2',expectedRevision:0};
+fixture.loseNextCultivation();check('cultivation lost learning response follows its commit',(await request('cultivation',cultivationStep)).aborted,true);
+const cultivationCommitted=structuredClone(fixture.cultivationSnapshot);
+check('cultivation learning retry preserves timestamp and revision',(await request('cultivation',cultivationStep)).data,cultivationCommitted);
+check('cultivation keeps the other course progress intact',[fixture.botanySnapshot.revision,fixture.historySnapshot.revision,fixture.terpenesSnapshot.revision,fixture.cannabinoidsSnapshot.revision],[2,0,1,1]);
+check('botany IDs cannot enter cultivation progress',(await request('cultivation',{...cultivationStep,lessonIds:['botany-anatomy-1']})).status,400);
+check('cultivation learning cannot change reward totals',[fixture.snapshot.totalPaidCents,genetics.paidCents],[3900,1000]);
+let healthQuiz=(await request('quiz?quizId=biodiversity')).data;
+check('health selection covers all eight chapters with ten unique questions',[healthQuiz.questions.length,new Set(healthQuiz.questions.map(q=>q.id)).size,new Set(healthQuiz.questions.map(q=>q.chapterId)).size],[10,10,8]);
+check('health carries its own edition and p1 prefix',[healthQuiz.contentVersion,healthQuiz.selectionId.startsWith('p1.')],['2026-11-12.health1',true]);
+check('public health quiz carries no reference answer',JSON.stringify(healthQuiz).includes('correctOptionId')||JSON.stringify(healthQuiz).includes('optionExplanations'),false);
+// Explicit legacy fixture: this player's old biodiversity quiz already paid 700c.
+const biodiversity=fixture.snapshot.quizzes.find(item=>item.quizId==='biodiversity');
+Object.assign(biodiversity,{bestScore:7,paidCents:700,remainingCents:300,attempts:1});fixture.snapshot.cashCents+=700;fixture.snapshot.totalPaidCents+=700;
+const healthAttempt=score=>({requestKey:randomUUID(),quizId:'biodiversity',contentVersion:healthQuiz.contentVersion,selectionId:healthQuiz.selectionId,
+ answers:healthQuiz.questions.map((question,index)=>({questionId:question.id,optionId:index<score?fixture.answers[question.id].correctOptionId:question.options.find(option=>option.id!==fixture.answers[question.id].correctOptionId).id}))});
+const healthNine=healthAttempt(9),healthResult=await request('quiz',healthNine);
+check('health improvement preserves legacy biodiversity budget',[healthResult.data.result.gainCents,biodiversity.paidCents,biodiversity.rewardId,fixture.snapshot.totalPaidCents],[200,900,'school:biodiversity',4800]);
+const beforeHealthReplay=fixture.snapshot.cashCents;
+check('health receipt replays exactly',(await request('quiz',healthNine)).data.result,healthResult.data.result);
+check('health replay never credits twice',fixture.snapshot.cashCents,beforeHealthReplay);
+healthQuiz=(await request('quiz?quizId=biodiversity')).data;
+check('health perfect score cannot reopen the existing cap',(await request('quiz',healthAttempt(10))).data.result.gainCents,100);
+const healthStep={lessonIds:['health-observation-1'],checkpointIds:[],activityIds:['health-observation-activity-1'],resumeLessonId:'health-observation-2',expectedRevision:0};
+fixture.loseNextHealth();check('health lost learning response follows its commit',(await request('health',healthStep)).aborted,true);
+const healthCommitted=structuredClone(fixture.healthSnapshot);
+check('health learning retry preserves timestamp and revision',(await request('health',healthStep)).data,healthCommitted);
+check('health keeps the other course progress intact',[fixture.botanySnapshot.revision,fixture.historySnapshot.revision,fixture.terpenesSnapshot.revision,fixture.cannabinoidsSnapshot.revision,fixture.cultivationSnapshot.revision],[2,0,1,1,1]);
+check('botany IDs cannot enter health progress',(await request('health',{...healthStep,lessonIds:['botany-anatomy-1']})).status,400);
+check('health learning cannot change reward totals',[fixture.snapshot.totalPaidCents,biodiversity.paidCents],[4900,1000]);
+let soilQuiz=(await request('quiz?quizId=uses')).data;
+check('soil selection covers all ten chapters with ten unique questions',[soilQuiz.questions.length,new Set(soilQuiz.questions.map(q=>q.id)).size,new Set(soilQuiz.questions.map(q=>q.chapterId)).size],[10,10,10]);
+check('soil carries its own edition and s1 prefix',[soilQuiz.contentVersion,soilQuiz.selectionId.startsWith('s1.')],['2026-11-12.soil1',true]);
+check('public soil quiz carries no reference answer',JSON.stringify(soilQuiz).includes('correctOptionId')||JSON.stringify(soilQuiz).includes('optionExplanations'),false);
+// Explicit legacy fixture: this player's old uses quiz already paid 700c.
+const uses=fixture.snapshot.quizzes.find(item=>item.quizId==='uses');
+Object.assign(uses,{bestScore:7,paidCents:700,remainingCents:300,attempts:1});fixture.snapshot.cashCents+=700;fixture.snapshot.totalPaidCents+=700;
+const soilAttempt=score=>({requestKey:randomUUID(),quizId:'uses',contentVersion:soilQuiz.contentVersion,selectionId:soilQuiz.selectionId,
+ answers:soilQuiz.questions.map((question,index)=>({questionId:question.id,optionId:index<score?fixture.answers[question.id].correctOptionId:question.options.find(option=>option.id!==fixture.answers[question.id].correctOptionId).id}))});
+const soilNine=soilAttempt(9),soilResult=await request('quiz',soilNine);
+check('soil improvement preserves legacy uses budget',[soilResult.data.result.gainCents,uses.paidCents,uses.rewardId,fixture.snapshot.totalPaidCents],[200,900,'school:uses',5800]);
+const beforeSoilReplay=fixture.snapshot.cashCents;
+check('soil receipt replays exactly',(await request('quiz',soilNine)).data.result,soilResult.data.result);
+check('soil replay never credits twice',fixture.snapshot.cashCents,beforeSoilReplay);
+soilQuiz=(await request('quiz?quizId=uses')).data;
+check('soil perfect score cannot reopen the existing cap',(await request('quiz',soilAttempt(10))).data.result.gainCents,100);
+const soilStep={lessonIds:['soil-physical-1'],checkpointIds:[],activityIds:['soil-physical-activity-1'],resumeLessonId:'soil-physical-2',expectedRevision:0};
+fixture.loseNextSoil();check('soil lost learning response follows its commit',(await request('soil',soilStep)).aborted,true);
+const soilCommitted=structuredClone(fixture.soilSnapshot);
+check('soil learning retry preserves timestamp and revision',(await request('soil',soilStep)).data,soilCommitted);
+check('soil keeps the other course progress intact',[fixture.botanySnapshot.revision,fixture.historySnapshot.revision,fixture.terpenesSnapshot.revision,fixture.cannabinoidsSnapshot.revision,fixture.cultivationSnapshot.revision,fixture.healthSnapshot.revision],[2,0,1,1,1,1]);
+check('botany IDs cannot enter soil progress',(await request('soil',{...soilStep,lessonIds:['botany-anatomy-1']})).status,400);
+check('soil learning cannot change reward totals',[fixture.snapshot.totalPaidCents,uses.paidCents],[5900,1000]);
+let productsQuiz=(await request('quiz?quizId=profiles')).data;
+check('products selection covers all ten chapters with ten unique questions',[productsQuiz.questions.length,new Set(productsQuiz.questions.map(q=>q.id)).size,new Set(productsQuiz.questions.map(q=>q.chapterId)).size],[10,10,10]);
+check('products carries its own edition and v1 prefix',[productsQuiz.contentVersion,productsQuiz.selectionId.startsWith('v1.')],['2026-11-12.products1',true]);
+check('public products quiz carries no reference answer',JSON.stringify(productsQuiz).includes('correctOptionId')||JSON.stringify(productsQuiz).includes('optionExplanations'),false);
+// Explicit legacy fixture: this player's old profiles quiz already paid 700c.
+const profiles=fixture.snapshot.quizzes.find(item=>item.quizId==='profiles');
+Object.assign(profiles,{bestScore:7,paidCents:700,remainingCents:300,attempts:1});fixture.snapshot.cashCents+=700;fixture.snapshot.totalPaidCents+=700;
+const productsAttempt=score=>({requestKey:randomUUID(),quizId:'profiles',contentVersion:productsQuiz.contentVersion,selectionId:productsQuiz.selectionId,
+ answers:productsQuiz.questions.map((question,index)=>({questionId:question.id,optionId:index<score?fixture.answers[question.id].correctOptionId:question.options.find(option=>option.id!==fixture.answers[question.id].correctOptionId).id}))});
+const productsNine=productsAttempt(9),productsResult=await request('quiz',productsNine);
+check('products improvement preserves legacy profiles budget',[productsResult.data.result.gainCents,profiles.paidCents,profiles.rewardId,fixture.snapshot.totalPaidCents],[200,900,'school:profiles',6800]);
+const beforeProductsReplay=fixture.snapshot.cashCents;
+check('products receipt replays exactly',(await request('quiz',productsNine)).data.result,productsResult.data.result);
+check('products replay never credits twice',fixture.snapshot.cashCents,beforeProductsReplay);
+productsQuiz=(await request('quiz?quizId=profiles')).data;
+check('products perfect score cannot reopen the existing cap',(await request('quiz',productsAttempt(10))).data.result.gainCents,100);
+const productsStep={lessonIds:['products-seeds-1'],checkpointIds:[],activityIds:['products-seeds-activity-1'],resumeLessonId:'products-seeds-2',expectedRevision:0};
+fixture.loseNextProducts();check('products lost learning response follows its commit',(await request('products',productsStep)).aborted,true);
+const productsCommitted=structuredClone(fixture.productsSnapshot);
+check('products learning retry preserves timestamp and revision',(await request('products',productsStep)).data,productsCommitted);
+check('products keeps the other course progress intact',[fixture.botanySnapshot.revision,fixture.historySnapshot.revision,fixture.terpenesSnapshot.revision,fixture.cannabinoidsSnapshot.revision,fixture.cultivationSnapshot.revision,fixture.healthSnapshot.revision,fixture.soilSnapshot.revision],[2,0,1,1,1,1,1]);
+check('botany IDs cannot enter products progress',(await request('products',{...productsStep,lessonIds:['botany-anatomy-1']})).status,400);
+check('products learning cannot change reward totals',[fixture.snapshot.totalPaidCents,profiles.paidCents],[6900,1000]);
+let harvestQuiz=(await request('quiz?quizId=prevention')).data;
+check('harvest selection covers all nine chapters with ten unique questions',[harvestQuiz.questions.length,new Set(harvestQuiz.questions.map(q=>q.id)).size,new Set(harvestQuiz.questions.map(q=>q.chapterId)).size],[10,10,9]);
+check('harvest carries its own edition and v1 prefix',[harvestQuiz.contentVersion,harvestQuiz.selectionId.startsWith('r1.')],['2026-11-12.harvest1',true]);
+check('public harvest quiz carries no reference answer',JSON.stringify(harvestQuiz).includes('correctOptionId')||JSON.stringify(harvestQuiz).includes('optionExplanations'),false);
+// Explicit legacy fixture: this player's old prevention quiz already paid 700c.
+const prevention=fixture.snapshot.quizzes.find(item=>item.quizId==='prevention');
+Object.assign(prevention,{bestScore:7,paidCents:700,remainingCents:300,attempts:1});fixture.snapshot.cashCents+=700;fixture.snapshot.totalPaidCents+=700;
+const harvestAttempt=score=>({requestKey:randomUUID(),quizId:'prevention',contentVersion:harvestQuiz.contentVersion,selectionId:harvestQuiz.selectionId,
+ answers:harvestQuiz.questions.map((question,index)=>({questionId:question.id,optionId:index<score?fixture.answers[question.id].correctOptionId:question.options.find(option=>option.id!==fixture.answers[question.id].correctOptionId).id}))});
+const harvestNine=harvestAttempt(9),harvestResult=await request('quiz',harvestNine);
+check('harvest improvement preserves legacy prevention budget',[harvestResult.data.result.gainCents,prevention.paidCents,prevention.rewardId,fixture.snapshot.totalPaidCents],[200,900,'school:prevention',7800]);
+const beforeHarvestReplay=fixture.snapshot.cashCents;
+check('harvest receipt replays exactly',(await request('quiz',harvestNine)).data.result,harvestResult.data.result);
+check('harvest replay never credits twice',fixture.snapshot.cashCents,beforeHarvestReplay);
+harvestQuiz=(await request('quiz?quizId=prevention')).data;
+check('harvest perfect score cannot reopen the existing cap',(await request('quiz',harvestAttempt(10))).data.result.gainCents,100);
+const harvestStep={lessonIds:['harvest-outcomes-1'],checkpointIds:[],activityIds:['harvest-outcomes-activity-1'],resumeLessonId:'harvest-outcomes-2',expectedRevision:0};
+fixture.loseNextHarvest();check('harvest lost learning response follows its commit',(await request('harvest',harvestStep)).aborted,true);
+const harvestCommitted=structuredClone(fixture.harvestSnapshot);
+check('harvest learning retry preserves timestamp and revision',(await request('harvest',harvestStep)).data,harvestCommitted);
+check('harvest keeps the other course progress intact',[fixture.botanySnapshot.revision,fixture.historySnapshot.revision,fixture.terpenesSnapshot.revision,fixture.cannabinoidsSnapshot.revision,fixture.cultivationSnapshot.revision,fixture.healthSnapshot.revision,fixture.soilSnapshot.revision,fixture.productsSnapshot.revision],[2,0,1,1,1,1,1,1]);
+check('botany IDs cannot enter harvest progress',(await request('harvest',{...harvestStep,lessonIds:['botany-anatomy-1']})).status,400);
+check('harvest learning cannot change reward totals',[fixture.snapshot.totalPaidCents,prevention.paidCents],[7900,1000]);
+fixture.reset();check('fixture reset restores all nine distinct courses',[fixture.botanySnapshot.revision,fixture.historySnapshot.revision,fixture.terpenesSnapshot.revision,fixture.botanySubmissions.length,fixture.terpenesSubmissions.length,fixture.cannabinoidsSnapshot.revision,fixture.cannabinoidsSubmissions.length,fixture.cultivationSnapshot.revision,fixture.cultivationSubmissions.length,fixture.healthSnapshot.revision,fixture.healthSubmissions.length,fixture.soilSnapshot.revision,fixture.soilSubmissions.length,fixture.productsSnapshot.revision,fixture.productsSubmissions.length,fixture.harvestSnapshot.revision,fixture.harvestSubmissions.length,fixture.snapshot.totalPaidCents],[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]);
+console.log(`PASS: ${checks.length} school fixture transport checks; Node memory only.`);

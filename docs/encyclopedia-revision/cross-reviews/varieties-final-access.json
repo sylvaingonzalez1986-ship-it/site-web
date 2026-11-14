@@ -1,0 +1,154 @@
+{
+  "reviewedAt": "2026-11-14",
+  "mode": "read-only-final-access-attempt",
+  "scope": "Une nouvelle voie par cible, sans modification des lots botany.",
+  "summary": {"targets": 4, "accessBlockersResolved": 2, "remainingBlocked": 2, "lotsModified": false},
+  "localEvidenceDirectory": "output/encyclopedia-revision",
+  "accessLog": "output/encyclopedia-revision/varieties-access-log.json",
+  "toolsActuallyUsed": {"download": "Python urllib.request, HTTP GET", "pdfExtraction": "PyPDF2 déjà installé ; pdftotext, mutool et pypdf absents", "htmlExtraction": "html.parser.HTMLParser, scripts/styles exclus"},
+  "targets": [
+    {
+      "articleId": "record-variety-kush",
+      "newRoute": "Téléchargement local du PDF original LA Weekly, puis extraction avec PyPDF2.",
+      "result": "read",
+      "url": "https://www.laweekly.com/wp-content/uploads/2020/01/e-edition-041620-396221.pdf",
+      "httpStatus": 200,
+      "downloadedBytes": 19576199,
+      "sha256": "364f6a04854261256fb7fb18d68dfd690f4975bb06f38c8781b0e51e24182c54",
+      "sourceFile": "output/encyclopedia-revision/varieties-kush-source.pdf",
+      "extractedFile": "output/encyclopedia-revision/varieties-kush-extracted.txt",
+      "passagesActuallyRead": ["PDF p.1 : une, titre et période de l’édition", "PDF p.2–3 : entretien complet OG Kush: A Quarter Century of Gas, texte et légendes extraits"],
+      "shortVerificationQuotes": ["By 1996, he was in the L.A. scene pretty heavy and already growing.", "the original Kush from Florida"],
+      "findings": [
+        "Le document de six pages est lisible ; la taille excédait seulement la voie web utilisée précédemment.",
+        "Josh Del Rosso décrit le contexte de1996, puis l’apport depuis la Floride de boutures par Matt Berger et la diffusion à Los Angeles.",
+        "Le récit de transmission ne fournit pas les parents biologiques fondateurs d’OG Kush. Le repère1996 concerne le contexte du récit, pas un acte daté de croisement.",
+        "La une et les pages portent April17–23,2020 : corriger la mention antérieure édition du16avril, qui provenait du nom de fichier."
+      ],
+      "sourceUpdateProposal": {
+        "id": "botany-variety-og-interview",
+        "title": "OG Kush: A Quarter Century of Gas",
+        "author": "Jimi Devine, entretien avec Josh Del Rosso (Josh D)",
+        "organization": "LA Weekly",
+        "published": "Édition imprimée du17au23avril2020",
+        "url": "https://www.laweekly.com/wp-content/uploads/2020/01/e-edition-041620-396221.pdf",
+        "verifiedAt": "2026-11-14",
+        "passage": "PDF p.2–3 : contexte1996, apport de boutures depuis la Floride par Matt Berger, diffusion et dénomination OG.",
+        "access": "excerpt",
+        "documentKind": "Entretien journalistique primaire avec un acteur de la transmission",
+        "limitation": "Témoignage rétrospectif publié en2020 ; pas archive contemporaine de1996 ni preuve génétique des fondateurs. Les allégations médicales et détails pratiques du reste du récit ne sont pas repris.",
+        "reviewEvidence": [{
+          "url": "https://www.laweekly.com/wp-content/uploads/2020/01/e-edition-041620-396221.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": ["PDF p.1 pour date/titre", "PDF p.2–3, entretien intégral extrait et effectivement lu"],
+          "result": "Téléchargement HTTP200 de19,576,199octets ; texte des six pages extrait avec PyPDF2 ; entretien p.2–3 lu localement.",
+          "assertionsSupported": ["Récit attribué à Josh D concernant un matériel venu de Floride avec Matt Berger et sa diffusion à Los Angeles.", "Repère1996 dans le contexte de l’installation collective du récit, sans pedigree fondateur établi."]
+        }]
+      },
+      "articlePatchProposal": {
+        "id": "record-variety-kush",
+        "operation": "merge-section-paragraphs-by-id-and-add-reviewed-source",
+        "sectionPatches": [
+          {
+            "id": "history",
+            "paragraphs": [
+              "Hindu Kush est à la fois un toponyme et une appellation de matériels sélectionnés. Sensi attribue sa version au massif entre Afghanistan et Pakistan. Cette provenance revendiquée ne permet pas de déduire celle de chaque produit portant le mot Kush.",
+              "Dans l’entretien publié par LA Weekly en2020, Josh D situe en1996 le contexte de son installation avec des associés, puis raconte l’apport de boutures depuis la Floride par Matt Berger et leur diffusion à Los Angeles. Il s’agit d’un témoignage de transmission, distinct de l’identification des parents biologiques d’OG Kush."
+            ],
+            "sourceIds": ["botany-variety-kush-sensi", "botany-variety-og-interview"]
+          }
+        ],
+        "sourceIdsReviewedAdd": ["botany-variety-og-interview"],
+        "status": "ready-for-integration",
+        "blockers": [],
+        "preserve": "Autres sections, identifiants, liens, image/diagramme et prudence sur les fondateurs inchangés. Aucune recette de propagation proposée."
+      }
+    },
+    {
+      "articleId": "record-variety-northern-lights",
+      "newRoute": "Téléchargement local HTTP de la page primaire Sensi, extraction HTML ; pas nouvel appel à la voie web ayant expiré.",
+      "result": "read",
+      "url": "https://sensiseeds.com/en/blog/40-years-sensi-seeds/",
+      "httpStatus": 200,
+      "downloadedBytes": 496686,
+      "sha256": "37ab6bcde1d516dbecd435d57355de439aa916a1d73e55a0528ae8f62e0d6adc",
+      "sourceFile": "output/encyclopedia-revision/varieties-northern-lights-source.html",
+      "extractedFile": "output/encyclopedia-revision/varieties-northern-lights-extracted.txt",
+      "passagesActuallyRead": ["En-tête, auteur et métadonnées de publication/mise à jour", "Chapitre Two: Northern Lights,1985, texte intégral du chapitre", "Chapitre Three, passage ciblé Skunk#1 : versions2007 et2013"],
+      "shortVerificationQuotes": ["Chapter Two: Northern Lights, 1985", "Four years after its European debut"],
+      "findings": [
+        "Le chapitre présente1985 comme repère des débuts européens de Northern Lights ; il décrit aussi des matériels numérotés et le souvenir d’Alan Dronkers.",
+        "L’auteur est Scarlet Palmer ; métadonnées2025-03-27 et mise à jour2025-12-17. Les dates2026 dans les articles liés ne sont pas celles du texte historique.",
+        "Les dates Skunk#1 féminisée2007 et automatique2013 sont également présentes dans le passage ciblé du chapitre suivant.",
+        "Rétrospective de marque et témoignages tardifs : ne pas convertir1985 en date de création biologique américaine ni adopter son pedigree sans archives indépendantes. Le contexte politique et les autres filiations commerciales ne sont pas réutilisés."
+      ],
+      "sourceUpdateProposal": {
+        "id": "botany-variety-sensi-history",
+        "title": "Sensi Seeds at40: The Roots of Dutch Cannabis History",
+        "author": "Scarlet Palmer",
+        "organization": "Sensi Seeds",
+        "published": "2025-03-27 ; mise à jour2025-12-17",
+        "url": "https://sensiseeds.com/en/blog/40-years-sensi-seeds/",
+        "verifiedAt": "2026-11-14",
+        "passage": "Chapitre Northern Lights1985 ; passage Skunk#1 sur versions féminisée2007 et automatique2013.",
+        "access": "excerpt",
+        "documentKind": "Rétrospective primaire de marque avec entretiens de ses acteurs",
+        "limitation": "Chronologie revendiquée, pas catalogue original de1985 ou génotypage. Ni les filiations supplémentaires ni le contexte historique général ne sont validés globalement.",
+        "reviewEvidence": [{
+          "url": "https://sensiseeds.com/en/blog/40-years-sensi-seeds/",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": ["En-tête auteur et métadonnées", "Chapitre Two: Northern Lights,1985 intégral", "Chapitre Three: passage des versions2007/2013"],
+          "result": "Page HTTP200 enregistrée et extraite ; passages lus localement, au-delà des extraits de moteur.",
+          "assertionsSupported": ["Sensi situe les débuts européens de Northern Lights en1985 dans sa rétrospective.", "Le passage Skunk#1 attribue2007 et2013 aux versions féminisée et automatique."]
+        }]
+      },
+      "articlePatchProposal": {
+        "id": "record-variety-northern-lights",
+        "operation": "merge-section-paragraphs-by-id-and-add-reviewed-source",
+        "sectionPatches": [
+          {
+            "id": "history",
+            "paragraphs": [
+              "Northern Lights désigne une famille de matériels avec des sélections numérotées. La rétrospective publiée par Sensi Seeds en2025 situe ses débuts européens en1985. Ce repère attribué à la marque ne date pas la création biologique américaine et ne fournit pas les archives complètes des plantes fondatrices."
+            ],
+            "sourceIds": ["botany-variety-sensi-history"]
+          }
+        ],
+        "sourceIdsReviewedAdd": ["botany-variety-sensi-history"],
+        "status": "ready-for-integration",
+        "blockers": [],
+        "preserve": "Autres sections, identifiants, liens et diagramme inchangés ; absence d’arbre fondateur indépendant explicitement conservée."
+      }
+    },
+    {
+      "articleId": "record-variety-cookies",
+      "newRoute": "Endpoint AMP du même éditeur primaire, une seule tentative nouvelle.",
+      "url": "https://cannabisnow.com/cookies-crush/amp/",
+      "result": "unavailable",
+      "httpStatus": 404,
+      "status": "blocked",
+      "blockers": ["L’entretien primaire de Jigga n’a pas été lu : la voie AMP renvoie404. Aucun extrait du moteur n’est déclaré preuve de lecture."],
+      "articlePatchProposal": null,
+      "preserve": "Aucune parenté F1Durban×FloridaOG ni explication nominale deF1 ajoutée depuis les extraits de recherche."
+    },
+    {
+      "articleId": "record-variety-gelato",
+      "newRoute": "Endpoint AMP du même éditeur primaire, une seule tentative nouvelle.",
+      "url": "https://cannabisnow.com/sherbinski-sitdown-gelato/amp/",
+      "result": "unavailable",
+      "httpStatus": 404,
+      "status": "blocked",
+      "blockers": ["L’entretien2017 n’a pas été lu : la voie AMP renvoie404. Chronologie et liste historique des sélections ne sont pas confirmées par une nouvelle lecture."],
+      "articlePatchProposal": null,
+      "preserve": "Parenté actuelle déjà confirmée séparément sur Sherbinskis conservée ; pas de date2014 calculée à partir d’un extrait de moteur."
+    }
+  ],
+  "integrationInstructions": [
+    "Ce rapport ne modifie aucun lot. Le coordinateur peut intégrer les deux mises à jour de source et les sections proposées, puis lever seulement les deux blocages d’accès correspondants.",
+    "Les patchs de section sont des fusions par identifiant : ne pas remplacer le tableau complet des sections par le seul sous-ensemble proposé.",
+    "Normaliser les espaces typographiques autour des années lors de l’intégration. Les documents bruts téléchargés servent à l’audit et ne reçoivent aucune licence commerciale d’image.",
+    "Cookies et Gelato restent bloqués après la tentative unique autorisée ; aucune nouvelle voie supplémentaire n’a été essayée."
+  ]
+}

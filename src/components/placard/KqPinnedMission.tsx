@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useCallback, useContext, useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { ArrowRight, Pin, PinOff, RefreshCw } from "lucide-react";
 import { KQ_MISSION_COPY, type KqMission, type KqMissionCode } from "@/lib/kanab-quest-missions";
 import { kqPinnedMissionKey, readKqPinnedMission, readKqPinnedMissionProgress, writeKqPinnedMission } from "@/lib/kanab-quest-pinned-mission";
@@ -59,7 +59,6 @@ export function KqPinnedMission({ onChoose, onContinue }: { onChoose: () => void
   const code = focus?.code ?? null;
   const [result, setResult] = useState<{ code: KqMissionCode; mission: KqMission | null; error: boolean } | null>(null);
   const [revision, setRevision] = useState(0);
-  const chooseButton = useRef<HTMLButtonElement>(null);
   useEffect(() => {
     if (!code || api.isTutorial) return;
     const controller = new AbortController();
@@ -80,12 +79,11 @@ export function KqPinnedMission({ onChoose, onContinue }: { onChoose: () => void
     const unsubscribe = api.subscribe(["kq:missions-updated", "kq:storage-updated", "kq:commerce-updated", "arena:progress-updated"], refresh);
     return () => { controller.abort(); polling(); unsubscribe(); };
   }, [api, code, revision]);
-  if (!focus || !focus.loaded || api.isTutorial) return null;
-  if (!code) return <div className={styles.empty}><button ref={chooseButton} type="button" className={styles.pin} onClick={onChoose}><Pin size={16} aria-hidden="true" />Choisir un objectif<ArrowRight size={16} aria-hidden="true" /></button></div>;
+  if (!focus || !focus.loaded || api.isTutorial || !code) return null;
   const copy = KQ_MISSION_COPY[code], current = result?.code === code ? result : null, mission = current?.mission;
   return <section className={styles.focus} aria-label="Mon objectif épinglé" data-pinned-mission={code}>
     <header><div><span><Pin size={15} aria-hidden="true" />Mon objectif</span><h2>{copy.title}</h2></div>
-      <button type="button" className={styles.pin} onClick={() => { focus.choose(null); requestAnimationFrame(() => chooseButton.current?.focus()); }} aria-label="Retirer l’objectif épinglé"><PinOff size={16} aria-hidden="true" />Retirer</button></header>
+      <button type="button" className={styles.pin} onClick={event => { const lobby = event.currentTarget.closest<HTMLElement>("[data-placard-lobby]"); focus.choose(null); requestAnimationFrame(() => lobby?.focus({ preventScroll: true })); }} aria-label="Retirer l’objectif épinglé"><PinOff size={16} aria-hidden="true" />Retirer</button></header>
     {mission ? <>
       <KqProgressMeter label={copy.progressLabel} value={mission.progress} max={mission.target} valueLabel={`${mission.progress.toLocaleString("fr-FR")} / ${mission.target.toLocaleString("fr-FR")}`} />
       {mission.claimed ? <p>Objectif accompli, récompense récupérée.</p> : mission.claimable ? <p>Objectif atteint · récompense à récupérer dans Missions.</p> : !mission.unlocked ? <p>Récupère la récompense précédente pour débloquer cette étape.</p> : null}

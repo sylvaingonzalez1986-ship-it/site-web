@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Link from "@/components/navigation/NavigationLink";
-import { ArrowLeft, ArrowUpRight, ChevronRight, Gift, Recycle, Sparkles, Ticket } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, ChevronRight, Gift, Recycle, Sparkles } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { useCart } from "@/context/CartContext";
 import { PackOpeningFlowModal } from "@/components/account/PackOpeningFlowModal";
@@ -32,7 +32,9 @@ import type {
 import albumStyles from "@/components/lottery/AlbumExperience.module.css";
 import { AlbumArenaLobby, ALBUM_DESTINATIONS, type AlbumDestination } from "@/components/lottery/AlbumArenaLobby";
 import arenaStyles from "@/components/lottery/AlbumArena.module.css";
-import lobbyStyles from "@/components/contest/ArenaLobby.module.css";
+import retroStyles from "@/components/contest/ArenaRetro.module.css";
+import { KqChapterHeading } from "@/components/placard/KqChapterHeading";
+import { KqPrintedArt } from "@/components/placard/KqPrintedArt";
 
 export function CollectionAlbumClient() {
   return <CollectionAlbumContent embedded={false} />;
@@ -146,6 +148,8 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
     tickets,
     config,
     loyalty,
+    ticketsLoaded,
+    ticketsReady,
     loading,
     error,
     acting,
@@ -392,7 +396,7 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
   };
 
   const handlePurchasePacks = async () => {
-    if (maxPurchasablePacks < 1) {
+    if (!ticketsReady || loading || acting || maxPurchasablePacks < 1) {
       return;
     }
 
@@ -407,21 +411,30 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
       </button>}
   </div> : null;
   const openAvailablePack = () => availableTickets[0] && setSelectedTicketId(availableTickets[0].id);
-  const screenTitle = screen === "cards" ? "Mes cartes." : screen === "boosters" ? "Mes boosters." : "Mes récompenses.";
+  const screenTitle = screen === "cards" ? "Mes cartes" : screen === "boosters" ? "Mes boosters" : "Mes récompenses";
+  const screenArt = ALBUM_DESTINATIONS.find(({ id }) => id === screen)?.art ?? "buddies-cards";
+  const hasTicketData = isAlbumPreview || ticketsLoaded;
+  const loadNotice = error ? <div className={arenaStyles.loadNotice} role="alert" data-album-load-error>
+    <strong>{ticketsReady ? "Actualisation incomplète" : "Points et boosters indisponibles"}</strong>
+    <p>{error}</p>
+    {ticketsLoaded && !ticketsReady && <p>Les derniers montants connus sont affichés. Actualise avant de continuer.</p>}
+    <button type="button" className={arenaStyles.primary} disabled={loading || acting} onClick={() => void refreshAll()}>{loading ? "Actualisation…" : "Actualiser"}</button>
+  </div> : null;
 
   const buddiesAlbumBody = (
-    <div ref={screenRef} tabIndex={-1} className={arenaStyles.root} data-album-screen={screen} inert={isAlbumPreview}>
+    <div ref={screenRef} tabIndex={-1} className={`${retroStyles.surface} ${arenaStyles.root}`} data-album-screen={screen} inert={isAlbumPreview}>
       {screen === "lobby" ? <AlbumArenaLobby
-        packs={availableTickets.length} owned={album.summary.ownedUnique} total={album.summary.totalCards}
-        rewards={claimablePages.length} points={loyalty.spendablePoints}
-        onNavigate={setScreen} onOpenPack={openAvailablePack} welcome={welcome}
+        packs={hasTicketData ? availableTickets.length : null} owned={album.summary.ownedUnique} total={album.summary.totalCards}
+        rewards={claimablePages.length} points={hasTicketData ? loyalty.spendablePoints : null}
+        onNavigate={setScreen} welcome={welcome} notice={loadNotice}
       /> : <div className={arenaStyles.workspace}>
-        <header className={`${lobbyStyles.topBar} ${arenaStyles.workspaceTop}`}>
-          <div className={lobbyStyles.brand}><span>Kanab Quest · Mon album</span><h1>{screenTitle}</h1></div>
+        <div className={arenaStyles.workspaceTop}>
           <button data-album-return type="button" className={arenaStyles.returnLink} onClick={() => setScreen("lobby")}><ArrowLeft aria-hidden="true" /><span>Retour à l’album</span></button>
-        </header>
-        <nav className={`${lobbyStyles.modeSelector} ${arenaStyles.workspaceNav}`} aria-label="Espaces de l’album">
-          {ALBUM_DESTINATIONS.map(({ id, label, icon: Icon }) => <button data-ui-account="album-mode" data-ui-shape="control" key={id} type="button" aria-pressed={screen === id} onClick={() => setScreen(id)}><Icon aria-hidden="true" /><span>{label}</span></button>)}
+          <KqChapterHeading art={screenArt} title={screenTitle} level={1} />
+        </div>
+        {loadNotice}
+        <nav className={arenaStyles.workspaceNav} aria-label="Espaces de l’album">
+          {ALBUM_DESTINATIONS.map(({ id, label, art }) => <button key={id} type="button" aria-pressed={screen === id} onClick={() => setScreen(id)}><KqPrintedArt kind={art} className={arenaStyles.navArt} sizes="40px" /><span>{label}</span></button>)}
         </nav>
         <div className={arenaStyles.workspaceBody}>
           {screen === "cards" && <nav className={arenaStyles.collectionNav} aria-label="Collections">
@@ -449,22 +462,20 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
       </div>}
 
       {screen === "boosters" && <>
-        <div className={arenaStyles.toolIntro}><Ticket aria-hidden="true" /><div><h2>La prochaine découverte.</h2><p>Ouvre tes boosters ou échange tes points pour agrandir ta collection.</p></div></div>
         <div className={arenaStyles.boosterActions}>
-          {availableTickets.length > 0 && <button data-ui-account="gold" data-ui-shape="control" type="button" className={lobbyStyles.enter} onClick={openAvailablePack}>Ouvrir un booster <ArrowUpRight aria-hidden="true" /></button>}
-          <span>{availableTickets.length} booster{availableTickets.length > 1 ? "s" : ""} disponible{availableTickets.length > 1 ? "s" : ""}</span>
+          <span>{hasTicketData ? `${availableTickets.length} booster${availableTickets.length > 1 ? "s" : ""} disponible${availableTickets.length > 1 ? "s" : ""}` : "Packs indisponibles"}</span>
+          {availableTickets.length > 0 && <button type="button" className={arenaStyles.primary} disabled={!ticketsReady || loading || acting} onClick={openAvailablePack}>Ouvrir un booster <ArrowUpRight aria-hidden="true" /></button>}
           {welcome}
         </div>
       </>}
-      {screen === "rewards" && <div className={arenaStyles.toolIntro}><Gift aria-hidden="true" /><div><h2>À toi de choisir.</h2><p>Les pages complètes et les doublons réunis débloquent tes récompenses.</p></div></div>}
       {screen !== "cards" && <section className={albumStyles.actionGrid} aria-label="Actions de l'album">
         {screen === "boosters" && <div data-ui-account="album-action" data-ui-shape="panel" className={albumStyles.actionCard}>
           <span>
             <span className={albumStyles.actionHeader}>
               <span className={albumStyles.actionIcon}><Sparkles aria-hidden="true" /></span>
-              <strong className={albumStyles.actionValue}>{loyalty.spendablePoints}</strong>
+              <strong className={albumStyles.actionValue}>{hasTicketData ? loyalty.spendablePoints : "—"}</strong>
             </span>
-            <h2>Points disponibles</h2>
+            <h2>{hasTicketData ? "Points disponibles" : "Points indisponibles"}</h2>
             <p>{LOTTERY_POINTS_PACK_COST} points permettent d’obtenir un booster.</p>
           </span>
           <div className={albumStyles.pointsControls}>
@@ -473,12 +484,12 @@ export function CollectionAlbumContent({ embedded = false }: CollectionAlbumCont
               min={1}
               max={Math.max(1, maxPurchasablePacks)}
               onChange={setPackPurchaseQty}
-              disabled={isAlbumPreview}
+              disabled={isAlbumPreview || !ticketsReady || loading || acting}
               compact
             />
             <button data-ui-account="points-action" data-ui-shape="control"
               type="button"
-              disabled={isAlbumPreview || acting || maxPurchasablePacks < 1}
+              disabled={isAlbumPreview || !ticketsReady || loading || acting || maxPurchasablePacks < 1}
               onClick={() => void handlePurchasePacks()}
             >
               Acheter {effectivePackPurchaseQty}

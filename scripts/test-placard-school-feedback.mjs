@@ -1,0 +1,66 @@
+import assert from 'node:assert/strict';
+import {randomUUID} from 'node:crypto';
+import {readFile} from 'node:fs/promises';
+import {PGlite} from '@electric-sql/pglite';
+const db=new PGlite(),checks=[];
+const scalar=async(sql,args=[])=>Object.values((await db.query(sql,args)).rows[0])[0];
+const check=(name,actual,expected)=>{assert.deepEqual(actual,expected,name);checks.push(name);};
+const owner=randomUUID(),other=randomUUID(),key=randomUUID(),selection='l1.'+randomUUID()+'.'+'a'.repeat(64);
+const questions=Array.from({length:10},(_,index)=>'law-q'+String(index+1).padStart(2,'0'));
+const answers=questions.map((questionId,index)=>({questionId,optionId:index?'a':'b'}));
+const grade={score:9,corrections:answers.map(answer=>({...answer,isCorrect:answer.optionId==='a'}))};
+const command=(id=key)=>({action:'submit',requestKey:id,quizId:'law',contentVersion:'2026-11-11.1',answers});
+const feedback=(questionId,optionId='a',requestKey=key)=>({requestKey,quizId:'law',contentVersion:'2026-11-11.1',selectionId:selection,questionId,optionId});
+const correction=input=>({questionId:input.questionId,optionId:input.optionId,correctOptionId:'a',isCorrect:input.optionId==='a',explanation:'Reference explanation.'});
+const save=(user,input,ref=correction(input))=>scalar('SELECT rpc_kq_school_check($1,$2,$3)',[user,input,ref]);
+const submit=(user,input=command(),grading=grade,selector=selection)=>scalar('SELECT rpc_kq_school_submit_checked($1,$2,$3,$4)',[user,input,grading,selector]);
+const money=()=>scalar("SELECT jsonb_build_object('wallet',(SELECT cash_cents FROM kq_equipment_wallets WHERE user_id=$1),'receipts',(SELECT count(*) FROM kq_school_receipts WHERE user_id=$1))",[owner]);
+try{
+ await db.exec("CREATE ROLE anon; CREATE ROLE authenticated; CREATE ROLE service_role BYPASSRLS; CREATE SCHEMA auth; CREATE TABLE auth.users(id UUID PRIMARY KEY); CREATE TABLE kq_equipment_wallets(user_id UUID PRIMARY KEY REFERENCES auth.users(id),cash_cents INTEGER DEFAULT100000,updated_at TIMESTAMPTZ DEFAULT now()); CREATE TABLE kq_commerce_accounts(user_id UUID PRIMARY KEY REFERENCES auth.users(id),revision BIGINT DEFAULT0); CREATE FUNCTION kq_treasury_initialize(UUID) RETURNS VOID LANGUAGE sql AS $$ SELECT; $$; CREATE FUNCTION kq_treasury_pair(UUID,TEXT,TEXT,TIMESTAMPTZ,TEXT,TEXT,BIGINT,TEXT DEFAULT NULL) RETURNS VOID LANGUAGE sql AS $$ SELECT; $$;".replaceAll('DEFAULT100000','DEFAULT 100000').replaceAll('DEFAULT0','DEFAULT 0'));
+ await db.exec(await readFile('supabase/migrations/20261111000400_kq_school.sql','utf8'));
+ for(const user of [owner,other]){await db.query('INSERT INTO auth.users VALUES($1)',[user]);await db.query('INSERT INTO kq_equipment_wallets(user_id) VALUES($1)',[user]);await db.query('INSERT INTO kq_commerce_accounts(user_id) VALUES($1)',[user]);}
+ const oldCommand=command(randomUUID()),oldGrade={...grade,score:7};
+ const oldReceipt=await scalar('SELECT rpc_kq_school($1,$2,$3)',[owner,oldCommand,oldGrade]);
+ const before=await money(),definition=await scalar("SELECT pg_get_functiondef('rpc_kq_school(uuid,jsonb,jsonb)'::regprocedure)");
+ await db.exec(await readFile('supabase/migrations/20261112001000_kq_school_question_feedback.sql','utf8'));
+ check('financial RPC definition is untouched',await scalar("SELECT pg_get_functiondef('rpc_kq_school(uuid,jsonb,jsonb)'::regprocedure)"),definition);
+ check('migration preserves money and receipts',await money(),before);
+ const input=feedback(questions[0],'b'),first=await save(owner,input);
+ check('first wrong answer has authoritative feedback',[first.correction.optionId,first.correction.isCorrect,first.replayed],['b',false,false]);
+ check('feedback itself pays nothing',await money(),before);
+ await assert.rejects(()=>save(owner,feedback(questions[0],'a',randomUUID())),/school_feedback_mismatch/);checks.push('same selection cannot change attempt key after feedback');
+ await assert.rejects(()=>submit(owner,{...command(randomUUID()),answers:answers.map(answer=>({...answer,optionId:'a'}))},{...grade,score:10}),/school_feedback_mismatch/);checks.push('same selection with new key cannot bypass first wrong answer through final submission');
+ const fresh={...feedback(questions[0],'a',randomUUID()),selectionId:'l1.'+randomUUID()+'.'+'c'.repeat(64)};
+ check('a genuinely new selection permits a new attempt',(await save(owner,fresh)).correction.isCorrect,true);
+ const retry=await save(owner,input,{...correction(input),explanation:'New editorial text'});
+ check('lost-response retry returns the same stored correction',[retry.correction,retry.replayed],[first.correction,true]);
+ await assert.rejects(()=>save(owner,feedback(questions[0],'a')),/school_feedback_locked/);checks.push('changing the answer after disclosure is rejected');
+ await assert.rejects(()=>submit(owner),/school_feedback_incomplete/);checks.push('partial feedback cannot reach final payment');
+ await assert.rejects(()=>save(owner,{...input,selectionId:'l1.'+randomUUID()+'.'+'b'.repeat(64)}),/school_feedback_mismatch/);checks.push('one attempt cannot change selection');
+ for(const answer of answers.slice(1))await save(owner,feedback(answer.questionId,answer.optionId));
+ await assert.rejects(()=>save(owner,feedback('law-extra')),/school_feedback_invalid/);checks.push('attempt holds at most ten checks');
+ const forged={...command(),answers:answers.map(answer=>({...answer,optionId:'a'}))};
+ await assert.rejects(()=>submit(owner,forged,{...grade,score:10}),/school_feedback_locked/);checks.push('forged final answers cannot turn feedback into a higher score');
+ await assert.rejects(()=>submit(owner,command(),grade,null),/school_feedback_mismatch/);checks.push('stripping the selector cannot bypass stored checks');
+ check('failed mutations leave money untouched',await money(),before);
+ const result=await submit(owner);
+ check('score nine only pays the historical complement',[result.result.score,result.result.gainCents,result.result.paidCents,result.snapshot.totalBudgetCents],[9,200,900,10000]);
+ const after=await money();
+ await assert.rejects(()=>submit(owner,{...command(randomUUID()),answers:answers.map(answer=>({...answer,optionId:'a'}))},{...grade,score:10}),/school_feedback_mismatch/);checks.push('new key cannot increase a completed selection from nine to ten');
+ check('selection permutation leaves paid amount unchanged',await money(),after);
+ check('final receipt retry is identical',(await submit(owner,command(),null,null)).result,result.result);
+ check('final retry never pays twice',await money(),after);
+ check('old receipt still replays exactly',(await submit(owner,oldCommand,null,null)).result,oldReceipt.result);
+ check('trusted legacy completion compatibility remains intact',(await submit(owner,command(randomUUID()),oldGrade,null)).result.gainCents,0);
+ const directKey=randomUUID(),directSelection='l1.'+randomUUID()+'.'+'d'.repeat(64);
+ const direct=await submit(owner,command(directKey),grade,directSelection);
+ check('direct legacy completion binds its selection',(await submit(owner,command(directKey),null,null)).result,direct.result);
+ await assert.rejects(()=>save(owner,{...feedback(questions[0],'a',randomUUID()),selectionId:directSelection}),/school_feedback_mismatch/);checks.push('direct completion prevents another check key on the disclosed selection');
+ await assert.rejects(()=>submit(owner,command(randomUUID()),grade,directSelection),/school_feedback_mismatch/);checks.push('direct completion prevents another final key on the disclosed selection');
+ check('another owner has an independent answer',(await save(other,feedback(questions[0],'a'))).correction.optionId,'a');
+ for(const role of ['anon','authenticated','service_role']){
+  check(role+' table inaccessible',await scalar("SELECT has_table_privilege($1,'kq_school_question_feedback','SELECT,INSERT,UPDATE,DELETE')",[role]),false);
+  for(const fn of ['rpc_kq_school_check(uuid,jsonb,jsonb)','rpc_kq_school_submit_checked(uuid,jsonb,jsonb,text)'])check(role+' named RPC '+fn,await scalar('SELECT has_function_privilege($1,$2,\'EXECUTE\')',[role,fn]),role==='service_role');
+ }
+ console.log('PASS: '+checks.length+' local SQL feedback/immutability/payment checks.');
+}finally{await db.close();}

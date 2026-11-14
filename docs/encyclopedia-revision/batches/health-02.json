@@ -1,0 +1,930 @@
+{
+  "domain": "health",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "health-atlas-florida-2023",
+      "title": "An initial list of arthropods on hemp (Cannabis sativa L.; Cannabaceae) in Florida",
+      "author": "Eileen A. Buss et Paul E. Skelley",
+      "organization": "Florida Department of Agriculture and Consumer Services",
+      "published": "2023-11",
+      "url": "https://ccmedia.fdacs.gov/content/download/114776/file/FDACS-P-02203_2023-11(Arthropods-on-Hemp-Circular).pdf",
+      "passage": "Circular 445, sections mites, aphids, whiteflies et tableau 1 : identifications de prélèvements soumis au service.",
+      "access": "full-text",
+      "limitation": "Inventaire floridien non aléatoire ; distingue ravageurs, prédateurs et présences incidentes. Les introductions historiques et affirmations réglementaires ne sont pas utilisées.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://ccmedia.fdacs.gov/content/download/114776/file/FDACS-P-02203_2023-11(Arthropods-on-Hemp-Circular).pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "PDF FDACS 2023-11, p.1–4 et tableau d’arthropodes"
+          ],
+          "result": "Inventaire régional de 127 taxons ; P. latus et Bemisia tabaci signalés, MEAM1 identifié. Myzus persicae cité comme signalé dans d’autres régions, pas parmi les quatre pucerons collectés en Floride. Trialeurodes non observé dans cet échantillonnage floridien, pas absent partout.",
+          "assertionsSupported": [
+            "Inventaire régional de 127 taxons ; P. latus et Bemisia tabaci signalés, MEAM1 identifié. Myzus persicae cité comme signalé dans d’autres régions, pas parmi les quatre pucerons collectés en Floride. Trialeurodes non observé dans cet échantillonnage floridien, pas absent partout."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-thrips-unh",
+      "title": "Hemp Pests in New Hampshire",
+      "author": "UNH Extension",
+      "organization": "University of New Hampshire",
+      "published": "Page sans date éditoriale explicite, consultée en 2026",
+      "url": "https://extension.unh.edu/resource/hemp-pests-new-hampshire",
+      "passage": "Sections Thrips et Corn Earworm : espèces rapportées sur chanvre, cicatrices et contexte de culture.",
+      "access": "full-text",
+      "limitation": "Synthèse universitaire nord-américaine ; les seuils économiques et distributions locales ne sont pas extrapolés.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://extension.unh.edu/resource/hemp-pests-new-hampshire",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "UNH Hemp Pests : Hemp budworm et Thrips"
+          ],
+          "result": "Helicoverpa zea sur inflorescences ; Thrips tabaci et Frankliniella occidentalis, cicatrices/ponctuations et déjections sombres, contexte régional.",
+          "assertionsSupported": [
+            "Helicoverpa zea sur inflorescences ; Thrips tabaci et Frankliniella occidentalis, cicatrices/ponctuations et déjections sombres, contexte régional."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-aphids",
+      "title": "Cannabis Aphid in Industrial Hemp",
+      "author": "Melissa Pulkoski et Hannah Burrack",
+      "organization": "NC State Extension",
+      "published": "2020-07-03",
+      "url": "https://content.ces.ncsu.edu/cannabis-aphid-in-industrial-hemp",
+      "passage": "Biology, identification de Phorodon et liste des autres pucerons rapportés, dont Myzus persicae ; exuvies, miellat et fumagine.",
+      "access": "full-text",
+      "limitation": "Les exemples de transmission virale et d’auxiliaires ne sont pas des diagnostics ni une garantie d’efficacité pour tout puceron ou virus.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://content.ces.ncsu.edu/cannabis-aphid-in-industrial-hemp",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "NC State Cannabis Aphid : identification, life history, damage, légendes"
+          ],
+          "result": "Phorodon cannabis suceur de sève phloémienne ; miellat, formes ailées/aptères, reproduction saisonnière ; autres pucerons possibles. Photo 5565654 CC BY 4.0 vérifiée.",
+          "assertionsSupported": [
+            "Phorodon cannabis suceur de sève phloémienne ; miellat, formes ailées/aptères, reproduction saisonnière ; autres pucerons possibles. Photo 5565654 CC BY 4.0 vérifiée."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-purdue-greenhouse",
+      "title": "Management Strategies for Common Arthropod Pests of Greenhouse Hemp in Indiana",
+      "author": "Zachary Serber et Elizabeth Y. Long",
+      "organization": "Purdue University Extension",
+      "published": "2021-12",
+      "url": "https://www.extension.entm.purdue.edu/publications/E-275/E-275.html",
+      "passage": "Greenhouse Whitefly, figure 2 sur chanvre ; Predatory Mites et réserve sur les preuves disponibles, surtout pour Aculops.",
+      "access": "full-text",
+      "limitation": "Contexte Indiana. Une légende confond les parasitoïdes de pucerons et d’aleurodes : elle n’est pas reprise. Aucune liste de pesticides ni lâcher prescrit.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.extension.entm.purdue.edu/publications/E-275/E-275.html",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Purdue E-275, pucerons, aleurodes, acariens et natural enemies"
+          ],
+          "result": "Identification avant gestion ; Phytoseiulus persimilis spécialisé sur tétranyques tisserands, autres Phytoseiidae généralistes ; résultats non interchangeables entre espèces.",
+          "assertionsSupported": [
+            "Identification avant gestion ; Phytoseiulus persimilis spécialisé sur tétranyques tisserands, autres Phytoseiidae généralistes ; résultats non interchangeables entre espèces."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-cranshaw-2019",
+      "title": "Developing Insect Pest Management Systems for Hemp in the United States: A Work in Progress",
+      "author": "Whitney Cranshaw, Melissa Schreiner, Kadie Britt, Thomas P. Kuhar, John McPartland et Jerome Grant",
+      "organization": "Journal of Integrated Pest Management",
+      "published": "2019 ; 10(1):26",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/JIPM_2019.pdf",
+      "passage": "DOI 10.1093/jipm/pmz023 ; sections mites, stem/stalk borers et flower/seed insects : observations et lacunes de connaissances.",
+      "access": "full-text",
+      "limitation": "Synthèse de recherches et observations américaines, parfois non publiées séparément. Les relations présence/dégât et leur importance économique ne sont pas systématiquement établies.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/JIPM_2019.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "JIPM 2019, PDF 11 p., résumé et groupes de ravageurs"
+          ],
+          "result": "Synthèse sur les États-Unis, dégâts et insectes associés au chanvre ; pas estimation française. Licence CC BY-NC 4.0 : aucune photographie de cet article réutilisée commercialement.",
+          "assertionsSupported": [
+            "Synthèse sur les États-Unis, dégâts et insectes associés au chanvre ; pas estimation française. Licence CC BY-NC 4.0 : aucune photographie de cet article réutilisée commercialement."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-diagnostic",
+      "title": "Industrial Hemp Sampling",
+      "author": "Mike Munster",
+      "organization": "NC State Plant Disease and Insect Clinic",
+      "published": "Mise à jour le 2024-11-14",
+      "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+      "passage": "Contexte du problème, vues d’ensemble et détails, intérêt des racines et des transitions entre tissus sains et atteints.",
+      "access": "official-page",
+      "limitation": "Les exigences de prélèvement et d’envoi dépendent du laboratoire et du droit local ; aucun protocole de transport n’est reproduit.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "NC State Industrial Hemp Sampling : informations de contexte, parties à prélever et symptômes"
+          ],
+          "result": "L’examen combine progression, tissus et analyses ; identifier un organisme ne démontre pas automatiquement qu’il cause la totalité des symptômes. Règles administratives américaines non transposées.",
+          "assertionsSupported": [
+            "L’examen combine progression, tissus et analyses ; identifier un organisme ne démontre pas automatiquement qu’il cause la totalité des symptômes. Règles administratives américaines non transposées."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-bemisia-name",
+      "title": "Bemisia tabaci — Datasheet",
+      "author": "Organisation européenne et méditerranéenne pour la protection des plantes",
+      "organization": "EPPO Global Database",
+      "published": "Fiche courante consultée en 2026",
+      "url": "https://gd.eppo.int/taxon/BEMITA/datasheet",
+      "passage": "Identity : diversité génétique et complexe d’espèces cryptiques ; limites de l’identification morphologique.",
+      "access": "official-page",
+      "limitation": "La classification ne prouve pas l’identité d’une population sur une photo ni sa présence sur chanvre dans un pays donné.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://gd.eppo.int/taxon/BEMITA/datasheet",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "EPPO datasheet, Identity/Description/Biology"
+          ],
+          "result": "Complexe d’espèces cryptiques B. tabaci ; la photographie d’un adulte ne discrimine pas MEAM1/MED et ne prouve pas la transmission d’un virus sur chanvre.",
+          "assertionsSupported": [
+            "Complexe d’espèces cryptiques B. tabaci ; la photographie d’un adulte ne discrimine pas MEAM1/MED et ne prouve pas la transmission d’un virus sur chanvre."
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-health-thrips",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : thrips du feuillage ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Frankliniella occidentalis ; Thrips tabaci. Fiche regroupant deux espèces rapportées ; un thrips photographié n’est pas automatiquement l’une d’elles.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-thrips",
+        "topicId": "health",
+        "title": "Thrips du feuillage",
+        "lead": "Plusieurs thrips peuvent se nourrir du chanvre, dont Thrips tabaci et Frankliniella occidentalis. Les cicatrices sur le feuillage orientent l’observation sans identifier à elles seules l’espèce.",
+        "image": {
+          "src": "/placard/reference/health/thrips-occidentalis.jpg",
+          "author": "Frank Peairs, Colorado State University, Bugwood.org",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Frankliniella_occidentalis_5364132-LGPT.jpg",
+          "license": "CC BY 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/3.0",
+          "kind": "photograph",
+          "alt": "Adulte de thrips, très allongé, avec ailes étroites sur une feuille.",
+          "caption": "Frankliniella occidentalis adulte, Frank Peairs/Colorado State University, Bugwood 5364132, CC BY 3. Hôte non établi comme chanvre ; cliché reçu déjà recadré par Commons."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Thrips tabaci et Frankliniella occidentalis sont décrits sur le chanvre dans la fiche du New Hampshire. Les assemblages d’espèces et leur importance varient avec la région et les conditions de culture ; ces rapports ne donnent ni une fréquence française ni une gravité commune à tous les thrips."
+            ],
+            "sourceIds": [
+              "health-atlas-thrips-unh"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Sur les feuilles et les jeunes pousses, les thrips peuvent laisser des cicatrices argentées et des ponctuations. De petits points fécaux sombres peuvent accompagner ces marques ; leur rapprochement avec des larves ou des adultes observés sur la plante aide à orienter l’identification."
+            ],
+            "sourceIds": [
+              "health-atlas-thrips-unh"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le cycle comporte des œufs, des larves actives, des stades préadultes et des adultes. Tous ne vivent pas au même endroit ; les adultes ailés et le transport de végétaux contribuent à la dispersion, avec une importance variable selon l’espèce et le milieu.",
+              "Les thrips percent et vident des cellules superficielles : les plages endommagées réfléchissent la lumière et prennent un aspect argenté. De petits points noirs de déjections peuvent accompagner les cicatrices, tandis que les jeunes tissus se déforment en grandissant."
+            ],
+            "sourceIds": [
+              "health-atlas-thrips-unh"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Des ponctuations dues à des acariens ou à un stress peuvent ressembler à certains dégâts de thrips ; les cicatrices, déjections et insectes doivent être examinés ensemble.",
+              "La notice regroupe des espèces, notamment Thrips tabaci et Frankliniella occidentalis signalées sur chanvre au New Hampshire. Un corps étroit et des ailes frangées chez l’adulte orientent vers les thrips ; l’espèce exige un examen morphologique, et les ailes ne caractérisent pas les larves."
+            ],
+            "sourceIds": [
+              "health-atlas-thrips-unh",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "La surveillance doit relier les captures éventuelles, les organismes présents sur le feuillage et les lésions qui progressent. Les végétaux entrants méritent aussi d’être examinés. Une capacité vectorielle connue chez un thrips ne prouve pas qu’un virus est présent dans la plante observée."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-thrips-unh"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-thrips-unh",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-thrips"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Frankliniella occidentalis ; Thrips tabaci"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-thrips-unh",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Frankliniella occidentalis adulte, Frank Peairs/Colorado State University, Bugwood5364132, CC BY3. Hôte non établi comme chanvre ; cliché reçu déjà recadré par Commons."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-thrips"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-phorodon-cannabis",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : puceron du chanvre ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Phorodon cannabis. P. cannabis et le puceron du houblon P. humuli sont distincts.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-phorodon-cannabis",
+        "topicId": "health",
+        "title": "Puceron du chanvre",
+        "lead": "Phorodon cannabis est un puceron qui prélève de la sève sur le chanvre. Les colonies peuvent produire du miellat et présenter des formes ailées ou aptères, dont les caractères doivent être examinés pour identifier l’espèce.",
+        "image": {
+          "src": "/placard/school/health/cranshaw-2017-aphids.jpeg",
+          "kind": "photograph",
+          "alt": "Colonies de pucerons pâles sur une feuille de chanvre.",
+          "caption": "Phorodon cannabis sur chanvre, Whitney Cranshaw/Colorado State University, Bugwood 5565654, photographie de septembre 2017 ; NC State, CC BY 4.",
+          "author": "Whitney Cranshaw, Colorado State University, Bugwood.org",
+          "sourceUrl": "https://content.ces.ncsu.edu/cannabis-aphid-in-industrial-hemp",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Phorodon cannabis est décrit sur le chanvre par NC State et figure parmi les pucerons identifiés dans les collectes floridiennes. Ces observations étayent sa relation avec l’hôte, mais ne donnent pas une estimation de sa fréquence en France ni la preuve d’une transmission virale dans chaque colonie."
+            ],
+            "sourceIds": [
+              "health-atlas-aphids",
+              "health-atlas-florida-2023"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Les colonies se rencontrent sur les feuilles, les tiges et les inflorescences. Des exuvies claires, laissées par les mues, peuvent rester sur les tissus ; le miellat rend les surfaces collantes et peut s’accompagner de fumagine. Ces éléments indiquent une activité de pucerons, sans identifier à eux seuls l’espèce."
+            ],
+            "sourceIds": [
+              "health-atlas-aphids"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Les formes ailées favorisent la dispersion et des plantes porteuses peuvent déplacer les colonies. La reproduction et le stade hivernant varient avec la saison ; la présence durable d’un hôte et des conditions favorables peuvent permettre une augmentation rapide.",
+              "Phorodon cannabis introduit ses pièces buccales dans les tissus pour prélever de la sève élaborée du phloème. Le miellat est un rejet sucré et collant de cette alimentation ; il peut servir de support à une fumagine, croissance superficielle secondaire, différente d’une lésion directement causée par un champignon pénétrant la feuille."
+            ],
+            "sourceIds": [
+              "health-atlas-aphids"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "L’observation microscopique permet de distinguer le puceron du chanvre de formes proches, plutôt que de retenir le nom d’espèce à partir du miellat ou de la fumagine.",
+              "Les formes ailées permettent la dispersion, les aptères se multiplient dans les colonies ; la couleur varie avec la saison. Phorodon humuli lui ressemble : l’avant de la tête et d’autres caractères microscopiques sont nécessaires à la séparation, pas seulement l’hôte ou la teinte."
+            ],
+            "sourceIds": [
+              "health-atlas-aphids",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "Le suivi associe les colonies, les symptômes et les ennemis naturels, afin d’apprécier leur évolution plutôt que la seule présence d’un insecte. La décision dépend de la progression et du contexte de culture ; toute intervention doit correspondre à un usage autorisé. Ni le miellat ni la fumagine ne suffisent à nommer le puceron."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-aphids"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-aphids",
+          "health-atlas-diagnostic",
+          "health-atlas-florida-2023"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-phorodon-cannabis"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Phorodon cannabis"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-aphids",
+        "health-atlas-diagnostic",
+        "health-atlas-florida-2023"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Phorodon cannabis sur chanvre, Whitney Cranshaw/Colorado State University, Bugwood5565654, photographie de septembre2017 ; NC State, CC BY4."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-puceron",
+        "hemp-biodiversity-miellat"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-myzus-persicae",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : puceron vert du pêcher ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Myzus persicae. Le nom vernaculaire lié au pêcher ne limite pas l’espèce à cet hôte.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-myzus-persicae",
+        "topicId": "health",
+        "title": "Puceron vert du pêcher",
+        "lead": "Myzus persicae, le puceron vert du pêcher, est polyphage et a été signalé sur chanvre. Le nom de son hôte habituel ne restreint pas toutes ses associations, et sa couleur ne suffit pas à le distinguer des autres pucerons.",
+        "image": {
+          "src": "/placard/reference/health/myzus-persicae.jpg",
+          "author": "Scott Bauer",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Myzus_persicae.jpg",
+          "license": "Public domain",
+          "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/United_States#Federal_government_works",
+          "kind": "photograph",
+          "alt": "Puceron adulte ailé avec longues antennes et abdomen vert.",
+          "caption": "Myzus persicae, Scott Bauer/USDA, domaine public fédéral américain ; hôte de la photographie non établi comme chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Myzus persicae est cité parmi les pucerons signalés sur chanvre dans la synthèse de NC State. L’inventaire floridien le mentionne à propos d’autres régions et ne le présente pas comme une nouvelle collecte locale ; les références ne fournissent ici ni enquête quantitative ni essai de nuisibilité propre à cette espèce sur chanvre."
+            ],
+            "sourceIds": [
+              "health-atlas-aphids",
+              "health-atlas-florida-2023"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Des pucerons sur les feuilles ou les jeunes pousses, du miellat et parfois un jaunissement peuvent orienter l’examen. Ces observations sont partagées avec d’autres pucerons : le nom courant « puceron vert » ne permet pas de déterminer Myzus persicae."
+            ],
+            "sourceIds": [
+              "health-atlas-aphids"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Les formes ailées peuvent voler entre hôtes et le transport de matériel végétal déplacer une colonie. Les modes de reproduction et les formes observées dépendent de la saison et du milieu ; les hôtes voisins font donc partie du contexte à documenter.",
+              "Myzus persicae, puceron vert du pêcher, est polyphage : son association avec le chanvre ne signifie pas qu’il lui est inféodé. Comme les autres pucerons, il prélève de la sève, peut former des colonies et produire du miellat ; les formes ailées participent aux déplacements entre plantes."
+            ],
+            "sourceIds": [
+              "health-atlas-aphids"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Des Phorodon et d’autres pucerons peuvent se rencontrer sur les mêmes tissus ; le jaunissement et le miellat ne les séparent pas.",
+              "Une photographie d’adulte ailé aide à comprendre la forme, mais les caractères de la tête, des antennes et des cornicules sont nécessaires à une détermination."
+            ],
+            "sourceIds": [
+              "health-atlas-aphids",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "L’observation des colonies et du matériel entrant doit être accompagnée d’une vérification de l’espèce et des dégâts associés. Les auxiliaires identifiés font partie du suivi. La fiche ne désigne pas ce puceron comme l’espèce dominante des cultures françaises de chanvre."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-aphids"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-aphids",
+          "health-atlas-florida-2023",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-myzus-persicae"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Myzus persicae"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-aphids",
+        "health-atlas-florida-2023",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Myzus persicae, Scott Bauer/USDA, domaine public fédéral américain ; hôte de la photographie non établi comme chanvre."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-trialeurodes-vaporariorum",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : aleurode des serres ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Trialeurodes vaporariorum. Aleyrodidae : hémiptère, pas une mouche vraie.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-trialeurodes-vaporariorum",
+        "topicId": "health",
+        "title": "Aleurode des serres",
+        "lead": "Trialeurodes vaporariorum est l’aleurode des serres, décrit parmi les ravageurs du chanvre sous abri. Il faut distinguer ses adultes ailés des stades immatures fixés au revers des feuilles.",
+        "image": {
+          "src": "/placard/reference/health/trialeurodes.jpg",
+          "author": "Sanja565658",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Trialeurodes_vaporariorum_01.JPG",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+          "kind": "photograph",
+          "alt": "Petit aleurode adulte aux ailes blanches sur la face d’une feuille.",
+          "caption": "Trialeurodes vaporariorum, Sanja565658, CC BY-SA 3. Cliché sur un autre végétal : ne documente pas des dégâts sur chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Trialeurodes vaporariorum est présenté parmi les ravageurs du chanvre sous abri dans le guide de Purdue, en Indiana. Il n’a pas été retrouvé sur cette plante dans l’inventaire floridien consulté ; cette différence entre échantillonnages n’établit pas son absence dans d’autres régions ou systèmes de culture."
+            ],
+            "sourceIds": [
+              "health-atlas-purdue-greenhouse",
+              "health-atlas-florida-2023"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "L’examen du revers des feuilles peut révéler de petits adultes blancs et des stades immatures aplatis, fixés à la surface. Du miellat peut être présent. L’envol des adultes attire l’attention, mais les immatures peuvent rester sur la feuille sans être remarqués."
+            ],
+            "sourceIds": [
+              "health-atlas-purdue-greenhouse"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le cycle passe de l’œuf à un premier stade immature mobile, puis à des stades fixés et enfin à l’adulte ailé. Les végétaux peuvent transporter les immatures, tandis que les adultes volent localement ; la continuité des plantes hôtes peut maintenir des populations sous abri.",
+              "Les aleurodes sont des insectes hémiptères suceurs de sève, malgré leur aspect de petites mouches blanches. Après un premier stade mobile, leurs stades immatures restent fixés sur la feuille, tandis que les adultes ailés se dispersent ; œufs et immatures peuvent donc être présents sans envol spectaculaire."
+            ],
+            "sourceIds": [
+              "health-atlas-purdue-greenhouse"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "D’autres aleurodes, dont Bemisia, et des dépôts clairs peuvent prêter à confusion ; examiner plusieurs stades sur le revers des feuilles.",
+              "Le port des ailes et les caractères des stades immatures aident à distinguer les aleurodes, mais une photographie d’adulte ne remplace pas une détermination. Purdue cite l’aleurode des serres dans les milieux protégés ; son absence d’un échantillonnage de Floride ne démontre ni son absence sur tout chanvre ni son absence en France."
+            ],
+            "sourceIds": [
+              "health-atlas-purdue-greenhouse",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "L’inspection des revers de feuilles et des végétaux introduits permet de suivre les stades présents. L’évolution du foyer doit être rapprochée des conditions de l’abri et de l’identité de l’aleurode avant une réponse encadrée ; la présence d’aleurodes ne prouve pas une virose."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-purdue-greenhouse"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-purdue-greenhouse",
+          "health-atlas-florida-2023",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-trialeurodes-vaporariorum"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Trialeurodes vaporariorum"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-purdue-greenhouse",
+        "health-atlas-florida-2023",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Trialeurodes vaporariorum, Sanja565658, CC BY-SA3. Cliché sur un autre végétal : ne documente pas des dégâts sur chanvre."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-bemisia-tabaci",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : aleurode du tabac ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Bemisia tabaci, complexe d’espèces. Complexe cryptique ; l’inventaire de Floride mentionne notamment MEAM1.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-bemisia-tabaci",
+        "topicId": "health",
+        "title": "Aleurode du tabac",
+        "lead": "Bemisia tabaci désigne un complexe d’aleurodes cryptiques comprenant des populations signalées sur chanvre. L’identification du complexe et celle d’une lignée en son sein demandent des niveaux d’examen différents.",
+        "image": {
+          "src": "/placard/reference/health/bemisia.jpg",
+          "author": "Stephen Ausmus",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bemisia_tabaci_from_USDA_1.jpg",
+          "license": "Public domain",
+          "licenseUrl": "https://commons.wikimedia.org/wiki/Commons:Copyright_rules_by_territory/United_States#Federal_government_works",
+          "kind": "photograph",
+          "alt": "Deux aleurodes aux ailes blanches et au corps jaune sur un revers velu de feuille.",
+          "caption": "Bemisia tabaci, Stephen Ausmus/USDA, domaine public fédéral américain. Le cliché ne distingue pas une lignée cryptique et n’établit pas l’hôte chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Bemisia tabaci a été identifié sur le chanvre dans l’inventaire floridien, où le matériel étudié a été rattaché à MEAM1. Cette observation locale ne détermine ni l’identité d’un aleurode trouvé en France ni son rôle éventuel dans la transmission d’un virus."
+            ],
+            "sourceIds": [
+              "health-atlas-bemisia-name",
+              "health-atlas-florida-2023"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Sur les feuilles, des adultes blancs et des stades immatures fixés peuvent être accompagnés de miellat. Ces signes ne permettent pas de séparer les membres du complexe Bemisia tabaci ; ils doivent conduire à examiner les organismes plutôt qu’à attribuer directement une lignée cryptique."
+            ],
+            "sourceIds": [
+              "health-atlas-bemisia-name",
+              "health-atlas-florida-2023"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le développement comprend l’œuf, plusieurs stades immatures puis l’adulte ailé, avec des générations pouvant se chevaucher. La dispersion implique les adultes et les plantes porteuses ; les hôtes, le climat et le système de culture modifient la dynamique.",
+              "Le nom Bemisia tabaci recouvre un complexe d’espèces cryptiques : elles peuvent se ressembler fortement tout en différant par leur biologie. Les immatures et adultes prélèvent la sève, et les adultes assurent la dispersion ; leur présence seule ne démontre pas la transmission d’un agent viral particulier."
+            ],
+            "sourceIds": [
+              "health-atlas-bemisia-name",
+              "health-atlas-florida-2023"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Il faut distinguer l’identification du complexe Bemisia tabaci de celle d’une lignée à l’intérieur de ce complexe.",
+              "L’étude floridienne a identifié MEAM1 dans son matériel. Ce résultat ne permet pas de nommer MEAM1 à partir de n’importe quelle photographie de B. tabaci, ni d’attribuer une feuille enroulée à un virus transmis par cet aleurode. Une analyse appropriée est nécessaire pour les lignées cryptiques."
+            ],
+            "sourceIds": [
+              "health-atlas-bemisia-name",
+              "health-atlas-florida-2023",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "La surveillance des introductions et la traçabilité des observations permettent de caractériser un foyer. Il faut faire préciser l’identité et les conditions locales avant d’en déduire une mesure ; les performances ou comportements d’une population ne se transfèrent pas automatiquement à toutes les autres."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-bemisia-name"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-florida-2023",
+          "health-atlas-bemisia-name",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-bemisia-tabaci"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Bemisia tabaci, complexe d’espèces"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-florida-2023",
+        "health-atlas-bemisia-name",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Bemisia tabaci, Stephen Ausmus/USDA, domaine public fédéral américain. Le cliché ne distingue pas une lignée cryptique et n’établit pas l’hôte chanvre."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-helicoverpa-zea",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : noctuelle américaine du maïs ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Helicoverpa zea. H. zea et H. armigera sont deux espèces distinctes.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-helicoverpa-zea",
+        "topicId": "health",
+        "title": "Noctuelle américaine du maïs",
+        "lead": "Helicoverpa zea est un papillon dont la chenille peut consommer des inflorescences et des structures portant les graines du chanvre. Les attaques documentées aux États-Unis ne constituent pas un diagnostic local en Europe.",
+        "image": {
+          "src": "/placard/reference/health/helicoverpa.jpg",
+          "author": "cyanocorax",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Helicoverpa_zea_larva.jpg",
+          "license": "CC BY-SA 2.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0",
+          "kind": "photograph",
+          "alt": "Chenille striée se nourrissant sur un épi de maïs.",
+          "caption": "Helicoverpa zea au stade larvaire sur maïs, cyanocorax, CC BY-SA 2 ; document comparatif du ravageur, pas photographie d’un dégât sur chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Les attaques d’Helicoverpa zea sur les inflorescences de chanvre sont documentées aux États-Unis. Leur importance varie avec les populations régionales et le débouché de la récolte ; ces observations ne constituent pas une confirmation de présence dans un site français."
+            ],
+            "sourceIds": [
+              "health-atlas-cranshaw-2019",
+              "health-atlas-thrips-unh"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Dans les inflorescences et les tissus voisins, une chenille, des morsures et des déjections peuvent être observées ensemble. Une blessure peut être suivie d’une pourriture, mais la consommation par une chenille et l’identification d’un microorganisme responsable de pourriture sont deux constats distincts."
+            ],
+            "sourceIds": [
+              "health-atlas-cranshaw-2019",
+              "health-atlas-thrips-unh"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le papillon pond des œufs dont sortent les chenilles ; celles-ci se transforment ensuite en chrysalides, puis en adultes ailés. Le vol des papillons et les plantes hôtes du paysage participent à la dynamique régionale ; les dégâts dépendent aussi de l’organe disponible.",
+              "La chenille est le stade larvaire d’un papillon de la famille des Noctuidae. Chez Helicoverpa zea, ce stade consomme les fleurs et les structures portant les graines avec ses mandibules ; l’adulte ailé ne produit pas ces morsures. Les blessures et débris de consommation peuvent aussi faciliter des pourritures secondaires, sans identifier leur agent."
+            ],
+            "sourceIds": [
+              "health-atlas-cranshaw-2019",
+              "health-atlas-thrips-unh"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Plusieurs chenilles consomment des fleurs ou des graines ; une blessure peut également être colonisée secondairement par des microorganismes.",
+              "Les chenilles varient en couleur et plusieurs espèces peuvent attaquer les mêmes organes. Il faut associer caractères morphologiques, organe atteint et contexte géographique ; une chenille sur maïs illustre le taxon, pas une attaque observée sur chanvre."
+            ],
+            "sourceIds": [
+              "health-atlas-cranshaw-2019",
+              "health-atlas-thrips-unh",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "Le suivi doit consigner les organes atteints et les organismes réellement associés aux lésions. Une observation américaine ne suffit pas à identifier un foyer européen ; de même, reconnaître la blessure initiale ne démontre pas qu’une matière ensuite pourrie est récupérable."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-cranshaw-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-cranshaw-2019",
+          "health-atlas-thrips-unh",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-helicoverpa-zea"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Helicoverpa zea"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-cranshaw-2019",
+        "health-atlas-thrips-unh",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Helicoverpa zea au stade larvaire sur maïs, cyanocorax, CC BY-SA2 ; document comparatif du ravageur, pas photographie d’un dégât sur chanvre."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-chenille"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [],
+  "sensitivePoints": []
+}

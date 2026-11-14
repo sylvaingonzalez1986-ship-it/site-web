@@ -289,7 +289,7 @@ describe("staff server authority", () => {
   it("keeps legacy farms accessible before deployment but the staff desk fails closed", async () => {
     mocks.rpc.mockResolvedValue({ data: null, error: { code: "PGRST202", message: "rpc_kq_staff_snapshot missing" } });
     await expect(getKqStaffSnapshot(user)).rejects.toThrow("staff_migration_required");
-    await expect(settleKqStaffIfAvailable(user)).resolves.toBeUndefined();
+    await expect(settleKqStaffIfAvailable(user)).resolves.toBeNull();
   });
   it("rejects malformed identities and commands without database calls", async () => {
     await expect(handleKqStaffAction("bad", hire())).rejects.toThrow();

@@ -70,6 +70,7 @@ export async function POST(request: Request) {
   }
   if (body.energyMode !== undefined && !isKqEnergyMode(body.energyMode)) return NextResponse.json({ error: "Mode énergétique invalide." }, { status: 400 });
   if (body.expectedWarehouseRevision !== undefined && (typeof body.expectedWarehouseRevision !== "number" || !Number.isSafeInteger(body.expectedWarehouseRevision) || body.expectedWarehouseRevision < 1)) return NextResponse.json({ error: "Révision de l’aménagement invalide." }, { status: 400 });
+  if (body.expectedProductionReservedZoneId !== undefined && body.expectedProductionReservedZoneId !== null && (typeof body.expectedProductionReservedZoneId !== "string" || !body.expectedProductionReservedZoneId.trim())) return NextResponse.json({ error: "Réservation de production invalide." }, { status: 400 });
   if (body.campaign !== undefined && typeof body.campaign !== "boolean") return NextResponse.json({ error: "Campagne invalide." }, { status: 400 });
   if ((body.zoneId !== undefined && typeof body.zoneId !== "string") || (body.requestKey !== undefined && typeof body.requestKey !== "string")) return NextResponse.json({ error: "Zone ou clé de lancement invalide." }, { status: 400 });
   const input = {
@@ -78,6 +79,7 @@ export async function POST(request: Request) {
     requestKey: typeof body.requestKey === "string" ? body.requestKey : undefined,
     expectedEnergyCents: typeof body.expectedEnergyCents === "number" ? body.expectedEnergyCents : undefined,
     ...(typeof body.expectedWarehouseRevision === "number" ? { expectedWarehouseRevision: body.expectedWarehouseRevision } : {}),
+    ...(body.expectedProductionReservedZoneId !== undefined ? { expectedProductionReservedZoneId: body.expectedProductionReservedZoneId as string | null } : {}),
     energyMode: isKqEnergyMode(body.energyMode) ? body.energyMode : "balanced" as const,
     buddieCode: typeof body.buddieCode === "string" ? body.buddieCode : "",
     deckCodes: body.deckCodes as string[],

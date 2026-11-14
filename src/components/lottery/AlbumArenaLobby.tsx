@@ -3,31 +3,29 @@
 import Image from "next/image";
 import Link from "@/components/navigation/NavigationLink";
 import { ArrowLeft, ArrowUpRight, BookOpen, Gift, Ticket } from "lucide-react";
-import { useState, type KeyboardEvent } from "react";
-import lobby from "@/components/contest/ArenaLobby.module.css";
-import retro from "@/components/contest/ArenaRetro.module.css";
+import type { KeyboardEvent, ReactNode } from "react";
+import { KqPrintedArt } from "@/components/placard/KqPrintedArt";
+import { KqProgressMeter } from "@/components/placard/KqVisuals";
 import styles from "./AlbumArena.module.css";
 
 export type AlbumDestination = "boosters" | "cards" | "rewards";
 export const ALBUM_DESTINATIONS = [
-  { id: "boosters", label: "Boosters", icon: Ticket },
-  { id: "cards", label: "Cartes", icon: BookOpen },
-  { id: "rewards", label: "Récompenses", icon: Gift },
+  { id: "boosters", label: "Boosters", icon: Ticket, art: "buddies-pack" },
+  { id: "cards", label: "Cartes", icon: BookOpen, art: "buddies-cards" },
+  { id: "rewards", label: "Récompenses", icon: Gift, art: "album-rewards" },
 ] as const;
 
-export function AlbumArenaLobby({ packs, owned, total, rewards, points, onNavigate, onOpenPack, welcome }: {
-  packs: number; owned: number; total: number; rewards: number; points: number;
+export function AlbumArenaLobby({ packs, owned, total, rewards, points, onNavigate, welcome, notice }: {
+  packs: number | null; owned: number; total: number; rewards: number; points: number | null;
   onNavigate: (destination: AlbumDestination) => void;
-  onOpenPack: () => void;
-  welcome?: React.ReactNode;
+  welcome?: ReactNode;
+  notice?: ReactNode;
 }) {
-  const [selected, setSelected] = useState<AlbumDestination>("boosters");
   const descriptions = {
-    boosters: { title: "Mes boosters", caption: packs ? `${packs} booster${packs > 1 ? "s" : ""} à ouvrir. La prochaine carte t’attend.` : "Ton prochain booster t’attend. Échange tes points pour l’obtenir.", action: packs ? "Ouvrir un booster" : "Obtenir des boosters" },
-    cards: { title: "Ma collection", caption: `${owned} / ${total} cartes Buddies. Retrouve aussi tes cartes de Kanab Quest.`, action: "Feuilleter mon album" },
-    rewards: { title: "Mes récompenses", caption: rewards ? `${rewards} page${rewards > 1 ? "s" : ""} complète${rewards > 1 ? "s" : ""} : tes récompenses sont prêtes.` : "Complète tes pages et recycle tes doublons pour débloquer tes gains.", action: "Voir mes récompenses" },
+    boosters: packs === null ? "Packs indisponibles · actualise" : `${packs} booster${packs > 1 ? "s" : ""} à ouvrir`,
+    cards: `${owned} / ${total} cartes Buddies`,
+    rewards: `${rewards} page${rewards > 1 ? "s" : ""} avec un lot à récupérer`,
   };
-  const mode = descriptions[selected];
   const keyboard = (event: KeyboardEvent<HTMLElement>) => {
     if (!["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown", "Home", "End"].includes(event.key)) return;
     const buttons = Array.from(event.currentTarget.querySelectorAll<HTMLButtonElement>("button"));
@@ -38,30 +36,28 @@ export function AlbumArenaLobby({ packs, owned, total, rewards, points, onNaviga
     buttons[next]?.focus();
   };
 
-  return <div className={`${retro.surface} ${lobby.lobby} ${styles.lobby}`} data-album-lobby data-album-mode={selected}>
-    <div className={styles.ambience} aria-hidden="true" />
-    <header className={`${lobby.topBar} ${styles.albumTopBar}`}>
-      <div className={lobby.brand}><span>Kanab Quest</span><h1>Mon album.</h1></div>
+  return <div className={styles.lobby} data-album-lobby>
+    <header className={styles.topBar}>
+      <h1>Mon album</h1>
       <Link data-album-return href="/arene" className={styles.returnLink}><ArrowLeft aria-hidden="true" /><span>L’Arène</span></Link>
     </header>
-    <div className={styles.stage} aria-hidden="true">
-      <div className={styles.halo} />
-      <Image src="/app/lottery/sylvain-booster-presentation-v3.webp" alt="" width={1024} height={1536} priority sizes="(max-width: 700px) 90vw, 650px" className={styles.mascot} />
-    </div>
-    <div className={lobby.dock}>
-      <div className={lobby.modeBrief} aria-live="polite" aria-atomic="true">
-        <span>Collection · {String(ALBUM_DESTINATIONS.findIndex(item => item.id === selected) + 1).padStart(2, "0")} / 03</span>
-        <h2>{mode.title}</h2><p>{mode.caption}</p>
+    {notice}
+    <div className={styles.lobbyBody}>
+      <div className={styles.overview}>
+        <KqProgressMeter label="Collection Buddies" value={owned} max={total} valueLabel={`${owned} / ${total} cartes`} />
+        <p>{points === null ? "Points indisponibles" : <><strong>{points.toLocaleString("fr-FR")}</strong> points disponibles</>}</p>
       </div>
-      <nav className={lobby.modeSelector} aria-label="Choisir un espace de l’album" onKeyDown={keyboard}>
-        {ALBUM_DESTINATIONS.map(({ id, label, icon: Icon }) => <button data-ui-account="album-mode" data-ui-shape="control" key={id} type="button" data-album-mode-button={id} aria-pressed={selected === id} onClick={() => setSelected(id)} onFocus={() => setSelected(id)}><Icon aria-hidden="true" /><span>{label}</span></button>)}
+      <div className={styles.stage} aria-hidden="true">
+        <Image src="/app/lottery/sylvain-booster-presentation-v3.webp" alt="" width={1024} height={1536} priority sizes="(max-width: 700px) 260px, 450px" className={styles.mascot} />
+      </div>
+      <nav className={styles.destinations} aria-label="Choisir un espace de l’album" onKeyDown={keyboard}>
+        {ALBUM_DESTINATIONS.map(({ id, label, art }) => <button key={id} type="button" data-album-mode-button={id} onClick={() => onNavigate(id)}>
+          <KqPrintedArt kind={art} className={styles.destinationArt} sizes="80px" />
+          <span><strong>{label}</strong><small>{descriptions[id]}</small></span>
+          <ArrowUpRight aria-hidden="true" />
+        </button>)}
       </nav>
-      <button data-ui-account="gold" data-ui-shape="control" type="button" className={lobby.enter} data-album-enter onClick={() => selected === "boosters" && packs > 0 ? onOpenPack() : onNavigate(selected)}><span>{mode.action}</span><ArrowUpRight aria-hidden="true" /></button>
-      <div className={`${lobby.help} ${styles.resources}`}>
-        <span>{owned}/{total} cartes</span><span>{points} points</span>
-        <button type="button" onClick={() => onNavigate("boosters")}>Obtenir des boosters <ArrowUpRight size={14} aria-hidden="true" /></button>
-        {welcome}
-      </div>
+      {welcome && <div className={styles.lobbyWelcome}>{welcome}</div>}
     </div>
   </div>;
 }

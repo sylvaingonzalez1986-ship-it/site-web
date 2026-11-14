@@ -1,0 +1,147 @@
+{
+  "date": "2026-11-14",
+  "status": "Validated locally; not deployed",
+  "previousQuestions": 180,
+  "addedQuestions": 180,
+  "totalQuestions": 360,
+  "historicalQuestions": 90,
+  "levels": [
+    {
+      "level": 1,
+      "questions": 90
+    },
+    {
+      "level": 2,
+      "questions": 90
+    },
+    {
+      "level": 3,
+      "questions": 90
+    },
+    {
+      "level": 4,
+      "questions": 90
+    }
+  ],
+  "topics": [
+    {
+      "id": "plant",
+      "title": "La plante",
+      "questions": 40
+    },
+    {
+      "id": "genetics",
+      "title": "Variétés et génétique",
+      "questions": 20
+    },
+    {
+      "id": "molecules",
+      "title": "Arômes et terpènes",
+      "questions": 40
+    },
+    {
+      "id": "evidence",
+      "title": "Cannabinoïdes",
+      "questions": 50
+    },
+    {
+      "id": "seeds",
+      "title": "Graines et alimentation",
+      "questions": 20
+    },
+    {
+      "id": "profiles",
+      "title": "Fibres et matériaux",
+      "questions": 40
+    },
+    {
+      "id": "uses",
+      "title": "Sol et racines",
+      "questions": 20
+    },
+    {
+      "id": "biodiversity",
+      "title": "Santé du chanvre",
+      "questions": 20
+    },
+    {
+      "id": "prevention",
+      "title": "Culture et récolte",
+      "questions": 20
+    },
+    {
+      "id": "history",
+      "title": "Histoire et anecdotes",
+      "questions": 90
+    }
+  ],
+  "research": {
+    "agents": [
+      {
+        "model": "gpt-6-luna",
+        "task": "History, literature, words and historical uses"
+      },
+      {
+        "model": "gpt-6-luna",
+        "task": "Prohibition, conventions and scientific discoveries"
+      },
+      {
+        "model": "gpt-6-luna",
+        "task": "Botany, aromas and materials"
+      }
+    ],
+    "review": "Principal agent reviewed and rewrote duplicate, ambiguous and methodology questions; checked bibliographic corrections. Difficulty is editorial, not calibrated on player outcomes.",
+    "documents": [
+      "quiz-history-culture-research.json",
+      "quiz-history-science-research.json",
+      "quiz-nature-research.json"
+    ],
+    "usedSourceRecords": 61,
+    "usedSourceUrls": 60,
+    "access": "Full documents, institutional pages, abstracts, catalogue notices and an indexed excerpt distinguished in source metadata."
+  },
+  "preserved": {
+    "originals": [
+      {
+        "path": "src/lib/kanab-quest-hemp-quiz-biology.ts",
+        "sha256": "85779e32c26d64fba929dd20aa93c74c67ff8302ff2c7889b3111a9d6a490dfa"
+      },
+      {
+        "path": "src/lib/kanab-quest-hemp-quiz-uses.ts",
+        "sha256": "fb676de2929b32c6ccd18132784b418c64ea0d917e988e7d7c0176abc189afed"
+      }
+    ],
+    "existingQuestionsUnchanged": true,
+    "storedTournamentPlans": "Stored questions remain authoritative for an ongoing room; new rooms use the expanded pool",
+    "scoring": true,
+    "soloQuizRetired": true
+  },
+  "validation": {
+    "tests": 38,
+    "unitReport": "output/school/quiz-expansion/unit-report.json",
+    "lint": "PASS modified TypeScript and components",
+    "build": "PASS",
+    "buildReport": "output/school/school-quiz-bank-expanded-build-exit.json",
+    "browser": [
+      "Lobby announces actual 360-question bank and ten themes",
+      "Actual SQL tournament draws a new historical question with three bots; answer remains private",
+      "Historical question and four choices fit 320 and 1440px",
+      "Correct historical answer yields points and a matching explanation",
+      "Historical correction opens illustrated article with sources on mobile",
+      "All three new private banks denied over preview HTTP"
+    ],
+    "browserReport": "output/school/quiz-expansion/ui/report.json",
+    "privateBank": {
+      "browserChunksScanned": 194,
+      "leaks": 0
+    }
+  },
+  "reference": {
+    "newArticles": 6,
+    "topics": 9,
+    "articles": 52,
+    "illustrations": "Existing cannabis illustrations reused; no new image generation"
+  },
+  "migrationRequired": false,
+  "deployed": false
+}

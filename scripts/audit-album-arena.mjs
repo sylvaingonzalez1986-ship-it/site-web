@@ -2,13 +2,14 @@
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
-import { createServer } from 'vite';
+import { createServer, transformWithOxc } from 'vite';
 import tailwindcss from '@tailwindcss/postcss';
 import { Launcher } from 'chrome-launcher';
 import puppeteer from 'puppeteer-core';
 
 const root = process.cwd(), output = resolve(root, 'output/placard-workshop/album');
 const controlsOnly = process.argv.includes('--controls-only');
+const dataOnly = process.argv.includes('--data-only');
 const modules = {
   'album-entry': `import React from 'react';import {createRoot} from 'react-dom/client';import '/src/app/globals.css';
     import '/src/app/site-ui-preview.css';import '/src/components/site-preview/quartier-commerce.css';import '/src/components/site-preview/quartier-account.css';
@@ -26,7 +27,7 @@ const modules = {
     });
     const album={collectionId:'demo',collectionCode:'demo',collectionTitle:'Les Buddies',isActive:true,pageOrder:RARITY_ORDER,summary:{totalCards:40,ownedUnique:empty?0:20,totalOwnedCopies:empty?0:70,duplicateCopies:empty?0:50,completionPercent:empty?0:50,completedPages:empty?0:1,claimablePages:empty?0:1,availableClaims:0},pages,availableClaims:[],generatedAt:'2026-09-10'};
     let tickets=empty?[]:[{id:'pack-1',ticketNumber:'DEMO-001',status:'available'}],points=empty?0:LOTTERY_POINTS_PACK_COST*3;
-    window.__writes=[];window.__failPack=params.has('packError');
+    window.__writes=[];window.__failPack=params.has('packError');window.__ticketsFailure=params.get('ticketsFailure');
     const json=x=>new Response(JSON.stringify(x),{headers:{'Content-Type':'application/json'}}),realFetch=window.fetch.bind(window);
     window.fetch=async(url,init={})=>{
       if(!String(url).startsWith('/api/'))return realFetch(url,init);
@@ -43,6 +44,9 @@ const modules = {
       if(url==='/api/account/collection')return json(album);
       if(url==='/api/account/tickets'){
         if(init.method==='POST'){const {packCount}=JSON.parse(init.body);points-=packCount*LOTTERY_POINTS_PACK_COST;tickets.push({id:'pack-2',ticketNumber:'DEMO-002',status:'available'});return json({granted:packCount});}
+        if(window.__ticketsFailure==='network')throw new TypeError('fetch failed');
+        if(window.__ticketsFailure==='http')return new Response(JSON.stringify({error:'Lecture des points et packs momentanément indisponible.'}),{status:503,headers:{'Content-Type':'application/json'}});
+        if(window.__ticketsFailure==='malformed')return json({tickets});
         return json({tickets,loyalty:{spendablePoints:points},config:{seasonLabel:'Saison 01',albumSubtitle:'Les cartes de ta collection, réunies au même endroit.'}});
       }
       if(url==='/api/account/collection/claim'){pages[0].rewardStatus='claimed';return json({claim:{id:'claim-1'}});}
@@ -55,21 +59,162 @@ const modules = {
   'next/navigation': `export const useRouter=()=>({push:()=>{},refresh:()=>{},replace:()=>{}});export const usePathname=()=>'/profil/collection';export const useSearchParams=()=>new URLSearchParams();`,
   '/src/context/CartContext.tsx': `export const useCart=()=>({isAuthenticated:!new URLSearchParams(location.search).has('preview'),authLoading:false});`,
 };
-const server = await createServer({root, configFile:false, envDir:false, cacheDir:resolve(output,'vite-cache'), publicDir:resolve(root,'public'), esbuild:{jsx:'automatic'}, optimizeDeps:{include:['react','react-dom','react-dom/client','react/jsx-runtime','react/jsx-dev-runtime','lucide-react']},resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},plugins:[{name:'album-audit',enforce:'pre',resolveId(id){if(id.replaceAll('\\','/').endsWith('/src/context/CartContext'))return '\0/src/context/CartContext.tsx';if(id in modules)return '\0'+id;},load(id){if(id.startsWith('\0'))return modules[id.slice(1)];},configureServer(vite){vite.middlewares.use((req,res,next)=>{if(req.url?.split('?')[0]!=='/')return next();res.setHeader('Content-Type','text/html');res.end('<!doctype html><html lang="fr" data-site-ui="quartier"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Album</title><style>:root{--font-display:Impact;--font-body:Arial;--font-sans:Arial}body{margin:0}</style><div id="root"></div><script type="module" src="/@id/__x00__album-entry"></script></html>');});}}],server:{host:'127.0.0.1',port:3197,strictPort:true,hmr:false,watch:{ignored:['**/output/**','**/.next/**']}}});
+const server = await createServer({
+  root, configFile:false, envDir:false, cacheDir:resolve(output,'vite-cache'), publicDir:resolve(root,'public'),
+  optimizeDeps:{include:['react','react-dom','react-dom/client','react/jsx-runtime','react/jsx-dev-runtime','lucide-react']},
+  resolve:{alias:{'@':resolve(root,'src')}},css:{postcss:{plugins:[tailwindcss({base:root})]}},
+  plugins:[{
+    name:'album-audit',enforce:'pre',
+    resolveId(id){if(id.replaceAll('\\','/').endsWith('/src/context/CartContext'))return '\0/src/context/CartContext.tsx';if(id in modules)return '\0'+id;},
+    async load(id){
+      if(id.startsWith('\0')&&modules[id.slice(1)])return (await transformWithOxc(modules[id.slice(1)],id+'.tsx',{lang:'tsx',jsx:{runtime:'automatic'}})).code;
+    },
+    configureServer(vite){vite.middlewares.use((req,res,next)=>{
+      if(req.url?.split('?')[0]!=='/')return next();
+      res.setHeader('Content-Type','text/html; charset=utf-8');
+      res.end(`<!doctype html><html lang="fr" data-site-ui="quartier"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Album</title><style>@font-face{font-family:AuditDisplay;src:url('/src/app/fonts/BarlowCondensed-Latin-ExtraBold.woff2');font-weight:800}@font-face{font-family:AuditBody;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:AuditDisplay;--font-body:AuditBody;--font-sans:AuditBody}body{margin:0}</style><div id="root"></div><script type="module" src="/@id/__x00__album-entry"></script></html>`);
+    });},
+  }],
+  server:{host:'127.0.0.1',port:3197,strictPort:true,hmr:false,watch:{ignored:['**/output/**','**/.next/**']}},
+});
 let browser,page;const errors=[],results=[];
 try {
   await mkdir(output,{recursive:true});await server.listen();
   browser=await puppeteer.launch({executablePath:Launcher.getInstallations()[0],headless:true,defaultViewport:{width:320,height:900,isMobile:true,hasTouch:true},userDataDir:resolve(output,'chrome-profile'),args:['--no-sandbox','--disable-gpu']});
   page=await browser.newPage();page.setDefaultTimeout(30000);page.on('pageerror',e=>errors.push(e.message));
   await page.setRequestInterception(true);page.on('request',r=>{const u=new URL(r.url());if(u.protocol==='data:'||(u.hostname==='127.0.0.1'&&u.port==='3197'))void r.continue();else void r.abort();});
-  const visit=async(query='')=>{await page.goto('http://127.0.0.1:3197/'+query,{waitUntil:'networkidle0',timeout:90000});await page.waitForSelector('[data-album-lobby]');};
-  const enter=async(mode)=>{await page.click(`[data-album-mode-button="${mode}"]`);await page.click('[data-album-enter]');};
-  const back=async()=>page.locator('::-p-text(Retour à l’album)').click();
+  const waitScreen=async(screen)=>{await page.waitForSelector(`[data-album-screen="${screen}"]`);await page.evaluate(()=>document.fonts.ready);};
+  const visit=async(query='',screen='lobby')=>{await page.goto('http://127.0.0.1:3197/'+query,{waitUntil:'networkidle0',timeout:90000});await waitScreen(screen);};
+  const writes=()=>page.evaluate(()=>window.__writes.length);
+  const enter=async(mode)=>{
+    const before=await writes();
+    await page.click(`[data-album-mode-button="${mode}"]`);await waitScreen(mode);
+    assert.equal(new URL(page.url()).searchParams.get('albumScreen'),mode);
+    assert.equal(await writes(),before,'navigation must not make a POST');
+    assert.equal(await page.$('[aria-label="Ouverture du booster"]'),null,'Boosters opens its content before an explicit pack action');
+  };
+  const back=async()=>{await page.locator('button::-p-text(Retour à l’album)').click();await waitScreen('lobby');};
+  const openBooster=async()=>{
+    await enter('boosters');await page.locator('button::-p-text(Ouvrir un booster)').click();
+    await page.waitForSelector('[aria-label="Glissez pour ouvrir le booster"]');
+  };
   const shot=async(name)=>{
     await page.evaluate(async()=>{await document.fonts.ready;await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
     return page.screenshot({path:resolve(output,name+'.png')});
   };
   const layout=()=>page.evaluate(()=>({overflow:document.documentElement.scrollWidth>innerWidth+1,brokenImages:[...document.images].filter(i=>i.complete&&!i.naturalWidth).map(i=>i.src)}));
+  const checkFocus=async(selector)=>{
+    await page.keyboard.press('Tab');await page.focus(selector);
+    assert.ok(await page.$eval(selector,node=>node===document.activeElement&&node.matches(':focus-visible')&&getComputedStyle(node).outlineStyle!=='none'),'keyboard focus stays visible');
+  };
+  const checkMaterials=async()=>{
+    const materials=await page.evaluate(()=>{
+      const root=document.querySelector('[data-album-screen]');
+      const measure=node=>{
+        const style=getComputedStyle(node),box=node.getBoundingClientRect();
+        return {label:node.textContent.trim().slice(0,70),art:style.borderImageSource,slice:style.borderImageSlice,background:style.backgroundColor,
+          border:style.borderTopColor,shadow:style.boxShadow,height:box.height};
+      };
+      const controls=[...root.querySelectorAll('[data-album-return], [data-album-mode-button], nav[aria-label="Espaces de l’album"] button, [data-ui-shape="control"]')].filter(node=>node.getClientRects().length);
+      const panels=new Set(root.querySelectorAll('[data-ui-shape="panel"]'));
+      const overview=root.querySelector('[data-album-lobby] [role="meter"]')?.parentElement?.parentElement;
+      const pages=root.querySelector('[aria-label="Mes cartes"] > div > div:last-child');
+      if(overview)panels.add(overview);if(pages)panels.add(pages);
+      return {background:getComputedStyle(root).backgroundColor,controls:controls.map(measure),panels:[...panels].filter(node=>node.getClientRects().length).map(measure),
+        overflow:document.documentElement.scrollWidth>innerWidth+1};
+    });
+    assert.equal(materials.background,'rgb(255, 241, 214)','the album uses its cream paper background');
+    assert.equal(materials.overflow,false);
+    assert(materials.controls.length>=4,'navigation controls are present');
+    for(const [kind,items] of [['control',materials.controls],['panel',materials.panels]])for(const item of items){
+      assert.match(item.art,kind==='control'?/control-[a-z-]+-v2\.webp/:/panel-[a-z-]+-v1\.webp/,`${kind} artwork: ${item.label}`);
+      assert.match(item.slice,/fill/,`${kind} artwork fills its centre`);
+      assert.equal(item.background,'rgba(0, 0, 0, 0)',`${kind} native background is transparent`);
+      assert.equal(item.border,'rgba(0, 0, 0, 0)',`${kind} native border is transparent`);
+      assert.equal(item.shadow,'none',`${kind} has no rectangular decorative shadow`);
+    }
+    if(await page.$('[data-album-lobby], [data-album-screen="cards"], [data-album-screen="boosters"]'))assert(materials.panels.length>0,'content uses printed panels');
+    return materials;
+  };
+  const checkNavigation=async()=>{
+    for(const mode of ['boosters','cards','rewards']){
+      await visit(`?tab=collection&albumScreen=${mode}&albumPage=silver#album-test`,mode);
+      assert.equal(await writes(),0);assert.equal(await page.$('[aria-label="Ouverture du booster"]'),null);
+      await page.reload({waitUntil:'networkidle0'});await waitScreen(mode);
+      await back();
+      let url=new URL(page.url());assert.equal(url.searchParams.get('albumScreen'),null);
+      assert.equal(url.searchParams.get('tab'),'collection');assert.equal(url.searchParams.get('albumPage'),'silver');assert.equal(url.hash,'#album-test');
+      await page.goBack();await waitScreen(mode);
+      await page.goForward();await waitScreen('lobby');
+      await enter(mode);assert.equal(await writes(),0);
+      url=new URL(page.url());assert.equal(url.searchParams.get('tab'),'collection');assert.equal(url.hash,'#album-test');
+    }
+    await visit('?embedded=1&tab=collection&albumCollection=placard&albumPage=silver#album-test');
+    await page.evaluate(()=>history.replaceState({...history.state,albumAuditState:'preserved'},''));
+    await enter('cards');await page.waitForSelector('[aria-label="Progression Botte du Chanvrier"]');
+    await back();await enter('rewards');
+    const url=new URL(page.url());assert.equal(url.searchParams.get('albumCollection'),'placard');assert.equal(url.searchParams.get('albumPage'),'silver');
+    assert.equal(url.searchParams.get('embedded'),'1');assert.equal(url.searchParams.get('tab'),'collection');assert.equal(url.hash,'#album-test');
+    assert.equal(await page.evaluate(()=>history.state.albumAuditState),'preserved');assert.equal(await writes(),0);
+    results.push({navigation:{singleClick:true,deepLinks:['boosters','cards','rewards'],reload:true,backForward:true,preservedQueryAndHash:true,preservedHistoryState:true,noWrites:true}});
+  };
+  const checkKeyboard=async()=>{
+    const initial=page.url(),before=await writes();
+    await checkFocus('[data-album-mode-button="boosters"]');
+    for(const [key,mode] of [['End','rewards'],['Home','boosters'],['ArrowRight','cards'],['ArrowDown','rewards'],['ArrowLeft','cards'],['ArrowUp','boosters']]){
+      await page.keyboard.press(key);assert.equal(await page.evaluate(()=>document.activeElement?.dataset.albumModeButton),mode);
+      assert.equal(page.url(),initial,'focus navigation does not change the URL');assert(await page.$('[data-album-lobby]'));
+    }
+    await page.keyboard.press('Enter');await waitScreen('boosters');
+    assert.equal(await page.$('[aria-label="Ouverture du booster"]'),null);
+    await checkFocus('[data-album-return]');await page.keyboard.press('Enter');await waitScreen('lobby');
+    await checkFocus('[data-album-mode-button="cards"]');await page.keyboard.press('Space');await waitScreen('cards');
+    assert.equal(await writes(),before,'keyboard navigation must not make a POST');
+    await back();
+  };
+  if (dataOnly) {
+    for (const failure of ['http','network','malformed']) {
+      await visit('?ticketsFailure='+failure);
+      await page.waitForSelector('[data-album-load-error]');
+      const lobby=await page.$eval('[data-album-lobby]',el=>el.textContent);
+      assert.match(lobby,/Points indisponibles/);assert.doesNotMatch(lobby,/0 booster|0 points disponibles/);
+      await enter('boosters');
+      assert.equal(await page.$eval('[data-ui-account="points-action"]',el=>el.disabled),true);
+      assert.equal(await page.$('button::-p-text(Ouvrir un booster)'),null);
+      assert.equal((await layout()).overflow,false);await shot('data-unavailable-'+failure);
+      assert.equal(await writes(),0);
+      await page.evaluate(()=>{window.__ticketsFailure=null;});
+      await page.locator('[data-album-load-error] button').click();
+      await page.waitForFunction(()=>!document.querySelector('[data-album-load-error]')&&!document.querySelector('[data-ui-account="points-action"]').disabled);
+      assert.match(await page.$eval('[data-ui-account="album-action"]',el=>el.textContent),/300/);
+      assert(await page.$('button::-p-text(Ouvrir un booster)'));assert.equal(await writes(),0);
+      results.push({failure,unknownInsteadOfZero:true,manualReadRecovery:true,noWrites:true});
+    }
+    await visit();await enter('boosters');
+    await page.evaluate(()=>{window.__ticketsFailure='http';});
+    await page.locator('[data-ui-account="points-action"]').click();
+    await page.waitForSelector('[data-album-load-error]');
+    assert.match(await page.$eval('[data-ui-account="album-action"]',el=>el.textContent),/300/,'failed refresh preserves the last confirmed balance');
+    assert.match(await page.$eval('[data-album-load-error]',el=>el.textContent),/derniers montants connus/);
+    assert(await page.$eval('[data-ui-account="points-action"]',el=>el.disabled));
+    assert(await page.$eval('button::-p-text(Ouvrir un booster)',el=>el.disabled));
+    assert.equal(await writes(),1);await shot('data-stale-after-purchase');
+    await page.evaluate(()=>{window.__ticketsFailure=null;});
+    await page.locator('[data-album-load-error] button').click();
+    await page.waitForFunction(()=>!document.querySelector('[data-album-load-error]'));
+    assert.match(await page.$eval('[data-ui-account="album-action"]',el=>el.textContent),/200/);
+    assert.match(await page.$eval('[data-album-screen]',el=>el.textContent),/2 boosters disponibles/);
+    assert.equal(await writes(),1,'recovery never replays the purchase');
+    await shot('data-recovered-after-purchase');
+    results.push({refreshFailurePreservesKnownData:true,staleActionsDisabled:true,recoveredPoints:200,recoveredPacks:2,noPurchaseReplay:true});
+    await visit('?empty=1');await enter('boosters');
+    assert.equal(await page.$('[data-album-load-error]'),null);assert.match(await page.$eval('[data-album-screen]',el=>el.textContent),/0 booster disponible/);
+    assert(await page.$eval('[data-ui-account="points-action"]',el=>el.disabled));
+    assert.deepEqual(errors,[]);
+    await writeFile(resolve(output,'data-report.json'),JSON.stringify({passed:true,results,confirmedEmpty:true,errors},null,2));
+    console.log(JSON.stringify({passed:true,checks:results.length+1,output}));
+  } else {
+  await checkNavigation();
   if (controlsOnly) {
     await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);
     const checkReturn = async (label) => {
@@ -93,15 +238,14 @@ try {
       console.log('Album control audit:',width);
       await page.setViewport({width,height:900,isMobile:width<700,hasTouch:width<700});
       await visit();
-      results.push({width,screen:'lobby',...await checkReturn('L’Arène')});
+      results.push({width,screen:'lobby',...await checkReturn('L’Arène'),materials:await checkMaterials()});
       await page.$('[data-album-return]').then(button=>button.screenshot({path:resolve(output,`return-arena-${width}.png`)}));
-      await page.keyboard.press('Tab');await page.focus('[data-album-return]');
-      assert.ok(await page.$eval('[data-album-return]', node => node.matches(':focus-visible') && getComputedStyle(node).outlineStyle !== 'none'));
+      await checkFocus('[data-album-return]');
       await shot(`controls-lobby-${width}`);
+      await checkKeyboard();
       for (const mode of ['cards','boosters','rewards']) {
-        if(mode==='boosters')await page.locator('::-p-text(Obtenir des boosters)').click();else await enter(mode);
-        await page.waitForSelector(`[data-album-screen="${mode}"]`);
-        results.push({width,screen:mode,...await checkReturn('Retour à l’album')});
+        await enter(mode);
+        results.push({width,screen:mode,...await checkReturn('Retour à l’album'),materials:await checkMaterials()});
         if(mode==='boosters') {
           const points=await page.$eval('[data-ui-account="album-action"]',node=>({text:node.textContent,foreground:getComputedStyle(node.querySelector('strong')).color,input:getComputedStyle(node.querySelector('input')).backgroundColor}));
           assert.match(points.text,/Points disponibles/);
@@ -114,9 +258,9 @@ try {
     }
     await visit('?embedded=1');
     await page.evaluate(()=>{document.documentElement.dataset.siteUi='original';});
-    results.push({embedded:true,...await checkReturn('L’Arène')});
+    results.push({embedded:true,...await checkReturn('L’Arène'),materials:await checkMaterials()});
     await enter('cards');await page.waitForSelector('[data-album-screen="cards"]');
-    results.push({embedded:true,...await checkReturn('Retour à l’album')});
+    results.push({embedded:true,...await checkReturn('Retour à l’album'),materials:await checkMaterials()});
     assert.deepEqual(errors,[]);
     await writeFile(resolve(output,'controls-report.json'),JSON.stringify({passed:true,results,errors},null,2));
     console.log(JSON.stringify({passed:true,checks:results.length,output}));
@@ -127,16 +271,23 @@ try {
     await shot('album-'+width);const check=await layout();assert.equal(check.overflow,false);assert.deepEqual(check.brokenImages,[]);
     assert(await page.$('img[src="/app/lottery/sylvain-booster-presentation-v3.webp"]'));
     assert.equal(await page.$('img[src="/app/lottery/album-booster-mascot-v3.webp"]'),null);
-    assert.equal(await page.$$eval('[data-album-enter]',els=>els.length),1);
+    assert.equal(await page.$$eval('[data-album-enter]',els=>els.length),0);
+    assert.equal(await page.$$eval('[data-album-mode-button]',els=>els.length),3);
+    const materials={lobby:await checkMaterials()};await checkKeyboard();
+    await enter('rewards');materials.rewards=await checkMaterials();await checkFocus('[data-album-return]');await back();
     await enter('cards');await page.waitForSelector('[aria-label="Mes cartes"]');
+    materials.cards=await checkMaterials();await checkFocus('[data-album-return]');
     await page.click('button[aria-label="Page suivante"]');
-    assert.equal(await page.$eval('[aria-current="page"]',el=>el.textContent.includes('Silver')),true);
+    await page.waitForFunction(()=>new URL(location.href).searchParams.get('albumPage')==='silver');
+    assert.match(await page.$eval('[aria-current="page"]',el=>el.textContent),/Argent/);
     const visible=await page.$eval('[aria-current="page"]',el=>{const r=el.getBoundingClientRect(),p=el.parentElement.getBoundingClientRect();return r.left>=p.left-1&&r.right<=p.right+1;});assert(visible);
     await page.click('button[aria-label="Page précédente"]');
     await page.$eval('[aria-label="Mes cartes"]',el=>el.scrollIntoView({block:'start',behavior:'instant'}));await shot('cards-'+width);
     await page.click('button[title="#1 Carte 1"]');await page.waitForSelector('[role="dialog"]');await shot('detail-'+width);await page.click('[role="dialog"] button[aria-label="Fermer"]');
     await page.locator('::-p-text(Botte du Chanvrier & Héritages)').click();await page.waitForSelector('[aria-label="Progression Botte du Chanvrier"]');assert.equal((await layout()).overflow,false);await shot('placard-'+width);
-    await back();await page.click('[data-album-enter]');await page.waitForSelector('[aria-label="Glissez pour ouvrir le booster"]');
+    await back();await enter('boosters');materials.boosters=await checkMaterials();await checkFocus('[data-album-return]');
+    await page.locator('button::-p-text(Ouvrir un booster)').click();await page.waitForSelector('[aria-label="Glissez pour ouvrir le booster"]');
+    assert.equal(await writes(),0,'displaying a pack does not open it');
     assert(await page.$('img[src="/app/lottery/sealed-booster-pack-sylvain-v3.webp"]'));
     await new Promise(r=>setTimeout(r,750));await shot('pack-sealed-'+width);
     const pack=await page.$('[aria-label="Glissez pour ouvrir le booster"]'),bounds=await pack.boundingBox();
@@ -152,22 +303,23 @@ try {
     assert.equal(await page.evaluate(()=>window.__writes.filter(w=>w.url.endsWith('/scratch')).length),1);
     const rarities=['common','silver','gold','epic','legendary'];
     for(let i=0;i<5;i++){
+      await page.waitForSelector('[data-card-motion="ready"]');
       assert(await page.$('[data-card-revealed="false"]'));
       if(width===390&&i===1){const box=await (await page.$('[data-card-revealed]')).boundingBox();await page.touchscreen.touchStart(box.x+box.width*.85,box.y+box.height*.5);await page.touchscreen.touchMove(box.x+box.width*.15,box.y+box.height*.5);await page.touchscreen.touchEnd();}
       else{await page.focus('[data-card-revealed]');await page.keyboard.press('Enter');}
-      await page.waitForSelector('[data-card-revealed="true"]');
+      await page.waitForSelector('[data-card-motion="revealed"]');assert(await page.$('[data-card-revealed="true"]'));
       assert.equal(await page.$eval('[data-pack-phase]',e=>e.dataset.rarity),rarities[i]);
       await new Promise(r=>setTimeout(r,950));await shot('pack-'+rarities[i]+'-'+width);
       assert.equal((await layout()).overflow,false);
       if(i<4)await page.click('button[aria-label="Carte suivante"]');
     }
-    await page.locator('::-p-text(Voir mon butin)').click();await page.waitForSelector('[data-pack-phase="recap"]');await new Promise(r=>setTimeout(r,1000));await shot('pack-recap-'+width);
+    await page.locator('button::-p-text(Voir les cartes)').click();await page.waitForSelector('[data-pack-phase="recap"]');await new Promise(r=>setTimeout(r,1000));await shot('pack-recap-'+width);
     assert.equal(await page.$$eval('button[aria-label^="Revoir "]',els=>els.length),5);
-    await page.locator('::-p-text(Ranger dans mon album)').click();assert.equal(await page.$('[aria-label="Ouverture du booster"]'),null);
-    results.push({width,...check,pages:true,cardDetails:true,originalBooster:true});
+    await page.locator('button::-p-text(Terminer)').click();assert.equal(await page.$('[aria-label="Ouverture du booster"]'),null);
+    results.push({width,...check,materials,pages:true,cardDetails:true,originalBooster:true});
   }
   await page.setViewport({width:390,height:844,isMobile:true,hasTouch:true});await visit();
-  await page.locator('::-p-text(Obtenir des boosters)').click();await shot('boosters-390');
+  await enter('boosters');await shot('boosters-390');
   await page.locator('::-p-text(Acheter 1)').click();await page.waitForFunction(()=>window.__writes.some(w=>w.url==='/api/account/tickets'));
   assert.deepEqual(await page.evaluate(()=>window.__writes[0].body),{packCount:1});
   await back();await enter('rewards');await shot('rewards-390');
@@ -175,22 +327,22 @@ try {
   await page.locator('[role="dialog"] ::-p-text(Réduction de collection)').click();await page.waitForFunction(()=>!document.querySelector('[role="dialog"]'));
   assert.deepEqual(await page.evaluate(()=>window.__writes.find(w=>w.url.endsWith('/claim')).body),{pageRarity:'common',rewardDefinitionId:'reward-1'});
   await page.locator('::-p-text(Gérer mes doublons)').click();await page.waitForSelector('#duplicate-manager-title');await shot('duplicates-390');await page.click('[role="dialog"] button[aria-label="Fermer"]');
-  await visit('?empty=1');assert(await page.$eval('[data-album-enter]',e=>e.textContent.includes('Obtenir')));assert.equal((await layout()).overflow,false);await shot('empty-390');
-  await page.click('[data-album-enter]');assert(await page.$eval('[aria-label="Actions de l\'album"] > div button:last-child',e=>e.disabled));
+  await visit('?empty=1');assert(await page.$eval('[data-album-mode-button="boosters"]',e=>e.textContent.includes('0 booster')));assert.equal((await layout()).overflow,false);await shot('empty-390');
+  await enter('boosters');assert(await page.$eval('[data-ui-account="points-action"]',e=>e.disabled));
+  assert.equal(await page.$('button::-p-text(Ouvrir un booster)'),null);
   await visit('?preview=1');assert(await page.$('a[href="/compte/inscription?next=/profil/collection"]'));assert.equal((await layout()).overflow,false);await shot('preview-390');
   await page.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'}]);await visit('?embedded=1');
-  await page.focus('[data-album-mode-button="boosters"]');await page.keyboard.press('End');assert.equal(await page.$eval('[data-album-mode-button="rewards"]',e=>e.getAttribute('aria-pressed')),'true');
-  await page.keyboard.press('Home');assert.equal(await page.$eval('[data-album-mode-button="boosters"]',e=>e.getAttribute('aria-pressed')),'true');
-  await enter('cards');assert.equal((await layout()).overflow,false);
-  await visit('?packError=1');await page.click('[data-album-enter]');await page.focus('[aria-label="Glissez pour ouvrir le booster"]');await page.keyboard.press('Enter');
+  await page.evaluate(()=>{document.documentElement.dataset.siteUi='original';});
+  await checkMaterials();await checkKeyboard();await enter('cards');await checkMaterials();assert.equal((await layout()).overflow,false);
+  await visit('?packError=1');await openBooster();await page.focus('[aria-label="Glissez pour ouvrir le booster"]');await page.keyboard.press('Enter');
   await page.waitForSelector('[data-pack-phase="error"]');await shot('pack-error');await page.locator('::-p-text(Réessayer)').click();await page.waitForSelector('[data-pack-phase="cards"]');
   assert.equal(await page.evaluate(()=>window.__writes.filter(w=>w.url.endsWith('/scratch')).length),2);
   await page.locator('::-p-text(Tout révéler)').click();await page.waitForSelector('[data-pack-phase="recap"]');
   await new Promise(r=>setTimeout(r,3300));assert(await page.$('[data-pack-phase="recap"]'));
-  await page.click('button[aria-label="Revoir Héritage légendaire"]');assert(await page.$('[data-card-revealed="true"]'));
+  await page.click('button[aria-label^="Revoir Héritage légendaire"]');assert(await page.$('[data-card-revealed="true"]'));
   assert(await page.$$eval('[data-pack-phase] *',els=>els.every(el=>getComputedStyle(el).animationName==='none')));
   await page.keyboard.press('Escape');assert.equal(await page.$('[aria-label="Ouverture du booster"]'),null);
-  await page.setViewport({width:320,height:480,isMobile:true,hasTouch:true});await visit('?slow=1');await page.click('[data-album-enter]');
+  await page.setViewport({width:320,height:480,isMobile:true,hasTouch:true});await visit('?slow=1');await openBooster();
   await page.locator('::-p-text(Ouvrir le pack)').click();await page.locator('::-p-text(Passer l’animation)').click();await page.waitForSelector('[data-pack-phase="cards"]');
   assert.equal(await page.evaluate(()=>window.__writes.filter(w=>w.url.endsWith('/scratch')).length),1);
   await page.locator('::-p-text(Tout révéler)').click();await shot('pack-small-height');assert.equal((await layout()).overflow,false);
@@ -198,6 +350,7 @@ try {
   await page.keyboard.press('Escape');
   assert.deepEqual(errors,[]);await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,results,purchase:true,claim:true,duplicates:true,empty:true,preview:true,reducedMotion:true,pack:{touch:true,keyboard:true,allRarities:true,bonus:true,noDuplicateRequests:true,retry:true,skip:true,manualRecap:true,shortViewport:true,focusTrap:true},errors},null,2));
   console.log(JSON.stringify({passed:true,output}));
+  }
   }
 } catch(error) {
   await page?.screenshot({path:resolve(output,'failure.png')}).catch(()=>{});

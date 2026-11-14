@@ -1,4 +1,4 @@
-﻿/** Real booster UI + local fixtures. Run: node scripts/audit-pack-opening.mjs [--record] */
+/** Real booster UI + local fixtures. Run: node scripts/audit-pack-opening.mjs [--record] */
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -29,9 +29,11 @@ const modules = {
       cardNumber: Number(codes[i].slice(-3)), imageUrl: '/app/kanab-quest/buddies/' + codes[i].toLowerCase() + '-scene-v2.webp',
       description: 'Fixture locale', ownedCount: i === 1 ? 2 : 1, isBonus: false,
     }));
+    if (params.has('bonus')) cards.push({ ...cards[4], id: 'audit-bonus', code: 'BONUS', name: 'Bon bonus', isBonus: true });
     const ticket = { id: 'audit-ticket', userId: 'audit', ticketNumber: 'KANAB QUEST · COLLECTION 01', orderAmount: 0, status: 'available', createdAt: '2026-09-22' };
     const result = { ticketId: ticket.id, ticketNumber: ticket.ticketNumber, scratchedAt: '2026-09-22', card: cards[0], cards,
       inventory: { totalCards: 52, uniqueOwned: 12, totalOwnedCopies: 17, duplicateCopies: 5, byRarity: {} }, bonusPrize: null };
+    if (params.has('noInventory')) result.inventory = { ...result.inventory, totalCards: 0, uniqueOwned: 0 };
     window.__audit = { opens: 0, closes: 0, ticketIds: [], settled: false };
     const onOpen = async ticketId => {
       window.__audit.opens++; window.__audit.ticketIds.push(ticketId);
@@ -93,6 +95,7 @@ try {
     userDataDir: resolve(output, recordOnly ? 'chrome-profile-record' : 'chrome-profile'), args: ['--no-sandbox', '--disable-gpu'] });
   const page = await browser.newPage();
   page.setDefaultTimeout(20000);
+  page.setDefaultNavigationTimeout(60000);
   page.on('pageerror', error => errors.push({ scenario, message: error.message }));
   page.on('console', message => { if (message.type() === 'error') errors.push({ scenario, message: message.text() }); });
   await page.setRequestInterception(true);
@@ -102,9 +105,10 @@ try {
   });
   await page.evaluateOnNewDocument(() => {
     window.__audioAudit = { contexts: 0, closed: 0 };
-    const NativeContext = window.AudioContext;
-    if (NativeContext) {
-      window.AudioContext = new Proxy(NativeContext, { construct(Target, args) {
+    for (const name of ['AudioContext', 'webkitAudioContext']) {
+      const NativeContext = window[name];
+      if (!NativeContext) continue;
+      window[name] = new Proxy(NativeContext, { construct(Target, args) {
         const context = Reflect.construct(Target, args);
         window.__audioAudit.contexts++;
         const close = context.close.bind(context);
@@ -118,6 +122,13 @@ try {
   const button = label => page.locator(`button::-p-text(${label})`);
   const shot = name => page.screenshot({ path: resolve(output, name + '.png') });
   const decode = () => page.evaluate(() => Promise.all([...document.images].map(image => image.decode())));
+  const assertSilent = async () => {
+    assert.equal(await page.$$eval('[role="dialog"] button', buttons => buttons.some(element =>
+      /^Son(?:\s|$)/u.test(element.getAttribute('aria-label') ?? '') || /^Son(?:\s|$)/u.test(element.textContent.trim()))), false, scenario + ': sound button must be absent');
+    const audio = await page.evaluate(() => window.__audioAudit);
+    assert.deepEqual(audio, { contexts: 0, closed: 0 }, scenario + ': pack opening must never create an audio context');
+    return audio;
+  };
   const state = () => page.evaluate(() => {
     const experience = document.querySelector('[data-pack-phase]');
     const card = document.querySelector('[data-card-revealed]');
@@ -128,18 +139,22 @@ try {
   });
   const checkLayout = async () => {
     await decode();
+    await assertSilent();
     const check = await page.evaluate(() => {
       const experience = document.querySelector('[data-pack-phase]');
       const dialog = document.querySelector('[role="dialog"]');
       const rect = dialog?.getBoundingClientRect();
+      const actions = experience?.querySelector('[data-pack-actions]')?.getBoundingClientRect();
       return { documentOverflow: document.documentElement.scrollWidth > innerWidth + 1,
         experienceOverflow: !!experience && experience.scrollWidth > experience.clientWidth + 1,
         dialogInViewport: !!rect && rect.left >= -1 && rect.right <= innerWidth + 1 && rect.top >= -1 && rect.bottom <= innerHeight + 1,
+        actionsInViewport: experience?.dataset.packPhase === 'recap' || (!!actions && actions.top >= -1 && actions.bottom <= innerHeight + 1),
         brokenImages: [...document.images].filter(image => !image.complete || !image.naturalWidth).map(image => image.src) };
     });
     assert.equal(check.documentOverflow, false, scenario + ': document overflow');
     assert.equal(check.experienceOverflow, false, scenario + ': content overflow');
     assert.equal(check.dialogInViewport, true, scenario + ': modal outside viewport');
+    assert.equal(check.actionsInViewport, true, scenario + ': next action outside viewport');
     assert.deepEqual(check.brokenImages, [], scenario + ': broken image');
     return check;
   };
@@ -161,10 +176,10 @@ try {
         attributeFilter: ['data-pack-phase', 'data-card-motion', 'data-card-revealed', 'data-rarity', 'aria-current'] });
       capture();
     });
-    assert.equal(await page.evaluate(() => window.__audioAudit.contexts), 0, 'audio must require opt-in');
+    await assertSilent();
     assert.equal(await page.evaluate(() => window.__audit.opens), 0, 'display must not open the pack');
   };
-  const ready = async () => { await waitPhase('cards'); await waitMotion('ready'); await decode(); };
+  const ready = async () => { await waitPhase('cards'); await waitMotion('ready'); await decode(); await assertSilent(); };
   const assertSecret = async () => {
     const current = await state();
     assert.equal(current.revealed, 'false', 'new card stays face down');
@@ -173,6 +188,7 @@ try {
   };
   const reveal = async (input, prefix) => {
     await assertSecret();
+    const traceStart = await page.evaluate(() => window.__trace.length);
     if (input === 'keyboard') { await page.focus('[data-card-revealed]'); await page.keyboard.press('Enter'); }
     else if (input === 'touch') {
       const box = await (await page.$('[data-card-revealed]')).boundingBox();
@@ -181,11 +197,15 @@ try {
       await page.touchscreen.touchEnd();
     } else await button('Révéler la carte').click();
     await waitMotion('revealing');
-    assert.equal((await state()).revealed, 'false', 'face stays concealed during anticipation');
     assert(await page.$$eval('button[aria-label="Carte suivante"]', buttons => buttons.every(element => element.disabled)), 'navigation locks during flip');
     if (prefix) await shot(prefix + '-anticipation');
     await waitMotion('revealed');
     assert.equal((await state()).revealed, 'true');
+    // Observe the browser's transition sequence instead of racing a short animation over CDP.
+    const trace = await page.evaluate(start => window.__trace.slice(start).map(entry => entry.state), traceStart);
+    const hidden = trace.findIndex(entry => entry.motion === 'revealing' && entry.revealed === 'false');
+    const shown = trace.findIndex(entry => entry.revealed === 'true');
+    assert(hidden >= 0 && shown > hidden, 'face stays concealed during anticipation');
   };
 
   if (recordOnly) {
@@ -211,10 +231,10 @@ try {
           await page.click('button[aria-label="Carte suivante"]'); await ready(); await sleep(250);
         }
       }
-      await button('Voir mon butin').click(); await waitPhase('recap'); await sleep(1200);
+      await button('Voir les cartes').click(); await waitPhase('recap'); await sleep(1200);
       await shot('recording-recap');
     } finally { await recorder.stop(); }
-    assert.equal(await page.evaluate(() => window.__audioAudit.contexts), 0, 'recorded demonstration stays muted');
+    await assertSilent();
     assert.deepEqual(errors, []); assert.deepEqual(blockedRequests, []);
     const recording = { passed: true, videoPath, width: 390, height: 844, fps: 30, muted: true, durationMs: Date.now() - startedAt, errors };
     await writeFile(resolve(output, 'recording-report.json'), JSON.stringify(recording, null, 2));
@@ -224,10 +244,6 @@ try {
     scenario = 'viewport-' + width; console.log('Pack opening audit:', scenario);
     await visit('', { width, height: width < 700 ? 844 : 1000 });
     await sleep(700); await checkLayout(); await shot('sealed-' + width);
-    if (width === 1440) {
-      await page.click('button[aria-label="Son de l’ouverture"]');
-      await page.waitForSelector('button[aria-label="Son de l’ouverture"][aria-pressed="true"]');
-    }
     if (width === 390) {
       const box = await (await page.$('[aria-label="Glissez pour ouvrir le booster"]')).boundingBox();
       const x = box.x + box.width * .15, y = box.y + box.height * .3;
@@ -244,9 +260,22 @@ try {
         document.querySelector('[aria-label="Glissez pour ouvrir le booster"]')?.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }));
       });
     }
-    await waitPhase('opening'); await shot('opening-' + width);
+    await waitPhase('opening'); await assertSilent(); await shot('opening-' + width);
     await ready(); await assertSecret(); await checkLayout(); await shot('card-back-' + width);
     assert.equal(await page.evaluate(() => window.__audit.opens), 1, 'repeated input must not duplicate the request');
+    assert.equal(await page.$eval('[data-card-revealed]', element => element === document.activeElement), true, 'focus moves to the extracted card');
+    if (width === 390) {
+      const box = await (await page.$('[data-card-revealed]')).boundingBox();
+      const x = box.x + box.width * .6, y = box.y + box.height * .5;
+      const client = await page.createCDPSession();
+      await client.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+      await client.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: x - 35, y }] });
+      assert.notEqual(await page.$eval('[data-card-revealed]', element => element.style.getPropertyValue('--drag-x')), '0px', 'card follows the finger');
+      await client.send('Input.dispatchTouchEvent', { type: 'touchCancel', touchPoints: [] });
+      await client.detach();
+      assert.equal(await page.$eval('[data-card-revealed]', element => element.style.getPropertyValue('--drag-x')), '0px', 'cancelled gesture restores the card');
+      await assertSecret();
+    }
     for (const [index, rarity] of rarities.entries()) {
       await reveal(width === 768 ? 'keyboard' : width === 390 && index === 1 ? 'touch' : 'button', width === 390 ? rarity + '-390' : null);
       assert.equal((await state()).rarity, rarity);
@@ -258,18 +287,20 @@ try {
         await ready(); await assertSecret();
       }
     }
-    await button('Voir mon butin').click(); await waitPhase('recap'); await checkLayout();
+    await button('Voir les cartes').click(); await waitPhase('recap'); await checkLayout();
+    assert.equal(await page.$eval('[data-recap-focus]', element => element === document.activeElement), true, 'recap receives keyboard focus');
+    assert.equal(await page.$eval('[role="meter"]', element => element.getAttribute('aria-valuetext')), '12 / 52 cartes', 'collection meter uses the receipt');
     assert.equal(await page.$$eval('button[aria-label^="Revoir "]', elements => elements.length), 5);
     await shot('recap-' + width);
     await page.click('button[aria-label^="Revoir Harlequin"]'); await waitPhase('cards'); await waitMotion('revealed');
     assert.equal((await state()).rarity, 'epic', 'recap review keeps already revealed cards visible');
     assert.equal(await page.evaluate(() => window.__audit.opens), 1);
-    await button('Voir mon butin').click(); await waitPhase('recap');
-    await button('Ranger dans mon album').click(); await page.waitForSelector('[role="dialog"]', { hidden: true });
+    await button('Voir les cartes').click(); await waitPhase('recap');
+    await button('Terminer').click(); await page.waitForSelector('[role="dialog"]', { hidden: true });
     assert.equal(await page.evaluate(() => document.activeElement?.id), 'audit-launch', 'focus returns to opener');
     assert.equal(await page.evaluate(() => document.body.style.overflow), '', 'scroll lock is released');
-    assert.deepEqual(await page.evaluate(() => window.__audioAudit), width === 1440 ? { contexts: 1, closed: 1 } : { contexts: 0, closed: 0 }, 'audio remains opt-in through every rarity and closes with the modal');
-    results.push({ scenario, passed: true, touch: width === 390, keyboard: width === 768, rarities, trace: await page.evaluate(() => window.__trace) });
+    const audio = await assertSilent();
+    results.push({ scenario, passed: true, audio, touch: width === 390, keyboard: width === 768, rarities, trace: await page.evaluate(() => window.__trace) });
   }
 
   scenario = 'slow-skip'; console.log('Pack opening audit:', scenario);
@@ -280,6 +311,7 @@ try {
   await page.evaluate(() => window.__resolveOpen()); await ready(); await assertSecret();
   await button('Tout révéler').click(); await waitPhase('recap');
   assert.equal(await page.$$eval('button[aria-label^="Revoir "]', elements => elements.length), 5);
+  await assertSilent();
   results.push({ scenario, passed: true });
 
   scenario = 'network-retry'; console.log('Pack opening audit:', scenario);
@@ -289,28 +321,22 @@ try {
   assert.deepEqual(await page.evaluate(() => window.__audit.ticketIds), ['audit-ticket', 'audit-ticket']);
   results.push({ scenario, passed: true });
 
-  scenario = 'sound-and-unmount'; console.log('Pack opening audit:', scenario);
+  scenario = 'silent-opening-and-unmount'; console.log('Pack opening audit:', scenario);
   await visit('?deferred=1');
-  const soundSelector = 'button[aria-label="Son de l’ouverture"]';
-  assert.equal(await page.$eval(soundSelector, element => element.getAttribute('aria-pressed')), 'false');
-  await page.click(soundSelector); await page.waitForFunction(selector => document.querySelector(selector)?.getAttribute('aria-pressed') === 'true', {}, soundSelector);
-  assert.equal(await page.evaluate(() => window.__audioAudit.contexts), 1);
-  await page.click(soundSelector); await page.waitForFunction(selector => document.querySelector(selector)?.getAttribute('aria-pressed') === 'false', {}, soundSelector);
-  await page.click(soundSelector); await page.waitForFunction(selector => document.querySelector(selector)?.getAttribute('aria-pressed') === 'true', {}, soundSelector);
-  assert.equal(await page.evaluate(() => window.__audioAudit.contexts), 1, 'sound toggle reuses its context');
   await button('Ouvrir le pack').click(); await waitPhase('opening');
+  await assertSilent();
   await page.keyboard.press('Escape'); await page.waitForSelector('[role="dialog"]', { hidden: true });
   await page.evaluate(() => window.__resolveOpen()); await sleep(250);
   assert.equal(await page.$('[data-pack-phase]'), null, 'late result must not remount a closed pack');
-  assert.equal(await page.evaluate(() => window.__audioAudit.closed), 1, 'audio context closes on unmount');
+  await assertSilent();
   assert.equal(await page.evaluate(() => document.body.style.overflow), '');
   await page.click('#audit-launch'); await waitPhase('idle');
-  assert.equal(await page.$eval(soundSelector, element => element.getAttribute('aria-pressed')), 'false', 'sound starts disabled on remount');
+  await assertSilent();
   assert.equal(await page.evaluate(() => window.__audit.opens), 1, 'remount must not repeat a purchase/open');
   await page.focus('button[aria-label="Fermer"]'); await page.keyboard.down('Shift'); await page.keyboard.press('Tab'); await page.keyboard.up('Shift');
   assert(await page.$eval('[role="dialog"]', element => element.contains(document.activeElement)), 'focus stays within modal');
   await page.keyboard.press('Escape');
-  results.push({ scenario, passed: true });
+  results.push({ scenario, passed: true, audio: await assertSilent() });
 
   scenario = 'reduced-motion-short-viewport'; console.log('Pack opening audit:', scenario);
   await page.emulateMediaFeatures([{ name: 'prefers-reduced-motion', value: 'reduce' }]);
@@ -320,7 +346,19 @@ try {
   await page.click('button[aria-label="Carte suivante"]'); await ready(); await assertSecret();
   await button('Tout révéler').click(); await waitPhase('recap'); await checkLayout();
   await shot('reduced-motion-recap-320x480');
-  assert.equal(await page.evaluate(() => window.__audioAudit.contexts), 0);
+  await assertSilent();
+  results.push({ scenario, passed: true });
+
+  scenario = 'bonus-and-unavailable-collection'; console.log('Pack opening audit:', scenario);
+  await visit('?bonus=1&noInventory=1', { width: 320, height: 568 });
+  await button('Ouvrir le pack').click(); await ready();
+  await button('Tout révéler').click(); await waitPhase('recap'); await checkLayout();
+  assert.equal(await page.$$eval('button[aria-label^="Revoir "]', elements => elements.length), 6);
+  assert.equal(await page.$('[role="meter"]'), null, 'missing collection data must not become an empty goal');
+  assert.match(await page.$eval('[data-recap-focus]', element => element.textContent), /4 nouvelles · 1 doublon · 1 bonus/);
+  await page.click('button[aria-label^="Revoir Bon bonus"]'); await waitPhase('cards');
+  assert.equal((await state()).revealed, 'true');
+  await checkLayout();
   results.push({ scenario, passed: true });
 
   assert.deepEqual(errors, [], 'browser errors'); assert.deepEqual(blockedRequests, [], 'unexpected external requests');

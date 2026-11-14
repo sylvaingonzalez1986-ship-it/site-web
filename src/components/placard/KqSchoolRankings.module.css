@@ -1,0 +1,55 @@
+.rankings { min-width:0; color:var(--game-ink,#172923); line-height:1.5; }
+.rankings * { box-sizing:border-box; }
+.rankings h3 { margin:0 0 14px; font:800 clamp(25px,3vw,32px)/1.15 var(--font-display),Impact,sans-serif; text-transform:none; }
+.rankings p { margin:10px 0; }
+.rankings button { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:44px; min-width:0; padding:12px 18px; color:inherit; font:inherit; font-weight:700; border:2px solid transparent; border-radius:0; background:transparent; box-shadow:none; --game-control-art:var(--game-control-paper,url('/placard/ui/control-paper-v2.webp')); border-image:var(--game-control-art) var(--game-control-slice,40) fill / var(--game-control-edge,14px) / 0 stretch; cursor:pointer; }
+.rankings button.primary { --game-control-art:var(--game-control-teal,url('/placard/ui/control-teal-v2.webp')); color:#fff8e7; }
+.rankings button:hover:not(:disabled) { --game-control-art:var(--game-control-gold,url('/placard/ui/control-gold-v2.webp')); color:#172923; }
+.rankings button:disabled { opacity:.6; cursor:default; }
+.rankings :is(button,summary):focus-visible { outline:3px solid #087b70; outline-offset:4px; }
+.rankings button svg { flex-shrink:0; }
+.actions { display:flex; flex-wrap:wrap; gap:12px; margin:0 0 22px; }
+.highlights { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; margin:20px 0 28px; }
+.panel { min-width:0; padding:24px; border:2px solid transparent; background:transparent; --game-panel-art:var(--game-panel-paper,url('/placard/ui/panel-paper-v1.webp')); border-image:var(--game-panel-art) var(--game-panel-slice,48) fill / var(--game-panel-edge,18px) / 0 stretch; }
+.champion { --game-panel-art:var(--game-panel-gold,url('/placard/ui/panel-gold-v1.webp')); }
+.champion h3 { display:flex; align-items:center; gap:10px; }
+.champion h3 svg { flex-shrink:0; }
+.identity { display:flex; align-items:center; gap:12px; margin:12px 0 20px; }
+.identity>div { min-width:0; }
+.identity strong { display:block; font-size:19px; overflow-wrap:anywhere; }
+.identity span:not(.avatar) { font-size:13px; }
+.avatar { display:grid; place-items:center; flex:0 0 44px; width:44px; height:44px; overflow:hidden; border-radius:50%; border:2px solid #172923; background:#087b70; color:#fff8e7; font-size:16px; font-weight:800; }
+.avatar :is(img,canvas) { display:block; width:100%; height:100%; object-fit:cover; }
+.avatar canvas { object-fit:contain; }
+.rankings .ownRank { margin:14px 0 20px; color:#00685c; font:800 38px/1.2 var(--font-display),Impact,sans-serif; }
+.ownRank span { display:block; color:#455748; font:400 13px/1.5 var(--font-body),Arial,sans-serif; }
+.small { font-size:13px; }
+.register { margin:28px 0; min-width:0; }
+.register h3 { margin-bottom:8px; }
+.rows { list-style:none; padding:0; margin:16px 0 0; }
+.rows li { display:grid; grid-template-columns:30px 44px minmax(0,1fr) auto; align-items:center; gap:12px; min-width:0; padding:16px 0; border-bottom:1px solid #17292344; }
+.rows li[data-own=true] { border-left:3px solid #087b70; padding-left:10px; }
+.rank { font:800 25px/1.2 var(--font-display),Impact,sans-serif; color:#00685c; }
+.playerName { min-width:0; }
+.playerName strong { display:block; overflow-wrap:anywhere; }
+.rows small { display:block; font-size:12px; font-weight:400; line-height:1.5; }
+.playerName small { color:#455748; }
+.score { min-width:0; text-align:right; color:#00685c; font-variant-numeric:tabular-nums; }
+.score small { max-width:190px; color:#455748; }
+.rules { padding:10px 0; border-top:1px solid #17292344; font-size:14px; }
+.rules summary { cursor:pointer; min-height:44px; padding:12px 0; font-weight:700; }
+.rules p { max-width:80ch; }
+.updated { color:#455748; font-size:12px; }
+.notice { margin:20px 0; }
+.error { margin:16px 0; padding:12px 0; border-block:2px solid #8c3b20; color:#742f17; }
+.error button { margin-top:8px; }
+@media(max-width:650px) {
+  .highlights { grid-template-columns:minmax(0,1fr); gap:12px; }
+  .panel { padding:20px; }
+  .rows li { grid-template-columns:26px 38px minmax(0,1fr); gap:8px; }
+  .rows .avatar { width:38px; height:38px; font-size:13px; }
+  .score { grid-column:3; text-align:left; }
+  .score small { max-width:none; }
+  .playerName strong { font-size:14px; }
+  .rows small { font-size:12px; }
+}

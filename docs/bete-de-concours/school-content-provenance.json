@@ -1,0 +1,641 @@
+{
+  "version": "2026-11-11.1",
+  "verifiedAt": "2026-11-11",
+  "status": "Contenus effectivement rédigés, banque publique et clés de réponses séparées ; aucun service IA requis à l’exécution.",
+  "initialBank": {
+    "filename": "ecole_chanvre_100_questions.json",
+    "found": false,
+    "searched": [
+      "Dépôt, fichiers suivis et non ignorés",
+      "Dossier de la pièce jointe 891dd2be-dd32-406d-93ea-fa057e3be805 (Pasted text.txt uniquement)"
+    ],
+    "action": "Création de 100 questions originales selon les dix thèmes demandés."
+  },
+  "contracts": {
+    "publicFile": "src/lib/kanab-quest-school-content.ts",
+    "visualSummaryFile": "src/lib/kanab-quest-school-visuals.ts",
+    "lessonComponent": "src/components/placard/KqSchoolLesson.tsx",
+    "answerFile": "src/lib/kanab-quest-school-answers.ts",
+    "stableRewardIds": [
+      "plant",
+      "molecules",
+      "profiles",
+      "genetics",
+      "history",
+      "uses",
+      "evidence",
+      "biodiversity",
+      "law",
+      "prevention"
+    ],
+    "editorialVersionSeparate": true,
+    "optionIds": [
+      "a",
+      "b",
+      "c",
+      "d"
+    ],
+    "answerExposure": "Clés protégées par server-only ; corrigé délivré par le backend seulement après soumission finalisée. Les solutions des ateliers sans monnaie sont des aides pédagogiques publiques."
+  },
+  "editorialPolicy": [
+    "Faits botaniques distincts de la description commerciale et de la fiction.",
+    "Aucune promesse de bénéfice médical, de sécurité absolue, de rendement ou d’effet garanti par un nom.",
+    "Aucun protocole de culture, extraction, dosage ou fabrication de drogues.",
+    "Seuils agricoles, denrées et conduite distingués ; repères France/UE datés du 11 novembre 2026.",
+    "Les exemples de conversion sont des exercices mathématiques créés pour le cours.",
+    "Quatre séquences par cours plus observation et exercice ; 4 minutes est une durée de parcours guidé comprenant les pauses et la reformulation, sans chronomètre."
+  ],
+  "reviewNotes": [
+    "Sources juridiques croisées : arrêté initial de 2021 et annulation partielle de 2022, aide PAC, arrêt de 2023 sur la conduite et communiqué du ministère de l’Agriculture du 20 mai 2026 sur les denrées avec CBD ajouté.",
+    "ANSM directement inaccessible pendant la vérification ; document original du 11 mars 2025 consulté via son relais CRPV Île-de-France. Communiqué ANSES/ANSM du 19 juin 2025 vérifié par les extraits indexés du PDF officiel ; ouvertures directes refusées (403).",
+    "Étude Nature Plants 2021 vérifiée dans son PDF primaire indexé ; ouverture directe redirige vers authentification. Aucun contournement.",
+    "Guide Terres Inovia 2026 : une mention C4 erronée a été repérée et exclue ; seules les parties biodiversité, auxiliaires, eau et rotation pertinentes sont utilisées.",
+    "Relecture des distracteurs : distinction pollinisation/fécondation/germination/dissémination ; génotype/phénotype/lot ; échantillonnage, unités et catégories réglementaires. Identifiants stables conservés.",
+    "Jirzankal : date approximative vers 500 avant notre ère, publication 2019 ; aucune revendication de première utilisation absolue.",
+    "Les questions portent sur la fiche du Buddy et les profils locaux accessibles sans possession ; aucun nouveau pedigree, taux ou effet n’est inventé."
+  ],
+  "sources": [
+    {
+      "id": "kew",
+      "title": "Cannabis sativa L. — nomenclature et famille",
+      "organization": "Royal Botanic Gardens, Kew",
+      "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2",
+      "verifiedAt": "2026-11-11",
+      "note": "Nom accepté, Cannabaceae, publication en 1753 ; aucune règle juridique tirée de cette fiche."
+    },
+    {
+      "id": "biology",
+      "title": "Biologie de Cannabis sativa — BIO2020-02",
+      "organization": "Agence canadienne d’inspection des aliments",
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "verifiedAt": "2026-11-11",
+      "note": "Sections 2.6, 4.1 et 4.2 : morphologie, reproduction et molécules. Les anciens seuils juridiques de ce document ne sont pas repris."
+    },
+    {
+      "id": "leaves",
+      "title": "Biology — Leaves",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology/pages/30-4-leaves",
+      "verifiedAt": "2026-11-11",
+      "note": "Feuilles composées, folioles, photosynthèse et échanges."
+    },
+    {
+      "id": "plant-body",
+      "title": "Biology 2e — The plant body",
+      "organization": "OpenStax / Rice University",
+      "url": "https://openstax.org/books/biology-2e/pages/30-introduction",
+      "verifiedAt": "2026-11-11",
+      "note": "Organisation des organes et circulation de l’eau, des minéraux et des produits de la photosynthèse."
+    },
+    {
+      "id": "profiles",
+      "title": "Cannabis labelling is associated with genetic variation in terpene synthase genes",
+      "organization": "Watts et al., Nature Plants (2021)",
+      "url": "https://www.nature.com/articles/s41477-021-01003-y.pdf",
+      "verifiedAt": "2026-11-11",
+      "note": "Étude originale : limites des étiquettes commerciales Sativa–Indica et variation des terpènes."
+    },
+    {
+      "id": "genotype",
+      "title": "Genotype — glossaire",
+      "organization": "National Human Genome Research Institute",
+      "url": "https://www.genome.gov/genetics-glossary/genotype",
+      "verifiedAt": "2026-11-11"
+    },
+    {
+      "id": "phenotype",
+      "title": "Phenotype — glossaire",
+      "organization": "National Human Genome Research Institute",
+      "url": "https://www.genome.gov/genetics-glossary/Phenotype",
+      "verifiedAt": "2026-11-11"
+    },
+    {
+      "id": "geves",
+      "title": "DHS : Distinction, Homogénéité, Stabilité",
+      "organization": "GEVES",
+      "url": "https://www.geves.fr/glossary/dhs/",
+      "verifiedAt": "2026-11-11"
+    },
+    {
+      "id": "catalogue",
+      "title": "Le catalogue officiel des variétés",
+      "organization": "Ministère de l’Agriculture",
+      "url": "https://agriculture.gouv.fr/le-catalogue-officiel-des-varietes-quest-ce-que-cest",
+      "verifiedAt": "2026-11-11",
+      "note": "Rôle de l’évaluation variétale et de la traçabilité."
+    },
+    {
+      "id": "germination",
+      "title": "Méthode officielle de faculté germinative du chanvre",
+      "organization": "Ministère de l’Agriculture / GEVES",
+      "url": "https://info.agriculture.gouv.fr/boagri/instruction-2021-781",
+      "verifiedAt": "2026-11-11",
+      "note": "Instruction DGAL/SDSPV/2021-781. Le cours définit le critère sans donner de protocole de culture."
+    },
+    {
+      "id": "archaeology",
+      "title": "The origins of cannabis smoking: Chemical residue evidence from the first millennium BCE in the Pamirs",
+      "organization": "Ren et al., Science Advances (2019) / Max Planck",
+      "url": "https://pure.mpg.de/rest/items/item_3080701_1/component/file_3080703/content",
+      "verifiedAt": "2026-11-11",
+      "note": "Jirzankal, vers 500 avant notre ère ; traces contextualisées, pas première utilisation universelle."
+    },
+    {
+      "id": "thc1964",
+      "title": "Isolation, Structure, and Partial Synthesis of an Active Constituent of Hashish",
+      "organization": "Gaoni et Mechoulam, JACS (1964)",
+      "url": "https://doi.org/10.1021/ja01062a046",
+      "verifiedAt": "2026-11-11",
+      "note": "Publication de 1964, ne pas confondre avec sa date de mise en ligne."
+    },
+    {
+      "id": "receptor1990",
+      "title": "Structure of a cannabinoid receptor and functional expression of the cloned cDNA",
+      "organization": "Matsuda et al., Nature (1990)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/2165569/",
+      "verifiedAt": "2026-11-11"
+    },
+    {
+      "id": "anandamide1992",
+      "title": "Isolation and structure of a brain constituent that binds to the cannabinoid receptor",
+      "organization": "Devane et al., Science (1992)",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+      "verifiedAt": "2026-11-11"
+    },
+    {
+      "id": "uses",
+      "title": "Lexique de la filière chanvre",
+      "organization": "InterChanvre",
+      "url": "https://www.interchanvre.org/documentation_lexique",
+      "verifiedAt": "2026-11-11",
+      "note": "Chènevis, chènevotte, défibrage, compounds : vocabulaire de filière, pas promesses environnementales universelles."
+    },
+    {
+      "id": "eu-hemp",
+      "title": "Hemp — usages et cadre agricole",
+      "organization": "Commission européenne, Agriculture",
+      "url": "https://agriculture.ec.europa.eu/farming/crops/hemp_en",
+      "verifiedAt": "2026-11-11",
+      "note": "Usages textiles, papier, construction ; conditions des aides PAC et semences certifiées. Le seuil agricole ne vaut pas autorisation de tout produit."
+    },
+    {
+      "id": "lifecycle",
+      "title": "Empreinte carbone : calcul par analyse en cycle de vie",
+      "organization": "Ministère de la Transition écologique, SDES",
+      "url": "https://www.statistiques.developpement-durable.gouv.fr/empreinte-carbone-calcul-par-analyse-en-cycle-de-vie-ou-approche-macro-economique",
+      "verifiedAt": "2026-11-11",
+      "note": "Périmètre du cycle de vie, depuis les matières premières jusqu’à la fin de vie ; les comparaisons doivent expliciter leur service de référence."
+    },
+    {
+      "id": "units",
+      "title": "Guide to the SI — Expressing values of quantities",
+      "organization": "National Institute of Standards and Technology",
+      "url": "https://www.nist.gov/pml/special-publication-811/nist-guide-si-chapter-7-rules-and-style-conventions-expressing-values",
+      "verifiedAt": "2026-11-11",
+      "note": "Rapports, unités et symbole % = 0,01. Exemples numériques du cours créés pour l’apprentissage."
+    },
+    {
+      "id": "analysis",
+      "title": "Analyse de produits CBD non pharmaceutiques disponibles en France",
+      "organization": "MILDECA / centres d’addictovigilance (2023)",
+      "url": "https://www.drogues.gouv.fr/sites/default/files/2023-12/rapport%20MILDECA%20CBD%202023.pdf",
+      "verifiedAt": "2026-11-11",
+      "note": "Étude de composition : étiquettes, analyse de lots et limites de l’échantillon."
+    },
+    {
+      "id": "bees",
+      "title": "Hemp and Bees: Field Hemp as a Pollen Source",
+      "organization": "Cornell University, Poveda Lab",
+      "url": "https://hemp.cals.cornell.edu/resource/hemp-and-bees-pollen-source-nys-landscape/",
+      "verifiedAt": "2026-11-11",
+      "note": "Visites de fleurs mâles pour leur pollen ; pas de nectar. Résultats situés dans l’État de New York."
+    },
+    {
+      "id": "agriculture",
+      "title": "Chanvre — guide 2026, biodiversité et rotations",
+      "organization": "Terres Inovia",
+      "url": "https://www.terresinovia.fr/sites/default/files/2026-01/guide_culture_chanvre_2026.pdf",
+      "verifiedAt": "2026-11-11",
+      "note": "Sections biodiversité, auxiliaires, eau et rotation uniquement. Aucun itinéraire technique repris ; la mention erronée de photosynthèse C4 dans le guide n’est pas utilisée."
+    },
+    {
+      "id": "decree",
+      "title": "Arrêté du 30 décembre 2021 — article 1",
+      "organization": "Légifrance",
+      "url": "https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000044793222",
+      "verifiedAt": "2026-11-11",
+      "note": "Lire avec la décision du Conseil d’État du 29 décembre 2022 : l’interdiction générale des fleurs/feuilles a été annulée."
+    },
+    {
+      "id": "council2022",
+      "title": "Annulation de l’interdiction générale des fleurs et feuilles",
+      "organization": "Conseil d’État, 29 décembre 2022",
+      "url": "https://conseil-etat.fr/actualites/cbd-annulation-de-l-arrete-interdisant-la-vente-des-fleurs-et-feuilles-de-cannabis-sans-proprietes-stupefiantes",
+      "verifiedAt": "2026-11-11"
+    },
+    {
+      "id": "driving",
+      "title": "Pourvoi 22-85.530 — conduite après usage de stupéfiants",
+      "organization": "Cour de cassation, 21 juin 2023",
+      "url": "https://www.courdecassation.fr/decision/6492974417c95e05dbf9ded3",
+      "verifiedAt": "2026-11-11",
+      "note": "La vente licite d’un produit contenant du THC n’écarte pas l’infraction de conduite après usage constaté."
+    },
+    {
+      "id": "food2026",
+      "title": "Denrées contenant du CBD : rappel réglementaire",
+      "organization": "Ministère de l’Agriculture, 20 mai 2026",
+      "url": "https://agriculture.gouv.fr/node/110883",
+      "verifiedAt": "2026-11-11",
+      "note": "CBD ajouté non autorisé comme nouvel aliment ; distinction avec les graines et leurs dérivés, sous conditions."
+    },
+    {
+      "id": "interactions",
+      "title": "Mélanger CBD et médicaments, ce n’est jamais anodin",
+      "organization": "ANSM, 11 mars 2025 — document relayé par les CRPV d’Île-de-France",
+      "url": "https://www.pharmacovigilance-iledefrance.fr/files/editeur/Alertes/Documents%20PDF/Commun/PDF_2025/melanger-cbd-et-medicaments-ce-nest-jamais-anodin.pdf",
+      "verifiedAt": "2026-11-11",
+      "note": "Document original ANSM ; site ANSM directement inaccessible lors de la vérification."
+    },
+    {
+      "id": "alert2025",
+      "title": "Intoxications par des produits présentés comme du CBD",
+      "organization": "ANSM et ANSES, 19 juin 2025",
+      "url": "https://www.anses.fr/system/files/press-2025-08.pdf",
+      "verifiedAt": "2026-11-11",
+      "note": "Composition inattendue, THC et cannabinoïdes de synthèse non annoncés ; conduite à tenir après effet indésirable."
+    },
+    {
+      "id": "ameli",
+      "title": "CBD non médical : définition et précautions",
+      "organization": "Assurance Maladie, 19 décembre 2025",
+      "url": "https://www.ameli.fr/assure/sante/medicaments/cannabidiol-cbd-non-medical-definition-et-precautions-d-utilisation",
+      "verifiedAt": "2026-11-11",
+      "note": "Risques, interactions et distinction avec les médicaments prescrits. Aucune promesse thérapeutique reprise."
+    },
+    {
+      "id": "poison",
+      "title": "Intoxication par ingestion : informations à transmettre et prévention",
+      "organization": "Assurance Maladie",
+      "url": "https://www.ameli.fr/assure/sante/urgence/accidents-domestiques/intoxication-voie-orale-ingestion",
+      "verifiedAt": "2026-11-11",
+      "note": "Emballage, étiquette et références à conserver pour identifier le produit ; produits dangereux hors de portée des enfants."
+    },
+    {
+      "id": "emergency",
+      "title": "Numéros d’urgence médicale en France et en Europe",
+      "organization": "Service Public / DILA",
+      "url": "https://www.service-public.gouv.fr/particuliers/vosdroits/F33954",
+      "verifiedAt": "2026-11-11",
+      "note": "15 : SAMU ; 112 : urgence européenne. Fiche vérifiée par la DILA le 25 août 2026."
+    },
+    {
+      "id": "buddy",
+      "title": "Fiches Buddies du Quartier",
+      "organization": "Kanab Quest — descriptions existantes du jeu",
+      "url": "/arene/placard?view=shop&tab=collection&section=buddies",
+      "verifiedAt": "2026-11-11",
+      "note": "Fiches accessibles aux joueurs sans posséder les cartes. Description de fiche ou fiction explicitement attribuée, jamais preuve médicale."
+    }
+  ],
+  "courses": [
+    {
+      "id": "plant",
+      "wordCount": 518,
+      "sourceIds": [
+        "kew",
+        "biology",
+        "leaves",
+        "plant-body",
+        "buddy"
+      ],
+      "workshopIds": [
+        "crossword-plant",
+        "matching-plant"
+      ]
+    },
+    {
+      "id": "molecules",
+      "wordCount": 493,
+      "sourceIds": [
+        "biology",
+        "profiles",
+        "ameli",
+        "buddy"
+      ],
+      "workshopIds": [
+        "matching-molecules",
+        "crossword-plant"
+      ]
+    },
+    {
+      "id": "profiles",
+      "wordCount": 516,
+      "sourceIds": [
+        "profiles",
+        "biology",
+        "units",
+        "analysis",
+        "buddy"
+      ],
+      "workshopIds": [
+        "matching-evidence"
+      ]
+    },
+    {
+      "id": "genetics",
+      "wordCount": 506,
+      "sourceIds": [
+        "genotype",
+        "phenotype",
+        "geves",
+        "catalogue",
+        "germination",
+        "buddy"
+      ],
+      "workshopIds": [
+        "matching-evidence"
+      ]
+    },
+    {
+      "id": "history",
+      "wordCount": 506,
+      "sourceIds": [
+        "archaeology",
+        "kew",
+        "thc1964",
+        "receptor1990",
+        "anandamide1992",
+        "council2022",
+        "buddy"
+      ],
+      "workshopIds": [
+        "timeline-history"
+      ]
+    },
+    {
+      "id": "uses",
+      "wordCount": 534,
+      "sourceIds": [
+        "uses",
+        "eu-hemp",
+        "food2026",
+        "lifecycle"
+      ],
+      "workshopIds": [
+        "crossword-uses",
+        "matching-plant"
+      ]
+    },
+    {
+      "id": "evidence",
+      "wordCount": 518,
+      "sourceIds": [
+        "analysis",
+        "units",
+        "profiles",
+        "buddy"
+      ],
+      "workshopIds": [
+        "matching-evidence",
+        "crossword-uses"
+      ]
+    },
+    {
+      "id": "biodiversity",
+      "wordCount": 542,
+      "sourceIds": [
+        "bees",
+        "biology",
+        "agriculture",
+        "plant-body",
+        "buddy"
+      ],
+      "workshopIds": [
+        "matching-plant"
+      ]
+    },
+    {
+      "id": "law",
+      "wordCount": 513,
+      "sourceIds": [
+        "decree",
+        "council2022",
+        "eu-hemp",
+        "food2026",
+        "driving"
+      ],
+      "workshopIds": [
+        "matching-evidence",
+        "timeline-history"
+      ]
+    },
+    {
+      "id": "prevention",
+      "wordCount": 519,
+      "sourceIds": [
+        "ameli",
+        "interactions",
+        "alert2025",
+        "poison",
+        "emergency",
+        "buddy"
+      ],
+      "workshopIds": [
+        "matching-evidence"
+      ]
+    }
+  ],
+  "buddyLinks": {
+    "count": 10,
+    "linkedQuestionCount": 11,
+    "sourceFiles": [
+      "src/lib/kanab-quest-buddie-flavors.ts",
+      "src/lib/kanab-quest-buddie-varieties.ts",
+      "src/data/buddie-varieties/001-026.json",
+      "src/data/buddie-varieties/027-052.json"
+    ],
+    "links": [
+      {
+        "buddyCode": "HH2026-001",
+        "courseIds": [
+          "plant"
+        ],
+        "questionIds": [
+          "plant-q10"
+        ],
+        "notions": [
+          "Fiction et botanique"
+        ]
+      },
+      {
+        "buddyCode": "HH2026-002",
+        "courseIds": [
+          "history"
+        ],
+        "questionIds": [
+          "history-q08"
+        ],
+        "notions": [
+          "Histoire attribuée et lieu"
+        ]
+      },
+      {
+        "buddyCode": "HH2026-003",
+        "courseIds": [
+          "genetics"
+        ],
+        "questionIds": [
+          "genetics-q08"
+        ],
+        "notions": [
+          "Parenté corrigée et provenance"
+        ]
+      },
+      {
+        "buddyCode": "HH2026-004",
+        "courseIds": [
+          "molecules"
+        ],
+        "questionIds": [
+          "molecules-q07"
+        ],
+        "notions": [
+          "Description aromatique"
+        ]
+      },
+      {
+        "buddyCode": "HH2026-005",
+        "courseIds": [
+          "molecules"
+        ],
+        "questionIds": [
+          "molecules-q08"
+        ],
+        "notions": [
+          "Molécule et perception"
+        ]
+      },
+      {
+        "buddyCode": "HH2026-006",
+        "courseIds": [
+          "profiles"
+        ],
+        "questionIds": [
+          "profiles-q07"
+        ],
+        "notions": [
+          "Lire un profil"
+        ]
+      },
+      {
+        "buddyCode": "HH2026-007",
+        "courseIds": [
+          "profiles"
+        ],
+        "questionIds": [
+          "profiles-q08"
+        ],
+        "notions": [
+          "Nom et description"
+        ]
+      },
+      {
+        "buddyCode": "HH2026-008",
+        "courseIds": [
+          "prevention"
+        ],
+        "questionIds": [
+          "prevention-q08"
+        ],
+        "notions": [
+          "Arôme sans promesse médicale"
+        ]
+      },
+      {
+        "buddyCode": "HH2026-009",
+        "courseIds": [
+          "evidence"
+        ],
+        "questionIds": [
+          "evidence-q07",
+          "evidence-q10"
+        ],
+        "notions": [
+          "Attribuer une information"
+        ]
+      },
+      {
+        "buddyCode": "HH2026-010",
+        "courseIds": [
+          "biodiversity"
+        ],
+        "questionIds": [
+          "biodiversity-q08"
+        ],
+        "notions": [
+          "Distinguer profil et propriété écologique"
+        ]
+      }
+    ]
+  },
+  "workshops": {
+    "crosswords": [
+      {
+        "id": "crossword-plant",
+        "width": 9,
+        "height": 10,
+        "words": 8,
+        "connected": true,
+        "accidentalWords": 0
+      },
+      {
+        "id": "crossword-uses",
+        "width": 8,
+        "height": 13,
+        "words": 8,
+        "connected": true,
+        "accidentalWords": 0
+      }
+    ],
+    "timelineYears": [
+      -500,
+      1753,
+      1964,
+      1990,
+      1992,
+      2022
+    ],
+    "timelineScale": "Classement chronologique ; espacement non proportionnel au temps.",
+    "matchingSeries": [
+      {
+        "id": "matching-plant",
+        "pairs": 6
+      },
+      {
+        "id": "matching-evidence",
+        "pairs": 4
+      },
+      {
+        "id": "matching-molecules",
+        "pairs": 4
+      }
+    ],
+    "accentPolicy": "NFD et lettres latines majuscules dans la grille ; orthographe française accentuée conservée dans displayAnswer."
+  },
+  "validation": {
+    "testFile": "src/lib/kanab-quest-school-content.test.ts",
+    "tests": 10,
+    "checks": [
+      "10 cours et 10 × 10 questions, identités uniques",
+      "4 options distinctes et une clé serveur valide par question",
+      "Aucune clé de quiz dans le module public",
+      "Sources, chapitres de révision, versions et ateliers valides",
+      "10 Buddies existants et arômes comparés directement aux profils réels",
+      "Croisements cohérents, grilles connexes, aucun mot adjacent accidentel",
+      "6 dates dans le bon ordre et date ancienne approximative",
+      "3 séries d’associations aux choix distincts"
+    ],
+    "productionApplied": false
+  }
+}

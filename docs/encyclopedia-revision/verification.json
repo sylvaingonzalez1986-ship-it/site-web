@@ -1,0 +1,47 @@
+{
+  "date": "2026-11-14",
+  "environment": "Local preview with in-memory fixtures; no remote data mutation or deployment",
+  "checks": [
+    {
+      "command": "node scripts/integrate-encyclopedia-revision.mjs",
+      "result": "passed",
+      "scope": "189 IDs, original section anchors and relationships, source registries, media paths and credits, diagrams, glossary, quiz options and source links; validation requires the reviewed content hash"
+    },
+    {
+      "command": "npx.cmd tsc --noEmit",
+      "result": "passed"
+    },
+    {
+      "command": "npx.cmd vitest run src/lib/kanab-quest-cannabis-reference.test.ts src/lib/kanab-quest-hemp-quiz.test.ts src/lib/kanab-quest-terpene-cards.test.ts",
+      "result": "passed",
+      "testFiles": 3,
+      "tests": 13,
+      "scope": "Published catalog, redirects and glossary; every article has instructional media and consulted section references; 360 questions preserve IDs, levels, scoring and article/source relationships; quiz answers absent from client editorial data"
+    },
+    {
+      "command": "npx.cmd eslint src/components/placard/KqCannabisArticle.tsx src/components/placard/KqTerpeneCards.tsx src/lib/kanab-quest-cannabis-revision.ts src/lib/kanab-quest-cannabis-reference.test.ts src/lib/kanab-quest-hemp-quiz.test.ts scripts/integrate-encyclopedia-revision.mjs",
+      "result": "passed",
+      "followUp": "Article component and integration script checked again after their final edits"
+    },
+    {
+      "command": "node output/encyclopedia-revision/browser.mjs",
+      "result": "passed",
+      "articleCases": 15,
+      "viewports": [320, 390, 1440],
+      "checks": 45,
+      "javascriptErrors": 0,
+      "scope": "No horizontal overflow or failed images; sequence, comparison, timeline and evidence templates; documentary photographs and chemical diagrams; terpene dialog sources, drawing credits, keyboard containment and Escape",
+      "report": "output/encyclopedia-revision/browser-report.json",
+      "visualInspection": "Coordinator inspected desktop/mobile screenshots of each template and special layouts, including full documentary plates, the two new host-comparison photos, long botanical images, chemical structure contrast and the terpene dialog. A final CSS-only gold material state for the aroma summary changes no geometry."
+    }
+  ],
+  "warnings": [
+    "Existing Vite configuration emits a non-failing warning about future native config loading.",
+    "The local preview emits a non-failing PostCSS from-option warning."
+  ],
+  "dataSafety": {
+    "migrationsApplied": 0,
+    "deploymentPerformed": false,
+    "existingWorkspaceChangesPreserved": true
+  }
+}

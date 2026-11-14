@@ -1,0 +1,536 @@
+{
+  "sources": [
+    {
+      "id": "qh-nature-kew",
+      "title": "Cannabis sativa L. | Plants of the World Online",
+      "organization": "Royal Botanic Gardens, Kew",
+      "author": "Royal Botanic Gardens, Kew",
+      "published": "non indiquée (page consultée en 2026)",
+      "url": "https://powo.science.kew.org/taxon/306087-2",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "passage": "Classification: ordre Rosales, famille Cannabaceae, genre Cannabis, espèce Cannabis sativa.",
+      "supportedFacts": [
+        "Cannabis sativa est classé dans les Cannabaceae",
+        "Cannabis relève des Rosales"
+      ],
+      "limitation": "Notice taxonomique institutionnelle, pas une revue de la diversité infraspécifique."
+    },
+    {
+      "id": "qh-nature-canada",
+      "title": "The Biology of Cannabis sativa L. (Cannabis, hemp, marijuana)",
+      "organization": "Canadian Food Inspection Agency",
+      "author": "Canadian Food Inspection Agency",
+      "published": "2021 (page révisée; date exacte non indiquée)",
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "consultedAt": "2026-11-14",
+      "access": "institutional page",
+      "passage": "Sections 2.5 Taxonomy and genetics; 4.1 Floral and seed morphology.",
+      "supportedFacts": [
+        "Le nombre d’espèces reconnues varie selon les taxonomistes",
+        "La description taxonomique historique compare taille et marbrures des fruits secs",
+        "Les formes chanvre et autres Cannabis montrent des différences génomiques larges"
+      ],
+      "limitation": "Le document résume des modèles taxonomiques publiés et signale leur caractère discuté."
+    },
+    {
+      "id": "qh-nature-geves-new-varieties",
+      "title": "Chanvre : nouvelles variétés proposées à l’inscription, janvier 2025",
+      "organization": "GEVES / CTPS",
+      "author": "GEVES",
+      "published": "2025",
+      "url": "https://www.geves.fr/wp-content/uploads/PLA_Chanvre_2025_Janvier-1.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Tableau p. 4: variétés, usage fibre/graine, type monoïque, précocité.",
+      "supportedFacts": [
+        "Sylviçi 26, Vega et Anka sont proposées pour fibre et graine et indiquées monoïques",
+        "Le tableau distingue les classes de précocité"
+      ],
+      "limitation": "Variétés proposées à inscription dans ce document daté, pas une description exhaustive du catalogue actuel."
+    },
+    {
+      "id": "qh-nature-aroma-key-compounds",
+      "title": "Characterisation of the key-aroma compounds among the volatile constituents in different hemp strains",
+      "organization": "ZHAW, Institute of Food and Beverage Innovation; Weurman Flavour Research Symposium",
+      "author": "Markus Kneubühl, Amandine André, Irene Chetschik",
+      "published": "2021",
+      "url": "https://digitalcollection.zhaw.ch/bitstream/11475/24337/2/2021_Kneubuehl-etal_Aroma-characterisation-hemp-strains.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Table 1 and conclusion, pp. 2–3: aroma descriptors and GC-O results for KC Virtus, Felina 32 and Santhica 70.",
+      "supportedFacts": [
+        "α-pinène a une note de pin dans l’analyse sensorielle",
+        "β-phellandrène, cinéole, linalol et myrcène ont été détectés comme odorants",
+        "Linalol est décrit floral/bergamote dans les échantillons",
+        "Santhica 70 a une impression globale grasse, épicée et balsamique tandis que KC Virtus/Felina sont fraîches et citronnées",
+        "Des notes de biscuit, champignon, noisette, pomme de terre cuite, fromage, poivron, carton et cannelle sont reliées à des molécules précises",
+        "33 composés odorants ont été repérés",
+        "L’odeur observée incluait des molécules non terpéniques"
+      ],
+      "limitation": "Résultats de fleurs fraîches de trois cultivars suisses; ne prédit ni tous les cultivars ni des effets physiologiques."
+    },
+    {
+      "id": "qh-nature-hemp-lime",
+      "title": "Knowledge mapping for advancement of hemp-lime composite in the construction industry: a systematic literature review",
+      "organization": "Journal of Materials Science: Materials in Engineering",
+      "author": "Arta Yazdanseta, Yehong Mi",
+      "published": "2025",
+      "url": "https://link.springer.com/article/10.1186/s40712-025-00334-4",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Introduction: composition du chanvre-chaux et définition de la chènevotte.",
+      "supportedFacts": [
+        "Le composite chanvre-chaux combine chènevotte, liant à base de chaux et eau",
+        "La chènevotte est le cœur ligneux de la tige"
+      ],
+      "limitation": "Revue de littérature; les performances dépendent de la formulation et des conditions d’application."
+    },
+    {
+      "id": "qh-nature-hemp-stubble-paper",
+      "title": "Papermaking potential of pulps from bast, hurd and stubble of hemp; separately and blended with pine pulp",
+      "organization": "Cellulose / Springer Nature",
+      "author": "Kemal Parlak, Alper Ertürk, Celil Atik",
+      "published": "2026",
+      "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Résumé, publié le 11 janvier 2026: potentiel papetier du chaume et des racines; fibres de liber/chènevotte.",
+      "supportedFacts": [
+        "Le chaume résiduel a été étudié comme pâte à papier",
+        "Liber et chènevotte ont des compositions différentes et demandent des cuissons séparées"
+      ],
+      "limitation": "Résultats de procédés testés en laboratoire; ne garantit pas viabilité industrielle ou avantage écologique."
+    },
+    {
+      "id": "qh-nature-hurd-tissue-paper",
+      "title": "Ecofriendly and Innovative Processing of Hemp Hurds Fibers for Tissue and Towel Paper",
+      "organization": "BioResources / North Carolina State University",
+      "author": "Ved Naithani, Preeti Tyagi, Hasan Jameel, Lucian A. Lucia, Lokendra Pal",
+      "published": "2020",
+      "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Résumé et sections résultats: mise en pâte, mélanges avec pulpe de bois, propriétés des feuilles.",
+      "supportedFacts": [
+        "Des fibres de chènevotte ont été utilisées pour des papiers tissue et essuie-tout",
+        "L’étude mesure absorption d’eau, résistance, douceur et traction",
+        "La matière est défibrée par différents procédés"
+      ],
+      "limitation": "Essais de laboratoire et formulations particulières; résultats non généralisables à tous les papiers."
+    },
+    {
+      "id": "qh-nature-composite-review",
+      "title": "Hemp Fibre Treatments in Bio-Composites: A Review for Sustainable and Resilient Structures",
+      "organization": "Buildings (MDPI)",
+      "author": "Mariana Costa Laktim, Antonio Formisano",
+      "published": "2025",
+      "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Introduction, paras. sur adhérence et traitements des fibres.",
+      "supportedFacts": [
+        "Les traitements de surface peuvent améliorer l’adhérence fibre-matrice",
+        "Les revêtements hydrophobes réduisent l’affinité à l’eau",
+        "Des concentrations élevées d’alcali peuvent endommager les fibres"
+      ],
+      "limitation": "Revue ciblée sur composites à matrice inorganique; les résultats dépendent des protocoles et formulations."
+    },
+    {
+      "id": "qh-nature-synthases-original",
+      "title": "Terpene synthases from Cannabis sativa",
+      "organization": "PLOS ONE / University of British Columbia",
+      "author": "Judith K. Booth, Jonathan E. Page et Jörg Bohlmann",
+      "published": "2017-03-29",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+      "consultedAt": "2026-11-14",
+      "access": "full text",
+      "passage": "Introduction, figures 1–2, caractérisation des terpène synthases",
+      "limitation": "Biosynthèse et enzymes étudiées dans ce travail ; aucun bénéfice clinique ni procédé de fabrication déduit.",
+      "supportedFacts": [
+        "Organisation MEP/plastes et mévalonate/cytosol",
+        "IPP et DMAPP ; acétyl-CoA",
+        "Synthases multiproduits et structures des terpènes"
+      ]
+    },
+    {
+      "id": "qh-nature-sulfur-original",
+      "title": "Identification of a New Family of Prenylated Volatile Sulfur Compounds in Cannabis",
+      "organization": "ACS Omega / PubMed",
+      "author": "Iain W. H. Oswald et al.",
+      "published": "2021",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34869990/",
+      "consultedAt": "2026-11-14",
+      "access": "abstract",
+      "passage": "Résumé : composés soufrés prénylés et 3-méthyl-2-butène-1-thiol",
+      "limitation": "Résumé consulté ; accès direct au texte intégral bloqué. Aucune recette ni donnée quantitative extrapolée.",
+      "supportedFacts": [
+        "Composés soufrés volatils",
+        "Identification du 3-méthyl-2-butène-1-thiol parmi les odorants de la note skunk"
+      ]
+    }
+  ],
+  "questionSources": [
+    {
+      "id": "hemp-en-1-01",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-02",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-03",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-04",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-05",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-06",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-07",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-08",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-09",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-10",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-11",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-12",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-13",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-14",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-15",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-16",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-17",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-18",
+      "sourceIds": [
+        "qh-nature-kew"
+      ]
+    },
+    {
+      "id": "hemp-en-1-19",
+      "sourceIds": [
+        "qh-nature-canada"
+      ]
+    },
+    {
+      "id": "hemp-en-1-20",
+      "sourceIds": [
+        "qh-nature-geves-new-varieties"
+      ]
+    },
+    {
+      "id": "hemp-en-2-01",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-02",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-03",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-04",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-05",
+      "sourceIds": [
+        "qh-nature-synthases-original"
+      ]
+    },
+    {
+      "id": "hemp-en-2-06",
+      "sourceIds": [
+        "qh-nature-synthases-original"
+      ]
+    },
+    {
+      "id": "hemp-en-2-07",
+      "sourceIds": [
+        "qh-nature-synthases-original"
+      ]
+    },
+    {
+      "id": "hemp-en-2-08",
+      "sourceIds": [
+        "qh-nature-synthases-original"
+      ]
+    },
+    {
+      "id": "hemp-en-2-09",
+      "sourceIds": [
+        "qh-nature-sulfur-original"
+      ]
+    },
+    {
+      "id": "hemp-en-2-10",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-11",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-12",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-13",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-14",
+      "sourceIds": [
+        "qh-nature-sulfur-original"
+      ]
+    },
+    {
+      "id": "hemp-en-2-15",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-16",
+      "sourceIds": [
+        "qh-nature-synthases-original"
+      ]
+    },
+    {
+      "id": "hemp-en-2-17",
+      "sourceIds": [
+        "qh-nature-synthases-original"
+      ]
+    },
+    {
+      "id": "hemp-en-2-18",
+      "sourceIds": [
+        "qh-nature-synthases-original"
+      ]
+    },
+    {
+      "id": "hemp-en-2-19",
+      "sourceIds": [
+        "qh-nature-synthases-original"
+      ]
+    },
+    {
+      "id": "hemp-en-2-20",
+      "sourceIds": [
+        "qh-nature-synthases-original"
+      ]
+    },
+    {
+      "id": "hemp-en-3-01",
+      "sourceIds": [
+        "qh-nature-hemp-lime"
+      ]
+    },
+    {
+      "id": "hemp-en-3-02",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-03",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-04",
+      "sourceIds": [
+        "qh-nature-hemp-stubble-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-05",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-06",
+      "sourceIds": [
+        "qh-nature-hemp-stubble-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-07",
+      "sourceIds": [
+        "qh-nature-hemp-stubble-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-08",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-09",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-10",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-11",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-12",
+      "sourceIds": [
+        "qh-nature-hemp-stubble-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-13",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-14",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-15",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-16",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-17",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-18",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-19",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-20",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ]
+    }
+  ],
+  "editorialReview": "Réécriture par l’agent principal : faits botaniques, notes précises, matériaux ; retrait des questions de méthode et des chiffres arbitraires d’études. Les identifications provisoires de la communication ZHAW restent explicitement provisoires."
+}

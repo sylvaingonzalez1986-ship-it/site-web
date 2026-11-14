@@ -25,7 +25,7 @@ const modules={
  window.__gets++;return window.__mode==='error'?Response.json({error:'Unavailable'},{status:503}):Response.json({missions:missions(),collectionActive:true});};
  const api=createKqTutorialApi(request);api.isTutorial=params.get('tutorial')==='1';window.__refresh=()=>api.notify('kq:missions-updated');
  if(params.get('blocked')==='1')Object.defineProperty(window,'localStorage',{get(){throw new Error('Storage disabled');}});
- function App(){const [view,setView]=useState('quartier');window.__view=setView;const open=(code)=>window.__routes.push(getKqMissionTarget(code));return React.createElement(KqTutorialApiProvider,{api},React.createElement(KqMissionFocusProvider,{ownerId:owner},React.createElement('div',{className:retro.surface},React.createElement('nav',{'aria-label':'Navigation de recette'},React.createElement('button',{onClick:()=>setView('quartier')},'Quartier'),React.createElement('button',{onClick:()=>setView('missions')},'Missions')),view==='missions'?React.createElement(KqMissionCenter,{onOpen:(view,code)=>code&&open(code)}):React.createElement('main',{className:lobbyStyles.lobby},React.createElement('h1',null,'Mon quartier'),React.createElement(KqPinnedMission,{onChoose:()=>setView('missions'),onContinue:open})))));}
+ function App(){const [view,setView]=useState('quartier');window.__view=setView;const open=(code)=>window.__routes.push(getKqMissionTarget(code));return React.createElement(KqTutorialApiProvider,{api},React.createElement(KqMissionFocusProvider,{ownerId:owner},React.createElement('div',{className:retro.surface},React.createElement('nav',{'aria-label':'Navigation de recette'},React.createElement('button',{onClick:()=>setView('quartier')},'Quartier'),React.createElement('button',{onClick:()=>setView('missions')},'Missions')),view==='missions'?React.createElement(KqMissionCenter,{onOpen:(view,code)=>code&&open(code)}):React.createElement('main',{className:lobbyStyles.lobby,'data-placard-lobby':'',tabIndex:-1},React.createElement('h1',null,'Mon quartier'),React.createElement(KqPinnedMission,{onChoose:()=>setView('missions'),onContinue:open})))));}
  createRoot(document.getElementById('root')).render(React.createElement(App));`,
  '@/components/navigation/NavigationLink': `import React from 'react';export default function Link(props){return React.createElement('a',props);}`,
  'mission-hud': 'export function KqPlacardHud(){return null;}',
@@ -45,12 +45,21 @@ try {
  const goto=async(query='')=>{await page.goto('http://127.0.0.1:'+port+'/?'+query,{waitUntil:'networkidle0'});await page.waitForSelector('main');};
  const clickText=async(text)=>page.$$eval('button',(buttons,text)=>{const button=buttons.find(b=>b.textContent===text);if(!button)throw new Error('Missing button '+text);button.click();},text);
  const check=async(name,width)=>{assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1),false,name+' overflow');assert.deepEqual(await page.evaluate(()=>window.__writes),[]);observations.push({name,width});};
+ const checkUnpinned=async(name,width,expectedGets=0)=>{
+  await page.waitForSelector('main[data-placard-lobby]');
+  assert.equal(await page.$$('[data-pinned-mission]').then(items=>items.length),0,name+' has no pinned objective');
+  assert.equal(await page.$$eval('button',buttons=>buttons.some(button=>button.textContent==='Choisir un objectif')),false,name+' has no empty objective action');
+  await page.evaluate(async()=>{window.__refresh();await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));});
+  assert.equal(await page.evaluate(()=>window.__gets),expectedGets,name+' makes no mission request while unpinned');
+  await check(name,width);
+ };
  const shot=async(name)=>{await page.evaluate(async()=>{await Promise.allSettled([...document.images].map(img=>img.decode()));});await page.screenshot({path:resolve(output,name+'.png'),fullPage:true});};
  const pin='[data-pin-mission="first-curing"]', focus='[data-pinned-mission="first-curing"]';
  for(const width of [320,390,1440]) {
   await page.setViewport({width,height:900});await goto('owner=width-'+width);
-  await page.waitForFunction(()=>document.body.innerText.includes('Choisir un objectif'));assert.equal(await page.evaluate(()=>window.__gets),0,'Unpinned Quartier makes no mission request');
-  await clickText('Choisir un objectif');await page.waitForSelector(pin);await check('missions-before-pin',width);
+  await checkUnpinned('initial-unpinned',width);await shot('quartier-unpinned-'+width);
+  await page.reload({waitUntil:'networkidle0'});await checkUnpinned('reload-unpinned',width);
+  await clickText('Missions');await page.waitForSelector(pin);await check('missions-before-pin',width);
   await page.focus(pin);await page.keyboard.press('Enter');await page.waitForFunction(selector=>document.querySelector(selector).getAttribute('aria-pressed')==='true',{},pin);
   await shot('mission-selected-'+width);await clickText('Quartier');await page.waitForSelector(focus+' [role="meter"]');
   assert.equal(await page.$eval(focus+' [role="meter"]',e=>e.getAttribute('aria-valuenow')),'0');
@@ -65,16 +74,19 @@ try {
   await page.evaluate(()=>{window.__mode='error';window.__refresh();});await page.waitForFunction(()=>document.body.innerText.includes('Progression indisponible'));
   assert.equal(await page.$$(focus+' [role="meter"]').then(items=>items.length),0,'Unavailable progress never shows zero');await check('unavailable',width);await shot('unavailable-'+width);
   await page.evaluate(()=>{window.__mode='progress';window.__progress=0;});await clickText('Réessayer');await page.waitForSelector(focus+' [role="meter"]');await check('retry',width);
-  await page.focus('[aria-label="Retirer l’objectif épinglé"]');await page.keyboard.press('Enter');await page.waitForFunction(()=>document.activeElement?.textContent.includes('Choisir un objectif'));await check('remove-keyboard-focus',width);
+  const getsBeforeRemoval=await page.evaluate(()=>window.__gets);
+  await page.focus('[aria-label="Retirer l’objectif épinglé"]');await page.keyboard.press('Enter');await page.waitForFunction(()=>document.activeElement===document.querySelector('[data-placard-lobby]'));
+  await checkUnpinned('remove-keyboard-focus',width,getsBeforeRemoval);
+  await page.reload({waitUntil:'networkidle0'});await checkUnpinned('removed-choice-stays-absent',width);
  }
- await goto('owner=alice');await clickText('Choisir un objectif');await page.waitForSelector(pin);await page.click(pin);await clickText('Quartier');await page.waitForSelector(focus);
- await goto('owner=bob');await page.waitForFunction(()=>document.body.innerText.includes('Choisir un objectif'));assert.equal(await page.$$(focus).then(items=>items.length),0);await check('separate-account',1440);
+ await goto('owner=alice');await clickText('Missions');await page.waitForSelector(pin);await page.click(pin);await clickText('Quartier');await page.waitForSelector(focus);
+ await goto('owner=bob');await checkUnpinned('separate-account',1440);
  await goto('owner=alice');await page.waitForSelector(focus+' [role="meter"]');await check('account-choice-restored',1440);
  await clickText('Missions');await page.waitForSelector('[data-pin-mission="first-harvest"]');await page.click('[data-pin-mission="first-harvest"]');await clickText('Quartier');await page.waitForSelector('[data-pinned-mission="first-harvest"] [role="meter"]');assert.equal(await page.$$(focus).then(items=>items.length),0);await check('replace-choice',1440);
  await goto('owner=alice&tutorial=1');assert.equal(await page.$$('[data-pinned-mission]').then(items=>items.length),0);await clickText('Missions');await page.waitForSelector('section[aria-label="Culture & Buddies"]');assert.equal(await page.$$('[data-pin-mission]').then(items=>items.length),0);await check('tutorial-isolated',1440);
- await goto('owner=blocked&blocked=1');await clickText('Choisir un objectif');await page.waitForSelector(pin);await page.click(pin);await clickText('Quartier');await page.waitForSelector(focus+' [role="meter"]');assert.equal(await page.$eval(focus,e=>e.textContent.includes('ne peut pas sauvegarder')),true);await check('storage-blocked',1440);
+ await goto('owner=blocked&blocked=1');await checkUnpinned('storage-blocked-unpinned',1440);await clickText('Missions');await page.waitForSelector(pin);await page.click(pin);await clickText('Quartier');await page.waitForSelector(focus+' [role="meter"]');assert.equal(await page.$eval(focus,e=>e.textContent.includes('ne peut pas sauvegarder')),true);await check('storage-blocked',1440);
  assert.deepEqual(errors,[]);await writeFile(resolve(output,'report.json'),JSON.stringify({passed:true,observations,errors,noGameMutations:true},null,2));
- console.log('Pinned objective passed: '+observations.length+' observations at 320/390/1440 px, keyboard, account isolation, tutorial isolation, unavailable data, retry and zero game writes.');
+ console.log('Pinned objective passed: '+observations.length+' observations at 320/390/1440 px, no empty objective action or unpinned mission requests, keyboard focus, account isolation, tutorial isolation, unavailable data, retry and zero game writes.');
 } finally {
  const closing=setTimeout(()=>{browser?.process()?.kill();server.httpServer?.closeAllConnections();},5000);
  try {await browser?.close();server.httpServer?.closeAllConnections();await server.close();} finally {clearTimeout(closing);}

@@ -1,0 +1,29 @@
+{
+  "created": "2026-11-12",
+  "tool": "image_gen.imagegen",
+  "useCase": "scientific-educational",
+  "reference": "public/placard/school/products/plate-thumb-v1.webp",
+  "prompt": "Use case: scientific-educational. Asset type: landscape hero illustration for the advanced harvest quality lesson in a French botanical hemp school, existing hand-inked cartoon Breton village game.\nCreate a calm illustrated hemp harvest observation desk, 1536x1024, warm cream teal gold and dark ink. Reference image supplies precise botanical printed gouache/pencil style, not layout to copy.\nA wide well organized cream worktable at a village workshop window. Foreground three equal-sized shallow sample dishes containing recognizable mottled hemp seed fruits, clearly separated, with blank cream tags. Equal dish sizes do NOT encode yield, quantities, or rankings. Left a small bundle of long straw-coloured hemp bast fibres and a few cut hemp stems with correctly palmate serrated Cannabis sativa leaves. Right a small sample jar, a hand magnifying lens and a modest balance with blank unreadable dial; nearby an open field notebook with only a few abstract non-text ruled lines and pencil. Very quiet soft background glimpse of Breton village stone roofs and fields. All plant material exclusively hemp, no unrelated flowers.\nHand drawn botanical illustration with crisp ink, restrained gouache, tactile cream paper, legible at thumbnail size. Keep objects distinct with breathing space. No written text, numbers, logos, arrows, rankings, graphs, watermark, medical claims, people, smoking, giant cannabis buds, extraction/synthesis apparatus or recipes. Do not depict mold or diseased plants as diagnostic images. This is a conceptual observation scene, not a manufacturing setup, not a measured result. No brown wall panels, no neon.",
+  "source": "output/school/artwork/harvest-desk-v1-source.png",
+  "review": "Scène conceptuelle de contrôle du chanvre : trois échantillons de graines, fibres, tiges, balance et carnet. Les échantillons et objets n’encodent aucune mesure ou classement. Le brin végétal est décoratif, pas une planche d’anatomie ni un diagnostic.",
+  "limits": [
+    "Aucun rendement, état sanitaire ou réglage déduit de l’image.",
+    "Mesures et graphiques fictifs rendus en HTML avec leurs unités et limites."
+  ],
+  "assets": [
+    {
+      "path": "public/placard/school/harvest/desk-v1.webp",
+      "width": 1536,
+      "height": 1024,
+      "bytes": 506246,
+      "sha256": "20f9ca2a8c8da03a4382a8b099259ec1d8e8f30f70701e288fc7a852f0197c33"
+    },
+    {
+      "path": "public/placard/school/harvest/desk-thumb-v1.webp",
+      "width": 480,
+      "height": 320,
+      "bytes": 47980,
+      "sha256": "bd60e4d3bbebdc2f882e2c5c527d48b36ae85fd34d33a75f966960aca85527d9"
+    }
+  ]
+}

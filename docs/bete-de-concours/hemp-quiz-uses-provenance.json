@@ -1,0 +1,62 @@
+{
+  "version": "2026-11-13.hemp-quiz-uses1",
+  "file": "src/lib/kanab-quest-hemp-quiz-uses.ts",
+  "scope": "100 QCM originaux : 20 graines, 20 fibres et matériaux, 20 sol et nutrition, 20 organismes, 20 milieux et conservation du chanvre fibre/graine ; cinq questions par niveau dans chaque domaine.",
+  "authoring": "Questions courtes sur des objets, propriétés, mécanismes et organismes concrets. Aucun questionnaire historique, juridique, méthodologique, de lecture de graphiques ou d’évaluation de preuves. Pas de recette, dose, réglage ni optimisation de production de stupéfiants.",
+  "bibliography": "Réutilisation des identifiants de sources et des articles canoniques du catalogue existant. Les limites d’accès des notices originales sont conservées ; une notice réutilisée n’est pas une affirmation de relecture intégrale.",
+  "localReferences": [
+    "src/lib/kanab-quest-cannabis-reference-society.ts",
+    "src/lib/kanab-quest-cannabis-reference-biology.ts",
+    "src/lib/kanab-quest-cannabis-reference-records.ts",
+    "src/lib/kanab-quest-school-products-tools.ts",
+    "src/lib/kanab-quest-school-health-atlas.ts",
+    "src/lib/kanab-quest-school-soil-lessons.ts",
+    "src/lib/kanab-quest-school-cultivation-lessons.ts",
+    "src/lib/kanab-quest-school-harvest-lessons.ts"
+  ],
+  "targetedExternalChecks": [
+    {
+      "sourceIds": ["products-tool-seed-protein"],
+      "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+      "checked": "Article original ouvert : constituants du tourteau, globulines et albumines, édestine, acides aminés, solubilité minimale au point isoélectrique, ponts disulfure ; aucun protocole de transformation repris.",
+      "access": "Texte intégral accessible, lecture ciblée des passages concernés."
+    },
+    {
+      "sourceIds": ["products-tool-seed-oil"],
+      "url": "https://www.mdpi.com/2076-3921/11/3/490",
+      "checked": "Publication originale : linoléique majoritaire, alpha-linolénique, stéaridonique, tocophérols, chlorophylles et aldéhydes d’oxydation ; aucune durée de conservation ni extrapolation de teneur universelle.",
+      "access": "Passages du texte original indexés sur le site éditeur et PMC ; accès direct au PDF initial en erreur."
+    },
+    {
+      "sourceIds": ["harvest-lesson-oil"],
+      "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+      "checked": "Résumé original indexé : sensibilité à l’oxydation et à la photo-oxydation de l’huile de chènevis.",
+      "access": "Passages du site éditeur indexés ; ouverture PMC limitée par une page de vérification."
+    },
+    {
+      "sourceIds": ["harvest-lesson-hemp", "cultivation-lesson-hemp2026", "health-atlas-hemp-france"],
+      "url": "https://www.terresinovia.fr/sites/default/files/2026-01/guide_culture_chanvre_2026.pdf",
+      "checked": "Pages imprimées 14 et 20–23 : fragilité à la levée, altises, maturité échelonnée du chènevis, battage, fanage, andains, échauffement et bris de graines. Les dates, dosages, réglages, récits historiques et promesses générales du guide ne sont pas repris.",
+      "access": "PDF original ouvert ; lecture ciblée."
+    },
+    {
+      "sourceIds": ["products-tool-textile"],
+      "url": "https://www.interchanvre.org/documents/5.actu_presse/newsletters/10/Les_savoir-faire_du_chanvre_textile.pdf",
+      "checked": "Parties techniques de l’inventaire : position des fibres, teillage, étoupes, peignage, filage, ourdissage, tissage et pectines ; aucun récit historique repris.",
+      "access": "PDF original ouvert ; lecture ciblée des descriptions de savoir-faire."
+    },
+    {
+      "sourceIds": ["products-tool-hempcrete"],
+      "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf",
+      "checked": "Définition du béton de chanvre et fonction de remplissage, en complément des notices et articles locaux.",
+      "access": "Document institutionnel de deux pages accessible."
+    }
+  ],
+  "review": {
+    "counts": "100 questions ; 20 par domaine ; cinq par niveau et domaine.",
+    "answers": "Quatre choix et une réponse ; positions équilibrées ; relecture des réponses et distracteurs.",
+    "references": "Les articleId et sourceIds sont résolus contre loadCannabisReferenceCatalog ; chaque source doit également appartenir à l’article lié.",
+    "lengths": "Chaque question reste sous 110 caractères, chaque choix sous 45 et chaque explication sous 160.",
+    "security": "Module protégé par import server-only ; aucune modification des anciennes banques ni du backend."
+  }
+}

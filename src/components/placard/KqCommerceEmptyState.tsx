@@ -7,6 +7,7 @@ import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import type { KqCommerceSnapshot } from "@/lib/kanab-quest-commerce";
 import { startArenaVisiblePolling } from "@/lib/arena-visible-polling";
 import { getKqCommercePackagedStock, getKqCommerceWaitingHarvest, isKqCommerceWaitingStorage } from "@/lib/kanab-quest-commerce-guidance";
+import { getKqTrimPresentation } from "@/lib/kanab-quest-jury-readiness";
 import { useKqTutorialApi } from "./KqTutorialApiContext";
 import styles from "./KqCommerceEmptyState.module.css";
 
@@ -49,7 +50,8 @@ export function KqCommerceEmptyState({ data, onOpenStorage, onOpenCulture, onVie
   const hasPackets = packets !== null && packets.packets > 0;
   const storageHref = `/arene/placard?view=harvests&section=storage&from=market&fromSection=sales${advice ? `&flower=${encodeURIComponent(advice.lot.flowerId)}` : ""}`;
   const awaitingJury = advice && ["queued", "locked"].includes(advice.lot.flowerStatus);
-  const title = advice ? advice.kind === "overflow" ? "Une récolte attend son contenant" : awaitingJury ? "Une récolte attend son verdict" : advice.kind === "ready" ? "Une récolte est prête pour le jury" : advice.kind === "curing" ? "Une récolte est en affinage" : "Une récolte est encore au stockage"
+  const trim = getKqTrimPresentation(advice?.lot.trim);
+  const title = advice ? advice.kind === "overflow" ? "Une récolte attend son contenant" : awaitingJury ? "Une récolte attend son verdict" : advice.kind === "ready" ? trim.status === "ready" ? "Une récolte est prête pour le jury" : trim.status === "unknown" ? "Le trim d’une récolte reste à vérifier" : "Une récolte attend son trim" : advice.kind === "curing" ? "Une récolte est en affinage" : "Une récolte est encore au stockage"
     : hasPackets ? "Tes paquets sont déjà préparés" : "Aucun lot en vrac au comptoir";
   return <section className={styles.empty} data-commerce-empty aria-label="La prochaine étape pour vendre">
     <h3>{title}</h3>
@@ -57,9 +59,9 @@ export function KqCommerceEmptyState({ data, onOpenStorage, onOpenCulture, onVie
       <p><strong>{advice.lot.varietyName}</strong>{Number.isFinite(advice.lot.harvestGrams) ? ` · ${number(advice.lot.harvestGrams)} g récoltés` : ""}</p>
       <p>{advice.kind === "overflow" ? `${number(advice.lot.projection.capacity!.overflowUnits / 10)} g sans contenant. Range ce surplus pour le protéger ; son délai et sa reprise éventuelle sont indiqués dans le stockage.`
         : awaitingJury ? "La vente s’ouvrira après le verdict. Retrouve cette récolte pour suivre son passage au jury."
-        : advice.kind === "ready" ? "L’affinage est terminé. Retrouve cette récolte pour la présenter au jury avant de la vendre."
-        : advice.kind === "curing" ? `Affinage prévu jusqu’au ${new Date(advice.readyAt!).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}. Le jury vient ensuite, avant la vente.`
-        : "Vérifie son rangement et son affinage avant le jury. Son état exact reste à confirmer."}</p>
+        : advice.kind === "ready" ? trim.status === "ready" ? "L’affinage et le trim sont terminés. Retrouve cette récolte pour la présenter au jury avant de la vendre." : `L’affinage est terminé. ${trim.description}`
+        : advice.kind === "curing" ? `Affinage prévu jusqu’au ${new Date(advice.readyAt!).toLocaleString("fr-FR", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" })}. L’affinage et le trim doivent être terminés avant le jury, puis la vente.`
+        : "Vérifie son rangement, son affinage et son trim avant le jury. Son état exact reste à confirmer."}</p>
       <Link className={styles.primary} href={storageHref} prefetch={false} onClick={event => navigate(event, onOpenStorage ? () => onOpenStorage(advice.lot.flowerId) : undefined)}>{advice.kind === "overflow" ? "Ranger cette récolte" : "Retrouver cette récolte"}<ArrowRight size={18} aria-hidden="true" /></Link>
     </> : null}
     {hasPackets ? <div className={styles.packets}><p><strong>{number(packets.packets)} paquets · {number(packets.grams)} g</strong> déjà conditionnés. Leurs annonces, prix et états de vente sont dans « Mon stock en vente ».</p><Link className={advice ? styles.secondary : styles.primary} href="/arene/placard?view=market&section=dashboard" prefetch={false} onClick={event => navigate(event, onViewSales)}>Voir mon stock en vente<ArrowRight size={18} aria-hidden="true" /></Link></div> : null}
@@ -67,7 +69,7 @@ export function KqCommerceEmptyState({ data, onOpenStorage, onOpenCulture, onVie
     {error ? <p className={styles.error} role="alert">{error} <button type="button" onClick={() => void poll.current?.refresh()}><RefreshCw size={15} aria-hidden="true" />Réessayer</button></p> : null}
     {packets === null ? <p className={styles.error}>Le suivi des paquets est indisponible. Leur absence n’est pas confirmée.</p> : null}
     {!advice && !hasPackets ? <>
-      <p>{storage ? "Retrouve une culture en cours ou lance la suivante." : "Vérifie d’abord les récoltes en attente dans ton stockage."} Après la récolte : rangement, {api.isTutorial ? "6 heures d’affinage avec l’horloge fictive de l’essai" : "6 heures réelles d’affinage, même hors connexion"}, puis jury. Le verdict ouvre la vente.</p>
+      <p>{storage ? "Retrouve une culture en cours ou lance la suivante." : "Vérifie d’abord les récoltes en attente dans ton stockage."} Après la récolte : rangement, {api.isTutorial ? "6 heures d’affinage avec l’horloge fictive de l’essai" : "6 heures réelles d’affinage, même hors connexion"}, trim, puis jury. Le verdict ouvre la vente.</p>
       <div className={styles.actions}>{!storage ? <Link className={styles.primary} href={storageHref} prefetch={false} onClick={event => navigate(event, onOpenStorage)}>Vérifier mon stockage<ArrowRight size={18} aria-hidden="true" /></Link> : null}<Link className={storage ? styles.primary : styles.secondary} href="/arene/placard?view=game" prefetch={false} onClick={event => navigate(event, onOpenCulture)}>Voir mes cultures{storage ? <ArrowRight size={18} aria-hidden="true" /> : null}</Link>{storage ? <Link className={styles.secondary} href={storageHref} prefetch={false} onClick={event => navigate(event, onOpenStorage)}>Vérifier mon stockage</Link> : null}{packets === null ? <Link className={styles.secondary} href="/arene/placard?view=market&section=dashboard" prefetch={false} onClick={event => navigate(event, onViewSales)}>Voir mon stock en vente</Link> : null}</div>
     </> : null}
   </section>;

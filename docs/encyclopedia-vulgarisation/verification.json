@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-14",
+  "typescript": "PASS",
+  "lint": "PASS",
+  "tests": "PASS",
+  "integration": "PASS",
+  "commands": {
+    "typescript": "npx.cmd tsc --noEmit",
+    "lint": "npx.cmd eslint src/components/placard/KqCannabisArticle.tsx src/lib/kanab-quest-cannabis-citations.ts src/lib/kanab-quest-cannabis-citations.test.ts src/lib/kanab-quest-cannabis-reference.ts src/lib/kanab-quest-cannabis-reference-types.ts src/lib/kanab-quest-cannabis-reference.test.ts",
+    "tests": "npx.cmd vitest run src/lib/kanab-quest-cannabis-citations.test.ts src/lib/kanab-quest-cannabis-reference.test.ts src/lib/kanab-quest-hemp-quiz.test.ts src/lib/kanab-quest-terpene-cards.test.ts",
+    "integration": "node docs/encyclopedia-vulgarisation/prepare-integration.mjs && node scripts/integrate-encyclopedia-revision.mjs",
+    "browser": "node output/encyclopedia-vulgarisation/browser.mjs --all"
+  },
+  "testFiles": 4,
+  "testsPassed": 15,
+  "browser": {
+    "status": "PASS",
+    "report": "output/encyclopedia-vulgarisation/browser-report.json",
+    "articles": 15,
+    "widths": [320, 390, 1440],
+    "scenarios": 45,
+    "checks": ["No horizontal overflow", "Images loaded", "Diagram follows its explanation", "Citation targets exist", "No repeated citation number in a group", "No bibliography appended to the introduction", "Pilot details open with Enter", "Legacy CBD risks anchor focuses the surviving section heading"],
+    "screenshotsVisuallyInspected": ["pilot-diagram-320.png", "ref-terpenes-terpenoides-1440.png", "ref-reglementation-produits-320.png", "record-cannabinoid-cbd-1440.png", "ref-virus-viroides-320.png"]
+  },
+  "editorial": {
+    "individualArticlesRead": 189,
+    "definitionsRead": 160,
+    "quizExplanationsRead": 360,
+    "coordinatorReports": "docs/encyclopedia-vulgarisation/reviews/coordinator",
+    "method": "Individual reading after rewriting; content hashes checked before integration. Technical and browser checks do not measure comprehension by real readers."
+  },
+  "unchangedScientificSourceLimitations": 8,
+  "databaseMigrationRequired": false,
+  "deployed": false
+}

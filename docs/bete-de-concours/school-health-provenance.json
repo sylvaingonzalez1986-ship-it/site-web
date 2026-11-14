@@ -1,0 +1,109 @@
+{
+  "version": "2026-11-12.health1",
+  "verifiedAt": "2026-11-12",
+  "status": "Livré et validé localement",
+  "counts": {
+    "chapters": 8,
+    "lessons": 16,
+    "activities": 16,
+    "checkpoints": 8,
+    "questions": 32,
+    "privateOptionExplanations": 128,
+    "terms": 55,
+    "commonGlossaryEntries": 260,
+    "atlasEntries": 28,
+    "beneficialGroups": 4,
+    "photographicDocuments": 4,
+    "investigations": 6,
+    "sourceRecords": 45,
+    "distinctSourceUrls": 39
+  },
+  "scope": "Sixième parcours développé. Trois futurs parcours restent à préciser ; les quatre introductions historiques restantes ne les remplacent pas.",
+  "sourceAccess": {
+    "full-text": 21,
+    "excerpt": 10,
+    "official-page": 13,
+    "catalogue": 1
+  },
+  "files": {
+    "lessons": "src/lib/kanab-quest-school-health-lessons.ts",
+    "answers": "src/lib/kanab-quest-school-health-answers.ts",
+    "atlas": "src/lib/kanab-quest-school-health-atlas.ts",
+    "documents": "src/lib/kanab-quest-school-health-documents.ts",
+    "entry": "src/components/placard/KqSchoolHealth.tsx"
+  },
+  "requiredExercises": [
+    "health-observation-1",
+    "health-observation-2",
+    "health-causes-2",
+    "health-allies-1",
+    "health-ipm-1",
+    "health-ipm-2"
+  ],
+  "scientificBoundaries": [
+    "Symptôme, présence et preuve causale séparés ; jaunissement et flétrissement ne nomment pas une cause.",
+    "Atlas contextualisé : région, système, organe, méthodes et limites ; aucune fréquence française inférée d’une enquête américaine.",
+    "Oomycètes distincts des champignons ; virus distincts des viroïdes. Les détections mixtes et les groupes taxonomiques restent explicites.",
+    "Photographies originales CC BY avec légendes, crédits, dates et limites ; aucune illustration générée utilisée comme preuve sanitaire.",
+    "Protection intégrée proportionnée et auxiliaires contextualisés, sans promesse universelle. Aucun traitement artisanal, calendrier de production ou récupération de matière moisie.",
+    "E-Phy daté et catalogue primaire vérifié, portée toutes cultures incluant chanvre sous conditions propres au produit et à son étiquette. Aucun produit recommandé dans l’atlas.",
+    "Nutrition reliée au chapitre des causes abiotiques en attendant un futur parcours spécialisé ; humidité et racines reliées aux cours existants."
+  ],
+  "review": {
+    "method": "Recherches primaires, relecture indépendante des taxons et des légendes, vérification visuelle du catalogue des usages ; intégrité automatisée des références.",
+    "limits": "Validation documentaire et logicielle locale. Pas d’expertise de laboratoire, de diagnostic d’une plante réelle ou d’étude de l’apprentissage revendiquée."
+  },
+  "economy": "quizId biodiversity / reward school:biodiversity conservés. Plafond existant 1000 centimes, total école10000 ; sélection p1 couvre huit chapitres. Les lectures et exercices ne versent pas de monnaie.",
+  "migration": "20261112000600_kq_school_health_progress.sql testée en bases temporaires locales. Aucune des sept migrations de l’école appliquée au projet distant.",
+  "validation": {
+    "contentTests": 8,
+    "backendTests": 225,
+    "totalVitestTests": 233,
+    "sqlPglite": 61,
+    "postgresConcurrency": 15,
+    "fixture": 68,
+    "grantsMigrations": 385,
+    "eslint": "PASS ciblé : contenus, UI, backend et recette.",
+    "build": "PASS Next.js / TypeScript, code de sortie 0 enregistré ; présence des dernières sources du catalogue vérifiée dans les fichiers de production.",
+    "buildNotes": "Les avertissements de revalidation du cache public Supabase liés à l’accès réseau sont conservés dans le journal. Aucun contenu distant ne devient une preuve de validation locale.",
+    "browser": "PASS 320/1440 : six enquêtes, justifications, demandes d’observation et reprises, filtres atlas, photos/crédits/zoom, ordre au clavier, E-Phy, Buddy sans possession, retry, propriétaire et réponses privées.",
+    "preview": {
+      "results": [
+        {
+          "width": 320,
+          "sixCurricula": true,
+          "commonGlossary": 260,
+          "documentaryImagesLoaded": 4,
+          "privateAnswers403": true,
+          "reducedMotionLayout": true
+        },
+        {
+          "width": 1440,
+          "sixCurricula": true,
+          "commonGlossary": 260,
+          "documentaryImagesLoaded": 4,
+          "privateAnswers403": true,
+          "reducedMotionLayout": true
+        }
+      ],
+      "errors": []
+    },
+    "privacy": {
+      "checkedAt": "2026-11-12T19:46:52.080Z",
+      "chunks": 192,
+      "privateExplanations": 220,
+      "leaks": []
+    },
+    "transport": "Vrais composants avec API de démonstration en mémoire ; aucun compte distant ni paiement réel vérifié."
+  },
+  "reports": [
+    "output/placard-navigation/school-health-report.json",
+    "output/placard-navigation/school-health-preview-smoke.json",
+    "output/school/health-backend-validation.json",
+    "output/school/health-content-tests.json",
+    "output/school/health-build.log",
+    "output/school/health-client-answer-check.json",
+    "docs/bete-de-concours/school-health-corpus.json",
+    "docs/bete-de-concours/school-health-art-provenance.json"
+  ]
+}

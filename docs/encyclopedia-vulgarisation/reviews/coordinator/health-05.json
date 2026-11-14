@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "health-05",
+  "entries": {
+    "record-health-beet-curly-top-virus": {
+      "contentHash": "63bd1ca7b436818f299b2b27c1f7cf2e7c3b1db1e00e2979ea363da290acb4be",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-citrus-yellow-vein-associated-virus": {
+      "contentHash": "04a1ff5c80458d732e6c1c13ab18f7b5e17b07af006c0515301dda12c7063d23",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-hop-latent-viroid": {
+      "contentHash": "dfed314c15668cb8d5279a80ae0c21195916ad9db475817f27b40362c5e05bdd",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-ladybirds": {
+      "contentHash": "a021129aa142a9cbc1362d17c0587674f32e24a8399c400bd0f591d0a87f8c1b",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-lacewings": {
+      "contentHash": "c2931d86f50bf0f878e87303a0d09104157a8200777d50e122cc95527cc2eea1",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-aphid-parasitoids": {
+      "contentHash": "b2de03a2b51f2ec8cec23bbfdb1c8e6e7818f7ebefe2f70bd307e53897f21c26",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-predatory-mites": {
+      "contentHash": "4989fa0cdc19665ea842410d943f595a07908baaffbcd9c9afd30b49cb54b81b",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 4,
+    "hash": "9117426b30eb5440f52ef4410f4810459c2e3c3ef2a42914a8b763c49fb11c81"
+  }
+}

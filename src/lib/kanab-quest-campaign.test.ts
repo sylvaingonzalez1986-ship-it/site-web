@@ -20,6 +20,38 @@ function fixture() {
 }
 
 describe("shared decisions with different zone equipment", () => {
+  it("excludes a preassigned commercial zone without changing the paid plan or old campaigns", () => {
+    const { campaign, state } = fixture();
+    const plan = structuredClone(campaign.members[0].warehouse.sourceState);
+    const before = structuredClone(plan);
+    const participants = getKqCampaignParticipants(plan, 4, undefined, "b");
+    expect(participants.map(member => member.zoneId)).toEqual(["a"]);
+    expect(plan).toEqual(before);
+    expect(participants[0].warehouse.sourceState).toEqual(before);
+    expect(participants[0].warehouse.productionReservedZoneId).toBe("b");
+    const reservedCampaign = { ...campaign, members: participants.map(member => ({ ...member, runId: campaign.leaderRunId })) };
+    expect(isKqCampaign(reservedCampaign)).toBe(true);
+    const saved = { ...state, warehouse: reservedCampaign.members[0].warehouse, campaign: reservedCampaign };
+    expect(parseKqGameSave(encodeKqSave(saved))).toEqual(saved);
+    expect(getKqCampaignWarehouse(participants)?.activeAreaM2).toBe(1);
+    expect(isKqCampaign(campaign)).toBe(true);
+    expect(getKqCampaignParticipants(plan, 4, undefined, null)).toHaveLength(2);
+    const missingReservation = structuredClone(reservedCampaign);
+    delete missingReservation.members[0].warehouse.productionReservedZoneId;
+    expect(isKqCampaign(missingReservation)).toBe(false);
+  });
+
+  it("rejects inconsistent or nonexistent frozen reservations and participating reserved zones", () => {
+    const { campaign } = fixture();
+    const source = campaign.members[0].warehouse.sourceState;
+    expect(() => getKqCampaignParticipants(source, 4, undefined, "unknown")).toThrow("réservation");
+    for (const id of ["unknown", "a", "b"]) {
+      const changed = structuredClone(campaign);
+      changed.members[0].warehouse.productionReservedZoneId = id;
+      expect(isKqCampaign(changed)).toBe(false);
+    }
+  });
+
   it("retains each zone's quality advantage and harvest without stacking it on replay", () => {
     const { state, members } = fixture();
     let leader = state;

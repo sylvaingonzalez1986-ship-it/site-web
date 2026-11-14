@@ -1,0 +1,1659 @@
+{
+  "verifiedAt": "2026-11-14",
+  "scope": "Modern timeline, 1839?2020; 18 events; historical law changes, no current legal advice.",
+  "dataFile": "src/lib/kanab-quest-history-timeline-modern.ts",
+  "method": [
+    "Opened primary texts, original-paper records, institutional catalogues and official legal documents online.",
+    "Source access describes actual reading. Indexed abstracts or metadata after unsuccessful direct opening are excerpt, not full-text.",
+    "Claim targets below point to exact narrative fields in the data file; they avoid duplicating the article prose in this log."
+  ],
+  "comparedRegistries": [
+    "src/lib/kanab-quest-school-history-modern.ts",
+    "src/lib/kanab-quest-hemp-quiz-expansion-sources.ts"
+  ],
+  "newReferenceCountComparedWithRegistries": 15,
+  "wordLimitAudit": {
+    "limitPerSourceUrl": 200,
+    "scope": "Cumulative event narrative: titles, summaries, paragraphs, anecdotes, cautions and date notes. Date/place labels and bibliographic metadata excluded. Every narrative segment assigned once to its principal supporting source; general editorial interpretation is included conservatively.",
+    "counting": "Whitespace-delimited words; paragraph sentences split after ., ! or ? followed by whitespace. Distinct references are grouped by exact URL.",
+    "maximumSourceWords": 200,
+    "completeNarrativeCoverage": true
+  },
+  "sources": [
+    {
+      "id": "ht-src-modern-osh1839",
+      "url": "https://wellcomecollection.org/works/yuwk7u76",
+      "access": "catalogue",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Publication à Calcutta, Bishop’s College Press ; 46 pages et une planche dépliante.",
+      "caveat": "Notice ouverte ; elle établit l’édition de 1839, pas les résultats médicaux.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 28,
+      "claimTargets": [
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "dateNote",
+          "words": 12
+        },
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "paragraphs.0.sentence.0",
+          "words": 16
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-osh1843-text",
+      "url": "https://www.gutenberg.org/cache/epub/67959/pg67959-images.html",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Pages 3–4 : programme et informateurs nommés ; p. 8–9 : Ameer ; p. 36 : fourniture à Squire.",
+      "caveat": "Passages lus ; le bandeau Gutenberg indique 1838, mais le texte porte explicitement une date de réimpression de 1843. Opinions médicales historiques, sans validation clinique actuelle.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 187,
+      "claimTargets": [
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "summary",
+          "words": 15
+        },
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "anecdote.title",
+          "words": 4
+        },
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "anecdote.text",
+          "words": 47
+        },
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "caution",
+          "words": 13
+        },
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "paragraphs.0.sentence.1",
+          "words": 20
+        },
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "paragraphs.0.sentence.2",
+          "words": 23
+        },
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "paragraphs.1.sentence.0",
+          "words": 22
+        },
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "paragraphs.1.sentence.1",
+          "words": 21
+        },
+        {
+          "eventId": "ht-oshaughnessy",
+          "field": "paragraphs.1.sentence.2",
+          "words": 15
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-dumas-text",
+      "url": "https://fr.wikisource.org/wiki/Le_Comte_de_Monte-Cristo/Chapitre_31",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Tome II, p. 129–163 : Franz, la coupe de vermeil, la pâte verte et le récit de Simbad.",
+      "caveat": "Scène de fiction ; ni preuve de consommation personnelle de Dumas, ni histoire fiable des Nizârites.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 177,
+      "claimTargets": [
+        {
+          "eventId": "ht-dumas",
+          "field": "title",
+          "words": 5
+        },
+        {
+          "eventId": "ht-dumas",
+          "field": "summary",
+          "words": 13
+        },
+        {
+          "eventId": "ht-dumas",
+          "field": "anecdote.title",
+          "words": 5
+        },
+        {
+          "eventId": "ht-dumas",
+          "field": "anecdote.text",
+          "words": 49
+        },
+        {
+          "eventId": "ht-dumas",
+          "field": "caution",
+          "words": 12
+        },
+        {
+          "eventId": "ht-dumas",
+          "field": "paragraphs.0.sentence.1",
+          "words": 16
+        },
+        {
+          "eventId": "ht-dumas",
+          "field": "paragraphs.0.sentence.2",
+          "words": 16
+        },
+        {
+          "eventId": "ht-dumas",
+          "field": "paragraphs.1.sentence.0",
+          "words": 9
+        },
+        {
+          "eventId": "ht-dumas",
+          "field": "paragraphs.1.sentence.1",
+          "words": 30
+        },
+        {
+          "eventId": "ht-dumas",
+          "field": "paragraphs.1.sentence.2",
+          "words": 22
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-dumas-dates",
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb119526826",
+      "access": "catalogue",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Publication en feuilleton du 28 août 1844 au 15 janvier 1846, avec interruptions ; collaboration d’Auguste Maquet.",
+      "caveat": "Date l’ensemble de la publication, pas le jour de parution du chapitre étudié.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 38,
+      "claimTargets": [
+        {
+          "eventId": "ht-dumas",
+          "field": "dateNote",
+          "words": 13
+        },
+        {
+          "eventId": "ht-dumas",
+          "field": "paragraphs.0.sentence.0",
+          "words": 25
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-moreau-page",
+      "url": "https://preview.wellcomecollection.org/works/ghxnqhhk/items?canvas=112&shouldScrollToCanvas=true",
+      "access": "excerpt",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Page imprimée 98, vue 112 : excitation, associations d’idées et comparaison avec un rêve persistant.",
+      "caveat": "Page 98 et métadonnées consultées ; ouvrage non lu intégralement. Le mot « moléculaire » y relève d’une image théorique.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 126,
+      "claimTargets": [
+        {
+          "eventId": "ht-moreau",
+          "field": "anecdote.title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-moreau",
+          "field": "anecdote.text",
+          "words": 48
+        },
+        {
+          "eventId": "ht-moreau",
+          "field": "caution",
+          "words": 12
+        },
+        {
+          "eventId": "ht-moreau",
+          "field": "paragraphs.1.sentence.0",
+          "words": 21
+        },
+        {
+          "eventId": "ht-moreau",
+          "field": "paragraphs.1.sentence.1",
+          "words": 9
+        },
+        {
+          "eventId": "ht-moreau",
+          "field": "paragraphs.1.sentence.2",
+          "words": 29
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-moreau-iowa",
+      "url": "https://heirs.lib.uiowa.edu/record.php?id=1667",
+      "access": "catalogue",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Notice de l’exemplaire de 1845 : introspection, rêves et usage de soi comme sujet expérimental.",
+      "caveat": "Présentation historique de l’institution conservatrice ; ne prouve pas les hypothèses psychiatriques du livre.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 82,
+      "claimTargets": [
+        {
+          "eventId": "ht-moreau",
+          "field": "title",
+          "words": 5
+        },
+        {
+          "eventId": "ht-moreau",
+          "field": "summary",
+          "words": 16
+        },
+        {
+          "eventId": "ht-moreau",
+          "field": "paragraphs.0.sentence.0",
+          "words": 9
+        },
+        {
+          "eventId": "ht-moreau",
+          "field": "paragraphs.0.sentence.1",
+          "words": 20
+        },
+        {
+          "eventId": "ht-moreau",
+          "field": "paragraphs.0.sentence.2",
+          "words": 14
+        },
+        {
+          "eventId": "ht-moreau",
+          "field": "paragraphs.0.sentence.3",
+          "words": 18
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-liniere",
+      "url": "https://patrimoine.bzh/gertrude-diffusion/dossier/IA29131775",
+      "access": "official-page",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Historique, vestiges et statuts annexés, article premier : lin, chanvre et jute ; ouvriers écossais ; fermeture en 1891.",
+      "caveat": "Dossier ouvert ; sa mention « début du XXe siècle » accolée à 1820 est incohérente et n’est pas reprise. Les fibres des commandes ne sont pas toutes précisées.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 199,
+      "claimTargets": [
+        {
+          "eventId": "ht-landerneau",
+          "field": "title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "summary",
+          "words": 11
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "anecdote.title",
+          "words": 5
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "anecdote.text",
+          "words": 48
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "caution",
+          "words": 8
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "paragraphs.0.sentence.0",
+          "words": 24
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "paragraphs.0.sentence.1",
+          "words": 17
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "paragraphs.0.sentence.2",
+          "words": 16
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "paragraphs.1.sentence.0",
+          "words": 14
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "paragraphs.1.sentence.1",
+          "words": 11
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "paragraphs.1.sentence.2",
+          "words": 21
+        },
+        {
+          "eventId": "ht-landerneau",
+          "field": "paragraphs.1.sentence.3",
+          "words": 17
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-gautier",
+      "url": "https://fr.wikisource.org/wiki/Le_Club_des_Hachichins",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Début à l’hôtel Pimodan ; sections IX–X : trajet interminable et pendule ; personnage Daucus-Carota.",
+      "caveat": "Récit fantastique : sa première personne ne transforme pas chaque vision en compte rendu clinique ou en liste de membres.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 200,
+      "claimTargets": [
+        {
+          "eventId": "ht-gautier",
+          "field": "title",
+          "words": 6
+        },
+        {
+          "eventId": "ht-gautier",
+          "field": "summary",
+          "words": 12
+        },
+        {
+          "eventId": "ht-gautier",
+          "field": "anecdote.title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-gautier",
+          "field": "anecdote.text",
+          "words": 49
+        },
+        {
+          "eventId": "ht-gautier",
+          "field": "caution",
+          "words": 12
+        },
+        {
+          "eventId": "ht-gautier",
+          "field": "paragraphs.0.sentence.0",
+          "words": 13
+        },
+        {
+          "eventId": "ht-gautier",
+          "field": "paragraphs.0.sentence.1",
+          "words": 22
+        },
+        {
+          "eventId": "ht-gautier",
+          "field": "paragraphs.0.sentence.2",
+          "words": 18
+        },
+        {
+          "eventId": "ht-gautier",
+          "field": "paragraphs.1.sentence.0",
+          "words": 12
+        },
+        {
+          "eventId": "ht-gautier",
+          "field": "paragraphs.1.sentence.1",
+          "words": 20
+        },
+        {
+          "eventId": "ht-gautier",
+          "field": "paragraphs.1.sentence.2",
+          "words": 29
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-baudelaire-date",
+      "url": "https://catalogue.bnf.fr/ark:/12148/cb36575102p",
+      "access": "catalogue",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Publication : Paris, Poulet-Malassis et de Broise, 1860.",
+      "caveat": "Utilisée pour dater le volume ; le texte est lu dans une édition ultérieure.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 14,
+      "claimTargets": [
+        {
+          "eventId": "ht-baudelaire",
+          "field": "paragraphs.0.sentence.0",
+          "words": 14
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-baudelaire-morale",
+      "url": "https://fr.wikisource.org/wiki/Les_Paradis_artificiels/Le_Po%C3%A8me_du_haschisch/V",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Lendemain, volonté, travail et récit d’une conversation avec Balzac.",
+      "caveat": "Témoignage et jugement de l’auteur ; ne permet pas de mesurer une consommation ni de valider ses affirmations médicales.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 193,
+      "claimTargets": [
+        {
+          "eventId": "ht-baudelaire",
+          "field": "title",
+          "words": 5
+        },
+        {
+          "eventId": "ht-baudelaire",
+          "field": "summary",
+          "words": 14
+        },
+        {
+          "eventId": "ht-baudelaire",
+          "field": "anecdote.title",
+          "words": 5
+        },
+        {
+          "eventId": "ht-baudelaire",
+          "field": "anecdote.text",
+          "words": 51
+        },
+        {
+          "eventId": "ht-baudelaire",
+          "field": "caution",
+          "words": 13
+        },
+        {
+          "eventId": "ht-baudelaire",
+          "field": "paragraphs.0.sentence.1",
+          "words": 11
+        },
+        {
+          "eventId": "ht-baudelaire",
+          "field": "paragraphs.0.sentence.2",
+          "words": 34
+        },
+        {
+          "eventId": "ht-baudelaire",
+          "field": "paragraphs.1.sentence.0",
+          "words": 12
+        },
+        {
+          "eventId": "ht-baudelaire",
+          "field": "paragraphs.1.sentence.1",
+          "words": 18
+        },
+        {
+          "eventId": "ht-baudelaire",
+          "field": "paragraphs.1.sentence.2",
+          "words": 11
+        },
+        {
+          "eventId": "ht-baudelaire",
+          "field": "paragraphs.1.sentence.3",
+          "words": 19
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-commission-remit",
+      "url": "https://deriv.nls.uk/dcn9/7496/74964631.9.htm",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Paragraphes 1–2 : origine de l’enquête, extension géographique, questionnaire et restrictions politiques dans les États princiers.",
+      "caveat": "Page lue ; source administrative coloniale, dont le périmètre exclut certaines séances territoriales.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 149,
+      "claimTargets": [
+        {
+          "eventId": "ht-indian-commission",
+          "field": "title",
+          "words": 8
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "summary",
+          "words": 13
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "anecdote.title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "anecdote.text",
+          "words": 51
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "dateNote",
+          "words": 11
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "paragraphs.0.sentence.0",
+          "words": 19
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "paragraphs.0.sentence.1",
+          "words": 19
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "paragraphs.0.sentence.2",
+          "words": 6
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "paragraphs.0.sentence.3",
+          "words": 15
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-commission-policy",
+      "url": "https://deriv.nls.uk/dcn9/7443/74435034.9.htm",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Fin du §585 et §586–587 : rejet de la prohibition totale, risques, contrebande, substitutions et fiscalité.",
+      "caveat": "Conclusion de politique publique historique ; ne pas transformer ses catégories d’usage en seuils sanitaires contemporains.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 77,
+      "claimTargets": [
+        {
+          "eventId": "ht-indian-commission",
+          "field": "caution",
+          "words": 15
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "paragraphs.1.sentence.0",
+          "words": 11
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "paragraphs.1.sentence.1",
+          "words": 18
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "paragraphs.1.sentence.2",
+          "words": 10
+        },
+        {
+          "eventId": "ht-indian-commission",
+          "field": "paragraphs.1.sentence.3",
+          "words": 23
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-geneva1925",
+      "url": "https://treaties.un.org/doc/Publication/UNTS/LON/Volume%2081/v81.pdf",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Traité no 1845 : définition p. 329 ; chapitre IV, article 11, p. 333, contrôles du commerce du chanvre indien et de sa résine.",
+      "caveat": "Articles lus dans le volume original ; le dispositif international ne décrit pas toutes les interdictions nationales.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 198,
+      "claimTargets": [
+        {
+          "eventId": "ht-geneva1925",
+          "field": "title",
+          "words": 8
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "summary",
+          "words": 10
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "anecdote.title",
+          "words": 6
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "anecdote.text",
+          "words": 51
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "caution",
+          "words": 5
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "paragraphs.0.sentence.0",
+          "words": 20
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "paragraphs.0.sentence.1",
+          "words": 21
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "paragraphs.0.sentence.2",
+          "words": 20
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "paragraphs.1.sentence.0",
+          "words": 13
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "paragraphs.1.sentence.1",
+          "words": 12
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "paragraphs.1.sentence.2",
+          "words": 15
+        },
+        {
+          "eventId": "ht-geneva1925",
+          "field": "paragraphs.1.sentence.3",
+          "words": 17
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-tax1937",
+      "url": "https://www.govinfo.gov/content/pkg/STATUTE-50/pdf/STATUTE-50-Pg551-2.pdf",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Sections 1(b), 2, 6, 7 et 12 : définitions, enregistrement, commandes, taux de transfert et sanctions.",
+      "caveat": "Droit historique ; le texte ne suffit pas à attribuer une motivation économique unique à la loi.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 194,
+      "claimTargets": [
+        {
+          "eventId": "ht-tax1937",
+          "field": "title",
+          "words": 8
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "summary",
+          "words": 9
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "anecdote.title",
+          "words": 6
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "anecdote.text",
+          "words": 46
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "caution",
+          "words": 6
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "paragraphs.0.sentence.0",
+          "words": 14
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "paragraphs.0.sentence.1",
+          "words": 17
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "paragraphs.0.sentence.2",
+          "words": 30
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "paragraphs.1.sentence.0",
+          "words": 15
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "paragraphs.1.sentence.1",
+          "words": 8
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "paragraphs.1.sentence.2",
+          "words": 22
+        },
+        {
+          "eventId": "ht-tax1937",
+          "field": "paragraphs.1.sentence.3",
+          "words": 13
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-adams1940",
+      "url": "https://pubs.acs.org/doi/10.1021/ja01858a058",
+      "access": "excerpt",
+      "opened": "Direct opening attempted; indexed excerpt read",
+      "passage": "Titre, auteurs et date de l’édition originale dans l’indexation de la notice éditeur.",
+      "caveat": "Ouverture directe refusée (403) ; métadonnées indexées lues, sans accès au texte. La mise en ligne de 2002 n’est pas la date du travail.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 133,
+      "claimTargets": [
+        {
+          "eventId": "ht-cbd",
+          "field": "title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "summary",
+          "words": 13
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "anecdote.title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "anecdote.text",
+          "words": 50
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "paragraphs.0.sentence.0",
+          "words": 8
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "paragraphs.0.sentence.1",
+          "words": 1
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "paragraphs.0.sentence.2",
+          "words": 14
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "paragraphs.0.sentence.3",
+          "words": 12
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "paragraphs.0.sentence.4",
+          "words": 21
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-cbd1963",
+      "url": "https://www.alchimiaweb.com/blogfr/wp-content/uploads/2016/06/cbd-Mechoulam-1963.pdf",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Première page : structure et stéréochimie du cannabidiol, travaux antérieurs d’Adams ; conclusion structurale.",
+      "caveat": "Copie hébergée par un site commercial ; contenu identifié par titre, auteurs et pagination, corroborés par la notice NLM. Pas de conseil de préparation.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 72,
+      "claimTargets": [
+        {
+          "eventId": "ht-cbd",
+          "field": "caution",
+          "words": 12
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "paragraphs.1.sentence.0",
+          "words": 17
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "paragraphs.1.sentence.1",
+          "words": 15
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "paragraphs.1.sentence.2",
+          "words": 10
+        },
+        {
+          "eventId": "ht-cbd",
+          "field": "paragraphs.1.sentence.3",
+          "words": 18
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-cbd1963-record",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/5879214/",
+      "access": "catalogue",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Notice bibliographique, auteurs, volume, pagination et DOI 10.1016/0040-4020(63)85022-X.",
+      "caveat": "Notice ouverte ; aucun résumé disponible sur cette page.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 0,
+      "claimTargets": []
+    },
+    {
+      "id": "ht-src-modern-victory",
+      "url": "https://archivesspace.nal.usda.gov/repositories/4/archival_objects/16966",
+      "access": "catalogue",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Notice du film : 16 mm, noir et blanc, sonore, 14 min 13 s ; fibres et toiles à usage militaire.",
+      "caveat": "Notice ouverte ; film non visionné intégralement. Aucun dialogue, plan ou minutage de scène n’est présenté comme vérifié.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 200,
+      "claimTargets": [
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "title",
+          "words": 6
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "summary",
+          "words": 9
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "anecdote.title",
+          "words": 6
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "anecdote.text",
+          "words": 48
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "caution",
+          "words": 7
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "dateNote",
+          "words": 2
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "paragraphs.0.sentence.0",
+          "words": 14
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "paragraphs.0.sentence.1",
+          "words": 31
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "paragraphs.0.sentence.2",
+          "words": 10
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "paragraphs.1.sentence.0",
+          "words": 17
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "paragraphs.1.sentence.1",
+          "words": 14
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "paragraphs.1.sentence.2",
+          "words": 20
+        },
+        {
+          "eventId": "ht-hemp-victory",
+          "field": "paragraphs.1.sentence.3",
+          "words": 16
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-single1961",
+      "url": "https://treaties.un.org/doc/Publication/UNTS/Volume%20520/volume-520-I-7515-English.pdf",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Articles 4(c) et 28 ; tableaux I et IV de l’édition originale.",
+      "caveat": "Version historique ; modifications ultérieures et règles nationales doivent être distinguées.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 200,
+      "claimTargets": [
+        {
+          "eventId": "ht-single1961",
+          "field": "title",
+          "words": 5
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "summary",
+          "words": 7
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "anecdote.title",
+          "words": 5
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "anecdote.text",
+          "words": 46
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "caution",
+          "words": 8
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "dateNote",
+          "words": 7
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "paragraphs.0.sentence.0",
+          "words": 13
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "paragraphs.0.sentence.1",
+          "words": 23
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "paragraphs.0.sentence.2",
+          "words": 22
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "paragraphs.1.sentence.0",
+          "words": 18
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "paragraphs.1.sentence.1",
+          "words": 23
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "paragraphs.1.sentence.2",
+          "words": 9
+        },
+        {
+          "eventId": "ht-single1961",
+          "field": "paragraphs.1.sentence.3",
+          "words": 14
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-thc1964",
+      "url": "https://pubs.acs.org/doi/10.1021/ja01062a046",
+      "access": "excerpt",
+      "opened": "Direct opening attempted; indexed excerpt read",
+      "passage": "Titre, auteurs, pagination et année de l’article dans la notice éditeur indexée.",
+      "caveat": "Ouverture directe refusée (403) ; texte intégral non lu. Pas de récit de laboratoire ni de détail de synthèse déduit de la notice.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 26,
+      "claimTargets": [
+        {
+          "eventId": "ht-thc1964",
+          "field": "title",
+          "words": 6
+        },
+        {
+          "eventId": "ht-thc1964",
+          "field": "paragraphs.0.sentence.0",
+          "words": 20
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-mechoulam-memoir",
+      "url": "https://www.annualreviews.org/doi/pdf/10.1146/annurev-pharmtox-051921-083709",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Pages 3–4 : approvisionnement policier de 1963, travaux avec Gaoni, isolement du THC en 1964 et changement de numérotation Δ1/Δ9.",
+      "caveat": "PDF ouvert ; souvenirs rétrospectifs attribués à l’auteur, pas procès-verbal policier. Ses autres prises de position médicales ne sont pas reprises.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 191,
+      "claimTargets": [
+        {
+          "eventId": "ht-thc1964",
+          "field": "summary",
+          "words": 14
+        },
+        {
+          "eventId": "ht-thc1964",
+          "field": "anecdote.title",
+          "words": 8
+        },
+        {
+          "eventId": "ht-thc1964",
+          "field": "anecdote.text",
+          "words": 53
+        },
+        {
+          "eventId": "ht-thc1964",
+          "field": "caution",
+          "words": 9
+        },
+        {
+          "eventId": "ht-thc1964",
+          "field": "paragraphs.0.sentence.1",
+          "words": 9
+        },
+        {
+          "eventId": "ht-thc1964",
+          "field": "paragraphs.0.sentence.2",
+          "words": 33
+        },
+        {
+          "eventId": "ht-thc1964",
+          "field": "paragraphs.1.sentence.0",
+          "words": 20
+        },
+        {
+          "eventId": "ht-thc1964",
+          "field": "paragraphs.1.sentence.1",
+          "words": 10
+        },
+        {
+          "eventId": "ht-thc1964",
+          "field": "paragraphs.1.sentence.2",
+          "words": 15
+        },
+        {
+          "eventId": "ht-thc1964",
+          "field": "paragraphs.1.sentence.3",
+          "words": 20
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-receptor1988",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/2848184/",
+      "access": "excerpt",
+      "opened": "Direct opening attempted; indexed excerpt read",
+      "passage": "Résumé original indexé : liaison saturable, réversible et stéréosélective d’une sonde dans des membranes de cerveau de rat.",
+      "caveat": "Ouverture directe ne renvoyant qu’un pied de page ; résumé lu dans l’indexation. Étude animale, pas essai thérapeutique.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 55,
+      "claimTargets": [
+        {
+          "eventId": "ht-receptors",
+          "field": "paragraphs.0.sentence.0",
+          "words": 20
+        },
+        {
+          "eventId": "ht-receptors",
+          "field": "paragraphs.0.sentence.1",
+          "words": 15
+        },
+        {
+          "eventId": "ht-receptors",
+          "field": "paragraphs.0.sentence.2",
+          "words": 20
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-cb1",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/2165569/",
+      "access": "excerpt",
+      "opened": "Direct opening attempted; indexed excerpt read",
+      "passage": "Résumé original indexé : clonage, expression d’un ADN complémentaire et récepteur couplé aux protéines G.",
+      "caveat": "Ouverture directe limitée au pied de page ; résumé lu dans l’indexation, sans texte intégral.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 39,
+      "claimTargets": [
+        {
+          "eventId": "ht-receptors",
+          "field": "title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-receptors",
+          "field": "summary",
+          "words": 15
+        },
+        {
+          "eventId": "ht-receptors",
+          "field": "paragraphs.1.sentence.0",
+          "words": 17
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-cb2",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7689702/",
+      "access": "excerpt",
+      "opened": "Direct opening attempted; indexed excerpt read",
+      "passage": "Résumé original indexé : clonage d’un récepteur et expression dans les macrophages de la zone marginale de la rate.",
+      "caveat": "Ouverture directe limitée au pied de page ; le profil tissulaire décrit en 1993 ne résume pas toute la distribution connue depuis.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 120,
+      "claimTargets": [
+        {
+          "eventId": "ht-receptors",
+          "field": "anecdote.title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-receptors",
+          "field": "anecdote.text",
+          "words": 54
+        },
+        {
+          "eventId": "ht-receptors",
+          "field": "caution",
+          "words": 11
+        },
+        {
+          "eventId": "ht-receptors",
+          "field": "paragraphs.1.sentence.1",
+          "words": 23
+        },
+        {
+          "eventId": "ht-receptors",
+          "field": "paragraphs.1.sentence.2",
+          "words": 8
+        },
+        {
+          "eventId": "ht-receptors",
+          "field": "paragraphs.1.sentence.3",
+          "words": 17
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-anandamide",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/1470919/",
+      "access": "abstract",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Résumé : anandamide isolée de cerveau porcin, structure déterminée et tests de liaison.",
+      "caveat": "Page et résumé ouverts ; texte complet non consulté. Résultats biochimiques et animaux, sans bénéfice clinique démontré ici.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 77,
+      "claimTargets": [
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "title",
+          "words": 5
+        },
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "summary",
+          "words": 16
+        },
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "paragraphs.0.sentence.0",
+          "words": 26
+        },
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "paragraphs.0.sentence.1",
+          "words": 16
+        },
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "paragraphs.0.sentence.2",
+          "words": 14
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-2ag",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/7575630/",
+      "access": "abstract",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Résumé : compétition de liaison du 2-AG et variation de l’affinité apparente selon les conditions expérimentales.",
+      "caveat": "Résumé ouvert ; cette étude constitue un jalon de 1995, pas une attribution exclusive de la découverte du 2-AG.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 131,
+      "claimTargets": [
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "anecdote.title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "anecdote.text",
+          "words": 49
+        },
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "caution",
+          "words": 12
+        },
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "paragraphs.1.sentence.0",
+          "words": 17
+        },
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "paragraphs.1.sentence.1",
+          "words": 13
+        },
+        {
+          "eventId": "ht-endocannabinoids",
+          "field": "paragraphs.1.sentence.2",
+          "words": 33
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-uruguay",
+      "url": "https://www.impo.com.uy/bases/leyes/19172-2013",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Articles 1–4, 11 et 17 : objectifs, contrôle public, publicité et création de l’IRCCA.",
+      "caveat": "Page consolidée ouverte ; seuls les repères de 2013 et les dispositions citées sont employés, sans prétendre décrire tout le droit actuel.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 199,
+      "claimTargets": [
+        {
+          "eventId": "ht-uruguay",
+          "field": "title",
+          "words": 5
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "summary",
+          "words": 9
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "anecdote.title",
+          "words": 4
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "anecdote.text",
+          "words": 48
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "caution",
+          "words": 5
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "dateNote",
+          "words": 5
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "paragraphs.0.sentence.0",
+          "words": 10
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "paragraphs.0.sentence.1",
+          "words": 18
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "paragraphs.0.sentence.2",
+          "words": 22
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "paragraphs.0.sentence.3",
+          "words": 12
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "paragraphs.1.sentence.0",
+          "words": 12
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "paragraphs.1.sentence.1",
+          "words": 15
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "paragraphs.1.sentence.2",
+          "words": 20
+        },
+        {
+          "eventId": "ht-uruguay",
+          "field": "paragraphs.1.sentence.3",
+          "words": 14
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-canada",
+      "url": "https://www.canada.ca/en/health-canada/news/2018/10/backgrounder-the-cannabis-act-the-facts.html",
+      "access": "official-page",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Entrée en vigueur, partage des compétences et liste des produits initialement commercialisables.",
+      "caveat": "Photographie de 2018 ; ses conditions et annonces ne sont pas des conseils juridiques pour aujourd’hui.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 163,
+      "claimTargets": [
+        {
+          "eventId": "ht-canada",
+          "field": "title",
+          "words": 8
+        },
+        {
+          "eventId": "ht-canada",
+          "field": "summary",
+          "words": 17
+        },
+        {
+          "eventId": "ht-canada",
+          "field": "anecdote.title",
+          "words": 7
+        },
+        {
+          "eventId": "ht-canada",
+          "field": "anecdote.text",
+          "words": 49
+        },
+        {
+          "eventId": "ht-canada",
+          "field": "caution",
+          "words": 14
+        },
+        {
+          "eventId": "ht-canada",
+          "field": "paragraphs.1.sentence.0",
+          "words": 18
+        },
+        {
+          "eventId": "ht-canada",
+          "field": "paragraphs.1.sentence.1",
+          "words": 18
+        },
+        {
+          "eventId": "ht-canada",
+          "field": "paragraphs.1.sentence.2",
+          "words": 13
+        },
+        {
+          "eventId": "ht-canada",
+          "field": "paragraphs.1.sentence.3",
+          "words": 19
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-canada-order",
+      "url": "https://gazette.gc.ca/rp-pr/p2/2018/2018-07-11/html/si-tr52-eng.html",
+      "access": "full-text",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Décret fixant la date et note explicative sur la sanction royale du 21 juin 2018.",
+      "caveat": "Le décret comporte des exceptions pour certains articles : la date ne signifie pas que chaque disposition entre en vigueur simultanément.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 54,
+      "claimTargets": [
+        {
+          "eventId": "ht-canada",
+          "field": "paragraphs.0.sentence.0",
+          "words": 14
+        },
+        {
+          "eventId": "ht-canada",
+          "field": "paragraphs.0.sentence.1",
+          "words": 22
+        },
+        {
+          "eventId": "ht-canada",
+          "field": "paragraphs.0.sentence.2",
+          "words": 18
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-who2020",
+      "url": "https://www.who.int/news/item/04-12-2020-un-commission-on-narcotic-drugs-reclassifies-cannabis-to-recognize-its-therapeutic-uses",
+      "access": "official-page",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Recommandations, vote, portée pour la recherche et maintien du contrôle international.",
+      "caveat": "La décision n’est ni une autorisation de chaque produit médical ni une légalisation mondiale de l’usage non médical.",
+      "newComparedWithRegistries": false,
+      "eventNarrativeWords": 161,
+      "claimTargets": [
+        {
+          "eventId": "ht-un2020",
+          "field": "title",
+          "words": 6
+        },
+        {
+          "eventId": "ht-un2020",
+          "field": "summary",
+          "words": 21
+        },
+        {
+          "eventId": "ht-un2020",
+          "field": "caution",
+          "words": 15
+        },
+        {
+          "eventId": "ht-un2020",
+          "field": "paragraphs.0.sentence.0",
+          "words": 20
+        },
+        {
+          "eventId": "ht-un2020",
+          "field": "paragraphs.0.sentence.1",
+          "words": 18
+        },
+        {
+          "eventId": "ht-un2020",
+          "field": "paragraphs.0.sentence.2",
+          "words": 20
+        },
+        {
+          "eventId": "ht-un2020",
+          "field": "paragraphs.1.sentence.0",
+          "words": 23
+        },
+        {
+          "eventId": "ht-un2020",
+          "field": "paragraphs.1.sentence.1",
+          "words": 4
+        },
+        {
+          "eventId": "ht-un2020",
+          "field": "paragraphs.1.sentence.2",
+          "words": 23
+        },
+        {
+          "eventId": "ht-un2020",
+          "field": "paragraphs.1.sentence.3",
+          "words": 11
+        }
+      ]
+    },
+    {
+      "id": "ht-src-modern-vote2020",
+      "url": "https://www.mha.gov.sg/media-room/newsroom/the-singapore-government-s-position-on-the-recommendations-of-the-world-health-organisation-expert-committee-on-drug-dependence-on-cannabis-and-cannabis-related-substances-voted-on-at-the-reconvened-63rd-session-of-the-commission-on-narcotic-drugs/",
+      "access": "official-page",
+      "opened": "Page/PDF opened and cited passage read",
+      "passage": "Paragraphes 1–3 : 27 voix pour, 25 contre, une abstention ; retrait du tableau IV et maintien au tableau I.",
+      "caveat": "Position gouvernementale opposée à la réforme ; utilisée pour le résultat et la portée du vote, pas comme expertise médicale indépendante.",
+      "newComparedWithRegistries": true,
+      "eventNarrativeWords": 55,
+      "claimTargets": [
+        {
+          "eventId": "ht-un2020",
+          "field": "anecdote.title",
+          "words": 6
+        },
+        {
+          "eventId": "ht-un2020",
+          "field": "anecdote.text",
+          "words": 49
+        }
+      ]
+    }
+  ],
+  "rejectedOrLimitedAccess": [
+    {
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC2490410/",
+      "result": "Browser challenge; not treated as full text. Replaced by Gutenberg transcription of original O?Shaughnessy reprint."
+    },
+    {
+      "url": "https://www.bmj.com/content/s1-5/123/363",
+      "result": "403; original reprint read through Gutenberg."
+    },
+    {
+      "url": "https://archive.org/download/b2840709x/b2840709x_djvu.txt",
+      "result": "Tool could not open; not used as read evidence."
+    },
+    {
+      "url": "https://townhall.virginia.gov/L/GetFile.cfm?File=Meeting%5C30%5C29226%5CMinutes_DHP_29226_v3.pdf",
+      "result": "Opening timed out. Indexed excerpt not retained; replaced by Mechoulam autobiographical original PDF."
+    },
+    {
+      "url": "https://digitallibrary.un.org/record/3905712/files/E_2020_28_Add.1--E_CN.7_2020_15_Add.1-EN.pdf",
+      "result": "403; official WHO and Singapore contemporaneous pages opened instead."
+    },
+    {
+      "url": "https://www.nature.com/articles/346561a0",
+      "result": "Authentication redirect; original abstract read in PubMed index and explicitly marked excerpt."
+    },
+    {
+      "url": "https://www.nature.com/articles/365061a0",
+      "result": "Authentication redirect; original abstract read in PubMed index and explicitly marked excerpt."
+    }
+  ],
+  "editorialExclusions": [
+    "No membership list of the Paris club inferred from famous names.",
+    "Dumas scene is fictional; no inference about his personal consumption.",
+    "No modern clinical efficacy inferred from nineteenth-century observations.",
+    "No unseen film dialogue, police record or laboratory scene invented.",
+    "Mechoulam police supply anecdote explicitly attributed to his retrospective account.",
+    "No claim that the 2020 vote legalized cannabis worldwide."
+  ],
+  "validation": {
+    "eventCount": 18,
+    "sourceCount": 31,
+    "paragraphsPerEvent": [
+      {
+        "eventId": "ht-oshaughnessy",
+        "count": 2,
+        "words": 117,
+        "anecdoteWords": 47
+      },
+      {
+        "eventId": "ht-dumas",
+        "count": 2,
+        "words": 118,
+        "anecdoteWords": 49
+      },
+      {
+        "eventId": "ht-moreau",
+        "count": 2,
+        "words": 120,
+        "anecdoteWords": 48
+      },
+      {
+        "eventId": "ht-landerneau",
+        "count": 2,
+        "words": 120,
+        "anecdoteWords": 48
+      },
+      {
+        "eventId": "ht-gautier",
+        "count": 2,
+        "words": 114,
+        "anecdoteWords": 49
+      },
+      {
+        "eventId": "ht-baudelaire",
+        "count": 2,
+        "words": 119,
+        "anecdoteWords": 51
+      },
+      {
+        "eventId": "ht-indian-commission",
+        "count": 2,
+        "words": 121,
+        "anecdoteWords": 51
+      },
+      {
+        "eventId": "ht-geneva1925",
+        "count": 2,
+        "words": 118,
+        "anecdoteWords": 51
+      },
+      {
+        "eventId": "ht-tax1937",
+        "count": 2,
+        "words": 119,
+        "anecdoteWords": 46
+      },
+      {
+        "eventId": "ht-cbd",
+        "count": 2,
+        "words": 116,
+        "anecdoteWords": 50
+      },
+      {
+        "eventId": "ht-hemp-victory",
+        "count": 2,
+        "words": 122,
+        "anecdoteWords": 48
+      },
+      {
+        "eventId": "ht-single1961",
+        "count": 2,
+        "words": 122,
+        "anecdoteWords": 46
+      },
+      {
+        "eventId": "ht-thc1964",
+        "count": 2,
+        "words": 127,
+        "anecdoteWords": 53
+      },
+      {
+        "eventId": "ht-receptors",
+        "count": 2,
+        "words": 120,
+        "anecdoteWords": 54
+      },
+      {
+        "eventId": "ht-endocannabinoids",
+        "count": 2,
+        "words": 119,
+        "anecdoteWords": 49
+      },
+      {
+        "eventId": "ht-uruguay",
+        "count": 2,
+        "words": 123,
+        "anecdoteWords": 48
+      },
+      {
+        "eventId": "ht-canada",
+        "count": 2,
+        "words": 122,
+        "anecdoteWords": 49
+      },
+      {
+        "eventId": "ht-un2020",
+        "count": 2,
+        "words": 119,
+        "anecdoteWords": 49
+      }
+    ],
+    "eslint": "npx.cmd eslint src/lib/kanab-quest-history-timeline-modern.ts: passed",
+    "typecheck": "node node_modules/typescript/bin/tsc --noEmit --skipLibCheck --target ES2020 --moduleResolution bundler --module ESNext src/lib/kanab-quest-history-timeline-modern.ts: passed"
+  }
+}

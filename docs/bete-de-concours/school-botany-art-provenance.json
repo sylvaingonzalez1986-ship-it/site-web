@@ -1,0 +1,40 @@
+{
+  "version": "2026-11-12.botany-art1",
+  "tool": "image_gen built-in via imagegen skill",
+  "status": "Integrated and locally validated at 320 and 1440 px; final edited botanical specimens inspected with HTML labels.",
+  "original": "C:/Users/sylva/.codex/generated_images/01a1cc9c-af01-71e0-a0e6-59f0eb060d0f/exec-b1f1c605-ff87-4e12-917f-97feb0db6373.png",
+  "selected": "C:/Users/sylva/.codex/generated_images/01a1cc9c-af01-71e0-a0e6-59f0eb060d0f/exec-3f09a3b0-a762-4df9-8f99-717ed473e48f.png",
+  "prompts": [
+    "Use case: scientific-educational. Create one scientifically careful botanical illustration plate for an adult hemp botany course. Landscape 3:2 image, warm light cream paper, delicate engraved ink and watercolor botanical atlas style, green and ochre palette, no writing, no numbers, no arrows. Four isolated specimens, a clear evenly spaced 2 by 2 grid with generous empty gutters, each specimen on the same plain paper. Upper left: greatly enlarged staminate Cannabis sativa flower in frontal oblique view, five green narrow sepals/tepals surrounding exactly five distinct dangling yellow-green anthers on short filaments, no showy petals, no stigmas. Upper right: greatly enlarged pistillate Cannabis sativa flower, one small green teardrop enclosing bract, from its tip exactly two delicate pale stigma branches protrude; finely textured glandular surface, no bouquet of other flowers, no colored petals. Lower left: a single hemp leaf node close-up, green stem and side petiole base, two small pointed lanceolate stipules attached at the leaf base, an axillary bud, a hint of serrated hemp leaflet on the petiole; stipules are clearly broad green leaflike structures, not hairs. Lower right: two dry hemp achenes side by side, one intact mottled brown fruit and one simple longitudinal cutaway showing a thin outer fruit wall around one seed with pale cotyledons and embryo, not a nut with several separate seeds. Every illustration is exclusively Cannabis/hemp. These are botanical teaching illustrations, not photographs or diagnostic specimens. Keep the four subjects anatomically distinct and proportionate within each specimen, with no decorative extra plants. Fine crisp detail, suitable for cropping into four labelled teaching panels later. No text at all.",
+    "Edit this botanical teaching plate. Preserve exactly the upper left male hemp flower with its five anthers, the upper right female hemp flower with two stigma branches, and the same cream paper and fine green watercolor/ink style. Correct only the lower left leaf node and the lower right fruit cutaway for botanical accuracy. Lower left: replace the two large broad leaflike pieces flanking the petiole base with TWO MUCH SMALLER, VERY NARROW LANCEOLATE STIPULES, thin pointed green blades, clearly separate from the central axillary bud. Stipules must be tiny relative to the petiole, roughly a quarter of the current broad pieces' area. Keep the true leaf petiole going to the right and the green main stem. Lower right: maintain exactly one intact achene and one longitudinal cutaway. Make the fruit wall thin, not a thick woody nutshell. Inside the thin outer brown fruit wall show a second extremely fine pale tan seed coat surrounding one seed with two pale cotyledons; the two cotyledons are parts of one embryo, not two seeds. No added organs. Keep anatomical clean separations with enough cream space around each specimen for HTML labels. Do not add any text, letters, arrows, numbers, borders or other plants. This is a conceptual botanical illustration, not a diagnostic photograph."
+  ],
+  "outputDirectory": "public/placard/school/botany",
+  "exportScript": "scripts/export-school-botany-art.mjs",
+  "exportEvidence": "output/school/artwork/botany-art-export.json",
+  "review": {
+    "first": "Independent botanical content reviewer identified excessively broad stipules and overly thick fruit wall.",
+    "revision": "Narrow small stipules, distinct axillary bud, thin fruit wall and simplified seed envelope; five anthers and two stigma branches retained.",
+    "labels": "HTML labels. Ovary hidden in external pistillate view, not falsely pointed out. Achene contains one seed; two cotyledons belong to one embryo. Cutaway is conceptual, no histological measurement or scale claim.",
+    "limitations": "Synthetic illustrations, not photographs or diagnostic observations of a specimen. No cultivar identification, chromosome inference, cannabinoid content or production parameters from appearance."
+  },
+  "botanicalReferences": [
+    {
+      "url": "https://powo.science.kew.org/taxon/urn:lsid:ipni.org:names:306087-2/general-information",
+      "passage": "Verdcourt 1975 flora description: stipules, male/female flowers, achene."
+    },
+    {
+      "url": "https://inspection.canada.ca/en/plant-varieties/plants-novel-traits/applicants/directive-94-08/biology-documents/cannabis-sativa",
+      "passage": "Morphology and reproductive biology; botanical descriptions only."
+    },
+    {
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.00350/full",
+      "passage": "Spitzer-Rimon et al. 2019: solitary flower and inflorescence anatomy."
+    }
+  ],
+  "existingArt": "Approved course-plant-v1.webp retained for whole-plant overview; no change to approved hemp interior v4.",
+  "nativeDiagrams": "HTML/SVG explanatory graphics for tissues, trichomes, life cycle, Mendelian inheritance and pedigree; deliberately schematic and labelled. No new botanical image rendered by code as substitute for requested illustration.",
+  "browserEvidence": [
+    "output/placard-navigation/school-botany-report.json",
+    "output/placard-navigation/school-botany-preview-smoke.json"
+  ]
+}

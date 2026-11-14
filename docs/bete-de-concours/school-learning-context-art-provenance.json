@@ -1,0 +1,25 @@
+{
+  "date": "2026-11-12",
+  "tool": "Built-in image_gen",
+  "reference": "public/placard/school/botany/organs-v1.webp",
+  "entries": [
+    {
+      "name": "evidence-desk",
+      "source": "exec-19cf1888-4219-4ee7-9a01-87ea4975751f.png",
+      "prompt": "Use case scientific-educational. A new illustration for a hemp history learning game, in the careful ink and watercolour botanical textbook style of the reference, pale cream paper, green teal and ochre. Wide horizontal illustration divided naturally into four distinct unlabelled clusters on a pale wood work table, large clear objects and negative space: (1) two mottled intact hemp achenes beside a tiny glass sample dish, (2) a bundle of coarse hemp bast fibres and short fibrous hemp stalk, (3) a plain archaeological ceramic shard next to a magnifying glass, (4) an old closed archive ledger beside a folded unmarked paper and a modern plain microscope silhouette. Include ONE modest pressed palmate serrated Cannabis leaf at the edge so the subject is unmistakable hemp. No other plants, no decorative flowers, no readable text, dates, labels, symbols, arrows, ancient writing, drugs, smoke or named artefact. This is a fictional educational collection of different kinds of evidence, not reconstruction of a real discovery. Do not draw pollen grains as labelled species, DNA or fake measurements. Readable at small screen size, warm friendly game artwork, accurate simple botanical hemp traits.",
+      "sourceCopy": "output/school/artwork/evidence-desk-v1-source.png",
+      "asset": "public/placard/school/learning/evidence-desk-v1.webp",
+      "sha256": "2e794956530cfadb4a338d8b39dcbdff742756d7cd2f55caede14f9db1bff780"
+    },
+    {
+      "name": "fibre-workshop",
+      "source": "exec-a24e6583-9344-41e9-b5b5-341761596863.png",
+      "prompt": "Use case scientific-educational. New illustrated teaching scene for a hemp game, in careful ink and watercolour style matching the botanical reference, pale cream, teal, straw gold and dark green ink, readable shapes. Wide horizontal composition showing three distinct materials from left to right on an illustrated Breton workshop table: a cut bundle of green Cannabis sativa stems with one unmistakable palmate narrow serrated hemp leaf; a loose hank of separated long straw-coloured bast fibres and a small spool of yarn; and an off-white piece of plain woven sailcloth beside a tiny simple wooden shuttle. In the far background a small understated window silhouette of a Breton stone harbour with a sailing ship. NO other botanical species, flowers, flax, coloured blossoms, intoxicating products. No text, labels, arrows, measurements, dates or logos. Not a historical reconstruction or real archive evidence, just a fictional educational overview of hemp fibre material transformations and craft work. Do not encode a process recipe, mechanical apparatus or production schedule. Spacious uncluttered composition, objects large and distinct, paper and craft material texture.",
+      "sourceCopy": "output/school/artwork/fibre-workshop-v1-source.png",
+      "asset": "public/placard/school/learning/fibre-workshop-v1.webp",
+      "sha256": "85c970cd94462317f62eb3349fe594cd1f709c85c8f9129d8d88f0de8743f8da"
+    }
+  ],
+  "review": "Deux décors pédagogiques consacrés au chanvre, sans autre espèce florale : catégories de preuves et matières textiles. Livres et pièces vierges ; aucune archive, fouille ou pièce réelle prétendument reproduite.",
+  "limits": "Images de synthèse illustratives, tailles non comparables, détails de matière stylisés. Ne pas les utiliser pour identifier une espèce, diagnostiquer, lire une coupe anatomique ou dater un objet. L’atelier et son port sont fictifs ; ce n’est pas une reconstitution de Noyal ou Locronan."
+}

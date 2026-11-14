@@ -1,0 +1,52 @@
+{
+  "date": "2026-11-14",
+  "entriesRead": [
+    "ref-environnements-culture",
+    "ref-lumiere-climat",
+    "ref-sol",
+    "ref-racines-rhizosphere",
+    "ref-nutrition-minerale",
+    "ref-matiere-organique"
+  ],
+  "glossaryRead": [
+    "soil-term-amendment",
+    "soil-term-nitrogen",
+    "soil-term-calcium",
+    "soil-term-cec",
+    "soil-term-compost",
+    "soil-term-ec",
+    "cultivation-term-environment",
+    "soil-term-exudate",
+    "cultivation-term-soilless",
+    "cultivation-term-relative-humidity",
+    "soil-term-immobilisation",
+    "soil-term-magnesium",
+    "soil-term-organic-matter",
+    "soil-term-mineralisation",
+    "soil-term-mycorrhiza",
+    "soil-term-micronutrient",
+    "soil-term-phosphorus",
+    "cultivation-term-photoperiod",
+    "cultivation-term-photosynthesis",
+    "cultivation-term-dew-point",
+    "soil-term-pore",
+    "soil-term-potassium",
+    "soil-term-root-respiration",
+    "soil-term-rhizosphere",
+    "soil-term-sulfur",
+    "soil-term-structure",
+    "cultivation-term-substrate",
+    "soil-term-texture"
+  ],
+  "method": "Fiches rédigées et intégralement relues par le coordinateur, puis contre-vérifiées par le spécialiste botanique. Sources primaires ouvertes ; portée des études et conditions réglementaires explicitées.",
+  "finalApprovalRecordedIn": "validation.json",
+  "crossReview": "agronomy-botany.json",
+  "contentHashes": {
+    "ref-environnements-culture": "1f1b52c567d78e9dfb368a783407ef3e5f55eca00821ca6fd866c19399cf8bf8",
+    "ref-lumiere-climat": "bd87ee32fee396a4aa65635acce726f1e024b0d22575bb479a2a14f904bc8ed5",
+    "ref-sol": "b89356cfbd333cee112296af7d9b8ab1db8d07bc017b4045d7eee0a43e330a4e",
+    "ref-racines-rhizosphere": "efdc7278a17b21213dcde740c31ed2af1ce8ed079207c0403f340ff09f935548",
+    "ref-nutrition-minerale": "b7a051b7917c982406039a73a6a7016f818b586e235514cc6bc8c5d0f20ef741",
+    "ref-matiere-organique": "a2f07f3bb6f67ea974dc92c189cd20038c624f0d1fc433c06e0e9363a2d564c5"
+  }
+}

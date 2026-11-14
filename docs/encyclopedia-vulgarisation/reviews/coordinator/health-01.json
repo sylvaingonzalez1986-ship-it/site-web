@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-14",
+  "lot": "health-01",
+  "entries": {
+    "ref-maladies-chanvre": {
+      "contentHash": "f38e8003ab64a777c363579d108b92d350cf0f73042a049bca6603cf9f28b4cc",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "ref-ravageurs-auxiliaires": {
+      "contentHash": "61c52194cec4c41722f5b56ece33b667d46a6e9da8f6ef58159fd738f8264263",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "ref-virus-viroides": {
+      "contentHash": "8df7fb91ee1e4c2ab88fbe5efdf68e69e3d2cb07d676557ca33b93b02afdf479",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-tetranychus-urticae": {
+      "contentHash": "43659b3ede7492d29abf3ec58ca5aa6bbb382134ded0d788a3ad8cd34f2644c6",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-aculops-cannibicola": {
+      "contentHash": "ecbcfeb9da09b32b7c8f0c4928fda16f4e1a8813250b28406826a460852e3cb1",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    },
+    "record-health-polyphagotarsonemus-latus": {
+      "contentHash": "7eedcdb8da65087e106ae7a922f9ee85281d4ba3fcff3cb88b0e913f3f460cf3",
+      "note": "Read each article, photo caption, diagram and quiz explanation; mechanisms, visible signs, laboratory evidence and host limitations explained in context.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 11,
+    "hash": "ee77b2f3c8dfe81d054bae5584735edead21b361b4d3d4470ed20ba7df11cc6b"
+  },
+  "quiz": {
+    "count": 6,
+    "hash": "48b09332e3edbde00f93fbe73946d67cfde36abf7d3715501438703ce53832bc"
+  }
+}

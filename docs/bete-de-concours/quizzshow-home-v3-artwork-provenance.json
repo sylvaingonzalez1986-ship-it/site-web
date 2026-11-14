@@ -1,0 +1,18 @@
+{
+  "date": "2026-11-14",
+  "tool": "image_gen.imagegen (built-in), via imagegen skill",
+  "request": "Libellé Tournoi ; tableau de classement dans l’illustration ; accès aux pages en cliquant directement les objets.",
+  "asset": "public/placard/school/quizzshow-home-v3.webp",
+  "source": "output/quizzshow-home/interior-v3-source.png",
+  "generatedSource": "C:/Users/sylva/.codex/generated_images/01a1dbb7-1788-75d0-a319-d2d74a4c4dcf/exec-328ee843-fd67-4e53-882c-0ea7286941df.png",
+  "editTarget": "public/placard/school/quizzshow-home-v2.webp",
+  "reference": "public/placard/map/placard-world-quizzshow-v9.webp",
+  "previousProvenance": "docs/bete-de-concours/quizzshow-home-v2-artwork-provenance.json",
+  "prompt": "Use case: precise-object-edit. Image 1 is the EDIT TARGET, the approved 1536x1024 QuizzShow room. Image 2 is style reference only, the actual Quartier village. Add ONE new prominent clickable-looking piece of furniture: a freestanding small LEADERBOARD CHALKBOARD on two short wooden legs, centered in the clear floor space BELOW the window BETWEEN the quiz podium and the bookshelf. Bounding box approximately x600..935 and y605..870 on the 1536x1024 canvas. Its face is a dark teal chalkboard, thick golden oak hand-carved frame, a small golden trophy cup crest at its top center, and THREE clear short cream chalk horizontal lines with small medal/circle pictograms at the left. These are decorative empty rows only: absolutely NO player names, NO scores, NO numerals, NO words. It should read instantly as a ranking board rather than another book, and be large enough to click on a mobile screen. Keep it completely separate from the podium on the left and the bookshelf on the right, with no overlap of furniture silhouettes. Use the exact bold irregular black ink contours, warm cream/teal/gold/apricot flat cartoon style of the approved room and reference. Preserve EVERYTHING ELSE in image 1: exact camera, crop and 1536x1024 dimensions; window with the SAME recognizable bank and sea view (do not change this view), podium with microphone/orange buzzer/question-mark emblem on the left, bookshelf and hemp encyclopedia on the right, curtain, roof, lamp, architecture, clean paper texture and blank bottom strip. Keep the podium and bookshelf in their exact positions. No added paper UI labels or buttons in the artwork, all destination names will be HTML overlays directly on the objects. No people or additional objects. Only add the central leaderboard board; do not redraw the room or replace the map view.",
+  "processing": "Conversion WebP qualité 86 ; 1536 × 1024 ; 314200 octets. Contenu dessiné par imagegen sans retouche par code.",
+  "interaction": "Trois boutons HTML transparents calés sur les objets, avec enseignes HTML posées sur leur base. Pupitre → tournament ; tableau → ranking ; bibliothèque → learn. Aucune rangée de boutons sous la scène. Focus non découpé, grandes cibles tactiles.",
+  "ranking": "Le dessin du tableau comporte trois lignes décoratives sans nom ni score. Les résultats proviennent du GET tournoi dans la page Classement, avec classement de la semaine et palmarès.",
+  "validation": "Recette à 320/390/1627 px : clic directement sur chaque dessin, clavier, rechargement du classement et historique. Aucune erreur JS, aucun débordement, aucun POST. Résultats vides/remplis et erreurs 503/401 sur réponses explicitement simulées. TypeScript, ESLint ciblé et 4 tests de navigation réussis.",
+  "report": "output/quizzshow-home/room-v3-report.json",
+  "deployed": false
+}

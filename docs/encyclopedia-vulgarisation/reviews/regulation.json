@@ -1,0 +1,59 @@
+{
+  "domain": "regulation",
+  "reviewedAt": "2026-11-14",
+  "scope": "Réécriture pédagogique individuelle, réutilisant les preuves scientifiques déjà relues.",
+  "batchFiles": [
+    "regulation-01.json"
+  ],
+  "articleIds": [
+    "ref-conservation",
+    "ref-contaminants",
+    "ref-analyses",
+    "ref-origines-formulations",
+    "ref-reglementation-produits"
+  ],
+  "termIds": [
+    "products-term-absorption",
+    "products-term-analyte",
+    "products-term-concentration",
+    "products-term-degradation",
+    "products-term-emission",
+    "products-term-formulation",
+    "products-term-semisynthesis",
+    "harvest-term-wet-basis",
+    "harvest-term-integrity",
+    "products-term-loq",
+    "products-term-lot",
+    "products-term-matrix-sample",
+    "health-term-mycotoxin",
+    "products-term-novel-food",
+    "products-term-stereoisomer",
+    "products-term-total-thc"
+  ],
+  "quizIds": [
+    "hemp-prevention-sechage",
+    "hemp-prevention-paille",
+    "hemp-prevention-echauffement",
+    "hemp-prevention-fanage",
+    "hemp-prevention-andain",
+    "hemp-prevention-battage",
+    "hemp-prevention-huile-rance",
+    "hemp-prevention-bris-graines",
+    "hemp-prevention-maturite"
+  ],
+  "counts": {
+    "articles": 5,
+    "terms": 16,
+    "quizExplanations": 9
+  },
+  "checks": [
+    "Lecture des nouveaux textes, exemples, titres et légendes ; termes définis lors de leur introduction.",
+    "Anciennes ancres de sections conservées directement ou dans anchorIds ; diagrammes après les éléments expliqués.",
+    "Références de sections et questions incluses dans la fiche ; indices de réponse conservés.",
+    "Statuts et blocages scientifiques conservés ; aucune nouvelle recherche générale ni modification des originaux."
+  ],
+  "difficulties": [
+    "Les neuf questions de conservation, absentes des patches scientifiques initiaux, sont reprises depuis le quiz courant.",
+    "Territoires, dates de vérification et catégories juridiques maintenus ; les seuils de composition ne sont pas présentés comme des autorisations."
+  ]
+}

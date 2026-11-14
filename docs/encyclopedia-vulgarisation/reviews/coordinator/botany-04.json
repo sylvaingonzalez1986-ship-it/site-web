@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-14",
+  "lot": "botany-04",
+  "entries": {
+    "record-variety-blueberry": {
+      "contentHash": "7389d0d7b6ed92a217b989b82fb3ab3cdbd11361c96c6b00fbbb4246377998d3",
+      "note": "Five genealogy notices and diagrams read. Cookies and Gelato scientific gaps retained in plain language; diagrams follow the explanations of versions and selection numbers.",
+      "status": "read-and-reviewed"
+    },
+    "record-variety-white-widow": {
+      "contentHash": "1e51bf7c1c5a4f4a495a341c6e1bf87fbf6b9a5d0e0bdd90351a1813ded7dd97",
+      "note": "Five genealogy notices and diagrams read. Cookies and Gelato scientific gaps retained in plain language; diagrams follow the explanations of versions and selection numbers.",
+      "status": "read-and-reviewed"
+    },
+    "record-variety-cookies": {
+      "contentHash": "c544c5e46b359d49603d81a12eaecf778699b37e4befd5685934b907fcfa9c12",
+      "note": "Five genealogy notices and diagrams read. Cookies and Gelato scientific gaps retained in plain language; diagrams follow the explanations of versions and selection numbers.",
+      "status": "read-and-reviewed"
+    },
+    "record-variety-gelato": {
+      "contentHash": "c47a04383d301fe7c8849b7ba77b6e181f1c350661755d9f8cdbde49af87ab4a",
+      "note": "Five genealogy notices and diagrams read. Cookies and Gelato scientific gaps retained in plain language; diagrams follow the explanations of versions and selection numbers.",
+      "status": "read-and-reviewed"
+    },
+    "record-variety-cbd-hybrids": {
+      "contentHash": "2f852e5a3fb26fe32b166dd68917657acd32df5620f1401664100cf50e34457d",
+      "note": "Five genealogy notices and diagrams read. Cookies and Gelato scientific gaps retained in plain language; diagrams follow the explanations of versions and selection numbers.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+}

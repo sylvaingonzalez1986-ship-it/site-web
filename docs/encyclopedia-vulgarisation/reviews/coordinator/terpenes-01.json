@@ -1,0 +1,53 @@
+{
+  "date": "2026-11-14",
+  "lot": "terpenes-01",
+  "entries": {
+    "ref-terpenes-terpenoides": {
+      "contentHash": "b956746f2628af90674040b004d20323de951d3ee58179378f164b8c8f30c797",
+      "note": "Pilot and five associated explanations read and independently checked by terpene specialist; mobile and desktop rendering inspected.",
+      "status": "read-and-reviewed"
+    },
+    "ref-biosynthese-terpenes": {
+      "contentHash": "bd481c71b0e1feeb74fb50e3b44baad94a83e2cad146999eed6bff68dae41205",
+      "note": "Six rewritten articles and root pilot read. Definitions and quiz read; individual diagram captions, oxidation placement and VSC teaching corrected. Clinical negative findings remain visible.",
+      "status": "read-and-reviewed"
+    },
+    "ref-odeur-cannabis": {
+      "contentHash": "43f3a9ba6bdaa189d37d5c7686c78e03424fa7ea11ab0b89d5b6e94944415960",
+      "note": "Six rewritten articles and root pilot read. Definitions and quiz read; individual diagram captions, oxidation placement and VSC teaching corrected. Clinical negative findings remain visible.",
+      "status": "read-and-reviewed"
+    },
+    "ref-profils-aromatiques": {
+      "contentHash": "6c28e8da950face2f0dd79d476bc9a6fcd3af2bf4b9e6a4ea2e6c07d88461472",
+      "note": "Six rewritten articles and root pilot read. Definitions and quiz read; individual diagram captions, oxidation placement and VSC teaching corrected. Clinical negative findings remain visible.",
+      "status": "read-and-reviewed"
+    },
+    "ref-volatils-non-terpeniques": {
+      "contentHash": "1d640efaea8cf063058417ec9d10ac98c63679282a1bda1f70b4d38cf90a071f",
+      "note": "Six rewritten articles and root pilot read. Definitions and quiz read; individual diagram captions, oxidation placement and VSC teaching corrected. Clinical negative findings remain visible.",
+      "status": "read-and-reviewed"
+    },
+    "ref-evolution-aromes": {
+      "contentHash": "815aa67af6378ade3865a2c1638e5016c928f6b4e32fdc1339f39889dc02a16f",
+      "note": "Re-read final position and caption of evaporation/oxidation comparison; full entry remains coherent.",
+      "status": "read-and-reviewed"
+    },
+    "ref-aromes-chanvre": {
+      "contentHash": "3c49d747449449d1583284663bab49cc8676158accbc010f72ffdef8f1075f8d",
+      "note": "Six rewritten articles and root pilot read. Definitions and quiz read; individual diagram captions, oxidation placement and VSC teaching corrected. Clinical negative findings remain visible.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 26,
+    "hash": "c0a0edd8efd7e861aaced77f6775bc4f53158e5c91cd3d079d9a400d45b3bff0"
+  },
+  "quiz": {
+    "count": 24,
+    "hash": "1c1b5cadf7084a31715497a42a8a198ba453a9656ab81cf0ca7af38818d85cff"
+  },
+  "pilotQuiz": {
+    "count": 5,
+    "hash": "c7bcc8aa4d69ab870520f3042af4c8f7564a244e8dcfff0e61d9cfc31dfc783d"
+  }
+}

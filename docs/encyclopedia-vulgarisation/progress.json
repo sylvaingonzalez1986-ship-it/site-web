@@ -1,0 +1,1596 @@
+{
+  "date": "2026-11-14",
+  "scope": 189,
+  "status": "integrated-and-verified",
+  "entries": [
+    {
+      "id": "ref-cannabis-sativa",
+      "domain": "botany",
+      "lot": "botany-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-01.json"
+    },
+    {
+      "id": "ref-organes-vegetatifs",
+      "domain": "botany",
+      "lot": "botany-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-01.json"
+    },
+    {
+      "id": "ref-fleurs-fruits-graines",
+      "domain": "botany",
+      "lot": "botany-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-01.json"
+    },
+    {
+      "id": "ref-trichomes",
+      "domain": "botany",
+      "lot": "botany-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-01.json"
+    },
+    {
+      "id": "ref-cycle-vie",
+      "domain": "botany",
+      "lot": "botany-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-01.json"
+    },
+    {
+      "id": "ref-reproduction",
+      "domain": "botany",
+      "lot": "botany-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-01.json"
+    },
+    {
+      "id": "ref-photoperiode",
+      "domain": "botany",
+      "lot": "botany-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-02.json"
+    },
+    {
+      "id": "ref-taxonomie-cannabis",
+      "domain": "botany",
+      "lot": "botany-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-02.json"
+    },
+    {
+      "id": "ref-populations-domestication",
+      "domain": "botany",
+      "lot": "botany-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-02.json"
+    },
+    {
+      "id": "ref-cultivars-clones",
+      "domain": "botany",
+      "lot": "botany-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-02.json"
+    },
+    {
+      "id": "ref-genetique-heredite",
+      "domain": "botany",
+      "lot": "botany-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-02.json"
+    },
+    {
+      "id": "ref-noms-lignees",
+      "domain": "botany",
+      "lot": "botany-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-02.json"
+    },
+    {
+      "id": "ref-diversite-chanvre",
+      "domain": "botany",
+      "lot": "botany-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-02.json"
+    },
+    {
+      "id": "record-variety-haze",
+      "domain": "botany",
+      "lot": "botany-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-03.json"
+    },
+    {
+      "id": "record-variety-skunk",
+      "domain": "botany",
+      "lot": "botany-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-03.json"
+    },
+    {
+      "id": "record-variety-northern-lights",
+      "domain": "botany",
+      "lot": "botany-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-03.json"
+    },
+    {
+      "id": "record-variety-kush",
+      "domain": "botany",
+      "lot": "botany-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-03.json"
+    },
+    {
+      "id": "record-variety-diesel",
+      "domain": "botany",
+      "lot": "botany-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-03.json"
+    },
+    {
+      "id": "record-variety-blueberry",
+      "domain": "botany",
+      "lot": "botany-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-04.json"
+    },
+    {
+      "id": "record-variety-white-widow",
+      "domain": "botany",
+      "lot": "botany-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-04.json"
+    },
+    {
+      "id": "record-variety-cookies",
+      "domain": "botany",
+      "lot": "botany-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [
+        "Relire l’entretien primaire Jigga du 30 mars 2020 pour confirmer F1 Durban × Florida OG et l’étymologie F1 ; accès direct 403."
+      ],
+      "review": "reviews/coordinator/botany-04.json"
+    },
+    {
+      "id": "record-variety-gelato",
+      "domain": "botany",
+      "lot": "botany-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [
+        "Récupérer l’entretien Sherbinski 2017 pour la chronologie et la liste historique des sélections ; page primaire 403. La parenté actuelle est confirmée séparément sur Sherbinskis."
+      ],
+      "review": "reviews/coordinator/botany-04.json"
+    },
+    {
+      "id": "record-variety-cbd-hybrids",
+      "domain": "botany",
+      "lot": "botany-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/botany-04.json"
+    },
+    {
+      "id": "ref-terpenes-terpenoides",
+      "domain": "terpenes",
+      "lot": "terpenes-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-01.json"
+    },
+    {
+      "id": "ref-biosynthese-terpenes",
+      "domain": "terpenes",
+      "lot": "terpenes-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-01.json"
+    },
+    {
+      "id": "ref-odeur-cannabis",
+      "domain": "terpenes",
+      "lot": "terpenes-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-01.json"
+    },
+    {
+      "id": "ref-profils-aromatiques",
+      "domain": "terpenes",
+      "lot": "terpenes-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-01.json"
+    },
+    {
+      "id": "ref-volatils-non-terpeniques",
+      "domain": "terpenes",
+      "lot": "terpenes-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-01.json"
+    },
+    {
+      "id": "ref-evolution-aromes",
+      "domain": "terpenes",
+      "lot": "terpenes-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-01.json"
+    },
+    {
+      "id": "ref-aromes-chanvre",
+      "domain": "terpenes",
+      "lot": "terpenes-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-01.json"
+    },
+    {
+      "id": "record-terpene-alphapinene",
+      "domain": "terpenes",
+      "lot": "terpenes-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-02.json"
+    },
+    {
+      "id": "record-terpene-betapinene",
+      "domain": "terpenes",
+      "lot": "terpenes-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-02.json"
+    },
+    {
+      "id": "record-terpene-myrcene",
+      "domain": "terpenes",
+      "lot": "terpenes-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-02.json"
+    },
+    {
+      "id": "record-terpene-limonene",
+      "domain": "terpenes",
+      "lot": "terpenes-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-02.json"
+    },
+    {
+      "id": "record-terpene-camphene",
+      "domain": "terpenes",
+      "lot": "terpenes-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-02.json"
+    },
+    {
+      "id": "record-terpene-alpha-phellandrene",
+      "domain": "terpenes",
+      "lot": "terpenes-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-02.json"
+    },
+    {
+      "id": "record-terpene-delta3-carene",
+      "domain": "terpenes",
+      "lot": "terpenes-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-02.json"
+    },
+    {
+      "id": "record-terpene-alpha-terpinene",
+      "domain": "terpenes",
+      "lot": "terpenes-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-03.json"
+    },
+    {
+      "id": "record-terpene-gamma-terpinene",
+      "domain": "terpenes",
+      "lot": "terpenes-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-03.json"
+    },
+    {
+      "id": "record-terpene-terpinolene",
+      "domain": "terpenes",
+      "lot": "terpenes-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-03.json"
+    },
+    {
+      "id": "record-terpene-e-beta-ocimene",
+      "domain": "terpenes",
+      "lot": "terpenes-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-03.json"
+    },
+    {
+      "id": "record-terpene-z-beta-ocimene",
+      "domain": "terpenes",
+      "lot": "terpenes-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-03.json"
+    },
+    {
+      "id": "record-terpene-linalool",
+      "domain": "terpenes",
+      "lot": "terpenes-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-03.json"
+    },
+    {
+      "id": "record-terpene-fenchol",
+      "domain": "terpenes",
+      "lot": "terpenes-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-03.json"
+    },
+    {
+      "id": "record-terpene-borneol",
+      "domain": "terpenes",
+      "lot": "terpenes-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-04.json"
+    },
+    {
+      "id": "record-terpene-alpha-terpineol",
+      "domain": "terpenes",
+      "lot": "terpenes-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-04.json"
+    },
+    {
+      "id": "record-terpene-terpinen4-ol",
+      "domain": "terpenes",
+      "lot": "terpenes-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-04.json"
+    },
+    {
+      "id": "record-terpene-eucalyptol",
+      "domain": "terpenes",
+      "lot": "terpenes-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-04.json"
+    },
+    {
+      "id": "record-terpene-p-cymene",
+      "domain": "terpenes",
+      "lot": "terpenes-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-04.json"
+    },
+    {
+      "id": "record-terpene-beta-caryophyllene",
+      "domain": "terpenes",
+      "lot": "terpenes-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-04.json"
+    },
+    {
+      "id": "record-terpene-alpha-humulene",
+      "domain": "terpenes",
+      "lot": "terpenes-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-04.json"
+    },
+    {
+      "id": "record-terpene-e-beta-farnesene",
+      "domain": "terpenes",
+      "lot": "terpenes-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-05.json"
+    },
+    {
+      "id": "record-terpene-alpha-selinene",
+      "domain": "terpenes",
+      "lot": "terpenes-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-05.json"
+    },
+    {
+      "id": "record-terpene-guaiol",
+      "domain": "terpenes",
+      "lot": "terpenes-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-05.json"
+    },
+    {
+      "id": "record-terpene-alpha-bisabolol",
+      "domain": "terpenes",
+      "lot": "terpenes-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-05.json"
+    },
+    {
+      "id": "record-terpene-nerolidol",
+      "domain": "terpenes",
+      "lot": "terpenes-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-05.json"
+    },
+    {
+      "id": "record-terpene-caryophyllene-oxide",
+      "domain": "terpenes",
+      "lot": "terpenes-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-05.json"
+    },
+    {
+      "id": "record-terpene-geranyl-acetate",
+      "domain": "terpenes",
+      "lot": "terpenes-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/terpenes-05.json"
+    },
+    {
+      "id": "ref-phytocannabinoides",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-01.json"
+    },
+    {
+      "id": "ref-biosynthese-cannabinoides",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-01.json"
+    },
+    {
+      "id": "ref-formes-acides-neutres",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-01.json"
+    },
+    {
+      "id": "ref-thc",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-01.json"
+    },
+    {
+      "id": "ref-cbd",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-01.json"
+    },
+    {
+      "id": "ref-systeme-endocannabinoide",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-01.json"
+    },
+    {
+      "id": "ref-cannabinoides-mineurs",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-02.json"
+    },
+    {
+      "id": "ref-cannabinoides-transformes",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-02.json"
+    },
+    {
+      "id": "ref-decouvertes-cannabinoides",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [
+        "Originaux de Wood, Spivey et Easterfield et jalon de liaison avant le clonage : documents primaires toujours inaccessibles. Le sous-point CB2 est désormais confirmé par le résumé original de Munro (1993). Aucune question du quiz ne dépend des précisions historiques non relues.",
+        "Étymologie historique de l’anandamide non étayée dans les passages originaux accessibles ; question remplacée par la liaison amide documentée."
+      ],
+      "review": "reviews/coordinator/cannabinoids-02.json"
+    },
+    {
+      "id": "record-cannabinoid-delta9-thc",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-02.json"
+    },
+    {
+      "id": "record-cannabinoid-delta9-thca-a",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-02.json"
+    },
+    {
+      "id": "record-cannabinoid-delta9-thca-b",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [
+        "La relation exacte de position du carboxyle THCA-A/THCA-B requiert le dessin ou texte intégral primaire ; la diffraction confirme une identité mais pas tous les détails comparatifs de la question."
+      ],
+      "review": "reviews/coordinator/cannabinoids-02.json"
+    },
+    {
+      "id": "record-cannabinoid-cbd",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-03.json"
+    },
+    {
+      "id": "record-cannabinoid-cbda",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-03.json"
+    },
+    {
+      "id": "record-cannabinoid-cbg",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-03.json"
+    },
+    {
+      "id": "record-cannabinoid-cbga",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-03.json"
+    },
+    {
+      "id": "record-cannabinoid-cbc",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-03.json"
+    },
+    {
+      "id": "record-cannabinoid-cbca",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-03.json"
+    },
+    {
+      "id": "record-cannabinoid-cbn",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-04.json"
+    },
+    {
+      "id": "record-cannabinoid-cbna",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-04.json"
+    },
+    {
+      "id": "record-cannabinoid-thcv",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-04.json"
+    },
+    {
+      "id": "record-cannabinoid-thcva",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-04.json"
+    },
+    {
+      "id": "record-cannabinoid-cbdv",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-04.json"
+    },
+    {
+      "id": "record-cannabinoid-cbdva",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-04.json"
+    },
+    {
+      "id": "record-cannabinoid-cbgva",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-05.json"
+    },
+    {
+      "id": "record-cannabinoid-cbcva",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-05.json"
+    },
+    {
+      "id": "record-cannabinoid-cbgv",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-05.json"
+    },
+    {
+      "id": "record-cannabinoid-cbcv",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-05.json"
+    },
+    {
+      "id": "record-cannabinoid-thcp",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-05.json"
+    },
+    {
+      "id": "record-cannabinoid-cbdp",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-05.json"
+    },
+    {
+      "id": "record-cannabinoid-hhc",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-05.json"
+    },
+    {
+      "id": "record-cannabinoid-delta8-thc",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-06.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-06.json"
+    },
+    {
+      "id": "record-cannabinoid-thc-o-acetate",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-06.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-06.json"
+    },
+    {
+      "id": "record-cannabinoid-hhc-o",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-06.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-06.json"
+    },
+    {
+      "id": "record-cannabinoid-hhcp",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-06.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-06.json"
+    },
+    {
+      "id": "record-cannabinoid-h4-cbd",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-06.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-06.json"
+    },
+    {
+      "id": "record-cannabinoid-anandamide",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-06.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-06.json"
+    },
+    {
+      "id": "record-cannabinoid-2-ag",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-06.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-06.json"
+    },
+    {
+      "id": "record-study-cbd-thc-2023",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-07.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-07.json"
+    },
+    {
+      "id": "record-study-thcp-discovery-2019",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-07.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-07.json"
+    },
+    {
+      "id": "record-study-cbd-dravet-2017",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-07.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-07.json"
+    },
+    {
+      "id": "record-study-cbd-lgs-2018",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-07.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-07.json"
+    },
+    {
+      "id": "record-study-cbd-tsc-2021",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-07.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-07.json"
+    },
+    {
+      "id": "record-study-cbd-pain-2023",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-07.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-07.json"
+    },
+    {
+      "id": "record-study-cbg-acute-2024",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-07.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-07.json"
+    },
+    {
+      "id": "record-study-cbg-laboratory-2026",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-08.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [
+        "Éditeur refusé : financement exact et dénominateur 16 éligibles du dossier initial restent à confirmer dans texte intégral."
+      ],
+      "review": "reviews/coordinator/cannabinoids-08.json"
+    },
+    {
+      "id": "record-study-hhc-human-2025",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-08.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-08.json"
+    },
+    {
+      "id": "record-study-hhc-metabolites-2026",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-08.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-08.json"
+    },
+    {
+      "id": "record-study-cbn-sleep-2026",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-08.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-08.json"
+    },
+    {
+      "id": "record-study-cbdv-seizures-2021",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-08.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-08.json"
+    },
+    {
+      "id": "record-study-cbda-preclinical-2013",
+      "domain": "cannabinoids",
+      "lot": "cannabinoids-08.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/cannabinoids-08.json"
+    },
+    {
+      "id": "ref-maladies-chanvre",
+      "domain": "health",
+      "lot": "health-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-01.json"
+    },
+    {
+      "id": "ref-ravageurs-auxiliaires",
+      "domain": "health",
+      "lot": "health-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-01.json"
+    },
+    {
+      "id": "ref-virus-viroides",
+      "domain": "health",
+      "lot": "health-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-01.json"
+    },
+    {
+      "id": "record-health-tetranychus-urticae",
+      "domain": "health",
+      "lot": "health-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-01.json"
+    },
+    {
+      "id": "record-health-aculops-cannibicola",
+      "domain": "health",
+      "lot": "health-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-01.json"
+    },
+    {
+      "id": "record-health-polyphagotarsonemus-latus",
+      "domain": "health",
+      "lot": "health-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-01.json"
+    },
+    {
+      "id": "record-health-thrips",
+      "domain": "health",
+      "lot": "health-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-02.json"
+    },
+    {
+      "id": "record-health-phorodon-cannabis",
+      "domain": "health",
+      "lot": "health-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-02.json"
+    },
+    {
+      "id": "record-health-myzus-persicae",
+      "domain": "health",
+      "lot": "health-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-02.json"
+    },
+    {
+      "id": "record-health-trialeurodes-vaporariorum",
+      "domain": "health",
+      "lot": "health-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-02.json"
+    },
+    {
+      "id": "record-health-bemisia-tabaci",
+      "domain": "health",
+      "lot": "health-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-02.json"
+    },
+    {
+      "id": "record-health-helicoverpa-zea",
+      "domain": "health",
+      "lot": "health-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-02.json"
+    },
+    {
+      "id": "record-health-ostrinia-nubilalis",
+      "domain": "health",
+      "lot": "health-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-03.json"
+    },
+    {
+      "id": "record-health-grapholita-delineana",
+      "domain": "health",
+      "lot": "health-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-03.json"
+    },
+    {
+      "id": "record-health-psylliodes-attenuata",
+      "domain": "health",
+      "lot": "health-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-03.json"
+    },
+    {
+      "id": "record-health-slugs",
+      "domain": "health",
+      "lot": "health-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-03.json"
+    },
+    {
+      "id": "record-health-birds",
+      "domain": "health",
+      "lot": "health-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-03.json"
+    },
+    {
+      "id": "record-health-golovinomyces-ambrosiae",
+      "domain": "health",
+      "lot": "health-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-03.json"
+    },
+    {
+      "id": "record-health-podosphaera-macularis",
+      "domain": "health",
+      "lot": "health-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-04.json"
+    },
+    {
+      "id": "record-health-botrytis-cinerea",
+      "domain": "health",
+      "lot": "health-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-04.json"
+    },
+    {
+      "id": "record-health-sclerotinia-sclerotiorum",
+      "domain": "health",
+      "lot": "health-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-04.json"
+    },
+    {
+      "id": "record-health-fusarium",
+      "domain": "health",
+      "lot": "health-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-04.json"
+    },
+    {
+      "id": "record-health-pythium-globisporangium",
+      "domain": "health",
+      "lot": "health-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-04.json"
+    },
+    {
+      "id": "record-health-rhizoctonia",
+      "domain": "health",
+      "lot": "health-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-04.json"
+    },
+    {
+      "id": "record-health-beet-curly-top-virus",
+      "domain": "health",
+      "lot": "health-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-05.json"
+    },
+    {
+      "id": "record-health-citrus-yellow-vein-associated-virus",
+      "domain": "health",
+      "lot": "health-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-05.json"
+    },
+    {
+      "id": "record-health-hop-latent-viroid",
+      "domain": "health",
+      "lot": "health-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-05.json"
+    },
+    {
+      "id": "record-health-ladybirds",
+      "domain": "health",
+      "lot": "health-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-05.json"
+    },
+    {
+      "id": "record-health-lacewings",
+      "domain": "health",
+      "lot": "health-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-05.json"
+    },
+    {
+      "id": "record-health-aphid-parasitoids",
+      "domain": "health",
+      "lot": "health-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-05.json"
+    },
+    {
+      "id": "record-health-predatory-mites",
+      "domain": "health",
+      "lot": "health-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/health-05.json"
+    },
+    {
+      "id": "ref-environnements-culture",
+      "domain": "agronomy",
+      "lot": "agronomy-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/agronomy-01.json"
+    },
+    {
+      "id": "ref-lumiere-climat",
+      "domain": "agronomy",
+      "lot": "agronomy-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/agronomy-01.json"
+    },
+    {
+      "id": "ref-sol",
+      "domain": "agronomy",
+      "lot": "agronomy-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/agronomy-01.json"
+    },
+    {
+      "id": "ref-racines-rhizosphere",
+      "domain": "agronomy",
+      "lot": "agronomy-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/agronomy-01.json"
+    },
+    {
+      "id": "ref-nutrition-minerale",
+      "domain": "agronomy",
+      "lot": "agronomy-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/agronomy-01.json"
+    },
+    {
+      "id": "ref-matiere-organique",
+      "domain": "agronomy",
+      "lot": "agronomy-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/agronomy-01.json"
+    },
+    {
+      "id": "ref-graines-chanvre",
+      "domain": "products",
+      "lot": "products-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-01.json"
+    },
+    {
+      "id": "ref-huile-graines",
+      "domain": "products",
+      "lot": "products-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-01.json"
+    },
+    {
+      "id": "ref-proteines-chanvre",
+      "domain": "products",
+      "lot": "products-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-01.json"
+    },
+    {
+      "id": "ref-fibres-chanvre",
+      "domain": "products",
+      "lot": "products-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-01.json"
+    },
+    {
+      "id": "ref-chenevotte-materiaux",
+      "domain": "products",
+      "lot": "products-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-01.json"
+    },
+    {
+      "id": "ref-resines-extraits",
+      "domain": "products",
+      "lot": "products-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-01.json"
+    },
+    {
+      "id": "ref-matieres-chanvre",
+      "domain": "products",
+      "lot": "products-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-01.json"
+    },
+    {
+      "id": "record-product-products-chenevis",
+      "domain": "products",
+      "lot": "products-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-02.json"
+    },
+    {
+      "id": "record-product-products-seed-oil",
+      "domain": "products",
+      "lot": "products-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-02.json"
+    },
+    {
+      "id": "record-product-products-press-cake",
+      "domain": "products",
+      "lot": "products-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-02.json"
+    },
+    {
+      "id": "record-product-products-protein",
+      "domain": "products",
+      "lot": "products-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-02.json"
+    },
+    {
+      "id": "record-product-products-bast-fibre",
+      "domain": "products",
+      "lot": "products-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-02.json"
+    },
+    {
+      "id": "record-product-products-hemp-hurd",
+      "domain": "products",
+      "lot": "products-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-02.json"
+    },
+    {
+      "id": "record-product-products-fines",
+      "domain": "products",
+      "lot": "products-02.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-02.json"
+    },
+    {
+      "id": "record-product-products-paper",
+      "domain": "products",
+      "lot": "products-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-03.json"
+    },
+    {
+      "id": "record-product-products-composite",
+      "domain": "products",
+      "lot": "products-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-03.json"
+    },
+    {
+      "id": "record-product-products-insulation",
+      "domain": "products",
+      "lot": "products-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-03.json"
+    },
+    {
+      "id": "record-product-products-bedding",
+      "domain": "products",
+      "lot": "products-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-03.json"
+    },
+    {
+      "id": "record-product-products-hempcrete",
+      "domain": "products",
+      "lot": "products-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-03.json"
+    },
+    {
+      "id": "record-product-products-textile",
+      "domain": "products",
+      "lot": "products-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-03.json"
+    },
+    {
+      "id": "record-product-products-kief",
+      "domain": "products",
+      "lot": "products-03.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-03.json"
+    },
+    {
+      "id": "record-product-products-hash",
+      "domain": "products",
+      "lot": "products-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-04.json"
+    },
+    {
+      "id": "record-product-products-rosin",
+      "domain": "products",
+      "lot": "products-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-04.json"
+    },
+    {
+      "id": "record-product-products-extract",
+      "domain": "products",
+      "lot": "products-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-04.json"
+    },
+    {
+      "id": "record-product-products-distillate",
+      "domain": "products",
+      "lot": "products-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-04.json"
+    },
+    {
+      "id": "record-product-products-isolate",
+      "domain": "products",
+      "lot": "products-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-04.json"
+    },
+    {
+      "id": "record-product-products-formulated",
+      "domain": "products",
+      "lot": "products-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [
+        "Confirmer les articles 18–19 dans la consolidation courante du règlement 178/2002 : texte original effectivement lu, consolidation 2026 inaccessible. Les affirmations de retrait et rappel ne sont pas validées comme vérification réglementaire actuelle."
+      ],
+      "review": "reviews/coordinator/products-04.json"
+    },
+    {
+      "id": "record-product-products-seed-food",
+      "domain": "products",
+      "lot": "products-04.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-04.json"
+    },
+    {
+      "id": "record-product-products-enriched-food",
+      "domain": "products",
+      "lot": "products-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-05.json"
+    },
+    {
+      "id": "record-product-products-oral",
+      "domain": "products",
+      "lot": "products-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-05.json"
+    },
+    {
+      "id": "record-product-products-smoke",
+      "domain": "products",
+      "lot": "products-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-05.json"
+    },
+    {
+      "id": "record-product-products-aerosol",
+      "domain": "products",
+      "lot": "products-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-05.json"
+    },
+    {
+      "id": "record-product-products-plant-origin",
+      "domain": "products",
+      "lot": "products-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-05.json"
+    },
+    {
+      "id": "record-product-products-semisynthetic-origin",
+      "domain": "products",
+      "lot": "products-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-05.json"
+    },
+    {
+      "id": "record-product-products-synthetic-origin",
+      "domain": "products",
+      "lot": "products-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-05.json"
+    },
+    {
+      "id": "record-product-products-live-extract",
+      "domain": "products",
+      "lot": "products-05.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/products-05.json"
+    },
+    {
+      "id": "ref-histoire-culture",
+      "domain": "history",
+      "lot": "history-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/history-01.json"
+    },
+    {
+      "id": "ref-histoire-politiques",
+      "domain": "history",
+      "lot": "history-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/history-01.json"
+    },
+    {
+      "id": "ref-conservation",
+      "domain": "regulation",
+      "lot": "regulation-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/regulation-01.json"
+    },
+    {
+      "id": "ref-contaminants",
+      "domain": "regulation",
+      "lot": "regulation-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/regulation-01.json"
+    },
+    {
+      "id": "ref-analyses",
+      "domain": "regulation",
+      "lot": "regulation-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [
+        "Confirmer les articles 18–19 dans la consolidation courante du règlement 178/2002 : plusieurs URL consolidées bloquent par CAPTCHA/redirection ; texte original effectivement lu."
+      ],
+      "review": "reviews/coordinator/regulation-01.json"
+    },
+    {
+      "id": "ref-origines-formulations",
+      "domain": "regulation",
+      "lot": "regulation-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [],
+      "review": "reviews/coordinator/regulation-01.json"
+    },
+    {
+      "id": "ref-reglementation-produits",
+      "domain": "regulation",
+      "lot": "regulation-01.json",
+      "status": "read-and-reviewed",
+      "scientificBlockers": [
+        "Consolidation courante du règlement 178/2002 à confirmer pour les articles 18–19 ; original ouvert, versions consolidées demandées inaccessibles."
+      ],
+      "review": "reviews/coordinator/regulation-01.json"
+    }
+  ],
+  "glossary": {
+    "scope": 160,
+    "reviewed": 160
+  },
+  "quiz": {
+    "scope": 360,
+    "explanationsReviewed": 360
+  },
+  "reviewed": 189,
+  "scientificBlockers": [
+    {
+      "id": "record-variety-cookies",
+      "blockers": [
+        "Relire l’entretien primaire Jigga du 30 mars 2020 pour confirmer F1 Durban × Florida OG et l’étymologie F1 ; accès direct 403."
+      ]
+    },
+    {
+      "id": "record-variety-gelato",
+      "blockers": [
+        "Récupérer l’entretien Sherbinski 2017 pour la chronologie et la liste historique des sélections ; page primaire 403. La parenté actuelle est confirmée séparément sur Sherbinskis."
+      ]
+    },
+    {
+      "id": "ref-decouvertes-cannabinoides",
+      "blockers": [
+        "Originaux de Wood, Spivey et Easterfield et jalon de liaison avant le clonage : documents primaires toujours inaccessibles. Le sous-point CB2 est désormais confirmé par le résumé original de Munro (1993). Aucune question du quiz ne dépend des précisions historiques non relues.",
+        "Étymologie historique de l’anandamide non étayée dans les passages originaux accessibles ; question remplacée par la liaison amide documentée."
+      ]
+    },
+    {
+      "id": "record-cannabinoid-delta9-thca-b",
+      "blockers": [
+        "La relation exacte de position du carboxyle THCA-A/THCA-B requiert le dessin ou texte intégral primaire ; la diffraction confirme une identité mais pas tous les détails comparatifs de la question."
+      ]
+    },
+    {
+      "id": "record-study-cbg-laboratory-2026",
+      "blockers": [
+        "Éditeur refusé : financement exact et dénominateur 16 éligibles du dossier initial restent à confirmer dans texte intégral."
+      ]
+    },
+    {
+      "id": "record-product-products-formulated",
+      "blockers": [
+        "Confirmer les articles 18–19 dans la consolidation courante du règlement 178/2002 : texte original effectivement lu, consolidation 2026 inaccessible. Les affirmations de retrait et rappel ne sont pas validées comme vérification réglementaire actuelle."
+      ]
+    },
+    {
+      "id": "ref-analyses",
+      "blockers": [
+        "Confirmer les articles 18–19 dans la consolidation courante du règlement 178/2002 : plusieurs URL consolidées bloquent par CAPTCHA/redirection ; texte original effectivement lu."
+      ]
+    },
+    {
+      "id": "ref-reglementation-produits",
+      "blockers": [
+        "Consolidation courante du règlement 178/2002 à confirmer pour les articles 18–19 ; original ouvert, versions consolidées demandées inaccessibles."
+      ]
+    }
+  ]
+}

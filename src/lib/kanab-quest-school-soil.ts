@@ -1,0 +1,11 @@
+import { SOIL_CHAPTERS,SOIL_LESSON_SOURCES,SOIL_TERMS,SOIL_QUESTIONS } from './kanab-quest-school-soil-lessons';
+import { SOIL_TOOL_SOURCES } from './kanab-quest-school-soil-tools';
+import { SOIL_VISUAL_SOURCES } from './kanab-quest-school-soil-visuals';
+export { SOIL_CHAPTERS,SOIL_TERMS,SOIL_QUESTIONS };
+export { SOIL_INDICATORS,SOIL_ANALYSES,SOIL_ANALYSIS_COMPARISONS,SOIL_NUTRIENTS,SOIL_INPUTS,SOIL_NETWORK_NODES,SOIL_NETWORK_EDGES } from './kanab-quest-school-soil-tools';
+export { SOIL_HOTSPOTS,SOIL_CYCLE_STAGES,SOIL_REASONING_STEPS } from './kanab-quest-school-soil-visuals';
+export const SOIL_VERSION='2026-11-12.soil1';
+export const VERSION=SOIL_VERSION;
+export const SOIL_LESSONS=SOIL_CHAPTERS.flatMap(chapter=>chapter.lessons);
+export const SOIL_SOURCES=[...SOIL_LESSON_SOURCES,...SOIL_TOOL_SOURCES,...SOIL_VISUAL_SOURCES];
+export const SOIL_LESSON_ALIASES:Readonly<Record<string,string>>={'uses-1':'soil-hemp-1','uses-2':'soil-hemp-1','uses-3':'soil-inputs-1','uses-4':'soil-hemp-2'};

@@ -3,6 +3,8 @@ import "server-only";
 import { getKqStorageContainer, getKqStorageMethod, isKqStorageLot, KQ_STORAGE_CONTAINERS, KQ_STORAGE_METHODS, projectKqStorageLot, type KqStorageLot } from "@/lib/kanab-quest-storage";
 import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import { createSupabaseServiceClient } from "./admin";
+import { settleKqStaffIfAvailable } from "./kanab-quest-staff-backend";
+import { createKqFlowerTrimReader } from "@/lib/kanab-quest-flower-trim";
 
 const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 function uuid(value: unknown): string {
@@ -46,18 +48,24 @@ export async function getKqStorageRecords(userId: string): Promise<StoredSnapsho
   if (result.error) databaseError(result.error.message);
   return result.data as StoredSnapshot;
 }
-function snapshot(current: StoredSnapshot): KqStorageSnapshot {
+function snapshot(current: StoredSnapshot, staff?: unknown): KqStorageSnapshot {
   const nowMs = Date.parse(current.serverNow);
+  const trim = createKqFlowerTrimReader(staff);
   return { ...current, catalog: KQ_STORAGE_METHODS, containers: KQ_STORAGE_CONTAINERS, lots: current.lots.filter(lot => lot.marketStatus !== "sold").map(lot => ({
     flowerId: lot.flowerId, varietyName: lot.varietyName, harvestGrams: Number(lot.harvestGrams), flowerStatus: lot.flowerStatus,
+    trim: trim(lot.flowerId, lot.state.harvestedAt),
     projection: projectKqStoredStorageLot(lot, nowMs),
     ...(lot.overflowOffer ? { overflowOffer: lot.overflowOffer } : {}),
   })) };
 }
 export async function getKqStorageSnapshot(userId: string) {
+  uuid(userId);
+  let staff: Awaited<ReturnType<typeof settleKqStaffIfAvailable>> = null;
+  // Keep stock readable when trim cannot be confirmed; never grant readiness.
+  try { staff = await settleKqStaffIfAvailable(userId); } catch { /* unknown trim */ }
   const result = await createSupabaseServiceClient().rpc("rpc_kq_warehouse_storage_state", { p_user_id: uuid(userId) });
   if (result.error) databaseError(result.error.message);
-  return snapshot(result.data as StoredSnapshot);
+  return snapshot(result.data as StoredSnapshot, staff);
 }
 export async function handleKqStorageAction(userId: string, body: Record<string, unknown>) {
   uuid(userId);

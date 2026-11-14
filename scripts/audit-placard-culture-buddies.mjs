@@ -11,7 +11,9 @@ const root = process.cwd(), output = resolve(root, 'output/placard-culture-buddi
 const port = Number(process.env.KQ_CULTURE_BUDDIES_PORT ?? 3431), origin = `http://127.0.0.1:${port}`;
 const preview = process.argv.includes('--preview');
 const zonesOnly = process.argv.includes('--zones-only');
-const reportFile = zonesOnly ? 'zones-report.json' : 'report.json';
+const productionOnly = process.argv.includes('--production-only');
+const equipmentOnly = process.argv.includes('--equipment-only');
+const reportFile = equipmentOnly ? 'production-equipment-report.json' : productionOnly ? 'production-report.json' : zonesOnly ? 'zones-report.json' : 'report.json';
 const entry = `
 import React from'react';import{createRoot}from'react-dom/client';import'/src/app/globals.css';
 import{PlacardPlayerShell}from'/src/components/placard/PlacardPlayerShell';
@@ -20,19 +22,22 @@ import{createReleveCultureTransport}from'/src/lib/kanab-quest-releve-culture';
 import{getReleveNativeWarehouse}from'/src/lib/kanab-quest-releve-warehouse';
 import{createKqReleveProduction,applyKqReleveProductionAction,suggestKqRelevePlan}from'/src/lib/kanab-quest-releve-production';
 import{createKqOperationsLesson,getKqOperationsEquipment}from'/src/lib/kanab-quest-operations-lesson';
-const scenario=new URLSearchParams(location.search).get('scenario')||'single';
+import{createKqStaffState,projectKqStaffSnapshot}from'/src/lib/kanab-quest-staff';
+const scenario=new URLSearchParams(location.search).get('scenario')||sessionStorage.getItem('fixture-scenario')||'single';sessionStorage.setItem('fixture-scenario',scenario);
 if(!new URLSearchParams(location.search).has('view'))history.replaceState(null,'','?scenario='+scenario+'&view=game&campaign=1');
 let production=createKqReleveProduction();production.recentBuddieCodes=[];
 if(scenario==='no-zones')production.revision=1;
 const act=action=>production=applyKqReleveProductionAction(production,action);
-if(scenario!=='no-zones'){act({type:'draft',warehouse:suggestKqRelevePlan(production,['multi','paused','rotation'].includes(scenario)?2:1)});act({type:'save-plan'});}
+if(scenario!=='no-zones'){act({type:'draft',warehouse:suggestKqRelevePlan(production,['multi','paused','rotation','autonomous','autonomous-paused','autonomous-released','autonomous-unassigned'].includes(scenario)?2:1)});act({type:'save-plan'});}
 for(let index=0;index<3;index++)act({type:'reveal-buddie'});
 if(scenario!=='no-zones'&&scenario!=='unassigned'){production.warehouse.zones.forEach((zone,index)=>act({type:'assign',zoneId:zone.id,buddieCode:production.ownedBuddies[index]}));act({type:'save-plan'});}
+if(scenario==='autonomous-unassigned'||scenario==='autonomous-only'){delete production.warehouse.zones[0].buddieCode;production.draftWarehouse=structuredClone(production.warehouse);}
 if(scenario==='rotation')production.recentBuddieCodes=[production.ownedBuddies[0],production.ownedBuddies[2]];
 if(scenario==='paused'){production.warehouse.zones[1].active=false;production.draftWarehouse=structuredClone(production.warehouse);}
 if(scenario==='active')act({type:'launch'});
 const initial=structuredClone(production),lesson=createKqOperationsLesson('market');
 const control={warehouseMode:scenario==='warehouse-error'?'error':scenario==='warehouse-malformed'?'malformed':'known',collectionMode:scenario==='collection-pending'?'pending':scenario==='collection-error'?'error':'known',rotationUnknown:scenario==='rotation-unknown',patchMode:'known',energyPending:false};
+control.productionReservation=scenario.startsWith('autonomous')&&scenario!=='autonomous-released'?{zoneId:production.warehouse.zones[0].id,enabled:scenario!=='autonomous-paused',equipmentEditable:!['autonomous-paused','autonomous-busy'].includes(scenario)}:null;
 const deferred=[],patchReceipts=new Map();window.__calls=[];window.__unexpected=[];window.__appliedPatches=0;
 const transport=createReleveCultureTransport({getState:()=>production,setState:next=>production=next});
 const response=(body,status=200)=>Response.json(body,{status});
@@ -41,6 +46,7 @@ const request=async(input,init={})=>{
  window.__calls.push({path,method,body});
  if(method!=='GET'&&!(method==='PATCH'&&path.endsWith('/warehouse'))&&!(method==='POST'&&path.endsWith('/runs'))){window.__unexpected.push({path,method,body});return response({error:'Action hors périmètre de la recette.'},403);}
  if(path.endsWith('/equipment'))return response({...getKqOperationsEquipment(lesson),routePlan:null,strength:null});
+ if(path.endsWith('/staff')){const now=new Date().toISOString();return response(projectKqStaffSnapshot({state:createKqStaffState(now),revision:0,serverNow:now,cashCents:production.cashCents,context:{businessStartedAt:now,reputation:0,instagramFollowers:0,shopPartners:0,activeRuns:[],processingBatches:[],supplierInvoices:[],trimLots:[]}}));}
  if(path.endsWith('/contracts'))return response({error:'Contrat hors périmètre de la recette.'},404);
  if(path.endsWith('/boosters')||path.endsWith('/missions'))return response({error:'Récompense hors périmètre de la recette.'},503);
  if(path.endsWith('/bootstrap')||path.endsWith('/collection')){
@@ -55,6 +61,7 @@ const request=async(input,init={})=>{
   if(method==='GET'){
    if(control.warehouseMode==='error')return response({error:'Plan momentanément indisponible.'},503);
    if(control.warehouseMode==='malformed')return response({state:null,revision:null});
+   return response({...getReleveNativeWarehouse(production),productionReservation:control.productionReservation});
   }else{
    const cached=patchReceipts.get(body.requestKey);
    if(cached){if(JSON.stringify(cached.body)!==JSON.stringify(body))throw new Error('Request key reused for a different warehouse update');return response({...getReleveNativeWarehouse(production),receipt:{...cached.payload.receipt,replayed:true}});}
@@ -63,7 +70,7 @@ const request=async(input,init={})=>{
    if(control.patchMode==='409'){control.patchMode='known';production.revision++;production.warehouse.zones[0].name='Zone renommée ailleurs';production.draftWarehouse=structuredClone(production.warehouse);return response({error:'Ce plan a changé. Actualise avant de continuer.'},409);}
    const received=await transport(input,init),payload=await received.json();
    if(received.ok){payload.receipt={requestKey:body.requestKey,revision:payload.revision,investmentCents:0,creditUsedCents:0,chargedCents:0,replayed:false};window.__appliedPatches++;patchReceipts.set(body.requestKey,{body,payload});if(control.patchMode==='lost'){control.patchMode='known';throw new TypeError('Connexion interrompue après enregistrement.');}}
-   return response(payload,received.status);
+   return response({...payload,productionReservation:control.productionReservation},received.status);
   }
  }
  const received=await transport(input,init);if(!received.ok)window.__unexpected.push({path,method,status:received.status});return received;
@@ -89,7 +96,7 @@ const server = await createServer({ root, configFile: false, envDir: false, cach
   resolve: { alias: { '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom'] }, css: { postcss: { plugins: [tailwindcss({ base: root })] } },
   plugins: [{ name: 'culture-buddies-audit', enforce: 'pre', resolveId(id) { if (id.endsWith('/public/placard/warehouse-v2/manifest.json')) return '\0warehouse-assets'; if (id in modules) return '\0' + id; },
     async load(id) { if (id.startsWith('\0') && modules[id.slice(1)]) return (await transformWithOxc(modules[id.slice(1)], id + '.tsx', { lang: 'tsx', jsx: { runtime: 'automatic' } })).code; },
-    configureServer(vite) { vite.middlewares.use((req, res, next) => { if (req.url?.split('?')[0] !== '/') return next(); res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Buddies · démo locale</title><style>${fonts}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>`); }); },
+    configureServer(vite) { vite.middlewares.use((req, res, next) => { if (!['/','/arene/placard'].includes(req.url?.split('?')[0])) return next(); res.setHeader('Content-Type', 'text/html; charset=utf-8'); res.end(`<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="data:,"><title>Buddies · démo locale</title><style>${fonts}</style><div id="root"></div><script type="module" src="/@id/__x00__entry"></script></html>`); }); },
   }], server: { host: '127.0.0.1', port, strictPort: true, hmr: false, watch: null },
 });
 const results = [], errors = [], forbiddenRequests = [], unexpectedRequests = [];
@@ -143,6 +150,88 @@ if (preview) {
     assert.equal(focused.zone,zone,`Saving restores keyboard focus to the edited zone: ${JSON.stringify(focused)}`);
   }
   async function startDialog(){await keyClick('[data-culture-preparation] > button');await page.waitForSelector('[data-culture-confirm-start]');}
+  if (equipmentOnly) {
+    for (const [scenario,width] of [['autonomous',320],['autonomous',390],['autonomous',1440],['autonomous-busy',320]]) {
+      await load(scenario,width);await page.waitForSelector('[data-culture-production-equipment]');
+      await keyClick('[data-culture-production-equipment]');await page.waitForSelector('[data-warehouse-shop][open]');await settle();
+      assert(await page.$('[data-warehouse-production-equipment-hint]'));
+      const before=(await fixture()).production;
+      const material='SIM-LIGHT-02';
+      assert.equal(await page.$eval(`[data-warehouse-shop-choose="${material}"]`,node=>node.disabled),false,'Autonomous equipment can be compared and added to the quote');
+      const comparison=await page.$eval(`[data-warehouse-shop-choose="${material}"]`,node=>node.closest('article').textContent);
+      assert.match(comparison,/Qualité au départ/);assert.match(comparison,/Charges/);
+      await keyClick(`[data-warehouse-shop-choose="${material}"]`);await layout();
+      assert.equal((await mutations()).length,0,'Selecting equipment is a draft without payment');
+      await page.screenshot({path:resolve(output,`production-equipment-shop-${scenario}-${width}.png`),fullPage:false});
+      await keyClick('[data-warehouse-shop-review]');await page.waitForSelector('[data-production-equipment-review]');await settle();
+      const saveButton='[data-warehouse-plan-review] [data-warehouse-action="save"]';
+      if (scenario==='autonomous-busy') {
+        assert.equal(await page.$eval(saveButton,node=>node.disabled),true);
+        assert.match(await page.$eval('[data-production-equipment-review]',node=>node.textContent),/Des lots ou tâches/);
+        await setControl('productionReservation',{zoneId:'culture-1',enabled:true,equipmentEditable:true});
+        await button('Actualiser la disponibilité','[data-production-equipment-review]');
+        await page.waitForFunction(selector=>!document.querySelector(selector)?.disabled,{},saveButton);
+        assert.match(await page.$eval('[data-production-equipment-review]',node=>node.textContent),/prochains cycles/);
+      }
+      assert.equal(await page.$eval(saveButton,node=>node.disabled),false);
+      await layout();await page.$eval('[data-production-equipment-review]',node=>node.scrollIntoView({block:'center',behavior:'instant'}));
+      await page.screenshot({path:resolve(output,`production-equipment-quote-${scenario}-${width}.png`),fullPage:false});
+      await keyClick(saveButton);await page.waitForFunction(()=>window.__appliedPatches===1);await settle();
+      const after=(await fixture()).production,patches=await mutations();
+      assert.equal(patches.length,1);const patch=patches[0].body;
+      assert(patch.expectedCostCents>0);assert.equal(after.cashCents,before.cashCents-patch.expectedCostCents);
+      assert.deepEqual(after.warehouse.zones[0],{...before.warehouse.zones[0],lightingCode:material});
+      assert.deepEqual(after.warehouse.zones.slice(1),before.warehouse.zones.slice(1));
+      assert.deepEqual(after.warehouse.serviceZones,before.warehouse.serviceZones);
+      assert.equal(after.game,null);assert.equal((await fixture()).control.productionReservation.enabled,true);
+      results.push({scenario:'autonomous equipment quote and confirmed installation',width,busy:scenario==='autonomous-busy',chargedCents:patch.expectedCostCents});
+    }
+  }
+  if (productionOnly) {
+    for (const width of [320,390,1440]) {
+      await load('autonomous',width);await page.waitForSelector('[data-culture-production-zone="culture-1"]');await settle();
+      const before=(await fixture()).production;
+      assert.match(await page.$eval('[data-culture-production-zone]',node=>node.textContent),/Production autonome.*Gérée par le personnel/);
+      assert.equal(await page.$('[data-culture-buddie-change="culture-1"]'),null);
+      assert.equal(await page.$('[data-culture-buddie-remove="culture-1"]'),null);
+      assert.match(await page.$eval('[data-culture-buddie-summary]',node=>node.textContent),/1 zone affectée · 1 m²/);
+      assert.equal(await page.$eval('[data-culture-production-zone] a[href$="view=staff"]',node=>node.getAttribute('href')),'/arene/placard?view=staff');
+      await page.focus('[data-culture-production-zone] a');
+      assert.equal(await page.$eval('[data-culture-production-zone] a',node=>document.activeElement===node),true);
+      await layout();await shot('production-culture-'+width);
+      await openPicker('culture-2');await choose(before.ownedBuddies[2],'culture-2');
+      await assertAssignmentOnly(before);
+      assert.deepEqual((await fixture()).production.warehouse.zones[0],before.warehouse.zones[0],'Editing another zone preserves the reserved zone and its previous Buddie');
+      await keyClick('[data-preparation-edit-plan]');await page.waitForSelector('[data-warehouse-plan]');await settle();
+      assert.match(await page.$eval('[data-warehouse-zone-chip="culture-1"]',node=>node.textContent),/Production autonome/);
+      assert.match(await page.$eval('[data-warehouse-plan] g[data-zone-id="culture-1"] title',node=>node.textContent),/Production autonome/);
+      assert.equal(await page.$('[data-warehouse-plan] g[data-zone-id="culture-1"] [data-zone-buddie]'),null);
+      await keyClick('[data-warehouse-zone-chip="culture-1"]');await settle();await layout();
+      await page.waitForSelector('[data-warehouse-production-zone="culture-1"]');
+      await page.$eval('[data-warehouse-production-zone]',node=>node.scrollIntoView({block:'center',behavior:'instant'}));
+      await page.screenshot({path:resolve(output,'production-plan-'+width+'.png'),fullPage:false});
+      assert.equal((await mutations()).length,1,'Viewing autonomous status never changes account state');
+      results.push({scenario:'reserved zone in Culture and plan; another zone remains assignable',width});
+    }
+    for (const scenario of ['autonomous-paused','autonomous-unassigned','autonomous-only','autonomous-released']) {
+      await load(scenario,320);await page.waitForSelector(section);await settle();
+      if (scenario==='autonomous-released') {
+        assert.equal(await page.$('[data-culture-production-zone]'),null);
+        assert.equal(await page.$eval('[data-culture-buddie-change="culture-1"]',node=>node.disabled),false);
+        assert.match(await page.$eval('[data-culture-buddie-summary]',node=>node.textContent),/2 zones affectées/);
+      } else {
+        assert.equal(await page.$('[data-culture-buddie-change="culture-1"]'),null);
+        const text=await page.$eval('[data-culture-production-zone]',node=>node.textContent);
+        assert(!text.includes('Choisis ton Buddie'));
+        if (scenario==='autonomous-paused') assert.match(text,/En pause · lots ou tâches à terminer/);
+        if (scenario==='autonomous-only') {
+          assert.equal(await page.$eval('[data-culture-preparation] > button',node=>node.disabled),true);
+          assert.match(await page.$eval('[data-culture-preparation]',node=>node.textContent),/réservée au personnel/);
+        }
+      }
+      await layout();assert.equal((await mutations()).length,0);results.push({scenario,width:320});
+    }
+  }
   if (zonesOnly) {
     for (const width of [1440,320]) {
       await load('multi',width);await page.waitForSelector(section);await settle();
@@ -195,7 +284,7 @@ if (preview) {
       results.push({scenario:'number, area, colour and accessible type remain consistent across preparation, plan, selection and inspector',width});
     }
   }
-  if (!zonesOnly) {
+  if (!zonesOnly && !productionOnly && !equipmentOnly) {
   for(const width of [1440,390,320]){
     await load('single',width);await page.waitForSelector(section);const before=(await fixture()).production;const prepared=await customPreparation();
     await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));await settle();await page.screenshot({path:resolve(output,'first-fold-'+width+'.png'),fullPage:false});

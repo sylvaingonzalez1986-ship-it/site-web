@@ -1,0 +1,149 @@
+{
+  "version": "2026-11-12.botany1",
+  "verifiedAt": "2026-11-12",
+  "scope": "Botanique, diversité et génétique : les huit chapitres demandés, sans protocole d’optimisation de substances contrôlées.",
+  "counts": {
+    "chapters": 8,
+    "lessons": 16,
+    "lessonActivities": 16,
+    "chapterCheckpoints": 8,
+    "authoredQuizQuestions": 32,
+    "privateOptionExplanations": 128,
+    "synthesisQuestions": 10,
+    "sources": 53,
+    "botanyGlossaryTerms": 42,
+    "commonGlossaryEntries": 74,
+    "varietyDossiers": 10,
+    "pedigreeEdges": 27,
+    "indirectAncestryEdges": 4
+  },
+  "files": {
+    "entry": "src/lib/kanab-quest-school-botany.ts",
+    "foundations": "src/lib/kanab-quest-school-botany-foundations.ts",
+    "diversity": "src/lib/kanab-quest-school-botany-diversity.ts",
+    "dossiers": "src/lib/kanab-quest-school-botany-varieties.ts",
+    "answers": [
+      "src/lib/kanab-quest-school-botany-foundations-answers.ts",
+      "src/lib/kanab-quest-school-botany-diversity-answers.ts"
+    ],
+    "sharedRenderer": "src/components/placard/KqSchoolCurriculum.tsx",
+    "botanyVisuals": "src/components/placard/KqBotanyVisuals.tsx",
+    "pedigreeAndComparison": "src/components/placard/KqBotanyDossiers.tsx",
+    "artAndExactPrompts": "docs/bete-de-concours/school-botany-art-provenance.json"
+  },
+  "sourceAccess": {
+    "full-text": 32,
+    "official-page": 10,
+    "abstract": 6,
+    "excerpt": 4,
+    "catalogue": 1
+  },
+  "accessMeaning": "L’accès porte sur le passage décrit. Les textes ou passages intégraux incluent des pages d’obtenteurs, qui documentent leurs propres revendications. Les quatre extraits indexés ne sont pas assimilés à une lecture intégrale, les résumés scientifiques ne sont pas les annexes et la fiche du jeu ne constitue pas une étude indépendante.",
+  "requiredExercises": [
+    {
+      "lessonId": "botany-anatomy-1",
+      "purpose": "Légender quatre repères sur une planche de chanvre puis associer organes et fonctions ; distinguer fibres internes et organe tige."
+    },
+    {
+      "lessonId": "botany-anatomy-2",
+      "purpose": "Associer structures, enveloppes et fonctions sans confondre inflorescence/fleur, bractée/périanthe, fruit/graine."
+    },
+    {
+      "lessonId": "botany-observation-1",
+      "purpose": "Classer des observations, dont une vue volontairement dégradée et l’option observation insuffisante ; borner la conclusion à la fleur observée."
+    },
+    {
+      "lessonId": "botany-life-cycle-1",
+      "purpose": "Réordonner les phases du cycle et justifier les relations, sans calendrier de production."
+    },
+    {
+      "lessonId": "botany-genetics-1",
+      "purpose": "Distinguer génotype et phénotype ; tableau interactif conceptuel à un locus fictif."
+    },
+    {
+      "lessonId": "botany-modern-lineages-1",
+      "purpose": "Lire et réviser une filiation revendiquée à partir de documents attribués."
+    },
+    {
+      "lessonId": "botany-modern-lineages-2",
+      "purpose": "Comparer deux fiches variétales sans assimiler un nom partagé à une identité génétique."
+    }
+  ],
+  "pedigrees": {
+    "families": [
+      "Haze",
+      "Skunk",
+      "Northern Lights",
+      "Kush",
+      "Diesel",
+      "Blueberry",
+      "White Widow",
+      "Cookies",
+      "Gelato",
+      "Hybrides CBD"
+    ],
+    "statuses": {
+      "documented": 0,
+      "breeder-claim": 27,
+      "hypothesis": 0
+    },
+    "policy": "Aucun lien n’est artificiellement promu au statut documenté pour remplir une légende. Tous les liens ont auteur, période, référence, explication et limite. Les trois statuts sont disponibles dans l’interface, avec résultat vide explicite.",
+    "generationMeaning": "Quatre liens d’ascendance composée sont distingués des parents immédiats. Les nœuds inconnus restent sans parents dessinés ; ni mère ni père n’est inféré de la position gauche/droite.",
+    "criticalCases": [
+      "Versions White Widow conservées séparément",
+      "Haze à trois composantes colombiennes attribué au récit Authentic Genetics, pas consensus",
+      "Origines précises de Northern Lights et d’OG Kush laissées incertaines",
+      "Cookies : F1 Durban est un nom dans le témoignage, pas une démonstration de génération F1",
+      "Cannatonic : correction d’obtenteur de 2015, pas validation ADN",
+      "CBD Therapy : parents non publiés dans le dossier retenu",
+      "Un même nom peut recouvrir des matériels distincts ; aucune teneur ou efficacité médicale garantie"
+    ]
+  },
+  "scientificBoundaries": [
+    "Kew constitue un traitement taxonomique de référence, pas la preuve que trois espèces commerciales sont définitivement établies.",
+    "Chromosomes, expression florale et mécanismes expérimentaux sont distingués. La synthèse d’une découverte génomique récente reste limitée au résumé consulté lorsque le texte intégral est inaccessible.",
+    "Dioécie, monoécie et fleur bisexuée désignent des échelles d’organisation différentes.",
+    "Autofloraison, autofécondation et semences féminisées ne sont pas le même caractère.",
+    "AA/Aa/aa est un modèle mendélien fictif à un locus, pas une carte des caractères d’un cultivar ni un programme de production.",
+    "Aucune correspondance automatique indica/sativa → effet, aucune pureté génétique garantie par un nom, aucune concentration déduite de la couleur d’un trichome."
+  ],
+  "review": {
+    "independentContent": "Relecture croisée anatomie florale/expression sexuelle, F1/F2 et distinctions de reproduction, dossiers Northern Lights et Cookies ; observations et limites recoupées avec les sources primaires accessibles.",
+    "illustrations": "Première planche relue : stipules trop larges et paroi du fruit corrigées par imagegen. Planche finale inspectée, légendes HTML conservatrices, coupes schématiques sans échelle. Sources morphologiques Kew, ACIA, Spitzer-Rimon2019 et GEVES/UPOV dans le registre.",
+    "limits": "Relecture interne documentaire et tests techniques ; pas de validation universitaire externe ni d’étude d’apprentissage auprès de joueurs."
+  },
+  "economyAndProgress": {
+    "quizId": "plant",
+    "rewardId": "school:plant",
+    "budgetCents": 1000,
+    "preservation": "Anciens gains et reçus maintenus ; nouveau contenu sans remise à zéro. Tirage signé b1 couvrant huit chapitres en dix questions.",
+    "progress": "16 lectures,16 activités,8 checkpoints ; file d’envoi et stockage distincts par parcours/propriétaire ; CAS pour la position, union pour les validations.",
+    "migration": "supabase/migrations/20261112000200_kq_school_botany_progress.sql",
+    "evidence": "docs/bete-de-concours/school-economy-validation.json#botanyExtension"
+  },
+  "delivery": {
+    "mode": "Local uniquement ; migrations dans des bases temporaires, aucun changement distant.",
+    "contentTests": "src/lib/kanab-quest-school-botany-content.test.ts",
+    "browserBotany": "output/placard-navigation/school-botany-report.json",
+    "browserHistoryRegression": "output/placard-navigation/school-history-report.json",
+    "build": "output/school/botany-build.log",
+    "preview": "http://127.0.0.1:3248/arene/placard?view=school&module=plant&passage=botany-index"
+  },
+  "validation": {
+    "status": "Livraison locale terminée",
+    "unitTests": "107 tests ciblés réussis : 95 backend/protocole/outbox et 12 contenu.",
+    "database": "49 contrôles PGlite, 11 contrôles de concurrence Botanique et 8 de régression Histoire sous PostgreSQL 17 ; permissions explicites vérifiées sur 381 migrations.",
+    "fixtures": "20 contrôles de simulation réussis ; aperçu final avec garde propriétaire 409, deux modules de réponses privés interdits 403 et cinq images chargées.",
+    "browser": "Botanique et régression Histoire à 320/1440 px : zéro erreur JavaScript ni débordement. Exercices avec justification et brouillon, reprise après réponse perdue, 10 dossiers, filtres de preuves, navigation clavier, comparaison, Buddy sans possession, glossaire partagé, synthèse et corrigés.",
+    "build": "npm run build réussi, dont vérification TypeScript et génération des routes ; ESLint ciblé réussi.",
+    "privateAnswers": "76 explications privées (32 Botanique et 44 Histoire), en texte brut et échappé JSON, absentes des 182 chunks JavaScript client ; garde server-only vérifiée par le build.",
+    "limits": "Tests documentaires et techniques internes ; navigateur avec API locales simulées. Aucune étude pédagogique auprès de joueurs ni validation de compte distant.",
+    "reports": [
+      "output/placard-navigation/school-botany-report.json",
+      "output/placard-navigation/school-history-report.json",
+      "output/placard-navigation/school-botany-preview-smoke.json",
+      "output/school/botany-build.log",
+      "output/school/botany-client-answer-check.json"
+    ]
+  }
+}

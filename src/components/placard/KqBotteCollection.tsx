@@ -43,10 +43,12 @@ export function KqBotteCardDetail({ card, copies, onClose }: { card: KqSupportCa
 
 export type KqCollectionKind = "botte" | "buddies";
 
-export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte" }: { onClose: () => void; onOpenShop?: (collection?: KqCollectionKind) => void; initialSection?: KqCollectionKind }) {
+export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte", embedded = false, initialBuddyCode, onSectionChange, onLearnWithBuddy, onCloseBuddy }: { onClose: () => void; onOpenShop?: (collection?: KqCollectionKind) => void; initialSection?: KqCollectionKind; embedded?: boolean; initialBuddyCode?: string; onSectionChange?: (section: KqCollectionKind) => void; onLearnWithBuddy?: (buddyCode: string, moduleId: string, passageId?: string) => void; onCloseBuddy?: () => void }) {
   const api = useKqTutorialApi();
-  const dialog = useCardDialog(onClose);
-  const [album, setAlbum] = useState<KqCollectionKind>(initialSection);
+  const dialog = useCardDialog(onClose, !embedded);
+  const [localAlbum, setAlbum] = useState<KqCollectionKind>(initialSection);
+  const album = onSectionChange ? initialSection : localAlbum;
+  const selectAlbum = (section: KqCollectionKind) => { setAlbum(section); onSectionChange?.(section); };
   const request = useRef<AbortController | null>(null);
   const [inventory, setInventory] = useState<Record<string, number> | null>(null);
   const [loading, setLoading] = useState(true);
@@ -88,17 +90,16 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
     return (ownership === "all" || (ownership === "owned" ? count > 0 : count === 0)) && (utility === "all" || role.key === utility) && (rarity === "all" || rarity === card.rarity) && (!normalized || search.includes(normalized));
   });
   if (typeof document === "undefined") return null;
-  return createPortal(<>
-    <dialog ref={dialog} className={styles.collectionDialog} data-placard-collections aria-labelledby="botte-collection-title" onCancel={(event) => { event.preventDefault(); onClose(); }} onKeyDown={(event) => { if (event.key === "Escape") event.stopPropagation(); }} onClick={(event) => { if (clickedBackdrop(event)) onClose(); }}>
+  const content = <>
       <div className={styles.albumLayout}>
-        <KqChapterHeading art="collection" title="Collections" titleId="botte-collection-title" compact actions={<button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button>} />
+        <KqChapterHeading art="collection" title="Collection" titleId="botte-collection-title" compact actions={!embedded ? <button type="button" className={styles.close} onClick={onClose} aria-label="Fermer la collection"><X aria-hidden="true" /></button> : undefined} />
         <div data-farm-guide-host />
         <div className={styles.albumTabs} role="tablist" aria-label="Choisir une collection">
-          {(["botte", "buddies"] as const).map(kind => <button key={kind} type="button" role="tab" id={`collection-tab-${kind}`} data-collection-tab={kind} aria-selected={album === kind} aria-controls={`collection-panel-${kind}`} tabIndex={album === kind ? 0 : -1} onClick={() => setAlbum(kind)} onKeyDown={event => {
+          {(["botte", "buddies"] as const).map(kind => <button key={kind} type="button" role="tab" id={`collection-tab-${kind}`} data-collection-tab={kind} aria-selected={album === kind} aria-controls={`collection-panel-${kind}`} tabIndex={album === kind ? 0 : -1} onClick={() => selectAlbum(kind)} onKeyDown={event => {
             if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
             event.preventDefault();
             const next = event.key === "Home" ? "botte" : event.key === "End" ? "buddies" : kind === "botte" ? "buddies" : "botte";
-            setAlbum(next);
+            selectAlbum(next);
             event.currentTarget.parentElement?.querySelector<HTMLButtonElement>(`[data-collection-tab="${next}"]`)?.focus();
           }}>{kind === "botte" ? <BookOpen size={18} aria-hidden="true" /> : <Leaf size={18} aria-hidden="true" />}{kind === "botte" ? "Botte du Chanvrier" : "Buddies"}</button>)}
         </div>
@@ -121,9 +122,10 @@ export function KqBotteCollection({ onClose, onOpenShop, initialSection = "botte
         </div>
         <footer className={styles.footer}><span>Une carte jouée consomme un exemplaire. Les cartes conservées restent dans ta collection.</span>{onOpenShop ? <button type="button" className={styles.shopLink} onClick={() => onOpenShop("botte")}><ShoppingBag size={18} aria-hidden="true" /><span>La Boutique <small>Packs et nouvelles cartes</small></span></button> : null}</footer>
         </div>
-        <KqBuddiesCollection active={album === "buddies"} onOpenShop={onOpenShop ? () => onOpenShop("buddies") : undefined} />
+        <KqBuddiesCollection active={album === "buddies"} initialBuddyCode={initialBuddyCode} onLearnWithBuddy={onLearnWithBuddy} onCloseBuddy={onCloseBuddy} onOpenShop={onOpenShop ? () => onOpenShop("buddies") : undefined} />
       </div>
-    </dialog>
     {selected ? <KqBotteCardDetail card={selected} copies={inventory ? inventory[selected.code] ?? 0 : null} onClose={() => setSelected(null)} /> : null}
-  </>, document.body);
+  </>;
+  if (embedded) return <section className={styles.embeddedCollection} data-placard-collections aria-labelledby="botte-collection-title">{content}</section>;
+  return createPortal(<dialog ref={dialog} className={styles.collectionDialog} data-placard-collections aria-labelledby="botte-collection-title" onCancel={event => { event.preventDefault(); onClose(); }} onKeyDown={event => { if (event.key === "Escape") event.stopPropagation(); }} onClick={event => { if (clickedBackdrop(event)) onClose(); }}>{content}</dialog>, document.body);
 }

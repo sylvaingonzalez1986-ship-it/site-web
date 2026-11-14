@@ -14,8 +14,8 @@ export type PlacardMapBuildingShape = {
 export const KQ_PLACARD_MAP_SCENE = {
   width: 1536,
   height: 1024,
-  image: "/placard/map/placard-world-sylvain-v6.webp",
-  alt: "Le quartier breton de Sylvain en cartoon : huit petits lieux aux toits de travers, portes turquoise et gros contours noirs, entre hortensias, chemins de sable et bord de mer.",
+  image: "/placard/map/placard-world-quizzshow-v9.webp",
+  alt: "Le quartier breton de Sylvain : la Maison des cartes et QuizzShow, avec son enseigne dorée et ses quatre pupitres à buzzers, rejoignent la ferme, le commerce, les finances, le personnel, les missions et le jury au bord de la mer.",
 } as const;
 
 /** Coordinates are kept separate from navigation and can follow a new drawing. */
@@ -49,7 +49,7 @@ export const KQ_PLACARD_MAP_SHAPES: Record<PlacardMapBuildingId, PlacardMapBuild
     focusPoint: [751,447], labelPoint: [752,554], groundPoint: [650,334],
   },
   collection: {
-    outline: [[148,747],[156,740],[241,684],[278,657],[291,651],[303,652],[333,661],[424,686],[444,694],[452,703],[455,714],[489,745],[491,752],[487,757],[475,753],[481,823],[485,877],[483,883],[474,888],[484,891],[491,899],[494,908],[490,914],[452,922],[425,927],[417,920],[416,912],[403,908],[398,907],[384,916],[367,915],[365,909],[346,915],[336,913],[318,916],[300,921],[285,918],[283,911],[256,910],[228,905],[214,902],[205,894],[200,879],[190,876],[188,858],[177,842],[164,842],[167,763],[151,760],[147,755]],
+    outline: [[148,747],[156,740],[241,668],[279,665],[296,671],[296,647],[286,645],[287,638],[320,606],[320,597],[323,591],[332,589],[338,595],[337,603],[372,640],[372,647],[363,648],[363,677],[424,686],[444,694],[452,703],[455,714],[489,745],[491,752],[487,757],[475,753],[481,823],[485,877],[483,883],[474,888],[484,891],[491,899],[494,908],[490,914],[452,922],[425,927],[417,920],[416,912],[403,908],[398,907],[384,916],[367,915],[365,909],[346,915],[336,913],[318,916],[300,921],[285,918],[283,911],[256,910],[228,905],[214,902],[205,894],[200,879],[190,876],[188,858],[177,842],[164,842],[167,763],[151,760],[147,755]],
     focusPoint: [425,838], labelPoint: [312,880], groundPoint: [164,666],
   },
 };

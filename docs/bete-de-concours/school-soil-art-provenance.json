@@ -1,0 +1,26 @@
+{
+  "date": "2026-11-12",
+  "tool": "image_gen.imagegen, compétence imagegen",
+  "source": "C:/Users/sylva/.codex/generated_images/01a1cc9c-af01-71e0-a0e6-59f0eb060d0f/exec-93876588-959b-4764-b431-74a7d5a492a8.png",
+  "original": "output/school/artwork/soil-cutaway-v1-source.png",
+  "prompt": "Use case: stylized-concept. Asset type: a wide educational illustration for the École des Chanvriers, inside a French cartoon village game. Create a NEW high quality landscape image 1536x1024, no text. Subject: a readable cutaway of a patch of soil with ONE young hemp plant (Cannabis sativa) growing from its centre. Botanical leaves must be clearly palmate with five or seven serrated narrow leaflets, no other flowers or plant species. Upper 35%: pale cream sky, central hemp seedling foliage, a very distant small cream-stone Breton village with slate roof outlines softly fading into paper. Soil surface at y=40%, with a little dead hemp leaf litter at x=20%. Lower 60%: large front-facing illustrative soil cross-section, irregular granular aggregates in warm ochre, apricot and umber, discrete pores and a few little stones. A coherent cream taproot descends from the stem near x=52%, with thinner lateral roots branching into soil; roots must connect continuously to the plant, not float. Two visible earthworms and a burrow toward right side at x=80%, and a slightly more compact area at x=18% y=73% with fewer large visible gaps, no extreme solid brick. Show a small moist zone in lower right as subtle darker earth, NOT an underground blue lake. Style: beautifully hand-inked botanical storybook teaching plate, restrained watercolor and print grain, clear silhouettes, cream/teal/ochre palette, matches warm paper signage and a charming illustrated village. Detailed enough to invite exploration, simple enough to place six numbered HTML hotspots later. Composition: soil block occupies almost full width with generous margins, all plant and root extremities inside image. Scientific constraints: conceptual illustration not measured horizons; no giant bacteria, fungi mushrooms or invented microscopic organisms at the same scale as roots; no DNA, ions, arrows, labels, callout bubbles, numbers, lettering, ruler or chart; no pots, no laboratory, no cannabis consumption or tools. All explanatory labels and quantitative information will be HTML outside the artwork.",
+  "files": [
+    {
+      "path": "public/placard/school/soil/cutaway-v1.webp",
+      "bytes": 557642,
+      "width": 1536,
+      "height": 1024,
+      "sha256": "850ea7b8127147078aabaaffb975cb6a8c0147b210462ae87b02d46ed118dc40"
+    },
+    {
+      "path": "public/placard/school/soil/cutaway-thumb-v1.webp",
+      "bytes": 50556,
+      "width": 480,
+      "height": 320,
+      "sha256": "2de7d1cf53447075e476ea57c0d83912595a7c86b8b6446f943e10f4d8d2cadc"
+    }
+  ],
+  "processing": "Export WebP et miniature, proportions conservées ; aucun montage ni retouche sémantique.",
+  "review": "Illustration inspectée : chanvre reconnaissable, racine principale et latérales connectées, aucun microorganisme artificiellement grossi dans la scène. Repères et explications en HTML.",
+  "limits": "Coupe synthétique sans échelle ni horizons mesurés. Les couleurs ne prouvent ni texture, ni humidité chiffrée, ni fertilité. Racines et faune simplifiées ; les microbes et processus sont expliqués dans un schéma conceptuel séparé."
+}

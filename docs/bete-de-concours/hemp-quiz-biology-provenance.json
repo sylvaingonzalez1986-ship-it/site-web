@@ -1,0 +1,35 @@
+{
+  "checkedAt": "2026-11-13",
+  "module": "src/lib/kanab-quest-hemp-quiz-biology.ts",
+  "questions": 80,
+  "topics": ["plant", "genetics", "molecules", "evidence"],
+  "questionsPerTopic": 20,
+  "questionsPerLevelWithinTopic": 5,
+  "basis": "Faits du corpus botanique, terpènes et cannabinoïdes existant ; chaque articleId et sourceId résout dans le catalogue public.",
+  "directChecks": [
+    {
+      "questionId": "hemp-genetics-synthases-chromosome",
+      "sourceId": "botany-diversity-lynch2025",
+      "url": "https://www.nature.com/articles/s41586-025-09065-0",
+      "section": "Domesticated cannabinoid pathway, figure 4",
+      "fact": "Les gènes THCAS, CBDAS et CBCAS sont organisés dans des ensembles de séquences du chromosome 7.",
+      "access": "Texte original indexé consulté ; accès direct PMC interrompu par une vérification de navigateur."
+    },
+    {
+      "questionId": "hemp-genetics-chromosomes-diploides",
+      "sourceId": "botany-diversity-lynch2025",
+      "url": "https://www.nature.com/articles/s41586-025-09065-0",
+      "section": "Figure 1a, dix paires de chromosomes du génome diploïde",
+      "fact": "Le chanvre diploïde possède dix paires, soit vingt chromosomes dans une cellule somatique.",
+      "access": "Légende originale indexée consultée."
+    }
+  ],
+  "editorialReview": {
+    "focus": "Organes, cycle et sexes ; diversité et hérédité ; arômes et structures terpéniques ; identités et réseau des cannabinoïdes.",
+    "excluded": ["histoire", "dates à mémoriser", "méthodologie scientifique", "évaluation des preuves", "questions juridiques", "protocoles de production", "doses", "conseils de consommation"],
+    "answerPositions": [20, 20, 20, 20],
+    "maximumLengths": {"prompt": 102, "option": 42, "explanation": 127},
+    "checks": ["80 identifiants et énoncés uniques", "4 choix distincts par question", "5 questions par niveau et thème", "Articles et sources reliés au catalogue", "Relecture des réponses et distracteurs", "ESLint ciblé réussi"],
+    "crossTopicReview": "Remplacement de la localisation des fibres par celle des stipules pour éviter le recoupement avec les matériaux ; remplacement du vocabulaire des collections par le nombre de chromosomes du chanvre."
+  }
+}

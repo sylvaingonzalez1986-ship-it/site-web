@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-14",
+  "lot": "cannabinoids-04",
+  "entries": {
+    "record-cannabinoid-cbn": {
+      "contentHash": "73e3a8d6a3d5b182409564e319e587ae2e3cc223e7a9520c8b251afb3ef122b1",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-cbna": {
+      "contentHash": "1bddfbe450d5af07f77cf143db9f1f2c518c7fe95bd87c7c1fe49b13d11b72e6",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-thcv": {
+      "contentHash": "031e0742733e02e04ded18bf760ff5a7a1153fccc0fca04abdce7faf51984e7d",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-thcva": {
+      "contentHash": "3b904c1ab0311fa9dcd7a480499189725b442f74dd160c805247990c9c764d70",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-cbdv": {
+      "contentHash": "79264e63e52bf3787f14d890b6c9dcc959981a7d5b5b434a09b677134b7d576d",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-cbdva": {
+      "contentHash": "2c69f5698793205e14ecf0d36ace54833663473a7f2f1d88acb0b2228145cb1c",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  }
+}

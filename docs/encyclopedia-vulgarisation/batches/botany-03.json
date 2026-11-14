@@ -1,0 +1,1065 @@
+{
+  "domain": "botany",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "botany-variety-identity",
+      "title": "Genetic tools weed out misconceptions of strain reliability in Cannabis sativa",
+      "author": "Anna L. Schwabe et Mitchell E. McGlaughlin — Journal of Cannabis Research",
+      "organization": "Anna L. Schwabe et Mitchell E. McGlaughlin — Journal of Cannabis Research",
+      "published": "2019 ; Journal of Cannabis Research 1:3 ; DOI 10.1186/s42238-019-0001-1",
+      "url": "https://grn.issup.net/files/2019-06/Genetic%20tools%20weed%20out%20misconceptions%20of%20strain%20reliability%20in%20Cannabis%20sativa%20implications%20for%20a%20budding%20industry.pdf",
+      "passage": "Résumé original indexé : cohérence génétique variable d’échantillons portant un même nom commercial.",
+      "limitation": "Article original lu dans son PDF de 2019. La référence précédente liait ce titre au PMID 33526091, qui correspond à un autre article : URL corrigée. Dix marqueurs microsatellites ne couvrent pas tout le génome ni tous les matériels du marché.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé d’étude génétique originale",
+      "reviewEvidence": [
+        {
+          "url": "https://grn.issup.net/files/2019-06/Genetic%20tools%20weed%20out%20misconceptions%20of%20strain%20reliability%20in%20Cannabis%20sativa%20implications%20for%20a%20budding%20industry.pdf",
+          "sectionsOpened": [
+            "PDF original 2019 : p.1 résumé ; p.2–3 clones et mutations ; résultats et discussion"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Microsatellites et 30 noms de lignées ; discordances entre échantillons ; plusieurs lignées relativement cohérentes une fois les valeurs atypiques examinées"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-haze-ag",
+      "title": "What is Original Haze?",
+      "author": "Todd McCormick — Authentic Genetics",
+      "organization": "Todd McCormick — Authentic Genetics",
+      "published": "1er mai 2025",
+      "url": "https://agseedco.com/blogs/news/original-haze",
+      "passage": "Récit de transmission par Skunkman Sam ; origine revendiquée en 1969 à Santa Cruz et trois composantes colombiennes.",
+      "limitation": "Témoignage rétrospectif d’un détenteur et vendeur du matériel, pas archive contemporaine de 1969 ni vérification génétique ; ne pas généraliser cette version à toutes les Haze.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://agseedco.com/blogs/news/original-haze",
+          "sectionsOpened": [
+            "Article du 1 mai 2025 : paragraphes Original Haze, G, Sam, Colombian varieties"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Récit attribué de Santa Cruz 1969, transmission par Sam et trois composantes colombiennes"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-skunk-sam",
+      "title": "Sam the Skunkman: The Evolution of Hybrids",
+      "author": "Sensi Seeds, entretien avec Sam the Skunkman",
+      "organization": "Sensi Seeds, entretien avec Sam the Skunkman",
+      "published": "Entretien 2023 ; page mise à jour en 2025",
+      "url": "https://sensiseeds.com/en/blog/sam-the-skunkman-the-evolution-of-hybrids/",
+      "passage": "Passages Sam, you were talking about Skunk #1 et The process of hybridisation : Afghan, Colombian puis Acapulco Gold ; récit Sacred Seeds.",
+      "limitation": "Récit rétrospectif et présentation commerciale. Ni registre intégral des croisements ni test indépendant de parentage ; allégations d’effets non reprises.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://sensiseeds.com/en/blog/sam-the-skunkman-the-evolution-of-hybrids/",
+          "sectionsOpened": [
+            "Intro; Sam, you were talking about Skunk #1; The process of hybridisation"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Entretien original 2023 révisé en 2025 ; séquence Afghan/Colombian puis Acapulco Gold ; transmission européenne"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-sensi-history",
+      "title": "Sensi Seeds at 40: The Roots of Dutch Cannabis History",
+      "author": "Scarlet Palmer",
+      "organization": "Sensi Seeds",
+      "published": "2025-03-27 ; mise à jour 2025-12-17",
+      "url": "https://sensiseeds.com/en/blog/40-years-sensi-seeds/",
+      "verifiedAt": "2026-11-14",
+      "passage": "Chapitre Northern Lights1985 ; passage Skunk#1 sur versions féminisée2007 et automatique2013.",
+      "access": "excerpt",
+      "documentKind": "Rétrospective primaire de marque avec entretiens de ses acteurs",
+      "limitation": "Chronologie revendiquée, pas catalogue original de1985 ou génotypage. Ni les filiations supplémentaires ni le contexte historique général ne sont validés globalement.",
+      "reviewEvidence": [
+        {
+          "url": "https://sensiseeds.com/en/blog/40-years-sensi-seeds/",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "En-tête auteur et métadonnées",
+            "Chapitre Two: Northern Lights,1985 intégral",
+            "Chapitre Three: passage des versions2007/2013"
+          ],
+          "result": "Page HTTP200 enregistrée et extraite ; passages lus localement, au-delà des extraits de moteur.",
+          "assertionsSupported": [
+            "Sensi situe les débuts européens de Northern Lights en1985 dans sa rétrospective.",
+            "Le passage Skunk#1 attribue2007 et2013 aux versions féminisée et automatique."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-mango",
+      "title": "Mango Haze — Strains",
+      "author": "Mr. Nice, attribution à Nevil et Shantibaba",
+      "organization": "Mr. Nice, attribution à Nevil et Shantibaba",
+      "published": "Page sans date éditoriale affichée ; consultée en 2026",
+      "url": "https://mrnice.nl/dhtml/strains.php?id=26",
+      "passage": "Family of breed et premier paragraphe : branches Northern Lights #5, Skunk et Haze ; relation annoncée avec Super Silver Haze.",
+      "limitation": "La page décrit une ascendance composée ; elle ne donne pas trois parents directs simultanés ni un certificat ADN. Conseils de production et effets non repris.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://mrnice.nl/dhtml/strains.php?id=26",
+          "sectionsOpened": [
+            "Premier paragraphe; Heritage; Family of breed; Breeder"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Mr. Nice décrit un père Haze commun avec SSH et une mère sœur de celle de SSH ; ascendance NL5/Skunk/Haze ; attribution Nevil/Shantibaba"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-ssh",
+      "title": "Super Silver Haze — Genetics",
+      "author": "Green House Seed Company",
+      "organization": "Green House Seed Company",
+      "published": "Fiche courante consultée le 12 novembre 2026",
+      "url": "https://shop.greenhouseseeds.nl/feminised-cannabis-seeds/super-silver-haze/",
+      "passage": "Champ Genetics : Skunk × Northern Lights × Haze.",
+      "limitation": "Ascendances annoncées sans ordre détaillé de tous les croisements ; les flèches ne représentent pas nécessairement des parents directs. Mesures de catalogue et promesses non reprises.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://shop.greenhouseseeds.nl/feminised-cannabis-seeds/super-silver-haze/",
+          "sectionsOpened": [
+            "Titre; Genetics"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Ascendances annoncées Skunk, Northern Lights et Haze ; pas ordre complet des croisements"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-kush-sensi",
+      "title": "Hindu Kush — présentation de la lignée",
+      "author": "Sensi Seeds",
+      "organization": "Sensi Seeds",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://sensiseeds.com/en/feminized-seeds/sensi-seeds/hindu-kush",
+      "passage": "Origine revendiquée dans le massif de l’Hindu Kush, Afghanistan et Pakistan.",
+      "limitation": "Déclaration de provenance d’une version Sensi ; aucune équivalence démontrée avec toutes les lignées commerciales portant Kush.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://sensiseeds.com/en/feminized-seeds/sensi-seeds/hindu-kush",
+          "sectionsOpened": [
+            "About Hindu Kush Feminized; origine dans le massif"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Provenance revendiquée Afghanistan/Pakistan pour la version de Sensi, pas parentage universel de Kush"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-og-interview",
+      "title": "OG Kush: A Quarter Century of Gas",
+      "author": "Jimi Devine, entretien avec Josh Del Rosso (Josh D)",
+      "organization": "LA Weekly",
+      "published": "Édition imprimée du 17 au 23 avril 2020",
+      "url": "https://www.laweekly.com/wp-content/uploads/2020/01/e-edition-041620-396221.pdf",
+      "verifiedAt": "2026-11-14",
+      "passage": "PDF p.2–3 : contexte1996, apport de boutures depuis la Floride par Matt Berger, diffusion et dénomination OG.",
+      "access": "excerpt",
+      "documentKind": "Entretien journalistique primaire avec un acteur de la transmission",
+      "limitation": "Témoignage rétrospectif publié en2020 ; pas archive contemporaine de1996 ni preuve génétique des fondateurs. Les allégations médicales et détails pratiques du reste du récit ne sont pas repris.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.laweekly.com/wp-content/uploads/2020/01/e-edition-041620-396221.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "PDF p.1 pour date/titre",
+            "PDF p.2–3, entretien intégral extrait et effectivement lu"
+          ],
+          "result": "Téléchargement HTTP200 de19,576,199octets ; texte des six pages extrait avec PyPDF2 ; entretien p.2–3 lu localement.",
+          "assertionsSupported": [
+            "Récit attribué à Josh D concernant un matériel venu de Floride avec Matt Berger et sa diffusion à Los Angeles.",
+            "Repère1996 dans le contexte de l’installation collective du récit, sans pedigree fondateur établi."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-og-cbd",
+      "title": "OG Kush CBD — déclaration de généalogie",
+      "author": "Dinafem / Green Born Identity",
+      "organization": "Dinafem / Green Born Identity",
+      "published": "Article de la collection OG Kush CBD ; page consultée en 2026",
+      "url": "https://www.dinafem.org/en/blog/og-kush-cbd-grow-report-green-medicine/",
+      "passage": "Encadré Genetics : OG Kush × Dancehall.",
+      "limitation": "Source commerciale pour cette seule version Dinafem ; récit de culture, chiffres et promesses thérapeutiques volontairement exclus du dossier.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://www.dinafem.org/en/blog/og-kush-cbd-grow-report-green-medicine/",
+          "sectionsOpened": [
+            "Cultivation data: Genetics"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "OG Kush × Dancehall annoncé par Dinafem ; allégations médicales et consignes pratiques exclues"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-soma",
+      "title": "NYC Diesel — Soma Seeds Originals",
+      "author": "Soma’s Sacred Seeds",
+      "organization": "Soma’s Sacred Seeds",
+      "published": "Fiche courante consultée le 12 novembre 2026",
+      "url": "https://www.somaseeds.nl/product/new-york-city-diesel",
+      "passage": "En-tête de génétique Mexican Sativa × Afghani et récit de graines apportées par un ami de New York.",
+      "limitation": "Déclaration de Soma pour sa version ; provenance détaillée des lots fondateurs et relation exacte à Sour Diesel non établies. Pas de date de création inventée.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://www.somaseeds.nl/product/new-york-city-diesel",
+          "sectionsOpened": [
+            "Titre; Strain Description"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "NYC Diesel Soma : Mexican Sativa × Afghani et récit des graines reçues d’un ami"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-cannatonic",
+      "title": "New Cannatonic Information!",
+      "author": "Resin Seeds",
+      "organization": "Resin Seeds",
+      "published": "10 novembre 2015, modifié le 17 janvier 2016",
+      "url": "https://resinseeds.net/new-cannatonic-information/",
+      "passage": "Correction explicite de la parenté déclarée : Reina Madre × NYCD remplace MK-Ultra × G13.",
+      "limitation": "Document primaire de rectification, sans analyse indépendante présentée ; les anciennes parentés ne sont pas conservées comme faits biologiques simultanés.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "url": "https://resinseeds.net/new-cannatonic-information/",
+          "sectionsOpened": [
+            "Article complet, publication 10 novembre 2015 et modification 17 janvier 2016"
+          ],
+          "result": "Document ouvert et passage lu le 14 novembre 2026.",
+          "assertionsSupported": [
+            "Rectification explicite Reina Madre × NYCD remplaçant MK-Ultra × G13"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "botany-variety-buddies",
+      "title": "Fiches documentaires des Buddies existants",
+      "author": "Kanab Quest",
+      "organization": "Kanab Quest",
+      "published": "Révision locale du 30 octobre 2026",
+      "url": "/arene/placard?view=shop&tab=collection&section=buddies",
+      "passage": "Registre KQ_BUDDIE_NAMES et tables locales 001–026 / 027–052 : existence des noms et rattachements des notices de variétés aux cartes du jeu.",
+      "limitation": "Vérification locale des liens et des versions nommées ; ces fichiers ne constituent ni une archive indépendante de création ni un test génétique des parentés commerciales.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source primaire attribuée ou fiche documentaire du jeu",
+      "reviewEvidence": [
+        {
+          "status": "read",
+          "url": "/arene/placard?view=shop&tab=collection&section=buddies",
+          "sectionsOpened": [
+            "src/lib/kanab-quest-game.ts: KQ_BUDDIE_NAMES",
+            "src/data/buddie-varieties/001-026.json",
+            "src/data/buddie-varieties/027-052.json",
+            "src/lib/kanab-quest-school-botany-varieties.ts: variantes et buddyCodes"
+          ],
+          "result": "Registre des 52 noms lu et correspondances des dix notices de variétés contrôlées dans les fichiers locaux ; aucune nouvelle preuve externe de pedigree revendiquée.",
+          "assertionsSupported": [
+            "Existence et distinction des fiches Buddies référencées"
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-variety-haze",
+      "questions": [
+        "À qui le récit McCormick attribue-t-il Original Haze ?",
+        "Comment distinguer ses composantes colombiennes, Super Silver Haze et Mango Haze ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après ouverture : récit McCormick et champ Genetics Green House. Fragments développés pour expliquer conservation, branches et différence entre ascendance et parents directs. Pas de photo générique attribuée à un cultivar historique.",
+        "Contre-lecture du coordinateur : références réparties par section ; détails techniques de collecte retirés de la lecture publique, incertitudes historiques conservées."
+      ],
+      "patch": {
+        "lead": "Haze est un nom associé à une histoire de sélection en Californie, puis à de nombreux croisements. Original Haze, Super Silver Haze et Mango Haze désignent des matériels différents : leurs noms racontent une famille, pas une plante unique partout identique.",
+        "sections": [
+          {
+            "id": "history",
+            "title": "Un récit de création et de transmission",
+            "paragraphs": [
+              "Dans son article de 2025, Todd McCormick situe son Original Haze dans les montagnes de Santa Cruz, en Californie, en 1969. Il attribue la création à une personne nommée « G », puis la conservation et la transmission des graines à Skunkman Sam.",
+              "Il faut distinguer créer un matériel, le conserver et le transmettre à une autre personne. Le récit donne des acteurs et un parcours ; publié longtemps après les faits, il n’est pas un document rédigé en 1969."
+            ],
+            "sourceIds": [
+              "botany-variety-haze-ag"
+            ]
+          },
+          {
+            "id": "parents",
+            "title": "Des ancêtres et des parents directs",
+            "paragraphs": [
+              "Authentic Genetics décrit trois composantes colombiennes pour sa version d’Original Haze. Une composante ancestrale peut avoir été apportée à une génération antérieure : trois origines ne sont pas forcément trois parents directs réunis au même moment.",
+              "Pour Super Silver Haze, Green House annonce Skunk, Northern Lights et Haze. Le champ de génétique de sa fiche ne détaille pas tout l’ordre des croisements ; on peut retenir les noms annoncés sans inventer les étapes intermédiaires."
+            ],
+            "sourceIds": [
+              "botany-variety-haze-ag",
+              "botany-variety-ssh"
+            ]
+          },
+          {
+            "id": "variants",
+            "title": "Suivre les branches plutôt que fusionner les noms",
+            "paragraphs": [
+              "Mr. Nice décrit Mango Haze comme une branche parallèle à Super Silver Haze, avec un père Haze commun et une mère apparentée. Un croisement produit une descendance ; des sélections différentes dans cette histoire peuvent donc porter des noms différents.",
+              "Les noms Hawaiian Haze, Mango Haze CBD et Lemon Haze CBD renvoient encore à des versions décrites séparément dans leurs fiches Buddies. Une partie du nom peut rappeler une parenté, mais ne suffit pas à rendre toutes ces plantes identiques."
+            ],
+            "sourceIds": [
+              "botany-variety-mango",
+              "botany-variety-ssh",
+              "botany-variety-buddies"
+            ]
+          },
+          {
+            "id": "evidence",
+            "title": "Ce que permettent les documents",
+            "paragraphs": [
+              "Le récit de McCormick et les fiches des sélectionneurs enseignent des histoires attribuées à leurs auteurs. Ils ne livrent pas l’ADN de tous les fondateurs. Le plus utile est donc de garder ensemble le nom de la version, la maison qui l’annonce et la relation précise qu’elle décrit."
+            ],
+            "sourceIds": [
+              "botany-variety-identity",
+              "botany-variety-haze-ag",
+              "botany-variety-ssh"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-variety-haze-ag",
+          "botany-variety-ssh",
+          "botany-variety-mango",
+          "botany-variety-buddies",
+          "botany-variety-identity"
+        ],
+        "relatedArticleIds": [
+          "ref-noms-lignees",
+          "ref-cultivars-clones"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "haze"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Désignation",
+            "value": "Famille de sélections et d’hybrides"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois branches portant Haze",
+          "nodes": [
+            {
+              "label": "Original Haze",
+              "detail": "Authentic Genetics annonce trois composantes colombiennes."
+            },
+            {
+              "label": "Super Silver Haze",
+              "detail": "Green House annonce Skunk, Northern Lights et Haze."
+            },
+            {
+              "label": "Mango Haze",
+              "detail": "Mr. Nice décrit une branche parallèle avec un père Haze commun."
+            }
+          ],
+          "caption": "Chaque ligne correspond à la déclaration d’une maison, pas à trois noms interchangeables.",
+          "sourceIds": [
+            "botany-variety-haze-ag",
+            "botany-variety-ssh",
+            "botany-variety-mango"
+          ],
+          "afterSectionId": "variants"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-variety-haze-ag",
+        "botany-variety-ssh",
+        "botany-variety-identity",
+        "botany-variety-mango"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Pourquoi Original Haze et Super Silver Haze ne sont-elles pas deux noms de la même plante ?",
+        "explainedTerms": [
+          "sélection",
+          "transmission",
+          "composante ancestrale",
+          "parent direct",
+          "croisement"
+        ],
+        "example": "Trois origines ancestrales peuvent être apportées au fil de plusieurs générations.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Que manque-t-il pour dessiner toutes les étapes de Super Silver Haze ?",
+            "expectedAnswer": "Les composantes sont annoncées, mais leur ordre complet de croisement n’est pas fourni par le champ étudié."
+          }
+        ],
+        "quizIdsReviewed": [],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "record-variety-skunk",
+      "questions": [
+        "Quelle séquence d’ascendances le récit de Sam annonce-t-il pour Skunk #1 ?",
+        "Pourquoi les versions commerciales ne sont-elles pas interchangeables ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Séquence ancestrale conservée après lecture ; trois parents directs simultanés évités. Dates 2007/2013 mises en réserve car source Sensi 40 ans inaccessible malgré plusieurs tentatives, avec trace distincte.",
+        "Contre-lecture du coordinateur : références réparties par section ; détails techniques de collecte retirés de la lecture publique, incertitudes historiques conservées."
+      ],
+      "patch": {
+        "lead": "Skunk #1 est liée au travail de sélection de Sacred Seeds en Californie, puis à la circulation de graines vers l’Europe. Son histoire de croisements permet de comprendre comment plusieurs origines peuvent se retrouver dans une même descendance.",
+        "sections": [
+          {
+            "id": "history",
+            "title": "Du travail californien à la diffusion européenne",
+            "paragraphs": [
+              "Dans l’entretien avec Sam the Skunkman publié par Sensi en 2023 puis mis à jour en 2025, Skunk #1 est rattachée à Sacred Seeds en Californie. Le récit suit ensuite la circulation de graines vers les Pays-Bas.",
+              "La création et la diffusion sont deux moments différents : une plante ou une population peut avoir été sélectionnée avant d’être proposée par une autre maison. Le document est un témoignage rétrospectif, c’est-à-dire raconté après les événements."
+            ],
+            "sourceIds": [
+              "botany-variety-skunk-sam"
+            ]
+          },
+          {
+            "id": "parents",
+            "title": "Lire un croisement en plusieurs générations",
+            "paragraphs": [
+              "Le récit annonce d’abord un croisement entre des matériels Afghan et Colombian, puis un apport d’Acapulco Gold à leur descendance. Le signe × représente un croisement : il relie deux matériels parentaux à une génération donnée.",
+              "On obtient ainsi trois composantes ancestrales au fil des générations, et non trois parents directs simultanés. Les noms d’origine décrivent les matériels revendiqués ; ils ne fournissent pas l’identité génétique de chacune des plantes fondatrices."
+            ],
+            "sourceIds": [
+              "botany-variety-skunk-sam"
+            ]
+          },
+          {
+            "id": "variants",
+            "title": "Ne pas confondre les versions",
+            "paragraphs": [
+              "Une version régulière et une version féminisée diffèrent par la catégorie de semences annoncée ; la seconde vise une descendance principalement femelle. Une version automatique possède une floraison moins dépendante de la durée du jour. Ces mots ne décrivent donc pas le même caractère.",
+              "Sensi Skunk, Skunk Dream CBD et Cheese CBD possèdent leurs propres fiches. Le mot partagé ne suffit pas à les identifier à chaque lot Skunk #1."
+            ],
+            "sourceIds": [
+              "botany-variety-buddies",
+              "botany-variety-identity"
+            ]
+          },
+          {
+            "id": "evidence",
+            "title": "Garder le nom avec sa source",
+            "paragraphs": [
+              "Le témoignage de Sam permet d’attribuer une histoire à son auteur. Le terme courant skunk peut toutefois être employé plus largement : son apparition dans une conversation ou une étiquette ne démontre pas une descendance précise de Skunk #1. Pour suivre une version, son nom complet et son détenteur sont plus informatifs."
+            ],
+            "sourceIds": [
+              "botany-variety-skunk-sam",
+              "botany-variety-identity"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-variety-skunk-sam",
+          "botany-variety-buddies",
+          "botany-variety-identity"
+        ],
+        "relatedArticleIds": [
+          "ref-noms-lignees",
+          "ref-cultivars-clones"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "skunk"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Désignation",
+            "value": "Skunk #1 et branches commerciales"
+          }
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Lire les générations dans le récit Skunk #1",
+          "nodes": [
+            {
+              "label": "Premier apport",
+              "detail": "Croisement annoncé Afghan–Colombian."
+            },
+            {
+              "label": "Apport suivant",
+              "detail": "Acapulco Gold est ensuite reliée à cette descendance."
+            },
+            {
+              "label": "Sélections ultérieures",
+              "detail": "Les matériels et versions doivent garder leurs noms propres."
+            }
+          ],
+          "caption": "Trois composantes ancestrales n’impliquent pas trois parents directs simultanés.",
+          "sourceIds": [
+            "botany-variety-skunk-sam"
+          ],
+          "afterSectionId": "parents"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-variety-skunk-sam",
+        "botany-variety-identity"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Comment trois composantes peuvent-elles entrer dans une descendance sans trois parents directs ?",
+        "explainedTerms": [
+          "croisement",
+          "descendance",
+          "ancestral",
+          "régulière",
+          "féminisée",
+          "automatique"
+        ],
+        "example": "Un descendant Afghan–Colombian peut recevoir ensuite un apport Acapulco Gold.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Féminisée et automatique désignent-elles la même propriété ?",
+            "expectedAnswer": "Non : la première concerne la catégorie de semences visant surtout des femelles, la seconde la dépendance de la floraison à la durée du jour."
+          }
+        ],
+        "quizIdsReviewed": [],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "record-variety-northern-lights",
+      "questions": [
+        "Que documentent les mentions de NL5 dans Mango Haze et de Northern Lights dans SSH ?",
+        "Quels fondateurs et quel repère historique restent à vérifier ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Ascendances NL5/Skunk/Haze et relation entre Mango Haze et SSH relues chez Mr. Nice. Repère 1985 non confirmé faute d’accès Sensi ; pas de fondateurs reconstruits avec des récits secondaires.",
+        "Contre-lecture du coordinateur : références réparties par section ; détails techniques de collecte retirés de la lecture publique, incertitudes historiques conservées.",
+        "Dernier accès primaire résolu et proposition relue par le coordinateur ; voir cross-reviews/varieties-final-access.json. Attribution rétrospective maintenue, aucune certification génétique ajoutée."
+      ],
+      "patch": {
+        "lead": "Northern Lights désigne une famille de sélections, dont certaines portent un numéro. La rétrospective de Sensi situe ses débuts européens en 1985 ; les catalogues décrivent ensuite plusieurs descendants utilisant cette famille.",
+        "sections": [
+          {
+            "id": "history",
+            "title": "Le repère européen de 1985",
+            "paragraphs": [
+              "La rétrospective publiée par Sensi en 2025 situe les débuts européens de Northern Lights en 1985. Ce repère décrit une diffusion : il ne faut pas le confondre avec la date de création biologique du matériel aux États-Unis.",
+              "Un numéro peut servir à suivre une sélection particulière dans une famille. Northern Lights #5, souvent abrégée NL5, est ainsi une désignation plus précise que Northern Lights sans numéro."
+            ],
+            "sourceIds": [
+              "botany-variety-sensi-history"
+            ]
+          },
+          {
+            "id": "parents",
+            "title": "Un descendant ne révèle pas les parents de son ancêtre",
+            "paragraphs": [
+              "Mr. Nice cite NL5 dans l’ascendance de Mango Haze, avec Skunk et Haze. Green House cite Northern Lights dans celle de Super Silver Haze. Ces annonces indiquent qu’une version de Northern Lights est présentée comme un ancêtre.",
+              "Elles ne donnent pas pour autant les parents fondateurs de Northern Lights elle-même. Dans un arbre familial, connaître un descendant et le nom de sa grand-mère ne révèle pas automatiquement les parents de cette grand-mère. Aucun couple fondateur n’est donc imposé ici."
+            ],
+            "sourceIds": [
+              "botany-variety-mango",
+              "botany-variety-ssh"
+            ]
+          },
+          {
+            "id": "variants",
+            "title": "Un numéro aide à suivre une branche",
+            "paragraphs": [
+              "Northern Lights, Northern Lights #5 et leurs descendants doivent garder leurs descriptions propres. Pour Mango Haze, Mr. Nice annonce un père Haze commun à Super Silver Haze et une mère sœur de celle de cette dernière.",
+              "Le Buddy Mango Haze CBD est encore une version distincte. La continuité d’un nom doit donc être accompagnée du détenteur et du matériel étudié, plutôt que déduite du seul numéro."
+            ],
+            "sourceIds": [
+              "botany-variety-mango",
+              "botany-variety-buddies"
+            ]
+          },
+          {
+            "id": "evidence",
+            "title": "Ce que l’on peut retenir",
+            "paragraphs": [
+              "La date de diffusion attribuée à Sensi et les ascendances annoncées par les catalogues sont des informations documentées de nature différente. Un catalogue explique ce qu’une maison présente ; une comparaison d’ADN serait nécessaire pour examiner directement la proximité de plantes identifiées."
+            ],
+            "sourceIds": [
+              "botany-variety-mango",
+              "botany-variety-ssh",
+              "botany-variety-identity"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-variety-sensi-history",
+          "botany-variety-mango",
+          "botany-variety-ssh",
+          "botany-variety-buddies",
+          "botany-variety-identity"
+        ],
+        "relatedArticleIds": [
+          "ref-noms-lignees",
+          "ref-cultivars-clones"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "northern-lights"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Désignation",
+            "value": "Famille de sélections numérotées et d’hybrides"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "Un ancêtre annoncé dans deux descendants",
+          "nodes": [
+            {
+              "label": "Northern Lights historique",
+              "detail": "Les parents fondateurs restent non établis ici."
+            },
+            {
+              "label": "Mango Haze",
+              "detail": "Mr. Nice cite NL5 dans son ascendance."
+            },
+            {
+              "label": "Super Silver Haze",
+              "detail": "Green House cite Northern Lights dans son ascendance."
+            }
+          ],
+          "caption": "Ces deux annonces de descendants ne révèlent pas les parents de Northern Lights.",
+          "sourceIds": [
+            "botany-variety-mango",
+            "botany-variety-ssh"
+          ],
+          "afterSectionId": "parents"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-variety-mango",
+        "botany-variety-ssh",
+        "botany-variety-identity",
+        "botany-variety-sensi-history"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite. Contrôle du coordinateur : le diagramme final ne reprend pas les dates ou filiations historiques encore bloquées ; son contenu est limité aux distinctions et déclarations effectivement lues."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "À quoi sert le numéro dans Northern Lights #5 ?",
+        "explainedTerms": [
+          "sélection numérotée",
+          "diffusion",
+          "ancêtre",
+          "descendant",
+          "détenteur"
+        ],
+        "example": "Un descendant documenté de NL5 ne révèle pas automatiquement les parents de NL5.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "1985 date-t-il nécessairement le premier croisement de Northern Lights ?",
+            "expectedAnswer": "Non : le document situe ses débuts européens, ce qui est un événement de diffusion."
+          }
+        ],
+        "quizIdsReviewed": [],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "record-variety-kush",
+      "questions": [
+        "Quelle différence existe-t-il entre provenance Hindu Kush et parenté OG Kush CBD ?",
+        "Quels points historiques sur OG Kush restent à vérifier ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Pages Sensi et Dinafem ouvertes, annonces conservées avec attribution. Véritable limite : entretien OG PDF non relu, trop volumineux pour outil web ; date et transmission signalées à contre-vérifier. Aucun parent Chemdawg/Hindu Kush inventé.",
+        "Contre-lecture du coordinateur : références réparties par section ; détails techniques de collecte retirés de la lecture publique, incertitudes historiques conservées.",
+        "Dernier accès primaire résolu et proposition relue par le coordinateur ; voir cross-reviews/varieties-final-access.json. Attribution rétrospective maintenue, aucune certification génétique ajoutée."
+      ],
+      "patch": {
+        "lead": "Le nom Kush peut renvoyer au massif de l’Hindu Kush, à des matériels qui lui sont attribués ou à des familles commerciales différentes. Hindu Kush, OG Kush et OG Kush CBD ne racontent donc pas exactement la même histoire.",
+        "sections": [
+          {
+            "id": "history",
+            "title": "Distinguer un lieu et un parcours de transmission",
+            "paragraphs": [
+              "L’Hindu Kush est un massif entre l’Afghanistan et le Pakistan. Sensi attribue à cette région l’origine de sa version Hindu Kush : c’est une provenance annoncée par la maison.",
+              "Pour OG Kush, l’entretien de Josh D publié en 2020 raconte une autre étape : dans un contexte situé autour de 1996, Matt Berger apporte des boutures depuis la Floride, puis le matériel se diffuse à Los Angeles. Une bouture est un fragment de plante dont peut provenir une descendance végétative. Le récit décrit une transmission, pas les parents génétiques fondateurs."
+            ],
+            "sourceIds": [
+              "botany-variety-kush-sensi",
+              "botany-variety-og-interview"
+            ]
+          },
+          {
+            "id": "parents",
+            "title": "Lire la parenté d’une version précise",
+            "paragraphs": [
+              "Dinafem annonce OG Kush × Dancehall pour OG Kush CBD. Le signe × relie les deux matériels présentés comme parents du croisement. Cette information s’applique à cette version nommée.",
+              "Elle ne signifie pas que Dancehall serait un parent de l’OG Kush historique : dans ce croisement, OG Kush est déjà un matériel parental. On remonte ou l’on descend une génération selon la question posée."
+            ],
+            "sourceIds": [
+              "botany-variety-og-cbd"
+            ]
+          },
+          {
+            "id": "variants",
+            "title": "Le nom commun ne fusionne pas les familles",
+            "paragraphs": [
+              "Hindu Kush, OG Kush et Bubba Kush gardent leurs dossiers propres. De même, une sélection visant un caractère CBD ajoute une histoire de sélection à celle du matériel utilisé au départ.",
+              "Skywalker OG et Kandy Kush ne deviennent pas des parents universels des autres plantes parce qu’ils portent Kush ou OG. Le nom d’une famille et une relation de parenté vérifiée ne sont pas la même information."
+            ],
+            "sourceIds": [
+              "botany-variety-buddies",
+              "botany-variety-identity"
+            ]
+          },
+          {
+            "id": "evidence",
+            "title": "Rassembler les bonnes pièces",
+            "paragraphs": [
+              "Le catalogue Sensi documente la provenance revendiquée pour Hindu Kush ; l’entretien de Josh D décrit un parcours ; la fiche Dinafem annonce un croisement. Les lire ensemble aide à distinguer lieu, transmission et parenté. Ces documents ne fournissent toujours pas les fondateurs génétiques complets d’OG Kush."
+            ],
+            "sourceIds": [
+              "botany-variety-kush-sensi",
+              "botany-variety-og-cbd",
+              "botany-variety-identity"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-variety-kush-sensi",
+          "botany-variety-og-interview",
+          "botany-variety-og-cbd",
+          "botany-variety-buddies",
+          "botany-variety-identity"
+        ],
+        "relatedArticleIds": [
+          "ref-noms-lignees",
+          "ref-cultivars-clones"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "kush"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Désignation",
+            "value": "Toponyme, lignées et noms commerciaux"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois usages du nom Kush",
+          "nodes": [
+            {
+              "label": "Hindu Kush",
+              "detail": "Un lieu et une provenance revendiquée par Sensi."
+            },
+            {
+              "label": "OG Kush",
+              "detail": "Un récit de transmission depuis la Floride ; fondateurs non établis ici."
+            },
+            {
+              "label": "OG Kush CBD",
+              "detail": "Dinafem annonce OG Kush × Dancehall."
+            }
+          ],
+          "caption": "Lieu d’origine, transmission d’une plante et croisement décrivent des événements différents.",
+          "sourceIds": [
+            "botany-variety-kush-sensi",
+            "botany-variety-og-cbd"
+          ],
+          "afterSectionId": "parents"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-variety-kush-sensi",
+        "botany-variety-og-cbd",
+        "botany-variety-identity",
+        "botany-variety-og-interview"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite. Contrôle du coordinateur : le diagramme final ne reprend pas les dates ou filiations historiques encore bloquées ; son contenu est limité aux distinctions et déclarations effectivement lues."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Que peut-on apprendre du mot Kush, et que faut-il chercher ailleurs ?",
+        "explainedTerms": [
+          "provenance",
+          "bouture",
+          "descendance végétative",
+          "parent",
+          "croisement"
+        ],
+        "example": "OG Kush est parent dans OG Kush × Dancehall ; le croisement ne décrit pas ses propres fondateurs.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Le récit Floride–Los Angeles prouve-t-il les parents génétiques d’OG Kush ?",
+            "expectedAnswer": "Non : il raconte la transmission d’un matériel déjà existant."
+          }
+        ],
+        "quizIdsReviewed": [],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    },
+    {
+      "id": "record-variety-diesel",
+      "questions": [
+        "Quelle parenté Soma annonce-t-il pour NYC Diesel ?",
+        "Pourquoi le nom NYCD dans Cannatonic ne suffit-il pas à identifier un lot Soma ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Soma et correction Resin Seeds relus ; les parentés annoncées sont conservées. Clarification NYCD/lot Soma et retrait du style de fragments ; aucune confusion avec Sour Diesel.",
+        "Contre-lecture du coordinateur : références réparties par section ; détails techniques de collecte retirés de la lecture publique, incertitudes historiques conservées."
+      ],
+      "patch": {
+        "lead": "NYC Diesel est associée au récit de Soma, qui dit avoir reçu des graines d’un ami de New York. Le mot Diesel apparaît cependant dans plusieurs noms : une odeur ou un nom partagé ne suffit pas à relier tous ces matériels au même arbre familial.",
+        "sections": [
+          {
+            "id": "history",
+            "title": "La provenance d’un lot de graines",
+            "paragraphs": [
+              "Soma raconte l’arrivée de graines d’un ami new-yorkais dans l’histoire de sa NYC Diesel. Ce récit concerne une transmission ; la page ne date pas avec précision tous les croisements précédents.",
+              "Le nom NYCD apparaît aussi comme parent de Cannatonic dans une correction publiée par Resin Seeds en 2015. Sa présence dans ce document montre que le nom est utilisé dans une annonce, sans identifier chaque lot passé ou actuel."
+            ],
+            "sourceIds": [
+              "botany-variety-soma",
+              "botany-variety-cannatonic"
+            ]
+          },
+          {
+            "id": "parents",
+            "title": "Deux annonces à lire séparément",
+            "paragraphs": [
+              "Soma présente NYC Diesel comme Mexican Sativa × Afghani. Resin Seeds annonce pour Cannatonic Reina Madre × NYCD. Le signe × désigne dans chaque cas les deux matériels revendiqués comme parents.",
+              "Pour relier avec certitude le NYCD des deux documents, il faudrait suivre les plantes ou les lots concernés. Un même nom dans deux arbres ne prouve pas à lui seul que les échantillons sont identiques."
+            ],
+            "sourceIds": [
+              "botany-variety-soma",
+              "botany-variety-cannatonic"
+            ]
+          },
+          {
+            "id": "variants",
+            "title": "Une odeur ne fait pas un arbre familial",
+            "paragraphs": [
+              "NYC Diesel et Sour Diesel sont deux appellations distinctes ; Sour Tsunami et NYC Diesel CBD SWS69 ont aussi leurs propres descriptions. Les caractères sélectionnés peuvent changer entre branches.",
+              "Dire qu’une plante sent le diesel décrit une perception aromatique. Cette perception ne donne ni le nom de ses parents ni une teneur chimique. Elle ne suffit donc pas à prouver une descendance de Soma ou une parenté avec Sour Diesel."
+            ],
+            "sourceIds": [
+              "botany-variety-buddies",
+              "botany-variety-identity"
+            ]
+          },
+          {
+            "id": "evidence",
+            "title": "Une correction est un changement de déclaration",
+            "paragraphs": [
+              "Resin Seeds a retiré l’ancienne annonce MK-Ultra × G13 pour Cannatonic. Elle ne doit pas être ajoutée à la nouvelle comme un second couple de parents : il s’agit d’une rectification du récit de la même maison. Les déclarations restent attribuées à leurs auteurs."
+            ],
+            "sourceIds": [
+              "botany-variety-soma",
+              "botany-variety-cannatonic",
+              "botany-variety-identity"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "botany-variety-soma",
+          "botany-variety-cannatonic",
+          "botany-variety-buddies",
+          "botany-variety-identity"
+        ],
+        "relatedArticleIds": [
+          "ref-noms-lignees",
+          "ref-cultivars-clones"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "plant",
+            "passageId": "diesel"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Désignation",
+            "value": "Noms proches, versions distinctes"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Lire deux annonces sans confondre les lots",
+          "nodes": [
+            {
+              "label": "NYC Diesel / Soma",
+              "detail": "Mexican Sativa × Afghani."
+            },
+            {
+              "label": "Cannatonic / Resin Seeds",
+              "detail": "Reina Madre × NYCD, correctif de 2015."
+            },
+            {
+              "label": "Le lien à vérifier",
+              "detail": "Le nom NYCD seul ne prouve pas l’identité des plantes employées."
+            }
+          ],
+          "caption": "Un nom partagé relie des récits ; il ne remplace pas le suivi des échantillons.",
+          "sourceIds": [
+            "botany-variety-soma",
+            "botany-variety-cannatonic"
+          ],
+          "afterSectionId": "parents"
+        },
+        "image": null
+      },
+      "sourceIdsReviewed": [
+        "botany-variety-soma",
+        "botany-variety-cannatonic",
+        "botany-variety-identity"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Planche de synthèse existante examinée, écartée comme preuve. Diagramme original contrôlé sur les passages sources ; chaque relation est décrite en texte, sans pedigree implicite."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "reviewedAt": "2026-11-14",
+        "entryQuestion": "Une odeur de diesel indique-t-elle les parents d’une plante ?",
+        "explainedTerms": [
+          "transmission",
+          "lot",
+          "parenté annoncée",
+          "perception aromatique",
+          "rectification"
+        ],
+        "example": "Une même abréviation NYCD dans deux documents ne suffit pas à identifier le même lot.",
+        "detailsMovedTo": [],
+        "comprehensionChecks": [
+          {
+            "question": "Faut-il dessiner deux couples de parents pour Cannatonic après la correction de 2015 ?",
+            "expectedAnswer": "Non : l’ancienne annonce a été remplacée, pas ajoutée comme une autre génération biologique."
+          }
+        ],
+        "quizIdsReviewed": [],
+        "method": "Réécriture individuelle : définition, mécanisme, exemple ; réserves essentielles intégrées au passage concerné."
+      }
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [],
+  "sensitivePoints": [
+    "Le coordinateur doit contre-vérifier les taxonomies et pedigrees attribués avant validation finale."
+  ],
+  "pedagogicalReview": {
+    "reviewedAt": "2026-11-14",
+    "articles": 5,
+    "terms": 0,
+    "quizExplanations": 0,
+    "scientificOriginalsModified": false
+  }
+}

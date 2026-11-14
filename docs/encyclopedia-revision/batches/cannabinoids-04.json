@@ -1,0 +1,930 @@
+{
+  "domain": "cannabinoids",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "cb-kim-2022",
+      "title": "Profiling Cannabinoid Contents and Expression Levels of Corresponding Biosynthetic Genes in Commercial Cannabis (Cannabis sativa L.) Cultivars",
+      "author": "A. L. Kim et al.",
+      "published": "2022-11-14",
+      "organization": "Plants",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9697443/",
+      "access": "excerpt",
+      "passage": "Introduction, Figure 1 and results; numeric inconsistencies in abstract not reused.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC9697443/",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction, Figure 1 and results; numeric inconsistencies in abstract not reused.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cannabinoids-lesson-aging2019",
+      "title": "The role of time and storage conditions on the composition of hashish and marijuana samples: A four-year study",
+      "author": "Luca Zamengo, Chiara Bettin, Denis Badocco, Valerio Di Marco, Giorgia Miolo et Giampietro Frison",
+      "organization": "Forensic Science International / PubMed",
+      "published": "En ligne le 8 mars 2019 ; mai 2019, 298:131–137",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/30901710/",
+      "passage": "PubMed abstract: six products, four years, storage dependency.",
+      "access": "abstract",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés par indexation",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/30901710/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: six products, four years, storage dependency.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-propyl-1977",
+      "title": "Cannabis. X. The Isolation and Structures of Four New Propyl Cannabinoid Acids, Tetrahydrocannabivarinic Acid, Cannabidivarinic Acid, Cannabichromevarinic Acid and Cannabigerovarinic Acid, from Thai Cannabis, ‘Meao Variant’",
+      "author": "Y. Shoyama, H. Hirano, H. Makino, N. Umekita et I. Nishioka",
+      "published": "1977-09-25",
+      "organization": "Chemical and Pharmaceutical Bulletin",
+      "url": "https://www.jstage.jst.go.jp/article/cpb1958/25/9/25_9_2306/_article/-char/en",
+      "access": "abstract",
+      "passage": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+      "limitation": "Pas d’essai pharmacologique humain.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.jstage.jst.go.jp/article/cpb1958/25/9/25_9_2306/_article/-char/en",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-shoyama-1970",
+      "title": "Cannabis. V. Cannabigerolic Acid Monomethyl Ether and Cannabinolic Acid",
+      "author": "Y. Shoyama, T. Yamauchi et I. Nishioka",
+      "published": "1970",
+      "organization": "Chemical and Pharmaceutical Bulletin",
+      "url": "https://www.jstage.jst.go.jp/article/cpb1958/18/7/18_7_1327/_article",
+      "access": "abstract",
+      "passage": "Résumé J-STAGE : cannabinoïdes acides du matériel frais et CBNA observé dans du matériel conservé.",
+      "limitation": "PDF non récupéré ; aucune non-détection du THCA-B vérifiée.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.jstage.jst.go.jp/article/cpb1958/18/7/18_7_1327/_article",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé J-STAGE : cannabinoïdes acides du matériel frais et CBNA observé dans du matériel conservé.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé J-STAGE : cannabinoïdes acides du matériel frais et CBNA observé dans du matériel conservé.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-zagzoog-2020",
+      "title": "In vitro and in vivo pharmacological activity of minor cannabinoids isolated from Cannabis sativa",
+      "author": "A. Zagzoog et al.",
+      "published": "2020-11-23",
+      "organization": "Scientific Reports",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7684313/",
+      "access": "excerpt",
+      "passage": "Résumé et résultats PMC, tableau 1, figure 2, tableaux fonctionnels AMPc : huit cannabinoïdes, cellules CHO exprimant CB1/CB2 humains et souris C57BL/6.",
+      "limitation": "Récepteurs humains en cellules de hamster ≠ participants humains ; les estimations de liaison ont parfois de larges intervalles.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7684313/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et résultats PMC, tableau 1, figure 2, tableaux fonctionnels AMPc : huit cannabinoïdes, cellules CHO exprimant CB1/CB2 humains et souris C57BL/6.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé et résultats PMC, tableau 1, figure 2, tableaux fonctionnels AMPc : huit cannabinoïdes, cellules CHO exprimant CB1/CB2 humains et souris C57BL/6.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-cbn-human-2026",
+      "title": "Cannabinol for Acute Treatment of Insomnia Disorder in a Randomized Placebo-Controlled Crossover Trial",
+      "author": "I. G. Lavender et al.",
+      "published": "2026",
+      "organization": "Journal of Sleep Research",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13357646/",
+      "access": "excerpt",
+      "passage": "Résumé et introduction PMC : 20 adultes insomniaques, essai croisé trois bras, nuit unique ; WASO primaire négatif, résultats secondaires et événements.",
+      "limitation": "Suivi aigu ; effets secondaires exploratoires, pas validation de produits commerciaux.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC13357646/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et introduction PMC : 20 adultes insomniaques, essai croisé trois bras, nuit unique ; WASO primaire négatif, résultats secondaires et événements.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé et introduction PMC : 20 adultes insomniaques, essai croisé trois bras, nuit unique ; WASO primaire négatif, résultats secondaires et événements.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-cbdv-human-2021",
+      "title": "A Phase 2 Randomized Controlled Trial of the Efficacy and Safety of Cannabidivarin as Add-on Therapy in Participants with Inadequately Controlled Focal Seizures",
+      "author": "M. J. Brodie et al.",
+      "published": "2021-12",
+      "organization": "Cannabis and Cannabinoid Research",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8713263/",
+      "access": "excerpt",
+      "passage": "Résumé et résultats PMC : 162 participants, 81/bras, critère principal crises focales non significatif, événements et transaminases ; conclusion.",
+      "limitation": "Pas de supériorité clinique démontrée ; annexes non relues.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8713263/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et résultats PMC : 162 participants, 81/bras, critère principal crises focales non significatif, événements et transaminases ; conclusion.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé et résultats PMC : 162 participants, 81/bras, critère principal crises focales non significatif, événements et transaminases ; conclusion.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-luo-2019",
+      "title": "Complete biosynthesis of cannabinoids and their unnatural analogues in yeast",
+      "author": "X. Luo et al.",
+      "published": "2019-02-27",
+      "organization": "Nature",
+      "url": "https://backend.orbit.dtu.dk/ws/files/240436196/qt3fn1m6p5_noSplash_be06dd7b6fdfa004bec17ec4fed2cabd.pdf",
+      "access": "excerpt",
+      "passage": "Copie auteur DTU PDF p.2–5 : résumé, prényltransférases, branches THCA/CBDA, détection CBGVA et production THCVA/CBDVA ; figure 3 citée dans le texte.",
+      "limitation": "Manuscrit auteur ; reconstruction hétérologue, pas mesure universelle de flux végétal.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://backend.orbit.dtu.dk/ws/files/240436196/qt3fn1m6p5_noSplash_be06dd7b6fdfa004bec17ec4fed2cabd.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Copie auteur DTU PDF p.2–5 : résumé, prényltransférases, branches THCA/CBDA, détection CBGVA et production THCVA/CBDVA ; figure 3 citée dans le texte.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Copie auteur DTU PDF p.2–5 : résumé, prényltransférases, branches THCA/CBDA, détection CBGVA et production THCVA/CBDVA ; figure 3 citée dans le texte.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-thcv-human-2016",
+      "title": "Efficacy and Safety of Cannabidiol and Tetrahydrocannabivarin on Glycemic and Lipid Parameters in Patients With Type 2 Diabetes: A Randomized, Double-Blind, Placebo-Controlled, Parallel Group Pilot Study",
+      "author": "K. A. Jadoon et al.",
+      "published": "2016-10",
+      "organization": "Diabetes Care",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/27573936/",
+      "access": "abstract",
+      "passage": "Résumé original PMID 27573936, quatre AbstractText de la réponse EUtils XML : objectif, méthodes, résultats, conclusion ; 62 sujets, cinq bras, 13 semaines, HDL principal inchangé.",
+      "limitation": "Résumé original réellement lu via EUtils HTTP dans exec, après signalement de ce point d’accès par la contrelectrice terpenes. La page PubMed et le document intégral n’ont pas été accessibles dans le lecteur web. Pas de tableaux, d’effectifs par bras ou de détail des événements indésirables vérifiés au-delà du résumé.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=pubmed&id=27573936,42575778&retmode=xml",
+          "openedAt": "2026-11-14",
+          "sections": "PubmedArticle PMID 27573936 : ArticleTitle et quatre AbstractText complets",
+          "result": "Réponse XML récupérée sur le réseau public par urllib.request dans exec et texte effectivement affiché et lu ; essai pilote confirmé. Le lecteur web ne rendait pas cet endpoint.",
+          "supports": "Population sans insulinothérapie ; 62 sujets randomisés, cinq bras, 13 semaines ; HDL inchangé et signaux secondaires glycémiques ; associations sans effet significatif sur les critères dans le résumé.",
+          "access": "abstract"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-cannabinoid-cbn",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent CBN ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Aromatisé remplacé par noyau aromatique pour éviter le sens ajout de parfum.",
+        "Résultat CBN sommeil conservé : primaire négatif, secondaires distingués ; mécanisme proposé séparé du résultat clinique.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Le cannabinol (CBN) possède un noyau aromatique distinct de celui du THC ; sa formation peut accompagner le vieillissement oxydatif.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le CBN est une forme neutre de la famille cannabinol, différente du THC et de l’acide CBNA. Le terme aromatique décrit ici une structure chimique ; il ne signifie pas aromatisé par ajout d’un parfum."
+            ],
+            "sourceIds": [
+              "cb-shoyama-1970",
+              "cannabinoids-lesson-aging2019"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "Des transformations oxydatives du THC peuvent former du CBN dans le cannabis conservé. La composition dépend de l’histoire du matériau, et toutes les pertes de THC ne deviennent pas nécessairement du CBN."
+            ],
+            "sourceIds": [
+              "cannabinoids-lesson-aging2019"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "En 2026, chez vingt adultes souffrant d’insomnie, le critère principal d’éveil après endormissement n’est pas significativement amélioré ; certains critères secondaires le sont. Essai aigu limité, avec événements indésirables ; ne démontre pas une solution générale ou durable au sommeil."
+            ],
+            "sourceIds": [
+              "cb-cbn-human-2026"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "La promesse commerciale ‘sommeil’ ne remplace pas les résultats et limites d’un essai. Efficacité durable et profils de risque des produits commerciaux insuffisamment établis."
+            ],
+            "sourceIds": [
+              "cb-cbn-human-2026"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "L’introduction de l’essai sommeil décrit le CBN comme un agoniste partiel faible de CB1, avec une affinité inférieure à celle du THC. L’implication de CB1 dans le sommeil reste une explication proposée ; l’essai clinique mesure le sommeil et ne démontre pas ce mécanisme chez les participants. Le critère principal WASO n’étant pas significativement amélioré, les critères secondaires ne prouvent pas une propriété hypnotique garantie."
+            ],
+            "sourceIds": [
+              "cb-cbn-human-2026"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cannabinoids-lesson-aging2019",
+          "cb-cbn-human-2026",
+          "cb-shoyama-1970"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbn"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "CBN : vieillissement et sommeil ne sont pas synonymes",
+          "nodes": [
+            {
+              "label": "Structure",
+              "detail": "Noyau davantage aromatisé que le THC ; forme neutre distincte du CBNA."
+            },
+            {
+              "label": "Vieillissement",
+              "detail": "Évolution avec lumière, température et matrice ; pas horloge universelle."
+            },
+            {
+              "label": "Essai sommeil",
+              "detail": "WASO, critère principal, sans amélioration significative ; critères secondaires à interpréter ensemble."
+            }
+          ],
+          "caption": "Relations structurales et niveaux de preuve ; les différences ne constituent pas une échelle de puissance humaine.",
+          "sourceIds": [
+            "cannabinoids-lesson-aging2019",
+            "cb-cbn-human-2026"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cannabinoids-lesson-aging2019",
+        "cb-cbn-human-2026",
+        "cb-shoyama-1970"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbna",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent CBNA ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "CBNA observé dans matériel conservé et transformation THCA documentés par résumé original.",
+        "Aucune voie biosynthétique dédiée ni activité humaine attribuée sans preuve.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Forme acide du cannabinol documentée dans du cannabis conservé.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "CBNA signifie acide cannabinolique : il est distinct du CBN neutre, du THCA et du métabolite humain THC-COOH. La présence du carboxyle distingue ici la forme acide et la forme neutre ; le noyau cannabinol aromatisé constitue une autre caractéristique structurale."
+            ],
+            "sourceIds": [
+              "cb-shoyama-1970"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "L’étude de 1970 rapporte l’isolement de CBNA dans du cannabis conservé et sa formation à partir de THCA. Cette observation ne démontre pas une voie biosynthétique dédiée dans la plante vivante."
+            ],
+            "sourceIds": [
+              "cb-shoyama-1970"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "L’étude chimique du CBNA dans du cannabis conservé ne teste pas son efficacité chez des patients."
+            ],
+            "sourceIds": [
+              "cb-shoyama-1970"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "Le rôle physiologique dans la plante et la pharmacologie humaine restent à préciser."
+            ],
+            "sourceIds": [
+              "cb-shoyama-1970",
+              "cannabinoids-lesson-aging2019"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "L’étude chimique observe une transformation du THCA en CBNA dans du matériel conservé. Elle ne démontre pas une enzyme dédiée dans la plante vivante ni une cinétique universelle. Les transformations dans l’organisme humain constituent encore une autre question."
+            ],
+            "sourceIds": [
+              "cb-shoyama-1970"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-shoyama-1970",
+          "cannabinoids-lesson-aging2019"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbna"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "CBNA : acide cannabinolique, pas métabolite urinaire",
+          "nodes": [
+            {
+              "label": "THCA → CBNA",
+              "detail": "Transformation observée dans du matériel conservé ; pas preuve d’une enzyme dédiée."
+            },
+            {
+              "label": "CBNA / CBN",
+              "detail": "Présence ou absence du carboxyle ; acide et neutre sont distincts."
+            },
+            {
+              "label": "THC-COOH",
+              "detail": "Autre structure : métabolite humain ; ne pas l’identifier au CBNA végétal."
+            }
+          ],
+          "caption": "Relations structurales et niveaux de preuve ; les différences ne constituent pas une échelle de puissance humaine.",
+          "sourceIds": [
+            "cb-shoyama-1970",
+            "cannabinoids-lesson-aging2019"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-shoyama-1970",
+        "cannabinoids-lesson-aging2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-thcv",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent Δ9-THCV ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Suppression du jargon interne Buddy ; structure propyle explicitée.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections.",
+        "Blocage documentaire du résumé levé par lecture directe EUtils, après contrelecture terpenes ; référence clinique attribuée aux sections humain et risques, distincte de la source cellulaire Zagzoog. Texte intégral et tableaux non lus."
+      ],
+      "patch": {
+        "lead": "Homologue propyle du Δ9-THC, et non simple dilution de celui-ci.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le THCV appartient à la famille structurale du THC mais porte une chaîne propyle à trois carbones au lieu de la chaîne pentyle à cinq carbones. Le THCVA est sa forme acide apparentée : le carboxyle y est encore présent. Ni la terminaison V ni l’absence de carboxyle ne fournissent une mesure de puissance clinique."
+            ],
+            "sourceIds": [
+              "cb-kim-2022",
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "Le THCV est identifié dans les préparations végétales analysées. Cette détection ne permet pas de prédire la teneur d’une autre variété ou d’un produit commercial."
+            ],
+            "sourceIds": [
+              "cb-kim-2022"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "L’essai pilote randomisé en double aveugle de Jadoon et ses collègues porte sur 62 adultes atteints de diabète de type 2 sans insulinothérapie, répartis entre cinq groupes durant 13 semaines : CBD, THCV, deux associations de ces molécules ou placebo. Le groupe THCV reçoit 5 mg deux fois par jour ; cette quantité décrit l’expérience et ne constitue pas un conseil d’utilisation. Le critère principal, la concentration de HDL-cholestérol, n’est pas amélioré.",
+              "Le résumé rapporte une diminution de la glycémie à jeun sous THCV par rapport au placebo, avec une différence estimée de −1,2 mmol/L, ainsi que d’autres signaux métaboliques secondaires. Les associations ne modifient pas significativement les critères rapportés. Le petit effectif réparti en cinq groupes et les nombreux critères explorés appellent une confirmation ; ces résultats ne démontrent ni un traitement établi du diabète ni une propriété amaigrissante."
+            ],
+            "sourceIds": [
+              "cb-thcv-human-2016"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "Le résumé décrit CBD et THCV comme bien tolérés pendant cet essai pilote. Il ne fournit pas ici le détail des événements indésirables, ni une sécurité chronique dans d’autres populations. Un signal sur un critère secondaire métabolique ne justifie pas les slogans de perte de poids ; l’exposition et les associations doivent être étudiées spécifiquement."
+            ],
+            "sourceIds": [
+              "cb-thcv-human-2016"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "Zagzoog étudie le THCV dans des cellules CHO exprimant CB1/CB2 humains : liaison compétitive, inhibition d’AMPc et recrutement de β-arrestine sont des mesures distinctes. Le profil dépend du test et ne se résume pas à une affirmation universelle antagoniste ou agoniste. Les résultats murins ne démontrent pas une perte de poids humaine."
+            ],
+            "sourceIds": [
+              "cb-zagzoog-2020"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-propyl-1977",
+          "cb-kim-2022",
+          "cb-zagzoog-2020",
+          "cb-thcv-human-2016"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-thcv"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "THCV : la chaîne latérale ne se lit pas comme une dose",
+          "nodes": [
+            {
+              "label": "Δ9-THC",
+              "detail": "Chaîne pentyle : cinq carbones."
+            },
+            {
+              "label": "THCV",
+              "detail": "Chaîne propyle : trois carbones ; autre identité chimique."
+            },
+            {
+              "label": "Tests CB1/CB2",
+              "detail": "Liaison et voies de signalisation distinctes ; pas antagonisme universel."
+            },
+            {
+              "label": "Humain",
+              "detail": "62 sujets, cinq bras, 13 semaines : HDL principal inchangé ; signaux métaboliques secondaires à confirmer."
+            }
+          ],
+          "caption": "Relations structurales et niveaux de preuve ; les différences ne constituent pas une échelle de puissance humaine.",
+          "sourceIds": [
+            "cb-propyl-1977",
+            "cb-kim-2022",
+            "cb-zagzoog-2020",
+            "cb-thcv-human-2016"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-propyl-1977",
+        "cb-kim-2022",
+        "cb-zagzoog-2020",
+        "cb-thcv-human-2016"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-thcva",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent THCVA ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Isolement de 1977 confirmé ; relation propyle/acide expliquée.",
+        "Résultat Luo effectivement lu dans copie auteur DTU ; niveau hétérologue conservé.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Homologue propyle acide de la famille THC.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le THCVA n’est ni le THCA à faible concentration ni le THCV neutre. La chaîne propyle compte trois carbones ; la fonction carboxyle distingue cet acide de sa forme neutre THCV."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "Le THCVA est isolé et caractérisé avec les autres acides propyles dans le matériel thaïlandais Meao. Ce résultat porte sur un matériel défini, sans établir une présence universelle dans le cannabis."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977",
+              "cb-luo-2019"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "La production de THCVA dans une levure reconstituée constitue une preuve biosynthétique, sans résultat clinique humain."
+            ],
+            "sourceIds": [
+              "cb-luo-2019"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "La biodisponibilité, les effets durables et les conséquences des mélanges restent insuffisamment caractérisés par ces études."
+            ],
+            "sourceIds": [
+              "cb-luo-2019"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "Luo reconstruit dans Saccharomyces cerevisiae une voie utilisant des enzymes végétales qui produit du THCVA à partir de la branche CBGVA. Ce résultat établit une capacité du système hétérologue, sans mesurer le flux de chaque organe d’une plante entière."
+            ],
+            "sourceIds": [
+              "cb-luo-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-propyl-1977",
+          "cb-luo-2019"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-thcva"
+          }
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "THCVA : preuve dans une levure reconstituée",
+          "nodes": [
+            {
+              "label": "CBGVA",
+              "detail": "Branche acide à chaîne propyle, trois carbones."
+            },
+            {
+              "label": "Enzymes végétales en levure",
+              "detail": "Saccharomyces cerevisiae porte une voie reconstruite."
+            },
+            {
+              "label": "THCVA",
+              "detail": "Produit acide de famille THC, distinct du THCV neutre."
+            }
+          ],
+          "caption": "Voie reconstituée dans une levure : preuve de capacité, sans mesure du flux d’une plante entière.",
+          "sourceIds": [
+            "cb-luo-2019",
+            "cb-propyl-1977"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-propyl-1977",
+        "cb-luo-2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbdv",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent CBDV ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Critère principal négatif confirmé ; données quantitatives et événements ajoutés.",
+        "Conclusions spéculatives des auteurs sur réponse pharmacologique distinguées de la comparaison contrôlée.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Homologue propyle du CBD.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le CBDV est l’homologue propyle du CBD : sa chaîne latérale compte trois carbones au lieu de cinq. Il se distingue aussi du CBDVA acide par l’absence du carboxyle. Ces changements d’identité empêchent de lui attribuer automatiquement les indications autorisées d’un médicament au CBD."
+            ],
+            "sourceIds": [
+              "cb-kim-2022"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "Le CBDV est identifié parmi les formes neutres après préparation analytique des échantillons végétaux. Comme cette préparation peut transformer une partie des acides, la matrice et les traitements doivent accompagner l’interprétation du résultat."
+            ],
+            "sourceIds": [
+              "cb-kim-2022"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "L’essai de phase 2 porte sur 162 adultes, 81 par groupe. Les réductions des crises focales sont proches : 40,5 % sous CBDV et 37,7 % sous placebo ; la différence n’est pas statistiquement significative (p=0,648). Cela ne démontre pas la supériorité du CBDV pour cette population et ce traitement d’appoint."
+            ],
+            "sourceIds": [
+              "cb-cbdv-human-2021"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "Les résultats d’une autre molécule ou d’une autre épilepsie ne comblent pas cette incertitude. Des événements apparus sous traitement concernent 72,8 % des participants CBDV contre 48,1 % placebo ; diarrhée, nausée et somnolence sont fréquentes. Des élévations de transaminases sont rapportées. Non intoxicant ne signifie pas sans risque."
+            ],
+            "sourceIds": [
+              "cb-cbdv-human-2021"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "Les expériences précliniques examinent plusieurs cibles et voies, dont des récepteurs cannabinoïdes dans des cellules CHO ; l’implication de TRPV1 dans l’effet anticonvulsivant est une piste présentée dans l’article clinique. Ces hypothèses ne compensent pas l’absence de supériorité face au placebo dans cet essai humain."
+            ],
+            "sourceIds": [
+              "cb-zagzoog-2020",
+              "cb-cbdv-human-2021"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-kim-2022",
+          "cb-cbdv-human-2021",
+          "cb-zagzoog-2020"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbdv"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "CBDV : l’homologie ne remplace pas le résultat clinique",
+          "nodes": [
+            {
+              "label": "CBD / CBDV",
+              "detail": "Chaîne pentyle / propyle ; deux molécules distinctes."
+            },
+            {
+              "label": "Cibles précliniques",
+              "detail": "Hypothèses, dont TRPV1 ; ne démontrent pas à elles seules l’effet thérapeutique."
+            },
+            {
+              "label": "Essai humain épilepsie",
+              "detail": "Absence de supériorité au placebo dans l’étude citée ; les indications du CBD ne se transfèrent pas."
+            }
+          ],
+          "caption": "Relations structurales et niveaux de preuve ; les différences ne constituent pas une échelle de puissance humaine.",
+          "sourceIds": [
+            "cb-kim-2022",
+            "cb-cbdv-human-2021"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-kim-2022",
+        "cb-cbdv-human-2021",
+        "cb-zagzoog-2020"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbdva",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent CBDVA ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Identité et isolement 1977 confirmés ; acide/neutre et propyle/pentyle explicités.",
+        "Reconstruction Luo lue ; absence de preuve clinique conservée comme limite du corpus.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Acide à chaîne propyle de la famille CBD.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le CBDVA possède une chaîne propyle à trois carbones, contre cinq pour le CBDA pentyle. Sa fonction carboxyle le distingue aussi du CBDV neutre."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "Le CBDVA est isolé et caractérisé dans le cannabis Meao. Cette observation historique ne fournit pas un profil quantitatif de tous les cannabis."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977",
+              "cb-luo-2019"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "La production de CBDVA dans une levure reconstituée ne permet pas de conclure à une efficacité chez des patients."
+            ],
+            "sourceIds": [
+              "cb-luo-2019"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "La biodisponibilité, les effets durables et les conséquences des mélanges restent insuffisamment caractérisés par ces études."
+            ],
+            "sourceIds": [
+              "cb-luo-2019"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "Luo documente la production de CBDVA à partir de la branche CBGVA dans une levure reconstituée. Cette capacité du système hétérologue ne mesure pas l’abondance naturelle du composé dans chaque plante."
+            ],
+            "sourceIds": [
+              "cb-luo-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-propyl-1977",
+          "cb-luo-2019"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbdva"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "CBDVA : deux distinctions indépendantes",
+          "nodes": [
+            {
+              "label": "CBDA / CBDVA",
+              "detail": "Chaîne pentyle de cinq carbones / propyle de trois carbones."
+            },
+            {
+              "label": "CBDVA / CBDV",
+              "detail": "Carboxyle présent dans l’acide / absent dans le neutre."
+            },
+            {
+              "label": "Levure reconstituée",
+              "detail": "Production documentée à partir de la branche CBGVA ; pas preuve d’efficacité clinique."
+            }
+          ],
+          "caption": "Relations structurales et niveaux de preuve ; les différences ne constituent pas une échelle de puissance humaine.",
+          "sourceIds": [
+            "cb-propyl-1977",
+            "cb-luo-2019"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-propyl-1977",
+        "cb-luo-2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [],
+  "sensitivePoints": [
+    "CBN : le primaire WASO doit rester visible avant les résultats secondaires ; aromatique ≠ parfum ajouté.",
+    "THCV : résumé Jadoon2016 désormais directement lu via EUtils ; ne pas confondre critère principal HDL négatif et signaux secondaires, ni les données du THCV avec celles d’un médicament au CBD. Pas de détail clinique au-delà de l’abstract."
+  ]
+}

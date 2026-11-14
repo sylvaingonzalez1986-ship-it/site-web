@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "terpenes-05",
+  "entries": {
+    "record-terpene-e-beta-farnesene": {
+      "contentHash": "922fbb26a0e2213d0c5dd42c4267229aed3bc6e491ba39b4459e86d53832e2c9",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-alpha-selinene": {
+      "contentHash": "51a95fcdbf31d56bb2740d39420c62ff54cde0c09f890f41ab7023e2aa752886",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-guaiol": {
+      "contentHash": "2ee3fa4c0e8011aefa9e3df70410cf509845d8a5c31d4fb5de5f43b949396191",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-alpha-bisabolol": {
+      "contentHash": "0acd0556a0e62520b42d7018bf7f769a9bfe509650aef802647ba0c53f413489",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-nerolidol": {
+      "contentHash": "c6579e39696c8e2a02e29bfef24cf03fc1cf28f57f9c9970f66eb064643d8e23",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-caryophyllene-oxide": {
+      "contentHash": "b905b17647032ea6a6198ce47a42b0bd7b4e37e147c8804be453964c0d86f8a8",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    },
+    "record-terpene-geranyl-acetate": {
+      "contentHash": "b9b07802ea603221c508b28b9b593a997758284cfef3d90fa284eee65db05890",
+      "note": "All seven notices, chemical captions, plain-language fact panels and quiz explanations read. Identity, measured presence and biological results remain distinct; synonyms and scientific limits retained.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 0,
+    "hash": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+  },
+  "quiz": {
+    "count": 1,
+    "hash": "0bd6d7cb305d103cfda0b2d2cbb2dfaf1fc540fdf00038f433574da6958eec0e"
+  }
+}

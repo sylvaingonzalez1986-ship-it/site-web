@@ -1,0 +1,44 @@
+{
+  "date": "2026-11-14",
+  "lot": "cannabinoids-02",
+  "entries": {
+    "ref-cannabinoides-mineurs": {
+      "contentHash": "3754a384d9eb24e8a39c67de79c351a887bef3ca8a55913f5fe3eabd75bcabcd",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "ref-cannabinoides-transformes": {
+      "contentHash": "561effd275965caae4f223af05bc9f01429874fdb91e5fc4f564e472770f28c6",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "ref-decouvertes-cannabinoides": {
+      "contentHash": "2266763142bf790d5b5256e8b769e1d2b10231f918fbc8d11bb2303035bddf18",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-delta9-thc": {
+      "contentHash": "e3c01b87fbde3e06daa03c4237f7ba6b487361336222736ee62e9681ae235f87",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-delta9-thca-a": {
+      "contentHash": "67cffce79357b81de8ab7552a572cad372d6a962e5bee94e96ae0100200246a3",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    },
+    "record-cannabinoid-delta9-thca-b": {
+      "contentHash": "4657a8cba95681e07522c6b9da65c3d08eba1cfb41a255d56bcf50ae66eaacba",
+      "note": "All entries, definitions and quiz explanations read individually; final grouped sections, restored anchors, corrected titles and statistical explanations inspected.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 3,
+    "hash": "5407bf1c81a5c154b9c34096f4fa7b2c308bde402185a90df26606f6c71d2163"
+  },
+  "quiz": {
+    "count": 33,
+    "hash": "bcecf9e2e732a834df44c853dc9d7bddd8bda5549508c3ac18f1c0262d241d37"
+  }
+}

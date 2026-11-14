@@ -1,0 +1,1104 @@
+{
+  "domain": "cannabinoids",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "cb-citti-2019",
+      "title": "A novel phytocannabinoid isolated from Cannabis sativa L. with an in vivo cannabimimetic activity higher than Δ9-tetrahydrocannabinol: Δ9-Tetrahydrocannabiphorol",
+      "author": "C. Citti et al.",
+      "published": "2019-12-30",
+      "organization": "Scientific Reports",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+      "access": "excerpt",
+      "passage": "PMC introduction and identification; Results: binding affinities and mouse tetrad.",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+          "openedAt": "2026-11-14",
+          "sections": "PMC introduction and identification; Results: binding affinities and mouse tetrad.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-propyl-1977",
+      "title": "Cannabis. X. The Isolation and Structures of Four New Propyl Cannabinoid Acids, Tetrahydrocannabivarinic Acid, Cannabidivarinic Acid, Cannabichromevarinic Acid and Cannabigerovarinic Acid, from Thai Cannabis, ‘Meao Variant’",
+      "author": "Y. Shoyama, H. Hirano, H. Makino, N. Umekita et I. Nishioka",
+      "published": "1977-09-25",
+      "organization": "Chemical and Pharmaceutical Bulletin",
+      "url": "https://www.jstage.jst.go.jp/article/cpb1958/25/9/25_9_2306/_article/-char/en",
+      "access": "abstract",
+      "passage": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+      "limitation": "Pas d’essai pharmacologique humain.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.jstage.jst.go.jp/article/cpb1958/25/9/25_9_2306/_article/-char/en",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé J-STAGE : quatre acides propyles isolés du matériel thaïlandais Meao, identification chimique et spectrale.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-propyl-1975",
+      "title": "Cannabichromevarin and Cannabigerovarin, Two New Propyl Homologues of Cannabichromene and Cannabigerol",
+      "author": "Y. Shoyama, H. Hirano, M. Oda, T. Somehara et I. Nishioka",
+      "published": "1975-08-25",
+      "organization": "Chemical and Pharmaceutical Bulletin",
+      "url": "https://www.jstage.jst.go.jp/article/cpb1958/23/8/23_8_1894/_article",
+      "access": "abstract",
+      "passage": "Résumé J-STAGE : CBCV et CBGV, homologues propyles de CBC et CBG.",
+      "limitation": "Données d’identité, pas d’efficacité.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.jstage.jst.go.jp/article/cpb1958/23/8/23_8_1894/_article",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé J-STAGE : CBCV et CBGV, homologues propyles de CBC et CBG.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé J-STAGE : CBCV et CBGV, homologues propyles de CBC et CBG.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "cb-euda-2023",
+      "title": "Hexahydrocannabinol (HHC) and related substances",
+      "author": "I. Ujváry et al. / EMCDDA",
+      "published": "2023-04-17",
+      "organization": "EMCDDA (aujourd’hui EUDA)",
+      "url": "https://www.euda.europa.eu/system/files/documents/2023-05/emcdda-technical-report-hhc-and-related-substances.pdf",
+      "access": "excerpt",
+      "passage": "Rapport technique PDF, p.24–25 : HHC, stéréochimie, épimères, structures apparentées ; introduction sur marché des semi-synthétiques.",
+      "limitation": "Rapport de 2023 : aucune affirmation réglementaire actuelle ; pas de protocole de fabrication repris.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.euda.europa.eu/system/files/documents/2023-05/emcdda-technical-report-hhc-and-related-substances.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Rapport technique PDF, p.24–25 : HHC, stéréochimie, épimères, structures apparentées ; introduction sur marché des semi-synthétiques.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Rapport technique PDF, p.24–25 : HHC, stéréochimie, épimères, structures apparentées ; introduction sur marché des semi-synthétiques.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-luo-2019",
+      "title": "Complete biosynthesis of cannabinoids and their unnatural analogues in yeast",
+      "author": "X. Luo et al.",
+      "published": "2019-02-27",
+      "organization": "Nature",
+      "url": "https://backend.orbit.dtu.dk/ws/files/240436196/qt3fn1m6p5_noSplash_be06dd7b6fdfa004bec17ec4fed2cabd.pdf",
+      "access": "excerpt",
+      "passage": "Copie auteur DTU PDF p.2–5 : résumé, prényltransférases, branches THCA/CBDA, détection CBGVA et production THCVA/CBDVA ; figure 3 citée dans le texte.",
+      "limitation": "Manuscrit auteur ; reconstruction hétérologue, pas mesure universelle de flux végétal.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://backend.orbit.dtu.dk/ws/files/240436196/qt3fn1m6p5_noSplash_be06dd7b6fdfa004bec17ec4fed2cabd.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Copie auteur DTU PDF p.2–5 : résumé, prényltransférases, branches THCA/CBDA, détection CBGVA et production THCVA/CBDVA ; figure 3 citée dans le texte.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Copie auteur DTU PDF p.2–5 : résumé, prényltransférases, branches THCA/CBDA, détection CBGVA et production THCVA/CBDVA ; figure 3 citée dans le texte.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-hhc-2023",
+      "title": "Studies Pertaining to the Emerging Cannabinoid Hexahydrocannabinol (HHC)",
+      "author": "D. J. Nasrallah et N. K. Garg",
+      "published": "2023-08-14",
+      "organization": "ACS Chemical Biology",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10510108/",
+      "access": "excerpt",
+      "passage": "Résumé et section CB1 and CB2 receptor studies, figures 3–4 et analyse de certificats : épimères 9R/9S, liaison et AMPc.",
+      "limitation": "Deux répétitions ; certificats commerciaux ne remplacent pas une analyse indépendante des lots. Pas d’extrapolation clinique du rapport de puissance.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10510108/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et section CB1 and CB2 receptor studies, figures 3–4 et analyse de certificats : épimères 9R/9S, liaison et AMPc.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé et section CB1 and CB2 receptor studies, figures 3–4 et analyse de certificats : épimères 9R/9S, liaison et AMPc.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-hhc-human-2025",
+      "title": "Preliminary pharmacokinetic and psychophysical investigations after controlled oral and inhalative consumption of hexahydrocannabinol (HHC)",
+      "author": "L. Höfert et al.",
+      "published": "2025-03-24",
+      "organization": "Scientific Reports",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11933371/",
+      "access": "excerpt",
+      "passage": "Résumé PMC : 6 volontaires, 3 par voie, matrices sérum/urine/salive et tests psychophysiques.",
+      "limitation": "Pas de groupe placebo ni puissance pour établir une sécurité générale.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11933371/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé PMC : 6 volontaires, 3 par voie, matrices sérum/urine/salive et tests psychophysiques.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Résumé PMC : 6 volontaires, 3 par voie, matrices sérum/urine/salive et tests psychophysiques.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-hhc-metabolites-2026",
+      "title": "Preliminary pharmacokinetic investigations of hydroxylated metabolites after controlled inhalative and oral consumption of hexahydrocannabinol (HHC)",
+      "author": "L. Höfert, W. Schirmer, I. Mösch, B. Franz, C. Groß, S. Becker et S. Baumann",
+      "published": "2026-07-20",
+      "organization": "Scientific Reports",
+      "url": "https://www.nature.com/articles/s41598-026-62767-x.pdf",
+      "access": "excerpt",
+      "passage": "PDF p.1–5 : réemploi des échantillons, six participants, métabolites M1/M2 proposés, M3 8-OH, rapports d’aires et longue conservation.",
+      "limitation": "Même cohorte que 2025 ; certains isomères ne sont pas définitivement identifiés.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Article scientifique original",
+      "reviewEvidence": [
+        {
+          "url": "https://www.nature.com/articles/s41598-026-62767-x.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "PDF p.1–5 : réemploi des échantillons, six participants, métabolites M1/M2 proposés, M3 8-OH, rapports d’aires et longue conservation.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "PDF p.1–5 : réemploi des échantillons, six participants, métabolites M1/M2 proposés, M3 8-OH, rapports d’aires et longue conservation.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "cb-euda-2026",
+      "title": "New psychoactive substances — the current situation in Europe",
+      "author": "EUDA, European Drug Report 2026",
+      "published": "2026",
+      "organization": "EUDA",
+      "url": "https://www.euda.europa.eu/publications/european-drug-report/2026/new-psychoactive-substances_en",
+      "access": "excerpt",
+      "passage": "Section Continued availability of semi-synthetic cannabinoids creates health concerns, lignes 361–373 : variabilité, HHC-P apparemment synthétique et intoxications.",
+      "limitation": "Surveillance de marché, pas essai clinique ; catégories de marché parfois plus larges que classification chimique.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.euda.europa.eu/publications/european-drug-report/2026/new-psychoactive-substances_en",
+          "openedAt": "2026-11-14",
+          "sections": "Section Continued availability of semi-synthetic cannabinoids creates health concerns, lignes 361–373 : variabilité, HHC-P apparemment synthétique et intoxications.",
+          "result": "Passages lisibles réellement ouverts et examinés.",
+          "supports": "Section Continued availability of semi-synthetic cannabinoids creates health concerns, lignes 361–373 : variabilité, HHC-P apparemment synthétique et intoxications.",
+          "access": "excerpt"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-cannabinoid-cbgva",
+      "questions": [
+        "Quel est l’homologue à chaîne propyle du CBGA, associé à la branche varinique ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Identité CBGVA et quiz confirmés dans résumé d’isolement ; rôle de branchement contextualisé par Luo.",
+        "CBCVA reste une branche proposée, sans flèche enzymatique directe déclarée démontrée."
+      ],
+      "patch": {
+        "lead": "Homologue propyle du CBGA, précurseur de la branche varinique.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le CBGVA porte une chaîne propyle à trois carbones, contre cinq pour le CBGA pentyle. Il se distingue aussi du CBGV neutre par sa fonction carboxyle : longueur de chaîne et forme acide/neutre sont deux caractéristiques indépendantes."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "Le CBGVA fait partie des quatre cannabinoïdes acides isolés du matériel thaïlandais Meao en 1977. Cette identification ne détermine pas son abondance générale dans le cannabis."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "L’isolement du CBGVA et les voies reconstituées citées n’évaluent pas un bénéfice thérapeutique humain."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977",
+              "cb-luo-2019"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "La présence de composés apparentés ne prouve pas à elle seule l’enzyme ni chaque étape qui les relie. Le flux dans la plante et les effets d’une exposition humaine restent à préciser."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977",
+              "cb-luo-2019"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "Dans la levure reconstituée de Luo, des signaux compatibles avec CBGVA accompagnent la production de THCVA et de CBDVA. Ces branches documentées ne fournissent pas une preuve enzymatique directe équivalente pour la conversion vers le CBCVA."
+            ],
+            "sourceIds": [
+              "cb-luo-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-propyl-1977",
+          "cb-luo-2019"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbgva"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Ce que montre la branche varinique",
+          "nodes": [
+            {
+              "label": "CBGVA",
+              "detail": "Acide à chaîne propyle ; isolé historiquement."
+            },
+            {
+              "label": "THCVA et CBDVA",
+              "detail": "Production documentée dans le réseau de levure reconstruit."
+            },
+            {
+              "label": "CBCVA",
+              "detail": "Identité isolée ; preuve enzymatique directe distincte des branches THCVA et CBDVA."
+            }
+          ],
+          "caption": "Branches de même parenté chimique ; niveaux de preuve des réactions différents.",
+          "sourceIds": [
+            "cb-propyl-1977",
+            "cb-luo-2019"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-propyl-1977",
+        "cb-luo-2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-cbgva"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbcva",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent CBCVA ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Preuve d’identité conservée ; limites de l’attribution CBCAS explicitées.",
+        "Aucune pharmacologie humaine inventée à partir de l’homologie.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Acide propyle apparenté au CBCA.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le CBCVA appartient à la famille acide du cannabichromène et possède une chaîne propyle à trois carbones, contre cinq pour le CBCA. Le carboxyle le distingue du CBCV neutre ; cette identité structurale ne démontre pas la voie enzymatique qui le forme."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "L’isolement et la structure du CBCVA sont publiés avec les autres acides propyles du matériel Meao. L’étude d’isolement ne reproduit pas directement sa formation depuis le CBGVA par une CBCAS végétale purifiée."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "L’isolement structural de 1977 ne mesure pas un effet clinique du CBCVA."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "L’enzyme responsable, le flux dans la plante et les effets humains ne sont pas établis par l’identification chimique."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "L’isolement et les données spectrales de 1977 documentent le CBCVA dans le matériel Meao. Sa parenté structurale avec le CBGVA suggère une question biosynthétique, mais ne démontre pas leur conversion enzymatique directe. Les branches rapportées par Luo vers d’autres acides ne constituent pas une preuve équivalente de cette réaction."
+            ],
+            "sourceIds": [
+              "cb-propyl-1977",
+              "cb-luo-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-propyl-1977",
+          "cb-luo-2019"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbcva"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "CBCVA : structure identifiée, voie à établir",
+          "nodes": [
+            {
+              "label": "CBCA / CBCVA",
+              "detail": "Chaîne pentyle / propyle ; famille acide conservée."
+            },
+            {
+              "label": "CBCVA / CBCV",
+              "detail": "Groupe carboxyle présent / absent."
+            },
+            {
+              "label": "Isolement de 1977",
+              "detail": "Données chimiques et spectrales dans le matériel Meao."
+            },
+            {
+              "label": "Branche CBGVA → CBCVA",
+              "detail": "La relation structurale ne démontre pas une conversion catalytique directe."
+            }
+          ],
+          "caption": "Relations structurales et niveaux de preuve ; les différences ne constituent pas une échelle de puissance humaine.",
+          "sourceIds": [
+            "cb-propyl-1977",
+            "cb-luo-2019"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-propyl-1977",
+        "cb-luo-2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbgv",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent CBGV ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous champs relus ; isolement Meao 1975 et relation propyle confirmés.",
+        "Comparaison forme acide et chaîne pentyle ajoutée ; limites pharmacologiques conservées.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Homologue propyle du CBG identifié par données chimiques et spectrales.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le CBGV est l’homologue propyle du CBG : sa chaîne latérale possède trois carbones au lieu de cinq. La forme acide apparentée, CBGVA, porte en plus une fonction carboxyle. Ces noms désignent des structures distinctes, sans correspondre à des variétés de plante."
+            ],
+            "sourceIds": [
+              "cb-propyl-1975",
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "Le CBGV est isolé du cannabis Meao dans la publication de 1975. Ce résultat ne fixe pas une teneur universelle et ne sépare pas entièrement les effets des traitements de l’échantillon."
+            ],
+            "sourceIds": [
+              "cb-propyl-1975"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "Les travaux d’isolement cités ne testent pas un effet thérapeutique du CBGV chez l’humain."
+            ],
+            "sourceIds": [
+              "cb-propyl-1975"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "La pharmacologie et les conséquences d’une exposition humaine au CBGV restent insuffisamment caractérisées par les travaux d’isolement."
+            ],
+            "sourceIds": [
+              "cb-propyl-1975"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "Le résumé original de 1975 décrit un isolat caractérisé par des données spectrales et chimiques. Il ne mesure ni action sur un récepteur humain ni résultat chez des patients ; la parenté avec le CBG guide une hypothèse pharmacologique sans la démontrer."
+            ],
+            "sourceIds": [
+              "cb-propyl-1975"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-propyl-1975",
+          "cb-propyl-1977"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbgv"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "CBGV : homologue et forme acide",
+          "nodes": [
+            {
+              "label": "CBG",
+              "detail": "Chaîne pentyle : cinq carbones."
+            },
+            {
+              "label": "CBGV",
+              "detail": "Chaîne propyle : trois carbones, identifié chimiquement en 1975."
+            },
+            {
+              "label": "CBGVA",
+              "detail": "Forme acide apparentée ; carboxyle supplémentaire."
+            },
+            {
+              "label": "Limite",
+              "detail": "Données spectrales ≠ activité sur récepteurs ou efficacité chez des patients."
+            }
+          ],
+          "caption": "Relations structurales et niveaux de preuve ; les différences ne constituent pas une échelle de puissance humaine.",
+          "sourceIds": [
+            "cb-propyl-1975",
+            "cb-propyl-1977"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-propyl-1975",
+        "cb-propyl-1977"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbcv",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent CBCV ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous champs relus ; isolement Meao 1975 et relation propyle confirmés.",
+        "Comparaison forme acide et chaîne pentyle ajoutée ; limites pharmacologiques conservées.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Homologue propyle du CBC, identifié séparément.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le CBCV est l’homologue propyle du CBC : sa chaîne latérale possède trois carbones au lieu de cinq. La forme acide apparentée, CBCVA, porte en plus une fonction carboxyle. Ces noms désignent des structures distinctes, sans correspondre à des variétés de plante."
+            ],
+            "sourceIds": [
+              "cb-propyl-1975",
+              "cb-propyl-1977"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "Le CBCV est isolé et caractérisé avec le CBGV dans le matériel Meao. Cette présence documentée ne constitue pas une conclusion sur tous les cannabis."
+            ],
+            "sourceIds": [
+              "cb-propyl-1975"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "Les données structurales de 1975 ne constituent pas une évaluation clinique du CBCV."
+            ],
+            "sourceIds": [
+              "cb-propyl-1975"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "Les mécanismes pharmacologiques, la variabilité des expositions et la sécurité humaine du CBCV ne sont pas établis par les données structurales citées."
+            ],
+            "sourceIds": [
+              "cb-propyl-1975"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "Le résumé original de 1975 décrit un isolat caractérisé par des données spectrales et chimiques. Il ne mesure ni action sur un récepteur humain ni résultat chez des patients ; la parenté avec le CBC guide une hypothèse pharmacologique sans la démontrer."
+            ],
+            "sourceIds": [
+              "cb-propyl-1975"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-propyl-1975",
+          "cb-propyl-1977"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbcv"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "CBCV : trois noms, trois structures",
+          "nodes": [
+            {
+              "label": "CBC",
+              "detail": "Famille cannabichromène à chaîne pentyle."
+            },
+            {
+              "label": "CBCV",
+              "detail": "Homologue propyle, identifié séparément en 1975."
+            },
+            {
+              "label": "CBCVA",
+              "detail": "Acide propyle apparenté, avec carboxyle."
+            },
+            {
+              "label": "Limite",
+              "detail": "L’isolement spectral ne démontre pas un bénéfice clinique."
+            }
+          ],
+          "caption": "Relations structurales et niveaux de preuve ; les différences ne constituent pas une échelle de puissance humaine.",
+          "sourceIds": [
+            "cb-propyl-1975",
+            "cb-propyl-1977"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-propyl-1975",
+        "cb-propyl-1977"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-thcp",
+      "questions": [
+        "Le THCP se distingue du THC par une chaîne latérale à…"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Chaîne heptyle, identité FM2 et quiz confirmés.",
+        "Valeurs de liaison contextualisées ; comparaison THC bibliographique, pas comparaison clinique humaine.",
+        "Docking non représenté comme preuve structurale : la référence 33 porte un signal de rétractation à contre-vérifier."
+      ],
+      "patch": {
+        "lead": "Homologue heptyle du Δ9-THC : la chaîne latérale compte sept carbones au lieu de cinq.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le THCP est l’homologue heptyle du THC : sa chaîne latérale comporte sept carbones au lieu de cinq. La structure caractérisée dans l’étude de découverte doit être distinguée de la composition d’un produit vendu sous le nom THCP."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "L’étude de 2019 isole et caractérise le THCP dans le cannabis médicinal FM2. Cette présence ne détermine ni son abondance habituelle ni l’origine d’un produit commercial vendu sous ce nom."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "Les essais de liaison et la tétrade murine de 2019 ne mesurent pas la puissance ni les effets du THCP chez des personnes."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "Les promesses ‘plusieurs fois plus puissant’ extrapolent souvent une mesure de laboratoire. Composition et sécurité des produits émergents sont incertaines. Effets humains propres, métabolisme et sécurité durable ne sont pas établis par la découverte de 2019."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "Le test de liaison rapporte un Ki de 1,2 nM pour CB1 et 6,2 nM pour CB2. Le rapport souvent cité comme « 33 fois » compare l’affinité CB1 du THCP à une valeur de THC de 40 nM issue de références : ce n’est pas un multiplicateur d’intoxication humaine. Les réponses de la tétrade chez la souris et les prédictions de docking apportent d’autres types d’information ; aucune de ces expériences n’est un essai clinique."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-citti-2019"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-thcp"
+          }
+        ],
+        "diagram": {
+          "kind": "evidence",
+          "title": "THCP : trois observations distinctes",
+          "nodes": [
+            {
+              "label": "Identité",
+              "detail": "Isolat FM2 confronté à une référence synthétique."
+            },
+            {
+              "label": "Liaison",
+              "detail": "CB1 Ki 1,2 nM : mesure in vitro, pas effet ressenti."
+            },
+            {
+              "label": "Souris",
+              "detail": "Tétrade comportementale : modèle animal, pas efficacité humaine."
+            }
+          ],
+          "caption": "Le rapport d’affinité de 33 ne peut pas être utilisé comme rapport de puissance clinique.",
+          "sourceIds": [
+            "cb-citti-2019"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-citti-2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-thcp"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-cbdp",
+      "questions": [
+        "Quelle identité, origine et quel niveau de preuve caractérisent CBDP ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Attribution des résultats CBDP/THCP contrôlée ; aucune transposition du test THCP au CBDP.",
+        "Identité chimique et limites cliniques conservées.",
+        "Reprise après contrôle du coordinateur : diagramme spécifique effectivement inclus ; identité développée si fragmentaire et références distribuées selon les assertions des sections."
+      ],
+      "patch": {
+        "lead": "Homologue heptyle du cannabidiol identifié dans l’étude de 2019.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le CBDP porte une chaîne heptyle à sept carbones, contre cinq pour le CBD. Il est également distinct du THCP, malgré leur identification dans le même article ; les données pharmacologiques ne sont pas interchangeables entre ces molécules."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "Le CBDP est identifié avec le THCP dans le matériel FM2 étudié. La présence dans cet échantillon ne garantit pas l’identité ou la provenance d’un produit commercial."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "La publication de 2019 caractérise le CBDP, sans tester son efficacité chez des patients."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "L’étude ne permet pas de conclure à un mécanisme clinique ou à une innocuité propres."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "L’identification du CBDP combine chromatographie, spectrométrie de masse et comparaison RMN avec une référence synthétique. Les mesures de liaison et la tétrade murine de la publication portent sur le THCP, sans démontrer une activité équivalente du CBDP."
+            ],
+            "sourceIds": [
+              "cb-citti-2019"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-citti-2019"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-cbdp"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "CBDP et THCP : ne pas transférer l’expérience",
+          "nodes": [
+            {
+              "label": "CBD → CBDP",
+              "detail": "Comparaison structurale : chaîne pentyle C5 / heptyle C7."
+            },
+            {
+              "label": "CBDP, étude de 2019",
+              "detail": "Identité confirmée par analyses et comparaison à une référence."
+            },
+            {
+              "label": "THCP, même publication",
+              "detail": "Liaison CB1 et tétrade murine concernent le THCP ; résultats non attribuables au CBDP."
+            }
+          ],
+          "caption": "Relations structurales et niveaux de preuve ; les différences ne constituent pas une échelle de puissance humaine.",
+          "sourceIds": [
+            "cb-citti-2019"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-citti-2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original spécifique ajouté et contrôlé : relations structurales, transformations ou résultats expérimentaux nommés et limites explicites. Schéma conceptuel, pas dessin atomique ; aucune photo scientifique indispensable ni ancienne vignette certifiée comme observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-cannabinoid-hhc",
+      "questions": [
+        "Les formes 9R et 9S du HHC sont…"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "9R/9S, non racémique et activité différentielle confirmés par étude 2023 réellement ouverte.",
+        "Cohorte commune 2025/2026 confirmée, sans double comptage.",
+        "Surveillance 2026 lue ; présence rapportée ne certifie ni biosynthèse naturelle ni traçabilité des produits."
+      ],
+      "patch": {
+        "lead": "Analogue saturé du THC, avec notamment deux épimères distingués dans les produits étudiés.",
+        "sections": [
+          {
+            "id": "identity",
+            "title": "Identité chimique",
+            "paragraphs": [
+              "Le HHC est un analogue hydrogéné du THC. Les formes 9R et 9S sont des épimères, donc des diastéréoisomères, plutôt qu’une paire d’énantiomères dont le mélange serait dit racémique. Leur activité doit être étudiée séparément."
+            ],
+            "sourceIds": [
+              "cb-hhc-2023",
+              "cb-euda-2023"
+            ]
+          },
+          {
+            "id": "occurrence",
+            "title": "Origine et présence",
+            "paragraphs": [
+              "Des traces historiques ont été rapportées dans des préparations de cannabis, sans établir une biosynthèse normale dans la plante : des transformations peuvent aussi les expliquer. Le HHC est surveillé sur le marché européen, où le nom du produit ne garantit ni proportions d’épimères ni pureté."
+            ],
+            "sourceIds": [
+              "cb-euda-2023",
+              "cb-euda-2026"
+            ]
+          },
+          {
+            "id": "human",
+            "title": "Données humaines",
+            "paragraphs": [
+              "L’étude de 2025 porte sur six volontaires ; l’article métabolique de 2026 réanalyse leurs prélèvements avec de nouveaux dosages. Ces publications reposent donc sur une seule cohorte, dont les effectifs ne doivent pas être additionnés. Elles ne démontrent ni une efficacité thérapeutique ni une sécurité générale."
+            ],
+            "sourceIds": [
+              "cb-hhc-human-2025",
+              "cb-hhc-metabolites-2026"
+            ]
+          },
+          {
+            "id": "risks",
+            "title": "Risques et inconnues",
+            "paragraphs": [
+              "Des intoxications sont signalées, avec des effets cognitifs et psychiques et une composition variable des produits. La mention « naturel » ne garantit pas leur sécurité ; les risques chroniques, les interactions et le contenu réel de nombreux lots restent incertains."
+            ],
+            "sourceIds": [
+              "cb-euda-2023",
+              "cb-euda-2026",
+              "cb-hhc-human-2025"
+            ]
+          },
+          {
+            "id": "mechanisms",
+            "title": "Mécanismes étudiés",
+            "paragraphs": [
+              "Dans l’étude de Nasrallah et Garg, les épimères 9R et 9S lient CB1 et CB2 et présentent une activité agoniste partielle dans des essais cellulaires AMPc. L’épimère 9R montre une affinité et une activité supérieures dans ces conditions ; l’épimère 9S n’est donc pas universellement inactif. La liaison, la réponse cellulaire et l’exposition d’une personne sont trois mesures distinctes."
+            ],
+            "sourceIds": [
+              "cb-hhc-2023"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cb-hhc-2023",
+          "cb-euda-2023",
+          "cb-euda-2026",
+          "cb-hhc-human-2025",
+          "cb-hhc-metabolites-2026"
+        ],
+        "relatedArticleIds": [
+          "ref-phytocannabinoides"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "evidence",
+            "passageId": "compound-hhc"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "HHC : identité, activité, exposition",
+          "nodes": [
+            {
+              "label": "9R et 9S",
+              "detail": "Épimères : configuration différente à un seul centre."
+            },
+            {
+              "label": "Essais cellulaires",
+              "detail": "Les deux peuvent être actifs ; intensités différentes selon conditions."
+            },
+            {
+              "label": "Six volontaires",
+              "detail": "2025 : exposition ; 2026 : réanalyse des mêmes prélèvements."
+            }
+          ],
+          "caption": "Ne pas additionner les cohortes ni extrapoler la sécurité chronique.",
+          "sourceIds": [
+            "cb-hhc-2023",
+            "cb-hhc-human-2025",
+            "cb-hhc-metabolites-2026"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cb-hhc-2023",
+        "cb-euda-2023",
+        "cb-euda-2026",
+        "cb-hhc-human-2025",
+        "cb-hhc-metabolites-2026"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlable relu : relations et limites concordent avec les passages ouverts. L’ancienne vignette de synthèse ne constitue pas une observation et n’est pas validée comme preuve scientifique. Aucun téléchargement photographique. Photo non indispensable à cette identité moléculaire."
+      },
+      "quizIdsReviewed": [
+        "hemp-evidence-hhc-epimeres"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [
+    {
+      "id": "hemp-evidence-cbgva",
+      "prompt": "Quel est l’homologue à chaîne propyle du CBGA, associé à la branche varinique ?",
+      "options": [
+        "Le CBG",
+        "Le CBNA",
+        "Le CBDP",
+        "Le CBGVA"
+      ],
+      "answer": 3,
+      "explanation": "Le CBGVA est l’homologue propyle du CBGA et un précurseur de cannabinoïdes variniques.",
+      "articleId": "record-cannabinoid-cbgva",
+      "sourceIds": [
+        "cb-propyl-1977",
+        "cb-luo-2019"
+      ]
+    },
+    {
+      "id": "hemp-evidence-thcp",
+      "prompt": "Le THCP se distingue du THC par une chaîne latérale à…",
+      "options": [
+        "Sept carbones",
+        "Trois carbones",
+        "Cinq carbones",
+        "Deux carbones"
+      ],
+      "answer": 0,
+      "explanation": "Le THCP porte une chaîne heptyle à sept carbones, contre une chaîne pentyle à cinq carbones pour le THC.",
+      "articleId": "record-cannabinoid-thcp",
+      "sourceIds": [
+        "cb-citti-2019"
+      ]
+    },
+    {
+      "id": "hemp-evidence-hhc-epimeres",
+      "prompt": "Les formes 9R et 9S du HHC sont…",
+      "options": [
+        "Deux isotopes du carbone",
+        "Deux épimères",
+        "Deux longueurs de chaîne",
+        "Un acide et sa forme neutre"
+      ],
+      "answer": 1,
+      "explanation": "Les formes 9R et 9S du HHC sont des épimères, donc des diastéréoisomères différant à un centre stéréogène.",
+      "articleId": "record-cannabinoid-hhc",
+      "sourceIds": [
+        "cb-hhc-2023"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "THCP : le rapport 33 décrit une comparaison d’affinités avec une valeur bibliographique THC ; aucun multiplicateur humain.",
+    "CBGVA→CBCVA : branche proposée, pas voie enzymatique directement vérifiée.",
+    "HHC : risque d’erreur de double comptage de la cohorte 2025/2026."
+  ]
+}

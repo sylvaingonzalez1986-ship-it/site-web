@@ -28,7 +28,7 @@ export function PackOpeningFlowModal({ ticket, onClose, onOpen, inline = false }
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") { event.preventDefault(); closeRef.current(); }
       if (event.key === "Tab" && dialogRef.current) {
-        const elements = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button:not(:disabled), [tabindex="0"]')).filter(el => el.getClientRects().length > 0 && el.getAttribute("aria-disabled") !== "true");
+        const elements = Array.from(dialogRef.current.querySelectorAll<HTMLElement>('button:not(:disabled), summary, [tabindex="0"]')).filter(el => el.getClientRects().length > 0 && el.getAttribute("aria-disabled") !== "true");
         const first = elements[0], last = elements.at(-1);
         if (event.shiftKey && (document.activeElement === first || !dialogRef.current.contains(document.activeElement))) { event.preventDefault(); last?.focus(); }
         else if (!event.shiftKey && (document.activeElement === last || !dialogRef.current.contains(document.activeElement))) { event.preventDefault(); first?.focus(); }

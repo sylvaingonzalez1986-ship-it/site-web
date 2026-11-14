@@ -1,0 +1,1307 @@
+{
+  "domain": "regulation",
+  "articles": [
+    {
+      "id": "ref-conservation",
+      "topicId": "quality",
+      "title": "Qualité physique et conservation",
+      "lead": "La qualité d'une récolte de chanvre dépend de la matière concernée, de son intégrité et de son évolution après récolte. Graines, fibres et huiles ne vieillissent pas de la même manière.",
+      "image": {
+        "src": "/placard/school/products/plate-v1.webp",
+        "alt": "Graines, huile, fractions de tige, fibres, corde, tissu et matériaux de chanvre illustrés.",
+        "caption": "Graines, fibres et matériaux du chanvre, illustration de synthèse."
+      },
+      "sections": [
+        {
+          "id": "ref-conservation-1",
+          "title": "Eau et matière sèche",
+          "paragraphs": [
+            "La masse d'une récolte comprend de l'eau et de la matière sèche. La variation de son humidité peut donc modifier son poids sans augmenter la matière végétale produite. Le rendement exprimé par surface dépend de cette base. La fraction commercialisable dépend aussi du débouché et de ses critères ; un rejet contractuel n'est pas automatiquement une preuve de danger alimentaire."
+          ],
+          "sourceIds": [
+            "harvest-lesson-moisture",
+            "harvest-lesson-hemp"
+          ]
+        },
+        {
+          "id": "ref-conservation-2",
+          "title": "Intégrité des matières",
+          "paragraphs": [
+            "Le chènevis peut subir des bris et contenir des impuretés. Les caractéristiques des fibres comprennent notamment leur longueur et leur propreté. La manutention et les séparations modifient ces propriétés à différents stades. Une perte physique de matière se distingue d'une fraction présente mais écartée pour un usage particulier, et certaines fractions peuvent rejoindre un autre débouché."
+          ],
+          "sourceIds": [
+            "cultivation-lesson-hemp2026",
+            "harvest-lesson-hemp",
+            "products-lesson-chain"
+          ]
+        },
+        {
+          "id": "ref-conservation-3",
+          "title": "Évolution pendant le stockage",
+          "paragraphs": [
+            "L'humidité et les conditions locales influencent la conservation des matières végétales. Une paroi froide peut recevoir de la condensation sans que cela démontre à elle seule une moisissure des graines. Dans les huiles, l'oxydation des lipides modifie progressivement des caractéristiques chimiques et sensorielles. La composition, l'emballage et les conditions de stockage interviennent dans cette évolution."
+          ],
+          "sourceIds": [
+            "cultivation-lesson-humidity",
+            "products-lesson-oil-stability",
+            "harvest-lesson-oil"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "harvest-lesson-moisture",
+        "harvest-lesson-hemp",
+        "cultivation-lesson-hemp2026",
+        "products-lesson-chain",
+        "cultivation-lesson-humidity",
+        "products-lesson-oil-stability",
+        "harvest-lesson-oil"
+      ],
+      "relatedArticleIds": [
+        "ref-graines-chanvre",
+        "ref-huile-graines",
+        "ref-contaminants"
+      ],
+      "glossaryIds": [
+        "harvest-term-dry-matter",
+        "harvest-term-wet-basis",
+        "harvest-term-integrity",
+        "products-term-oxidation"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-outcomes-1"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-outcomes-2"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-outcomes-checkpoint"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-units-1"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-units-2"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-units-checkpoint"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-limits-1"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-limits-2"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-limits-checkpoint"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-records-1"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-records-2"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-records-checkpoint"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-handling-1"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-handling-2"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-handling-checkpoint"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-trials-1"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-trials-2"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-trials-checkpoint"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-before-after-1"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-before-after-2"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-before-after-checkpoint"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-tradeoffs-1"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-tradeoffs-2"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-tradeoffs-checkpoint"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-tips-1"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-tips-2"
+        },
+        {
+          "courseId": "prevention",
+          "passageId": "harvest-tips-checkpoint"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-performance-1"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-performance-2"
+        },
+        {
+          "courseId": "genetics",
+          "passageId": "cultivation-performance-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "ref-contaminants",
+      "topicId": "quality",
+      "title": "Contaminants des produits de chanvre",
+      "lead": "Les contaminants sont des substances ou des organismes indésirables dont la présence et les conséquences dépendent de la matière, de l'exposition et de la destination du produit.",
+      "image": {
+        "src": "/placard/school/products/plate-v1.webp",
+        "alt": "Graines, huile, fractions de tige, fibres, corde, tissu et matériaux de chanvre illustrés.",
+        "caption": "Graines, fibres et matériaux du chanvre, illustration de synthèse."
+      },
+      "sections": [
+        {
+          "id": "ref-contaminants-1",
+          "title": "Des familles différentes",
+          "paragraphs": [
+            "Des contrôles de produits à base de cannabis peuvent porter sur des résidus de pesticides, des éléments métalliques, des solvants résiduels ou des microorganismes. Les molécules recherchées dépendent du produit et de sa fabrication. La teneur déclarée d'un cannabinoïde ne décrit pas ces autres paramètres. La mention sans solvant n'exclut donc pas toutes les familles possibles de contaminants."
+          ],
+          "sourceIds": [
+            "products-lesson-methods",
+            "products-lesson-labels"
+          ]
+        },
+        {
+          "id": "ref-contaminants-2",
+          "title": "Moisissures et mycotoxines",
+          "paragraphs": [
+            "Certaines moisissures peuvent produire des mycotoxines, substances distinctes des organismes qui les fabriquent. Leur présence dépend des espèces et des conditions. Une contamination fongique ne se résume pas à un changement de couleur ou d'odeur, et l'absence d'un aspect visible ne constitue pas une analyse. Une matière moisie ne devient pas conforme par simple retrait de sa partie visible."
+          ],
+          "sourceIds": [
+            "health-lesson-mycotoxins",
+            "health-lesson-punja2019"
+          ]
+        },
+        {
+          "id": "ref-contaminants-3",
+          "title": "Produit et voie d'exposition",
+          "paragraphs": [
+            "La composition d'un produit initial et celle de ses émissions peuvent différer lorsqu'il est chauffé. Une étude sur des acétates de cannabinoïdes a identifié la formation de cétène dans les conditions examinées. Ce résultat concerne ces substances et ces conditions : il n'autorise pas à attribuer des émissions identiques à tous les produits, ni à considérer toute inhalation sans combustion comme dépourvue de risque."
+          ],
+          "sourceIds": [
+            "products-lesson-acetates",
+            "products-tool-inhalation"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "products-lesson-methods",
+        "products-lesson-labels",
+        "health-lesson-mycotoxins",
+        "health-lesson-punja2019",
+        "products-lesson-acetates",
+        "products-tool-inhalation"
+      ],
+      "relatedArticleIds": [
+        "ref-analyses",
+        "ref-conservation",
+        "ref-origines-formulations"
+      ],
+      "glossaryIds": [
+        "health-term-mycotoxin",
+        "products-term-emission",
+        "products-term-degradation"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "profiles",
+          "passageId": "products-exposure-1"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-exposure-2"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-exposure-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "ref-analyses",
+      "topicId": "quality",
+      "title": "Analyses et composition des lots",
+      "lead": "Les analyses de laboratoire caractérisent des constituants ou des propriétés d'un échantillon de chanvre. Elles portent sur des paramètres définis et sur une matière identifiée.",
+      "image": {
+        "src": "/placard/school/products/plate-v1.webp",
+        "alt": "Graines, huile, fractions de tige, fibres, corde, tissu et matériaux de chanvre illustrés.",
+        "caption": "Graines, fibres et matériaux du chanvre, illustration de synthèse."
+      },
+      "sections": [
+        {
+          "id": "ref-analyses-1",
+          "title": "Identité et teneur",
+          "paragraphs": [
+            "L'identification d'une molécule et la mesure de sa concentration sont des résultats distincts. Les laboratoires emploient des méthodes adaptées aux cannabinoïdes, aux résidus chimiques, aux métaux ou aux microorganismes. Les matrices végétales, les huiles et les produits formulés ont des compositions différentes. Une méthode validée pour une matière n'est pas automatiquement applicable avec les mêmes performances à toutes les autres."
+          ],
+          "sourceIds": [
+            "products-lesson-methods",
+            "products-lesson-nist"
+          ]
+        },
+        {
+          "id": "ref-analyses-2",
+          "title": "Unités et limites analytiques",
+          "paragraphs": [
+            "Une teneur est une quantité rapportée à une masse ou à un volume défini. L'expression sur matière sèche diffère de celle sur produit humide. La limite de quantification désigne le plus bas niveau compatible avec des performances analytiques acceptables. Un résultat inférieur à cette limite ne signifie pas nécessairement absence de toute molécule ; les mesures comportent également une incertitude."
+          ],
+          "sourceIds": [
+            "products-tool-metrology",
+            "harvest-lesson-moisture"
+          ]
+        },
+        {
+          "id": "ref-analyses-3",
+          "title": "Certificat et lot",
+          "paragraphs": [
+            "Un certificat d'analyse relie des résultats à l'objet effectivement essayé. Le prélèvement, la fourniture de l'échantillon et l'identification du lot en déterminent la portée. Un rapport sur un ingrédient ne décrit pas automatiquement un assemblage ultérieur, et un paramètre non analysé n'est pas réputé conforme. La traçabilité relie les matières entrantes, les transformations et les produits obtenus."
+          ],
+          "sourceIds": [
+            "products-tool-analysis",
+            "products-tool-food-law"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "products-lesson-methods",
+        "products-lesson-nist",
+        "products-tool-metrology",
+        "harvest-lesson-moisture",
+        "products-tool-analysis",
+        "products-tool-food-law"
+      ],
+      "relatedArticleIds": [
+        "ref-contaminants",
+        "ref-origines-formulations",
+        "ref-conservation"
+      ],
+      "glossaryIds": [
+        "products-term-concentration",
+        "products-term-analyte",
+        "products-term-matrix-sample",
+        "products-term-loq",
+        "products-term-lot"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "profiles",
+          "passageId": "products-labels-1"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-labels-2"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-labels-checkpoint"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-quality-1"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-quality-2"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-quality-checkpoint"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-traceability-1"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-traceability-2"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-traceability-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "ref-origines-formulations",
+      "topicId": "quality",
+      "title": "Origine des molécules et formulations",
+      "lead": "L'identité chimique d'une molécule, sa présence dans une plante et le procédé ayant fourni un produit commercial correspondent à des caractéristiques différentes.",
+      "image": {
+        "src": "/placard/school/products/plate-v1.webp",
+        "alt": "Graines, huile, fractions de tige, fibres, corde, tissu et matériaux de chanvre illustrés.",
+        "caption": "Graines, fibres et matériaux du chanvre, illustration de synthèse."
+      },
+      "sections": [
+        {
+          "id": "ref-origines-formulations-1",
+          "title": "Présence naturelle",
+          "paragraphs": [
+            "Une molécule peut être identifiée dans un échantillon végétal sans constituer un composé abondant de toutes les plantes. La publication de 2019 sur le THCP et le CBDP décrit des constituants isolés du cannabis. Cette présence ne démontre pas que chaque produit commercial portant ces noms provient directement de leur séparation à partir de fleurs."
+          ],
+          "sourceIds": [
+            "products-lesson-thcp"
+          ]
+        },
+        {
+          "id": "ref-origines-formulations-2",
+          "title": "Hémisynthèse et synthèse",
+          "paragraphs": [
+            "L'hémisynthèse transforme chimiquement un précurseur d'origine naturelle. Une synthèse construit la molécule par des transformations chimiques ; l'origine de la matière et l'identité finale ne sont pas des synonymes. Pour le HHC commercial, les rapports européens décrivent notamment une production à partir de précurseurs cannabinoïdes. Les produits peuvent contenir différents stéréoisomères et des constituants secondaires."
+          ],
+          "sourceIds": [
+            "products-lesson-hhc",
+            "products-lesson-isomers",
+            "products-tool-hhc"
+          ]
+        },
+        {
+          "id": "ref-origines-formulations-3",
+          "title": "La formulation finale",
+          "paragraphs": [
+            "Un produit formulé associe une ou plusieurs substances à un support et éventuellement à d'autres ingrédients. Sa composition ne se résume pas à la molécule mise en avant sur l'étiquette. La voie d'exposition modifie également l'absorption et les effets : une formulation destinée à une voie donnée n'acquiert pas automatiquement une compatibilité ou une sécurité équivalente pour une autre voie."
+          ],
+          "sourceIds": [
+            "products-lesson-seed-oil",
+            "products-lesson-oral",
+            "products-tool-inhalation"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "products-lesson-thcp",
+        "products-lesson-hhc",
+        "products-lesson-isomers",
+        "products-tool-hhc",
+        "products-lesson-seed-oil",
+        "products-lesson-oral",
+        "products-tool-inhalation"
+      ],
+      "relatedArticleIds": [
+        "ref-resines-extraits",
+        "ref-huile-graines",
+        "ref-reglementation-produits"
+      ],
+      "glossaryIds": [
+        "products-term-formulation",
+        "products-term-semisynthesis",
+        "products-term-stereoisomer",
+        "products-term-absorption"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "profiles",
+          "passageId": "products-origins-1"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-origins-2"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-origins-checkpoint"
+        }
+      ]
+    },
+    {
+      "id": "ref-reglementation-produits",
+      "topicId": "quality",
+      "title": "Statut des produits en France et dans l'UE",
+      "lead": "Le statut d'un produit issu du chanvre dépend de sa composition, de sa destination et des textes applicables. Les repères suivants sont datés de novembre 2026.",
+      "image": {
+        "src": "/placard/school/products/plate-v1.webp",
+        "alt": "Graines, huile, fractions de tige, fibres, corde, tissu et matériaux de chanvre illustrés.",
+        "caption": "Graines, fibres et matériaux du chanvre, illustration de synthèse."
+      },
+      "sections": [
+        {
+          "id": "ref-reglementation-produits-1",
+          "title": "Graines et denrées alimentaires",
+          "paragraphs": [
+            "Le ministère français de l'Agriculture distingue les graines et leurs dérivés non enrichis des aliments comportant du CBD ajouté. Son communiqué du 20 mai 2026 rappelle l'absence d'autorisation alimentaire du CBD. Une évaluation de l'EFSA ne constitue pas, à elle seule, une autorisation au titre du règlement européen sur les nouveaux aliments."
+          ],
+          "sourceIds": [
+            "products-tool-dgal-2026",
+            "products-tool-novel-food"
+          ]
+        },
+        {
+          "id": "ref-reglementation-produits-2",
+          "title": "Teneurs maximales alimentaires",
+          "paragraphs": [
+            "Le règlement 2023/915, consolidé au 19 août 2026, fixe 3 mg/kg pour les graines et certains produits exclusivement issus des graines, et 7,5 mg/kg pour l'huile de graines. Ces limites concernent la somme Δ9-THC + 0,877 × Δ9-THCA. Elles s'expriment en mg/kg et ne correspondent pas au seuil agricole de 0,3 %."
+          ],
+          "sourceIds": [
+            "products-tool-contaminants",
+            "products-tool-hemp-order"
+          ]
+        },
+        {
+          "id": "ref-reglementation-produits-3",
+          "title": "Substances classées et sécurité",
+          "paragraphs": [
+            "En France, le HHC reste classé comme stupéfiant : la décision du 16 janvier 2026 le transfère de l'annexe IV à l'annexe III, sans le déclasser. En matière alimentaire, les obligations de retrait ou d'information peuvent s'appliquer lorsqu'un opérateur a des raisons de penser que les prescriptions de sécurité ne sont pas respectées, sans attendre une preuve définitive."
+          ],
+          "sourceIds": [
+            "products-tool-hhc-decision-2026",
+            "products-tool-classification",
+            "products-tool-food-law"
+          ]
+        }
+      ],
+      "sourceIds": [
+        "products-tool-dgal-2026",
+        "products-tool-novel-food",
+        "products-tool-contaminants",
+        "products-tool-hemp-order",
+        "products-tool-hhc-decision-2026",
+        "products-tool-classification",
+        "products-tool-food-law"
+      ],
+      "relatedArticleIds": [
+        "ref-graines-chanvre",
+        "ref-origines-formulations"
+      ],
+      "glossaryIds": [
+        "products-term-total-thc",
+        "products-term-novel-food"
+      ],
+      "legacyPassages": [
+        {
+          "courseId": "profiles",
+          "passageId": "products-food-1"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-food-2"
+        },
+        {
+          "courseId": "profiles",
+          "passageId": "products-food-checkpoint"
+        }
+      ]
+    }
+  ],
+  "terms": [
+    {
+      "id": "products-term-absorption",
+      "term": "Absorption",
+      "definition": "Passage d’une substance depuis son site d’exposition vers l’organisme ; la composition du produit ne mesure pas directement ce transfert.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "products-lesson-oral"
+      ]
+    },
+    {
+      "id": "products-term-analyte",
+      "term": "Analyte",
+      "definition": "Substance ou grandeur ciblée par une analyse, à identifier précisément avant d’interpréter un nombre.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "products-lesson-methods"
+      ]
+    },
+    {
+      "id": "products-term-concentration",
+      "term": "Concentration / teneur",
+      "definition": "Quantité d’un analyte rapportée à une quantité définie de produit ; unité et base font partie du résultat.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "products-lesson-methods"
+      ]
+    },
+    {
+      "id": "products-term-degradation",
+      "term": "Dégradation",
+      "definition": "Transformations de constituants pouvant modifier composition et propriétés ; elles demandent des critères adaptés au contexte.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "products-lesson-acetates",
+        "products-lesson-oil-stability"
+      ]
+    },
+    {
+      "id": "products-term-emission",
+      "term": "Émission",
+      "definition": "Substances libérées lors d’une situation d’usage ; leur composition peut différer de celle de la matière initiale.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "products-lesson-acetates"
+      ]
+    },
+    {
+      "id": "products-term-formulation",
+      "term": "Formulation",
+      "definition": "Association d’ingrédients constituant un produit ; elle n’implique pas nécessairement une réaction chimique.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "products-lesson-seed-oil",
+        "products-lesson-names"
+      ]
+    },
+    {
+      "id": "products-term-semisynthesis",
+      "term": "Hémisynthèse / semi-synthèse",
+      "definition": "Transformation chimique d’un précurseur d’origine naturelle ; cette origine ne garantit pas le profil complet du produit final.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "products-lesson-hhc"
+      ]
+    },
+    {
+      "id": "harvest-term-wet-basis",
+      "term": "Humidité sur base humide",
+      "definition": "Masse d’eau rapportée à la masse humide totale ; le pourcentage d’exercice n’est pas une cible de conduite.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-moisture"
+      ]
+    },
+    {
+      "id": "harvest-term-integrity",
+      "term": "Intégrité physique",
+      "definition": "État matériel de la fraction suivie, par exemple présence de graines cassées, distinct de sa sécurité complète.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ]
+    },
+    {
+      "id": "products-term-loq",
+      "term": "Limite de quantification",
+      "definition": "Niveau à partir duquel une méthode peut quantifier avec les performances requises ; un résultat inférieur n’est pas une preuve de zéro absolu.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "products-lesson-methods"
+      ]
+    },
+    {
+      "id": "products-term-lot",
+      "term": "Lot",
+      "definition": "Ensemble de produit identifié dans sa chaîne documentaire ; l’identifiant doit correspondre aux matières et résultats invoqués.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "products-lesson-coa",
+        "products-lesson-trace"
+      ]
+    },
+    {
+      "id": "products-term-matrix-sample",
+      "term": "Matrice analytique",
+      "definition": "Nature du matériau dans lequel on recherche ou mesure un analyte : huile, matière végétale, formulation, etc.",
+      "articleId": "ref-analyses",
+      "sourceIds": [
+        "products-lesson-methods"
+      ]
+    },
+    {
+      "id": "health-term-mycotoxin",
+      "term": "Mycotoxine",
+      "definition": "Substance toxique produite par certaines moisissures ; sa présence et sa quantité ne se déduisent pas d’une couleur.",
+      "articleId": "ref-contaminants",
+      "sourceIds": [
+        "health-lesson-mycotoxins"
+      ]
+    },
+    {
+      "id": "products-term-novel-food",
+      "term": "Nouvel aliment",
+      "definition": "Catégorie réglementaire européenne soumise à la procédure applicable, à distinguer d’un simple produit récemment commercialisé.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "products-lesson-novel",
+        "products-lesson-food-fr"
+      ]
+    },
+    {
+      "id": "products-term-stereoisomer",
+      "term": "Stéréoisomère",
+      "definition": "Molécule de même connectivité qu’une autre, mais d’organisation spatiale différente ; les propriétés peuvent différer.",
+      "articleId": "ref-origines-formulations",
+      "sourceIds": [
+        "products-lesson-isomers"
+      ]
+    },
+    {
+      "id": "products-term-total-thc",
+      "term": "THC total alimentaire",
+      "definition": "Dans la rubrique européenne étudiée : Δ9-THC + 0,877 × Δ9-THCA. Une somme réglementaire de composition, pas une exposition humaine mesurée.",
+      "articleId": "ref-reglementation-produits",
+      "sourceIds": [
+        "products-lesson-contaminants"
+      ]
+    }
+  ],
+  "quiz": [
+    {
+      "id": "hemp-prevention-sechage",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quelle matière quitte principalement le chènevis pendant son séchage ?",
+      "options": [
+        "Les protéines",
+        "L’eau",
+        "Les fibres",
+        "Les sels minéraux"
+      ],
+      "answer": 1,
+      "explanation": "Le séchage diminue la quantité d’eau contenue dans les graines.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-moisture"
+      ]
+    },
+    {
+      "id": "hemp-prevention-paille",
+      "topicId": "prevention",
+      "level": 1,
+      "prompt": "Quelle matière de chanvre peut être conditionnée en balles après la fauche ?",
+      "options": [
+        "L’huile alimentaire",
+        "Le pollen seul",
+        "La paille de tiges",
+        "Les protéines dissoutes"
+      ],
+      "answer": 2,
+      "explanation": "Les tiges fauchées constituent une paille qui peut être pressée en balles.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ]
+    },
+    {
+      "id": "hemp-prevention-echauffement",
+      "topicId": "prevention",
+      "level": 2,
+      "prompt": "Quel phénomène peut altérer du chènevis humide entassé après la récolte ?",
+      "options": [
+        "Un échauffement du tas",
+        "Une carbonatation du tas",
+        "Un gel spontané du tas",
+        "Un rouissage textile du tas"
+      ],
+      "answer": 0,
+      "explanation": "Un lot de chènevis humide peut s’échauffer et perdre en qualité après récolte.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ]
+    },
+    {
+      "id": "hemp-prevention-fanage",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Que fait le fanage à la paille de chanvre fauchée ?",
+      "options": [
+        "Il en extrait l’huile",
+        "Il l’étale et l’aère",
+        "Il la transforme en fil",
+        "Il sépare les protéines"
+      ],
+      "answer": 1,
+      "explanation": "Le fanage étale et aère la paille pour favoriser son séchage.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ]
+    },
+    {
+      "id": "hemp-prevention-andain",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Qu’est-ce qu’un andain de chanvre après la fauche ?",
+      "options": [
+        "Un sac de graines décortiquées",
+        "Un rouleau de tissu fini",
+        "Une ligne de paille rassemblée",
+        "Une cuve d’huile pressée"
+      ],
+      "answer": 2,
+      "explanation": "Un andain est une rangée de matière fauchée rassemblée au sol.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ]
+    },
+    {
+      "id": "hemp-prevention-battage",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Lors de la récolte du chanvre à graines, à quoi sert le battage ?",
+      "options": [
+        "À carder les fibres",
+        "À broyer les racines",
+        "À presser l’huile",
+        "À détacher les graines"
+      ],
+      "answer": 3,
+      "explanation": "Le battage détache les graines des parties de la plante qui les portent.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ]
+    },
+    {
+      "id": "hemp-prevention-huile-rance",
+      "topicId": "prevention",
+      "level": 3,
+      "prompt": "Quelle réaction contribue au rancissement d’une huile de graines de chanvre ?",
+      "options": [
+        "La photosynthèse",
+        "L’oxydation des lipides",
+        "La germination des protéines",
+        "La fixation du diazote"
+      ],
+      "answer": 1,
+      "explanation": "L’oxydation des lipides produit notamment des composés qui modifient l’odeur et la saveur de l’huile.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-oil"
+      ]
+    },
+    {
+      "id": "hemp-prevention-bris-graines",
+      "topicId": "prevention",
+      "level": 4,
+      "prompt": "Quel risque augmente quand la manutention fait éclater les graines de chanvre ?",
+      "options": [
+        "L’oxydation de leurs lipides",
+        "La transformation en amidon pur",
+        "La formation de nouvelles fibres",
+        "La disparition de leurs minéraux"
+      ],
+      "answer": 0,
+      "explanation": "Les bris de graines favorisent l’exposition de leur contenu et peuvent accélérer son oxydation.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ]
+    },
+    {
+      "id": "hemp-prevention-maturite",
+      "topicId": "prevention",
+      "level": 4,
+      "prompt": "Dans une inflorescence de chanvre à graines, quelle zone mûrit généralement en premier ?",
+      "options": [
+        "La pointe supérieure",
+        "Toutes les zones simultanément",
+        "La partie inférieure",
+        "Uniquement la face ombragée"
+      ],
+      "answer": 2,
+      "explanation": "Les graines du bas peuvent être mûres alors que celles du haut de l’inflorescence sont encore vertes.",
+      "articleId": "ref-conservation",
+      "sourceIds": [
+        "harvest-lesson-hemp"
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "id": "cultivation-lesson-humidity",
+      "title": "Reducing Humidity in the Greenhouse",
+      "author": "Tina Smith et John W. Bartok Jr.",
+      "organization": "UMass Extension / University of Connecticut",
+      "published": "Version reprise dans le bulletin UMass de janvier–février 2016 ; page consultée le 12 novembre 2026",
+      "url": "https://www.umass.edu/agriculture-food-environment/greenhouse-floriculture/fact-sheets/reducing-humidity-in-greenhouse",
+      "passage": "Introduction, Relationship Between Temperature and Humidity, Air Movement et Measuring humidity : rosée, surfaces froides, humidité relative, hétérogénéité et qualité des mesures.",
+      "access": "excerpt",
+      "limitation": "Accès direct refusé ; passages originaux indexés lus. Aucun seuil cible, cycle de ventilation/chauffage, coût ancien ou programme cultural reproduit. Les exemples floricoles ne constituent pas une prescription pour le chanvre.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages du document original consultés"
+    },
+    {
+      "id": "cultivation-lesson-hemp2026",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Louis-Marie Allard, avec les contributeurs de la filière ; coordination I. Lartigot",
+      "organization": "Terres Inovia / InterChanvre",
+      "published": "Dépôt légal janvier 2026",
+      "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+      "passage": "Pages imprimées 8–9 : contractualisation, débouché et région ; page 17 : dépendance de l’eau au contexte ; pages 19–20 : maladies et ravageurs ; pages 22–23 : humidité, impuretés, fragilité du chènevis et qualité des fibres ; sommaire et crédits page 2.",
+      "access": "excerpt",
+      "limitation": "Sections ciblées du PDF lues, pas reprise intégrale du guide. Les slogans généraux zéro irrigation ou zéro risque ne sont pas retenus ; le cours ne reproduit aucun itinéraire, apport, calendrier ou réglage de production. Les affirmations historiques de la page 3 ne sont pas utilisées.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages du document original consultés"
+    },
+    {
+      "id": "health-lesson-punja2019",
+      "title": "Pathogens and Molds Affecting Production and Quality of Cannabis sativa L.",
+      "author": "Zamir K. Punja, Danielle Collyer, Cameron Scott, Samantha Lung, Janesse Holmes et Darren Sutton",
+      "organization": "Frontiers in Plant Science 10:1120",
+      "published": "17 octobre 2019 ; DOI 10.3389/fpls.2019.01120",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+      "passage": "Méthodes d’identification ; résultats Root-Infecting Pathogens ; figures 4, 5 et 7 et texte sur l’identité provisoire de l’oïdium ; discussion Pythium catenulatum/endophytes ; financement.",
+      "access": "full-text",
+      "limitation": "Étude de sites autorisés canadiens, pas inventaire représentatif de tous les chanvres. Pathogénicité vérifiée pour certains isolats, pas pour toute détection ; G. cichoracearum sensu lato est explicitement provisoire en 2019. Financement Agrima Botanicals, NSERC et programmes publics canadiens. Aucun protocole expérimental ou de production reproduit.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication originale scientifique ou institutionnelle"
+    },
+    {
+      "id": "health-lesson-mycotoxins",
+      "title": "Mycotoxins",
+      "author": "Organisation mondiale de la santé",
+      "organization": "OMS",
+      "published": "2 octobre 2023",
+      "url": "https://www.who.int/news-room/fact-sheets/detail/mycotoxins",
+      "passage": "Overview et Reducing risk : seules certaines moisissures produisent des mycotoxines, contamination au-delà de la surface et limites de la transformation alimentaire.",
+      "access": "official-page",
+      "limitation": "Information générale sur les aliments, pas analyse d’un lot de chanvre ni démonstration qu’un champignon observé produit une toxine. Le cours ne propose aucune méthode de récupération d’un produit moisi.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication originale scientifique ou institutionnelle"
+    },
+    {
+      "id": "products-lesson-chain",
+      "title": "La filière chanvre française",
+      "author": "InterChanvre",
+      "organization": "Interprofession du chanvre",
+      "published": "2023",
+      "url": "https://www.interchanvre.org/documents/1.Interchanvre/2023_InterChanvre.pdf",
+      "passage": "Diapositives 21–30 : chaîne textile, rouissage, fibres courtes, semi-longues, longues et voie cellulosique ; filature et tissage.",
+      "access": "excerpt",
+      "limitation": "Présentation professionnelle datée. Les capacités et perspectives annoncées en 2023 ne sont pas présentées comme des résultats de 2026. Le parcours textile choisi est un exemple, pas une chaîne obligatoire pour tous les produits.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-seed-oil",
+      "title": "Cannabidiol (CBD)",
+      "author": "Santé Canada",
+      "organization": "Gouvernement du Canada",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+      "passage": "Section The difference between cannabis oil and hemp-seed oil : huile issue de graines et extrait cannabinoïde éventuellement mélangé à une huile porteuse.",
+      "access": "official-page",
+      "limitation": "Seule cette distinction de matières est utilisée. Les règles canadiennes et autres assertions de la page ne sont pas transposées à la France ; huile de graines ne signifie pas absence analytique garantie de tout cannabinoïde.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication originale ou page de son organisme émetteur"
+    },
+    {
+      "id": "products-lesson-oil-stability",
+      "title": "Monitoring the Shelf Life of Hemp Seed Oil Stored at Two Temperatures in Different Materials via Near-Infrared (NIR) Spectroscopy",
+      "author": "Francesca Bonazza, Lucia Monti, Milena Povolo, Andrea Gasparini, Valeria Pelizzola et Giovanni Cabassi",
+      "organization": "Molecules 29(23):5577",
+      "published": "26 novembre 2024 ; DOI 10.3390/molecules29235577",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11643794/",
+      "passage": "Résumé, introduction et conclusion : suivi de l’oxydation, influence des conditions et du conditionnement, comparaison d’indicateurs analytiques.",
+      "access": "excerpt",
+      "limitation": "Une huile de graines Futura 75 et des conditions expérimentales particulières ; pas de durée de conservation universelle, ni de consigne de stockage chiffrée reprise. Financement CANAPRO, programme de développement rural lombard.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-names",
+      "title": "Cannabis Concentrates 101: Extracting the Facts on Inhalable Concentrates",
+      "author": "BC Cannabis Stores, rédaction pédagogique",
+      "organization": "Distributeur public de Colombie-Britannique",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.bccannabisstores.com/blogs/learn/cannabis-concentrates-101-extracting-the-facts-on-inhalable-concentrates",
+      "passage": "Terminologie commerciale : kief, hash, rosin, resin, live, distillate et textures.",
+      "access": "catalogue",
+      "limitation": "Source primaire d’usage commercial des noms, pas norme scientifique ni droit français. Les procédés pratiques, paramètres et promesses sensorielles ne sont pas repris. Les noms ne démontrent ni pureté ni innocuité.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication originale ou page de son organisme émetteur"
+    },
+    {
+      "id": "products-lesson-labels",
+      "title": "Product labeling accuracy and contamination analysis of commercially available cannabidiol product samples",
+      "author": "Barry E. Gidal, Ryan Vandrey, Chela Wallin, Sean Callan, Alan Sutton, Timothy B. Saurer et Jennifer L. Triemstra",
+      "organization": "Frontiers in Pharmacology 15:1335441",
+      "published": "18 mars 2024 ; DOI 10.3389/fphar.2024.1335441",
+      "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2024.1335441/full",
+      "passage": "Résumé, méthodes, résultats et financement : 202 produits américains achetés en 2021, étiquetage, catégories revendiquées et contaminants.",
+      "access": "excerpt",
+      "limitation": "Échantillon commercial américain non représentatif de tous les marchés. Définitions opérationnelles de l’étude, pas norme universelle ; seuils américains non transposés. Étude financée par Jazz Pharmaceuticals, affiliations industrielles déclarées.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-coa",
+      "title": "How to Read a Certificate of Analysis (CoA)",
+      "author": "New York State Office of Cannabis Management",
+      "organization": "État de New York",
+      "published": "Document institutionnel consulté le 12 novembre 2026 ; date éditoriale non confirmée",
+      "url": "https://cannabis.ny.gov/how-read-lab-certificate-analysis-your-cannabis-product",
+      "passage": "Pages 2–3 : lot, identifiant d’échantillon, date et résultats ; portée des mentions pass/fail.",
+      "access": "excerpt",
+      "limitation": "Guide de lecture d’un certificat, pas autorisation française ni garantie sanitaire universelle. Les règles et seuils de New York ne sont pas appliqués au dossier fictif.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-methods",
+      "title": "Validating analytical methods in cannabis testing",
+      "author": "Santé Canada",
+      "organization": "Gouvernement du Canada",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.canada.ca/en/health-canada/services/cannabis-regulations-licensed-producers/validating-analytical-methods-cannabis-testing.html",
+      "passage": "Passages originaux indexés sur validation, matrice, expression des résultats, limites de détection/quantification et incertitude.",
+      "access": "excerpt",
+      "limitation": "Principes de métrologie ; aucun protocole analytique, seuil canadien ou statut réglementaire transféré en France. Une méthode validée dans une matrice ne vaut pas validation de tout produit fini.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-nist",
+      "title": "Characterization of Reference Material 8210: Hemp Plant",
+      "author": "Colleen E. Bryan Sallee, Walter Brent Wilson et collaborateurs",
+      "organization": "NIST, Special Publication 260-248",
+      "published": "20 juin 2024 ; DOI 10.6028/NIST.SP.260-248",
+      "url": "https://www.nist.gov/publications/characterization-reference-material-8210-hemp-plant",
+      "passage": "Résumé de la publication : caractérisation de cannabinoïdes et éléments toxiques dans une matière végétale de référence.",
+      "access": "abstract",
+      "limitation": "RM 8210 porte des valeurs non certifiées : il n’est pas appelé matériau de référence certifié. Outil de contrôle analytique, pas certificat du lot commercial d’un vendeur.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication originale ou page de son organisme émetteur"
+    },
+    {
+      "id": "products-lesson-food-fr",
+      "title": "Denrées alimentaires contenant du cannabidiol (CBD) : des produits illégaux qui doivent être retirés du marché",
+      "author": "Direction générale de l’alimentation",
+      "organization": "Ministère français de l’Agriculture",
+      "published": "20 mai 2026 ; vérifié le 12 novembre 2026",
+      "url": "https://agriculture.gouv.fr/node/110883",
+      "passage": "Absence d’autorisation des denrées avec ajout de CBD ; distinction graines et dérivés non enrichis, feuilles exclusivement en infusion aqueuse et conditions applicables.",
+      "access": "official-page",
+      "limitation": "État France/Union européenne daté, pas règle mondiale. Le statut de non-nouvel aliment de certaines parties ne supprime ni les limites de contaminants ni les autres obligations ; pas d’assimilation à un médicament autorisé.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Publication originale ou page de son organisme émetteur"
+    },
+    {
+      "id": "products-lesson-contaminants",
+      "title": "Règlement (UE) 2023/915 concernant les teneurs maximales pour certains contaminants dans les denrées alimentaires",
+      "author": "Commission européenne",
+      "organization": "Journal officiel de l’Union européenne",
+      "published": "25 avril 2023 ; annexe I, rubrique 2.6 vérifiée au 12 novembre 2026",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/915/",
+      "passage": "Annexe I, 2.6 : graines et produits exclusivement à base de graines, huile de graines ; somme Δ9-THC + 0,877 × Δ9-THCA.",
+      "access": "excerpt",
+      "limitation": "Rubrique originale lue et maintien confirmé dans la consolidation du 19 août 2026 par vérification croisée. Les limites alimentaires en mg/kg ne sont ni un seuil variétal en pourcentage ni une autorisation générale du produit.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-novel",
+      "title": "Règlement (UE) 2015/2283 relatif aux nouveaux aliments",
+      "author": "Parlement européen et Conseil de l’Union européenne",
+      "organization": "Journal officiel de l’Union européenne",
+      "published": "25 novembre 2015 ; articles 6 et 10–12 vérifiés le 12 novembre 2026",
+      "url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=celex%3A32015R2283",
+      "passage": "Articles 6 et 10–12 : liste de l’Union, demande, évaluation de sécurité et décision d’autorisation.",
+      "access": "excerpt",
+      "limitation": "Extraits originaux indexés consultés ; ouverture directe bloquée. Le texte explique les rôles, mais le statut courant du CBD alimentaire est documenté séparément par la DGAL en 2026. Avis scientifique ne signifie pas autorisation.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-oral",
+      "title": "Pharmacodynamic dose effects of oral cannabis ingestion in healthy adults who infrequently use cannabis",
+      "author": "Nicolas J. Schlienz, Tory R. Spindle, Edward J. Cone et collaborateurs",
+      "organization": "Drug and Alcohol Dependence 211:107969",
+      "published": "1 juin 2020 ; PMID 32298998",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC8221366/",
+      "passage": "Résumé et discussion : étude contrôlée avec placebo chez 17 adultes, effets de l’ingestion et variabilité.",
+      "access": "excerpt",
+      "limitation": "Étude orale ; les comparaisons avec inhalation s’appuient sur la littérature, pas sur un bras inhalé du même essai. Pas de dose, délai pratique, équivalence ou recommandation d’usage repris ; pas de généralisation à toute formulation.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-acetates",
+      "title": "Vaping Cannabinoid Acetates Leads to Ketene Formation",
+      "author": "K. R. Munger, R. P. Jensen et R. M. Strongin",
+      "organization": "Chemical Research in Toxicology",
+      "published": "18 juillet 2022 ; DOI 10.1021/acs.chemrestox.2c00170",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/35801872/",
+      "passage": "Résumé original indexé : formation de cétène dans des expériences sur des acétates de cannabinoïdes, dont un échantillon commercial.",
+      "access": "excerpt",
+      "limitation": "Expériences chimiques et composés précis, pas mesure du risque clinique de tout produit. Les réactifs, appareils et paramètres ne sont pas repris. Ne prouve pas que tout aérosol possède la même composition.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-hhc",
+      "title": "Hexahydrocannabinol (HHC) and related substances",
+      "author": "István Ujváry et équipe EMCDDA",
+      "organization": "Observatoire européen des drogues et des toxicomanies, devenu EUDA",
+      "published": "17 avril 2023 ; DOI 10.2810/852912",
+      "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+      "passage": "Parties identité, origine et composition : hémisynthèse, présence naturelle rapportée avec réserves, isomères et produits commercialisés.",
+      "access": "excerpt",
+      "limitation": "Rapport daté utilisé pour les distinctions d’origine et d’identité. Son état des preuves humaines et du droit en 2023 n’est pas présenté comme actuel en 2026 ; aucune description opératoire de conversion n’est reprise.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-isomers",
+      "title": "Studies Pertaining to the Emerging Cannabinoid Hexahydrocannabinol (HHC)",
+      "author": "Daniel J. Nasrallah et Neil K. Garg",
+      "organization": "ACS Chemical Biology",
+      "published": "14 août 2023 ; DOI 10.1021/acschembio.3c00254",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37578929/",
+      "passage": "Résumé original indexé : comparaison d’épimères et examen de plus de 60 certificats commerciaux.",
+      "access": "excerpt",
+      "limitation": "Les certificats examinés ne sont pas tous des réanalyses indépendantes de produits. Différences dans des essais biologiques ne donnent ni multiplicateur d’effet humain ni conclusion sanitaire sur un lot inconnu.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-thcp",
+      "title": "A novel phytocannabinoid isolated from Cannabis sativa L. with an in vivo cannabimimetic activity higher than Δ9-tetrahydrocannabinol: Δ9-Tetrahydrocannabiphorol",
+      "author": "Cinzia Citti et collaborateurs",
+      "organization": "Scientific Reports 9:20335",
+      "published": "30 décembre 2019 ; DOI 10.1038/s41598-019-56785-1",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6937300/",
+      "passage": "Résumé et passages originaux indexés sur l’isolement et la caractérisation de THCP/CBDP dans le matériel FM2.",
+      "access": "excerpt",
+      "limitation": "Présence documentée dans le matériel étudié, pas abondance universelle ni origine végétale de tout produit commercial portant ce nom. Les résultats récepteurs/animaux ne deviennent pas une puissance clinique multiplicative.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-lesson-trace",
+      "title": "Règlement (CE) no 178/2002 — législation alimentaire générale",
+      "author": "Parlement européen et Conseil de l’Union européenne",
+      "organization": "EUR-Lex",
+      "published": "28 janvier 2002 ; consolidation au 1 janvier 2026, vérifiée le 12 novembre 2026",
+      "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:02002R0178-20260101",
+      "passage": "Articles 14, 17, 18 et 19 : sécurité, responsabilités, traçabilité et obligations lorsqu’un aliment ne satisfait pas aux exigences de sécurité.",
+      "access": "excerpt",
+      "limitation": "Articles ciblés originaux consultés dans l’index et vérifiés en lecture directe croisée du texte consolidé. L’exercice fictif d’attente documentaire ne conclut pas automatiquement à un danger ni à une obligation de rappel.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Passages originaux consultés"
+    },
+    {
+      "id": "products-tool-food-law",
+      "title": "Règlement (CE) 178/2002 — législation alimentaire, texte consolidé au 1er janvier 2026",
+      "author": "Parlement européen et Conseil",
+      "organization": "Parlement européen et Conseil",
+      "published": "2002-01-28 ; consolidation 2026-01-01",
+      "url": "https://eur-lex.europa.eu/legal-content/FR/TXT/HTML/?uri=CELEX:02002R0178-20260101",
+      "passage": "Articles 14 et 17–19 : sécurité, responsabilité, fournisseurs et clients professionnels, retrait et information des autorités.",
+      "limitation": "Texte courant lu directement en HTTP public après CAPTCHA du lecteur web. Un certificat isolé ne remplace pas ces obligations ; les consolidations sont des outils documentaires, les actes du JO font foi.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "products-tool-contaminants",
+      "title": "Règlement (UE) 2023/915 — contaminants alimentaires, consolidation du 19 août 2026",
+      "author": "Commission européenne",
+      "organization": "Commission européenne",
+      "published": "2023-04-25 ; consolidation 2026-08-19",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/915/",
+      "passage": "Article 3 et annexe I, section 2.6 : catégories graines, produits exclusivement issus des graines et huile ; équivalents Δ9-THC et facteur 0,877.",
+      "limitation": "Les limites de catégories ne sont ni une dose d’usage, ni une autorisation Novel Food, ni une garantie portant sur les contaminants non recherchés. Pour une denrée composée, examiner l’article 3.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "products-tool-novel-food",
+      "title": "Règlement (UE) 2015/2283 — nouveaux aliments, consolidation du 27 mars 2021",
+      "author": "Parlement européen et Conseil",
+      "organization": "Parlement européen et Conseil",
+      "published": "2015-11-25 ; consolidation courante 2021-03-27",
+      "url": "https://eur-lex.europa.eu/eli/reg/2015/2283/",
+      "passage": "Articles 3–4, 6 et 10–12 : historique, vérification du statut, liste de l’Union et procédure d’autorisation.",
+      "limitation": "L’avis scientifique et l’acte d’autorisation sont deux étapes distinctes. Le catalogue indicatif ne remplace pas les textes et conditions propres au produit.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "products-tool-dgal-2026",
+      "title": "Denrées alimentaires contenant du cannabidiol : rappel des règles et contrôles",
+      "author": "Ministère de l’Agriculture — DGAL",
+      "organization": "Ministère de l’Agriculture — DGAL",
+      "published": "2026-05-20",
+      "url": "https://agriculture.gouv.fr/node/110883",
+      "passage": "Graines et dérivés non enrichis ; exception des feuilles exclusivement destinées à une infusion aqueuse ; absence d’autorisation des ingrédients CBD et contrôles renforcés.",
+      "limitation": "Communication d’application française du droit européen ; pas une autorisation de toute partie végétale, de tout procédé ou de toute utilisation. Les traces résiduelles sont distinctes d’un enrichissement.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "products-tool-hemp-order",
+      "title": "Arrêté du 30 décembre 2021 portant application de l’article R.5132-86",
+      "author": "Ministères chargés de la Santé et de l’Agriculture",
+      "organization": "Ministères chargés de la Santé et de l’Agriculture",
+      "published": "2021-12-30 ; texte courant consulté",
+      "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213",
+      "passage": "Article 1 I et III : variétés et conditions du chanvre, seuil des extraits sans préjudice du droit alimentaire ; article 2 : documents de conformité pour les échanges hors Union européenne.",
+      "limitation": "Lire avec l’annulation juridictionnelle de 2022. Le seuil de 0,3 % ne rend pas licite tout produit fini et ne remplace pas les limites alimentaires en mg/kg.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "products-tool-classification",
+      "title": "Liste consolidée des substances classées comme stupéfiants",
+      "author": "ANSM",
+      "organization": "ANSM",
+      "published": "2026-06-26",
+      "url": "https://ansm.sante.fr/uploads/2026/06/26/20260626-stupefiants-version-consolidee.pdf",
+      "passage": "Page 28 : HHC ; annexe IV autour des pages 50–53 : H2-CBD, H4-CBD, HHCO, HHCP et définition structurale assortie d’exceptions.",
+      "limitation": "Liste consolidée actuelle publiée sur la page ANSM mise à jour le 3 juillet 2026. La qualification exige identité et texte exact ; aucune conclusion depuis un nom commercial nouveau.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "products-tool-hhc-decision-2026",
+      "title": "Décision du 16 janvier 2026 modifiant la liste des stupéfiants",
+      "author": "ANSM",
+      "organization": "ANSM",
+      "published": "2026-01-16 ; publication 2026-01-19",
+      "url": "https://ansm.sante.fr/actualites/decision-du-16-01-2026-portant-modification-de-la-liste-des-substances-classees-comme-stupefiants",
+      "passage": "Articles 3–4 : ajout du HHC à l’annexe III et suppression de sa ligne à l’annexe IV.",
+      "limitation": "Déplacement entre annexes, pas déclassement. Le HHC avait été inscrit par décision du 12 juin 2023.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "products-tool-analysis",
+      "title": "LAB REF 02, révision 15 — exigences d’accréditation ISO/IEC 17025",
+      "author": "Cofrac",
+      "organization": "Cofrac",
+      "published": "Applicable à compter du 2026-03-01",
+      "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+      "passage": "§7.3, 7.6 et 7.8, notamment p.16 §7.8.2.1 l : les résultats valent pour l’objet essayé ; portée d’accréditation et réserves.",
+      "limitation": "Guide Cofrac intégral consulté, pas lecture payante de la norme ISO. L’accréditation d’une activité n’est pas une certification universelle du produit ou du lot.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "products-tool-metrology",
+      "title": "The Fitness for Purpose of Analytical Methods, troisième édition",
+      "author": "H. Cantwell (direction), Eurachem",
+      "organization": "H. Cantwell (direction), Eurachem",
+      "published": "2025",
+      "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+      "passage": "§5.3.1 p.31 : détection et quantification ; §9.3 p.59 : incertitude élargie et facteur de couverture.",
+      "limitation": "La LQ dépend de la méthode et de son usage ; résultat inférieur à LQ ne signifie pas absence. Les incertitudes d’analyse et d’échantillonnage doivent être distinguées.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "products-tool-inhalation",
+      "title": "Cannabis accessories for inhalation: health risks",
+      "author": "Santé Canada",
+      "organization": "Santé Canada",
+      "published": "Page institutionnelle consultée le 2026-11-12",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "passage": "Sections Smoking et Vaping : fumée de combustion distincte de l’aérosol ; substances nocives et transfert possible depuis le matériel.",
+      "limitation": "Informations sur l’exposition, pas mode d’emploi ni validation d’un produit. Absence de combustion ne signifie pas innocuité.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "products-tool-hhc",
+      "title": "Hexahydrocannabinol (HHC) and related substances",
+      "author": "EMCDDA, rapport technique",
+      "organization": "EMCDDA, rapport technique",
+      "published": "2023-04-17",
+      "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+      "passage": "Pages 22–23 et chapitre composition : identité, signalements de présence, transformations et marché ; incertitude sur une origine végétale native.",
+      "limitation": "Parties historiques et chimiques seulement. Statut juridique et données humaines actualisés par d’autres sources ; aucun réactif ou protocole reproduit.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre"
+    },
+    {
+      "id": "harvest-lesson-hemp",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Louis-Marie Allard ; coordination I. Lartigot ; contributions InterChanvre et partenaires",
+      "organization": "Terres Inovia",
+      "published": "Janvier 2026",
+      "url": "https://www.terresinovia.fr/sites/default/files/2026-01/guide_culture_chanvre_2026.pdf",
+      "passage": "Pages imprimées 8 et 22–23 : contractualisation, débouchés graine/fibre, pertes et conservation ; intégrité, échauffement et oxydation des graines.",
+      "access": "excerpt",
+      "limitation": "Seuls les principes et critères de qualité sont retenus. Aucun réglage de machine, calendrier, objectif d’humidité, durée ou température de conduite n’est repris. Les chiffres pédagogiques A/B/C ne proviennent pas du guide.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source méthodologique, scientifique ou de filière originale ; nature précisée dans le titre"
+    },
+    {
+      "id": "harvest-lesson-moisture",
+      "title": "Adjusting Crop Yield to a Standard Moisture Content — SS-AGR-443",
+      "author": "Michael J. Mulvaney, Pratap Devkota et Hardeep Singh",
+      "organization": "University of Florida, IFAS Extension",
+      "published": "Publication initiale mai 2020 ; révision avril 2025 ; DOI 10.32473/edis-ag442-2020",
+      "url": "https://ask.ifas.ufl.edu/publication/AG442/pdf",
+      "passage": "Pages 1–2 : eau rapportée à la masse humide, matière sèche, erreur de calcul courante et normalisation des rendements.",
+      "access": "excerpt",
+      "limitation": "PDF original consulté ; la page HTML bouclait en redirection. Les exemples et humidités commerciales d’autres cultures ne sont pas transférés au chanvre. Les pourcentages A/B/C sont entièrement fictifs, pas des cibles de conservation.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source méthodologique, scientifique ou de filière originale ; nature précisée dans le titre"
+    },
+    {
+      "id": "harvest-lesson-oil",
+      "title": "Monitoring the Shelf Life of Hemp Seed Oil Stored at Two Temperatures in Different Materials via Near-Infrared (NIR) Spectroscopy",
+      "author": "Francesca Bonazza, Lucia Monti, Milena Povolo, Andrea Gasparini, Valeria Pelizzola et Giovanni Cabassi",
+      "organization": "Molecules 29(23):5577",
+      "published": "26 novembre 2024 ; DOI 10.3390/molecules29235577",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11643794/",
+      "passage": "Résumé, introduction et conclusion : évolution de marqueurs d’oxydation selon conditions et conditionnement.",
+      "access": "excerpt",
+      "limitation": "Une huile de graines et des conditions expérimentales particulières. Pas de durée de conservation universelle ni de paramètres pratiques repris. Ces résultats sur huile ne quantifient pas directement les pertes des lots fictifs de graines.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Source méthodologique, scientifique ou de filière originale ; nature précisée dans le titre"
+    }
+  ]
+}

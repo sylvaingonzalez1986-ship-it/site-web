@@ -1,0 +1,60 @@
+{
+  "reviewedAt": "2026-11-14",
+  "reviewer": "revision_terpenes",
+  "scope": "Revue finale ciblée, en lecture seule, de HLVd, des oïdiums et de Pythium dans health-01 à health-05. Textes, diagrammes et métadonnées image des six fiches concernées lus entièrement ; deux nouveaux JPEG inspectés à l’écran. Ne constitue pas une nouvelle validation de toutes les fiches santé.",
+  "articleIdsRead": [
+    "ref-maladies-chanvre",
+    "ref-virus-viroides",
+    "record-health-golovinomyces-ambrosiae",
+    "record-health-podosphaera-macularis",
+    "record-health-pythium-globisporangium",
+    "record-health-hop-latent-viroid"
+  ],
+  "result": "Aucune correction biologique ou de légende des deux nouvelles photos requise. Les hôtes comparatifs sont explicitement distingués du chanvre et les limites diagnostiques sont conservées. Une correction bibliographique mineure est requise dans le champ auteur de la source sur les oïdiums.",
+  "correctionsRequired": [
+    {
+      "sourceId": "health-atlas-powdery-2024",
+      "field": "author",
+      "current": "Barbora Mieslerová et Aleš Lebeda",
+      "proposed": "Barbora Mieslerová et collaborateurs",
+      "reason": "La page originale comporte sept auteurs : Barbora Mieslerová, Miloslav Kitner, Josef Baltazar Šenkyřík, Tereza Křivánková, Michaela Sedlářová, Uwe Braun et Aleš Lebeda. La présentation comme une publication à deux auteurs omet les cinq coauteurs intermédiaires.",
+      "evidenceUrl": "https://onlinelibrary.wiley.com/doi/10.1111/jph.13348"
+    }
+  ],
+  "checks": [
+    {"articleIds": ["ref-virus-viroides", "record-health-hop-latent-viroid"], "result": "HLVd : infection asymptomatique, détection dans feuilles/racines et transmission à la descendance confirmées dans les essais de 2024. Les textes ne transposent ni les taux expérimentaux à toute semence ni un échantillonnage de laboratoire à une prévalence nationale. La figure 7 montrant le dépérissement concerne Arabidopsis thaliana : sa non-utilisation comme symptôme de chanvre est correcte."},
+    {"articleIds": ["ref-maladies-chanvre", "record-health-golovinomyces-ambrosiae", "record-health-podosphaera-macularis"], "result": "Oïdium : dépôt et sporulation sont des signes de surface ; espèce non identifiable sur le seul aspect poudreux. Source tchèque : coexistence morphologique en 2022, fibrosine chez Podosphaera, séquences 2022 appuyant P. macularis et 2023 appuyant G. ambrosiae, avec limites des ITS. La nuance des textes sur les prélèvements mixtes est compatible avec les résultats détaillés. La planche Punja 2019 reste attribuée à G. cichoracearum sensu lato, sans réidentification rétrospective forcée."},
+    {"articleIds": ["ref-maladies-chanvre", "record-health-pythium-globisporangium"], "result": "Pythium : effondrement, brunissement et flétrissement ne sont pas une identité d’agent. Isolement et causalité distingués ; pathogénicité de P. catenulatum encore à confirmer dans la publication de 2019, sans extrapolation à toute la littérature ultérieure. EPPO conserve Pythium ultimum comme nom préféré et Globisporangium ultimum comme autre nom. Ni mobilité des spores ni caractéristiques de tous les cycles ne sont généralisées."}
+  ],
+  "imagesInspected": [
+    {
+      "articleId": "record-health-podosphaera-macularis",
+      "path": "public/placard/reference/health/podosphaera-hop.jpg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Signs_and_Symptoms_of_Powdery_Mildew_on_Hop_Leaves.jpg",
+      "observed": "Feuilles larges lobées et dentées avec nombreux dépôts blancs ; numéro Bugwood 5393947 visible. Le fichier n’est pas présenté comme Cannabis. L’identification de l’agent est une attribution documentaire, pas une détermination par ma seule inspection.",
+      "metadataChecked": "Page Commons Summary et Licensing : houblon, David Gent/USDA Agricultural Research Service/Bugwood.org, CC BY 3.0. Auteur, source, licence et lien du lot concordent.",
+      "licenseUrlRead": "https://creativecommons.org/licenses/by/3.0/deed.en",
+      "licenseResult": "Usage commercial et adaptation permis avec attribution, lien et conditions de la licence. Lien primaire Invasive.org ouvert mais refusé 403 ; la licence a été effectivement lue sur Commons et Creative Commons, pas inventée à partir du seul crédit USDA.",
+      "captionResult": "Autre hôte Humulus lupulus, pas Cannabis, et limites de comparaison explicites : aucune correction requise."
+    },
+    {
+      "articleId": "record-health-pythium-globisporangium",
+      "path": "public/placard/reference/health/pythium-basil.jpg",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Basilikum_Pythium-1--Roswitha_Ulrich.jpg",
+      "observed": "Pot de jeunes plantes à feuilles entières, avec plantules vertes et nombreuses plantules affaissées ou mortes. L’image correspond à une fonte comparative ; aucun diagnostic de chanvre n’est tiré de son aspect.",
+      "metadataChecked": "Page Commons Summary, légende et Licensing : basilic, Roswitha Ulrich/Pflanzenschutzdienst, CC BY-SA 4.0. L’avis public VRT atteste une permission sous la licence, ticket 2024091110008277 ; la correspondance privée du ticket n’a pas été consultée.",
+      "licenseUrlRead": "https://creativecommons.org/licenses/by-sa/4.0/deed.en",
+      "licenseResult": "Usage commercial permis avec attribution et lien ; adaptations sous même licence ou licence compatible. Métadonnées du lot concordantes.",
+      "captionResult": "Autre hôte Ocimum basilicum, pas Cannabis, et symptôme non spécifique explicités : aucune correction requise."
+    }
+  ],
+  "sourceReadEvidence": [
+    {"sourceId": "health-new-hlvd-2024", "url": "https://www.mdpi.com/1999-4915/16/1/30", "access": "excerpt", "sections": "§3.1, §3.3–3.5, figures 5–8 et début Discussion : asymptomatiques, répartition dans les tissus, Arabidopsis et descendance de chanvre.", "result": "read"},
+    {"sourceId": "health-new-hlvd-pnw", "url": "https://pnwhandbooks.org/plantdisease/host-disease/hemp-cannabis-sativa-viroid-diseases", "access": "official-page", "sections": "Cause, Symptoms et références, édition mars 2026. Synthèse institutionnelle complémentaire, pas étude primaire ; recommandations pratiques non reprises.", "result": "read"},
+    {"sourceId": "health-atlas-powdery-2024", "url": "https://onlinelibrary.wiley.com/doi/10.1111/jph.13348", "access": "excerpt", "sections": "Auteurs, résumé, résultats morphologiques/table 1, §3.3 Molecular analysis et début Discussion : OL49997/OL49998, fibrosine, limites des séquences mixtes.", "result": "read"},
+    {"sourceId": "health-atlas-punja-2019", "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full", "access": "excerpt", "sections": "Results isolements des racines, Powdery Mildew/figure 7 et Discussion sur Pythium catenulatum et sources d’inoculum ; pas nouvelle lecture intégrale de tout l’article.", "result": "read"},
+    {"sourceId": "health-atlas-pythium-name", "url": "https://gd.eppo.int/taxon/PYTHUL", "access": "official-page", "sections": "Preferred name, Other scientific names et classification Oomycota.", "result": "read"}
+  ],
+  "batchFilesModified": false,
+  "finalApproval": false
+}

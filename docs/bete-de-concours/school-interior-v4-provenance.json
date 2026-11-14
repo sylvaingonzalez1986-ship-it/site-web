@@ -1,0 +1,35 @@
+{
+  "date": "2026-11-12",
+  "tool": "Built-in image_gen via imagegen skill; no CLI or runtime generation",
+  "userRequest": "Recommencer l’illustration : école dédiée au chanvre, aucune autre plante ou fleur dans les illustrations des livres.",
+  "references": [
+    "public/placard/school/interior-v3.webp (architecture et style seulement)",
+    "public/placard/school/course-plant-v1.webp (morphologie du chanvre)"
+  ],
+  "direction": "Conserver la salle en coupe du Quartier. Livre : feuille palmée à folioles dentées et inflorescence de chanvre. Pot, semis, fenêtre et feuillage extérieur remplacés par du chanvre. Atelier : graines marbrées, fibres, corde et textile de chanvre. Affiche de feuille et tige de chanvre.",
+  "interior": {
+    "path": "/placard/school/interior-v4.webp",
+    "source": "output/school/artwork/interior-v4-source.png",
+    "generatedSource": "C:/Users/sylva/.codex/generated_images/01a1cc9c-af01-71e0-a0e6-59f0eb060d0f/exec-6d32017b-e4d4-4918-8922-1782e849f045.png",
+    "prompt": "Use case: precise-object-edit. Image1 is the EDIT TARGET: the school interior for a HEMP EDUCATION GAME. Image2 is BOTANICAL ANATOMY REFERENCE ONLY, the approved Cannabis sativa teaching plate. Keep image1's exact 1536x1024 framing, open-front cutaway perspective, cream stone walls, textured oak furniture, inked cartoon village style, lamp, desks and all object positions. CRITICAL CORRECTION: this is a school DEDICATED TO HEMP, every botanical object and EVERY illustration in every book must be Cannabis sativa. No generic garden flowers or unrelated plants anywhere. Carefully make all these replacements: (1) On BOTH visible pages of the open book on the lower-left reading lectern, ERASE the generic oval-leaf branch and yellow petalled flowers. Left page: one LARGE clearly recognizable hemp leaf, palmately compound with SEVEN long narrow pointed sharply serrated leaflets radiating from ONE common point. Right page: an upright HEMP stem bearing palmate serrated leaves and a small compact GREEN hemp inflorescence with fine pale pistils, no colorful petals. Make the leaf drawing legible even small; keep the book's EXACT outline, cover, angle, dimensions and page layout, change only its printed illustrations. (2) Replace the round-leaved trailing plant on top of the left bookshelf with an upright potted HEMP plant with true narrow serrated palmate leaves, 5 or 7 leaflets each, slender upright stems, no round leaves and no trailing ivy. Keep its overall footprint similar. (3) Replace the generic seedlings in BOTH right workbench trays with young HEMP plants bearing small, visibly toothed three- and five-leaflet palmate true leaves, not oval-leaf vegetable sprouts. Add a small visible shallow sample dish containing brown/grey marbled oval hemp seeds, and a tied small bundle of pale hemp bast fibres beside the existing hemp cord spool/fabric on that workbench, without crowding it. (4) Replace ALL blue hydrangea flowers both at the outside front-left foot of the wall AND through the arched window with low HEMP foliage, slim palmate serrated leaves; there must be ZERO blue, pink or yellow ornamental flowers anywhere. (5) On the plain wall between the bookshelf and window, hang one small cream educational sheet with a large recognizable seven-leaflet HEMP leaf and a small cut-stem section, in the same inked cartoon style, no writing. Anatomy matters: all leaflets meet at a single petiole point, slender lance-shaped sawtooth edges, long central leaflet and shorter lateral leaflets; NEVER maple leaves, round leaves, generic leafy sprigs or daisy/rapeseed-like blossoms. The educational images must be clearly hemp/cannabis, not symbolic generic botany. Keep all the existing architecture/materials/colors and camera exactly, do not turn it into a realistic photograph or botanical watercolor room. No people, no text, no UI, no labels, no logos, no drug-use paraphernalia. This is a hemp botanical school, with its plant, seed, fibre and textile specimens."
+  },
+  "animation": {
+    "cleanPlate": "/placard/school/interior-clean-v4.webp",
+    "source": "output/school/artwork/interior-clean-v4-source.png",
+    "generatedSource": "C:/Users/sylva/.codex/generated_images/01a1cc9c-af01-71e0-a0e6-59f0eb060d0f/exec-9c902b5f-b0be-49d1-8dd5-20995c8623f1.png",
+    "prompt": "Use case: precise-object-edit. Registered animation CLEAN PLATE for this exact1536x1024 HEMP schoolroom. Make ONLY TWO small object removals: (1) remove the little gold hanging lamp and its gold ring at x710..832 y122..236; retain the wooden beam and its black metal mounting bracket. Reconstruct ONLY the cream stone behind the lamp, do NOT change the nearby hemp teaching poster. (2) Remove ONLY the OPEN HEMP BOTANY BOOK at x178..386 y468..626 from its angled wooden lectern at lower left. Reveal the same intact empty sloped oak lectern surface underneath. Keep the entire lectern wood rim, legs and base. Preserve EXACTLY the framing, camera, scene geometry, dimensions, furniture and all other objects and botanical content. The potted HEMP plant, hemp foliage outside/window, hemp teaching poster, hemp seedlings on workbench, hemp seeds and hemp bast fibre bundle MUST remain identical to the input. No flowers or unrelated plants, no replacement books, no labels or text, no new items. Do not regenerate the room or alter lighting. This output will only fill the two small removal masks behind separately animated original lamp and book.",
+    "sprites": [
+      "/placard/school/interior-pendant-v4.webp",
+      "/placard/school/interior-herbarium-v4.webp"
+    ],
+    "manifest": "src/components/placard/KqSchoolInterior.sprites.json",
+    "processing": "Registered alpha cuts of the original lamp and book; clean plate applied only in two removal masks. Original metal mount retained above y124. No replacement of surrounding hemp plants/poster."
+  },
+  "exportScript": "scripts/export-school-interior-art.mjs",
+  "supersedes": "interior-v3 and its generic botanical book, trailing pot plant, seedlings and hydrangeas; no longer used by school components.",
+  "preserved": "Approved ten botanical teaching plates; classroom layout and Quartier art direction; courses, quiz data, rewards and database.",
+  "visualEvidence": [
+    "output/school/artwork/interior-v4-book-detail.png",
+    "output/school/artwork/interior-v4-recomposed.png"
+  ]
+}

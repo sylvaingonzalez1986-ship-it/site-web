@@ -32,6 +32,7 @@ export function getReleveNativeFlowers(state: KqReleveProductionState): KqOffici
       varietyCode: game.varietyCode, varietyName: game.varietyName, quality: game.quality, traits: game.traits, combos: game.combos,
       stats: battle?.playerFlower.stats ?? flower.stats, status: battle?.status === "verdict" ? "burned" : battle ? "locked" : "available", createdAt: game.completedAt ?? now(state),
       storage: projectKqStorageLot(storage, state.clock, storage.juryApplied && battle?.status === "verdict" ? getKqJuryScoreFromRounds(battle.rounds, "player") : undefined),
+      trim: { status: "ready", totalGrams: null, completedGrams: null },
       queuedAt: null, lockedAt: battle ? now(state) : null, burnedAt: battle?.burnedAt ?? null,
       rulesVersion: game.rulesVersion, cultivationProfile: game.cultivationProfile,
       cannabinoidReport: getKqCannabinoidReport(game), terpeneReport: getKqTerpeneReport(game) };
@@ -43,6 +44,7 @@ export function getReleveProductionStorageSnapshot(state: KqReleveProductionStat
   const containers = getKqStorageInventory(ownedContainers, harvests.flatMap(row => row.storage.capacity!.allocations));
   const lots = harvests.map(({ zoneId, game, battle, storage }) => ({ flowerId: flowerId(zoneId), varietyName: game.varietyName,
     harvestGrams: game.harvestGrams!, flowerStatus: battle?.status === "verdict" ? "burned" : battle ? "locked" : "available",
+    trim: { status: "ready" as const, totalGrams: null, completedGrams: null },
     projection: projectKqStorageLot(storage, state.clock, storage.juryApplied && battle?.status === "verdict" ? getKqJuryScoreFromRounds(battle.rounds, "player") : undefined) }));
   const totalUnits = containers.reduce((sum, row) => sum + row.ownedQuantity * row.capacityUnits, 0);
   const usedUnits = lots.reduce((sum, row) => sum + row.projection.capacity!.totalUnits, 0);

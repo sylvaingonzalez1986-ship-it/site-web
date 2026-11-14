@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "products-01",
+  "entries": {
+    "ref-graines-chanvre": {
+      "contentHash": "26071105e8462340118d211d57221ed08bb875b39a8e89126f88d655dc5d18c7",
+      "note": "Seven articles, 18 glossary definitions and 51 quiz explanations read. Solubility corrected; diagram references reduced to the documents supporting each concrete example.",
+      "status": "read-and-reviewed"
+    },
+    "ref-huile-graines": {
+      "contentHash": "3500d03695153f65eb1142d058c89220652b60944b35426889b77f4903aba4e5",
+      "note": "Seven articles, 18 glossary definitions and 51 quiz explanations read. Solubility corrected; diagram references reduced to the documents supporting each concrete example.",
+      "status": "read-and-reviewed"
+    },
+    "ref-proteines-chanvre": {
+      "contentHash": "e0de315f8f384035187be811eec1e32c8e556673c7d89d22190fc6f5c05c9aea",
+      "note": "Seven articles, 18 glossary definitions and 51 quiz explanations read. Solubility corrected; diagram references reduced to the documents supporting each concrete example.",
+      "status": "read-and-reviewed"
+    },
+    "ref-fibres-chanvre": {
+      "contentHash": "68a119ffe63b0ace5f168ea37a2c27de543787e94399fc5f0743e0cbc799ca9a",
+      "note": "Seven articles, 18 glossary definitions and 51 quiz explanations read. Solubility corrected; diagram references reduced to the documents supporting each concrete example.",
+      "status": "read-and-reviewed"
+    },
+    "ref-chenevotte-materiaux": {
+      "contentHash": "0fc618d1b095c499555a496656f4964b65e2a7bd248d7a8213e2cfa048d8aa4f",
+      "note": "Seven articles, 18 glossary definitions and 51 quiz explanations read. Solubility corrected; diagram references reduced to the documents supporting each concrete example.",
+      "status": "read-and-reviewed"
+    },
+    "ref-resines-extraits": {
+      "contentHash": "35c5e964ccfa5fdaf003bf00bc41ede1c48db6d6a2cf1601940581b411e50ef3",
+      "note": "Seven articles, 18 glossary definitions and 51 quiz explanations read. Solubility corrected; diagram references reduced to the documents supporting each concrete example.",
+      "status": "read-and-reviewed"
+    },
+    "ref-matieres-chanvre": {
+      "contentHash": "2e5b4c78d67a7260644597bd6631ec6ec86ab7d1a3091bceaf60357c264a8eeb",
+      "note": "Seven articles, 18 glossary definitions and 51 quiz explanations read. Solubility corrected; diagram references reduced to the documents supporting each concrete example.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 18,
+    "hash": "9f4ec5c272fc3da2187a0f97ff29f5e125205f5d46fbbf5ba3425e6ef915ddb3"
+  },
+  "quiz": {
+    "count": 51,
+    "hash": "7f614ea20b271816abae1d56150470dc445e1864ef988d6ff504a8e2b4d95264"
+  }
+}

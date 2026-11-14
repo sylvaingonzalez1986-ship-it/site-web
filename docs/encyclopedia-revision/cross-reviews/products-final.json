@@ -1,0 +1,157 @@
+{
+  "domain": "products",
+  "reviewedAt": "2026-11-14",
+  "reviewer": "botany-physiology-phytopathology",
+  "mode": "read-only-cross-review",
+  "inputs": ["batches/products-01.json", "batches/products-02.json", "batches/products-03.json", "batches/products-04.json", "batches/products-05.json"],
+  "scope": {
+    "articlesExaminedForTargetedIssues": 36,
+    "priorities": ["ref-graines-chanvre", "ref-huile-graines", "ref-proteines-chanvre", "ref-fibres-chanvre", "ref-chenevotte-materiaux", "ref-matieres-chanvre", "record-product-products-chenevis", "record-product-products-seed-oil", "record-product-products-press-cake", "record-product-products-protein", "record-product-products-seed-food", "record-product-products-enriched-food", "record-product-products-paper"],
+    "topics": ["Fruit et graine, huile lipidique et extrait, tourteau et fractions protéiques", "THC alimentaire en mg/kg et cadre agricole distinct", "Avis EFSA et autorisation alimentaire", "Papier et contact alimentaire", "Portée des preuves sur rouissage, fibres, chènevotte et matériaux"],
+    "infusionNote": "Aucune notice infusion n’existe parmi les 36 identifiants des lots products-01–05. Le mot apparaît dans les métadonnées DGAL ; l’exception est effectivement enseignée dans ref-reglementation-produits, déjà contre-lue. Aucune nouvelle fiche proposée hors périmètre.",
+    "lotsModified": false
+  },
+  "conclusion": "Pas de correction scientifique requise sur les distinctions graine/fruit, huile de graines/extrait, enrichissement relatif des protéines ou portée des essais de matières. Les textes alimentaires ne substituent pas 0,3% aux limites en mg/kg et ne transforment pas l’avis EFSA en autorisation. Les reprises requises sont ciblées ci-dessous.",
+  "requiredCorrections": [
+    {
+      "id": "products-final-paper-food-contact",
+      "articleIds": ["record-product-products-paper"],
+      "sectionIds": ["regulations"],
+      "severity": "targeted-content-gap",
+      "problem": "La notice évoque des papiers tissue et essuie-tout mais sa réglementation ne décrit que le chanvre agricole et une destination générale. Il manque le cadre propre au papier destiné au contact alimentaire, différent de l’aliment et des performances mécaniques expérimentales.",
+      "requiredAction": "Ajouter une phrase conditionnelle ciblée sur l’usage alimentaire et une source DGCCRF réellement ouverte. Ne pas attribuer au papier de l’étude Naithani une conformité qu’elle n’a pas évaluée.",
+      "suggestedText": "Lorsqu’un papier est destiné à emballer, filtrer ou toucher des aliments, son aptitude au contact alimentaire doit être établie pour le produit fini et les conditions d’emploi prévues. L’origine chanvre et de bonnes propriétés d’absorption ou de résistance ne prouvent pas cette aptitude ; la composition, les traitements et les transferts possibles de constituants doivent aussi être considérés.",
+      "evidence": [
+        {"url": "https://www.economie.gouv.fr/dgccrf/Papiers-et-cartons", "sectionsOpened": ["1. Domaine d’application", "3.1.1 Textes réglementaires"], "result": "Page officielle ouverte : inclut emballages, filtres, essuie-tout ménager et serviettes susceptibles de toucher des aliments ; cite règlements1935/2004 et2023/2006. Référentiel affiché janvier2019 : aucun seuil chimique historique détaillé transposé."},
+        {"url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques-et-les-faq/materiaux-organiques-base-de-fibres-vegetales", "sectionsOpened": ["1. Introduction générale", "2. Domaine d’application"], "result": "Article3 du règlement1935/2004 expliqué : transferts ne devant pas présenter un danger ou modifier de manière inacceptable l’aliment ; bonnes pratiques et emploi prévisible. Fiches méthodologiques distinguées d’une certification de tout matériau végétal."}
+      ]
+    },
+    {
+      "id": "products-final-food-law-scope",
+      "sourceId": "products-tool-food-law",
+      "articleIds": ["record-product-products-chenevis", "record-product-products-seed-oil", "record-product-products-press-cake", "record-product-products-formulated", "record-product-products-seed-food"],
+      "severity": "source-scope-consistency",
+      "problem": "Les deux copies de la source dans les lots produits reprennent la lecture du coordinateur du texte ORIGINAL178/2002, CELEX32002R0178. La limitation précise bien que la consolidation2026 était inaccessible, mais le titre annonce encore un texte consolidé au1erjanvier2026. Aucune nouvelle ouverture d’une consolidation actuelle par le spécialiste produits n’est documentée.",
+      "requiredAction": "Harmoniser le titre et les métadonnées avec la lecture réelle ; conserver la réserve de consolidation déjà identifiée en réglementation. Ne pas compter la réutilisation comme une seconde vérification indépendante.",
+      "suggestedSourceTitle": "Règlement (CE)178/2002 — articles18–19 du texte original ; consolidation courante à confirmer",
+      "propagation": [
+        {"articleId": "record-product-products-chenevis", "sections": ["regulations"], "impact": "Référence secondaire à la traçabilité ; pas de blocage scientifique global de la fiche proposé."},
+        {"articleId": "record-product-products-seed-oil", "sections": ["regulations"], "impact": "Référence secondaire à la traçabilité ; pas de blocage scientifique global de la fiche proposé."},
+        {"articleId": "record-product-products-press-cake", "sections": ["quality", "regulations"], "impact": "Référence secondaire à la traçabilité et au cadre alimentaire ; pas de blocage scientifique global proposé."},
+        {"articleId": "record-product-products-formulated", "sections": ["quality", "regulations"], "impact": "Affirmation directe de retrait, information et rappel : même réserve ciblée de consolidation que ref-reglementation-produits ; ne pas la déclarer nouvellement validée en droit courant."},
+        {"articleId": "record-product-products-seed-food", "sections": ["quality", "regulations"], "impact": "Référence secondaire de traçabilité ; les limites THC ont leur source propre, et ne sont pas invalidées par cette réserve."}
+      ],
+      "evidence": [{"url": "https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32002R0178", "result": "Métadonnées produits examinées : published articles originaux consultés2026-11-14, limitation CAPTCHA2026, reviewReusedFrom regulation-01 ; aucune preuve de nouvelle consolidation."}]
+    },
+    {
+      "id": "products-final-unavailable-source-status",
+      "severity": "review-metadata",
+      "problem": "Plusieurs reviewEvidence ont result inaccessible sans status not-reverified. Le coordinateur a indiqué que ce statut explicite est nécessaire pour ne pas compter ces ouvertures comme lectures.",
+      "requiredAction": "Ajouter status not-reverified aux éléments réellement inaccessibles ; ne pas ajouter une fausse preuve de lecture et ne pas modifier les faits publics sur cette seule base.",
+      "occurrences": {
+        "products-01.json": ["products-lesson-lca"],
+        "products-02.json": ["products-tool-union-list", "products-tool-claims"],
+        "products-03.json": ["products-tool-classification", "products-tool-penal-use"],
+        "products-04.json": ["products-tool-union-list", "products-tool-claims", "products-tool-classification", "products-tool-penal-use"],
+        "products-05.json": ["products-tool-union-list", "products-tool-claims", "products-tool-classification", "products-tool-penal-use"]
+      }
+    },
+    {
+      "id": "products-final-cabral-access-metadata",
+      "sourceId": "products-tool-seed-protein",
+      "severity": "review-metadata",
+      "problem": "La limitation annonce résumé éditeur consulté et PMC bloqué, tandis que reviewEvidence documente la lecture du texte intégral Wiley, de la récupération, des acides aminés et du SDS-PAGE. Le contenu public mobilise justement ces passages.",
+      "requiredAction": "Mettre passage et limitation en accord avec la lecture réelle de ces sections du texte intégral Wiley. Je les ai également ouvertes et lues ; il n’y a pas lieu de ramener le contenu à un résumé seul.",
+      "evidence": [{"url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979", "sectionsOpened": ["Abstract", "Protein recovery", "Amino acid composition", "SDS-PAGE"], "result": "Solubilité près du point isoélectrique, fractions de réserve et agrégats réductibles/non réductibles effectivement lus ; les formulations prudentes des fiches sont soutenues."}]
+    }
+  ],
+  "independentlyOpenedEvidence": [
+    {"sourceId": "products-tool-seed-oil", "url": "https://www.mdpi.com/2076-3921/11/3/490", "sectionsOpened": ["Introduction", "3.4 Fatty Acids", "3.6 Tocopherols", "4.1 et4.2 Discussion", "Conclusions"], "result": "Neuf huiles, essai accéléré ; profil acides gras/tocophérols et marqueurs primaires/secondaires confirmés. Aucune durée universelle inférée."},
+    {"sourceId": "products-tool-seed-protein", "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979", "sectionsOpened": ["Résumé", "Protein recovery", "Amino acid composition", "SDS-PAGE"], "result": "Récupération, composition en acides aminés et altérations structurales distinctes ; texte produit ne fournit pas de protocole opératoire."},
+    {"sourceId": "qh-nature-hemp-stubble-paper", "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2", "sectionsOpened": ["Abstract", "Chemical composition", "Fiber morphology et discussion des propriétés"], "result": "Liber/chènevotte et chaume-racines distingués ; faisabilité de pâtes et mélanges testés, pas disponibilité industrielle universelle."},
+    {"sourceId": "qh-nature-hurd-tissue-paper", "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf", "sectionsOpened": ["PDFp1 résumé et introduction"], "result": "Mélange fibres bois/chènevotte pour feuilles tissue ; absorption, traction sec/humide et éclatement comparés. Pas certification de contact alimentaire."},
+    {"sourceId": "products-primary-retting-2015", "url": "https://pubmed.ncbi.nlm.nih.gov/25575888/", "sectionsOpened": ["Résumé intégral"], "result": "Bactéries et champignons associés aux tiges en rouissage ; différences de proportions dans six échantillons, pas preuve fonctionnelle de chaque espèce. Le texte public ne fait pas cette extrapolation."},
+    {"sourceId": "products-tool-fibres", "url": "https://www.inrae.fr/actualites/inrae-luniversite-reims-champagne-ardenne-centre-ressources-technologiques-fibres-recherche-developpement-affirment-leur-collaboration-creant-laboratoire-partenarial-associe", "sectionsOpened": ["Communiqué6avril2023", "Obstacles scientifiques, techniques et économiques"], "result": "Variabilité des fractions et des transformations, composites/textiles, cadre de recherche institutionnel ; pas garantie produit."},
+    {"sourceId": "products-tool-hempcrete", "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf", "sectionsOpened": ["PDFp1–2 intégrales"], "result": "Chènevotte/liant/eau, remplissage d’une structure porteuse ; simulations WUFI bâtiment fictif et couplage hydrique-thermique. Généralisation énergétique correctement évitée."},
+    {"sourceId": "products-tool-dgal-2026", "url": "https://agriculture.gouv.fr/node/110883", "sectionsOpened": ["Communiqué20mai2026, paragraphes CBD, graines et feuilles pour infusion aqueuse"], "result": "Ingrédient CBD alimentaire et support graines distincts ; conditions d’exception des feuilles étroites. Avis scientifique et autorisation non confondus dans les fiches."},
+    {"sourceId": "products-tool-efsa-2026", "url": "https://www.efsa.europa.eu/en/news/provisional-safe-level-cannabidiol-novel-food", "sectionsOpened": ["Provisional safe level", "Food supplements", "Data gaps", "Next steps"], "result": "Niveau provisoire limité à certaines formulations de compléments et populations ; lacunes persistantes et évaluations des dossiers à poursuivre. Aucun conseil de dose introduit dans les fiches."}
+  ],
+  "additionalTargetedVerification": {
+    "requestedByCoordinator": "Rattacher le terme carbonatation à une source lue et étayer précisément allégations et usage illicite sans citations génériques.",
+    "termProposal": {
+      "id": "products-term-carbonation",
+      "definition": "Réaction du dioxyde de carbone avec certains constituants minéraux d’un liant, formant notamment des carbonates ; son importance dépend de la composition du matériau, du temps et des conditions considérés.",
+      "sourceIds": ["qh-nature-hemp-lime"],
+      "findings": ["La revue2025 a été ouverte : introduction, liants aériens/hydrauliques et section sur les bilans carbone. La carbonatation minérale est distincte du carbone biogénique du chanvre ; aucun taux universel ajouté.", "Le communiqué Cerema décrit stockage et échanges hygrothermiques, mais pas assez précisément la réaction minérale : ne pas le substituer seul pour ce terme."]
+    },
+    "sourceProposals": [
+      {
+        "id": "products-official-claims-dgccrf-2025",
+        "title": "Allégations nutritionnelles et de santé : ne vous faites pas avoir !",
+        "author": "DGCCRF",
+        "organization": "Ministère de l’Économie",
+        "published": "2025-11-10",
+        "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/allegations-nutritionnelles-et-de-sante-ne-vous-faites-pas-avoir",
+        "verifiedAt": "2026-11-14",
+        "passage": "Cadre réglementaire ; Q2 allégations nutritionnelles et conditions ; section allégations en attente et interdiction thérapeutique.",
+        "access": "official-page",
+        "documentKind": "Explication originale par l’autorité française chargée du contrôle",
+        "limitation": "Page institutionnelle explicative, pas nouvelle lecture du règlement1924/2006 consolidé. N’attribue aucune allégation autorisée au CBD ; distingue aussi le régime particulier des allégations botaniques en attente.",
+        "reviewEvidence": [{
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/allegations-nutritionnelles-et-de-sante-ne-vous-faites-pas-avoir",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": ["Cadre réglementaire", "Allégations en attente et outil DGCCRF", "Questions/réponses : Q1–Q2"],
+          "result": "Passages effectivement ouverts et lus.",
+          "assertionsSupported": ["Allégations nutritionnelles limitées à celles de l’annexe et à leurs conditions d’utilisation.", "Évaluation scientifique et autorisation sont deux étapes distinctes.", "Une denrée ne peut prétendre prévenir, guérir ou traiter une maladie humaine."]
+        }],
+        "replacementScope": "Référence précise pour record-product-products-protein, seed-food, enriched-food et oral lorsque le paragraphe explique les conditions d’allégations ou l’absence de promesse thérapeutique. Ajouter cet identifiant effectivement lu plutôt que prétendre avoir ouvert le règlement bloqué."
+      },
+      {
+        "id": "products-tool-penal-use",
+        "title": "Code de la santé publique, article L3421-1 — version en vigueur depuis le20août2026",
+        "author": "République française",
+        "organization": "Légifrance",
+        "published": "2026-08-20",
+        "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000054724736/2026-08-20",
+        "verifiedAt": "2026-11-14",
+        "passage": "ArticleL3421-1 intégral, premier alinéa : usage illicite d’une substance ou plante classée comme stupéfiant.",
+        "access": "full-text",
+        "documentKind": "Texte législatif primaire, version exacte LEGIARTI000054724736",
+        "limitation": "La version exacte entrée en vigueur le20août2026 a été lue au lien daté ; l’accès demandé au14novembre échoue. Les fiches retiennent la qualification d’usage illicite, sans recopier barème, exceptions ou procédures. Cet article ne suffit pas à qualifier le commerce, qui a sa source pénale propre.",
+        "reviewEvidence": [{
+          "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000054724736/2026-08-20",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": ["ArticleL3421-1 : version en vigueur depuis le20août2026, modifiée par loi2026-798 art25", "Premier alinéa et alinéas suivants, lecture intégrale"],
+          "result": "Version exacte du texte ouverte ; premier alinéa sur l’usage illicite effectivement lu, distinct d’une simple capture de moteur.",
+          "assertionsSupported": ["L’usage illicite des substances ou plantes classées comme stupéfiants fait l’objet d’une disposition propre.", "Ce texte ne se confond pas avec les dispositions pénales sur le commerce et la détention."]
+        }],
+        "replacementScope": "Réutiliser l’identifiant existant car il s’agit du même article et de la même version que la source initialement inaccessible ; remplacer la preuve d’échec par cette preuve de lecture limitée à la version datée. Ne pas attribuer à cet article les dispositions du commerce."
+      }
+    ],
+    "carbonationEvidence": [{
+      "sourceId": "qh-nature-hemp-lime",
+      "url": "https://link.springer.com/article/10.1186/s40712-025-00334-4",
+      "openedAt": "2026-11-14",
+      "status": "read",
+      "sectionsOpened": ["Introduction : mineral binder, air lime et natural hydraulic lime", "Développement sur liants, hydratation et carbonatation", "Analyse des hypothèses de carbonatation dans les bilans de cycle de vie"],
+      "result": "La prise de la chaux aérienne par réaction avec CO₂ et la contribution variable de carbonatation sont explicitement décrites. La revue distingue chimie des liants et hypothèses parfois non vérifiées des bilans.",
+      "assertionsSupported": ["Réaction minérale impliquant leCO₂, formation de carbonate de calcium dans le cas de la chaux.", "Composition du liant et périmètre/temps du bilan changent l’interprétation.", "Aucun taux uniforme ni bilan universel ne découle du seul terme carbonatation."]
+    }],
+    "classificationLimit": {
+      "sourceId": "products-tool-classification",
+      "url": "https://ansm.sante.fr/uploads/2026/06/26/20260626-stupefiants-version-consolidee.pdf",
+      "status": "not-reverified",
+      "result": "Nouvelle tentative d’ouverture échouée. La décision ANSM16janvier2026, déjà réellement lue, soutient HHC seulement ; elle ne remplace pas une liste structurale complète pour HHCP/H4-CBD ou toutes les autres molécules.",
+      "requiredHandling": "Pour l’affirmation HHC encore classé, garder products-tool-hhc-decision-2026. Pour des clauses générales demandant d’examiner l’identité, ne pas présenter la liste consolidée comme lue ; aucune catégorie structurale précise supplémentaire n’a été validée ici."
+    },
+    "metadataUpdate": "Les occurrences penal-use de la liste d’échecs ci-dessus correspondent à l’état constaté avant cette vérification complémentaire et sont maintenant résolues pour la version datée explicitement lue. Claims EUR-Lex reste inaccessible : la nouvelle source DGCCRF soutient les assertions ciblées sans falsifier cet échec."
+  },
+  "verificationLimits": [
+    "Le règlement915 consolidé a été demandé de nouveau au lien officiel : contrôle JavaScript, status not-reverified par ce contre-lecteur. La lecture antérieure du coordinateur est conservée comme telle ; je n’invente pas une seconde lecture indépendante.",
+    "Les valeurs3,0mg/kg et7,5mg/kg, la somme THC+0,877THCA et les facteurs article3 sont correctement séparés des0,30% dans les textes examinés ; cette vérification de cohérence ne remplace pas une nouvelle ouverture du règlement consolidé.",
+    "Les sources déjà ouvertes lors des contrelectures précédentes, notamment Santé Canada sur huile de graines/extrait et l’arrêté français article1I/III, ne sont pas présentées comme rouvertes pendant ce dernier passage.",
+    "Ce rapport signale des corrections requises et des limites de preuve ; il ne modifie aucun statut ou fichier de lot."
+  ]
+}

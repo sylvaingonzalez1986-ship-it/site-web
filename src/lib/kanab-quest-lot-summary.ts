@@ -4,6 +4,8 @@ import { getKqHarvestStep } from "./kanab-quest-harvests";
 import { getKqCommerceStockQuality, type KqCommerceRawLot, type KqCommerceStock } from "./kanab-quest-commerce";
 import { KQ_MARKET_ROUTES } from "./kanab-quest-market";
 import type { KqStorageProjection } from "./kanab-quest-storage";
+import type { KqFlowerTrim } from "./kanab-quest-flower-trim";
+import { getKqTrimPresentation } from "./kanab-quest-jury-readiness";
 
 export type KqLotSummarySource = { kind: "harvest"; row: KqHarvestRow }
   | { kind: "storage"; lot: KqStorageSnapshot["lots"][number] }
@@ -31,7 +33,7 @@ const score = (value: unknown): number | null => { const valid = amount(value); 
 const date = (value: unknown): string | null => typeof value === "string" && Number.isFinite(Date.parse(value)) ? value : null;
 const grams = (units: unknown) => { const value = amount(units); return value === null ? null : value / 10; };
 
-function summary(input: { flowerId: string; name: string; status: string; storage?: KqStorageProjection; createdAt?: string; quantity?: KqLotSummary["quantity"] }): KqLotSummary {
+function summary(input: { flowerId: string; name: string; status: string; storage?: KqStorageProjection; trim?: KqFlowerTrim; createdAt?: string; quantity?: KqLotSummary["quantity"] }): KqLotSummary {
   const { storage, status } = input;
   const judged = status === "burned";
   const beforeJury = status === "available" || status === "queued" || status === "locked";
@@ -39,6 +41,7 @@ function summary(input: { flowerId: string; name: string; status: string; storag
   const progress = amount(storage?.progressPercent);
   const quantity = input.quantity ?? { label: "Vrac restant", grams: grams(storage?.capacity?.totalUnits), equivalent: true };
   const exposedGrams = grams(storage?.capacity?.overflowUnits);
+  const trim = getKqTrimPresentation(input.trim);
   let state = "État à vérifier", next = "Actualise le suivi du lot pour connaître la prochaine étape.";
   if (status === "queued") { state = "Adversaire recherché"; next = "Suis la recherche depuis le jury. Le stock récolté est conservé."; }
   else if (status === "locked") { state = "Duel en cours"; next = "Termine le passage au jury pour ouvrir la vente."; }
@@ -49,8 +52,11 @@ function summary(input: { flowerId: string; name: string; status: string; storag
       : "Protège le surplus et vérifie le passage au jury avant de choisir une vente.";
   }
   else if (judged && !input.quantity && getKqHarvestStep(status, storage) === "storage") { state = "Stock à vérifier"; next = "Actualise le stockage pour confirmer la quantité restante et les possibilités de vente."; }
-  else if (storage?.stage === "curing") { state = "Affinage en cours"; next = judged ? "Le grossiste peut proposer une reprise avant la fin, selon son quota." : beforeJury ? "L’affinage avance hors connexion. Le jury vient ensuite." : "L’affinage avance hors connexion. Le passage au jury reste à vérifier."; }
-  else if (ready && status === "available") { state = "Prêt pour le jury"; next = "Présente la Fleur d’Arène au jury. Ton stock récolté sera conservé."; }
+  else if (storage?.stage === "curing") { state = "Affinage en cours"; next = judged ? "Le grossiste peut proposer une reprise avant la fin, selon son quota." : beforeJury ? `L’affinage avance hors connexion. ${trim.status === "ready" ? "Trim validé ; le jury attend la fin de l’affinage." : trim.description}` : "L’affinage avance hors connexion. Le passage au jury reste à vérifier."; }
+  else if (ready && status === "available") {
+    state = trim.status === "ready" ? "Prêt pour le jury" : trim.label;
+    next = trim.status === "ready" ? "Affinage terminé et trim validé. Présente la Fleur d’Arène au jury ; ton stock récolté sera conservé." : `Affinage terminé. ${trim.description}`;
+  }
   else if (judged) {
     state = ready && quantity.grams !== null && quantity.grams > 0 && exposedGrams === 0 ? "Prêt à vendre" : "Après le jury";
     next = "Compare les préparations et les offres disponibles pour ce lot.";
@@ -74,13 +80,13 @@ export function getKqLotSummary(source: KqLotSummarySource): KqLotSummary {
   if (source.kind === "harvest") {
     if (source.row.lot) return getKqLotSummary({ kind: "storage", lot: source.row.lot });
     const flower: KqOfficialFlower | undefined = source.row.flower;
-    const result = summary({ flowerId: source.row.id, name: source.row.name, status: flower?.status ?? "unknown", storage: flower?.storage, createdAt: flower?.createdAt });
+    const result = summary({ flowerId: source.row.id, name: source.row.name, status: flower?.status ?? "unknown", storage: flower?.storage, trim: flower?.trim, createdAt: flower?.createdAt });
     if (!flower?.storage) result.quality = { label: "Qualité de culture", value: amount(flower?.quality), unit: "points" };
     return result;
   }
   if (source.kind === "storage") {
     const { lot } = source;
-    return summary({ flowerId: lot.flowerId, name: lot.varietyName, status: lot.flowerStatus, storage: lot.projection });
+    return summary({ flowerId: lot.flowerId, name: lot.varietyName, status: lot.flowerStatus, storage: lot.projection, trim: lot.trim });
   }
   if (source.kind === "raw") {
     const { lot } = source;

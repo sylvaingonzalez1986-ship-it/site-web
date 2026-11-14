@@ -75,12 +75,10 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
       const code = `HH2026-${String(n).padStart(3, "0")}`;
       equal(await scalar("SELECT kq_campaign_cultivation_profile($1)", [code]), profiles.getKqBuddieCultivationProfile(code), `profile ${code}: SQL/TS exact parity`);
     }
-    const build = async (owner, { tokens = 1, deck = ["BOTTE-ZONE-A"], heritageCode, heritageCard } = {}) => {
+    const build = async (owner, { tokens = 1, deck = ["BOTTE-ZONE-A"], heritageCode, heritageCard, reservedZoneId } = {}) => {
       const saved = await layout(owner);
-      const zones = saved.state.zones.filter(zone => zone.active && zone.buddieCode).sort((a, b) => a.id.localeCompare(b.id));
-      const members = zones.map(zone => ({ runId: randomUUID(), zoneId: zone.id, buddieCode: zone.buddieCode,
-        warehouse: getKqWarehouseRunSnapshot(saved.state, saved.revision, zone.id),
-        cultivationProfile: profiles.getKqBuddieCultivationProfile(zone.buddieCode) }));
+      const members = campaignEngine.getKqCampaignParticipants(saved.state, saved.revision, undefined, reservedZoneId)
+        .map(member => ({ ...member, runId: randomUUID() }));
       const campaign = { version: 1, id: randomUUID(), leaderRunId: members[0].runId, members };
       const lead = game.startKqGame(123, { warehouse: members[0].warehouse, varietyCode: members[0].buddieCode, domiciliation: "home",
         startingXp: 1 + tokens, ...(heritageCode ? { heritageCode, heritageCard } : {}) });
@@ -272,7 +270,72 @@ async function campaignChecks({ db, sql, scalar, definition, equal, reject, play
     equal(rolls.map(result => result.replayed).sort(), [false, true], "parallel common action retries cannot advance twice");
     await db.exec("BEGIN");
 
+    // Extend the existing real campaign/warehouse chain with the canonical
+    // production predicate and real player-work wrapper. Only its hour ledger
+    // is a small fixture boundary; the migration patches the actual inner RPC.
+    await db.exec("COMMIT");
+    await db.exec(`CREATE TABLE public.kq_staff_accounts(user_id UUID PRIMARY KEY,state JSONB);
+      CREATE TABLE fixture_campaign_work(user_id UUID,hours NUMERIC);
+      CREATE FUNCTION public.kq_player_work_cost(TEXT,TEXT) RETURNS NUMERIC LANGUAGE sql AS $$ SELECT 1::NUMERIC $$;
+      CREATE FUNCTION public.kq_player_work_charge(p_user UUID,p_hours NUMERIC) RETURNS VOID LANGUAGE sql AS $$
+        INSERT INTO fixture_campaign_work VALUES(p_user,p_hours) $$;`);
+    await db.exec(await definition("20261110000100_kq_staff_production.sql", "kq_staff_production_reservation"));
+    const workday = await sql("20261107000500_kq_player_workday.sql");
+    await db.exec(workday.slice(workday.indexOf("CREATE FUNCTION pg_temp.kq_player_work_wrap"), workday.indexOf("-- Registration list")));
+    await db.exec("SELECT pg_temp.kq_player_work_wrap('public.rpc_kq_start_campaign(uuid,uuid,jsonb,jsonb,integer,text)','culture','''start''')");
+    await db.exec(await sql("20261111000100_kq_production_zone_reservations.sql"));
+    await db.exec("BEGIN");
+    const commercial = await player(plan(3)); await ownCards(commercial);
+    const paidPlan = await layout(commercial);
+    const production = { settings: { enabled: true }, facility: { zoneId: "zone-1" }, lots: [], jobs: [] };
+    const reserve = value => db.query("INSERT INTO kq_staff_accounts VALUES($1,$2) ON CONFLICT(user_id) DO UPDATE SET state=excluded.state", [commercial, { production: value }]);
+    const reservation = () => scalar("SELECT kq_warehouse_snapshot($1)->'productionReservation'", [commercial]);
+    await reserve(production);
+    equal(await reservation(), { zoneId: "zone-1", enabled: true }, "active empty production is visibly reserved");
+    await reserve({ ...production, settings: { enabled: false }, lots: [{}] });
+    equal(await reservation(), { zoneId: "zone-1", enabled: false }, "paused production with material remains visibly reserved");
+    await reserve({ ...production, settings: { enabled: false }, jobs: [{}] });
+    equal(await reservation(), { zoneId: "zone-1", enabled: false }, "paused production with a pending gesture remains reserved");
+    await reserve({ ...production, settings: { enabled: false } });
+    equal(await reservation(), null, "paused empty production releases its zone even before facility cleanup");
+    await reserve(production);
+    const unavailable = await build(commercial);
+    await reject(() => launch(commercial, unavailable), "kq_campaign_members_changed");
+    const availableProduction = await build(commercial, { reservedZoneId: "zone-1" });
+    const forgedReservation = structuredClone(availableProduction);
+    for (const member of forgedReservation.members) {
+      member.state.warehouse.productionReservedZoneId = null;
+      for (const participant of member.state.campaign.members) participant.warehouse.productionReservedZoneId = null;
+    }
+    await reject(() => launch(commercial, forgedReservation), "kq_campaign_member_invalid");
+    equal((await runRows(commercial)).length, 0, "stale or forged exclusions create no partial campaign");
+    const reservedKey = randomUUID();
+    const commercialStart = await launch(commercial, availableProduction, reservedKey);
+    equal((await runRows(commercial)).map(run => run.warehouse_zone_id), ["zone-0", "zone-2"], "preassigned autonomous zone is omitted from the campaign");
+    equal((await layout(commercial)).state, paidPlan.state, "reservation and launch never rewrite the paid plan or its Buddie assignment");
+    equal((await runRows(commercial)).map(run => run.state.warehouse.sourceState), [paidPlan.state, paidPlan.state], "members retain the exact authoritative floor plan");
+    await reserve({ ...production, settings: { enabled: false } });
+    const oldReceipt = await launch(commercial, availableProduction, reservedKey);
+    equal(oldReceipt.run.id, commercialStart.run.id, "committed launch replays after the reservation is released");
+    equal(oldReceipt.replayed, true, "reservation drift never invalidates a committed receipt");
+    equal(await scalar("SELECT count(*)::INTEGER FROM fixture_campaign_work WHERE user_id=$1", [commercial]), 1, "public wrapper charges one work entry and none on replay or failure");
+    equal(campaignEngine.isKqCampaign(oldReceipt.run.state.campaign), true, "released reservation leaves the frozen campaign readable");
+
+    const legacyPlan = plan(3); delete legacyPlan.zones[1].buddieCode;
+    const legacyCommercial = await player(legacyPlan); await ownCards(legacyCommercial);
+    await db.query("INSERT INTO kq_staff_accounts VALUES($1,$2)", [legacyCommercial, { production }]);
+    const legacyPrepared = await build(legacyCommercial);
+    equal(legacyPrepared.members.every(member => !("productionReservedZoneId" in member.state.warehouse)), true,
+      "old deployed server sends no reservation metadata");
+    const legacyStarted = await launch(legacyCommercial, legacyPrepared);
+    equal((await runRows(legacyCommercial)).map(run => run.warehouse_zone_id), ["zone-0", "zone-2"],
+      "legacy launch still succeeds when the reserved zone has no assigned Buddie");
+    equal(campaignEngine.isKqCampaign(legacyStarted.run.state.campaign), true,
+      "legacy manifest without metadata stays readable during deployment");
+
     for (const role of ["anon", "authenticated", "service_role"]) {
+      for (const signature of ["kq_warehouse_snapshot(uuid)", "kq_warehouse_snapshot_before_production_reservation(uuid)", "kq_work_inner_start_campaign(uuid,uuid,jsonb,jsonb,integer,text)"])
+        equal(await scalar("SELECT has_function_privilege($1,$2,'EXECUTE')", [role, signature]), false, `${role}: production reservation helpers stay private`);
       for (const table of ["kq_culture_campaigns", "kq_campaign_action_receipts"]) equal(await scalar("SELECT has_table_privilege($1,$2,'SELECT,INSERT,UPDATE,DELETE')", [role, table]), false, `${role}: campaign persistence remains private`);
       for (const signature of ["rpc_kq_start_campaign(uuid,uuid,jsonb,jsonb,integer,text)", "rpc_kq_update_campaign_state(uuid,uuid,timestamptz,text,jsonb,jsonb)", "rpc_kq_campaign_receipt(uuid,uuid,jsonb)"])
         equal(await scalar("SELECT has_function_privilege($1,$2,'EXECUTE')", [role, signature]), role === "service_role", `${role}: only named service campaign RPCs are callable`);

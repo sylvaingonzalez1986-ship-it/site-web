@@ -1,0 +1,1535 @@
+{
+  "domain": "agronomy",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "cultivation-lesson-missouri",
+      "title": "Controlled Environment Agriculture: Hydroponic Farming, G6986",
+      "author": "Juan Cabrera-Garcia, Ryan Milhollin et Matt Ernst",
+      "organization": "University of Missouri Extension",
+      "published": "Avril 2024 ; révision juillet 2024",
+      "url": "https://extension.missouri.edu/publications/g6986",
+      "passage": "Définition CEA, distinction milieu aérien/racinaire, systèmes avec ou sans support, tableau avantages/contraintes.",
+      "access": "excerpt",
+      "limitation": "Horticulture générale, exemples surtout légumes ; aucun rendement ni réglage transposé au chanvre.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale institutionnelle ou scientifique",
+      "reviewEvidence": [
+        {
+          "url": "https://extension.missouri.edu/publications/g6986",
+          "openedAt": "2026-11-14",
+          "sections": "Définition CEA, distinction milieu aérien/racinaire, systèmes avec ou sans support, tableau avantages/contraintes.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Définition CEA, distinction milieu aérien/racinaire, systèmes avec ou sans support, tableau avantages/contraintes."
+        }
+      ]
+    },
+    {
+      "id": "cultivation-lesson-coverings",
+      "title": "Greenhouse covering materials",
+      "author": "NSW Department of Primary Industries and Regional Development",
+      "organization": "Gouvernement de Nouvelle-Galles du Sud, Australie",
+      "published": "Page sans date éditoriale explicite ; consultée le 12 novembre 2026",
+      "url": "https://www.dpird.nsw.gov.au/agriculture/horticulture/greenhouse/structures-and-technology/covers",
+      "passage": "Introduction et parties Glass, Plastic sheeting, Plastic films : transmission et diffusion du rayonnement.",
+      "access": "excerpt",
+      "limitation": "Les valeurs et préconisations de la page australienne ne sont pas présentées comme objectifs pour le chanvre.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale institutionnelle ou scientifique",
+      "reviewEvidence": [
+        {
+          "url": "https://www.dpird.nsw.gov.au/agriculture/horticulture/greenhouse/structures-and-technology/covers",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction et parties Glass, Plastic sheeting, Plastic films : transmission et diffusion du rayonnement.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Introduction et parties Glass, Plastic sheeting, Plastic films : transmission et diffusion du rayonnement."
+        }
+      ]
+    },
+    {
+      "id": "cultivation-lesson-light",
+      "title": "HO-238: Measuring Daily Light Integral in a Greenhouse",
+      "author": "Ariana P. Torres et Roberto G. Lopez",
+      "organization": "Purdue University, Horticulture and Landscape Architecture",
+      "published": "Publication HO-238 ; page sans date éditoriale explicite consultée le 12 novembre 2026",
+      "url": "https://ag.purdue.edu/department/hla/extension/extension-publications-library/ext-pubs/ho-238-w.html",
+      "passage": "What Is Light, Measuring Light et définition de Daily Light Integral.",
+      "access": "excerpt",
+      "limitation": "Seules définitions et unités sont reprises ; aucun seuil horticole transposé au cannabis.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale institutionnelle ou scientifique",
+      "reviewEvidence": [
+        {
+          "url": "https://ag.purdue.edu/department/hla/extension/extension-publications-library/ext-pubs/ho-238-w.html",
+          "openedAt": "2026-11-14",
+          "sections": "What Is Light, Measuring Light et définition de Daily Light Integral.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "What Is Light, Measuring Light et définition de Daily Light Integral."
+        }
+      ]
+    },
+    {
+      "id": "cultivation-lesson-humidity",
+      "title": "Reducing Humidity in the Greenhouse",
+      "author": "Tina Smith et John W. Bartok Jr.",
+      "organization": "UMass Extension / University of Connecticut",
+      "published": "Version reprise dans le bulletin UMass de janvier–février 2016 ; page consultée le 12 novembre 2026",
+      "url": "https://www.umass.edu/agriculture-food-environment/greenhouse-floriculture/fact-sheets/reducing-humidity-in-greenhouse",
+      "passage": "Introduction, Relationship Between Temperature and Humidity, Dewpoint et Ventilation and Heating.",
+      "access": "excerpt",
+      "limitation": "Physique de l’air humide et distinction circulation/renouvellement. Les recettes de conduite de serre ne sont pas reprises.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages du document original consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.umass.edu/agriculture-food-environment/greenhouse-floriculture/fact-sheets/reducing-humidity-in-greenhouse",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction, Relationship Between Temperature and Humidity, Dewpoint et Ventilation and Heating.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Introduction, Relationship Between Temperature and Humidity, Dewpoint et Ventilation and Heating."
+        }
+      ]
+    },
+    {
+      "id": "cultivation-lesson-hemp2026",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Louis-Marie Allard, avec les contributeurs de la filière ; coordination I. Lartigot",
+      "organization": "Terres Inovia / InterChanvre",
+      "published": "Dépôt légal janvier 2026",
+      "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+      "passage": "Pages imprimées 3 (débouchés uniquement), 9 (modes de récolte), 14 (sensibilité à la levée), 16–17 (exportations et eau).",
+      "access": "excerpt",
+      "limitation": "Guide français fibre/graine, non généralisé au chanvre à fleurs. Les raccourcis historiques de p.3 et la mention C4 erronée ne sont pas utilisés.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages du document original consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Pages imprimées 3 (débouchés uniquement), 9 (modes de récolte), 14 (sensibilité à la levée), 16–17 (exportations et eau).",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Pages imprimées 3 (débouchés uniquement), 9 (modes de récolte), 14 (sensibilité à la levée), 16–17 (exportations et eau)."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-physical",
+      "title": "1. Soils & Plant Nutrients — Extension Gardener Handbook",
+      "author": "NC State Extension, équipe du manuel Extension Gardener",
+      "organization": "North Carolina State University",
+      "published": "Page courante consultée le 12 novembre 2026 ; date de révision non confirmée",
+      "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/1-soils-and-plant-nutrients",
+      "passage": "Texture, structure, porosité, Cation Exchange Capacity et Plant Nutrition and Fertilization.",
+      "access": "excerpt",
+      "limitation": "Manuel général de Caroline du Nord ; tableaux de symptômes et doses non transposés au chanvre.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://content.ces.ncsu.edu/extension-gardener-handbook/1-soils-and-plant-nutrients",
+          "openedAt": "2026-11-14",
+          "sections": "Texture, structure, porosité, Cation Exchange Capacity et Plant Nutrition and Fertilization.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Texture, structure, porosité, Cation Exchange Capacity et Plant Nutrition and Fertilization."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-compaction",
+      "title": "Soil compaction",
+      "author": "University of Minnesota Extension, équipe de gestion des sols",
+      "organization": "University of Minnesota",
+      "published": "Page courante consultée le 12 novembre 2026 ; date de révision non confirmée",
+      "url": "https://extension.umn.edu/natural-resources/conservation/agricultural-soil-and-water/soil-compaction",
+      "passage": "Quick facts, What is compaction : réduction des pores, infiltration, échanges gazeux et résistance mécanique.",
+      "access": "excerpt",
+      "limitation": "Les rendements et essais culturaux américains ne sont pas extrapolés.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://extension.umn.edu/natural-resources/conservation/agricultural-soil-and-water/soil-compaction",
+          "openedAt": "2026-11-14",
+          "sections": "Quick facts, What is compaction : réduction des pores, infiltration, échanges gazeux et résistance mécanique.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Quick facts, What is compaction : réduction des pores, infiltration, échanges gazeux et résistance mécanique."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-rhizosphere",
+      "title": "Racines et rhizosphère",
+      "author": "Institut fédéral de recherches sur la forêt, la neige et le paysage",
+      "organization": "WSL",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.wsl.ch/fr/foret/sol-et-cycles/racines-et-rhizosphere/",
+      "passage": "Parties Racines et Rhizosphère : racines fines, exsudats, absorption et communauté microbienne.",
+      "access": "excerpt",
+      "limitation": "Page forestière : les photographies de hêtre/épicéa et leurs mycorhizes ne sont pas des observations du chanvre.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication scientifique ou institutionnelle originale",
+      "reviewEvidence": [
+        {
+          "url": "https://www.wsl.ch/fr/foret/sol-et-cycles/racines-et-rhizosphere/",
+          "openedAt": "2026-11-14",
+          "sections": "Parties Racines et Rhizosphère : racines fines, exsudats, absorption et communauté microbienne.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Parties Racines et Rhizosphère : racines fines, exsudats, absorption et communauté microbienne."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-biology",
+      "title": "Soil Biology — version 2.3",
+      "author": "USDA Natural Resources Conservation Service, Soil Health Division",
+      "organization": "USDA NRCS",
+      "published": "Version 2.3, document institutionnel diffusé en juin 2023 ; consulté le 12 novembre 2026",
+      "url": "https://www.nrcs.usda.gov/sites/default/files/2023-06/Soil%20Biology%202.3.pdf",
+      "passage": "Diapositives 4–9 : réseau trophique et groupes fonctionnels ; racines, vers de terre, décomposeurs et régulateurs.",
+      "access": "excerpt",
+      "limitation": "Le schéma de fonctions est retenu, pas les chiffres d’abondance généralisés du support.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.nrcs.usda.gov/sites/default/files/2023-06/Soil%20Biology%202.3.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Diapositives 4–9 : réseau trophique et groupes fonctionnels ; racines, vers de terre, décomposeurs et régulateurs.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Diapositives 4–9 : réseau trophique et groupes fonctionnels ; racines, vers de terre, décomposeurs et régulateurs."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-living",
+      "title": "The Living Soil",
+      "author": "Adrian Card, Catherine Moravec, David Whiting, Carl Wilson, Jean Reeder et Susan Carter ; relecture Sarah Schweig",
+      "organization": "Colorado State University Extension",
+      "published": "Octobre 2015 ; relecture octobre 2022",
+      "url": "https://extension.colostate.edu/resource/the-living-soil/",
+      "passage": "Types of Soil Organisms, Directly et Indirectly Beneficial Soil Organisms.",
+      "access": "excerpt",
+      "limitation": "Les fonctions et la variabilité des inoculations sont retenues ; les simplifications sur humus/glomaline et les proportions universelles ne sont pas reprises.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://extension.colostate.edu/resource/the-living-soil/",
+          "openedAt": "2026-11-14",
+          "sections": "Types of Soil Organisms, Directly et Indirectly Beneficial Soil Organisms.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Types of Soil Organisms, Directly et Indirectly Beneficial Soil Organisms."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-inoculation",
+      "title": "Soil microbiome indicators can predict crop growth response to large-scale inoculation with arbuscular mycorrhizal fungi",
+      "author": "Stefanie Lutz, Natacha Bodenhausen, Julia Hess, Alain Valzano-Held, Jan Waelchli, Gabriel Deslandes-Hérold, Klaus Schlaeppi et Marcel G. A. van der Heijden",
+      "organization": "Nature Microbiology 8:2277–2289",
+      "published": "29 novembre 2023 ; DOI 10.1038/s41564-023-01520-w",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/38030903/",
+      "passage": "Résumé et légendes des figures 1–2 : essai sur maïs dans 54 champs suisses, réponses variables. Correction PMC11153126 ouverte : changement de licence, pas correction des résultats.",
+      "access": "abstract",
+      "limitation": "Résumé et légendes seulement, non texte intégral. Ni essai sur chanvre ni garantie d’efficacité d’un inoculant commercial.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/38030903/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et légendes des figures 1–2 : essai sur maïs dans 54 champs suisses, réponses variables. Correction PMC11153126 ouverte : changement de licence, pas correction des résultats.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Résumé et légendes des figures 1–2 : essai sur maïs dans 54 champs suisses, réponses variables. Correction PMC11153126 ouverte : changement de licence, pas correction des résultats."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-nitrogen",
+      "title": "Nitrogen Cycle",
+      "author": "Southwest Research and Outreach Center",
+      "organization": "University of Minnesota",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://swroc.cfans.umn.edu/research/soil-water/nitrogen-cycle",
+      "passage": "Nitrogen cycle stages : ammonification, nitrification, immobilization, mineralization et leaching.",
+      "access": "excerpt",
+      "limitation": "Présentation générale du cycle ; pas de bilan ni de taux appliqué à une chanvrière.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication scientifique ou institutionnelle originale",
+      "reviewEvidence": [
+        {
+          "url": "https://swroc.cfans.umn.edu/research/soil-water/nitrogen-cycle",
+          "openedAt": "2026-11-14",
+          "sections": "Nitrogen cycle stages : ammonification, nitrification, immobilization, mineralization et leaching.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Nitrogen cycle stages : ammonification, nitrification, immobilization, mineralization et leaching."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-humus",
+      "title": "Histoires d’humus, 1. Qu’est-ce que l’humus ?",
+      "author": "Christian Feller, Bernard Jabiol et Denis Baize",
+      "organization": "Les Mots de l’agronomie, plateforme INRAE",
+      "published": "4 mai 2022",
+      "url": "https://mots-agronomie.inrae.fr/index.php?title=Histoires_d%E2%80%99humus,_1._Qu%E2%80%99est-ce_que_l%E2%80%99humus_?",
+      "passage": "Introduction et Les différentes significations du mot Humus : constituant et succession d’horizons.",
+      "access": "excerpt",
+      "limitation": "Histoire de concepts agronomiques, non modèle chiffré de stockage permanent.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://mots-agronomie.inrae.fr/index.php?title=Histoires_d%E2%80%99humus,_1._Qu%E2%80%99est-ce_que_l%E2%80%99humus_?",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction et Les différentes significations du mot Humus : constituant et succession d’horizons.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Introduction et Les différentes significations du mot Humus : constituant et succession d’horizons."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-fractions",
+      "title": "Soil carbon storage informed by particulate and mineral-associated organic matter",
+      "author": "M. Francesca Cotrufo, Maria Giovanna Ranalli, Michelle L. Haddix et collaborateurs",
+      "organization": "Nature Geoscience 12:989–994",
+      "published": "2019 ; DOI 10.1038/s41561-019-0484-6",
+      "url": "https://desertblooms.nmsu.edu/documents/Cotrufo_2019_Soil-C-storage-informed-by-particulate-and-MAOM1.pdf",
+      "passage": "Page 989 : introduction, définition des fractions POM/MAOM, protection dans les agrégats et association aux minéraux.",
+      "access": "excerpt",
+      "limitation": "Étude de sols forestiers et prairiaux européens ; aucune vitesse de stockage extrapolée au chanvre. Copie universitaire de l’article effectivement ouverte.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://desertblooms.nmsu.edu/documents/Cotrufo_2019_Soil-C-storage-informed-by-particulate-and-MAOM1.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Page 989 : introduction, définition des fractions POM/MAOM, protection dans les agrégats et association aux minéraux.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Page 989 : introduction, définition des fractions POM/MAOM, protection dans les agrégats et association aux minéraux."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-ph",
+      "title": "Les Vrai/Faux du chaulage : oui, la mesure du pHeau suffit pour faire un diagnostic d’acidité",
+      "author": "ARVALIS, rédaction technique",
+      "organization": "ARVALIS",
+      "published": "9 décembre 2021",
+      "url": "https://www.arvalis.fr/infos-techniques/oui-la-mesure-du-pheau-suffit-pour-faire-un-diagnostic-dacidite",
+      "passage": "Le pHeau permet d’établir le diagnostic ; CEC Metson à pH 7 et définition des cations échangeables.",
+      "access": "excerpt",
+      "limitation": "Méthodes distinguées ; aucune dose de chaulage prescrite.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.arvalis.fr/infos-techniques/oui-la-mesure-du-pheau-suffit-pour-faire-un-diagnostic-dacidite",
+          "openedAt": "2026-11-14",
+          "sections": "Le pHeau permet d’établir le diagnostic ; CEC Metson à pH 7 et définition des cations échangeables.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Le pHeau permet d’établir le diagnostic ; CEC Metson à pH 7 et définition des cations échangeables."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-ec",
+      "title": "Soil Quality Indicators — Soil Electrical Conductivity",
+      "author": "USDA Natural Resources Conservation Service",
+      "organization": "USDA NRCS",
+      "published": "Fiche institutionnelle, date éditoriale non confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.nrcs.usda.gov/sites/default/files/2022-10/Soil%20Electrical%20Conductivity.pdf",
+      "passage": "PDF pages 1–2 : nature électrolytique, unités dS/m, facteurs de température, eau et ions, limites comme mesure de fertilité.",
+      "access": "excerpt",
+      "limitation": "La conductivité globale ne détermine pas l’identité des ions ; pas de seuil universel transposé aux substrats.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.nrcs.usda.gov/sites/default/files/2022-10/Soil%20Electrical%20Conductivity.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "PDF pages 1–2 : nature électrolytique, unités dS/m, facteurs de température, eau et ions, limites comme mesure de fertilité.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "PDF pages 1–2 : nature électrolytique, unités dS/m, facteurs de température, eau et ions, limites comme mesure de fertilité."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-methods",
+      "title": "Our Methods — Soil Testing Laboratory",
+      "author": "Soil Testing Laboratory",
+      "organization": "University of Minnesota",
+      "published": "Page courante consultée le 12 novembre 2026 ; référence méthodologique citée révisée en 2015",
+      "url": "https://soiltest.cfans.umn.edu/about-us/our-methods",
+      "passage": "Routine Soil Tests, Soil Tests Available Upon Request : pH suspension 1:1, conductance suspension 1:1 ou extrait saturé.",
+      "access": "excerpt",
+      "limitation": "Les méthodes de ce laboratoire ne sont pas toutes équivalentes aux méthodes françaises.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication scientifique ou institutionnelle originale",
+      "reviewEvidence": [
+        {
+          "url": "https://soiltest.cfans.umn.edu/about-us/our-methods",
+          "openedAt": "2026-11-14",
+          "sections": "Routine Soil Tests, Soil Tests Available Upon Request : pH suspension 1:1, conductance suspension 1:1 ou extrait saturé.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Routine Soil Tests, Soil Tests Available Upon Request : pH suspension 1:1, conductance suspension 1:1 ou extrait saturé."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-fertilisers",
+      "title": "Les matières fertilisantes, adjuvants pour matières fertilisantes et supports de culture",
+      "author": "Agence nationale de sécurité sanitaire de l’alimentation, de l’environnement et du travail",
+      "organization": "Anses — E-Phy",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://ephy.anses.fr/decouvrir-site-e-phy/les-matieres-fertilisantes-adjuvants-pour-matieres-fertilisantes-et-supports-de-culture",
+      "passage": "Définitions officielles de matière fertilisante, adjuvant et support de culture.",
+      "access": "official-page",
+      "limitation": "Définition générale ; ce texte ne vaut pas autorisation d’un produit particulier.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication scientifique ou institutionnelle originale",
+      "reviewEvidence": [
+        {
+          "url": "https://ephy.anses.fr/decouvrir-site-e-phy/les-matieres-fertilisantes-adjuvants-pour-matieres-fertilisantes-et-supports-de-culture",
+          "openedAt": "2026-11-14",
+          "sections": "Définitions officielles de matière fertilisante, adjuvant et support de culture.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Définitions officielles de matière fertilisante, adjuvant et support de culture."
+        }
+      ]
+    },
+    {
+      "id": "soil-lesson-compost",
+      "title": "Interpreting compost analyses — EM 9217",
+      "author": "Oregon State University Extension, rédaction du bulletin EM 9217",
+      "organization": "Oregon State University",
+      "published": "Bulletin EM 9217 ; page courante consultée le 12 novembre 2026, date de révision non confirmée",
+      "url": "https://extension.oregonstate.edu/catalog/em-9217-interpreting-compost-analyses",
+      "passage": "Introduction ; Choosing a laboratory ; Compost maturity and stability, Industry standards et limites des essais.",
+      "access": "excerpt",
+      "limitation": "Maturité/stabilité et salinité sont distinguées ; normes américaines non présentées comme réglementation française.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://extension.oregonstate.edu/catalog/em-9217-interpreting-compost-analyses",
+          "openedAt": "2026-11-14",
+          "sections": "Introduction ; Choosing a laboratory ; Compost maturity and stability, Industry standards et limites des essais.",
+          "result": "Passages ouverts et lus dans cette révision.",
+          "supports": "Introduction ; Choosing a laboratory ; Compost maturity and stability, Industry standards et limites des essais."
+        }
+      ]
+    },
+    {
+      "id": "revision-agro-montana",
+      "title": "Module 2: Plant Nutrition and Soil Fertility",
+      "author": "Clain Jones et Kathrin Olson-Rutz",
+      "organization": "Montana State University Extension",
+      "published": "2016-09",
+      "url": "https://landresources.montana.edu/soilfertility/html/modules/4449-2/",
+      "verifiedAt": "2026-11-14",
+      "passage": "Essential Elements et tableau 1 ; macro/micronutriments et formes absorbées ; Plant Uptake ; disponibilité et mobilité.",
+      "limitation": "Physiologie générale, sans transposition des conseils de fertilisation et des essais sur céréales au chanvre.",
+      "access": "excerpt",
+      "documentKind": "Ressource pédagogique universitaire",
+      "reviewEvidence": [
+        {
+          "url": "https://landresources.montana.edu/soilfertility/html/modules/4449-2/",
+          "openedAt": "2026-11-14",
+          "sections": "Essential Elements et tableau 1 ; macro/micronutriments et formes absorbées ; Plant Uptake ; disponibilité et mobilité.",
+          "result": "Document ouvert ; sections indiquées lues.",
+          "supports": "Essential Elements et tableau 1 ; macro/micronutriments et formes absorbées ; Plant Uptake ; disponibilité et mobilité."
+        }
+      ]
+    },
+    {
+      "id": "revision-agro-msstate",
+      "title": "Calcium and Magnesium in Mississippi Crop Production — P3727",
+      "author": "Corey Bryant ; édition antérieure Larry Oldham et Keri D. Jones",
+      "organization": "Mississippi State University Extension",
+      "published": "révision 2026-04",
+      "url": "https://extension.msstate.edu/publications/calcium-and-magnesium-mississippi-crop-production",
+      "verifiedAt": "2026-11-14",
+      "passage": "Sections Calcium et Magnesium : parois et messager cellulaire ; Mg au centre de la chlorophylle et activation enzymatique.",
+      "limitation": "Seules fonctions végétales générales retenues ; doses, fréquence des carences et conseils propres au Mississippi exclus.",
+      "access": "excerpt",
+      "documentKind": "Ressource pédagogique universitaire",
+      "reviewEvidence": [
+        {
+          "url": "https://extension.msstate.edu/publications/calcium-and-magnesium-mississippi-crop-production",
+          "openedAt": "2026-11-14",
+          "sections": "Sections Calcium et Magnesium : parois et messager cellulaire ; Mg au centre de la chlorophylle et activation enzymatique.",
+          "result": "Document ouvert ; sections indiquées lues.",
+          "supports": "Sections Calcium et Magnesium : parois et messager cellulaire ; Mg au centre de la chlorophylle et activation enzymatique."
+        }
+      ]
+    },
+    {
+      "id": "revision-agro-openstax",
+      "title": "31.1 Nutritional Requirements of Plants — Biology 2e",
+      "author": "OpenStax",
+      "organization": "Rice University / OpenStax",
+      "published": "s. d. sur la section consultée",
+      "url": "https://openstax.org/books/biology-2e/pages/31-1-nutritional-requirements-of-plants",
+      "verifiedAt": "2026-11-14",
+      "passage": "Chemical Composition ; paragraphes N/P/S/K : acides nucléiques, ATP, cystéine/méthionine, stomates ; absorption et transpiration.",
+      "limitation": "Le tableau mélange éléments essentiels et bénéfiques : sa liste de vingt éléments n’est pas reprise. Le décompte de dix-sept éléments est vérifié dans Montana.",
+      "access": "excerpt",
+      "documentKind": "Ressource pédagogique universitaire",
+      "reviewEvidence": [
+        {
+          "url": "https://openstax.org/books/biology-2e/pages/31-1-nutritional-requirements-of-plants",
+          "openedAt": "2026-11-14",
+          "sections": "Chemical Composition ; paragraphes N/P/S/K : acides nucléiques, ATP, cystéine/méthionine, stomates ; absorption et transpiration.",
+          "result": "Document ouvert ; sections indiquées lues.",
+          "supports": "Chemical Composition ; paragraphes N/P/S/K : acides nucléiques, ATP, cystéine/méthionine, stomates ; absorption et transpiration."
+        }
+      ]
+    },
+    {
+      "id": "revision-agro-water",
+      "title": "30.5 Transport of Water and Solutes in Plants — Biology 2e",
+      "author": "OpenStax",
+      "organization": "Rice University / OpenStax",
+      "published": "s. d. sur la section consultée",
+      "url": "https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants",
+      "verifiedAt": "2026-11-14",
+      "passage": "Pressure Potential et Control of Transpiration : turgescence contre la paroi, évaporation et diffusion de vapeur à travers les stomates.",
+      "limitation": "Lecture ciblée ; les erreurs de signe et de légende sur le potentiel gravitaire et le schéma de xylème ne sont pas reprises.",
+      "access": "excerpt",
+      "documentKind": "Ressource pédagogique universitaire",
+      "reviewEvidence": [
+        {
+          "url": "https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants",
+          "openedAt": "2026-11-14",
+          "sections": "Pressure Potential et Control of Transpiration : turgescence contre la paroi, évaporation et diffusion de vapeur à travers les stomates.",
+          "result": "Document ouvert ; sections indiquées lues.",
+          "supports": "Pressure Potential et Control of Transpiration : turgescence contre la paroi, évaporation et diffusion de vapeur à travers les stomates."
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "ref-environnements-culture",
+      "questions": [
+        "Qu’est-ce qui distingue environnement aérien et milieu racinaire ?",
+        "Que changent un abri et un circuit recirculé ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les paragraphes existants relus ; distinctions fiables conservées après confrontation aux sources.",
+        "Mécanismes et exemples ajoutés ; notions requises par le quiz explicitement enseignées.",
+        "Visuel générique remplacé dans la lecture par une comparaison ou une séquence originale documentée."
+      ],
+      "patch": {
+        "lead": "Le plein champ, la serre et l'intérieur décrivent l'environnement aérien d'une culture. Le sol ou le substrat décrit son milieu racinaire.",
+        "sections": [
+          {
+            "id": "ref-environnements-culture-1",
+            "title": "Plein champ et abri",
+            "paragraphs": [
+              "En plein champ, les plantes sont directement exposées aux variations météorologiques et saisonnières. Une serre modifie ces échanges grâce à sa couverture. Films plastiques, verre et plaques de polycarbonate présentent des propriétés différentes. Le mot serre englobe des installations non chauffées comme des structures plus équipées ; il ne définit pas un niveau unique de contrôle.",
+              "Une couverture transmet une partie du rayonnement, en réfléchit ou en absorbe une autre et peut le diffuser. « Sous serre » ne signifie donc pas « même lumière que dehors ». Le matériau, son vieillissement et ses dépôts de poussière modifient cette transmission. Une serre reste aussi en échange de chaleur avec l’extérieur : un abri n’est pas un climat parfaitement constant."
+            ],
+            "sourceIds": [
+              "cultivation-lesson-missouri",
+              "cultivation-lesson-coverings"
+            ]
+          },
+          {
+            "id": "ref-environnements-culture-2",
+            "title": "Le milieu des racines",
+            "paragraphs": [
+              "Une culture sous serre peut être implantée en pleine terre ou dans un substrat. Le hors-sol regroupe plusieurs situations, avec ou sans support solide autour des racines. L'eau, l'oxygène et les éléments nutritifs restent indispensables dans ces différents milieux. L'environnement aérien et le support racinaire sont donc deux caractéristiques indépendantes d'un système.",
+              "Deux plantes sous le même toit peuvent ainsi avoir des racines dans des milieux très différents. À l’inverse, un même substrat peut être utilisé sous abri ou dans un autre environnement. Dans un circuit recirculé, l’eau est réutilisée ; dans un système ouvert, elle ne retourne pas dans le même circuit. Ces mots décrivent le trajet de l’eau, pas une supériorité automatique du produit obtenu."
+            ],
+            "sourceIds": [
+              "cultivation-lesson-missouri"
+            ]
+          },
+          {
+            "id": "ref-environnements-culture-3",
+            "title": "Le chanvre fibre et graine",
+            "paragraphs": [
+              "Dans les filières françaises décrites par le guide Terres Inovia, le chanvre fibre et graine s'inscrit dans une production agricole liée aux débouchés et au territoire. Les installations contrôlées mobilisent des équipements et de la maintenance. Éclairage artificiel, pompes et dispositifs climatiques introduisent des consommations d'énergie et des dépendances techniques propres à l'installation.",
+              "Le choix d’un système change les contraintes autant que les possibilités : un dispositif dépendant de pompes ou d’éclairage demande de l’énergie et peut être affecté par une panne. Comparer les systèmes suppose de préciser le produit, le climat et les ressources comptabilisées. Un résultat obtenu sur des laitues hydroponiques ne fournit pas directement un bilan du chanvre."
+            ],
+            "sourceIds": [
+              "cultivation-lesson-hemp2026",
+              "cultivation-lesson-missouri"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cultivation-lesson-missouri",
+          "cultivation-lesson-coverings",
+          "cultivation-lesson-hemp2026"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Deux dimensions pour décrire un système",
+          "nodes": [
+            {
+              "label": "Environnement aérien",
+              "detail": "Plein champ : météo directe. Sous abri : rayonnement et échanges modifiés. Intérieur : environnement dépendant des installations."
+            },
+            {
+              "label": "Milieu racinaire",
+              "detail": "Sol en place, substrat en contenant ou milieu sans support solide : le support des racines est une autre caractéristique."
+            },
+            {
+              "label": "Exemple de combinaison",
+              "detail": "Une serre peut abriter une culture en pleine terre ou une culture hors-sol. Ces deux catégories ne s’excluent pas."
+            }
+          ],
+          "caption": "Comparaison originale : les catégories ne constituent pas un classement de rendement ou de qualité.",
+          "sourceIds": [
+            "cultivation-lesson-missouri",
+            "cultivation-lesson-coverings"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cultivation-lesson-missouri",
+        "cultivation-lesson-coverings",
+        "cultivation-lesson-hemp2026"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison HTML ou séquence originale, contenu et relations contrôlés à partir des passages cités. Aucun cliché d’une autre culture présenté comme observation du chanvre. Rendu mobile à vérifier par le coordinateur."
+      },
+      "quizIdsReviewed": [
+        "hemp-prevention-plein-champ",
+        "hemp-prevention-serre",
+        "hemp-prevention-hors-sol"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-lumiere-climat",
+      "questions": [
+        "Pourquoi durée du jour et quantité de lumière sont-elles différentes ?",
+        "Comment turgescence, transpiration et condensation se distinguent-elles ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les paragraphes existants relus ; distinctions fiables conservées après confrontation aux sources.",
+        "Mécanismes et exemples ajoutés ; notions requises par le quiz explicitement enseignées.",
+        "Visuel générique remplacé dans la lecture par une comparaison ou une séquence originale documentée."
+      ],
+      "patch": {
+        "lead": "La lumière, la température et l'eau participent au fonctionnement du chanvre et aux échanges entre la plante, le sol et l'atmosphère.",
+        "sections": [
+          {
+            "id": "ref-lumiere-climat-1",
+            "title": "Lumière et saison",
+            "paragraphs": [
+              "La photosynthèse utilise l'énergie lumineuse pour produire de la matière organique. Le rayonnement reçu dépend notamment de la latitude, de la saison, des nuages et de l'ombrage. Sous abri, la couverture intercepte aussi une partie de la lumière. La photopériode désigne la durée du jour ; elle se distingue de l'intensité lumineuse et du cumul de lumière reçu.",
+              "La quantité de lumière accumulée sur une journée se décrit par l’intégrale lumineuse journalière (DLI), en moles de photons par mètre carré et par jour. Deux journées de même durée peuvent apporter des quantités différentes de lumière si l’une est nuageuse. La durée du jour est un signal biologique ; le flux reçu est une ressource énergétique. Les confondre empêche de comprendre les réponses de la plante."
+            ],
+            "sourceIds": [
+              "cultivation-lesson-light"
+            ]
+          },
+          {
+            "id": "ref-lumiere-climat-2",
+            "title": "Eau et température",
+            "paragraphs": [
+              "L'eau absorbée par les racines contribue au transport de substances et à la turgescence des tissus. Une partie retourne dans l'air par transpiration. Les besoins et les contraintes hydriques d'un chanvre agricole dépendent du sol, du climat et du développement de la culture. La température intervient dans les processus biologiques et dans les échanges d'eau avec l'atmosphère.",
+              "La turgescence est la pression du contenu hydraté d’une cellule contre sa paroi : elle contribue à la fermeté des tissus. L’eau passe des racines aux organes aériens et quitte surtout les feuilles sous forme de vapeur à travers les stomates, petites ouvertures de l’épiderme. Ces échanges sont couplés au climat. À la levée, lorsque les cotylédons apparaissent, le chanvre agricole est particulièrement sensible au gel ; il ne faut pas confondre une graine stockée avec une plantule exposée."
+            ],
+            "sourceIds": [
+              "revision-agro-water",
+              "cultivation-lesson-hemp2026"
+            ]
+          },
+          {
+            "id": "ref-lumiere-climat-3",
+            "title": "Humidité et condensation",
+            "paragraphs": [
+              "L'humidité relative dépend à la fois de la vapeur d'eau présente et de la température. Une surface assez froide peut atteindre le point de rosée et recevoir de la condensation, même si l'air n'est pas uniforme dans la serre. Le brassage déplace l'air ; son renouvellement échange de l'air avec l'extérieur. Ces phénomènes ne sont pas équivalents.",
+              "Si l’air se réchauffe sans apport de vapeur d’eau, son humidité relative diminue : cela ne démontre pas qu’une masse d’eau a été retirée. Inversement, une feuille ou une paroi peut être assez froide pour provoquer une condensation locale. Un thermomètre placé ailleurs ne décrit donc pas nécessairement la surface observée."
+            ],
+            "sourceIds": [
+              "cultivation-lesson-humidity"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "cultivation-lesson-light",
+          "revision-agro-water",
+          "cultivation-lesson-hemp2026",
+          "cultivation-lesson-humidity"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois grandeurs lumineuses à ne pas confondre",
+          "nodes": [
+            {
+              "label": "Photopériode",
+              "detail": "Durée de la phase éclairée, exprimée en heures."
+            },
+            {
+              "label": "Densité de flux de photons",
+              "detail": "Quantité reçue par unité de surface à un instant, en µmol·m⁻²·s⁻¹. Le PAR du document cité couvre 400–700 nm."
+            },
+            {
+              "label": "Intégrale journalière",
+              "detail": "Quantité cumulée sur une journée, exprimée en mol·m⁻²·jour⁻¹."
+            }
+          ],
+          "caption": "Unités distinctes : ce tableau ne donne aucun seuil de conduite. Un jour couvert peut avoir la même photopériode qu’un jour dégagé.",
+          "sourceIds": [
+            "cultivation-lesson-light"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "cultivation-lesson-light",
+        "revision-agro-water",
+        "cultivation-lesson-hemp2026",
+        "cultivation-lesson-humidity"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison HTML ou séquence originale, contenu et relations contrôlés à partir des passages cités. Aucun cliché d’une autre culture présenté comme observation du chanvre. Rendu mobile à vérifier par le coordinateur."
+      },
+      "quizIdsReviewed": [
+        "hemp-prevention-nuages",
+        "hemp-prevention-turgescence",
+        "hemp-prevention-transpiration",
+        "hemp-prevention-gel-plantule",
+        "hemp-prevention-condensation",
+        "hemp-prevention-point-rosee",
+        "hemp-prevention-humidite-relative"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-sol",
+      "questions": [
+        "Quelle différence entre texture et structure ?",
+        "Pourquoi eau présente, eau accessible et oxygène disponible ne sont-ils pas équivalents ?",
+        "Que mesurent pH, CEC et EC ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les paragraphes existants relus ; distinctions fiables conservées après confrontation aux sources.",
+        "Mécanismes et exemples ajoutés ; notions requises par le quiz explicitement enseignées.",
+        "Visuel générique remplacé dans la lecture par une comparaison ou une séquence originale documentée."
+      ],
+      "patch": {
+        "lead": "Le sol est un milieu minéral, organique et vivant dont la structure permet les échanges d'eau et de gaz autour des racines.",
+        "sections": [
+          {
+            "id": "ref-sol-1",
+            "title": "Texture et structure",
+            "paragraphs": [
+              "La texture décrit les proportions de sable, de limon et d'argile. La structure correspond à l'organisation des particules en agrégats et à la disposition des pores. Un tassement peut modifier cette organisation sans changer la texture. La taille et la continuité des pores influencent l'infiltration, le drainage, l'aération et la pénétration des racines.",
+              "Un sol peut garder les mêmes proportions de sable, limon et argile tout en devenant plus compact. C’est alors l’organisation des espaces, et non la taille des particules minérales, qui change. Les agrégats sont des assemblages de particules ; les pores entre ces assemblages n’ont pas les mêmes dimensions que tous les pores internes."
+            ],
+            "sourceIds": [
+              "soil-lesson-physical",
+              "soil-lesson-compaction"
+            ]
+          },
+          {
+            "id": "ref-sol-2",
+            "title": "Eau et porosité",
+            "paragraphs": [
+              "Les pores du sol contiennent de l'air ou de l'eau en proportions variables. Toute l'eau retenue n'est pas également accessible aux plantes. Un excès d'eau persistant peut réduire l'oxygène disponible pour les racines, tandis qu'une réserve limitée augmente la sensibilité aux déficits hydriques. Le comportement d'une parcelle dépend aussi de sa profondeur et de son organisation.",
+              "Après une pluie, une partie de l’eau s’écoule par gravité, tandis qu’une autre reste retenue. Une eau très fortement retenue n’est pas nécessairement accessible aux racines. Le tassement peut à la fois freiner l’infiltration, limiter le drainage et rendre la pénétration des racines plus difficile : « il y a de l’eau » ne suffit donc pas à décrire un milieu fonctionnel."
+            ],
+            "sourceIds": [
+              "soil-lesson-physical",
+              "soil-lesson-compaction"
+            ]
+          },
+          {
+            "id": "ref-sol-3",
+            "title": "Propriétés chimiques",
+            "paragraphs": [
+              "Le pH décrit une propriété d'acidité dépendante de la méthode de mesure. La capacité d'échange cationique concerne la rétention réversible de certains ions positifs. La conductivité électrique renseigne sur la conduction liée aux ions présents dans l'extrait mesuré. Ces propriétés correspondent à des phénomènes distincts ; aucune ne constitue à elle seule une mesure globale de fertilité.",
+              "Un cation est un ion chargé positivement, comme K⁺ ou Ca²⁺. Des surfaces du sol chargées négativement peuvent le retenir de façon échangeable. La CEC décrit cette capacité ; elle ne mesure pas le passage du courant. L’EC décrit une conduction et s’exprime notamment en dS/m. Pour comparer deux analyses, il faut aussi connaître la suspension ou l’extrait utilisé : une mesure sur extrait saturé et une mesure sur suspension 1:1 ne se comparent pas directement."
+            ],
+            "sourceIds": [
+              "soil-lesson-ph",
+              "soil-lesson-ec",
+              "soil-lesson-methods"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "soil-lesson-physical",
+          "soil-lesson-compaction",
+          "soil-lesson-ph",
+          "soil-lesson-ec",
+          "soil-lesson-methods"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Texture, structure et mesures chimiques",
+          "nodes": [
+            {
+              "label": "Texture",
+              "detail": "Composition en classes de particules : sable, limon, argile."
+            },
+            {
+              "label": "Structure",
+              "detail": "Organisation en agrégats et pores ; peut changer sous tassement."
+            },
+            {
+              "label": "pH et CEC",
+              "detail": "Acidité de la suspension et rétention échangeable de cations : deux propriétés différentes."
+            },
+            {
+              "label": "Conductivité électrique",
+              "detail": "Conduction liée aux ions, à l’eau et à la méthode ; ni inventaire des nutriments ni mesure universelle de fertilité."
+            }
+          ],
+          "caption": "Tableau original de distinctions. Les valeurs chimiques demandent une méthode et des unités connues.",
+          "sourceIds": [
+            "soil-lesson-physical",
+            "soil-lesson-ph",
+            "soil-lesson-ec",
+            "soil-lesson-methods"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "soil-lesson-physical",
+        "soil-lesson-compaction",
+        "soil-lesson-ph",
+        "soil-lesson-ec",
+        "soil-lesson-methods"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison HTML ou séquence originale, contenu et relations contrôlés à partir des passages cités. Aucun cliché d’une autre culture présenté comme observation du chanvre. Rendu mobile à vérifier par le coordinateur."
+      },
+      "quizIdsReviewed": [
+        "hemp-uses-pores",
+        "hemp-uses-texture",
+        "hemp-uses-echange-cations"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-racines-rhizosphere",
+      "questions": [
+        "Que font les racines et les organismes proches ?",
+        "Pourquoi une mycorhize ne garantit-elle pas un gain de croissance ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les paragraphes existants relus ; distinctions fiables conservées après confrontation aux sources.",
+        "Mécanismes et exemples ajoutés ; notions requises par le quiz explicitement enseignées.",
+        "Visuel générique remplacé dans la lecture par une comparaison ou une séquence originale documentée."
+      ],
+      "patch": {
+        "lead": "Les racines assurent l'ancrage et l'absorption du chanvre. La rhizosphère est la zone du sol directement influencée par leur activité.",
+        "sections": [
+          {
+            "id": "ref-racines-rhizosphere-1",
+            "title": "Absorption et respiration",
+            "paragraphs": [
+              "Les racines absorbent de l'eau et des éléments minéraux présents sous des formes accessibles. Leurs cellules respirent et ont besoin d'oxygène. Un sol engorgé ou fortement tassé peut limiter les échanges gazeux et perturber leur fonctionnement. Une plante peut ainsi présenter des signes de mauvaise nutrition alors que des éléments sont présents dans le milieu.",
+              "La respiration cellulaire utilise notamment du dioxygène pour tirer de l’énergie des composés organiques. Cette énergie soutient des fonctions actives de la racine. L’engorgement remplace une partie de l’air des pores par de l’eau et ralentit l’approvisionnement en oxygène. Une difficulté d’absorption peut donc avoir une origine physique, même sans manque total d’éléments dans le sol."
+            ],
+            "sourceIds": [
+              "soil-lesson-compaction",
+              "revision-agro-openstax"
+            ]
+          },
+          {
+            "id": "ref-racines-rhizosphere-2",
+            "title": "La zone d'échanges",
+            "paragraphs": [
+              "Les racines libèrent des substances organiques qui participent aux échanges avec les organismes du sol. Bactéries, champignons, protozoaires et faune interviennent dans un réseau alimentaire complexe. Certains organismes décomposent des matières, d'autres consomment des microorganismes ou interagissent avec la plante. Leur abondance, leurs fonctions et leurs effets ne sont pas des caractéristiques interchangeables.",
+              "La rhizosphère n’est pas une couche d’épaisseur fixe : c’est une zone d’influence. Les exsudats comprennent des composés organiques libérés par les racines ; ils peuvent nourrir des microorganismes et modifier leur activité. À une autre échelle, les vers de terre creusent des galeries et déplacent des matières. Ce sont des fonctions différentes de celles d’une bactérie qui transforme une forme d’azote."
+            ],
+            "sourceIds": [
+              "soil-lesson-biology",
+              "soil-lesson-living",
+              "soil-lesson-rhizosphere"
+            ]
+          },
+          {
+            "id": "ref-racines-rhizosphere-3",
+            "title": "Les associations mycorhiziennes",
+            "paragraphs": [
+              "Les mycorhizes associent des champignons et des racines. La plante fournit des composés carbonés ; les filaments fongiques explorent le sol et participent à des échanges d'éléments nutritifs avec leur partenaire. Le fonctionnement de l'association dépend des organismes et du milieu. Une colonisation importante ne s'accompagne pas nécessairement d'une augmentation de croissance ou de rendement.",
+              "« Présence d’un champignon », « colonisation des racines » et « bénéfice mesuré » sont trois observations différentes. Un essai sur maïs dans 54 champs suisses a obtenu des réponses variables à l’inoculation. Il illustre cette dépendance au contexte ; il ne mesure pas l’effet d’un produit sur le chanvre. Les associations du chanvre ne doivent pas non plus être assimilées aux nodules fixateurs d’azote des légumineuses."
+            ],
+            "sourceIds": [
+              "soil-lesson-living",
+              "soil-lesson-inoculation"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "soil-lesson-compaction",
+          "revision-agro-openstax",
+          "soil-lesson-biology",
+          "soil-lesson-living",
+          "soil-lesson-rhizosphere",
+          "soil-lesson-inoculation"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Autour d’une racine, plusieurs fonctions",
+          "nodes": [
+            {
+              "label": "Racine",
+              "detail": "Absorbe eau et éléments disponibles, respire et libère des exsudats."
+            },
+            {
+              "label": "Champignon mycorhizien",
+              "detail": "Ses filaments explorent le milieu ; échanges avec la plante, notamment contre des composés carbonés."
+            },
+            {
+              "label": "Décomposeurs",
+              "detail": "Transforment les résidus et participent au recyclage des nutriments."
+            },
+            {
+              "label": "Faune fouisseuse",
+              "detail": "Des vers de terre créent des galeries et modifient la disposition des matières."
+            }
+          ],
+          "caption": "Réseau fonctionnel simplifié, sans échelle anatomique. Une fonction potentielle ne garantit pas un gain de rendement.",
+          "sourceIds": [
+            "soil-lesson-rhizosphere",
+            "soil-lesson-biology",
+            "soil-lesson-living"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "soil-lesson-compaction",
+        "revision-agro-openstax",
+        "soil-lesson-biology",
+        "soil-lesson-living",
+        "soil-lesson-rhizosphere",
+        "soil-lesson-inoculation"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison HTML ou séquence originale, contenu et relations contrôlés à partir des passages cités. Aucun cliché d’une autre culture présenté comme observation du chanvre. Rendu mobile à vérifier par le coordinateur."
+      },
+      "quizIdsReviewed": [
+        "hemp-uses-respiration-racines",
+        "hemp-uses-vers-terre",
+        "hemp-uses-rhizosphere",
+        "hemp-uses-exsudats",
+        "hemp-uses-mycorhize",
+        "hemp-uses-echange-mycorhize"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-nutrition-minerale",
+      "questions": [
+        "À quoi servent N, P, K, Ca, Mg et S ?",
+        "Pourquoi quantité totale, disponibilité et absorption diffèrent-elles ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les paragraphes existants relus ; distinctions fiables conservées après confrontation aux sources.",
+        "Mécanismes et exemples ajoutés ; notions requises par le quiz explicitement enseignées.",
+        "Visuel générique remplacé dans la lecture par une comparaison ou une séquence originale documentée."
+      ],
+      "patch": {
+        "lead": "Le chanvre utilise plusieurs éléments minéraux pour construire ses tissus et assurer ses fonctions. La nutrition ne se limite pas au trio azote, phosphore et potassium.",
+        "sections": [
+          {
+            "id": "ref-nutrition-minerale-1",
+            "title": "Azote, phosphore et potassium",
+            "paragraphs": [
+              "L'azote entre notamment dans les protéines et la chlorophylle. Le phosphore participe aux acides nucléiques, aux membranes et aux transferts d'énergie. Le potassium intervient dans l'activation d'enzymes et la régulation osmotique, dont le fonctionnement des stomates. Ces rôles biologiques sont différents ; les éléments ne se remplacent pas simplement les uns les autres.",
+              "L’ATP, adénosine triphosphate, intervient dans les transferts d’énergie cellulaire ; l’ADN porte l’information génétique. Tous deux contiennent du phosphore. Un stomate est une ouverture de la feuille entourée de cellules qui en règlent l’ouverture ; les mouvements de potassium participent à leurs échanges d’eau. Ces exemples expliquent pourquoi « NPK » regroupe des fonctions complémentaires plutôt qu’un seul ingrédient interchangeable."
+            ],
+            "sourceIds": [
+              "revision-agro-montana",
+              "revision-agro-openstax"
+            ]
+          },
+          {
+            "id": "ref-nutrition-minerale-2",
+            "title": "Autres éléments essentiels",
+            "paragraphs": [
+              "Le calcium participe à l'organisation des parois et à la signalisation cellulaire. Le magnésium est au centre de la molécule de chlorophylle et intervient dans des réactions enzymatiques. Le soufre entre dans certains acides aminés. Fer, manganèse, zinc, cuivre, bore, molybdène, chlore et nickel sont également nécessaires, dans des quantités généralement plus faibles.",
+              "La cystéine et la méthionine sont deux acides aminés contenant du soufre. Un oligoélément est requis en petite quantité, mais cette petite quantité ne le rend pas facultatif. La distinction entre macroéléments et oligoéléments porte sur les besoins ; elle ne classe pas leur importance biologique. Le carbone, l’hydrogène et l’oxygène proviennent surtout de l’air et de l’eau : la masse de la plante n’est pas simplement la masse d’engrais absorbée."
+            ],
+            "sourceIds": [
+              "revision-agro-msstate",
+              "revision-agro-montana",
+              "revision-agro-openstax"
+            ]
+          },
+          {
+            "id": "ref-nutrition-minerale-3",
+            "title": "Du sol à la plante",
+            "paragraphs": [
+              "La quantité totale d'un élément dans le sol se distingue de sa fraction disponible et de la quantité effectivement absorbée. Le pH, l'eau, les transformations microbiennes et l'état des racines modifient ces relations. Pour le chanvre agricole, les exportations de matière dépendent également du débouché : récolte de graines, de tiges ou de plusieurs fractions.",
+              "Par exemple, du phosphore contenu dans un composé peu soluble n’est pas équivalent au phosphate présent dans la solution du sol. L’absorption dépend ensuite de l’accès à la racine et de son fonctionnement. Exporter un élément signifie l’emporter hors de la parcelle dans la matière récoltée ; ce n’est ni la totalité prélevée durant la vie de la plante ni une dose à apporter automatiquement."
+            ],
+            "sourceIds": [
+              "revision-agro-montana",
+              "cultivation-lesson-hemp2026"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "revision-agro-montana",
+          "revision-agro-openstax",
+          "revision-agro-msstate",
+          "cultivation-lesson-hemp2026"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Des éléments, des fonctions différentes",
+          "nodes": [
+            {
+              "label": "N et P",
+              "detail": "N entre dans les acides aminés ; P dans l’ADN et l’ATP."
+            },
+            {
+              "label": "K",
+              "detail": "Participe à la régulation osmotique et aux mouvements des stomates."
+            },
+            {
+              "label": "Ca et Mg",
+              "detail": "Ca contribue aux parois et aux signaux ; Mg se trouve au centre de la chlorophylle."
+            },
+            {
+              "label": "S et oligoéléments",
+              "detail": "S entre notamment dans cystéine et méthionine ; les oligoéléments remplissent des fonctions spécifiques à faible quantité."
+            }
+          ],
+          "caption": "Mémo fonctionnel original : aucun élément ne remplace tous les autres, et aucun symptôme isolé ne prouve une carence particulière.",
+          "sourceIds": [
+            "revision-agro-montana",
+            "revision-agro-msstate",
+            "revision-agro-openstax"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "revision-agro-montana",
+        "revision-agro-openstax",
+        "revision-agro-msstate",
+        "cultivation-lesson-hemp2026"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison HTML ou séquence originale, contenu et relations contrôlés à partir des passages cités. Aucun cliché d’une autre culture présenté comme observation du chanvre. Rendu mobile à vérifier par le coordinateur."
+      },
+      "quizIdsReviewed": [
+        "hemp-uses-magnesium",
+        "hemp-uses-phosphore",
+        "hemp-uses-potassium",
+        "hemp-uses-calcium",
+        "hemp-uses-azote",
+        "hemp-uses-soufre"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-matiere-organique",
+      "questions": [
+        "Comment minéralisation, nitrification et immobilisation se distinguent-elles ?",
+        "Quelle différence entre compost stable et compost adapté à un usage ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les paragraphes existants relus ; distinctions fiables conservées après confrontation aux sources.",
+        "Mécanismes et exemples ajoutés ; notions requises par le quiz explicitement enseignées.",
+        "Visuel générique remplacé dans la lecture par une comparaison ou une séquence originale documentée."
+      ],
+      "patch": {
+        "lead": "La matière organique du sol rassemble des constituants d'origines et de durées de résidence différentes, issus notamment des plantes et des organismes du sol.",
+        "sections": [
+          {
+            "id": "ref-matiere-organique-1",
+            "title": "Décomposition et cycles",
+            "paragraphs": [
+              "La décomposition transforme les résidus végétaux et animaux. La minéralisation libère des éléments sous des formes minérales ; l'immobilisation les incorpore temporairement dans la biomasse microbienne. Ces processus peuvent se produire simultanément dans des zones différentes. Le carbone et l'azote circulent ainsi entre résidus, organismes, solution du sol et autres compartiments.",
+              "L’azote d’une racine morte peut être transformé en ammonium lors de la décomposition. La nitrification est une autre transformation : des microorganismes oxydent l’ammonium en nitrite puis en nitrate. L’immobilisation incorpore de l’azote dans des organismes vivants ; elle ne le détruit pas. « Matière organique », « azote minéral » et « biomasse microbienne » désignent donc des compartiments reliés."
+            ],
+            "sourceIds": [
+              "soil-lesson-biology",
+              "soil-lesson-nitrogen"
+            ]
+          },
+          {
+            "id": "ref-matiere-organique-2",
+            "title": "Des fractions diverses",
+            "paragraphs": [
+              "Le terme humus a plusieurs usages historiques et agronomiques. Il ne désigne pas un réservoir unique, homogène et définitivement stable. Des fractions organiques particulaires coexistent avec des constituants associés aux minéraux. Les interactions avec les particules et les conditions du milieu influencent leur décomposition et la durée de maintien du carbone dans le sol.",
+              "La matière organique particulaire conserve souvent des restes végétaux relativement reconnaissables. La fraction associée aux minéraux comprend des composés retenus ou protégés au contact des particules minérales. Ces catégories sont définies par des méthodes de fractionnement et ne correspondent pas à deux substances pures. Même un carbone protégé peut être remis en circulation si les conditions changent."
+            ],
+            "sourceIds": [
+              "soil-lesson-humus",
+              "soil-lesson-fractions"
+            ]
+          },
+          {
+            "id": "ref-matiere-organique-3",
+            "title": "Composts, paillis et couverts",
+            "paragraphs": [
+              "Les composts et les fumiers ont des compositions variables. Leur maturité, leur stabilité, leur teneur en sels et leur éventuelle contamination sont des propriétés distinctes. Les paillis couvrent la surface ; les couverts végétaux introduisent des plantes vivantes et leurs racines. Un engrais apporte des éléments nutritifs, tandis qu'un amendement vise principalement des propriétés du milieu.",
+              "La stabilité décrit la résistance d’un compost à une décomposition supplémentaire ; la maturité décrit son aptitude à un usage. Un compost stable n’est pas automatiquement adapté à toute plante : des sels, une composition inappropriée ou des contaminants peuvent encore poser problème. Un paillis agit d’abord comme couverture de surface ; un couvert végétal reste vivant et prélève aussi des ressources."
+            ],
+            "sourceIds": [
+              "soil-lesson-compost",
+              "soil-lesson-fertilisers",
+              "soil-lesson-physical"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "soil-lesson-biology",
+          "soil-lesson-nitrogen",
+          "soil-lesson-humus",
+          "soil-lesson-fractions",
+          "soil-lesson-compost",
+          "soil-lesson-fertilisers",
+          "soil-lesson-physical"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Un trajet possible de l’azote des résidus",
+          "nodes": [
+            {
+              "label": "Résidu organique",
+              "detail": "Une racine morte contient de l’azote dans des composés organiques."
+            },
+            {
+              "label": "Minéralisation",
+              "detail": "Une partie de cet azote est transformée en formes minérales, notamment ammonium."
+            },
+            {
+              "label": "Transformations et reprises",
+              "detail": "L’ammonium peut être nitrifié ; ammonium et nitrate peuvent aussi être absorbés par les plantes ou incorporés dans la biomasse microbienne."
+            }
+          ],
+          "caption": "Schéma original simplifié : il montre un trajet possible et des branches, pas un cycle fermé ni une conversion totale et automatique.",
+          "sourceIds": [
+            "soil-lesson-nitrogen"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "soil-lesson-biology",
+        "soil-lesson-nitrogen",
+        "soil-lesson-humus",
+        "soil-lesson-fractions",
+        "soil-lesson-compost",
+        "soil-lesson-fertilisers",
+        "soil-lesson-physical"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Comparaison HTML ou séquence originale, contenu et relations contrôlés à partir des passages cités. Aucun cliché d’une autre culture présenté comme observation du chanvre. Rendu mobile à vérifier par le coordinateur."
+      },
+      "quizIdsReviewed": [
+        "hemp-uses-matiere-organique",
+        "hemp-uses-paillis",
+        "hemp-uses-mineralisation",
+        "hemp-uses-nitrification",
+        "hemp-uses-immobilisation"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [
+    {
+      "id": "soil-term-amendment",
+      "definition": "Matière visant principalement l’entretien ou la modification de propriétés du sol ; des apports nutritifs sont aussi possibles.",
+      "sourceIds": [
+        "soil-lesson-fertilisers",
+        "soil-lesson-compost"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-nitrogen",
+      "definition": "Élément entrant notamment dans les acides aminés et protéines ; total, formes minérales et absorption diffèrent.",
+      "sourceIds": [
+        "revision-agro-montana",
+        "soil-lesson-nitrogen"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-calcium",
+      "definition": "Élément participant notamment aux parois, membranes et signaux cellulaires.",
+      "sourceIds": [
+        "revision-agro-montana",
+        "soil-lesson-physical"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-cec",
+      "definition": "Capacité d’échange cationique définie pour une méthode et un pH ; souvent exprimée en cmol(+)/kg.",
+      "sourceIds": [
+        "soil-lesson-ph"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-compost",
+      "definition": "Matière issue d’un processus de transformation biologique contrôlé de matières organiques ; composition et qualité à caractériser.",
+      "sourceIds": [
+        "soil-lesson-compost"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-ec",
+      "definition": "Conductivité électrique, liée notamment aux ions et aux conditions de la mesure ; distincte de la CEC.",
+      "sourceIds": [
+        "soil-lesson-ec",
+        "soil-lesson-methods"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "cultivation-term-environment",
+      "definition": "Cadre aérien et degré d’abri : plein champ, serre ou intérieur ; distinct du milieu racinaire.",
+      "sourceIds": [
+        "cultivation-lesson-missouri"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-exudate",
+      "definition": "Composé libéré par les racines et participant aux interactions avec leur voisinage.",
+      "sourceIds": [
+        "soil-lesson-rhizosphere"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "cultivation-term-soilless",
+      "definition": "Culture sans utilisation du sol en place ; elle peut comporter un substrat ou un système sans substrat.",
+      "sourceIds": [
+        "cultivation-lesson-missouri"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "cultivation-term-relative-humidity",
+      "definition": "Rapport à la saturation en vapeur d’eau à la température considérée ; sa variation ne prouve pas à elle seule un retrait d’eau.",
+      "sourceIds": [
+        "cultivation-lesson-humidity"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-immobilisation",
+      "definition": "Incorporation de nutriments minéraux dans la biomasse d’organismes ; changement de compartiment, pas destruction.",
+      "sourceIds": [
+        "soil-lesson-nitrogen"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-magnesium",
+      "definition": "Élément entrant dans la chlorophylle et intervenant dans des fonctions enzymatiques.",
+      "sourceIds": [
+        "revision-agro-montana",
+        "soil-lesson-physical"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-organic-matter",
+      "definition": "Ensemble divers de matières issues du vivant, avec différentes formes, transformations et interactions.",
+      "sourceIds": [
+        "soil-lesson-humus",
+        "soil-lesson-fractions"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-mineralisation",
+      "definition": "Transformation d’éléments liés à des matières organiques en formes minérales, sans absorption automatique.",
+      "sourceIds": [
+        "soil-lesson-nitrogen"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-mycorrhiza",
+      "definition": "Association entre un champignon et des racines ; le résultat dépend des partenaires et des conditions.",
+      "sourceIds": [
+        "soil-lesson-living",
+        "soil-lesson-inoculation"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-micronutrient",
+      "definition": "Élément essentiel requis en petite quantité ; Fe, Mn, Zn, Cu, B, Mo, Cl et Ni en font partie.",
+      "sourceIds": [
+        "revision-agro-montana"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-phosphorus",
+      "definition": "Élément participant notamment aux acides nucléiques et aux transferts d’énergie.",
+      "sourceIds": [
+        "revision-agro-montana"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "cultivation-term-photoperiod",
+      "definition": "Durée de la phase éclairée dans un cycle journalier ; distincte de la quantité totale de lumière reçue.",
+      "sourceIds": [
+        "cultivation-lesson-light"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "cultivation-term-photosynthesis",
+      "definition": "Processus biologique utilisant l’énergie lumineuse pour produire de la matière organique ; sa réponse ne croît pas sans limite avec la lumière.",
+      "sourceIds": [
+        "cultivation-lesson-light"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "cultivation-term-dew-point",
+      "definition": "Température à laquelle l’air considéré atteint la saturation ; une surface assez froide peut provoquer une condensation locale.",
+      "sourceIds": [
+        "cultivation-lesson-humidity"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-pore",
+      "definition": "Espace du sol occupé par de l’air ou de l’eau, dont taille et connexion influencent les échanges.",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-potassium",
+      "definition": "Élément intervenant notamment dans les régulations osmotiques et enzymatiques.",
+      "sourceIds": [
+        "revision-agro-montana",
+        "soil-lesson-physical"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-root-respiration",
+      "definition": "Processus cellulaire produisant de l’énergie ; l’oxygène participe au fonctionnement aérobie des racines.",
+      "sourceIds": [
+        "soil-lesson-physical",
+        "soil-lesson-rhizosphere"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-rhizosphere",
+      "definition": "Zone du sol influencée par l’activité des racines, sans épaisseur universelle fixe.",
+      "sourceIds": [
+        "soil-lesson-rhizosphere"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-sulfur",
+      "definition": "Élément entrant notamment dans certains acides aminés ; essentiel malgré sa catégorie dite secondaire.",
+      "sourceIds": [
+        "revision-agro-montana",
+        "soil-lesson-physical"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-structure",
+      "definition": "Organisation des particules en assemblages et des espaces qui les séparent.",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "cultivation-term-substrate",
+      "definition": "Milieu servant de support aux racines ; un substrat en contenant n’est pas le sol en place.",
+      "sourceIds": [
+        "cultivation-lesson-missouri"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    },
+    {
+      "id": "soil-term-texture",
+      "definition": "Proportions de sable, limon et argile de la fraction minérale fine ; distinctes de leur organisation.",
+      "sourceIds": [
+        "soil-lesson-physical"
+      ],
+      "findings": [
+        "Définition individuellement relue, conservée ; référence actualisée si nécessaire."
+      ]
+    }
+  ],
+  "quizPatches": [
+    {
+      "id": "hemp-uses-respiration-racines",
+      "sourceIds": [
+        "revision-agro-openstax"
+      ]
+    },
+    {
+      "id": "hemp-uses-vers-terre",
+      "sourceIds": [
+        "soil-lesson-biology"
+      ]
+    },
+    {
+      "id": "hemp-uses-mycorhize",
+      "sourceIds": [
+        "soil-lesson-living"
+      ]
+    },
+    {
+      "id": "hemp-uses-magnesium",
+      "sourceIds": [
+        "revision-agro-msstate"
+      ]
+    },
+    {
+      "id": "hemp-uses-phosphore",
+      "sourceIds": [
+        "revision-agro-montana",
+        "revision-agro-openstax"
+      ],
+      "explanation": "Le phosphore entre dans les groupements phosphate de l’ATP, impliquée dans les transferts d’énergie, et de l’ADN, qui porte l’information génétique."
+    },
+    {
+      "id": "hemp-uses-potassium",
+      "sourceIds": [
+        "revision-agro-openstax"
+      ]
+    },
+    {
+      "id": "hemp-uses-calcium",
+      "sourceIds": [
+        "revision-agro-msstate"
+      ]
+    },
+    {
+      "id": "hemp-uses-azote",
+      "sourceIds": [
+        "revision-agro-montana"
+      ]
+    },
+    {
+      "id": "hemp-uses-soufre",
+      "sourceIds": [
+        "revision-agro-openstax"
+      ]
+    },
+    {
+      "id": "hemp-uses-echange-mycorhize",
+      "sourceIds": [
+        "soil-lesson-living"
+      ]
+    },
+    {
+      "id": "hemp-prevention-turgescence",
+      "sourceIds": [
+        "revision-agro-water"
+      ]
+    },
+    {
+      "id": "hemp-prevention-transpiration",
+      "sourceIds": [
+        "revision-agro-water"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Contre-vérification botanique demandée pour l’explication des mycorhizes, les nutriments essentiels et le passage turgescence/transpiration.",
+    "La correction Lutz 2023 est une correction de licence, consultée dans PMC11153126.",
+    "Le manuel OpenStax mélange essentiels/bénéfiques dans son tableau : décompte non repris ; distinction appuyée sur Montana."
+  ],
+  "accessFailures": [
+    {
+      "url": "https://extension.missouri.edu/publications/mg4",
+      "reason": "403 ; remplacé par Montana et Mississippi State."
+    },
+    {
+      "url": "https://www.nature.com/articles/s41561-019-0484-6",
+      "reason": "Redirection indisponible ; copie NMSU ouverte."
+    }
+  ]
+}

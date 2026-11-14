@@ -80,7 +80,7 @@ function buildTicketRecap(ticket: LotteryTicket, inventory: ReturnType<typeof us
 }
 
 export function LotterySection() {
-  const { tickets, inventory, config, loading, error, openPack } = useLotteryExperience();
+  const { tickets, inventory, config, ticketsLoaded, ticketsReady, loading, error, refreshAll, openPack } = useLotteryExperience();
   const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
   const [status, setStatus] = useState<string | null>(null);
   const [resultModal, setResultModal] = useState<ScratchResult | null>(null);
@@ -131,7 +131,7 @@ export function LotterySection() {
           </p>
         </div>
         <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-[0.08em] text-charcoal">
-          <span className="pill-cartoon px-3 py-1">Packs: {availableTickets.length}</span>
+          <span className="pill-cartoon px-3 py-1">Packs: {ticketsLoaded ? availableTickets.length : "?"}</span>
           <span className="pill-cartoon px-3 py-1">
             Uniques: {inventory?.uniqueOwned ?? 0}/{inventory?.totalCards ?? 0}
           </span>
@@ -147,12 +147,12 @@ export function LotterySection() {
         .
       </p>
 
-      {!config?.isActive && (
+      {ticketsReady && !config?.isActive && (
         <p className="mt-3 text-sm font-semibold text-ink">La loterie est actuellement desactivee.</p>
       )}
 
       {loading && <p className="mt-4 text-sm text-charcoal">Chargement loterie...</p>}
-      {error && <p className="mt-3 text-sm font-semibold text-red-700">{error}</p>}
+      {error && <p className="mt-3 text-sm font-semibold text-red-700">{error} <button type="button" disabled={loading} onClick={() => void refreshAll()}>Actualiser</button></p>}
       {status && <p className="mt-3 text-sm font-semibold text-ink">{status}</p>}
 
       <section
@@ -240,7 +240,7 @@ export function LotterySection() {
         </div>
       </section>
 
-      {!loading && config?.isActive && availableTickets.length > 0 && (
+      {!loading && ticketsReady && config?.isActive && availableTickets.length > 0 && (
         <section className="mt-6">
           <button
             type="button"
@@ -266,13 +266,13 @@ export function LotterySection() {
         </section>
       )}
 
-      {!loading && availableTickets.length === 0 && (
+      {!loading && ticketsReady && availableTickets.length === 0 && (
         <p className="mt-6 text-sm text-charcoal">Aucun pack disponible pour le moment.</p>
       )}
 
       <section className="mt-6">
         <h3 className="font-display text-2xl">Historique des ouvertures</h3>
-        {scratchedTickets.length === 0 ? (
+        {!ticketsLoaded ? <p className="mt-2 text-sm text-charcoal">Historique indisponible.</p> : scratchedTickets.length === 0 ? (
           <p className="mt-2 text-sm text-charcoal">Aucun pack ouvert.</p>
         ) : (
           <div className="mt-3 grid gap-2">

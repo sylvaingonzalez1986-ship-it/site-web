@@ -1,0 +1,49 @@
+{
+  "date": "2026-11-14",
+  "lot": "botany-02",
+  "entries": {
+    "ref-photoperiode": {
+      "contentHash": "880739c10ca87f4f50493c317295cdb4ade87b98513519a0c845e898a61bbf4b",
+      "note": "Entries previously read and unchanged; re-read all definitions and final forty quiz explanations after last wording correction.",
+      "status": "read-and-reviewed"
+    },
+    "ref-taxonomie-cannabis": {
+      "contentHash": "9682e1311f182e423580de8cce69126f677fb8d6cea2de753975ccb04443cf1e",
+      "note": "Entries previously read and unchanged; re-read all definitions and final forty quiz explanations after last wording correction.",
+      "status": "read-and-reviewed"
+    },
+    "ref-populations-domestication": {
+      "contentHash": "5c647f678c13e7685d9e4b39471c69a7fd2258a563efbff6abd042b0625049d3",
+      "note": "Entries previously read and unchanged; re-read all definitions and final forty quiz explanations after last wording correction.",
+      "status": "read-and-reviewed"
+    },
+    "ref-cultivars-clones": {
+      "contentHash": "ffefc84897359fe371a534901ef48cab7d45233db387aa38d7909fb11b328ad3",
+      "note": "Entries previously read and unchanged; re-read all definitions and final forty quiz explanations after last wording correction.",
+      "status": "read-and-reviewed"
+    },
+    "ref-genetique-heredite": {
+      "contentHash": "f28348cf0125a2d69bf28ef6d2823aef3d4bf10af39c07edaeb3da9b27aa41ad",
+      "note": "Entries previously read and unchanged; re-read all definitions and final forty quiz explanations after last wording correction.",
+      "status": "read-and-reviewed"
+    },
+    "ref-noms-lignees": {
+      "contentHash": "e5f9fa8a9ace5cd77847ae747732f5a41b84aeb080f3f23b339019f5f253da95",
+      "note": "Entries previously read and unchanged; re-read all definitions and final forty quiz explanations after last wording correction.",
+      "status": "read-and-reviewed"
+    },
+    "ref-diversite-chanvre": {
+      "contentHash": "6edeb7ac6328f0d3c3cbffa6ca5e2402d5df26b3addf3e565368a693eacdd0b7",
+      "note": "Entries previously read and unchanged; re-read all definitions and final forty quiz explanations after last wording correction.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 18,
+    "hash": "43851cfc2a23d3f669305bc32f54e5bb441f2563806447c0049dc3a07279591b"
+  },
+  "quiz": {
+    "count": 40,
+    "hash": "99f7f8dcc018afa7812c49095f20dff51f83d93c3adc42cbee9efb773af733a5"
+  }
+}

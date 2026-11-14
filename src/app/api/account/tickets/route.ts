@@ -2,7 +2,7 @@ import { readRequestBody } from "@/lib/body-size-guard";
 import { NextResponse } from "next/server";
 import { logAuditEvent } from "@/lib/audit-log";
 import { getCurrentCustomerSessionByBackend } from "@/lib/customer-backend";
-import { readStoreByBackend } from "@/lib/data-backend";
+import { readLoyaltyOrdersForCustomerFromSupabase } from "@/lib/supabase/loyalty-orders";
 import {
   buildEmptyLoyaltySummary,
   buildLoyaltySummary,
@@ -58,15 +58,14 @@ export async function GET(request: Request) {
   }
 
   try {
-    const [inventory, tickets, config, bonuses, store] = await Promise.all([
+    const [inventory, tickets, config, bonuses, orders] = await Promise.all([
       getLotteryInventoryForCustomerByBackend(session.customerId),
       getLotteryTicketsForCustomerByBackend(session.customerId),
       getLotteryConfigByBackend(),
       listLotteryBonusInstancesForCustomerByBackend(session.customerId),
-      readStoreByBackend(),
+      readLoyaltyOrdersForCustomerFromSupabase(session.customerId),
     ]);
 
-    const orders = store.orders.filter((order) => order.customerId === session.customerId);
     const loyalty = buildLoyaltySummaryWithBonus(
       orders,
       session.customer.loyaltyPoints ?? 0,
@@ -125,8 +124,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const store = await readStoreByBackend();
-    const orders = store.orders.filter((order) => order.customerId === session.customerId);
+    const orders = await readLoyaltyOrdersForCustomerFromSupabase(session.customerId);
     const baseLoyalty = buildLoyaltySummary(orders);
     const granted = await purchaseLotteryPacksWithPointsByBackend({
       userId: session.customerId,

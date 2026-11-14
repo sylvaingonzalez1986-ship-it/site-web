@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-const mocks = vi.hoisted(() => ({ rpc: vi.fn() }));
+const mocks = vi.hoisted(() => ({ rpc: vi.fn(), staff: vi.fn() }));
 vi.mock("@/lib/supabase/admin", () => ({ createSupabaseServiceClient: () => ({ rpc: mocks.rpc }) }));
+vi.mock("./kanab-quest-staff-backend", () => ({ settleKqStaffIfAvailable: mocks.staff }));
 import { getKqStorageRecords, getKqStorageSnapshot, handleKqStorageAction } from "./kanab-quest-storage-backend";
 import { createKqStorageLot } from "@/lib/kanab-quest-storage";
 const user = "00000000-0000-4000-8000-000000000001", flower = "00000000-0000-4000-8000-000000000002", key = "00000000-0000-4000-8000-000000000003";
@@ -13,7 +14,7 @@ const stored = () => ({ serverNow: now, cashCents: 20000, ownedMethodCodes: ["ST
     capacity: { totalUnits: 1200, allocations: [{ containerCode: "GLASS-1L", quantity: 2, storedUnits: 1000 }], overflowDeadlineAt: "2026-10-10T13:00:00Z" } }),
 }] });
 describe("server storage API", () => {
-  beforeEach(() => { vi.clearAllMocks(); mocks.rpc.mockResolvedValue({ data: stored(), error: null }); });
+  beforeEach(() => { vi.clearAllMocks(); mocks.staff.mockResolvedValue(null); mocks.rpc.mockResolvedValue({ data: stored(), error: null }); });
   it("projects at server time, uses actual verdict score and hides persistence details", async () => {
     const result = await getKqStorageSnapshot(user);
     expect(result.lots[0].projection).toMatchObject({ conditionScore: 8, stage: "curing", serverNow: now });
@@ -25,6 +26,29 @@ describe("server storage API", () => {
   it("keeps market history on its existing RPC", async () => {
     await getKqStorageRecords(user);
     expect(mocks.rpc).toHaveBeenCalledExactlyOnceWith("rpc_kq_storage_state", { p_user_id: user });
+  });
+  it("settles once before reading storage and projects each lot's confirmed trim", async () => {
+    mocks.staff.mockResolvedValue({ serverNow: now, context: { trimLots: [{ flowerId: flower, requiredWork: 6,
+      completedWork: 3, completedAt: null, totalGrams: 120, completedGrams: 60 }] } });
+    const result = await getKqStorageSnapshot(user);
+    expect(result.lots[0].trim).toEqual({ status: "in-progress", totalGrams: 120, completedGrams: 60 });
+    expect(mocks.staff).toHaveBeenCalledExactlyOnceWith(user);
+    expect(mocks.staff.mock.invocationCallOrder[0]).toBeLessThan(mocks.rpc.mock.invocationCallOrder[0]);
+  });
+  it("keeps absent trim evidence unknown and does not settle after a successful storage payment", async () => {
+    expect((await getKqStorageSnapshot(user)).lots[0].trim?.status).toBe("unknown");
+    mocks.staff.mockClear();
+    const result = await handleKqStorageAction(user, { action: "buy", containerCode: "GLASS-1L", quantity: 1, requestKey: key });
+    expect(result.lots[0].trim?.status).toBe("unknown");
+    expect(mocks.staff).not.toHaveBeenCalled();
+  });
+  it("keeps stock visible if the optional trim source fails", async () => {
+    mocks.staff.mockRejectedValueOnce(new Error("Temporary staff transport failure"));
+    const result = await getKqStorageSnapshot(user);
+    expect(result.cashCents).toBe(20000);
+    expect(result.lots[0].trim?.status).toBe("unknown");
+    expect(result.lots[0].harvestGrams).toBe(120);
+    expect(mocks.staff).toHaveBeenCalledTimes(1);
   });
   it("passes through explicit stock pools and leaves absent metadata unknown", async () => {
     const stockBreakdown = { bulkUnits: 0, bulkProtectedUnits: 0, bulkOverflowUnits: 0,

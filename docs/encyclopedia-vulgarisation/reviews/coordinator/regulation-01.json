@@ -1,0 +1,39 @@
+{
+  "date": "2026-11-14",
+  "lot": "regulation-01",
+  "entries": {
+    "ref-conservation": {
+      "contentHash": "064a7e07160f85b37f3ebb1eba1405095f5703c9db44f9f397d76d357b987ad6",
+      "note": "Read all entries, diagrams, definitions and quiz explanations; technical and legal vocabulary explained, dated scope and remaining source limitations preserved.",
+      "status": "read-and-reviewed"
+    },
+    "ref-contaminants": {
+      "contentHash": "c1f1a0ac276aae561b82b80e48f6000818854edfd6ce05c19ac80becd8b60051",
+      "note": "Read all entries, diagrams, definitions and quiz explanations; technical and legal vocabulary explained, dated scope and remaining source limitations preserved.",
+      "status": "read-and-reviewed"
+    },
+    "ref-analyses": {
+      "contentHash": "79b84b3bd8216a015d6e9679ba2cb03ad8e3d7dc3745ba3187e5c4ecdbca2423",
+      "note": "Read all entries, diagrams, definitions and quiz explanations; technical and legal vocabulary explained, dated scope and remaining source limitations preserved.",
+      "status": "read-and-reviewed"
+    },
+    "ref-origines-formulations": {
+      "contentHash": "5ed30a67d3a322afe3044e9bc86c1e9f202aeaa7f8d8d20f8c96297b27a879c6",
+      "note": "Read all entries, diagrams, definitions and quiz explanations; technical and legal vocabulary explained, dated scope and remaining source limitations preserved.",
+      "status": "read-and-reviewed"
+    },
+    "ref-reglementation-produits": {
+      "contentHash": "e7c522f262b95a45f043fe09f7b5e3e7fdb7e6827a0d388fcc8b3effba95d9c9",
+      "note": "Read all entries, diagrams, definitions and quiz explanations; technical and legal vocabulary explained, dated scope and remaining source limitations preserved.",
+      "status": "read-and-reviewed"
+    }
+  },
+  "glossary": {
+    "count": 16,
+    "hash": "e0247c87693abcece26ad390e3529e5513e9a1e58d94da739c7b83f27756073d"
+  },
+  "quiz": {
+    "count": 9,
+    "hash": "a793f6e9301a46d92871485d68f90da5d2f5c7c1f4e3e8a7622ea383c2f85ec5"
+  }
+}

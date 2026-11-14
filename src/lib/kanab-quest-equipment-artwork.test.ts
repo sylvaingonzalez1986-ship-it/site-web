@@ -45,12 +45,12 @@ describe("Kanab Quest equipment artwork", () => {
     expect(new Set(artwork.map(item => item?.src)).size).toBe(36);
     for (const [index, item] of artwork.entries()) {
       expect(item?.tier).toBe(offers[index].tier);
-      expect(item?.src).toMatch(/^\/placard\/equipment-sylvain-v1\/[a-z]+-[123]\.webp$/);
+      expect(item?.src).toMatch(/^\/placard\/equipment-real-v2\/[a-z]+-[123]\.webp$/);
       expect(existsSync(join(process.cwd(), "public", item!.src.slice(1))), item?.src).toBe(true);
     }
     const repeatedSources = [...new Set(artwork.map(item => item!.src))]
       .filter(src => artwork.filter(item => item!.src === src).length > 1);
-    expect(repeatedSources.sort()).toEqual([1, 2, 3].map(tier => `/placard/equipment-sylvain-v1/climate-${tier}.webp`));
+    expect(repeatedSources.sort()).toEqual([1, 2, 3].map(tier => `/placard/equipment-real-v2/climate-${tier}.webp`));
     for (const suffix of ["01", "02", "03"]) {
       expect(getKqWarehouseProductArtwork(`SIM-STORAGE-CLIMATE-${suffix}`)?.src)
         .toBe(getKqWarehouseProductArtwork(`SIM-CLIMATE-${suffix}`)?.src);
@@ -59,7 +59,7 @@ describe("Kanab Quest equipment artwork", () => {
     expect(getKqWarehouseProductArtwork("UNKNOWN")).toBeNull();
   });
 
-  it("shares ten restored illustrations between workshop offers and details without inventing tier models", () => {
+  it("shares ten reference-based illustrations between workshop offers and details without inventing tier models", () => {
     const models = {
       "SIFT-TRAY": ["SIFT-TRAY", "SIFT-TRAY", "SIFT-TRAY"],
       "PRESS-0600": ["PRESS-0600", "PRESS-10T", "PRESS-20T"],
@@ -70,7 +70,7 @@ describe("Kanab Quest equipment artwork", () => {
     };
     const sources = Object.entries(models).flatMap(([code, expectedModels]) => [1, 4, 7].map((level, index) => {
       const artwork = getKqWorkshopProductArtwork(code, level)!;
-      expect(artwork.src).toBe(`/app/kanab-quest/equipment/equipment-${expectedModels[index]}-hero-v2.webp`);
+      expect(artwork.src).toBe(`/placard/equipment-real-v2/${expectedModels[index]}.webp`);
       expect(artwork.tier).toBe(["economy", "standard", "premium"][index]);
       expect(artwork.alt.length).toBeGreaterThan(30);
       expect(getKqEquipmentArtwork(code, level)?.src).toBe(artwork.src);
@@ -85,9 +85,9 @@ describe("Kanab Quest equipment artwork", () => {
 
   it("keeps the existing 1/4/7 tier boundaries and normalizes invalid levels", () => {
     for (const [level, model] of [[1, "PRESS-0600"], [3, "PRESS-0600"], [4, "PRESS-10T"], [6, "PRESS-10T"], [7, "PRESS-20T"], [10, "PRESS-20T"]] as const) {
-      expect(getKqWorkshopProductArtwork("PRESS-0600", level)?.src).toContain(`equipment-${model}-hero-v2.webp`);
+      expect(getKqWorkshopProductArtwork("PRESS-0600", level)?.src).toBe(`/placard/equipment-real-v2/${model}.webp`);
     }
-    for (const level of [0, 11, 1.5, NaN]) expect(getKqWorkshopProductArtwork("PRESS-0600", level)?.src).toContain("equipment-PRESS-0600-hero-v2.webp");
+    for (const level of [0, 11, 1.5, NaN]) expect(getKqWorkshopProductArtwork("PRESS-0600", level)?.src).toBe("/placard/equipment-real-v2/PRESS-0600.webp");
     expect(getKqWorkshopProductArtwork("toString")).toBeNull();
     expect(getKqWorkshopProductArtwork("__proto__")).toBeNull();
   });

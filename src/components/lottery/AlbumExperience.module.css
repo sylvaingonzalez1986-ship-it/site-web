@@ -3,13 +3,13 @@
 .modalShell,
 .dialogShell,
 .statusCard {
-  --album-green: #00563f;
-  --album-green-dark: #102b28;
-  --album-cream: #f6f0e6;
-  --album-paper: #fffaf1;
-  --album-yellow: #f4c43d;
-  --album-tan: #d7a374;
-  --album-ink: #111512;
+  --album-green: #087b70;
+  --album-green-dark: #172923;
+  --album-cream: #f5e6c9;
+  --album-paper: #fff1d6;
+  --album-yellow: #efc451;
+  --album-tan: var(--game-surface-warm, #ffad5c);
+  --album-ink: #172923;
 }
 
 .experience {
@@ -23,9 +23,7 @@
   min-height: 100vh;
   padding: clamp(7rem, 11vw, 9rem) clamp(0.75rem, 3vw, 2.5rem) clamp(4rem, 8vw, 7rem);
   color: var(--album-ink);
-  background:
-    radial-gradient(ellipse at 80% 0%, #146556 0%, transparent 55%),
-    #082e28;
+  background: var(--album-paper);
 }
 
 .pageInner {
@@ -36,16 +34,18 @@
 .gameCollection {
   display: grid;
   gap: 1.5rem;
-  background: var(--album-paper);
+  background: transparent;
   padding: clamp(0.75rem, 2vw, 1.5rem);
   color: var(--album-ink);
 }
 
 .gameCollectionHeader {
-  background: #073a32;
-  border-bottom: 4px solid var(--album-yellow);
-  padding: clamp(1rem, 3vw, 1.75rem);
+  background: transparent;
+  border-bottom: 3px double var(--album-ink);
+  padding: 0 0 1.25rem;
 }
+.gameCollectionHeader h2 { color: var(--album-ink); }
+.gameCollectionHeader p { color: #455748; }
 
 .hero {
   position: relative;
@@ -247,10 +247,10 @@ button.notice {
   min-width: 0;
   min-height: 154px;
   align-content: space-between;
-  border: 1px solid #fffaf16b;
-  background: #004b39;
+  border: 2px solid transparent;
+  background: transparent;
   padding: 1.25rem;
-  color: var(--album-paper);
+  color: var(--album-ink);
   text-align: left;
   gap: 1rem;
 }
@@ -263,13 +263,11 @@ button.actionCard {
 
 button.actionCard:not(:disabled):hover,
 button.actionCard:not(:disabled):focus-visible {
-  outline: none;
-  background: #086449;
-  border-color: var(--album-yellow);
+  background: transparent;
 }
 
 .actionCardMuted {
-  background: #003f30;
+  background: transparent;
 }
 
 button.actionCard:disabled {
@@ -307,16 +305,15 @@ button.actionCard:disabled {
 
 .actionCard h2 {
   margin: 0.8rem 0 0;
-  font-size: 0.7rem;
+  font-size: 1.2rem;
   font-weight: 950;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--album-paper);
+  font-family: var(--font-display), Impact, sans-serif;
+  color: var(--album-ink);
 }
 
 .actionCard p {
   margin: 0.35rem 0 0;
-  color: #cee1d4;
+  color: #455748;
   font-size: 0.72rem;
   font-weight: 700;
   line-height: 1.35;
@@ -328,7 +325,7 @@ button.actionCard:disabled {
   justify-content: space-between;
   gap: 0.4rem;
   margin-top: 0.75rem;
-  color: var(--album-yellow);
+  color: var(--album-green);
   font-size: 0.65rem;
   font-weight: 950;
   letter-spacing: 0.06em;
@@ -363,7 +360,7 @@ button.actionCard:disabled {
 
 .book {
   position: relative;
-  background: var(--album-paper);
+  background: transparent;
 }
 
 .book::before {
@@ -375,8 +372,8 @@ button.actionCard:disabled {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: end;
   gap: 1rem;
-  color: var(--album-paper);
-  background: #003f30;
+  color: var(--album-ink);
+  background: transparent;
   padding: 0 0 1.25rem;
 }
 
@@ -387,13 +384,13 @@ button.actionCard:disabled {
   font-size: clamp(2rem, 5vw, 3.6rem);
   line-height: 0.9;
   text-transform: uppercase;
-  color: var(--album-paper);
+  color: var(--album-ink);
 }
 
 .bookHeader p {
   max-width: 620px;
   margin: 0.5rem 0 0;
-  color: #c1dcd0;
+  color: #455748;
   font-size: 0.78rem;
   font-weight: 700;
 }
@@ -418,7 +415,7 @@ button.actionCard:disabled {
 
 .bookProgress strong {
   display: block;
-  color: var(--album-yellow);
+  color: var(--album-green);
   font-family: var(--font-display), Impact, sans-serif;
   font-size: 2rem;
   line-height: 1;
@@ -448,7 +445,9 @@ button.actionCard:disabled {
 .bookPages {
   display: grid;
   gap: 0.75rem;
-  background: var(--album-paper);
+  background: transparent;
+  border: 2px solid transparent;
+  border-image: var(--game-panel-art, var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp'))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
   padding: 1rem;
 }
 
@@ -914,13 +913,15 @@ dialog.cardDetailDialog { width: min(384px, calc(100vw - 24px)); }
 }
 
 .statusCard {
-  border: 3px solid var(--album-green-dark);
-  background: var(--album-paper);
+  border: 2px solid transparent;
+  background: transparent;
+  border-image: var(--game-panel-art, var(--game-panel-paper, url('/placard/ui/panel-paper-v1.webp'))) var(--game-panel-slice, 48) fill / var(--game-panel-edge, 15px) / 0 stretch;
   padding: 2rem;
   color: var(--album-ink);
   text-align: center;
-  box-shadow: 7px 7px 0 var(--album-green-dark);
+  box-shadow: none;
 }
+.statusCard[data-ui-shape]::before { display: none !important; }
 
 .primaryButton,
 .secondaryButton {

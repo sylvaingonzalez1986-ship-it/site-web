@@ -1,0 +1,93 @@
+{
+  "version": "2026-11-12.cannabinoids1",
+  "verifiedAt": "2026-11-12",
+  "status": "Livré et validé localement",
+  "counts": {
+    "chapters": 10,
+    "lessons": 20,
+    "activities": 20,
+    "checkpoints": 10,
+    "authoredQuestions": 40,
+    "privateOptionExplanations": 160,
+    "terms": 43,
+    "commonGlossaryEntries": 163,
+    "compoundRecords": 29,
+    "studyCards": 13,
+    "sourceRecords": 71,
+    "distinctSourceUrls": 59,
+    "networkNodes": 23,
+    "networkEdges": 23,
+    "proposedEdges": 1
+  },
+  "scope": "Quatrième parcours développé ; les cinq futurs parcours non précisés ne sont pas inventés. Registre raisonné et daté, non catalogue exhaustif de toutes les molécules.",
+  "sourceAccess": {
+    "abstract": 33,
+    "excerpt": 22,
+    "official-page": 6,
+    "catalogue": 1,
+    "full-text": 9
+  },
+  "files": {
+    "curriculum": "src/lib/kanab-quest-school-cannabinoids-lessons.ts",
+    "answers": "src/lib/kanab-quest-school-cannabinoids-answers.ts",
+    "registry": "src/lib/kanab-quest-school-cannabinoids-compounds.ts",
+    "studies": "src/lib/kanab-quest-school-cannabinoids-studies.ts",
+    "network": "src/lib/kanab-quest-school-cannabinoids-network.ts",
+    "entry": "src/components/placard/KqSchoolCannabinoids.tsx"
+  },
+  "requiredExercises": [
+    "cannabinoids-origins-1",
+    "cannabinoids-acid-forms-1",
+    "cannabinoids-biosynthesis-1",
+    "cannabinoids-reading-studies-1",
+    "cannabinoids-clinical-evidence-2",
+    "cannabinoids-emerging-products-2"
+  ],
+  "scientificBoundaries": [
+    "Identité, présence naturelle, procédé et composition réelle du lot séparés.",
+    "CBGA et CBG distincts ; précurseurs cosubstrats explicités, branche CBGVA→CBCVA proposée seulement.",
+    "Biosynthèse, décarboxylation, vieillissement, métabolisme et fabrication séparés ; aucun protocole ni dosage.",
+    "HHC2025 et2026 : même cohorte de six personnes ; CBG2024 et2026 : cohortes distinctes.",
+    "THCP2019 : liaison et souris, sans multiplicateur clinique ; pharmacologie non transférée au CBDP.",
+    "CBD médicaments : formulations et indications précises ; douleur et CBDV négatifs inclus. CBN2026 : critère principal négatif malgré secondaires.",
+    "EMA, EFSA, ANSES/ANSM et EUDA cités selon leur rôle et leur date. Résumé, extrait, texte intégral et notice de registre distingués."
+  ],
+  "review": {
+    "molecules": "Relecture indépendante bornée THCA-B, CBGVA/CBCVA, HHC, HHC-O, HHCP, H4-CBD ; aucune anomalie bloquante.",
+    "studies": "Relecture indépendante des douze dossiers initiaux contre les originaux ; identifiant Dravet ajouté. Treizième dossier Englund recoupé : 64 randomisés,46 complets,12 abandons liés aux effets ; accès aux extraits signalé.",
+    "lessons": "Origines, récepteurs, clinique, produits et six exercices relus ; définition de l’hémisynthèse corrigée vers un précurseur naturel.",
+    "limits": "Relecture documentaire et tests techniques ; aucune validation médicale externe ni mesure d’apprentissage revendiquée."
+  },
+  "validation": {
+    "contentTests": 10,
+    "backendTests": 158,
+    "sqlPglite": 55,
+    "postgresConcurrency": 13,
+    "fixture": 44,
+    "grantsMigrations": 383,
+    "eslint": "PASS ciblé",
+    "build": "PASS Next.js avec TypeScript",
+    "browser": "PASS 320/1440 : six exercices, justifications, brouillons, retry progression/quiz, filtre négatif, même cohorte, réseau clavier, Buddy non possédé et retour exact, budgets et owner409/private403.",
+    "privacy": {
+      "checkedAt": "2026-11-12T18:42:04.355Z",
+      "chunks": 188,
+      "privateExplanations": 156,
+      "leaks": []
+    },
+    "transport": "Vrais composants avec API de démonstration locales ; pas validation d’une session distante.",
+    "buildNotes": "Compilation Next.js et TypeScript réussie (code 0). Des revalidations du cache des données publiques Supabase échouent faute d’accès réseau ; cette livraison ne valide pas ces données distantes.",
+    "finalPreview": "PASS à 320 et 1440 px : quatre parcours, glossaire de 163 entrées, synonyme, réseau au clavier, graphiques liés aux sources et réponses privées protégées. Chaque liaison du réseau affiche son précurseur et son produit, sans chaîne visuelle implicite entre les produits.",
+    "finalTypecheck": "TypeScript et ESLint ciblé revérifiés après la clarification visuelle des branches du réseau."
+  },
+  "migration": "20261112000400_kq_school_cannabinoids_progress.sql appliquée uniquement aux bases temporaires de test. Les cinq migrations de l’école restent non appliquées au projet distant.",
+  "economy": "evidence / school:evidence,1000 centimes existants, total10000 ; sélection c1 signée, une question par chapitre. Aucune remise à zéro.",
+  "artwork": "Planche de chanvre course-evidence-v1.webp existante et direction du Quartier réutilisées ; réseaux et chiffres en HTML, pas d’illustration utilisée comme preuve.",
+  "reports": [
+    "output/placard-navigation/school-cannabinoids-report.json",
+    "output/school/cannabinoids-build.log",
+    "output/school/cannabinoids-client-answer-check.json",
+    "docs/bete-de-concours/school-economy-validation.json",
+    "output/placard-navigation/school-cannabinoids-preview-smoke.json",
+    "output/school/cannabinoids-final-typecheck.log"
+  ]
+}

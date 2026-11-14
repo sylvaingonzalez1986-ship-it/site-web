@@ -1,0 +1,91 @@
+{
+  "date": "2026-11-14",
+  "generator": "Built-in image_gen.imagegen",
+  "skill": "C:/Users/sylva/.codex/skills/.system/imagegen/SKILL.md",
+  "transparentBackground": true,
+  "referenceImages": [
+    "public/placard/flavors-v1/citron.webp",
+    "public/placard/flavors-v1/pin.webp"
+  ],
+  "meaning": "Analogies olfactives illustrées, pas des photographies de diagnostic ni des preuves de présence dans les plantes dessinées.",
+  "webDelivery": "WebP 512 px avec alpha conservé. Les originaux générés sont copiés dans output/school/terpene-aroma-originals.",
+  "assets": [
+    {
+      "id": "herbace",
+      "prompt": "Use case: stylized-concept. Asset type: one square transparent aroma illustration for collectible terpene cards in the existing French Quartier game. The two attached pictures are STYLE REFERENCES ONLY: keep their crisp very dark forest-green ink outlines, vintage grocery-label cartoon illustration, engraved fine internal lines, gently printed grain, warm natural colors, simple readable silhouette. Create ONE new isolated object grouping, NOT a sheet, card, UI, botanical plate, landscape, human or character. Genuine transparent background, no shadow panel, no labels, no text, no border. Center the objects, fill 78% of the square, generous transparent padding; readable at 100 px. Never draw a chemical molecule. Subject: freshly cut green grass: a small naturally arranged tuft of bright and dark green long flat grass blades, with a few loose freshly clipped blades resting at its foot. Clearly recognizable fresh-cut meadow grass, NO mint leaves, NO pine needles, NO cannabis leaf, NO flowers, NO soil clod. This is the image for an HERBACEOUS odor; an olfactory analogy, not a botanical claim.",
+      "sourcePath": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cc9c-af01-71e0-a0e6-59f0eb060d0f\\exec-891450ca-6696-444b-99c3-90dd95830f26.png",
+      "image": "/placard/school/terpenes/aromas/herbace-v1.webp",
+      "original": "output/school/terpene-aroma-originals/exec-891450ca-6696-444b-99c3-90dd95830f26.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 82768,
+      "sha256": "178a2fc4231b3feb9324f1f2f9e4763eeb74f8020ffd4ccc41a980261c4a1def"
+    },
+    {
+      "id": "camphre",
+      "prompt": "Use case: stylized-concept. Asset type: one square transparent aroma illustration for collectible terpene cards in the existing French Quartier game. The two attached pictures are STYLE REFERENCES ONLY: keep their crisp very dark forest-green ink outlines, vintage grocery-label cartoon illustration, engraved fine internal lines, gently printed grain, warm natural colors, simple readable silhouette. Create ONE new isolated object grouping, NOT a sheet, card, UI, botanical plate, landscape, human or character. Genuine transparent background, no shadow panel, no labels, no text, no border. Center the objects, fill 78% of the square, generous transparent padding; readable at 100 px. Never draw a chemical molecule. Subject: a small elegant camphor laurel twig with 3 glossy oval entire green leaves with visible three basal main veins, alongside a small cluster of irregular translucent white camphor crystal fragments. The white crystals must remain visible on a cream card with subtle sage-gray facets and a clear dark outline. NO mint sprig, no powder mound, no laboratory equipment, no bottle, no smoke. This is an olfactory analogy for a CAMPHORACEOUS odor.",
+      "sourcePath": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cc9c-af01-71e0-a0e6-59f0eb060d0f\\exec-91752b23-b666-4528-9a00-dd72d0313798.png",
+      "image": "/placard/school/terpenes/aromas/camphre-v1.webp",
+      "original": "output/school/terpene-aroma-originals/exec-91752b23-b666-4528-9a00-dd72d0313798.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 68878,
+      "sha256": "92a3e74075581885bab09b26d02525c78f870453137dd4beeacfa243346e9b7e"
+    },
+    {
+      "id": "lavande",
+      "prompt": "Use case: stylized-concept. Asset type: one square transparent aroma illustration for collectible terpene cards in the French Quartier game. The two attached pictures are STYLE REFERENCES ONLY: match their very dark forest-green ink outlines, vintage grocery-label cartoon illustration, fine engraved internal lines, gently printed grain, warm natural colors and strong simple silhouette. Create ONE isolated object grouping, NOT a sheet, UI, card, diagram, landscape, person or character. Genuine transparent background, no shadow panel, no text, no labels, no border. Center, fill 78% of the square, transparent padding, clearly readable at 100 px. Never draw a chemical molecule. Subject: a small graceful grouping of three lavender flowering sprigs (Lavandula), narrow silvery-green linear leaves and recognizable violet flowers in small stacked whorls along thin stems. Flowering spikes are visibly purple, not cannabis buds. No rose, no other flower, no ribbon, no jar. This picture illustrates the lavender odor word.",
+      "sourcePath": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cc9c-af01-71e0-a0e6-59f0eb060d0f\\exec-1761e6a1-744a-4604-ac0b-e7876d91bd50.png",
+      "image": "/placard/school/terpenes/aromas/lavande-v1.webp",
+      "original": "output/school/terpene-aroma-originals/exec-1761e6a1-744a-4604-ac0b-e7876d91bd50.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 87860,
+      "sha256": "e67e34ee7ea1e3cd3b75fc1358d4ed1ab9ff1454fd790d3c91e5d4f485f0d348"
+    },
+    {
+      "id": "resine",
+      "prompt": "Use case: stylized-concept. Asset type: one square transparent aroma illustration for collectible terpene cards in the French Quartier game. The two attached pictures are STYLE REFERENCES ONLY: match their very dark forest-green ink outlines, vintage grocery-label cartoon illustration, fine engraved internal lines, gently printed grain, warm natural colors and strong simple silhouette. Create ONE isolated object grouping, NOT a sheet, UI, card, diagram, landscape, person or character. Genuine transparent background, no shadow panel, no text, no labels, no border. Center, fill 78% of the square, transparent padding, clearly readable at 100 px. Never draw a chemical molecule. Subject: one small vertical piece of textured pine bark with two glossy golden-amber translucent resin droplets on it; a short green pine-needle twig at the base for context. Make the resin prominent, thick amber drops catching cream highlights. No honey jar, no cannabis concentrate, no smoking objects, no tools. This picture illustrates a resinous odor.",
+      "sourcePath": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cc9c-af01-71e0-a0e6-59f0eb060d0f\\exec-5bc79901-0c10-43b3-bf52-9d9348999c3f.png",
+      "image": "/placard/school/terpenes/aromas/resine-v1.webp",
+      "original": "output/school/terpene-aroma-originals/exec-5bc79901-0c10-43b3-bf52-9d9348999c3f.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 67576,
+      "sha256": "1b578dbe191e1ae132f154685441d5c641f68f8eb2a56e54610d4f97882da6af"
+    },
+    {
+      "id": "muscade",
+      "prompt": "Use case: stylized-concept. Asset type: one square transparent aroma illustration for collectible terpene cards in the French Quartier game. The two attached pictures are STYLE REFERENCES ONLY: match their very dark forest-green ink outlines, vintage grocery-label cartoon illustration, fine engraved internal lines, gently printed grain, warm natural colors and strong simple silhouette. Create ONE isolated object grouping, NOT a sheet, UI, card, diagram, landscape, person or character. Genuine transparent background, no shadow panel, no text, no labels, no border. Center, fill 78% of the square, transparent padding, clearly readable at 100 px. Never draw a chemical molecule. Subject: a whole oval nutmeg seed with its wrinkled warm-brown exterior and one neatly sliced half showing its distinctive pale beige and brown marbled interior; tiny natural crumbs at the base. Two objects grouped tightly. No cinnamon sticks, no pepper, no orange, no cup, no utensil. This picture illustrates nutmeg odor.",
+      "sourcePath": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cc9c-af01-71e0-a0e6-59f0eb060d0f\\exec-8c6138f5-858e-467d-806e-63d12feb5756.png",
+      "image": "/placard/school/terpenes/aromas/muscade-v1.webp",
+      "original": "output/school/terpene-aroma-originals/exec-8c6138f5-858e-467d-806e-63d12feb5756.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 81978,
+      "sha256": "86b404e1b9536ecedaf7f78e91c9649304cf03d488d7928c17bd662e0aabfd80"
+    },
+    {
+      "id": "rose",
+      "prompt": "Use case: stylized-concept. Asset type: one square transparent aroma illustration for collectible terpene cards in the French Quartier game. The two attached pictures are STYLE REFERENCES ONLY: match their very dark forest-green ink outlines, vintage grocery-label cartoon illustration, fine engraved internal lines, gently printed grain, warm natural colors and strong simple silhouette. Create ONE isolated object grouping, NOT a sheet, UI, card, diagram, landscape, person or character. Genuine transparent background, no shadow panel, no text, no labels, no border. Center, fill 78% of the square, transparent padding, clearly readable at 100 px. Never draw a chemical molecule. Subject: a single classic fully opened pink rose flower with overlapping cupped petals, one small rosebud and two serrated green rose leaves on a short stem. Clear identifiable rose, no daisies, no lavender, no bouquet wrapping, no ribbons. This picture illustrates rose odor.",
+      "sourcePath": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cc9c-af01-71e0-a0e6-59f0eb060d0f\\exec-adbe9714-6f78-4a4c-b076-2c2f62ff1e9f.png",
+      "image": "/placard/school/terpenes/aromas/rose-v1.webp",
+      "original": "output/school/terpene-aroma-originals/exec-adbe9714-6f78-4a4c-b076-2c2f62ff1e9f.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 90226,
+      "sha256": "00a6e884517d4b6c24e4dcd9caaef79d3766c072189d84585a980ce406f05880"
+    },
+    {
+      "id": "terebenthine",
+      "prompt": "Use case: stylized-concept. Asset type: one square transparent aroma illustration for collectible terpene cards in the French Quartier game. The two attached pictures are STYLE REFERENCES ONLY: match their very dark forest-green ink outlines, vintage grocery-label cartoon illustration, fine engraved internal lines, gently printed grain, warm natural colors and strong simple silhouette. Create ONE isolated object grouping, NOT a sheet, UI, card, diagram, landscape, person or character. Genuine transparent background, no shadow panel, no text, no labels, no border. Center, fill 78% of the square, transparent padding, clearly readable at 100 px. Never draw a chemical molecule. Subject: a small squat clear glass stoppered bottle, firmly closed, containing colorless liquid, beside a short pine-needle twig and one small amber pine resin bead. Bottle is the main object, with clear dark-green contours and subtle pale teal glass reflections; no label, no bubbles, no potion magic, no pouring, no tools, no flames. This is a visual mnemonic for the TURPENTINE odor word, an olfactory analogy only. Must be visibly different from pine bark with resin, and NOT a fuel can, beverage or perfume atomizer.",
+      "sourcePath": "C:\\Users\\sylva\\.codex\\generated_images\\01a1cc9c-af01-71e0-a0e6-59f0eb060d0f\\exec-7a8d2ff5-a8fb-453d-86d0-b659662ed8fb.png",
+      "image": "/placard/school/terpenes/aromas/terebenthine-v1.webp",
+      "original": "output/school/terpene-aroma-originals/exec-7a8d2ff5-a8fb-453d-86d0-b659662ed8fb.png",
+      "width": 512,
+      "height": 512,
+      "bytes": 73146,
+      "sha256": "428f787bd35291bfc95265f20a852b7222946186730e7fe9619eaea81f268ab9"
+    }
+  ]
+}

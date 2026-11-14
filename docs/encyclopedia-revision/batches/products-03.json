@@ -1,0 +1,1527 @@
+{
+  "domain": "products",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "products-lesson-parts",
+      "title": "Le processus de transformation et valorisation du chanvre",
+      "author": "InterChanvre",
+      "organization": "Interprofession du chanvre",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.interchanvre.org/transformation-chanvre",
+      "passage": "Passages originaux indexés sur la séparation fibres/chènevotte et les débouchés du chènevis : graines, huile, farine et tourteau.",
+      "access": "official-page",
+      "limitation": "Le contenu français substantiel a été consulté dans l’index ; l’ouverture directe restituait surtout la navigation. Les parts commerciales et rendements de transformation ne deviennent pas des constantes botaniques.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.interchanvre.org/transformation-chanvre",
+          "sections": "InterChanvre : défibrage et matières (chènevis, fibre, chènevotte, fines) et transformations ; slogans de santé/environnement non repris.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Passages originaux indexés sur la séparation fibres/chènevotte et les débouchés du chènevis : graines, huile, farine et tourteau."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-names",
+      "title": "Cannabis Concentrates 101: Extracting the Facts on Inhalable Concentrates",
+      "author": "BC Cannabis Stores, rédaction pédagogique",
+      "organization": "Distributeur public de Colombie-Britannique",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.bccannabisstores.com/blogs/learn/cannabis-concentrates-101-extracting-the-facts-on-inhalable-concentrates",
+      "passage": "Terminologie commerciale : kief, hash, rosin, resin, live, distillate et textures.",
+      "access": "excerpt",
+      "limitation": "Source primaire d’usage commercial des noms, pas norme scientifique ni droit français. Les procédés pratiques, paramètres et promesses sensorielles ne sont pas repris. Les noms ne démontrent ni pureté ni innocuité.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://www.bccannabisstores.com/blogs/learn/cannabis-concentrates-101-extracting-the-facts-on-inhalable-concentrates",
+          "sections": "BC Cannabis Stores, article Concentrates 101 : catégories kief/hash, rosin, distillate et live. Source d’un distributeur public canadien ; seules les définitions, pas les promesses ni conseils de consommation, sont reprises.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Terminologie commerciale : kief, hash, rosin, resin, live, distillate et textures."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-hemp-order",
+      "title": "Arrêté du 30 décembre 2021 portant application de l’article R.5132-86",
+      "author": "Ministères chargés de la Santé et de l’Agriculture",
+      "organization": "Ministères chargés de la Santé et de l’Agriculture",
+      "published": "2021-12-30 ; texte courant consulté",
+      "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213",
+      "passage": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+      "limitation": "Le critère 0,30 % n’est ni une autorisation alimentaire ni une garantie de sécurité. Les conditions de culture et les autres textes demeurent applicables.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213",
+          "openedAt": "2026-11-14",
+          "sections": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+          "supports": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-hemp-judgment",
+      "title": "Conseil d’État, décision 444887 et affaires jointes",
+      "author": "Conseil d’État",
+      "organization": "Conseil d’État",
+      "published": "2022-12-29",
+      "url": "https://conseil-etat.fr/fr/arianeweb/CE/decision/2022-12-29/444887",
+      "passage": "Dispositif, article 3 : annulation du II de l’article 1 de l’arrêté du 30 décembre 2021 ; motifs relatifs notamment à l’interdiction générale des fleurs et feuilles.",
+      "limitation": "Annulation de ce II, pas suppression de l’ensemble des règles alimentaires, sanitaires ou relatives aux stupéfiants. À distinguer de la suspension provisoire de janvier 2022.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://conseil-etat.fr/fr/arianeweb/CE/decision/2022-12-29/444887",
+          "sections": "Conseil d’État décision 444887 : §1–5, §17–22 et dispositif lus ; annulation du II, distinction du seuil variétal et de l’innocuité. Les considérations scientifiques de 2022 ne valent pas bilan pharmacologique actualisé.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Dispositif, article 3 : annulation du II de l’article 1 de l’arrêté du 30 décembre 2021 ; motifs relatifs notamment à l’interdiction générale des fleurs et feuilles."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-classification",
+      "title": "Liste consolidée des substances classées comme stupéfiants",
+      "author": "ANSM",
+      "organization": "ANSM",
+      "published": "2026-06-26",
+      "url": "https://ansm.sante.fr/uploads/2026/06/26/20260626-stupefiants-version-consolidee.pdf",
+      "passage": "Page 28 : HHC ; annexe IV autour des pages 50–53 : H2-CBD, H4-CBD, HHCO, HHCP et définition structurale assortie d’exceptions.",
+      "limitation": "Liste consolidée actuelle publiée sur la page ANSM mise à jour le 3 juillet 2026. La qualification exige identité et texte exact ; aucune conclusion depuis un nom commercial nouveau.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://ansm.sante.fr/uploads/2026/06/26/20260626-stupefiants-version-consolidee.pdf",
+          "sections": "Tentative d’ouverture non aboutie ou document restant à contre-lire ; ne pas compter comme lu.",
+          "result": "inaccessible",
+          "supports": [],
+          "status": "not-reverified"
+        }
+      ]
+    },
+    {
+      "id": "products-tool-hhc-decision-2026",
+      "title": "Décision du 16 janvier 2026 modifiant la liste des stupéfiants",
+      "author": "ANSM",
+      "organization": "ANSM",
+      "published": "2026-01-16 ; publication 2026-01-19",
+      "url": "https://ansm.sante.fr/actualites/decision-du-16-01-2026-portant-modification-de-la-liste-des-substances-classees-comme-stupefiants",
+      "passage": "Décision du 16 janvier 2026 publiée le 19 janvier : ajout HHC annexe III et retrait annexe IV.",
+      "limitation": "Transfert entre annexes des stupéfiants, pas déclassement. Pas de généralisation à toutes les molécules commercialisées sous un nom voisin.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://ansm.sante.fr/actualites/decision-du-16-01-2026-portant-modification-de-la-liste-des-substances-classees-comme-stupefiants",
+          "openedAt": "2026-11-14",
+          "sections": "Décision du 16 janvier 2026 publiée le 19 janvier : ajout HHC annexe III et retrait annexe IV.",
+          "supports": "Décision du 16 janvier 2026 publiée le 19 janvier : ajout HHC annexe III et retrait annexe IV.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-penal-use",
+      "title": "Code de la santé publique, article L3421-1 — version en vigueur depuis le20août2026",
+      "author": "République française",
+      "organization": "Légifrance",
+      "published": "2026-08-20",
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000054724736/2026-08-20",
+      "verifiedAt": "2026-11-14",
+      "passage": "ArticleL3421-1 intégral, premier alinéa : usage illicite d’une substance ou plante classée comme stupéfiant.",
+      "access": "full-text",
+      "documentKind": "Texte législatif primaire, version exacte LEGIARTI000054724736",
+      "limitation": "La version exacte entrée en vigueur le20août2026 a été lue au lien daté ; l’accès demandé au14novembre échoue. Les fiches retiennent la qualification d’usage illicite, sans recopier barème, exceptions ou procédures. Cet article ne suffit pas à qualifier le commerce, qui a sa source pénale propre.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000054724736/2026-08-20",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "ArticleL3421-1 : version en vigueur depuis le20août2026, modifiée par loi2026-798 art25",
+            "Premier alinéa et alinéas suivants, lecture intégrale"
+          ],
+          "result": "Version exacte du texte ouverte ; premier alinéa sur l’usage illicite effectivement lu, distinct d’une simple capture de moteur.",
+          "assertionsSupported": [
+            "L’usage illicite des substances ou plantes classées comme stupéfiants fait l’objet d’une disposition propre.",
+            "Ce texte ne se confond pas avec les dispositions pénales sur le commerce et la détention."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "products-tool-penal-commerce",
+      "title": "Code pénal, article 222-37",
+      "author": "République française — Légifrance",
+      "organization": "République française — Légifrance",
+      "published": "Version en vigueur depuis le 2002-01-01, contrôlée le 14 novembre 2026",
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417724",
+      "passage": "Transport, détention, offre, cession, acquisition ou emploi illicites de stupéfiants.",
+      "limitation": "Distinct du seul usage. Ne décrit pas à lui seul toutes les infractions de production, importation ou toutes les peines complémentaires.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417724",
+          "sections": "Légifrance : article 222-37, version en vigueur au 14 novembre 2026, transport/détention/offre/cession/acquisition/emploi illicites et facilitation. Aucun seuil de chanvre converti en autorisation générale.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Transport, détention, offre, cession, acquisition ou emploi illicites de stupéfiants."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-analysis",
+      "title": "Exigences pour l’accréditation des laboratoires selon NF EN ISO/IEC 17025:2017 — LAB REF 02, révision 15",
+      "author": "Cofrac",
+      "organization": "Cofrac",
+      "published": "Applicable à compter du 2026-03-01",
+      "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+      "passage": "LAB REF 02 révision 15, §7.8.6–7.8.7 : couverture des résultats et distinction déclarations sous/hors accréditation.",
+      "limitation": "Complément COFRAC à ISO/IEC 17025 ; ne remplace pas la norme et ne certifie pas automatiquement chaque produit.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+          "openedAt": "2026-11-14",
+          "sections": "LAB REF 02 révision 15, §7.8.6–7.8.7 : couverture des résultats et distinction déclarations sous/hors accréditation.",
+          "supports": "LAB REF 02 révision 15, §7.8.6–7.8.7 : couverture des résultats et distinction déclarations sous/hors accréditation.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-metrology",
+      "title": "The Fitness for Purpose of Analytical Methods — Third Edition",
+      "author": "Helen Cantwell (dir.) et groupe Method Validation",
+      "organization": "H. Cantwell (direction), Eurachem",
+      "published": "2025",
+      "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+      "passage": "Guide 3e édition 2025 : §5.1 sélectivité et définition du mesurande ; §5.3.1 et §5.3.4 limites de détection et quantification.",
+      "limitation": "Lecture des sections citées, non de l’ensemble des 86 pages. Performances acceptables définies pour un usage donné.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.eurachem.org/images/stories/Guides/pdf/MV_guide_3rd_ed_V1_EN.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Guide 3e édition 2025 : §5.1 sélectivité et définition du mesurande ; §5.3.1 et §5.3.4 limites de détection et quantification.",
+          "supports": "Guide 3e édition 2025 : §5.1 sélectivité et définition du mesurande ; §5.3.1 et §5.3.4 limites de détection et quantification.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-fibres",
+      "title": "Création du laboratoire partenarial 4FM : fibres lignocellulosiques et rouissage",
+      "author": "INRAE, université de Reims Champagne-Ardenne et FRD",
+      "organization": "INRAE, université de Reims Champagne-Ardenne et FRD",
+      "published": "2023-04-06",
+      "url": "https://www.inrae.fr/actualites/inrae-luniversite-reims-champagne-ardenne-centre-ressources-technologiques-fibres-recherche-developpement-affirment-leur-collaboration-creant-laboratoire-partenarial-associe",
+      "passage": "Transformations biologiques de rouissage, qualité variable des pailles, fibres et chènevotte ; projets de fractionnement.",
+      "limitation": "Présentation du programme par ses porteurs, pas démonstration que toute filière ou matière atteint la même qualité.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.inrae.fr/actualites/inrae-luniversite-reims-champagne-ardenne-centre-ressources-technologiques-fibres-recherche-developpement-affirment-leur-collaboration-creant-laboratoire-partenarial-associe",
+          "sections": "INRAE : communiqué du 6 avril 2023, variabilité des fractions et comportements en transformation ; ne fournit pas à lui seul tout le mécanisme microbien du rouissage.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Transformations biologiques de rouissage, qualité variable des pailles, fibres et chènevotte ; projets de fractionnement."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-materials",
+      "title": "Perspectives de développement de la filière chanvre en Nouvelle-Aquitaine — rapport final",
+      "author": "Stéphanie Sauvée, Virginie Gautier, Yves Hustache et Florian Rollin, pour la Région Nouvelle-Aquitaine",
+      "organization": "Stéphanie Sauvée, Virginie Gautier, Yves Hustache et Florian Rollin, pour la Région Nouvelle-Aquitaine",
+      "published": "2019-02",
+      "url": "https://entreprises.nouvelle-aquitaine.fr/sites/default/files/2020-07/Rapport_filiere-chanvre-Nouvelle-Aquitaine.pdf",
+      "passage": "Pages 13–14 et sections 2.2–2.4 : graine, fibres, chènevotte, fines, débouchés observés et projets régionaux.",
+      "limitation": "Enquête de filière datée : pas parts de marché 2026. Les généralités environnementales, sanitaires et l’ancien cadre juridique du rapport ne sont pas repris.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://entreprises.nouvelle-aquitaine.fr/sites/default/files/2020-07/Rapport_filiere-chanvre-Nouvelle-Aquitaine.pdf",
+          "sections": "Rapport filière Nouvelle-Aquitaine 2019 : pp. 24–29, fractions fibreuses, chènevotte, construction non porteuse, isolants et autres usages. Les volumes historiques ne sont pas présentés comme un marché actuel.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages 13–14 et sections 2.2–2.4 : graine, fibres, chènevotte, fines, débouchés observés et projets régionaux."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-hempcrete",
+      "title": "Performance énergétique des bâtiments : étude du béton de chanvre",
+      "author": "Cerema",
+      "organization": "Cerema",
+      "published": "2021-05-18",
+      "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf",
+      "passage": "Définition du mélange chènevotte/liant ; remplissage d’une structure porteuse ; transferts couplés chaleur-humidité.",
+      "limitation": "Résultats liés au bâtiment et à la modélisation étudiés. Aucun pourcentage d’économie, bilan carbone ou caractère porteur universel transféré à l’atlas.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf",
+          "sections": "Cerema : communiqué de deux pages lu entièrement ; chènevotte, liant, eau, remplissage, simulations et limites de transfert des économies.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Définition du mélange chènevotte/liant ; remplissage d’une structure porteuse ; transferts couplés chaleur-humidité."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-textile",
+      "title": "Les savoir-faire du chanvre textile — fiche d’inventaire du patrimoine culturel immatériel",
+      "author": "Marie-Laurence Sapin et Catherine Virassamy, pour l’Association Tashkent",
+      "organization": "Marie-Laurence Sapin et Catherine Virassamy, pour l’Association Tashkent",
+      "published": "Fiche remise le 2020-10-01 ; inclusion à l’inventaire en 2020",
+      "url": "https://www.interchanvre.org/documents/5.actu_presse/newsletters/10/Les_savoir-faire_du_chanvre_textile.pdf",
+      "passage": "Pages 3 et 11–12 : fibres périphériques, chènevotte interne, teillage, peignage et voies de filature ; métadonnées p.27–28, identifiant 2020_67717_INV_PCI_FRANCE_00481.",
+      "limitation": "Enquête primaire auprès de praticiens en 2019–2020, intégral consulté. Seules les distinctions matérielles et les savoir-faire sont repris : ni les généralisations botaniques et agronomiques du document, ni son ancien droit, ni ses promesses environnementales, ni un état du marché en 2026.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.interchanvre.org/documents/5.actu_presse/newsletters/10/Les_savoir-faire_du_chanvre_textile.pdf",
+          "sections": "PDF patrimoine immatériel Les savoir-faire du chanvre textile : pp. 4–8, rouissage, pectines, peignage, étoupes, filature et ourdissage/tissage. Les états économiques historiques ne sont pas actualisés par supposition.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages 3 et 11–12 : fibres périphériques, chènevotte interne, teillage, peignage et voies de filature ; métadonnées p.27–28, identifiant 2020_67717_INV_PCI_FRANCE_00481."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-resin",
+      "title": "Recommended Methods for the Identification and Analysis of Cannabis and Cannabis Products, révision",
+      "author": "UNODC, Laboratory and Scientific Service",
+      "organization": "UNODC, Laboratory and Scientific Service",
+      "published": "2022",
+      "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/forensics_html/Recommended_methods_for_the_identification_and_analysis_of_cannabis_and_cannabis_products_ST-NAR-40.pdf",
+      "passage": "§3.7 : produits végétaux, résine séparée et préparations ; portée de l’identification analytique.",
+      "limitation": "Manuel original ST/NAR/40/REV.1 ; seules définitions et limites d’identification utilisées, aucun protocole de préparation ou d’analyse reproduit.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/forensics_html/Recommended_methods_for_the_identification_and_analysis_of_cannabis_and_cannabis_products_ST-NAR-40.pdf",
+          "sections": "UNODC ST/NAR/40 : introduction §1.2 et §3.7.2 Cannabis resin (hashish), sécrétion glandulaire, fraction fine/poudre pressée ; aucune procédure reproduite.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "§3.7 : produits végétaux, résine séparée et préparations ; portée de l’identification analytique."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-concentrates",
+      "title": "Developments in the European cannabis market",
+      "author": "EMCDDA",
+      "organization": "EMCDDA",
+      "published": "2019",
+      "url": "https://www.emcdda.europa.eu/system/files/publications/11391/TDAU19001ENN.pdf",
+      "passage": "Pages 10–11 : diversité des concentrés, rosin, extraits et produits purifiés.",
+      "limitation": "Typologie institutionnelle datée, pas autorisation française actuelle ; taux, appareils, techniques détaillées et allégations de santé exclus.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.emcdda.europa.eu/system/files/publications/11391/TDAU19001ENN.pdf",
+          "sections": "EMCDDA 2019 : résumé et typologie des matières résineuses/concentrés ; ne décrit pas tout le marché de 2026.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages 10–11 : diversité des concentrés, rosin, extraits et produits purifiés."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-product-terms",
+      "title": "Clearing the Smoke on Cannabis: Edible Cannabis Products, Cannabis Extracts and Cannabis Topicals",
+      "author": "Centre canadien sur les dépendances et l’usage de substances",
+      "organization": "Centre canadien sur les dépendances et l’usage de substances",
+      "published": "2020",
+      "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+      "passage": "Tableau 1, p.3 du PDF : kief, résines, rosin, live resin ; origine du mot live dans l’état de la matière première.",
+      "limitation": "Terminologie décrite dans un contexte canadien ; pas norme de composition ou droit français. Teneurs, prix, procédures et promesses sensorielles non repris.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+          "sections": "CCSA 2020 : résumé et parties sur aliments/extraits, délais d’apparition et risque d’ingestion accidentelle ; contexte canadien distinct du droit français.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Tableau 1, p.3 du PDF : kief, résines, rosin, live resin ; origine du mot live dans l’état de la matière première."
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-hemp-stubble-paper",
+      "title": "Papermaking potential of pulps from bast, hurd and stubble of hemp; separately and blended with pine pulp",
+      "organization": "Cellulose / Springer Nature",
+      "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2",
+      "verifiedAt": "2026-11-14",
+      "author": "Kemal Parlak, Alper Ertürk, Celil Atik",
+      "published": "2026",
+      "passage": "Résumé, publié le 11 janvier 2026: potentiel papetier du chaume et des racines; fibres de liber/chènevotte.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Résultats de procédés testés en laboratoire; ne garantit pas viabilité industrielle ou avantage écologique.",
+      "reviewEvidence": [
+        {
+          "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2",
+          "sections": "Cellulose 2026 : résumé, composition, figures FTIR et morphologie ; fractions de tige/racines et pâtes distinguées.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé, publié le 11 janvier 2026: potentiel papetier du chaume et des racines; fibres de liber/chènevotte."
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-hurd-tissue-paper",
+      "title": "Ecofriendly and Innovative Processing of Hemp Hurds Fibers for Tissue and Towel Paper",
+      "organization": "BioResources / North Carolina State University",
+      "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Ved Naithani, Preeti Tyagi, Hasan Jameel, Lucian A. Lucia, Lokendra Pal",
+      "published": "2020",
+      "passage": "Résumé et sections résultats: mise en pâte, mélanges avec pulpe de bois, propriétés des feuilles.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Essais de laboratoire et formulations particulières; résultats non généralisables à tous les papiers.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+          "sections": "BioResources 2020 : résumé, introduction et critères des feuilles tissue ; papier expérimental mélangeant fibres bois et chènevotte, pas tissu textile.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé et sections résultats: mise en pâte, mélanges avec pulpe de bois, propriétés des feuilles."
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-composite-review",
+      "title": "Hemp Fibre Treatments in Bio-Composites: A Review for Sustainable and Resilient Structures",
+      "organization": "Buildings (MDPI)",
+      "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+      "verifiedAt": "2026-11-14",
+      "author": "Mariana Costa Laktim, Antonio Formisano",
+      "published": "2025",
+      "passage": "Introduction, paras. sur adhérence et traitements des fibres.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Revue ciblée sur composites à matrice inorganique; les résultats dépendent des protocoles et formulations.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "sections": "Buildings 2025 : §2, figure 3 et passages microfibrilles, lumen, lamelle moyenne, hydroxyles et adhésion ; revue secondaire explicitement identifiée.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Introduction, paras. sur adhérence et traitements des fibres."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-building",
+      "title": "Bonnes pratiques de la construction en chanvre",
+      "author": "Construire en Chanvre",
+      "organization": "Construire en Chanvre",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.construire-en-chanvre.fr/bonnes-pratiques",
+      "passage": "Couples liant/granulat validés et champ des règles professionnelles ; matériaux et systèmes constructifs.",
+      "access": "official-page",
+      "limitation": "Seuls les périmètres de validation technique sont retenus. Les affirmations promotionnelles générales sur l’environnement ou les performances ne servent pas de preuve ; un granulat ne certifie pas seul un ouvrage.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://www.construire-en-chanvre.fr/bonnes-pratiques",
+          "sections": "Construire en Chanvre : page bonnes pratiques, règles et couples liant–granulat ; une page d’orientation ne vaut pas lecture de toutes les règles professionnelles.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Couples liant/granulat validés et champ des règles professionnelles ; matériaux et systèmes constructifs."
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-hemp-lime",
+      "title": "Knowledge mapping for advancement of hemp-lime composite in the construction industry: a systematic literature review",
+      "organization": "Journal of Materials Science: Materials in Engineering",
+      "url": "https://link.springer.com/article/10.1186/s40712-025-00334-4",
+      "verifiedAt": "2026-11-14",
+      "author": "Arta Yazdanseta, Yehong Mi",
+      "published": "2025",
+      "passage": "Introduction: composition du chanvre-chaux et définition de la chènevotte.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Revue de littérature; les performances dépendent de la formulation et des conditions d’application.",
+      "reviewEvidence": [
+        {
+          "url": "https://link.springer.com/article/10.1186/s40712-025-00334-4",
+          "sections": "Springer 2025 : résumé et section comparative des ACV/carbonatation ; revue secondaire, pas essai du lot illustré.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Introduction: composition du chanvre-chaux et définition de la chènevotte."
+        },
+        {
+          "sourceId": "qh-nature-hemp-lime",
+          "url": "https://link.springer.com/article/10.1186/s40712-025-00334-4",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Introduction : mineral binder, air lime et natural hydraulic lime",
+            "Développement sur liants, hydratation et carbonatation",
+            "Analyse des hypothèses de carbonatation dans les bilans de cycle de vie"
+          ],
+          "result": "La prise de la chaux aérienne par réaction avec CO₂ et la contribution variable de carbonatation sont explicitement décrites. La revue distingue chimie des liants et hypothèses parfois non vérifiées des bilans.",
+          "assertionsSupported": [
+            "Réaction minérale impliquant leCO₂, formation de carbonate de calcium dans le cas de la chaux.",
+            "Composition du liant et périmètre/temps du bilan changent l’interprétation.",
+            "Aucun taux uniforme ni bilan universel ne découle du seul terme carbonatation."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "products-official-paper-food-contact",
+      "title": "Matériaux organiques à base de fibres végétales — contact alimentaire",
+      "author": "DGCCRF",
+      "organization": "Ministère de l’Économie",
+      "published": "Page institutionnelle, date éditoriale non relevée",
+      "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques-et-les-faq/materiaux-organiques-base-de-fibres-vegetales",
+      "verifiedAt": "2026-11-14",
+      "access": "official-page",
+      "documentKind": "Explication originale de l’autorité française chargée du contrôle",
+      "passage": "Introduction et domaine d’application : aptitude au contact alimentaire, transferts de constituants, bonnes pratiques et conditions d’emploi prévisibles.",
+      "limitation": "Cadre général du produit fini ; aucun seuil historique détaillé transposé et aucune certification attribuée au papier expérimental de Naithani.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.economie.gouv.fr/dgccrf/Papiers-et-cartons",
+          "sectionsOpened": [
+            "1. Domaine d’application",
+            "3.1.1 Textes réglementaires"
+          ],
+          "result": "Page officielle ouverte : inclut emballages, filtres, essuie-tout ménager et serviettes susceptibles de toucher des aliments ; cite règlements1935/2004 et2023/2006. Référentiel affiché janvier2019 : aucun seuil chimique historique détaillé transposé.",
+          "status": "read",
+          "openedAt": "2026-11-14",
+          "assertionsSupported": [
+            "Aptitude au contact alimentaire à examiner pour le papier fini et ses conditions d’emploi ; propriétés mécaniques seules insuffisantes."
+          ]
+        },
+        {
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques-et-les-faq/materiaux-organiques-base-de-fibres-vegetales",
+          "sectionsOpened": [
+            "1. Introduction générale",
+            "2. Domaine d’application"
+          ],
+          "result": "Article3 du règlement1935/2004 expliqué : transferts ne devant pas présenter un danger ou modifier de manière inacceptable l’aliment ; bonnes pratiques et emploi prévisible. Fiches méthodologiques distinguées d’une certification de tout matériau végétal.",
+          "status": "read",
+          "openedAt": "2026-11-14",
+          "assertionsSupported": [
+            "Aptitude au contact alimentaire à examiner pour le papier fini et ses conditions d’emploi ; propriétés mécaniques seules insuffisantes."
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-product-products-paper",
+      "questions": [
+        "Quelle organisation des fibres de chanvre obtient-on en papeterie ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Le papier est une feuille formée par un réseau de fibres préparées, souvent issues d’une suspension appelée pâte.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "Matière et origine",
+            "paragraphs": [
+              "Le papier est une feuille formée par un réseau de fibres préparées, souvent issues d’une suspension appelée pâte. Il n’exige pas de filature puis de tissage. Fibres du liber, de chènevotte ou d’autres végétaux peuvent entrer dans des mélanges aux propriétés distinctes."
+            ],
+            "sourceIds": [
+              "products-tool-materials",
+              "qh-nature-hurd-tissue-paper",
+              "qh-nature-hemp-stubble-paper"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Propriétés et usages",
+            "paragraphs": [
+              "Les fibres de chanvre ont des débouchés papetiers, notamment dans des papiers spéciaux. La préparation et la formulation déterminent les propriétés de la feuille. Naithani étudie par exemple des feuilles tissue et essuie-tout associant des fibres de chènevotte au bois : absorption d’eau, résistance à la traction et résistance à l’éclatement y sont des critères distincts."
+            ],
+            "sourceIds": [
+              "products-tool-materials",
+              "qh-nature-hurd-tissue-paper",
+              "qh-nature-hemp-stubble-paper"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Qualité et limites",
+            "paragraphs": [
+              "L’étiquette chanvre ne précise pas à elle seule l’origine de toutes les fibres ni leur proportion. Un résultat expérimental sur un mélange ne garantit ni un papier commercial entièrement en chanvre ni une amélioration sur tous les critères. L’usage, les traitements et la fin de vie entrent aussi dans une comparaison environnementale ; une origine végétale commune ne suffit pas à établir une supériorité écologique."
+            ],
+            "sourceIds": [
+              "qh-nature-hurd-tissue-paper",
+              "products-tool-materials"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Cadre réglementaire documenté",
+            "paragraphs": [
+              "France / Union européenne, consultation du 14 novembre 2026 : L’arrêté du 30 décembre 2021 encadre les variétés et les usages dérogatoires du chanvre, avec un seuil variétal de Δ9-THC de 0,30 %. La décision du Conseil d’État de 2022 a annulé l’interdiction générale des fleurs et feuilles ; cette décision ne certifie pas les produits finis.",
+              "Lorsqu’un papier est destiné à emballer, filtrer ou toucher des aliments, son aptitude au contact alimentaire doit être établie pour le produit fini et les conditions d’emploi prévues. L’origine chanvre et de bonnes propriétés d’absorption ou de résistance ne prouvent pas cette aptitude ; la composition, les traitements et les transferts possibles de constituants doivent aussi être considérés."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment",
+              "products-official-paper-food-contact"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-materials",
+          "qh-nature-hurd-tissue-paper",
+          "qh-nature-hemp-stubble-paper",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment",
+          "products-official-paper-food-contact"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Des fibres à la feuille de papier",
+          "nodes": [
+            {
+              "label": "Pâte",
+              "detail": "Fibres préparées mises en suspension."
+            },
+            {
+              "label": "Réseau de feuille",
+              "detail": "Organisation distincte d’une étoffe tissée."
+            },
+            {
+              "label": "Mesures séparées",
+              "detail": "Traction, éclatement, absorption et composition du mélange."
+            }
+          ],
+          "caption": "Schéma explicatif original ; aucune dimension ni flèche ne représente un rendement ou une proportion mesurée.",
+          "sourceIds": [
+            "qh-nature-hurd-tissue-paper",
+            "qh-nature-hemp-stubble-paper"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-bast-fibre",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-materials",
+        "products-tool-fibres",
+        "qh-nature-hurd-tissue-paper",
+        "qh-nature-hemp-stubble-paper",
+        "products-tool-hemp-judgment"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [
+        "hemp-profiles-papier"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-product-products-composite",
+      "questions": [
+        "Quel rôle peuvent jouer les fibres de chanvre dans une pièce composite ?",
+        "Dans un composite à fibres de chanvre, qu’appelle-t-on la matrice ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Un composite associe un renfort et une matrice, matière continue qui enrobe les fibres et transmet les efforts.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "Matière et origine",
+            "paragraphs": [
+              "Un composite associe un renfort et une matrice, matière continue qui enrobe les fibres et transmet les efforts. Une fibre de chanvre peut renforcer du polypropylène, noté PP, sans que la matrice devienne végétale. La proportion, l’orientation et l’adhésion des fibres comptent autant que leur origine."
+            ],
+            "sourceIds": [
+              "products-tool-materials",
+              "products-tool-fibres",
+              "qh-nature-composite-review"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Propriétés et usages",
+            "paragraphs": [
+              "Un composite fait travailler ensemble un renfort et une matrice. Masse, rigidité et résistance dépendent notamment de leur proportion, de l’orientation des fibres et de leur adhésion à la matrice. Les groupes hydroxyle de la cellulose favorisent les interactions avec l’eau ; une interface mal adaptée peut faciliter un décollement ou une délamination. Le module de Young décrit une rigidité élastique, distincte de la résistance à la rupture."
+            ],
+            "sourceIds": [
+              "qh-nature-composite-review",
+              "products-tool-fibres"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Qualité et limites",
+            "paragraphs": [
+              "La matrice peut être d’origine fossile : un renfort de chanvre ne rend pas l’ensemble entièrement végétal. Les essais doivent correspondre à l’usage et au vieillissement prévus. Biodégradation, recyclabilité et bilan carbone dépendent du système complet et de sa filière de fin de vie ; ils ne découlent pas automatiquement de l’origine du renfort."
+            ],
+            "sourceIds": [
+              "qh-nature-composite-review",
+              "products-tool-materials"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Cadre réglementaire documenté",
+            "paragraphs": [
+              "France / Union européenne, consultation du 14 novembre 2026 : L’arrêté du 30 décembre 2021 encadre les variétés et les usages dérogatoires du chanvre, avec un seuil variétal de Δ9-THC de 0,30 %. La décision du Conseil d’État de 2022 a annulé l’interdiction générale des fleurs et feuilles ; cette décision ne certifie pas les produits finis.",
+              "Le cadre agricole du chanvre ne vaut pas conformité du composite fini. Les justifications concernent le couple renfort–matrice, son usage et son vieillissement, sans certification de recyclabilité tirée de la seule origine végétale."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-materials",
+          "products-tool-fibres",
+          "qh-nature-composite-review",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Faire travailler fibre et matrice",
+          "nodes": [
+            {
+              "label": "Renfort",
+              "detail": "Fibres de chanvre : longueur, orientation et état."
+            },
+            {
+              "label": "Matrice",
+              "detail": "Phase continue, par exemple PP ; origine éventuellement fossile."
+            },
+            {
+              "label": "Interface",
+              "detail": "Adhésion permettant le transfert d’efforts ; décollement possible si elle est insuffisante."
+            }
+          ],
+          "caption": "Schéma explicatif original ; aucune dimension ni flèche ne représente un rendement ou une proportion mesurée.",
+          "sourceIds": [
+            "qh-nature-composite-review",
+            "products-lesson-parts"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-bast-fibre",
+          "record-product-products-hempcrete",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-materials",
+        "products-tool-fibres",
+        "qh-nature-composite-review",
+        "products-lesson-parts",
+        "products-tool-hemp-judgment"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [
+        "hemp-profiles-renfort",
+        "hemp-profiles-matrice"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-product-products-insulation",
+      "questions": [
+        "Quelle est la fonction principale d’une laine isolante de chanvre dans un mur ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Une laine isolante est un assemblage de fibres, souvent avec liant ou autres constituants.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "Matière et origine",
+            "paragraphs": [
+              "Une laine isolante est un assemblage de fibres, souvent avec liant ou autres constituants. Elle cherche principalement à limiter les transferts de chaleur ; elle ne porte pas seule le bâtiment et n’assure pas, par son seul nom, étanchéité à la pluie ou gestion de toute vapeur d’eau."
+            ],
+            "sourceIds": [
+              "products-tool-materials",
+              "products-tool-hempcrete"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Propriétés et usages",
+            "paragraphs": [
+              "Les isolants à fibres de chanvre limitent les transferts de chaleur dans des systèmes de paroi définis. La performance dépend de l’épaisseur, de l’état du matériau et des autres couches. Humidité, ponts thermiques et assemblages peuvent modifier le résultat du bâtiment : une mesure sur une fibre, un produit isolant et un mur complet ne décrit pas le même objet."
+            ],
+            "sourceIds": [
+              "products-tool-materials",
+              "products-tool-hempcrete"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Qualité et limites",
+            "paragraphs": [
+              "La composition et la fiche technique du produit permettent d’examiner son emploi, sa durabilité et son comportement à l’humidité. Le nom chanvre ne précise ni sa réaction au feu ni sa résistance à toutes les expositions. Les autres fonctions de la paroi, dont la protection contre l’eau, doivent être assurées par le système prévu."
+            ],
+            "sourceIds": [
+              "products-tool-materials",
+              "products-tool-hempcrete"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Cadre réglementaire documenté",
+            "paragraphs": [
+              "France / Union européenne, consultation du 14 novembre 2026 : L’arrêté du 30 décembre 2021 encadre les variétés et les usages dérogatoires du chanvre, avec un seuil variétal de Δ9-THC de 0,30 %. La décision du Conseil d’État de 2022 a annulé l’interdiction générale des fleurs et feuilles ; cette décision ne certifie pas les produits finis.",
+              "Le cadre agricole du chanvre ne valide pas à lui seul un isolant ou une paroi. Le domaine d’emploi, la composition et les justifications techniques doivent correspondre au produit et à l’assemblage choisis."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-materials",
+          "products-tool-hempcrete",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois niveaux de performance thermique",
+          "nodes": [
+            {
+              "label": "Fibre",
+              "detail": "Constituant végétal, avec variabilité propre."
+            },
+            {
+              "label": "Produit isolant",
+              "detail": "Assemblage, épaisseur et état définis."
+            },
+            {
+              "label": "Paroi entière",
+              "detail": "Autres couches, jonctions et humidité ; ne pas reprendre une valeur de fibre comme résultat du mur."
+            }
+          ],
+          "caption": "Schéma explicatif original ; aucune dimension ni flèche ne représente un rendement ou une proportion mesurée.",
+          "sourceIds": [
+            "products-tool-hempcrete",
+            "products-lesson-parts"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-bast-fibre",
+          "record-product-products-hempcrete",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-materials",
+        "products-tool-hempcrete",
+        "products-lesson-parts",
+        "products-tool-hemp-judgment"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [
+        "hemp-profiles-isolation"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-product-products-bedding",
+      "questions": [
+        "Quelle propriété rend la chènevotte utile comme litière animale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Les fragments poreux de chènevotte peuvent absorber de l’humidité et servir de support de litière.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "Matière et origine",
+            "paragraphs": [
+              "Les fragments poreux de chènevotte peuvent absorber de l’humidité et servir de support de litière. Cette propriété explique le débouché observé ; elle ne démontre pas un effet antibactérien, antiparasitaire ou une adaptation à toutes les espèces."
+            ],
+            "sourceIds": [
+              "products-tool-materials",
+              "products-lesson-parts"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Propriétés et usages",
+            "paragraphs": [
+              "La litière constitue un débouché de la chènevotte, dont les fragments poreux peuvent recevoir de l’humidité. Granulométrie et propreté peuvent être spécifiées par le fournisseur. Un produit neuf et une litière chargée évoluent différemment : l’absorption et le suivi de l’état humide participent au fonctionnement de l’ensemble."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-tool-materials"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Qualité et limites",
+            "paragraphs": [
+              "La destination et l’espèce prévues, les poussières et les corps étrangers sont à considérer avec l’information du fournisseur. La capacité absorbante ne démontre pas un effet antibactérien, antiparasitaire ou un bénéfice sanitaire universel. Une qualité adaptée à la litière ne certifie ni une qualité alimentaire ni un usage constructif."
+            ],
+            "sourceIds": [
+              "products-tool-materials"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Cadre réglementaire documenté",
+            "paragraphs": [
+              "France / Union européenne, consultation du 14 novembre 2026 : L’arrêté du 30 décembre 2021 encadre les variétés et les usages dérogatoires du chanvre, avec un seuil variétal de Δ9-THC de 0,30 %. La décision du Conseil d’État de 2022 a annulé l’interdiction générale des fleurs et feuilles ; cette décision ne certifie pas les produits finis.",
+              "Le cadre agricole du chanvre n’attribue pas de fonction désinfectante à une litière. La destination prévue et les spécifications du fournisseur restent distinctes d’une qualité alimentaire ou d’un emploi en construction."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-materials",
+          "products-lesson-parts",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Une fonction absorbante en usage",
+          "nodes": [
+            {
+              "label": "Chènevotte préparée",
+              "detail": "Calibre et propreté propres au produit."
+            },
+            {
+              "label": "Contact avec humidité",
+              "detail": "La matière peut recevoir de l’eau ; aucun effet désinfectant supposé."
+            },
+            {
+              "label": "État en service",
+              "detail": "Évolution de l’humidité et du chargement : l’usage demande une gestion adaptée."
+            }
+          ],
+          "caption": "Schéma explicatif original ; aucune dimension ni flèche ne représente un rendement ou une proportion mesurée.",
+          "sourceIds": [
+            "products-tool-textile",
+            "products-lesson-parts"
+          ]
+        },
+        "image": {
+          "src": "/placard/reference/products/chenevotte.jpg",
+          "alt": "Photographie de fragments de chènevotte présentés dans un panier avec étiquette Hanfschäben.",
+          "caption": "Chènevotte : fragments de cœur ligneux. L’exemple photographié n’est pas un granulat de construction certifié.",
+          "author": "Florian Gerlach (Nawaro)",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hemp_shives.jpg",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "kind": "photograph"
+        },
+        "relatedArticleIds": [
+          "record-product-products-hemp-hurd",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-materials",
+        "products-tool-textile",
+        "products-lesson-parts",
+        "products-tool-hemp-judgment"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photographie Commons téléchargée et effectivement examinée ; auteur/licence contrôlés via page et API. Chènevotte : fragments de cœur ligneux. L’exemple photographié n’est pas un granulat de construction certifié."
+      },
+      "quizIdsReviewed": [
+        "hemp-profiles-litiere"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-product-products-hempcrete",
+      "questions": [
+        "Dans une ossature bois, quel rôle joue couramment le béton de chanvre ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Le béton de chanvre courant associe chènevotte, liant et eau.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "Matière et origine",
+            "paragraphs": [
+              "Le béton de chanvre courant associe chènevotte, liant et eau. Dans le système décrit par Cerema, l’ossature porte et le mélange remplit et isole. Le mot béton ne signifie donc pas que ce matériau remplace le béton armé porteur."
+            ],
+            "sourceIds": [
+              "products-tool-hempcrete"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Propriétés et usages",
+            "paragraphs": [
+              "Sa porosité et ses échanges de vapeur d’eau couplent les comportements thermique et hydrique. Les simulations de Cerema montrent aussi l’influence des autres parois et de l’isolation : une économie calculée dans ce bâtiment fictif ne s’applique pas automatiquement à tout logement."
+            ],
+            "sourceIds": [
+              "products-tool-hempcrete"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Qualité et limites",
+            "paragraphs": [
+              "Le système constructif, son domaine d’emploi et la compatibilité du granulat avec le liant doivent être reliés aux justifications de performance et de durabilité. Le mot béton ne lui attribue pas la fonction d’un béton armé porteur. Il ne garantit pas davantage une innocuité générale ou une neutralité carbone ; une comparaison environnementale dépend notamment de la formulation et du périmètre étudié."
+            ],
+            "sourceIds": [
+              "products-tool-hempcrete",
+              "products-lesson-building",
+              "qh-nature-hemp-lime"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Cadre réglementaire documenté",
+            "paragraphs": [
+              "France / Union européenne, consultation du 14 novembre 2026 : L’arrêté du 30 décembre 2021 encadre les variétés et les usages dérogatoires du chanvre, avec un seuil variétal de Δ9-THC de 0,30 %. La décision du Conseil d’État de 2022 a annulé l’interdiction générale des fleurs et feuilles ; cette décision ne certifie pas les produits finis.",
+              "L’autorisation agricole du chanvre ne constitue pas une autorisation de construire avec n’importe quel mélange. Les règles et justifications portent sur le système constructif, le couple liant–granulat et son domaine d’emploi."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment",
+              "products-lesson-building"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-hempcrete",
+          "products-lesson-building",
+          "qh-nature-hemp-lime",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Répartir les fonctions dans un mur",
+          "nodes": [
+            {
+              "label": "Ossature",
+              "detail": "Fonction porteuse du système courant."
+            },
+            {
+              "label": "Chanvre + liant + eau",
+              "detail": "Remplissage isolant avec échanges hydriques et thermiques."
+            },
+            {
+              "label": "Bâtiment",
+              "detail": "Résultat dépendant des autres parois, jonctions et conditions ; simulation ≠ résultat universel."
+            }
+          ],
+          "caption": "Schéma explicatif original ; aucune dimension ni flèche ne représente un rendement ou une proportion mesurée.",
+          "sourceIds": [
+            "products-tool-hempcrete"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-hemp-hurd",
+          "record-product-products-insulation",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-hempcrete",
+        "products-tool-hemp-judgment"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [
+        "hemp-profiles-remplissage"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-product-products-textile",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Préparer les fibres, former le fil et organiser l’étoffe sont trois opérations distinctes.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "Matière et origine",
+            "paragraphs": [
+              "Préparer les fibres, former le fil et organiser l’étoffe sont trois opérations distinctes. Le peignage parallélise les fibres ; la filature forme un fil ; le tissage entrecroise chaîne et trame. Les étoupes courtes peuvent suivre une préparation différente des fibres longues."
+            ],
+            "sourceIds": [
+              "products-tool-textile",
+              "products-tool-fibres"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Propriétés et usages",
+            "paragraphs": [
+              "Un textile en chanvre résulte de la préparation des fibres, de la filature puis de l’organisation de l’étoffe. Toucher, résistance, entretien et durée d’usage dépendent du fil, du tissage, des mélanges et des finitions. Les fibres courtes et les fibres longues peuvent suivre des préparations différentes, même lorsqu’elles proviennent de la même plante."
+            ],
+            "sourceIds": [
+              "products-tool-textile",
+              "products-tool-fibres"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Qualité et limites",
+            "paragraphs": [
+              "La composition réelle et les finitions décrivent le produit mieux que le seul nom chanvre. La photographie montre plusieurs états de matière, sans prouver leur pureté ou un bénéfice sanitaire. Aucun caractère antibactérien ni avantage écologique général ne peut être garanti par l’origine végétale ; ces affirmations demandent des preuves portant sur le textile concerné."
+            ],
+            "sourceIds": [
+              "products-tool-textile",
+              "products-tool-fibres"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Cadre réglementaire documenté",
+            "paragraphs": [
+              "France / Union européenne, consultation du 14 novembre 2026 : L’arrêté du 30 décembre 2021 encadre les variétés et les usages dérogatoires du chanvre, avec un seuil variétal de Δ9-THC de 0,30 %. La décision du Conseil d’État de 2022 a annulé l’interdiction générale des fleurs et feuilles ; cette décision ne certifie pas les produits finis.",
+              "Le cadre agricole du chanvre ne certifie ni la composition complète d’une étoffe ni ses allégations sanitaires ou environnementales. Les justificatifs doivent correspondre au textile fini, à ses mélanges et à ses traitements."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-textile",
+          "products-tool-fibres",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Fibre, fil, étoffe",
+          "nodes": [
+            {
+              "label": "Fibre préparée",
+              "detail": "Longueur, propreté et alignement."
+            },
+            {
+              "label": "Fil",
+              "detail": "Assemblage cohérent formé par filature."
+            },
+            {
+              "label": "Étoffe",
+              "detail": "Chaîne et trame croisées ; finitions et mélanges changent le produit."
+            }
+          ],
+          "caption": "Schéma explicatif original ; aucune dimension ni flèche ne représente un rendement ou une proportion mesurée.",
+          "sourceIds": [
+            "products-tool-textile"
+          ]
+        },
+        "image": {
+          "src": "/placard/reference/products/matieres-tige.jpg",
+          "alt": "Photographie d’échantillons exposés : tissu, fragments, fibres et laine de chanvre.",
+          "caption": "Échantillons présentés par l’auteur comme tissu, fragments, fibres et laine de chanvre ; les sachets n’ont pas une échelle ou une composition commune.",
+          "author": "D-Kuru",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:4_products_of_hemp-fabric%2Bparing%2Bfibres%2Bwool_PNr%C2%B00084.jpg",
+          "license": "CC BY-SA 3.0 Autriche",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/at/",
+          "kind": "photograph"
+        },
+        "relatedArticleIds": [
+          "record-product-products-bast-fibre",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-textile",
+        "products-tool-fibres",
+        "products-tool-hemp-judgment"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photographie Commons téléchargée et effectivement examinée ; auteur/licence contrôlés via page et API. Échantillons présentés par l’auteur comme tissu, fragments, fibres et laine de chanvre ; les sachets n’ont pas une échelle ou une composition commune."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-product-products-kief",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Le kief désigne une fraction rassemblant des trichomes détachés, avec des proportions variables de débris végétaux.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "Matière et origine",
+            "paragraphs": [
+              "Le kief désigne une fraction rassemblant des trichomes détachés, avec des proportions variables de débris végétaux. Il peut paraître poudreux comme des fines, mais son origine glandulaire est différente de celle de poussières de tige. Il ne s’agit pas de pollen."
+            ],
+            "sourceIds": [
+              "products-tool-resin",
+              "products-lesson-names"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Propriétés et usages",
+            "paragraphs": [
+              "Cette séparation peut enrichir certains constituants par rapport à la fleur, sans produire une molécule pure. Son aspect poudreux le distingue mal à lui seul d’autres fractions : son origine glandulaire est différente de celle des fines de tige et du pollen reproducteur."
+            ],
+            "sourceIds": [
+              "products-tool-resin",
+              "products-lesson-names"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Qualité et limites",
+            "paragraphs": [
+              "Couleur et toucher ne mesurent ni cannabinoïdes ni contaminants. L’identité, les impuretés et la traçabilité du lot demandent des informations autres qu’une photographie. Le nom kief ne prouve pas davantage une origine autorisée ou un statut légal ; une présence décrite dans une typologie de marché n’est pas une autorisation française."
+            ],
+            "sourceIds": [
+              "products-tool-resin",
+              "products-tool-analysis"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Cadre réglementaire documenté",
+            "paragraphs": [
+              "France / Union européenne, consultation du 14 novembre 2026 : La qualification d’une fraction résineuse dépend de sa composition et du cadre applicable au chanvre ; le nom kief n’est pas une exemption. Un seuil variétal de THC ne constitue pas une autorisation générale de toute fraction séparée.",
+              "Les substances classées restent soumises au droit des stupéfiants ; l’usage illicite et les actes de détention ou de commerce relèvent de qualifications différentes. Les références générales et leurs exceptions sont détaillées dans la fiche sur la réglementation des produits."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment",
+              "products-tool-hhc-decision-2026",
+              "products-tool-penal-commerce",
+              "products-tool-penal-use",
+              "products-tool-classification"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-resin",
+          "products-lesson-names",
+          "products-tool-analysis",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment",
+          "products-tool-hhc-decision-2026",
+          "products-tool-penal-commerce",
+          "products-tool-penal-use",
+          "products-tool-classification"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Kief, fines et pollen",
+          "nodes": [
+            {
+              "label": "Kief",
+              "detail": "Structures résineuses détachées, plus ou moins de débris."
+            },
+            {
+              "label": "Fines",
+              "detail": "Petits fragments provenant du défibrage de la tige."
+            },
+            {
+              "label": "Pollen",
+              "detail": "Structure reproductrice ; le nom ne désigne pas un concentré de trichomes."
+            }
+          ],
+          "caption": "Schéma explicatif original ; aucune dimension ni flèche ne représente un rendement ou une proportion mesurée.",
+          "sourceIds": [
+            "products-tool-resin",
+            "products-lesson-names"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-hash",
+          "record-product-products-fines",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-resin",
+        "products-tool-concentrates",
+        "products-tool-product-terms",
+        "products-lesson-names",
+        "products-tool-hemp-judgment",
+        "products-tool-penal-commerce"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-hhc-decision-2026",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [
+    {
+      "id": "hemp-profiles-papier",
+      "prompt": "Quelle organisation des fibres de chanvre obtient-on en papeterie ?",
+      "options": [
+        "Des torons torsadés",
+        "Une feuille de fibres",
+        "Des grains décortiqués",
+        "Des tiges entières alignées"
+      ],
+      "answer": 1,
+      "explanation": "La papeterie assemble des fibres préparées en une feuille.",
+      "articleId": "record-product-products-paper",
+      "sourceIds": [
+        "products-tool-materials"
+      ]
+    },
+    {
+      "id": "hemp-profiles-renfort",
+      "prompt": "Quel rôle peuvent jouer les fibres de chanvre dans une pièce composite ?",
+      "options": [
+        "Celui de carburant",
+        "Celui de pigment liquide",
+        "Celui de renfort",
+        "Celui de dissolvant"
+      ],
+      "answer": 2,
+      "explanation": "Les fibres peuvent renforcer une matrice qui les maintient et transmet les efforts.",
+      "articleId": "record-product-products-composite",
+      "sourceIds": [
+        "products-tool-materials"
+      ]
+    },
+    {
+      "id": "hemp-profiles-matrice",
+      "prompt": "Dans un composite à fibres de chanvre, qu’appelle-t-on la matrice ?",
+      "options": [
+        "Le champ d’origine",
+        "La matière qui enrobe les fibres",
+        "Le pollen retenu dans la tige",
+        "La machine de récolte"
+      ],
+      "answer": 1,
+      "explanation": "La matrice est la matière continue dans laquelle les fibres sont incorporées.",
+      "articleId": "record-product-products-composite",
+      "sourceIds": [
+        "products-tool-materials"
+      ]
+    },
+    {
+      "id": "hemp-profiles-isolation",
+      "prompt": "Quelle est la fonction principale d’une laine isolante de chanvre dans un mur ?",
+      "options": [
+        "Bloquer toute vapeur d’eau",
+        "Porter seule le bâtiment",
+        "Assurer l’étanchéité à la pluie",
+        "Limiter les transferts de chaleur"
+      ],
+      "answer": 3,
+      "explanation": "Une laine isolante de chanvre participe à réduire les transferts thermiques à travers la paroi.",
+      "articleId": "record-product-products-insulation",
+      "sourceIds": [
+        "products-tool-materials"
+      ]
+    },
+    {
+      "id": "hemp-profiles-litiere",
+      "prompt": "Quelle propriété rend la chènevotte utile comme litière animale ?",
+      "options": [
+        "Elle absorbe de l’humidité",
+        "Elle est imperméable à l’eau",
+        "Elle forme une surface lisse",
+        "Elle se dissout rapidement"
+      ],
+      "answer": 0,
+      "explanation": "Les fragments de chènevotte peuvent absorber de l’humidité dans une litière.",
+      "articleId": "record-product-products-bedding",
+      "sourceIds": [
+        "products-tool-materials"
+      ]
+    },
+    {
+      "id": "hemp-profiles-remplissage",
+      "prompt": "Dans une ossature bois, quel rôle joue couramment le béton de chanvre ?",
+      "options": [
+        "Armature métallique",
+        "Remplissage isolant",
+        "Poutre porteuse principale",
+        "Câble de précontrainte"
+      ],
+      "answer": 1,
+      "explanation": "Le mélange de chanvre et de liant sert couramment de remplissage autour d’une structure porteuse.",
+      "articleId": "record-product-products-hempcrete",
+      "sourceIds": [
+        "products-tool-hempcrete"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Le droit cité est celui du contexte France/UE annoncé ; les descriptions de marché canadien ne constituent pas des autorisations françaises.",
+    "Références juridiques réutilisées : voir attribution au coordinateur et preuves dans regulation-01.json. La consolidation 2026 de 178/2002 reste à résoudre par le coordinateur ; ne pas présenter sa lecture consolidée comme acquise.",
+    "Ne pas transformer les listes de contrôles en garantie : matrice, produit fini, échantillon et destination restent distincts.",
+    "Papier : distinguer tissu textile et papier tissue ; les propriétés absorption/traction/éclatement ne sont pas interchangeables.",
+    "Bâtiment : ni réaction au feu, ni portance, ni recyclabilité universelles déduites du nom chanvre.",
+    "Kief/hash : aucune photo de poudre ou bloc ne démontre l’absence d’adultération."
+  ]
+}

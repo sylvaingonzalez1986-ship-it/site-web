@@ -1,0 +1,34 @@
+/** Non-monetary learning checkpoints; never substitute these for rewarded scores. */
+export const KQ_SCHOOL_HISTORY_CHAPTER_IDS = ["evidence", "prehistory", "eurasian-antiquity", "asian-contexts", "middle-east-africa",
+  "medieval-europe", "brittany", "nineteenth-century", "twentieth-century", "scientific-discoveries", "contemporary"] as const;
+export const KQ_SCHOOL_HISTORY_LESSON_IDS = KQ_SCHOOL_HISTORY_CHAPTER_IDS.flatMap(id => [`history-${id}-1`, `history-${id}-2`]);
+export const KQ_SCHOOL_HISTORY_CHECKPOINT_IDS = KQ_SCHOOL_HISTORY_CHAPTER_IDS.map(id => `history-${id}-checkpoint`);
+export const KQ_SCHOOL_HISTORY_ACTIVITY_IDS = KQ_SCHOOL_HISTORY_CHAPTER_IDS.flatMap(id => [`history-${id}-activity-1`, `history-${id}-activity-2`]);
+
+export type KqSchoolHistoryProgressCommand = {
+  lessonIds: string[]; checkpointIds: string[]; activityIds: string[];
+  resumeLessonId?: string | null; expectedRevision?: number;
+};
+export type KqSchoolHistorySnapshot = {
+  version: 1; ownerId: string; contentVersion: string;
+  lessonIds: string[]; checkpointIds: string[]; activityIds: string[];
+  resumeLessonId: string | null; revision: number; updatedAt: string | null;
+  /** A stale tab still merges completions, but cannot overwrite a newer reading position. */
+  resumeConflict: boolean;
+};
+const record = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === "object" && !Array.isArray(value);
+const ids = (value: unknown, allowed: readonly string[]): value is string[] => Array.isArray(value)
+  && value.length <= allowed.length && value.every(id => typeof id === "string" && allowed.includes(id));
+
+export function parseKqSchoolHistoryProgress(value: unknown): KqSchoolHistoryProgressCommand | null {
+  if (!record(value)) return null;
+  const hasPosition = Object.hasOwn(value, "resumeLessonId");
+  const keys = ["lessonIds", "checkpointIds", "activityIds", ...(hasPosition ? ["resumeLessonId", "expectedRevision"] : [])];
+  if (Object.keys(value).length !== keys.length || !keys.every(key => Object.hasOwn(value, key))
+    || !ids(value.lessonIds, KQ_SCHOOL_HISTORY_LESSON_IDS) || !ids(value.checkpointIds, KQ_SCHOOL_HISTORY_CHECKPOINT_IDS)
+    || !ids(value.activityIds, KQ_SCHOOL_HISTORY_ACTIVITY_IDS)) return null;
+  if (hasPosition && ((value.resumeLessonId !== null && (typeof value.resumeLessonId !== "string" || !KQ_SCHOOL_HISTORY_LESSON_IDS.includes(value.resumeLessonId)))
+    || !Number.isSafeInteger(value.expectedRevision) || (value.expectedRevision as number) < 0)) return null;
+  return { lessonIds: [...new Set(value.lessonIds)].sort(), checkpointIds: [...new Set(value.checkpointIds)].sort(), activityIds: [...new Set(value.activityIds)].sort(),
+    ...(hasPosition ? { resumeLessonId: value.resumeLessonId as string | null, expectedRevision: value.expectedRevision as number } : {}) };
+}

@@ -1,0 +1,71 @@
+{
+  "date": "2026-11-14",
+  "entriesRead": [
+    "ref-cannabis-sativa",
+    "ref-organes-vegetatifs",
+    "ref-fleurs-fruits-graines",
+    "ref-trichomes",
+    "ref-cycle-vie",
+    "ref-reproduction",
+    "ref-photoperiode",
+    "ref-taxonomie-cannabis",
+    "ref-populations-domestication",
+    "ref-cultivars-clones",
+    "ref-genetique-heredite",
+    "ref-noms-lignees",
+    "ref-diversite-chanvre",
+    "record-variety-haze",
+    "record-variety-skunk",
+    "record-variety-northern-lights",
+    "record-variety-kush",
+    "record-variety-diesel",
+    "record-variety-blueberry",
+    "record-variety-white-widow",
+    "record-variety-cookies",
+    "record-variety-gelato",
+    "record-variety-cbd-hybrids"
+  ],
+  "findings": [
+    "23 fiches relues intégralement, y compris tous les paragraphes, faits, légendes et diagrammes.",
+    "Distinctions biologiques cohérentes ; quatre chronologies/généalogies restent bloquées.",
+    "Sources de sections des dix variétés resserrées ; procédés internes de consultation supprimés du texte de lecture.",
+    "Image trichomes Figure 12 inspectée : photographies A–D, mesures E–F et unités confirmées.",
+    "Validation finale attend contrôles visuels restants, termes et références sensibles.",
+    "Contrôle complémentaire : figures 2 et 4 de Spitzer-Rimon 2019 inspectées, retrait des stigmates du panneau 4E confirmé ; auteur Shai Duchin corrigé. Lynch 2025, section Domesticated cannabinoid pathway : localisation des ensembles de synthases sur chromosome 7 relue dans le texte intégral.",
+    "Registre local des Buddies et rattachements des dix notices lus ; les diagrammes des quatre notices historiquement bloquées sont contrôlés sans reprendre les détails non vérifiés."
+  ],
+  "finalApprovalRecordedIn": "validation.json",
+  "contentHashes": {
+    "ref-cannabis-sativa": "b0eb101c319293eb42a999f1d5278f9d4cd34bc24bc41e0f883fb7531ba7b69e",
+    "ref-organes-vegetatifs": "c486a34d4aee412efa767df9d2c16b09c750d14e076b11c23cded342e8d1fb2b",
+    "ref-fleurs-fruits-graines": "7e4655c0469e49bca959cdb533375b5124ca843ce701740daf81b9d80f6557c7",
+    "ref-trichomes": "ed07092b8f25a590ef85ea540592d56801c9f7e16fb54027be454acd52eb4441",
+    "ref-cycle-vie": "f3a64c6875a41b0bab4828a0057ff04d9ec0583bb35ae2a5fb4c14611c19b3a2",
+    "ref-reproduction": "a7b146839742c38b5f2f548ee18b8c4da47ad44e669ad302ce32c27892113921",
+    "ref-photoperiode": "a3730f5d8759793840ee767eb495c77c54ee9f82ee032d5e2efded3cf1e32086",
+    "ref-taxonomie-cannabis": "6797a26b9a47fa3f400b4aaa206644196d330565048b007be7e8f524f5d56d35",
+    "ref-populations-domestication": "1a71f2863e7b92a63a4233b1f639ed0655be968e337e4edf165d1a1e74f48c1b",
+    "ref-cultivars-clones": "b05ca1b4d3d3cca178d31afd3e2c307f12f4eee6a018a2935db8768258c97ba2",
+    "ref-genetique-heredite": "242955525cf206f89f0647e49508f3c36dacaf9eb4bf3542682ba56d43793747",
+    "ref-noms-lignees": "c5f3f01c45ac8ca6a7712fce130b644d65e7a3dbec8c59914dd408b7b9fdfcd0",
+    "ref-diversite-chanvre": "b83eefc9c47b737242ffdec52091908b8c0fa3fc6c56701f6059813c5d0f0320",
+    "record-variety-haze": "d3cb19a78e99922b15255c5aed7a41e4c25f7005b816b92b9569652e6873d442",
+    "record-variety-skunk": "fd7dcd225ee9f621b6f76cafbba501e45539cd77be685e98c87c763ccd7286f6",
+    "record-variety-northern-lights": "5c141a7dbf05e63c9e76bebb24b235fac9a8719b15bdf5b459092a782ce8e1db",
+    "record-variety-kush": "81a112c80f231e19c90d4816407ea52bcad6b768537f56eb9c3623e8e2692200",
+    "record-variety-diesel": "3cc0c56a234a017b491b99df42fbb756b8aa61ed55f1633e3c079a836f3b9194",
+    "record-variety-blueberry": "586bf7ddd0b7c0fd99af4f81bbbffa555414fffb212b1c92d7aaabcffc22dc8e",
+    "record-variety-white-widow": "93749db60bba1a5147a174ee5e2d1028f0efd9046fca7386ca5d494825d20211",
+    "record-variety-cookies": "2a6fc8b5300033da5bbdc1327e7a6defad0405dedc7b73e9bb2080b93d5f38a4",
+    "record-variety-gelato": "874df7682254cdec8615dccedec34d9d829f09e0dfc0bf55fdfb3ad5b50a581c",
+    "record-variety-cbd-hybrids": "66176f2b893292b159198101fdb4c839efdfbf748fc473d87f8bbe4892d6daac"
+  },
+  "finalAccessReview": {
+    "report": "varieties-final-access.json",
+    "articleIds": [
+      "record-variety-kush",
+      "record-variety-northern-lights"
+    ],
+    "sourceAndParagraphProposalsRead": true
+  }
+}

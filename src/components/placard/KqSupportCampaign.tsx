@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useId, useRef, useState, type FormEvent } from "react";
-import { Heart, LockKeyhole, RefreshCw } from "lucide-react";
+import { ChevronDown, Heart, LockKeyhole, RefreshCw } from "lucide-react";
 import { BUSINESS_IDENTITY } from "@/lib/business-identity";
 import { parseSupportEuros, parseSupportForm, supportEuros, type SupportAttempt, type SupportStatus, type SupportSummary } from "@/lib/support-campaign";
 import { clearSupportAttempt, createSupportToken, goToSupportPayment, readSupportAttempt, rememberSupportAttempt, supportRequest, validateSupportSummary } from "@/lib/support-client";
@@ -10,7 +10,6 @@ import { KqProgressMeter } from "./KqVisuals";
 import styles from "./KqFinancialSupport.module.css";
 
 export function KqSupportCampaign({ standalone = false }: { standalone?: boolean }) {
-  const Heading = standalone ? "h1" : "h2";
   const id = useId();
   const [summary, setSummary] = useState<SupportSummary | null>(null);
   const [error, setError] = useState("");
@@ -27,6 +26,7 @@ export function KqSupportCampaign({ standalone = false }: { standalone?: boolean
   const inFlight = useRef(false);
   const formHeading = useRef<HTMLHeadingElement>(null);
   const opener = useRef<HTMLButtonElement>(null);
+  const disclosure = useRef<HTMLDetailsElement>(null);
   const mounted = useRef(true);
   const amountCents = parseSupportEuros(amount);
   const refresh = useCallback(async () => {
@@ -41,13 +41,18 @@ export function KqSupportCampaign({ standalone = false }: { standalone?: boolean
     try {
       const saved = readSupportAttempt();
       if (saved) {
+        if (disclosure.current) disclosure.current.open = true;
         setAttempt(saved); setPseudonym(saved.pseudonym); setAmount(String(saved.amountCents / 100));
         setPublishName(saved.publishName); setPublishAmount(saved.publishAmount); setShowForm(true);
         void supportRequest<SupportStatus>("/api/support/status", { id: saved.id, token: saved.token })
           .then(result => { if (mounted.current) setStatus(result); })
           .catch(cause => { if (mounted.current) setFormError(cause.message); });
       }
-    } catch { setFormError("La fiche enregistrée est inaccessible. Vérifie le stockage de ce navigateur avant de payer."); }
+    } catch {
+      if (disclosure.current) disclosure.current.open = true;
+      setShowForm(true);
+      setFormError("La fiche enregistrée est inaccessible. Vérifie le stockage de ce navigateur avant de payer.");
+    }
     const visible = () => { if (document.visibilityState === "visible") void refresh(); };
     document.addEventListener("visibilitychange", visible);
     return () => { mounted.current = false; document.removeEventListener("visibilitychange", visible); };
@@ -99,11 +104,11 @@ export function KqSupportCampaign({ standalone = false }: { standalone?: boolean
   }
   const confirmed = status?.state === "paid" || status?.state === "refunded";
   const waiting = status?.state === "uncertain" || status?.state === "creating" || status?.state === "review";
-  return <aside className={styles.support} aria-labelledby={`${id}-title`} data-financial-support>
+  const content = <>
     <div className={styles.overview}>
       <KqPrintedArt kind="producer-support" className={styles.art} sizes="(max-width: 600px) 150px, 220px" />
       <div className={styles.summary}>
-        <Heading id={`${id}-title`}>Soutenir les producteurs</Heading>
+        {standalone && <h1 id={`${id}-title`}>Soutenir les producteurs</h1>}
         <p>Bon, on n’est pas là pour faire la manche… mais la tréso, ça ne pousse pas sous les lampes.</p>
         <p>Chez nous, dès qu’on parle de chanvre à actifs, les banques rangent le chéquier.
           Quand t’as les poches pleines, c’est plus facile de grandir.
@@ -169,5 +174,14 @@ export function KqSupportCampaign({ standalone = false }: { standalone?: boolean
       {summary && !summary.needsReconciliation && <p>{summary.feesCents === null ? "Les frais Viva sont en cours de rapprochement." : `Frais Viva vérifiés : ${supportEuros(summary.feesCents)}. Après frais : ${supportEuros(summary.collectedCents - summary.feesCents)}, avant les dépenses du projet.`}</p>}
       <p>Pour modifier l’affichage de ton soutien, contacte <a href={`mailto:${BUSINESS_IDENTITY.email}`}>{BUSINESS_IDENTITY.email}</a> avec sa référence.</p>
     </details>
+  </>;
+  return <aside className={`${styles.support}${standalone ? "" : ` ${styles.collapsible}`}`} aria-labelledby={`${id}-title`} data-financial-support>
+    {standalone ? content : <details ref={disclosure} className={styles.disclosure}>
+      <summary>
+        <h2 id={`${id}-title`}>Soutenir les producteurs</h2>
+        <ChevronDown size={22} aria-hidden="true" />
+      </summary>
+      <div className={styles.disclosureContent}>{content}</div>
+    </details>}
   </aside>;
 }

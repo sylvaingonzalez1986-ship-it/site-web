@@ -1,0 +1,2888 @@
+{
+  "domain": "products",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "products-lesson-parts",
+      "title": "Le processus de transformation et valorisation du chanvre",
+      "author": "InterChanvre",
+      "organization": "Interprofession du chanvre",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.interchanvre.org/transformation-chanvre",
+      "passage": "Passages originaux indexés sur la séparation fibres/chènevotte et les débouchés du chènevis : graines, huile, farine et tourteau.",
+      "access": "official-page",
+      "limitation": "Le contenu français substantiel a été consulté dans l’index ; l’ouverture directe restituait surtout la navigation. Les parts commerciales et rendements de transformation ne deviennent pas des constantes botaniques.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.interchanvre.org/transformation-chanvre",
+          "sections": "InterChanvre : défibrage et matières (chènevis, fibre, chènevotte, fines) et transformations ; slogans de santé/environnement non repris.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Passages originaux indexés sur la séparation fibres/chènevotte et les débouchés du chènevis : graines, huile, farine et tourteau."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-chain",
+      "title": "La filière chanvre française",
+      "author": "InterChanvre",
+      "organization": "Interprofession du chanvre",
+      "published": "2023",
+      "url": "https://www.interchanvre.org/documents/1.Interchanvre/2023_InterChanvre.pdf",
+      "passage": "Diapositives 21–30 : chaîne textile, rouissage, fibres courtes, semi-longues, longues et voie cellulosique ; filature et tissage.",
+      "access": "excerpt",
+      "limitation": "Présentation professionnelle datée. Les capacités et perspectives annoncées en 2023 ne sont pas présentées comme des résultats de 2026. Le parcours textile choisi est un exemple, pas une chaîne obligatoire pour tous les produits.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.interchanvre.org/documents/1.Interchanvre/2023_InterChanvre.pdf",
+          "sections": "PDF InterChanvre : présentation des fractions et débouchés ; données datées de filière, pas parts de marché actuelles.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Diapositives 21–30 : chaîne textile, rouissage, fibres courtes, semi-longues, longues et voie cellulosique ; filature et tissage."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-seed-oil",
+      "title": "Evaluation of Hemp Seed Oils Stability under Accelerated Storage Test",
+      "author": "M. Tura, D. Ansorena, I. Astiasarán, M. Mandrioli et T. Gallina Toschi",
+      "organization": "M. Tura, D. Ansorena, I. Astiasarán, M. Mandrioli et T. Gallina Toschi",
+      "published": "2022-02-28",
+      "url": "https://www.mdpi.com/2076-3921/11/3/490",
+      "passage": "Résumé, résultats et conclusion : neuf huiles, évolution de marqueurs d’oxydation et limites d’un indicateur unique. DOI 10.3390/antiox11030490.",
+      "limitation": "Vieillissement accéléré expérimental ; ne prédit pas la durée de conservation d’un flacon, ne prescrit pas de cuisson et ne démontre pas un bénéfice thérapeutique.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2076-3921/11/3/490",
+          "sections": "MDPI Antioxidants 11(3):490 : résumé, introduction et résultats §3 ; neuf huiles, linoléique, α-linolénique, stéaridonique, pigments, tocophérols et marqueurs d’oxydation.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé, résultats et conclusion : neuf huiles, évolution de marqueurs d’oxydation et limites d’un indicateur unique. DOI 10.3390/antiox11030490."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-seed-protein",
+      "title": "Effect of solvent composition on the extraction of proteins from hemp oil processing stream",
+      "author": "E. M. Cabral, M. M. Poojary, M. N. Lund, J. Curtin, M. Fenelon et B. K. Tiwari",
+      "organization": "E. M. Cabral, M. M. Poojary, M. N. Lund, J. Curtin, M. Fenelon et B. K. Tiwari",
+      "published": "2022-05-05",
+      "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+      "passage": "Résumé, Protein recovery, Amino acid composition et SDS-PAGE du texte intégral Wiley effectivement ouverts : récupération des fractions, composition et changements structuraux distincts.",
+      "limitation": "Sections scientifiques du texte intégral consultées ; pas de méthode opératoire, de rendement universel ou d’équivalence nutritionnelle garantie. L’accès PMC bloqué ne décrit pas l’accès au texte Wiley.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+          "sections": "Wiley texte intégral : résumé, introduction, §Protein recovery, Amino acid composition et SDS-PAGE ; solubilité, protéines de réserve, point isoélectrique et ponts/réticulations.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé original : récupération de fractions protéiques à partir du tourteau, composition et récupération dépendantes de la transformation. DOI 10.1002/jsfa.11979."
+        },
+        {
+          "sourceId": "products-tool-seed-protein",
+          "url": "https://scijournals.onlinelibrary.wiley.com/doi/full/10.1002/jsfa.11979",
+          "sectionsOpened": [
+            "Résumé",
+            "Protein recovery",
+            "Amino acid composition",
+            "SDS-PAGE"
+          ],
+          "result": "Récupération, composition en acides aminés et altérations structurales distinctes ; texte produit ne fournit pas de protocole opératoire.",
+          "status": "read",
+          "openedAt": "2026-11-14",
+          "assertionsSupported": [
+            "Récupération, composition et structure des fractions protéiques distinctes."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cultivation-lesson-hemp2026",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Louis-Marie Allard, avec les contributeurs de la filière ; coordination I. Lartigot",
+      "organization": "Terres Inovia / InterChanvre",
+      "published": "Dépôt légal janvier 2026",
+      "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+      "passage": "Pages imprimées 8–9 : contractualisation, débouché et région ; page 17 : dépendance de l’eau au contexte ; pages 19–20 : maladies et ravageurs ; pages 22–23 : humidité, impuretés, fragilité du chènevis et qualité des fibres ; sommaire et crédits page 2.",
+      "access": "excerpt",
+      "limitation": "Sections ciblées du PDF lues, pas reprise intégrale du guide. Les slogans généraux zéro irrigation ou zéro risque ne sont pas retenus ; le cours ne reproduit aucun itinéraire, apport, calendrier ou réglage de production. Les affirmations historiques de la page 3 ne sont pas utilisées.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages du document original consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://interchanvre.org/documents/5.actu_presse/documents_de_reference/Guide_chanvre_2026_Terres-Inovia.pdf",
+          "sections": "InterChanvre guide 2026 : pp. 22–23, état du grain et qualité, rouissage et dégradation des pectines ; aucun réglage de production repris.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages imprimées 8–9 : contractualisation, débouché et région ; page 17 : dépendance de l’eau au contexte ; pages 19–20 : maladies et ravageurs ; pages 22–23 : humidité, impuretés, fragilité du chènevis et qualité des fibres ; sommaire et crédits page 2."
+        }
+      ]
+    },
+    {
+      "id": "harvest-lesson-moisture",
+      "title": "Adjusting Crop Yield to a Standard Moisture Content — SS-AGR-443",
+      "author": "Michael J. Mulvaney, Pratap Devkota et Hardeep Singh",
+      "organization": "University of Florida, IFAS Extension",
+      "published": "Publication initiale mai 2020 ; révision avril 2025 ; DOI 10.32473/edis-ag442-2020",
+      "url": "https://ask.ifas.ufl.edu/publication/AG442/pdf",
+      "passage": "Pages 1–2 : eau rapportée à la masse humide, matière sèche, erreur de calcul courante et normalisation des rendements.",
+      "access": "excerpt",
+      "limitation": "PDF original consulté ; la page HTML bouclait en redirection. Les exemples et humidités commerciales d’autres cultures ne sont pas transférés au chanvre. Les pourcentages A/B/C sont entièrement fictifs, pas des cibles de conservation.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Source méthodologique, scientifique ou de filière originale ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://ask.ifas.ufl.edu/publication/AG442/pdf",
+          "sections": "UF/IFAS : introduction et définitions, eau rapportée à masse humide et normalisation ; pas itinéraire de production repris.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages 1–2 : eau rapportée à la masse humide, matière sèche, erreur de calcul courante et normalisation des rendements."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-food-fr",
+      "title": "Denrées alimentaires contenant du cannabidiol (CBD) : des produits illégaux qui doivent être retirés du marché",
+      "author": "Direction générale de l’alimentation",
+      "organization": "Ministère français de l’Agriculture",
+      "published": "20 mai 2026 ; vérifié le 12 novembre 2026",
+      "url": "https://agriculture.gouv.fr/node/110883",
+      "passage": "Absence d’autorisation des denrées avec ajout de CBD ; distinction graines et dérivés non enrichis, feuilles exclusivement en infusion aqueuse et conditions applicables.",
+      "access": "official-page",
+      "limitation": "État France/Union européenne daté, pas règle mondiale. Le statut de non-nouvel aliment de certaines parties ne supprime ni les limites de contaminants ni les autres obligations ; pas d’assimilation à un médicament autorisé.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://agriculture.gouv.fr/node/110883",
+          "sections": "DGAL 20 mai 2026 : graines/dérivés et feuilles exclusivement destinées à infusion aqueuse ; absence d’autorisation des ingrédients CBD rappelée.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Absence d’autorisation des denrées avec ajout de CBD ; distinction graines et dérivés non enrichis, feuilles exclusivement en infusion aqueuse et conditions applicables."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-seed-oil",
+      "title": "Cannabidiol (CBD)",
+      "author": "Santé Canada",
+      "organization": "Gouvernement du Canada",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+      "passage": "Section The difference between cannabis oil and hemp-seed oil : huile issue de graines et extrait cannabinoïde éventuellement mélangé à une huile porteuse.",
+      "access": "official-page",
+      "limitation": "Seule cette distinction de matières est utilisée. Les règles canadiennes et autres assertions de la page ne sont pas transposées à la France ; huile de graines ne signifie pas absence analytique garantie de tout cannabinoïde.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/about/cannabidiol.html",
+          "sections": "Santé Canada : The difference between cannabis oil and hemp-seed oil ; graines pressées versus extrait ajouté. Les passages juridiques canadiens datés ne servent pas au droit français.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Section The difference between cannabis oil and hemp-seed oil : huile issue de graines et extrait cannabinoïde éventuellement mélangé à une huile porteuse."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-oil-stability",
+      "title": "Monitoring the Shelf Life of Hemp Seed Oil Stored at Two Temperatures in Different Materials via Near-Infrared (NIR) Spectroscopy",
+      "author": "Francesca Bonazza, Lucia Monti, Milena Povolo, Andrea Gasparini, Valeria Pelizzola et Giovanni Cabassi",
+      "organization": "Molecules 29(23):5577",
+      "published": "26 novembre 2024 ; DOI 10.3390/molecules29235577",
+      "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+      "passage": "Résumé, introduction et conclusion : suivi de l’oxydation, influence des conditions et du conditionnement, comparaison d’indicateurs analytiques.",
+      "access": "excerpt",
+      "limitation": "Une huile de graines Futura 75 et des conditions expérimentales particulières ; pas de durée de conservation universelle, ni de consigne de stockage chiffrée reprise. Financement CANAPRO, programme de développement rural lombard.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/1420-3049/29/23/5577",
+          "sections": "MDPI Molecules 29(23):5577 : résumé et introduction ; étude sur une huile Futura 75, lumière, température et suivi NIR. Aucun délai de conservation universel déduit de cette expérience.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé, introduction et conclusion : suivi de l’oxydation, influence des conditions et du conditionnement, comparaison d’indicateurs analytiques."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-oral",
+      "title": "Statement on Cannabis Extracts, Edibles and Topical Products",
+      "author": "Conseil des médecins hygiénistes en chef, Agence de la santé publique du Canada",
+      "organization": "Conseil des médecins hygiénistes en chef, Agence de la santé publique du Canada",
+      "published": "2020-01-06",
+      "url": "https://www.canada.ca/en/public-health/news/2020/01/council-of-chief-medical-officers-of-health-ccmoh-statement-on-cannabis-extracts-edibles-and-topical-products.html",
+      "passage": "Distinction ingestion/inhalation, effets oraux différés et risque de répétition ; ne pas vapoter un produit non destiné à cette voie.",
+      "limitation": "Aucun conseil de dosage ou de consommation repris ; la réglementation canadienne n’est pas transposée à la France.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/public-health/news/2020/01/council-of-chief-medical-officers-of-health-ccmoh-statement-on-cannabis-extracts-edibles-and-topical-products.html",
+          "sections": "ASPC, déclaration du 6 janvier 2020 : différence ingestion/inhalation et produits destinés à une voie ; aucun conseil de dose repris.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Distinction ingestion/inhalation, effets oraux différés et risque de répétition ; ne pas vapoter un produit non destiné à cette voie."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-inhalation",
+      "title": "Cannabis accessories for inhalation: health risks",
+      "author": "Santé Canada",
+      "organization": "Santé Canada",
+      "published": "Page institutionnelle consultée le 14 novembre 2026",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "passage": "Sections Smoking et Vaping : fumée de combustion distincte de l’aérosol ; substances nocives et transfert possible depuis le matériel.",
+      "limitation": "Informations sur l’exposition, pas mode d’emploi ni validation d’un produit. Absence de combustion ne signifie pas innocuité.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+          "sections": "Santé Canada : Smoking et Vaping ; combustion, aérosols et limites des dispositifs ; recommandations générales sans garantie d’innocuité.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Sections Smoking et Vaping : fumée de combustion distincte de l’aérosol ; substances nocives et transfert possible depuis le matériel."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-contaminants",
+      "title": "Règlement (UE) 2023/915 — contaminants alimentaires, consolidation du 19 août 2026",
+      "author": "Commission européenne",
+      "organization": "Commission européenne",
+      "published": "2023-04-25 ; consolidation 2026-08-19",
+      "url": "https://eur-lex.europa.eu/eli/reg/2023/915/",
+      "passage": "Règlement 2023/915, consolidation 2026-08-19, annexe I §2.6 et notes : graines 3 mg/kg, huile 7,5 mg/kg, somme et convention <LOQ.",
+      "limitation": "Catégories exclusivement issues des graines pour les valeurs citées ; ne pas transférer ces seuils à des fleurs ou à un médicament.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://eur-lex.europa.eu/eli/reg/2023/915/",
+          "openedAt": "2026-11-14",
+          "sections": "Règlement 2023/915, consolidation 2026-08-19, annexe I §2.6 et notes : graines 3 mg/kg, huile 7,5 mg/kg, somme et convention <LOQ.",
+          "supports": "Règlement 2023/915, consolidation 2026-08-19, annexe I §2.6 et notes : graines 3 mg/kg, huile 7,5 mg/kg, somme et convention <LOQ.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-fibres",
+      "title": "Création du laboratoire partenarial 4FM : fibres lignocellulosiques et rouissage",
+      "author": "INRAE, université de Reims Champagne-Ardenne et FRD",
+      "organization": "INRAE, université de Reims Champagne-Ardenne et FRD",
+      "published": "2023-04-06",
+      "url": "https://www.inrae.fr/actualites/inrae-luniversite-reims-champagne-ardenne-centre-ressources-technologiques-fibres-recherche-developpement-affirment-leur-collaboration-creant-laboratoire-partenarial-associe",
+      "passage": "Transformations biologiques de rouissage, qualité variable des pailles, fibres et chènevotte ; projets de fractionnement.",
+      "limitation": "Présentation du programme par ses porteurs, pas démonstration que toute filière ou matière atteint la même qualité.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.inrae.fr/actualites/inrae-luniversite-reims-champagne-ardenne-centre-ressources-technologiques-fibres-recherche-developpement-affirment-leur-collaboration-creant-laboratoire-partenarial-associe",
+          "sections": "INRAE : communiqué du 6 avril 2023, variabilité des fractions et comportements en transformation ; ne fournit pas à lui seul tout le mécanisme microbien du rouissage.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Transformations biologiques de rouissage, qualité variable des pailles, fibres et chènevotte ; projets de fractionnement."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-textile",
+      "title": "Les savoir-faire du chanvre textile — fiche d’inventaire du patrimoine culturel immatériel",
+      "author": "Marie-Laurence Sapin et Catherine Virassamy, pour l’Association Tashkent",
+      "organization": "Marie-Laurence Sapin et Catherine Virassamy, pour l’Association Tashkent",
+      "published": "Fiche remise le 2020-10-01 ; inclusion à l’inventaire en 2020",
+      "url": "https://www.interchanvre.org/documents/5.actu_presse/newsletters/10/Les_savoir-faire_du_chanvre_textile.pdf",
+      "passage": "Pages 3 et 11–12 : fibres périphériques, chènevotte interne, teillage, peignage et voies de filature ; métadonnées p.27–28, identifiant 2020_67717_INV_PCI_FRANCE_00481.",
+      "limitation": "Enquête primaire auprès de praticiens en 2019–2020, intégral consulté. Seules les distinctions matérielles et les savoir-faire sont repris : ni les généralisations botaniques et agronomiques du document, ni son ancien droit, ni ses promesses environnementales, ni un état du marché en 2026.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.interchanvre.org/documents/5.actu_presse/newsletters/10/Les_savoir-faire_du_chanvre_textile.pdf",
+          "sections": "PDF patrimoine immatériel Les savoir-faire du chanvre textile : pp. 4–8, rouissage, pectines, peignage, étoupes, filature et ourdissage/tissage. Les états économiques historiques ne sont pas actualisés par supposition.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages 3 et 11–12 : fibres périphériques, chènevotte interne, teillage, peignage et voies de filature ; métadonnées p.27–28, identifiant 2020_67717_INV_PCI_FRANCE_00481."
+        }
+      ]
+    },
+    {
+      "id": "products-primary-retting-2015",
+      "title": "Microbial diversity observed during hemp retting",
+      "author": "Alexandra Ribeiro et al.",
+      "organization": "Applied Microbiology and Biotechnology / CNAM",
+      "published": "2015",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/25575888/",
+      "verifiedAt": "2026-11-14",
+      "passage": "Résumé : bactéries et champignons associés aux tiges pendant le rouissage, échantillons et profils microbiens variables.",
+      "access": "abstract",
+      "documentKind": "Étude originale de microbiologie, PMID 25575888, DOI 10.1007/s00253-014-6356-5",
+      "limitation": "Résumé seul lu ; présence et abondance relatives ne suffisent pas à établir la fonction de chaque espèce.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/25575888/",
+          "sections": "Résumé PubMed entier lu : six échantillons, quantification bactéries/champignons et variations de profils ; aucun nombre expérimental ni protocole reproduit.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé : bactéries et champignons associés aux tiges pendant le rouissage, échantillons et profils microbiens variables."
+        }
+      ]
+    },
+    {
+      "id": "history-modern-brittany",
+      "title": "Patrimoine linier et chanvrier de Bretagne — IA29005674",
+      "author": "Andrée Le Gall-Sanquer, Lénaïg Salaün et Juliette Roussel",
+      "organization": "Région Bretagne / Lin & Chanvre en Bretagne",
+      "published": "Inventaire engagé après l’appel régional de 2013 ; page sans date éditoriale unique",
+      "url": "https://patrimoine.bzh/gertrude-diffusion/dossier/IA29005674",
+      "passage": "Un patrimoine, reflet du travail : filage féminin, étapes de transformation, graines de lin baltiques ; carte des crées et bretagnes en lin, olonnes et noyales en chanvre.",
+      "access": "official-page",
+      "documentKind": "Inventaire patrimonial de terrain et synthèse documentaire",
+      "limitation": "Les zones de spécialisation ne signifient ni monoculture ni composition de chaque tissu. L’inventaire n’est pas exhaustif ; ne pas reprendre ses explications chimiques simplifiées comme protocole.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://patrimoine.bzh/gertrude-diffusion/dossier/IA29005674",
+          "sections": "Inventaire patrimoine Bretagne : présentation historique des filières et traces matérielles, sans première date mondiale déduite.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Un patrimoine, reflet du travail : filage féminin, étapes de transformation, graines de lin baltiques ; carte des crées et bretagnes en lin, olonnes et noyales en chanvre."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-materials",
+      "title": "Perspectives de développement de la filière chanvre en Nouvelle-Aquitaine — rapport final",
+      "author": "Stéphanie Sauvée, Virginie Gautier, Yves Hustache et Florian Rollin, pour la Région Nouvelle-Aquitaine",
+      "organization": "Stéphanie Sauvée, Virginie Gautier, Yves Hustache et Florian Rollin, pour la Région Nouvelle-Aquitaine",
+      "published": "2019-02",
+      "url": "https://entreprises.nouvelle-aquitaine.fr/sites/default/files/2020-07/Rapport_filiere-chanvre-Nouvelle-Aquitaine.pdf",
+      "passage": "Pages 13–14 et sections 2.2–2.4 : graine, fibres, chènevotte, fines, débouchés observés et projets régionaux.",
+      "limitation": "Enquête de filière datée : pas parts de marché 2026. Les généralités environnementales, sanitaires et l’ancien cadre juridique du rapport ne sont pas repris.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://entreprises.nouvelle-aquitaine.fr/sites/default/files/2020-07/Rapport_filiere-chanvre-Nouvelle-Aquitaine.pdf",
+          "sections": "Rapport filière Nouvelle-Aquitaine 2019 : pp. 24–29, fractions fibreuses, chènevotte, construction non porteuse, isolants et autres usages. Les volumes historiques ne sont pas présentés comme un marché actuel.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages 13–14 et sections 2.2–2.4 : graine, fibres, chènevotte, fines, débouchés observés et projets régionaux."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-building",
+      "title": "Bonnes pratiques de la construction en chanvre",
+      "author": "Construire en Chanvre",
+      "organization": "Construire en Chanvre",
+      "published": "Page courante consultée le 12 novembre 2026",
+      "url": "https://www.construire-en-chanvre.fr/bonnes-pratiques",
+      "passage": "Couples liant/granulat validés et champ des règles professionnelles ; matériaux et systèmes constructifs.",
+      "access": "official-page",
+      "limitation": "Seuls les périmètres de validation technique sont retenus. Les affirmations promotionnelles générales sur l’environnement ou les performances ne servent pas de preuve ; un granulat ne certifie pas seul un ouvrage.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://www.construire-en-chanvre.fr/bonnes-pratiques",
+          "sections": "Construire en Chanvre : page bonnes pratiques, règles et couples liant–granulat ; une page d’orientation ne vaut pas lecture de toutes les règles professionnelles.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Couples liant/granulat validés et champ des règles professionnelles ; matériaux et systèmes constructifs."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-hempcrete",
+      "title": "Performance énergétique des bâtiments : étude du béton de chanvre",
+      "author": "Cerema",
+      "organization": "Cerema",
+      "published": "2021-05-18",
+      "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf",
+      "passage": "Définition du mélange chènevotte/liant ; remplissage d’une structure porteuse ; transferts couplés chaleur-humidité.",
+      "limitation": "Résultats liés au bâtiment et à la modélisation étudiés. Aucun pourcentage d’économie, bilan carbone ou caractère porteur universel transféré à l’atlas.",
+      "access": "full-text",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.cerema.fr/system/files/documents/2021/05/210518-performance-beton-de-chanvre.pdf",
+          "sections": "Cerema : communiqué de deux pages lu entièrement ; chènevotte, liant, eau, remplissage, simulations et limites de transfert des économies.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Définition du mélange chènevotte/liant ; remplissage d’une structure porteuse ; transferts couplés chaleur-humidité."
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-hemp-lime",
+      "title": "Knowledge mapping for advancement of hemp-lime composite in the construction industry: a systematic literature review",
+      "organization": "Journal of Materials Science: Materials in Engineering",
+      "url": "https://link.springer.com/article/10.1186/s40712-025-00334-4",
+      "verifiedAt": "2026-11-14",
+      "author": "Arta Yazdanseta, Yehong Mi",
+      "published": "2025",
+      "passage": "Introduction: composition du chanvre-chaux et définition de la chènevotte.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Revue de littérature; les performances dépendent de la formulation et des conditions d’application.",
+      "reviewEvidence": [
+        {
+          "url": "https://link.springer.com/article/10.1186/s40712-025-00334-4",
+          "sections": "Springer 2025 : résumé et section comparative des ACV/carbonatation ; revue secondaire, pas essai du lot illustré.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Introduction: composition du chanvre-chaux et définition de la chènevotte."
+        },
+        {
+          "sourceId": "qh-nature-hemp-lime",
+          "url": "https://link.springer.com/article/10.1186/s40712-025-00334-4",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Introduction : mineral binder, air lime et natural hydraulic lime",
+            "Développement sur liants, hydratation et carbonatation",
+            "Analyse des hypothèses de carbonatation dans les bilans de cycle de vie"
+          ],
+          "result": "La prise de la chaux aérienne par réaction avec CO₂ et la contribution variable de carbonatation sont explicitement décrites. La revue distingue chimie des liants et hypothèses parfois non vérifiées des bilans.",
+          "assertionsSupported": [
+            "Réaction minérale impliquant leCO₂, formation de carbonate de calcium dans le cas de la chaux.",
+            "Composition du liant et périmètre/temps du bilan changent l’interprétation.",
+            "Aucun taux uniforme ni bilan universel ne découle du seul terme carbonatation."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "products-tool-resin",
+      "title": "Recommended Methods for the Identification and Analysis of Cannabis and Cannabis Products, révision",
+      "author": "UNODC, Laboratory and Scientific Service",
+      "organization": "UNODC, Laboratory and Scientific Service",
+      "published": "2022",
+      "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/forensics_html/Recommended_methods_for_the_identification_and_analysis_of_cannabis_and_cannabis_products_ST-NAR-40.pdf",
+      "passage": "§3.7 : produits végétaux, résine séparée et préparations ; portée de l’identification analytique.",
+      "limitation": "Manuel original ST/NAR/40/REV.1 ; seules définitions et limites d’identification utilisées, aucun protocole de préparation ou d’analyse reproduit.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://syntheticdrugs.unodc.org/uploads/syntheticdrugs/res/library/forensics_html/Recommended_methods_for_the_identification_and_analysis_of_cannabis_and_cannabis_products_ST-NAR-40.pdf",
+          "sections": "UNODC ST/NAR/40 : introduction §1.2 et §3.7.2 Cannabis resin (hashish), sécrétion glandulaire, fraction fine/poudre pressée ; aucune procédure reproduite.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "§3.7 : produits végétaux, résine séparée et préparations ; portée de l’identification analytique."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-concentrates",
+      "title": "Developments in the European cannabis market",
+      "author": "EMCDDA",
+      "organization": "EMCDDA",
+      "published": "2019",
+      "url": "https://www.emcdda.europa.eu/system/files/publications/11391/TDAU19001ENN.pdf",
+      "passage": "Pages 10–11 : diversité des concentrés, rosin, extraits et produits purifiés.",
+      "limitation": "Typologie institutionnelle datée, pas autorisation française actuelle ; taux, appareils, techniques détaillées et allégations de santé exclus.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.emcdda.europa.eu/system/files/publications/11391/TDAU19001ENN.pdf",
+          "sections": "EMCDDA 2019 : résumé et typologie des matières résineuses/concentrés ; ne décrit pas tout le marché de 2026.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Pages 10–11 : diversité des concentrés, rosin, extraits et produits purifiés."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-names",
+      "title": "Cannabis Concentrates 101: Extracting the Facts on Inhalable Concentrates",
+      "author": "BC Cannabis Stores, rédaction pédagogique",
+      "organization": "Distributeur public de Colombie-Britannique",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.bccannabisstores.com/blogs/learn/cannabis-concentrates-101-extracting-the-facts-on-inhalable-concentrates",
+      "passage": "Terminologie commerciale : kief, hash, rosin, resin, live, distillate et textures.",
+      "access": "excerpt",
+      "limitation": "Source primaire d’usage commercial des noms, pas norme scientifique ni droit français. Les procédés pratiques, paramètres et promesses sensorielles ne sont pas repris. Les noms ne démontrent ni pureté ni innocuité.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://www.bccannabisstores.com/blogs/learn/cannabis-concentrates-101-extracting-the-facts-on-inhalable-concentrates",
+          "sections": "BC Cannabis Stores, article Concentrates 101 : catégories kief/hash, rosin, distillate et live. Source d’un distributeur public canadien ; seules les définitions, pas les promesses ni conseils de consommation, sont reprises.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Terminologie commerciale : kief, hash, rosin, resin, live, distillate et textures."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-extract-terms",
+      "title": "Extracts and tinctures of cannabis — Critical Review",
+      "author": "Groupe d’experts du 41e ECDD, Organisation mondiale de la santé",
+      "organization": "Groupe d’experts du 41e ECDD, Organisation mondiale de la santé",
+      "published": "2018",
+      "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+      "passage": "Section Chemistry, p.10 du PDF : distillat et fractions ; typologie des préparations.",
+      "limitation": "Rapport d’experts, explicitement distinct d’une décision de l’OMS. Définitions seulement ; aucun équipement ou protocole, aucune recommandation thérapeutique.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://cdn.who.int/media/docs/default-source/controlled-substances/extracts-and-tinctures.pdf",
+          "sections": "Rapport OMS 2018 : sommaire et parties d’identification des extraits ; ni autorisation française actuelle ni protocole pratique repris.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Section Chemistry, p.10 du PDF : distillat et fractions ; typologie des préparations."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-hhc",
+      "title": "Hexahydrocannabinol (HHC) and related substances",
+      "author": "István Ujváry et équipe EMCDDA",
+      "organization": "Observatoire européen des drogues et des toxicomanies, devenu EUDA",
+      "published": "17 avril 2023 ; DOI 10.2810/852912",
+      "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+      "passage": "Parties identité, origine et composition : hémisynthèse, présence naturelle rapportée avec réserves, isomères et produits commercialisés.",
+      "access": "excerpt",
+      "limitation": "Rapport daté utilisé pour les distinctions d’origine et d’identité. Son état des preuves humaines et du droit en 2023 n’est pas présenté comme actuel en 2026 ; aucune description opératoire de conversion n’est reprise.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+          "sections": "EMCDDA 2023 : pp. 4–6 et 19, classification par origine, HHC de marché et épimères ; droit et pharmacologie humaine de 2023 non transposés en état actuel.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Parties identité, origine et composition : hémisynthèse, présence naturelle rapportée avec réserves, isomères et produits commercialisés."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-labels",
+      "title": "Product labeling accuracy and contamination analysis of commercially available cannabidiol product samples",
+      "author": "Barry E. Gidal, Ryan Vandrey, Chela Wallin, Sean Callan, Alan Sutton, Timothy B. Saurer et Jennifer L. Triemstra",
+      "organization": "Frontiers in Pharmacology 15:1335441",
+      "published": "18 mars 2024 ; DOI 10.3389/fphar.2024.1335441",
+      "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2024.1335441/full",
+      "passage": "Résumé, méthodes, résultats et financement : 202 produits américains achetés en 2021, étiquetage, catégories revendiquées et contaminants.",
+      "access": "excerpt",
+      "limitation": "Échantillon commercial américain non représentatif de tous les marchés. Définitions opérationnelles de l’étude, pas norme universelle ; seuils américains non transposés. Étude financée par Jazz Pharmaceuticals, affiliations industrielles déclarées.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2024.1335441/full",
+          "sections": "Frontiers 2024 : résumé et méthodes, 202 produits CBD achetés aux États-Unis, mentions full/broad spectrum et isolat confrontées aux analyses.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé, méthodes, résultats et financement : 202 produits américains achetés en 2021, étiquetage, catégories revendiquées et contaminants."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-product-terms",
+      "title": "Clearing the Smoke on Cannabis: Edible Cannabis Products, Cannabis Extracts and Cannabis Topicals",
+      "author": "Centre canadien sur les dépendances et l’usage de substances",
+      "organization": "Centre canadien sur les dépendances et l’usage de substances",
+      "published": "2020",
+      "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+      "passage": "Tableau 1, p.3 du PDF : kief, résines, rosin, live resin ; origine du mot live dans l’état de la matière première.",
+      "limitation": "Terminologie décrite dans un contexte canadien ; pas norme de composition ou droit français. Teneurs, prix, procédures et promesses sensorielles non repris.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+          "sections": "CCSA 2020 : résumé et parties sur aliments/extraits, délais d’apparition et risque d’ingestion accidentelle ; contexte canadien distinct du droit français.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Tableau 1, p.3 du PDF : kief, résines, rosin, live resin ; origine du mot live dans l’état de la matière première."
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-composite-review",
+      "title": "Hemp Fibre Treatments in Bio-Composites: A Review for Sustainable and Resilient Structures",
+      "organization": "Buildings (MDPI)",
+      "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+      "verifiedAt": "2026-11-14",
+      "author": "Mariana Costa Laktim, Antonio Formisano",
+      "published": "2025",
+      "passage": "Introduction, paras. sur adhérence et traitements des fibres.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Revue ciblée sur composites à matrice inorganique; les résultats dépendent des protocoles et formulations.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2075-5309/15/23/4238",
+          "sections": "Buildings 2025 : §2, figure 3 et passages microfibrilles, lumen, lamelle moyenne, hydroxyles et adhésion ; revue secondaire explicitement identifiée.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Introduction, paras. sur adhérence et traitements des fibres."
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-hemp-stubble-paper",
+      "title": "Papermaking potential of pulps from bast, hurd and stubble of hemp; separately and blended with pine pulp",
+      "organization": "Cellulose / Springer Nature",
+      "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2",
+      "verifiedAt": "2026-11-14",
+      "author": "Kemal Parlak, Alper Ertürk, Celil Atik",
+      "published": "2026",
+      "passage": "Résumé, publié le 11 janvier 2026: potentiel papetier du chaume et des racines; fibres de liber/chènevotte.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Résultats de procédés testés en laboratoire; ne garantit pas viabilité industrielle ou avantage écologique.",
+      "reviewEvidence": [
+        {
+          "url": "https://link.springer.com/article/10.1007/s10570-026-06935-2",
+          "sections": "Cellulose 2026 : résumé, composition, figures FTIR et morphologie ; fractions de tige/racines et pâtes distinguées.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé, publié le 11 janvier 2026: potentiel papetier du chaume et des racines; fibres de liber/chènevotte."
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-hurd-tissue-paper",
+      "title": "Ecofriendly and Innovative Processing of Hemp Hurds Fibers for Tissue and Towel Paper",
+      "organization": "BioResources / North Carolina State University",
+      "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Ved Naithani, Preeti Tyagi, Hasan Jameel, Lucian A. Lucia, Lokendra Pal",
+      "published": "2020",
+      "passage": "Résumé et sections résultats: mise en pâte, mélanges avec pulpe de bois, propriétés des feuilles.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Essais de laboratoire et formulations particulières; résultats non généralisables à tous les papiers.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.bioresources.cnr.ncsu.edu/wp-content/uploads/2019/12/BioRes_15_1_706_Naithani_TJLP_Ecofriendly_Innov_Prodn_Hemp_Hurds_Tissue_Towel_Bioprod_16557.pdf",
+          "sections": "BioResources 2020 : résumé, introduction et critères des feuilles tissue ; papier expérimental mélangeant fibres bois et chènevotte, pas tissu textile.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Résumé et sections résultats: mise en pâte, mélanges avec pulpe de bois, propriétés des feuilles."
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "ref-graines-chanvre",
+      "questions": [
+        "Quel nom désigne couramment les graines de chanvre ?",
+        "Quels deux constituants sont abondants dans les graines de chanvre ?",
+        "Comment nomme-t-on la paroi du petit fruit sec qui entoure la graine de chanvre ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes, sources, liens et questions relus ; distinctions initiales fiables conservées.",
+        "Ajout de mécanismes, exemples et vocabulaire nécessaires pour apprendre les réponses du quiz.",
+        "Planche de synthèse plate-v1.webp réellement examinée : elle ne remplace pas une observation ; photographie documentaire créditée quand pertinente, diagramme propre à la fiche."
+      ],
+      "patch": {
+        "lead": "Ce que l’on vend comme graines de chanvre s’appelle le chènevis. Ces petits fruits contiennent des réserves de matières grasses et de protéines, dont on tire notamment de l’huile et du tourteau.",
+        "sections": [
+          {
+            "id": "ref-graines-chanvre-1",
+            "title": "Pourquoi dit-on fruit alors qu’on achète des graines ?",
+            "paragraphs": [
+              "Chaque petit fruit sec contient une graine entourée d’une paroi. Cette enveloppe s’appelle le péricarpe ; elle vient de la paroi de l’ovaire, la partie de la fleur où se forme le fruit. Dans le commerce, on appelle souvent graine l’ensemble du fruit.",
+              "Décortiquer enlève l’enveloppe extérieure et conserve la partie intérieure. Un fruit entier et un produit décortiqué n’ont donc pas les mêmes proportions de tissus. La photographie montre justement du chènevis décortiqué, sans sa coque extérieure."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-lesson-chain",
+              "products-tool-seed-oil"
+            ]
+          },
+          {
+            "id": "ref-graines-chanvre-2",
+            "title": "Que reste-t-il quand on sépare l’huile ?",
+            "paragraphs": [
+              "La graine contient notamment des lipides, c’est-à-dire des matières grasses, et des protéines, de longues chaînes de petites unités appelées acides aminés. Séparer une partie de l’huile laisse un solide nommé tourteau, qui garde des protéines, des fibres et une partie de l’huile.",
+              "La séparation redistribue ce qui était déjà là. Retirer une partie de la matière grasse peut augmenter le pourcentage de protéines dans le solide sans créer de protéines nouvelles. Cette matière issue des graines est différente de la résine produite par les petites glandes de la plante."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-tool-seed-protein",
+              "products-tool-seed-oil"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "La majeure partie de l’huile des graines est stockée sous forme de triacylglycérols : trois chaînes d’acides gras liées à une molécule de glycérol. Ces lipides ne sont pas des cannabinoïdes, les composés étudiés notamment dans la résine."
+              ],
+              "sourceIds": [
+                "products-lesson-parts",
+                "products-tool-seed-protein",
+                "products-tool-seed-oil"
+              ]
+            }
+          },
+          {
+            "id": "ref-graines-chanvre-3",
+            "title": "Pourquoi faut-il connaître la quantité d’eau ?",
+            "paragraphs": [
+              "Un lot comprend une quantité d’eau variable. Dans un exemple de calcul, 100 kg de graines à 10 % d’eau contiennent 10 kg d’eau et 90 kg de matière sèche. Une masse fraîche ou humide et une masse sans eau ne décrivent donc pas la même quantité.",
+              "Humidité, corps étrangers, graines endommagées et conservation font partie des caractéristiques du lot. Une valeur par kilogramme sec n’est pas directement comparable à une valeur par kilogramme tel que vendu. Enfin, un aliment de graines et un aliment auquel on ajoute des cannabinoïdes sont deux produits différents, même si tous deux portent le mot chanvre."
+            ],
+            "sourceIds": [
+              "cultivation-lesson-hemp2026",
+              "harvest-lesson-moisture",
+              "products-lesson-food-fr",
+              "products-tool-seed-oil"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-parts",
+          "products-lesson-chain",
+          "products-tool-seed-oil",
+          "products-tool-seed-protein",
+          "cultivation-lesson-hemp2026",
+          "harvest-lesson-moisture",
+          "products-lesson-food-fr"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Ce que change la séparation de l’huile",
+          "nodes": [
+            {
+              "label": "Graine",
+              "detail": "Matières grasses, protéines et autres constituants."
+            },
+            {
+              "label": "Huile séparée et tourteau",
+              "detail": "La composition est redistribuée : le solide garde notamment des protéines et de l’huile résiduelle."
+            }
+          ],
+          "caption": "Le tourteau est ce qui reste après séparation d’une partie de l’huile ; ce n’est pas une protéine fabriquée par le pressage.",
+          "afterSectionId": "ref-graines-chanvre-2",
+          "sourceIds": [
+            "products-lesson-parts",
+            "products-tool-seed-protein"
+          ]
+        },
+        "image": {
+          "src": "/placard/reference/products/graines-decortiquees.jpg",
+          "alt": "Photographie de chènevis décortiqué, montrant les parties intérieures claires sans enveloppe entière.",
+          "caption": "Ces graines ont été décortiquées : leur enveloppe extérieure a été retirée. La photo ne montre pas les fruits entiers.",
+          "author": "MPart4",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hemp_seeds_protein.jpg",
+          "license": "CC BY-SA 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+          "kind": "photograph"
+        }
+      },
+      "sourceIdsReviewed": [
+        "products-lesson-parts",
+        "products-lesson-chain",
+        "products-tool-seed-oil",
+        "products-tool-seed-protein",
+        "cultivation-lesson-hemp2026",
+        "harvest-lesson-moisture",
+        "products-lesson-food-fr"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photographie Commons téléchargée en miniature standard 960 px et examinée ; auteur et licence commerciale CC vérifiés sur page d’origine et API. Chènevis décortiqué : cette présentation diffère des fruits entiers et ne renseigne pas leur composition analytique."
+      },
+      "quizIdsReviewed": [
+        "hemp-seeds-chenevis",
+        "hemp-seeds-reserves",
+        "hemp-seeds-pericarpe"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Pourquoi dit-on fruit alors qu’on achète des graines ?",
+        "termsExplained": [
+          "péricarpe",
+          "lipides",
+          "acides aminés",
+          "tourteau"
+        ],
+        "example": "La composition est redistribuée : le solide garde notamment des protéines et de l’huile résiduelle.",
+        "detailsMoved": [
+          "ref-graines-chanvre-2"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": [
+          "hemp-seeds-chenevis",
+          "hemp-seeds-reserves",
+          "hemp-seeds-pericarpe"
+        ]
+      }
+    },
+    {
+      "id": "ref-huile-graines",
+      "questions": [
+        "Quelle partie du chanvre fournit son huile alimentaire ?",
+        "Quel type d’acides gras domine dans l’huile de graines de chanvre ?",
+        "Quel acide gras est généralement le plus abondant dans l’huile de chènevis ?",
+        "Quel oméga-3 trouve-t-on naturellement dans l’huile de graines de chanvre ?",
+        "Quel pigment contribue à la couleur verte de certaines huiles de chènevis ?",
+        "Quel acide gras minoritaire de l’huile de chanvre possède quatre doubles liaisons ?",
+        "Quel tocophérol est généralement majoritaire dans l’huile de graines de chanvre ?",
+        "À quelle famille appartient l’hexanal formé lors de l’oxydation d’huile de chènevis ?",
+        "Quels composés sont des produits primaires de l’oxydation de l’huile de chènevis ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes, sources, liens et questions relus ; distinctions initiales fiables conservées.",
+        "Ajout de mécanismes, exemples et vocabulaire nécessaires pour apprendre les réponses du quiz.",
+        "Planche de synthèse plate-v1.webp réellement examinée : elle ne remplace pas une observation ; photographie documentaire créditée quand pertinente, diagramme propre à la fiche."
+      ],
+      "patch": {
+        "lead": "L’huile de graines de chanvre vient des matières grasses du chènevis. Elle peut servir d’aliment ou de support à un mélange, mais ces deux usages ne donnent pas la même composition au produit final.",
+        "sections": [
+          {
+            "id": "ref-huile-graines-1",
+            "title": "Qu’y a-t-il dans cette huile ?",
+            "paragraphs": [
+              "Les lipides de la graine, ses matières grasses, contiennent surtout des acides gras polyinsaturés. Cela signifie que leurs chaînes de carbone portent plusieurs doubles liaisons. L’acide linoléique est généralement le plus abondant ; l’alpha-linolénique appartient, lui, à la famille des oméga-3.",
+              "Des chlorophylles, les pigments verts de la plante, peuvent accompagner l’huile. Le gamma-tocophérol est généralement le tocophérol dominant, parmi cette famille de molécules apparentées à la vitamine E. Ni la couleur verte ni la présence de tocophérols ne garantissent à elles seules une conservation sans changement."
+            ],
+            "sourceIds": [
+              "products-lesson-seed-oil",
+              "products-tool-seed-oil"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Les écritures 18:2 n-6 et 18:3 n-3 décrivent respectivement l’acide linoléique et l’alpha-linolénique : dix-huit carbones et deux ou trois doubles liaisons, la famille oméga étant indiquée par n-6 ou n-3. L’acide stéaridonique, minoritaire, s’écrit 18:4 n-3 et possède quatre doubles liaisons. Les proportions varient entre huiles et transformations."
+              ],
+              "sourceIds": [
+                "products-lesson-seed-oil",
+                "products-tool-seed-oil"
+              ]
+            }
+          },
+          {
+            "id": "ref-huile-graines-2",
+            "title": "Comment l’huile peut-elle changer pendant la conservation ?",
+            "paragraphs": [
+              "Les matières grasses peuvent réagir avec l’oxygène : c’est ici leur oxydation. Des hydroperoxydes apparaissent d’abord, puis peuvent se décomposer en d’autres molécules, dont l’hexanal. Celui-ci est un aldéhyde, famille portant un groupe terminal carbone–hydrogène–oxygène appelé –CHO ; il peut passer dans l’air et contribuer à une odeur.",
+              "Une mesure d’un produit de départ ne résume donc pas toute l’évolution. Si les hydroperoxydes diminuent parce qu’ils se transforment, l’huile n’est pas redevenue neuve. Les études sur neuf huiles ou sur une huile de Futura 75 comparent des conditions précises ; elles ne donnent pas une même date de péremption à tous les flacons."
+            ],
+            "sourceIds": [
+              "products-lesson-oil-stability",
+              "products-tool-seed-oil"
+            ]
+          },
+          {
+            "id": "ref-huile-graines-3",
+            "title": "Huile de graines et huile au CBD : pourquoi les distinguer ?",
+            "paragraphs": [
+              "Une huile de graines contient les matières grasses provenant des graines. On peut aussi ajouter un extrait ou un ingrédient comme le cannabidiol, abrégé CBD, à une huile servant de support. Le résultat est alors un mélange différent : lire huile de chanvre ne suffit pas pour savoir lequel on a devant soi.",
+              "Une huile comestible n’est pas pour autant adaptée à être inhalée. Avaler un produit et exposer les poumons à un aérosol ne font pas intervenir les mêmes organes ni les mêmes risques."
+            ],
+            "sourceIds": [
+              "products-lesson-seed-oil",
+              "products-tool-oral",
+              "products-tool-inhalation"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-seed-oil",
+          "products-tool-seed-oil",
+          "products-lesson-oil-stability",
+          "products-tool-oral",
+          "products-tool-inhalation"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Une transformation qui continue",
+          "nodes": [
+            {
+              "label": "Premiers produits",
+              "detail": "Des hydroperoxydes se forment pendant l’oxydation."
+            },
+            {
+              "label": "Produits suivants",
+              "detail": "Leur décomposition peut former notamment de l’hexanal."
+            }
+          ],
+          "caption": "La baisse d’un premier marqueur ne signifie pas un retour à l’état initial : il peut avoir été transformé en autre chose.",
+          "afterSectionId": "ref-huile-graines-2",
+          "sourceIds": [
+            "products-tool-seed-oil"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "products-lesson-seed-oil",
+        "products-tool-seed-oil",
+        "products-lesson-oil-stability",
+        "products-tool-oral",
+        "products-tool-inhalation"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre au mécanisme décrit, contrôlé contre les sources ouvertes ; aucune fabrication d’extrait ni réglage pratique. Pas de photographie indispensable pour comprendre cette distinction moléculaire."
+      },
+      "quizIdsReviewed": [
+        "hemp-seeds-huile",
+        "hemp-seeds-insaturation",
+        "hemp-seeds-linoleique",
+        "hemp-seeds-omega-trois",
+        "hemp-seeds-pigment-huile",
+        "hemp-seeds-stearidonique",
+        "hemp-seeds-tocopherol",
+        "hemp-seeds-hexanal",
+        "hemp-prevention-hydroperoxydes"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Qu’y a-t-il dans cette huile ?",
+        "termsExplained": [
+          "lipides",
+          "aérosol"
+        ],
+        "example": "Leur décomposition peut former notamment de l’hexanal.",
+        "detailsMoved": [
+          "ref-huile-graines-1"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": [
+          "hemp-seeds-huile",
+          "hemp-seeds-insaturation",
+          "hemp-seeds-linoleique",
+          "hemp-seeds-omega-trois",
+          "hemp-seeds-pigment-huile",
+          "hemp-seeds-stearidonique",
+          "hemp-seeds-tocopherol",
+          "hemp-seeds-hexanal",
+          "hemp-prevention-hydroperoxydes"
+        ]
+      }
+    },
+    {
+      "id": "ref-proteines-chanvre",
+      "questions": [
+        "Quelle opération transforme une matière issue des graines de chanvre en farine ?",
+        "De quelles unités les protéines du chènevis sont-elles constituées ?",
+        "L’édestine présente dans le chènevis est…",
+        "Quelles familles regroupent les principales protéines de réserve du chènevis ?",
+        "Quand la solubilité des protéines de chanvre est-elle généralement la plus faible ?",
+        "Quelle liaison entre deux atomes de soufre peut relier des protéines de chanvre ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes, sources, liens et questions relus ; distinctions initiales fiables conservées.",
+        "Ajout de mécanismes, exemples et vocabulaire nécessaires pour apprendre les réponses du quiz.",
+        "Planche de synthèse plate-v1.webp réellement examinée : elle ne remplace pas une observation ; photographie documentaire créditée quand pertinente, diagramme propre à la fiche."
+      ],
+      "patch": {
+        "lead": "Les protéines de chanvre viennent des graines. Une farine, un tourteau et une poudre enrichie peuvent tous en contenir, sans avoir la même composition ni le même comportement dans un aliment.",
+        "sections": [
+          {
+            "id": "ref-proteines-chanvre-1",
+            "title": "De quelles protéines parle-t-on ?",
+            "paragraphs": [
+              "Une protéine est une chaîne d’acides aminés, de petites unités assemblées. La graine en stocke à côté de ses matières grasses. Ses principales familles de protéines de réserve sont les globulines et les albumines ; l’édestine appartient aux globulines.",
+              "Après séparation d’une partie de l’huile, le tourteau garde beaucoup des constituants solides. Ce n’est donc ni du cœur de tige, ni de la fibre textile, ni une protéine pure. La présence d’édestine ne suffit pas à prévoir la facilité de digestion de n’importe quelle poudre."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-tool-seed-protein"
+            ]
+          },
+          {
+            "id": "ref-proteines-chanvre-2",
+            "title": "Broyer et enrichir changent-ils la même chose ?",
+            "paragraphs": [
+              "Broyer réduit la matière en petites particules pour former une farine. Séparer des fractions peut, en plus, changer leurs proportions et donner une poudre plus riche en protéines. Les noms farine, concentré et isolat ne garantissent donc pas une composition commune.",
+              "La solubilité est la capacité d’une substance à se dissoudre dans un liquide. Pour les protéines, elle dépend notamment du milieu et du pH, la mesure de son acidité. Au point isoélectrique, leurs charges positives et négatives s’équilibrent : la charge totale est nulle et leur solubilité est généralement la plus faible. Cela aide à comprendre pourquoi on peut séparer des fractions différentes."
+            ],
+            "sourceIds": [
+              "products-tool-seed-protein"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Certains acides aminés appelés cystéines portent du soufre. Une liaison entre deux de leurs atomes de soufre, écrite –S–S–, forme un pont disulfure, au sein d’une protéine ou entre protéines. Cabral compare leur comportement avant et après réduction, une réaction pouvant couper ces ponts. D’autres liens ou associations ne sont pas coupés de la même façon : tous les changements de structure ne sont pas des ponts disulfure."
+              ],
+              "sourceIds": [
+                "products-tool-seed-protein"
+              ]
+            }
+          },
+          {
+            "id": "ref-proteines-chanvre-3",
+            "title": "Un pourcentage de protéines suffit-il à juger le produit ?",
+            "paragraphs": [
+              "La quantité récupérée, le pourcentage de protéines et la proportion de chaque acide aminé répondent à des questions différentes. Une meilleure récupération ne prouve donc pas une meilleure qualité nutritionnelle. Goût, autres constituants, contaminants et stabilité restent à considérer.",
+              "Une fraction exclusivement issue des graines et un aliment enrichi en extrait cannabinoïde n’ont pas le même statut à examiner. L’origine végétale commune ne suffit pas à rendre tous les procédés ou ingrédients équivalents."
+            ],
+            "sourceIds": [
+              "products-tool-seed-protein",
+              "products-lesson-food-fr",
+              "products-tool-contaminants"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-parts",
+          "products-tool-seed-protein",
+          "products-lesson-food-fr",
+          "products-tool-contaminants"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Deux transformations différentes",
+          "nodes": [
+            {
+              "label": "Broyage",
+              "detail": "La matière devient plus fine."
+            },
+            {
+              "label": "Séparation de fractions",
+              "detail": "La proportion de protéines peut changer."
+            }
+          ],
+          "caption": "Une farine décrit d’abord une présentation ; une fraction enrichie décrit aussi une composition modifiée.",
+          "afterSectionId": "ref-proteines-chanvre-2",
+          "sourceIds": [
+            "products-tool-seed-protein"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "products-lesson-parts",
+        "products-tool-seed-protein",
+        "products-lesson-food-fr"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre au mécanisme décrit, contrôlé contre les sources ouvertes ; aucune fabrication d’extrait ni réglage pratique. Pas de photographie indispensable pour comprendre cette distinction moléculaire."
+      },
+      "quizIdsReviewed": [
+        "hemp-seeds-farine",
+        "hemp-seeds-acides-amines",
+        "hemp-seeds-edestine",
+        "hemp-seeds-fractions-proteines",
+        "hemp-seeds-solubilite",
+        "hemp-seeds-ponts"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "De quelles protéines parle-t-on ?",
+        "termsExplained": [
+          "acides aminés",
+          "tourteau",
+          "solubilité",
+          "pH",
+          "point isoélectrique"
+        ],
+        "example": "La proportion de protéines peut changer.",
+        "detailsMoved": [
+          "ref-proteines-chanvre-2"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": [
+          "hemp-seeds-farine",
+          "hemp-seeds-acides-amines",
+          "hemp-seeds-edestine",
+          "hemp-seeds-fractions-proteines",
+          "hemp-seeds-solubilite",
+          "hemp-seeds-ponts"
+        ]
+      }
+    },
+    {
+      "id": "ref-fibres-chanvre",
+      "questions": [
+        "Où se trouvent les fibres textiles dans une tige de chanvre ?",
+        "Que produit la filature des fibres de chanvre ?",
+        "Comment le tissage forme-t-il une étoffe de chanvre ?",
+        "Que sépare le teillage du chanvre ?",
+        "Dans la préparation textile du chanvre, que désignent les étoupes ?",
+        "Quel effet le peignage recherche-t-il sur les fibres de chanvre ?",
+        "Quelles substances qui unissent les tissus sont dégradées pendant le rouissage du chanvre ?",
+        "Quels fils prépare l’ourdissage pour tisser une étoffe de chanvre ?",
+        "Quels organismes participent au rouissage biologique des pailles de chanvre ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes, sources, liens et questions relus ; distinctions initiales fiables conservées.",
+        "Ajout de mécanismes, exemples et vocabulaire nécessaires pour apprendre les réponses du quiz.",
+        "Planche de synthèse plate-v1.webp réellement examinée : elle ne remplace pas une observation ; photographie documentaire créditée quand pertinente, diagramme propre à la fiche."
+      ],
+      "patch": {
+        "lead": "Les fibres utilisées pour les fils et certains matériaux viennent de la partie extérieure de la tige de chanvre. Leur préparation, puis leur assemblage, expliquent comment une même plante peut donner tissu, corde ou papier.",
+        "sections": [
+          {
+            "id": "ref-fibres-chanvre-1",
+            "title": "Où les fibres se trouvent-elles dans la tige ?",
+            "paragraphs": [
+              "Des faisceaux de fibres entourent le cœur ligneux de la tige. Cette zone périphérique est appelée liber ; elle est distincte de la chènevotte, issue du cœur. Longueur, finesse, propreté et fragments de cœur restants influencent les usages possibles.",
+              "Une fibre longue destinée à un fil ne demande pas nécessairement la même préparation qu’une fibre courte destinée à renforcer une pièce. Le nom chanvre ne suffit pas à choisir le débouché."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-lesson-chain",
+              "cultivation-lesson-hemp2026"
+            ]
+          },
+          {
+            "id": "ref-fibres-chanvre-2",
+            "title": "Comment passe-t-on de la tige aux fibres préparées ?",
+            "paragraphs": [
+              "Le rouissage est une transformation biologique : des bactéries et des champignons dégradent notamment les pectines, des substances qui aident à unir certains tissus. Cela facilite leur séparation. Le teillage, ou défibrage, sépare ensuite mécaniquement les faisceaux fibreux et le cœur ligneux : les deux opérations n’ont pas le même rôle.",
+              "Cardage et peignage préparent les fibres pour certaines voies textiles. Le peignage les dispose parallèlement et aide à retirer des résidus. Les étoupes sont des fibres courtes séparées pendant cette préparation ; elles peuvent suivre une autre chaîne que les fibres longues. La filature forme ensuite un fil à partir des fibres préparées."
+            ],
+            "sourceIds": [
+              "products-tool-fibres",
+              "products-tool-textile",
+              "products-primary-retting-2015"
+            ]
+          },
+          {
+            "id": "ref-fibres-chanvre-3",
+            "title": "Un fil, une étoffe et une feuille sont-ils assemblés de la même façon ?",
+            "paragraphs": [
+              "Pour tisser, on prépare les fils de chaîne, placés dans la longueur : c’est l’ourdissage. On les entrecroise ensuite avec les fils de trame pour former une étoffe. Les cordages assemblent autrement les fils et fibres ; les non-tissés forment un réseau sans ce croisement régulier de fils.",
+              "Le papier est également un réseau de fibres préparées, mais n’exige pas de les filer puis de les tisser. Les productions domestiques, artisanales et industrielles ont utilisé ces savoir-faire de façons différentes. La forme finale et ses traitements comptent autant que la plante de départ pour comprendre les propriétés d’un produit."
+            ],
+            "sourceIds": [
+              "products-tool-textile",
+              "history-modern-brittany",
+              "products-lesson-chain",
+              "products-tool-fibres"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-parts",
+          "products-lesson-chain",
+          "cultivation-lesson-hemp2026",
+          "products-tool-fibres",
+          "products-tool-textile",
+          "products-primary-retting-2015",
+          "history-modern-brittany"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Trois rôles dans la chaîne textile",
+          "nodes": [
+            {
+              "label": "Préparer les tissus",
+              "detail": "Rouissage puis séparation mécanique."
+            },
+            {
+              "label": "Former le fil",
+              "detail": "Préparation des fibres puis filature."
+            },
+            {
+              "label": "Former l’étoffe",
+              "detail": "Préparation de la chaîne et croisement avec la trame."
+            }
+          ],
+          "caption": "La filature forme le fil ; le tissage entrecroise des fils déjà formés.",
+          "afterSectionId": "ref-fibres-chanvre-3",
+          "sourceIds": [
+            "products-tool-textile"
+          ]
+        },
+        "image": {
+          "src": "/placard/reference/products/fibre.jpg",
+          "alt": "Photographie de faisceaux fibreux se détachant de deux tiges de chanvre après macération.",
+          "caption": "Les faisceaux de fibres se détachent de la partie extérieure des tiges après macération. Ils sont différents du cœur ligneux.",
+          "author": "SpessiG",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hemp_fiber.jpg",
+          "license": "CC0 1.0",
+          "licenseUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+          "kind": "photograph"
+        }
+      },
+      "sourceIdsReviewed": [
+        "products-lesson-parts",
+        "products-lesson-chain",
+        "cultivation-lesson-hemp2026",
+        "products-tool-fibres",
+        "products-tool-textile",
+        "history-modern-brittany",
+        "products-primary-retting-2015"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photographie Commons téléchargée en miniature standard 960 px et examinée ; auteur et licence commerciale CC vérifiés sur page d’origine et API. Fibres périphériques après macération : observation documentaire, sans échelle de longueur ni diagnostic de qualité textile."
+      },
+      "quizIdsReviewed": [
+        "hemp-profiles-position-fibres",
+        "hemp-profiles-filature",
+        "hemp-profiles-tissage",
+        "hemp-profiles-teillage",
+        "hemp-profiles-etoupes",
+        "hemp-profiles-peignage",
+        "hemp-profiles-pectines",
+        "hemp-profiles-ourdissage",
+        "hemp-profiles-rouissage-organismes"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Où les fibres se trouvent-elles dans la tige ?",
+        "termsExplained": [
+          "liber",
+          "rouissage",
+          "teillage",
+          "défibrage",
+          "filature",
+          "trame"
+        ],
+        "example": "Préparation de la chaîne et croisement avec la trame.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": [
+          "hemp-profiles-position-fibres",
+          "hemp-profiles-filature",
+          "hemp-profiles-tissage",
+          "hemp-profiles-teillage",
+          "hemp-profiles-etoupes",
+          "hemp-profiles-peignage",
+          "hemp-profiles-pectines",
+          "hemp-profiles-ourdissage",
+          "hemp-profiles-rouissage-organismes"
+        ]
+      }
+    },
+    {
+      "id": "ref-chenevotte-materiaux",
+      "questions": [
+        "Quelle matière provient de la partie ligneuse intérieure de la tige de chanvre ?",
+        "Quels ingrédients végétal et minéral composent un béton de chanvre à la chaux ?",
+        "Quel gaz réagit avec la chaux lors de la carbonatation d’un béton de chanvre ?",
+        "Un matériau de chanvre hygroscopique échange principalement quoi avec l’air ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes, sources, liens et questions relus ; distinctions initiales fiables conservées.",
+        "Ajout de mécanismes, exemples et vocabulaire nécessaires pour apprendre les réponses du quiz.",
+        "Planche de synthèse plate-v1.webp réellement examinée : elle ne remplace pas une observation ; photographie documentaire créditée quand pertinente, diagramme propre à la fiche."
+      ],
+      "patch": {
+        "lead": "La chènevotte vient du cœur ligneux de la tige. Ses petits fragments servent notamment dans des matériaux isolants, mais la présence de chanvre ne suffit pas à rendre un mur porteur ou à connaître son bilan environnemental.",
+        "sections": [
+          {
+            "id": "ref-chenevotte-materiaux-1",
+            "title": "En quoi diffère-t-elle des fibres textiles ?",
+            "paragraphs": [
+              "Le défibrage sépare les longues fractions fibreuses extérieures et le cœur fragmenté, la chènevotte. Celle-ci n’a pas la même structure qu’un faisceau prêt à filer. Sa taille de fragments, appelée granulométrie, sa propreté et son humidité doivent correspondre à l’emploi prévu.",
+              "Un sac préparé pour une litière et un granulat prévu pour un mur n’ont donc pas automatiquement les mêmes spécifications. La photographie montre des fragments de cœur, sans certifier leur usage dans un système de construction."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-tool-materials"
+            ]
+          },
+          {
+            "id": "ref-chenevotte-materiaux-2",
+            "title": "Que fait le chanvre dans un béton de chanvre ?",
+            "paragraphs": [
+              "Le mélange associe des fragments de chènevotte, un liant qui les maintient ensemble, souvent à base de chaux, et de l’eau. Celle-ci aide à la mise en œuvre et participe aux réactions du liant. Dans le système courant décrit par Cerema, une ossature porte le bâtiment ; le mélange remplit et isole.",
+              "Le matériau poreux peut recevoir et restituer de la vapeur d’eau de l’air : cette capacité est appelée hygroscopie. L’eau et ses changements d’état influencent aussi les échanges de chaleur. Cela ne rend pas le matériau étanche à la pluie et ne lui donne pas une fonction porteuse universelle."
+            ],
+            "sourceIds": [
+              "products-lesson-building",
+              "products-tool-hempcrete",
+              "qh-nature-hemp-lime"
+            ]
+          },
+          {
+            "id": "ref-chenevotte-materiaux-3",
+            "title": "Pourquoi le bilan carbone ne dépend-il pas seulement de la plante ?",
+            "paragraphs": [
+              "En grandissant, la plante a incorporé du carbone provenant du dioxyde de carbone de l’air. La fabrication du liant, les transports et la fin de vie ont eux aussi des conséquences. Biosourcé signifie qu’une partie de la matière vient du vivant, pas que sa fabrication n’émet rien.",
+              "La chaux peut aussi réagir avec du dioxyde de carbone pour former un carbonate : c’est la carbonatation. Ce carbone fixé dans un constituant minéral est différent de celui accumulé par la plante. Il faut préciser ce que l’on compte et sur quelle durée pour éviter de les additionner ou de les soustraire de façon trompeuse."
+            ],
+            "sourceIds": [
+              "products-tool-hempcrete",
+              "qh-nature-hemp-lime"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Dans une réaction simple, la chaux hydratée Ca(OH)2 réagit avec le dioxyde de carbone CO2 et forme du carbonate de calcium CaCO3 et de l’eau. Tous les liants n’ont ni cette composition ni la même part réellement transformée ; la carbonatation ne compense donc pas automatiquement toutes leurs émissions."
+              ],
+              "sourceIds": [
+                "products-tool-hempcrete",
+                "qh-nature-hemp-lime"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-parts",
+          "products-tool-materials",
+          "products-lesson-building",
+          "products-tool-hempcrete",
+          "qh-nature-hemp-lime"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Porter et isoler sont deux fonctions",
+          "nodes": [
+            {
+              "label": "Ossature",
+              "detail": "Elle assure la fonction porteuse du système courant décrit."
+            },
+            {
+              "label": "Mélange chanvre–liant–eau",
+              "detail": "Il remplit et isole autour de cette structure."
+            }
+          ],
+          "caption": "Le mot béton ne signifie pas que le remplissage en chanvre remplace une structure porteuse en béton armé.",
+          "afterSectionId": "ref-chenevotte-materiaux-2",
+          "sourceIds": [
+            "products-tool-hempcrete"
+          ]
+        },
+        "image": {
+          "src": "/placard/reference/products/chenevotte.jpg",
+          "alt": "Photographie de fragments de chènevotte présentés dans un panier avec étiquette Hanfschäben.",
+          "caption": "Ces fragments viennent du cœur ligneux de la tige. Leur aspect ne certifie pas un emploi en construction.",
+          "author": "Florian Gerlach (Nawaro)",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hemp_shives.jpg",
+          "license": "CC BY-SA 3.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/",
+          "kind": "photograph"
+        }
+      },
+      "sourceIdsReviewed": [
+        "products-lesson-parts",
+        "products-tool-materials",
+        "products-lesson-building",
+        "products-tool-hempcrete",
+        "qh-nature-hemp-lime"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photographie Commons téléchargée en miniature standard 960 px et examinée ; auteur et licence commerciale CC vérifiés sur page d’origine et API. Chènevotte : fragments de cœur ligneux. L’exemple photographié n’est pas un granulat de construction certifié."
+      },
+      "quizIdsReviewed": [
+        "hemp-profiles-chenevotte",
+        "hemp-profiles-beton",
+        "hemp-profiles-carbonatation",
+        "hemp-profiles-hygroscopie"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "En quoi diffère-t-elle des fibres textiles ?",
+        "termsExplained": [
+          "défibrage",
+          "liant",
+          "granulométrie",
+          "hygroscopie",
+          "carbonatation"
+        ],
+        "example": "Il remplit et isole autour de cette structure.",
+        "detailsMoved": [
+          "ref-chenevotte-materiaux-3"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": [
+          "hemp-profiles-chenevotte",
+          "hemp-profiles-beton",
+          "hemp-profiles-carbonatation",
+          "hemp-profiles-hygroscopie"
+        ]
+      }
+    },
+    {
+      "id": "ref-resines-extraits",
+      "questions": [
+        "Quelle matière est transformée, par quel mécanisme et avec quelles limites de preuve ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes, sources, liens et questions relus ; distinctions initiales fiables conservées.",
+        "Ajout de mécanismes, exemples et vocabulaire nécessaires pour apprendre les réponses du quiz.",
+        "Planche de synthèse plate-v1.webp réellement examinée : elle ne remplace pas une observation ; photographie documentaire créditée quand pertinente, diagramme propre à la fiche."
+      ],
+      "patch": {
+        "lead": "La résine est un mélange produit par de petites glandes du cannabis. On peut en séparer des matières ou en tirer des extraits, puis préparer des mélanges : ces étapes ne donnent pas toutes le même produit.",
+        "sections": [
+          {
+            "id": "ref-resines-extraits-1",
+            "title": "D’où vient la résine ?",
+            "paragraphs": [
+              "Certaines petites structures à la surface de la plante, les trichomes glandulaires, produisent une sécrétion contenant notamment des cannabinoïdes et des molécules odorantes. Les cannabinoïdes comprennent par exemple le cannabidiol, ou CBD, et le THC, associé à l’intoxication. Cette sécrétion est différente de l’huile grasse des graines.",
+              "Le kief désigne une matière regroupant des structures résineuses détachées ; le hash ou haschisch une matière résineuse séparée, parfois agglomérée. Leur composition reste variable : ce sont des mélanges, pas des noms de molécules pures."
+            ],
+            "sourceIds": [
+              "products-tool-resin",
+              "products-tool-concentrates"
+            ]
+          },
+          {
+            "id": "ref-resines-extraits-2",
+            "title": "Séparer et transformer changent-ils la même chose ?",
+            "paragraphs": [
+              "Une séparation physique répartit les constituants sans avoir pour but de changer leurs molécules. Concentrer signifie augmenter la part de certains constituants en en séparant d’autres. Une extraction transfère des substances vers une autre matière ou phase ; la distillation les répartit selon leur facilité à passer en vapeur.",
+              "Une transformation chimique change au contraire les molécules elles-mêmes. Un extrait, un distillat et un isolat ne sont donc pas des termes interchangeables : l’isolat revendique surtout un composé très majoritaire, tandis que les autres peuvent garder plusieurs constituants. Leur nom ne suffit pas à connaître leurs proportions."
+            ],
+            "sourceIds": [
+              "products-lesson-names",
+              "products-tool-extract-terms",
+              "products-lesson-hhc",
+              "products-lesson-labels"
+            ]
+          },
+          {
+            "id": "ref-resines-extraits-3",
+            "title": "Que disent les mots sur une étiquette ?",
+            "paragraphs": [
+              "Rosin désigne une séparation mécanique mobilisant chaleur et pression, sans solvant d’extraction ajouté dans cette étape. Live renvoie ici à l’état frais congelé revendiqué avant transformation. Full spectrum et broad spectrum annoncent des catégories de profils, sans formule quantitative unique ni preuve que toute la plante soit présente.",
+              "Une étude de 2024 compare ces mentions aux analyses de 202 produits CBD achetés aux États-Unis : le nom annoncé ne dispense pas de vérifier le produit réel. Elle ne donne pas un taux d’erreurs valable pour toute la France. Texture claire, sombre, poudreuse ou visqueuse ne mesure ni pureté, ni contaminants, ni autorisation."
+            ],
+            "sourceIds": [
+              "products-lesson-names",
+              "products-lesson-labels",
+              "products-tool-product-terms"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-resin",
+          "products-tool-concentrates",
+          "products-lesson-names",
+          "products-tool-extract-terms",
+          "products-lesson-hhc",
+          "products-lesson-labels",
+          "products-tool-product-terms"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Déplacer ou changer la molécule",
+          "nodes": [
+            {
+              "label": "Séparation physique",
+              "detail": "Certains constituants sont rassemblés dans une autre fraction."
+            },
+            {
+              "label": "Transformation chimique",
+              "detail": "La structure des molécules est modifiée."
+            }
+          ],
+          "caption": "Un produit plus concentré n’est pas nécessairement une nouvelle molécule ; une réaction chimique, elle, peut changer son identité.",
+          "afterSectionId": "ref-resines-extraits-2",
+          "sourceIds": [
+            "products-tool-extract-terms",
+            "products-lesson-hhc"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "products-tool-resin",
+        "products-tool-concentrates",
+        "products-lesson-names",
+        "products-tool-extract-terms",
+        "products-lesson-hhc",
+        "products-tool-label-study",
+        "products-lesson-labels",
+        "products-tool-product-terms"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre au mécanisme décrit, contrôlé contre les sources ouvertes ; aucune fabrication d’extrait ni réglage pratique. Pas de photographie indispensable pour comprendre cette distinction moléculaire."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient la résine ?",
+        "termsExplained": [
+          "trichomes glandulaires"
+        ],
+        "example": "La structure des molécules est modifiée.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "ref-matieres-chanvre",
+      "questions": [
+        "En plus de la chènevotte et du liant, quel ingrédient entre dans un mélange chanvre-chaux ?",
+        "Quel polymère végétal constitue une grande part des fibres de chanvre ?",
+        "Quel produit absorbant a été fabriqué expérimentalement avec des fibres de chènevotte ?",
+        "Le chaume de chanvre désigne notamment…",
+        "Dans les usages papetiers du chanvre, que désigne une « pâte » ?",
+        "Quel constituant contribue au caractère ligneux de la chènevotte ?",
+        "Comment sont généralement les fibres de chènevotte par rapport aux fibres du liber ?",
+        "Le lumen d’une fibre de chanvre correspond à…",
+        "Un revêtement hydrophobe sur une fibre de chanvre tend à…",
+        "Le module de Young d’une fibre de chanvre décrit surtout…",
+        "Quels groupes chimiques de la cellulose favorisent l’affinité des fibres de chanvre pour l’eau ?",
+        "Dans la tige de chanvre, quelle fraction est généralement plus lignifiée que le liber textile ?",
+        "Dans la cellulose des fibres de chanvre, une zone cristalline possède une organisation…",
+        "Dans un composite chanvre/PP, que signifie PP ?",
+        "Pour un papier contenant du chanvre, la résistance à l’éclatement concerne…",
+        "Quelles structures de cellulose participent à la résistance mécanique d’une fibre de chanvre ?",
+        "Dans un composite à fibres de chanvre, une délamination est…",
+        "Quelle couche lie les cellules fibreuses du chanvre en faisceaux ?",
+        "Dans les fibres de chanvre, les hémicelluloses appartiennent à quelle grande famille ?",
+        "Quelle propriété d’un papier chanvre-bois peut être évaluée à sec et à l’état humide ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Paragraphes, sources, liens et questions relus ; distinctions initiales fiables conservées.",
+        "Ajout de mécanismes, exemples et vocabulaire nécessaires pour apprendre les réponses du quiz.",
+        "Planche de synthèse plate-v1.webp réellement examinée : elle ne remplace pas une observation ; photographie documentaire créditée quand pertinente, diagramme propre à la fiche.",
+        "Finition éditoriale : exemple Naithani déplacé de graines vers chènevotte ; doublon constructif retiré et sources propres à chaque fraction redistribuées."
+      ],
+      "patch": {
+        "lead": "Graines, fibres extérieures et cœur de tige donnent des matières différentes. Comprendre leur organisation explique leurs emplois, sans supposer qu’un produit portant le mot chanvre possède toutes les propriétés de la plante.",
+        "sections": [
+          {
+            "id": "ref-matieres-chanvre-1",
+            "title": "Pourquoi les fibres servent-elles à tant de matériaux ?",
+            "paragraphs": [
+              "Les faisceaux de la partie extérieure de la tige peuvent servir aux fils, aux papiers ou au renforcement d’une pièce. Une cellule fibreuse possède une cavité centrale, le lumen, entourée d’une paroi. Celle-ci contient de la cellulose, une longue chaîne de petites unités de sucre, organisée en fins ensembles appelés microfibrilles. Leur organisation contribue à la résistance de la paroi.",
+              "Dans un composite, les fibres servent de renfort au sein d’une matrice, la matière continue qui les enrobe et transmet les efforts. Cette matrice peut être du polypropylène, abrégé PP, un plastique qui ne devient pas végétal parce qu’on y ajoute du chanvre. L’adhésion entre les deux compte pour que l’ensemble travaille bien."
+            ],
+            "sourceIds": [
+              "products-tool-textile",
+              "products-lesson-parts",
+              "qh-nature-composite-review"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "La cellulose fait partie des polysaccharides, les longues chaînes de sucres. Certaines régions de ses chaînes sont plus ordonnées, dites cristallines ; d’autres sont moins ordonnées. La lamelle moyenne est la couche qui unit les cellules en faisceaux ; elle contient notamment des pectines. Les hémicelluloses sont d’autres chaînes de sucres associées à la cellulose dans les parois.",
+                "Les groupes hydroxyle –OH de la cellulose favorisent ses interactions avec l’eau. Un revêtement hydrophobe vise à diminuer cette affinité. Le module de Young mesure une rigidité élastique : à quel point un matériau s’oppose à une déformation réversible. Il ne se confond pas avec la résistance à la rupture. Une délamination est une séparation de couches ou d’interfaces, notamment lorsque leur adhésion est insuffisante."
+              ],
+              "sourceIds": [
+                "products-tool-textile",
+                "products-lesson-parts",
+                "qh-nature-composite-review"
+              ]
+            }
+          },
+          {
+            "id": "ref-matieres-chanvre-2",
+            "title": "Que peut-on faire du cœur de la tige ?",
+            "paragraphs": [
+              "Le cœur ligneux fournit la chènevotte. Il est généralement plus riche en lignine, un constituant qui contribue au caractère rigide et ligneux des tissus, et contient des fibres plus courtes que le liber extérieur. Ces fragments servent notamment de litière ou de granulat dans un mélange de construction avec liant et eau. L’ossature reste porteuse dans le système courant décrit.",
+              "La papeterie peut aussi utiliser certaines fractions : une pâte est une suspension de fibres préparées dans de l’eau, destinée à former une feuille. Naithani a fabriqué des feuilles tissue et essuie-tout mélangeant bois et chènevotte. Le chaume, c’est-à-dire les restes de tiges laissés après récolte, et des racines ont également été étudiés : une possibilité expérimentale ne prouve pas un débouché commercial partout."
+            ],
+            "sourceIds": [
+              "products-tool-hempcrete",
+              "products-lesson-parts",
+              "qh-nature-hemp-stubble-paper",
+              "qh-nature-hurd-tissue-paper",
+              "qh-nature-hemp-lime"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Pour une feuille, absorber de l’eau, résister à une traction et résister à l’éclatement sont trois propriétés différentes. La traction tire sur la feuille et peut être testée à sec ou humide ; l’éclatement évalue sa rupture sous une pression appliquée. Un meilleur résultat pour l’une ne garantit pas une amélioration de toutes."
+              ],
+              "sourceIds": [
+                "products-tool-hempcrete",
+                "products-lesson-parts",
+                "qh-nature-hemp-stubble-paper",
+                "qh-nature-hurd-tissue-paper",
+                "qh-nature-hemp-lime"
+              ]
+            }
+          },
+          {
+            "id": "ref-matieres-chanvre-3",
+            "title": "Pourquoi les graines suivent-elles une autre filière ?",
+            "paragraphs": [
+              "Le chènevis contient notamment des lipides, les matières grasses, et des protéines, chaînes d’acides aminés. Décortiquer retire l’enveloppe du fruit. Séparer une partie de l’huile donne d’un côté l’huile de graines et de l’autre un solide, le tourteau.",
+              "Ni l’huile ni le tourteau ne sont des fibres de tige. Une huile alimentaire de graines n’est pas non plus un extrait de fleurs enrichi en cannabinoïdes. Chaque transformation donne une matière à décrire et à contrôler pour sa destination propre."
+            ],
+            "sourceIds": [
+              "products-lesson-parts",
+              "products-tool-seed-oil",
+              "products-tool-seed-protein",
+              "products-lesson-seed-oil"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-textile",
+          "products-lesson-parts",
+          "qh-nature-composite-review",
+          "products-tool-hempcrete",
+          "qh-nature-hemp-stubble-paper",
+          "qh-nature-hurd-tissue-paper",
+          "qh-nature-hemp-lime",
+          "products-tool-seed-oil",
+          "products-tool-seed-protein",
+          "products-lesson-seed-oil"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Trois origines dans la plante",
+          "nodes": [
+            {
+              "label": "Graines",
+              "detail": "Huile, tourteau et fractions protéiques."
+            },
+            {
+              "label": "Extérieur de la tige",
+              "detail": "Faisceaux de fibres pour fils, réseaux ou renforts."
+            },
+            {
+              "label": "Cœur de la tige",
+              "detail": "Fragments de chènevotte pour litières, mélanges et certaines pâtes."
+            }
+          ],
+          "caption": "Un fil, une huile et un granulat ne sont pas trois présentations de la même fraction végétale.",
+          "afterSectionId": "ref-matieres-chanvre-3",
+          "sourceIds": [
+            "products-lesson-parts"
+          ]
+        },
+        "image": {
+          "src": "/placard/reference/products/matieres-tige.jpg",
+          "alt": "Photographie d’échantillons exposés : tissu, fragments, fibres et laine de chanvre.",
+          "caption": "Échantillons présentés comme tissu, fragments, fibres et laine de chanvre : des préparations différentes issues de la plante.",
+          "author": "D-Kuru",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:4_products_of_hemp-fabric%2Bparing%2Bfibres%2Bwool_PNr%C2%B00084.jpg",
+          "license": "CC BY-SA 3.0 Autriche",
+          "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0/at/",
+          "kind": "photograph"
+        }
+      },
+      "sourceIdsReviewed": [
+        "qh-nature-hemp-lime",
+        "qh-nature-composite-review",
+        "qh-nature-hurd-tissue-paper",
+        "qh-nature-hemp-stubble-paper",
+        "products-tool-hempcrete"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Photographie Commons téléchargée en miniature standard 960 px et examinée ; auteur et licence commerciale CC vérifiés sur page d’origine et API. Échantillons présentés par l’auteur comme tissu, fragments, fibres et laine de chanvre ; les sachets n’ont pas une échelle ou une composition commune."
+      },
+      "quizIdsReviewed": [
+        "hemp-en-3-01",
+        "hemp-en-3-02",
+        "hemp-en-3-03",
+        "hemp-en-3-04",
+        "hemp-en-3-05",
+        "hemp-en-3-06",
+        "hemp-en-3-07",
+        "hemp-en-3-08",
+        "hemp-en-3-09",
+        "hemp-en-3-10",
+        "hemp-en-3-11",
+        "hemp-en-3-12",
+        "hemp-en-3-13",
+        "hemp-en-3-14",
+        "hemp-en-3-15",
+        "hemp-en-3-16",
+        "hemp-en-3-17",
+        "hemp-en-3-18",
+        "hemp-en-3-19",
+        "hemp-en-3-20"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Pourquoi les fibres servent-elles à tant de matériaux ?",
+        "termsExplained": [
+          "lipides",
+          "acides aminés",
+          "tourteau",
+          "liber",
+          "cellulose",
+          "liant",
+          "matrice",
+          "microfibrilles"
+        ],
+        "example": "Fragments de chènevotte pour litières, mélanges et certaines pâtes.",
+        "detailsMoved": [
+          "ref-matieres-chanvre-1",
+          "ref-matieres-chanvre-2"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": [
+          "hemp-en-3-01",
+          "hemp-en-3-02",
+          "hemp-en-3-03",
+          "hemp-en-3-04",
+          "hemp-en-3-05",
+          "hemp-en-3-06",
+          "hemp-en-3-07",
+          "hemp-en-3-08",
+          "hemp-en-3-09",
+          "hemp-en-3-10",
+          "hemp-en-3-11",
+          "hemp-en-3-12",
+          "hemp-en-3-13",
+          "hemp-en-3-14",
+          "hemp-en-3-15",
+          "hemp-en-3-16",
+          "hemp-en-3-17",
+          "hemp-en-3-18",
+          "hemp-en-3-19",
+          "hemp-en-3-20"
+        ]
+      }
+    }
+  ],
+  "termReviews": [
+    {
+      "id": "products-term-carbonation",
+      "definition": "Réaction du dioxyde de carbone avec certains constituants d’un matériau, formant des carbonates. La chaux peut ainsi former du carbonate de calcium ; l’importance de cette réaction dépend du liant, du temps et des conditions.",
+      "sourceIds": [
+        "qh-nature-hemp-lime"
+      ],
+      "findings": [
+        "La revue2025 a été ouverte : introduction, liants aériens/hydrauliques et section sur les bilans carbone. La carbonatation minérale est distincte du carbone biogénique du chanvre ; aucun taux universel ajouté.",
+        "Le communiqué Cerema décrit stockage et échanges hygrothermiques, mais pas assez précisément la réaction minérale : ne pas le substituer seul pour ce terme."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-chenevis",
+      "definition": "Nom des petits fruits du chanvre vendus couramment comme graines. Entiers ou décortiqués, ils fournissent notamment de l’huile et des matières protéiques.",
+      "sourceIds": [
+        "products-lesson-parts"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-shiv",
+      "definition": "Partie ligneuse du cœur de la tige, séparée des fibres extérieures et réduite en fragments. Elle sert notamment dans des litières et certains mélanges de construction.",
+      "sourceIds": [
+        "products-lesson-parts"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-composite",
+      "definition": "Matériau où plusieurs composants travaillent ensemble. Par exemple, des fibres de chanvre renforcent une matrice de plastique : le renfort est végétal, sans rendre tout le produit végétal.",
+      "sourceIds": [
+        "products-lesson-building",
+        "products-lesson-parts"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-extraction",
+      "definition": "Séparation qui fait passer certains constituants d’une matière dans une autre phase ou fraction. Un extrait ne conserve pas forcément toutes les proportions de la plante de départ.",
+      "sourceIds": [
+        "products-lesson-names"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-bast",
+      "definition": "Zone périphérique de la tige contenant les faisceaux de fibres, autour du cœur ligneux. Les fibres textiles de chanvre proviennent de cette zone, appelée liber.",
+      "sourceIds": [
+        "products-lesson-parts",
+        "products-lesson-chain"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-spinning",
+      "definition": "Opération qui forme un fil à partir de fibres préparées. Elle précède le tissage, qui entrecroise les fils.",
+      "sourceIds": [
+        "products-lesson-chain"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-seed-oil",
+      "definition": "Huile provenant des matières grasses des graines. Une huile de graines seule est différente du mélange obtenu lorsqu’on y ajoute un extrait cannabinoïde.",
+      "sourceIds": [
+        "products-lesson-seed-oil"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-carrier",
+      "definition": "Huile utilisée pour porter et mélanger d’autres ingrédients. Par exemple, une huile végétale peut recevoir un extrait : connaître le support ne suffit pas à connaître tout le produit.",
+      "sourceIds": [
+        "products-lesson-seed-oil"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-isolate",
+      "definition": "Matière revendiquant un composé très majoritaire. Le nom ne signifie pas exactement 100 % : identité, teneur et impuretés restent à mesurer.",
+      "sourceIds": [
+        "products-lesson-labels"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-kief",
+      "definition": "Matière rassemblant des trichomes résineux détachés, ces petites structures glandulaires de la plante, avec une part variable de débris. Ce n’est pas du pollen.",
+      "sourceIds": [
+        "products-lesson-names"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-binder",
+      "definition": "Matière qui aide à maintenir les autres constituants ensemble. Dans un béton de chanvre à la chaux, le liant relie les fragments de chènevotte, avec l’eau nécessaire au mélange et à ses réactions.",
+      "sourceIds": [
+        "products-lesson-building"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "harvest-term-dry-matter",
+      "definition": "Masse restant lorsqu’on exclut l’eau selon la méthode de mesure. Dans un exemple de 100 kg à 10 % d’eau, la matière sèche représente 90 kg.",
+      "sourceIds": [
+        "harvest-lesson-moisture"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-oxidation",
+      "definition": "Dans le cas de l’huile étudiée, réaction des matières grasses avec l’oxygène, produisant de nouvelles substances. Des hydroperoxydes peuvent apparaître puis se décomposer : un seul indicateur ne raconte pas toute l’évolution.",
+      "sourceIds": [
+        "products-lesson-oil-stability"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-resin",
+      "definition": "Mélange sécrété par de petites glandes de la plante, contenant notamment cannabinoïdes et molécules odorantes. Il est différent de l’huile grasse des graines.",
+      "sourceIds": [
+        "products-lesson-names"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-retting",
+      "definition": "Transformation biologique facilitant la séparation de certains tissus de la tige. Des bactéries et champignons dégradent notamment les pectines qui contribuent à les unir.",
+      "sourceIds": [
+        "products-lesson-chain"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-separation",
+      "definition": "Opération qui répartit des constituants entre plusieurs fractions sans exiger qu’ils changent de molécule. Séparer une partie de l’huile d’une graine laisse par exemple un tourteau.",
+      "sourceIds": [
+        "products-lesson-parts",
+        "products-lesson-names"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "products-term-weaving",
+      "definition": "Formation d’une étoffe en croisant des fils de chaîne et de trame. Les fils sont déjà formés : le tissage ne se confond pas avec la filature.",
+      "sourceIds": [
+        "products-lesson-chain"
+      ],
+      "findings": [
+        "Définition relue dans les mécanismes concernés ; distinction matière, transformation et destination conservée."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    }
+  ],
+  "quizPatches": [
+    {
+      "id": "hemp-seeds-chenevis",
+      "prompt": "Quel nom désigne couramment les graines de chanvre ?",
+      "options": [
+        "La filasse",
+        "Le chènevis",
+        "La chènevotte",
+        "Les étoupes"
+      ],
+      "answer": 1,
+      "explanation": "Le chènevis désigne les petits fruits secs du chanvre, couramment vendus sous le nom graines. Ils contiennent la graine et son enveloppe.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "products-lesson-parts"
+      ]
+    },
+    {
+      "id": "hemp-seeds-reserves",
+      "prompt": "Quels deux constituants sont abondants dans les graines de chanvre ?",
+      "options": [
+        "Eau et sels minéraux",
+        "Lactose et protéines",
+        "Saccharose et amidon",
+        "Lipides et protéines"
+      ],
+      "answer": 3,
+      "explanation": "Les graines renferment des lipides, les matières grasses, et des protéines, chaînes d’acides aminés. Le pressage répartit ces réserves entre huile et tourteau.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ]
+    },
+    {
+      "id": "hemp-seeds-pericarpe",
+      "prompt": "Comment nomme-t-on la paroi du petit fruit sec qui entoure la graine de chanvre ?",
+      "options": [
+        "Le pétiole",
+        "Le péricarpe",
+        "Le limbe",
+        "Le cambium"
+      ],
+      "answer": 1,
+      "explanation": "Le péricarpe est la paroi du fruit autour de la graine. Il provient de la paroi de l’ovaire de la fleur ; le décorticage retire cette enveloppe.",
+      "articleId": "ref-graines-chanvre",
+      "sourceIds": [
+        "products-lesson-parts"
+      ]
+    },
+    {
+      "id": "hemp-seeds-huile",
+      "prompt": "Quelle partie du chanvre fournit son huile alimentaire ?",
+      "options": [
+        "Les racines",
+        "Les tiges",
+        "Les graines",
+        "Les pétales"
+      ],
+      "answer": 2,
+      "explanation": "L’huile alimentaire vient des matières grasses des graines. Elle est différente de la résine produite par les petites glandes de la plante.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-lesson-seed-oil"
+      ]
+    },
+    {
+      "id": "hemp-seeds-insaturation",
+      "prompt": "Quel type d’acides gras domine dans l’huile de graines de chanvre ?",
+      "options": [
+        "Les acides gras trans",
+        "Les acides gras saturés",
+        "Les acides gras ramifiés",
+        "Les acides gras polyinsaturés"
+      ],
+      "answer": 3,
+      "explanation": "Les acides gras polyinsaturés dominent généralement : leurs chaînes portent plusieurs doubles liaisons. Linoléique et alpha-linolénique en sont des exemples.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-tool-seed-oil"
+      ]
+    },
+    {
+      "id": "hemp-seeds-linoleique",
+      "prompt": "Quel acide gras est généralement le plus abondant dans l’huile de chènevis ?",
+      "options": [
+        "L’acide palmitique",
+        "L’acide stéarique",
+        "L’acide linoléique",
+        "L’acide laurique"
+      ],
+      "answer": 2,
+      "explanation": "Le linoléique est généralement l’acide gras le plus abondant de l’huile de graines. Sa proportion reste liée au produit et à sa transformation.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-tool-seed-oil"
+      ]
+    },
+    {
+      "id": "hemp-seeds-omega-trois",
+      "prompt": "Quel oméga-3 trouve-t-on naturellement dans l’huile de graines de chanvre ?",
+      "options": [
+        "L’acide oléique",
+        "L’acide palmitique",
+        "L’acide linoléique",
+        "L’acide alpha-linolénique"
+      ],
+      "answer": 3,
+      "explanation": "L’alpha-linolénique appartient à la famille des oméga-3. Il est présent naturellement dans l’huile de graines, à côté notamment du linoléique.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-tool-seed-oil"
+      ]
+    },
+    {
+      "id": "hemp-seeds-pigment-huile",
+      "prompt": "Quel pigment contribue à la couleur verte de certaines huiles de chènevis ?",
+      "options": [
+        "La mélanine",
+        "La chlorophylle",
+        "L’hémoglobine",
+        "La phycocyanine"
+      ],
+      "answer": 1,
+      "explanation": "Les chlorophylles sont des pigments verts pouvant accompagner l’huile. La teinte verte ne suffit pas à garantir sa qualité ou sa stabilité.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-tool-seed-oil"
+      ]
+    },
+    {
+      "id": "hemp-seeds-stearidonique",
+      "prompt": "Quel acide gras minoritaire de l’huile de chanvre possède quatre doubles liaisons ?",
+      "options": [
+        "L’acide oléique",
+        "L’acide stéarique",
+        "L’acide palmitique",
+        "L’acide stéaridonique"
+      ],
+      "answer": 3,
+      "explanation": "L’écriture 18:4 du stéaridonique indique dix-huit carbones et quatre doubles liaisons. Il est minoritaire dans l’huile étudiée.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-tool-seed-oil"
+      ]
+    },
+    {
+      "id": "hemp-seeds-tocopherol",
+      "prompt": "Quel tocophérol est généralement majoritaire dans l’huile de graines de chanvre ?",
+      "options": [
+        "Le gamma-tocophérol",
+        "Le bêta-tocophérol",
+        "Le delta-tocophérol",
+        "L’alpha-tocophérol"
+      ],
+      "answer": 0,
+      "explanation": "Le gamma-tocophérol domine généralement parmi les tocophérols de cette huile. Ces molécules sont apparentées à la vitamine E, mais leur présence ne garantit pas une conservation sans changement.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-tool-seed-oil"
+      ]
+    },
+    {
+      "id": "hemp-seeds-hexanal",
+      "prompt": "À quelle famille appartient l’hexanal formé lors de l’oxydation d’huile de chènevis ?",
+      "options": [
+        "Aux protéines",
+        "Aux sels minéraux",
+        "Aux polysaccharides",
+        "Aux aldéhydes"
+      ],
+      "answer": 3,
+      "explanation": "L’hexanal est un aldéhyde : il porte un groupe terminal –CHO. Il peut se former lors de la décomposition de premiers produits d’oxydation de l’huile.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-tool-seed-oil"
+      ]
+    },
+    {
+      "id": "hemp-prevention-hydroperoxydes",
+      "prompt": "Quels composés sont des produits primaires de l’oxydation de l’huile de chènevis ?",
+      "options": [
+        "Les aldéhydes volatils",
+        "Les hydroperoxydes lipidiques",
+        "Les acides aminés libres",
+        "Les sucres simples"
+      ],
+      "answer": 1,
+      "explanation": "Les hydroperoxydes sont de premiers produits de la réaction des lipides avec l’oxygène. Ils peuvent ensuite se transformer : leur baisse ne signifie pas que l’huile revient à son état initial.",
+      "articleId": "ref-huile-graines",
+      "sourceIds": [
+        "products-tool-seed-oil"
+      ]
+    },
+    {
+      "id": "hemp-seeds-farine",
+      "prompt": "Quelle opération transforme une matière issue des graines de chanvre en farine ?",
+      "options": [
+        "Le tissage",
+        "Le broyage",
+        "Le rouissage",
+        "Le peignage"
+      ],
+      "answer": 1,
+      "explanation": "Le broyage réduit la matière en petites particules et donne une farine. Il change d’abord la taille ; une séparation supplémentaire est nécessaire pour modifier certaines proportions.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ]
+    },
+    {
+      "id": "hemp-seeds-acides-amines",
+      "prompt": "De quelles unités les protéines du chènevis sont-elles constituées ?",
+      "options": [
+        "De grains de pollen",
+        "De cristaux de silice",
+        "D’acides aminés",
+        "D’acides gras"
+      ],
+      "answer": 2,
+      "explanation": "Les protéines sont des chaînes d’acides aminés. Leur quantité ne donne pas, à elle seule, la proportion de chacun de ces acides aminés.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ]
+    },
+    {
+      "id": "hemp-seeds-edestine",
+      "prompt": "L’édestine présente dans le chènevis est…",
+      "options": [
+        "Une protéine",
+        "Un pigment vert",
+        "Un acide gras",
+        "Un sucre simple"
+      ],
+      "answer": 0,
+      "explanation": "L’édestine est une protéine de réserve de la graine. Elle appartient à la famille des globulines, distincte de celle des albumines.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ]
+    },
+    {
+      "id": "hemp-seeds-fractions-proteines",
+      "prompt": "Quelles familles regroupent les principales protéines de réserve du chènevis ?",
+      "options": [
+        "Collagènes et kératines",
+        "Actines et myosines",
+        "Globulines et albumines",
+        "Élastines et fibroïnes"
+      ],
+      "answer": 2,
+      "explanation": "Globulines et albumines sont les principales familles de protéines de réserve du chènevis. L’édestine est un exemple de globuline.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ]
+    },
+    {
+      "id": "hemp-seeds-solubilite",
+      "prompt": "Quand la solubilité des protéines de chanvre est-elle généralement la plus faible ?",
+      "options": [
+        "À tout pH alcalin",
+        "À leur point isoélectrique",
+        "À tout pH acide",
+        "À toute température froide"
+      ],
+      "answer": 1,
+      "explanation": "Au point isoélectrique, les charges positives et négatives d’une protéine s’équilibrent : sa charge totale est nulle. Sa solubilité est alors généralement la plus faible.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ]
+    },
+    {
+      "id": "hemp-seeds-ponts",
+      "prompt": "Quelle liaison entre deux atomes de soufre peut relier des protéines de chanvre ?",
+      "options": [
+        "Une liaison ester",
+        "Une liaison glycosidique",
+        "Un pont disulfure",
+        "Une liaison phosphodiester"
+      ],
+      "answer": 2,
+      "explanation": "Un pont disulfure est une liaison –S–S– entre deux atomes de soufre portés par des cystéines, des acides aminés. Il peut relier des parties d’une même protéine ou de protéines différentes.",
+      "articleId": "ref-proteines-chanvre",
+      "sourceIds": [
+        "products-tool-seed-protein"
+      ]
+    },
+    {
+      "id": "hemp-profiles-position-fibres",
+      "prompt": "Où se trouvent les fibres textiles dans une tige de chanvre ?",
+      "options": [
+        "Dans le liber périphérique",
+        "Dans la moelle centrale",
+        "Dans les vaisseaux du bois",
+        "Sur la cuticule extérieure"
+      ],
+      "answer": 0,
+      "explanation": "Le liber est la zone extérieure de la tige, autour du cœur ligneux. Il contient les faisceaux de fibres utilisés notamment pour les fils.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "products-tool-textile"
+      ]
+    },
+    {
+      "id": "hemp-profiles-filature",
+      "prompt": "Que produit la filature des fibres de chanvre ?",
+      "options": [
+        "Un granulat",
+        "Un fil",
+        "Une huile",
+        "Un liant"
+      ],
+      "answer": 1,
+      "explanation": "La filature transforme les fibres préparées en fil. Le tissage intervient ensuite pour entrecroiser des fils.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "products-tool-textile"
+      ]
+    },
+    {
+      "id": "hemp-profiles-tissage",
+      "prompt": "Comment le tissage forme-t-il une étoffe de chanvre ?",
+      "options": [
+        "En broyant des graines",
+        "En comprimant des tiges",
+        "En collant des feuilles",
+        "En entrecroisant des fils"
+      ],
+      "answer": 3,
+      "explanation": "Le tissage croise les fils de chaîne, disposés dans la longueur, avec ceux de trame. C’est cet assemblage qui forme l’étoffe.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "products-tool-textile"
+      ]
+    },
+    {
+      "id": "hemp-profiles-teillage",
+      "prompt": "Que sépare le teillage du chanvre ?",
+      "options": [
+        "Les fibres et la chènevotte",
+        "L’huile et les protéines",
+        "Le pollen et les ovules",
+        "Les feuilles et leurs nervures"
+      ],
+      "answer": 0,
+      "explanation": "Le teillage, ou défibrage, sépare mécaniquement les fibres extérieures du cœur ligneux qui fournit la chènevotte.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "products-tool-textile"
+      ]
+    },
+    {
+      "id": "hemp-profiles-etoupes",
+      "prompt": "Dans la préparation textile du chanvre, que désignent les étoupes ?",
+      "options": [
+        "Les tiges encore debout",
+        "Les fibres courtes",
+        "Les graines vides",
+        "Les liants minéraux"
+      ],
+      "answer": 1,
+      "explanation": "Les étoupes sont les fibres courtes séparées au cours de la préparation textile. Elles peuvent suivre une autre voie que les longues fibres.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "products-tool-textile"
+      ]
+    },
+    {
+      "id": "hemp-profiles-peignage",
+      "prompt": "Quel effet le peignage recherche-t-il sur les fibres de chanvre ?",
+      "options": [
+        "Les dissoudre dans l’eau",
+        "Les transformer en graines",
+        "Les disposer parallèlement",
+        "Les souder en blocs"
+      ],
+      "answer": 2,
+      "explanation": "Le peignage aligne les fibres parallèlement et aide à les nettoyer. Il prépare la matière avant de former le fil.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "products-tool-textile"
+      ]
+    },
+    {
+      "id": "hemp-profiles-pectines",
+      "prompt": "Quelles substances qui unissent les tissus sont dégradées pendant le rouissage du chanvre ?",
+      "options": [
+        "Les pectines",
+        "Les protéines du chènevis",
+        "Les huiles des graines",
+        "Les pigments du pollen"
+      ],
+      "answer": 0,
+      "explanation": "Les pectines contribuent à unir certains tissus. Leur dégradation pendant le rouissage aide à les séparer ; le défibrage assure ensuite une séparation mécanique.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "products-tool-fibres",
+        "products-tool-textile"
+      ]
+    },
+    {
+      "id": "hemp-profiles-ourdissage",
+      "prompt": "Quels fils prépare l’ourdissage pour tisser une étoffe de chanvre ?",
+      "options": [
+        "Les fils de trame",
+        "Les fils de couture",
+        "Les fils de broderie",
+        "Les fils de chaîne"
+      ],
+      "answer": 3,
+      "explanation": "L’ourdissage prépare les fils de chaîne placés dans la longueur. La trame les croisera pendant le tissage.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "products-tool-textile"
+      ]
+    },
+    {
+      "id": "hemp-profiles-rouissage-organismes",
+      "prompt": "Quels organismes participent au rouissage biologique des pailles de chanvre ?",
+      "options": [
+        "Les oiseaux granivores",
+        "Les seuls vers de terre",
+        "Des bactéries et champignons",
+        "Les insectes pollinisateurs"
+      ],
+      "answer": 2,
+      "explanation": "Des bactéries et champignons participent à la dégradation de certains constituants des tissus. C’est une action biologique, différente du travail mécanique de séparation.",
+      "articleId": "ref-fibres-chanvre",
+      "sourceIds": [
+        "products-tool-fibres",
+        "products-primary-retting-2015"
+      ]
+    },
+    {
+      "id": "hemp-profiles-chenevotte",
+      "prompt": "Quelle matière provient de la partie ligneuse intérieure de la tige de chanvre ?",
+      "options": [
+        "Le chènevis",
+        "La filasse",
+        "Le pollen",
+        "La chènevotte"
+      ],
+      "answer": 3,
+      "explanation": "La chènevotte vient du cœur ligneux de la tige, distinct des faisceaux de fibres de sa périphérie.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "products-tool-materials"
+      ]
+    },
+    {
+      "id": "hemp-profiles-beton",
+      "prompt": "Quels ingrédients végétal et minéral composent un béton de chanvre à la chaux ?",
+      "options": [
+        "Graines et sable",
+        "Feuilles et argile",
+        "Chènevotte et chaux",
+        "Pollen et plâtre"
+      ],
+      "answer": 2,
+      "explanation": "Le mélange associe des granulats de chènevotte à un liant à base de chaux. L’eau intervient aussi dans sa mise en œuvre et les réactions du liant.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "products-tool-hempcrete"
+      ]
+    },
+    {
+      "id": "hemp-profiles-carbonatation",
+      "prompt": "Quel gaz réagit avec la chaux lors de la carbonatation d’un béton de chanvre ?",
+      "options": [
+        "Le diazote",
+        "Le dihydrogène",
+        "Le dioxyde de carbone",
+        "Le méthane"
+      ],
+      "answer": 2,
+      "explanation": "La chaux peut réagir avec le dioxyde de carbone, ou CO2, pour former du carbonate de calcium. Cette réaction ne compense pas automatiquement toutes les émissions du matériau.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "products-tool-hempcrete"
+      ]
+    },
+    {
+      "id": "hemp-profiles-hygroscopie",
+      "prompt": "Un matériau de chanvre hygroscopique échange principalement quoi avec l’air ?",
+      "options": [
+        "De la vapeur d’eau",
+        "Des grains de sable",
+        "Des fibres textiles",
+        "Des cristaux de sel"
+      ],
+      "answer": 0,
+      "explanation": "Hygroscopique signifie capable de recevoir et restituer de l’humidité de l’air, donc de la vapeur d’eau. Cela ne veut pas dire étanche à la pluie.",
+      "articleId": "ref-chenevotte-materiaux",
+      "sourceIds": [
+        "products-tool-hempcrete"
+      ]
+    },
+    {
+      "id": "hemp-en-3-01",
+      "prompt": "En plus de la chènevotte et du liant, quel ingrédient entre dans un mélange chanvre-chaux ?",
+      "options": [
+        "De l’eau",
+        "De l’huile de graines",
+        "Du sucre",
+        "De la résine de pin"
+      ],
+      "answer": 0,
+      "explanation": "L’eau aide à mettre le mélange en œuvre et participe aux réactions du liant. Elle ne doit donc pas être oubliée lorsqu’on décrit un mélange chanvre–chaux.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hemp-lime"
+      ]
+    },
+    {
+      "id": "hemp-en-3-02",
+      "prompt": "Quel polymère végétal constitue une grande part des fibres de chanvre ?",
+      "options": [
+        "La cellulose",
+        "L’amidon",
+        "La chitine",
+        "Le caoutchouc"
+      ],
+      "answer": 0,
+      "explanation": "La cellulose est une longue chaîne d’unités de sucre, assemblée dans la paroi des cellules fibreuses. Son organisation contribue à leurs propriétés.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-03",
+      "prompt": "Quel produit absorbant a été fabriqué expérimentalement avec des fibres de chènevotte ?",
+      "options": [
+        "Du papier essuie-tout",
+        "Du verre plat",
+        "Un film métallique",
+        "Une céramique"
+      ],
+      "answer": 0,
+      "explanation": "L’étude fabrique des feuilles tissue et essuie-tout avec un mélange de fibres de bois et de chènevotte. Ce résultat expérimental ne signifie pas que tout essuie-tout en chanvre possède la même composition.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-04",
+      "prompt": "Le chaume de chanvre désigne notamment…",
+      "options": [
+        "Les restes de tiges laissés après récolte",
+        "Les fleurs femelles seules",
+        "Le pollen libéré",
+        "L’huile pressée"
+      ],
+      "answer": 0,
+      "explanation": "Le chaume comprend les parties de tiges restant après la récolte. Il a été étudié, avec des racines résiduelles, comme matière possible pour la papeterie.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hemp-stubble-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-05",
+      "prompt": "Dans les usages papetiers du chanvre, que désigne une « pâte » ?",
+      "options": [
+        "Des fibres mises en suspension",
+        "Une huile solidifiée",
+        "Une résine aromatique",
+        "Une farine de graines sèche"
+      ],
+      "answer": 0,
+      "explanation": "Une pâte papetière est une suspension de fibres préparées, destinée à former la feuille. Ce n’est pas un fil que l’on tisse.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-06",
+      "prompt": "Quel constituant contribue au caractère ligneux de la chènevotte ?",
+      "options": [
+        "La lignine",
+        "Le gluten",
+        "La kératine",
+        "Le glycogène"
+      ],
+      "answer": 0,
+      "explanation": "La lignine contribue au caractère ligneux du cœur de tige. La chènevotte en est généralement plus riche que les fibres textiles du liber.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hemp-stubble-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-07",
+      "prompt": "Comment sont généralement les fibres de chènevotte par rapport aux fibres du liber ?",
+      "options": [
+        "Plus courtes",
+        "Plus longues",
+        "De longueur toujours identique",
+        "Sans paroi cellulaire"
+      ],
+      "answer": 0,
+      "explanation": "Les fibres du cœur de tige sont généralement plus courtes que celles du liber. Cette différence aide à comprendre pourquoi les fractions n’ont pas les mêmes usages.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hemp-stubble-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-08",
+      "prompt": "Le lumen d’une fibre de chanvre correspond à…",
+      "options": [
+        "Sa cavité centrale",
+        "Son pigment vert",
+        "Une graine incorporée",
+        "Une goutte d’huile externe"
+      ],
+      "answer": 0,
+      "explanation": "Le lumen est la cavité au centre de la cellule fibreuse, entourée de sa paroi. Il ne désigne pas la couche qui unit plusieurs cellules.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-09",
+      "prompt": "Un revêtement hydrophobe sur une fibre de chanvre tend à…",
+      "options": [
+        "Réduire son affinité pour l’eau",
+        "Augmenter sa teneur en protéines",
+        "La transformer en métal",
+        "Lui ajouter des graines"
+      ],
+      "answer": 0,
+      "explanation": "Hydrophobe signifie qui a peu d’affinité pour l’eau. Un tel revêtement vise notamment à mieux adapter une fibre à certaines matrices de composites.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-10",
+      "prompt": "Le module de Young d’une fibre de chanvre décrit surtout…",
+      "options": [
+        "Sa rigidité élastique",
+        "Sa couleur",
+        "Sa teneur en huile",
+        "Son odeur"
+      ],
+      "answer": 0,
+      "explanation": "Le module de Young décrit la résistance à une déformation élastique, donc réversible. Il ne se confond pas avec la charge à laquelle le matériau casse.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-11",
+      "prompt": "Quels groupes chimiques de la cellulose favorisent l’affinité des fibres de chanvre pour l’eau ?",
+      "options": [
+        "Les groupes hydroxyle –OH",
+        "Les groupes thiol –SH",
+        "Les groupes nitrile –CN",
+        "Les groupes chlorure –Cl"
+      ],
+      "answer": 0,
+      "explanation": "Les groupes –OH, appelés hydroxyle, peuvent interagir avec l’eau. Leur présence contribue à l’affinité des fibres pour l’humidité.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-12",
+      "prompt": "Dans la tige de chanvre, quelle fraction est généralement plus lignifiée que le liber textile ?",
+      "options": [
+        "La chènevotte",
+        "Le pollen",
+        "Le chènevis décortiqué",
+        "Les stigmates"
+      ],
+      "answer": 0,
+      "explanation": "La chènevotte est la fraction du cœur ligneux, généralement plus riche en lignine que le liber utilisé pour les fibres textiles.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hemp-stubble-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-13",
+      "prompt": "Dans la cellulose des fibres de chanvre, une zone cristalline possède une organisation…",
+      "options": [
+        "Plus ordonnée",
+        "Entièrement gazeuse",
+        "Sans molécules liées",
+        "Formée de sels minéraux seuls"
+      ],
+      "answer": 0,
+      "explanation": "Cristallin signifie ici que les chaînes sont organisées de manière plus ordonnée. D’autres régions de la cellulose sont moins ordonnées.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-14",
+      "prompt": "Dans un composite chanvre/PP, que signifie PP ?",
+      "options": [
+        "Polypropylène",
+        "Polystyrène",
+        "Polycarbonate",
+        "Polyuréthane"
+      ],
+      "answer": 0,
+      "explanation": "PP abrège polypropylène, un plastique pouvant servir de matrice autour des fibres. Ajouter du chanvre ne rend pas ce plastique lui-même végétal.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-15",
+      "prompt": "Pour un papier contenant du chanvre, la résistance à l’éclatement concerne…",
+      "options": [
+        "La rupture sous une pression appliquée",
+        "La vitesse de coloration",
+        "Le pouvoir odorant",
+        "La teneur en huile"
+      ],
+      "answer": 0,
+      "explanation": "Le test d’éclatement concerne la rupture sous une pression appliquée. Il est distinct du test qui tire sur la feuille ou de la mesure d’absorption d’eau.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ]
+    },
+    {
+      "id": "hemp-en-3-16",
+      "prompt": "Quelles structures de cellulose participent à la résistance mécanique d’une fibre de chanvre ?",
+      "options": [
+        "Les microfibrilles",
+        "Les ribosomes",
+        "Les chromosomes",
+        "Les globules lipidiques"
+      ],
+      "answer": 0,
+      "explanation": "Les microfibrilles sont de fins ensembles de chaînes de cellulose organisés dans la paroi. Leur arrangement participe à ses propriétés mécaniques.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-17",
+      "prompt": "Dans un composite à fibres de chanvre, une délamination est…",
+      "options": [
+        "Une séparation entre couches ou interfaces",
+        "Une germination des fibres",
+        "Une formation de chlorophylle",
+        "Une fonte du cœur ligneux"
+      ],
+      "answer": 0,
+      "explanation": "Une délamination sépare des couches ou des interfaces du matériau. Une mauvaise adhésion entre fibre et matrice peut y contribuer.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-18",
+      "prompt": "Quelle couche lie les cellules fibreuses du chanvre en faisceaux ?",
+      "options": [
+        "La lamelle moyenne",
+        "La cuticule de la graine",
+        "Le cambium entier",
+        "Le lumen"
+      ],
+      "answer": 0,
+      "explanation": "La lamelle moyenne est la couche qui unit les cellules fibreuses en faisceaux. Elle contient notamment des pectines, impliquées dans leur cohésion.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-19",
+      "prompt": "Dans les fibres de chanvre, les hémicelluloses appartiennent à quelle grande famille ?",
+      "options": [
+        "Polysaccharides",
+        "Triglycérides",
+        "Protéines",
+        "Terpènes"
+      ],
+      "answer": 0,
+      "explanation": "Les hémicelluloses sont des polysaccharides, c’est-à-dire de longues chaînes de petites unités de sucre. Elles sont associées à la cellulose dans les parois.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-composite-review"
+      ]
+    },
+    {
+      "id": "hemp-en-3-20",
+      "prompt": "Quelle propriété d’un papier chanvre-bois peut être évaluée à sec et à l’état humide ?",
+      "options": [
+        "Sa résistance à la traction",
+        "Le nombre de ses graines",
+        "Sa vitesse de photosynthèse",
+        "La fertilité de son pollen"
+      ],
+      "answer": 0,
+      "explanation": "On peut tirer sur une feuille sèche ou humide et mesurer sa résistance à la traction. Son comportement dépend de son état d’humidité.",
+      "articleId": "ref-matieres-chanvre",
+      "sourceIds": [
+        "qh-nature-hurd-tissue-paper"
+      ]
+    }
+  ],
+  "sensitivePoints": [
+    "Cabral : le texte contient un libellé edestin (albumin) incohérent avec son introduction ; édéstine conservée comme globuline, albumines distinctes. Ne pas confondre tous les types de réticulation avec des ponts disulfure.",
+    "Les études de vieillissement accéléré ne donnent pas une durée de conservation universelle.",
+    "Cerema : étude exploratoire avec bâtiment simulé ; aucun pourcentage d’économie transféré à tous les bâtiments.",
+    "L’ACV Arrigoni reste inaccessible directement ; seules les idées générales recoupées dans la littérature ouverte sont ajoutées, aucun chiffre de résultat repris.",
+    "Source composite 2025 : revue secondaire identifiée ; les points de structure sont recoupés autant que possible avec l’étude originale Cellulose 2026.",
+    "Photo D-Kuru : le sachet de fragments ne doit pas être présenté comme un lot de chènevotte certifié ni comme un dosage des fractions."
+  ],
+  "pedagogicalRevision": {
+    "date": "2026-11-14",
+    "status": "ready-for-coordinator-review",
+    "articleIdsRewritten": [
+      "ref-graines-chanvre",
+      "ref-huile-graines",
+      "ref-proteines-chanvre",
+      "ref-fibres-chanvre",
+      "ref-chenevotte-materiaux",
+      "ref-resines-extraits",
+      "ref-matieres-chanvre"
+    ],
+    "pilotPreserved": false
+  }
+}

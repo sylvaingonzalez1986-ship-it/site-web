@@ -1,0 +1,2431 @@
+{
+  "domain": "terpenes",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "terpenes-lesson-terpenes",
+      "title": "Glossary of class names of organic compounds and reactive intermediates based on structure — terpenes",
+      "author": "G. P. Moss, P. A. S. Smith et D. Tavernier",
+      "organization": "IUPAC / version électronique Queen Mary University of London",
+      "published": "1995, Pure and Applied Chemistry 67, 1307–1375",
+      "url": "https://iupac.qmul.ac.uk/class/terp.html",
+      "passage": "Entrées terpenes et isoprenoids : hydrocarbures et classement C5/C10/C15 ; dérivation formelle, pas polymérisation biologique d’isoprène libre.",
+      "access": "full-text",
+      "limitation": "Version web autorisée par l’IUPAC, identité avec le document publié déclarée dans l’index ; les pages Gold Book actuelles ont refusé l’accès.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Recommandations de nomenclature originales",
+      "reviewEvidence": [
+        {
+          "url": "https://goldbook.iupac.org/terms/view/T06278",
+          "sections": "Tentative d’ouverture : contenu non obtenu (403, CAPTCHA ou accès technique). Ne pas compter comme document relu.",
+          "result": "inaccessible",
+          "supports": []
+        },
+        {
+          "url": "https://iupac.qmul.ac.uk/class/terp.html",
+          "sectionsOpened": [
+            "Entrées terpenes et isoprenoids : hydrocarbures et classement C5/C10/C15 ; dérivation formelle, pas polymérisation biologique d’isoprène libre.",
+            "Index éditorial : auteurs, publication 1995 et autorisation IUPAC"
+          ],
+          "result": "Document ouvert et passages lus par le coordinateur le 14 novembre 2026.",
+          "status": "read"
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-booth2017",
+      "title": "Terpene synthases from Cannabis sativa",
+      "author": "Judith K. Booth, Jonathan E. Page et Jörg Bohlmann",
+      "organization": "PLOS ONE",
+      "published": "29 mars 2017 ; 12(3):e0173911",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+      "passage": "Résumé, introduction, tableau 1 et caractérisation des synthases : trichomes de Finola, précurseurs, enzymes à un ou plusieurs produits et variation entre plantes.",
+      "access": "excerpt",
+      "limitation": "Étude sur des matériels identifiés, pas inventaire de toute l’espèce. Les voies biochimiques sont expliquées sans protocole ni optimisation de production.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document primaire ou ressource institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "sections": "PLOS : introduction, figures 1–2, méthodes analytiques et résultats des synthases ; IPP/DMAPP, GPP/FPP et CsTPS9.",
+          "result": "read",
+          "supports": "Résumé, introduction, tableau 1 et caractérisation des synthases : trichomes de Finola, précurseurs, enzymes à un ou plusieurs produits et variation entre plantes."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-terpenoids",
+      "title": "Glossary of class names of organic compounds and reactive intermediates based on structure — terpenoids",
+      "author": "G. P. Moss, P. A. S. Smith et D. Tavernier",
+      "organization": "IUPAC / version électronique Queen Mary University of London",
+      "published": "1995, Pure and Applied Chemistry 67, 1307–1375",
+      "url": "https://iupac.qmul.ac.uk/class/terp.html",
+      "passage": "Entrées terpenoids et monoterpenoids : fonctions oxygénées, squelette pouvant perdre ou déplacer un fragment.",
+      "access": "full-text",
+      "limitation": "Version web autorisée par l’IUPAC, identité avec le document publié déclarée dans l’index ; les pages Gold Book actuelles ont refusé l’accès.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Recommandations de nomenclature originales",
+      "reviewEvidence": [
+        {
+          "url": "https://goldbook.iupac.org/terms/view/T06279",
+          "sections": "Tentative d’ouverture : contenu non obtenu (403, CAPTCHA ou accès technique). Ne pas compter comme document relu.",
+          "result": "inaccessible",
+          "supports": []
+        },
+        {
+          "url": "https://iupac.qmul.ac.uk/class/terp.html",
+          "sectionsOpened": [
+            "Entrées terpenoids et monoterpenoids : fonctions oxygénées, squelette pouvant perdre ou déplacer un fragment.",
+            "Index éditorial : auteurs, publication 1995 et autorisation IUPAC"
+          ],
+          "result": "Document ouvert et passages lus par le coordinateur le 14 novembre 2026.",
+          "status": "read"
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-linalool",
+      "title": "NIST Chemistry WebBook — Linalool",
+      "author": "National Institute of Standards and Technology",
+      "organization": "NIST, SRD 69",
+      "published": "Base courante consultée le 12 novembre 2026",
+      "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C78706&Units=SI",
+      "passage": "Identité, structure et formule C10H18O ; nom 3,7-diméthylocta-1,6-dièn-3-ol.",
+      "access": "official-page",
+      "limitation": "Fiche d’identité chimique ; elle ne démontre ni présence dans un Buddy ni bénéfice médical de cette molécule.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document primaire ou ressource institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://webbook.nist.gov/cgi/cbook.cgi?ID=C78706&Units=SI",
+          "sections": "Tentative d’ouverture : contenu non obtenu (403, CAPTCHA ou accès technique). Ne pas compter comme document relu.",
+          "result": "inaccessible",
+          "supports": []
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-enantiomer",
+      "title": "Gold Book — enantiomer",
+      "author": "International Union of Pure and Applied Chemistry",
+      "organization": "IUPAC",
+      "published": "Recommandations stéréochimiques 1996 ; portail consulté en 2026",
+      "url": "https://goldbook.iupac.org/terms/view/E02069",
+      "passage": "Définition E02069 : relation entre deux images miroir moléculaires non superposables.",
+      "access": "official-page",
+      "limitation": "Une définition géométrique ne prédit pas à elle seule l’odeur, l’activité ou la proportion des formes dans un lot.",
+      "verifiedAt": "2026-11-12",
+      "documentKind": "Document primaire ou ressource institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://goldbook.iupac.org/terms/view/E02069",
+          "sections": "Tentative d’ouverture : contenu non obtenu (403, CAPTCHA ou accès technique). Ne pas compter comme document relu.",
+          "result": "inaccessible",
+          "supports": []
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-rice2015",
+      "title": "Characterizing the Smell of Marijuana by Odor Impact of Volatile Compounds",
+      "author": "Somchai Rice et Jacek A. Koziel",
+      "organization": "PLOS ONE",
+      "published": "10 décembre 2015 ; 10(12):e0144160",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0144160",
+      "passage": "Sections Odor activity value, analyse simultanée GC–MS–olfactométrie et résultats de classement concentration/contribution odorante.",
+      "access": "excerpt",
+      "limitation": "Échantillons et méthode spécifiques ; certaines concentrations sont des estimations relatives. Les seuils publiés et l’OAV ne sont pas une prédiction exhaustive du mélange pour chaque personne.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document primaire ou ressource institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0144160",
+          "sections": "PLOS : résumé et introduction ; abondance chimique et activité odorante distinguées.",
+          "result": "read",
+          "supports": "Sections Odor activity value, analyse simultanée GC–MS–olfactométrie et résultats de classement concentration/contribution odorante."
+        }
+      ]
+    },
+    {
+      "id": "tp-booth2017",
+      "title": "Terpene synthases from Cannabis sativa",
+      "author": "Judith K. Booth, Jonathan E. Page et Jörg Bohlmann",
+      "organization": "PLOS ONE",
+      "published": "2017-03-29",
+      "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+      "passage": "Tableaux 1–2 ; résultats « Functional characterization » ; figures 3–5 ; méthodes GC-MS et séparation chirale.",
+      "access": "excerpt",
+      "documentKind": "Étude analytique et enzymes recombinantes",
+      "limitation": "Finola et enzymes testées : ni tous les cannabis, ni preuve d’un effet humain. Certains produits thermolabiles se réarrangent pendant l’analyse.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0173911",
+          "sections": "PLOS : introduction, figures 1–2, méthodes analytiques et résultats des synthases ; IPP/DMAPP, GPP/FPP et CsTPS9.",
+          "result": "read",
+          "supports": "Tableaux 1–2 ; résultats « Functional characterization » ; figures 3–5 ; méthodes GC-MS et séparation chirale."
+        }
+      ]
+    },
+    {
+      "id": "tp-booth2020",
+      "title": "Terpene Synthases and Terpene Variation in Cannabis sativa",
+      "author": "Judith K. Booth, Macaire M. S. Yuen, Sharon Jancsik, Lufiani L. Madilao, Jonathan E. Page et Jörg Bohlmann",
+      "organization": "Plant Physiology",
+      "published": "2020-06-26",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479917/",
+      "passage": "Tableau 1, légende des astérisques ; « Functions of CsTPSs » ; figures 9–10 ; « Terpene Extraction and Analysis ».",
+      "access": "excerpt",
+      "documentKind": "Profils végétaux et caractérisation fonctionnelle",
+      "limitation": "Les pics sans astérisque reposent sur MS et indice de rétention. Les échantillons Purple Kush ne sont pas directement comparables aux autres conditions ; aucun pourcentage universel n’est repris.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7479917/",
+          "sections": "PMC via requête réseau : Variation of Foliar Terpene Profiles, tableau 1 entier et Functions of CsTPSs ; astérisques des étalons distingués.",
+          "result": "read",
+          "supports": "Tableau 1, légende des astérisques ; « Functions of CsTPSs » ; figures 9–10 ; « Terpene Extraction and Analysis »."
+        }
+      ]
+    },
+    {
+      "id": "revision-iupac-stereochemistry",
+      "title": "Nomenclature of Organic Chemistry — Chapter P-9",
+      "author": "Henri A. Favre et Warren H. Powell (éditeurs)",
+      "organization": "IUPAC / Royal Society of Chemistry ; version web QMUL",
+      "published": "2013",
+      "url": "https://iupac.qmul.ac.uk/BlueBook/P9.html",
+      "verifiedAt": "2026-11-14",
+      "access": "full-text",
+      "documentKind": "Recommandations de nomenclature",
+      "passage": "P-91.1, P-92.1.1 et P-93.1.3 : traits/coins stéréochimiques, image miroir non superposable, racémate équimolaire.",
+      "limitation": "Seules ces définitions et conventions sont utilisées ; pas preuve de présence ou de pharmacologie.",
+      "reviewEvidence": [
+        {
+          "status": "read",
+          "sectionsOpened": [
+            "P-91.1",
+            "P-92.1.1",
+            "P-93.1.3"
+          ],
+          "result": "Passages effectivement ouverts et lus par le coordinateur le 14 novembre 2026."
+        }
+      ]
+    },
+    {
+      "id": "rev-terpene-pubchem-linalool",
+      "title": "PubChem CID 6549 — identité et structure 2D",
+      "author": "NCBI PubChem",
+      "organization": "National Library of Medicine / NCBI",
+      "published": "Base évolutive",
+      "url": "https://pubchem.ncbi.nlm.nih.gov/compound/6549",
+      "verifiedAt": "2026-11-14",
+      "passage": "PUG REST : MolecularFormula, IUPACName, SMILES, AtomStereoCount et DefinedAtomStereoCount ; dessin PNG original existant comparé.",
+      "access": "official-page",
+      "documentKind": "Notice institutionnelle et réponse API d’identité moléculaire",
+      "limitation": "Une structure standardisée représente une connectivité ou un stéréoisomère ; elle ne démontre pas la composition d’un échantillon. La page HTML peut être bloquée : données effectivement lues via API.",
+      "reviewEvidence": [
+        {
+          "url": "https://pubchem.ncbi.nlm.nih.gov/rest/pug/compound/cid/6549/property/MolecularFormula,IUPACName,IsomericSMILES/JSON",
+          "sections": "Réponse API lue : formule C10H18O et nomenclature ; image locale examinée sur planche de contrôle puis comparée aux descriptions des cycles et fonctions.",
+          "result": "read",
+          "supports": [
+            "Formule",
+            "Connectivité",
+            "Portée stéréochimique du dessin"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bf-trichomes-2020",
+      "title": "Cannabis glandular trichomes alter morphology and metabolite content during flower maturation",
+      "author": "Samuel J. Livingston, Teagen D. Quilichini, Judith K. Booth et collaborateurs",
+      "organization": "The Plant Journal / PubMed",
+      "published": "Publication en ligne le 12 octobre 2019 ; janvier 2020, 101(1), p. 37–56",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+      "passage": "PubMed abstract: glandular trichomes and secretory disc cells.",
+      "access": "abstract",
+      "documentKind": "Résumé d’une étude originale de microscopie et biochimie",
+      "limitation": "Only the passages identified in reviewEvidence were read. No dosing or preparation instructions.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/31469934/",
+          "openedAt": "2026-11-14",
+          "sections": "PubMed abstract: glandular trichomes and secretory disc cells.",
+          "result": "Opened and readable; assertions checked.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "tp-zager2019",
+      "title": "Gene Networks Underlying Cannabinoid and Terpenoid Accumulation in Cannabis",
+      "author": "Jordan J. Zager, Iris Lange, Narayanan Srividya, Anthony Smith et B. Markus Lange",
+      "organization": "Plant Physiology",
+      "published": "2019-05-28",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+      "passage": "Tableaux 1 et 3 ; figures 7–8 ; paragraphes de caractérisation des synthases linalol/nérolidol.",
+      "access": "excerpt",
+      "documentKind": "Profils de fleurs et enzymes recombinantes",
+      "limitation": "Une enzyme active hors de la plante ne démontre pas à elle seule son produit dans chaque variété ; la séparation chirale concerne les analyses spécifiées.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6670104/",
+          "sections": "PMC, variante report=xml&x=2 : Target Gene Identification and Characterization, tableaux 1 et 3, figures 7–8 et séparation chirale ; CsTPS18VF (+) et CsTPS19BL mélange (+)/(−), nérolidol quantifiable seulement Black Lime.",
+          "result": "read",
+          "supports": "Tableaux 1 et 3 ; figures 7–8 ; paragraphes de caractérisation des synthases linalol/nérolidol."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-olfaction",
+      "title": "Smell Disorders — How does your sense of smell work?",
+      "author": "National Institute on Deafness and Other Communication Disorders",
+      "organization": "NIDCD / NIH",
+      "published": "Page institutionnelle courante consultée le 12 novembre 2026",
+      "url": "https://www.nidcd.nih.gov/health/smell-disorders",
+      "passage": "Section sur le fonctionnement de l’odorat : molécules, récepteurs, voies nasale et rétronasale, distinction avec goût et sensations chimiques communes.",
+      "access": "official-page",
+      "limitation": "Seule la physiologie sensorielle est utilisée ; ce cours n’établit aucun diagnostic ni indication de traitement.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document primaire ou ressource institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://www.nidcd.nih.gov/health/smell-disorders",
+          "sections": "NIDCD : How does your sense of smell work? ; neurones, récepteurs et représentation combinatoire.",
+          "result": "read",
+          "supports": "Section sur le fonctionnement de l’odorat : molécules, récepteurs, voies nasale et rétronasale, distinction avec goût et sensations chimiques communes."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-laing1989",
+      "title": "The capacity of humans to identify odors in mixtures",
+      "author": "David G. Laing et Graham W. Francis",
+      "organization": "Physiology & Behavior / PubMed",
+      "published": "Novembre 1989 ; 46(5):809–814",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/2628992/",
+      "passage": "Résumé : identification des constituants de stimuli simples et mélangés chez 123 participants ; DOI 10.1016/0031-9384(89)90041-3.",
+      "access": "abstract",
+      "limitation": "Tâche expérimentale avec des odorants définis ; ne fixe pas un nombre maximal universel d’odeurs perceptibles ni une limite individuelle de compétence.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/2628992/",
+          "sections": "Résumé original lu par E-utilities PubMed 2628992 : 123 personnes, identification d’odorants dans des mélanges de un à cinq constituants.",
+          "result": "read",
+          "supports": "Résumé : identification des constituants de stimuli simples et mélangés chez 123 participants ; DOI 10.1016/0031-9384(89)90041-3."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-jinks2001",
+      "title": "The analysis of odor mixtures by humans: evidence for a configurational process",
+      "author": "Anthony Jinks et David G. Laing",
+      "organization": "Physiology & Behavior / PubMed",
+      "published": "Janvier 2001 ; 72(1–2):51–63",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/11239981/",
+      "passage": "Résumé : difficultés d’identification des composants et hypothèse d’une représentation globale du mélange ; DOI 10.1016/S0031-9384(00)00407-8.",
+      "access": "abstract",
+      "limitation": "Une hypothèse perceptive issue d’un dispositif donné ; aucune formule universelle de mélange ni efficacité pharmacologique n’en découle.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/11239981/",
+          "sections": "PubMed : résumé entier ; expériences à 14 et 21 personnes, reconnaissance des odorants dans des mélanges et hypothèse configurationnelle.",
+          "result": "read",
+          "supports": "Résumé : difficultés d’identification des composants et hypothèse d’une représentation globale du mélange ; DOI 10.1016/S0031-9384(00)00407-8."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-spindle2024",
+      "title": "Vaporized D-limonene selectively mitigates the acute anxiogenic effects of Δ9-tetrahydrocannabinol in healthy adults who intermittently use cannabis",
+      "author": "Tory R. Spindle, C. Austin Zamarripa, Ethan Russo et collaborateurs",
+      "organization": "Drug and Alcohol Dependence / PubMed et manuscrit PMC",
+      "published": "13 mars 2024 en ligne ; 257:111267",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/pmid/38498958",
+      "passage": "Résumé et sections 3.1–3.3 indexées : 20 adultes ayant terminé l’étude, 12 dans la session additionnelle ; anxiété subjective aiguë et autres critères. Contrelecture pharmacologique : Abstract ; Results 3.1–3.3 ; discussion des limites ; Funding et Conflicts of Interest.",
+      "access": "excerpt",
+      "limitation": "Passages du manuscrit original lus par indexation ; accès direct PMC bloqué. Petit essai aigu croisé en double aveugle, formulations contrôlées inhalées, pas traitement d’un trouble anxieux ni preuve concernant une odeur citronnée. Liens d’intérêts déclarés dans l’article.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages du document original consultés par indexation",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/pmid/38498958",
+          "sections": "PDF original du coauteur ethanrusso.org : résultats et discussion pp. 6–8 ; condition ajoutée non randomisée chez 12 participants.",
+          "result": "read",
+          "supports": "Résumé et sections 3.1–3.3 indexées : 20 adultes ayant terminé l’étude, 12 dans la session additionnelle ; anxiété subjective aiguë et autres critères."
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11031290/",
+          "openedAt": "2026-11-14",
+          "sections": "Abstract ; Results 3.1–3.3 ; discussion des limites ; Funding et Conflicts of Interest.",
+          "result": "Passages réellement ouverts et lus.",
+          "supports": "Abstract ; Results 3.1–3.3 ; discussion des limites ; Funding et Conflicts of Interest.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-kumar2025",
+      "title": "The Individual and Interactive Effects of Alpha-Pinene and Delta-9-Tetrahydrocannabinol in Healthy Adults",
+      "author": "Lakshmi Kumar, Tory R. Spindle, C. Austin Zamarripa et collaborateurs",
+      "organization": "Medical Cannabis and Cannabinoids / PMC",
+      "published": "25 juin 2025 ; 8:144–157 ; DOI 10.1159/000547014",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12306963/",
+      "passage": "Résumé et sections Participants, Results et Discussion indexés : 19 adultes, six sessions, absence d’atténuation des altérations mnésiques dues au THC dans les conditions étudiées. Contrelecture pharmacologique : Abstract ; Participants ; Cognitive Performance ; Adverse Effects ; Discussion et limites.",
+      "access": "excerpt",
+      "limitation": "Passages originaux indexés consultés ; pas annexes. Petit essai aigu sur formulations contrôlées inhalées, pas conclusion sur toutes les voies ou associations ; liens d’intérêts déclarés. Les doses et procédures ne sont pas reproduites.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages du document original consultés par indexation",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12306963/",
+          "sections": "PMC : résumé, résultats Participants et conclusions ; 19 sujets complets, absence de mitigation des déficits cognitifs.",
+          "result": "read",
+          "supports": "Résumé et sections Participants, Results et Discussion indexés : 19 adultes, six sessions, absence d’atténuation des altérations mnésiques dues au THC dans les conditions étudiées."
+        },
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12306963/",
+          "openedAt": "2026-11-14",
+          "sections": "Abstract ; Participants ; Cognitive Performance ; Adverse Effects ; Discussion et limites.",
+          "result": "Passages réellement ouverts et lus.",
+          "supports": "Abstract ; Participants ; Cognitive Performance ; Adverse Effects ; Discussion et limites.",
+          "access": "excerpt"
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-sumner2007",
+      "title": "Proposed minimum reporting standards for chemical analysis",
+      "author": "Lloyd W. Sumner, Alexander Amberg, Dave Barrett et collaborateurs",
+      "organization": "Metabolomics / Metabolomics Standards Initiative",
+      "published": "Septembre 2007 ; 3(3):211–221",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3772505/",
+      "passage": "Sections identification et validation quantitative consultées dans l’index : standard authentique, propriétés indépendantes, annotation provisoire, étalonnage, limites analytiques.",
+      "access": "excerpt",
+      "limitation": "Accès direct bloqué ; passages originaux indexés lus, pas annexes. Il s’agit de recommandations de compte rendu de 2007, pas d’une certification automatique de toute analyse actuelle.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages du document original consultés par indexation",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC3772505/",
+          "sections": "PMC via report=xml : résumé, introduction et §2.9 identification ; métadonnées, étalons et identification stéréochimique distingués.",
+          "result": "read",
+          "supports": "Sections identification et validation quantitative consultées dans l’index : standard authentique, propriétés indépendantes, annotation provisoire, étalonnage, limites analytiques."
+        }
+      ]
+    },
+    {
+      "id": "tp-herbs2021",
+      "title": "Headspace/GC–MS Analysis and Investigation of Antibacterial, Antioxidant and Cytotoxic Activity of Essential Oils and Hydrolates from Rosmarinus officinalis L. and Lavandula angustifolia Miller",
+      "author": "Stefania Garzoli, Valentina Laghezza Masci, Sara Franceschi, Antonio Tiezzi, Pierluigi Giacomello et Elisa Ovidi",
+      "organization": "Foods",
+      "published": "2021-07-30",
+      "url": "https://www.mdpi.com/2304-8158/10/8/1768",
+      "passage": "Tableaux 1–2 (romarin et lavande) ; §2.2–2.3, identification MS et indices.",
+      "access": "excerpt",
+      "documentKind": "Profils d’huiles et de phases vapeur",
+      "limitation": "Seuls les résultats de composition sont utilisés. Les essais sur mélanges et cellules ne prouvent pas les effets des molécules séparées ou d’un usage humain.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/2304-8158/10/8/1768",
+          "sections": "MDPI : §3.1–3.2 et tableaux 1–2, huiles et phases vapeur de romarin et lavande.",
+          "result": "read",
+          "supports": "Tableaux 1–2 (romarin et lavande) ; §2.2–2.3, identification MS et indices."
+        }
+      ]
+    },
+    {
+      "id": "tp-janta2024",
+      "title": "Chemical profiling and clustering of various dried cannabis flowers revealed by volatilomics and chemometric processing",
+      "author": "Pannipa Janta et Sornkanok Vimolmangkang",
+      "organization": "Journal of Cannabis Research",
+      "published": "2024-12-06",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11622677/",
+      "passage": "« Compound identification » et tableau 2 : noms proposés, indices, différences d’indices et scores de correspondance.",
+      "access": "excerpt",
+      "documentKind": "Volatilomique HS-SPME-GC-MS de 19 fleurs séchées",
+      "limitation": "Les auteurs qualifient les identifications de provisoires. Bibliothèque NIST et indice de rétention ne remplacent pas un étalon ; DB-WAX non chirale ne démontre pas les signes (+)/(−) et préfixes R/L du tableau.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11622677/",
+          "sections": "PMC via réseau : Compound identification et tableau 2 ; identifications provisoires et aires normalisées.",
+          "result": "read",
+          "supports": "« Compound identification » et tableau 2 : noms proposés, indices, différences d’indices et scores de correspondance."
+        }
+      ]
+    },
+    {
+      "id": "tp-ovidi2022",
+      "title": "Hemp (Cannabis sativa L., Kompolti cv.) and Hop (Humulus lupulus L., Chinook cv.) Essential Oil and Hydrolate: HS-GC-MS Chemical Investigation and Apoptotic Activity Evaluation",
+      "author": "Elisa Ovidi et huit coauteurs",
+      "organization": "Pharmaceuticals",
+      "published": "2022-08-08",
+      "url": "https://www.mdpi.com/1424-8247/15/8/976",
+      "passage": "Tableau 1, colonne Hemp EO ; tableau 2, colonne Hemp Hy ; méthodes d’identification GC-MS.",
+      "access": "excerpt",
+      "documentKind": "Analyse d’huile et d’hydrolat ; expériences cellulaires distinctes",
+      "limitation": "Huile et hydrolat transformés, pas profil de fleur fraîche. Les résultats cellulaires portent sur des mélanges : ils ne sont attribués à aucune molécule isolée dans ces fiches. Quelques lignes n’ont pas d’indice de référence.",
+      "verifiedAt": "2026-11-14",
+      "reviewEvidence": [
+        {
+          "url": "https://www.mdpi.com/1424-8247/15/8/976",
+          "sections": "MDPI : §2.2 et tableaux 1–2, huile essentielle et hydrolat Kompolti séparés.",
+          "result": "read",
+          "supports": "Tableau 1, colonne Hemp EO ; tableau 2, colonne Hemp Hy ; méthodes d’identification GC-MS."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-sulfur2021",
+      "title": "Identification of a New Family of Prenylated Volatile Sulfur Compounds in Cannabis Revealed by Comprehensive Two-Dimensional Gas Chromatography",
+      "author": "Iain W. H. Oswald, Marcos A. Ojeda, Ryan J. Pobanz et collaborateurs",
+      "organization": "ACS Omega / PubMed",
+      "published": "Novembre 2021 ; DOI 10.1021/acsomega.1c04196",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/34869990/",
+      "passage": "Résumé original : composés soufrés prénylés et contribution du 3-méthylbut-2-ène-1-thiol à une note dite skunk.",
+      "access": "abstract",
+      "limitation": "Échantillons définis, pas marqueur universel de variété. Équipe comprenant des acteurs commerciaux ; aucune méthode de production ni de transformation reproduite.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/34869990/",
+          "sections": "PubMed : résumé original ; VSC prénylés et analyse chromatographique ; texte intégral non relu.",
+          "result": "read",
+          "supports": "Résumé original : composés soufrés prénylés et contribution du 3-méthylbut-2-ène-1-thiol à une note dite skunk."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-nonterpenes2023",
+      "title": "Minor, Nonterpenoid Volatile Compounds Drive the Aroma Differences of Exotic Cannabis",
+      "author": "Iain W. H. Oswald, Twinkle R. Paryani, Manuel E. Sosa et collaborateurs",
+      "organization": "ACS Omega / PubMed",
+      "published": "12 octobre 2023 ; 8(42):39203–39216",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/37901519/",
+      "passage": "Résumé et légendes des figures 5–8 : composés soufrés, skatole, hexanoate de propyle, associations entre profils mesurés et descripteurs sensoriels.",
+      "access": "abstract",
+      "limitation": "Résumé et légendes consultés, pas totalité du texte. Matrice d’extraits et sélection d’échantillons spécifiques, corrélations à contextualiser ; brevets déclarés. Les terpènes ne sont pas réputés inutiles pour toutes les odeurs.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/37901519/",
+          "sections": "PubMed : résumé original ; corrélations chimie–sensoriel, pas prévalence universelle.",
+          "result": "read",
+          "supports": "Résumé et légendes des figures 5–8 : composés soufrés, skatole, hexanoate de propyle, associations entre profils mesurés et descripteurs sensoriels."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-phase",
+      "title": "Chemistry 2e — 10.3 Phase Transitions",
+      "author": "Paul Flowers, Klaus Theopold, Richard Langley et William R. Robinson",
+      "organization": "OpenStax / Rice University",
+      "published": "2019 ; version en ligne consultée le 12 novembre 2026",
+      "url": "https://openstax.org/books/chemistry-2e/pages/10-3-phase-transitions",
+      "passage": "Vaporization and Condensation et Boiling Points : échanges liquide/gaz, pression de vapeur et rôle de la pression extérieure.",
+      "access": "excerpt",
+      "limitation": "Principes physiques généraux, pas réglage d’un appareil ni méthode pour extraire ou consommer une substance contrôlée.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document primaire ou ressource institutionnelle",
+      "reviewEvidence": [
+        {
+          "url": "https://openstax.org/books/chemistry-2e/pages/10-3-phase-transitions",
+          "sections": "OpenStax 10.3 : Vaporization and Condensation ; pression de vapeur et équilibre.",
+          "result": "read",
+          "supports": "Vaporization and Condensation et Boiling Points : échanges liquide/gaz, pression de vapeur et rôle de la pression extérieure."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-oxidation1992",
+      "title": "Air oxidation of d-limonene (the citrus solvent) creates potent allergens",
+      "author": "Ann-Therese Karlberg, Kerstin Magnusson et Ulrika Nilsson",
+      "organization": "Contact Dermatitis / PubMed",
+      "published": "Mai 1992 ; 26(5):332–340",
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1600-0536.1992.tb00129.x",
+      "passage": "Résumé : identification de produits d’oxydation après exposition à l’air et étude de sensibilisation chez l’animal. Contrelecture pharmacologique : Résumé : oxydation à l’air ; tests FCAT/GPMT chez le cobaye ; carvone et oxydes de limonène sensibilisants.",
+      "access": "abstract",
+      "limitation": "Utilisé pour distinguer transformation chimique et évaporation ; les résultats animaux ne donnent ni risque individuel chiffré ni conduite de traitement.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/1395597/",
+          "sections": "Wiley : résumé original entier ; FCAT/GPMT chez le cobaye, carvone et oxydes ; pas essai clinique.",
+          "result": "read",
+          "supports": "Résumé : identification de produits d’oxydation après exposition à l’air et étude de sensibilisation chez l’animal."
+        },
+        {
+          "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1600-0536.1992.tb00129.x",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé : oxydation à l’air ; tests FCAT/GPMT chez le cobaye ; carvone et oxydes de limonène sensibilisants.",
+          "result": "Passages réellement ouverts et lus.",
+          "supports": "Résumé : oxydation à l’air ; tests FCAT/GPMT chez le cobaye ; carvone et oxydes de limonène sensibilisants.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-thermal2017",
+      "title": "Toxicant Formation in Dabbing: The Terpene Story",
+      "author": "Jiries Meehan-Atrash, Wentai Luo et Robert M. Strongin",
+      "organization": "ACS Omega / PubMed",
+      "published": "22 septembre 2017 ; 2(9):6112–6117",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/28983528/",
+      "passage": "Résumé et légende du schéma 1 : formation de produits de dégradation à partir de terpènes dans le dispositif expérimental ; DOI 10.1021/acsomega.7b01130. Contrelecture pharmacologique : Résumé et légendes des figures : méthacroléine, benzène et autres produits ; limonène, linalol, myrcène ; répétitions et limites du modèle.",
+      "access": "abstract",
+      "limitation": "Aucun protocole, température ou dosage de consommation reproduit. Les produits observés dépendent des conditions ; le résultat ne définit pas une température universelle sans risque.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Résumé original consulté",
+      "reviewEvidence": [
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28983528/",
+          "sections": "PubMed : résumé et légende Scheme 1 ; méthacroléine et benzène dans les conditions de laboratoire.",
+          "result": "read",
+          "supports": "Résumé et légende du schéma 1 : formation de produits de dégradation à partir de terpènes dans le dispositif expérimental ; DOI 10.1021/acsomega.7b01130."
+        },
+        {
+          "url": "https://pubmed.ncbi.nlm.nih.gov/28983528/",
+          "openedAt": "2026-11-14",
+          "sections": "Résumé et légendes des figures : méthacroléine, benzène et autres produits ; limonène, linalol, myrcène ; répétitions et limites du modèle.",
+          "result": "Passages réellement ouverts et lus.",
+          "supports": "Résumé et légendes des figures : méthacroléine, benzène et autres produits ; limonène, linalol, myrcène ; répétitions et limites du modèle.",
+          "access": "abstract"
+        }
+      ]
+    },
+    {
+      "id": "qh-nature-aroma-key-compounds",
+      "title": "Characterisation of the key-aroma compounds among the volatile constituents in different hemp strains",
+      "organization": "ZHAW, Institute of Food and Beverage Innovation; Weurman Flavour Research Symposium",
+      "url": "https://digitalcollection.zhaw.ch/bitstream/11475/24337/2/2021_Kneubuehl-etal_Aroma-characterisation-hemp-strains.pdf",
+      "verifiedAt": "2026-11-14",
+      "author": "Markus Kneubühl, Amandine André, Irene Chetschik",
+      "published": "2021",
+      "passage": "Table 1 and conclusion, pp. 2–3: aroma descriptors and GC-O results for KC Virtus, Felina 32 and Santhica 70.",
+      "access": "excerpt",
+      "documentKind": "Document de référence",
+      "limitation": "Résultats de fleurs fraîches de trois cultivars suisses; ne prédit ni tous les cultivars ni des effets physiologiques.",
+      "reviewEvidence": [
+        {
+          "url": "https://digitalcollection.zhaw.ch/bitstream/11475/24337/2/2021_Kneubuehl-etal_Aroma-characterisation-hemp-strains.pdf",
+          "sections": "PDF ZHAW : pp. 1–3, tableau 1 et critères a/b ; molécules confirmées et provisoires distinguées.",
+          "result": "read",
+          "supports": "Table 1 and conclusion, pp. 2–3: aroma descriptors and GC-O results for KC Virtus, Felina 32 and Santhica 70."
+        }
+      ]
+    },
+    {
+      "id": "terpenes-lesson-esters",
+      "title": "Glossary of class names of organic compounds and reactive intermediates based on structure — esters",
+      "author": "G. P. Moss, P. A. S. Smith et D. Tavernier",
+      "organization": "IUPAC / version électronique Queen Mary University of London",
+      "published": "1995, Pure and Applied Chemistry 67, 1307–1375",
+      "url": "https://iupac.qmul.ac.uk/class/carba.html",
+      "passage": "Entrée esters : famille générale des dérivés d’oxoacides et exemples carboxyliques R–C(=O)–O–R′.",
+      "access": "full-text",
+      "limitation": "Version web autorisée par l’IUPAC, identité avec le document publié déclarée dans l’index ; les pages Gold Book actuelles ont refusé l’accès.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Recommandations de nomenclature originales",
+      "reviewEvidence": [
+        {
+          "url": "https://goldbook.iupac.org/terms/view/E02219",
+          "sections": "Tentative d’ouverture : contenu non obtenu (403, CAPTCHA ou accès technique). Ne pas compter comme document relu.",
+          "result": "inaccessible",
+          "supports": []
+        },
+        {
+          "url": "https://iupac.qmul.ac.uk/class/carba.html",
+          "sectionsOpened": [
+            "Entrée esters : famille générale des dérivés d’oxoacides et exemples carboxyliques R–C(=O)–O–R′.",
+            "Index éditorial : auteurs, publication 1995 et autorisation IUPAC"
+          ],
+          "result": "Document ouvert et passages lus par le coordinateur le 14 novembre 2026.",
+          "status": "read"
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "ref-terpenes-terpenoides",
+      "questions": [
+        "Un monoterpène du chanvre, comme le limonène, possède combien de carbones ?",
+        "L’humulène et le β-caryophyllène du chanvre sont des sesquiterpènes à…",
+        "Quelle fonction chimique porte le linalol du chanvre ?",
+        "L’α-pinène et le β-pinène du chanvre sont…",
+        "Les deux énantiomères du linalol sont des molécules…"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Texte, sections, liens et identifiants relus ; distinctions initiales conservées et exemples mécanistiques ajoutés.",
+        "Illustration générique non validée comme observation scientifique ; schéma original propre à cette fiche."
+      ],
+      "patch": {
+        "lead": "Les terpènes constituent une grande famille de composés organiques dont les squelettes carbonés sont liés à des unités à cinq carbones. Plusieurs de ces molécules participent aux profils volatils du cannabis.",
+        "sections": [
+          {
+            "id": "ref-terpenes-terpenoides-familles",
+            "title": "Les principales classes",
+            "paragraphs": [
+              "Les monoterpènes possèdent un squelette à dix carbones et les sesquiterpènes un squelette à quinze carbones. Le limonène et les pinènes appartiennent aux monoterpènes ; le β-caryophyllène et l’humulène sont des sesquiterpènes. Ces catégories décrivent une organisation chimique, et non une famille d’odeurs ou un effet pharmacologique.",
+              "La règle C5 classe des squelettes issus des précurseurs IPP et DMAPP : elle ne signifie pas que la plante assemble de l’isoprène libre. Un même nombre de carbones permet des chaînes ouvertes comme le myrcène, ou des structures cycliques comme les pinènes."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-terpenes",
+              "terpenes-lesson-booth2017",
+              "tp-booth2017",
+              "tp-booth2020"
+            ]
+          },
+          {
+            "id": "ref-terpenes-terpenoides-oxygenes",
+            "title": "Les dérivés oxygénés",
+            "paragraphs": [
+              "Dans la convention chimique retenue par l’IUPAC, les terpènes sont des hydrocarbures, tandis que les terpénoïdes sont des dérivés oxygénés dont le squelette peut aussi être modifié. Le linalol, de formule C10H18O, est un monoterpénoïde portant une fonction alcool. La seule présence d’oxygène ne suffit toutefois pas à rattacher une molécule à cette famille."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-terpenoids",
+              "terpenes-lesson-linalool",
+              "rev-terpene-pubchem-linalool"
+            ]
+          },
+          {
+            "id": "ref-terpenes-terpenoides-isomeres",
+            "title": "Les isomères",
+            "paragraphs": [
+              "Deux molécules peuvent partager une formule brute tout en différant par leurs liaisons ou leur arrangement spatial. Les formes α et β du pinène ne sont pas interchangeables ; les énantiomères correspondent à des configurations images l’une de l’autre dans un miroir. Ces différences structurales peuvent modifier les propriétés des composés, y compris leurs interactions avec les systèmes sensoriels.",
+              "Les lettres α/β et les signes (+)/(−) décrivent des différences distinctes. α-pinène et β-pinène diffèrent par la position de leur double liaison ; chacun peut lui-même exister sous des formes miroir. Une analyse non chirale ne détermine pas leurs proportions."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-enantiomer",
+              "terpenes-lesson-booth2017",
+              "terpenes-lesson-rice2015",
+              "tp-booth2017",
+              "tp-booth2020",
+              "revision-iupac-stereochemistry"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "terpenes-lesson-terpenes",
+          "terpenes-lesson-booth2017",
+          "terpenes-lesson-terpenoids",
+          "terpenes-lesson-linalool",
+          "terpenes-lesson-enantiomer",
+          "terpenes-lesson-rice2015",
+          "tp-booth2017",
+          "tp-booth2020",
+          "revision-iupac-stereochemistry",
+          "rev-terpene-pubchem-linalool"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Deux classements indépendants",
+          "nodes": [
+            {
+              "label": "C10 / C15",
+              "detail": "Limonène et pinènes / caryophyllène et humulène : taille du squelette."
+            },
+            {
+              "label": "Hydrocarbure / oxygéné",
+              "detail": "Limonène C10H16 / linalol C10H18O : fonction alcool."
+            },
+            {
+              "label": "Constitution / configuration",
+              "detail": "α/β-pinène : double liaison déplacée ; énantiomères : images miroir non superposables."
+            }
+          ],
+          "caption": "Schéma pédagogique original ; les relations et limites sont expliquées dans le texte. Les tailles ne représentent pas des quantités.",
+          "sourceIds": [
+            "terpenes-lesson-booth2017",
+            "terpenes-lesson-rice2015",
+            "tp-booth2017",
+            "tp-booth2020"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "terpenes-lesson-booth2017",
+        "terpenes-lesson-rice2015",
+        "tp-booth2017",
+        "tp-booth2020"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlé contre les passages ouverts. L’image de synthèse course-molecules est décorative et ne documente ni molécule ni observation."
+      },
+      "quizIdsReviewed": [
+        "hemp-molecules-monoterpene",
+        "hemp-molecules-sesquiterpene",
+        "hemp-molecules-linalol-fonction",
+        "hemp-molecules-pinenes-isomeres",
+        "hemp-molecules-enantiomeres"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "ref-biosynthese-terpenes",
+      "questions": [
+        "Quel précurseur alimente la biosynthèse des monoterpènes du chanvre ?",
+        "Quel précurseur fournit de nombreux sesquiterpènes du chanvre ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Texte, sections, liens et identifiants relus ; distinctions initiales conservées et exemples mécanistiques ajoutés.",
+        "Illustration générique non validée comme observation scientifique ; schéma original propre à cette fiche."
+      ],
+      "patch": {
+        "lead": "Le cannabis fabrique lui-même des molécules odorantes, les terpènes. Des protéines appelées enzymes transforment des matières de départ communes en molécules différentes : c’est leur biosynthèse, autrement dit leur fabrication par un être vivant.",
+        "sections": [
+          {
+            "id": "ref-biosynthese-terpenes-precurseurs",
+            "title": "Avec quoi la plante les fabrique-t-elle ?",
+            "paragraphs": [
+              "La plante prépare d’abord de petites molécules contenant cinq atomes de carbone. Elle les transforme notamment en deux matières de départ : le géranyl diphosphate, qui compte dix carbones, et le farnésyl diphosphate, qui en compte quinze. Les noms sont longs, mais l’idée est simple : une réserve de départ peut servir à fabriquer plusieurs molécules odorantes.",
+              "Les produits à dix carbones comprennent les monoterpènes, comme le myrcène. Ceux à quinze carbones comprennent les sesquiterpènes, comme l’humulène. Ces substances sont fabriquées dans les tissus : la plante n’a pas besoin d’absorber une odeur de pin pour produire un pinène."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-booth2017",
+              "tp-booth2020"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Les deux premiers précurseurs, c’est-à-dire les molécules transformées ensuite, sont IPP et DMAPP. Ils possèdent chacun cinq carbones, mais leurs atomes ne sont pas reliés exactement de la même façon. La voie MEP fonctionne surtout dans les plastes, de petits compartiments cellulaires ; la voie du mévalonate surtout dans le cytosol, le milieu entourant ces compartiments. La première utilise notamment pyruvate et glycéraldéhyde-3-phosphate, la seconde acétyl-CoA. Des échanges entre compartiments restent possibles."
+              ],
+              "sourceIds": [
+                "terpenes-lesson-booth2017",
+                "tp-booth2020"
+              ]
+            }
+          },
+          {
+            "id": "ref-biosynthese-terpenes-enzymes",
+            "title": "Une enzyme peut-elle fabriquer plusieurs terpènes ?",
+            "paragraphs": [
+              "Une enzyme facilite une réaction chimique sans être consommée comme un ingrédient. Les enzymes appelées terpène synthases peuvent replier et transformer une même matière de départ de plusieurs façons. Une synthase ne correspond donc pas toujours à un seul produit.",
+              "Chez le chanvre Finola, l’enzyme nommée CsTPS9 peut former à la fois du β-caryophyllène et de l’α-humulène. Trouver ces deux molécules ensemble peut ainsi refléter une étape de fabrication commune, plutôt que deux mécanismes complètement séparés."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-booth2017",
+              "tp-booth2020"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Pendant ces réactions, le groupe diphosphate est détaché. Des intermédiaires portant une charge électrique positive, appelés carbocations, peuvent se réorganiser ou former des anneaux. La perte d’un proton ou une réaction avec l’eau conduit ensuite à différents produits. Ces étapes expliquent pourquoi une enzyme peut donner un mélange."
+              ],
+              "sourceIds": [
+                "terpenes-lesson-booth2017",
+                "tp-booth2020"
+              ]
+            }
+          },
+          {
+            "id": "ref-biosynthese-terpenes-glandes",
+            "title": "Pourquoi les fleurs n’ont-elles pas toutes le même profil ?",
+            "paragraphs": [
+              "Les trichomes glandulaires sont de petites glandes à la surface de la plante. Elles participent à la fabrication et à l’accumulation de ces substances. Leur forme et leur contenu évoluent pendant le développement des fleurs.",
+              "Posséder un gène, la portion d’ADN donnant l’instruction de fabriquer une enzyme, ne signifie pas produire toujours la même quantité. Il faut que l’instruction soit utilisée, que l’enzyme fonctionne et que le produit s’accumule. Ces étapes aident à comprendre les différences entre plantes et entre moments de leur développement."
+            ],
+            "sourceIds": [
+              "bf-trichomes-2020",
+              "tp-zager2019",
+              "tp-booth2020"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "terpenes-lesson-booth2017",
+          "tp-booth2020",
+          "bf-trichomes-2020",
+          "tp-zager2019"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Une fabrication peut donner deux produits",
+          "nodes": [
+            {
+              "label": "Matière de départ",
+              "detail": "Une molécule à quinze carbones."
+            },
+            {
+              "label": "Enzyme CsTPS9 de Finola",
+              "detail": "Elle peut transformer cette matière de plusieurs façons."
+            },
+            {
+              "label": "Deux produits observés",
+              "detail": "β-caryophyllène et α-humulène."
+            }
+          ],
+          "caption": "Chez Finola, la même enzyme peut former du caryophyllène et de l’humulène : un produit différent ne suppose pas toujours une enzyme différente.",
+          "sourceIds": [
+            "terpenes-lesson-booth2017",
+            "tp-booth2020"
+          ],
+          "afterSectionId": "ref-biosynthese-terpenes-enzymes"
+        }
+      },
+      "sourceIdsReviewed": [
+        "terpenes-lesson-booth2017",
+        "tp-booth2017",
+        "tp-booth2020",
+        "terpenes-lesson-livingston2020",
+        "tp-zager2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlé contre les passages ouverts. L’image de synthèse course-molecules est décorative et ne documente ni molécule ni observation."
+      },
+      "quizIdsReviewed": [
+        "hemp-molecules-gpp",
+        "hemp-molecules-fpp"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Avec quoi la plante les fabrique-t-elle ?",
+        "termsExplained": [
+          "biosynthèse",
+          "enzyme",
+          "précurseur",
+          "trichome glandulaire",
+          "gène"
+        ],
+        "example": "β-caryophyllène et α-humulène.",
+        "detailsMoved": [
+          "ref-biosynthese-terpenes-precurseurs",
+          "ref-biosynthese-terpenes-enzymes"
+        ],
+        "comprehensionChecks": [
+          "Le lecteur peut expliquer la différence centrale avec un exemple avant de lire les détails."
+        ],
+        "quizIdsReviewed": [
+          "hemp-molecules-gpp",
+          "hemp-molecules-fpp"
+        ]
+      }
+    },
+    {
+      "id": "ref-odeur-cannabis",
+      "questions": [
+        "Quels mécanismes expliquent ce phénomène et quelles sont les limites des observations ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Texte, sections, liens et identifiants relus ; distinctions initiales conservées et exemples mécanistiques ajoutés.",
+        "Illustration générique non validée comme observation scientifique ; schéma original propre à cette fiche."
+      ],
+      "patch": {
+        "lead": "L’odeur du cannabis vient de molécules qui passent dans l’air puis atteignent le nez. Nous percevons leur mélange : connaître la molécule la plus abondante ne suffit pas à prévoir l’odeur, encore moins un effet sur la santé.",
+        "sections": [
+          {
+            "id": "ref-odeur-cannabis-perception",
+            "title": "Pourquoi parle-t-on de notes citronnées ou boisées ?",
+            "paragraphs": [
+              "Une molécule odorante active des capteurs dans le nez, les récepteurs olfactifs. Le cerveau combine leurs signaux pour reconnaître une odeur. Dire citronné ou boisé décrit ce que l’on perçoit ; cela ne désigne pas une substance unique.",
+              "Dans un mélange, une odeur peut en masquer une autre : elle devient plus difficile à reconnaître, même si sa molécule est toujours présente. Une impression nouvelle peut donc apparaître sans qu’une nouvelle substance ait été fabriquée."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-olfaction",
+              "terpenes-lesson-laing1989",
+              "terpenes-lesson-jinks2001"
+            ]
+          },
+          {
+            "id": "ref-odeur-cannabis-seuils",
+            "title": "Une petite quantité peut-elle beaucoup sentir ?",
+            "paragraphs": [
+              "Oui, car le nez ne détecte pas toutes les molécules à la même concentration. Le seuil olfactif est une concentration repère à partir de laquelle une substance devient détectable dans des conditions données. Une molécule présente en petite quantité peut compter beaucoup si son seuil est très bas.",
+              "Pour estimer cette contribution, on peut comparer la concentration au seuil : c’est la valeur d’activité odorante. La comparaison n’a de sens que dans le même milieu et avec des unités compatibles. Une quantité par gramme de fleur ne se compare pas directement à un seuil par litre d’air. Ce calcul reste un indice, car il ne décrit pas tout ce qui se passe dans un mélange."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-rice2015"
+            ]
+          },
+          {
+            "id": "ref-odeur-cannabis-pharmacologie",
+            "title": "L’odeur annonce-t-elle un effet relaxant ou protecteur ?",
+            "paragraphs": [
+              "Une odeur d’agrumes ne prouve pas un effet contre l’anxiété. Un petit essai humain de 2024 a trouvé une diminution de certaines sensations anxieuses lorsque du d-limonène était associé au THC, le cannabinoïde responsable de l’intoxication. La comparaison la plus favorable provenait toutefois d’un sous-groupe recevant une condition supplémentaire non tirée au sort. Elle ne démontre pas l’effet d’une fleur qui sent le citron.",
+              "En 2025, un autre essai humain n’a pas trouvé la protection de la mémoire attendue avec de l’α-pinène associé au THC. L’idée d’un effet d’entourage désigne des interactions possibles entre constituants ; elle ne signifie pas que tout mélange protège ou agit mieux. Il faut tester la composition, les personnes et l’effet précis que l’on veut mesurer."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-spindle2024",
+              "terpenes-lesson-kumar2025"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Les expériences cellulaires de Finlay portent sur des récepteurs humains produits par des cellules de laboratoire : elles ne trouvent pas la modification attendue d’une voie de signalisation nommée AMPc. LaVigne observe des effets combinés chez la souris avec certains terpènes et WIN55,212-2, un cannabinoïde synthétique. Une réponse combinée plus forte ne suffit pas à établir une synergie, c’est-à-dire un effet dépassant celui attendu de l’addition des deux produits. Ni ces cellules ni ces souris ne constituent un essai du mélange THC–terpènes chez l’humain."
+              ],
+              "sourceIds": [
+                "terpenes-lesson-spindle2024",
+                "terpenes-lesson-kumar2025"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "terpenes-lesson-olfaction",
+          "terpenes-lesson-laing1989",
+          "terpenes-lesson-jinks2001",
+          "terpenes-lesson-rice2015",
+          "terpenes-lesson-spindle2024",
+          "terpenes-lesson-kumar2025"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Le nez lit un mélange",
+          "nodes": [
+            {
+              "label": "Des molécules dans l’air",
+              "detail": "Une partie des substances quitte la fleur."
+            },
+            {
+              "label": "Des capteurs dans le nez",
+              "detail": "Les substances ne sont pas toutes détectées à la même concentration."
+            },
+            {
+              "label": "Une odeur perçue",
+              "detail": "Le cerveau combine les signaux ; cette odeur ne prescrit pas un effet de santé."
+            }
+          ],
+          "caption": "Une odeur se construit à partir de plusieurs signaux : reconnaître moins bien une note ne signifie pas que sa molécule a disparu.",
+          "sourceIds": [
+            "terpenes-lesson-olfaction",
+            "terpenes-lesson-laing1989",
+            "terpenes-lesson-jinks2001"
+          ],
+          "afterSectionId": "ref-odeur-cannabis-perception"
+        }
+      },
+      "sourceIdsReviewed": [
+        "terpenes-lesson-olfaction",
+        "terpenes-lesson-laing1989",
+        "terpenes-lesson-jinks2001",
+        "terpenes-lesson-rice2015",
+        "terpenes-lesson-spindle2024",
+        "terpenes-lesson-kumar2025"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlé contre les passages ouverts. L’image de synthèse course-molecules est décorative et ne documente ni molécule ni observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Pourquoi parle-t-on de notes citronnées ou boisées ?",
+        "termsExplained": [
+          "récepteur olfactif",
+          "masquage",
+          "seuil olfactif",
+          "valeur d’activité odorante",
+          "effet d’entourage"
+        ],
+        "example": "Le cerveau combine les signaux ; cette odeur ne prescrit pas un effet de santé.",
+        "detailsMoved": [
+          "ref-odeur-cannabis-pharmacologie"
+        ],
+        "comprehensionChecks": [
+          "Le lecteur peut expliquer la différence centrale avec un exemple avant de lire les détails."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "ref-profils-aromatiques",
+      "questions": [
+        "Quels mécanismes expliquent ce phénomène et quelles sont les limites des observations ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Texte, sections, liens et identifiants relus ; distinctions initiales conservées et exemples mécanistiques ajoutés.",
+        "Illustration générique non validée comme observation scientifique ; schéma original propre à cette fiche."
+      ],
+      "patch": {
+        "lead": "Un profil chimique est la liste de substances mesurées dans un échantillon, avec leurs quantités ou leurs proportions. Pour comparer deux profils de cannabis, il faut savoir ce qui a été analysé et ce que signifient les nombres.",
+        "sections": [
+          {
+            "id": "ref-profils-aromatiques-quantites",
+            "title": "Une quantité et un pourcentage disent-ils la même chose ?",
+            "paragraphs": [
+              "Une concentration rapporte une quantité à une masse ou à un volume. Par exemple, 1 mg/g signifie un milligramme de substance par gramme de matière : le composé représente alors 0,1 % de cette masse. Le milligramme est un millième de gramme.",
+              "Un pourcentage relatif répond à une autre question : quelle place un composé prend-il dans le total choisi ? Deux fleurs peuvent avoir les mêmes proportions de terpènes, mais contenir des quantités totales différentes. Et un tableau totalisant 100 % ne décrit que ce qui entre dans son calcul, pas nécessairement toute la fleur."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-sumner2007",
+              "terpenes-lesson-rice2015",
+              "tp-herbs2021",
+              "tp-janta2024"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "La chromatographie sépare les constituants et produit un signal pour chacun. Une aire de pic est la surface de ce signal sur le graphique. Ainsi, 10 % d’aire normalisée signifie 10 % du signal retenu, pas automatiquement 10 % de la masse de fleur. Pour passer du signal à une quantité, il faut un étalonnage, c’est-à-dire comparer l’appareil à des quantités connues, et tenir compte de sa réponse à chaque composé."
+              ],
+              "sourceIds": [
+                "terpenes-lesson-sumner2007",
+                "terpenes-lesson-rice2015",
+                "tp-herbs2021",
+                "tp-janta2024"
+              ]
+            }
+          },
+          {
+            "id": "ref-profils-aromatiques-matrices",
+            "title": "Pourquoi l’air au-dessus d’une fleur a-t-il un autre profil ?",
+            "paragraphs": [
+              "L’espace de tête est simplement l’air situé au-dessus d’un échantillon, par exemple dans un récipient. Les molécules n’y passent pas toutes aussi facilement. Cet air ne contient donc pas les mêmes proportions que la matière dont il provient.",
+              "Une étude du romarin et de la lavande trouve ainsi des proportions différentes dans l’huile et dans sa vapeur. La température et la nature de la matière influencent ce passage. Une fleur sèche, un extrait et l’air au-dessus de cet extrait sont trois objets de mesure différents."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-rice2015",
+              "tp-ovidi2022",
+              "tp-janta2024",
+              "tp-herbs2021"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Une comparaison précise aussi l’organe analysé, l’état frais ou sec, la méthode et la limite de détection, soit la plus petite quantité que la méthode peut repérer. Non détecté ne veut pas dire exactement absent."
+              ],
+              "sourceIds": [
+                "terpenes-lesson-rice2015",
+                "tp-ovidi2022",
+                "tp-janta2024",
+                "tp-herbs2021"
+              ]
+            }
+          },
+          {
+            "id": "ref-profils-aromatiques-variations",
+            "title": "Le nom d’une variété garantit-il un profil ?",
+            "paragraphs": [
+              "Un nom de variété ne fixe pas une composition immuable. Les études retrouvent des différences entre plantes et au cours du développement des fleurs. Les instructions génétiques et l’activité des enzymes de fabrication y participent.",
+              "Le résultat reste celui de l’échantillon analysé et de son histoire. Pour comparer deux analyses portant le même nom commercial, il faut donc regarder aussi la matière, son état et les conditions de mesure."
+            ],
+            "sourceIds": [
+              "tp-booth2020",
+              "tp-zager2019",
+              "bf-trichomes-2020"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "terpenes-lesson-sumner2007",
+          "terpenes-lesson-rice2015",
+          "tp-herbs2021",
+          "tp-janta2024",
+          "tp-ovidi2022",
+          "tp-booth2020",
+          "tp-zager2019",
+          "bf-trichomes-2020"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Deux nombres à ne pas confondre",
+          "nodes": [
+            {
+              "label": "1 mg/g",
+              "detail": "Une masse de composé par gramme de matière."
+            },
+            {
+              "label": "10 % du signal",
+              "detail": "Une part des composés retenus par l’analyse, sans équivalence automatique avec la masse."
+            }
+          ],
+          "caption": "Une masse par gramme et une part du signal de l’appareil répondent à deux questions différentes ; leurs pourcentages ne sont pas interchangeables.",
+          "sourceIds": [
+            "terpenes-lesson-sumner2007",
+            "terpenes-lesson-rice2015",
+            "tp-herbs2021",
+            "tp-janta2024"
+          ],
+          "afterSectionId": "ref-profils-aromatiques-quantites"
+        }
+      },
+      "sourceIdsReviewed": [
+        "terpenes-lesson-sumner2007",
+        "terpenes-lesson-rice2015",
+        "tp-ovidi2022",
+        "tp-janta2024",
+        "tp-booth2020",
+        "tp-zager2019",
+        "terpenes-lesson-livingston2020",
+        "tp-herbs2021"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlé contre les passages ouverts. L’image de synthèse course-molecules est décorative et ne documente ni molécule ni observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Une quantité et un pourcentage disent-ils la même chose ?",
+        "termsExplained": [
+          "concentration",
+          "milligramme",
+          "pourcentage relatif",
+          "espace de tête",
+          "limite de détection"
+        ],
+        "example": "Une part des composés retenus par l’analyse, sans équivalence automatique avec la masse.",
+        "detailsMoved": [
+          "ref-profils-aromatiques-quantites",
+          "ref-profils-aromatiques-matrices"
+        ],
+        "comprehensionChecks": [
+          "Le lecteur peut expliquer la différence centrale avec un exemple avant de lire les détails."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "ref-volatils-non-terpeniques",
+      "questions": [
+        "Quelle famille de molécules contribue à la note « skunk » de certains cannabis ?",
+        "L’hexanoate de propyle décrit dans certains extraits de cannabis appartient aux…"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Texte, sections, liens et identifiants relus ; distinctions initiales conservées et exemples mécanistiques ajoutés.",
+        "Illustration générique non validée comme observation scientifique ; schéma original propre à cette fiche."
+      ],
+      "patch": {
+        "lead": "Les terpènes ne sont pas les seules molécules qui donnent une odeur au cannabis. D’autres substances, parfois présentes en très petite quantité, peuvent aussi marquer son bouquet, notamment certaines molécules contenant du soufre.",
+        "sections": [
+          {
+            "id": "ref-volatils-non-terpeniques-soufre",
+            "title": "D’où vient parfois la note dite skunk ?",
+            "paragraphs": [
+              "Des chercheurs ont relié cette note puissante à certaines molécules contenant du soufre dans les échantillons étudiés. L’une d’elles porte le nom de 3-méthylbut-2-ène-1-thiol. La terminaison thiol désigne un groupe d’atomes comprenant du soufre lié à de l’hydrogène, écrit –SH.",
+              "Toutes les molécules soufrées ne sont pas des thiols et toutes ne sentent pas le skunk. Le soufre indique un élément de leur composition ; l’odeur dépend de la molécule entière et du mélange."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-sulfur2021",
+              "terpenes-lesson-terpenes"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Les publications emploient parfois VSC, abréviation anglaise de composés soufrés volatils : des molécules soufrées qui passent dans l’air. Le thiol cité porte aussi un fragment prénylé, un petit groupe carboné. Ce fragment ne suffit pas à en faire un terpène hydrocarboné, c’est-à-dire constitué seulement de carbone et d’hydrogène."
+              ],
+              "sourceIds": [
+                "terpenes-lesson-sulfur2021",
+                "terpenes-lesson-terpenes"
+              ]
+            }
+          },
+          {
+            "id": "ref-volatils-non-terpeniques-autres",
+            "title": "Quelles autres familles contribuent aux odeurs ?",
+            "paragraphs": [
+              "Certains extraits contiennent de l’hexanoate de propyle, un ester. Un ester est une famille définie par un assemblage particulier de carbone et d’oxygène ; plusieurs de ses membres ont des notes fruitées. Cela ne veut pas dire que tous les esters sentent le fruit.",
+              "Les analyses décrivent aussi le skatole et des aldéhydes. Un aldéhyde porte un groupe terminal –CHO, une organisation de carbone, d’hydrogène et d’oxygène. Ces noms classent des structures : une note fruitée ou soufrée peut venir de plusieurs substances et de leur combinaison."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-nonterpenes2023",
+              "terpenes-lesson-rice2015"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Le skatole est aussi appelé 3-méthylindole. Sa structure comporte un anneau contenant de l’azote, ce que l’on nomme un hétérocycle azoté. La fonction ester carboxylique s’écrit R–C(=O)–O–R′ : les lettres R représentent les autres parties de la molécule. Les associations entre composition et odeur étudiées en 2023 concernent des extraits précis, pas toutes les fleurs."
+              ],
+              "sourceIds": [
+                "terpenes-lesson-nonterpenes2023",
+                "terpenes-lesson-rice2015"
+              ]
+            }
+          },
+          {
+            "id": "ref-volatils-non-terpeniques-melange",
+            "title": "Pourquoi un tableau de terpènes ne suffit-il pas ?",
+            "paragraphs": [
+              "Une molécule peu abondante peut être facilement détectée par le nez. Un tableau limité à quelques terpènes peut donc manquer une partie importante de l’odeur, même s’il mesure correctement ces terpènes.",
+              "Cela ne rend pas les terpènes inutiles : ils contribuent aussi au mélange. Les études de certains extraits montrent surtout pourquoi on ne peut pas résumer toutes les odeurs d’une variété à un seul composé ou à une seule famille."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-nonterpenes2023",
+              "terpenes-lesson-rice2015"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "terpenes-lesson-sulfur2021",
+          "terpenes-lesson-terpenes",
+          "terpenes-lesson-nonterpenes2023",
+          "terpenes-lesson-rice2015"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Beaucoup présent ne veut pas toujours dire beaucoup senti",
+          "nodes": [
+            {
+              "label": "Quantité mesurée",
+              "detail": "Certaines molécules sont très minoritaires."
+            },
+            {
+              "label": "Sensibilité du nez",
+              "detail": "Un seuil de détection bas peut leur donner une forte contribution à l’odeur."
+            }
+          ],
+          "caption": "Une faible quantité peut compter dans le bouquet si le nez détecte facilement la substance : un tableau de terpènes ne décrit pas tous les odorants.",
+          "sourceIds": [
+            "terpenes-lesson-nonterpenes2023",
+            "terpenes-lesson-rice2015"
+          ],
+          "afterSectionId": "ref-volatils-non-terpeniques-melange"
+        }
+      },
+      "sourceIdsReviewed": [
+        "terpenes-lesson-sulfur2021",
+        "terpenes-lesson-nonterpenes2023",
+        "terpenes-lesson-rice2015"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlé contre les passages ouverts. L’image de synthèse course-molecules est décorative et ne documente ni molécule ni observation."
+      },
+      "quizIdsReviewed": [
+        "hemp-molecules-skunk-thiol",
+        "hemp-molecules-ester"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient parfois la note dite skunk ?",
+        "termsExplained": [
+          "composé soufré",
+          "thiol",
+          "ester",
+          "aldéhyde",
+          "VSC"
+        ],
+        "example": "Un seuil de détection bas peut leur donner une forte contribution à l’odeur.",
+        "detailsMoved": [
+          "ref-volatils-non-terpeniques-soufre",
+          "ref-volatils-non-terpeniques-autres"
+        ],
+        "comprehensionChecks": [
+          "Le lecteur peut expliquer la différence centrale avec un exemple avant de lire les détails."
+        ],
+        "quizIdsReviewed": [
+          "hemp-molecules-skunk-thiol",
+          "hemp-molecules-ester"
+        ]
+      }
+    },
+    {
+      "id": "ref-evolution-aromes",
+      "questions": [
+        "Quels mécanismes expliquent ce phénomène et quelles sont les limites des observations ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Texte, sections, liens et identifiants relus ; distinctions initiales conservées et exemples mécanistiques ajoutés.",
+        "Illustration générique non validée comme observation scientifique ; schéma original propre à cette fiche."
+      ],
+      "patch": {
+        "lead": "Une odeur végétale peut changer parce que des molécules partent dans l’air ou parce qu’elles se transforment en d’autres substances. Distinguer ces deux mécanismes aide à comprendre ce que le séchage, la conservation ou le chauffage peuvent changer.",
+        "sections": [
+          {
+            "id": "ref-evolution-aromes-evaporation",
+            "title": "Une molécule doit-elle bouillir pour passer dans l’air ?",
+            "paragraphs": [
+              "Non. L’évaporation est le passage de molécules depuis la surface d’une matière vers l’air ; elle se produit déjà au-dessous du point d’ébullition. La volatilité décrit la facilité avec laquelle une substance rejoint l’air. La molécule conserve alors son identité : elle a changé de place, pas de composition.",
+              "Dans un récipient fermé, des molécules retournent aussi vers la matière. À l’équilibre, les passages dans les deux sens continuent au même rythme. Si l’air est renouvelé, des molécules peuvent continuer à être emportées, même sans ébullition."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-phase",
+              "terpenes-lesson-rice2015"
+            ]
+          },
+          {
+            "id": "ref-evolution-aromes-oxydation",
+            "title": "Que change une réaction avec l’oxygène ?",
+            "paragraphs": [
+              "L’oxydation est une réaction chimique qui change la substance, au lieu de simplement la déplacer. Du limonène exposé à l’air peut ainsi former d’autres composés. L’odeur et les propriétés du mélange peuvent alors évoluer.",
+              "Dans des expériences animales, certains produits d’oxydation du d-limonène ont provoqué une sensibilisation : après exposition, l’organisme peut réagir lors d’un contact ultérieur. Ce résultat porte sur les produits et les conditions testés ; il ne mesure pas le risque de chaque fleur ou de chaque personne."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-oxidation1992"
+            ]
+          },
+          {
+            "id": "ref-evolution-aromes-temperature",
+            "title": "Le point d’ébullition indique-t-il une température sans danger ?",
+            "paragraphs": [
+              "Le point d’ébullition décrit une substance pure sous une pression donnée. Il ne résume pas le comportement d’un mélange chauffé : des substances peuvent passer dans l’air et des réactions peuvent en créer de nouvelles en même temps.",
+              "Une étude de laboratoire de 2017 a détecté notamment du benzène et de la méthacroléine après chauffage de terpènes. Une analyse du produit avant chauffage ne décrit donc pas forcément les substances auxquelles on serait exposé ensuite. Cette expérience ne fournit pas une température universellement sûre."
+            ],
+            "sourceIds": [
+              "terpenes-lesson-phase",
+              "terpenes-lesson-thermal2017"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "terpenes-lesson-phase",
+          "terpenes-lesson-rice2015",
+          "terpenes-lesson-oxidation1992",
+          "terpenes-lesson-thermal2017"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Déplacement ou transformation ?",
+          "nodes": [
+            {
+              "label": "Évaporation",
+              "detail": "La même molécule passe dans l’air."
+            },
+            {
+              "label": "Oxydation ou dégradation",
+              "detail": "La réaction forme d’autres molécules ; leurs propriétés peuvent être différentes."
+            }
+          ],
+          "caption": "Dans l’évaporation, la molécule est déplacée ; dans une réaction chimique, elle est transformée. Les deux peuvent se produire ensemble.",
+          "sourceIds": [
+            "terpenes-lesson-phase",
+            "terpenes-lesson-rice2015",
+            "terpenes-lesson-oxidation1992"
+          ],
+          "afterSectionId": "ref-evolution-aromes-oxydation"
+        }
+      },
+      "sourceIdsReviewed": [
+        "terpenes-lesson-phase",
+        "terpenes-lesson-rice2015",
+        "terpenes-lesson-oxidation1992",
+        "terpenes-lesson-thermal2017"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlé contre les passages ouverts. L’image de synthèse course-molecules est décorative et ne documente ni molécule ni observation."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Une molécule doit-elle bouillir pour passer dans l’air ?",
+        "termsExplained": [
+          "évaporation",
+          "volatilité",
+          "équilibre",
+          "oxydation",
+          "sensibilisation"
+        ],
+        "example": "La réaction forme d’autres molécules ; leurs propriétés peuvent être différentes.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Le lecteur peut expliquer la différence centrale avec un exemple avant de lire les détails."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "ref-aromes-chanvre",
+      "questions": [
+        "Quelle note caractérise le 1,8-cinéole détecté dans des fleurs de chanvre ?",
+        "Quel registre olfactif est associé au phénylacétaldéhyde détecté dans le chanvre ?",
+        "À quelle odeur l’acide butanoïque peut-il contribuer dans un bouquet de chanvre ?",
+        "Le méthional, détecté dans des fleurs de chanvre, évoque quelle odeur ?",
+        "Quelle plante apparentée au cannabis fournit des arômes recherchés en brasserie ?",
+        "Le myrcène du cannabis est un terpène acyclique : cela signifie que sa structure…",
+        "Les protéines qui forment les terpènes du cannabis sont notamment des…",
+        "Une même terpène synthase du cannabis peut former…",
+        "Dans les travaux sur l’odeur du cannabis, VSC désigne des composés volatils contenant quel élément ?",
+        "Dans le chanvre, le β-phellandrène appartient à quelle famille ?",
+        "Quelle famille d’odorants a été proposée pour une note de poivron dans certaines fleurs de chanvre ?",
+        "Quelle note a été associée au cinnamate d’éthyle proposé parmi les odorants du chanvre ?",
+        "Quel composé a été proposé pour une note de champignon dans des fleurs de chanvre ?",
+        "Quel composé a été relié à la forte note « skunk » de plusieurs cannabis dans des travaux de 2021 ?",
+        "Le méthional détecté dans le chanvre porte quelle fonction chimique ?",
+        "Dans les cellules du cannabis, la voie terpénique MEP se déroule surtout dans…",
+        "La voie du mévalonate, impliquée dans les terpènes du cannabis, se situe surtout dans…",
+        "Quel terpène du cannabis possède notamment un petit anneau à quatre carbones ?",
+        "Dans la biosynthèse terpénique du cannabis, quelle relation unit l’IPP et le DMAPP ?",
+        "Quel composé alimente le début de la voie du mévalonate liée aux terpènes du cannabis ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Texte, sections, liens et identifiants relus ; distinctions initiales conservées et exemples mécanistiques ajoutés.",
+        "Illustration générique non validée comme observation scientifique ; schéma original propre à cette fiche.",
+        "Les réponses de 20 questions n’étaient pas toutes enseignées ; ajout des notes, fonctions, précurseurs et critères provisoires nécessaires."
+      ],
+      "patch": {
+        "lead": "Pin, fleurs, agrumes ou épices : ces mots aident à décrire une odeur de chanvre. Ils sont des comparaisons sensorielles, pas des noms de molécules ni des promesses d’effet.",
+        "sections": [
+          {
+            "id": "ref-aromes-chanvre-1",
+            "title": "Comment relier un mot d’odeur à une molécule ?",
+            "paragraphs": [
+              "Le limonène est associé à des notes d’agrumes, les pinènes à des notes de pin et le linalol à des notes florales. La forme de la molécule, sa quantité et les autres substances présentes peuvent changer ce que l’on reconnaît. Citronné ne signifie donc pas automatiquement stimulant.",
+              "Les chercheurs peuvent séparer les substances d’un échantillon avant de décrire leur odeur. Dans trois variétés suisses de chanvre frais, ils ont notamment associé le 1,8-cinéole à l’eucalyptus, le linalol et le phénylacétaldéhyde au floral, l’acide butanoïque au fromage et le méthional à la pomme de terre cuite. Le méthional est un aldéhyde contenant aussi du soufre."
+            ],
+            "sourceIds": [
+              "qh-nature-aroma-key-compounds",
+              "terpenes-lesson-booth2017",
+              "terpenes-lesson-sulfur2021"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "La chromatographie sépare les substances. En GC-olfactométrie, une personne décrit l’odeur des fractions séparées ; en GC-MS, un spectromètre de masse aide à identifier les molécules. Ces méthodes se complètent : reconnaître une odeur ne prouve pas à lui seul l’identité chimique."
+              ],
+              "sourceIds": [
+                "qh-nature-aroma-key-compounds",
+                "terpenes-lesson-booth2017",
+                "terpenes-lesson-sulfur2021"
+              ]
+            }
+          },
+          {
+            "id": "ref-aromes-chanvre-2",
+            "title": "Pourquoi le bouquet dépasse-t-il les terpènes ?",
+            "paragraphs": [
+              "La substance la plus abondante n’est pas forcément celle que le nez repère le mieux. Certains composés soufrés ou d’autres molécules minoritaires peuvent compter beaucoup. L’odeur complète est ainsi un bouquet de substances, avec des notes qui se combinent ou se masquent.",
+              "Les composés soufrés volatils, c’est-à-dire contenant du soufre et pouvant passer dans l’air, sont parfois regroupés sous le sigle anglais VSC. Certains sont des thiols : ils portent le groupe –SH, où le soufre est lié à un hydrogène. L’un d’eux, le 3-méthylbut-2-ène-1-thiol, aussi écrit 3-méthyl-2-butène-1-thiol, a été relié à la forte note skunk dans les matériels étudiés en 2021. Ce résultat ne signifie pas que toute molécule soufrée possède cette odeur.",
+              "Toutes les associations publiées n’ont pas la même certitude. Dans l’étude suisse, des pistes comme poivron, cannelle et champignon restent provisoires. Reconnaître une odeur après séparation ne prouve pas non plus que chacun la retrouve dans la fleur entière."
+            ],
+            "sourceIds": [
+              "qh-nature-aroma-key-compounds",
+              "terpenes-lesson-booth2017",
+              "terpenes-lesson-sulfur2021"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Les identifications provisoires concernent notamment une méthoxypyrazine pour le poivron, le cinnamate d’éthyle pour la cannelle et la 1-octen-3-one pour le champignon. Leur comportement dans l’appareil et leur odeur ne remplacent pas toutes les confirmations par spectrométrie de masse."
+              ],
+              "sourceIds": [
+                "qh-nature-aroma-key-compounds",
+                "terpenes-lesson-booth2017",
+                "terpenes-lesson-sulfur2021"
+              ]
+            }
+          },
+          {
+            "id": "ref-aromes-chanvre-3",
+            "title": "Comment la plante produit-elle cette diversité ?",
+            "paragraphs": [
+              "Les enzymes sont des protéines qui facilitent les réactions chimiques de la plante. Certaines terpène synthases, les enzymes de fabrication des terpènes, peuvent former plusieurs molécules : CsTPS9 forme par exemple du caryophyllène et de l’humulène. Le développement de la fleur, puis le séchage et la conservation, contribuent aussi aux différences de profil.",
+              "Le chanvre partage certains terpènes avec le houblon, une plante de la même famille botanique, les Cannabaceae. Les terpènes du houblon participent aux arômes recherchés en brasserie. Une molécule commune à deux plantes ne leur donne pas pour autant la même odeur ni les mêmes effets."
+            ],
+            "sourceIds": [
+              "qh-nature-aroma-key-compounds",
+              "terpenes-lesson-booth2017",
+              "terpenes-lesson-sulfur2021"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Le myrcène est acyclique, ce qui signifie que sa chaîne ne forme pas d’anneau. Le β-phellandrène est un autre monoterpène, donc à dix carbones ; le β-caryophyllène possède deux anneaux, dont un à quatre carbones. En amont, les molécules IPP et DMAPP à cinq carbones alimentent la fabrication. La voie MEP agit surtout dans les plastes, des compartiments cellulaires ; celle du mévalonate surtout dans le cytosol et part notamment de l’acétyl-CoA. Cette répartition n’est pas une frontière sans échanges."
+              ],
+              "sourceIds": [
+                "qh-nature-aroma-key-compounds",
+                "terpenes-lesson-booth2017",
+                "terpenes-lesson-sulfur2021"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "qh-nature-aroma-key-compounds",
+          "terpenes-lesson-booth2017",
+          "terpenes-lesson-sulfur2021"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Une odeur est une comparaison",
+          "nodes": [
+            {
+              "label": "Molécule séparée",
+              "detail": "Le linalol peut être décrit comme floral."
+            },
+            {
+              "label": "Fleur entière",
+              "detail": "D’autres molécules changent la place de cette note dans le bouquet."
+            }
+          ],
+          "caption": "Floral décrit une perception du linalol séparé ; dans la fleur, cette note fait partie d’un bouquet plus large.",
+          "sourceIds": [
+            "qh-nature-aroma-key-compounds",
+            "terpenes-lesson-booth2017",
+            "terpenes-lesson-sulfur2021"
+          ],
+          "afterSectionId": "ref-aromes-chanvre-1"
+        }
+      },
+      "sourceIdsReviewed": [
+        "qh-nature-aroma-key-compounds",
+        "qh-nature-synthases-original",
+        "qh-nature-sulfur-original"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Schéma original contrôlé contre les passages ouverts. L’image de synthèse course-molecules est décorative et ne documente ni molécule ni observation."
+      },
+      "quizIdsReviewed": [
+        "hemp-en-2-01",
+        "hemp-en-2-02",
+        "hemp-en-2-03",
+        "hemp-en-2-04",
+        "hemp-en-2-05",
+        "hemp-en-2-06",
+        "hemp-en-2-07",
+        "hemp-en-2-08",
+        "hemp-en-2-09",
+        "hemp-en-2-10",
+        "hemp-en-2-11",
+        "hemp-en-2-12",
+        "hemp-en-2-13",
+        "hemp-en-2-14",
+        "hemp-en-2-15",
+        "hemp-en-2-16",
+        "hemp-en-2-17",
+        "hemp-en-2-18",
+        "hemp-en-2-19",
+        "hemp-en-2-20"
+      ],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "Comment relier un mot d’odeur à une molécule ?",
+        "termsExplained": [
+          "terpène synthase",
+          "VSC",
+          "thiol",
+          "acyclique",
+          "identification provisoire"
+        ],
+        "example": "D’autres molécules changent la place de cette note dans le bouquet.",
+        "detailsMoved": [
+          "ref-aromes-chanvre-1",
+          "ref-aromes-chanvre-2",
+          "ref-aromes-chanvre-3"
+        ],
+        "comprehensionChecks": [
+          "Le lecteur peut expliquer la différence centrale avec un exemple avant de lire les détails."
+        ],
+        "quizIdsReviewed": [
+          "hemp-en-2-01",
+          "hemp-en-2-02",
+          "hemp-en-2-03",
+          "hemp-en-2-04",
+          "hemp-en-2-05",
+          "hemp-en-2-06",
+          "hemp-en-2-07",
+          "hemp-en-2-08",
+          "hemp-en-2-09",
+          "hemp-en-2-10",
+          "hemp-en-2-11",
+          "hemp-en-2-12",
+          "hemp-en-2-13",
+          "hemp-en-2-14",
+          "hemp-en-2-15",
+          "hemp-en-2-16",
+          "hemp-en-2-17",
+          "hemp-en-2-18",
+          "hemp-en-2-19",
+          "hemp-en-2-20"
+        ]
+      }
+    }
+  ],
+  "termReviews": [
+    {
+      "id": "terpenes-term-aldehyde",
+      "definition": "Molécule portant un groupe terminal –CHO, formé de carbone, d’hydrogène et d’oxygène. Le méthional, associé à une odeur de pomme de terre cuite, en est un exemple contenant aussi du soufre.",
+      "sourceIds": [
+        "terpenes-lesson-rice2015"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-biosynthesis",
+      "definition": "Fabrication de molécules par un être vivant. Par exemple, des enzymes du chanvre transforment des matières de départ en terpènes.",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-concentration",
+      "definition": "Quantité de substance rapportée à une masse ou à un volume. Une valeur de 1 mg/g signifie un milligramme par gramme de matière.",
+      "sourceIds": [
+        "terpenes-lesson-sumner2007"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-degradation",
+      "definition": "Transformation d’une substance en d’autres molécules. Par exemple, le chauffage peut modifier un terpène ; cela diffère de l’évaporation, où il passe dans l’air sans changer d’identité.",
+      "sourceIds": [
+        "terpenes-lesson-thermal2017"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-boiling",
+      "definition": "Passage d’un liquide en gaz dans tout le liquide, avec formation de bulles. Le point d’ébullition dépend de la pression ; l’eau ne bout donc pas toujours à la même température.",
+      "sourceIds": [
+        "terpenes-lesson-phase"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-enantiomer",
+      "definition": "L’une de deux formes moléculaires images dans un miroir mais non superposables, comme deux mains. Elles gardent les mêmes liaisons entre atomes ; le linalol peut présenter ces deux formes.",
+      "sourceIds": [
+        "revision-iupac-stereochemistry"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-headspace",
+      "definition": "Air ou autre gaz situé au-dessus d’un échantillon. Dans un récipient de fleurs, cet air ne contient pas forcément les mêmes proportions de substances que les fleurs.",
+      "sourceIds": [
+        "terpenes-lesson-rice2015",
+        "terpenes-lesson-phase"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-ester",
+      "definition": "Dans les exemples étudiés ici, molécule réunissant une partie issue d’un acide et une partie issue d’un alcool, reliées par un groupe contenant deux oxygènes. L’hexanoate de propyle appartient à cette famille ; tous ses membres ne partagent pas une même odeur.",
+      "sourceIds": [
+        "terpenes-lesson-esters",
+        "terpenes-lesson-nonterpenes2023"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-evaporation",
+      "definition": "Passage de molécules depuis la surface d’un liquide vers l’air, possible sans ébullition. Une substance odorante peut ainsi quitter une matière bien avant son point d’ébullition.",
+      "sourceIds": [
+        "terpenes-lesson-phase"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-indole",
+      "definition": "Famille de molécules dont la structure comprend deux anneaux accolés, avec de l’azote dans l’un d’eux. Le skatole, aussi appelé 3-méthylindole, appartient à cette famille.",
+      "sourceIds": [
+        "terpenes-lesson-nonterpenes2023"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-isomer",
+      "definition": "Molécule ayant les mêmes nombres d’atomes de chaque élément qu’une autre, mais un assemblage ou une disposition dans l’espace différent. L’α-pinène et le β-pinène sont des isomères.",
+      "sourceIds": [
+        "revision-iupac-stereochemistry",
+        "terpenes-lesson-booth2017"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-masking",
+      "definition": "Situation où une odeur devient plus difficile à reconnaître dans un mélange. Elle peut être masquée par une autre sans que sa molécule ait disparu.",
+      "sourceIds": [
+        "terpenes-lesson-laing1989",
+        "terpenes-lesson-jinks2001"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-mixture",
+      "definition": "Ensemble contenant plusieurs substances. Une fleur peut libérer plusieurs odorants dont le mélange est perçu autrement que chacun pris séparément.",
+      "sourceIds": [
+        "terpenes-lesson-jinks2001"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-monoterpene",
+      "definition": "Terpène dont le squelette comporte dix atomes de carbone. Le limonène et les pinènes en sont des exemples ; mono ne veut pas dire qu’ils sont seuls dans la fleur.",
+      "sourceIds": [
+        "terpenes-lesson-terpenes"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-odor",
+      "definition": "Perception construite par le cerveau à partir des signaux reçus par le nez. Citronné est une description d’odeur, pas le nom d’une molécule unique.",
+      "sourceIds": [
+        "terpenes-lesson-olfaction"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-oxidation",
+      "definition": "Réaction au cours de laquelle une substance perd des électrons, de minuscules particules chargées qui participent aux liaisons chimiques. Le limonène peut ainsi réagir avec l’oxygène de l’air et former de nouvelles substances : il se transforme au lieu de simplement s’évaporer.",
+      "sourceIds": [
+        "terpenes-lesson-oxidation1992"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-profile",
+      "definition": "Ensemble de résultats décrivant les substances recherchées dans un échantillon. Un profil de quelques terpènes ne décrit pas forcément tous ses odorants.",
+      "sourceIds": [
+        "terpenes-lesson-sumner2007"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-relative",
+      "definition": "Part calculée dans un total choisi. Si un terpène représente 20 % des terpènes mesurés, cela ne veut pas dire que 20 % de toute la fleur est constitué de ce terpène.",
+      "sourceIds": [
+        "terpenes-lesson-sumner2007"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-sesquiterpene",
+      "definition": "Terpène dont le squelette contient quinze atomes de carbone, comme le β-caryophyllène ou l’α-humulène.",
+      "sourceIds": [
+        "terpenes-lesson-terpenes",
+        "terpenes-lesson-booth2017"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-threshold",
+      "definition": "Concentration repère à partir de laquelle une odeur est détectée dans des conditions données. Un seuil bas signifie que de petites concentrations peuvent être repérées ; il ne vaut pas exactement pour chaque personne.",
+      "sourceIds": [
+        "terpenes-lesson-rice2015"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-terpene",
+      "definition": "Au sens chimique strict retenu ici, molécule composée de carbone et d’hydrogène, dont le squelette est lié à des unités à cinq carbones. Le limonène en contient dix : c’est un monoterpène.",
+      "sourceIds": [
+        "terpenes-lesson-terpenes"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-terpenoid",
+      "definition": "Dans la convention utilisée ici, molécule apparentée aux terpènes mais contenant de l’oxygène, avec parfois un squelette modifié. Le linalol en est un exemple : il porte un groupe alcool –OH.",
+      "sourceIds": [
+        "terpenes-lesson-terpenes"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-thiol",
+      "definition": "Molécule portant un groupe –SH, où le soufre est lié à un hydrogène. Certains thiols contribuent à la note skunk, mais ce groupe ne donne pas la même odeur à toutes les molécules.",
+      "sourceIds": [
+        "terpenes-lesson-sulfur2021"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-trichome",
+      "definition": "Petite structure qui pousse à la surface d’une plante, avec ou sans glande. Chez le cannabis, certains trichomes possèdent des cellules qui fabriquent et accumulent notamment terpènes et cannabinoïdes.",
+      "sourceIds": [
+        "bf-trichomes-2020"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues.",
+        "Corrigé : tous les trichomes ne sont pas sécréteurs."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-oav",
+      "definition": "Valeur d’activité odorante : concentration d’une substance divisée par son seuil de détection, avec un milieu et des unités compatibles. C’est un indice de contribution possible, pas son pourcentage exact dans l’odeur perçue.",
+      "sourceIds": [
+        "terpenes-lesson-rice2015"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    },
+    {
+      "id": "terpenes-term-volatility",
+      "definition": "Facilité avec laquelle une substance passe dans l’air sous forme gazeuse. Elle peut être volatile sans être facilement sentie : le passage dans l’air et la détection par le nez sont deux choses différentes.",
+      "sourceIds": [
+        "terpenes-lesson-phase"
+      ],
+      "findings": [
+        "Définition relue ; les références inaccessibles restent signalées, jamais comptées comme lues."
+      ],
+      "pedagogicalReview": {
+        "definitionRewritten": true,
+        "exampleIncluded": true
+      }
+    }
+  ],
+  "quizPatches": [
+    {
+      "id": "hemp-molecules-gpp",
+      "prompt": "Quel précurseur alimente la biosynthèse des monoterpènes du chanvre ?",
+      "options": [
+        "Le farnésyl diphosphate",
+        "Le CBGA",
+        "Le cannabinol",
+        "Le géranyl diphosphate"
+      ],
+      "answer": 3,
+      "explanation": "Le géranyl diphosphate est une matière de départ à dix carbones. Des enzymes, les terpène synthases, le transforment en monoterpènes.",
+      "articleId": "ref-biosynthese-terpenes",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    },
+    {
+      "id": "hemp-molecules-fpp",
+      "prompt": "Quel précurseur fournit de nombreux sesquiterpènes du chanvre ?",
+      "options": [
+        "Le géranyl diphosphate",
+        "Le farnésyl diphosphate",
+        "Le THCA",
+        "Le cannabidiol"
+      ],
+      "answer": 1,
+      "explanation": "Le farnésyl diphosphate contient quinze carbones et sert de matière de départ à de nombreux sesquiterpènes, comme l’humulène.",
+      "articleId": "ref-biosynthese-terpenes",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    },
+    {
+      "id": "hemp-molecules-skunk-thiol",
+      "prompt": "Quelle famille de molécules contribue à la note « skunk » de certains cannabis ?",
+      "options": [
+        "Les esters",
+        "Les alcools monoterpéniques",
+        "Les thiols prénylés",
+        "Les hydrocarbures sesquiterpéniques"
+      ],
+      "answer": 2,
+      "explanation": "Certains thiols prénylés contribuent à cette note dans les échantillons étudiés. Un thiol porte le groupe soufré –SH ; tous les composés soufrés ne sentent pas le skunk.",
+      "articleId": "ref-volatils-non-terpeniques",
+      "sourceIds": [
+        "terpenes-lesson-sulfur2021"
+      ]
+    },
+    {
+      "id": "hemp-molecules-ester",
+      "prompt": "L’hexanoate de propyle décrit dans certains extraits de cannabis appartient aux…",
+      "options": [
+        "Esters",
+        "Thiols",
+        "Indoles",
+        "Alcools"
+      ],
+      "answer": 0,
+      "explanation": "L’hexanoate de propyle est un ester. Il illustre pourquoi un bouquet de cannabis ne se résume pas aux seuls terpènes.",
+      "articleId": "ref-volatils-non-terpeniques",
+      "sourceIds": [
+        "terpenes-lesson-nonterpenes2023"
+      ]
+    },
+    {
+      "id": "hemp-en-2-01",
+      "prompt": "Quelle note caractérise le 1,8-cinéole détecté dans des fleurs de chanvre ?",
+      "options": [
+        "Eucalyptus",
+        "Fromage",
+        "Chocolat",
+        "Vanille"
+      ],
+      "answer": 0,
+      "explanation": "Dans les fleurs analysées, le 1,8-cinéole a été associé à la note eucalyptus. Ce mot décrit une odeur, pas un effet respiratoire démontré.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-02",
+      "prompt": "Quel registre olfactif est associé au phénylacétaldéhyde détecté dans le chanvre ?",
+      "options": [
+        "Floral",
+        "Soufré",
+        "Mentholé",
+        "Fumé"
+      ],
+      "answer": 0,
+      "explanation": "La note relevée pour le phénylacétaldéhyde était florale. Dans la fleur entière, d’autres odorants peuvent renforcer ou masquer cette note.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-03",
+      "prompt": "À quelle odeur l’acide butanoïque peut-il contribuer dans un bouquet de chanvre ?",
+      "options": [
+        "Fromage",
+        "Pin",
+        "Rose",
+        "Menthe"
+      ],
+      "answer": 0,
+      "explanation": "Une note de fromage a été associée à l’acide butanoïque dans l’étude. Une même molécule contribue à un mélange ; elle ne résume pas toute son odeur.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-04",
+      "prompt": "Le méthional, détecté dans des fleurs de chanvre, évoque quelle odeur ?",
+      "options": [
+        "Pomme de terre cuite",
+        "Citron",
+        "Lavande",
+        "Résine de pin"
+      ],
+      "answer": 0,
+      "explanation": "Le méthional évoque la pomme de terre cuite dans cette analyse. C’est un exemple d’odorant contenant du soufre qui ne se réduit pas à la note skunk.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-05",
+      "prompt": "Quelle plante apparentée au cannabis fournit des arômes recherchés en brasserie ?",
+      "options": [
+        "Le houblon",
+        "Le tabac",
+        "Le colza",
+        "Le cotonnier"
+      ],
+      "answer": 0,
+      "explanation": "Le houblon appartient, comme le cannabis, aux Cannabaceae. Ses terpènes participent aux arômes recherchés en brasserie.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    },
+    {
+      "id": "hemp-en-2-06",
+      "prompt": "Le myrcène du cannabis est un terpène acyclique : cela signifie que sa structure…",
+      "options": [
+        "Ne comporte pas d’anneau",
+        "Possède trois anneaux",
+        "Ne contient pas de carbone",
+        "Est un polymère géant"
+      ],
+      "answer": 0,
+      "explanation": "Acyclique signifie sans anneau : la chaîne d’atomes de carbone du myrcène reste ouverte.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    },
+    {
+      "id": "hemp-en-2-07",
+      "prompt": "Les protéines qui forment les terpènes du cannabis sont notamment des…",
+      "options": [
+        "Terpène synthases",
+        "Cellulases",
+        "Protéases digestives",
+        "Amylases"
+      ],
+      "answer": 0,
+      "explanation": "Les terpène synthases sont des enzymes, donc des protéines qui facilitent des réactions de fabrication des terpènes.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    },
+    {
+      "id": "hemp-en-2-08",
+      "prompt": "Une même terpène synthase du cannabis peut former…",
+      "options": [
+        "Plusieurs terpènes différents",
+        "Uniquement un seul produit dans tous les cas",
+        "Des fibres textiles entières",
+        "Des chromosomes complets"
+      ],
+      "answer": 0,
+      "explanation": "Une enzyme peut former plusieurs produits. Chez Finola, CsTPS9 forme par exemple du β-caryophyllène et de l’α-humulène.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    },
+    {
+      "id": "hemp-en-2-09",
+      "prompt": "Dans les travaux sur l’odeur du cannabis, VSC désigne des composés volatils contenant quel élément ?",
+      "options": [
+        "Du soufre",
+        "Du sodium",
+        "Du silicium",
+        "Du sélénium"
+      ],
+      "answer": 0,
+      "explanation": "VSC abrège l’anglais volatile sulfur compounds : composés soufrés volatils. Ils contiennent du soufre et peuvent passer dans l’air.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-sulfur2021"
+      ]
+    },
+    {
+      "id": "hemp-en-2-10",
+      "prompt": "Dans le chanvre, le β-phellandrène appartient à quelle famille ?",
+      "options": [
+        "Monoterpènes",
+        "Sesquiterpènes",
+        "Cannabinoïdes",
+        "Acides gras"
+      ],
+      "answer": 0,
+      "explanation": "Le β-phellandrène est un monoterpène : son squelette contient dix atomes de carbone.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-11",
+      "prompt": "Quelle famille d’odorants a été proposée pour une note de poivron dans certaines fleurs de chanvre ?",
+      "options": [
+        "Méthoxypyrazines",
+        "Tocophérols",
+        "Anthocyanes",
+        "Phytostérols"
+      ],
+      "answer": 0,
+      "explanation": "Une méthoxypyrazine a été proposée pour la note poivron. L’identification reste provisoire : reconnaître cette odeur ne suffit pas à confirmer toute la structure.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-12",
+      "prompt": "Quelle note a été associée au cinnamate d’éthyle proposé parmi les odorants du chanvre ?",
+      "options": [
+        "Cannelle",
+        "Eucalyptus",
+        "Champignon",
+        "Pomme de terre cuite"
+      ],
+      "answer": 0,
+      "explanation": "La note proposée est cannelle. Le nom cinnamate d’éthyle reste une identification provisoire dans cette étude.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-13",
+      "prompt": "Quel composé a été proposé pour une note de champignon dans des fleurs de chanvre ?",
+      "options": [
+        "1-octen-3-one",
+        "Limonène",
+        "Linalol",
+        "1,8-cinéole"
+      ],
+      "answer": 0,
+      "explanation": "La 1-octen-3-one est la molécule proposée pour cette note de champignon. Cette attribution n’a pas le même degré de confirmation que tous les autres odorants de l’étude.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-14",
+      "prompt": "Quel composé a été relié à la forte note « skunk » de plusieurs cannabis dans des travaux de 2021 ?",
+      "options": [
+        "3-méthyl-2-butène-1-thiol",
+        "α-pinène",
+        "Linalol",
+        "Acétate d’éthyle"
+      ],
+      "answer": 0,
+      "explanation": "Ce nom désigne un thiol contenant le groupe –SH. L’étude de 2021 le relie à la forte note skunk des matériels étudiés, sans en faire l’odeur de tous les cannabis.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-sulfur2021"
+      ]
+    },
+    {
+      "id": "hemp-en-2-15",
+      "prompt": "Le méthional détecté dans le chanvre porte quelle fonction chimique ?",
+      "options": [
+        "Aldéhyde",
+        "Alcool",
+        "Ester",
+        "Acide carboxylique"
+      ],
+      "answer": 0,
+      "explanation": "Le méthional porte un groupe aldéhyde –CHO. Il contient aussi du soufre : les deux descriptions concernent des parties différentes de la même molécule.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "qh-nature-aroma-key-compounds"
+      ]
+    },
+    {
+      "id": "hemp-en-2-16",
+      "prompt": "Dans les cellules du cannabis, la voie terpénique MEP se déroule surtout dans…",
+      "options": [
+        "Les plastes",
+        "Le noyau",
+        "Les ribosomes",
+        "La paroi cellulaire"
+      ],
+      "answer": 0,
+      "explanation": "La voie MEP fonctionne surtout dans les plastes, de petits compartiments à l’intérieur des cellules végétales. Des échanges avec d’autres parties de la cellule restent possibles.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    },
+    {
+      "id": "hemp-en-2-17",
+      "prompt": "La voie du mévalonate, impliquée dans les terpènes du cannabis, se situe surtout dans…",
+      "options": [
+        "Le cytosol",
+        "Le noyau",
+        "La vacuole",
+        "La paroi cellulaire"
+      ],
+      "answer": 0,
+      "explanation": "La voie du mévalonate fonctionne surtout dans le cytosol, le milieu de la cellule qui entoure ses compartiments.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    },
+    {
+      "id": "hemp-en-2-18",
+      "prompt": "Quel terpène du cannabis possède notamment un petit anneau à quatre carbones ?",
+      "options": [
+        "β-caryophyllène",
+        "Myrcène",
+        "Linalol",
+        "β-ocimène"
+      ],
+      "answer": 0,
+      "explanation": "Le β-caryophyllène possède deux anneaux, dont un petit anneau à quatre carbones. Cette forme aide à distinguer sa structure de celle de l’humulène.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    },
+    {
+      "id": "hemp-en-2-19",
+      "prompt": "Dans la biosynthèse terpénique du cannabis, quelle relation unit l’IPP et le DMAPP ?",
+      "options": [
+        "Ce sont deux isomères à cinq carbones",
+        "Ce sont deux récepteurs",
+        "Ce sont deux polysaccharides",
+        "Ce sont deux protéines"
+      ],
+      "answer": 0,
+      "explanation": "IPP et DMAPP ont chacun cinq carbones, mais leurs atomes ne sont pas reliés exactement de la même façon : ce sont des isomères.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    },
+    {
+      "id": "hemp-en-2-20",
+      "prompt": "Quel composé alimente le début de la voie du mévalonate liée aux terpènes du cannabis ?",
+      "options": [
+        "Acétyl-CoA",
+        "Chlorophylle b",
+        "Lignine",
+        "Anandamide"
+      ],
+      "answer": 0,
+      "explanation": "L’acétyl-CoA alimente le début de la voie du mévalonate. Plusieurs transformations conduisent ensuite aux matières de départ utilisées pour fabriquer les terpènes.",
+      "articleId": "ref-aromes-chanvre",
+      "sourceIds": [
+        "terpenes-lesson-booth2017"
+      ]
+    }
+  ],
+  "cardPatches": [],
+  "sensitivePoints": [
+    "Contre-lecture des définitions IUPAC requise : 403 persistant ; pas de lecture prétendue.",
+    "Spindle : condition supplémentaire non randomisée et petit effectif ; aucune recommandation médicale.",
+    "Tableau ZHAW : anomalie typographique myrcène/α-pinène ; ne pas convertir la ligne litigieuse en identification nouvelle.",
+    "Les références marquées inaccessibles ne sont pas comptées comme lues. Zager, Sumner et Laing ont finalement été ouverts via variantes publiques et leurs passages utiles relus."
+  ],
+  "pedagogicalRevision": {
+    "date": "2026-11-14",
+    "status": "ready-for-coordinator-review",
+    "articleIdsRewritten": [
+      "ref-biosynthese-terpenes",
+      "ref-odeur-cannabis",
+      "ref-profils-aromatiques",
+      "ref-volatils-non-terpeniques",
+      "ref-evolution-aromes",
+      "ref-aromes-chanvre"
+    ],
+    "pilotPreserved": true
+  }
+}

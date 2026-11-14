@@ -1,0 +1,1505 @@
+{
+  "domain": "products",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "products-lesson-food-fr",
+      "title": "Denrées alimentaires contenant du cannabidiol (CBD) : des produits illégaux qui doivent être retirés du marché",
+      "author": "Direction générale de l’alimentation",
+      "organization": "Ministère français de l’Agriculture",
+      "published": "20 mai 2026 ; vérifié le 12 novembre 2026",
+      "url": "https://agriculture.gouv.fr/node/110883",
+      "passage": "Absence d’autorisation des denrées avec ajout de CBD ; distinction graines et dérivés non enrichis, feuilles exclusivement en infusion aqueuse et conditions applicables.",
+      "access": "official-page",
+      "limitation": "État France/Union européenne daté, pas règle mondiale. Le statut de non-nouvel aliment de certaines parties ne supprime ni les limites de contaminants ni les autres obligations ; pas d’assimilation à un médicament autorisé.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://agriculture.gouv.fr/node/110883",
+          "sections": "DGAL 20 mai 2026 : graines/dérivés et feuilles exclusivement destinées à infusion aqueuse ; absence d’autorisation des ingrédients CBD rappelée.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Absence d’autorisation des denrées avec ajout de CBD ; distinction graines et dérivés non enrichis, feuilles exclusivement en infusion aqueuse et conditions applicables."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-novel-food",
+      "title": "Règlement (UE) 2015/2283 — nouveaux aliments, consolidation du 27 mars 2021",
+      "author": "Parlement européen et Conseil",
+      "organization": "Parlement européen et Conseil",
+      "published": "2015-11-25 ; consolidation courante 2021-03-27",
+      "url": "https://eur-lex.europa.eu/eli/reg/2015/2283/",
+      "passage": "Texte consolidé 2021-03-27, articles 3–4 et 6 : historique avant le 15 mai 1997, catégories, vérification et liste de l’Union.",
+      "limitation": "Articles effectivement ouverts. Statut d’un produit dépend aussi de sa nature, de son usage et des conditions de l’autorisation.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://eur-lex.europa.eu/eli/reg/2015/2283/",
+          "openedAt": "2026-11-14",
+          "sections": "Texte consolidé 2021-03-27, articles 3–4 et 6 : historique avant le 15 mai 1997, catégories, vérification et liste de l’Union.",
+          "supports": "Texte consolidé 2021-03-27, articles 3–4 et 6 : historique avant le 15 mai 1997, catégories, vérification et liste de l’Union.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-oral",
+      "title": "Statement on Cannabis Extracts, Edibles and Topical Products",
+      "author": "Conseil des médecins hygiénistes en chef, Agence de la santé publique du Canada",
+      "organization": "Conseil des médecins hygiénistes en chef, Agence de la santé publique du Canada",
+      "published": "2020-01-06",
+      "url": "https://www.canada.ca/en/public-health/news/2020/01/council-of-chief-medical-officers-of-health-ccmoh-statement-on-cannabis-extracts-edibles-and-topical-products.html",
+      "passage": "Distinction ingestion/inhalation, effets oraux différés et risque de répétition ; ne pas vapoter un produit non destiné à cette voie.",
+      "limitation": "Aucun conseil de dosage ou de consommation repris ; la réglementation canadienne n’est pas transposée à la France.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/public-health/news/2020/01/council-of-chief-medical-officers-of-health-ccmoh-statement-on-cannabis-extracts-edibles-and-topical-products.html",
+          "sections": "ASPC, déclaration du 6 janvier 2020 : différence ingestion/inhalation et produits destinés à une voie ; aucun conseil de dose repris.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Distinction ingestion/inhalation, effets oraux différés et risque de répétition ; ne pas vapoter un produit non destiné à cette voie."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-efsa-2026",
+      "title": "Provisional safe level for cannabidiol as a novel food",
+      "author": "EFSA, groupe NDA",
+      "organization": "EFSA, groupe NDA",
+      "published": "2026-02-09",
+      "url": "https://www.efsa.europa.eu/en/news/provisional-safe-level-cannabidiol-novel-food",
+      "passage": "Déclaration actualisée : niveau provisoire pour des formulations de compléments très spécifiques ; données manquantes et populations pour lesquelles la sécurité ne peut être établie.",
+      "limitation": "Page institutionnelle de l’évaluation, pas autorisation commerciale. Aucun niveau d’ingestion n’est transformé ici en conseil ; conclusion non transposable à tous les extraits, mélanges ou voies.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.efsa.europa.eu/en/news/provisional-safe-level-cannabidiol-novel-food",
+          "sections": "EFSA 9 février 2026 : page lue, niveau provisoire limité à certaines formulations de compléments, lacunes et populations non couvertes ; avis de risque distinct d’une autorisation, aucune dose conseillée.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Déclaration actualisée : niveau provisoire pour des formulations de compléments très spécifiques ; données manquantes et populations pour lesquelles la sécurité ne peut être établie."
+        }
+      ]
+    },
+    {
+      "id": "products-official-claims-dgccrf-2025",
+      "title": "Allégations nutritionnelles et de santé : ne vous faites pas avoir !",
+      "author": "DGCCRF",
+      "organization": "Ministère de l’Économie",
+      "published": "2025-11-10",
+      "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/allegations-nutritionnelles-et-de-sante-ne-vous-faites-pas-avoir",
+      "verifiedAt": "2026-11-14",
+      "passage": "Cadre réglementaire ; Q2 allégations nutritionnelles et conditions ; section allégations en attente et interdiction thérapeutique.",
+      "access": "official-page",
+      "documentKind": "Explication originale par l’autorité française chargée du contrôle",
+      "limitation": "Page institutionnelle explicative, pas nouvelle lecture du règlement1924/2006 consolidé. N’attribue aucune allégation autorisée au CBD ; distingue aussi le régime particulier des allégations botaniques en attente.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.economie.gouv.fr/dgccrf/les-fiches-pratiques/allegations-nutritionnelles-et-de-sante-ne-vous-faites-pas-avoir",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Cadre réglementaire",
+            "Allégations en attente et outil DGCCRF",
+            "Questions/réponses : Q1–Q2"
+          ],
+          "result": "Passages effectivement ouverts et lus.",
+          "assertionsSupported": [
+            "Allégations nutritionnelles limitées à celles de l’annexe et à leurs conditions d’utilisation.",
+            "Évaluation scientifique et autorisation sont deux étapes distinctes.",
+            "Une denrée ne peut prétendre prévenir, guérir ou traiter une maladie humaine."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "products-tool-product-terms",
+      "title": "Clearing the Smoke on Cannabis: Edible Cannabis Products, Cannabis Extracts and Cannabis Topicals",
+      "author": "Centre canadien sur les dépendances et l’usage de substances",
+      "organization": "Centre canadien sur les dépendances et l’usage de substances",
+      "published": "2020",
+      "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+      "passage": "Tableau 1, p.3 du PDF : kief, résines, rosin, live resin ; origine du mot live dans l’état de la matière première.",
+      "limitation": "Terminologie décrite dans un contexte canadien ; pas norme de composition ou droit français. Teneurs, prix, procédures et promesses sensorielles non repris.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://ccsa.ca/sites/default/files/2020-05/CCSA-Edible-Cannabis-Extracts-and-Topicals-Report-2020-en.pdf",
+          "sections": "CCSA 2020 : résumé et parties sur aliments/extraits, délais d’apparition et risque d’ingestion accidentelle ; contexte canadien distinct du droit français.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Tableau 1, p.3 du PDF : kief, résines, rosin, live resin ; origine du mot live dans l’état de la matière première."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-inhalation",
+      "title": "Cannabis accessories for inhalation: health risks",
+      "author": "Santé Canada",
+      "organization": "Santé Canada",
+      "published": "Page institutionnelle consultée le 14 novembre 2026",
+      "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+      "passage": "Sections Smoking et Vaping : fumée de combustion distincte de l’aérosol ; substances nocives et transfert possible depuis le matériel.",
+      "limitation": "Informations sur l’exposition, pas mode d’emploi ni validation d’un produit. Absence de combustion ne signifie pas innocuité.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.canada.ca/en/health-canada/services/drugs-medication/cannabis/personal-use/accessories-inhalation.html",
+          "sections": "Santé Canada : Smoking et Vaping ; combustion, aérosols et limites des dispositifs ; recommandations générales sans garantie d’innocuité.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Sections Smoking et Vaping : fumée de combustion distincte de l’aérosol ; substances nocives et transfert possible depuis le matériel."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-analysis",
+      "title": "Exigences pour l’accréditation des laboratoires selon NF EN ISO/IEC 17025:2017 — LAB REF 02, révision 15",
+      "author": "Cofrac",
+      "organization": "Cofrac",
+      "published": "Applicable à compter du 2026-03-01",
+      "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+      "passage": "LAB REF 02 révision 15, §7.8.6–7.8.7 : couverture des résultats et distinction déclarations sous/hors accréditation.",
+      "limitation": "Complément COFRAC à ISO/IEC 17025 ; ne remplace pas la norme et ne certifie pas automatiquement chaque produit.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://tools.cofrac.fr/documentation/LAB-REF-02",
+          "openedAt": "2026-11-14",
+          "sections": "LAB REF 02 révision 15, §7.8.6–7.8.7 : couverture des résultats et distinction déclarations sous/hors accréditation.",
+          "supports": "LAB REF 02 révision 15, §7.8.6–7.8.7 : couverture des résultats et distinction déclarations sous/hors accréditation.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-hhc-decision-2026",
+      "title": "Décision du 16 janvier 2026 modifiant la liste des stupéfiants",
+      "author": "ANSM",
+      "organization": "ANSM",
+      "published": "2026-01-16 ; publication 2026-01-19",
+      "url": "https://ansm.sante.fr/actualites/decision-du-16-01-2026-portant-modification-de-la-liste-des-substances-classees-comme-stupefiants",
+      "passage": "Décision du 16 janvier 2026 publiée le 19 janvier : ajout HHC annexe III et retrait annexe IV.",
+      "limitation": "Transfert entre annexes des stupéfiants, pas déclassement. Pas de généralisation à toutes les molécules commercialisées sous un nom voisin.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://ansm.sante.fr/actualites/decision-du-16-01-2026-portant-modification-de-la-liste-des-substances-classees-comme-stupefiants",
+          "openedAt": "2026-11-14",
+          "sections": "Décision du 16 janvier 2026 publiée le 19 janvier : ajout HHC annexe III et retrait annexe IV.",
+          "supports": "Décision du 16 janvier 2026 publiée le 19 janvier : ajout HHC annexe III et retrait annexe IV.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-penal-commerce",
+      "title": "Code pénal, article 222-37",
+      "author": "République française — Légifrance",
+      "organization": "République française — Légifrance",
+      "published": "Version en vigueur depuis le 2002-01-01, contrôlée le 14 novembre 2026",
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417724",
+      "passage": "Transport, détention, offre, cession, acquisition ou emploi illicites de stupéfiants.",
+      "limitation": "Distinct du seul usage. Ne décrit pas à lui seul toutes les infractions de production, importation ou toutes les peines complémentaires.",
+      "access": "official-page",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000006417724",
+          "sections": "Légifrance : article 222-37, version en vigueur au 14 novembre 2026, transport/détention/offre/cession/acquisition/emploi illicites et facilitation. Aucun seuil de chanvre converti en autorisation générale.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Transport, détention, offre, cession, acquisition ou emploi illicites de stupéfiants."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-penal-use",
+      "title": "Code de la santé publique, article L3421-1 — version en vigueur depuis le20août2026",
+      "author": "République française",
+      "organization": "Légifrance",
+      "published": "2026-08-20",
+      "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000054724736/2026-08-20",
+      "verifiedAt": "2026-11-14",
+      "passage": "ArticleL3421-1 intégral, premier alinéa : usage illicite d’une substance ou plante classée comme stupéfiant.",
+      "access": "full-text",
+      "documentKind": "Texte législatif primaire, version exacte LEGIARTI000054724736",
+      "limitation": "La version exacte entrée en vigueur le20août2026 a été lue au lien daté ; l’accès demandé au14novembre échoue. Les fiches retiennent la qualification d’usage illicite, sans recopier barème, exceptions ou procédures. Cet article ne suffit pas à qualifier le commerce, qui a sa source pénale propre.",
+      "reviewEvidence": [
+        {
+          "url": "https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000054724736/2026-08-20",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "ArticleL3421-1 : version en vigueur depuis le20août2026, modifiée par loi2026-798 art25",
+            "Premier alinéa et alinéas suivants, lecture intégrale"
+          ],
+          "result": "Version exacte du texte ouverte ; premier alinéa sur l’usage illicite effectivement lu, distinct d’une simple capture de moteur.",
+          "assertionsSupported": [
+            "L’usage illicite des substances ou plantes classées comme stupéfiants fait l’objet d’une disposition propre.",
+            "Ce texte ne se confond pas avec les dispositions pénales sur le commerce et la détention."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "products-tool-alert-2025",
+      "title": "Augmentation des intoxications causées par des produits à base de CBD contenant d’autres substances",
+      "author": "ANSM et Anses",
+      "organization": "ANSM et Anses",
+      "published": "2025-06-19",
+      "url": "https://www.anses.fr/system/files/press-2025-08.pdf",
+      "passage": "Alerte conjointe : discordance d’étiquetage, substances présentes à l’insu de l’utilisateur et signalements d’intoxications.",
+      "limitation": "Extrait original indexé consulté ; des signalements ne donnent ni incidence ni preuve que chaque produit de la catégorie est contaminé.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.anses.fr/system/files/press-2025-08.pdf",
+          "sections": "ANSES/ANSM 19 juin 2025 : pp. 1–2, écarts composition annoncée/réelle, voies ingérée/fumée/vapotée et substances inattendues ; aucun taux universel déduit.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Alerte conjointe : discordance d’étiquetage, substances présentes à l’insu de l’utilisateur et signalements d’intoxications."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-hhc",
+      "title": "Hexahydrocannabinol (HHC) and related substances",
+      "author": "István Ujváry et équipe EMCDDA",
+      "organization": "Observatoire européen des drogues et des toxicomanies, devenu EUDA",
+      "published": "17 avril 2023 ; DOI 10.2810/852912",
+      "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+      "passage": "Rapport 2023 pp.5, 19, 23–24 : origine semi-synthétique du marché décrit et épimères 9R/9S.",
+      "access": "excerpt",
+      "limitation": "Rapport historique 2023 ; ses anciens états du droit et l’absence alors d’études humaines ne sont pas présentés comme état actuel. Aucune méthode de synthèse reproduite.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.euda.europa.eu/system/files/documents/2023-04/emcdda-technical-report-hhc-and-related-substances.pdf",
+          "openedAt": "2026-11-14",
+          "sections": "Rapport 2023 pp.5, 19, 23–24 : origine semi-synthétique du marché décrit et épimères 9R/9S.",
+          "supports": "Rapport 2023 pp.5, 19, 23–24 : origine semi-synthétique du marché décrit et épimères 9R/9S.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-labels",
+      "title": "Product labeling accuracy and contamination analysis of commercially available cannabidiol product samples",
+      "author": "Barry E. Gidal, Ryan Vandrey, Chela Wallin, Sean Callan, Alan Sutton, Timothy B. Saurer et Jennifer L. Triemstra",
+      "organization": "Frontiers in Pharmacology 15:1335441",
+      "published": "18 mars 2024 ; DOI 10.3389/fphar.2024.1335441",
+      "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2024.1335441/full",
+      "passage": "Méthodes, résultats et tableaux 1–2, contamination : 202 produits achetés en ligne aux États-Unis, octobre–décembre 2021.",
+      "access": "excerpt",
+      "limitation": "Échantillon commercial de convenance, pas fréquence actuelle de contamination en France. Détection, dépassement de seuil et risque ne sont pas synonymes. Les pourcentages ne sont pas généralisés.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Passages originaux consultés",
+      "reviewEvidence": [
+        {
+          "url": "https://www.frontiersin.org/journals/pharmacology/articles/10.3389/fphar.2024.1335441/full",
+          "openedAt": "2026-11-14",
+          "sections": "Méthodes, résultats et tableaux 1–2, contamination : 202 produits achetés en ligne aux États-Unis, octobre–décembre 2021.",
+          "supports": "Méthodes, résultats et tableaux 1–2, contamination : 202 produits achetés en ligne aux États-Unis, octobre–décembre 2021.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-hemp-order",
+      "title": "Arrêté du 30 décembre 2021 portant application de l’article R.5132-86",
+      "author": "Ministères chargés de la Santé et de l’Agriculture",
+      "organization": "Ministères chargés de la Santé et de l’Agriculture",
+      "published": "2021-12-30 ; texte courant consulté",
+      "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213",
+      "passage": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+      "limitation": "Le critère 0,30 % n’est ni une autorisation alimentaire ni une garantie de sécurité. Les conditions de culture et les autres textes demeurent applicables.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.legifrance.gouv.fr/loda/id/JORFTEXT000044793213",
+          "openedAt": "2026-11-14",
+          "sections": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+          "supports": "Arrêté du 30 décembre 2021, version affichée au 14 novembre 2026, article 1 I et III ; II annulé.",
+          "result": "Passages du document ouverts et effectivement lus par le coordinateur."
+        }
+      ],
+      "reviewReusedFrom": "batches/regulation-01.json ; lecture du coordinateur réutilisée, non présentée comme une lecture personnelle du spécialiste products."
+    },
+    {
+      "id": "products-tool-hemp-judgment",
+      "title": "Conseil d’État, décision 444887 et affaires jointes",
+      "author": "Conseil d’État",
+      "organization": "Conseil d’État",
+      "published": "2022-12-29",
+      "url": "https://conseil-etat.fr/fr/arianeweb/CE/decision/2022-12-29/444887",
+      "passage": "Dispositif, article 3 : annulation du II de l’article 1 de l’arrêté du 30 décembre 2021 ; motifs relatifs notamment à l’interdiction générale des fleurs et feuilles.",
+      "limitation": "Annulation de ce II, pas suppression de l’ensemble des règles alimentaires, sanitaires ou relatives aux stupéfiants. À distinguer de la suspension provisoire de janvier 2022.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://conseil-etat.fr/fr/arianeweb/CE/decision/2022-12-29/444887",
+          "sections": "Conseil d’État décision 444887 : §1–5, §17–22 et dispositif lus ; annulation du II, distinction du seuil variétal et de l’innocuité. Les considérations scientifiques de 2022 ne valent pas bilan pharmacologique actualisé.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Dispositif, article 3 : annulation du II de l’article 1 de l’arrêté du 30 décembre 2021 ; motifs relatifs notamment à l’interdiction générale des fleurs et feuilles."
+        }
+      ]
+    },
+    {
+      "id": "products-tool-emerging-2026",
+      "title": "New psychoactive substances — European Drug Report 2026",
+      "author": "EUDA",
+      "organization": "EUDA",
+      "published": "2026",
+      "url": "https://www.euda.europa.eu/publications/european-drug-report/2026/new-psychoactive-substances_en",
+      "passage": "Section Continued availability of semi-synthetic cannabinoids : diversité, produits et incertitudes de composition.",
+      "limitation": "Surveillance européenne, non mesure de fréquence des risques dans la population ; familles de marché distinctes de l’identité et du procédé de chaque lot.",
+      "access": "excerpt",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Texte primaire juridique, institutionnel, scientifique ou de filière ; nature précisée dans le titre",
+      "reviewEvidence": [
+        {
+          "url": "https://www.euda.europa.eu/publications/european-drug-report/2026/new-psychoactive-substances_en",
+          "sections": "EUDA European Drug Report 2026 : sections Highly potent synthetic cannabinoids et Continued availability of semi-synthetic cannabinoids ; contrôle international HHC en décembre 2025 et variabilité des produits, sans reprendre les chiffres d’enquête comme prévalences générales.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Section Continued availability of semi-synthetic cannabinoids : diversité, produits et incertitudes de composition."
+        }
+      ]
+    },
+    {
+      "id": "products-lesson-names",
+      "title": "Cannabis Concentrates 101: Extracting the Facts on Inhalable Concentrates",
+      "author": "BC Cannabis Stores, rédaction pédagogique",
+      "organization": "Distributeur public de Colombie-Britannique",
+      "published": "Page sans date éditoriale confirmée ; consultée le 12 novembre 2026",
+      "url": "https://www.bccannabisstores.com/blogs/learn/cannabis-concentrates-101-extracting-the-facts-on-inhalable-concentrates",
+      "passage": "Terminologie commerciale : kief, hash, rosin, resin, live, distillate et textures.",
+      "access": "excerpt",
+      "limitation": "Source primaire d’usage commercial des noms, pas norme scientifique ni droit français. Les procédés pratiques, paramètres et promesses sensorielles ne sont pas repris. Les noms ne démontrent ni pureté ni innocuité.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Publication originale ou page de son organisme émetteur",
+      "reviewEvidence": [
+        {
+          "url": "https://www.bccannabisstores.com/blogs/learn/cannabis-concentrates-101-extracting-the-facts-on-inhalable-concentrates",
+          "sections": "BC Cannabis Stores, article Concentrates 101 : catégories kief/hash, rosin, distillate et live. Source d’un distributeur public canadien ; seules les définitions, pas les promesses ni conseils de consommation, sont reprises.",
+          "result": "read",
+          "reviewedBy": "products specialist",
+          "supports": "Terminologie commerciale : kief, hash, rosin, resin, live, distillate et textures."
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-product-products-enriched-food",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Un aliment enrichi en cannabinoïdes contient un ingrédient ajouté, par exemple du cannabidiol ou CBD. Le fait que son huile ou ses graines de départ soient alimentaires ne donne pas automatiquement ce statut à l’ajout.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "Le support est l’aliment qui reçoit l’ingrédient, par exemple une huile de graines. Ajouter un extrait ou une molécule change la composition : l’histoire d’usage de l’huile seule ne décrit plus tout le produit. Un complément alimentaire reste lui aussi une denrée alimentaire."
+            ],
+            "sourceIds": [
+              "products-lesson-food-fr",
+              "products-tool-novel-food"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "La préparation influence ce qui est absorbé par le tube digestif. La quantité réellement présente et la répartition de l’ingrédient dans le mélange ne se lisent pas dans le nom du produit. Être proposé en rayon montre une présence sur le marché, pas une vérification indépendante de toute sa composition."
+            ],
+            "sourceIds": [
+              "products-lesson-food-fr",
+              "products-tool-oral"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Il faut distinguer trois choses : l’évaluation scientifique des risques, le dépôt d’un dossier par une entreprise et l’acte qui autorise un ingrédient sous conditions. Un taux faible de THC, cannabinoïde associé à l’intoxication, ne prouve ni que le CBD ajouté est autorisé ni que le mélange est sans risques ou interactions."
+            ],
+            "sourceIds": [
+              "products-tool-novel-food",
+              "products-tool-efsa-2026"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "La DGAL, administration chargée de l’alimentation, rappelle en mai 2026 l’absence d’autorisation des ingrédients CBD alimentaires. Le nom complément alimentaire ne dispense pas du cadre des nouveaux aliments, applicable aux ingrédients concernés sans historique suffisant dans l’alimentation européenne.",
+              "L’EFSA, agence européenne d’évaluation des aliments, a rendu une conclusion de sécurité provisoire limitée à certaines formulations et populations. Ce n’est pas une autorisation générale. Les conditions de mise sur le marché et les promesses de bénéfices doivent donc être examinées séparément ; un nouveau nom ne prouve pas l’absence de classement d’une substance."
+            ],
+            "sourceIds": [
+              "products-lesson-food-fr",
+              "products-tool-novel-food",
+              "products-tool-efsa-2026",
+              "products-official-claims-dgccrf-2025"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-food-fr",
+          "products-tool-novel-food",
+          "products-tool-oral",
+          "products-tool-efsa-2026",
+          "products-official-claims-dgccrf-2025"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Évaluer et autoriser sont deux étapes",
+          "nodes": [
+            {
+              "label": "Avis de sécurité",
+              "detail": "Les scientifiques examinent des risques dans des conditions données."
+            },
+            {
+              "label": "Autorisation",
+              "detail": "Un acte distinct précise si l’ingrédient peut être commercialisé et à quelles conditions."
+            }
+          ],
+          "caption": "Un avis scientifique ou une demande déposée ne vaut pas, à lui seul, permission de vendre l’ingrédient alimentaire.",
+          "afterSectionId": "quality",
+          "sourceIds": [
+            "products-tool-novel-food",
+            "products-tool-efsa-2026"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-seed-food",
+          "record-product-products-oral",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-dgal-2026",
+        "products-tool-efsa-2026",
+        "products-tool-oral",
+        "products-tool-penal-commerce"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-novel-food",
+        "products-tool-hhc-decision-2026"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [],
+        "example": "Un acte distinct précise si l’ingrédient peut être commercialisé et à quelles conditions.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-oral",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "La voie orale signifie que le produit est avalé et passe par le tube digestif. Son absorption et les transformations par l’organisme peuvent retarder les effets ; l’absence d’effet immédiat ne signifie pas absence d’exposition.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "Après ingestion, des constituants passent du tube digestif vers l’organisme. Ils peuvent être transformés, notamment au foie : ce sont des étapes du métabolisme. Cette arrivée diffère de celle d’un produit inhalé par les poumons ; le nom d’une huile ou d’une capsule ne suffit pas à prévoir son effet."
+            ],
+            "sourceIds": [
+              "products-tool-oral",
+              "products-tool-product-terms"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "La formulation, la quantité absorbée et la personne contribuent aux différences. Un délai d’apparition peut faire croire trop tôt que rien ne s’est passé. Répéter une prise avant les effets peut alors cumuler les expositions et augmenter le risque d’intoxication."
+            ],
+            "sourceIds": [
+              "products-tool-oral",
+              "products-tool-product-terms"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Une capsule, un aliment et un médicament peuvent partager cette voie sans partager leurs contrôles ou leurs usages. Une étude d’une formulation précise ne couvre pas tous les mélanges ni toutes les populations. De même, une qualité adaptée à être avalée ne peut pas être transposée à l’inhalation."
+            ],
+            "sourceIds": [
+              "products-tool-oral",
+              "products-tool-efsa-2026"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Un médicament et une denrée alimentaire répondent à des règles différentes, même si tous deux s’avalent. Pour les denrées, la DGAL rappelle en mai 2026 l’absence d’autorisation des ingrédients au cannabidiol, abrégé CBD ; le nom complément alimentaire ne règle pas cette question.",
+              "Un avis de l’EFSA, l’agence d’évaluation alimentaire, ne donne pas une autorisation générale ni la permission de promettre un effet thérapeutique. La forme avalable ne dispense pas non plus d’examiner le classement des substances présentes et la composition réelle."
+            ],
+            "sourceIds": [
+              "products-lesson-food-fr",
+              "products-tool-novel-food",
+              "products-tool-efsa-2026",
+              "products-official-claims-dgccrf-2025"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-oral",
+          "products-tool-product-terms",
+          "products-tool-efsa-2026",
+          "products-lesson-food-fr",
+          "products-tool-novel-food",
+          "products-official-claims-dgccrf-2025"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Les effets ne suivent pas toujours immédiatement l’ingestion",
+          "nodes": [
+            {
+              "label": "Produit avalé",
+              "detail": "La composition et la formulation influencent l’exposition."
+            },
+            {
+              "label": "Absorption et transformations",
+              "detail": "Tube digestif et métabolisme, notamment au foie."
+            },
+            {
+              "label": "Effets possibles",
+              "detail": "Le délai et l’intensité varient ; l’absence immédiate n’indique pas une absence d’exposition."
+            }
+          ],
+          "caption": "L’enchaînement digestif peut retarder les effets : on ne peut pas déduire l’exposition du seul ressenti immédiat.",
+          "afterSectionId": "properties",
+          "sourceIds": [
+            "products-tool-oral",
+            "products-tool-product-terms"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-enriched-food",
+          "record-product-products-aerosol",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-oral",
+        "products-tool-efsa-2026",
+        "products-tool-product-terms",
+        "products-tool-dgal-2026",
+        "products-tool-penal-commerce"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-novel-food",
+        "products-tool-hhc-decision-2026"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "métabolisme"
+        ],
+        "example": "Le délai et l’intensité varient ; l’absence immédiate n’indique pas une absence d’exposition.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-smoke",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "La fumée est le mélange de gaz et de particules produit par une combustion. Brûler une matière peut créer de nouvelles substances : l’analyse de la plante de départ ne décrit pas toute la fumée inhalée.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "La combustion est une réaction qui transforme les molécules de départ. Certaines substances passent dans la fumée et d’autres se forment pendant cette transformation. Le mélange inhalé n’est donc pas simplement la composition de la plante déplacée dans l’air."
+            ],
+            "sourceIds": [
+              "products-tool-inhalation"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "La fumée de cannabis contient des substances nocives, dont certaines peuvent favoriser des cancers. Les personnes autour peuvent aussi être exposées. Un faible taux de THC, associé à l’intoxication, ne supprime pas les produits de combustion ; refroidir ou filtrer une partie de la fumée ne démontre pas sa sécurité respiratoire."
+            ],
+            "sourceIds": [
+              "products-tool-inhalation"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Un résultat peut concerner la matière avant combustion, les émissions ou l’exposition d’une personne : ce sont trois objets différents. Un certificat de la matière ne mesure pas tout ce qui sera formé. Une origine naturelle ou une qualité alimentaire ne prouve pas l’innocuité pour les poumons."
+            ],
+            "sourceIds": [
+              "products-tool-inhalation",
+              "products-tool-analysis"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "La voie fumée ne crée pas une exemption aux règles sur les substances présentes. Le statut dépend du produit et de sa composition réels ; l’annonce chanvre ne suffit pas à établir que tout usage est autorisé.",
+              "Usage illicite et actes de commerce ou de détention illicites répondent à des qualifications différentes selon les faits. Leurs dispositions générales sont réunies dans la fiche réglementaire ; elles sont distinctes de la question sanitaire des émissions de combustion."
+            ],
+            "sourceIds": [
+              "products-tool-hhc-decision-2026",
+              "products-tool-penal-commerce",
+              "products-tool-penal-use",
+              "products-tool-inhalation"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-inhalation",
+          "products-tool-analysis",
+          "products-tool-hhc-decision-2026",
+          "products-tool-penal-commerce",
+          "products-tool-penal-use"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "La combustion change le mélange",
+          "nodes": [
+            {
+              "label": "Matière initiale",
+              "detail": "Les substances présentes avant combustion."
+            },
+            {
+              "label": "Fumée",
+              "detail": "Gaz et particules, avec des substances formées pendant la réaction."
+            }
+          ],
+          "caption": "Mesurer ce qui est dans la plante ne suffit pas à mesurer ce qui est dans sa fumée.",
+          "afterSectionId": "origin",
+          "sourceIds": [
+            "products-tool-inhalation"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-aerosol",
+          "record-product-products-oral",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-inhalation",
+        "products-tool-oral",
+        "products-tool-penal-commerce"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hhc-decision-2026",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "combustion"
+        ],
+        "example": "Gaz et particules, avec des substances formées pendant la réaction.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-aerosol",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Un aérosol contient de petites gouttelettes ou particules dispersées dans un gaz. Il n’est pas une simple vapeur d’eau ; même sans combustion, son inhalation peut exposer les poumons à des substances nocives.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "Le liquide, ses transformations au chauffage et le dispositif peuvent contribuer au mélange émis. Des constituants du matériel peuvent ainsi rejoindre l’aérosol. La présence ou l’absence d’une flamme ne suffit pas à décrire tout ce qui est inhalé."
+            ],
+            "sourceIds": [
+              "products-tool-inhalation"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "Il faut distinguer le contenu du flacon, ce qui sort du dispositif, ce qui est réellement inhalé et ce qui passe dans l’organisme. Une mesure de l’un ne décrit pas automatiquement les autres. Les poumons et le tube digestif ne reçoivent pas les substances de la même façon."
+            ],
+            "sourceIds": [
+              "products-tool-inhalation"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Une huile de cuisine ou une préparation orale n’est pas validée pour cet usage. Les mots naturel, sans solvant ou testé ne disent pas quels risques respiratoires ont été examinés. Les alertes des agences françaises de sécurité sanitaire et du médicament (ANSES/ANSM) montrent aussi que certains produits peuvent contenir des substances inattendues : connaître l’objet testé et les ingrédients réels reste essentiel."
+            ],
+            "sourceIds": [
+              "products-tool-inhalation",
+              "products-tool-alert-2025"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Présenter un produit comme liquide d’aérosol ne change pas le classement des substances qu’il contient. Une conformité ou un usage établi pour un ingrédient alimentaire ne fournit pas de validation pour les poumons.",
+              "Les règles dépendent de la composition et du produit réel, avec des qualifications distinctes pour l’usage illicite ou les actes illicites de détention et de commerce. Elles ne peuvent pas être déduites d’une analyse du liquide seule, qui ne décrit pas toutes les émissions."
+            ],
+            "sourceIds": [
+              "products-tool-hhc-decision-2026",
+              "products-tool-penal-commerce",
+              "products-tool-penal-use",
+              "products-tool-inhalation"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-inhalation",
+          "products-tool-alert-2025",
+          "products-tool-hhc-decision-2026",
+          "products-tool-penal-commerce",
+          "products-tool-penal-use"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Du flacon à l’exposition",
+          "nodes": [
+            {
+              "label": "Liquide",
+              "detail": "Un premier mélange à analyser."
+            },
+            {
+              "label": "Aérosol émis",
+              "detail": "Le chauffage et le matériel peuvent modifier ou compléter ce mélange."
+            },
+            {
+              "label": "Personne exposée",
+              "detail": "La quantité inhalée puis absorbée demande d’autres informations."
+            }
+          ],
+          "caption": "Un test du liquide est une information sur le flacon, pas une mesure complète de l’exposition pulmonaire.",
+          "afterSectionId": "properties",
+          "sourceIds": [
+            "products-tool-inhalation"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-seed-oil",
+          "record-product-products-smoke",
+          "record-product-products-formulated",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-inhalation",
+        "products-tool-oral",
+        "products-tool-alert-2025",
+        "products-tool-penal-commerce"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hhc-decision-2026",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "aérosol"
+        ],
+        "example": "La quantité inhalée puis absorbée demande d’autres informations.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-plant-origin",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "L’origine végétale décrit d’où vient une matière. Elle ne précise pas nécessairement la substance finale ni toutes les transformations : une molécule décrite dans une plante peut aussi être fabriquée autrement.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "La chaîne de provenance relie une matière de départ à une plante identifiée. Mais le fait qu’une molécule existe dans le vivant ne prouve pas que celle d’un produit vendu ait été directement récoltée dans cette plante. Le nom de la substance et l’origine d’un lot sont deux informations différentes."
+            ],
+            "sourceIds": [
+              "products-lesson-hhc",
+              "products-lesson-labels"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "L’analyse peut identifier une molécule et rechercher des impuretés, les autres substances présentes avec elle. Ces indices peuvent aider à comprendre une fabrication, sans toujours révéler toute son histoire. Deux produits de même identité principale peuvent donc demander d’autres documents pour établir leur origine."
+            ],
+            "sourceIds": [
+              "products-lesson-hhc",
+              "products-lesson-labels"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Les documents de provenance et les transformations déclarées complètent l’analyse du produit final. Naturel ne signifie pas sans danger ni autorisé, et une apparence de plante n’exclut pas des substances ajoutées. Il faut relier l’annonce d’origine à la matière réellement fournie."
+            ],
+            "sourceIds": [
+              "products-lesson-hhc",
+              "products-tool-alert-2025"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "L’origine végétale ne dispense ni du classement de la substance ni des règles propres à sa destination alimentaire, médicinale ou autre. Le cadre agricole autorisant certains chanvres ne fournit pas une permission générale pour tous leurs extraits et formulations.",
+              "La question utile pour un produit est donc : quelle substance finale, obtenue par quelles étapes et pour quel emploi ? La réponse ne tient pas dans le seul mot naturel."
+            ],
+            "sourceIds": [
+              "products-tool-hemp-order",
+              "products-tool-hemp-judgment"
+            ],
+            "details": {
+              "title": "Pour aller plus loin",
+              "paragraphs": [
+                "Le seuil agricole de 0,30 % de Δ9-THC s’inscrit dans un cadre variétal et des usages sous conditions. Il ne représente pas une autorisation générale de tous les produits obtenus ; le détail des règles figure dans la fiche réglementaire."
+              ],
+              "sourceIds": [
+                "products-tool-hemp-order",
+                "products-tool-hemp-judgment"
+              ]
+            }
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-hhc",
+          "products-lesson-labels",
+          "products-tool-alert-2025",
+          "products-tool-hemp-order",
+          "products-tool-hemp-judgment"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Identité et provenance ne se remplacent pas",
+          "nodes": [
+            {
+              "label": "Quelle molécule ?",
+              "detail": "Réponse apportée par une identification adaptée."
+            },
+            {
+              "label": "D’où vient ce lot ?",
+              "detail": "Réponse demandant aussi une chaîne de matières et de transformations."
+            }
+          ],
+          "caption": "Une substance peut exister dans une plante sans que chaque produit vendu sous son nom provienne directement de cette plante.",
+          "afterSectionId": "properties",
+          "sourceIds": [
+            "products-lesson-hhc",
+            "products-lesson-labels"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-semisynthetic-origin",
+          "record-product-products-synthetic-origin",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-hhc",
+        "products-tool-label-study",
+        "products-tool-hemp-judgment",
+        "products-tool-penal-commerce"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hemp-order",
+        "products-tool-hhc-decision-2026",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [],
+        "example": "Réponse demandant aussi une chaîne de matières et de transformations.",
+        "detailsMoved": [
+          "regulations"
+        ],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-semisynthetic-origin",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "L’hémisynthèse part d’une substance issue du vivant puis la transforme chimiquement en une autre. L’origine végétale du départ ne rend pas la molécule finale identique à la plante ou à l’ingrédient initial.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "Un précurseur est une matière de départ qui sera transformée. Dans une séparation physique, on redistribue des constituants ; dans l’hémisynthèse, leurs molécules sont modifiées. Du cannabidiol, ou CBD, végétal au début d’une chaîne ne signifie donc pas que le produit final soit encore du CBD."
+            ],
+            "sourceIds": [
+              "products-lesson-hhc",
+              "products-tool-emerging-2026"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "Les rapports européens décrivent de l’hexahydrocannabinol, abrégé HHC, vendu sur le marché dans ce contexte. Ce composé peut présenter deux formes dont une orientation spatiale diffère, les épimères, et leurs propriétés ne sont pas identiques dans tous les tests. Des traces rapportées dans une préparation végétale ne prouvent pas que le HHC de chaque produit ait été directement récolté dans la plante."
+            ],
+            "sourceIds": [
+              "products-lesson-hhc"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Il faut préciser la substance, ses formes, les impuretés et l’histoire du lot. L’EUDA, agence européenne sur les drogues, signale en 2026 que des produits comme HHC-P semblent entièrement synthétiques. La parenté de nom ne permet donc pas d’attribuer une même origine ou un même risque à tous les composés."
+            ],
+            "sourceIds": [
+              "products-lesson-hhc",
+              "products-tool-emerging-2026"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Le HHC reste un stupéfiant en France : la décision de janvier 2026 l’a déplacé de l’annexe IV à l’annexe III de la liste, sans le déclasser. Une matière de départ CBD ou végétale ne le soustrait pas à ce classement.",
+              "Pour les autres substances, il faut examiner leur identité et les catégories de classement applicables plutôt que la seule abréviation. Le mot hémisynthétique ne crée pas une exemption commune ; usage illicite et actes illicites de détention ou de commerce gardent des qualifications distinctes."
+            ],
+            "sourceIds": [
+              "products-tool-hhc-decision-2026",
+              "products-tool-penal-commerce",
+              "products-tool-penal-use"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-hhc",
+          "products-tool-emerging-2026",
+          "products-tool-hhc-decision-2026",
+          "products-tool-penal-commerce",
+          "products-tool-penal-use"
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "Un départ végétal, une identité transformée",
+          "nodes": [
+            {
+              "label": "Précurseur naturel",
+              "detail": "Une substance de départ dont l’origine doit être documentée."
+            },
+            {
+              "label": "Transformation chimique",
+              "detail": "L’organisation des molécules est modifiée."
+            },
+            {
+              "label": "Produit final",
+              "detail": "Son identité et ses impuretés ne sont plus décrites par le seul nom du départ."
+            }
+          ],
+          "caption": "L’origine d’un précurseur et l’identité finale répondent à deux questions différentes.",
+          "afterSectionId": "origin",
+          "sourceIds": [
+            "products-lesson-hhc",
+            "products-tool-emerging-2026"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-plant-origin",
+          "record-product-products-synthetic-origin",
+          "record-product-products-formulated",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-hhc",
+        "products-tool-emerging-2026",
+        "products-tool-penal-commerce"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-hhc-decision-2026",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "précurseur"
+        ],
+        "example": "Son identité et ses impuretés ne sont plus décrites par le seul nom du départ.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-synthetic-origin",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "Synthétique décrit une fabrication par construction chimique. La molécule obtenue peut être identique à une substance du vivant ou différente : ce mot ne donne pas à lui seul une activité ou un niveau de risque unique.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "Une identité chimique décrit les atomes et leur arrangement ; une synthèse décrit une manière d’obtenir le produit. Fabriquer une molécule que l’on trouve aussi dans une plante ne change pas son identité par le seul fait de cette origine. Mais toute substance appelée cannabinoïde synthétique n’est pas pour autant du cannabidiol, ou CBD, ou du THC."
+            ],
+            "sourceIds": [
+              "products-tool-emerging-2026",
+              "products-tool-alert-2025",
+              "products-lesson-hhc"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "Certaines familles de cannabinoïdes de synthèse agissent sur des récepteurs, des capteurs biologiques des cellules. Un agoniste est une substance qui active un tel récepteur. Les familles regroupées sous cette étiquette ont des structures et des propriétés diverses : il n’existe pas un effet commun garanti par le mot synthétique."
+            ],
+            "sourceIds": [
+              "products-lesson-hhc",
+              "products-tool-emerging-2026"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "L’alerte des agences françaises de sécurité sanitaire et du médicament (ANSES/ANSM) de 2025 décrit des produits annoncés comme CBD contenant des substances inattendues. Une nouvelle abréviation, une pureté annoncée ou une apparence végétale ne remplace donc pas l’identification et la recherche des autres constituants. Un résultat limité à quelques substances ne décrit pas tout ce qui pourrait être présent."
+            ],
+            "sourceIds": [
+              "products-tool-alert-2025",
+              "products-tool-analysis"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Le classement dépend de la molécule réelle et des catégories de structure concernées, pas seulement du mode de fabrication. Changer un nom commercial ne crée pas une permission et deux substances de synthèse ne sont pas nécessairement soumises au même statut.",
+              "Pour un ingrédient alimentaire, les règles des nouveaux aliments s’ajoutent à cet examen. Une fabrication synthétique ne contourne pas l’absence d’autorisation des ingrédients CBD alimentaires rappelée par la DGAL : présence sur le marché et autorisation restent distinctes."
+            ],
+            "sourceIds": [
+              "products-tool-novel-food",
+              "products-lesson-food-fr"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-tool-emerging-2026",
+          "products-tool-alert-2025",
+          "products-lesson-hhc",
+          "products-tool-analysis",
+          "products-tool-novel-food",
+          "products-lesson-food-fr"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Fabriquer et identifier sont deux descriptions",
+          "nodes": [
+            {
+              "label": "Origine synthétique",
+              "detail": "Une information sur l’obtention."
+            },
+            {
+              "label": "Structure moléculaire",
+              "detail": "Une information sur la substance obtenue, identique ou non à une molécule du vivant."
+            }
+          ],
+          "caption": "Le procédé ne suffit pas à dire quelle activité possède la molécule ni quelles règles s’appliquent à elle.",
+          "afterSectionId": "properties",
+          "sourceIds": [
+            "products-lesson-hhc",
+            "products-tool-emerging-2026"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-semisynthetic-origin",
+          "record-product-products-isolate",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-emerging-2026",
+        "products-tool-alert-2025",
+        "products-tool-hhc",
+        "products-tool-dgal-2026",
+        "products-tool-efsa-2026",
+        "products-tool-penal-commerce"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-novel-food",
+        "products-tool-hhc-decision-2026",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [
+          "agoniste"
+        ],
+        "example": "Une information sur la substance obtenue, identique ou non à une molécule du vivant.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    },
+    {
+      "id": "record-product-products-live-extract",
+      "questions": [
+        "Quelle origine et quel mécanisme caractérisent cette matière ?",
+        "Quelles propriétés réelles ne se déduisent pas de sa désignation commerciale ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Tous les champs et paragraphes de la fiche relus, dont les blocs réglementaires communs contrôlés une fois comme passages identiques puis rattachés à chaque notice.",
+        "Origine, mécanisme et propriétés développés avec un exemple propre à cette matière ; limites fiables conservées.",
+        "Les références juridiques communes réutilisent les preuves de lecture du coordinateur lorsqu’elles existent, sans les attribuer au spécialiste.",
+        "Source CCSA sur live resin confirmée ; ajout de la typologie BC pour distinguer live resin et live rosin.",
+        "Finition éditoriale : propriétés et limites rédigées en paragraphes continus, cadre juridique propre au produit condensé en deux paragraphes, références redistribuées par section et renvoi réglementaire ajouté."
+      ],
+      "patch": {
+        "lead": "La mention live décrit ici une matière végétale fraîche congelée avant transformation. Elle ne signifie pas qu’une plante reste vivante dans le produit final, ni que tous ses composés ont été conservés.",
+        "sections": [
+          {
+            "id": "origin",
+            "title": "D’où vient cette matière ?",
+            "paragraphs": [
+              "Le mot apporte une information revendiquée sur l’histoire de la matière après récolte. Pour la comprendre, il faut aussi savoir à quelle famille de produit elle s’applique : live resin et live rosin ne nomment pas nécessairement la même séparation."
+            ],
+            "sourceIds": [
+              "products-lesson-labels",
+              "products-lesson-names"
+            ]
+          },
+          {
+            "id": "properties",
+            "title": "Que change sa préparation ?",
+            "paragraphs": [
+              "Certains composés volatils, ceux qui passent facilement dans l’air, peuvent être mieux conservés dans un contexte donné. Mais les transformations suivantes et les ajouts éventuels modifient encore le profil final. Les terpènes, une famille de molécules participant aux odeurs, ne sont donc pas tous garantis présents par ce mot."
+            ],
+            "sourceIds": [
+              "products-tool-product-terms",
+              "products-lesson-names"
+            ]
+          },
+          {
+            "id": "quality",
+            "title": "Que faut-il distinguer pour comprendre sa qualité ?",
+            "paragraphs": [
+              "Documents sur la matière initiale, catégorie de transformation et analyses du lot fini apportent des informations complémentaires. Live ne garantit ni fraîcheur indéfinie, ni qualité supérieure, ni composition constante. Une histoire revendiquée et un résultat mesuré ne répondent pas à la même question."
+            ],
+            "sourceIds": [
+              "products-tool-product-terms",
+              "products-lesson-labels"
+            ]
+          },
+          {
+            "id": "regulations",
+            "title": "Quel cadre s’applique en France et dans l’Union européenne ? (14 novembre 2026)",
+            "paragraphs": [
+              "Live est une mention de marché ; aucune définition française universelle n’attribue le même statut à tous les produits ainsi nommés. La famille réelle, la composition et la destination restent à examiner, y compris d’éventuelles substances classées.",
+              "Pour un ingrédient cannabinoïde alimentaire, l’histoire frais/congelé ne remplace pas le statut requis. La DGAL rappelle en mai 2026 l’absence d’autorisation des ingrédients au cannabidiol, ou CBD, pour l’alimentation : le mot live ne change pas cette question."
+            ],
+            "sourceIds": [
+              "products-tool-product-terms",
+              "products-tool-novel-food",
+              "products-lesson-food-fr"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "products-lesson-labels",
+          "products-lesson-names",
+          "products-tool-product-terms",
+          "products-tool-novel-food",
+          "products-lesson-food-fr"
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Histoire annoncée et contenu mesuré",
+          "nodes": [
+            {
+              "label": "Mention live",
+              "detail": "Décrit l’état frais congelé revendiqué avant transformation."
+            },
+            {
+              "label": "Profil final",
+              "detail": "Décrit ce que les analyses retrouvent après toutes les étapes."
+            }
+          ],
+          "caption": "Connaître l’état de départ ne permet pas de supposer une conservation totale de chaque substance.",
+          "afterSectionId": "quality",
+          "sourceIds": [
+            "products-tool-product-terms",
+            "products-lesson-labels"
+          ]
+        },
+        "relatedArticleIds": [
+          "record-product-products-rosin",
+          "record-product-products-extract",
+          "ref-origines-formulations",
+          "ref-reglementation-produits"
+        ]
+      },
+      "sourceIdsReviewed": [
+        "products-tool-product-terms",
+        "products-tool-label-study",
+        "products-lesson-names",
+        "products-tool-dgal-2026",
+        "products-tool-efsa-2026",
+        "products-tool-penal-commerce"
+      ],
+      "sourceReviewsReused": [
+        "products-tool-novel-food",
+        "products-tool-hhc-decision-2026",
+        "products-tool-analysis",
+        "products-tool-metrology"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Diagramme original propre à cette fiche, montrant les relations physiques, chimiques ou documentaires concernées. Pour les résines et liquides, l’apparence ne permet pas l’identification chimique : aucune photo n’est présentée comme diagnostic. La planche de synthèse existante a été examinée et reste décorative."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": [],
+      "pedagogicalReview": {
+        "entryQuestion": "D’où vient cette matière ?",
+        "termsExplained": [],
+        "example": "Décrit ce que les analyses retrouvent après toutes les étapes.",
+        "detailsMoved": [],
+        "comprehensionChecks": [
+          "Expliquer ce que la transformation change et ce qu’elle ne prouve pas.",
+          "Retrouver les réponses aux questions sans devoir décoder une autre fiche."
+        ],
+        "quizIdsReviewed": []
+      }
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [],
+  "sensitivePoints": [
+    "Le droit cité est celui du contexte France/UE annoncé ; les descriptions de marché canadien ne constituent pas des autorisations françaises.",
+    "Références juridiques réutilisées : voir attribution au coordinateur et preuves dans regulation-01.json. La consolidation 2026 de 178/2002 reste à résoudre par le coordinateur ; ne pas présenter sa lecture consolidée comme acquise.",
+    "Ne pas transformer les listes de contrôles en garantie : matrice, produit fini, échantillon et destination restent distincts.",
+    "HHC : rapport 2023 utilisé pour la classification d’origine ; son état juridique international ancien n’est pas repris. EUDA 2026 signale contrôle international en décembre 2025.",
+    "HHC-P : EUDA 2026 mentionne des produits pouvant être entièrement synthétiques ; ne pas déduire une origine hémisynthétique de toute abréviation.",
+    "Voie orale et inhalation : aucun seuil de dose, protocole de transformation ou conseil individuel ; sécurité alimentaire non transposée aux poumons.",
+    "Live : histoire revendiquée frais/congelé, pas preuve de conservation de tous les volatils."
+  ],
+  "pedagogicalRevision": {
+    "date": "2026-11-14",
+    "status": "ready-for-coordinator-review",
+    "articleIdsRewritten": [
+      "record-product-products-enriched-food",
+      "record-product-products-oral",
+      "record-product-products-smoke",
+      "record-product-products-aerosol",
+      "record-product-products-plant-origin",
+      "record-product-products-semisynthetic-origin",
+      "record-product-products-synthetic-origin",
+      "record-product-products-live-extract"
+    ],
+    "pilotPreserved": false
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "updated": "2026-11-11",
+  "status": "Refonte locale de l’ouverture des packs Buddies ; aucune publication ni migration.",
+  "diagnosis": "L’ouverture possédait déjà une déchirure, une pile, un retournement et un récapitulatif. Son décor vert presque noir, les effets lumineux, les boutons ronds et les slogans ne correspondaient plus aux feuilles et enseignes du Quartier.",
+  "references": [
+    {
+      "name": "Pokémon GO",
+      "url": "https://scopelyexplore.helpshift.com/hc/en/5-pokemon-go/faq/1139-sending-receiving-gifts/",
+      "verified": "Ouverture de cadeaux d’amis contenant des objets et une carte postale. Ce n’est pas l’ouverture de boosters de cartes."
+    },
+    {
+      "name": "Pokémon TCG Pocket — présentation officielle DeNA",
+      "url": "https://dena.com/intl/news/4742/",
+      "verified": "Le jeu repose sur l’ouverture de boosters numériques et la collection de cartes."
+    },
+    {
+      "name": "Pocket — témoignages sur le forum officiel",
+      "url": "https://community.pokemon.com/en-us/discussion/18429/add-a-less-animation-heavy-way-to-open-packs-or-make-it-skippable",
+      "verified": "Des joueurs décrivent le glissement d’ouverture, les étapes successives et la longueur des animations.",
+      "limits": "Témoignages 2024–2025, pas spécification actuelle du produit. Le bouton Tout révéler de Buddies est une décision d’accessibilité et de rythme, pas une fonctionnalité Pocket vérifiée."
+    },
+    {
+      "name": "Sorare — Early Access",
+      "url": "https://sorare.com/blog/football/early-access-cards-last-chance-for-special-editions",
+      "verified": "Présentation d’une expérience d’ouverture spéciale pour les éditions animées.",
+      "limits": "Le geste précis, les commandes actuelles et le récapitulatif n’ont pas été observés dans une session Sorare authentifiée."
+    },
+    {
+      "name": "Sorare — WNTR Set",
+      "url": "https://sorare.com/blog/football/wntr-set-the-guide",
+      "verified": "Les cartes issues des packs sont ajoutées automatiquement à la collection."
+    }
+  ],
+  "adaptation": [
+    "Pack canonique conservé, déchirure au doigt ou à la souris et bouton clavier équivalent.",
+    "Sortie de pile et cartes face cachée ; nombre de cartes et épaisseur restante issus du résultat reçu.",
+    "Retour tactile du déplacement horizontal ; annulation ou perte de capture ramène la carte en place.",
+    "Retournement volontaire, navigation et retour aux cartes déjà révélées ; rythme plus bref selon rareté confirmée.",
+    "Confettis imprimés crème, or, abricot et encre à la place des anneaux et colonnes lumineuses.",
+    "Commandes en neuf tranches avec matériaux du jeu, feuille papier et vignettes KqPrintedArt ; composition à deux colonnes sur ordinateur, verticale sur mobile.",
+    "Compteur numéroté avec état révélé, bouton Tout révéler et animation d’ouverture pouvant être passée.",
+    "Récapitulatif avec nouveautés, doublons, bonus et jauge de collection réelle ; absence de jauge lorsque la collection n’est pas disponible.",
+    "Focus transféré à la carte puis au récapitulatif, retour au déclencheur, son volontaire et mouvements réduits."
+  ],
+  "feasibility": {
+    "implementation": "React, CSS Modules, Pointer Events et GSAP déjà installés. Aucun moteur 3D, vidéo, canvas ou nouvelle dépendance.",
+    "rendering": "Transformations/opacité animées ; déplacement au doigt par variable CSS sans rendu React à chaque mouvement. Effets bornés et désactivés avec prefers-reduced-motion.",
+    "server": "Prix, consommation du pack, probabilités, ordre et contenu du tirage restent ceux du serveur. Aucun changement API, RPC, paiement ou base de données.",
+    "recovery": "Gardes contre appels simultanés, réutilisation du ticket, résultats tardifs et fermeture conservées. La fin de l’animation ne conditionne pas l’attribution.",
+    "assets": "Aucune génération nécessaire : réemploi des matériaux et illustrations déjà validés. Aucune illustration, marque ou donnée Sorare/Pokémon copiée."
+  },
+  "assets": {
+    "pack": "/app/lottery/sealed-booster-pack-sylvain-v3.webp",
+    "cardBack": "/app/lottery/tcg-card-back-sylvain-v2.webp",
+    "illustrations": [
+      "/app/lottery/sealed-booster-pack-sylvain-v3.webp",
+      "/app/lottery/tcg-card-back-sylvain-v2.webp"
+    ],
+    "provenance": [
+      "docs/bete-de-concours/ui-navigation-provenance.json",
+      "docs/bete-de-concours/ui-control-material-provenance.json",
+      "docs/bete-de-concours/ui-panel-material-provenance.json"
+    ]
+  },
+  "verification": {
+    "result": "Neuf groupes navigateur et treize tests ciblés réussis ; TypeScript global, ESLint ciblé et diff-check réussis. Captures inspectées, aucune erreur JavaScript ni requête externe.",
+    "demo": "output/pack-opening-studio/opening-demo.webm — 390×844, 30 images/s, environ 21 s, son coupé ; enregistrement vérifié par recording-report.json.",
+    "browser": "scripts/audit-pack-opening.mjs",
+    "report": "output/pack-opening-studio/report.json",
+    "cases": [
+      "320/390/768/1440 px",
+      "tactile, annulation du geste, clavier et focus",
+      "cinq raretés, aucune révélation prématurée",
+      "double entrée, réponse lente, passage et réessai sur même ticket",
+      "son volontaire et fermeture en attente",
+      "320×480 et mouvements réduits",
+      "carte bonus et progression de collection indisponible"
+    ]
+  }
+}

@@ -104,7 +104,7 @@ function clickedBackdrop(event: MouseEvent<HTMLDialogElement>) {
   return event.target === event.currentTarget && (event.clientX < bounds.left || event.clientX > bounds.right || event.clientY < bounds.top || event.clientY > bounds.bottom);
 }
 
-export function KqWarehouseShop({ open, onClose, zone, state, installedState, condition, initialDepartment = "lighting", initialEquipmentCode, locked, zoneLocked = false, onChangeZone, onPlaceDevice, onOpenWorkshop, planReview }: {
+export function KqWarehouseShop({ open, onClose, zone, state, installedState, condition, initialDepartment = "lighting", initialEquipmentCode, locked, zoneLocked = false, autonomous = false, onChangeZone, onPlaceDevice, onOpenWorkshop, planReview }: {
   open: boolean;
   onClose: () => void;
   zone: KqWarehouseZone | null;
@@ -115,6 +115,7 @@ export function KqWarehouseShop({ open, onClose, zone, state, installedState, co
   initialEquipmentCode?: string | null;
   locked: boolean;
   zoneLocked?: boolean;
+  autonomous?: boolean;
   onChangeZone: (patch: Partial<KqWarehouseZone>) => void;
   onPlaceDevice: (device: KqWarehouseDevice) => void;
   onOpenWorkshop: () => void;
@@ -200,6 +201,7 @@ export function KqWarehouseShop({ open, onClose, zone, state, installedState, co
           <div className={styles.departmentHeading}><h3>{currentDepartment.label}</h3>{department !== "workshop" && <div className={styles.zoneTag}><Warehouse size={17} /><span>{services ? "Zone à tracer" : validZone ? validZone.name : "Aperçu"}<strong>{services ? "Prix pour 1 m²" : `${sampleZone.width * sampleZone.height} m²`}</strong></span></div>}</div>
           {target?.kind === "unavailable" && <p className={styles.warning} role="status" data-warehouse-target-unavailable>Le modèle demandé{target.name ? ` « ${target.name} »` : ""} n’est pas proposé dans ce catalogue. Compare les équipements actuels dans les rayons ; aucun modèle n’a été ajouté au devis.</p>}
           {locked && <p className={styles.warning} role="status">Achats indisponibles pendant l’opération en cours.</p>}
+          {autonomous && !services && department !== "workshop" && <p className={styles.warning} data-warehouse-production-equipment-hint>Production autonome : éclairage, extraction et options agissent sur les prochains cycles. Choisis ton matériel maintenant ; l’installation attend que les lots et tâches du circuit soient terminés.</p>}
           {!locked && zoneLocked && !services && department !== "workshop" && <p className={styles.warning} role="status">Cette zone est en culture. Son équipement reste figé jusqu’à la récolte.</p>}
           {!validZone && !services && department !== "workshop" && <p className={styles.warning}>{zone ? "Corrige les dimensions de la zone pour l’équiper." : "Sélectionne une zone sur le plan pour l’équiper."}</p>}
           {notice && <p className={styles.notice} role="status"><Check size={16} />{notice}</p>}

@@ -6,6 +6,7 @@ import type { KqCareProduct, getKqCannabinoidReport, KqTerpeneReport } from "@/l
 import type { KqBuddieCultivationProfile } from "@/lib/kanab-quest-buddie-cultivation";
 import type { KqStorageContainer, KqStorageMethod, KqStorageMethodCode, KqStorageProjection } from "@/lib/kanab-quest-storage";
 import type { KqStorageStockBreakdown } from "@/lib/kanab-quest-storage-breakdown";
+import type { KqFlowerTrim } from "@/lib/kanab-quest-flower-trim";
 
 export type KqApiBurnReceipt = {
   id: string;
@@ -17,7 +18,9 @@ export type KqApiBurnReceipt = {
 };
 
 export type KqOfficialFlower = {
-  /** Authoritative conservation state; jury eligibility starts when curing is ready. */
+  /** Confirmed trim prerequisite; absent on older responses means unknown. */
+  trim?: KqFlowerTrim;
+  /** Authoritative conservation state; jury also requires confirmed trim readiness. */
   storage?: KqStorageProjection;
   /** Absent on historical responses; the original harvest scale then applies. */
   harvestTierVersion?: 2;
@@ -138,6 +141,7 @@ export type KqStorageSnapshot = {
   capacity: { totalUnits: number; usedUnits: number; freeUnits: number; reservedUnits: number; overflowUnits: number };
   overflowSales: Array<{ flowerId: string; units: number; payoutCents: number; netPayoutCents: number; soldAt: string; automatic: boolean }>;
   lots: Array<{ flowerId: string; varietyName: string; harvestGrams: number; flowerStatus: string; projection: KqStorageProjection;
+    trim?: KqFlowerTrim;
     overflowOffer?: { units: number; payoutCents: number; netPayoutCents: number } }>;
 };
 export async function getKqRemoteStorage(request: typeof fetch = fetch) {
@@ -173,7 +177,7 @@ export async function applyKqRemoteCare(runId: string, input: { productCode?: st
 }
 
 export async function startKqRemoteRun(
-  input: { buddieCode: string; deckCodes: string[]; cultureTokens?: number; heritageCode?: string; energyMode?: KqEnergyMode; expectedEnergyCents?: number; expectedWarehouseRevision?: number; zoneId?: string; campaign?: boolean; requestKey?: string },
+  input: { buddieCode: string; deckCodes: string[]; cultureTokens?: number; heritageCode?: string; energyMode?: KqEnergyMode; expectedEnergyCents?: number; expectedWarehouseRevision?: number; expectedProductionReservedZoneId?: string | null; zoneId?: string; campaign?: boolean; requestKey?: string },
   request: typeof fetch = fetch,
 ) {
   const response = await request("/api/admin/placard/runs", {

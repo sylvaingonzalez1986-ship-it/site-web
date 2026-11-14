@@ -1,0 +1,954 @@
+{
+  "domain": "health",
+  "reviewedAt": "2026-11-14",
+  "sources": [
+    {
+      "id": "health-atlas-cranshaw-2019",
+      "title": "Developing Insect Pest Management Systems for Hemp in the United States: A Work in Progress",
+      "author": "Whitney Cranshaw, Melissa Schreiner, Kadie Britt, Thomas P. Kuhar, John McPartland et Jerome Grant",
+      "organization": "Journal of Integrated Pest Management",
+      "published": "2019 ; 10(1):26",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/JIPM_2019.pdf",
+      "passage": "DOI 10.1093/jipm/pmz023 ; sections mites, stem/stalk borers et flower/seed insects : observations et lacunes de connaissances.",
+      "access": "full-text",
+      "limitation": "Synthèse de recherches et observations américaines, parfois non publiées séparément. Les relations présence/dégât et leur importance économique ne sont pas systématiquement établies.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/JIPM_2019.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "JIPM 2019, PDF 11 p., résumé et groupes de ravageurs"
+          ],
+          "result": "Synthèse sur les États-Unis, dégâts et insectes associés au chanvre ; pas estimation française. Licence CC BY-NC 4.0 : aucune photographie de cet article réutilisée commercialement.",
+          "assertionsSupported": [
+            "Synthèse sur les États-Unis, dégâts et insectes associés au chanvre ; pas estimation française. Licence CC BY-NC 4.0 : aucune photographie de cet article réutilisée commercialement."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-ostrinia",
+      "title": "Insects that Feed on Hemp — European Corn Borer",
+      "author": "Whitney Cranshaw, programme Hemp Insects",
+      "organization": "Colorado State University",
+      "published": "Fiche sans date imprimée explicite",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/European%20corn%20borer%20with%20photos.pdf",
+      "passage": "Description, cycle et galeries dans les tiges ; référence aux observations historiques sur chanvre.",
+      "access": "full-text",
+      "limitation": "Phénologie et distribution décrites pour les États-Unis. Les photos de larves sur maïs ne constituent pas des photos d’attaque sur chanvre.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/European%20corn%20borer%20with%20photos.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "CSU European Corn Borer, PDF p.1–2"
+          ],
+          "result": "Jeunes larves puis galeries dans la tige, fragilisation, hivernation de larves mûres ; photos sur maïs distinguées du chanvre.",
+          "assertionsSupported": [
+            "Jeunes larves puis galeries dans la tige, fragilisation, hivernation de larves mûres ; photos sur maïs distinguées du chanvre."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-grapholita",
+      "title": "Insects that Feed on Hemp — Eurasian Hemp Borer",
+      "author": "Whitney Cranshaw, programme Hemp Insects",
+      "organization": "Colorado State University",
+      "published": "2018-09, version révisée",
+      "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/Eurasian%20hemp%20borer%20September%202018%20rewrite(1).pdf",
+      "passage": "Pages 1–4 : Grapholita delineana, galeries, flétrissement et comparaison avec Ostrinia ; hôtes alternatifs discutés.",
+      "access": "full-text",
+      "limitation": "État des connaissances du Colorado en 2018 ; nombre de générations et hôtes sauvages demeurent incertains. Pas d’affirmation de monophagie stricte.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://webdoc.agsci.colostate.edu/hempinsects/PDFs/Eurasian%20hemp%20borer%20September%202018%20rewrite(1).pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "CSU Eurasian Hemp Borer, PDF p.1–4"
+          ],
+          "result": "Tortricidae ; chenilles devenant rougeâtres, bourgeons/gaines/tiges ; lésions à la base d’un bourgeon, hivernation larvaire. Contexte Colorado et connaissances publiées, pas présence locale démontrée.",
+          "assertionsSupported": [
+            "Tortricidae ; chenilles devenant rougeâtres, bourgeons/gaines/tiges ; lésions à la base d’un bourgeon, hivernation larvaire. Contexte Colorado et connaissances publiées, pas présence locale démontrée."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-hemp-france",
+      "title": "Chanvre — Guide de culture 2026",
+      "author": "Louis-Marie Allard et contributeurs ; coordination I. Lartigot",
+      "organization": "Terres Inovia",
+      "published": "2026-01",
+      "url": "https://www.terresinovia.fr/sites/default/files/2026-01/guide_culture_chanvre_2026.pdf",
+      "passage": "Pages 19–20 : maladies, fonte, altises, limaces et oiseaux ; symptômes de Botrytis et Sclerotinia.",
+      "access": "full-text",
+      "limitation": "Contexte français fibre/graine. On ne reprend ni produits conseillés, ni seuils climatiques simplifiés, ni l’assimilation de Pythium à un vrai champignon, ni une immunité générale des variétés.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.terresinovia.fr/sites/default/files/2026-01/guide_culture_chanvre_2026.pdf",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Guide Terres Inovia 2026, PDF p.19–20 (pages imprimées 19–20), chapitres maladies et ravageurs"
+          ],
+          "result": "Descriptions de sclérotiniose, rhizoctones, altises, limaces et oiseaux en contexte français. Exclusion des erreurs : Pythium appelé champignon ; tableau prétendant certains arthropodes absents de l’Hexagone ; extrapolations historiques/C4. Pas de photographie reprise sans licence.",
+          "assertionsSupported": [
+            "Descriptions de sclérotiniose, rhizoctones, altises, limaces et oiseaux en contexte français. Exclusion des erreurs : Pythium appelé champignon ; tableau prétendant certains arthropodes absents de l’Hexagone ; extrapolations historiques/C4. Pas de photographie reprise sans licence."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-punja-2019",
+      "title": "Pathogens and Molds Affecting Production and Quality of Cannabis sativa L.",
+      "author": "Zamir K. Punja et collaborateurs",
+      "organization": "Frontiers in Plant Science",
+      "published": "2019 ; 10:1120",
+      "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+      "passage": "DOI 10.3389/fpls.2019.01120 ; Results, figures 2–4, Discussion : isolements, confirmations et essais de pathogénicité.",
+      "access": "full-text",
+      "limitation": "Principalement Canada, plusieurs systèmes. Isolement et pathogénicité ne sont pas équivalents ; celle de Pythium catenulatum reste non confirmée. Ancien nom d’oïdium à interpréter avec les travaux récents.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Frontiers 2019 : résultats Root and Crown Diseases, Flower Bud Rots, Powdery Mildew ; figures 2,4,5,7 et Copyright"
+          ],
+          "result": "Photographies sur Cannabis et caractérisation d’isolats ; Fusarium/Pythium et maladies racinaires, Botrytis et pourritures, oïdium historiquement G. cichoracearum sensu lato. Licence globale CC BY 4.0, MAIS figure2 A,D,E,G reproduits sous permission tierce : figure entière exclue de la proposition. Figures4,5,7 sans cette réserve. Figure7 possède huit panneaux A–H ; la légende éditoriale mentionne I par erreur.",
+          "assertionsSupported": [
+            "Photographies sur Cannabis et caractérisation d’isolats ; Fusarium/Pythium et maladies racinaires, Botrytis et pourritures, oïdium historiquement G. cichoracearum sensu lato. Licence globale CC BY 4.0, MAIS figure2 A,D,E,G reproduits sous permission tierce : figure entière exclue de la proposition. Figures4,5,7 sans cette réserve. Figure7 possède huit panneaux A–H ; la légende éditoriale mentionne I par erreur."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-powdery-2024",
+      "title": "The co-occurrence of two powdery mildew species on Cannabis sativa in the Czech Republic",
+      "author": "Barbora Mieslerová et collaborateurs",
+      "organization": "Journal of Phytopathology",
+      "published": "2024-06-25",
+      "url": "https://doi.org/10.1111/jph.13348",
+      "passage": "Résumé, Methods et Discussion : deux prélèvements de jardin en 2022–2023, microscopie, séquences ITS, G. ambrosiae et P. macularis.",
+      "access": "excerpt",
+      "limitation": "Texte original indexé consulté. Petit nombre d’échantillons ; la co-infection de 2022 est surtout documentée microscopiquement, la lecture moléculaire étant limitée par le mélange.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://doi.org/10.1111/jph.13348",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "Wiley : abstract, Materials and Methods, Results et Discussion, échantillons OL49997 et OL49998"
+          ],
+          "result": "Deux genres d’oïdium observés morphologiquement dans le prélèvement 2022 ; corps de fibrosine chez Podosphaera. Résultat ITS 2022 appuyant P. macularis ; séquence 2023 G. ambrosiae ; ni carte de France ni test causal de tous les symptômes. Photos non réutilisées : licence commerciale non établie.",
+          "assertionsSupported": [
+            "Deux genres d’oïdium observés morphologiquement dans le prélèvement 2022 ; corps de fibrosine chez Podosphaera. Résultat ITS 2022 appuyant P. macularis ; séquence 2023 G. ambrosiae ; ni carte de France ni test causal de tous les symptômes. Photos non réutilisées : licence commerciale non établie."
+          ]
+        }
+      ]
+    },
+    {
+      "id": "health-atlas-diagnostic",
+      "title": "Industrial Hemp Sampling",
+      "author": "Mike Munster",
+      "organization": "NC State Plant Disease and Insect Clinic",
+      "published": "Mise à jour le 2024-11-14",
+      "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+      "passage": "Contexte du problème, vues d’ensemble et détails, intérêt des racines et des transitions entre tissus sains et atteints.",
+      "access": "official-page",
+      "limitation": "Les exigences de prélèvement et d’envoi dépendent du laboratoire et du droit local ; aucun protocole de transport n’est reproduit.",
+      "verifiedAt": "2026-11-14",
+      "documentKind": "Document original universitaire, scientifique ou institutionnel",
+      "reviewEvidence": [
+        {
+          "url": "https://pdic.ces.ncsu.edu/industrial-hemp-sampling/",
+          "openedAt": "2026-11-14",
+          "status": "read",
+          "sectionsOpened": [
+            "NC State Industrial Hemp Sampling : informations de contexte, parties à prélever et symptômes"
+          ],
+          "result": "L’examen combine progression, tissus et analyses ; identifier un organisme ne démontre pas automatiquement qu’il cause la totalité des symptômes. Règles administratives américaines non transposées.",
+          "assertionsSupported": [
+            "L’examen combine progression, tissus et analyses ; identifier un organisme ne démontre pas automatiquement qu’il cause la totalité des symptômes. Règles administratives américaines non transposées."
+          ]
+        }
+      ]
+    }
+  ],
+  "articles": [
+    {
+      "id": "record-health-ostrinia-nubilalis",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : pyrale du maïs ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Ostrinia nubilalis. Crambidae ; distincte de la petite tordeuse du chanvre.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-ostrinia-nubilalis",
+        "topicId": "health",
+        "title": "Pyrale du maïs",
+        "lead": "Ostrinia nubilalis, la pyrale du maïs, peut aussi se développer dans des tiges de chanvre. La chenille creuse des galeries qui peuvent fragiliser la tige, avec des conséquences variables selon la situation.",
+        "image": {
+          "src": "/placard/reference/health/ostrinia.jpg",
+          "author": "Bj.schoenmakers",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ostrinia_nubilalis_(European_corn_borer),_Arnhem,_the_Netherlands.jpg",
+          "license": "CC0",
+          "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "kind": "photograph",
+          "alt": "Papillon beige aux ailes déployées portant des lignes transversales, posé sur une ombellifère.",
+          "caption": "Ostrinia nubilalis adulte, B. Schoenmakers, Arnhem 2014, CC0. L’adulte photographié sur une inflorescence d’une autre plante ne montre pas la galerie produite par la chenille."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Les références américaines décrivent le développement d’Ostrinia nubilalis dans des tiges de chanvre, avec des données historiques et des observations plus récentes encore limitées dans la synthèse de 2019. Les conséquences sur la récolte varient : une association connue avec la plante ne fournit pas un niveau actuel de risque pour une parcelle française."
+            ],
+            "sourceIds": [
+              "health-atlas-ostrinia"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Une galerie à l’intérieur d’une tige, parfois accompagnée de déjections, peut expliquer son affaiblissement. L’examen doit distinguer une lésion interne de simples morsures sur le feuillage ; la présence d’une galerie ne permet pas à elle seule d’identifier le foreur."
+            ],
+            "sourceIds": [
+              "health-atlas-ostrinia"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Le cycle comprend l’œuf, la chenille, la chrysalide et le papillon. Les larves mûres peuvent passer l’hiver dans des résidus végétaux ; le déplacement des adultes et les matières porteuses participent à la dispersion.",
+              "Après les premiers stades exposés, la chenille peut pénétrer dans une tige et y creuser une galerie. La perte de tissu et la fragilisation mécanique expliquent qu’une tige se casse ou qu’une partie de plante flétrisse ; ces effets diffèrent de simples morsures superficielles sur une feuille."
+            ],
+            "sourceIds": [
+              "health-atlas-ostrinia"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "D’autres foreurs, dont Grapholita, peuvent produire des lésions internes ; des troubles de tige non parasitaires peuvent aussi provoquer un flétrissement.",
+              "La présence de déjections et d’une galerie oriente vers un insecte foreur mais ne suffit pas à nommer Ostrinia nubilalis : comparer la larve et la disposition des dégâts avec d’autres foreurs. Le document CSU décrit l’hivernation sous forme de larve mûre dans des résidus de tige."
+            ],
+            "sourceIds": [
+              "health-atlas-ostrinia",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "L’historique et les observations locales doivent être rapprochés avec les organismes de conseil. Il faut apprécier les dégâts effectifs sur le chanvre plutôt que transposer un calendrier établi sur maïs ; une galerie observée n’équivaut pas automatiquement à une perte économique mesurée."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-ostrinia"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-ostrinia",
+          "health-atlas-cranshaw-2019",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-ostrinia-nubilalis"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Ostrinia nubilalis"
+          }
+        ],
+        "diagram": {
+          "kind": "sequence",
+          "title": "De la ponte à la galerie",
+          "nodes": [
+            {
+              "label": "Œufs et jeunes larves",
+              "detail": "Stades encore présents à la surface des organes."
+            },
+            {
+              "label": "Entrée dans la tige",
+              "detail": "La chenille se nourrit à l’intérieur et laisse une galerie."
+            },
+            {
+              "label": "Tige fragilisée",
+              "detail": "Des dégâts internes peuvent précéder la casse visible."
+            }
+          ],
+          "caption": "Schéma de synthèse : les relations décrites ne constituent pas un diagnostic sur photographie.",
+          "sourceIds": [
+            "health-atlas-ostrinia"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-ostrinia",
+        "health-atlas-cranshaw-2019",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Ostrinia nubilalis adulte, B. Schoenmakers, Arnhem2014, CC0. L’adulte photographié sur une inflorescence d’une autre plante ne montre pas la galerie produite par la chenille."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-pyrale"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-grapholita-delineana",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : petite tordeuse du chanvre ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Grapholita delineana. Tortricidae ; les formes larvaires changent d’apparence avec leur développement.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-grapholita-delineana",
+        "topicId": "health",
+        "title": "Petite tordeuse du chanvre",
+        "lead": "Grapholita delineana est un papillon de la famille des Tortricidae dont les chenilles peuvent attaquer les bourgeons et les tiges de chanvre. Une atteinte localisée peut être discrète et nécessite l’examen de l’insecte et des tissus.",
+        "image": {
+          "src": "/placard/reference/health/grapholita.jpg",
+          "author": "pintail",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Grapholita_delineana.jpg",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "kind": "photograph",
+          "alt": "Petit papillon sombre posé, ailes repliées au-dessus du corps.",
+          "caption": "Grapholita delineana adulte, pintail, CC BY 4 ; le végétal photographié n’est pas établi comme chanvre et aucun dégât larvaire n’est illustré."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "La fiche s’appuie sur des observations et une synthèse du Colorado décrivant Grapholita delineana sur chanvre. Elles documentent des organes attaqués et des traits biologiques, mais ne fixent ni sa phénologie en France ni un risque identique dans toutes les régions."
+            ],
+            "sourceIds": [
+              "health-atlas-grapholita"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Les petites galeries peuvent concerner les tiges, la base des inflorescences et les structures portant les graines. Un renflement ou un flétrissement local peut rester discret ; l’emplacement précis de la lésion aide à relier la chenille au symptôme."
+            ],
+            "sourceIds": [
+              "health-atlas-grapholita"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "D’abord exposée, la chenille pénètre ensuite dans des tissus ; les derniers stades peuvent hiverner dans des tiges ou des replis végétaux. Les adultes se déplacent en volant et les végétaux porteurs peuvent aussi transporter l’insecte ; le nombre de générations dépend du contexte régional.",
+              "Grapholita delineana est un petit papillon de la famille des Tortricidae. Sa chenille attaque des bourgeons, des tissus de tige et parfois des structures portant les graines. Une atteinte à la base d’un bourgeon peut interrompre localement sa continuité avec la tige et provoquer son flétrissement, même si le reste de la plante demeure vert."
+            ],
+            "sourceIds": [
+              "health-atlas-grapholita"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "Les autres chenilles foreuses et les lésions sans insecte doivent être envisagées ; la galerie seule ne nomme pas la tordeuse.",
+              "La chenille jeune est claire avec tête sombre, puis peut devenir rougeâtre à orangée ; cette évolution ne constitue pas une clé unique. Le document CSU décrit des larves dans les tiges ou les replis végétaux en hiver. Une photo d’adulte illustre le taxon sans prouver l’identité d’une larve trouvée dans une galerie."
+            ],
+            "sourceIds": [
+              "health-atlas-grapholita",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "La traçabilité des végétaux et le suivi des signes localisés permettent de documenter le foyer. Une évaluation régionale reste nécessaire avant d’en tirer une réponse culturale ; certains hôtes et effets sur la récolte demeurent discutés dans la source, et aucun nombre de générations n’est valable partout."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-grapholita"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-grapholita",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-grapholita-delineana"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Grapholita delineana"
+          }
+        ],
+        "diagram": {
+          "kind": "comparison",
+          "title": "Deux observations à relier",
+          "nodes": [
+            {
+              "label": "Adulte",
+              "detail": "Papillon ailé, à identifier sur ses caractères."
+            },
+            {
+              "label": "Larve et organe",
+              "detail": "Chenille dans un bourgeon ou une tige ; dégâts à documenter séparément."
+            }
+          ],
+          "caption": "Schéma de synthèse : les relations décrites ne constituent pas un diagnostic sur photographie.",
+          "sourceIds": [
+            "health-atlas-grapholita"
+          ]
+        }
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-grapholita",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Grapholita delineana adulte, pintail, CC BY4 ; le végétal photographié n’est pas établi comme chanvre et aucun dégât larvaire n’est illustré."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-tordeuse"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-psylliodes-attenuata",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : altise du chanvre ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Psylliodes attenuata. Le guide utilise aussi Psylliodes apicalis comme synonyme ; garder le nom de la référence lors d’une comparaison.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-psylliodes-attenuata",
+        "topicId": "health",
+        "title": "Altise du chanvre",
+        "lead": "Psylliodes attenuata est un coléoptère appelé altise du chanvre. Les adultes peuvent perforer les cotylédons et les premières feuilles ; reconnaître l’insecte et apprécier les dégâts sont deux étapes distinctes.",
+        "image": {
+          "src": "/placard/reference/health/psylliodes.jpg",
+          "author": "M. Gamman (Agriculture and Agri-Food Canada)",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Psylliodes_attenuata_(10.3897-BDJ.12.e120340)_Figure_1a.jpg",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "kind": "photograph",
+          "alt": "Vue dorsale d’un petit coléoptère sombre, avec antennes et pattes postérieures développées.",
+          "caption": "Psylliodes attenuata, photographie M. Gamman/Agriculture et Agroalimentaire Canada, figure 1a de Biodiversity Data Journal 12 : e120340, CC BY 4 ; spécimen canadien."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Le guide français du chanvre de 2026 décrit les adultes de Psylliodes attenuata et leurs morsures sur de jeunes plantes. Le signalement d’un ravageur ne signifie pas que toute présence entraîne une perte : l’importance dépend du stade et de l’étendue des dégâts."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Sur les cotylédons et les premières feuilles, de petites morsures ou perforations peuvent apparaître. Des coléoptères capables de sauter peuvent être observés à proximité ; les trous dans le limbe doivent être rapprochés de l’insecte et de ses caractères avant d’attribuer l’espèce."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Ce coléoptère possède une métamorphose complète, mais le guide français décrit surtout les adultes et leurs déplacements sur les jeunes plantes. Les conditions chaudes et sèches sont associées au contexte d’attaque observé ; elles ne suffisent pas à prédire l’intensité de chaque foyer.",
+              "L’altise du chanvre Psylliodes attenuata est un coléoptère : l’adulte possède des ailes antérieures durcies, les élytres, et des pattes postérieures adaptées au saut. Ses mandibules découpent de petites perforations dans les cotylédons et les premières feuilles ; une petite plantule supporte moins de perte de surface qu’une plante déjà développée."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "D’autres insectes peuvent perforer de jeunes feuilles ; l’identification de l’adulte est plus précise qu’une attribution fondée sur la forme d’un trou.",
+              "Le guide français cite aussi le nom Psylliodes apicalis. Des trous dans une feuille ne suffisent pas à attribuer l’espèce : rechercher l’adulte et comparer ses caractères. La photographie montre un spécimen de référence, sans représenter un prélèvement français."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "Comparer les jeunes plantes atteintes et les zones indemnes permet d’apprécier la progression et la surface réellement consommée. Chaque perforation ne déclenche pas automatiquement une intervention ; la présente fiche ne fixe ni seuil d’action ni produit à employer."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-hemp-france"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-hemp-france",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-psylliodes-attenuata"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Psylliodes attenuata"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-hemp-france",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Psylliodes attenuata, photographie M. Gamman/Agriculture et Agroalimentaire Canada, figure1a de Biodiversity Data Journal12:e120340, CC BY4 ; spécimen canadien."
+      },
+      "quizIdsReviewed": [
+        "hemp-biodiversity-altise"
+      ],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-slugs",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : limaces ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Gastropoda — plusieurs espèces terrestres. Groupe fonctionnel, pas une espèce unique.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-slugs",
+        "topicId": "health",
+        "title": "Limaces",
+        "lead": "Les limaces sont des mollusques gastéropodes qui peuvent consommer les tissus tendres du chanvre à la levée. Plusieurs espèces sont possibles, sans pouvoir les nommer à partir de la seule couleur.",
+        "image": {
+          "src": "/placard/reference/health/deroceras.jpg",
+          "author": "Deadstar",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Deroceras_reticulatum_Ireland_2021.jpg",
+          "license": "CC0",
+          "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en",
+          "kind": "photograph",
+          "alt": "Limace claire et tachetée, allongée sur un sol minéral.",
+          "caption": "Deroceras reticulatum, Deadstar, CC0 ; photographie hors culture, donnée comme exemple de gastéropode et non comme identification d’un foyer de chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Le guide français du chanvre cite des limaces parmi les causes possibles de dégâts à la levée. Les termes « grise » et « noire » décrivent leur aspect, sans constituer des identifications d’espèce ; la source ne donne ici ni classement spécifique ni taux de perte universel."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Les plantules et les cotylédons peuvent présenter des tissus consommés, et des traces de mucus sont parfois visibles. La disparition d’une jeune plante doit être rapprochée de ces indices et des organismes observés, car plusieurs causes peuvent produire un manque dans le peuplement."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Les limaces naissent d’œufs et accomplissent des cycles variables selon l’espèce, sans passer par les stades d’un insecte. Elles se déplacent au sol et peuvent être transportées accidentellement avec des matériaux ; les abris et l’humidité modifient leur activité.",
+              "Les limaces sont des mollusques gastéropodes et non des insectes. Leur appareil buccal râpe et prélève les tissus tendres : au stade de levée, une consommation de cotylédon ou de jeune tige peut supprimer une plantule. L’humidité facilite leur activité, ce qui explique le contexte frais et humide décrit par le guide français."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "D’autres organismes et des défauts de levée peuvent provoquer des manques : chercher les animaux et les indices associés à la consommation.",
+              "Les pertes de plantules doivent être rapprochées de morsures et d’observations de limaces ; une trace luisante seule n’est pas une mesure de densité. Plusieurs espèces sont possibles, et une photographie de Deroceras reticulatum illustre une limace sans déterminer toutes celles d’une parcelle."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "L’examen des bordures et de zones présentant des symptômes comparables aide à apprécier la pression réelle. Les protections physiques doivent être adaptées au contexte ; une couleur de limace ou une trace isolée ne permet ni d’identifier l’espèce ni de mesurer l’importance du foyer."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-hemp-france"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-hemp-france",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-slugs"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Gastropoda — plusieurs espèces terrestres"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-hemp-france",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Deroceras reticulatum, Deadstar, CC0 ; photographie hors culture, donnée comme exemple de gastéropode et non comme identification d’un foyer de chanvre."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-birds",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : oiseaux consommateurs de graines ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Aves — notamment Columbidae et Corvidae. Groupe regroupant plusieurs familles, sans identification depuis une trace seule.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-birds",
+        "topicId": "health",
+        "title": "Oiseaux consommateurs de graines",
+        "lead": "Des oiseaux granivores, notamment des colombidés et des corvidés, peuvent consommer des graines de chanvre. Leur présence doit être reliée à des indices de consommation avant d’expliquer un manque dans le peuplement.",
+        "image": {
+          "src": "/placard/reference/health/columba.jpg",
+          "author": "Don Loarie",
+          "sourceUrl": "https://commons.wikimedia.org/wiki/File:Columba_palumbus_ssp._palumbus.jpg",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0",
+          "kind": "photograph",
+          "alt": "Pigeon ramier debout dans l’herbe, cou portant une marque blanche.",
+          "caption": "Columba palumbus, Don Loarie, CC BY 4. Cette photographie identifie un oiseau possible, sans montrer de consommation sur chanvre."
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Les colombidés et les corvidés sont cités comme consommateurs possibles de graines dans le guide français du chanvre. Leur présence dans le paysage ne suffit cependant pas à expliquer une levée irrégulière : il faut établir un lien avec une consommation observée ou des indices concordants."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "Des graines manquantes ou consommées et des interruptions localisées du jeune peuplement peuvent être observées. Les traces et les oiseaux présents apportent du contexte, mais un pigeon posé près d’une parcelle n’est pas, à lui seul, une preuve de dommage."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Les cycles et déplacements dépendent de l’espèce d’oiseau. Des rassemblements locaux peuvent rencontrer des graines facilement accessibles ; leur présence doit être comprise dans le paysage et ne se résume pas à un rôle de ravageur.",
+              "Les oiseaux granivores consomment directement les graines, notamment autour du semis ; des pertes peuvent apparaître avant que les plantules soient visibles. Il s’agit d’une consommation de matière végétale, différente d’une infection ou d’un défaut de germination. La disponibilité des graines et le stade de culture modifient le risque."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "La qualité des semences, l’état du sol et d’autres consommateurs peuvent aussi expliquer des manques. Il faut confronter observations d’oiseaux en alimentation, graines manquantes et autres indices ; une présence à proximité ne suffit pas à attribuer les pertes."
+            ],
+            "sourceIds": [
+              "health-atlas-hemp-france",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "Il faut documenter les épisodes et les espèces avec les acteurs locaux, puis examiner les protections ou moyens de dissuasion adaptés et autorisés. Les oiseaux remplissent aussi d’autres fonctions écologiques ; les règles dépendent de l’espèce et du lieu, et la fiche ne propose aucune destruction."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-hemp-france"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-hemp-france",
+          "health-atlas-diagnostic"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-birds"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Aves — notamment Columbidae et Corvidae"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-hemp-france",
+        "health-atlas-diagnostic"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Columba palumbus, Don Loarie, CC BY4. Cette photographie identifie un oiseau possible, sans montrer de consommation sur chanvre."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    },
+    {
+      "id": "record-health-golovinomyces-ambrosiae",
+      "questions": [
+        "Quels organes et signes permettent d’orienter l’observation : oïdium à golovinomyces ?",
+        "Quel mécanisme explique les dégâts ou l’action biologique, et comment confirmer l’identité ?"
+      ],
+      "fullyRead": true,
+      "findings": [
+        "Conservés après lecture : Golovinomyces ambrosiae. Des publications anciennes emploient G. cichoracearum sensu lato ou G. spadiceus ; ne pas assimiler tous les usages de cichoracearum à cette espèce.",
+        "Fragments réunis en paragraphes ; mécanisme et identification explicités ; portée géographique et limites du diagnostic conservées.",
+        "Finition éditoriale : les cinq sections ont été reformulées en paragraphes naturels ; répétitions réduites et références réparties selon les assertions de chaque section."
+      ],
+      "patch": {
+        "id": "record-health-golovinomyces-ambrosiae",
+        "topicId": "health",
+        "title": "Oïdium à Golovinomyces",
+        "lead": "Golovinomyces ambrosiae est l’un des agents d’oïdium documentés sur Cannabis. Les anciennes identifications au sens large et la présence d’autres oïdiums imposent de distinguer le dépôt poudreux visible de l’identité précise du champignon.",
+        "image": {
+          "src": "/placard/school/health/punja-2019-fig7.webp",
+          "kind": "photograph",
+          "alt": "Quatre vues de dépôts poudreux sur Cannabis et quatre vues microscopiques du champignon.",
+          "caption": "Punja et al. 2019, figure 7 A–H, oïdium publié sous G. cichoracearum sensu lato. La planche montre le syndrome et des structures ; G. ambrosiae n’y est pas séparé de tous les taxons proches.",
+          "author": "Zamir K. Punja et al.",
+          "sourceUrl": "https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2019.01120/full",
+          "license": "CC BY 4.0",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/"
+        },
+        "sections": [
+          {
+            "id": "context",
+            "title": "Répartition et contexte",
+            "paragraphs": [
+              "Golovinomyces ambrosiae est documenté sur Cannabis dans des travaux nord-américains et dans les prélèvements tchèques étudiés en 2022 et 2023. La microscopie et les séquences sont interprétées ensemble ; cette documentation ne donne pas une prévalence française et les anciennes identifications au sens large demandent de la prudence."
+            ],
+            "sourceIds": [
+              "health-atlas-powdery-2024"
+            ]
+          },
+          {
+            "id": "signs",
+            "title": "Organes et signes",
+            "paragraphs": [
+              "L’oïdium se présente comme des colonies blanches poudreuses sur les feuilles et, selon les observations, sur d’autres tissus aériens. Ce signe de surface oriente vers un oïdium, mais plusieurs espèces peuvent produire un aspect comparable."
+            ],
+            "sourceIds": [
+              "health-atlas-powdery-2024",
+              "health-atlas-punja-2019"
+            ]
+          },
+          {
+            "id": "biology",
+            "title": "Cycle et dispersion",
+            "paragraphs": [
+              "Les spores aériennes et les végétaux infectés peuvent participer à la propagation. La disponibilité d’un hôte sensible et le microclimat interviennent ; les conditions favorables à un oïdium ne se réduisent pas à la présence visible d’eau sur la feuille.",
+              "L’oïdium forme un mycélium superficiel et produit des conidies donnant l’aspect poudreux blanc. Les structures de nutrition sont en relation avec les cellules de l’hôte vivant : une plage blanche est un signe de colonisation fongique, tandis que le jaunissement éventuel est une réponse du tissu."
+            ],
+            "sourceIds": [
+              "health-atlas-powdery-2024",
+              "health-atlas-punja-2019"
+            ]
+          },
+          {
+            "id": "identification",
+            "title": "Identification et confusions",
+            "paragraphs": [
+              "D’autres oïdiums et des dépôts non biologiques peuvent donner un aspect blanc ; les caractères microscopiques et les séquences précisent l’hypothèse.",
+              "L’étude tchèque distingue deux types de conidies et obtient en 2023 une séquence ITS attribuée à Golovinomyces ambrosiae. Des publications plus anciennes utilisaient G. cichoracearum au sens large ; les séquences ITS ne séparaient pas toujours les noms G. ambrosiae et G. spadiceus. La photographie de 2019 illustre donc un oïdium, pas une confirmation rétrospective d’espèce."
+            ],
+            "sourceIds": [
+              "health-atlas-powdery-2024",
+              "health-atlas-punja-2019",
+              "health-atlas-diagnostic"
+            ]
+          },
+          {
+            "id": "management",
+            "title": "Prévention et gestion",
+            "paragraphs": [
+              "L’observation du matériel entrant et des premiers foyers permet de suivre la maladie. Faire préciser l’agent aide à interpréter les résultats publiés sur un oïdium donné ; la gestion de la plante et l’évaluation d’un produit atteint restent deux questions différentes."
+            ],
+            "sourceIds": [
+              "health-atlas-diagnostic",
+              "health-atlas-powdery-2024"
+            ]
+          }
+        ],
+        "sourceIds": [
+          "health-atlas-powdery-2024",
+          "health-atlas-diagnostic",
+          "health-atlas-punja-2019"
+        ],
+        "relatedArticleIds": [
+          "ref-maladies-chanvre",
+          "ref-ravageurs-auxiliaires"
+        ],
+        "glossaryIds": [],
+        "legacyPassages": [
+          {
+            "courseId": "biodiversity",
+            "passageId": "health-atlas-golovinomyces-ambrosiae"
+          }
+        ],
+        "facts": [
+          {
+            "label": "Nom scientifique",
+            "value": "Golovinomyces ambrosiae"
+          }
+        ]
+      },
+      "sourceIdsReviewed": [
+        "health-atlas-powdery-2024",
+        "health-atlas-diagnostic",
+        "health-atlas-punja-2019"
+      ],
+      "visual": {
+        "status": "verified",
+        "notes": "Page source et photographie locale examinées ; attribution/licence commerciale vérifiées. Punja et al.2019, figure7 A–H, oïdium publié sous G. cichoracearum sensu lato. La planche montre le syndrome et des structures ; G. ambrosiae n’y est pas séparé de tous les taxons proches."
+      },
+      "quizIdsReviewed": [],
+      "status": "ready-for-integration",
+      "blockers": []
+    }
+  ],
+  "termReviews": [],
+  "quizPatches": [],
+  "sensitivePoints": []
+}

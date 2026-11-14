@@ -1,0 +1,109 @@
+{
+  "domain": "agronomy",
+  "reviewerDomain": "botany-physiology",
+  "reviewedAt": "2026-11-14",
+  "scope": "Contre-lecture des six patches complets d’agronomy-01.json, des 28 définitions révisées et des dix corrections de quiz présentes dans ce lot. Vérification ciblée des mécanismes demandés ; pas de nouvelle certification indépendante de toutes les sources du domaine.",
+  "overall": "Pas d’erreur botanique bloquante dans les mécanismes contrôlés. Deux précisions de source ou de terminologie sont proposées avant intégration.",
+  "articles": [
+    {
+      "id": "ref-environnements-culture",
+      "status": "reviewed-no-change",
+      "findings": [
+        "La séparation environnement aérien/milieu racinaire est correcte : serre et hors-sol peuvent décrire le même système.",
+        "Les racines demandent eau, nutriments et oxygène ; la présence d’une solution nutritive n’élimine pas la respiration racinaire.",
+        "Les précautions sur les bilans laitue/chanvre et sur les limites d’une serre sont conservées. Aucun rendement comparatif universel n’est introduit."
+      ]
+    },
+    {
+      "id": "ref-lumiere-climat",
+      "status": "reviewed-minor-patch-proposed",
+      "findings": [
+        "Turgescence et transpiration correctement décrites ; distinguer durée du jour et cumul reçu est pertinent.",
+        "La référence OpenStax 31.1 décrit les éléments nutritifs et les stomates, mais le passage précis sur la pression de turgescence et le trajet de l’eau se trouve en 30.5. Ajouter cette source à la section 2.",
+        "La grandeur en µmol·m⁻²·s⁻¹ est une densité de flux de photons, et dans le document Purdue elle porte sur le PAR conventionnel 400–700 nm. Le mot flux seul est moins précis. DLI et mesure instantanée doivent porter sur une bande spectrale annoncée."
+      ],
+      "proposedSectionSourceAddition": {
+        "sectionId": "ref-lumiere-climat-2",
+        "sourceIds": ["cross-botany-water-transport-2018"]
+      },
+      "proposedDiagramNodeReplacement": {
+        "existingLabel": "Flux de photons",
+        "label": "Densité de flux de photons",
+        "detail": "Flux reçu par unité de surface et par seconde, en µmol·m⁻²·s⁻¹ ; préciser la bande spectrale, ici le PAR conventionnel 400–700 nm."
+      },
+      "proposedParagraphAddition": "Les mesures de photons doivent aussi préciser la bande spectrale considérée. Dans le document Purdue, le PAR conventionnel correspond à 400–700 nm ; sa densité de flux reçue par la surface se mesure instantanément, puis son intégration sur la journée donne le DLI."
+    },
+    {
+      "id": "ref-sol",
+      "status": "reviewed-no-change",
+      "findings": [
+        "Texture et structure sont distinguées correctement ; un tassement change la porosité et l’organisation sans changer nécessairement les proportions granulométriques.",
+        "La rétention échangeable des cations n’est pas la conduction électrique. L’explication K⁺/Ca²⁺ et l’impossibilité de comparer directement extrait saturé/suspension 1:1 sont correctes.",
+        "L’eau totale n’est pas assimilée à l’eau accessible ; l’excès d’eau et l’obstacle mécanique sont traités comme des mécanismes distincts."
+      ]
+    },
+    {
+      "id": "ref-racines-rhizosphere",
+      "status": "reviewed-no-change",
+      "findings": [
+        "La respiration aérobie soutient les fonctions énergétiques des racines ; engorgement et moindre diffusion de l’oxygène peuvent limiter leur fonctionnement sans absence totale de nutriments. L’expression générale « leurs cellules respirent » est acceptable ici et n’affirme pas qu’aucune fermentation ne puisse survenir.",
+        "Exsudats, rhizosphère et réseaux trophiques sont expliqués sans attribuer une fonction identique à tous les microorganismes.",
+        "Lutz est correctement décrit : essai sur maïs, 54 champs suisses, réponse variable. Le résumé primaire et les légendes confirment ces trois points ; aucun résultat n’est extrapolé au chanvre.",
+        "Échange de composés carbonés contre services nutritifs expliqué ; colonisation et bénéfice mesuré distingués ; absence de confusion avec les nodules fixateurs des légumineuses."
+      ]
+    },
+    {
+      "id": "ref-nutrition-minerale",
+      "status": "reviewed-no-change",
+      "findings": [
+        "Ca : contribution aux parois et à la signalisation ; Mg : atome central de la chlorophylle et fonctions enzymatiques ; S : cystéine et méthionine. Ces fonctions sont correctes et ne se confondent pas.",
+        "NPK ne sont pas interchangeables. L’ATP contient du phosphore et le potassium intervient dans la régulation stomatique. La formulation ne prescrit aucun apport.",
+        "La liste de huit oligoéléments Fe, Mn, Zn, Cu, B, Mo, Cl et Ni correspond au cadre usuel des 17 éléments essentiels retenu par Montana. Ne pas ajouter automatiquement Co, Na et Si comme essentiels à toutes les plantes à partir du tableau simplifié OpenStax, qui les énumère aussi.",
+        "Quantité totale, fraction disponible, absorption et exportations sont correctement distinguées."
+      ]
+    },
+    {
+      "id": "ref-matiere-organique",
+      "status": "reviewed-no-change",
+      "findings": [
+        "Minéralisation, immobilisation et nitrification décrivent des transformations distinctes. La séquence ammonium→nitrite→nitrate est correcte sans présenter toutes les transformations comme obligatoires.",
+        "Le carbone protégé n’est pas présenté comme définitivement stable ; fractions particulaires et associées aux minéraux restent des catégories opérationnelles.",
+        "Paillis et couvert vivant sont distingués ; stabilité du compost et aptitude à un usage ne sont pas assimilées."
+      ]
+    }
+  ],
+  "termReview": {
+    "count": 28,
+    "result": "Définitions lues ; pas de correction botanique nécessaire. La définition de respiration précise déjà « fonctionnement aérobie » et la définition de texture mentionne correctement la fraction minérale fine."
+  },
+  "quizReview": {
+    "scope": "Dix quizPatches présents dans le lot, principalement correction des références.",
+    "result": "Les réponses et l’explication ATP/ADN sont compatibles avec les sections révisées. Pas de changement de réponse proposé."
+  },
+  "sourcesOpened": [
+    {"url":"https://openstax.org/books/biology-2e/pages/31-1-nutritional-requirements-of-plants","passages":"Composition chimique ; essential nutrients ; paragraphes O2/ATP, P, S et K.","supports":"Oxygène et respiration, cystéine/méthionine, stomates ; limite du tableau d’éléments dits essentiels."},
+    {"url":"https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants","passages":"Pressure Potential ; Movement of Water and Minerals in the Xylem ; stomatal regulation.","supports":"Turgescence, perte d’eau foliaire et trajet racine–feuille."},
+    {"url":"https://openstax.org/books/biology-2e/pages/7-4-oxidative-phosphorylation","passages":"Electron Transport Chain, introduction.","supports":"Dioxygène accepteur terminal et production d’ATP en respiration aérobie."},
+    {"url":"https://pubmed.ncbi.nlm.nih.gov/38030903/","passages":"Abstract ; légendes figures 1 et 2.","supports":"54 champs, maïs, réponse variable à l’inoculation ; pas d’essai chanvre."},
+    {"url":"https://content.ces.ncsu.edu/extension-gardener-handbook/1-soils-and-plant-nutrients","passages":"Physical Properties of Soil : Texture/Structure ; Chemical Properties : Cation Exchange Capacity.","supports":"Texture/structure et rétention échangeable des cations."},
+    {"url":"https://landresources.montana.edu/soilfertility/html/modules/4449-2/","passages":"Background ; tableau 1 ; Nutrient uptake ; Soil fertility.","supports":"17 éléments, rôles et formes accessibles, mycorhizes et carbone."},
+    {"url":"https://extension.msstate.edu/publications/calcium-and-magnesium-mississippi-crop-production","passages":"Calcium ; Magnesium.","supports":"Parois, chlorophylle, enzymes ; absence de justification d’un ratio idéal Ca/Mg universel."},
+    {"url":"https://ag.purdue.edu/department/hla/extension/extension-publications-library/ext-pubs/ho-238-w.html","passages":"What Is Light ; Measuring Light ; DLI.","supports":"PAR 400–700 nm ; µmol·m⁻²·s⁻¹ et cumul journalier."}
+  ],
+  "newSources": [
+    {
+      "id":"cross-botany-water-transport-2018",
+      "title":"30.5 Transport of Water and Solutes in Plants — Biology 2e",
+      "author":"Mary Ann Clark, Matthew Douglas et Jung Choi",
+      "organization":"OpenStax / Rice University",
+      "published":"2018 ; page courante consultée en 2026",
+      "url":"https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants",
+      "verifiedAt":"2026-11-14",
+      "passage":"Pressure Potential ; Movement of Water and Minerals in the Xylem ; stomatal regulation.",
+      "access":"full-text",
+      "documentKind":"Manuel institutionnel de physiologie végétale",
+      "limitation":"Principes généraux, sans seuil de conduite pour le chanvre ; aucune photographie du manuel réutilisée.",
+      "reviewEvidence":[{"url":"https://openstax.org/books/biology-2e/pages/30-5-transport-of-water-and-solutes-in-plants","sectionsOpened":["Pressure Potential","Movement of Water and Minerals in the Xylem"],"result":"Page ouverte et passages lus.","assertionsSupported":["Pression de turgescence ; vapeur d’eau perdue par la feuille ; trajet dans le xylème."]}]
+    }
+  ]
+}

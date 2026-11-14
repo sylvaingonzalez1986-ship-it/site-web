@@ -3,13 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef } from "react";
-import { ArrowRight, Check, CircleAlert, Clock3, Package, RefreshCw, ShieldCheck, ShoppingBag, Swords } from "lucide-react";
+import { ArrowRight, Check, CircleAlert, Clock3, Package, RefreshCw, Scissors, ShieldCheck, ShoppingBag, Swords } from "lucide-react";
 import type { KqStorageSnapshot } from "@/lib/kanab-quest-api";
 import { formatKqCash } from "@/lib/kanab-quest-equipment";
 import { getKqHarvestStep, getKqStorageHarvestOverview, isKqHarvestBeforeJury, type KqHarvestMarketSection } from "@/lib/kanab-quest-harvests";
+import { getKqTrimHref, getKqTrimPresentation } from "@/lib/kanab-quest-jury-readiness";
 import { KQ_STORAGE_CONTAINER_ARTWORK } from "@/lib/kanab-quest-storage-artwork";
 import { getKqStoragePlacementAvailability } from "@/lib/kanab-quest-storage-placement";
-import { KQ_WORKSHOP_TRIM_HREF } from "@/lib/kanab-quest-hub";
 import { KqProgressMeter } from "./KqVisuals";
 import { KqStoragePlacement, openKqStoragePlacement } from "./KqStoragePlacement";
 import { KqLotSummary } from "./KqLotSummary";
@@ -105,8 +105,6 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
       {showOverviewLink && (onOpenHarvests ? <button type="button" onClick={() => onOpenHarvests(initialFlowerId)}>Toutes mes récoltes <ArrowRight size={16} aria-hidden="true" /></button> : <Link href={`/arene/placard?view=harvests${initialFlowerId ? `&flower=${encodeURIComponent(initialFlowerId)}` : ""}`}>Toutes mes récoltes <ArrowRight size={16} aria-hidden="true" /></Link>)}
     </header>
 
-    {!api.isTutorial && lots.length > 0 ? <p className={styles.trimLink}><Link href={KQ_WORKSHOP_TRIM_HREF}>Faire le trim à l’Atelier <ArrowRight size={16} aria-hidden="true" /></Link><span>Les nouvelles récoltes passent par le trim avant le jury et la vente. Tu peux le faire toi-même ou le confier au personnel.</span></p> : null}
-
     {error && !initialFlowerId && <div className={styles.error} role="alert"><CircleAlert size={18} aria-hidden="true" /><span>{error}</span>{onRetry && <button type="button" disabled={disabled} onClick={onRetry}><RefreshCw size={15} aria-hidden="true" /> Réessayer</button>}</div>}
     {initialFlowerId && selection !== "selected" ? <div ref={selectionNotice} className={styles.selectionNotice} data-storage-selection={selection} tabIndex={-1} role={selection === "unavailable" ? "alert" : "status"}>
       <div><strong>Lot {initialFlowerId.slice(0, 8)}</strong><p>{selection === "loading" ? "Recherche dans le stockage…" : selection === "missing" ? "Ce lot n’apparaît plus dans le stockage. Il a pu être vendu ou transformé." : "Impossible de vérifier ce lot pour le moment."}</p>{selection === "unavailable" && error ? <small>{error}</small> : null}</div>
@@ -118,7 +116,9 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
         const { projection } = lot;
         const ready = projection.stage === "ready";
         const beforeJury = isKqHarvestBeforeJury(lot);
-        const step = getKqHarvestStep(lot.flowerStatus, projection);
+        const step = getKqHarvestStep(lot.flowerStatus, projection, lot.trim);
+        const trim = getKqTrimPresentation(lot.trim);
+        const needsTrim = lot.flowerStatus === "available" && trim.status !== "ready";
         const inDuel = step === "duel" || step === "queued";
         const juryLabel = inDuel ? "Suivre le duel" : "Présenter au jury";
         const juryHref = `/arene/placard?view=arena&flower=${encodeURIComponent(lot.flowerId)}&from=${juryReturnView}&fromSection=storage&fromFlower=${encodeURIComponent(lot.flowerId)}`;
@@ -142,6 +142,10 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
           <div className={styles.lotSheet}>
             <KqLotSummary source={{ kind: "storage", lot }} level={4} selected={selected} artwork={artwork ? <Image src={artwork.src} alt="" width={64} height={64} sizes="48px" /> : <Package size={30} />}>
             <div className={styles.lotAction}>
+              {needsTrim && <>
+                {!api.isTutorial && <Link className={styles.action} data-open-trim={lot.flowerId} href={getKqTrimHref(lot.flowerId, juryReturnView, "storage")} aria-disabled={actionsDisabled || undefined} onClick={event => { if (actionsDisabled) event.preventDefault(); }}><Scissors size={16} aria-hidden="true" />{trim.buttonLabel}<ArrowRight size={16} aria-hidden="true" /></Link>}
+                {trim.status === "unknown" && onRetry && <button type="button" className={styles.protect} data-refresh-trim={lot.flowerId} disabled={disabled} onClick={onRetry}><RefreshCw size={16} aria-hidden="true" />Actualiser</button>}
+              </>}
               {step === "storage" ? onRetry ? <button type="button" className={styles.action} disabled={actionsDisabled} onClick={onRetry}>Vérifier le lot <RefreshCw size={16} aria-hidden="true" /></button> : <span>État du lot à vérifier</span> : beforeJury ? step === "jury" || inDuel ? <>
                 {onOpenArena ? <button type="button" className={styles.action} data-open-jury={lot.flowerId} disabled={actionsDisabled} onClick={() => onOpenArena(lot.flowerId)}><Swords size={16} aria-hidden="true" />{juryLabel}<ArrowRight size={16} aria-hidden="true" /></button>
                   : <Link className={styles.action} data-open-jury={lot.flowerId} href={juryHref} aria-disabled={actionsDisabled || undefined} onClick={event => { if (actionsDisabled) event.preventDefault(); }}><Swords size={16} aria-hidden="true" />{juryLabel}<ArrowRight size={16} aria-hidden="true" /></Link>}
@@ -171,7 +175,7 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
             <div className={styles.detailsBody}>
               <div><strong>{projection.methodName}</strong><p>{total === 0 ? "Aucun vrac à ranger" : containerCount > 0 ? `${containerCount} contenant${containerCount > 1 ? "s" : ""} occupé${containerCount > 1 ? "s" : ""}` : "Contenants à attribuer"} · Lot {lot.flowerId.slice(0, 8)}</p>
                 <p>Récolte initiale : {known(lot.harvestGrams) ? mass(lot.harvestGrams) : "à confirmer"}.{!known(total) && " Quantité restante à confirmer."}</p>
-                {!ready && <><p>{readyDate ? <>Maturité prévue le <time dateTime={projection.readyAt}>{readyDate}</time>.</> : "Date de maturité à confirmer."}</p><p>{beforeJury ? "L’affinage avance aussi hors connexion. Sa fin permet de présenter le lot au jury, puis de vendre après le verdict." : "L’affinage avance aussi hors connexion. Les boutiques attendent sa fin ; le grossiste peut reprendre plus tôt, selon son quota."}</p></>}
+                {!ready && <><p>{readyDate ? <>Maturité prévue le <time dateTime={projection.readyAt}>{readyDate}</time>.</> : "Date de maturité à confirmer."}</p><p>{beforeJury ? "L’affinage avance aussi hors connexion. Le jury demande un affinage terminé et un trim validé ; la vente vient après le verdict." : "L’affinage avance aussi hors connexion. Les boutiques attendent sa fin ; le grossiste peut reprendre plus tôt, selon son quota."}</p></>}
               </div>
               <div className={styles.detailMeters}>
                 {known(total) && known(protectedGrams) && total > 0 && <KqProgressMeter label="Fleurs en contenant" value={protectedGrams} max={total} valueLabel={`${mass(protectedGrams)} / ${mass(total)}`} tone={surplus > 0 ? "gold" : "teal"} />}
@@ -182,7 +186,7 @@ export function KqWarehouseHarvests({ storage, stockGrams, storageReservedGrams,
         </article>;
       })}
     </div>
-    {!lots.length && !initialFlowerId && <div className={styles.empty} role="status"><Package size={28} aria-hidden="true" /><strong>{storage ? "Aucune récolte en conservation" : error ? "Les lots ne sont pas disponibles" : "Chargement des récoltes…"}</strong><p>{storage ? "Tes prochaines récoltes apparaîtront ici : choisis leurs contenants, suis leur affinage, puis présente leur Fleur d’Arène au jury avant la vente." : error ? "Réessaie pour retrouver leur état de conservation." : "Le stock et l’avancement de chaque lot arrivent ici."}</p></div>}
+    {!lots.length && !initialFlowerId && <div className={styles.empty} role="status"><Package size={28} aria-hidden="true" /><strong>{storage ? "Aucune récolte en conservation" : error ? "Les lots ne sont pas disponibles" : "Chargement des récoltes…"}</strong><p>{storage ? "Tes prochaines récoltes apparaîtront ici : choisis leurs contenants, suis leur affinage et leur trim, puis présente leur Fleur d’Arène au jury avant la vente." : error ? "Réessaie pour retrouver leur état de conservation." : "Le stock et l’avancement de chaque lot arrivent ici."}</p></div>}
 
     <details className={styles.storageDetails} data-storage-summary-details>
       <summary><span>Stock et capacité</span><small>{known(free) ? `${mass(free)} de capacité disponible` : "Capacité à confirmer"}</small></summary>

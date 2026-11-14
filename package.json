@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:mobile": "next dev --hostname 0.0.0.0",
+    "preview:school": "node scripts/audit-placard-navigation.mjs --preview --school-visual",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",

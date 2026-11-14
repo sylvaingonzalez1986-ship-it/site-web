@@ -1,0 +1,28 @@
+.article { min-width: 0; }
+.article .question { font-size: clamp(17px, 1.6vw, 21px); color: #075e54; max-width: 65ch; margin: 12px 0 18px; }
+.introduction { display: grid; grid-template-columns: minmax(0,.85fr) minmax(0,1.15fr); gap: clamp(18px,3vw,36px); align-items: start; }
+.illustration { margin: 0; min-width: 0; }
+.illustration img { display: block; width: 100%; height: auto; max-height: 350px; object-fit: contain; }
+.illustration figcaption { font-size: 12px; line-height: 1.4; color: #4c5d53; }
+.illustration summary { min-height: 44px; }
+.essential { min-width: 0; }
+.essential h3 { margin: 0 0 12px; font-size: 23px; }
+.paragraph { max-width: 72ch; margin-bottom: 16px; }
+.paragraph p { line-height: 1.75; }
+.paragraph small { display: block; color: #526359; font-size: 12px; margin: 0 0 4px; }
+.diagram, .exercise { margin: 20px 0; border-block: 1px solid #17292330; }
+.diagram>summary, .exercise>summary { min-height: 48px; padding: 12px 4px; }
+.example { margin: 22px 0; padding: 20px clamp(14px,2vw,24px); border: 2px solid transparent; background: transparent; box-shadow: none; border-image: var(--game-panel-apricot,url('/placard/ui/panel-apricot-v1.webp')) var(--game-panel-slice,48) fill / var(--game-panel-edge,18px) / 0 stretch; }
+.example h3 { margin: 0 0 14px; font-size: 23px; }
+.readAction { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 16px; }
+.readAction small { font-size: 12px; color: #526359; }
+.readAction button { display: inline-flex; gap: 8px; align-items: center; }
+.next { display: grid; gap: 8px; margin: 20px 0; }
+.next>span { font-size: 13px; }
+.next button { justify-self: start; display: flex; gap: 10px; text-align: left; }
+@media (max-width:700px) {
+  .introduction { grid-template-columns: minmax(0,1fr); gap: 16px; }
+  .illustration img { max-height: 230px; }
+  .paragraph { margin-bottom: 14px; }
+  .article .question { margin: 10px 0 14px; }
+}

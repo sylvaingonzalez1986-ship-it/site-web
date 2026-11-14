@@ -13,12 +13,14 @@ export type KqCampaignParticipant = {
 export type KqCampaignMember = KqCampaignParticipant & { runId: string };
 export type KqCampaign = { version: 1; id: string; leaderRunId: string; members: KqCampaignMember[] };
 
-/** All assigned active zones join together. The order does not depend on UI selection. */
-export function getKqCampaignParticipants(state: KqWarehouseState, revision: number, condition?: KqWarehouseCondition): KqCampaignParticipant[] {
-  return state.zones.filter(zone => zone.active && zone.buddieCode)
+/** All available assigned zones join together; the paid plan stays intact. */
+export function getKqCampaignParticipants(state: KqWarehouseState, revision: number, condition?: KqWarehouseCondition, reservedZoneId?: string | null): KqCampaignParticipant[] {
+  if (reservedZoneId != null && !state.zones.some(zone => zone.id === reservedZoneId)) throw new Error("La réservation de production ne correspond plus au plan. Actualise la préparation.");
+  return state.zones.filter(zone => zone.active && zone.buddieCode && zone.id !== reservedZoneId)
     .sort((left, right) => left.id < right.id ? -1 : left.id > right.id ? 1 : 0)
     .map(zone => ({ zoneId: zone.id, buddieCode: zone.buddieCode!,
-      warehouse: getKqWarehouseRunSnapshot(state, revision, zone.id, 2, 2, 2, condition),
+      warehouse: { ...getKqWarehouseRunSnapshot(state, revision, zone.id, 2, 2, 2, condition),
+        ...(reservedZoneId !== undefined ? { productionReservedZoneId: reservedZoneId } : {}), },
       cultivationProfile: getKqBuddieCultivationProfile(zone.buddieCode!),
     }));
 }
@@ -80,6 +82,7 @@ export function isKqCampaign(value: unknown): value is KqCampaign {
   const runs = new Set<string>(), zones = new Set<string>(), buddies = new Set<string>();
   let source: string | undefined, revision: number | undefined, balanceVersion: number | undefined,
     climateBillingVersion: number | undefined, postHarvestBalanceVersion: number | undefined, condition: string | undefined;
+  let reservedZoneId: string | null | undefined;
   for (const member of value.members) {
     if (!record(member) || typeof member.runId !== "string" || !uuid.test(member.runId)
       || typeof member.zoneId !== "string" || typeof member.buddieCode !== "string"
@@ -93,15 +96,18 @@ export function isKqCampaign(value: unknown): value is KqCampaign {
     const ownClimateBilling = member.warehouse.climateBillingVersion ?? 1;
     const ownPostHarvestBalance = member.warehouse.postHarvestBalanceVersion ?? 1;
     const ownCondition = JSON.stringify(member.warehouse.cultureEquipment ?? null);
+    const ownReservation = member.warehouse.productionReservedZoneId ?? null;
     if (source !== undefined && (source !== ownSource || revision !== member.warehouse.revision || balanceVersion !== ownBalance
-      || climateBillingVersion !== ownClimateBilling || postHarvestBalanceVersion !== ownPostHarvestBalance || condition !== ownCondition)) return false;
+      || climateBillingVersion !== ownClimateBilling || postHarvestBalanceVersion !== ownPostHarvestBalance || condition !== ownCondition
+      || reservedZoneId !== ownReservation)) return false;
     source = ownSource; revision = member.warehouse.revision; balanceVersion = ownBalance;
     climateBillingVersion = ownClimateBilling; postHarvestBalanceVersion = ownPostHarvestBalance;
     condition = ownCondition;
+    reservedZoneId = ownReservation;
     runs.add(member.runId); zones.add(member.zoneId); buddies.add(member.buddieCode);
   }
   const members = value.members as KqCampaignMember[];
-  const expected = members[0].warehouse.sourceState.zones.filter(zone => zone.active && zone.buddieCode);
+  const expected = members[0].warehouse.sourceState.zones.filter(zone => zone.active && zone.buddieCode && zone.id !== reservedZoneId);
   return runs.has(value.leaderRunId) && members[0].runId === value.leaderRunId
     && expected.length === members.length && expected.every(zone => zones.has(zone.id))
     && members.every((member, index) => index === 0 || members[index - 1].zoneId < member.zoneId);
