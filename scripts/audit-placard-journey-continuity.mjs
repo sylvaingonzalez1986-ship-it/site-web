@@ -280,7 +280,8 @@ const modules = {
 const fonts = `@font-face{font-family:Display;src:url('/src/app/fonts/BarlowCondensed-Latin-Black.woff2');font-weight:900}@font-face{font-family:Body;src:url('/src/app/fonts/SpaceGrotesk-Latin-Variable.woff2');font-weight:300 700}:root{--font-display:Display;--font-body:Body;--font-sans:Body}body{margin:0;background:#fff1d6}.fixture-tools{padding:12px 18px;font:12px Body;background:#182b24;color:#fff1d6}.fixture-tools p{margin:5px 0}.fixture-tools select{max-width:100%;margin-left:8px;color:#182b24}`;
 const server = await createServer({ root, configFile: false, envDir: false, cacheDir: resolve(output, 'vite-cache'), publicDir: resolve(root, 'public'),
   define: { 'process.env.NEXT_PUBLIC_KQ_FINANCIAL_SUPPORT_URL': '""' },
-  optimizeDeps: { include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'lucide-react', '@3d-dice/dice-box-threejs'] },
+  optimizeDeps: { include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'react/jsx-dev-runtime', 'lucide-react',
+    'cannon-es', 'three', 'three/addons/utils/BufferGeometryUtils.js', 'three/addons/geometries/RoundedBoxGeometry.js', 'three/addons/controls/OrbitControls.js'] },
   resolve: { alias: { '@': resolve(root, 'src') }, dedupe: ['react', 'react-dom'] }, css: { postcss: { plugins: [tailwindcss({ base: root })] } },
   plugins: [{ name: 'journey-continuity-audit', enforce: 'pre', resolveId(id) { if (/\/src\/context\/CartContext(?:\.tsx)?$/.test(id.replaceAll('\\', '/'))) return '\0@/context/CartContext'; if (id.endsWith('/public/placard/warehouse-v2/manifest.json')) return '\0warehouse-assets'; if (id in modules) return '\0' + id; },
     async load(id) { if (id.startsWith('\0') && modules[id.slice(1)]) return (await transformWithOxc(modules[id.slice(1)], id + '.tsx', { lang: 'tsx', jsx: { runtime: 'automatic' } })).code; },
@@ -307,7 +308,8 @@ if (preview) {
   async function load(scenario, width = 390, query = '') {
     await page.evaluate(() => { localStorage.clear(); sessionStorage.clear(); }).catch(() => {});
     await page.setViewport({ width, height: width === 320 ? 720 : width === 390 ? 844 : 1000 });
-    await page.goto(`${origin}${guideOnly ? '/arene/placard' : '/'}?scenario=${scenario}${query ? '&' + query : ''}`, { waitUntil: 'networkidle0' }); await page.evaluate(() => document.fonts.ready);
+    const navigation = cultureBadgesOnly ? { waitUntil: 'domcontentloaded', timeout: 360000 } : { waitUntil: 'networkidle0' };
+    await page.goto(`${origin}${guideOnly ? '/arene/placard' : '/'}?scenario=${scenario}${query ? '&' + query : ''}`, navigation); await page.evaluate(() => document.fonts.ready);
   }
   async function layout() { assert(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), 'No horizontal page overflow'); }
   const settled = () => page.waitForFunction(() => !document.querySelector('[data-placard-view] > [role="status"]'));
@@ -439,7 +441,9 @@ if (preview) {
     }
     async function loadBadges(badgeCase = 'base', width = 390, query = '') {
       await load('culture-carousel', width, `${runQuery}&badgeCase=${badgeCase}${query ? '&' + query : ''}`);
-      await page.waitForSelector('[data-culture-carousel]');
+      // The real Shell lazy-loads the culture screen. Wait for its actual
+      // controls before reading badges, including on the first cold Vite load.
+      await page.waitForSelector('[data-culture-carousel]', { visible: true, timeout: 240000 });
     }
     async function openCare() {
       await panel('care'); await keyClick(intervention);

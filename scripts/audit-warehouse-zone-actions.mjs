@@ -94,6 +94,18 @@ try {
  const camera='[data-grow-camera]';
  const footprint=id=>'[data-grow-footprint="'+id+'"]';
  const frame=async()=>{await page.$eval(camera,node=>node.scrollIntoView({block:'center',behavior:'instant'}));await settle();};
+ const waitForArtwork=async fallback=>{
+  await page.waitForSelector(camera+'[data-renderer="'+(fallback?'plan':'webgl')+'"]');
+  if(!fallback)return;
+  const art='[data-grow-fallback-plan] [data-warehouse-room-artwork]';
+  await page.waitForSelector(art);
+  await page.$eval(art,async node=>{
+   const image=new Image();
+   image.src=node.getAttribute('href');
+   await image.decode();
+  });
+  await settle();
+ };
  const visit=async(extra='')=>{
   await page.goto(origin+'/?compact&zoneActions&'+extra,{waitUntil:'domcontentloaded'});
   await page.waitForSelector(footprint('starter'),{timeout:60000});await frame();
@@ -205,7 +217,18 @@ try {
   return page.$eval('[data-grow-footprint][data-selected="true"][data-kind="'+kind+'"]',node=>node.dataset.growFootprint);
  };
  const size=id=>page.$eval(footprint(id),node=>[+node.dataset.worldX,+node.dataset.worldZ,+node.dataset.width,+node.dataset.depth]);
- const savePlan=async()=>page.click('[data-warehouse-action="save"]:not(:disabled)');
+ const savePlan=async()=>{
+  const selector='[data-warehouse-action="save"]:not(:disabled)';
+  await page.$eval(selector,node=>node.scrollIntoView({block:'center',behavior:'instant'}));
+  await settle();
+  const target=await page.$eval(selector,node=>{
+   const rect=node.getBoundingClientRect(),x=rect.x+rect.width/2,y=rect.y+rect.height/2;
+   const hit=document.elementFromPoint(x,y);
+   return {x,y,reachable:node.contains(hit),obstacle:hit?.closest('button')?.textContent?.trim().slice(0,60)};
+  });
+  assert(target.reachable,'Save button is directly reachable, found '+target.obstacle);
+  await page.mouse.click(target.x,target.y);
+ };
  await run('isometric-wall-occupied-cell',async()=>{
   await page.setViewport({width:1440,height:900,isMobile:false,hasTouch:false});
   await visit('savedWall');
@@ -215,13 +238,14 @@ try {
   await frame();await tap(await point(1,1),false);await page.waitForSelector(wallMenu);
   assert.match(await page.$eval(wallMenu,node=>node.innerText),/Colonne 2, ligne 2/);
   assert.equal(await page.$eval('[data-warehouse-cell-save]',node=>node.disabled),true);
-  await close();assert.deepEqual(await size('saved-wall'),origin);
+  await page.click('[data-warehouse-cell-cancel]');await page.waitForSelector(wallMenu,{hidden:true});await settle();
+  assert.deepEqual(await size('saved-wall'),origin);
   await noMutation();return {rejectedPosition:[1,1]};
  });
  for(const touch of [false,true])await run('isometric-edit-'+(touch?'320':'1440'),async()=>{
   await page.setViewport({width:touch?320:1440,height:touch?568:900,isMobile:touch,hasTouch:touch});
   await visit('savedWall&persist=iso-'+touch+'-'+Date.now()+(touch?'&noWebGL':''));
-  if(touch)await page.waitForSelector('[data-grow-fallback-plan]');
+  await waitForArtwork(touch);
   await tap(await zonePoint('saved-wall'),touch);await page.waitForSelector('dialog[data-warehouse-cell-menu][open]');await close();
   await frame();await tap(await point(5,5),touch);
   assert.equal(await page.$('dialog[open]'),null,'A free cell never opens a menu');
@@ -257,8 +281,10 @@ try {
   assert.equal(saved.request.expectedCostCents,payable);assert.equal(saved.snapshot.cashCents,before.cash-payable);
   await page.reload({waitUntil:'networkidle0'});
   for(const id of created)await page.waitForSelector(footprint(id));
+  await frame();
+  await waitForArtwork(touch);
   assert.deepEqual(await page.evaluate(()=>window.__snapshot.state),saved.snapshot.state);
-  await frame();await capture('isometric-saved-'+(touch?'320':'1440'));
+  await capture('isometric-saved-'+(touch?'320':'1440'));
   return {touch,fallback:touch,created,payable};
  });
  await run('isometric-save-conflict-and-retry',async()=>{
@@ -309,11 +335,16 @@ try {
   }
   assert(await page.$(footprint('second')+'[data-selected="true"]'));
   assert.equal(await page.$(menu),null,'Buddie placement does not open zone actions');
+  assert.equal(await page.$('[data-buddie-variety-popover]:popover-open'),null,'Buddie placement leaves the card closed');
   await noMutation();await savePlan();
   await page.waitForFunction(()=>window.__snapshot.revision===2);
   const zones=await page.evaluate(()=>window.__snapshot.state.zones);
   assert.equal(zones.find(zone=>zone.id==='second').buddieCode,'HH2026-003');
   assert.equal(zones.find(zone=>zone.id==='starter').buddieCode,undefined);
+  if(input==='drag'){
+   await page.click(card);
+   await page.waitForSelector('[data-buddie-variety-popover]:popover-open');
+  }
   return {zoneId:'second',input};
  });
  for(const [width,height]of [[320,568],[1440,900]])await run('tutorial-progression-and-draft-removal-'+width,async()=>{

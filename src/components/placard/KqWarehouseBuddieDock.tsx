@@ -46,7 +46,7 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
   const track = useRef<HTMLDivElement>(null);
   const cardGesture = useRef<CardGesture | null>(null);
   const scrollGesture = useRef<ScrollGesture | null>(null);
-  const suppressedClick = useRef<{ code: string; until: number } | null>(null);
+  const suppressedClick = useRef<{ code: string; pointerId: number } | null>(null);
   const callbacks = useRef({ onPick, onDragPoint, onDrop, selectedCode });
   const [ghost, setGhost] = useState<{ code: string; point: KqWarehouseBuddiePoint } | null>(null);
   const [scroll, setScroll] = useState({ previous: false, next: false, percent: 0 });
@@ -68,7 +68,7 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
     const scrolling = scrollGesture.current;
     cardGesture.current = null;
     scrollGesture.current = null;
-    if (current) suppressedClick.current = { code: current.code, until: performance.now() + 600 };
+    if (current) suppressedClick.current = { code: current.code, pointerId: current.pointerId };
     releasePointer(current);
     releasePointer(scrolling);
     if (updateView) setGhost(null);
@@ -165,7 +165,7 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
     if (!current || current.pointerId !== event.pointerId) return;
     event.preventDefault(); event.stopPropagation();
     cardGesture.current = null;
-    suppressedClick.current = { code: current.code, until: performance.now() + 600 };
+    suppressedClick.current = { code: current.code, pointerId: current.pointerId };
     releasePointer(current); setGhost(null);
     if (current.dragging) {
       try { callbacks.current.onDrop(current.code, { x: event.clientX, y: event.clientY }); }
@@ -215,10 +215,20 @@ export function KqWarehouseBuddieDock({ buddies, runs, zones, disabled, open, on
         return <div key={buddie.code} role="listitem" className={styles.slot}>
           <button type="button" className={styles.card} data-warehouse-buddie-card={buddie.code} data-buddie-blocked={blocked} data-selected={selectedCode === buddie.code && !blocked || undefined} data-dragging={ghost?.code === buddie.code || undefined}
             aria-haspopup="dialog" aria-expanded={inspectedBuddie?.code === buddie.code} aria-controls={inspectedBuddie?.code === buddie.code ? `${id}-variety` : undefined} aria-label={`Voir la fiche de ${buddie.name}`} aria-describedby={`${id}-${buddie.code}-status`} title={`${buddie.name} · ${reason}`}
-            onPointerDown={event => { if (!blocked) startCard(event, buddie.code); }} onPointerMove={moveCard} onPointerUp={finishCard} onPointerCancel={cancelCard} onLostPointerCapture={cancelCard}
+            onPointerDown={event => {
+              if (event.isPrimary && event.button === 0) suppressedClick.current = null;
+              if (!blocked) startCard(event, buddie.code);
+            }} onPointerMove={moveCard} onPointerUp={finishCard} onPointerCancel={cancelCard} onLostPointerCapture={cancelCard}
             onDragStart={event => event.preventDefault()} onContextMenu={event => event.preventDefault()}
             onClick={event => {
-              if (event.detail > 0 && suppressedClick.current?.code === buddie.code && performance.now() < suppressedClick.current.until) { suppressedClick.current = null; event.preventDefault(); event.stopPropagation(); return; }
+              const suppressed = suppressedClick.current;
+              const pointerId = "pointerId" in event.nativeEvent ? event.nativeEvent.pointerId : undefined;
+              if (suppressed?.code === buddie.code && (pointerId === suppressed.pointerId || pointerId === undefined && event.detail > 0)) {
+                suppressedClick.current = null;
+                event.preventDefault();
+                event.stopPropagation();
+                return;
+              }
               const trigger = event.currentTarget;
               setInspected(previous => previous?.code === buddie.code ? null : { code: buddie.code, trigger });
             }}>

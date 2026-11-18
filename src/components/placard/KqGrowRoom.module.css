@@ -195,6 +195,16 @@
 .editorGroup { display: flex; flex-wrap: wrap; gap: .16rem; }
 .editorGroup .stationChoice { padding-inline: .55rem; }
 .editorHint { margin: .1rem 0 .35rem; font-size: .83rem; }
+.iso[data-warehouse-iso-viewport] :is(.cameraBar, .editorHint) {
+  --game-panel-art: var(--game-panel-paper,url("/placard/ui/panel-paper-v1.webp"));
+  padding: .3rem .7rem;
+  color: var(--arcade-ink,#172923);
+  border: 2px solid transparent;
+  background: transparent;
+  border-image: var(--game-panel-art) var(--game-panel-slice,48) fill / var(--game-panel-edge,15px) / 0 stretch;
+}
+.iso[data-warehouse-iso-viewport] .cameraBar { margin-block-start: .3rem; }
+.iso[data-warehouse-iso-viewport] .editorHint { width: fit-content; max-width: 100%; box-sizing: border-box; }
 .stationDisclosure { display: none; }
 .blocked { margin: .3rem .15rem; font-size: .80rem; color: var(--arcade-ink,#172923); }
 @media (max-width:600px) {
