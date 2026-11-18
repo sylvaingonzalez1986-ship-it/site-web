@@ -1,4 +1,5 @@
 {
+  "warehouseUpdate20261118": "À la demande du joueur, l’entrepôt utilise désormais sa vue isométrique unique pour sélectionner et aménager les zones. Le plan de dessus est retiré de ce parcours. Le code d’exploration intérieure à la première personne reste hors parcours. Suivi actuel : warehouseIsometricEditor20261118 dans docs/bete-de-concours/ux-progress.json ; les validations ci-dessous restent historiques.",
   "date": "2026-11-17",
   "branch": "feat/village-interiors-3d",
   "status": "Extérieur 3D animé et activités 2D conservés ; sélection historique de l’entrepôt rétablie le 17 novembre.",

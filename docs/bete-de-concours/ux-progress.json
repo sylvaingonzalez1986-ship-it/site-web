@@ -1,4 +1,15 @@
 {
+  "warehouseIsometricEditor20261118": {
+    "date": "2026-11-18",
+    "status": "Vue isométrique unique intégrée à l’entrepôt ; vérifications finales en cours.",
+    "changes": "Le plan de dessus est retiré de l’entrepôt. La scène isométrique permet sélection, tracé Culture/Séchage/Stockage, déplacement et taille, avec une seule liste accessible de postes. Brouillon, devis, confirmations, Buddies, parois enregistrées, verrouillages et destinations séchage/stockage sont conservés. Le repli sans WebGL garde la même projection et les mêmes commandes.",
+    "interactionReview": "Clic tactile traité après le relâchement, sans activation dans le dialogue ouvert ; désélection sur case vide ; gestes attachés à leur zone d’origine ; rejet parent sans faux message de succès. Le dock Buddie consomme le clic suivant un dépôt sans minuterie. Dimensions et consignes sur papier lisible.",
+    "validation": "185 tests ciblés, TypeScript global sur les sources finales et ESLint ciblé réussis. 27 scénarios entrepôt réussis : souris/tactile/clavier, trois types de zone, déplacement/taille, parois, devis et confirmation, sauvegarde/rechargement, conflit/réponse perdue, Buddies, suppression/revente et tutoriel. Captures finales 320/1440 px inspectées, dont repli illustré chargé sans WebGL à 320 px.",
+    "browserReport": "output/warehouse-zone-actions/report.json",
+    "documentation": "docs/bete-de-concours/salle-de-culture.md",
+    "deployed": false,
+    "nextBoundedTask": "Terminer uniquement la non-régression du groupe entrepôt et un smoke PBI. Aucun nouvel audit général ni publication implicite."
+  },
   "equipeQuartier20261118": {
     "date": "2026-11-18",
     "status": "Mon équipe est accessible sur les cartes 2D et 3D du Quartier. Le registre commun du personnel fournit les budgets, les missions et les reçus des bâtiments.",
@@ -16,6 +27,7 @@
     "migrationIntrants": "20261118000400_kq_care_input_sectors.sql, vérifiée par 261 contrôles PostgreSQL locaux. Le tarif affiché couvre le lot acheté. Un dépôt sur plan consomme 1 m².",
     "recetteInterventions": "13 scénarios navigateur réussis, zéro erreur JavaScript. Les quatre intrants sont appliqués sur la case choisie. Le nettoyage payé ramène le joueur à la salle et consomme le prix affiché. Captures dans output/culture-room/pbi/lombricompost-390.png et nettoyage-390.png.",
     "clavierIntrants": "À 390 px, achat de 6 m² de lombricompost, choix de case avec le clavier, validation par Entrée et 5 m² restants. Preuve dans output/placard-journey-continuity/culture-input-keyboard-report.json.",
+    "validationLivraison": "20 scénarios de badges, 75 tests de soins, PBI et récit de culture, TypeScript et construction Next.js réussis. Avertissements réseau du CMS et de la boutique pendant le pré-rendu local.",
     "status": "PBI jouables au mètre carré dans la salle. Le joueur choisit le produit puis la case du plan. Le personnage rejoint l’allée et dépose le sachet.",
     "changes": "Un foyer de parasites démarre sur un plant et peut gagner un voisin par bilan. Une protection compatible laisse une chance sur dix de propagation. Emplacements des plants, traitements actifs et réserves sont repris après rechargement. Sur téléphone, le lancer est sous les dés. La salle et le plateau disposent de raccourcis réciproques. La vue générale permet le défilement et le pincement passe au zoom.",
     "validation": "Recette Chromium tactile à 320 × 690, 390 × 844 et 844 × 390, plus bureau à 1440 × 900. Huit scénarios PBI et six de campagne, dont choix hors foyer, retour aux dés, annulation et reprise. 206 contrôles PostgreSQL locaux, dont douze contrôles du retour de version. Droits vérifiés sur 400 migrations.",
@@ -56,6 +68,7 @@
   },
   "warehouseZoneSelectionRollback": {
     "date": "2026-11-17",
+    "supersededBy": "warehouseIsometricEditor20261118 : à la demande du joueur, la vue isométrique prend désormais le relais pour sélectionner et aménager les zones.",
     "status": "Ancienne sélection des zones rétablie à la demande du joueur, avant la refonte liée aux intérieurs 3D.",
     "changes": "Boutons Culture, Séchage et Stockage directement visibles ; tracé sur le plan, sélection directe et inspecteur historique restaurés. Un clic ou Entrée sur une case vide n’ouvre plus le menu de construction. Contrainte de passage 3D retirée du client et du serveur ; géométrie, chevauchements, parois enregistrées, devis et protections de sauvegarde conservés.",
     "validation": "143 tests ciblés réussis ; 22 scénarios navigateur réussis, dont tracé/déplacement souris et tactile 320 px, parois existantes, clavier, équipement, Buddies, suppression/revente et leçon. Captures 320/1440 px inspectées ; ESLint ciblé réussi. Premier TypeScript global réussi ; dernier contrôle après ajustement tactile bloqué par deux erreurs hors correctif dans village-breton.ts:212 (number | boolean) et VillageAtmosphere.tsx:10 (village-fisherman absent), fichiers modifiés pendant cette intervention.",

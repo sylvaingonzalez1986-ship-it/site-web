@@ -14,7 +14,7 @@ const previewOnly = process.argv.includes("--preview-only");
 if(previewOnly&&!serve)throw Error("--preview-only requires --serve.");
 const refreshVisuals=process.argv.includes("--refresh-visuals");
 const group = process.argv.find(arg=>arg.startsWith("--check="))?.slice(8);
-if (group && !["warehouse","campaign","orientation","parity","pbi"].includes(group)) throw Error("--check accepts warehouse, campaign, orientation, parity or pbi.");
+if (group && !["warehouse","campaign","orientation","parity","pbi","pbi-smoke"].includes(group)) throw Error("--check accepts warehouse, campaign, orientation, parity, pbi or pbi-smoke.");
 if(refreshVisuals&&group)throw Error("--refresh-visuals runs the complete browser route with existing measured frame data.");
 const output = resolve(root, "output/culture-room", group || (serve ? "preview" : "."));
 const port = Number(process.env.CULTURE_ROOM_PORT ?? (serve ? 3693 : 3694));
@@ -502,6 +502,17 @@ async function audit(){
     if(!group || group==="pbi"){
       const {checkSpatialCare}=await import("./audit-culture-room-pbi.mjs");
       await checkSpatialCare({page,output,viewport,visit,state,reveal,tap,pass,pose,screenshots,chooseCareProduct,pressCareCell});
+    }
+    if(group==="pbi-smoke"){
+      await viewport(390);await visit("pbi-smoke");
+      assert.equal(await page.$("[data-warehouse-iso-map]"),null);
+      await selectOnFloor("culture-2");
+      await chooseCareProduct();
+      await pressCareCell("culture-2:0:1");
+      const live=await state(),target={zoneId:"culture-2",x:0,y:1};
+      assert.deepEqual(live.game.care.applications.map(application=>application.target),[target]);
+      assert.deepEqual(live.calls.filter(call=>call.method==="POST").map(call=>[call.body.productCode,call.body.target,call.status]),[["CARE-APHIDIUS",target,200]]);
+      pass("Culture selection and projected PBI target without warehouse editing",{target});
     }
     if(!group||group==="campaign"){
     await viewport(320);await visit("campaign");await visibleRoom();
